@@ -48,20 +48,20 @@ typedef struct axis2_http_chunked_stream axis2_http_chunked_stream_t;
 AXIS2_DECLARE_DATA struct axis2_http_chunked_stream_ops
 {
 	int (AXIS2_CALL *read) (axis2_http_chunked_stream_t *chunked_stream,
-						axis2_env_t **env, void *buffer, size_t count);
+						const axis2_env_t *env, void *buffer, size_t count);
 	
 	int (AXIS2_CALL *write) (axis2_http_chunked_stream_t *chunked_stream, 
-						axis2_env_t **env, const void *buffer, 
+						const axis2_env_t *env, const void *buffer, 
 						size_t count);
 	int (AXIS2_CALL *get_current_chunk_size) 
                         (axis2_http_chunked_stream_t *chunked_stream, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 	axis2_status_t (AXIS2_CALL *write_last_chunk) 
 						(axis2_http_chunked_stream_t *chunked_stream, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 	axis2_status_t (AXIS2_CALL *free) 
                         (axis2_http_chunked_stream_t *chunked_stream, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 };
 
 /**
@@ -75,7 +75,7 @@ AXIS2_DECLARE_DATA struct axis2_http_chunked_stream
 
 
 AXIS2_DECLARE(axis2_http_chunked_stream_t *) 
-axis2_http_chunked_stream_create(axis2_env_t **env, axis2_stream_t* stream);
+axis2_http_chunked_stream_create(const axis2_env_t *env, axis2_stream_t* stream);
 /********************* Start of function macros	***************************/
 
 #define AXIS2_HTTP_CHUNKED_STREAM_READ(chunked_stream, env, buffer, count) \

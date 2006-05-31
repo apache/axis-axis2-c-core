@@ -49,15 +49,15 @@ typedef struct axis2_http_out_transport_info axis2_http_out_transport_info_t;
 AXIS2_DECLARE_DATA struct axis2_http_out_transport_info_ops
 {
     int (AXIS2_CALL *set_content_type) (axis2_http_out_transport_info_t *info, 
-					axis2_env_t **env, axis2_char_t *content_type);
+					const axis2_env_t *env, axis2_char_t *content_type);
     
     axis2_status_t (AXIS2_CALL *set_char_encoding) 
-                    (axis2_http_out_transport_info_t *info, axis2_env_t **env,
+                    (axis2_http_out_transport_info_t *info, const axis2_env_t *env,
 					axis2_char_t *encoding);
     
     axis2_status_t (AXIS2_CALL *free) 
 					(axis2_http_out_transport_info_t *out_transport_info, 
-					axis2_env_t **env);
+					const axis2_env_t *env);
 };
 
 /**
@@ -71,7 +71,7 @@ AXIS2_DECLARE_DATA struct axis2_http_out_transport_info
 
 
 AXIS2_DECLARE(axis2_http_out_transport_info_t *) 
-axis2_http_out_transport_info_create(axis2_env_t **env,
+axis2_http_out_transport_info_create(const axis2_env_t *env,
 					axis2_http_simple_response_t *response);
 
 /**
@@ -81,7 +81,7 @@ axis2_http_out_transport_info_create(axis2_env_t **env,
  */
 AXIS2_DECLARE(axis2_status_t) 
 axis2_http_out_transport_info_free_void_arg (void *transport_info,
-                                             axis2_env_t **env);
+                                             const axis2_env_t *env);
 
 /************************* Start of function macros    ***************************/
 

@@ -65,7 +65,7 @@ extern "C"
          */
          axis2_status_t (AXIS2_CALL *
 		add_handler_at)(struct axis2_phase *phase, 
-						axis2_env_t **env,
+						const axis2_env_t *env,
 						int index, 
 						axis2_handler_t *hander);
         /**
@@ -75,7 +75,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
 		add_handler)(struct axis2_phase *phase, 
-					 axis2_env_t **env,
+					 const axis2_env_t *env,
 					 axis2_handler_t *handler);
 		/**
          * If need to see how this works look at the stack!
@@ -84,7 +84,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		invoke)(struct axis2_phase *phase, 
-				axis2_env_t **env,
+				const axis2_env_t *env,
 				struct axis2_msg_ctx *msg_ctx);
         /**
          * phase name accessor
@@ -92,11 +92,11 @@ extern "C"
          */
         axis2_char_t* (AXIS2_CALL *
 		get_name)(struct axis2_phase *phase, 
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
          
         int (AXIS2_CALL *
 		get_handler_count)(struct axis2_phase *phase, 
-                           axis2_env_t **env);
+                           const axis2_env_t *env);
         
         /**
          * Method setPhaseFirst
@@ -105,7 +105,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		set_first_handler)(struct axis2_phase *phase, 
-                           axis2_env_t **env, 
+                           const axis2_env_t *env, 
 						   axis2_handler_t * handler);
         /**
          * Method setPhaseLast
@@ -114,7 +114,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		set_last_handler)(struct axis2_phase *phase, 
-                          axis2_env_t **env, 
+                          const axis2_env_t *env, 
 						  axis2_handler_t * handler);
         /**
          * Method add_handler
@@ -123,7 +123,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		add_handler_desc)(struct axis2_phase *phase, 
-                          axis2_env_t **env, 
+                          const axis2_env_t *env, 
 						  axis2_handler_desc_t * handler_desc);
         /**
          * Method axis2_phase_insert_before
@@ -132,7 +132,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		insert_before)(struct axis2_phase *phase, 
-					   axis2_env_t **env, 
+					   const axis2_env_t *env, 
 		               axis2_handler_t * handler);
         
         /**
@@ -142,7 +142,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		insert_after)(struct axis2_phase *phase, 
-			          axis2_env_t **env, 
+			          const axis2_env_t *env, 
 		              axis2_handler_t * handler);
         
         /**
@@ -153,12 +153,12 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		insert_before_and_after)(struct axis2_phase *phase, 
-			                     axis2_env_t **env, 
+			                     const axis2_env_t *env, 
 		                         axis2_handler_t * handler);
         
         axis2_status_t (AXIS2_CALL *
 		insert_handler_desc)(struct axis2_phase *phase, 
-			                 axis2_env_t **env, 
+			                 const axis2_env_t *env, 
 		                     axis2_handler_desc_t * handler_desc);
         
         /**
@@ -168,18 +168,18 @@ extern "C"
          */
         axis2_array_list_t* (AXIS2_CALL *
 		get_handlers)(struct axis2_phase *phase, 
-			          axis2_env_t **env);
+			          const axis2_env_t *env);
 		
         axis2_status_t (AXIS2_CALL *
 		invoke_start_from_handler)(struct axis2_phase *phase, 
-			                       axis2_env_t **env, 
+			                       const axis2_env_t *env, 
 		                           axis2_qname_t *qname, 
 		                           struct axis2_msg_ctx *msg_ctx);
 									   
 									   
         axis2_status_t (AXIS2_CALL *
 	    free)(struct axis2_phase *phase,
-			  axis2_env_t **env);
+			  const axis2_env_t *env);
 		
     } axis2_phase_ops_t;
 	
@@ -197,7 +197,7 @@ extern "C"
  * creates phase struct
  */
 AXIS2_DECLARE(axis2_phase_t*) 
-axis2_phase_create(axis2_env_t **env, 
+axis2_phase_create(const axis2_env_t *env, 
 				   const axis2_char_t *phase_name);
 
 #define AXIS2_PHASE_ADD_HANDLER_AT(phase, env, index, handler) \

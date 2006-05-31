@@ -35,7 +35,7 @@ extern "C"
   */
 
 AXIS2_DECLARE(axis2_http_out_transport_info_t *) 
-axis2_apache2_out_transport_info_create(axis2_env_t **env,
+axis2_apache2_out_transport_info_create(const axis2_env_t *env,
 					request_rec *r);
 
 /**
@@ -45,7 +45,7 @@ axis2_apache2_out_transport_info_create(axis2_env_t **env,
  */
 AXIS2_DECLARE(axis2_status_t) 
 axis2_apache2_out_transport_info_free_void_arg (void *transport_info,
-                                             axis2_env_t **env);
+                                             const axis2_env_t *env);
 
 /** @} */
 #ifdef __cplusplus

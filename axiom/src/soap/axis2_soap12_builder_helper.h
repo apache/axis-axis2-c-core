@@ -46,11 +46,11 @@ typedef struct axis2_soap12_builder_helper_ops  axis2_soap12_builder_helper_ops_
     {
         axis2_status_t (AXIS2_CALL *free_fn)
                             (axis2_soap12_builder_helper_t *builder_helper,
-                             axis2_env_t **env);
+                             const axis2_env_t *env);
         
         axis2_status_t (AXIS2_CALL *handle_event)
                     (axis2_soap12_builder_helper_t *builder_helper,
-                     axis2_env_t **env,
+                     const axis2_env_t *env,
                      axis2_om_node_t *om_element_node,
                      int element_level);
     };                                                      
@@ -68,7 +68,7 @@ struct axis2_soap12_builder_helper
     * @param env Environment. MUST NOT be NULL
     */
 AXIS2_DECLARE(axis2_soap12_builder_helper_t*)
-axis2_soap12_builder_helper_create(axis2_env_t **env, 
+axis2_soap12_builder_helper_create(const axis2_env_t *env, 
                                    axis2_soap_builder_t *soap_builder);
     
 /******************** Macros **************************************************/

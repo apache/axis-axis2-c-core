@@ -59,36 +59,36 @@ AXIS2_DECLARE_DATA struct axis2_transport_receiver_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_transport_receiver_t *transport_receiver,
-        axis2_env_t **env);
+        const axis2_env_t *env);
     
 	axis2_status_t (AXIS2_CALL *
     start)(axis2_transport_receiver_t *transport_receiver,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
                     
 	axis2_status_t (AXIS2_CALL *
     stop)(axis2_transport_receiver_t *transport_receiver,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
                     
 	axis2_endpoint_ref_t* (AXIS2_CALL *
     get_reply_to_epr)(axis2_transport_receiver_t *transport_receiver,
-			            axis2_env_t **env,
+			            const axis2_env_t *env,
                         axis2_char_t *svc_name);
 
     axis2_status_t (AXIS2_CALL *
     init) (axis2_transport_receiver_t *transport_receiver,
-		    axis2_env_t **env,
+		    const axis2_env_t *env,
 			struct axis2_conf_ctx *conf_ctx,
 			struct axis2_transport_in_desc *transport_in);
 
 
     struct axis2_conf_ctx* (AXIS2_CALL *
     get_conf_ctx) (axis2_transport_receiver_t *server, 
-                    	axis2_env_t **env);
+                    	const axis2_env_t *env);
 	
 	
     axis2_bool_t (AXIS2_CALL *
     is_running) (axis2_transport_receiver_t *server, 
-                    	axis2_env_t **env);
+                    	const axis2_env_t *env);
 
 };
 

@@ -54,22 +54,22 @@ struct axis2_http_transport_sender_impl
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_invoke
 							(axis2_transport_sender_t *transport_sender, 
-                    		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx);
+                    		const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx);
     
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_clean_up
 							(axis2_transport_sender_t *transport_sender, 
-                    		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx);
+                    		const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx);
     
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_init
 							(axis2_transport_sender_t *transport_sender, 
-                    		axis2_env_t **env, axis2_conf_ctx_t *conf_ctx, 
+                    		const axis2_env_t *env, axis2_conf_ctx_t *conf_ctx, 
 							axis2_transport_out_desc_t *out_desc);
 axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_write_message
 							(axis2_transport_sender_t *transport_sender, 
-                    		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
+                    		const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
 							axis2_endpoint_ref_t *epr, 
 							axis2_soap_envelope_t *out, 
 							axis2_om_output_t *om_output);
@@ -77,22 +77,22 @@ axis2_http_transport_sender_write_message
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_free 
 							(axis2_transport_sender_t *transport_sender, 
-                    		axis2_env_t **env);
+                    		const axis2_env_t *env);
 /***************************** End of function headers ************************/
 
 axis2_transport_sender_t* AXIS2_CALL
-axis2_http_transport_sender_create(axis2_env_t **env)
+axis2_http_transport_sender_create(const axis2_env_t *env)
 {
     axis2_http_transport_sender_impl_t *transport_sender_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
         
     transport_sender_impl = (axis2_http_transport_sender_impl_t *)AXIS2_MALLOC 
-                            ((*env)->allocator, sizeof(
+                            (env->allocator, sizeof(
                             axis2_http_transport_sender_impl_t));
 	
     if(NULL == transport_sender_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 		return NULL;
 	}
     transport_sender_impl->http_version = AXIS2_STRDUP(
@@ -101,13 +101,13 @@ axis2_http_transport_sender_create(axis2_env_t **env)
 	transport_sender_impl->connection_timeout = 
 						AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
 	transport_sender_impl->so_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
-    transport_sender_impl->transport_sender.ops = AXIS2_MALLOC((*env)->allocator
+    transport_sender_impl->transport_sender.ops = AXIS2_MALLOC(env->allocator
 						,sizeof(axis2_transport_sender_ops_t));
     if(NULL == transport_sender_impl->transport_sender.ops)
 	{
 		axis2_http_transport_sender_free((axis2_transport_sender_t*)
 						transport_sender_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
 		return NULL;
 	}
     
@@ -127,7 +127,7 @@ axis2_http_transport_sender_create(axis2_env_t **env)
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_free 
 						(axis2_transport_sender_t *transport_sender, 
-						axis2_env_t **env)
+						const axis2_env_t *env)
 {
     axis2_http_transport_sender_impl_t *transport_sender_impl = NULL;
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -135,14 +135,14 @@ axis2_http_transport_sender_free
 
     if(NULL != transport_sender_impl->http_version)
     {
-        AXIS2_FREE((*env)->allocator, transport_sender_impl->http_version);
+        AXIS2_FREE(env->allocator, transport_sender_impl->http_version);
         transport_sender_impl->http_version = NULL;
     }
 
     if(NULL != transport_sender->ops)
-        AXIS2_FREE((*env)->allocator, transport_sender->ops);
+        AXIS2_FREE(env->allocator, transport_sender->ops);
     
-	AXIS2_FREE((*env)->allocator, transport_sender_impl);
+	AXIS2_FREE(env->allocator, transport_sender_impl);
 	return AXIS2_SUCCESS;
 }
 
@@ -150,7 +150,7 @@ axis2_http_transport_sender_free
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_invoke
 							(axis2_transport_sender_t *transport_sender, 
-                    		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
+                    		const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx)
 {
     axis2_char_t *char_set_enc = NULL;
 	axis2_endpoint_ref_t *epr = NULL;
@@ -164,7 +164,7 @@ axis2_http_transport_sender_invoke
     axis2_om_node_t *data_out = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 	
 	property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
 							AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
@@ -233,11 +233,11 @@ axis2_http_transport_sender_invoke
     soap_data_out = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
     if(NULL == soap_data_out)
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
                     AXIS2_ERROR_NULL_SOAP_ENVELOPE_IN_MSG_CTX, 
                     AXIS2_FAILURE);
-        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "%s", 
-                        AXIS2_ERROR_GET_MESSAGE((*env)->error));
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s", 
+                        AXIS2_ERROR_GET_MESSAGE(env->error));
         return AXIS2_FAILURE;
     }
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, 
@@ -298,7 +298,7 @@ axis2_http_transport_sender_invoke
 			
 			if(NULL == out_info)
 			{
-				AXIS2_ERROR_SET((*env)->error, 
+				AXIS2_ERROR_SET(env->error, 
 							AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL, AXIS2_FAILURE);
                 AXIS2_OM_OUTPUT_FREE(om_output, env);
                 om_output = NULL;
@@ -334,11 +334,11 @@ axis2_http_transport_sender_invoke
                 
                 if(NULL == soap_body)
                 {
-                    AXIS2_ERROR_SET((*env)->error, 
+                    AXIS2_ERROR_SET(env->error, 
                                 AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL, 
                                 AXIS2_FAILURE);
-                    AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "%s", 
-                                AXIS2_ERROR_GET_MESSAGE((*env)->error));
+                    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s", 
+                                AXIS2_ERROR_GET_MESSAGE(env->error));
                     AXIS2_OM_OUTPUT_FREE(om_output, env);
                     om_output = NULL;
                     xml_writer = NULL;
@@ -371,7 +371,7 @@ axis2_http_transport_sender_invoke
                 buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
             }
 			AXIS2_STREAM_WRITE(out_stream, env, buffer, AXIS2_STRLEN(buffer));				
-			AXIS2_FREE((*env)->allocator, buffer);
+			AXIS2_FREE(env->allocator, buffer);
 	
             op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
             if (op_ctx)
@@ -414,10 +414,10 @@ axis2_http_transport_sender_invoke
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_clean_up
 							(axis2_transport_sender_t *transport_sender, 
-                    		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
+                    		const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 	/*
 	 * Clean up is not used. If the http sender needs
 	 * to be cleaned up it should be done here.
@@ -429,7 +429,7 @@ axis2_http_transport_sender_clean_up
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_init
 							(axis2_transport_sender_t *transport_sender, 
-                    		axis2_env_t **env, axis2_conf_ctx_t *conf_ctx, 
+                    		const axis2_env_t *env, axis2_conf_ctx_t *conf_ctx, 
 							axis2_transport_out_desc_t *out_desc)
 {
 	axis2_param_t *version_param = NULL;
@@ -437,8 +437,8 @@ axis2_http_transport_sender_init
 	axis2_char_t *temp = NULL;
 	axis2_param_t *temp_param = NULL;
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, conf_ctx, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, out_desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, out_desc, AXIS2_FAILURE);
 	
 	version_param = AXIS2_PARAM_CONTAINER_GET_PARAM(
 							out_desc->param_container, env, 
@@ -455,7 +455,7 @@ axis2_http_transport_sender_init
 			axis2_param_t *encoding_param = NULL;
 			if(NULL != AXIS2_INTF_TO_IMPL(transport_sender)->http_version)
 			{
-				AXIS2_FREE((*env)->allocator, 
+				AXIS2_FREE(env->allocator, 
 							AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
 			}
 			AXIS2_INTF_TO_IMPL(transport_sender)->http_version = AXIS2_STRDUP(
@@ -481,7 +481,7 @@ axis2_http_transport_sender_init
 		{
 			if(NULL != AXIS2_INTF_TO_IMPL(transport_sender)->http_version)
 			{
-				AXIS2_FREE((*env)->allocator, 
+				AXIS2_FREE(env->allocator, 
 							AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
 			}
 			AXIS2_INTF_TO_IMPL(transport_sender)->http_version = AXIS2_STRDUP(
@@ -491,7 +491,7 @@ axis2_http_transport_sender_init
 	}
 	else
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_HTTP_VERSION, 
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_HTTP_VERSION, 
 							AXIS2_FAILURE);
 		return AXIS2_FAILURE;
 	}
@@ -527,7 +527,7 @@ axis2_http_transport_sender_init
 axis2_status_t AXIS2_CALL
 axis2_http_transport_sender_write_message
 							(axis2_transport_sender_t *transport_sender, 
-                    		axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
+                    		const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
 							axis2_endpoint_ref_t *epr, 
 							axis2_soap_envelope_t *out, 
 							axis2_om_output_t *om_output)
@@ -538,9 +538,9 @@ axis2_http_transport_sender_write_message
     axis2_status_t status = AXIS2_FAILURE;
 
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, epr, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, epr, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
 	url = AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env);
 	soap_action = AXIS2_MSG_CTX_GET_SOAP_ACTION(msg_ctx, env);
@@ -561,11 +561,11 @@ axis2_http_transport_sender_write_message
         
         if(NULL == soap_body)
         {
-            AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_SET(env->error, 
                         AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL, 
                         AXIS2_FAILURE);
-            AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "%s", 
-                        AXIS2_ERROR_GET_MESSAGE((*env)->error));
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s", 
+                        AXIS2_ERROR_GET_MESSAGE(env->error));
             return AXIS2_FAILURE;
         }
         body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body,env);
@@ -616,7 +616,7 @@ axis2_http_transport_sender_write_message
  */
 AXIS2_EXPORT int 
 axis2_get_instance(struct axis2_transport_sender **inst,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     *inst = axis2_http_transport_sender_create(env);
     if(!(*inst))
@@ -630,7 +630,7 @@ axis2_get_instance(struct axis2_transport_sender **inst,
 
 AXIS2_EXPORT int 
 axis2_remove_instance(axis2_transport_sender_t *inst,
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     if (inst)

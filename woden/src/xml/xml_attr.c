@@ -40,12 +40,12 @@ struct axis2_woden_xml_attr_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_xml_attr_free(
         void *xml_attr,
-        axis2_env_t **envv);
+        const axis2_env_t *envv);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_xml_attr_init(
         void *xml_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_element_t *owner_el,
         axis2_om_node_t *owner_node,
         axis2_qname_t *attr_type, 
@@ -54,32 +54,32 @@ axis2_woden_xml_attr_init(
 axis2_qname_t *AXIS2_CALL
 axis2_woden_xml_attr_get_attribute_type(
         void *xml_attr,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_xml_attr_get_content(
         void *xml_attr,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 axis2_woden_xml_attr_to_external_form(
         void *xml_attr,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 axis2_woden_xml_attr_is_valid(
         void *xml_attr,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_xml_attr_set_valid(
         void *xml_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_bool_t validity);
 
 AXIS2_DECLARE(axis2_woden_xml_attr_t *)
 axis2_woden_xml_attr_create(
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_element_t *owner_el,
         axis2_om_node_t *owner_node,
         axis2_qname_t *attr_type, 
@@ -88,7 +88,7 @@ axis2_woden_xml_attr_create(
     axis2_woden_xml_attr_impl_t *xml_attr_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    xml_attr_impl = AXIS2_MALLOC((*env)->allocator, 
+    xml_attr_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_xml_attr_impl_t));
 
     xml_attr_impl->f_attr_type = NULL;
@@ -96,7 +96,7 @@ axis2_woden_xml_attr_create(
     xml_attr_impl->f_external_form = NULL;
     xml_attr_impl->f_valid = AXIS2_TRUE;
 
-    xml_attr_impl->xml_attr.ops = AXIS2_MALLOC((*env)->allocator, 
+    xml_attr_impl->xml_attr.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_xml_attr_ops_t)); 
     
     axis2_woden_xml_attr_init(&(xml_attr_impl->xml_attr), env, owner_el, 
@@ -118,7 +118,7 @@ axis2_woden_xml_attr_create(
 axis2_status_t AXIS2_CALL
 axis2_woden_xml_attr_free(
         void *xml_attr,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
@@ -133,19 +133,19 @@ axis2_woden_xml_attr_free(
     
     if(xml_attr_impl->f_external_form)
     {
-        AXIS2_FREE((*env)->allocator, xml_attr_impl->f_external_form);
+        AXIS2_FREE(env->allocator, xml_attr_impl->f_external_form);
         xml_attr_impl->f_external_form = NULL;
     }
     
     if((&(xml_attr_impl->xml_attr))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(xml_attr_impl->xml_attr))->ops);
+        AXIS2_FREE(env->allocator, (&(xml_attr_impl->xml_attr))->ops);
         (&(xml_attr_impl->xml_attr))->ops = NULL;
     }
 
     if(xml_attr_impl)
     {
-        AXIS2_FREE((*env)->allocator, xml_attr_impl);
+        AXIS2_FREE(env->allocator, xml_attr_impl);
         xml_attr_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -154,13 +154,13 @@ axis2_woden_xml_attr_free(
 axis2_status_t AXIS2_CALL
 axis2_woden_xml_attr_resolve_methods(
         axis2_woden_xml_attr_t *xml_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
-    xml_attr->ops = AXIS2_MALLOC((*env)->allocator, 
+    xml_attr->ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_xml_attr_ops_t));
     xml_attr->ops->free = axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
     xml_attr->ops->to_xml_attr_free = axis2_hash_get(methods, 
@@ -187,7 +187,7 @@ axis2_woden_xml_attr_resolve_methods(
 axis2_status_t AXIS2_CALL 
 axis2_woden_xml_attr_init(
         void *xml_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_element_t *owner_el,
         axis2_om_node_t *owner_node,
         axis2_qname_t *attr_type, 
@@ -196,10 +196,10 @@ axis2_woden_xml_attr_init(
     axis2_woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, owner_el, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, owner_node, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, attr_type, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, attr_value, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, owner_el, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, owner_node, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, attr_type, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, attr_value, AXIS2_FAILURE);
     xml_attr_impl = INTF_TO_IMPL(xml_attr);
 
     if(xml_attr_impl->f_attr_type)
@@ -225,7 +225,7 @@ axis2_woden_xml_attr_init(
 axis2_qname_t *AXIS2_CALL
 axis2_woden_xml_attr_get_attribute_type(
         void *xml_attr,
-        axis2_env_t **env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
@@ -238,7 +238,7 @@ axis2_woden_xml_attr_get_attribute_type(
 void *AXIS2_CALL
 axis2_woden_xml_attr_get_content(
         void *xml_attr,
-        axis2_env_t **env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
@@ -250,7 +250,7 @@ axis2_woden_xml_attr_get_content(
 axis2_char_t *AXIS2_CALL
 axis2_woden_xml_attr_to_external_form(
         void *xml_attr,
-        axis2_env_t **env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
@@ -262,7 +262,7 @@ axis2_woden_xml_attr_to_external_form(
 axis2_bool_t AXIS2_CALL
 axis2_woden_xml_attr_is_valid(
         void *xml_attr,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
@@ -274,7 +274,7 @@ axis2_woden_xml_attr_is_valid(
 axis2_status_t AXIS2_CALL
         axis2_woden_xml_attr_set_valid(
         void *xml_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_bool_t validity) 
 {
     axis2_woden_xml_attr_impl_t *xml_attr_impl = NULL;

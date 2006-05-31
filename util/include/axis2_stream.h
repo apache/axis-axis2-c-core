@@ -67,11 +67,11 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 	 */
    	axis2_status_t (AXIS2_CALL *
 	free)(axis2_stream_t *stream, 
-		  axis2_env_t **env);
+		  const axis2_env_t *env);
    	
     axis2_status_t (AXIS2_CALL *
     free_void_arg) (void *stream, 
-            		axis2_env_t **env);
+            		const axis2_env_t *env);
    
   	/**
 	 * reads from stream
@@ -82,7 +82,7 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
    
 	int (AXIS2_CALL *
 	read) (axis2_stream_t *stream, 
-		   axis2_env_t **env, 
+		   const axis2_env_t *env, 
 		   void *buffer, 
 		   size_t count);
 	/**
@@ -93,7 +93,7 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 	 */
 	int (AXIS2_CALL *
 	write) (axis2_stream_t *stream, 
-			axis2_env_t **env, 
+			const axis2_env_t *env, 
 			const void *buffer, 
 			size_t count);
    	/**
@@ -103,7 +103,7 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 	 */
 	int (AXIS2_CALL *
 	skip) (axis2_stream_t *stream, 
-		   axis2_env_t **env, 
+		   const axis2_env_t *env, 
 		   int count);
 						
 	/**
@@ -113,7 +113,7 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 	 */
 	int (AXIS2_CALL *
 	get_char) (axis2_stream_t *stream, 
-	           axis2_env_t **env);
+	           const axis2_env_t *env);
 	
 	/**
 	 * Pushes a character back to stream, cast to unsigned char, where it is 
@@ -123,7 +123,7 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 	 */
 	int (AXIS2_CALL *
 	unget_char) (axis2_stream_t *stream, 
-				 axis2_env_t **env, 
+				 const axis2_env_t *env, 
 				 int ch);
 
 	/**
@@ -133,7 +133,7 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 	 */
 	int (AXIS2_CALL *
 	get_len) (axis2_stream_t *stream, 
-	          axis2_env_t **env);
+	          const axis2_env_t *env);
 	
 	/**
 	 * Returns the type of the stream as axis2_stream_type_t
@@ -141,7 +141,7 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 	 */
 	axis2_stream_type_t (AXIS2_CALL *
 	get_type) (axis2_stream_t *stream, 
-			   axis2_env_t **env); 
+			   const axis2_env_t *env); 
 	
 };
 
@@ -161,21 +161,21 @@ AXIS2_DECLARE_DATA struct axis2_stream
 /** \brief Constructor for creating an in memory stream
   * @return axis2_stream (in memory)
   */
-AXIS2_DECLARE(axis2_stream_t *) axis2_stream_create_basic (axis2_env_t **env);
+AXIS2_DECLARE(axis2_stream_t *) axis2_stream_create_basic (const axis2_env_t *env);
 
 /** \brief Constructor for creating a file stream
   * @param valid file pointer (opened file)
   * @return axis2_stream (file)
   */
 AXIS2_DECLARE(axis2_stream_t *)
-axis2_stream_create_file (axis2_env_t **env, FILE *fp);
+axis2_stream_create_file (const axis2_env_t *env, FILE *fp);
 
 /** \brief Constructor for creating a file stream
   * @param valid socket (opened socket)
   * @return axis2_stream (socket)
   */
 AXIS2_DECLARE(axis2_stream_t *)
-axis2_stream_create_socket (axis2_env_t **env, int socket);
+axis2_stream_create_socket (const axis2_env_t *env, int socket);
 
 /**
  * Free stream passed as void pointer. This will be
@@ -184,7 +184,7 @@ axis2_stream_create_socket (axis2_env_t **env, int socket);
  */
 AXIS2_DECLARE(axis2_status_t) 
 axis2_stream_free_void_arg (void *stream,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 #define AXIS2_STREAM_FREE(stream, env) ((stream->ops)->free(stream, env))
 

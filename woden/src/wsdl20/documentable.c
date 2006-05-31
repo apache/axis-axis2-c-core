@@ -36,43 +36,43 @@ struct axis2_woden_documentable_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_documentable_free(
         void *documentable,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_woden_documentable_super_objs(
         void *documentable,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_wsdl_obj_t *AXIS2_CALL
 axis2_woden_documentable_get_base_impl(
         void *documentable,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_documentable_add_documentation_element(
         void *documentable,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_documentation_element_t *documentation);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_documentable_get_documentation_elements(
         void *documentable,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 static axis2_woden_documentable_t *
 create(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_documentable_impl_t *documentable_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    documentable_impl = AXIS2_MALLOC((*env)->allocator, 
+    documentable_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_documentable_impl_t));
 
     documentable_impl->f_doc_elems = NULL;
     documentable_impl->super = NULL;
     
-    documentable_impl->documentable.ops = AXIS2_MALLOC((*env)->allocator, 
+    documentable_impl->documentable.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_documentable_ops_t));
 
     documentable_impl->documentable.ops->free = axis2_woden_documentable_free;
@@ -88,7 +88,7 @@ create(
 
 AXIS2_DECLARE(axis2_woden_documentable_t *)
 axis2_woden_documentable_create(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_documentable_impl_t *documentable_impl = NULL;
    
@@ -100,7 +100,7 @@ axis2_woden_documentable_create(
     documentable_impl->super = axis2_hash_make(env);
     if(!documentable_impl->super)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(documentable_impl->super, "AXIS2_WODEN_DOCUMENTABLE", 
@@ -115,7 +115,7 @@ axis2_woden_documentable_create(
 axis2_status_t AXIS2_CALL
 axis2_woden_documentable_free(
         void *documentable,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_documentable_impl_t *documentable_impl = NULL;
 
@@ -142,13 +142,13 @@ axis2_woden_documentable_free(
     
     if(documentable_impl->documentable.ops)
     {
-        AXIS2_FREE((*env)->allocator, documentable_impl->documentable.ops);
+        AXIS2_FREE(env->allocator, documentable_impl->documentable.ops);
         documentable_impl->documentable.ops = NULL;
     }
     
     if(documentable_impl)
     {
-        AXIS2_FREE((*env)->allocator, documentable_impl);
+        AXIS2_FREE(env->allocator, documentable_impl);
         documentable_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -157,7 +157,7 @@ axis2_woden_documentable_free(
 axis2_hash_t *AXIS2_CALL
 axis2_woden_documentable_super_objs(
         void *documentable,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_documentable_impl_t *documentable_impl = NULL;
 
@@ -170,7 +170,7 @@ axis2_woden_documentable_super_objs(
 axis2_woden_wsdl_obj_t *AXIS2_CALL
 axis2_woden_documentable_get_base_impl(
         void *documentable,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_documentable_impl_t *documentable_impl = NULL;
 
@@ -183,17 +183,17 @@ axis2_woden_documentable_get_base_impl(
 axis2_status_t AXIS2_CALL
 axis2_woden_documentable_resolve_methods(
         axis2_woden_documentable_t *documentable,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_documentable_t *documentable_impl,
         axis2_hash_t *methods)
 {
     axis2_woden_documentable_impl_t *documentable_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     documentable_impl_l = INTF_TO_IMPL(documentable_impl);
 
-    documentable->ops = AXIS2_MALLOC((*env)->allocator, 
+    documentable->ops = AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_documentable_ops_t));
     
     documentable->ops->free = axis2_hash_get(methods, "free", 
@@ -221,14 +221,14 @@ axis2_woden_documentable_resolve_methods(
 axis2_status_t AXIS2_CALL
 axis2_woden_documentable_add_documentation_element(
         void *documentable,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_documentation_element_t *documentation)
 {
     axis2_woden_documentable_impl_t *documentable_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, documentation, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, documentation, AXIS2_FAILURE);
     super = AXIS2_WODEN_DOCUMENTABLE_SUPER_OBJS(documentable, env);
     documentable_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DOCUMENTABLE", AXIS2_HASH_KEY_STRING));
@@ -238,7 +238,7 @@ axis2_woden_documentable_add_documentation_element(
         documentable_impl->f_doc_elems = axis2_array_list_create(env, 0);
         if(!documentable_impl->f_doc_elems)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
@@ -249,7 +249,7 @@ axis2_woden_documentable_add_documentation_element(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_documentable_get_documentation_elements(
         void *documentable,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_documentable_impl_t *documentable_impl = NULL;
     axis2_hash_t *super = NULL;

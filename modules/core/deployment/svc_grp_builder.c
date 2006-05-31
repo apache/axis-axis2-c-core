@@ -33,12 +33,12 @@ typedef struct axis2_svc_grp_builder_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_grp_builder_free (axis2_svc_grp_builder_t *svc_grp_builder, 
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 
 axis2_status_t AXIS2_CALL
 axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_svc_grp_t *svc_grp);
 
 /**
@@ -47,26 +47,26 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
  */
 axis2_status_t AXIS2_CALL
 axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *grp_builder,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                    axis2_om_children_qname_iterator_t *module_refs ,
                                             axis2_svc_grp_t *svc_grp);
                                             
 /************************** End of function prototypes ************************/
 
 axis2_svc_grp_builder_t * AXIS2_CALL 
-axis2_svc_grp_builder_create (axis2_env_t **env)
+axis2_svc_grp_builder_create (const axis2_env_t *env)
 {
     axis2_svc_grp_builder_impl_t *svc_grp_builder_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	svc_grp_builder_impl = (axis2_svc_grp_builder_impl_t *) AXIS2_MALLOC((*env)->
+	svc_grp_builder_impl = (axis2_svc_grp_builder_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_svc_grp_builder_impl_t));
 	
 	
 	if(NULL == svc_grp_builder_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -75,11 +75,11 @@ axis2_svc_grp_builder_create (axis2_env_t **env)
     svc_grp_builder_impl->svc_grp_builder.desc_builder = NULL;
     
 	svc_grp_builder_impl->svc_grp_builder.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_svc_grp_builder_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_svc_grp_builder_ops_t));
 	if(NULL == svc_grp_builder_impl->svc_grp_builder.ops)
     {
         axis2_svc_grp_builder_free(&(svc_grp_builder_impl->svc_grp_builder), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -93,7 +93,7 @@ axis2_svc_grp_builder_create (axis2_env_t **env)
 }
 
 axis2_svc_grp_builder_t * AXIS2_CALL 
-axis2_svc_grp_builder_create_with_svc_and_dep_engine (axis2_env_t **env,
+axis2_svc_grp_builder_create_with_svc_and_dep_engine (const axis2_env_t *env,
                                                 axis2_om_node_t *svc_grp,
                                                 axis2_dep_engine_t *dep_engine)
 {
@@ -103,7 +103,7 @@ axis2_svc_grp_builder_create_with_svc_and_dep_engine (axis2_env_t **env,
         axis2_svc_grp_builder_create(env);
     if(!grp_builder_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         grp_builder_impl = NULL;
     }
     grp_builder_impl->svc_grp_builder.desc_builder = 
@@ -122,7 +122,7 @@ axis2_svc_grp_builder_create_with_svc_and_dep_engine (axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_grp_builder_free (axis2_svc_grp_builder_t *svc_grp_builder, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_svc_grp_builder_impl_t *grp_builder_impl = NULL;
     
@@ -138,13 +138,13 @@ axis2_svc_grp_builder_free (axis2_svc_grp_builder_t *svc_grp_builder,
     }
 	if(NULL != svc_grp_builder->ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_grp_builder->ops);
+        AXIS2_FREE(env->allocator, svc_grp_builder->ops);
         svc_grp_builder->ops = NULL;
     }
     
     if(grp_builder_impl)
     {
-        AXIS2_FREE((*env)->allocator, grp_builder_impl);
+        AXIS2_FREE(env->allocator, grp_builder_impl);
         grp_builder_impl = NULL;
     }
     
@@ -153,7 +153,7 @@ axis2_svc_grp_builder_free (axis2_svc_grp_builder_t *svc_grp_builder,
 
 axis2_status_t AXIS2_CALL
 axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_svc_grp_t *svc_grp)
 {
     axis2_svc_grp_builder_impl_t *grp_builder_impl = NULL;
@@ -205,7 +205,7 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
         svc_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(svc_name_att, env);
         if(NULL == svc_name)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_NAME_ERROR,
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_NAME_ERROR,
                 AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
@@ -247,15 +247,15 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
 
 axis2_status_t AXIS2_CALL
 axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *grp_builder,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                    axis2_om_children_qname_iterator_t *module_refs ,
                                             axis2_svc_grp_t *svc_grp)
 {
     axis2_svc_grp_builder_impl_t *grp_builder_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, module_refs, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, module_refs, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
     grp_builder_impl = AXIS2_INTF_TO_IMPL(grp_builder);
     
     while (AXIS2_TRUE == AXIS2_OM_CHILDREN_ITERATOR_HAS_NEXT(module_refs, env))
@@ -284,7 +284,7 @@ axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *grp_builder,
                 engine, env, qrefname);
             if(NULL == module)
             {
-                AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_NOT_FOUND,
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND,
                     AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }   

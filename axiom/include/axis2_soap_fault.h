@@ -69,7 +69,7 @@ struct axis2_soap_builder;
 
         axis2_status_t (AXIS2_CALL *
 		free_fn)(axis2_soap_fault_t *fault,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
 	   /**
         * this function returns a axis2_soap_fault_code struct
         * if a fault code is associated with this soap fault
@@ -81,7 +81,7 @@ struct axis2_soap_builder;
         */		
         struct axis2_soap_fault_code * (AXIS2_CALL *
 		get_code)(axis2_soap_fault_t *fault,
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
        /** 
         * @param fault soap fault struct
         * @param env environment must not be NULL
@@ -91,7 +91,7 @@ struct axis2_soap_builder;
                                               
         struct axis2_soap_fault_reason *(AXIS2_CALL *
 		get_reason)(axis2_soap_fault_t *fault,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
                                              
        /** 
         * @param fault soap fault struct
@@ -101,7 +101,7 @@ struct axis2_soap_builder;
         */	                                     
         struct axis2_soap_fault_node* (AXIS2_CALL *
 		get_node)(axis2_soap_fault_t *fault,
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
                                              
        /** 
         * @param fault soap fault struct
@@ -111,7 +111,7 @@ struct axis2_soap_builder;
         */	                                      
         struct axis2_soap_fault_role* (AXIS2_CALL *
 		get_role)(axis2_soap_fault_t *fault,
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
 	   /** 
         * @param fault soap fault struct
         * @param env environment must not be NULL
@@ -121,7 +121,7 @@ struct axis2_soap_builder;
 
         struct axis2_soap_fault_detail* (AXIS2_CALL *
 		get_detail)(axis2_soap_fault_t *fault,
-                    axis2_env_t **env); 
+                    const axis2_env_t *env); 
 	   /** 
         * @param fault soap fault struct 
         * @param env enviroment must not be NULL
@@ -130,7 +130,7 @@ struct axis2_soap_builder;
         */	
         axis2_char_t * (AXIS2_CALL *
 		get_exception)(axis2_soap_fault_t *fault,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
 	   /**
         * set an error string 
         * @param fualt soap fault struct
@@ -139,7 +139,7 @@ struct axis2_soap_builder;
         */		
         axis2_status_t (AXIS2_CALL *
 		set_exception) (axis2_soap_fault_t *fault,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_char_t *exception);                                                                                             
 	  /**
        * returns the axis2_om_node_t struct which is wrapped by
@@ -151,7 +151,7 @@ struct axis2_soap_builder;
        */
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node)(axis2_soap_fault_t *fault,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
                        
                                  
     };
@@ -179,7 +179,7 @@ struct axis2_soap_builder;
 
     
 AXIS2_DECLARE(axis2_soap_fault_t *)
-axis2_soap_fault_create_with_parent(axis2_env_t **env,
+axis2_soap_fault_create_with_parent(const axis2_env_t *env,
                                     struct axis2_soap_body *parent);
 
 /** create an returns a axis2_soap_fault_t struct with a soap fault detail 
@@ -193,12 +193,12 @@ axis2_soap_fault_create_with_parent(axis2_env_t **env,
  */
 
 AXIS2_DECLARE(axis2_soap_fault_t *)
-axis2_soap_fault_create_with_exception(axis2_env_t **env,
+axis2_soap_fault_create_with_exception(const axis2_env_t *env,
                                         struct axis2_soap_body *parent,  
                                         axis2_char_t* exception);
                                         
 AXIS2_DECLARE(axis2_soap_fault_t *)
-axis2_soap_fault_create_default_fault(axis2_env_t **env,
+axis2_soap_fault_create_default_fault(const axis2_env_t *env,
                                       struct axis2_soap_body *parent,
                                       axis2_char_t *code_value,
                                       axis2_char_t *reason_text,

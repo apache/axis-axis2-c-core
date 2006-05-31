@@ -56,7 +56,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         axis2_status_t (AXIS2_CALL *
         ensure_capacity) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 int min_capacity);
         
        /**
@@ -67,7 +67,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         int (AXIS2_CALL *
         size) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env);
+                const axis2_env_t *env);
         
        /**
         * Checks if the list is empty.
@@ -77,7 +77,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         axis2_bool_t (AXIS2_CALL *
         is_empty) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env);
+                const axis2_env_t *env);
         
        /**
         * Returns true iff element is in this array_list.
@@ -88,7 +88,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         axis2_bool_t (AXIS2_CALL *
         contains) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 void *e);
             
        /**
@@ -102,7 +102,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         int (AXIS2_CALL *
         index_of) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 void *e);
         
        /**
@@ -116,7 +116,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         int (AXIS2_CALL *
         last_index_of) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 void *e);
         
        /**
@@ -128,7 +128,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         void** (AXIS2_CALL *
         to_array) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env);
+                const axis2_env_t *env);
         
        /**
         * Retrieves the element at the user-supplied index.
@@ -138,7 +138,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         */
         void* (AXIS2_CALL *
         get) (struct axis2_array_list *array_list, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 int index);
         
        /**
@@ -152,7 +152,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         void* (AXIS2_CALL *
         set) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 int index, 
                 void* e);
         
@@ -166,7 +166,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         axis2_status_t (AXIS2_CALL *
         add) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 void* e);
         
        /**
@@ -181,7 +181,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         axis2_status_t (AXIS2_CALL *
         add_at) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 int index, 
                 void* e);
         
@@ -193,7 +193,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         */
         void* (AXIS2_CALL *
         remove) (struct axis2_array_list *array_list, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 int index);
         
        /**
@@ -205,7 +205,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         axis2_bool_t (AXIS2_CALL *
         check_bound_inclusive) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 int index);
         
        /**
@@ -217,13 +217,13 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         axis2_bool_t (AXIS2_CALL *
         check_bound_exclusive) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 int index);
             
         axis2_status_t (AXIS2_CALL *
         free) (
                 struct axis2_array_list *array_list, 
-                axis2_env_t **env);
+                const axis2_env_t *env);
 
     } axis2_array_list_ops_t;
 
@@ -243,14 +243,14 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
     * @param capacity initial capacity of this array_list
     */
 
-    AXIS2_DECLARE(axis2_array_list_t*) axis2_array_list_create(axis2_env_t **env, int capacity);
+    AXIS2_DECLARE(axis2_array_list_t*) axis2_array_list_create(const axis2_env_t *env, int capacity);
     /**
      * Free array passed as void pointer.
      */
     AXIS2_DECLARE(axis2_status_t)
     axis2_array_list_free_void_arg(
             void *array_list, 
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 
 #define AXIS2_ARRAY_LIST_FREE(array_list, env) ((array_list)->ops->free(array_list, env))

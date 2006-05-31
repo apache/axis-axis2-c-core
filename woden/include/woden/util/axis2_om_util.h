@@ -28,25 +28,25 @@ extern "C"
 
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_first_child_element(axis2_om_element_t *ele,
-                                      axis2_env_t **env,
+                                      const axis2_env_t *env,
                                       axis2_om_node_t *ele_node,
                                       axis2_om_node_t **child_node);
                                       
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_last_child_element(axis2_om_element_t *ele,
-                                     axis2_env_t **env,
+                                     const axis2_env_t *env,
                                      axis2_om_node_t *ele_node,
                                      axis2_om_node_t **child_node);
                                      
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_next_sibling_element(axis2_om_element_t *ele,
-                                       axis2_env_t **env,
+                                       const axis2_env_t *env,
                                        axis2_om_node_t *ele_node,
                                        axis2_om_node_t **next_node);
                                        
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_first_child_element_with_localname(axis2_om_element_t *ele,
-                                             axis2_env_t  **env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_om_node_t **child_node);
@@ -54,34 +54,34 @@ axis2_om_util_get_first_child_element_with_localname(axis2_om_element_t *ele,
                                              
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_last_child_element_with_localname(axis2_om_element_t *ele,
-                                             axis2_env_t  **env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_om_node_t **child_node);
                                                                                          
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_next_siblng_element_with_localname(axis2_om_element_t *ele,
-                                             axis2_env_t  **env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_om_node_t **next_node);
                                              
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_first_child_element_with_uri_localname(axis2_om_element_t *ele,
-                                             axis2_env_t  **env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *uri,
                                              axis2_om_node_t **child_node);                                                                                                                
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_last_child_element_with_uri_localname(axis2_om_element_t *ele,
-                                             axis2_env_t  **env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *uri,
                                              axis2_om_node_t **child_node);                        AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_next_sibling_element_with_uri_localname(axis2_om_element_t *ele,
-                                             axis2_env_t  **env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *uri,
@@ -89,7 +89,7 @@ axis2_om_util_get_next_sibling_element_with_uri_localname(axis2_om_element_t *el
                                              
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_first_child_element_with_localnames(axis2_om_element_t *ele,
-                                             axis2_env_t  **env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_array_list_t *names,
                                              axis2_om_node_t **child_node);
@@ -97,21 +97,21 @@ axis2_om_util_get_first_child_element_with_localnames(axis2_om_element_t *ele,
                                              
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_last_child_element_with_localnames(axis2_om_element_t *ele,
-                                             axis2_env_t  **env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_array_list_t *names,
                                              axis2_om_node_t **child_node);
                                                                                          
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_next_siblng_element_with_localnames(axis2_om_element_t *ele,
-                                             axis2_env_t  **env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_array_list_t *names,
                                              axis2_om_node_t **next_node); 
                                              
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_first_child_element_with_localname_attr(axis2_om_element_t *ele,
-                                             axis2_env_t  **env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *attr_name,
@@ -121,7 +121,7 @@ axis2_om_util_get_first_child_element_with_localname_attr(axis2_om_element_t *el
                                              
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_last_child_element_with_localname_attr(axis2_om_element_t *ele,
-                                             axis2_env_t  **env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *attr_name,
@@ -130,7 +130,7 @@ axis2_om_util_get_last_child_element_with_localname_attr(axis2_om_element_t *ele
                                                                                          
 AXIS2_DECLARE(axis2_om_element_t *)
 axis2_om_util_get_next_siblng_element_with_localname_attr(axis2_om_element_t *ele,
-                                             axis2_env_t  **env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *attr_name,
@@ -139,15 +139,15 @@ axis2_om_util_get_next_siblng_element_with_localname_attr(axis2_om_element_t *el
                                                                             
 AXIS2_DECLARE(axis2_char_t *)
 axis2_om_util_get_child_text(axis2_om_node_t *node,
-                             axis2_env_t **env);
+                             const axis2_env_t *env);
                              
 AXIS2_DECLARE(axis2_char_t *)
 axis2_om_util_get_localname(axis2_om_node_t *node,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
                             
 AXIS2_DECLARE(axis2_char_t *)
 axis2_om_util_get_node_namespace_uri(axis2_om_node_t *om_node,
-                                     axis2_env_t **env);                            
+                                     const axis2_env_t *env);                            
                                                                                                                       
 
 #ifdef __cplusplus

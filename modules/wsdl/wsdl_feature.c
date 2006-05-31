@@ -35,42 +35,42 @@ typedef struct axis2_wsdl_feature_impl
 
 axis2_status_t AXIS2_CALL
 	axis2_wsdl_feature_free (axis2_wsdl_feature_t *wsdl_feature,
-									axis2_env_t **env);
+									const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 axis2_wsdl_feature_get_name(axis2_wsdl_feature_t *wsdl_feature,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_feature_set_name(axis2_wsdl_feature_t *wsdl_feature,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *name);
 
 axis2_bool_t AXIS2_CALL
 axis2_wsdl_feature_is_required(axis2_wsdl_feature_t *wsdl_feature,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_feature_set_required(axis2_wsdl_feature_t *wsdl_feature,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_bool_t required);
                                 
 /************************** End of function prototypes ************************/
 
 axis2_wsdl_feature_t * AXIS2_CALL 
-axis2_wsdl_feature_create (axis2_env_t **env)
+axis2_wsdl_feature_create (const axis2_env_t *env)
 {
     axis2_wsdl_feature_impl_t *wsdl_feature_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	wsdl_feature_impl = (axis2_wsdl_feature_impl_t *) AXIS2_MALLOC((*env)->allocator,
+	wsdl_feature_impl = (axis2_wsdl_feature_impl_t *) AXIS2_MALLOC(env->allocator,
 			sizeof(axis2_wsdl_feature_impl_t));
 	
 	
 	if(NULL == wsdl_feature_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -83,16 +83,16 @@ axis2_wsdl_feature_create (axis2_env_t **env)
     if(NULL == wsdl_feature_impl->wsdl_feature.wsdl_component)
     {
         axis2_wsdl_feature_free(&(wsdl_feature_impl->wsdl_feature), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }    
     
 	wsdl_feature_impl->wsdl_feature.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_feature_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_feature_ops_t));
 	if(NULL == wsdl_feature_impl->wsdl_feature.ops)
     {
         axis2_wsdl_feature_free(&(wsdl_feature_impl->wsdl_feature), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -113,7 +113,7 @@ axis2_wsdl_feature_create (axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_feature_free (axis2_wsdl_feature_t *wsdl_feature, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_wsdl_feature_impl_t *feature_impl = NULL;
     
@@ -122,11 +122,11 @@ axis2_wsdl_feature_free (axis2_wsdl_feature_t *wsdl_feature,
     feature_impl = AXIS2_INTF_TO_IMPL(wsdl_feature);
     
 	if(NULL != wsdl_feature->ops)
-        AXIS2_FREE((*env)->allocator, wsdl_feature->ops);
+        AXIS2_FREE(env->allocator, wsdl_feature->ops);
     
     if(NULL != feature_impl->name)
     {
-        AXIS2_FREE((*env)->allocator, feature_impl->name);
+        AXIS2_FREE(env->allocator, feature_impl->name);
         feature_impl->name = NULL;
     }
     
@@ -136,7 +136,7 @@ axis2_wsdl_feature_free (axis2_wsdl_feature_t *wsdl_feature,
         wsdl_feature->wsdl_component = NULL;
     }
     
-    AXIS2_FREE((*env)->allocator, feature_impl);
+    AXIS2_FREE(env->allocator, feature_impl);
     feature_impl = NULL;
     
 	return AXIS2_SUCCESS;
@@ -144,7 +144,7 @@ axis2_wsdl_feature_free (axis2_wsdl_feature_t *wsdl_feature,
 
 axis2_char_t *AXIS2_CALL
 axis2_wsdl_feature_get_name(axis2_wsdl_feature_t *wsdl_feature,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(wsdl_feature)->name;
@@ -152,25 +152,25 @@ axis2_wsdl_feature_get_name(axis2_wsdl_feature_t *wsdl_feature,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_feature_set_name(axis2_wsdl_feature_t *wsdl_feature,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *name) 
 {
     axis2_wsdl_feature_impl_t *feature_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, name, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
     
     feature_impl = AXIS2_INTF_TO_IMPL(wsdl_feature);
     
     if(feature_impl->name)
     {
-        AXIS2_FREE((*env)->allocator, feature_impl->name);
+        AXIS2_FREE(env->allocator, feature_impl->name);
         feature_impl->name = NULL;
     }
     feature_impl->name = AXIS2_STRDUP(name, env);
     if(!feature_impl->name)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -178,7 +178,7 @@ axis2_wsdl_feature_set_name(axis2_wsdl_feature_t *wsdl_feature,
 
 axis2_bool_t AXIS2_CALL
 axis2_wsdl_feature_is_required(axis2_wsdl_feature_t *wsdl_feature,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     return AXIS2_INTF_TO_IMPL(wsdl_feature)->required;
@@ -186,7 +186,7 @@ axis2_wsdl_feature_is_required(axis2_wsdl_feature_t *wsdl_feature,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_feature_set_required(axis2_wsdl_feature_t *wsdl_feature,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_bool_t required) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

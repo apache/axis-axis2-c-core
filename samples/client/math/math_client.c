@@ -22,14 +22,14 @@
 #include <axis2_client.h>
 
 axis2_om_node_t *
-build_om_programatically(axis2_env_t **env, axis2_char_t *operation, axis2_char_t *param1, axis2_char_t *param2);
+build_om_programatically(const axis2_env_t *env, axis2_char_t *operation, axis2_char_t *param1, axis2_char_t *param2);
 
 int main(int argc, char** argv)
 {
     axis2_stub_t *stub = NULL;
     axis2_om_node_t *node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_env_t *env = NULL;
+    const axis2_env_t *env = NULL;
     axis2_char_t *address = NULL;
     axis2_char_t *client_home = NULL;
     axis2_om_node_t *ret_node = NULL;
@@ -68,19 +68,19 @@ int main(int argc, char** argv)
     printf ("Using endpoint : %s\n", address);
     printf ("\nInvoking operation %s with params %s and %s\n", operation, param1, param2);
 
-    node = build_om_programatically(&env, operation, param1, param2);
+    node = build_om_programatically(env, operation, param1, param2);
     stub = 
-        axis2_math_stub_create_with_endpoint_uri_and_client_home(&env, address,   client_home);
+        axis2_math_stub_create_with_endpoint_uri_and_client_home(env, address,   client_home);
     /* create node and invoke math */
-    ret_node = axis2_math_stub_add(stub, &env, node);
+    ret_node = axis2_math_stub_add(stub, env, node);
     if(ret_node)
     {
-        if (AXIS2_OM_NODE_GET_NODE_TYPE(ret_node, &env) == AXIS2_OM_ELEMENT)
+        if (AXIS2_OM_NODE_GET_NODE_TYPE(ret_node, env) == AXIS2_OM_ELEMENT)
         {
             axis2_char_t *result = NULL;
-            axis2_om_element_t *result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node, &env);
+            axis2_om_element_t *result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node, env);
             
-            result = AXIS2_OM_ELEMENT_GET_TEXT(result_ele, &env, ret_node);
+            result = AXIS2_OM_ELEMENT_GET_TEXT(result_ele, env, ret_node);
             printf( "\nResult = %s\n", result);
         }
         else
@@ -88,12 +88,12 @@ int main(int argc, char** argv)
             axis2_xml_writer_t *writer = NULL;
             axis2_om_output_t *om_output = NULL;
             axis2_char_t *buffer = NULL;
-            writer = axis2_xml_writer_create_for_memory(&env, NULL, AXIS2_TRUE, 0,
+            writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
 					AXIS2_XML_PARSER_TYPE_BUFFER);
-            om_output = axis2_om_output_create (&env, writer);
+            om_output = axis2_om_output_create (env, writer);
 
-            AXIS2_OM_NODE_SERIALIZE (ret_node, &env, om_output);
-            buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(writer, &env);
+            AXIS2_OM_NODE_SERIALIZE (ret_node, env, om_output);
+            buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(writer, env);
             printf ("\nReceived invalid OM as result : %s\n", buffer);
             if(NULL != buffer)
             {
@@ -102,7 +102,7 @@ int main(int argc, char** argv)
             }
             if(NULL != om_output)
             {
-                AXIS2_OM_OUTPUT_FREE(om_output, &env);
+                AXIS2_OM_OUTPUT_FREE(om_output, env);
                 om_output = NULL;
             }
         }
@@ -117,13 +117,13 @@ int main(int argc, char** argv)
     
     if (stub)
     {
-        AXIS2_STUB_FREE(stub, &env);
+        AXIS2_STUB_FREE(stub, env);
     }
     return status;
 }
 
 axis2_om_node_t *
-build_om_programatically(axis2_env_t **env, axis2_char_t *operation, axis2_char_t *param1, axis2_char_t *param2)
+build_om_programatically(const axis2_env_t *env, axis2_char_t *operation, axis2_char_t *param1, axis2_char_t *param2)
 {
     axis2_om_node_t *math_om_node = NULL;
     axis2_om_element_t* math_om_ele = NULL;
@@ -152,10 +152,10 @@ build_om_programatically(axis2_env_t **env, axis2_char_t *operation, axis2_char_
     
     AXIS2_OM_NODE_SERIALIZE(math_om_node, env, om_output);
     buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
-    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "\nSending OM node in XML : %s \n",  buffer); 
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "\nSending OM node in XML : %s \n",  buffer); 
     if(NULL != buffer)
     {
-        AXIS2_FREE((*env)->allocator, buffer);
+        AXIS2_FREE(env->allocator, buffer);
         buffer = NULL;
     }
     if(NULL != om_output)

@@ -69,7 +69,7 @@ typedef struct axis2_call_impl
 
 typedef struct axis2_call_worker_func_args
 {
-    axis2_env_t **env;
+    const axis2_env_t *env;
     axis2_call_impl_t *call_impl;
     axis2_callback_t *callback;
     axis2_op_t *op;
@@ -86,85 +86,85 @@ axis2_call_worker_func(axis2_thread_t *thd, void *data);
 
 axis2_mep_client_t *AXIS2_CALL
 axis2_call_get_base(struct axis2_call *call,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
 axis2_msg_ctx_t* AXIS2_CALL 
 axis2_call_invoke_blocking(struct axis2_call *call, 
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_op_t *op,
                                     axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL 
 axis2_call_invoke_non_blocking(struct axis2_call *call, 
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_op_t *op,
                                     axis2_msg_ctx_t *msg_ctx,
                                     axis2_callback_t *callback);
 
 axis2_status_t AXIS2_CALL 
 axis2_call_set_to(struct axis2_call *call, 
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_endpoint_ref_t *to);
 
 axis2_status_t AXIS2_CALL 
 axis2_call_set_transport_info(struct axis2_call *call, 
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_char_t *sender_transport,
                              axis2_char_t *listener_transport,
                              axis2_bool_t use_separate_listener);
 
 axis2_status_t AXIS2_CALL 
 axis2_call_check_transport(struct axis2_call *call, 
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL 
 axis2_call_close(struct axis2_call *call, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_call_set_time(struct axis2_call *call, 
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     long timeout_ms);
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_call_invoke_blocking_with_om(struct axis2_call *call, 
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *op_name, 
                                     axis2_om_node_t *om_node_to_send);
 
 axis2_soap_envelope_t* AXIS2_CALL 
 axis2_call_invoke_blocking_with_soap(struct axis2_call *call, 
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *op_name, 
                                         axis2_soap_envelope_t *envelope);
 
 axis2_status_t AXIS2_CALL 
 axis2_call_invoke_non_blocking_with_om(struct axis2_call *call, 
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *op_name,
                                         axis2_om_node_t *om_node_to_send,
                                         axis2_callback_t *callback);
 
 axis2_status_t AXIS2_CALL 
 axis2_call_invoke_non_blocking_with_soap(struct axis2_call *call, 
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_char_t *op_name,
                                             axis2_soap_envelope_t *envelope,
                                             axis2_callback_t * callback);
 
 axis2_op_t* AXIS2_CALL 
 axis2_call_create_op_fill_flow(struct axis2_call *call, 
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *op_name);
 
 axis2_msg_ctx_t* AXIS2_CALL 
 axis2_call_get_last_res_msg_ctx(struct axis2_call *call, 
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_call_set(axis2_call_t *call,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_char_t *key,
                 axis2_property_t *value);
 
@@ -176,27 +176,27 @@ axis2_call_set(axis2_call_t *call,
  */
 axis2_svc_ctx_t *
 axis2_call_assume_svc_ctx(axis2_call_t *call,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_char_t *client_home);
 
 axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call, 
-                                   axis2_env_t **env);
+                                   const axis2_env_t *env);
 
 /******************************************************************************/
 
-axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env, 
+axis2_call_t* AXIS2_CALL axis2_call_create(const axis2_env_t *env, 
                                             axis2_svc_ctx_t *svc_ctx,
                                             axis2_char_t *client_home) 
 {
     axis2_call_impl_t *call_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    /*AXIS2_PARAM_CHECK((*env)->error, svc_ctx, NULL);*/
+    /*AXIS2_PARAM_CHECK(env->error, svc_ctx, NULL);*/
     
-    call_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_call_impl_t) );
+    call_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_call_impl_t) );
     if (!call_impl)
     { 
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
     
@@ -249,10 +249,10 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env,
     }
     
     /* initialize ops */    
-    call_impl->call.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_call_ops_t) );
+    call_impl->call.ops  = AXIS2_MALLOC( env->allocator, sizeof(axis2_call_ops_t) );
     if (!call_impl->call.ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_call_free(&(call_impl->call), env);
         return NULL;        
     }
@@ -280,7 +280,7 @@ axis2_call_t* AXIS2_CALL axis2_call_create(axis2_env_t **env,
 /******************************************************************************/
 
 axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call, 
-                                   axis2_env_t **env)
+                                   const axis2_env_t *env)
 {
     axis2_call_impl_t *call_impl = NULL;
     
@@ -290,7 +290,7 @@ axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call,
     
     if (call_impl->call.ops)
     {
-        AXIS2_FREE((*env)->allocator, call_impl->call.ops);
+        AXIS2_FREE(env->allocator, call_impl->call.ops);
         call_impl->call.ops = NULL;
     }
     
@@ -340,7 +340,7 @@ axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call,
         call_impl->listener_manager = NULL;
     }
 
-    AXIS2_FREE((*env)->allocator, call_impl);
+    AXIS2_FREE(env->allocator, call_impl);
     call_impl = NULL;
     
     return AXIS2_SUCCESS;
@@ -385,7 +385,7 @@ axis2_status_t AXIS2_CALL axis2_call_free(struct axis2_call *call,
  */
 
 axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call, 
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_op_t *op,
                                     axis2_msg_ctx_t *msg_ctx)
 {
@@ -415,7 +415,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
 
     if(NULL != message_id)
     {
-        AXIS2_FREE((*env)->allocator, message_id);
+        AXIS2_FREE(env->allocator, message_id);
         message_id = NULL;
     }
    
@@ -470,7 +470,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
             } 
             else 
             {
-                AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_RESPONSE_TIMED_OUT, AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_RESPONSE_TIMED_OUT, AXIS2_FAILURE);
                 return NULL;
             }
         }
@@ -489,7 +489,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
         {
             if (AXIS2_CALLBACK_GET_ERROR(callback, env) != AXIS2_ERROR_NONE)
             {
-                AXIS2_ERROR_SET((*env)->error, AXIS2_CALLBACK_GET_ERROR(callback, env), AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error, AXIS2_CALLBACK_GET_ERROR(callback, env), AXIS2_FAILURE);
                 return NULL;
             }
         }
@@ -553,7 +553,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
  * anyhting about the transport used or the nature of the transport.
  */
 axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call, 
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_op_t *op,
                                     axis2_msg_ctx_t *msg_ctx,
                                     axis2_callback_t *callback)
@@ -617,7 +617,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
             temp = AXIS2_STRACAT(AXIS2_QNAME_GET_LOCALPART(svc_qname, env), "/", env);
             svc_name = AXIS2_STRACAT(temp, AXIS2_QNAME_GET_LOCALPART(op_qname, env), env);
             if (temp)
-                AXIS2_FREE((*env)->allocator, temp);
+                AXIS2_FREE(env->allocator, temp);
             
             /*epr = AXIS2_LISTNER_MANAGER_REPLY_TO_EPR(call_impl->listener_manager, env, svc_name,
                         AXIS2_QNAME_GET_LOCALPART(transport_qname, env));
@@ -627,7 +627,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
             }*/
             
             if (svc_name)
-                AXIS2_FREE((*env)->allocator, svc_name);
+                AXIS2_FREE(env->allocator, svc_name);
             AXIS2_MSG_CTX_SET_RELATES_TO(msg_ctx, env, relates_to);
             
         }
@@ -644,7 +644,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
     {
         axis2_thread_t *worker_thread = NULL;
         axis2_call_worker_func_args_t *arg_list = NULL;
-		arg_list = AXIS2_MALLOC((*env)->allocator, 
+		arg_list = AXIS2_MALLOC(env->allocator, 
 						sizeof(axis2_call_worker_func_args_t));
 		if(NULL == arg_list)
 		{
@@ -658,20 +658,20 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
         /* here a bloking invocation happens in a new thread, so the progamming model is non blocking */
          /* TODO svc_ctx.getConfigurationContext().getThreadPool().execute(new NonBlockingInvocationWorker(callback, op, msg_ctx)); */
 #ifdef AXIS2_SVR_MULTI_THREADED
-        if ((*env)->thread_pool)
+        if (env->thread_pool)
         {
-            worker_thread = AXIS2_THREAD_POOL_GET_THREAD((*env)->thread_pool,
+            worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
                                              axis2_call_worker_func, (void*)arg_list);
             if(NULL == worker_thread)
             {
-                AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread creation failed"
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
                                  "call invoke non blocking");
             }
-            AXIS2_THREAD_POOL_THREAD_DETACH((*env)->thread_pool, worker_thread);
+            AXIS2_THREAD_POOL_THREAD_DETACH(env->thread_pool, worker_thread);
         }
         else
         {
-            AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread pool not set in environment."
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread pool not set in environment."
                                          " Cannot invoke call non blocking");
         }
 #else
@@ -681,7 +681,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
 
     if(NULL != message_id)
     {
-        AXIS2_FREE((*env)->allocator, message_id);
+        AXIS2_FREE(env->allocator, message_id);
         message_id = NULL;
     }
     if (engine)
@@ -697,7 +697,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
  * @param to
  */
 axis2_status_t AXIS2_CALL axis2_call_set_to(struct axis2_call *call, 
-    axis2_env_t **env,
+    const axis2_env_t *env,
     axis2_endpoint_ref_t *to) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -721,7 +721,7 @@ axis2_status_t AXIS2_CALL axis2_call_set_to(struct axis2_call *call,
  */
 
 axis2_status_t AXIS2_CALL axis2_call_set_transport_info(struct axis2_call *call, 
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_char_t *sender_transport,
                              axis2_char_t *listener_transport,
                              axis2_bool_t use_separate_listener)
@@ -780,13 +780,13 @@ axis2_status_t AXIS2_CALL axis2_call_set_transport_info(struct axis2_call *call,
     
     if (!(call_impl->sender_transport)) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_UNKNOWN_TRANSPORT, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_UNKNOWN_TRANSPORT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     
     if (!(call_impl->listener_transport)) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_UNKNOWN_TRANSPORT, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_UNKNOWN_TRANSPORT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     
@@ -798,7 +798,7 @@ axis2_status_t AXIS2_CALL axis2_call_set_transport_info(struct axis2_call *call,
         if (!conf || !(AXIS2_CONF_IS_ENGAGED(conf, env, qname)))
         {
             AXIS2_QNAME_FREE(qname, env);
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_TWO_WAY_CHANNEL_NEEDS_ADDRESSING, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_TWO_WAY_CHANNEL_NEEDS_ADDRESSING, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
         
@@ -815,7 +815,7 @@ axis2_status_t AXIS2_CALL axis2_call_set_transport_info(struct axis2_call *call,
  * @param msg_ctx
  */
 axis2_status_t AXIS2_CALL axis2_call_check_transport(struct axis2_call *call, 
-    axis2_env_t **env,
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_call_impl_t *call_impl = NULL;
@@ -868,7 +868,7 @@ axis2_status_t AXIS2_CALL axis2_call_check_transport(struct axis2_call *call,
  * request to send the Call should be kept open closing only when done
  */
 axis2_status_t AXIS2_CALL axis2_call_close(struct axis2_call *call, 
-    axis2_env_t **env) 
+    const axis2_env_t *env) 
 {
     axis2_call_impl_t *call_impl = NULL;
     axis2_char_t *transport_name = NULL;
@@ -894,8 +894,7 @@ axis2_call_worker_func(axis2_thread_t *thd, void *data)
     axis2_call_worker_func_args_t *args_list = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_msg_ctx_t *response = NULL;
-	axis2_env_t **thread_env = NULL;
-	axis2_env_t *th_env = NULL;
+	const axis2_env_t *th_env = NULL;
     
     args_list = (axis2_call_worker_func_args_t *) data;
     if (!args_list)
@@ -903,19 +902,18 @@ axis2_call_worker_func(axis2_thread_t *thd, void *data)
         
     AXIS2_ENV_CHECK(args_list->env, AXIS2_FAILURE);
 	th_env = axis2_init_thread_env(args_list->env);
-    thread_env = &th_env;
 
-    op_ctx = axis2_op_ctx_create(thread_env, args_list->op, args_list->call_impl->svc_ctx);
+    op_ctx = axis2_op_ctx_create(th_env, args_list->op, args_list->call_impl->svc_ctx);
     if (!op_ctx)
         return NULL;
-    AXIS2_MSG_CTX_SET_OP_CTX(args_list->msg_ctx, thread_env, op_ctx);
-    AXIS2_MSG_CTX_SET_SVC_CTX(args_list->msg_ctx, thread_env, args_list->call_impl->svc_ctx);
+    AXIS2_MSG_CTX_SET_OP_CTX(args_list->msg_ctx, th_env, op_ctx);
+    AXIS2_MSG_CTX_SET_SVC_CTX(args_list->msg_ctx, th_env, args_list->call_impl->svc_ctx);
 
     /* send the request and wait for reponse */
-    response = axis2_mep_client_two_way_send(thread_env, args_list->msg_ctx);
-    args_list->call_impl->async_result = axis2_async_result_create(thread_env, response);
-    AXIS2_CALLBACK_INVOKE_ON_COMPLETE(args_list->callback, thread_env, args_list->call_impl->async_result);
-    AXIS2_CALLBACK_SET_COMPLETE(args_list->callback, thread_env, AXIS2_TRUE);
+    response = axis2_mep_client_two_way_send(th_env, args_list->msg_ctx);
+    args_list->call_impl->async_result = axis2_async_result_create(th_env, response);
+    AXIS2_CALLBACK_INVOKE_ON_COMPLETE(args_list->callback, th_env, args_list->call_impl->async_result);
+    AXIS2_CALLBACK_SET_COMPLETE(args_list->callback, th_env, AXIS2_TRUE);
     
     return NULL; 
 }
@@ -926,7 +924,7 @@ axis2_call_worker_func(axis2_thread_t *thd, void *data)
  * @param timeout_ms
  */
 axis2_status_t AXIS2_CALL axis2_call_set_time(struct axis2_call *call, 
-    axis2_env_t **env,
+    const axis2_env_t *env,
     long timeout_ms) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -942,7 +940,7 @@ axis2_status_t AXIS2_CALL axis2_call_set_time(struct axis2_call *call,
  * @return
  */
 axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(axis2_call_t *call, 
-    axis2_env_t **env,
+    const axis2_env_t *env,
     axis2_char_t *op_name, axis2_om_node_t *om_node_to_send)
 {
     axis2_call_impl_t *call_impl = NULL;
@@ -1031,7 +1029,7 @@ axis2_om_node_t* AXIS2_CALL axis2_call_invoke_blocking_with_om(axis2_call_t *cal
  * @return
  */
 axis2_soap_envelope_t* AXIS2_CALL axis2_call_invoke_blocking_with_soap(struct axis2_call *call, 
-    axis2_env_t **env,
+    const axis2_env_t *env,
     axis2_char_t *op_name, axis2_soap_envelope_t *envelope)
 {
     axis2_call_impl_t *call_impl = NULL;
@@ -1069,7 +1067,7 @@ axis2_soap_envelope_t* AXIS2_CALL axis2_call_invoke_blocking_with_soap(struct ax
         
         if (!envelope || !(AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env)))
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL, AXIS2_FAILURE);
             return NULL;
         }
         
@@ -1105,7 +1103,7 @@ axis2_soap_envelope_t* AXIS2_CALL axis2_call_invoke_blocking_with_soap(struct ax
  */
 
 axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_om(struct axis2_call *call, 
-    axis2_env_t **env,
+    const axis2_env_t *env,
     axis2_char_t *op_name,
     axis2_om_node_t *om_node_to_send,
     axis2_callback_t *callback)
@@ -1160,7 +1158,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_om(struct axis2_ca
  */
 
 axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_soap(struct axis2_call *call, 
-    axis2_env_t **env,
+    const axis2_env_t *env,
     axis2_char_t *op_name,
     axis2_soap_envelope_t *envelope,
     axis2_callback_t * callback)
@@ -1200,7 +1198,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_soap(struct axis2_
         
         if (!envelope || !(AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env)))
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOAP_ENVELOPE_OR_SOAP_BODY_NULL, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
         
@@ -1224,7 +1222,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking_with_soap(struct axis2_
  * @param axisOp
  */
 axis2_op_t* AXIS2_CALL axis2_call_create_op_fill_flow(struct axis2_call *call, 
-    axis2_env_t **env,
+    const axis2_env_t *env,
     axis2_char_t *op_name)
 {
     axis2_call_impl_t *call_impl = NULL;
@@ -1274,7 +1272,7 @@ axis2_op_t* AXIS2_CALL axis2_call_create_op_fill_flow(struct axis2_call *call,
 
 axis2_status_t AXIS2_CALL
 axis2_call_set(axis2_call_t *call,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_char_t *key,
                 axis2_property_t *value)
 {
@@ -1284,8 +1282,8 @@ axis2_call_set(axis2_call_t *call,
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, key, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, key, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
     call_impl = AXIS2_INTF_TO_IMPL(call);
     
     conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(call_impl->svc_ctx, env);
@@ -1306,7 +1304,7 @@ axis2_call_set(axis2_call_t *call,
  * @return
  */
 axis2_msg_ctx_t* AXIS2_CALL axis2_call_get_last_res_msg_ctx(struct axis2_call *call, 
-    axis2_env_t **env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(call)->last_res_msg_ctx;
@@ -1320,7 +1318,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_get_last_res_msg_ctx(struct axis2_call *c
  */
 axis2_svc_ctx_t *
 axis2_call_assume_svc_ctx(axis2_call_t *call,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_char_t *client_home)
 {
     axis2_call_impl_t *call_impl = NULL;
@@ -1335,7 +1333,7 @@ axis2_call_assume_svc_ctx(axis2_call_t *call,
     axis2_char_t *svc_name = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, client_home, NULL);
+    AXIS2_PARAM_CHECK(env->error, client_home, NULL);
     call_impl = AXIS2_INTF_TO_IMPL(call);
     
     /* we are trying to keep one configuration Context at the Client side. 
@@ -1404,7 +1402,7 @@ axis2_call_assume_svc_ctx(axis2_call_t *call,
 
 axis2_mep_client_t *AXIS2_CALL
 axis2_call_get_base(struct axis2_call *call,
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(call)->base;

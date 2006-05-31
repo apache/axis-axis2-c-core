@@ -43,44 +43,44 @@ struct axis2_http_server_impl
 
 /***************************** Function headers *******************************/
 axis2_status_t AXIS2_CALL 
-axis2_http_server_init(axis2_transport_receiver_t *server, axis2_env_t **env,
+axis2_http_server_init(axis2_transport_receiver_t *server, const axis2_env_t *env,
 						axis2_conf_ctx_t *conf_ctx, 
 						axis2_transport_in_desc_t *in_desc);
 axis2_status_t AXIS2_CALL 
-axis2_http_server_start(axis2_transport_receiver_t *server, axis2_env_t **env);
+axis2_http_server_start(axis2_transport_receiver_t *server, const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
-axis2_http_server_stop(axis2_transport_receiver_t *server, axis2_env_t **env);
+axis2_http_server_stop(axis2_transport_receiver_t *server, const axis2_env_t *env);
 
 axis2_conf_ctx_t* AXIS2_CALL 
 axis2_http_server_get_conf_ctx (axis2_transport_receiver_t *server, 
-						axis2_env_t **env);
+						const axis2_env_t *env);
 
 axis2_endpoint_ref_t* AXIS2_CALL 
 axis2_http_server_get_reply_to_epr(axis2_transport_receiver_t *server, 
-						axis2_env_t **env, axis2_char_t *svc_name);
+						const axis2_env_t *env, axis2_char_t *svc_name);
 
 axis2_bool_t AXIS2_CALL 
 axis2_http_server_is_running (axis2_transport_receiver_t *server, 
-						axis2_env_t **env);						
+						const axis2_env_t *env);						
 
 axis2_status_t AXIS2_CALL 
-axis2_http_server_free (axis2_transport_receiver_t *server, axis2_env_t **env);
+axis2_http_server_free (axis2_transport_receiver_t *server, const axis2_env_t *env);
 
 /***************************** End of function headers ************************/
 
 AXIS2_DECLARE(axis2_transport_receiver_t *) 
-axis2_http_server_create (axis2_env_t **env, axis2_char_t *repo, int port)
+axis2_http_server_create (const axis2_env_t *env, axis2_char_t *repo, int port)
 {
     axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
             
     server_impl = (axis2_http_server_impl_t *)AXIS2_MALLOC 
-                        ((*env)->allocator, sizeof(axis2_http_server_impl_t));
+                        (env->allocator, sizeof(axis2_http_server_impl_t));
 	
     if(NULL == server_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -89,12 +89,12 @@ axis2_http_server_create (axis2_env_t **env, axis2_char_t *repo, int port)
 	server_impl->conf_ctx_private = NULL;
 	server_impl->port = port;
 		
-    server_impl->http_server.ops = AXIS2_MALLOC((*env)->allocator,
+    server_impl->http_server.ops = AXIS2_MALLOC(env->allocator,
 						sizeof(axis2_transport_receiver_ops_t));
     if(NULL == server_impl->http_server.ops)
 	{
 		axis2_http_server_free((axis2_transport_receiver_t*) server_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     if(repo)
@@ -126,7 +126,7 @@ axis2_http_server_create (axis2_env_t **env, axis2_char_t *repo, int port)
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_http_server_free (axis2_transport_receiver_t *server, axis2_env_t **env)
+axis2_http_server_free (axis2_transport_receiver_t *server, const axis2_env_t *env)
 {
 	axis2_http_server_impl_t *server_impl = NULL;
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -150,15 +150,15 @@ axis2_http_server_free (axis2_transport_receiver_t *server, axis2_env_t **env)
     
 	if(NULL != server->ops)
 	{
-        AXIS2_FREE((*env)->allocator, server->ops);
+        AXIS2_FREE(env->allocator, server->ops);
     }
-	AXIS2_FREE((*env)->allocator, server_impl);
+	AXIS2_FREE(env->allocator, server_impl);
 	return AXIS2_SUCCESS;
 }
 
 
 axis2_status_t AXIS2_CALL 
-axis2_http_server_init(axis2_transport_receiver_t *server, axis2_env_t **env,
+axis2_http_server_init(axis2_transport_receiver_t *server, const axis2_env_t *env,
 						axis2_conf_ctx_t *conf_ctx, 
 						axis2_transport_in_desc_t *in_desc)
 {
@@ -185,7 +185,7 @@ axis2_http_server_init(axis2_transport_receiver_t *server, axis2_env_t **env,
 
 
 axis2_status_t AXIS2_CALL 
-axis2_http_server_start(axis2_transport_receiver_t *server, axis2_env_t **env)
+axis2_http_server_start(axis2_transport_receiver_t *server, const axis2_env_t *env)
 {
 
 	axis2_http_server_impl_t *server_impl = NULL;
@@ -206,7 +206,7 @@ axis2_http_server_start(axis2_transport_receiver_t *server, axis2_env_t **env)
 		AXIS2_HTTP_SVR_THREAD_FREE(server_impl->svr_thread, env);
 		return AXIS2_FAILURE;
 	}
-	AXIS2_LOG_INFO((*env)->log, "Starting HTTP server thread");
+	AXIS2_LOG_INFO(env->log, "Starting HTTP server thread");
 	AXIS2_HTTP_SVR_THREAD_SET_WORKER(server_impl->svr_thread, env, worker);
 	AXIS2_HTTP_SVR_THREAD_RUN(server_impl->svr_thread, env);
     return AXIS2_SUCCESS;
@@ -214,24 +214,24 @@ axis2_http_server_start(axis2_transport_receiver_t *server, axis2_env_t **env)
 
 
 axis2_status_t AXIS2_CALL 
-axis2_http_server_stop(axis2_transport_receiver_t *server, axis2_env_t **env)
+axis2_http_server_stop(axis2_transport_receiver_t *server, const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	
-	AXIS2_LOG_INFO((*env)->log, "Terminating HTTP server thread");
+	AXIS2_LOG_INFO(env->log, "Terminating HTTP server thread");
 	if(NULL != AXIS2_INTF_TO_IMPL(server)->svr_thread)
 	{
 		AXIS2_HTTP_SVR_THREAD_DESTROY(AXIS2_INTF_TO_IMPL(server)->svr_thread, 
 						env);
 	}
-	AXIS2_LOG_INFO((*env)->log, "Successfully terminated  HTTP server"
+	AXIS2_LOG_INFO(env->log, "Successfully terminated  HTTP server"
 						" thread");
 	return AXIS2_SUCCESS;
 }
 
 axis2_conf_ctx_t* AXIS2_CALL 
 axis2_http_server_get_conf_ctx (axis2_transport_receiver_t *server, 
-						axis2_env_t **env)
+						const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
 	return AXIS2_INTF_TO_IMPL(server)->conf_ctx;
@@ -239,20 +239,20 @@ axis2_http_server_get_conf_ctx (axis2_transport_receiver_t *server,
 
 axis2_endpoint_ref_t* AXIS2_CALL 
 axis2_http_server_get_reply_to_epr(axis2_transport_receiver_t *server, 
-						axis2_env_t **env, axis2_char_t *svc_name)
+						const axis2_env_t *env, axis2_char_t *svc_name)
 {
 	axis2_endpoint_ref_t *epr = NULL;
 	axis2_char_t *host_address = NULL;
 	axis2_char_t *svc_path = NULL;
 	axis2_url_t *url = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, svc_name, NULL);
+    AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
 	
 	host_address = "127.0.0.1"; /* TODO : get from axis2.xml */
 	svc_path = AXIS2_STRACAT("/axis2/services/", svc_name, env);
 	url = axis2_url_create(env, "http", host_address, 
 						AXIS2_INTF_TO_IMPL(server)->port, svc_path);
-	AXIS2_FREE((*env)->allocator, svc_path);
+	AXIS2_FREE(env->allocator, svc_path);
 	if(NULL == url)
 	{
 		return NULL;
@@ -264,7 +264,7 @@ axis2_http_server_get_reply_to_epr(axis2_transport_receiver_t *server,
 
 axis2_bool_t AXIS2_CALL 
 axis2_http_server_is_running (axis2_transport_receiver_t *server, 
-						axis2_env_t **env)
+						const axis2_env_t *env)
 {
 	axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -284,7 +284,7 @@ axis2_http_server_is_running (axis2_transport_receiver_t *server,
  * Following block distinguish the exposed part of the dll.
  */
 AXIS2_EXPORT int axis2_get_instance(struct axis2_transport_receiver **inst,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     *inst = axis2_http_server_create(env, NULL, -1);
     if(!(*inst))
@@ -297,7 +297,7 @@ AXIS2_EXPORT int axis2_get_instance(struct axis2_transport_receiver **inst,
 }
 
 AXIS2_EXPORT int axis2_remove_instance(axis2_transport_receiver_t *inst,
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     if (inst)

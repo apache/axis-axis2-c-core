@@ -69,7 +69,7 @@ struct axis2_module_desc_ops
 {
     axis2_status_t (AXIS2_CALL *
     free) (axis2_module_desc_t *module_desc,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
         
     /**
      * Get fault out flow
@@ -77,7 +77,7 @@ struct axis2_module_desc_ops
      */
     axis2_flow_t *(AXIS2_CALL *
     get_inflow) (axis2_module_desc_t *module_desc,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * Set in flow
@@ -85,7 +85,7 @@ struct axis2_module_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_inflow) (axis2_module_desc_t *module_desc,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_flow_t *inflow);
     
     /**
@@ -94,7 +94,7 @@ struct axis2_module_desc_ops
      */
     axis2_flow_t *(AXIS2_CALL *
     get_outflow) (axis2_module_desc_t *module_desc,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * Set out flow
@@ -102,7 +102,7 @@ struct axis2_module_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_outflow) (axis2_module_desc_t *module_desc,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_flow_t *outflow);
     
     /**
@@ -111,7 +111,7 @@ struct axis2_module_desc_ops
      */
     axis2_flow_t * (AXIS2_CALL *
     get_fault_inflow) (axis2_module_desc_t *module_desc,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
     
     /**
      * set fault in flow
@@ -119,7 +119,7 @@ struct axis2_module_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_fault_inflow) (axis2_module_desc_t *module_desc,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_flow_t *falut_inflow);
     
     /**
@@ -128,7 +128,7 @@ struct axis2_module_desc_ops
      */
     axis2_flow_t *(AXIS2_CALL *
     get_fault_outflow) (axis2_module_desc_t *module_desc,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
     
     /**
      * Set fault out flow
@@ -136,7 +136,7 @@ struct axis2_module_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_fault_outflow) (axis2_module_desc_t *module_desc,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_flow_t *fault_outflow);
     
     /**
@@ -144,32 +144,32 @@ struct axis2_module_desc_ops
      */
     axis2_qname_t * (AXIS2_CALL *
     get_name ) (axis2_module_desc_t *module_desc,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
     
     /**
      * @param name
      */
     axis2_status_t (AXIS2_CALL *
     set_name ) (axis2_module_desc_t *module_desc,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *qname);
     
     axis2_status_t (AXIS2_CALL *
     add_op ) (axis2_module_desc_t *module_desc,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         struct axis2_op *op);
     
     axis2_hash_t * (AXIS2_CALL *
     get_ops ) (axis2_module_desc_t *module_desc,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     struct axis2_conf * (AXIS2_CALL *
     get_parent ) (axis2_module_desc_t *module_desc,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_parent ) (axis2_module_desc_t *module_desc,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     struct axis2_conf *parent);
     
     /**
@@ -178,7 +178,7 @@ struct axis2_module_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_param) (axis2_module_desc_t *module_desc,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_param_t *param);
     
     /**
@@ -187,12 +187,12 @@ struct axis2_module_desc_ops
      */
     axis2_param_t * (AXIS2_CALL *
     get_param) (axis2_module_desc_t *module_desc,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *name);
     
     axis2_array_list_t * (AXIS2_CALL *
     get_params) (axis2_module_desc_t *module_desc,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * To check whether a given paramter is locked
@@ -201,7 +201,7 @@ struct axis2_module_desc_ops
      */
     axis2_bool_t (AXIS2_CALL *
     is_param_locked ) (axis2_module_desc_t *module_desc,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *param_name);
                                         
     /**
@@ -209,14 +209,14 @@ struct axis2_module_desc_ops
      */
     struct axis2_module *(AXIS2_CALL *
     get_module) (axis2_module_desc_t *module_desc,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * @param module
      */
     axis2_status_t (AXIS2_CALL *
     set_module) (axis2_module_desc_t *module_desc,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     struct axis2_module *module);                                        
 
 };
@@ -247,13 +247,13 @@ struct axis2_module_desc
  * @return pointer to newly created module description
  */
 AXIS2_DECLARE(axis2_module_desc_t *) 
-axis2_module_desc_create (axis2_env_t **env);
+axis2_module_desc_create (const axis2_env_t *env);
 
 /** create Module Description struct
  * @return pointer to newly created module description
  */
 AXIS2_DECLARE(axis2_module_desc_t *) 
-axis2_module_desc_create_with_qname (axis2_env_t **env, 
+axis2_module_desc_create_with_qname (const axis2_env_t *env, 
                                         axis2_qname_t *qname);
 
 /**
@@ -263,7 +263,7 @@ axis2_module_desc_create_with_qname (axis2_env_t **env,
  */
 AXIS2_DECLARE(axis2_status_t) 
 axis2_module_desc_free_void_arg (void *module_desc,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
                                 
 /************************* Start of function macros	***************************/

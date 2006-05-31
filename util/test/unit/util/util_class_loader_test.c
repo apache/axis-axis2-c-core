@@ -18,20 +18,20 @@ void Testaxis2_class_loader_create_dll(CuTest *tc)
     printf("testing axis2_class_loader_create_dll\n");
     printf("******************************************\n");
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create (allocator);
+    const axis2_env_t *env = axis2_env_create (allocator);
     
     
-    dll_desc = axis2_dll_desc_create(&env);
+    dll_desc = axis2_dll_desc_create(env);
     
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    dll_name = AXIS2_STRACAT (axis2c_home, "/services/echo/libecho.so", &env);
+    dll_name = AXIS2_STRACAT (axis2c_home, "/services/echo/libecho.so", env);
 
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, &env, dll_name);
-    AXIS2_DLL_DESC_SET_TYPE(dll_desc, &env, AXIS2_SVC_DLL);
-    impl_info_param = axis2_param_create(&env, NULL, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, &env, dll_desc);
-    axis2_class_loader_init(&env);
-    svc = axis2_class_loader_create_dll(&env, impl_info_param);
+    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
+    AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_SVC_DLL);
+    impl_info_param = axis2_param_create(env, NULL, NULL);
+    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    axis2_class_loader_init(env);
+    svc = axis2_class_loader_create_dll(env, impl_info_param);
     AXIS2_FREE(env->allocator, dll_name);
     CuAssertIntEquals(tc, expected, status);
 }

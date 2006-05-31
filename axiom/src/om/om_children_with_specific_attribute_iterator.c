@@ -23,23 +23,23 @@
 axis2_status_t AXIS2_CALL 
 axis2_om_children_with_specific_attribute_iterator_free(
             axis2_om_children_with_specific_attribute_iterator_t *iterator,
-            axis2_env_t **env);
+            const axis2_env_t *env);
                                 
 axis2_status_t AXIS2_CALL
 axis2_om_children_with_specific_attribute_iterator_remove(
             axis2_om_children_with_specific_attribute_iterator_t *iterator,
-            axis2_env_t **env);  
+            const axis2_env_t *env);  
 
 
 axis2_bool_t AXIS2_CALL 
 axis2_om_children_with_specific_attribute_iterator_has_next(
             axis2_om_children_with_specific_attribute_iterator_t *iterator,
-            axis2_env_t **env); 
+            const axis2_env_t *env); 
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_om_children_with_specific_attribute_iterator_next(
             axis2_om_children_with_specific_attribute_iterator_t *iterator,
-            axis2_env_t **env);  
+            const axis2_env_t *env);  
                                 
 /*************** end function prototypes **********************************/                                
 
@@ -65,7 +65,7 @@ typedef struct axis2_om_children_with_specific_attribute_iterator_impl_t
 
 AXIS2_DECLARE( axis2_om_children_with_specific_attribute_iterator_t *)
 axis2_om_children_with_specific_attribute_iterator_create(
-                                  axis2_env_t **env, 
+                                  const axis2_env_t *env, 
                                   axis2_om_node_t *current_child,
                                   axis2_qname_t *attr_qname,
                                   axis2_char_t *attr_value,
@@ -73,16 +73,16 @@ axis2_om_children_with_specific_attribute_iterator_create(
 {
     axis2_om_children_with_specific_attribute_iterator_impl_t *iterator_impl = NULL;
 
-    AXIS2_PARAM_CHECK((*env)->error, current_child, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, attr_qname, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, attr_value, NULL);    
+    AXIS2_PARAM_CHECK(env->error, current_child, NULL);
+    AXIS2_PARAM_CHECK(env->error, attr_qname, NULL);
+    AXIS2_PARAM_CHECK(env->error, attr_value, NULL);    
     iterator_impl = (axis2_om_children_with_specific_attribute_iterator_impl_t *)
-                        AXIS2_MALLOC((*env)->allocator,
+                        AXIS2_MALLOC(env->allocator,
                         sizeof(axis2_om_children_with_specific_attribute_iterator_impl_t));
 
     if(!iterator_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;    
     }
     
@@ -100,13 +100,13 @@ axis2_om_children_with_specific_attribute_iterator_create(
     iterator_impl->iterator.ops = NULL;
     iterator_impl->iterator.ops = 
             (axis2_om_children_with_specific_attribute_iterator_ops_t*)
-                    AXIS2_MALLOC((*env)->allocator,
+                    AXIS2_MALLOC(env->allocator,
                     sizeof(axis2_om_children_with_specific_attribute_iterator_ops_t));
     
     if(!(iterator_impl->iterator.ops))
     {
         AXIS2_OM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_FREE(&(iterator_impl->iterator), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -126,7 +126,7 @@ axis2_om_children_with_specific_attribute_iterator_create(
 axis2_status_t AXIS2_CALL 
 axis2_om_children_with_specific_attribute_iterator_free(
             axis2_om_children_with_specific_attribute_iterator_t *iterator,
-            axis2_env_t **env)
+            const axis2_env_t *env)
 {
     axis2_om_children_with_specific_attribute_iterator_impl_t *qname_iter_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -138,17 +138,17 @@ axis2_om_children_with_specific_attribute_iterator_free(
     }    
     if(iterator->ops)
     {
-        AXIS2_FREE((*env)->allocator, iterator->ops);
+        AXIS2_FREE(env->allocator, iterator->ops);
         iterator->ops = NULL;
     }    
-    AXIS2_FREE((*env)->allocator, qname_iter_impl);        
+    AXIS2_FREE(env->allocator, qname_iter_impl);        
     return AXIS2_SUCCESS;
 }                                
                                 
 axis2_status_t AXIS2_CALL
 axis2_om_children_with_specific_attribute_iterator_remove(
             axis2_om_children_with_specific_attribute_iterator_t *iterator,
-            axis2_env_t **env)
+            const axis2_env_t *env)
 {
     axis2_om_children_with_specific_attribute_iterator_impl_t *iterator_impl = NULL;
     axis2_om_node_t *last_child = NULL;
@@ -157,13 +157,13 @@ axis2_om_children_with_specific_attribute_iterator_remove(
 
     if(!(iterator_impl->next_called))
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
         AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     if(iterator_impl->remove_called)
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
         AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -183,7 +183,7 @@ axis2_om_children_with_specific_attribute_iterator_remove(
 axis2_bool_t AXIS2_CALL 
 axis2_om_children_with_specific_attribute_iterator_has_next(
             axis2_om_children_with_specific_attribute_iterator_t *iterator,
-            axis2_env_t **env)
+            const axis2_env_t *env)
 {
     axis2_bool_t matching_node_found = AXIS2_FALSE;
     axis2_bool_t need_to_move_forward = AXIS2_TRUE;
@@ -240,7 +240,7 @@ axis2_om_children_with_specific_attribute_iterator_has_next(
 axis2_om_node_t* AXIS2_CALL 
 axis2_om_children_with_specific_attribute_iterator_next(
             axis2_om_children_with_specific_attribute_iterator_t *iterator,
-            axis2_env_t **env)
+            const axis2_env_t *env)
 {
     axis2_om_children_with_specific_attribute_iterator_impl_t *iterator_impl = NULL;
     axis2_om_node_t *last_child = NULL;

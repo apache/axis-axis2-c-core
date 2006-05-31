@@ -44,7 +44,7 @@ struct axis2_wsdl_component_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (axis2_wsdl_component_t *wsdl_component, 
-           axis2_env_t **env);
+           const axis2_env_t *env);
     
 	/**
      * Sets the properties of the Component if any
@@ -53,7 +53,7 @@ struct axis2_wsdl_component_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_component_properties) (axis2_wsdl_component_t *wsdl_component, 
-                                axis2_env_t **env, 
+                                const axis2_env_t *env, 
                                 axis2_hash_t *properties);
     
 
@@ -63,7 +63,7 @@ struct axis2_wsdl_component_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_component_properties) (axis2_wsdl_component_t *wsdl_component, 
-                               axis2_env_t **env);
+                               const axis2_env_t *env);
     
     /**
      * Will set the property keyed with the relavent key
@@ -73,7 +73,7 @@ struct axis2_wsdl_component_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_component_property) (axis2_wsdl_component_t *wsdl_component,
-                                axis2_env_t **env, 
+                                const axis2_env_t *env, 
                                 axis2_char_t *key, 
                                 void *value);        
                                 
@@ -85,7 +85,7 @@ struct axis2_wsdl_component_ops
      */
     void *(AXIS2_CALL *
     get_component_property) (axis2_wsdl_component_t *wsdl_component, 
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *key);
  
 
@@ -97,7 +97,7 @@ struct axis2_wsdl_component_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_extensibility_element) (axis2_wsdl_component_t *wsdl_component,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 void *element);
                                                         
     /**
@@ -107,7 +107,7 @@ struct axis2_wsdl_component_ops
      */
     axis2_linked_list_t *(AXIS2_CALL *
     get_extensibility_elements) (axis2_wsdl_component_t *wsdl_component,
-                                                    axis2_env_t **env);
+                                                    const axis2_env_t *env);
                                                 
 };
 
@@ -125,7 +125,7 @@ struct axis2_wsdl_component
  * @return pointer to newly created wsdl component
  */
 AXIS2_DECLARE(axis2_wsdl_component_t *) 
-axis2_wsdl_component_create (axis2_env_t **env);
+axis2_wsdl_component_create (const axis2_env_t *env);
 
 /**************************** Start of function macros ************************/
 

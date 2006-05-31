@@ -50,73 +50,73 @@ extern "C"
     { 
         axis2_qname_t* (AXIS2_CALL *
         get_qname) (struct axis2_handler_desc *handler_desc, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
         
         axis2_status_t (AXIS2_CALL *
         set_qname) (struct axis2_handler_desc *handler_desc, 
-                        axis2_env_t **env, 
+                        const axis2_env_t *env, 
                         axis2_qname_t *qname);
         
         axis2_phase_rule_t* (AXIS2_CALL *
         get_rules) (struct axis2_handler_desc *handler_desc, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
         
         axis2_status_t (AXIS2_CALL *
         set_rules) (struct axis2_handler_desc *handler_desc, 
-                        axis2_env_t **env, 
+                        const axis2_env_t *env, 
                         axis2_phase_rule_t *phase_rule);
         
         axis2_param_t* (AXIS2_CALL *
         get_param) (struct axis2_handler_desc *handler_desc, 
-                        axis2_env_t **env, 
+                        const axis2_env_t *env, 
                         axis2_char_t *name);
         
         axis2_status_t (AXIS2_CALL *
         add_param) (struct axis2_handler_desc *handler_desc, 
-                        axis2_env_t **env, 
+                        const axis2_env_t *env, 
                         axis2_param_t * param);
         
         axis2_array_list_t* (AXIS2_CALL *
         get_params) (struct axis2_handler_desc *handler_desc, 
-                     axis2_env_t **env);
+                     const axis2_env_t *env);
 
         /**
         * checks whether the paramter is locked at any levle 
         */
         axis2_bool_t (AXIS2_CALL *
         is_param_locked)(struct axis2_handler_desc *handler_desc, 
-                         axis2_env_t **env, axis2_char_t * param_name);
+                         const axis2_env_t *env, axis2_char_t * param_name);
         
         axis2_handler_t* (AXIS2_CALL *
         get_handler) (struct axis2_handler_desc *handler_desc, 
-                      axis2_env_t **env);
+                      const axis2_env_t *env);
         
         axis2_status_t (AXIS2_CALL *
         set_handler) (struct axis2_handler_desc *handler_desc, 
-                        axis2_env_t **env, 
+                        const axis2_env_t *env, 
                         axis2_handler_t * handler);
         
         axis2_char_t* (AXIS2_CALL *
         get_class_name) (struct axis2_handler_desc *handler_desc, 
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
         
         axis2_status_t (AXIS2_CALL *
         set_class_name) (struct axis2_handler_desc *handler_desc, 
-                            axis2_env_t **env, 
+                            const axis2_env_t *env, 
                             axis2_char_t *class_name);
         
         axis2_param_container_t* (AXIS2_CALL *
         get_parent) (struct axis2_handler_desc *handler_desc, 
-                                               axis2_env_t **env);
+                                               const axis2_env_t *env);
         
         axis2_status_t (AXIS2_CALL *
         set_parent) (struct axis2_handler_desc *handler_desc, 
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_param_container_t * parent);
         
         axis2_status_t (AXIS2_CALL *
         free) (struct axis2_handler_desc *handler_desc, 
-                axis2_env_t **env);
+                const axis2_env_t *env);
         
     } axis2_handler_desc_ops_t;
 	
@@ -139,7 +139,7 @@ extern "C"
  * @param qname qname, can be NULL
  */
 AXIS2_DECLARE(axis2_handler_desc_t*) 
-axis2_handler_desc_create_with_qname(axis2_env_t **env, axis2_qname_t *qname);
+axis2_handler_desc_create_with_qname(const axis2_env_t *env, axis2_qname_t *qname);
 
 #define AXIS2_HANDLER_DESC_GET_HANDLER(handler_desc, env) \
         ((handler_desc)->ops->get_handler(handler_desc, env))

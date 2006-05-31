@@ -50,32 +50,32 @@ struct axis2_xml_schema_simple_type_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *simple_type,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_type_t *(AXIS2_CALL *
     get_base_impl) (void *simple_type,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
                     
     axis2_xml_schema_types_t (AXIS2_CALL *
     type) (void *simple_type,
-            axis2_env_t **env);
+            const axis2_env_t *env);
                     
     axis2_hash_t* (AXIS2_CALL *
     super_objs) (void *simple_type,
-                 axis2_env_t **env);                                        
+                 const axis2_env_t *env);                                        
                     
     axis2_xml_schema_simple_type_content_t* (AXIS2_CALL *
     get_content)(void *simple_type,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
                  
     axis2_status_t (AXIS2_CALL*
     set_content)(void *simple_type,
-                 axis2_env_t **env,
+                 const axis2_env_t *env,
                  axis2_xml_schema_simple_type_content_t *simple_content);
                  
     axis2_char_t* (AXIS2_CALL *
     to_string)(void *simple_type,
-               axis2_env_t **env,
+               const axis2_env_t *env,
                axis2_char_t *prefix,
                int tab);
 };
@@ -95,7 +95,7 @@ struct axis2_xml_schema_simple_type
  * (any).
  */
 AXIS2_DECLARE(axis2_xml_schema_simple_type_t *)
-axis2_xml_schema_simple_type_create(axis2_env_t **env,
+axis2_xml_schema_simple_type_create(const axis2_env_t *env,
                                 struct axis2_xml_schema *schema);
 
 /**
@@ -104,7 +104,7 @@ axis2_xml_schema_simple_type_create(axis2_env_t **env,
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_simple_type_resolve_methods(
                                 axis2_xml_schema_simple_type_t *simple_type,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_simple_type_t *type_impl,
                                 axis2_hash_t *methods);
  */

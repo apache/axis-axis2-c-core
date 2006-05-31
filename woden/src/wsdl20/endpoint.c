@@ -45,22 +45,22 @@ struct axis2_woden_endpoint_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_endpoint_free(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_woden_endpoint_super_objs(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_endpoint_type(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_nested_configurable_t *AXIS2_CALL
 axis2_woden_endpoint_get_base_impl(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /* ************************************************************
  *  Endpoint interface methods (the WSDL Component model)
@@ -69,17 +69,17 @@ axis2_woden_endpoint_get_base_impl(
 woden_nc_name_t *AXIS2_CALL
 axis2_woden_endpoint_get_name(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_endpoint_get_binding(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_url_t *AXIS2_CALL
 axis2_woden_endpoint_get_address(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 /* ************************************************************
  *  Endpoint Element interface methods (the XML Element model)
  * ************************************************************/
@@ -87,29 +87,29 @@ axis2_woden_endpoint_get_address(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_set_name(
         void *endpoint,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         woden_nc_name_t *name);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_set_binding_qname(
         void *endpoint,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *binding_qname);
 
 axis2_qname_t *AXIS2_CALL
 axis2_woden_endpoint_get_binding_qname(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_endpoint_get_binding_element(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_set_address(
         void *endpoint,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_url_t *uri);
 
 /******************************************************************************
@@ -119,17 +119,17 @@ axis2_woden_endpoint_set_address(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_set_binding_element(
         void *endpoint,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *binding);
 
 static axis2_woden_endpoint_t *
-create(axis2_env_t **env);
+create(const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_endpoint_element(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
    
@@ -142,7 +142,7 @@ axis2_woden_endpoint_to_endpoint_element(
         endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
 
     endpoint_impl->endpoint.base.endpoint_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_endpoint_element_ops_t));
     axis2_woden_endpoint_element_resolve_methods(&(endpoint_impl->endpoint.base.
             endpoint_element), env, endpoint_impl->methods);
@@ -152,7 +152,7 @@ axis2_woden_endpoint_to_endpoint_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_to_endpoint_element_free(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -161,7 +161,7 @@ axis2_woden_endpoint_to_endpoint_element_free(
 
     if(endpoint_impl->endpoint.base.endpoint_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 endpoint_element.ops);
         endpoint_impl->endpoint.base.endpoint_element.ops = NULL;
     }
@@ -171,7 +171,7 @@ axis2_woden_endpoint_to_endpoint_element_free(
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_nested_element(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
    
@@ -184,7 +184,7 @@ axis2_woden_endpoint_to_nested_element(
         endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
 
     endpoint_impl->endpoint.base.endpoint_element.base.nested_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_nested_element_ops_t));
     axis2_woden_nested_element_resolve_methods(&(endpoint_impl->endpoint.base.
             endpoint_element.base.nested_element), env, endpoint_impl->methods);
@@ -194,7 +194,7 @@ axis2_woden_endpoint_to_nested_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_to_nested_element_free(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -203,7 +203,7 @@ axis2_woden_endpoint_to_nested_element_free(
 
     if(endpoint_impl->endpoint.base.endpoint_element.base.nested_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 endpoint_element.base.nested_element.ops);
         endpoint_impl->endpoint.base.endpoint_element.base.nested_element.ops = 
             NULL;
@@ -214,7 +214,7 @@ axis2_woden_endpoint_to_nested_element_free(
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_documentable_element(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
    
@@ -227,7 +227,7 @@ axis2_woden_endpoint_to_documentable_element(
         endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
 
     endpoint_impl->endpoint.base.endpoint_element.base.documentable_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_documentable_element_ops_t));
     axis2_woden_documentable_element_resolve_methods(&(endpoint_impl->endpoint.base.
             endpoint_element.base.documentable_element), env, 
@@ -238,7 +238,7 @@ axis2_woden_endpoint_to_documentable_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_to_documentable_element_free(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -247,7 +247,7 @@ axis2_woden_endpoint_to_documentable_element_free(
 
     if(endpoint_impl->endpoint.base.endpoint_element.base.documentable_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 endpoint_element.base.documentable_element.ops);
         endpoint_impl->endpoint.base.endpoint_element.base.documentable_element.ops = 
             NULL;
@@ -258,7 +258,7 @@ axis2_woden_endpoint_to_documentable_element_free(
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_nested_configurable(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
    
@@ -271,7 +271,7 @@ axis2_woden_endpoint_to_nested_configurable(
         endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
 
     endpoint_impl->endpoint.base.nested_configurable.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_nested_configurable_ops_t));
     axis2_woden_nested_configurable_resolve_methods(&(endpoint_impl->endpoint.base.
             nested_configurable), env, endpoint_impl->nested_configurable, 
@@ -282,7 +282,7 @@ axis2_woden_endpoint_to_nested_configurable(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_to_nested_configurable_free(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -291,7 +291,7 @@ axis2_woden_endpoint_to_nested_configurable_free(
 
     if(endpoint_impl->endpoint.base.nested_configurable.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 nested_configurable.ops);
         endpoint_impl->endpoint.base.nested_configurable.ops = NULL;
     }
@@ -301,7 +301,7 @@ axis2_woden_endpoint_to_nested_configurable_free(
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_configurable(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
     void *configurable = NULL;
@@ -315,7 +315,7 @@ axis2_woden_endpoint_to_configurable(
         endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
 
     endpoint_impl->endpoint.base.nested_configurable.base.configurable.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_configurable_ops_t));
     configurable = AXIS2_WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(
             endpoint_impl->nested_configurable, env);
@@ -328,7 +328,7 @@ axis2_woden_endpoint_to_configurable(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_to_configurable_free(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -337,7 +337,7 @@ axis2_woden_endpoint_to_configurable_free(
 
     if(endpoint_impl->endpoint.base.nested_configurable.base.configurable.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 nested_configurable.base.configurable.ops);
         endpoint_impl->endpoint.base.nested_configurable.base.configurable.ops = 
             NULL;
@@ -348,7 +348,7 @@ axis2_woden_endpoint_to_configurable_free(
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_nested_component(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
     
@@ -361,7 +361,7 @@ axis2_woden_endpoint_to_nested_component(
         endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
   
     endpoint_impl->endpoint.base.nested_configurable.base.nested_component.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_nested_component_ops_t));
     axis2_woden_nested_component_resolve_methods(&(endpoint_impl->endpoint.base.
             nested_configurable.base.nested_component), env, endpoint_impl->methods);
@@ -371,7 +371,7 @@ axis2_woden_endpoint_to_nested_component(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_to_nested_component_free(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -380,7 +380,7 @@ axis2_woden_endpoint_to_nested_component_free(
 
     if(endpoint_impl->endpoint.base.nested_configurable.base.nested_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 nested_configurable.base.nested_component.ops);
         endpoint_impl->endpoint.base.nested_configurable.base.nested_component.
             ops = NULL;
@@ -391,7 +391,7 @@ axis2_woden_endpoint_to_nested_component_free(
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_configurable_component(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
     
@@ -404,7 +404,7 @@ axis2_woden_endpoint_to_configurable_component(
         endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
   
     endpoint_impl->endpoint.base.configurable_component.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_configurable_component_ops_t));
     axis2_woden_configurable_component_resolve_methods(&(endpoint_impl->endpoint.base.
             configurable_component), env, endpoint_impl->methods);
@@ -414,7 +414,7 @@ axis2_woden_endpoint_to_configurable_component(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_to_configurable_component_free(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -423,7 +423,7 @@ axis2_woden_endpoint_to_configurable_component_free(
 
     if(endpoint_impl->endpoint.base.configurable_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 configurable_component.ops);
         endpoint_impl->endpoint.base.configurable_component.ops = NULL;
     }
@@ -434,7 +434,7 @@ axis2_woden_endpoint_to_configurable_component_free(
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_wsdl_component(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -447,7 +447,7 @@ axis2_woden_endpoint_to_wsdl_component(
     else
         endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
     endpoint_impl->endpoint.base.configurable_component.wsdl_component.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_woden_wsdl_component_ops_t));
     axis2_woden_wsdl_component_resolve_methods(&(endpoint_impl->endpoint.base.
             configurable_component.wsdl_component), env, endpoint_impl->methods);
@@ -457,7 +457,7 @@ axis2_woden_endpoint_to_wsdl_component(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_to_wsdl_component_free(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -466,7 +466,7 @@ axis2_woden_endpoint_to_wsdl_component_free(
 
     if(endpoint_impl->endpoint.base.configurable_component.wsdl_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 configurable_component.wsdl_component.ops);
         endpoint_impl->endpoint.base.configurable_component.wsdl_component.ops = NULL;
     }
@@ -475,12 +475,12 @@ axis2_woden_endpoint_to_wsdl_component_free(
 
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_endpoint_t *
-create(axis2_env_t **env)
+create(const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    endpoint_impl = AXIS2_MALLOC((*env)->allocator, 
+    endpoint_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_endpoint_impl_t));
 
     endpoint_impl->obj_type= AXIS2_WODEN_ENDPOINT;
@@ -501,7 +501,7 @@ create(axis2_env_t **env)
     endpoint_impl->endpoint.base.configurable_component.ops = NULL;
     endpoint_impl->endpoint.base.configurable_component.wsdl_component.ops = NULL;
     
-    endpoint_impl->endpoint.ops = AXIS2_MALLOC((*env)->allocator, 
+    endpoint_impl->endpoint.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_endpoint_ops_t));
 
     endpoint_impl->endpoint.ops->free = axis2_woden_endpoint_free;
@@ -517,7 +517,7 @@ create(axis2_env_t **env)
     endpoint_impl->methods = axis2_hash_make(env);
     if(!endpoint_impl->methods) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(endpoint_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -583,7 +583,7 @@ create(axis2_env_t **env)
 }
 
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
-axis2_woden_endpoint_create(axis2_env_t **env)
+axis2_woden_endpoint_create(const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
    
@@ -595,7 +595,7 @@ axis2_woden_endpoint_create(axis2_env_t **env)
     endpoint_impl->super = axis2_hash_make(env);
     if(!endpoint_impl->super) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(endpoint_impl->super, "AXIS2_WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING, 
@@ -608,7 +608,7 @@ axis2_woden_endpoint_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_free(void *endpoint,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -661,14 +661,14 @@ axis2_woden_endpoint_free(void *endpoint,
 
     if(endpoint_impl->endpoint.base.endpoint_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 endpoint_element.ops);
         endpoint_impl->endpoint.base.endpoint_element.ops = NULL;
     }
 
     if(endpoint_impl->endpoint.base.endpoint_element.base.nested_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 endpoint_element.base.nested_element.ops);
         endpoint_impl->endpoint.base.endpoint_element.base.nested_element.ops = 
             NULL;
@@ -676,7 +676,7 @@ axis2_woden_endpoint_free(void *endpoint,
     
     if(endpoint_impl->endpoint.base.endpoint_element.base.documentable_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 endpoint_element.base.documentable_element.ops);
         endpoint_impl->endpoint.base.endpoint_element.base.documentable_element.ops = 
             NULL;
@@ -684,7 +684,7 @@ axis2_woden_endpoint_free(void *endpoint,
     
     if(endpoint_impl->endpoint.base.nested_configurable.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 nested_configurable.ops);
         endpoint_impl->endpoint.base.nested_configurable.ops = 
             NULL;
@@ -692,7 +692,7 @@ axis2_woden_endpoint_free(void *endpoint,
     
     if(endpoint_impl->endpoint.base.nested_configurable.base.configurable.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 nested_configurable.base.configurable.ops);
         endpoint_impl->endpoint.base.nested_configurable.base.configurable.ops = 
             NULL;
@@ -700,34 +700,34 @@ axis2_woden_endpoint_free(void *endpoint,
 
     if(endpoint_impl->endpoint.base.nested_configurable.base.nested_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 nested_configurable.base.nested_component.ops);
         endpoint_impl->endpoint.base.nested_configurable.base.nested_component.ops = NULL;
     }
 
     if(endpoint_impl->endpoint.base.configurable_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 configurable_component.ops);
         endpoint_impl->endpoint.base.configurable_component.ops = NULL;
     }
 
     if(endpoint_impl->endpoint.base.configurable_component.wsdl_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl->endpoint.base.
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
                 configurable_component.wsdl_component.ops);
         endpoint_impl->endpoint.base.configurable_component.wsdl_component.ops = NULL;
     }
 
     if((&(endpoint_impl->endpoint))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(endpoint_impl->endpoint))->ops);
+        AXIS2_FREE(env->allocator, (&(endpoint_impl->endpoint))->ops);
         (&(endpoint_impl->endpoint))->ops = NULL;
     }
     
     if(endpoint_impl)
     {
-        AXIS2_FREE((*env)->allocator, endpoint_impl);
+        AXIS2_FREE(env->allocator, endpoint_impl);
         endpoint_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -736,7 +736,7 @@ axis2_woden_endpoint_free(void *endpoint,
 axis2_hash_t *AXIS2_CALL
 axis2_woden_endpoint_super_objs(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -749,7 +749,7 @@ axis2_woden_endpoint_super_objs(
 axis2_woden_obj_types_t AXIS2_CALL
 axis2_woden_endpoint_type(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -762,7 +762,7 @@ axis2_woden_endpoint_type(
 axis2_woden_nested_configurable_t *AXIS2_CALL
 axis2_woden_endpoint_get_base_impl(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
 
@@ -775,14 +775,14 @@ axis2_woden_endpoint_get_base_impl(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_resolve_methods(
         axis2_woden_endpoint_t *endpoint,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_endpoint_t *endpoint_impl,
         axis2_hash_t *methods)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     endpoint_impl_l = INTF_TO_IMPL(endpoint_impl);
     
     endpoint->ops->free = axis2_hash_get(methods, "free", 
@@ -827,7 +827,7 @@ axis2_woden_endpoint_resolve_methods(
 woden_nc_name_t *AXIS2_CALL
 axis2_woden_endpoint_get_name(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -843,7 +843,7 @@ axis2_woden_endpoint_get_name(
 void *AXIS2_CALL
 axis2_woden_endpoint_get_binding(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -859,7 +859,7 @@ axis2_woden_endpoint_get_binding(
 axis2_url_t *AXIS2_CALL
 axis2_woden_endpoint_get_address(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -878,7 +878,7 @@ axis2_woden_endpoint_get_address(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_set_name(
         void *endpoint,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         woden_nc_name_t *name)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
@@ -900,7 +900,7 @@ axis2_woden_endpoint_set_name(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_set_binding_qname(
         void *endpoint,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *binding_qname)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
@@ -923,7 +923,7 @@ axis2_woden_endpoint_set_binding_qname(
 axis2_qname_t *AXIS2_CALL
 axis2_woden_endpoint_get_binding_qname(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -939,7 +939,7 @@ axis2_woden_endpoint_get_binding_qname(
 void *AXIS2_CALL
 axis2_woden_endpoint_get_binding_element(
         void *endpoint,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -955,7 +955,7 @@ axis2_woden_endpoint_get_binding_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_set_address(
         void *endpoint,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_url_t *uri)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
@@ -982,7 +982,7 @@ axis2_woden_endpoint_set_address(
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_set_binding_element(
         void *endpoint,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *binding)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;

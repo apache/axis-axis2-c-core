@@ -63,60 +63,60 @@ struct axis2_woden_interface_fault_ref_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *interface_fault_ref_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
  
     axis2_status_t (AXIS2_CALL *
     to_interface_fault_ref_element_free) (
             void *interface_fault_ref_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *interface_fault_ref_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
  
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *interface_fault_ref_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_ref) (
             void *iface_fault_ele,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *fault_qname);
     
     axis2_qname_t *(AXIS2_CALL *
     get_ref) (
             void *iface_fault_ele,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     void *(AXIS2_CALL *
     get_interface_fault_element) (
             void *iface_fault_ele,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_msg_label) (
             void *iface_fault_ele,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *msg_label);
 
     void *(AXIS2_CALL *
     get_msg_label) (
             void *iface_fault_ele,
-            axis2_env_t **env);
+            const axis2_env_t *env);
      
     axis2_status_t (AXIS2_CALL *
     set_direction) (
             void *iface_fault_ele,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *dir);
 
     void *(AXIS2_CALL *
     get_direction) (
             void *iface_fault_ele,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
 
 };
@@ -136,13 +136,13 @@ struct axis2_woden_interface_fault_ref_element
 
 AXIS2_DECLARE(axis2_woden_interface_fault_ref_element_t *)
 axis2_woden_interface_fault_ref_element_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_interface_fault_ref_element_resolve_methods(
         axis2_woden_interface_fault_ref_element_t *interface_fault_ref_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

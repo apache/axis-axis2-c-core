@@ -50,50 +50,50 @@ typedef struct axis2_wsdl_fault_ref_impl
 
 axis2_status_t AXIS2_CALL
 	axis2_wsdl_fault_ref_free (axis2_wsdl_fault_ref_t *fault_ref,
-									axis2_env_t **env);
+									const axis2_env_t *env);
 
 axis2_char_t * AXIS2_CALL
 axis2_wsdl_fault_ref_get_direction(axis2_wsdl_fault_ref_t *fault_ref,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_fault_ref_set_direction(axis2_wsdl_fault_ref_t *fault_ref,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_char_t *direction);
 
 axis2_char_t * AXIS2_CALL
 axis2_wsdl_fault_ref_get_msg_label(axis2_wsdl_fault_ref_t *fault_ref,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_fault_ref_set_msg_label(axis2_wsdl_fault_ref_t *fault_ref,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_char_t *msg_label);
                                             
 axis2_qname_t * AXIS2_CALL
 axis2_wsdl_fault_ref_get_ref(axis2_wsdl_fault_ref_t *fault_ref,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_wdsl_fault_ref_set_ref(axis2_wsdl_fault_ref_t *fault_ref,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_qname_t *ref);                                           
 
 /************************** End of function prototypes ************************/
 
 axis2_wsdl_fault_ref_t * AXIS2_CALL 
-axis2_wsdl_fault_ref_create (axis2_env_t **env)
+axis2_wsdl_fault_ref_create (const axis2_env_t *env)
 {
     axis2_wsdl_fault_ref_impl_t *fault_ref_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	fault_ref_impl = (axis2_wsdl_fault_ref_impl_t *) AXIS2_MALLOC((*env)->
+	fault_ref_impl = (axis2_wsdl_fault_ref_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_wsdl_fault_ref_impl_t));
 	
 	if(NULL == fault_ref_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -107,18 +107,18 @@ axis2_wsdl_fault_ref_create (axis2_env_t **env)
  
     if(NULL == fault_ref_impl->fault_ref.wsdl_component)
     {
-        AXIS2_FREE((*env)->allocator, fault_ref_impl);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, fault_ref_impl);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
 	fault_ref_impl->fault_ref.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_fault_ref_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_fault_ref_ops_t));
 	if(NULL == fault_ref_impl->fault_ref.ops)
     {
         AXIS2_WSDL_COMPONENT_FREE(fault_ref_impl->fault_ref.wsdl_component, env);
-        AXIS2_FREE((*env)->allocator, fault_ref_impl);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, fault_ref_impl);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -146,7 +146,7 @@ axis2_wsdl_fault_ref_create (axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_fault_ref_free (axis2_wsdl_fault_ref_t *fault_ref, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_wsdl_fault_ref_impl_t *fault_ref_impl = NULL;
     
@@ -156,19 +156,19 @@ axis2_wsdl_fault_ref_free (axis2_wsdl_fault_ref_t *fault_ref,
     
 	if(NULL != fault_ref->ops)
     {
-        AXIS2_FREE((*env)->allocator, fault_ref->ops);
+        AXIS2_FREE(env->allocator, fault_ref->ops);
         fault_ref->ops = NULL;
     }
     
     if(NULL != fault_ref_impl->msg_label)
     {
-        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(fault_ref)->msg_label);
+        AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(fault_ref)->msg_label);
         fault_ref_impl->msg_label = NULL;
     }
     
     if(NULL != fault_ref_impl->direction)
     {
-        AXIS2_FREE((*env)->allocator, fault_ref_impl->direction);
+        AXIS2_FREE(env->allocator, fault_ref_impl->direction);
         fault_ref_impl->direction = NULL;   
     }
     
@@ -185,7 +185,7 @@ axis2_wsdl_fault_ref_free (axis2_wsdl_fault_ref_t *fault_ref,
     }
     
     if(fault_ref_impl)
-        AXIS2_FREE((*env)->allocator, fault_ref_impl);
+        AXIS2_FREE(env->allocator, fault_ref_impl);
     fault_ref_impl = NULL;
     
 	return AXIS2_SUCCESS;
@@ -193,7 +193,7 @@ axis2_wsdl_fault_ref_free (axis2_wsdl_fault_ref_t *fault_ref,
 
 axis2_char_t * AXIS2_CALL
 axis2_wsdl_fault_ref_get_direction(axis2_wsdl_fault_ref_t *fault_ref,
-                                            axis2_env_t **env) 
+                                            const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(fault_ref)->direction;
@@ -201,18 +201,18 @@ axis2_wsdl_fault_ref_get_direction(axis2_wsdl_fault_ref_t *fault_ref,
 
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_fault_ref_set_direction(axis2_wsdl_fault_ref_t *fault_ref,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_char_t *direction) 
 {
     axis2_wsdl_fault_ref_impl_t *fault_ref_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, direction, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, direction, AXIS2_FAILURE);
     
     fault_ref_impl = AXIS2_INTF_TO_IMPL(fault_ref);
     if(fault_ref_impl->direction)
     {
-        AXIS2_FREE((*env)->allocator, fault_ref_impl->direction);
+        AXIS2_FREE(env->allocator, fault_ref_impl->direction);
         fault_ref_impl->direction = NULL;
     }
     fault_ref_impl->direction = AXIS2_STRDUP(direction, env);
@@ -221,7 +221,7 @@ axis2_wsdl_fault_ref_set_direction(axis2_wsdl_fault_ref_t *fault_ref,
 
 axis2_char_t * AXIS2_CALL
 axis2_wsdl_fault_ref_get_msg_label(axis2_wsdl_fault_ref_t *fault_ref,
-                                            axis2_env_t **env) 
+                                            const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(fault_ref)->msg_label;
@@ -229,18 +229,18 @@ axis2_wsdl_fault_ref_get_msg_label(axis2_wsdl_fault_ref_t *fault_ref,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_fault_ref_set_msg_label(axis2_wsdl_fault_ref_t *fault_ref,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_char_t *msg_label) 
 {
     axis2_wsdl_fault_ref_impl_t *fault_ref_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_label, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_label, AXIS2_FAILURE);
     
     fault_ref_impl = AXIS2_INTF_TO_IMPL(fault_ref);
     if(fault_ref_impl->msg_label)
     {
-        AXIS2_FREE((*env)->allocator, fault_ref_impl->msg_label);
+        AXIS2_FREE(env->allocator, fault_ref_impl->msg_label);
         fault_ref_impl->msg_label = NULL;
     }
     fault_ref_impl->msg_label = AXIS2_STRDUP(msg_label, env);
@@ -249,7 +249,7 @@ axis2_wsdl_fault_ref_set_msg_label(axis2_wsdl_fault_ref_t *fault_ref,
 
 axis2_qname_t * AXIS2_CALL
 axis2_wsdl_fault_ref_get_ref(axis2_wsdl_fault_ref_t *fault_ref,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(fault_ref)->ref;
@@ -257,13 +257,13 @@ axis2_wsdl_fault_ref_get_ref(axis2_wsdl_fault_ref_t *fault_ref,
 
 axis2_status_t AXIS2_CALL
 axis2_wdsl_fault_ref_set_ref(axis2_wsdl_fault_ref_t *fault_ref,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_qname_t *ref) 
 {
     axis2_wsdl_fault_ref_impl_t *fault_ref_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, ref, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ref, AXIS2_FAILURE);
     
     fault_ref_impl = AXIS2_INTF_TO_IMPL(fault_ref);
     if(fault_ref_impl->ref)

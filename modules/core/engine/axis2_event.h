@@ -53,17 +53,17 @@ struct axis2_event_ops
 
     axis2_svc_t* (AXIS2_CALL *
     get_svc)(struct axis2_event *event, 
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
             
     int (AXIS2_CALL *
     get_event_type)(struct axis2_event *event, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 
                     
     axis2_status_t (AXIS2_CALL *
     free)(struct axis2_event *event,
-          axis2_env_t **env);
+          const axis2_env_t *env);
 };
 
 /** 
@@ -76,7 +76,7 @@ struct axis2_event
 };
 
 AXIS2_DECLARE(axis2_event_t*) 
-axis2_event_create(axis2_env_t **env, 
+axis2_event_create(const axis2_env_t *env, 
                    axis2_svc_t *svc, 
                    int event_type);
     

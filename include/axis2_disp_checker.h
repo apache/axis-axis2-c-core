@@ -47,21 +47,21 @@ extern "C"
     { 
         axis2_handler_t* (AXIS2_CALL *
 		get_base) (struct axis2_disp_checker *disp_checker, 
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
 		
 		
         axis2_qname_t* (AXIS2_CALL *
 		get_qname) (struct axis2_disp_checker *disp_checker, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 		
         axis2_status_t (AXIS2_CALL *
 		set_qname) (struct axis2_disp_checker *disp_checker, 
-                    axis2_env_t **env, 
+                    const axis2_env_t *env, 
 					axis2_qname_t *qname);
 		
         axis2_status_t (AXIS2_CALL *
 		free) (struct axis2_disp_checker *disp_checker, 
-               axis2_env_t **env);
+               const axis2_env_t *env);
         
     } axis2_disp_checker_ops_t;
 	
@@ -80,7 +80,7 @@ extern "C"
  * @param qname qname, can be NULL
  */
 AXIS2_DECLARE(axis2_disp_checker_t*)
-axis2_disp_checker_create(axis2_env_t **env, 
+axis2_disp_checker_create(const axis2_env_t *env, 
 						  axis2_qname_t *qname);
 
 #define AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env) \

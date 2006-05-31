@@ -54,7 +54,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_import_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_import_t *wsdl_import,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
                                
     /**
      * Method get_namespace
@@ -63,7 +63,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_import_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_namespace) (axis2_wsdl_import_t *wsdl_import,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
                                     
     /**
      * Method set_namespace
@@ -72,7 +72,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_import_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_namespace) (axis2_wsdl_import_t *wsdl_import,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *namespace);
     
     
@@ -83,7 +83,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_import_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_location) (axis2_wsdl_import_t *wsdl_import,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
                                     
     /**
      * Method set_location
@@ -92,7 +92,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_import_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_location) (axis2_wsdl_import_t *wsdl_import,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *location);  
 
 
@@ -112,7 +112,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_import
  * Creates wsdl import struct
  * @return pointer to newly created wsdl import
  */
-AXIS2_DECLARE(axis2_wsdl_import_t *) axis2_wsdl_import_create (axis2_env_t **env);
+AXIS2_DECLARE(axis2_wsdl_import_t *) axis2_wsdl_import_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

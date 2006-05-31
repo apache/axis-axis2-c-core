@@ -35,36 +35,36 @@ typedef struct axis2_flow_impl
 /***************************** Function headers *******************************/
 
 axis2_status_t AXIS2_CALL
-axis2_flow_free (axis2_flow_t *flow, axis2_env_t **env);
+axis2_flow_free (axis2_flow_t *flow, const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_flow_add_handler (axis2_flow_t *flow,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_handler_desc_t *handler);
 
 axis2_handler_desc_t * AXIS2_CALL
 axis2_flow_get_handler (axis2_flow_t *flow,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         int index);
 
 int AXIS2_CALL
 axis2_flow_get_handler_count(axis2_flow_t *flow,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 /************************** End of Function headers ************************/
 
 AXIS2_DECLARE(axis2_flow_t *)
-axis2_flow_create (axis2_env_t **env)
+axis2_flow_create (const axis2_env_t *env)
 {
     axis2_flow_impl_t *flow_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
-	flow_impl = (axis2_flow_impl_t *) AXIS2_MALLOC((*env)->allocator, 
+	flow_impl = (axis2_flow_impl_t *) AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_flow_impl_t));
 		
 	if(NULL == flow_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
 	
@@ -76,16 +76,16 @@ axis2_flow_create (axis2_env_t **env)
     if(NULL == flow_impl->list)
     {
         axis2_flow_free(&(flow_impl->flow), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }       
     
-	flow_impl->flow.ops = AXIS2_MALLOC ((*env)->allocator, 
+	flow_impl->flow.ops = AXIS2_MALLOC (env->allocator, 
         sizeof(axis2_flow_ops_t));
 	if(NULL == flow_impl->flow.ops)
     {
         axis2_flow_free(&(flow_impl->flow), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -100,7 +100,7 @@ axis2_flow_create (axis2_env_t **env)
 /*************************** Start of op impls *************************/
 
 axis2_status_t AXIS2_CALL
-axis2_flow_free (axis2_flow_t *flow, axis2_env_t **env)
+axis2_flow_free (axis2_flow_t *flow, const axis2_env_t *env)
 {
     axis2_flow_impl_t *flow_impl = NULL;
     
@@ -127,13 +127,13 @@ axis2_flow_free (axis2_flow_t *flow, axis2_env_t **env)
     
     if(NULL != flow->ops)
     {
-        AXIS2_FREE((*env)->allocator, flow->ops);
+        AXIS2_FREE(env->allocator, flow->ops);
         flow->ops = NULL;
     }
     
     if(flow_impl)
     {
-        AXIS2_FREE((*env)->allocator, flow_impl);
+        AXIS2_FREE(env->allocator, flow_impl);
         flow_impl = NULL;
     }
     
@@ -142,7 +142,7 @@ axis2_flow_free (axis2_flow_t *flow, axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_flow_free_void_arg (void *flow,
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_flow_t *flow_l = NULL;
     
@@ -153,13 +153,13 @@ axis2_flow_free_void_arg (void *flow,
 
 axis2_status_t AXIS2_CALL
 axis2_flow_add_handler (axis2_flow_t *flow,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_handler_desc_t *handler)
 {
     axis2_flow_impl_t *flow_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, handler, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, handler, AXIS2_FAILURE);
   
     flow_impl = AXIS2_INTF_TO_IMPL(flow);
     
@@ -169,7 +169,7 @@ axis2_flow_add_handler (axis2_flow_t *flow,
         if(NULL == flow_impl->list)
         {
             axis2_flow_free(&(flow_impl->flow), env);
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         } 
     }
@@ -178,7 +178,7 @@ axis2_flow_add_handler (axis2_flow_t *flow,
 
 axis2_handler_desc_t * AXIS2_CALL
 axis2_flow_get_handler (axis2_flow_t *flow,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         int index)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -188,7 +188,7 @@ axis2_flow_get_handler (axis2_flow_t *flow,
 
 int AXIS2_CALL
 axis2_flow_get_handler_count(axis2_flow_t *flow,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     

@@ -46,22 +46,22 @@ struct axis2_woden_binding_op_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_binding_op_free(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_woden_binding_op_super_objs(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_binding_op_type(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_nested_configurable_t *AXIS2_CALL
 axis2_woden_binding_op_get_base_impl(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 /* ************************************************************
  *  Binding Operation  methods (the WSDL Component model)
  * ************************************************************/
@@ -69,22 +69,22 @@ axis2_woden_binding_op_get_base_impl(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_binding_op_get_binding_msg_refs(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_binding_op_get_binding_fault_refs(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_binding_op_to_element(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_binding_op_get_interface_op(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 /* ************************************************************
  *  Binding Operation Element methods (the XML Element model)
  * ************************************************************/
@@ -92,53 +92,53 @@ axis2_woden_binding_op_get_interface_op(
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_set_ref(
         void *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname);
 
 axis2_qname_t *AXIS2_CALL
 axis2_woden_binding_op_get_ref(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_binding_op_get_interface_op_element(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_add_binding_msg_ref_element(
         void *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *msg_ref);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_remove_binding_msg_ref_element(
         void *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *msg_ref);
 
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_binding_op_get_binding_msg_ref_elements(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_add_binding_fault_ref_element(
         void *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *fault_ref);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_remove_binding_fault_ref_element(
         void *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *fault_ref);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_binding_op_get_binding_fault_ref_elements(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /* ************************************************************
  *  Non-API implementation methods
@@ -147,22 +147,22 @@ axis2_woden_binding_op_get_binding_fault_ref_elements(
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_set_interface_op_element(
         void *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *int_op);
 
 static axis2_woden_binding_op_t *
-create(axis2_env_t **env);
+create(const axis2_env_t *env);
 
 static axis2_status_t
 axis2_woden_binding_op_free_ops(
         void *binding_op,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_woden_binding_op_t *)
 axis2_woden_binding_op_to_binding_op_element(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
    
@@ -176,7 +176,7 @@ axis2_woden_binding_op_to_binding_op_element(
     axis2_woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.binding_op_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_binding_op_element_ops_t));
     axis2_woden_binding_op_element_resolve_methods(&(binding_op_impl->binding_op.base.
             binding_op_element), env, binding_op_impl->methods);
@@ -186,7 +186,7 @@ axis2_woden_binding_op_to_binding_op_element(
 AXIS2_DECLARE(axis2_woden_binding_op_t *)
 axis2_woden_binding_op_to_nested_configurable(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
    
@@ -200,7 +200,7 @@ axis2_woden_binding_op_to_nested_configurable(
     axis2_woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.nested_configurable.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_nested_configurable_ops_t));
     axis2_woden_nested_configurable_resolve_methods(&(binding_op_impl->binding_op.base.
             nested_configurable), env, binding_op_impl->nested_configurable, 
@@ -211,7 +211,7 @@ axis2_woden_binding_op_to_nested_configurable(
 AXIS2_DECLARE(axis2_woden_binding_op_t *)
 axis2_woden_binding_op_to_configurable(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     void *configurable = NULL;
@@ -226,7 +226,7 @@ axis2_woden_binding_op_to_configurable(
     axis2_woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.nested_configurable.base.configurable.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_configurable_ops_t));
     configurable = AXIS2_WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(
             binding_op_impl->nested_configurable, env);
@@ -238,7 +238,7 @@ axis2_woden_binding_op_to_configurable(
 AXIS2_DECLARE(axis2_woden_binding_op_t *)
 axis2_woden_binding_op_to_wsdl_obj(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     void *configurable = NULL;
@@ -255,7 +255,7 @@ axis2_woden_binding_op_to_wsdl_obj(
     axis2_woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.nested_configurable.base.configurable.
-        base.documentable.base.wsdl_obj.ops = AXIS2_MALLOC((*env)->allocator, 
+        base.documentable.base.wsdl_obj.ops = AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_wsdl_obj_ops_t));
     configurable = AXIS2_WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(
             binding_op_impl->nested_configurable, env);
@@ -272,7 +272,7 @@ axis2_woden_binding_op_to_wsdl_obj(
 AXIS2_DECLARE(axis2_woden_binding_op_t *)
 axis2_woden_binding_op_to_nested_element(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     
@@ -286,7 +286,7 @@ axis2_woden_binding_op_to_nested_element(
     axis2_woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.nested_configurable.base.
-        nested_element.ops = AXIS2_MALLOC((*env)->allocator, 
+        nested_element.ops = AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_nested_element_ops_t));
     axis2_woden_nested_element_resolve_methods(&(binding_op_impl->binding_op.base.
             nested_configurable.base.nested_element), 
@@ -297,7 +297,7 @@ axis2_woden_binding_op_to_nested_element(
 AXIS2_DECLARE(axis2_woden_binding_op_t *)
 axis2_woden_binding_op_to_wsdl_component(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     
@@ -311,7 +311,7 @@ axis2_woden_binding_op_to_wsdl_component(
     axis2_woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.nested_configurable.base.
-        nested_component.wsdl_component.ops = AXIS2_MALLOC((*env)->allocator, 
+        nested_component.wsdl_component.ops = AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_wsdl_component_ops_t));
     axis2_woden_wsdl_component_resolve_methods(&(binding_op_impl->binding_op.base.
             nested_configurable.base.nested_component.wsdl_component), 
@@ -323,7 +323,7 @@ axis2_woden_binding_op_to_wsdl_component(
 AXIS2_DECLARE(axis2_woden_binding_op_t *)
 axis2_woden_binding_op_to_attr_extensible(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
    
@@ -338,7 +338,7 @@ axis2_woden_binding_op_to_attr_extensible(
 
     binding_op_impl->binding_op.base.binding_op_element.
         base.documentable_element.wsdl_element.base.attr_extensible.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_attr_extensible_ops_t));
     axis2_woden_element_ext_resolve_methods(&(binding_op_impl->binding_op.base.
             binding_op_element.base.documentable_element.
@@ -349,7 +349,7 @@ axis2_woden_binding_op_to_attr_extensible(
 AXIS2_DECLARE(axis2_woden_binding_op_t *)
 axis2_woden_binding_op_to_element_extensible(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
    
@@ -364,7 +364,7 @@ axis2_woden_binding_op_to_element_extensible(
 
     binding_op_impl->binding_op.base.binding_op_element.
         base.documentable_element.wsdl_element.base.element_extensible.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_element_extensible_ops_t));
     axis2_woden_element_ext_resolve_methods(&(binding_op_impl->binding_op.base.
             binding_op_element.base.documentable_element.
@@ -375,12 +375,12 @@ axis2_woden_binding_op_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_binding_op_t *
-create(axis2_env_t **env)
+create(const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    binding_op_impl = AXIS2_MALLOC((*env)->allocator, 
+    binding_op_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_binding_op_impl_t));
 
     binding_op_impl->obj_type= AXIS2_WODEN_BINDING_OP;
@@ -396,7 +396,7 @@ create(axis2_env_t **env)
     binding_op_impl->binding_op.base.nested_configurable.base.configurable.ops = 
             NULL;
     
-    binding_op_impl->binding_op.ops = AXIS2_MALLOC((*env)->allocator, 
+    binding_op_impl->binding_op.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_binding_op_ops_t));
 
     binding_op_impl->binding_op.ops->free = axis2_woden_binding_op_free;
@@ -416,7 +416,7 @@ create(axis2_env_t **env)
     binding_op_impl->methods = axis2_hash_make(env);
     if(!binding_op_impl->methods) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(binding_op_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -473,7 +473,7 @@ create(axis2_env_t **env)
 }
 
 AXIS2_DECLARE(axis2_woden_binding_op_t *)
-axis2_woden_binding_op_create(axis2_env_t **env)
+axis2_woden_binding_op_create(const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     void *configurable = NULL;
@@ -486,7 +486,7 @@ axis2_woden_binding_op_create(axis2_env_t **env)
     binding_op_impl->super = axis2_hash_make(env);
     if(!binding_op_impl->super) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(binding_op_impl->super, "AXIS2_WODEN_BINDING_OP", 
@@ -506,7 +506,7 @@ axis2_woden_binding_op_create(axis2_env_t **env)
 static axis2_status_t
 axis2_woden_binding_op_free_ops(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
 
@@ -515,14 +515,14 @@ axis2_woden_binding_op_free_ops(
 
     if(binding_op_impl->binding_op.base.binding_op_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, binding_op_impl->binding_op.base.
+        AXIS2_FREE(env->allocator, binding_op_impl->binding_op.base.
                 binding_op_element.ops);
         binding_op_impl->binding_op.base.binding_op_element.ops = NULL;
     }
 
     if(binding_op_impl->binding_op.base.nested_configurable.ops)
     {
-        AXIS2_FREE((*env)->allocator, binding_op_impl->binding_op.base.
+        AXIS2_FREE(env->allocator, binding_op_impl->binding_op.base.
                 nested_configurable.ops);
         binding_op_impl->binding_op.base.nested_configurable.ops = 
             NULL;
@@ -530,7 +530,7 @@ axis2_woden_binding_op_free_ops(
     
     if(binding_op_impl->binding_op.base.nested_configurable.base.configurable.ops)
     {
-        AXIS2_FREE((*env)->allocator, binding_op_impl->binding_op.base.
+        AXIS2_FREE(env->allocator, binding_op_impl->binding_op.base.
                 nested_configurable.base.configurable.ops);
         binding_op_impl->binding_op.base.nested_configurable.base.configurable.ops = 
             NULL;
@@ -539,7 +539,7 @@ axis2_woden_binding_op_free_ops(
     if(binding_op_impl->binding_op.base.nested_configurable.base.
             configurable.base.documentable.base.wsdl_obj.ops)
     {
-        AXIS2_FREE((*env)->allocator, binding_op_impl->binding_op.base.
+        AXIS2_FREE(env->allocator, binding_op_impl->binding_op.base.
                 nested_configurable.base.configurable.base.documentable.base.wsdl_obj.ops);
         binding_op_impl->binding_op.base.nested_configurable.base.
             configurable.base.documentable.base.wsdl_obj.ops = NULL;
@@ -548,7 +548,7 @@ axis2_woden_binding_op_free_ops(
     if(binding_op_impl->binding_op.base.nested_configurable.base.
             nested_component.wsdl_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, binding_op_impl->binding_op.base.
+        AXIS2_FREE(env->allocator, binding_op_impl->binding_op.base.
                 nested_configurable.base.nested_component.wsdl_component.ops);
         binding_op_impl->binding_op.base.nested_configurable.base.
             nested_component.wsdl_component.ops = NULL;
@@ -557,7 +557,7 @@ axis2_woden_binding_op_free_ops(
     if(binding_op_impl->binding_op.base.nested_configurable.base.
             nested_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, binding_op_impl->binding_op.base.
+        AXIS2_FREE(env->allocator, binding_op_impl->binding_op.base.
                 nested_configurable.base.nested_element.ops);
         binding_op_impl->binding_op.base.nested_configurable.base.
             nested_element.ops = NULL;
@@ -566,7 +566,7 @@ axis2_woden_binding_op_free_ops(
     if(binding_op_impl->binding_op.base.binding_op_element.
             base.documentable_element.wsdl_element.base.attr_extensible.ops)
     {
-        AXIS2_FREE((*env)->allocator, binding_op_impl->binding_op.
+        AXIS2_FREE(env->allocator, binding_op_impl->binding_op.
                 base.binding_op_element.base.documentable_element.
                 wsdl_element.base.attr_extensible.ops );
         binding_op_impl->binding_op.
@@ -577,7 +577,7 @@ axis2_woden_binding_op_free_ops(
     if(binding_op_impl->binding_op.base.binding_op_element.
             base.documentable_element.wsdl_element.base.element_extensible.ops)
     {
-        AXIS2_FREE((*env)->allocator, binding_op_impl->binding_op.
+        AXIS2_FREE(env->allocator, binding_op_impl->binding_op.
                 base.binding_op_element.base.documentable_element.
                 wsdl_element.base.element_extensible.ops );
         binding_op_impl->binding_op.
@@ -592,7 +592,7 @@ axis2_woden_binding_op_free_ops(
 
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_free(void *binding_op,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
 
@@ -645,13 +645,13 @@ axis2_woden_binding_op_free(void *binding_op,
 
     if((&(binding_op_impl->binding_op))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(binding_op_impl->binding_op))->ops);
+        AXIS2_FREE(env->allocator, (&(binding_op_impl->binding_op))->ops);
         (&(binding_op_impl->binding_op))->ops = NULL;
     }
     
     if(binding_op_impl)
     {
-        AXIS2_FREE((*env)->allocator, binding_op_impl);
+        AXIS2_FREE(env->allocator, binding_op_impl);
         binding_op_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -660,7 +660,7 @@ axis2_woden_binding_op_free(void *binding_op,
 axis2_hash_t *AXIS2_CALL
 axis2_woden_binding_op_super_objs(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
 
@@ -673,7 +673,7 @@ axis2_woden_binding_op_super_objs(
 axis2_woden_obj_types_t AXIS2_CALL
 axis2_woden_binding_op_type(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
 
@@ -686,7 +686,7 @@ axis2_woden_binding_op_type(
 axis2_woden_nested_configurable_t *AXIS2_CALL
 axis2_woden_binding_op_get_base_impl(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
 
@@ -699,14 +699,14 @@ axis2_woden_binding_op_get_base_impl(
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_resolve_methods(
         axis2_woden_binding_op_t *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_binding_op_t *binding_op_impl,
         axis2_hash_t *methods)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     binding_op_impl_l = INTF_TO_IMPL(binding_op_impl);
     
     binding_op->ops->free = axis2_hash_get(methods, "free", 
@@ -761,7 +761,7 @@ axis2_woden_binding_op_resolve_methods(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_binding_op_get_binding_msg_refs(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -777,7 +777,7 @@ axis2_woden_binding_op_get_binding_msg_refs(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_binding_op_get_binding_fault_refs(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -793,7 +793,7 @@ axis2_woden_binding_op_get_binding_fault_refs(
 void *AXIS2_CALL
 axis2_woden_binding_op_to_element(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -809,7 +809,7 @@ axis2_woden_binding_op_to_element(
 void *AXIS2_CALL
 axis2_woden_binding_op_get_interface_op(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -828,14 +828,14 @@ axis2_woden_binding_op_get_interface_op(
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_set_ref(
         void *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
     super = AXIS2_WODEN_BINDING_OP_SUPER_OBJS(binding_op, env);
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
@@ -853,7 +853,7 @@ axis2_woden_binding_op_set_ref(
 axis2_qname_t *AXIS2_CALL
 axis2_woden_binding_op_get_ref(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -869,7 +869,7 @@ axis2_woden_binding_op_get_ref(
 void *AXIS2_CALL
 axis2_woden_binding_op_get_interface_op_element(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -886,14 +886,14 @@ axis2_woden_binding_op_get_interface_op_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_add_binding_msg_ref_element(
         void *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *msg_ref)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ref, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ref, AXIS2_FAILURE);
     super = AXIS2_WODEN_BINDING_OP_SUPER_OBJS(binding_op, env);
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
@@ -903,7 +903,7 @@ axis2_woden_binding_op_add_binding_msg_ref_element(
         binding_op_impl->f_msg_refs = axis2_array_list_create(env, 0);
         if(!binding_op_impl->f_msg_refs)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
@@ -915,7 +915,7 @@ axis2_woden_binding_op_add_binding_msg_ref_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_remove_binding_msg_ref_element(
         void *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *msg_ref)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
@@ -923,7 +923,7 @@ axis2_woden_binding_op_remove_binding_msg_ref_element(
     int index = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ref, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ref, AXIS2_FAILURE);
     super = AXIS2_WODEN_BINDING_OP_SUPER_OBJS(binding_op, env);
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
@@ -937,7 +937,7 @@ axis2_woden_binding_op_remove_binding_msg_ref_element(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_binding_op_get_binding_msg_ref_elements(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -953,14 +953,14 @@ axis2_woden_binding_op_get_binding_msg_ref_elements(
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_add_binding_fault_ref_element(
         void *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *fault_ref)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, fault_ref, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, fault_ref, AXIS2_FAILURE);
     super = AXIS2_WODEN_BINDING_OP_SUPER_OBJS(binding_op, env);
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
@@ -970,7 +970,7 @@ axis2_woden_binding_op_add_binding_fault_ref_element(
         binding_op_impl->f_fault_refs = axis2_array_list_create(env, 0);
         if(!binding_op_impl->f_fault_refs)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
@@ -982,7 +982,7 @@ axis2_woden_binding_op_add_binding_fault_ref_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_remove_binding_fault_ref_element(
         void *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *fault_ref)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
@@ -990,7 +990,7 @@ axis2_woden_binding_op_remove_binding_fault_ref_element(
     int index = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, fault_ref, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, fault_ref, AXIS2_FAILURE);
     super = AXIS2_WODEN_BINDING_OP_SUPER_OBJS(binding_op, env);
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
@@ -1004,7 +1004,7 @@ axis2_woden_binding_op_remove_binding_fault_ref_element(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_binding_op_get_binding_fault_ref_elements(
         void *binding_op,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1026,14 +1026,14 @@ axis2_woden_binding_op_get_binding_fault_ref_elements(
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_op_set_interface_op_element(
         void *binding_op,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *int_op)
 {
     axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, int_op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, int_op, AXIS2_FAILURE);
     super = AXIS2_WODEN_BINDING_OP_SUPER_OBJS(binding_op, env);
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));

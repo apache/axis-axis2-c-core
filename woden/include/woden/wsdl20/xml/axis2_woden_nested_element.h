@@ -65,28 +65,28 @@ struct axis2_woden_nested_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_nested_element_free) (
             void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_parent_element) (
             void *doc_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             struct axis2_woden_wsdl_element *parent);
 
     void *(AXIS2_CALL *
     get_parent_element) (
             void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 };
 
@@ -100,7 +100,7 @@ struct axis2_woden_nested_element
 axis2_status_t AXIS2_CALL
 axis2_woden_nested_element_resolve_methods(
         axis2_woden_nested_element_t *nested_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

@@ -64,7 +64,7 @@ struct axis2_wsdl_svc_ops
      */
 	axis2_status_t (AXIS2_CALL *
 	free) (axis2_wsdl_svc_t *wsdl_svc, 
-           axis2_env_t **env);
+           const axis2_env_t *env);
 
     /**
      * Get wsdl service name
@@ -72,7 +72,7 @@ struct axis2_wsdl_svc_ops
      */
     axis2_qname_t * (AXIS2_CALL *
 	get_qname)(axis2_wsdl_svc_t *wsdl_svc,
-               axis2_env_t **env);
+               const axis2_env_t *env);
 
     /**
      * Set wsdl serivce name
@@ -80,7 +80,7 @@ struct axis2_wsdl_svc_ops
      */
     axis2_status_t (AXIS2_CALL *
 	set_qname) (axis2_wsdl_svc_t *wsdl_svc,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_qname_t *qname);
     
     /**
@@ -90,7 +90,7 @@ struct axis2_wsdl_svc_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_endpoints) (axis2_wsdl_svc_t *wsdl_svc,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     /**
      * Method setEndpoints
@@ -99,7 +99,7 @@ struct axis2_wsdl_svc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_endpoints) (axis2_wsdl_svc_t *wsdl_svc,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_hash_t *endpoints);
     
     /**
@@ -109,7 +109,7 @@ struct axis2_wsdl_svc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_endpoint) (axis2_wsdl_svc_t *wsdl_svc,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     struct axis2_wsdl_endpoint *endpoint);
     
     /**
@@ -120,7 +120,7 @@ struct axis2_wsdl_svc_ops
      */
     struct axis2_wsdl_endpoint * (AXIS2_CALL *
     get_endpoint) (axis2_wsdl_svc_t *wsdl_svc,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *qname);
 
     /**
@@ -131,7 +131,7 @@ struct axis2_wsdl_svc_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_namespace) (axis2_wsdl_svc_t *wsdl_svc,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
     /**
      * Method get_svc_interface
@@ -140,7 +140,7 @@ struct axis2_wsdl_svc_ops
      */
     struct axis2_wsdl_interface * (AXIS2_CALL *
     get_svc_interface) (axis2_wsdl_svc_t *wsdl_svc,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * Method setServiceInterface
@@ -149,7 +149,7 @@ struct axis2_wsdl_svc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_svc_interface) (axis2_wsdl_svc_t *wsdl_svc,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         struct axis2_wsdl_interface *svc_interface);
 
 };
@@ -168,7 +168,7 @@ struct axis2_wsdl_svc
  * @return pointer to newly created wsdl service
  */
 AXIS2_DECLARE(axis2_wsdl_svc_t *) 
-axis2_wsdl_svc_create (axis2_env_t **env);
+axis2_wsdl_svc_create (const axis2_env_t *env);
 
 /**************************** Start of function macros ************************/
 

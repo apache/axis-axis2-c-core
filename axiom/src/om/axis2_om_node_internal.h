@@ -51,7 +51,7 @@ struct axis2_om_stax_builder;
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_om_node_set_parent (axis2_om_node_t * om_node,
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           axis2_om_node_t * parent);
 
 /**
@@ -62,7 +62,7 @@ axis2_om_node_set_parent (axis2_om_node_t * om_node,
 */  
 AXIS2_DECLARE(axis2_status_t)
 axis2_om_node_set_first_child(axis2_om_node_t *om_node,
-                              axis2_env_t **env,
+                              const axis2_env_t *env,
                               axis2_om_node_t *first_child); 
 /**
 * set previous sibling
@@ -76,7 +76,7 @@ axis2_om_node_set_first_child(axis2_om_node_t *om_node,
      
 AXIS2_DECLARE(axis2_status_t)  
 axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,                                  
-                                   axis2_env_t **env,
+                                   const axis2_env_t *env,
                                    axis2_om_node_t *prev_sibling); 
 /**
 * set next sibling
@@ -89,7 +89,7 @@ axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,
  
 AXIS2_DECLARE(axis2_status_t)
 axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
-                               axis2_env_t **env,
+                               const axis2_env_t *env,
                                axis2_om_node_t *next_sibling);
 /**
 *   set node type
@@ -101,7 +101,7 @@ axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
 */
 AXIS2_DECLARE(axis2_status_t) 
 axis2_om_node_set_node_type(axis2_om_node_t *om_node,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_om_types_t type);
 
 /**
@@ -114,7 +114,7 @@ axis2_om_node_set_node_type(axis2_om_node_t *om_node,
 */
 AXIS2_DECLARE(axis2_status_t) 
 axis2_om_node_set_data_element(axis2_om_node_t *om_node,
-                               axis2_env_t **env,
+                               const axis2_env_t *env,
                                void* data_element);
 /**
 * sets the build status , if the node if completety build, this attribute  is
@@ -125,7 +125,7 @@ axis2_om_node_set_data_element(axis2_om_node_t *om_node,
 */                                    
 AXIS2_DECLARE(axis2_status_t)
 axis2_om_node_set_complete(axis2_om_node_t *om_node,
-                               axis2_env_t **env,
+                               const axis2_env_t *env,
                                axis2_bool_t done);  
   
 /**
@@ -134,7 +134,7 @@ axis2_om_node_set_complete(axis2_om_node_t *om_node,
 */  
 AXIS2_DECLARE(axis2_status_t)
 axis2_om_node_set_document(axis2_om_node_t *om_node,
-                           axis2_env_t **env,
+                           const axis2_env_t *env,
                            struct axis2_om_document *om_doc);
 /**
 *    sets the builder 
@@ -142,12 +142,12 @@ axis2_om_node_set_document(axis2_om_node_t *om_node,
 */                           
 AXIS2_DECLARE(axis2_status_t)
 axis2_om_node_set_builder(axis2_om_node_t *om_node,
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           struct axis2_om_stax_builder *builder);                           
 
 AXIS2_DECLARE(struct axis2_om_stax_builder *)
 axis2_om_node_get_builder(axis2_om_node_t *om_node,
-                          axis2_env_t **env);                                
+                          const axis2_env_t *env);                                
 /** @} */
     
 #ifdef __cplusplus

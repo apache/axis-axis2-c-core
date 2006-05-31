@@ -53,48 +53,48 @@ struct axis2_xml_schema_obj_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *obj,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *obj,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_xml_schema_types_t (AXIS2_CALL *
     type) (
             void *obj,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     int (AXIS2_CALL *
     get_line_num) (void *obj,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_line_num) (void *obj,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     int line_num);
 
     int (AXIS2_CALL *
     get_line_pos) (void *obj,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_line_pos) (void *obj,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     int line_pos);
 
     axis2_char_t * (AXIS2_CALL *
     get_source_uri) (void *obj,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_source_uri) (void *obj,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_char_t *source_uri);
 
     axis2_bool_t (AXIS2_CALL *
     equals) (void *obj,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 void *obj_comp);
 
 };
@@ -105,14 +105,14 @@ struct axis2_xml_schema_obj
 };
 
 AXIS2_DECLARE(axis2_xml_schema_obj_t *)
-axis2_xml_schema_obj_create(axis2_env_t **env);
+axis2_xml_schema_obj_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
  */
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_obj_resolve_methods(axis2_xml_schema_obj_t *schema_obj,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_xml_schema_obj_t *schema_obj_impl,
                                         axis2_hash_t *methods);
 

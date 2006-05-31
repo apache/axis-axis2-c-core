@@ -69,24 +69,24 @@ struct axis2_woden_element_decl_ops
     free) (
             void *
             element_decl,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_element_decl_free) (
             void *
             element_decl,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *
             element_decl,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *element_decl,
-            axis2_env_t **env);
+            const axis2_env_t *env);
      
     /* ************************************************************
      *  Element Declaration interface methods (the WSDL Component model)
@@ -99,7 +99,7 @@ struct axis2_woden_element_decl_ops
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *decl,
-            axis2_env_t **env); 
+            const axis2_env_t *env); 
 
     /**
      * Indicates the underlying type system of this element declaration.
@@ -111,7 +111,7 @@ struct axis2_woden_element_decl_ops
     axis2_url_t *(AXIS2_CALL *
     get_system) (
             void *decl,
-            axis2_env_t **env); 
+            const axis2_env_t *env); 
 
     /**
      * Indicates the type of model or API used to represent components from the 
@@ -132,7 +132,7 @@ struct axis2_woden_element_decl_ops
     axis2_char_t *(AXIS2_CALL *
     get_content_model) (
             void *decl,
-            axis2_env_t **env); 
+            const axis2_env_t *env); 
 
     /**
      * Returns the content of the element declaration in an object
@@ -145,7 +145,7 @@ struct axis2_woden_element_decl_ops
     axis2_generic_obj_t *(AXIS2_CALL *
     get_content) (
             void *decl,
-            axis2_env_t **env); 
+            const axis2_env_t *env); 
 
     /* ************************************************************
      *  Non-API implementation methods
@@ -154,25 +154,25 @@ struct axis2_woden_element_decl_ops
     axis2_status_t (AXIS2_CALL *
     set_qname) (
             void *decl,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname); 
 
     axis2_status_t (AXIS2_CALL *
     set_system) (
             void *decl,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *type_system_uri); 
 
     axis2_status_t (AXIS2_CALL *
     set_content_model) (
             void *decl,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *content_model); 
 
     axis2_status_t (AXIS2_CALL *
     set_content) (
             void *decl,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_generic_obj_t *element_content);
 
 
@@ -184,7 +184,7 @@ struct axis2_woden_element_decl
 };
 
 AXIS2_DECLARE(axis2_woden_element_decl_t *)
-axis2_woden_element_decl_create(axis2_env_t **env);
+axis2_woden_element_decl_create(const axis2_env_t *env);
 
 /**
  * This is an Axis2 C internal method. This is used only from constructor
@@ -193,7 +193,7 @@ axis2_woden_element_decl_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_element_decl_resolve_methods(
         axis2_woden_element_decl_t *decl,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_element_decl_t *decl_impl,
         axis2_hash_t *methods);
 

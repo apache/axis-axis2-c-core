@@ -45,7 +45,7 @@ extern "C"
  * @return pointer to newly created raw xml in out message receiver
  */
 AXIS2_DECLARE(axis2_msg_recv_t *) 
-axis2_raw_xml_in_out_msg_recv_create(axis2_env_t **env);
+axis2_raw_xml_in_out_msg_recv_create(const axis2_env_t *env);
 
 /** @} */
 

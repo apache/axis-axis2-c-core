@@ -26,22 +26,22 @@
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_disp_invoke (struct axis2_handler * handler, 
-                             axis2_env_t **env,
+                             const axis2_env_t *env,
                              struct axis2_msg_ctx *msg_ctx);
                              
 axis2_svc_t* AXIS2_CALL 
 axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
-                              axis2_env_t **env);
+                              const axis2_env_t *env);
 
                               
 axis2_op_t* AXIS2_CALL 
 axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
-                             axis2_env_t **env,
+                             const axis2_env_t *env,
                              axis2_svc_t *svc);
 
 
 axis2_disp_t* AXIS2_CALL 
-axis2_soap_body_disp_create(axis2_env_t **env) 
+axis2_soap_body_disp_create(const axis2_env_t *env) 
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
@@ -56,7 +56,7 @@ axis2_soap_body_disp_create(axis2_env_t **env)
     disp = axis2_disp_create(env, qname);
     if (!disp)
     { 
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
@@ -64,7 +64,7 @@ axis2_soap_body_disp_create(axis2_env_t **env)
     handler = AXIS2_DISP_GET_BASE(disp, env);
     if (!handler)
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
         return NULL;        
     }
@@ -92,7 +92,7 @@ axis2_soap_body_disp_create(axis2_env_t **env)
  */
 axis2_svc_t* AXIS2_CALL 
 axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx, 
-                              axis2_env_t **env) 
+                              const axis2_env_t *env) 
 {    
     axis2_soap_envelope_t *soap_envelope = NULL;
     axis2_svc_t *svc = NULL;
@@ -125,7 +125,7 @@ axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                                 if (uri)
                                 {
                                     axis2_char_t **url_tokens = NULL;
-                                    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
                                    "Checking for service using SOAP message body's first child's namespace URI : %s", uri);
                                     
                                     url_tokens = axis2_parse_request_url_for_svc_and_op(env, uri);
@@ -145,14 +145,14 @@ axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                                                 {
                                                     svc = AXIS2_CONF_GET_SVC(conf, env, url_tokens[0]);
                                                     if (svc)
-                                                        AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                                                        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
                                                             "Service found using SOAP message body's first child's namespace URI");
                                                 }
                                             }
-                                            AXIS2_FREE((*env)->allocator, url_tokens[0]);
+                                            AXIS2_FREE(env->allocator, url_tokens[0]);
                                         }
 
-                                        AXIS2_FREE((*env)->allocator, url_tokens);
+                                        AXIS2_FREE(env->allocator, url_tokens);
                                         url_tokens = NULL;
                                     }
                                 }
@@ -176,14 +176,14 @@ axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
  */
 axis2_op_t* AXIS2_CALL 
 axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
-                             axis2_env_t **env,
+                             const axis2_env_t *env,
                              axis2_svc_t *svc)
 {
     axis2_soap_envelope_t *soap_envelope = NULL;
     axis2_op_t *op = NULL;
     
     AXIS2_ENV_CHECK(env, NULL); 
-    AXIS2_PARAM_CHECK((*env)->error, svc, NULL);
+    AXIS2_PARAM_CHECK(env->error, svc, NULL);
 
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
     if (soap_envelope)
@@ -208,7 +208,7 @@ axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx,
                             if (element_name)
                             {
                                 axis2_qname_t *op_qname = NULL;
-                                AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
                                     "Checking for operation using SOAP message body's first child's local name : %s", 
                                         element_name);
                                 op_qname = axis2_qname_create(env, element_name, NULL, NULL);
@@ -217,7 +217,7 @@ axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx,
                                 
                                 AXIS2_QNAME_FREE(op_qname, env);
                                 if (op)
-                                    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, 
+                                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
                                         "Operation found using SOAP message body's first child's local name");
                                 
                             }
@@ -232,7 +232,7 @@ axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx,
             
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_disp_invoke(struct axis2_handler * handler, 
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             struct axis2_msg_ctx *msg_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);    

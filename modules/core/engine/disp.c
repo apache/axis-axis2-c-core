@@ -40,35 +40,35 @@ typedef struct axis2_disp_impl
 
 axis2_handler_t* AXIS2_CALL 
 axis2_disp_get_base(struct axis2_disp *disp, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
                     
 axis2_qname_t* AXIS2_CALL 
 axis2_disp_get_qname(struct axis2_disp *disp, 
-                     axis2_env_t **env);
+                     const axis2_env_t *env);
                      
 axis2_status_t AXIS2_CALL 
 axis2_disp_set_qname(struct axis2_disp *disp, 
-                     axis2_env_t **env, 
+                     const axis2_env_t *env, 
                      axis2_qname_t *qname);
 
                      
 axis2_status_t AXIS2_CALL 
 axis2_disp_free (struct axis2_disp * disp, 
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
                  
 axis2_svc_t* AXIS2_CALL 
 axis2_disp_find_svc(axis2_msg_ctx_t * msg_ctx,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
                     
 struct axis2_op* AXIS2_CALL 
 axis2_disp_find_op(axis2_msg_ctx_t * msg_ctx,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    struct axis2_svc *svc);
                    
 
 
 axis2_disp_t* AXIS2_CALL 
-axis2_disp_create(axis2_env_t **env, 
+axis2_disp_create(const axis2_env_t *env, 
                   axis2_qname_t *qname) 
 {
     axis2_disp_impl_t *disp_impl = NULL;
@@ -76,10 +76,10 @@ axis2_disp_create(axis2_env_t **env,
     
     AXIS2_ENV_CHECK(env, NULL);
     
-    disp_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_disp_impl_t) );
+    disp_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_disp_impl_t) );
     if (!disp_impl)
     { 
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
 
@@ -91,7 +91,7 @@ axis2_disp_create(axis2_env_t **env,
         disp_impl->qname = AXIS2_QNAME_CLONE(qname, env);
         if (!(disp_impl->qname))
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axis2_disp_free(&(disp_impl->disp), env);
             return NULL;        
         }
@@ -132,10 +132,10 @@ axis2_disp_create(axis2_env_t **env,
 
     /* initialize ops */
     disp_impl->disp.ops = NULL;
-    disp_impl->disp.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_disp_ops_t) );
+    disp_impl->disp.ops  = AXIS2_MALLOC( env->allocator, sizeof(axis2_disp_ops_t) );
     if (!disp_impl->disp.ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_disp_free(&(disp_impl->disp), env);
         return NULL;        
     }
@@ -152,7 +152,7 @@ axis2_disp_create(axis2_env_t **env,
 
 axis2_handler_t* AXIS2_CALL 
 axis2_disp_get_base(struct axis2_disp *disp, 
-                    axis2_env_t **env)
+                    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(disp)->base;
@@ -160,7 +160,7 @@ axis2_disp_get_base(struct axis2_disp *disp,
 
 axis2_qname_t* AXIS2_CALL 
 axis2_disp_get_qname(struct axis2_disp *disp, 
-                     axis2_env_t **env)
+                     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(disp)->qname;
@@ -168,7 +168,7 @@ axis2_disp_get_qname(struct axis2_disp *disp,
 
 axis2_status_t AXIS2_CALL 
 axis2_disp_set_qname(struct axis2_disp *disp, 
-                     axis2_env_t **env, 
+                     const axis2_env_t *env, 
                      axis2_qname_t *qname)
 {
     axis2_disp_impl_t *disp_impl = NULL;
@@ -195,14 +195,14 @@ axis2_disp_set_qname(struct axis2_disp *disp,
 
 axis2_status_t AXIS2_CALL 
 axis2_disp_invoke(struct axis2_handler *handler, 
-                  axis2_env_t **env,
+                  const axis2_env_t *env,
                   struct axis2_msg_ctx *msg_ctx)
 {
     axis2_svc_t *axis_service = NULL;
     axis2_op_t *op = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     
     axis_service = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
         
@@ -236,7 +236,7 @@ axis2_disp_invoke(struct axis2_handler *handler,
 
 axis2_status_t AXIS2_CALL 
 axis2_disp_free (struct axis2_disp * disp, 
-                 axis2_env_t **env)
+                 const axis2_env_t *env)
 {
     axis2_disp_impl_t *disp_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -258,11 +258,11 @@ axis2_disp_free (struct axis2_disp * disp,
     
     if (disp_impl->disp.ops)
     {
-        AXIS2_FREE((*env)->allocator, disp_impl->disp.ops);
+        AXIS2_FREE(env->allocator, disp_impl->disp.ops);
         disp_impl->disp.ops = NULL;
     }
     
-    AXIS2_FREE((*env)->allocator, disp_impl);
+    AXIS2_FREE(env->allocator, disp_impl);
     disp_impl = NULL;
     
     return AXIS2_SUCCESS;    
@@ -283,7 +283,7 @@ axis2_disp_free (struct axis2_disp * disp,
  */
 axis2_svc_t* AXIS2_CALL 
 axis2_disp_find_svc(axis2_msg_ctx_t * msg_ctx,
-                    axis2_env_t **env) 
+                    const axis2_env_t *env) 
 {
     return NULL;
 }
@@ -297,7 +297,7 @@ axis2_disp_find_svc(axis2_msg_ctx_t * msg_ctx,
  */
 struct axis2_op* AXIS2_CALL 
 axis2_disp_find_op(axis2_msg_ctx_t * msg_ctx,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    struct axis2_svc *svc)
 {
     return NULL;

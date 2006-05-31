@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 axis2_handler_desc_t * 
-test_handler_desc_create_handler_desc(axis2_env_t **env)
+test_handler_desc_create_handler_desc(const axis2_env_t *env)
 {
     axis2_handler_desc_t *handler_desc = NULL;
     axis2_handler_t *handler = NULL;
@@ -44,10 +44,10 @@ void Testaxis2_handler_desc_free(CuTest *tc)
     printf("****************************************\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create (allocator);
+    const axis2_env_t *env = axis2_env_create (allocator);
 
-    handler_desc = test_handler_desc_create_handler_desc(&env); 
-    actual = AXIS2_HANDLER_DESC_FREE (handler_desc,  &env);
+    handler_desc = test_handler_desc_create_handler_desc(env); 
+    actual = AXIS2_HANDLER_DESC_FREE (handler_desc,  env);
     
     CuAssertIntEquals(tc, expected, actual);
 

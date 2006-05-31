@@ -51,7 +51,7 @@ struct axis2_diclient_ops
 {
     axis2_status_t (AXIS2_CALL *
 	free)(struct axis2_diclient *diclient, 
-          axis2_env_t **env);
+          const axis2_env_t *env);
 
     /**
      * Invoke the operation by passing om node and axis2 operation as 
@@ -62,7 +62,7 @@ struct axis2_diclient_ops
      */
     axis2_status_t (AXIS2_CALL *
     invoke) (axis2_diclient_t *diclient,
-             axis2_env_t **env,
+             const axis2_env_t *env,
              axis2_om_node_t *node,
              struct axis2_op *op);
    
@@ -76,7 +76,7 @@ struct axis2_diclient_ops
      */
     axis2_status_t (AXIS2_CALL *
     init) (axis2_diclient_t *diclient,
-           axis2_env_t **env,
+           const axis2_env_t *env,
 		   axis2_char_t *wsdl_file_name);
 
     /**
@@ -88,7 +88,7 @@ struct axis2_diclient_ops
      */
     axis2_status_t *(AXIS2_CALL *
     set_address_and_action_for_op) (axis2_diclient_t *diclient,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *op_qname);
 
 
@@ -98,7 +98,7 @@ struct axis2_diclient_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_endpoints) (axis2_diclient_t *diclient,
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
 
     /**
      * Return all the services associated with the wsdl
@@ -106,7 +106,7 @@ struct axis2_diclient_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_services) (axis2_diclient_t *diclient,
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
 
     /**
      * Return the all operations associated with the wsdl
@@ -114,7 +114,7 @@ struct axis2_diclient_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_operations) (axis2_diclient_t *diclient,
-            axis2_env_t **env);
+            const axis2_env_t *env);
    
     /**
      * Return the operation parameter's localname. This method
@@ -125,7 +125,7 @@ struct axis2_diclient_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_param_localname) (axis2_diclient_t *diclient,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *op_qname);
 
     /**
@@ -137,7 +137,7 @@ struct axis2_diclient_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_param_namespace) (axis2_diclient_t *diclient,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *op_qname);
 
     /**
@@ -149,7 +149,7 @@ struct axis2_diclient_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_params) (axis2_diclient_t *diclient,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *op_qname);
 };
 
@@ -163,7 +163,7 @@ struct axis2_diclient
 };
 
 AXIS2_DECLARE(axis2_diclient_t*) 
-axis2_diclient_create(axis2_env_t **env);
+axis2_diclient_create(const axis2_env_t *env);
 
 /************************** Start of function macros **************************/
 

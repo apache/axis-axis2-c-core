@@ -44,7 +44,7 @@ extern "C"
  * @return opened socket
  */ 
 AXIS2_DECLARE(axis2_socket_t) 
-axis2_network_handler_open_socket(axis2_env_t **env, 
+axis2_network_handler_open_socket(const axis2_env_t *env, 
 								  char *server, 
 								  int port);
 
@@ -54,7 +54,7 @@ axis2_network_handler_open_socket(axis2_env_t **env,
  * @return creates server socket
  */ 
 AXIS2_DECLARE(axis2_socket_t) 
-axis2_network_handler_create_server_socket(axis2_env_t **env, 
+axis2_network_handler_create_server_socket(const axis2_env_t *env, 
 										   int port);
 
 /**
@@ -63,7 +63,7 @@ axis2_network_handler_create_server_socket(axis2_env_t **env,
  * @return status code
  */
 AXIS2_DECLARE(axis2_status_t) 
-axis2_network_handler_close_socket (axis2_env_t **env, 
+axis2_network_handler_close_socket (const axis2_env_t *env, 
 									axis2_socket_t socket);
 
 /**
@@ -74,7 +74,7 @@ axis2_network_handler_close_socket (axis2_env_t **env,
  * @return status of the operations as axis2_status_t
  */
 AXIS2_DECLARE(axis2_status_t)
-axis2_network_handler_set_sock_option(axis2_env_t **env, 
+axis2_network_handler_set_sock_option(const axis2_env_t *env, 
 									  axis2_socket_t socket, 
 									  int option,
 						              int value);
@@ -84,7 +84,7 @@ axis2_network_handler_set_sock_option(axis2_env_t **env,
  * @return created socket to handle the incoming client connection
  */						
 AXIS2_DECLARE(axis2_socket_t)						
-axis2_network_handler_svr_socket_accept(axis2_env_t **env, 
+axis2_network_handler_svr_socket_accept(const axis2_env_t *env, 
 										axis2_socket_t socket);
 
 /**
@@ -93,7 +93,7 @@ axis2_network_handler_svr_socket_accept(axis2_env_t **env,
  * @return ip address asoociated with the socket or NULL
  */
 AXIS2_DECLARE(axis2_char_t *)
-axis2_network_handler_get_svr_ip(axis2_env_t **env, 
+axis2_network_handler_get_svr_ip(const axis2_env_t *env, 
 								 axis2_socket_t socket);
 /** @} */
     

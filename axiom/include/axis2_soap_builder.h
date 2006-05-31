@@ -48,51 +48,51 @@ typedef struct axis2_soap_builder_ops  axis2_soap_builder_ops_t;
 AXIS2_DECLARE_DATA   struct axis2_soap_builder_ops
 {
         axis2_status_t (AXIS2_CALL *free)(axis2_soap_builder_t *builder,
-                                          axis2_env_t **env);
+                                          const axis2_env_t *env);
 
         axis2_soap_envelope_t* (AXIS2_CALL *get_soap_envelope)
                                          (axis2_soap_builder_t *builder,
-                                          axis2_env_t **env);
+                                          const axis2_env_t *env);
                                           
         axis2_om_document_t* (AXIS2_CALL *get_document)
                                          (axis2_soap_builder_t *builder,
-                                          axis2_env_t **env);
+                                          const axis2_env_t *env);
                                           
         axis2_status_t (AXIS2_CALL *next)(axis2_soap_builder_t *builder,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
                                 
                                                      
         axis2_om_node_t* (AXIS2_CALL *get_document_element)
                                             (axis2_soap_builder_t *builder,
-                                             axis2_env_t **env); 
+                                             const axis2_env_t *env); 
                                              
         axis2_status_t (AXIS2_CALL *set_bool_processing_mandatory_fault_elements)
                                             (axis2_soap_builder_t *builder,
-                                             axis2_env_t **env,
+                                             const axis2_env_t *env,
                                              axis2_bool_t value);
         
         axis2_status_t (AXIS2_CALL *set_processing_detail_elements)
                                     (axis2_soap_builder_t *builder,
-                                     axis2_env_t **env,
+                                     const axis2_env_t *env,
                                      axis2_bool_t value);
                                      
         axis2_bool_t (AXIS2_CALL *is_processing_detail_elements)
                                     (axis2_soap_builder_t *builder, 
-                                     axis2_env_t **env);
+                                     const axis2_env_t *env);
                                      
                                      
         int (AXIS2_CALL *get_soap_version)(axis2_soap_builder_t *builder,
-                                           axis2_env_t **env);
+                                           const axis2_env_t *env);
                                            
         axis2_status_t (AXIS2_CALL *process_namespace_data)
                                           (axis2_soap_builder_t *builder,
-                                           axis2_env_t **env,
+                                           const axis2_env_t *env,
                                            axis2_om_node_t *om_node,
                                            axis2_bool_t is_soap_element);
         axis2_status_t (AXIS2_CALL *
         set_mime_body_parts)
                                     (axis2_soap_builder_t *builder, 
-                                     axis2_env_t **env,
+                                     const axis2_env_t *env,
                                      axis2_hash_t *map); 
 };
                                                       
@@ -114,7 +114,7 @@ struct axis2_soap_builder
  */
 
 AXIS2_DECLARE(axis2_soap_builder_t *)
-axis2_soap_builder_create(axis2_env_t **env,
+axis2_soap_builder_create(const axis2_env_t *env,
                                 axis2_om_stax_builder_t *builder,
                                 axis2_char_t *soap_version);
 

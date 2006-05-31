@@ -51,22 +51,22 @@ AXIS2_DECLARE_DATA struct axis2_http_svr_thread_ops
 {
     axis2_status_t (AXIS2_CALL *run)
 						(axis2_http_svr_thread_t *svr_thread, 
-						axis2_env_t **env);
+						const axis2_env_t *env);
 	axis2_status_t (AXIS2_CALL *destroy) 
 						(axis2_http_svr_thread_t *svr_thread, 
-						axis2_env_t **env);
+						const axis2_env_t *env);
 	int (AXIS2_CALL *get_local_port)
 						(axis2_http_svr_thread_t *svr_thread, 
-						axis2_env_t **env);
+						const axis2_env_t *env);
     axis2_bool_t (AXIS2_CALL *is_running) 
 						(axis2_http_svr_thread_t *svr_thread, 
-                    	axis2_env_t **env);
+                    	const axis2_env_t *env);
 	axis2_status_t (AXIS2_CALL *set_worker) 
 						(axis2_http_svr_thread_t *svr_thread, 
-                    	axis2_env_t **env, axis2_http_worker_t *worker);
+                    	const axis2_env_t *env, axis2_http_worker_t *worker);
 	axis2_status_t (AXIS2_CALL *free)
                     (axis2_http_svr_thread_t *svr_thread, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 };
 
 /** 
@@ -80,7 +80,7 @@ AXIS2_DECLARE_DATA struct axis2_http_svr_thread
 
 
 AXIS2_DECLARE(axis2_http_svr_thread_t *) 
-axis2_http_svr_thread_create (axis2_env_t **env, int port);
+axis2_http_svr_thread_create (const axis2_env_t *env, int port);
 
 /************************** Start of function macros **************************/
 

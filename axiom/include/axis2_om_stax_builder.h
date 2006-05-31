@@ -58,7 +58,7 @@ extern "C"
         */
         axis2_om_node_t*(AXIS2_CALL *
 		next) (struct axis2_om_stax_builder *builder,
-               axis2_env_t **env);
+               const axis2_env_t *env);
 
       /**
         * Discards the element that is being built currently.
@@ -68,7 +68,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
 		discard_current_element)(struct axis2_om_stax_builder *builder,
-                                 axis2_env_t **env);
+                                 const axis2_env_t *env);
         /**
          * Free op
          * @param builder pointer to builder struct
@@ -79,7 +79,7 @@ extern "C"
 			 
 		axis2_status_t (AXIS2_CALL *
 		free)(struct axis2_om_stax_builder *builder,
-		      axis2_env_t **env);
+		      const axis2_env_t *env);
         
        /** get the document associated with the builder  
         * @param builder axis2_om_stax_builder 
@@ -90,21 +90,21 @@ extern "C"
         */                                             
         axis2_om_document_t* (AXIS2_CALL *
 		get_document)(struct axis2_om_stax_builder *builder,
-                      axis2_env_t **env);
+                      const axis2_env_t *env);
         /**
          * builder is finished building om structure
          */        
                                              
         axis2_bool_t (AXIS2_CALL *
 		is_complete)(struct axis2_om_stax_builder* builder,
-                     axis2_env_t **env);
+                     const axis2_env_t *env);
         /**
          * moves the reader to next event and returns the token returned
 		 * by the xml_reader , returns -1 on error 
          */                                                
         int (AXIS2_CALL *
 		next_with_token)(struct axis2_om_stax_builder *builder,
-                         axis2_env_t **env);                                                                                                                                                                                                                                                 
+                         const axis2_env_t *env);                                                                                                                                                                                                                                                 
                                                         
     } axis2_om_stax_builder_ops_t;
 
@@ -125,7 +125,7 @@ extern "C"
     * @return a pointer to the newly created builder struct. 
     */
     AXIS2_DECLARE(axis2_om_stax_builder_t *)
-    axis2_om_stax_builder_create(axis2_env_t **env,
+    axis2_om_stax_builder_create(const axis2_env_t *env,
                                  axis2_xml_reader_t *parser);
 
 

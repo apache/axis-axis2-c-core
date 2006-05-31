@@ -44,9 +44,9 @@ typedef struct axis2_dll_desc axis2_dll_desc_t;
 typedef struct axis2_dll_desc_ops axis2_dll_desc_ops_t;
    
     
-typedef int (*CREATE_FUNCT) (void **inst, axis2_env_t **env);
+typedef int (*CREATE_FUNCT) (void **inst, const axis2_env_t *env);
 
-typedef int (*DELETE_FUNCT) (void *inst, axis2_env_t **env);
+typedef int (*DELETE_FUNCT) (void *inst, const axis2_env_t *env);
 
 typedef enum axis2_dll_type
 {
@@ -72,14 +72,14 @@ AXIS2_DECLARE_DATA struct axis2_dll_desc_ops
 { 
     axis2_status_t (AXIS2_CALL *
     free) (axis2_dll_desc_t *dll_desc, 
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     /**
      * Set path qualified platform specific dll name
      */    
     axis2_status_t (AXIS2_CALL *
     set_name) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_char_t *name);
     
     /**
@@ -87,61 +87,61 @@ AXIS2_DECLARE_DATA struct axis2_dll_desc_ops
      */ 
     axis2_char_t *(AXIS2_CALL *
     get_name) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_type) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_dll_type_t type);
     
     axis2_dll_type_t (AXIS2_CALL *
     get_type) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_load_options) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             int options);
     
     int (AXIS2_CALL *
     get_load_options) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_dl_handler) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             AXIS2_DLHANDLER dl_handler);
     
     AXIS2_DLHANDLER (AXIS2_CALL *
     get_dl_handler) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_create_funct) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             CREATE_FUNCT funct);
     
     CREATE_FUNCT (AXIS2_CALL *
     get_create_funct) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_delete_funct) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             DELETE_FUNCT funct);
     
     DELETE_FUNCT (AXIS2_CALL *
     get_delete_funct) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
                             
     axis2_status_t (AXIS2_CALL *
     set_timestamp) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             AXIS2_TIME_T timestamp);
     
     AXIS2_TIME_T (AXIS2_CALL *
     get_timestamp) (axis2_dll_desc_t *dll_desc,
-                            axis2_env_t **env);                            
+                            const axis2_env_t *env);                            
      /**
      * This function will accept the library name without any platform
      * dependant prefixes or suffixes. It then prefix and suffix
@@ -153,7 +153,7 @@ AXIS2_DECLARE_DATA struct axis2_dll_desc_ops
      */
     axis2_char_t *(AXIS2_CALL *
     create_platform_specific_dll_name)(axis2_dll_desc_t *dll_desc,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *class_name);
 
         
@@ -175,11 +175,11 @@ AXIS2_DECLARE_DATA struct axis2_dll_desc
  * @param qname qname, can be NULL
  */
 AXIS2_DECLARE(axis2_dll_desc_t*) 
-axis2_dll_desc_create(axis2_env_t **env);
+axis2_dll_desc_create(const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_dll_desc_free_void_arg (void *dll_desc,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
 /******************************************************************************/
 

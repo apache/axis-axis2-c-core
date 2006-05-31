@@ -60,39 +60,39 @@ AXIS2_DECLARE_DATA struct axis2_transport_out_desc_ops
   	 */
 	axis2_status_t (AXIS2_CALL *free)(
                     axis2_transport_out_desc_t *transport_out_desc,
-			        axis2_env_t **env);
+			        const axis2_env_t *env);
     
     /**
      * @return
      */
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (struct axis2_transport_out_desc *transport_out,
-                axis2_env_t **env);
+                const axis2_env_t *env);
     
     /**
      * @param name
      */
     axis2_status_t (AXIS2_CALL *
     set_qname) (struct axis2_transport_out_desc *transport_out,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_qname_t *qname);
     
     struct axis2_flow *(AXIS2_CALL *
     get_outflow) (struct axis2_transport_out_desc *transport_out,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_outflow) (struct axis2_transport_out_desc *transport_out,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     struct axis2_flow *outflow);
     
     struct axis2_flow *(AXIS2_CALL *
     get_faultflow) (struct axis2_transport_out_desc *transport_out,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_faultflow) (struct axis2_transport_out_desc *transport_out,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     struct axis2_flow *faultflow);
     
     /**
@@ -100,47 +100,47 @@ AXIS2_DECLARE_DATA struct axis2_transport_out_desc_ops
      */
     axis2_transport_sender_t * (AXIS2_CALL *
     get_sender) (struct axis2_transport_out_desc *transport_out,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     /**
      * @param receiver
      */
     axis2_status_t (AXIS2_CALL *
     set_sender) (struct axis2_transport_out_desc *transport_out,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_transport_sender_t *sender);
     
     struct axis2_phase * (AXIS2_CALL *
     get_out_phase) (struct axis2_transport_out_desc *transport_out,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_out_phase) (struct axis2_transport_out_desc *transport_out,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     struct axis2_phase *out_phase);
     
     struct axis2_phase *(AXIS2_CALL *
     get_faultphase) (struct axis2_transport_out_desc *transport_out,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_faultphase) (struct axis2_transport_out_desc *transport_out,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         struct axis2_phase *faultphase);
         
     axis2_status_t (AXIS2_CALL *
     add_param) (axis2_transport_out_desc_t *transport_out_desc,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_param_t *param);
 
     axis2_param_t *(AXIS2_CALL *
     get_param) (axis2_transport_out_desc_t *transport_out_desc,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_char_t *param_name);
 
     axis2_bool_t (AXIS2_CALL *
     is_param_locked) (axis2_transport_out_desc_t *transport_out_desc,
-                      axis2_env_t **env,
+                      const axis2_env_t *env,
                       axis2_char_t *param_name);
 
 };
@@ -159,7 +159,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_out_desc
  * @return pointer to newly created transport out
  */
 AXIS2_DECLARE(axis2_transport_out_desc_t *) 
-axis2_transport_out_desc_create_with_qname (axis2_env_t **env, axis2_qname_t *qname);
+axis2_transport_out_desc_create_with_qname (const axis2_env_t *env, axis2_qname_t *qname);
 
 /*************************** Function macros **********************************/
 

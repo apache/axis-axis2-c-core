@@ -34,29 +34,29 @@ typedef struct axis2_svc_name_impl
 
 axis2_qname_t* AXIS2_CALL 
 axis2_svc_name_get_qname(struct axis2_svc_name *svc_name, 
-                         axis2_env_t **env);
+                         const axis2_env_t *env);
                          
 axis2_status_t AXIS2_CALL 
 axis2_svc_name_set_qname(struct axis2_svc_name *svc_name, 
-                         axis2_env_t **env, 
+                         const axis2_env_t *env, 
                          axis2_qname_t *qname);
                          
 axis2_char_t* AXIS2_CALL 
 axis2_svc_name_get_endpoint_name(struct axis2_svc_name *svc_name, 
-                                 axis2_env_t **env);
+                                 const axis2_env_t *env);
                                  
 axis2_status_t AXIS2_CALL 
 axis2_svc_name_set_endpoint_name(struct axis2_svc_name *svc_name, 
-                                 axis2_env_t **env, 
+                                 const axis2_env_t *env, 
                                  axis2_char_t *endpoint_name);
                                  
 axis2_status_t AXIS2_CALL 
 axis2_svc_name_free(struct axis2_svc_name *svc_name, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
                     
 
 axis2_svc_name_t* AXIS2_CALL 
-axis2_svc_name_create(axis2_env_t **env, 
+axis2_svc_name_create(const axis2_env_t *env, 
                       axis2_qname_t *qname, 
                       axis2_char_t *endpoint_name) 
 {
@@ -65,10 +65,10 @@ axis2_svc_name_create(axis2_env_t **env,
     AXIS2_ENV_CHECK(env, NULL);
     
     svc_name_impl = 
-            AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_svc_name_impl_t) );
+            AXIS2_MALLOC( env->allocator, sizeof(axis2_svc_name_impl_t) );
     if (!svc_name_impl)
     { 
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
 
@@ -81,7 +81,7 @@ axis2_svc_name_create(axis2_env_t **env,
         svc_name_impl->qname = AXIS2_QNAME_CLONE(qname, env);
         if (!(svc_name_impl->qname))
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axis2_svc_name_free(&(svc_name_impl->svc_name), env);
             return NULL;        
         }
@@ -92,7 +92,7 @@ axis2_svc_name_create(axis2_env_t **env,
         svc_name_impl->endpoint_name = AXIS2_STRDUP(endpoint_name, env);
         if (!(svc_name_impl->endpoint_name))
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axis2_svc_name_free(&(svc_name_impl->svc_name), env);
             return NULL;        
         }
@@ -100,10 +100,10 @@ axis2_svc_name_create(axis2_env_t **env,
 
     /* initialize ops */
     svc_name_impl->svc_name.ops  = 
-            AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_svc_name_ops_t) );
+            AXIS2_MALLOC( env->allocator, sizeof(axis2_svc_name_ops_t) );
     if (!svc_name_impl->svc_name.ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_svc_name_free(&(svc_name_impl->svc_name), env);
         return NULL;        
     }
@@ -124,7 +124,7 @@ axis2_svc_name_create(axis2_env_t **env,
  */
 axis2_qname_t* AXIS2_CALL 
 axis2_svc_name_get_qname(struct axis2_svc_name *svc_name, 
-                         axis2_env_t **env) 
+                         const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_name)->qname;
@@ -137,7 +137,7 @@ axis2_svc_name_get_qname(struct axis2_svc_name *svc_name,
  */
 axis2_status_t AXIS2_CALL 
 axis2_svc_name_set_qname(struct axis2_svc_name *svc_name, 
-                         axis2_env_t **env, 
+                         const axis2_env_t *env, 
                          axis2_qname_t *qname) 
 {
     axis2_svc_name_impl_t *svc_name_impl = NULL;
@@ -169,7 +169,7 @@ axis2_svc_name_set_qname(struct axis2_svc_name *svc_name,
  */
 axis2_char_t* AXIS2_CALL 
 axis2_svc_name_get_endpoint_name(struct axis2_svc_name *svc_name, 
-                                 axis2_env_t **env) 
+                                 const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_name)->endpoint_name;
@@ -182,7 +182,7 @@ axis2_svc_name_get_endpoint_name(struct axis2_svc_name *svc_name,
  */
 axis2_status_t AXIS2_CALL 
 axis2_svc_name_set_endpoint_name(struct axis2_svc_name *svc_name, 
-                                 axis2_env_t **env, 
+                                 const axis2_env_t *env, 
                                  axis2_char_t *endpoint_name) 
 {
     axis2_svc_name_impl_t *svc_name_impl = NULL;
@@ -193,7 +193,7 @@ axis2_svc_name_set_endpoint_name(struct axis2_svc_name *svc_name,
     
     if (svc_name_impl->endpoint_name)
     {
-        AXIS2_FREE((*env)->allocator, svc_name_impl->endpoint_name);
+        AXIS2_FREE(env->allocator, svc_name_impl->endpoint_name);
         svc_name_impl->endpoint_name = NULL;
     }
     
@@ -209,7 +209,7 @@ axis2_svc_name_set_endpoint_name(struct axis2_svc_name *svc_name,
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_name_free (struct axis2_svc_name *svc_name, 
-                     axis2_env_t **env)
+                     const axis2_env_t *env)
 {
     axis2_svc_name_impl_t *svc_name_impl = NULL;
     
@@ -219,7 +219,7 @@ axis2_svc_name_free (struct axis2_svc_name *svc_name,
     
     if (svc_name_impl->svc_name.ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_name_impl->svc_name.ops);
+        AXIS2_FREE(env->allocator, svc_name_impl->svc_name.ops);
         svc_name_impl->svc_name.ops = NULL;
     }
     
@@ -231,11 +231,11 @@ axis2_svc_name_free (struct axis2_svc_name *svc_name,
     
     if (svc_name_impl->endpoint_name)
     {
-        AXIS2_FREE((*env)->allocator, svc_name_impl->endpoint_name);
+        AXIS2_FREE(env->allocator, svc_name_impl->endpoint_name);
         svc_name_impl->endpoint_name = NULL;
     }    
 
-    AXIS2_FREE((*env)->allocator, svc_name_impl);
+    AXIS2_FREE(env->allocator, svc_name_impl);
     svc_name_impl = NULL;
     
     return AXIS2_SUCCESS;

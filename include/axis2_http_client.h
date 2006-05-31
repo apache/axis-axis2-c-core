@@ -51,34 +51,34 @@ typedef struct axis2_http_client axis2_http_client_t;
 AXIS2_DECLARE_DATA struct axis2_http_client_ops
 {
     axis2_status_t (AXIS2_CALL *send)
-						(axis2_http_client_t *client, axis2_env_t **env,
+						(axis2_http_client_t *client, const axis2_env_t *env,
 						axis2_http_simple_request_t *request);
 	int (AXIS2_CALL *recieve_header)
-						(axis2_http_client_t *client, axis2_env_t **env);
+						(axis2_http_client_t *client, const axis2_env_t *env);
 	axis2_http_simple_response_t* (AXIS2_CALL *get_response)
-						(axis2_http_client_t *client, axis2_env_t **env);
+						(axis2_http_client_t *client, const axis2_env_t *env);
     
 	axis2_status_t (AXIS2_CALL *set_url) (axis2_http_client_t *client, 
-                    axis2_env_t **env, axis2_url_t *url);
+                    const axis2_env_t *env, axis2_url_t *url);
 	
 	axis2_url_t* (AXIS2_CALL *get_url) (axis2_http_client_t *client, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 	
     axis2_status_t (AXIS2_CALL *set_timeout) (axis2_http_client_t *client, 
-                    axis2_env_t **env, int timeout_ms);
+                    const axis2_env_t *env, int timeout_ms);
 	
     int (AXIS2_CALL *get_timeout) (axis2_http_client_t *client, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 	
     axis2_status_t (AXIS2_CALL *set_proxy) (axis2_http_client_t *client, 
-                    axis2_env_t **env, axis2_char_t *proxy_host,
+                    const axis2_env_t *env, axis2_char_t *proxy_host,
                     int proxy_port);
 	
     axis2_char_t* (AXIS2_CALL *get_proxy) (axis2_http_client_t *client, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 	
     axis2_status_t (AXIS2_CALL *free) (axis2_http_client_t *client, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 };
 
 /** 
@@ -92,7 +92,7 @@ AXIS2_DECLARE_DATA struct axis2_http_client
 
 
 AXIS2_DECLARE(axis2_http_client_t *) 
-axis2_http_client_create (axis2_env_t **env, axis2_url_t *url);
+axis2_http_client_create (const axis2_env_t *env, axis2_url_t *url);
 
 /**
  * Free http_client passed as void pointer. This will be
@@ -100,7 +100,7 @@ axis2_http_client_create (axis2_env_t **env, axis2_url_t *url);
  * into the http_client structure's free method
  */
 axis2_status_t AXIS2_CALL
-axis2_http_client_free_void_arg (void *client, axis2_env_t **env);
+axis2_http_client_free_void_arg (void *client, const axis2_env_t *env);
 
 /************************** Start of function macros **************************/
 

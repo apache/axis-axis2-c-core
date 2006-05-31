@@ -95,15 +95,15 @@ typedef struct axis2_wsdl_pump_impl
 
 axis2_status_t AXIS2_CALL
 	axis2_wsdl_pump_free (axis2_wsdl_pump_t *wsdl_pump,
-									axis2_env_t **env);
+									const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_pump_pump(axis2_wsdl_pump_t *wsdl_pump,
-						axis2_env_t **env);
+						const axis2_env_t *env);
 
 static axis2_status_t
 axis2_wsdl_pump_populate_def(axis2_wsdl_pump_t *wsdl_pump,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 /*//////////////////////////////////////////////////////////////////////////////
 //////////////////////// Top level Components Copying ////////////////////////*/
@@ -119,7 +119,7 @@ axis2_wsdl_pump_populate_def(axis2_wsdl_pump_t *wsdl_pump,
 
 static axis2_status_t
 axis2_wsdl_pump_populate_interfaces(axis2_wsdl_pump_t *wsdl_pump,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_wsdl_interface_t *interface,
                                     void *port_type);
 
@@ -130,7 +130,7 @@ axis2_wsdl_pump_populate_interfaces(axis2_wsdl_pump_t *wsdl_pump,
  */
 static axis2_bool_t
 axis2_wsdl_pump_find_wrappable(axis2_wsdl_pump_t *wsdl_pump,
-								axis2_env_t **env,
+								const axis2_env_t *env,
 								void *message);
 
 /**
@@ -138,7 +138,7 @@ axis2_wsdl_pump_find_wrappable(axis2_wsdl_pump_t *wsdl_pump,
  */
 static axis2_status_t
 axis2_wsdl_pump_populate_bindings(axis2_wsdl_pump_t *wsdl_pump,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_wsdl_binding_t *wsdl_binding,
                                     void *binding);
 
@@ -150,7 +150,7 @@ axis2_wsdl_pump_populate_bindings(axis2_wsdl_pump_t *wsdl_pump,
  */
 static axis2_status_t
 axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
-											axis2_env_t **env,
+											const axis2_env_t *env,
                                             void *binding,
                                             axis2_wsdl_binding_op_t *
                                                     wsdl_binding_op,
@@ -159,7 +159,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_pump_populate_services(axis2_wsdl_pump_t *wsdl_pump,
-									axis2_env_t **env,
+									const axis2_env_t *env,
 									axis2_wsdl_svc_t *wsdl_svc,
 									void *wsdl4c_svc);
 					
@@ -170,7 +170,7 @@ axis2_wsdl_pump_populate_services(axis2_wsdl_pump_t *wsdl_pump,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
-									axis2_env_t **env,
+									const axis2_env_t *env,
 									axis2_wsdl_op_t *wsdl_op,
 									void *wsdl4c_op,
 									axis2_char_t *namespce_of_op,
@@ -187,14 +187,14 @@ axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
  */
 static axis2_qname_t *
 axis2_wsdl_pump_generate_reference_qname(axis2_wsdl_pump_t *wsdl_pump,
-											axis2_env_t **env,
+											const axis2_env_t *env,
 											axis2_qname_t *outer_qname,
 											void *wsdl4c_msg,
 											axis2_bool_t is_wrappable);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_pump_populate_ports(axis2_wsdl_pump_t *wsdl_pump,
-								axis2_env_t **env,
+								const axis2_env_t *env,
 								axis2_wsdl_endpoint_t *wsdl_endpoint,
 								void *wsdl4c_binding,
 								char *port_name,
@@ -216,13 +216,13 @@ axis2_wsdl_pump_populate_ports(axis2_wsdl_pump_t *wsdl_pump,
  */
 static axis2_wsdl_interface_t *
 axis2_wsdl_pump_get_bound_interface(axis2_wsdl_pump_t *wsdl_pump,
-									axis2_env_t **env,
+									const axis2_env_t *env,
 									axis2_wsdl_svc_t *wsdl_svc);
                                 
 /************************** End of function prototypes ************************/
 
 axis2_wsdl_pump_t * AXIS2_CALL 
-axis2_wsdl_pump_create (axis2_env_t **env,
+axis2_wsdl_pump_create (const axis2_env_t *env,
 						axis2_wsdl_desc_t *wom_def,
 						void *wsdl_parser)
 {
@@ -230,12 +230,12 @@ axis2_wsdl_pump_create (axis2_env_t **env,
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	wsdl_pump_impl = (axis2_wsdl_pump_impl_t *) AXIS2_MALLOC((*env)->allocator,
+	wsdl_pump_impl = (axis2_wsdl_pump_impl_t *) AXIS2_MALLOC(env->allocator,
 			sizeof(axis2_wsdl_pump_impl_t));
 
 	if(NULL == wsdl_pump_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -255,11 +255,11 @@ axis2_wsdl_pump_create (axis2_env_t **env,
 	}
 	
 	wsdl_pump_impl->wsdl_pump.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_pump_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_pump_ops_t));
 	if(NULL == wsdl_pump_impl->wsdl_pump.ops)
     {
         axis2_wsdl_pump_free(&(wsdl_pump_impl->wsdl_pump), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -273,7 +273,7 @@ axis2_wsdl_pump_create (axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_pump_free (axis2_wsdl_pump_t *wsdl_pump, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_wsdl_pump_impl_t *pump_impl = NULL;
     
@@ -282,9 +282,9 @@ axis2_wsdl_pump_free (axis2_wsdl_pump_t *wsdl_pump,
     pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
     
 	if(NULL != wsdl_pump->ops)
-        AXIS2_FREE((*env)->allocator, wsdl_pump->ops);
+        AXIS2_FREE(env->allocator, wsdl_pump->ops);
     
-    AXIS2_FREE((*env)->allocator, pump_impl);
+    AXIS2_FREE(env->allocator, pump_impl);
     pump_impl = NULL;
     
 	return AXIS2_SUCCESS;
@@ -292,7 +292,7 @@ axis2_wsdl_pump_free (axis2_wsdl_pump_t *wsdl_pump,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_pump_pump(axis2_wsdl_pump_t *wsdl_pump,
-						axis2_env_t **env)
+						const axis2_env_t *env)
 {
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	return axis2_wsdl_pump_populate_def(wsdl_pump, env);	
@@ -300,7 +300,7 @@ axis2_wsdl_pump_pump(axis2_wsdl_pump_t *wsdl_pump,
 
 static axis2_status_t
 axis2_wsdl_pump_populate_def(axis2_wsdl_pump_t *wsdl_pump,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_wsdl_pump_impl_t *pump_impl = NULL;
     int element_type = -1;
@@ -430,7 +430,7 @@ axis2_wsdl_pump_populate_def(axis2_wsdl_pump_t *wsdl_pump,
 
 static axis2_status_t
 axis2_wsdl_pump_populate_interfaces(axis2_wsdl_pump_t *wsdl_pump,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_wsdl_interface_t *interface,
                                     void *port_type)
 {
@@ -444,8 +444,8 @@ axis2_wsdl_pump_populate_interfaces(axis2_wsdl_pump_t *wsdl_pump,
 	int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, interface, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, port_type, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, interface, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, port_type, AXIS2_FAILURE);
     pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
 
     /* 
@@ -499,14 +499,14 @@ axis2_wsdl_pump_populate_interfaces(axis2_wsdl_pump_t *wsdl_pump,
  */
 static axis2_bool_t
 axis2_wsdl_pump_find_wrappable(axis2_wsdl_pump_t *wsdl_pump,
-								axis2_env_t **env,
+								const axis2_env_t *env,
 								void *message)
 {
 	int no_of_parts = 0;
 	axis2_bool_t wrappable = AXIS2_FALSE;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, message, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, message, AXIS2_FAILURE);
 
 /*
 // ********************************************************************************************
@@ -536,7 +536,7 @@ axis2_wsdl_pump_find_wrappable(axis2_wsdl_pump_t *wsdl_pump,
  */
 static axis2_status_t
 axis2_wsdl_pump_populate_bindings(axis2_wsdl_pump_t *wsdl_pump,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_wsdl_binding_t *wsdl_binding,
                                     void *binding)
 {
@@ -552,8 +552,8 @@ axis2_wsdl_pump_populate_bindings(axis2_wsdl_pump_t *wsdl_pump,
     int i = 0, size = 0;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, wsdl_binding, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, binding, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, wsdl_binding, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, binding, AXIS2_FAILURE);
     pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
 
     binding_name = axis2_wsdl4c_binding_get_name(binding);
@@ -581,7 +581,7 @@ axis2_wsdl_pump_populate_bindings(axis2_wsdl_pump_t *wsdl_pump,
     /* FIXME Do We need this eventually??? */
     if(!wsdl_interface)
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -595,7 +595,7 @@ axis2_wsdl_pump_populate_bindings(axis2_wsdl_pump_t *wsdl_pump,
     ops = axis2_wsdl4c_port_type_get_operations(port_type);
     if(!ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WSDL_PARSER_INVALID_STATE,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WSDL_PARSER_INVALID_STATE,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     } 
@@ -646,7 +646,7 @@ axis2_wsdl_pump_populate_bindings(axis2_wsdl_pump_t *wsdl_pump,
  */
 static axis2_status_t
 axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
-											axis2_env_t **env,
+											const axis2_env_t *env,
                                             void *binding,
                                             axis2_wsdl_binding_op_t *
                                                     wsdl_binding_op,
@@ -670,8 +670,8 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
 	axis2_wsdl_ext_soap_op_t *ext_soap_op = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, wsdl_binding_op, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, binding, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, wsdl_binding_op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, binding, AXIS2_FAILURE);
     pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
    
     axis2_wsdl4c_binding_get_op_binding(binding, op_index, &bindings); 
@@ -727,7 +727,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
 	    	AXIS2_WSDL_EXT_SOAP_BODY_SET_USE(soap_body, env, str_use);
 			if(str_use)
 			{
-				AXIS2_FREE((*env)->allocator, str_use);
+				AXIS2_FREE(env->allocator, str_use);
 				str_use = NULL;
 			}
 	    	AXIS2_WSDL_EXT_SOAP_BODY_SET_NAMESPC_URI(soap_body, env, nsp);
@@ -880,7 +880,7 @@ axis2_wsdl_pump_populate_binding_operation(axis2_wsdl_pump_t *wsdl_pump,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_pump_populate_services(axis2_wsdl_pump_t *wsdl_pump,
-									axis2_env_t **env,
+									const axis2_env_t *env,
 									axis2_wsdl_svc_t *wsdl_svc,
 									void *wsdl4c_svc)
 {
@@ -893,8 +893,8 @@ axis2_wsdl_pump_populate_services(axis2_wsdl_pump_t *wsdl_pump,
 	axis2_status_t status = AXIS2_FAILURE;
 
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, wsdl_svc, AXIS2_FAILURE);	
-	AXIS2_PARAM_CHECK((*env)->error, wsdl4c_svc, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, wsdl_svc, AXIS2_FAILURE);	
+	AXIS2_PARAM_CHECK(env->error, wsdl4c_svc, AXIS2_FAILURE);
    	pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
    	
 	svc_name = axis2_wsdl4c_service_get_name(wsdl4c_svc); 
@@ -953,7 +953,7 @@ axis2_wsdl_pump_populate_services(axis2_wsdl_pump_t *wsdl_pump,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
-									axis2_env_t **env,
+									const axis2_env_t *env,
 									axis2_wsdl_op_t *wsdl_op,
 									void *wsdl4c_op,
 									axis2_char_t *namespc_of_op,
@@ -977,8 +977,8 @@ axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
 	axis2_char_t *mep = NULL;
 
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, namespc_of_op, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, wsdl4c_op, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, namespc_of_op, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, wsdl4c_op, AXIS2_FAILURE);
 	pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
 
 	wsdl_input_msg = axis2_wsdl_msg_ref_create(env);
@@ -1123,7 +1123,7 @@ axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
  */
 static axis2_qname_t *
 axis2_wsdl_pump_generate_reference_qname(axis2_wsdl_pump_t *wsdl_pump,
-											axis2_env_t **env,
+											const axis2_env_t *env,
 											axis2_qname_t *outer_qname,
 											void *wsdl4c_msg,
 											axis2_bool_t is_wrappable)
@@ -1132,8 +1132,8 @@ axis2_wsdl_pump_generate_reference_qname(axis2_wsdl_pump_t *wsdl_pump,
 	axis2_qname_t *reference_qname = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, outer_qname, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, wsdl4c_msg, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, outer_qname, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, wsdl4c_msg, AXIS2_FAILURE);
     pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
 
 	/*if(AXIS2_TRUE == is_wrappable)
@@ -1176,7 +1176,7 @@ axis2_wsdl_pump_generate_reference_qname(axis2_wsdl_pump_t *wsdl_pump,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_pump_populate_ports(axis2_wsdl_pump_t *wsdl_pump,
-								axis2_env_t **env,
+								const axis2_env_t *env,
 								axis2_wsdl_endpoint_t *wsdl_endpoint,
 								void *wsdl4c_binding,
 								char *port_name,
@@ -1189,8 +1189,8 @@ axis2_wsdl_pump_populate_ports(axis2_wsdl_pump_t *wsdl_pump,
 	axis2_wsdl_binding_t *wsdl_binding = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, wsdl_endpoint, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, wsdl4c_binding, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, wsdl_endpoint, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, wsdl4c_binding, AXIS2_FAILURE);
 	pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
 	
 	port_qname = axis2_qname_create(env, port_name, target_namespc, NULL);
@@ -1229,7 +1229,7 @@ e @param service
  */
 static axis2_wsdl_interface_t *
 axis2_wsdl_pump_get_bound_interface(axis2_wsdl_pump_t *wsdl_pump,
-									axis2_env_t **env,
+									const axis2_env_t *env,
 									axis2_wsdl_svc_t *wsdl_svc)
 {
 	axis2_wsdl_pump_impl_t *pump_impl = NULL;
@@ -1237,7 +1237,7 @@ axis2_wsdl_pump_get_bound_interface(axis2_wsdl_pump_t *wsdl_pump,
 	axis2_hash_t *interfaces = NULL;
 	
 	AXIS2_ENV_CHECK(env, NULL);
-	AXIS2_PARAM_CHECK((*env)->error, wsdl_svc, NULL);
+	AXIS2_PARAM_CHECK(env->error, wsdl_svc, NULL);
 	pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
 	
 	interfaces = AXIS2_WSDL_DESC_GET_INTERFACES(pump_impl->wom_def, env);
@@ -1245,7 +1245,7 @@ axis2_wsdl_pump_get_bound_interface(axis2_wsdl_pump_t *wsdl_pump,
     /* Return error code  if there are no interfaces defined as at yet */
 	if(0 == no_of_interfaces)
 	{
-		AXIS2_ERROR_SET((*env)->error, 
+		AXIS2_ERROR_SET(env->error, 
 			AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM,
 			AXIS2_FAILURE);
 		return NULL;

@@ -40,7 +40,7 @@ extern "C"
  * @return generated uuid as a string
  */ 
 AXIS2_DECLARE (axis2_char_t*)
-axis2_uuid_gen(axis2_env_t **env);
+axis2_uuid_gen(const axis2_env_t *env);
 
 /** @} */
     

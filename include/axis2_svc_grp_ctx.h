@@ -51,17 +51,17 @@ struct axis2_svc_grp_ctx_ops
 {
     axis2_ctx_t* (AXIS2_CALL *
 	get_base)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-              axis2_env_t **env);
+              const axis2_env_t *env);
 	
 	
     struct axis2_conf_ctx* (AXIS2_CALL *
 	get_parent)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                axis2_env_t **env);
+                const axis2_env_t *env);
 	
 	
     axis2_status_t (AXIS2_CALL *
 	free)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-          axis2_env_t **env);
+          const axis2_env_t *env);
 	
 	
     /**
@@ -69,25 +69,25 @@ struct axis2_svc_grp_ctx_ops
      */
     axis2_status_t (AXIS2_CALL *
 	init)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-		  axis2_env_t **env,
+		  const axis2_env_t *env,
 		  struct axis2_conf *conf);
 			  
 		  
     axis2_char_t* (AXIS2_CALL *
 	get_id)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-            axis2_env_t **env);
+            const axis2_env_t *env);
 	
 	
     axis2_status_t (AXIS2_CALL *
 	set_id)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-            axis2_env_t **env, 
+            const axis2_env_t *env, 
 			axis2_char_t *id);
 	
 	
     /** if the servic name is foo:bar , you should pass only bar */
     struct axis2_svc_ctx* (AXIS2_CALL *
 	get_svc_ctx)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-				 axis2_env_t **env,
+				 const axis2_env_t *env,
 				 axis2_char_t *svc_name);
 	
     /**
@@ -97,17 +97,17 @@ struct axis2_svc_grp_ctx_ops
      */
     axis2_status_t (AXIS2_CALL *
 	fill_svc_ctx_map)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                      axis2_env_t **env);
+                      const axis2_env_t *env);
 	
 	
     struct axis2_svc_grp* (AXIS2_CALL *
 	get_svc_grp)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
 	
 	
     axis2_hash_t* (AXIS2_CALL *
 	get_svc_ctx_map)(struct axis2_svc_grp_ctx *svc_grp_ctx, 
-                     axis2_env_t **env);
+                     const axis2_env_t *env);
 };
 
 /** 
@@ -121,7 +121,7 @@ struct axis2_svc_grp_ctx
 
 
 AXIS2_DECLARE(axis2_svc_grp_ctx_t*) 
-axis2_svc_grp_ctx_create(axis2_env_t **env, 
+axis2_svc_grp_ctx_create(const axis2_env_t *env, 
                         struct axis2_svc_grp *svc_grp, 
                         struct axis2_conf_ctx *conf_ctx);
 

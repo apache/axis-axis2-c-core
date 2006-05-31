@@ -52,37 +52,37 @@ struct axis2_xml_schema_any_attribute_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *any_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
             
     axis2_xml_schema_types_t (AXIS2_CALL *
     type)(void *any_attr,
-          axis2_env_t **env);
+          const axis2_env_t *env);
           
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(void *any_attr,
-                axis2_env_t **env);
+                const axis2_env_t *env);
                                       
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *any_attr,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_char_t *(AXIS2_CALL *
     get_namespace)(void *any_attr,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_namespace) (void *any_attr,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_char_t *ns);
 
     struct axis2_xml_schema_content_processing *(AXIS2_CALL *
     get_process_content) (void *any_attr,
-                          axis2_env_t **env);
+                          const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_process_content)(void *any_attr,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         struct axis2_xml_schema_content_processing *process_content);
 };
 
@@ -93,7 +93,7 @@ struct axis2_xml_schema_any_attribute
 };
 
 AXIS2_DECLARE(axis2_xml_schema_any_attribute_t *)
-axis2_xml_schema_any_attribute_create(axis2_env_t **env);
+axis2_xml_schema_any_attribute_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -101,7 +101,7 @@ axis2_xml_schema_any_attribute_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_any_attribute_resolve_methods(
                                 axis2_xml_schema_any_attribute_t *any_attr,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_any_attribute_t *any_impl,
                                 axis2_hash_t *methods);
  */

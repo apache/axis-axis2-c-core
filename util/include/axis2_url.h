@@ -49,53 +49,53 @@ AXIS2_DECLARE_DATA struct axis2_url_ops
 {
     axis2_char_t* (AXIS2_CALL *
 	to_external_form) (axis2_url_t *url, 
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
 	
     axis2_status_t (AXIS2_CALL *
 	set_protocol)(axis2_url_t *url, 
-                  axis2_env_t **env, 
+                  const axis2_env_t *env, 
 	              axis2_char_t *protocol);
 	
 	
 	axis2_char_t* (AXIS2_CALL *
 	get_protocol) (axis2_url_t *url, 
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
 	
 	axis2_status_t (AXIS2_CALL *
 	set_server)(axis2_url_t *url, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
 				axis2_char_t *server);
 	
 	
     axis2_char_t* (AXIS2_CALL *
 	get_server)(axis2_url_t *url, 
-                axis2_env_t **env);
+                const axis2_env_t *env);
 				
 				
 	axis2_status_t (AXIS2_CALL *
 	set_port)(axis2_url_t *url, 
-              axis2_env_t **env, 
+              const axis2_env_t *env, 
 			  int port);
 			  
 			  
     int (AXIS2_CALL *
 	get_port) (axis2_url_t *url, 
-               axis2_env_t **env);
+               const axis2_env_t *env);
 			   
 			   
 	axis2_status_t (AXIS2_CALL *
 	set_path)(axis2_url_t *url, 
-              axis2_env_t **env, 
+              const axis2_env_t *env, 
 			  axis2_char_t *path);
 			  
 			  
 	axis2_char_t* (AXIS2_CALL *
 	get_path)(axis2_url_t *url, 
-              axis2_env_t **env);
+              const axis2_env_t *env);
 			  
     axis2_status_t (AXIS2_CALL *
 	free) (axis2_url_t *url, 
-           axis2_env_t **env);
+           const axis2_env_t *env);
 };
 
 /** 
@@ -109,7 +109,7 @@ AXIS2_DECLARE_DATA struct axis2_url
 
 
 AXIS2_DECLARE(axis2_url_t *) 
-axis2_url_create (axis2_env_t **env, 
+axis2_url_create (const axis2_env_t *env, 
 				  axis2_char_t *protocol, 
 				  axis2_char_t *server, 
                   int port, 
@@ -117,7 +117,7 @@ axis2_url_create (axis2_env_t **env,
 
 
 AXIS2_DECLARE(axis2_url_t *)
-axis2_url_parse_string(axis2_env_t **env, 
+axis2_url_parse_string(const axis2_env_t *env, 
                        axis2_char_t *str_url);
 
 /************************** Start of function macros **************************/

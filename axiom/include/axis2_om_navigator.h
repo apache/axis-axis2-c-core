@@ -64,7 +64,7 @@ extern "C"
      
      axis2_status_t (AXIS2_CALL *
      free)(axis2_om_navigator_t *om_navigator,
-           axis2_env_t **env); 
+           const axis2_env_t *env); 
  
     /**
      *  returns the navigable status 
@@ -76,7 +76,7 @@ extern "C"
 
      axis2_bool_t (AXIS2_CALL *
      is_navigable)(axis2_om_navigator_t *om_navigator,
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
 
     /**
      * returns the build status of this node 
@@ -90,7 +90,7 @@ extern "C"
      
      axis2_bool_t (AXIS2_CALL *
      is_completed)(axis2_om_navigator_t *om_navigator,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
     /**
      * gets the next node 
@@ -104,7 +104,7 @@ extern "C"
 
      axis2_om_node_t* (AXIS2_CALL *
      next)(axis2_om_navigator_t *om_navigator, 
-           axis2_env_t **env);
+           const axis2_env_t *env);
 
     /**
      * method visited 
@@ -115,7 +115,7 @@ extern "C"
      */
      axis2_bool_t (AXIS2_CALL *
      visited)(axis2_om_navigator_t *om_navigator,
-              axis2_env_t **env);
+              const axis2_env_t *env);
 
  };
     
@@ -135,7 +135,7 @@ struct axis2_om_navigator
  */
 
 AXIS2_DECLARE(axis2_om_navigator_t *)
-axis2_om_navigator_create(axis2_env_t **env,
+axis2_om_navigator_create(const axis2_env_t *env,
                           axis2_om_node_t *node);
                           
 /** Macros ********************************************************************/

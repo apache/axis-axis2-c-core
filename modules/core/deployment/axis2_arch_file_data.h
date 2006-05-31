@@ -59,15 +59,15 @@ AXIS2_DECLARE_DATA struct axis2_arch_file_data_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_arch_file_data_t *arch_file_data,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
     
     axis2_char_t *(AXIS2_CALL *
     get_msg_recv)(axis2_arch_file_data_t *file_data,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_msg_recv)(axis2_arch_file_data_t *file_data,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *msg_recv);
     
     /**
@@ -75,62 +75,62 @@ AXIS2_DECLARE_DATA struct axis2_arch_file_data_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_name)(axis2_arch_file_data_t *file_data,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     /**
      * @return the service name. if contained file is not null this is the
      * file name. else this is the name property
      */
     axis2_char_t *(AXIS2_CALL *
     get_svc_name)(axis2_arch_file_data_t *file_data,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     int (AXIS2_CALL *
     get_type)(axis2_arch_file_data_t *file_data,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     axis2_file_t *(AXIS2_CALL *
     get_file)(axis2_arch_file_data_t *file_data,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     axis2_char_t *(AXIS2_CALL *
     get_module_name)(axis2_arch_file_data_t *file_data,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_module_name)(axis2_arch_file_data_t *file_data,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_char_t *module_name);
                         
         axis2_char_t *(AXIS2_CALL *
     get_module_dll_name)(axis2_arch_file_data_t *file_data,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_module_dll_name)(axis2_arch_file_data_t *file_data,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_char_t *module_dll_name);
                         
     axis2_status_t (AXIS2_CALL *
     add_svc)(axis2_arch_file_data_t *file_data,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     struct axis2_svc *svc_desc);
     
     struct axis2_svc *(AXIS2_CALL *
     get_svc)(axis2_arch_file_data_t *file_data,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *svc_name);
     
     axis2_hash_t *(AXIS2_CALL *
     get_svc_map)(axis2_arch_file_data_t *file_data,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     axis2_array_list_t *(AXIS2_CALL *
     get_deployable_svcs)(axis2_arch_file_data_t *file_data,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_deployable_svcs) (axis2_arch_file_data_t *file_data,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_array_list_t *deployable_svcs);    
  
 
@@ -149,7 +149,7 @@ AXIS2_DECLARE_DATA struct axis2_arch_file_data
  * @return pointer to newly created arch file data
  */
 AXIS2_DECLARE(axis2_arch_file_data_t *)
-axis2_arch_file_data_create(axis2_env_t **env);
+axis2_arch_file_data_create(const axis2_env_t *env);
 
 /**
  * Creates arch file data struct
@@ -158,7 +158,7 @@ axis2_arch_file_data_create(axis2_env_t **env);
  * @return pointer to newly created arch file data
  */
 AXIS2_DECLARE(axis2_arch_file_data_t *) 
-axis2_arch_file_data_create_with_type_and_file(axis2_env_t **env,
+axis2_arch_file_data_create_with_type_and_file(const axis2_env_t *env,
                                                     int type,
                                                     axis2_file_t *file);
 
@@ -169,7 +169,7 @@ axis2_arch_file_data_create_with_type_and_file(axis2_env_t **env,
  * @return pointer to newly created arch file data
  */
 AXIS2_DECLARE(axis2_arch_file_data_t *)
-axis2_arch_file_data_create_with_type_and_name(axis2_env_t **env,
+axis2_arch_file_data_create_with_type_and_name(const axis2_env_t *env,
                                                     int type,
                                                     axis2_char_t *name);
 

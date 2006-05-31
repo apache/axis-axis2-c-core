@@ -48,44 +48,44 @@ struct axis2_xml_schema_complex_content_ops
 {
     axis2_status_t (AXIS2_CALL *
     free) (void *complex_content,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *complex_content,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
                     
     axis2_xml_schema_types_t (AXIS2_CALL *
     type) (void *complex_content,
-            axis2_env_t **env);
+            const axis2_env_t *env);
                     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *complex_content,
-                    axis2_env_t **env);                                        
+                    const axis2_env_t *env);                                        
 
     void* (AXIS2_CALL *
     get_content)(
             void *complex_content,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_content)(
             void *complex_content,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *content);
     
     axis2_char_t* (AXIS2_CALL*
     to_string)(void *complex_content,
-               axis2_env_t **env,
+               const axis2_env_t *env,
                axis2_char_t *prefix,
                int tab);
                
     axis2_bool_t (AXIS2_CALL *
     is_mixed)(void *complex_content,
-              axis2_env_t **env);
+              const axis2_env_t *env);
               
     axis2_status_t (AXIS2_CALL *
     set_mixed)(void *complex_content,
-               axis2_env_t **env,
+               const axis2_env_t *env,
                axis2_bool_t mixed);
 };
 
@@ -99,7 +99,7 @@ struct axis2_xml_schema_complex_content
  * Creates new Xml Schema Group
  */
 AXIS2_DECLARE(axis2_xml_schema_complex_content_t *)
-axis2_xml_schema_complex_content_create(axis2_env_t **env);
+axis2_xml_schema_complex_content_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -107,7 +107,7 @@ axis2_xml_schema_complex_content_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_complex_content_resolve_methods(
                                 axis2_xml_schema_complex_content_t *complex_content,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_complex_content_t *group_impl,
                                 axis2_hash_t *methods);
 */

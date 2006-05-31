@@ -57,7 +57,7 @@ struct axis2_woden_ext_registry_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *ext_registry,
-            axis2_env_t **env);
+            const axis2_env_t *env);
  
     /**
     * Declare that the specified deserializer should be used to deserialize
@@ -77,7 +77,7 @@ struct axis2_woden_ext_registry_ops
     axis2_status_t (AXIS2_CALL *
     register_deserializer) (
             void *registry,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *parent_type,
             axis2_qname_t *element_qtype,
             void *ed);
@@ -101,7 +101,7 @@ struct axis2_woden_ext_registry_ops
     void *(AXIS2_CALL *
     query_deserializer) (
             void *registry,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *parent_type,
             axis2_qname_t *element_type);
 
@@ -121,7 +121,7 @@ struct axis2_woden_ext_registry_ops
     void *(AXIS2_CALL *
     query_ext_element_type) (
             void *registry,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *parent_class,
             axis2_qname_t *elem_qn);
 
@@ -136,7 +136,7 @@ struct axis2_woden_ext_registry_ops
     axis2_array_list_t *(AXIS2_CALL *
     get_allowable_exts) (
             void *registry,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *parent_type);
 
     /**
@@ -158,7 +158,7 @@ struct axis2_woden_ext_registry_ops
     axis2_status_t (AXIS2_CALL *
     register_ext_element_type) (
             void *registry,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *parent_type,
             axis2_qname_t *element_qtype,
             void *element);
@@ -180,7 +180,7 @@ struct axis2_woden_ext_registry_ops
     axis2_status_t (AXIS2_CALL *
     register_ext_attr_type) (
             void *registry,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *owner_class,
             axis2_qname_t *attr_qname,
             void *attr);
@@ -200,7 +200,7 @@ struct axis2_woden_ext_registry_ops
     void *(AXIS2_CALL *
     query_ext_attr_type) (
             void *registry,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *parent_class,
             axis2_qname_t *attr_qn);
 
@@ -215,7 +215,7 @@ struct axis2_woden_ext_registry_ops
     axis2_status_t (AXIS2_CALL *
     register_component_ext) (
             void *registry,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *parent_class,
             axis2_url_t *ext_namespc,
             void *comp_ext);
@@ -231,7 +231,7 @@ struct axis2_woden_ext_registry_ops
     void *(AXIS2_CALL *
     query_component_ext) (
             void *registry,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *parent_class,
             axis2_url_t *ext_namespc);
 
@@ -244,7 +244,7 @@ struct axis2_woden_ext_registry_ops
     axis2_array_list_t *(AXIS2_CALL *
     query_component_ext_namespaces) (
             void *registry,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *parent_class);
 };
 
@@ -254,7 +254,7 @@ struct axis2_woden_ext_registry
 };
 
 AXIS2_DECLARE(axis2_woden_ext_registry_t *)
-axis2_woden_ext_registry_create(axis2_env_t **env);
+axis2_woden_ext_registry_create(const axis2_env_t *env);
 
 #define AXIS2_WODEN_EXT_REGISTRY_FREE(ext_registry, env) \
 		(((axis2_woden_ext_registry_t *) ext_registry)->ops->\

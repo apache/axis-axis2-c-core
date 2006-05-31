@@ -21,14 +21,14 @@
 #include <axis2_client.h>
 
 axis2_om_node_t *
-build_soap_body_content(axis2_env_t **env, axis2_char_t *operation, axis2_char_t *google_key, 
+build_soap_body_content(const axis2_env_t *env, axis2_char_t *operation, axis2_char_t *google_key, 
                         axis2_char_t *word_to_spell);
 
-void print_invalid_om(axis2_env_t **env, axis2_om_node_t *ret_node);
+void print_invalid_om(const axis2_env_t *env, axis2_om_node_t *ret_node);
 
 int main(int argc, char** argv)
 {
-    axis2_env_t *env = NULL;
+    const axis2_env_t *env = NULL;
     axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
@@ -70,12 +70,12 @@ int main(int argc, char** argv)
     printf ("\nInvoking operation %s with params %s and %s\n", operation, google_key, word_to_spell);
 
     /* Create EPR with given address */
-    endpoint_ref = axis2_endpoint_ref_create(&env, address);
+    endpoint_ref = axis2_endpoint_ref_create(env, address);
     
     /* Setup options */
-    options = axis2_options_create(&env);
-    AXIS2_OPTIONS_SET_TO(options, &env, endpoint_ref);
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, &env, AXIS2_SOAP11);
+    options = axis2_options_create(env);
+    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIS2_SOAP11);
     
      /* Set up deploy folder.*/
     client_home = AXIS2_GETENV("AXIS2C_HOME");
@@ -83,7 +83,7 @@ int main(int argc, char** argv)
         client_home = "../../deploy";
 
     /* Create service client */
-    svc_client = axis2_svc_client_create(&env, client_home);
+    svc_client = axis2_svc_client_create(env, client_home);
     if (!svc_client)
     {
         printf("Error creating service client\n");
@@ -93,42 +93,42 @@ int main(int argc, char** argv)
     }
 
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, &env, options);    
+    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);    
 
     /* Build the SOAP request message payload using OM API.*/
-    payload = build_soap_body_content(&env, operation, google_key, word_to_spell);
+    payload = build_soap_body_content(env, operation, google_key, word_to_spell);
     
     /* Send request */
-    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, &env, payload);
+    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
     
     if(ret_node)
     {
-        if (AXIS2_OM_NODE_GET_NODE_TYPE(ret_node, &env) == AXIS2_OM_ELEMENT)
+        if (AXIS2_OM_NODE_GET_NODE_TYPE(ret_node, env) == AXIS2_OM_ELEMENT)
         {
             axis2_char_t *result = NULL;
             axis2_om_element_t *result_ele = NULL;
             axis2_om_node_t *ret_node1 = NULL;
 
-            result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node, &env);
-            if (AXIS2_STRCMP(AXIS2_OM_ELEMENT_GET_LOCALNAME(result_ele, &env), "doSpellingSuggestionResponse") != 0 )
+            result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node, env);
+            if (AXIS2_STRCMP(AXIS2_OM_ELEMENT_GET_LOCALNAME(result_ele, env), "doSpellingSuggestionResponse") != 0 )
             {
-                print_invalid_om(&env, ret_node);
+                print_invalid_om(env, ret_node);
                 return AXIS2_FAILURE;
             }
             
-            ret_node1 = AXIS2_OM_NODE_GET_FIRST_CHILD(ret_node, &env); /*return*/
+            ret_node1 = AXIS2_OM_NODE_GET_FIRST_CHILD(ret_node, env); /*return*/
             if (!ret_node1)
             {
-                print_invalid_om(&env, ret_node);
+                print_invalid_om(env, ret_node);
                 return AXIS2_FAILURE;
             }
-            result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node1, &env);
-            result = AXIS2_OM_ELEMENT_GET_TEXT(result_ele, &env, ret_node1);
+            result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node1, env);
+            result = AXIS2_OM_ELEMENT_GET_TEXT(result_ele, env, ret_node1);
             printf( "\nResult = %s\n", result);
         }
         else
         {
-            print_invalid_om(&env, ret_node);
+            print_invalid_om(env, ret_node);
             return AXIS2_FAILURE;
         }
     }
@@ -142,7 +142,7 @@ int main(int argc, char** argv)
     
     if (svc_client)
     {
-        AXIS2_SVC_CLIENT_FREE(svc_client, &env);
+        AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
     
@@ -150,7 +150,7 @@ int main(int argc, char** argv)
 }
 
 axis2_om_node_t *
-build_soap_body_content(axis2_env_t **env, axis2_char_t *operation, axis2_char_t *google_key, 
+build_soap_body_content(const axis2_env_t *env, axis2_char_t *operation, axis2_char_t *google_key, 
                         axis2_char_t *word_to_spell)
 {
     axis2_om_node_t *google_om_node = NULL;
@@ -188,7 +188,7 @@ build_soap_body_content(axis2_env_t **env, axis2_char_t *operation, axis2_char_t
     return google_om_node;
 }
 
-void print_invalid_om(axis2_env_t **env, axis2_om_node_t *ret_node)
+void print_invalid_om(const axis2_env_t *env, axis2_om_node_t *ret_node)
 {
     axis2_char_t *buffer = NULL;
     buffer = AXIS2_OM_NODE_TO_STRING(ret_node, env);

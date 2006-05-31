@@ -55,7 +55,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
         free)(struct axis2_om_processing_instruction * om_pi,
-              axis2_env_t **env);
+              const axis2_env_t *env);
         /**
          * set processing instruction data
          *@param om_pi
@@ -65,7 +65,7 @@ extern "C"
          
         axis2_status_t (AXIS2_CALL *
         set_value)(struct axis2_om_processing_instruction *om_pi,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    const axis2_char_t* value);
         /**
          * set processing instruction target
@@ -78,7 +78,7 @@ extern "C"
         
         axis2_status_t (AXIS2_CALL *
         set_target)(struct axis2_om_processing_instruction *om_pi,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     const axis2_char_t* target);
         /**
          * get PI target
@@ -88,7 +88,7 @@ extern "C"
          */
         axis2_char_t* (AXIS2_CALL *
         get_target)(struct axis2_om_processing_instruction *om_pi,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
         /**
          *  get data part of processing_instruction
          * @param om_pi processing instruction 
@@ -97,7 +97,7 @@ extern "C"
          */
         axis2_char_t* (AXIS2_CALL *
         get_value)(struct axis2_om_processing_instruction *om_pi,
-                   axis2_env_t **env);                                                                                                                           
+                   const axis2_env_t *env);                                                                                                                           
                            
         /**
          *  serialize function
@@ -109,7 +109,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
         serialize)(struct axis2_om_processing_instruction *om_pi,
-                  axis2_env_t **env, 
+                  const axis2_env_t *env, 
                   axis2_om_output_t *om_output);
                                     
                                           
@@ -138,7 +138,7 @@ extern "C"
     * @return a pointer tonewly created processing instruction struct 
     */
     AXIS2_DECLARE(axis2_om_processing_instruction_t *) 
-        axis2_om_processing_instruction_create (axis2_env_t **env,
+        axis2_om_processing_instruction_create (const axis2_env_t *env,
                                                 axis2_om_node_t * parent,
                                                 const axis2_char_t * target,
                                                 const axis2_char_t * value,

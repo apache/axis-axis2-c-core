@@ -57,7 +57,7 @@ struct axis2_flow_container_ops
      */
     axis2_status_t (AXIS2_CALL *
 	free) (axis2_flow_container_t *flow_container,
-           axis2_env_t **env);
+           const axis2_env_t *env);
 
     /**
      * Get fault out flow
@@ -65,7 +65,7 @@ struct axis2_flow_container_ops
      */
     axis2_flow_t *(AXIS2_CALL *
 	get_inflow)(axis2_flow_container_t *flow_container,
-                axis2_env_t **env);
+                const axis2_env_t *env);
     
     /**
      * Set in flow
@@ -73,7 +73,7 @@ struct axis2_flow_container_ops
      */
     axis2_status_t (AXIS2_CALL *
 	set_inflow)(axis2_flow_container_t *flow_container,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_flow_t *inflow);
     
     /**
@@ -82,7 +82,7 @@ struct axis2_flow_container_ops
      */
     axis2_flow_t *(AXIS2_CALL *
 	get_outflow)(axis2_flow_container_t *flow_container,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
     
     /**
      * Set out flow
@@ -90,7 +90,7 @@ struct axis2_flow_container_ops
      */
     axis2_status_t (AXIS2_CALL *
 	set_outflow)(axis2_flow_container_t *flow_container,
-                 axis2_env_t **env,
+                 const axis2_env_t *env,
                  axis2_flow_t *outflow);
     
     /**
@@ -99,7 +99,7 @@ struct axis2_flow_container_ops
      */
     axis2_flow_t * (AXIS2_CALL *
 	get_fault_inflow)(axis2_flow_container_t *flow_container,
-                      axis2_env_t **env);
+                      const axis2_env_t *env);
     
     /**
      * set fault in flow
@@ -107,7 +107,7 @@ struct axis2_flow_container_ops
      */
     axis2_status_t (AXIS2_CALL *
 	set_fault_inflow)(axis2_flow_container_t *flow_container,
-                      axis2_env_t **env,
+                      const axis2_env_t *env,
                       axis2_flow_t *falut_inflow);
     /**
      * Get fault out flow
@@ -115,7 +115,7 @@ struct axis2_flow_container_ops
      */
     axis2_flow_t *(AXIS2_CALL *
 	get_fault_outflow)(axis2_flow_container_t *flow_container,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
     
     /**
      * Set fault out flow
@@ -123,7 +123,7 @@ struct axis2_flow_container_ops
      */
     axis2_status_t (AXIS2_CALL *
 	set_fault_outflow)(axis2_flow_container_t *flow_container,
-                       axis2_env_t **env,
+                       const axis2_env_t *env,
                        axis2_flow_t *fault_outflow);  
 };
 
@@ -141,7 +141,7 @@ struct axis2_flow_container
  * @return pointer to newly created flow container
  */
 AXIS2_DECLARE(axis2_flow_container_t *) 
-axis2_flow_container_create (axis2_env_t **env);
+axis2_flow_container_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

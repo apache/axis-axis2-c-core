@@ -53,7 +53,7 @@ struct axis2_svc_grp_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (axis2_svc_grp_t *svc_grp, 
-           axis2_env_t **env);
+           const axis2_env_t *env);
     
     /** 
      * Set name of the service group
@@ -62,7 +62,7 @@ struct axis2_svc_grp_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_svc_grp_name) (axis2_svc_grp_t *svc_grp, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 axis2_char_t *svc_grp_name);
 	/** 
      * Get the service group name
@@ -70,7 +70,7 @@ struct axis2_svc_grp_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_svc_grp_name) (axis2_svc_grp_t *svc_grp, 
-               axis2_env_t **env) ;
+               const axis2_env_t *env) ;
     /** 
      * Add a service to the serivce group
      * @param service service to be added
@@ -78,7 +78,7 @@ struct axis2_svc_grp_ops
      */
 	axis2_status_t (AXIS2_CALL *
     add_svc) (axis2_svc_grp_t *svc_grp, 
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 struct axis2_svc *svc) ;
     
     /** 
@@ -88,81 +88,81 @@ struct axis2_svc_grp_ops
      */
 	struct axis2_svc *(AXIS2_CALL *
     get_svc) (axis2_svc_grp_t *svc_grp, 
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_qname_t *svc_name);
     
     axis2_hash_t *(AXIS2_CALL *
     get_svcs) (axis2_svc_grp_t *svc_grp, 
-               axis2_env_t **env);
+               const axis2_env_t *env);
     
 	axis2_status_t (AXIS2_CALL *
     remove_svc) (axis2_svc_grp_t *svc_grp, 
-                 axis2_env_t **env,
+                 const axis2_env_t *env,
                  axis2_qname_t *svc_name);
         
 	axis2_status_t (AXIS2_CALL *
     add_param) (axis2_svc_grp_t *svc_grp, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 axis2_param_t *param);
         
 	axis2_param_t *(AXIS2_CALL *
     get_param) (axis2_svc_grp_t *svc_grp, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 const axis2_char_t *name);
         
 	axis2_array_list_t *(AXIS2_CALL *
     get_params) (axis2_svc_grp_t *svc_grp, 
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
     
 	axis2_bool_t (AXIS2_CALL *
     is_param_locked) (axis2_svc_grp_t *svc_grp, 
-                        axis2_env_t **env, 
+                        const axis2_env_t *env, 
                         axis2_char_t *param_name);
                         
     axis2_status_t (AXIS2_CALL *
     add_module) (axis2_svc_grp_t *svc_grp, 
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_qname_t *module_qname);
 
     struct axis2_conf * (AXIS2_CALL *
     get_parent) (axis2_svc_grp_t *svc_grp,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_parent) (axis2_svc_grp_t *svc_grp,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     struct axis2_conf *parent);
                         
     axis2_status_t (AXIS2_CALL *
     engage_module_to_grp) (axis2_svc_grp_t *svc_grp,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_qname_t *module_name);
     
     axis2_array_list_t *(AXIS2_CALL *
     get_svc_grp_modules) (axis2_svc_grp_t *svc_grp,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     struct axis2_conf *(AXIS2_CALL *
     get_axis_desc) (axis2_svc_grp_t *svc_grp,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_axis_desc) (axis2_svc_grp_t *svc_grp,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_conf *axis2_desc);
     
     axis2_status_t (AXIS2_CALL *
     add_moduleref) (axis2_svc_grp_t *svc_grp,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_qname_t *moduleref);
     
     axis2_array_list_t *(AXIS2_CALL *
     get_modules) (axis2_svc_grp_t *svc_grp,
-                                axis2_env_t **env); 
+                                const axis2_env_t *env); 
                                 
     struct axis2_svc_grp_ctx *(AXIS2_CALL *
     get_svc_grp_ctx) (axis2_svc_grp_t *svc_grp,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_conf_ctx *parent);                                
                                 
 };
@@ -183,7 +183,7 @@ struct axis2_svc_grp
  * @return pointer to newly created service group
  */
 AXIS2_DECLARE(axis2_svc_grp_t *)
-axis2_svc_grp_create (axis2_env_t **env);
+axis2_svc_grp_create (const axis2_env_t *env);
 
 /** 
  * Creates service group struct
@@ -191,7 +191,7 @@ axis2_svc_grp_create (axis2_env_t **env);
  * @return pointer to newly created service group
  */
 AXIS2_DECLARE(axis2_svc_grp_t *) 
-axis2_svc_grp_create_with_conf (axis2_env_t **env,
+axis2_svc_grp_create_with_conf (const axis2_env_t *env,
                                          struct axis2_conf *conf);
 
 /**************************** Start of function macros ************************/

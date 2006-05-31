@@ -17,28 +17,28 @@
 #include <axis2_class_loader.h>
 
 axis2_status_t 
-axis2_class_loader_load_lib (axis2_env_t **env,
+axis2_class_loader_load_lib (const axis2_env_t *env,
                                 axis2_dll_desc_t *dll_desc);
                                 
 axis2_status_t
-axis2_class_loader_unload_lib (axis2_env_t **env,
+axis2_class_loader_unload_lib (const axis2_env_t *env,
                                 axis2_dll_desc_t *dll_desc);
                                 
                                 
 AXIS2_DECLARE(axis2_status_t)
-axis2_class_loader_init(axis2_env_t **env)
+axis2_class_loader_init(const axis2_env_t *env)
 {
     AXIS2_PLATFORM_LOADLIBINIT();
     return AXIS2_SUCCESS;
 }
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_class_loader_delete_dll (axis2_env_t **env,
+axis2_class_loader_delete_dll (const axis2_env_t *env,
                                     axis2_dll_desc_t *dll_desc)
 { 
     if(!dll_desc)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -48,7 +48,7 @@ axis2_class_loader_delete_dll (axis2_env_t **env,
 }
 
 AXIS2_DECLARE(void *)
-axis2_class_loader_create_dll (axis2_env_t **env,
+axis2_class_loader_create_dll (const axis2_env_t *env,
                                 axis2_param_t *impl_info_param)
 {
     void *svc_skeli = NULL; /* axis2_svc_skeleton */
@@ -67,7 +67,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
     dll_desc = AXIS2_PARAM_GET_VALUE(impl_info_param, env);
     if(!dll_desc)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
             AXIS2_FAILURE);
         return NULL;
     }
@@ -77,7 +77,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         status = axis2_class_loader_load_lib(env, dll_desc);
         if(AXIS2_SUCCESS != status)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
                     AXIS2_FAILURE);
             return NULL;
         }
@@ -97,7 +97,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         if(AXIS2_FAILURE == status)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
                 AXIS2_FAILURE);
             return NULL;
         }
@@ -112,7 +112,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         if(AXIS2_FAILURE == status)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_CREATE_FAILED, 
                 AXIS2_FAILURE);
             return NULL;
         }
@@ -120,7 +120,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
     create_funct = AXIS2_DLL_DESC_GET_CREATE_FUNCT(dll_desc, env);
     if(!create_funct)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_DLL_DESC,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_DLL_DESC,
             AXIS2_FAILURE);
         return NULL;
     }
@@ -131,7 +131,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         if(NULL == svc_skeli)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
-            AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_SVC_SKELETON_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
         }
@@ -143,7 +143,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         if(NULL == handler)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
-            AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_HANDLER_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
         }
@@ -155,7 +155,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         if(NULL == module)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
-            AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_MODULE_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
         }
@@ -167,14 +167,14 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         if(NULL == msg_recv)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
-            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "message receiver is NULL");
-            AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "message receiver is NULL");
+            AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_MSG_RECV_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
         }
         else
         {
-            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "message receiver loaded successfully");
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "message receiver loaded successfully");
         }
         return msg_recv;
     }
@@ -184,14 +184,14 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         if(NULL == transport_recv)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
-            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "transport receiver is NULL");
-            AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "transport receiver is NULL");
+            AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_TRANSPORT_RECV_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
         }
         else
         {
-            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "transport receiver loaded successfully");
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "transport receiver loaded successfully");
         }
         return transport_recv;
     }
@@ -201,14 +201,14 @@ axis2_class_loader_create_dll (axis2_env_t **env,
         if(NULL == transport_sender)
         {
             axis2_class_loader_unload_lib(env, dll_desc);
-            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "transport sender is NULL");
-            AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "transport sender is NULL");
+            AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_TRANSPORT_SENDER_CREATION_FAILED,AXIS2_FAILURE);
             return NULL;
         }
         else
         {
-            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "transport sender loaded successfully");
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "transport sender loaded successfully");
         }
         return transport_sender;
     }
@@ -218,7 +218,7 @@ axis2_class_loader_create_dll (axis2_env_t **env,
 }
 
 axis2_status_t 
-axis2_class_loader_load_lib (axis2_env_t **env,
+axis2_class_loader_load_lib (const axis2_env_t *env,
                                 axis2_dll_desc_t *dll_desc)
 {
     axis2_char_t *dll_name = NULL;
@@ -235,7 +235,7 @@ axis2_class_loader_load_lib (axis2_env_t **env,
         errormsg =  (axis2_char_t *) dlerror ();
         printf("errormsg:%s\n", errormsg);
         */
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_LOADING_FAILED, 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED, 
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -245,7 +245,7 @@ axis2_class_loader_load_lib (axis2_env_t **env,
     {
         AXIS2_PLATFORM_UNLOADLIB(dl_handler);
         dl_handler = NULL;
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_DLL_LOADING_FAILED, 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_DLL_LOADING_FAILED, 
             AXIS2_FAILURE);
         return status;
     }
@@ -254,7 +254,7 @@ axis2_class_loader_load_lib (axis2_env_t **env,
 }
 
 axis2_status_t
-axis2_class_loader_unload_lib (axis2_env_t **env,
+axis2_class_loader_unload_lib (const axis2_env_t *env,
                                 axis2_dll_desc_t *dll_desc)
 {
     AXIS2_DLHANDLER dl_handler = AXIS2_DLL_DESC_GET_DL_HANDLER(dll_desc, env);

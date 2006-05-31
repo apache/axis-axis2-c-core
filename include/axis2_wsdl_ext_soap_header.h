@@ -54,33 +54,33 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_header_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_ext_soap_header_t *ext_soap_header,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_part) (axis2_wsdl_ext_soap_header_t *ext_soap_header,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_part) (axis2_wsdl_ext_soap_header_t *ext_soap_header,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *part);
 
     axis2_qname_t *(AXIS2_CALL *
     get_msg_qname) (axis2_wsdl_ext_soap_header_t *ext_soap_header,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_msg_qname) (axis2_wsdl_ext_soap_header_t *ext_soap_header,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *msg_qname);
      
     axis2_qname_t *(AXIS2_CALL *
     get_qelement) (axis2_wsdl_ext_soap_header_t *ext_soap_header,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_qelement) (axis2_wsdl_ext_soap_header_t *ext_soap_header,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *qelement);
      
 };
@@ -100,7 +100,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_header
  * @return pointer to newly created wsdl ext_soap_header
  */
 AXIS2_DECLARE(axis2_wsdl_ext_soap_header_t *) 
-axis2_wsdl_ext_soap_header_create (axis2_env_t **env,
+axis2_wsdl_ext_soap_header_create (const axis2_env_t *env,
                                     axis2_qname_t *qtype);
 
 /*************************** Function macros **********************************/

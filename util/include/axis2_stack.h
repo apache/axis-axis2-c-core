@@ -55,20 +55,20 @@ AXIS2_DECLARE_DATA struct axis2_stack_ops
      
     axis2_status_t (AXIS2_CALL*
     free)(axis2_stack_t *stack,
-          axis2_env_t **env);      
+          const axis2_env_t *env);      
        
     void* (AXIS2_CALL*
     pop)(axis2_stack_t *stack,
-         axis2_env_t **env); 
+         const axis2_env_t *env); 
     
     axis2_status_t (AXIS2_CALL *
     push)(axis2_stack_t *stack,
-          axis2_env_t **env,
+          const axis2_env_t *env,
           void* value);
           
     int (AXIS2_CALL *
     size)(axis2_stack_t *stack,
-          axis2_env_t **env);
+          const axis2_env_t *env);
     /** 
      * returns the last put value from the stack
      * without removing it from stack
@@ -76,11 +76,11 @@ AXIS2_DECLARE_DATA struct axis2_stack_ops
           
     void* (AXIS2_CALL *
     get)(axis2_stack_t *stack,
-         axis2_env_t **env);  
+         const axis2_env_t *env);  
          
     void* (AXIS2_CALL *
     get_at)(axis2_stack_t *stack,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             int i);
                                        
           
@@ -92,7 +92,7 @@ struct axis2_stack
 };
 
 AXIS2_DECLARE(axis2_stack_t *)
-axis2_stack_create(axis2_env_t **env);
+axis2_stack_create(const axis2_env_t *env);
  
  
 /*************MACROS ********************************************************/

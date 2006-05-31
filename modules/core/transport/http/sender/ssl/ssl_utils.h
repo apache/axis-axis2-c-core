@@ -30,14 +30,14 @@ extern "C"
 BIO *bio_err = 0;
 
 AXIS2_DECLARE (SSL_CTX *)
-axis2_ssl_utils_initialize_ctx(axis2_env_t **env);
+axis2_ssl_utils_initialize_ctx(const axis2_env_t *env);
 
 AXIS2_DECLARE (SSL *)
-axis2_ssl_utils_initialize_ssl(axis2_env_t **env, SSL_CTX *ctx, 
+axis2_ssl_utils_initialize_ssl(const axis2_env_t *env, SSL_CTX *ctx, 
                         axis2_socket_t socket);
                         
 AXIS2_DECLARE (axis2_status_t)
-axis2_ssl_utils_cleanup_ssl(axis2_env_t **env, SSL_CTX *ctx, SSL *ssl);
+axis2_ssl_utils_cleanup_ssl(const axis2_env_t *env, SSL_CTX *ctx, SSL *ssl);
 
 #ifdef __cplusplus
 }

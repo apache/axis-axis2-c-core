@@ -61,25 +61,25 @@ struct axis2_woden_documentation_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_documentation_element_free) (
             void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_content) (void *doc_el,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         void *doc_elem);
 
     void *(AXIS2_CALL *
     get_content) (void *doc_el,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 };
 
@@ -93,7 +93,7 @@ struct axis2_woden_documentation_element
 axis2_status_t AXIS2_CALL
 axis2_woden_documentation_element_resolve_methods(
         axis2_woden_documentation_element_t *documentation_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

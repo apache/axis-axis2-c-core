@@ -58,7 +58,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_types_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_types_t *wsdl_types,
-		    axis2_env_t **env);
+		    const axis2_env_t *env);
     /**
      * Adds the <code>ExtensionElement</code> to the map keyed with the 
      * <code>axis2_qname_t</code>
@@ -67,7 +67,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_types_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_element) (axis2_wsdl_types_t *wsdl_types,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     struct axis2_wsdl_extensible_element *element);
 
 
@@ -80,7 +80,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_types_ops
      */
     struct axis2_wsdl_extensible_element *(AXIS2_CALL *
     get_first_element) (axis2_wsdl_types_t *wsdl_types,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_qname_t *qname);
 
 
@@ -101,7 +101,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_types
  * @return pointer to newly created wsdl property
  */
 AXIS2_DECLARE(axis2_wsdl_types_t *) 
-axis2_wsdl_types_create (axis2_env_t **env);
+axis2_wsdl_types_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

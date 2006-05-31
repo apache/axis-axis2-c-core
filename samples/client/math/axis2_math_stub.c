@@ -18,7 +18,7 @@
 
 
 axis2_stub_t * 
-axis2_math_stub_create_with_endpoint_ref_and_client_home(axis2_env_t **env,
+axis2_math_stub_create_with_endpoint_ref_and_client_home(const axis2_env_t *env,
                                             axis2_endpoint_ref_t *endpoint_ref,
                                             axis2_char_t *client_home)
 {
@@ -31,14 +31,14 @@ axis2_math_stub_create_with_endpoint_ref_and_client_home(axis2_env_t **env,
             client_home);
     if(NULL == stub)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     axis2_populate_axis_service( stub, env);
     return stub;
 }
 
-void axis2_populate_axis_service( axis2_stub_t* stub, axis2_env_t** env)
+void axis2_populate_axis_service( axis2_stub_t* stub, const axis2_env_t *env)
 {
    axis2_svc_client_t* svc_client = NULL;
    axis2_qname_t *svc_qname =  NULL;
@@ -74,7 +74,7 @@ void axis2_populate_axis_service( axis2_stub_t* stub, axis2_env_t** env)
 }
 
 axis2_stub_t *
-axis2_math_stub_create_with_endpoint_uri_and_client_home(axis2_env_t **env,
+axis2_math_stub_create_with_endpoint_uri_and_client_home(const axis2_env_t *env,
                                             axis2_char_t *endpoint_uri,
                                             axis2_char_t *client_home)
 {
@@ -87,7 +87,7 @@ axis2_math_stub_create_with_endpoint_uri_and_client_home(axis2_env_t **env,
             client_home);
 	if(NULL == stub)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -100,7 +100,7 @@ axis2_math_stub_create_with_endpoint_uri_and_client_home(axis2_env_t **env,
 
 axis2_om_node_t *
 axis2_math_stub_add(axis2_stub_t *stub,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_om_node_t *node)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -118,7 +118,7 @@ axis2_math_stub_add(axis2_stub_t *stub,
 
 axis2_om_node_t *
 axis2_math_stub_sub(axis2_stub_t *stub,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_om_node_t *node)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -136,7 +136,7 @@ axis2_math_stub_sub(axis2_stub_t *stub,
 
 axis2_om_node_t *
 axis2_math_stub_mul(axis2_stub_t *stub,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_om_node_t *node)
 {
     axis2_svc_client_t *svc_client = NULL;
@@ -154,7 +154,7 @@ axis2_math_stub_mul(axis2_stub_t *stub,
 
 axis2_om_node_t *
 axis2_math_stub_div(axis2_stub_t *stub,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_om_node_t *node)
 {
     axis2_svc_client_t *svc_client = NULL;

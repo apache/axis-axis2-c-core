@@ -24,9 +24,9 @@
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
 
-axis2_om_node_t *axis2_math_add(axis2_env_t **env, axis2_om_node_t *node);
-axis2_om_node_t *axis2_math_sub(axis2_env_t **env, axis2_om_node_t *node);
-axis2_om_node_t *axis2_math_mul(axis2_env_t **env, axis2_om_node_t *node);
-axis2_om_node_t *axis2_math_div(axis2_env_t **env, axis2_om_node_t *node);
+axis2_om_node_t *axis2_math_add(const axis2_env_t *env, axis2_om_node_t *node);
+axis2_om_node_t *axis2_math_sub(const axis2_env_t *env, axis2_om_node_t *node);
+axis2_om_node_t *axis2_math_mul(const axis2_env_t *env, axis2_om_node_t *node);
+axis2_om_node_t *axis2_math_div(const axis2_env_t *env, axis2_om_node_t *node);
 
 #endif /* MATH_H*/

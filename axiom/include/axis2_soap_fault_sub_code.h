@@ -55,19 +55,19 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
 		free_fn)(axis2_soap_fault_sub_code_t *fault_sub_code,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
                                      
         axis2_soap_fault_sub_code_t* (AXIS2_CALL *
 		get_sub_code)(axis2_soap_fault_sub_code_t *fault_sub_code,
-                      axis2_env_t **env);
+                      const axis2_env_t *env);
                                      
         struct axis2_soap_fault_value* (AXIS2_CALL *
 		get_value)(axis2_soap_fault_sub_code_t *fault_sub_code,
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
                                      
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node) (axis2_soap_fault_sub_code_t *fault_sub_code,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
         };      
 
@@ -87,11 +87,11 @@ extern "C"
     * @param env Environment. MUST NOT be NULL
     */
 AXIS2_DECLARE(axis2_soap_fault_sub_code_t *)
-axis2_soap_fault_sub_code_create_with_parent(axis2_env_t **env,
+axis2_soap_fault_sub_code_create_with_parent(const axis2_env_t *env,
                             axis2_soap_fault_code_t *fault_code);
                             
 AXIS2_DECLARE(axis2_soap_fault_sub_code_t *)
-axis2_soap_fault_sub_code_create_with_parent_value(axis2_env_t **env,
+axis2_soap_fault_sub_code_create_with_parent_value(const axis2_env_t *env,
                             axis2_soap_fault_code_t *fault_code,
                             axis2_char_t *value);                            
 

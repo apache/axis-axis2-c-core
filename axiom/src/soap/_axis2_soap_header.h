@@ -40,25 +40,25 @@ extern "C"
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_set_base_node(axis2_soap_header_t *header,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_om_node_t *node);
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_set_soap_version(axis2_soap_header_t *header,
-                                   axis2_env_t **env,
+                                   const axis2_env_t *env,
                                    int soap_version);                                                                                                                                                                                                       
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_set_header_block(axis2_soap_header_t *header,
-                                   axis2_env_t **env,
+                                   const axis2_env_t *env,
                                    struct axis2_soap_header_block *header_block);
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_set_builder(axis2_soap_header_t *header,
-                              axis2_env_t **env,
+                              const axis2_env_t *env,
                               struct axis2_soap_builder *builder); 
     
     
 AXIS2_DECLARE(axis2_soap_header_t *)
-axis2_soap_header_create(axis2_env_t **env);    
+axis2_soap_header_create(const axis2_env_t *env);    
     
 /** @} */
     

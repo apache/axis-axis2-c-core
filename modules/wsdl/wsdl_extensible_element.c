@@ -38,46 +38,46 @@ typedef struct axis2_wsdl_extensible_element_impl
 axis2_status_t AXIS2_CALL
 	axis2_wsdl_extensible_element_free (
                 axis2_wsdl_extensible_element_t *extensible_element,
-				axis2_env_t **env);
+				const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 axis2_wsdl_extensible_element_is_required(
                             axis2_wsdl_extensible_element_t *extensible_element,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_extensible_element_set_required(
                             axis2_wsdl_extensible_element_t *extensible_element,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_bool_t required);
 
 axis2_qname_t *AXIS2_CALL
 axis2_wsdl_extensible_element_get_type(
                             axis2_wsdl_extensible_element_t *extensible_element,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_extensible_element_set_type(
                             axis2_wsdl_extensible_element_t *extensible_element,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *type);
                         
 /************************** End of function prototypes ************************/
 
 axis2_wsdl_extensible_element_t * AXIS2_CALL 
-axis2_wsdl_extensible_element_create (axis2_env_t **env)
+axis2_wsdl_extensible_element_create (const axis2_env_t *env)
 {
     axis2_wsdl_extensible_element_impl_t *extensible_element_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
 	extensible_element_impl = (axis2_wsdl_extensible_element_impl_t *) 
-        AXIS2_MALLOC((*env)->allocator, sizeof(axis2_wsdl_extensible_element_impl_t));
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_wsdl_extensible_element_impl_t));
 	
 	
 	if(NULL == extensible_element_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
     
@@ -85,12 +85,12 @@ axis2_wsdl_extensible_element_create (axis2_env_t **env)
     extensible_element_impl->extensible_element.ops = NULL;
     
 	extensible_element_impl->extensible_element.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_extensible_element_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_extensible_element_ops_t));
 	if(NULL == extensible_element_impl->extensible_element.ops)
     {
         axis2_wsdl_extensible_element_free(&(extensible_element_impl->
             extensible_element), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -115,11 +115,11 @@ axis2_wsdl_extensible_element_create (axis2_env_t **env)
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_extensible_element_free (
                         axis2_wsdl_extensible_element_t *extensible_element, 
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	if(NULL != extensible_element->ops)
-        AXIS2_FREE((*env)->allocator, extensible_element->ops);
+        AXIS2_FREE(env->allocator, extensible_element->ops);
     
     if(NULL != AXIS2_INTF_TO_IMPL(extensible_element)->type)
     {
@@ -129,7 +129,7 @@ axis2_wsdl_extensible_element_free (
         
     }
     
-    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(extensible_element));
+    AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(extensible_element));
     
 	return AXIS2_SUCCESS;
 }
@@ -137,7 +137,7 @@ axis2_wsdl_extensible_element_free (
 axis2_bool_t AXIS2_CALL
 axis2_wsdl_extensible_element_is_required(
                             axis2_wsdl_extensible_element_t *extensible_element,
-                            axis2_env_t **env) 
+                            const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     return AXIS2_INTF_TO_IMPL(extensible_element)->required;
@@ -146,7 +146,7 @@ axis2_wsdl_extensible_element_is_required(
 axis2_status_t AXIS2_CALL
 axis2_wsdl_extensible_element_set_required(
                             axis2_wsdl_extensible_element_t *extensible_element,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_bool_t required) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
@@ -158,7 +158,7 @@ axis2_wsdl_extensible_element_set_required(
 axis2_qname_t *AXIS2_CALL
 axis2_wsdl_extensible_element_get_type(
                             axis2_wsdl_extensible_element_t *extensible_element,
-                            axis2_env_t **env) 
+                            const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(extensible_element)->type;
@@ -167,14 +167,14 @@ axis2_wsdl_extensible_element_get_type(
 axis2_status_t AXIS2_CALL
 axis2_wsdl_extensible_element_set_type(
                             axis2_wsdl_extensible_element_t *extensible_element,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *type) 
 {
     axis2_wsdl_extensible_element_impl_t *extensible_element_impl = 
         AXIS2_INTF_TO_IMPL(extensible_element);
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, type, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, type, AXIS2_FAILURE);
     
     if(extensible_element_impl->type)
     {
@@ -185,7 +185,7 @@ axis2_wsdl_extensible_element_set_type(
     extensible_element_impl->type = AXIS2_QNAME_CLONE(type, env);
     if(!extensible_element_impl->type)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     } 
     return AXIS2_SUCCESS;

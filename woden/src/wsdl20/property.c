@@ -53,118 +53,118 @@ struct axis2_woden_property_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_property_free(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_woden_property_super_objs(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_property_type(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_documentable_t *AXIS2_CALL
 axis2_woden_property_get_base_impl(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_ref(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_url_t *ref);
 
 axis2_url_t *AXIS2_CALL
 axis2_woden_property_get_ref(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_parent_element(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_wsdl_element_t *parent);
 
 void *AXIS2_CALL
 axis2_woden_property_get_parent_element(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_property_get_parent(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_property_to_element(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_value(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *value);
 
 void *AXIS2_CALL
 axis2_woden_property_get_value(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_value_constraint(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *type_def);
 
 void *AXIS2_CALL
 axis2_woden_property_get_value_constraint(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_constraint_qname(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *type_def);
 
 axis2_qname_t *AXIS2_CALL
 axis2_woden_property_get_constraint_qname(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_property_get_constraint(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_types(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *types);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_has_value_token(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_bool_t b);
 
 axis2_bool_t AXIS2_CALL
 axis2_woden_property_has_value_token(
         void *property,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 static axis2_woden_property_t *
-create(axis2_env_t **env);
+create(const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_woden_property_t *)
 axis2_woden_property_to_property_element(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
    
@@ -177,7 +177,7 @@ axis2_woden_property_to_property_element(
         property_impl = (axis2_woden_property_impl_t *) property;
 
     property_impl->property.base.property_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_property_element_ops_t));
     axis2_woden_property_element_resolve_methods(&(property_impl->property.base.
             property_element), env, property_impl->methods);
@@ -187,7 +187,7 @@ axis2_woden_property_to_property_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_to_property_element_free(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -196,7 +196,7 @@ axis2_woden_property_to_property_element_free(
 
     if(property_impl->property.base.property_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 property_element.ops);
         property_impl->property.base.property_element.ops = NULL;
     }
@@ -206,7 +206,7 @@ axis2_woden_property_to_property_element_free(
 AXIS2_DECLARE(axis2_woden_property_t *)
 axis2_woden_property_to_nested_element(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
    
@@ -219,7 +219,7 @@ axis2_woden_property_to_nested_element(
         property_impl = (axis2_woden_property_impl_t *) property;
 
     property_impl->property.base.property_element.base.nested_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_nested_element_ops_t));
     axis2_woden_nested_element_resolve_methods(&(property_impl->property.base.
             property_element.base.nested_element), env, property_impl->methods);
@@ -229,7 +229,7 @@ axis2_woden_property_to_nested_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_to_nested_element_free(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -238,7 +238,7 @@ axis2_woden_property_to_nested_element_free(
 
     if(property_impl->property.base.property_element.base.nested_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 property_element.base.nested_element.ops);
         property_impl->property.base.property_element.base.nested_element.ops = 
             NULL;
@@ -249,7 +249,7 @@ axis2_woden_property_to_nested_element_free(
 AXIS2_DECLARE(axis2_woden_property_t *)
 axis2_woden_property_to_documentable_element(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
    
@@ -262,7 +262,7 @@ axis2_woden_property_to_documentable_element(
         property_impl = (axis2_woden_property_impl_t *) property;
 
     property_impl->property.base.property_element.base.documentable_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_documentable_element_ops_t));
     axis2_woden_documentable_element_resolve_methods(&(property_impl->property.base.
             property_element.base.documentable_element), env, 
@@ -273,7 +273,7 @@ axis2_woden_property_to_documentable_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_to_documentable_element_free(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -282,7 +282,7 @@ axis2_woden_property_to_documentable_element_free(
 
     if(property_impl->property.base.property_element.base.documentable_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 property_element.base.documentable_element.ops);
         property_impl->property.base.property_element.base.documentable_element.ops = 
             NULL;
@@ -293,7 +293,7 @@ axis2_woden_property_to_documentable_element_free(
 AXIS2_DECLARE(axis2_woden_property_t *)
 axis2_woden_property_to_documentable(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
    
@@ -306,7 +306,7 @@ axis2_woden_property_to_documentable(
         property_impl = (axis2_woden_property_impl_t *) property;
 
     property_impl->property.base.documentable.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_documentable_ops_t));
     axis2_woden_documentable_resolve_methods(&(property_impl->property.base.
             documentable), env, property_impl->documentable, property_impl->methods);
@@ -316,7 +316,7 @@ axis2_woden_property_to_documentable(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_to_documentable_free(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -325,7 +325,7 @@ axis2_woden_property_to_documentable_free(
 
     if(property_impl->property.base.documentable.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 documentable.ops);
         property_impl->property.base.documentable.ops = NULL;
     }
@@ -335,7 +335,7 @@ axis2_woden_property_to_documentable_free(
 AXIS2_DECLARE(axis2_woden_property_t *)
 axis2_woden_property_to_wsdl_obj(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     axis2_woden_wsdl_obj_t *wsdl_obj = NULL;
@@ -349,7 +349,7 @@ axis2_woden_property_to_wsdl_obj(
         property_impl = (axis2_woden_property_impl_t *) property;
 
     property_impl->property.base.documentable.base.wsdl_obj.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_wsdl_obj_ops_t));
     wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(
             property_impl->documentable, env);
@@ -361,7 +361,7 @@ axis2_woden_property_to_wsdl_obj(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_to_wsdl_obj_free(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -370,7 +370,7 @@ axis2_woden_property_to_wsdl_obj_free(
 
     if(property_impl->property.base.documentable.base.wsdl_obj.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 documentable.base.wsdl_obj.ops);
         property_impl->property.base.documentable.base.wsdl_obj.ops = NULL;
     }
@@ -380,7 +380,7 @@ axis2_woden_property_to_wsdl_obj_free(
 AXIS2_DECLARE(axis2_woden_property_t *)
 axis2_woden_property_to_nested_component(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     
@@ -393,7 +393,7 @@ axis2_woden_property_to_nested_component(
         property_impl = (axis2_woden_property_impl_t *) property;
   
     property_impl->property.base.nested_component.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_nested_component_ops_t));
     axis2_woden_nested_component_resolve_methods(&(property_impl->property.base.
             nested_component), env, property_impl->methods);
@@ -403,7 +403,7 @@ axis2_woden_property_to_nested_component(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_to_nested_component_free(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -412,7 +412,7 @@ axis2_woden_property_to_nested_component_free(
 
     if(property_impl->property.base.nested_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 nested_component.ops);
         property_impl->property.base.nested_component.ops = NULL;
     }
@@ -422,7 +422,7 @@ axis2_woden_property_to_nested_component_free(
 AXIS2_DECLARE(axis2_woden_property_t *)
 axis2_woden_property_to_wsdl_component(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -435,7 +435,7 @@ axis2_woden_property_to_wsdl_component(
     else
         property_impl = (axis2_woden_property_impl_t *) property;
     property_impl->property.base.nested_component.wsdl_component.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_woden_wsdl_component_ops_t));
     axis2_woden_wsdl_component_resolve_methods(&(property_impl->property.base.
             nested_component.wsdl_component), env, property_impl->methods);
@@ -445,7 +445,7 @@ axis2_woden_property_to_wsdl_component(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_to_wsdl_component_free(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -454,7 +454,7 @@ axis2_woden_property_to_wsdl_component_free(
 
     if(property_impl->property.base.nested_component.wsdl_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 nested_component.wsdl_component.ops);
         property_impl->property.base.nested_component.wsdl_component.ops = NULL;
     }
@@ -464,7 +464,7 @@ axis2_woden_property_to_wsdl_component_free(
 AXIS2_DECLARE(axis2_woden_property_t *)
 axis2_woden_property_to_attr_extensible(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -479,7 +479,7 @@ axis2_woden_property_to_attr_extensible(
 
     property_impl->property.base.documentable.base.wsdl_obj.base.
             wsdl_element.base.attr_extensible.ops =
-            AXIS2_MALLOC((*env)->allocator, 
+            AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_attr_extensible_ops_t));
     axis2_woden_attr_extensible_resolve_methods(&(property_impl->property.base.
             documentable.base.wsdl_obj.base.wsdl_element.base.attr_extensible), 
@@ -491,7 +491,7 @@ axis2_woden_property_to_attr_extensible(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_to_attr_extensible_free(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -501,7 +501,7 @@ axis2_woden_property_to_attr_extensible_free(
     if(property_impl->property.base.documentable.base.wsdl_obj.base.
             wsdl_element.base.attr_extensible.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.documentable.
+        AXIS2_FREE(env->allocator, property_impl->property.base.documentable.
                 base.wsdl_obj.base.wsdl_element.base.attr_extensible.ops);
         property_impl->property.base.documentable.base.wsdl_obj.base.wsdl_element.
                 base.attr_extensible.ops = NULL;
@@ -512,7 +512,7 @@ axis2_woden_property_to_attr_extensible_free(
 AXIS2_DECLARE(axis2_woden_property_t *)
 axis2_woden_property_to_element_extensible(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -525,7 +525,7 @@ axis2_woden_property_to_element_extensible(
     else
         property_impl = (axis2_woden_property_impl_t *) property;
         property_impl->property.base.documentable.base.wsdl_obj.base.wsdl_element.
-                base.element_extensible.ops = AXIS2_MALLOC((*env)->allocator, 
+                base.element_extensible.ops = AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_element_extensible_ops_t));
     axis2_woden_element_extensible_resolve_methods(&(property_impl->property.base.
             documentable.base.wsdl_obj.base.wsdl_element.base.element_extensible), 
@@ -537,7 +537,7 @@ axis2_woden_property_to_element_extensible(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_to_element_extensible_free(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -547,7 +547,7 @@ axis2_woden_property_to_element_extensible_free(
     if(property_impl->property.base.documentable.base.wsdl_obj.base.
             wsdl_element.base.element_extensible.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.documentable.
+        AXIS2_FREE(env->allocator, property_impl->property.base.documentable.
                 base.wsdl_obj.base.wsdl_element.base.element_extensible.ops);
         property_impl->property.base.documentable.base.wsdl_obj.base.wsdl_element.
                 base.element_extensible.ops = NULL;
@@ -557,12 +557,12 @@ axis2_woden_property_to_element_extensible_free(
 
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_property_t *
-create(axis2_env_t **env)
+create(const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    property_impl = AXIS2_MALLOC((*env)->allocator, 
+    property_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_property_impl_t));
 
     property_impl->obj_type= AXIS2_WODEN_PROPERTY;
@@ -589,7 +589,7 @@ create(axis2_env_t **env)
     property_impl->property.base.documentable.base.wsdl_obj.base.wsdl_element.
             base.element_extensible.ops = NULL;
     
-    property_impl->property.ops = AXIS2_MALLOC((*env)->allocator, 
+    property_impl->property.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_property_ops_t));
 
     property_impl->property.ops->free = axis2_woden_property_free;
@@ -607,7 +607,7 @@ create(axis2_env_t **env)
     property_impl->methods = axis2_hash_make(env);
     if(!property_impl->methods) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(property_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -697,7 +697,7 @@ create(axis2_env_t **env)
 }
 
 AXIS2_DECLARE(axis2_woden_property_t *)
-axis2_woden_property_create(axis2_env_t **env)
+axis2_woden_property_create(const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
    
@@ -709,7 +709,7 @@ axis2_woden_property_create(axis2_env_t **env)
     property_impl->super = axis2_hash_make(env);
     if(!property_impl->super) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(property_impl->super, "AXIS2_WODEN_PROPERTY", 
@@ -722,7 +722,7 @@ axis2_woden_property_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_woden_property_free(void *property,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -757,14 +757,14 @@ axis2_woden_property_free(void *property,
 
     if(property_impl->property.base.property_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 property_element.ops);
         property_impl->property.base.property_element.ops = NULL;
     }
 
     if(property_impl->property.base.property_element.base.nested_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 property_element.base.nested_element.ops);
         property_impl->property.base.property_element.base.nested_element.ops = 
             NULL;
@@ -772,7 +772,7 @@ axis2_woden_property_free(void *property,
     
     if(property_impl->property.base.property_element.base.documentable_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 property_element.base.documentable_element.ops);
         property_impl->property.base.property_element.base.documentable_element.ops = 
             NULL;
@@ -780,7 +780,7 @@ axis2_woden_property_free(void *property,
     
     if(property_impl->property.base.documentable.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 documentable.ops);
         property_impl->property.base.documentable.ops = 
             NULL;
@@ -788,7 +788,7 @@ axis2_woden_property_free(void *property,
     
     if(property_impl->property.base.documentable.base.wsdl_obj.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 documentable.base.wsdl_obj.ops);
         property_impl->property.base.documentable.base.wsdl_obj.ops = 
             NULL;
@@ -796,14 +796,14 @@ axis2_woden_property_free(void *property,
 
     if(property_impl->property.base.nested_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 nested_component.ops);
         property_impl->property.base.nested_component.ops = NULL;
     }
 
     if(property_impl->property.base.nested_component.wsdl_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.
+        AXIS2_FREE(env->allocator, property_impl->property.base.
                 nested_component.wsdl_component.ops);
         property_impl->property.base.nested_component.wsdl_component.ops = NULL;
     }
@@ -812,7 +812,7 @@ axis2_woden_property_free(void *property,
     if(property_impl->property.base.documentable.base.wsdl_obj.base.
             wsdl_element.base.attr_extensible.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.documentable.
+        AXIS2_FREE(env->allocator, property_impl->property.base.documentable.
                 base.wsdl_obj.base.wsdl_element.base.attr_extensible.ops);
         property_impl->property.base.documentable.base.wsdl_obj.base.wsdl_element.
                 base.attr_extensible.ops = NULL;
@@ -821,20 +821,20 @@ axis2_woden_property_free(void *property,
     if(property_impl->property.base.documentable.base.wsdl_obj.base.
             wsdl_element.base.element_extensible.ops)
     {
-        AXIS2_FREE((*env)->allocator, property_impl->property.base.documentable.
+        AXIS2_FREE(env->allocator, property_impl->property.base.documentable.
                 base.wsdl_obj.base.wsdl_element.base.element_extensible.ops);
         property_impl->property.base.documentable.base.wsdl_obj.base.wsdl_element.
                 base.element_extensible.ops = NULL;
     }
     if((&(property_impl->property))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(property_impl->property))->ops);
+        AXIS2_FREE(env->allocator, (&(property_impl->property))->ops);
         (&(property_impl->property))->ops = NULL;
     }
     
     if(property_impl)
     {
-        AXIS2_FREE((*env)->allocator, property_impl);
+        AXIS2_FREE(env->allocator, property_impl);
         property_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -843,7 +843,7 @@ axis2_woden_property_free(void *property,
 axis2_hash_t *AXIS2_CALL
 axis2_woden_property_super_objs(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -856,7 +856,7 @@ axis2_woden_property_super_objs(
 axis2_woden_obj_types_t AXIS2_CALL
 axis2_woden_property_type(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -868,7 +868,7 @@ axis2_woden_property_type(
 
 axis2_woden_documentable_t *AXIS2_CALL
 axis2_woden_property_get_base_impl(void *property,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
 
@@ -881,14 +881,14 @@ axis2_woden_property_get_base_impl(void *property,
 axis2_status_t AXIS2_CALL
 axis2_woden_property_resolve_methods(
         axis2_woden_property_t *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_property_t *property_impl,
         axis2_hash_t *methods)
 {
     axis2_woden_property_impl_t *property_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     property_impl_l = INTF_TO_IMPL(property_impl);
     
     property->ops->free = axis2_hash_get(methods, "free", 
@@ -936,7 +936,7 @@ axis2_woden_property_resolve_methods(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_ref(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_url_t *ref)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
@@ -958,7 +958,7 @@ axis2_woden_property_set_ref(
 axis2_url_t *AXIS2_CALL
 axis2_woden_property_get_ref(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -974,7 +974,7 @@ axis2_woden_property_get_ref(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_parent_element(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_wsdl_element_t *parent)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
@@ -996,7 +996,7 @@ axis2_woden_property_set_parent_element(
 void *AXIS2_CALL
 axis2_woden_property_get_parent_element(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1012,7 +1012,7 @@ axis2_woden_property_get_parent_element(
 void *AXIS2_CALL
 axis2_woden_property_get_parent(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1028,7 +1028,7 @@ axis2_woden_property_get_parent(
 void *AXIS2_CALL
 axis2_woden_property_to_element(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1044,7 +1044,7 @@ axis2_woden_property_to_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_value(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *value)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
@@ -1067,7 +1067,7 @@ axis2_woden_property_set_value(
 void *AXIS2_CALL
 axis2_woden_property_get_value(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1083,7 +1083,7 @@ axis2_woden_property_get_value(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_value_constraint(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *type_def)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
@@ -1107,7 +1107,7 @@ axis2_woden_property_set_value_constraint(
 void *AXIS2_CALL
 axis2_woden_property_get_value_constraint(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1123,7 +1123,7 @@ axis2_woden_property_get_value_constraint(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_constraint_qname(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *constraint)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
@@ -1146,7 +1146,7 @@ axis2_woden_property_set_constraint_qname(
 axis2_qname_t *AXIS2_CALL
 axis2_woden_property_get_constraint_qname(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1162,7 +1162,7 @@ axis2_woden_property_get_constraint_qname(
 void *AXIS2_CALL
 axis2_woden_property_get_constraint(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     axis2_xml_schema_type_t *xst = NULL;
@@ -1185,7 +1185,7 @@ axis2_woden_property_get_constraint(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_types(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *types)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
@@ -1208,7 +1208,7 @@ axis2_woden_property_set_types(
 axis2_status_t AXIS2_CALL
 axis2_woden_property_set_has_value_token(
         void *property,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_bool_t b)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
@@ -1226,7 +1226,7 @@ axis2_woden_property_set_has_value_token(
 axis2_bool_t AXIS2_CALL
 axis2_woden_property_has_value_token(
         void *property,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;

@@ -56,7 +56,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
         free) (struct axis2_om_text *om_text,
-               axis2_env_t **env);
+               const axis2_env_t *env);
 
       /**
         * Serialize op
@@ -68,7 +68,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
         serialize) (struct axis2_om_text *om_text,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_om_output_t *om_output);
        /**
         *  set the text value
@@ -80,7 +80,7 @@ extern "C"
         */                                                
         axis2_status_t (AXIS2_CALL *
         set_value)(struct axis2_om_text *om_text,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    const axis2_char_t *value);
        /**
         *  get text value 
@@ -90,7 +90,7 @@ extern "C"
         */                                                
         axis2_char_t* (AXIS2_CALL *
         get_value)(struct axis2_om_text *om_text,
-                   axis2_env_t **env);                                               
+                   const axis2_env_t *env);                                               
        /**
         * set optimized 
         * @param om_text pointer to om_text struct
@@ -100,7 +100,7 @@ extern "C"
         */                                               
         axis2_status_t (AXIS2_CALL *
         set_optimize)(struct axis2_om_text *om_text,
-                      axis2_env_t **env,
+                      const axis2_env_t *env,
                       axis2_bool_t optimize);
 
        /**
@@ -111,16 +111,16 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
         set_is_binary)(struct axis2_om_text *om_text,
-                       axis2_env_t **env,
+                       const axis2_env_t *env,
                        axis2_bool_t is_binary);
         
         axis2_data_handler_t* (AXIS2_CALL *
         get_data_handler)(struct axis2_om_text *om_text,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
         
         axis2_char_t* (AXIS2_CALL *
         get_content_id)(struct axis2_om_text *om_text,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                                                                                                 
     } axis2_om_text_ops_t;
 
@@ -148,7 +148,7 @@ extern "C"
     * @return pointer to newly created text struct 
     */
     AXIS2_DECLARE(axis2_om_text_t *) 
-    axis2_om_text_create (axis2_env_t **env,
+    axis2_om_text_create (const axis2_env_t *env,
                           axis2_om_node_t *parent,
                           const axis2_char_t *value,
                           axis2_om_node_t ** node);
@@ -165,7 +165,7 @@ extern "C"
     * @return pointer to newly created text struct 
     */
     AXIS2_DECLARE(axis2_om_text_t*)
-    axis2_om_text_create_with_data_handler (axis2_env_t **env,
+    axis2_om_text_create_with_data_handler (const axis2_env_t *env,
                           axis2_om_node_t * parent,
                           axis2_data_handler_t* data_handler,
                           axis2_om_node_t **node);

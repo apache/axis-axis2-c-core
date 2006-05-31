@@ -25,7 +25,7 @@ axis2_threadattr_create(axis2_allocator_t *allocator)
     new = AXIS2_MALLOC(allocator, sizeof(axis2_threadattr_t));
 	if(NULL == new)
 	{
-		/*AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE)*/
+		/*AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE)*/
 		return NULL;
 	}
     new->detach = 0;
@@ -52,7 +52,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_threadattr_detach_set(
 }
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_threadattr_detach_get(axis2_threadattr_t *attr, axis2_env_t **env)
+axis2_threadattr_detach_get(axis2_threadattr_t *attr, const axis2_env_t *env)
 {
 	if (1 == attr->detach)
 	{
@@ -194,7 +194,7 @@ axis2_thread_detach(axis2_thread_t *thd)
 }
 
 AXIS2_DECLARE(axis2_os_thread_t)
-axis2_os_thread_get(axis2_thread_t *thd, axis2_env_t **env)
+axis2_os_thread_get(axis2_thread_t *thd, const axis2_env_t *env)
 {
 	return thd->td;
 }

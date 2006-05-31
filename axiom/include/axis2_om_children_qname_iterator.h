@@ -53,7 +53,7 @@ typedef struct axis2_om_children_qname_iterator axis2_om_children_qname_iterator
 		 */
         axis2_status_t (AXIS2_CALL *
 		free_fn)(axis2_om_children_qname_iterator_t *iterator,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
                              
         /**
         * Removes from the underlying collection the last element returned by the
@@ -64,7 +64,7 @@ typedef struct axis2_om_children_qname_iterator axis2_om_children_qname_iterator
         */                                              
         axis2_status_t (AXIS2_CALL *
 		remove)(axis2_om_children_qname_iterator_t *iterator,
-                axis2_env_t **env);
+                const axis2_env_t *env);
                              
        /**
         * Returns <tt>true</tt> if the iteration has more elements. (In other
@@ -74,14 +74,14 @@ typedef struct axis2_om_children_qname_iterator axis2_om_children_qname_iterator
         
         axis2_bool_t (AXIS2_CALL *
 		has_next)(axis2_om_children_qname_iterator_t *iterator,
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
     
        /**
         * Returns the next element in the iteration.
         */
         axis2_om_node_t* (AXIS2_CALL *
 		next)(axis2_om_children_qname_iterator_t *iterator,
-              axis2_env_t **env);
+              const axis2_env_t *env);
                              
                         
         
@@ -93,7 +93,7 @@ struct axis2_om_children_qname_iterator
 };
 
 AXIS2_DECLARE(axis2_om_children_qname_iterator_t *)
-axis2_om_children_qname_iterator_create(axis2_env_t **env,
+axis2_om_children_qname_iterator_create(const axis2_env_t *env,
                                         axis2_om_node_t *current_child,
                                         axis2_qname_t *given_qname);
  

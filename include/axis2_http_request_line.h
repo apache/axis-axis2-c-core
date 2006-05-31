@@ -48,23 +48,23 @@ AXIS2_DECLARE_DATA struct axis2_http_request_line_ops
 {
 	axis2_char_t* (AXIS2_CALL *get_method) 
                                 (axis2_http_request_line_t *request_line, 
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 	
 	axis2_char_t* (AXIS2_CALL *get_http_version) 
                                 (axis2_http_request_line_t *request_line, 
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
     
 	axis2_char_t* (AXIS2_CALL *get_uri) 
                                 (axis2_http_request_line_t *request_line, 
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
     
 	axis2_char_t* (AXIS2_CALL *to_string)
                                 (axis2_http_request_line_t *request_line, 
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 	
 	axis2_status_t (AXIS2_CALL *free) 
                                 (axis2_http_request_line_t *request_line, 
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 };
 
 /**
@@ -78,11 +78,11 @@ AXIS2_DECLARE_DATA struct axis2_http_request_line
 
 
 AXIS2_DECLARE(axis2_http_request_line_t *) 
-axis2_http_request_line_create(axis2_env_t **env, axis2_char_t *method, 
+axis2_http_request_line_create(const axis2_env_t *env, axis2_char_t *method, 
                                 axis2_char_t *uri, axis2_char_t *http_version);
 
 AXIS2_DECLARE(axis2_http_request_line_t*)
-axis2_http_request_line_parse_line(axis2_env_t **env, const axis2_char_t *str);
+axis2_http_request_line_parse_line(const axis2_env_t *env, const axis2_char_t *str);
 /********************* Start of function macros	***************************/
 
 #define AXIS2_HTTP_REQUEST_LINE_GET_METHOD(request_line, env) \

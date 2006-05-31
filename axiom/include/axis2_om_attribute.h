@@ -56,7 +56,7 @@ extern "C"
 
         axis2_status_t (AXIS2_CALL *
         free)(struct axis2_om_attribute *om_attribute,
-              axis2_env_t **env);
+              const axis2_env_t *env);
 
       /** 
         * Creates and returns a qname struct for this attribute
@@ -68,7 +68,7 @@ extern "C"
 
         axis2_qname_t * (AXIS2_CALL *
         get_qname)(struct axis2_om_attribute *om_attribute,
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
 
       /**
         * Serialize op
@@ -80,7 +80,7 @@ extern "C"
 
         int (AXIS2_CALL *
         serialize)(struct axis2_om_attribute *om_attribute,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    axis2_om_output_t *om_output);
        
        /**  returns the localname of this attribute
@@ -90,7 +90,7 @@ extern "C"
         */
         axis2_char_t* (AXIS2_CALL *
         get_localname)(struct axis2_om_attribute *om_attribute,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
        /**
         * returns value of this attribute 
         *@param om_attribute pointer to om_attribute struct 
@@ -99,7 +99,7 @@ extern "C"
         */
         axis2_char_t* (AXIS2_CALL *
         get_value)(struct axis2_om_attribute *om_attribute,
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
        /**
         * returns namespace of this attribute 
         *@param om_attribute
@@ -108,7 +108,7 @@ extern "C"
         */
         axis2_om_namespace_t* (AXIS2_CALL *
         get_namespace)(struct axis2_om_attribute *om_attribute,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
        
        /** sets the localname of the attribute
         *@param om_attribute pointer to om attribute struct. 
@@ -118,7 +118,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
         set_localname)(struct axis2_om_attribute *om_attribute,
-                       axis2_env_t **env,
+                       const axis2_env_t *env,
                        const axis2_char_t *localname);
        
        /** set the attribute value
@@ -130,7 +130,7 @@ extern "C"
         
         axis2_status_t (AXIS2_CALL *
         set_value)(struct axis2_om_attribute *om_attribute,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    const axis2_char_t *value);
        
        /** set namespace of the attribute
@@ -142,7 +142,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
         set_namespace)(struct axis2_om_attribute *om_attribute,
-                       axis2_env_t **env,
+                       const axis2_env_t *env,
                        axis2_om_namespace_t *om_namespace);
 
         /**
@@ -154,7 +154,7 @@ extern "C"
          */            
         struct axis2_om_attribute* (AXIS2_CALL *
         clone)(struct axis2_om_attribute *om_attribute,
-               axis2_env_t **env);
+               const axis2_env_t *env);
 
 
     } axis2_om_attribute_ops_t;
@@ -180,7 +180,7 @@ extern "C"
     *           error code set in environment's error. 
     */
     AXIS2_DECLARE(axis2_om_attribute_t *)
-    axis2_om_attribute_create (axis2_env_t **env,
+    axis2_om_attribute_create (const axis2_env_t *env,
                                const axis2_char_t *localname,
                                const axis2_char_t *value,
                                axis2_om_namespace_t *ns);
@@ -192,7 +192,7 @@ extern "C"
     AXIS2_DECLARE(axis2_status_t) 
     axis2_om_attribute_free_void_arg (
             void *om_attribute,
-            axis2_env_t **env);
+            const axis2_env_t *env);
      
 /******************** Macros **************************************************/
     

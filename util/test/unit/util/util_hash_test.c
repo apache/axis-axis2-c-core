@@ -14,7 +14,7 @@ void Testaxis2_hash_get(CuTest *tc)
 {
     printf("testing axis2_hash_get\n"); 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *environment =
+    const axis2_env_t *environment =
         axis2_env_create (allocator);
 
     axis2_hash_t *ht;
@@ -26,13 +26,13 @@ void Testaxis2_hash_get(CuTest *tc)
     const char *key1 = "key1";
 
     actual = (a *) AXIS2_MALLOC(environment->allocator, sizeof (a));
-    actual->value = AXIS2_STRDUP("value1", &environment);
+    actual->value = AXIS2_STRDUP("value1", environment);
 
-    ht = axis2_hash_make (&environment);
+    ht = axis2_hash_make (environment);
 
     axis2_hash_set (ht, key1, AXIS2_HASH_KEY_STRING, actual);
 
-    for (i = axis2_hash_first (ht, &environment); i; i = axis2_hash_next (&environment, i))
+    for (i = axis2_hash_first (ht, environment); i; i = axis2_hash_next (environment, i))
     {
         axis2_hash_this (i, NULL, NULL, &v);
     }
@@ -44,7 +44,7 @@ void Testaxis2_hash_get(CuTest *tc)
 void Testaxis2_hash_while(CuTest *tc)
 {
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *environment =
+    const axis2_env_t *environment =
         axis2_env_create (allocator);
 
     axis2_hash_t *ht;
@@ -68,23 +68,23 @@ void Testaxis2_hash_while(CuTest *tc)
     entry3 = (a *) AXIS2_MALLOC(environment->allocator, sizeof (a));
     
     expected = (a *) AXIS2_MALLOC(environment->allocator, sizeof (a));
-    expected->value = AXIS2_STRDUP("value2", &environment);
+    expected->value = AXIS2_STRDUP("value2", environment);
 
-    entry1->value = AXIS2_STRDUP("value1", &environment);
+    entry1->value = AXIS2_STRDUP("value1", environment);
 
-    ht = axis2_hash_make (&environment);
+    ht = axis2_hash_make (environment);
 
     axis2_hash_set (ht, key1, AXIS2_HASH_KEY_STRING, entry1);
     
-    entry2->value = AXIS2_STRDUP("value2", &environment);
+    entry2->value = AXIS2_STRDUP("value2", environment);
     
     axis2_hash_set (ht, key2, AXIS2_HASH_KEY_STRING, entry2);
     
-    entry3->value = AXIS2_STRDUP("value3", &environment);
+    entry3->value = AXIS2_STRDUP("value3", environment);
     
     axis2_hash_set (ht, key3, AXIS2_HASH_KEY_STRING, entry3);
 
-    index_i = axis2_hash_first (ht, &environment);
+    index_i = axis2_hash_first (ht, environment);
     do 
     {
         axis2_hash_this (index_i, &k, NULL, &v);
@@ -97,7 +97,7 @@ void Testaxis2_hash_while(CuTest *tc)
             break;
         }
         
-        index_i = axis2_hash_next (&environment, index_i);
+        index_i = axis2_hash_next (environment, index_i);
     
     }while(NULL != index_i);
     
@@ -112,5 +112,5 @@ void Testaxis2_hash_while(CuTest *tc)
     free(entry3);
     free(entry2->value);
     free(entry2);
-    axis2_hash_free(ht, &environment);
+    axis2_hash_free(ht, environment);
 }

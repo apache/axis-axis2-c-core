@@ -43,76 +43,76 @@ struct axis2_simple_http_svr_conn_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_close(axis2_simple_http_svr_conn_t *svr_conn, 
-						axis2_env_t **env);
+						const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 axis2_simple_http_svr_conn_is_open(axis2_simple_http_svr_conn_t *svr_conn, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_set_keep_alive 
                         (axis2_simple_http_svr_conn_t *svr_conn, 
-                        axis2_env_t **env, axis2_bool_t keep_alive);
+                        const axis2_env_t *env, axis2_bool_t keep_alive);
 
 axis2_bool_t AXIS2_CALL 
 axis2_simple_http_svr_conn_is_keep_alive(axis2_simple_http_svr_conn_t *svr_conn, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                                         
 axis2_stream_t* AXIS2_CALL 
 axis2_simple_http_svr_conn_get_stream(axis2_simple_http_svr_conn_t *svr_conn, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                                         
 axis2_http_response_writer_t* AXIS2_CALL 
 axis2_simple_http_svr_conn_get_writer(axis2_simple_http_svr_conn_t *svr_conn, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                                         
 axis2_http_simple_request_t* AXIS2_CALL 
 axis2_simple_http_svr_conn_read_request(axis2_simple_http_svr_conn_t *svr_conn, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                                         
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_write_response
                         (axis2_simple_http_svr_conn_t *svr_conn, 
-                        axis2_env_t **env, 
+                        const axis2_env_t *env, 
                         axis2_http_simple_response_t *response);
 						
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_set_rcv_timeout
 		                (axis2_simple_http_svr_conn_t *svr_conn, 
-        		        axis2_env_t **env, int timeout);
+        		        const axis2_env_t *env, int timeout);
 						
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_set_snd_timeout
                         (axis2_simple_http_svr_conn_t *svr_conn, 
-                        axis2_env_t **env, int timeout);
+                        const axis2_env_t *env, int timeout);
 int AXIS2_CALL 
 axis2_simple_http_svr_conn_read_request_body
                         (axis2_simple_http_svr_conn_t *svr_conn, 
-                        axis2_env_t **env, axis2_char_t *buffer, int size);
+                        const axis2_env_t *env, axis2_char_t *buffer, int size);
                         
 axis2_char_t * AXIS2_CALL
 axis2_simple_http_svr_conn_get_svr_ip
                         (axis2_simple_http_svr_conn_t *svr_conn, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                                 
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_free(axis2_simple_http_svr_conn_t *svr_conn, 
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
                                 
 /***************************** End of function headers ************************/
 
 axis2_simple_http_svr_conn_t* AXIS2_CALL
-axis2_simple_http_svr_conn_create (axis2_env_t **env, int sockfd)
+axis2_simple_http_svr_conn_create (const axis2_env_t *env, int sockfd)
 {
     axis2_simple_http_svr_conn_impl_t *svr_conn_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     svr_conn_impl = (axis2_simple_http_svr_conn_impl_t *)
-                        AXIS2_MALLOC ((*env)->allocator,
+                        AXIS2_MALLOC (env->allocator,
                             sizeof(axis2_simple_http_svr_conn_impl_t));
     
     if(NULL == svr_conn_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     svr_conn_impl->socket = sockfd;
@@ -130,13 +130,13 @@ axis2_simple_http_svr_conn_create (axis2_env_t **env, int sockfd)
 			return NULL;
 		}
 	}
-    svr_conn_impl->svr_conn.ops = AXIS2_MALLOC((*env)->allocator,
+    svr_conn_impl->svr_conn.ops = AXIS2_MALLOC(env->allocator,
         sizeof(axis2_simple_http_svr_conn_ops_t));
     if(NULL == svr_conn_impl->svr_conn.ops)
     {
         axis2_simple_http_svr_conn_free((axis2_simple_http_svr_conn_t *)
                                         svr_conn_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     svr_conn_impl->svr_conn.ops->close = axis2_simple_http_svr_conn_close;
@@ -166,7 +166,7 @@ axis2_simple_http_svr_conn_create (axis2_env_t **env, int sockfd)
 
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_free(axis2_simple_http_svr_conn_t *svr_conn, 
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_simple_http_svr_conn_impl_t *svr_conn_impl = 
                                     AXIS2_INTF_TO_IMPL(svr_conn);
@@ -174,11 +174,11 @@ axis2_simple_http_svr_conn_free(axis2_simple_http_svr_conn_t *svr_conn,
     axis2_simple_http_svr_conn_close(svr_conn, env);
 	if(NULL != svr_conn->ops)
     {
-        AXIS2_FREE((*env)->allocator, svr_conn->ops);
+        AXIS2_FREE(env->allocator, svr_conn->ops);
         svr_conn->ops = NULL;
     }
     
-    AXIS2_FREE((*env)->allocator, svr_conn_impl);
+    AXIS2_FREE(env->allocator, svr_conn_impl);
     svr_conn_impl = NULL;
     
     return AXIS2_SUCCESS;
@@ -187,7 +187,7 @@ axis2_simple_http_svr_conn_free(axis2_simple_http_svr_conn_t *svr_conn,
 
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_close(axis2_simple_http_svr_conn_t *svr_conn, 
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     axis2_simple_http_svr_conn_impl_t *svr_conn_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -205,7 +205,7 @@ axis2_simple_http_svr_conn_close(axis2_simple_http_svr_conn_t *svr_conn,
 
 axis2_bool_t AXIS2_CALL
 axis2_simple_http_svr_conn_is_open(axis2_simple_http_svr_conn_t *svr_conn, 
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     axis2_simple_http_svr_conn_impl_t *svr_conn_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -225,7 +225,7 @@ axis2_simple_http_svr_conn_is_open(axis2_simple_http_svr_conn_t *svr_conn,
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_set_keep_alive 
                                     (axis2_simple_http_svr_conn_t *svr_conn, 
-                                    axis2_env_t **env, axis2_bool_t keep_alive)
+                                    const axis2_env_t *env, axis2_bool_t keep_alive)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(svr_conn)->keep_alive = keep_alive;
@@ -235,7 +235,7 @@ axis2_simple_http_svr_conn_set_keep_alive
 
 axis2_bool_t AXIS2_CALL 
 axis2_simple_http_svr_conn_is_keep_alive(axis2_simple_http_svr_conn_t *svr_conn, 
-                                        axis2_env_t **env)
+                                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -245,7 +245,7 @@ axis2_simple_http_svr_conn_is_keep_alive(axis2_simple_http_svr_conn_t *svr_conn,
 
 axis2_stream_t* AXIS2_CALL 
 axis2_simple_http_svr_conn_get_stream(axis2_simple_http_svr_conn_t *svr_conn, 
-                                        axis2_env_t **env)
+                                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svr_conn)->stream;
@@ -254,7 +254,7 @@ axis2_simple_http_svr_conn_get_stream(axis2_simple_http_svr_conn_t *svr_conn,
 
 axis2_http_response_writer_t* AXIS2_CALL 
 axis2_simple_http_svr_conn_get_writer(axis2_simple_http_svr_conn_t *svr_conn, 
-                                        axis2_env_t **env)
+                                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return axis2_http_response_writer_create(env, 
@@ -265,7 +265,7 @@ axis2_simple_http_svr_conn_get_writer(axis2_simple_http_svr_conn_t *svr_conn,
 
 axis2_http_simple_request_t* AXIS2_CALL 
 axis2_simple_http_svr_conn_read_request(axis2_simple_http_svr_conn_t *svr_conn, 
-                                        axis2_env_t **env)
+                                        const axis2_env_t *env)
 {
 	axis2_char_t str_line[1024];
 	axis2_char_t tmp_buf[3];
@@ -312,7 +312,7 @@ axis2_simple_http_svr_conn_read_request(axis2_simple_http_svr_conn_t *svr_conn,
 	request_line = axis2_http_request_line_parse_line(env, str_line);
 	if(NULL == request_line)
 	{
-		AXIS2_ERROR_SET((*env)->error, 
+		AXIS2_ERROR_SET(env->error, 
 						AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, 
 						AXIS2_FAILURE);
 		return NULL;
@@ -362,7 +362,7 @@ axis2_simple_http_svr_conn_read_request(axis2_simple_http_svr_conn_t *svr_conn,
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_write_response
 						(axis2_simple_http_svr_conn_t *svr_conn, 
-						axis2_env_t **env, 
+						const axis2_env_t *env, 
 						axis2_http_simple_response_t *response)
 {
 	axis2_http_response_writer_t *response_writer = NULL;
@@ -378,7 +378,7 @@ axis2_simple_http_svr_conn_write_response
 	
 	
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, response, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, response, AXIS2_FAILURE);
 	
 	svr_conn_impl = AXIS2_INTF_TO_IMPL(svr_conn);
 	response_writer = axis2_http_response_writer_create(env, 
@@ -411,7 +411,7 @@ axis2_simple_http_svr_conn_write_response
 	status_line = AXIS2_HTTP_SIMPLE_RESPONSE_GET_STATUS_LINE(response, env);
 	if(NULL == status_line)
 	{
-		AXIS2_ERROR_SET((*env)->error, 
+		AXIS2_ERROR_SET(env->error, 
 						AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE, 
 						AXIS2_FAILURE);
 		AXIS2_HTTP_RESPONSE_WRITER_FREE(response_writer, env);
@@ -436,7 +436,7 @@ axis2_simple_http_svr_conn_write_response
 
 				AXIS2_HTTP_RESPONSE_WRITER_PRINT_STR(response_writer, env, 
 							header_ext_form);
-                AXIS2_FREE((*env)->allocator, header_ext_form);
+                AXIS2_FREE(env->allocator, header_ext_form);
 			}
 	    }
     }
@@ -457,7 +457,7 @@ axis2_simple_http_svr_conn_write_response
 						env, response_body);
 		if(AXIS2_SUCCESS != write_stat)
 		{
-			AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_WRITING_RESPONSE, 
+			AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_RESPONSE, 
 						AXIS2_FAILURE);
             AXIS2_HTTP_RESPONSE_WRITER_FREE(response_writer, env);
 			return AXIS2_FAILURE;
@@ -477,7 +477,7 @@ axis2_simple_http_svr_conn_write_response
 		AXIS2_HTTP_CHUNKED_STREAM_WRITE_LAST_CHUNK(chunked_stream, env);
 		AXIS2_HTTP_CHUNKED_STREAM_FREE(chunked_stream, env);
 	}
-    AXIS2_FREE((*env)->allocator, response_body);
+    AXIS2_FREE(env->allocator, response_body);
     AXIS2_HTTP_RESPONSE_WRITER_FREE(response_writer, env);
     return AXIS2_SUCCESS;
 }
@@ -485,7 +485,7 @@ axis2_simple_http_svr_conn_write_response
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_set_rcv_timeout
 		                (axis2_simple_http_svr_conn_t *svr_conn, 
-        		        axis2_env_t **env, int timeout)
+        		        const axis2_env_t *env, int timeout)
 {
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	return axis2_network_handler_set_sock_option(env, 
@@ -498,7 +498,7 @@ axis2_simple_http_svr_conn_set_rcv_timeout
 axis2_status_t AXIS2_CALL 
 axis2_simple_http_svr_conn_set_snd_timeout
                         (axis2_simple_http_svr_conn_t *svr_conn, 
-                        axis2_env_t **env, int timeout)
+                        const axis2_env_t *env, int timeout)
 {
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	return axis2_network_handler_set_sock_option(env, 
@@ -509,7 +509,7 @@ axis2_simple_http_svr_conn_set_snd_timeout
 axis2_char_t* AXIS2_CALL 
 axis2_simple_http_svr_conn_get_svr_ip(
                         axis2_simple_http_svr_conn_t *svr_conn, 
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return axis2_network_handler_get_svr_ip(env, 

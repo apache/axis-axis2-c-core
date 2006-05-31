@@ -55,11 +55,11 @@ struct axis2_wsdl_pump_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (axis2_wsdl_pump_t *wsdl_pump,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 	axis2_status_t (AXIS2_CALL *
 	pump) (axis2_wsdl_pump_t *wsdl_pump,
-						axis2_env_t **env);
+						const axis2_env_t *env);
 
 };
 
@@ -77,7 +77,7 @@ struct axis2_wsdl_pump
  * @return pointer to newly created wsdl_pump
  */
 AXIS2_DECLARE(axis2_wsdl_pump_t *) 
-axis2_wsdl_pump_create (axis2_env_t **env,
+axis2_wsdl_pump_create (const axis2_env_t *env,
 						struct axis2_wsdl_desc *wom_def,
 						void *wsdl_parser);
 

@@ -69,7 +69,7 @@ struct axis2_op_client_ops
      */
 	axis2_status_t (AXIS2_CALL *
 	set_options)(struct axis2_op_client *op_client,
-					axis2_env_t **env,
+					const axis2_env_t *env,
 					axis2_options_t *options);
 
 
@@ -82,7 +82,7 @@ struct axis2_op_client_ops
      */
 	axis2_options_t* (AXIS2_CALL *
 	get_options)(struct axis2_op_client *op_client,
-					axis2_env_t **env);
+					const axis2_env_t *env);
 
     /**
      * Add a message context to the client for processing. This method must not
@@ -93,7 +93,7 @@ struct axis2_op_client_ops
      */
 	axis2_status_t (AXIS2_CALL *
 	add_msg_ctx)(struct axis2_op_client *op_client,
-						axis2_env_t **env,
+						const axis2_env_t *env,
 						axis2_msg_ctx_t *mc);
 
 	/**
@@ -105,7 +105,7 @@ struct axis2_op_client_ops
      */
 	axis2_msg_ctx_t* (AXIS2_CALL *
 	get_msg_ctx)(struct axis2_op_client *op_client,
-							axis2_env_t **env,
+							const axis2_env_t *env,
 							axis2_char_t *message_label);
 
     /**
@@ -120,7 +120,7 @@ struct axis2_op_client_ops
      */
 	axis2_status_t (AXIS2_CALL *
 	set_callback)(struct axis2_op_client *op_client,
-					axis2_env_t **env,
+					const axis2_env_t *env,
 					axis2_callback_t *callback);
 
 	 /**
@@ -137,7 +137,7 @@ struct axis2_op_client_ops
      */
 	axis2_status_t (AXIS2_CALL *
 	execute)(struct axis2_op_client *op_client,
-				axis2_env_t **env,
+				const axis2_env_t *env,
 				axis2_bool_t block);
 
     /**
@@ -148,7 +148,7 @@ struct axis2_op_client_ops
      */
 	axis2_status_t (AXIS2_CALL *
 	reset)(struct axis2_op_client *op_client,
-				axis2_env_t **env);
+				const axis2_env_t *env);
 
     /**
      * To close the tranport if necessary , can call this method. The most usage of thie method
@@ -160,7 +160,7 @@ struct axis2_op_client_ops
      */
 	axis2_status_t (AXIS2_CALL *
 	compelete)(struct axis2_op_client *op_client,
-				axis2_env_t **env,
+				const axis2_env_t *env,
 				axis2_msg_ctx_t *mc);
 
 	/**
@@ -173,12 +173,12 @@ struct axis2_op_client_ops
     axis2_status_t (AXIS2_CALL *
     set_callback_recv)(
         struct axis2_op_client *op_client, 
-        axis2_env_t **env,
+        const axis2_env_t *env,
         struct axis2_callback_recv *callback_recv);
 
 	axis2_status_t (AXIS2_CALL *
 	free)(struct axis2_op_client *op_client,
-				axis2_env_t **env);
+				const axis2_env_t *env);
 };
 
 /** 
@@ -190,7 +190,7 @@ struct axis2_op_client
     axis2_op_client_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_op_client_t*) axis2_op_client_create(axis2_env_t **env,
+AXIS2_DECLARE(axis2_op_client_t*) axis2_op_client_create(const axis2_env_t *env,
 														axis2_op_t *op,
 														axis2_svc_ctx_t *svc_ctx,
 														axis2_options_t *options);

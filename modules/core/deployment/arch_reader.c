@@ -39,54 +39,54 @@ typedef struct axis2_arch_reader_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_arch_reader_free (axis2_arch_reader_t *arch_reader, 
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 struct axis2_svc *AXIS2_CALL
 axis2_arch_reader_create_svc(axis2_arch_reader_t *arch_reader,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_arch_file_data *file);
 
 axis2_status_t AXIS2_CALL
 axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *file_path,
                                     struct axis2_dep_engine *dep_engine,
                                     axis2_svc_grp_t *svc_grp);
 
 axis2_status_t AXIS2_CALL
 axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *file_path,
                                 struct axis2_dep_engine *dep_engine,
                                 struct axis2_svc_grp *svc_grp);
 
 axis2_status_t AXIS2_CALL
 axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *file_path,
                                     struct axis2_dep_engine *dep_engine,
                                     axis2_module_desc_t *module);
 axis2_file_t *AXIS2_CALL
 axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *module_name);
                               
 /************************** End of function prototypes ************************/
 
 AXIS2_DECLARE(axis2_arch_reader_t *)
-axis2_arch_reader_create (axis2_env_t **env)
+axis2_arch_reader_create (const axis2_env_t *env)
 {
     axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	arch_reader_impl = (axis2_arch_reader_impl_t *) AXIS2_MALLOC((*env)->
+	arch_reader_impl = (axis2_arch_reader_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_arch_reader_impl_t));
 	
 	
 	if(NULL == arch_reader_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -94,11 +94,11 @@ axis2_arch_reader_create (axis2_env_t **env)
     arch_reader_impl->arch_reader.ops = NULL;
     
 	arch_reader_impl->arch_reader.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_arch_reader_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_arch_reader_ops_t));
 	if(NULL == arch_reader_impl->arch_reader.ops)
     {
         axis2_arch_reader_free(&(arch_reader_impl->arch_reader), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -120,7 +120,7 @@ axis2_arch_reader_create (axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL 
 axis2_arch_reader_free (axis2_arch_reader_t *arch_reader, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     
@@ -128,7 +128,7 @@ axis2_arch_reader_free (axis2_arch_reader_t *arch_reader,
     arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
     
 	if(NULL != arch_reader->ops)
-        AXIS2_FREE((*env)->allocator, arch_reader->ops);   
+        AXIS2_FREE(env->allocator, arch_reader->ops);   
 
     if(arch_reader_impl->desc_builder) 
     {
@@ -138,7 +138,7 @@ axis2_arch_reader_free (axis2_arch_reader_t *arch_reader,
 
     if(arch_reader_impl) 
     {
-        AXIS2_FREE((*env)->allocator, arch_reader_impl);
+        AXIS2_FREE(env->allocator, arch_reader_impl);
         arch_reader_impl = NULL;
     }
     
@@ -147,7 +147,7 @@ axis2_arch_reader_free (axis2_arch_reader_t *arch_reader,
 
 struct axis2_svc *AXIS2_CALL
 axis2_arch_reader_create_svc(axis2_arch_reader_t *arch_reader,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_arch_file_data *file) 
 {
     struct axis2_svc *svc = NULL;
@@ -303,7 +303,7 @@ public void processWSDLs(ArchiveFileData file , DeploymentEngine depengine) thro
 
 axis2_status_t AXIS2_CALL
 axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *file_name,
                                     struct axis2_dep_engine *dep_engine,
                                     axis2_svc_grp_t *svc_grp)
@@ -318,9 +318,9 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
     axis2_char_t *svc_folder = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, file_name, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, file_name, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, dep_engine, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
     
     repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env);
     temp_path = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
@@ -329,14 +329,14 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
     svc_container_path = AXIS2_STRACAT(temp_path3, file_name, env);
     svc_folder = AXIS2_STRACAT(svc_container_path, AXIS2_PATH_SEP_STR, env);
     svcs_xml = AXIS2_STRACAT(svc_folder, AXIS2_SVC_XML, env);
-    AXIS2_FREE((*env)->allocator, temp_path);
-    AXIS2_FREE((*env)->allocator, temp_path2);
-    AXIS2_FREE((*env)->allocator, temp_path3);
-    AXIS2_FREE((*env)->allocator, svc_container_path);
-    AXIS2_FREE((*env)->allocator, svc_folder);
+    AXIS2_FREE(env->allocator, temp_path);
+    AXIS2_FREE(env->allocator, temp_path2);
+    AXIS2_FREE(env->allocator, temp_path3);
+    AXIS2_FREE(env->allocator, svc_container_path);
+    AXIS2_FREE(env->allocator, svc_folder);
     if(!svcs_xml)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     status = axis2_file_handler_access(svcs_xml, AXIS2_F_OK);
@@ -356,17 +356,17 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
         AXIS2_SVC_GRP_SET_NAME(svc_grp, env, svc_name);
     } else 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SERVICE_XML_NOT_FOUND, 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SERVICE_XML_NOT_FOUND, 
             AXIS2_FAILURE);
         status = AXIS2_FAILURE;
     }
-    AXIS2_FREE((*env)->allocator, svcs_xml);
+    AXIS2_FREE(env->allocator, svcs_xml);
     return status;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *svc_xml,
                                 axis2_dep_engine_t *dep_engine,
                                 axis2_svc_grp_t *svc_grp)
@@ -378,9 +378,9 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, svc_xml, AXIS2_FAILURE);    
-    AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, svc_grp, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, svc_xml, AXIS2_FAILURE);    
+    AXIS2_PARAM_CHECK(env->error, dep_engine, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
     arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
    
     if(arch_reader_impl->desc_builder)
@@ -431,7 +431,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         AXIS2_SVC_BUILDER_FREE(svc_builder, env);
         if(AXIS2_SUCCESS != status)
         {
-            AXIS2_LOG_INFO((*env)->log, AXIS2_LOG_SI, "populating service is not successful");
+            AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "populating service is not successful");
 
             return AXIS2_FAILURE;
         }
@@ -461,7 +461,7 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
 
 axis2_status_t AXIS2_CALL
 axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *file_name,
                                     axis2_dep_engine_t *dep_engine,
                                     axis2_module_desc_t *module_desc)
@@ -477,9 +477,9 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     axis2_char_t *module_folder = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, file_name, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, dep_engine, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, file_name, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, dep_engine, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
     
     repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env);
@@ -489,14 +489,14 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     module_container_path = AXIS2_STRACAT(temp_path3, file_name, env);
     module_folder = AXIS2_STRACAT(module_container_path, AXIS2_PATH_SEP_STR, env);
     module_xml = AXIS2_STRACAT(module_folder, AXIS2_MODULE_XML, env);
-    AXIS2_FREE((*env)->allocator, temp_path);
-    AXIS2_FREE((*env)->allocator, temp_path2);
-    AXIS2_FREE((*env)->allocator, temp_path3);
-    AXIS2_FREE((*env)->allocator, module_container_path);
-    AXIS2_FREE((*env)->allocator, module_folder);
+    AXIS2_FREE(env->allocator, temp_path);
+    AXIS2_FREE(env->allocator, temp_path2);
+    AXIS2_FREE(env->allocator, temp_path3);
+    AXIS2_FREE(env->allocator, module_container_path);
+    AXIS2_FREE(env->allocator, module_folder);
     if(!module_xml)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     status = axis2_file_handler_access(module_xml, AXIS2_F_OK);
@@ -512,17 +512,17 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     }
     else
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_MODULE_XML_NOT_FOUND_FOR_THE_MODULE, AXIS2_FAILURE);
         status = AXIS2_FAILURE;
     }
-    AXIS2_FREE((*env)->allocator, module_xml);
+    AXIS2_FREE(env->allocator, module_xml);
     return status;
 }
 
 axis2_file_t *AXIS2_CALL
 axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *module_name)
 {
     axis2_file_t *file = NULL;

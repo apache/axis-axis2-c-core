@@ -19,14 +19,14 @@
 
 
 AXIS2_DECLARE(axis2_char_t *) 
-axis2_uuid_gen(axis2_env_t **env)
+axis2_uuid_gen(const axis2_env_t *env)
 {
     
-	axis2_char_t *str = AXIS2_MALLOC((*env)->allocator, 40 * sizeof(char));
+	axis2_char_t *str = AXIS2_MALLOC(env->allocator, 40 * sizeof(char));
     axis2_platform_uuid_gen(str);
 	if (str == NULL)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_UUID_GEN_FAILED, 
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_UUID_GEN_FAILED, 
 			AXIS2_FAILURE);
 		return NULL;
 	}

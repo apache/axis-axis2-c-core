@@ -34,28 +34,28 @@ typedef struct axis2_relates_to_impl
 
 axis2_char_t* AXIS2_CALL 
 axis2_relates_to_get_value(struct axis2_relates_to *relates_to, 
-                           axis2_env_t **env);
+                           const axis2_env_t *env);
                            
 axis2_status_t AXIS2_CALL 
 axis2_relates_to_set_value(struct axis2_relates_to *relates_to, 
-                           axis2_env_t **env, 
+                           const axis2_env_t *env, 
                            axis2_char_t * value);
                            
 axis2_char_t* AXIS2_CALL 
 axis2_relates_to_get_relationship_type(struct axis2_relates_to *relates_to, 
-                                       axis2_env_t **env);
+                                       const axis2_env_t *env);
                                        
 axis2_status_t AXIS2_CALL 
 axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to, 
-                                       axis2_env_t **env, 
+                                       const axis2_env_t *env, 
                                        axis2_char_t *relationship_type);
                                        
 axis2_status_t AXIS2_CALL 
 axis2_relates_to_free (struct axis2_relates_to *relates_to, 
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
 
 axis2_relates_to_t* AXIS2_CALL 
-axis2_relates_to_create(axis2_env_t **env, 
+axis2_relates_to_create(const axis2_env_t *env, 
                         axis2_char_t *value, 
                         axis2_char_t *relationship_type) 
 {
@@ -63,10 +63,10 @@ axis2_relates_to_create(axis2_env_t **env,
     
     AXIS2_ENV_CHECK(env, NULL);
     
-    relates_to_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_relates_to_impl_t) );
+    relates_to_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_relates_to_impl_t) );
     if (!relates_to_impl)
     { 
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
 
@@ -79,7 +79,7 @@ axis2_relates_to_create(axis2_env_t **env,
         relates_to_impl->value = AXIS2_STRDUP(value, env);
         if (!(relates_to_impl->value))
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axis2_relates_to_free(&(relates_to_impl->relates_to), env);
             return NULL;        
         }
@@ -90,17 +90,17 @@ axis2_relates_to_create(axis2_env_t **env,
         relates_to_impl->relationship_type = AXIS2_STRDUP(relationship_type, env);
         if (!(relates_to_impl->relationship_type))
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             axis2_relates_to_free(&(relates_to_impl->relates_to), env);
             return NULL;        
         }
     }
 
     /* initialize ops */
-    relates_to_impl->relates_to.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_relates_to_ops_t) );
+    relates_to_impl->relates_to.ops  = AXIS2_MALLOC( env->allocator, sizeof(axis2_relates_to_ops_t) );
     if (!relates_to_impl->relates_to.ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_relates_to_free(&(relates_to_impl->relates_to), env);
         return NULL;        
     }
@@ -125,7 +125,7 @@ axis2_relates_to_create(axis2_env_t **env,
 
 axis2_char_t* AXIS2_CALL 
 axis2_relates_to_get_value(struct axis2_relates_to *relates_to, 
-                           axis2_env_t **env) 
+                           const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(relates_to)->value;
@@ -133,7 +133,7 @@ axis2_relates_to_get_value(struct axis2_relates_to *relates_to,
 
 axis2_status_t AXIS2_CALL 
 axis2_relates_to_set_value(struct axis2_relates_to *relates_to, 
-                           axis2_env_t **env, 
+                           const axis2_env_t *env, 
                            axis2_char_t * value) 
 {
     axis2_relates_to_impl_t *relates_to_impl = NULL;
@@ -144,7 +144,7 @@ axis2_relates_to_set_value(struct axis2_relates_to *relates_to,
     
     if (relates_to_impl->value)
     {
-        AXIS2_FREE((*env)->allocator, relates_to_impl->value);
+        AXIS2_FREE(env->allocator, relates_to_impl->value);
         relates_to_impl->value = NULL;
     }
 
@@ -153,7 +153,7 @@ axis2_relates_to_set_value(struct axis2_relates_to *relates_to,
         relates_to_impl->value = (axis2_char_t*)AXIS2_STRDUP(value, env);
         if (!(relates_to_impl->value))
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
@@ -163,7 +163,7 @@ axis2_relates_to_set_value(struct axis2_relates_to *relates_to,
 
 axis2_char_t* AXIS2_CALL 
 axis2_relates_to_get_relationship_type(struct axis2_relates_to *relates_to, 
-                                       axis2_env_t **env) 
+                                       const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(relates_to)->relationship_type;
@@ -171,7 +171,7 @@ axis2_relates_to_get_relationship_type(struct axis2_relates_to *relates_to,
 
 axis2_status_t AXIS2_CALL 
 axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to, 
-                                       axis2_env_t **env, 
+                                       const axis2_env_t *env, 
                                        axis2_char_t *relationship_type) 
 {
     axis2_relates_to_impl_t *relates_to_impl = NULL;
@@ -182,7 +182,7 @@ axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to,
     
     if (relates_to_impl->relationship_type)
     {
-        AXIS2_FREE((*env)->allocator, relates_to_impl->relationship_type);
+        AXIS2_FREE(env->allocator, relates_to_impl->relationship_type);
         relates_to_impl->relationship_type = NULL;
     }
 
@@ -192,7 +192,7 @@ axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to,
                 (axis2_char_t*)AXIS2_STRDUP(relationship_type, env);
         if (!(relates_to_impl->relationship_type))
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
@@ -202,7 +202,7 @@ axis2_relates_to_set_relationship_type(struct axis2_relates_to *relates_to,
 
 axis2_status_t AXIS2_CALL 
 axis2_relates_to_free (struct axis2_relates_to *relates_to, 
-                       axis2_env_t **env)
+                       const axis2_env_t *env)
 {
     axis2_relates_to_impl_t *relates_to_impl = NULL;
     
@@ -212,23 +212,23 @@ axis2_relates_to_free (struct axis2_relates_to *relates_to,
     
     if (relates_to_impl->relates_to.ops)
     {
-        AXIS2_FREE((*env)->allocator, relates_to_impl->relates_to.ops);
+        AXIS2_FREE(env->allocator, relates_to_impl->relates_to.ops);
         relates_to_impl->relates_to.ops = NULL;
     }
     
     if (relates_to_impl->value)
     {
-        AXIS2_FREE((*env)->allocator, relates_to_impl->value);
+        AXIS2_FREE(env->allocator, relates_to_impl->value);
         relates_to_impl->value = NULL;
     }    
     
     if (relates_to_impl->relationship_type)
     {
-        AXIS2_FREE((*env)->allocator, relates_to_impl->relationship_type);
+        AXIS2_FREE(env->allocator, relates_to_impl->relationship_type);
         relates_to_impl->relationship_type = NULL;
     }    
 
-    AXIS2_FREE((*env)->allocator, relates_to_impl);
+    AXIS2_FREE(env->allocator, relates_to_impl);
     relates_to_impl = NULL;
     
     return AXIS2_SUCCESS;

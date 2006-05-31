@@ -35,7 +35,7 @@ extern "C"
 
     AXIS2_DECLARE(void*)
     axis2_strdup (const void *ptr, 
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
 
     AXIS2_DECLARE(int)
     axis2_strcmp (const axis2_char_t * s1, 
@@ -60,7 +60,7 @@ extern "C"
     AXIS2_DECLARE(axis2_char_t*)
     axis2_stracat(const axis2_char_t *s1, const 
                   axis2_char_t *s2, 
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
     
     AXIS2_DECLARE(axis2_char_t *)
     axis2_strstr (const axis2_char_t *heystack,

@@ -49,17 +49,17 @@ struct axis2_svc_ctx_ops
 {
     axis2_ctx_t* (AXIS2_CALL *
 	get_base)(struct axis2_svc_ctx *svc_ctx,
-			  axis2_env_t **env);
+			  const axis2_env_t *env);
 	
 	
     struct axis2_svc_grp_ctx* (AXIS2_CALL *
 	get_parent)(struct axis2_svc_ctx *svc_ctx,
-				axis2_env_t **env);
+				const axis2_env_t *env);
 	
 	
     axis2_status_t (AXIS2_CALL *
 	free)(struct axis2_svc_ctx *svc_ctx,
-		  axis2_env_t **env);
+		  const axis2_env_t *env);
 	
 	
     /**
@@ -67,7 +67,7 @@ struct axis2_svc_ctx_ops
      */
     axis2_status_t (AXIS2_CALL *
 	init)(struct axis2_svc_ctx *svc_ctx, 
-          axis2_env_t **env,
+          const axis2_env_t *env,
 	      struct axis2_conf *conf);
 			  
 		  
@@ -76,27 +76,27 @@ struct axis2_svc_ctx_ops
      */
     axis2_char_t* (AXIS2_CALL *
 	get_svc_id)(struct axis2_svc_ctx *svc_ctx,
-		        axis2_env_t **env);
+		        const axis2_env_t *env);
 	
 	
     struct axis2_svc* (AXIS2_CALL *
 	get_svc)(struct axis2_svc_ctx *svc_ctx,
-             axis2_env_t **env);
+             const axis2_env_t *env);
 	
     axis2_status_t (AXIS2_CALL *
     set_svc) (axis2_svc_ctx_t *svc_ctx,
-              axis2_env_t **env,
+              const axis2_env_t *env,
               struct axis2_svc *svc);
 				  
 
     struct axis2_conf_ctx* (AXIS2_CALL *
 	get_conf_ctx)(struct axis2_svc_ctx *svc_ctx, 
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
 	
 	
     struct axis2_op_ctx* (AXIS2_CALL *
 	create_op_ctx)(struct axis2_svc_ctx *svc_ctx, 
-                   axis2_env_t **env, 
+                   const axis2_env_t *env, 
 				   axis2_qname_t *qname);
 };
 
@@ -109,7 +109,7 @@ struct axis2_svc_ctx
     axis2_svc_ctx_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_svc_ctx_t*) axis2_svc_ctx_create(axis2_env_t **env, 
+AXIS2_DECLARE(axis2_svc_ctx_t*) axis2_svc_ctx_create(const axis2_env_t *env, 
     struct axis2_svc *svc,
     struct axis2_svc_grp_ctx *svc_grp_ctx);
     

@@ -52,27 +52,27 @@ struct axis2_xml_schema_xpath_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *xpath,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *xpath,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
                     
     axis2_xml_schema_types_t (AXIS2_CALL *
     type)(void *xpath,
-          axis2_env_t **env);
+          const axis2_env_t *env);
           
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(void *xpath,
-                axis2_env_t **env);
+                const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_xpath)(void *xpath,
-                axis2_env_t **env);
+                const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_xpath)(void *xpath,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_char_t *x_path);
 
 };
@@ -87,7 +87,7 @@ struct axis2_xml_schema_xpath
  * Creates new Xml Schema Xpath
  */
 AXIS2_DECLARE(axis2_xml_schema_xpath_t *)
-axis2_xml_schema_xpath_create(axis2_env_t **env);
+axis2_xml_schema_xpath_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -95,7 +95,7 @@ axis2_xml_schema_xpath_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_xpath_resolve_methods(
                                 axis2_xml_schema_xpath_t *xpath,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_xpath_t *xpath_impl,
                                 axis2_hash_t *methods);
  */

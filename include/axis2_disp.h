@@ -48,13 +48,13 @@ extern "C"
  AXIS2_DECLARE_DATA   typedef struct axis2_disp_ops
     { 
         axis2_handler_t* (AXIS2_CALL *get_base) (struct axis2_disp *disp, 
-                                               axis2_env_t **env);
+                                               const axis2_env_t *env);
         axis2_qname_t* (AXIS2_CALL *get_qname) (struct axis2_disp *disp, 
-                                               axis2_env_t **env);
+                                               const axis2_env_t *env);
         axis2_status_t (AXIS2_CALL *set_qname) (struct axis2_disp *disp, 
-                                               axis2_env_t **env, axis2_qname_t *qname);
+                                               const axis2_env_t *env, axis2_qname_t *qname);
         axis2_status_t (AXIS2_CALL *free) (struct axis2_disp *disp, 
-                                               axis2_env_t **env);
+                                               const axis2_env_t *env);
         /**
         * finds the service
         *
@@ -62,7 +62,7 @@ extern "C"
         * @return
         */
         struct axis2_svc* (AXIS2_CALL *find_svc)(axis2_msg_ctx_t *msg_ctx, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
         /**
         * finds the op
         *
@@ -71,7 +71,7 @@ extern "C"
         * @return
         */
         struct axis2_op *(AXIS2_CALL *find_op)(axis2_msg_ctx_t *msg_ctx,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     struct axis2_svc *svc);
         
     } axis2_disp_ops_t;
@@ -90,7 +90,7 @@ extern "C"
  * creates disp struct
  * @param qname qname, can be NULL
  */
-AXIS2_DECLARE(axis2_disp_t*) axis2_disp_create(axis2_env_t **env, axis2_qname_t *qname);
+AXIS2_DECLARE(axis2_disp_t*) axis2_disp_create(const axis2_env_t *env, axis2_qname_t *qname);
 
 #define AXIS2_DISP_GET_BASE(disp, env) ((disp)->ops->get_base(disp, env))
 #define AXIS2_DISP_GET_QNAME(disp, env) ((disp)->ops->get_qname(disp, env))
@@ -100,13 +100,13 @@ AXIS2_DECLARE(axis2_disp_t*) axis2_disp_create(axis2_env_t **env, axis2_qname_t 
 #define AXIS2_DISP_FIND_OP(msg_ctx, env, svc) ((msg_ctx)->ops->find_op(msg_ctx, env, svc))
 
 axis2_status_t AXIS2_CALL axis2_disp_invoke(struct axis2_handler * handler, 
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 struct axis2_msg_ctx *msg_ctx);
                                                     
-axis2_disp_t* AXIS2_CALL axis2_addr_disp_create(axis2_env_t **env);
-axis2_disp_t* AXIS2_CALL axis2_req_uri_disp_create(axis2_env_t **env);
-axis2_disp_t* AXIS2_CALL axis2_soap_body_disp_create(axis2_env_t **env);
-axis2_disp_t* AXIS2_CALL axis2_soap_action_disp_create(axis2_env_t **env);
+axis2_disp_t* AXIS2_CALL axis2_addr_disp_create(const axis2_env_t *env);
+axis2_disp_t* AXIS2_CALL axis2_req_uri_disp_create(const axis2_env_t *env);
+axis2_disp_t* AXIS2_CALL axis2_soap_body_disp_create(const axis2_env_t *env);
+axis2_disp_t* AXIS2_CALL axis2_soap_action_disp_create(const axis2_env_t *env);
                                                 
 /** @} */
     

@@ -17,11 +17,11 @@
 #include <stdio.h>
 
 void
-axis2_notify_notify (axis2_env_t **env, axis2_om_node_t *node)
+axis2_notify_notify (const axis2_env_t *env, axis2_om_node_t *node)
 {
     axis2_om_node_t *text_node = NULL;
 
-    if (!env || !(*env))
+    if (!env || !env)
         return;
    
     /* Expected request format is :-
@@ -29,7 +29,7 @@ axis2_notify_notify (axis2_env_t **env, axis2_om_node_t *node)
      */
     if (!node) /* 'notify' node */
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL, AXIS2_FAILURE);
         printf("Echo client ERROR: input parameter NULL\n");
         return;
     }
@@ -37,7 +37,7 @@ axis2_notify_notify (axis2_env_t **env, axis2_om_node_t *node)
     text_node = AXIS2_OM_NODE_GET_FIRST_CHILD(node, env);
     if (!node) /* actual text to notify */
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Echo client ERROR: invalid XML in request\n");
         return;
     }
@@ -53,7 +53,7 @@ axis2_notify_notify (axis2_env_t **env, axis2_om_node_t *node)
     }
     else
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Echo client ERROR: invalid XML in request\n");
         return;
     }

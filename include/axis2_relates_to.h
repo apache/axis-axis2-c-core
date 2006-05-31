@@ -52,7 +52,7 @@ extern "C"
          */
         axis2_char_t* (AXIS2_CALL *
 		get_value)(struct axis2_relates_to *relates_to, 
-				   axis2_env_t **env);
+				   const axis2_env_t *env);
 
         /**
          * Method set_value
@@ -61,7 +61,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		set_value)(struct axis2_relates_to *relates_to, 
-			       axis2_env_t **env, 
+			       const axis2_env_t *env, 
                    axis2_char_t * value);
 
         /**
@@ -71,7 +71,7 @@ extern "C"
          */
         axis2_char_t* (AXIS2_CALL *
 		get_relationship_type)(struct axis2_relates_to *relates_to, 
-			                   axis2_env_t **env);
+			                   const axis2_env_t *env);
 
         /**
          * Method set_relationship_type
@@ -80,7 +80,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		set_relationship_type)(struct axis2_relates_to *relates_to, 
-			                   axis2_env_t **env, 
+			                   const axis2_env_t *env, 
                                axis2_char_t *relationship_type);
         
        /**
@@ -89,7 +89,7 @@ extern "C"
         
         axis2_status_t (AXIS2_CALL *
 		free) (struct axis2_relates_to *relates_to, 
-               axis2_env_t **env);
+               const axis2_env_t *env);
         
     } axis2_relates_to_ops_t;
 	
@@ -110,7 +110,7 @@ extern "C"
  * @param relationship_type
  */
 AXIS2_DECLARE(axis2_relates_to_t*)
-axis2_relates_to_create(axis2_env_t **env, 
+axis2_relates_to_create(const axis2_env_t *env, 
 						axis2_char_t *value, 
 						axis2_char_t *relationship_type);
     

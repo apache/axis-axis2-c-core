@@ -64,7 +64,7 @@ AXIS2_DECLARE_DATA struct axis2_arch_reader_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_arch_reader_t *arch_reader,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
     
     
     /**
@@ -76,7 +76,7 @@ AXIS2_DECLARE_DATA struct axis2_arch_reader_ops
      */
     struct axis2_svc *(AXIS2_CALL *
     create_svc) (axis2_arch_reader_t *arch_reader,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     struct axis2_arch_file_data *file);
     
     /**
@@ -87,28 +87,28 @@ AXIS2_DECLARE_DATA struct axis2_arch_reader_ops
      */
     axis2_status_t (AXIS2_CALL *
     process_svc_grp) (axis2_arch_reader_t *arch_reader,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *file_name,
                                         struct axis2_dep_engine *dep_engine,
                                         axis2_svc_grp_t *svc_grp);
     
     axis2_status_t (AXIS2_CALL *
     build_svc_grp) (axis2_arch_reader_t *arch_reader,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *file_path,
                                     struct axis2_dep_engine *dep_engine,
                                     struct axis2_svc_grp *svc_grp);
     
     axis2_status_t (AXIS2_CALL *
     read_module_arch) (axis2_arch_reader_t *arch_reader,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *file_path,
                                         struct axis2_dep_engine *dep_engine,
                                         axis2_module_desc_t *module);
 
 axis2_file_t *(AXIS2_CALL *
 create_module_arch)(axis2_arch_reader_t *arch_reader,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_char_t *module_name);
 };
 
@@ -126,7 +126,7 @@ AXIS2_DECLARE_DATA struct axis2_arch_reader
  * @return pointer to newly created arch reader
  */
 AXIS2_DECLARE(axis2_arch_reader_t *) 
-axis2_arch_reader_create (axis2_env_t **env);
+axis2_arch_reader_create (const axis2_env_t *env);
 
 
 /*************************** Function macros **********************************/

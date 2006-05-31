@@ -59,34 +59,34 @@ struct axis2_woden_feature_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_feature_element_free) (
             void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_ref) (void *doc_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *uri);
 
     axis2_url_t *(AXIS2_CALL *
     get_ref) (void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_required) (void *doc_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_bool_t required);
 
     axis2_bool_t (AXIS2_CALL *
     is_required) (void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 };
 
@@ -106,7 +106,7 @@ struct axis2_woden_feature_element
 axis2_status_t AXIS2_CALL
 axis2_woden_feature_element_resolve_methods(
         axis2_woden_feature_element_t *feature_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

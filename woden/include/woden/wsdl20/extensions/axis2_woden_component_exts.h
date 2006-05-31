@@ -78,25 +78,25 @@ struct axis2_woden_component_exts_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *component_exts,
-            axis2_env_t **env);
+            const axis2_env_t *env);
       
     axis2_status_t (AXIS2_CALL *
     to_component_exts_free) (void *component_exts,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *component_exts,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_url_t *(AXIS2_CALL *
     get_namespace) (
             void *component_exts,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     init) (
             void *component_exts,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             struct axis2_woden_wsdl_element *parent_el,
             axis2_url_t *namespc);
 
@@ -108,7 +108,7 @@ struct axis2_woden_component_exts
 };
 
 AXIS2_DECLARE(axis2_woden_component_exts_t *)
-axis2_woden_component_exts_create(axis2_env_t **env);
+axis2_woden_component_exts_create(const axis2_env_t *env);
 
 /**
  * This is an Axis2 C internal method. This is used only from constructor
@@ -117,7 +117,7 @@ axis2_woden_component_exts_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_component_exts_resolve_methods(
         axis2_woden_component_exts_t *component_exts,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 
 #define AXIS2_WODEN_COMPONENT_EXTS_FREE(component_exts, env) \

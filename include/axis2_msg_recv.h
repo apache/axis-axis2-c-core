@@ -59,7 +59,7 @@ struct axis2_msg_recv_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (axis2_msg_recv_t *msg_recv,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /**
      * This method is called from axis2_engine_receive method. This method's
@@ -74,7 +74,7 @@ struct axis2_msg_recv_ops
      */
     axis2_status_t (AXIS2_CALL *
     receive) (axis2_msg_recv_t *msg_recv,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 struct axis2_msg_ctx *in_msg_ctx,
                 void *callback_recv_param);
     /** 
@@ -84,7 +84,7 @@ struct axis2_msg_recv_ops
      */                
     axis2_status_t (AXIS2_CALL *
     receive_sync) (axis2_msg_recv_t *msg_recv,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 struct axis2_msg_ctx *in_msg_ctx,
                 void *callback_recv_param);
 
@@ -95,7 +95,7 @@ struct axis2_msg_recv_ops
      */                
     axis2_status_t (AXIS2_CALL *
     receive_async) (axis2_msg_recv_t *msg_recv,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 struct axis2_msg_ctx *in_msg_ctx,
                 void *callback_recv_param);                
     
@@ -106,7 +106,7 @@ struct axis2_msg_recv_ops
      */
     axis2_status_t (AXIS2_CALL *
     invoke_in_business_logic_sync) (axis2_msg_recv_t *msg_recv,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             struct axis2_msg_ctx *in_msg_ctx);
      
     /** 
@@ -117,7 +117,7 @@ struct axis2_msg_recv_ops
      */                                            
     axis2_status_t (AXIS2_CALL *
     invoke_in_business_logic_async) (axis2_msg_recv_t *msg_recv,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             struct axis2_msg_ctx *in_msg_ctx,
                                             struct axis2_svr_callback *svr_callback);
      
@@ -129,7 +129,7 @@ struct axis2_msg_recv_ops
      */                                            
     axis2_status_t (AXIS2_CALL *
     invoke_in_out_business_logic_sync) (axis2_msg_recv_t *msg_recv,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             struct axis2_msg_ctx *in_msg_ctx,
                                             struct axis2_msg_ctx *out_msg_ctx);
     
@@ -142,7 +142,7 @@ struct axis2_msg_recv_ops
      */                                              
     axis2_status_t (AXIS2_CALL *
     invoke_in_out_business_logic_async) (axis2_msg_recv_t *msg_recv,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             struct axis2_msg_ctx *in_msg_ctx,
                                             struct axis2_msg_ctx *out_msg_ctx,
                                             struct axis2_svr_callback *callback);                                            
@@ -155,7 +155,7 @@ struct axis2_msg_recv_ops
      */
     axis2_svc_skeleton_t * (AXIS2_CALL *
     make_new_svc_obj) (axis2_msg_recv_t *msg_recv,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         struct axis2_msg_ctx *msg_ctx);
 
     /**
@@ -165,7 +165,7 @@ struct axis2_msg_recv_ops
      */
     axis2_svc_skeleton_t * (AXIS2_CALL *
     get_impl_obj) (axis2_msg_recv_t *msg_recv,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     struct axis2_msg_ctx *msg_ctx); 
 
     /**
@@ -175,7 +175,7 @@ struct axis2_msg_recv_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_scope) (axis2_msg_recv_t *msg_recv,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *scope);
 
     
@@ -186,7 +186,7 @@ struct axis2_msg_recv_ops
      */                    
     axis2_char_t * (AXIS2_CALL *
     get_scope) (axis2_msg_recv_t *msg_recv,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
      
     /**
      * Delete the service skeleton object created by make_new_svc_obj
@@ -195,7 +195,7 @@ struct axis2_msg_recv_ops
      */                    
     axis2_status_t (AXIS2_CALL *
     delete_svc_obj) (axis2_msg_recv_t *msg_recv,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_msg_ctx_t *msg_ctx);                    
 };
 
@@ -218,7 +218,7 @@ struct axis2_msg_recv
  * @return newly created message receiver object
  **/
 AXIS2_DECLARE(axis2_msg_recv_t *)
-axis2_msg_recv_create (axis2_env_t **env);
+axis2_msg_recv_create (const axis2_env_t *env);
 
 /************************** Start of function macros **************************/
 

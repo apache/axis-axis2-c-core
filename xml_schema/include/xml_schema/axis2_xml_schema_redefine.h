@@ -49,40 +49,40 @@ struct axis2_xml_schema_redefine_ops
 {
     axis2_status_t (AXIS2_CALL *
     free) (void *redefine,
-            axis2_env_t **env);
+            const axis2_env_t *env);
             
     axis2_xml_schema_external_t* (AXIS2_CALL *
     get_base_impl)(void *redefine,
-                   axis2_env_t **env);            
+                   const axis2_env_t *env);            
 
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(void *redefine,
-                axis2_env_t **env);            
+                const axis2_env_t *env);            
 
     axis2_xml_schema_types_t (AXIS2_CALL *
     type)(void *redefine,
-          axis2_env_t **env);            
+          const axis2_env_t *env);            
 
     axis2_xml_schema_obj_table_t* (AXIS2_CALL *
     get_attribute_group)(void *redefine,
-                axis2_env_t **env);
+                const axis2_env_t *env);
                 
     axis2_status_t (AXIS2_CALL *
     set_attribute_group)(void *redefine,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_xml_schema_obj_table_t *group);
                    
     axis2_xml_schema_obj_collection_t* (AXIS2_CALL *
     get_items)(void *redefine,
-               axis2_env_t **env);
+               const axis2_env_t *env);
                
     axis2_xml_schema_obj_table_t* (AXIS2_CALL *
     get_schema_types)(void *redefine,
-                      axis2_env_t **env);
+                      const axis2_env_t *env);
                       
     axis2_xml_schema_obj_table_t* (AXIS2_CALL *
     get_group)(void *redefine, 
-               axis2_env_t **env);                      
+               const axis2_env_t *env);                      
                       
 };
 
@@ -96,7 +96,7 @@ struct axis2_xml_schema_redefine
  * Creates new Xml Schema redefine
  */
 AXIS2_DECLARE(axis2_xml_schema_redefine_t *)
-axis2_xml_schema_redefine_create(axis2_env_t **env);
+axis2_xml_schema_redefine_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -104,7 +104,7 @@ axis2_xml_schema_redefine_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_redefine_resolve_methods(
                                 axis2_xml_schema_redefine_t *redefine,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_redefine_t *redefine_impl,
                                 axis2_hash_t *methods);
  */

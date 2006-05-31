@@ -58,7 +58,7 @@ AXIS2_DECLARE_DATA struct axis2_om_output_ops
     */
     axis2_status_t (AXIS2_CALL *
 	free_fn)(axis2_om_output_t *om_output,
-             axis2_env_t **env);
+             const axis2_env_t *env);
     
 	/**
      * If the xml to be serialized is soap 11, this property is set to true
@@ -68,27 +68,27 @@ AXIS2_DECLARE_DATA struct axis2_om_output_ops
      */	
     axis2_bool_t (AXIS2_CALL *
 	is_soap11)(axis2_om_output_t *om_output,
-			   axis2_env_t **env); 
+			   const axis2_env_t *env); 
 	/**
      * @returns true if the ignore_xml_declaration property is true	
 	 */
 	axis2_bool_t (AXIS2_CALL *
 	is_ignore_xml_declaration)(axis2_om_output_t *om_output,
-							   axis2_env_t **env);                               
+							   const axis2_env_t *env);                               
 
 	/**
 	 * sets the ignore_xml_declaration property is true
 	 */
 	axis2_status_t (AXIS2_CALL *
 	set_ignore_xml_declaration)(axis2_om_output_t *om_output,
-							    axis2_env_t **env,
+							    const axis2_env_t *env,
 							    axis2_bool_t ignore_xml_dec); 
 	/**
 	 * sets the soap11  property to true
 	 */						   
 	axis2_status_t (AXIS2_CALL *
 	set_soap11)(axis2_om_output_t *om_output,
-				axis2_env_t **env,
+				const axis2_env_t *env,
 				axis2_bool_t soap11);
 					
 	/**
@@ -96,33 +96,33 @@ AXIS2_DECLARE_DATA struct axis2_om_output_ops
      */	 
 	axis2_status_t (AXIS2_CALL *
 	set_xml_version)(axis2_om_output_t *om_output,
-					 axis2_env_t **env,
+					 const axis2_env_t *env,
 					 axis2_char_t *xml_version);
 	/**
      * @returns xml version property
      */	 
 	axis2_char_t* (AXIS2_CALL *
 	get_xml_version)(axis2_om_output_t *om_output,
-					 axis2_env_t **env);  
+					 const axis2_env_t *env);  
 	/**	
      * set the char set encoding property
      */	 
 	axis2_status_t (AXIS2_CALL *
 	set_char_set_encoding)(axis2_om_output_t *om_output,
-						   axis2_env_t **env,
+						   const axis2_env_t *env,
 						   axis2_char_t *char_set_encoding);
 	/**
      * @returns the char set encoding property
      */	 
 	axis2_char_t* (AXIS2_CALL *
 	get_char_set_encoding)(axis2_om_output_t *om_output,
-						   axis2_env_t **env); 
+						   const axis2_env_t *env); 
 	/** 
      * set the do optimize property true
      */	 
 	axis2_status_t (AXIS2_CALL *
 	set_do_optimize)(axis2_om_output_t *om_output,
-					 axis2_env_t **env,
+					 const axis2_env_t *env,
 					 axis2_bool_t optimize); 
 	
 	/**
@@ -130,7 +130,7 @@ AXIS2_DECLARE_DATA struct axis2_om_output_ops
      */	 
 	axis2_xml_writer_t* (AXIS2_CALL *
 	get_xml_writer)(axis2_om_output_t *om_output,
-					axis2_env_t **env);                                                                                                                                               	/**
+					const axis2_env_t *env);                                                                                                                                               	/**
      *  returns the content type
      *  for soap11 'text/xml' etc..
      *  @param om_output
@@ -139,43 +139,43 @@ AXIS2_DECLARE_DATA struct axis2_om_output_ops
      */ 	 
 	axis2_char_t* (AXIS2_CALL *
 	get_content_type)(axis2_om_output_t *om_output,
-					  axis2_env_t **env);
+					  const axis2_env_t *env);
 							   
 	/**
      * writes the xml versio encoding 
      */	 
 	axis2_status_t (AXIS2_CALL *
 	write_xml_version_encoding)(axis2_om_output_t *om_output,
-							    axis2_env_t **env);
+							    const axis2_env_t *env);
 
     /**
      * @returns whether the output is to be optimized 
      */
     axis2_bool_t (AXIS2_CALL *
     is_optimized)(axis2_om_output_t *om_output,
-                  axis2_env_t **env);                               
+                  const axis2_env_t *env);                               
 
     /** returns the next content id 
      */
     axis2_char_t* (AXIS2_CALL *
     get_next_content_id)(axis2_om_output_t *om_output,
-                         axis2_env_t **env);
+                         const axis2_env_t *env);
                          
     /**
      * root content id
      */                         
     axis2_char_t* (AXIS2_CALL *
     get_root_content_id)(axis2_om_output_t *om_output,
-                         axis2_env_t **env);
+                         const axis2_env_t *env);
     
     
     axis2_char_t* (AXIS2_CALL *
     get_mime_boundry)(axis2_om_output_t *om_output,
-                      axis2_env_t **env);                       
+                      const axis2_env_t *env);                       
 
     axis2_byte_t* (AXIS2_CALL *
     flush)(axis2_om_output_t *om_output,
-                      axis2_env_t **env,
+                      const axis2_env_t *env,
                       axis2_byte_t **output_stream,
                       int *output_stream_size);
 
@@ -197,7 +197,7 @@ struct axis2_om_output
     */
 
 AXIS2_DECLARE(axis2_om_output_t*) 
-axis2_om_output_create (axis2_env_t **env,
+axis2_om_output_create (const axis2_env_t *env,
                         axis2_xml_writer_t *xml_writer);
 
 
@@ -213,13 +213,13 @@ axis2_om_output_create (axis2_env_t **env,
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_om_output_write(axis2_om_output_t * om_output, 
-                      axis2_env_t **env,
+                      const axis2_env_t *env,
                       axis2_om_types_t type,
                       int no_of_args, ...);
                       
 AXIS2_DECLARE(axis2_status_t)
 axis2_om_output_write_optimized(axis2_om_output_t *om_output, 
-                      axis2_env_t **env, 
+                      const axis2_env_t *env, 
                       struct axis2_om_text *om_text);
 /************** Macros ********************************************************/
 

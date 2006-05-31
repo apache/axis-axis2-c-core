@@ -27,11 +27,11 @@
 
 axis2_status_t AXIS2_CALL 
 axis2_ctx_handler_invoke(struct axis2_handler *handler, 
-                         axis2_env_t **env,
+                         const axis2_env_t *env,
                          struct axis2_msg_ctx *msg_ctx);
 
 axis2_handler_t* AXIS2_CALL 
-axis2_ctx_handler_create(axis2_env_t **env, 
+axis2_ctx_handler_create(const axis2_env_t *env, 
                          axis2_qname_t *qname) 
 {
     axis2_handler_t *handler = NULL;
@@ -45,7 +45,7 @@ axis2_ctx_handler_create(axis2_env_t **env,
         handler_qname = AXIS2_QNAME_CLONE(qname, env);
         if (!(handler_qname))
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;        
         }
     }
@@ -88,7 +88,7 @@ axis2_ctx_handler_create(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL 
 axis2_ctx_handler_invoke(struct axis2_handler *handler, 
-                         axis2_env_t **env,
+                         const axis2_env_t *env,
                          struct axis2_msg_ctx *msg_ctx)
 {
     axis2_op_t *op = NULL;
@@ -97,7 +97,7 @@ axis2_ctx_handler_invoke(struct axis2_handler *handler,
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     svc_ctx = AXIS2_MSG_CTX_GET_SVC_CTX(msg_ctx, env);

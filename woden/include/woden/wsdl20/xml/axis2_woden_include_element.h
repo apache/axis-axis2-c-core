@@ -61,34 +61,34 @@ struct axis2_woden_include_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *include_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_include_element_free) (
             void *include_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *include_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_location) (void *include_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *loc_uri);
 
     axis2_url_t *(AXIS2_CALL *
     get_location) (void *include_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_desc_element) (void *include_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *desc);
 
     void *(AXIS2_CALL *
     get_desc_element) (void *include_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 };
 
@@ -103,7 +103,7 @@ struct axis2_woden_include_element
 axis2_status_t AXIS2_CALL
 axis2_woden_include_element_resolve_methods(
         axis2_woden_include_element_t *include_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

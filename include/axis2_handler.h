@@ -56,7 +56,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
 		free) (struct axis2_handler * handler, 
-               axis2_env_t **env);
+               const axis2_env_t *env);
          
 
       /**
@@ -66,7 +66,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
 		init) (struct axis2_handler * handler, 
-               axis2_env_t **env, 
+               const axis2_env_t *env, 
                struct axis2_handler_desc *handler_desc);
 
       /**
@@ -80,7 +80,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
 		invoke) (struct axis2_handler * handler,
-				 axis2_env_t **env,
+				 const axis2_env_t *env,
 				 struct axis2_msg_ctx *msg_ctx);
 
       /**
@@ -90,7 +90,7 @@ extern "C"
         */
         axis2_qname_t* (AXIS2_CALL *
 		get_name) (struct axis2_handler * handler, 
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
 
        /**
          * Method getParameter
@@ -100,7 +100,7 @@ extern "C"
          */
          axis2_param_t* (AXIS2_CALL *
 		get_param) (struct axis2_handler * handler, 
-                    axis2_env_t **env, 
+                    const axis2_env_t *env, 
                     axis2_char_t *name);
 
       /**
@@ -111,18 +111,18 @@ extern "C"
         */
         struct axis2_handler_desc* (AXIS2_CALL *
 		get_handler_desc) (struct axis2_handler * handler, 
-                           axis2_env_t **env);
+                           const axis2_env_t *env);
       /**
         * derived struct accessor
         */        
         /*void* (AXIS2_CALL *get_derived)(struct axis2_handler * handler, 
-                                                          axis2_env_t **env);
+                                                          const axis2_env_t *env);
         */
       /**
         * derived struct mutator
         */        
         /*axis2_status_t (AXIS2_CALL *set_derived)(struct axis2_handler * handler, 
-                                                          axis2_env_t **env, void* derived);
+                                                          const axis2_env_t *env, void* derived);
         */
     } axis2_handler_ops_t;
 	
@@ -136,17 +136,17 @@ extern "C"
     } axis2_handler_t;
 
     typedef axis2_handler_t *(AXIS2_CALL * 
-    AXIS2_HANDLER_CREATE_FUNC) (axis2_env_t **env, 
+    AXIS2_HANDLER_CREATE_FUNC) (const axis2_env_t *env, 
                                 axis2_qname_t *qname);
     
 /**
  * creates handler struct
  */
 AXIS2_DECLARE(axis2_handler_t*) 
-axis2_handler_create(axis2_env_t **env);
+axis2_handler_create(const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_handler_t*) 
-axis2_ctx_handler_create(axis2_env_t **env, axis2_qname_t *qname);
+axis2_ctx_handler_create(const axis2_env_t *env, axis2_qname_t *qname);
     
 #define AXIS2_HANDLER_FREE(handler, env) \
 	    ((handler)->ops->free(handler, env))

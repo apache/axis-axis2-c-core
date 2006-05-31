@@ -53,7 +53,7 @@ void system_exit(axis2_env_t *env, int status)
     axis2_allocator_t *allocator = NULL;
     if(NULL != server)
     {
-       AXIS2_TRANSPORT_RECEIVER_FREE(server,  &system_env);
+       AXIS2_TRANSPORT_RECEIVER_FREE(server,  system_env);
     }
 	if(NULL != env)
 	{
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
 	AXIS2_LOG_INFO(env->log, "Repo location : %s", repo_path);
 	AXIS2_LOG_INFO(env->log, "Read Timeout : %d ms", axis2_http_socket_read_timeout);
 	
-	server = axis2_http_server_create(&env, repo_path, port);
+	server = axis2_http_server_create(env, repo_path, port);
 	if(NULL == server)
 	{
 	    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server creation failed: Error code:"
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
 		
 	}
 	printf("Started Simple Axis2 HTTP Server ...\n");
-	if(AXIS2_TRANSPORT_RECEIVER_START(server, &env) == AXIS2_FAILURE)
+	if(AXIS2_TRANSPORT_RECEIVER_START(server, env) == AXIS2_FAILURE)
 	{
 		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server start failed: Error code:"
 						" %d :: %s", env->error->error_number,
@@ -197,7 +197,7 @@ void sig_handler(int signal)
 		{
 			AXIS2_LOG_INFO(system_env->log, "Received signal SIGINT. Server "
 						"shutting down");
-			axis2_http_server_stop(server, &system_env);
+			axis2_http_server_stop(server, system_env);
 			AXIS2_LOG_INFO(system_env->log, "Shutdown complete ...");
 			system_exit(system_env, 0);			
 		}

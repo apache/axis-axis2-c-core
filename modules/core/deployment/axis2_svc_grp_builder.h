@@ -55,11 +55,11 @@ AXIS2_DECLARE_DATA struct axis2_svc_grp_builder_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_svc_grp_builder_t *svc_grp_builder,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
                                
     axis2_status_t (AXIS2_CALL *
     populate_svc_grp) (axis2_svc_grp_builder_t *grp_builder,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_svc_grp_t *svc_grp);
     
     /**
@@ -68,7 +68,7 @@ AXIS2_DECLARE_DATA struct axis2_svc_grp_builder_ops
      */
     axis2_status_t (AXIS2_CALL *
     process_module_refs) (axis2_svc_grp_builder_t *grp_builder,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                        axis2_om_children_qname_iterator_t *module_refs ,
                                                 axis2_svc_grp_t *svc_grp);
 
@@ -88,7 +88,7 @@ AXIS2_DECLARE_DATA struct axis2_svc_grp_builder
  * @return pointer to newly created service group builder
  */
 AXIS2_DECLARE(axis2_svc_grp_builder_t *) 
-axis2_svc_grp_builder_create (axis2_env_t **env);
+axis2_svc_grp_builder_create (const axis2_env_t *env);
 
 /**
  * Creates svc_grp builder struct
@@ -97,7 +97,7 @@ axis2_svc_grp_builder_create (axis2_env_t **env);
  * @return pointer to newly created service group builder
  */
 AXIS2_DECLARE(axis2_svc_grp_builder_t *) 
-axis2_svc_grp_builder_create_with_svc_and_dep_engine (axis2_env_t **env,
+axis2_svc_grp_builder_create_with_svc_and_dep_engine (const axis2_env_t *env,
                                                 axis2_om_node_t *svc,
                                                 axis2_dep_engine_t *dep_engine);
 

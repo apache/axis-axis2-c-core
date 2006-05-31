@@ -157,32 +157,32 @@ axis2_env_create_with_error_log_thread_pool (axis2_allocator_t *allocator
 }
 
 AXIS2_DECLARE( axis2_status_t )
-axis2_env_check_status (axis2_env_t **env)
+axis2_env_check_status (const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 
-	return AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
+	return AXIS2_ERROR_GET_STATUS_CODE(env->error);
 }
 
-AXIS2_DECLARE(axis2_status_t) axis2_env_enable_log (axis2_env_t **env, axis2_bool_t enable)
+AXIS2_DECLARE(axis2_status_t) axis2_env_enable_log (axis2_env_t *env, axis2_bool_t enable)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 
-    (*env)->log_enabled = enable;
+    env->log_enabled = enable;
     
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_status_t)  axis2_env_write_log (axis2_env_t **env, const char* message, axis2_log_levels_t level)
+AXIS2_DECLARE(axis2_status_t)  axis2_env_write_log (const axis2_env_t *env, const char* message, axis2_log_levels_t level)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
 
-    if (! ((*env)->log_enabled))
+    if (! (env->log_enabled))
         return AXIS2_SUCCESS;
  
-    if (message && (*env)->log)
+    if (message && env->log)
     {
-        AXIS2_LOG_WRITE((*env)->log, message, level);
+        AXIS2_LOG_WRITE(env->log, message, level);
     }
     return AXIS2_SUCCESS;
 }

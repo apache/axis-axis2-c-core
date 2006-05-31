@@ -19,11 +19,11 @@
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_fault_element_resolve_methods(
         axis2_woden_binding_fault_element_t *binding_fault_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     binding_fault_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);

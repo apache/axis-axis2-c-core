@@ -50,16 +50,16 @@ AXIS2_DECLARE_DATA struct axis2_stub_ops
 {
     axis2_status_t (AXIS2_CALL * 
     free)(axis2_stub_t *stub,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_endpoint_ref) (axis2_stub_t *stub,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_endpoint_ref_t *endpoint_ref);
     
     axis2_status_t (AXIS2_CALL *
     set_endpoint_uri) (axis2_stub_t *stub,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_char_t *endpoint_uri);
     
     
@@ -69,7 +69,7 @@ AXIS2_DECLARE_DATA struct axis2_stub_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_use_seperate_listener)(axis2_stub_t *stub,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_bool_t use_separate_listener);
     
     /**
@@ -78,27 +78,27 @@ AXIS2_DECLARE_DATA struct axis2_stub_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_soap_version)(axis2_stub_t *stub,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         int soap_version);
     
     
     axis2_char_t *(AXIS2_CALL *
     get_svc_ctx_id)(axis2_stub_t *stub,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     
     axis2_status_t (AXIS2_CALL *
     engage_module)(axis2_stub_t *stub,
-		  axis2_env_t **env,
+		  const axis2_env_t *env,
 		  axis2_char_t *module_name);
 
     axis2_svc_client_t *(AXIS2_CALL *
     get_svc_client)(axis2_stub_t *stub,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
     
     axis2_options_t *(AXIS2_CALL *
     get_options)(axis2_stub_t *stub,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 } ;
 
@@ -113,7 +113,7 @@ AXIS2_DECLARE_DATA struct axis2_stub
  * @return pointer to newly created axis2_stub struct
  */
 AXIS2_DECLARE(axis2_stub_t *)
-axis2_stub_create_with_endpoint_ref_and_client_home(axis2_env_t **env,
+axis2_stub_create_with_endpoint_ref_and_client_home(const axis2_env_t *env,
                                         axis2_endpoint_ref_t *endpoint_ref,
                                         axis2_char_t *client_home);
 
@@ -123,7 +123,7 @@ axis2_stub_create_with_endpoint_ref_and_client_home(axis2_env_t **env,
  * @return pointer to newly created axis2_stub struct
  */
 AXIS2_DECLARE(axis2_stub_t *)
-axis2_stub_create_with_endpoint_uri_and_client_home(axis2_env_t **env,
+axis2_stub_create_with_endpoint_uri_and_client_home(const axis2_env_t *env,
                                         axis2_char_t *endpoint_uri,
                                         axis2_char_t *client_home);
 

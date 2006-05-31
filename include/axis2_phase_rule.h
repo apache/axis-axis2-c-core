@@ -47,56 +47,56 @@ extern "C"
     {        
         axis2_char_t* (AXIS2_CALL *
 		get_before) (struct axis2_phase_rule *phase_rule, 
-                     axis2_env_t **env);
+                     const axis2_env_t *env);
 		
         axis2_status_t (AXIS2_CALL *
 		set_before) (struct axis2_phase_rule *phase_rule, 
-                     axis2_env_t **env, 
+                     const axis2_env_t *env, 
 					 axis2_char_t *before);
 		
         axis2_char_t* (AXIS2_CALL *
 		get_after) (struct axis2_phase_rule * phase_rule, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 		
         axis2_status_t (AXIS2_CALL *
 		set_after) (struct axis2_phase_rule * phase_rule, 
-                    axis2_env_t **env, 
+                    const axis2_env_t *env, 
 					axis2_char_t *after);
 		
         axis2_char_t* (AXIS2_CALL *
 		get_name) (struct axis2_phase_rule * phase_rule, 
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
 		
         axis2_status_t (AXIS2_CALL *
 		set_name) (struct axis2_phase_rule * phase_rule, 
-                   axis2_env_t **env, 
+                   const axis2_env_t *env, 
 				   const axis2_char_t *name);
 		
         axis2_bool_t (AXIS2_CALL *
 		is_phase_first) (struct axis2_phase_rule * phase_rule, 
-                         axis2_env_t **env);
+                         const axis2_env_t *env);
 		
         axis2_status_t (AXIS2_CALL *
 		set_phase_first) (struct axis2_phase_rule * phase_rule, 
-                          axis2_env_t **env, 
+                          const axis2_env_t *env, 
 						  axis2_bool_t phae_first);
 		
         axis2_bool_t (AXIS2_CALL *
 		is_phase_last) (struct axis2_phase_rule * phase_rule, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 		
         axis2_status_t (AXIS2_CALL *
 		set_phase_last) (struct axis2_phase_rule * phase_rule, 
-                         axis2_env_t **env, 
+                         const axis2_env_t *env, 
 						 axis2_bool_t phae_last);
 
         axis2_status_t (AXIS2_CALL *
 		free) (struct axis2_phase_rule *phase_rule, 
-               axis2_env_t **env);
+               const axis2_env_t *env);
 		
         struct axis2_phase_rule* (AXIS2_CALL *
 		clone) (struct axis2_phase_rule *phase_rule, 
-                axis2_env_t **env);
+                const axis2_env_t *env);
 		
     } axis2_phase_rule_ops_t;
 	
@@ -114,7 +114,7 @@ extern "C"
  * creates phase_rule struct
  */
 AXIS2_DECLARE(axis2_phase_rule_t*) 
-axis2_phase_rule_create(axis2_env_t **env, 
+axis2_phase_rule_create(const axis2_env_t *env, 
 						axis2_char_t *phase_name);
     
 #define AXIS2_PHASE_RULE_GET_BEFORE(phase_rule, env) \

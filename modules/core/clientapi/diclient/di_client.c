@@ -74,73 +74,73 @@ typedef struct axis2_diclient_impl
 
 axis2_status_t AXIS2_CALL
 	axis2_diclient_free (axis2_diclient_t *diclient,
-									axis2_env_t **env);
+									const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_diclient_invoke(axis2_diclient_t *diclient,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
 				       	axis2_om_node_t *node,
                         axis2_op_t *op);
                                 
 axis2_status_t AXIS2_CALL
 axis2_diclient_init(axis2_diclient_t *diclient,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
 						axis2_char_t *wsdl_file_name);
 
 axis2_status_t *AXIS2_CALL
 axis2_diclient_set_address_and_action_for_op(axis2_diclient_t *diclient,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_qname_t *op_qname);
 
 
 axis2_hash_t *AXIS2_CALL
 axis2_diclient_get_endpoints(axis2_diclient_t *diclient,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 axis2_diclient_get_services(axis2_diclient_t *diclient,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 axis2_diclient_get_operations(axis2_diclient_t *diclient,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 axis2_diclient_get_param_localname(axis2_diclient_t *diclient,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *op_qname);
 
 axis2_char_t *AXIS2_CALL
 axis2_diclient_get_param_namespace(axis2_diclient_t *diclient,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *op_qname);
 
 static axis2_status_t
 axis2_diclient_process_param(axis2_diclient_t *diclient,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_qname_t *op_qname);
 
 axis2_hash_t *AXIS2_CALL
 axis2_diclient_get_params(axis2_diclient_t *diclient,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *op_qname);
 
 /************************** End of function prototypes ************************/
 
 axis2_diclient_t * AXIS2_CALL 
-axis2_diclient_create (axis2_env_t **env)
+axis2_diclient_create (const axis2_env_t *env)
 {
     axis2_diclient_impl_t *diclient_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	diclient_impl = (axis2_diclient_impl_t *) AXIS2_MALLOC((*env)->allocator,
+	diclient_impl = (axis2_diclient_impl_t *) AXIS2_MALLOC(env->allocator,
 			sizeof(axis2_diclient_impl_t));
 	
 	
 	if(NULL == diclient_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -157,11 +157,11 @@ axis2_diclient_create (axis2_env_t **env)
     diclient_impl->diclient.ops = NULL;
 	
 	diclient_impl->diclient.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_diclient_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_diclient_ops_t));
 	if(NULL == diclient_impl->diclient.ops)
     {
         axis2_diclient_free(&(diclient_impl->diclient), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -185,7 +185,7 @@ axis2_diclient_create (axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL 
 axis2_diclient_free (axis2_diclient_t *diclient, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_diclient_impl_t *diclient_impl = NULL;
     
@@ -219,22 +219,22 @@ axis2_diclient_free (axis2_diclient_t *diclient,
     
     if(diclient_impl->wsa_action)
     {
-        AXIS2_FREE((*env)->allocator, diclient_impl->wsa_action);
+        AXIS2_FREE(env->allocator, diclient_impl->wsa_action);
         diclient_impl->wsa_action = NULL;
     }
     
     if(diclient_impl->address)
     {
-        AXIS2_FREE((*env)->allocator, diclient_impl->address);
+        AXIS2_FREE(env->allocator, diclient_impl->address);
         diclient_impl->address = NULL;
     }
     
 	if(NULL != diclient->ops)
-        AXIS2_FREE((*env)->allocator, diclient->ops);
+        AXIS2_FREE(env->allocator, diclient->ops);
     
     if(diclient_impl)
     {
-        AXIS2_FREE((*env)->allocator, diclient_impl);
+        AXIS2_FREE(env->allocator, diclient_impl);
         diclient_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -242,7 +242,7 @@ axis2_diclient_free (axis2_diclient_t *diclient,
 
 axis2_status_t AXIS2_CALL
 axis2_diclient_init(axis2_diclient_t *diclient,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
 						axis2_char_t *wsdl_file_name)
 {
     axis2_diclient_impl_t *diclient_impl = NULL;
@@ -261,7 +261,7 @@ axis2_diclient_init(axis2_diclient_t *diclient,
 	axis2_char_t *op_name = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, wsdl_file_name, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, wsdl_file_name, AXIS2_FAILURE);
     diclient_impl = AXIS2_INTF_TO_IMPL(diclient);
     
     diclient_impl->parser = axis2_wsdl4c_parser_create(wsdl_file_name, "");
@@ -357,7 +357,7 @@ axis2_diclient_init(axis2_diclient_t *diclient,
 
 axis2_status_t AXIS2_CALL
 axis2_diclient_invoke(axis2_diclient_t *diclient,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
 				       	axis2_om_node_t *node,
                         axis2_op_t *op)
 {    
@@ -374,7 +374,7 @@ axis2_diclient_invoke(axis2_diclient_t *diclient,
     axis2_svc_t *svc = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
     diclient_impl = AXIS2_INTF_TO_IMPL(diclient);
 
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
@@ -463,9 +463,9 @@ axis2_diclient_invoke(axis2_diclient_t *diclient,
     }
     else
     {
-		AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Stub invoke failed: Error code:"
-						" %d :: %s", (*env)->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE((*env)->error));
+		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke failed: Error code:"
+						" %d :: %s", env->error->error_number,
+                        AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("echo stub invoke failed!\n");
         return AXIS2_FAILURE;
     }
@@ -479,7 +479,7 @@ axis2_diclient_invoke(axis2_diclient_t *diclient,
 
 axis2_status_t *AXIS2_CALL
 axis2_diclient_set_address_and_action_for_op(axis2_diclient_t *diclient,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_qname_t *op_qname)
 {
     axis2_diclient_impl_t *diclient_impl = NULL;
@@ -499,7 +499,7 @@ axis2_diclient_set_address_and_action_for_op(axis2_diclient_t *diclient,
     int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, op_qname, NULL);
+    AXIS2_PARAM_CHECK(env->error, op_qname, NULL);
     diclient_impl = AXIS2_INTF_TO_IMPL(diclient);
 
     op_name = AXIS2_QNAME_GET_LOCALPART(op_qname, env);
@@ -578,7 +578,7 @@ axis2_diclient_set_address_and_action_for_op(axis2_diclient_t *diclient,
 
 axis2_hash_t *AXIS2_CALL
 axis2_diclient_get_endpoints(axis2_diclient_t *diclient,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(diclient)->endpoint_map;
@@ -586,7 +586,7 @@ axis2_diclient_get_endpoints(axis2_diclient_t *diclient,
 
 axis2_hash_t *AXIS2_CALL
 axis2_diclient_get_services(axis2_diclient_t *diclient,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(diclient)->svc_map;
@@ -594,7 +594,7 @@ axis2_diclient_get_services(axis2_diclient_t *diclient,
 
 axis2_hash_t *AXIS2_CALL
 axis2_diclient_get_operations(axis2_diclient_t *diclient,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(diclient)->op_map;
@@ -602,7 +602,7 @@ axis2_diclient_get_operations(axis2_diclient_t *diclient,
 
 axis2_char_t *AXIS2_CALL
 axis2_diclient_get_param_localname(axis2_diclient_t *diclient,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *op_qname)
 {
     axis2_diclient_impl_t *diclient_impl = NULL;
@@ -618,7 +618,7 @@ axis2_diclient_get_param_localname(axis2_diclient_t *diclient,
 
 axis2_char_t *AXIS2_CALL
 axis2_diclient_get_param_namespace(axis2_diclient_t *diclient,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *op_qname)
 {
     axis2_diclient_impl_t *diclient_impl = NULL;
@@ -634,7 +634,7 @@ axis2_diclient_get_param_namespace(axis2_diclient_t *diclient,
 
 static axis2_status_t
 axis2_diclient_process_param(axis2_diclient_t *diclient,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_qname_t *op_qname)
 {    
     axis2_diclient_impl_t *diclient_impl = NULL;
@@ -644,7 +644,7 @@ axis2_diclient_process_param(axis2_diclient_t *diclient,
     axis2_qname_t *element_qname = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, op_qname, NULL);
+    AXIS2_PARAM_CHECK(env->error, op_qname, NULL);
     diclient_impl = AXIS2_INTF_TO_IMPL(diclient);
 
     op_name = AXIS2_QNAME_GET_LOCALPART(op_qname, env);
@@ -660,7 +660,7 @@ axis2_diclient_process_param(axis2_diclient_t *diclient,
                                 
 axis2_hash_t *AXIS2_CALL
 axis2_diclient_get_params(axis2_diclient_t *diclient,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *op_qname)
 {
     axis2_diclient_impl_t *diclient_impl = NULL;

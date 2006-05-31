@@ -21,7 +21,7 @@
 
 int main(int argc, char** argv)
 {
-    axis2_env_t *env = NULL;
+    const axis2_env_t *env = NULL;
     axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
@@ -46,12 +46,12 @@ int main(int argc, char** argv)
     printf ("Using endpoint : %s\n", address);
     
     /* Create EPR with given address */
-    endpoint_ref = axis2_endpoint_ref_create(&env, address);
+    endpoint_ref = axis2_endpoint_ref_create(env, address);
 
     /* Setup options */
-    options = axis2_options_create(&env);
-    AXIS2_OPTIONS_SET_TO(options, &env, endpoint_ref);
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, &env, AXIS2_SOAP11);
+    options = axis2_options_create(env);
+    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIS2_SOAP11);
 
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
      * using the axis2.xml file.
@@ -65,7 +65,7 @@ int main(int argc, char** argv)
         client_home = "../../deploy";
 
     /* Create service client */
-    svc_client = axis2_svc_client_create(&env, client_home);
+    svc_client = axis2_svc_client_create(env, client_home);
     if (!svc_client)
     {
         printf("Error creating service client\n");
@@ -75,18 +75,18 @@ int main(int argc, char** argv)
     }
 
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, &env, options);
+    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
 
     /* Build the SOAP request message payload using OM API.*/
-    payload = build_om_payload_for_echo_svc(&env);
+    payload = build_om_payload_for_echo_svc(env);
     
     /* Send request */
-    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, &env, payload);
+    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
     
     if(ret_node)
     {
         axis2_char_t *om_str = NULL;
-        om_str = AXIS2_OM_NODE_TO_STRING(ret_node, &env);
+        om_str = AXIS2_OM_NODE_TO_STRING(ret_node, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
         printf("\necho client invoke SUCCESSFUL!\n");
@@ -101,7 +101,7 @@ int main(int argc, char** argv)
     
     if (svc_client)
     {
-        AXIS2_SVC_CLIENT_FREE(svc_client, &env);
+        AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
 

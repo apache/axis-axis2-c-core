@@ -37,41 +37,41 @@
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_detail_free(axis2_soap_fault_detail_t *fault_detail,
-                             axis2_env_t **env);
+                             const axis2_env_t *env);
                                 
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_detail_add_detail_entry
                         (axis2_soap_fault_detail_t *fault_detail,
-                         axis2_env_t **env,
+                         const axis2_env_t *env,
                          axis2_om_node_t *ele_node);
                             
 axis2_om_children_iterator_t* AXIS2_CALL 
 axis2_soap_fault_detail_get_all_detail_entries
                         (axis2_soap_fault_detail_t *fault_detail,
-                         axis2_env_t **env); 
+                         const axis2_env_t *env); 
 
 
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_fault_detail_get_base_node
                         (axis2_soap_fault_detail_t *fault_detail,
-                         axis2_env_t **env);
+                         const axis2_env_t *env);
 
 /******************** function implementations ********************************/
 
 AXIS2_DECLARE(axis2_soap_fault_detail_t *)
-axis2_soap_fault_detail_create(axis2_env_t **env)
+axis2_soap_fault_detail_create(const axis2_env_t *env)
 {
     axis2_soap_fault_detail_impl_t *fault_detail_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
     fault_detail_impl = (axis2_soap_fault_detail_impl_t*)AXIS2_MALLOC(
-                        (*env)->allocator,
+                        env->allocator,
                         sizeof(axis2_soap_fault_detail_impl_t));
     if(!fault_detail_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }                                  
     
@@ -79,13 +79,13 @@ axis2_soap_fault_detail_create(axis2_env_t **env)
     fault_detail_impl->om_ele_node = NULL;
     
     fault_detail_impl->fault_detail.ops = (axis2_soap_fault_detail_ops_t*)AXIS2_MALLOC(
-                                       (*env)->allocator,
+                                       env->allocator,
                                        sizeof(axis2_soap_fault_detail_ops_t));
     if(!(fault_detail_impl->fault_detail.ops))
     {
-        AXIS2_FREE((*env)->allocator, fault_detail_impl);
+        AXIS2_FREE(env->allocator, fault_detail_impl);
         fault_detail_impl = NULL;
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }                                       
     
@@ -106,7 +106,7 @@ axis2_soap_fault_detail_create(axis2_env_t **env)
 
 AXIS2_DECLARE(axis2_soap_fault_detail_t *)
 axis2_soap_fault_detail_create_with_parent
-                        (axis2_env_t **env,
+                        (const axis2_env_t *env,
                          axis2_soap_fault_t *fault)
 {
     axis2_soap_fault_detail_impl_t *fault_detail_impl = NULL;
@@ -119,7 +119,7 @@ axis2_soap_fault_detail_create_with_parent
     int soap_version = -1;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, fault, NULL);
+    AXIS2_PARAM_CHECK(env->error, fault, NULL);
     
     fault_detail = axis2_soap_fault_detail_create(env);
     if(!fault_detail)
@@ -157,15 +157,15 @@ axis2_soap_fault_detail_create_with_parent
                          
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_detail_free(axis2_soap_fault_detail_t *fault_detail,
-                             axis2_env_t **env)
+                             const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(fault_detail->ops)
     {
-        AXIS2_FREE((*env)->allocator, fault_detail->ops);
+        AXIS2_FREE(env->allocator, fault_detail->ops);
         fault_detail->ops = NULL;
     }
-    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(fault_detail));
+    AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(fault_detail));
     fault_detail = NULL;
     return AXIS2_SUCCESS;
 }
@@ -173,17 +173,17 @@ axis2_soap_fault_detail_free(axis2_soap_fault_detail_t *fault_detail,
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_detail_add_detail_entry
                         (axis2_soap_fault_detail_t *fault_detail,
-                         axis2_env_t **env,
+                         const axis2_env_t *env,
                          axis2_om_node_t *node)
 {
     axis2_soap_fault_detail_impl_t *fault_detail_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
     fault_detail_impl = AXIS2_INTF_TO_IMPL(fault_detail);
         
     if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_OM_ELEMENT_EXPECTED, AXIS2_FAILURE);
         return AXIS2_FAILURE;                
     }
@@ -195,7 +195,7 @@ axis2_soap_fault_detail_add_detail_entry
 axis2_om_children_iterator_t* AXIS2_CALL 
 axis2_soap_fault_detail_get_all_detail_entries
                         (axis2_soap_fault_detail_t *fault_detail,
-                         axis2_env_t **env)
+                         const axis2_env_t *env)
 {
     axis2_soap_fault_detail_impl_t *fault_detail_impl = NULL;
     axis2_om_element_t *om_ele = NULL;
@@ -215,17 +215,17 @@ axis2_soap_fault_detail_get_all_detail_entries
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_detail_set_base_node
                         (axis2_soap_fault_detail_t *fault_detail,
-                         axis2_env_t **env,
+                         const axis2_env_t *env,
                          axis2_om_node_t *node)
 {
    axis2_soap_fault_detail_impl_t *fault_detail_impl = NULL;
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
+   AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
    fault_detail_impl = AXIS2_INTF_TO_IMPL(fault_detail);
    
    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
    {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
    }
    fault_detail_impl->om_ele_node = node;
@@ -235,7 +235,7 @@ axis2_soap_fault_detail_set_base_node
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_fault_detail_get_base_node
                         (axis2_soap_fault_detail_t *fault_detail,
-                         axis2_env_t **env)
+                         const axis2_env_t *env)
 {
    AXIS2_ENV_CHECK(env, NULL);
    return AXIS2_INTF_TO_IMPL(fault_detail)->om_ele_node;

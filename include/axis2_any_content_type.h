@@ -56,7 +56,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
         add_value)(struct axis2_any_content_type *any_content_type,
-                   axis2_env_t **env, 
+                   const axis2_env_t *env, 
                    axis2_qname_t *qname, 
                    axis2_char_t *value); 
        
@@ -70,7 +70,7 @@ extern "C"
          */
         axis2_char_t* (AXIS2_CALL *
 		get_value)(struct axis2_any_content_type *any_content_type, 
-				   axis2_env_t **env, 
+				   const axis2_env_t *env, 
 				   axis2_qname_t *qname);
         /**
          * Gets the map of values
@@ -81,7 +81,7 @@ extern "C"
          */
         axis2_hash_t* (AXIS2_CALL *
 		get_value_map)(struct axis2_any_content_type *any_content_type, 
-					   axis2_env_t **env);
+					   const axis2_env_t *env);
 		
         /**
          * Frees the given any_content_type struct
@@ -91,7 +91,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		free)(struct axis2_any_content_type *any_content_type, 
-              axis2_env_t **env);
+              const axis2_env_t *env);
 		
     } axis2_any_content_type_ops_t;
 	
@@ -111,7 +111,7 @@ extern "C"
  * @return Pointer to the newly created any_content_type instance. Returns NULL on error.
  */
 AXIS2_DECLARE(axis2_any_content_type_t*) 
-axis2_any_content_type_create(axis2_env_t **env);
+axis2_any_content_type_create(const axis2_env_t *env);
     
     
 /**************************** Start of function macros ************************/    

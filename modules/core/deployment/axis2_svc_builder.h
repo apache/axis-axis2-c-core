@@ -57,20 +57,20 @@ AXIS2_DECLARE_DATA struct axis2_svc_builder_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_svc_builder_t *svc_builder,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
                                    
     /**
      * top most method that is used to populate service from corresponding OM
      */
     axis2_status_t (AXIS2_CALL *
     populate_svc) (axis2_svc_builder_t *svc_builder,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_om_node_t *svc_node);
     
     
     axis2_status_t (AXIS2_CALL *
     process_svc_module_conf) (axis2_svc_builder_t *svc_builder,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_om_children_qname_iterator_t *module_confs,
                                     axis2_param_container_t *parent, 
                                     axis2_svc_t *svc);
@@ -81,7 +81,7 @@ AXIS2_DECLARE_DATA struct axis2_svc_builder_ops
      */
     axis2_status_t (AXIS2_CALL *
     process_module_refs) (axis2_svc_builder_t *svc_builder,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_om_children_qname_iterator_t *module_refs);
  
 
@@ -101,7 +101,7 @@ AXIS2_DECLARE_DATA struct axis2_svc_builder
  * @return pointer to newly created service builder
  */
 AXIS2_DECLARE(axis2_svc_builder_t *)
-axis2_svc_builder_create (axis2_env_t **env);
+axis2_svc_builder_create (const axis2_env_t *env);
 
 /**
  * Creates svc builder struct
@@ -111,7 +111,7 @@ axis2_svc_builder_create (axis2_env_t **env);
  * @return pointer to newly created service builder
  */
 AXIS2_DECLARE(axis2_svc_builder_t *)
-axis2_svc_builder_create_with_file_and_dep_engine_and_svc (axis2_env_t **env,
+axis2_svc_builder_create_with_file_and_dep_engine_and_svc (const axis2_env_t *env,
                                                 axis2_char_t *file_name,
                                                 struct axis2_dep_engine *dep_engine,
                                                 axis2_svc_t *svc);
@@ -123,7 +123,7 @@ axis2_svc_builder_create_with_file_and_dep_engine_and_svc (axis2_env_t **env,
  * @return pointer to newly created service builder
  */
 AXIS2_DECLARE(axis2_svc_builder_t *) 
-axis2_svc_builder_create_with_dep_engine_and_svc (axis2_env_t **env,
+axis2_svc_builder_create_with_dep_engine_and_svc (const axis2_env_t *env,
                                                 struct axis2_dep_engine *dep_engine,
                                                 axis2_svc_t *svc);
 

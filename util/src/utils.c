@@ -21,7 +21,7 @@
 #include <platforms/axis2_platform_auto_sense.h>
 
 AXIS2_DECLARE(axis2_char_t**)
-axis2_parse_request_url_for_svc_and_op(axis2_env_t **env, 
+axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env, 
                                                 axis2_char_t *request)
 
 {
@@ -30,7 +30,7 @@ axis2_parse_request_url_for_svc_and_op(axis2_env_t **env,
     axis2_char_t *tmp = NULL;
     int i = 0;
     AXIS2_ENV_CHECK(env, NULL);
-    ret  = AXIS2_MALLOC((*env)->allocator, 
+    ret  = AXIS2_MALLOC(env->allocator, 
                                         2*(sizeof(axis2_char_t *)));
     memset(ret, 0, 2*sizeof(axis2_char_t*)); 
     tmp = request;
@@ -57,7 +57,7 @@ axis2_parse_request_url_for_svc_and_op(axis2_env_t **env,
             if(NULL != tmp)
             {
                 i = tmp - service_str;
-                ret[0] = AXIS2_MALLOC((*env)->allocator, i*sizeof(char)+1);
+                ret[0] = AXIS2_MALLOC(env->allocator, i*sizeof(char)+1);
                 strncpy(ret[0], service_str,i);
                 ret[0][i] = '\0';
 
@@ -70,7 +70,7 @@ axis2_parse_request_url_for_svc_and_op(axis2_env_t **env,
                     if(NULL != tmp)
                     {
                         i = tmp - service_str;
-                        ret[1] = AXIS2_MALLOC((*env)->allocator, 
+                        ret[1] = AXIS2_MALLOC(env->allocator, 
                                                 i*sizeof(char)+1);
                         strncpy(ret[1], service_str,i);
                         ret[1][i] = '\0';

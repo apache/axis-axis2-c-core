@@ -37,40 +37,40 @@
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_role_free(axis2_soap_fault_role_t *fault_role,
-                              axis2_env_t **env);
+                              const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_role_set_role_value
                             (axis2_soap_fault_role_t *fault_role,
-                             axis2_env_t **env,
+                             const axis2_env_t *env,
                              axis2_char_t* uri);
                                 
 axis2_char_t* AXIS2_CALL 
 axis2_soap_fault_role_get_role_value
                             (axis2_soap_fault_role_t *fault_role,
-                             axis2_env_t **env);
+                             const axis2_env_t *env);
                                 
 axis2_om_node_t* AXIS2_CALL
 axis2_soap_fault_role_get_base_node
                         (axis2_soap_fault_role_t *fault_role,
-                         axis2_env_t **env);
+                         const axis2_env_t *env);
                             
 /*********************** end function prototypes ******************************/
 
 
 AXIS2_DECLARE(axis2_soap_fault_role_t *)
-axis2_soap_fault_role_create(axis2_env_t **env)
+axis2_soap_fault_role_create(const axis2_env_t *env)
 {
     axis2_soap_fault_role_impl_t *fault_role_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
     fault_role_impl = (axis2_soap_fault_role_impl_t*) AXIS2_MALLOC(
-                            (*env)->allocator,
+                            env->allocator,
                             sizeof(axis2_soap_fault_role_impl_t));
     if(!fault_role_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -78,13 +78,13 @@ axis2_soap_fault_role_create(axis2_env_t **env)
     fault_role_impl->om_ele_node = NULL;
     
     fault_role_impl->fault_role.ops = 
-            (axis2_soap_fault_role_ops_t*)AXIS2_MALLOC((*env)->allocator,
+            (axis2_soap_fault_role_ops_t*)AXIS2_MALLOC(env->allocator,
                 sizeof(axis2_soap_fault_role_ops_t));
                 
     if(!(fault_role_impl->fault_role.ops))
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_FREE((*env)->allocator, fault_role_impl);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, fault_role_impl);
         return NULL;
     }                                                                  
     
@@ -104,7 +104,7 @@ axis2_soap_fault_role_create(axis2_env_t **env)
 }
 
 AXIS2_DECLARE(axis2_soap_fault_role_t *)
-axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
+axis2_soap_fault_role_create_with_parent(const axis2_env_t *env,
                             axis2_soap_fault_t *fault)
 {
     axis2_soap_fault_role_impl_t *fault_role_impl = NULL;
@@ -120,7 +120,7 @@ axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
     axis2_om_namespace_t *parent_ns = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, fault, NULL);
+    AXIS2_PARAM_CHECK(env->error, fault, NULL);
     
     fault_role = axis2_soap_fault_role_create(env);
     if(!fault_role)
@@ -166,29 +166,29 @@ axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_role_free(axis2_soap_fault_role_t *fault_role,
-                              axis2_env_t **env)
+                              const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(NULL != fault_role->ops)
     {
-        AXIS2_FREE((*env)->allocator, fault_role->ops);
+        AXIS2_FREE(env->allocator, fault_role->ops);
         fault_role->ops = NULL;
     }    
-    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(fault_role));        
+    AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(fault_role));        
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_role_set_role_value
                             (axis2_soap_fault_role_t *fault_role,
-                             axis2_env_t **env,
+                             const axis2_env_t *env,
                              axis2_char_t* uri)
 {
     axis2_soap_fault_role_impl_t *fault_role_impl = NULL;
     axis2_om_element_t *role_ele = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, uri, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
     fault_role_impl = AXIS2_INTF_TO_IMPL(fault_role);
     
     if(!fault_role_impl->om_ele_node)
@@ -208,7 +208,7 @@ axis2_soap_fault_role_set_role_value
 axis2_char_t* AXIS2_CALL 
 axis2_soap_fault_role_get_role_value
                             (axis2_soap_fault_role_t *fault_role,
-                             axis2_env_t **env)
+                             const axis2_env_t *env)
 {
     axis2_soap_fault_role_impl_t *fault_role_impl = NULL;
     axis2_om_element_t *role_ele = NULL;
@@ -232,17 +232,17 @@ axis2_soap_fault_role_get_role_value
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_role_set_base_node
                             (axis2_soap_fault_role_t *fault_role,
-                             axis2_env_t **env,
+                             const axis2_env_t *env,
                              axis2_om_node_t *node)
 {
    axis2_soap_fault_role_impl_t *fault_role_impl = NULL;
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
+   AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
    fault_role_impl = AXIS2_INTF_TO_IMPL(fault_role);
    
    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
    {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
    }
    fault_role_impl->om_ele_node = node;
@@ -252,7 +252,7 @@ axis2_soap_fault_role_set_base_node
 axis2_om_node_t* AXIS2_CALL
 axis2_soap_fault_role_get_base_node
                         (axis2_soap_fault_role_t *fault_role,
-                         axis2_env_t **env)
+                         const axis2_env_t *env)
 {
      AXIS2_ENV_CHECK(env, NULL);
      return AXIS2_INTF_TO_IMPL(fault_role)->om_ele_node;

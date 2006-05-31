@@ -58,15 +58,15 @@ typedef struct axis2_phase_resolver_impl
 axis2_status_t AXIS2_CALL
 	axis2_phase_resolver_free (
                 axis2_phase_resolver_t *phase_resolver,
-				axis2_env_t **env);
+				const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_build_chains(axis2_phase_resolver_t *phase_resolver,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_build_module_op(axis2_phase_resolver_t *phase_resolver,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_op_t *op);
 
 /**
@@ -80,18 +80,18 @@ axis2_phase_resolver_build_module_op(axis2_phase_resolver_t *phase_resolver,
  */                                    
 static axis2_status_t
 axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolver,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     int type,
                                     axis2_op_t *op);
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_build_transport_chains(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
 
 
 static axis2_status_t
 axis2_phase_resolver_build_in_transport_chains(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_transport_in_desc_t *transport);
 
 /**
@@ -101,55 +101,55 @@ axis2_phase_resolver_build_in_transport_chains(axis2_phase_resolver_t *phase_res
  */
 static axis2_status_t
 axis2_phase_resolver_build_out_transport_chains(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_transport_out_desc_t *transport);
 
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_module_desc_t *module);
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_svc_t *svc,
                                                 axis2_module_desc_t *module_desc);
 
 
 static axis2_status_t
 axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_module_desc_t *module_desc);
 
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_svc_t *svc,
                                                 axis2_module_desc_t *module_desc);
                                                     
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_op_t *axis_op,
                                                 axis2_module_desc_t *module_desc);
 
 /************************** End of function prototypes ************************/
 
 AXIS2_DECLARE(axis2_phase_resolver_t *)
-axis2_phase_resolver_create (axis2_env_t **env)
+axis2_phase_resolver_create (const axis2_env_t *env)
 {
     axis2_phase_resolver_impl_t *phase_resolver_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	phase_resolver_impl = (axis2_phase_resolver_impl_t *) AXIS2_MALLOC((*env)->allocator,
+	phase_resolver_impl = (axis2_phase_resolver_impl_t *) AXIS2_MALLOC(env->allocator,
 			sizeof(axis2_phase_resolver_impl_t));
     
     if(NULL == phase_resolver_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
 	
@@ -161,11 +161,11 @@ axis2_phase_resolver_create (axis2_env_t **env)
 	
     
 	phase_resolver_impl->phase_resolver.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_phase_resolver_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_phase_resolver_ops_t));
 	if(NULL == phase_resolver_impl->phase_resolver.ops)
     {
         axis2_phase_resolver_free(&(phase_resolver_impl->phase_resolver), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -198,13 +198,13 @@ axis2_phase_resolver_create (axis2_env_t **env)
 }
 
 AXIS2_DECLARE(axis2_phase_resolver_t *) 
-axis2_phase_resolver_create_with_config (axis2_env_t **env, 
+axis2_phase_resolver_create_with_config (const axis2_env_t *env, 
                                          axis2_conf_t *axis2_config)
 {
     axis2_phase_resolver_impl_t *phase_resolver_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, axis2_config, NULL);
+    AXIS2_PARAM_CHECK(env->error, axis2_config, NULL);
     
     phase_resolver_impl = (axis2_phase_resolver_impl_t *)
         axis2_phase_resolver_create(env);
@@ -215,14 +215,14 @@ axis2_phase_resolver_create_with_config (axis2_env_t **env,
 }
 
 AXIS2_DECLARE(axis2_phase_resolver_t *)
-axis2_phase_resolver_create_with_config_and_svc (axis2_env_t **env, 
+axis2_phase_resolver_create_with_config_and_svc (const axis2_env_t *env, 
                                                 axis2_conf_t *axis2_config,
                                                 axis2_svc_t *svc)
 {
     axis2_phase_resolver_impl_t *phase_resolver_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, axis2_config, NULL);
+    AXIS2_PARAM_CHECK(env->error, axis2_config, NULL);
     
     phase_resolver_impl = (axis2_phase_resolver_impl_t *)
         axis2_phase_resolver_create(env);
@@ -242,7 +242,7 @@ axis2_phase_resolver_create_with_config_and_svc (axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL 
 axis2_phase_resolver_free (axis2_phase_resolver_t *phase_resolver, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_phase_resolver_impl_t *phase_resolver_impl = NULL;
     
@@ -262,13 +262,13 @@ axis2_phase_resolver_free (axis2_phase_resolver_t *phase_resolver,
 	
     if(phase_resolver->ops)
     {
-        AXIS2_FREE((*env)->allocator, phase_resolver->ops);
+        AXIS2_FREE(env->allocator, phase_resolver->ops);
         phase_resolver->ops = NULL;
     }
 
     if(phase_resolver_impl)
     {
-        AXIS2_FREE((*env)->allocator, phase_resolver_impl);
+        AXIS2_FREE(env->allocator, phase_resolver_impl);
         phase_resolver_impl = NULL;
     }
     
@@ -277,7 +277,7 @@ axis2_phase_resolver_free (axis2_phase_resolver_t *phase_resolver,
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_build_chains(axis2_phase_resolver_t *phase_resolver,
-                                    axis2_env_t **env) 
+                                    const axis2_env_t *env) 
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
     axis2_hash_index_t *index_i = 0;
@@ -312,13 +312,13 @@ axis2_phase_resolver_build_chains(axis2_phase_resolver_t *phase_resolver,
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_build_module_op(axis2_phase_resolver_t *phase_resolver,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_op_t *op)
 {
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
     
    
     for (i = 1; i < 5; i++) 
@@ -331,7 +331,7 @@ axis2_phase_resolver_build_module_op(axis2_phase_resolver_t *phase_resolver,
 
 static axis2_status_t
 axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolver,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     int type,
                                     axis2_op_t *op)
 {
@@ -354,7 +354,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
         resolver_impl->axis2_config, env);
     
     size = AXIS2_ARRAY_LIST_SIZE(moduleqnames, env);
-    status = AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
+    status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
     if(AXIS2_SUCCESS != status)
     {
         return status;
@@ -409,7 +409,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
         } else 
         {
                 
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MODULE_REF, 
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODULE_REF, 
                 AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
@@ -419,7 +419,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             int j = 0;
             int count = 0;
             count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
-            if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+            if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
             {
                 return AXIS2_FAILURE;
             }
@@ -530,7 +530,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
         int count = 0;
         count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
         
-        if(AXIS2_FAILURE == AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+        if(AXIS2_FAILURE == AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
             if(all_handlers)
             {  
@@ -555,7 +555,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
             /* TODO change this in properway */
             if(!phase_name || (0 == AXIS2_STRCMP(phase_name, "")))
             {
-                AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_PHASE_IS_NOT_SPECIFED,
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_PHASE_IS_NOT_SPECIFED,
                     AXIS2_FAILURE);
                 return AXIS2_FAILURE;
                 
@@ -570,7 +570,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
                     AXIS2_ARRAY_LIST_FREE(all_handlers, env);
                     all_handlers = NULL;                        
                 }
-                AXIS2_ERROR_SET((*env)->error, 
+                AXIS2_ERROR_SET(env->error, 
                     AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
                 
@@ -668,7 +668,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
     */
     
     size = AXIS2_ARRAY_LIST_SIZE(all_handlers, env);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         return AXIS2_FAILURE;
     }
@@ -695,7 +695,7 @@ axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolv
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_build_transport_chains(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env)
+                                                const axis2_env_t *env)
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
     axis2_hash_t *transports_in = NULL;
@@ -713,7 +713,7 @@ axis2_phase_resolver_build_transport_chains(axis2_phase_resolver_t *phase_resolv
         env);
     if(!transports_in)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_TRANSPORT_IN_CONFIGURED, 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_TRANSPORT_IN_CONFIGURED, 
             AXIS2_FAILURE);
         return AXIS2_SUCCESS;
     }
@@ -722,7 +722,7 @@ axis2_phase_resolver_build_transport_chains(axis2_phase_resolver_t *phase_resolv
         env);
     if(!transports_out)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_TRANSPORT_OUT_CONFIGURED, 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_TRANSPORT_OUT_CONFIGURED, 
             AXIS2_FAILURE);
         return AXIS2_SUCCESS;
     }
@@ -766,7 +766,7 @@ axis2_phase_resolver_build_transport_chains(axis2_phase_resolver_t *phase_resolv
 static axis2_status_t
 axis2_phase_resolver_build_in_transport_chains(axis2_phase_resolver_t *
                                                     phase_resolver,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_transport_in_desc_t *
                                                     transport)
 {
@@ -776,7 +776,7 @@ axis2_phase_resolver_build_in_transport_chains(axis2_phase_resolver_t *
     axis2_array_list_t *handlers = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, transport, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, transport, AXIS2_FAILURE);
 
     for (type = 1; type < 4; type++) 
     {
@@ -872,7 +872,7 @@ axis2_phase_resolver_build_in_transport_chains(axis2_phase_resolver_t *
                     }
                     AXIS2_ARRAY_LIST_FREE(handlers, env);
                 }
-                AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, 
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, 
                         AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }
@@ -897,7 +897,7 @@ axis2_phase_resolver_build_in_transport_chains(axis2_phase_resolver_t *
 
 static axis2_status_t
 axis2_phase_resolver_build_out_transport_chains(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_transport_out_desc_t *transport)
 {
     int type = 0;
@@ -905,7 +905,7 @@ axis2_phase_resolver_build_out_transport_chains(axis2_phase_resolver_t *phase_re
     axis2_array_list_t *handlers = NULL;
        
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, transport, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, transport, AXIS2_FAILURE);
     for (type = 1; type < 5; type++) 
     {
         axis2_flow_t *flow = NULL;
@@ -932,7 +932,7 @@ axis2_phase_resolver_build_out_transport_chains(axis2_phase_resolver_t *phase_re
             int hndlr_count = 0;
             int j = 0;
             hndlr_count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
-            if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+            if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
             {
                 return AXIS2_FAILURE;
             }
@@ -1008,7 +1008,7 @@ axis2_phase_resolver_build_out_transport_chains(axis2_phase_resolver_t *phase_re
                     }
                     AXIS2_ARRAY_LIST_FREE(handlers, env);
                 }
-                AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }
             
@@ -1029,7 +1029,7 @@ axis2_phase_resolver_build_out_transport_chains(axis2_phase_resolver_t *phase_re
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_module_desc_t *module_desc)
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
@@ -1038,7 +1038,7 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
     
     status = axis2_phase_resolver_engage_to_global_chain(phase_resolver, env, 
@@ -1112,7 +1112,7 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_svc_t *svc,
                                                 axis2_module_desc_t *module_desc)
 {
@@ -1124,8 +1124,8 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
     axis2_status_t status = AXIS2_FAILURE;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, svc, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
     
     ops = AXIS2_SVC_GET_OPS(svc, env);
@@ -1302,7 +1302,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
 
 static axis2_status_t
 axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolver,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_module_desc_t *module_desc)
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
@@ -1460,7 +1460,7 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_svc_t *svc,
                                             axis2_module_desc_t *module_desc)
 {
@@ -1546,7 +1546,7 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_op_t *axis_op,
                                             axis2_module_desc_t *module_desc)
 {
@@ -1555,8 +1555,8 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, axis_op, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, axis_op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
        
     for (type = 1; type < 5; type++) 
@@ -1655,7 +1655,7 @@ axis2_phase_resolver_engage_module_to_op(axis2_phase_resolver_t *phase_resolver,
                 /*} 
                 else 
                 {
-                    AXIS2_ERROR_SET((*env)->error, 
+                    AXIS2_ERROR_SET(env->error, 
                         AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE, 
                             AXIS2_FAILURE);
                     continue;

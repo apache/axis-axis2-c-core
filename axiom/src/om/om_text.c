@@ -27,88 +27,88 @@
 /* ops */
 axis2_status_t AXIS2_CALL
 axis2_om_text_free (axis2_om_text_t * om_text,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
                     
                                        
 axis2_status_t AXIS2_CALL 
 axis2_om_text_serialize (axis2_om_text_t * om_text,
-                         axis2_env_t **env,
+                         const axis2_env_t *env,
                          axis2_om_output_t * om_output);
 
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_value(axis2_om_text_t *om_text,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_set_value(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         const axis2_char_t *value);                                                 
 /*Following are for MTOM*/                                             
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_mime_type(axis2_om_text_t *om_text,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_set_mime_type(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         const axis2_char_t *mime_type);
 
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_set_optimize(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         const axis2_bool_t optimize);
                         
 axis2_bool_t AXIS2_CALL
 axis2_om_text_get_optimize(axis2_om_text_t *om_text,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 axis2_om_text_get_is_binary(axis2_om_text_t *om_text,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                         
 axis2_status_t AXIS2_CALL
 axis2_om_text_set_is_binary(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         const axis2_bool_t is_binary);
                         
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_localname(axis2_om_text_t *om_text,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_content_id(axis2_om_text_t *om_text,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_set_content_id(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         const axis2_char_t *content_id);                        
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize_start_part(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_om_output_t *om_output_t);
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize_attribute(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_om_output_t *om_output, 
                         axis2_om_attribute_t *om_attribute);
                         
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize_namespace(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         const axis2_om_namespace_t *om_namespace, 
                         axis2_om_output_t *om_output);
 
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_text(axis2_om_text_t *om_text,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_data_handler_t *AXIS2_CALL
 axis2_om_text_get_data_handler(axis2_om_text_t *om_text,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 /********************* axis2_om_text_impl_struct ***************/
 
@@ -137,7 +137,7 @@ typedef struct axis2_om_text_impl_t
 
 
 AXIS2_DECLARE(axis2_om_text_t*)
-axis2_om_text_create (axis2_env_t **env,
+axis2_om_text_create (const axis2_env_t *env,
                       axis2_om_node_t * parent,
                       const axis2_char_t * value,
                       axis2_om_node_t **node)
@@ -145,21 +145,21 @@ axis2_om_text_create (axis2_env_t **env,
 
     axis2_om_text_impl_t *om_text = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, node, NULL);
+    AXIS2_PARAM_CHECK(env->error, node, NULL);
 
     *node = axis2_om_node_create (env);
 
     if (!(*node))
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    om_text = (axis2_om_text_impl_t *) AXIS2_MALLOC ((*env)->allocator,
+    om_text = (axis2_om_text_impl_t *) AXIS2_MALLOC (env->allocator,
                                           sizeof (axis2_om_text_impl_t));
     if (!om_text)
     {
-        AXIS2_FREE ((*env)->allocator, *node);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE (env->allocator, *node);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -190,15 +190,15 @@ axis2_om_text_create (axis2_env_t **env,
 
     /* ops */
     om_text->om_text.ops = NULL;
-    om_text->om_text.ops = (axis2_om_text_ops_t *) AXIS2_MALLOC((*env)->allocator,
+    om_text->om_text.ops = (axis2_om_text_ops_t *) AXIS2_MALLOC(env->allocator,
                                               sizeof (axis2_om_text_ops_t));
 
     if (!om_text->om_text.ops)
     {
-        AXIS2_FREE ((*env)->allocator, om_text->value);
-        AXIS2_FREE ((*env)->allocator, om_text);
-        AXIS2_FREE ((*env)->allocator, *node);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE (env->allocator, om_text->value);
+        AXIS2_FREE (env->allocator, om_text);
+        AXIS2_FREE (env->allocator, *node);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -215,7 +215,7 @@ axis2_om_text_create (axis2_env_t **env,
 }
 
 AXIS2_DECLARE(axis2_om_text_t*)
-axis2_om_text_create_with_data_handler (axis2_env_t **env,
+axis2_om_text_create_with_data_handler (const axis2_env_t *env,
                       axis2_om_node_t * parent,
                       axis2_data_handler_t* data_handler,
                       axis2_om_node_t **node)
@@ -223,7 +223,7 @@ axis2_om_text_create_with_data_handler (axis2_env_t **env,
 
     axis2_om_text_impl_t *om_text_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, data_handler, NULL);
+    AXIS2_PARAM_CHECK(env->error, data_handler, NULL);
 
     om_text_impl = (axis2_om_text_impl_t*)axis2_om_text_create(env, parent, NULL, node);
     if (!om_text_impl)
@@ -236,7 +236,7 @@ axis2_om_text_create_with_data_handler (axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_free (axis2_om_text_t * om_text,
-                    axis2_env_t **env)
+                    const axis2_env_t *env)
 {
     axis2_om_text_impl_t *text_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -244,7 +244,7 @@ axis2_om_text_free (axis2_om_text_t * om_text,
     text_impl = AXIS2_INTF_TO_IMPL(om_text);
     if(NULL != text_impl->value)
     {
-        AXIS2_FREE ((*env)->allocator, text_impl->value);
+        AXIS2_FREE (env->allocator, text_impl->value);
         text_impl->value = NULL;
     }
 
@@ -256,23 +256,23 @@ axis2_om_text_free (axis2_om_text_t * om_text,
     
     if(text_impl->content_id)
     {
-        AXIS2_FREE((*env)->allocator, text_impl->content_id);
+        AXIS2_FREE(env->allocator, text_impl->content_id);
         text_impl->content_id = NULL;
     }
                             
     if(NULL != om_text->ops)
     {
-        AXIS2_FREE ((*env)->allocator, om_text->ops);
+        AXIS2_FREE (env->allocator, om_text->ops);
         om_text->ops = NULL;
     }
 
-    AXIS2_FREE ((*env)->allocator, text_impl);
+    AXIS2_FREE (env->allocator, text_impl);
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize (axis2_om_text_t *om_text,
-                         axis2_env_t **env,
+                         const axis2_env_t *env,
                          axis2_om_output_t *om_output)
 {
     int status = AXIS2_SUCCESS;
@@ -282,7 +282,7 @@ axis2_om_text_serialize (axis2_om_text_t *om_text,
     axis2_xml_writer_t *om_output_xml_writer = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
 
     if(!axis2_om_text_get_is_binary(om_text, env))
@@ -324,7 +324,7 @@ axis2_om_text_serialize (axis2_om_text_t *om_text,
 
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_value(axis2_om_text_t *om_text,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env,NULL);
     return AXIS2_INTF_TO_IMPL(om_text)->value;
@@ -332,25 +332,25 @@ axis2_om_text_get_value(axis2_om_text_t *om_text,
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_set_value(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         const axis2_char_t *value)
 {
     axis2_om_text_impl_t *text_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error , om_text, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error , om_text, AXIS2_FAILURE);
     
     text_impl = AXIS2_INTF_TO_IMPL(om_text);
     if(NULL != text_impl->value)
     {
-        AXIS2_FREE((*env)->allocator, text_impl->value);
+        AXIS2_FREE(env->allocator, text_impl->value);
         text_impl->value = NULL;
     }
     
     text_impl->value = (axis2_char_t*)AXIS2_STRDUP(value, env);
     if(!text_impl->value)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,
             AXIS2_FAILURE);
             
         return AXIS2_FAILURE;
@@ -362,7 +362,7 @@ axis2_om_text_set_value(axis2_om_text_t *om_text,
 
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_mime_type(axis2_om_text_t *om_text,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env,NULL);
     return AXIS2_INTF_TO_IMPL(om_text)->mime_type;
@@ -370,13 +370,13 @@ axis2_om_text_get_mime_type(axis2_om_text_t *om_text,
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_set_mime_type(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         const axis2_char_t *mime_type)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error , om_text, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error , om_text, AXIS2_FAILURE);
     if(AXIS2_INTF_TO_IMPL(om_text)->mime_type)
-        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(om_text)->mime_type);
+        AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(om_text)->mime_type);
     AXIS2_INTF_TO_IMPL(om_text)->mime_type = (axis2_char_t*)AXIS2_STRDUP(mime_type,env);
     return AXIS2_SUCCESS;
 }
@@ -384,7 +384,7 @@ axis2_om_text_set_mime_type(axis2_om_text_t *om_text,
 
 axis2_bool_t AXIS2_CALL
 axis2_om_text_get_optimize(axis2_om_text_t *om_text,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(om_text)->optimize;
@@ -392,11 +392,11 @@ axis2_om_text_get_optimize(axis2_om_text_t *om_text,
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_set_optimize(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         const axis2_bool_t optimize)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error , om_text, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error , om_text, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(om_text)->optimize = optimize;
     return AXIS2_SUCCESS;
 }
@@ -404,7 +404,7 @@ axis2_om_text_set_optimize(axis2_om_text_t *om_text,
 
 axis2_bool_t AXIS2_CALL
 axis2_om_text_get_is_binary(axis2_om_text_t *om_text,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(om_text)->is_binary;
@@ -412,18 +412,18 @@ axis2_om_text_get_is_binary(axis2_om_text_t *om_text,
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_set_is_binary(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         const axis2_bool_t is_binary)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error , om_text, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error , om_text, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(om_text)->is_binary = is_binary;
     return AXIS2_SUCCESS;
 }
 
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_localname(axis2_om_text_t *om_text,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env,NULL);
     return AXIS2_INTF_TO_IMPL(om_text)->localname;
@@ -431,7 +431,7 @@ axis2_om_text_get_localname(axis2_om_text_t *om_text,
 
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_content_id(axis2_om_text_t *om_text,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env,NULL);
     return AXIS2_INTF_TO_IMPL(om_text)->content_id;
@@ -439,20 +439,20 @@ axis2_om_text_get_content_id(axis2_om_text_t *om_text,
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_set_content_id(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         const axis2_char_t *content_id)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error , om_text, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error , om_text, AXIS2_FAILURE);
     if(AXIS2_INTF_TO_IMPL(om_text)->content_id)
-        AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(om_text)->content_id);
+        AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(om_text)->content_id);
     AXIS2_INTF_TO_IMPL(om_text)->content_id = (axis2_char_t*)AXIS2_STRDUP(content_id, env);
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize_start_part(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_om_output_t *om_output)
 {
     axis2_om_text_impl_t *om_text_impl = NULL;
@@ -502,7 +502,7 @@ axis2_om_text_serialize_start_part(axis2_om_text_t *om_text,
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize_attribute(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_om_output_t *om_output, 
                         axis2_om_attribute_t *om_attribute)
 {
@@ -545,7 +545,7 @@ axis2_om_text_serialize_attribute(axis2_om_text_t *om_text,
 
 axis2_status_t AXIS2_CALL
 axis2_om_text_serialize_namespace(axis2_om_text_t *om_text,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         const axis2_om_namespace_t *om_namespace, 
                         axis2_om_output_t *om_output)
 {
@@ -573,7 +573,7 @@ axis2_om_text_serialize_namespace(axis2_om_text_t *om_text,
 
 axis2_char_t* AXIS2_CALL
 axis2_om_text_get_text(axis2_om_text_t *om_text,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_om_text_impl_t *om_text_impl = NULL;
     AXIS2_ENV_CHECK(env,NULL);
@@ -596,7 +596,7 @@ axis2_om_text_get_text(axis2_om_text_t *om_text,
             if (data_handler_stream)
             {
                 encoded_len = axis2_base64_encode_len(data_handler_stream_size);
-                encoded_str = AXIS2_MALLOC((*env)->allocator, encoded_len);
+                encoded_str = AXIS2_MALLOC(env->allocator, encoded_len);
                 if (encoded_str)
                 {
                     encoded_len = axis2_base64_encode(encoded_str, 
@@ -612,7 +612,7 @@ axis2_om_text_get_text(axis2_om_text_t *om_text,
 
 axis2_data_handler_t *AXIS2_CALL
 axis2_om_text_get_data_handler(axis2_om_text_t *om_text,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env,NULL);
     return AXIS2_INTF_TO_IMPL(om_text)->data_handler;

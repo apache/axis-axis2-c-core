@@ -61,57 +61,57 @@ struct axis2_xml_schema_obj_table_ops
     axis2_status_t (AXIS2_CALL *
     free)(
             axis2_xml_schema_obj_table_t *obj_table,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     int (AXIS2_CALL *
     get_count)(
             axis2_xml_schema_obj_table_t *obj_table,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     void *(AXIS2_CALL *
     get_item)(
             axis2_xml_schema_obj_table_t *obj_table,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_names)(
             axis2_xml_schema_obj_table_t *obj_table,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_values)(
             axis2_xml_schema_obj_table_t *obj_table,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_bool_t (AXIS2_CALL *
     contains)(
             axis2_xml_schema_obj_table_t *obj_table,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname);
 
     axis2_status_t (AXIS2_CALL *
     add) (
             axis2_xml_schema_obj_table_t *obj_table,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname,
             void *value);
           
     axis2_status_t (AXIS2_CALL *
     put)(
             axis2_xml_schema_obj_table_t *obj_table,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *key,
             void *value);
          
     axis2_hash_t* (AXIS2_CALL *
     get_hash_table)(
             axis2_xml_schema_obj_table_t *obj_table,
-            axis2_env_t **env);
+            const axis2_env_t *env);
             
     void* (AXIS2_CALL*
     get)(   axis2_xml_schema_obj_table_t *obj_table,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *key);            
             
                                            
@@ -123,7 +123,7 @@ struct axis2_xml_schema_obj_table
 };
 
 AXIS2_DECLARE(axis2_xml_schema_obj_table_t *)
-axis2_xml_schema_obj_table_create(axis2_env_t **env);
+axis2_xml_schema_obj_table_create(const axis2_env_t *env);
 
 /********************* macros ************************************************/
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_FREE(obj_table, env) \

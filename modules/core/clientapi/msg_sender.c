@@ -37,49 +37,49 @@ struct axis2_msg_sender_impl
 
 /***************************** Function headers *******************************/
 axis2_status_t AXIS2_CALL 
-axis2_msg_sender_send(axis2_msg_sender_t *msg_sender, axis2_env_t **env,
+axis2_msg_sender_send(axis2_msg_sender_t *msg_sender, const axis2_env_t *env,
 						axis2_op_t *op,
 						axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL 
 axis2_msg_sender_set_transport_info(axis2_msg_sender_t *msg_sender, 
-						axis2_env_t **env,
+						const axis2_env_t *env,
 						axis2_char_t *sender_transport);
 
 axis2_status_t AXIS2_CALL 
 axis2_msg_sender_send_with_om(struct axis2_msg_sender *msg_sender, 
-						axis2_env_t **env,
+						const axis2_env_t *env,
 						axis2_char_t *op_name, 
 						axis2_om_node_t *om_node_to_send);
 
 axis2_status_t AXIS2_CALL 
 axis2_msg_sender_send_with_soap(axis2_msg_sender_t *msg_sender, 
-						axis2_env_t **env,
+						const axis2_env_t *env,
 						axis2_char_t *op_name, 
 						axis2_soap_envelope_t *envelope);
 axis2_msg_info_headers_t* AXIS2_CALL 
 axis2_msg_sender_get_msg_info_headers(axis2_msg_sender_t *msg_sender, 
-						axis2_env_t **env);
+						const axis2_env_t *env);
 					
 axis2_status_t AXIS2_CALL 
-axis2_msg_sender_free(struct axis2_msg_sender *msg_sender, axis2_env_t **env);
+axis2_msg_sender_free(struct axis2_msg_sender *msg_sender, const axis2_env_t *env);
 	
 /***************************** End of function headers ************************/
 
-axis2_msg_sender_t* AXIS2_CALL axis2_msg_sender_create(axis2_env_t **env, 
+axis2_msg_sender_t* AXIS2_CALL axis2_msg_sender_create(const axis2_env_t *env, 
 						axis2_svc_ctx_t *svc_ctx) 
 {
     axis2_msg_sender_impl_t *msg_sender_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, svc_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, svc_ctx, NULL);
     
-    msg_sender_impl = AXIS2_MALLOC( (*env)->allocator, 
+    msg_sender_impl = AXIS2_MALLOC( env->allocator, 
 						sizeof(axis2_msg_sender_impl_t));
 	
     if (NULL == msg_sender_impl)
     { 
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
     
@@ -100,11 +100,11 @@ axis2_msg_sender_t* AXIS2_CALL axis2_msg_sender_create(axis2_env_t **env,
 						NULL, NULL);
     
     /* initialize ops */    
-    msg_sender_impl->msg_sender.ops  = AXIS2_MALLOC((*env)->allocator, 
+    msg_sender_impl->msg_sender.ops  = AXIS2_MALLOC(env->allocator, 
 						sizeof(axis2_msg_sender_ops_t));
     if (NULL == msg_sender_impl->msg_sender.ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_msg_sender_free(&(msg_sender_impl->msg_sender), env);
         return NULL;        
     }
@@ -124,7 +124,7 @@ axis2_msg_sender_t* AXIS2_CALL axis2_msg_sender_create(axis2_env_t **env,
 }
 
 axis2_status_t AXIS2_CALL axis2_msg_sender_free(struct axis2_msg_sender *msg_sender, 
-                                   axis2_env_t **env)
+                                   const axis2_env_t *env)
 {
     axis2_msg_sender_impl_t *msg_sender_impl = NULL;
     
@@ -134,7 +134,7 @@ axis2_status_t AXIS2_CALL axis2_msg_sender_free(struct axis2_msg_sender *msg_sen
     
     if (NULL != msg_sender_impl->msg_sender.ops)
     {
-        AXIS2_FREE((*env)->allocator, msg_sender_impl->msg_sender.ops);
+        AXIS2_FREE(env->allocator, msg_sender_impl->msg_sender.ops);
         msg_sender_impl->msg_sender.ops = NULL;
     }
     
@@ -144,14 +144,14 @@ axis2_status_t AXIS2_CALL axis2_msg_sender_free(struct axis2_msg_sender *msg_sen
         msg_sender_impl->base = NULL;
     }    
     
-    AXIS2_FREE((*env)->allocator, msg_sender_impl);
+    AXIS2_FREE(env->allocator, msg_sender_impl);
     msg_sender_impl = NULL;
     
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_msg_sender_send(axis2_msg_sender_t *msg_sender, axis2_env_t **env,
+axis2_msg_sender_send(axis2_msg_sender_t *msg_sender, const axis2_env_t *env,
 						axis2_op_t *op,
 						axis2_msg_ctx_t *msg_ctx)
 {
@@ -202,7 +202,7 @@ axis2_msg_sender_send(axis2_msg_sender_t *msg_sender, axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL 
 axis2_msg_sender_set_transport_info(axis2_msg_sender_t *msg_sender, 
-						axis2_env_t **env,
+						const axis2_env_t *env,
 						axis2_char_t *sender_transport)
 {
     axis2_msg_sender_impl_t *msg_sender_impl = NULL;
@@ -233,7 +233,7 @@ axis2_msg_sender_set_transport_info(axis2_msg_sender_t *msg_sender,
 	AXIS2_QNAME_FREE(qname, env);
 	if(NULL == msg_sender_impl->sender_transport)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_UNKNOWN_TRANSPORT, 
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_UNKNOWN_TRANSPORT, 
 				AXIS2_FAILURE);
 		return AXIS2_FAILURE;
 	}
@@ -243,7 +243,7 @@ axis2_msg_sender_set_transport_info(axis2_msg_sender_t *msg_sender,
 
 axis2_status_t AXIS2_CALL 
 axis2_msg_sender_send_with_om(struct axis2_msg_sender *msg_sender, 
-						axis2_env_t **env,
+						const axis2_env_t *env,
 						axis2_char_t *op_name, 
 						axis2_om_node_t *om_node_to_send)
 {
@@ -252,8 +252,8 @@ axis2_msg_sender_send_with_om(struct axis2_msg_sender *msg_sender,
 	axis2_status_t status = AXIS2_FAILURE;
 	
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, op_name, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, om_node_to_send, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, op_name, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, om_node_to_send, AXIS2_FAILURE);
 	
     msg_sender_impl = AXIS2_INTF_TO_IMPL(msg_sender);
 	soap_envelope = AXIS2_MEP_CLIENT_CREATE_DEFAULT_SOAP_ENVELOPE(
@@ -269,7 +269,7 @@ axis2_msg_sender_send_with_om(struct axis2_msg_sender *msg_sender,
 
 axis2_status_t AXIS2_CALL 
 axis2_msg_sender_send_with_soap(axis2_msg_sender_t *msg_sender, 
-						axis2_env_t **env,
+						const axis2_env_t *env,
 						axis2_char_t *op_name, 
 						axis2_soap_envelope_t *envelope)
 {
@@ -283,8 +283,8 @@ axis2_msg_sender_send_with_soap(axis2_msg_sender_t *msg_sender,
 	axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, op_name, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, envelope, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, op_name, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, envelope, AXIS2_FAILURE);
     
     msg_sender_impl = AXIS2_INTF_TO_IMPL(msg_sender);
 
@@ -330,7 +330,7 @@ axis2_msg_sender_send_with_soap(axis2_msg_sender_t *msg_sender,
 
 axis2_msg_info_headers_t* AXIS2_CALL 
 axis2_msg_sender_get_msg_info_headers(axis2_msg_sender_t *msg_sender, 
-						axis2_env_t **env)
+						const axis2_env_t *env)
 {
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	return AXIS2_INTF_TO_IMPL(msg_sender)->msg_info_headers;

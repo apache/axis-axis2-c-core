@@ -55,18 +55,18 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_address_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_ext_soap_address_t *ext_soap_address,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_location_uri) (axis2_wsdl_ext_soap_address_t *ext_soap_address,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
     /**
      * Set the Endpoint Uri
      */
     axis2_status_t (AXIS2_CALL *
     set_location_uri) (axis2_wsdl_ext_soap_address_t *ext_soap_address,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *location_uri);
  
 };
@@ -89,7 +89,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_address
  * @return pointer to newly created wsdl ext_soap_address
  */
 AXIS2_DECLARE(axis2_wsdl_ext_soap_address_t *) 
-axis2_wsdl_ext_soap_address_create (axis2_env_t **env,
+axis2_wsdl_ext_soap_address_create (const axis2_env_t *env,
                                     axis2_qname_t *qtype);
 
 /*************************** Function macros **********************************/

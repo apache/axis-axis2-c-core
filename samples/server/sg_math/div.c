@@ -17,7 +17,7 @@
 #include <stdio.h>
 
 axis2_om_node_t *
-axis2_div_div (axis2_env_t **env, axis2_om_node_t *node)
+axis2_div_div (const axis2_env_t *env, axis2_om_node_t *node)
 {
     axis2_om_node_t *param1_node = NULL;
     axis2_om_node_t *param1_text_node = NULL;
@@ -30,7 +30,7 @@ axis2_div_div (axis2_env_t **env, axis2_om_node_t *node)
 
     if (!node)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL, AXIS2_FAILURE);
         printf("Math client request ERROR: input parameter NULL\n");
         return NULL;
     }
@@ -38,7 +38,7 @@ axis2_div_div (axis2_env_t **env, axis2_om_node_t *node)
     param1_node = AXIS2_OM_NODE_GET_FIRST_CHILD(node, env);
     if (!param1_node)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Math service  ERROR: invalid XML in request\n");
         return NULL;
     }
@@ -46,7 +46,7 @@ axis2_div_div (axis2_env_t **env, axis2_om_node_t *node)
     param1_text_node = AXIS2_OM_NODE_GET_FIRST_CHILD(param1_node, env);
     if (!param1_text_node)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Math service ERROR: invalid XML in request\n");
         return NULL;
     }
@@ -61,7 +61,7 @@ axis2_div_div (axis2_env_t **env, axis2_om_node_t *node)
     }
     else
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Math service ERROR: invalid XML in request\n");
         return NULL;
     }
@@ -69,7 +69,7 @@ axis2_div_div (axis2_env_t **env, axis2_om_node_t *node)
     param2_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(param1_node, env);
     if (!param2_node)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Math service  ERROR: invalid XML in request\n");
         return NULL;
     }
@@ -77,7 +77,7 @@ axis2_div_div (axis2_env_t **env, axis2_om_node_t *node)
     param2_text_node = AXIS2_OM_NODE_GET_FIRST_CHILD(param2_node, env);
     if (!param2_text_node)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Math service ERROR: invalid XML in request\n");
         return NULL;
     }
@@ -92,7 +92,7 @@ axis2_div_div (axis2_env_t **env, axis2_om_node_t *node)
     }
     else
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Math service ERROR: invalid XML in request\n");
         return NULL;
     }
@@ -125,7 +125,7 @@ axis2_div_div (axis2_env_t **env, axis2_om_node_t *node)
         return node1;
     }
     
-    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_OPERATION_PARAMETERS_IN_SOAP_REQUEST, AXIS2_FAILURE);
+    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_OPERATION_PARAMETERS_IN_SOAP_REQUEST, AXIS2_FAILURE);
     printf("Math service ERROR: invalid parameters\n");
     return NULL;
 }

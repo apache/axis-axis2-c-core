@@ -57,7 +57,7 @@ struct axis2_ctx_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_property)(struct axis2_ctx *ctx, 
-                    axis2_env_t **env, 
+                    const axis2_env_t *env, 
                     axis2_char_t *key, 
                     axis2_property_t *value, 
                     axis2_bool_t persistent);
@@ -69,32 +69,32 @@ struct axis2_ctx_ops
      */
     axis2_property_t* (AXIS2_CALL *
     get_property)(struct axis2_ctx *ctx, 
-                    axis2_env_t **env, 
+                    const axis2_env_t *env, 
                     axis2_char_t *key, 
                     axis2_bool_t persistent);
     
     axis2_hash_t* (AXIS2_CALL *get_non_persistent_map)(struct axis2_ctx *ctx, 
-                                                           axis2_env_t **env);
+                                                           const axis2_env_t *env);
     
     axis2_hash_t* (AXIS2_CALL *get_persistent_map)(struct axis2_ctx *ctx, 
-                                                   axis2_env_t **env);
+                                                   const axis2_env_t *env);
 
     /** 
      * Deallocate memory
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *free)(axis2_ctx_t *ctx,
-                                        axis2_env_t **env); 
+                                        const axis2_env_t *env); 
     axis2_status_t (AXIS2_CALL *
     set_non_persistent_map)(
         struct axis2_ctx *ctx, 
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t* map);
         
     axis2_status_t (AXIS2_CALL *
     set_persistent_map)(
         struct axis2_ctx *ctx, 
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t* map);
 };
 
@@ -107,7 +107,7 @@ struct axis2_ctx
     axis2_ctx_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_ctx_t*) axis2_ctx_create (axis2_env_t **env);
+AXIS2_DECLARE(axis2_ctx_t*) axis2_ctx_create (const axis2_env_t *env);
     
 /************************** Start of function macros **************************/
 

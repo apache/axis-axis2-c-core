@@ -59,18 +59,18 @@ AXIS2_DECLARE_DATA struct axis2_conf_builder_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_conf_builder_t *conf_builder,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     populate_conf) (axis2_conf_builder_t *conf_builder,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * To get the list og modules that is requird to be engage globally
      */
     axis2_status_t (AXIS2_CALL *
     process_module_refs) (axis2_conf_builder_t *conf_builder,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_om_children_qname_iterator_t *module_refs);
                                
  
@@ -91,7 +91,7 @@ AXIS2_DECLARE_DATA struct axis2_conf_builder
  * @return pointer to newly created conf builder
  */
 AXIS2_DECLARE(axis2_conf_builder_t *) 
-axis2_conf_builder_create (axis2_env_t **env);
+axis2_conf_builder_create (const axis2_env_t *env);
 
 /**
  * Creates conf builder struct
@@ -102,7 +102,7 @@ axis2_conf_builder_create (axis2_env_t **env);
  */
 
 AXIS2_DECLARE(axis2_conf_builder_t *)
-axis2_conf_builder_create_with_file_and_dep_engine_and_conf (axis2_env_t **env,
+axis2_conf_builder_create_with_file_and_dep_engine_and_conf (const axis2_env_t *env,
                                             axis2_char_t *file,
                                             struct axis2_dep_engine *dep_engine,
                                             axis2_conf_t *conf);

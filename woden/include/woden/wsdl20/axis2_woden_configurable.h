@@ -55,17 +55,17 @@ struct axis2_woden_configurable_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *configurable,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     to_configurable_free) (
             void *configurable,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *configurable,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     /**
      * @return the base implementation class
@@ -73,7 +73,7 @@ struct axis2_woden_configurable_ops
     struct axis2_woden_documentable *(AXIS2_CALL *
     get_base_impl) (
             void *configurable,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 
 };
@@ -93,13 +93,13 @@ struct axis2_woden_configurable
 
 AXIS2_DECLARE(axis2_woden_configurable_t *)
 axis2_woden_configurable_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_configurable_resolve_methods(
         axis2_woden_configurable_t *configurable,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_configurable_t *configurable_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

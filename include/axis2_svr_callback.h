@@ -51,7 +51,7 @@ struct axis2_svr_callback_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (axis2_svr_callback_t *svr_callback,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /**
      * Handle result
@@ -60,7 +60,7 @@ struct axis2_svr_callback_ops
      */
     axis2_status_t (AXIS2_CALL *
     handle_result) (axis2_svr_callback_t *svr_callback,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_msg_ctx_t *msg_ctx);
     
     /** 
@@ -70,7 +70,7 @@ struct axis2_svr_callback_ops
      */
     axis2_status_t (AXIS2_CALL *
     handle_fault) (axis2_svr_callback_t *svr_callback,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_msg_ctx_t *msg_ctx);               
 };
 
@@ -88,7 +88,7 @@ struct axis2_svr_callback
  * @return newly created server callback object
  */
 AXIS2_DECLARE(axis2_svr_callback_t *)
-axis2_svr_callback_create (axis2_env_t **env);
+axis2_svr_callback_create (const axis2_env_t *env);
 
 /************************** Start of function macros **************************/
 

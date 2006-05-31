@@ -56,11 +56,11 @@ AXIS2_DECLARE_DATA struct axis2_module_builder_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_module_builder_t *module_builder,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
                                
     axis2_status_t (AXIS2_CALL *
     populate_module) (axis2_module_builder_t *module_builder,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
 };
 
@@ -78,7 +78,7 @@ AXIS2_DECLARE_DATA struct axis2_module_builder
  * @return pointer to newly created module builder
  */
 AXIS2_DECLARE(axis2_module_builder_t *) 
-axis2_module_builder_create (axis2_env_t **env);
+axis2_module_builder_create (const axis2_env_t *env);
 
 /**
  * Creates module builder struct
@@ -88,7 +88,7 @@ axis2_module_builder_create (axis2_env_t **env);
  * @return pointer to newly created module builder
  */
 AXIS2_DECLARE(axis2_module_builder_t *)
-axis2_module_builder_create_with_file_and_dep_engine_and_module (axis2_env_t **env,
+axis2_module_builder_create_with_file_and_dep_engine_and_module (const axis2_env_t *env,
                                                 axis2_char_t *file_name,
                                                 struct axis2_dep_engine *dep_engine,
                                                 axis2_module_desc_t *module);

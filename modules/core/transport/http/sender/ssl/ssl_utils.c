@@ -17,7 +17,7 @@
 
 
 AXIS2_DECLARE (SSL_CTX *)
-axis2_ssl_utils_initialize_ctx(axis2_env_t **env)
+axis2_ssl_utils_initialize_ctx(const axis2_env_t *env)
 {
     SSL_METHOD *meth = NULL;
     axis2_char_t *ca_file = NULL;
@@ -29,7 +29,7 @@ axis2_ssl_utils_initialize_ctx(axis2_env_t **env)
     ca_file = AXIS2_GETENV("AXIS2_SSL_CA_FILE");
     if(NULL == ca_file)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SSL_NO_CA_FILE,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SSL_NO_CA_FILE,
                         AXIS2_FAILURE);
         return NULL;
     }
@@ -70,14 +70,14 @@ axis2_ssl_utils_initialize_ctx(axis2_env_t **env)
 }
 
 AXIS2_DECLARE (SSL *)
-axis2_ssl_utils_initialize_ssl(axis2_env_t **env, SSL_CTX *ctx, 
+axis2_ssl_utils_initialize_ssl(const axis2_env_t *env, SSL_CTX *ctx, 
                         axis2_socket_t socket)
 {
     SSL *ssl = NULL;
     BIO *sbio = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, ctx, NULL);
     
     ssl = SSL_new(ctx);
     if(NULL == ssl)
@@ -92,7 +92,7 @@ axis2_ssl_utils_initialize_ssl(axis2_env_t **env, SSL_CTX *ctx,
     SSL_set_bio(ssl, sbio, sbio);
     if(SSL_connect(ssl) <=0 )
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SSL_ENGINE, 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SSL_ENGINE, 
                         AXIS2_FAILURE);
         return NULL;
     }
@@ -100,7 +100,7 @@ axis2_ssl_utils_initialize_ssl(axis2_env_t **env, SSL_CTX *ctx,
 }
 
 AXIS2_DECLARE (axis2_status_t)
-axis2_ssl_utils_cleanup_ssl(axis2_env_t **env, SSL_CTX *ctx, SSL *ssl)
+axis2_ssl_utils_cleanup_ssl(const axis2_env_t *env, SSL_CTX *ctx, SSL *ssl)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    

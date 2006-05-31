@@ -27,14 +27,14 @@
 
 axis2_status_t AXIS2_CALL
 axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_recv,
-                                                    axis2_env_t **env,
+                                                    const axis2_env_t *env,
                                                     axis2_msg_ctx_t *msg_ctx,
                                                     axis2_msg_ctx_t *new_msg_ctx);
                                 
 /************************** End of function prototypes ************************/
 
 AXIS2_DECLARE(axis2_msg_recv_t *) 
-axis2_raw_xml_in_out_msg_recv_create(axis2_env_t **env)
+axis2_raw_xml_in_out_msg_recv_create(const axis2_env_t *env)
 {
     axis2_msg_recv_t *msg_recv = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -43,7 +43,7 @@ axis2_raw_xml_in_out_msg_recv_create(axis2_env_t **env)
 	msg_recv = axis2_msg_recv_create(env);
 	if(NULL == msg_recv)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     status = AXIS2_MSG_RECV_SET_SCOPE(msg_recv, env, AXIS2_APPLICATION_SCOPE);
@@ -62,7 +62,7 @@ axis2_raw_xml_in_out_msg_recv_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_recv,
-                                                    axis2_env_t **env,
+                                                    const axis2_env_t *env,
                                                     axis2_msg_ctx_t *msg_ctx,
                                                     axis2_msg_ctx_t *new_msg_ctx)
 {
@@ -88,18 +88,18 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     axis2_om_namespace_t *env_ns = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, new_msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, new_msg_ctx, AXIS2_FAILURE);
     
     /* get the implementation class for the Web Service */
     svc_obj = AXIS2_MSG_RECV_GET_IMPL_OBJ(msg_recv, env, msg_ctx);
     
     if (!svc_obj)
     {
-        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
             "Impl object for service not set in message receiver"
-            " %d :: %s", (*env)->error->error_number,
-            AXIS2_ERROR_GET_MESSAGE((*env)->error));
+            " %d :: %s", env->error->error_number,
+            AXIS2_ERROR_GET_MESSAGE(env->error));
         status = AXIS2_FAILURE;
     }
     else
@@ -166,28 +166,28 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
                     }
                     else
                     {
-                        AXIS2_ERROR_SET((*env)->error, 
+                        AXIS2_ERROR_SET(env->error, 
                             AXIS2_ERROR_OM_ELEMENT_MISMATCH, AXIS2_FAILURE);
                         status = AXIS2_FAILURE;
                     }
                 }
                 else
                 {
-                    AXIS2_ERROR_SET((*env)->error, 
+                    AXIS2_ERROR_SET(env->error, 
                         AXIS2_ERROR_OM_ELEMENT_INVALID_STATE, AXIS2_FAILURE);
                     status = AXIS2_FAILURE;
                 }
             }
             else
             {
-                AXIS2_ERROR_SET((*env)->error, 
+                AXIS2_ERROR_SET(env->error, 
                         AXIS2_ERROR_RPC_NEED_MATCHING_CHILD, AXIS2_FAILURE);
                 status = AXIS2_FAILURE;
             }
         }
         else
         {
-            AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_SET(env->error, 
                     AXIS2_ERROR_UNKNOWN_STYLE, AXIS2_FAILURE);
             status = AXIS2_FAILURE;
         }
@@ -227,7 +227,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         }
         else
         {
-            status = AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
+            status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
         }
     }
     
@@ -287,7 +287,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         if (!skel_invoked)
             fault_value_str = "env:Receiver";
             
-        err_msg = AXIS2_ERROR_GET_MESSAGE((*env)->error);
+        err_msg = AXIS2_ERROR_GET_MESSAGE(env->error);
         if (err_msg)
         {
             fault_reason_str = err_msg;
@@ -328,7 +328,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
 
 
 AXIS2_EXPORT int axis2_get_instance(struct axis2_msg_recv **inst,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     *inst = axis2_raw_xml_in_out_msg_recv_create(env);
     if(!(*inst))
@@ -340,7 +340,7 @@ AXIS2_EXPORT int axis2_get_instance(struct axis2_msg_recv **inst,
 }
 
 AXIS2_EXPORT int axis2_remove_instance(struct axis2_msg_recv *inst,
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
     if (inst)

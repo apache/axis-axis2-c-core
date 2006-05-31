@@ -46,7 +46,7 @@ struct axis2_wsdl_binding_op_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (axis2_wsdl_binding_op_t *wsdl_binding_op, 
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * Method getInput
@@ -55,7 +55,7 @@ struct axis2_wsdl_binding_op_ops
      */
     struct axis2_wsdl_binding_msg_ref * (AXIS2_CALL *
     get_input) (axis2_wsdl_binding_op_t *binding_op,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
     
     
     /**
@@ -65,7 +65,7 @@ struct axis2_wsdl_binding_op_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_input) (axis2_wsdl_binding_op_t *binding_op,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 struct axis2_wsdl_binding_msg_ref *input);
     
     /**
@@ -75,7 +75,7 @@ struct axis2_wsdl_binding_op_ops
      */
     void *(AXIS2_CALL *
     get_op) (axis2_wsdl_binding_op_t *binding_op,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * Method setOperation
@@ -84,7 +84,7 @@ struct axis2_wsdl_binding_op_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_op)(axis2_wsdl_binding_op_t *binding_op,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 void *op);
     
     /**
@@ -94,7 +94,7 @@ struct axis2_wsdl_binding_op_ops
      */
     struct axis2_wsdl_binding_msg_ref * (AXIS2_CALL *
     get_output)(axis2_wsdl_binding_op_t *binding_op,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
     
     /**
      * Method setOutput
@@ -103,7 +103,7 @@ struct axis2_wsdl_binding_op_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_output) (axis2_wsdl_binding_op_t *binding_op,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             struct axis2_wsdl_binding_msg_ref *output);
     
     /**
@@ -113,7 +113,7 @@ struct axis2_wsdl_binding_op_ops
      */
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (axis2_wsdl_binding_op_t *binding_op,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * Method setName
@@ -122,7 +122,7 @@ struct axis2_wsdl_binding_op_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_qname) (axis2_wsdl_binding_op_t *binding_op,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_qname_t *qname);
     
     /**
@@ -132,7 +132,7 @@ struct axis2_wsdl_binding_op_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_in_fault) (axis2_wsdl_binding_op_t *binding_op,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 struct axis2_wsdl_binding_fault *in_fault);
     
     /**
@@ -142,25 +142,25 @@ struct axis2_wsdl_binding_op_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_out_fault) (axis2_wsdl_binding_op_t *binding_op,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 struct axis2_wsdl_binding_fault *out_fault);
     
     axis2_linked_list_t * (AXIS2_CALL *
     get_in_faults) (axis2_wsdl_binding_op_t *binding_op,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_in_faults) (axis2_wsdl_binding_op_t *binding_op,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_linked_list_t *in_faults);
     
     axis2_linked_list_t * (AXIS2_CALL *
     get_out_faults) (axis2_wsdl_binding_op_t *binding_op,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_out_faults) (axis2_wsdl_binding_op_t *binding_op,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_linked_list_t *out_faults);
 };
 
@@ -179,7 +179,7 @@ struct axis2_wsdl_binding_op
  * @return pointer to newly created wsdl wsdl_binding_op
  */
 AXIS2_DECLARE(axis2_wsdl_binding_op_t *) 
-axis2_wsdl_binding_op_create (axis2_env_t **env);
+axis2_wsdl_binding_op_create (const axis2_env_t *env);
 
 /**************************** Start of function macros ************************/
 

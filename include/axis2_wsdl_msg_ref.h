@@ -55,7 +55,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref_ops
      */
     axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_msg_ref_t *wsdl_msg_ref,
-		    axis2_env_t **env);
+		    const axis2_env_t *env);
 
     /**
      * Method getDirection
@@ -64,7 +64,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref_ops
      */
     axis2_char_t * (AXIS2_CALL *
     get_direction) (axis2_wsdl_msg_ref_t *msg_ref,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
     
     /**
      * Method setDirection
@@ -73,7 +73,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_direction) (axis2_wsdl_msg_ref_t *msg_ref,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_char_t *direction);
     
     /**
@@ -83,7 +83,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref_ops
      */
     axis2_char_t * (AXIS2_CALL *
     get_msg_label) (axis2_wsdl_msg_ref_t *msg_ref,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
     
     /**
      * Method setMessageLabel
@@ -92,7 +92,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_msg_label) (axis2_wsdl_msg_ref_t *msg_ref,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_char_t *msg_label);
                                                 
     /**
@@ -103,7 +103,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref_ops
      */
     axis2_qname_t * (AXIS2_CALL *
     get_element) (axis2_wsdl_msg_ref_t *msg_ref,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
     
     /**
      * Sets the Element that will Abstract the actual message. All the parts defined 
@@ -112,7 +112,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_element) (axis2_wsdl_msg_ref_t *msg_ref,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *element);                                              
 };
 
@@ -130,7 +130,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref
  * @return pointer to newly created wsdl  message reference
  */
 AXIS2_DECLARE(axis2_wsdl_msg_ref_t *) 
-axis2_wsdl_msg_ref_create (axis2_env_t **env);
+axis2_wsdl_msg_ref_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

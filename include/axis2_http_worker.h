@@ -53,17 +53,17 @@ AXIS2_DECLARE_DATA struct axis2_http_worker_ops
 {
     axis2_bool_t (AXIS2_CALL *process_request)
                     (axis2_http_worker_t *http_worker, 
-                    axis2_env_t **env, 
+                    const axis2_env_t *env, 
                     axis2_simple_http_svr_conn_t *svr_conn, 
                     axis2_http_simple_request_t *simple_request);
    
     axis2_status_t (AXIS2_CALL *set_svr_port)
                     (axis2_http_worker_t *http_worker,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     int port);
     axis2_status_t (AXIS2_CALL *free)
                     (axis2_http_worker_t *http_worker, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 };
 
 /** 
@@ -77,7 +77,7 @@ AXIS2_DECLARE_DATA struct axis2_http_worker
 
 
 AXIS2_DECLARE(axis2_http_worker_t *) 
-axis2_http_worker_create (axis2_env_t **env, axis2_conf_ctx_t *conf_ctx);
+axis2_http_worker_create (const axis2_env_t *env, axis2_conf_ctx_t *conf_ctx);
     
 /************************** Start of function macros **************************/
 

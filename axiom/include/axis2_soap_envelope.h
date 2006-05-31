@@ -61,7 +61,7 @@ extern "C"
          */
         struct axis2_soap_header* (AXIS2_CALL *
 		get_header)(axis2_soap_envelope_t *envelope,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
         /**
          * Returns the soap body associated with this soap envelope
          * @param envelope soap_envelope
@@ -70,7 +70,7 @@ extern "C"
          */
         struct axis2_soap_body* (AXIS2_CALL *
 		get_body)(axis2_soap_envelope_t *envelope,
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
         /**
          * serialize function , serialize the soap envelope 
          * IF the soap version it set to soap11 the soap fault part is converted 
@@ -84,7 +84,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		serialize)(axis2_soap_envelope_t *envelope,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    axis2_om_output_t *om_output, 
                    axis2_bool_t cache);
 		
@@ -99,7 +99,7 @@ extern "C"
          */         
         axis2_status_t (AXIS2_CALL *
 		free)(axis2_soap_envelope_t *envelope,
-              axis2_env_t **env);
+              const axis2_env_t *env);
 			  
         /**
          * returns the om_node associated with this soap envelope
@@ -109,7 +109,7 @@ extern "C"
          */
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node)(axis2_soap_envelope_t *envelope,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
 
            
         /** returns the soap version of this soap envelope
@@ -119,7 +119,7 @@ extern "C"
          */         
         int (AXIS2_CALL *
 		get_soap_version)(axis2_soap_envelope_t *envelope,
-                          axis2_env_t **env);
+                          const axis2_env_t *env);
                    
         /** return the soap envelope namespace 
          * @param envelope 
@@ -128,11 +128,11 @@ extern "C"
          */                                                
         axis2_om_namespace_t* (AXIS2_CALL *
 		get_namespace)(axis2_soap_envelope_t *envelope,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
 
         axis2_status_t (AXIS2_CALL *
         set_soap_version)(axis2_soap_envelope_t *envelope,
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           int soap_version);
      
     };
@@ -153,7 +153,7 @@ struct axis2_soap_envelope
   * as the prefix and uri, The uri of ns should be valid soap uri
   */
 AXIS2_DECLARE(axis2_soap_envelope_t*)
-axis2_soap_envelope_create(axis2_env_t **env, 
+axis2_soap_envelope_create(const axis2_env_t *env, 
 						   axis2_om_namespace_t *ns);
 
  /**
@@ -167,16 +167,16 @@ axis2_soap_envelope_create(axis2_env_t **env,
   * 
   */						   
 AXIS2_DECLARE(axis2_soap_envelope_t*)
-axis2_soap_envelope_create_with_soap_version_prefix(axis2_env_t **env,
+axis2_soap_envelope_create_with_soap_version_prefix(const axis2_env_t *env,
                                                     int soap_version,
                                                     axis2_char_t *prefix);						   
 
 AXIS2_DECLARE(axis2_soap_envelope_t *)
-axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
+axis2_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
                                                  int soap_version);
  
 AXIS2_DECLARE(axis2_soap_envelope_t *)
-axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
+axis2_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
 		    axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version,
             axis2_array_list_t *sub_codes,
             axis2_om_node_t *detail_node);

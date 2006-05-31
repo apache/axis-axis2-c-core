@@ -22,17 +22,17 @@
 #include <ctype.h>
 
 AXIS2_DECLARE(void*)
-axis2_strdup (const void *ptr, axis2_env_t **env)
+axis2_strdup (const void *ptr, const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     if (ptr)
     {
         int len = strlen(ptr);
-        axis2_char_t * str = (axis2_char_t *) AXIS2_MALLOC( (*env)->allocator, 
+        axis2_char_t * str = (axis2_char_t *) AXIS2_MALLOC( env->allocator, 
             sizeof(axis2_char_t) * (len + 1 ));
         if (!str)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
         memcpy(str, ptr, len + 1);
@@ -45,7 +45,7 @@ axis2_strdup (const void *ptr, axis2_env_t **env)
 }
 
 AXIS2_DECLARE(axis2_char_t*)
-axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, axis2_env_t **env)
+axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, const axis2_env_t *env)
 {
     axis2_char_t *ret = NULL;
     int alloc_len = -1;
@@ -63,7 +63,7 @@ axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, axis2_env_t **env)
         return (axis2_char_t*)AXIS2_STRDUP(s1, env);
     }
     alloc_len = axis2_strlen(s1) + axis2_strlen(s2) + 1;
-    ret = (axis2_char_t*)AXIS2_MALLOC((*env)->allocator,
+    ret = (axis2_char_t*)AXIS2_MALLOC(env->allocator,
                     alloc_len*sizeof(axis2_char_t));
     memcpy(ret, s1, axis2_strlen(s1)*sizeof(axis2_char_t));
     memcpy((ret + axis2_strlen(s1)*sizeof(axis2_char_t)), s2,

@@ -44,25 +44,25 @@ AXIS2_DECLARE_DATA struct axis2_svc_skeleton_ops
 {
     int (AXIS2_CALL *
     init) (axis2_svc_skeleton_t *svc_skeleton,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     int (AXIS2_CALL * 
     free)(axis2_svc_skeleton_t *svc_skeli,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     int (AXIS2_CALL * 
     free_void_arg)(void *svc_skeli,
-          axis2_env_t **env);
+          const axis2_env_t *env);
     
     axis2_om_node_t *(AXIS2_CALL* 
     invoke)(axis2_svc_skeleton_t *svc_skeli, 
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_om_node_t *node,
             axis2_msg_ctx_t *msg_ctx);
     
     axis2_om_node_t *(AXIS2_CALL* 
     on_fault)(axis2_svc_skeleton_t *svc_skeli, 
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_om_node_t *node);
     
 
@@ -79,7 +79,7 @@ AXIS2_DECLARE_DATA struct axis2_svc_skeleton
  * @return pointer to newly created axis2_svc_struct
  */
 AXIS2_DECLARE(axis2_svc_skeleton_t *) 
-axis2_svc_skeleton_create (axis2_env_t **env);
+axis2_svc_skeleton_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

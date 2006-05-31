@@ -36,43 +36,43 @@ typedef struct axis2_wsdl_ext_soap_body_impl
 
 axis2_status_t AXIS2_CALL
 	axis2_wsdl_ext_soap_body_free (axis2_wsdl_ext_soap_body_t *ext_soap_body,
-									axis2_env_t **env);
+									const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 axis2_wsdl_ext_soap_body_get_use(axis2_wsdl_ext_soap_body_t *ext_soap_body,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_ext_soap_body_set_use(axis2_wsdl_ext_soap_body_t *ext_soap_body,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *use);
 
 axis2_char_t *AXIS2_CALL
 axis2_wsdl_ext_soap_body_get_namespc_uri(axis2_wsdl_ext_soap_body_t *ext_soap_body,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_ext_soap_body_set_namespc_uri(axis2_wsdl_ext_soap_body_t *ext_soap_body,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *namespc_uri);
                                 
 /************************** End of function prototypes ************************/
 
 axis2_wsdl_ext_soap_body_t * AXIS2_CALL 
-axis2_wsdl_ext_soap_body_create (axis2_env_t **env,
+axis2_wsdl_ext_soap_body_create (const axis2_env_t *env,
                                  axis2_qname_t *qtype)
 {
     axis2_wsdl_ext_soap_body_impl_t *ext_soap_body_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	ext_soap_body_impl = (axis2_wsdl_ext_soap_body_impl_t *) AXIS2_MALLOC((*env)->allocator,
+	ext_soap_body_impl = (axis2_wsdl_ext_soap_body_impl_t *) AXIS2_MALLOC(env->allocator,
 			sizeof(axis2_wsdl_ext_soap_body_impl_t));
 	
 	
 	if(NULL == ext_soap_body_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -86,16 +86,16 @@ axis2_wsdl_ext_soap_body_create (axis2_env_t **env,
     if(NULL == ext_soap_body_impl->ext_soap_body.ext_element)
     {
         axis2_wsdl_ext_soap_body_free(&(ext_soap_body_impl->ext_soap_body), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }    
     
 	ext_soap_body_impl->ext_soap_body.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_ext_soap_body_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_ext_soap_body_ops_t));
 	if(NULL == ext_soap_body_impl->ext_soap_body.ops)
     {
         axis2_wsdl_ext_soap_body_free(&(ext_soap_body_impl->ext_soap_body), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     if(!qtype)
@@ -123,7 +123,7 @@ axis2_wsdl_ext_soap_body_create (axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_ext_soap_body_free (axis2_wsdl_ext_soap_body_t *ext_soap_body, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_wsdl_ext_soap_body_impl_t *exp_soap_body_impl = NULL;
     
@@ -132,17 +132,17 @@ axis2_wsdl_ext_soap_body_free (axis2_wsdl_ext_soap_body_t *ext_soap_body,
     exp_soap_body_impl = AXIS2_INTF_TO_IMPL(ext_soap_body);
     
 	if(NULL != ext_soap_body->ops)
-        AXIS2_FREE((*env)->allocator, ext_soap_body->ops);
+        AXIS2_FREE(env->allocator, ext_soap_body->ops);
     
     if(NULL != exp_soap_body_impl->use)
     {
-        AXIS2_FREE((*env)->allocator, exp_soap_body_impl->use);
+        AXIS2_FREE(env->allocator, exp_soap_body_impl->use);
         exp_soap_body_impl->use = NULL;
     }
     
     if(NULL != exp_soap_body_impl->namespc_uri)
     {
-        AXIS2_FREE((*env)->allocator, exp_soap_body_impl->namespc_uri);
+        AXIS2_FREE(env->allocator, exp_soap_body_impl->namespc_uri);
         exp_soap_body_impl->namespc_uri = NULL;
     }
     
@@ -152,7 +152,7 @@ axis2_wsdl_ext_soap_body_free (axis2_wsdl_ext_soap_body_t *ext_soap_body,
         ext_soap_body->ext_element = NULL;
     }
     
-    AXIS2_FREE((*env)->allocator, exp_soap_body_impl);
+    AXIS2_FREE(env->allocator, exp_soap_body_impl);
     exp_soap_body_impl = NULL;
     
 	return AXIS2_SUCCESS;
@@ -160,7 +160,7 @@ axis2_wsdl_ext_soap_body_free (axis2_wsdl_ext_soap_body_t *ext_soap_body,
 
 axis2_char_t *AXIS2_CALL
 axis2_wsdl_ext_soap_body_get_use(axis2_wsdl_ext_soap_body_t *ext_soap_body,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(ext_soap_body)->use;
@@ -168,25 +168,25 @@ axis2_wsdl_ext_soap_body_get_use(axis2_wsdl_ext_soap_body_t *ext_soap_body,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_ext_soap_body_set_use(axis2_wsdl_ext_soap_body_t *ext_soap_body,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *use) 
 {
     axis2_wsdl_ext_soap_body_impl_t *exp_soap_body_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, use, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, use, AXIS2_FAILURE);
     
     exp_soap_body_impl = AXIS2_INTF_TO_IMPL(ext_soap_body);
     
     if(exp_soap_body_impl->use)
     {
-        AXIS2_FREE((*env)->allocator, exp_soap_body_impl->use);
+        AXIS2_FREE(env->allocator, exp_soap_body_impl->use);
         exp_soap_body_impl->use = NULL;
     }
     exp_soap_body_impl->use = AXIS2_STRDUP(use, env);
     if(!exp_soap_body_impl->use)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -194,7 +194,7 @@ axis2_wsdl_ext_soap_body_set_use(axis2_wsdl_ext_soap_body_t *ext_soap_body,
 
 axis2_char_t *AXIS2_CALL
 axis2_wsdl_ext_soap_body_get_namespc_uri(axis2_wsdl_ext_soap_body_t *ext_soap_body,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     return AXIS2_INTF_TO_IMPL(ext_soap_body)->namespc_uri;
@@ -202,24 +202,24 @@ axis2_wsdl_ext_soap_body_get_namespc_uri(axis2_wsdl_ext_soap_body_t *ext_soap_bo
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_ext_soap_body_set_namespc_uri(axis2_wsdl_ext_soap_body_t *ext_soap_body,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *namespc_uri) 
 {
     axis2_wsdl_ext_soap_body_impl_t *exp_soap_body_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, namespc_uri, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, namespc_uri, AXIS2_FAILURE);
     exp_soap_body_impl = AXIS2_INTF_TO_IMPL(ext_soap_body); 
 
     if(exp_soap_body_impl->namespc_uri)
     {
-        AXIS2_FREE((*env)->allocator, exp_soap_body_impl->namespc_uri);
+        AXIS2_FREE(env->allocator, exp_soap_body_impl->namespc_uri);
         exp_soap_body_impl->namespc_uri = NULL;
     }
     exp_soap_body_impl->namespc_uri = AXIS2_STRDUP(namespc_uri, env);
     if(!exp_soap_body_impl->namespc_uri)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;

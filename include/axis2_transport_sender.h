@@ -59,7 +59,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
   	 */
 	axis2_status_t (AXIS2_CALL *free)(
                     axis2_transport_sender_t *transport_sender,
-			        axis2_env_t **env);
+			        const axis2_env_t *env);
     /**
      * Initialize
      * @param confContext
@@ -68,7 +68,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
      */
     axis2_status_t (AXIS2_CALL * 
     init) (axis2_transport_sender_t *transport_sender,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_conf_ctx *conf_ctx,
                                 struct axis2_transport_out_desc *transport_out);
     /**
@@ -78,7 +78,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
      */
     axis2_status_t (AXIS2_CALL *                          
     cleanup) (axis2_transport_sender_t *transport_sender,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_msg_ctx *msg_ctx);
 									
 	/**
@@ -88,7 +88,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
      */
     axis2_status_t (AXIS2_CALL *                          
     invoke) (axis2_transport_sender_t *transport_sender,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_msg_ctx *msg_ctx);
 
 };
@@ -108,7 +108,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender
  * @return pointer to newly created transport sender
  */
 AXIS2_DECLARE(axis2_transport_sender_t *) 
-axis2_transport_sender_create (axis2_env_t **env);
+axis2_transport_sender_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

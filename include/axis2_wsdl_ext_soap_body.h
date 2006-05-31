@@ -54,24 +54,24 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_body_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_ext_soap_body_t *ext_soap_body,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_use) (axis2_wsdl_ext_soap_body_t *ext_soap_body,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_use) (axis2_wsdl_ext_soap_body_t *ext_soap_body,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *use);
 
     axis2_char_t *(AXIS2_CALL *
     get_namespc_uri) (axis2_wsdl_ext_soap_body_t *ext_soap_body,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_namespc_uri) (axis2_wsdl_ext_soap_body_t *ext_soap_body,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *namespc_uri);
      
 };
@@ -91,7 +91,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_body
  * @return pointer to newly created wsdl ext_soap_body
  */
 AXIS2_DECLARE(axis2_wsdl_ext_soap_body_t *) 
-axis2_wsdl_ext_soap_body_create (axis2_env_t **env,
+axis2_wsdl_ext_soap_body_create (const axis2_env_t *env,
                                     axis2_qname_t *qtype);
 
 /*************************** Function macros **********************************/

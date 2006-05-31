@@ -57,12 +57,12 @@ struct woden_nc_name_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *nc_name,
-            axis2_env_t **env);
+            const axis2_env_t *env);
  
     axis2_bool_t (AXIS2_CALL *
     is_valid) (
             void *nc_name,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *st_value);
 
     /**
@@ -72,13 +72,13 @@ struct woden_nc_name_ops
     axis2_status_t (AXIS2_CALL *
     set_value) (
             void *nc_name,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *value);
 
     axis2_char_t *(AXIS2_CALL *
     to_string) (
             void *nc_name,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
    
 };
@@ -90,7 +90,7 @@ struct woden_nc_name
 
 AXIS2_DECLARE(woden_nc_name_t *)
 woden_nc_name_create(
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *value);
 
 #define WODEN_NC_NAME_FREE(nc_name, env) \

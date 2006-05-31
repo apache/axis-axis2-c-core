@@ -41,17 +41,17 @@ struct axis2_woden_element_decl_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_element_decl_free(
         void *decl,
-        axis2_env_t **envv);
+        const axis2_env_t *envv);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_woden_element_decl_super_objs(
         void *decl,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_element_decl_type(
         void *decl,
-        axis2_env_t **envv);
+        const axis2_env_t *envv);
 
 /* ************************************************************
  *  Element Declaration interface methods (the WSDL Component model)
@@ -59,22 +59,22 @@ axis2_woden_element_decl_type(
 axis2_qname_t *AXIS2_CALL 
 axis2_woden_element_decl_get_qname(
         void *decl,
-        axis2_env_t **env); 
+        const axis2_env_t *env); 
 
 axis2_url_t *AXIS2_CALL 
 axis2_woden_element_decl_get_system(
         void *decl,
-        axis2_env_t **env); 
+        const axis2_env_t *env); 
 
 axis2_char_t *AXIS2_CALL 
 axis2_woden_element_decl_get_content_model(
         void *decl,
-        axis2_env_t **env); 
+        const axis2_env_t *env); 
 
 axis2_generic_obj_t *AXIS2_CALL 
 axis2_woden_element_decl_get_content(
         void *decl,
-        axis2_env_t **env); 
+        const axis2_env_t *env); 
 
 /* ************************************************************
  *  Non-API implementation methods
@@ -83,36 +83,36 @@ axis2_woden_element_decl_get_content(
 axis2_status_t AXIS2_CALL 
 axis2_woden_element_decl_set_qname(
         void *decl,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname); 
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_element_decl_set_system(
         void *decl,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_url_t *type_system_uri); 
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_element_decl_set_content_model(
         void *decl,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *content_model); 
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_element_decl_set_content(
         void *decl,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_generic_obj_t *element_content);
 
 
 AXIS2_DECLARE(axis2_woden_element_decl_t *)
 axis2_woden_element_decl_create(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    decl_impl = AXIS2_MALLOC((*env)->allocator, 
+    decl_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_element_decl_impl_t));
 
     decl_impl->obj_type = AXIS2_WODEN_ELEMENT_DECL;
@@ -123,7 +123,7 @@ axis2_woden_element_decl_create(
     decl_impl->f_content = NULL;
 
     decl_impl->decl.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_element_decl_ops_t)); 
     
     decl_impl->decl.ops->free = 
@@ -151,7 +151,7 @@ axis2_woden_element_decl_create(
     decl_impl->super = axis2_hash_make(env);
     if(!decl_impl->super) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(decl_impl->super, "AXIS2_WODEN_ELEMENT_DECL", 
@@ -162,7 +162,7 @@ axis2_woden_element_decl_create(
 
 axis2_status_t AXIS2_CALL
 axis2_woden_element_decl_free(void *decl,
-                axis2_env_t **env)
+                const axis2_env_t *env)
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
 
@@ -177,13 +177,13 @@ axis2_woden_element_decl_free(void *decl,
 
     if((&(decl_impl->decl))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(decl_impl->decl))->ops);
+        AXIS2_FREE(env->allocator, (&(decl_impl->decl))->ops);
         (&(decl_impl->decl))->ops = NULL;
     }
 
     if(decl_impl)
     {
-        AXIS2_FREE((*env)->allocator, decl_impl);
+        AXIS2_FREE(env->allocator, decl_impl);
         decl_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -192,7 +192,7 @@ axis2_woden_element_decl_free(void *decl,
 axis2_hash_t *AXIS2_CALL
 axis2_woden_element_decl_super_objs(
         void *decl,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
 
@@ -205,7 +205,7 @@ axis2_woden_element_decl_super_objs(
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_element_decl_type(
         void *decl,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
 
@@ -218,14 +218,14 @@ axis2_woden_element_decl_type(
 axis2_status_t AXIS2_CALL
 axis2_woden_element_decl_resolve_methods(
         axis2_woden_element_decl_t *decl,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_element_decl_t *decl_impl,
         axis2_hash_t *methods)
 {
     axis2_woden_element_decl_impl_t *decl_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     decl_impl_l = INTF_TO_IMPL(decl_impl);
     
     decl->ops->free = axis2_hash_get(methods, "free", 
@@ -293,7 +293,7 @@ axis2_woden_element_decl_resolve_methods(
 axis2_qname_t *AXIS2_CALL 
 axis2_woden_element_decl_get_qname(
         void *decl,
-        axis2_env_t **env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -309,7 +309,7 @@ axis2_woden_element_decl_get_qname(
 axis2_url_t *AXIS2_CALL 
 axis2_woden_element_decl_get_system(
         void *decl,
-        axis2_env_t **env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -325,7 +325,7 @@ axis2_woden_element_decl_get_system(
 axis2_char_t *AXIS2_CALL 
 axis2_woden_element_decl_get_content_model(
         void *decl,
-        axis2_env_t **env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -341,7 +341,7 @@ axis2_woden_element_decl_get_content_model(
 axis2_generic_obj_t *AXIS2_CALL 
 axis2_woden_element_decl_get_content(
         void *decl,
-        axis2_env_t **env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -364,14 +364,14 @@ axis2_woden_element_decl_get_content(
 axis2_status_t AXIS2_CALL 
 axis2_woden_element_decl_set_qname(
         void *decl,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname) 
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
     super = AXIS2_WODEN_ELEMENT_DECL_SUPER_OBJS(decl, env);
     decl_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_ELEMENT_DECL", AXIS2_HASH_KEY_STRING)); 
@@ -388,14 +388,14 @@ axis2_woden_element_decl_set_qname(
 axis2_status_t AXIS2_CALL 
 axis2_woden_element_decl_set_system(
         void *decl,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_url_t *type_system_uri) 
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, type_system_uri, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, type_system_uri, AXIS2_FAILURE);
     super = AXIS2_WODEN_ELEMENT_DECL_SUPER_OBJS(decl, env);
     decl_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_ELEMENT_DECL", AXIS2_HASH_KEY_STRING)); 
@@ -411,21 +411,21 @@ axis2_woden_element_decl_set_system(
 axis2_status_t AXIS2_CALL 
 axis2_woden_element_decl_set_content_model(
         void *decl,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *content_model) 
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, content_model, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, content_model, AXIS2_FAILURE);
     super = AXIS2_WODEN_ELEMENT_DECL_SUPER_OBJS(decl, env);
     decl_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_ELEMENT_DECL", AXIS2_HASH_KEY_STRING)); 
 
     if(decl_impl->f_content_model)
     {
-        AXIS2_FREE((*env)->allocator, decl_impl->f_content_model);
+        AXIS2_FREE(env->allocator, decl_impl->f_content_model);
         decl_impl->f_content_model = NULL;
     }
     decl_impl->f_content_model = AXIS2_STRDUP(content_model, env);
@@ -435,14 +435,14 @@ axis2_woden_element_decl_set_content_model(
 axis2_status_t AXIS2_CALL 
 axis2_woden_element_decl_set_content(
         void *decl,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_generic_obj_t *element_content) 
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, element_content, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, element_content, AXIS2_FAILURE);
     super = AXIS2_WODEN_ELEMENT_DECL_SUPER_OBJS(decl, env);
     decl_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_ELEMENT_DECL", AXIS2_HASH_KEY_STRING)); 

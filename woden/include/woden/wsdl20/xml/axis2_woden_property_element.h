@@ -70,35 +70,35 @@ struct axis2_woden_property_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_property_element_free) (
             void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_ref) (void *doc_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *uri);
 
     axis2_url_t *(AXIS2_CALL *
     get_ref) (void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_value) (void *doc_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *value);
 
     void *(AXIS2_CALL *
     get_value) (void *doc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /**
      * Set the QName represented by the &lt;constraint&gt; element within the
@@ -111,13 +111,13 @@ struct axis2_woden_property_element_ops
     axis2_status_t (AXIS2_CALL *
     set_constraint_qname) (
             void *property_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname);
    
     axis2_qname_t *(AXIS2_CALL *
     get_constraint_qname) (
             void *property_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /**
      * Returns the Schema type definition identified by the QName in the &lt;
@@ -132,7 +132,7 @@ struct axis2_woden_property_element_ops
     struct axis2_xml_schema_type *(AXIS2_CALL *
     get_constraint) (
             void *property_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /**
      * Set to true if &lt;constraint&gt; specifies the NMToken <code>"#value"
@@ -144,7 +144,7 @@ struct axis2_woden_property_element_ops
     axis2_status_t (AXIS2_CALL *
     set_has_value_token) (
             void *property_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_bool_t b);
     
     /**
@@ -156,7 +156,7 @@ struct axis2_woden_property_element_ops
     axis2_bool_t (AXIS2_CALL * 
     has_value_token) (
             void *property_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 };
 
@@ -176,7 +176,7 @@ struct axis2_woden_property_element
 axis2_status_t AXIS2_CALL
 axis2_woden_property_element_resolve_methods(
         axis2_woden_property_element_t *property_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
 	free)(axis2_phase_holder_t *phase_holder,
-		  axis2_env_t **env);
+		  const axis2_env_t *env);
     
     /**
      * Method isPhaseExist
@@ -72,7 +72,7 @@ AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
      */
     axis2_bool_t (AXIS2_CALL *
     is_phase_exist)(axis2_phase_holder_t *phase_holder, 
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_char_t *phase_name);
     
     /**
@@ -82,7 +82,7 @@ AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_handler) (axis2_phase_holder_t *phase_holder, 
-                  axis2_env_t **env,
+                  const axis2_env_t *env,
                   struct axis2_handler_desc *handler);
     
     /**
@@ -93,7 +93,7 @@ AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
      */
     struct axis2_phase * (AXIS2_CALL *
     get_phase) (axis2_phase_holder_t *phase_holder, 
-				axis2_env_t **env,
+				const axis2_env_t *env,
 				axis2_char_t *phase_name);
     
     /**
@@ -106,7 +106,7 @@ AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
      */
     axis2_status_t (AXIS2_CALL *
     build_transport_handler_chain) (axis2_phase_holder_t *phase_holder, 
-									axis2_env_t **env,
+									const axis2_env_t *env,
 									struct axis2_phase *phase,
 									axis2_array_list_t *handlers);
 
@@ -127,7 +127,7 @@ AXIS2_DECLARE_DATA struct axis2_phase_holder
  * @return pointer to newly created phase holder
  */
 AXIS2_DECLARE(axis2_phase_holder_t *) 
-axis2_phase_holder_create (axis2_env_t **env);
+axis2_phase_holder_create (const axis2_env_t *env);
 
 /**
  * Creates phase holder struct
@@ -135,7 +135,7 @@ axis2_phase_holder_create (axis2_env_t **env);
  * @return pointer to newly created phase holder
  */
 AXIS2_DECLARE(axis2_phase_holder_t *) 
-axis2_phase_holder_create_with_phases (axis2_env_t **env, 
+axis2_phase_holder_create_with_phases (const axis2_env_t *env, 
 									   axis2_array_list_t *phases);
 
 /*************************** Function macros **********************************/

@@ -57,15 +57,15 @@ extern "C"
 
         axis2_status_t (AXIS2_CALL *
 		free_fn)(axis2_soap_message_t *message,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
                                              
         axis2_soap_envelope_t* (AXIS2_CALL *
 		get_soap_envelope)(axis2_soap_message_t *message,
-                           axis2_env_t **env);
+                           const axis2_env_t *env);
                                              
         axis2_status_t (AXIS2_CALL *
 		serialize)(axis2_soap_message_t *message,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    axis2_om_output_t *om_output);
                                                        
                                                                                             
@@ -87,7 +87,7 @@ extern "C"
     * @param env Environment. MUST NOT be NULL
     */
 AXIS2_DECLARE(axis2_soap_message_t *)
-axis2_soap_message_create(axis2_env_t **env,
+axis2_soap_message_create(const axis2_env_t *env,
                           axis2_soap_builder_t *soap_builder,
                           axis2_om_document_t *om_doc);
 

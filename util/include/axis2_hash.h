@@ -76,7 +76,7 @@ extern "C"
  * @param env The environment to allocate the hash table out of
  * @return The hash table just created
   */
-  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make (axis2_env_t **env);
+  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make (const axis2_env_t *env);
 
 /**
  * Create a hash table with a custom hash function
@@ -84,7 +84,7 @@ extern "C"
  * @param hash_func A custom hash function.
  * @return The hash table just created
   */
-   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make_custom (axis2_env_t **env
+   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make_custom (const axis2_env_t *env
    			, axis2_hashfunc_t hash_func);
 
 /**
@@ -95,7 +95,7 @@ extern "C"
  * @remark Makes a shallow copy
  */
   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_copy (const axis2_hash_t *ht
-  			, axis2_env_t **env);
+  			, const axis2_env_t *env);
 
 /**
  * Associate a value with a key in a hash table.
@@ -133,7 +133,7 @@ extern "C"
 /**
  * <PRE>
  * 
- * int sum_values(axis2_env_t *env, axis2_hash_t *ht)
+ * int sum_values(const axis2_env_t *env, axis2_hash_t *ht)
  * {
  *     axis2_hash_index_t *hi;
  *     void *val;
@@ -147,7 +147,7 @@ extern "C"
  * </PRE>
  */
  AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_first (axis2_hash_t *ht
- 			,axis2_env_t **env);
+ 			,const axis2_env_t *env);
 
 /**
  * Continue iterating over the entries in a hash table.
@@ -155,7 +155,7 @@ extern "C"
  * @return a pointer to the updated iteration state.  NULL if there are no more  
  *         entries.
  */
- AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_next (axis2_env_t **env
+ AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_next (const axis2_env_t *env
  			, axis2_hash_index_t *hi);
 
 /**
@@ -187,7 +187,7 @@ extern "C"
  * @return A new hash table containing all of the data from the two passed in
  */
   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_overlay (const axis2_hash_t *overlay
-  			,axis2_env_t **env, const axis2_hash_t *base);
+  			,const axis2_env_t *env, const axis2_hash_t *base);
 
 /**
  * Merge two hash tables into one new hash table. If the same key
@@ -204,8 +204,8 @@ extern "C"
  * @return A new hash table containing all of the data from the two passed in
  */
   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_merge (const axis2_hash_t *h1
-  			, axis2_env_t **env, const axis2_hash_t *h2
-            , void *(*merger) (axis2_env_t *env, const void *key
+  			, const axis2_env_t *env, const axis2_hash_t *h2
+            , void *(*merger) (const axis2_env_t *env, const void *key
             , axis2_ssize_t klen, const void *h1_val, const void *h2_val
             , const void *data), const void *data);
 
@@ -218,7 +218,7 @@ extern "C"
  */
 									
 AXIS2_DECLARE(axis2_status_t) axis2_hash_free(axis2_hash_t *ht
-		, axis2_env_t **env);
+		, const axis2_env_t *env);
 									
 /**
  * Free a hash table with hash table given as void
@@ -228,7 +228,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_hash_free(axis2_hash_t *ht
  */
 
 AXIS2_DECLARE(axis2_status_t)
-axis2_hash_free_void_arg (void *ht_void, axis2_env_t** env);
+axis2_hash_free_void_arg (void *ht_void, const axis2_env_t* env);
 
 /** @} */
 

@@ -47,30 +47,30 @@ AXIS2_DECLARE_DATA struct axis2_generic_obj_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             axis2_generic_obj_t *generic_obj, 
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_scope) (
             axis2_generic_obj_t *generic_obj,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_scope_t scope);
 
     axis2_status_t (AXIS2_CALL *
     set_free_func) (
             axis2_generic_obj_t *generic_obj,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             AXIS2_FREE_VOID_ARG free_func);
 
     axis2_status_t (AXIS2_CALL *
     set_value) (
             axis2_generic_obj_t *generic_obj,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *value);
     
     void *(AXIS2_CALL *
     get_value) (
             axis2_generic_obj_t *generic_obj,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 };
     
@@ -88,7 +88,7 @@ AXIS2_DECLARE_DATA struct axis2_generic_obj
  * @return generic_obj newly created generic_obj
  */
 AXIS2_DECLARE(axis2_generic_obj_t *)
-axis2_generic_obj_create(axis2_env_t **env);
+axis2_generic_obj_create(const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

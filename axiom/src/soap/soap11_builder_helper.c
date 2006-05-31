@@ -54,35 +54,35 @@ typedef struct axis2_soap11_builder_helper_impl_t
 
 axis2_status_t AXIS2_CALL 
 axis2_soap11_builder_helper_free(axis2_soap11_builder_helper_t *builder_helper,
-                                 axis2_env_t **env);
+                                 const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder_helper,
-                             axis2_env_t **env,
+                             const axis2_env_t *env,
                              axis2_om_node_t *om_element_node,
                              int element_level);
                              
 static axis2_status_t 
 axis2_soap11_builder_helper_process_text(axis2_soap11_builder_helper_t *builder_helper,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
                              
                              
 
 AXIS2_DECLARE(axis2_soap11_builder_helper_t*)
-axis2_soap11_builder_helper_create(axis2_env_t **env, 
+axis2_soap11_builder_helper_create(const axis2_env_t *env, 
                                    axis2_soap_builder_t *soap_builder,
                                    axis2_om_stax_builder_t *om_builder)
 {
     axis2_soap11_builder_helper_impl_t *builder_helper_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, soap_builder, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, om_builder, NULL);
+    AXIS2_PARAM_CHECK(env->error, soap_builder, NULL);
+    AXIS2_PARAM_CHECK(env->error, om_builder, NULL);
     
     builder_helper_impl = (axis2_soap11_builder_helper_impl_t*)AXIS2_MALLOC(
-                            (*env)->allocator, sizeof(axis2_soap11_builder_helper_impl_t));
+                            env->allocator, sizeof(axis2_soap11_builder_helper_impl_t));
     if(!builder_helper_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -93,12 +93,12 @@ axis2_soap11_builder_helper_create(axis2_env_t **env,
     builder_helper_impl->builder_helper.ops = NULL;   
     
     builder_helper_impl->builder_helper.ops = (axis2_soap11_builder_helper_ops_t*) AXIS2_MALLOC(
-                                                (*env)->allocator, sizeof(axis2_soap11_builder_helper_ops_t));
+                                                env->allocator, sizeof(axis2_soap11_builder_helper_ops_t));
                                                 
     if(!(builder_helper_impl->builder_helper.ops))
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_FREE((*env)->allocator, builder_helper_impl->builder_helper.ops);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, builder_helper_impl->builder_helper.ops);
         return NULL;
     }
     builder_helper_impl->soap_builder = soap_builder;
@@ -115,7 +115,7 @@ axis2_soap11_builder_helper_create(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL 
 axis2_soap11_builder_helper_free(axis2_soap11_builder_helper_t *builder_helper,
-                                 axis2_env_t **env)
+                                 const axis2_env_t *env)
 {
     axis2_soap11_builder_helper_impl_t *builder_helper_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -124,18 +124,18 @@ axis2_soap11_builder_helper_free(axis2_soap11_builder_helper_t *builder_helper,
    
     if(builder_helper_impl->builder_helper.ops)
     {
-        AXIS2_FREE((*env)->allocator, builder_helper_impl->builder_helper.ops);
+        AXIS2_FREE(env->allocator, builder_helper_impl->builder_helper.ops);
         builder_helper_impl->builder_helper.ops = NULL;
     }
 
-    AXIS2_FREE((*env)->allocator, builder_helper_impl);
+    AXIS2_FREE(env->allocator, builder_helper_impl);
     builder_helper_impl = NULL;    
     return AXIS2_SUCCESS;
 }                                 
 
 axis2_status_t AXIS2_CALL 
 axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder_helper,
-                             axis2_env_t **env,
+                             const axis2_env_t *env,
                              axis2_om_node_t *om_element_node,
                              int element_level)
 {
@@ -147,7 +147,7 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
     axis2_soap_fault_t *soap_fault = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, om_element_node, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, om_element_node, AXIS2_FAILURE);
     builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);
       
     om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(om_element_node, env);
@@ -335,7 +335,7 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
             return AXIS2_FAILURE;
         if(AXIS2_STRCMP(parent_localname, AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME) == 0)
         {
-            AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_SOAP11_FAULT_ACTOR_SHOULD_NOT_HAVE_CHILD_ELEMENTS, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
@@ -345,7 +345,7 @@ axis2_soap11_builder_helper_handle_event (axis2_soap11_builder_helper_t *builder
                                          
 static axis2_status_t  
 axis2_soap11_builder_helper_process_text(axis2_soap11_builder_helper_t *builder_helper,
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     axis2_soap11_builder_helper_impl_t *builder_helper_impl = NULL;
     int token = 0;
@@ -361,7 +361,7 @@ axis2_soap11_builder_helper_process_text(axis2_soap11_builder_helper_t *builder_
     {
         if(token != AXIS2_XML_READER_CHARACTER)
         {
-            AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE, AXIS2_FAILURE);
             return AXIS2_FAILURE;                
         

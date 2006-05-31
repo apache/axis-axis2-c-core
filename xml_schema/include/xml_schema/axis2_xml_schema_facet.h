@@ -52,41 +52,41 @@ struct axis2_xml_schema_facet_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *facet,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *facet,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_xml_schema_types_t (AXIS2_CALL*
     type)(void *facet,
-          axis2_env_t **env);
+          const axis2_env_t *env);
           
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(void *facet,
-                axis2_env_t **env);          
+                const axis2_env_t *env);          
 
     axis2_bool_t (AXIS2_CALL *
     is_fixed)(void *facet,
-                axis2_env_t **env);
+                const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_fixed)(void *facet,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_bool_t fixed);
     
     void *(AXIS2_CALL *
     get_value)(void *facet,
-                axis2_env_t **env);
+                const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_value)(void *facet,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     void *value);
     
     axis2_status_t (AXIS2_CALL *
     set_facet_type)(void *facet,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     int facet_type);                    
     
 };
@@ -101,7 +101,7 @@ struct axis2_xml_schema_facet
  * Creates new Xml Schema Facet
  */
 AXIS2_DECLARE(axis2_xml_schema_facet_t *)
-axis2_xml_schema_facet_create(axis2_env_t **env,
+axis2_xml_schema_facet_create(const axis2_env_t *env,
                               void *value,
                               axis2_bool_t fixed,
                               axis2_xml_schema_types_t type);
@@ -112,12 +112,12 @@ axis2_xml_schema_facet_create(axis2_env_t **env,
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_facet_resolve_methods(
                                 axis2_xml_schema_facet_t *facet,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_facet_t *facet_impl,
                                 axis2_hash_t *methods);
 */                                
 AXIS2_DECLARE(axis2_xml_schema_facet_t *)
-axis2_xml_schema_facet_construct(axis2_env_t **env,
+axis2_xml_schema_facet_construct(const axis2_env_t *env,
                                  axis2_om_node_t *node);
                                                                  
 /************************* macros *********************************************/

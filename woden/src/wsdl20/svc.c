@@ -44,22 +44,22 @@ struct axis2_woden_svc_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_svc_free(
         void *svc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_woden_svc_super_objs(
         void *svc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_svc_type(
         void *svc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_configurable_t *AXIS2_CALL
 axis2_woden_svc_get_base_impl(
         void *svc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 /* ************************************************************
  *  Service interface methods (the WSDL Component model)
  * ************************************************************/
@@ -67,17 +67,17 @@ axis2_woden_svc_get_base_impl(
 axis2_qname_t *AXIS2_CALL
 axis2_woden_svc_get_qname(
         void *svc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_svc_get_interface(
         void *svc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_svc_get_endpoints(
         void *svc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 /* ************************************************************
  *  Service Element interface methods (the XML Element model)
  * ************************************************************/
@@ -85,35 +85,35 @@ axis2_woden_svc_get_endpoints(
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_set_qname(
         void *svc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_set_interface_qname(
         void *svc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *interface_qname);
 
 axis2_qname_t *AXIS2_CALL
 axis2_woden_svc_get_interface_qname(
         void *svc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_svc_get_interface_element(
         void *svc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_add_endpoint_element(
         void *svc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *endpoint);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_svc_get_endpoint_elements(
         void *svc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /******************************************************************************
  *  Non-API implementation methods
@@ -122,18 +122,18 @@ axis2_woden_svc_get_endpoint_elements(
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_set_interface_element(
         void *svc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *interface);
 
 
 static axis2_woden_svc_t *
-create(axis2_env_t **env);
+create(const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_woden_svc_t *)
 axis2_woden_svc_to_svc_element(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
    
@@ -146,7 +146,7 @@ axis2_woden_svc_to_svc_element(
         svc_impl = (axis2_woden_svc_impl_t *) svc;
 
     svc_impl->svc.base.svc_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_svc_element_ops_t));
     axis2_woden_svc_element_resolve_methods(&(svc_impl->svc.base.
             svc_element), env, svc_impl->methods);
@@ -156,7 +156,7 @@ axis2_woden_svc_to_svc_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_to_svc_element_free(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
 
@@ -165,7 +165,7 @@ axis2_woden_svc_to_svc_element_free(
 
     if(svc_impl->svc.base.svc_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_impl->svc.base.
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
                 svc_element.ops);
         svc_impl->svc.base.svc_element.ops = NULL;
     }
@@ -175,7 +175,7 @@ axis2_woden_svc_to_svc_element_free(
 AXIS2_DECLARE(axis2_woden_svc_t *)
 axis2_woden_svc_to_documentable_element(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
    
@@ -188,7 +188,7 @@ axis2_woden_svc_to_documentable_element(
         svc_impl = (axis2_woden_svc_impl_t *) svc;
 
     svc_impl->svc.base.svc_element.base.documentable_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_documentable_element_ops_t));
     axis2_woden_documentable_element_resolve_methods(&(svc_impl->svc.base.
             svc_element.base.documentable_element), env, 
@@ -199,7 +199,7 @@ axis2_woden_svc_to_documentable_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_to_documentable_element_free(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
 
@@ -208,7 +208,7 @@ axis2_woden_svc_to_documentable_element_free(
 
     if(svc_impl->svc.base.svc_element.base.documentable_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_impl->svc.base.
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
                 svc_element.base.documentable_element.ops);
         svc_impl->svc.base.svc_element.base.documentable_element.ops = 
             NULL;
@@ -219,7 +219,7 @@ axis2_woden_svc_to_documentable_element_free(
 AXIS2_DECLARE(axis2_woden_svc_t *)
 axis2_woden_svc_to_configurable(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
    
@@ -232,7 +232,7 @@ axis2_woden_svc_to_configurable(
         svc_impl = (axis2_woden_svc_impl_t *) svc;
 
     svc_impl->svc.base.configurable.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_configurable_ops_t));
     axis2_woden_configurable_resolve_methods(&(svc_impl->svc.base.
             configurable), env, svc_impl->configurable, 
@@ -243,7 +243,7 @@ axis2_woden_svc_to_configurable(
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_to_configurable_free(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
 
@@ -252,7 +252,7 @@ axis2_woden_svc_to_configurable_free(
 
     if(svc_impl->svc.base.configurable.ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_impl->svc.base.
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
                 configurable.ops);
         svc_impl->svc.base.configurable.ops = 
             NULL;
@@ -263,7 +263,7 @@ axis2_woden_svc_to_configurable_free(
 AXIS2_DECLARE(axis2_woden_svc_t *)
 axis2_woden_svc_to_configurable_component(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
     
@@ -276,7 +276,7 @@ axis2_woden_svc_to_configurable_component(
         svc_impl = (axis2_woden_svc_impl_t *) svc;
   
     svc_impl->svc.base.configurable_component.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_configurable_component_ops_t));
     axis2_woden_configurable_component_resolve_methods(&(svc_impl->svc.base.
             configurable_component), env, svc_impl->methods);
@@ -286,7 +286,7 @@ axis2_woden_svc_to_configurable_component(
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_to_configurable_component_free(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
 
@@ -295,7 +295,7 @@ axis2_woden_svc_to_configurable_component_free(
 
     if(svc_impl->svc.base.configurable_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_impl->svc.base.
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
                 configurable_component.ops);
         svc_impl->svc.base.configurable_component.ops = NULL;
     }
@@ -306,7 +306,7 @@ axis2_woden_svc_to_configurable_component_free(
 AXIS2_DECLARE(axis2_woden_svc_t *)
 axis2_woden_svc_to_wsdl_component(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
 
@@ -319,7 +319,7 @@ axis2_woden_svc_to_wsdl_component(
     else
         svc_impl = (axis2_woden_svc_impl_t *) svc;
     svc_impl->svc.base.configurable_component.wsdl_component.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_woden_wsdl_component_ops_t));
     axis2_woden_wsdl_component_resolve_methods(&(svc_impl->svc.base.
             configurable_component.wsdl_component), env, svc_impl->methods);
@@ -329,7 +329,7 @@ axis2_woden_svc_to_wsdl_component(
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_to_wsdl_component_free(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
 
@@ -338,7 +338,7 @@ axis2_woden_svc_to_wsdl_component_free(
 
     if(svc_impl->svc.base.configurable_component.wsdl_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_impl->svc.base.
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
                 configurable_component.wsdl_component.ops);
         svc_impl->svc.base.configurable_component.wsdl_component.ops = NULL;
     }
@@ -347,12 +347,12 @@ axis2_woden_svc_to_wsdl_component_free(
 
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_svc_t *
-create(axis2_env_t **env)
+create(const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    svc_impl = AXIS2_MALLOC((*env)->allocator, 
+    svc_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_svc_impl_t));
 
     svc_impl->obj_type= AXIS2_WODEN_SVC;
@@ -370,7 +370,7 @@ create(axis2_env_t **env)
     svc_impl->svc.base.configurable_component.ops = NULL;
     svc_impl->svc.base.configurable_component.wsdl_component.ops = NULL;
     
-    svc_impl->svc.ops = AXIS2_MALLOC((*env)->allocator, 
+    svc_impl->svc.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_svc_ops_t));
 
     svc_impl->svc.ops->free = axis2_woden_svc_free;
@@ -388,7 +388,7 @@ create(axis2_env_t **env)
     svc_impl->methods = axis2_hash_make(env);
     if(!svc_impl->methods) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(svc_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -451,7 +451,7 @@ create(axis2_env_t **env)
 }
 
 AXIS2_DECLARE(axis2_woden_svc_t *)
-axis2_woden_svc_create(axis2_env_t **env)
+axis2_woden_svc_create(const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
    
@@ -463,7 +463,7 @@ axis2_woden_svc_create(axis2_env_t **env)
     svc_impl->super = axis2_hash_make(env);
     if(!svc_impl->super) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(svc_impl->super, "AXIS2_WODEN_SVC", AXIS2_HASH_KEY_STRING, 
@@ -476,7 +476,7 @@ axis2_woden_svc_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_free(void *svc,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
 
@@ -529,14 +529,14 @@ axis2_woden_svc_free(void *svc,
 
     if(svc_impl->svc.base.svc_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_impl->svc.base.
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
                 svc_element.ops);
         svc_impl->svc.base.svc_element.ops = NULL;
     }
 
     if(svc_impl->svc.base.svc_element.base.documentable_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_impl->svc.base.
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
                 svc_element.base.documentable_element.ops);
         svc_impl->svc.base.svc_element.base.documentable_element.ops = 
             NULL;
@@ -544,7 +544,7 @@ axis2_woden_svc_free(void *svc,
     
     if(svc_impl->svc.base.configurable.ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_impl->svc.base.
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
                 configurable.ops);
         svc_impl->svc.base.configurable.ops = 
             NULL;
@@ -552,27 +552,27 @@ axis2_woden_svc_free(void *svc,
     
     if(svc_impl->svc.base.configurable_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_impl->svc.base.
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
                 configurable_component.ops);
         svc_impl->svc.base.configurable_component.ops = NULL;
     }
 
     if(svc_impl->svc.base.configurable_component.wsdl_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_impl->svc.base.
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
                 configurable_component.wsdl_component.ops);
         svc_impl->svc.base.configurable_component.wsdl_component.ops = NULL;
     }
 
     if((&(svc_impl->svc))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(svc_impl->svc))->ops);
+        AXIS2_FREE(env->allocator, (&(svc_impl->svc))->ops);
         (&(svc_impl->svc))->ops = NULL;
     }
     
     if(svc_impl)
     {
-        AXIS2_FREE((*env)->allocator, svc_impl);
+        AXIS2_FREE(env->allocator, svc_impl);
         svc_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -581,7 +581,7 @@ axis2_woden_svc_free(void *svc,
 axis2_hash_t *AXIS2_CALL
 axis2_woden_svc_super_objs(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
 
@@ -594,7 +594,7 @@ axis2_woden_svc_super_objs(
 axis2_woden_obj_types_t AXIS2_CALL
 axis2_woden_svc_type(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
 
@@ -607,7 +607,7 @@ axis2_woden_svc_type(
 axis2_woden_configurable_t *AXIS2_CALL
 axis2_woden_svc_get_base_impl(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
 
@@ -620,14 +620,14 @@ axis2_woden_svc_get_base_impl(
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_resolve_methods(
         axis2_woden_svc_t *svc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_svc_t *svc_impl,
         axis2_hash_t *methods)
 {
     axis2_woden_svc_impl_t *svc_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     svc_impl_l = INTF_TO_IMPL(svc_impl);
     
     svc->ops->free = axis2_hash_get(methods, "free", 
@@ -672,7 +672,7 @@ axis2_woden_svc_resolve_methods(
 axis2_qname_t *AXIS2_CALL
 axis2_woden_svc_get_qname(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -688,7 +688,7 @@ axis2_woden_svc_get_qname(
 void *AXIS2_CALL
 axis2_woden_svc_get_interface(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -704,7 +704,7 @@ axis2_woden_svc_get_interface(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_svc_get_endpoints(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -723,7 +723,7 @@ axis2_woden_svc_get_endpoints(
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_set_qname(
         void *svc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
@@ -745,7 +745,7 @@ axis2_woden_svc_set_qname(
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_set_interface_qname(
         void *svc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *interface_qname)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
@@ -768,7 +768,7 @@ axis2_woden_svc_set_interface_qname(
 axis2_qname_t *AXIS2_CALL
 axis2_woden_svc_get_interface_qname(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -784,7 +784,7 @@ axis2_woden_svc_get_interface_qname(
 void *AXIS2_CALL
 axis2_woden_svc_get_interface_element(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -800,7 +800,7 @@ axis2_woden_svc_get_interface_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_add_endpoint_element(
         void *svc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *endpoint)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
@@ -816,7 +816,7 @@ axis2_woden_svc_add_endpoint_element(
         svc_impl->f_endpoints = axis2_array_list_create(env, 0);
         if(!svc_impl->f_endpoints)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
@@ -827,7 +827,7 @@ axis2_woden_svc_add_endpoint_element(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_svc_get_endpoint_elements(
         void *svc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -846,7 +846,7 @@ axis2_woden_svc_get_endpoint_elements(
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_set_interface_element(
         void *svc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *interface)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;

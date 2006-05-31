@@ -11,7 +11,7 @@
 
 
 axis2_handler_desc_t * 
-test_flow_create_handler(axis2_env_t **env)
+test_flow_create_handler(const axis2_env_t *env)
 {
     axis2_handler_desc_t *handler_desc = NULL;
     axis2_handler_t *handler = NULL;
@@ -48,13 +48,13 @@ void Testaxis2_flow_add_handler(CuTest *tc)
     printf("***************************************\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create (allocator);
+    const axis2_env_t *env = axis2_env_create (allocator);
 
-    flow = axis2_flow_create(&env); 
-    handler_desc = test_flow_create_handler(&env);
-    actual = AXIS2_FLOW_ADD_HANDLER(flow, &env, handler_desc); 
+    flow = axis2_flow_create(env); 
+    handler_desc = test_flow_create_handler(env);
+    actual = AXIS2_FLOW_ADD_HANDLER(flow, env, handler_desc); 
     CuAssertIntEquals(tc, expected, actual);
-    AXIS2_FLOW_FREE (flow,  &env);
+    AXIS2_FLOW_FREE (flow,  env);
 
 }
 
@@ -69,10 +69,10 @@ void Testaxis2_flow_free(CuTest *tc)
     printf("********************************\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create (allocator);
+    const axis2_env_t *env = axis2_env_create (allocator);
 
-    flow = axis2_flow_create(&env); 
-    actual = AXIS2_FLOW_FREE (flow,  &env);
+    flow = axis2_flow_create(env); 
+    actual = AXIS2_FLOW_FREE (flow,  env);
     
     CuAssertIntEquals(tc, expected, actual);
 

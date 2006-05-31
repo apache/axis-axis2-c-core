@@ -56,13 +56,13 @@ struct axis2_listener_manager_ops
      */
     axis2_status_t (AXIS2_CALL *
     make_sure_started)(struct axis2_listener_manager *listener_manager, 
-                       axis2_env_t **env, 
+                       const axis2_env_t *env, 
                        axis2_char_t *transport,
                        axis2_conf_ctx_t *conf_ctx);
                        
     axis2_status_t (AXIS2_CALL *
     stop)(struct axis2_listener_manager *listener_manager, 
-          axis2_env_t **env, 
+          const axis2_env_t *env, 
           axis2_char_t *transport);
     /**
      * @param serviceName
@@ -72,18 +72,18 @@ struct axis2_listener_manager_ops
      */
     axis2_endpoint_ref_t* (AXIS2_CALL *
     reply_to_epr)(struct axis2_listener_manager *listener_manager, 
-                  axis2_env_t **env, 
+                  const axis2_env_t *env, 
                   axis2_char_t *svc_name,
                   axis2_char_t *transport);
     
     
     axis2_conf_ctx_t *(AXIS2_CALL *
     get_conf_ctx)(axis2_listener_manager_t *listener_manager,
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     free)(struct axis2_listener_manager *listener_manager, 
-          axis2_env_t **env);
+          const axis2_env_t *env);
           
 };
 
@@ -97,7 +97,7 @@ struct axis2_listener_manager
 };
 
 AXIS2_DECLARE(axis2_listener_manager_t*) 
-axis2_listener_manager_create(axis2_env_t **env);
+axis2_listener_manager_create(const axis2_env_t *env);
     
 /************************** Start of function macros **************************/
 

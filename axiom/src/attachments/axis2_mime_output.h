@@ -56,7 +56,7 @@ struct axis2_mime_output_ops
 {
 
     axis2_byte_t* (AXIS2_CALL *complete)(axis2_mime_output_t *mime_output,
-                            axis2_env_t **env, 
+                            const axis2_env_t *env, 
                             axis2_byte_t **output_stream,
 							int *output_stream_size,
                             axis2_char_t *soap_body_buffer,
@@ -66,14 +66,14 @@ struct axis2_mime_output_ops
                             axis2_char_t *char_set_encoding,
                             axis2_char_t *soap_content_type);
 
-    axis2_char_t* (AXIS2_CALL *get_content_type_for_mime)(axis2_mime_output_t *mime_output, axis2_env_t **env, 
+    axis2_char_t* (AXIS2_CALL *get_content_type_for_mime)(axis2_mime_output_t *mime_output, const axis2_env_t *env, 
                         axis2_char_t *boundary, axis2_char_t *content_id, axis2_char_t *char_set_encoding, axis2_char_t *soap_content_type);
     
 	/** Deallocate memory
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *free) (axis2_mime_output_t *mime_output,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 };
 
@@ -91,7 +91,7 @@ struct axis2_mime_output
  * @return pointer to newly created mime_output
  */
 AXIS2_DECLARE(axis2_mime_output_t *) 
-axis2_mime_output_create (axis2_env_t **env);
+axis2_mime_output_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

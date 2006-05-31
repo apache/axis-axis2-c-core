@@ -35,54 +35,54 @@ typedef struct axis2_ctx_impl
 
 axis2_property_t* AXIS2_CALL 
 axis2_ctx_get_property(struct axis2_ctx *ctx, 
-                        axis2_env_t **env, 
+                        const axis2_env_t *env, 
                         axis2_char_t *key, 
                         axis2_bool_t persistent);
 
 axis2_status_t AXIS2_CALL 
 axis2_ctx_set_property(struct axis2_ctx *ctx, 
-                       axis2_env_t **env, 
+                       const axis2_env_t *env, 
                        axis2_char_t *key, 
                        axis2_property_t *value, 
                        axis2_bool_t persistent);
 
 axis2_hash_t* AXIS2_CALL 
 axis2_ctx_get_non_persistent_map(struct axis2_ctx *ctx, 
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
                                 
 axis2_hash_t* AXIS2_CALL 
 axis2_ctx_get_persistent_map(struct axis2_ctx *ctx, 
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_ctx_set_non_persistent_map(
     struct axis2_ctx *ctx, 
-    axis2_env_t **env,
+    const axis2_env_t *env,
     axis2_hash_t* map);
     
 axis2_status_t AXIS2_CALL
 axis2_ctx_set_persistent_map(
     struct axis2_ctx *ctx, 
-    axis2_env_t **env,
+    const axis2_env_t *env,
     axis2_hash_t* map);
     
 axis2_status_t AXIS2_CALL 
 axis2_ctx_free (struct axis2_ctx *ctx, 
-                axis2_env_t **env);
+                const axis2_env_t *env);
                 
 
 AXIS2_DECLARE(axis2_ctx_t*)
-axis2_ctx_create(axis2_env_t **env) 
+axis2_ctx_create(const axis2_env_t *env) 
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
-    ctx_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_ctx_impl_t) );
+    ctx_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_ctx_impl_t) );
     if (!ctx_impl)
     { 
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
 
@@ -105,10 +105,10 @@ axis2_ctx_create(axis2_env_t **env)
 	
     /* initialize ops */
     ctx_impl->ctx.ops = NULL;
-    ctx_impl->ctx.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_ctx_ops_t) );
+    ctx_impl->ctx.ops  = AXIS2_MALLOC( env->allocator, sizeof(axis2_ctx_ops_t) );
     if (!ctx_impl->ctx.ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_ctx_free(&(ctx_impl->ctx), env);
         return NULL;        
     }
@@ -126,7 +126,7 @@ axis2_ctx_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL 
 axis2_ctx_set_property(struct axis2_ctx *ctx, 
-                       axis2_env_t **env, 
+                       const axis2_env_t *env, 
                        axis2_char_t *key, 
                        axis2_property_t *value, 
                        axis2_bool_t persistent) 
@@ -154,7 +154,7 @@ axis2_ctx_set_property(struct axis2_ctx *ctx,
 
 axis2_property_t* AXIS2_CALL 
 axis2_ctx_get_property(struct axis2_ctx *ctx, 
-                        axis2_env_t **env, 
+                        const axis2_env_t *env, 
                         axis2_char_t *key, 
                         axis2_bool_t persistent) 
 {
@@ -186,7 +186,7 @@ axis2_ctx_get_property(struct axis2_ctx *ctx,
 
 axis2_hash_t* AXIS2_CALL 
 axis2_ctx_get_non_persistent_map(struct axis2_ctx *ctx, 
-                                 axis2_env_t **env) 
+                                 const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(ctx)->non_persistent_map;
@@ -194,7 +194,7 @@ axis2_ctx_get_non_persistent_map(struct axis2_ctx *ctx,
 
 axis2_hash_t* AXIS2_CALL 
 axis2_ctx_get_persistent_map(struct axis2_ctx *ctx, 
-                             axis2_env_t **env) 
+                             const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(ctx)->persistent_map;
@@ -202,7 +202,7 @@ axis2_ctx_get_persistent_map(struct axis2_ctx *ctx,
 
 axis2_status_t AXIS2_CALL 
 axis2_ctx_free (struct axis2_ctx *ctx, 
-                axis2_env_t **env)
+                const axis2_env_t *env)
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     
@@ -212,7 +212,7 @@ axis2_ctx_free (struct axis2_ctx *ctx,
     
     if (ctx_impl->ctx.ops)
     {
-        AXIS2_FREE((*env)->allocator, ctx_impl->ctx.ops);
+        AXIS2_FREE(env->allocator, ctx_impl->ctx.ops);
         ctx_impl->ctx.ops = NULL;
     }
     
@@ -268,7 +268,7 @@ axis2_ctx_free (struct axis2_ctx *ctx,
         ctx_impl->persistent_map = NULL;
     }    
     
-    AXIS2_FREE((*env)->allocator, ctx_impl);
+    AXIS2_FREE(env->allocator, ctx_impl);
     ctx_impl = NULL;
     
     return AXIS2_SUCCESS;
@@ -277,7 +277,7 @@ axis2_ctx_free (struct axis2_ctx *ctx,
 axis2_status_t AXIS2_CALL 
 axis2_ctx_set_non_persistent_map(
     struct axis2_ctx *ctx, 
-    axis2_env_t **env,
+    const axis2_env_t *env,
     axis2_hash_t* map)
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
@@ -320,7 +320,7 @@ axis2_ctx_set_non_persistent_map(
 axis2_status_t AXIS2_CALL
 axis2_ctx_set_persistent_map(
     struct axis2_ctx *ctx, 
-    axis2_env_t **env,
+    const axis2_env_t *env,
     axis2_hash_t* map)
 {
     axis2_ctx_impl_t *ctx_impl = NULL;

@@ -39,19 +39,19 @@ extern "C"
  */
 axis2_status_t AXIS2_CALL
 axis2_soap_body_set_base_node(axis2_soap_body_t *body,
-                              axis2_env_t **env,
+                              const axis2_env_t *env,
                               axis2_om_node_t *om_node);  
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_set_builder(axis2_soap_body_t *body,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             struct axis2_soap_builder *builder);
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_set_fault(axis2_soap_body_t *body,
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           struct axis2_soap_fault *soap_fault);
                           
 AXIS2_DECLARE(axis2_soap_body_t *)
-axis2_soap_body_create(axis2_env_t **env);     
+axis2_soap_body_create(const axis2_env_t *env);     
 /** @} */
     
 #ifdef __cplusplus

@@ -63,7 +63,7 @@ struct axis2_soap_builder;
         */
         axis2_status_t (AXIS2_CALL *
 		free_fn)(axis2_soap_header_t *header,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
                                              
        /**
         * create a new axis2_soap_header_block_t struct initialized  with the
@@ -75,7 +75,7 @@ struct axis2_soap_builder;
         */
         struct axis2_soap_header_block* (AXIS2_CALL *
 		add_header_block)(axis2_soap_header_t* header,
-		        		  axis2_env_t **env,
+		        		  const axis2_env_t *env,
 						  axis2_char_t *localname,
 						  axis2_om_namespace_t *ns); 
        /**
@@ -90,7 +90,7 @@ struct axis2_soap_builder;
         */
         axis2_hash_t* (AXIS2_CALL *
 		examine_header_blocks)(axis2_soap_header_t* header,
-                               axis2_env_t **env,
+                               const axis2_env_t *env,
                                axis2_char_t* param_role);
        /**
         * returns an arraylist of header_blocks which has a given namesapce uri
@@ -103,7 +103,7 @@ struct axis2_soap_builder;
         */
         axis2_array_list_t* (AXIS2_CALL *
 		get_header_blocks_with_namespace_uri)(axis2_soap_header_t* header,
-                                              axis2_env_t **env,
+                                              const axis2_env_t *env,
                                          	  axis2_char_t *ns_uri);
        /**
         * returns an iterator to iterate through all soap header block's om nodes 
@@ -114,7 +114,7 @@ struct axis2_soap_builder;
         */
         axis2_om_children_qname_iterator_t* (AXIS2_CALL *
 		examine_all_header_blocks)(axis2_soap_header_t* header,
-                                   axis2_env_t **env);
+                                   const axis2_env_t *env);
        /**
         * returns an iterator to iterate through all  header blocks om_nodes 
         * with the matching role attribute
@@ -126,7 +126,7 @@ struct axis2_soap_builder;
         */
         axis2_om_children_with_specific_attribute_iterator_t *(AXIS2_CALL *
 		extract_header_blocks)(axis2_soap_header_t *header,
-                               axis2_env_t **env,
+                               const axis2_env_t *env,
                                axis2_char_t *role);
                                          
        /**
@@ -137,7 +137,7 @@ struct axis2_soap_builder;
         */
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node)(axis2_soap_header_t *header,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
         /**
          *  return the soap_version of this soap_header
          *  @param header soap_header
@@ -146,7 +146,7 @@ struct axis2_soap_builder;
          */
        int  (AXIS2_CALL *
 	   get_soap_version) (axis2_soap_header_t *header,
-                          axis2_env_t **env);
+                          const axis2_env_t *env);
         
          
        /**
@@ -154,7 +154,7 @@ struct axis2_soap_builder;
 		*/
        axis2_hash_t* (AXIS2_CALL *
 	   get_all_header_blocks)(axis2_soap_header_t *header,
-                               axis2_env_t **env);                                                
+                               const axis2_env_t *env);                                                
                                          
     };
 
@@ -177,7 +177,7 @@ struct axis2_soap_builder;
 
     
 AXIS2_DECLARE(axis2_soap_header_t *)
-axis2_soap_header_create_with_parent(axis2_env_t **env,
+axis2_soap_header_create_with_parent(const axis2_env_t *env,
                                      struct axis2_soap_envelope *envelope);
                                      
 /******************** Macros **************************************************/

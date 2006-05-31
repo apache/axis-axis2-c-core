@@ -53,24 +53,24 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_attribute_ops
   	 */
 	axis2_status_t (AXIS2_CALL *free)(
                     axis2_wsdl_extensible_attribute_t *wsdl_extensible_attribute,
-			        axis2_env_t **env);
+			        const axis2_env_t *env);
 
     axis2_qname_t *(AXIS2_CALL *
     get_key) (axis2_wsdl_extensible_attribute_t *extensible_attribute,
-               axis2_env_t **env);
+               const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_key) (axis2_wsdl_extensible_attribute_t *extensible_attribute,
-               axis2_env_t **env,
+               const axis2_env_t *env,
                axis2_qname_t *key);
     
     axis2_qname_t *(AXIS2_CALL *
     get_value) (axis2_wsdl_extensible_attribute_t *extensible_attribute,
-               axis2_env_t **env);
+               const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_value) (axis2_wsdl_extensible_attribute_t *extensible_attribute,
-               axis2_env_t **env,
+               const axis2_env_t *env,
                axis2_qname_t *value);
 };
 
@@ -88,7 +88,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_attribute
  * @return pointer to newly created wsdl property
  */
 AXIS2_DECLARE(axis2_wsdl_extensible_attribute_t *) 
-axis2_wsdl_extensible_attribute_create (axis2_env_t **env);
+axis2_wsdl_extensible_attribute_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

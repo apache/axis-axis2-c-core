@@ -39,35 +39,35 @@ typedef struct axis2_soap_message_impl_t
 
 axis2_status_t AXIS2_CALL
 axis2_soap_message_free(axis2_soap_message_t *message,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                                         
 axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_message_get_soap_envelope(axis2_soap_message_t *message,
-                                     axis2_env_t **env);
+                                     const axis2_env_t *env);
                                         
                                         
 axis2_status_t AXIS2_CALL
 axis2_soap_message_serialize(axis2_soap_message_t *message,
-                             axis2_env_t **env,
+                             const axis2_env_t *env,
                              axis2_om_output_t *om_output);
                              
 /************************** function implementations **************************/
 
 AXIS2_DECLARE(axis2_soap_message_t*)
-axis2_soap_message_create(axis2_env_t **env,
+axis2_soap_message_create(const axis2_env_t *env,
                           axis2_soap_builder_t *builder,
                           axis2_om_document_t *om_doc)
 {
     axis2_soap_message_impl_t *soap_message_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, om_doc, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, builder, NULL);
+    AXIS2_PARAM_CHECK(env->error, om_doc, NULL);
+    AXIS2_PARAM_CHECK(env->error, builder, NULL);
     
-    soap_message_impl = (axis2_soap_message_impl_t *)AXIS2_MALLOC((*env)->allocator, 
+    soap_message_impl = (axis2_soap_message_impl_t *)AXIS2_MALLOC(env->allocator, 
                             sizeof(axis2_soap_message_impl_t));
     if(!soap_message_impl)                            
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -75,13 +75,13 @@ axis2_soap_message_create(axis2_env_t **env,
     soap_message_impl->om_doc = NULL;
     soap_message_impl->soap_envelope = NULL;
     
-    soap_message_impl->soap_message.ops = (axis2_soap_message_ops_t*)AXIS2_MALLOC((*env)->allocator,
+    soap_message_impl->soap_message.ops = (axis2_soap_message_ops_t*)AXIS2_MALLOC(env->allocator,
                                             sizeof(axis2_soap_message_ops_t));
                                             
     if(!(soap_message_impl->soap_message.ops))
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_FREE((*env)->allocator, soap_message_impl);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, soap_message_impl);
         soap_message_impl = NULL;
         return NULL;
     }  
@@ -101,7 +101,7 @@ axis2_soap_message_create(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_soap_message_free(axis2_soap_message_t *message,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_soap_message_impl_t *soap_message_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -118,17 +118,17 @@ axis2_soap_message_free(axis2_soap_message_t *message,
     }   
     if(soap_message_impl->soap_message.ops)
     {
-        AXIS2_FREE((*env)->allocator, soap_message_impl->soap_message.ops);
+        AXIS2_FREE(env->allocator, soap_message_impl->soap_message.ops);
         soap_message_impl->soap_message.ops = NULL;
     }
-    AXIS2_FREE((*env)->allocator, soap_message_impl);
+    AXIS2_FREE(env->allocator, soap_message_impl);
     soap_message_impl = NULL;
     return AXIS2_SUCCESS;
 }
 
 axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_message_get_soap_envelope(axis2_soap_message_t *message,
-                                     axis2_env_t **env)
+                                     const axis2_env_t *env)
 {
     axis2_soap_message_impl_t* soap_message_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -147,7 +147,7 @@ axis2_soap_message_get_soap_envelope(axis2_soap_message_t *message,
 
 axis2_status_t AXIS2_CALL
 axis2_soap_message_serialize(axis2_soap_message_t *message,
-                             axis2_env_t **env,
+                             const axis2_env_t *env,
                              axis2_om_output_t *om_output)
 {
     axis2_soap_message_impl_t *soap_message_impl = NULL;

@@ -17,25 +17,25 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
     printf("******************************************************************\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create(allocator);
+    const axis2_env_t *env = axis2_env_create(allocator);
 
-    expected = AXIS2_STRDUP("libaxis2_util.so", &env);
+    expected = AXIS2_STRDUP("libaxis2_util.so", env);
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    pathname = AXIS2_STRACAT (axis2c_home, "/lib", &env);
-    file_list = AXIS2_DIR_HANDLER_LIST_SERVICES_OR_MODULES_IN_DIR(&env, pathname);
-    size = AXIS2_ARRAY_LIST_SIZE(file_list, &env);
+    pathname = AXIS2_STRACAT (axis2c_home, "/lib", env);
+    file_list = AXIS2_DIR_HANDLER_LIST_SERVICES_OR_MODULES_IN_DIR(env, pathname);
+    size = AXIS2_ARRAY_LIST_SIZE(file_list, env);
     for (i = 0; i < size; i++) 
     {
         axis2_file_t *arch_file = NULL;
-        arch_file = (axis2_file_t *) AXIS2_ARRAY_LIST_GET(file_list, &env, i);
+        arch_file = (axis2_file_t *) AXIS2_ARRAY_LIST_GET(file_list, env, i);
         if(!arch_file)
         {
             printf("arch file is null\n");
             continue;
         }
-        if(0 == AXIS2_STRCMP(AXIS2_FILE_GET_NAME(arch_file, &env), expected))
+        if(0 == AXIS2_STRCMP(AXIS2_FILE_GET_NAME(arch_file, env), expected))
         {
-            actual = AXIS2_FILE_GET_NAME(arch_file, &env);
+            actual = AXIS2_FILE_GET_NAME(arch_file, env);
         }   
     }
     

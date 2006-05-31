@@ -63,25 +63,25 @@ struct axis2_woden_ext_element_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *ext_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_ext_type) (void *ext_element,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_ext_type) (void *ext_element,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_required) (void *ext_element,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_bool_t required);
 
     axis2_bool_t (AXIS2_CALL *
     is_required) (void *ext_element,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 };
 
@@ -91,7 +91,7 @@ struct axis2_woden_ext_element
 };
 
 AXIS2_DECLARE(axis2_woden_ext_element_t *)
-axis2_woden_ext_element_create(axis2_env_t **env);
+axis2_woden_ext_element_create(const axis2_env_t *env);
 
 /**
  * This is an Axis2 C internal method. This is used only from constructor
@@ -99,7 +99,7 @@ axis2_woden_ext_element_create(axis2_env_t **env);
  */
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_ext_element_resolve_methods(axis2_woden_ext_element_t *ext_element,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_woden_ext_element_t *ext_element_impl,
                                 axis2_hash_t *methods);
 

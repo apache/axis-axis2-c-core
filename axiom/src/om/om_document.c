@@ -21,32 +21,32 @@
 
 axis2_status_t AXIS2_CALL 
 axis2_om_document_free (axis2_om_document_t * document,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                         
 axis2_om_node_t * AXIS2_CALL
 axis2_om_document_build_next (axis2_om_document_t *document,
-                              axis2_env_t **env);
+                              const axis2_env_t *env);
                               
 axis2_om_node_t * AXIS2_CALL 
 axis2_om_document_get_root_element (axis2_om_document_t *document,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
                                    
 axis2_status_t  AXIS2_CALL
 axis2_om_document_set_root_element(axis2_om_document_t *document,
-                                   axis2_env_t **env,
+                                   const axis2_env_t *env,
                                    axis2_om_node_t *node);  
 
 axis2_om_node_t* AXIS2_CALL
 axis2_om_document_build_all(axis2_om_document_t *document,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 axis2_om_stax_builder_t* AXIS2_CALL
 axis2_om_document_get_builder(axis2_om_document_t *document,
-                              axis2_env_t **env);
+                              const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_om_document_serialize(axis2_om_document_t *document,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_om_output_t *om_output);                              
                                  
 /********************************* end of function pointers ******************/
@@ -77,7 +77,7 @@ typedef struct axis2_om_document_impl_t
 /*******************************************************************************/
 
 AXIS2_DECLARE(axis2_om_document_t *)
-axis2_om_document_create (axis2_env_t **env,
+axis2_om_document_create (const axis2_env_t *env,
                           axis2_om_node_t *root,
                           axis2_om_stax_builder_t *builder)
 {
@@ -86,11 +86,11 @@ axis2_om_document_create (axis2_env_t **env,
     AXIS2_ENV_CHECK(env, NULL);
     
     document = (axis2_om_document_impl_t *) AXIS2_MALLOC (
-                (*env)->allocator, sizeof (axis2_om_document_impl_t));
+                env->allocator, sizeof (axis2_om_document_impl_t));
     
     if (!document)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -106,8 +106,8 @@ axis2_om_document_create (axis2_env_t **env,
     document->char_set_encoding = (axis2_char_t *) AXIS2_STRDUP(CHAR_SET_ENCODING,env);
     if (!document->char_set_encoding)
     {
-        AXIS2_FREE((*env)->allocator, document);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, document);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
     
@@ -115,21 +115,21 @@ axis2_om_document_create (axis2_env_t **env,
     if (!document->xml_version)
     {
         
-        AXIS2_FREE((*env)->allocator, document->char_set_encoding);
-        AXIS2_FREE((*env)->allocator, document);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, document->char_set_encoding);
+        AXIS2_FREE(env->allocator, document);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-    document->om_document.ops = (axis2_om_document_ops_t *) AXIS2_MALLOC ((*env)->allocator,
+    document->om_document.ops = (axis2_om_document_ops_t *) AXIS2_MALLOC (env->allocator,
                                                   sizeof(axis2_om_document_ops_t));
     if (!document->om_document.ops)
     {
         
-        AXIS2_FREE((*env)->allocator, document->char_set_encoding);
-        AXIS2_FREE((*env)->allocator, document->xml_version);
-        AXIS2_FREE((*env)->allocator, document);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, document->char_set_encoding);
+        AXIS2_FREE(env->allocator, document->xml_version);
+        AXIS2_FREE(env->allocator, document);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
   
@@ -146,7 +146,7 @@ axis2_om_document_create (axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_om_document_free (axis2_om_document_t *om_document,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_om_document_impl_t *document = NULL;
     
@@ -155,12 +155,12 @@ axis2_om_document_free (axis2_om_document_t *om_document,
     
     if (document->char_set_encoding)
     {
-        AXIS2_FREE((*env)->allocator, document->char_set_encoding);
+        AXIS2_FREE(env->allocator, document->char_set_encoding);
         document->char_set_encoding = NULL;
     }
     if (document->xml_version)
     {
-        AXIS2_FREE((*env)->allocator, document->xml_version);
+        AXIS2_FREE(env->allocator, document->xml_version);
         document->xml_version = NULL;
     }
     if(document->root_element)
@@ -171,17 +171,17 @@ axis2_om_document_free (axis2_om_document_t *om_document,
     }
     if(document->om_document.ops)
     {
-        AXIS2_FREE((*env)->allocator, document->om_document.ops);
+        AXIS2_FREE(env->allocator, document->om_document.ops);
         document->om_document.ops = NULL;
     }
-    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(document));
+    AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(document));
     return AXIS2_SUCCESS;
 }
 
 
 axis2_om_node_t* AXIS2_CALL
 axis2_om_document_build_next (axis2_om_document_t *om_document,
-                                   axis2_env_t **env)
+                                   const axis2_env_t *env)
 {
     axis2_om_document_impl_t *document = NULL;
     axis2_om_node_t  *last_child = NULL;
@@ -215,7 +215,7 @@ axis2_om_document_build_next (axis2_om_document_t *om_document,
 
 axis2_om_node_t * AXIS2_CALL
 axis2_om_document_get_root_element (axis2_om_document_t * document,
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     axis2_om_node_t *node = NULL;
     axis2_om_document_impl_t *doc_impl = NULL;
@@ -237,7 +237,7 @@ axis2_om_document_get_root_element (axis2_om_document_t * document,
         }
         else
         {
-            AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_INVALID_DOCUMENT_STATE_ROOT_NULL, AXIS2_FAILURE);
             return NULL;
         }
@@ -247,14 +247,14 @@ axis2_om_document_get_root_element (axis2_om_document_t * document,
 
 axis2_status_t AXIS2_CALL
 axis2_om_document_set_root_element(axis2_om_document_t *document,
-                                   axis2_env_t **env,
+                                   const axis2_env_t *env,
                                    axis2_om_node_t *node)
 {
     int status = AXIS2_SUCCESS;
     axis2_om_document_impl_t *document_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
     
     document_impl = AXIS2_INTF_TO_IMPL(document);
     
@@ -277,7 +277,7 @@ axis2_om_document_set_root_element(axis2_om_document_t *document,
 
 axis2_om_node_t* AXIS2_CALL
 axis2_om_document_build_all(struct axis2_om_document *document,
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {   
     axis2_om_document_impl_t *doc_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -316,7 +316,7 @@ axis2_om_document_build_all(struct axis2_om_document *document,
 
 axis2_om_stax_builder_t* AXIS2_CALL
 axis2_om_document_get_builder(axis2_om_document_t *document,
-                              axis2_env_t **env)
+                              const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(document)->builder;
@@ -324,7 +324,7 @@ axis2_om_document_get_builder(axis2_om_document_t *document,
 
 axis2_status_t AXIS2_CALL
 axis2_om_document_serialize(axis2_om_document_t *document,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_om_output_t *om_output)
 {
     axis2_om_document_impl_t *document_impl = NULL;

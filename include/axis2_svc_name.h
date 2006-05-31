@@ -53,7 +53,7 @@ extern "C"
          */
         axis2_qname_t* (AXIS2_CALL *
 		get_qname)(struct axis2_svc_name *svc_name, 
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
         /**
          * Method setName
          *
@@ -61,7 +61,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		set_qname)(struct axis2_svc_name *svc_name, 
-                   axis2_env_t **env, 
+                   const axis2_env_t *env, 
 				   axis2_qname_t *qname);
         /**
          * Method getEndpointName
@@ -70,7 +70,7 @@ extern "C"
          */
         axis2_char_t* (AXIS2_CALL *
 		get_endpoint_name)(struct axis2_svc_name *svc_name, 
-                           axis2_env_t **env);
+                           const axis2_env_t *env);
         /**
          * Method setEndpointName
          *
@@ -78,13 +78,13 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
 		set_endpoint_name)(struct axis2_svc_name *svc_name, 
-                           axis2_env_t **env, 
+                           const axis2_env_t *env, 
 						   axis2_char_t *endpoint_name);
 		
 		
         axis2_status_t (AXIS2_CALL *
 		free)(struct axis2_svc_name *svc_name, 
-              axis2_env_t **env);
+              const axis2_env_t *env);
 		
 		
     } axis2_svc_name_ops_t;
@@ -106,7 +106,7 @@ extern "C"
  * @param relationship_type
  */
 AXIS2_DECLARE(axis2_svc_name_t*) 
-axis2_svc_name_create(axis2_env_t **env, 
+axis2_svc_name_create(const axis2_env_t *env, 
 					  axis2_qname_t *qname, 
 					  axis2_char_t *endpoint_name) ;
     

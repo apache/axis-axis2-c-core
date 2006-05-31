@@ -9,8 +9,8 @@
 #include <stdio.h>
 #include <string.h>
 
-void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env);
-axis2_array_list_t *get_op_in_phases(axis2_env_t **env);
+void add_handlers_to_flow(struct axis2_flow *flow, const axis2_env_t *env);
+axis2_array_list_t *get_op_in_phases(const axis2_env_t *env);
 
 void axis2_phase_resolver_engage_module_to_svc(CuTest *tc)
 {
@@ -23,7 +23,7 @@ void Testaxis2_phase_resolver_free(CuTest *tc)
     axis2_phase_resolver_t *resolver = NULL;
     axis2_allocator_t *allocator = NULL;
     axis2_log_t *log = NULL;
-    axis2_env_t *env = NULL;
+    const axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
 
     printf("******************************************\n");
@@ -37,8 +37,8 @@ void Testaxis2_phase_resolver_free(CuTest *tc)
     env->log->level = AXIS2_LOG_LEVEL_TRACE;
     axis2_error_init();
 
-    resolver = axis2_phase_resolver_create(&env); 
-    actual = AXIS2_PHASE_RESOLVER_FREE(resolver,  &env);
+    resolver = axis2_phase_resolver_create(env); 
+    actual = AXIS2_PHASE_RESOLVER_FREE(resolver,  env);
     
     CuAssertIntEquals(tc, expected, actual);
 
@@ -54,7 +54,7 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
     axis2_status_t actual = AXIS2_FAILURE;
     axis2_allocator_t *allocator = NULL;
     axis2_log_t *log = NULL;
-    axis2_env_t *env = NULL;
+    const axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
     
     printf("*********************************************************\n");
@@ -68,25 +68,25 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
     env->log->level = AXIS2_LOG_LEVEL_TRACE;
     axis2_error_init();
 
-    axis2_op_t *optr = axis2_op_create(&env);
-    op_in_phases = get_op_in_phases(&env);  
-    AXIS2_OP_SET_REMAINING_PHASES_INFLOW(optr, &env, op_in_phases);
-    flow = axis2_flow_create(&env); 
-    add_handlers_to_flow(flow, &env);
-    module_desc = axis2_module_desc_create(&env);
-    AXIS2_MODULE_DESC_SET_INFLOW(module_desc, &env, flow);
-    resolver = axis2_phase_resolver_create(&env);
-    actual = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(resolver, &env, optr,
+    axis2_op_t *optr = axis2_op_create(env);
+    op_in_phases = get_op_in_phases(env);  
+    AXIS2_OP_SET_REMAINING_PHASES_INFLOW(optr, env, op_in_phases);
+    flow = axis2_flow_create(env); 
+    add_handlers_to_flow(flow, env);
+    module_desc = axis2_module_desc_create(env);
+    AXIS2_MODULE_DESC_SET_INFLOW(module_desc, env, flow);
+    resolver = axis2_phase_resolver_create(env);
+    actual = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(resolver, env, optr,
         module_desc);
 
-    AXIS2_OP_FREE(optr, &env);
-    AXIS2_MODULE_DESC_FREE(module_desc, &env);
-    AXIS2_PHASE_RESOLVER_FREE(resolver, &env);
+    AXIS2_OP_FREE(optr, env);
+    AXIS2_MODULE_DESC_FREE(module_desc, env);
+    AXIS2_PHASE_RESOLVER_FREE(resolver, env);
     CuAssertIntEquals(tc, expected, actual);
     
 }
 
-void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env)
+void add_handlers_to_flow(struct axis2_flow *flow, const axis2_env_t *env)
 {
     struct axis2_handler_desc *handler_desc = NULL;
     struct axis2_handler *handler = NULL;
@@ -130,7 +130,7 @@ void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env)
 /** helper method. This is the requirement method from phases_info's 
   * axis2_get_op_in_phases method
   */
-axis2_array_list_t *get_op_in_phases(axis2_env_t **env)
+axis2_array_list_t *get_op_in_phases(const axis2_env_t *env)
 {
     struct axis2_phase *phase = NULL; 
     axis2_array_list_t *op_in_phases = NULL; 

@@ -49,35 +49,35 @@ struct axis2_woden_imported_schema_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *schema,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_imported_schema_free) (
             void *schema,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *schema,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     /**
      * @return the base implementation class
      */
     axis2_woden_schema_t *(AXIS2_CALL *
     get_base_impl) (
             void *schema,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_location) (
             void *schema,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             struct axis2_url *location);
 
     struct axis2_url *(AXIS2_CALL *
     get_location) (
             void *schema,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
   
 };
@@ -90,18 +90,18 @@ struct axis2_woden_imported_schema
 
 AXIS2_DECLARE(axis2_woden_imported_schema_t *)
 axis2_woden_imported_schema_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_woden_imported_schema_t *)
 axis2_woden_imported_schema_to_schema(
         void *schema,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_imported_schema_resolve_methods(
         axis2_woden_imported_schema_t *schema,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

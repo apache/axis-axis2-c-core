@@ -39,27 +39,27 @@ struct axis2_woden_uri_attr_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_uri_attr_free(
         void *uri_attr,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_uri_attr_type(
         void *uri_attr,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_xml_attr_t *AXIS2_CALL
 axis2_woden_uri_attr_get_base_impl(
         void *uri_attr,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_url_t *AXIS2_CALL
 axis2_woden_uri_attr_get_uri(
         void *uri_attr,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_uri_attr_convert(
         void *uri_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_element_t *owner_el,
         axis2_om_node_t *owner_node,
         axis2_char_t *attr_value);
@@ -70,7 +70,7 @@ axis2_woden_uri_attr_convert(
  */
 AXIS2_DECLARE(axis2_woden_uri_attr_t *)
 axis2_woden_uri_attr_create(
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_element_t *owner_el,
         axis2_om_node_t *owner_node,
         axis2_qname_t *attr_type,
@@ -79,14 +79,14 @@ axis2_woden_uri_attr_create(
     axis2_woden_uri_attr_impl_t *uri_attr_impl = NULL;
      
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    uri_attr_impl = AXIS2_MALLOC((*env)->allocator, 
+    uri_attr_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_uri_attr_impl_t));
 
     uri_attr_impl->obj_type = AXIS2_WODEN_URI_ATTR;
     uri_attr_impl->xml_attr = NULL;
     uri_attr_impl->methods = NULL;
     uri_attr_impl->uri_attr.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_uri_attr_ops_t));
 
     uri_attr_impl->uri_attr.ops->free = 
@@ -104,7 +104,7 @@ axis2_woden_uri_attr_create(
     uri_attr_impl->methods = axis2_hash_make(env);
     if(!uri_attr_impl->methods) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(uri_attr_impl->methods, "free", 
@@ -125,7 +125,7 @@ axis2_woden_uri_attr_create(
 axis2_woden_obj_types_t AXIS2_CALL
 axis2_woden_uri_attr_type(
         void *uri_attr,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_uri_attr_impl_t *uri_attr_impl = NULL;
 
@@ -138,7 +138,7 @@ axis2_woden_uri_attr_type(
 axis2_status_t AXIS2_CALL
 axis2_woden_uri_attr_free(
         void *uri_attr,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_uri_attr_impl_t *uri_attr_impl = NULL;
 
@@ -159,13 +159,13 @@ axis2_woden_uri_attr_free(
     
     if((&(uri_attr_impl->uri_attr))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(uri_attr_impl->uri_attr))->ops);
+        AXIS2_FREE(env->allocator, (&(uri_attr_impl->uri_attr))->ops);
         (&(uri_attr_impl->uri_attr))->ops = NULL;
     }
 
     if(uri_attr_impl)
     {
-        AXIS2_FREE((*env)->allocator, uri_attr_impl);
+        AXIS2_FREE(env->allocator, uri_attr_impl);
         uri_attr_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -174,7 +174,7 @@ axis2_woden_uri_attr_free(
 axis2_woden_xml_attr_t *AXIS2_CALL
 axis2_woden_uri_attr_get_base_impl(
         void *uri_attr,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_uri_attr_impl_t *uri_attr_impl = NULL;
 
@@ -187,11 +187,11 @@ axis2_woden_uri_attr_get_base_impl(
 axis2_status_t AXIS2_CALL
 axis2_woden_uri_attr_resolve_methods(
         axis2_woden_uri_attr_t *uri_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     uri_attr->ops->free = axis2_hash_get(methods, 
             "free", AXIS2_HASH_KEY_STRING);
@@ -210,7 +210,7 @@ axis2_woden_uri_attr_resolve_methods(
 axis2_url_t *AXIS2_CALL
 axis2_woden_uri_attr_get_uri(
         void *uri_attr,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_uri_attr_impl_t *uri_attr_impl = NULL;
     
@@ -223,7 +223,7 @@ axis2_woden_uri_attr_get_uri(
 void *AXIS2_CALL
 axis2_woden_uri_attr_convert(
         void *uri_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_element_t *owner_el,
         axis2_om_node_t *owner_node,
         axis2_char_t *attr_value)

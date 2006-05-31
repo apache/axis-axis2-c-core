@@ -18,7 +18,7 @@
 
 /* build SOAP request message content using OM */
 axis2_om_node_t *
-build_om_payload_for_echo_svc(axis2_env_t **env)
+build_om_payload_for_echo_svc(const axis2_env_t *env)
 {
     axis2_om_node_t *echo_om_node = NULL;
     axis2_om_element_t* echo_om_ele = NULL;

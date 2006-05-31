@@ -43,7 +43,7 @@ extern "C"
 
 
 AXIS2_DECLARE(axis2_transport_sender_t *) 
-axis2_http_transport_sender_create (axis2_env_t **env);
+axis2_http_transport_sender_create (const axis2_env_t *env);
 
 
 /** @} */

@@ -63,7 +63,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     
     axis2_status_t (AXIS2_CALL *
     free) (axis2_linked_list_t *linked_list, 
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     /**
     * Obtain the Entry at a given position in a list. This method of course
@@ -79,7 +79,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     entry_t * (AXIS2_CALL *
     get_entry)(axis2_linked_list_t *linked_list, 
-                                axis2_env_t **env, 
+                                const axis2_env_t *env, 
                                 int n);
                                             
     /**
@@ -90,7 +90,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
      */
     axis2_status_t (AXIS2_CALL *
     remove_entry)(axis2_linked_list_t *linked_list, 
-                                    axis2_env_t **env, 
+                                    const axis2_env_t *env, 
                                     entry_t *e);
             
     
@@ -101,7 +101,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
      */
     axis2_bool_t (AXIS2_CALL *
     check_bounds_inclusive)(axis2_linked_list_t *linked_list, 
-                                                axis2_env_t **env, 
+                                                const axis2_env_t *env, 
                                                 int index);
     
     /**
@@ -111,7 +111,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     axis2_bool_t (AXIS2_CALL *
     check_bounds_exclusive)(axis2_linked_list_t *linked_list,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 int index);
     
     /**
@@ -121,7 +121,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     void * (AXIS2_CALL *
     get_first)(axis2_linked_list_t *linked_list,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
                                 
     /**
     * Returns the last element in the list.
@@ -130,7 +130,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     void * (AXIS2_CALL *
     get_last)(axis2_linked_list_t *linked_list,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
     
     /**
     * Remove and return the first element in the list.
@@ -139,7 +139,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     void * (AXIS2_CALL *
     remove_first)(axis2_linked_list_t *linked_list,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
                                     
     /**
     * Remove and return the last element in the list.
@@ -148,7 +148,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     void * (AXIS2_CALL *
     remove_last)(axis2_linked_list_t *linked_list,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
     
     /**
     * Insert an element at the first of the list.
@@ -157,7 +157,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     axis2_status_t (AXIS2_CALL *
     add_first) (axis2_linked_list_t *linked_list,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 void *o);
                                 
     /**
@@ -167,7 +167,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     axis2_status_t (AXIS2_CALL *
     add_last) (axis2_linked_list_t *linked_list,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 void *o);
                     
     /**
@@ -179,7 +179,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     axis2_bool_t (AXIS2_CALL *
     contains) (axis2_linked_list_t *linked_list,
-                                axis2_env_t ** env,
+                                const axis2_env_t *env,
                                 void *o);
     
     /**
@@ -189,7 +189,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     int (AXIS2_CALL *
     size) (axis2_linked_list_t *linked_list,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
                             
     /**
     * Adds an element to the end of the list.
@@ -199,7 +199,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     axis2_bool_t (AXIS2_CALL *
     add) (axis2_linked_list_t *linked_list, 
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             void *o);
     
     /**
@@ -211,7 +211,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     axis2_bool_t (AXIS2_CALL *
     remove) (axis2_linked_list_t *linked_list,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 void *o);
                                 
     /**
@@ -219,7 +219,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     axis2_status_t (AXIS2_CALL *
     clear) (axis2_linked_list_t *linked_list,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
     
     /**
     * Return the element at index.
@@ -229,7 +229,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     void * (AXIS2_CALL *
     get) (axis2_linked_list_t *linked_list,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             int index);
                             
     /**
@@ -241,7 +241,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     void * (AXIS2_CALL *
     set) (axis2_linked_list_t *linked_list,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             int index, void *o);
     
     /**
@@ -252,7 +252,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     axis2_status_t (AXIS2_CALL *
     add_at_index) (axis2_linked_list_t *linked_list,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             int index, 
                             void *o);
                             
@@ -264,7 +264,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     void * (AXIS2_CALL *
     remove_at_index) (axis2_linked_list_t *linked_list,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 int index);
     
     /**
@@ -275,7 +275,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     int (AXIS2_CALL *
     index_of)(axis2_linked_list_t *linked_list,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 void *o);
                                 
     /**
@@ -286,7 +286,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     int (AXIS2_CALL *
     last_index_of) (axis2_linked_list_t *linked_list,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     void *o);
     
     /**
@@ -296,7 +296,7 @@ AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
     */
     void ** (AXIS2_CALL *
     to_array) (axis2_linked_list_t *linked_list,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 };
 
@@ -313,7 +313,7 @@ struct axis2_linked_list_s
 /**
 * Create an empty linked list.
 */
-AXIS2_DECLARE(axis2_linked_list_t*) axis2_linked_list_create(axis2_env_t **env);    
+AXIS2_DECLARE(axis2_linked_list_t*) axis2_linked_list_create(const axis2_env_t *env);    
     
 #define AXIS2_LINKED_LIST_FREE(linked_list, env) \
         ((linked_list)->ops->free(linked_list, env))

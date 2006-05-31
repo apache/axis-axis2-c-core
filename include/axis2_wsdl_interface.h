@@ -60,7 +60,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_interface_t *wsdl_interface,
-		    axis2_env_t **env);
+		    const axis2_env_t *env);
 
     /**
      * Method getDefinedOperations
@@ -69,28 +69,28 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_defined_ops) (axis2_wsdl_interface_t *wsdl_interface,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
     
     /**
      * @return
      */
     axis2_linked_list_t *(AXIS2_CALL *
     get_faults) (axis2_wsdl_interface_t *wsdl_interface,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * @return
      */
     axis2_qname_t *(AXIS2_CALL *
     get_name) (axis2_wsdl_interface_t *wsdl_interface,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
                                     
     /**
      * @return
      */
     axis2_hash_t *(AXIS2_CALL *
     get_ops) (axis2_wsdl_interface_t *wsdl_interface,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * Retruns the <code>WSDLOperation</code>
@@ -100,7 +100,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      */
     void *(AXIS2_CALL *
     get_op) (axis2_wsdl_interface_t *wsdl_interface,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *nc_name);
                                     
     /**
@@ -108,7 +108,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_super_interfaces) (axis2_wsdl_interface_t *wsdl_interface,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
     
     /**
      * Method getSuperInterface
@@ -118,7 +118,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      */
     axis2_wsdl_interface_t *(AXIS2_CALL *
     get_super_interface) (axis2_wsdl_interface_t *wsdl_interface,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_qname_t *qname);
                                                 
     /**
@@ -129,14 +129,14 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_target_namespace) (axis2_wsdl_interface_t *wsdl_interface,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
     
     /**
      * @param list
      */
     axis2_status_t (AXIS2_CALL *
     set_faults) (axis2_wsdl_interface_t *wsdl_interface,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_linked_list_t *list);
                                     
     /**
@@ -144,7 +144,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_name) (axis2_wsdl_interface_t *wsdl_interface,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *qName);
     
     /**
@@ -152,7 +152,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_ops) (axis2_wsdl_interface_t *wsdl_interface,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_hash_t *list);
                                         
     /**
@@ -164,7 +164,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_op) (axis2_wsdl_interface_t *wsdl_interface,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         void *op);
     
     /**
@@ -172,7 +172,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_super_interfaces) (axis2_wsdl_interface_t *wsdl_interface,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_hash_t *list);
                                                 
     /**
@@ -183,7 +183,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_super_interface)(axis2_wsdl_interface_t *wsdl_interface,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_wsdl_interface_t *interface_component);
     
     /**
@@ -193,7 +193,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_style_default)(axis2_wsdl_interface_t *wsdl_interface,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
                                             
     
     /**
@@ -203,7 +203,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_style_default) (axis2_wsdl_interface_t *wsdl_interface,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_char_t *style_default);
 
 };
@@ -222,7 +222,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface
  * Creates wsdl property struct
  * @return pointer to newly created wsdl property
  */
-AXIS2_DECLARE(axis2_wsdl_interface_t *) axis2_wsdl_interface_create (axis2_env_t **env);
+AXIS2_DECLARE(axis2_wsdl_interface_t *) axis2_wsdl_interface_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

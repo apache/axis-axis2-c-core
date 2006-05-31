@@ -44,53 +44,53 @@ struct axis2_xml_schema_annotated_ops
 {
     axis2_status_t (AXIS2_CALL *
     free)(void *annotated,
-          axis2_env_t **env);
+          const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs)(
             void *annotated,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_xml_schema_types_t (AXIS2_CALL *
     type)(
             void *annotated,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_obj_t *(AXIS2_CALL *
     get_base_impl)(
             void *annotated,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_id) (void *annotated,
-             axis2_env_t **env);
+             const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_id) (
             void *annotated,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *id);
 
     struct axis2_xml_schema_annotation *(AXIS2_CALL *
     get_annotation) (
             void *annotated,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_annotation)(
             void *annotated,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             struct axis2_xml_schema_annotation *annotation);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_unhandled_attrs) (
             void *annotated,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_unhandled_attrs) (
             void *annotated,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_array_list_t *unhandled_attrs);
 };
 
@@ -101,7 +101,7 @@ struct axis2_xml_schema_annotated
 };
 
 AXIS2_DECLARE(axis2_xml_schema_annotated_t *)
-axis2_xml_schema_annotated_create(axis2_env_t **env);
+axis2_xml_schema_annotated_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -109,7 +109,7 @@ axis2_xml_schema_annotated_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_annotated_resolve_methods(
                                 axis2_xml_schema_annotated_t *annotated,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_annotated_t *annotated_impl,
                                 axis2_hash_t *methods);
                                 

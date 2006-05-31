@@ -20,19 +20,19 @@
  
 axis2_status_t AXIS2_CALL 
 axis2_om_children_iterator_free(axis2_om_children_iterator_t *iterator,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
                                 
 axis2_status_t AXIS2_CALL
 axis2_om_children_iterator_remove(axis2_om_children_iterator_t *iterator,
-                                  axis2_env_t **env);  
+                                  const axis2_env_t *env);  
 
 axis2_bool_t AXIS2_CALL 
 axis2_om_children_iterator_has_next(axis2_om_children_iterator_t *iterator,
-                                     axis2_env_t **env); 
+                                     const axis2_env_t *env); 
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_om_children_iterator_next(axis2_om_children_iterator_t *iterator,
-                                axis2_env_t **env);  
+                                const axis2_env_t *env);  
                                 
 /*************** end function prototypes **********************************/                                
 
@@ -55,19 +55,19 @@ typedef struct axis2_om_children_iterator_impl_t
 
 
 AXIS2_DECLARE( axis2_om_children_iterator_t *)
-axis2_om_children_iterator_create(axis2_env_t **env, 
+axis2_om_children_iterator_create(const axis2_env_t *env, 
                                   axis2_om_node_t *current_child)
 {
     axis2_om_children_iterator_impl_t *iterator_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     
     iterator_impl = (axis2_om_children_iterator_impl_t *)AXIS2_MALLOC(
-                        (*env)->allocator,
+                        env->allocator,
                         sizeof(axis2_om_children_iterator_impl_t));
 
     if(!iterator_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;    
     }
     
@@ -79,13 +79,13 @@ axis2_om_children_iterator_create(axis2_env_t **env,
     
     iterator_impl->iterator.ops = NULL;
     iterator_impl->iterator.ops = 
-            (axis2_om_children_iterator_ops_t*)AXIS2_MALLOC((*env)->allocator,
+            (axis2_om_children_iterator_ops_t*)AXIS2_MALLOC(env->allocator,
                                     sizeof(axis2_om_children_iterator_ops_t));
     
     if(!(iterator_impl->iterator.ops))
     {
         AXIS2_OM_CHILDREN_ITERATOR_FREE(&(iterator_impl->iterator), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -100,19 +100,19 @@ axis2_om_children_iterator_create(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL 
 axis2_om_children_iterator_free(axis2_om_children_iterator_t *iterator,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(iterator->ops)
-        AXIS2_FREE((*env)->allocator, iterator->ops);
+        AXIS2_FREE(env->allocator, iterator->ops);
         
-    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(iterator));        
+    AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(iterator));        
     return AXIS2_SUCCESS;
 }                                
                                 
 axis2_status_t AXIS2_CALL
 axis2_om_children_iterator_remove(axis2_om_children_iterator_t *iterator,
-                                  axis2_env_t **env)
+                                  const axis2_env_t *env)
 {
     axis2_om_children_iterator_impl_t *iterator_impl = NULL;
     axis2_om_node_t *om_node = NULL;
@@ -121,12 +121,12 @@ axis2_om_children_iterator_remove(axis2_om_children_iterator_t *iterator,
 
     if(!(iterator_impl->next_called))
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_ITERATOR_NEXT_METHOD_HAS_NOT_YET_BEEN_CALLED, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     if(iterator_impl->remove_called)
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED, AXIS2_FAILURE); 
         return AXIS2_FAILURE;
     }
@@ -145,7 +145,7 @@ axis2_om_children_iterator_remove(axis2_om_children_iterator_t *iterator,
 
 axis2_bool_t AXIS2_CALL 
 axis2_om_children_iterator_has_next(axis2_om_children_iterator_t *iterator,
-                                     axis2_env_t **env)
+                                     const axis2_env_t *env)
 {
     axis2_om_children_iterator_impl_t *iterator_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -156,7 +156,7 @@ axis2_om_children_iterator_has_next(axis2_om_children_iterator_t *iterator,
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_om_children_iterator_next(axis2_om_children_iterator_t *iterator,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_om_children_iterator_impl_t *iterator_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);

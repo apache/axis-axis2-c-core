@@ -61,55 +61,55 @@ struct axis2_woden_svc_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *svc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_svc_element_free) (
             void *svc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *svc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_qname) (
             void *svc_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *svc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_interface_qname) (
             void *svc_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_interface_qname) (
             void *svc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     void *(AXIS2_CALL *
     get_interface_element) (
             void *svc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     add_endpoint_element) (
             void *svc_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *interface);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_endpoint_elements) (
             void *svc_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 };
 
@@ -130,7 +130,7 @@ struct axis2_woden_svc_element
 axis2_status_t AXIS2_CALL
 axis2_woden_svc_element_resolve_methods(
         axis2_woden_svc_element_t *svc_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

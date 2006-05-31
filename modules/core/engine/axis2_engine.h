@@ -62,7 +62,7 @@ struct axis2_engine_ops
      */
     axis2_status_t (AXIS2_CALL *
     send)(struct axis2_engine *engine, 
-          axis2_env_t **env, 
+          const axis2_env_t *env, 
           axis2_msg_ctx_t *msg_ctx);
     /**
      * This methods represents the inflow of the Axis, this could be either at the server side or the client side.
@@ -75,7 +75,7 @@ struct axis2_engine_ops
      */
     axis2_status_t (AXIS2_CALL *
     receive)(struct axis2_engine *engine, 
-             axis2_env_t **env, 
+             const axis2_env_t *env, 
              axis2_msg_ctx_t *msg_ctx);
     /**
      * Sends the SOAP Fault to another SOAP node.
@@ -84,7 +84,7 @@ struct axis2_engine_ops
      */
     axis2_status_t (AXIS2_CALL *
     send_fault)(struct axis2_engine *engine, 
-                axis2_env_t **env, 
+                const axis2_env_t *env, 
                 axis2_msg_ctx_t *msg_ctx);
     /**
      * This is invoked when a SOAP Fault is received from a Other SOAP Node
@@ -94,7 +94,7 @@ struct axis2_engine_ops
      */
     axis2_status_t (AXIS2_CALL *
     receive_fault)(struct axis2_engine *engine, 
-                   axis2_env_t **env, 
+                   const axis2_env_t *env, 
                    axis2_msg_ctx_t *msg_ctx);
     /**
      * This method is called to handle any error that occurs at inflow or outflow. But if the
@@ -106,7 +106,7 @@ struct axis2_engine_ops
      */
     axis2_msg_ctx_t* (AXIS2_CALL *
     create_fault_msg_ctx)(struct axis2_engine *engine, 
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           axis2_msg_ctx_t *processing_context);   
     /**
      * Information to create the SOAPFault can be extracted from different places.
@@ -142,45 +142,45 @@ struct axis2_engine_ops
      */
     axis2_status_t (AXIS2_CALL *
     extract_fault_info_from_msg_ctx)(struct axis2_engine *engine, 
-                                     axis2_env_t **env,
+                                     const axis2_env_t *env,
                                      axis2_msg_ctx_t *msg_ctx,
                                      struct axis2_soap_fault *fault);
 
                                      
     axis2_status_t (AXIS2_CALL *
     verify_ctx_built)(struct axis2_engine *engine, 
-                      axis2_env_t **env, 
+                      const axis2_env_t *env, 
                       axis2_msg_ctx_t *msg_ctx);
 
                       
     axis2_status_t (AXIS2_CALL *
     invoke_phases)(struct axis2_engine *engine, 
-                   axis2_env_t **env, 
+                   const axis2_env_t *env, 
                    axis2_array_list_t *phases, 
                    axis2_msg_ctx_t *msg_ctx);
 
                    
     axis2_status_t (AXIS2_CALL *
     resume_invocation_phases)(struct axis2_engine *engine, 
-                              axis2_env_t **env, 
+                              const axis2_env_t *env, 
                               axis2_array_list_t *phases, 
                               axis2_msg_ctx_t *msg_ctx);
 
                               
     axis2_char_t* (AXIS2_CALL *
     get_sender_fault_code)(struct axis2_engine *engine, 
-                           axis2_env_t **env, 
+                           const axis2_env_t *env, 
                            axis2_char_t *soap_namespace);
 
                            
     axis2_char_t* (AXIS2_CALL *
     get_receiver_fault_code)(struct axis2_engine *engine, 
-                             axis2_env_t **env, 
+                             const axis2_env_t *env, 
                              axis2_char_t *soap_namespace);
                              
     axis2_status_t (AXIS2_CALL *
     free)(struct axis2_engine *engine, 
-          axis2_env_t **env);
+          const axis2_env_t *env);
           
 };
 
@@ -194,7 +194,7 @@ struct axis2_engine
 };
 
 AXIS2_DECLARE(axis2_engine_t*) 
-axis2_engine_create(axis2_env_t **env, 
+axis2_engine_create(const axis2_env_t *env, 
                     axis2_conf_ctx_t *conf_ctx);
     
 /************************** Start of function macros **************************/

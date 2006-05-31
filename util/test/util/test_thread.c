@@ -26,7 +26,7 @@
 #include <unistd.h>
 
 
-axis2_env_t *env = NULL;
+const axis2_env_t *env = NULL;
 static axis2_thread_mutex_t *thread_lock = NULL;
 static axis2_thread_once_t *control = NULL;
 static int x = 0;
@@ -44,7 +44,7 @@ void init_func(void)
     value++;
 }
 
-void thread_init(axis2_env_t *env)
+void thread_init(const axis2_env_t *env)
 {
     axis2_allocator_t *allocator = NULL;
     	
@@ -79,7 +79,7 @@ void * AXIS2_CALL test_function(axis2_thread_t *td,void *param)
 }
 
 
-void test_axis2_thread_create(axis2_env_t *env)
+void test_axis2_thread_create(const axis2_env_t *env)
 {
 	axis2_status_t rv = AXIS2_FAILURE;
 	axis2_allocator_t *allocator = NULL;
@@ -122,7 +122,7 @@ void * AXIS2_CALL test_function2(axis2_thread_t *td,void *param)
 	return (void*)1;
 }
 
-void test_axis2_thread_detach(axis2_env_t *env)
+void test_axis2_thread_detach(const axis2_env_t *env)
 {
 	axis2_threadattr_t *attr = NULL;
 	axis2_allocator_t *allocator = NULL;
@@ -174,7 +174,7 @@ void test_axis2_thread_detach(axis2_env_t *env)
 	printf("success - test_axis2_thread_detach\n");
 }
 
-void test_axis2_thread_detach2(axis2_env_t *env)
+void test_axis2_thread_detach2(const axis2_env_t *env)
 {
 	axis2_threadattr_t *attr = NULL;
 	axis2_allocator_t *allocator = NULL;
@@ -233,7 +233,7 @@ void check_thread_once()
 	else printf ("failure - check_thread_once \n");
 }
 
-void run_test_thread(axis2_env_t *env)
+void run_test_thread(const axis2_env_t *env)
 {
 	thread_init(env);
 	test_axis2_thread_create(env);
@@ -251,11 +251,11 @@ void run_test_thread(axis2_env_t *env)
 	axis2_thread_mutex_destroy(thread_lock);
 }
 
-axis2_env_t *create_env_with_error_log()
+const axis2_env_t *create_env_with_error_log()
 {
 	axis2_error_t *error = NULL;
 	axis2_log_t *log22 = NULL;
-	axis2_env_t *env = NULL;
+	const axis2_env_t *env = NULL;
     axis2_allocator_t *allocator = axis2_allocator_init(NULL);
     if (!allocator)
     {

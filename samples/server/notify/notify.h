@@ -24,6 +24,6 @@
 #include <axis2_om_node.h>
 #include <axis2_om_element.h>
 
-void axis2_notify_notify(axis2_env_t **env, axis2_om_node_t *node);
+void axis2_notify_notify(const axis2_env_t *env, axis2_om_node_t *node);
 
 #endif /* CALC_H*/

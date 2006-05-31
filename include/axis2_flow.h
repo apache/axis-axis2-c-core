@@ -57,7 +57,7 @@ struct axis2_flow_ops
      */
     axis2_status_t (AXIS2_CALL *
 	free) (axis2_flow_t *flow,
-           axis2_env_t **env);
+           const axis2_env_t *env);
 
     /**
      * Add handler description
@@ -65,7 +65,7 @@ struct axis2_flow_ops
      */
     axis2_status_t (AXIS2_CALL *
 	add_handler) (axis2_flow_t *flow,
-                  axis2_env_t **env,
+                  const axis2_env_t *env,
                   axis2_handler_desc_t *handler);
     
     /**
@@ -75,7 +75,7 @@ struct axis2_flow_ops
      */
     axis2_handler_desc_t * (AXIS2_CALL *
 	get_handler) (axis2_flow_t *flow,
-                  axis2_env_t **env,
+                  const axis2_env_t *env,
                   int index);
     
     /**
@@ -84,7 +84,7 @@ struct axis2_flow_ops
      */
     int (AXIS2_CALL *
 	get_handler_count) (axis2_flow_t *flow,
-                        axis2_env_t **env);  
+                        const axis2_env_t *env);  
 };
 
 /** 
@@ -101,7 +101,7 @@ struct axis2_flow
  * @return pointer to newly created flow
  */
 AXIS2_DECLARE(axis2_flow_t *) 
-axis2_flow_create (axis2_env_t **env);
+axis2_flow_create (const axis2_env_t *env);
 
 /**
  * Free flow passed as void pointer. This will be
@@ -110,7 +110,7 @@ axis2_flow_create (axis2_env_t **env);
  */
 AXIS2_DECLARE(axis2_status_t) 
 axis2_flow_free_void_arg (void *flow,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

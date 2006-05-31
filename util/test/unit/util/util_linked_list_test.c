@@ -21,23 +21,23 @@ void Testaxis2_linked_list_get(CuTest *tc)
     printf("**************************************\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create(allocator);
+    const axis2_env_t *env = axis2_env_create(allocator);
 
     actual = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
     actual2 = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
 
-    actual->value = AXIS2_STRDUP("value1", &env);
-    actual2->value = AXIS2_STRDUP("value2", &env);
+    actual->value = AXIS2_STRDUP("value1", env);
+    actual2->value = AXIS2_STRDUP("value2", env);
 
-    al = axis2_linked_list_create (&env);
+    al = axis2_linked_list_create (env);
 
-    AXIS2_LINKED_LIST_ADD (al, &env, (void*)actual);
-    AXIS2_LINKED_LIST_ADD (al, &env, (void*)actual);
-    AXIS2_LINKED_LIST_ADD (al, &env, (void*)actual);
-    AXIS2_LINKED_LIST_ADD (al, &env, (void*)actual);
-    AXIS2_LINKED_LIST_SET (al, &env, 3, (void*)actual2);
-    AXIS2_LINKED_LIST_REMOVE_AT_INDEX (al, &env, 2);
+    AXIS2_LINKED_LIST_ADD (al, env, (void*)actual);
+    AXIS2_LINKED_LIST_ADD (al, env, (void*)actual);
+    AXIS2_LINKED_LIST_ADD (al, env, (void*)actual);
+    AXIS2_LINKED_LIST_ADD (al, env, (void*)actual);
+    AXIS2_LINKED_LIST_SET (al, env, 3, (void*)actual2);
+    AXIS2_LINKED_LIST_REMOVE_AT_INDEX (al, env, 2);
 
-    expected = (a *) AXIS2_LINKED_LIST_GET (al, &env, 2);
+    expected = (a *) AXIS2_LINKED_LIST_GET (al, env, 2);
     CuAssertStrEquals(tc, expected->value, actual2->value);
 }

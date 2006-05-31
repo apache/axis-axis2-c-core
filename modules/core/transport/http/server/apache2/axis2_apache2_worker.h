@@ -51,11 +51,11 @@ AXIS2_DECLARE_DATA struct axis2_apache2_worker_ops
 {
     int (AXIS2_CALL *process_request)
                     (axis2_apache2_worker_t *apache2_worker, 
-                     axis2_env_t **env, request_rec *r);
+                     const axis2_env_t *env, request_rec *r);
     
     axis2_status_t (AXIS2_CALL *free)
                     (axis2_apache2_worker_t *apache2_worker, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 };
 
 /** 
@@ -69,7 +69,7 @@ AXIS2_DECLARE_DATA struct axis2_apache2_worker
 
 
 AXIS2_DECLARE(axis2_apache2_worker_t *) 
-axis2_apache2_worker_create (axis2_env_t **env, axis2_char_t *repo_path);
+axis2_apache2_worker_create (const axis2_env_t *env, axis2_char_t *repo_path);
     
 /************************** Start of function macros **************************/
 #define AXIS2_APACHE2_WORKER_PROCESS_REQUEST(apache2_worker, env, request) \

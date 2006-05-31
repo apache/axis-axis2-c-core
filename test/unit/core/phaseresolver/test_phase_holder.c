@@ -8,7 +8,7 @@
 
 /** helper method
   */
-axis2_array_list_t *get_phases(axis2_env_t **env);
+axis2_array_list_t *get_phases(const axis2_env_t *env);
 
 void Testaxis2_phase_holder_free(CuTest *tc)
 {
@@ -22,11 +22,11 @@ void Testaxis2_phase_holder_free(CuTest *tc)
     printf("****************************************\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create (allocator);
+    const axis2_env_t *env = axis2_env_create (allocator);
 
-    phases = get_phases(&env);
-    phase_holder = axis2_phase_holder_create_with_phases(&env, phases); 
-    actual = AXIS2_PHASE_HOLDER_FREE(phase_holder, &env);
+    phases = get_phases(env);
+    phase_holder = axis2_phase_holder_create_with_phases(env, phases); 
+    actual = AXIS2_PHASE_HOLDER_FREE(phase_holder, env);
     
     CuAssertIntEquals(tc, expected, actual);
 
@@ -34,7 +34,7 @@ void Testaxis2_phase_holder_free(CuTest *tc)
 
 /** helper method
   */
-axis2_array_list_t *get_phases(axis2_env_t **env)
+axis2_array_list_t *get_phases(const axis2_env_t *env)
 {
     struct axis2_phase *phase = NULL; 
     axis2_array_list_t *phases = NULL; 

@@ -50,53 +50,53 @@ struct axis2_rest_sender_impl
 /***************************** Function headers *******************************/
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_get_header_info(axis2_rest_sender_t *sender, 
-						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
+						const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
 						axis2_http_simple_response_t *response);
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_process_response(axis2_rest_sender_t *sender, 
-						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
+						const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx, 
 						axis2_http_simple_response_t *response);
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_get_timeout_values(axis2_rest_sender_t *sender, 
-						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx);
+						const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_send(axis2_rest_sender_t *sender, 
-						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
+						const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
 						axis2_om_node_t *out, axis2_char_t *str_url);
 
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_set_chunked(axis2_rest_sender_t *sender, 
-						axis2_env_t **env, axis2_bool_t chunked);
+						const axis2_env_t *env, axis2_bool_t chunked);
 
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_set_om_output(axis2_rest_sender_t *sender, 
-						axis2_env_t **env, axis2_om_output_t *om_output);
+						const axis2_env_t *env, axis2_om_output_t *om_output);
 						
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_set_http_version(axis2_rest_sender_t *sender, 
-									axis2_env_t **env, axis2_char_t *version);
+									const axis2_env_t *env, axis2_char_t *version);
 
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_free(axis2_rest_sender_t *sender, 
-						axis2_env_t **env);
+						const axis2_env_t *env);
 /***************************** End of function headers ************************/
 
 AXIS2_DECLARE(axis2_rest_sender_t *) 
-axis2_rest_sender_create(axis2_env_t **env)
+axis2_rest_sender_create(const axis2_env_t *env)
 {
     axis2_rest_sender_impl_t *sender_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     sender_impl =  (axis2_rest_sender_impl_t *)AXIS2_MALLOC 
-                        ((*env)->allocator, sizeof(
+                        (env->allocator, sizeof(
                         axis2_rest_sender_impl_t));
 	
     if(NULL == sender_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
 	
@@ -107,13 +107,13 @@ axis2_rest_sender_create(axis2_env_t **env)
 	sender_impl->chunked = AXIS2_FALSE;
 	sender_impl->client = NULL;
     
-    sender_impl->sender.ops = AXIS2_MALLOC((*env)->allocator,
+    sender_impl->sender.ops = AXIS2_MALLOC(env->allocator,
                         sizeof(axis2_rest_sender_ops_t));
     if(NULL == sender_impl->sender.ops)
 	{
 		axis2_rest_sender_free((axis2_rest_sender_t*)
 						sender_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -132,7 +132,7 @@ axis2_rest_sender_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_free (axis2_rest_sender_t *sender, 
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_rest_sender_impl_t *sender_impl = NULL;
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -140,24 +140,24 @@ axis2_rest_sender_free (axis2_rest_sender_t *sender,
     sender_impl = AXIS2_INTF_TO_IMPL(sender);
     if(NULL != sender_impl->http_version)
     {
-        AXIS2_FREE((*env)->allocator, sender_impl->http_version);
+        AXIS2_FREE(env->allocator, sender_impl->http_version);
         sender_impl->http_version= NULL;
     }    
     if(NULL != sender->ops)
-        AXIS2_FREE((*env)->allocator, sender->ops);
+        AXIS2_FREE(env->allocator, sender->ops);
     
     /* Do not free this here since it will be required in later processing
      * of the response soap message
      */
     sender_impl->client = NULL;
-	AXIS2_FREE((*env)->allocator, sender_impl);
+	AXIS2_FREE(env->allocator, sender_impl);
 	return AXIS2_SUCCESS;
 }
 
 
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_send(axis2_rest_sender_t *sender, 
-						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx,
+						const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
 						axis2_om_node_t *out, axis2_char_t *str_url)
 {
 	axis2_http_simple_request_t *request = NULL;
@@ -174,9 +174,9 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
     axis2_property_t *property = NULL;
 		
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, out, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, str_url, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, out, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, str_url, AXIS2_FAILURE);
 	
 	url = axis2_url_parse_string(env, str_url);
 	sender_impl = AXIS2_INTF_TO_IMPL(sender);
@@ -209,7 +209,7 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
 
 	if(NULL == sender_impl->om_output)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_OM_OUTPUT, 
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_OM_OUTPUT, 
 						AXIS2_FAILURE);
 		return AXIS2_FAILURE;
 	}
@@ -234,7 +234,7 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
 
     if(NULL == buffer)
     {
-        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "NULL xml returned"
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "NULL xml returned"
                         "from xml writer");
         return AXIS2_FAILURE;
     }
@@ -272,7 +272,7 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
 		AXIS2_HTTP_HEADER_PROTOCOL_11))
 	{
 		axis2_char_t *header = NULL;
-        header = AXIS2_MALLOC((*env)->allocator, AXIS2_STRLEN(
+        header = AXIS2_MALLOC(env->allocator, AXIS2_STRLEN(
                         AXIS2_URL_GET_SERVER(url, env)) + 10 * sizeof(
                         axis2_char_t));
         sprintf(header, "%s:%d", AXIS2_URL_GET_SERVER(url, env), 
@@ -280,7 +280,7 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
 		http_header = axis2_http_header_create(env, 
 						AXIS2_HTTP_HEADER_HOST, 
 						header);
-        AXIS2_FREE((*env)->allocator, header);
+        AXIS2_FREE(env->allocator, header);
         header = NULL;
 		AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
 	}
@@ -291,7 +291,7 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
 	
 	status_code = AXIS2_HTTP_CLIENT_SEND(sender_impl->client, env, request);
     
-    AXIS2_FREE((*env)->allocator, buffer);
+    AXIS2_FREE(env->allocator, buffer);
     buffer = NULL;
 	AXIS2_HTTP_SIMPLE_REQUEST_FREE(request, env);
 	request = NULL;
@@ -327,7 +327,7 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
                         msg_ctx, response);
         }
     }
-    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR, 
+    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR, 
                         AXIS2_FAILURE);
     return AXIS2_FAILURE;
 }
@@ -335,7 +335,7 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
 
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_set_chunked(axis2_rest_sender_t *sender, 
-						axis2_env_t **env, axis2_bool_t chunked)
+						const axis2_env_t *env, axis2_bool_t chunked)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(sender)->chunked = chunked;
@@ -345,7 +345,7 @@ axis2_rest_sender_set_chunked(axis2_rest_sender_t *sender,
 
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_set_om_output(axis2_rest_sender_t *sender, 
-						axis2_env_t **env, axis2_om_output_t *om_output)
+						const axis2_env_t *env, axis2_om_output_t *om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(sender)->om_output = om_output;
@@ -355,7 +355,7 @@ axis2_rest_sender_set_om_output(axis2_rest_sender_t *sender,
 
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_get_header_info(axis2_rest_sender_t *sender, 
-						axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
+						const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx, 
 						axis2_http_simple_response_t *response)
 {
 	axis2_array_list_t *headers = NULL;
@@ -367,8 +367,8 @@ axis2_rest_sender_get_header_info(axis2_rest_sender_t *sender,
     axis2_property_t *property = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, response, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, response, AXIS2_FAILURE);
 	
 	sender_impl = AXIS2_INTF_TO_IMPL(sender);
 	
@@ -435,7 +435,7 @@ axis2_rest_sender_get_header_info(axis2_rest_sender_t *sender,
 	if(AXIS2_FALSE == response_chunked)
 	{
 		int tmp_len = 0;
-		content_length = AXIS2_MALLOC((*env)->allocator, sizeof(int));
+		content_length = AXIS2_MALLOC(env->allocator, sizeof(int));
 		if(NULL == content_length)
 		{
 			return AXIS2_FAILURE;
@@ -454,20 +454,20 @@ axis2_rest_sender_get_header_info(axis2_rest_sender_t *sender,
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_process_response(axis2_rest_sender_t *sender, 
-                                axis2_env_t **env, axis2_msg_ctx_t *msg_ctx, 
+                                const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx, 
 								axis2_http_simple_response_t *response)
 {
     axis2_stream_t *in_stream = NULL;
     axis2_property_t *property = NULL;
 	
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-	AXIS2_PARAM_CHECK((*env)->error, response, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+	AXIS2_PARAM_CHECK(env->error, response, AXIS2_FAILURE);
 	
 	in_stream = AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY(response, env);
 	if(NULL == in_stream)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY, 
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY, 
 								AXIS2_FAILURE);
 		return AXIS2_FAILURE;
 	}
@@ -488,7 +488,7 @@ axis2_rest_sender_process_response(axis2_rest_sender_t *sender,
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_get_timeout_values(axis2_rest_sender_t *sender, 
-                                axis2_env_t **env, axis2_msg_ctx_t *msg_ctx)
+                                const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx)
 {
     axis2_char_t *so_str = NULL;
 	axis2_char_t *connection_str = NULL;
@@ -524,7 +524,7 @@ axis2_rest_sender_get_timeout_values(axis2_rest_sender_t *sender,
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_set_http_version(axis2_rest_sender_t *sender, 
-									axis2_env_t **env, axis2_char_t *version)
+									const axis2_env_t *env, axis2_char_t *version)
 {
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 	AXIS2_INTF_TO_IMPL(sender)->http_version =  AXIS2_STRDUP(version, env);

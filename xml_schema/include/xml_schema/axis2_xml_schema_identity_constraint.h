@@ -53,51 +53,51 @@ struct axis2_xml_schema_identity_constraint_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *id_constr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *id_constr,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
                     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *id_constr,
-                axis2_env_t **env);
+                const axis2_env_t *env);
                 
                         
     axis2_xml_schema_types_t (AXIS2_CALL *
     type) (void *id_constr,
-            axis2_env_t **env);   
+            const axis2_env_t *env);   
         
     /** xml schema keyref method */            
     axis2_qname_t* (AXIS2_CALL *
     get_refer)(void *id_constr,
-               axis2_env_t **env);
+               const axis2_env_t *env);
 
     /** xml schema keyref method */               
     axis2_status_t (AXIS2_CALL *                                                                    set_refer)(void *id_constr,
-               axis2_env_t **env,
+               const axis2_env_t *env,
                axis2_qname_t *refer);
 
     struct axis2_xml_schema_obj_collection *(AXIS2_CALL *
     get_fields)(void *id_constr,
-                axis2_env_t **env);
+                const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_name)(void *id_constr,
-                axis2_env_t **env);
+                const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_name)(void *id_constr,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_char_t *name);
     
     struct axis2_xml_schema_xpath *(AXIS2_CALL *
     get_selector)(void *id_constr,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_selector)(void *id_constr,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     struct axis2_xml_schema_xpath *selector);
 };
 
@@ -111,16 +111,16 @@ struct axis2_xml_schema_identity_constraint
  * Creates new Xml Schema Identity Constraint
  */
 AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
-axis2_xml_schema_identity_constraint_create(axis2_env_t **env);
+axis2_xml_schema_identity_constraint_create(const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
-axis2_xml_schema_unique_create(axis2_env_t **env);
+axis2_xml_schema_unique_create(const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
-axis2_xml_schema_keyref_create(axis2_env_t **env);
+axis2_xml_schema_keyref_create(const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
-axis2_xml_schema_key_create(axis2_env_t **env);
+axis2_xml_schema_key_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -128,7 +128,7 @@ axis2_xml_schema_key_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_identity_constraint_resolve_methods(
                 axis2_xml_schema_identity_constraint_t *identity_constraint,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_xml_schema_identity_constraint_t *identity_constraint_impl,
                 axis2_hash_t *methods);
 */                

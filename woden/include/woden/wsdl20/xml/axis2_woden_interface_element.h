@@ -61,67 +61,67 @@ struct axis2_woden_interface_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *interface_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
  
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *interface_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_qname) (
             void *interface_element,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *interface_element,
-            axis2_env_t **env); 
+            const axis2_env_t *env); 
  
     axis2_status_t (AXIS2_CALL *
     add_extends_qname) (
             void *interface_element,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_extends_qnames) (
             void *interface_element,
-            axis2_env_t **env); 
+            const axis2_env_t *env); 
   
     axis2_status_t (AXIS2_CALL *
     add_style_default_uri) (
             void *interface_element,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *uri);
 
     axis2_url_t *(AXIS2_CALL *
     get_style_default) (
             void *interface_element,
-            axis2_env_t **env); 
+            const axis2_env_t *env); 
   
     axis2_status_t (AXIS2_CALL *
     add_interface_fault_element) (
             void *interface_element,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *fault);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_interface_fault_elements) (
             void *interface_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
   
     axis2_status_t (AXIS2_CALL *
     add_interface_op_element) (
             void *interface_element,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *op);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_interface_op_elements) (
             void *interface_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 };
 
@@ -139,13 +139,13 @@ struct axis2_woden_interface_element
 
 AXIS2_DECLARE(axis2_woden_interface_element_t *)
 axis2_woden_interface_element_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_interface_element_resolve_methods(
         axis2_woden_interface_element_t *interface_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

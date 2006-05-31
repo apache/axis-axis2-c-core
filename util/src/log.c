@@ -503,5 +503,5 @@ axis2_log_impl_log_trace(axis2_log_t *log, const axis2_char_t *filename,
 #else
 AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_trace(axis2_log_t *log, 
 	const axis2_char_t *filename, const int linenumber,
-	const axis2_char_t *format,...) {}
+	const axis2_char_t *format,...) { return AXIS2_SUCCESS;}
 #endif

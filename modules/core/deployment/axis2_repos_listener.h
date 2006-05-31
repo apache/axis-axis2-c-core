@@ -57,7 +57,7 @@ AXIS2_DECLARE_DATA struct axis2_repos_listener_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_repos_listener_t *repos_listener,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
     
     /**
      * this method ask serachWS to serch for the folder to caheck
@@ -65,7 +65,7 @@ AXIS2_DECLARE_DATA struct axis2_repos_listener_ops
      */
     axis2_status_t (AXIS2_CALL *
     check_modules) (axis2_repos_listener_t *listener,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * this method ask serachWS to serch for the folder to caheck
@@ -73,14 +73,14 @@ AXIS2_DECLARE_DATA struct axis2_repos_listener_ops
      */
     axis2_status_t (AXIS2_CALL *
     check_svcs) (axis2_repos_listener_t *listener,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * call to update method of WSInfoList object
      */
     axis2_status_t (AXIS2_CALL *
     update) (axis2_repos_listener_t *listener,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * First it call to initalize method of WSInfoList to initilizat that.
@@ -90,14 +90,14 @@ AXIS2_DECLARE_DATA struct axis2_repos_listener_ops
      */
     axis2_status_t (AXIS2_CALL *
     init) (axis2_repos_listener_t *listener,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * this is the actual method that is call from scheduler
      */
     axis2_status_t (AXIS2_CALL *
     start_listen) (axis2_repos_listener_t *listener,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
 
 };
@@ -114,7 +114,7 @@ AXIS2_DECLARE_DATA struct axis2_repos_listener
  * @return pointer to newly created deployment engine
  */
 AXIS2_DECLARE(axis2_repos_listener_t *) 
-axis2_repos_listener_create (axis2_env_t **env);
+axis2_repos_listener_create (const axis2_env_t *env);
 
 /**
  * @param folder_name this is the axis2 deployment root directory(repository path)
@@ -122,7 +122,7 @@ axis2_repos_listener_create (axis2_env_t **env);
  * @return pointer to newly created deployment engine
  */
 AXIS2_DECLARE(axis2_repos_listener_t *) 
-axis2_repos_listener_create_with_folder_name_and_dep_engine(axis2_env_t **env,
+axis2_repos_listener_create_with_folder_name_and_dep_engine(const axis2_env_t *env,
                                                 axis2_char_t *folder_name,
                                                 struct axis2_dep_engine *dep_engine);
 

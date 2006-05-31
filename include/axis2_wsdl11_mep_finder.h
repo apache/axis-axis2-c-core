@@ -39,7 +39,7 @@ extern "C"
  */
 axis2_char_t *AXIS2_CALL
 axis2_wsdl11_mep_finder_get_mep(void *op,
-						        axis2_env_t **env);
+						        const axis2_env_t *env);
 
 /** @} */
 

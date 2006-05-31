@@ -49,62 +49,62 @@ typedef struct axis2_ws_info_list_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_ws_info_list_free (axis2_ws_info_list_t *ws_info_list, 
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_ws_info_list_init(axis2_ws_info_list_t *info_list,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_file_t *file, 
                                     int type);
 
 axis2_ws_info_t *AXIS2_CALL
 axis2_ws_info_list_get_file_item(axis2_ws_info_list_t *info_list,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *file_name);
 
 axis2_bool_t AXIS2_CALL
 axis2_ws_info_list_is_modified(axis2_ws_info_list_t *info_list,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_file_t *file, 
                                 axis2_ws_info_t *ws_info);
 
 axis2_bool_t AXIS2_CALL
 axis2_ws_info_list_is_file_exist(axis2_ws_info_list_t *info_list,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *file_name);
 
 axis2_status_t AXIS2_CALL
 axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
 
 axis2_status_t AXIS2_CALL
 axis2_ws_info_list_update(axis2_ws_info_list_t *info_list,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 
                                 
 /************************** End of function prototypes ************************/
 
 AXIS2_DECLARE(axis2_ws_info_list_t *) 
-axis2_ws_info_list_create_with_dep_engine (axis2_env_t **env,
+axis2_ws_info_list_create_with_dep_engine (const axis2_env_t *env,
                                             struct axis2_dep_engine *dep_engine)
 {
     axis2_ws_info_list_impl_t *ws_info_list_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	ws_info_list_impl = (axis2_ws_info_list_impl_t *) AXIS2_MALLOC((*env)->
+	ws_info_list_impl = (axis2_ws_info_list_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_ws_info_list_impl_t));
 	
 	
 	if(NULL == ws_info_list_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -119,7 +119,7 @@ axis2_ws_info_list_create_with_dep_engine (axis2_env_t **env,
     if (!(ws_info_list_impl->info_list))
     {
         axis2_ws_info_list_free(&(ws_info_list_impl->ws_info_list), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -127,16 +127,16 @@ axis2_ws_info_list_create_with_dep_engine (axis2_env_t **env,
     if (!(ws_info_list_impl->current_info_lists))
     {
         axis2_ws_info_list_free(&(ws_info_list_impl->ws_info_list), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
 	ws_info_list_impl->ws_info_list.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_ws_info_list_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_ws_info_list_ops_t));
 	if(NULL == ws_info_list_impl->ws_info_list.ops)
     {
         axis2_ws_info_list_free(&(ws_info_list_impl->ws_info_list), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -161,7 +161,7 @@ axis2_ws_info_list_create_with_dep_engine (axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL 
 axis2_ws_info_list_free (axis2_ws_info_list_t *ws_info_list, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     
@@ -180,7 +180,7 @@ axis2_ws_info_list_free (axis2_ws_info_list_t *ws_info_list,
 
             file_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(info_list_impl->
                 current_info_lists, env, i);
-            AXIS2_FREE((*env)->allocator, file_name);
+            AXIS2_FREE(env->allocator, file_name);
         }
         AXIS2_ARRAY_LIST_FREE(info_list_impl->current_info_lists, env);
         info_list_impl->current_info_lists = NULL;
@@ -203,11 +203,11 @@ axis2_ws_info_list_free (axis2_ws_info_list_t *ws_info_list,
         info_list_impl->info_list = NULL;
     }
 	if(NULL != ws_info_list->ops)
-        AXIS2_FREE((*env)->allocator, ws_info_list->ops);
+        AXIS2_FREE(env->allocator, ws_info_list->ops);
     
     if(info_list_impl)
     {
-        AXIS2_FREE((*env)->allocator, info_list_impl);
+        AXIS2_FREE(env->allocator, info_list_impl);
         info_list_impl = NULL;
     }
     
@@ -216,7 +216,7 @@ axis2_ws_info_list_free (axis2_ws_info_list_t *ws_info_list,
 
 axis2_status_t AXIS2_CALL
 axis2_ws_info_list_init(axis2_ws_info_list_t *info_list,
-                            axis2_env_t **env) 
+                            const axis2_env_t *env) 
 {
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     int size = 0;
@@ -226,9 +226,9 @@ axis2_ws_info_list_init(axis2_ws_info_list_t *info_list,
     info_list_impl = AXIS2_INTF_TO_IMPL(info_list);
     
     size = AXIS2_ARRAY_LIST_SIZE(info_list_impl->info_list, env);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
-        return AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
+        return AXIS2_ERROR_GET_STATUS_CODE(env->error);
     }
     
     for (i = 0; i < size; i++) 
@@ -244,7 +244,7 @@ axis2_ws_info_list_init(axis2_ws_info_list_t *info_list,
 
 axis2_status_t AXIS2_CALL
 axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_file_t *file, 
                                     int type) 
 {
@@ -254,7 +254,7 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
     axis2_char_t *temp_name = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, file, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, file, AXIS2_FAILURE);
     
     temp_name = AXIS2_FILE_GET_NAME(file, env);
     info_list_name = AXIS2_STRDUP(temp_name, env);
@@ -339,14 +339,14 @@ axis2_ws_info_list_add_ws_info_item(axis2_ws_info_list_t *info_list,
 
 axis2_ws_info_t *AXIS2_CALL
 axis2_ws_info_list_get_file_item(axis2_ws_info_list_t *info_list,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *file_name) 
 {
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     int i = 0;
     int size = 0;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, file_name, NULL);
+    AXIS2_PARAM_CHECK(env->error, file_name, NULL);
     info_list_impl = AXIS2_INTF_TO_IMPL(info_list);
     
     size = AXIS2_ARRAY_LIST_SIZE(info_list_impl->info_list, env);
@@ -368,15 +368,15 @@ axis2_ws_info_list_get_file_item(axis2_ws_info_list_t *info_list,
 
 axis2_bool_t AXIS2_CALL
 axis2_ws_info_list_is_modified(axis2_ws_info_list_t *info_list,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_file_t *file, 
                                 axis2_ws_info_t *ws_info) 
 {
     long last_modified_date = 0;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, file, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, ws_info, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, file, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ws_info, AXIS2_FAILURE);
     
     last_modified_date = AXIS2_WS_INFO_GET_LAST_MODIFIED_DATE(ws_info, env);
     return (last_modified_date != AXIS2_FILE_GET_TIMESTAMP(file, env));
@@ -384,20 +384,20 @@ axis2_ws_info_list_is_modified(axis2_ws_info_list_t *info_list,
 
 axis2_bool_t AXIS2_CALL
 axis2_ws_info_list_is_file_exist(axis2_ws_info_list_t *info_list,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *file_name) 
 {
     axis2_ws_info_t *ws_info = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, file_name, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, file_name, AXIS2_FAILURE);
     ws_info = axis2_ws_info_list_get_file_item(info_list, env, file_name);
     return !(ws_info == NULL);
 }
 
 axis2_status_t AXIS2_CALL
 axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
-                                        axis2_env_t **env) 
+                                        const axis2_env_t *env) 
 {
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     int list_size = 0;
@@ -473,7 +473,7 @@ axis2_ws_info_list_check_for_undeploy(axis2_ws_info_list_t *info_list,
 
 axis2_status_t AXIS2_CALL
 axis2_ws_info_list_update(axis2_ws_info_list_t *info_list,
-                            axis2_env_t **env) 
+                            const axis2_env_t *env) 
 {
     axis2_ws_info_list_impl_t *info_list_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;

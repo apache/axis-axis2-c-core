@@ -23,7 +23,7 @@
 
 
 static axis2_om_document_t* 
-get_root_element_from_filename(axis2_env_t **env, 
+get_root_element_from_filename(const axis2_env_t *env, 
                                axis2_char_t *filename);
 
 void test_simple_type_schema_generation(CuTest *tc);
@@ -64,7 +64,7 @@ CuSuite* xml_schema_GetSuite()
 
 void test_simple_type_schema_generation(CuTest *tc)
 {
-    axis2_env_t *env = NULL;
+    const axis2_env_t *env = NULL;
     axis2_om_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
@@ -79,28 +79,28 @@ void test_simple_type_schema_generation(CuTest *tc)
     
     
     env = axis2_env_create_all("test.log", 1);
-    om_doc = get_root_element_from_filename(&env, filename);
-    sch_collection = axis2_xml_schema_collection_create(&env);
+    om_doc = get_root_element_from_filename(env, filename);
+    sch_collection = axis2_xml_schema_collection_create(env);
     schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(
-        sch_collection, &env, om_doc);
+        sch_collection, env, om_doc);
     
     CuAssertPtrNotNull(tc, schema); 
     
-    obj_table = AXIS2_XML_SCHEMA_GET_ELEMENTS(schema, &env);
+    obj_table = AXIS2_XML_SCHEMA_GET_ELEMENTS(schema, env);
     
     CuAssertPtrNotNull(tc, obj_table); 
     
-    list = AXIS2_XML_SCHEMA_OBJ_TABLE_GET_VALUES(obj_table, &env);
+    list = AXIS2_XML_SCHEMA_OBJ_TABLE_GET_VALUES(obj_table, env);
     
     CuAssertPtrNotNull(tc, list);
     
-    for(i = 0; i < AXIS2_ARRAY_LIST_SIZE(list, &env); i++)
+    for(i = 0; i < AXIS2_ARRAY_LIST_SIZE(list, env); i++)
     {
-        ele = AXIS2_ARRAY_LIST_GET(list, &env, i);
+        ele = AXIS2_ARRAY_LIST_GET(list, env, i);
             
         CuAssertPtrNotNull(tc, ele);
         
-        sch_type = AXIS2_XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele, &env);
+        sch_type = AXIS2_XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele, env);
         
         CuAssertPtrNotNull(tc, sch_type);
         
@@ -124,7 +124,7 @@ void test_unqualified_schemas(CuTest *tc){}
 void test_two_schmes(CuTest *tc){}
 
 static axis2_om_document_t* 
-get_root_element_from_filename(axis2_env_t **env, 
+get_root_element_from_filename(const axis2_env_t *env, 
                                axis2_char_t *filename)
 {
     axis2_xml_reader_t *reader = NULL;

@@ -52,17 +52,17 @@ struct axis2_callback_recv_ops
 {
     axis2_msg_recv_t* (AXIS2_CALL *
     get_base)(struct axis2_callback_recv *callback_recv, 
-              axis2_env_t **env);
+              const axis2_env_t *env);
           
           
     axis2_status_t (AXIS2_CALL *
     free)(struct axis2_callback_recv *callback_recv, 
-          axis2_env_t **env);
+          const axis2_env_t *env);
           
           
     axis2_status_t (AXIS2_CALL *
     add_callback)(struct axis2_callback_recv *callback_recv, 
-                  axis2_env_t **env,
+                  const axis2_env_t *env,
                   axis2_char_t *msg_id, 
                   axis2_callback_t *callback);
 };
@@ -77,7 +77,7 @@ struct axis2_callback_recv
 };
 
 AXIS2_DECLARE(axis2_callback_recv_t*) 
-axis2_callback_recv_create(axis2_env_t **env);
+axis2_callback_recv_create(const axis2_env_t *env);
     
 /************************** Start of function macros **************************/
 

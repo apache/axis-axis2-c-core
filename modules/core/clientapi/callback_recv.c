@@ -40,37 +40,37 @@ typedef struct axis2_callback_recv_impl
 
 axis2_msg_recv_t* AXIS2_CALL 
 axis2_callback_recv_get_base(struct axis2_callback_recv *callback_recv, 
-                             axis2_env_t **env);
+                             const axis2_env_t *env);
                              
 axis2_status_t AXIS2_CALL 
 axis2_callback_recv_free (struct axis2_callback_recv *callback_recv, 
-                          axis2_env_t **env);
+                          const axis2_env_t *env);
                           
 axis2_status_t AXIS2_CALL 
 axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv, 
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *msg_id, 
                                 axis2_callback_t *callback);
                                 
 axis2_status_t AXIS2_CALL 
 axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv, 
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_msg_ctx_t *msg_ctx,
                             void *callback_recv_param);
 
 axis2_callback_recv_t* AXIS2_CALL 
-axis2_callback_recv_create(axis2_env_t **env) 
+axis2_callback_recv_create(const axis2_env_t *env) 
 {
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
     callback_recv_impl = 
-            AXIS2_MALLOC((*env)->allocator, sizeof(axis2_callback_recv_impl_t) );
+            AXIS2_MALLOC(env->allocator, sizeof(axis2_callback_recv_impl_t) );
 
     if (!callback_recv_impl)
     { 
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
 
@@ -97,11 +97,11 @@ axis2_callback_recv_create(axis2_env_t **env)
     /* initialize ops */
     
     callback_recv_impl->callback_recv.ops  = 
-        AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_callback_recv_ops_t) );
+        AXIS2_MALLOC( env->allocator, sizeof(axis2_callback_recv_ops_t) );
         
     if (!callback_recv_impl->callback_recv.ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_callback_recv_free(&(callback_recv_impl->callback_recv), env);
         return NULL;        
     }
@@ -120,7 +120,7 @@ axis2_callback_recv_create(axis2_env_t **env)
 
 axis2_msg_recv_t* AXIS2_CALL 
 axis2_callback_recv_get_base(struct axis2_callback_recv *callback_recv, 
-                             axis2_env_t **env)
+                             const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(callback_recv)->base;
@@ -128,7 +128,7 @@ axis2_callback_recv_get_base(struct axis2_callback_recv *callback_recv,
 
 axis2_status_t AXIS2_CALL 
 axis2_callback_recv_free (struct axis2_callback_recv *callback_recv, 
-                          axis2_env_t **env)
+                          const axis2_env_t *env)
 {
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
     
@@ -138,7 +138,7 @@ axis2_callback_recv_free (struct axis2_callback_recv *callback_recv,
     
     if (callback_recv_impl->callback_recv.ops)
     {
-        AXIS2_FREE((*env)->allocator, callback_recv_impl->callback_recv.ops);
+        AXIS2_FREE(env->allocator, callback_recv_impl->callback_recv.ops);
         callback_recv_impl->callback_recv.ops = NULL;
     }
     
@@ -156,7 +156,7 @@ axis2_callback_recv_free (struct axis2_callback_recv *callback_recv,
                  hi = axis2_hash_next ( env, hi))
         {
             if (val)
-               AXIS2_FREE ((*env)->allocator, val);
+               AXIS2_FREE (env->allocator, val);
             val = NULL;
         }
 
@@ -164,7 +164,7 @@ axis2_callback_recv_free (struct axis2_callback_recv *callback_recv,
         callback_recv_impl->callback_map = NULL;
     }
     
-    AXIS2_FREE((*env)->allocator, callback_recv_impl);
+    AXIS2_FREE(env->allocator, callback_recv_impl);
     callback_recv_impl = NULL;
     
     return AXIS2_SUCCESS;
@@ -173,7 +173,7 @@ axis2_callback_recv_free (struct axis2_callback_recv *callback_recv,
 
 axis2_status_t AXIS2_CALL 
 axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv, 
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *msg_id, 
                                 axis2_callback_t *callback) 
 {
@@ -194,7 +194,7 @@ axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv,
 
 axis2_status_t AXIS2_CALL 
 axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv, 
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_msg_ctx_t *msg_ctx,
                             void *callback_recv_param)
 {

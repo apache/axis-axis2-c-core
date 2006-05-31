@@ -51,29 +51,29 @@ struct axis2_apache2_worker_impl
 
 int AXIS2_CALL 
 axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker, 
-							axis2_env_t **env, request_rec *req);
+							const axis2_env_t *env, request_rec *req);
     
 AXIS2_DECLARE(axis2_char_t*)
-axis2_apache2_worker_get_bytes(axis2_env_t **env, 
+axis2_apache2_worker_get_bytes(const axis2_env_t *env, 
                         axis2_stream_t *stream);
                         
 axis2_status_t AXIS2_CALL 
 axis2_apache2_worker_free(axis2_apache2_worker_t *apache2_worker, 
-							axis2_env_t **env);
+							const axis2_env_t *env);
 								
 /***************************** End of function headers ************************/
 
 AXIS2_DECLARE(axis2_apache2_worker_t *)
-axis2_apache2_worker_create (axis2_env_t **env, axis2_char_t *repo_path)
+axis2_apache2_worker_create (const axis2_env_t *env, axis2_char_t *repo_path)
 {
     axis2_apache2_worker_impl_t *apache2_worker_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     apache2_worker_impl = (axis2_apache2_worker_impl_t *)
-        AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_apache2_worker_impl_t));
+        AXIS2_MALLOC (env->allocator, sizeof(axis2_apache2_worker_impl_t));
 	
     if(NULL == apache2_worker_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     apache2_worker_impl->apache2_worker.ops = NULL;
@@ -85,13 +85,13 @@ axis2_apache2_worker_create (axis2_env_t **env, axis2_char_t *repo_path)
                                    env);
         return NULL;
     }
-    apache2_worker_impl->apache2_worker.ops = AXIS2_MALLOC((*env)->allocator,
+    apache2_worker_impl->apache2_worker.ops = AXIS2_MALLOC(env->allocator,
         sizeof(axis2_apache2_worker_ops_t));
     if(NULL == apache2_worker_impl->apache2_worker.ops)
 	{
 		axis2_apache2_worker_free((axis2_apache2_worker_t*)apache2_worker_impl,
                         env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -104,7 +104,7 @@ axis2_apache2_worker_create (axis2_env_t **env, axis2_char_t *repo_path)
 
 axis2_status_t AXIS2_CALL
 axis2_apache2_worker_free (axis2_apache2_worker_t *apache2_worker, 
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_apache2_worker_impl_t *worker_impl = NULL;
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -117,16 +117,16 @@ axis2_apache2_worker_free (axis2_apache2_worker_t *apache2_worker,
     }
     
     if(NULL != apache2_worker->ops)
-        AXIS2_FREE((*env)->allocator, apache2_worker->ops);
+        AXIS2_FREE(env->allocator, apache2_worker->ops);
     
-    AXIS2_FREE((*env)->allocator, worker_impl->conf_ctx);
+    AXIS2_FREE(env->allocator, worker_impl->conf_ctx);
     
 	return AXIS2_SUCCESS;
 }
 
 int AXIS2_CALL 
 axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker, 
-                        axis2_env_t **env, request_rec *request)
+                        const axis2_env_t *env, request_rec *request)
 {
     axis2_apache2_worker_impl_t *apache2_worker_impl = NULL;
 	axis2_conf_ctx_t *conf_ctx = NULL;
@@ -153,7 +153,7 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
     axis2_char_t *ctx_uuid = NULL;
 	
     AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, request, AXIS2_CRTICAL_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, request, AXIS2_CRTICAL_FAILURE);
 	
 	apache2_worker_impl = AXIS2_INTF_TO_IMPL(apache2_worker);
 	conf_ctx = apache2_worker_impl->conf_ctx;
@@ -162,7 +162,7 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
                         ap_get_server_port(request), request->unparsed_uri);
 	if(NULL == conf_ctx)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
                           AXIS2_FAILURE);
         return AXIS2_CRTICAL_FAILURE;
 	}
@@ -180,12 +180,12 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
     }
 	if(NULL == http_version)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_HTTP_VERSION, 
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_HTTP_VERSION, 
 						AXIS2_FAILURE);
         return AXIS2_CRTICAL_FAILURE;
 	}
     out_stream = axis2_stream_create_basic(env);
-	AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Client HTTP version %s", 
+	AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Client HTTP version %s", 
 						http_version);
 	
 	encoding_header_value = (axis2_char_t*)request->content_encoding;
@@ -215,7 +215,7 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
                         simple_request), AXIS2_FALSE);*/
     ctx_uuid = axis2_uuid_gen(env);
 	AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, ctx_uuid);
-    AXIS2_FREE((*env)->allocator, ctx_uuid);
+    AXIS2_FREE(env->allocator, ctx_uuid);
     
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
@@ -232,7 +232,7 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
     request_body = axis2_stream_create_apache2(env, request);
     if(NULL == request_body)
     {
-        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Error occured in"
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
                 " creating input stream.");
         return AXIS2_CRTICAL_FAILURE;
     }
@@ -310,7 +310,7 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
     if(NULL != body_string)
     {
         ap_rputs(body_string, request);
-        AXIS2_FREE((*env)->allocator, body_string);
+        AXIS2_FREE(env->allocator, body_string);
         body_string = NULL;
     }
     if(NULL != url)
@@ -320,7 +320,7 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
     }
     if(NULL != req_url)
     {
-        AXIS2_FREE((*env)->allocator, req_url);
+        AXIS2_FREE(env->allocator, req_url);
         req_url = NULL;
     }
     if(NULL != request_body)
@@ -334,7 +334,7 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
 }
 
 AXIS2_DECLARE(axis2_char_t*)
-axis2_apache2_worker_get_bytes(axis2_env_t **env, 
+axis2_apache2_worker_get_bytes(const axis2_env_t *env, 
                         axis2_stream_t *stream)
 {
     
@@ -343,7 +343,7 @@ axis2_apache2_worker_get_bytes(axis2_env_t **env,
     axis2_char_t *buffer = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, stream, NULL);
+    AXIS2_PARAM_CHECK(env->error, stream, NULL);
     
     tmp_stream = axis2_stream_create_basic(env);
     while(1)
@@ -367,7 +367,7 @@ axis2_apache2_worker_get_bytes(axis2_env_t **env,
 
     if(return_size > 0)
     {
-        buffer = (char *)AXIS2_MALLOC((*env)->allocator, sizeof(char)*
+        buffer = (char *)AXIS2_MALLOC(env->allocator, sizeof(char)*
                 (return_size +2));
         return_size = AXIS2_STREAM_READ(tmp_stream, env, buffer,
                                         return_size + 1);

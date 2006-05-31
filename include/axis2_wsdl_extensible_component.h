@@ -59,7 +59,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops
   	 */
 	axis2_status_t (AXIS2_CALL *free)(
                     axis2_wsdl_extensible_component_t *wsdl_extensible_component,
-			        axis2_env_t **env);
+			        const axis2_env_t *env);
 
     /**
      * Will add a <code>WSDLFeature</code> to the feature list.
@@ -70,7 +70,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_feature) (axis2_wsdl_extensible_component_t *extensible_component,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 struct axis2_wsdl_feature *wsdl_feature);
         
     /**
@@ -81,7 +81,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops
      */
     axis2_linked_list_t *(AXIS2_CALL *
     get_features) (axis2_wsdl_extensible_component_t *extensible_component,
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
         
     /**
      * Will add the property to the component properties. If the property is null it will
@@ -91,7 +91,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_property) (axis2_wsdl_extensible_component_t *extensible_component,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    struct axis2_wsdl_property *wsdl_property);
         
     /**
@@ -101,7 +101,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops
      */
     axis2_linked_list_t *(AXIS2_CALL *
     get_properties) (axis2_wsdl_extensible_component_t *extensible_component,
-                     axis2_env_t **env);
+                     const axis2_env_t *env);
 };
 
 /** 
@@ -119,7 +119,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component
  * @return pointer to newly created wsdl property
  */
 AXIS2_DECLARE(axis2_wsdl_extensible_component_t *) 
-axis2_wsdl_extensible_component_create (axis2_env_t **env);
+axis2_wsdl_extensible_component_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

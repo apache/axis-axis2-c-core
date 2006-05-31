@@ -57,43 +57,43 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
 		free_fn)(axis2_soap_header_block_t *header_block,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
                                              
         axis2_status_t (AXIS2_CALL *
 		set_role)(axis2_soap_header_block_t *header_block,
-                  axis2_env_t **env,
+                  const axis2_env_t *env,
                   axis2_char_t *uri);  
         
         axis2_status_t (AXIS2_CALL *
 		set_must_understand_with_bool)(axis2_soap_header_block_t *header_block,
-                             		   axis2_env_t **env,
+                             		   const axis2_env_t *env,
                              	 	   axis2_bool_t *must_understand);
                              
         axis2_status_t (AXIS2_CALL *
 		set_must_understand_with_string)(axis2_soap_header_block_t *header_block,
-                             			 axis2_env_t **env,
+                             			 const axis2_env_t *env,
                              			 axis2_char_t *must_understand);
                                              
         axis2_bool_t (AXIS2_CALL *
 		get_must_understand)(axis2_soap_header_block_t *header_block,
-                             axis2_env_t **env);
+                             const axis2_env_t *env);
                              
                              
         axis2_bool_t (AXIS2_CALL *
 		is_processed)(axis2_soap_header_block_t *header_block,
-                      axis2_env_t **env);
+                      const axis2_env_t *env);
                              
         axis2_status_t (AXIS2_CALL *
 		set_processed)(axis2_soap_header_block_t *header_block,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
 					   
         axis2_char_t* (AXIS2_CALL *
 		get_role)(axis2_soap_header_block_t *header_block,
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
           
         axis2_status_t (AXIS2_CALL *
 		set_attribute)(axis2_soap_header_block_t *header_block,
-                       axis2_env_t **env,
+                       const axis2_env_t *env,
                        axis2_char_t *attr_name,
                        axis2_char_t *attr_value,
                        axis2_char_t *soap_envelope_namespace_uri);
@@ -101,18 +101,18 @@ extern "C"
                              
         axis2_char_t* (AXIS2_CALL *
 		get_attribute)(axis2_soap_header_block_t *header_block,
-                       axis2_env_t **env,
+                       const axis2_env_t *env,
                        axis2_char_t *attr_name,
                        axis2_char_t *soap_envelope_namespace_uri);                            
                                        
                                               
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node)(axis2_soap_header_block_t *header_block,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
         
         int (AXIS2_CALL *
 		get_soap_version)(axis2_soap_header_block_t *header_block,
-                          axis2_env_t **env);
+                          const axis2_env_t *env);
 
     };
 
@@ -135,7 +135,7 @@ extern "C"
 
 
 AXIS2_DECLARE(axis2_soap_header_block_t *)
-axis2_soap_header_block_create_with_parent(axis2_env_t **env,
+axis2_soap_header_block_create_with_parent(const axis2_env_t *env,
                                            axis2_char_t *localname,
                                            axis2_om_namespace_t *ns,
                                            struct axis2_soap_header *parent);

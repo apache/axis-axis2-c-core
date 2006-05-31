@@ -39,63 +39,63 @@ struct axis2_phases_info_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *free) (axis2_phases_info_t *phases_info, 
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_in_phases) (axis2_phases_info_t *phases_info,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_array_list_t *in_phases);
     
     axis2_status_t (AXIS2_CALL *
     set_out_phases) (axis2_phases_info_t *phases_info,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_array_list_t *out_phases);
     
     axis2_status_t (AXIS2_CALL *
     set_in_faultphases) (axis2_phases_info_t *phases_info,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_array_list_t *in_faultphases);
                                     
     axis2_status_t (AXIS2_CALL *
     set_out_faultphases) (axis2_phases_info_t *phases_info,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_array_list_t * out_faultphases);
     
     axis2_array_list_t *(AXIS2_CALL *
     get_in_phases) (axis2_phases_info_t *phases_info,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
     
     axis2_array_list_t *(AXIS2_CALL *
     get_out_phases) (axis2_phases_info_t *phases_info,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
     
     axis2_array_list_t *(AXIS2_CALL *
     get_in_faultphases) (axis2_phases_info_t *phases_info,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
     
     axis2_array_list_t *(AXIS2_CALL *
     get_out_faultphases) (axis2_phases_info_t *phases_info,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
     
     axis2_array_list_t *(AXIS2_CALL *
     get_op_in_phases) (axis2_phases_info_t *phases_info,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
     
     axis2_array_list_t *(AXIS2_CALL *
     get_op_out_phases) (axis2_phases_info_t *phases_info,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
     
     axis2_array_list_t *(AXIS2_CALL *
     get_op_in_faultphases) (axis2_phases_info_t *phases_info,
-                                                    axis2_env_t **env);
+                                                    const axis2_env_t *env);
     
     axis2_array_list_t *(AXIS2_CALL *
     get_op_out_faultphases) (axis2_phases_info_t *phases_info,
-                                                    axis2_env_t **env);
+                                                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_op_phases) (axis2_phases_info_t *phases_info,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             struct axis2_op *axis2_opt);
     
                                                 
@@ -114,7 +114,7 @@ struct axis2_phases_info
  * @return pointer to newly created phases info
  */
 AXIS2_DECLARE(axis2_phases_info_t *) 
-axis2_phases_info_create (axis2_env_t **env);
+axis2_phases_info_create (const axis2_env_t *env);
 
 /**************************** Start of function macros ************************/
 

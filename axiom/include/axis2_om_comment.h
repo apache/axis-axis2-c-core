@@ -55,7 +55,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
         free) (struct axis2_om_comment *om_comment,
-               axis2_env_t **env);
+               const axis2_env_t *env);
        /** get the comments data
         * @param om_comment a pointer to axis2_om_comment_t struct
         * @param env environment, MUST NOT be NULL 
@@ -64,7 +64,7 @@ extern "C"
                
         axis2_char_t* (AXIS2_CALL *
         get_value)(struct axis2_om_comment *om_comment,
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
        /**
         * set comment data
         * @param om_comment pointer to axis2_om_comment_t struct
@@ -74,7 +74,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
         set_value)(struct axis2_om_comment *om_comment,
-                  axis2_env_t **env,
+                  const axis2_env_t *env,
                   const axis2_char_t* value);
         /**
          *  serialize function 
@@ -85,7 +85,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
         serialize)(struct axis2_om_comment *om_comment,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    axis2_om_output_t *om_output);
                                                                                             
                                               
@@ -113,7 +113,7 @@ extern "C"
     * @return a pointer to the newly created comment struct
     */
     AXIS2_DECLARE(axis2_om_comment_t *) 
-    axis2_om_comment_create (axis2_env_t **env,
+    axis2_om_comment_create (const axis2_env_t *env,
                              axis2_om_node_t *parent,
                              const axis2_char_t *value,
                              axis2_om_node_t **node);

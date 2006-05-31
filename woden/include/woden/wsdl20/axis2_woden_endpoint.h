@@ -56,26 +56,26 @@ struct axis2_woden_endpoint_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *endpoint,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     to_endpoint_free) (void *endpoint,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *endpoint,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *endpoint,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     /**
      * @return the base implementation class
      */
     struct axis2_woden_nested_configurable *(AXIS2_CALL *
     get_base_impl) (
             void *endpoint,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /* ************************************************************
      *  Endpoint interface methods (the WSDL Component model)
@@ -84,22 +84,22 @@ struct axis2_woden_endpoint_ops
     woden_nc_name_t *(AXIS2_CALL *
     get_name) (
             void *endpoint,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     void *(AXIS2_CALL *
     get_binding) (
             void *endpoint,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_url_t *(AXIS2_CALL *
     get_address) (
             void *endpoint,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_binding_element) (
         void *endpoint,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *binding);
 
 };
@@ -120,54 +120,54 @@ struct axis2_woden_endpoint
 
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_endpoint_element(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_nested_element(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_documentable_element(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_nested_configurable(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_configurable(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_nested_component(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_configurable_component(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_endpoint_t *)
 axis2_woden_endpoint_to_wsdl_component(
         void *endpoint,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_endpoint_resolve_methods(
         axis2_woden_endpoint_t *endpoint,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_endpoint_t *endpoint_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

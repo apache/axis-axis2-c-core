@@ -61,22 +61,22 @@ struct axis2_woden_binding_fault_ref_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *binding_fault_ref_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
  
     axis2_status_t (AXIS2_CALL *
     to_binding_fault_ref_element_free) (
             void *binding_fault_ref_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *binding_fault_ref_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
  
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *binding_fault_ref_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /**
      * Set the 'ref' attribute to the specified QName.
@@ -85,7 +85,7 @@ struct axis2_woden_binding_fault_ref_element_ops
     axis2_status_t (AXIS2_CALL *
     set_ref) (
             void *binding_fault_ref_ele,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *fault_qname);
     
     /**
@@ -95,7 +95,7 @@ struct axis2_woden_binding_fault_ref_element_ops
     axis2_qname_t *(AXIS2_CALL *
     get_ref) (
             void *binding_fault_ref_ele,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     /**
      * Get the Interface Fault Reference Element associated with this Binding Fault Reference Element
@@ -105,18 +105,18 @@ struct axis2_woden_binding_fault_ref_element_ops
     void *(AXIS2_CALL *
     get_interface_fault_ref_element) (
             void *binding_fault_ref_ele,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_msg_label) (
             void *binding_fault_ref_ele,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *msg_label);
 
     void *(AXIS2_CALL *
     get_msg_label) (
             void *binding_fault_ref_ele,
-            axis2_env_t **env);
+            const axis2_env_t *env);
      
 };
 
@@ -135,13 +135,13 @@ struct axis2_woden_binding_fault_ref_element
 
 AXIS2_DECLARE(axis2_woden_binding_fault_ref_element_t *)
 axis2_woden_binding_fault_ref_element_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_binding_fault_ref_element_resolve_methods(
         axis2_woden_binding_fault_ref_element_t *binding_fault_ref_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

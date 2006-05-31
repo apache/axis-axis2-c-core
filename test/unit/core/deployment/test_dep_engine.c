@@ -19,14 +19,14 @@ void Testaxis2_dep_engine_free(CuTest *tc)
     axis2_env_t *env = axis2_env_create (allocator);
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
 	
-    dep_engine = axis2_dep_engine_create_with_repos_name(&env, axis2c_home
+    dep_engine = axis2_dep_engine_create_with_repos_name(env, axis2c_home
         );
     if(!dep_engine)
     {
         printf("dep engine is not created \n");
         return;
     }
-    actual = AXIS2_DEP_ENGINE_FREE(dep_engine, &env);
+    actual = AXIS2_DEP_ENGINE_FREE(dep_engine, env);
     CuAssertIntEquals(tc, expected, actual);
 	axis2_env_free(env);
 }
@@ -45,12 +45,12 @@ void Testaxis2_dep_engine_create(CuTest *tc)
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
-    dep_engine = axis2_dep_engine_create(&env);
+    dep_engine = axis2_dep_engine_create(env);
 
 	CuAssertPtrNotNull(tc,dep_engine);
 
     if (dep_engine)
-        AXIS2_DEP_ENGINE_FREE(dep_engine, &env);
+        AXIS2_DEP_ENGINE_FREE(dep_engine, env);
     axis2_env_free(env);
 }
 
@@ -70,12 +70,12 @@ void Testaxis2_dep_engine_create_with_repos_name(CuTest *tc)
 
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
 	
-    dep_engine = axis2_dep_engine_create_with_repos_name(&env,axis2c_home);
+    dep_engine = axis2_dep_engine_create_with_repos_name(env,axis2c_home);
 
 	CuAssertPtrNotNull(tc, dep_engine);
 
     if (dep_engine)
-        AXIS2_DEP_ENGINE_FREE(dep_engine, &env);
+        AXIS2_DEP_ENGINE_FREE(dep_engine, env);
 
     axis2_env_free(env);
 }
@@ -99,14 +99,14 @@ void Testaxis2_dep_engine_load(CuTest *tc)
 
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
 
-    dep_engine = axis2_dep_engine_create_with_repos_name(&env, axis2c_home);
+    dep_engine = axis2_dep_engine_create_with_repos_name(env, axis2c_home);
     if (dep_engine)
-        conf_actual = AXIS2_DEP_ENGINE_LOAD(dep_engine, &env);
+        conf_actual = AXIS2_DEP_ENGINE_LOAD(dep_engine, env);
 
 	CuAssertPtrNotNull(tc, conf_actual);
 
     if (conf_actual)
-        AXIS2_DEP_ENGINE_FREE(dep_engine, &env);
+        AXIS2_DEP_ENGINE_FREE(dep_engine, env);
     
     axis2_env_free(env);
 }

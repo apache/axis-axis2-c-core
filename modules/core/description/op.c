@@ -45,220 +45,220 @@ typedef struct axis2_op_impl
 
 axis2_status_t AXIS2_CALL
 axis2_op_free (axis2_op_t *op, 
-                        axis2_env_t **env);	
+                        const axis2_env_t *env);	
 
 axis2_status_t AXIS2_CALL 
 axis2_op_add_param (axis2_op_t *op, 
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_param_t *param);
 
 axis2_param_t * AXIS2_CALL
 axis2_op_get_param (axis2_op_t *op, 
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_char_t *name);
 
 axis2_array_list_t * AXIS2_CALL
 axis2_op_get_params (axis2_op_t *op, 
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 axis2_op_is_param_locked(axis2_op_t *op, 
-                                    axis2_env_t **env
+                                    const axis2_env_t *env
     ,                               axis2_char_t *param_name);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_parent (axis2_op_t *op, 
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_svc_t *svc);
 
 axis2_svc_t * AXIS2_CALL
 axis2_op_get_parent (axis2_op_t *op, 
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 		
 axis2_status_t AXIS2_CALL
 axis2_op_set_msg_recv (axis2_op_t *op, 
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_msg_recv *msg_recv);
 
 struct axis2_msg_recv * AXIS2_CALL
 axis2_op_get_msg_recv (axis2_op_t *op, 
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_qname (axis2_op_t *op, 
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *qname);
                             
 axis2_qname_t * AXIS2_CALL
 axis2_op_get_qname (void *op, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_msg_exchange_pattern (axis2_op_t *op, 
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_char_t *pattern);
 		
 axis2_char_t * AXIS2_CALL
 axis2_op_get_msg_exchange_pattern (axis2_op_t *op, 
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 
 axis2_char_t * AXIS2_CALL
 axis2_op_get_style (axis2_op_t *op,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 axis2_status_t  AXIS2_CALL
 axis2_op_set_style (axis2_op_t *op,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_char_t *style);
 
 axis2_status_t AXIS2_CALL
 axis2_op_engage_module(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_module_desc_t *moduleref);
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_to_engage_module_list(axis2_op_t *op,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_module_desc_t *module_name);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_op_get_modules(axis2_op_t *op,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 int AXIS2_CALL
 axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_op_get_phases_in_fault_flow(axis2_op_t *op,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 
 
 axis2_array_list_t *AXIS2_CALL
 axis2_op_get_phases_out_fault_flow(axis2_op_t *op,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 
 axis2_array_list_t * AXIS2_CALL
 axis2_op_get_phases_outflow(axis2_op_t *op,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
 
 axis2_array_list_t *AXIS2_CALL
 axis2_op_get_remaining_phases_inflow(axis2_op_t *op,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_phases_in_fault_flow(axis2_op_t *op,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_array_list_t *list);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_phases_out_fault_flow(axis2_op_t *op,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_array_list_t *list);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_phases_outflow(axis2_op_t *op,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_array_list_t *list);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_remaining_phases_inflow(axis2_op_t *op,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_array_list_t *list);
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_module(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_qname_t *module_name);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_op_get_module_refs(axis2_op_t *op,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
 axis2_linked_list_t *AXIS2_CALL
 axis2_op_get_in_faults(axis2_op_t *op,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_in_faults(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_linked_list_t *in_faults);
 
 struct axis2_wsdl_msg_ref *AXIS2_CALL
 axis2_op_get_input_msg(axis2_op_t *op,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_input_msg(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_wsdl_msg_ref *input_msg); 
 
 
 axis2_linked_list_t *AXIS2_CALL
 axis2_op_get_out_faults(axis2_op_t *op,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_out_faults(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_linked_list_t *out_faults);
 
 struct axis2_wsdl_msg_ref *AXIS2_CALL
 axis2_op_get_output_msg(axis2_op_t *op,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_output_msg(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_wsdl_msg_ref *output_msg); 
 
 
 axis2_bool_t AXIS2_CALL
 axis2_op_is_safe(axis2_op_t *op,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_safety(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_bool_t safe);
 
 axis2_char_t *AXIS2_CALL
 axis2_op_get_target_namespace(axis2_op_t *op,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_in_fault(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_wsdl_fault_ref_t *in_fault);
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_out_fault(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_wsdl_fault_ref_t *out_fault);
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_feature(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_wsdl_feature_t *feature);
 
 axis2_linked_list_t *AXIS2_CALL
 axis2_op_get_features(axis2_op_t *op,
-                                axis2_env_t **env); 
+                                const axis2_env_t *env); 
 
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_property(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_wsdl_property_t *wsdl_property);
 
 axis2_linked_list_t *AXIS2_CALL
 axis2_op_get_Properties(axis2_op_t *op,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_op_set_wsdl_op(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_wsdl_op_t *wsdl_op);
 
 /**
@@ -284,7 +284,7 @@ axis2_op_set_wsdl_op(axis2_op_t *op,
  */
 struct axis2_op_ctx *AXIS2_CALL
 axis2_op_find_op_ctx(axis2_op_t *op,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         struct axis2_msg_ctx *msg_ctx, 
                         struct axis2_svc_ctx *svc_ctx);
 
@@ -296,43 +296,43 @@ axis2_op_find_op_ctx(axis2_op_t *op,
  */
 axis2_op_ctx_t *AXIS2_CALL
 axis2_op_find_for_existing_op_ctx(axis2_op_t *op,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     struct axis2_msg_ctx *msg_ctx);
                                         
 axis2_status_t AXIS2_CALL
 axis2_op_register_op_ctx(axis2_op_t *op,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             struct axis2_msg_ctx *msg_ctx,
                             struct axis2_op_ctx *op_ctx);
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_msg_ctx_in_only(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_msg_ctx_t *msg_ctx,
                                 axis2_op_ctx_t *op_ctx);
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_msg_ctx_out_only(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_msg_ctx_t *msg_ctx,
                                 axis2_op_ctx_t *op_ctx);
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_msg_ctx_in_out(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_msg_ctx_t *msg_ctx,
                                 axis2_op_ctx_t *op_ctx);
     
 axis2_status_t AXIS2_CALL
 axis2_op_add_msg_ctx_out_in(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_msg_ctx_t *msg_ctx,
                                 axis2_op_ctx_t *op_ctx);                            
                                 
 /************************* End of function headers ****************************/	
 
 AXIS2_DECLARE(axis2_op_t *)
-axis2_op_create (axis2_env_t **env)
+axis2_op_create (const axis2_env_t *env)
 {
     axis2_param_container_t *param_container_l = NULL;
     axis2_array_list_t *array_list_l = NULL;
@@ -345,12 +345,12 @@ axis2_op_create (axis2_env_t **env)
  
     AXIS2_ENV_CHECK(env, NULL);
 	
-	op_impl =  (axis2_op_impl_t *) AXIS2_MALLOC ((*env)->allocator,
+	op_impl =  (axis2_op_impl_t *) AXIS2_MALLOC (env->allocator,
 		sizeof (axis2_op_impl_t));
      
 	if(NULL == op_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -371,7 +371,7 @@ axis2_op_create (axis2_env_t **env)
 	if(NULL == op_impl->op.param_container)
 	{
         axis2_op_free(&(op_impl->op), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);	
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);	
         return NULL;        
 	}
 
@@ -379,11 +379,11 @@ axis2_op_create (axis2_env_t **env)
 	if(NULL == op_impl->wsdl_op)
 	{
         axis2_op_free(&(op_impl->op), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;		
 	}
     /* Set the function pointers of the base */
-    op_impl->op.base.ops = AXIS2_MALLOC((*env)->allocator, 
+    op_impl->op.base.ops = AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_wsdl_op_ops_t));
     op_impl->op.base.ops->free_void_arg = axis2_op_free_void_arg;
     op_impl->op.base.ops->get_qname = axis2_op_get_qname;
@@ -492,11 +492,11 @@ axis2_op_create (axis2_env_t **env)
         return NULL;
     }
 
-    op_impl->op.ops = AXIS2_MALLOC((*env)->allocator, sizeof(axis2_op_ops_t));
+    op_impl->op.ops = AXIS2_MALLOC(env->allocator, sizeof(axis2_op_ops_t));
 	if(NULL == op_impl->op.ops)
 	{
         axis2_op_free(&(op_impl->op), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
 	
@@ -557,19 +557,19 @@ axis2_op_create (axis2_env_t **env)
 }
 
 axis2_op_t * AXIS2_CALL
-axis2_op_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
+axis2_op_create_with_qname (const axis2_env_t *env, axis2_qname_t *qname)
 {
 	axis2_op_impl_t *op_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);	
+    AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);	
     
     op_impl = (axis2_op_impl_t *) axis2_op_create(env);
     
 	if(NULL == op_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -579,7 +579,7 @@ axis2_op_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
         if(NULL == op_impl->wsdl_op)
         {
             axis2_op_free(&(op_impl->op), env);
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;		
         }
     }
@@ -594,19 +594,19 @@ axis2_op_create_with_qname (axis2_env_t **env, axis2_qname_t *qname)
 }
 
 axis2_op_t * AXIS2_CALL
-axis2_op_create_with_wsdl_op (axis2_env_t **env, 
+axis2_op_create_with_wsdl_op (const axis2_env_t *env, 
                                             axis2_wsdl_op_t *wsdl_op)
 {
 	axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, wsdl_op, NULL);
+    AXIS2_PARAM_CHECK(env->error, wsdl_op, NULL);
     
     op_impl = (axis2_op_impl_t *) axis2_op_create(env);
     
 	if(NULL == op_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
    
@@ -622,7 +622,7 @@ axis2_op_create_with_wsdl_op (axis2_env_t **env,
 /*************************** Start of op impls *************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_op_free (axis2_op_t *op, axis2_env_t **env)
+axis2_op_free (axis2_op_t *op, const axis2_env_t *env)
 { 
     axis2_op_impl_t *op_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -750,19 +750,19 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
     
     if (op_impl->op.base.ops)
     {
-        AXIS2_FREE((*env)->allocator, op_impl->op.base.ops);
+        AXIS2_FREE(env->allocator, op_impl->op.base.ops);
         op_impl->op.base.ops = NULL;
     }
     
     if (op_impl->op.ops)
     {
-        AXIS2_FREE((*env)->allocator, op_impl->op.ops);
+        AXIS2_FREE(env->allocator, op_impl->op.ops);
         op_impl->op.ops = NULL;
     }
 
     if(op_impl)    
     {
-        AXIS2_FREE((*env)->allocator, op_impl);
+        AXIS2_FREE(env->allocator, op_impl);
         op_impl = NULL;
     }
     
@@ -771,7 +771,7 @@ axis2_op_free (axis2_op_t *op, axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_op_free_void_arg(void *op,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_op_t *op_l = NULL;
     
@@ -783,7 +783,7 @@ axis2_op_free_void_arg(void *op,
 
 axis2_status_t AXIS2_CALL 
 axis2_op_add_param (axis2_op_t *op, 
-                                axis2_env_t **env,       
+                                const axis2_env_t *env,       
 		                        axis2_param_t *param)
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -792,13 +792,13 @@ axis2_op_add_param (axis2_op_t *op,
     axis2_property_t *property = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-    AXIS2_PARAM_CHECK((*env)->error, param, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, param, AXIS2_FALSE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
 	
     param_name = AXIS2_PARAM_GET_NAME(param, env);
     if(AXIS2_TRUE == axis2_op_is_param_locked(op, env, param_name))
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -818,7 +818,7 @@ axis2_op_add_param (axis2_op_t *op,
 
 axis2_param_t * AXIS2_CALL
 axis2_op_get_param (axis2_op_t *op, 
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
 		                        axis2_char_t *param_name)
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -826,7 +826,7 @@ axis2_op_get_param (axis2_op_t *op,
     axis2_property_t *property = NULL;
  
 	AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-	AXIS2_PARAM_CHECK((*env)->error, param_name, NULL);
+	AXIS2_PARAM_CHECK(env->error, param_name, NULL);
     op_impl = AXIS2_INTF_TO_IMPL(op);
 
     property = (axis2_property_t *) 
@@ -844,13 +844,13 @@ axis2_op_get_param (axis2_op_t *op,
 
 axis2_array_list_t * AXIS2_CALL
 axis2_op_get_params(axis2_op_t *op, 
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_op_impl_t *op_impl = NULL;
     /*axis2_param_container_t *param_container_l = NULL; */
     
 	AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-    AXIS2_PARAM_CHECK((*env)->error, op->param_container, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, op->param_container, AXIS2_FALSE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
    
     return AXIS2_PARAM_CONTAINER_GET_PARAMS(op->param_container, env);
@@ -858,7 +858,7 @@ axis2_op_get_params(axis2_op_t *op,
 
 axis2_bool_t AXIS2_CALL 
 axis2_op_is_param_locked(axis2_op_t *op, 
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
 		                            axis2_char_t *param_name)
 {
     axis2_svc_t *parent_l = NULL;
@@ -866,7 +866,7 @@ axis2_op_is_param_locked(axis2_op_t *op,
     axis2_bool_t locked = AXIS2_FALSE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-    AXIS2_PARAM_CHECK((*env)->error, param_name, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
     
     /* checking the locked value of parent*/
     parent_l = axis2_op_get_parent(op, env);
@@ -887,13 +887,13 @@ axis2_op_is_param_locked(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL 
 axis2_op_set_parent (axis2_op_t *op, 
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
 		                        axis2_svc_t *svc)
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, svc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
     
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
@@ -907,7 +907,7 @@ axis2_op_set_parent (axis2_op_t *op,
 
 axis2_svc_t * AXIS2_CALL
 axis2_op_get_parent (axis2_op_t *op, 
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {           
 	AXIS2_ENV_CHECK(env, NULL);
     
@@ -916,13 +916,13 @@ axis2_op_get_parent (axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL 
 axis2_op_set_msg_recv (axis2_op_t *op, 
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
 		                        struct axis2_msg_recv *msg_recv)
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_recv, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_recv, AXIS2_FAILURE);
     
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
@@ -938,7 +938,7 @@ axis2_op_set_msg_recv (axis2_op_t *op,
 
 struct axis2_msg_recv * AXIS2_CALL
 axis2_op_get_msg_recv (axis2_op_t *op, 
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(op)->msg_recv;
@@ -946,7 +946,7 @@ axis2_op_get_msg_recv (axis2_op_t *op,
  
 axis2_status_t AXIS2_CALL
 axis2_op_set_qname (axis2_op_t *op, 
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_qname_t *qname)
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -959,7 +959,7 @@ axis2_op_set_qname (axis2_op_t *op,
     
 axis2_qname_t * AXIS2_CALL
 axis2_op_get_qname (void *op, 
-                    axis2_env_t **env)
+                    const axis2_env_t *env)
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -972,13 +972,13 @@ axis2_op_get_qname (void *op,
 
 axis2_status_t AXIS2_CALL 
 axis2_op_set_msg_exchange_pattern (axis2_op_t *op, 
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
 		                                    axis2_char_t *pattern)
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, pattern, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, pattern, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     return AXIS2_WSDL_OP_SET_MSG_EXCHANGE_PATTERN(op_impl->wsdl_op, env, 
@@ -987,7 +987,7 @@ axis2_op_set_msg_exchange_pattern (axis2_op_t *op,
 
 axis2_char_t * AXIS2_CALL
 axis2_op_get_msg_exchange_pattern (axis2_op_t *op, 
-                                            axis2_env_t **env)
+                                            const axis2_env_t *env)
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -999,7 +999,7 @@ axis2_op_get_msg_exchange_pattern (axis2_op_t *op,
 
 axis2_char_t * AXIS2_CALL
 axis2_op_get_style (axis2_op_t *op,
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -1010,13 +1010,13 @@ axis2_op_get_style (axis2_op_t *op,
 
 axis2_status_t  AXIS2_CALL
 axis2_op_set_style (axis2_op_t *op,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_char_t *style)
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, style, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, style, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     return AXIS2_WSDL_OP_SET_STYLE(op_impl->wsdl_op, env, style);
@@ -1024,7 +1024,7 @@ axis2_op_set_style (axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_engage_module(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_module_desc_t *moduleref) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1037,7 +1037,7 @@ axis2_op_engage_module(axis2_op_t *op,
     axis2_property_t *property = NULL;
         
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, moduleref, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, moduleref, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     property = (axis2_property_t *)
@@ -1046,7 +1046,7 @@ axis2_op_engage_module(axis2_op_t *op,
     collection_module = (axis2_array_list_t *) 
         AXIS2_PROPERTY_GET_VALUE(property, env);
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         return AXIS2_FAILURE;
     }
@@ -1062,7 +1062,7 @@ axis2_op_engage_module(axis2_op_t *op,
         if(AXIS2_QNAME_EQUALS(AXIS2_MODULE_DESC_GET_NAME(module_desc, env), env,
                 AXIS2_MODULE_DESC_GET_NAME(moduleref, env)))
         {
-            AXIS2_ERROR_SET((*env)->error, 
+            AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP, AXIS2_FAILURE);
             return AXIS2_SUCCESS;
         }
@@ -1091,7 +1091,7 @@ axis2_op_engage_module(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_to_engage_module_list(axis2_op_t *op,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_module_desc_t *module_desc) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1103,7 +1103,7 @@ axis2_op_add_to_engage_module_list(axis2_op_t *op,
     axis2_qname_t *module_qname = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, module_desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     property = (axis2_property_t *) 
@@ -1114,9 +1114,9 @@ axis2_op_add_to_engage_module_list(axis2_op_t *op,
         property, env);
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
     
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE((*env)->error))
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
-        return AXIS2_ERROR_GET_STATUS_CODE((*env)->error);
+        return AXIS2_ERROR_GET_STATUS_CODE(env->error);
     }
     module_qname = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
     for(index = 0; index < size; index++)
@@ -1128,8 +1128,8 @@ axis2_op_add_to_engage_module_list(axis2_op_t *op,
         module_qname_l = AXIS2_MODULE_DESC_GET_NAME(module_desc_l, env);        
         if(AXIS2_QNAME_EQUALS(module_qname, env, module_qname_l))
         {
-            AXIS2_ERROR_SET((*env)->error, 
-                AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP, AXIS2_FAILURE);
+            /*AXIS2_ERROR_SET(env->error, 
+                AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP, AXIS2_FAILURE);*/
             return AXIS2_SUCCESS;
         }
 
@@ -1139,7 +1139,7 @@ axis2_op_add_to_engage_module_list(axis2_op_t *op,
 
 axis2_array_list_t *AXIS2_CALL
 axis2_op_get_modules(axis2_op_t *op,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
     axis2_property_t *property = NULL;
@@ -1157,7 +1157,7 @@ axis2_op_get_modules(axis2_op_t *op,
 
 int AXIS2_CALL
 axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
-                                                axis2_env_t **env) 
+                                                const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
     int temp = 0;
@@ -1216,7 +1216,7 @@ axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
 
     if (temp == AXIS2_MEP_CONSTANT_INVALID) 
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_COULD_NOT_MAP_MEP_URI_TO_MEP_CONSTANT, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -1227,7 +1227,7 @@ axis2_op_get_axis_specific_mep_const(axis2_op_t *op,
 
 axis2_array_list_t *AXIS2_CALL
 axis2_op_get_phases_in_fault_flow(axis2_op_t *op,
-                                            axis2_env_t **env) 
+                                            const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(op)->phases_in_fault_flow;
@@ -1236,7 +1236,7 @@ axis2_op_get_phases_in_fault_flow(axis2_op_t *op,
 
 axis2_array_list_t *AXIS2_CALL
 axis2_op_get_phases_out_fault_flow(axis2_op_t *op,
-                                            axis2_env_t **env) 
+                                            const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(op)->phases_out_fault_flow;
@@ -1245,7 +1245,7 @@ axis2_op_get_phases_out_fault_flow(axis2_op_t *op,
 
 axis2_array_list_t * AXIS2_CALL
 axis2_op_get_phases_outflow(axis2_op_t *op,
-                                        axis2_env_t **env) 
+                                        const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(op)->phases_outflow;
@@ -1254,7 +1254,7 @@ axis2_op_get_phases_outflow(axis2_op_t *op,
 
 axis2_array_list_t *AXIS2_CALL
 axis2_op_get_remaining_phases_inflow(axis2_op_t *op,
-                                                axis2_env_t **env) 
+                                                const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
  
@@ -1263,13 +1263,13 @@ axis2_op_get_remaining_phases_inflow(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_phases_in_fault_flow(axis2_op_t *op,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_array_list_t *list) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
     
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
@@ -1301,13 +1301,13 @@ axis2_op_set_phases_in_fault_flow(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_phases_out_fault_flow(axis2_op_t *op,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_array_list_t *list) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     if(op_impl->phases_out_fault_flow)
@@ -1335,13 +1335,13 @@ axis2_op_set_phases_out_fault_flow(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_phases_outflow(axis2_op_t *op,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_array_list_t *list) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     if(op_impl->phases_outflow)
@@ -1369,13 +1369,13 @@ axis2_op_set_phases_outflow(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_remaining_phases_inflow(axis2_op_t *op,
-                                                axis2_env_t **env,
+                                                const axis2_env_t *env,
                                                 axis2_array_list_t *list) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, list, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, list, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     if(op_impl->remaining_phases_inflow)
     {
@@ -1403,14 +1403,14 @@ axis2_op_set_remaining_phases_inflow(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_module(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_qname_t *module_qname) 
 {
     axis2_op_impl_t *op_impl = NULL;
     axis2_qname_t *module_qname_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, module_qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, module_qname, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     module_qname_l = AXIS2_QNAME_CLONE(module_qname, env);
@@ -1420,7 +1420,7 @@ axis2_op_add_module(axis2_op_t *op,
 
 axis2_array_list_t *AXIS2_CALL
 axis2_op_get_module_refs(axis2_op_t *op,
-                                    axis2_env_t **env) 
+                                    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(op)->modulerefs;
@@ -1428,7 +1428,7 @@ axis2_op_get_module_refs(axis2_op_t *op,
 
 axis2_linked_list_t *AXIS2_CALL
 axis2_op_get_in_faults(axis2_op_t *op,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -1440,13 +1440,13 @@ axis2_op_get_in_faults(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_in_faults(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_linked_list_t *in_faults) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, in_faults, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, in_faults, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     return AXIS2_WSDL_OP_SET_IN_FAULTS(op_impl->wsdl_op, env, in_faults);
@@ -1454,7 +1454,7 @@ axis2_op_set_in_faults(axis2_op_t *op,
 
 struct axis2_wsdl_msg_ref *AXIS2_CALL
 axis2_op_get_input_msg(axis2_op_t *op,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -1466,13 +1466,13 @@ axis2_op_get_input_msg(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_input_msg(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_wsdl_msg_ref *input_msg) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, input_msg, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, input_msg, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     return AXIS2_WSDL_OP_SET_INPUT_MSG(op_impl->wsdl_op, env, input_msg);
@@ -1480,7 +1480,7 @@ axis2_op_set_input_msg(axis2_op_t *op,
 
 axis2_linked_list_t *AXIS2_CALL
 axis2_op_get_out_faults(axis2_op_t *op,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -1492,13 +1492,13 @@ axis2_op_get_out_faults(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_out_faults(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_linked_list_t *out_faults) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, out_faults, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, out_faults, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     return AXIS2_WSDL_OP_SET_OUT_FAULTS(op_impl->wsdl_op, env, out_faults);
@@ -1506,7 +1506,7 @@ axis2_op_set_out_faults(axis2_op_t *op,
 
 struct axis2_wsdl_msg_ref *AXIS2_CALL
 axis2_op_get_output_msg(axis2_op_t *op,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -1518,13 +1518,13 @@ axis2_op_get_output_msg(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_output_msg(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_wsdl_msg_ref *output_msg) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, output_msg, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, output_msg, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     return AXIS2_WSDL_OP_SET_OUTPUT_MSG(op_impl->wsdl_op, env, output_msg);
@@ -1532,7 +1532,7 @@ axis2_op_set_output_msg(axis2_op_t *op,
 
 axis2_bool_t AXIS2_CALL
 axis2_op_is_safe(axis2_op_t *op,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -1544,7 +1544,7 @@ axis2_op_is_safe(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_safety(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_bool_t safe) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1557,7 +1557,7 @@ axis2_op_set_safety(axis2_op_t *op,
 
 axis2_char_t *AXIS2_CALL
 axis2_op_get_target_namespace(axis2_op_t *op,
-                                        axis2_env_t **env) 
+                                        const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -1570,13 +1570,13 @@ axis2_op_get_target_namespace(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_in_fault(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_wsdl_fault_ref_t *in_fault) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, in_fault, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, in_fault, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     return AXIS2_WSDL_OP_ADD_IN_FAULT(op_impl->wsdl_op, env, in_fault);
@@ -1584,13 +1584,13 @@ axis2_op_add_in_fault(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_out_fault(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_wsdl_fault_ref_t *out_fault) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, out_fault, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, out_fault, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     return AXIS2_WSDL_OP_ADD_OUT_FAULT(op_impl->wsdl_op, env, out_fault);
@@ -1598,13 +1598,13 @@ axis2_op_add_out_fault(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_feature(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_wsdl_feature_t *feature) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, feature, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, feature, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     return AXIS2_WSDL_EXTENSIBLE_COMPONENT_ADD_FEATURE(op_impl->wsdl_op->
@@ -1613,7 +1613,7 @@ axis2_op_add_feature(axis2_op_t *op,
 
 axis2_linked_list_t *AXIS2_CALL
 axis2_op_get_features(axis2_op_t *op,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -1626,13 +1626,13 @@ axis2_op_get_features(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_property(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_wsdl_property_t *wsdl_property) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, wsdl_property, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, wsdl_property, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     return AXIS2_WSDL_EXTENSIBLE_COMPONENT_ADD_PROPERTY(op_impl->wsdl_op->
@@ -1641,7 +1641,7 @@ axis2_op_add_property(axis2_op_t *op,
 
 axis2_linked_list_t *AXIS2_CALL
 axis2_op_get_Properties(axis2_op_t *op,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -1654,13 +1654,13 @@ axis2_op_get_Properties(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL 
 axis2_op_set_wsdl_op(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_wsdl_op_t *wsdl_op) 
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, wsdl_op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, wsdl_op, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
     if(op_impl->wsdl_op)
@@ -1677,7 +1677,7 @@ axis2_op_set_wsdl_op(axis2_op_t *op,
 
 axis2_op_ctx_t *AXIS2_CALL
 axis2_op_find_op_ctx(axis2_op_t *op,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         struct axis2_msg_ctx *msg_ctx, 
                         struct axis2_svc_ctx *svc_ctx)
 {
@@ -1687,8 +1687,8 @@ axis2_op_find_op_ctx(axis2_op_t *op,
     axis2_status_t status = AXIS2_FAILURE;
         
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, svc_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, svc_ctx, NULL);
 
     op_impl = AXIS2_INTF_TO_IMPL(op);
     relates_to = AXIS2_MSG_CTX_GET_RELATES_TO(msg_ctx, env);
@@ -1699,7 +1699,7 @@ axis2_op_find_op_ctx(axis2_op_t *op,
         op_ctx = axis2_op_ctx_create(env, op, svc_ctx);
         if(!op_ctx)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
     }
@@ -1715,7 +1715,7 @@ axis2_op_find_op_ctx(axis2_op_t *op,
         op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, value);
         if(NULL == op_ctx)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG, 
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG, 
                 AXIS2_FAILURE);
             return NULL;
         }
@@ -1733,14 +1733,14 @@ axis2_op_find_op_ctx(axis2_op_t *op,
 
 axis2_op_ctx_t *AXIS2_CALL
 axis2_op_find_for_existing_op_ctx(axis2_op_t *op,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_relates_to_t *relates_to = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, NULL);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     if(NULL != op_ctx) 
@@ -1764,7 +1764,7 @@ axis2_op_find_for_existing_op_ctx(axis2_op_t *op,
 
         if (NULL == op_ctx) 
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG, 
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_CORRELATE_MSG, 
                 AXIS2_FAILURE);
             return NULL;
         }
@@ -1776,7 +1776,7 @@ axis2_op_find_for_existing_op_ctx(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_register_op_ctx(axis2_op_t *op,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_msg_ctx_t *msg_ctx,
                             axis2_op_ctx_t *op_ctx)
 {
@@ -1785,8 +1785,8 @@ axis2_op_register_op_ctx(axis2_op_t *op,
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, op_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
     
     conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
     if(!conf_ctx)
@@ -1819,15 +1819,15 @@ axis2_op_register_op_ctx(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_msg_ctx_in_only(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_msg_ctx_t *msg_ctx,
                                 axis2_op_ctx_t *op_ctx)
 {
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, op_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     if(AXIS2_TRUE != AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env))
     {
@@ -1839,7 +1839,7 @@ axis2_op_add_msg_ctx_in_only(axis2_op_t *op,
     }
     else
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -1849,13 +1849,13 @@ axis2_op_add_msg_ctx_in_only(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_msg_ctx_out_only(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_msg_ctx_t *msg_ctx,
                                 axis2_op_ctx_t *op_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, op_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
     
     if(AXIS2_TRUE != AXIS2_OP_CTX_GET_IS_COMPLETE(op_ctx, env))
     {
@@ -1867,7 +1867,7 @@ axis2_op_add_msg_ctx_out_only(axis2_op_t *op,
     }
     else
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -1877,7 +1877,7 @@ axis2_op_add_msg_ctx_out_only(axis2_op_t *op,
 
 axis2_status_t AXIS2_CALL
 axis2_op_add_msg_ctx_in_out(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_msg_ctx_t *msg_ctx,
                                 axis2_op_ctx_t *op_ctx)
 {
@@ -1886,8 +1886,8 @@ axis2_op_add_msg_ctx_in_out(axis2_op_t *op,
     axis2_msg_ctx_t *out_msg_ctx = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, op_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
     
     mep = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
     in_msg_ctx = (axis2_msg_ctx_t *) axis2_hash_get(mep, 
@@ -1896,7 +1896,7 @@ axis2_op_add_msg_ctx_in_out(axis2_op_t *op,
         AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING);
     if(NULL != in_msg_ctx && NULL != out_msg_ctx)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -1916,7 +1916,7 @@ axis2_op_add_msg_ctx_in_out(axis2_op_t *op,
     
 axis2_status_t AXIS2_CALL
 axis2_op_add_msg_ctx_out_in(axis2_op_t *op,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_msg_ctx_t *msg_ctx,
                                 axis2_op_ctx_t *op_ctx)
 {
@@ -1925,8 +1925,8 @@ axis2_op_add_msg_ctx_out_in(axis2_op_t *op,
     axis2_msg_ctx_t *out_msg_ctx = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, op_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op_ctx, AXIS2_FAILURE);
     
     mep = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
     in_msg_ctx = (axis2_msg_ctx_t *) axis2_hash_get(mep, 
@@ -1935,7 +1935,7 @@ axis2_op_add_msg_ctx_out_in(axis2_op_t *op,
         AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING);
     if(NULL != in_msg_ctx && NULL != out_msg_ctx)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }

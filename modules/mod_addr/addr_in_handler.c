@@ -29,25 +29,25 @@
 
 axis2_status_t AXIS2_CALL
 axis2_addr_in_handler_invoke(struct axis2_handler *handler, 
-                         axis2_env_t **env,
+                         const axis2_env_t *env,
                          struct axis2_msg_ctx *msg_ctx);
                                              
 axis2_bool_t 
-axis2_addr_in_check_element(axis2_env_t **env, axis2_qname_t *expected_qname,
+axis2_addr_in_check_element(const axis2_env_t *env, axis2_qname_t *expected_qname,
               axis2_qname_t *actual_qname);
                          
 axis2_status_t 
-axis2_addr_in_extract_svc_grp_ctx_id(axis2_env_t **env, 
+axis2_addr_in_extract_svc_grp_ctx_id(const axis2_env_t *env, 
                        axis2_soap_header_t *soap_header, 
                        axis2_msg_ctx_t *msg_ctx);
                          
 axis2_status_t
-axis2_addr_in_extract_ref_params(axis2_env_t **env,
+axis2_addr_in_extract_ref_params(const axis2_env_t *env,
                    axis2_soap_header_t *soap_header,
                    axis2_msg_info_headers_t *msg_info_headers);
                             
 axis2_status_t 
-axis2_addr_in_extract_addr_final_info(axis2_env_t **env,
+axis2_addr_in_extract_addr_final_info(const axis2_env_t *env,
                         axis2_soap_header_t *soap_header,
                         axis2_msg_info_headers_t **msg_info_headers,
                         axis2_array_list_t *addr_headers,
@@ -55,33 +55,33 @@ axis2_addr_in_extract_addr_final_info(axis2_env_t **env,
                          
                          
 axis2_status_t 
-axis2_addr_in_extract_to_epr_ref_params(axis2_env_t **env,
+axis2_addr_in_extract_to_epr_ref_params(const axis2_env_t *env,
                           axis2_endpoint_ref_t * to_epr,
                           axis2_soap_header_t *soap_header,
                           axis2_char_t *addr_ns);
                           
 axis2_status_t 
-axis2_addr_in_extract_epr_information(axis2_env_t **env,
+axis2_addr_in_extract_epr_information(const axis2_env_t *env,
                         axis2_soap_header_block_t *soap_header_block,
                         axis2_endpoint_ref_t *endpoint_ref,
                         axis2_char_t *addr_ns);
                         
 axis2_status_t
-axis2_addr_in_extract_addr_params(axis2_env_t **env,
+axis2_addr_in_extract_addr_params(const axis2_env_t *env,
                     axis2_soap_header_t *soap_header,
                     axis2_msg_info_headers_t **msg_info_headers,
                     axis2_array_list_t *addr_headers,
                     axis2_char_t *addr_ns,
                     axis2_msg_ctx_t *msg_ctx);
 
-axis2_status_t axis2_addr_in_extract_addr_submission_info(axis2_env_t **env,
+axis2_status_t axis2_addr_in_extract_addr_submission_info(const axis2_env_t *env,
         axis2_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
         axis2_array_list_t *addr_headers,
         axis2_msg_ctx_t *msg_ctx);
 
 void 
-axis2_addr_in_create_fault_envelope(axis2_env_t **env,
+axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
         axis2_char_t *header_name,
         axis2_char_t *addr_ns_str,
         axis2_msg_ctx_t *msg_ctx);
@@ -89,7 +89,7 @@ axis2_addr_in_create_fault_envelope(axis2_env_t **env,
 /******************************************************************************/                         
 
 AXIS2_DECLARE(axis2_handler_t*)
-axis2_addr_in_handler_create(axis2_env_t **env, 
+axis2_addr_in_handler_create(const axis2_env_t *env, 
                          axis2_qname_t *qname) 
 {
     axis2_handler_t *handler = NULL;
@@ -114,7 +114,7 @@ axis2_addr_in_handler_create(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_addr_in_handler_invoke(struct axis2_handler *handler, 
-                         axis2_env_t **env,
+                         const axis2_env_t *env,
                          struct axis2_msg_ctx *msg_ctx)
 {
     axis2_soap_envelope_t *soap_envelope = NULL;
@@ -123,9 +123,9 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     
-    AXIS2_LOG_INFO((*env)->log, "Starting addressing in handler .........");
+    AXIS2_LOG_INFO(env->log, "Starting addressing in handler .........");
     
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
     
@@ -166,7 +166,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
                 else 
                 {
                     /* addressing headers are not present in the SOAP message*/
-                    AXIS2_LOG_INFO((*env)->log, AXIS2_LOG_SI, "No Addressing Headers present in the IN message. Addressing In Handler cannot do anything.");
+                    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "No Addressing Headers present in the IN message. Addressing In Handler cannot do anything.");
                     return AXIS2_SUCCESS; /* no addressing heades means addressing not in use */
                 }
             }
@@ -192,7 +192,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
 }
 
 axis2_status_t 
-axis2_addr_in_extract_svc_grp_ctx_id(axis2_env_t **env, 
+axis2_addr_in_extract_svc_grp_ctx_id(const axis2_env_t *env, 
                        axis2_soap_header_t *soap_header, 
                        axis2_msg_ctx_t *msg_ctx)
 {
@@ -241,7 +241,7 @@ axis2_addr_in_extract_svc_grp_ctx_id(axis2_env_t **env,
     
 
 axis2_status_t 
-axis2_addr_in_extract_addr_final_info(axis2_env_t **env,
+axis2_addr_in_extract_addr_final_info(const axis2_env_t *env,
                         axis2_soap_header_t *soap_header,
                         axis2_msg_info_headers_t **msg_info_headers,
                         axis2_array_list_t *addr_headers,
@@ -255,7 +255,7 @@ axis2_addr_in_extract_addr_final_info(axis2_env_t **env,
             msg_ctx);
 }
 
-axis2_status_t axis2_addr_in_extract_addr_submission_info(axis2_env_t **env,
+axis2_status_t axis2_addr_in_extract_addr_submission_info(const axis2_env_t *env,
         axis2_soap_header_t *soap_header,
         axis2_msg_info_headers_t **msg_info_headers,
         axis2_array_list_t *addr_headers,
@@ -270,7 +270,7 @@ axis2_status_t axis2_addr_in_extract_addr_submission_info(axis2_env_t **env,
 }
 
 axis2_status_t
-axis2_addr_in_extract_addr_params(axis2_env_t **env,
+axis2_addr_in_extract_addr_params(const axis2_env_t *env,
                     axis2_soap_header_t *soap_header,
                     axis2_msg_info_headers_t **msg_info_headers_p,
                     axis2_array_list_t *addr_headers,
@@ -288,10 +288,10 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
     axis2_bool_t msg_id_found = AXIS2_FALSE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, soap_header, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_info_headers_p, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, addr_headers, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, addr_ns_str, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, soap_header, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_info_headers_p, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, addr_headers, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, addr_ns_str, AXIS2_FAILURE);
     
     
 
@@ -495,7 +495,7 @@ axis2_addr_in_extract_addr_params(axis2_env_t **env,
 }
 
 axis2_status_t 
-axis2_addr_in_extract_epr_information(axis2_env_t **env,
+axis2_addr_in_extract_epr_information(const axis2_env_t *env,
                         axis2_soap_header_block_t *soap_header_block,
                         axis2_endpoint_ref_t *endpoint_ref,
                         axis2_char_t *addr_ns_str) 
@@ -507,9 +507,9 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
     axis2_om_element_t *header_block_ele = NULL;
     axis2_om_child_element_iterator_t *child_ele_iter = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, soap_header_block, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, endpoint_ref, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, addr_ns_str, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, soap_header_block, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, endpoint_ref, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, addr_ns_str, AXIS2_FAILURE);
     
     header_block_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(soap_header_block, env);
     header_block_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(header_block_node, env);
@@ -563,7 +563,7 @@ axis2_addr_in_extract_epr_information(axis2_env_t **env,
 }
  
 axis2_status_t 
-axis2_addr_in_extract_ref_params(axis2_env_t **env, 
+axis2_addr_in_extract_ref_params(const axis2_env_t *env, 
                    axis2_soap_header_t *soap_header,
                     axis2_msg_info_headers_t* msg_info_headers) 
 {
@@ -572,8 +572,8 @@ axis2_addr_in_extract_ref_params(axis2_env_t **env,
     axis2_qname_t *wsa_qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, soap_header, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, msg_info_headers, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, soap_header, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_info_headers, AXIS2_FAILURE);
 
     header_block_ht = AXIS2_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(soap_header, env);
     if(!header_block_ht)
@@ -619,7 +619,7 @@ axis2_addr_in_extract_ref_params(axis2_env_t **env,
 
 
 axis2_status_t 
-axis2_addr_in_extract_to_epr_ref_params(axis2_env_t **env,
+axis2_addr_in_extract_to_epr_ref_params(const axis2_env_t *env,
                           axis2_endpoint_ref_t * to_epr,
                           axis2_soap_header_t *soap_header,
                           axis2_char_t *addr_ns_str)
@@ -629,9 +629,9 @@ axis2_addr_in_extract_to_epr_ref_params(axis2_env_t **env,
     axis2_qname_t *is_ref_qn = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, to_epr, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, soap_header, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, addr_ns_str, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, to_epr, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, soap_header, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, addr_ns_str, AXIS2_FAILURE);
     
     header_blocks_ht = AXIS2_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(soap_header, env);
     if(!header_blocks_ht)
@@ -676,7 +676,7 @@ axis2_addr_in_extract_to_epr_ref_params(axis2_env_t **env,
 
 
 axis2_bool_t 
-axis2_addr_in_check_element(axis2_env_t **env, 
+axis2_addr_in_check_element(const axis2_env_t *env, 
                 axis2_qname_t *expected_qname,
                 axis2_qname_t *actual_qname)
 {
@@ -686,8 +686,8 @@ axis2_addr_in_check_element(axis2_env_t **env,
     axis2_char_t *act_qn_nsuri = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, expected_qname, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, actual_qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, expected_qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, actual_qname, AXIS2_FAILURE);
     
     exp_qn_lpart = AXIS2_QNAME_GET_LOCALPART(expected_qname, env);
     act_qn_lpart = AXIS2_QNAME_GET_LOCALPART(actual_qname, env);
@@ -700,7 +700,7 @@ axis2_addr_in_check_element(axis2_env_t **env,
 }
 
 void 
-axis2_addr_in_create_fault_envelope(axis2_env_t **env,
+axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
         axis2_char_t *header_name,
         axis2_char_t *addr_ns_str,
         axis2_msg_ctx_t *msg_ctx)

@@ -53,30 +53,30 @@ extern "C"
 
         axis2_status_t (AXIS2_CALL *
 		free_fn)(axis2_soap_fault_text_t *fault_text,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
 
         axis2_status_t (AXIS2_CALL *
 		set_lang)(axis2_soap_fault_text_t *fault_text,
-                  axis2_env_t **env,
+                  const axis2_env_t *env,
                   axis2_char_t* lang);
                                      
         axis2_char_t* (AXIS2_CALL *
 		get_lang)(axis2_soap_fault_text_t *fault_text,
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
     
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node)(axis2_soap_fault_text_t *fault_text,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
                        
         axis2_status_t (AXIS2_CALL *
         set_text)(axis2_soap_fault_text_t *fault_text,
-                  axis2_env_t **env,
+                  const axis2_env_t *env,
                   axis2_char_t *value,
                   axis2_char_t *lang);
                   
         axis2_char_t * (AXIS2_CALL *
         get_text)(axis2_soap_fault_text_t *fault_text,
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
                                                             
     };      
 
@@ -96,7 +96,7 @@ extern "C"
     * @param env Environment. MUST NOT be NULL
     */
 AXIS2_DECLARE(axis2_soap_fault_text_t *)
-axis2_soap_fault_text_create_with_parent(axis2_env_t **env,
+axis2_soap_fault_text_create_with_parent(const axis2_env_t *env,
                             axis2_soap_fault_reason_t *fault);
                             
 /******************** Macros **************************************************/

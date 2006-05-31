@@ -41,76 +41,76 @@ typedef struct axis2_phase_rule_impl
 
 axis2_char_t* AXIS2_CALL 
 axis2_phase_rule_get_before (struct axis2_phase_rule *phase_rule, 
-                             axis2_env_t **env);
+                             const axis2_env_t *env);
                              
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_before (struct axis2_phase_rule *phase_rule, 
-                             axis2_env_t **env, 
+                             const axis2_env_t *env, 
                              axis2_char_t *before);
                              
 axis2_char_t* AXIS2_CALL 
 axis2_phase_rule_get_after (struct axis2_phase_rule * phase_rule, 
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
                             
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_after (struct axis2_phase_rule * phase_rule, 
-                            axis2_env_t **env, 
+                            const axis2_env_t *env, 
                             axis2_char_t *after);
                             
 axis2_char_t* AXIS2_CALL 
 axis2_phase_rule_get_name (struct axis2_phase_rule * phase_rule, 
-                           axis2_env_t **env);
+                           const axis2_env_t *env);
                            
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_name (struct axis2_phase_rule * phase_rule, 
-                           axis2_env_t **env, 
+                           const axis2_env_t *env, 
                            const axis2_char_t *name);
 
                            
 axis2_bool_t AXIS2_CALL 
 axis2_phase_rule_is_phase_first (struct axis2_phase_rule * phase_rule, 
-                                 axis2_env_t **env);
+                                 const axis2_env_t *env);
 
                                  
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_phase_first (struct axis2_phase_rule * phase_rule, 
-                                  axis2_env_t **env, 
+                                  const axis2_env_t *env, 
                                   axis2_bool_t phae_first);
 
                                   
 axis2_bool_t AXIS2_CALL 
 axis2_phase_rule_is_phase_last (struct axis2_phase_rule * phase_rule, 
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
                                 
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_phase_last (struct axis2_phase_rule * phase_rule, 
-                                 axis2_env_t **env, 
+                                 const axis2_env_t *env, 
                                  axis2_bool_t phae_last);
                                  
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_free (struct axis2_phase_rule *phase_rule, 
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
 
                        
 axis2_phase_rule_t*  AXIS2_CALL 
 axis2_phase_rule_clone (struct axis2_phase_rule *phase_rule, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                         
 
 
 AXIS2_DECLARE(axis2_phase_rule_t*)
-axis2_phase_rule_create(axis2_env_t **env, 
+axis2_phase_rule_create(const axis2_env_t *env, 
                         axis2_char_t *name)
 {
     axis2_phase_rule_impl_t *phase_rule_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
-    phase_rule_impl = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_phase_rule_impl_t) );
+    phase_rule_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_phase_rule_impl_t) );
     if (!phase_rule_impl)
     { 
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
+        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
         return NULL;        
     }
 
@@ -127,11 +127,11 @@ axis2_phase_rule_create(axis2_env_t **env,
     
     /* initialize ops */
     phase_rule_impl->phase_rule.ops = NULL;
-    phase_rule_impl->phase_rule.ops  = AXIS2_MALLOC( (*env)->allocator, sizeof(axis2_phase_rule_ops_t) );
+    phase_rule_impl->phase_rule.ops  = AXIS2_MALLOC( env->allocator, sizeof(axis2_phase_rule_ops_t) );
     if (!phase_rule_impl->phase_rule.ops)
     {
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+        AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
+        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
         axis2_phase_rule_free(&(phase_rule_impl->phase_rule), env);
         return NULL;        
     }
@@ -177,7 +177,7 @@ axis2_phase_rule_create(axis2_env_t **env,
 
 axis2_char_t* AXIS2_CALL 
 axis2_phase_rule_get_before (struct axis2_phase_rule *phase_rule, 
-                             axis2_env_t **env)
+                             const axis2_env_t *env)
                              
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -186,7 +186,7 @@ axis2_phase_rule_get_before (struct axis2_phase_rule *phase_rule,
 
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_before (struct axis2_phase_rule *phase_rule, 
-                             axis2_env_t **env, 
+                             const axis2_env_t *env, 
                              axis2_char_t *before)
 {
     axis2_phase_rule_impl_t *phase_rule_impl = NULL;
@@ -196,7 +196,7 @@ axis2_phase_rule_set_before (struct axis2_phase_rule *phase_rule,
     phase_rule_impl = AXIS2_INTF_TO_IMPL(phase_rule);
     if (phase_rule_impl->before)
     {
-        AXIS2_FREE((*env)->allocator, phase_rule_impl->before);
+        AXIS2_FREE(env->allocator, phase_rule_impl->before);
         phase_rule_impl->before = NULL;
     }
     
@@ -205,8 +205,8 @@ axis2_phase_rule_set_before (struct axis2_phase_rule *phase_rule,
         phase_rule_impl->before  = AXIS2_STRDUP(before, env);
         if (!phase_rule_impl->before)
         {
-            AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-            AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+            AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
+            AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
@@ -216,7 +216,7 @@ axis2_phase_rule_set_before (struct axis2_phase_rule *phase_rule,
 
 axis2_char_t* AXIS2_CALL 
 axis2_phase_rule_get_after (struct axis2_phase_rule * phase_rule, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(phase_rule)->after;
@@ -224,7 +224,7 @@ axis2_phase_rule_get_after (struct axis2_phase_rule * phase_rule,
 
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_after (struct axis2_phase_rule * phase_rule, 
-                            axis2_env_t **env, 
+                            const axis2_env_t *env, 
                             axis2_char_t *after)
 {
     axis2_phase_rule_impl_t *phase_rule_impl = NULL;
@@ -234,7 +234,7 @@ axis2_phase_rule_set_after (struct axis2_phase_rule * phase_rule,
     phase_rule_impl = AXIS2_INTF_TO_IMPL(phase_rule);
     if (phase_rule_impl->after)
     {
-        AXIS2_FREE((*env)->allocator, phase_rule_impl->after);
+        AXIS2_FREE(env->allocator, phase_rule_impl->after);
         phase_rule_impl->after = NULL;
     }
     
@@ -243,8 +243,8 @@ axis2_phase_rule_set_after (struct axis2_phase_rule * phase_rule,
         phase_rule_impl->after  = AXIS2_STRDUP(after, env);
         if (!phase_rule_impl->after)
         {
-            AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-            AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+            AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
+            AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
@@ -254,7 +254,7 @@ axis2_phase_rule_set_after (struct axis2_phase_rule * phase_rule,
 
 axis2_char_t* AXIS2_CALL 
 axis2_phase_rule_get_name (struct axis2_phase_rule * phase_rule, 
-                           axis2_env_t **env)
+                           const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(phase_rule)->name;
@@ -262,7 +262,7 @@ axis2_phase_rule_get_name (struct axis2_phase_rule * phase_rule,
 
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_name (struct axis2_phase_rule * phase_rule, 
-                           axis2_env_t **env, 
+                           const axis2_env_t *env, 
                            const axis2_char_t *name)
 {
     axis2_phase_rule_impl_t *phase_rule_impl = NULL;
@@ -272,7 +272,7 @@ axis2_phase_rule_set_name (struct axis2_phase_rule * phase_rule,
     phase_rule_impl = AXIS2_INTF_TO_IMPL(phase_rule);
     if (phase_rule_impl->name)
     {
-        AXIS2_FREE((*env)->allocator, phase_rule_impl->name);
+        AXIS2_FREE(env->allocator, phase_rule_impl->name);
         phase_rule_impl->name = NULL;
     }
     
@@ -281,8 +281,8 @@ axis2_phase_rule_set_name (struct axis2_phase_rule * phase_rule,
         phase_rule_impl->name  = AXIS2_STRDUP(name, env);
         if (!phase_rule_impl->name)
         {
-            AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_NO_MEMORY);
-            AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE);
+            AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
+            AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
     }
@@ -293,7 +293,7 @@ axis2_phase_rule_set_name (struct axis2_phase_rule * phase_rule,
 
 axis2_bool_t AXIS2_CALL 
 axis2_phase_rule_is_phase_first (struct axis2_phase_rule * phase_rule, 
-                                 axis2_env_t **env)
+                                 const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(phase_rule)->phase_first;
@@ -301,7 +301,7 @@ axis2_phase_rule_is_phase_first (struct axis2_phase_rule * phase_rule,
 
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_phase_first (struct axis2_phase_rule * phase_rule, 
-                                  axis2_env_t **env, 
+                                  const axis2_env_t *env, 
                                   axis2_bool_t phase_first)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -311,7 +311,7 @@ axis2_phase_rule_set_phase_first (struct axis2_phase_rule * phase_rule,
 
 axis2_bool_t AXIS2_CALL 
 axis2_phase_rule_is_phase_last (struct axis2_phase_rule * phase_rule, 
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(phase_rule)->phase_last;
@@ -319,7 +319,7 @@ axis2_phase_rule_is_phase_last (struct axis2_phase_rule * phase_rule,
 
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_phase_last (struct axis2_phase_rule * phase_rule, 
-                                 axis2_env_t **env, 
+                                 const axis2_env_t *env, 
                                  axis2_bool_t phase_last)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -330,7 +330,7 @@ axis2_phase_rule_set_phase_last (struct axis2_phase_rule * phase_rule,
 
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_free (struct axis2_phase_rule *phase_rule, 
-                       axis2_env_t **env)
+                       const axis2_env_t *env)
 {
     axis2_phase_rule_impl_t *phase_rule_impl = NULL;
     
@@ -340,29 +340,29 @@ axis2_phase_rule_free (struct axis2_phase_rule *phase_rule,
     
     if (phase_rule_impl->phase_rule.ops)
     {
-        AXIS2_FREE((*env)->allocator, phase_rule_impl->phase_rule.ops);
+        AXIS2_FREE(env->allocator, phase_rule_impl->phase_rule.ops);
         phase_rule_impl->phase_rule.ops = NULL;
     }
     
     if (phase_rule_impl->before)
     {
-        AXIS2_FREE((*env)->allocator, phase_rule_impl->before);
+        AXIS2_FREE(env->allocator, phase_rule_impl->before);
         phase_rule_impl->before = NULL;
     }    
     
 	if (phase_rule_impl->after)
     {
-        AXIS2_FREE((*env)->allocator, phase_rule_impl->after);
+        AXIS2_FREE(env->allocator, phase_rule_impl->after);
         phase_rule_impl->after = NULL;
     }
 	
     if (phase_rule_impl->name)
     {
-        AXIS2_FREE((*env)->allocator, phase_rule_impl->name);
+        AXIS2_FREE(env->allocator, phase_rule_impl->name);
         phase_rule_impl->name = NULL;
     }
     
-    AXIS2_FREE((*env)->allocator, phase_rule_impl);
+    AXIS2_FREE(env->allocator, phase_rule_impl);
     phase_rule_impl = NULL;
     
     return AXIS2_SUCCESS;
@@ -370,7 +370,7 @@ axis2_phase_rule_free (struct axis2_phase_rule *phase_rule,
 
 axis2_phase_rule_t*  AXIS2_CALL 
 axis2_phase_rule_clone (struct axis2_phase_rule *phase_rule, 
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_phase_rule_t *phase_rule_new = NULL;
     AXIS2_ENV_CHECK(env, NULL);

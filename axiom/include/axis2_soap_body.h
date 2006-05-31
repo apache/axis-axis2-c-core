@@ -71,7 +71,7 @@ struct axis2_soap_builder;
          */
         axis2_status_t (AXIS2_CALL *
 		free)(axis2_soap_body_t *body,
-              axis2_env_t **env);
+              const axis2_env_t *env);
 		
         /**
          * Indicates whether a soap fault is available with this 
@@ -82,7 +82,7 @@ struct axis2_soap_builder;
          */
         axis2_bool_t (AXIS2_CALL *
 		has_fault)(axis2_soap_body_t *body,
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
 				   
         /**
          * returns the soap fault in this soap_body 
@@ -94,7 +94,7 @@ struct axis2_soap_builder;
         */
         axis2_soap_fault_t* (AXIS2_CALL *
 		get_fault)(axis2_soap_body_t *body,
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
 				   
         /**
          * get the underlying om_node 
@@ -104,7 +104,7 @@ struct axis2_soap_builder;
          */
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node)(axis2_soap_body_t *body,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
 					   
         /**
          *  return the soap version 
@@ -114,7 +114,7 @@ struct axis2_soap_builder;
          */
         int (AXIS2_CALL *
 		get_soap_version)(axis2_soap_body_t *body,
-                          axis2_env_t **env);
+                          const axis2_env_t *env);
                                                       
                                                      
         /**
@@ -123,7 +123,7 @@ struct axis2_soap_builder;
          */                                                 
         axis2_status_t (AXIS2_CALL *
 		build)(axis2_soap_body_t *body, 
-               axis2_env_t **env);                                                 
+               const axis2_env_t *env);                                                 
 
        /** add an om node as the child to this soap_body 
         * the child is added to as the first child 
@@ -135,7 +135,7 @@ struct axis2_soap_builder;
 
         axis2_status_t (AXIS2_CALL *
         add_child)(axis2_soap_body_t *body,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    axis2_om_node_t *child);
                    
 
@@ -158,7 +158,7 @@ struct axis2_soap_builder;
     */
    
 AXIS2_DECLARE(axis2_soap_body_t *)
-axis2_soap_body_create_with_parent(axis2_env_t **env, 
+axis2_soap_body_create_with_parent(const axis2_env_t *env, 
                                    struct axis2_soap_envelope *envelope);
     
 /******************** Macros **************************************************/

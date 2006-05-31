@@ -111,7 +111,7 @@ AXIS2_DECLARE(axis2_thread_pool_t *) axis2_thread_pool_init(
  * spawning a new thread via a thread function
  */
 AXIS2_DECLARE (struct axis2_env *)
-axis2_init_thread_env(struct axis2_env **system_env);
+axis2_init_thread_env(const struct axis2_env *system_env);
 
 #define AXIS2_THREAD_POOL_GET_THREAD(thread_pool, func, data) \
 		((thread_pool)->ops->get_thread(thread_pool, func, data))

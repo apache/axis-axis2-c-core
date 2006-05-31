@@ -62,55 +62,55 @@ struct axis2_woden_endpoint_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *endpoint_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_endpoint_element_free) (
             void *endpoint_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *endpoint_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_name) (
             void *endpoint_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             woden_nc_name_t *name);
 
     woden_nc_name_t *(AXIS2_CALL *
     get_name) (
             void *endpoint_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_binding_qname) (
             void *endpoint_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
     get_binding_qname) (
             void *endpoint_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     void *(AXIS2_CALL *
     get_binding_element) (
             void *endpoint_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_address) (
             void *endpoint_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *uri);
 
     axis2_url_t *(AXIS2_CALL *
     get_address) (
             void *endpoint_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 };
 
@@ -131,7 +131,7 @@ struct axis2_woden_endpoint_element
 axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_element_resolve_methods(
         axis2_woden_endpoint_element_t *endpoint_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

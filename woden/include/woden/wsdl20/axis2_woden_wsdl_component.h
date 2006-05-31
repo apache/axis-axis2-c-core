@@ -57,22 +57,22 @@ struct axis2_woden_wsdl_component_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *wsdl_component,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_wsdl_component_free) (
             void *wsdl_component,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *wsdl_component,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     void *(AXIS2_CALL *
     get_component_exts_for_namespace) (
             void *wsdl_component,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *namespc);
 
 };
@@ -86,7 +86,7 @@ struct axis2_woden_wsdl_component
 axis2_status_t AXIS2_CALL
 axis2_woden_wsdl_component_resolve_methods(
         axis2_woden_wsdl_component_t *wsdl_component,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

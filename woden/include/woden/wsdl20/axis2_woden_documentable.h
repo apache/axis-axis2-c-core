@@ -54,17 +54,17 @@ struct axis2_woden_documentable_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *documentable,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_documentable_free) (
             void *documentable,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *documentable,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     /**
      * @return the base implementation class
@@ -72,18 +72,18 @@ struct axis2_woden_documentable_ops
     axis2_woden_wsdl_obj_t *(AXIS2_CALL *
     get_base_impl) (
             void *documentable,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     add_documentation_element) (
             void *types,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             struct axis2_woden_documentation_element *documentation);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_documentation_elements) (
             void *types,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 
 };
@@ -102,13 +102,13 @@ struct axis2_woden_documentable
 
 AXIS2_DECLARE(axis2_woden_documentable_t *)
 axis2_woden_documentable_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_documentable_resolve_methods(
         axis2_woden_documentable_t *documentable,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_documentable_t *documentable_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

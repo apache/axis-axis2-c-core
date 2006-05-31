@@ -34,7 +34,7 @@ extern "C"
   * @return axis2_stream (ssl)
   */
 AXIS2_DECLARE(axis2_stream_t *) 
-axis2_stream_create_ssl(axis2_env_t **env, axis2_socket_t socket);
+axis2_stream_create_ssl(const axis2_env_t *env, axis2_socket_t socket);
 
 /** @} */
     

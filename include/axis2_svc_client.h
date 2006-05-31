@@ -75,7 +75,7 @@ struct axis2_svc_client_ops
     axis2_svc_t* (AXIS2_CALL *
     get_svc)(
         struct axis2_svc_client *svc_client, 
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
   /**
     * Sets the options to be used by service client
@@ -87,7 +87,7 @@ struct axis2_svc_client_ops
     axis2_status_t (AXIS2_CALL *
     set_options)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_options_t *options);    
 
   /**
@@ -99,7 +99,7 @@ struct axis2_svc_client_ops
     axis2_options_t* (AXIS2_CALL *
     get_options)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
   /**
     * Sets the client options related to this service interaction to
@@ -112,7 +112,7 @@ struct axis2_svc_client_ops
     axis2_status_t (AXIS2_CALL *
     set_override_options)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_options_t *override_options);    
 
   /**
@@ -124,7 +124,7 @@ struct axis2_svc_client_ops
     axis2_options_t* (AXIS2_CALL *
     get_override_options)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env);    
+        const axis2_env_t *env);    
 
   /**
     * Engages the named module
@@ -136,7 +136,7 @@ struct axis2_svc_client_ops
     axis2_status_t (AXIS2_CALL *
     engage_module)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *module_name);
 
   /**
@@ -149,7 +149,7 @@ struct axis2_svc_client_ops
     axis2_status_t (AXIS2_CALL *
     disengage_module)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *module_name);
     
   /**
@@ -164,7 +164,7 @@ struct axis2_svc_client_ops
     axis2_status_t (AXIS2_CALL *
     add_header)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_node_t *header);
 
   /**
@@ -176,7 +176,7 @@ struct axis2_svc_client_ops
     axis2_status_t (AXIS2_CALL *
     remove_headers)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
   /**
     * Adds a simple header consisting of some text to be sent with interactions.
@@ -189,7 +189,7 @@ struct axis2_svc_client_ops
     axis2_status_t (AXIS2_CALL *
     add_header_with_text)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *header_name,
         axis2_char_t *header_text);     
 
@@ -204,7 +204,7 @@ struct axis2_svc_client_ops
     axis2_status_t (AXIS2_CALL *
     send_robust)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_node_t *payload);
 
   /**
@@ -223,7 +223,7 @@ struct axis2_svc_client_ops
     axis2_status_t (AXIS2_CALL *
     send_robust_with_op_qname)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *op_qname,
         axis2_om_node_t *payload);
     
@@ -239,7 +239,7 @@ struct axis2_svc_client_ops
     void (AXIS2_CALL *
     fire_and_forget)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_node_t *payload);
 
   /**
@@ -259,7 +259,7 @@ struct axis2_svc_client_ops
     void (AXIS2_CALL *
     fire_and_forget_with_op_qname)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *op_qname,
         axis2_om_node_t *payload);
 
@@ -275,7 +275,7 @@ struct axis2_svc_client_ops
     axis2_om_node_t* (AXIS2_CALL *
     send_receive)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_node_t *payload);
 
   /**
@@ -294,7 +294,7 @@ struct axis2_svc_client_ops
     axis2_om_node_t* (AXIS2_CALL *
     send_receive_with_op_qname)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *op_qname,    
         axis2_om_node_t *payload);
 
@@ -311,7 +311,7 @@ struct axis2_svc_client_ops
     void (AXIS2_CALL *
     send_receive_non_blocking)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_node_t *payload,
         axis2_callback_t *callback);
 
@@ -332,7 +332,7 @@ struct axis2_svc_client_ops
     void (AXIS2_CALL *
     send_receive_non_blocking_with_op_qname)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *op_qname,
         axis2_om_node_t *payload,
         axis2_callback_t *callback);
@@ -349,7 +349,7 @@ struct axis2_svc_client_ops
     axis2_op_client_t* (AXIS2_CALL *
     create_op_client)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *op_qname);
 
   /**
@@ -362,7 +362,7 @@ struct axis2_svc_client_ops
     axis2_status_t (AXIS2_CALL *
     finalize_invoke)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
   /**
     * Gets the from EPR 
@@ -374,7 +374,7 @@ struct axis2_svc_client_ops
     axis2_endpoint_ref_t* (AXIS2_CALL *
     get_my_epr)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *transport);                
         
   /**
@@ -386,7 +386,7 @@ struct axis2_svc_client_ops
     axis2_endpoint_ref_t* (AXIS2_CALL *
     get_target_epr)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
   /**
     * Sets the target EPR 
@@ -398,7 +398,7 @@ struct axis2_svc_client_ops
     axis2_status_t (AXIS2_CALL *
     set_target_epr)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_endpoint_ref_t *target_epr);        
         
   /**
@@ -410,7 +410,7 @@ struct axis2_svc_client_ops
     axis2_svc_ctx_t* (AXIS2_CALL *
     get_svc_ctx)(
         struct axis2_svc_client *svc_client,
-           axis2_env_t **env);        
+           const axis2_env_t *env);        
 
   /**
     * Frees the service client 
@@ -422,7 +422,7 @@ struct axis2_svc_client_ops
     axis2_status_t (AXIS2_CALL *
     free)(
         struct axis2_svc_client *svc_client,
-        axis2_env_t **env);    
+        const axis2_env_t *env);    
 };
 
 /** 
@@ -443,7 +443,7 @@ struct axis2_svc_client
  */
 AXIS2_DECLARE(axis2_svc_client_t*) 
 axis2_svc_client_create(
-    axis2_env_t **env, 
+    const axis2_env_t *env, 
     axis2_char_t *client_home);
 
 /**
@@ -458,7 +458,7 @@ axis2_svc_client_create(
  */
 AXIS2_DECLARE(axis2_svc_client_t*) 
 axis2_svc_client_create_with_conf_ctx_and_svc(
-    axis2_env_t **env,
+    const axis2_env_t *env,
     axis2_conf_ctx_t *conf_ctx,
     axis2_svc_t *svc,
     axis2_char_t *client_home);

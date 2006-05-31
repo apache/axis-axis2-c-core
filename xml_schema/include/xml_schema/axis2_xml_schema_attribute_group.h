@@ -53,51 +53,51 @@ struct axis2_xml_schema_attribute_group_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *attr_grp,
-            axis2_env_t **env);
+            const axis2_env_t *env);
             
     axis2_xml_schema_types_t (AXIS2_CALL *
     type)(
             void *attr_grp,
-            axis2_env_t **env);
+            const axis2_env_t *env);
           
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(
             void *attr_grp,
-            axis2_env_t **env);
+            const axis2_env_t *env);
                                       
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl)(
             void *attr_grp,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_xml_schema_any_attribute_t* (AXIS2_CALL *
     get_any_attribute)(
             void *attr_grp,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_any_attribute)(
             void *attr_grp,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_xml_schema_any_attribute_t* any_attr);  
     
     axis2_xml_schema_obj_collection_t* (AXIS2_CALL *
     get_attributes)(void *attr_grp,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_attributes)(void *attr_grp,
-                     axis2_env_t **env,
+                     const axis2_env_t *env,
                      axis2_xml_schema_obj_collection_t* attributes);
 
     axis2_char_t* (AXIS2_CALL *
     get_name)(void *attr_grp,
-              axis2_env_t **env);
+              const axis2_env_t *env);
               
     axis2_status_t (AXIS2_CALL *
     set_name)(void *attr_grp,
-              axis2_env_t **env,
+              const axis2_env_t *env,
               axis2_char_t *name);
               
 };
@@ -109,7 +109,7 @@ struct axis2_xml_schema_attribute_group
 };
 
 AXIS2_DECLARE(axis2_xml_schema_attribute_group_t *)
-axis2_xml_schema_attribute_group_create(axis2_env_t **env);
+axis2_xml_schema_attribute_group_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -117,7 +117,7 @@ axis2_xml_schema_attribute_group_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_attribute_resolve_methods(
                                 axis2_xml_schema_attribute_t *attr,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_attribute_t *any_impl,
                                 axis2_hash_t *methods);
  */

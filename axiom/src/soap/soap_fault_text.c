@@ -47,45 +47,45 @@
 
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_text_free(axis2_soap_fault_text_t *fault_text,
-                                  axis2_env_t **env);
+                                  const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_text_set_lang(axis2_soap_fault_text_t *fault_text,
-                                      axis2_env_t **env,
+                                      const axis2_env_t *env,
                                       axis2_char_t* lang);
                                      
 axis2_char_t* AXIS2_CALL
 axis2_soap_fault_text_get_lang(axis2_soap_fault_text_t *fault_text,
-                                      axis2_env_t **env);
+                                      const axis2_env_t *env);
                                      
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_fault_text_get_base_node(axis2_soap_fault_text_t *fault_text,
-                                      axis2_env_t **env);
+                                      const axis2_env_t *env);
                                       
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_text_set_text(axis2_soap_fault_text_t *fault_text,
-                               axis2_env_t **env,
+                               const axis2_env_t *env,
                                axis2_char_t *value,
                                axis2_char_t *lang);
                                                                     
 axis2_char_t* AXIS2_CALL
 axis2_soap_fault_text_get_text(axis2_soap_fault_text_t *fault_text,
-                               axis2_env_t **env);                                      
+                               const axis2_env_t *env);                                      
 /***************************** functions **************************************/                                      
                                                        
 
 AXIS2_DECLARE(axis2_soap_fault_text_t *)
-axis2_soap_fault_text_create(axis2_env_t **env)
+axis2_soap_fault_text_create(const axis2_env_t *env)
 {
     axis2_soap_fault_text_impl_t *fault_text_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     
     fault_text_impl = (axis2_soap_fault_text_impl_t*)AXIS2_MALLOC(
-                        (*env)->allocator,
+                        env->allocator,
                         sizeof(axis2_soap_fault_text_impl_t));
     if(!fault_text_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }                                  
     
@@ -103,13 +103,13 @@ axis2_soap_fault_text_create(axis2_env_t **env)
             return NULL;
             
     fault_text_impl->fault_text.ops = (axis2_soap_fault_text_ops_t*)AXIS2_MALLOC(
-                                       (*env)->allocator,
+                                       env->allocator,
                                        sizeof(axis2_soap_fault_text_ops_t));
     if(!(fault_text_impl->fault_text.ops))
     {
-        AXIS2_FREE((*env)->allocator, fault_text_impl);
+        AXIS2_FREE(env->allocator, fault_text_impl);
         fault_text_impl = NULL;
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }                                       
     fault_text_impl->fault_text.ops->free_fn = 
@@ -137,7 +137,7 @@ axis2_soap_fault_text_create(axis2_env_t **env)
 
 
 AXIS2_DECLARE(axis2_soap_fault_text_t *)
-axis2_soap_fault_text_create_with_parent(axis2_env_t **env,
+axis2_soap_fault_text_create_with_parent(const axis2_env_t *env,
                             axis2_soap_fault_reason_t *parent)
 {
     axis2_soap_fault_text_impl_t *fault_text_impl = NULL;
@@ -150,7 +150,7 @@ axis2_soap_fault_text_create_with_parent(axis2_env_t **env,
     axis2_om_element_t *parent_ele = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, parent, NULL);
+    AXIS2_PARAM_CHECK(env->error, parent, NULL);
     
     fault_text = axis2_soap_fault_text_create(env);
     
@@ -200,7 +200,7 @@ axis2_soap_fault_text_create_with_parent(axis2_env_t **env,
                                                        
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_text_free(axis2_soap_fault_text_t *fault_text,
-                                  axis2_env_t **env)
+                                  const axis2_env_t *env)
 {
     axis2_soap_fault_text_impl_t* fault_text_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -208,7 +208,7 @@ axis2_soap_fault_text_free(axis2_soap_fault_text_t *fault_text,
     
     if(NULL != fault_text->ops)
     {
-        AXIS2_FREE((*env)->allocator, fault_text->ops);
+        AXIS2_FREE(env->allocator, fault_text->ops);
         fault_text->ops = NULL; 
     }    
     if(fault_text_impl->lang_ns_used == AXIS2_FALSE && fault_text_impl->lang_namespace)
@@ -216,14 +216,14 @@ axis2_soap_fault_text_free(axis2_soap_fault_text_t *fault_text,
         AXIS2_OM_NAMESPACE_FREE(fault_text_impl->lang_namespace, env);
         fault_text_impl->lang_namespace = NULL;
     }
-    AXIS2_FREE((*env)->allocator, fault_text_impl);
+    AXIS2_FREE(env->allocator, fault_text_impl);
     fault_text_impl = NULL;
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_text_set_lang(axis2_soap_fault_text_t *fault_text,
-                                      axis2_env_t **env,
+                                      const axis2_env_t *env,
                                       axis2_char_t* lang)
 {
     axis2_soap_fault_text_impl_t* fault_text_impl = NULL;
@@ -231,7 +231,7 @@ axis2_soap_fault_text_set_lang(axis2_soap_fault_text_t *fault_text,
     axis2_om_element_t *om_ele = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, lang, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, lang, AXIS2_FAILURE);
     
     fault_text_impl = AXIS2_INTF_TO_IMPL(fault_text);
     if(NULL != fault_text_impl->lang_attribute)
@@ -279,7 +279,7 @@ axis2_soap_fault_text_set_lang(axis2_soap_fault_text_t *fault_text,
                                      
 axis2_char_t* AXIS2_CALL
 axis2_soap_fault_text_get_lang(axis2_soap_fault_text_t *fault_text,
-                                      axis2_env_t **env)
+                                      const axis2_env_t *env)
 {
     axis2_soap_fault_text_impl_t* fault_text_impl = NULL;
     axis2_om_element_t* om_ele = NULL;
@@ -318,18 +318,18 @@ axis2_soap_fault_text_get_lang(axis2_soap_fault_text_t *fault_text,
                                      
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_text_set_base_node(axis2_soap_fault_text_t *fault_text,
-                                      axis2_env_t **env,
+                                      const axis2_env_t *env,
                                       axis2_om_node_t *node)
 {
     axis2_soap_fault_text_impl_t* fault_text_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
     
     fault_text_impl = AXIS2_INTF_TO_IMPL(fault_text);
     
     if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -339,7 +339,7 @@ axis2_soap_fault_text_set_base_node(axis2_soap_fault_text_t *fault_text,
     
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_fault_text_get_base_node(axis2_soap_fault_text_t *fault_text,
-                                      axis2_env_t **env)
+                                      const axis2_env_t *env)
 {
     axis2_soap_fault_text_impl_t* fault_text_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -349,14 +349,14 @@ axis2_soap_fault_text_get_base_node(axis2_soap_fault_text_t *fault_text,
 
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_text_set_text(axis2_soap_fault_text_t *fault_text,
-                               axis2_env_t **env,
+                               const axis2_env_t *env,
                                axis2_char_t *value,
                                axis2_char_t *lang)
 {
     axis2_soap_fault_text_impl_t *text_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, value, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
     
     text_impl = AXIS2_INTF_TO_IMPL(fault_text);
     
@@ -380,7 +380,7 @@ axis2_soap_fault_text_set_text(axis2_soap_fault_text_t *fault_text,
                                
 axis2_char_t* AXIS2_CALL
 axis2_soap_fault_text_get_text(axis2_soap_fault_text_t *fault_text,
-                               axis2_env_t **env)
+                               const axis2_env_t *env)
 {
     axis2_soap_fault_text_impl_t *text_impl = NULL;
     axis2_char_t *text = NULL;

@@ -62,14 +62,14 @@ AXIS2_DECLARE_DATA struct axis2_ws_info_list_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free) (axis2_ws_info_list_t *ws_info_list,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
 
     /**
      * This method is used to initialize the vector
      */
     axis2_status_t (AXIS2_CALL *
     init) (axis2_ws_info_list_t *info_list,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
     
     /**
      * First it check whether the file is already available in the
@@ -87,7 +87,7 @@ AXIS2_DECLARE_DATA struct axis2_ws_info_list_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_ws_info_item) (axis2_ws_info_list_t *info_list,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_file_t *file, 
                                         int type);
     
@@ -99,7 +99,7 @@ AXIS2_DECLARE_DATA struct axis2_ws_info_list_ops
      */
     axis2_ws_info_t *(AXIS2_CALL *
     get_file_item) (axis2_ws_info_list_t *info_list,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *file_name);
     
     /**
@@ -111,7 +111,7 @@ AXIS2_DECLARE_DATA struct axis2_ws_info_list_ops
      */
     axis2_bool_t (AXIS2_CALL *
     is_modified) (axis2_ws_info_list_t *info_list,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_file_t *file, 
                                     struct axis2_ws_info *ws_info);
     
@@ -122,7 +122,7 @@ AXIS2_DECLARE_DATA struct axis2_ws_info_list_ops
      */
     axis2_bool_t (AXIS2_CALL *
     is_file_exist) (axis2_ws_info_list_t *info_list,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *file_name);
     
     /**
@@ -134,7 +134,7 @@ AXIS2_DECLARE_DATA struct axis2_ws_info_list_ops
      */
     axis2_status_t (AXIS2_CALL *
     check_for_undeploy) (axis2_ws_info_list_t *info_list,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
     
     
     /**
@@ -142,7 +142,7 @@ AXIS2_DECLARE_DATA struct axis2_ws_info_list_ops
      */
     axis2_status_t (AXIS2_CALL *
     update) (axis2_ws_info_list_t *info_list,
-                                axis2_env_t **env);    
+                                const axis2_env_t *env);    
        
 };
     
@@ -160,7 +160,7 @@ AXIS2_DECLARE_DATA struct axis2_ws_info_list
  * @return pointer to newly created ws info list
  */
 AXIS2_DECLARE(axis2_ws_info_list_t *) 
-axis2_ws_info_list_create_with_dep_engine (axis2_env_t **env,
+axis2_ws_info_list_create_with_dep_engine (const axis2_env_t *env,
                                             struct axis2_dep_engine *dep_engine);
 
 

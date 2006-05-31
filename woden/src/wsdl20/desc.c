@@ -63,27 +63,27 @@ struct axis2_woden_desc_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_desc_free(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 static axis2_status_t AXIS2_CALL
 axis2_woden_desc_free_ops(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_woden_desc_super_objs(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_desc_type(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_documentable_t *AXIS2_CALL
 axis2_woden_desc_get_base_impl(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /* ************************************************************
  *  Description interface methods (the WSDL Component model)
@@ -91,44 +91,44 @@ axis2_woden_desc_get_base_impl(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_interfaces(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_bindings(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_svcs(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_element_decls(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_element_decl(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_type_defs(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_type_def(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname);
 
 void *AXIS2_CALL
 axis2_woden_desc_to_element(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /* ************************************************************
  *  Description Element interface methods (the XML Element model)
@@ -137,204 +137,204 @@ axis2_woden_desc_to_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_set_document_base_uri(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_url_t *doc_base_uri);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_set_target_namespace(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_url_t *namespc);
 
 axis2_url_t *AXIS2_CALL
 axis2_woden_desc_get_target_namespace(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_namespace(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_url_t *namespc);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_remove_namespace(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix);
 
 axis2_url_t *AXIS2_CALL
 axis2_woden_desc_get_namespace(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_namespaces(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_import_element(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_url_t *import_el);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_import_elements(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_include_element(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_url_t *include_el);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_include_elements(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_set_types_element(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *types_el);
 
 axis2_url_t *AXIS2_CALL
 axis2_woden_desc_get_types_element(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_interface_element(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_url_t *interface_el);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_interface_elements(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_binding_element(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_url_t *binding_el);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_binding_elements(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_svc_element(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_url_t *svc_el);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_svc_elements(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /* Creator methods */
 
 void *AXIS2_CALL
 axis2_woden_desc_create_documentation_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_import_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_include_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_types_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_fault_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_op_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_fault_ref_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_msg_ref_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_fault_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_op_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_fault_ref_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_msg_ref_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_svc_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_endpoint_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_feature_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_create_property_element(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_set_extension_registry(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *ext_reg);
 
 void *AXIS2_CALL
 axis2_woden_desc_get_extension_registry(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_desc_to_component(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 }
 /* ************************************************************
  *  Non-API implementation methods
@@ -353,46 +353,46 @@ axis2_woden_desc_to_component(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_to_all_interfaces(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *interface);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_to_all_bindings(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *binding);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_to_all_svcs(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *svc);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_to_all_element_decls(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *element_decl);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_to_all_type_defs(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *type_def);
 
 static axis2_status_t AXIS2_CALL
 axis2_woden_desc_init_components(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 static axis2_woden_desc_t *
-create(axis2_env_t **env);
+create(const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_woden_desc_t *)
 axis2_woden_desc_to_desc_element(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
    
@@ -406,7 +406,7 @@ axis2_woden_desc_to_desc_element(
 
     axis2_woden_desc_free_ops(desc, env);
     desc_impl->desc.base.desc_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_desc_element_ops_t));
     axis2_woden_desc_element_resolve_methods(&(desc_impl->desc.base.
             desc_element), env, desc_impl->methods);
@@ -416,7 +416,7 @@ axis2_woden_desc_to_desc_element(
 AXIS2_DECLARE(axis2_woden_desc_t *)
 axis2_woden_desc_to_documentable_element(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
    
@@ -430,7 +430,7 @@ axis2_woden_desc_to_documentable_element(
 
     axis2_woden_desc_free_ops(desc, env);
     desc_impl->desc.base.desc_element.base.documentable_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_documentable_element_ops_t));
     axis2_woden_documentable_element_resolve_methods(&(desc_impl->desc.base.
             desc_element.base.documentable_element), env, 
@@ -441,7 +441,7 @@ axis2_woden_desc_to_documentable_element(
 AXIS2_DECLARE(axis2_woden_desc_t *)
 axis2_woden_desc_to_documentable(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
    
@@ -455,7 +455,7 @@ axis2_woden_desc_to_documentable(
 
     axis2_woden_desc_free_ops(desc, env);
     desc_impl->desc.base.documentable.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_documentable_ops_t));
     axis2_woden_documentable_resolve_methods(&(desc_impl->desc.base.
             documentable), env, desc_impl->documentable, 
@@ -466,7 +466,7 @@ axis2_woden_desc_to_documentable(
 AXIS2_DECLARE(axis2_woden_desc_t *)
 axis2_woden_desc_to_wsdl_obj(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     void *wsdl_obj = NULL;
@@ -481,7 +481,7 @@ axis2_woden_desc_to_wsdl_obj(
 
     axis2_woden_desc_free_ops(desc, env);
     desc_impl->desc.base.documentable.base.wsdl_obj.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_wsdl_obj_ops_t));
     wsdl_obj = AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(
             desc_impl->documentable, env);
@@ -493,7 +493,7 @@ axis2_woden_desc_to_wsdl_obj(
 AXIS2_DECLARE(axis2_woden_desc_t *)
 axis2_woden_desc_to_wsdl_component(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
 
@@ -507,7 +507,7 @@ axis2_woden_desc_to_wsdl_component(
         desc_impl = (axis2_woden_desc_impl_t *) desc;
     axis2_woden_desc_free_ops(desc, env);
     desc_impl->desc.base.wsdl_component.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_woden_wsdl_component_ops_t));
     axis2_woden_wsdl_component_resolve_methods(&(desc_impl->desc.base.
             wsdl_component), env, desc_impl->methods);
@@ -516,12 +516,12 @@ axis2_woden_desc_to_wsdl_component(
 
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_desc_t *
-create(axis2_env_t **env)
+create(const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    desc_impl = AXIS2_MALLOC((*env)->allocator, 
+    desc_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_desc_impl_t));
 
     desc_impl->obj_type= AXIS2_WODEN_DESC;
@@ -558,7 +558,7 @@ create(axis2_env_t **env)
     desc_impl->desc.base.documentable.base.wsdl_obj.base.wsdl_element.
             base.element_extensible.ops = NULL;
     
-    desc_impl->desc.ops = AXIS2_MALLOC((*env)->allocator, 
+    desc_impl->desc.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_desc_ops_t));
 
     desc_impl->desc.ops->free = axis2_woden_desc_free;
@@ -578,7 +578,7 @@ create(axis2_env_t **env)
     desc_impl->methods = axis2_hash_make(env);
     if(!desc_impl->methods) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(desc_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -755,7 +755,7 @@ create(axis2_env_t **env)
 }
 
 AXIS2_DECLARE(axis2_woden_desc_t *)
-axis2_woden_desc_create(axis2_env_t **env)
+axis2_woden_desc_create(const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
    
@@ -767,7 +767,7 @@ axis2_woden_desc_create(axis2_env_t **env)
     desc_impl->super = axis2_hash_make(env);
     if(!desc_impl->super) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(desc_impl->super, "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING, 
@@ -781,7 +781,7 @@ axis2_woden_desc_create(axis2_env_t **env)
 static axis2_status_t AXIS2_CALL
 axis2_woden_desc_free_ops(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
 
@@ -790,14 +790,14 @@ axis2_woden_desc_free_ops(
 
     if(desc_impl->desc.base.desc_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, desc_impl->desc.base.
+        AXIS2_FREE(env->allocator, desc_impl->desc.base.
                 desc_element.ops);
         desc_impl->desc.base.desc_element.ops = NULL;
     }
 
     if(desc_impl->desc.base.desc_element.base.documentable_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, desc_impl->desc.base.
+        AXIS2_FREE(env->allocator, desc_impl->desc.base.
                 desc_element.base.documentable_element.ops);
         desc_impl->desc.base.desc_element.base.documentable_element.ops = 
             NULL;
@@ -805,7 +805,7 @@ axis2_woden_desc_free_ops(
     
     if(desc_impl->desc.base.documentable.ops)
     {
-        AXIS2_FREE((*env)->allocator, desc_impl->desc.base.
+        AXIS2_FREE(env->allocator, desc_impl->desc.base.
                 documentable.ops);
         desc_impl->desc.base.documentable.ops = 
             NULL;
@@ -813,7 +813,7 @@ axis2_woden_desc_free_ops(
     
     if(desc_impl->desc.base.documentable.base.wsdl_obj.ops)
     {
-        AXIS2_FREE((*env)->allocator, desc_impl->desc.base.
+        AXIS2_FREE(env->allocator, desc_impl->desc.base.
                 documentable.base.wsdl_obj.ops);
         desc_impl->desc.base.documentable.base.wsdl_obj.ops = 
             NULL;
@@ -821,7 +821,7 @@ axis2_woden_desc_free_ops(
 
     if(desc_impl->desc.base.nested_component.wsdl_component.ops)
     {
-        AXIS2_FREE((*env)->allocator, desc_impl->desc.base.
+        AXIS2_FREE(env->allocator, desc_impl->desc.base.
                 nested_component.wsdl_component.ops);
         desc_impl->desc.base.nested_component.wsdl_component.ops = NULL;
     }
@@ -833,7 +833,7 @@ axis2_woden_desc_free_ops(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_free(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
 
@@ -869,13 +869,13 @@ axis2_woden_desc_free(
 
     if((&(desc_impl->desc))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(desc_impl->desc))->ops);
+        AXIS2_FREE(env->allocator, (&(desc_impl->desc))->ops);
         (&(desc_impl->desc))->ops = NULL;
     }
     
     if(desc_impl)
     {
-        AXIS2_FREE((*env)->allocator, desc_impl);
+        AXIS2_FREE(env->allocator, desc_impl);
         desc_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -884,7 +884,7 @@ axis2_woden_desc_free(
 axis2_hash_t *AXIS2_CALL
 axis2_woden_desc_super_objs(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
 
@@ -897,7 +897,7 @@ axis2_woden_desc_super_objs(
 axis2_woden_obj_types_t AXIS2_CALL
 axis2_woden_desc_type(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
 
@@ -910,7 +910,7 @@ axis2_woden_desc_type(
 axis2_woden_documentable_t *AXIS2_CALL
 axis2_woden_desc_get_base_impl(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
 
@@ -923,14 +923,14 @@ axis2_woden_desc_get_base_impl(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_resolve_methods(
         axis2_woden_desc_t *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_desc_t *desc_impl,
         axis2_hash_t *methods)
 {
     axis2_woden_desc_impl_t *desc_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     desc_impl_l = INTF_TO_IMPL(desc_impl);
     
     desc->ops->free = axis2_hash_get(methods, "free", 
@@ -1027,7 +1027,7 @@ axis2_woden_desc_resolve_methods(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_interfaces(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1045,7 +1045,7 @@ axis2_woden_desc_get_interfaces(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_bindings(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1063,7 +1063,7 @@ axis2_woden_desc_get_bindings(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_svcs(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1081,7 +1081,7 @@ axis2_woden_desc_get_svcs(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_element_decls(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1099,7 +1099,7 @@ axis2_woden_desc_get_element_decls(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_element_decl(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
@@ -1107,7 +1107,7 @@ axis2_woden_desc_get_element_decl(
     void *el_decl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
+    AXIS2_PARAM_CHECK(env->error, qname, NULL);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1132,7 +1132,7 @@ axis2_woden_desc_get_element_decl(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_type_defs(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1150,7 +1150,7 @@ axis2_woden_desc_get_type_defs(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_type_def(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
@@ -1158,7 +1158,7 @@ axis2_woden_desc_get_type_def(
     void *type_def = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
+    AXIS2_PARAM_CHECK(env->error, qname, NULL);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1183,7 +1183,7 @@ axis2_woden_desc_get_type_def(
 void *AXIS2_CALL
 axis2_woden_desc_to_element(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1203,14 +1203,14 @@ axis2_woden_desc_to_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_set_document_base_uri(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_url_t *doc_base_uri)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, doc_base_uri, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, doc_base_uri, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1226,14 +1226,14 @@ axis2_woden_desc_set_document_base_uri(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_set_target_namespace(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_url_t *namespc)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, namespc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, namespc, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1249,7 +1249,7 @@ axis2_woden_desc_set_target_namespace(
 axis2_url_t *AXIS2_CALL
 axis2_woden_desc_get_target_namespace(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1265,7 +1265,7 @@ axis2_woden_desc_get_target_namespace(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_namespace(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_url_t *namespc)
 {
@@ -1290,7 +1290,7 @@ axis2_woden_desc_add_namespace(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_remove_namespace(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
@@ -1310,7 +1310,7 @@ axis2_woden_desc_remove_namespace(
 axis2_url_t *AXIS2_CALL
 axis2_woden_desc_get_namespace(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
@@ -1329,7 +1329,7 @@ axis2_woden_desc_get_namespace(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_namespaces(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1345,7 +1345,7 @@ axis2_woden_desc_get_namespaces(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_import_element(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_url_t *import_el)
 {
@@ -1353,7 +1353,7 @@ axis2_woden_desc_add_import_element(
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, import_el, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, import_el, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1364,7 +1364,7 @@ axis2_woden_desc_add_import_element(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_import_elements(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1380,7 +1380,7 @@ axis2_woden_desc_get_import_elements(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_include_element(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_url_t *include_el)
 {
@@ -1388,7 +1388,7 @@ axis2_woden_desc_add_include_element(
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, import_el, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, import_el, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1399,7 +1399,7 @@ axis2_woden_desc_add_include_element(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_include_elements(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1415,14 +1415,14 @@ axis2_woden_desc_get_include_elements(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_set_types_element(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *types_el)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, types_el, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, types_el, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1438,7 +1438,7 @@ axis2_woden_desc_set_types_element(
 axis2_url_t *AXIS2_CALL
 axis2_woden_desc_get_types_element(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1454,7 +1454,7 @@ axis2_woden_desc_get_types_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_interface_element(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_url_t *interface_el)
 {
@@ -1462,7 +1462,7 @@ axis2_woden_desc_add_interface_element(
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, interface_el, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, interface_el, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1473,7 +1473,7 @@ axis2_woden_desc_add_interface_element(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_interface_elements(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1489,7 +1489,7 @@ axis2_woden_desc_get_interface_elements(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_binding_element(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_url_t *binding_el)
 {
@@ -1497,7 +1497,7 @@ axis2_woden_desc_add_binding_element(
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, binding_el, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, binding_el, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1508,7 +1508,7 @@ axis2_woden_desc_add_binding_element(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_binding_elements(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1524,7 +1524,7 @@ axis2_woden_desc_get_binding_elements(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_svc_element(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_url_t *svc_el)
 {
@@ -1532,7 +1532,7 @@ axis2_woden_desc_add_svc_element(
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, svc_el, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, svc_el, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1543,7 +1543,7 @@ axis2_woden_desc_add_svc_element(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_desc_get_svc_elements(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1560,126 +1560,126 @@ axis2_woden_desc_get_svc_elements(
 
 void *AXIS2_CALL
 axis2_woden_desc_create_documentation_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_documentation(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_import_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_import(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_include_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_include(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_types_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_types(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_interface(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_fault_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_interface_fault(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_op_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_interface_op(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_fault_ref_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_interface_fault_ref(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_msg_ref_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_interface_msg_ref(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_binding(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_fault_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_binding_fault(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_op_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_binding_op(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_fault_ref_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_binding_fault_ref(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_msg_ref_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_binding_msg_ref(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_svc_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_svc(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_endpoint_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_endpoint(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_feature_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_feature(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_property_element(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return axis2_woden_property(env);
 }
@@ -1687,14 +1687,14 @@ axis2_woden_desc_create_property_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_set_extension_registry(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *ext_reg)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, ext_reg, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ext_reg, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1710,7 +1710,7 @@ axis2_woden_desc_set_extension_registry(
 void *AXIS2_CALL
 axis2_woden_desc_get_extension_registry(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1726,7 +1726,7 @@ axis2_woden_desc_get_extension_registry(
 void *AXIS2_CALL
 axis2_woden_desc_to_component(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1757,14 +1757,14 @@ axis2_woden_desc_to_component(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_to_all_interfaces(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *interface)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, interface, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, interface, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1775,14 +1775,14 @@ axis2_woden_desc_add_to_all_interfaces(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_to_all_bindings(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *binding)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, binding, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, binding, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1793,14 +1793,14 @@ axis2_woden_desc_add_to_all_bindings(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_to_all_svcs(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *svc)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, svc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1811,14 +1811,14 @@ axis2_woden_desc_add_to_all_svcs(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_to_all_element_decls(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *element_decl)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, element_decl, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, element_decl, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1829,14 +1829,14 @@ axis2_woden_desc_add_to_all_element_decls(
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_add_to_all_type_defs(
         void *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *type_def)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, type_def, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, type_def, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1847,13 +1847,13 @@ axis2_woden_desc_add_to_all_type_defs(
 static axis2_status_t AXIS2_CALL
 axis2_woden_desc_init_components(
         void *desc,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, binding, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, binding, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));

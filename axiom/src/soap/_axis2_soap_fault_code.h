@@ -40,33 +40,33 @@ extern "C"
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_code_set_value(axis2_soap_fault_code_t *fault_code,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_soap_fault_value *fault_val);
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_code_set_sub_code(axis2_soap_fault_code_t *fault_code,
-                                  axis2_env_t **env,
+                                  const axis2_env_t *env,
                                   struct axis2_soap_fault_sub_code *fault_subcode);
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_code_set_base_node(axis2_soap_fault_code_t *fault_code,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_om_node_t *node);
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_code_set_builder(axis2_soap_fault_code_t *fault_code,
-                                  axis2_env_t **env,
+                                  const axis2_env_t *env,
                                   struct axis2_soap_builder *soap_builder);
                                   
 int AXIS2_CALL
 axis2_soap_fault_code_get_soap_version(axis2_soap_fault_code_t  *fault_code,
-                                       axis2_env_t **env);
+                                       const axis2_env_t *env);
                                        
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_code_set_soap_version(axis2_soap_fault_code_t *fault_code,
-                                       axis2_env_t **env,
+                                       const axis2_env_t *env,
                                        int soap_version);
                                                                               
    
 AXIS2_DECLARE(axis2_soap_fault_code_t *)
-axis2_soap_fault_code_create(axis2_env_t **env);      
+axis2_soap_fault_code_create(const axis2_env_t *env);      
     
 /** @} */
     

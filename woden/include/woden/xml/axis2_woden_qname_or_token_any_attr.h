@@ -55,17 +55,17 @@ struct axis2_woden_qname_or_token_any_attr_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *list_token_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_qname_or_token_any_attr_free) (
             void *list_token_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *list_token_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /**
      * @return the base implementation class
@@ -73,7 +73,7 @@ struct axis2_woden_qname_or_token_any_attr_ops
     axis2_woden_xml_attr_t *(AXIS2_CALL *
     get_base_impl) (
             void *list_token_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /* ************************************************************
      *  QNameAttr interface declared methods 
@@ -82,23 +82,23 @@ struct axis2_woden_qname_or_token_any_attr_ops
     axis2_bool_t (AXIS2_CALL *
     is_qname) (
             void *list_token_attr,
-            axis2_env_t **env); 
+            const axis2_env_t *env); 
 
     axis2_bool_t (AXIS2_CALL *
     is_token) (
             void *list_token_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 
     axis2_array_list_t *(AXIS2_CALL *
     get_qnames) (
             void *list_token_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_token) (
             void *list_token_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /* ************************************************************
      *  Non-API implementation methods 
@@ -113,7 +113,7 @@ struct axis2_woden_qname_or_token_any_attr_ops
     void *(AXIS2_CALL *
     convert) (
             void *list_token_attr,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             struct axis2_om_element *owner_el,
             struct axis2_om_node *owner_node,
             axis2_char_t *attr_value);
@@ -132,7 +132,7 @@ struct axis2_woden_qname_or_token_any_attr
  */
 AXIS2_DECLARE(axis2_woden_qname_or_token_any_attr_t *)
 axis2_woden_qname_or_token_any_attr_create(
-        axis2_env_t **env,
+        const axis2_env_t *env,
         struct axis2_om_element *owner_el,
         struct axis2_om_node *owner_node,
         axis2_qname_t *attr_type,
@@ -143,7 +143,7 @@ axis2_woden_qname_or_token_any_attr_create(
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_qname_or_token_any_attr_resolve_methods(
         axis2_woden_qname_or_token_any_attr_t *list_token_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

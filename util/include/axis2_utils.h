@@ -46,13 +46,13 @@ extern "C"
     AXIS2_ENV_CHECK(env, error_return);\
     if (!object) \
     { \
-        AXIS2_ERROR_SET_ERROR_NUMBER((*env)->error, AXIS2_ERROR_INVALID_NULL_PARAM); \
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_FAILURE); \
+        AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_INVALID_NULL_PARAM); \
+        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE); \
         return error_return; \
     } \
     else \
     { \
-        AXIS2_ERROR_SET_STATUS_CODE((*env)->error, AXIS2_SUCCESS); \
+        AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS); \
     }
  
 /**This macro is called to check whether an object is NULL.
@@ -97,7 +97,7 @@ extern "C"
 #define AXIS2_DELETE_FUNCTION "axis2_remove_instance"
 
 typedef int (AXIS2_CALL *AXIS2_FREE_VOID_ARG) (void *obj_to_be_freed, 
-    axis2_env_t **env);
+    const axis2_env_t *env);
     
 /* Function pointer typedef for read callback */
 typedef int (AXIS2_CALL *AXIS2_READ_INPUT_CALLBACK)(char *buffer, int size, 
@@ -135,7 +135,7 @@ typedef int (AXIS2_CALL *AXIS2_CLOSE_INPUT_CALLBACK)(void *ctx);
      * @return axis2_char_t ** <code>axis2_char_t **<code>
      */
     AXIS2_DECLARE(axis2_char_t**)
-    axis2_parse_request_url_for_svc_and_op(axis2_env_t **env, axis2_char_t *request);
+    axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env, axis2_char_t *request);
     
 /** @} */
     

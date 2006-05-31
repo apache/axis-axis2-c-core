@@ -41,30 +41,30 @@ extern "C"
 
 axis2_status_t AXIS2_CALL
 axis2_soap_envelope_set_base_node(axis2_soap_envelope_t *envelope,
-                                  axis2_env_t **env,
+                                  const axis2_env_t *env,
                                   axis2_om_node_t *om_node);  
   
 axis2_status_t AXIS2_CALL 
 axis2_soap_envelope_set_body(axis2_soap_envelope_t *envelope,
-                             axis2_env_t **env, 
+                             const axis2_env_t *env, 
                              struct axis2_soap_body *body);
 axis2_status_t AXIS2_CALL 
 axis2_soap_envelope_set_header(axis2_soap_envelope_t *envelope,
-                               axis2_env_t **env, 
+                               const axis2_env_t *env, 
                                struct axis2_soap_header *header);
     
 axis2_status_t AXIS2_CALL
 axis2_soap_envelope_set_builder(axis2_soap_envelope_t *envelope,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_soap_builder *soap_builder); 
                                 
 axis2_status_t AXIS2_CALL 
 axis2_soap_envelope_set_soap_version_internal(axis2_soap_envelope_t *envelope,
-                                              axis2_env_t **env,
+                                              const axis2_env_t *env,
                                               int soap_version);                                
 
 AXIS2_DECLARE(axis2_soap_envelope_t*)
-axis2_soap_envelope_create_null(axis2_env_t **env);
+axis2_soap_envelope_create_null(const axis2_env_t *env);
     
 /** @} */
     

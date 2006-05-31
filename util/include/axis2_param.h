@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
      */
     axis2_char_t* (AXIS2_CALL *
 	get_name)(struct axis2_param *param, 
-			  axis2_env_t **env);
+			  const axis2_env_t *env);
 
     /**
      * Parameter value accessor
@@ -70,7 +70,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
      */
     void* (AXIS2_CALL *
 	get_value)(struct axis2_param *param, 
-		       axis2_env_t **env);
+		       const axis2_env_t *env);
 
     /**
      * param name mutator
@@ -78,7 +78,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
      */
      axis2_status_t (AXIS2_CALL *
 	 set_name)(struct axis2_param *param, 
-		 	   axis2_env_t **env, 
+		 	   const axis2_env_t *env, 
 	 	       axis2_char_t *name);
 
     /**
@@ -88,7 +88,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
      */
      axis2_status_t (AXIS2_CALL *
 	 set_value)(struct axis2_param *param, 
-		 		axis2_env_t **env, 
+		 		const axis2_env_t *env, 
 	 			void *value);
 
     /**
@@ -98,7 +98,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
      */
      axis2_bool_t (AXIS2_CALL *
 	 is_locked)(struct axis2_param *param,
-		        axis2_env_t **env);
+		        const axis2_env_t *env);
 
     /**
      * Method setLocked
@@ -107,7 +107,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
      */
      axis2_status_t (AXIS2_CALL *
 	 set_locked)(struct axis2_param *param,
-				 axis2_env_t **env,
+				 const axis2_env_t *env,
 				 axis2_bool_t value);
 
     /**
@@ -117,31 +117,31 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
      */
      int (AXIS2_CALL *
 	 get_param_type)(struct axis2_param *param, 
-		 			 axis2_env_t **env);
+		 			 const axis2_env_t *env);
 
      axis2_status_t (AXIS2_CALL *
 	 set_param_type)(struct axis2_param *param, 
-				     axis2_env_t **env,
+				     const axis2_env_t *env,
 					 int type);
 
      axis2_status_t (AXIS2_CALL *
 	 free)(struct axis2_param *param, 
-	 	   axis2_env_t **env);
+	 	   const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_attributes) (
             struct axis2_param *param,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_hash_t *attrs);
 
     axis2_hash_t* (AXIS2_CALL *
     get_attributes) (
             struct axis2_param *param,
-            axis2_env_t **env);
+            const axis2_env_t *env);
          
     axis2_status_t (AXIS2_CALL *
     value_free) (void *param_value, 
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
 }axis2_param_ops_t;
  
 /** 
@@ -157,7 +157,7 @@ typedef struct axis2_param
  * creates param struct
  */
 AXIS2_DECLARE(axis2_param_t*) 
-axis2_param_create(axis2_env_t **env, 
+axis2_param_create(const axis2_env_t *env, 
 						axis2_char_t *name, 
 						void *value);
 

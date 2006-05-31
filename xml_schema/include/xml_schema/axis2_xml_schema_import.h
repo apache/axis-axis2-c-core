@@ -47,30 +47,30 @@ struct axis2_xml_schema_import_ops
 {
     axis2_status_t (AXIS2_CALL *
     free) (void *import,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_external_t* (AXIS2_CALL *
     get_base_impl)(void *import,
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
 
 
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(void *import,
-                axis2_env_t **env);
+                const axis2_env_t *env);
                 
     axis2_xml_schema_types_t (AXIS2_CALL *
     type)(void *import,
-                axis2_env_t **env);                
+                const axis2_env_t *env);                
     
     axis2_char_t* (AXIS2_CALL *
     get_namespace)(void *import,
-                axis2_env_t **env);
+                const axis2_env_t *env);
                 
                 
                 
     axis2_status_t (AXIS2_CALL *
     set_namespace)(void *import,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_char_t *ns);
 
 };
@@ -85,7 +85,7 @@ struct axis2_xml_schema_import
  * Creates new Xml Schema import
  */
 AXIS2_DECLARE(axis2_xml_schema_import_t *)
-axis2_xml_schema_import_create(axis2_env_t **env);
+axis2_xml_schema_import_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -93,7 +93,7 @@ axis2_xml_schema_import_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_import_resolve_methods(
                                 axis2_xml_schema_import_t *import,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_import_t *import_impl,
                                 axis2_hash_t *methods);
  */

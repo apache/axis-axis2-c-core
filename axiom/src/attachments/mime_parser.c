@@ -33,42 +33,42 @@ typedef struct axis2_mime_parser_impl
 /***************************** Function headers *******************************/
 
 axis2_status_t AXIS2_CALL
-axis2_mime_parser_free (axis2_mime_parser_t *mime_parser, axis2_env_t **env);
+axis2_mime_parser_free (axis2_mime_parser_t *mime_parser, const axis2_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
-    axis2_env_t **env, 
+    const axis2_env_t *env, 
     AXIS2_READ_INPUT_CALLBACK,
     void *callback_ctx,
     axis2_char_t *mime_boundary);
 
 axis2_hash_t* AXIS2_CALL
 axis2_mime_parser_get_mime_parts_map(axis2_mime_parser_t *mime_parser, 
-    axis2_env_t **env);
+    const axis2_env_t *env);
 
 int AXIS2_CALL
 axis2_mime_parser_get_soap_body_len(axis2_mime_parser_t *mime_parser, 
-    axis2_env_t **env);
+    const axis2_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 axis2_mime_parser_get_soap_body_str(axis2_mime_parser_t *mime_parser, 
-    axis2_env_t **env);
+    const axis2_env_t *env);
 
 
 /************************** End of Function headers ************************/
 
 AXIS2_DECLARE(axis2_mime_parser_t *)
-axis2_mime_parser_create (axis2_env_t **env)
+axis2_mime_parser_create (const axis2_env_t *env)
 {
     axis2_mime_parser_impl_t *mime_parser_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
-	mime_parser_impl = (axis2_mime_parser_impl_t *) AXIS2_MALLOC((*env)->allocator, 
+	mime_parser_impl = (axis2_mime_parser_impl_t *) AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_mime_parser_impl_t));
 		
 	if(NULL == mime_parser_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
 	
@@ -84,12 +84,12 @@ axis2_mime_parser_create (axis2_env_t **env)
         return NULL;
     }
     
-	mime_parser_impl->mime_parser.ops = AXIS2_MALLOC ((*env)->allocator, 
+	mime_parser_impl->mime_parser.ops = AXIS2_MALLOC (env->allocator, 
         sizeof(axis2_mime_parser_ops_t));
 	if(NULL == mime_parser_impl->mime_parser.ops)
     {
         axis2_mime_parser_free(&(mime_parser_impl->mime_parser), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -106,7 +106,7 @@ axis2_mime_parser_create (axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL    
 
-axis2_mime_parser_free (axis2_mime_parser_t *mime_parser, axis2_env_t **env)
+axis2_mime_parser_free (axis2_mime_parser_t *mime_parser, const axis2_env_t *env)
 {
     axis2_mime_parser_impl_t *mime_parser_impl = NULL;
     
@@ -121,13 +121,13 @@ axis2_mime_parser_free (axis2_mime_parser_t *mime_parser, axis2_env_t **env)
     
     if(NULL != mime_parser->ops)
     {
-        AXIS2_FREE((*env)->allocator, mime_parser->ops);
+        AXIS2_FREE(env->allocator, mime_parser->ops);
         mime_parser->ops = NULL;
     }
     
     if(mime_parser_impl)
     {
-        AXIS2_FREE((*env)->allocator, mime_parser_impl);
+        AXIS2_FREE(env->allocator, mime_parser_impl);
         mime_parser_impl = NULL;
     }
     
@@ -137,7 +137,7 @@ axis2_mime_parser_free (axis2_mime_parser_t *mime_parser, axis2_env_t **env)
 
 axis2_hash_t* AXIS2_CALL
 axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
-    axis2_env_t **env, 
+    const axis2_env_t *env, 
     AXIS2_READ_INPUT_CALLBACK callback, 
     void *callback_ctx,
     axis2_char_t *mime_boundary)
@@ -160,7 +160,7 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
     AXIS2_ENV_CHECK(env, NULL);
     mime_parser_impl = AXIS2_INTF_TO_IMPL(mime_parser);
     
-    buffer = AXIS2_MALLOC((*env)->allocator, sizeof(axis2_char_t) * (size + 1));
+    buffer = AXIS2_MALLOC(env->allocator, sizeof(axis2_char_t) * (size + 1));
    
     do 
     {    
@@ -168,14 +168,14 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
         if (len > 0)
         {
             axis2_char_t *temp_root_mime = root_mime;
-            root_mime = AXIS2_MALLOC((*env)->allocator, 
+            root_mime = AXIS2_MALLOC(env->allocator, 
                 sizeof(char) * (root_mime_len + len + 1));
             if (root_mime)
             {
                 if (temp_root_mime)
                 {
                     memcpy(root_mime, temp_root_mime, root_mime_len);
-                    AXIS2_FREE((*env)->allocator, temp_root_mime);
+                    AXIS2_FREE(env->allocator, temp_root_mime);
                     temp_root_mime = NULL;
                 }
                 
@@ -189,7 +189,7 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
                     if (root_mime_len > (pos - root_mime + 4))
                     {
                         soap_body_len = root_mime_len - (pos - root_mime + 4);
-                        soap_body_str = AXIS2_MALLOC((*env)->allocator,
+                        soap_body_str = AXIS2_MALLOC(env->allocator,
                                         sizeof(char) * (soap_body_len + 1));
                         memcpy(soap_body_str, pos + 4, soap_body_len);
                         soap_body_str[soap_body_len] = '\0';
@@ -215,7 +215,7 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
         {
             pos -= 2;
             body_mime_len = soap_body_len - (pos - soap_body_str);
-            body_mime = AXIS2_MALLOC((*env)->allocator,
+            body_mime = AXIS2_MALLOC(env->allocator,
                             sizeof(char) * (body_mime_len + 1));
             memcpy(body_mime, pos, body_mime_len);
             body_mime[body_mime_len] = '\0';
@@ -229,14 +229,14 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
             if (len > 0)
             {
                 axis2_char_t *temp_soap_body = soap_body_str;
-                soap_body_str = AXIS2_MALLOC((*env)->allocator, 
+                soap_body_str = AXIS2_MALLOC(env->allocator, 
                     sizeof(char) * (soap_body_len + len + 1));
                 if (soap_body_str)
                 {
                     if (temp_soap_body)
                     {
                         memcpy(soap_body_str, temp_soap_body, soap_body_len);
-                        AXIS2_FREE((*env)->allocator, temp_soap_body);
+                        AXIS2_FREE(env->allocator, temp_soap_body);
                         temp_soap_body = NULL;
                     }
                     
@@ -273,7 +273,7 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
                 if (body_mime_len > (pos - body_mime + 4))
                 {
                     mime_binary_len = body_mime_len - (pos - body_mime + 4);
-                    mime_binary = AXIS2_MALLOC((*env)->allocator,
+                    mime_binary = AXIS2_MALLOC(env->allocator,
                                     sizeof(char) * (mime_binary_len + 1));
                     memcpy(mime_binary, pos + 4, mime_binary_len);
                     mime_binary[mime_binary_len] = '\0';
@@ -286,14 +286,14 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
                 if (len > 0)
                 {
                     temp_body_mime = body_mime;
-                    body_mime = AXIS2_MALLOC((*env)->allocator, 
+                    body_mime = AXIS2_MALLOC(env->allocator, 
                         sizeof(char) * (body_mime_len + len + 1));
                     if (body_mime)
                     {
                         if (temp_body_mime)
                         {
                             memcpy(body_mime, temp_body_mime, body_mime_len);
-                            AXIS2_FREE((*env)->allocator, temp_body_mime);
+                            AXIS2_FREE(env->allocator, temp_body_mime);
                             temp_body_mime = NULL;
                         }
                         
@@ -349,14 +349,14 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
                 if (len > 0)
                 {
                     axis2_char_t *temp_mime_binary = mime_binary;
-                    mime_binary = AXIS2_MALLOC((*env)->allocator, 
+                    mime_binary = AXIS2_MALLOC(env->allocator, 
                         sizeof(char) * (mime_binary_len + len + 1));
                     if (mime_binary)
                     {
                         if (temp_mime_binary)
                         {
                             memcpy(mime_binary, temp_mime_binary, mime_binary_len);
-                            AXIS2_FREE((*env)->allocator, temp_mime_binary);
+                            AXIS2_FREE(env->allocator, temp_mime_binary);
                             temp_mime_binary = NULL;
                         }
                         
@@ -375,7 +375,7 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
                     (AXIS2_MIME_BOUNDARY_BYTE == *(temp_pos + 1));
                 
                 /* capture the next mime part */
-                temp_body_mime = AXIS2_MALLOC((*env)->allocator, 
+                temp_body_mime = AXIS2_MALLOC(env->allocator, 
                     sizeof(char) * (old_mime_binary_len - mime_binary_len + 1));
                 if (temp_body_mime)
                 {
@@ -414,7 +414,7 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
                             axis2_char_t *mime_id = NULL;
                             int mime_id_len = 0;
                             mime_id_len = pos - id;
-                            mime_id = AXIS2_MALLOC((*env)->allocator, 
+                            mime_id = AXIS2_MALLOC(env->allocator, 
                                 sizeof(axis2_char_t) * mime_id_len + 1);
                             if (mime_id)
                             {
@@ -444,7 +444,7 @@ axis2_mime_parser_parse(axis2_mime_parser_t *mime_parser,
 
 axis2_hash_t* AXIS2_CALL
 axis2_mime_parser_get_mime_parts_map(axis2_mime_parser_t *mime_parser, 
-    axis2_env_t **env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(mime_parser)->mime_parts_map;
@@ -452,7 +452,7 @@ axis2_mime_parser_get_mime_parts_map(axis2_mime_parser_t *mime_parser,
 
 int AXIS2_CALL
 axis2_mime_parser_get_soap_body_len(axis2_mime_parser_t *mime_parser, 
-    axis2_env_t **env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(mime_parser)->soap_body_len;
@@ -460,7 +460,7 @@ axis2_mime_parser_get_soap_body_len(axis2_mime_parser_t *mime_parser,
 
 axis2_char_t* AXIS2_CALL
 axis2_mime_parser_get_soap_body_str(axis2_mime_parser_t *mime_parser, 
-    axis2_env_t **env)
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(mime_parser)->soap_body_str;

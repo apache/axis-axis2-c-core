@@ -46,65 +46,65 @@ struct axis2_xml_schema_complex_content_extension_ops
 {
     axis2_status_t (AXIS2_CALL *
     free)(void *cmp_content_ext,
-          axis2_env_t **env);
+          const axis2_env_t *env);
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (
             void *cmp_content_ext,
-            axis2_env_t **env);
+            const axis2_env_t *env);
             
     axis2_xml_schema_types_t (AXIS2_CALL *
     type) (
             void *cmp_content_ext,
-            axis2_env_t **env);  
+            const axis2_env_t *env);  
             
     axis2_hash_t* (AXIS2_CALL *
     super_objs)(
             void *cmp_content_ext,
-            axis2_env_t **env);                      
+            const axis2_env_t *env);                      
 
     axis2_xml_schema_any_attribute_t* (AXIS2_CALL *
     get_any_attribute)(
             void *cmp_content_ext,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_any_attribute)(
             void *cmp_content_ext,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_xml_schema_any_attribute_t *any_attr);
     
     axis2_xml_schema_obj_collection_t* (AXIS2_CALL *
     get_attributes)(
             void *cmp_content_ext,
-            axis2_env_t **env);
+            const axis2_env_t *env);
             
     axis2_qname_t* (AXIS2_CALL*
     get_base_type_name)(
             void *cmp_content_ext,
-            axis2_env_t **env);
+            const axis2_env_t *env);
             
     axis2_status_t (AXIS2_CALL *
     set_base_type_name)(
             void *cmp_content_ext,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname);
             
     axis2_xml_schema_particle_t* (AXIS2_CALL *
     get_particle)(
             void *cmp_content_ext,
-            axis2_env_t **env);
+            const axis2_env_t *env);
                   
     axis2_status_t (AXIS2_CALL *
     set_particle)(
             void *cmp_content_ext,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_xml_schema_particle_t *particle);
                   
     axis2_char_t* (AXIS2_CALL *
     to_string)(
             void *cmp_content_ext,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *prefix,
             int tab);
     
@@ -120,7 +120,7 @@ struct axis2_xml_schema_complex_content_extension
  * Creates new Xml Schema Group
  */
 AXIS2_DECLARE(axis2_xml_schema_complex_content_extension_t *)
-axis2_xml_schema_complex_content_extension_create(axis2_env_t **env);
+axis2_xml_schema_complex_content_extension_create(const axis2_env_t *env);
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_FREE(cmp_content_ext, env) \
 		(((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->free(cmp_content_ext, env))

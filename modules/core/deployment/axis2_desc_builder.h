@@ -74,7 +74,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_desc_builder_t *desc_builder,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
                                
      /**
      * This will creat OMElemnt for a given descrition document (axis2.xml , 
@@ -84,7 +84,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
      */
     axis2_om_node_t *(AXIS2_CALL *
     build_OM) (axis2_desc_builder_t *desc_builder,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     
     /**
@@ -94,7 +94,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
      */
     axis2_flow_t *(AXIS2_CALL *
     process_flow) (axis2_desc_builder_t *desc_builder,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_om_element_t *flow_element,
                                     axis2_param_container_t *parent,
                                     axis2_om_node_t *node);
@@ -106,7 +106,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
      */
     axis2_handler_desc_t *(AXIS2_CALL *
     process_handler) (axis2_desc_builder_t *desc_builder,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_om_node_t *handler_element,
                                         axis2_param_container_t *parent);
     
@@ -118,7 +118,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
      */
     axis2_status_t (AXIS2_CALL *
     process_params) (axis2_desc_builder_t *desc_builder,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_om_children_qname_iterator_t *params,
                                     axis2_param_container_t *param_container,
                                     axis2_param_container_t *parent );
@@ -126,18 +126,18 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
     
     axis2_status_t (AXIS2_CALL *
     process_op_module_refs) (axis2_desc_builder_t *desc_builder,
-                              axis2_env_t **env,
+                              const axis2_env_t *env,
                               axis2_om_children_qname_iterator_t *module_refs, 
                               axis2_op_t *op);
                                   
     axis2_msg_recv_t *(AXIS2_CALL *
     load_msg_recv) (axis2_desc_builder_t *desc_builder,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_om_element_t *recv_element);
     
     axis2_msg_recv_t *(AXIS2_CALL *
     load_default_msg_recv) (axis2_desc_builder_t *desc_builder,
-                                                axis2_env_t **env);
+                                                const axis2_env_t *env);
     
     /**
      * This method is used to retrive service name form the arechive file name
@@ -148,12 +148,12 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_short_file_name) (axis2_desc_builder_t *desc_builder,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_char_t *file_name);
     
     axis2_char_t *(AXIS2_CALL *
     get_file_name_without_prefix) (axis2_desc_builder_t *desc_builder,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *short_file_name);    
  
  /**
@@ -164,7 +164,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_value) (axis2_desc_builder_t *desc_builder,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *in);
                                     
                                         
@@ -186,7 +186,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder
  * @return pointer to newly created description builder
  */
 AXIS2_DECLARE(axis2_desc_builder_t *)
-axis2_desc_builder_create (axis2_env_t **env);
+axis2_desc_builder_create (const axis2_env_t *env);
 
 /**
  * Creates description builder struct
@@ -195,7 +195,7 @@ axis2_desc_builder_create (axis2_env_t **env);
  */
 AXIS2_DECLARE(axis2_desc_builder_t *)
 axis2_desc_builder_create_with_dep_engine (
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         struct axis2_dep_engine *engine);
 /**
  * Creates description builder struct
@@ -205,7 +205,7 @@ axis2_desc_builder_create_with_dep_engine (
  */
 AXIS2_DECLARE(axis2_desc_builder_t *) 
 axis2_desc_builder_create_with_file_and_dep_engine (
-                                        axis2_env_t **env, 
+                                        const axis2_env_t *env, 
                                         axis2_char_t *file_name, 
                                         struct axis2_dep_engine *engine);
 

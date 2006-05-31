@@ -66,70 +66,70 @@ struct axis2_woden_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *desc,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     to_desc_free) (void *desc,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *desc,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *desc,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     /**
      * @return the base implementation class
      */
     struct axis2_woden_documentable *(AXIS2_CALL *
     get_base_impl) (
             void *desc,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     /* ************************************************************
      *  Description interface methods (the WSDL Component model)
      * ************************************************************/
     axis2_array_list_t *(AXIS2_CALL *
     get_interfaces) (
             void *desc,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_bindings) (
             void *desc,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_svcs) (
             void *desc,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_element_decls) (
             void *desc,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_element_decl) (
             void *desc,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_type_defs) (
             void *desc,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_type_def) (
             void *desc,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname);
 
     void *(AXIS2_CALL *
     to_element) (
             void *desc,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     /* ************************************************************
      *  Non-API implementation methods
      * ************************************************************/
@@ -147,31 +147,31 @@ struct axis2_woden_desc_ops
     axis2_status_t (AXIS2_CALL *
     add_to_all_interfaces) (
             void *desc,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *interface);
 
     axis2_status_t (AXIS2_CALL *
     add_to_all_bindings) (
             void *desc,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *binding);
 
     axis2_status_t (AXIS2_CALL *
     add_to_all_svcs) (
             void *desc,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *svc);
 
     axis2_status_t (AXIS2_CALL *
     add_to_all_element_decls) (
             void *desc,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *element_decl);
 
     axis2_status_t (AXIS2_CALL *
     add_to_all_type_defs) (
             void *desc,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *type_def);
 };
 
@@ -190,39 +190,39 @@ struct axis2_woden_desc
 
 AXIS2_DECLARE(axis2_woden_desc_t *)
 axis2_woden_desc_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_DECLARE(axis2_woden_desc_t *)
 axis2_woden_desc_to_desc_element(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_desc_t *)
 axis2_woden_desc_to_documentable_element(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_desc_t *)
 axis2_woden_desc_to_documentable(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_desc_t *)
 axis2_woden_desc_to_wsdl_obj(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_desc_t *)
 axis2_woden_desc_to_wsdl_component(
         void *desc,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_desc_resolve_methods(
         axis2_woden_desc_t *desc,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_desc_t *desc_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

@@ -49,23 +49,23 @@ struct axis2_xml_schema_form_ops
 {
     axis2_status_t (AXIS2_CALL *
     free) (void *form,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *form,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
     type) (void *form,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_enum_t *(AXIS2_CALL *
     get_base_impl) (void *form,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_array_list_t *(AXIS2_CALL *
     get_values)(void *form,
-                axis2_env_t **env);
+                const axis2_env_t *env);
     
 };
 
@@ -76,7 +76,7 @@ struct axis2_xml_schema_form
 };
 
 AXIS2_DECLARE(axis2_xml_schema_form_t *)
-axis2_xml_schema_form_create(axis2_env_t **env,
+axis2_xml_schema_form_create(const axis2_env_t *env,
                                     axis2_char_t* value);
 
 /***************** Macros ************************************************/

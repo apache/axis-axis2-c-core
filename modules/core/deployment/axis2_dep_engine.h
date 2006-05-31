@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_dep_engine_t *dep_engine,
-	        axis2_env_t **env);
+	        const axis2_env_t *env);
     
     
     /**
@@ -73,24 +73,24 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_module) (axis2_dep_engine_t *dep_engine,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *module_qname);
     
     struct axis2_module_desc *(AXIS2_CALL *
     get_module) (axis2_dep_engine_t *dep_engine,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *module_name);
     
     struct axis2_arch_file_data *(AXIS2_CALL *
     get_current_file_item) (axis2_dep_engine_t *dep_engine,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 	 
     /**
      * @param file
      */
     axis2_status_t (AXIS2_CALL *
     add_ws_to_deploy) (axis2_dep_engine_t *dep_engine,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         struct axis2_arch_file_data *file);
     
     /**
@@ -98,12 +98,12 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_ws_to_undeploy) (axis2_dep_engine_t *dep_engine,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         struct axis2_ws_info *file);
     
     struct axis2_phases_info *(AXIS2_CALL *
     get_phases_info) (axis2_dep_engine_t *dep_engine,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * tio get ER
@@ -112,40 +112,40 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      */
     struct axis2_conf *(AXIS2_CALL *
     get_axis_conf) (axis2_dep_engine_t *dep_engine,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
     
     
     struct axis2_conf *(AXIS2_CALL *
     load) (axis2_dep_engine_t *dep_engine,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
     
     struct axis2_conf *(AXIS2_CALL *
     load_client) (axis2_dep_engine_t *dep_engine,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *client_home);
     
     
     void * (AXIS2_CALL *
     get_handler_dll) (axis2_dep_engine_t *dep_engine,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *dll_name);
     
     axis2_status_t (AXIS2_CALL *
     do_deploy) (axis2_dep_engine_t *dep_engine,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     undeploy) (axis2_dep_engine_t *dep_engine,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
     
     axis2_bool_t (AXIS2_CALL *
     is_hot_update) (axis2_dep_engine_t *dep_engine,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
     
     
     axis2_status_t (AXIS2_CALL *
     set_phases_info) (axis2_dep_engine_t *dep_engine,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         struct axis2_phases_info *phases_info);
     
     /**
@@ -161,7 +161,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      */
     struct axis2_svc *(AXIS2_CALL *
     build_svc) (axis2_dep_engine_t *dep_engine,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_svc *svc,
                                 axis2_char_t *file_name);
     
@@ -174,22 +174,22 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     
     struct axis2_module_desc *(AXIS2_CALL *
     build_module) (axis2_dep_engine_t *dep_engine,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_file_t *module_archive,
                                     struct axis2_conf *conf); 
 
     axis2_char_t *(AXIS2_CALL *
     get_repos_path) (axis2_dep_engine_t *dep_engine,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                         
     axis2_status_t (AXIS2_CALL *
     set_current_file_item)(axis2_dep_engine_t *dep_engine,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             struct axis2_arch_file_data *file_data);                        
                                        
     axis2_status_t (AXIS2_CALL *
     set_arch_reader)(axis2_dep_engine_t *dep_engine,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         struct axis2_arch_reader *arch_reader);
     
 };
@@ -208,7 +208,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      * @return pointer to newly created deployment engine
      */
     AXIS2_DECLARE(axis2_dep_engine_t *)
-    axis2_dep_engine_create (axis2_env_t **env);
+    axis2_dep_engine_create (const axis2_env_t *env);
     
     /**
      * Creates description builder struct
@@ -220,7 +220,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      */
     AXIS2_DECLARE(axis2_dep_engine_t *)
     axis2_dep_engine_create_with_repos_name (
-                                            axis2_env_t **env, 
+                                            const axis2_env_t *env, 
                                             axis2_char_t *repos_path);
     /**
      * Creates deployment engine struct
@@ -230,7 +230,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      */
     AXIS2_DECLARE(axis2_dep_engine_t *) 
     axis2_dep_engine_create_with_repos_name_and_svr_xml_file (
-                                            axis2_env_t **env, 
+                                            const axis2_env_t *env, 
                                             axis2_char_t *repos_path, 
                                             axis2_char_t *svr_xml_file);                                            
 

@@ -51,44 +51,44 @@ AXIS2_DECLARE_DATA struct axis2_http_response_writer_ops
 {
     axis2_char_t* (AXIS2_CALL *get_encoding) 
                     (axis2_http_response_writer_t *response_writer, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *close) 
                     (axis2_http_response_writer_t *response_writer, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *flush) 
                     (axis2_http_response_writer_t *response_writer, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *write_char) 
                     (axis2_http_response_writer_t *response_writer, 
-                    axis2_env_t **env, char c);
+                    const axis2_env_t *env, char c);
     
     axis2_status_t (AXIS2_CALL *write_buf) 
                     (axis2_http_response_writer_t *response_writer, 
-                    axis2_env_t **env, char *buf, int offset, 
+                    const axis2_env_t *env, char *buf, int offset, 
                     axis2_ssize_t len);
 
     axis2_status_t (AXIS2_CALL *print_str) 
                     (axis2_http_response_writer_t *response_writer, 
-                    axis2_env_t **env, char *str);
+                    const axis2_env_t *env, char *str);
     
     axis2_status_t (AXIS2_CALL *print_int) 
                     (axis2_http_response_writer_t *response_writer, 
-                    axis2_env_t **env, int i);
+                    const axis2_env_t *env, int i);
     
     axis2_status_t (AXIS2_CALL *println_str) 
                     (axis2_http_response_writer_t *response_writer, 
-                    axis2_env_t **env, char *str);
+                    const axis2_env_t *env, char *str);
     
     axis2_status_t (AXIS2_CALL *println) 
                     (axis2_http_response_writer_t *response_writer, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *free) 
                     (axis2_http_response_writer_t *response_writer, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 };
 
 /** 
@@ -102,10 +102,10 @@ AXIS2_DECLARE_DATA struct axis2_http_response_writer
 
 
 AXIS2_DECLARE(axis2_http_response_writer_t *) 
-axis2_http_response_writer_create (axis2_env_t **env, axis2_stream_t *stream);
+axis2_http_response_writer_create (const axis2_env_t *env, axis2_stream_t *stream);
 
 AXIS2_DECLARE(axis2_http_response_writer_t *) 
-axis2_http_response_writer_create_with_encoding(axis2_env_t **env,
+axis2_http_response_writer_create_with_encoding(const axis2_env_t *env,
                     axis2_stream_t *stream, const axis2_char_t *encoding);
     
 /************************** Start of function macros **************************/

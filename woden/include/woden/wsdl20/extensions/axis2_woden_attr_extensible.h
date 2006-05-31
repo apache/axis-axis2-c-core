@@ -58,51 +58,51 @@ struct axis2_woden_attr_extensible_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *attr_extensible,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_attr_extensible_free) (
             void *attr_extensible,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *attr_extensible,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *attr_extensible,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_ext_attr) (
             void *extensible,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *attr_type,
             struct axis2_woden_xml_attr *attr); 
 
     void *(AXIS2_CALL *
     get_ext_attr) (
             void *extensible,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *attr_type); 
 
     axis2_array_list_t *(AXIS2_CALL *
     get_ext_attrs) (
             void *extensible,
-            axis2_env_t **env); 
+            const axis2_env_t *env); 
 
     axis2_array_list_t *(AXIS2_CALL *
     get_ext_attrs_for_namespace) (
             void *extensible,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *namespc);
 
     axis2_bool_t (AXIS2_CALL *
     has_ext_attrs_for_namespace) (
             void *extensible,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *namespc);
 
 
@@ -114,7 +114,7 @@ struct axis2_woden_attr_extensible
 };
 
 AXIS2_DECLARE(axis2_woden_attr_extensible_t *)
-axis2_woden_attr_extensible_create(axis2_env_t **env);
+axis2_woden_attr_extensible_create(const axis2_env_t *env);
 
 /**
  * This is an Axis2 C internal method. This is used only from constructor
@@ -123,7 +123,7 @@ axis2_woden_attr_extensible_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_attr_extensible_resolve_methods(
         axis2_woden_attr_extensible_t *extensible,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_attr_extensible_t *extensible_impl,
         axis2_hash_t *methods);
 

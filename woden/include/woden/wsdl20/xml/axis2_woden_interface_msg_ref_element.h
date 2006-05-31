@@ -61,44 +61,44 @@ struct axis2_woden_interface_msg_ref_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *interface_msg_ref_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
  
     axis2_status_t (AXIS2_CALL *
     to_interface_msg_ref_element_free) (
             void *interface_msg_ref_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *interface_msg_ref_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
  
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *interface_msg_ref_element,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_msg_label) (
             void *iface_fault_ele,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *msg_label);
 
     void *(AXIS2_CALL *
     get_msg_label) (
             void *iface_fault_ele,
-            axis2_env_t **env);
+            const axis2_env_t *env);
  
     axis2_status_t (AXIS2_CALL *
     set_msg_content_model) (
             void *iface_fault_ele,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *nm_token);
     
     axis2_char_t *(AXIS2_CALL *
     get_msg_content_model) (
             void *iface_fault_ele,
-            axis2_env_t **env);
+            const axis2_env_t *env);
  
     /**
      * Set the QName that represents the 'element' attribute of the interface 
@@ -110,13 +110,13 @@ struct axis2_woden_interface_msg_ref_element_ops
     axis2_status_t (AXIS2_CALL *
     set_element_qname) (
             void *iface_fault_ele,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *element);
 
     axis2_qname_t *(AXIS2_CALL *
     get_element_qname) (
             void *iface_fault_ele,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     /**
      * Returns the Schema element declaration identified by the QName in the 'element' 
@@ -131,18 +131,18 @@ struct axis2_woden_interface_msg_ref_element_ops
     void *(AXIS2_CALL *
     get_element) (
             void *iface_fault_ele,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_direction) (
             void *iface_fault_ele,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *dir);
 
     void *(AXIS2_CALL *
     get_direction) (
             void *iface_fault_ele,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
 
 };
@@ -162,13 +162,13 @@ struct axis2_woden_interface_msg_ref_element
 
 AXIS2_DECLARE(axis2_woden_interface_msg_ref_element_t *)
 axis2_woden_interface_msg_ref_element_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_interface_msg_ref_element_resolve_methods(
         axis2_woden_interface_msg_ref_element_t *interface_msg_ref_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

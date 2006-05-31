@@ -44,30 +44,30 @@ typedef struct axis2_desc_builder_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_desc_builder_free (axis2_desc_builder_t *desc_builder, 
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 axis2_om_node_t *AXIS2_CALL
 axis2_build_OM(axis2_desc_builder_t *desc_builder,
-                axis2_env_t **env);
+                const axis2_env_t *env);
 
 
 struct axis2_flow *AXIS2_CALL
 axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_om_element *flow_element,
                                 axis2_param_container_t *parent,
                                 axis2_om_node_t *node);
 
 struct axis2_handler_desc *AXIS2_CALL
 axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_om_node_t *handler_element,
                                     axis2_param_container_t *parent);
 
 
 axis2_status_t AXIS2_CALL
 axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_om_children_qname_iterator_t *params,
                                 axis2_param_container_t *param_container,
                                 axis2_param_container_t *parent );
@@ -75,52 +75,52 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
 
 axis2_status_t AXIS2_CALL
 axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           axis2_om_children_qname_iterator_t *module_refs, 
                           struct axis2_op *op);
                               
 struct axis2_msg_recv *AXIS2_CALL
 axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_om_element_t *recv_element);
 
 struct axis2_msg_recv *AXIS2_CALL
 axis2_desc_builder_load_default_msg_recv(axis2_desc_builder_t *desc_builder,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 
 
 axis2_char_t *AXIS2_CALL
 axis2_desc_builder_get_short_file_name(axis2_desc_builder_t *desc_builder,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *file_name);
 
 axis2_char_t *AXIS2_CALL
 axis2_desc_builder_get_file_name_without_prefix(axis2_desc_builder_t *desc_builder,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *short_file_name);
 
 axis2_char_t *AXIS2_CALL
 axis2_desc_builder_get_value(axis2_desc_builder_t *desc_builder,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *in);
 
                                 
 /************************** End of function prototypes ************************/
 
 axis2_desc_builder_t * AXIS2_CALL 
-axis2_desc_builder_create (axis2_env_t **env)
+axis2_desc_builder_create (const axis2_env_t *env)
 {
     axis2_desc_builder_impl_t *desc_builder_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	desc_builder_impl = (axis2_desc_builder_impl_t *) AXIS2_MALLOC((*env)->
+	desc_builder_impl = (axis2_desc_builder_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_desc_builder_impl_t));
 	
 	
 	if(NULL == desc_builder_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     desc_builder_impl->file_name = NULL;
@@ -129,11 +129,11 @@ axis2_desc_builder_create (axis2_env_t **env)
     desc_builder_impl->desc_builder.ops = NULL;
     
 	desc_builder_impl->desc_builder.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_desc_builder_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_desc_builder_ops_t));
 	if(NULL == desc_builder_impl->desc_builder.ops)
     {
         axis2_desc_builder_free(&(desc_builder_impl->desc_builder), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -163,28 +163,28 @@ axis2_desc_builder_create (axis2_env_t **env)
 
 axis2_desc_builder_t * AXIS2_CALL 
 axis2_desc_builder_create_with_file_and_dep_engine (
-                                        axis2_env_t **env, 
+                                        const axis2_env_t *env, 
                                         axis2_char_t *file_name, 
                                         axis2_dep_engine_t *engine)
 {
     axis2_desc_builder_impl_t *desc_builder_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, file_name, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, engine, NULL);
+    AXIS2_PARAM_CHECK(env->error, file_name, NULL);
+    AXIS2_PARAM_CHECK(env->error, engine, NULL);
 	
 	desc_builder_impl = (axis2_desc_builder_impl_t *) 
         axis2_desc_builder_create(env);
 	if(NULL == desc_builder_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
     desc_builder_impl->file_name = AXIS2_STRDUP(file_name, env);
     if(!desc_builder_impl->file_name)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     desc_builder_impl->desc_builder.engine = engine;
@@ -194,19 +194,19 @@ axis2_desc_builder_create_with_file_and_dep_engine (
 
 axis2_desc_builder_t * AXIS2_CALL 
 axis2_desc_builder_create_with_dep_engine (
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         struct axis2_dep_engine *engine)
 {
     axis2_desc_builder_impl_t *desc_builder_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, engine, NULL);
+    AXIS2_PARAM_CHECK(env->error, engine, NULL);
 	
 	desc_builder_impl = (axis2_desc_builder_impl_t *)
         axis2_desc_builder_create(env);
 	if(NULL == desc_builder_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -219,7 +219,7 @@ axis2_desc_builder_create_with_dep_engine (
 
 axis2_status_t AXIS2_CALL 
 axis2_desc_builder_free (axis2_desc_builder_t *desc_builder, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_desc_builder_impl_t *desc_builder_impl = NULL;
     
@@ -229,7 +229,7 @@ axis2_desc_builder_free (axis2_desc_builder_t *desc_builder,
     
     if(desc_builder_impl->file_name)
     {
-        AXIS2_FREE((*env)->allocator, desc_builder_impl->file_name);
+        AXIS2_FREE(env->allocator, desc_builder_impl->file_name);
         desc_builder_impl->file_name = NULL;
     }
 
@@ -243,11 +243,11 @@ axis2_desc_builder_free (axis2_desc_builder_t *desc_builder,
     desc_builder->engine = NULL;
     
 	if(NULL != desc_builder->ops)
-        AXIS2_FREE((*env)->allocator, desc_builder->ops);
+        AXIS2_FREE(env->allocator, desc_builder->ops);
     
     if(desc_builder_impl)
     {
-        AXIS2_FREE((*env)->allocator, desc_builder_impl);
+        AXIS2_FREE(env->allocator, desc_builder_impl);
         desc_builder_impl = NULL;
     }
 	return AXIS2_SUCCESS;
@@ -255,7 +255,7 @@ axis2_desc_builder_free (axis2_desc_builder_t *desc_builder,
 
 axis2_om_node_t *AXIS2_CALL
 axis2_build_OM(axis2_desc_builder_t *desc_builder,
-                axis2_env_t **env) 
+                const axis2_env_t *env) 
 {
     axis2_desc_builder_impl_t *desc_builder_impl = NULL;
     axis2_xml_reader_t *reader = NULL;
@@ -267,7 +267,7 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
     
     if(!desc_builder_impl->file_name)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_STATE_DESC_BUILDER,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_DESC_BUILDER,
             AXIS2_FAILURE);
         return NULL;
     }
@@ -277,7 +277,7 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
 
     if(!reader)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
             AXIS2_FAILURE)
         return NULL;
     }
@@ -287,7 +287,7 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
 
     if(!(desc_builder_impl->builder))
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CREATING_XML_STREAM_READER,
             AXIS2_FAILURE)
         return NULL;
     }
@@ -310,7 +310,7 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
 
 axis2_flow_t *AXIS2_CALL
 axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_om_element_t *flow_element,
                                 axis2_param_container_t *parent,
                                 axis2_om_node_t *flow_node)
@@ -320,13 +320,13 @@ axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
     axis2_qname_t *qchild = NULL;
         
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, parent, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, flow_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, parent, NULL);
+    AXIS2_PARAM_CHECK(env->error, flow_node, NULL);
         
     flow = axis2_flow_create(env);
     if(!flow)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -365,7 +365,7 @@ axis2_desc_builder_process_flow(axis2_desc_builder_t *desc_builder,
 
 struct axis2_handler_desc *AXIS2_CALL
 axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_om_node_t *handler_node,
                                     struct axis2_param_container *parent)
 {
@@ -382,8 +382,8 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     axis2_qname_t *order_qname = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, handler_node, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, parent, NULL);
+    AXIS2_PARAM_CHECK(env->error, handler_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, parent, NULL);
     
     handler_desc = axis2_handler_desc_create_with_qname(env, NULL);
     if(!handler_desc)
@@ -403,7 +403,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     if(!name_attrib)
     {
         AXIS2_HANDLER_DESC_FREE(handler_desc, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
             AXIS2_FAILURE);
         return NULL;
     }
@@ -435,7 +435,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     if(NULL == class_attrib)
     {
         AXIS2_HANDLER_DESC_FREE(handler_desc, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE,
             AXIS2_FAILURE);
         return NULL;   
     }
@@ -461,7 +461,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     if(NULL == order_element || NULL == order_node)
     {
         AXIS2_HANDLER_DESC_FREE(handler_desc, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_HANDLER_STATE, 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, 
             AXIS2_FAILURE);
         return NULL;
     }
@@ -544,7 +544,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                     if(AXIS2_SUCCESS != status)
                     {
                         AXIS2_HANDLER_DESC_FREE(handler_desc, env);
-                        AXIS2_FREE((*env)->allocator, bool_val);
+                        AXIS2_FREE(env->allocator, bool_val);
                         return NULL;
                     }
                 }
@@ -557,11 +557,11 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
                     if(AXIS2_SUCCESS != status)
                     {
                         AXIS2_HANDLER_DESC_FREE(handler_desc, env);
-                        AXIS2_FREE((*env)->allocator, bool_val);
+                        AXIS2_FREE(env->allocator, bool_val);
                         return NULL;
                     }
                 }
-                AXIS2_FREE((*env)->allocator, bool_val);
+                AXIS2_FREE(env->allocator, bool_val);
             }
             index_i = axis2_hash_next (env, index_i);
         }
@@ -591,7 +591,7 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
 
 axis2_status_t AXIS2_CALL
 axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_om_children_qname_iterator_t *params,
                                 axis2_param_container_t *param_container,
                                 axis2_param_container_t *parent )
@@ -599,9 +599,9 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
     axis2_status_t status = AXIS2_FAILURE;
         
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, params, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, param_container, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, parent, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, params, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, param_container, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, parent, AXIS2_FAILURE);
     
     while(AXIS2_FALSE != AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(params, env))
     {
@@ -660,7 +660,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
                 if(!obj)
                 {
                     AXIS2_PARAM_FREE(param, env);
-                    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, 
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, 
                             AXIS2_FAILURE);
                     return AXIS2_FAILURE;
                 }
@@ -721,7 +721,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
             if(AXIS2_SUCCESS != status)
             {
                 AXIS2_PARAM_FREE(param, env);
-                AXIS2_FREE((*env)->allocator, para_test_value);
+                AXIS2_FREE(env->allocator, para_test_value);
                 return status;
             }
             AXIS2_PARAM_SET_PARAM_TYPE(param, env, AXIS2_TEXT_PARAM);
@@ -756,7 +756,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
                 if(parent && AXIS2_TRUE == is_param_locked)
                 {
                     AXIS2_PARAM_FREE(param, env);
-                    AXIS2_ERROR_SET((*env)->error, 
+                    AXIS2_ERROR_SET(env->error, 
                         AXIS2_ERROR_CONFIG_NOT_FOUND, AXIS2_FAILURE);
                     return AXIS2_FAILURE;
                 }
@@ -807,7 +807,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
 
 axis2_status_t AXIS2_CALL
 axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
-                              axis2_env_t **env,
+                              const axis2_env_t *env,
                               axis2_om_children_qname_iterator_t *module_refs, 
                               axis2_op_t *op)
 {
@@ -818,7 +818,7 @@ axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
     axis2_status_t status = AXIS2_FAILURE;
         
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
     desc_builder_impl = AXIS2_INTF_TO_IMPL(desc_builder);
     
     while(module_refs && AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(module_refs,
@@ -842,7 +842,7 @@ axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
             if(NULL == module_desc)
             {
                 AXIS2_QNAME_FREE(ref_qname, env);
-                AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_NOT_FOUND, 
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND, 
                     AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }
@@ -852,7 +852,7 @@ axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
                 AXIS2_QNAME_FREE(ref_qname, env);
                 if(AXIS2_SUCCESS != status)
                 {
-                    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_MODULE_NOT_FOUND, 
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_NOT_FOUND, 
                         AXIS2_FAILURE);
                     return AXIS2_FAILURE;
                 }
@@ -864,7 +864,7 @@ axis2_desc_builder_process_op_module_refs(axis2_desc_builder_t *desc_builder,
 
 axis2_msg_recv_t *AXIS2_CALL
 axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     struct axis2_om_element *recv_element)
 {
     axis2_om_attribute_t *recv_name = NULL;
@@ -882,7 +882,7 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
     axis2_char_t *msg_recv_dll_name = NULL;
         
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, recv_element, NULL);
+    AXIS2_PARAM_CHECK(env->error, recv_element, NULL);
 
     class_qname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
     recv_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(recv_element, env, class_qname);
@@ -907,11 +907,11 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
         temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_LIB_FOLDER, env);
         temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
         dll_name = AXIS2_STRACAT(temp_path3, msg_recv_dll_name, env);
-        AXIS2_FREE((*env)->allocator, temp_path);
-        AXIS2_FREE((*env)->allocator, temp_path2);
-        AXIS2_FREE((*env)->allocator, temp_path3);
+        AXIS2_FREE(env->allocator, temp_path);
+        AXIS2_FREE(env->allocator, temp_path2);
+        AXIS2_FREE(env->allocator, temp_path3);
         AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
-        AXIS2_FREE((*env)->allocator, dll_name);
+        AXIS2_FREE(env->allocator, dll_name);
         AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_MSG_RECV_DLL);
         impl_info_param = axis2_param_create(env, class_name, NULL);
         AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
@@ -930,7 +930,7 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
 
 struct axis2_msg_recv *AXIS2_CALL
 axis2_desc_builder_load_default_msg_recv(axis2_desc_builder_t *desc_builder,
-                                            axis2_env_t **env)
+                                            const axis2_env_t *env)
 {
     axis2_msg_recv_t *msg_recv = NULL;
   
@@ -940,7 +940,7 @@ axis2_desc_builder_load_default_msg_recv(axis2_desc_builder_t *desc_builder,
 
 axis2_char_t *AXIS2_CALL
 axis2_desc_builder_get_short_file_name(axis2_desc_builder_t *desc_builder,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *file_name) 
 {
     axis2_char_t *separator = NULL;
@@ -949,12 +949,12 @@ axis2_desc_builder_get_short_file_name(axis2_desc_builder_t *desc_builder,
     axis2_char_t *short_name = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, file_name, NULL);
+    AXIS2_PARAM_CHECK(env->error, file_name, NULL);
     
     file_name_l = AXIS2_STRDUP(file_name, env);
     if(!file_name_l)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     separator = ".";
@@ -969,18 +969,18 @@ axis2_desc_builder_get_short_file_name(axis2_desc_builder_t *desc_builder,
 
 axis2_char_t *AXIS2_CALL
 axis2_desc_builder_get_file_name_without_prefix(axis2_desc_builder_t *desc_builder,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *short_file_name)
 {
     axis2_char_t *file_name_l = NULL;
     axis2_char_t *short_name = NULL;
     int len = 0;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, short_file_name, NULL);
+    AXIS2_PARAM_CHECK(env->error, short_file_name, NULL);
     file_name_l = AXIS2_STRDUP(short_file_name, env);
     if(!file_name_l)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     len = AXIS2_STRLEN(AXIS2_LIB_PREFIX);
@@ -991,7 +991,7 @@ axis2_desc_builder_get_file_name_without_prefix(axis2_desc_builder_t *desc_build
 
 axis2_char_t *AXIS2_CALL
 axis2_desc_builder_get_value(axis2_desc_builder_t *desc_builder,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *in) 
 {
     axis2_char_t *separator = ":";
@@ -999,12 +999,12 @@ axis2_desc_builder_get_value(axis2_desc_builder_t *desc_builder,
     axis2_char_t *in_l = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, in, NULL);
+    AXIS2_PARAM_CHECK(env->error, in, NULL);
     
     in_l = AXIS2_STRDUP(in, env);
     if(!in_l)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     value = AXIS2_STRSTR(in_l, separator);

@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA struct axis2_module_ops
     /* initialize the module */
     axis2_status_t (AXIS2_CALL *
     init) (struct axis2_module *module, 
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /* TODO figure out how to get the engage() concept done */
     /* public void engage(ExecutionChain exeChain) throws AxisFault; */
@@ -70,7 +70,7 @@ AXIS2_DECLARE_DATA struct axis2_module_ops
     /* shutdown the module */
     axis2_status_t (AXIS2_CALL * 
     shutdown)(struct axis2_module *module,
-                axis2_env_t **env);
+                const axis2_env_t *env);
     
     /** 
      * Return a hash map of handler create functions for the module
@@ -78,7 +78,7 @@ AXIS2_DECLARE_DATA struct axis2_module_ops
      */
     axis2_status_t (AXIS2_CALL * 
     fill_handler_create_func_map)(struct axis2_module *module,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
 
 } ;
@@ -94,7 +94,7 @@ AXIS2_DECLARE_DATA struct axis2_module
  * @return pointer to newly created axis2_module
  */
 AXIS2_DECLARE(axis2_module_t *) 
-axis2_module_create (axis2_env_t **env);
+axis2_module_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

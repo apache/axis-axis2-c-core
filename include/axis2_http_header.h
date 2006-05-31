@@ -48,16 +48,16 @@ typedef struct axis2_http_header axis2_http_header_t;
 AXIS2_DECLARE_DATA struct axis2_http_header_ops
 {
     axis2_char_t* (AXIS2_CALL *to_external_form) (axis2_http_header_t *header, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_char_t* (AXIS2_CALL *get_name) (axis2_http_header_t *header, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_char_t* (AXIS2_CALL *get_value) (axis2_http_header_t *header, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *free) (axis2_http_header_t *header, 
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 };
 
 /** 
@@ -71,10 +71,10 @@ AXIS2_DECLARE_DATA struct axis2_http_header
 
 
 AXIS2_DECLARE(axis2_http_header_t *) 
-axis2_http_header_create (axis2_env_t **env, axis2_char_t *name, 
+axis2_http_header_create (const axis2_env_t *env, axis2_char_t *name, 
                             axis2_char_t *value);
 AXIS2_DECLARE(axis2_http_header_t *) AXIS2_CALL
-axis2_http_header_create_by_str (axis2_env_t **env, axis2_char_t *str);
+axis2_http_header_create_by_str (const axis2_env_t *env, axis2_char_t *str);
 /************************** Start of function macros **************************/
 
 #define AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(header, env) \

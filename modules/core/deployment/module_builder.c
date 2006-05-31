@@ -35,45 +35,45 @@ typedef struct axis2_module_builder_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_module_builder_free (axis2_module_builder_t *module_builder, 
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 
 axis2_status_t AXIS2_CALL
 axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_om_children_qname_iterator_t *op_itr);
                                 
 /************************** End of function prototypes ************************/
 
 axis2_module_builder_t * AXIS2_CALL 
-axis2_module_builder_create (axis2_env_t **env)
+axis2_module_builder_create (const axis2_env_t *env)
 {
     axis2_module_builder_impl_t *module_builder_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	module_builder_impl = (axis2_module_builder_impl_t *) AXIS2_MALLOC((*env)->
+	module_builder_impl = (axis2_module_builder_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_module_builder_impl_t));
 	
 	
 	if(NULL == module_builder_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
     module_builder_impl->module_builder.ops = NULL;
     
 	module_builder_impl->module_builder.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_module_builder_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_module_builder_ops_t));
 	if(NULL == module_builder_impl->module_builder.ops)
     {
         axis2_module_builder_free(&(module_builder_impl->module_builder), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -85,7 +85,7 @@ axis2_module_builder_create (axis2_env_t **env)
 }
 
 axis2_module_builder_t * AXIS2_CALL 
-axis2_module_builder_create_with_file_and_dep_engine_and_module (axis2_env_t **env,
+axis2_module_builder_create_with_file_and_dep_engine_and_module (const axis2_env_t *env,
                                                 axis2_char_t *file_name,
                                                 axis2_dep_engine_t *dep_engine,
                                                 axis2_module_desc_t *module_desc)
@@ -97,7 +97,7 @@ axis2_module_builder_create_with_file_and_dep_engine_and_module (axis2_env_t **e
 	builder_impl = (axis2_module_builder_impl_t *) axis2_module_builder_create(env);
 	if(NULL == builder_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     builder_impl->module_builder.desc_builder = 
@@ -116,7 +116,7 @@ axis2_module_builder_create_with_file_and_dep_engine_and_module (axis2_env_t **e
 
 axis2_status_t AXIS2_CALL 
 axis2_module_builder_free (axis2_module_builder_t *module_builder, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_module_builder_impl_t *module_builder_impl = NULL;
     
@@ -132,13 +132,13 @@ axis2_module_builder_free (axis2_module_builder_t *module_builder,
 
 	if(NULL != module_builder->ops)
     {
-        AXIS2_FREE((*env)->allocator, module_builder->ops);
+        AXIS2_FREE(env->allocator, module_builder->ops);
         module_builder->ops = NULL;
     }
     
     if(module_builder_impl)
     {
-        AXIS2_FREE((*env)->allocator, module_builder_impl);
+        AXIS2_FREE(env->allocator, module_builder_impl);
         module_builder_impl = NULL;
     }
     
@@ -147,7 +147,7 @@ axis2_module_builder_free (axis2_module_builder_t *module_builder,
 
 axis2_status_t AXIS2_CALL
 axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
-                                        axis2_env_t **env)
+                                        const axis2_env_t *env)
 {
     axis2_module_builder_impl_t *builder_impl = NULL;
     axis2_om_element_t *module_element = NULL;
@@ -177,7 +177,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     
-    AXIS2_LOG_TRACE((*env)->log, AXIS2_LOG_SI, "axis2_module_builder_populate_module start");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_module_builder_populate_module start");
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(module_builder);
@@ -202,7 +202,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         if(NULL != module_name && (0 != AXIS2_STRCMP("", module_name)))
         {
             axis2_qname_t *qmodule_name = NULL;
-            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Populate module %s", module_name);
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Populate module %s", module_name);
             
             qmodule_name = axis2_qname_create(env, module_name, NULL, NULL);
             AXIS2_MODULE_DESC_SET_NAME(builder_impl->module_desc, env, qmodule_name);
@@ -218,7 +218,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
             file_data = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(module_builder->
                 desc_builder->engine, env);
             module_name = AXIS2_ARCH_FILE_DATA_GET_MODULE_NAME(file_data, env);
-            AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "Populate module %s", module_name);
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Populate module %s", module_name);
      
             module_qname = axis2_qname_create(env, module_name, NULL, NULL);
             AXIS2_MODULE_DESC_SET_NAME(builder_impl->module_desc, env, module_qname);
@@ -389,21 +389,21 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         AXIS2_MODULE_DESC_ADD_OP(builder_impl->module_desc, env, op);
     }
     AXIS2_ARRAY_LIST_FREE(ops, env);
-    AXIS2_LOG_TRACE((*env)->log, AXIS2_LOG_SI, "axis2_module_builder_populate_module end");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_module_builder_populate_module end");
     return AXIS2_SUCCESS;
 }
 
 
 axis2_array_list_t *AXIS2_CALL
 axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_om_children_qname_iterator_t *op_itr)
 {
     axis2_module_builder_impl_t *builder_impl = NULL;
     axis2_array_list_t *ops = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, op_itr, NULL);
+    AXIS2_PARAM_CHECK(env->error, op_itr, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(module_builder);
     
     ops = axis2_array_list_create(env, 0);
@@ -439,7 +439,7 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
 
         if(NULL == op_name_att)
         {
-            AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_OP_NAME_MISSING,
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_OP_NAME_MISSING,
                 AXIS2_FAILURE);
             return NULL;
         }

@@ -17,10 +17,10 @@
 #include <stdio.h>
 
 axis2_om_node_t *
-build_om_programatically(axis2_env_t **env, axis2_char_t *text);
+build_om_programatically(const axis2_env_t *env, axis2_char_t *text);
 
 axis2_om_node_t *
-axis2_mtom_mtom (axis2_env_t **env, axis2_om_node_t *node)
+axis2_mtom_mtom (const axis2_env_t *env, axis2_om_node_t *node)
 {
     axis2_om_node_t *file_name_node = NULL;
     axis2_om_node_t *file_text_node = NULL;
@@ -38,7 +38,7 @@ axis2_mtom_mtom (axis2_env_t **env, axis2_om_node_t *node)
      */
     if (!node) /* 'mtomSample' node */
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL, AXIS2_FAILURE);
         printf("Echo client ERROR: input parameter NULL\n");
         return NULL;
     }
@@ -46,7 +46,7 @@ axis2_mtom_mtom (axis2_env_t **env, axis2_om_node_t *node)
     file_name_node = AXIS2_OM_NODE_GET_FIRST_CHILD(node, env);
     if (!file_name_node) /* 'text' node */
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Echo client ERROR: invalid XML in request\n");
         return NULL;
     }
@@ -54,7 +54,7 @@ axis2_mtom_mtom (axis2_env_t **env, axis2_om_node_t *node)
     file_text_node = AXIS2_OM_NODE_GET_FIRST_CHILD(file_name_node, env);
     if (!file_text_node) /* actual text to mtom */
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Echo client ERROR: invalid XML in request\n");
         return NULL;
     }
@@ -97,7 +97,7 @@ axis2_mtom_mtom (axis2_env_t **env, axis2_om_node_t *node)
     }
     else
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Echo client ERROR: invalid XML in request\n");
         return NULL;
     }
@@ -107,7 +107,7 @@ axis2_mtom_mtom (axis2_env_t **env, axis2_om_node_t *node)
 
 /* Builds the response content */
 axis2_om_node_t *
-build_om_programatically(axis2_env_t **env, axis2_char_t *text)
+build_om_programatically(const axis2_env_t *env, axis2_char_t *text)
 {
     axis2_om_node_t *mtom_om_node = NULL;
     axis2_om_element_t* mtom_om_ele = NULL;

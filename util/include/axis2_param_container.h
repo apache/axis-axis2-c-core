@@ -48,7 +48,7 @@ struct axis2_param_container_ops;
  * type of function implemented. When the param value is set this function  
  * should also be assigned to param free function
  */
-typedef axis2_status_t (AXIS2_CALL *AXIS2_PARAM_VALUE_FREE)(void *param, axis2_env_t **env);    
+typedef axis2_status_t (AXIS2_CALL *AXIS2_PARAM_VALUE_FREE)(void *param, const axis2_env_t *env);    
 
 /** @defgroup axis2_param_container Parameter Container
  * @ingroup axis2_description
@@ -66,7 +66,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_container_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
 	free)(struct axis2_param_container *param_container,
-		  axis2_env_t **env);
+		  const axis2_env_t *env);
 
 	/** Add a param
      * @param param param to be added
@@ -74,7 +74,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_container_ops
      */
 	axis2_status_t (AXIS2_CALL *
 	add_param)(struct axis2_param_container *param_container,
-				axis2_env_t **env,
+				const axis2_env_t *env,
 				axis2_param_t *param);
 
 	/** To get a param in a given description 
@@ -83,7 +83,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_container_ops
      */
 	axis2_param_t *(AXIS2_CALL *
 	get_param) (struct axis2_param_container *param_container, 
-				axis2_env_t **env,
+				const axis2_env_t *env,
 				const axis2_char_t *name);
 
 
@@ -92,7 +92,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_container_ops
 	 */
 	axis2_array_list_t *(AXIS2_CALL *
 	get_params)(struct axis2_param_container *param_container, 
-				axis2_env_t **env);
+				const axis2_env_t *env);
 
 	/** To check whether the paramter is locked at any level
 	 * @param param_name name of the param
@@ -100,7 +100,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_container_ops
 	 */
 	axis2_bool_t (AXIS2_CALL *
 	is_param_locked)(struct axis2_param_container *param_container, 
-					 axis2_env_t **env,
+					 const axis2_env_t *env,
 					 const axis2_char_t *param_name) ;
 
 }axis2_param_container_ops_t;
@@ -119,7 +119,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_container
  * @return pointer to newly created param container
  */
 AXIS2_DECLARE(axis2_param_container_t *) 
-axis2_param_container_create (axis2_env_t **env);
+axis2_param_container_create (const axis2_env_t *env);
 
 /**
  * Free param_container passed as void pointer. This will be
@@ -128,7 +128,7 @@ axis2_param_container_create (axis2_env_t **env);
  */
 AXIS2_DECLARE(axis2_status_t) 
 axis2_param_container_free_void_arg (void *param_container,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
                                     
 /*************************** Function macros **********************************/
 

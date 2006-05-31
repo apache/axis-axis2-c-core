@@ -71,7 +71,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_desc_t *wsdl_desc,
-		    axis2_env_t **env);
+		    const axis2_env_t *env);
 
     /**
      * Returns a Map of <code>wsdl_bindings</code> Objects keyed by the 
@@ -81,7 +81,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_bindings)(axis2_wsdl_desc_t *wsdl_desc,  
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
     
     /**
      * Sets the whole new set of Bindings to the axis2_wsd_desc.
@@ -90,7 +90,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_bindings)(axis2_wsdl_desc_t *wsdl_desc,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_hash_t *bindings);
     
     /**
@@ -103,7 +103,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_binding)(axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_wsdl_binding *binding);
     
     /**
@@ -115,7 +115,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     struct axis2_wsdl_binding *(AXIS2_CALL *
     get_binding)(axis2_wsdl_desc_t *wsdl_desc,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *qname);
     
     /**
@@ -127,7 +127,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_interface)(axis2_wsdl_desc_t *wsdl_desc,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     struct axis2_wsdl_interface *interface);
     
     /**
@@ -139,7 +139,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     struct axis2_wsdl_interface *(AXIS2_CALL *
     get_interface)(axis2_wsdl_desc_t *wsdl_desc,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *qname);
     
     /**
@@ -149,7 +149,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_interfaces)(axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
     
     /**
      * Method set_interfaces
@@ -158,7 +158,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_interfaces)(axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_hash_t *interfaces);
     
     /**
@@ -168,7 +168,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_svcs)(axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
     
     /**
      * Method set_svcs
@@ -177,7 +177,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_svcs)(axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_hash_t *svcs);
     
     /**
@@ -188,7 +188,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     struct axis2_wsdl_svc *(AXIS2_CALL *
     get_svc)(axis2_wsdl_desc_t *wsdl_desc,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *qname);
     
     /**
@@ -200,7 +200,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_svc)(axis2_wsdl_desc_t *wsdl_desc,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     struct axis2_wsdl_svc *svc);
     
     /**
@@ -210,7 +210,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_target_namespace)(axis2_wsdl_desc_t *wsdl_desc,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
     
     /**
      * Method set_target_namespace
@@ -219,7 +219,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_target_namespace)(axis2_wsdl_desc_t *wsdl_desc,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_char_t *target_namespace);
     
     /**
@@ -229,7 +229,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     struct axis2_wsdl_types *(AXIS2_CALL *
     get_types)(axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
     
     /**
      * Method axis2_wsdl_desc_set_types
@@ -238,7 +238,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_types)(axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_wsdl_types *types);
     
     /**
@@ -248,7 +248,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_qname_t *(AXIS2_CALL *
     get_wsdl1_def_name)(axis2_wsdl_desc_t *wsdl_desc,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * Sets the name attribute of the WSDL 1.1 Definitions Element
@@ -257,7 +257,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_wsdl1_def_name)(axis2_wsdl_desc_t *wsdl_desc,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_qname_t *wsdl1_def_name);
     
     /**
@@ -270,7 +270,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_namespace)(axis2_wsdl_desc_t *wsdl_desc,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *prefix);
     
     /**
@@ -281,7 +281,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_hash_t *(AXIS2_CALL *
     get_namespaces)(axis2_wsdl_desc_t *wsdl_desc,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
     
     /**
      * Sets the Namespaces associated with the Difinition Component
@@ -291,7 +291,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_namespaces)(axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_hash_t *namespaces);
     
     /**
@@ -301,7 +301,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_array_list_t *(AXIS2_CALL *
     get_imports)(axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t *env);
+                                const axis2_env_t *env);
     
     /**
      * Sets the imports as an <code>axis2_array_list_t</code>
@@ -310,7 +310,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_imports)(axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_array_list_t *imports);
     
     /**
@@ -320,7 +320,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_import)(axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_wsdl_import *wsdl_import);
     
     /**
@@ -330,7 +330,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_array_list_t *(AXIS2_CALL *
     get_includes)(axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t *env);
+                                const axis2_env_t *env);
     
     /**
      * Sets the includes as an <code>axis2_array_list_t</code>
@@ -339,7 +339,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_includes) (axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_array_list_t *includes);
     
     /**
@@ -349,12 +349,12 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
      */
     axis2_status_t (AXIS2_CALL *
     add_include) (axis2_wsdl_desc_t *wsdl_desc,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_wsdl_include *wsdl_include);
     
     struct axis2_wsdl_binding *(AXIS2_CALL *
     get_first_binding) (axis2_wsdl_desc_t *wsdl_desc,
-                      axis2_env_t **env);
+                      const axis2_env_t *env);
 
 };
 
@@ -373,7 +373,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc
  * @return pointer to newly created wsdl property
  */
 AXIS2_DECLARE(axis2_wsdl_desc_t *) 
-axis2_wsdl_desc_create (axis2_env_t **env);
+axis2_wsdl_desc_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

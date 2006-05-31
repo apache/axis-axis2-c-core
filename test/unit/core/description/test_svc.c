@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <string.h>
 
-struct axis2_module_desc *create_module_desc(axis2_env_t **env);
-void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env); 
-axis2_array_list_t *get_svc_op_in_phases(axis2_env_t **env);    
+struct axis2_module_desc *create_module_desc(const axis2_env_t *env);
+void add_handlers_to_flow(struct axis2_flow *flow, const axis2_env_t *env); 
+axis2_array_list_t *get_svc_op_in_phases(const axis2_env_t *env);    
     
 void Testaxis2_svc_add_module_ops(CuTest *tc)
 {
@@ -20,7 +20,7 @@ void Testaxis2_svc_add_module_ops(CuTest *tc)
     axis2_qname_t *svc_qname = NULL;
     axis2_allocator_t *allocator = NULL;
     axis2_log_t *log = NULL;
-    axis2_env_t *env = NULL;
+    const axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
           
     printf("**************************************\n");
@@ -35,15 +35,15 @@ void Testaxis2_svc_add_module_ops(CuTest *tc)
     env->log->level = AXIS2_LOG_LEVEL_TRACE;
     axis2_error_init();
 
-    conf = axis2_conf_create(&env);
-    module_desc = create_module_desc(&env);
+    conf = axis2_conf_create(env);
+    module_desc = create_module_desc(env);
       
-    inflow = axis2_flow_create(&env);
-    add_handlers_to_flow(inflow, &env);
-    svc_qname = axis2_qname_create(&env, "service name", NULL, NULL);
-    svc = axis2_svc_create_with_qname(&env, svc_qname);
-    AXIS2_SVC_SET_INFLOW(svc, &env, inflow);
-    actual = AXIS2_SVC_ADD_MODULE_OPS(svc, &env, module_desc, conf);
+    inflow = axis2_flow_create(env);
+    add_handlers_to_flow(inflow, env);
+    svc_qname = axis2_qname_create(env, "service name", NULL, NULL);
+    svc = axis2_svc_create_with_qname(env, svc_qname);
+    AXIS2_SVC_SET_INFLOW(svc, env, inflow);
+    actual = AXIS2_SVC_ADD_MODULE_OPS(svc, env, module_desc, conf);
     
     CuAssertIntEquals(tc, expected, actual);
     
@@ -60,26 +60,26 @@ void Testaxis2_svc_add_param(CuTest *tc)
     printf("**************************************\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create (allocator);    
+    const axis2_env_t *env = axis2_env_create (allocator);    
 
-    svc = axis2_svc_create(&env);
+    svc = axis2_svc_create(env);
     axis2_param_t *param = NULL;
     axis2_char_t *param_name = NULL;
     axis2_char_t *param_value = NULL;
 
     param_name = "damitha";
     param_value = "kumarage";
-    param = axis2_param_create(&env, NULL, NULL);
-    AXIS2_PARAM_SET_NAME(param, &env, param_name);
-    AXIS2_PARAM_SET_VALUE(param, &env, param_value);
-    AXIS2_SVC_ADD_PARAM(svc, &env, param);
+    param = axis2_param_create(env, NULL, NULL);
+    AXIS2_PARAM_SET_NAME(param, env, param_name);
+    AXIS2_PARAM_SET_VALUE(param, env, param_value);
+    AXIS2_SVC_ADD_PARAM(svc, env, param);
     
 
     CuAssertIntEquals(tc, expected, actual);
     
 }
 
-struct axis2_module_desc *create_module_desc(axis2_env_t **env) 
+struct axis2_module_desc *create_module_desc(const axis2_env_t *env) 
 {
     struct axis2_op *op = NULL;
     axis2_qname_t *op_qname = NULL;
@@ -104,7 +104,7 @@ struct axis2_module_desc *create_module_desc(axis2_env_t **env)
     
 }
 
-void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env)
+void add_handlers_to_flow(struct axis2_flow *flow, const axis2_env_t *env)
 {
     struct axis2_handler_desc *handler_desc = NULL;
     struct axis2_handler *handler = NULL;
@@ -148,7 +148,7 @@ void add_handlers_to_flow(struct axis2_flow *flow, axis2_env_t **env)
 /** helper method. This is the requirement method from phases_info's 
   * axis2_get_op_in_phases method
   */
-axis2_array_list_t *get_svc_op_in_phases(axis2_env_t **env)
+axis2_array_list_t *get_svc_op_in_phases(const axis2_env_t *env)
 {
     struct axis2_phase *phase = NULL; 
     axis2_array_list_t *op_in_phases = NULL; 
@@ -184,17 +184,17 @@ void Testaxis2_svc_create_with_qname(CuTest *tc)
     printf("********************************************\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create (allocator);
+    const axis2_env_t *env = axis2_env_create (allocator);
     
-    expected = AXIS2_STRDUP("service name", &env);
-    qname = axis2_qname_create(&env, "service name", NULL, NULL);
-    svc = axis2_svc_create_with_qname(&env, qname);
-    qactual = AXIS2_SVC_GET_QNAME(svc, &env);
-    actual = AXIS2_QNAME_GET_LOCALPART(qactual, &env);
+    expected = AXIS2_STRDUP("service name", env);
+    qname = axis2_qname_create(env, "service name", NULL, NULL);
+    svc = axis2_svc_create_with_qname(env, qname);
+    qactual = AXIS2_SVC_GET_QNAME(svc, env);
+    actual = AXIS2_QNAME_GET_LOCALPART(qactual, env);
     
     CuAssertStrEquals(tc, expected, actual);
     
     AXIS2_FREE((env)->allocator, expected);
-    AXIS2_QNAME_FREE(qname, &env);
-    AXIS2_SVC_FREE(svc, &env);
+    AXIS2_QNAME_FREE(qname, env);
+    AXIS2_SVC_FREE(svc, env);
 }

@@ -42,16 +42,16 @@
 #include <ctype.h>
 
 axis2_om_node_t *
-build_soap_body_content(axis2_env_t **env, axis2_char_t *echo_operation,
+build_soap_body_content(const axis2_env_t *env, axis2_char_t *echo_operation,
                         axis2_char_t *word_to_echo, axis2_om_node_t *body_node);
 
-void print_invalid_om(axis2_env_t **env, axis2_om_node_t *ret_node);
+void print_invalid_om(const axis2_env_t *env, axis2_om_node_t *ret_node);
 
 int main(int argc, char** argv)
 {
     axis2_om_node_t *node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_env_t *env = NULL;
+    const axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
     axis2_allocator_t *allocator = NULL;
@@ -109,17 +109,17 @@ int main(int argc, char** argv)
 
 
     /* create call without passing svc_ctx_t struct */
-    call = axis2_call_create(&env, NULL, client_home);
-    mep_client = AXIS2_CALL_GET_BASE(call, &env);
+    call = axis2_call_create(env, NULL, client_home);
+    mep_client = AXIS2_CALL_GET_BASE(call, env);
     /* prepare SOAP envelope */
-    env_ns = axis2_om_namespace_create(&env, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, "soap"); 
-    soap_envelope = axis2_soap_envelope_create(&env, env_ns);
-    soap_body = axis2_soap_body_create_with_parent(&env, soap_envelope);
-    body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, &env);
-    build_soap_body_content(&env, echo_operation, word_to_echo, body_node);
+    env_ns = axis2_om_namespace_create(env, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, "soap"); 
+    soap_envelope = axis2_soap_envelope_create(env, env_ns);
+    soap_body = axis2_soap_body_create_with_parent(env, soap_envelope);
+    body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+    build_soap_body_content(env, echo_operation, word_to_echo, body_node);
 
     
-    msg_ctx = AXIS2_MEP_CLIENT_PREPARE_SOAP_ENVELOPE(mep_client, &env, node);
+    msg_ctx = AXIS2_MEP_CLIENT_PREPARE_SOAP_ENVELOPE(mep_client, env, node);
     if (!msg_ctx)
     {
         printf("ERROR: Could not prepare message context. ");
@@ -127,33 +127,33 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, &env, soap_envelope);
-    endpoint_ref = axis2_endpoint_ref_create(&env, address);
-    AXIS2_CALL_SET_TO(call, &env, endpoint_ref);
+    AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
+    endpoint_ref = axis2_endpoint_ref_create(env, address);
+    AXIS2_CALL_SET_TO(call, env, endpoint_ref);
     conf = AXIS2_CONF_CTX_GET_CONF(
                             AXIS2_SVC_CTX_GET_CONF_CTX(
-                                AXIS2_MEP_CLIENT_GET_SVC_CTX(mep_client, &env), 
-                                &env), 
-                                &env);
-    svc = AXIS2_CONF_GET_SVC(conf, &env, "simpletest");
+                                AXIS2_MEP_CLIENT_GET_SVC_CTX(mep_client, env), 
+                                env), 
+                                env);
+    svc = AXIS2_CONF_GET_SVC(conf, env, "simpletest");
     if (svc)
     {
-        op = AXIS2_SVC_GET_OP_WITH_NAME(svc, &env, "simpletest");
+        op = AXIS2_SVC_GET_OP_WITH_NAME(svc, env, "simpletest");
         if (op)
         {
-            AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, &env, AXIS2_MEP_URI_OUT_IN);
+            AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
         }
     }
     else
     {
         axis2_qname_t *op_qname = NULL;
-        axis2_qname_t *svc_qname = axis2_qname_create(&env, "simpletest", NULL, NULL);
-        svc = axis2_svc_create_with_qname(&env, svc_qname);
-        op_qname = axis2_qname_create(&env, operation , NULL, NULL);
-        op = axis2_op_create_with_qname(&env, op_qname);
-        AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, &env, AXIS2_MEP_URI_OUT_IN);
-        AXIS2_SVC_ADD_OP(svc, &env, op);
-        AXIS2_CONF_ADD_SVC(conf, &env, svc);
+        axis2_qname_t *svc_qname = axis2_qname_create(env, "simpletest", NULL, NULL);
+        svc = axis2_svc_create_with_qname(env, svc_qname);
+        op_qname = axis2_qname_create(env, operation , NULL, NULL);
+        op = axis2_op_create_with_qname(env, op_qname);
+        AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
+        AXIS2_SVC_ADD_OP(svc, env, op);
+        AXIS2_CONF_ADD_SVC(conf, env, svc);
     }
 
     if (!op)
@@ -161,54 +161,54 @@ int main(int argc, char** argv)
         printf("ERROR: echo_operation not present in service\n");
         return -1;
     }
-    response_ctx = AXIS2_CALL_INVOKE_BLOCKING(call, &env, op, msg_ctx);
+    response_ctx = AXIS2_CALL_INVOKE_BLOCKING(call, env, op, msg_ctx);
 
     if (response_ctx)
     {
-        axis2_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(response_ctx, &env);
-        ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, &env);
+        axis2_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(response_ctx, env);
+        ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
     }
 
     if(ret_node)
     {
-        if (AXIS2_OM_NODE_GET_NODE_TYPE(ret_node, &env) == AXIS2_OM_ELEMENT)
+        if (AXIS2_OM_NODE_GET_NODE_TYPE(ret_node, env) == AXIS2_OM_ELEMENT)
         {
             axis2_char_t *result = NULL;
             axis2_om_element_t *result_ele = NULL;
             axis2_om_node_t *ret_node1 = NULL;
             axis2_char_t echo_response_buff[32];
             
-            ret_node1 = AXIS2_OM_NODE_GET_FIRST_CHILD(ret_node, &env); /*Body*/
+            ret_node1 = AXIS2_OM_NODE_GET_FIRST_CHILD(ret_node, env); /*Body*/
             if (!ret_node1)
             {
-                print_invalid_om(&env, ret_node);
+                print_invalid_om(env, ret_node);
                 return AXIS2_FAILURE;
             }
-            ret_node = AXIS2_OM_NODE_GET_FIRST_CHILD(ret_node1, &env); /*GetTypeResponse*/
+            ret_node = AXIS2_OM_NODE_GET_FIRST_CHILD(ret_node1, env); /*GetTypeResponse*/
             if (!ret_node)
             {
-                print_invalid_om(&env, ret_node1);
+                print_invalid_om(env, ret_node1);
                 return AXIS2_FAILURE;
             }
             /*see if we have got a fault*/
 	    
 	    sprintf (echo_response_buff, "echo%sResponse", echo_operation);
-            result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node, &env);
-            if (AXIS2_STRCMP(AXIS2_OM_ELEMENT_GET_LOCALNAME(result_ele, &env), echo_response_buff) != 0 )
+            result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node, env);
+            if (AXIS2_STRCMP(AXIS2_OM_ELEMENT_GET_LOCALNAME(result_ele, env), echo_response_buff) != 0 )
             {
-                print_invalid_om(&env, ret_node1);
+                print_invalid_om(env, ret_node1);
                 return AXIS2_FAILURE;
             }
             
-            ret_node1 = AXIS2_OM_NODE_GET_FIRST_CHILD(ret_node, &env); /*return*/
+            ret_node1 = AXIS2_OM_NODE_GET_FIRST_CHILD(ret_node, env); /*return*/
             if (!ret_node1)
             {
-                print_invalid_om(&env, ret_node);
+                print_invalid_om(env, ret_node);
                 return AXIS2_FAILURE;
             }
-            result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node1, &env);
-            /*printf(AXIS2_OM_ELEMENT_GET_LOCALNAME(result_ele, &env)); */
-            result = AXIS2_OM_ELEMENT_GET_TEXT(result_ele, &env, ret_node1);
+            result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node1, env);
+            /*printf(AXIS2_OM_ELEMENT_GET_LOCALNAME(result_ele, env)); */
+            result = AXIS2_OM_ELEMENT_GET_TEXT(result_ele, env, ret_node1);
 	    if (!strcmp( word_to_echo, result ) )
 	    {
 		printf("Success\n");
@@ -221,7 +221,7 @@ int main(int argc, char** argv)
         }
         else
         {
-            print_invalid_om(&env, ret_node);
+            print_invalid_om(env, ret_node);
             return AXIS2_FAILURE;
         }
     }
@@ -237,7 +237,7 @@ int main(int argc, char** argv)
 }
 
 axis2_om_node_t *
-build_soap_body_content(axis2_env_t **env, axis2_char_t *echo_operation,
+build_soap_body_content(const axis2_env_t *env, axis2_char_t *echo_operation,
                         axis2_char_t *word_to_echo, axis2_om_node_t *body_node)
 {
     axis2_om_node_t* envelope_node = NULL;
@@ -299,12 +299,12 @@ build_soap_body_content(axis2_env_t **env, axis2_char_t *echo_operation,
     
     AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
     buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
-    AXIS2_LOG_DEBUG((*env)->log, AXIS2_LOG_SI, "\nSending OM node in XML : %s \n",  buffer); 
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "\nSending OM node in XML : %s \n",  buffer); 
 
     return echo_om_node;
 }
 
-void print_invalid_om(axis2_env_t **env, axis2_om_node_t *ret_node)
+void print_invalid_om(const axis2_env_t *env, axis2_om_node_t *ret_node)
 {
 
     axis2_xml_writer_t *writer = NULL;

@@ -20,31 +20,31 @@
 
 int AXIS2_CALL
 math_free(axis2_svc_skeleton_t *svc_skeleton,
-          axis2_env_t **env);
+          const axis2_env_t *env);
 
 /*
  * This method invokes the right service method 
  */
 axis2_om_node_t* AXIS2_CALL 
 math_invoke(axis2_svc_skeleton_t *svc_skeleton,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_om_node_t *node,
             axis2_msg_ctx_t *msg_ctx);
 
 int AXIS2_CALL math_init(axis2_svc_skeleton_t *svc_skeleton,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 
 AXIS2_DECLARE(axis2_svc_skeleton_t *)
-axis2_math_create(axis2_env_t **env)
+axis2_math_create(const axis2_env_t *env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;
-    svc_skeleton = AXIS2_MALLOC((*env)->allocator, 
+    svc_skeleton = AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_svc_skeleton_t));
 
     
     svc_skeleton->ops = AXIS2_MALLOC(
-        (*env)->allocator, sizeof(axis2_svc_skeleton_ops_t));
+        env->allocator, sizeof(axis2_svc_skeleton_ops_t));
 
     svc_skeleton->func_array = NULL;
 
@@ -58,7 +58,7 @@ axis2_math_create(axis2_env_t **env)
 
 int AXIS2_CALL
 math_init(axis2_svc_skeleton_t *svc_skeleton,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     svc_skeleton->func_array = axis2_array_list_create(env, 0);
     AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "add");
@@ -72,7 +72,7 @@ math_init(axis2_svc_skeleton_t *svc_skeleton,
 
 int AXIS2_CALL
 math_free(axis2_svc_skeleton_t *svc_skeleton,
-            axis2_env_t **env)
+            const axis2_env_t *env)
 {
     /*if(svc_skeleton->func_array)
     {
@@ -82,13 +82,13 @@ math_free(axis2_svc_skeleton_t *svc_skeleton,
     
     if(svc_skeleton->ops)
     {
-        AXIS2_FREE((*env)->allocator, svc_skeleton->ops);
+        AXIS2_FREE(env->allocator, svc_skeleton->ops);
         svc_skeleton->ops = NULL;
     }
     
     if(svc_skeleton)
     {
-        AXIS2_FREE((*env)->allocator, svc_skeleton);
+        AXIS2_FREE(env->allocator, svc_skeleton);
         svc_skeleton = NULL;
     }
     return AXIS2_SUCCESS; 
@@ -99,7 +99,7 @@ math_free(axis2_svc_skeleton_t *svc_skeleton,
  */
 axis2_om_node_t* AXIS2_CALL
 math_invoke(axis2_svc_skeleton_t *svc_skeleton,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_om_node_t *node,
             axis2_msg_ctx_t *msg_ctx)
 {
@@ -141,7 +141,7 @@ math_invoke(axis2_svc_skeleton_t *svc_skeleton,
  */
 
 AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
 	*inst = axis2_math_create(env);
     /*if(NULL != *inst)
@@ -157,7 +157,7 @@ AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
 }
 
 AXIS2_EXPORT int axis2_remove_instance(axis2_svc_skeleton_t *inst,
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
 	if (inst)

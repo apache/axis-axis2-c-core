@@ -51,20 +51,20 @@ struct axis2_xml_schema_data_type_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *data_type,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     void * (AXIS2_CALL *
     parse_value) (void *data_type,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     void *input);
 
     void *(AXIS2_CALL *
     value_type) (void *data_type,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 
     struct axis2_xml_tokenized_type *(AXIS2_CALL *
     tokenized_type) (void *data_type,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 };
 
@@ -74,7 +74,7 @@ struct axis2_xml_schema_data_type
 };
 
 AXIS2_DECLARE(axis2_xml_schema_data_type_t *)
-axis2_xml_schema_data_type_create(axis2_env_t **env);
+axis2_xml_schema_data_type_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -82,7 +82,7 @@ axis2_xml_schema_data_type_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_data_type_resolve_methods(
                             axis2_xml_schema_data_type_t *schema_data_type,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_xml_schema_data_type_t *schema_data_type_impl,
                             axis2_hash_t *methods);
 

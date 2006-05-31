@@ -39,21 +39,21 @@ struct axis2_http_header_impl
 /***************************** Function headers *******************************/
 axis2_char_t* AXIS2_CALL 
 axis2_http_header_to_external_form (axis2_http_header_t *header, 
-                axis2_env_t **env);
+                const axis2_env_t *env);
     
 axis2_char_t* AXIS2_CALL 
-axis2_http_header_get_name (axis2_http_header_t *header, axis2_env_t **env);
+axis2_http_header_get_name (axis2_http_header_t *header, const axis2_env_t *env);
     
 axis2_char_t* AXIS2_CALL 
-axis2_http_header_get_value (axis2_http_header_t *header, axis2_env_t **env);
+axis2_http_header_get_value (axis2_http_header_t *header, const axis2_env_t *env);
     
 axis2_status_t AXIS2_CALL 
-axis2_http_header_free (axis2_http_header_t *header, axis2_env_t **env);								
+axis2_http_header_free (axis2_http_header_t *header, const axis2_env_t *env);								
 
 /***************************** End of function headers ************************/
 
 AXIS2_DECLARE(axis2_http_header_t *) AXIS2_CALL
-axis2_http_header_create (axis2_env_t **env, axis2_char_t *name, 
+axis2_http_header_create (const axis2_env_t *env, axis2_char_t *name, 
                             axis2_char_t *value)
 {
     axis2_http_header_impl_t *http_header_impl = NULL;
@@ -62,24 +62,24 @@ axis2_http_header_create (axis2_env_t **env, axis2_char_t *name,
     AXIS2_ENV_CHECK(env, NULL);
         
     http_header_impl =  (axis2_http_header_impl_t *)AXIS2_MALLOC 
-                        ((*env)->allocator, sizeof(
+                        (env->allocator, sizeof(
                         axis2_http_header_impl_t));
 	
     if(NULL == http_header_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     http_header_impl->name = (axis2_char_t *)AXIS2_STRDUP(name, env);
     http_header_impl->value = (axis2_char_t *)AXIS2_STRDUP(value, env);
      
-    http_header_impl->http_header.ops = AXIS2_MALLOC((*env)->allocator,
+    http_header_impl->http_header.ops = AXIS2_MALLOC(env->allocator,
         sizeof(axis2_http_header_ops_t));
     if(NULL == http_header_impl->http_header.ops)
 	{
 		axis2_http_header_free((axis2_http_header_t*)
                          http_header_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -93,7 +93,7 @@ axis2_http_header_create (axis2_env_t **env, axis2_char_t *name,
 }
 
 AXIS2_DECLARE(axis2_http_header_t *) AXIS2_CALL
-axis2_http_header_create_by_str (axis2_env_t **env, axis2_char_t *str)
+axis2_http_header_create_by_str (const axis2_env_t *env, axis2_char_t *str)
 {
 	axis2_char_t *tmp_str = NULL;
 	axis2_char_t *ch = NULL;
@@ -116,9 +116,9 @@ axis2_http_header_create_by_str (axis2_env_t **env, axis2_char_t *str)
 	ch = strchr((const char*)tmp_str, ':');
 	if(NULL == ch)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_HEADER, 
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HEADER, 
 						AXIS2_FAILURE);
-		AXIS2_FREE((*env)->allocator, tmp_str);
+		AXIS2_FREE(env->allocator, tmp_str);
 		return NULL;
 	}
 	ch2 = ch + sizeof(axis2_char_t);
@@ -129,12 +129,12 @@ axis2_http_header_create_by_str (axis2_env_t **env, axis2_char_t *str)
 	}
 	*ch = '\0';
 	ret = axis2_http_header_create(env, tmp_str, ch2);
-	AXIS2_FREE((*env)->allocator, tmp_str);
+	AXIS2_FREE(env->allocator, tmp_str);
 	return ret;	
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_http_header_free (axis2_http_header_t *header, axis2_env_t **env)
+axis2_http_header_free (axis2_http_header_t *header, const axis2_env_t *env)
 {
     axis2_http_header_impl_t *http_header_impl = NULL;
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -142,25 +142,25 @@ axis2_http_header_free (axis2_http_header_t *header, axis2_env_t **env)
     
     if(NULL != http_header_impl->name)
     {
-        AXIS2_FREE((*env)->allocator, http_header_impl->name);
+        AXIS2_FREE(env->allocator, http_header_impl->name);
         http_header_impl->name = NULL;
     }
     if(NULL != http_header_impl->value)
     {
-        AXIS2_FREE((*env)->allocator, http_header_impl->value);
+        AXIS2_FREE(env->allocator, http_header_impl->value);
         http_header_impl->value = NULL;
     }
     if(NULL != header->ops)
-        AXIS2_FREE((*env)->allocator, header->ops);
+        AXIS2_FREE(env->allocator, header->ops);
     
-	AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(header));
+	AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(header));
 	return AXIS2_SUCCESS;
 }
 
 
 axis2_char_t* AXIS2_CALL 
 axis2_http_header_to_external_form (axis2_http_header_t *header, 
-                axis2_env_t **env)
+                const axis2_env_t *env)
 {
     axis2_http_header_impl_t *http_header_impl = NULL;
     axis2_ssize_t len = 0;
@@ -169,7 +169,7 @@ axis2_http_header_to_external_form (axis2_http_header_t *header,
     http_header_impl = AXIS2_INTF_TO_IMPL(header);
     len = AXIS2_STRLEN(http_header_impl->name) + 
                 AXIS2_STRLEN(http_header_impl->value) + 8;
-    external_form = (axis2_char_t*) AXIS2_MALLOC((*env)->allocator,
+    external_form = (axis2_char_t*) AXIS2_MALLOC(env->allocator,
                 len);
     sprintf(external_form, "%s: %s%s", http_header_impl->name, 
                 http_header_impl->value, AXIS2_HTTP_CRLF);
@@ -178,7 +178,7 @@ axis2_http_header_to_external_form (axis2_http_header_t *header,
 
 
 axis2_char_t* AXIS2_CALL 
-axis2_http_header_get_name (axis2_http_header_t *header, axis2_env_t **env)
+axis2_http_header_get_name (axis2_http_header_t *header, const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(header)->name;
@@ -186,7 +186,7 @@ axis2_http_header_get_name (axis2_http_header_t *header, axis2_env_t **env)
 
 
 axis2_char_t* AXIS2_CALL 
-axis2_http_header_get_value (axis2_http_header_t *header, axis2_env_t **env)
+axis2_http_header_get_value (axis2_http_header_t *header, const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(header)->value;

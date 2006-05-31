@@ -34,39 +34,39 @@ struct woden_nc_name_impl
 axis2_status_t AXIS2_CALL 
 woden_nc_name_free(
         void *nc_name,
-        axis2_env_t **envv);
+        const axis2_env_t *envv);
 
 axis2_bool_t AXIS2_CALL
 woden_nc_name_is_valid(
         void *nc_name,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *st_value);
 
 axis2_status_t AXIS2_CALL
 woden_nc_name_set_value(
         void *nc_name,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *value);
 
 axis2_char_t *AXIS2_CALL
 woden_nc_name_to_string(
         void *nc_name,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(woden_nc_name_t *)
 woden_nc_name_create(
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *value)
 {
     woden_nc_name_impl_t *nc_name_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    nc_name_impl = AXIS2_MALLOC((*env)->allocator, 
+    nc_name_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_nc_name_impl_t));
 
     nc_name_impl->f_value = NULL;
 
-    nc_name_impl->nc_name.ops = AXIS2_MALLOC((*env)->allocator, 
+    nc_name_impl->nc_name.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_nc_name_ops_t)); 
     
     nc_name_impl->nc_name.ops->free = woden_nc_name_free;
@@ -82,7 +82,7 @@ woden_nc_name_create(
 axis2_status_t AXIS2_CALL
 woden_nc_name_free(
         void *nc_name,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     woden_nc_name_impl_t *nc_name_impl = NULL;
 
@@ -91,19 +91,19 @@ woden_nc_name_free(
 
     if(nc_name_impl->f_value)
     {
-        AXIS2_FREE((*env)->allocator, nc_name_impl->f_value);
+        AXIS2_FREE(env->allocator, nc_name_impl->f_value);
         nc_name_impl->f_value = NULL;
     }
     
     if((&(nc_name_impl->nc_name))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(nc_name_impl->nc_name))->ops);
+        AXIS2_FREE(env->allocator, (&(nc_name_impl->nc_name))->ops);
         (&(nc_name_impl->nc_name))->ops = NULL;
     }
 
     if(nc_name_impl)
     {
-        AXIS2_FREE((*env)->allocator, nc_name_impl);
+        AXIS2_FREE(env->allocator, nc_name_impl);
         nc_name_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -112,7 +112,7 @@ woden_nc_name_free(
 axis2_bool_t AXIS2_CALL
 woden_nc_name_is_valid(
         void *nc_name,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *st_value)
 {
     woden_nc_name_impl_t *nc_name_impl = NULL;
@@ -137,7 +137,7 @@ woden_nc_name_is_valid(
 axis2_status_t AXIS2_CALL
 woden_nc_name_set_value(
         void *nc_name,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *value)
 {
     woden_nc_name_impl_t *nc_name_impl = NULL;
@@ -147,12 +147,12 @@ woden_nc_name_set_value(
 
     if(AXIS2_TRUE != woden_nc_name_is_valid(nc_name, env, value))
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_STRING_DOES_NOT_REPRESENT_A_VALID_NC_NAME, 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_STRING_DOES_NOT_REPRESENT_A_VALID_NC_NAME, 
                 AXIS2_FAILURE);
     }
     if(nc_name_impl->f_value)
     {
-        AXIS2_FREE((*env)->allocator, nc_name_impl->f_value);
+        AXIS2_FREE(env->allocator, nc_name_impl->f_value);
         nc_name_impl->f_value = NULL;
     }
     nc_name_impl->f_value = AXIS2_STRDUP(value, env);
@@ -163,7 +163,7 @@ woden_nc_name_set_value(
 axis2_char_t *AXIS2_CALL
 woden_nc_name_to_string(
         void *nc_name,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     woden_nc_name_impl_t *nc_name_impl = NULL;
 

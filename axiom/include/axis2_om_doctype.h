@@ -54,7 +54,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
         free)(struct axis2_om_doctype *om_doctype,
-              axis2_env_t **env);
+              const axis2_env_t *env);
        /**
         * @param om_doctype pointer to a axis2_om_doctype_t struct
         * @param env environment must not be null       
@@ -62,7 +62,7 @@ extern "C"
         */
         axis2_char_t* (AXIS2_CALL *
         get_value)(struct axis2_om_doctype *om_doctype,
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
        /**
         * @param om_doctype pointer to axis2_om doctype_t struct
         * @param env environment , MUST NOT be NULL.
@@ -73,7 +73,7 @@ extern "C"
 
         axis2_status_t (AXIS2_CALL *
         set_value)(struct axis2_om_doctype *om_doctype,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    const axis2_char_t *value);
        /**
         * serialize op 
@@ -86,7 +86,7 @@ extern "C"
         
         axis2_status_t (AXIS2_CALL *
         serialize)(struct axis2_om_doctype *om_doctype,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    axis2_om_output_t *om_output);
                                                                                                                                       
     } axis2_om_doctype_ops_t;
@@ -113,7 +113,7 @@ extern "C"
     * @return pointer to newly created doctype struct 
     */
     AXIS2_DECLARE(axis2_om_doctype_t *)
-    axis2_om_doctype_create (axis2_env_t **env,
+    axis2_om_doctype_create (const axis2_env_t *env,
                              axis2_om_node_t * parent,
                              const axis2_char_t * value,
                              axis2_om_node_t ** node);

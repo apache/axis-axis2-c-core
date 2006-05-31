@@ -54,7 +54,7 @@ struct axis2_mime_parser_ops
     axis2_hash_t* (AXIS2_CALL *
     parse)(
         axis2_mime_parser_t *mime_parser,
-        axis2_env_t **env, 
+        const axis2_env_t *env, 
         AXIS2_READ_INPUT_CALLBACK,
         void *callback_ctx,
         axis2_char_t *mime_boundary);
@@ -62,7 +62,7 @@ struct axis2_mime_parser_ops
     axis2_hash_t* (AXIS2_CALL *
     get_mime_parts_map)(
         axis2_mime_parser_t *mime_parser, 
-        axis2_env_t **env);
+        const axis2_env_t *env);
     
 	/** Deallocate memory
      * @return status code
@@ -70,17 +70,17 @@ struct axis2_mime_parser_ops
     axis2_status_t (AXIS2_CALL *
     free)(
         axis2_mime_parser_t *mime_parser,
-        axis2_env_t **env);
+        const axis2_env_t *env);
     
     int (AXIS2_CALL *
     get_soap_body_len)(
         axis2_mime_parser_t *mime_parser, 
-        axis2_env_t **env);
+        const axis2_env_t *env);
         
     axis2_char_t* (AXIS2_CALL *
     get_soap_body_str)(
         axis2_mime_parser_t *mime_parser, 
-        axis2_env_t **env);
+        const axis2_env_t *env);
 };
 
 /** 
@@ -97,7 +97,7 @@ struct axis2_mime_parser
  * @return pointer to newly created mime_parser
  */
 AXIS2_DECLARE(axis2_mime_parser_t *) 
-axis2_mime_parser_create (axis2_env_t **env);
+axis2_mime_parser_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

@@ -19,27 +19,27 @@
 /*************************** function prototypes ******************************************/
 axis2_status_t AXIS2_CALL
 axis2_om_navigator_free(axis2_om_navigator_t *om__navigator,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 axis2_om_navigator_is_navigable(axis2_om_navigator_t *om_navigator,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 axis2_om_navigator_is_completed(axis2_om_navigator_t *om_navigator,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 axis2_om_navigator_visited(axis2_om_navigator_t *om_navigator,
-                           axis2_env_t **env);
+                           const axis2_env_t *env);
 
 axis2_om_node_t* AXIS2_CALL
 axis2_om_navigator_next(axis2_om_navigator_t *om_navigator,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                 
 static void 
 axis2_om_navigator_update_next_node(axis2_om_navigator_t *om_navigator,
-                        			axis2_env_t **env);
+                        			const axis2_env_t *env);
 /************************************************************************************/
 
 typedef struct axis2_om_navigator_impl
@@ -70,18 +70,18 @@ typedef struct axis2_om_navigator_impl
 /*****************************************************************************/
 
 AXIS2_DECLARE(axis2_om_navigator_t *)
-axis2_om_navigator_create(axis2_env_t **env, 
+axis2_om_navigator_create(const axis2_env_t *env, 
                           axis2_om_node_t *om_node)
 {
     axis2_om_navigator_impl_t *navigator_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, om_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, om_node, NULL);
 
     navigator_impl = (axis2_om_navigator_impl_t *)
-                     AXIS2_MALLOC((*env)->allocator, sizeof(axis2_om_navigator_impl_t));
+                     AXIS2_MALLOC(env->allocator, sizeof(axis2_om_navigator_impl_t));
     if(!navigator_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -97,12 +97,12 @@ axis2_om_navigator_create(axis2_env_t **env,
     navigator_impl->root = om_node;
     
     navigator_impl->navigator.ops = (axis2_om_navigator_ops_t*)AXIS2_MALLOC(
-                            (*env)->allocator, sizeof(axis2_om_navigator_ops_t));
+                            env->allocator, sizeof(axis2_om_navigator_ops_t));
 
     if(!(navigator_impl->navigator.ops))
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_FREE((*env)->allocator, navigator_impl);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, navigator_impl);
         navigator_impl = NULL;
         return NULL;
     };
@@ -128,24 +128,24 @@ axis2_om_navigator_create(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_om_navigator_free(axis2_om_navigator_t *om_navigator,
-                       axis2_env_t **env)
+                       const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env , AXIS2_FAILURE);
 
     if(NULL != om_navigator->ops)
     {
-        AXIS2_FREE((*env)->allocator, om_navigator->ops);
+        AXIS2_FREE(env->allocator, om_navigator->ops);
         om_navigator->ops = NULL;
     }
     
-    AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(om_navigator));
+    AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(om_navigator));
     om_navigator = NULL;
     return AXIS2_SUCCESS;
 }
 
 axis2_bool_t AXIS2_CALL
 axis2_om_navigator_is_navigable(axis2_om_navigator_t *om_navigator,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
 	axis2_om_navigator_impl_t *navigator_impl = NULL;
 	AXIS2_ENV_CHECK(env, AXIS2_FALSE);
@@ -164,7 +164,7 @@ axis2_om_navigator_is_navigable(axis2_om_navigator_t *om_navigator,
 
 axis2_bool_t AXIS2_CALL
 axis2_om_navigator_is_completed(axis2_om_navigator_t *om_navigator,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
 	AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 	return AXIS2_INTF_TO_IMPL(om_navigator)->end;	
@@ -173,7 +173,7 @@ axis2_om_navigator_is_completed(axis2_om_navigator_t *om_navigator,
 
 axis2_bool_t AXIS2_CALL
 axis2_om_navigator_visited(axis2_om_navigator_t *om_navigator,
-                           axis2_env_t **env)
+                           const axis2_env_t *env)
 {
 	AXIS2_ENV_CHECK(env, AXIS2_FALSE);
 	return AXIS2_INTF_TO_IMPL(om_navigator)->visited;	
@@ -182,7 +182,7 @@ axis2_om_navigator_visited(axis2_om_navigator_t *om_navigator,
 
 axis2_om_node_t* AXIS2_CALL
 axis2_om_navigator_next(axis2_om_navigator_t *om_navigator,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
 	axis2_om_navigator_impl_t *navigator_impl = NULL;
 	AXIS2_ENV_CHECK(env, NULL);
@@ -216,7 +216,7 @@ axis2_om_navigator_next(axis2_om_navigator_t *om_navigator,
 /** this method encapsulate searching logic */
 static void 
 axis2_om_navigator_update_next_node(axis2_om_navigator_t *om_navigator,
-                        			axis2_env_t **env)
+                        			const axis2_env_t *env)
 {
 	axis2_om_navigator_impl_t *navigator_impl = NULL;
 	if(!om_navigator)

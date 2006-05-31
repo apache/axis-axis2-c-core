@@ -53,7 +53,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_property_ops
   	 * @return status code
   	 */
 	axis2_status_t (AXIS2_CALL *free)(axis2_wsdl_property_t *wsdl_property,
-										axis2_env_t **env);
+										const axis2_env_t *env);
 
     /**
      * Method getConstraint
@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_property_ops
      */
     void * (AXIS2_CALL *
     get_constraint) (axis2_wsdl_property_t *wsdl_property,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
     
     /**
      * Method setConstraint
@@ -71,7 +71,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_property_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_constraint) (axis2_wsdl_property_t *wsdl_property,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         void *constraint);
     
     /**
@@ -81,7 +81,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_property_ops
      */
     axis2_char_t *(AXIS2_CALL *
     get_name) (axis2_wsdl_property_t *wsdl_property,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
                                     
     /**
      * Method setName
@@ -90,7 +90,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_property_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_name) (axis2_wsdl_property_t *wsdl_property,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_char_t *name);
     
     
@@ -101,7 +101,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_property_ops
      */
     void *(AXIS2_CALL *
     get_value) (axis2_wsdl_property_t *wsdl_property,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
                                     
     /**
      * Method setValue
@@ -110,7 +110,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_property_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_value) (axis2_wsdl_property_t *wsdl_property,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     void *value);                                
 
 
@@ -131,7 +131,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_property
  * Creates wsdl property struct
  * @return pointer to newly created wsdl property
  */
-AXIS2_DECLARE(axis2_wsdl_property_t *) axis2_wsdl_property_create (axis2_env_t **env);
+AXIS2_DECLARE(axis2_wsdl_property_t *) axis2_wsdl_property_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

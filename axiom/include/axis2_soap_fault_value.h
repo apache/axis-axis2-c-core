@@ -54,7 +54,7 @@ typedef struct axis2_soap_fault_value axis2_soap_fault_value_t;
 
         axis2_status_t (AXIS2_CALL *
 		free_fn)(axis2_soap_fault_value_t *fault_value,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
 		
 		/**
 		  * Get the text value of the env:Value element directly under env:Code element
@@ -64,7 +64,7 @@ typedef struct axis2_soap_fault_value axis2_soap_fault_value_t;
 		  */
 		axis2_char_t* (AXIS2_CALL *
 		get_text)(axis2_soap_fault_value_t *fault_value,
-				axis2_env_t **env);	
+				const axis2_env_t *env);	
 		
 		/**
 		  * Set the text value of the env:Value element directly under env:Code element
@@ -74,7 +74,7 @@ typedef struct axis2_soap_fault_value axis2_soap_fault_value_t;
 		  */
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node)(axis2_soap_fault_value_t *fault_value,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
         /**
          * set the text value of soap_fault_value element 
          * @param fault_value pointer to soap fault value struct
@@ -84,7 +84,7 @@ typedef struct axis2_soap_fault_value axis2_soap_fault_value_t;
                                 
         axis2_status_t (AXIS2_CALL *
 		set_text)(axis2_soap_fault_value_t *fault_value,
-				axis2_env_t **env, axis2_char_t *text);	
+				const axis2_env_t *env, axis2_char_t *text);	
 				
     };      
 
@@ -104,11 +104,11 @@ typedef struct axis2_soap_fault_value axis2_soap_fault_value_t;
     * @param env Environment. MUST NOT be NULL
     */
 AXIS2_DECLARE(axis2_soap_fault_value_t *)
-axis2_soap_fault_value_create_with_subcode(axis2_env_t **env,
+axis2_soap_fault_value_create_with_subcode(const axis2_env_t *env,
                             axis2_soap_fault_sub_code_t *parent);
 
 AXIS2_DECLARE(axis2_soap_fault_value_t *)
-axis2_soap_fault_value_create_with_code(axis2_env_t **env,
+axis2_soap_fault_value_create_with_code(const axis2_env_t *env,
                             axis2_soap_fault_code_t *parent);  
 
 

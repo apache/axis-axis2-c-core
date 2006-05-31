@@ -53,18 +53,18 @@ struct axis2_mime_body_part_ops
 {
 	axis2_status_t (AXIS2_CALL *
     add_header)(axis2_mime_body_part_t *mime_body_part, 
-            axis2_env_t **env, 
+            const axis2_env_t *env, 
             axis2_char_t *name, 
             axis2_char_t *value); 
 	
     axis2_status_t (AXIS2_CALL *
     set_data_handler)(axis2_mime_body_part_t *mime_body_part, 
-            axis2_env_t **env, 
+            const axis2_env_t *env, 
             axis2_data_handler_t *data_handler); 
 
     axis2_status_t (AXIS2_CALL *
     write_to)(axis2_mime_body_part_t *mime_body_part, 
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_byte_t **output_stream, 
             int *output_stream_size); 
 
@@ -73,7 +73,7 @@ struct axis2_mime_body_part_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (axis2_mime_body_part_t *mime_body_part, 
-            axis2_env_t **env);
+            const axis2_env_t *env);
 };
 
 struct axis2_mime_body_part
@@ -87,7 +87,7 @@ struct axis2_mime_body_part
  * @return pointer to newly created mime_body_part
  */
 AXIS2_DECLARE(axis2_mime_body_part_t *) 
-axis2_mime_body_part_create (axis2_env_t **env);
+axis2_mime_body_part_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

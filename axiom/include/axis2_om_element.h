@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */
         axis2_om_namespace_t* (AXIS2_CALL *
         find_namespace)(axis2_om_element_t *om_element,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_om_node_t *node,
                         const axis2_char_t *uri,
                         const axis2_char_t *prefix);
@@ -77,7 +77,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */
         axis2_status_t (AXIS2_CALL *
         declare_namespace)(axis2_om_element_t *om_element,
-                           axis2_env_t **env,
+                           const axis2_env_t *env,
                            axis2_om_node_t *node,
                            axis2_om_namespace_t * ns);
        /**
@@ -92,7 +92,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */
          axis2_om_namespace_t *(AXIS2_CALL *
          find_namespace_with_qname)(axis2_om_element_t *om_element,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_om_node_t *node,
                                     axis2_qname_t *qname);
 
@@ -106,7 +106,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */
          axis2_status_t (AXIS2_CALL *
          add_attribute)(axis2_om_element_t *om_element,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_om_attribute_t *attribute,
                         axis2_om_node_t *node);
 
@@ -120,7 +120,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */
          axis2_om_attribute_t *(AXIS2_CALL *
          get_attribute) (axis2_om_element_t *om_element,
-                         axis2_env_t **env,
+                         const axis2_env_t *env,
                          axis2_qname_t * qname);
                          
         /**
@@ -133,7 +133,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */
          axis2_char_t *(AXIS2_CALL *
          get_attribute_value) (axis2_om_element_t *om_element,
-                               axis2_env_t **env,
+                               const axis2_env_t *env,
                                axis2_qname_t * qname);                         
         
       /**
@@ -144,7 +144,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */
          axis2_status_t (AXIS2_CALL *
          free) (axis2_om_element_t *element,
-                axis2_env_t **env);
+                const axis2_env_t *env);
 
       /**
         * Serializes the start part of the given element
@@ -155,7 +155,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */
         axis2_status_t (AXIS2_CALL *
         serialize_start_part)(axis2_om_element_t *om_element,
-                              axis2_env_t **env,
+                              const axis2_env_t *env,
                               axis2_om_output_t * om_output,
                               axis2_om_node_t *ele_node);
 
@@ -169,7 +169,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */
         axis2_status_t (AXIS2_CALL *
         serialize_end_part)(axis2_om_element_t *om_element,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_om_output_t * om_output);
        /**
         *  finds a namespace in current elements scope
@@ -182,7 +182,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         
         axis2_om_namespace_t* (AXIS2_CALL *
         find_declared_namespace)(axis2_om_element_t *om_element,
-                                 axis2_env_t **env,
+                                 const axis2_env_t *env,
                                  const axis2_char_t *uri,
                                  const axis2_char_t *prefix);
                                                              
@@ -195,7 +195,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */        
         axis2_char_t* (AXIS2_CALL *
         get_localname)(axis2_om_element_t *om_element,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
        /**
         * set the localname of this element
         * @param om_element om_element_struct to with localname is set
@@ -206,7 +206,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */
         axis2_status_t (AXIS2_CALL *
         set_localname)(axis2_om_element_t *om_element,
-                       axis2_env_t **env,
+                       const axis2_env_t *env,
                        const axis2_char_t *localname);
         /**
          * get the namespace  of om_element 
@@ -218,7 +218,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */
         axis2_om_namespace_t *(AXIS2_CALL *
         get_namespace)(axis2_om_element_t *om_element,
-                       axis2_env_t **env,
+                       const axis2_env_t *env,
                        axis2_om_node_t *ele_node);
        /**
         * set the namespace of the element
@@ -230,7 +230,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */                                         
         axis2_status_t (AXIS2_CALL *
         set_namespace)(axis2_om_element_t *om_element,
-                       axis2_env_t **env,
+                       const axis2_env_t *env,
                        axis2_om_namespace_t *ns,
                        axis2_om_node_t *node);
         /**
@@ -242,7 +242,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */
         axis2_hash_t* (AXIS2_CALL *
         get_all_attributes)(axis2_om_element_t *om_element,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
         /**
          * get the namespace list of the element
          * @param om_element om element
@@ -252,7 +252,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */                                             
         axis2_hash_t* (AXIS2_CALL *
         get_namespaces)(axis2_om_element_t *om_element,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
         /**
          *@return qname of this element
          * the returned qname should not be externaly freed
@@ -262,7 +262,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */
         axis2_qname_t* (AXIS2_CALL *
         get_qname)(axis2_om_element_t *om_element,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    axis2_om_node_t *ele_node);
         
        /**
@@ -271,7 +271,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         */        
         axis2_om_children_iterator_t*(AXIS2_CALL *
         get_children)(axis2_om_element_t *om_element,
-                      axis2_env_t **env,
+                      const axis2_env_t *env,
                      axis2_om_node_t *element_node);
                                       
        /**
@@ -287,7 +287,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
                                                 
         axis2_om_children_qname_iterator_t *(AXIS2_CALL *
         get_children_with_qname)(axis2_om_element_t *om_element,
-                                 axis2_env_t **env,
+                                 const axis2_env_t *env,
                                  axis2_qname_t *element_qname,
                                  axis2_om_node_t* element_node);
         /**
@@ -296,7 +296,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         
         axis2_om_element_t* (AXIS2_CALL *
         get_first_child_with_qname)(axis2_om_element_t *om_element,
-                                     axis2_env_t **env,
+                                     const axis2_env_t *env,
                                      axis2_qname_t *element_qname,
                                      axis2_om_node_t* element_node,
                                      axis2_om_node_t **child_node);                       
@@ -312,7 +312,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */         
         axis2_status_t (AXIS2_CALL *
         remove_attribute)(axis2_om_element_t *om_element,
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           axis2_om_attribute_t *om_attribute); 
         /**
          * Sets the text of the given element.
@@ -321,7 +321,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */
         axis2_status_t (AXIS2_CALL *
         set_text)(axis2_om_element_t *om_element,
-                  axis2_env_t **env,
+                  const axis2_env_t *env,
                   axis2_char_t *text,
                   axis2_om_node_t *element_node); 
         /**
@@ -333,7 +333,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         axis2_char_t* (AXIS2_CALL *
         get_text)(
                 axis2_om_element_t *om_element,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_om_node_t *element_node);
     
         /**
@@ -344,7 +344,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         axis2_om_element_t* (AXIS2_CALL *
         get_first_element)(
                 axis2_om_element_t *om_element,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_om_node_t *element_node,
                 axis2_om_node_t **first_element_node);  
         /**
@@ -355,7 +355,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         axis2_char_t* (AXIS2_CALL *
         to_string)(
                 axis2_om_element_t *om_element,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_om_node_t *element_node);
         /** 
          * returns an iterator with child elements of type AXIS2_OM_ELEMENT
@@ -368,7 +368,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          axis2_om_child_element_iterator_t* (AXIS2_CALL *
          get_child_elements)(
                 axis2_om_element_t *om_element,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_om_node_t *element_node);                                                                            
         /**
          * builds this om_element_node completely, This is only possible 
@@ -382,7 +382,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */
          axis2_status_t (AXIS2_CALL *
          build)(axis2_om_element_t *om_element,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_om_node_t *element_node);
                 
         /** 
@@ -394,7 +394,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          axis2_om_namespace_t* (AXIS2_CALL *
          get_default_namespace)(
                 axis2_om_element_t *om_element,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_om_node_t *element_node);
                                 
         /**
@@ -407,7 +407,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          axis2_om_namespace_t* (AXIS2_CALL *
          declare_default_namespace)(
                 axis2_om_element_t *om_element,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_char_t *uri);
                 
         /** 
@@ -422,7 +422,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          axis2_om_namespace_t* (AXIS2_CALL *
          find_namespace_uri)(
                 axis2_om_element_t *om_element,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_char_t *prefix,
                 axis2_om_node_t *element_node);  
         /**
@@ -435,7 +435,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          axis2_status_t (AXIS2_CALL *
          set_namespace_with_no_find_in_current_scope)(
                 axis2_om_element_t *om_element,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_om_namespace_t *om_ns); 
                 
         /**
@@ -445,13 +445,13 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          axis2_hash_t* (AXIS2_CALL *
          extract_attributes)(
                 axis2_om_element_t *om_element,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_om_node_t *ele_node);
                 
          axis2_char_t* (AXIS2_CALL*
          get_attribute_value_by_name)(
                 axis2_om_element_t *om_ele,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 axis2_char_t *attr_name);
                 
     };
@@ -480,7 +480,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
     * @return a pointer to the newly created element struct
     */
     AXIS2_DECLARE(axis2_om_element_t *)
-    axis2_om_element_create (axis2_env_t **env,
+    axis2_om_element_create (const axis2_env_t *env,
                              axis2_om_node_t *parent,
                              const axis2_char_t *localname,
                              axis2_om_namespace_t *ns,
@@ -497,7 +497,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
     * @return a pointer to the newly created element struct
     */
     AXIS2_DECLARE(axis2_om_element_t *) 
-    axis2_om_element_create_with_qname (axis2_env_t **env,
+    axis2_om_element_create_with_qname (const axis2_env_t *env,
                                         axis2_om_node_t *parent,
                                         axis2_qname_t *qname,
                                         axis2_om_node_t ** node);

@@ -73,12 +73,12 @@ struct axis2_woden_ext_registry_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_ext_registry_free(
         void *registry,
-        axis2_env_t **envv);
+        const axis2_env_t *envv);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_ext_registry_register_deserializer(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_type,
         axis2_qname_t *element_qtype,
         void *ed);
@@ -86,27 +86,27 @@ axis2_woden_ext_registry_register_deserializer(
 void *AXIS2_CALL
 axis2_woden_ext_registry_query_deserializer(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_type,
         axis2_qname_t *element_type);
 
 void *AXIS2_CALL
 axis2_woden_ext_registry_query_ext_element_type(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_class,
         axis2_qname_t *elem_qn);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_ext_registry_get_allowable_exts(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_type);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_ext_registry_register_ext_element_type(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_type,
         axis2_qname_t *element_qtype,
         void *element);
@@ -114,7 +114,7 @@ axis2_woden_ext_registry_register_ext_element_type(
 axis2_status_t AXIS2_CALL
 axis2_woden_ext_registry_register_ext_attr_type(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *owner_class,
         axis2_qname_t *attr_qname,
         void *attr);
@@ -122,14 +122,14 @@ axis2_woden_ext_registry_register_ext_attr_type(
 void *AXIS2_CALL
 axis2_woden_ext_registry_query_ext_attr_type(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_class,
         axis2_qname_t *attr_qn);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_ext_registry_register_component_ext(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_class,
         axis2_url_t *ext_namespc,
         void *comp_ext);
@@ -137,29 +137,29 @@ axis2_woden_ext_registry_register_component_ext(
 void *AXIS2_CALL
 axis2_woden_ext_registry_query_component_ext(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_class,
         axis2_url_t *ext_namespc);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_ext_registry_query_component_ext_namespaces(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_class);
 
 static axis2_status_t
 axis2_woden_ext_registry_populate(
         void *registry,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_ext_registry_t *)
 axis2_woden_ext_registry_create(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_ext_registry_impl_t *registry_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    registry_impl = AXIS2_MALLOC((*env)->allocator, 
+    registry_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_ext_registry_impl_t));
 
     registry_impl->deserializer_reg = NULL;
@@ -182,7 +182,7 @@ axis2_woden_ext_registry_create(
     registry_impl->soap_binding_msg_ref_ext = NULL;
     registry_impl->soap_binding_fault_ref_ext = NULL;
 
-    registry_impl->registry.ops = AXIS2_MALLOC((*env)->allocator, 
+    registry_impl->registry.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_ext_registry_ops_t)); 
     
     registry_impl->registry.ops->free = 
@@ -216,7 +216,7 @@ axis2_woden_ext_registry_create(
 axis2_status_t AXIS2_CALL
 axis2_woden_ext_registry_free(
         void *registry,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_ext_registry_impl_t *registry_impl = NULL;
 
@@ -245,13 +245,13 @@ axis2_woden_ext_registry_free(
     
     if((&(registry_impl->registry))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(registry_impl->registry))->ops);
+        AXIS2_FREE(env->allocator, (&(registry_impl->registry))->ops);
         (&(registry_impl->registry))->ops = NULL;
     }
 
     if(registry_impl)
     {
-        AXIS2_FREE((*env)->allocator, registry_impl);
+        AXIS2_FREE(env->allocator, registry_impl);
         registry_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -275,7 +275,7 @@ axis2_woden_ext_registry_free(
 axis2_status_t AXIS2_CALL
 axis2_woden_ext_registry_register_deserializer(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_type,
         axis2_qname_t *element_qtype,
         void *ed)
@@ -320,7 +320,7 @@ axis2_woden_ext_registry_register_deserializer(
 void *AXIS2_CALL
 axis2_woden_ext_registry_query_deserializer(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_type,
         axis2_qname_t *element_type)
 {
@@ -359,7 +359,7 @@ axis2_woden_ext_registry_query_deserializer(
 void *AXIS2_CALL
 axis2_woden_ext_registry_query_ext_element_type(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_class,
         axis2_qname_t *elem_qn)
 {
@@ -393,7 +393,7 @@ axis2_woden_ext_registry_query_ext_element_type(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_ext_registry_get_allowable_exts(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_type)
 {
     axis2_woden_ext_registry_impl_t *registry_impl = NULL;
@@ -440,7 +440,7 @@ axis2_woden_ext_registry_get_allowable_exts(
 axis2_status_t AXIS2_CALL
 axis2_woden_ext_registry_register_ext_element_type(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_type,
         axis2_qname_t *element_qtype,
         void *element)
@@ -483,7 +483,7 @@ axis2_woden_ext_registry_register_ext_element_type(
 axis2_status_t AXIS2_CALL
 axis2_woden_ext_registry_register_ext_attr_type(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *owner_class,
         axis2_qname_t *attr_qname,
         void *attr)
@@ -523,7 +523,7 @@ axis2_woden_ext_registry_register_ext_attr_type(
 void *AXIS2_CALL
 axis2_woden_ext_registry_query_ext_attr_type(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_class,
         axis2_qname_t *attr_qn)
 {
@@ -557,7 +557,7 @@ axis2_woden_ext_registry_query_ext_attr_type(
 axis2_status_t AXIS2_CALL
 axis2_woden_ext_registry_register_component_ext(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_class,
         axis2_url_t *ext_namespc,
         void *comp_ext)
@@ -593,7 +593,7 @@ axis2_woden_ext_registry_register_component_ext(
 void *AXIS2_CALL
 axis2_woden_ext_registry_query_component_ext(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_class,
         axis2_url_t *ext_namespc)
 {
@@ -625,7 +625,7 @@ axis2_woden_ext_registry_query_component_ext(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_ext_registry_query_component_ext_namespaces(
         void *registry,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_class)
 {
     axis2_woden_ext_registry_impl_t *registry_impl = NULL;
@@ -656,7 +656,7 @@ axis2_woden_ext_registry_query_component_ext_namespaces(
 static axis2_status_t
 axis2_woden_ext_registry_populate(
         void *registry,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_ext_registry_impl_t *registry_impl = NULL;
 

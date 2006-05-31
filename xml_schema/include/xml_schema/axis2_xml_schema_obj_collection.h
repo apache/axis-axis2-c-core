@@ -55,46 +55,46 @@ struct axis2_xml_schema_obj_collection_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (axis2_xml_schema_obj_collection_t *obj_collection,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     int (AXIS2_CALL *
     get_count) (axis2_xml_schema_obj_collection_t *obj_collection,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 
     axis2_xml_schema_obj_t *(AXIS2_CALL *
     get_item) (axis2_xml_schema_obj_collection_t *obj_collection,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     int i);
 
     axis2_status_t (AXIS2_CALL *
     set_item) (axis2_xml_schema_obj_collection_t *obj_collection,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     int i,
                     axis2_xml_schema_obj_t *item);
 
     axis2_status_t (AXIS2_CALL *
     add) (axis2_xml_schema_obj_collection_t *obj_collection,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_xml_schema_obj_t *item);
 
     axis2_bool_t (AXIS2_CALL *
     contains) (axis2_xml_schema_obj_collection_t *obj_collection,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_xml_schema_obj_t *item);
 
     axis2_status_t (AXIS2_CALL *
     index_of) (axis2_xml_schema_obj_collection_t *obj_collection,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_xml_schema_obj_t *item);
 
     void* (AXIS2_CALL *
     remove_at) (axis2_xml_schema_obj_collection_t *obj_collection,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 int i);
                 
     axis2_array_list_t* (AXIS2_CALL *
     to_array)(axis2_xml_schema_obj_collection_t *obj_collection,
-              axis2_env_t **env);                
+              const axis2_env_t *env);                
 
 };
 
@@ -104,7 +104,7 @@ struct axis2_xml_schema_obj_collection
 };
 
 AXIS2_DECLARE(axis2_xml_schema_obj_collection_t *)
-axis2_xml_schema_obj_collection_create(axis2_env_t **env);
+axis2_xml_schema_obj_collection_create(const axis2_env_t *env);
 
 /******************* MACROS ***************************************************/
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_FREE(obj_collection, env) \

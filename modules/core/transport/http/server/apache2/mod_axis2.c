@@ -35,7 +35,7 @@ typedef struct axis2_config_rec
 }axis2_config_rec_t;
 
 axis2_apache2_worker_t *axis2_worker = NULL;
-axis2_env_t *axis2_env = NULL;
+const axis2_env_t *axis2_env = NULL;
 
 /******************************Function Headers********************************/
 static void * axis2_create_svr(apr_pool_t *p, server_rec *s);
@@ -154,7 +154,7 @@ static int axis2_handler(request_rec *req)
         return rv;
     }
     ap_should_client_block(req);
-    rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, &axis2_env, req);
+    rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, axis2_env, req);
     if(AXIS2_CRTICAL_FAILURE == rv)
     {
         return HTTP_INTERNAL_SERVER_ERROR;
@@ -216,7 +216,7 @@ static void axis2_module_init(apr_pool_t* p, server_rec* svr_rec)
         AXIS2_LOG_INFO(axis2_env->log, "Starting log with log level %d", 
                         conf->log_level);
     }
-    axis2_worker = axis2_apache2_worker_create(&axis2_env, 
+    axis2_worker = axis2_apache2_worker_create(axis2_env, 
                         conf->axis2_repo_path);
     if(NULL == axis2_worker)
     {

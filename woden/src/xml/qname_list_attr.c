@@ -38,27 +38,27 @@ struct axis2_woden_qname_list_attr_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_qname_list_attr_free(
         void *qname_list_attr,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_qname_list_attr_type(
         void *qname_list_attr,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_xml_attr_t *AXIS2_CALL
 axis2_woden_qname_list_attr_get_base_impl(
         void *qname_list_attr,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_qname_list_attr_get_qnames(
         void *qname_list_attr,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_qname_list_attr_convert(
         void *qname_list_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_element_t *owner_el,
         axis2_om_node_t *owner_node,
         axis2_char_t *attr_value);
@@ -69,7 +69,7 @@ axis2_woden_qname_list_attr_convert(
  */
 AXIS2_DECLARE(axis2_woden_qname_list_attr_t *)
 axis2_woden_qname_list_attr_create(
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_element_t *owner_el,
         axis2_om_node_t *owner_node,
         axis2_qname_t *attr_type,
@@ -78,14 +78,14 @@ axis2_woden_qname_list_attr_create(
     axis2_woden_qname_list_attr_impl_t *qname_list_attr_impl = NULL;
      
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    qname_list_attr_impl = AXIS2_MALLOC((*env)->allocator, 
+    qname_list_attr_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_qname_list_attr_impl_t));
 
     qname_list_attr_impl->obj_type = AXIS2_WODEN_QNAME_LIST_ATTR;
     qname_list_attr_impl->xml_attr = NULL;
     qname_list_attr_impl->methods = NULL;
     qname_list_attr_impl->qname_list_attr.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_qname_list_attr_ops_t));
 
     qname_list_attr_impl->qname_list_attr.ops->free = 
@@ -103,7 +103,7 @@ axis2_woden_qname_list_attr_create(
     qname_list_attr_impl->methods = axis2_hash_make(env);
     if(!qname_list_attr_impl->methods) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(qname_list_attr_impl->methods, "free", 
@@ -124,7 +124,7 @@ axis2_woden_qname_list_attr_create(
 axis2_woden_obj_types_t AXIS2_CALL
 axis2_woden_qname_list_attr_type(
         void *qname_list_attr,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_qname_list_attr_impl_t *qname_list_attr_impl = NULL;
 
@@ -137,7 +137,7 @@ axis2_woden_qname_list_attr_type(
 axis2_status_t AXIS2_CALL
 axis2_woden_qname_list_attr_free(
         void *qname_list_attr,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_qname_list_attr_impl_t *qname_list_attr_impl = NULL;
 
@@ -158,13 +158,13 @@ axis2_woden_qname_list_attr_free(
     
     if((&(qname_list_attr_impl->qname_list_attr))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(qname_list_attr_impl->qname_list_attr))->ops);
+        AXIS2_FREE(env->allocator, (&(qname_list_attr_impl->qname_list_attr))->ops);
         (&(qname_list_attr_impl->qname_list_attr))->ops = NULL;
     }
 
     if(qname_list_attr_impl)
     {
-        AXIS2_FREE((*env)->allocator, qname_list_attr_impl);
+        AXIS2_FREE(env->allocator, qname_list_attr_impl);
         qname_list_attr_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -173,7 +173,7 @@ axis2_woden_qname_list_attr_free(
 axis2_woden_xml_attr_t *AXIS2_CALL
 axis2_woden_qname_list_attr_get_base_impl(
         void *qname_list_attr,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_woden_qname_list_attr_impl_t *qname_list_attr_impl = NULL;
 
@@ -186,11 +186,11 @@ axis2_woden_qname_list_attr_get_base_impl(
 axis2_status_t AXIS2_CALL
 axis2_woden_qname_list_attr_resolve_methods(
         axis2_woden_qname_list_attr_t *qname_list_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     qname_list_attr->ops->free = axis2_hash_get(methods, 
             "free", AXIS2_HASH_KEY_STRING);
@@ -209,7 +209,7 @@ axis2_woden_qname_list_attr_resolve_methods(
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_qname_list_attr_get_qnames(
         void *qname_list_attr,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_qname_list_attr_impl_t *qname_list_attr_impl = NULL;
     
@@ -222,7 +222,7 @@ axis2_woden_qname_list_attr_get_qnames(
 void *AXIS2_CALL
 axis2_woden_qname_list_attr_convert(
         void *qname_list_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_om_element_t *owner_el,
         axis2_om_node_t *owner_node,
         axis2_char_t *attr_value)

@@ -63,37 +63,37 @@ struct axis2_data_handler_ops
 {
 	axis2_char_t *(AXIS2_CALL *
     get_content_type)(axis2_data_handler_t *data_handler, 
-        axis2_env_t **env); 
+        const axis2_env_t *env); 
 	
 	axis2_byte_t* (AXIS2_CALL *
     get_input_stream)(axis2_data_handler_t *data_handler, 
-        axis2_env_t **env); 
+        const axis2_env_t *env); 
 
     axis2_status_t (AXIS2_CALL *
     read_from)(axis2_data_handler_t *data_handler, 
-        axis2_env_t **env, 
+        const axis2_env_t *env, 
         axis2_byte_t** output_stream, 
         int *output_stream_size);
 
     axis2_status_t (AXIS2_CALL *
     set_binary_data)(axis2_data_handler_t *data_handler, 
-        axis2_env_t **env, 
+        const axis2_env_t *env, 
         axis2_byte_t* input_stream, 
         int input_stream_len);
 
     axis2_status_t (AXIS2_CALL *
     write_to)(axis2_data_handler_t *data_handler, 
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
     axis2_status_t ( AXIS2_CALL *
     set_file_name )(
         axis2_data_handler_t *data_handler, 
-        axis2_env_t **env, 
+        const axis2_env_t *env, 
         axis2_char_t* file_name);
     
     axis2_status_t (AXIS2_CALL *
     free) (axis2_data_handler_t *data_handler, 
-        axis2_env_t **env);
+        const axis2_env_t *env);
 };
 
 /** 
@@ -115,7 +115,7 @@ struct axis2_data_handler
  * @return pointer to newly created data_handler
  */
 AXIS2_DECLARE(axis2_data_handler_t *) 
-axis2_data_handler_create (axis2_env_t **env, axis2_char_t *file_name, axis2_char_t *mime_type);
+axis2_data_handler_create (const axis2_env_t *env, axis2_char_t *file_name, axis2_char_t *mime_type);
 
 /*************************** Function macros **********************************/
 

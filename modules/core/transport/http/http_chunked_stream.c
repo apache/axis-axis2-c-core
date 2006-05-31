@@ -42,45 +42,45 @@ struct axis2_http_chunked_stream_impl
 /***************************** Function headers *******************************/
 int AXIS2_CALL 
 axis2_http_chunked_stream_read (axis2_http_chunked_stream_t *chunked_stream,
-						axis2_env_t **env, void *buffer, size_t count);
+						const axis2_env_t *env, void *buffer, size_t count);
 int AXIS2_CALL 
 axis2_http_chunked_stream_write (axis2_http_chunked_stream_t *chunked_stream, 
-						axis2_env_t **env, const void *buffer, 
+						const axis2_env_t *env, const void *buffer, 
 						size_t count);
 int AXIS2_CALL 
 axis2_http_chunked_stream_get_current_chunk_size
                         (axis2_http_chunked_stream_t *chunked_stream, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_http_chunked_stream_start_chunk(
 						axis2_http_chunked_stream_t *chunked_stream, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 						
 axis2_status_t AXIS2_CALL
 axis2_http_chunked_stream_write_last_chunk(
 						axis2_http_chunked_stream_t *chunked_stream, 
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_http_chunked_stream_free (axis2_http_chunked_stream_t *chunked_stream, 
-                        axis2_env_t **env);				
+                        const axis2_env_t *env);				
 /***************************** End of function headers ************************/
 
 AXIS2_DECLARE(axis2_http_chunked_stream_t *)
-axis2_http_chunked_stream_create(axis2_env_t **env, axis2_stream_t *stream)
+axis2_http_chunked_stream_create(const axis2_env_t *env, axis2_stream_t *stream)
 {
     axis2_http_chunked_stream_impl_t *chunked_stream_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, stream, NULL);
+    AXIS2_PARAM_CHECK(env->error, stream, NULL);
         
     chunked_stream_impl = (axis2_http_chunked_stream_impl_t *)AXIS2_MALLOC 
-                        ((*env)->allocator, sizeof(
+                        (env->allocator, sizeof(
                         axis2_http_chunked_stream_impl_t));
 	
     if(NULL == chunked_stream_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     chunked_stream_impl->stream = stream;
@@ -89,13 +89,13 @@ axis2_http_chunked_stream_create(axis2_env_t **env, axis2_stream_t *stream)
 	chunked_stream_impl->end_of_chunks = AXIS2_FALSE;
 	chunked_stream_impl->chunk_started = AXIS2_FALSE;
 	
-    chunked_stream_impl->chunked_stream.ops = AXIS2_MALLOC((*env)->allocator,
+    chunked_stream_impl->chunked_stream.ops = AXIS2_MALLOC(env->allocator,
         				sizeof(axis2_http_chunked_stream_ops_t));
     if(NULL == chunked_stream_impl->chunked_stream.ops)
 	{
 		axis2_http_chunked_stream_free((axis2_http_chunked_stream_t*)
                          chunked_stream_impl, env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -114,19 +114,19 @@ axis2_http_chunked_stream_create(axis2_env_t **env, axis2_stream_t *stream)
 
 axis2_status_t AXIS2_CALL
 axis2_http_chunked_stream_free(axis2_http_chunked_stream_t *chunked_stream, 
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(NULL != chunked_stream->ops)
-        AXIS2_FREE((*env)->allocator, chunked_stream->ops);
+        AXIS2_FREE(env->allocator, chunked_stream->ops);
     
-	AXIS2_FREE((*env)->allocator, AXIS2_INTF_TO_IMPL(chunked_stream));
+	AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(chunked_stream));
 	return AXIS2_SUCCESS;
 }
 
 int AXIS2_CALL 
 axis2_http_chunked_stream_read (axis2_http_chunked_stream_t *chunked_stream,
-						axis2_env_t **env, void *buffer, size_t count)
+						const axis2_env_t *env, void *buffer, size_t count)
 {
 	int len = -1;
 	int yet_to_read = 0;
@@ -141,7 +141,7 @@ axis2_http_chunked_stream_read (axis2_http_chunked_stream_t *chunked_stream,
 	}
 	if(NULL == stream)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM
 						, AXIS2_FAILURE);
 		return -1;
 	}
@@ -182,7 +182,7 @@ axis2_http_chunked_stream_read (axis2_http_chunked_stream_t *chunked_stream,
 
 int AXIS2_CALL
 axis2_http_chunked_stream_write (axis2_http_chunked_stream_t *chunked_stream
-						, axis2_env_t **env, const void *buffer, 
+						, const axis2_env_t *env, const void *buffer, 
 						size_t count)
 {
 	axis2_stream_t *stream = AXIS2_INTF_TO_IMPL(chunked_stream)->stream;
@@ -196,7 +196,7 @@ axis2_http_chunked_stream_write (axis2_http_chunked_stream_t *chunked_stream
 	}
 	if(NULL == stream)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM
 						, AXIS2_FAILURE);
 		return -1;
 	}
@@ -211,7 +211,7 @@ axis2_http_chunked_stream_write (axis2_http_chunked_stream_t *chunked_stream
 int AXIS2_CALL 
 axis2_http_chunked_stream_get_current_chunk_size
                         (axis2_http_chunked_stream_t *chunked_stream, 
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(chunked_stream)->current_chunk_size;
@@ -221,7 +221,7 @@ axis2_http_chunked_stream_get_current_chunk_size
 axis2_status_t AXIS2_CALL
 axis2_http_chunked_stream_start_chunk(
 						axis2_http_chunked_stream_t *chunked_stream, 
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
 	axis2_char_t tmp_buf[3] = "";
 	axis2_char_t str_chunk_len[512] = "";
@@ -274,7 +274,7 @@ axis2_http_chunked_stream_start_chunk(
 axis2_status_t AXIS2_CALL
 axis2_http_chunked_stream_write_last_chunk(
 						axis2_http_chunked_stream_t *chunked_stream, 
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
 	axis2_stream_t *stream = NULL;
 	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

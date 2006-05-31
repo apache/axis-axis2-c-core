@@ -48,25 +48,25 @@ struct axis2_xml_schema_annotation_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *annotation,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *annotation,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
     type) (
             void *annotation,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_obj_t *(AXIS2_CALL *
     get_base_impl) (void *annotation,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
     
     axis2_xml_schema_obj_collection_t *(AXIS2_CALL *
     get_items)(void *annotation,
-                axis2_env_t **env);
+                const axis2_env_t *env);
     
 };
 
@@ -77,7 +77,7 @@ struct axis2_xml_schema_annotation
 };
 
 AXIS2_DECLARE(axis2_xml_schema_annotation_t *)
-axis2_xml_schema_annotation_create(axis2_env_t **env);
+axis2_xml_schema_annotation_create(const axis2_env_t *env);
 
 /***************** Macros *****************************************/
 

@@ -56,20 +56,20 @@ extern "C"
 
         axis2_status_t (AXIS2_CALL *
 		free_fn)(axis2_soap_fault_detail_t *fault_detail,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
                                      
         axis2_status_t (AXIS2_CALL *
 		add_detail_entry)(axis2_soap_fault_detail_t *fault_detail,
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           axis2_om_node_t *ele_node);
                                  
         axis2_om_children_iterator_t* (AXIS2_CALL *
 		get_all_detail_entries) (axis2_soap_fault_detail_t *fault_detail,
-                                 axis2_env_t **env); 
+                                 const axis2_env_t *env); 
 
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node)(axis2_soap_fault_detail_t *fault_code,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
         
     };      
 
@@ -93,7 +93,7 @@ extern "C"
 
 AXIS2_DECLARE(axis2_soap_fault_detail_t *)
 axis2_soap_fault_detail_create_with_parent
-                        (axis2_env_t **env,
+                        (const axis2_env_t *env,
                          axis2_soap_fault_t *fault);
                          
 /******************** Macros **************************************************/

@@ -34,33 +34,33 @@ typedef struct axis2_wsdl_include_impl
 
 axis2_status_t AXIS2_CALL
 	axis2_wsdl_include_free (axis2_wsdl_include_t *wsdl_include,
-									axis2_env_t **env);
+									const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 axis2_wsdl_include_get_location(axis2_wsdl_include_t *wsdl_include,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_include_set_location(axis2_wsdl_include_t *wsdl_include,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *location);
                                 
 /************************** End of function prototypes ************************/
 
 axis2_wsdl_include_t * AXIS2_CALL 
-axis2_wsdl_include_create (axis2_env_t **env)
+axis2_wsdl_include_create (const axis2_env_t *env)
 {
     axis2_wsdl_include_impl_t *wsdl_include_impl = NULL;
     
 	AXIS2_ENV_CHECK(env, NULL);
 	
-	wsdl_include_impl = (axis2_wsdl_include_impl_t *) AXIS2_MALLOC((*env)->allocator,
+	wsdl_include_impl = (axis2_wsdl_include_impl_t *) AXIS2_MALLOC(env->allocator,
 			sizeof(axis2_wsdl_include_impl_t));
 	
 	
 	if(NULL == wsdl_include_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
@@ -72,16 +72,16 @@ axis2_wsdl_include_create (axis2_env_t **env)
     if(NULL == wsdl_include_impl->wsdl_include.wsdl_component)
     {
         axis2_wsdl_include_free(&(wsdl_include_impl->wsdl_include), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }    
     
 	wsdl_include_impl->wsdl_include.ops = 
-		AXIS2_MALLOC ((*env)->allocator, sizeof(axis2_wsdl_include_ops_t));
+		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_include_ops_t));
 	if(NULL == wsdl_include_impl->wsdl_include.ops)
     {
         axis2_wsdl_include_free(&(wsdl_include_impl->wsdl_include), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -98,7 +98,7 @@ axis2_wsdl_include_create (axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_include_free (axis2_wsdl_include_t *wsdl_include, 
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_wsdl_include_impl_t *include_impl = NULL;
     
@@ -107,11 +107,11 @@ axis2_wsdl_include_free (axis2_wsdl_include_t *wsdl_include,
     include_impl = AXIS2_INTF_TO_IMPL(wsdl_include);
     
 	if(NULL != wsdl_include->ops)
-        AXIS2_FREE((*env)->allocator, wsdl_include->ops);
+        AXIS2_FREE(env->allocator, wsdl_include->ops);
 
     if(NULL != include_impl->location)
     {
-        AXIS2_FREE((*env)->allocator, include_impl->location);
+        AXIS2_FREE(env->allocator, include_impl->location);
         include_impl->location = NULL;
     }
     
@@ -121,7 +121,7 @@ axis2_wsdl_include_free (axis2_wsdl_include_t *wsdl_include,
         wsdl_include->wsdl_component = NULL;
     }
     
-    AXIS2_FREE((*env)->allocator, include_impl);
+    AXIS2_FREE(env->allocator, include_impl);
     include_impl = NULL;
     
 	return AXIS2_SUCCESS;
@@ -129,7 +129,7 @@ axis2_wsdl_include_free (axis2_wsdl_include_t *wsdl_include,
 
 axis2_char_t *AXIS2_CALL
 axis2_wsdl_include_get_location(axis2_wsdl_include_t *wsdl_include,
-                                axis2_env_t **env) 
+                                const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(wsdl_include)->location;
@@ -137,25 +137,25 @@ axis2_wsdl_include_get_location(axis2_wsdl_include_t *wsdl_include,
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_include_set_location(axis2_wsdl_include_t *wsdl_include,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *location) 
 {
     axis2_wsdl_include_impl_t *include_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, location, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, location, AXIS2_FAILURE);
     
     include_impl = AXIS2_INTF_TO_IMPL(wsdl_include);
     
     if(include_impl->location)
     {
-        AXIS2_FREE((*env)->allocator, include_impl->location);
+        AXIS2_FREE(env->allocator, include_impl->location);
         include_impl->location = NULL;
     }
     include_impl->location = AXIS2_STRDUP(location, env);
     if(!include_impl->location)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;

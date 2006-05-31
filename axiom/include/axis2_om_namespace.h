@@ -55,7 +55,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
         free) (struct axis2_om_namespace *om_namespace,
-               axis2_env_t **env);
+               const axis2_env_t *env);
 
       /**
         * Compares two namepsaces
@@ -66,7 +66,7 @@ extern "C"
         */
         axis2_bool_t (AXIS2_CALL *
         equals)(struct axis2_om_namespace *om_namespace,
-                axis2_env_t **env,
+                const axis2_env_t *env,
                 struct axis2_om_namespace *om_namespace1);
 
       /**
@@ -78,7 +78,7 @@ extern "C"
         */
         axis2_status_t (AXIS2_CALL *
         serialize)(struct axis2_om_namespace *om_namespace,
-                   axis2_env_t **env,
+                   const axis2_env_t *env,
                    axis2_om_output_t * om_output);
        /**   
         *@param om_namespace pointer to om_namespace struct
@@ -87,7 +87,7 @@ extern "C"
         */
         axis2_char_t* (AXIS2_CALL *
         get_uri)(struct axis2_om_namespace *om_namespace,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
        /**   
         *@param om_namespace pointer to om namespace struct
         *@param env  environment, MUST NOT be NULL
@@ -95,7 +95,7 @@ extern "C"
         */
         axis2_char_t* (AXIS2_CALL *
         get_prefix)(struct axis2_om_namespace *om_namespace,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 
 
         /**
@@ -106,7 +106,7 @@ extern "C"
          */
         struct axis2_om_namespace* (AXIS2_CALL *
         clone)(struct axis2_om_namespace *om_namespace,
-               axis2_env_t **env);
+               const axis2_env_t *env);
                
         /**
          * to string , returns the string by combining namespace_uri,
@@ -118,7 +118,7 @@ extern "C"
          */                                                                                     
         axis2_char_t * (AXIS2_CALL *
         to_string)(struct axis2_om_namespace *om_namespace,
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
 
     } axis2_om_namespace_ops_t;
 
@@ -140,7 +140,7 @@ extern "C"
     * @return a pointer to newly created namespace struct
     */
     AXIS2_DECLARE(axis2_om_namespace_t *)
-    axis2_om_namespace_create (axis2_env_t **env,
+    axis2_om_namespace_create (const axis2_env_t *env,
                                const axis2_char_t * uri,
                                const axis2_char_t *prefix);
 

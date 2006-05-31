@@ -53,17 +53,17 @@ struct axis2_woden_bool_attr_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *bool_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_bool_attr_free) (
             void *bool_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *bool_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /**
      * @return the base implementation class
@@ -71,7 +71,7 @@ struct axis2_woden_bool_attr_ops
     axis2_woden_xml_attr_t *(AXIS2_CALL *
     get_base_impl) (
             void *bool_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /* ************************************************************
      *  BooleanAttr interface declared methods 
@@ -80,7 +80,7 @@ struct axis2_woden_bool_attr_ops
     axis2_bool_t (AXIS2_CALL *
     get_boolean) (
             void *bool_attr,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /* ************************************************************
      *  Non-API implementation methods 
@@ -95,7 +95,7 @@ struct axis2_woden_bool_attr_ops
     void *(AXIS2_CALL *
     convert) (
             void *bool_attr,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             struct axis2_om_element *owner_el,
             struct axis2_om_node *owner_node,
             axis2_char_t *attr_value);
@@ -115,7 +115,7 @@ struct axis2_woden_bool_attr
  */
 AXIS2_DECLARE(axis2_woden_bool_attr_t *)
 axis2_woden_bool_attr_create(
-        axis2_env_t **env,
+        const axis2_env_t *env,
         struct axis2_om_element *owner_el,
         struct axis2_om_node *owner_node,
         axis2_qname_t *attr_type,
@@ -126,7 +126,7 @@ axis2_woden_bool_attr_create(
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_bool_attr_resolve_methods(
         axis2_woden_bool_attr_t *bool_attr,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

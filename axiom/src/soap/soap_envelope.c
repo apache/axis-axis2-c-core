@@ -54,65 +54,65 @@
 
 axis2_soap_header_t* AXIS2_CALL
 axis2_soap_envelope_get_header(axis2_soap_envelope_t *envelope,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
                                 
                                 
 axis2_soap_header_block_t* AXIS2_CALL 
 axis2_soap_envelope_add_header(axis2_soap_envelope_t *envelope,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *namespace_uri, 
                                 axis2_char_t *name);
                                 
 axis2_soap_body_t* AXIS2_CALL 
 axis2_soap_envelope_get_body(axis2_soap_envelope_t *envelope,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
                                 
                                 
 axis2_status_t AXIS2_CALL 
 axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_om_output_t *om_output, 
                                 axis2_bool_t cache);
                                 
 axis2_status_t AXIS2_CALL
 axis2_soap_envelope_free(axis2_soap_envelope_t *envelope,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_envelope_get_base_node(axis2_soap_envelope_t *envelope,
-                             axis2_env_t **env);
+                             const axis2_env_t *env);
                              
                                   
 int AXIS2_CALL 
 axis2_soap_envelope_get_soap_version(axis2_soap_envelope_t *envelope,
-                                   axis2_env_t **env);
+                                   const axis2_env_t *env);
                                    
 axis2_om_namespace_t* AXIS2_CALL 
 axis2_soap_envelope_get_namespace(axis2_soap_envelope_t *envelope,
-                                  axis2_env_t **env);
+                                  const axis2_env_t *env);
                                   
 static axis2_status_t
 check_and_set_soap_version(axis2_soap_envelope_t *env_impl, 
-                           axis2_env_t **env, 
+                           const axis2_env_t *env, 
                            axis2_om_namespace_t *ns);
 
 
 axis2_status_t AXIS2_CALL
 axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *soap_envelope,
-                                     axis2_env_t **env,
+                                     const axis2_env_t *env,
                                      int soap_version);
 /*************** function implementations *************************************/
 
 AXIS2_DECLARE(axis2_soap_envelope_t*)
-axis2_soap_envelope_create_null(axis2_env_t **env)
+axis2_soap_envelope_create_null(const axis2_env_t *env)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     envelope_impl = (axis2_soap_envelope_impl_t*)AXIS2_MALLOC(
-                    (*env)->allocator,
+                    env->allocator,
                     sizeof(axis2_soap_envelope_impl_t));
     if(!envelope_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     envelope_impl->soap_envelope.ops = NULL;
@@ -122,11 +122,11 @@ axis2_soap_envelope_create_null(axis2_env_t **env)
     envelope_impl->body = NULL;
     envelope_impl->soap_builder = NULL;
     
-    envelope_impl->soap_envelope.ops  = AXIS2_MALLOC( (*env)->allocator, 
+    envelope_impl->soap_envelope.ops  = AXIS2_MALLOC( env->allocator, 
                                         sizeof(axis2_soap_envelope_ops_t) );
     if (!envelope_impl->soap_envelope.ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_soap_envelope_free(&(envelope_impl->soap_envelope), env);
         return NULL;        
     }
@@ -159,7 +159,7 @@ axis2_soap_envelope_create_null(axis2_env_t **env)
 
 
 AXIS2_DECLARE(axis2_soap_envelope_t*)
-axis2_soap_envelope_create(axis2_env_t **env, 
+axis2_soap_envelope_create(const axis2_env_t *env, 
                            axis2_om_namespace_t *ns)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
@@ -167,7 +167,7 @@ axis2_soap_envelope_create(axis2_env_t **env,
     axis2_om_element_t *ele = NULL;
     int status = AXIS2_SUCCESS;
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, ns, NULL);
+    AXIS2_PARAM_CHECK(env->error, ns, NULL);
     
     envelope = axis2_soap_envelope_create_null(env);
     if(!envelope)
@@ -177,7 +177,7 @@ axis2_soap_envelope_create(axis2_env_t **env,
     status =  check_and_set_soap_version(&(envelope_impl->soap_envelope), env, ns);
     if(status == AXIS2_FAILURE)
     {
-        AXIS2_FREE((*env)->allocator, envelope_impl); 
+        AXIS2_FREE(env->allocator, envelope_impl); 
         return NULL; 
     }
      
@@ -186,7 +186,7 @@ axis2_soap_envelope_create(axis2_env_t **env,
                                   &(envelope_impl->om_ele_node));
     if (!ele)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_soap_envelope_free(&(envelope_impl->soap_envelope), env);
         return NULL;
     }
@@ -194,7 +194,7 @@ axis2_soap_envelope_create(axis2_env_t **env,
 }
 
 AXIS2_DECLARE(axis2_soap_envelope_t*)
-axis2_soap_envelope_create_with_soap_version_prefix(axis2_env_t **env,
+axis2_soap_envelope_create_with_soap_version_prefix(const axis2_env_t *env,
                                                     int soap_version,
                                                     axis2_char_t *prefix)
 {
@@ -212,7 +212,7 @@ axis2_soap_envelope_create_with_soap_version_prefix(axis2_env_t **env,
     }
     else
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
         return NULL;
     }
     if(!prefix || AXIS2_STRCMP(prefix, "") == 0)
@@ -232,7 +232,7 @@ axis2_soap_envelope_create_with_soap_version_prefix(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_soap_envelope_free(axis2_soap_envelope_t *envelope,
-                       axis2_env_t **env)
+                       const axis2_env_t *env)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -249,7 +249,7 @@ axis2_soap_envelope_free(axis2_soap_envelope_t *envelope,
     }
     if(envelope->ops)
     {
-        AXIS2_FREE((*env)->allocator, envelope->ops);
+        AXIS2_FREE(env->allocator, envelope->ops);
         envelope->ops = NULL;
     }
     if(envelope_impl->om_ele_node)
@@ -267,14 +267,14 @@ axis2_soap_envelope_free(axis2_soap_envelope_t *envelope,
         }
     }
     
-    AXIS2_FREE((*env)->allocator, envelope_impl);
+    AXIS2_FREE(env->allocator, envelope_impl);
     envelope_impl = NULL;
     return AXIS2_SUCCESS;
 }
     
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_envelope_get_base_node(axis2_soap_envelope_t *envelope,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(envelope)->om_ele_node;
@@ -282,16 +282,16 @@ axis2_soap_envelope_get_base_node(axis2_soap_envelope_t *envelope,
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_envelope_set_base_node(axis2_soap_envelope_t *envelope,
-                                  axis2_env_t **env,
+                                  const axis2_env_t *env,
                                   axis2_om_node_t *node)
 {
    axis2_soap_envelope_impl_t *envelope_impl = NULL;
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
+   AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
    envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
    {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
    }
    envelope_impl->om_ele_node = node;
@@ -300,7 +300,7 @@ axis2_soap_envelope_set_base_node(axis2_soap_envelope_t *envelope,
                                              
 int AXIS2_CALL 
 axis2_soap_envelope_get_soap_version(axis2_soap_envelope_t *envelope,
-                                   axis2_env_t **env)
+                                   const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(envelope)->soap_version;    
@@ -309,7 +309,7 @@ axis2_soap_envelope_get_soap_version(axis2_soap_envelope_t *envelope,
 /** this is an internal function */ 
 axis2_status_t AXIS2_CALL 
 axis2_soap_envelope_set_soap_version_internal(axis2_soap_envelope_t *envelope,
-                                   axis2_env_t **env,
+                                   const axis2_env_t *env,
                                    int soap_version)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
@@ -322,7 +322,7 @@ axis2_soap_envelope_set_soap_version_internal(axis2_soap_envelope_t *envelope,
 
 axis2_soap_header_t* AXIS2_CALL 
 axis2_soap_envelope_get_header(axis2_soap_envelope_t *envelope,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     int status = AXIS2_SUCCESS;
@@ -349,7 +349,7 @@ axis2_soap_envelope_get_header(axis2_soap_envelope_t *envelope,
 
 axis2_soap_header_block_t* AXIS2_CALL 
 axis2_soap_envelope_add_header(axis2_soap_envelope_t *envelope,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_char_t *namespace_uri, 
                                 axis2_char_t *name)
 {
@@ -372,7 +372,7 @@ axis2_soap_envelope_add_header(axis2_soap_envelope_t *envelope,
 
 axis2_soap_body_t* AXIS2_CALL 
 axis2_soap_envelope_get_body(axis2_soap_envelope_t *envelope,
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     int status = AXIS2_SUCCESS;
@@ -399,14 +399,14 @@ axis2_soap_envelope_get_body(axis2_soap_envelope_t *envelope,
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
-                              axis2_env_t **env,
+                              const axis2_env_t *env,
                               axis2_om_output_t *om_output, 
                               axis2_bool_t cache)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, envelope, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, om_output, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, envelope, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
     
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
 /*
@@ -573,7 +573,7 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_envelope_set_body(axis2_soap_envelope_t *envelope,
-                            axis2_env_t **env, 
+                            const axis2_env_t *env, 
                             axis2_soap_body_t *body)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
@@ -586,7 +586,7 @@ axis2_soap_envelope_set_body(axis2_soap_envelope_t *envelope,
     }
     else
     {
-        AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, 
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
             "trying to set a soap bedy to envelope when a soap body alrady exists");
         return AXIS2_FAILURE;
     }
@@ -594,7 +594,7 @@ axis2_soap_envelope_set_body(axis2_soap_envelope_t *envelope,
 }
 
 axis2_status_t AXIS2_CALL axis2_soap_envelope_set_header(axis2_soap_envelope_t *envelope,
-    axis2_env_t **env, axis2_soap_header_t *header)
+    const axis2_env_t *env, axis2_soap_header_t *header)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -606,7 +606,7 @@ axis2_status_t AXIS2_CALL axis2_soap_envelope_set_header(axis2_soap_envelope_t *
     }
     else
     {
-       AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, 
+       AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
         " trying to set a soap header to envelope when a soap header alrady exists");
         return AXIS2_FAILURE;
     }
@@ -615,7 +615,7 @@ axis2_status_t AXIS2_CALL axis2_soap_envelope_set_header(axis2_soap_envelope_t *
 
 axis2_om_namespace_t* AXIS2_CALL 
 axis2_soap_envelope_get_namespace(axis2_soap_envelope_t *envelope,
-                                  axis2_env_t **env)
+                                  const axis2_env_t *env)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -638,19 +638,19 @@ axis2_soap_envelope_get_namespace(axis2_soap_envelope_t *envelope,
 
 axis2_status_t AXIS2_CALL
 axis2_soap_envelope_set_builder(axis2_soap_envelope_t *envelope,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_soap_builder_t *soap_builder)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, soap_builder, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, soap_builder, AXIS2_FAILURE);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     envelope_impl->soap_builder = soap_builder;
     return AXIS2_SUCCESS;
 }
 
 AXIS2_DECLARE(axis2_soap_envelope_t *)
-axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
+axis2_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
                                                  int soap_version)
 {
     axis2_soap_envelope_t *soap_env = NULL;
@@ -692,13 +692,13 @@ axis2_soap_envelope_create_default_soap_envelope(axis2_env_t **env,
         return soap_env;    
     }
     
-    AXIS2_ERROR_SET((*env)->error, 
+    AXIS2_ERROR_SET(env->error, 
         AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
     return NULL;
 }
 
 AXIS2_DECLARE(axis2_soap_envelope_t *)
-axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
+axis2_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
 	axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version,
     axis2_array_list_t *sub_codes,
     axis2_om_node_t *detail_node)
@@ -711,7 +711,7 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
 
 	if (AXIS2_SOAP11 != soap_version && AXIS2_SOAP12 != soap_version)
 	{
-		AXIS2_ERROR_SET((*env)->error,
+		AXIS2_ERROR_SET(env->error,
 			AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
 		return NULL;
 	}
@@ -771,7 +771,7 @@ axis2_soap_envelope_create_default_soap_fault_envelope(axis2_env_t **env,
 
 static axis2_status_t
 check_and_set_soap_version(axis2_soap_envelope_t *envelope,
-                           axis2_env_t **env,
+                           const axis2_env_t *env,
                            axis2_om_namespace_t *ns)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
@@ -799,7 +799,7 @@ check_and_set_soap_version(axis2_soap_envelope_t *envelope,
     }
     else
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_INVALID_SOAP_NAMESPACE_URI, AXIS2_FAILURE);
     }
     return AXIS2_FAILURE;
@@ -807,7 +807,7 @@ check_and_set_soap_version(axis2_soap_envelope_t *envelope,
 
 axis2_status_t AXIS2_CALL
 axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *soap_envelope,
-                                     axis2_env_t **env,
+                                     const axis2_env_t *env,
                                      int soap_version)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;

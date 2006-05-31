@@ -34,7 +34,7 @@ typedef struct axis2_woden_component_model_builder_impl
 axis2_status_t AXIS2_CALL
 axis2_woden_component_model_builder_free (
         axis2_woden_component_model_builder_t *builder, 
-        axis2_env_t **env); 
+        const axis2_env_t *env); 
 
 /*
  * Extract the element declarations from the given schema. 
@@ -42,7 +42,7 @@ axis2_woden_component_model_builder_free (
 static axis2_status_t
 build_element_decls(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *schema_def,
         axis2_url_t *type_system_uri);
     
@@ -52,7 +52,7 @@ build_element_decls(
 static axis2_status_t
 build_type_defs(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *schema_def,
         axis2_url_t *type_system_uri);
 
@@ -67,31 +67,31 @@ build_type_defs(
 static axis2_status_t
 build_interfaces(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *desc);
 
 static axis2_status_t
 build_interface_faults(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *interface);
 
 static axis2_status_t
 build_interface_ops(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *interface);
 
 static axis2_status_t
 build_interface_fault_refs(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *op);
 
 static axis2_status_t
 build_interface_msg_refs(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *op);
 
 /* *******************************************************************************
@@ -105,61 +105,61 @@ build_interface_msg_refs(
 static axis2_status_t
 build_bindings(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *desc);
 
 static axis2_status_t
 build_binding_faults(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *binding);
 
 static axis2_status_t
 build_binding_ops(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *binding);
 
 static axis2_status_t
 build_binding_fault_refs(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *op);
 
 static axis2_status_t
 build_binding_msg_refs(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *op);
 
 static axis2_status_t
 build_binding_exts(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *binding);
 
 static axis2_status_t
 build_binding_fault_ref_exts(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *bind_fault);
 
 static axis2_status_t
 build_binding_op_exts(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *bind_op);
 
 static axis2_status_t
 build_binding_msg_ref_exts(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *bind_msg_ref);
     
 static axis2_status_t
 build_binding_fault_ref_exts(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *bind_fault_ref);
     
 /*
@@ -169,7 +169,7 @@ build_binding_fault_ref_exts(
 static void *
 create_component_exts(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_class,
         void *parent_elem,
         axis2_url_t *ext_ns);
@@ -180,7 +180,7 @@ create_component_exts(
 static axis2_status_t
 build_svcs(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *desc);
 
 /* *******************************************************************************
@@ -190,7 +190,7 @@ build_svcs(
 static axis2_status_t
 build_properties(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_array_list_t *prop_els,
         void *parent);
 
@@ -198,7 +198,7 @@ build_properties(
 
 axis2_woden_component_model_builder_t *AXIS2_CALL 
 axis2_woden_component_model_builder_create(
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *desc)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -206,12 +206,12 @@ axis2_woden_component_model_builder_create(
 	AXIS2_ENV_CHECK(env, NULL);
 	
 	builder_impl = (axis2_woden_component_model_builder_impl_t *) 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_woden_component_model_builder_impl_t));
 	
 	if(NULL == builder_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     builder_impl->f_desc= NULL;
@@ -221,12 +221,12 @@ axis2_woden_component_model_builder_create(
     builder_impl->f_svcs_done = NULL;
     
     builder_impl->builder.ops = 
-		AXIS2_MALLOC ((*env)->allocator, 
+		AXIS2_MALLOC (env->allocator, 
                 sizeof(axis2_woden_component_model_builder_ops_t));
 	if(NULL == builder_impl->builder.ops)
     {
         axis2_woden_component_model_builder_free(&(builder_impl->builder), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -245,7 +245,7 @@ axis2_woden_component_model_builder_create(
 axis2_status_t AXIS2_CALL 
 axis2_woden_component_model_builder_free (
         axis2_woden_component_model_builder_t *builder, 
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -253,14 +253,14 @@ axis2_woden_component_model_builder_free (
     
     if(builder_impl->builder.ops)
     {
-        AXIS2_FREE((*env)->allocator, builder_impl->
+        AXIS2_FREE(env->allocator, builder_impl->
                 builder.ops);
         builder_impl->builder.ops = NULL;
     }
     
     if(builder_impl)
     {
-        AXIS2_FREE((*env)->allocator, builder_impl);
+        AXIS2_FREE(env->allocator, builder_impl);
         builder_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -269,7 +269,7 @@ axis2_woden_component_model_builder_free (
 static axis2_status_t
 init_components(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *desc)
 {
     axis2_array_list_t *includes = NULL;
@@ -323,7 +323,7 @@ init_components(
 static axis2_status_t
 build_elements_and_types(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *desc)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -331,7 +331,7 @@ build_elements_and_types(
     axis2_url_t *type_system_uri = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
     types = AXIS2_WODEN_DESC_GET_TYPES_ELEMENT(desc, env);
@@ -378,7 +378,7 @@ build_elements_and_types(
                 {
                     builder_impl->f_schemas_done = axis2_array_list_create(env, 0);
                     if(!builder_impl->f_schemas_done)
-                        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, 
+                        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, 
                                 AXIS2_FAILURE);
                 }
                 AXIS2_ARRAY_LIST_ADD(builder_impl->f_schemas_done, env, schema_def);
@@ -393,7 +393,7 @@ build_elements_and_types(
 static axis2_status_t
 build_element_decls(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *schema_def,
         axis2_url_t *type_system_uri)
 {
@@ -401,8 +401,8 @@ build_element_decls(
     axis2_char_t *schema_tns = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, schema_def, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, type_system_uri, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, schema_def, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, type_system_uri, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
     schema_tns = AXIS2_XML_SCHEMA_GET_TARGET_NAMESPACE(schema_def, env);
@@ -449,7 +449,7 @@ build_element_decls(
 static axis2_status_t
 build_type_defs(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *schema_def,
         axis2_url_t *type_system_uri)
 {
@@ -457,8 +457,8 @@ build_type_defs(
     axis2_char_t *schema_tns = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, schema_def, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, type_system_uri, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, schema_def, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, type_system_uri, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
     schema_tns = AXIS2_XML_SCHEMA_GET_TARGET_NAMESPACE(schema_def, env);
@@ -511,7 +511,7 @@ build_type_defs(
 static axis2_status_t
 build_interfaces(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *desc)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -519,7 +519,7 @@ build_interfaces(
     int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
     interface_els = AXIS2_WODEN_DESC_GET_INTERFACE_ELEMENTS(desc, env);
@@ -546,7 +546,7 @@ build_interfaces(
             {
                 builder_impl->f_interfaces_done = axis2_array_list_create(env, 0);
                 if(!builder_impl->f_interfaces_done)
-                    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, 
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, 
                             AXIS2_FAILURE);
             }
             AXIS2_ARRAY_LIST_ADD(builder_impl->f_interfaces_done, env, int_impl);
@@ -558,7 +558,7 @@ build_interfaces(
 static axis2_status_t
 build_interface_faults(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *interface)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -566,7 +566,7 @@ build_interface_faults(
     int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, interface, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, interface, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     interface = axis2_woden_interface_to_interface_element(interface, env);
@@ -599,7 +599,7 @@ build_interface_faults(
 static axis2_status_t
 build_interface_ops(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *interface)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -607,7 +607,7 @@ build_interface_ops(
     int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, interface, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, interface, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     interface = axis2_woden_interface_to_interface_element(interface, env);
@@ -633,7 +633,7 @@ build_interface_ops(
 static axis2_status_t
 build_interface_fault_refs(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *op)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -641,7 +641,7 @@ build_interface_fault_refs(
     int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     op = axis2_woden__interface_op_to_interface_op_element(op, env);
@@ -675,7 +675,7 @@ build_interface_fault_refs(
 static axis2_status_t
 build_interface_msg_refs(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *op)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -683,7 +683,7 @@ build_interface_msg_refs(
     int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     op = axis2_woden_interface_op_to_interface_op_element(op, env);
@@ -731,7 +731,7 @@ build_interface_msg_refs(
 static axis2_status_t
 build_bindings(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *desc)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -739,7 +739,7 @@ build_bindings(
     int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
     binding_els = AXIS2_WODEN_DESC_GET_BINDING_ELEMENTS(desc, env);
@@ -768,7 +768,7 @@ build_bindings(
             {
                 builder_impl->f_bindings_done = axis2_array_list_create(env, 0);
                 if(!builder_impl->f_bindings_done)
-                    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, 
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, 
                             AXIS2_FAILURE);
             }
             AXIS2_ARRAY_LIST_ADD(builder_impl->f_bindings_done, env, bind_impl);
@@ -781,7 +781,7 @@ build_bindings(
 static axis2_status_t
 build_binding_faults(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *binding)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -789,7 +789,7 @@ build_binding_faults(
     int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, binding, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, binding, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     binding = axis2_woden_binding_to_binding_element(binding, env);
@@ -814,7 +814,7 @@ build_binding_faults(
 static axis2_status_t
 build_binding_ops(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *binding)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -822,7 +822,7 @@ build_binding_ops(
     int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, binding, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, binding, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     binding = axis2_woden_binding_to_binding_element(binding, env);
@@ -849,7 +849,7 @@ build_binding_ops(
 static axis2_status_t
 build_binding_fault_refs(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *op)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -857,7 +857,7 @@ build_binding_fault_refs(
     int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     op = axis2_woden_binding_op_to_binding_op_element(op, env);
@@ -882,7 +882,7 @@ build_binding_fault_refs(
 static axis2_status_t
 build_binding_msg_refs(
         void *builder,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *op)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -890,7 +890,7 @@ build_binding_msg_refs(
     int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, op, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     op = axis2_woden_binding_op_to_binding_op_element(op, env);
@@ -916,7 +916,7 @@ build_binding_msg_refs(
 static axis2_status_t
 build_binding_exts(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *binding)
 {
     axis2_woden_ext_registry_t *er = NULL;
@@ -1002,7 +1002,7 @@ build_binding_exts(
 static axis2_status_t
 build_binding_fault_ref_exts(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *bind_fault)
 {
     axis2_woden_ext_registry_t *er = NULL;
@@ -1085,7 +1085,7 @@ build_binding_fault_ref_exts(
 static axis2_status_t
 build_binding_op_exts(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *bind_op)
 {
     axis2_ext_registry_t *er = NULL;
@@ -1167,7 +1167,7 @@ build_binding_op_exts(
 static axis2_status_t
 build_binding_msg_ref_exts(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *bind_msg_ref)
 {
     axis2_ext_registry_t *er = NULL;
@@ -1208,7 +1208,7 @@ build_binding_msg_ref_exts(
 static axis2_status_t
 build_binding_fault_ref_exts(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *bind_fault_ref)
 {
     axis2_ext_registry_t *er = NULL;
@@ -1253,7 +1253,7 @@ build_binding_fault_ref_exts(
 static void *
 create_component_exts(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *parent_class,
         void *parent_elem,
         axis2_url_t *ext_ns)
@@ -1263,9 +1263,9 @@ create_component_exts(
     void *comp_ext = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, parent_class, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, parent_elem, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, ext_ns, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, parent_class, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, parent_elem, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ext_ns, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
         
     er = AXIS2_WODEN_DESC_GET_EXT_REGISTRY(builder_impl->f_desc, env);
@@ -1283,14 +1283,14 @@ create_component_exts(
 static axis2_status_t
 build_svcs(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *desc)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
     axis2_array_list_t *svcs = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, desc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
     svcs = AXIS2_WODEN_DESC_GET_SVC_ELEMENTS(desc, env);
@@ -1310,7 +1310,7 @@ build_svcs(
                 builder_impl->f_svcs_done = axis2_array_list_create(env, 0);
                 if(!builder_impl->f_svcs_done)
                 {
-                    AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, 
+                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, 
                             AXIS2_FAILURE);
                     return AXIS2_FAILURE;
                 }
@@ -1329,7 +1329,7 @@ build_svcs(
 static axis2_status_t
 build_properties(
         void *builder,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_array_list_t *prop_els,
         void *parent)
 {
@@ -1337,8 +1337,8 @@ build_properties(
     int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, prop_els, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, parent, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, prop_els, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, parent, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
     size = AXIS2_ARRAY_LIST_SIZE(prop_els, env);

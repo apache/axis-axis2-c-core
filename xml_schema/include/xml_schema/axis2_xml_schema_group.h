@@ -52,36 +52,36 @@ struct axis2_xml_schema_group_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *group,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *group,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
     type) (void *group,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
     get_base_impl) (void *group,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_name)(void *group,
-                axis2_env_t **env);
+                const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_name)(void *group,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_char_t *name);
     
     struct axis2_xml_schema_group_base *(AXIS2_CALL *
     get_particle)(void *group,
-                axis2_env_t **env);
+                const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_particle)(void *group,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     struct axis2_xml_schema_group_base *particle);
 };
 
@@ -95,7 +95,7 @@ struct axis2_xml_schema_group
  * Creates new Xml Schema Group
  */
 AXIS2_DECLARE(axis2_xml_schema_group_t *)
-axis2_xml_schema_group_create(axis2_env_t **env);
+axis2_xml_schema_group_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -103,7 +103,7 @@ axis2_xml_schema_group_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_group_resolve_methods(
                                 axis2_xml_schema_group_t *group,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_group_t *group_impl,
                                 axis2_hash_t *methods);
 */

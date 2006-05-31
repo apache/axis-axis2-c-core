@@ -53,22 +53,22 @@ struct axis2_conf_ctx_ops
      * @param configuration
      */
     axis2_status_t (AXIS2_CALL *set_conf)(struct axis2_conf_ctx *conf_ctx, 
-        axis2_env_t **env, 
+        const axis2_env_t *env, 
         struct axis2_conf *conf);
     /**
      */
     axis2_ctx_t* (AXIS2_CALL *get_base)(struct axis2_conf_ctx *conf_ctx, 
-        axis2_env_t **env);
+        const axis2_env_t *env);
     /**
      */
     struct axis2_conf* (AXIS2_CALL *get_conf)(struct axis2_conf_ctx *conf_ctx, 
-        axis2_env_t **env);
+        const axis2_env_t *env);
     axis2_hash_t* (AXIS2_CALL *get_op_ctx_map)(struct axis2_conf_ctx *conf_ctx, 
-        axis2_env_t **env);
+        const axis2_env_t *env);
     axis2_hash_t* (AXIS2_CALL *get_svc_ctx_map)(struct axis2_conf_ctx *conf_ctx, 
-        axis2_env_t **env);
+        const axis2_env_t *env);
     axis2_hash_t* (AXIS2_CALL *get_svc_grp_ctx_map)(struct axis2_conf_ctx *conf_ctx, 
-                                                                axis2_env_t **env);
+                                                                const axis2_env_t *env);
     /**
      * Register a struct axis2_op_ctx against a given Message ID.
      *
@@ -76,7 +76,7 @@ struct axis2_conf_ctx_ops
      * @param mepContext
      */
     axis2_status_t (AXIS2_CALL *register_op_ctx)(struct axis2_conf_ctx *conf_ctx, 
-                                                                    axis2_env_t **env,
+                                                                    const axis2_env_t *env,
                                                                     axis2_char_t *message_id,
                                                                     struct axis2_op_ctx *op_ctx);
     /**
@@ -86,7 +86,7 @@ struct axis2_conf_ctx_ops
      * @return struct axis2_op_ctx * <code>struct axis2_op_ctx *<code>
      */
     struct axis2_op_ctx* (AXIS2_CALL *get_op_ctx)(struct axis2_conf_ctx *conf_ctx, 
-                                                                            axis2_env_t **env,
+                                                                            const axis2_env_t *env,
                                                                             axis2_char_t *message_id);
     /**
      * Register a struct axis2_svc_ctx against a given Message ID.
@@ -95,7 +95,7 @@ struct axis2_conf_ctx_ops
      * @param mepContext
      */
     axis2_status_t (AXIS2_CALL *register_svc_ctx)(struct axis2_conf_ctx *conf_ctx, 
-                                                                    axis2_env_t **env,
+                                                                    const axis2_env_t *env,
                                                                     axis2_char_t *svc_id,
                                                                     struct axis2_svc_ctx *svc_ctx);
     /**
@@ -105,7 +105,7 @@ struct axis2_conf_ctx_ops
      * @return struct axis2_svc_ctx * <code>struct axis2_svc_ctx *<code>
      */
     struct axis2_svc_ctx* (AXIS2_CALL *get_svc_ctx)(struct axis2_conf_ctx *conf_ctx, 
-                                                                            axis2_env_t **env,
+                                                                            const axis2_env_t *env,
                                                                             axis2_char_t *svc_id);
     /**
      * Register a struct axis2_svc_grp_ctx against a given Message ID.
@@ -114,7 +114,7 @@ struct axis2_conf_ctx_ops
      * @param mepContext
      */
     axis2_status_t (AXIS2_CALL *register_svc_grp_ctx)(struct axis2_conf_ctx *conf_ctx, 
-                                                                    axis2_env_t **env,
+                                                                    const axis2_env_t *env,
                                                                     axis2_char_t *svc_grp_id,
                                                                     struct axis2_svc_grp_ctx *svc_grp_ctx);
     /**
@@ -124,7 +124,7 @@ struct axis2_conf_ctx_ops
      * @return struct axis2_svc_grp_ctx * <code>struct axis2_svc_grp_ctx *<code>
      */
     struct axis2_svc_grp_ctx* (AXIS2_CALL *get_svc_grp_ctx)(struct axis2_conf_ctx *conf_ctx, 
-                                                                            axis2_env_t **env,
+                                                                            const axis2_env_t *env,
                                                                             axis2_char_t *svc_grp_id);
     /**
      * This method allows users to reolve the paths relative to the
@@ -133,18 +133,18 @@ struct axis2_conf_ctx_ops
      * @param path
      */
     axis2_char_t* (AXIS2_CALL *get_root_dir)(struct axis2_conf_ctx *conf_ctx, 
-                                                            axis2_env_t **env);
+                                                            const axis2_env_t *env);
     /**
      * @param file
      */
     axis2_status_t (AXIS2_CALL *set_root_dir)(struct axis2_conf_ctx *conf_ctx, 
-                                                            axis2_env_t **env,
+                                                            const axis2_env_t *env,
                                                             axis2_char_t *path);
     axis2_status_t (AXIS2_CALL *init)(struct axis2_conf_ctx *conf_ctx, 
-                                                            axis2_env_t **env,
+                                                            const axis2_env_t *env,
                                                             struct axis2_conf *conf);
     axis2_status_t (AXIS2_CALL *free)(struct axis2_conf_ctx *conf_ctx, 
-                                       axis2_env_t **env);
+                                       const axis2_env_t *env);
     /**
      * This method should search for a service group context in the map with given id as the key.
      * If(key != null && found)
@@ -158,7 +158,7 @@ struct axis2_conf_ctx_ops
      * @param messageContext
      */
     struct axis2_svc_grp_ctx* (AXIS2_CALL *fill_ctxs)(struct axis2_conf_ctx *conf_ctx, 
-                                                   axis2_env_t **env,
+                                                   const axis2_env_t *env,
                                                    axis2_msg_ctx_t *msg_ctx);
 };
 
@@ -171,7 +171,7 @@ struct axis2_conf_ctx
     axis2_conf_ctx_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_conf_ctx_t*) axis2_conf_ctx_create(axis2_env_t **env, struct axis2_conf *conf);
+AXIS2_DECLARE(axis2_conf_ctx_t*) axis2_conf_ctx_create(const axis2_env_t *env, struct axis2_conf *conf);
     
 /************************** Start of function macros **************************/
 

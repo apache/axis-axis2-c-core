@@ -48,7 +48,7 @@ typedef struct axis2_om_child_element_iterator axis2_om_child_element_iterator_t
     {
         axis2_status_t (AXIS2_CALL *free_fn)
                             (axis2_om_child_element_iterator_t *iterator,
-                             axis2_env_t **env);
+                             const axis2_env_t *env);
                              
         /**
         * Removes from the underlying collection the last element returned by the
@@ -59,7 +59,7 @@ typedef struct axis2_om_child_element_iterator axis2_om_child_element_iterator_t
         */                                              
         axis2_status_t (AXIS2_CALL *
 		remove)(axis2_om_child_element_iterator_t *iterator,
-                axis2_env_t **env);
+                const axis2_env_t *env);
                              
        /**
         * returns true if the iteration has more elements 
@@ -68,7 +68,7 @@ typedef struct axis2_om_child_element_iterator axis2_om_child_element_iterator_t
         */                             
         axis2_bool_t (AXIS2_CALL *
 		has_next)(axis2_om_child_element_iterator_t *iterator,
-                  axis2_env_t **env);
+                  const axis2_env_t *env);
     
        /**
         * Returns the next element in the iteration. Returns null if there 
@@ -76,7 +76,7 @@ typedef struct axis2_om_child_element_iterator axis2_om_child_element_iterator_t
         */
         axis2_om_node_t* (AXIS2_CALL *
 		next)(axis2_om_child_element_iterator_t *iterator,
-              axis2_env_t **env);
+              const axis2_env_t *env);
     };
     
     
@@ -92,7 +92,7 @@ struct axis2_om_child_element_iterator
  */
 
 AXIS2_DECLARE( axis2_om_child_element_iterator_t *)
-axis2_om_child_element_iterator_create(axis2_env_t **env, 
+axis2_om_child_element_iterator_create(const axis2_env_t *env, 
                                        axis2_om_node_t *current_child);
                                   
 /************ Macros *********************************************/

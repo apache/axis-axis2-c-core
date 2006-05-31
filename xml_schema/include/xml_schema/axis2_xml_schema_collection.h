@@ -58,76 +58,76 @@ struct axis2_xml_schema_collection_ops
     axis2_status_t (AXIS2_CALL *
     free)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_base_uri)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *base_uri);
                    
     axis2_status_t (AXIS2_CALL * 
     init)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 
     struct axis2_xml_schema* (AXIS2_CALL *
     read_with_reader)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_xml_reader_t *reader); 
 
     
     struct axis2_xml_schema *(AXIS2_CALL *
     read_document) (
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_om_document_t *document);
 
     struct axis2_xml_schema *(AXIS2_CALL *
     read_element)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_om_node_t *ele_node);
 
     struct axis2_xml_schema* (AXIS2_CALL *
     read_document_with_uri) (
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_om_document_t *document,
             axis2_char_t *uri); 
 
     struct axis2_xml_schema *(AXIS2_CALL *
     read_element_with_uri)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_om_node_t *ele_node,
             axis2_char_t *uri);
             
     const axis2_hash_t* (AXIS2_CALL *
     get_xml_schema)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *system_id);
             
     struct axis2_xml_schema_element *(AXIS2_CALL *
     get_element_by_qname)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qname);
 
     struct axis2_xml_schema_type *(AXIS2_CALL *
     get_type_by_qname)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *schema_type_qname);
 
 
     axis2_status_t (AXIS2_CALL *
     add_unresolved_type)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *qtype, 
             void *receiver); 
             
@@ -135,7 +135,7 @@ struct axis2_xml_schema_collection_ops
     axis2_status_t (AXIS2_CALL *
     resolve_type)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *type_qname, 
             struct axis2_xml_schema_type *type); 
             
@@ -143,42 +143,42 @@ struct axis2_xml_schema_collection_ops
     axis2_char_t *(AXIS2_CALL *
     get_namespace_for_prefix)(
             axis2_xml_schema_collection_t *collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *prefix); 
                      
 
     axis2_status_t (AXIS2_CALL *
     map_namespace)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *prefix, 
             axis2_char_t *namespc_uri);
             
     axis2_hash_t* (AXIS2_CALL *
     get_systemid2_schemas)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env);
+            const axis2_env_t *env);
             
     axis2_array_list_t* (AXIS2_CALL *
     get_schemas)(
             axis2_xml_schema_collection_t* collection,
-            axis2_env_t **env);
+            const axis2_env_t *env);
             
     axis2_status_t* (AXIS2_CALL *
     set_schemas)(
             axis2_xml_schema_collection_t *collection,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_array_list_t *schemas);            
                       
     axis2_hash_t* (AXIS2_CALL *
     get_namespaces)(
             axis2_xml_schema_collection_t *collection,
-            axis2_env_t **env);
+            const axis2_env_t *env);
             
     axis2_status_t (AXIS2_CALL *
     set_namespaces)(
             axis2_xml_schema_collection_t *collection,
-            axis2_env_t **env);
+            const axis2_env_t *env);
             
                             
 };            
@@ -189,7 +189,7 @@ struct axis2_xml_schema_collection
 };
 
 AXIS2_DECLARE(axis2_xml_schema_collection_t *)
-axis2_xml_schema_collection_create(axis2_env_t **env);
+axis2_xml_schema_collection_create(const axis2_env_t *env);
 
 /***************** MACROS *****************************************************/
 

@@ -34,7 +34,7 @@ typedef struct axis2_wsdl_types_impl
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_types_free (axis2_wsdl_types_t *wsdl_types, 
-                        axis2_env_t **env);	
+                        const axis2_env_t *env);	
 
 /**
  * Adds the <code>ExtensionElement</code> to the map keyed with the 
@@ -44,7 +44,7 @@ axis2_wsdl_types_free (axis2_wsdl_types_t *wsdl_types,
  */
 axis2_status_t AXIS2_CALL
 axis2_wsdl_types_add_element(axis2_wsdl_types_t *wsdl_types,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_wsdl_extensible_element_t *element);
 
 
@@ -57,24 +57,24 @@ axis2_wsdl_types_add_element(axis2_wsdl_types_t *wsdl_types,
  */
 axis2_wsdl_extensible_element_t *AXIS2_CALL
 axis2_wsdl_types_get_first_element(axis2_wsdl_types_t *wsdl_types,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *qname);
 
 /************************* End of function headers ****************************/	
 
 axis2_wsdl_types_t * AXIS2_CALL
-axis2_wsdl_types_create (axis2_env_t **env)
+axis2_wsdl_types_create (const axis2_env_t *env)
 {
     axis2_wsdl_types_impl_t *wsdl_types_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
-	wsdl_types_impl = (axis2_wsdl_types_impl_t *) AXIS2_MALLOC ((*env)->
+	wsdl_types_impl = (axis2_wsdl_types_impl_t *) AXIS2_MALLOC (env->
         allocator, sizeof (axis2_wsdl_types_impl_t));
      
 	if(NULL == wsdl_types_impl)
 	{
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
     
@@ -86,16 +86,16 @@ axis2_wsdl_types_create (axis2_env_t **env)
 	if(NULL == wsdl_types_impl->wsdl_types.ext_component)
 	{
         axis2_wsdl_types_free(&(wsdl_types_impl->wsdl_types), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
 	}    
     
-    wsdl_types_impl->wsdl_types.ops = AXIS2_MALLOC((*env)->allocator, 
+    wsdl_types_impl->wsdl_types.ops = AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_wsdl_types_ops_t));
 	if(NULL == wsdl_types_impl->wsdl_types.ops)
 	{
         axis2_wsdl_types_free(&(wsdl_types_impl->wsdl_types), env);
-		AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
 	}
 	
@@ -111,7 +111,7 @@ axis2_wsdl_types_create (axis2_env_t **env)
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_types_free (
                         axis2_wsdl_types_t *wsdl_types, 
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_wsdl_types_impl_t *wsdl_types_impl = NULL;
     
@@ -120,7 +120,7 @@ axis2_wsdl_types_free (
     
 	if(wsdl_types->ops)
     {
-        AXIS2_FREE((*env)->allocator, wsdl_types->ops);
+        AXIS2_FREE(env->allocator, wsdl_types->ops);
         wsdl_types->ops = NULL;
     }
     
@@ -131,7 +131,7 @@ axis2_wsdl_types_free (
     }
     
     if(wsdl_types_impl)
-        AXIS2_FREE((*env)->allocator, wsdl_types_impl);
+        AXIS2_FREE(env->allocator, wsdl_types_impl);
     wsdl_types_impl = NULL;
     
 	return AXIS2_SUCCESS;
@@ -146,11 +146,11 @@ axis2_wsdl_types_free (
  */
 axis2_status_t AXIS2_CALL
 axis2_wsdl_types_add_element(axis2_wsdl_types_t *wsdl_types,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_wsdl_extensible_element_t *element)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, element, AXIS2_FAILURE); 
+    AXIS2_PARAM_CHECK(env->error, element, AXIS2_FAILURE); 
 
     return AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_types->
         ext_component->wsdl_component, env, element);
@@ -165,7 +165,7 @@ axis2_wsdl_types_add_element(axis2_wsdl_types_t *wsdl_types,
  */
 axis2_wsdl_extensible_element_t *AXIS2_CALL
 axis2_wsdl_types_get_first_element(axis2_wsdl_types_t *wsdl_types,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     axis2_qname_t *qname)
 {
     axis2_linked_list_t *ext_elements = NULL;
@@ -173,7 +173,7 @@ axis2_wsdl_types_get_first_element(axis2_wsdl_types_t *wsdl_types,
     int size = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, qname, NULL);
+    AXIS2_PARAM_CHECK(env->error, qname, NULL);
     
     ext_elements = AXIS2_WSDL_COMPONENT_GET_EXTENSIBILITY_ELEMENTS(wsdl_types->
         ext_component->wsdl_component, env);

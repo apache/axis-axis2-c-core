@@ -52,38 +52,38 @@ struct axis2_xml_schema_group_ref_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *group_ref,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *group_ref,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
     type) (
             void *group_ref,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_particle_t *(AXIS2_CALL *
     get_base_impl) (void *group_ref,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
 
     axis2_qname_t *(AXIS2_CALL *
     get_ref_qname)(void *group_ref,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_ref_qname)(void *group_ref,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_qname_t *ref_qname);
     
     struct axis2_xml_schema_group_base *(AXIS2_CALL *
     get_particle)(void *group_ref,
-                    axis2_env_t **env);
+                    const axis2_env_t *env);
                     
     axis2_status_t (AXIS2_CALL *
     set_particle)(void *group_ref,
-                  axis2_env_t **env,
+                  const axis2_env_t *env,
                   void *particle);
                         
     
@@ -99,7 +99,7 @@ struct axis2_xml_schema_group_ref
  * Creates new Xml Schema Group Ref
  */
 AXIS2_DECLARE(axis2_xml_schema_group_ref_t *)
-axis2_xml_schema_group_ref_create(axis2_env_t **env);
+axis2_xml_schema_group_ref_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
@@ -107,7 +107,7 @@ axis2_xml_schema_group_ref_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_group_ref_resolve_methods(
                                 axis2_xml_schema_group_ref_t *group_ref,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_group_ref_t *group_ref_impl,
                                 axis2_hash_t *methods);
  */

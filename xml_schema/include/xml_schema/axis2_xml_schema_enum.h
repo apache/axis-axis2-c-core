@@ -49,38 +49,38 @@ struct axis2_xml_schema_enum_ops
     axis2_status_t (AXIS2_CALL *
     free)(
             void *schema_enum,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs)(
             void *schema_enum,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
     type) (
             void *schema_enum,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_char_t* (AXIS2_CALL *
     get_value)(
             void *schema_enum,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_value)(
             void *schema_enum,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_char_t *value);
 
     axis2_bool_t (AXIS2_CALL *
     equals)(void *schema_enum,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *obj);
 
     axis2_array_list_t* (AXIS2_CALL *
     get_values)(
             void *schema_enum, 
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
 };
 
@@ -90,7 +90,7 @@ struct axis2_xml_schema_enum
 };
 
 AXIS2_DECLARE(axis2_xml_schema_enum_t *)
-axis2_xml_schema_enum_create(axis2_env_t **env,
+axis2_xml_schema_enum_create(const axis2_env_t *env,
                              axis2_char_t *value);
 
 /**
@@ -98,13 +98,13 @@ axis2_xml_schema_enum_create(axis2_env_t **env,
  */
 AXIS2_DECLARE(axis2_status_t)
 axis2_xml_schema_enum_resolve_methods(axis2_xml_schema_enum_t *schema_enum,
-                                      axis2_env_t **env,
+                                      const axis2_env_t *env,
                                       axis2_xml_schema_enum_t *schema_enum_impl,
                                       axis2_hash_t *methods);
 
 AXIS2_DECLARE(int)
 axis2_xml_schema_enum_index(axis2_char_t *value,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_array_list_t *values);
                             
 /***************** macros ****************************************************/                           

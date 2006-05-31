@@ -61,44 +61,44 @@ struct axis2_woden_import_element_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *import_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_import_element_free) (
             void *import_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *import_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
      
     axis2_status_t (AXIS2_CALL *
     set_namespace) (void *import_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *ns_uri);
 
     axis2_url_t *(AXIS2_CALL *
     get_namespace) (void *import_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
    
     axis2_status_t (AXIS2_CALL *
     set_location) (void *import_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *loc_uri);
 
     axis2_url_t *(AXIS2_CALL *
     get_location) (void *import_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_desc_element) (void *import_el,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *desc);
 
     void *(AXIS2_CALL *
     get_desc_element) (void *import_el,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 };
 
@@ -113,7 +113,7 @@ struct axis2_woden_import_element
 axis2_status_t AXIS2_CALL
 axis2_woden_import_element_resolve_methods(
         axis2_woden_import_element_t *import_element,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

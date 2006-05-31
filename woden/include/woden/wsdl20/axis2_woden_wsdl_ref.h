@@ -55,17 +55,17 @@ struct axis2_woden_wsdl_ref_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *wsdl_ref,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *wsdl_ref,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *wsdl_ref,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /**
      * @return the base implementation class
@@ -73,40 +73,40 @@ struct axis2_woden_wsdl_ref_ops
     axis2_woden_wsdl_element_t *(AXIS2_CALL *
     get_base_impl) (
             void *wsdl_ref,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_url_t *(AXIS2_CALL *
     get_location) (
             void *wsdl_ref,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_location) (
             void *wsdl_ref,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *loc_uri);
 
     void *(AXIS2_CALL *
     get_desc_element) (
             void *wsdl_ref,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_desc_element) (
             void *wsdl_ref,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *desc);
 
     axis2_status_t (AXIS2_CALL *
     add_documentation_element) (
             void *wsdl_ref,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             void *doc_el);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_documentation_elements) (
             void *wsdl_ref,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 
 };
@@ -119,13 +119,13 @@ struct axis2_woden_wsdl_ref
 
 AXIS2_DECLARE(axis2_woden_wsdl_ref_t *)
 axis2_woden_wsdl_ref_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_wsdl_ref_resolve_methods(
         axis2_woden_wsdl_ref_t *wsdl_ref,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_wsdl_ref_t *wsdl_ref_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

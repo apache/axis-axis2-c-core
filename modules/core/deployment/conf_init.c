@@ -18,13 +18,13 @@
 #include <axis2_transport_sender.h>
 #include <axis2_transport_receiver.h>
 
-axis2_status_t AXIS2_CALL axis2_init_modules(axis2_env_t **env, 
+axis2_status_t AXIS2_CALL axis2_init_modules(const axis2_env_t *env, 
     axis2_conf_ctx_t *conf_ctx);
-axis2_status_t AXIS2_CALL axis2_init_transports(axis2_env_t **env, 
+axis2_status_t AXIS2_CALL axis2_init_transports(const axis2_env_t *env, 
     axis2_conf_ctx_t *conf_ctx);
     
 AXIS2_DECLARE(axis2_conf_ctx_t*) 
-build_conf_ctx (axis2_env_t **env,
+build_conf_ctx (const axis2_env_t *env,
     axis2_char_t *repo_name)
 {    
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -65,7 +65,7 @@ build_conf_ctx (axis2_env_t **env,
     return conf_ctx;
 }
 
- axis2_conf_ctx_t* AXIS2_CALL build_client_conf_ctx(axis2_env_t **env,
+ axis2_conf_ctx_t* AXIS2_CALL build_client_conf_ctx(const axis2_env_t *env,
         axis2_char_t *axis2_home)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -110,14 +110,14 @@ build_conf_ctx (axis2_env_t **env,
     return conf_ctx;
 }
 
-axis2_status_t AXIS2_CALL axis2_init_modules(axis2_env_t **env, 
+axis2_status_t AXIS2_CALL axis2_init_modules(const axis2_env_t *env, 
     axis2_conf_ctx_t *conf_ctx)
 {
     axis2_conf_t *conf = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, conf_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
     
     conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
     if (conf)
@@ -149,14 +149,14 @@ axis2_status_t AXIS2_CALL axis2_init_modules(axis2_env_t **env,
     return status;
 }
 
-axis2_status_t AXIS2_CALL axis2_init_transports(axis2_env_t **env, 
+axis2_status_t AXIS2_CALL axis2_init_transports(const axis2_env_t *env, 
     axis2_conf_ctx_t *conf_ctx)
 {
     axis2_conf_t *conf = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, conf_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, conf_ctx, AXIS2_FAILURE);
     
     conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
     if (conf)

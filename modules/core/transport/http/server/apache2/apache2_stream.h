@@ -33,7 +33,7 @@ extern "C"
   * @return axis2_stream (apache2)
   */
 AXIS2_DECLARE(axis2_stream_t *) axis2_stream_create_apache2
-                        (axis2_env_t **env, request_rec *req);
+                        (const axis2_env_t *env, request_rec *req);
 
 /** @} */
     

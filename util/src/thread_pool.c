@@ -157,11 +157,11 @@ axis2_thread_pool_thread_detach (axis2_thread_pool_t *pool,
 }
 
 AXIS2_DECLARE (axis2_env_t *)
-axis2_init_thread_env(axis2_env_t **system_env)
+axis2_init_thread_env(const axis2_env_t *system_env)
 {
-	axis2_error_t *error = axis2_error_create((*system_env)->allocator);
-	return axis2_env_create_with_error_log_thread_pool((*system_env)->allocator, error, 
-						(*system_env)->log, (*system_env)->thread_pool);
+	axis2_error_t *error = axis2_error_create(system_env->allocator);
+	return axis2_env_create_with_error_log_thread_pool(system_env->allocator, error, 
+						system_env->log, system_env->thread_pool);
 }
 
 

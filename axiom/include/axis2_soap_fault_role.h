@@ -54,20 +54,20 @@ extern "C"
 
         axis2_status_t (AXIS2_CALL *
 		free_fn)(axis2_soap_fault_role_t *fault_role,
-                 axis2_env_t **env);
+                 const axis2_env_t *env);
 
         axis2_status_t (AXIS2_CALL *
 		set_role_value)(axis2_soap_fault_role_t *fault_role,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_char_t* uri);
                                      
         axis2_char_t* (AXIS2_CALL *
 		get_role_value)(axis2_soap_fault_role_t *fault_role,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
                                      
         axis2_om_node_t* (AXIS2_CALL *
 		get_base_node)(axis2_soap_fault_role_t *fault_role,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
                                                                                                                    
     };      
 
@@ -88,7 +88,7 @@ extern "C"
     */
     
 AXIS2_DECLARE(axis2_soap_fault_role_t *)
-axis2_soap_fault_role_create_with_parent(axis2_env_t **env,
+axis2_soap_fault_role_create_with_parent(const axis2_env_t *env,
                             axis2_soap_fault_t *fault);
                             
 /******************** Macros **************************************************/

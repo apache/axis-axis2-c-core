@@ -55,34 +55,34 @@ struct axis2_woden_schema_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *schema,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *schema,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_namespace) (
             void *schema,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *namespc);
 
     axis2_url_t *(AXIS2_CALL *
     get_namespace) (
             void *schema,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_schema_def) (
             void *schema,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             struct axis2_xml_schema *schema_def);
 
     struct axis2_xml_schema *(AXIS2_CALL *
     get_schema_def) (
             void *schema,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     /* ************************************************************
      *  Non-API implementation methods
@@ -104,18 +104,18 @@ struct axis2_woden_schema_ops
     axis2_status_t (AXIS2_CALL *
     set_referenceable) (
             void *schema,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_bool_t referenceable);
 
     axis2_bool_t (AXIS2_CALL *
     is_referenceable) (
             void *schema,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_namespace_as_string) (
             void *schema,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
   
 };
@@ -126,13 +126,13 @@ struct axis2_woden_schema
 };
 
 AXIS2_DECLARE(axis2_woden_schema_t *)
-axis2_woden_schema_create(axis2_env_t **env);
+axis2_woden_schema_create(const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_schema_resolve_methods(
         axis2_woden_schema_t *schema,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

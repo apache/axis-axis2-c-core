@@ -72,7 +72,7 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
   	 */
 	axis2_status_t (AXIS2_CALL *free)(
                     axis2_phase_resolver_t *phase_resolver,
-			        axis2_env_t **env);
+			        const axis2_env_t *env);
 
     /**
      * Method buildchains
@@ -80,7 +80,7 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
      */
     axis2_status_t (AXIS2_CALL *
     build_chains) (axis2_phase_resolver_t *phase_resolver,
-                   axis2_env_t **env);
+                   const axis2_env_t *env);
     
     /**
      * To build the opration for the opeartion which the module going to be added
@@ -89,7 +89,7 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
      */
     axis2_status_t (AXIS2_CALL *
     build_module_op) (axis2_phase_resolver_t *phase_resolver,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_op *op);
     
     
@@ -101,12 +101,12 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
      */
     axis2_status_t (AXIS2_CALL *
     build_transport_chains) (axis2_phase_resolver_t *phase_resolver,
-                             axis2_env_t **env);
+                             const axis2_env_t *env);
     
     
     axis2_status_t (AXIS2_CALL *
     engage_module_globally) (axis2_phase_resolver_t *phase_resolver,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 struct axis2_module_desc *module);
     
     /**
@@ -117,19 +117,19 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver_ops
      */
     axis2_status_t (AXIS2_CALL *
     engage_module_to_svc_from_global) (axis2_phase_resolver_t *phase_resolver,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         struct axis2_svc *svc,
                                         struct axis2_module_desc *module_desc);
     
     axis2_status_t (AXIS2_CALL *
     engage_module_to_svc) (axis2_phase_resolver_t *phase_resolver,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             struct axis2_svc *svc,
                             struct axis2_module_desc *module_desc);
                                                         
     axis2_status_t (AXIS2_CALL *
     engage_module_to_op) (axis2_phase_resolver_t *phase_resolver,
-                                    axis2_env_t **env,
+                                    const axis2_env_t *env,
                                     struct axis2_op *axis_op,
                                     struct axis2_module_desc *module_desc);    
 
@@ -149,7 +149,7 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver
  * @return pointer to newly created phase resolver
  */
 AXIS2_DECLARE(axis2_phase_resolver_t *) 
-axis2_phase_resolver_create (axis2_env_t **env);
+axis2_phase_resolver_create (const axis2_env_t *env);
 
 /**
  * default constructor , to obuild chains for GlobalDescription
@@ -157,7 +157,7 @@ axis2_phase_resolver_create (axis2_env_t **env);
  * @param engineConfig
  */
 AXIS2_DECLARE(axis2_phase_resolver_t *) 
-axis2_phase_resolver_create_with_config (axis2_env_t **env, 
+axis2_phase_resolver_create_with_config (const axis2_env_t *env, 
                                          struct axis2_conf *axis2_config);
 
 /**
@@ -167,7 +167,7 @@ axis2_phase_resolver_create_with_config (axis2_env_t **env,
  * @param serviceContext
  */
 AXIS2_DECLARE(axis2_phase_resolver_t *)
-axis2_phase_resolver_create_with_config_and_svc (axis2_env_t **env, 
+axis2_phase_resolver_create_with_config_and_svc (const axis2_env_t *env, 
                                                 struct axis2_conf *axis2_config,
                                                 struct axis2_svc *svc);
 

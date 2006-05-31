@@ -55,7 +55,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_fault_ops
   	 */
 	axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_binding_fault_t *binding_fault,
-		    axis2_env_t **env);
+		    const axis2_env_t *env);
 
     /**
      * Method getRef
@@ -64,7 +64,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_fault_ops
      */
     axis2_qname_t *(AXIS2_CALL *
     get_ref) (axis2_wsdl_binding_fault_t *binding_fault,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
     
     /**
      * Method setRef
@@ -73,7 +73,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_fault_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_ref)(axis2_wsdl_binding_fault_t *binding_fault,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_qname_t *ref);
 };
 
@@ -91,7 +91,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_fault
  * @return pointer to newly created wsdl binding fault
  */
 AXIS2_DECLARE(axis2_wsdl_binding_fault_t *) 
-axis2_binding_fault_create (axis2_env_t **env);
+axis2_binding_fault_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

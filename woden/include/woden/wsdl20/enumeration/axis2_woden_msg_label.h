@@ -79,22 +79,22 @@ struct axis2_woden_msg_label_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *msg_label,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_msg_label_free) (
             void *msg_label,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *msg_label,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *msg_label,
-            axis2_env_t **env);
+            const axis2_env_t *env);
      
 };
 
@@ -108,7 +108,7 @@ struct axis2_woden_msg_label
 
 AXIS2_DECLARE(axis2_woden_msg_label_t *)
 axis2_woden_msg_label_create(
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *f_value);
 
 /**
@@ -118,7 +118,7 @@ axis2_woden_msg_label_create(
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_msg_label_resolve_methods(
         axis2_woden_msg_label_t *msg_label,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_msg_label_t *msg_label_impl,
         axis2_hash_t *methods);
 

@@ -45,57 +45,57 @@ typedef struct axis2_soap_body_impl_t
 
 axis2_status_t AXIS2_CALL
 axis2_soap_body_free(axis2_soap_body_t *body,
-                       axis2_env_t **env);
+                       const axis2_env_t *env);
                        
 axis2_bool_t AXIS2_CALL 
 axis2_soap_body_has_fault(axis2_soap_body_t *body,
-                              axis2_env_t **env);
+                              const axis2_env_t *env);
                               
 axis2_soap_fault_t* AXIS2_CALL 
 axis2_soap_body_get_fault(axis2_soap_body_t *body,
-                          axis2_env_t **env);
+                          const axis2_env_t *env);
                           
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_add_fault(axis2_soap_body_t *body,
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           axis2_soap_fault_t *soap_fault);
                           
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_body_get_base_node(axis2_soap_body_t *body,
-                              axis2_env_t **env);
+                              const axis2_env_t *env);
                               
                               
 axis2_status_t AXIS2_CALL
 axis2_soap_body_build(axis2_soap_body_t *body,
-                      axis2_env_t **env);
+                      const axis2_env_t *env);
                       
                      
 
 axis2_status_t AXIS2_CALL
 axis2_soap_body_add_child(axis2_soap_body_t *body,
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           axis2_om_node_t *child);
                           
 int AXIS2_CALL
 axis2_soap_body_get_soap_version(axis2_soap_body_t *body,
-                                 axis2_env_t **env);                          
+                                 const axis2_env_t *env);                          
                           
                           
                           
 /*************** function implementations *************************************/
 axis2_soap_body_t* AXIS2_CALL
-axis2_soap_body_create(axis2_env_t **env)
+axis2_soap_body_create(const axis2_env_t *env)
 {
     axis2_soap_body_impl_t *body_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     body_impl = (axis2_soap_body_impl_t*)AXIS2_MALLOC(
-                (*env)->allocator,
+                env->allocator,
                 sizeof(axis2_soap_body_impl_t));
                 
     if(!body_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     body_impl->soap_body.ops = NULL;
@@ -105,12 +105,12 @@ axis2_soap_body_create(axis2_env_t **env)
     body_impl->soap_fault = NULL; 
    
     body_impl->soap_body.ops = (axis2_soap_body_ops_t*) AXIS2_MALLOC(
-                               (*env)->allocator, sizeof(axis2_soap_body_ops_t));
+                               env->allocator, sizeof(axis2_soap_body_ops_t));
 
     if(!(body_impl->soap_body.ops))
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        AXIS2_FREE((*env)->allocator, body_impl);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, body_impl);
         body_impl = NULL;
         return NULL;
     }
@@ -144,7 +144,7 @@ return NULL;
 
 
 axis2_soap_body_t* AXIS2_CALL
-axis2_soap_body_create_with_parent(axis2_env_t **env, 
+axis2_soap_body_create_with_parent(const axis2_env_t *env, 
                                    axis2_soap_envelope_t *envelope)
 {
     axis2_soap_body_impl_t *body_impl = NULL;
@@ -155,7 +155,7 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
     axis2_om_namespace_t *om_ns = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK((*env)->error, envelope, NULL);
+    AXIS2_PARAM_CHECK(env->error, envelope, NULL);
     
     body = axis2_soap_body_create(env);
     if(!body)
@@ -199,11 +199,11 @@ axis2_soap_body_create_with_parent(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_soap_body_free(axis2_soap_body_t *body,
-                       axis2_env_t **env)
+                       const axis2_env_t *env)
 {
     axis2_soap_body_impl_t *body_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, body, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, body, AXIS2_FAILURE);
     
     body_impl = AXIS2_INTF_TO_IMPL(body);
     
@@ -214,10 +214,10 @@ axis2_soap_body_free(axis2_soap_body_t *body,
     }
     if(NULL != body->ops)
     {
-        AXIS2_FREE((*env)->allocator, body->ops);
+        AXIS2_FREE(env->allocator, body->ops);
         body->ops = NULL;
     }
-    AXIS2_FREE((*env)->allocator, body_impl);
+    AXIS2_FREE(env->allocator, body_impl);
     body_impl = NULL;
     return AXIS2_SUCCESS;
 }
@@ -231,7 +231,7 @@ axis2_soap_body_free(axis2_soap_body_t *body,
  *         otherwise
  */
 axis2_bool_t AXIS2_CALL axis2_soap_body_has_fault(axis2_soap_body_t *body,
-    axis2_env_t **env) 
+    const axis2_env_t *env) 
 {
     axis2_soap_body_impl_t *body_impl = NULL;
     int status = AXIS2_SUCCESS;
@@ -271,7 +271,7 @@ axis2_bool_t AXIS2_CALL axis2_soap_body_has_fault(axis2_soap_body_t *body,
  */
 axis2_soap_fault_t* AXIS2_CALL 
 axis2_soap_body_get_fault(axis2_soap_body_t *body,
-                          axis2_env_t **env) 
+                          const axis2_env_t *env) 
 {
     axis2_soap_body_impl_t *body_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -303,18 +303,18 @@ axis2_soap_body_get_fault(axis2_soap_body_t *body,
  *
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_add_fault(axis2_soap_body_t *body,
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           axis2_soap_fault_t *soap_fault)
 {
     axis2_soap_body_impl_t *body_impl = NULL;
     axis2_om_node_t *fault_node = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, soap_fault, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, soap_fault, AXIS2_FAILURE);
     body_impl = AXIS2_INTF_TO_IMPL(body);
     
     if (body_impl->has_fault) 
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -332,7 +332,7 @@ axis2_soap_body_add_fault(axis2_soap_body_t *body,
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_soap_body_get_base_node(axis2_soap_body_t *body,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(body)->om_ele_node;
@@ -340,16 +340,16 @@ axis2_soap_body_get_base_node(axis2_soap_body_t *body,
 
 axis2_status_t AXIS2_CALL
 axis2_soap_body_set_base_node(axis2_soap_body_t *body,
-                              axis2_env_t **env,
+                              const axis2_env_t *env,
                               axis2_om_node_t *node)
 {
    axis2_soap_body_impl_t *body_impl = NULL;
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   AXIS2_PARAM_CHECK((*env)->error, node, AXIS2_FAILURE);
+   AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
    body_impl = AXIS2_INTF_TO_IMPL(body);
    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
    {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
    }
    body_impl->om_ele_node = node;
@@ -359,11 +359,11 @@ axis2_soap_body_set_base_node(axis2_soap_body_t *body,
                                              
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_set_builder(axis2_soap_body_t *body,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_soap_builder_t *builder)
 {
     axis2_soap_body_impl_t *body_impl = NULL;
-    AXIS2_PARAM_CHECK((*env)->error, builder, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, builder, AXIS2_FAILURE);
     body_impl = AXIS2_INTF_TO_IMPL(body);
     body_impl->soap_builder = builder;
     return AXIS2_SUCCESS;
@@ -372,7 +372,7 @@ axis2_soap_body_set_builder(axis2_soap_body_t *body,
 
 axis2_status_t AXIS2_CALL
 axis2_soap_body_build(axis2_soap_body_t *body,
-                      axis2_env_t **env)
+                      const axis2_env_t *env)
 {
     axis2_soap_body_impl_t *soap_body_impl = NULL;
     int status = AXIS2_SUCCESS;
@@ -396,15 +396,15 @@ axis2_soap_body_build(axis2_soap_body_t *body,
 */
 axis2_status_t AXIS2_CALL 
 axis2_soap_body_set_fault(axis2_soap_body_t *body,
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           axis2_soap_fault_t *soap_fault)
 {
     axis2_soap_body_impl_t *body_impl = NULL;
-    AXIS2_PARAM_CHECK((*env)->error, soap_fault, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, soap_fault, AXIS2_FAILURE);
     body_impl = AXIS2_INTF_TO_IMPL(body);
     if (NULL != body_impl->soap_fault) 
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -418,12 +418,12 @@ axis2_soap_body_set_fault(axis2_soap_body_t *body,
 
 axis2_status_t AXIS2_CALL
 axis2_soap_body_add_child(axis2_soap_body_t *body,
-                          axis2_env_t **env,
+                          const axis2_env_t *env,
                           axis2_om_node_t *child)
 {
     axis2_soap_body_impl_t *body_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, child, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, child, AXIS2_FAILURE);
 
     body_impl = AXIS2_INTF_TO_IMPL(body);
     if(NULL != body_impl->om_ele_node)
@@ -434,7 +434,7 @@ axis2_soap_body_add_child(axis2_soap_body_t *body,
 }                          
 int AXIS2_CALL
 axis2_soap_body_get_soap_version(axis2_soap_body_t *body,
-                                 axis2_env_t **env)
+                                 const axis2_env_t *env)
 {
     axis2_soap_body_impl_t *body_impl = NULL;
     axis2_om_element_t *body_ele = NULL;

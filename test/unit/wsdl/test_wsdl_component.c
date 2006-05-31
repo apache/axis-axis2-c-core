@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 axis2_array_list_t *
-get_module_list(axis2_env_t **env)
+get_module_list(const axis2_env_t *env)
 {
     axis2_array_list_t *module_list = NULL;
     axis2_module_desc_t *module_desc = NULL;
@@ -31,7 +31,7 @@ get_module_list(axis2_env_t **env)
 }
 
 axis2_hash_t *
-get_module_list_map(axis2_wsdl_component_t *wsdl_comp, axis2_env_t **env)
+get_module_list_map(axis2_wsdl_component_t *wsdl_comp, const axis2_env_t *env)
 {
     axis2_hash_t *module_list_map = NULL;
     axis2_array_list_t *module_list = NULL;
@@ -87,19 +87,19 @@ void Testaxis2_wsdl_component_set_component_properties(CuTest *tc)
     printf("**************************************************************\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_env_t *env = axis2_env_create(allocator);
+    const axis2_env_t *env = axis2_env_create(allocator);
 
-    wsdl_comp = axis2_wsdl_component_create(&env);
+    wsdl_comp = axis2_wsdl_component_create(env);
     CuAssertPtrNotNull(tc, wsdl_comp);
-    module_list_map = get_module_list_map(wsdl_comp, &env);
+    module_list_map = get_module_list_map(wsdl_comp, env);
     CuAssertPtrNotNull(tc, module_list_map);
-    actual = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTIES(wsdl_comp, &env, module_list_map);
+    actual = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTIES(wsdl_comp, env, module_list_map);
     /* again create a module_list_map and assign to see whether it works correctly */
     module_list_map = NULL;
-    module_list_map = get_module_list_map(wsdl_comp, &env);
+    module_list_map = get_module_list_map(wsdl_comp, env);
     CuAssertPtrNotNull(tc, module_list_map);
-    actual = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTIES(wsdl_comp, &env, module_list_map);
-    /*AXIS2_WSDL_COMPONENT_FREE(wsdl_comp, &env);*/
+    actual = AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTIES(wsdl_comp, env, module_list_map);
+    /*AXIS2_WSDL_COMPONENT_FREE(wsdl_comp, env);*/
    
     CuAssertIntEquals(tc, expected, actual);
 }
