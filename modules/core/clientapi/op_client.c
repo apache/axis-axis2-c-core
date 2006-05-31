@@ -444,7 +444,16 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
             /*Send the SOAP Message and receive a response */
         	response_mc = axis2_mep_client_two_way_send(env, msg_ctx);
         	if (!response_mc)
-            	return AXIS2_FAILURE;
+            {
+                axis2_char_t *mep = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
+                if (AXIS2_STRCMP(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
+                    AXIS2_STRCMP(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
+                {
+                    return AXIS2_SUCCESS;
+                }
+                else
+                    return AXIS2_FAILURE;
+            }
 			axis2_op_client_add_msg_ctx(&(op_client_impl->op_client), env, 
                 response_mc);	
 		}
