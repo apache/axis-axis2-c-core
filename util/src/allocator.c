@@ -18,8 +18,15 @@
 #include <axis2_utils.h>
 #include <stdlib.h>
 
+void *axis2_allocator_malloc_impl(axis2_allocator_t *allocator, size_t size);
+
+void *axis2_allocator_realloc_impl(axis2_allocator_t *allocator, void *ptr, size_t size);
+
+void axis2_allocator_free_impl(axis2_allocator_t *allocator, void *ptr);
+
+
 AXIS2_DECLARE(axis2_allocator_t *)
-axis2_allocator_init (axis2_allocator_t * allocator)
+axis2_allocator_init (axis2_allocator_t *allocator)
 {
     if (allocator)
         return allocator;
@@ -29,9 +36,9 @@ axis2_allocator_init (axis2_allocator_t * allocator)
         allocator = (axis2_allocator_t *) malloc (sizeof (axis2_allocator_t));
         if (allocator)
         {
-            allocator->malloc = malloc;
-            allocator->realloc = realloc;
-            allocator->free = free;
+            allocator->malloc = axis2_allocator_malloc_impl;
+            allocator->realloc = axis2_allocator_realloc_impl;
+            allocator->free = axis2_allocator_free_impl;
             return allocator;
         }
     }
@@ -41,11 +48,24 @@ axis2_allocator_init (axis2_allocator_t * allocator)
 AXIS2_DECLARE(axis2_status_t)
 axis2_allocator_free(axis2_allocator_t *allocator)
 {
-    void (*free_func)(void *) = NULL;
     if(allocator)
     {
-        free_func = allocator->free; 
-        free_func(allocator);
+        allocator->free(allocator, allocator);
     }
     return AXIS2_SUCCESS;
+}
+
+void *axis2_allocator_malloc_impl(axis2_allocator_t *allocator, size_t size)
+{
+    return malloc(size);
+}
+
+void *axis2_allocator_realloc_impl(axis2_allocator_t *allocator, void *ptr, size_t size)
+{
+    return realloc(ptr, size);
+}
+
+void axis2_allocator_free_impl(axis2_allocator_t *allocator, void *ptr)
+{
+    return free(ptr);
 }

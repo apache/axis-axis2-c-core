@@ -49,22 +49,31 @@ extern "C"
 
       /**
         * allocates memory
+        * @param allocator pointer to allocator struct. In the default 
+        * implementation this is not used, however this parameter is useful 
+        * when the allocator implementation is dealing with a memory pool.
         * @param size size of the memory block to be allocated
         * @return pointer to the allocated memory block
         */
-         void * (*malloc) (size_t size);
+         void * (*malloc) (struct axis2_allocator *allocator, size_t size);
       /**
         * re-llocates memory
+        * @param allocator pointer to allocator struct. In the default 
+        * implementation this is not used, however this parameter is useful 
+        * when the allocator implementation is dealing with a memory pool.
         * @param ptr memory block who's size to be changed
         * @param size size of the memory block to be allocated
         * @return pointer to the allocated memory block
         */
-         void * (*realloc) (void *ptr, size_t size);
+         void * (*realloc) (struct axis2_allocator *allocator, void *ptr, size_t size);
       /**
         * frees memory
+        * @param allocator pointer to allocator struct. In the default 
+        * implementation this is not used, however this parameter is useful 
+        * when the allocator implementation is dealing with a memory pool.
         * @param ptr pointer to be freed
         */
-         void (*free) (void *ptr);
+         void (*free) (struct axis2_allocator *allocator, void *ptr);
     } axis2_allocator_t;
 
   /**
@@ -73,7 +82,7 @@ extern "C"
     * @return initialized allocator. NULL on error.
     */
     AXIS2_DECLARE(axis2_allocator_t *) 
-	axis2_allocator_init (axis2_allocator_t * allocator);
+	axis2_allocator_init (axis2_allocator_t *allocator);
 
   /** 
     * This function should be used to deallocate memory if the default allocator provided by
@@ -84,13 +93,13 @@ extern "C"
 	axis2_allocator_free(axis2_allocator_t *allocator);
 
 #define AXIS2_MALLOC(allocator, size) \
-		((allocator)->malloc(size))
+		((allocator)->malloc(allocator, size))
 	
 #define AXIS2_REALLOC(allocator, ptr, size) \
-		((allocator)->realloc(ptr, size))
+		((allocator)->realloc(allocator, ptr, size))
 		
 #define AXIS2_FREE(allocator, ptr) \
-		((allocator)->free(ptr))
+		((allocator)->free(allocator, ptr))
 
 /** @} */
     
