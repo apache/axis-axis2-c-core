@@ -148,7 +148,7 @@ extern "C"
      
 /**
  * Append one array to the end of another, creating a new array in the process.
- * @param environment guththila_envioronment
+ * @param environment guththila_environment
  * @param first The array to put first in the new array.
  * @param second The array to put second in the new array.
  * @return A new array containing the data from the two arrays passed in.

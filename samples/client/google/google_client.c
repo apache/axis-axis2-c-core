@@ -45,7 +45,7 @@ int main(int argc, char** argv)
     google_key = "00000000000000000000000000000000";
     word_to_spell = "salvasion";
  
-    /* Set up the envioronment */
+    /* Set up the environment */
     env = axis2_env_create_all("google_client.log", AXIS2_LOG_LEVEL_TRACE);
  
     /* Set end point reference of google service */

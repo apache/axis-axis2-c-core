@@ -217,7 +217,7 @@ axis2_listener_manager_make_sure_started(struct axis2_listener_manager *listener
                         }
                         else
                         {
-                            AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread pool not set in envioronment."
+                            AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread pool not set in environment."
                                                          " Cannot invoke call non blocking");
                         }
 #else

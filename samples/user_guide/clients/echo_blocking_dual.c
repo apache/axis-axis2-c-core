@@ -31,7 +31,7 @@ int main(int argc, char** argv)
     axis2_om_node_t *payload = NULL;
     axis2_om_node_t *ret_node = NULL;
    
-    /* Set up the envioronment */
+    /* Set up the environment */
     env = axis2_env_create_all("echo_blocking_dual.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */

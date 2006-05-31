@@ -46,7 +46,7 @@ int main(int argc, char** argv)
     axis2_callback_t *callback = NULL;
     int count = 0;
    
-    /* Set up the envioronment */
+    /* Set up the environment */
     env = axis2_env_create_all("echo_non_blocking_dual.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */

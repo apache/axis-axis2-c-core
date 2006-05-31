@@ -671,7 +671,7 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
         }
         else
         {
-            AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread pool not set in envioronment."
+            AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread pool not set in environment."
                                          " Cannot invoke call non blocking");
         }
 #else

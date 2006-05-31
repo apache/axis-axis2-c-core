@@ -37,7 +37,7 @@ int main(int argc, char** argv)
     axis2_char_t *to_save_name = "test.jpg";
 
    
-    /* Set up the envioronment */
+    /* Set up the environment */
     env = axis2_env_create_all("mtom.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of mtom service */

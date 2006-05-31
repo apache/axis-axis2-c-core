@@ -34,7 +34,7 @@ int main(int argc, char** argv)
     axis2_om_node_t *payload = NULL;
     axis2_status_t status = AXIS2_FAILURE;
    
-    /* Set up the envioronment */
+    /* Set up the environment */
     env = axis2_env_create_all("notify.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */

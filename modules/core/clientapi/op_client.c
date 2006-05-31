@@ -477,7 +477,7 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
             }
             else
             {
-                AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread pool not set in envioronment."
+                AXIS2_LOG_ERROR((*env)->log, AXIS2_LOG_SI, "Thread pool not set in environment."
                                              " Cannot invoke call non blocking");
             }
 #else
