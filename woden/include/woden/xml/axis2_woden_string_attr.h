@@ -130,10 +130,6 @@ axis2_woden_string_attr_resolve_methods(
 		(((axis2_woden_string_attr_t *) string_attr)->ops->\
          free(string_attr, env))
 
-#define AXIS2_WODEN_STRING_ATTR_TO_STRING_ATTR_FREE(string_attr, env) \
-		(((axis2_woden_string_attr_t *) string_attr)->ops->\
-         to_string_attr_free(string_attr, env))
-
 #define AXIS2_WODEN_STRING_ATTR_TYPE(string_attr, env) \
 		(((axis2_woden_string_attr_t *) string_attr)->ops->\
          type(string_attr, env))
@@ -142,7 +138,7 @@ axis2_woden_string_attr_resolve_methods(
 		(((axis2_woden_string_attr_t *) string_attr)->ops->\
          get_base_impl(string_attr, env))
 
-#define AXIS2_WODEN_STRING_ATTR_GET_URI(string_attr, env) \
+#define AXIS2_WODEN_STRING_ATTR_GET_STRING(string_attr, env) \
 		(((axis2_woden_string_attr_t *) string_attr)->ops->\
          get_string(string_attr, env))
 

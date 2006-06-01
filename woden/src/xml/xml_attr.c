@@ -30,7 +30,7 @@ struct axis2_woden_xml_attr_impl
 {
     axis2_woden_xml_attr_t xml_attr;
     axis2_qname_t *f_attr_type;
-    void *f_content;
+    axis2_generic_obj_t *f_content;
     axis2_char_t *f_external_form;
     axis2_bool_t f_valid;
 };
@@ -56,7 +56,7 @@ axis2_woden_xml_attr_get_attribute_type(
         void *xml_attr,
         const axis2_env_t *env);
 
-void *AXIS2_CALL
+axis2_generic_obj_t *AXIS2_CALL
 axis2_woden_xml_attr_get_content(
         void *xml_attr,
         const axis2_env_t *env);
@@ -163,8 +163,6 @@ axis2_woden_xml_attr_resolve_methods(
     xml_attr->ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_xml_attr_ops_t));
     xml_attr->ops->free = axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
-    xml_attr->ops->to_xml_attr_free = axis2_hash_get(methods, 
-            "to_xml_attr_free", AXIS2_HASH_KEY_STRING);
     xml_attr->ops->type = axis2_hash_get(methods, "type", AXIS2_HASH_KEY_STRING);
     xml_attr->ops->init = axis2_hash_get(methods, 
             "init", AXIS2_HASH_KEY_STRING);
@@ -235,7 +233,7 @@ axis2_woden_xml_attr_get_attribute_type(
     return xml_attr_impl->f_attr_type;
 }
 
-void *AXIS2_CALL
+axis2_generic_obj_t *AXIS2_CALL
 axis2_woden_xml_attr_get_content(
         void *xml_attr,
         const axis2_env_t *env) 

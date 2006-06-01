@@ -1,4 +1,5 @@
 noinst_LTLIBRARIES = libaxis2_woden_extensions.la
+SUBDIRS = soap
 
 libaxis2_woden_extensions_la_SOURCES = \
 							element_extensible.c \

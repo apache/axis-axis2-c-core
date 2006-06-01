@@ -54,17 +54,17 @@ struct axis2_woden_qname_or_token_any_attr_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (
-            void *list_token_attr,
+            void *token_attr,
             const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     to_qname_or_token_any_attr_free) (
-            void *list_token_attr,
+            void *token_attr,
             const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
-            void *list_token_attr,
+            void *token_attr,
             const axis2_env_t *env);
 
     /**
@@ -72,7 +72,7 @@ struct axis2_woden_qname_or_token_any_attr_ops
      */
     axis2_woden_xml_attr_t *(AXIS2_CALL *
     get_base_impl) (
-            void *list_token_attr,
+            void *token_attr,
             const axis2_env_t *env);
 
     /* ************************************************************
@@ -81,23 +81,23 @@ struct axis2_woden_qname_or_token_any_attr_ops
 
     axis2_bool_t (AXIS2_CALL *
     is_qname) (
-            void *list_token_attr,
+            void *token_attr,
             const axis2_env_t *env); 
 
     axis2_bool_t (AXIS2_CALL *
     is_token) (
-            void *list_token_attr,
+            void *token_attr,
             const axis2_env_t *env);
 
 
-    axis2_array_list_t *(AXIS2_CALL *
-    get_qnames) (
-            void *list_token_attr,
+    axis2_qname_t *(AXIS2_CALL *
+    get_qname) (
+            void *token_attr,
             const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_token) (
-            void *list_token_attr,
+            void *token_attr,
             const axis2_env_t *env);
 
     /* ************************************************************
@@ -112,7 +112,7 @@ struct axis2_woden_qname_or_token_any_attr_ops
      */
     void *(AXIS2_CALL *
     convert) (
-            void *list_token_attr,
+            void *token_attr,
             const axis2_env_t *env,
             struct axis2_om_element *owner_el,
             struct axis2_om_node *owner_node,
@@ -142,57 +142,43 @@ axis2_woden_qname_or_token_any_attr_create(
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_qname_or_token_any_attr_resolve_methods(
-        axis2_woden_qname_or_token_any_attr_t *list_token_attr,
+        axis2_woden_qname_or_token_any_attr_t *token_attr,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_FREE(list_token_attr, env) \
+#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_FREE(token_attr, env) \
 		(((axis2_woden_qname_or_token_any_attr_t *) \
-          list_token_attr)->ops->free(list_token_attr, env))
+          token_attr)->ops->free(token_attr, env))
 
-#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_TO_QNAME_OR_TOKEN_ANY_ATTR_FREE(\
-        list_token_attr, env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) list_token_attr)->ops->\
-         to_qname_or_token_any_attr_free(list_token_attr, env))
+#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_TYPE(token_attr, env) \
+		(((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
+         type(token_attr, env))
 
-#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_TYPE(list_token_attr, env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) list_token_attr)->ops->\
-         type(list_token_attr, env))
-
-#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_GET_BASE_IMPL(list_token_attr, \
+#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_GET_BASE_IMPL(token_attr, \
         env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) \
-          list_token_attr)->ops->get_base_impl(list_token_attr, \
-                                                          env))
+		(((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
+         get_base_impl(token_attr, env))
 
-#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_IS_QNAME(list_token_attr, \
-        env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) \
-          list_token_attr)->ops->is_qname(list_token_attr, \
-                                                            env))
+#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_IS_QNAME(token_attr, env) \
+		(((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
+         is_qname(token_attr, env))
 
-#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_IS_TOKEN(list_token_attr, env) \
+#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_IS_TOKEN(token_attr, env) \
 		(((axis2_woden_qname_or_token_any_attr_t *) \
-          list_token_attr)->ops->is_token(list_token_attr, \
-                                                       env))
+          token_attr)->ops->is_token(token_attr, env))
 
-#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_GET_QNAMES(list_token_attr, \
-        env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) \
-          list_token_attr)->ops->get_qnames(list_token_attr, \
-                                                         env))
+#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_GET_QNAME(token_attr, env) \
+		(((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
+         get_qname(token_attr, env))
 
-#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_GET_TOKEN(list_token_attr, \
-        env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) \
-          list_token_attr)->ops->get_token(list_token_attr, \
-                                                         env))
+#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_GET_TOKEN(token_attr, env) \
+		(((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
+         get_token(token_attr, env))
 
-#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_CONVERT(list_token_attr, env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) \
-          list_token_attr)->ops->convert(list_token_attr, \
-                                                      env))
+#define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_CONVERT(token_attr, env) \
+		(((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
+         convert(token_attr, env))
 
 /** @} */
 #ifdef __cplusplus

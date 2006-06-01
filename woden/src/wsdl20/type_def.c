@@ -266,8 +266,6 @@ axis2_woden_type_def_resolve_methods(
     
     type_def->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    type_def->ops->to_type_def_free = axis2_hash_get(methods, 
-            "to_type_def_free", AXIS2_HASH_KEY_STRING);
     type_def->ops->super_objs = axis2_hash_get(methods, 
             "super_objs", AXIS2_HASH_KEY_STRING);
     type_def->ops->type = axis2_hash_get(methods, "type", 

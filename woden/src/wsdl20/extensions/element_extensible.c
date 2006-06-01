@@ -220,8 +220,6 @@ axis2_woden_element_extensible_resolve_methods(
     
     extensible->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    extensible->ops->to_element_extensible_free = axis2_hash_get(methods, 
-            "to_element_extensible_free", AXIS2_HASH_KEY_STRING); 
     extensible->ops->super_objs = axis2_hash_get(methods, "super_objs", 
             AXIS2_HASH_KEY_STRING);
     extensible->ops->type = axis2_hash_get(methods, "type", 

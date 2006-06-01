@@ -100,6 +100,10 @@ struct axis2_woden_component_exts_ops
             struct axis2_woden_wsdl_element *parent_el,
             axis2_url_t *namespc);
 
+    void *(AXIS2_CALL *
+    get_parent_element) (
+           void *component_exts,
+            axis2_env_t **env);
 };
 
 struct axis2_woden_component_exts
@@ -141,6 +145,9 @@ axis2_woden_component_exts_resolve_methods(
 		(((axis2_woden_component_exts_t *) component_exts)->ops->\
          get_namespace(component_exts, env))
 
+#define AXIS2_WODEN_COMPONENT_EXTS_GET_PARENT_ELEMENT(component_exts, env) \
+		(((axis2_woden_component_exts_t *) component_exts)->ops->\
+         get_parent_element(component_exts, env))
 
 /** @} */
 #ifdef __cplusplus

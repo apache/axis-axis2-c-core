@@ -264,10 +264,14 @@ axis2_woden_qname_list_or_token_any_attr_is_qname_list(
 {
     axis2_woden_qname_list_or_token_any_attr_impl_t *
             list_token_attr_impl = NULL;
+    axis2_generic_obj_t *content = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     list_token_attr_impl = INTF_TO_IMPL(list_token_attr);
-    if(AXIS2_FALSE == list_token_attr_impl->is_token)
+
+    content = AXIS2_WODEN_XML_ATTR_GET_CONTENT(list_token_attr_impl->xml_attr, 
+            env);
+    if(AXIS2_QNAME_LIST == AXIS2_GENERIC_OBJ_GET_TYPE(content, env))
         return AXIS2_TRUE;
     return AXIS2_FALSE;
 }
@@ -283,8 +287,9 @@ axis2_woden_qname_list_or_token_any_attr_is_token(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     list_token_attr_impl = INTF_TO_IMPL(list_token_attr);
 
-    if(AXIS2_TRUE == AXIS2_WODEN_XML_ATTR_IS_VALID(list_token_attr_impl->xml_attr, env) && 
-            list_token_attr_impl->is_token)
+    if(AXIS2_TRUE != axis2_woden_qname_list_or_token_any_attr_is_qname_list(
+                list_token_attr, env) && AXIS2_TRUE == 
+            AXIS2_WODEN_XML_ATTR_IS_VALID(list_token_attr_impl->xml_attr, env))
     {
         return AXIS2_TRUE;
     } else 

@@ -1,4 +1,4 @@
-SUBDIRS = xml extensions
+SUBDIRS = enumeration xml extensions
 noinst_LTLIBRARIES = libaxis2_woden_wsdl20.la
 
 libaxis2_woden_wsdl20_la_SOURCES = \
@@ -28,7 +28,9 @@ libaxis2_woden_wsdl20_la_SOURCES = \
 							endpoint.c \
 							svc.c \
 							wsdl_ref.c \
-							element_decl.c
+							element_decl.c \
+							import.c \
+							include.c
 
 INCLUDES = -I$(top_builddir)/include \
 			@AXIOMINC@ \
