@@ -42,34 +42,44 @@ struct axis2_url_impl
 /***************************** Function headers *******************************/
 axis2_char_t* AXIS2_CALL 
 axis2_url_to_external_form (axis2_url_t *url, const axis2_env_t *env);
+
 axis2_status_t AXIS2_CALL 
 axis2_url_set_protocol(axis2_url_t *url, const axis2_env_t *env, 
 						axis2_char_t *protocol);
 axis2_char_t* AXIS2_CALL 
 axis2_url_get_protocol (axis2_url_t *url, const axis2_env_t *env);
+
 axis2_status_t AXIS2_CALL 
-axis2_url_set_server(axis2_url_t *url,const axis2_env_t *env, axis2_char_t *server);
+axis2_url_set_server(axis2_url_t *url,const axis2_env_t *env, 
+                        axis2_char_t *server);
+
 axis2_char_t* AXIS2_CALL 
 axis2_url_get_server(axis2_url_t *url, const axis2_env_t *env);
+
 axis2_status_t AXIS2_CALL 
 axis2_url_set_port(axis2_url_t *url, const axis2_env_t *env, int port);
+
 int AXIS2_CALL 
 axis2_url_get_port (axis2_url_t *url, const axis2_env_t *env);
+
 axis2_status_t AXIS2_CALL 
-axis2_url_set_path(axis2_url_t *url, const axis2_env_t *env, axis2_char_t *path);
+axis2_url_set_path(axis2_url_t *url, const axis2_env_t *env, 
+                        axis2_char_t *path);
+
 axis2_char_t* AXIS2_CALL 
 axis2_url_get_path(axis2_url_t *url, const axis2_env_t *env);
+
 axis2_status_t AXIS2_CALL 
 axis2_url_free (axis2_url_t *url, const axis2_env_t *env);								
+
 axis2_status_t AXIS2_CALL
 axis2_url_open (axis2_url_t *url, const axis2_env_t *env);
+
 axis2_status_t AXIS2_CALL
 axis2_url_close (axis2_url_t *url, const axis2_env_t *env);
 
 axis2_url_t* AXIS2_CALL
-axis2_url_clone(
-        axis2_url_t *url,
-        const axis2_env_t *env);
+axis2_url_clone(axis2_url_t *url, const axis2_env_t *env);
 /***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_url_t * AXIS2_CALL 
@@ -422,9 +432,7 @@ axis2_url_get_path (axis2_url_t *url, const axis2_env_t *env)
 }
 
 axis2_url_t* AXIS2_CALL
-axis2_url_clone(
-        axis2_url_t *url,
-        const axis2_env_t *env)
+axis2_url_clone(axis2_url_t *url, const axis2_env_t *env)
 {
     axis2_url_impl_t *url_impl = NULL;
     
@@ -432,9 +440,9 @@ axis2_url_clone(
     url_impl = AXIS2_INTF_TO_IMPL(url);
 
     return axis2_url_create(env, url_impl->protocol,
-                              url_impl->server,
-                              url_impl->port,
-                              url_impl->path);
+                        url_impl->server,
+                        url_impl->port,
+                        url_impl->path);
 }
 
 
