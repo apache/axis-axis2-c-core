@@ -81,7 +81,7 @@ axis2_xml_schema_enum_get_values(
 /************************** function impl ************************************/
 
 AXIS2_EXTERN axis2_xml_schema_enum_t * AXIS2_CALL
-axis2_xml_schema_enum_create(axis2_env_t **env,
+axis2_xml_schema_enum_create(axis2_env_t *env,
                                 axis2_char_t *value)
 {
     axis2_xml_schema_enum_impl_t *schema_enum_impl = NULL;

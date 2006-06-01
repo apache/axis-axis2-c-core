@@ -24,9 +24,7 @@ libaxis2_xml_schema_la_SOURCES = \
 								 xml_schema_obj_table.c \
 								 xml_schema_collection.c \
 								 xml_schema_type.c \
-								 xml_schema_type_receiver.c \
 								 xml_schema_element.c \
-								 validation_event_handler.c \
 								 xml_schema_any_attribute.c \
                                  xml_schema_builder.c \
                                  xml_schema_external.c \
@@ -44,4 +42,7 @@ libaxis2_xml_schema_la_SOURCES = \
                                  
 
 INCLUDES = -I$(top_builddir)/include \
-           -I$(top_builddir)/modules/xml/xml_schema/include 
+           -I$(top_builddir)/xml_schema/include \
+           @AXIOMINC@ \
+		   @UTILINC@
+
