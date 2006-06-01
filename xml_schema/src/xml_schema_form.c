@@ -59,7 +59,7 @@ axis2_xml_schema_enum_t *AXIS2_CALL
 axis2_xml_schema_form_get_base_impl(void *form,
                                 axis2_env_t **env);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_form_resolve_methods(
                                 axis2_xml_schema_form_t *form,
                                 axis2_env_t **env,
@@ -71,7 +71,7 @@ axis2_xml_schema_form_get_values(void *form,
                         axis2_env_t **env);
 
 
-AXIS2_DECLARE(axis2_xml_schema_form_t *)
+AXIS2_EXTERN axis2_xml_schema_form_t * AXIS2_CALL
 axis2_xml_schema_form_create(axis2_env_t **env,
                             axis2_char_t *value)
 {

@@ -72,7 +72,7 @@ axis2_ctx_free (struct axis2_ctx *ctx,
                 const axis2_env_t *env);
                 
 
-AXIS2_DECLARE(axis2_ctx_t*)
+AXIS2_EXTERN axis2_ctx_t* AXIS2_CALL
 axis2_ctx_create(const axis2_env_t *env) 
 {
     axis2_ctx_impl_t *ctx_impl = NULL;

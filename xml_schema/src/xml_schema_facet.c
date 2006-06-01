@@ -89,7 +89,7 @@ axis2_xml_schema_facet_super_objs(void *facet,
 
 /********************** end function prototypes *******************************/
 
-AXIS2_DECLARE(axis2_xml_schema_facet_t *)
+AXIS2_EXTERN axis2_xml_schema_facet_t * AXIS2_CALL
 axis2_xml_schema_facet_create(axis2_env_t **env,
                                 void *value,
                                 axis2_bool_t fixed,
@@ -240,7 +240,7 @@ axis2_xml_schema_facet_get_base_impl(void *facet,
     return facet_impl->annotated;
 }
 /*
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_facet_resolve_methods(
                                 axis2_xml_schema_facet_t *facet,
                                 axis2_env_t **env,
@@ -319,7 +319,7 @@ axis2_xml_schema_facet_set_value(void *facet,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_xml_schema_facet_t*)
+AXIS2_EXTERN axis2_xml_schema_facet_t* AXIS2_CALL
 axis2_xml_schema_facet_construct (axis2_env_t **env,
                                   axis2_om_node_t *node)
 {

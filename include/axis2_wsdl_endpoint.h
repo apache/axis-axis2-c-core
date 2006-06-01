@@ -113,7 +113,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_endpoint
  * Creates wsdl endpoint struct
  * @return pointer to newly created wsdl endpoint
  */
-AXIS2_DECLARE(axis2_wsdl_endpoint_t *) 
+AXIS2_EXTERN axis2_wsdl_endpoint_t * AXIS2_CALL 
 axis2_wsdl_endpoint_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

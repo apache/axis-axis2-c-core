@@ -100,7 +100,7 @@ struct axis2_xml_schema_facet
 /**
  * Creates new Xml Schema Facet
  */
-AXIS2_DECLARE(axis2_xml_schema_facet_t *)
+AXIS2_EXTERN axis2_xml_schema_facet_t * AXIS2_CALL
 axis2_xml_schema_facet_create(const axis2_env_t *env,
                               void *value,
                               axis2_bool_t fixed,
@@ -109,14 +109,14 @@ axis2_xml_schema_facet_create(const axis2_env_t *env,
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
  
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_facet_resolve_methods(
                                 axis2_xml_schema_facet_t *facet,
                                 const axis2_env_t *env,
                                 axis2_xml_schema_facet_t *facet_impl,
                                 axis2_hash_t *methods);
 */                                
-AXIS2_DECLARE(axis2_xml_schema_facet_t *)
+AXIS2_EXTERN axis2_xml_schema_facet_t * AXIS2_CALL
 axis2_xml_schema_facet_construct(const axis2_env_t *env,
                                  axis2_om_node_t *node);
                                                                  

@@ -38,7 +38,7 @@
   * @param file name
   * @return status code
   */
-AXIS2_DECLARE(axis2_status_t) axis2_file_diff(const axis2_env_t *env
+AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_file_diff(const axis2_env_t *env
 		, axis2_char_t *expected_file_name, axis2_char_t *actual_file_name);
 
 #endif /* AXIS2_FILE_DIFF_H */

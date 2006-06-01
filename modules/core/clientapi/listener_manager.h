@@ -96,7 +96,7 @@ struct axis2_listener_manager
     axis2_listener_manager_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_listener_manager_t*) 
+AXIS2_EXTERN axis2_listener_manager_t* AXIS2_CALL 
 axis2_listener_manager_create(const axis2_env_t *env);
     
 /************************** Start of function macros **************************/

@@ -34,7 +34,7 @@ int dir_select(struct dirent *entry);
  * @param pathname path to your service or module directory
  * @return array list of dll file names
  */
-AXIS2_DECLARE(axis2_array_list_t *)
+AXIS2_EXTERN axis2_array_list_t * AXIS2_CALL
 axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
                             axis2_char_t *pathname)   
 { 
@@ -184,7 +184,7 @@ axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
  * @param pathname path  your modules or services folder
  * @return array list of contents of services or modules folder
  */
-AXIS2_DECLARE(axis2_array_list_t *)
+AXIS2_EXTERN axis2_array_list_t * AXIS2_CALL
 axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
                             axis2_char_t *pathname)   
 { 

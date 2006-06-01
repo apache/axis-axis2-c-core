@@ -58,7 +58,7 @@ axis2_xml_schema_enum_t *AXIS2_CALL
 axis2_xml_schema_use_get_base_impl(void *use,
                                 axis2_env_t **env);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_use_resolve_methods(
                                 axis2_xml_schema_use_t *use,
                                 axis2_env_t **env,
@@ -70,7 +70,7 @@ axis2_xml_schema_use_get_values(void *use,
                         axis2_env_t **env);
 
 
-AXIS2_DECLARE(axis2_xml_schema_use_t *)
+AXIS2_EXTERN axis2_xml_schema_use_t * AXIS2_CALL
 axis2_xml_schema_use_create(axis2_env_t **env,
                             axis2_char_t *value)
 {

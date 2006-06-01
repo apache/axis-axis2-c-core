@@ -68,7 +68,7 @@ axis2_soap11_builder_helper_process_text(axis2_soap11_builder_helper_t *builder_
                              
                              
 
-AXIS2_DECLARE(axis2_soap11_builder_helper_t*)
+AXIS2_EXTERN axis2_soap11_builder_helper_t* AXIS2_CALL
 axis2_soap11_builder_helper_create(const axis2_env_t *env, 
                                    axis2_soap_builder_t *soap_builder,
                                    axis2_om_stax_builder_t *om_builder)

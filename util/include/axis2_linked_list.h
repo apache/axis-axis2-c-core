@@ -313,7 +313,7 @@ struct axis2_linked_list_s
 /**
 * Create an empty linked list.
 */
-AXIS2_DECLARE(axis2_linked_list_t*) axis2_linked_list_create(const axis2_env_t *env);    
+AXIS2_EXTERN axis2_linked_list_t* AXIS2_CALL axis2_linked_list_create(const axis2_env_t *env);    
     
 #define AXIS2_LINKED_LIST_FREE(linked_list, env) \
         ((linked_list)->ops->free(linked_list, env))

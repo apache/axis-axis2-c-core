@@ -479,7 +479,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
     *                       Node type will be set to AXIS2_OM_ELEMENT
     * @return a pointer to the newly created element struct
     */
-    AXIS2_DECLARE(axis2_om_element_t *)
+    AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
     axis2_om_element_create (const axis2_env_t *env,
                              axis2_om_node_t *parent,
                              const axis2_char_t *localname,
@@ -496,7 +496,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
     *                       Node type will be set to AXIS2_OM_ELEMENT
     * @return a pointer to the newly created element struct
     */
-    AXIS2_DECLARE(axis2_om_element_t *) 
+    AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL 
     axis2_om_element_create_with_qname (const axis2_env_t *env,
                                         axis2_om_node_t *parent,
                                         axis2_qname_t *qname,

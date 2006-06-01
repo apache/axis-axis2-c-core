@@ -103,28 +103,28 @@ struct axis2_woden_interface_fault
     axis2_woden_interface_fault_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_interface_fault_t *)
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
 axis2_woden_interface_fault_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_DECLARE(axis2_woden_interface_fault_t *)
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
 axis2_woden_interface_fault_to_interface_fault_element(
         void *interface_fault,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_interface_fault_t *)
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
 axis2_woden_interface_fault_to_nested_configurable(
         void *interface_fault,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_interface_fault_t *)
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
 axis2_woden_interface_fault_to_configurable(
         void *interface_fault,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_interface_fault_resolve_methods(
         axis2_woden_interface_fault_t *interface_fault,
         const axis2_env_t *env,

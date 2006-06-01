@@ -81,7 +81,7 @@ AXIS2_DECLARE_DATA struct axis2_property
  * create new property
  * @return property newly created property
  */
-AXIS2_DECLARE(axis2_property_t *)
+AXIS2_EXTERN axis2_property_t * AXIS2_CALL
 axis2_property_create(const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

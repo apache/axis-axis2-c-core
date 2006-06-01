@@ -51,7 +51,7 @@ axis2_xml_tokenized_type_t *AXIS2_CALL
 axis2_xml_schema_data_type_tokenized_type(void *data_type,
                                             axis2_env_t **env);
 
-AXIS2_DECLARE(axis2_xml_schema_data_type_t *)
+AXIS2_EXTERN axis2_xml_schema_data_type_t * AXIS2_CALL
 axis2_xml_schema_data_type_create(axis2_env_t **env)
 {
     axis2_xml_schema_data_type_impl_t *data_type_impl = NULL;
@@ -105,7 +105,7 @@ axis2_xml_schema_data_type_free(void *data_type,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_data_type_resolve_methods(
                                     axis2_xml_schema_data_type_t *data_type,
                                     axis2_env_t **env,

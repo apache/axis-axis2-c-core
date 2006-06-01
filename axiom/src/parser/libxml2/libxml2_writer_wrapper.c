@@ -349,7 +349,7 @@ axis2_libxml2_writer_wrapper_init_ops(
 
 
 
-AXIS2_DECLARE(axis2_xml_writer_t *)
+AXIS2_EXTERN axis2_xml_writer_t * AXIS2_CALL
 axis2_xml_writer_create(const axis2_env_t *env,
                         axis2_char_t *filename,
                         axis2_char_t *encoding,
@@ -431,7 +431,7 @@ axis2_xml_writer_create(const axis2_env_t *env,
 
 /*********************** writer create func for file ***************************/
 
-AXIS2_DECLARE(axis2_xml_writer_t *)
+AXIS2_EXTERN axis2_xml_writer_t * AXIS2_CALL
 axis2_xml_writer_create_for_memory(const axis2_env_t *env,
                                    axis2_char_t *encoding, 
                                    int is_prefix_default,

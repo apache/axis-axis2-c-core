@@ -40,7 +40,7 @@ std::string* getPlatformErrorMessage(long errorNumber)
     return returningString;
 }
 */
-AXIS2_DECLARE(HMODULE) callLoadLib(LPCTSTR lib)
+AXIS2_EXTERN HMODULE) callLoadLib(LPCTSTR lib AXIS2_CALL
 {
 
         SetErrorMode(SEM_FAILCRITICALERRORS); //Disable display of the critical-error-handler message box

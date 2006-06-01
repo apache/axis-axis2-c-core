@@ -122,7 +122,7 @@ axis2_woden_binding_msg_ref_free_ops(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_binding_msg_ref_t *)
+AXIS2_EXTERN axis2_woden_binding_msg_ref_t * AXIS2_CALL
 axis2_woden_binding_msg_ref_to_binding_msg_ref_element(
         void *binding_msg_ref,
         const axis2_env_t *env)
@@ -146,7 +146,7 @@ axis2_woden_binding_msg_ref_to_binding_msg_ref_element(
     return binding_msg_ref;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_msg_ref_t *)
+AXIS2_EXTERN axis2_woden_binding_msg_ref_t * AXIS2_CALL
 axis2_woden_binding_msg_ref_to_nested_configurable(
         void *binding_msg_ref,
         const axis2_env_t *env)
@@ -171,7 +171,7 @@ axis2_woden_binding_msg_ref_to_nested_configurable(
     return binding_msg_ref;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_msg_ref_t *)
+AXIS2_EXTERN axis2_woden_binding_msg_ref_t * AXIS2_CALL
 axis2_woden_binding_msg_ref_to_configurable(
         void *binding_msg_ref,
         const axis2_env_t *env)
@@ -198,7 +198,7 @@ axis2_woden_binding_msg_ref_to_configurable(
     return binding_msg_ref;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_msg_ref_t *)
+AXIS2_EXTERN axis2_woden_binding_msg_ref_t * AXIS2_CALL
 axis2_woden_binding_msg_ref_to_wsdl_obj(
         void *binding_msg_ref,
         const axis2_env_t *env)
@@ -232,7 +232,7 @@ axis2_woden_binding_msg_ref_to_wsdl_obj(
     return binding_msg_ref;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_msg_ref_t *)
+AXIS2_EXTERN axis2_woden_binding_msg_ref_t * AXIS2_CALL
 axis2_woden_binding_msg_ref_to_nested_element(
         void *binding_msg_ref,
         const axis2_env_t *env)
@@ -257,7 +257,7 @@ axis2_woden_binding_msg_ref_to_nested_element(
     return binding_msg_ref;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_msg_ref_t *)
+AXIS2_EXTERN axis2_woden_binding_msg_ref_t * AXIS2_CALL
 axis2_woden_binding_msg_ref_to_wsdl_component(
         void *binding_msg_ref,
         const axis2_env_t *env)
@@ -283,7 +283,7 @@ axis2_woden_binding_msg_ref_to_wsdl_component(
 }
 
 
-AXIS2_DECLARE(axis2_woden_binding_msg_ref_t *)
+AXIS2_EXTERN axis2_woden_binding_msg_ref_t * AXIS2_CALL
 axis2_woden_binding_msg_ref_to_attr_extensible(
         void *binding_msg_ref,
         const axis2_env_t *env)
@@ -309,7 +309,7 @@ axis2_woden_binding_msg_ref_to_attr_extensible(
     return binding_msg_ref;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_msg_ref_t *)
+AXIS2_EXTERN axis2_woden_binding_msg_ref_t * AXIS2_CALL
 axis2_woden_binding_msg_ref_to_element_extensible(
         void *binding_msg_ref,
         const axis2_env_t *env)
@@ -411,7 +411,7 @@ create(const axis2_env_t *env)
     return &(binding_msg_ref_impl->binding_msg_ref);
 }
 
-AXIS2_DECLARE(axis2_woden_binding_msg_ref_t *)
+AXIS2_EXTERN axis2_woden_binding_msg_ref_t * AXIS2_CALL
 axis2_woden_binding_msg_ref_create(const axis2_env_t *env)
 {
     axis2_woden_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;

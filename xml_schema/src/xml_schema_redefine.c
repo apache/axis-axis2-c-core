@@ -90,7 +90,7 @@ axis2_xml_schema_redefine_get_group(void *redefine,
     
 /********************* end function prototypes ********************************/
 
-AXIS2_DECLARE(axis2_xml_schema_redefine_t *)
+AXIS2_EXTERN axis2_xml_schema_redefine_t * AXIS2_CALL
 axis2_xml_schema_redefine_create(axis2_env_t **env)
 {
     axis2_xml_schema_redefine_impl_t *redefine_impl = NULL;
@@ -250,7 +250,7 @@ axis2_xml_schema_redefine_get_base_impl(void *redefine,
 
 /*
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_redefine_resolve_methods(
                                 axis2_xml_schema_redefine_t *redefine,
                                 axis2_env_t **env,

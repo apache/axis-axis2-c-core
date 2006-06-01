@@ -60,7 +60,7 @@ axis2_om_node_t *axis2_addr_out_handler_process_string_info (const axis2_env_t *
                                                              axis2_char_t *addr_ns);
 
 
-AXIS2_DECLARE (axis2_handler_t *)
+AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
 axis2_addr_out_handler_create (const axis2_env_t *env, axis2_qname_t * qname)
 {
     axis2_handler_t *handler = NULL;

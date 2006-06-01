@@ -114,7 +114,7 @@ struct axis2_data_handler
  * Creates data_handler struct
  * @return pointer to newly created data_handler
  */
-AXIS2_DECLARE(axis2_data_handler_t *) 
+AXIS2_EXTERN axis2_data_handler_t * AXIS2_CALL 
 axis2_data_handler_create (const axis2_env_t *env, axis2_char_t *file_name, axis2_char_t *mime_type);
 
 /*************************** Function macros **********************************/

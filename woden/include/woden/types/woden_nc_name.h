@@ -88,7 +88,7 @@ struct woden_nc_name
     woden_nc_name_ops_t *ops;
 };
 
-AXIS2_DECLARE(woden_nc_name_t *)
+AXIS2_EXTERN woden_nc_name_t * AXIS2_CALL
 woden_nc_name_create(
         const axis2_env_t *env,
         axis2_char_t *value);

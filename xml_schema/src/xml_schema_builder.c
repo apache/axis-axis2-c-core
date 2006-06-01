@@ -339,7 +339,7 @@ handle_annotation_with_element(
         
 /*************** end function prototypes **************************************/
 
-AXIS2_DECLARE(axis2_xml_schema_builder_t *)
+AXIS2_EXTERN axis2_xml_schema_builder_t * AXIS2_CALL
 axis2_xml_schema_builder_create(
         axis2_env_t **env,
         axis2_xml_schema_collection_t *sch_collection)

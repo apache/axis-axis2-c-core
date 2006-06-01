@@ -126,7 +126,7 @@ static axis2_woden_endpoint_t *
 create(const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_endpoint_element(
         void *endpoint,
         const axis2_env_t *env)
@@ -168,7 +168,7 @@ axis2_woden_endpoint_to_endpoint_element_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_nested_element(
         void *endpoint,
         const axis2_env_t *env)
@@ -211,7 +211,7 @@ axis2_woden_endpoint_to_nested_element_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_documentable_element(
         void *endpoint,
         const axis2_env_t *env)
@@ -255,7 +255,7 @@ axis2_woden_endpoint_to_documentable_element_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_nested_configurable(
         void *endpoint,
         const axis2_env_t *env)
@@ -298,7 +298,7 @@ axis2_woden_endpoint_to_nested_configurable_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_configurable(
         void *endpoint,
         const axis2_env_t *env)
@@ -345,7 +345,7 @@ axis2_woden_endpoint_to_configurable_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_nested_component(
         void *endpoint,
         const axis2_env_t *env)
@@ -388,7 +388,7 @@ axis2_woden_endpoint_to_nested_component_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_configurable_component(
         void *endpoint,
         const axis2_env_t *env)
@@ -431,7 +431,7 @@ axis2_woden_endpoint_to_configurable_component_free(
 }
 
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_wsdl_component(
         void *endpoint,
         const axis2_env_t *env)
@@ -582,7 +582,7 @@ create(const axis2_env_t *env)
     return &(endpoint_impl->endpoint);
 }
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_create(const axis2_env_t *env)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;

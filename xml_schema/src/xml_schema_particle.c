@@ -90,7 +90,7 @@ axis2_xml_schema_particle_set_min_occurs(void *particle,
 
 /*************** function prototypes *****************************************/
 
-AXIS2_DECLARE(axis2_xml_schema_particle_t *)
+AXIS2_EXTERN axis2_xml_schema_particle_t * AXIS2_CALL
 axis2_xml_schema_particle_create(axis2_env_t **env)
 {
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;
@@ -276,7 +276,7 @@ axis2_xml_schema_particle_get_base_impl(void *particle,
     return particle_impl->annotated;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_particle_resolve_methods(
                                 axis2_xml_schema_particle_t *particle,
                                 axis2_env_t **env,

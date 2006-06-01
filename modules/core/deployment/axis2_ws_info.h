@@ -97,12 +97,12 @@ AXIS2_DECLARE_DATA struct axis2_ws_info
  * @param repos_path
  * @return pointer to newly created ws info
  */
-AXIS2_DECLARE(axis2_ws_info_t *) 
+AXIS2_EXTERN axis2_ws_info_t * AXIS2_CALL 
 axis2_ws_info_create_with_file_name_and_last_modified_date (const axis2_env_t *env,
                                         axis2_char_t *file_name,
                                         long last_modified_date);
 
-AXIS2_DECLARE(axis2_ws_info_t *) 
+AXIS2_EXTERN axis2_ws_info_t * AXIS2_CALL 
 axis2_ws_info_create_with_file_name_and_last_modified_date_and_type (
                                         const axis2_env_t *env,
                                         axis2_char_t *file_name,

@@ -50,7 +50,7 @@ axis2_woden_component_exts_init(
         axis2_woden_wsdl_element_t *parent_el,
         axis2_url_t *namespc);
  
-AXIS2_DECLARE(axis2_woden_component_exts_t *)
+AXIS2_EXTERN axis2_woden_component_exts_t * AXIS2_CALL
 axis2_woden_component_exts_create(
         const axis2_env_t *env)
 {

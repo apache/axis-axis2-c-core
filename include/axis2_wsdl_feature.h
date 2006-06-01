@@ -112,7 +112,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_feature
  * Creates wsdl feature struct
  * @return pointer to newly created wsdl feature
  */
-AXIS2_DECLARE(axis2_wsdl_feature_t *) axis2_wsdl_feature_create (const axis2_env_t *env);
+AXIS2_EXTERN axis2_wsdl_feature_t *AXIS2_CALL axis2_wsdl_feature_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

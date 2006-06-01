@@ -120,7 +120,7 @@ struct axis2_xml_schema_complex_content_restriction
 /**
  * Creates new Xml Schema Group
  */
-AXIS2_DECLARE(axis2_xml_schema_complex_content_restriction_t *)
+AXIS2_EXTERN axis2_xml_schema_complex_content_restriction_t * AXIS2_CALL
 axis2_xml_schema_complex_content_restriction_create(const axis2_env_t *env);
 
 

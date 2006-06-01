@@ -98,7 +98,7 @@ AXIS2_DECLARE_DATA struct axis2_file
  * create new file
  * @return file newly created file
  */
-AXIS2_DECLARE(axis2_file_t *)
+AXIS2_EXTERN axis2_file_t * AXIS2_CALL
 axis2_file_create(const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

@@ -698,7 +698,7 @@ struct axis2_msg_ctx
 };
 
 
-AXIS2_DECLARE(axis2_msg_ctx_t *) 
+AXIS2_EXTERN axis2_msg_ctx_t * AXIS2_CALL 
 axis2_msg_ctx_create (const axis2_env_t *env,
                         struct axis2_conf_ctx *conf_ctx,
                         struct axis2_transport_in_desc *transport_in_desc,

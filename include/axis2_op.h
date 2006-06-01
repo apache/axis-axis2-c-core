@@ -402,7 +402,7 @@ AXIS2_DECLARE_DATA struct axis2_op
  * Creates op struct
  * @return pointer to newly created op
  */
-AXIS2_DECLARE(axis2_op_t *)
+AXIS2_EXTERN axis2_op_t * AXIS2_CALL
 axis2_op_create (const axis2_env_t *env);
 
 /** 
@@ -410,7 +410,7 @@ axis2_op_create (const axis2_env_t *env);
  * @param name op name
  * @return pointer to newly created op
  */
-AXIS2_DECLARE(axis2_op_t *)
+AXIS2_EXTERN axis2_op_t * AXIS2_CALL
 axis2_op_create_with_qname (const axis2_env_t *env, 
                             axis2_qname_t *name);
 
@@ -419,11 +419,11 @@ axis2_op_create_with_qname (const axis2_env_t *env,
  * @param wsdl_op wsdl op
  * @return pointer to newly created op
  */
-AXIS2_DECLARE(axis2_op_t *) 
+AXIS2_EXTERN axis2_op_t * AXIS2_CALL 
 axis2_op_create_with_wsdl_op (const axis2_env_t *env, 
                               struct axis2_wsdl_op *wsdl_op);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_op_free_void_arg(void *op,
                        const axis2_env_t *env);
 

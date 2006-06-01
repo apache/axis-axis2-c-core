@@ -107,7 +107,7 @@ struct axis2_ctx
     axis2_ctx_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_ctx_t*) axis2_ctx_create (const axis2_env_t *env);
+AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL axis2_ctx_create (const axis2_env_t *env);
     
 /************************** Start of function macros **************************/
 

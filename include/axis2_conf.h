@@ -345,7 +345,7 @@ struct axis2_conf
 /** create Engine configuration struct
  * @return pointer to newly created engine configuration
  */
-AXIS2_DECLARE(axis2_conf_t *) 
+AXIS2_EXTERN axis2_conf_t * AXIS2_CALL 
 axis2_conf_create(const axis2_env_t *env);
 
 /************************* Start of function macros	***************************/

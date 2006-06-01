@@ -105,7 +105,7 @@ static axis2_woden_inlined_schema_t *
 create(const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_inlined_schema_t *)
+AXIS2_EXTERN axis2_woden_inlined_schema_t * AXIS2_CALL
 axis2_woden_inlined_schema_to_schema(
         void *schema,
         const axis2_env_t *env)
@@ -214,7 +214,7 @@ create(
 
     return &(schema_impl->inlined_schema);
 }
-AXIS2_DECLARE(axis2_woden_inlined_schema_t *)
+AXIS2_EXTERN axis2_woden_inlined_schema_t * AXIS2_CALL
 axis2_woden_inlined_schema_create(
         const axis2_env_t *env)
 {

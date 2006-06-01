@@ -99,7 +99,7 @@ axis2_xml_schema_annotated_set_unhandled_attrs(void *annotated,
 
 /******************* implementation functions ********************************/
 
-AXIS2_DECLARE(axis2_xml_schema_annotated_t *)
+AXIS2_EXTERN axis2_xml_schema_annotated_t * AXIS2_CALL
 axis2_xml_schema_annotated_create(axis2_env_t **env)
 {
     axis2_xml_schema_annotated_impl_t *annotated_impl = NULL;
@@ -289,7 +289,7 @@ axis2_xml_schema_annotated_get_base_impl(void *annotated,
     return AXIS2_INTF_TO_IMPL(annotated)->schema_obj;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_annotated_resolve_methods(
                                 axis2_xml_schema_annotated_t *annotated,
                                 axis2_env_t **env,

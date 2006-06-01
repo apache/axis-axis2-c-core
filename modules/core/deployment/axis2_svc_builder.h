@@ -100,7 +100,7 @@ AXIS2_DECLARE_DATA struct axis2_svc_builder
  * Creates svc builder struct
  * @return pointer to newly created service builder
  */
-AXIS2_DECLARE(axis2_svc_builder_t *)
+AXIS2_EXTERN axis2_svc_builder_t * AXIS2_CALL
 axis2_svc_builder_create (const axis2_env_t *env);
 
 /**
@@ -110,7 +110,7 @@ axis2_svc_builder_create (const axis2_env_t *env);
  * @param svc
  * @return pointer to newly created service builder
  */
-AXIS2_DECLARE(axis2_svc_builder_t *)
+AXIS2_EXTERN axis2_svc_builder_t * AXIS2_CALL
 axis2_svc_builder_create_with_file_and_dep_engine_and_svc (const axis2_env_t *env,
                                                 axis2_char_t *file_name,
                                                 struct axis2_dep_engine *dep_engine,
@@ -122,7 +122,7 @@ axis2_svc_builder_create_with_file_and_dep_engine_and_svc (const axis2_env_t *en
  * @param svc
  * @return pointer to newly created service builder
  */
-AXIS2_DECLARE(axis2_svc_builder_t *) 
+AXIS2_EXTERN axis2_svc_builder_t * AXIS2_CALL 
 axis2_svc_builder_create_with_dep_engine_and_svc (const axis2_env_t *env,
                                                 struct axis2_dep_engine *dep_engine,
                                                 axis2_svc_t *svc);

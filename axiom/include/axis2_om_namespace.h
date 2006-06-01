@@ -139,7 +139,7 @@ extern "C"
     * @param prefix namespace prefix
     * @return a pointer to newly created namespace struct
     */
-    AXIS2_DECLARE(axis2_om_namespace_t *)
+    AXIS2_EXTERN axis2_om_namespace_t * AXIS2_CALL
     axis2_om_namespace_create (const axis2_env_t *env,
                                const axis2_char_t * uri,
                                const axis2_char_t *prefix);

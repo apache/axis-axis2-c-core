@@ -35,7 +35,7 @@ int AXIS2_CALL math_init(axis2_svc_skeleton_t *svc_skeleton,
                         const axis2_env_t *env);
 
 
-AXIS2_DECLARE(axis2_svc_skeleton_t *)
+AXIS2_EXTERN axis2_svc_skeleton_t * AXIS2_CALL
 axis2_math_create(const axis2_env_t *env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;

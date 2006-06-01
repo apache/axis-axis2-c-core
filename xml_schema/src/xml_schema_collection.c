@@ -181,7 +181,7 @@ axis2_xml_schema_collection_get_namespaces(
 
 /*************** end function prototypes ****************************/                    
 
-AXIS2_DECLARE(axis2_xml_schema_collection_t *)
+AXIS2_EXTERN axis2_xml_schema_collection_t * AXIS2_CALL
 axis2_xml_schema_collection_create(axis2_env_t **env)
 {
     axis2_xml_schema_collection_impl_t *collection_impl = NULL;

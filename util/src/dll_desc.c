@@ -115,7 +115,7 @@ axis2_dll_desc_create_platform_specific_dll_name(axis2_dll_desc_t *dll_desc,
                        
 /************************* End of function headers ****************************/	
 
-AXIS2_DECLARE(axis2_dll_desc_t *)
+AXIS2_EXTERN axis2_dll_desc_t * AXIS2_CALL
 axis2_dll_desc_create (const axis2_env_t *env)
 {
     axis2_dll_desc_impl_t *dll_desc_impl = NULL;

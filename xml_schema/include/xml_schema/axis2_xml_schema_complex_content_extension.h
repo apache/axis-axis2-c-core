@@ -119,7 +119,7 @@ struct axis2_xml_schema_complex_content_extension
 /**
  * Creates new Xml Schema Group
  */
-AXIS2_DECLARE(axis2_xml_schema_complex_content_extension_t *)
+AXIS2_EXTERN axis2_xml_schema_complex_content_extension_t * AXIS2_CALL
 axis2_xml_schema_complex_content_extension_create(const axis2_env_t *env);
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_FREE(cmp_content_ext, env) \

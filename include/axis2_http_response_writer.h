@@ -101,10 +101,10 @@ AXIS2_DECLARE_DATA struct axis2_http_response_writer
 };
 
 
-AXIS2_DECLARE(axis2_http_response_writer_t *) 
+AXIS2_EXTERN axis2_http_response_writer_t * AXIS2_CALL 
 axis2_http_response_writer_create (const axis2_env_t *env, axis2_stream_t *stream);
 
-AXIS2_DECLARE(axis2_http_response_writer_t *) 
+AXIS2_EXTERN axis2_http_response_writer_t * AXIS2_CALL 
 axis2_http_response_writer_create_with_encoding(const axis2_env_t *env,
                     axis2_stream_t *stream, const axis2_char_t *encoding);
     

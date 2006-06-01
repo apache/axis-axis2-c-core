@@ -218,7 +218,7 @@ struct axis2_xml_schema
 /**
  * Creates new Xml Schema
  */
-AXIS2_DECLARE(axis2_xml_schema_t *)
+AXIS2_EXTERN axis2_xml_schema_t * AXIS2_CALL
 axis2_xml_schema_create(axis2_env_t **env,
                                 axis2_char_t *namespc,
                                 struct axis2_xml_schema_collection *parent);
@@ -226,7 +226,7 @@ axis2_xml_schema_create(axis2_env_t **env,
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
  */
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_resolve_methods(
                                 axis2_xml_schema_t *schema,
                                 axis2_env_t **env,

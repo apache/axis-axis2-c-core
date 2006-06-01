@@ -82,7 +82,7 @@ axis2_xml_schema_simple_type_to_string(void *simple_type,
                                 
 /************************** end       ****************************************/                                
 
-AXIS2_DECLARE(axis2_xml_schema_simple_type_t *)
+AXIS2_EXTERN axis2_xml_schema_simple_type_t * AXIS2_CALL
 axis2_xml_schema_simple_type_create(axis2_env_t **env,
                                 axis2_xml_schema_t *schema)
 {
@@ -236,7 +236,7 @@ axis2_xml_schema_simple_type_get_base_impl(void *simple_type,
     
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_simple_type_resolve_methods(
                                 axis2_xml_schema_simple_type_t *simple_type,
                                 axis2_env_t **env,

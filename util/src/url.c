@@ -67,7 +67,7 @@ axis2_status_t AXIS2_CALL
 axis2_url_close (axis2_url_t *url, const axis2_env_t *env);
 /***************************** End of function headers ************************/
 
-AXIS2_DECLARE(axis2_url_t *) 
+AXIS2_EXTERN axis2_url_t * AXIS2_CALL 
 axis2_url_create (const axis2_env_t *env, axis2_char_t *protocol, 
 						axis2_char_t *server, int port, axis2_char_t *path)
 {

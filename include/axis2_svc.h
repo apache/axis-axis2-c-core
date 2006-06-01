@@ -421,7 +421,7 @@ struct axis2_svc
  * Creates service struct with qname
  * @return pointer to newly created service
  */
-AXIS2_DECLARE(axis2_svc_t *)
+AXIS2_EXTERN axis2_svc_t * AXIS2_CALL
 axis2_svc_create (const axis2_env_t *env);
 
 /** 
@@ -429,7 +429,7 @@ axis2_svc_create (const axis2_env_t *env);
  * @param qname ualified name
  * @return pointer to newly created service
  */
-AXIS2_DECLARE(axis2_svc_t *)
+AXIS2_EXTERN axis2_svc_t * AXIS2_CALL
 axis2_svc_create_with_qname (const axis2_env_t *env, 
                                 axis2_qname_t *qname);
 
@@ -438,7 +438,7 @@ axis2_svc_create_with_qname (const axis2_env_t *env,
  * @param wsdl_svc wsdl service
  * @return pointer to newly created service
  */
-AXIS2_DECLARE(axis2_svc_t *)
+AXIS2_EXTERN axis2_svc_t * AXIS2_CALL
 axis2_svc_create_with_wsdl_svc (const axis2_env_t *env, 
                                 struct axis2_wsdl_svc *wsdl_svc);
 

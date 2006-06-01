@@ -90,7 +90,7 @@ AXIS2_DECLARE_DATA struct axis2_conf_builder
  * Creates conf builder struct
  * @return pointer to newly created conf builder
  */
-AXIS2_DECLARE(axis2_conf_builder_t *) 
+AXIS2_EXTERN axis2_conf_builder_t * AXIS2_CALL 
 axis2_conf_builder_create (const axis2_env_t *env);
 
 /**
@@ -101,7 +101,7 @@ axis2_conf_builder_create (const axis2_env_t *env);
  * @return pointer to newly created conf builder
  */
 
-AXIS2_DECLARE(axis2_conf_builder_t *)
+AXIS2_EXTERN axis2_conf_builder_t * AXIS2_CALL
 axis2_conf_builder_create_with_file_and_dep_engine_and_conf (const axis2_env_t *env,
                                             axis2_char_t *file,
                                             struct axis2_dep_engine *dep_engine,

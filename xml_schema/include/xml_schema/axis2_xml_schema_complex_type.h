@@ -199,7 +199,7 @@ struct axis2_xml_schema_complex_type
  * a reference to a named content model group (group), or an element wildcard 
  * (any).
  */
-AXIS2_DECLARE(axis2_xml_schema_complex_type_t *)
+AXIS2_EXTERN axis2_xml_schema_complex_type_t * AXIS2_CALL
 axis2_xml_schema_complex_type_create(const axis2_env_t *env,
                         struct axis2_xml_schema *schema);
 

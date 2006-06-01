@@ -124,7 +124,7 @@ struct axis2_wsdl_component
 /** create Wsdl Component struct
  * @return pointer to newly created wsdl component
  */
-AXIS2_DECLARE(axis2_wsdl_component_t *) 
+AXIS2_EXTERN axis2_wsdl_component_t * AXIS2_CALL 
 axis2_wsdl_component_create (const axis2_env_t *env);
 
 /**************************** Start of function macros ************************/

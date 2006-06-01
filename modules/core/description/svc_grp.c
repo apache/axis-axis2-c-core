@@ -138,7 +138,7 @@ axis2_svc_grp_get_svc_grp_ctx(axis2_svc_grp_t *svc_grp,
                           
 /***************************** End of function headers ************************/
 
-AXIS2_DECLARE(axis2_svc_grp_t *) 
+AXIS2_EXTERN axis2_svc_grp_t * AXIS2_CALL 
 axis2_svc_grp_create (const axis2_env_t *env)
 {
     axis2_svc_grp_impl_t *svc_grp_impl = NULL;
@@ -226,7 +226,7 @@ axis2_svc_grp_create (const axis2_env_t *env)
 	return &(svc_grp_impl->svc_grp);	
 }
 
-AXIS2_DECLARE(axis2_svc_grp_t *) 
+AXIS2_EXTERN axis2_svc_grp_t * AXIS2_CALL 
 axis2_svc_grp_create_with_conf (const axis2_env_t *env,
                                          axis2_conf_t *conf)
 {

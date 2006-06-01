@@ -82,7 +82,7 @@ axis2_xml_schema_group_ref_set_particle(void *group_ref,
                                     axis2_xml_schema_group_base_t *particle);
 /************************** end function pointers **************************/
 
-AXIS2_DECLARE(axis2_xml_schema_group_ref_t *)
+AXIS2_EXTERN axis2_xml_schema_group_ref_t * AXIS2_CALL
 axis2_xml_schema_group_ref_create(axis2_env_t **env)
 {
     axis2_xml_schema_group_ref_impl_t *group_ref_impl = NULL;
@@ -280,7 +280,7 @@ axis2_xml_schema_group_ref_get_base_impl(void *group_ref,
 }
 
 /*
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_group_ref_resolve_methods(
                                 axis2_xml_schema_group_ref_t *group_ref,
                                 axis2_env_t **env,

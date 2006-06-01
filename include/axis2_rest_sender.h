@@ -101,7 +101,7 @@ AXIS2_DECLARE_DATA struct axis2_rest_sender
 };
 
 
-AXIS2_DECLARE(axis2_rest_sender_t *) 
+AXIS2_EXTERN axis2_rest_sender_t * AXIS2_CALL 
 axis2_rest_sender_create(const axis2_env_t *env);
 
 /********************* Start of function macros	***************************/

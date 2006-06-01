@@ -240,7 +240,7 @@ struct axis2_xml_schema_element
     axis2_xml_schema_element_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_xml_schema_element_t *)
+AXIS2_EXTERN axis2_xml_schema_element_t * AXIS2_CALL
 axis2_xml_schema_element_create(const axis2_env_t *env);
 
 /************ macros **********************************************************/

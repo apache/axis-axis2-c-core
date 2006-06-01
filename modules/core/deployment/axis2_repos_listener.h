@@ -113,7 +113,7 @@ AXIS2_DECLARE_DATA struct axis2_repos_listener
 /**
  * @return pointer to newly created deployment engine
  */
-AXIS2_DECLARE(axis2_repos_listener_t *) 
+AXIS2_EXTERN axis2_repos_listener_t * AXIS2_CALL 
 axis2_repos_listener_create (const axis2_env_t *env);
 
 /**
@@ -121,7 +121,7 @@ axis2_repos_listener_create (const axis2_env_t *env);
  * @param dep_engine
  * @return pointer to newly created deployment engine
  */
-AXIS2_DECLARE(axis2_repos_listener_t *) 
+AXIS2_EXTERN axis2_repos_listener_t * AXIS2_CALL 
 axis2_repos_listener_create_with_folder_name_and_dep_engine(const axis2_env_t *env,
                                                 axis2_char_t *folder_name,
                                                 struct axis2_dep_engine *dep_engine);

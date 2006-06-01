@@ -266,7 +266,7 @@ AXIS2_DECLARE_DATA   typedef struct axis2_om_node_ops
     * @param env Environment. MUST NOT be NULL, .
     * @return a pointer to newly created node struct. NULL on error. 
     */
-AXIS2_DECLARE(axis2_om_node_t *) 
+AXIS2_EXTERN axis2_om_node_t * AXIS2_CALL 
 axis2_om_node_create (const axis2_env_t *env);
 
 /** frees given node */

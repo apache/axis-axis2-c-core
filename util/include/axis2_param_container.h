@@ -118,7 +118,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_container
  * Creates param container struct
  * @return pointer to newly created param container
  */
-AXIS2_DECLARE(axis2_param_container_t *) 
+AXIS2_EXTERN axis2_param_container_t * AXIS2_CALL 
 axis2_param_container_create (const axis2_env_t *env);
 
 /**
@@ -126,7 +126,7 @@ axis2_param_container_create (const axis2_env_t *env);
  * cast into appropriate type and then pass the cast object
  * into the param_container structure's free method
  */
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_param_container_free_void_arg (void *param_container,
                                         const axis2_env_t *env);
                                     

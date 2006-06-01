@@ -148,7 +148,7 @@ AXIS2_DECLARE_DATA struct axis2_phase_resolver
  * Creates phase resolver struct
  * @return pointer to newly created phase resolver
  */
-AXIS2_DECLARE(axis2_phase_resolver_t *) 
+AXIS2_EXTERN axis2_phase_resolver_t * AXIS2_CALL 
 axis2_phase_resolver_create (const axis2_env_t *env);
 
 /**
@@ -156,7 +156,7 @@ axis2_phase_resolver_create (const axis2_env_t *env);
  *
  * @param engineConfig
  */
-AXIS2_DECLARE(axis2_phase_resolver_t *) 
+AXIS2_EXTERN axis2_phase_resolver_t * AXIS2_CALL 
 axis2_phase_resolver_create_with_config (const axis2_env_t *env, 
                                          struct axis2_conf *axis2_config);
 
@@ -166,7 +166,7 @@ axis2_phase_resolver_create_with_config (const axis2_env_t *env,
  * @param axisConfig
  * @param serviceContext
  */
-AXIS2_DECLARE(axis2_phase_resolver_t *)
+AXIS2_EXTERN axis2_phase_resolver_t * AXIS2_CALL
 axis2_phase_resolver_create_with_config_and_svc (const axis2_env_t *env, 
                                                 struct axis2_conf *axis2_config,
                                                 struct axis2_svc *svc);

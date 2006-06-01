@@ -196,7 +196,7 @@ extern "C"
 /**
  * creates phase struct
  */
-AXIS2_DECLARE(axis2_phase_t*) 
+AXIS2_EXTERN axis2_phase_t* AXIS2_CALL 
 axis2_phase_create(const axis2_env_t *env, 
 				   const axis2_char_t *phase_name);
 

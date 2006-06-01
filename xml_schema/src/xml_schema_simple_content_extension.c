@@ -103,7 +103,7 @@ axis2_xml_schema_simple_content_extension_get_type(
                                           
 /*************************** end function protos **********************************/                
                           
-AXIS2_DECLARE(axis2_xml_schema_simple_content_extension_t *)
+AXIS2_EXTERN axis2_xml_schema_simple_content_extension_t * AXIS2_CALL
 axis2_xml_schema_simple_content_extension_create(axis2_env_t **env)
 {
     axis2_xml_schema_simple_content_extension_impl_t *sim_content_ext_impl = NULL;

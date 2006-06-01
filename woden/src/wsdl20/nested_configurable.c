@@ -92,7 +92,7 @@ create(
     return &(nested_configurable_impl->nested_configurable);
 }
 
-AXIS2_DECLARE(axis2_woden_nested_configurable_t *)
+AXIS2_EXTERN axis2_woden_nested_configurable_t * AXIS2_CALL
 axis2_woden_nested_configurable_create(
         const axis2_env_t *env)
 {

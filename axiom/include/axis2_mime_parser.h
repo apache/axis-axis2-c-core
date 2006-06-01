@@ -96,7 +96,7 @@ struct axis2_mime_parser
  * Creates mime_parser struct
  * @return pointer to newly created mime_parser
  */
-AXIS2_DECLARE(axis2_mime_parser_t *) 
+AXIS2_EXTERN axis2_mime_parser_t * AXIS2_CALL 
 axis2_mime_parser_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

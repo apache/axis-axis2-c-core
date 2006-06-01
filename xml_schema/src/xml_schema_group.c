@@ -74,7 +74,7 @@ axis2_xml_schema_group_set_particle(void *group,
                                     axis2_env_t **env,
                                     axis2_xml_schema_group_base_t *particle);
 
-AXIS2_DECLARE(axis2_xml_schema_group_t *)
+AXIS2_EXTERN axis2_xml_schema_group_t * AXIS2_CALL
 axis2_xml_schema_group_create(axis2_env_t **env)
 {
     axis2_xml_schema_group_impl_t *group_impl = NULL;
@@ -261,7 +261,7 @@ axis2_xml_schema_group_get_base_impl(void *group,
 }
 
 /*
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_group_resolve_methods(
                                 axis2_xml_schema_group_t *group,
                                 axis2_env_t **env,

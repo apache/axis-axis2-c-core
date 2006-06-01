@@ -372,7 +372,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc
  * Creates wsdl property struct
  * @return pointer to newly created wsdl property
  */
-AXIS2_DECLARE(axis2_wsdl_desc_t *) 
+AXIS2_EXTERN axis2_wsdl_desc_t * AXIS2_CALL 
 axis2_wsdl_desc_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

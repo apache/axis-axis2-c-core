@@ -173,7 +173,7 @@ axis2_xml_schema_attribute_to_string(void *attr,
                int tab);                                                  
  /************************ end function prototypes ******************************/
  
-AXIS2_DECLARE(axis2_xml_schema_attribute_t *)
+AXIS2_EXTERN axis2_xml_schema_attribute_t * AXIS2_CALL
 axis2_xml_schema_attribute_create(axis2_env_t **env)
 {
     axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
@@ -389,7 +389,7 @@ axis2_xml_schema_attribute_get_base_impl(void *attr,
 }
 
 /*
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_attribute_resolve_methods(
                                 axis2_xml_schema_attribute_t *attr,
                                 axis2_env_t **env,

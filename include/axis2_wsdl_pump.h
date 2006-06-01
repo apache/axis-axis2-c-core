@@ -76,7 +76,7 @@ struct axis2_wsdl_pump
  * Creates wsdl_pump struct
  * @return pointer to newly created wsdl_pump
  */
-AXIS2_DECLARE(axis2_wsdl_pump_t *) 
+AXIS2_EXTERN axis2_wsdl_pump_t * AXIS2_CALL 
 axis2_wsdl_pump_create (const axis2_env_t *env,
 						struct axis2_wsdl_desc *wom_def,
 						void *wsdl_parser);

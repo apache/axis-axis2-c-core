@@ -138,7 +138,7 @@ axis2_transport_out_desc_is_param_locked (axis2_transport_out_desc_t *
 
 /************************** End of function prototypes ************************/
 
-AXIS2_DECLARE(axis2_transport_out_desc_t *)
+AXIS2_EXTERN axis2_transport_out_desc_t * AXIS2_CALL
 axis2_transport_out_desc_create_with_qname (const axis2_env_t *env, axis2_qname_t *qname)
 {
     axis2_transport_out_desc_impl_t *transport_out_impl = NULL;

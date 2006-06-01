@@ -74,7 +74,7 @@ axis2_soap_fault_text_get_text(axis2_soap_fault_text_t *fault_text,
 /***************************** functions **************************************/                                      
                                                        
 
-AXIS2_DECLARE(axis2_soap_fault_text_t *)
+AXIS2_EXTERN axis2_soap_fault_text_t * AXIS2_CALL
 axis2_soap_fault_text_create(const axis2_env_t *env)
 {
     axis2_soap_fault_text_impl_t *fault_text_impl = NULL;
@@ -136,7 +136,7 @@ axis2_soap_fault_text_create(const axis2_env_t *env)
 
 
 
-AXIS2_DECLARE(axis2_soap_fault_text_t *)
+AXIS2_EXTERN axis2_soap_fault_text_t * AXIS2_CALL
 axis2_soap_fault_text_create_with_parent(const axis2_env_t *env,
                             axis2_soap_fault_reason_t *parent)
 {

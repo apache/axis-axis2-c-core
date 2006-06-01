@@ -100,7 +100,7 @@ struct axis2_flow
  * Creates flow struct
  * @return pointer to newly created flow
  */
-AXIS2_DECLARE(axis2_flow_t *) 
+AXIS2_EXTERN axis2_flow_t * AXIS2_CALL 
 axis2_flow_create (const axis2_env_t *env);
 
 /**
@@ -108,7 +108,7 @@ axis2_flow_create (const axis2_env_t *env);
  * cast into appropriate type and then pass the cast object
  * into the flow structure's free method
  */
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_flow_free_void_arg (void *flow,
                             const axis2_env_t *env);
 

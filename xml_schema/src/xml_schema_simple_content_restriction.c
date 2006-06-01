@@ -131,7 +131,7 @@ axis2_xml_schema_simple_content_restriction_get_facets(
                                           
                                           
 /*****************************************************************************/                                          
-AXIS2_DECLARE(axis2_xml_schema_simple_content_restriction_t *)
+AXIS2_EXTERN axis2_xml_schema_simple_content_restriction_t * AXIS2_CALL
 axis2_xml_schema_simple_content_restriction_create(axis2_env_t **env)
 {
     axis2_xml_schema_simple_content_restriction_impl_t *sim_content_res_impl = NULL;

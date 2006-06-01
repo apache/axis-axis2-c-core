@@ -87,7 +87,7 @@ static unsigned char os_toascii[256] = {
 
 #endif /* __OS400__ */
 
-AXIS2_DECLARE(int) axis2_base64_decode_len(const char *bufcoded)
+AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode_len(const char *bufcoded)
 {
     int nbytesdecoded;
     register const unsigned char *bufin;
@@ -102,7 +102,7 @@ AXIS2_DECLARE(int) axis2_base64_decode_len(const char *bufcoded)
     return nbytesdecoded + 1;
 }
 
-AXIS2_DECLARE(int) axis2_base64_decode(char *bufplain, const char *bufcoded)
+AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode(char *bufplain, const char *bufcoded)
 {
     int len;
     len = axis2_base64_decode_binary((unsigned char *) bufplain, bufcoded);
@@ -114,7 +114,7 @@ AXIS2_DECLARE(int) axis2_base64_decode(char *bufplain, const char *bufcoded)
  * the conversion of the output to ebcdic is left out.
  */
 
-AXIS2_DECLARE(int) axis2_base64_decode_binary(unsigned char *bufplain,
+AXIS2_EXTERN int AXIS2_CALL axis2_base64_decode_binary(unsigned char *bufplain,
                    const char *bufcoded)
 {
     int nbytesdecoded;
@@ -166,12 +166,12 @@ AXIS2_DECLARE(int) axis2_base64_decode_binary(unsigned char *bufplain,
 static const char basis_64[] =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-AXIS2_DECLARE(int) axis2_base64_encode_len(int len)
+AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode_len(int len)
 {
     return ((len + 2) / 3 * 4) + 1;
 }
 
-AXIS2_DECLARE(int) axis2_base64_encode(char *encoded, const char *string, int len)
+AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode(char *encoded, const char *string, int len)
 {
 #ifndef __OS400__
     return axis2_base64_encode_binary(encoded, (const unsigned char *) string, len);
@@ -214,7 +214,7 @@ AXIS2_DECLARE(int) axis2_base64_encode(char *encoded, const char *string, int le
 /* This is the same as axis2_base64_encode() except on EBCDIC machines, where
  * the conversion of the input to ascii is left out.
  */
-AXIS2_DECLARE(int) axis2_base64_encode_binary(char *encoded,
+AXIS2_EXTERN int AXIS2_CALL axis2_base64_encode_binary(char *encoded,
                                       const unsigned char *string, int len)
 {
     int i;

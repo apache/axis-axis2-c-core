@@ -92,7 +92,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_op
  * Creates wsdl ext_soap_op struct
  * @return pointer to newly created wsdl ext_soap_op
  */
-AXIS2_DECLARE(axis2_wsdl_ext_soap_op_t *) 
+AXIS2_EXTERN axis2_wsdl_ext_soap_op_t * AXIS2_CALL 
 axis2_wsdl_ext_soap_op_create (const axis2_env_t *env,
                                     axis2_qname_t *qtype);
 

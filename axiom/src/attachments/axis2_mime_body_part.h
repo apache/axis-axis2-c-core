@@ -86,7 +86,7 @@ struct axis2_mime_body_part
  * Creates mime_body_part struct
  * @return pointer to newly created mime_body_part
  */
-AXIS2_DECLARE(axis2_mime_body_part_t *) 
+AXIS2_EXTERN axis2_mime_body_part_t * AXIS2_CALL 
 axis2_mime_body_part_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

@@ -67,12 +67,12 @@ axis2_status_t AXIS2_CALL axis2_log_impl_write (axis2_log_t *log,
 	   	const axis2_char_t *buffer, axis2_log_levels_t level,
 	   	const axis2_char_t *file, const int line);
 
-AXIS2_DECLARE(axis2_status_t) axis2_log_impl_write_to_file(FILE *fd,
+AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_log_impl_write_to_file(FILE *fd,
 	   	axis2_thread_mutex_t *mutex, axis2_log_levels_t level, 
 		const axis2_char_t * file, const int line, const axis2_char_t * value);
 
 
-AXIS2_DECLARE(axis2_log_t *)
+AXIS2_EXTERN axis2_log_t * AXIS2_CALL
 axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops,
 		axis2_char_t * stream_name)
 {
@@ -211,7 +211,7 @@ axis2_log_impl_write (axis2_log_t *log, const axis2_char_t *buffer,
 }
 
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_log_impl_write_to_file(FILE *fd, axis2_thread_mutex_t *mutex, 
 		axis2_log_levels_t level, const axis2_char_t *file, 
 		const int line, const axis2_char_t *value)
@@ -257,7 +257,7 @@ axis2_log_impl_write_to_file(FILE *fd, axis2_thread_mutex_t *mutex,
 	return 0;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_log_impl_log_debug(axis2_log_t *log, const axis2_char_t *filename,
 	   	const int linenumber, const axis2_char_t *format,...)
 {
@@ -295,7 +295,7 @@ axis2_log_impl_log_debug(axis2_log_t *log, const axis2_char_t *filename,
 	return 0;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_log_impl_log_info(axis2_log_t *log, const axis2_char_t *format,...)
 {
 	FILE *fd = NULL;
@@ -332,7 +332,7 @@ axis2_log_impl_log_info(axis2_log_t *log, const axis2_char_t *format,...)
 	return 0;
 }
 
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_log_impl_log_warning(axis2_log_t *log, const axis2_char_t *filename,
 	   	const int linenumber, const axis2_char_t *format,...)
 {
@@ -371,7 +371,7 @@ axis2_log_impl_log_warning(axis2_log_t *log, const axis2_char_t *filename,
 }
 
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_log_impl_log_error(axis2_log_t *log, const axis2_char_t *filename,
 	   	const int linenumber, const axis2_char_t *format,...)
 {
@@ -408,7 +408,7 @@ axis2_log_impl_log_error(axis2_log_t *log, const axis2_char_t *filename,
 	return 0;
 }
 	
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_log_impl_log_critical(axis2_log_t *log, const axis2_char_t *filename,
 	   	const int linenumber, const axis2_char_t *format,...)
 {
@@ -444,7 +444,7 @@ axis2_log_impl_log_critical(axis2_log_t *log, const axis2_char_t *filename,
 	return 0;
 }
 
-AXIS2_DECLARE(axis2_char_t *)
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_log_impl_get_time_str(void)
 {
     time_t tp;
@@ -463,7 +463,7 @@ axis2_log_impl_get_time_str(void)
 }
 
 #ifdef AXIS2_TRACE
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_log_impl_log_trace(axis2_log_t *log, const axis2_char_t *filename,
 	   	const int linenumber, const axis2_char_t *format,...)
 {
@@ -501,7 +501,7 @@ axis2_log_impl_log_trace(axis2_log_t *log, const axis2_char_t *filename,
 	return 0;
 }
 #else
-AXIS2_DECLARE(axis2_status_t) axis2_log_impl_log_trace(axis2_log_t *log, 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_log_impl_log_trace(axis2_log_t *log, 
 	const axis2_char_t *filename, const int linenumber,
 	const axis2_char_t *format,...) { return AXIS2_SUCCESS;}
 #endif

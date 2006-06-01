@@ -97,7 +97,7 @@ axis2_http_client_free_void_arg (void *client, const axis2_env_t *env);
 
 /***************************** End of function headers ************************/
 
-AXIS2_DECLARE(axis2_http_client_t *) 
+AXIS2_EXTERN axis2_http_client_t * AXIS2_CALL 
 axis2_http_client_create (const axis2_env_t *env, axis2_url_t *url)
 {
     axis2_http_client_impl_t *http_client_impl = NULL;

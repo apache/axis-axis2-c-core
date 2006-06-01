@@ -90,7 +90,7 @@ axis2_svc_grp_ctx_get_svc_ctx_map(struct axis2_svc_grp_ctx *svc_grp_ctx,
                                   const axis2_env_t *env);
 
 
-AXIS2_DECLARE(axis2_svc_grp_ctx_t*)
+AXIS2_EXTERN axis2_svc_grp_ctx_t* AXIS2_CALL
 axis2_svc_grp_ctx_create(const axis2_env_t *env, 
                         axis2_svc_grp_t *svc_grp, 
                          struct axis2_conf_ctx *conf_ctx) 

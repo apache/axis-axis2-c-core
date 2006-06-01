@@ -51,7 +51,7 @@ typedef struct axis2_om_comment_impl_t
 
 /*************************** End Macro *******************************/
 
-AXIS2_DECLARE(axis2_om_comment_t*)
+AXIS2_EXTERN axis2_om_comment_t* AXIS2_CALL
 axis2_om_comment_create(const axis2_env_t *env,
                         axis2_om_node_t *parent,
                         const axis2_char_t * value,

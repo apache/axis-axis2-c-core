@@ -246,13 +246,13 @@ struct axis2_module_desc
 /** create Module Description struct
  * @return pointer to newly created module description
  */
-AXIS2_DECLARE(axis2_module_desc_t *) 
+AXIS2_EXTERN axis2_module_desc_t * AXIS2_CALL 
 axis2_module_desc_create (const axis2_env_t *env);
 
 /** create Module Description struct
  * @return pointer to newly created module description
  */
-AXIS2_DECLARE(axis2_module_desc_t *) 
+AXIS2_EXTERN axis2_module_desc_t * AXIS2_CALL 
 axis2_module_desc_create_with_qname (const axis2_env_t *env, 
                                         axis2_qname_t *qname);
 
@@ -261,7 +261,7 @@ axis2_module_desc_create_with_qname (const axis2_env_t *env,
  * cast into appropriate type and then pass the cast object
  * into the module_desc structure's free method
  */
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_module_desc_free_void_arg (void *module_desc,
                                         const axis2_env_t *env);
 

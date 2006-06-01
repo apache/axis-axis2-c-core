@@ -101,7 +101,7 @@ axis2_mime_output_get_content_type_for_mime (axis2_mime_output_t *mime_output,
 
 /************************** End of Function headers ************************/
 
-AXIS2_DECLARE(axis2_mime_output_t *)
+AXIS2_EXTERN axis2_mime_output_t * AXIS2_CALL
 axis2_mime_output_create (const axis2_env_t *env)
 {
     axis2_mime_output_impl_t *mime_output_impl = NULL;

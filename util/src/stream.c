@@ -113,7 +113,7 @@ axis2_stream_unget_char_socket (axis2_stream_t *stream, const axis2_env_t *env,
 /*
  * Internal function. Not exposed to outside
  */
-AXIS2_DECLARE(axis2_stream_t *)
+AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
 axis2_stream_create_internal (const axis2_env_t *env)
 {
     axis2_stream_impl_t *stream_impl = NULL;
@@ -214,7 +214,7 @@ axis2_stream_get_type (axis2_stream_t *stream, const axis2_env_t *env)
 }
 
 /************************ Basic Stream Operations *****************************/
-AXIS2_DECLARE(axis2_stream_t *)
+AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
 axis2_stream_create_basic (const axis2_env_t *env)
 {
 	axis2_stream_t *def_stream = NULL;
@@ -421,7 +421,7 @@ axis2_stream_unget_char_basic (axis2_stream_t *stream, const axis2_env_t *env,
 /********************* End of Basic Stream Operations *************************/
 
 /************************** File Stream Operations ****************************/
-AXIS2_DECLARE(axis2_stream_t *)
+AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
 axis2_stream_create_file (const axis2_env_t *env, FILE *fp)
 {
 	axis2_stream_t *def_stream = NULL;
@@ -546,7 +546,7 @@ axis2_stream_unget_char_file (axis2_stream_t *stream, const axis2_env_t *env,
 /********************** End of File Stream Operations *************************/
 
 /************************** Socket Stream Operations **************************/
-AXIS2_DECLARE(axis2_stream_t *)
+AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
 axis2_stream_create_socket (const axis2_env_t *env, int socket)
 {
 	axis2_stream_t *def_stream = NULL;

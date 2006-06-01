@@ -68,7 +68,7 @@ axis2_xml_schema_import_set_namespace(void *import,
 
 /********************* end function prototypes ********************************/
 
-AXIS2_DECLARE(axis2_xml_schema_import_t *)
+AXIS2_EXTERN axis2_xml_schema_import_t * AXIS2_CALL
 axis2_xml_schema_import_create(axis2_env_t **env)
 {
     axis2_xml_schema_import_impl_t *import_impl = NULL;
@@ -215,7 +215,7 @@ axis2_xml_schema_import_get_base_impl(void *import,
 }
 
 /*
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_import_resolve_methods(
                                 axis2_xml_schema_import_t *import,
                                 axis2_env_t **env,

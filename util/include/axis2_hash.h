@@ -76,7 +76,7 @@ extern "C"
  * @param env The environment to allocate the hash table out of
  * @return The hash table just created
   */
-  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make (const axis2_env_t *env);
+  AXIS2_EXTERN axis2_hash_t* AXIS2_CALL axis2_hash_make (const axis2_env_t *env);
 
 /**
  * Create a hash table with a custom hash function
@@ -84,7 +84,7 @@ extern "C"
  * @param hash_func A custom hash function.
  * @return The hash table just created
   */
-   AXIS2_DECLARE(axis2_hash_t*) axis2_hash_make_custom (const axis2_env_t *env
+   AXIS2_EXTERN axis2_hash_t* AXIS2_CALL axis2_hash_make_custom (const axis2_env_t *env
    			, axis2_hashfunc_t hash_func);
 
 /**
@@ -94,7 +94,7 @@ extern "C"
  * @return The hash table just created
  * @remark Makes a shallow copy
  */
-  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_copy (const axis2_hash_t *ht
+  AXIS2_EXTERN axis2_hash_t* AXIS2_CALL axis2_hash_copy (const axis2_hash_t *ht
   			, const axis2_env_t *env);
 
 /**
@@ -105,7 +105,7 @@ extern "C"
  * @param val Value to associate with the key
  * @remark If the value is NULL the hash entry is deleted.
  */
-  AXIS2_DECLARE(void) axis2_hash_set (axis2_hash_t *ht, const void *key
+  AXIS2_EXTERN void AXIS2_CALL axis2_hash_set (axis2_hash_t *ht, const void *key
   			, axis2_ssize_t klen, const void *val);
 
 /**
@@ -115,7 +115,7 @@ extern "C"
  * @param klen Length of the key. Can be AXIS2_HASH_KEY_STRING to use the string length.
  * @return Returns NULL if the key is not present.
  */
-   AXIS2_DECLARE(void*) axis2_hash_get (axis2_hash_t *ht, const void *key
+   AXIS2_EXTERN void* AXIS2_CALL axis2_hash_get (axis2_hash_t *ht, const void *key
    			, axis2_ssize_t klen);
 
 /**
@@ -146,7 +146,7 @@ extern "C"
  * }
  * </PRE>
  */
- AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_first (axis2_hash_t *ht
+ AXIS2_EXTERN axis2_hash_index_t* AXIS2_CALL axis2_hash_first (axis2_hash_t *ht
  			,const axis2_env_t *env);
 
 /**
@@ -155,7 +155,7 @@ extern "C"
  * @return a pointer to the updated iteration state.  NULL if there are no more  
  *         entries.
  */
- AXIS2_DECLARE(axis2_hash_index_t*) axis2_hash_next (const axis2_env_t *env
+ AXIS2_EXTERN axis2_hash_index_t* AXIS2_CALL axis2_hash_next (const axis2_env_t *env
  			, axis2_hash_index_t *hi);
 
 /**
@@ -167,7 +167,7 @@ extern "C"
  * @remark The return pointers should point to a variable that will be set to the
  *         corresponding data, or they may be NULL if the data isn't interesting.
  */
- AXIS2_DECLARE(void) axis2_hash_this (axis2_hash_index_t *hi, const void **key
+ AXIS2_EXTERN void AXIS2_CALL axis2_hash_this (axis2_hash_index_t *hi, const void **key
             , axis2_ssize_t *klen, void **val);
 
 /**
@@ -175,7 +175,7 @@ extern "C"
  * @param ht The hash table
  * @return The number of key/value pairs in the hash table.
  */
-  AXIS2_DECLARE( unsigned int ) axis2_hash_count (axis2_hash_t *ht);
+  AXIS2_EXTERN  unsigned int AXIS2_CALL axis2_hash_count (axis2_hash_t *ht);
 
 /**
  * Merge two hash tables into one new hash table. The values of the overlay
@@ -186,7 +186,7 @@ extern "C"
  * @param base The table that represents the initial values of the new table
  * @return A new hash table containing all of the data from the two passed in
  */
-  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_overlay (const axis2_hash_t *overlay
+  AXIS2_EXTERN axis2_hash_t* AXIS2_CALL axis2_hash_overlay (const axis2_hash_t *overlay
   			,const axis2_env_t *env, const axis2_hash_t *base);
 
 /**
@@ -203,7 +203,7 @@ extern "C"
  * @param data Client data to pass to the merger function
  * @return A new hash table containing all of the data from the two passed in
  */
-  AXIS2_DECLARE(axis2_hash_t*) axis2_hash_merge (const axis2_hash_t *h1
+  AXIS2_EXTERN axis2_hash_t* AXIS2_CALL axis2_hash_merge (const axis2_hash_t *h1
   			, const axis2_env_t *env, const axis2_hash_t *h2
             , void *(*merger) (const axis2_env_t *env, const void *key
             , axis2_ssize_t klen, const void *h1_val, const void *h2_val
@@ -217,7 +217,7 @@ extern "C"
  *
  */
 									
-AXIS2_DECLARE(axis2_status_t) axis2_hash_free(axis2_hash_t *ht
+AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_hash_free(axis2_hash_t *ht
 		, const axis2_env_t *env);
 									
 /**
@@ -227,7 +227,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_hash_free(axis2_hash_t *ht
  * @return return status code
  */
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_hash_free_void_arg (void *ht_void, const axis2_env_t* env);
 
 /** @} */

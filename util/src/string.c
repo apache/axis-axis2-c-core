@@ -21,7 +21,7 @@
 #include <axis2_utils_defines.h>
 #include <ctype.h>
 
-AXIS2_DECLARE(void*)
+AXIS2_EXTERN void* AXIS2_CALL
 axis2_strdup (const void *ptr, const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -44,7 +44,7 @@ axis2_strdup (const void *ptr, const axis2_env_t *env)
     }
 }
 
-AXIS2_DECLARE(axis2_char_t*)
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, const axis2_env_t *env)
 {
     axis2_char_t *ret = NULL;
@@ -72,7 +72,7 @@ axis2_stracat(const axis2_char_t *s1, const axis2_char_t *s2, const axis2_env_t 
     return ret;
 }
 
-AXIS2_DECLARE(int)
+AXIS2_EXTERN int AXIS2_CALL
 axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
 {
     if (s1 && s2)
@@ -82,14 +82,14 @@ axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
 }
 
 
-AXIS2_DECLARE(axis2_ssize_t)
+AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
 axis2_strlen (const axis2_char_t * s)
 {
 	return strlen(s);
 }
 
 
-AXIS2_DECLARE(int)
+AXIS2_EXTERN int AXIS2_CALL
 axis2_strcasecmp(const axis2_char_t *s1, axis2_char_t *s2)
 {
     while (toupper(*s1) == toupper(*s2++))
@@ -99,7 +99,7 @@ axis2_strcasecmp(const axis2_char_t *s1, axis2_char_t *s2)
 }
 
 
-AXIS2_DECLARE(int)
+AXIS2_EXTERN int AXIS2_CALL
 axis2_strncasecmp(const axis2_char_t *s1, axis2_char_t *s2, int n)
 {
     while (--n >= 0 && toupper(*s1) == toupper(*s2++))
@@ -108,7 +108,7 @@ axis2_strncasecmp(const axis2_char_t *s1, axis2_char_t *s2, int n)
     return(n < 0 ? 0 : toupper(*s1) - toupper(*--s2));
 }
 
-AXIS2_DECLARE(axis2_char_t *)
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_strstr (const axis2_char_t *heystack,
                 const axis2_char_t *needle)
 {
@@ -116,7 +116,7 @@ axis2_strstr (const axis2_char_t *heystack,
 }
 
 
-AXIS2_DECLARE(axis2_char_t *)
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_rindex(const axis2_char_t *_s, axis2_char_t _ch)
 {
         int i,ilen = strlen(_s);

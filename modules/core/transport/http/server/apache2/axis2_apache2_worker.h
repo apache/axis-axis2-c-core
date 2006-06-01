@@ -68,7 +68,7 @@ AXIS2_DECLARE_DATA struct axis2_apache2_worker
 };
 
 
-AXIS2_DECLARE(axis2_apache2_worker_t *) 
+AXIS2_EXTERN axis2_apache2_worker_t * AXIS2_CALL 
 axis2_apache2_worker_create (const axis2_env_t *env, axis2_char_t *repo_path);
     
 /************************** Start of function macros **************************/

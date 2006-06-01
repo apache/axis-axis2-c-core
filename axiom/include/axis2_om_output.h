@@ -196,7 +196,7 @@ struct axis2_om_output
     * @return a pointer to newly created output struct.
     */
 
-AXIS2_DECLARE(axis2_om_output_t*) 
+AXIS2_EXTERN axis2_om_output_t* AXIS2_CALL 
 axis2_om_output_create (const axis2_env_t *env,
                         axis2_xml_writer_t *xml_writer);
 
@@ -211,13 +211,13 @@ axis2_om_output_create (const axis2_env_t *env,
     *  @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_output_write(axis2_om_output_t * om_output, 
                       const axis2_env_t *env,
                       axis2_om_types_t type,
                       int no_of_args, ...);
                       
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_output_write_optimized(axis2_om_output_t *om_output, 
                       const axis2_env_t *env, 
                       struct axis2_om_text *om_text);

@@ -90,7 +90,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_soap_op
  * Creates wsdl property struct
  * @return pointer to newly created wsdl property
  */
-AXIS2_DECLARE(axis2_wsdl_soap_op_t *) 
+AXIS2_EXTERN axis2_wsdl_soap_op_t * AXIS2_CALL 
 axis2_wsdl_soap_op_create (const axis2_env_t *env);
 
 /**
@@ -98,7 +98,7 @@ axis2_wsdl_soap_op_create (const axis2_env_t *env);
  * @param type 
  * @return pointer to newly created wsdl property
  */
-AXIS2_DECLARE(axis2_wsdl_soap_op_t *) 
+AXIS2_EXTERN axis2_wsdl_soap_op_t * AXIS2_CALL 
 axis2_wsdl_soap_op_create_with_type (const axis2_env_t *env, axis2_qname_t *type);
 
 /*************************** Function macros **********************************/

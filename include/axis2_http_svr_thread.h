@@ -79,7 +79,7 @@ AXIS2_DECLARE_DATA struct axis2_http_svr_thread
 };
 
 
-AXIS2_DECLARE(axis2_http_svr_thread_t *) 
+AXIS2_EXTERN axis2_http_svr_thread_t * AXIS2_CALL 
 axis2_http_svr_thread_create (const axis2_env_t *env, int port);
 
 /************************** Start of function macros **************************/

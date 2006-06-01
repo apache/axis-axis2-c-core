@@ -67,7 +67,7 @@ axis2_http_chunked_stream_free (axis2_http_chunked_stream_t *chunked_stream,
                         const axis2_env_t *env);				
 /***************************** End of function headers ************************/
 
-AXIS2_DECLARE(axis2_http_chunked_stream_t *)
+AXIS2_EXTERN axis2_http_chunked_stream_t * AXIS2_CALL
 axis2_http_chunked_stream_create(const axis2_env_t *env, axis2_stream_t *stream)
 {
     axis2_http_chunked_stream_impl_t *chunked_stream_impl = NULL;

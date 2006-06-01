@@ -109,7 +109,7 @@ extern "C"
  * @param value
  * @param relationship_type
  */
-AXIS2_DECLARE(axis2_relates_to_t*)
+AXIS2_EXTERN axis2_relates_to_t* AXIS2_CALL
 axis2_relates_to_create(const axis2_env_t *env, 
 						axis2_char_t *value, 
 						axis2_char_t *relationship_type);

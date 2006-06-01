@@ -98,7 +98,7 @@ axis2_xml_schema_documentation_get_language(
 
 /****************** end macros ***********************************************/
 
-AXIS2_DECLARE(axis2_xml_schema_documentation_t *)
+AXIS2_EXTERN axis2_xml_schema_documentation_t * AXIS2_CALL
 axis2_xml_schema_documentation_create(axis2_env_t **env)
 {
     axis2_xml_schema_documentation_impl_t *documentation_impl = NULL;

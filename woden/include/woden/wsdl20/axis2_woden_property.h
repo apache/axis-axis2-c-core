@@ -118,59 +118,59 @@ struct axis2_woden_property
     axis2_woden_property_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_property_t *)
+AXIS2_EXTERN axis2_woden_property_t * AXIS2_CALL
 axis2_woden_property_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_DECLARE(axis2_woden_property_t *)
+AXIS2_EXTERN axis2_woden_property_t * AXIS2_CALL
 axis2_woden_property_to_property_element(
         void *property,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_property_t *)
+AXIS2_EXTERN axis2_woden_property_t * AXIS2_CALL
 axis2_woden_property_to_nested_element(
         void *property,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_property_t *)
+AXIS2_EXTERN axis2_woden_property_t * AXIS2_CALL
 axis2_woden_property_to_documentable_element(
         void *property,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_property_t *)
+AXIS2_EXTERN axis2_woden_property_t * AXIS2_CALL
 axis2_woden_property_to_documentable(
         void *property,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_property_t *)
+AXIS2_EXTERN axis2_woden_property_t * AXIS2_CALL
 axis2_woden_property_to_wsdl_obj(
         void *property,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_property_t *)
+AXIS2_EXTERN axis2_woden_property_t * AXIS2_CALL
 axis2_woden_property_to_nested_component(
         void *property,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_property_t *)
+AXIS2_EXTERN axis2_woden_property_t * AXIS2_CALL
 axis2_woden_property_to_wsdl_component(
         void *property,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_property_t *)
+AXIS2_EXTERN axis2_woden_property_t * AXIS2_CALL
 axis2_woden_property_to_element_extensible(
         void *property,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_property_t *)
+AXIS2_EXTERN axis2_woden_property_t * AXIS2_CALL
 axis2_woden_property_to_attr_extensible(
         void *property,
         const axis2_env_t *env);
 
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_property_resolve_methods(
         axis2_woden_property_t *property,
         const axis2_env_t *env,

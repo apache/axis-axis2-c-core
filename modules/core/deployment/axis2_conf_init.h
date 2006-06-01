@@ -45,7 +45,7 @@ extern "C"
  * @param repo_name repository name
  * @return pointer to an instance of configuration context properly initialized
  */
-AXIS2_DECLARE(axis2_conf_ctx_t*) build_conf_ctx (const axis2_env_t *env,
+AXIS2_EXTERN axis2_conf_ctx_t* AXIS2_CALL build_conf_ctx (const axis2_env_t *env,
     axis2_char_t *repo_name);
 /**
  * Builds the Configuration for the Client
@@ -53,7 +53,7 @@ AXIS2_DECLARE(axis2_conf_ctx_t*) build_conf_ctx (const axis2_env_t *env,
  * @param axis2_home. axis2 home for client. 
  * @return pointer to an instance of configuration context properly initialized
  */
-AXIS2_DECLARE(axis2_conf_ctx_t*) build_client_conf_ctx(const axis2_env_t *env,
+AXIS2_EXTERN axis2_conf_ctx_t* AXIS2_CALL build_client_conf_ctx(const axis2_env_t *env,
         axis2_char_t *axis2_home);
 
 

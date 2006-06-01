@@ -43,9 +43,9 @@ extern "C"
     * @param allocator allocator to be used. Mandatory, cannot be NULL    
     * @return pointer to the newly created log struct 
     */
-    AXIS2_DECLARE(axis2_log_t *) axis2_log_create (axis2_allocator_t * allocator,
+    AXIS2_EXTERN axis2_log_t * AXIS2_CALL axis2_log_create (axis2_allocator_t * allocator,
                      axis2_log_ops_t * ops, axis2_char_t * stream_name);
-    AXIS2_DECLARE(axis2_char_t *) axis2_log_impl_get_time_str(void);
+    AXIS2_EXTERN axis2_char_t *AXIS2_CALL  axis2_log_impl_get_time_str(void);
 
 /** @} */
     

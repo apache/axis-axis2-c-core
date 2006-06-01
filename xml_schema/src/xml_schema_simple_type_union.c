@@ -93,7 +93,7 @@ axis2_xml_schema_simple_type_union_set_member_types_qnames(
 
 /*************** function prototypes *****************************************/
 
-AXIS2_DECLARE(axis2_xml_schema_simple_type_union_t *)
+AXIS2_EXTERN axis2_xml_schema_simple_type_union_t * AXIS2_CALL
 axis2_xml_schema_simple_type_union_create(axis2_env_t **env)
 {
     axis2_xml_schema_simple_type_union_impl_t *simple_type_union_impl = NULL;
@@ -282,7 +282,7 @@ axis2_xml_schema_simple_type_union_get_base_impl(void *simple_type_union,
 }
 
 /*
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_simple_type_union_resolve_methods(
                     axis2_xml_schema_simple_type_union_t *simple_type_union,
                     axis2_env_t **env,

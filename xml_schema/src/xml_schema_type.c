@@ -131,7 +131,7 @@ axis2_xml_schema_type_get_qname(void *type,
                                 
 /************************** end       ****************************************/                                
 
-AXIS2_DECLARE(axis2_xml_schema_type_t *)
+AXIS2_EXTERN axis2_xml_schema_type_t * AXIS2_CALL
 axis2_xml_schema_type_create(axis2_env_t **env,
                                 axis2_xml_schema_t *schema)
 {
@@ -326,7 +326,7 @@ axis2_xml_schema_type_get_base_impl(void *type,
     return type_impl->annotated;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_type_resolve_methods(
                                 axis2_xml_schema_type_t *type,
                                 axis2_env_t **env,

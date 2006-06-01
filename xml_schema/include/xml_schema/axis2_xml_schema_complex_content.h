@@ -98,13 +98,13 @@ struct axis2_xml_schema_complex_content
 /**
  * Creates new Xml Schema Group
  */
-AXIS2_DECLARE(axis2_xml_schema_complex_content_t *)
+AXIS2_EXTERN axis2_xml_schema_complex_content_t * AXIS2_CALL
 axis2_xml_schema_complex_content_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
  
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_complex_content_resolve_methods(
                                 axis2_xml_schema_complex_content_t *complex_content,
                                 const axis2_env_t *env,

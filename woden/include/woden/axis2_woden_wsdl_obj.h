@@ -109,12 +109,12 @@ struct axis2_woden_wsdl_obj
     axis2_woden_wsdl_obj_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_wsdl_obj_t *)
+AXIS2_EXTERN axis2_woden_wsdl_obj_t * AXIS2_CALL
 axis2_woden_wsdl_obj_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_wsdl_obj_resolve_methods(
         axis2_woden_wsdl_obj_t *wsdl_obj,
         const axis2_env_t *env,

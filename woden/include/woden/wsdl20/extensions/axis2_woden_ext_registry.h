@@ -253,7 +253,7 @@ struct axis2_woden_ext_registry
     axis2_woden_ext_registry_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_ext_registry_t *)
+AXIS2_EXTERN axis2_woden_ext_registry_t * AXIS2_CALL
 axis2_woden_ext_registry_create(const axis2_env_t *env);
 
 #define AXIS2_WODEN_EXT_REGISTRY_FREE(ext_registry, env) \

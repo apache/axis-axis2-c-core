@@ -158,7 +158,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_out_desc
  * Creates transport out struct
  * @return pointer to newly created transport out
  */
-AXIS2_DECLARE(axis2_transport_out_desc_t *) 
+AXIS2_EXTERN axis2_transport_out_desc_t * AXIS2_CALL 
 axis2_transport_out_desc_create_with_qname (const axis2_env_t *env, axis2_qname_t *qname);
 
 /*************************** Function macros **********************************/

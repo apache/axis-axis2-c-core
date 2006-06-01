@@ -83,7 +83,7 @@ typedef struct axis2_om_stax_builder_impl_t
 /******************************************************************************/
 
 													
-AXIS2_DECLARE(axis2_om_stax_builder_t *)
+AXIS2_EXTERN axis2_om_stax_builder_t * AXIS2_CALL
 axis2_om_stax_builder_create (const axis2_env_t *env,
                               axis2_xml_reader_t *parser)
 {
@@ -850,7 +850,7 @@ axis2_om_stax_builder_get_document (axis2_om_stax_builder_t *builder,
     This is an internal function 
 */
 
-AXIS2_DECLARE(int)
+AXIS2_EXTERN int AXIS2_CALL
 axis2_om_stax_builder_get_current_event(axis2_om_stax_builder_t *builder,
                                         const axis2_env_t *env)
 {
@@ -861,7 +861,7 @@ axis2_om_stax_builder_get_current_event(axis2_om_stax_builder_t *builder,
 /**
  This is an internal function 
 */
-AXIS2_DECLARE(axis2_om_node_t*)
+AXIS2_EXTERN axis2_om_node_t* AXIS2_CALL
 axis2_om_stax_builder_get_lastnode(axis2_om_stax_builder_t *builder,
                                     const axis2_env_t *env)
 {
@@ -884,7 +884,7 @@ axis2_om_stax_builder_is_complete(axis2_om_stax_builder_t *builder,
 /**
 This is an internal function to be used by soap builder only
 */
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_stax_builder_set_lastnode(axis2_om_stax_builder_t *builder,
                                     const axis2_env_t *env,
                                     axis2_om_node_t *om_node)
@@ -900,7 +900,7 @@ axis2_om_stax_builder_set_lastnode(axis2_om_stax_builder_t *builder,
 /**
 internal function for soap builder only
 */
-AXIS2_DECLARE(int)
+AXIS2_EXTERN int AXIS2_CALL
 axis2_om_stax_builder_get_element_level(axis2_om_stax_builder_t* builder,
                                         const axis2_env_t *env)
 {
@@ -912,7 +912,7 @@ axis2_om_stax_builder_get_element_level(axis2_om_stax_builder_t* builder,
 /**
 internal function for soap builder only
 */
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_stax_builder_set_element_level(axis2_om_stax_builder_t* builder,
                                         const axis2_env_t *env,
                                         int element_level)

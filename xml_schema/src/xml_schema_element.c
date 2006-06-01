@@ -269,7 +269,7 @@ axis2_xml_schema_element_set_type(void *element,
                                     axis2_env_t **env,
                                     axis2_xml_schema_type_t *type);
 
-AXIS2_DECLARE(axis2_xml_schema_element_t *)
+AXIS2_EXTERN axis2_xml_schema_element_t * AXIS2_CALL
 axis2_xml_schema_element_create(axis2_env_t **env)
 {
     axis2_xml_schema_element_impl_t *element_impl = NULL;
@@ -554,7 +554,7 @@ axis2_xml_schema_element_get_base_impl(void *element,
 
 /*
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_element_resolve_methods(
                                 axis2_xml_schema_element_t *element,
                                 axis2_env_t **env,

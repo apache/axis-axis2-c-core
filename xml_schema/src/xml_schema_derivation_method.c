@@ -67,7 +67,7 @@ axis2_xml_schema_derivation_method_get_values(void *derivation_method,
 
 /************************** end function prototypes ********************************/
 
-AXIS2_DECLARE(axis2_xml_schema_derivation_method_t *)
+AXIS2_EXTERN axis2_xml_schema_derivation_method_t * AXIS2_CALL
 axis2_xml_schema_derivation_method_create(axis2_env_t **env,
                             axis2_char_t *value)
 {

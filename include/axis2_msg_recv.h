@@ -217,7 +217,7 @@ struct axis2_msg_recv
  * @see create method of raw_xml_in_out_msg_recv
  * @return newly created message receiver object
  **/
-AXIS2_DECLARE(axis2_msg_recv_t *)
+AXIS2_EXTERN axis2_msg_recv_t * AXIS2_CALL
 axis2_msg_recv_create (const axis2_env_t *env);
 
 /************************** Start of function macros **************************/

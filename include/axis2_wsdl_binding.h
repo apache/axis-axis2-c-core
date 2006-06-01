@@ -206,7 +206,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding
  * Creates wsdl binding struct
  * @return pointer to newly created wsdl binding
  */
-AXIS2_DECLARE(axis2_wsdl_binding_t *) axis2_wsdl_binding_create (const axis2_env_t *env);
+AXIS2_EXTERN axis2_wsdl_binding_t *AXIS2_CALL axis2_wsdl_binding_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

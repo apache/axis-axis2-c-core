@@ -53,7 +53,7 @@ int AXIS2_CALL
 axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker, 
 							const axis2_env_t *env, request_rec *req);
     
-AXIS2_DECLARE(axis2_char_t*)
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_apache2_worker_get_bytes(const axis2_env_t *env, 
                         axis2_stream_t *stream);
                         
@@ -63,7 +63,7 @@ axis2_apache2_worker_free(axis2_apache2_worker_t *apache2_worker,
 								
 /***************************** End of function headers ************************/
 
-AXIS2_DECLARE(axis2_apache2_worker_t *)
+AXIS2_EXTERN axis2_apache2_worker_t * AXIS2_CALL
 axis2_apache2_worker_create (const axis2_env_t *env, axis2_char_t *repo_path)
 {
     axis2_apache2_worker_impl_t *apache2_worker_impl = NULL;
@@ -333,7 +333,7 @@ axis2_apache2_worker_process_request(axis2_apache2_worker_t *apache2_worker,
 	return send_status;
 }
 
-AXIS2_DECLARE(axis2_char_t*)
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_apache2_worker_get_bytes(const axis2_env_t *env, 
                         axis2_stream_t *stream)
 {

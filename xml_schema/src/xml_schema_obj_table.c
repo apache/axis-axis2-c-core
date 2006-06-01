@@ -92,7 +92,7 @@ axis2_xml_schema_obj_table_get_hash_table(
                                     
 /******************** end function pointers ***********************************/
 
-AXIS2_DECLARE(axis2_xml_schema_obj_table_t *)
+AXIS2_EXTERN axis2_xml_schema_obj_table_t * AXIS2_CALL
 axis2_xml_schema_obj_table_create(axis2_env_t **env)
 {
     axis2_xml_schema_obj_table_impl_t *obj_table_impl = NULL;

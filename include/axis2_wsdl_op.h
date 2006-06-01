@@ -257,10 +257,10 @@ struct axis2_wsdl_op
     struct axis2_wsdl_extensible_component *extensible_component;
 };
 
-AXIS2_DECLARE(axis2_wsdl_op_t *) 
+AXIS2_EXTERN axis2_wsdl_op_t * AXIS2_CALL 
 axis2_wsdl_op_create (const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_wsdl_op_free_void_arg(void *wsdl_op,
                         const axis2_env_t *env);
                         

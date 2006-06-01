@@ -54,7 +54,7 @@ axis2_thread_pool_thread_detach (axis2_thread_pool_t *pool,
 						axis2_thread_t *thd);
 						
 /************************* End of function headers ****************************/
-AXIS2_DECLARE(axis2_thread_pool_t *) 
+AXIS2_EXTERN axis2_thread_pool_t * AXIS2_CALL 
 axis2_thread_pool_init(axis2_allocator_t *allocator)
 {
     axis2_thread_pool_impl_t *pool_impl = NULL;
@@ -156,7 +156,7 @@ axis2_thread_pool_thread_detach (axis2_thread_pool_t *pool,
 	return axis2_thread_detach(thd);
 }
 
-AXIS2_DECLARE (axis2_env_t *)
+AXIS2_EXTERN axis2_env_t *AXIS2_CALL
 axis2_init_thread_env(const axis2_env_t *system_env)
 {
 	axis2_error_t *error = axis2_error_create(system_env->allocator);

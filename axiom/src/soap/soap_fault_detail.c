@@ -59,7 +59,7 @@ axis2_soap_fault_detail_get_base_node
 
 /******************** function implementations ********************************/
 
-AXIS2_DECLARE(axis2_soap_fault_detail_t *)
+AXIS2_EXTERN axis2_soap_fault_detail_t * AXIS2_CALL
 axis2_soap_fault_detail_create(const axis2_env_t *env)
 {
     axis2_soap_fault_detail_impl_t *fault_detail_impl = NULL;
@@ -104,7 +104,7 @@ axis2_soap_fault_detail_create(const axis2_env_t *env)
     return &(fault_detail_impl->fault_detail); 
 }
 
-AXIS2_DECLARE(axis2_soap_fault_detail_t *)
+AXIS2_EXTERN axis2_soap_fault_detail_t * AXIS2_CALL
 axis2_soap_fault_detail_create_with_parent
                         (const axis2_env_t *env,
                          axis2_soap_fault_t *fault)

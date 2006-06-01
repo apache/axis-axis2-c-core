@@ -113,7 +113,7 @@ struct axis2_msg_sender
     axis2_msg_sender_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_msg_sender_t*) 
+AXIS2_EXTERN axis2_msg_sender_t* AXIS2_CALL 
 axis2_msg_sender_create(const axis2_env_t *env, 
 						axis2_svc_ctx_t *svc_ctx);
 

@@ -83,7 +83,7 @@ axis2_xml_schema_simple_type_list_set_item_type_name(void *simple_type_list,
 
 /*************** function prototypes *****************************************/
 
-AXIS2_DECLARE(axis2_xml_schema_simple_type_list_t *)
+AXIS2_EXTERN axis2_xml_schema_simple_type_list_t * AXIS2_CALL
 axis2_xml_schema_simple_type_list_create(axis2_env_t **env)
 {
     axis2_xml_schema_simple_type_list_impl_t *simple_type_list_impl = NULL;
@@ -259,7 +259,7 @@ axis2_xml_schema_simple_type_list_get_base_impl(void *simple_type_list,
 }
 
 /*
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_simple_type_list_resolve_methods(
                     axis2_xml_schema_simple_type_list_t *simple_type_list,
                     axis2_env_t **env,

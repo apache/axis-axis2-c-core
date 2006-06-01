@@ -23,7 +23,7 @@ extern "C"
 {
 #endif
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_archive_extract();
 
 #ifdef __cplusplus

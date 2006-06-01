@@ -74,7 +74,7 @@ axis2_xml_schema_simple_content_to_string(void *sim_content,
                                           int tab);
                                           
 
-AXIS2_DECLARE(axis2_xml_schema_simple_content_t *)
+AXIS2_EXTERN axis2_xml_schema_simple_content_t * AXIS2_CALL
 axis2_xml_schema_simple_content_create(axis2_env_t **env)
 {
     axis2_xml_schema_simple_content_impl_t *sim_cnt_impl = NULL;
@@ -229,7 +229,7 @@ axis2_xml_schema_simple_content_get_base_impl(void *sim_content,
 
 /*
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_simple_content_resolve_methods(
                                 axis2_xml_schema_simple_content_t *sim_content,
                                 axis2_env_t **env,

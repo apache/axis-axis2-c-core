@@ -90,7 +90,7 @@ axis2_ws_info_list_update(axis2_ws_info_list_t *info_list,
                                 
 /************************** End of function prototypes ************************/
 
-AXIS2_DECLARE(axis2_ws_info_list_t *) 
+AXIS2_EXTERN axis2_ws_info_list_t * AXIS2_CALL 
 axis2_ws_info_list_create_with_dep_engine (const axis2_env_t *env,
                                             struct axis2_dep_engine *dep_engine)
 {

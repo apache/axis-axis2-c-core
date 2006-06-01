@@ -73,7 +73,7 @@ axis2_soap_fault_sub_code_get_soap_version
                  const axis2_env_t *env);
                 
                                     
-AXIS2_DECLARE(axis2_soap_fault_sub_code_t *)
+AXIS2_EXTERN axis2_soap_fault_sub_code_t * AXIS2_CALL
 axis2_soap_fault_sub_code_create(const axis2_env_t *env);
 
 /** @} */

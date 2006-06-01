@@ -32,7 +32,7 @@ extern "C"
 /** \brief Constructor for creating apche2 stream
   * @return axis2_stream (apache2)
   */
-AXIS2_DECLARE(axis2_stream_t *) axis2_stream_create_apache2
+AXIS2_EXTERN axis2_stream_t * AXIS2_CALL axis2_stream_create_apache2
                         (const axis2_env_t *env, request_rec *req);
 
 /** @} */

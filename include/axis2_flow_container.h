@@ -140,7 +140,7 @@ struct axis2_flow_container
  * Creates flow container struct
  * @return pointer to newly created flow container
  */
-AXIS2_DECLARE(axis2_flow_container_t *) 
+AXIS2_EXTERN axis2_flow_container_t * AXIS2_CALL 
 axis2_flow_container_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

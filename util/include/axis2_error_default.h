@@ -38,7 +38,7 @@ extern "C"
     * @param allocator allocator to be used. Mandatory, cannot be NULL    
     * @return pointer to the newly created error struct 
     */
-    AXIS2_DECLARE(axis2_error_t *) axis2_error_create (axis2_allocator_t * allocator);
+    AXIS2_EXTERN axis2_error_t *AXIS2_CALL axis2_error_create (axis2_allocator_t * allocator);
 
 
 /** @} */

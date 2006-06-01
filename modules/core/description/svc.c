@@ -477,7 +477,7 @@ axis2_svc_create_with_qname (const axis2_env_t *env,
 	return &(svc_impl->svc);
 }
 
-AXIS2_DECLARE(axis2_svc_t *)
+AXIS2_EXTERN axis2_svc_t * AXIS2_CALL
 axis2_svc_create_with_wsdl_svc (const axis2_env_t *env, 
                                 axis2_wsdl_svc_t *wsdl_svc)
 {

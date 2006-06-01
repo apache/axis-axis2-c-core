@@ -88,7 +88,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_address
  * Creates wsdl ext_soap_address struct
  * @return pointer to newly created wsdl ext_soap_address
  */
-AXIS2_DECLARE(axis2_wsdl_ext_soap_address_t *) 
+AXIS2_EXTERN axis2_wsdl_ext_soap_address_t * AXIS2_CALL 
 axis2_wsdl_ext_soap_address_create (const axis2_env_t *env,
                                     axis2_qname_t *qtype);
 

@@ -22,7 +22,7 @@
 #include <axis2_utils_defines.h>
 
 
-AXIS2_DECLARE(axis2_char_t *)  axis2_platform_uuid_gen(char *s)
+AXIS2_EXTERN axis2_char_t *)  axis2_platform_uuid_gen(char *s AXIS2_CALL
 {
 	RPC_STATUS			retval;   
     UUID				uuid;

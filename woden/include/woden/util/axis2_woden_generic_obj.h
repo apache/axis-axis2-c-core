@@ -87,7 +87,7 @@ AXIS2_DECLARE_DATA struct axis2_generic_obj
  * create new generic_obj
  * @return generic_obj newly created generic_obj
  */
-AXIS2_DECLARE(axis2_generic_obj_t *)
+AXIS2_EXTERN axis2_generic_obj_t * AXIS2_CALL
 axis2_generic_obj_create(const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

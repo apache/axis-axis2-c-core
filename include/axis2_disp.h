@@ -90,7 +90,7 @@ extern "C"
  * creates disp struct
  * @param qname qname, can be NULL
  */
-AXIS2_DECLARE(axis2_disp_t*) axis2_disp_create(const axis2_env_t *env, axis2_qname_t *qname);
+AXIS2_EXTERN axis2_disp_t *AXIS2_CALL axis2_disp_create(const axis2_env_t *env, axis2_qname_t *qname);
 
 #define AXIS2_DISP_GET_BASE(disp, env) ((disp)->ops->get_base(disp, env))
 #define AXIS2_DISP_GET_QNAME(disp, env) ((disp)->ops->get_qname(disp, env))

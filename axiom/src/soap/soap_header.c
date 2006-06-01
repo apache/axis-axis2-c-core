@@ -96,7 +96,7 @@ axis2_soap_header_get_all_header_blocks(axis2_soap_header_t *header,
                                    
 /*************** function implementations *************************************/
 
-AXIS2_DECLARE(axis2_soap_header_t *)
+AXIS2_EXTERN axis2_soap_header_t * AXIS2_CALL
 axis2_soap_header_create(const axis2_env_t *env)
 {
     axis2_soap_header_impl_t *header_impl = NULL;
@@ -164,7 +164,7 @@ axis2_soap_header_create(const axis2_env_t *env)
 }
 
     
-AXIS2_DECLARE(axis2_soap_header_t *)
+AXIS2_EXTERN axis2_soap_header_t * AXIS2_CALL
 axis2_soap_header_create_with_parent(const axis2_env_t *env,
                                      axis2_soap_envelope_t *envelope)
 {

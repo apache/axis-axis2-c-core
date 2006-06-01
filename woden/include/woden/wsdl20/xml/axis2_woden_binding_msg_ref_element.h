@@ -116,12 +116,12 @@ struct axis2_woden_binding_msg_ref_element
     axis2_woden_binding_msg_ref_element_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_binding_msg_ref_element_t *)
+AXIS2_EXTERN axis2_woden_binding_msg_ref_element_t * AXIS2_CALL
 axis2_woden_binding_msg_ref_element_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_binding_msg_ref_element_resolve_methods(
         axis2_woden_binding_msg_ref_element_t *binding_msg_ref_element,
         const axis2_env_t *env,

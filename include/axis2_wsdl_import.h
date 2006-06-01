@@ -112,7 +112,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_import
  * Creates wsdl import struct
  * @return pointer to newly created wsdl import
  */
-AXIS2_DECLARE(axis2_wsdl_import_t *) axis2_wsdl_import_create (const axis2_env_t *env);
+AXIS2_EXTERN axis2_wsdl_import_t *AXIS2_CALL axis2_wsdl_import_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 

@@ -147,7 +147,7 @@ static axis2_status_t guththila_xml_reader_wrapper_init_map(
 
 /********************************************************************************/
 
-AXIS2_DECLARE(axis2_xml_reader_t *)
+AXIS2_EXTERN axis2_xml_reader_t * AXIS2_CALL
 axis2_xml_reader_create_for_file(const axis2_env_t *env,
                                   char* filename,
                                   const char *encoding)
@@ -246,7 +246,7 @@ axis2_xml_reader_create_for_file(const axis2_env_t *env,
 /****** pull parser for io create function ***************************/
 
 
-AXIS2_DECLARE(axis2_xml_reader_t *)
+AXIS2_EXTERN axis2_xml_reader_t * AXIS2_CALL
 axis2_xml_reader_create_for_io(const axis2_env_t *env,
                                     int (*read_input_callback)(char *buffer,int size,void* ctx),
                                     int (*close_input_callback)(void *ctx),

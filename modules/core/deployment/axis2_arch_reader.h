@@ -125,7 +125,7 @@ AXIS2_DECLARE_DATA struct axis2_arch_reader
  * @param repos_path
  * @return pointer to newly created arch reader
  */
-AXIS2_DECLARE(axis2_arch_reader_t *) 
+AXIS2_EXTERN axis2_arch_reader_t * AXIS2_CALL 
 axis2_arch_reader_create (const axis2_env_t *env);
 
 

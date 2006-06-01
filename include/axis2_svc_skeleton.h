@@ -78,7 +78,7 @@ AXIS2_DECLARE_DATA struct axis2_svc_skeleton
  * Creates axis2_svc_skeleton struct
  * @return pointer to newly created axis2_svc_struct
  */
-AXIS2_DECLARE(axis2_svc_skeleton_t *) 
+AXIS2_EXTERN axis2_svc_skeleton_t * AXIS2_CALL 
 axis2_svc_skeleton_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

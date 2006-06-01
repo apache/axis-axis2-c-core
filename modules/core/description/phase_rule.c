@@ -98,7 +98,7 @@ axis2_phase_rule_clone (struct axis2_phase_rule *phase_rule,
                         
 
 
-AXIS2_DECLARE(axis2_phase_rule_t*)
+AXIS2_EXTERN axis2_phase_rule_t* AXIS2_CALL
 axis2_phase_rule_create(const axis2_env_t *env, 
                         axis2_char_t *name)
 {

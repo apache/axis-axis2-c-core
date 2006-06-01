@@ -453,14 +453,14 @@ struct axis2_xml_writer
  *  create function for axis2_xml_writer
  *
  */
-AXIS2_DECLARE(axis2_xml_writer_t *)
+AXIS2_EXTERN axis2_xml_writer_t * AXIS2_CALL
 axis2_xml_writer_create(const axis2_env_t *env,
                         axis2_char_t *filename,
                         axis2_char_t *encoding,
                         int is_prefix_default,
                         int compression);
 
-AXIS2_DECLARE(axis2_xml_writer_t *)
+AXIS2_EXTERN axis2_xml_writer_t * AXIS2_CALL
 axis2_xml_writer_create_for_memory(const axis2_env_t *env,
                                    axis2_char_t *encoding,
                                    int is_prefix_default,

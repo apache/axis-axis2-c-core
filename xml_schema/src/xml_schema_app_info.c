@@ -85,7 +85,7 @@ axis2_xml_schema_app_info_set_markup(void *app_info,
                                         void *markup);
 /****************** end macros ***********************************************/
 
-AXIS2_DECLARE(axis2_xml_schema_app_info_t *)
+AXIS2_EXTERN axis2_xml_schema_app_info_t * AXIS2_CALL
 axis2_xml_schema_app_info_create(axis2_env_t **env)
 {
     axis2_xml_schema_app_info_impl_t *app_info_impl = NULL;

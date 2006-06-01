@@ -137,7 +137,7 @@ extern "C"
     *                       Node type will be set to AXIS2_OM_PROCESSING_INSTRUCTION
     * @return a pointer tonewly created processing instruction struct 
     */
-    AXIS2_DECLARE(axis2_om_processing_instruction_t *) 
+    AXIS2_EXTERN axis2_om_processing_instruction_t * AXIS2_CALL 
         axis2_om_processing_instruction_create (const axis2_env_t *env,
                                                 axis2_om_node_t * parent,
                                                 const axis2_char_t * target,

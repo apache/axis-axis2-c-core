@@ -76,7 +76,7 @@ extern "C"
     * @param log_level log level to be used
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_env_t *) axis2_env_create_all (axis2_char_t *log_file, 
+    AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all (axis2_char_t *log_file, 
         axis2_log_levels_t log_level);                                                   
 
 	/**
@@ -85,7 +85,7 @@ extern "C"
     * @param allocator pointer to an instance of allocator struct. Must be non-NULL    
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_env_t *) axis2_env_create (axis2_allocator_t
+    AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create (axis2_allocator_t
                                                    *allocator);                                                   
 	
   /**
@@ -95,7 +95,7 @@ extern "C"
     * it would be taken as a flag for no logging.    
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_env_t *) axis2_env_create_with_error 
+    AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_with_error 
 													(axis2_allocator_t *allocator
                                                    , axis2_error_t *error);
 	
@@ -107,7 +107,7 @@ extern "C"
     * it would be taken as a flag for no logging.    
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_env_t *) axis2_env_create_with_error_log 
+    AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_with_error_log 
 													(axis2_allocator_t *allocator
                                                    , axis2_error_t *error
                                                    , axis2_log_t *log);
@@ -121,7 +121,7 @@ extern "C"
 	* @param pool pointer to an instance of thread_pool. May be NULL. If NULL
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_env_t *) axis2_env_create_with_error_log_thread_pool 
+    AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_with_error_log_thread_pool 
 													(axis2_allocator_t *allocator
                                                    , axis2_error_t *error
                                                    , axis2_log_t *log
@@ -135,7 +135,7 @@ extern "C"
     * @param string pointer to an instance of string struct. Optional, can be NULL. If NULL default string handler would be used.
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_DECLARE(axis2_status_t) axis2_env_free (axis2_env_t *env);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_env_free (axis2_env_t *env);
 
     /**
     * Frees the environment
@@ -148,21 +148,21 @@ extern "C"
     *       Eg : 0x3 frees both log and error
     * @return status of the operation
     */
-    AXIS2_DECLARE(axis2_status_t)  axis2_env_free_masked(axis2_env_t *env, char mask); 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL  axis2_env_free_masked(axis2_env_t *env, char mask); 
     /**
      * Enables logging
      */
-    AXIS2_DECLARE(axis2_status_t) axis2_env_enable_log (axis2_env_t *env, axis2_bool_t enable);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_env_enable_log (axis2_env_t *env, axis2_bool_t enable);
 
     /**
       * Checks the status code of environment
       */
-    AXIS2_DECLARE(axis2_status_t) axis2_env_check_status (const axis2_env_t *env);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_env_check_status (const axis2_env_t *env);
     
     /**
       * Writes given message to the log
       */
-    AXIS2_DECLARE(axis2_status_t) axis2_env_write_log (const axis2_env_t *env, const char* message, axis2_log_levels_t level);
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_env_write_log (const axis2_env_t *env, const char* message, axis2_log_levels_t level);
     #define AXIS2_LOG(env, message, level) axis2_env_write_log (env,message, level)
 
 

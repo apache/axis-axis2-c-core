@@ -110,7 +110,7 @@ axis2_soap_fault_set_exception(axis2_soap_fault_t *fault,
 
 /***************** function implementations ***********************************/
 
-AXIS2_DECLARE(axis2_soap_fault_t *)
+AXIS2_EXTERN axis2_soap_fault_t * AXIS2_CALL
 axis2_soap_fault_create(const axis2_env_t *env)
 {
     axis2_soap_fault_impl_t *fault_impl = NULL;
@@ -172,7 +172,7 @@ axis2_soap_fault_create(const axis2_env_t *env)
 }
 
 
-AXIS2_DECLARE(axis2_soap_fault_t *)
+AXIS2_EXTERN axis2_soap_fault_t * AXIS2_CALL
 axis2_soap_fault_create_with_parent(const axis2_env_t *env,
                                     axis2_soap_body_t *body)
 {
@@ -227,7 +227,7 @@ axis2_soap_fault_create_with_parent(const axis2_env_t *env,
 }
 
 
-AXIS2_DECLARE(axis2_soap_fault_t *)
+AXIS2_EXTERN axis2_soap_fault_t * AXIS2_CALL
 axis2_soap_fault_create_with_exception(const axis2_env_t *env,
                                         axis2_soap_body_t *body,  
                                         axis2_char_t* exception)
@@ -673,7 +673,7 @@ axis2_soap_fault_set_builder(axis2_soap_fault_t *fault,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_soap_fault_t *)
+AXIS2_EXTERN axis2_soap_fault_t * AXIS2_CALL
 axis2_soap_fault_create_default_fault(const axis2_env_t *env,
                                       struct axis2_soap_body *parent,
                                       axis2_char_t *code_value,

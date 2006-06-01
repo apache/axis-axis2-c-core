@@ -16,7 +16,7 @@
 
 #include <axis2_types.h>
 
-AXIS2_DECLARE(int)
+AXIS2_EXTERN int AXIS2_CALL
 axis2_atoi (const char *s)
 {
     int i,n;

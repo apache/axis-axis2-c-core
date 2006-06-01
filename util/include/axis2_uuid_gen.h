@@ -39,7 +39,7 @@ extern "C"
  * generate a uuid
  * @return generated uuid as a string
  */ 
-AXIS2_DECLARE (axis2_char_t*)
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 axis2_uuid_gen(const axis2_env_t *env);
 
 /** @} */

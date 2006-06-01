@@ -112,7 +112,7 @@ AXIS2_DECLARE_DATA struct axis2_stub
  * @param endpoint reference
  * @return pointer to newly created axis2_stub struct
  */
-AXIS2_DECLARE(axis2_stub_t *)
+AXIS2_EXTERN axis2_stub_t * AXIS2_CALL
 axis2_stub_create_with_endpoint_ref_and_client_home(const axis2_env_t *env,
                                         axis2_endpoint_ref_t *endpoint_ref,
                                         axis2_char_t *client_home);
@@ -122,7 +122,7 @@ axis2_stub_create_with_endpoint_ref_and_client_home(const axis2_env_t *env,
  * @param endpoint uri
  * @return pointer to newly created axis2_stub struct
  */
-AXIS2_DECLARE(axis2_stub_t *)
+AXIS2_EXTERN axis2_stub_t * AXIS2_CALL
 axis2_stub_create_with_endpoint_uri_and_client_home(const axis2_env_t *env,
                                         axis2_char_t *endpoint_uri,
                                         axis2_char_t *client_home);

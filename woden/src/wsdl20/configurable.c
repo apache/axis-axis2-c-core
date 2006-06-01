@@ -108,7 +108,7 @@ create(
     return &(configurable_impl->configurable);
 }
 
-AXIS2_DECLARE(axis2_woden_configurable_t *)
+AXIS2_EXTERN axis2_woden_configurable_t * AXIS2_CALL
 axis2_woden_configurable_create(
         const axis2_env_t *env)
 {

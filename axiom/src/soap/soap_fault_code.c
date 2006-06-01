@@ -63,7 +63,7 @@ axis2_soap_fault_code_get_base_node(axis2_soap_fault_code_t *fault_code,
  
 /********************* function implementation ********************************/
 
-AXIS2_DECLARE(axis2_soap_fault_code_t *)
+AXIS2_EXTERN axis2_soap_fault_code_t * AXIS2_CALL
 axis2_soap_fault_code_create(const axis2_env_t *env)
 {
     axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
@@ -109,7 +109,7 @@ axis2_soap_fault_code_create(const axis2_env_t *env)
   return  &(fault_code_impl->fault_code);  
 }
 
-AXIS2_DECLARE(axis2_soap_fault_code_t *)
+AXIS2_EXTERN axis2_soap_fault_code_t * AXIS2_CALL
 axis2_soap_fault_code_create_with_parent(const axis2_env_t *env,
                             axis2_soap_fault_t *fault)
 {
@@ -171,7 +171,7 @@ axis2_soap_fault_code_create_with_parent(const axis2_env_t *env,
     return  &(fault_code_impl->fault_code);            
 }
 
-AXIS2_DECLARE(axis2_soap_fault_code_t *)
+AXIS2_EXTERN axis2_soap_fault_code_t * AXIS2_CALL
 axis2_soap_fault_code_create_with_parent_value(const axis2_env_t *env,
                             axis2_soap_fault_t *fault,
                             axis2_char_t *value)

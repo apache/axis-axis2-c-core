@@ -73,7 +73,7 @@ axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
                               
 /************************** End of function prototypes ************************/
 
-AXIS2_DECLARE(axis2_arch_reader_t *)
+AXIS2_EXTERN axis2_arch_reader_t * AXIS2_CALL
 axis2_arch_reader_create (const axis2_env_t *env)
 {
     axis2_arch_reader_impl_t *arch_reader_impl = NULL;

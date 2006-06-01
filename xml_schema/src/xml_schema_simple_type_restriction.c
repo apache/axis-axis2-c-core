@@ -90,7 +90,7 @@ axis2_xml_schema_simple_type_restriction_get_facets(void *simple_type_restrictio
                                             axis2_env_t **env);                                       
 /*************** function prototypes *****************************************/
 
-AXIS2_DECLARE(axis2_xml_schema_simple_type_restriction_t *)
+AXIS2_EXTERN axis2_xml_schema_simple_type_restriction_t * AXIS2_CALL
 axis2_xml_schema_simple_type_restriction_create(axis2_env_t **env)
 {
     axis2_xml_schema_simple_type_restriction_impl_t *simple_type_restriction_impl = NULL;
@@ -269,7 +269,7 @@ axis2_xml_schema_simple_type_restriction_get_base_impl(void *simple_type_restric
 }
 
 /*
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_simple_type_restriction_resolve_methods(
                     axis2_xml_schema_simple_type_restriction_t *simple_type_restriction,
                     axis2_env_t **env,

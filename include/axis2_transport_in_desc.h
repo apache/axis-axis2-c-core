@@ -158,7 +158,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_in_desc
  * Creates phase holder struct
  * @return pointer to newly created phase holder
  */
-AXIS2_DECLARE(axis2_transport_in_desc_t *) 
+AXIS2_EXTERN axis2_transport_in_desc_t * AXIS2_CALL 
 axis2_transport_in_desc_create_with_qname (const axis2_env_t *env, 
                                            axis2_qname_t *qname);
 

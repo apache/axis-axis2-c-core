@@ -90,7 +90,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_fault
  * Creates wsdl binding fault struct
  * @return pointer to newly created wsdl binding fault
  */
-AXIS2_DECLARE(axis2_wsdl_binding_fault_t *) 
+AXIS2_EXTERN axis2_wsdl_binding_fault_t * AXIS2_CALL 
 axis2_binding_fault_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

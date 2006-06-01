@@ -81,7 +81,7 @@ axis2_xml_schema_obj_collection_to_array(axis2_xml_schema_obj_collection_t *obj_
                                          
 /**************************** end function prototypes ************************/                                         
 
-AXIS2_DECLARE(axis2_xml_schema_obj_collection_t *)
+AXIS2_EXTERN axis2_xml_schema_obj_collection_t * AXIS2_CALL
 axis2_xml_schema_obj_collection_create(axis2_env_t **env)
 {
     axis2_xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;

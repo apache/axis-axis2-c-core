@@ -107,7 +107,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender
  * Creates phase holder struct
  * @return pointer to newly created transport sender
  */
-AXIS2_DECLARE(axis2_transport_sender_t *) 
+AXIS2_EXTERN axis2_transport_sender_t * AXIS2_CALL 
 axis2_transport_sender_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

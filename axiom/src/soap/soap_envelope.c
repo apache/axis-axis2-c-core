@@ -102,7 +102,7 @@ axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *soap_envelope,
                                      int soap_version);
 /*************** function implementations *************************************/
 
-AXIS2_DECLARE(axis2_soap_envelope_t*)
+AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_envelope_create_null(const axis2_env_t *env)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
@@ -158,7 +158,7 @@ axis2_soap_envelope_create_null(const axis2_env_t *env)
 }
 
 
-AXIS2_DECLARE(axis2_soap_envelope_t*)
+AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_envelope_create(const axis2_env_t *env, 
                            axis2_om_namespace_t *ns)
 {
@@ -193,7 +193,7 @@ axis2_soap_envelope_create(const axis2_env_t *env,
     return &(envelope_impl->soap_envelope);        
 }
 
-AXIS2_DECLARE(axis2_soap_envelope_t*)
+AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_envelope_create_with_soap_version_prefix(const axis2_env_t *env,
                                                     int soap_version,
                                                     axis2_char_t *prefix)
@@ -649,7 +649,7 @@ axis2_soap_envelope_set_builder(axis2_soap_envelope_t *envelope,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_soap_envelope_t *)
+AXIS2_EXTERN axis2_soap_envelope_t * AXIS2_CALL
 axis2_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
                                                  int soap_version)
 {
@@ -697,7 +697,7 @@ axis2_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
     return NULL;
 }
 
-AXIS2_DECLARE(axis2_soap_envelope_t *)
+AXIS2_EXTERN axis2_soap_envelope_t * AXIS2_CALL
 axis2_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
 	axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version,
     axis2_array_list_t *sub_codes,

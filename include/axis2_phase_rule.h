@@ -113,7 +113,7 @@ extern "C"
 /**
  * creates phase_rule struct
  */
-AXIS2_DECLARE(axis2_phase_rule_t*) 
+AXIS2_EXTERN axis2_phase_rule_t* AXIS2_CALL 
 axis2_phase_rule_create(const axis2_env_t *env, 
 						axis2_char_t *phase_name);
     

@@ -94,7 +94,7 @@ axis2_xml_schema_attribute_group_set_name(void *attr_grp,
               
  /************************ end function prototypes ******************************/
  
-AXIS2_DECLARE(axis2_xml_schema_attribute_group_t *)
+AXIS2_EXTERN axis2_xml_schema_attribute_group_t * AXIS2_CALL
 axis2_xml_schema_attribute_group_create(axis2_env_t **env)
 {
     axis2_xml_schema_attribute_group_impl_t *attr_impl = NULL;
@@ -258,7 +258,7 @@ axis2_xml_schema_attribute_group_get_base_impl(void *attr_grp,
 }
 
 /*
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_attribute_group_resolve_methods(
                                 axis2_xml_schema_attribute_group_t *attr_grp,
                                 axis2_env_t **env,

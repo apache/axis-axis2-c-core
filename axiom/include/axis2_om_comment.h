@@ -112,7 +112,7 @@ extern "C"
     *        Node type will be set to AXIS2_OM_COMMENT
     * @return a pointer to the newly created comment struct
     */
-    AXIS2_DECLARE(axis2_om_comment_t *) 
+    AXIS2_EXTERN axis2_om_comment_t * AXIS2_CALL 
     axis2_om_comment_create (const axis2_env_t *env,
                              axis2_om_node_t *parent,
                              const axis2_char_t *value,

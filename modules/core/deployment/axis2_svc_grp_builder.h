@@ -87,7 +87,7 @@ AXIS2_DECLARE_DATA struct axis2_svc_grp_builder
  * Creates svc_grp builder struct
  * @return pointer to newly created service group builder
  */
-AXIS2_DECLARE(axis2_svc_grp_builder_t *) 
+AXIS2_EXTERN axis2_svc_grp_builder_t * AXIS2_CALL 
 axis2_svc_grp_builder_create (const axis2_env_t *env);
 
 /**
@@ -96,7 +96,7 @@ axis2_svc_grp_builder_create (const axis2_env_t *env);
  * @param dep_engine
  * @return pointer to newly created service group builder
  */
-AXIS2_DECLARE(axis2_svc_grp_builder_t *) 
+AXIS2_EXTERN axis2_svc_grp_builder_t * AXIS2_CALL 
 axis2_svc_grp_builder_create_with_svc_and_dep_engine (const axis2_env_t *env,
                                                 axis2_om_node_t *svc,
                                                 axis2_dep_engine_t *dep_engine);

@@ -110,7 +110,7 @@ extern "C"
  * @param env Environment. MUST NOT be NULL.
  * @return Pointer to the newly created any_content_type instance. Returns NULL on error.
  */
-AXIS2_DECLARE(axis2_any_content_type_t*) 
+AXIS2_EXTERN axis2_any_content_type_t* AXIS2_CALL 
 axis2_any_content_type_create(const axis2_env_t *env);
     
     

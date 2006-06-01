@@ -71,7 +71,7 @@ typedef struct axis2_om_namespace_impl
 
 
 /************************************************************************************/
-AXIS2_DECLARE(axis2_om_namespace_t *)
+AXIS2_EXTERN axis2_om_namespace_t * AXIS2_CALL
 axis2_om_namespace_create (const axis2_env_t *env,
                            const axis2_char_t * uri,
                            const axis2_char_t * prefix)
@@ -338,7 +338,7 @@ axis2_om_namespace_to_string(axis2_om_namespace_t *om_namespace,
 } 
 
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_namespace_set_uri(axis2_om_namespace_t *ns,
                            const axis2_env_t *env,
                            axis2_char_t *uri)

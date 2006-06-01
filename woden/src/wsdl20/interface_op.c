@@ -169,7 +169,7 @@ static axis2_woden_interface_op_t *
 create(const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_interface_op_t *)
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
 axis2_woden_interface_op_to_interface_op_element(
         void *interface_op,
         const axis2_env_t *env)
@@ -211,7 +211,7 @@ axis2_woden_interface_op_to_interface_op_element_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_interface_op_t *)
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
 axis2_woden_interface_op_to_nested_configurable(
         void *interface_op,
         const axis2_env_t *env)
@@ -255,7 +255,7 @@ axis2_woden_interface_op_to_nested_configurable_free(
 }
 
 
-AXIS2_DECLARE(axis2_woden_interface_op_t *)
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
 axis2_woden_interface_op_to_configurable(
         void *interface_op,
         const axis2_env_t *env)
@@ -422,7 +422,7 @@ create(const axis2_env_t *env)
     return &(interface_op_impl->interface_op);
 }
 
-AXIS2_DECLARE(axis2_woden_interface_op_t *)
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
 axis2_woden_interface_op_create(const axis2_env_t *env)
 {
     axis2_woden_interface_op_impl_t *interface_op_impl = NULL;

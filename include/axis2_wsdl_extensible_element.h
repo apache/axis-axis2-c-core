@@ -87,7 +87,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_element
  * Creates wsdl property struct
  * @return pointer to newly created wsdl property
  */
-AXIS2_DECLARE(axis2_wsdl_extensible_element_t *) 
+AXIS2_EXTERN axis2_wsdl_extensible_element_t * AXIS2_CALL 
 axis2_wsdl_extensible_element_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

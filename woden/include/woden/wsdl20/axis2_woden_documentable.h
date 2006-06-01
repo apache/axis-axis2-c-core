@@ -100,12 +100,12 @@ struct axis2_woden_documentable
     axis2_woden_documentable_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_documentable_t *)
+AXIS2_EXTERN axis2_woden_documentable_t * AXIS2_CALL
 axis2_woden_documentable_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_documentable_resolve_methods(
         axis2_woden_documentable_t *documentable,
         const axis2_env_t *env,

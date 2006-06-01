@@ -91,7 +91,7 @@ extern "C"
 
 
 
-AXIS2_DECLARE(axis2_soap_fault_detail_t *)
+AXIS2_EXTERN axis2_soap_fault_detail_t * AXIS2_CALL
 axis2_soap_fault_detail_create_with_parent
                         (const axis2_env_t *env,
                          axis2_soap_fault_t *fault);

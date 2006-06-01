@@ -136,7 +136,7 @@ typedef struct axis2_om_node_impl
 
 
 /*****************************************************************************/
-AXIS2_DECLARE(axis2_om_node_t *)
+AXIS2_EXTERN axis2_om_node_t * AXIS2_CALL
 axis2_om_node_create (const axis2_env_t *env)
 {
     axis2_om_node_impl_t *node = NULL;
@@ -352,7 +352,7 @@ Internal function , only used in om and soap
 not to be used by users
 
 */
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_node_set_parent (axis2_om_node_t *om_node,
                           const axis2_env_t *env,
                           axis2_om_node_t * parent)
@@ -683,7 +683,7 @@ axis2_om_node_get_data_element(axis2_om_node_t *om_node,
   internal function , not to be used by users 
   only sets the first_child link because this is needed by builder
 */
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_om_node_set_first_child(axis2_om_node_t *om_node,const axis2_env_t *env,
                               axis2_om_node_t *first_child)
 {
@@ -701,7 +701,7 @@ axis2_om_node_set_first_child(axis2_om_node_t *om_node,const axis2_env_t *env,
   only sets the previous sibling link as it is needed by builders
 
 */
-AXIS2_DECLARE(axis2_status_t)  
+AXIS2_EXTERN axis2_status_t AXIS2_CALL  
 axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,                                  
                                    const axis2_env_t *env,
                                    axis2_om_node_t *prev_sibling)
@@ -719,7 +719,7 @@ axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,
   internal function, not to be used by users 
   only sets the next sibling link;
 */
-AXIS2_DECLARE(axis2_status_t)  
+AXIS2_EXTERN axis2_status_t AXIS2_CALL  
 axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
                                const axis2_env_t *env,
                                axis2_om_node_t *next_sibling)
@@ -736,7 +736,7 @@ axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
    sets the node type only used in soap and om 
 */
 
-AXIS2_DECLARE(axis2_status_t)  
+AXIS2_EXTERN axis2_status_t AXIS2_CALL  
 axis2_om_node_set_node_type(axis2_om_node_t *om_node,
                             const axis2_env_t *env,
                             axis2_om_types_t type)
@@ -751,7 +751,7 @@ axis2_om_node_set_node_type(axis2_om_node_t *om_node,
    internal function , not to be used by users
    only used in om and soap
 */
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_om_node_set_data_element(axis2_om_node_t *om_node,
                                const axis2_env_t *env,
                                void* data_element)
@@ -769,7 +769,7 @@ axis2_om_node_set_data_element(axis2_om_node_t *om_node,
  only sets the build status 
 
 */
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_node_set_complete(axis2_om_node_t *om_node,
                                const axis2_env_t *env,
                                axis2_bool_t done)
@@ -784,7 +784,7 @@ axis2_om_node_set_complete(axis2_om_node_t *om_node,
  only used by om builder
 
 */
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_node_set_document(axis2_om_node_t *om_node,
                            const axis2_env_t *env,
                            struct axis2_om_document *om_doc)
@@ -802,7 +802,7 @@ axis2_om_node_set_document(axis2_om_node_t *om_node,
 
 */
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_node_set_builder(axis2_om_node_t *om_node,
                            const axis2_env_t *env,
                            axis2_om_stax_builder_t* builder)
@@ -817,7 +817,7 @@ axis2_om_node_set_builder(axis2_om_node_t *om_node,
 /**
  * This is an internal function 
  */
-AXIS2_DECLARE(axis2_om_stax_builder_t *)
+AXIS2_EXTERN axis2_om_stax_builder_t * AXIS2_CALL
 axis2_om_node_get_builder(axis2_om_node_t *om_node,
                           const axis2_env_t *env)
 {

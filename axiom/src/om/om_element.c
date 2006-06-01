@@ -245,7 +245,7 @@ typedef struct axis2_om_element_impl
 #define AXIS2_INTF_TO_IMPL(om_element) ((axis2_om_element_impl_t*)om_element)
 
 /**********************************************************************/                                          
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_element_create (const axis2_env_t *env,
                          axis2_om_node_t *parent,
                          const axis2_char_t *localname,
@@ -433,7 +433,7 @@ axis2_om_element_create (const axis2_env_t *env,
     return &(element->om_element);
 }
 
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_element_create_with_qname (const axis2_env_t *env,
                                     axis2_om_node_t *parent,
                                     axis2_qname_t *qname,

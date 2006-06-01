@@ -135,7 +135,7 @@ axis2_http_simple_response_free (axis2_http_simple_response_t *simple_response,
 								
 /***************************** End of function headers ************************/
 
-AXIS2_DECLARE(axis2_http_simple_response_t *)
+AXIS2_EXTERN axis2_http_simple_response_t * AXIS2_CALL
 axis2_http_simple_response_create (const axis2_env_t *env,
                         axis2_http_status_line_t *status_line,
                         const axis2_http_header_t **http_headers,
@@ -178,7 +178,7 @@ axis2_http_simple_response_create (const axis2_env_t *env,
 }
 
 
-AXIS2_DECLARE(axis2_http_simple_response_t *)
+AXIS2_EXTERN axis2_http_simple_response_t * AXIS2_CALL
 axis2_http_simple_response_create_default(const axis2_env_t *env)
 {
     axis2_http_simple_response_impl_t *simple_response_impl = NULL;

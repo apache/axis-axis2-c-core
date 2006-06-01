@@ -50,7 +50,7 @@ axis2_soap_body_set_fault(axis2_soap_body_t *body,
                           const axis2_env_t *env,
                           struct axis2_soap_fault *soap_fault);
                           
-AXIS2_DECLARE(axis2_soap_body_t *)
+AXIS2_EXTERN axis2_soap_body_t * AXIS2_CALL
 axis2_soap_body_create(const axis2_env_t *env);     
 /** @} */
     

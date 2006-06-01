@@ -38,24 +38,24 @@ extern "C"
  * @{
  */
     
-AXIS2_DECLARE(int)
+AXIS2_EXTERN int AXIS2_CALL
 axis2_om_stax_builder_get_current_event(axis2_om_stax_builder_t *builder,
                                         const axis2_env_t *env);
                                         
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_stax_builder_set_lastnode(axis2_om_stax_builder_t *builder,
                                     const axis2_env_t *env,
                                     axis2_om_node_t *om_node);
                                     
-AXIS2_DECLARE(int)
+AXIS2_EXTERN int AXIS2_CALL
 axis2_om_stax_builder_get_element_level(axis2_om_stax_builder_t* builder,
                                         const axis2_env_t *env); 
                                             
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_stax_builder_set_element_level(axis2_om_stax_builder_t* builder,
                                         const axis2_env_t *env,
                                         int element_level);  
-AXIS2_DECLARE(axis2_om_node_t*)
+AXIS2_EXTERN axis2_om_node_t* AXIS2_CALL
 axis2_om_stax_builder_get_lastnode(axis2_om_stax_builder_t *builder,
                                    const axis2_env_t *env);
   

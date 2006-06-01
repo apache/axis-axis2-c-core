@@ -243,11 +243,11 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
     * @param capacity initial capacity of this array_list
     */
 
-    AXIS2_DECLARE(axis2_array_list_t*) axis2_array_list_create(const axis2_env_t *env, int capacity);
+    AXIS2_EXTERN axis2_array_list_t* AXIS2_CALL axis2_array_list_create(const axis2_env_t *env, int capacity);
     /**
      * Free array passed as void pointer.
      */
-    AXIS2_DECLARE(axis2_status_t)
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_array_list_free_void_arg(
             void *array_list, 
             const axis2_env_t *env);

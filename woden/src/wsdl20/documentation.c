@@ -132,7 +132,7 @@ static axis2_woden_documentation_t *
 create(const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_documentation_t *)
+AXIS2_EXTERN axis2_woden_documentation_t * AXIS2_CALL
 axis2_woden_documentation_to_documentation_element(
         void *documentation,
         const axis2_env_t *env)
@@ -176,7 +176,7 @@ axis2_woden_documentation_to_documentation_element_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_documentation_t *)
+AXIS2_EXTERN axis2_woden_documentation_t * AXIS2_CALL
 axis2_woden_documentation_to_attr_extensible(
         void *documentation,
         const axis2_env_t *env)
@@ -223,7 +223,7 @@ axis2_woden_documentation_to_attr_extensible_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_documentation_t *)
+AXIS2_EXTERN axis2_woden_documentation_t * AXIS2_CALL
 axis2_woden_documentation_to_element_extensible(
         void *documentation,
         const axis2_env_t *env)
@@ -344,7 +344,7 @@ create(const axis2_env_t *env)
     return &(documentation_impl->documentation);
 }
 
-AXIS2_DECLARE(axis2_woden_documentation_t *)
+AXIS2_EXTERN axis2_woden_documentation_t * AXIS2_CALL
 axis2_woden_documentation_create(
         const axis2_env_t *env)
 {

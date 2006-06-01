@@ -159,7 +159,7 @@ AXIS2_DECLARE_DATA struct axis2_ws_info_list
  * @param repos_path
  * @return pointer to newly created ws info list
  */
-AXIS2_DECLARE(axis2_ws_info_list_t *) 
+AXIS2_EXTERN axis2_ws_info_list_t * AXIS2_CALL 
 axis2_ws_info_list_create_with_dep_engine (const axis2_env_t *env,
                                             struct axis2_dep_engine *dep_engine);
 

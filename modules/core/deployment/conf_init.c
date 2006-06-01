@@ -23,7 +23,7 @@ axis2_status_t AXIS2_CALL axis2_init_modules(const axis2_env_t *env,
 axis2_status_t AXIS2_CALL axis2_init_transports(const axis2_env_t *env, 
     axis2_conf_ctx_t *conf_ctx);
     
-AXIS2_DECLARE(axis2_conf_ctx_t*) 
+AXIS2_EXTERN axis2_conf_ctx_t* AXIS2_CALL 
 build_conf_ctx (const axis2_env_t *env,
     axis2_char_t *repo_name)
 {    

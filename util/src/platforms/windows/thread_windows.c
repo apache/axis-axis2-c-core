@@ -17,7 +17,7 @@
 #include <axis2_utils.h>
 #include <platforms/windows/axis2_thread_windows.h>
 
-AXIS2_DECLARE(axis2_threadattr_t*)
+AXIS2_EXTERN axis2_threadattr_t* AXIS2_CALL
 axis2_threadattr_create(axis2_allocator_t *allocator)
 {
     axis2_threadattr_t *new = NULL;
@@ -35,7 +35,7 @@ axis2_threadattr_create(axis2_allocator_t *allocator)
 }
 
 /* Destroy the threadattr object */
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 threadattr_cleanup(void *data)
 {
     axis2_threadattr_t *attr = data;
@@ -43,7 +43,7 @@ threadattr_cleanup(void *data)
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_status_t) axis2_threadattr_detach_set(
+AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_threadattr_detach_set(
 						axis2_threadattr_t *attr,
 						axis2_bool_t detached)
 {
@@ -51,7 +51,7 @@ AXIS2_DECLARE(axis2_status_t) axis2_threadattr_detach_set(
 	return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_threadattr_detach_get(axis2_threadattr_t *attr, const axis2_env_t *env)
 {
 	if (1 == attr->detach)
@@ -61,7 +61,7 @@ axis2_threadattr_detach_get(axis2_threadattr_t *attr, const axis2_env_t *env)
     return AXIS2_FALSE;
 }
 
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_threadattr_stacksize_set(axis2_threadattr_t *attr, size_t stacksize)
 {
     attr->stacksize = stacksize;
@@ -75,7 +75,7 @@ static void *dummy_worker(void *opaque)
     return thd->func(thd, thd->data);
 }
 
-AXIS2_DECLARE(axis2_thread_t*)
+AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
 axis2_thread_create(axis2_allocator_t *allocator, axis2_threadattr_t *attr,
 						axis2_thread_start_t func, void *data)
 {
@@ -116,7 +116,7 @@ axis2_thread_create(axis2_allocator_t *allocator, axis2_threadattr_t *attr,
 	return new;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_exit(axis2_thread_t *thd, axis2_allocator_t *allocator)
 {
     if(NULL != thd)
@@ -128,7 +128,7 @@ axis2_thread_exit(axis2_thread_t *thd, axis2_allocator_t *allocator)
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_os_thread_t)
+AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
 axis2_os_thread_current(void)
 {
     HANDLE hthread = (HANDLE)TlsGetValue(tls_axis2_thread);
@@ -150,13 +150,13 @@ axis2_os_thread_current(void)
     return hthread;
 }
 
-AXIS2_DECLARE(int)
+AXIS2_EXTERN int AXIS2_CALL
 axis2_os_thread_equal(axis2_os_thread_t tid1, axis2_os_thread_t tid2)
 {
     return (tid1 == tid2);
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_join(axis2_thread_t *thd)
 {
     axis2_status_t rv = AXIS2_SUCCESS,rv1;
@@ -179,7 +179,7 @@ axis2_thread_join(axis2_thread_t *thd)
     return rv;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_detach(axis2_thread_t *thd)
 {
     if (thd->td && CloseHandle(thd->td)) 
@@ -193,13 +193,13 @@ axis2_thread_detach(axis2_thread_t *thd)
     }
 }
 
-AXIS2_DECLARE(axis2_os_thread_t)
+AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
 axis2_os_thread_get(axis2_thread_t *thd, const axis2_env_t *env)
 {
 	return thd->td;
 }
 
-AXIS2_DECLARE(axis2_thread_once_t *)
+AXIS2_EXTERN axis2_thread_once_t * AXIS2_CALL
 axis2_thread_once_init(axis2_allocator_t *allocator)
 {
 	axis2_thread_once_t *control = NULL;
@@ -207,7 +207,7 @@ axis2_thread_once_init(axis2_allocator_t *allocator)
 	return control;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_once(axis2_thread_once_t *control, void (*func)(void))
 {
     if (!InterlockedExchange(&control->value, 1)) {

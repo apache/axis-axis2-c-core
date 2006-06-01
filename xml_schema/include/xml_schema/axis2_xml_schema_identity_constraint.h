@@ -110,22 +110,22 @@ struct axis2_xml_schema_identity_constraint
 /**
  * Creates new Xml Schema Identity Constraint
  */
-AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
+AXIS2_EXTERN axis2_xml_schema_identity_constraint_t * AXIS2_CALL
 axis2_xml_schema_identity_constraint_create(const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
+AXIS2_EXTERN axis2_xml_schema_identity_constraint_t * AXIS2_CALL
 axis2_xml_schema_unique_create(const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
+AXIS2_EXTERN axis2_xml_schema_identity_constraint_t * AXIS2_CALL
 axis2_xml_schema_keyref_create(const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
+AXIS2_EXTERN axis2_xml_schema_identity_constraint_t * AXIS2_CALL
 axis2_xml_schema_key_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
  
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_identity_constraint_resolve_methods(
                 axis2_xml_schema_identity_constraint_t *identity_constraint,
                 const axis2_env_t *env,

@@ -167,7 +167,7 @@ struct axis2_wsdl_svc
 /** create Wsdl Service struct
  * @return pointer to newly created wsdl service
  */
-AXIS2_DECLARE(axis2_wsdl_svc_t *) 
+AXIS2_EXTERN axis2_wsdl_svc_t * AXIS2_CALL 
 axis2_wsdl_svc_create (const axis2_env_t *env);
 
 /**************************** Start of function macros ************************/

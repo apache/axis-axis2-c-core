@@ -113,7 +113,7 @@ struct axis2_phases_info
 /** create Phases Info struct
  * @return pointer to newly created phases info
  */
-AXIS2_DECLARE(axis2_phases_info_t *) 
+AXIS2_EXTERN axis2_phases_info_t * AXIS2_CALL 
 axis2_phases_info_create (const axis2_env_t *env);
 
 /**************************** Start of function macros ************************/

@@ -93,7 +93,7 @@ AXIS2_DECLARE_DATA struct axis2_module
  * Creates axis2_module struct
  * @return pointer to newly created axis2_module
  */
-AXIS2_DECLARE(axis2_module_t *) 
+AXIS2_EXTERN axis2_module_t * AXIS2_CALL 
 axis2_module_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

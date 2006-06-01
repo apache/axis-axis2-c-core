@@ -78,7 +78,7 @@ axis2_svc_ctx_create_op_ctx(struct axis2_svc_ctx *svc_ctx,
                             const axis2_env_t *env, 
                             axis2_qname_t *qname);
 
-AXIS2_DECLARE(axis2_svc_ctx_t*)
+AXIS2_EXTERN axis2_svc_ctx_t* AXIS2_CALL
 axis2_svc_ctx_create(const axis2_env_t *env, 
     axis2_svc_t *svc,
     struct axis2_svc_grp_ctx *svc_grp_ctx) 

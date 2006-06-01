@@ -272,14 +272,14 @@ axis2_libxml2_reader_wrapper_init_ops(axis2_xml_reader_t *parser)
 
 
 /*******************************************************************************/
-AXIS2_DECLARE( axis2_status_t )
+AXIS2_EXTERN  axis2_status_t  AXIS2_CALL
 axis2_xml_reader_init()
 {
     xmlInitParser();
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE( axis2_status_t )
+AXIS2_EXTERN  axis2_status_t  AXIS2_CALL
 axis2_xml_reader_cleanup()
 {
     xmlCleanupParser();
@@ -287,7 +287,7 @@ axis2_xml_reader_cleanup()
 }
 
 /*******************************************************************************/
-AXIS2_DECLARE(axis2_xml_reader_t *)
+AXIS2_EXTERN axis2_xml_reader_t * AXIS2_CALL
 axis2_xml_reader_create_for_file(const axis2_env_t *env,
                                   char *filename,
                                   const axis2_char_t *encoding)
@@ -339,7 +339,7 @@ axis2_xml_reader_create_for_file(const axis2_env_t *env,
 
 /************** create function for io callback function **********************/
 
-AXIS2_DECLARE(axis2_xml_reader_t *)
+AXIS2_EXTERN axis2_xml_reader_t * AXIS2_CALL
 axis2_xml_reader_create_for_io(const axis2_env_t *env,
                                     AXIS2_READ_INPUT_CALLBACK read_input_callback,
                                     AXIS2_CLOSE_INPUT_CALLBACK close_input_callback,
@@ -411,7 +411,7 @@ axis2_xml_reader_create_for_io(const axis2_env_t *env,
 }
 
 /***************** create function for character buffer or xml doc ************************/
-AXIS2_DECLARE(axis2_xml_reader_t *)
+AXIS2_EXTERN axis2_xml_reader_t * AXIS2_CALL
 axis2_xml_reader_create_for_memory(const axis2_env_t *env,
                                   void *container,
                                   int size,

@@ -113,7 +113,7 @@ axis2_soap_header_block_set_soap_version(axis2_soap_header_block_t *header_block
                                    
 /*************** function implementations *************************************/                                                                                             
 
-AXIS2_DECLARE(axis2_soap_header_block_t *)
+AXIS2_EXTERN axis2_soap_header_block_t * AXIS2_CALL
 axis2_soap_header_block_create(const axis2_env_t *env)
 {
     axis2_soap_header_block_impl_t *header_block_impl = NULL;
@@ -168,7 +168,7 @@ axis2_soap_header_block_create(const axis2_env_t *env)
 }
 
 
-AXIS2_DECLARE(axis2_soap_header_block_t *)
+AXIS2_EXTERN axis2_soap_header_block_t * AXIS2_CALL
 axis2_soap_header_block_create_with_parent(const axis2_env_t *env,
                                            axis2_char_t *localname,
                                            axis2_om_namespace_t *ns,

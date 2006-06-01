@@ -191,7 +191,7 @@ axis2_woden_binding_free_ops(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_binding_element(
         void *binding,
         const axis2_env_t *env)
@@ -215,7 +215,7 @@ axis2_woden_binding_to_binding_element(
     return binding;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_configurable_element(
         void *binding,
         const axis2_env_t *env)
@@ -239,7 +239,7 @@ axis2_woden_binding_to_configurable_element(
     return binding;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_documentable_element(
         void *binding,
         const axis2_env_t *env)
@@ -264,7 +264,7 @@ axis2_woden_binding_to_documentable_element(
     return binding;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_configurable(
         void *binding,
         const axis2_env_t *env)
@@ -289,7 +289,7 @@ axis2_woden_binding_to_configurable(
     return binding;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_wsdl_obj(
         void *binding,
         const axis2_env_t *env)
@@ -320,7 +320,7 @@ axis2_woden_binding_to_wsdl_obj(
     return binding;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_wsdl_component(
         void *binding,
         const axis2_env_t *env)
@@ -345,7 +345,7 @@ axis2_woden_binding_to_wsdl_component(
     return binding;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_attr_extensible(
         void *binding,
         const axis2_env_t *env)
@@ -371,7 +371,7 @@ axis2_woden_binding_to_attr_extensible(
     return binding;
 }
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_element_extensible(
         void *binding,
         const axis2_env_t *env)
@@ -517,7 +517,7 @@ create(const axis2_env_t *env)
     return &(binding_impl->binding);
 }
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_create(const axis2_env_t *env)
 {
     axis2_woden_binding_impl_t *binding_impl = NULL;

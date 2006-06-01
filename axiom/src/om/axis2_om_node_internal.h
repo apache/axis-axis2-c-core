@@ -49,7 +49,7 @@ struct axis2_om_stax_builder;
  * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
  */
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_node_set_parent (axis2_om_node_t * om_node,
                           const axis2_env_t *env,
                           axis2_om_node_t * parent);
@@ -60,7 +60,7 @@ axis2_om_node_set_parent (axis2_om_node_t * om_node,
 * @param env environment, MUST NOT be NULL.
 * @param first_child child to be set as first child
 */  
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_node_set_first_child(axis2_om_node_t *om_node,
                               const axis2_env_t *env,
                               axis2_om_node_t *first_child); 
@@ -74,7 +74,7 @@ axis2_om_node_set_first_child(axis2_om_node_t *om_node,
 */
     
      
-AXIS2_DECLARE(axis2_status_t)  
+AXIS2_EXTERN axis2_status_t AXIS2_CALL  
 axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,                                  
                                    const axis2_env_t *env,
                                    axis2_om_node_t *prev_sibling); 
@@ -87,7 +87,7 @@ axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,
 *                   AXIS2_FAILURE on error
 */                                                  
  
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
                                const axis2_env_t *env,
                                axis2_om_node_t *next_sibling);
@@ -99,7 +99,7 @@ axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
 * @return status code of the op AXIS2_SUCCESS on success,
 *                       AXIS2_FAILURE on error
 */
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_om_node_set_node_type(axis2_om_node_t *om_node,
                             const axis2_env_t *env,
                             axis2_om_types_t type);
@@ -112,7 +112,7 @@ axis2_om_node_set_node_type(axis2_om_node_t *om_node,
 * @return status code of the op AXIS2_SUCCESS on success,
 *                       AXIS2_FAILURE on error
 */
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_om_node_set_data_element(axis2_om_node_t *om_node,
                                const axis2_env_t *env,
                                void* data_element);
@@ -123,7 +123,7 @@ axis2_om_node_set_data_element(axis2_om_node_t *om_node,
 * @param env environment, MUST NOT be NULL.
 * @param done                   
 */                                    
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_node_set_complete(axis2_om_node_t *om_node,
                                const axis2_env_t *env,
                                axis2_bool_t done);  
@@ -132,7 +132,7 @@ axis2_om_node_set_complete(axis2_om_node_t *om_node,
 * This functions is only to be used by builder
 * do not use this function
 */  
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_node_set_document(axis2_om_node_t *om_node,
                            const axis2_env_t *env,
                            struct axis2_om_document *om_doc);
@@ -140,12 +140,12 @@ axis2_om_node_set_document(axis2_om_node_t *om_node,
 *    sets the builder 
 *
 */                           
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_node_set_builder(axis2_om_node_t *om_node,
                           const axis2_env_t *env,
                           struct axis2_om_stax_builder *builder);                           
 
-AXIS2_DECLARE(struct axis2_om_stax_builder *)
+AXIS2_EXTERN struct axis2_om_stax_builder * AXIS2_CALL
 axis2_om_node_get_builder(axis2_om_node_t *om_node,
                           const axis2_env_t *env);                                
 /** @} */

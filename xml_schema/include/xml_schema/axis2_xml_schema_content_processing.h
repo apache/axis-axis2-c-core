@@ -77,7 +77,7 @@ struct axis2_xml_schema_content_processing
     axis2_xml_schema_content_processing_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_xml_schema_content_processing_t *)
+AXIS2_EXTERN axis2_xml_schema_content_processing_t * AXIS2_CALL
 axis2_xml_schema_content_processing_create(const axis2_env_t *env,
                                     axis2_char_t* value);
 

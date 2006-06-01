@@ -162,7 +162,7 @@ struct axis2_diclient
     axis2_diclient_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_diclient_t*) 
+AXIS2_EXTERN axis2_diclient_t* AXIS2_CALL 
 axis2_diclient_create(const axis2_env_t *env);
 
 /************************** Start of function macros **************************/

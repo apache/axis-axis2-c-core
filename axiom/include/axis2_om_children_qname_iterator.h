@@ -92,7 +92,7 @@ struct axis2_om_children_qname_iterator
     axis2_om_children_qname_iterator_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_om_children_qname_iterator_t *)
+AXIS2_EXTERN axis2_om_children_qname_iterator_t * AXIS2_CALL
 axis2_om_children_qname_iterator_create(const axis2_env_t *env,
                                         axis2_om_node_t *current_child,
                                         axis2_qname_t *given_qname);

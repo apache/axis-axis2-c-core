@@ -58,7 +58,7 @@ axis2_soap_fault_role_get_base_node
 /*********************** end function prototypes ******************************/
 
 
-AXIS2_DECLARE(axis2_soap_fault_role_t *)
+AXIS2_EXTERN axis2_soap_fault_role_t * AXIS2_CALL
 axis2_soap_fault_role_create(const axis2_env_t *env)
 {
     axis2_soap_fault_role_impl_t *fault_role_impl = NULL;
@@ -103,7 +103,7 @@ axis2_soap_fault_role_create(const axis2_env_t *env)
   return  &(fault_role_impl->fault_role);  
 }
 
-AXIS2_DECLARE(axis2_soap_fault_role_t *)
+AXIS2_EXTERN axis2_soap_fault_role_t * AXIS2_CALL
 axis2_soap_fault_role_create_with_parent(const axis2_env_t *env,
                             axis2_soap_fault_t *fault)
 {

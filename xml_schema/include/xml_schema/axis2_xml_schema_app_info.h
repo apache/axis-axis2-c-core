@@ -95,7 +95,7 @@ struct axis2_xml_schema_app_info
     axis2_xml_schema_app_info_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_xml_schema_app_info_t *)
+AXIS2_EXTERN axis2_xml_schema_app_info_t * AXIS2_CALL
 axis2_xml_schema_app_info_create(const axis2_env_t *env);
 
 

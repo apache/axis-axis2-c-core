@@ -63,7 +63,7 @@ axis2_soap_envelope_set_soap_version_internal(axis2_soap_envelope_t *envelope,
                                               const axis2_env_t *env,
                                               int soap_version);                                
 
-AXIS2_DECLARE(axis2_soap_envelope_t*)
+AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_envelope_create_null(const axis2_env_t *env);
     
 /** @} */

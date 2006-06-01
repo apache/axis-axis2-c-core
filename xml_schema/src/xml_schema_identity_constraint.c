@@ -92,7 +92,7 @@ axis2_xml_schema_identity_constraint_set_selector(void *id_constr,
                                     axis2_env_t **env,
                                     axis2_xml_schema_xpath_t *selector);
 
-AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
+AXIS2_EXTERN axis2_xml_schema_identity_constraint_t * AXIS2_CALL
 axis2_xml_schema_identity_constraint_create(axis2_env_t **env)
 {
     axis2_xml_schema_identity_constraint_impl_t *id_cns_impl = NULL;
@@ -200,7 +200,7 @@ axis2_xml_schema_identity_constraint_create(axis2_env_t **env)
     return &(id_cns_impl->id_constr);
 }
 
-AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
+AXIS2_EXTERN axis2_xml_schema_identity_constraint_t * AXIS2_CALL
 axis2_xml_schema_unique_create(axis2_env_t **env)
 {
     axis2_xml_schema_identity_constraint_t *id_cns = NULL;
@@ -209,7 +209,7 @@ axis2_xml_schema_unique_create(axis2_env_t **env)
     return id_cns;        
 }
 
-AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
+AXIS2_EXTERN axis2_xml_schema_identity_constraint_t * AXIS2_CALL
 axis2_xml_schema_keyref_create(axis2_env_t **env)
 {
     axis2_xml_schema_identity_constraint_t *id_cns = NULL;
@@ -218,7 +218,7 @@ axis2_xml_schema_keyref_create(axis2_env_t **env)
     return id_cns;        
 }
 
-AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
+AXIS2_EXTERN axis2_xml_schema_identity_constraint_t * AXIS2_CALL
 axis2_xml_schema_key_create(axis2_env_t **env)
 {
     axis2_xml_schema_identity_constraint_t *id_cns = NULL;
@@ -227,10 +227,10 @@ axis2_xml_schema_key_create(axis2_env_t **env)
     return id_cns;        
 }
 
-AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
+AXIS2_EXTERN axis2_xml_schema_identity_constraint_t * AXIS2_CALL
 axis2_xml_schema_keyref_create(axis2_env_t **env);
 
-AXIS2_DECLARE(axis2_xml_schema_identity_constraint_t *)
+AXIS2_EXTERN axis2_xml_schema_identity_constraint_t * AXIS2_CALL
 axis2_xml_schema_key_create(axis2_env_t **env);
 
 
@@ -311,7 +311,7 @@ axis2_xml_schema_identity_constraint_get_base_impl(void *id_constr,
 }
 
 /*
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_identity_constraint_resolve_methods(
                 axis2_xml_schema_identity_constraint_t *id_constr,
                 axis2_env_t **env,

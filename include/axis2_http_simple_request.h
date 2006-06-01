@@ -120,7 +120,7 @@ AXIS2_DECLARE_DATA struct axis2_http_simple_request
 };
 
 
-AXIS2_DECLARE(axis2_http_simple_request_t *) 
+AXIS2_EXTERN axis2_http_simple_request_t * AXIS2_CALL 
 axis2_http_simple_request_create (const axis2_env_t *env,
                         axis2_http_request_line_t *request_line,
                         axis2_http_header_t **http_headers,

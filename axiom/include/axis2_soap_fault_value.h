@@ -103,11 +103,11 @@ typedef struct axis2_soap_fault_value axis2_soap_fault_value_t;
     * creates a soap struct 
     * @param env Environment. MUST NOT be NULL
     */
-AXIS2_DECLARE(axis2_soap_fault_value_t *)
+AXIS2_EXTERN axis2_soap_fault_value_t * AXIS2_CALL
 axis2_soap_fault_value_create_with_subcode(const axis2_env_t *env,
                             axis2_soap_fault_sub_code_t *parent);
 
-AXIS2_DECLARE(axis2_soap_fault_value_t *)
+AXIS2_EXTERN axis2_soap_fault_value_t * AXIS2_CALL
 axis2_soap_fault_value_create_with_code(const axis2_env_t *env,
                             axis2_soap_fault_code_t *parent);  
 

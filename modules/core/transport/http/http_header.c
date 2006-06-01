@@ -52,7 +52,7 @@ axis2_http_header_free (axis2_http_header_t *header, const axis2_env_t *env);
 
 /***************************** End of function headers ************************/
 
-AXIS2_DECLARE(axis2_http_header_t *) AXIS2_CALL
+AXIS2_EXTERN axis2_http_header_t * AXIS2_CALL AXIS2_CALL
 axis2_http_header_create (const axis2_env_t *env, axis2_char_t *name, 
                             axis2_char_t *value)
 {
@@ -92,7 +92,7 @@ axis2_http_header_create (const axis2_env_t *env, axis2_char_t *name,
 	return &(http_header_impl->http_header);
 }
 
-AXIS2_DECLARE(axis2_http_header_t *) AXIS2_CALL
+AXIS2_EXTERN axis2_http_header_t * AXIS2_CALL AXIS2_CALL
 axis2_http_header_create_by_str (const axis2_env_t *env, axis2_char_t *str)
 {
 	axis2_char_t *tmp_str = NULL;

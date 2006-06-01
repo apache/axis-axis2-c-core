@@ -25,14 +25,14 @@ axis2_class_loader_unload_lib (const axis2_env_t *env,
                                 axis2_dll_desc_t *dll_desc);
                                 
                                 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_class_loader_init(const axis2_env_t *env)
 {
     AXIS2_PLATFORM_LOADLIBINIT();
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_class_loader_delete_dll (const axis2_env_t *env,
                                     axis2_dll_desc_t *dll_desc)
 { 
@@ -47,7 +47,7 @@ axis2_class_loader_delete_dll (const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(void *)
+AXIS2_EXTERN void * AXIS2_CALL
 axis2_class_loader_create_dll (const axis2_env_t *env,
                                 axis2_param_t *impl_info_param)
 {

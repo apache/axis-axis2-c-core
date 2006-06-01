@@ -107,14 +107,14 @@ struct axis2_woden_component_exts
     axis2_woden_component_exts_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_component_exts_t *)
+AXIS2_EXTERN axis2_woden_component_exts_t * AXIS2_CALL
 axis2_woden_component_exts_create(const axis2_env_t *env);
 
 /**
  * This is an Axis2 C internal method. This is used only from constructor
  * of the child class
  */
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_component_exts_resolve_methods(
         axis2_woden_component_exts_t *component_exts,
         const axis2_env_t *env,

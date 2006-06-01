@@ -90,7 +90,7 @@ struct axis2_mime_output
  * Creates mime_output struct
  * @return pointer to newly created mime_output
  */
-AXIS2_DECLARE(axis2_mime_output_t *) 
+AXIS2_EXTERN axis2_mime_output_t * AXIS2_CALL 
 axis2_mime_output_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

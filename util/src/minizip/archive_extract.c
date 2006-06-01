@@ -290,7 +290,7 @@ int axis2_extract_onefile(uf,filename,opt_extract_without_path,opt_overwrite,pas
 
 
 	
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_archive_extract()
 {
 	struct dirent **namelist;

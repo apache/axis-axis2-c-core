@@ -239,7 +239,7 @@ extern "C"
  * @param value
  * @param relationship_type
  */
-AXIS2_DECLARE(axis2_msg_info_headers_t*) 
+AXIS2_EXTERN axis2_msg_info_headers_t* AXIS2_CALL 
 axis2_msg_info_headers_create(const axis2_env_t *env, axis2_endpoint_ref_t *to,
                               axis2_char_t *action);
     

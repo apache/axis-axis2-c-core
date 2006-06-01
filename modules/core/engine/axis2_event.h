@@ -75,7 +75,7 @@ struct axis2_event
     axis2_event_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_event_t*) 
+AXIS2_EXTERN axis2_event_t* AXIS2_CALL 
 axis2_event_create(const axis2_env_t *env, 
                    axis2_svc_t *svc, 
                    int event_type);

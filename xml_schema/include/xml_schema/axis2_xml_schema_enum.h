@@ -89,20 +89,20 @@ struct axis2_xml_schema_enum
     axis2_xml_schema_enum_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_xml_schema_enum_t *)
+AXIS2_EXTERN axis2_xml_schema_enum_t * AXIS2_CALL
 axis2_xml_schema_enum_create(const axis2_env_t *env,
                              axis2_char_t *value);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
  */
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_enum_resolve_methods(axis2_xml_schema_enum_t *schema_enum,
                                       const axis2_env_t *env,
                                       axis2_xml_schema_enum_t *schema_enum_impl,
                                       axis2_hash_t *methods);
 
-AXIS2_DECLARE(int)
+AXIS2_EXTERN int AXIS2_CALL
 axis2_xml_schema_enum_index(axis2_char_t *value,
                             const axis2_env_t *env,
                             axis2_array_list_t *values);

@@ -86,7 +86,7 @@ alloc_array (axis2_hash_t *ht, unsigned int max)
                    sizeof (*ht->array) * (max + 1));
 }
 
-AXIS2_DECLARE(axis2_hash_t*)
+AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axis2_hash_make (const axis2_env_t *env)
 {
     axis2_hash_t *ht;
@@ -102,7 +102,7 @@ axis2_hash_make (const axis2_env_t *env)
     return ht;
 }
 
-AXIS2_DECLARE(axis2_hash_t*)
+AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axis2_hash_make_custom (const axis2_env_t *env,
                         axis2_hashfunc_t hash_func)
 {
@@ -118,7 +118,7 @@ axis2_hash_make_custom (const axis2_env_t *env,
  * Hash iteration functions.
  */
 
-AXIS2_DECLARE(axis2_hash_index_t*)
+AXIS2_EXTERN axis2_hash_index_t* AXIS2_CALL
 axis2_hash_next (const axis2_env_t *env, axis2_hash_index_t *hi)
 {
     hi->this = hi->next;
@@ -137,7 +137,7 @@ axis2_hash_next (const axis2_env_t *env, axis2_hash_index_t *hi)
     return hi;
 }
 
-AXIS2_DECLARE(axis2_hash_index_t*)
+AXIS2_EXTERN axis2_hash_index_t* AXIS2_CALL
 axis2_hash_first (axis2_hash_t *ht, const axis2_env_t *env)
 {
     axis2_hash_index_t *hi;
@@ -153,7 +153,7 @@ axis2_hash_first (axis2_hash_t *ht, const axis2_env_t *env)
     return axis2_hash_next (env, hi);
 }
 
-AXIS2_DECLARE(void)
+AXIS2_EXTERN void AXIS2_CALL
 axis2_hash_this (axis2_hash_index_t *hi,
                  const void **key, axis2_ssize_t *klen, void **val)
 {
@@ -303,7 +303,7 @@ find_entry (axis2_hash_t * ht,
     return hep;
 }
 
-AXIS2_DECLARE(axis2_hash_t*)
+AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axis2_hash_copy (const axis2_hash_t *orig, const axis2_env_t *env)
 {
     axis2_hash_t *ht;
@@ -344,7 +344,7 @@ axis2_hash_copy (const axis2_hash_t *orig, const axis2_env_t *env)
     return ht;
 }
 
-AXIS2_DECLARE(void*)
+AXIS2_EXTERN void* AXIS2_CALL
 axis2_hash_get (axis2_hash_t *ht, const void *key, axis2_ssize_t klen)
 {
     axis2_hash_entry_t *he;
@@ -355,7 +355,7 @@ axis2_hash_get (axis2_hash_t *ht, const void *key, axis2_ssize_t klen)
         return NULL;
 }
 
-AXIS2_DECLARE(void)
+AXIS2_EXTERN void AXIS2_CALL
 axis2_hash_set (axis2_hash_t *ht,
                 const void *key, axis2_ssize_t klen, const void *val)
 {
@@ -386,13 +386,13 @@ axis2_hash_set (axis2_hash_t *ht,
     /* else key not present and val==NULL */
 }
 
-AXIS2_DECLARE( unsigned int )
+AXIS2_EXTERN  unsigned int  AXIS2_CALL
 axis2_hash_count (axis2_hash_t * ht)
 {
     return ht->count;
 }
 
-AXIS2_DECLARE(axis2_hash_t*)
+AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axis2_hash_overlay (const axis2_hash_t *overlay, const axis2_env_t *env
 		, const axis2_hash_t * base)
 {
@@ -400,7 +400,7 @@ axis2_hash_overlay (const axis2_hash_t *overlay, const axis2_env_t *env
     return axis2_hash_merge (overlay, env, base, NULL, NULL);
 }
 
-AXIS2_DECLARE(axis2_hash_t*)
+AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axis2_hash_merge (const axis2_hash_t *overlay, const axis2_env_t *env
 			, const axis2_hash_t * base, void *(*merger) (const axis2_env_t * env
             , const void *key, axis2_ssize_t klen, const void *h1_val
@@ -519,7 +519,7 @@ axis2_hash_entry_free (const axis2_env_t *env, axis2_hash_entry_t *hash_entry)
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_hash_free (axis2_hash_t *ht, const axis2_env_t* env)
 {
     int i =0;
@@ -557,7 +557,7 @@ axis2_hash_free (axis2_hash_t *ht, const axis2_env_t* env)
     return AXIS2_FAILURE;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_hash_free_void_arg (void *ht_void, const axis2_env_t* env)
 {
     int i =0;

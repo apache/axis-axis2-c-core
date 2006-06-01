@@ -58,7 +58,7 @@ axis2_wsdl_soap_op_set_soap_action(axis2_wsdl_soap_op_t *soap_op,
                         
 /************************** End of function prototypes ************************/
 
-AXIS2_DECLARE(axis2_wsdl_soap_op_t *)
+AXIS2_EXTERN axis2_wsdl_soap_op_t * AXIS2_CALL
 axis2_wsdl_soap_op_create (const axis2_env_t *env)
 {
     axis2_wsdl_soap_op_impl_t *soap_op_impl = NULL;

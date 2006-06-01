@@ -174,10 +174,10 @@ AXIS2_DECLARE_DATA struct axis2_dll_desc
  * creates dll_desc struct
  * @param qname qname, can be NULL
  */
-AXIS2_DECLARE(axis2_dll_desc_t*) 
+AXIS2_EXTERN axis2_dll_desc_t* AXIS2_CALL 
 axis2_dll_desc_create(const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_dll_desc_free_void_arg (void *dll_desc,
                                     const axis2_env_t *env);
 

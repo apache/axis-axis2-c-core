@@ -57,7 +57,7 @@ apache2_stream_get_char(axis2_stream_t *stream, const axis2_env_t *env);
 /*
  * Internal function. Not exposed to outside
  */
-AXIS2_DECLARE(axis2_stream_t *)
+AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
 axis2_stream_create_apache2(const axis2_env_t *env, request_rec *request)
 {
     apache2_stream_impl_t *stream_impl = NULL;

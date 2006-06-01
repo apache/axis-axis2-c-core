@@ -314,7 +314,7 @@ struct axis2_xml_reader
  *          NULL on error with error code set in the environment's error 
  */
 
-AXIS2_DECLARE(axis2_xml_reader_t *)
+AXIS2_EXTERN axis2_xml_reader_t * AXIS2_CALL
 axis2_xml_reader_create_for_file(const axis2_env_t *env,
                                   char *filename,
                                   const axis2_char_t *encoding);
@@ -334,7 +334,7 @@ axis2_xml_reader_create_for_file(const axis2_env_t *env,
  * @param encoding encoding scheme of the xml stream
  */
  
-AXIS2_DECLARE(axis2_xml_reader_t *)
+AXIS2_EXTERN axis2_xml_reader_t * AXIS2_CALL
 axis2_xml_reader_create_for_io(const axis2_env_t *env,
                                     AXIS2_READ_INPUT_CALLBACK,
                                     AXIS2_CLOSE_INPUT_CALLBACK,
@@ -349,7 +349,7 @@ axis2_xml_reader_create_for_io(const axis2_env_t *env,
  * @param encoding encoding of the xml 
  * @return pointer to axis2_xml_reader_t struct on success , NULL otherwise
  */
-AXIS2_DECLARE(axis2_xml_reader_t *)
+AXIS2_EXTERN axis2_xml_reader_t * AXIS2_CALL
 axis2_xml_reader_create_for_memory(const axis2_env_t *env,
                                   void *container,
                                   int size,
@@ -360,13 +360,13 @@ axis2_xml_reader_create_for_memory(const axis2_env_t *env,
  * init function initializes the parser 
  */
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_reader_init();
 
 /**
  * parser cleanup function 
  */
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_reader_cleanup();
 
 

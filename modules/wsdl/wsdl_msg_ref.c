@@ -78,7 +78,7 @@ axis2_wdsl_msg_ref_set_element(axis2_wsdl_msg_ref_t *msg_ref,
 
 /************************** End of function prototypes ************************/
 
-AXIS2_DECLARE(axis2_wsdl_msg_ref_t *)
+AXIS2_EXTERN axis2_wsdl_msg_ref_t * AXIS2_CALL
 axis2_wsdl_msg_ref_create (const axis2_env_t *env)
 {
     axis2_wsdl_msg_ref_impl_t *msg_ref_impl = NULL;

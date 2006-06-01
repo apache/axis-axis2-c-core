@@ -18,7 +18,7 @@
 #include <axis2_om_element.h>
 #include <axis2_array_list.h>
 
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_first_child_element(axis2_om_element_t *ele,
                                       const axis2_env_t *env,
                                       axis2_om_node_t *ele_node,
@@ -30,7 +30,7 @@ axis2_om_util_get_first_child_element(axis2_om_element_t *ele,
     return AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(ele, env, ele_node, child_node);
 }                                      
                                       
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_last_child_element(axis2_om_element_t *ele,
                                      const axis2_env_t *env,
                                      axis2_om_node_t *ele_node,
@@ -55,7 +55,7 @@ axis2_om_util_get_last_child_element(axis2_om_element_t *ele,
     return NULL;    
 }                                     
                                      
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_next_sibling_element(axis2_om_element_t *ele,
                                        const axis2_env_t *env,
                                        axis2_om_node_t *ele_node,
@@ -79,7 +79,7 @@ axis2_om_util_get_next_sibling_element(axis2_om_element_t *ele,
     return NULL;
 }                                       
                                        
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_first_child_element_with_localname(axis2_om_element_t *ele,
                                              const axis2_env_t *env,
                                              axis2_om_node_t *ele_node,
@@ -141,7 +141,7 @@ axis2_om_util_get_first_child_element_with_localname(axis2_om_element_t *ele,
 }                                             
                                              
                                              
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_last_child_element_with_localname(axis2_om_element_t *ele,
                                              const axis2_env_t *env,
                                              axis2_om_node_t *ele_node,
@@ -183,7 +183,7 @@ axis2_om_util_get_last_child_element_with_localname(axis2_om_element_t *ele,
     return NULL;
 }                                             
                                                                                          
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_next_siblng_element_with_localname(axis2_om_element_t *ele,
                                              const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
@@ -220,7 +220,7 @@ axis2_om_util_get_next_siblng_element_with_localname(axis2_om_element_t *ele,
     return NULL;
 }                                             
                                              
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_first_child_element_with_uri_localname(axis2_om_element_t *ele,
                                              const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
@@ -301,7 +301,7 @@ axis2_om_util_get_first_child_element_with_uri_localname(axis2_om_element_t *ele
     }  
     return NULL;
 }                                                                                                                                                             
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_last_child_element_with_uri_localname(axis2_om_element_t *ele,
                                              const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
@@ -352,7 +352,7 @@ axis2_om_util_get_last_child_element_with_uri_localname(axis2_om_element_t *ele,
     return NULL;
 }
                                              
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_next_sibling_element_with_uri_localname(axis2_om_element_t *ele,
                                              const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
@@ -399,7 +399,7 @@ axis2_om_util_get_next_sibling_element_with_uri_localname(axis2_om_element_t *el
     return NULL;
 }                                             
                                              
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_first_child_element_with_localnames(axis2_om_element_t *ele,
                                              const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
@@ -483,7 +483,7 @@ axis2_om_util_get_first_child_element_with_localnames(axis2_om_element_t *ele,
 }                                             
                                              
                                              
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_last_child_element_with_localnames(axis2_om_element_t *ele,
                                              const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
@@ -533,7 +533,7 @@ axis2_om_util_get_last_child_element_with_localnames(axis2_om_element_t *ele,
     return NULL;
 }                                             
                                                                                          
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_next_siblng_element_with_localnames(axis2_om_element_t *ele,
                                              const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
@@ -583,7 +583,7 @@ axis2_om_util_get_next_siblng_element_with_localnames(axis2_om_element_t *ele,
     return NULL;    
 }                                              
                                              
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_first_child_element_with_localname_attr(axis2_om_element_t *ele,
                                              const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
@@ -715,7 +715,7 @@ axis2_om_util_get_first_child_element_with_localname_attr(axis2_om_element_t *el
 }                                             
                                              
                                              
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_last_child_element_with_localname_attr(axis2_om_element_t *ele,
                                              const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
@@ -794,7 +794,7 @@ axis2_om_util_get_last_child_element_with_localname_attr(axis2_om_element_t *ele
     return NULL;
 }                                             
                                                                                          
-AXIS2_DECLARE(axis2_om_element_t *)
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_next_siblng_element_with_localname_attr(axis2_om_element_t *ele,
                                              const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
@@ -870,7 +870,7 @@ axis2_om_util_get_next_siblng_element_with_localname_attr(axis2_om_element_t *el
     return NULL;
 }                                             
                                                                             
-AXIS2_DECLARE(axis2_char_t *)
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_om_util_get_child_node_text(axis2_om_node_t *om_node,
                              const axis2_env_t *env)
 {
@@ -891,7 +891,7 @@ axis2_om_util_get_child_node_text(axis2_om_node_t *om_node,
     return NULL;
 }                             
                              
-AXIS2_DECLARE(axis2_char_t *)
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_om_util_get_localname(axis2_om_node_t *node,
                             const axis2_env_t *env)
 {
@@ -908,7 +908,7 @@ axis2_om_util_get_localname(axis2_om_node_t *node,
     return NULL;
 }                            
     
-AXIS2_DECLARE(axis2_char_t *)
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_om_util_get_node_namespace_uri(axis2_om_node_t *om_node,
                                      const axis2_env_t *env)
 {

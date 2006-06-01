@@ -70,7 +70,7 @@ axis2_xml_schema_annotation_get_items(void *annotation,
 
 /********************** end **************************************************/
 
-AXIS2_DECLARE(axis2_xml_schema_annotation_t *)
+AXIS2_EXTERN axis2_xml_schema_annotation_t * AXIS2_CALL
 axis2_xml_schema_annotation_create(axis2_env_t **env)
 {
     axis2_xml_schema_annotation_impl_t *annotation_impl = NULL;

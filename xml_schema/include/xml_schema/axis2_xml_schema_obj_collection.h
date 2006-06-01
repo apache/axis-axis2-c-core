@@ -103,7 +103,7 @@ struct axis2_xml_schema_obj_collection
     axis2_xml_schema_obj_collection_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_xml_schema_obj_collection_t *)
+AXIS2_EXTERN axis2_xml_schema_obj_collection_t * AXIS2_CALL
 axis2_xml_schema_obj_collection_create(const axis2_env_t *env);
 
 /******************* MACROS ***************************************************/

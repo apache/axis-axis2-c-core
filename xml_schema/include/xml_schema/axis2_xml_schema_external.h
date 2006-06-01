@@ -102,16 +102,16 @@ struct axis2_xml_schema_external
 /**
  * Creates new Xml Schema external
  */
-AXIS2_DECLARE(axis2_xml_schema_external_t *)
+AXIS2_EXTERN axis2_xml_schema_external_t * AXIS2_CALL
 axis2_xml_schema_external_create(const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_xml_schema_external_t *)
+AXIS2_EXTERN axis2_xml_schema_external_t * AXIS2_CALL
 axis2_xml_schema_include_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
  */
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_external_resolve_methods(
                                 axis2_xml_schema_external_t *external,
                                 const axis2_env_t *env,

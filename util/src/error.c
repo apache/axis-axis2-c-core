@@ -472,7 +472,7 @@ axis2_error_impl_free (axis2_error_t *error)
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_error_t*)
+AXIS2_EXTERN axis2_error_t* AXIS2_CALL
 axis2_error_create (axis2_allocator_t * allocator)
 {
     axis2_error_t *error;

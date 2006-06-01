@@ -129,7 +129,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref
  * Creates wsdl  message reference struct
  * @return pointer to newly created wsdl  message reference
  */
-AXIS2_DECLARE(axis2_wsdl_msg_ref_t *) 
+AXIS2_EXTERN axis2_wsdl_msg_ref_t * AXIS2_CALL 
 axis2_wsdl_msg_ref_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

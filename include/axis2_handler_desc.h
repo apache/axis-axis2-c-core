@@ -138,7 +138,7 @@ extern "C"
  * creates handler_desc struct
  * @param qname qname, can be NULL
  */
-AXIS2_DECLARE(axis2_handler_desc_t*) 
+AXIS2_EXTERN axis2_handler_desc_t* AXIS2_CALL 
 axis2_handler_desc_create_with_qname(const axis2_env_t *env, axis2_qname_t *qname);
 
 #define AXIS2_HANDLER_DESC_GET_HANDLER(handler_desc, env) \

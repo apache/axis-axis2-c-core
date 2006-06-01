@@ -79,7 +79,7 @@ axis2_conf_builder_process_default_module_versions(
                             axis2_om_children_qname_iterator_t *module_versions);
 /************************** End of function prototypes ************************/
 
-AXIS2_DECLARE(axis2_conf_builder_t *) 
+AXIS2_EXTERN axis2_conf_builder_t * AXIS2_CALL 
 axis2_conf_builder_create (const axis2_env_t *env)
 {
     axis2_conf_builder_impl_t *conf_builder_impl = NULL;
@@ -117,7 +117,7 @@ axis2_conf_builder_create (const axis2_env_t *env)
 	return &(conf_builder_impl->conf_builder);
 }
 
-AXIS2_DECLARE(axis2_conf_builder_t *)
+AXIS2_EXTERN axis2_conf_builder_t * AXIS2_CALL
 axis2_conf_builder_create_with_file_and_dep_engine_and_conf (const axis2_env_t *env,
                                                 axis2_char_t *file,
                                                 axis2_dep_engine_t *engine,

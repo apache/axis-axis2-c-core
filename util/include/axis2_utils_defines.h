@@ -113,14 +113,14 @@ extern "C"
 
 #if !defined(WIN32)
 /**
- * Axis2 Core functions are declared with AXIS2_DECLARE(), so they may
+ * Axis2 Core functions are declared with AXIS2_EXTERN  AXIS2_CALL, so they may
  * use the most appropriate calling convention.  Other
  * Core functions with variable arguments must use AXIS2_DECLARE_NONSTD().
  * @code
- * AXIS2_DECLARE(rettype) axis2_func(args)
+ * AXIS2_EXTERN rettype) axis2_func(args AXIS2_CALL
  * @endcode
  */
-#define AXIS2_DECLARE(type)            type AXIS2_CALL
+#define AXIS2_EXTERN 
 
 /**
  * Axis2 Core variable argument and hook functions are declared with 
@@ -143,16 +143,16 @@ extern "C"
 #define AXIS2_DECLARE_DATA
 
 #elif defined(AXIS2_DECLARE_STATIC)
-#define AXIS2_DECLARE(type)            type AXIS2_CALL
-#define AXIS2_DECLARE_NONSTD(type)     type
+#define AXIS2_EXTERN            
+#define AXIS2_EXTERN_NONSTD
 #define AXIS2_DECLARE_DATA
 #elif defined(AXIS2_DECLARE_EXPORT)
-#define AXIS2_DECLARE(type)            AXIS2_EXPORT type AXIS2_CALL
-#define AXIS2_DECLARE_NONSTD(type)     AXIS2_EXPORT type
+#define AXIS2_EXTERN                    AXIS2_EXPORT
+#define AXIS2_EXTERN_NONSTD             AXIS2_EXPORT
 #define AXIS2_DECLARE_DATA             
 #else
-#define AXIS2_DECLARE(type)            AXIS2_IMPORT type AXIS2_CALL
-#define AXIS2_DECLARE_NONSTD(type)     AXIS2_IMPORT type
+#define AXIS2_EXTERN                    AXIS2_IMPORT
+#define AXIS2_EXTERN_NONSTD             AXIS2_IMPORT
 #define AXIS2_DECLARE_DATA             
 #endif
 

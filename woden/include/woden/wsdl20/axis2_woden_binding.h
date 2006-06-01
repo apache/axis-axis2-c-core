@@ -150,59 +150,59 @@ struct axis2_woden_binding
     axis2_woden_binding_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_binding_element(
         void *binding,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_configurable_element(
         void *binding,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_documentable_element(
         void *binding,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_configurable(
         void *binding,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_wsdl_obj(
         void *binding,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_nested_element(
         void *binding,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_wsdl_component(
         void *binding,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_attr_extensible(
         void *binding,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_binding_t *)
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_element_extensible(
         void *binding,
         const axis2_env_t *env);
 
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_binding_resolve_methods(
         axis2_woden_binding_t *binding,
         const axis2_env_t *env,

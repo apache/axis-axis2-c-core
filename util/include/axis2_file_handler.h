@@ -37,7 +37,7 @@ extern "C"
  * @param options file options given.
  * @return status code
  */ 
-AXIS2_DECLARE(void *) 
+AXIS2_EXTERN void * AXIS2_CALL 
 axis2_file_handler_open(const char *file_name, 
                         const char *options);
 
@@ -46,7 +46,7 @@ axis2_file_handler_open(const char *file_name,
  * @param file_ptr file pointer of the file need to be closed
  * @return status code
  */
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_file_handler_close (void *file_ptr);
 
 /**
@@ -65,7 +65,7 @@ axis2_file_handler_close (void *file_ptr);
  *     file exists
  * @return status
  */
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_file_handler_access(axis2_char_t *path, 
                             int mode);
 

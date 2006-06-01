@@ -91,7 +91,7 @@ struct axis2_stack
     axis2_stack_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_stack_t *)
+AXIS2_EXTERN axis2_stack_t * AXIS2_CALL
 axis2_stack_create(const axis2_env_t *env);
  
  

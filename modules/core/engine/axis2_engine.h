@@ -193,7 +193,7 @@ struct axis2_engine
     axis2_engine_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_engine_t*) 
+AXIS2_EXTERN axis2_engine_t* AXIS2_CALL 
 axis2_engine_create(const axis2_env_t *env, 
                     axis2_conf_ctx_t *conf_ctx);
     

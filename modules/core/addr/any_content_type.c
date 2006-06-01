@@ -49,7 +49,7 @@ axis2_any_content_type_free (axis2_any_content_type_t *any_content_type,
                              const axis2_env_t *env);
 
 
-AXIS2_DECLARE(axis2_any_content_type_t*)
+AXIS2_EXTERN axis2_any_content_type_t* AXIS2_CALL
 axis2_any_content_type_create(const axis2_env_t *env) 
 {
     axis2_any_content_type_impl_t *any_content_type_impl = NULL;

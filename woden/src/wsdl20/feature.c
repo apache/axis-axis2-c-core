@@ -108,7 +108,7 @@ static axis2_woden_feature_t *
 create(const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_feature_t *)
+AXIS2_EXTERN axis2_woden_feature_t * AXIS2_CALL
 axis2_woden_feature_to_feature_element(
         void *feature,
         const axis2_env_t *env)
@@ -150,7 +150,7 @@ axis2_woden_feature_to_feature_element_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_feature_t *)
+AXIS2_EXTERN axis2_woden_feature_t * AXIS2_CALL
 axis2_woden_feature_to_nested_element(
         void *feature,
         const axis2_env_t *env)
@@ -193,7 +193,7 @@ axis2_woden_feature_to_nested_element_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_feature_t *)
+AXIS2_EXTERN axis2_woden_feature_t * AXIS2_CALL
 axis2_woden_feature_to_documentable_element(
         void *feature,
         const axis2_env_t *env)
@@ -237,7 +237,7 @@ axis2_woden_feature_to_documentable_element_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_feature_t *)
+AXIS2_EXTERN axis2_woden_feature_t * AXIS2_CALL
 axis2_woden_feature_to_documentable(
         void *feature,
         const axis2_env_t *env)
@@ -280,7 +280,7 @@ axis2_woden_feature_to_documentable_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_feature_t *)
+AXIS2_EXTERN axis2_woden_feature_t * AXIS2_CALL
 axis2_woden_feature_to_wsdl_obj(
         void *feature,
         const axis2_env_t *env)
@@ -325,7 +325,7 @@ axis2_woden_feature_to_wsdl_obj_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_feature_t *)
+AXIS2_EXTERN axis2_woden_feature_t * AXIS2_CALL
 axis2_woden_feature_to_nested_component(
         void *feature,
         const axis2_env_t *env)
@@ -367,7 +367,7 @@ axis2_woden_feature_to_nested_component_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_feature_t *)
+AXIS2_EXTERN axis2_woden_feature_t * AXIS2_CALL
 axis2_woden_feature_to_wsdl_component(
         void *feature,
         const axis2_env_t *env)
@@ -409,7 +409,7 @@ axis2_woden_feature_to_wsdl_component_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_feature_t *)
+AXIS2_EXTERN axis2_woden_feature_t * AXIS2_CALL
 axis2_woden_feature_to_attr_extensible(
         void *feature,
         const axis2_env_t *env)
@@ -457,7 +457,7 @@ axis2_woden_feature_to_attr_extensible_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_feature_t *)
+AXIS2_EXTERN axis2_woden_feature_t * AXIS2_CALL
 axis2_woden_feature_to_element_extensible(
         void *feature,
         const axis2_env_t *env)
@@ -615,7 +615,7 @@ create(const axis2_env_t *env)
     return &(feature_impl->feature);
 }
 
-AXIS2_DECLARE(axis2_woden_feature_t *)
+AXIS2_EXTERN axis2_woden_feature_t * AXIS2_CALL
 axis2_woden_feature_create(const axis2_env_t *env)
 {
     axis2_woden_feature_impl_t *feature_impl = NULL;

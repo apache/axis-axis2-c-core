@@ -105,7 +105,7 @@ axis2_woden_element_decl_set_content(
         axis2_generic_obj_t *element_content);
 
 
-AXIS2_DECLARE(axis2_woden_element_decl_t *)
+AXIS2_EXTERN axis2_woden_element_decl_t * AXIS2_CALL
 axis2_woden_element_decl_create(
         const axis2_env_t *env)
 {

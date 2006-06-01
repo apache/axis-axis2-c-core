@@ -207,7 +207,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      * No param constructor is need to deploye module and service programatically
      * @return pointer to newly created deployment engine
      */
-    AXIS2_DECLARE(axis2_dep_engine_t *)
+    AXIS2_EXTERN axis2_dep_engine_t * AXIS2_CALL
     axis2_dep_engine_create (const axis2_env_t *env);
     
     /**
@@ -218,7 +218,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      * @param repos_path is the path to which Repositary Listner should listen.
      * @return pointer to newly created deployment engine
      */
-    AXIS2_DECLARE(axis2_dep_engine_t *)
+    AXIS2_EXTERN axis2_dep_engine_t * AXIS2_CALL
     axis2_dep_engine_create_with_repos_name (
                                             const axis2_env_t *env, 
                                             axis2_char_t *repos_path);
@@ -228,7 +228,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
      * @param svr_xml_file
      * @return pointer to newly created deployment engine
      */
-    AXIS2_DECLARE(axis2_dep_engine_t *) 
+    AXIS2_EXTERN axis2_dep_engine_t * AXIS2_CALL 
     axis2_dep_engine_create_with_repos_name_and_svr_xml_file (
                                             const axis2_env_t *env, 
                                             axis2_char_t *repos_path, 

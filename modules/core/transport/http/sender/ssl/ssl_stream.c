@@ -56,7 +56,7 @@ int AXIS2_CALL
 axis2_ssl_stream_get_char(axis2_stream_t *stream, const axis2_env_t *env);
 
 
-AXIS2_DECLARE(axis2_stream_t *)
+AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
 axis2_stream_create_ssl(const axis2_env_t *env, axis2_socket_t socket)
 {
     ssl_stream_impl_t *stream_impl = NULL;

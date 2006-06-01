@@ -142,7 +142,7 @@ extern "C"
     * @param builder pointer to axis2_om_stax_builder 
     * @return pointer to the newly created document.
     */
-    AXIS2_DECLARE(axis2_om_document_t *)
+    AXIS2_EXTERN axis2_om_document_t * AXIS2_CALL
     axis2_om_document_create (const axis2_env_t *env,
                               axis2_om_node_t * root,
                               struct axis2_om_stax_builder *builder);

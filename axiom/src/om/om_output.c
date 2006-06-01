@@ -161,7 +161,7 @@ axis2_om_output_write_optimized(axis2_om_output_t *om_output,
                         
 /*********************** end function prototypes ******************************/                      
 
-AXIS2_DECLARE(axis2_om_output_t *)
+AXIS2_EXTERN axis2_om_output_t * AXIS2_CALL
 axis2_om_output_create (const axis2_env_t *env, 
                         axis2_xml_writer_t *xml_writer)
 {
@@ -628,7 +628,7 @@ axis2_om_output_get_mime_boundry(axis2_om_output_t *om_output,
 
 /******************************************************************************/
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_output_write (axis2_om_output_t * om_output,
                        const axis2_env_t *env,
                        axis2_om_types_t type,

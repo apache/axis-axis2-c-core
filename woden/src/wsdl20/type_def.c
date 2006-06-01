@@ -160,7 +160,7 @@ create(const axis2_env_t *env)
     return &(type_def_impl->type_def);
 }
 
-AXIS2_DECLARE(axis2_woden_type_def_t *)
+AXIS2_EXTERN axis2_woden_type_def_t * AXIS2_CALL
 axis2_woden_type_def_create(
         const axis2_env_t *env)
 {

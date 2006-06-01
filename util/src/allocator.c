@@ -28,7 +28,7 @@ void AXIS2_CALL
 axis2_allocator_free_impl(axis2_allocator_t *allocator, void *ptr);
 
 
-AXIS2_DECLARE(axis2_allocator_t *)
+AXIS2_EXTERN axis2_allocator_t * AXIS2_CALL
 axis2_allocator_init (axis2_allocator_t *allocator)
 {
     if (allocator)
@@ -48,7 +48,7 @@ axis2_allocator_init (axis2_allocator_t *allocator)
     return NULL;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_allocator_free(axis2_allocator_t *allocator)
 {
     if(allocator)

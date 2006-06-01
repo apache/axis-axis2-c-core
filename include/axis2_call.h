@@ -257,7 +257,7 @@ struct axis2_call
     axis2_call_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_call_t*) axis2_call_create(const axis2_env_t *env, 
+AXIS2_EXTERN axis2_call_t* AXIS2_CALL axis2_call_create(const axis2_env_t *env, 
     axis2_svc_ctx_t *svc_ctx, 
     axis2_char_t *client_home);
 

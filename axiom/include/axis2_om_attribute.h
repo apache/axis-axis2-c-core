@@ -179,7 +179,7 @@ extern "C"
     * @return a pointer to newly created attribute struct, returns NULL on error with 
     *           error code set in environment's error. 
     */
-    AXIS2_DECLARE(axis2_om_attribute_t *)
+    AXIS2_EXTERN axis2_om_attribute_t * AXIS2_CALL
     axis2_om_attribute_create (const axis2_env_t *env,
                                const axis2_char_t *localname,
                                const axis2_char_t *value,
@@ -189,7 +189,7 @@ extern "C"
      * cast into appropriate type and then pass the cast object
      * into the om_attribute structure's free method
      */
-    AXIS2_DECLARE(axis2_status_t) 
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL 
     axis2_om_attribute_free_void_arg (
             void *om_attribute,
             const axis2_env_t *env);

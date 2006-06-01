@@ -77,7 +77,7 @@ struct axis2_xml_severity_type
     axis2_xml_severity_type_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_xml_severity_type_t *)
+AXIS2_EXTERN axis2_xml_severity_type_t * AXIS2_CALL
 axis2_xml_severity_type_create(const axis2_env_t *env,
                                     axis2_char_t* value);
 

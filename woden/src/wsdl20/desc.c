@@ -389,7 +389,7 @@ static axis2_woden_desc_t *
 create(const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_desc_t *)
+AXIS2_EXTERN axis2_woden_desc_t * AXIS2_CALL
 axis2_woden_desc_to_desc_element(
         void *desc,
         const axis2_env_t *env)
@@ -413,7 +413,7 @@ axis2_woden_desc_to_desc_element(
     return desc;
 }
 
-AXIS2_DECLARE(axis2_woden_desc_t *)
+AXIS2_EXTERN axis2_woden_desc_t * AXIS2_CALL
 axis2_woden_desc_to_documentable_element(
         void *desc,
         const axis2_env_t *env)
@@ -438,7 +438,7 @@ axis2_woden_desc_to_documentable_element(
     return desc;
 }
 
-AXIS2_DECLARE(axis2_woden_desc_t *)
+AXIS2_EXTERN axis2_woden_desc_t * AXIS2_CALL
 axis2_woden_desc_to_documentable(
         void *desc,
         const axis2_env_t *env)
@@ -463,7 +463,7 @@ axis2_woden_desc_to_documentable(
     return desc;
 }
 
-AXIS2_DECLARE(axis2_woden_desc_t *)
+AXIS2_EXTERN axis2_woden_desc_t * AXIS2_CALL
 axis2_woden_desc_to_wsdl_obj(
         void *desc,
         const axis2_env_t *env)
@@ -490,7 +490,7 @@ axis2_woden_desc_to_wsdl_obj(
     return desc;
 }
 
-AXIS2_DECLARE(axis2_woden_desc_t *)
+AXIS2_EXTERN axis2_woden_desc_t * AXIS2_CALL
 axis2_woden_desc_to_wsdl_component(
         void *desc,
         const axis2_env_t *env)
@@ -754,7 +754,7 @@ create(const axis2_env_t *env)
     return &(desc_impl->desc);
 }
 
-AXIS2_DECLARE(axis2_woden_desc_t *)
+AXIS2_EXTERN axis2_woden_desc_t * AXIS2_CALL
 axis2_woden_desc_create(const axis2_env_t *env)
 {
     axis2_woden_desc_impl_t *desc_impl = NULL;

@@ -380,7 +380,7 @@ axis2_status_t AXIS2_CALL axis2_array_list_free(struct axis2_array_list *array_l
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_array_list_free_void_arg(void *array_list, 
                                 const axis2_env_t *env)
 {

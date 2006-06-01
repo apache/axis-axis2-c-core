@@ -83,7 +83,7 @@ axis2_woden_element_extensible_has_ext_elements_for_namespace(
 
 
 
-AXIS2_DECLARE(axis2_woden_element_extensible_t *)
+AXIS2_EXTERN axis2_woden_element_extensible_t * AXIS2_CALL
 axis2_woden_element_extensible_create(
         const axis2_env_t *env)
 {

@@ -26,7 +26,7 @@ static int is_init_socket = 0;
 axis2_bool_t axis2_init_socket();
 #endif
 
-AXIS2_DECLARE(axis2_socket_t )
+AXIS2_EXTERN axis2_socket_t  AXIS2_CALL
 axis2_network_handler_open_socket(const axis2_env_t *env, char *server, int port)
 {
 	axis2_socket_t sock = AXIS2_INVALID_SOCKET;
@@ -91,7 +91,7 @@ if (is_init_socket == 0)
 	return sock;
 }
 
-AXIS2_DECLARE( axis2_socket_t )
+AXIS2_EXTERN  axis2_socket_t  AXIS2_CALL
 axis2_network_handler_create_server_socket(const axis2_env_t *env, int port)
 {
 	axis2_socket_t sock = AXIS2_INVALID_SOCKET;
@@ -141,7 +141,7 @@ axis2_network_handler_create_server_socket(const axis2_env_t *env, int port)
 	return sock;
 }
 
-AXIS2_DECLARE(axis2_status_t )
+AXIS2_EXTERN axis2_status_t  AXIS2_CALL
 axis2_network_handler_close_socket (const axis2_env_t *env,  axis2_socket_t socket)
 {
     int i = 0;
@@ -159,7 +159,7 @@ axis2_network_handler_close_socket (const axis2_env_t *env,  axis2_socket_t sock
 	return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_network_handler_set_sock_option(const axis2_env_t *env, axis2_socket_t socket, 
 						int option, int value)
 {
@@ -175,7 +175,7 @@ axis2_network_handler_set_sock_option(const axis2_env_t *env, axis2_socket_t soc
 	return AXIS2_FAILURE;    
 }
 
-AXIS2_DECLARE(axis2_socket_t)						
+AXIS2_EXTERN axis2_socket_t AXIS2_CALL						
 axis2_network_handler_svr_socket_accept(const axis2_env_t *env, 
 						axis2_socket_t svr_socket)
 {
@@ -240,7 +240,7 @@ axis2_bool_t axis2_init_socket()
 #endif
 
 
-AXIS2_DECLARE(axis2_char_t*)
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_network_handler_get_svr_ip(const axis2_env_t *env, 
                                  axis2_socket_t socket)
 {

@@ -67,7 +67,7 @@ axis2_http_request_line_free(axis2_http_request_line_t *request_line,
                             const axis2_env_t *env);								
 /***************************** End of function headers ************************/
 
-AXIS2_DECLARE(axis2_http_request_line_t *) 
+AXIS2_EXTERN axis2_http_request_line_t * AXIS2_CALL 
 axis2_http_request_line_create(const axis2_env_t *env, axis2_char_t *method, 
                                 axis2_char_t *uri, axis2_char_t *http_version)
 {
@@ -144,7 +144,7 @@ axis2_http_request_line_free(axis2_http_request_line_t *request_line,
 	return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_http_request_line_t*) 
+AXIS2_EXTERN axis2_http_request_line_t* AXIS2_CALL 
 axis2_http_request_line_parse_line(const axis2_env_t *env, const axis2_char_t *str)
 {
     axis2_char_t *req_line = NULL;

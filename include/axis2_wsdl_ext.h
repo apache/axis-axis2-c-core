@@ -74,7 +74,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext
  * Creates wsdl ext struct
  * @return pointer to newly created wsdl ext
  */
-AXIS2_DECLARE(axis2_wsdl_ext_t *) 
+AXIS2_EXTERN axis2_wsdl_ext_t * AXIS2_CALL 
 axis2_wsdl_ext_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/

@@ -178,7 +178,7 @@ struct axis2_wsdl_binding_op
 /** create Wsdl Binding Operation struct
  * @return pointer to newly created wsdl wsdl_binding_op
  */
-AXIS2_DECLARE(axis2_wsdl_binding_op_t *) 
+AXIS2_EXTERN axis2_wsdl_binding_op_t * AXIS2_CALL 
 axis2_wsdl_binding_op_create (const axis2_env_t *env);
 
 /**************************** Start of function macros ************************/

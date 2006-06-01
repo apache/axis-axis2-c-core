@@ -74,7 +74,7 @@ axis2_http_svr_thread_set_worker(axis2_http_svr_thread_t *svr_thread,
 axis2_status_t AXIS2_CALL 
 axis2_http_svr_thread_free (axis2_http_svr_thread_t *svr_thread, 
 						const axis2_env_t *env);
-AXIS2_DECLARE (const axis2_env_t*)
+AXIS2_EXTERN const axis2_env_t* AXIS2_CALL
 init_thread_env(const axis2_env_t **system_env);
 
 void * AXIS2_THREAD_FUNC

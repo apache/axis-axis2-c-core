@@ -150,7 +150,7 @@ static axis2_woden_types_t *
 create(const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_types_element(
         void *types,
         const axis2_env_t *env)
@@ -192,7 +192,7 @@ axis2_woden_types_to_types_element_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_documentable_element(
         void *types,
         const axis2_env_t *env)
@@ -236,7 +236,7 @@ axis2_woden_types_to_documentable_element_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_documentable(
         void *types,
         const axis2_env_t *env)
@@ -279,7 +279,7 @@ axis2_woden_types_to_documentable_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_wsdl_obj(
         void *types,
         const axis2_env_t *env)
@@ -324,7 +324,7 @@ axis2_woden_types_to_wsdl_obj_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_wsdl_component(
         void *types,
         const axis2_env_t *env)
@@ -368,7 +368,7 @@ axis2_woden_types_to_wsdl_component_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_attr_extensible(
         void *types,
         const axis2_env_t *env)
@@ -416,7 +416,7 @@ axis2_woden_types_to_attr_extensible_free(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_element_extensible(
         void *types,
         const axis2_env_t *env)
@@ -596,7 +596,7 @@ create(const axis2_env_t *env)
     return &(types_impl->types);
 }
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_create(const axis2_env_t *env)
 {
     axis2_woden_types_impl_t *types_impl = NULL;

@@ -169,7 +169,7 @@ struct axis2_callback
     axis2_callback_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_callback_t*) axis2_callback_create(const axis2_env_t *env);
+AXIS2_EXTERN axis2_callback_t *AXIS2_CALL axis2_callback_create(const axis2_env_t *env);
     
 /************************** Start of function macros **************************/
 

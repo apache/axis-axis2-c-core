@@ -185,7 +185,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder
  * Creates description builder struct
  * @return pointer to newly created description builder
  */
-AXIS2_DECLARE(axis2_desc_builder_t *)
+AXIS2_EXTERN axis2_desc_builder_t * AXIS2_CALL
 axis2_desc_builder_create (const axis2_env_t *env);
 
 /**
@@ -193,7 +193,7 @@ axis2_desc_builder_create (const axis2_env_t *env);
  * @param engine
  * @return pointer to newly created description builder
  */
-AXIS2_DECLARE(axis2_desc_builder_t *)
+AXIS2_EXTERN axis2_desc_builder_t * AXIS2_CALL
 axis2_desc_builder_create_with_dep_engine (
                                         const axis2_env_t *env,
                                         struct axis2_dep_engine *engine);
@@ -203,7 +203,7 @@ axis2_desc_builder_create_with_dep_engine (
  * @param engine                                        
  * @return pointer to newly created description builder
  */
-AXIS2_DECLARE(axis2_desc_builder_t *) 
+AXIS2_EXTERN axis2_desc_builder_t * AXIS2_CALL 
 axis2_desc_builder_create_with_file_and_dep_engine (
                                         const axis2_env_t *env, 
                                         axis2_char_t *file_name, 

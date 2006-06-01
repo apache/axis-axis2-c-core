@@ -35,31 +35,31 @@ struct axis2_conf;
  * @ingroup axis2_core_utils
  * @{
  */
-    AXIS2_DECLARE(axis2_msg_ctx_t *)
+    AXIS2_EXTERN axis2_msg_ctx_t * AXIS2_CALL
     axis2_core_utils_create_out_msg_ctx(const axis2_env_t *env,
                                 axis2_msg_ctx_t *in_msg_ctx);
 
-    AXIS2_DECLARE(void)
+    AXIS2_EXTERN void AXIS2_CALL
     axis2_core_utils_reset_out_msg_ctx(const axis2_env_t *env,
                                     axis2_msg_ctx_t *out_msg_ctx);
                                     
-    AXIS2_DECLARE(axis2_qname_t*)
+    AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
     axis2_core_utils_get_module_qname(const axis2_env_t *env, axis2_char_t *name, 
                                     axis2_char_t *version);
                                     
-    AXIS2_DECLARE(axis2_status_t)
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_core_utils_calculate_default_module_version(const axis2_env_t *env, 
                         axis2_hash_t *modules_map, struct axis2_conf *axis_conf);
     
-    AXIS2_DECLARE(axis2_char_t *)
+    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_core_utils_get_module_name(const axis2_env_t *env, 
                                     axis2_char_t *module_name);
                                     
-    AXIS2_DECLARE(axis2_char_t *)
+    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_core_utils_get_module_version(const axis2_env_t *env, 
                                         axis2_char_t *module_name);
                                         
-    AXIS2_DECLARE(axis2_bool_t)
+    AXIS2_EXTERN axis2_bool_t AXIS2_CALL
     axis2_core_utils_is_latest_mod_ver(const axis2_env_t *env, 
                                         axis2_char_t *module_ver, 
                                         axis2_char_t *current_def_ver);

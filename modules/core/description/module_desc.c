@@ -232,7 +232,7 @@ axis2_module_desc_create (const axis2_env_t *env)
 	return &(module_desc_impl->module_desc);
 }
 
-AXIS2_DECLARE(axis2_module_desc_t *) 
+AXIS2_EXTERN axis2_module_desc_t * AXIS2_CALL 
 axis2_module_desc_create_with_qname (const axis2_env_t *env, axis2_qname_t *qname)
 {
 	axis2_module_desc_impl_t *module_desc_impl = NULL;

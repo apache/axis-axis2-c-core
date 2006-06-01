@@ -66,7 +66,7 @@ axis2_stack_get_at(axis2_stack_t *stack,
                    int i);
                                                 
 
-AXIS2_DECLARE(axis2_stack_t *)
+AXIS2_EXTERN axis2_stack_t * AXIS2_CALL
 axis2_stack_create(const axis2_env_t *env)
 {
     axis2_stack_impl_t *stack_impl = NULL;

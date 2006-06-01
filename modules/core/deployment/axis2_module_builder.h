@@ -77,7 +77,7 @@ AXIS2_DECLARE_DATA struct axis2_module_builder
  * Creates module builder struct
  * @return pointer to newly created module builder
  */
-AXIS2_DECLARE(axis2_module_builder_t *) 
+AXIS2_EXTERN axis2_module_builder_t * AXIS2_CALL 
 axis2_module_builder_create (const axis2_env_t *env);
 
 /**
@@ -87,7 +87,7 @@ axis2_module_builder_create (const axis2_env_t *env);
  * @param module
  * @return pointer to newly created module builder
  */
-AXIS2_DECLARE(axis2_module_builder_t *)
+AXIS2_EXTERN axis2_module_builder_t * AXIS2_CALL
 axis2_module_builder_create_with_file_and_dep_engine_and_module (const axis2_env_t *env,
                                                 axis2_char_t *file_name,
                                                 struct axis2_dep_engine *dep_engine,

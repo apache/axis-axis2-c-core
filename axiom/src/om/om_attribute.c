@@ -86,7 +86,7 @@ typedef struct axis2_om_attribute_impl
 
 /*************************************** ***************************************/
 
-AXIS2_DECLARE(axis2_om_attribute_t*)
+AXIS2_EXTERN axis2_om_attribute_t* AXIS2_CALL
 axis2_om_attribute_create (const axis2_env_t *env,
                            const axis2_char_t * localname,
                            const axis2_char_t * value,

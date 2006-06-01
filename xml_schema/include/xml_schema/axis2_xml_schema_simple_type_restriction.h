@@ -109,13 +109,13 @@ struct axis2_xml_schema_simple_type_restriction
  * a reference to a named content model group (group), or an element wildcard 
  * (any).
  */
-AXIS2_DECLARE(axis2_xml_schema_simple_type_restriction_t *)
+AXIS2_EXTERN axis2_xml_schema_simple_type_restriction_t * AXIS2_CALL
 axis2_xml_schema_simple_type_restriction_create(const axis2_env_t *env);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor
  
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_simple_type_restriction_resolve_methods(
                     axis2_xml_schema_simple_type_restriction_t *simple_type_restriction,
                     const axis2_env_t *env,

@@ -122,7 +122,7 @@ create(
     return &(wsdl_ref_impl->wsdl_ref);
 }
 
-AXIS2_DECLARE(axis2_woden_wsdl_ref_t *)
+AXIS2_EXTERN axis2_woden_wsdl_ref_t * AXIS2_CALL
 axis2_woden_wsdl_ref_create(
         const axis2_env_t *env)
 {

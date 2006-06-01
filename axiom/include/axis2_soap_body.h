@@ -157,7 +157,7 @@ struct axis2_soap_builder;
     * @param env Environment. MUST NOT be NULL
     */
    
-AXIS2_DECLARE(axis2_soap_body_t *)
+AXIS2_EXTERN axis2_soap_body_t * AXIS2_CALL
 axis2_soap_body_create_with_parent(const axis2_env_t *env, 
                                    struct axis2_soap_envelope *envelope);
     

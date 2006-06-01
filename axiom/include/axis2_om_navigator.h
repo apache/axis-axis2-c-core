@@ -134,7 +134,7 @@ struct axis2_om_navigator
  * or returns NULL on error
  */
 
-AXIS2_DECLARE(axis2_om_navigator_t *)
+AXIS2_EXTERN axis2_om_navigator_t * AXIS2_CALL
 axis2_om_navigator_create(const axis2_env_t *env,
                           axis2_om_node_t *node);
                           

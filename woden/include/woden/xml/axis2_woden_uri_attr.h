@@ -110,7 +110,7 @@ struct axis2_woden_uri_attr
  * TODO This constructor is not used for extension attributes, but may be useful if
  * parsing of native WSDL attributes is changed to use the XMLAttr interface.
  */
-AXIS2_DECLARE(axis2_woden_uri_attr_t *)
+AXIS2_EXTERN axis2_woden_uri_attr_t * AXIS2_CALL
 axis2_woden_uri_attr_create(
         const axis2_env_t *env,
         struct axis2_om_element *owner_el,
@@ -120,7 +120,7 @@ axis2_woden_uri_attr_create(
 
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_uri_attr_resolve_methods(
         axis2_woden_uri_attr_t *uri_attr,
         const axis2_env_t *env,

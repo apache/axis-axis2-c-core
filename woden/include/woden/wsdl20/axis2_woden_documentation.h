@@ -89,27 +89,27 @@ struct axis2_woden_documentation
     axis2_woden_documentation_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_documentation_t *)
+AXIS2_EXTERN axis2_woden_documentation_t * AXIS2_CALL
 axis2_woden_documentation_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_documentation_t *)
+AXIS2_EXTERN axis2_woden_documentation_t * AXIS2_CALL
 axis2_woden_documentation_to_documentation_element(
         void *documentation,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_documentation_t *)
+AXIS2_EXTERN axis2_woden_documentation_t * AXIS2_CALL
 axis2_woden_documentation_to_attr_extensible(
         void *documentation,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_documentation_t *)
+AXIS2_EXTERN axis2_woden_documentation_t * AXIS2_CALL
 axis2_woden_documentation_to_element_extensible(
         void *documentation,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_documentation_resolve_methods(
         axis2_woden_documentation_t *documentation,
         const axis2_env_t *env,

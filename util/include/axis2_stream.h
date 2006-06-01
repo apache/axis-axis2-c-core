@@ -161,20 +161,20 @@ AXIS2_DECLARE_DATA struct axis2_stream
 /** \brief Constructor for creating an in memory stream
   * @return axis2_stream (in memory)
   */
-AXIS2_DECLARE(axis2_stream_t *) axis2_stream_create_basic (const axis2_env_t *env);
+AXIS2_EXTERN axis2_stream_t *AXIS2_CALL axis2_stream_create_basic (const axis2_env_t *env);
 
 /** \brief Constructor for creating a file stream
   * @param valid file pointer (opened file)
   * @return axis2_stream (file)
   */
-AXIS2_DECLARE(axis2_stream_t *)
+AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
 axis2_stream_create_file (const axis2_env_t *env, FILE *fp);
 
 /** \brief Constructor for creating a file stream
   * @param valid socket (opened socket)
   * @return axis2_stream (socket)
   */
-AXIS2_DECLARE(axis2_stream_t *)
+AXIS2_EXTERN axis2_stream_t * AXIS2_CALL
 axis2_stream_create_socket (const axis2_env_t *env, int socket);
 
 /**
@@ -182,7 +182,7 @@ axis2_stream_create_socket (const axis2_env_t *env, int socket);
  * cast into appropriate type and then pass the cast object
  * into the module_desc structure's free method
  */
-AXIS2_DECLARE(axis2_status_t) 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_stream_free_void_arg (void *stream,
                             const axis2_env_t *env);
 

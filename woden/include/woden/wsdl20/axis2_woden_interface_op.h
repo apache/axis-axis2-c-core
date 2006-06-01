@@ -116,28 +116,28 @@ struct axis2_woden_interface_op
     axis2_woden_interface_op_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_interface_op_t *)
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
 axis2_woden_interface_op_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_DECLARE(axis2_woden_interface_op_t *)
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
 axis2_woden_interface_op_to_interface_op_element(
         void *interface_op,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_interface_op_t *)
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
 axis2_woden_interface_op_to_nested_configurable(
         void *interface_op,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_interface_op_t *)
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
 axis2_woden_interface_op_to_configurable(
         void *interface_op,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_interface_op_resolve_methods(
         axis2_woden_interface_op_t *interface_op,
         const axis2_env_t *env,

@@ -148,7 +148,7 @@ AXIS2_DECLARE_DATA struct axis2_arch_file_data
  * Creates arch file data struct
  * @return pointer to newly created arch file data
  */
-AXIS2_DECLARE(axis2_arch_file_data_t *)
+AXIS2_EXTERN axis2_arch_file_data_t * AXIS2_CALL
 axis2_arch_file_data_create(const axis2_env_t *env);
 
 /**
@@ -157,7 +157,7 @@ axis2_arch_file_data_create(const axis2_env_t *env);
  * @param file folder name of service or module
  * @return pointer to newly created arch file data
  */
-AXIS2_DECLARE(axis2_arch_file_data_t *) 
+AXIS2_EXTERN axis2_arch_file_data_t * AXIS2_CALL 
 axis2_arch_file_data_create_with_type_and_file(const axis2_env_t *env,
                                                     int type,
                                                     axis2_file_t *file);
@@ -168,7 +168,7 @@ axis2_arch_file_data_create_with_type_and_file(const axis2_env_t *env,
  * @param name 
  * @return pointer to newly created arch file data
  */
-AXIS2_DECLARE(axis2_arch_file_data_t *)
+AXIS2_EXTERN axis2_arch_file_data_t * AXIS2_CALL
 axis2_arch_file_data_create_with_type_and_name(const axis2_env_t *env,
                                                     int type,
                                                     axis2_char_t *name);

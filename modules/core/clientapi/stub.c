@@ -85,7 +85,7 @@ axis2_stub_get_options(axis2_stub_t *stub,
 
 /************************** End of function prototypes ************************/
 
-AXIS2_DECLARE(axis2_stub_t *) 
+AXIS2_EXTERN axis2_stub_t * AXIS2_CALL 
 axis2_stub_create (const axis2_env_t *env)
 {
     axis2_stub_impl_t *stub_impl = NULL;
@@ -127,7 +127,7 @@ axis2_stub_create (const axis2_env_t *env)
     return &(stub_impl->stub);
 }
 
-AXIS2_DECLARE(axis2_stub_t *) 
+AXIS2_EXTERN axis2_stub_t * AXIS2_CALL 
 axis2_stub_create_with_endpoint_ref_and_client_home (const axis2_env_t *env,
                                         axis2_endpoint_ref_t *endpoint_ref,
                                         axis2_char_t *client_home)
@@ -171,7 +171,7 @@ axis2_stub_create_with_endpoint_ref_and_client_home (const axis2_env_t *env,
     return &(stub_impl->stub);
 }
 
-AXIS2_DECLARE(axis2_stub_t *) 
+AXIS2_EXTERN axis2_stub_t * AXIS2_CALL 
 axis2_stub_create_with_endpoint_uri_and_client_home (const axis2_env_t *env,
                                         axis2_char_t *endpoint_uri,
                                         axis2_char_t *client_home)

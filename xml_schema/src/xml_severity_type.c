@@ -62,7 +62,7 @@ axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_severity_type_type(void *severity_type,
                             axis2_env_t **env);
 
-AXIS2_DECLARE(axis2_xml_severity_type_t *)
+AXIS2_EXTERN axis2_xml_severity_type_t * AXIS2_CALL
 axis2_xml_severity_type_create(axis2_env_t **env,
                             axis2_char_t *value)
 {

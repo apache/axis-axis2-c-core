@@ -151,14 +151,14 @@ AXIS2_DECLARE_DATA struct axis2_http_simple_response
 };
 
 
-AXIS2_DECLARE(axis2_http_simple_response_t *) 
+AXIS2_EXTERN axis2_http_simple_response_t * AXIS2_CALL 
 axis2_http_simple_response_create (const axis2_env_t *env,
                         axis2_http_status_line_t *status_line,
                         const axis2_http_header_t **http_headers,
                         const axis2_ssize_t http_hdr_count,
                         axis2_stream_t *content);
 
-AXIS2_DECLARE(axis2_http_simple_response_t *) 
+AXIS2_EXTERN axis2_http_simple_response_t * AXIS2_CALL 
 axis2_http_simple_response_create_default(const axis2_env_t *env);
     
 /************************** Start of function macros **************************/

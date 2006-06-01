@@ -103,14 +103,14 @@ AXIS2_DECLARE_DATA struct axis2_thread_pool
 * @param allocator user defined allocator for the memory allocation.
 * @return initialized thread_pool. NULL on error.
 */
-AXIS2_DECLARE(axis2_thread_pool_t *) axis2_thread_pool_init(
+AXIS2_EXTERN axis2_thread_pool_t * AXIS2_CALL axis2_thread_pool_init(
 					axis2_allocator_t *allocator);
 
 /**
  * This function can be used to initialize the environment in case of 
  * spawning a new thread via a thread function
  */
-AXIS2_DECLARE (struct axis2_env *)
+AXIS2_EXTERN struct axis2_env * AXIS2_CALL
 axis2_init_thread_env(const struct axis2_env *system_env);
 
 #define AXIS2_THREAD_POOL_GET_THREAD(thread_pool, func, data) \

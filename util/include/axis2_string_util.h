@@ -24,17 +24,17 @@ extern "C"
 {
 #endif
 
-AXIS2_DECLARE(axis2_array_list_t *)
+AXIS2_EXTERN axis2_array_list_t * AXIS2_CALL
 axis2_tokenize(const axis2_env_t *env,
                axis2_char_t *in, 
                int delim);
 
-AXIS2_DECLARE(axis2_array_list_t *)
+AXIS2_EXTERN axis2_array_list_t * AXIS2_CALL
 axis2_first_token(const axis2_env_t *env,
                   axis2_char_t *in,
                   int delim);
 
-AXIS2_DECLARE(axis2_array_list_t *)
+AXIS2_EXTERN axis2_array_list_t * AXIS2_CALL
 axis2_last_token(const axis2_env_t *env,
                  axis2_char_t *in,
                  int delim);

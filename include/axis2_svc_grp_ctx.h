@@ -120,7 +120,7 @@ struct axis2_svc_grp_ctx
 };
 
 
-AXIS2_DECLARE(axis2_svc_grp_ctx_t*) 
+AXIS2_EXTERN axis2_svc_grp_ctx_t* AXIS2_CALL 
 axis2_svc_grp_ctx_create(const axis2_env_t *env, 
                         struct axis2_svc_grp *svc_grp, 
                         struct axis2_conf_ctx *conf_ctx);

@@ -582,7 +582,8 @@ extern "C"
         int status_code;
     } axis2_error_t;
 
-AXIS2_DECLARE(axis2_status_t) axis2_error_init();
+AXIS2_EXTERN 
+axis2_status_t AXIS2_CALL axis2_error_init();
 
 #define AXIS2_ERROR_FREE(error) ((error->ops)->free(error))
 

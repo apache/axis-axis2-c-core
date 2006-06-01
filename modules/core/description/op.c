@@ -331,7 +331,7 @@ axis2_op_add_msg_ctx_out_in(axis2_op_t *op,
                                 
 /************************* End of function headers ****************************/	
 
-AXIS2_DECLARE(axis2_op_t *)
+AXIS2_EXTERN axis2_op_t * AXIS2_CALL
 axis2_op_create (const axis2_env_t *env)
 {
     axis2_param_container_t *param_container_l = NULL;

@@ -71,7 +71,7 @@ struct axis2_async_result
     axis2_async_result_ops_t *ops;    
 };
 
-AXIS2_DECLARE(axis2_async_result_t*) 
+AXIS2_EXTERN axis2_async_result_t* AXIS2_CALL 
 axis2_async_result_create(const axis2_env_t *env, 
 					      axis2_msg_ctx_t *result); 
     
