@@ -1,4 +1,4 @@
-# Anjuta Version 1.2.4 
+# Anjuta Version 1.2.4a 
 Compatibility Level: 1 
 
 <PROJECT_DESCRIPTION_START>
@@ -22,7 +22,7 @@ Compatibility Level: 1
 
 props.file.type=project
 
-anjuta.version=1.2.4
+anjuta.version=1.2.4a
 anjuta.compatibility.level=1
 
 project.name=axis2c
@@ -58,7 +58,7 @@ preferences.build.option.warn.undef=0
 preferences.autoformat.custom.style=-nbad -bap -nbc -bbo -bl -bli0 -bls -ncdb -nce -cp1 -cs -di2 -ndj -nfc1 -nfca -hnl -i4 -ip5 -lp -pcs -nprs -psl -saf -sai -saw -nsc -nsob -ts4 -nut -nbfda
 preferences.indent.opening=0
 preferences.autoformat.disable=1
-preferences.indent.automatic=0
+preferences.indent.automatic=1
 preferences.use.tabs=0
 preferences.indent.size=4
 preferences.tabsize=4
