@@ -27,8 +27,6 @@ axis2_woden_svc_element_resolve_methods(
     
     svc_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    svc_element->ops->to_svc_element_free = axis2_hash_get(methods, 
-            "to_svc_element_free", AXIS2_HASH_KEY_STRING);
     svc_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
     svc_element->ops->set_qname = axis2_hash_get(methods,

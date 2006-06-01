@@ -27,9 +27,6 @@ axis2_woden_interface_fault_ref_element_resolve_methods(
     
     interface_fault_ref_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    interface_fault_ref_element->ops->to_interface_fault_ref_element_free = 
-            axis2_hash_get(methods, "to_interface_fault_ref_element_free", 
-            AXIS2_HASH_KEY_STRING);
     interface_fault_ref_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
 

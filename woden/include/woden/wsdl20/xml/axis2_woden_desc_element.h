@@ -68,11 +68,6 @@ struct axis2_woden_desc_element_ops
             void *desc_el,
             const axis2_env_t *env);
     
-    axis2_status_t (AXIS2_CALL *
-    to_desc_element_free) (
-            void *desc_el,
-            const axis2_env_t *env);
-    
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *desc_el,
             const axis2_env_t *env);
@@ -352,10 +347,6 @@ axis2_woden_desc_element_resolve_methods(
 #define AXIS2_WODEN_DESC_ELEMENT_FREE(desc_el, env) \
 		(((axis2_woden_desc_element_t *) desc_el)->ops->\
          free (desc_el, env))
-
-#define AXIS2_WODEN_DESC_ELEMENT_TO_DESC_ELEMENT_FREE(desc_el, env) \
-		(((axis2_woden_desc_element_t *) desc_el)->ops->\
-         to_desc_element_free (desc_el, env))
 
 #define AXIS2_WODEN_DESC_ELEMENT_TYPE(desc_el, env) \
 		(((axis2_woden_desc_element_t *) desc_el)->ops->\

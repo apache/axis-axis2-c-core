@@ -71,11 +71,6 @@ struct axis2_woden_configurable_element_ops
             void *conf_el,
             const axis2_env_t *env);
     
-    axis2_status_t (AXIS2_CALL *
-    to_configurable_element_free) (
-            void *conf_el,
-            const axis2_env_t *env);
-    
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *conf_el,
@@ -123,11 +118,6 @@ axis2_woden_configurable_element_resolve_methods(
 #define AXIS2_WODEN_CONFIGURABLE_ELEMENT_FREE(conf_el, env) \
 		(((axis2_woden_configurable_element_t *) conf_el)->ops->\
          free (conf_el, env))
-
-#define AXIS2_WODEN_CONFIGURABLE_ELEMENT_TO_CONFIGURABLE_ELEMENT_FREE(conf_el, \
-        env) \
-		(((axis2_woden_configurable_element_t *) conf_el)->ops->\
-         to_configurable_element_free (conf_el, env))
 
 #define AXIS2_WODEN_CONFIGURABLE_ELEMENT_TYPE(conf_el, env) \
 		(((axis2_woden_configurable_element_t *) conf_el)->ops->\

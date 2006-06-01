@@ -27,9 +27,6 @@ axis2_woden_interface_op_element_resolve_methods(
     
     interface_op_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    interface_op_element->ops->to_interface_op_element_free = 
-            axis2_hash_get(methods, "to_interface_op_element_free", 
-            AXIS2_HASH_KEY_STRING);
     interface_op_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
 

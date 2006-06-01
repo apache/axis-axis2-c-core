@@ -63,16 +63,6 @@ struct axis2_woden_interface_msg_ref_element_ops
             void *interface_msg_ref_element,
             const axis2_env_t *env);
  
-    axis2_status_t (AXIS2_CALL *
-    to_interface_msg_ref_element_free) (
-            void *interface_msg_ref_element,
-            const axis2_env_t *env);
-    
-    axis2_hash_t *(AXIS2_CALL *
-    super_objs) (
-            void *interface_msg_ref_element,
-            const axis2_env_t *env);
- 
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *interface_msg_ref_element,
@@ -175,14 +165,6 @@ axis2_woden_interface_msg_ref_element_resolve_methods(
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_FREE(interface_msg_ref_element, env) \
 		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
          free (interface_msg_ref_element, env))
-
-#define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_TO_INTERFACE_MSG_REF_ELEMENT_FREE(interface_msg_ref_element, env) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
-         to_interface_msg_ref_element_free (interface_msg_ref_element, env))
-
-#define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SUPER_OBJS(interface_msg_ref_element, env) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
-         super_objs (interface_msg_ref_element, env))
 
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_TYPE(interface_msg_ref_element, env) \
 		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\

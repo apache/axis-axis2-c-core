@@ -27,8 +27,6 @@ axis2_woden_nested_element_resolve_methods(
     
     nested_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    nested_element->ops->to_nested_element_free = axis2_hash_get(methods, 
-            "to_nested_element_free", AXIS2_HASH_KEY_STRING);
     nested_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
     nested_element->ops->set_parent_element = axis2_hash_get(methods,

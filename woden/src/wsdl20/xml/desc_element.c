@@ -27,8 +27,6 @@ axis2_woden_desc_element_resolve_methods(
     
     desc_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    desc_element->ops->to_desc_element_free = axis2_hash_get(methods, 
-            "to_desc_element_free", AXIS2_HASH_KEY_STRING);
     desc_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
 

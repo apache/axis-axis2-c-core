@@ -27,8 +27,6 @@ axis2_woden_endpoint_element_resolve_methods(
     
     endpoint_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    endpoint_element->ops->to_endpoint_element_free = axis2_hash_get(methods, 
-            "to_endpoint_element_free", AXIS2_HASH_KEY_STRING);
     endpoint_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
     endpoint_element->ops->set_name = axis2_hash_get(methods,

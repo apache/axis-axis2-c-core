@@ -63,11 +63,6 @@ struct axis2_woden_import_element_ops
             void *import_el,
             const axis2_env_t *env);
     
-    axis2_status_t (AXIS2_CALL *
-    to_import_element_free) (
-            void *import_el,
-            const axis2_env_t *env);
-    
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *import_el,
             const axis2_env_t *env);
@@ -120,17 +115,6 @@ axis2_woden_import_element_resolve_methods(
 #define AXIS2_WODEN_IMPORT_ELEMENT_FREE(import_el, env) \
 		(((axis2_woden_import_element_t *) import_el)->ops->\
          free (import_el, env))
-
-#define AXIS2_WODEN_IMPORT_ELEMENT_TO_IMPORT_ELEMENT_FREE(import_el, env) \
-		(((axis2_woden_import_element_t *) import_el)->ops->\
-         to_import_element_free (import_el, env))
-#define AXIS2_WODEN_IMPORT_ELEMENT_FREE(import_el, env) \
-		(((axis2_woden_import_element_t *) import_el)->ops->\
-         free (import_el, env))
-
-#define AXIS2_WODEN_IMPORT_ELEMENT_TO_IMPORT_ELEMENT_FREE(import_el, env) \
-		(((axis2_woden_import_element_t *) import_el)->ops->\
-         to_import_element_free (import_el, env))
 
 #define AXIS2_WODEN_IMPORT_ELEMENT_TYPE(import_el, env) \
 		(((axis2_woden_import_element_t *) import_el)->ops->\

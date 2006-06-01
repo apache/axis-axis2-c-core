@@ -27,10 +27,9 @@ axis2_woden_configurable_element_resolve_methods(
     
     configurable_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    configurable_element->ops->to_configurable_element_free = axis2_hash_get(methods, 
-            "to_configurable_element_free", AXIS2_HASH_KEY_STRING);
     configurable_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
+
     configurable_element->ops->add_feature_element = axis2_hash_get(methods,
             "add_feature_element", AXIS2_HASH_KEY_STRING);
     configurable_element->ops->get_feature_elements = axis2_hash_get(methods,

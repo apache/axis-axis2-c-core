@@ -39,6 +39,7 @@
 #include <axis2_const.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
+#include <woden/axis2_woden.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -65,6 +66,12 @@ struct axis2_woden_ext_element_ops
     free) (void *ext_element,
             const axis2_env_t *env);
     
+    axis2_woden_obj_types_t (AXIS2_CALL *
+    type) (
+            void *ext_element,
+            const axis2_env_t *env);
+
+
     axis2_status_t (AXIS2_CALL *
     set_ext_type) (void *ext_element,
                         const axis2_env_t *env,
@@ -98,13 +105,17 @@ axis2_woden_ext_element_create(const axis2_env_t *env);
  * of the child class
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_ext_element_resolve_methods(axis2_woden_ext_element_t *ext_element,
-                                const axis2_env_t *env,
-                                axis2_woden_ext_element_t *ext_element_impl,
-                                axis2_hash_t *methods);
+axis2_woden_ext_element_resolve_methods(
+        axis2_woden_ext_element_t *ext_element,
+        const axis2_env_t *env,
+        axis2_hash_t *methods);
 
 #define AXIS2_WODEN_EXT_ELEMENT_FREE(ext_element, env) \
 		(((axis2_woden_ext_element_t *) ext_element)->ops->free (ext_element, env))
+
+#define AXIS2_WODEN_EXT_ELEMENT_ELEMENT_TYPE(ext_element, env) \
+		(((axis2_woden_ext_element_t *) ext_element)->ops->\
+         type (ext_element, env))
 
 #define AXIS2_WODEN_EXT_ELEMENT_SET_EXT_TYPE(ext_element, env, qname) \
 		(((axis2_woden_ext_element_t *) ext_element)->ops->set_ext_type(ext_element, env, \

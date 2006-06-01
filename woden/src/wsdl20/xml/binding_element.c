@@ -27,9 +27,6 @@ axis2_woden_binding_element_resolve_methods(
     
     binding_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    binding_element->ops->to_binding_element_free = 
-            axis2_hash_get(methods, "to_binding_element_free", 
-            AXIS2_HASH_KEY_STRING);
     binding_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
 

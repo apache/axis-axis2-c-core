@@ -63,11 +63,6 @@ struct axis2_woden_svc_element_ops
             void *svc_el,
             const axis2_env_t *env);
     
-    axis2_status_t (AXIS2_CALL *
-    to_svc_element_free) (
-            void *svc_el,
-            const axis2_env_t *env);
-    
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *svc_el,
@@ -137,10 +132,6 @@ axis2_woden_svc_element_resolve_methods(
 #define AXIS2_WODEN_SVC_ELEMENT_FREE(svc_el, env) \
 		(((axis2_woden_svc_element_t *) svc_el)->ops->\
          free (svc_el, env))
-
-#define AXIS2_WODEN_SVC_ELEMENT_TO_SVC_ELEMENT_FREE(svc_el, env) \
-		(((axis2_woden_svc_element_t *) svc_el)->ops->\
-         to_svc_element_free (svc_el, env))
 
 #define AXIS2_WODEN_SVC_ELEMENT_TYPE(svc_el, env) \
 		(((axis2_woden_svc_element_t *) svc_el)->ops->\

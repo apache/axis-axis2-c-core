@@ -63,16 +63,6 @@ struct axis2_woden_binding_op_element_ops
             void *binding_op_element,
             const axis2_env_t *env);
  
-    axis2_status_t (AXIS2_CALL *
-    to_binding_op_element_free) (
-            void *binding_op_element,
-            const axis2_env_t *env);
-    
-    axis2_hash_t *(AXIS2_CALL *
-    super_objs) (
-            void *binding_op_element,
-            const axis2_env_t *env);
- 
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *binding_op_element,
@@ -171,14 +161,6 @@ axis2_woden_binding_op_element_resolve_methods(
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_FREE(binding_op_element, env) \
 		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
          free (binding_op_element, env))
-
-#define AXIS2_WODEN_BINDING_OP_ELEMENT_TO_BINDING_OP_ELEMENT_FREE(binding_op_element, env) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
-         to_binding_op_element_free (binding_op_element, env))
-
-#define AXIS2_WODEN_BINDING_OP_ELEMENT_SUPER_OBJS(binding_op_element, env) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
-         super_objs (binding_op_element, env))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_TYPE(binding_op_element, env) \
 		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\

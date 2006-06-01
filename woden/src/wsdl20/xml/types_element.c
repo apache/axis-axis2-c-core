@@ -27,8 +27,6 @@ axis2_woden_types_element_resolve_methods(
     
     types_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    types_element->ops->to_types_element_free = axis2_hash_get(methods, 
-            "to_types_element_free", AXIS2_HASH_KEY_STRING);
     types_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
     types_element->ops->set_type_system = axis2_hash_get(methods,

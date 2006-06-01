@@ -27,8 +27,6 @@ axis2_woden_import_element_resolve_methods(
     
     import_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    import_element->ops->to_import_element_free = axis2_hash_get(methods, 
-            "to_import_element_free", AXIS2_HASH_KEY_STRING);
     import_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
 

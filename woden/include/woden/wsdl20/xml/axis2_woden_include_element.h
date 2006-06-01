@@ -63,11 +63,6 @@ struct axis2_woden_include_element_ops
             void *include_el,
             const axis2_env_t *env);
     
-    axis2_status_t (AXIS2_CALL *
-    to_include_element_free) (
-            void *include_el,
-            const axis2_env_t *env);
-    
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *include_el,
             const axis2_env_t *env);
@@ -110,10 +105,6 @@ axis2_woden_include_element_resolve_methods(
 #define AXIS2_WODEN_INCLUDE_ELEMENT_FREE(include_el, env) \
 		(((axis2_woden_include_element_t *) include_el)->ops->\
          free (include_el, env))
-
-#define AXIS2_WODEN_INCLUDE_ELEMENT_TO_INCLUDE_ELEMENT_FREE(include_el, env) \
-		(((axis2_woden_include_element_t *) include_el)->ops->\
-         to_include_element_free (include_el, env))
 
 #define AXIS2_WODEN_INCLUDE_ELEMENT_TYPE(include_el, env) \
 		(((axis2_woden_include_element_t *) include_el)->ops->\

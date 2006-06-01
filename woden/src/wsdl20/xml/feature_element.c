@@ -27,8 +27,6 @@ axis2_woden_feature_element_resolve_methods(
     
     feature_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    feature_element->ops->to_feature_element_free = axis2_hash_get(methods, 
-            "to_feature_element_free", AXIS2_HASH_KEY_STRING);
     feature_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
     feature_element->ops->set_ref = axis2_hash_get(methods,

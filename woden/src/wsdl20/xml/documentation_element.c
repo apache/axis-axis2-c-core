@@ -27,9 +27,6 @@ axis2_woden_documentation_element_resolve_methods(
     
     documentation_element->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    documentation_element->ops->to_documentation_element_free = 
-            axis2_hash_get(methods, "to_documentation_element_free", 
-            AXIS2_HASH_KEY_STRING);
     documentation_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
     documentation_element->ops->set_content = 

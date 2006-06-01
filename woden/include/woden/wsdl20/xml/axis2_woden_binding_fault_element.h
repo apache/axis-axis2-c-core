@@ -62,16 +62,6 @@ struct axis2_woden_binding_fault_element_ops
             void *binding_fault_element,
             const axis2_env_t *env);
  
-    axis2_status_t (AXIS2_CALL *
-    to_binding_fault_element_free) (
-            void *binding_fault_element,
-            const axis2_env_t *env);
-    
-    axis2_hash_t *(AXIS2_CALL *
-    super_objs) (
-            void *binding_fault_element,
-            const axis2_env_t *env);
- 
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *binding_fault_element,

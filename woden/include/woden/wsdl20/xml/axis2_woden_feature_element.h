@@ -61,11 +61,6 @@ struct axis2_woden_feature_element_ops
             void *doc_el,
             const axis2_env_t *env);
     
-    axis2_status_t (AXIS2_CALL *
-    to_feature_element_free) (
-            void *doc_el,
-            const axis2_env_t *env);
-    
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *doc_el,
             const axis2_env_t *env);
@@ -113,10 +108,6 @@ axis2_woden_feature_element_resolve_methods(
 #define AXIS2_WODEN_FEATURE_ELEMENT_FREE(doc_el, env) \
 		(((axis2_woden_feature_element_t *) doc_el)->ops->\
          free (doc_el, env))
-
-#define AXIS2_WODEN_FEATURE_ELEMENT_TO_FEATURE_ELEMENT_FREE(doc_el, env) \
-		(((axis2_woden_feature_element_t *) doc_el)->ops->\
-         to_feature_element_free (doc_el, env))
 
 #define AXIS2_WODEN_FEATURE_ELEMENT_TYPE(doc_el, env) \
 		(((axis2_woden_feature_element_t *) doc_el)->ops->\

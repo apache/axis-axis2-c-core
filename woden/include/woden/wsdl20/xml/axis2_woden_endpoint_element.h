@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_SVC_ELEMENT_H
-#define AXIS2_WODEN_SVC_ELEMENT_H
+#ifndef AXIS2_WODEN_ENDPOINT_ELEMENT_H
+#define AXIS2_WODEN_ENDPOINT_ELEMENT_H
 
 /**
  * @file axis2_woden_endpoint_element.h
@@ -61,11 +61,6 @@ struct axis2_woden_endpoint_element_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (
-            void *endpoint_el,
-            const axis2_env_t *env);
-    
-    axis2_status_t (AXIS2_CALL *
-    to_endpoint_element_free) (
             void *endpoint_el,
             const axis2_env_t *env);
     
@@ -135,43 +130,39 @@ axis2_woden_endpoint_element_resolve_methods(
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_SVC_ELEMENT_FREE(endpoint_el, env) \
+#define AXIS2_WODEN_ENDPOINT_ELEMENT_FREE(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          free (endpoint_el, env))
 
-#define AXIS2_WODEN_SVC_ELEMENT_TO_SVC_ELEMENT_FREE(endpoint_el, env) \
-		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
-         to_endpoint_element_free (endpoint_el, env))
-
-#define AXIS2_WODEN_SVC_ELEMENT_TYPE(endpoint_el, env) \
+#define AXIS2_WODEN_ENDPOINT_ELEMENT_TYPE(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          type (endpoint_el, env))
 
-#define AXIS2_WODEN_SVC_ELEMENT_SET_NAME(endpoint_el, env, name) \
+#define AXIS2_WODEN_ENDPOINT_ELEMENT_SET_NAME(endpoint_el, env, name) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          set_name(endpoint_el, env, name))
 
-#define AXIS2_WODEN_SVC_ELEMENT_GET_NAME(endpoint_el, env) \
+#define AXIS2_WODEN_ENDPOINT_ELEMENT_GET_NAME(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          get_name(endpoint_el, env))
 
-#define AXIS2_WODEN_SVC_ELEMENT_SET_BINDING_QNAME(endpoint_el, env, qname) \
+#define AXIS2_WODEN_ENDPOINT_ELEMENT_SET_BINDING_QNAME(endpoint_el, env, qname) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          set_binding_qname(endpoint_el, env, qname))
 
-#define AXIS2_WODEN_SVC_ELEMENT_GET_BINDING_QNAME(endpoint_el, env) \
+#define AXIS2_WODEN_ENDPOINT_ELEMENT_GET_BINDING_QNAME(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          get_binding_qname(endpoint_el, env))
 
-#define AXIS2_WODEN_SVC_ELEMENT_GET_BINDING_ELEMENT(endpoint_el, env) \
+#define AXIS2_WODEN_ENDPOINT_ELEMENT_GET_BINDING_ELEMENT(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          get_binding_element(endpoint_el, env))
 
-#define AXIS2_WODEN_SVC_ELEMENT_SET_ADDRESS(endpoint_el, env, uri) \
+#define AXIS2_WODEN_ENDPOINT_ELEMENT_SET_ADDRESS(endpoint_el, env, uri) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          set_address(endpoint_el, env, uri))
 
-#define AXIS2_WODEN_SVC_ELEMENT_GET_ADDRESS(endpoint_el, env) \
+#define AXIS2_WODEN_ENDPOINT_ELEMENT_GET_ADDRESS(endpoint_el, env) \
 		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          get_address(endpoint_el, env))
 
@@ -179,4 +170,4 @@ axis2_woden_endpoint_element_resolve_methods(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_SVC_ELEMENT_H */
+#endif /* AXIS2_WODEN_ENDPOINT_ELEMENT_H */
