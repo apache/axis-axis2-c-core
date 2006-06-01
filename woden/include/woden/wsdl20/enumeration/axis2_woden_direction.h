@@ -34,15 +34,14 @@
  *     represented by the constant OUT
  * </ul>
  * This class uses the typesafe enum pattern. Applications should use the
- * constants defined in this class to specify or to 
+ * public static final constants defined in this class to specify or to 
  * evaluate direction.
  * <p>
  * Examples:
  * <pre>
- *     AXIS2_WODEN_INTERFACE_MSG_REF_SET_DIRECTION(msg_ref, env, msg_ref->AXIS2_WODEN_IN);
- *     if(msg_ref->AXIS2_WODEN_IN == AXIS2_WODEN_INTERFACE_MSG_REF_GET_DIRECTION(msg_ref, env))
- *          ...
- *     
+ *      AXIS2_WODEN_INTERFACE_MSG_REF_SET_DIRECTION(intf_msg_ref, env, WODEN_IN);
+ *      if(0 == AXIS2_STRCMP(WODEN_IN,AXIS2_WODEN_INTERFACE_GET_DIRECTION(
+ *          intf_msg_ref, env)) ...
  * </pre>
  * 
  */
@@ -81,63 +80,50 @@ struct axis2_woden_direction_ops
             void *direction,
             const axis2_env_t *env);
     
-    axis2_status_t (AXIS2_CALL *
-    to_direction_free) (
+    void *(AXIS2_CALL *
+    get_direction_in) (
             void *direction,
             const axis2_env_t *env);
-    
-    axis2_hash_t *(AXIS2_CALL *
-    super_objs) (
+
+    void *(AXIS2_CALL *
+    get_direction_out) (
             void *direction,
             const axis2_env_t *env);
-    
-    axis2_woden_obj_types_t (AXIS2_CALL *
-    type) (
+
+    axis2_char_t *(AXIS2_CALL *
+    to_string) (
             void *direction,
             const axis2_env_t *env);
-     
+
+
 };
 
 struct axis2_woden_direction
 {
     axis2_woden_direction_ops_t *ops;
-    axis2_woden_direction_t *AXIS2_WODEN_IN;
-    axis2_woden_direction_t *AXIS2_WODEN_OUT;
     
 };
 
 AXIS2_EXTERN axis2_woden_direction_t * AXIS2_CALL
 axis2_woden_direction_create(
         const axis2_env_t *env,
-        axis2_char_t *f_value);
-
-/**
- * This is an Axis2 C internal method. This is used only from constructor
- * of the child class
- */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_direction_resolve_methods(
-        axis2_woden_direction_t *direction,
-        const axis2_env_t *env,
-        axis2_woden_direction_t *direction_impl,
-        axis2_hash_t *methods);
+        axis2_char_t *value);
 
 #define AXIS2_WODEN_DIRECTION_FREE(direction, env) \
 		(((axis2_woden_direction_t *) direction)->ops->\
          free (direction, env))
 
-#define AXIS2_WODEN_DIRECTION_TO_DIRECTION_FREE(direction, \
-        env) \
+#define AXIS2_WODEN_DIRECTION_GET_DIRECTION_IN(direction, env) \
 		(((axis2_woden_direction_t *) direction)->ops->\
-         to_direction_free (direction, env))
+         get_direction_in (direction, env))
 
-#define AXIS2_WODEN_DIRECTION_SUPER_OBJS(direction, env) \
+#define AXIS2_WODEN_DIRECTION_GET_DIRECTION_OUT(direction, env) \
 		(((axis2_woden_direction_t *) direction)->ops->\
-         super_objs (direction, env))
+         get_direction_out (direction, env))
 
-#define AXIS2_WODEN_DIRECTION_TYPE(direction, env) \
+#define AXIS2_WODEN_DIRECTION_TO_STRING(direction, env) \
 		(((axis2_woden_direction_t *) direction)->ops->\
-         type (direction, env))
+         to_string (direction, env))
 
 
 /** @} */

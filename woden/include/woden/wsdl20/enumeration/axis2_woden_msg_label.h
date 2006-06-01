@@ -80,64 +80,71 @@ struct axis2_woden_msg_label_ops
     free) (
             void *msg_label,
             const axis2_env_t *env);
-    
-    axis2_status_t (AXIS2_CALL *
-    to_msg_label_free) (
+
+    void *(AXIS2_CALL *
+    get_msg_label_in) (
             void *msg_label,
             const axis2_env_t *env);
-    
-    axis2_hash_t *(AXIS2_CALL *
-    super_objs) (
+
+    void *(AXIS2_CALL *
+    get_msg_label_out) (
             void *msg_label,
             const axis2_env_t *env);
-    
-    axis2_woden_obj_types_t (AXIS2_CALL *
-    type) (
+
+    axis2_char_t *(AXIS2_CALL *
+    to_string) (
             void *msg_label,
             const axis2_env_t *env);
-     
+
+    axis2_bool_t (AXIS2_CALL *
+    is_valid) (
+            void *msg_label,
+            axis2_env_t **env);
+
+    axis2_bool_t (AXIS2_CALL *
+    equals) (
+            void *msg_label,
+            axis2_env_t **env,
+            axis2_woden_msg_label_t *other);
+
+
 };
 
 struct axis2_woden_msg_label
 {
     axis2_woden_msg_label_ops_t *ops;
-    axis2_woden_msg_label_t *AXIS2_WODEN_IN;
-    axis2_woden_msg_label_t *AXIS2_WODEN_OUT;
     
 };
 
 AXIS2_EXTERN axis2_woden_msg_label_t * AXIS2_CALL
 axis2_woden_msg_label_create(
         const axis2_env_t *env,
-        axis2_char_t *f_value);
-
-/**
- * This is an Axis2 C internal method. This is used only from constructor
- * of the child class
- */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_msg_label_resolve_methods(
-        axis2_woden_msg_label_t *msg_label,
-        const axis2_env_t *env,
-        axis2_woden_msg_label_t *msg_label_impl,
-        axis2_hash_t *methods);
+        axis2_char_t *value,
+        axis2_bool_t valid);
 
 #define AXIS2_WODEN_MSG_LABEL_FREE(msg_label, env) \
 		(((axis2_woden_msg_label_t *) msg_label)->ops->\
          free (msg_label, env))
 
-#define AXIS2_WODEN_MSG_LABEL_TO_MSG_LABEL_FREE(msg_label, \
-        env) \
+#define AXIS2_WODEN_MSG_LABEL_GET_MSG_LABEL_IN(msg_label, env) \
 		(((axis2_woden_msg_label_t *) msg_label)->ops->\
-         to_msg_label_free (msg_label, env))
+         get_msg_label_in (msg_label, env))
 
-#define AXIS2_WODEN_MSG_LABEL_SUPER_OBJS(msg_label, env) \
+#define AXIS2_WODEN_MSG_LABEL_GET_MSG_LABEL_OUT(msg_label, env) \
 		(((axis2_woden_msg_label_t *) msg_label)->ops->\
-         super_objs (msg_label, env))
+         get_msg_label_out (msg_label, env))
 
-#define AXIS2_WODEN_MSG_LABEL_TYPE(msg_label, env) \
+#define AXIS2_WODEN_MSG_LABEL_TO_STRING(msg_label, env) \
 		(((axis2_woden_msg_label_t *) msg_label)->ops->\
-         type (msg_label, env))
+         to_string (msg_label, env))
+
+#define AXIS2_WODEN_MSG_LABEL_IS_VALID(msg_label, env) \
+		(((axis2_woden_msg_label_t *) msg_label)->ops->\
+         is_valid (msg_label, env))
+
+#define AXIS2_WODEN_MSG_LABEL_EQUALS(msg_label, env, other) \
+		(((axis2_woden_msg_label_t *) msg_label)->ops->\
+         equals (msg_label, env, other))
 
 
 /** @} */
