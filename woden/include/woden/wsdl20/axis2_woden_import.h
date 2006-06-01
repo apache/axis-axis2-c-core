@@ -52,32 +52,32 @@ struct axis2_woden_import_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *import,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *import,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *import,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     /**
      * @return the base implementation class
      */
     struct axis2_woden_wsdl_ref *(AXIS2_CALL *
     get_base_impl) (
             void *import,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_url_t *(AXIS2_CALL *
     get_namespace) (
             void *import,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_namespace) (
             void *import,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *ns_uri);
 
 };
@@ -94,36 +94,36 @@ struct axis2_woden_import
     axis2_woden_import_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_import_t *)
+AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
 axis2_woden_import_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_DECLARE(axis2_woden_import_t *)
+AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
 axis2_woden_import_to_import_element(
         void *import,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_import_t *)
+AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
 axis2_woden_import_to_wsdl_ref(
         void *import,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_import_t *)
+AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
 axis2_woden_import_to_attr_extensible(
         void *import,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_import_t *)
+AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
 axis2_woden_import_to_element_extensible(
         void *import,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_import_resolve_methods(
         axis2_woden_import_t *import,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_import_t *import_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

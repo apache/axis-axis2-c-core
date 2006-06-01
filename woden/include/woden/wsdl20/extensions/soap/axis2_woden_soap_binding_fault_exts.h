@@ -61,42 +61,42 @@ struct axis2_woden_soap_binding_fault_exts_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *soap_binding_fault_exts,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *soap_binding_fault_exts,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *soap_binding_fault_exts,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     /**
      * @return the base implementation class
      */
     struct axis2_woden_component_exts *(AXIS2_CALL *
     get_base_impl) (
             void *soap_binding_fault_exts,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     void *(AXIS2_CALL *
     get_soap_fault_code) (
             void *binding_fault_exts,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     void *(AXIS2_CALL *
     get_soap_fault_subcodes) (
             void *binding_fault_exts,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_soap_modules) (
             void *binding_fault_exts,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_soap_headers) (
             void *binding_fault_exts,
-            axis2_env_t **env); 
+            const axis2_env_t *env); 
 
 
 };
@@ -107,21 +107,21 @@ struct axis2_woden_soap_binding_fault_exts
     axis2_woden_soap_binding_fault_exts_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_soap_binding_fault_exts_t *)
+AXIS2_EXTERN axis2_woden_soap_binding_fault_exts_t * AXIS2_CALL
 axis2_woden_soap_binding_fault_exts_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_DECLARE(axis2_woden_soap_binding_fault_exts_t *)
+AXIS2_EXTERN axis2_woden_soap_binding_fault_exts_t * AXIS2_CALL
 axis2_woden_soap_binding_fault_exts_to_component_exts(
         void *soap_binding_fault_exts,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_soap_binding_fault_exts_resolve_methods(
         axis2_woden_soap_binding_fault_exts_t *soap_binding_fault_exts,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_soap_binding_fault_exts_t *soap_binding_fault_exts_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

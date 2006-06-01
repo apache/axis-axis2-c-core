@@ -95,7 +95,7 @@ create(
     return &(msg_label_impl->msg_label);
 }
 
-AXIS2_DECLARE(axis2_woden_msg_label_t *)
+AXIS2_EXTERN axis2_woden_msg_label_t * AXIS2_CALL
 axis2_woden_msg_label_create(
         const axis2_env_t *env,
         axis2_char_t *value,

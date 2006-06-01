@@ -40,36 +40,36 @@ struct axis2_woden_include_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_include_free(
         void *include,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_woden_include_super_objs(
         void *include,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_include_type(
         void *include,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_wsdl_ref_t *AXIS2_CALL
 axis2_woden_include_get_base_impl(
         void *include,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 static axis2_woden_include_t *
-create(axis2_env_t **env);
+create(const axis2_env_t *env);
 
 static axis2_status_t
 axis2_woden_include_free_ops(
         void *include,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_include_t *)
+AXIS2_EXTERN axis2_woden_include_t * AXIS2_CALL
 axis2_woden_include_to_include_element(
         void *include,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_include_impl_t *include_impl = NULL;
    
@@ -84,17 +84,17 @@ axis2_woden_include_to_include_element(
     axis2_woden_include_free_ops(include, env);
 
     include_impl->include.base.include_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_include_element_ops_t));
     axis2_woden_include_element_resolve_methods(&(include_impl->include.base.
             include_element), env, include_impl->methods);
     return include;
 }
 
-AXIS2_DECLARE(axis2_woden_include_t *)
+AXIS2_EXTERN axis2_woden_include_t * AXIS2_CALL
 axis2_woden_include_to_wsdl_ref(
         void *include,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_include_impl_t *include_impl = NULL;
    
@@ -108,17 +108,17 @@ axis2_woden_include_to_wsdl_ref(
     axis2_woden_include_free_ops(include, env);
 
     include_impl->include.base.wsdl_ref.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_wsdl_ref_ops_t));
     axis2_woden_documentable_resolve_methods(&(include_impl->include.base.
             wsdl_ref), env, include_impl->wsdl_ref, include_impl->methods);
     return include;
 }
 
-AXIS2_DECLARE(axis2_woden_include_t *)
+AXIS2_EXTERN axis2_woden_include_t * AXIS2_CALL
 axis2_woden_include_to_attr_extensible(
         void *include,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_include_impl_t *include_impl = NULL;
 
@@ -134,7 +134,7 @@ axis2_woden_include_to_attr_extensible(
 
     include_impl->include.base.wsdl_ref.wsdl_element.base.
             attr_extensible.ops =
-            AXIS2_MALLOC((*env)->allocator, 
+            AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_attr_extensible_ops_t));
     axis2_woden_attr_extensible_resolve_methods(&(include_impl->include.base.
             wsdl_ref.wsdl_element.base.attr_extensible), 
@@ -143,10 +143,10 @@ axis2_woden_include_to_attr_extensible(
 
 }
 
-AXIS2_DECLARE(axis2_woden_include_t *)
+AXIS2_EXTERN axis2_woden_include_t * AXIS2_CALL
 axis2_woden_include_to_element_extensible(
         void *include,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_include_impl_t *include_impl = NULL;
 
@@ -160,7 +160,7 @@ axis2_woden_include_to_element_extensible(
         include_impl = (axis2_woden_include_impl_t *) include;
     axis2_woden_include_free_ops(include, env);
     include_impl->include.base.wsdl_ref.wsdl_element.
-                base.element_extensible.ops = AXIS2_MALLOC((*env)->allocator, 
+                base.element_extensible.ops = AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_element_extensible_ops_t));
     axis2_woden_element_extensible_resolve_methods(&(include_impl->include.base.
             wsdl_ref.wsdl_element.base.element_extensible), 
@@ -171,12 +171,12 @@ axis2_woden_include_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_include_t *
-create(axis2_env_t **env)
+create(const axis2_env_t *env)
 {
     axis2_woden_include_impl_t *include_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    include_impl = AXIS2_MALLOC((*env)->allocator, 
+    include_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_include_impl_t));
 
     include_impl->obj_type= AXIS2_WODEN_INCLUDE;
@@ -188,7 +188,7 @@ create(axis2_env_t **env)
     include_impl->include.base.wsdl_ref.wsdl_element.base.attr_extensible.ops = NULL;
     include_impl->include.base.wsdl_ref.wsdl_element.base.element_extensible.ops = NULL;
     
-    include_impl->include.ops = AXIS2_MALLOC((*env)->allocator, 
+    include_impl->include.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_include_ops_t));
 
     include_impl->include.ops->free = axis2_woden_include_free;
@@ -199,7 +199,7 @@ create(axis2_env_t **env)
     include_impl->methods = axis2_hash_make(env);
     if(!include_impl->methods) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(include_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -212,8 +212,8 @@ create(axis2_env_t **env)
     return &(include_impl->include);
 }
 
-AXIS2_DECLARE(axis2_woden_include_t *)
-axis2_woden_include_create(axis2_env_t **env)
+AXIS2_EXTERN axis2_woden_include_t * AXIS2_CALL
+axis2_woden_include_create(const axis2_env_t *env)
 {
     axis2_woden_include_impl_t *include_impl = NULL;
    
@@ -225,7 +225,7 @@ axis2_woden_include_create(axis2_env_t **env)
     include_impl->super = axis2_hash_make(env);
     if(!include_impl->super) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(include_impl->super, "AXIS2_WODEN_INCLUDE", 
@@ -239,7 +239,7 @@ axis2_woden_include_create(axis2_env_t **env)
 static axis2_status_t
 axis2_woden_include_free_ops(
         void *include,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_include_impl_t *include_impl = NULL;
 
@@ -248,20 +248,20 @@ axis2_woden_include_free_ops(
 
     if(include_impl->include.base.include_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, include_impl->include.base.
+        AXIS2_FREE(env->allocator, include_impl->include.base.
                 include_element.ops);
         include_impl->include.base.include_element.ops = NULL;
     }
 
     if(include_impl->include.base.wsdl_ref.ops)
     {
-        AXIS2_FREE((*env)->allocator, include_impl->include.base.wsdl_ref.ops);
+        AXIS2_FREE(env->allocator, include_impl->include.base.wsdl_ref.ops);
         include_impl->include.base.wsdl_ref.ops = NULL;
     }
 
     if(include_impl->include.base.wsdl_ref.wsdl_element.base.attr_extensible.ops)
     {
-        AXIS2_FREE((*env)->allocator, include_impl->include.base.wsdl_ref.
+        AXIS2_FREE(env->allocator, include_impl->include.base.wsdl_ref.
                 wsdl_element.base.attr_extensible.ops);
         include_impl->include.base.wsdl_ref.wsdl_element.
                 base.attr_extensible.ops = NULL;
@@ -270,7 +270,7 @@ axis2_woden_include_free_ops(
     if(include_impl->include.base.wsdl_ref.
             wsdl_element.base.element_extensible.ops)
     {
-        AXIS2_FREE((*env)->allocator, include_impl->include.base.wsdl_ref.
+        AXIS2_FREE(env->allocator, include_impl->include.base.wsdl_ref.
                 wsdl_element.base.element_extensible.ops);
         include_impl->include.base.wsdl_ref.wsdl_element.
                 base.element_extensible.ops = NULL;
@@ -281,7 +281,7 @@ axis2_woden_include_free_ops(
 
 axis2_status_t AXIS2_CALL
 axis2_woden_include_free(void *include,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_woden_include_impl_t *include_impl = NULL;
 
@@ -310,13 +310,13 @@ axis2_woden_include_free(void *include,
 
     if((&(include_impl->include))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(include_impl->include))->ops);
+        AXIS2_FREE(env->allocator, (&(include_impl->include))->ops);
         (&(include_impl->include))->ops = NULL;
     }
     
     if(include_impl)
     {
-        AXIS2_FREE((*env)->allocator, include_impl);
+        AXIS2_FREE(env->allocator, include_impl);
         include_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -325,7 +325,7 @@ axis2_woden_include_free(void *include,
 axis2_hash_t *AXIS2_CALL
 axis2_woden_include_super_objs(
         void *include,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_include_impl_t *include_impl = NULL;
 
@@ -338,7 +338,7 @@ axis2_woden_include_super_objs(
 axis2_woden_obj_types_t AXIS2_CALL
 axis2_woden_include_type(
         void *include,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_include_impl_t *include_impl = NULL;
 
@@ -350,7 +350,7 @@ axis2_woden_include_type(
 
 axis2_woden_wsdl_ref_t *AXIS2_CALL
 axis2_woden_include_get_base_impl(void *include,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_woden_include_impl_t *include_impl = NULL;
 
@@ -363,14 +363,14 @@ axis2_woden_include_get_base_impl(void *include,
 axis2_status_t AXIS2_CALL
 axis2_woden_include_resolve_methods(
         axis2_woden_include_t *include,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_include_t *include_impl,
         axis2_hash_t *methods)
 {
     axis2_woden_include_impl_t *include_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     include_impl_l = INTF_TO_IMPL(include_impl);
     
     include->ops->free = axis2_hash_get(methods, "free", 

@@ -154,7 +154,7 @@ axis2_woden_wsdl_element_free_ops(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_wsdl_element_t *)
+AXIS2_EXTERN axis2_woden_wsdl_element_t * AXIS2_CALL
 axis2_woden_wsdl_element_to_attr_extensible(
         void *wsdl_element,
         const axis2_env_t *env)
@@ -181,7 +181,7 @@ axis2_woden_wsdl_element_to_attr_extensible(
 
 }
 
-AXIS2_DECLARE(axis2_woden_wsdl_element_t *)
+AXIS2_EXTERN axis2_woden_wsdl_element_t * AXIS2_CALL
 axis2_woden_wsdl_element_to_element_extensible(
         void *wsdl_element,
         const axis2_env_t *env)
@@ -276,7 +276,7 @@ create(
     return &(wsdl_element_impl->wsdl_element);
 }
 
-AXIS2_DECLARE(axis2_woden_wsdl_element_t *)
+AXIS2_EXTERN axis2_woden_wsdl_element_t * AXIS2_CALL
 axis2_woden_wsdl_element_create(
         const axis2_env_t *env)
 {

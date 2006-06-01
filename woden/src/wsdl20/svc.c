@@ -135,7 +135,7 @@ axis2_woden_svc_free_ops(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_svc_t *)
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
 axis2_woden_svc_to_svc_element(
         void *svc,
         const axis2_env_t *env)
@@ -160,7 +160,7 @@ axis2_woden_svc_to_svc_element(
     return svc;
 }
 
-AXIS2_DECLARE(axis2_woden_svc_t *)
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
 axis2_woden_svc_to_documentable_element(
         void *svc,
         const axis2_env_t *env)
@@ -186,7 +186,7 @@ axis2_woden_svc_to_documentable_element(
     return svc;
 }
 
-AXIS2_DECLARE(axis2_woden_svc_t *)
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
 axis2_woden_svc_to_configurable(
         void *svc,
         const axis2_env_t *env)
@@ -212,7 +212,7 @@ axis2_woden_svc_to_configurable(
     return svc;
 }
 
-AXIS2_DECLARE(axis2_woden_svc_t *)
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
 axis2_woden_svc_to_configurable_component(
         void *svc,
         const axis2_env_t *env)
@@ -237,7 +237,7 @@ axis2_woden_svc_to_configurable_component(
     return svc;
 }
 
-AXIS2_DECLARE(axis2_woden_svc_t *)
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
 axis2_woden_svc_to_wsdl_component(
         void *svc,
         const axis2_env_t *env)
@@ -350,7 +350,7 @@ create(const axis2_env_t *env)
     return &(svc_impl->svc);
 }
 
-AXIS2_DECLARE(axis2_woden_svc_t *)
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
 axis2_woden_svc_create(const axis2_env_t *env)
 {
     axis2_woden_svc_impl_t *svc_impl = NULL;

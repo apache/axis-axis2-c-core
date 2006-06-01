@@ -90,22 +90,22 @@ struct axis2_woden_wsdl_element
     axis2_woden_wsdl_element_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_wsdl_element_t *)
+AXIS2_EXTERN axis2_woden_wsdl_element_t * AXIS2_CALL
 axis2_woden_wsdl_element_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_wsdl_element_t *)
+AXIS2_EXTERN axis2_woden_wsdl_element_t * AXIS2_CALL
 axis2_woden_wsdl_element_to_attr_extensible(
         void *wsdl_element,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_wsdl_element_t *)
+AXIS2_EXTERN axis2_woden_wsdl_element_t * AXIS2_CALL
 axis2_woden_wsdl_element_to_element_extensible(
         void *wsdl_element,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_wsdl_element_resolve_methods(
         axis2_woden_wsdl_element_t *wsdl_element,
         const axis2_env_t *env,

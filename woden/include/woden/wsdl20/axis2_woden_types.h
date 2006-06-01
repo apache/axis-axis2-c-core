@@ -192,59 +192,59 @@ struct axis2_woden_types
     axis2_woden_types_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_types_element(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_nested_element(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_documentable_element(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_documentable(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_wsdl_obj(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_nested_component(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_wsdl_component(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_element_extensible(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_types_t *)
+AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
 axis2_woden_types_to_attr_extensible(
         void *types,
         const axis2_env_t *env);
 
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_types_resolve_methods(
         axis2_woden_types_t *types,
         const axis2_env_t *env,

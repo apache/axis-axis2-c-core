@@ -44,57 +44,57 @@ struct axis2_woden_soap_binding_fault_exts_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_binding_fault_exts_free(
         void *binding_fault_exts,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_woden_soap_binding_fault_exts_super_objs(
         void *binding_fault_exts,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_soap_binding_fault_exts_type(
         void *binding_fault_exts,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_component_exts_t *AXIS2_CALL
 axis2_woden_soap_binding_fault_exts_get_base_impl(
         void *binding_fault_exts,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL 
 axis2_woden_soap_binding_fault_exts_get_soap_fault_code(
         void *binding_fault_exts,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL 
 axis2_woden_soap_binding_fault_exts_get_soap_fault_subcodes(
         void *binding_fault_exts,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_binding_fault_exts_get_soap_modules(
         void *binding_fault_exts,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_binding_fault_exts_get_soap_headers(
         void *binding_fault_exts,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 static axis2_woden_soap_binding_fault_exts_t *
 create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 static axis2_status_t
 axis2_woden_soap_binding_fault_exts_free_ops(
         void *binding_fault_exts,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_soap_binding_fault_exts_t *)
+AXIS2_EXTERN axis2_woden_soap_binding_fault_exts_t * AXIS2_CALL
 axis2_woden_soap_binding_fault_exts_to_component_exts(
         void *binding_fault_exts,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl = NULL;
    
@@ -108,7 +108,7 @@ axis2_woden_soap_binding_fault_exts_to_component_exts(
     axis2_woden_soap_binding_fault_exts_free_ops(binding_fault_exts, env);
 
     binding_fault_exts_impl->binding_fault_exts.component_exts.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_component_exts_ops_t));
     axis2_woden_component_exts_resolve_methods(&(binding_fault_exts_impl->binding_fault_exts.
             component_exts), env, binding_fault_exts_impl->methods);
@@ -117,12 +117,12 @@ axis2_woden_soap_binding_fault_exts_to_component_exts(
 
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_soap_binding_fault_exts_t *
-create(axis2_env_t **env)
+create(const axis2_env_t *env)
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    binding_fault_exts_impl = AXIS2_MALLOC((*env)->allocator, 
+    binding_fault_exts_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_soap_binding_fault_exts_impl_t));
 
     binding_fault_exts_impl->obj_type= AXIS2_WODEN_SOAP_BINDING_FAULT_EXTS;
@@ -134,7 +134,7 @@ create(axis2_env_t **env)
     
     binding_fault_exts_impl->binding_fault_exts.component_exts.ops = NULL;
     
-    binding_fault_exts_impl->binding_fault_exts.ops = AXIS2_MALLOC((*env)->allocator, 
+    binding_fault_exts_impl->binding_fault_exts.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_soap_binding_fault_exts_ops_t));
 
     binding_fault_exts_impl->binding_fault_exts.ops->free = axis2_woden_soap_binding_fault_exts_free;
@@ -157,7 +157,7 @@ create(axis2_env_t **env)
     binding_fault_exts_impl->methods = axis2_hash_make(env);
     if(!binding_fault_exts_impl->methods) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(binding_fault_exts_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -183,8 +183,8 @@ create(axis2_env_t **env)
     return &(binding_fault_exts_impl->binding_fault_exts);
 }
 
-AXIS2_DECLARE(axis2_woden_soap_binding_fault_exts_t *)
-axis2_woden_soap_binding_fault_exts_create(axis2_env_t **env)
+AXIS2_EXTERN axis2_woden_soap_binding_fault_exts_t * AXIS2_CALL
+axis2_woden_soap_binding_fault_exts_create(const axis2_env_t *env)
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl = NULL;
    
@@ -196,7 +196,7 @@ axis2_woden_soap_binding_fault_exts_create(axis2_env_t **env)
     binding_fault_exts_impl->super = axis2_hash_make(env);
     if(!binding_fault_exts_impl->super) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(binding_fault_exts_impl->super, "AXIS2_WODEN_SOAP_BINDING_FAULT_EXTS", AXIS2_HASH_KEY_STRING, 
@@ -210,7 +210,7 @@ axis2_woden_soap_binding_fault_exts_create(axis2_env_t **env)
 static axis2_status_t
 axis2_woden_soap_binding_fault_exts_free_ops(
         void *binding_fault_exts,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl = NULL;
 
@@ -219,7 +219,7 @@ axis2_woden_soap_binding_fault_exts_free_ops(
 
     if(binding_fault_exts_impl->binding_fault_exts.component_exts.ops)
     {
-        AXIS2_FREE((*env)->allocator, binding_fault_exts_impl->binding_fault_exts.
+        AXIS2_FREE(env->allocator, binding_fault_exts_impl->binding_fault_exts.
                 component_exts.ops);
         binding_fault_exts_impl->binding_fault_exts.component_exts.ops = NULL;
     }
@@ -230,7 +230,7 @@ axis2_woden_soap_binding_fault_exts_free_ops(
 
 axis2_status_t AXIS2_CALL
 axis2_woden_soap_binding_fault_exts_free(void *binding_fault_exts,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl = NULL;
 
@@ -264,13 +264,13 @@ axis2_woden_soap_binding_fault_exts_free(void *binding_fault_exts,
 
     if((&(binding_fault_exts_impl->binding_fault_exts))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(binding_fault_exts_impl->binding_fault_exts))->ops);
+        AXIS2_FREE(env->allocator, (&(binding_fault_exts_impl->binding_fault_exts))->ops);
         (&(binding_fault_exts_impl->binding_fault_exts))->ops = NULL;
     }
     
     if(binding_fault_exts_impl)
     {
-        AXIS2_FREE((*env)->allocator, binding_fault_exts_impl);
+        AXIS2_FREE(env->allocator, binding_fault_exts_impl);
         binding_fault_exts_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -279,7 +279,7 @@ axis2_woden_soap_binding_fault_exts_free(void *binding_fault_exts,
 axis2_hash_t *AXIS2_CALL
 axis2_woden_soap_binding_fault_exts_super_objs(
         void *binding_fault_exts,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl = NULL;
 
@@ -292,7 +292,7 @@ axis2_woden_soap_binding_fault_exts_super_objs(
 axis2_woden_obj_types_t AXIS2_CALL
 axis2_woden_soap_binding_fault_exts_type(
         void *binding_fault_exts,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl = NULL;
 
@@ -305,7 +305,7 @@ axis2_woden_soap_binding_fault_exts_type(
 axis2_woden_component_exts_t *AXIS2_CALL
 axis2_woden_soap_binding_fault_exts_get_base_impl(
         void *binding_fault_exts,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl = NULL;
 
@@ -318,14 +318,14 @@ axis2_woden_soap_binding_fault_exts_get_base_impl(
 axis2_status_t AXIS2_CALL
 axis2_woden_soap_binding_fault_exts_resolve_methods(
         axis2_woden_soap_binding_fault_exts_t *binding_fault_exts,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_soap_binding_fault_exts_t *binding_fault_exts_impl,
         axis2_hash_t *methods)
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     binding_fault_exts_impl_l = INTF_TO_IMPL(binding_fault_exts_impl);
     
     binding_fault_exts->ops->free = axis2_hash_get(methods, "free", 
@@ -365,7 +365,7 @@ axis2_woden_soap_binding_fault_exts_resolve_methods(
 void *AXIS2_CALL 
 axis2_woden_soap_binding_fault_exts_get_soap_fault_code(
         void *binding_fault_exts,
-        axis2_env_t **env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl = NULL;
     axis2_woden_qname_or_token_any_attr_t *code = NULL;
@@ -413,7 +413,7 @@ axis2_woden_soap_binding_fault_exts_get_soap_fault_code(
 void *AXIS2_CALL 
 axis2_woden_soap_binding_fault_exts_get_soap_fault_subcodes(
         void *binding_fault_exts,
-        axis2_env_t **env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl = NULL;
     axis2_woden_qname_list_or_token_any_attr_t *subcodes = NULL;
@@ -462,7 +462,7 @@ axis2_woden_soap_binding_fault_exts_get_soap_fault_subcodes(
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_binding_fault_exts_get_soap_modules(
         void *binding_fault_exts,
-        axis2_env_t **env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl = NULL;
     axis2_array_list_t *soap_mods = NULL;
@@ -486,7 +486,7 @@ axis2_woden_soap_binding_fault_exts_get_soap_modules(
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_binding_fault_exts_get_soap_headers(
         void *binding_fault_exts,
-        axis2_env_t **env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_binding_fault_exts_impl_t *binding_fault_exts_impl = NULL;
     axis2_array_list_t *soap_headers = NULL;

@@ -114,53 +114,53 @@ struct axis2_woden_endpoint
     axis2_woden_endpoint_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_endpoint_element(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_nested_element(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_documentable_element(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_nested_configurable(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_configurable(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_nested_component(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_configurable_component(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_endpoint_t *)
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
 axis2_woden_endpoint_to_wsdl_component(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_resolve_methods(
         axis2_woden_endpoint_t *endpoint,
         const axis2_env_t *env,

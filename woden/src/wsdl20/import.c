@@ -42,47 +42,47 @@ struct axis2_woden_import_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_import_free(
         void *import,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_woden_import_super_objs(
         void *import,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_import_type(
         void *import,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_wsdl_ref_t *AXIS2_CALL
 axis2_woden_import_get_base_impl(
         void *import,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_import_set_namespace(
         void *import,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_url_t *ns_uri);
 
 axis2_url_t *AXIS2_CALL
 axis2_woden_import_get_namespace(
         void *import,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 static axis2_woden_import_t *
-create(axis2_env_t **env);
+create(const axis2_env_t *env);
 
 static axis2_status_t
 axis2_woden_import_free_ops(
         void *import,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_DECLARE(axis2_woden_import_t *)
+AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
 axis2_woden_import_to_import_element(
         void *import,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
    
@@ -97,17 +97,17 @@ axis2_woden_import_to_import_element(
     axis2_woden_import_free_ops(import, env);
 
     import_impl->import.base.import_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_import_element_ops_t));
     axis2_woden_import_element_resolve_methods(&(import_impl->import.base.
             import_element), env, import_impl->methods);
     return import;
 }
 
-AXIS2_DECLARE(axis2_woden_import_t *)
+AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
 axis2_woden_import_to_wsdl_ref(
         void *import,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
    
@@ -121,17 +121,17 @@ axis2_woden_import_to_wsdl_ref(
     axis2_woden_import_free_ops(import, env);
 
     import_impl->import.base.wsdl_ref.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_wsdl_ref_ops_t));
     axis2_woden_documentable_resolve_methods(&(import_impl->import.base.
             wsdl_ref), env, import_impl->wsdl_ref, import_impl->methods);
     return import;
 }
 
-AXIS2_DECLARE(axis2_woden_import_t *)
+AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
 axis2_woden_import_to_attr_extensible(
         void *import,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
 
@@ -147,7 +147,7 @@ axis2_woden_import_to_attr_extensible(
 
     import_impl->import.base.wsdl_ref.wsdl_element.base.
             attr_extensible.ops =
-            AXIS2_MALLOC((*env)->allocator, 
+            AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_attr_extensible_ops_t));
     axis2_woden_attr_extensible_resolve_methods(&(import_impl->import.base.
             wsdl_ref.wsdl_element.base.attr_extensible), 
@@ -156,10 +156,10 @@ axis2_woden_import_to_attr_extensible(
 
 }
 
-AXIS2_DECLARE(axis2_woden_import_t *)
+AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
 axis2_woden_import_to_element_extensible(
         void *import,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
 
@@ -173,7 +173,7 @@ axis2_woden_import_to_element_extensible(
         import_impl = (axis2_woden_import_impl_t *) import;
     axis2_woden_import_free_ops(import, env);
     import_impl->import.base.wsdl_ref.wsdl_element.
-                base.element_extensible.ops = AXIS2_MALLOC((*env)->allocator, 
+                base.element_extensible.ops = AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_element_extensible_ops_t));
     axis2_woden_element_extensible_resolve_methods(&(import_impl->import.base.
             wsdl_ref.wsdl_element.base.element_extensible), 
@@ -184,12 +184,12 @@ axis2_woden_import_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_import_t *
-create(axis2_env_t **env)
+create(const axis2_env_t *env)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    import_impl = AXIS2_MALLOC((*env)->allocator, 
+    import_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_import_impl_t));
 
     import_impl->obj_type= AXIS2_WODEN_IMPORT;
@@ -202,7 +202,7 @@ create(axis2_env_t **env)
     import_impl->import.base.wsdl_ref.wsdl_element.base.attr_extensible.ops = NULL;
     import_impl->import.base.wsdl_ref.wsdl_element.base.element_extensible.ops = NULL;
     
-    import_impl->import.ops = AXIS2_MALLOC((*env)->allocator, 
+    import_impl->import.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_import_ops_t));
 
     import_impl->import.ops->free = axis2_woden_import_free;
@@ -216,7 +216,7 @@ create(axis2_env_t **env)
     import_impl->methods = axis2_hash_make(env);
     if(!import_impl->methods) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(import_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -236,8 +236,8 @@ create(axis2_env_t **env)
     return &(import_impl->import);
 }
 
-AXIS2_DECLARE(axis2_woden_import_t *)
-axis2_woden_import_create(axis2_env_t **env)
+AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
+axis2_woden_import_create(const axis2_env_t *env)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
    
@@ -249,7 +249,7 @@ axis2_woden_import_create(axis2_env_t **env)
     import_impl->super = axis2_hash_make(env);
     if(!import_impl->super) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(import_impl->super, "AXIS2_WODEN_IMPORT", 
@@ -263,7 +263,7 @@ axis2_woden_import_create(axis2_env_t **env)
 static axis2_status_t
 axis2_woden_import_free_ops(
         void *import,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
 
@@ -272,20 +272,20 @@ axis2_woden_import_free_ops(
 
     if(import_impl->import.base.import_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, import_impl->import.base.
+        AXIS2_FREE(env->allocator, import_impl->import.base.
                 import_element.ops);
         import_impl->import.base.import_element.ops = NULL;
     }
 
     if(import_impl->import.base.wsdl_ref.ops)
     {
-        AXIS2_FREE((*env)->allocator, import_impl->import.base.wsdl_ref.ops);
+        AXIS2_FREE(env->allocator, import_impl->import.base.wsdl_ref.ops);
         import_impl->import.base.wsdl_ref.ops = NULL;
     }
 
     if(import_impl->import.base.wsdl_ref.wsdl_element.base.attr_extensible.ops)
     {
-        AXIS2_FREE((*env)->allocator, import_impl->import.base.wsdl_ref.
+        AXIS2_FREE(env->allocator, import_impl->import.base.wsdl_ref.
                 wsdl_element.base.attr_extensible.ops);
         import_impl->import.base.wsdl_ref.wsdl_element.
                 base.attr_extensible.ops = NULL;
@@ -294,7 +294,7 @@ axis2_woden_import_free_ops(
     if(import_impl->import.base.wsdl_ref.
             wsdl_element.base.element_extensible.ops)
     {
-        AXIS2_FREE((*env)->allocator, import_impl->import.base.wsdl_ref.
+        AXIS2_FREE(env->allocator, import_impl->import.base.wsdl_ref.
                 wsdl_element.base.element_extensible.ops);
         import_impl->import.base.wsdl_ref.wsdl_element.
                 base.element_extensible.ops = NULL;
@@ -305,7 +305,7 @@ axis2_woden_import_free_ops(
 
 axis2_status_t AXIS2_CALL
 axis2_woden_import_free(void *import,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
 
@@ -340,13 +340,13 @@ axis2_woden_import_free(void *import,
 
     if((&(import_impl->import))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(import_impl->import))->ops);
+        AXIS2_FREE(env->allocator, (&(import_impl->import))->ops);
         (&(import_impl->import))->ops = NULL;
     }
     
     if(import_impl)
     {
-        AXIS2_FREE((*env)->allocator, import_impl);
+        AXIS2_FREE(env->allocator, import_impl);
         import_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -355,7 +355,7 @@ axis2_woden_import_free(void *import,
 axis2_hash_t *AXIS2_CALL
 axis2_woden_import_super_objs(
         void *import,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
 
@@ -368,7 +368,7 @@ axis2_woden_import_super_objs(
 axis2_woden_obj_types_t AXIS2_CALL
 axis2_woden_import_type(
         void *import,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
 
@@ -380,7 +380,7 @@ axis2_woden_import_type(
 
 axis2_woden_wsdl_ref_t *AXIS2_CALL
 axis2_woden_import_get_base_impl(void *import,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
 
@@ -393,14 +393,14 @@ axis2_woden_import_get_base_impl(void *import,
 axis2_status_t AXIS2_CALL
 axis2_woden_import_resolve_methods(
         axis2_woden_import_t *import,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_import_t *import_impl,
         axis2_hash_t *methods)
 {
     axis2_woden_import_impl_t *import_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     import_impl_l = INTF_TO_IMPL(import_impl);
     
     import->ops->free = axis2_hash_get(methods, "free", 
@@ -428,14 +428,14 @@ axis2_woden_import_resolve_methods(
 axis2_status_t AXIS2_CALL
 axis2_woden_import_set_namespace(
         void *import,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_url_t *ns_uri)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, ns_uri, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ns_uri, AXIS2_FAILURE);
     super = AXIS2_WODEN_IMPORT_SUPER_OBJS(import, env);
     import_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_IMPORT", AXIS2_HASH_KEY_STRING));
@@ -453,7 +453,7 @@ axis2_woden_import_set_namespace(
 axis2_url_t *AXIS2_CALL
 axis2_woden_import_get_namespace(
         void *import,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
     axis2_hash_t *super = NULL;

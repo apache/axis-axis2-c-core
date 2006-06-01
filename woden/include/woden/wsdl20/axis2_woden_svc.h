@@ -117,38 +117,38 @@ struct axis2_woden_svc
     axis2_woden_svc_ops_t *ops;
 };
 
-AXIS2_DECLARE(axis2_woden_svc_t *)
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
 axis2_woden_svc_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_DECLARE(axis2_woden_svc_t *)
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
 axis2_woden_svc_to_svc_element(
         void *svc,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_svc_t *)
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
 axis2_woden_svc_to_documentable_element(
         void *svc,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_svc_t *)
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
 axis2_woden_svc_to_configurable(
         void *svc,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_svc_t *)
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
 axis2_woden_svc_to_configurable_component(
         void *svc,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_woden_svc_t *)
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
 axis2_woden_svc_to_wsdl_component(
         void *svc,
         const axis2_env_t *env);
 
-AXIS2_DECLARE(axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_svc_resolve_methods(
         axis2_woden_svc_t *svc,
         const axis2_env_t *env,
