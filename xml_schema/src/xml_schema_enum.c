@@ -44,53 +44,53 @@ struct axis2_xml_schema_enum_impl
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_enum_free(
         void *schema_enum,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_xml_schema_enum_super_objs(
         void *schema_enum,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
 axis2_xml_schema_enum_type(
         void *schema_enum,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_char_t * AXIS2_CALL
 axis2_xml_schema_enum_get_value(
         void *schema_enum,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_enum_set_value(
         void *schema_enum,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *value);
 
 axis2_bool_t AXIS2_CALL
 axis2_xml_schema_enum_equals(
         void *schema_enum,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *obj);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_xml_schema_enum_get_values(
         void *schema_enum,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************** function impl ************************************/
 
 AXIS2_EXTERN axis2_xml_schema_enum_t * AXIS2_CALL
-axis2_xml_schema_enum_create(axis2_env_t *env,
+axis2_xml_schema_enum_create(const axis2_env_t *env,
                                 axis2_char_t *value)
 {
     axis2_xml_schema_enum_impl_t *schema_enum_impl = NULL;
     
-    schema_enum_impl = AXIS2_MALLOC((*env)->allocator, 
+    schema_enum_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_enum_impl_t));
     if(!schema_enum_impl)
     {
-        AXIS2_ERROR_SET((*env)->error,  
+        AXIS2_ERROR_SET(env->error,  
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -101,13 +101,13 @@ axis2_xml_schema_enum_create(axis2_env_t *env,
     schema_enum_impl->value = NULL;
     schema_enum_impl->schema_enum.ops = NULL;
 
-    schema_enum_impl->schema_enum.ops = AXIS2_MALLOC((*env)->allocator, 
+    schema_enum_impl->schema_enum.ops = AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_xml_schema_enum_ops_t)); 
     
     if(!(schema_enum_impl->schema_enum.ops))
     {
-        AXIS2_FREE((*env)->allocator, schema_enum_impl);
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_FREE(env->allocator, schema_enum_impl);
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -138,7 +138,7 @@ axis2_xml_schema_enum_create(axis2_env_t *env,
     if(!schema_enum_impl->ht_super)
     {
         axis2_xml_schema_enum_free(&(schema_enum_impl->schema_enum), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -153,7 +153,7 @@ axis2_xml_schema_enum_create(axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_enum_free(void *schema_enum,
-                axis2_env_t **env)
+                const axis2_env_t *env)
 {
     axis2_xml_schema_enum_impl_t *schema_enum_impl = NULL;
 
@@ -161,7 +161,7 @@ axis2_xml_schema_enum_free(void *schema_enum,
 
     if(NULL != schema_enum_impl->value)
     {
-        AXIS2_FREE((*env)->allocator, schema_enum_impl->value);
+        AXIS2_FREE(env->allocator, schema_enum_impl->value);
         schema_enum_impl->value = NULL;
     }
 
@@ -179,13 +179,13 @@ axis2_xml_schema_enum_free(void *schema_enum,
 
     if(NULL != schema_enum_impl->schema_enum.ops)
     {
-        AXIS2_FREE((*env)->allocator, schema_enum_impl->schema_enum.ops);
+        AXIS2_FREE(env->allocator, schema_enum_impl->schema_enum.ops);
         schema_enum_impl->schema_enum.ops = NULL;
     }
 
     if(NULL != schema_enum_impl)
     {
-        AXIS2_FREE((*env)->allocator, (schema_enum_impl));
+        AXIS2_FREE(env->allocator, (schema_enum_impl));
         schema_enum_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -194,7 +194,7 @@ axis2_xml_schema_enum_free(void *schema_enum,
 axis2_hash_t *AXIS2_CALL
 axis2_xml_schema_enum_super_objs(
         void *schema_enum,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_xml_schema_enum_impl_t *schema_enum_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -205,7 +205,7 @@ axis2_xml_schema_enum_super_objs(
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_schema_enum_type(
         void *schema_enum,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_xml_schema_enum_impl_t *schema_enum_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -216,23 +216,23 @@ axis2_xml_schema_enum_type(
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_enum_resolve_methods(
         axis2_xml_schema_enum_t *schema_enum,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_xml_schema_enum_t *schema_enum_impl,
         axis2_hash_t *methods)
 {    
     axis2_xml_schema_enum_impl_t *this_sch_enum_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, schema_enum_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, schema_enum_impl, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     this_sch_enum_impl = (axis2_xml_schema_enum_impl_t*) schema_enum_impl;
     
-    schema_enum->ops = AXIS2_MALLOC((*env)->allocator, 
+    schema_enum->ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_xml_schema_enum_ops_t));
     if(!schema_enum->ops)
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
@@ -266,7 +266,7 @@ axis2_xml_schema_enum_resolve_methods(
 
 axis2_char_t * AXIS2_CALL
 axis2_xml_schema_enum_get_value(void *schema_enum,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     axis2_xml_schema_enum_impl_t *schema_enum_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -280,7 +280,7 @@ axis2_xml_schema_enum_get_value(void *schema_enum,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_enum_set_value(void *schema_enum,
-                        axis2_env_t **env,
+                        const axis2_env_t *env,
                         axis2_char_t *value)
 {
     axis2_xml_schema_enum_impl_t *schema_enum_impl = NULL;
@@ -292,13 +292,13 @@ axis2_xml_schema_enum_set_value(void *schema_enum,
 
     if(NULL != schema_enum_impl->value)
     {
-        AXIS2_FREE((*env)->allocator, (schema_enum_impl->value));
+        AXIS2_FREE(env->allocator, (schema_enum_impl->value));
         schema_enum_impl->value = NULL;
     }
     schema_enum_impl->value = AXIS2_STRDUP(value, env);
     if(!schema_enum_impl->value)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -306,7 +306,7 @@ axis2_xml_schema_enum_set_value(void *schema_enum,
 
 axis2_bool_t AXIS2_CALL
 axis2_xml_schema_enum_equals(void *schema_enum,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 void *obj)
 {
     axis2_xml_schema_enum_impl_t *schema_enum_impl = NULL;
@@ -323,7 +323,7 @@ axis2_xml_schema_enum_equals(void *schema_enum,
 
 axis2_array_list_t *AXIS2_CALL
 axis2_xml_schema_enum_get_values(void *schema_enum, 
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_xml_schema_enum_impl_t *schema_enum_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -337,14 +337,14 @@ axis2_xml_schema_enum_get_values(void *schema_enum,
 
 AXIS2_EXTERN int AXIS2_CALL
 axis2_xml_schema_enum_index(axis2_char_t *value,
-                            axis2_env_t **env,
+                            const axis2_env_t *env,
                             axis2_array_list_t *values)
 {
     int size = 0;
     int i    = 0;
     AXIS2_ENV_CHECK(env, -1);
-    AXIS2_PARAM_CHECK((*env)->error, value, -1);
-    AXIS2_PARAM_CHECK((*env)->error, values, -1);
+    AXIS2_PARAM_CHECK(env->error, value, -1);
+    AXIS2_PARAM_CHECK(env->error, values, -1);
     size = AXIS2_ARRAY_LIST_SIZE(values, env);
     for(i =0; i <size; i++)
     {

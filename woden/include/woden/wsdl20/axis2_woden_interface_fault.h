@@ -53,37 +53,37 @@ struct axis2_woden_interface_fault_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (void *interface_fault,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (void *interface_fault,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (void *interface_fault,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     /**
      * @return the base implementation class
      */
     struct axis2_woden_nested_configurable *(AXIS2_CALL *
     get_base_impl) (
             void *interface_fault,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_qname_t *(AXIS2_CALL *
     get_qname) (
             void *interface_fault,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     void *(AXIS2_CALL *
     get_element_declaration) (
             void *interface_fault,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     void *(AXIS2_CALL *
     to_element)  (
             void *interface_fault,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 };
 
@@ -101,29 +101,29 @@ struct axis2_woden_interface_fault
 
 AXIS2_DECLARE(axis2_woden_interface_fault_t *)
 axis2_woden_interface_fault_create(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
 AXIS2_DECLARE(axis2_woden_interface_fault_t *)
 axis2_woden_interface_fault_to_interface_fault_element(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_interface_fault_t *)
 axis2_woden_interface_fault_to_nested_configurable(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_woden_interface_fault_t *)
 axis2_woden_interface_fault_to_configurable(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_interface_fault_resolve_methods(
         axis2_woden_interface_fault_t *interface_fault,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_interface_fault_t *interface_fault_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/

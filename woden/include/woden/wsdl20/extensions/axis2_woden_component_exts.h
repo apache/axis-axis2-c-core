@@ -103,7 +103,7 @@ struct axis2_woden_component_exts_ops
     void *(AXIS2_CALL *
     get_parent_element) (
            void *component_exts,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 };
 
 struct axis2_woden_component_exts

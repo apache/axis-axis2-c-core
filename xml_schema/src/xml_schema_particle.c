@@ -54,54 +54,54 @@ struct axis2_xml_schema_particle_impl
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_particle_free(
         void *particle,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_xml_schema_particle_super_objs(
         void *particle,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
 axis2_xml_schema_particle_type(
         void *particle,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_xml_schema_annotated_t *AXIS2_CALL
 axis2_xml_schema_particle_get_base_impl(void *particle,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
 long AXIS2_CALL
 axis2_xml_schema_particle_get_max_occurs(void *particle,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_particle_set_max_occurs(void *particle,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             long max_occurs);
 
 long AXIS2_CALL
 axis2_xml_schema_particle_get_min_occurs(void *particle,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_particle_set_min_occurs(void *particle,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             long min_occurs);
 
 /*************** function prototypes *****************************************/
 
 AXIS2_EXTERN axis2_xml_schema_particle_t * AXIS2_CALL
-axis2_xml_schema_particle_create(axis2_env_t **env)
+axis2_xml_schema_particle_create(const axis2_env_t *env)
 {
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    particle_impl = AXIS2_MALLOC((*env)->allocator, 
+    particle_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_particle_impl_t));
     
     if(!particle_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -115,13 +115,13 @@ axis2_xml_schema_particle_create(axis2_env_t **env)
     particle_impl->min_occurs_string = NULL;
     
     
-    particle_impl->particle.ops = AXIS2_MALLOC((*env)->allocator, 
+    particle_impl->particle.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_particle_ops_t));
 
     if(!particle_impl->particle.ops)
     {
         axis2_xml_schema_particle_free(&(particle_impl->particle), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -153,7 +153,7 @@ axis2_xml_schema_particle_create(axis2_env_t **env)
     if(!particle_impl->methods)
     {
         axis2_xml_schema_particle_free(&(particle_impl->particle), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(particle_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -182,7 +182,7 @@ axis2_xml_schema_particle_create(axis2_env_t **env)
     if(!particle_impl->ht_super)
     {
         axis2_xml_schema_particle_free(&(particle_impl->particle), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(particle_impl->ht_super, "AXIS2_XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING, 
@@ -202,7 +202,7 @@ axis2_xml_schema_particle_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_particle_free(void *particle,
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;
 
@@ -229,18 +229,18 @@ axis2_xml_schema_particle_free(void *particle,
     
     if(NULL != particle_impl->particle.ops)
     {
-        AXIS2_FREE((*env)->allocator, particle_impl->particle.ops);
+        AXIS2_FREE(env->allocator, particle_impl->particle.ops);
         particle_impl->particle.ops = NULL;
     }
     if(NULL != particle_impl->particle.base.ops)
     {
-        AXIS2_FREE((*env)->allocator, particle_impl->particle.base.ops);
+        AXIS2_FREE(env->allocator, particle_impl->particle.base.ops);
         particle_impl->particle.base.ops = NULL;
     }
     
     if(NULL != particle_impl)
     {
-        AXIS2_FREE((*env)->allocator, particle_impl);
+        AXIS2_FREE(env->allocator, particle_impl);
         particle_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -248,7 +248,7 @@ axis2_xml_schema_particle_free(void *particle,
 
 axis2_hash_t *AXIS2_CALL
 axis2_xml_schema_particle_super_objs(void *particle,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -258,7 +258,7 @@ axis2_xml_schema_particle_super_objs(void *particle,
 
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_schema_particle_type(void *particle,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -268,7 +268,7 @@ axis2_xml_schema_particle_type(void *particle,
 
 axis2_xml_schema_annotated_t *AXIS2_CALL
 axis2_xml_schema_particle_get_base_impl(void *particle,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -279,23 +279,23 @@ axis2_xml_schema_particle_get_base_impl(void *particle,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_particle_resolve_methods(
                                 axis2_xml_schema_particle_t *particle,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_particle_t *particle_impl,
                                 axis2_hash_t *methods)
 {
     axis2_xml_schema_particle_impl_t *sch_particle_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, particle_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, particle_impl, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     sch_particle_impl = (axis2_xml_schema_particle_impl_t *) particle_impl;
     
-    particle->ops = AXIS2_MALLOC((*env)->allocator, 
+    particle->ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_xml_schema_particle_ops_t));
     if(!particle->ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }            
     
@@ -336,7 +336,7 @@ axis2_xml_schema_particle_resolve_methods(
 
 long AXIS2_CALL
 axis2_xml_schema_particle_get_max_occurs(void *particle,
-                                            axis2_env_t **env)
+                                            const axis2_env_t *env)
 {
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -355,7 +355,7 @@ axis2_xml_schema_particle_get_max_occurs(void *particle,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_particle_set_max_occurs(void *particle,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             long max_occurs)
 {
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;
@@ -377,7 +377,7 @@ axis2_xml_schema_particle_set_max_occurs(void *particle,
 
 long AXIS2_CALL
 axis2_xml_schema_particle_get_min_occurs(void *particle,
-                                            axis2_env_t **env)
+                                            const axis2_env_t *env)
 {
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -397,7 +397,7 @@ axis2_xml_schema_particle_get_min_occurs(void *particle,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_particle_set_min_occurs(void *particle,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             long min_occurs)
 {
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;

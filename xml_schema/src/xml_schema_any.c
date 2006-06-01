@@ -48,55 +48,55 @@ struct axis2_xml_schema_any_impl
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_any_free(
         void *any,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_xml_schema_any_super_objs(
         void *any,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
 axis2_xml_schema_any_type(
         void *any,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_xml_schema_particle_t *AXIS2_CALL
 axis2_xml_schema_any_get_base_impl(void *any,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 axis2_xml_schema_any_get_namespace(void *any,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_any_set_namespace(void *any,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_char_t *namespc);
 
 axis2_xml_schema_content_processing_t *AXIS2_CALL
 axis2_xml_schema_any_get_process_content(void *any,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_any_set_process_content(
         void *any,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_xml_schema_content_processing_t *process_content);
                             
  /************************ end function prototypes ******************************/
  
 AXIS2_EXTERN axis2_xml_schema_any_t * AXIS2_CALL
-axis2_xml_schema_any_create(axis2_env_t **env)
+axis2_xml_schema_any_create(const axis2_env_t *env)
 {
     axis2_xml_schema_any_impl_t *any_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_xml_schema_annotated_t *annotated = NULL;
     
-    any_impl = AXIS2_MALLOC((*env)->allocator, 
+    any_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_any_impl_t));
     if(!any_impl)
     {
-        AXIS2_ERROR_SET((*env)->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     any_impl->any.base.ops = NULL;
@@ -107,13 +107,13 @@ axis2_xml_schema_any_create(axis2_env_t **env)
     any_impl->particle = NULL;
     any_impl->process_content = NULL;
     
-    any_impl->any.ops = AXIS2_MALLOC((*env)->allocator, 
+    any_impl->any.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_any_ops_t));
 
     if(!any_impl->any.ops)
     {
         axis2_xml_schema_any_free(&(any_impl->any), env);
-        AXIS2_ERROR_SET((*env)->error , 
+        AXIS2_ERROR_SET(env->error , 
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -147,7 +147,7 @@ axis2_xml_schema_any_create(axis2_env_t **env)
     any_impl->methods = axis2_hash_make(env);
     if(!any_impl->methods)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(any_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -169,13 +169,13 @@ axis2_xml_schema_any_create(axis2_env_t **env)
     if(!any_impl->particle)
     {
         axis2_xml_schema_any_free(&(any_impl->any), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     any_impl->ht_super = axis2_hash_make(env);
     if(!any_impl->ht_super)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(any_impl->ht_super, "AXIS_XML_SCHEMA_ANY", AXIS2_HASH_KEY_STRING, 
@@ -201,7 +201,7 @@ axis2_xml_schema_any_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_any_free(void *any,
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_xml_schema_any_impl_t *any_impl = NULL;
 
@@ -210,7 +210,7 @@ axis2_xml_schema_any_free(void *any,
 
     if(NULL != any_impl->ns)
     {
-        AXIS2_FREE((*env)->allocator, any_impl->ns);
+        AXIS2_FREE(env->allocator, any_impl->ns);
         any_impl->ns = NULL;
     }
     
@@ -240,23 +240,23 @@ axis2_xml_schema_any_free(void *any,
     
     if(NULL != any_impl->any.ops)
     {
-        AXIS2_FREE((*env)->allocator, any_impl->any.ops);
+        AXIS2_FREE(env->allocator, any_impl->any.ops);
         any_impl->any.ops = NULL;
     }
     if(NULL != any_impl->any.base.ops)
     {
-        AXIS2_FREE((*env)->allocator, any_impl->any.base.ops);
+        AXIS2_FREE(env->allocator, any_impl->any.base.ops);
         any_impl->any.base.ops = NULL;    
     }
 
-    AXIS2_FREE((*env)->allocator, any_impl);
+    AXIS2_FREE(env->allocator, any_impl);
     any_impl = NULL;
     return AXIS2_SUCCESS;
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_schema_any_type(void *any,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_xml_schema_any_impl_t *any_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -267,7 +267,7 @@ axis2_xml_schema_any_type(void *any,
 axis2_hash_t *AXIS2_CALL
 axis2_xml_schema_any_super_objs(
         void *any,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_xml_schema_any_impl_t *any_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -277,7 +277,7 @@ axis2_xml_schema_any_super_objs(
 
 axis2_xml_schema_particle_t *AXIS2_CALL
 axis2_xml_schema_any_get_base_impl(void *any,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_xml_schema_any_impl_t *any_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -288,23 +288,23 @@ axis2_xml_schema_any_get_base_impl(void *any,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_any_resolve_methods(
         axis2_xml_schema_any_t *any,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_xml_schema_any_t *any_impl,
         axis2_hash_t *methods)
 {
     axis2_xml_schema_any_impl_t *sch_any_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, any_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, any_impl, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     sch_any_impl = (axis2_xml_schema_any_impl_t *) any_impl;
     
-    any->ops = AXIS2_MALLOC((*env)->allocator, 
+    any->ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_xml_schema_any_ops_t));
     if(!any->ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }            
     any->ops->free = axis2_hash_get(methods, "free", 
@@ -347,7 +347,7 @@ axis2_xml_schema_any_resolve_methods(
 
 axis2_char_t *AXIS2_CALL
 axis2_xml_schema_any_get_namespace(void *any,
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     axis2_xml_schema_any_impl_t *any_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -365,12 +365,12 @@ axis2_xml_schema_any_get_namespace(void *any,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_any_set_namespace(void *any,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_char_t *namespc)
 {
     axis2_xml_schema_any_impl_t *any_impl = NULL;
     axis2_hash_t *ht_super = NULL;
-    AXIS2_PARAM_CHECK((*env)->error, namespc, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, namespc, AXIS2_FAILURE);
     
     ht_super = AXIS2_XML_SCHEMA_ANY_SUPER_OBJS(any, env);
     if(NULL != ht_super)
@@ -382,7 +382,7 @@ axis2_xml_schema_any_set_namespace(void *any,
     }
     if(NULL != any_impl->ns)
     {
-        AXIS2_FREE((*env)->allocator, any_impl->ns);
+        AXIS2_FREE(env->allocator, any_impl->ns);
         any_impl->ns = NULL;
     }
     any_impl->ns = AXIS2_STRDUP(any_impl->ns, env);
@@ -391,7 +391,7 @@ axis2_xml_schema_any_set_namespace(void *any,
 
 axis2_xml_schema_content_processing_t *AXIS2_CALL
 axis2_xml_schema_any_get_process_content(void *any,
-                                            axis2_env_t **env)
+                                            const axis2_env_t *env)
 {
     axis2_xml_schema_any_impl_t *any_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -409,14 +409,14 @@ axis2_xml_schema_any_get_process_content(void *any,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_any_set_process_content(void *any,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_xml_schema_content_processing_t *
                                                 process_content)
 {
     axis2_xml_schema_any_impl_t *any_impl = NULL;
     axis2_hash_t *ht_super = NULL;
     
-    AXIS2_PARAM_CHECK((*env)->error, process_content, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, process_content, AXIS2_FAILURE);
     
     ht_super = AXIS2_XML_SCHEMA_ANY_SUPER_OBJS(any, env);
     

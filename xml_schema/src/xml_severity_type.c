@@ -44,36 +44,36 @@ struct axis2_xml_severity_type_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_severity_type_free(void *severity_type,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_xml_schema_enum_t *AXIS2_CALL
 axis2_xml_severity_type_get_base_impl(void *severity_type,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_xml_severity_type_get_values(void *severity_type,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
 axis2_xml_severity_type_super_objs(void *severity_type,
-                                   axis2_env_t **env);
+                                   const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_severity_type_type(void *severity_type,
-                            axis2_env_t **env);
+                            const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_xml_severity_type_t * AXIS2_CALL
-axis2_xml_severity_type_create(axis2_env_t **env,
+axis2_xml_severity_type_create(const axis2_env_t *env,
                             axis2_char_t *value)
 {
     axis2_xml_severity_type_impl_t *severity_type_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    severity_type_impl = AXIS2_MALLOC((*env)->allocator, 
+    severity_type_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_severity_type_impl_t));
     if(!severity_type_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }                    
 
@@ -83,12 +83,12 @@ axis2_xml_severity_type_create(axis2_env_t **env,
     severity_type_impl->ht_super = NULL;
     severity_type_impl->type = AXIS2_XML_SEVERITY_TYPE;
     
-    severity_type_impl->severity_type.ops = AXIS2_MALLOC((*env)->allocator, 
+    severity_type_impl->severity_type.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_severity_type_ops_t));
     if(!severity_type_impl->severity_type.ops)
     {
         axis2_xml_severity_type_free(&(severity_type_impl->severity_type), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -119,7 +119,7 @@ axis2_xml_severity_type_create(axis2_env_t **env,
     if(!severity_type_impl->methods)
     {
         axis2_xml_severity_type_free(&(severity_type_impl->severity_type), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -136,7 +136,7 @@ axis2_xml_severity_type_create(axis2_env_t **env,
     if(!severity_type_impl->schema_enum)
     {
         axis2_xml_severity_type_free(&(severity_type_impl->severity_type), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -144,7 +144,7 @@ axis2_xml_severity_type_create(axis2_env_t **env,
     if(!severity_type_impl->ht_super)
     {
         axis2_xml_severity_type_free(&(severity_type_impl->severity_type), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -163,7 +163,7 @@ axis2_xml_severity_type_create(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_severity_type_free(void *severity_type,
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     axis2_xml_severity_type_impl_t *severity_type_impl = NULL;
 
@@ -181,7 +181,7 @@ axis2_xml_severity_type_free(void *severity_type,
             value =(axis2_char_t* ) AXIS2_ARRAY_LIST_GET(severity_type_impl->members, env, i);
             if(NULL != value)
             {
-                AXIS2_FREE((*env)->allocator, value);
+                AXIS2_FREE(env->allocator, value);
                 value = NULL;
             }
         }
@@ -197,17 +197,17 @@ axis2_xml_severity_type_free(void *severity_type,
     
     if(severity_type_impl->severity_type.ops)
     {
-        AXIS2_FREE((*env)->allocator, severity_type_impl->severity_type.ops);
+        AXIS2_FREE(env->allocator, severity_type_impl->severity_type.ops);
         severity_type_impl->severity_type.ops = NULL;
     }
     if(severity_type_impl->severity_type.base.ops)
     {
-        AXIS2_FREE((*env)->allocator, severity_type_impl->severity_type.base.ops);
+        AXIS2_FREE(env->allocator, severity_type_impl->severity_type.base.ops);
         severity_type_impl->severity_type.base.ops = NULL;
     }
     if(severity_type_impl)
     {
-        AXIS2_FREE((*env)->allocator, severity_type_impl);
+        AXIS2_FREE(env->allocator, severity_type_impl);
         severity_type_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -215,7 +215,7 @@ axis2_xml_severity_type_free(void *severity_type,
 
 axis2_xml_schema_enum_t *AXIS2_CALL
 axis2_xml_severity_type_get_base_impl(void *severity_type,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_xml_severity_type_impl_t *severity_type_impl = NULL;
 
@@ -226,7 +226,7 @@ axis2_xml_severity_type_get_base_impl(void *severity_type,
 
 axis2_array_list_t* AXIS2_CALL
 axis2_xml_severity_type_get_values(void *severity_type,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     /*
     axis2_xml_severity_type_impl_t *severity_impl = NULL;
@@ -245,14 +245,14 @@ axis2_xml_severity_type_get_values(void *severity_type,
 
 axis2_hash_t *AXIS2_CALL
 axis2_xml_severity_type_super_objs(void *severity_type,
-                                   axis2_env_t **env)
+                                   const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(severity_type)->ht_super;    
 }                                   
 
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_severity_type_type(void *severity_type,
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {                            
     return AXIS2_INTF_TO_IMPL(severity_type)->type;
 }

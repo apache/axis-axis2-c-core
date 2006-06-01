@@ -59,46 +59,46 @@ struct axis2_woden_element_extensible_ops
     free) (
             void *
             element_extensible,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
             void *
             element_extensible,
-            axis2_env_t **env);
+            const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *element_extensible,
-            axis2_env_t **env);
+            const axis2_env_t *env);
  
     axis2_status_t (AXIS2_CALL *
     add_ext_element) (
             void *extensible,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             struct axis2_woden_ext_element *ext_el); 
 
     axis2_status_t (AXIS2_CALL *
     remove_ext_element) (
             void *extensible,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             struct axis2_woden_ext_element *ext_el); 
 
     axis2_array_list_t *(AXIS2_CALL *
     get_ext_elements) (
             void *extensible,
-            axis2_env_t **env); 
+            const axis2_env_t *env); 
 
     axis2_array_list_t *(AXIS2_CALL *
     get_ext_elements_of_type) (
             void *extensible,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *ext_type);
 
     axis2_bool_t (AXIS2_CALL *
     has_ext_elements_for_namespace) (
             void *extensible,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_url_t *namespc);
  
 };
@@ -109,7 +109,7 @@ struct axis2_woden_element_extensible
 };
 
 AXIS2_DECLARE(axis2_woden_element_extensible_t *)
-axis2_woden_element_extensible_create(axis2_env_t **env);
+axis2_woden_element_extensible_create(const axis2_env_t *env);
 
 /**
  * This is an Axis2 C internal method. This is used only from constructor
@@ -118,7 +118,7 @@ axis2_woden_element_extensible_create(axis2_env_t **env);
 AXIS2_DECLARE(axis2_status_t)
 axis2_woden_element_extensible_resolve_methods(
         axis2_woden_element_extensible_t *extensible,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_element_extensible_t *extensible_impl,
         axis2_hash_t *methods);
 

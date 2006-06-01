@@ -36,36 +36,36 @@ static axis2_woden_direction_t *WODEN_DIRECTION_OUT = NULL;
 axis2_status_t AXIS2_CALL 
 axis2_woden_direction_free(
         void *direction,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_direction_get_direction_in(
         void *direction,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_direction_get_direction_out(
         void *direction,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 axis2_woden_direction_to_string(
         void *direction,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 static axis2_woden_direction_t *
 create(
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_direction_impl_t *direction_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    direction_impl = AXIS2_MALLOC((*env)->allocator, 
+    direction_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_direction_impl_t));
 
     direction_impl->f_value = NULL;
    
-    direction_impl->direction.ops = AXIS2_MALLOC((*env)->allocator, 
+    direction_impl->direction.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_direction_ops_t));
     
     direction_impl->direction.ops->free = axis2_woden_direction_free;
@@ -82,7 +82,7 @@ create(
 
 AXIS2_DECLARE(axis2_woden_direction_t *)
 axis2_woden_direction_create(
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *value)
 {
     axis2_woden_direction_impl_t *direction_impl = NULL;
@@ -98,7 +98,7 @@ axis2_woden_direction_create(
 axis2_status_t AXIS2_CALL
 axis2_woden_direction_free(
         void *direction,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_direction_impl_t *direction_impl = NULL;
 
@@ -107,19 +107,19 @@ axis2_woden_direction_free(
 
     if(direction_impl->f_value)
     {
-        AXIS2_FREE((*env)->allocator, direction_impl->f_value);
+        AXIS2_FREE(env->allocator, direction_impl->f_value);
         direction_impl->f_value = NULL;
     }
 
     if((&(direction_impl->direction))->ops)
     {
-        AXIS2_FREE((*env)->allocator, (&(direction_impl->direction))->ops);
+        AXIS2_FREE(env->allocator, (&(direction_impl->direction))->ops);
         (&(direction_impl->direction))->ops = NULL;
     }
 
     if(direction_impl)
     {
-        AXIS2_FREE((*env)->allocator, direction_impl);
+        AXIS2_FREE(env->allocator, direction_impl);
         direction_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -128,7 +128,7 @@ axis2_woden_direction_free(
 void *AXIS2_CALL
 axis2_woden_direction_get_direction_in(
         void *direction,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_direction_impl_t *direction_impl = NULL;
 
@@ -144,7 +144,7 @@ axis2_woden_direction_get_direction_in(
 void *AXIS2_CALL
 axis2_woden_direction_get_direction_out(
         void *direction,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_direction_impl_t *direction_impl = NULL;
 
@@ -159,7 +159,7 @@ axis2_woden_direction_get_direction_out(
 axis2_char_t *AXIS2_CALL
 axis2_woden_direction_to_string(
         void *direction,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_direction_impl_t *direction_impl = NULL;
 

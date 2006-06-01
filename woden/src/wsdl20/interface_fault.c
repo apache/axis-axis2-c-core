@@ -46,22 +46,22 @@ struct axis2_woden_interface_fault_impl
 axis2_status_t AXIS2_CALL 
 axis2_woden_interface_fault_free(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_woden_interface_fault_super_objs(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_obj_types_t AXIS2_CALL 
 axis2_woden_interface_fault_type(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_woden_nested_configurable_t *AXIS2_CALL
 axis2_woden_interface_fault_get_base_impl(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /* ************************************************************
  *  Interface Fault methods (the WSDL Component model)
@@ -69,17 +69,17 @@ axis2_woden_interface_fault_get_base_impl(
 axis2_qname_t *AXIS2_CALL
 axis2_woden_interface_fault_get_qname(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_interface_fault_get_element_declaration(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_interface_fault_to_element(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /* ************************************************************
  *  Interface FaultElement interface_fault methods (the XML Element model)
@@ -87,24 +87,24 @@ axis2_woden_interface_fault_to_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_interface_fault_set_qname(
         void *interface_fault,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_interface_fault_set_element_qname(
         void *interface_fault,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname);
 
 axis2_qname_t *AXIS2_CALL
 axis2_woden_interface_fault_get_element_qname(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_interface_fault_get_element(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /* ******************************************************************
  * Non-API implementation methods
@@ -113,28 +113,28 @@ axis2_woden_interface_fault_get_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_interface_fault_set_element_declaration(
         void *interface_fault,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *element_decl);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_interface_fault_set_types(
         void *interface_fault,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *types);
 
 static axis2_woden_interface_fault_t *
-create(axis2_env_t **env);
+create(const axis2_env_t *env);
 
 static axis2_status_t
 axis2_woden_interface_fault_free_ops(
         void *interface_fault,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_DECLARE(axis2_woden_interface_fault_t *)
 axis2_woden_interface_fault_to_interface_fault_element(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
    
@@ -149,7 +149,7 @@ axis2_woden_interface_fault_to_interface_fault_element(
     axis2_woden_interface_fault_free_ops(interface_fault, env);
 
     interface_fault_impl->interface_fault.base.interface_fault_element.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_interface_fault_element_ops_t));
     axis2_woden_interface_fault_element_resolve_methods(&(interface_fault_impl->interface_fault.base.
             interface_fault_element), env, interface_fault_impl->methods);
@@ -159,7 +159,7 @@ axis2_woden_interface_fault_to_interface_fault_element(
 AXIS2_DECLARE(axis2_woden_interface_fault_t *)
 axis2_woden_interface_fault_to_nested_configurable(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
    
@@ -174,7 +174,7 @@ axis2_woden_interface_fault_to_nested_configurable(
     axis2_woden_interface_fault_free_ops(interface_fault, env);
 
     interface_fault_impl->interface_fault.base.nested_configurable.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_nested_configurable_ops_t));
     axis2_woden_nested_configurable_resolve_methods(&(interface_fault_impl->interface_fault.base.
             nested_configurable), env, interface_fault_impl->nested_configurable, 
@@ -185,7 +185,7 @@ axis2_woden_interface_fault_to_nested_configurable(
 AXIS2_DECLARE(axis2_woden_interface_fault_t *)
 axis2_woden_interface_fault_to_configurable(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
     void *configurable = NULL;
@@ -201,7 +201,7 @@ axis2_woden_interface_fault_to_configurable(
     axis2_woden_interface_fault_free_ops(interface_fault, env);
 
     interface_fault_impl->interface_fault.base.nested_configurable.base.configurable.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_configurable_ops_t));
     configurable = AXIS2_WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(
             interface_fault_impl->nested_configurable, env);
@@ -212,12 +212,12 @@ axis2_woden_interface_fault_to_configurable(
 
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_interface_fault_t *
-create(axis2_env_t **env)
+create(const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    interface_fault_impl = AXIS2_MALLOC((*env)->allocator, 
+    interface_fault_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_woden_interface_fault_impl_t));
 
     interface_fault_impl->obj_type= AXIS2_WODEN_INTERFACE_FAULT;
@@ -233,7 +233,7 @@ create(axis2_env_t **env)
     interface_fault_impl->interface_fault.base.nested_configurable.base.configurable.ops = 
             NULL;
     
-    interface_fault_impl->interface_fault.ops = AXIS2_MALLOC((*env)->allocator, 
+    interface_fault_impl->interface_fault.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_interface_fault_ops_t));
 
     interface_fault_impl->interface_fault.ops->free = axis2_woden_interface_fault_free;
@@ -250,7 +250,7 @@ create(axis2_env_t **env)
     interface_fault_impl->methods = axis2_hash_make(env);
     if(!interface_fault_impl->methods) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(interface_fault_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -292,7 +292,7 @@ create(axis2_env_t **env)
 }
 
 AXIS2_DECLARE(axis2_woden_interface_fault_t *)
-axis2_woden_interface_fault_create(axis2_env_t **env)
+axis2_woden_interface_fault_create(const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
     void *configurable = NULL;
@@ -305,7 +305,7 @@ axis2_woden_interface_fault_create(axis2_env_t **env)
     interface_fault_impl->super = axis2_hash_make(env);
     if(!interface_fault_impl->super) 
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(interface_fault_impl->super, "AXIS2_WODEN_INTERFACE_FAULT", 
@@ -325,7 +325,7 @@ axis2_woden_interface_fault_create(axis2_env_t **env)
 static axis2_status_t
 axis2_woden_interface_fault_free_ops(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
 
@@ -334,14 +334,14 @@ axis2_woden_interface_fault_free_ops(
 
     if(interface_fault_impl->interface_fault.base.interface_fault_element.ops)
     {
-        AXIS2_FREE((*env)->allocator, interface_fault_impl->interface_fault.base.
+        AXIS2_FREE(env->allocator, interface_fault_impl->interface_fault.base.
                 interface_fault_element.ops);
         interface_fault_impl->interface_fault.base.interface_fault_element.ops = NULL;
     }
 
     if(interface_fault_impl->interface_fault.base.nested_configurable.ops)
     {
-        AXIS2_FREE((*env)->allocator, interface_fault_impl->interface_fault.base.
+        AXIS2_FREE(env->allocator, interface_fault_impl->interface_fault.base.
                 nested_configurable.ops);
         interface_fault_impl->interface_fault.base.nested_configurable.ops = 
             NULL;
@@ -349,7 +349,7 @@ axis2_woden_interface_fault_free_ops(
     
     if(interface_fault_impl->interface_fault.base.nested_configurable.base.configurable.ops)
     {
-        AXIS2_FREE((*env)->allocator, interface_fault_impl->interface_fault.base.
+        AXIS2_FREE(env->allocator, interface_fault_impl->interface_fault.base.
                 nested_configurable.base.configurable.ops);
         interface_fault_impl->interface_fault.base.nested_configurable.base.configurable.ops = 
             NULL;
@@ -362,7 +362,7 @@ axis2_woden_interface_fault_free_ops(
 axis2_status_t AXIS2_CALL
 axis2_woden_interface_fault_free(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
 
@@ -417,7 +417,7 @@ axis2_woden_interface_fault_free(
 
     if(interface_fault_impl)
     {
-        AXIS2_FREE((*env)->allocator, interface_fault_impl);
+        AXIS2_FREE(env->allocator, interface_fault_impl);
         interface_fault_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -426,7 +426,7 @@ axis2_woden_interface_fault_free(
 axis2_hash_t *AXIS2_CALL
 axis2_woden_interface_fault_super_objs(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
 
@@ -439,7 +439,7 @@ axis2_woden_interface_fault_super_objs(
 axis2_woden_obj_types_t AXIS2_CALL
 axis2_woden_interface_fault_type(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
 
@@ -452,7 +452,7 @@ axis2_woden_interface_fault_type(
 axis2_woden_nested_configurable_t *AXIS2_CALL
 axis2_woden_interface_fault_get_base_impl(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
 
@@ -465,14 +465,14 @@ axis2_woden_interface_fault_get_base_impl(
 axis2_status_t AXIS2_CALL
 axis2_woden_interface_fault_resolve_methods(
         axis2_woden_interface_fault_t *interface_fault,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_woden_interface_fault_t *interface_fault_impl,
         axis2_hash_t *methods)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     interface_fault_impl_l = INTF_TO_IMPL(interface_fault_impl);
     
     interface_fault->ops->free = axis2_hash_get(methods, "free", 
@@ -509,7 +509,7 @@ axis2_woden_interface_fault_resolve_methods(
 axis2_qname_t *AXIS2_CALL
 axis2_woden_interface_fault_get_qname(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -525,7 +525,7 @@ axis2_woden_interface_fault_get_qname(
 void *AXIS2_CALL
 axis2_woden_interface_fault_get_element_declaration(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -541,7 +541,7 @@ axis2_woden_interface_fault_get_element_declaration(
 void *AXIS2_CALL
 axis2_woden_interface_fault_to_element(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -560,14 +560,14 @@ axis2_woden_interface_fault_to_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_interface_fault_set_qname(
         void *interface_fault,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
     super = AXIS2_WODEN_INTERFACE_FAULT_SUPER_OBJS(interface_fault, env);
     interface_fault_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_INTERFACE_FAULT", AXIS2_HASH_KEY_STRING));
@@ -583,14 +583,14 @@ axis2_woden_interface_fault_set_qname(
 axis2_status_t AXIS2_CALL
 axis2_woden_interface_fault_set_element_qname(
         void *interface_fault,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_qname_t *qname)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
     super = AXIS2_WODEN_INTERFACE_FAULT_SUPER_OBJS(interface_fault, env);
     interface_fault_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_INTERFACE_FAULT", AXIS2_HASH_KEY_STRING));
@@ -608,7 +608,7 @@ axis2_woden_interface_fault_set_element_qname(
 axis2_qname_t *AXIS2_CALL
 axis2_woden_interface_fault_get_element_qname(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -624,7 +624,7 @@ axis2_woden_interface_fault_get_element_qname(
 void *AXIS2_CALL
 axis2_woden_interface_fault_get_element(
         void *interface_fault,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -646,14 +646,14 @@ axis2_woden_interface_fault_get_element(
 axis2_status_t AXIS2_CALL
 axis2_woden_interface_fault_set_element_declaration(
         void *interface_fault,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *element_decl)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, element_decl, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, element_decl, AXIS2_FAILURE);
     super = AXIS2_WODEN_INTERFACE_FAULT_SUPER_OBJS(interface_fault, env);
     interface_fault_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_INTERFACE_FAULT", AXIS2_HASH_KEY_STRING));
@@ -671,14 +671,14 @@ axis2_woden_interface_fault_set_element_declaration(
 axis2_status_t AXIS2_CALL
 axis2_woden_interface_fault_set_types(
         void *interface_fault,
-        axis2_env_t **env,
+        const axis2_env_t *env,
         void *types)
 {
     axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, types, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, types, AXIS2_FAILURE);
     super = AXIS2_WODEN_INTERFACE_FAULT_SUPER_OBJS(interface_fault, env);
     interface_fault_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_INTERFACE_FAULT", AXIS2_HASH_KEY_STRING));

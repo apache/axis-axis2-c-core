@@ -48,54 +48,54 @@ struct axis2_xml_schema_app_info_impl
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_app_info_free(
         void *app_info,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
 axis2_xml_schema_app_info_super_objs(
         void *app_info,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
 axis2_xml_schema_app_info_type(
         void *app_info,
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 axis2_xml_schema_obj_t *AXIS2_CALL
 axis2_xml_schema_app_info_get_base_impl(void *app_info,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 axis2_xml_schema_app_info_get_source(void *app_info,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_app_info_set_source(void *app_info,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *source);
 
 /* TODO replace (void *) mark up with node list */
 void *AXIS2_CALL
 axis2_xml_schema_app_info_get_markup(void *app_info,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
 /* TODO replace (void *) mark up with node list */
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_app_info_set_markup(void *app_info,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         void *markup);
 /****************** end macros ***********************************************/
 
 AXIS2_EXTERN axis2_xml_schema_app_info_t * AXIS2_CALL
-axis2_xml_schema_app_info_create(axis2_env_t **env)
+axis2_xml_schema_app_info_create(const axis2_env_t *env)
 {
     axis2_xml_schema_app_info_impl_t *app_info_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    app_info_impl = AXIS2_MALLOC((*env)->allocator, 
+    app_info_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_app_info_impl_t));
     if(!app_info_impl)
     {
-        AXIS2_ERROR_SET((*env)->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -108,13 +108,13 @@ axis2_xml_schema_app_info_create(axis2_env_t **env)
     app_info_impl->source = NULL;
     app_info_impl->markup = NULL;
     
-    app_info_impl->app_info.ops = AXIS2_MALLOC((*env)->allocator, 
+    app_info_impl->app_info.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_app_info_ops_t));
     
     if(!app_info_impl->app_info.ops)
     {
         axis2_xml_schema_app_info_free(&(app_info_impl->app_info), env);
-        AXIS2_ERROR_SET((*env)->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     app_info_impl->app_info.ops->free = 
@@ -145,7 +145,7 @@ axis2_xml_schema_app_info_create(axis2_env_t **env)
     if(!app_info_impl->methods) 
     {
         axis2_xml_schema_app_info_free(&(app_info_impl->app_info), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(app_info_impl->methods, "free", 
@@ -181,7 +181,7 @@ axis2_xml_schema_app_info_create(axis2_env_t **env)
     if(!app_info_impl->ht_super) 
     {
         axis2_xml_schema_app_info_free(&(app_info_impl->app_info), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(app_info_impl->ht_super, "AXIS2_XML_SCHEMA_APP_INFO", 
@@ -197,7 +197,7 @@ axis2_xml_schema_app_info_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_app_info_free(void *app_info,
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     axis2_xml_schema_app_info_impl_t *app_info_impl = NULL;
 
@@ -206,7 +206,7 @@ axis2_xml_schema_app_info_free(void *app_info,
 
     if(NULL != app_info_impl->source)
     {
-        AXIS2_FREE((*env)->allocator, app_info_impl->source);
+        AXIS2_FREE(env->allocator, app_info_impl->source);
         app_info_impl->source = NULL;
     }
 
@@ -232,17 +232,17 @@ axis2_xml_schema_app_info_free(void *app_info,
     
     if(NULL != app_info_impl->app_info.ops)
     {
-        AXIS2_FREE((*env)->allocator, app_info_impl->app_info.ops);
+        AXIS2_FREE(env->allocator, app_info_impl->app_info.ops);
         app_info_impl->app_info.ops = NULL;
     }
     if(NULL != app_info_impl->app_info.base.ops)
     {
-        AXIS2_FREE((*env)->allocator, app_info_impl->app_info.base.ops);
+        AXIS2_FREE(env->allocator, app_info_impl->app_info.base.ops);
         app_info_impl->app_info.base.ops = NULL;    
     }
     if(NULL != app_info_impl)
     {
-        AXIS2_FREE((*env)->allocator, app_info_impl);
+        AXIS2_FREE(env->allocator, app_info_impl);
         app_info_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -251,7 +251,7 @@ axis2_xml_schema_app_info_free(void *app_info,
 axis2_hash_t *AXIS2_CALL
 axis2_xml_schema_app_info_super_objs(
         void *app_info,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(app_info)->ht_super;
 }
@@ -259,7 +259,7 @@ axis2_xml_schema_app_info_super_objs(
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_schema_app_info_type(
         void *app_info,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(app_info)->obj_type;
 }
@@ -267,14 +267,14 @@ axis2_xml_schema_app_info_type(
 axis2_xml_schema_obj_t *AXIS2_CALL
 axis2_xml_schema_app_info_get_base_impl(
         void *app_info,
-        axis2_env_t **env)
+        const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(app_info)->schema_obj;
 }
 
 axis2_char_t *AXIS2_CALL
 axis2_xml_schema_app_info_get_source(void *app_info,
-                                        axis2_env_t **env)
+                                        const axis2_env_t *env)
 {
         
     axis2_xml_schema_app_info_impl_t *app_info_impl = NULL;
@@ -294,13 +294,13 @@ axis2_xml_schema_app_info_get_source(void *app_info,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_app_info_set_source(void *app_info,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         axis2_char_t *source)
 {
     axis2_xml_schema_app_info_impl_t *app_info_impl = NULL;
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, source, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, source, AXIS2_FAILURE);
     
     ht_super = AXIS2_XML_SCHEMA_USE_SUPER_OBJS(app_info, env);
     if(NULL != ht_super)
@@ -313,14 +313,14 @@ axis2_xml_schema_app_info_set_source(void *app_info,
     
     if(NULL != app_info_impl->source)
     {
-        AXIS2_FREE((*env)->allocator, app_info_impl->source);
+        AXIS2_FREE(env->allocator, app_info_impl->source);
         app_info_impl->source = NULL;
     }
 
     app_info_impl->source = AXIS2_STRDUP(source, env);
     if(!app_info_impl->source)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     return AXIS2_SUCCESS;
@@ -329,7 +329,7 @@ axis2_xml_schema_app_info_set_source(void *app_info,
 /* TODO replace (void *) mark up with node list */
 void *AXIS2_CALL
 axis2_xml_schema_app_info_get_markup(void *app_info,
-                                        axis2_env_t **env)
+                                        const axis2_env_t *env)
 {
     axis2_xml_schema_app_info_impl_t *app_info_impl = NULL;
     axis2_hash_t *ht_super = NULL;
@@ -348,13 +348,13 @@ axis2_xml_schema_app_info_get_markup(void *app_info,
 /* TODO replace (void *) mark up with node list */
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_app_info_set_markup(void *app_info,
-                                        axis2_env_t **env,
+                                        const axis2_env_t *env,
                                         void *markup)
 {
     axis2_xml_schema_app_info_impl_t *app_info_impl = NULL;
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, markup, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, markup, AXIS2_FAILURE);
     ht_super = AXIS2_XML_SCHEMA_USE_SUPER_OBJS(app_info, env);
     if(NULL != ht_super)
     {

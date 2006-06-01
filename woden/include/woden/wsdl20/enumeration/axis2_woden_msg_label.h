@@ -99,12 +99,12 @@ struct axis2_woden_msg_label_ops
     axis2_bool_t (AXIS2_CALL *
     is_valid) (
             void *msg_label,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_bool_t (AXIS2_CALL *
     equals) (
             void *msg_label,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_woden_msg_label_t *other);
 
 

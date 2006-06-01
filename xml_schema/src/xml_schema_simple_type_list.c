@@ -49,53 +49,53 @@ struct axis2_xml_schema_simple_type_list_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_simple_type_list_free(void *simple_type_list,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_xml_schema_simple_type_content_t *AXIS2_CALL
 axis2_xml_schema_simple_type_list_get_base_impl(void *simple_type_list,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 axis2_xml_schema_simple_type_list_super_objs(void *simple_type_list,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
                                             
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_schema_simple_type_list_type(void *simple_type_list,
-                                       axis2_env_t **env);                                            
+                                       const axis2_env_t *env);                                            
 
 axis2_xml_schema_simple_type_t* AXIS2_CALL
 axis2_xml_schema_simple_type_list_get_item_type(void *simple_type_list,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
                                             
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_simple_type_list_set_item_type(void *simple_type_list,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_xml_schema_simple_type_t *base_type);
 
 axis2_qname_t* AXIS2_CALL
 axis2_xml_schema_simple_type_list_get_item_type_name(void *simple_type_list,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_simple_type_list_set_item_type_name(void *simple_type_list,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_qname_t *base_type_name);
 
 /*************** function prototypes *****************************************/
 
 AXIS2_EXTERN axis2_xml_schema_simple_type_list_t * AXIS2_CALL
-axis2_xml_schema_simple_type_list_create(axis2_env_t **env)
+axis2_xml_schema_simple_type_list_create(const axis2_env_t *env)
 {
     axis2_xml_schema_simple_type_list_impl_t *simple_type_list_impl = NULL;
     axis2_xml_schema_annotated_t *annotated = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    simple_type_list_impl = AXIS2_MALLOC((*env)->allocator, 
+    simple_type_list_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_simple_type_list_impl_t));
     
     if(!simple_type_list_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -109,14 +109,14 @@ axis2_xml_schema_simple_type_list_create(axis2_env_t **env)
     simple_type_list_impl->obj_type = AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST;
     
     simple_type_list_impl->simple_type_list.ops = 
-        AXIS2_MALLOC((*env)->allocator, 
+        AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_simple_type_list_ops_t));
 
     if(!simple_type_list_impl->simple_type_list.ops)
     {
         axis2_xml_schema_simple_type_list_free(
             &(simple_type_list_impl->simple_type_list), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -143,7 +143,7 @@ axis2_xml_schema_simple_type_list_create(axis2_env_t **env)
     {
         axis2_xml_schema_simple_type_list_free(
             &(simple_type_list_impl->simple_type_list), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(simple_type_list_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -201,7 +201,7 @@ axis2_xml_schema_simple_type_list_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_simple_type_list_free(void *simple_type_list,
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     axis2_xml_schema_simple_type_list_impl_t *simple_type_list_impl = NULL;
 
@@ -227,20 +227,20 @@ axis2_xml_schema_simple_type_list_free(void *simple_type_list,
     
     if(NULL != simple_type_list_impl->simple_type_list.ops)
     {
-        AXIS2_FREE((*env)->allocator, 
+        AXIS2_FREE(env->allocator, 
             simple_type_list_impl->simple_type_list.ops);
         simple_type_list_impl->simple_type_list.ops = NULL;
     }
     if(NULL != simple_type_list_impl->simple_type_list.base.ops)
     {
-        AXIS2_FREE((*env)->allocator, 
+        AXIS2_FREE(env->allocator, 
             simple_type_list_impl->simple_type_list.base.ops);
         simple_type_list_impl->simple_type_list.base.ops = NULL;
     }
     
     if(NULL != simple_type_list_impl)
     {
-        AXIS2_FREE((*env)->allocator, simple_type_list_impl);
+        AXIS2_FREE(env->allocator, simple_type_list_impl);
         simple_type_list_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -248,7 +248,7 @@ axis2_xml_schema_simple_type_list_free(void *simple_type_list,
 
 axis2_xml_schema_simple_type_content_t *AXIS2_CALL
 axis2_xml_schema_simple_type_list_get_base_impl(void *simple_type_list,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_xml_schema_simple_type_list_impl_t *simple_type_list_impl = NULL;
 
@@ -262,24 +262,24 @@ axis2_xml_schema_simple_type_list_get_base_impl(void *simple_type_list,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_simple_type_list_resolve_methods(
                     axis2_xml_schema_simple_type_list_t *simple_type_list,
-                    axis2_env_t **env,
+                    const axis2_env_t *env,
                     axis2_xml_schema_simple_type_list_t *simple_type_list_impl,
                     axis2_hash_t *methods)
 {
     axis2_xml_schema_simple_type_list_impl_t *simple_type_list_impl_l = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, simple_type_list_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, simple_type_list_impl, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     simple_type_list_impl_l = 
         (axis2_xml_schema_simple_type_list_impl_t *) simple_type_list_impl;
     
-    simple_type_list->ops = AXIS2_MALLOC((*env)->allocator, 
+    simple_type_list->ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_xml_schema_simple_type_list_ops_t));
     if(NULL != simple_type_list->ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }            
     
@@ -306,7 +306,7 @@ axis2_xml_schema_simple_type_list_resolve_methods(
 */
 axis2_xml_schema_simple_type_t* AXIS2_CALL
 axis2_xml_schema_simple_type_list_get_item_type(void *simple_type_list,
-                                            axis2_env_t **env)
+                                            const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return 
@@ -315,7 +315,7 @@ axis2_xml_schema_simple_type_list_get_item_type(void *simple_type_list,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_simple_type_list_set_item_type(void *simple_type_list,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             axis2_xml_schema_simple_type_t* item_type)
 {
     axis2_xml_schema_simple_type_list_impl_t *sim_type_res_impl = NULL;
@@ -332,7 +332,7 @@ axis2_xml_schema_simple_type_list_set_item_type(void *simple_type_list,
 
 axis2_qname_t* AXIS2_CALL
 axis2_xml_schema_simple_type_list_get_item_type_name(void *simple_type_list,
-                                                            axis2_env_t **env)
+                                                            const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(simple_type_list)->item_type_name;
@@ -340,12 +340,12 @@ axis2_xml_schema_simple_type_list_get_item_type_name(void *simple_type_list,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_simple_type_list_set_item_type_name(void *simple_type_list,
-                                                            axis2_env_t **env,
+                                                            const axis2_env_t *env,
                                                             axis2_qname_t *item_type_name)
 {
     axis2_xml_schema_simple_type_list_impl_t *sim_type_res_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, item_type_name, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, item_type_name, AXIS2_FAILURE);
     
     sim_type_res_impl = AXIS2_INTF_TO_IMPL(simple_type_list);
     if(NULL != sim_type_res_impl->item_type_name)
@@ -359,14 +359,14 @@ axis2_xml_schema_simple_type_list_set_item_type_name(void *simple_type_list,
 
 axis2_hash_t* AXIS2_CALL
 axis2_xml_schema_simple_type_list_super_objs(void *simple_type_list,
-                                            axis2_env_t **env)
+                                            const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(simple_type_list)->ht_super;
 }                                            
                                             
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_schema_simple_type_list_type(void *simple_type_list,
-                                       axis2_env_t **env)
+                                       const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(simple_type_list)->obj_type;
 }                                                                               

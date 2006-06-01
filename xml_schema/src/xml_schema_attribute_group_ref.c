@@ -46,44 +46,44 @@ struct axis2_xml_schema_attribute_group_ref_impl
 /******************* function prototypes **********************************/
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_attribute_group_ref_free(void *grp_ref,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_xml_schema_annotated_t *AXIS2_CALL
 axis2_xml_schema_attribute_group_ref_get_base_impl(void *grp_ref,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_schema_attribute_group_ref_type(void *grp_ref,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 axis2_xml_schema_attribute_group_ref_super_objs(void *grp_ref,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
 axis2_qname_t* AXIS2_CALL 
 axis2_xml_schema_attribute_group_ref_get_ref_qname(
             void *grp_ref,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_attribute_group_ref_set_ref_qname(
             void *grp_ref,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *any_attr);  
     
  /************************ end function prototypes ******************************/
  
 AXIS2_EXTERN axis2_xml_schema_attribute_group_ref_t * AXIS2_CALL
-axis2_xml_schema_attribute_group_ref_create(axis2_env_t **env)
+axis2_xml_schema_attribute_group_ref_create(const axis2_env_t *env)
 {
     axis2_xml_schema_attribute_group_ref_impl_t *attr_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    attr_impl = AXIS2_MALLOC((*env)->allocator, 
+    attr_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_attribute_group_ref_impl_t));
     if(!attr_impl)
     {
-        AXIS2_ERROR_SET((*env)->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     attr_impl->grp_ref.base.ops = NULL;
@@ -94,13 +94,13 @@ axis2_xml_schema_attribute_group_ref_create(axis2_env_t **env)
     attr_impl->ref_qname = NULL;
     attr_impl->obj_type = AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_REF;
         
-    attr_impl->grp_ref.ops = AXIS2_MALLOC((*env)->allocator, 
+    attr_impl->grp_ref.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_attribute_group_ref_ops_t));
 
     if(!attr_impl->grp_ref.ops)
     {
         axis2_xml_schema_attribute_group_ref_free(&(attr_impl->grp_ref), env);
-        AXIS2_ERROR_SET((*env)->error , 
+        AXIS2_ERROR_SET(env->error , 
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -123,7 +123,7 @@ axis2_xml_schema_attribute_group_ref_create(axis2_env_t **env)
     attr_impl->ht_super = axis2_hash_make(env);
     if(!attr_impl->methods || !attr_impl->ht_super)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(attr_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -137,7 +137,7 @@ axis2_xml_schema_attribute_group_ref_create(axis2_env_t **env)
     if(!attr_impl->methods)
     {
         axis2_xml_schema_attribute_group_ref_free(&(attr_impl->grp_ref), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -159,7 +159,7 @@ axis2_xml_schema_attribute_group_ref_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_attribute_group_ref_free(void *grp_ref,
-                            axis2_env_t **env)
+                            const axis2_env_t *env)
 {
     axis2_xml_schema_attribute_group_ref_impl_t *attr_impl = NULL;
 
@@ -190,23 +190,23 @@ axis2_xml_schema_attribute_group_ref_free(void *grp_ref,
     
     if(NULL != attr_impl->grp_ref.ops)
     {
-        AXIS2_FREE((*env)->allocator, attr_impl->grp_ref.ops);
+        AXIS2_FREE(env->allocator, attr_impl->grp_ref.ops);
         attr_impl->grp_ref.ops = NULL;
     }
     if(NULL != attr_impl->grp_ref.base.ops)
     {
-        AXIS2_FREE((*env)->allocator, attr_impl->grp_ref.base.ops);
+        AXIS2_FREE(env->allocator, attr_impl->grp_ref.base.ops);
         attr_impl->grp_ref.base.ops = NULL;    
     }
 
-    AXIS2_FREE((*env)->allocator, attr_impl);
+    AXIS2_FREE(env->allocator, attr_impl);
     attr_impl = NULL;
     return AXIS2_SUCCESS;
 }
 
 axis2_xml_schema_annotated_t *AXIS2_CALL
 axis2_xml_schema_attribute_group_ref_get_base_impl(void *grp_ref,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_xml_schema_attribute_group_ref_impl_t *attr_impl = NULL;
 
@@ -219,23 +219,23 @@ axis2_xml_schema_attribute_group_ref_get_base_impl(void *grp_ref,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_attribute_group_ref_resolve_methods(
                                 axis2_xml_schema_attribute_group_ref_t *grp_ref,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_attribute_group_ref_t *attr_impl,
                                 axis2_hash_t *methods)
 {
     axis2_xml_schema_attribute_group_ref_impl_t *any_impl_l = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, attr_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, attr_impl, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     any_impl_l = (axis2_xml_schema_attribute_group_ref_impl_t *) attr_impl;
     
-    grp_ref->ops = AXIS2_MALLOC((*env)->allocator, 
+    grp_ref->ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_xml_schema_attribute_group_ref_ops_t));
     if(NULL != grp_ref->ops)
     {
-        AXIS2_ERROR_SET((*env)->error, 
+        AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }            
@@ -259,14 +259,14 @@ axis2_xml_schema_attribute_group_ref_resolve_methods(
 */
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_schema_attribute_group_ref_type(void *grp_ref,
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(grp_ref)->obj_type;    
 }                                    
 
 axis2_hash_t* AXIS2_CALL
 axis2_xml_schema_attribute_group_ref_super_objs(void *grp_ref,
-                                        axis2_env_t **env)
+                                        const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(grp_ref)->ht_super;
 }
@@ -274,7 +274,7 @@ axis2_xml_schema_attribute_group_ref_super_objs(void *grp_ref,
 axis2_qname_t* AXIS2_CALL 
 axis2_xml_schema_attribute_group_ref_get_ref_qname(
             void *grp_ref,
-            axis2_env_t **env)
+            const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(grp_ref)->ref_qname;
 }
@@ -282,11 +282,11 @@ axis2_xml_schema_attribute_group_ref_get_ref_qname(
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_attribute_group_ref_set_ref_qname(
             void *grp_ref,
-            axis2_env_t **env,
+            const axis2_env_t *env,
             axis2_qname_t *ref_qname)
 {
     axis2_xml_schema_attribute_group_ref_impl_t *attr_grp_impl = NULL;
-    AXIS2_PARAM_CHECK((*env)->error, ref_qname, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ref_qname, AXIS2_FAILURE);
     attr_grp_impl = AXIS2_INTF_TO_IMPL(grp_ref);
     if(NULL != attr_grp_impl->ref_qname)
     {

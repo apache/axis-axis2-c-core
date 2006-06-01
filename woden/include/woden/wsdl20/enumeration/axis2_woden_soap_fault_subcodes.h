@@ -65,27 +65,27 @@ struct axis2_woden_soap_fault_subcodes_ops
     axis2_status_t (AXIS2_CALL *
     free) (
             void *soap_fault_subcodes,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_bool_t (AXIS2_CALL *
     is_qnames) (
             void *soap_fault_subcodes,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_bool_t (AXIS2_CALL *
     is_token) (
             void *soap_fault_subcodes,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_qnames) (
             void *soap_fault_subcodes,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_token) (
             void *soap_fault_subcodes,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
 
 };
@@ -98,13 +98,13 @@ struct axis2_woden_soap_fault_subcodes
 
 AXIS2_DECLARE(axis2_woden_soap_fault_subcodes_t *)
 axis2_woden_soap_fault_subcodes_create(
-        axis2_env_t **env,
+        const axis2_env_t *env,
         axis2_char_t *token,
         axis2_array_list_t *subcode_qns);
 
 AXIS2_DECLARE(void *)
 axis2_woden_soap_fault_subcodes_get_soap_fault_subcodes_any(
-        axis2_env_t **env);
+        const axis2_env_t *env);
 
 #define AXIS2_WODEN_SOAP_FAULT_SUBCODES_FREE(soap_fault_subcodes, env) \
 		(((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\

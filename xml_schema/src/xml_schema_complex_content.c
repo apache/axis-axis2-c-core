@@ -46,57 +46,57 @@ struct axis2_xml_schema_complex_content_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_complex_content_free(void *complex_content,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_xml_schema_annotated_t *AXIS2_CALL
 axis2_xml_schema_complex_content_get_base_impl(void *complex_content,
-                                        axis2_env_t **env);
+                                        const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_schema_complex_content_type(void *complex_content,
-                                                 axis2_env_t **env);
+                                                 const axis2_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 axis2_xml_schema_complex_content_super_objs(void *complex_content,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 
 
 void* AXIS2_CALL
 axis2_xml_schema_complex_content_get_content(void *complex_content,
-                                            axis2_env_t **env);
+                                            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_complex_content_set_content(void *complex_content,
-                                            axis2_env_t **env,
+                                            const axis2_env_t *env,
                                             void* content);
 axis2_char_t* AXIS2_CALL
 axis2_xml_schema_complex_content_to_string(void *complex_content,
-                                          axis2_env_t **env,
+                                          const axis2_env_t *env,
                                           axis2_char_t *prefix, 
                                           int tab);
                                           
 axis2_bool_t AXIS2_CALL
 axis2_xml_schema_complex_content_is_mixed(void *complex_content,
-                                          axis2_env_t **env);
+                                          const axis2_env_t *env);
                                           
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_complex_content_set_mixed(void *complex_content,
-                                           axis2_env_t **env,
+                                           const axis2_env_t *env,
                                            axis2_bool_t mixed);                                          
                                                                                     
 /***************** end function prototypes ***********************************/                                          
 
 AXIS2_EXTERN axis2_xml_schema_complex_content_t * AXIS2_CALL
-axis2_xml_schema_complex_content_create(axis2_env_t **env)
+axis2_xml_schema_complex_content_create(const axis2_env_t *env)
 {
     axis2_xml_schema_complex_content_impl_t *complex_content_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    complex_content_impl = (axis2_xml_schema_complex_content_impl_t*)AXIS2_MALLOC((*env)->allocator, 
+    complex_content_impl = (axis2_xml_schema_complex_content_impl_t*)AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_xml_schema_complex_content_impl_t));
     if(!complex_content_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -109,12 +109,12 @@ axis2_xml_schema_complex_content_create(axis2_env_t **env)
     complex_content_impl->complex_content.base.ops = NULL;
     complex_content_impl->complex_content.ops = NULL;
     
-    complex_content_impl->complex_content.ops = AXIS2_MALLOC((*env)->allocator, 
+    complex_content_impl->complex_content.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_complex_content_ops_t));
     if(!complex_content_impl->complex_content.ops)
     {
         axis2_xml_schema_complex_content_free(&(complex_content_impl->complex_content), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
@@ -141,7 +141,7 @@ axis2_xml_schema_complex_content_create(axis2_env_t **env)
     if(!complex_content_impl->methods || !complex_content_impl->ht_super)
     {
         axis2_xml_schema_complex_content_free(&(complex_content_impl->complex_content), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(complex_content_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
@@ -183,7 +183,7 @@ axis2_xml_schema_complex_content_create(axis2_env_t **env)
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_complex_content_free(void *complex_content,
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     axis2_xml_schema_complex_content_impl_t *complex_content_impl = NULL;
 
@@ -211,23 +211,23 @@ axis2_xml_schema_complex_content_free(void *complex_content,
     }
     if(NULL != complex_content_impl->complex_content.base.ops)
     {
-        AXIS2_FREE((*env)->allocator, complex_content_impl->complex_content.base.ops);
+        AXIS2_FREE(env->allocator, complex_content_impl->complex_content.base.ops);
         complex_content_impl->complex_content.base.ops = NULL;  
     }
     if(NULL != complex_content_impl->complex_content.ops)
     {
-        AXIS2_FREE((*env)->allocator, complex_content_impl->complex_content.ops);
+        AXIS2_FREE(env->allocator, complex_content_impl->complex_content.ops);
         complex_content_impl->complex_content.ops = NULL;
     }
  
-    AXIS2_FREE((*env)->allocator, complex_content_impl);
+    AXIS2_FREE(env->allocator, complex_content_impl);
     complex_content_impl = NULL;
     return AXIS2_SUCCESS;
 }
 
 axis2_xml_schema_annotated_t *AXIS2_CALL
 axis2_xml_schema_complex_content_get_base_impl(void *complex_content,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_xml_schema_complex_content_impl_t *complex_content_impl = NULL;
 
@@ -240,24 +240,24 @@ axis2_xml_schema_complex_content_get_base_impl(void *complex_content,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_xml_schema_complex_content_resolve_methods(
                                 axis2_xml_schema_complex_content_t *complex_content,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 axis2_xml_schema_complex_content_t *complex_content_impl,
                                 axis2_hash_t *methods)
 {
     axis2_xml_schema_complex_content_impl_t *complex_content_impl_l = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, complex_content_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, methods, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, complex_content, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, complex_content_impl, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, complex_content, AXIS2_FAILURE);
     
     complex_content_impl_l = (axis2_xml_schema_complex_content_impl_t *) complex_content_impl;
     
-    complex_content->ops = AXIS2_MALLOC((*env)->allocator, 
+    complex_content->ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_xml_schema_complex_content_ops_t));
     if(!complex_content->ops)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
     complex_content->ops->free = axis2_hash_get(methods, "free", 
@@ -284,7 +284,7 @@ axis2_xml_schema_complex_content_resolve_methods(
 
 void* AXIS2_CALL
 axis2_xml_schema_complex_content_get_content(void *complex_content,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(complex_content)->content;
@@ -292,13 +292,13 @@ axis2_xml_schema_complex_content_get_content(void *complex_content,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_complex_content_set_content(void *complex_content,
-                                axis2_env_t **env,
+                                const axis2_env_t *env,
                                 void *content)
 {
     axis2_xml_schema_complex_content_impl_t *complex_content_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK((*env)->error, content, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, content, AXIS2_FAILURE);
     
     complex_content_impl = AXIS2_INTF_TO_IMPL(complex_content);
 
@@ -313,7 +313,7 @@ axis2_xml_schema_complex_content_set_content(void *complex_content,
 
 axis2_char_t* AXIS2_CALL
 axis2_xml_schema_complex_content_to_string(void *complex_content,
-                                          axis2_env_t **env,
+                                          const axis2_env_t *env,
                                           axis2_char_t *prefix, 
                                           int tab)
 {
@@ -335,7 +335,7 @@ axis2_xml_schema_complex_content_to_string(void *complex_content,
             temp_xml = xml;
             xml = AXIS2_STRACAT(xml, "\t", env);
             if(NULL != temp_xml)
-                AXIS2_FREE((*env)->allocator, temp_xml);
+                AXIS2_FREE(env->allocator, temp_xml);
             temp_xml = NULL;
         }
     }
@@ -351,7 +351,7 @@ axis2_xml_schema_complex_content_to_string(void *complex_content,
     xml = AXIS2_STRACAT(temp_xml, "complexContent>\n", env);
     if(NULL != temp_xml)
     {
-        AXIS2_FREE((*env)->allocator, temp_xml);
+        AXIS2_FREE(env->allocator, temp_xml);
         temp_xml = NULL;
     }
     
@@ -363,7 +363,7 @@ axis2_xml_schema_complex_content_to_string(void *complex_content,
 
 axis2_bool_t AXIS2_CALL
 axis2_xml_schema_complex_content_is_mixed(void *complex_content,
-                                          axis2_env_t **env)
+                                          const axis2_env_t *env)
 {
     axis2_xml_schema_complex_content_impl_t *complex_content_impl = NULL;
     /** AXIS2_ENV_CHECK(env, AXIS2_FAILURE); */
@@ -373,7 +373,7 @@ axis2_xml_schema_complex_content_is_mixed(void *complex_content,
                                             
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_complex_content_set_mixed(void *complex_content,
-                                           axis2_env_t **env,
+                                           const axis2_env_t *env,
                                            axis2_bool_t mixed)
 {
     axis2_xml_schema_complex_content_impl_t *complex_content_impl = NULL;
@@ -385,14 +385,14 @@ axis2_xml_schema_complex_content_set_mixed(void *complex_content,
                                            
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_schema_complex_content_type(void *complex_content,
-                                                 axis2_env_t **env)
+                                                 const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(complex_content)->obj_type;
 }                                                 
 
 axis2_hash_t* AXIS2_CALL
 axis2_xml_schema_complex_content_super_objs(void *complex_content,
-                                            axis2_env_t **env)
+                                            const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(complex_content)->ht_super;
 }                                                 

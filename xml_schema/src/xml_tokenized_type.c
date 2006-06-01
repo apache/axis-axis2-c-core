@@ -45,38 +45,38 @@ struct axis2_xml_tokenized_type_impl
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_tokenized_type_free(void *tokenized_type,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_xml_schema_enum_t *AXIS2_CALL
 axis2_xml_tokenized_type_get_base_impl(void *tokenized_type,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_array_list_t * AXIS2_CALL
 axis2_xml_tokenized_type_get_values(void *tokenized_type,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_tokenized_type_type(void *tokenized_type,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
 axis2_xml_tokenized_type_super_objs(void *tokenized_type,
-                                    axis2_env_t **env);
+                                    const axis2_env_t *env);
 
 /***************************** end macros **************************************/
 
 AXIS2_EXTERN axis2_xml_tokenized_type_t * AXIS2_CALL
-axis2_xml_tokenized_type_create(axis2_env_t **env,
+axis2_xml_tokenized_type_create(const axis2_env_t *env,
                             axis2_char_t *value)
 {
     axis2_xml_tokenized_type_impl_t *tokenized_type_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    tokenized_type_impl = AXIS2_MALLOC((*env)->allocator, 
+    tokenized_type_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_tokenized_type_impl_t));
     if(!tokenized_type_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -87,12 +87,12 @@ axis2_xml_tokenized_type_create(axis2_env_t **env,
     tokenized_type_impl->tokenized_type.ops = NULL;
     tokenized_type_impl->ht_super = NULL;
     
-    tokenized_type_impl->tokenized_type.ops = AXIS2_MALLOC((*env)->allocator, 
+    tokenized_type_impl->tokenized_type.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_tokenized_type_ops_t));
     if(!tokenized_type_impl->tokenized_type.ops)
     {
         axis2_xml_tokenized_type_free(&(tokenized_type_impl->tokenized_type), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -146,7 +146,7 @@ axis2_xml_tokenized_type_create(axis2_env_t **env,
     if(!tokenized_type_impl->methods)
     {
         axis2_xml_tokenized_type_free(&(tokenized_type_impl->tokenized_type), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -167,7 +167,7 @@ axis2_xml_tokenized_type_create(axis2_env_t **env,
     if(!tokenized_type_impl->ht_super)
     {
         axis2_xml_tokenized_type_free(&(tokenized_type_impl->tokenized_type), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -186,7 +186,7 @@ axis2_xml_tokenized_type_create(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_tokenized_type_free(void *tokenized_type,
-                              axis2_env_t **env)
+                              const axis2_env_t *env)
 {
     axis2_xml_tokenized_type_impl_t *tokenized_type_impl = NULL;
 
@@ -210,7 +210,7 @@ axis2_xml_tokenized_type_free(void *tokenized_type,
             value =(axis2_char_t* ) AXIS2_ARRAY_LIST_GET(tokenized_type_impl->members, env, i);
             if(NULL != value)
             {
-                AXIS2_FREE((*env)->allocator, value);
+                AXIS2_FREE(env->allocator, value);
                 value = NULL;
             }
         }
@@ -220,13 +220,13 @@ axis2_xml_tokenized_type_free(void *tokenized_type,
     
     if(NULL != tokenized_type_impl->tokenized_type.ops)
     {
-        AXIS2_FREE((*env)->allocator, tokenized_type_impl->tokenized_type.ops);
+        AXIS2_FREE(env->allocator, tokenized_type_impl->tokenized_type.ops);
         tokenized_type_impl->tokenized_type.ops = NULL;
     }
 
     if(NULL != tokenized_type_impl)
     {
-        AXIS2_FREE((*env)->allocator, tokenized_type_impl);
+        AXIS2_FREE(env->allocator, tokenized_type_impl);
         tokenized_type_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -234,14 +234,14 @@ axis2_xml_tokenized_type_free(void *tokenized_type,
 
 axis2_xml_schema_enum_t *AXIS2_CALL
 axis2_xml_tokenized_type_get_base_impl(void *tokenized_type,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(tokenized_type)->schema_enum;
 }
 
 axis2_array_list_t *AXIS2_CALL
 axis2_xml_tokenized_type_get_values(void *tokenized_type,
-                                        axis2_env_t **env)
+                                        const axis2_env_t *env)
 {
     /*
     axis2_xml_tokenized_type_impl_t *tokenized_impl = NULL;
@@ -263,14 +263,14 @@ axis2_xml_tokenized_type_get_values(void *tokenized_type,
 
 axis2_xml_schema_types_t AXIS2_CALL
 axis2_xml_tokenized_type_type(void *tokenized_type,
-                        axis2_env_t **env)
+                        const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(tokenized_type)->obj_type;
 }                        
 
 axis2_hash_t* AXIS2_CALL
 axis2_xml_tokenized_type_super_objs(void *tokenized_type,
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(tokenized_type)->ht_super;
 }                                    

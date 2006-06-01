@@ -46,39 +46,39 @@ struct axis2_xml_schema_derivation_method_impl
 /************************* function prototypes ************************************/
 axis2_hash_t* AXIS2_CALL
 axis2_xml_schema_derivation_method_super_objs(void *derivation_method,
-                                              axis2_env_t **env);
+                                              const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
 axis2_xml_schema_derivation_method_type(void *derivation_method,
-                                        axis2_env_t **env); 
+                                        const axis2_env_t *env); 
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_derivation_method_free(void *derivation_method,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 axis2_xml_schema_enum_t *AXIS2_CALL
 axis2_xml_schema_derivation_method_get_base_impl(void *derivation_method,
-                                axis2_env_t **env);
+                                const axis2_env_t *env);
 
 axis2_array_list_t * AXIS2_CALL
 axis2_xml_schema_derivation_method_get_values(void *derivation_method,
-                        axis2_env_t **env);
+                        const axis2_env_t *env);
 
 
 /************************** end function prototypes ********************************/
 
 AXIS2_EXTERN axis2_xml_schema_derivation_method_t * AXIS2_CALL
-axis2_xml_schema_derivation_method_create(axis2_env_t **env,
+axis2_xml_schema_derivation_method_create(const axis2_env_t *env,
                             axis2_char_t *value)
 {
     axis2_xml_schema_derivation_method_impl_t *derivation_method_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    derivation_method_impl = AXIS2_MALLOC((*env)->allocator, 
+    derivation_method_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_derivation_method_impl_t));
     if(!derivation_method_impl)
     {
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -90,13 +90,13 @@ axis2_xml_schema_derivation_method_create(axis2_env_t **env,
     derivation_method_impl->derivation_method.base.ops = NULL;
     derivation_method_impl->derivation_method.ops = NULL;
     
-    derivation_method_impl->derivation_method.ops = AXIS2_MALLOC((*env)->allocator, 
+    derivation_method_impl->derivation_method.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_derivation_method_ops_t));
     if(!derivation_method_impl->derivation_method.ops)
     {
         axis2_xml_schema_derivation_method_free(
             &(derivation_method_impl->derivation_method), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);            
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);            
         return NULL;
     }
 
@@ -149,7 +149,7 @@ axis2_xml_schema_derivation_method_create(axis2_env_t **env,
     {
         axis2_xml_schema_derivation_method_free(
             &(derivation_method_impl->derivation_method), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -171,7 +171,7 @@ axis2_xml_schema_derivation_method_create(axis2_env_t **env,
     {
         axis2_xml_schema_derivation_method_free(
             &(derivation_method_impl->derivation_method), env);
-        AXIS2_ERROR_SET((*env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }   
     
@@ -191,7 +191,7 @@ axis2_xml_schema_derivation_method_create(axis2_env_t **env,
 
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_derivation_method_free(void *derivation_method,
-                                    axis2_env_t **env)
+                                    const axis2_env_t *env)
 {
     axis2_xml_schema_derivation_method_impl_t *derivation_method_impl = NULL;
 
@@ -209,7 +209,7 @@ axis2_xml_schema_derivation_method_free(void *derivation_method,
             value =(axis2_char_t* ) AXIS2_ARRAY_LIST_GET(derivation_method_impl->members, env, i);
             if(NULL != value)
             {
-                AXIS2_FREE((*env)->allocator, value);
+                AXIS2_FREE(env->allocator, value);
                 value = NULL;
             }
         }
@@ -225,17 +225,17 @@ axis2_xml_schema_derivation_method_free(void *derivation_method,
     
     if(NULL != derivation_method_impl->derivation_method.ops)
     {
-        AXIS2_FREE((*env)->allocator, derivation_method_impl->derivation_method.ops);
+        AXIS2_FREE(env->allocator, derivation_method_impl->derivation_method.ops);
         derivation_method_impl->derivation_method.ops = NULL;
     }
     if(NULL != derivation_method_impl->derivation_method.base.ops)
     {
-        AXIS2_FREE((*env)->allocator, derivation_method_impl->derivation_method.base.ops);
+        AXIS2_FREE(env->allocator, derivation_method_impl->derivation_method.base.ops);
         derivation_method_impl->derivation_method.base.ops = NULL;
     }
     if(NULL != derivation_method_impl)
     {
-        AXIS2_FREE((*env)->allocator, derivation_method_impl);
+        AXIS2_FREE(env->allocator, derivation_method_impl);
         derivation_method_impl = NULL;
     }
     return AXIS2_SUCCESS;
@@ -243,7 +243,7 @@ axis2_xml_schema_derivation_method_free(void *derivation_method,
 
 axis2_xml_schema_enum_t *AXIS2_CALL
 axis2_xml_schema_derivation_method_get_base_impl(void *derivation_method,
-                                axis2_env_t **env)
+                                const axis2_env_t *env)
 {
     axis2_xml_schema_derivation_method_impl_t *derivation_method_impl = NULL;
 
@@ -255,7 +255,7 @@ axis2_xml_schema_derivation_method_get_base_impl(void *derivation_method,
 
 axis2_array_list_t *AXIS2_CALL
 axis2_xml_schema_derivation_method_get_values(void *derivation_method,
-                                        axis2_env_t **env)
+                                        const axis2_env_t *env)
 {
 /*
     axis2_xml_schema_derivation_method_impl_t *deri_impl = NULL;
@@ -274,14 +274,14 @@ axis2_xml_schema_derivation_method_get_values(void *derivation_method,
 
 axis2_hash_t* AXIS2_CALL
 axis2_xml_schema_derivation_method_super_objs(void *derivation_method,
-                                              axis2_env_t **env)
+                                              const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(derivation_method)->ht_super;
 }                                              
 
 axis2_xml_schema_types_t AXIS2_CALL 
 axis2_xml_schema_derivation_method_type(void *derivation_method,
-                                        axis2_env_t **env)
+                                        const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(derivation_method)->type;
 }                                        
