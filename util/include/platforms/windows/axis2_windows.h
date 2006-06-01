@@ -144,7 +144,8 @@ extern "C"
 #define AXIS2_PRINTF_LONGLONG_FORMAT_SPECIFIER "%I64d"
 #define AXIS2_PRINTF_LONGLONG_FORMAT_SPECIFIER_CHARS "I64d"
 
-AXIS2_EXTERN HMODULE) callLoadLib(LPCTSTR lib);
+AXIS2_EXTERN HMODULE AXIS2_CALL
+callLoadLib(LPCTSTR lib);
 
 /**
  * Platform specific path separator char

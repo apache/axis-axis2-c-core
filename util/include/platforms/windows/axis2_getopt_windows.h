@@ -36,7 +36,8 @@ int _axis2_opt_error(int __optopt, int __err, int __showerr);
   * @param __shortopts options
   * @return option char if successful, -1 if over, ':' or '?' if error
   */
-AXIS2_EXTERN int) axis2_getopt(int __argc, char * const *__argv, const char *__shortopts);
+AXIS2_EXTERN int AXIS2_CALL 
+axis2_getopt(int __argc, char * const *__argv, const char *__shortopts);
 
 /** @} */
 

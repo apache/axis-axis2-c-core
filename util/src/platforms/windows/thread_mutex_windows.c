@@ -67,7 +67,8 @@ AXIS2_EXTERN axis2_thread_mutex_t * AXIS2_CALL axis2_thread_mutex_create(axis2_a
     return mutex;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_thread_mutex_lock(axis2_thread_mutex_t *mutex AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+axis2_thread_mutex_lock(axis2_thread_mutex_t *mutex)
 {
     if (mutex->type == thread_mutex_critical_section) 
 	{
@@ -85,7 +86,8 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_thread_mutex_lock(axis2_thread_mute
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_thread_mutex_trylock(axis2_thread_mutex_t *mutex AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+axis2_thread_mutex_trylock(axis2_thread_mutex_t *mutex)
 {
 	
     if (mutex->type == thread_mutex_critical_section) 

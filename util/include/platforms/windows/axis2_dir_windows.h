@@ -53,39 +53,43 @@ AXIS2_DECLARE_DATA typedef struct
   * open a directory on a given name
   * returns a DIR if successful, or NULL if the path cannot be opened
   */
-AXIS2_DECLARE (DIR *) opendir(const char *);
+AXIS2_EXTERN DIR* AXIS2_CALL opendir(const char *);
 
 /**
   * Close the directory stream DIRP.
   * Return 0 if successful, -1 otherwise.
   */
-AXIS2_EXTERN int) closedir(DIR *);
+AXIS2_EXTERN int AXIS2_CALL closedir(DIR *);
 
 /**
   * Read a directory entry from DIRP.  Return a pointer to a `struct
   * dirent' describing the entry, or NULL for EOF or error.
   */
-AXIS2_EXTERN truct dirent *) readdir(DIR *);
+AXIS2_EXTERN struct dirent* AXIS2_CALL 
+readdir(DIR *);
 
 /**
   * Reentrant version of `readdir'
   */
-AXIS2_EXTERN int) readdir_r(DIR *, struct dirent *, struct dirent **);
+AXIS2_EXTERN int AXIS2_CALL 
+readdir_r(DIR *, struct dirent *, struct dirent **);
 
 /**
   * Rewind DIRP to the beginning of the directory.
   */
-AXIS2_EXTERN int) rewinddir(DIR *);
+AXIS2_EXTERN int AXIS2_CALL rewinddir(DIR *);
 
 /**
   * Scan the directory DIR
   *  Returns the number of entries selected, or -1 on error
   */
-AXIS2_EXTERN int) scandir(const char *_dirname, struct dirent **__namelist[], int (*selector) (const struct dirent *entry), int (*compare) (const struct dirent **a, const struct dirent **b));
+AXIS2_EXTERN int AXIS2_CALL 
+scandir(const char *_dirname, struct dirent **__namelist[], int (*selector) (const struct dirent *entry), int (*compare) (const struct dirent **a, const struct dirent **b));
 
 /**
   * Compare two `struct dirent's alphabetically
   */
-AXIS2_DECLARE_DATA int alphasort(const struct dirent **__d1, const struct dirent **__d2);
+extern int
+alphasort(const struct dirent **__d1, const struct dirent **__d2);
 
 #endif /* READDIR_H */

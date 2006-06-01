@@ -36,7 +36,8 @@ int _axis2_opt_error(int __optopt, int __err, int __showerr)
 	return (int)'?';
 }
 
-AXIS2_EXTERN int) axis2_getopt(int __argc, char * const *__argv, const char *__shortopts AXIS2_CALL
+AXIS2_EXTERN int AXIS2_CALL
+axis2_getopt(int __argc, char * const *__argv, const char *__shortopts)
 {
 	static char *pos = "";
 	char *olstindex;	

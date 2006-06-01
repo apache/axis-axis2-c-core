@@ -287,7 +287,11 @@ axis2_xml_schema_element_create(const axis2_env_t *env);
 
 #define AXIS2_XML_SCHEMA_ELEMENT_GET_BLOCK_RESOLVED(element, env) \
 		(((axis2_xml_schema_element_t *) element)->ops->get_block_resolved(\
-            element, env)) 
+            element, env))
+            
+#define AXIS2_XML_SCHEMA_ELEMENT_GET_BLOCK(element, env) \
+		(((axis2_xml_schema_element_t *) element)->ops->get_block(\
+            element, env))              
             
 #define AXIS2_XML_SCHEMA_ELEMENT_GET_FIXED_VALUE(element, env) \
 		(((axis2_xml_schema_element_t *) element)->ops->get_fixed_value(\

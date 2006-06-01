@@ -601,6 +601,7 @@ handle_xml_schema_element(
                 if(NULL != sch_ele)
                 {
                     axis2_qname_t *qualified_qname = NULL;
+                    axis2_char_t *qname_uri = NULL; /* for debuging */
                     axis2_qname_t *ref_qname = NULL;
                     axis2_xml_schema_obj_table_t *elements = NULL;
                     
@@ -611,6 +612,7 @@ handle_xml_schema_element(
                     
                     if(NULL != qualified_qname && NULL != elements)
                     {
+                            qname_uri = AXIS2_QNAME_GET_URI(qualified_qname, env);
                             AXIS2_XML_SCHEMA_OBJ_TABLE_ADD(elements, env, 
                                 qualified_qname, sch_ele);
                     }
@@ -1449,7 +1451,7 @@ handle_complex_type(
         else if(AXIS2_STRCMP(localname, "anyAttribute") == 0)
         {
             void *any_attr = NULL;
-            any_attr = handle_any_attribute(builder, env, any_attr, schema_node);
+            any_attr = handle_any_attribute(builder, env, node1, schema_node);
             AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_ANY_ATTRIBUTE(cmp_type, env, any_attr);
         }
         ele1 = axis2_om_util_get_next_sibling_element_with_uri(node1, env, 
@@ -2245,7 +2247,7 @@ handle_sequence(
             AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(sequence, env, annotation);
         }          
 
-        ele1 = axis2_om_util_get_first_child_element_with_uri(node1, env, 
+        ele1 = axis2_om_util_get_next_sibling_element_with_uri(node1, env, 
             AXIS2_XML_SCHEMA_NS, &node1);
     }        
     return sequence;
@@ -2593,6 +2595,8 @@ handle_any_attribute(
     axis2_xml_schema_builder_impl_t *builder_impl = NULL;
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    
+    any_attr = axis2_xml_schema_any_attribute_create(env);
     
     any_attr_ele = (axis2_om_element_t*)
         AXIS2_OM_NODE_GET_DATA_ELEMENT(any_attr_node, env);    
