@@ -138,7 +138,18 @@ AXIS2_DECLARE_DATA struct axis2_dll_desc_ops
     set_timestamp) (axis2_dll_desc_t *dll_desc,
                             const axis2_env_t *env,
                             AXIS2_TIME_T timestamp);
-    
+
+    axis2_status_t (AXIS2_CALL *
+    set_error_code) (
+            axis2_dll_desc_t *dll_desc,
+            const axis2_env_t *env,
+            axis2_error_codes_t error_code);
+
+    axis2_error_codes_t (AXIS2_CALL *
+    get_error_code) (
+            axis2_dll_desc_t *dll_desc,
+            const axis2_env_t *env);
+            
     AXIS2_TIME_T (AXIS2_CALL *
     get_timestamp) (axis2_dll_desc_t *dll_desc,
                             const axis2_env_t *env);                            
@@ -227,6 +238,12 @@ axis2_dll_desc_free_void_arg (void *dll_desc,
     
 #define AXIS2_DLL_DESC_SET_TIMESTAMP(dll_desc, env, timestamp) \
     ((dll_desc)->ops->set_timestamp(dll_desc, env, timestamp))
+    
+#define AXIS2_DLL_DESC_SET_ERROR_CODE(dll_desc, env, error_code) \
+    ((dll_desc)->ops->set_error_code(dll_desc, env, error_code))
+
+#define AXIS2_DLL_DESC_GET_ERROR_CODE(dll_desc, env) \
+    ((dll_desc)->ops->get_error_code(dll_desc, env))
 
 #define AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env, class_name) \
     ((dll_desc)->ops->create_platform_specific_dll_name(dll_desc, env, class_name))

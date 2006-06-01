@@ -33,6 +33,7 @@ typedef struct axis2_dll_desc_impl
     CREATE_FUNCT create_funct;
     DELETE_FUNCT delete_funct;
     AXIS2_TIME_T timestamp;
+    axis2_error_codes_t error_code;
     
     
 } axis2_dll_desc_impl_t;
@@ -105,6 +106,17 @@ axis2_dll_desc_set_timestamp (axis2_dll_desc_t *dll_desc,
                                 const axis2_env_t *env,
                                 AXIS2_TIME_T timestamp);
 
+axis2_status_t AXIS2_CALL
+axis2_dll_desc_set_error_code (
+        axis2_dll_desc_t *dll_desc,
+        const axis2_env_t *env,
+        axis2_error_codes_t error_code);
+
+axis2_error_codes_t AXIS2_CALL
+axis2_dll_desc_get_error_code (
+        axis2_dll_desc_t *dll_desc,
+        const axis2_env_t *env);
+
 AXIS2_TIME_T AXIS2_CALL
 axis2_dll_desc_get_timestamp (axis2_dll_desc_t *dll_desc,
                                 const axis2_env_t *env);
@@ -140,6 +152,7 @@ axis2_dll_desc_create (const axis2_env_t *env)
     dll_desc_impl->delete_funct = NULL;
     dll_desc_impl->dll_desc.ops = NULL;
     dll_desc_impl->timestamp = 0;
+    dll_desc_impl->error_code = AXIS2_ERROR_NONE;
     
     dll_desc_impl->dll_desc.ops = (axis2_dll_desc_ops_t *) AXIS2_MALLOC(
         env->allocator, sizeof(axis2_dll_desc_ops_t));
@@ -166,6 +179,8 @@ axis2_dll_desc_create (const axis2_env_t *env)
     dll_desc_impl->dll_desc.ops->get_type = axis2_dll_desc_get_type;
     dll_desc_impl->dll_desc.ops->get_timestamp = axis2_dll_desc_get_timestamp;
     dll_desc_impl->dll_desc.ops->set_timestamp = axis2_dll_desc_set_timestamp;
+	dll_desc_impl->dll_desc.ops->set_error_code = axis2_dll_desc_set_error_code;					
+	dll_desc_impl->dll_desc.ops->get_error_code = axis2_dll_desc_get_error_code;					
 	dll_desc_impl->dll_desc.ops->create_platform_specific_dll_name = 
         axis2_dll_desc_create_platform_specific_dll_name;					
 	return &(dll_desc_impl->dll_desc);
@@ -404,6 +419,33 @@ axis2_dll_desc_get_timestamp (axis2_dll_desc_t *dll_desc,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(dll_desc)->timestamp;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_dll_desc_set_error_code (
+        axis2_dll_desc_t *dll_desc,
+        const axis2_env_t *env,
+        axis2_error_codes_t error_code)
+{
+    axis2_dll_desc_impl_t *dll_desc_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
+
+    dll_desc_impl->error_code = error_code; 
+}
+
+axis2_error_codes_t AXIS2_CALL
+axis2_dll_desc_get_error_code (
+        axis2_dll_desc_t *dll_desc,
+        const axis2_env_t *env)
+{
+    axis2_dll_desc_impl_t *dll_desc_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
+
+    return dll_desc_impl->error_code; 
 }
 
 axis2_char_t* AXIS2_CALL

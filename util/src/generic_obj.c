@@ -20,6 +20,7 @@ typedef struct axis2_generic_obj_impl
 {
     axis2_generic_obj_t generic_obj;
     AXIS2_FREE_VOID_ARG free_func;
+    int type;
     void *value;
     
 }axis2_generic_obj_impl_t;
@@ -44,6 +45,18 @@ axis2_generic_obj_set_value(axis2_generic_obj_t *generic_obj,
 void *AXIS2_CALL
 axis2_generic_obj_get_value(axis2_generic_obj_t *generic_obj,
                             const axis2_env_t *env);
+
+
+axis2_status_t AXIS2_CALL
+axis2_generic_obj_set_type(
+        axis2_generic_obj_t *generic_obj,
+        axis2_env_t **env,
+        int type);
+
+int AXIS2_CALL
+axis2_generic_obj_get_type(
+        axis2_generic_obj_t *generic_obj,
+        axis2_env_t **env);
 
 /************************** End of function prototypes ************************/
 
@@ -78,6 +91,8 @@ axis2_generic_obj_create(const axis2_env_t *env)
     generic_obj_impl->generic_obj.ops->set_free_func = axis2_generic_obj_set_free_func;
     generic_obj_impl->generic_obj.ops->set_value = axis2_generic_obj_set_value;
 	generic_obj_impl->generic_obj.ops->get_value = axis2_generic_obj_get_value;
+    generic_obj_impl->generic_obj.ops->set_type = axis2_generic_obj_set_type;
+	generic_obj_impl->generic_obj.ops->get_type = axis2_generic_obj_get_type;
 	return &(generic_obj_impl->generic_obj);
 }
 
@@ -157,3 +172,32 @@ axis2_generic_obj_get_value(axis2_generic_obj_t *generic_obj,
 
     return generic_obj_impl->value;
 }
+
+axis2_status_t AXIS2_CALL
+axis2_generic_obj_set_type(
+        axis2_generic_obj_t *generic_obj,
+        axis2_env_t **env,
+        int type)
+{
+    axis2_generic_obj_impl_t *generic_obj_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    generic_obj_impl = AXIS2_INTF_TO_IMPL(generic_obj);
+   
+    generic_obj_impl->type = type;
+    return AXIS2_SUCCESS;
+}
+
+int AXIS2_CALL
+axis2_generic_obj_get_type(
+        axis2_generic_obj_t *generic_obj,
+        axis2_env_t **env)
+{
+    axis2_generic_obj_impl_t *generic_obj_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    generic_obj_impl = AXIS2_INTF_TO_IMPL(generic_obj);
+
+    return generic_obj_impl->type;
+}
+

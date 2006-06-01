@@ -45,7 +45,8 @@ AXIS2_DECLARE_DATA struct axis2_generic_obj_ops
 {
 
     axis2_status_t (AXIS2_CALL *
-    free) (axis2_generic_obj_t *generic_obj, 
+    free) (
+            axis2_generic_obj_t *generic_obj, 
             const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
@@ -57,9 +58,22 @@ AXIS2_DECLARE_DATA struct axis2_generic_obj_ops
     set_value) (axis2_generic_obj_t *generic_obj,
                 const axis2_env_t *env,
                 void *value);
+
     void *(AXIS2_CALL *
     get_value) (axis2_generic_obj_t *generic_obj,
                             const axis2_env_t *env);
+
+    axis2_status_t (AXIS2_CALL *
+    set_type) (
+            axis2_generic_obj_t *generic_obj,
+            axis2_env_t **env,
+            int type);
+
+    int (AXIS2_CALL *
+    get_type) (
+            axis2_generic_obj_t *generic_obj,
+            axis2_env_t **env);
+
 
 };
     
@@ -92,7 +106,13 @@ axis2_generic_obj_create(const axis2_env_t *env);
 
 #define AXIS2_GENERIC_OBJ_GET_VALUE(generic_obj, env) \
         ((generic_obj)->ops->get_value(generic_obj, env))
-                                        
+ 
+#define AXIS2_GENERIC_OBJ_SET_TYPE(generic_obj, env, type) \
+		((generic_obj)->ops->set_type (generic_obj, env, type))
+
+#define AXIS2_GENERIC_OBJ_GET_TYPE(generic_obj, env) \
+        ((generic_obj)->ops->get_type(generic_obj, env))
+                                                
 /*************************** End of function macros ***************************/
 
 

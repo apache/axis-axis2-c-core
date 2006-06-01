@@ -57,12 +57,14 @@ axis2_class_loader_create_dll (const axis2_env_t *env,
     void *module = NULL; /* axis2_module */
     void *transport_recv = NULL; /* axis2_transport_receiver */
     void *transport_sender = NULL; /* axis2_transport_sender */
+    void *obj = NULL;
     CREATE_FUNCT create_funct = NULL;
     DELETE_FUNCT delete_funct = NULL;
     AXIS2_DLHANDLER dl_handler = NULL;
     axis2_dll_desc_t *dll_desc = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_dll_type_t dll_type = AXIS2_SVC_DLL;
+    axis2_error_codes_t error_code = AXIS2_ERROR_NONE;
     
     dll_desc = AXIS2_PARAM_GET_VALUE(impl_info_param, env);
     if(!dll_desc)
@@ -125,6 +127,10 @@ axis2_class_loader_create_dll (const axis2_env_t *env,
         return NULL;
     }
     dll_type = AXIS2_DLL_DESC_GET_TYPE(dll_desc, env);
+    /* TODO Following blocks differ only by error message. Try to
+     * reduce them into one block
+     */
+    error_code = AXIS2_DLL_DESC_GET_ERROR_CODE(dll_desc, env) ;
     if(AXIS2_SVC_DLL == dll_type)
     {
         create_funct(&svc_skeli, env);
@@ -212,7 +218,22 @@ axis2_class_loader_create_dll (const axis2_env_t *env,
         }
         return transport_sender;
     }
-
+    else
+    {
+        create_funct(&obj, env);
+        if(NULL == obj)
+        {
+            axis2_class_loader_unload_lib(env, dll_desc);
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Object create function returned NULL");
+            AXIS2_ERROR_SET(env->error, error_code, AXIS2_FAILURE);
+            return NULL;
+        }
+        else
+        {
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Object loaded successfully");
+        }
+        return obj;
+    }
 
     return NULL;    
 }

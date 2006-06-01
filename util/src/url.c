@@ -65,6 +65,11 @@ axis2_status_t AXIS2_CALL
 axis2_url_open (axis2_url_t *url, const axis2_env_t *env);
 axis2_status_t AXIS2_CALL
 axis2_url_close (axis2_url_t *url, const axis2_env_t *env);
+
+axis2_url_t* AXIS2_CALL
+axis2_url_clone(
+        axis2_url_t *url,
+        axis2_env_t **env);
 /***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_url_t * AXIS2_CALL 
@@ -124,6 +129,7 @@ axis2_url_create (const axis2_env_t *env, axis2_char_t *protocol,
 	url_impl->url.ops->get_port = axis2_url_get_port;
 	url_impl->url.ops->set_path = axis2_url_set_path;
 	url_impl->url.ops->get_path = axis2_url_get_path;
+    url_impl->url.ops->clone = axis2_url_clone;
     url_impl->url.ops->free = axis2_url_free;
                         
 	return &(url_impl->url);
@@ -414,3 +420,21 @@ axis2_url_get_path (axis2_url_t *url, const axis2_env_t *env)
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(url)->path;
 }
+
+axis2_url_t* AXIS2_CALL
+axis2_url_clone(
+        axis2_url_t *url,
+        axis2_env_t **env)
+{
+    axis2_url_impl_t *url_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    url_impl = AXIS2_INTF_TO_IMPL(url);
+
+    return axis2_url_create(env, url_impl->protocol,
+                              url_impl->server,
+                              url_impl->port,
+                              url_impl->path);
+}
+
+

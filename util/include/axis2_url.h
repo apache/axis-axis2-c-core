@@ -92,7 +92,12 @@ AXIS2_DECLARE_DATA struct axis2_url_ops
 	axis2_char_t* (AXIS2_CALL *
 	get_path)(axis2_url_t *url, 
               const axis2_env_t *env);
-			  
+
+    axis2_url_t* (AXIS2_CALL *
+    clone) (
+            axis2_url_t *url,
+            axis2_env_t **env);
+
     axis2_status_t (AXIS2_CALL *
 	free) (axis2_url_t *url, 
            const axis2_env_t *env);
@@ -114,7 +119,6 @@ axis2_url_create (const axis2_env_t *env,
 				  axis2_char_t *server, 
                   int port, 
                   axis2_char_t *path);
-
 
 AXIS2_EXTERN axis2_url_t * AXIS2_CALL
 axis2_url_parse_string(const axis2_env_t *env, 
@@ -148,6 +152,9 @@ axis2_url_parse_string(const axis2_env_t *env,
 		
 #define AXIS2_URL_GET_PATH(url, env) \
 		((url)->ops->get_path(url, env))
+		
+#define AXIS2_URL_CLONE(url, env) \
+		((url)->ops->clone(url, env))
 		
 #define AXIS2_URL_FREE(url, env) \
 		((url)->ops->free(url, env))
