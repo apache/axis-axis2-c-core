@@ -9,6 +9,7 @@ libaxis2_util_la_SOURCES = \
                         stream.c \
                         log.c \
                         string.c \
+                        string_util.c \
                         qname.c \
                         array_list.c \
                         linked_list.c \
