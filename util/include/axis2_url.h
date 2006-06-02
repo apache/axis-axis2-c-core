@@ -96,7 +96,7 @@ AXIS2_DECLARE_DATA struct axis2_url_ops
     axis2_url_t* (AXIS2_CALL *
     clone) (
             axis2_url_t *url,
-            axis2_env_t **env);
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
 	free) (axis2_url_t *url, 
