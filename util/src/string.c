@@ -129,3 +129,25 @@ axis2_rindex(const axis2_char_t *_s, axis2_char_t _ch)
         }
         return NULL;
 }
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_replace(axis2_env_t *env,
+                axis2_char_t *str,
+                int s1,
+                int s2)
+{
+    axis2_char_t *newstr = NULL;
+    axis2_char_t *index = NULL;
+    if(!str)
+        return NULL;
+    
+    newstr = AXIS2_STRDUP(str, env);
+    
+    index = strchr(newstr, s1);
+    while(NULL != index)
+    {
+        newstr[index - newstr] = s2;
+        index = strchr(newstr, s1);
+    }
+    return newstr;
+}                

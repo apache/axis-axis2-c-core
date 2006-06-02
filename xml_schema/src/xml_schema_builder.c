@@ -3945,5 +3945,24 @@ resolve_xml_schema_with_uri(
         axis2_char_t *schema_location,
         axis2_char_t *base_uri)
 {
+    axis2_xml_reader_t *xml_reader = NULL;
+    axis2_om_document_t *om_doc = NULL;
+    axis2_om_stax_builder_t *om_builder = NULL;
+    axis2_xml_schema_collection_t *collection = NULL;
+    axis2_xml_schema_builder_t *builder = NULL;
+    axis2_char_t *filename = NULL;
+    filename = axis2_xml_schema_url_resolver_resolve_entity(env, 
+        target_namespace, schema_location, base_uri);
+    xml_reader = axis2_xml_reader_create_for_file(env, filename, NULL);
+    if(!xml_reader)
+        return NULL;        
+    om_builder = axis2_om_stax_builder_create(env, xml_reader);
+    if(!om_builder)
+        return NULL;
+    om_doc = axis2_om_document_create(env, NULL, om_builder);
+    AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
+    collection = axis2_xml_schema_collection_create(env);
+    return AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(collection, env, om_doc, base_uri);        
+            
     return NULL;
 }            

@@ -72,6 +72,7 @@
 #include "axis2_xml_schema.h"
 #include "axis2_xml_schema_redefine.h"
 #include "axis2_xml_schema_type.h"
+#include "axis2_xml_schema_url_resolver.h"
 
 #ifdef _cplusplus
 extern "C"

@@ -69,6 +69,13 @@ extern "C"
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_rindex(const axis2_char_t *s, 
                  axis2_char_t c);
+                 
+    AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+    axis2_replace(axis2_env_t *env,
+                  axis2_char_t *str,
+                  int s1,
+                  int s2);
+                                   
 
 #define AXIS2_STRDUP(pts, env) \
         axis2_strdup(pts, env)
@@ -93,6 +100,9 @@ extern "C"
         
 #define AXIS2_RINDEX(s, c) \
         axis2_rindex(s, c)
+        
+#define AXIS2_REPLACE(env, str, s1, s2) \
+        axis2_replace(env, str, s1, s2)        
 
 /** @} */
     
