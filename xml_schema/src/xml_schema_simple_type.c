@@ -324,4 +324,5 @@ axis2_xml_schema_simple_type_type(void *simple_type,
                                   const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(simple_type)->obj_type;
-}                                  
+}
+

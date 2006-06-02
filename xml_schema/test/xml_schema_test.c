@@ -45,20 +45,20 @@ void test_two_schmes(CuTest *tc);
 CuSuite* xml_schema_GetSuite()
 {
     CuSuite* suite = CuSuiteNew();
-  /*  SUITE_ADD_TEST(suite, test_simple_type_schema_generation);
+    SUITE_ADD_TEST(suite, test_simple_type_schema_generation);
     SUITE_ADD_TEST(suite, test_any_attribute);
     SUITE_ADD_TEST(suite, test_block_content);
     SUITE_ADD_TEST(suite, test_circular_schema);
     SUITE_ADD_TEST(suite, test_schema_import1);
-    SUITE_ADD_TEST(suite, test_schema_import2);*/
+    SUITE_ADD_TEST(suite, test_schema_import2);
     SUITE_ADD_TEST(suite, test_mixed_content);
-/*    SUITE_ADD_TEST(suite, test_local_elements);
+    SUITE_ADD_TEST(suite, test_local_elements);
     SUITE_ADD_TEST(suite, test_element_refs);
     SUITE_ADD_TEST(suite, test_forward_refs);
     SUITE_ADD_TEST(suite, test_local_unnamed_simple_type);
     SUITE_ADD_TEST(suite, test_simple_restriction);
     SUITE_ADD_TEST(suite, test_unqualified_schemas);
-    SUITE_ADD_TEST(suite, test_two_schmes);*/
+    SUITE_ADD_TEST(suite, test_two_schmes);
     return suite;
 }
 
@@ -295,4 +295,5 @@ get_root_element_from_filename(const axis2_env_t *env,
     doc = axis2_om_document_create(env, NULL, om_builder); 
     AXIS2_OM_DOCUMENT_BUILD_ALL(doc, env);
     return doc;    
-}                               
+}
+

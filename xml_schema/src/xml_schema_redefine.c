@@ -342,5 +342,5 @@ axis2_xml_schema_redefine_super_objs(void *redefine,
                                      const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(redefine)->ht_super;
-}                                     
-                                     
+}
+

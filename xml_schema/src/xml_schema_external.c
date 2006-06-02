@@ -382,5 +382,5 @@ axis2_xml_schema_external_set_schema_location(void *external,
     }
     ext_impl->schema_location = AXIS2_STRDUP(location, env);
     return AXIS2_SUCCESS;
-}                                        
-                                
+}
+

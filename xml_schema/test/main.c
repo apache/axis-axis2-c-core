@@ -27,6 +27,5 @@ void RunAllTests(void) {
 
 int main(void) {
     RunAllTests();
-    getchar();
     return 0;
 }

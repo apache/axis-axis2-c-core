@@ -92,6 +92,7 @@ AC_SUBST(AXIOMINC)
 
 AC_CONFIG_FILES([Makefile
     src/Makefile \
+    test/Makefile
     ])
     
 AC_OUTPUT

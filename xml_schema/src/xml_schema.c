@@ -1364,4 +1364,5 @@ axis2_xml_schema_set_schema_ns_prefix(void *schema,
     }
     sch_impl->schema_ns_prefix = AXIS2_STRDUP(ns_prefix, env);
     return AXIS2_FAILURE;
-}                            
+}
+
