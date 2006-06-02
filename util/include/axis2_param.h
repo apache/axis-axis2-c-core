@@ -25,6 +25,7 @@
 #include <axis2_utils_defines.h>
 #include <axis2_env.h>
 #include <axis2_hash.h>
+#include <axis2_array_list.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -140,13 +141,13 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
             const axis2_env_t *env);
          
     axis2_status_t (AXIS2_CALL *
-    set_value_map) (
+    set_value_list) (
             struct axis2_param *param,
             const axis2_env_t *env,
-            axis2_hash_t *value_map);
+            axis2_array_list_t *value_list);
 
-    axis2_hash_t* (AXIS2_CALL *
-    get_value_map) (
+    axis2_array_list_t* (AXIS2_CALL *
+    get_value_list) (
             struct axis2_param *param,
             const axis2_env_t *env);
 
@@ -205,11 +206,11 @@ axis2_param_create(const axis2_env_t *env,
 #define AXIS2_PARAM_GET_ATTRIBUTES(param, env) \
     ((param)->ops->get_attributes (param, env))
 	    
-#define AXIS2_PARAM_SET_VALUE_MAP(param, env, value_map) \
-    ((param)->ops->set_value_map (param , env, value_map))
+#define AXIS2_PARAM_SET_VALUE_LIST(param, env, value_list) \
+    ((param)->ops->set_value_list (param , env, value_list))
 
-#define AXIS2_PARAM_GET_VALUE_MAP(param, env) \
-    ((param)->ops->get_value_map (param, env))
+#define AXIS2_PARAM_GET_VALUE_LIST(param, env) \
+    ((param)->ops->get_value_list (param, env))
 	
 /** @} */
     

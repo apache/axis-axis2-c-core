@@ -32,7 +32,7 @@ typedef struct axis2_param_impl_s
     /** Parameter type */
     int type; /*default is AXIS2_TEXT_PARAM */
     axis2_hash_t *attrs;
-    axis2_hash_t *value_map;
+    axis2_array_list_t *value_list;
 
 } axis2_param_impl_t;
 
@@ -85,13 +85,13 @@ axis2_param_get_attributes(
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
-axis2_param_set_value_map(
+axis2_param_set_value_list(
         axis2_param_t *param,
         const axis2_env_t *env,
-        axis2_hash_t *value_map);
+        axis2_array_list_t *value_list);
 
-axis2_hash_t* AXIS2_CALL 
-axis2_param_get_value_map(
+axis2_array_list_t* AXIS2_CALL 
+axis2_param_get_value_list(
         axis2_param_t *param,
         const axis2_env_t *env);
 
@@ -121,7 +121,7 @@ axis2_param_create(const axis2_env_t *env,
     param_impl->locked = AXIS2_FALSE;
     param_impl->type = AXIS2_TEXT_PARAM;
     param_impl->attrs = NULL;
-    param_impl->value_map = NULL;
+    param_impl->value_list = NULL;
     
     param_impl->param.ops = 
 		AXIS2_MALLOC (env->allocator, sizeof(axis2_param_ops_t));
@@ -147,10 +147,10 @@ axis2_param_create(const axis2_env_t *env,
         axis2_param_set_attributes;
     param_impl->param.ops->get_attributes = 
         axis2_param_get_attributes;
-    param_impl->param.ops->set_value_map = 
-        axis2_param_set_value_map;
-    param_impl->param.ops->get_value_map = 
-        axis2_param_get_value_map;
+    param_impl->param.ops->set_value_list = 
+        axis2_param_set_value_list;
+    param_impl->param.ops->get_value_list = 
+        axis2_param_get_value_list;
     param_impl->param.ops->free = axis2_param_free;
     
     return &(param_impl->param);
@@ -294,46 +294,45 @@ axis2_param_get_attributes(
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_param_set_value_map(
+axis2_param_set_value_list(
         axis2_param_t *param,
         const axis2_env_t *env,
-        axis2_hash_t *value_map)
+        axis2_array_list_t *value_list)
 {
     axis2_param_impl_t *param_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, value_map, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, value_list, AXIS2_FAILURE);
     param_impl = AXIS2_INTF_TO_IMPL(param);
-
-    if(param_impl->value_map)
+ 
+    if(param_impl->value_list)
     {
-        axis2_hash_index_t *i = NULL;
-        void *v = NULL;
-
-        for (i = axis2_hash_first (param_impl->value_map, env); i; 
-                i = axis2_hash_next (env, i))
+        int i = 0, size = 0;
+        
+        size = AXIS2_ARRAY_LIST_SIZE(param_impl->value_list, env);
+        for (i = 0; i < size; i++)
         {
             axis2_param_t *param = NULL;
-            
-            axis2_hash_this (i, NULL, NULL, &v);
-            param = (axis2_param_t *) v;
+
+            param = (axis2_param_t *) AXIS2_ARRAY_LIST_GET(
+                    param_impl->value_list, env, i);
             AXIS2_PARAM_FREE(param, env);
         }
-        axis2_hash_free(param_impl->value_map, env);
+        AXIS2_ARRAY_LIST_FREE(param_impl->value_list, env);
     }
-   
-    param_impl->value_map = value_map;
+    param_impl->value_list = value_list;
+
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t* AXIS2_CALL 
-axis2_param_get_value_map(
+axis2_array_list_t* AXIS2_CALL 
+axis2_param_get_value_list(
         axis2_param_t *param,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     
-    return AXIS2_INTF_TO_IMPL(param)->value_map;
+    return AXIS2_INTF_TO_IMPL(param)->value_list;
 }
 
 axis2_status_t AXIS2_CALL 
@@ -374,21 +373,20 @@ axis2_param_free(axis2_param_t *param,
         axis2_hash_free(param_impl->attrs, env);
     }
     
-    if(param_impl->value_map)
+    if(param_impl->value_list)
     {
-        axis2_hash_index_t *i = NULL;
-        void *v = NULL;
-
-        for (i = axis2_hash_first (param_impl->value_map, env); i; 
-                i = axis2_hash_next (env, i))
+        int i = 0, size = 0;
+        
+        size = AXIS2_ARRAY_LIST_SIZE(param_impl->value_list, env);
+        for (i = 0; i < size; i++)
         {
             axis2_param_t *param = NULL;
 
-            axis2_hash_this (i, NULL, NULL, &v);
-            param = (axis2_param_t *) v;
+            param = (axis2_param_t *) AXIS2_ARRAY_LIST_GET(
+                    param_impl->value_list, env, i);
             AXIS2_PARAM_FREE(param, env);
         }
-        axis2_hash_free(param_impl->value_map, env);
+        AXIS2_ARRAY_LIST_FREE(param_impl->value_list, env);
     }
     param_name = axis2_param_get_name(param, env);
     AXIS2_FREE(env->allocator, param_name);

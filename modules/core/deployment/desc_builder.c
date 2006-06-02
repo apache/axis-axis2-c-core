@@ -655,32 +655,22 @@ set_attrs_and_value(
     childs = AXIS2_OM_ELEMENT_GET_CHILD_ELEMENTS(param_element, env, param_node);
     if(childs)
     {
-        axis2_hash_t *value_map = NULL;
+        axis2_array_list_t *value_list = NULL;
         
-        value_map = axis2_hash_make(env);
-        AXIS2_PARAM_SET_VALUE_MAP(param, env, value_map);
+        value_list = axis2_array_list_create(env, 0);
+        AXIS2_PARAM_SET_VALUE_LIST(param, env, value_list);
         
         while(AXIS2_TRUE == AXIS2_OM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(childs, env))
         {
             axis2_om_node_t *node = NULL;
             axis2_om_element_t *element = NULL;
             axis2_param_t *param = NULL;
-            axis2_qname_t *att_qname = NULL;
-            axis2_om_attribute_t *para_name = NULL;
             axis2_char_t *pname = NULL;
             
             node = AXIS2_OM_CHILD_ELEMENT_ITERATOR_NEXT(childs, env);
             element = AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
-            att_qname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-            para_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(element, env, 
-                att_qname);
-            AXIS2_QNAME_FREE(att_qname, env);
-            if(!para_name)
-            {
-                AXIS2_PARAM_FREE(param, env);
-                return AXIS2_FAILURE;
-            }
-            pname = AXIS2_OM_ATTRIBUTE_GET_VALUE(para_name, env);
+            param = axis2_param_create(env, NULL, NULL);
+            pname = AXIS2_OM_ELEMENT_GET_LOCALNAME(element, env);
             status = AXIS2_PARAM_SET_NAME(param, env, pname);
             if(AXIS2_SUCCESS != status)
             {
@@ -689,7 +679,7 @@ set_attrs_and_value(
             }
             AXIS2_PARAM_SET_PARAM_TYPE(param, env, AXIS2_DOM_PARAM);
             set_attrs_and_value(param, env, element, node);
-            axis2_hash_set(value_map, pname, AXIS2_HASH_KEY_STRING, param);
+            AXIS2_ARRAY_LIST_ADD(value_list, env, param);
         }
     }
     else
