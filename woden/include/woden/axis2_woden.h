@@ -85,7 +85,9 @@ extern "C"
         AXIS2_WODEN_IMPORT,
         AXIS2_WODEN_INCLUDE,
         AXIS2_QNAME,
-        AXIS2_QNAME_LIST
+        AXIS2_QNAME_LIST,
+        AXIS2_WODEN_SOAP_HEADER_BLOCK,
+        AXIS2_WODEN_SOAP_MODULE
     } axis2_woden_obj_types_t;
 
 /** @} */
