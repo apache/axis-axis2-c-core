@@ -104,6 +104,13 @@ axis2_desc_builder_get_value(axis2_desc_builder_t *desc_builder,
                                 const axis2_env_t *env,
                                 axis2_char_t *in);
 
+static axis2_status_t
+set_attrs_and_value(
+        axis2_param_t *param,
+        const axis2_env_t *env,
+        axis2_om_element_t *param_element,
+        axis2_om_node_t *param_node);
+
                                 
 /************************** End of function prototypes ************************/
 
@@ -589,6 +596,122 @@ axis2_desc_builder_process_handler(axis2_desc_builder_t *desc_builder,
     return handler_desc;
 }
 
+static axis2_status_t
+set_attrs_and_value(
+        axis2_param_t *param,
+        const axis2_env_t *env,
+        axis2_om_element_t *param_element,
+        axis2_om_node_t *param_node)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+    axis2_hash_t *attrs = NULL;
+    axis2_om_child_element_iterator_t *childs = NULL;
+        
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, param_element, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, param_node, AXIS2_FAILURE);
+
+     /* Setting attributes */
+    attrs = AXIS2_OM_ELEMENT_EXTRACT_ATTRIBUTES(param_element, env, param_node);
+    if(attrs)
+    {
+        axis2_hash_index_t *i = NULL;
+
+        for (i = axis2_hash_first (attrs, env); i; i = 
+                axis2_hash_next (env, i))
+        {
+            void *v = NULL;
+            axis2_om_attribute_t *value = NULL;
+            axis2_generic_obj_t *obj = NULL;
+            axis2_qname_t *attr_qname = NULL;
+            axis2_char_t *attr_name = NULL;
+
+            axis2_hash_this (i, NULL, NULL, &v);
+            if(!v) 
+            {
+                AXIS2_PARAM_FREE(param, env);
+                return AXIS2_FAILURE;
+            }
+            obj = axis2_generic_obj_create(env);
+            if(!obj)
+            {
+                AXIS2_PARAM_FREE(param, env);
+                AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, 
+                        AXIS2_FAILURE);
+                return AXIS2_FAILURE;
+            }
+            value = (axis2_om_attribute_t *) v;
+            AXIS2_GENERIC_OBJ_SET_VALUE(obj, env, value);
+            AXIS2_GENERIC_OBJ_SET_FREE_FUNC(obj, env, 
+                    axis2_om_attribute_free_void_arg);
+            attr_qname = AXIS2_OM_ATTRIBUTE_GET_QNAME(value, env);
+            attr_name = AXIS2_QNAME_TO_STRING(attr_qname, env);
+            axis2_hash_set(attrs, attr_name, AXIS2_HASH_KEY_STRING, obj); 
+        }
+        AXIS2_PARAM_SET_ATTRIBUTES(param, env, attrs);
+    }
+
+    childs = AXIS2_OM_ELEMENT_GET_CHILD_ELEMENTS(param_element, env, param_node);
+    if(childs)
+    {
+        axis2_hash_t *value_map = NULL;
+        
+        value_map = axis2_hash_make(env);
+        AXIS2_PARAM_SET_VALUE_MAP(param, env, value_map);
+        
+        while(AXIS2_TRUE == AXIS2_OM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(childs, env))
+        {
+            axis2_om_node_t *node = NULL;
+            axis2_om_element_t *element = NULL;
+            axis2_param_t *param = NULL;
+            axis2_qname_t *att_qname = NULL;
+            axis2_om_attribute_t *para_name = NULL;
+            axis2_char_t *pname = NULL;
+            
+            node = AXIS2_OM_CHILD_ELEMENT_ITERATOR_NEXT(childs, env);
+            element = AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
+            att_qname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
+            para_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(element, env, 
+                att_qname);
+            AXIS2_QNAME_FREE(att_qname, env);
+            if(!para_name)
+            {
+                AXIS2_PARAM_FREE(param, env);
+                return AXIS2_FAILURE;
+            }
+            pname = AXIS2_OM_ATTRIBUTE_GET_VALUE(para_name, env);
+            status = AXIS2_PARAM_SET_NAME(param, env, pname);
+            if(AXIS2_SUCCESS != status)
+            {
+                AXIS2_PARAM_FREE(param, env);
+                return status;
+            }
+            AXIS2_PARAM_SET_PARAM_TYPE(param, env, AXIS2_DOM_PARAM);
+            set_attrs_and_value(param, env, element, node);
+            axis2_hash_set(value_map, pname, AXIS2_HASH_KEY_STRING, param);
+        }
+    }
+    else
+    {
+        axis2_char_t *para_test_value = NULL;
+        axis2_char_t *temp = NULL;
+
+        temp = AXIS2_OM_ELEMENT_GET_TEXT(
+            param_element, env, param_node);
+        para_test_value = AXIS2_STRDUP(temp, env);
+        status = AXIS2_PARAM_SET_VALUE(param, env, para_test_value);
+        if(AXIS2_SUCCESS != status)
+        {
+            AXIS2_PARAM_FREE(param, env);
+            AXIS2_FREE(env->allocator, para_test_value);
+            return status;
+        }
+        AXIS2_PARAM_SET_PARAM_TYPE(param, env, AXIS2_TEXT_PARAM);
+    }
+    return AXIS2_SUCCESS;
+}
+
 axis2_status_t AXIS2_CALL
 axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
                                 const axis2_env_t *env,
@@ -607,8 +730,6 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
     {
         axis2_om_element_t *param_element = NULL;
         axis2_om_node_t *param_node = NULL;
-        axis2_om_element_t *para_value = NULL;
-        axis2_om_node_t *para_node = NULL;
         axis2_param_t *param = NULL;
         axis2_param_t *parent_para = NULL;
         axis2_om_attribute_t *para_name = NULL;
@@ -616,7 +737,6 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
         axis2_qname_t *att_locked = NULL;
         axis2_qname_t *att_qname = NULL;
         axis2_char_t *pname = NULL;
-        axis2_hash_t *attrs = NULL;
         
         /* This is to check whether some one has locked the parmter at the top 
          * level
@@ -635,47 +755,7 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
             return status;
         }*/
         
-        /* Setting attributes */
-        attrs = AXIS2_OM_ELEMENT_EXTRACT_ATTRIBUTES(param_element, env, param_node);
-        if(attrs)
-        {
-            axis2_hash_index_t *i = NULL;
-
-            for (i = axis2_hash_first (attrs, env); i; i = 
-                    axis2_hash_next (env, i))
-            {
-                void *v = NULL;
-                axis2_om_attribute_t *value = NULL;
-                axis2_generic_obj_t *obj = NULL;
-                axis2_qname_t *attr_qname = NULL;
-                axis2_char_t *attr_name = NULL;
-
-                axis2_hash_this (i, NULL, NULL, &v);
-                if(!v) 
-                {
-                    AXIS2_PARAM_FREE(param, env);
-                    return AXIS2_FAILURE;
-                }
-                obj = axis2_generic_obj_create(env);
-                if(!obj)
-                {
-                    AXIS2_PARAM_FREE(param, env);
-                    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, 
-                            AXIS2_FAILURE);
-                    return AXIS2_FAILURE;
-                }
-                value = (axis2_om_attribute_t *) v;
-                AXIS2_GENERIC_OBJ_SET_VALUE(obj, env, value);
-                AXIS2_GENERIC_OBJ_SET_FREE_FUNC(obj, env, 
-                        axis2_om_attribute_free_void_arg);
-                attr_qname = AXIS2_OM_ATTRIBUTE_GET_QNAME(value, env);
-                attr_name = AXIS2_QNAME_TO_STRING(attr_qname, env);
-                axis2_hash_set(attrs, attr_name, AXIS2_HASH_KEY_STRING, obj); 
-            }
-            AXIS2_PARAM_SET_ATTRIBUTES(param, env, attrs);
-        }
-
-        /* Setting paramter name */
+           /* Setting paramter name */
         att_qname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         para_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(param_element, env, 
             att_qname);
@@ -693,39 +773,9 @@ axis2_desc_builder_process_params(axis2_desc_builder_t *desc_builder,
             return status;
         }
         
-        /* Setting paramter Value (the chiled elemnt of the paramter) */
-        para_value = AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(param_element, env,
-            param_node, &para_node);
-        if(para_value)
-        {
-            /* TODO uncomment this when find usages */
-            /*
-            status = AXIS2_PARAM_SET_VALUE(param, env, param_element);
-            if(AXIS2_SUCCESS != status)
-            {
-                AXIS2_PARAM_FREE(param, env);
-                return AXIS2_FAILURE;
-            }
-            AXIS2_PARAM_SET_PARAM_TYPE(param, env, AXIS2_DOM_PARAM);
-            */
-        }
-        else
-        {
-            axis2_char_t *para_test_value = NULL;
-            axis2_char_t *temp = NULL;
+        /* Setting paramter Value (the chiled elemnt of the paramter) */ 
+        set_attrs_and_value(param, env, param_element, param_node);
 
-            temp = AXIS2_OM_ELEMENT_GET_TEXT(
-                param_element, env, param_node);
-            para_test_value = AXIS2_STRDUP(temp, env);
-            status = AXIS2_PARAM_SET_VALUE(param, env, para_test_value);
-            if(AXIS2_SUCCESS != status)
-            {
-                AXIS2_PARAM_FREE(param, env);
-                AXIS2_FREE(env->allocator, para_test_value);
-                return status;
-            }
-            AXIS2_PARAM_SET_PARAM_TYPE(param, env, AXIS2_TEXT_PARAM);
-        }
         /* Setting locking attrib */
         att_locked = axis2_qname_create(env, AXIS2_ATTLOCKED, NULL, NULL);
         para_locked = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(param_element, env, 

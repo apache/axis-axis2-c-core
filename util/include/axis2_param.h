@@ -140,6 +140,17 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
             const axis2_env_t *env);
          
     axis2_status_t (AXIS2_CALL *
+    set_value_map) (
+            struct axis2_param *param,
+            const axis2_env_t *env,
+            axis2_hash_t *value_map);
+
+    axis2_hash_t* (AXIS2_CALL *
+    get_value_map) (
+            struct axis2_param *param,
+            const axis2_env_t *env);
+
+    axis2_status_t (AXIS2_CALL *
     value_free) (void *param_value, 
                  const axis2_env_t *env);
 }axis2_param_ops_t;
@@ -193,6 +204,12 @@ axis2_param_create(const axis2_env_t *env,
 
 #define AXIS2_PARAM_GET_ATTRIBUTES(param, env) \
     ((param)->ops->get_attributes (param, env))
+	    
+#define AXIS2_PARAM_SET_VALUE_MAP(param, env, value_map) \
+    ((param)->ops->set_value_map (param , env, value_map))
+
+#define AXIS2_PARAM_GET_VALUE_MAP(param, env) \
+    ((param)->ops->get_value_map (param, env))
 	
 /** @} */
     
