@@ -72,7 +72,7 @@ axis2_om_text_set_is_binary(axis2_om_text_t *om_text,
                         const axis2_env_t *env,
                         const axis2_bool_t is_binary);
                         
-axis2_char_t* AXIS2_CALL
+const axis2_char_t* AXIS2_CALL
 axis2_om_text_get_localname(axis2_om_text_t *om_text,
                         const axis2_env_t *env);
 
@@ -120,7 +120,7 @@ typedef struct axis2_om_text_impl_t
     /** The following fields are for MTOM */
     axis2_char_t *mime_type;
     axis2_bool_t optimize;
-    axis2_char_t *localname;
+    const axis2_char_t *localname;
     axis2_bool_t is_binary;
     axis2_char_t *content_id;
     axis2_om_attribute_t *om_attribute;    
@@ -421,7 +421,7 @@ axis2_om_text_set_is_binary(axis2_om_text_t *om_text,
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t* AXIS2_CALL
+const axis2_char_t* AXIS2_CALL
 axis2_om_text_get_localname(axis2_om_text_t *om_text,
                         const axis2_env_t *env)
 {
@@ -458,7 +458,7 @@ axis2_om_text_serialize_start_part(axis2_om_text_t *om_text,
     axis2_om_text_impl_t *om_text_impl = NULL;
     axis2_char_t *namespace_uri = NULL;
     axis2_char_t *prefix = NULL;
-    axis2_char_t *local_name = NULL;
+    const axis2_char_t *local_name = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
     local_name = axis2_om_text_get_localname(om_text, env);    

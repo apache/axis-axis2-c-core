@@ -397,8 +397,8 @@ AXIS2_CALL axis2_soap_header_extract_header_blocks
 {
     axis2_soap_header_impl_t *header_impl = NULL;
     
-    axis2_char_t *localname = NULL;
-    axis2_char_t *nsuri     = NULL;
+    const axis2_char_t *localname = NULL;
+    const axis2_char_t *nsuri     = NULL;
     
     axis2_om_node_t *first_node = NULL;
     axis2_om_element_t *first_ele =  NULL;

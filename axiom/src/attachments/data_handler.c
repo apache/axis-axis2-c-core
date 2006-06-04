@@ -158,7 +158,7 @@ axis2_data_handler_get_input_stream (axis2_data_handler_t *data_handler, const a
     AXIS2_ENV_CHECK(env, NULL);       
    
    /*@TODO implement the following*/
-   return "";
+   return (axis2_byte_t *)"";
 }
 
 axis2_status_t AXIS2_CALL

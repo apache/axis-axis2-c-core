@@ -315,7 +315,7 @@ axis2_xml_reader_create_for_file(const axis2_env_t *env,
 
     xmlTextReaderSetErrorHandler(wrapper_impl->reader, 
         (xmlTextReaderErrorFunc)axis2_libxml2_reader_wrapper_error_handler, 
-        env);
+        (void *)env);
     wrapper_impl->current_event = -1;
     
     axis2_libxml2_reader_wrapper_init_map(wrapper_impl);
@@ -387,7 +387,7 @@ axis2_xml_reader_create_for_io(const axis2_env_t *env,
 
     xmlTextReaderSetErrorHandler(wrapper_impl->reader, 
          (xmlTextReaderErrorFunc)axis2_libxml2_reader_wrapper_error_handler, 
-         env);
+         (void *)env);
 
     wrapper_impl->current_event = -1;
     
@@ -462,7 +462,7 @@ axis2_xml_reader_create_for_memory(const axis2_env_t *env,
    {
        xmlTextReaderSetErrorHandler(wrapper_impl->reader, 
             (xmlTextReaderErrorFunc)axis2_libxml2_reader_wrapper_error_handler, 
-            env);
+            (void *)env);
    }
 
     wrapper_impl->current_event = -1;

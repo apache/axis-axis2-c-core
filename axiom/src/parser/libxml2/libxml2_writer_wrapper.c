@@ -289,8 +289,8 @@ static axis2_status_t
 axis2_libxml2_writer_wrapper_push(
         axis2_xml_writer_t *writer, 
         const axis2_env_t *env,
-        axis2_char_t *uri,
-        axis2_char_t *prefix);
+        const axis2_char_t *uri,
+        const axis2_char_t *prefix);
         
 static axis2_bool_t
 axis2_libxml2_writer_wrapper_is_namespace_declared(
@@ -306,10 +306,10 @@ uri_prefix_element_free(
 static uri_prefix_element_t *
 uri_prefix_element_create(
         const axis2_env_t *env,
-        axis2_char_t *uri,
-        axis2_char_t *prefix,
-        axis2_char_t *real_prefix,
-        axis2_char_t *key);    
+        const axis2_char_t *uri,
+        const axis2_char_t *prefix,
+        const axis2_char_t *real_prefix,
+        const axis2_char_t *key);    
         
 static axis2_status_t
 axis2_libxml2_writer_wrapper_push_context(
@@ -319,8 +319,8 @@ axis2_libxml2_writer_wrapper_push_context(
 static axis2_char_t *
 create_key_from_uri_prefix(
         const axis2_env_t *env,
-        axis2_char_t *uri,
-        axis2_char_t *prefix);
+        const axis2_char_t *uri,
+        const axis2_char_t *prefix);
   
   
 static  axis2_status_t
@@ -1570,13 +1570,13 @@ axis2_libxml2_writer_wrapper_pop_context(axis2_xml_writer_t *writer,
 static axis2_status_t
 axis2_libxml2_writer_wrapper_push(axis2_xml_writer_t *writer, 
                                   const axis2_env_t *env,
-                                  axis2_char_t *uri,
-                                  axis2_char_t *prefix)
+                                  const axis2_char_t *uri,
+                                  const axis2_char_t *prefix)
 {
     axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
     axis2_array_list_t *current_list = NULL;
     axis2_char_t *key = NULL;
-    axis2_char_t *temp_prefix = NULL;
+    const axis2_char_t *temp_prefix = NULL;
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
     if(!prefix || AXIS2_STRCMP(prefix, "") == 0)
     {
@@ -1670,10 +1670,10 @@ uri_prefix_element_free(uri_prefix_element_t *up_element,
                                              
 static uri_prefix_element_t *
 uri_prefix_element_create(const axis2_env_t *env,
-                          axis2_char_t *uri,
-                          axis2_char_t *prefix,
-                          axis2_char_t *real_prefix,
-                          axis2_char_t *key)
+                          const axis2_char_t *uri,
+                          const axis2_char_t *prefix,
+                          const axis2_char_t *real_prefix,
+                          const axis2_char_t *key)
 {
     uri_prefix_element_t *up_element = NULL;
     up_element = (uri_prefix_element_t *)AXIS2_MALLOC(env->allocator, 
@@ -1739,8 +1739,8 @@ axis2_libxml2_writer_wrapper_push_context(axis2_xml_writer_t *writer,
 }                                                                                                 
 static axis2_char_t *
 create_key_from_uri_prefix(const axis2_env_t *env,
-                           axis2_char_t *uri,
-                           axis2_char_t *prefix)
+                           const axis2_char_t *uri,
+                           const axis2_char_t *prefix)
 {
     axis2_char_t *key = NULL;
     axis2_char_t *temp_val = NULL;

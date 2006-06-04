@@ -56,7 +56,7 @@ int read_input(char *buffer,int size,void* ctx)
 }
 
 int
-test_om_build (char *filename)
+test_om_build (const char *filename)
 {
     axis2_om_element_t *ele1 = NULL, *ele2 = NULL;
     axis2_om_stax_builder_t *builder = NULL;
@@ -279,7 +279,7 @@ test_om_serialize ()
 int
 main (int argc, char *argv[])
 {
-    char *file_name = "./../../resources/xml/om/test.xml";
+    const char *file_name = "./../../resources/xml/om/test.xml";
     if (argc > 1)
         file_name = argv[1];
     allocator = axis2_allocator_init (NULL);

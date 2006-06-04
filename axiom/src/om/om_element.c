@@ -150,7 +150,7 @@ axis2_om_element_get_text(axis2_om_element_t *om_element,
 axis2_status_t AXIS2_CALL
 axis2_om_element_set_text(axis2_om_element_t *om_element,
                           const axis2_env_t *env,
-                          axis2_char_t *text,
+                          const axis2_char_t *text,
                           axis2_om_node_t *element_node);  
 
 axis2_char_t* AXIS2_CALL
@@ -1404,7 +1404,7 @@ axis2_om_element_get_text(axis2_om_element_t *om_element,
 axis2_status_t AXIS2_CALL
 axis2_om_element_set_text(axis2_om_element_t *om_element,
                           const axis2_env_t *env,
-                          axis2_char_t *text,
+                          const axis2_char_t *text,
                           axis2_om_node_t *element_node)
 {
     axis2_om_node_t* temp_node = NULL;
@@ -1796,4 +1796,7 @@ axis2_om_element_get_attribute_value_by_name(
         }
     }
     return NULL;        
-}        
+}
+
+
+

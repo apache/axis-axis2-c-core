@@ -116,7 +116,7 @@ struct axis2_soap_builder
 AXIS2_EXTERN axis2_soap_builder_t * AXIS2_CALL
 axis2_soap_builder_create(const axis2_env_t *env,
                                 axis2_om_stax_builder_t *builder,
-                                axis2_char_t *soap_version);
+                                const axis2_char_t *soap_version);
 
 /******************** Macros **************************************************/
     

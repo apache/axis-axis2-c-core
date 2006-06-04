@@ -169,7 +169,7 @@ axis2_soap_envelope_create(const axis2_env_t *env,
 AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_envelope_create_with_soap_version_prefix(const axis2_env_t *env,
                                                     int soap_version,
-                                                    axis2_char_t *prefix);                     
+                                                    const axis2_char_t *prefix);                     
 
 AXIS2_EXTERN axis2_soap_envelope_t * AXIS2_CALL
 axis2_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
@@ -177,9 +177,11 @@ axis2_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
  
 AXIS2_EXTERN axis2_soap_envelope_t * AXIS2_CALL
 axis2_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
-          axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version,
-            axis2_array_list_t *sub_codes,
-            axis2_om_node_t *detail_node);
+    const axis2_char_t *code_value, 
+    const axis2_char_t *reason_text, 
+    const int soap_version,
+    axis2_array_list_t *sub_codes,
+    axis2_om_node_t *detail_node);
 
 /******************** Macros **************************************************/
 

@@ -64,10 +64,16 @@ struct axis2_mime_output_ops
                             axis2_char_t *boundary, 
                             axis2_char_t *content_id,
                             axis2_char_t *char_set_encoding,
-                            axis2_char_t *soap_content_type);
+                            const axis2_char_t *soap_content_type);
 
-    axis2_char_t* (AXIS2_CALL *get_content_type_for_mime)(axis2_mime_output_t *mime_output, const axis2_env_t *env, 
-                        axis2_char_t *boundary, axis2_char_t *content_id, axis2_char_t *char_set_encoding, axis2_char_t *soap_content_type);
+    const axis2_char_t *(AXIS2_CALL *
+    get_content_type_for_mime)(
+        axis2_mime_output_t *mime_output, 
+        const axis2_env_t *env, 
+        axis2_char_t *boundary, 
+        axis2_char_t *content_id, 
+        axis2_char_t *char_set_encoding, 
+        const axis2_char_t *soap_content_type);
     
    /** Deallocate memory
      * @return status code

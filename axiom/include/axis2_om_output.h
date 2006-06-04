@@ -137,7 +137,7 @@ AXIS2_DECLARE_DATA struct axis2_om_output_ops
      *  @param env environemnt
      *  @returns content id
      */     
-   axis2_char_t* (AXIS2_CALL *
+   const axis2_char_t* (AXIS2_CALL *
    get_content_type)(axis2_om_output_t *om_output,
                  const axis2_env_t *env);
                         

@@ -95,16 +95,16 @@ axis2_status_t AXIS2_CALL
 axis2_soap_header_block_set_attribute
                        (axis2_soap_header_block_t *header_block,
                         const axis2_env_t *env,
-                        axis2_char_t *attr_name,
-                        axis2_char_t *attr_value,
-                        axis2_char_t *soap_envelope_namespace_uri);
+                        const axis2_char_t *attr_name,
+                        const axis2_char_t *attr_value,
+                        const axis2_char_t *soap_envelope_namespace_uri);
                         
 axis2_char_t* AXIS2_CALL 
 axis2_soap_header_block_get_attribute
                        (axis2_soap_header_block_t *header_block,
                         const axis2_env_t *env,
-                        axis2_char_t *attr_name,
-                        axis2_char_t *soap_envelope_namespace_uri);  
+                        const axis2_char_t *attr_name,
+                        const axis2_char_t *soap_envelope_namespace_uri);  
                         
 axis2_status_t AXIS2_CALL
 axis2_soap_header_block_set_soap_version(axis2_soap_header_block_t *header_block,
@@ -170,7 +170,7 @@ axis2_soap_header_block_create(const axis2_env_t *env)
 
 AXIS2_EXTERN axis2_soap_header_block_t * AXIS2_CALL
 axis2_soap_header_block_create_with_parent(const axis2_env_t *env,
-                                           axis2_char_t *localname,
+                                           const axis2_char_t *localname,
                                            axis2_om_namespace_t *ns,
                                            axis2_soap_header_t *header)
 {
@@ -229,8 +229,8 @@ axis2_soap_header_block_set_role(axis2_soap_header_block_t *header_block,
                                  axis2_char_t *role_uri)
 {
     axis2_soap_header_block_impl_t *header_block_impl = NULL;
-    axis2_char_t *attr_localname = NULL;
-    axis2_char_t *attr_nsuri     = NULL;
+    const axis2_char_t *attr_localname = NULL;
+    const axis2_char_t *attr_nsuri     = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     header_block_impl = AXIS2_INTF_TO_IMPL(header_block);
     
@@ -257,8 +257,8 @@ axis2_soap_header_block_get_role
                          const axis2_env_t *env)
 {
     axis2_soap_header_block_impl_t *header_block_impl = NULL;
-    axis2_char_t *attr_localname = NULL;
-    axis2_char_t *attr_nsuri     = NULL;
+    const axis2_char_t *attr_localname = NULL;
+    const axis2_char_t *attr_nsuri     = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     header_block_impl = AXIS2_INTF_TO_IMPL(header_block);
@@ -286,8 +286,8 @@ axis2_soap_header_block_set_must_understand_with_bool
                          axis2_bool_t *must_understand)
 {
     axis2_soap_header_block_impl_t *header_block_impl = NULL;
-    axis2_char_t *attr_nsuri     = NULL;
-    axis2_char_t* attr_value = NULL;
+    const axis2_char_t *attr_nsuri     = NULL;
+    const axis2_char_t* attr_value = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     header_block_impl = AXIS2_INTF_TO_IMPL(header_block);
@@ -323,7 +323,7 @@ axis2_soap_header_block_set_must_understand_with_string
                          axis2_char_t *must_understand)
 {
     axis2_soap_header_block_impl_t *header_block_impl = NULL;
-    axis2_char_t *attr_nsuri     = NULL;
+    const axis2_char_t *attr_nsuri     = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, must_understand, AXIS2_FAILURE);
@@ -365,9 +365,9 @@ axis2_soap_header_block_get_must_understand
                         (axis2_soap_header_block_t *header_block,
                          const axis2_env_t *env)
 {
-    axis2_char_t *must_understand = NULL;
+    const axis2_char_t *must_understand = NULL;
     axis2_soap_header_block_impl_t *header_block_impl = NULL;
-    axis2_char_t *attr_nsuri     = NULL;
+    const axis2_char_t *attr_nsuri     = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     header_block_impl = AXIS2_INTF_TO_IMPL(header_block);
@@ -406,9 +406,9 @@ axis2_status_t AXIS2_CALL
 axis2_soap_header_block_set_attribute
                        (axis2_soap_header_block_t *header_block,
                         const axis2_env_t *env,
-                        axis2_char_t *attr_name,
-                        axis2_char_t *attr_value,
-                        axis2_char_t *soap_envelope_namespace_uri)
+                        const axis2_char_t *attr_name,
+                        const axis2_char_t *attr_value,
+                        const axis2_char_t *soap_envelope_namespace_uri)
 {
     axis2_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_om_attribute_t* om_attr = NULL;
@@ -486,8 +486,8 @@ axis2_char_t* AXIS2_CALL
 axis2_soap_header_block_get_attribute
                        (axis2_soap_header_block_t *header_block,
                         const axis2_env_t *env,
-                        axis2_char_t *attr_name,
-                        axis2_char_t *soap_envelope_namespace_uri)
+                        const axis2_char_t *attr_name,
+                        const axis2_char_t *soap_envelope_namespace_uri)
 {
     axis2_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_om_attribute_t* om_attr = NULL;

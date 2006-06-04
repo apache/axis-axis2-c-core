@@ -148,7 +148,7 @@ axis2_om_output_flush(axis2_om_output_t *om_output,
                       axis2_byte_t **output_stream,
                       int *output_stream_size);
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_om_output_get_content_type(axis2_om_output_t *om_output,
                                  const axis2_env_t *env);                     
 
@@ -455,12 +455,12 @@ axis2_om_output_is_optimized(axis2_om_output_t *om_output,
     return AXIS2_INTF_TO_IMPL(om_output)->do_optimize;
 }
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_om_output_get_content_type(axis2_om_output_t *om_output,
                                  const axis2_env_t *env)
 {
     axis2_om_output_impl_t *output_impl = NULL;
-    axis2_char_t *soap_content_type = NULL;
+    const axis2_char_t *soap_content_type = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     output_impl = AXIS2_INTF_TO_IMPL(om_output);    
     if(AXIS2_TRUE == output_impl->do_optimize)
@@ -794,7 +794,7 @@ axis2_om_output_flush(axis2_om_output_t *om_output,
                       int *output_stream_size)
 {
     axis2_om_output_impl_t *output_impl = NULL;
-    axis2_char_t *soap_content_type = NULL;
+    const axis2_char_t *soap_content_type = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     output_impl = AXIS2_INTF_TO_IMPL(om_output);

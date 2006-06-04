@@ -676,9 +676,9 @@ axis2_soap_fault_set_builder(axis2_soap_fault_t *fault,
 AXIS2_EXTERN axis2_soap_fault_t * AXIS2_CALL
 axis2_soap_fault_create_default_fault(const axis2_env_t *env,
                                       struct axis2_soap_body *parent,
-                                      axis2_char_t *code_value,
-                                      axis2_char_t *reason_text,
-                                      int soap_version)
+                                      const axis2_char_t *code_value,
+                                      const axis2_char_t *reason_text,
+                                      const int soap_version)
 {
     axis2_soap_fault_t *soap_fault = NULL;
     axis2_om_node_t *fault_node    = NULL;

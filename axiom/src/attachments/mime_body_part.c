@@ -37,8 +37,10 @@ axis2_status_t AXIS2_CALL
 axis2_mime_body_part_free (axis2_mime_body_part_t *mime_body_part, const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_mime_body_part_add_header (axis2_mime_body_part_t *mime_body_part, const axis2_env_t *env,
-    axis2_char_t *name, axis2_char_t *value);
+axis2_mime_body_part_add_header (axis2_mime_body_part_t *mime_body_part, 
+    const axis2_env_t *env,
+    const axis2_char_t *name, 
+    const axis2_char_t *value);
 
 axis2_status_t AXIS2_CALL
 axis2_mime_body_part_set_data_handler (axis2_mime_body_part_t *mime_body_part, const axis2_env_t *env, axis2_data_handler_t *data_handler); 
@@ -125,8 +127,10 @@ axis2_mime_body_part_free (axis2_mime_body_part_t *mime_body_part, const axis2_e
 
 
 axis2_status_t AXIS2_CALL
-axis2_mime_body_part_add_header (axis2_mime_body_part_t *mime_body_part, const axis2_env_t *env,
-    axis2_char_t *name, axis2_char_t *value) 
+axis2_mime_body_part_add_header (axis2_mime_body_part_t *mime_body_part, 
+    const axis2_env_t *env,
+    const axis2_char_t *name, 
+    const axis2_char_t *value) 
 {
     axis2_mime_body_part_impl_t *mime_body_part_impl = NULL;
        

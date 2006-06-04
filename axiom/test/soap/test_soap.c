@@ -84,7 +84,7 @@ int printnode(axis2_om_node_t *om_node, const axis2_env_t *env)
     return 0;
 }
 
-int build_soap(const axis2_env_t *env, char *filename,axis2_char_t *uri)
+int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t *uri)
 {
     axis2_om_stax_builder_t *om_builder = NULL;
     
@@ -379,12 +379,12 @@ int test_soap_fault_value(const axis2_env_t *env)
 }   
 int main(int argc, char *argv[])
 {
-    const axis2_env_t *env = NULL;
+    axis2_env_t *env = NULL;
     axis2_allocator_t *allocator = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
-    axis2_char_t *uri = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
-    char *filename = "./../../resources/xml/soap/test.xml";
+    const axis2_char_t *uri = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    const char *filename = "./../../resources/xml/soap/test.xml";
     if(argc > 1)
         filename = argv[1];
     if(argc > 2)

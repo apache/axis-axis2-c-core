@@ -122,7 +122,7 @@ axis2_soap_builder_process_namespace_data
 static axis2_status_t
 axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
                       const axis2_env_t *env,
-                      axis2_char_t* soap_version_uri_from_transport);
+                      const axis2_char_t* soap_version_uri_from_transport);
                       
 static axis2_status_t
 axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
@@ -173,7 +173,7 @@ axis2_soap_builder_set_mime_body_parts
 AXIS2_EXTERN axis2_soap_builder_t * AXIS2_CALL
 axis2_soap_builder_create(const axis2_env_t *env,
                                 axis2_om_stax_builder_t *builder,
-                                axis2_char_t *soap_version)
+                                const axis2_char_t *soap_version)
 {
     axis2_soap_builder_impl_t *builder_impl = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
@@ -460,7 +460,7 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
     axis2_char_t *parent_localname = NULL;
     
     axis2_om_element_t *om_element = NULL;
-    axis2_char_t *ele_localname = NULL;
+    const axis2_char_t *ele_localname = NULL;
     
     int element_level = 0;
     int status = AXIS2_SUCCESS;
@@ -771,7 +771,7 @@ axis2_soap_builder_process_namespace_data
 static axis2_status_t 
 axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
                       const axis2_env_t *env,
-                      axis2_char_t* soap_version_uri_from_transport)
+                      const axis2_char_t* soap_version_uri_from_transport)
 {
     axis2_soap_builder_impl_t *builder_impl = NULL;
     axis2_om_namespace_t *om_ns = NULL;

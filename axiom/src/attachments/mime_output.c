@@ -68,7 +68,7 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
                             axis2_char_t *boundary, 
                             axis2_char_t *content_id,
                             axis2_char_t *char_set_encoding,
-                            axis2_char_t *soap_content_type);
+                            const axis2_char_t *soap_content_type);
 axis2_status_t AXIS2_CALL
 axis2_start_writing_mime (axis2_mime_output_t *mime_output, 
                             const axis2_env_t *env, axis2_byte_t **output_stream, 
@@ -91,13 +91,13 @@ axis2_status_t AXIS2_CALL
 axis2_write_finish_writing_mime (axis2_mime_output_t *mime_output, const axis2_env_t *env, 
                         axis2_byte_t **output_stream, int *output_stream_size, axis2_char_t *boundary);
 
-axis2_char_t * AXIS2_CALL
+const axis2_char_t * AXIS2_CALL
 axis2_mime_output_get_content_type_for_mime (axis2_mime_output_t *mime_output, 
         const axis2_env_t *env, 
         axis2_char_t *boundary, 
         axis2_char_t *content_id, 
         axis2_char_t *char_set_encoding, 
-        axis2_char_t *soap_content_type);
+        const axis2_char_t *soap_content_type);
 
 /************************** End of Function headers ************************/
 
@@ -170,7 +170,7 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
                             axis2_char_t *boundary, 
                             axis2_char_t *content_id,
                             axis2_char_t *char_set_encoding, 
-                            axis2_char_t *soap_content_type)
+                            const axis2_char_t *soap_content_type)
 {
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *header_value = NULL;
@@ -209,7 +209,7 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
     AXIS2_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-transfer-encoding", "binary");
 
     /* content-id */
-    content_id_string = "<";
+    content_id_string = (axis2_char_t *)"<";
     content_id_string = AXIS2_STRACAT(content_id_string, content_id, env);
     content_id_string = AXIS2_STRACAT(content_id_string, ">", env);
     AXIS2_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-id", content_id_string);
@@ -382,9 +382,9 @@ axis2_mime_body_part_t * AXIS2_CALL
 axis2_create_mime_body_part (axis2_om_text_t *text, const axis2_env_t *env)
 {
     axis2_data_handler_t *data_handler = NULL;
-    axis2_char_t * content_type = "application/octet-stream";
+    const axis2_char_t *content_type = "application/octet-stream";
     axis2_mime_body_part_t * mime_body_part = axis2_mime_body_part_create(env);
-    axis2_char_t * content_id = "<";
+    axis2_char_t *content_id = (axis2_char_t *)"<";
     if (!mime_body_part)
         return NULL;
     data_handler = AXIS2_OM_TEXT_SET_GET_DATA_HANDLER(text, env);
@@ -492,13 +492,13 @@ axis2_write_finish_writing_mime (axis2_mime_output_t *mime_output, const axis2_e
 
 }
 
-axis2_char_t * AXIS2_CALL
+const axis2_char_t * AXIS2_CALL
 axis2_mime_output_get_content_type_for_mime (axis2_mime_output_t *mime_output, 
         const axis2_env_t *env, 
         axis2_char_t *boundary, 
         axis2_char_t *content_id, 
         axis2_char_t *char_set_encoding, 
-        axis2_char_t *soap_content_type)
+        const axis2_char_t *soap_content_type)
 {
     axis2_char_t *content_type_string = NULL;
     

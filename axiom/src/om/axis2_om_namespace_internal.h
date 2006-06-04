@@ -35,7 +35,7 @@ extern "C"
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_om_namespace_set_uri(axis2_om_namespace_t *ns,
                           const axis2_env_t *env,
-                          axis2_char_t *ns_uri);
+                          const axis2_char_t *ns_uri);
                           
 #ifdef __cplusplus
 }

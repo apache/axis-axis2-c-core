@@ -54,8 +54,8 @@ struct axis2_mime_body_part_ops
    axis2_status_t (AXIS2_CALL *
     add_header)(axis2_mime_body_part_t *mime_body_part, 
             const axis2_env_t *env, 
-            axis2_char_t *name, 
-            axis2_char_t *value); 
+            const axis2_char_t *name, 
+            const axis2_char_t *value); 
    
     axis2_status_t (AXIS2_CALL *
     set_data_handler)(axis2_mime_body_part_t *mime_body_part, 

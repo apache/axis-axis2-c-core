@@ -1,4 +1,5 @@
 #include <CuTest.h>
+#include <stdio.h>
 #include "om/om_test.h"
 
 void RunAllTests(void) {

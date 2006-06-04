@@ -196,11 +196,11 @@ axis2_soap_envelope_create(const axis2_env_t *env,
 AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_envelope_create_with_soap_version_prefix(const axis2_env_t *env,
                                                     int soap_version,
-                                                    axis2_char_t *prefix)
+                                                    const axis2_char_t *prefix)
 {
     axis2_om_namespace_t *ns        = NULL;
-    axis2_char_t *ns_prefix = NULL;
-    axis2_char_t *ns_uri    = NULL;
+    const axis2_char_t *ns_prefix = NULL;
+    const axis2_char_t *ns_uri    = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     if(soap_version == AXIS2_SOAP11)
     {
@@ -699,7 +699,9 @@ axis2_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_soap_envelope_t * AXIS2_CALL
 axis2_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
-   axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version,
+    const axis2_char_t *code_value, 
+    const axis2_char_t *reason_text, 
+    const int soap_version,
     axis2_array_list_t *sub_codes,
     axis2_om_node_t *detail_node)
 {
@@ -813,7 +815,7 @@ axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *soap_envelope,
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     axis2_om_element_t *env_ele  = NULL;
     axis2_om_namespace_t *env_ns = NULL;
-    axis2_char_t *ns_uri         = NULL;
+    const axis2_char_t *ns_uri         = NULL;
     int status = AXIS2_SUCCESS;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     

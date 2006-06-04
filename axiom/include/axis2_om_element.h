@@ -322,7 +322,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         axis2_status_t (AXIS2_CALL *
         set_text)(axis2_om_element_t *om_element,
                   const axis2_env_t *env,
-                  axis2_char_t *text,
+                  const axis2_char_t *text,
                   axis2_om_node_t *element_node); 
         /**
          * select all the text children and concat them to a single string
