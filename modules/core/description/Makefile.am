@@ -12,7 +12,8 @@ libaxis2_description_la_SOURCES = \
                                 flow.c \
                                 flow_container.c \
                                 transport_in_desc.c \
-                                transport_out_desc.c
+                                transport_out_desc.c \
+                                msg.c
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl \

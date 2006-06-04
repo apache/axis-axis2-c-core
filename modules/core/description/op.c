@@ -16,6 +16,7 @@
  
 #include <axis2_op.h>
 #include <axis2_property.h>
+#include <axis2_msg.h>
 
 /** 
  * @brief Operaton struct impl
@@ -882,7 +883,7 @@ axis2_op_is_param_locked(axis2_op_t *op,
     {
         param_l = axis2_op_get_param(op, env, param_name);   
     }
-	return AXIS2_PARAM_IS_LOCKED(param_l, env);
+	return (param_l !=NULL && AXIS2_PARAM_IS_LOCKED(param_l, env));
 }
 
 axis2_status_t AXIS2_CALL 
