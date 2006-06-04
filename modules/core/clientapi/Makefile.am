@@ -7,7 +7,6 @@ libaxis2_clientapi_la_SOURCES = \
                                 mep_client.c \
                                 listener_manager.c \
                                 callback_recv.c \
-                                call.c \
                                 msg_sender.c \
                                 stub.c \
 								options.c \
