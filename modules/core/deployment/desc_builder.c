@@ -928,9 +928,6 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
     recv_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(recv_element, env, class_qname);
     AXIS2_QNAME_FREE(class_qname, env);
     class_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(recv_name, env);
-    msg_recv_dll_name = 
-        AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env, 
-            class_name);
     
     conf = AXIS2_DEP_ENGINE_GET_AXIS2_CONF(desc_builder->engine, env);
     if(!conf)
@@ -942,6 +939,9 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
     if(!impl_info_param)
     {
         dll_desc = axis2_dll_desc_create(env);
+    	msg_recv_dll_name = 
+        	AXIS2_DLL_DESC_CREATE_PLATFORM_SPECIFIC_DLL_NAME(dll_desc, env, 
+            	class_name);
         repos_name = AXIS2_DEP_ENGINE_GET_REPOS_PATH(desc_builder->engine, env);
         temp_path = AXIS2_STRACAT(repos_name, AXIS2_PATH_SEP_STR, env);
         temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_LIB_FOLDER, env);
