@@ -21,8 +21,8 @@
 #include <axis2_log_default.h>
 #include <axis2_string.h>
 
-AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all (axis2_char_t *log_file,
-        axis2_log_levels_t log_level)
+AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all (const axis2_char_t *log_file,
+        const axis2_log_levels_t log_level)
 {
     axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;

@@ -433,6 +433,8 @@ axis2_dll_desc_set_error_code (
     dll_desc_impl = AXIS2_INTF_TO_IMPL(dll_desc);
 
     dll_desc_impl->error_code = error_code; 
+
+    return AXIS2_SUCCESS;
 }
 
 axis2_error_codes_t AXIS2_CALL

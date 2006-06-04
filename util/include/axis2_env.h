@@ -76,8 +76,8 @@ extern "C"
     * @param log_level log level to be used
     * @return pointer to the newly created environment struct 
     */
-    AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all (axis2_char_t *log_file, 
-        axis2_log_levels_t log_level);                                                   
+    AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all (const axis2_char_t *log_file, 
+        const axis2_log_levels_t log_level);                                                   
 
    /**
     * Creates an environment struct. Users of axis2 should not use this function

@@ -17,7 +17,8 @@
 #include <stdlib.h>
 #include "axis2_error_default.h"
 
-axis2_char_t * AXIS2_CALL axis2_error_impl_get_message (axis2_error_t *error);
+const axis2_char_t * AXIS2_CALL 
+axis2_error_impl_get_message (const axis2_error_t *error);
       
 axis2_status_t AXIS2_CALL
 axis2_error_impl_set_error_number (axis2_error_t *error, axis2_error_codes_t error_number);
@@ -29,7 +30,7 @@ axis2_status_t AXIS2_CALL
 axis2_error_impl_get_status_code (axis2_error_t *error);
 
 /* array to hold error messages */
-axis2_char_t* axis2_error_messages[AXIS2_ERROR_LAST];
+const axis2_char_t* axis2_error_messages[AXIS2_ERROR_LAST];
 
 axis2_status_t AXIS2_CALL
 axis2_error_init()
@@ -504,8 +505,8 @@ axis2_error_create (axis2_allocator_t * allocator)
     return error;
 }
 
-axis2_char_t * AXIS2_CALL
-axis2_error_impl_get_message (axis2_error_t *error)
+const axis2_char_t * AXIS2_CALL
+axis2_error_impl_get_message (const axis2_error_t *error)
 {
     if (error && error->error_number >= AXIS2_ERROR_NONE && error->error_number < AXIS2_ERROR_LAST)
         return axis2_error_messages[error->error_number];

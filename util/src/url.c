@@ -85,8 +85,11 @@ axis2_url_clone(
 /***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_url_t * AXIS2_CALL 
-axis2_url_create (const axis2_env_t *env, axis2_char_t *protocol, 
-                  axis2_char_t *server, int port, axis2_char_t *path)
+axis2_url_create (const axis2_env_t *env, 
+    const axis2_char_t *protocol, 
+    const axis2_char_t *server, 
+    const int port, 
+    const axis2_char_t *path)
 {
     axis2_url_impl_t *url_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -159,7 +162,7 @@ axis2_url_parse_string(const axis2_env_t *env, axis2_char_t *str_url)
     */
    axis2_char_t *tmp_url_str = NULL;
    axis2_url_t *ret = NULL;
-   axis2_char_t *protocol = NULL;
+   const axis2_char_t *protocol = NULL;
    axis2_char_t *path = NULL;
    axis2_char_t *port_str = NULL;
    axis2_char_t *server = NULL;
@@ -202,7 +205,7 @@ axis2_url_parse_string(const axis2_env_t *env, axis2_char_t *str_url)
     /* if the url is file:// thing we need the protocol and
      * path only
      */
-    if(0 == AXIS2_STRCASECMP(protocol, "file"))
+    if(0 == AXIS2_STRCASECMP(protocol, (const axis2_char_t *)"file"))
     {
         ret = axis2_url_create(env, protocol, NULL, 0, server);
         AXIS2_FREE(env->allocator, tmp_url_str);

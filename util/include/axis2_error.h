@@ -555,7 +555,9 @@ extern "C"
         * get error message for the last error
         * @return error message for the last error. NULL on error.
         */
-         axis2_char_t * (AXIS2_CALL *get_message) (struct axis2_error *error);
+    const axis2_char_t *(AXIS2_CALL *
+    get_message)(
+    const struct axis2_error *error);
       
        axis2_status_t  (AXIS2_CALL *set_error_number) (struct axis2_error *error
             ,  axis2_error_codes_t error_number);

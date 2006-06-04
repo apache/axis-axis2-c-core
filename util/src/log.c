@@ -74,7 +74,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_log_impl_write_to_file(FILE *fd,
 
 AXIS2_EXTERN axis2_log_t * AXIS2_CALL
 axis2_log_create (axis2_allocator_t * allocator, axis2_log_ops_t * ops,
-      axis2_char_t * stream_name)
+      const axis2_char_t * stream_name)
 {
     axis2_log_impl_t *log_impl;
    axis2_char_t *path_home;
@@ -182,7 +182,7 @@ axis2_log_impl_write (axis2_log_t *log, const axis2_char_t *buffer,
         return -1;
     if (level <= log->level)
     {
-        char *level_str = "";
+        const char *level_str = "";
         switch (level)
         {
             case AXIS2_LOG_LEVEL_CRITICAL:
@@ -216,9 +216,9 @@ axis2_log_impl_write_to_file(FILE *fd, axis2_thread_mutex_t *mutex,
       axis2_log_levels_t level, const axis2_char_t *file, 
       const int line, const axis2_char_t *value)
 {
-    char *level_str = "";
-   if (!fd)
-      return -1;
+    const char *level_str = "";
+    if (!fd)
+        return -1;
    /**
       * print all critical and error logs irrespective of log->level setting
      */

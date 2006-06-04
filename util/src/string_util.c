@@ -27,7 +27,6 @@ axis2_tokenize(const axis2_env_t *env,
     axis2_char_t *rest = NULL;
     axis2_char_t *str  = NULL;
     
-    int i = 0;
     axis2_char_t *index = NULL;
        
     if(!in || AXIS2_STRCMP(in, "") == 0)

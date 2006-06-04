@@ -46,11 +46,11 @@ extern "C"
 
     AXIS2_EXTERN int AXIS2_CALL
     axis2_strcasecmp(const axis2_char_t *s1, 
-                     axis2_char_t *s2);
+                     const axis2_char_t *s2);
 
     AXIS2_EXTERN int AXIS2_CALL
     axis2_strncasecmp(const axis2_char_t *s1, 
-                      axis2_char_t *s2, int n);
+                      const axis2_char_t *s2, int n);
     
     /* much similar to the strcat behaviour. But the difference is
      * this allocates new memory to put the conatenated string rather than
@@ -58,8 +58,8 @@ extern "C"
      * memory for the return value
      */
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_stracat(const axis2_char_t *s1, const 
-                  axis2_char_t *s2, 
+    axis2_stracat(const axis2_char_t *s1, 
+                  const axis2_char_t *s2, 
                   const axis2_env_t *env);
     
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
