@@ -58,7 +58,7 @@ struct axis2_woden_wsdl_element;
 
 struct axis2_woden_nested_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -100,19 +100,19 @@ axis2_woden_nested_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_NESTED_ELEMENT_FREE(doc_el, env) \
-		(((axis2_woden_nested_element_t *) doc_el)->ops->\
+      (((axis2_woden_nested_element_t *) doc_el)->ops->\
          free (doc_el, env))
 
 #define AXIS2_WODEN_NESTED_ELEMENT_TYPE(doc_el, env) \
-		(((axis2_woden_nested_element_t *) doc_el)->ops->\
+      (((axis2_woden_nested_element_t *) doc_el)->ops->\
          type (doc_el, env))
 
 #define AXIS2_WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(doc_el, env, parent) \
-		(((axis2_woden_nested_element_t *) doc_el)->ops->\
+      (((axis2_woden_nested_element_t *) doc_el)->ops->\
          set_content(doc_el, env, parent))
 
 #define AXIS2_WODEN_NESTED_ELEMENT_GET_PARENT_ELEMENT(doc_el, env) \
-		(((axis2_woden_nested_element_t *) doc_el)->ops->\
+      (((axis2_woden_nested_element_t *) doc_el)->ops->\
          get_content(doc_el, env))
 
 

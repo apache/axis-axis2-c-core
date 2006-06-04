@@ -45,7 +45,7 @@ extern "C"
 
 struct axis2_xml_schema_documentation_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -111,31 +111,31 @@ axis2_xml_schema_documentation_create(const axis2_env_t *env);
 /*********************** macros ***********************************************/
 
 #define AXIS2_XML_SCHEMA_DOCUMENTATION_FREE(documentation, env) \
-		(((axis2_xml_schema_documentation_t *) documentation)->ops->\
+      (((axis2_xml_schema_documentation_t *) documentation)->ops->\
             free(documentation, env))
 
 #define AXIS2_XML_SCHEMA_DOCUMENTATION_SUPER_OBJS(documentation, env) \
-		(((axis2_xml_schema_documentation_t *) documentation)->ops->\
+      (((axis2_xml_schema_documentation_t *) documentation)->ops->\
             super_objs(documentation, env))
 
 #define AXIS2_XML_SCHEMA_DOCUMENTATION_TYPE(documentation, env) \
-		(((axis2_xml_schema_documentation_t *) documentation)->ops->\
+      (((axis2_xml_schema_documentation_t *) documentation)->ops->\
             type(documentation, env))
 
 #define AXIS2_XML_SCHEMA_DOCUMENTATION_GET_SOURCE(documentation, env) \
-		(((axis2_xml_schema_documentation_t *) documentation)->ops->\
+      (((axis2_xml_schema_documentation_t *) documentation)->ops->\
             get_source(documentation, env))
 
 #define AXIS2_XML_SCHEMA_DOCUMENTATION_SET_SOURCE(documentation, env, source) \
-		(((axis2_xml_schema_documentation_t *) documentation)->ops->\
+      (((axis2_xml_schema_documentation_t *) documentation)->ops->\
             set_source(documentation, env, source))
 
 #define AXIS2_XML_SCHEMA_DOCUMENTATION_GET_MARKUP(documentation, env) \
-		(((axis2_xml_schema_documentation_t *) documentation)->ops->\
+      (((axis2_xml_schema_documentation_t *) documentation)->ops->\
             get_markup(documentation, env))
 
 #define AXIS2_XML_SCHEMA_DOCUMENTATION_SET_MARKUP(documentation, env, markup) \
-		(((axis2_xml_schema_documentation_t *) documentation)->ops->\
+      (((axis2_xml_schema_documentation_t *) documentation)->ops->\
             set_markup(documentation, env, markup))
 
 

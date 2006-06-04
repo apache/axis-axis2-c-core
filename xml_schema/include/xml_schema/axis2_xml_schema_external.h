@@ -45,7 +45,7 @@ extern "C"
 
 struct axis2_xml_schema_external_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -120,35 +120,35 @@ axis2_xml_schema_external_resolve_methods(
 
 
 #define AXIS2_XML_SCHEMA_EXTERNAL_FREE(external, env) \
-		(((axis2_xml_schema_external_t *) external)->ops->\
+      (((axis2_xml_schema_external_t *) external)->ops->\
             free(external, env))
 
 #define AXIS2_XML_SCHEMA_EXTERNAL_GET_BASE_IMPL(external, env) \
-		(((axis2_xml_schema_external_t *) external)->ops->\
+      (((axis2_xml_schema_external_t *) external)->ops->\
             get_base_impl(external, env))
 
 #define AXIS2_XML_SCHEMA_EXTERNAL_SUPER_OBJS(external, env) \
-		(((axis2_xml_schema_external_t *) external)->ops->\
+      (((axis2_xml_schema_external_t *) external)->ops->\
             super_objs(external, env))
 
 #define AXIS2_XML_SCHEMA_EXTERNAL_TYPE(external, env) \
-		(((axis2_xml_schema_external_t *) external)->ops->\
+      (((axis2_xml_schema_external_t *) external)->ops->\
             type(external, env))
 
 #define AXIS2_XML_SCHEMA_EXTERNAL_GET_SCHEMA(external, env) \
-		(((axis2_xml_schema_external_t *) external)->ops->\
+      (((axis2_xml_schema_external_t *) external)->ops->\
             get_schema(external, env))
 
 #define AXIS2_XML_SCHEMA_EXTERNAL_SET_SCHEMA(external, env, sch) \
-		(((axis2_xml_schema_external_t *) external)->ops->\
+      (((axis2_xml_schema_external_t *) external)->ops->\
             set_schema(external, env, sch))
             
 #define AXIS2_XML_SCHEMA_EXTERNAL_GET_SCHEMA_LOCATION(external, env) \
-		(((axis2_xml_schema_external_t *) external)->ops->\
+      (((axis2_xml_schema_external_t *) external)->ops->\
             get_schema_location(external, env))
 
 #define AXIS2_XML_SCHEMA_EXTERNAL_SET_SCHEMA_LOCATION(external, env, location) \
-		(((axis2_xml_schema_external_t *) external)->ops->\
+      (((axis2_xml_schema_external_t *) external)->ops->\
             set_schema_location(external, env, location))            
 
 /** @} */

@@ -129,25 +129,25 @@ axis2_xml_schema_simple_content_restriction_create(const axis2_env_t *env);
 
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_FREE(sim_content_res, env) \
-		(((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
-		free(sim_content_res, env))
+      (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
+      free(sim_content_res, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_GET_BASE_IMPL(sim_content_res, env) \
-		(((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
-		get_base_impl(sim_content_res, env))
+      (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
+      get_base_impl(sim_content_res, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_GET_ANY_ATTRIBUTE(sim_content_res, env) \
-		(((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
+      (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
         get_any_attribute(sim_content_res, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_SET_ANY_ATTRIBUTE(sim_content_res,\
          env, any_attr)\
-		(((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
-		    set_content(sim_content_res, env, any_attr ))
+      (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
+          set_content(sim_content_res, env, any_attr ))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_GET_ATTRIBUTES(sim_content_res, env) \
-		(((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
-		    get_attributes(sim_content_res, env))
+      (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
+          get_attributes(sim_content_res, env))
             
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_GET_BASE_TYPE_NAME(sim_content_res, env)\
         (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
@@ -170,12 +170,12 @@ axis2_xml_schema_simple_content_restriction_create(const axis2_env_t *env);
             get_facets(sim_content_res, env))            
             
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_SUPER_OBJS(sim_content_res, env) \
-		(((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
-		super_objs(sim_content_res, env))  
-		
+      (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
+      super_objs(sim_content_res, env))  
+      
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_TYPE(sim_content_res, env) \
-		(((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
-		type(sim_content_res, env))                                          
+      (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
+      type(sim_content_res, env))                                          
 /** @} */
 #ifdef __cplusplus
 }

@@ -48,7 +48,7 @@ extern "C"
 #define AXIS2_PLATFORM_LOG_PATH            "/usr/local/axis2/log/axis2_log"
 #define AXIS2_PLATFORM_CLIENTLOG_PATH      "/usr/local/axis2/log/axis2_client_log"
 #define AXIS2_PLATFORM_CONFIG_PATH         "/etc/axiscpp.conf"
-#define AXIS2_PLATFORM_SECUREINFO			 ""
+#define AXIS2_PLATFORM_SECUREINFO          ""
 /**
  * Resource that contains the configuration
  */
@@ -237,7 +237,7 @@ extern "C"
 
 /** minizip functions */
 #define axis2_fill_win32_filefunc(ffunc) NULL
-#define AXIS2_UNZOPEN2(zipfilename,ffunc) 	unzOpen2(zipfilename,NULL)
+#define AXIS2_UNZOPEN2(zipfilename,ffunc)    unzOpen2(zipfilename,NULL)
 
 /**
   * handling variable number of arguments (for log.c)

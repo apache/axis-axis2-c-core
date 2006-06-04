@@ -47,19 +47,19 @@ typedef struct axis2_http_chunked_stream axis2_http_chunked_stream_t;
  */
 AXIS2_DECLARE_DATA struct axis2_http_chunked_stream_ops
 {
-	int (AXIS2_CALL *read) (axis2_http_chunked_stream_t *chunked_stream,
-						const axis2_env_t *env, void *buffer, size_t count);
-	
-	int (AXIS2_CALL *write) (axis2_http_chunked_stream_t *chunked_stream, 
-						const axis2_env_t *env, const void *buffer, 
-						size_t count);
-	int (AXIS2_CALL *get_current_chunk_size) 
+   int (AXIS2_CALL *read) (axis2_http_chunked_stream_t *chunked_stream,
+                  const axis2_env_t *env, void *buffer, size_t count);
+   
+   int (AXIS2_CALL *write) (axis2_http_chunked_stream_t *chunked_stream, 
+                  const axis2_env_t *env, const void *buffer, 
+                  size_t count);
+   int (AXIS2_CALL *get_current_chunk_size) 
                         (axis2_http_chunked_stream_t *chunked_stream, 
                         const axis2_env_t *env);
-	axis2_status_t (AXIS2_CALL *write_last_chunk) 
-						(axis2_http_chunked_stream_t *chunked_stream, 
+   axis2_status_t (AXIS2_CALL *write_last_chunk) 
+                  (axis2_http_chunked_stream_t *chunked_stream, 
                         const axis2_env_t *env);
-	axis2_status_t (AXIS2_CALL *free) 
+   axis2_status_t (AXIS2_CALL *free) 
                         (axis2_http_chunked_stream_t *chunked_stream, 
                         const axis2_env_t *env);
 };
@@ -70,26 +70,26 @@ AXIS2_DECLARE_DATA struct axis2_http_chunked_stream_ops
  */
 AXIS2_DECLARE_DATA struct axis2_http_chunked_stream
 {
-	axis2_http_chunked_stream_ops_t *ops;
+   axis2_http_chunked_stream_ops_t *ops;
 };
 
 
 AXIS2_EXTERN axis2_http_chunked_stream_t * AXIS2_CALL 
 axis2_http_chunked_stream_create(const axis2_env_t *env, axis2_stream_t* stream);
-/********************* Start of function macros	***************************/
+/********************* Start of function macros   ***************************/
 
 #define AXIS2_HTTP_CHUNKED_STREAM_READ(chunked_stream, env, buffer, count) \
                         ((chunked_stream)->ops->read(chunked_stream, env, \
-						buffer, count))
+                  buffer, count))
 #define AXIS2_HTTP_CHUNKED_STREAM_WRITE(chunked_stream, env, buffer, count) \
-						((chunked_stream)->ops->write(chunked_stream, env, \
-						buffer, count))
+                  ((chunked_stream)->ops->write(chunked_stream, env, \
+                  buffer, count))
 #define AXIS2_HTTP_CHUNKED_GET_CURRENT_CHUNK_SIZE(chunked_stream, env) \
                         ((chunked_stream)->ops->get_current_chunk_size \
-						(chunked_stream, env))
+                  (chunked_stream, env))
 #define AXIS2_HTTP_CHUNKED_STREAM_WRITE_LAST_CHUNK(chunked_stream, env) \
-						((chunked_stream)->ops->write_last_chunk(chunked_stream\
-						, env))
+                  ((chunked_stream)->ops->write_last_chunk(chunked_stream\
+                  , env))
 #define AXIS2_HTTP_CHUNKED_STREAM_FREE(chunked_stream, env) \
                         ((chunked_stream)->ops->free(chunked_stream, env))
 

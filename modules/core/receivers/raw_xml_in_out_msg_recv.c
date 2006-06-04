@@ -39,9 +39,9 @@ axis2_raw_xml_in_out_msg_recv_create(const axis2_env_t *env)
     axis2_msg_recv_t *msg_recv = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	msg_recv = axis2_msg_recv_create(env);
-	if(NULL == msg_recv)
+   AXIS2_ENV_CHECK(env, NULL);
+   msg_recv = axis2_msg_recv_create(env);
+   if(NULL == msg_recv)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -55,7 +55,7 @@ axis2_raw_xml_in_out_msg_recv_create(const axis2_env_t *env)
     msg_recv->ops->invoke_in_out_business_logic_sync = 
         axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync;
     msg_recv->ops->receive = msg_recv->ops->receive_sync;
-	return msg_recv;
+   return msg_recv;
 }
 
 /***************************Function implementation****************************/

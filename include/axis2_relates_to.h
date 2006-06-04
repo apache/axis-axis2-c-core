@@ -51,8 +51,8 @@ extern "C"
          * @return
          */
         axis2_char_t* (AXIS2_CALL *
-		get_value)(struct axis2_relates_to *relates_to, 
-				   const axis2_env_t *env);
+      get_value)(struct axis2_relates_to *relates_to, 
+               const axis2_env_t *env);
 
         /**
          * Method set_value
@@ -60,8 +60,8 @@ extern "C"
          * @param value
          */
         axis2_status_t (AXIS2_CALL *
-		set_value)(struct axis2_relates_to *relates_to, 
-			       const axis2_env_t *env, 
+      set_value)(struct axis2_relates_to *relates_to, 
+                const axis2_env_t *env, 
                    axis2_char_t * value);
 
         /**
@@ -70,8 +70,8 @@ extern "C"
          * @return
          */
         axis2_char_t* (AXIS2_CALL *
-		get_relationship_type)(struct axis2_relates_to *relates_to, 
-			                   const axis2_env_t *env);
+      get_relationship_type)(struct axis2_relates_to *relates_to, 
+                            const axis2_env_t *env);
 
         /**
          * Method set_relationship_type
@@ -79,8 +79,8 @@ extern "C"
          * @param relationship_type
          */
         axis2_status_t (AXIS2_CALL *
-		set_relationship_type)(struct axis2_relates_to *relates_to, 
-			                   const axis2_env_t *env, 
+      set_relationship_type)(struct axis2_relates_to *relates_to, 
+                            const axis2_env_t *env, 
                                axis2_char_t *relationship_type);
         
        /**
@@ -88,11 +88,11 @@ extern "C"
         */
         
         axis2_status_t (AXIS2_CALL *
-		free) (struct axis2_relates_to *relates_to, 
+      free) (struct axis2_relates_to *relates_to, 
                const axis2_env_t *env);
         
     } axis2_relates_to_ops_t;
-	
+   
    /** 
     * \brief Dispatcher struct
     */
@@ -111,23 +111,23 @@ extern "C"
  */
 AXIS2_EXTERN axis2_relates_to_t* AXIS2_CALL
 axis2_relates_to_create(const axis2_env_t *env, 
-						axis2_char_t *value, 
-						axis2_char_t *relationship_type);
+                  axis2_char_t *value, 
+                  axis2_char_t *relationship_type);
     
 #define AXIS2_RELATES_TO_GET_VALUE(relates_to, env) \
-		((relates_to)->ops->get_value(relates_to, env))
-	
+      ((relates_to)->ops->get_value(relates_to, env))
+   
 #define AXIS2_RELATES_TO_SET_VALUE(relates_to, env, vlaue) \
-		((relates_to)->ops->set_value(relates_to, env, vlaue))
-	
+      ((relates_to)->ops->set_value(relates_to, env, vlaue))
+   
 #define AXIS2_RELATES_TO_GET_RELATIONSHIP_TYPE(relates_to, env) \
-		((relates_to)->ops->get_relationship_type(relates_to, env))
-		
+      ((relates_to)->ops->get_relationship_type(relates_to, env))
+      
 #define AXIS2_RELATES_TO_SET_RELATIONSHIP_TYPE(relates_to, env, relationship_type) \
-		((relates_to)->ops->set_relationship_type(relates_to, env, relationship_type))
-		
+      ((relates_to)->ops->set_relationship_type(relates_to, env, relationship_type))
+      
 #define AXIS2_RELATES_TO_FREE(relates_to, env) \
-		((relates_to)->ops->free(relates_to, env))
+      ((relates_to)->ops->free(relates_to, env))
     
 /** @} */
     

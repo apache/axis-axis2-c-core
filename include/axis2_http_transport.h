@@ -357,16 +357,16 @@ extern "C"
      * Default charset in content
      */
     #define AXIS2_HTTP_DEFAULT_CONTENT_CHARSET "ISO-8859-1"
-	
-	/**
+   
+   /**
      * Field TRANSPORT_HTTP
      */
     #define AXIS2_TRANSPORT_HTTP "http"
-	
-	/**
-	 * Msg context response written key
-	 */
-	#define AXIS2_RESPONSE_WRITTEN "CONTENT_WRITTEN"
+   
+   /**
+    * Msg context response written key
+    */
+   #define AXIS2_RESPONSE_WRITTEN "CONTENT_WRITTEN"
     
     /**
      * Content type for MTOM

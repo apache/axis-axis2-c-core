@@ -699,43 +699,43 @@ axis2_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_soap_envelope_t * AXIS2_CALL
 axis2_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
-	axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version,
+   axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version,
     axis2_array_list_t *sub_codes,
     axis2_om_node_t *detail_node)
 {
     axis2_soap_envelope_t *soap_env = NULL;
     axis2_soap_body_t *soap_body = NULL;
     axis2_soap_envelope_impl_t *env_impl = NULL;
-	axis2_soap_fault_t *fault = NULL;
+   axis2_soap_fault_t *fault = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-	if (AXIS2_SOAP11 != soap_version && AXIS2_SOAP12 != soap_version)
-	{
-		AXIS2_ERROR_SET(env->error,
-			AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
-		return NULL;
-	}
-	
-	soap_env = axis2_soap_envelope_create_default_soap_envelope(env, soap_version);
-	if (!soap_env)
-	{
+   if (AXIS2_SOAP11 != soap_version && AXIS2_SOAP12 != soap_version)
+   {
+      AXIS2_ERROR_SET(env->error,
+         AXIS2_ERROR_INVALID_SOAP_VERSION, AXIS2_FAILURE);
+      return NULL;
+   }
+   
+   soap_env = axis2_soap_envelope_create_default_soap_envelope(env, soap_version);
+   if (!soap_env)
+   {
         return NULL;
-	}
-	env_impl = AXIS2_INTF_TO_IMPL(soap_env);
+   }
+   env_impl = AXIS2_INTF_TO_IMPL(soap_env);
 
     soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_env, env);
-	if (!soap_body)
-	{
-		AXIS2_SOAP_ENVELOPE_FREE(soap_env, env);
-		return NULL;
-	}
-	fault = axis2_soap_fault_create_default_fault(env, soap_body,
-				code_value, reason_text, soap_version);
-	if (!fault)
-	{
-		AXIS2_SOAP_ENVELOPE_FREE(soap_env, env);
-		return NULL;
-	}
+   if (!soap_body)
+   {
+      AXIS2_SOAP_ENVELOPE_FREE(soap_env, env);
+      return NULL;
+   }
+   fault = axis2_soap_fault_create_default_fault(env, soap_body,
+            code_value, reason_text, soap_version);
+   if (!fault)
+   {
+      AXIS2_SOAP_ENVELOPE_FREE(soap_env, env);
+      return NULL;
+   }
 
     if (sub_codes)
     {
@@ -765,7 +765,7 @@ axis2_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
         }
     }
 
-	return soap_env;
+   return soap_env;
 
 }
 

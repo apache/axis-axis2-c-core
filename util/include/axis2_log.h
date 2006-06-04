@@ -25,7 +25,7 @@ extern "C"
 #endif
 
     typedef struct axis2_log_ops axis2_log_ops_t;
-	typedef struct axis2_log axis2_log_t;
+   typedef struct axis2_log axis2_log_t;
 
 
 #define AXIS2_LOG_SI __FILE__,__LINE__
@@ -38,18 +38,18 @@ extern "C"
 
 /*TODO:log_xml*/
 
-	/**
-	  *Examples
-	  *To write debug information to log
-	  *AXIS2_LOG_DEBUG(log,AXIS2_LOG_SI,"log this %s %d","test",123);
-	  *This would log
-	  *"log this test 123" into the log file
-	  *
-	  *similar macros are defined for different log levels: CRITICAL,ERROR,WARNING and INFO
-	  *
-	  *CRITICAL and ERROR logs are always written to file and other logs are written 
-	  *depending on the log level set (log->level)
-	  */
+   /**
+     *Examples
+     *To write debug information to log
+     *AXIS2_LOG_DEBUG(log,AXIS2_LOG_SI,"log this %s %d","test",123);
+     *This would log
+     *"log this test 123" into the log file
+     *
+     *similar macros are defined for different log levels: CRITICAL,ERROR,WARNING and INFO
+     *
+     *CRITICAL and ERROR logs are always written to file and other logs are written 
+     *depending on the log level set (log->level)
+     */
 /** 
   * \brief Axis2 log levels
   */
@@ -89,8 +89,8 @@ extern "C"
        */
 
        axis2_status_t (AXIS2_CALL *
-		free) (axis2_allocator_t *allocator, 
-			   struct axis2_log *log);
+      free) (axis2_allocator_t *allocator, 
+            struct axis2_log *log);
 
       /**
         * writes to the log
@@ -99,11 +99,11 @@ extern "C"
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *
-	    write) (axis2_log_t *log, 
-			    const axis2_char_t *buffer, 
-			    axis2_log_levels_t level,
-			    const axis2_char_t *file,
-			    const int line);
+       write) (axis2_log_t *log, 
+             const axis2_char_t *buffer, 
+             axis2_log_levels_t level,
+             const axis2_char_t *file,
+             const int line);
     };
 
   /** 
@@ -124,43 +124,43 @@ extern "C"
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_log_impl_log_critical(axis2_log_t *log, 
-		 					const axis2_char_t *filename, 
-							const int linenumber,
-							const axis2_char_t *format,...);
+                      const axis2_char_t *filename, 
+                     const int linenumber,
+                     const axis2_char_t *format,...);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_log_impl_log_error(axis2_log_t *log,
-						 const axis2_char_t *filename,
-						 const int linenumber,
-						 const axis2_char_t *format,...);
+                   const axis2_char_t *filename,
+                   const int linenumber,
+                   const axis2_char_t *format,...);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_log_impl_log_warning(axis2_log_t *log,
-						   const axis2_char_t *filename,
-	                       const int linenumber,
-	                       const axis2_char_t *format,...);
+                     const axis2_char_t *filename,
+                          const int linenumber,
+                          const axis2_char_t *format,...);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_log_impl_log_info(axis2_log_t *log, 
-						const axis2_char_t *format,...);
+                  const axis2_char_t *format,...);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_log_impl_log_debug(axis2_log_t *log,
-						 const axis2_char_t *filename,
-						 const int linenumber,
-						 const axis2_char_t *format,...);
+                   const axis2_char_t *filename,
+                   const int linenumber,
+                   const axis2_char_t *format,...);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_log_impl_log_trace(axis2_log_t *log,
                          const axis2_char_t *filename,
-						 const int linenumber,
-						 const axis2_char_t *format,...);
+                   const int linenumber,
+                   const axis2_char_t *format,...);
 
 #define AXIS2_LOG_FREE(allocator, log) \
-		((log->ops)->free(allocator, log))
+      ((log->ops)->free(allocator, log))
 
 #define AXIS2_LOG_WRITE(log, buffer, level) \
-		((log)->ops->write(log, buffer, level,AXIS2_LOG_SI))
+      ((log)->ops->write(log, buffer, level,AXIS2_LOG_SI))
 
 #define AXIS2_LOG_DEBUG axis2_log_impl_log_debug 
 #define AXIS2_LOG_INFO axis2_log_impl_log_info 

@@ -19,7 +19,7 @@
 
 /** 
  * @brief Other Extension Struct Impl
- *	Axis2 Other Extension  
+ *   Axis2 Other Extension  
  */ 
 typedef struct axis2_xml_schema_redefine_impl
 {

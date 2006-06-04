@@ -154,7 +154,7 @@ AXIS2_EXPORT int
 axis2_get_instance(axis2_svc_skeleton_t **inst,
                    const axis2_env_t *env)
 {
-	*inst = axis2_notify_create(env);
+   *inst = axis2_notify_create(env);
     if(!(*inst))
     {
         return AXIS2_FAILURE;
@@ -168,8 +168,8 @@ axis2_remove_instance(axis2_svc_skeleton_t *inst,
                       const axis2_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
-	if (inst)
-	{
+   if (inst)
+   {
         status = AXIS2_SVC_SKELETON_FREE(inst, env);
     }
     return status;

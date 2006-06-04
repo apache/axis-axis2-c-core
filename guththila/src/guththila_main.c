@@ -13,8 +13,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  *
- *	
- * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)	
+ *   
+ * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)   
  */
 
 #include "guththila_xml_pull_parser.h"
@@ -73,7 +73,7 @@ main (int argc, char *argv[])
                 char *p;
                 guththila_element_t *e;
                 printf ("<");
-		/* printf ("\n %s \n", guththila_xml_pull_parser_get_encoding (environment, parser)); */
+      /* printf ("\n %s \n", guththila_xml_pull_parser_get_encoding (environment, parser)); */
                 p = guththila_xml_pull_parser_get_prefix (environment,
                                                           parser);
                 if (p)
@@ -138,7 +138,7 @@ main (int argc, char *argv[])
             {
                 char *p;
                 printf ("</");
-		/* printf ("\n %s \n", guththila_xml_pull_parser_get_encoding (environment, parser)); */
+      /* printf ("\n %s \n", guththila_xml_pull_parser_get_encoding (environment, parser)); */
                 p = guththila_xml_pull_parser_get_prefix (environment,
                                                           parser);
                 if (p)

@@ -91,7 +91,7 @@ AXIS2_DECLARE_DATA struct axis2_file_ops
      */ 
 AXIS2_DECLARE_DATA struct axis2_file
 {
-	axis2_file_ops_t *ops;
+   axis2_file_ops_t *ops;
 };
 
 /**
@@ -104,28 +104,28 @@ axis2_file_create(const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_FILE_FREE(file, env) \
-		((file)->ops->free (file, env))
+      ((file)->ops->free (file, env))
 
 #define AXIS2_FILE_GET_NAME(file, env) \
-		((file)->ops->get_name (file, env))  
+      ((file)->ops->get_name (file, env))  
 
 #define AXIS2_FILE_SET_NAME(file, env, name) \
-		((file)->ops->set_name (file, env, name)) 
+      ((file)->ops->set_name (file, env, name)) 
 
 #define AXIS2_FILE_GET_PATH(file, env) \
-		((file)->ops->get_path (file, env))  
+      ((file)->ops->get_path (file, env))  
 
 #define AXIS2_FILE_SET_PATH(file, env, path) \
-		((file)->ops->set_path (file, env, path)) 
+      ((file)->ops->set_path (file, env, path)) 
 
 #define AXIS2_FILE_GET_TIMESTAMP(file, env) \
-		((file)->ops->get_timestamp (file, env))  
+      ((file)->ops->get_timestamp (file, env))  
 
 #define AXIS2_FILE_SET_TIMESTAMP(file, env, timestamp) \
-		((file)->ops->set_timestamp (file, env, timestamp)) 
+      ((file)->ops->set_timestamp (file, env, timestamp)) 
 
 #define AXIS2_FILE_CLONE(file, env) \
-		((file)->ops->clone (file, env))
+      ((file)->ops->clone (file, env))
 
 
                                         

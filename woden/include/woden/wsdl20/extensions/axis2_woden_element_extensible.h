@@ -51,7 +51,7 @@ struct axis2_woden_ext_element;
 
 struct axis2_woden_element_extensible_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -123,38 +123,38 @@ axis2_woden_element_extensible_resolve_methods(
         axis2_hash_t *methods);
 
 #define AXIS2_WODEN_ELEMENT_EXTENSIBLE_FREE(extensible, env) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
+      (((axis2_woden_element_extensible_t *) extensible)->ops->\
          free (extensible, env))
 
 #define AXIS2_WODEN_ELEMENT_EXTENSIBLE_SUPER_OBJS(extensible, env) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
+      (((axis2_woden_element_extensible_t *) extensible)->ops->\
          super_objs (extensible, env))
 
 #define AXIS2_WODEN_ELEMENT_EXTENSIBLE_TYPE(extensible, env) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
+      (((axis2_woden_element_extensible_t *) extensible)->ops->\
          type (extensible, env))
 
 #define AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(extensible, env, ext_el) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
+      (((axis2_woden_element_extensible_t *) extensible)->ops->\
          add_ext_element(extensible, env, ext_el))
 
 #define AXIS2_WODEN_ELEMENT_EXTENSIBLE_REMOVE_EXT_ELEMENT(extensible, env, \
         ext_el) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
+      (((axis2_woden_element_extensible_t *) extensible)->ops->\
          remove_ext_element(extensible, env, ext_el))
 
 #define AXIS2_WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(extensible, env) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
+      (((axis2_woden_element_extensible_t *) extensible)->ops->\
          get_ext_elements(extensible, env))
 
 #define AXIS2_WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS_OF_TYPE(extensible, \
         env, ext_type) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
+      (((axis2_woden_element_extensible_t *) extensible)->ops->\
          get_ext_elements_of_type(extensible, env, ext_type))
 
 #define AXIS2_WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ELEMENTS_FOR_NAMESPACE(\
         extensible, env, namespc) \
-		(((axis2_woden_element_extensible_t *) extensible)->ops->\
+      (((axis2_woden_element_extensible_t *) extensible)->ops->\
          has_ext_elements_for_namespace(extensible, env, namespc))
 
 

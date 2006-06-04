@@ -72,7 +72,7 @@ struct axis2_woden_wsdl_element;
 
 struct axis2_woden_component_exts_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -125,28 +125,28 @@ axis2_woden_component_exts_resolve_methods(
         axis2_hash_t *methods);
 
 #define AXIS2_WODEN_COMPONENT_EXTS_FREE(component_exts, env) \
-		(((axis2_woden_component_exts_t *) component_exts)->ops->\
+      (((axis2_woden_component_exts_t *) component_exts)->ops->\
          free (component_exts, env))
 
 #define AXIS2_WODEN_COMPONENT_EXTS_TO_COMPONENT_EXTS_FREE(component_exts, env) \
-		(((axis2_woden_component_exts_t *) component_exts)->ops->\
+      (((axis2_woden_component_exts_t *) component_exts)->ops->\
          to_component_exts_free (component_exts, env))
 
 #define AXIS2_WODEN_COMPONENT_EXTS_TYPE(component_exts, env) \
-		(((axis2_woden_component_exts_t *) component_exts)->ops->\
+      (((axis2_woden_component_exts_t *) component_exts)->ops->\
          type (component_exts, env))
 
 #define AXIS2_WODEN_COMPONENT_EXTS_INIT(component_exts, env, parent_el, namespc) \
-		(((axis2_woden_component_exts_t *) component_exts)->ops->\
+      (((axis2_woden_component_exts_t *) component_exts)->ops->\
          init(component_exts, env, \
             parent_el, namespc))
 
 #define AXIS2_WODEN_COMPONENT_EXTS_GET_NAMESPACE(component_exts, env) \
-		(((axis2_woden_component_exts_t *) component_exts)->ops->\
+      (((axis2_woden_component_exts_t *) component_exts)->ops->\
          get_namespace(component_exts, env))
 
 #define AXIS2_WODEN_COMPONENT_EXTS_GET_PARENT_ELEMENT(component_exts, env) \
-		(((axis2_woden_component_exts_t *) component_exts)->ops->\
+      (((axis2_woden_component_exts_t *) component_exts)->ops->\
          get_parent_element(component_exts, env))
 
 /** @} */

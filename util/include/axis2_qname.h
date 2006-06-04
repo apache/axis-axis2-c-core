@@ -57,7 +57,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
      *  @return Status code
      */
     axis2_status_t (AXIS2_CALL *
-	free) (struct axis2_qname * qname,
+   free) (struct axis2_qname * qname,
            const axis2_env_t *env);
                                        
      /** 
@@ -68,7 +68,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
       */
 
     axis2_bool_t (AXIS2_CALL *
-	equals) (struct axis2_qname * qname,
+   equals) (struct axis2_qname * qname,
              const axis2_env_t *env,
              struct axis2_qname * qname1);
       /** 
@@ -79,19 +79,19 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
       */                                       
        
     struct axis2_qname* (AXIS2_CALL *
-	clone)(struct axis2_qname *qname,
+   clone)(struct axis2_qname *qname,
            const axis2_env_t *env);
                                        
     axis2_char_t* (AXIS2_CALL *
-	get_uri)(struct axis2_qname *qname,
+   get_uri)(struct axis2_qname *qname,
              const axis2_env_t *env);
                                         
     axis2_char_t* (AXIS2_CALL *
-	get_prefix)(struct axis2_qname *qname,
+   get_prefix)(struct axis2_qname *qname,
                 const axis2_env_t *env);
 
     axis2_char_t* (AXIS2_CALL *
-	get_localpart)(struct axis2_qname *qname,
+   get_localpart)(struct axis2_qname *qname,
                    const axis2_env_t *env);
                                               
     /**
@@ -101,7 +101,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
      * The returned char* is freed when qname free function is called.
      */
     axis2_char_t* (AXIS2_CALL *
-	to_string)(struct axis2_qname *qname,
+   to_string)(struct axis2_qname *qname,
                const axis2_env_t *env); 
                
    
@@ -115,7 +115,7 @@ typedef struct axis2_qname
 } axis2_qname_t;
 
 /**
- *	creates a qname struct
+ *   creates a qname struct
  *  returns a pointer to a qname struct
  *  @localpart   mandatory
  *  @prefix      mandatory  
@@ -143,7 +143,7 @@ axis2_qname_create (const axis2_env_t *env,
 AXIS2_EXTERN axis2_qname_t* AXIS2_CALL 
 axis2_qname_create_from_string(const axis2_env_t *env,
                                const axis2_char_t *string);
-	
+   
 
 #define AXIS2_QNAME_FREE(qname, env) \
         ((qname)->ops->free(qname,env))

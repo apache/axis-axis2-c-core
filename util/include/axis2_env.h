@@ -63,10 +63,10 @@ extern "C"
         axis2_error_t *error;
         /** Logging routines */
         axis2_log_t *log;
-		/** This flag indicate whether logging is enabled or not */
-		axis2_bool_t log_enabled;
-		/** Thread pooling routines */
-		axis2_thread_pool_t *thread_pool;
+      /** This flag indicate whether logging is enabled or not */
+      axis2_bool_t log_enabled;
+      /** Thread pooling routines */
+      axis2_thread_pool_t *thread_pool;
     } axis2_env_t;
 
     /**
@@ -79,15 +79,15 @@ extern "C"
     AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all (axis2_char_t *log_file, 
         axis2_log_levels_t log_level);                                                   
 
-	/**
+   /**
     * Creates an environment struct. Users of axis2 should not use this function
-	* to create an environment. He should use the other two create functions.
+   * to create an environment. He should use the other two create functions.
     * @param allocator pointer to an instance of allocator struct. Must be non-NULL    
     * @return pointer to the newly created environment struct 
     */
     AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create (axis2_allocator_t
                                                    *allocator);                                                   
-	
+   
   /**
     * Creates an environment struct
     * @param allocator pointer to an instance of allocator struct. Must be non-NULL
@@ -96,10 +96,10 @@ extern "C"
     * @return pointer to the newly created environment struct 
     */
     AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_with_error 
-													(axis2_allocator_t *allocator
+                                       (axis2_allocator_t *allocator
                                                    , axis2_error_t *error);
-	
-	/**
+   
+   /**
     * Creates an environment struct
     * @param allocator pointer to an instance of allocator struct. Must be non-NULL
     * @param error pointer to an instance of error struct. Must be non-NULL.
@@ -108,24 +108,24 @@ extern "C"
     * @return pointer to the newly created environment struct 
     */
     AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_with_error_log 
-													(axis2_allocator_t *allocator
+                                       (axis2_allocator_t *allocator
                                                    , axis2_error_t *error
                                                    , axis2_log_t *log);
-												   
-		/**
+                                       
+      /**
     * Creates an environment struct
     * @param allocator pointer to an instance of allocator struct. Must be non-NULL
     * @param error pointer to an instance of error struct. Must be non-NULL.
     * @param log pointer to an instance of log struct. May be NULL. If NULL
     * it would be taken as a flag for no logging.
-	* @param pool pointer to an instance of thread_pool. May be NULL. If NULL
+   * @param pool pointer to an instance of thread_pool. May be NULL. If NULL
     * @return pointer to the newly created environment struct 
     */
     AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_with_error_log_thread_pool 
-													(axis2_allocator_t *allocator
+                                       (axis2_allocator_t *allocator
                                                    , axis2_error_t *error
                                                    , axis2_log_t *log
-												   , axis2_thread_pool_t *pool);
+                                       , axis2_thread_pool_t *pool);
 
   /**
     * Creates an environment struct

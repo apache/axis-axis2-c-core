@@ -38,7 +38,7 @@
 extern "C"
 {
 #endif
-	
+   
 /** @defgroup axis2_wsdl_svc Wsdl Service
   * @ingroup axis2_wsdl
   * @{
@@ -62,8 +62,8 @@ struct axis2_wsdl_svc_ops
     /** Deallocate memory
      * @return status code
      */
-	axis2_status_t (AXIS2_CALL *
-	free) (axis2_wsdl_svc_t *wsdl_svc, 
+   axis2_status_t (AXIS2_CALL *
+   free) (axis2_wsdl_svc_t *wsdl_svc, 
            const axis2_env_t *env);
 
     /**
@@ -71,7 +71,7 @@ struct axis2_wsdl_svc_ops
      * @return wsdl service name
      */
     axis2_qname_t * (AXIS2_CALL *
-	get_qname)(axis2_wsdl_svc_t *wsdl_svc,
+   get_qname)(axis2_wsdl_svc_t *wsdl_svc,
                const axis2_env_t *env);
 
     /**
@@ -79,7 +79,7 @@ struct axis2_wsdl_svc_ops
      * @param set wsdl service name
      */
     axis2_status_t (AXIS2_CALL *
-	set_qname) (axis2_wsdl_svc_t *wsdl_svc,
+   set_qname) (axis2_wsdl_svc_t *wsdl_svc,
                 const axis2_env_t *env,
                 axis2_qname_t *qname);
     
@@ -160,7 +160,7 @@ struct axis2_wsdl_svc_ops
  */
 struct axis2_wsdl_svc
 {
-	axis2_wsdl_svc_ops_t *ops;
+   axis2_wsdl_svc_ops_t *ops;
     struct axis2_wsdl_component *wsdl_component;
 };
 
@@ -173,7 +173,7 @@ axis2_wsdl_svc_create (const axis2_env_t *env);
 /**************************** Start of function macros ************************/
 
 #define AXIS2_WSDL_SVC_FREE(wsdl_svc, env) ((wsdl_svc)->ops->free (wsdl_svc, \
-		env))
+      env))
 
 #define AXIS2_WSDL_SVC_GET_QNAME(wsdl_svc, env) \
         ((wsdl_svc)->ops->get_qname (wsdl_svc, env))

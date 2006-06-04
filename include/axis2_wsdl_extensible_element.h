@@ -48,12 +48,12 @@ typedef struct axis2_wsdl_extensible_element_ops axis2_wsdl_extensible_element_o
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_element_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *free)(
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *free)(
                     axis2_wsdl_extensible_element_t *wsdl_extensible_element,
-			        const axis2_env_t *env);
+                 const axis2_env_t *env);
 
     axis2_bool_t (AXIS2_CALL *
     is_required) (axis2_wsdl_extensible_element_t *extensible_element,
@@ -76,11 +76,11 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_element_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_element
 {
-	axis2_wsdl_extensible_element_ops_t *ops;
+   axis2_wsdl_extensible_element_ops_t *ops;
 };
 
 /**
@@ -93,19 +93,19 @@ axis2_wsdl_extensible_element_create (const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_EXTENSIBLE_ELEMENT_FREE(extensible_element, env) \
-		((extensible_element)->ops->free (extensible_element, env))
+      ((extensible_element)->ops->free (extensible_element, env))
 
 #define AXIS2_WSDL_EXTENSIBLE_ELEMENT_IS_REQUIRED(extensible_element, env) \
-		((extensible_element)->ops->is_required (extensible_element, env))
+      ((extensible_element)->ops->is_required (extensible_element, env))
 
 #define AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_REQUIRED(extensible_element, env, required) \
-		((extensible_element)->ops->set_required (extensible_element, env, required))
+      ((extensible_element)->ops->set_required (extensible_element, env, required))
 
 #define AXIS2_WSDL_EXTENSIBLE_ELEMENT_GET_TYPE(extensible_element, env) \
-		(extensible_element->ops->get_type (extensible_element, env))
+      (extensible_element->ops->get_type (extensible_element, env))
 
 #define AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_TYPE(extensible_element, env, type) \
-		((extensible_element)->ops->set_type (extensible_element, env, type))       
+      ((extensible_element)->ops->set_type (extensible_element, env, type))       
 
 /*************************** End of function macros ***************************/
 

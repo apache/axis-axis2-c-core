@@ -22,7 +22,7 @@ typedef struct axis2_woden_bool_attr_impl axis2_woden_bool_attr_impl_t;
 
 /** 
  * @brief Bool Attribute Struct Impl
- *	Axis2 Bool Attribute  
+ *   Axis2 Bool Attribute  
  */ 
 struct axis2_woden_bool_attr_impl
 {

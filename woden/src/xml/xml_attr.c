@@ -24,7 +24,7 @@ typedef struct axis2_woden_xml_attr_impl axis2_woden_xml_attr_impl_t;
 
 /** 
  * @brief Xml Attribute Struct Impl
- *	Axis2 Xml Attribute  
+ *   Axis2 Xml Attribute  
  */ 
 struct axis2_woden_xml_attr_impl
 {

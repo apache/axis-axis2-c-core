@@ -18,11 +18,11 @@
 
 /** 
  * @brief Wsdl extensible component struct impl
- *	Wsdl extensible component
+ *   Wsdl extensible component
  */ 
 typedef struct axis2_wsdl_extensible_component_impl
 {
-	axis2_wsdl_extensible_component_t extensible_component;
+   axis2_wsdl_extensible_component_t extensible_component;
     
     /**
      * Field features
@@ -37,14 +37,14 @@ typedef struct axis2_wsdl_extensible_component_impl
 } axis2_wsdl_extensible_component_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(extensible_component) \
-		((axis2_wsdl_extensible_component_impl_t *)extensible_component)
+      ((axis2_wsdl_extensible_component_impl_t *)extensible_component)
 
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-	axis2_wsdl_extensible_component_free (
+   axis2_wsdl_extensible_component_free (
                 axis2_wsdl_extensible_component_t *extensible_component,
-				const axis2_env_t *env);
+            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_extensible_component_add_feature(
@@ -75,18 +75,18 @@ axis2_wsdl_extensible_component_create (const axis2_env_t *env)
 {
     axis2_wsdl_extensible_component_impl_t *extensible_component_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	extensible_component_impl = (axis2_wsdl_extensible_component_impl_t *) 
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   extensible_component_impl = (axis2_wsdl_extensible_component_impl_t *) 
         AXIS2_MALLOC(env->allocator, sizeof(axis2_wsdl_extensible_component_impl_t));
-	
-	
-	if(NULL == extensible_component_impl)
+   
+   
+   if(NULL == extensible_component_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;        
     }
-	
+   
     extensible_component_impl->extensible_component.ops = NULL;
     extensible_component_impl->properties = NULL;
     extensible_component_impl->features = NULL;
@@ -121,29 +121,29 @@ axis2_wsdl_extensible_component_create (const axis2_env_t *env)
     }
     
     
-	extensible_component_impl->extensible_component.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_extensible_component_ops_t));
-	if(NULL == extensible_component_impl->extensible_component.ops)
+   extensible_component_impl->extensible_component.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_extensible_component_ops_t));
+   if(NULL == extensible_component_impl->extensible_component.ops)
     {
         axis2_wsdl_extensible_component_free(&(extensible_component_impl->
             extensible_component), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	extensible_component_impl->extensible_component.ops->free =  
+   extensible_component_impl->extensible_component.ops->free =  
         axis2_wsdl_extensible_component_free;
-	extensible_component_impl->extensible_component.ops->add_feature =  
+   extensible_component_impl->extensible_component.ops->add_feature =  
         axis2_wsdl_extensible_component_add_feature;
-	extensible_component_impl->extensible_component.ops->get_features =  
+   extensible_component_impl->extensible_component.ops->get_features =  
         axis2_wsdl_extensible_component_get_features;
-	extensible_component_impl->extensible_component.ops->add_property = 
+   extensible_component_impl->extensible_component.ops->add_property = 
         axis2_wsdl_extensible_component_add_property;
     extensible_component_impl->extensible_component.ops->get_properties = 
         axis2_wsdl_extensible_component_get_properties;
-	   
-	
-	return &(extensible_component_impl->extensible_component);
+      
+   
+   return &(extensible_component_impl->extensible_component);
 }
 
 /***************************Function implementation****************************/
@@ -159,7 +159,7 @@ axis2_wsdl_extensible_component_free (
     
     extensible_component_impl = AXIS2_INTF_TO_IMPL(extensible_component);
     
-	if(NULL != extensible_component->ops)
+   if(NULL != extensible_component->ops)
     {
         AXIS2_FREE(env->allocator, extensible_component->ops);
         extensible_component->ops = NULL;
@@ -217,7 +217,7 @@ axis2_wsdl_extensible_component_free (
         AXIS2_FREE(env->allocator, extensible_component_impl);
     extensible_component_impl = NULL;
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL

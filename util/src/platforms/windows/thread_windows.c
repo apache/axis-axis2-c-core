@@ -23,13 +23,13 @@ axis2_threadattr_create(axis2_allocator_t *allocator)
     axis2_threadattr_t *new = NULL;
 
     new = AXIS2_MALLOC(allocator, sizeof(axis2_threadattr_t));
-	if(NULL == new)
-	{
-		/*AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE)*/
-		return NULL;
-	}
+   if(NULL == new)
+   {
+      /*AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE)*/
+      return NULL;
+   }
     new->detach = 0;
-	new->stacksize = 0;
+   new->stacksize = 0;
 
     return new;
 }
@@ -44,20 +44,20 @@ threadattr_cleanup(void *data)
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_threadattr_detach_set(
-						axis2_threadattr_t *attr,
-						axis2_bool_t detached)
+                  axis2_threadattr_t *attr,
+                  axis2_bool_t detached)
 {
-	attr->detach = detached;
-	return AXIS2_SUCCESS;
+   attr->detach = detached;
+   return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_threadattr_detach_get(axis2_threadattr_t *attr, const axis2_env_t *env)
 {
-	if (1 == attr->detach)
-	{
+   if (1 == attr->detach)
+   {
         return AXIS2_TRUE;
-	}
+   }
     return AXIS2_FALSE;
 }
 
@@ -77,35 +77,35 @@ static void *dummy_worker(void *opaque)
 
 AXIS2_EXTERN axis2_thread_t* AXIS2_CALL
 axis2_thread_create(axis2_allocator_t *allocator, axis2_threadattr_t *attr,
-						axis2_thread_start_t func, void *data)
+                  axis2_thread_start_t func, void *data)
 {
     HANDLE           handle;
-	unsigned         temp;
+   unsigned         temp;
     axis2_thread_t   *new = NULL;
 
     new = (axis2_thread_t *)AXIS2_MALLOC(allocator, 
-						sizeof(axis2_thread_t));
+                  sizeof(axis2_thread_t));
 
     if (NULL == new) 
-	{
+   {
         return NULL;
     }
     
-	new->data = data;
+   new->data = data;
     new->func = func;
-	new->td   = NULL;
+   new->td   = NULL;
 
-	/* Use 0 for Thread Stack Size, because that will default the stack to the
+   /* Use 0 for Thread Stack Size, because that will default the stack to the
      * same size as the calling thread. 
      */
     if ((handle = CreateThread(NULL,
                         attr && attr->stacksize > 0 ? attr->stacksize : 0,
                         (unsigned int (AXIS2_THREAD_FUNC *)(void *))dummy_worker,
                         new, 0, &temp)) == 0) 
-	{
+   {
         return NULL;
     }
-	
+   
     if (attr && attr->detach)
     {
         CloseHandle(handle);
@@ -113,7 +113,7 @@ axis2_thread_create(axis2_allocator_t *allocator, axis2_threadattr_t *attr,
     else
         new->td = handle;
 
-	return new;
+   return new;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -135,7 +135,7 @@ axis2_os_thread_current(void)
     HANDLE hproc;
 
     if (hthread) 
-	{
+   {
         return hthread;
     }
     
@@ -162,13 +162,13 @@ axis2_thread_join(axis2_thread_t *thd)
     axis2_status_t rv = AXIS2_SUCCESS,rv1;
     
     if (!thd->td)
-	{
+   {
         /* Can not join on detached threads */
         return AXIS2_FAILURE;
     }
     rv1 = WaitForSingleObject(thd->td, INFINITE);
     if ( rv1 == WAIT_OBJECT_0 || rv1 == WAIT_ABANDONED) 
-	{
+   {
         /*rv = AXIS2_INCOMPLETE;*/
     }
     else
@@ -183,12 +183,12 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_detach(axis2_thread_t *thd)
 {
     if (thd->td && CloseHandle(thd->td)) 
-	{
+   {
         thd->td = NULL;
         return AXIS2_SUCCESS;
     }
     else 
-	{
+   {
         return AXIS2_FAILURE;
     }
 }
@@ -196,15 +196,15 @@ axis2_thread_detach(axis2_thread_t *thd)
 AXIS2_EXTERN axis2_os_thread_t AXIS2_CALL
 axis2_os_thread_get(axis2_thread_t *thd, const axis2_env_t *env)
 {
-	return thd->td;
+   return thd->td;
 }
 
 AXIS2_EXTERN axis2_thread_once_t * AXIS2_CALL
 axis2_thread_once_init(axis2_allocator_t *allocator)
 {
-	axis2_thread_once_t *control = NULL;
+   axis2_thread_once_t *control = NULL;
     control = AXIS2_MALLOC(allocator, sizeof(*control));
-	return control;
+   return control;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

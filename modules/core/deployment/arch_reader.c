@@ -27,9 +27,9 @@
  */ 
 typedef struct axis2_arch_reader_impl
 {
-	axis2_arch_reader_t arch_reader;
+   axis2_arch_reader_t arch_reader;
     axis2_desc_builder_t *desc_builder;
-    	
+       
 } axis2_arch_reader_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(arch_reader) \
@@ -78,13 +78,13 @@ axis2_arch_reader_create (const axis2_env_t *env)
 {
     axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	arch_reader_impl = (axis2_arch_reader_impl_t *) AXIS2_MALLOC(env->
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   arch_reader_impl = (axis2_arch_reader_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_arch_reader_impl_t));
-	
-	
-	if(NULL == arch_reader_impl)
+   
+   
+   if(NULL == arch_reader_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -93,16 +93,16 @@ axis2_arch_reader_create (const axis2_env_t *env)
     arch_reader_impl->desc_builder = NULL;
     arch_reader_impl->arch_reader.ops = NULL;
     
-	arch_reader_impl->arch_reader.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_arch_reader_ops_t));
-	if(NULL == arch_reader_impl->arch_reader.ops)
+   arch_reader_impl->arch_reader.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_arch_reader_ops_t));
+   if(NULL == arch_reader_impl->arch_reader.ops)
     {
         axis2_arch_reader_free(&(arch_reader_impl->arch_reader), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	arch_reader_impl->arch_reader.ops->free = axis2_arch_reader_free;
+   arch_reader_impl->arch_reader.ops->free = axis2_arch_reader_free;
     arch_reader_impl->arch_reader.ops->create_svc = axis2_arch_reader_create_svc;
     arch_reader_impl->arch_reader.ops->process_svc_grp = 
             axis2_arch_reader_process_svc_grp;
@@ -112,8 +112,8 @@ axis2_arch_reader_create (const axis2_env_t *env)
             axis2_arch_reader_read_module_arch;
     arch_reader_impl->arch_reader.ops->create_module_arch = 
             axis2_arch_reader_create_module_arch;
-	
-	return &(arch_reader_impl->arch_reader);
+   
+   return &(arch_reader_impl->arch_reader);
 }
 
 /***************************Function implementation****************************/
@@ -127,7 +127,7 @@ axis2_arch_reader_free (axis2_arch_reader_t *arch_reader,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE); 
     arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
     
-	if(NULL != arch_reader->ops)
+   if(NULL != arch_reader->ops)
         AXIS2_FREE(env->allocator, arch_reader->ops);   
 
     if(arch_reader_impl->desc_builder) 
@@ -142,7 +142,7 @@ axis2_arch_reader_free (axis2_arch_reader_t *arch_reader,
         arch_reader_impl = NULL;
     }
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 struct axis2_svc *AXIS2_CALL

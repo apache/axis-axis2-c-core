@@ -28,7 +28,7 @@
 typedef struct axis2_disp_checker_impl 
 {
     /** phase */
-	axis2_disp_checker_t disp_checker;
+   axis2_disp_checker_t disp_checker;
     /** base class, inherits from handler */
     axis2_handler_t *base;
     /** phase name */

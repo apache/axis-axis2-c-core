@@ -123,31 +123,31 @@ AXIS2_EXTERN axis2_xml_schema_complex_content_extension_t * AXIS2_CALL
 axis2_xml_schema_complex_content_extension_create(const axis2_env_t *env);
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_FREE(cmp_content_ext, env) \
-		(((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->free(cmp_content_ext, env))
+      (((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->free(cmp_content_ext, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_GET_BASE_IMPL(cmp_content_ext, env) \
-		(((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->\
-		    get_base_impl(cmp_content_ext, env))
+      (((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->\
+          get_base_impl(cmp_content_ext, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_TYPE(cmp_content_ext, env) \
-		(((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->\
-		    type(cmp_content_ext, env))
+      (((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->\
+          type(cmp_content_ext, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_SUPER_OBJS(cmp_content_ext, env) \
-		(((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->\
-		    super_objs(cmp_content_ext, env))
+      (((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->\
+          super_objs(cmp_content_ext, env))
 
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_GET_ANY_ATTRIBUTE(cmp_content_ext, env) \
-		(((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->get_any_attribute(cmp_content_ext, env))
+      (((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->get_any_attribute(cmp_content_ext, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_SET_ANY_ATTRIBUTE(cmp_content_ext, \
          env, any_attr)\
-		(((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->\
-		set_any_attribute(cmp_content_ext, env, any_attr ))
+      (((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->\
+      set_any_attribute(cmp_content_ext, env, any_attr ))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_GET_ATTRIBUTES(cmp_content_ext, env) \
-		(((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->get_attributes(cmp_content_ext, env))
+      (((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->get_attributes(cmp_content_ext, env))
             
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_GET_BASE_TYPE_NAME(cmp_content_ext, env)\
         (((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->get_base_type_name(cmp_content_ext, env))            

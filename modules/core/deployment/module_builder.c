@@ -23,9 +23,9 @@
  */
 typedef struct axis2_module_builder_impl
 {
-	axis2_module_builder_t module_builder;
+   axis2_module_builder_t module_builder;
     axis2_module_desc_t *module_desc;
-    	
+       
 } axis2_module_builder_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(module_builder) \
@@ -54,13 +54,13 @@ axis2_module_builder_create (const axis2_env_t *env)
 {
     axis2_module_builder_impl_t *module_builder_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	module_builder_impl = (axis2_module_builder_impl_t *) AXIS2_MALLOC(env->
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   module_builder_impl = (axis2_module_builder_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_module_builder_impl_t));
-	
-	
-	if(NULL == module_builder_impl)
+   
+   
+   if(NULL == module_builder_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -68,20 +68,20 @@ axis2_module_builder_create (const axis2_env_t *env)
     
     module_builder_impl->module_builder.ops = NULL;
     
-	module_builder_impl->module_builder.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_module_builder_ops_t));
-	if(NULL == module_builder_impl->module_builder.ops)
+   module_builder_impl->module_builder.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_module_builder_ops_t));
+   if(NULL == module_builder_impl->module_builder.ops)
     {
         axis2_module_builder_free(&(module_builder_impl->module_builder), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	module_builder_impl->module_builder.ops->free = axis2_module_builder_free;
+   module_builder_impl->module_builder.ops->free = axis2_module_builder_free;
     module_builder_impl->module_builder.ops->populate_module = 
         axis2_module_builder_populate_module;
     
-	return &(module_builder_impl->module_builder);
+   return &(module_builder_impl->module_builder);
 }
 
 axis2_module_builder_t * AXIS2_CALL 
@@ -92,10 +92,10 @@ axis2_module_builder_create_with_file_and_dep_engine_and_module (const axis2_env
 {
     axis2_module_builder_impl_t *builder_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	builder_impl = (axis2_module_builder_impl_t *) axis2_module_builder_create(env);
-	if(NULL == builder_impl)
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   builder_impl = (axis2_module_builder_impl_t *) axis2_module_builder_create(env);
+   if(NULL == builder_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -130,7 +130,7 @@ axis2_module_builder_free (axis2_module_builder_t *module_builder,
         module_builder->desc_builder = NULL;
     }
 
-	if(NULL != module_builder->ops)
+   if(NULL != module_builder->ops)
     {
         AXIS2_FREE(env->allocator, module_builder->ops);
         module_builder->ops = NULL;
@@ -142,7 +142,7 @@ axis2_module_builder_free (axis2_module_builder_t *module_builder,
         module_builder_impl = NULL;
     }
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL

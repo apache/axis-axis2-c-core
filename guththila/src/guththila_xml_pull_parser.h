@@ -13,8 +13,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  *
- *	
- * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)	
+ *   
+ * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)   
  */
 
 #ifndef GUTHTHILA_XML_PULL_PARSER_H
@@ -89,16 +89,16 @@ typedef struct guththila_xml_pull_parser_s
 
 GUTHTHILA_DECLARE (int)
      guththila_xml_pull_parser_read (guththila_environment_t * environment,
-				     guththila_xml_pull_parser_t * p);
+                 guththila_xml_pull_parser_t * p);
                                 
      int 
      guththila_xml_pull_parser_next_char (guththila_environment_t *environment,
-					  guththila_xml_pull_parser_t * p,
-					  int eof);
+                 guththila_xml_pull_parser_t * p,
+                 int eof);
 
 int 
 guththila_xml_pull_parser_tokenize (guththila_environment_t *environment,
-				    guththila_xml_pull_parser_t * p);
+                guththila_xml_pull_parser_t * p);
                                         
                                         
 int 
@@ -106,12 +106,12 @@ guththila_xml_pull_parser_exception (guththila_char_t * s, int line, int error_c
 
 int 
 guththila_xml_pull_parser_skip_spaces (guththila_environment_t *environment,
-				       guththila_xml_pull_parser_t *p,
-				       int c);
+                   guththila_xml_pull_parser_t *p,
+                   int c);
                                            
 int 
 guththila_xml_pull_parser_process_xml_decl(guththila_environment_t *environment,
-					   guththila_xml_pull_parser_t * p);
+                  guththila_xml_pull_parser_t * p);
                                             
 int 
 guththila_xml_pull_parser_process_version_info(guththila_environment_t * environment,
@@ -241,15 +241,15 @@ guththila_xml_pull_parser_is_valid_starting_char
 
 GUTHTHILA_DECLARE (int)
      guththila_xml_pull_parser_next (guththila_environment_t * environment,
-				     guththila_xml_pull_parser_t * p);
+                 guththila_xml_pull_parser_t * p);
                                 
 GUTHTHILA_DECLARE (guththila_xml_pull_parser_t *)
      guththila_xml_pull_parser_create (guththila_environment_t * environment,
-				       guththila_reader_t * r);
+                   guththila_reader_t * r);
                                   
 GUTHTHILA_DECLARE (void)
      guththila_xml_pull_parser_free (guththila_environment_t * environment,
-				     guththila_xml_pull_parser_t * parser);
+                 guththila_xml_pull_parser_t * parser);
                                
 GUTHTHILA_DECLARE (int)
   guththila_xml_pull_parser_get_attribute_count 
@@ -280,7 +280,7 @@ GUTHTHILA_DECLARE (guththila_char_t *)
                                  
 GUTHTHILA_DECLARE (guththila_attribute_t *)
      guththila_xml_pull_parser_get_attribute (guththila_environment_t *environment,
-					      guththila_xml_pull_parser_t * p);
+                     guththila_xml_pull_parser_t * p);
                                          
                                          
      GUTHTHILA_DECLARE (guththila_char_t *)
@@ -306,22 +306,22 @@ GUTHTHILA_DECLARE (guththila_char_t *)
                                          
 GUTHTHILA_DECLARE (guththila_char_t *)
      guththila_xml_pull_parser_get_name (guththila_environment_t * environment,
-					 guththila_xml_pull_parser_t * p);
+                guththila_xml_pull_parser_t * p);
                                     
                                     
 GUTHTHILA_DECLARE (guththila_char_t *)
      guththila_xml_pull_parser_get_prefix (guththila_environment_t * environment,
-					   guththila_xml_pull_parser_t * p);
+                  guththila_xml_pull_parser_t * p);
                                       
                                       
 GUTHTHILA_DECLARE (guththila_char_t *)
      guththila_xml_pull_parser_get_value (guththila_environment_t * environment,
-					  guththila_xml_pull_parser_t * p);
+                 guththila_xml_pull_parser_t * p);
                                      
                                      
 GUTHTHILA_DECLARE (guththila_namespace_t *)
      guththila_xml_pull_parser_get_namespace (guththila_environment_t *environment,
-					      guththila_xml_pull_parser_t * p);
+                     guththila_xml_pull_parser_t * p);
                                          
                                          
 GUTHTHILA_DECLARE (int)

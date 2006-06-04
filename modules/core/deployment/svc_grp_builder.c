@@ -21,9 +21,9 @@
  */
 typedef struct axis2_svc_grp_builder_impl
 {
-	axis2_svc_grp_builder_t svc_grp_builder;
+   axis2_svc_grp_builder_t svc_grp_builder;
     axis2_om_node_t *svc_grp;
-    	
+       
 } axis2_svc_grp_builder_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(svc_grp_builder) \
@@ -58,13 +58,13 @@ axis2_svc_grp_builder_create (const axis2_env_t *env)
 {
     axis2_svc_grp_builder_impl_t *svc_grp_builder_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	svc_grp_builder_impl = (axis2_svc_grp_builder_impl_t *) AXIS2_MALLOC(env->
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   svc_grp_builder_impl = (axis2_svc_grp_builder_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_svc_grp_builder_impl_t));
-	
-	
-	if(NULL == svc_grp_builder_impl)
+   
+   
+   if(NULL == svc_grp_builder_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -74,22 +74,22 @@ axis2_svc_grp_builder_create (const axis2_env_t *env)
     svc_grp_builder_impl->svc_grp = NULL;
     svc_grp_builder_impl->svc_grp_builder.desc_builder = NULL;
     
-	svc_grp_builder_impl->svc_grp_builder.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_svc_grp_builder_ops_t));
-	if(NULL == svc_grp_builder_impl->svc_grp_builder.ops)
+   svc_grp_builder_impl->svc_grp_builder.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_svc_grp_builder_ops_t));
+   if(NULL == svc_grp_builder_impl->svc_grp_builder.ops)
     {
         axis2_svc_grp_builder_free(&(svc_grp_builder_impl->svc_grp_builder), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	svc_grp_builder_impl->svc_grp_builder.ops->free = axis2_svc_grp_builder_free;
+   svc_grp_builder_impl->svc_grp_builder.ops->free = axis2_svc_grp_builder_free;
     svc_grp_builder_impl->svc_grp_builder.ops->populate_svc_grp = 
         axis2_svc_grp_builder_populate_svc_grp;
     svc_grp_builder_impl->svc_grp_builder.ops->process_module_refs = 
         axis2_svc_grp_builder_process_module_refs;
     
-	return &(svc_grp_builder_impl->svc_grp_builder);
+   return &(svc_grp_builder_impl->svc_grp_builder);
 }
 
 axis2_svc_grp_builder_t * AXIS2_CALL 
@@ -136,7 +136,7 @@ axis2_svc_grp_builder_free (axis2_svc_grp_builder_t *svc_grp_builder,
             env);
         grp_builder_impl->svc_grp_builder.desc_builder = NULL;
     }
-	if(NULL != svc_grp_builder->ops)
+   if(NULL != svc_grp_builder->ops)
     {
         AXIS2_FREE(env->allocator, svc_grp_builder->ops);
         svc_grp_builder->ops = NULL;
@@ -148,7 +148,7 @@ axis2_svc_grp_builder_free (axis2_svc_grp_builder_t *svc_grp_builder,
         grp_builder_impl = NULL;
     }
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL

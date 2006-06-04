@@ -25,7 +25,7 @@
  */ 
 typedef struct axis2_ws_info_list_impl
 {
-	axis2_ws_info_list_t ws_info_list;
+   axis2_ws_info_list_t ws_info_list;
     /**
      * This is to store all the jar files in a specified folder (WEB_INF)
      */
@@ -39,7 +39,7 @@ typedef struct axis2_ws_info_list_impl
      * Referance to DeploymentEngine to make update
      */
     struct axis2_dep_engine *deployer;
-    	
+       
 } axis2_ws_info_list_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(ws_info_list) \
@@ -96,13 +96,13 @@ axis2_ws_info_list_create_with_dep_engine (const axis2_env_t *env,
 {
     axis2_ws_info_list_impl_t *ws_info_list_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	ws_info_list_impl = (axis2_ws_info_list_impl_t *) AXIS2_MALLOC(env->
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   ws_info_list_impl = (axis2_ws_info_list_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_ws_info_list_impl_t));
-	
-	
-	if(NULL == ws_info_list_impl)
+   
+   
+   if(NULL == ws_info_list_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -131,16 +131,16 @@ axis2_ws_info_list_create_with_dep_engine (const axis2_env_t *env,
         return NULL;
     }
     
-	ws_info_list_impl->ws_info_list.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_ws_info_list_ops_t));
-	if(NULL == ws_info_list_impl->ws_info_list.ops)
+   ws_info_list_impl->ws_info_list.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_ws_info_list_ops_t));
+   if(NULL == ws_info_list_impl->ws_info_list.ops)
     {
         axis2_ws_info_list_free(&(ws_info_list_impl->ws_info_list), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	ws_info_list_impl->ws_info_list.ops->free = axis2_ws_info_list_free;
+   ws_info_list_impl->ws_info_list.ops->free = axis2_ws_info_list_free;
     ws_info_list_impl->ws_info_list.ops->init = axis2_ws_info_list_init;
     ws_info_list_impl->ws_info_list.ops->add_ws_info_item = 
         axis2_ws_info_list_add_ws_info_item;
@@ -153,8 +153,8 @@ axis2_ws_info_list_create_with_dep_engine (const axis2_env_t *env,
     ws_info_list_impl->ws_info_list.ops->check_for_undeploy = 
         axis2_ws_info_list_check_for_undeploy;
     ws_info_list_impl->ws_info_list.ops->update = axis2_ws_info_list_update;
-	
-	return &(ws_info_list_impl->ws_info_list);
+   
+   return &(ws_info_list_impl->ws_info_list);
 }
 
 /***************************Function implementation****************************/
@@ -202,7 +202,7 @@ axis2_ws_info_list_free (axis2_ws_info_list_t *ws_info_list,
         AXIS2_ARRAY_LIST_FREE(info_list_impl->info_list, env);
         info_list_impl->info_list = NULL;
     }
-	if(NULL != ws_info_list->ops)
+   if(NULL != ws_info_list->ops)
         AXIS2_FREE(env->allocator, ws_info_list->ops);
     
     if(info_list_impl)
@@ -211,7 +211,7 @@ axis2_ws_info_list_free (axis2_ws_info_list_t *ws_info_list,
         info_list_impl = NULL;
     }
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL

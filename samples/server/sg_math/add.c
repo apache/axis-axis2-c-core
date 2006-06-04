@@ -66,7 +66,7 @@ axis2_add_add (const axis2_env_t *env, axis2_om_node_t *node, axis2_msg_ctx_t *m
         printf("Math service ERROR: invalid XML in request\n");
         return NULL;
     }
-	
+   
     param2_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(param1_node, env);
     if (!param2_node)
     {
@@ -97,7 +97,7 @@ axis2_add_add (const axis2_env_t *env, axis2_om_node_t *node, axis2_msg_ctx_t *m
         printf("Math service ERROR: invalid XML in request\n");
         return NULL;
     }
-	
+   
     if (param1_str && param2_str)
     {
         long int result = 0;

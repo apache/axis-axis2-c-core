@@ -21,7 +21,7 @@ typedef struct axis2_xml_tokenized_type_impl axis2_xml_tokenized_type_impl_t;
 
 /** 
  * @brief Other Extension Struct Impl
- *	Axis2 Other Extension  
+ *   Axis2 Other Extension  
  */ 
 struct axis2_xml_tokenized_type_impl
 {

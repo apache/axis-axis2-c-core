@@ -25,7 +25,7 @@ typedef struct axis2_woden_endpoint_impl axis2_woden_endpoint_impl_t;
 
 /** 
  * @brief Endpoint Struct Impl
- *	Axis2 Endpoint  
+ *   Axis2 Endpoint  
  */ 
 struct axis2_woden_endpoint_impl
 {

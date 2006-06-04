@@ -20,7 +20,7 @@ typedef struct axis2_woden_msg_label_impl axis2_woden_msg_label_impl_t;
 
 /** 
  * @brief Message Label Struct Impl
- *	Axis2 Message Label  
+ *   Axis2 Message Label  
  */ 
 struct axis2_woden_msg_label_impl
 {

@@ -83,7 +83,7 @@ AXIS2_DECLARE_DATA struct axis2_generic_obj_ops
      */ 
 AXIS2_DECLARE_DATA struct axis2_generic_obj
 {
-	axis2_generic_obj_ops_t *ops;
+   axis2_generic_obj_ops_t *ops;
 };
 
 /**
@@ -96,19 +96,19 @@ axis2_generic_obj_create(const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_GENERIC_OBJ_FREE(generic_obj, env) \
-		(((axis2_generic_obj_t *) generic_obj)->ops->free (generic_obj, env))
+      (((axis2_generic_obj_t *) generic_obj)->ops->free (generic_obj, env))
 
 #define AXIS2_GENERIC_OBJ_SET_FREE_FUNC(generic_obj, env, free_func) \
-		((generic_obj)->ops->set_free_func (generic_obj, env, free_func))  
+      ((generic_obj)->ops->set_free_func (generic_obj, env, free_func))  
 
 #define AXIS2_GENERIC_OBJ_SET_VALUE(generic_obj, env, value) \
-		((generic_obj)->ops->set_value (generic_obj, env, value))
+      ((generic_obj)->ops->set_value (generic_obj, env, value))
 
 #define AXIS2_GENERIC_OBJ_GET_VALUE(generic_obj, env) \
         ((generic_obj)->ops->get_value(generic_obj, env))
  
 #define AXIS2_GENERIC_OBJ_SET_TYPE(generic_obj, env, type) \
-		((generic_obj)->ops->set_type (generic_obj, env, type))
+      ((generic_obj)->ops->set_type (generic_obj, env, type))
 
 #define AXIS2_GENERIC_OBJ_GET_TYPE(generic_obj, env) \
         ((generic_obj)->ops->get_type(generic_obj, env))

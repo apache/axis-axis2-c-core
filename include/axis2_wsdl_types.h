@@ -53,12 +53,12 @@ typedef struct axis2_wsdl_types_ops axis2_wsdl_types_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_types_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_types_t *wsdl_types,
-		    const axis2_env_t *env);
+          const axis2_env_t *env);
     /**
      * Adds the <code>ExtensionElement</code> to the map keyed with the 
      * <code>axis2_qname_t</code>
@@ -88,11 +88,11 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_types_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_types
 {
-	axis2_wsdl_types_ops_t *ops;
+   axis2_wsdl_types_ops_t *ops;
     struct axis2_wsdl_extensible_component *ext_component;
 };
 
@@ -106,15 +106,14 @@ axis2_wsdl_types_create (const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_TYPES_FREE(wsdl_types, env) \
-		((wsdl_types)->ops->free (wsdl_types, env))
+      ((wsdl_types)->ops->free (wsdl_types, env))
 
 #define AXIS2_WSDL_TYPES_ADD_ELEMENT(wsdl_types, env, element) \
-		((wsdl_types)->ops->add_element (wsdl_types, env, element))
+      ((wsdl_types)->ops->add_element (wsdl_types, env, element))
 
 #define AXIS2_WSDL_TYPES_GET_FIRST_ELEMENT(wsdl_types, env, qname) \
-		((wsdl_types)->ops->get_first_element (wsdl_types, env, qname))
+      ((wsdl_types)->ops->get_first_element (wsdl_types, env, qname))
 
-	
 /*************************** End of function macros ***************************/
 
 /** @} */

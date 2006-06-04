@@ -23,7 +23,7 @@
  */ 
 typedef struct axis2_dll_desc_impl
 {
-	axis2_dll_desc_t dll_desc;
+   axis2_dll_desc_t dll_desc;
     
     axis2_char_t *dll_name;
     axis2_char_t *path_qualified_dll_name;
@@ -39,7 +39,7 @@ typedef struct axis2_dll_desc_impl
 } axis2_dll_desc_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(dll_desc) ((axis2_dll_desc_impl_t *) dll_desc)
-	
+   
 /*************************** Function headers *********************************/
 
 axis2_status_t AXIS2_CALL
@@ -125,7 +125,7 @@ axis2_dll_desc_create_platform_specific_dll_name(axis2_dll_desc_t *dll_desc,
                                                     const axis2_env_t *env,
                                                     axis2_char_t *class_name);
                        
-/************************* End of function headers ****************************/	
+/************************* End of function headers ****************************/   
 
 AXIS2_EXTERN axis2_dll_desc_t * AXIS2_CALL
 axis2_dll_desc_create (const axis2_env_t *env)
@@ -134,10 +134,10 @@ axis2_dll_desc_create (const axis2_env_t *env)
     
     AXIS2_ENV_CHECK(env, NULL);
     
-	dll_desc_impl = (axis2_dll_desc_impl_t *) AXIS2_MALLOC (env->allocator
-		    , sizeof (axis2_dll_desc_impl_t));
+   dll_desc_impl = (axis2_dll_desc_impl_t *) AXIS2_MALLOC (env->allocator
+          , sizeof (axis2_dll_desc_impl_t));
     
-	if(NULL == dll_desc_impl)
+   if(NULL == dll_desc_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -157,14 +157,14 @@ axis2_dll_desc_create (const axis2_env_t *env)
     dll_desc_impl->dll_desc.ops = (axis2_dll_desc_ops_t *) AXIS2_MALLOC(
         env->allocator, sizeof(axis2_dll_desc_ops_t));
     
-	if(NULL == dll_desc_impl->dll_desc.ops)
-	{
+   if(NULL == dll_desc_impl->dll_desc.ops)
+   {
         axis2_dll_desc_free(&(dll_desc_impl->dll_desc), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
-	dll_desc_impl->dll_desc.ops->free = axis2_dll_desc_free;
+   dll_desc_impl->dll_desc.ops->free = axis2_dll_desc_free;
     dll_desc_impl->dll_desc.ops->get_name = axis2_dll_desc_get_name;
     dll_desc_impl->dll_desc.ops->set_name = axis2_dll_desc_set_name;
     dll_desc_impl->dll_desc.ops->get_load_options = axis2_dll_desc_get_load_options;
@@ -179,11 +179,11 @@ axis2_dll_desc_create (const axis2_env_t *env)
     dll_desc_impl->dll_desc.ops->get_type = axis2_dll_desc_get_type;
     dll_desc_impl->dll_desc.ops->get_timestamp = axis2_dll_desc_get_timestamp;
     dll_desc_impl->dll_desc.ops->set_timestamp = axis2_dll_desc_set_timestamp;
-	dll_desc_impl->dll_desc.ops->set_error_code = axis2_dll_desc_set_error_code;					
-	dll_desc_impl->dll_desc.ops->get_error_code = axis2_dll_desc_get_error_code;					
-	dll_desc_impl->dll_desc.ops->create_platform_specific_dll_name = 
-        axis2_dll_desc_create_platform_specific_dll_name;					
-	return &(dll_desc_impl->dll_desc);
+   dll_desc_impl->dll_desc.ops->set_error_code = axis2_dll_desc_set_error_code;               
+   dll_desc_impl->dll_desc.ops->get_error_code = axis2_dll_desc_get_error_code;               
+   dll_desc_impl->dll_desc.ops->create_platform_specific_dll_name = 
+        axis2_dll_desc_create_platform_specific_dll_name;               
+   return &(dll_desc_impl->dll_desc);
 }
 
 /******************************************************************************/
@@ -201,7 +201,7 @@ axis2_dll_desc_free (axis2_dll_desc_t *dll_desc,
     {
         axis2_class_loader_delete_dll(env, dll_desc);
     }
-	
+   
     if(dll_desc_impl->dll_name)
     {
         AXIS2_FREE(env->allocator, dll_desc_impl->dll_name);
@@ -213,10 +213,10 @@ axis2_dll_desc_free (axis2_dll_desc_t *dll_desc,
         AXIS2_FREE(env->allocator, dll_desc_impl->path_qualified_dll_name);
         dll_desc_impl->path_qualified_dll_name = NULL;
     }
-    	
+       
     if(NULL != dll_desc->ops)
     {
-		AXIS2_FREE(env->allocator, dll_desc->ops);
+      AXIS2_FREE(env->allocator, dll_desc->ops);
         dll_desc->ops = NULL;
     }
     dll_desc_impl->create_funct = NULL;
@@ -228,7 +228,7 @@ axis2_dll_desc_free (axis2_dll_desc_t *dll_desc,
         dll_desc_impl = NULL;
     }
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL

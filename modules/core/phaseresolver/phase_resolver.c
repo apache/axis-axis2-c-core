@@ -33,7 +33,7 @@
  */ 
 typedef struct axis2_phase_resolver_impl
 {
-	axis2_phase_resolver_t phase_resolver;
+   axis2_phase_resolver_t phase_resolver;
     /**
      * Field axisConfig
      */
@@ -56,9 +56,9 @@ typedef struct axis2_phase_resolver_impl
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-	axis2_phase_resolver_free (
+   axis2_phase_resolver_free (
                 axis2_phase_resolver_t *phase_resolver,
-				const axis2_env_t *env);
+            const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_build_chains(axis2_phase_resolver_t *phase_resolver,
@@ -142,36 +142,36 @@ axis2_phase_resolver_create (const axis2_env_t *env)
 {
     axis2_phase_resolver_impl_t *phase_resolver_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	phase_resolver_impl = (axis2_phase_resolver_impl_t *) AXIS2_MALLOC(env->allocator,
-			sizeof(axis2_phase_resolver_impl_t));
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   phase_resolver_impl = (axis2_phase_resolver_impl_t *) AXIS2_MALLOC(env->allocator,
+         sizeof(axis2_phase_resolver_impl_t));
     
     if(NULL == phase_resolver_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-	
+   
     phase_resolver_impl->phase_resolver.ops = NULL;
     phase_resolver_impl->axis2_config = NULL;
     phase_resolver_impl->svc = NULL;
     phase_resolver_impl->phase_holder = NULL;
     
-	
+   
     
-	phase_resolver_impl->phase_resolver.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_phase_resolver_ops_t));
-	if(NULL == phase_resolver_impl->phase_resolver.ops)
+   phase_resolver_impl->phase_resolver.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_phase_resolver_ops_t));
+   if(NULL == phase_resolver_impl->phase_resolver.ops)
     {
         axis2_phase_resolver_free(&(phase_resolver_impl->phase_resolver), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
     phase_resolver_impl->phase_resolver.ops->free =  
         axis2_phase_resolver_free;
-	
+   
     phase_resolver_impl->phase_resolver.ops->build_chains = 
         axis2_phase_resolver_build_chains;
     
@@ -194,7 +194,7 @@ axis2_phase_resolver_create (const axis2_env_t *env)
         axis2_phase_resolver_engage_module_to_op;
     
   
-	return &(phase_resolver_impl->phase_resolver);
+   return &(phase_resolver_impl->phase_resolver);
 }
 
 AXIS2_EXTERN axis2_phase_resolver_t * AXIS2_CALL 
@@ -259,7 +259,7 @@ axis2_phase_resolver_free (axis2_phase_resolver_t *phase_resolver,
         AXIS2_PHASE_HOLDER_FREE(phase_resolver_impl->phase_holder, env);
         phase_resolver_impl->phase_holder = NULL;
     }
-	
+   
     if(phase_resolver->ops)
     {
         AXIS2_FREE(env->allocator, phase_resolver->ops);
@@ -272,7 +272,7 @@ axis2_phase_resolver_free (axis2_phase_resolver_t *phase_resolver,
         phase_resolver_impl = NULL;
     }
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL

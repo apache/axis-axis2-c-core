@@ -47,7 +47,7 @@ extern "C"
 
 struct axis2_woden_interface_fault_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -129,27 +129,27 @@ axis2_woden_interface_fault_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_INTERFACE_FAULT_FREE(interface_fault, env) \
-		(((axis2_woden_interface_fault_t *) interface_fault)->ops->free(interface_fault, env))
+      (((axis2_woden_interface_fault_t *) interface_fault)->ops->free(interface_fault, env))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_SUPER_OBJS(interface_fault, env) \
-		(((axis2_woden_interface_fault_t *) interface_fault)->ops->super_objs(interface_fault, env))
+      (((axis2_woden_interface_fault_t *) interface_fault)->ops->super_objs(interface_fault, env))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_TYPE(interface_fault, env) \
-		(((axis2_woden_interface_fault_t *) interface_fault)->ops->type(interface_fault, env))
+      (((axis2_woden_interface_fault_t *) interface_fault)->ops->type(interface_fault, env))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_GET_BASE_IMPL(interface_fault, env) \
-		(((axis2_woden_interface_fault_t *) interface_fault)->ops->get_base_impl(interface_fault, env))
+      (((axis2_woden_interface_fault_t *) interface_fault)->ops->get_base_impl(interface_fault, env))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_GET_QNAME(interface_fault, env) \
-		(((axis2_woden_interface_fault_t *) interface_fault)->\
+      (((axis2_woden_interface_fault_t *) interface_fault)->\
          get_qname(interface_fault, env))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_GET_ELEMENT_DECLARATION(interface_fault, env) \
-		(((axis2_woden_interface_fault_t *) interface_fault)->\
+      (((axis2_woden_interface_fault_t *) interface_fault)->\
          get_element_declaration(interface_fault, env))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_TO_ELEMENT(interface_fault, env) \
-		(((axis2_woden_interface_fault_t *) interface_fault)->ops->\
+      (((axis2_woden_interface_fault_t *) interface_fault)->ops->\
          to_element(interface_fault, env))
 
 /** @} */

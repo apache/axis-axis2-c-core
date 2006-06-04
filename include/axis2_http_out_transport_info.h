@@ -38,7 +38,7 @@ extern "C"
   */
 
 typedef struct axis2_http_out_transport_info_ops 
-					axis2_http_out_transport_info_ops_t;
+               axis2_http_out_transport_info_ops_t;
 typedef struct axis2_http_out_transport_info axis2_http_out_transport_info_t;
     
     
@@ -49,15 +49,15 @@ typedef struct axis2_http_out_transport_info axis2_http_out_transport_info_t;
 AXIS2_DECLARE_DATA struct axis2_http_out_transport_info_ops
 {
     int (AXIS2_CALL *set_content_type) (axis2_http_out_transport_info_t *info, 
-					const axis2_env_t *env, axis2_char_t *content_type);
+               const axis2_env_t *env, axis2_char_t *content_type);
     
     axis2_status_t (AXIS2_CALL *set_char_encoding) 
                     (axis2_http_out_transport_info_t *info, const axis2_env_t *env,
-					axis2_char_t *encoding);
+               axis2_char_t *encoding);
     
     axis2_status_t (AXIS2_CALL *free) 
-					(axis2_http_out_transport_info_t *out_transport_info, 
-					const axis2_env_t *env);
+               (axis2_http_out_transport_info_t *out_transport_info, 
+               const axis2_env_t *env);
 };
 
 /**
@@ -72,7 +72,7 @@ AXIS2_DECLARE_DATA struct axis2_http_out_transport_info
 
 AXIS2_EXTERN axis2_http_out_transport_info_t * AXIS2_CALL 
 axis2_http_out_transport_info_create(const axis2_env_t *env,
-					axis2_http_simple_response_t *response);
+               axis2_http_simple_response_t *response);
 
 /**
  * Free http_out_transport_info passed as void pointer. This will be
@@ -86,11 +86,11 @@ axis2_http_out_transport_info_free_void_arg (void *transport_info,
 /************************* Start of function macros    ***************************/
 
 #define AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_transport_info, \
-					env, content_type) ((out_transport_info)->ops->\
-					set_content_type (out_transport_info, env, content_type))
+               env, content_type) ((out_transport_info)->ops->\
+               set_content_type (out_transport_info, env, content_type))
 #define AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(out_transport_info,\
-					env, encoding) ((out_transport_info)->ops->set_char_encoding \
-					(out_transport_info, env, encoding))
+               env, encoding) ((out_transport_info)->ops->set_char_encoding \
+               (out_transport_info, env, encoding))
 #define AXIS2_HTTP_OUT_TRANSPORT_INFO_FREE(out_transport_info, env)\
                     ((out_transport_info)->ops->free(out_transport_info, env))
 

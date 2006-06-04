@@ -13,8 +13,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  *
- *	
- * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)	
+ *   
+ * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)   
  */
 
 #include "guththila_xml_pull_parser.h"
@@ -163,7 +163,7 @@ guththila_xml_pull_parser_from_utf16 (guththila_environment_t * environment,
         if (eof)
             return -1;
         else
-	  guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_UNEXPECTED_UTF16_EOF);
+     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_UNEXPECTED_UTF16_EOF);
     }
     while (!c)
         c = parser->buffer->buff[parser->_next++];
@@ -426,7 +426,7 @@ guththila_xml_pull_parser_process_sd_decl (guththila_environment_t *
         {
             if ('o' !=
                 guththila_xml_pull_parser_next_char (environment, parser, 0))
-	      guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_STANDALONE_ERROR_IN_NO);
+         guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_STANDALONE_ERROR_IN_NO);
             else
                 nc = guththila_xml_pull_parser_next_char (environment, parser,
                                                           0);
@@ -649,7 +649,7 @@ guththila_xml_pull_parser_process_char_data (guththila_environment_t *
         c = guththila_xml_pull_parser_next_char (environment, parser, -1);
 
         /* if (c != '<') */
-	/*             all_spaces = (all_spaces && guththila_is_space (c)); */
+   /*             all_spaces = (all_spaces && guththila_is_space (c)); */
 
         if (c == '&')
             ref = 1;
@@ -1424,7 +1424,7 @@ guththila_xml_pull_parser_get_attribute_namespace_by_number
 
 GUTHTHILA_DECLARE (guththila_char_t *)
      guththila_xml_pull_parser_get_encoding(guththila_environment_t *environment,
-				       guththila_xml_pull_parser_t *parser)
+                   guththila_xml_pull_parser_t *parser)
 {
   /* parser will find character encoding base on Byte Order Mark
      (BOM). */

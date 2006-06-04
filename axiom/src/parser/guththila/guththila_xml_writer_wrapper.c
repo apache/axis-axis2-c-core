@@ -333,7 +333,7 @@ axis2_xml_writer_create_for_memory(const axis2_env_t *env,
                                    axis2_char_t *encoding,
                                    int is_prefix_default,
                                    int compression,
-								   int type)
+                           int type)
 {
     
     return axis2_xml_writer_create(env, NULL, encoding, is_prefix_default, compression);

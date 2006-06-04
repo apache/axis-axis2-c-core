@@ -26,7 +26,7 @@
  */
 typedef struct axis2_arch_file_data_impl
 {
-	axis2_arch_file_data_t arch_file_data;
+   axis2_arch_file_data_t arch_file_data;
     axis2_file_t *file;
     int type;
     axis2_char_t *msg_recv;
@@ -40,7 +40,7 @@ typedef struct axis2_arch_file_data_impl
      */
     axis2_hash_t *svc_map;
     axis2_array_list_t *deployable_svcs;
-    	
+       
 } axis2_arch_file_data_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(arch_file_data) \
@@ -126,13 +126,13 @@ axis2_arch_file_data_create(const axis2_env_t *env)
 {
     axis2_arch_file_data_impl_t *arch_file_data_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	arch_file_data_impl = (axis2_arch_file_data_impl_t *) AXIS2_MALLOC(env->
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   arch_file_data_impl = (axis2_arch_file_data_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_arch_file_data_impl_t));
-	
-	
-	if(NULL == arch_file_data_impl)
+   
+   
+   if(NULL == arch_file_data_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -152,20 +152,20 @@ axis2_arch_file_data_create(const axis2_env_t *env)
     if(!arch_file_data_impl->deployable_svcs)
     {
         axis2_arch_file_data_free(&(arch_file_data_impl->arch_file_data), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	arch_file_data_impl->arch_file_data.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_arch_file_data_ops_t));
-	if(NULL == arch_file_data_impl->arch_file_data.ops)
+   arch_file_data_impl->arch_file_data.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_arch_file_data_ops_t));
+   if(NULL == arch_file_data_impl->arch_file_data.ops)
     {
         axis2_arch_file_data_free(&(arch_file_data_impl->arch_file_data), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	arch_file_data_impl->arch_file_data.ops->free =  axis2_arch_file_data_free;
+   arch_file_data_impl->arch_file_data.ops->free =  axis2_arch_file_data_free;
     arch_file_data_impl->arch_file_data.ops->get_msg_recv = 
         axis2_arch_file_data_get_msg_recv;
     arch_file_data_impl->arch_file_data.ops->set_msg_recv = 
@@ -196,8 +196,8 @@ axis2_arch_file_data_create(const axis2_env_t *env)
         axis2_arch_file_data_get_deployable_svcs;
     arch_file_data_impl->arch_file_data.ops->set_deployable_svcs =
         axis2_arch_file_data_set_deployable_svcs;    
-	
-	return &(arch_file_data_impl->arch_file_data);
+   
+   return &(arch_file_data_impl->arch_file_data);
 }
 
 AXIS2_EXTERN axis2_arch_file_data_t * AXIS2_CALL 
@@ -299,7 +299,7 @@ axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data,
         file_data_impl->deployable_svcs = NULL;        
     }
     
-	if(NULL != arch_file_data->ops)
+   if(NULL != arch_file_data->ops)
     {
         AXIS2_FREE(env->allocator, arch_file_data->ops);
         arch_file_data->ops = NULL;
@@ -311,7 +311,7 @@ axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data,
         file_data_impl = NULL;
     }
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_char_t *AXIS2_CALL

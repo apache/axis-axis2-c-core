@@ -44,7 +44,7 @@ extern "C"
 
 struct axis2_xml_schema_content_type_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -82,13 +82,13 @@ axis2_xml_schema_content_type_create(const axis2_env_t *env,
 
 /************************* Macros ************************************************/
 #define AXIS2_XML_SCHEMA_CONTENT_TYPE_FREE(content_type, env) \
-		(((axis2_xml_schema_content_type_t *) content_type)->ops->free(content_type, env))
+      (((axis2_xml_schema_content_type_t *) content_type)->ops->free(content_type, env))
 
 #define AXIS2_XML_SCHEMA_CONTENT_TYPE_GET_BASE_IMPL(content_type, env) \
-		(((axis2_xml_schema_content_type_t *) content_type)->ops->get_base_impl(content_type, env))
+      (((axis2_xml_schema_content_type_t *) content_type)->ops->get_base_impl(content_type, env))
 
 #define AXIS2_XML_SCHEMA_CONTENT_TYPE_GET_VALUES(content_type, env) \
-		(((axis2_xml_schema_content_type_t *) content_type)->ops->values(content_type, env))
+      (((axis2_xml_schema_content_type_t *) content_type)->ops->values(content_type, env))
 
 #define AXIS2_XML_SCHEMA_CONTENT_TYPE_SUPER_OBJS(content_type, env) \
         (((axis2_xml_schema_content_type_t *) content_type)->ops->super_objs(content_type, env))

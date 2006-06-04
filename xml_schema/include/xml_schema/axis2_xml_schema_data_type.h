@@ -45,7 +45,7 @@ struct axis2_xml_tokenized_type;
 
 struct axis2_xml_schema_data_type_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -87,18 +87,18 @@ axis2_xml_schema_data_type_resolve_methods(
                             axis2_hash_t *methods);
 
 #define AXIS2_XML_SCHEMA_DATA_TYPE_FREE(data_type, env) \
-		(((axis2_xml_schema_data_type_t *) data_type)->ops->free (data_type, env))
+      (((axis2_xml_schema_data_type_t *) data_type)->ops->free (data_type, env))
 
 #define AXIS2_XML_SCHEMA_DATA_TYPE_PARSE_VALUE(data_type, env, input) \
-		(((axis2_xml_schema_data_type_t *) data_type)->ops->parse_value (\
+      (((axis2_xml_schema_data_type_t *) data_type)->ops->parse_value (\
         data_type, env, input))
 
 #define AXIS2_XML_SCHEMA_DATA_TYPE_VALUE_TYPE(data_type, env, line_num) \
-		(((axis2_xml_schema_data_type_t *) data_type)->ops->value_type (\
+      (((axis2_xml_schema_data_type_t *) data_type)->ops->value_type (\
         data_type, env, line_num))
 
 #define AXIS2_XML_SCHEMA_DATA_TYPE_TOKENIZED_TYPE(data_type, env) \
-		(((axis2_xml_schema_data_type_t *) data_type)->ops->tokenized_type (\
+      (((axis2_xml_schema_data_type_t *) data_type)->ops->tokenized_type (\
         data_type, env))
 
 /** @} */

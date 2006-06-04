@@ -41,7 +41,7 @@ typedef struct axis2_wsdl_msg_ref_impl
 } axis2_wsdl_msg_ref_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(msg_ref) \
-		((axis2_wsdl_msg_ref_impl_t *)msg_ref)
+      ((axis2_wsdl_msg_ref_impl_t *)msg_ref)
 
 /************************* Function prototypes ********************************/
 
@@ -83,15 +83,15 @@ axis2_wsdl_msg_ref_create (const axis2_env_t *env)
 {
     axis2_wsdl_msg_ref_impl_t *msg_ref_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-	
+   
     msg_ref_impl =  (axis2_wsdl_msg_ref_impl_t *) AXIS2_MALLOC(env->allocator,
             sizeof(axis2_wsdl_msg_ref_impl_t));
-	
+   
     if(NULL == msg_ref_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
-    }	
+    }   
     msg_ref_impl->msg_label = NULL;
     msg_ref_impl->direction = NULL;
     msg_ref_impl->element = NULL;
@@ -101,7 +101,7 @@ axis2_wsdl_msg_ref_create (const axis2_env_t *env)
     if(NULL == msg_ref_impl->msg_ref.extensible_component)
     {
         AXIS2_WSDL_MSG_REF_FREE(&(msg_ref_impl->msg_ref), env);
-	AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+   AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     msg_ref_impl->msg_ref.ops = 
@@ -160,7 +160,7 @@ axis2_wsdl_msg_ref_free (axis2_wsdl_msg_ref_t *msg_ref,
     }
     if(msg_ref_impl)
     {
-    	AXIS2_FREE(env->allocator, msg_ref_impl);
+       AXIS2_FREE(env->allocator, msg_ref_impl);
     }
     return AXIS2_SUCCESS;
 }

@@ -22,7 +22,7 @@ typedef struct axis2_woden_imported_schema_impl axis2_woden_imported_schema_impl
 
 /** 
  * @brief Imported Schema Struct Impl
- *	Axis2 Imported Schema  
+ *   Axis2 Imported Schema  
  */ 
 struct axis2_woden_imported_schema_impl
 {

@@ -54,7 +54,7 @@ typedef union axis2_woden_interface_msg_ref_element_base axis2_woden_interface_m
 
 struct axis2_woden_interface_msg_ref_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -163,47 +163,47 @@ axis2_woden_interface_msg_ref_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_FREE(interface_msg_ref_element, env) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+      (((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
          free (interface_msg_ref_element, env))
 
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_TYPE(interface_msg_ref_element, env) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+      (((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
          type (interface_msg_ref_element, env))
 
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_MSG_LABEL(interface_msg_ref_element, env, msg_label) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+      (((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
          set_msg_label (interface_msg_ref_element, env, msg_label))
 
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_GET_MSG_LABEL(interface_msg_ref_element, env) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+      (((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
         get_msg_label  (interface_msg_ref_element, env))
 
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_MSG_CONTENT_MODEL(interface_msg_ref_element, env, nm_token) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+      (((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
          set_msg_content_model (interface_msg_ref_element, env, nm_token))
 
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_GET_MSG_CONTENT_MODEL(interface_msg_ref_element, env) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+      (((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
          get_msg_content_model (interface_msg_ref_element, env))
 
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_ELEMENT_QNAME(interface_msg_ref_element, env, element) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+      (((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
         set_element_qname  (interface_msg_ref_element, env, element))
 
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_GET_ELEMENT_QNAME(interface_msg_ref_element, env) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+      (((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
         get_element_qname  (interface_msg_ref_element, env))
 
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_GET_ELEMENT(interface_msg_ref_element, env) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+      (((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
         get_element  (interface_msg_ref_element, env))
 
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_DIRECTION(interface_msg_ref_element, env, dir) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+      (((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
          set_direction (interface_msg_ref_element, env, dir))
 
 #define AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_GET_DIRECTION(interface_msg_ref_element, env) \
-		(((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+      (((axis2_woden_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
          get_direction (interface_msg_ref_element, env))
 
 

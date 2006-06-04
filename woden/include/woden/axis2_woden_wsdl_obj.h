@@ -51,7 +51,7 @@ extern "C"
 
 struct axis2_woden_wsdl_obj_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -123,24 +123,24 @@ axis2_woden_wsdl_obj_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_WSDL_OBJ_FREE(wsdl_obj, env) \
-		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->free(wsdl_obj, env))
+      (((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->free(wsdl_obj, env))
 
 #define AXIS2_WODEN_WSDL_OBJ_SUPER_OBJS(wsdl_obj, env) \
-		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->super_objs(wsdl_obj, env))
+      (((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->super_objs(wsdl_obj, env))
 
 #define AXIS2_WODEN_WSDL_OBJ_TYPE(wsdl_obj, env) \
-		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->type(wsdl_obj, env))
+      (((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->type(wsdl_obj, env))
 
 #define AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env) \
-		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->get_base_impl(wsdl_obj, env))
+      (((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->get_base_impl(wsdl_obj, env))
 
 #define AXIS2_WODEN_WSDL_OBJ_GET_COMPONENT_EXTS_FOR_NAMESPACE(wsdl_obj, env, \
                         namespc) \
-		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->\
+      (((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->\
          get_component_exts_for_namespace(wsdl_obj, env, namespc))
 
 #define AXIS2_WODEN_WSDL_OBJ_SET_COMPONENT_EXTS(wsdl_obj, env, namespc, exts) \
-		(((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->set_component_exts(\
+      (((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->set_component_exts(\
         wsdl_obj, env, namespc, exts))
 
 /** @} */

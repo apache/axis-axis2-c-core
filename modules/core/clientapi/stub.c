@@ -25,7 +25,7 @@ typedef struct axis2_stub_impl
     
     axis2_svc_client_t *svc_client;
     axis2_options_t *options;
-    	
+       
 } axis2_stub_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(stub) \
@@ -106,11 +106,11 @@ axis2_stub_create (const axis2_env_t *env)
     stub_impl->stub.ops = NULL;
     
     stub_impl->stub.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_stub_ops_t));
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_stub_ops_t));
     if(NULL == stub_impl->stub.ops)
     {
         axis2_stub_free(&(stub_impl->stub), env);
-	AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+   AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -140,7 +140,7 @@ axis2_stub_create_with_endpoint_ref_and_client_home (const axis2_env_t *env,
     stub_impl = (axis2_stub_impl_t *) axis2_stub_create(env);
     if(!stub_impl)
     {
-	AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+   AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;  
     }
     /* create service_client*/
@@ -149,7 +149,7 @@ axis2_stub_create_with_endpoint_ref_and_client_home (const axis2_env_t *env,
     if(!stub_impl->svc_client )
     {
         axis2_stub_free(&(stub_impl->stub), env);
-	AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+   AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;  
     }
     /* create options */
@@ -157,14 +157,14 @@ axis2_stub_create_with_endpoint_ref_and_client_home (const axis2_env_t *env,
     if (!stub_impl->options )
     {
         axis2_stub_free(&(stub_impl->stub), env);
-	AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-	return NULL;
+   AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+   return NULL;
 
     }
     /* Set service client options */
     AXIS2_SVC_CLIENT_SET_OPTIONS( stub_impl->svc_client,
-		                  env,
-				  stub_impl-> options);
+                        env,
+              stub_impl-> options);
     
     AXIS2_OPTIONS_SET_TO( stub_impl->options, env, endpoint_ref);
     
@@ -194,7 +194,7 @@ axis2_stub_create_with_endpoint_uri_and_client_home (const axis2_env_t *env,
     if(!stub_impl)
     {
         axis2_stub_free(&(stub_impl->stub), env);
-	AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+   AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;  
     }
     
@@ -285,7 +285,7 @@ axis2_stub_set_use_seperate_listener(axis2_stub_t *stub,
     stub_impl = AXIS2_INTF_TO_IMPL(stub);
     
     AXIS2_OPTIONS_SET_USE_SEPERATE_LISTENER ( stub_impl-> options, env,
-		                              use_separate_listener );
+                                    use_separate_listener );
     return AXIS2_SUCCESS;
 }
 
@@ -322,7 +322,7 @@ axis2_stub_set_soap_version(axis2_stub_t *stub,
       return AXIS2_FAILURE;
     }
     return AXIS2_OPTIONS_SET_SOAP_VERSION( stub_impl-> options,
-		                           env, soap_version );
+                                 env, soap_version );
 }
 
 axis2_char_t *AXIS2_CALL
@@ -337,7 +337,7 @@ axis2_stub_get_svc_ctx_id(axis2_stub_t *stub,
     stub_impl = AXIS2_INTF_TO_IMPL(stub);
    
     svc_ctx = AXIS2_SVC_CLIENT_GET_SERVICE_CONTEXT(stub_impl->svc_client,
-		                                      env );
+                                            env );
     svc_ctx_id = AXIS2_SVC_CTX_GET_SVC_ID ( svc_ctx, env );
     return svc_ctx_id;
 }
@@ -352,7 +352,7 @@ axis2_stub_get_svc_client(axis2_stub_t *stub,
 
 axis2_options_t *AXIS2_CALL
 axis2_stub_get_options(axis2_stub_t *stub,
-		           const axis2_env_t *env)
+                 const axis2_env_t *env)
 {
       AXIS2_ENV_CHECK(env, NULL);
       return AXIS2_INTF_TO_IMPL(stub)->options;

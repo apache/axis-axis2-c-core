@@ -48,7 +48,7 @@ struct axis2_xml_schema;
 
 struct axis2_woden_schema_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -137,34 +137,34 @@ axis2_woden_schema_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_SCHEMA_FREE(schema, env) \
-		(((axis2_woden_schema_t *) schema)->ops->free (schema, env))
+      (((axis2_woden_schema_t *) schema)->ops->free (schema, env))
 
 #define AXIS2_WODEN_SCHEMA_TYPE(schema, env) \
-		(((axis2_woden_schema_t *) schema)->ops->type (schema, env))
+      (((axis2_woden_schema_t *) schema)->ops->type (schema, env))
 
 #define AXIS2_WODEN_SCHEMA_SET_NAMESPACE(schema, env, namespc) \
-		(((axis2_woden_schema_t *) schema)->ops->set_namespace(schema, env, \
+      (((axis2_woden_schema_t *) schema)->ops->set_namespace(schema, env, \
                                                                namespc))
 
 #define AXIS2_WODEN_SCHEMA_GET_NAMESPACE(schema, env) \
-		(((axis2_woden_schema_t *) schema)->ops->get_namespace(schema, env))
+      (((axis2_woden_schema_t *) schema)->ops->get_namespace(schema, env))
 
 #define AXIS2_WODEN_SCHEMA_SET_SCHEMA_DEF(schema, env, schema_def) \
-		(((axis2_woden_schema_t *) schema)->ops->set_schema_def(schema, env, \
+      (((axis2_woden_schema_t *) schema)->ops->set_schema_def(schema, env, \
                                                                 schema_def))
 
 #define AXIS2_WODEN_SCHEMA_GET_SCHEMA_DEF(schema, env) \
-		(((axis2_woden_schema_t *) schema)->ops->get_schema_def(schema, env))
+      (((axis2_woden_schema_t *) schema)->ops->get_schema_def(schema, env))
 
 #define AXIS2_WODEN_SCHEMA_SET_REFERENCEABLE(schema, env, referenceable) \
-		(((axis2_woden_schema_t *) schema)->ops->set_referenceable(schema, env, \
+      (((axis2_woden_schema_t *) schema)->ops->set_referenceable(schema, env, \
                                                              referenceable))
 
 #define AXIS2_WODEN_SCHEMA_IS_REFERENCEABLE(schema, env) \
-		(((axis2_woden_schema_t *) schema)->ops->is_referenceable(schema, env))
+      (((axis2_woden_schema_t *) schema)->ops->is_referenceable(schema, env))
 
 #define AXIS2_WODEN_SCHEMA_GET_NAMESPACE_AS_STRING(schema, env) \
-		(((axis2_woden_schema_t *) schema)->ops->get_namespace_as_string(schema, \
+      (((axis2_woden_schema_t *) schema)->ops->get_namespace_as_string(schema, \
                                                                          env))
 
 /** @} */

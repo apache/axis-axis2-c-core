@@ -22,7 +22,7 @@ typedef struct axis2_woden_configurable_impl axis2_woden_configurable_impl_t;
 
 /** 
  * @brief Documentable Struct Impl
- *	Axis2 Documentable  
+ *   Axis2 Documentable  
  */ 
 struct axis2_woden_configurable_impl
 {

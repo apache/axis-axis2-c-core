@@ -46,7 +46,7 @@ extern "C"
 
 struct axis2_xml_schema_group_ref_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -114,33 +114,33 @@ axis2_xml_schema_group_ref_resolve_methods(
  
 /******************* Macros ******************************************************/ 
 #define AXIS2_XML_SCHEMA_GROUP_REF_FREE(group_ref, env) \
-		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
+      (((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
             free(group_ref, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_REF_SUPER_OBJS(group_ref, env) \
-		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->super_objs(group_ref, env))
+      (((axis2_xml_schema_group_ref_t *) group_ref)->ops->super_objs(group_ref, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_REF_TYPE(group_ref, env) \
-		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->type(group_ref, env))
+      (((axis2_xml_schema_group_ref_t *) group_ref)->ops->type(group_ref, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_REF_GET_BASE_IMPL(group_ref, env) \
-		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
+      (((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
             get_base_impl(group_ref, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_REF_GET_REF_QNAME(group_ref, env) \
-		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
+      (((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
             get_ref_qname(group_ref, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_REF_SET_REF_QNAME(group_ref, env, ref_qname) \
-		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
+      (((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
             set_ref_qname(group_ref, env, ref_qname))
 
 #define AXIS2_XML_SCHEMA_GROUP_REF_GET_PARTICLE(group_ref, env) \
-		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
+      (((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
             get_particle(group_ref, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_REF_SET_PARTICLE(group_ref, env, particle) \
-		(((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
+      (((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
             set_particle(group_ref, env, particle))
 /*************************** end macros ****************************************/
 /** @} */

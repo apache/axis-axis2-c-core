@@ -24,7 +24,7 @@ typedef struct axis2_xml_schema_data_type_impl
 
 /** 
  * @brief Xml Schema Data Type Struct Impl
- *	Axis2 Xml Schema Data Type  
+ *   Axis2 Xml Schema Data Type  
  */ 
 struct axis2_xml_schema_data_type_impl
 {

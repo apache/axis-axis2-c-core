@@ -47,7 +47,7 @@ typedef struct axis2_svc_grp axis2_svc_grp_t;
  */   
 struct axis2_svc_grp_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -64,7 +64,7 @@ struct axis2_svc_grp_ops
     set_svc_grp_name) (axis2_svc_grp_t *svc_grp, 
                 const axis2_env_t *env, 
                 axis2_char_t *svc_grp_name);
-	/** 
+   /** 
      * Get the service group name
      * @return service group name
      */
@@ -76,7 +76,7 @@ struct axis2_svc_grp_ops
      * @param service service to be added
      * @return status code
      */
-	axis2_status_t (AXIS2_CALL *
+   axis2_status_t (AXIS2_CALL *
     add_svc) (axis2_svc_grp_t *svc_grp, 
                 const axis2_env_t *env,
                 struct axis2_svc *svc) ;
@@ -86,7 +86,7 @@ struct axis2_svc_grp_ops
      * @param svc_name name of the service
      * @return service description
      */
-	struct axis2_svc *(AXIS2_CALL *
+   struct axis2_svc *(AXIS2_CALL *
     get_svc) (axis2_svc_grp_t *svc_grp, 
                 const axis2_env_t *env,
                 axis2_qname_t *svc_name);
@@ -95,26 +95,26 @@ struct axis2_svc_grp_ops
     get_svcs) (axis2_svc_grp_t *svc_grp, 
                const axis2_env_t *env);
     
-	axis2_status_t (AXIS2_CALL *
+   axis2_status_t (AXIS2_CALL *
     remove_svc) (axis2_svc_grp_t *svc_grp, 
                  const axis2_env_t *env,
                  axis2_qname_t *svc_name);
         
-	axis2_status_t (AXIS2_CALL *
+   axis2_status_t (AXIS2_CALL *
     add_param) (axis2_svc_grp_t *svc_grp, 
                 const axis2_env_t *env, 
                 axis2_param_t *param);
         
-	axis2_param_t *(AXIS2_CALL *
+   axis2_param_t *(AXIS2_CALL *
     get_param) (axis2_svc_grp_t *svc_grp, 
                 const axis2_env_t *env, 
                 const axis2_char_t *name);
         
-	axis2_array_list_t *(AXIS2_CALL *
+   axis2_array_list_t *(AXIS2_CALL *
     get_params) (axis2_svc_grp_t *svc_grp, 
                  const axis2_env_t *env);
     
-	axis2_bool_t (AXIS2_CALL *
+   axis2_bool_t (AXIS2_CALL *
     is_param_locked) (axis2_svc_grp_t *svc_grp, 
                         const axis2_env_t *env, 
                         axis2_char_t *param_name);
@@ -169,11 +169,11 @@ struct axis2_svc_grp_ops
 
 /** 
  * @brief Service group struct
-  *	Axis2 Service group  
+  *   Axis2 Service group  
  */
 struct axis2_svc_grp
 {
-	axis2_svc_grp_ops_t *ops; 
+   axis2_svc_grp_ops_t *ops; 
     axis2_param_container_t *param_container;    
 
 };
@@ -197,10 +197,10 @@ axis2_svc_grp_create_with_conf (const axis2_env_t *env,
 /**************************** Start of function macros ************************/
 
 #define AXIS2_SVC_GRP_FREE(svc_grp, env) ((svc_grp)->ops->free (svc_grp , env))
-	
+   
 #define AXIS2_SVC_GRP_SET_NAME(svc_grp, env , svc_grp_name) \
         ((svc_grp)->ops->set_svc_grp_name (svc_grp, env, svc_grp_name))
-		
+      
 #define AXIS2_SVC_GRP_GET_NAME(svc_grp, env) \
         ((svc_grp)->ops->get_svc_grp_name(svc_grp, env))
 
@@ -214,17 +214,17 @@ axis2_svc_grp_create_with_conf (const axis2_env_t *env,
         ((svc_grp)->ops->get_svcs(svc_grp, env))
         
 #define AXIS2_SVC_GRP_REMOVE_SVC(svc_grp, env, srvc_name) \
-		((svc_grp)->ops->remove_svc(svc_grp, env, srvc_name))		
+      ((svc_grp)->ops->remove_svc(svc_grp, env, srvc_name))      
 
 #define AXIS2_SVC_GRP_ADD_PARAM(svc_grp, env, param) \
-		((svc_grp)->ops->add_param(svc_grp, env, param))
-		
+      ((svc_grp)->ops->add_param(svc_grp, env, param))
+      
 #define AXIS2_SVC_GRP_GET_PARAM(svc_grp, env, name) \
-		((svc_grp)->ops->get_param(svc_grp, env, name))
-		
+      ((svc_grp)->ops->get_param(svc_grp, env, name))
+      
 #define AXIS2_SVC_GRP_GET_PARAMS(svc_grp, env) \
         ((svc_grp)->ops->get_params(svc_grp, env))
-				
+            
 #define AXIS2_SVC_GRP_IS_PARAM_LOCKED(svc_grp, env , param_name) \
         ((svc_grp)->ops->is_param_locked(svc_grp, env, param_name))
 

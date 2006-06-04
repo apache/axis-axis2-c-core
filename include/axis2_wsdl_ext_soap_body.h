@@ -49,12 +49,12 @@ typedef struct axis2_wsdl_ext_soap_body_ops axis2_wsdl_ext_soap_body_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_body_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_ext_soap_body_t *ext_soap_body,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_use) (axis2_wsdl_ext_soap_body_t *ext_soap_body,
@@ -78,11 +78,11 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_body_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_body
 {
-	axis2_wsdl_ext_soap_body_ops_t *ops;
+   axis2_wsdl_ext_soap_body_ops_t *ops;
     struct axis2_wsdl_extensible_element *ext_element;
 };
 
@@ -97,19 +97,19 @@ axis2_wsdl_ext_soap_body_create (const axis2_env_t *env,
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_EXT_SOAP_BODY_FREE(ext_soap_body, env) \
-		((ext_soap_body)->ops->free (ext_soap_body, env))
+      ((ext_soap_body)->ops->free (ext_soap_body, env))
 
 #define AXIS2_WSDL_EXT_SOAP_BODY_GET_USE(ext_soap_body, env) \
-		((ext_soap_body)->ops->get_use (ext_soap_body, env))
+      ((ext_soap_body)->ops->get_use (ext_soap_body, env))
 
 #define AXIS2_WSDL_EXT_SOAP_BODY_SET_USE(ext_soap_body, env, use) \
-		((ext_soap_body)->ops->set_use (ext_soap_body, env, use))
+      ((ext_soap_body)->ops->set_use (ext_soap_body, env, use))
         
 #define AXIS2_WSDL_EXT_SOAP_BODY_GET_NAMESPC_URI(ext_soap_body, env) \
-		((ext_soap_body)->ops->get_namespc_uri (ext_soap_body, env))
+      ((ext_soap_body)->ops->get_namespc_uri (ext_soap_body, env))
 
 #define AXIS2_WSDL_EXT_SOAP_BODY_SET_NAMESPC_URI(ext_soap_body, env, namespc_uri) \
-		((ext_soap_body)->ops->set_namespc_uri (ext_soap_body, env, namespc_uri))        
+      ((ext_soap_body)->ops->set_namespc_uri (ext_soap_body, env, namespc_uri))        
 
 /*************************** End of function macros ***************************/
 

@@ -7,7 +7,7 @@
  * @brief windows cutdown version of getopt function in unix
  */
 
-#ifdef	__cplusplus
+#ifdef   __cplusplus
 extern "C" {
 #endif
 
@@ -16,9 +16,9 @@ extern "C" {
  * @{
  */
 
-AXIS2_DECLARE_DATA  int	opterr;
-AXIS2_DECLARE_DATA  int 	optopt;	
-AXIS2_DECLARE_DATA  char	*optarg;
+AXIS2_DECLARE_DATA  int   opterr;
+AXIS2_DECLARE_DATA  int    optopt;   
+AXIS2_DECLARE_DATA  char   *optarg;
 
 /**
   * return and log error
@@ -41,7 +41,7 @@ axis2_getopt(int __argc, char * const *__argv, const char *__shortopts);
 
 /** @} */
 
-#ifdef	__cplusplus
+#ifdef   __cplusplus
 }
 #endif
 

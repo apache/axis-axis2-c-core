@@ -44,7 +44,7 @@ extern "C"
 
 struct axis2_xml_schema_simple_type_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -110,31 +110,31 @@ axis2_xml_schema_simple_type_resolve_methods(
  */
  /***************** Macros ***************************************************/
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_FREE(simple_type, env) \
-		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
+      (((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
             free(simple_type, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_GET_BASE_IMPL(simple_type, env) \
-		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
+      (((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
             get_base_impl(simple_type, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_TYPE(simple_type, env) \
-		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
+      (((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
             type(simple_type, env))
             
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_SUPER_OBJS(simple_type, env) \
-		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
+      (((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
             super_objs(simple_type, env))            
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_GET_CONTENT(simple_type, env) \
-		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
+      (((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
             get_content(simple_type, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_SET_CONTENT(simple_type, env, content) \
-		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
+      (((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
             set_content(simple_type, env, content))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_TO_STRING(simple_type, env) \
-		(((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
+      (((axis2_xml_schema_simple_type_t *) simple_type)->ops->\
             to_string(simple_type, env))
                                                            
 /************************ end macros ********************************************/                                                           

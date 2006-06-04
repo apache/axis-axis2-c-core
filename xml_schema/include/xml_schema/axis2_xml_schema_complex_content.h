@@ -113,27 +113,27 @@ axis2_xml_schema_complex_content_resolve_methods(
 */
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_FREE(complex_content, env) \
-		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
+      (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
             free(complex_content, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_GET_BASE_IMPL(complex_content, env) \
-		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
+      (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
             get_base_impl(complex_content, env))
             
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_TYPE(complex_content, env) \
-		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
+      (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
             type(complex_content, env))
             
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_SUPER_OBJS(complex_content, env) \
-		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
+      (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
             super_objs(complex_content, env))                        
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_GET_CONTENT(complex_content, env) \
-		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
+      (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
             get_content(complex_content, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_SET_CONTENT(complex_content, env, content) \
-		(((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
+      (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
             set_content(complex_content, env, content ))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_TO_STRING(complex_content, env, prefix, tab) \

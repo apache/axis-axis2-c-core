@@ -25,7 +25,7 @@ typedef struct axis2_woden_soap_binding_exts_impl axis2_woden_soap_binding_exts_
 
 /** 
  * @brief Soap Binding Extensions Struct Impl
- *	Axis2 Soap Binding Extensions  
+ *   Axis2 Soap Binding Extensions  
  */ 
 struct axis2_woden_soap_binding_exts_impl
 {

@@ -46,11 +46,11 @@ axis2_om_stax_builder_get_document (axis2_om_stax_builder_t *builder,
 axis2_bool_t  AXIS2_CALL
 axis2_om_stax_builder_is_complete(axis2_om_stax_builder_t *builder,
                                    const axis2_env_t *env);
-                                                              											
+                                                                                               
 int AXIS2_CALL 
 axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
-                                          const axis2_env_t *env);                                                                                                                                            											
-													
+                                          const axis2_env_t *env);                                                                                                                                                                             
+                                       
 /********************************* axis2_om_stax_builder_impl_t struct ********/
 typedef struct axis2_om_stax_builder_impl_t
 {
@@ -76,13 +76,13 @@ typedef struct axis2_om_stax_builder_impl_t
         
 }axis2_om_stax_builder_impl_t;
 
-/************************************** Macro *********************************/				
+/************************************** Macro *********************************/            
 
 #define AXIS2_INTF_TO_IMPL(builder) ((axis2_om_stax_builder_impl_t*)builder)
 
 /******************************************************************************/
 
-													
+                                       
 AXIS2_EXTERN axis2_om_stax_builder_t * AXIS2_CALL
 axis2_om_stax_builder_create (const axis2_env_t *env,
                               axis2_xml_reader_t *parser)
@@ -136,8 +136,8 @@ axis2_om_stax_builder_create (const axis2_env_t *env,
     builder->om_stax_builder.ops->discard_current_element = 
             axis2_om_stax_builder_discard_current_element;
         
-	builder->om_stax_builder.ops->free = 
-	        axis2_om_stax_builder_free;
+   builder->om_stax_builder.ops->free = 
+           axis2_om_stax_builder_free;
 
     builder->om_stax_builder.ops->get_document = 
             axis2_om_stax_builder_get_document;
@@ -148,7 +148,7 @@ axis2_om_stax_builder_create (const axis2_env_t *env,
     builder->om_stax_builder.ops->is_complete =
             axis2_om_stax_builder_is_complete;
                                                
-	
+   
     return &(builder->om_stax_builder);
 }
 
@@ -521,7 +521,7 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
     axis2_om_stax_builder_process_attributes ( om_stax_builder, env, element_node);
 
     builder_impl->lastnode = element_node;
-	
+   
     return element_node;
 }
 
@@ -828,13 +828,13 @@ AXIS2_CALL axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
             builder_impl->root_node = NULL;
         }
     }
-	if(builder->ops)
-	{
-		AXIS2_FREE (env->allocator, builder->ops);
+   if(builder->ops)
+   {
+      AXIS2_FREE (env->allocator, builder->ops);
         builder->ops = NULL;
-	}	
-	AXIS2_FREE (env->allocator, AXIS2_INTF_TO_IMPL(builder));
-	return AXIS2_SUCCESS;	
+   }   
+   AXIS2_FREE (env->allocator, AXIS2_INTF_TO_IMPL(builder));
+   return AXIS2_SUCCESS;   
 }
 
 

@@ -225,13 +225,13 @@ axis2_msg_recv_create (const axis2_env_t *env);
 #define AXIS2_MSG_RECV_FREE(msg_recv, env) ((msg_recv)->ops->free (msg_recv, env))
 
 #define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx, callback_recv_param) \
-		((msg_recv)->ops->receive (msg_recv, env, msg_ctx, callback_recv_param))
+      ((msg_recv)->ops->receive (msg_recv, env, msg_ctx, callback_recv_param))
 
 #define AXIS2_MSG_RECV_RECEIVE_SYNC(msg_recv, env, msg_ctx, callback_recv_param) \
-		((msg_recv)->ops->receive_sync (msg_recv, env, msg_ctx, callback_recv_param))
+      ((msg_recv)->ops->receive_sync (msg_recv, env, msg_ctx, callback_recv_param))
 
 #define AXIS2_MSG_RECV_RECEIVE_ASYNC(msg_recv, env, msg_ctx, callback_recv_param) \
-		((msg_recv)->ops->receive_async (msg_recv, env, msg_ctx, callback_recv_param))
+      ((msg_recv)->ops->receive_async (msg_recv, env, msg_ctx, callback_recv_param))
 
 #define AXIS2_MSG_RECV_INVOKE_IN_BUSINESS_LOGIC_SYNC(msg_recv, env, in_msg_ctx) \
         ((msg_recv)->ops->invoke_in_business_logic_sync(msg_recv, env, in_msg_ctx))
@@ -255,10 +255,10 @@ axis2_msg_recv_create (const axis2_env_t *env);
         ((msg_recv)->ops->make_new_svc_obj(msg_recv, env, msg_ctx))
 
 #define AXIS2_MSG_RECV_GET_IMPL_OBJ(msg_recv, env, msg_ctx) \
-		((msg_recv)->ops->get_impl_obj(msg_recv, env, msg_ctx))
+      ((msg_recv)->ops->get_impl_obj(msg_recv, env, msg_ctx))
         
 #define AXIS2_MSG_RECV_SET_SCOPE(msg_recv, env, scope) \
-		((msg_recv)->ops->set_scope(msg_recv, env, scope))
+      ((msg_recv)->ops->set_scope(msg_recv, env, scope))
 
 #define AXIS2_MSG_RECV_GET_SCOPE(msg_recv, env) \
         ((msg_recv)->ops->get_scope(msg_recv, env))

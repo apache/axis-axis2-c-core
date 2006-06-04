@@ -20,19 +20,19 @@
 
 typedef struct axis2_phase_rule_impl
 {
-	/** Phase Rule related ops */
-	axis2_phase_rule_t phase_rule;
-	/** name of phase or handler before */
-	axis2_char_t *before;
-	/** name of phase or handler after */
-	axis2_char_t *after;
-	/** phase name */
-	axis2_char_t *name;
-	/** Is this first phase? */
-	axis2_bool_t phase_first;
-	/** Is this last phase? */
-	axis2_bool_t phase_last;
-	
+   /** Phase Rule related ops */
+   axis2_phase_rule_t phase_rule;
+   /** name of phase or handler before */
+   axis2_char_t *before;
+   /** name of phase or handler after */
+   axis2_char_t *after;
+   /** phase name */
+   axis2_char_t *name;
+   /** Is this first phase? */
+   axis2_bool_t phase_first;
+   /** Is this last phase? */
+   axis2_bool_t phase_last;
+   
 } axis2_phase_rule_impl_t;
 
 /** Interface to implementation conversion macro */
@@ -115,15 +115,15 @@ axis2_phase_rule_create(const axis2_env_t *env,
     }
 
     phase_rule_impl->before = NULL;
-	phase_rule_impl->after = NULL;
-	phase_rule_impl->name = NULL;
-	phase_rule_impl->phase_first = AXIS2_FALSE;
-	phase_rule_impl->phase_last = AXIS2_FALSE;
-	
-	if (name)
-	{
-		phase_rule_impl->name = AXIS2_STRDUP(name, env);
-	}
+   phase_rule_impl->after = NULL;
+   phase_rule_impl->name = NULL;
+   phase_rule_impl->phase_first = AXIS2_FALSE;
+   phase_rule_impl->phase_last = AXIS2_FALSE;
+   
+   if (name)
+   {
+      phase_rule_impl->name = AXIS2_STRDUP(name, env);
+   }
     
     /* initialize ops */
     phase_rule_impl->phase_rule.ops = NULL;
@@ -350,12 +350,12 @@ axis2_phase_rule_free (struct axis2_phase_rule *phase_rule,
         phase_rule_impl->before = NULL;
     }    
     
-	if (phase_rule_impl->after)
+   if (phase_rule_impl->after)
     {
         AXIS2_FREE(env->allocator, phase_rule_impl->after);
         phase_rule_impl->after = NULL;
     }
-	
+   
     if (phase_rule_impl->name)
     {
         AXIS2_FREE(env->allocator, phase_rule_impl->name);

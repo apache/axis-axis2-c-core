@@ -18,7 +18,7 @@
 #define AXIS2_OM_DOCTYPE_H
 
 /**
- *@file axis2_om_doctype.h	
+ *@file axis2_om_doctype.h   
  *@brief defines struct representing xml DTD and its manipulation functions
  */
 

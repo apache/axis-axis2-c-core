@@ -45,7 +45,7 @@ extern "C"
 
 struct axis2_woden_interface_op_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -142,39 +142,39 @@ axis2_woden_interface_op_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_INTERFACE_OP_FREE(interface_op, env) \
-		(((axis2_woden_interface_op_t *) interface_op)->ops->free(interface_op, env))
+      (((axis2_woden_interface_op_t *) interface_op)->ops->free(interface_op, env))
 
 #define AXIS2_WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env) \
-		(((axis2_woden_interface_op_t *) interface_op)->ops->super_objs(interface_op, env))
+      (((axis2_woden_interface_op_t *) interface_op)->ops->super_objs(interface_op, env))
 
 #define AXIS2_WODEN_INTERFACE_OP_TYPE(interface_op, env) \
-		(((axis2_woden_interface_op_t *) interface_op)->ops->type(interface_op, env))
+      (((axis2_woden_interface_op_t *) interface_op)->ops->type(interface_op, env))
 
 #define AXIS2_WODEN_INTERFACE_OP_GET_BASE_IMPL(interface_op, env) \
-		(((axis2_woden_interface_op_t *) interface_op)->ops->get_base_impl(interface_op, env))
+      (((axis2_woden_interface_op_t *) interface_op)->ops->get_base_impl(interface_op, env))
 
 #define AXIS2_WODEN_INTERFACE_OP_GET_QNAME(interface_op, env) \
-		(((axis2_woden_interface_op_t *) interface_op)->\
+      (((axis2_woden_interface_op_t *) interface_op)->\
          get_qname(interface_op, env))
 
 #define AXIS2_WODEN_INTERFACE_OP_GET_MSG_EXCHANGE_PATTERN(interface_op, env) \
-		(((axis2_woden_interface_op_t *) interface_op)->\
+      (((axis2_woden_interface_op_t *) interface_op)->\
          get_msg_exchange_pattern(interface_op, env))
 
 #define AXIS2_WODEN_INTERFACE_OP_GET_INTERFACE_MSG_REFS(interface_op, env) \
-		(((axis2_woden_interface_op_t *) interface_op)->\
+      (((axis2_woden_interface_op_t *) interface_op)->\
          get_interface_msg_refs(interface_op, env))
 
 #define AXIS2_WODEN_INTERFACE_OP_GET_INTERFACE_FAULT_REFS(interface_op, env) \
-		(((axis2_woden_interface_op_t *) interface_op)->\
+      (((axis2_woden_interface_op_t *) interface_op)->\
          get_interface_fault_refs(interface_op, env))
 
 #define AXIS2_WODEN_INTERFACE_OP_GET_STYLE(interface_op, env) \
-		(((axis2_woden_interface_op_t *) interface_op)->\
+      (((axis2_woden_interface_op_t *) interface_op)->\
          get_style(interface_op, env))
 
 #define AXIS2_WODEN_INTERFACE_OP_TO_ELEMENT(interface_op, env) \
-		(((axis2_woden_interface_op_t *) interface_op)->ops->\
+      (((axis2_woden_interface_op_t *) interface_op)->ops->\
          to_element(interface_op, env))
 
 /** @} */

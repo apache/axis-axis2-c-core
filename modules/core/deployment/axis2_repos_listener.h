@@ -52,12 +52,12 @@ typedef struct axis2_repos_listener_ops axis2_repos_listener_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_repos_listener_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_repos_listener_t *repos_listener,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
     
     /**
      * this method ask serachWS to serch for the folder to caheck
@@ -107,7 +107,7 @@ AXIS2_DECLARE_DATA struct axis2_repos_listener_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_repos_listener
 {
-	axis2_repos_listener_ops_t *ops;
+   axis2_repos_listener_ops_t *ops;
 };
 
 /**
@@ -129,22 +129,22 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(const axis2_env_t *e
 /*************************** Function macros **********************************/
 
 #define AXIS2_REPOS_LISTENER_FREE(repos_listener, env) \
-		((repos_listener)->ops->free (repos_listener, env))
+      ((repos_listener)->ops->free (repos_listener, env))
 
 #define AXIS2_REPOS_LISTENER_CHECK_MODULES(repos_listener, env) \
-		((repos_listener)->ops->check_modules (repos_listener, env))
+      ((repos_listener)->ops->check_modules (repos_listener, env))
         
 #define AXIS2_REPOS_LISTENER_CHECK_SVCS(repos_listener, env) \
-		((repos_listener)->ops->check_svcs (repos_listener, env))
+      ((repos_listener)->ops->check_svcs (repos_listener, env))
 
 #define AXIS2_REPOS_LISTENER_UPDATE(repos_listener, env) \
-		((repos_listener)->ops->update (repos_listener, env))
+      ((repos_listener)->ops->update (repos_listener, env))
         
 #define AXIS2_REPOS_LISTENER_INIT(repos_listener, env) \
-		((repos_listener)->ops->init (repos_listener, env))
+      ((repos_listener)->ops->init (repos_listener, env))
 
 #define AXIS2_REPOS_LISTENER_START_LISTEN(repos_listener, env) \
-		((repos_listener)->ops->start_listen (repos_listener, env)) 
+      ((repos_listener)->ops->start_listen (repos_listener, env)) 
 
         
 

@@ -26,7 +26,7 @@ typedef struct axis2_woden_interface_msg_ref_impl axis2_woden_interface_msg_ref_
 
 /** 
  * @brief Interface Message Reference Struct Impl
- *	Axis2 Interface Message Reference  
+ *   Axis2 Interface Message Reference  
  */ 
 struct axis2_woden_interface_msg_ref_impl
 {

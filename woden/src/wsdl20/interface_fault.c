@@ -26,7 +26,7 @@ typedef struct axis2_woden_interface_fault_impl axis2_woden_interface_fault_impl
 
 /** 
  * @brief Interface Fault Struct Impl
- *	Axis2 Interface Fault  
+ *   Axis2 Interface Fault  
  */ 
 struct axis2_woden_interface_fault_impl
 {

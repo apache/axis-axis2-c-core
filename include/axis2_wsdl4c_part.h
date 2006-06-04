@@ -43,7 +43,7 @@ extern "C"
         Type
     };
 
-	typedef enum axis2_part_ref_type axis2_wsdl4c_part_ref_type_t;
+   typedef enum axis2_part_ref_type axis2_wsdl4c_part_ref_type_t;
     
     void *
     axis2_wsdl4c_part_create(char* n);

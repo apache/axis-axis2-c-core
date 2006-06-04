@@ -50,7 +50,7 @@ struct axis2_op;
 struct axis2_diclient_ops
 {
     axis2_status_t (AXIS2_CALL *
-	free)(struct axis2_diclient *diclient, 
+   free)(struct axis2_diclient *diclient, 
           const axis2_env_t *env);
 
     /**
@@ -77,7 +77,7 @@ struct axis2_diclient_ops
     axis2_status_t (AXIS2_CALL *
     init) (axis2_diclient_t *diclient,
            const axis2_env_t *env,
-		   axis2_char_t *wsdl_file_name);
+         axis2_char_t *wsdl_file_name);
 
     /**
      * By passing the operation qualified name and the endpoint qualified
@@ -155,7 +155,7 @@ struct axis2_diclient_ops
 
 /** 
  * @brief Dynamic Invocation Client struct
-  *	Axis2 Dynamic Invocation Client
+  *   Axis2 Dynamic Invocation Client
  */
 struct axis2_diclient
 {
@@ -168,35 +168,35 @@ axis2_diclient_create(const axis2_env_t *env);
 /************************** Start of function macros **************************/
 
 #define AXIS2_DICLIENT_FREE(diclient, env) \
-		((diclient)->ops->free (diclient, env))
-		
+      ((diclient)->ops->free (diclient, env))
+      
 #define AXIS2_DICLIENT_INVOKE(diclient, env, node, op) \
-		((diclient)->ops->invoke (diclient, env, node, op))
+      ((diclient)->ops->invoke (diclient, env, node, op))
 
 #define AXIS2_DICLIENT_INIT(diclient, env, wsdl_file_name) \
-		((diclient)->ops->init (diclient, env, wsdl_file_name))
+      ((diclient)->ops->init (diclient, env, wsdl_file_name))
 
 #define AXIS2_DICLIENT_SET_ADDRESS_AND_ACTION_FOR_OP(diclient, env, op_qname) \
-		((diclient)->ops->set_address_and_action_for_op (diclient, env, \
+      ((diclient)->ops->set_address_and_action_for_op (diclient, env, \
                 op_qname))
 
 #define AXIS2_DICLIENT_GET_ENDPOINTS(diclient, env) \
-		((diclient)->ops->get_endpoints (diclient, env))
+      ((diclient)->ops->get_endpoints (diclient, env))
 
 #define AXIS2_DICLIENT_GET_SERVICES(diclient, env) \
-		((diclient)->ops->get_services (diclient, env))
+      ((diclient)->ops->get_services (diclient, env))
 
 #define AXIS2_DICLIENT_GET_OPERATIONS(diclient, env) \
-		((diclient)->ops->get_operations (diclient, env))
+      ((diclient)->ops->get_operations (diclient, env))
 
 #define AXIS2_DICLIENT_GET_PARAM_LOCALNAME(diclient, env, op_qname) \
-		((diclient)->ops->get_param_localname (diclient, env, op_qname))
+      ((diclient)->ops->get_param_localname (diclient, env, op_qname))
 
 #define AXIS2_DICLIENT_GET_PARAM_NAMESPACE(diclient, env, op_qname) \
-		((diclient)->ops->get_param_namespace (diclient, env, op_qname))
+      ((diclient)->ops->get_param_namespace (diclient, env, op_qname))
 
 #define AXIS2_DICLIENT_GET_PARAMS(diclient, env, op_qname) \
-		((diclient)->ops->get_params (diclient, env, op_qname))
+      ((diclient)->ops->get_params (diclient, env, op_qname))
 
 /************************** End of function macros ****************************/    
 

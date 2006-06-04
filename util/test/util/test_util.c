@@ -37,10 +37,10 @@ typedef struct a
 
 const axis2_env_t *test_init()
 {
-	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+   axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_error_t *error = axis2_error_create (allocator);
     const axis2_env_t *env = axis2_env_create_with_error(allocator, error);
-	return env;
+   return env;
 }
 
 int test_hash_get (const axis2_env_t *env)
@@ -147,48 +147,48 @@ void test_axis2_dir_handler_list_service_or_module_dirs()
   */
 int test_file_diff(const axis2_env_t *env)
 {
-	axis2_char_t *expected_file_name = AXIS2_STRDUP("expected", env);
-    axis2_char_t *actual_file_name = AXIS2_STRDUP("actual", env);	
+   axis2_char_t *expected_file_name = AXIS2_STRDUP("expected", env);
+    axis2_char_t *actual_file_name = AXIS2_STRDUP("actual", env);   
     axis2_file_diff(env, expected_file_name, actual_file_name);
-	return 0;
+   return 0;
 }
 
 char* test_funct_for_test_env_null(const axis2_env_t *env)
 {
-	if(NULL == *env)
-	{
-		axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-		axis2_error_t *error = axis2_error_create (allocator);
+   if(NULL == *env)
+   {
+      axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+      axis2_error_t *error = axis2_error_create (allocator);
         *env = axis2_env_create_with_error(allocator, error);
-		AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
-		AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);	
-		return AXIS2_STRDUP("env is null!!!", env);
-	}
+      AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
+      AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);   
+      return AXIS2_STRDUP("env is null!!!", env);
+   }
     
     AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS);
-	return AXIS2_STRDUP("env not null, so be happy", env);	
+   return AXIS2_STRDUP("env not null, so be happy", env);   
 }
 
 int test_env_null()
 {
-	const axis2_env_t *env = NULL;
-	char *msg;
-	int status;
-	/* Suppose we did properly initialized env here */
-	/* But here we mistakenly make env to null */
-	env = NULL;
-	/*Now we call an axis2 mock function called
-	 * test_funct_for_test_env_null
-	 */
-	msg = test_funct_for_test_env_null(env);
-	status = axis2_env_check_status(env);
-	if(AXIS2_SUCCESS == status)
-		printf("%s\n", msg);
-	else
-		printf("status code is:%d\n", status);
+   const axis2_env_t *env = NULL;
+   char *msg;
+   int status;
+   /* Suppose we did properly initialized env here */
+   /* But here we mistakenly make env to null */
+   env = NULL;
+   /*Now we call an axis2 mock function called
+    * test_funct_for_test_env_null
+    */
+   msg = test_funct_for_test_env_null(env);
+   status = axis2_env_check_status(env);
+   if(AXIS2_SUCCESS == status)
+      printf("%s\n", msg);
+   else
+      printf("status code is:%d\n", status);
 
     AXIS2_FREE((env)->allocator, msg);
-	return 0;
+   return 0;
 }
 
 void test_array_list(const axis2_env_t *env)
@@ -255,58 +255,58 @@ void test_uuid_gen(const axis2_env_t *env)
 
 void test_log_write()
 {
-	char msg[10];
-	printf("start of test_log_write\n\n");
+   char msg[10];
+   printf("start of test_log_write\n\n");
     axis2_allocator_t *allocator = axis2_allocator_init(NULL);
-	if (!allocator)
-	{
-		printf("allocator is NULL\n");
-		return;
-	}
-	axis2_error_t *error = axis2_error_create(allocator);
-	if (!error)
-	{
-		printf("cannot create error\n");
-		return;
-	}
+   if (!allocator)
+   {
+      printf("allocator is NULL\n");
+      return;
+   }
+   axis2_error_t *error = axis2_error_create(allocator);
+   if (!error)
+   {
+      printf("cannot create error\n");
+      return;
+   }
     axis2_log_t *log22  = axis2_log_create (allocator, NULL,NULL);
-	if (!log22)
-	{
-		printf("cannot create log\n");
-		return;
-	}
-	log22->level = AXIS2_LOG_LEVEL_DEBUG;
+   if (!log22)
+   {
+      printf("cannot create log\n");
+      return;
+   }
+   log22->level = AXIS2_LOG_LEVEL_DEBUG;
 
     const axis2_env_t *env = axis2_env_create_with_error_log(allocator, error, log22);
-	if (!env)
-	{
-		printf("cannot create env with error and log\n");
-		return;
-	}
-	strcpy(msg,"abcd test123");
-	AXIS2_LOG_WRITE(env->log,msg,AXIS2_LOG_LEVEL_ERROR);
+   if (!env)
+   {
+      printf("cannot create env with error and log\n");
+      return;
+   }
+   strcpy(msg,"abcd test123");
+   AXIS2_LOG_WRITE(env->log,msg,AXIS2_LOG_LEVEL_ERROR);
 
-	AXIS2_LOG_CRITICAL(env->log,AXIS2_LOG_SI,"log1 %s","test1");
-	AXIS2_LOG_ERROR(env->log,AXIS2_LOG_SI,"log2 %d",2);
-	AXIS2_LOG_WARNING(env->log,AXIS2_LOG_SI,"log3 %s","test3");
-	AXIS2_LOG_INFO(env->log,AXIS2_LOG_SI,"log4 %s %s","info1","info2");
-	AXIS2_LOG_DEBUG(env->log,AXIS2_LOG_SI,"log5 %s %d","test",5);
+   AXIS2_LOG_CRITICAL(env->log,AXIS2_LOG_SI,"log1 %s","test1");
+   AXIS2_LOG_ERROR(env->log,AXIS2_LOG_SI,"log2 %d",2);
+   AXIS2_LOG_WARNING(env->log,AXIS2_LOG_SI,"log3 %s","test3");
+   AXIS2_LOG_INFO(env->log,AXIS2_LOG_SI,"log4 %s %s","info1","info2");
+   AXIS2_LOG_DEBUG(env->log,AXIS2_LOG_SI,"log5 %s %d","test",5);
     printf("end of test_log_write \n\n");
-	
+   
 }
 
 int main(void)
 {
-	const axis2_env_t *env = test_init();
-	test_file_diff(env);
-	test_hash_get(env);
-	test_env_null(); 
+   const axis2_env_t *env = test_init();
+   test_file_diff(env);
+   test_hash_get(env);
+   test_env_null(); 
     test_array_list(env);
     test_uuid_gen(env);
-	run_test_log();
-	test_axis2_dir_handler_list_service_or_module_dirs();
-	axis2_allocator_t *allocator = env->allocator;
+   run_test_log();
+   test_axis2_dir_handler_list_service_or_module_dirs();
+   axis2_allocator_t *allocator = env->allocator;
     axis2_env_free(env);
     axis2_allocator_free(allocator);
-	return 0;	
+   return 0;   
 }

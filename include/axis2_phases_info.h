@@ -23,7 +23,7 @@ extern "C"
 
 typedef struct axis2_phases_info_ops axis2_phases_info_ops_t;
 typedef struct axis2_phases_info axis2_phases_info_t;
-	
+   
 /** @defgroup axis2_phases_info Phases Info
   * @ingroup axis2_deployment
   * @{
@@ -35,7 +35,7 @@ typedef struct axis2_phases_info axis2_phases_info_t;
  */
 struct axis2_phases_info_ops
 {
-	/** Deallocate memory
+   /** Deallocate memory
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *free) (axis2_phases_info_t *phases_info, 
@@ -107,7 +107,7 @@ struct axis2_phases_info_ops
  */
 struct axis2_phases_info
 {
-	axis2_phases_info_ops_t *ops;
+   axis2_phases_info_ops_t *ops;
 };
 
 /** create Phases Info struct
@@ -119,46 +119,46 @@ axis2_phases_info_create (const axis2_env_t *env);
 /**************************** Start of function macros ************************/
 
 #define AXIS2_PHASES_INFO_FREE(phases_info, env) \
-		((phases_info)->ops->free (phases_info, env))
+      ((phases_info)->ops->free (phases_info, env))
 
 #define AXIS2_PHASES_INFO_SET_IN_PHASES(phases_info, env, in_phases) \
-		((phases_info)->ops->set_in_phases(phases_info, env, in_phases))
-		
+      ((phases_info)->ops->set_in_phases(phases_info, env, in_phases))
+      
 #define AXIS2_PHASES_INFO_SET_OUT_PHASES(phases_info, env, out_phases) \
-		((phases_info)->ops->set_out_phases(phases_info, env, out_phases))
+      ((phases_info)->ops->set_out_phases(phases_info, env, out_phases))
 
 #define AXIS2_PHASES_INFO_SET_IN_FAULTPHASES(phases_info, env, in_faultphases) \
-		((phases_info)->ops->set_in_faultphases(phases_info, env, in_faultphases))
+      ((phases_info)->ops->set_in_faultphases(phases_info, env, in_faultphases))
 
 #define AXIS2_PHASES_INFO_SET_OUT_FAULTPHASES(phases_info, env, out_faultphases) \
-		((phases_info)->ops->set_out_faultphases(phases_info, env, out_faultphases)) 
+      ((phases_info)->ops->set_out_faultphases(phases_info, env, out_faultphases)) 
 
 #define AXIS2_PHASES_INFO_GET_IN_PHASES(phases_info, env) \
-		((phases_info)->ops->get_in_phases(phases_info, env)) 
+      ((phases_info)->ops->get_in_phases(phases_info, env)) 
 
 #define AXIS2_PHASES_INFO_GET_OUT_PHASES(phases_info, env) \
-		((phases_info)->ops->get_out_phases(phases_info, env)) 
+      ((phases_info)->ops->get_out_phases(phases_info, env)) 
         
 #define AXIS2_PHASES_INFO_GET_IN_FAULTPHASES(phases_info, env) \
-		((phases_info)->ops->get_in_faultphases(phases_info, env)) 
+      ((phases_info)->ops->get_in_faultphases(phases_info, env)) 
 
 #define AXIS2_PHASES_INFO_GET_OUT_FAULTPHASES(phases_info, env) \
-		((phases_info)->ops->get_out_faultphases(phases_info, env)) 
+      ((phases_info)->ops->get_out_faultphases(phases_info, env)) 
         
 #define AXIS2_PHASES_INFO_GET_OP_IN_PHASES(phases_info, env) \
-		((phases_info)->ops->get_op_in_phases(phases_info, env)) 
+      ((phases_info)->ops->get_op_in_phases(phases_info, env)) 
 
 #define AXIS2_PHASES_INFO_GET_OP_OUT_PHASES(phases_info, env) \
-		((phases_info)->ops->get_op_out_phases(phases_info, env)) 
+      ((phases_info)->ops->get_op_out_phases(phases_info, env)) 
                                         
 #define AXIS2_PHASES_INFO_GET_OP_IN_FAULTPHASES(phases_info, env) \
-		((phases_info)->ops->get_op_in_faultphases(phases_info, env))                                         
+      ((phases_info)->ops->get_op_in_faultphases(phases_info, env))                                         
                                         
 #define AXIS2_PHASES_INFO_GET_OP_OUT_FAULTPHASES(phases_info, env) \
-		((phases_info)->ops->get_op_out_faultphases(phases_info, env))                                         
+      ((phases_info)->ops->get_op_out_faultphases(phases_info, env))                                         
                                         
 #define AXIS2_PHASES_INFO_SET_OP_PHASES(phases_info, env, axis2_opt) \
-		((phases_info)->ops->set_op_phases(phases_info, env, axis2_opt))                                         
+      ((phases_info)->ops->set_op_phases(phases_info, env, axis2_opt))                                         
                                            
 /**************************** End of function macros **************************/
 

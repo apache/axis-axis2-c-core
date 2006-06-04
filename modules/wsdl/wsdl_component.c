@@ -3,12 +3,12 @@
 
 /** 
  * @brief Wsdl Component struct impl
- *	Axis2 Wsdl Component impl  
+ *   Axis2 Wsdl Component impl  
  */
 typedef struct axis2_wsdl_component_impl
 {
-	axis2_wsdl_component_t wsdl_component;
-	axis2_hash_t *component_properties;
+   axis2_wsdl_component_t wsdl_component;
+   axis2_hash_t *component_properties;
     /**
      * Field Namespace Qualified elements that can be sticked in the component.
      */
@@ -35,7 +35,7 @@ axis2_status_t AXIS2_CALL
 axis2_wsdl_component_set_component_properties(
                                         axis2_wsdl_component_t *wsdl_component,
                                         const axis2_env_t *env,
-		                                axis2_hash_t *properties);
+                                      axis2_hash_t *properties);
 
 axis2_hash_t * AXIS2_CALL
 axis2_wsdl_component_get_component_properties(
@@ -44,14 +44,14 @@ axis2_wsdl_component_get_component_properties(
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_component_set_component_property(
-	                                    axis2_wsdl_component_t *wsdl_component, 
+                                       axis2_wsdl_component_t *wsdl_component, 
                                         const axis2_env_t *env,
                                         axis2_char_t *key, 
                                         void *value);
                                         
 void * AXIS2_CALL
 axis2_wsdl_component_get_component_property(
-		                                axis2_wsdl_component_t *wsdl_component,
+                                      axis2_wsdl_component_t *wsdl_component,
                                         const axis2_env_t *env,
                                         axis2_char_t *key);
 
@@ -75,39 +75,39 @@ axis2_wsdl_component_create (const axis2_env_t *env)
     
     AXIS2_ENV_CHECK(env, NULL);
     
-	wsdl_component_impl = (axis2_wsdl_component_impl_t *) AXIS2_MALLOC (env->
+   wsdl_component_impl = (axis2_wsdl_component_impl_t *) AXIS2_MALLOC (env->
         allocator, sizeof(axis2_wsdl_component_impl_t));
     
-	if(NULL == wsdl_component_impl)
-	{
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+   if(NULL == wsdl_component_impl)
+   {
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
     wsdl_component_impl->component_properties = NULL;
     wsdl_component_impl->elements = NULL;
     wsdl_component_impl->attributes = NULL;
-	
+   
     wsdl_component_impl->component_properties = axis2_hash_make (env);
     if(NULL == wsdl_component_impl->component_properties)
     {
         axis2_wsdl_component_free(&(wsdl_component_impl->wsdl_component), env);
-		AXIS2_ERROR_SET (env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET (env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
     }
     
-	wsdl_component_impl->wsdl_component.ops = (axis2_wsdl_component_ops_t *)
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_component_ops_t));
+   wsdl_component_impl->wsdl_component.ops = (axis2_wsdl_component_ops_t *)
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_component_ops_t));
     
-	if(NULL == wsdl_component_impl->wsdl_component.ops)
-	{
-		axis2_wsdl_component_free(&(wsdl_component_impl->wsdl_component), env);
-		AXIS2_ERROR_SET (env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);	
+   if(NULL == wsdl_component_impl->wsdl_component.ops)
+   {
+      axis2_wsdl_component_free(&(wsdl_component_impl->wsdl_component), env);
+      AXIS2_ERROR_SET (env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);   
         return NULL;
-	}
+   }
     
-	wsdl_component_impl->wsdl_component.ops->free = axis2_wsdl_component_free;
-	wsdl_component_impl->wsdl_component.ops->set_component_properties =
+   wsdl_component_impl->wsdl_component.ops->free = axis2_wsdl_component_free;
+   wsdl_component_impl->wsdl_component.ops->set_component_properties =
             axis2_wsdl_component_set_component_properties;
     wsdl_component_impl->wsdl_component.ops->get_component_properties =
             axis2_wsdl_component_get_component_properties;
@@ -119,8 +119,8 @@ axis2_wsdl_component_create (const axis2_env_t *env)
             axis2_wsdl_component_add_extensibility_element;
     wsdl_component_impl->wsdl_component.ops->get_extensibility_elements = 
             axis2_wsdl_component_get_extensibility_elements;
-	
-	return &(wsdl_component_impl->wsdl_component);
+   
+   return &(wsdl_component_impl->wsdl_component);
 }
 
 /******************************************************************************/
@@ -135,7 +135,7 @@ axis2_wsdl_component_free (axis2_wsdl_component_t *wsdl_component,
     
     component_impl = AXIS2_INTF_TO_IMPL(wsdl_component);
     
-	if(NULL != wsdl_component->ops)
+   if(NULL != wsdl_component->ops)
     {
         AXIS2_FREE(env->allocator, wsdl_component->ops);
         wsdl_component->ops = NULL;
@@ -181,12 +181,12 @@ axis2_wsdl_component_free (axis2_wsdl_component_t *wsdl_component,
     
     AXIS2_FREE(env->allocator, component_impl);
     component_impl = NULL;
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_component_set_component_properties(
-		                                axis2_wsdl_component_t *wsdl_component, 
+                                      axis2_wsdl_component_t *wsdl_component, 
                                         const axis2_env_t *env,
                                         axis2_hash_t *properties) 
 {
@@ -219,8 +219,8 @@ axis2_wsdl_component_set_component_properties(
         axis2_hash_free(component_impl->component_properties, env);
         component_impl->component_properties = NULL;
     }
-	component_impl->component_properties = properties;
-	return AXIS2_SUCCESS;
+   component_impl->component_properties = properties;
+   return AXIS2_SUCCESS;
 }
 
 axis2_hash_t * AXIS2_CALL
@@ -228,8 +228,8 @@ axis2_wsdl_component_get_component_properties(
                                         axis2_wsdl_component_t *wsdl_component,
                                         const axis2_env_t *env)
 {
-	AXIS2_ENV_CHECK(env, NULL);
-	return AXIS2_INTF_TO_IMPL(wsdl_component)->component_properties;
+   AXIS2_ENV_CHECK(env, NULL);
+   return AXIS2_INTF_TO_IMPL(wsdl_component)->component_properties;
 }
 
 axis2_status_t AXIS2_CALL
@@ -246,22 +246,22 @@ axis2_wsdl_component_set_component_property(
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
     component_impl = AXIS2_INTF_TO_IMPL(wsdl_component);
     
-	axis2_hash_set (component_impl->component_properties, key, 
+   axis2_hash_set (component_impl->component_properties, key, 
         AXIS2_HASH_KEY_STRING, value);
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 void *AXIS2_CALL
 axis2_wsdl_component_get_component_property(
-		                                axis2_wsdl_component_t *wsdl_component,
+                                      axis2_wsdl_component_t *wsdl_component,
                                         const axis2_env_t *env, 
                                         axis2_char_t *key) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, key, NULL);
-	
-	return (void *)(axis2_hash_get (AXIS2_INTF_TO_IMPL(wsdl_component)->
+   
+   return (void *)(axis2_hash_get (AXIS2_INTF_TO_IMPL(wsdl_component)->
         component_properties, key, AXIS2_HASH_KEY_STRING));
 }
 

@@ -74,12 +74,12 @@ axis2_file_create(const axis2_env_t *env)
 {
     axis2_file_impl_t *file_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	file_impl = (axis2_file_impl_t *) AXIS2_MALLOC(env->allocator, 
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   file_impl = (axis2_file_impl_t *) AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_file_impl_t));
-	
-	if(NULL == file_impl)
+   
+   if(NULL == file_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -89,11 +89,11 @@ axis2_file_create(const axis2_env_t *env)
     file_impl->timestamp = 0;
     
     file_impl->file.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_file_ops_t));
-	if(NULL == file_impl->file.ops)
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_file_ops_t));
+   if(NULL == file_impl->file.ops)
     {
         axis2_file_free(&(file_impl->file), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -105,8 +105,8 @@ axis2_file_create(const axis2_env_t *env)
     file_impl->file.ops->set_timestamp = axis2_file_set_timestamp;
     file_impl->file.ops->get_timestamp = axis2_file_get_timestamp;
     file_impl->file.ops->clone = axis2_file_clone;
-	
-	return &(file_impl->file);
+   
+   return &(file_impl->file);
 }
 
 /***************************Function implementation****************************/
@@ -130,7 +130,7 @@ axis2_file_free (axis2_file_t *file,
         AXIS2_FREE(env->allocator, file_impl->path);
         file_impl->path = NULL;
     }
-	
+   
     if(file_impl->file.ops)
     {
         AXIS2_FREE(env->allocator, file_impl->file.ops);

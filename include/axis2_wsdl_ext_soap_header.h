@@ -49,12 +49,12 @@ typedef struct axis2_wsdl_ext_soap_header_ops axis2_wsdl_ext_soap_header_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_header_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_ext_soap_header_t *ext_soap_header,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_part) (axis2_wsdl_ext_soap_header_t *ext_soap_header,
@@ -87,11 +87,11 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_header_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_header
 {
-	axis2_wsdl_ext_soap_header_ops_t *ops;
+   axis2_wsdl_ext_soap_header_ops_t *ops;
     struct axis2_wsdl_ext_soap_body *ext_soap_body;
 };
 
@@ -106,25 +106,25 @@ axis2_wsdl_ext_soap_header_create (const axis2_env_t *env,
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_EXT_SOAP_HEADER_FREE(ext_soap_header, env) \
-		((ext_soap_header)->ops->free (ext_soap_header, env))
+      ((ext_soap_header)->ops->free (ext_soap_header, env))
 
 #define AXIS2_WSDL_EXT_SOAP_HEADER_GET_PART(ext_soap_header, env) \
-		((ext_soap_header)->ops->get_part (ext_soap_header, env))
+      ((ext_soap_header)->ops->get_part (ext_soap_header, env))
 
 #define AXIS2_WSDL_EXT_SOAP_HEADER_SET_PART(ext_soap_header, env, part) \
-		((ext_soap_header)->ops->set_part (ext_soap_header, env, part))
+      ((ext_soap_header)->ops->set_part (ext_soap_header, env, part))
         
 #define AXIS2_WSDL_EXT_SOAP_HEADER_GET_MSG_QNAME(ext_soap_header, env) \
-		((ext_soap_header)->ops->get_msg_qname (ext_soap_header, env))
+      ((ext_soap_header)->ops->get_msg_qname (ext_soap_header, env))
 
 #define AXIS2_WSDL_EXT_SOAP_HEADER_SET_MSG_QNAME(ext_soap_header, env, msg_qname) \
-		((ext_soap_header)->ops->set_msg_qname (ext_soap_header, env, msg_qname))        
+      ((ext_soap_header)->ops->set_msg_qname (ext_soap_header, env, msg_qname))        
 
 #define AXIS2_WSDL_EXT_SOAP_HEADER_GET_QELEMENT(ext_soap_header, env) \
-		((ext_soap_header)->ops->get_qelement (ext_soap_header, env))
+      ((ext_soap_header)->ops->get_qelement (ext_soap_header, env))
 
 #define AXIS2_WSDL_EXT_SOAP_HEADER_SET_QELEMENT(ext_soap_header, env, qelement) \
-		((ext_soap_header)->ops->set_qelement (ext_soap_header, env, qelement))        
+      ((ext_soap_header)->ops->set_qelement (ext_soap_header, env, qelement))        
 
 /*************************** End of function macros ***************************/
 

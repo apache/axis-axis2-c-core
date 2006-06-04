@@ -54,7 +54,7 @@ typedef union axis2_woden_svc_element_base axis2_woden_svc_element_base_t;
 
 struct axis2_woden_svc_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -130,39 +130,39 @@ axis2_woden_svc_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_SVC_ELEMENT_FREE(svc_el, env) \
-		(((axis2_woden_svc_element_t *) svc_el)->ops->\
+      (((axis2_woden_svc_element_t *) svc_el)->ops->\
          free (svc_el, env))
 
 #define AXIS2_WODEN_SVC_ELEMENT_TYPE(svc_el, env) \
-		(((axis2_woden_svc_element_t *) svc_el)->ops->\
+      (((axis2_woden_svc_element_t *) svc_el)->ops->\
          type (svc_el, env))
 
 #define AXIS2_WODEN_SVC_ELEMENT_SET_QNAME(svc_el, env, name) \
-		(((axis2_woden_svc_element_t *) svc_el)->ops->\
+      (((axis2_woden_svc_element_t *) svc_el)->ops->\
          set_qname(svc_el, env, qname))
 
 #define AXIS2_WODEN_SVC_ELEMENT_GET_QNAME(svc_el, env) \
-		(((axis2_woden_svc_element_t *) svc_el)->ops->\
+      (((axis2_woden_svc_element_t *) svc_el)->ops->\
          get_qname(svc_el, env))
 
 #define AXIS2_WODEN_SVC_ELEMENT_SET_INTERFACE_QNAME(svc_el, env, qname) \
-		(((axis2_woden_svc_element_t *) svc_el)->ops->\
+      (((axis2_woden_svc_element_t *) svc_el)->ops->\
          set_interface_qname(svc_el, env, qname))
 
 #define AXIS2_WODEN_SVC_ELEMENT_GET_INTERFACE_QNAME(svc_el, env) \
-		(((axis2_woden_svc_element_t *) svc_el)->ops->\
+      (((axis2_woden_svc_element_t *) svc_el)->ops->\
          get_interface_qname(svc_el, env))
 
 #define AXIS2_WODEN_SVC_ELEMENT_GET_INTERFACE_ELEMENT(svc_el, env) \
-		(((axis2_woden_svc_element_t *) svc_el)->ops->\
+      (((axis2_woden_svc_element_t *) svc_el)->ops->\
          get_interface_element(svc_el, env))
 
 #define AXIS2_WODEN_SVC_ELEMENT_ADD_ENDPOINT_ELEMENT(svc_el, env, uri) \
-		(((axis2_woden_svc_element_t *) svc_el)->ops->\
+      (((axis2_woden_svc_element_t *) svc_el)->ops->\
          add_endpoint_element(svc_el, env, endpoint))
 
 #define AXIS2_WODEN_SVC_ELEMENT_GET_ENDPOINT_ELEMENTS(svc_el, env) \
-		(((axis2_woden_svc_element_t *) svc_el)->ops->\
+      (((axis2_woden_svc_element_t *) svc_el)->ops->\
          get_endpoint_elements(svc_el, env))
 
 /** @} */

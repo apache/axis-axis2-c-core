@@ -429,7 +429,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
         property = axis2_property_create(env);
         AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
         epr_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(call_impl->to, env);
-		address = AXIS2_STRDUP(epr_address, env);
+      address = AXIS2_STRDUP(epr_address, env);
         AXIS2_PROPERTY_SET_VALUE(property, env, address);
         AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
                                     AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);
@@ -506,7 +506,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_call_invoke_blocking(struct axis2_call *call,
         property = axis2_property_create(env);
         AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
         epr_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(call_impl->to, env);
-		address = AXIS2_STRDUP(epr_address, env);
+      address = AXIS2_STRDUP(epr_address, env);
         AXIS2_PROPERTY_SET_VALUE(property, env, address);
         AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
                                     AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);
@@ -644,16 +644,16 @@ axis2_status_t AXIS2_CALL axis2_call_invoke_non_blocking(struct axis2_call *call
     {
         axis2_thread_t *worker_thread = NULL;
         axis2_call_worker_func_args_t *arg_list = NULL;
-		arg_list = AXIS2_MALLOC(env->allocator, 
-						sizeof(axis2_call_worker_func_args_t));
-		if(NULL == arg_list)
-		{
-			return AXIS2_FAILURE;			
-		}
-		arg_list->env = env;
-		arg_list->call_impl = call_impl;
-		arg_list->callback = callback;
-		arg_list->op = op;
+      arg_list = AXIS2_MALLOC(env->allocator, 
+                  sizeof(axis2_call_worker_func_args_t));
+      if(NULL == arg_list)
+      {
+         return AXIS2_FAILURE;         
+      }
+      arg_list->env = env;
+      arg_list->call_impl = call_impl;
+      arg_list->callback = callback;
+      arg_list->op = op;
         arg_list->msg_ctx = msg_ctx;
         /* here a bloking invocation happens in a new thread, so the progamming model is non blocking */
          /* TODO svc_ctx.getConfigurationContext().getThreadPool().execute(new NonBlockingInvocationWorker(callback, op, msg_ctx)); */
@@ -894,14 +894,14 @@ axis2_call_worker_func(axis2_thread_t *thd, void *data)
     axis2_call_worker_func_args_t *args_list = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_msg_ctx_t *response = NULL;
-	const axis2_env_t *th_env = NULL;
+   const axis2_env_t *th_env = NULL;
     
     args_list = (axis2_call_worker_func_args_t *) data;
     if (!args_list)
         return NULL;
         
     AXIS2_ENV_CHECK(args_list->env, AXIS2_FAILURE);
-	th_env = axis2_init_thread_env(args_list->env);
+   th_env = axis2_init_thread_env(args_list->env);
 
     op_ctx = axis2_op_ctx_create(th_env, args_list->op, args_list->call_impl->svc_ctx);
     if (!op_ctx)

@@ -30,7 +30,7 @@ typedef struct axis2_conf_impl axis2_conf_impl_t;
  */  
 struct axis2_conf_impl
 {
-	axis2_conf_t conf;
+   axis2_conf_t conf;
     axis2_hash_t *svc_grps;
     axis2_hash_t *transports_in;
     axis2_hash_t *transports_out;
@@ -73,12 +73,12 @@ axis2_conf_free (axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL 
 axis2_conf_add_svc_grp (axis2_conf_t *conf, 
                                     const axis2_env_t *env,
-    	                            axis2_svc_grp_t *svc_grp);
+                                   axis2_svc_grp_t *svc_grp);
 
 axis2_svc_grp_t * AXIS2_CALL 
 axis2_conf_get_svc_grp (axis2_conf_t *conf, 
                                     const axis2_env_t *env,
-		                            axis2_char_t *svc_grp_name);
+                                  axis2_char_t *svc_grp_name);
 
 axis2_hash_t * AXIS2_CALL
 axis2_conf_get_svc_grps(axis2_conf_t *conf, 
@@ -87,7 +87,7 @@ axis2_conf_get_svc_grps(axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL 
 axis2_conf_add_svc (axis2_conf_t *conf, 
                                 const axis2_env_t *env,
-		                        axis2_svc_t *svc);
+                              axis2_svc_t *svc);
 
 axis2_svc_t * AXIS2_CALL 
 axis2_conf_get_svc (axis2_conf_t *conf, 
@@ -97,7 +97,7 @@ axis2_conf_get_svc (axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL 
 axis2_conf_remove_svc (axis2_conf_t *conf, 
                                     const axis2_env_t *env,
-		                            const axis2_char_t *name);
+                                  const axis2_char_t *name);
 
 axis2_status_t AXIS2_CALL
 axis2_conf_add_param (axis2_conf_t *conf, 
@@ -107,7 +107,7 @@ axis2_conf_add_param (axis2_conf_t *conf,
 axis2_param_t * AXIS2_CALL
 axis2_conf_get_param (axis2_conf_t *conf, 
                                 const axis2_env_t *env,
-		                        const axis2_char_t *name);
+                              const axis2_char_t *name);
 
 axis2_array_list_t * AXIS2_CALL
 axis2_conf_get_params (axis2_conf_t *conf, 
@@ -116,7 +116,7 @@ axis2_conf_get_params (axis2_conf_t *conf,
 axis2_bool_t AXIS2_CALL
 axis2_conf_is_param_locked (axis2_conf_t *conf, 
                                         const axis2_env_t *env,
-		                                axis2_char_t *param_name);
+                                      axis2_char_t *param_name);
                             
 /**
  * To split a given svc name into it's svc grp name and svc name.
@@ -131,7 +131,7 @@ axis2_status_t
 split_svc_name(const axis2_env_t *env,
                 axis2_char_t *svc_name, 
                 axis2_char_t **svc_name_st);
-		
+      
 axis2_transport_in_desc_t * AXIS2_CALL
 axis2_conf_get_transport_in(axis2_conf_t *conf,
                                         const axis2_env_t *env,
@@ -158,7 +158,7 @@ axis2_conf_get_transports_in(axis2_conf_t *conf,
 
 axis2_hash_t * AXIS2_CALL
 axis2_conf_get_transports_out(axis2_conf_t *conf,
-                                        const axis2_env_t *env);	
+                                        const axis2_env_t *env);   
                                         
 axis2_module_desc_t *AXIS2_CALL
 axis2_conf_get_module(axis2_conf_t *conf,
@@ -322,15 +322,15 @@ axis2_conf_create (const axis2_env_t *env)
 
     AXIS2_ENV_CHECK(env, NULL);
     
-	config_impl = (axis2_conf_impl_t *) AXIS2_MALLOC (env->allocator
-		, sizeof(axis2_conf_impl_t));
-	
-	if(NULL == config_impl)
+   config_impl = (axis2_conf_impl_t *) AXIS2_MALLOC (env->allocator
+      , sizeof(axis2_conf_impl_t));
+   
+   if(NULL == config_impl)
     {
-	    AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+       AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-	
+   
     config_impl->conf.param_container = NULL;
     config_impl->svc_grps = NULL;
     /*config_impl->modules = NULL;*/
@@ -352,62 +352,62 @@ axis2_conf_create (const axis2_env_t *env)
     config_impl->conf.ops = NULL;
     
     config_impl->conf.param_container = (axis2_param_container_t *) 
-        axis2_param_container_create(env);		
-	if(NULL == config_impl->conf.param_container)
-	{
+        axis2_param_container_create(env);      
+   if(NULL == config_impl->conf.param_container)
+   {
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
-    config_impl->svc_grps = axis2_hash_make(env);		
-	if(NULL == config_impl->svc_grps)
-	{
+    config_impl->svc_grps = axis2_hash_make(env);      
+   if(NULL == config_impl->svc_grps)
+   {
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
 
-    config_impl->transports_in = axis2_hash_make(env);		
-	if(NULL == config_impl->transports_in)
-	{
+    config_impl->transports_in = axis2_hash_make(env);      
+   if(NULL == config_impl->transports_in)
+   {
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
-	config_impl->transports_out = axis2_hash_make(env);		
-	if(NULL == config_impl->transports_out)
-	{
+   config_impl->transports_out = axis2_hash_make(env);      
+   if(NULL == config_impl->transports_out)
+   {
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
-    /*config_impl->modules = axis2_hash_make(env);		
-	if(NULL == config_impl->modules)
-	{
+    /*config_impl->modules = axis2_hash_make(env);      
+   if(NULL == config_impl->modules)
+   {
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}*/
+   }*/
     
-    config_impl->engaged_modules = axis2_array_list_create(env, 0);		
-	if(NULL == config_impl->engaged_modules)
-	{
+    config_impl->engaged_modules = axis2_array_list_create(env, 0);      
+   if(NULL == config_impl->engaged_modules)
+   {
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
     config_impl->in_phases_upto_and_including_post_dispatch = 
-        axis2_array_list_create(env, 0);		
-	if(NULL == config_impl->in_phases_upto_and_including_post_dispatch)
-	{
+        axis2_array_list_create(env, 0);      
+   if(NULL == config_impl->in_phases_upto_and_including_post_dispatch)
+   {
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     else
     {
         phase = axis2_phase_create(env, AXIS2_PHASE_TRANSPORTIN);
@@ -439,37 +439,37 @@ axis2_conf_create (const axis2_env_t *env)
         }
     }
     
-    /*config_impl->out_phases = axis2_array_list_create(env, 0);		
-	if(NULL == config_impl->out_phases)
-	{
+    /*config_impl->out_phases = axis2_array_list_create(env, 0);      
+   if(NULL == config_impl->out_phases)
+   {
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
-    config_impl->in_faultphases = axis2_array_list_create(env, 0);		
-	if(NULL == config_impl->in_faultphases)
-	{
+    config_impl->in_faultphases = axis2_array_list_create(env, 0);      
+   if(NULL == config_impl->in_faultphases)
+   {
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
-    config_impl->out_faultphases = axis2_array_list_create(env, 0);		
-	if(NULL == config_impl->out_faultphases)
-	{
+    config_impl->out_faultphases = axis2_array_list_create(env, 0);      
+   if(NULL == config_impl->out_faultphases)
+   {
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}*/
+   }*/
     
-    config_impl->handlers = axis2_array_list_create(env, 0);		
-	if(NULL == config_impl->handlers)
-	{
+    config_impl->handlers = axis2_array_list_create(env, 0);      
+   if(NULL == config_impl->handlers)
+   {
         axis2_conf_free(&(config_impl->conf), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
     config_impl->all_svcs = axis2_hash_make(env);
     if(NULL == config_impl->all_svcs)
@@ -528,22 +528,22 @@ axis2_conf_create (const axis2_env_t *env)
         return NULL;
     }
     
-	config_impl->conf.ops->free = axis2_conf_free;
-	config_impl->conf.ops->add_svc_grp = 
+   config_impl->conf.ops->free = axis2_conf_free;
+   config_impl->conf.ops->add_svc_grp = 
         axis2_conf_add_svc_grp;
-	config_impl->conf.ops->get_svc_grp = 
+   config_impl->conf.ops->get_svc_grp = 
         axis2_conf_get_svc_grp;
     config_impl->conf.ops->get_svc_grps = 
         axis2_conf_get_svc_grps;
-	config_impl->conf.ops->add_svc = axis2_conf_add_svc;
-	config_impl->conf.ops->get_svc = axis2_conf_get_svc;
-	config_impl->conf.ops->remove_svc = 
+   config_impl->conf.ops->add_svc = axis2_conf_add_svc;
+   config_impl->conf.ops->get_svc = axis2_conf_get_svc;
+   config_impl->conf.ops->remove_svc = 
         axis2_conf_remove_svc;
     config_impl->conf.ops->add_param = 
         axis2_conf_add_param;
-	config_impl->conf.ops->get_param = 
+   config_impl->conf.ops->get_param = 
         axis2_conf_get_param;
-	config_impl->conf.ops->get_params = 
+   config_impl->conf.ops->get_params = 
         axis2_conf_get_params;
     config_impl->conf.ops->is_param_locked = 
             axis2_conf_is_param_locked;
@@ -615,8 +615,8 @@ axis2_conf_create (const axis2_env_t *env)
     config_impl->conf.ops->engage_module_with_version = 
                         axis2_conf_engage_module_with_version;
     
-	return &(config_impl->conf);	
-}	
+   return &(config_impl->conf);   
+}   
 
 /**********************Start of op impls********************************/
 
@@ -627,10 +627,10 @@ axis2_conf_free (axis2_conf_t *conf,
     axis2_conf_impl_t *config_impl = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
     
-	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     
-	if(NULL != conf->param_container)
+   if(NULL != conf->param_container)
     {
         AXIS2_PARAM_CONTAINER_FREE(conf->param_container, env);
         conf->param_container = NULL;
@@ -919,7 +919,7 @@ axis2_conf_free (axis2_conf_t *conf,
         config_impl->faulty_modules = NULL;
     }
     
-	if(NULL != config_impl->dep_engine)
+   if(NULL != config_impl->dep_engine)
     {
         AXIS2_DEP_ENGINE_FREE(config_impl->dep_engine, env);
         config_impl->dep_engine= NULL;
@@ -951,17 +951,17 @@ axis2_conf_free (axis2_conf_t *conf,
 
     if(NULL != conf->ops)
     {
-		AXIS2_FREE(env->allocator, conf->ops);
+      AXIS2_FREE(env->allocator, conf->ops);
         conf->ops = NULL;
     }
     
     if(config_impl)
     {
-	    AXIS2_FREE(env->allocator, config_impl);
+       AXIS2_FREE(env->allocator, config_impl);
         config_impl = NULL;
     }
     
-	return status;
+   return status;
 }
 
 axis2_status_t AXIS2_CALL 
@@ -1053,18 +1053,18 @@ axis2_conf_add_svc_grp (axis2_conf_t *conf,
     }
     axis2_hash_set (config_impl->svc_grps, svc_grp_name, 
         AXIS2_HASH_KEY_STRING, svc_grp);
-	
-	return AXIS2_SUCCESS;
+   
+   return AXIS2_SUCCESS;
 }
 
 axis2_svc_grp_t * AXIS2_CALL 
 axis2_conf_get_svc_grp (axis2_conf_t *conf, 
                                     const axis2_env_t *env,
-		                            axis2_char_t *svc_grp_name)
+                                  axis2_char_t *svc_grp_name)
 {
     axis2_conf_impl_t *config_impl = NULL;
-	AXIS2_ENV_CHECK(env, NULL);
-	AXIS2_PARAM_CHECK(env->error, svc_grp_name, NULL);
+   AXIS2_ENV_CHECK(env, NULL);
+   AXIS2_PARAM_CHECK(env->error, svc_grp_name, NULL);
     
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     if(!config_impl->svc_grps)
@@ -1073,7 +1073,7 @@ axis2_conf_get_svc_grp (axis2_conf_t *conf,
             AXIS2_FAILURE);
         return NULL;
     }
-	return (axis2_svc_grp_t *) (axis2_hash_get (config_impl->svc_grps, 
+   return (axis2_svc_grp_t *) (axis2_hash_get (config_impl->svc_grps, 
             svc_grp_name, AXIS2_HASH_KEY_STRING));
 }
 
@@ -1096,57 +1096,57 @@ axis2_conf_add_svc (axis2_conf_t *conf,
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
-	
-	svc_grp = axis2_svc_grp_create(env);
-	
-	if(NULL == svc_grp)
+   
+   svc_grp = axis2_svc_grp_create(env);
+   
+   if(NULL == svc_grp)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE)
         return AXIS2_FAILURE;
     }
-		
-	
-	svc_grp_qname = AXIS2_SVC_GET_QNAME(svc, env);
+      
+   
+   svc_grp_qname = AXIS2_SVC_GET_QNAME(svc, env);
     if(NULL == svc_grp_qname)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_SVC, 
             AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-	
-	svc_grp_name = AXIS2_QNAME_GET_LOCALPART(svc_grp_qname, env);
-	if(!svc_grp_name)
+   
+   svc_grp_name = AXIS2_QNAME_GET_LOCALPART(svc_grp_qname, env);
+   if(!svc_grp_name)
     {
         return AXIS2_FAILURE;
     }
-	status = AXIS2_SVC_GRP_SET_NAME(svc_grp, env, svc_grp_name);
+   status = AXIS2_SVC_GRP_SET_NAME(svc_grp, env, svc_grp_name);
     if(AXIS2_FAILURE == status)
     {
         return status;
     }
-	status = AXIS2_SVC_GRP_SET_PARENT(svc_grp, env, conf);
+   status = AXIS2_SVC_GRP_SET_PARENT(svc_grp, env, conf);
     if(AXIS2_FAILURE == status)
     {
         return status;
     }
-	status = AXIS2_SVC_GRP_ADD_SVC(svc_grp, env, svc);
+   status = AXIS2_SVC_GRP_ADD_SVC(svc_grp, env, svc);
     if(AXIS2_FAILURE == status)
     {
         return status;
     }
     status = axis2_conf_add_svc_grp(conf, env, svc_grp);
-	
-	return status;
+   
+   return status;
 }
 
 axis2_svc_t * AXIS2_CALL 
 axis2_conf_get_svc (axis2_conf_t *conf, 
                                 const axis2_env_t *env,
-		                        axis2_char_t* svc_name)
+                              axis2_char_t* svc_name)
 {   
-	AXIS2_ENV_CHECK(env, NULL);
+   AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, svc_name, NULL);
-	
+   
     return axis2_hash_get(AXIS2_INTF_TO_IMPL(conf)->all_svcs, svc_name,
         AXIS2_HASH_KEY_STRING);
 }
@@ -1154,7 +1154,7 @@ axis2_conf_get_svc (axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL 
 axis2_conf_remove_svc (axis2_conf_t *conf, 
                                 const axis2_env_t *env,
-		                        const axis2_char_t *svc_name)
+                              const axis2_char_t *svc_name)
 {
     axis2_conf_impl_t *config_impl = NULL;
         
@@ -1169,21 +1169,21 @@ axis2_conf_remove_svc (axis2_conf_t *conf,
 axis2_status_t AXIS2_CALL
 axis2_conf_add_param (axis2_conf_t *conf, 
                         const axis2_env_t *env,
-		                axis2_param_t *param)
+                      axis2_param_t *param)
 {
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
     
-	if(AXIS2_TRUE == axis2_conf_is_param_locked(conf, env, 
+   if(AXIS2_TRUE == axis2_conf_is_param_locked(conf, env, 
         AXIS2_PARAM_GET_NAME(param, env)))
     {
         AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-	else
+   else
     {
         status = AXIS2_PARAM_CONTAINER_ADD_PARAM(conf->param_container, env, 
             param);
@@ -1194,36 +1194,36 @@ axis2_conf_add_param (axis2_conf_t *conf,
 axis2_param_t * AXIS2_CALL
 axis2_conf_get_param (axis2_conf_t *conf, 
                         const axis2_env_t *env,
-		                const axis2_char_t *name)
+                      const axis2_char_t *name)
 {
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
     
-	if(NULL == conf->param_container)
-	{
-		AXIS2_ERROR_SET(env->error, 
+   if(NULL == conf->param_container)
+   {
+      AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER, AXIS2_FAILURE);
         return NULL;
-	}
-		
-	return AXIS2_PARAM_CONTAINER_GET_PARAM(conf->param_container, env,
+   }
+      
+   return AXIS2_PARAM_CONTAINER_GET_PARAM(conf->param_container, env,
         name);
-	
+   
 }
 
 axis2_array_list_t * AXIS2_CALL
 axis2_conf_get_params (axis2_conf_t *conf, 
                         const axis2_env_t *env)
 {
-	AXIS2_ENV_CHECK(env, NULL);
-	return AXIS2_PARAM_CONTAINER_GET_PARAMS(conf->param_container, env);
-	
+   AXIS2_ENV_CHECK(env, NULL);
+   return AXIS2_PARAM_CONTAINER_GET_PARAMS(conf->param_container, env);
+   
 }
 
 axis2_bool_t AXIS2_CALL
 axis2_conf_is_param_locked (axis2_conf_t *conf, 
                             const axis2_env_t *env,
-		                    axis2_char_t *param_name)
+                          axis2_char_t *param_name)
 {
     axis2_param_t *param = NULL;
         
@@ -1449,7 +1449,7 @@ axis2_conf_get_transports_out(axis2_conf_t *conf,
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(conf)->transports_out;
-}	
+}   
 
 /*static axis2_status_t 
 split_svc_name (const axis2_env_t *env, 
@@ -1458,7 +1458,7 @@ split_svc_name (const axis2_env_t *env,
 {
     axis2_char_t *svc_name_l = NULL;
     axis2_char_t *grp_name = NULL;
-	
+   
     svc_name_l = strpbrk(svc_name, SERVICE_NAME_SPLIT_CHAR);
     if(NULL == svc_name_l)
     {
@@ -1472,8 +1472,8 @@ split_svc_name (const axis2_env_t *env,
     svc_name_l = svc_name_l + 1;
     *(svc_name_st + 1) = AXIS2_STRDUP(svc_name_l, env);
     *(svc_name_st + 2) = grp_name;
-	
-    return AXIS2_SUCCESS;	
+   
+    return AXIS2_SUCCESS;   
 }
 */
 

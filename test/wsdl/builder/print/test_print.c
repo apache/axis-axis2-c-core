@@ -49,25 +49,25 @@ main (int argc, char *argv[])
     void *wp = axis2_wsdl4c_parser_create(argv[1], ""); 
     while (axis2_wsdl4c_parser_get_event_type(wp) != AXIS2_WSDL4C_PARSER_END)
     {
-	    switch (axis2_wsdl4c_parser_get_next_element(wp))
-	    {
+       switch (axis2_wsdl4c_parser_get_next_element(wp))
+       {
             axis2_array_list_t *msg_list = NULL;
             void * port_type = NULL;
             int i = 0;
             int size = 0;
             void *message = NULL;
 
-	        case AXIS2_WSDL4C_PARSER_DOCUMENTATION:
+           case AXIS2_WSDL4C_PARSER_DOCUMENTATION:
                 printf("%s\n", axis2_wsdl4c_parser_get_documentation(wp));
-	            break;
-	            case AXIS2_WSDL4C_PARSER_TYPES:
+               break;
+               case AXIS2_WSDL4C_PARSER_TYPES:
                 printf("%d schema(s) found \n", axis2_wsdl4c_parser_get_num_schemas(wp));
-	            break;
-	        case AXIS2_WSDL4C_PARSER_MESSAGE:
+               break;
+           case AXIS2_WSDL4C_PARSER_MESSAGE:
                 message = axis2_wsdl4c_parser_get_message(wp);
-	            printf("Message  :%s\n", axis2_wsdl4c_msg_get_name(message));
-	            break;
-	        case AXIS2_WSDL4C_PARSER_PORT_TYPE:
+               printf("Message  :%s\n", axis2_wsdl4c_msg_get_name(message));
+               break;
+           case AXIS2_WSDL4C_PARSER_PORT_TYPE:
                 port_type = axis2_wsdl4c_parser_get_port_type(wp);
                 printf("Port Type %s ", axis2_wsdl4c_port_type_get_name(port_type));
                 printf("has :%d operations \n", axis2_wsdl4c_port_type_get_num_ops(port_type));
@@ -82,26 +82,26 @@ main (int argc, char *argv[])
                     axis2_array_list_t *fault_list = NULL;
 
                     void *op = AXIS2_ARRAY_LIST_GET(msg_list, env, i);
-					if(!op)
-					{
-						return -1;
-					}
+               if(!op)
+               {
+                  return -1;
+               }
                     void *in_msg = axis2_wsdl4c_operation_get_message(op, AXIS2_WSDL4C_INPUT);
                     void *out_msg = axis2_wsdl4c_operation_get_message(op, AXIS2_WSDL4C_OUTPUT);
                     fault_list = axis2_wsdl4c_operation_get_faults(op);
                     
                     op_name = axis2_wsdl4c_operation_get_name(op);
                     printf("Operation Name:%s\n", op_name);
-					if(in_msg)
-					{
-                    	in_msg_name = axis2_wsdl4c_msg_get_name(in_msg);
-                    	printf("Input:%s\n", in_msg_name); 
-					}
-					if(out_msg)
-					{
-                    	out_msg_name = axis2_wsdl4c_msg_get_name(out_msg);
-                    	printf("Output:%s\n", out_msg_name);
-					}
+               if(in_msg)
+               {
+                       in_msg_name = axis2_wsdl4c_msg_get_name(in_msg);
+                       printf("Input:%s\n", in_msg_name); 
+               }
+               if(out_msg)
+               {
+                       out_msg_name = axis2_wsdl4c_msg_get_name(out_msg);
+                       printf("Output:%s\n", out_msg_name);
+               }
                     if(fault_list)
                     {
                         int j = 0, sizej = 0;

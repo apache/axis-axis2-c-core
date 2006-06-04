@@ -22,21 +22,21 @@
 
 std::string* getPlatformErrorMessage(long errorNumber)
 {
-	std::string* returningString = new std::string();
+   std::string* returningString = new std::string();
     LPVOID lpMsgBuf;
 
-	FormatMessage(
-	FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-	FORMAT_MESSAGE_FROM_SYSTEM,
-	NULL,
-	errorNumber,
-	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-	(LPTSTR) &lpMsgBuf,
-	0, NULL );
+   FormatMessage(
+   FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+   FORMAT_MESSAGE_FROM_SYSTEM,
+   NULL,
+   errorNumber,
+   MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+   (LPTSTR) &lpMsgBuf,
+   0, NULL );
 
-	returningString->append((LPTSTR)lpMsgBuf);
+   returningString->append((LPTSTR)lpMsgBuf);
     LocalFree(lpMsgBuf);
-		    
+          
     return returningString;
 }
 */

@@ -18,7 +18,7 @@
 
 /** 
  * @brief Wsdl interface struct impl
- *	Axis2 Wsdl Interface Implementation 
+ *   Axis2 Wsdl Interface Implementation 
  */ 
 typedef struct axis2_wsdl_interface_impl
 {
@@ -47,12 +47,12 @@ typedef struct axis2_wsdl_interface_impl
 } axis2_wsdl_interface_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(wsdl_interface) ((axis2_wsdl_interface_impl_t *)wsdl_interface)
-	
+   
 /*************************** Function headers *********************************/
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_interface_free (axis2_wsdl_interface_t *wsdl_interface, 
-                        const axis2_env_t *env);	
+                        const axis2_env_t *env);   
 
 axis2_hash_t *AXIS2_CALL
 axis2_wsdl_interface_get_defined_ops(axis2_wsdl_interface_t *wsdl_interface,
@@ -127,7 +127,7 @@ axis2_wsdl_interface_set_style_default(axis2_wsdl_interface_t *wsdl_interface,
                                         const axis2_env_t *env,
                                         axis2_char_t *style_default);
 
-/************************* End of function headers ****************************/	
+/************************* End of function headers ****************************/   
 
 axis2_wsdl_interface_t * AXIS2_CALL
 axis2_wsdl_interface_create (const axis2_env_t *env)
@@ -136,18 +136,18 @@ axis2_wsdl_interface_create (const axis2_env_t *env)
     
     AXIS2_ENV_CHECK(env, NULL);
     
-	wsdl_interface_impl = (axis2_wsdl_interface_impl_t *) AXIS2_MALLOC (env->
+   wsdl_interface_impl = (axis2_wsdl_interface_impl_t *) AXIS2_MALLOC (env->
         allocator, sizeof (axis2_wsdl_interface_impl_t));
      
-	if(NULL == wsdl_interface_impl)
-	{
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+   if(NULL == wsdl_interface_impl)
+   {
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
     wsdl_interface_impl->wsdl_interface.extensible_component = NULL;
     wsdl_interface_impl->qname = NULL;
-	wsdl_interface_impl->style_default = NULL;
+   wsdl_interface_impl->style_default = NULL;
     wsdl_interface_impl->faults = NULL;
     wsdl_interface_impl->super_interfaces = NULL;
     wsdl_interface_impl->ops = NULL;
@@ -156,82 +156,82 @@ axis2_wsdl_interface_create (const axis2_env_t *env)
     wsdl_interface_impl->wsdl_interface.extensible_component = 
         axis2_wsdl_extensible_component_create(env);
     
-	if(NULL == wsdl_interface_impl->wsdl_interface.extensible_component)
-	{
+   if(NULL == wsdl_interface_impl->wsdl_interface.extensible_component)
+   {
         axis2_wsdl_interface_free(&(wsdl_interface_impl->wsdl_interface), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
-	}    
+   }    
     
-    wsdl_interface_impl->faults = axis2_linked_list_create(env);		
-	if(NULL == wsdl_interface_impl->faults)
-	{
+    wsdl_interface_impl->faults = axis2_linked_list_create(env);      
+   if(NULL == wsdl_interface_impl->faults)
+   {
         axis2_wsdl_interface_free(&(wsdl_interface_impl->wsdl_interface), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;		
-	}
+        return NULL;      
+   }
 
-	wsdl_interface_impl->super_interfaces = axis2_hash_make(env);		
-	if(NULL == wsdl_interface_impl->super_interfaces)
-	{
+   wsdl_interface_impl->super_interfaces = axis2_hash_make(env);      
+   if(NULL == wsdl_interface_impl->super_interfaces)
+   {
         axis2_wsdl_interface_free(&(wsdl_interface_impl->wsdl_interface), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;		
-	}
+        return NULL;      
+   }
     
-    wsdl_interface_impl->ops = axis2_hash_make(env);		
-	if(NULL == wsdl_interface_impl->ops)
-	{
+    wsdl_interface_impl->ops = axis2_hash_make(env);      
+   if(NULL == wsdl_interface_impl->ops)
+   {
         axis2_wsdl_interface_free(&(wsdl_interface_impl->wsdl_interface), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;		
-	}  
+        return NULL;      
+   }  
     
     wsdl_interface_impl->wsdl_interface.ops = AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_wsdl_interface_ops_t));
-	if(NULL == wsdl_interface_impl->wsdl_interface.ops)
-	{
+   if(NULL == wsdl_interface_impl->wsdl_interface.ops)
+   {
         axis2_wsdl_interface_free(&(wsdl_interface_impl->wsdl_interface), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
-	
-	wsdl_interface_impl->wsdl_interface.ops->free = axis2_wsdl_interface_free;
+   }
+   
+   wsdl_interface_impl->wsdl_interface.ops->free = axis2_wsdl_interface_free;
     
-	wsdl_interface_impl->wsdl_interface.ops->get_defined_ops = 
+   wsdl_interface_impl->wsdl_interface.ops->get_defined_ops = 
         axis2_wsdl_interface_get_defined_ops;
     
-	wsdl_interface_impl->wsdl_interface.ops->get_faults = 
+   wsdl_interface_impl->wsdl_interface.ops->get_faults = 
         axis2_wsdl_interface_get_faults;
     
-	wsdl_interface_impl->wsdl_interface.ops->get_name = 
+   wsdl_interface_impl->wsdl_interface.ops->get_name = 
         axis2_wsdl_interface_get_name;
     
-	wsdl_interface_impl->wsdl_interface.ops->get_ops = 
+   wsdl_interface_impl->wsdl_interface.ops->get_ops = 
         axis2_wsdl_interface_get_ops;
     
     wsdl_interface_impl->wsdl_interface.ops->get_op =
         axis2_wsdl_interface_get_op;
     
-	wsdl_interface_impl->wsdl_interface.ops->get_super_interfaces = 
+   wsdl_interface_impl->wsdl_interface.ops->get_super_interfaces = 
         axis2_wsdl_interface_get_super_interfaces;
   
-	wsdl_interface_impl->wsdl_interface.ops->get_super_interface = 
+   wsdl_interface_impl->wsdl_interface.ops->get_super_interface = 
         axis2_wsdl_interface_get_super_interface;
     
-	wsdl_interface_impl->wsdl_interface.ops->get_target_namespace = 
+   wsdl_interface_impl->wsdl_interface.ops->get_target_namespace = 
         axis2_wsdl_interface_get_target_namespace;
     
     wsdl_interface_impl->wsdl_interface.ops->set_faults = 
         axis2_wsdl_interface_set_faults;
         
-	wsdl_interface_impl->wsdl_interface.ops->set_name = 
+   wsdl_interface_impl->wsdl_interface.ops->set_name = 
         axis2_wsdl_interface_set_name;
     
-	wsdl_interface_impl->wsdl_interface.ops->set_ops = 
+   wsdl_interface_impl->wsdl_interface.ops->set_ops = 
         axis2_wsdl_interface_set_ops;
     
-	wsdl_interface_impl->wsdl_interface.ops->set_op = 
+   wsdl_interface_impl->wsdl_interface.ops->set_op = 
         axis2_wsdl_interface_set_op;
     
     wsdl_interface_impl->wsdl_interface.ops->set_super_interfaces = 
@@ -245,8 +245,8 @@ axis2_wsdl_interface_create (const axis2_env_t *env)
         
     wsdl_interface_impl->wsdl_interface.ops->set_style_default = 
         axis2_wsdl_interface_set_style_default;
-						
-	return &(wsdl_interface_impl->wsdl_interface);
+                  
+   return &(wsdl_interface_impl->wsdl_interface);
 }
 
 /*************************Function implementations*****************************/
@@ -261,7 +261,7 @@ axis2_wsdl_interface_free (
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE); 
     wsdl_interface_impl = AXIS2_INTF_TO_IMPL(wsdl_interface);
     
-	if(wsdl_interface->ops)
+   if(wsdl_interface->ops)
     {
         AXIS2_FREE(env->allocator, wsdl_interface->ops);
         wsdl_interface->ops = NULL;
@@ -318,7 +318,7 @@ axis2_wsdl_interface_free (
         AXIS2_FREE(env->allocator, wsdl_interface_impl);
     wsdl_interface_impl = NULL;
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_hash_t *AXIS2_CALL

@@ -54,12 +54,12 @@ typedef struct axis2_transport_sender_ops axis2_transport_sender_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *free)(
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *free)(
                     axis2_transport_sender_t *transport_sender,
-			        const axis2_env_t *env);
+                 const axis2_env_t *env);
     /**
      * Initialize
      * @param confContext
@@ -80,8 +80,8 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
     cleanup) (axis2_transport_sender_t *transport_sender,
                                 const axis2_env_t *env,
                                 struct axis2_msg_ctx *msg_ctx);
-									
-	/**
+                           
+   /**
      * Invoke
      * @param msgContext
      * @throws org.apache.axis2.AxisFault
@@ -100,7 +100,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_transport_sender
 {
-	axis2_transport_sender_ops_t *ops;
+   axis2_transport_sender_ops_t *ops;
 };
 
 /**
@@ -113,16 +113,16 @@ axis2_transport_sender_create (const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_TRANSPORT_SENDER_FREE(transport_sender, env) \
-		((transport_sender->ops)->free (transport_sender, env))
+      ((transport_sender->ops)->free (transport_sender, env))
 
 #define AXIS2_TRANSPORT_SENDER_INIT(transport_sender, env, conf_context, transport_out) \
-		((transport_sender->ops)->init (transport_sender, env, conf_context, transport_out))
+      ((transport_sender->ops)->init (transport_sender, env, conf_context, transport_out))
 
 #define AXIS2_TRANSPORT_SENDER_INVOKE(transport_sender, env, msg_ctx) \
-		((transport_sender->ops)->invoke (transport_sender, env, msg_ctx))      
+      ((transport_sender->ops)->invoke (transport_sender, env, msg_ctx))      
 
 #define AXIS2_TRANSPORT_SENDER_CLEANUP(transport_sender, env, msg_ctx) \
-		((transport_sender->ops)->cleanup (transport_sender, env, msg_ctx))      
+      ((transport_sender->ops)->cleanup (transport_sender, env, msg_ctx))      
 
 /*************************** End of function macros ***************************/
 

@@ -29,7 +29,7 @@ DWORD tls_axis2_thread = 0;
 
 struct axis2_thread_t 
 {
-	HANDLE *td;
+   HANDLE *td;
     void *data;
     axis2_thread_start_t func;
 };
@@ -42,12 +42,12 @@ struct axis2_threadattr_t
 
 struct axis2_threadkey_t 
 {
-	DWORD key;
+   DWORD key;
 };
 
 struct axis2_thread_once_t 
 {
-	long value;
+   long value;
 };
 
 #endif  /* AXIS2_THREAD_WINDOWS_H */

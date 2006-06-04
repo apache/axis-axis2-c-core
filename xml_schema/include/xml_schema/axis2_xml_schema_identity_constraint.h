@@ -47,7 +47,7 @@ extern "C"
 
 struct axis2_xml_schema_identity_constraint_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -135,48 +135,48 @@ axis2_xml_schema_identity_constraint_resolve_methods(
 /**************** Macros *****************************************************/                
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_FREE(id_constr, env) \
-		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
+      (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
             free(id_constr, env))
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_GET_BASE_IMPL(id_constr, env) \
-		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
+      (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
             get_base_impl(id_constr, env))
 
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_TYPE(id_constr, env) \
-		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
+      (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
             type(id_constr, env))
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_SUPER_OBJS(id_constr, env) \
-		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
+      (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
             super_objs(id_constr, env))
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_GET_REFER(id_constr, env) \
-		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
+      (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
             get_refer(id_constr, env))
             
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_SET_REFER(id_constr, env, refer) \
-		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
+      (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
             set_refer(id_constr, env, refer))            
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_GET_FIELDS(id_constr, env) \
-		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
+      (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
             get_fields(id_constr, env))
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_GET_NAME(id_constr, env) \
-		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
+      (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
             get_name(id_constr, env))
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_SET_NAME(id_constr, env, name) \
-		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
+      (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
             set_name(id_constr, env, name))
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_GET_SELECTOR(id_constr, env) \
-		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
+      (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
             get_selector(id_constr, env))
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_SET_SELECTOR(id_constr, env, selector) \
-		(((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
+      (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
             set_selector(id_constr, env, selector))
 
 /********************** macros **************************************************/

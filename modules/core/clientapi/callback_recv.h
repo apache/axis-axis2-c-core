@@ -69,7 +69,7 @@ struct axis2_callback_recv_ops
 
 /** 
  * @brief Message Context struct
-  *	Axis2 Message Context
+  *   Axis2 Message Context
  */
 struct axis2_callback_recv
 {

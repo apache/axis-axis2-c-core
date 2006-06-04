@@ -23,7 +23,7 @@ typedef struct axis2_woden_qname_list_or_token_any_attr_impl
 
 /** 
  * @brief QName List or Token Any Attribute Struct Impl
- *	Axis2 QName List or Token Any Attribute  
+ *   Axis2 QName List or Token Any Attribute  
  */ 
 struct axis2_woden_qname_list_or_token_any_attr_impl
 {

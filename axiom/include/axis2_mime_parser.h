@@ -37,8 +37,8 @@ extern "C"
 #endif
 
 typedef struct axis2_mime_parser_ops axis2_mime_parser_ops_t;
-typedef struct axis2_mime_parser axis2_mime_parser_t;	
-	
+typedef struct axis2_mime_parser axis2_mime_parser_t;   
+   
 
 /** @defgroup axis2_mime_parser Flow
   * @ingroup axis2_mime_parser
@@ -64,7 +64,7 @@ struct axis2_mime_parser_ops
         axis2_mime_parser_t *mime_parser, 
         const axis2_env_t *env);
     
-	/** Deallocate memory
+   /** Deallocate memory
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
@@ -85,11 +85,11 @@ struct axis2_mime_parser_ops
 
 /** 
  * @brief Flow struct
- *	Flow  
+ *   Flow  
  */ 
 struct axis2_mime_parser
 {
-	axis2_mime_parser_ops_t *ops;
+   axis2_mime_parser_ops_t *ops;
 };
 
 /**

@@ -20,7 +20,7 @@
 typedef struct axis2_array_list_impl
 {
     /** handler description */
-	axis2_array_list_t array_list;
+   axis2_array_list_t array_list;
     /**The number of elements in this list. */
     int size;
     /**Current capacity of this list. */
@@ -121,7 +121,7 @@ AXIS2_CALL axis2_array_list_create(const axis2_env_t *env, int capacity)
     array_list_impl->size = 0;
     array_list_impl->capacity = 0;
     array_list_impl->data = NULL;
-	
+   
     /* Check capacity, and set the default if error */
     if (capacity <= 0)
         capacity = AXIS2_ARRAY_LIST_DEFAULT_CAPACITY;

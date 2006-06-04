@@ -46,7 +46,7 @@ extern "C"
 
 struct axis2_woden_include_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -122,16 +122,16 @@ axis2_woden_include_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_INCLUDE_FREE(include, env) \
-		(((axis2_woden_include_t *) include)->ops->free(include, env))
+      (((axis2_woden_include_t *) include)->ops->free(include, env))
 
 #define AXIS2_WODEN_INCLUDE_SUPER_OBJS(include, env) \
-		(((axis2_woden_include_t *) include)->ops->super_objs(include, env))
+      (((axis2_woden_include_t *) include)->ops->super_objs(include, env))
 
 #define AXIS2_WODEN_INCLUDE_TYPE(include, env) \
-		(((axis2_woden_include_t *) include)->ops->type(include, env))
+      (((axis2_woden_include_t *) include)->ops->type(include, env))
 
 #define AXIS2_WODEN_INCLUDE_GET_BASE_IMPL(include, env) \
-		(((axis2_woden_include_t *) include)->ops->get_base_impl(include, env))
+      (((axis2_woden_include_t *) include)->ops->get_base_impl(include, env))
 
 /** @} */
 #ifdef __cplusplus

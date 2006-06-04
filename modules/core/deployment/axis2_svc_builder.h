@@ -52,12 +52,12 @@ typedef struct axis2_svc_builder_ops axis2_svc_builder_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_svc_builder_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_svc_builder_t *svc_builder,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
                                    
     /**
      * top most method that is used to populate service from corresponding OM
@@ -92,7 +92,7 @@ AXIS2_DECLARE_DATA struct axis2_svc_builder_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_svc_builder
 {
-	axis2_svc_builder_ops_t *ops;
+   axis2_svc_builder_ops_t *ops;
     struct axis2_desc_builder *desc_builder;
 };
 
@@ -130,13 +130,13 @@ axis2_svc_builder_create_with_dep_engine_and_svc (const axis2_env_t *env,
 /*************************** Function macros **********************************/
 
 #define AXIS2_SVC_BUILDER_FREE(svc_builder, env) \
-		((svc_builder)->ops->free (svc_builder, env))
+      ((svc_builder)->ops->free (svc_builder, env))
 
 #define AXIS2_SVC_BUILDER_POPULATE_SVC(svc_builder, env, svc_node) \
-		((svc_builder)->ops->populate_svc (svc_builder, env, svc_node))
+      ((svc_builder)->ops->populate_svc (svc_builder, env, svc_node))
 
 #define AXIS2_SVC_BUILDER_PROCESS_MODULE_REFS(svc_builder, env, module_refs) \
-		((svc_builder)->ops->process_module_refs (svc_builder, env, module_refs))
+      ((svc_builder)->ops->process_module_refs (svc_builder, env, module_refs))
 
 
 /*************************** End of function macros ***************************/

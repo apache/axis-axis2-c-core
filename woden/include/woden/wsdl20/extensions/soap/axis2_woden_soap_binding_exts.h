@@ -55,7 +55,7 @@ extern "C"
 
 struct axis2_woden_soap_binding_exts_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -127,31 +127,31 @@ axis2_woden_soap_binding_exts_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_SOAP_BINDING_EXTS_FREE(soap_binding_exts, env) \
-		(((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->free(soap_binding_exts, env))
+      (((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->free(soap_binding_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_EXTS_SUPER_OBJS(soap_binding_exts, env) \
-		(((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->super_objs(soap_binding_exts, env))
+      (((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->super_objs(soap_binding_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_EXTS_TYPE(soap_binding_exts, env) \
-		(((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->type(soap_binding_exts, env))
+      (((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->type(soap_binding_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_EXTS_GET_BASE_IMPL(soap_binding_exts, env) \
-		(((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->get_base_impl(soap_binding_exts, env))
+      (((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->get_base_impl(soap_binding_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_EXTS_GET_SOAP_VERSION(soap_binding_exts, env) \
-		(((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->\
+      (((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->\
         get_soap_version (soap_binding_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_EXTS_GET_SOAP_UNDERLYING_PROTOCOL(soap_binding_exts, env) \
-		(((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->\
+      (((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->\
         get_soap_underlying_protocol (soap_binding_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_EXTS_GET_SOAP_MEP_DEFAULT(soap_binding_exts, env) \
-		(((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->\
+      (((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->\
         get_soap_mep_default (soap_binding_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_EXTS_GET_SOAP_MODULES(soap_binding_exts, env) \
-		(((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->\
+      (((axis2_woden_soap_binding_exts_t *) soap_binding_exts)->ops->\
         get_soap_modules (soap_binding_exts, env))
 
 /** @} */

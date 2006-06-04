@@ -35,7 +35,7 @@ typedef struct axis2_msg_ctx_impl axis2_msg_ctx_impl_t;
 struct axis2_msg_ctx_impl
 {
     /** message context interface struct */
-	axis2_msg_ctx_t msg_ctx;
+   axis2_msg_ctx_t msg_ctx;
     /** base context struct */
     axis2_ctx_t *base;
     /** parent of message context is an op context instance */
@@ -416,7 +416,7 @@ axis2_msg_ctx_set_options (axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env,
     axis2_options_t *options);
 
-/************************* End of function headers ****************************/	
+/************************* End of function headers ****************************/   
 
 AXIS2_EXTERN axis2_msg_ctx_t * AXIS2_CALL
 axis2_msg_ctx_create (const axis2_env_t *env,
@@ -684,7 +684,7 @@ axis2_msg_ctx_free (axis2_msg_ctx_t *msg_ctx,
     if (msg_ctx_impl->svc_grp_id)
     {
         /*AXIS2_FREE(env->allocator, msg_ctx_impl->svc_grp_id);
-		Freeing this is wrong. This is a shallow copy */
+      Freeing this is wrong. This is a shallow copy */
         msg_ctx_impl->svc_grp_id = NULL;
     }
     

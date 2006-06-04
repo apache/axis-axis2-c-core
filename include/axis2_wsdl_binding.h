@@ -56,12 +56,12 @@ typedef struct axis2_wsdl_binding_ops axis2_wsdl_binding_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_binding_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_binding_t *wsdl_binding,
-		    const axis2_env_t *env);
+          const axis2_env_t *env);
                                
     /**
      * Method getBoundInterface
@@ -198,7 +198,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_binding
 {
-	axis2_wsdl_binding_ops_t *ops;
+   axis2_wsdl_binding_ops_t *ops;
     struct axis2_wsdl_extensible_component *extensible_component;
 };
 
@@ -211,46 +211,46 @@ AXIS2_EXTERN axis2_wsdl_binding_t *AXIS2_CALL axis2_wsdl_binding_create (const a
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_BINDING_FREE(wsdl_binding, env) \
-		((wsdl_binding)->ops->free (wsdl_binding, env))
+      ((wsdl_binding)->ops->free (wsdl_binding, env))
 
 #define AXIS2_WSDL_BINDING_GET_BOUND_INTERFACE(wsdl_binding, env) \
-		((wsdl_binding)->ops->get_bound_interface (wsdl_binding, env))
+      ((wsdl_binding)->ops->get_bound_interface (wsdl_binding, env))
 
 #define AXIS2_WSDL_BINDING_SET_BOUND_INTERFACE(wsdl_binding, env, interface) \
-		((wsdl_binding)->ops->set_bound_interface (wsdl_binding, env, interface))
+      ((wsdl_binding)->ops->set_bound_interface (wsdl_binding, env, interface))
         
 #define AXIS2_WSDL_BINDING_GET_NAME(wsdl_binding, env) \
-		((wsdl_binding)->ops->get_name (wsdl_binding, env))
+      ((wsdl_binding)->ops->get_name (wsdl_binding, env))
 
 #define AXIS2_WSDL_BINDING_SET_NAME(wsdl_binding, env, qname) \
-		((wsdl_binding)->ops->set_name (wsdl_binding, env, qname))        
+      ((wsdl_binding)->ops->set_name (wsdl_binding, env, qname))        
 
 #define AXIS2_WSDL_BINDING_GET_TARGET_NAMESPACE(wsdl_binding, env) \
-		((wsdl_binding)->ops->get_target_namespace (wsdl_binding, env))
+      ((wsdl_binding)->ops->get_target_namespace (wsdl_binding, env))
 
 #define AXIS2_WSDL_BINDING_GET_BINDING_FAULTS(wsdl_binding, env) \
-		((wsdl_binding)->ops->get_binding_faults (wsdl_binding, env)) 
+      ((wsdl_binding)->ops->get_binding_faults (wsdl_binding, env)) 
         
 #define AXIS2_WSDL_BINDING_SET_BINDING_FAULTS(wsdl_binding, env, faults) \
-		((wsdl_binding)->ops->set_binding_faults (wsdl_binding, env, faults))
+      ((wsdl_binding)->ops->set_binding_faults (wsdl_binding, env, faults))
 
 #define AXIS2_WSDL_BINDING_GET_BINDING_OPS(wsdl_binding, env) \
-		((wsdl_binding)->ops->get_binding_ops (wsdl_binding, env))
+      ((wsdl_binding)->ops->get_binding_ops (wsdl_binding, env))
 
 #define AXIS2_WSDL_BINDING_SET_BINDING_OPS(wsdl_binding, env, ops) \
-		((wsdl_binding)->ops->set_binding_ops (wsdl_binding, env, ops)) 
+      ((wsdl_binding)->ops->set_binding_ops (wsdl_binding, env, ops)) 
         
 #define AXIS2_WSDL_BINDING_ADD_BINDING_OP(wsdl_binding, env, op) \
-		((wsdl_binding)->ops->add_binding_op (wsdl_binding, env, op))
+      ((wsdl_binding)->ops->add_binding_op (wsdl_binding, env, op))
 
 #define AXIS2_WSDL_BINDING_GET_BINDING_OP(wsdl_binding, env, qname) \
-		((wsdl_binding)->ops->get_binding_op (wsdl_binding, env, qname)) 
+      ((wsdl_binding)->ops->get_binding_op (wsdl_binding, env, qname)) 
 
 #define AXIS2_WSDL_BINDING_ADD_BINDING_FAULT(wsdl_binding, env, op) \
-		((wsdl_binding)->ops->add_binding_fault (wsdl_binding, env, fault))
+      ((wsdl_binding)->ops->add_binding_fault (wsdl_binding, env, fault))
 
 #define AXIS2_WSDL_BINDING_GET_BINDING_FAULT(wsdl_binding, env) \
-		((wsdl_binding)->ops->get_binding_fault (wsdl_binding, env)) 
+      ((wsdl_binding)->ops->get_binding_fault (wsdl_binding, env)) 
 /*************************** End of function macros ***************************/
 
 /** @} */

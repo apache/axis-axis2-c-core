@@ -46,7 +46,7 @@ typedef struct axis2_xml_schema_facet_ops
 
 struct axis2_xml_schema_facet_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -123,15 +123,15 @@ axis2_xml_schema_facet_construct(const axis2_env_t *env,
 /************************* macros *********************************************/
 
 #define AXIS2_XML_SCHEMA_FACET_FREE(facet, env) \
-		(((axis2_xml_schema_facet_t *) facet)->ops->\
+      (((axis2_xml_schema_facet_t *) facet)->ops->\
             free(facet, env))
 
 #define AXIS2_XML_SCHEMA_FACET_GET_BASE_IMPL(facet, env) \
-		(((axis2_xml_schema_facet_t *) facet)->ops->\
+      (((axis2_xml_schema_facet_t *) facet)->ops->\
             get_base_impl(facet, env))
 
 #define AXIS2_XML_SCHEMA_FACET_TYPE(facet, env) \
-		(((axis2_xml_schema_facet_t *) facet)->ops->\
+      (((axis2_xml_schema_facet_t *) facet)->ops->\
             type(facet, env))
 
 #define AXIS2_XML_SCHEMA_FACET_SUPER_OBJS(facet, env) \
@@ -139,19 +139,19 @@ axis2_xml_schema_facet_construct(const axis2_env_t *env,
             super_objs(facet, env))
 
 #define AXIS2_XML_SCHEMA_FACET_IS_FIXED(facet, env) \
-		(((axis2_xml_schema_facet_t *) facet)->ops->\
+      (((axis2_xml_schema_facet_t *) facet)->ops->\
             is_fixed(facet, env))
 
 #define AXIS2_XML_SCHEMA_FACET_SET_FIXED(facet, env, fixed) \
-		(((axis2_xml_schema_facet_t *) facet)->ops->\
+      (((axis2_xml_schema_facet_t *) facet)->ops->\
             set_fixed(facet, env, fixed))
 
 #define AXIS2_XML_SCHEMA_FACET_GET_VALUE(facet, env) \
-		(((axis2_xml_schema_facet_t *) facet)->ops->\
+      (((axis2_xml_schema_facet_t *) facet)->ops->\
             get_value(facet, env))
 
 #define AXIS2_XML_SCHEMA_FACET_SET_VALUE(facet, env, value) \
-		(((axis2_xml_schema_facet_t *) facet)->ops->\
+      (((axis2_xml_schema_facet_t *) facet)->ops->\
             set_value(facet, env, value))
             
 #define AXIS2_XML_SCHEMA_FACET_SET_FACET_TYPE(facet, env, facet_type) \

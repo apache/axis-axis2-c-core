@@ -38,13 +38,13 @@ extern "C"
  * @ingroup axis2_utils
  * @{
  */
-	
+   
 /**
  * Thread callbacks from axis2 functions must be declared with AXIS2_THREAD_FUNC
  * so that they follow the platform's calling convention.
  */
 /*#define AXIS2_THREAD_FUNC*/
-	
+   
 /** Thread structure. */
 typedef struct axis2_thread_t           axis2_thread_t;
 

@@ -54,12 +54,12 @@ typedef struct axis2_conf_builder_ops axis2_conf_builder_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_conf_builder_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_conf_builder_t *conf_builder,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     populate_conf) (axis2_conf_builder_t *conf_builder,
@@ -82,7 +82,7 @@ AXIS2_DECLARE_DATA struct axis2_conf_builder_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_conf_builder
 {
-	axis2_conf_builder_ops_t *ops;
+   axis2_conf_builder_ops_t *ops;
     struct axis2_desc_builder *desc_builder;
 };
 
@@ -110,13 +110,13 @@ axis2_conf_builder_create_with_file_and_dep_engine_and_conf (const axis2_env_t *
 /*************************** Function macros **********************************/
 
 #define AXIS2_CONF_BUILDER_FREE(conf_builder, env) \
-		((conf_builder)->ops->free (conf_builder, env))
+      ((conf_builder)->ops->free (conf_builder, env))
 
 #define AXIS2_CONF_BUILDER_POPULATE_CONF(conf_builder, env) \
-		((conf_builder)->ops->populate_conf (conf_builder, env))
+      ((conf_builder)->ops->populate_conf (conf_builder, env))
 
 #define AXIS2_CONF_BUILDER_PROCESS_MODULE_REFS(conf_builder, env, module_refs) \
-		((conf_builder)->ops->process_module_refs (conf_builder, env, module_refs))
+      ((conf_builder)->ops->process_module_refs (conf_builder, env, module_refs))
 
 
 /*************************** End of function macros ***************************/

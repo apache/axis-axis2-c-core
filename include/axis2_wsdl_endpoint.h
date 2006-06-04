@@ -52,11 +52,11 @@ typedef struct axis2_wsdl_endpoint_ops axis2_wsdl_endpoint_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_endpoint_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *free)(axis2_wsdl_endpoint_t *wsdl_endpoint,
-										const axis2_env_t *env);
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *free)(axis2_wsdl_endpoint_t *wsdl_endpoint,
+                              const axis2_env_t *env);
                                
     /**
      * Method getName
@@ -105,7 +105,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_endpoint_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_endpoint
 {
-	axis2_wsdl_endpoint_ops_t *ops;
+   axis2_wsdl_endpoint_ops_t *ops;
     struct axis2_wsdl_component *wsdl_component;
 };
 
@@ -119,19 +119,19 @@ axis2_wsdl_endpoint_create (const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_ENDPOINT_FREE(wsdl_endpoint, env) \
-		((wsdl_endpoint)->ops->free (wsdl_endpoint, env))
+      ((wsdl_endpoint)->ops->free (wsdl_endpoint, env))
 
 #define AXIS2_WSDL_ENDPOINT_GET_NAME(wsdl_endpoint, env) \
-		((wsdl_endpoint)->ops->get_name (wsdl_endpoint, env))
+      ((wsdl_endpoint)->ops->get_name (wsdl_endpoint, env))
 
 #define AXIS2_WSDL_ENDPOINT_SET_NAME(wsdl_endpoint, env, qname) \
-		((wsdl_endpoint)->ops->set_name (wsdl_endpoint, env, qname))
+      ((wsdl_endpoint)->ops->set_name (wsdl_endpoint, env, qname))
         
 #define AXIS2_WSDL_ENDPOINT_GET_BINDING(wsdl_endpoint, env) \
-		((wsdl_endpoint)->ops->get_binding (wsdl_endpoint, env))
+      ((wsdl_endpoint)->ops->get_binding (wsdl_endpoint, env))
 
 #define AXIS2_WSDL_ENDPOINT_SET_BINDING(wsdl_endpoint, env, wsdl_binding) \
-		((wsdl_endpoint)->ops->set_binding (wsdl_endpoint, env, wsdl_binding))        
+      ((wsdl_endpoint)->ops->set_binding (wsdl_endpoint, env, wsdl_binding))        
 
 /*************************** End of function macros ***************************/
 

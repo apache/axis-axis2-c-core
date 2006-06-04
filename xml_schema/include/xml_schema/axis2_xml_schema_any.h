@@ -46,7 +46,7 @@ extern "C"
 
 struct axis2_xml_schema_any_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -111,28 +111,28 @@ axis2_xml_schema_any_resolve_methods(
  /************************ Macros *******************************************/
  
 #define AXIS2_XML_SCHEMA_ANY_FREE(any, env) \
-		(((axis2_xml_schema_any_t *) any)->ops->free(any, env))
+      (((axis2_xml_schema_any_t *) any)->ops->free(any, env))
 
 #define AXIS2_XML_SCHEMA_ANY_SUPER_OBJS(any, env) \
-		(((axis2_xml_schema_any_t *) any)->ops->super_objs(any, env))
+      (((axis2_xml_schema_any_t *) any)->ops->super_objs(any, env))
 
 #define AXIS2_XML_SCHEMA_ANY_TYPE(any, env) \
-		(((axis2_xml_schema_any_t *) any)->ops->type(any, env))
+      (((axis2_xml_schema_any_t *) any)->ops->type(any, env))
 
 #define AXIS2_XML_SCHEMA_ANY_GET_BASE_IMPL(any, env) \
-		(((axis2_xml_schema_any_t *) any)->ops->get_base_impl(any, env))
+      (((axis2_xml_schema_any_t *) any)->ops->get_base_impl(any, env))
 
 #define AXIS2_XML_SCHEMA_ANY_GET_NAMESPACE(any, env) \
-		(((axis2_xml_schema_any_t *) any)->ops->get_namespace(any, env))
+      (((axis2_xml_schema_any_t *) any)->ops->get_namespace(any, env))
 
 #define AXIS2_XML_SCHEMA_ANY_SET_NAMESPACE(any, env, namespc) \
-		(((axis2_xml_schema_any_t *) any)->ops->set_namespace(any, env, namespc))
+      (((axis2_xml_schema_any_t *) any)->ops->set_namespace(any, env, namespc))
 
 #define AXIS2_XML_SCHEMA_ANY_GET_PROCESS_CONTENT(any, env) \
-		(((axis2_xml_schema_any_t *) any)->ops->get_process_content(any, env))
+      (((axis2_xml_schema_any_t *) any)->ops->get_process_content(any, env))
 
 #define AXIS2_XML_SCHEMA_ANY_SET_PROCESS_CONTENT(any, env, process_content) \
-		(((axis2_xml_schema_any_t *) any)->ops->set_process_content(any, env, process_content))
+      (((axis2_xml_schema_any_t *) any)->ops->set_process_content(any, env, process_content))
 
 /*********************************** Macros ***************************************************/
 /** @} */

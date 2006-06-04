@@ -23,11 +23,11 @@ extern "C"
 #endif
 
 struct axis2_wsdl_extensible_element;
-struct axis2_param_container;	
+struct axis2_param_container;   
 struct axis2_module_desc;
 typedef struct axis2_wsdl_component_ops axis2_wsdl_component_ops_t;
 typedef struct axis2_wsdl_component axis2_wsdl_component_t;
-	
+   
 /** @defgroup axis2_wsdl_component Wsdl Component
   * @ingroup axis2_wsdl
   * @{
@@ -39,14 +39,14 @@ typedef struct axis2_wsdl_component axis2_wsdl_component_t;
  */
 struct axis2_wsdl_component_ops
 {
-	/** Deallocate memory
+   /** Deallocate memory
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
     free) (axis2_wsdl_component_t *wsdl_component, 
            const axis2_env_t *env);
     
-	/**
+   /**
      * Sets the properties of the Component if any
      * @param axis2_hash_t properties
      * @return status code
@@ -118,7 +118,7 @@ struct axis2_wsdl_component_ops
  */
 struct axis2_wsdl_component
 {
-	axis2_wsdl_component_ops_t *ops;
+   axis2_wsdl_component_ops_t *ops;
 };
 
 /** create Wsdl Component struct
@@ -130,30 +130,30 @@ axis2_wsdl_component_create (const axis2_env_t *env);
 /**************************** Start of function macros ************************/
 
 #define AXIS2_WSDL_COMPONENT_FREE(wsdl_component, env) \
-		((wsdl_component)->ops->free (wsdl_component, env))
+      ((wsdl_component)->ops->free (wsdl_component, env))
 
 #define AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTIES(wsdl_component, env, \
-		properties) \
-		((wsdl_component)->ops->set_component_properties(wsdl_component , env, \
+      properties) \
+      ((wsdl_component)->ops->set_component_properties(wsdl_component , env, \
             properties))
             
 #define AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTIES(wsdl_component, env) \
-		((wsdl_component)->ops->get_component_properties(wsdl_component, env))
+      ((wsdl_component)->ops->get_component_properties(wsdl_component, env))
 
 #define AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(wsdl_component, env, \
-		key, value) \
-		((wsdl_component)->ops->set_component_property(wsdl_component, env,\
+      key, value) \
+      ((wsdl_component)->ops->set_component_property(wsdl_component, env,\
             key, value))            
-		
+      
 #define AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(wsdl_component, env, key) \
-		((wsdl_component)->ops->get_component_property(wsdl_component, env, key))
+      ((wsdl_component)->ops->get_component_property(wsdl_component, env, key))
 
 
 #define AXIS2_WSDL_COMPONENT_ADD_EXTENSIBILITY_ELEMENT(wsdl_component, env, element) \
-		((wsdl_component)->ops->add_extensibility_element(wsdl_component, env, element))
+      ((wsdl_component)->ops->add_extensibility_element(wsdl_component, env, element))
  
 #define AXIS2_WSDL_COMPONENT_GET_EXTENSIBILITY_ELEMENTS(wsdl_component, env) \
-		((wsdl_component)->ops->get_extensibility_elements(wsdl_component, env))
+      ((wsdl_component)->ops->get_extensibility_elements(wsdl_component, env))
         
 /**************************** End of function macros **************************/
 

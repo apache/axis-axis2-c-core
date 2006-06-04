@@ -46,25 +46,25 @@ extern "C"
  AXIS2_DECLARE_DATA   typedef struct axis2_disp_checker_ops
     { 
         axis2_handler_t* (AXIS2_CALL *
-		get_base) (struct axis2_disp_checker *disp_checker, 
+      get_base) (struct axis2_disp_checker *disp_checker, 
                    const axis2_env_t *env);
-		
-		
+      
+      
         axis2_qname_t* (AXIS2_CALL *
-		get_qname) (struct axis2_disp_checker *disp_checker, 
+      get_qname) (struct axis2_disp_checker *disp_checker, 
                     const axis2_env_t *env);
-		
+      
         axis2_status_t (AXIS2_CALL *
-		set_qname) (struct axis2_disp_checker *disp_checker, 
+      set_qname) (struct axis2_disp_checker *disp_checker, 
                     const axis2_env_t *env, 
-					axis2_qname_t *qname);
-		
+               axis2_qname_t *qname);
+      
         axis2_status_t (AXIS2_CALL *
-		free) (struct axis2_disp_checker *disp_checker, 
+      free) (struct axis2_disp_checker *disp_checker, 
                const axis2_env_t *env);
         
     } axis2_disp_checker_ops_t;
-	
+   
    /** 
     * \brief Dispatcher struct
     */
@@ -81,20 +81,20 @@ extern "C"
  */
 AXIS2_EXTERN axis2_disp_checker_t* AXIS2_CALL
 axis2_disp_checker_create(const axis2_env_t *env, 
-						  axis2_qname_t *qname);
+                    axis2_qname_t *qname);
 
 #define AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env) \
-		((disp_checker)->ops->get_base(disp_checker, env))
-	
+      ((disp_checker)->ops->get_base(disp_checker, env))
+   
 #define AXIS2_DISP_CHECKER_GET_QNAME(disp_checker, env) \
-		((disp_checker)->ops->get_qname(disp_checker, env))
-	
+      ((disp_checker)->ops->get_qname(disp_checker, env))
+   
 #define AXIS2_DISP_CHECKER_SET_QNAME(disp_checker, env, name) \
-		((disp_checker)->ops->set_qname(disp_checker, env, name))
-	
+      ((disp_checker)->ops->set_qname(disp_checker, env, name))
+   
 #define AXIS2_DISP_CHECKER_FREE(disp_checker, env) \
-		((disp_checker)->ops->free(disp_checker, env))
-		
+      ((disp_checker)->ops->free(disp_checker, env))
+      
     
 /** @} */
     

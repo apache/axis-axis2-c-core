@@ -53,7 +53,7 @@ extern "C"
 
 struct axis2_woden_soap_binding_fault_ref_exts_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -109,19 +109,19 @@ axis2_woden_soap_binding_fault_ref_exts_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_REF_EXTS_FREE(soap_binding_fault_ref_exts, env) \
-		(((axis2_woden_soap_binding_fault_ref_exts_t *) soap_binding_fault_ref_exts)->ops->free(soap_binding_fault_ref_exts, env))
+      (((axis2_woden_soap_binding_fault_ref_exts_t *) soap_binding_fault_ref_exts)->ops->free(soap_binding_fault_ref_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_REF_EXTS_SUPER_OBJS(soap_binding_fault_ref_exts, env) \
-		(((axis2_woden_soap_binding_fault_ref_exts_t *) soap_binding_fault_ref_exts)->ops->super_objs(soap_binding_fault_ref_exts, env))
+      (((axis2_woden_soap_binding_fault_ref_exts_t *) soap_binding_fault_ref_exts)->ops->super_objs(soap_binding_fault_ref_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_REF_EXTS_TYPE(soap_binding_fault_ref_exts, env) \
-		(((axis2_woden_soap_binding_fault_ref_exts_t *) soap_binding_fault_ref_exts)->ops->type(soap_binding_fault_ref_exts, env))
+      (((axis2_woden_soap_binding_fault_ref_exts_t *) soap_binding_fault_ref_exts)->ops->type(soap_binding_fault_ref_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_REF_EXTS_GET_BASE_IMPL(soap_binding_fault_ref_exts, env) \
-		(((axis2_woden_soap_binding_fault_ref_exts_t *) soap_binding_fault_ref_exts)->ops->get_base_impl(soap_binding_fault_ref_exts, env))
+      (((axis2_woden_soap_binding_fault_ref_exts_t *) soap_binding_fault_ref_exts)->ops->get_base_impl(soap_binding_fault_ref_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_REF_EXTS_GET_SOAP_MODULES(soap_binding_fault_ref_exts, env) \
-		(((axis2_woden_soap_binding_fault_ref_exts_t *) soap_binding_fault_ref_exts)->ops->\
+      (((axis2_woden_soap_binding_fault_ref_exts_t *) soap_binding_fault_ref_exts)->ops->\
         get_soap_modules (soap_binding_fault_ref_exts, env))
 
 /** @} */

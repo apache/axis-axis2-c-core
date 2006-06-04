@@ -24,7 +24,7 @@
 typedef struct axis2_phase_impl 
 {
     /** phase */
-	axis2_phase_t phase;
+   axis2_phase_t phase;
     /** phase name */
     axis2_char_t *name;    
     /** array list of phases */
@@ -169,7 +169,7 @@ axis2_phase_create(const axis2_env_t *env,
     phase_impl->last_handler_set = AXIS2_FALSE;    
     phase_impl->is_one_handler = AXIS2_FALSE;
     
-	phase_impl->handlers = axis2_array_list_create(env, 10);
+   phase_impl->handlers = axis2_array_list_create(env, 10);
     if (!(phase_impl->handlers))
     {
         /** error is already set by last method array list container create */

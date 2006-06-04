@@ -48,7 +48,7 @@ extern "C"
 
 struct axis2_woden_wsdl_ref_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -131,39 +131,39 @@ axis2_woden_wsdl_ref_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_WSDL_REF_FREE(wsdl_ref, env) \
-		(((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->free(wsdl_ref, env))
+      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->free(wsdl_ref, env))
 
 #define AXIS2_WODEN_WSDL_REF_SUPER_OBJS(wsdl_ref, env) \
-		(((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->super_objs(wsdl_ref, env))
+      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->super_objs(wsdl_ref, env))
 
 #define AXIS2_WODEN_WSDL_REF_TYPE(wsdl_ref, env) \
-		(((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->type(wsdl_ref, env))
+      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->type(wsdl_ref, env))
 
 #define AXIS2_WODEN_WSDL_REF_GET_BASE_IMPL(wsdl_ref, env) \
-		(((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->get_base_impl(wsdl_ref, env))
+      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->get_base_impl(wsdl_ref, env))
 
 #define AXIS2_WODEN_WSDL_REF_GET_LOCATION(wsdl_ref, env) \
-		(((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
+      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
         get_location (wsdl_ref, env))
 
 #define AXIS2_WODEN_WSDL_REF_SET_LOCATION(wsdl_ref, env, loc_uri) \
-		(((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
+      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
          set_location(wsdl_ref, env, loc_uri))
 
 #define AXIS2_WODEN_WSDL_REF_GET_DESC_ELEMENT(wsdl_ref, env) \
-		(((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
+      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
         get_desc_element (wsdl_ref, env))
 
 #define AXIS2_WODEN_WSDL_REF_SET_DESC_ELEMENT(wsdl_ref, env, desc) \
-		(((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
+      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
          set_desc_element(wsdl_ref, env, desc))
 
 #define AXIS2_WODEN_WSDL_REF_ADD_DOCUMENTATION_ELEMENT(wsdl_ref, env, doc_el) \
-		(((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
+      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
         add_documentation_element (wsdl_ref, env, doc_el))
 
 #define AXIS2_WODEN_WSDL_REF_GET_DOCUMENTATION_ELEMENTS(wsdl_ref, env) \
-		(((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
+      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
          get_documentation_elements(wsdl_ref, env))
 
 /** @} */

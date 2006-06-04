@@ -60,7 +60,7 @@ extern "C"
 
 struct axis2_woden_desc_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -228,70 +228,70 @@ axis2_woden_desc_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_DESC_FREE(desc, env) \
-		(((axis2_woden_desc_t *) desc)->ops->free(desc, env))
+      (((axis2_woden_desc_t *) desc)->ops->free(desc, env))
 
 #define AXIS2_WODEN_DESC_TO_DESC_FREE(desc, env) \
-		(((axis2_woden_desc_t *) desc)->ops->to_desc_free(desc, env))
+      (((axis2_woden_desc_t *) desc)->ops->to_desc_free(desc, env))
 
 #define AXIS2_WODEN_DESC_SUPER_OBJS(desc, env) \
-		(((axis2_woden_desc_t *) desc)->ops->super_objs(desc, env))
+      (((axis2_woden_desc_t *) desc)->ops->super_objs(desc, env))
 
 #define AXIS2_WODEN_DESC_TYPE(desc, env) \
-		(((axis2_woden_desc_t *) desc)->ops->type(desc, env))
+      (((axis2_woden_desc_t *) desc)->ops->type(desc, env))
 
 #define AXIS2_WODEN_DESC_GET_BASE_IMPL(desc, env) \
-		(((axis2_woden_desc_t *) desc)->ops->get_base_impl(desc, env))
+      (((axis2_woden_desc_t *) desc)->ops->get_base_impl(desc, env))
 
 #define AXIS2_WODEN_DESC_GET_INTERFACES(desc, env) \
-		(((axis2_woden_desc_t *) desc)->\
+      (((axis2_woden_desc_t *) desc)->\
         get_interfaces (desc, env))
 
 #define AXIS2_WODEN_DESC_GET_BINDINGS(desc, env) \
-		(((axis2_woden_desc_t *) desc)->\
+      (((axis2_woden_desc_t *) desc)->\
          get_bindings(desc, env))
 
 #define AXIS2_WODEN_DESC_GET_SVCS(desc, env) \
-		(((axis2_woden_desc_t *) desc)->ops->\
+      (((axis2_woden_desc_t *) desc)->ops->\
          get_svcs(desc, env))
 
 #define AXIS2_WODEN_DESC_GET_ELEMENT_DECLS(desc, env) \
-		(((axis2_woden_desc_t *) desc)->ops->\
+      (((axis2_woden_desc_t *) desc)->ops->\
          get_element_decls(desc, env))
 
 #define AXIS2_WODEN_DESC_GET_ELEMENT_DECL(desc, env, qname) \
-		(((axis2_woden_desc_t *) desc)->ops->\
+      (((axis2_woden_desc_t *) desc)->ops->\
         get_element_decl (desc, env, qname))
 
 #define AXIS2_WODEN_DESC_GET_TYPE_DEFS(desc, env) \
-		(((axis2_woden_desc_t *) desc)->ops->\
+      (((axis2_woden_desc_t *) desc)->ops->\
         get_type_defs (desc, env))
 
 #define AXIS2_WODEN_DESC_GET_TYPE_DEF(desc, env, qname) \
-		(((axis2_woden_desc_t *) desc)->ops->\
+      (((axis2_woden_desc_t *) desc)->ops->\
         get_type_def (desc, env, qname))
 
 #define AXIS2_WODEN_DESC_TO_ELEMENT(desc, env) \
-		(((axis2_woden_desc_t *) desc)->ops->\
+      (((axis2_woden_desc_t *) desc)->ops->\
         to_element (desc, env))
 
 #define AXIS2_WODEN_DESC_ADD_TO_ALL_INTERFACES(desc, env, interface) \
-		(((axis2_woden_desc_t *) desc)->ops->\
+      (((axis2_woden_desc_t *) desc)->ops->\
         add_to_all_interfaces (desc, env, interface))
 
 #define AXIS2_WODEN_DESC_ADD_TO_ALL_BINDINGS(desc, env, binding) \
-		(((axis2_woden_desc_t *) desc)->ops->\
+      (((axis2_woden_desc_t *) desc)->ops->\
         add_to_all_bindings (desc, env, binding))
 
 #define AXIS2_WODEN_DESC_ADD_TO_ALL_SVCS(desc, env, svc) \
-		(((axis2_woden_desc_t *) desc)->ops->\
+      (((axis2_woden_desc_t *) desc)->ops->\
         add_to_all_svcs (desc, env, svc))
 
 #define AXIS2_WODEN_DESC_ADD_TO_ALL_ELEMENT_DECLS(desc, env, element_decl) \
-		(((axis2_woden_desc_t *) desc)->ops->\
+      (((axis2_woden_desc_t *) desc)->ops->\
         add_to_all_element_decls (desc, env, element_decl))
 
 #define AXIS2_WODEN_DESC_ADD_TO_ALL_TYPE_DEFS(desc, env, type_def) \
-		(((axis2_woden_desc_t *) desc)->ops->\
+      (((axis2_woden_desc_t *) desc)->ops->\
         add_to_all_type_defs (desc, env, type_def))
 
 /** @} */

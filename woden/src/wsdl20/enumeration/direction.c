@@ -20,7 +20,7 @@ typedef struct axis2_woden_direction_impl axis2_woden_direction_impl_t;
 
 /** 
  * @brief Direction Struct Impl
- *	Axis2 Direction  
+ *   Axis2 Direction  
  */ 
 struct axis2_woden_direction_impl
 {

@@ -49,12 +49,12 @@ typedef struct axis2_wsdl_feature_ops axis2_wsdl_feature_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_feature_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_feature_t *wsdl_feature,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
                                
     /**
      * Method getName
@@ -100,11 +100,11 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_feature_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_feature
 {
-	axis2_wsdl_feature_ops_t *ops;
+   axis2_wsdl_feature_ops_t *ops;
     struct axis2_wsdl_component *wsdl_component;
 };
 
@@ -117,19 +117,19 @@ AXIS2_EXTERN axis2_wsdl_feature_t *AXIS2_CALL axis2_wsdl_feature_create (const a
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_FEATURE_FREE(wsdl_feature, env) \
-		((wsdl_feature)->ops->free (wsdl_feature, env))
+      ((wsdl_feature)->ops->free (wsdl_feature, env))
 
 #define AXIS2_WSDL_FEATURE_GET_NAME(wsdl_feature, env) \
-		((wsdl_feature)->ops->get_name (wsdl_feature, env))
+      ((wsdl_feature)->ops->get_name (wsdl_feature, env))
 
 #define AXIS2_WSDL_FEATURE_SET_NAME(wsdl_feature, env, name) \
-		((wsdl_feature)->ops->set_name (wsdl_feature, env, name))
+      ((wsdl_feature)->ops->set_name (wsdl_feature, env, name))
         
 #define AXIS2_WSDL_FEATURE_IS_REQUIRED(wsdl_feature, env) \
-		((wsdl_feature)->ops->is_required (wsdl_feature, env))
+      ((wsdl_feature)->ops->is_required (wsdl_feature, env))
 
 #define AXIS2_WSDL_FEATURE_SET_REQUIRED(wsdl_feature, env, required) \
-		((wsdl_feature)->ops->set_required (wsdl_feature, env, required))        
+      ((wsdl_feature)->ops->set_required (wsdl_feature, env, required))        
 
 /*************************** End of function macros ***************************/
 

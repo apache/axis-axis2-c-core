@@ -18,7 +18,7 @@
  #define AXIS2_OM_CHILD_ELEMENT_ITERATOR_H
  
  /**
- *@file axis2_om_child_element_iterator.h	
+ *@file axis2_om_child_element_iterator.h   
  *@brief this is the iterator for om elemnts 
  */
   
@@ -58,7 +58,7 @@ typedef struct axis2_om_child_element_iterator axis2_om_child_element_iterator_t
         * progress in any way other than by calling this method.
         */                                              
         axis2_status_t (AXIS2_CALL *
-		remove)(axis2_om_child_element_iterator_t *iterator,
+      remove)(axis2_om_child_element_iterator_t *iterator,
                 const axis2_env_t *env);
                              
        /**
@@ -67,15 +67,15 @@ typedef struct axis2_om_child_element_iterator axis2_om_child_element_iterator_t
         * rather than null with an error code set to environments error
         */                             
         axis2_bool_t (AXIS2_CALL *
-		has_next)(axis2_om_child_element_iterator_t *iterator,
+      has_next)(axis2_om_child_element_iterator_t *iterator,
                   const axis2_env_t *env);
     
        /**
         * Returns the next element in the iteration. Returns null if there 
-		* is no more elements 
+      * is no more elements 
         */
         axis2_om_node_t* (AXIS2_CALL *
-		next)(axis2_om_child_element_iterator_t *iterator,
+      next)(axis2_om_child_element_iterator_t *iterator,
               const axis2_env_t *env);
     };
     

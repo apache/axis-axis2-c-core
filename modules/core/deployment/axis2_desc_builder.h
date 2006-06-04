@@ -69,12 +69,12 @@ typedef struct axis2_desc_builder_ops axis2_desc_builder_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_desc_builder_t *desc_builder,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
                                
      /**
      * This will creat OMElemnt for a given descrition document (axis2.xml , 
@@ -177,7 +177,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_desc_builder
 {
-	axis2_desc_builder_ops_t *ops;
+   axis2_desc_builder_ops_t *ops;
     struct axis2_dep_engine *engine;
 };
 
@@ -212,10 +212,10 @@ axis2_desc_builder_create_with_file_and_dep_engine (
 /*************************** Function macros **********************************/
 
 #define AXIS2_DESC_BUILDER_FREE(desc_builder, env) \
-		((desc_builder)->ops->free (desc_builder, env))
+      ((desc_builder)->ops->free (desc_builder, env))
 
 #define AXIS2_DESC_BUILDER_BUILD_OM(desc_builder, env) \
-		((desc_builder)->ops->build_OM (desc_builder, env))                                        
+      ((desc_builder)->ops->build_OM (desc_builder, env))                                        
 
 #define AXIS2_DESC_BUILDER_PROCESS_FLOW(desc_builder, env, flow_element, \
         parent, node) ((desc_builder)->ops->process_flow (desc_builder, env, \
@@ -234,19 +234,19 @@ axis2_desc_builder_create_with_file_and_dep_engine (
             (desc_builder, env, module_refs, op))                                          
 
 #define AXIS2_DESC_BUILDER_LOAD_MSG_RECV(desc_builder, env, recv_element) \
-		((desc_builder)->ops->load_msg_recv (desc_builder, env, recv_element))  
+      ((desc_builder)->ops->load_msg_recv (desc_builder, env, recv_element))  
 
 #define AXIS2_DESC_BUILDER_LOAD_DEFAULT_MSG_RECV(desc_builder, env) \
-		((desc_builder)->ops->load_default_msg_recv (desc_builder, env))  
+      ((desc_builder)->ops->load_default_msg_recv (desc_builder, env))  
 
 #define AXIS2_DESC_BUILDER_GET_SHORT_FILE_NAME(desc_builder, env, file_name) \
-		((desc_builder)->ops->get_short_file_name (desc_builder, env, file_name))  
+      ((desc_builder)->ops->get_short_file_name (desc_builder, env, file_name))  
 
 #define AXIS2_DESC_BUILDER_GET_FILE_NAME_WITHOUT_PREFIX(desc_builder, env, file_name) \
-		((desc_builder)->ops->get_file_name_without_prefix (desc_builder, env, file_name))  
+      ((desc_builder)->ops->get_file_name_without_prefix (desc_builder, env, file_name))  
 
 #define AXIS2_DESC_BUILDER_GET_VALUE(desc_builder, env, in) \
-		((desc_builder)->ops->get_value (desc_builder, env, in))  
+      ((desc_builder)->ops->get_value (desc_builder, env, in))  
                                         
 /*************************** End of function macros ***************************/
 

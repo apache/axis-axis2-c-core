@@ -37,7 +37,7 @@ int main(int argc, char** argv)
     axis2_char_t *operation = "add";
     axis2_char_t *param1 = "40";
     axis2_char_t *param2 = "8";
-	
+   
     env = axis2_env_create_all( "math_blocking.log", AXIS2_LOG_LEVEL_TRACE);
 
     client_home = AXIS2_GETENV("AXIS2C_HOME");
@@ -89,7 +89,7 @@ int main(int argc, char** argv)
             axis2_om_output_t *om_output = NULL;
             axis2_char_t *buffer = NULL;
             writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
-					AXIS2_XML_PARSER_TYPE_BUFFER);
+               AXIS2_XML_PARSER_TYPE_BUFFER);
             om_output = axis2_om_output_create (env, writer);
 
             AXIS2_OM_NODE_SERIALIZE (ret_node, env, om_output);
@@ -109,8 +109,8 @@ int main(int argc, char** argv)
     }
     else
     {
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-						" %d :: %s", env->error->error_number,
+      AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+                  " %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("math stub invoke FAILED!\n");
     }
@@ -147,7 +147,7 @@ build_om_programatically(const axis2_env_t *env, axis2_char_t *operation, axis2_
     AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, param2, text_om_node);
     
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE,
-					AXIS2_XML_PARSER_TYPE_BUFFER);
+               AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axis2_om_output_create( env, xml_writer);
     
     AXIS2_OM_NODE_SERIALIZE(math_om_node, env, om_output);

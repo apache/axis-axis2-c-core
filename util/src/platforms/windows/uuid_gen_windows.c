@@ -25,35 +25,35 @@
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL  
 axis2_platform_uuid_gen(char *s)
 {
-	RPC_STATUS			retval;   
-    UUID				uuid;
-	unsigned char		*str;
-	axis2_char_t		*retstr;
+   RPC_STATUS         retval;   
+    UUID            uuid;
+   unsigned char      *str;
+   axis2_char_t      *retstr;
 
     if(NULL == s)
     {
         return NULL;
-    }	
+    }   
     retstr = s;
-	retval = UuidCreate(&uuid);
-	if (retval == RPC_S_UUID_LOCAL_ONLY)
-		printf("warning - unique within computer \n");
-	else if (retval == RPC_S_UUID_NO_ADDRESS)
-	{
-		printf("error\n");
-		return NULL;
-	}
+   retval = UuidCreate(&uuid);
+   if (retval == RPC_S_UUID_LOCAL_ONLY)
+      printf("warning - unique within computer \n");
+   else if (retval == RPC_S_UUID_NO_ADDRESS)
+   {
+      printf("error\n");
+      return NULL;
+   }
 
-	retval = UuidToStringA(&uuid,&str);
-	if (retval == RPC_S_OK)
-	{
-		strcpy(retstr, str);
-		RpcStringFree(&str);
-	}
-	else if (retval == RPC_S_OUT_OF_MEMORY)
-	{
-		printf("system is out of memory \n");
-		return NULL;
-	}
+   retval = UuidToStringA(&uuid,&str);
+   if (retval == RPC_S_OK)
+   {
+      strcpy(retstr, str);
+      RpcStringFree(&str);
+   }
+   else if (retval == RPC_S_OUT_OF_MEMORY)
+   {
+      printf("system is out of memory \n");
+      return NULL;
+   }
     return retstr;
 }

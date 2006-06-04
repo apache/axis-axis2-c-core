@@ -43,7 +43,7 @@ extern "C"
 
 struct axis2_woden_uri_attr_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -128,25 +128,25 @@ axis2_woden_uri_attr_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_URI_ATTR_FREE(uri_attr, env) \
-		(((axis2_woden_uri_attr_t *) uri_attr)->ops->free(uri_attr, env))
+      (((axis2_woden_uri_attr_t *) uri_attr)->ops->free(uri_attr, env))
 
 #define AXIS2_WODEN_URI_ATTR_TO_URI_ATTR_FREE(uri_attr, env) \
-		(((axis2_woden_uri_attr_t *) uri_attr)->ops->\
+      (((axis2_woden_uri_attr_t *) uri_attr)->ops->\
          to_uri_attr_free(uri_attr, env))
 
 #define AXIS2_WODEN_URI_ATTR_TYPE(uri_attr, env) \
-		(((axis2_woden_uri_attr_t *) uri_attr)->ops->type(uri_attr, env))
+      (((axis2_woden_uri_attr_t *) uri_attr)->ops->type(uri_attr, env))
 
 #define AXIS2_WODEN_URI_ATTR_GET_BASE_IMPL(uri_attr, env) \
-		(((axis2_woden_uri_attr_t *) uri_attr)->ops->get_base_impl(uri_attr, \
+      (((axis2_woden_uri_attr_t *) uri_attr)->ops->get_base_impl(uri_attr, \
                                                                         env))
 
 #define AXIS2_WODEN_URI_ATTR_GET_URI(uri_attr, env) \
-		(((axis2_woden_uri_attr_t *) uri_attr)->ops->get_uri(uri_attr, \
+      (((axis2_woden_uri_attr_t *) uri_attr)->ops->get_uri(uri_attr, \
                                                                     env))
 
 #define AXIS2_WODEN_URI_ATTR_CONVERT(uri_attr, env) \
-		(((axis2_woden_uri_attr_t *) uri_attr)->ops->convert(uri_attr, \
+      (((axis2_woden_uri_attr_t *) uri_attr)->ops->convert(uri_attr, \
                                                                        env))
 
 /** @} */

@@ -48,49 +48,49 @@ typedef struct axis2_url axis2_url_t;
 AXIS2_DECLARE_DATA struct axis2_url_ops
 {
     axis2_char_t* (AXIS2_CALL *
-	to_external_form) (axis2_url_t *url, 
+   to_external_form) (axis2_url_t *url, 
                        const axis2_env_t *env);
-	
+   
     axis2_status_t (AXIS2_CALL *
-	set_protocol)(axis2_url_t *url, 
+   set_protocol)(axis2_url_t *url, 
                   const axis2_env_t *env, 
-	              axis2_char_t *protocol);
-	
-	
-	axis2_char_t* (AXIS2_CALL *
-	get_protocol) (axis2_url_t *url, 
+                 axis2_char_t *protocol);
+   
+   
+   axis2_char_t* (AXIS2_CALL *
+   get_protocol) (axis2_url_t *url, 
                    const axis2_env_t *env);
-	
-	axis2_status_t (AXIS2_CALL *
-	set_server)(axis2_url_t *url, 
+   
+   axis2_status_t (AXIS2_CALL *
+   set_server)(axis2_url_t *url, 
                 const axis2_env_t *env, 
-				axis2_char_t *server);
-	
-	
+            axis2_char_t *server);
+   
+   
     axis2_char_t* (AXIS2_CALL *
-	get_server)(axis2_url_t *url, 
+   get_server)(axis2_url_t *url, 
                 const axis2_env_t *env);
-				
-				
-	axis2_status_t (AXIS2_CALL *
-	set_port)(axis2_url_t *url, 
+            
+            
+   axis2_status_t (AXIS2_CALL *
+   set_port)(axis2_url_t *url, 
               const axis2_env_t *env, 
-			  int port);
-			  
-			  
+           int port);
+           
+           
     int (AXIS2_CALL *
-	get_port) (axis2_url_t *url, 
+   get_port) (axis2_url_t *url, 
                const axis2_env_t *env);
-			   
-			   
-	axis2_status_t (AXIS2_CALL *
-	set_path)(axis2_url_t *url, 
+            
+            
+   axis2_status_t (AXIS2_CALL *
+   set_path)(axis2_url_t *url, 
               const axis2_env_t *env, 
-			  axis2_char_t *path);
-			  
-			  
-	axis2_char_t* (AXIS2_CALL *
-	get_path)(axis2_url_t *url, 
+           axis2_char_t *path);
+           
+           
+   axis2_char_t* (AXIS2_CALL *
+   get_path)(axis2_url_t *url, 
               const axis2_env_t *env);
 
     axis2_url_t* (AXIS2_CALL *
@@ -99,7 +99,7 @@ AXIS2_DECLARE_DATA struct axis2_url_ops
             const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
-	free) (axis2_url_t *url, 
+   free) (axis2_url_t *url, 
            const axis2_env_t *env);
 };
 
@@ -115,8 +115,8 @@ AXIS2_DECLARE_DATA struct axis2_url
 
 AXIS2_EXTERN axis2_url_t * AXIS2_CALL 
 axis2_url_create (const axis2_env_t *env, 
-				  axis2_char_t *protocol, 
-				  axis2_char_t *server, 
+              axis2_char_t *protocol, 
+              axis2_char_t *server, 
                   int port, 
                   axis2_char_t *path);
 
@@ -127,37 +127,37 @@ axis2_url_parse_string(const axis2_env_t *env,
 /************************** Start of function macros **************************/
 
 #define AXIS2_URL_TO_EXTERNAL_FORM(url, env) \
-		((url)->ops->to_external_form(url, env))
+      ((url)->ops->to_external_form(url, env))
 
 #define AXIS2_URL_SET_PROTOCOL(url, env, protocol) \
         ((url)->ops->set_prtocol(url, env, protocol))
-		
+      
 #define AXIS2_URL_GET_PROTOCOL(url, env) \
-		((url)->ops->get_protocol(url, env))
-		
+      ((url)->ops->get_protocol(url, env))
+      
 #define AXIS2_URL_SET_SERVER(url, env, server) \
         ((url)->ops->set_server(url, env, server))
-		
+      
 #define AXIS2_URL_GET_SERVER(url, env) \
-		((url)->ops->get_server(url, env))
-		
+      ((url)->ops->get_server(url, env))
+      
 #define AXIS2_URL_SET_PORT(url, env, port) \
-		((url)->ops->set_port(url, env, port))
-		
+      ((url)->ops->set_port(url, env, port))
+      
 #define AXIS2_URL_GET_PORT(url, env) \
-		((url)->ops->get_port(url, env))
-		
+      ((url)->ops->get_port(url, env))
+      
 #define AXIS2_URL_SET_PATH(url, env, path) \
         ((url)->ops->set_path(url, env, path))
-		
+      
 #define AXIS2_URL_GET_PATH(url, env) \
-		((url)->ops->get_path(url, env))
-		
+      ((url)->ops->get_path(url, env))
+      
 #define AXIS2_URL_CLONE(url, env) \
-		((url)->ops->clone(url, env))
-		
+      ((url)->ops->clone(url, env))
+      
 #define AXIS2_URL_FREE(url, env) \
-		((url)->ops->free(url, env))
+      ((url)->ops->free(url, env))
 
 /************************** End of function macros ****************************/    
 

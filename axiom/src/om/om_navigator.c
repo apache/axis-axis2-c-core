@@ -39,7 +39,7 @@ axis2_om_navigator_next(axis2_om_navigator_t *om_navigator,
                 
 static void 
 axis2_om_navigator_update_next_node(axis2_om_navigator_t *om_navigator,
-                        			const axis2_env_t *env);
+                                 const axis2_env_t *env);
 /************************************************************************************/
 
 typedef struct axis2_om_navigator_impl
@@ -147,18 +147,18 @@ axis2_bool_t AXIS2_CALL
 axis2_om_navigator_is_navigable(axis2_om_navigator_t *om_navigator,
                                 const axis2_env_t *env)
 {
-	axis2_om_navigator_impl_t *navigator_impl = NULL;
-	AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-	
-	navigator_impl = AXIS2_INTF_TO_IMPL(om_navigator);
-	if(AXIS2_TRUE == navigator_impl->end )
-		return AXIS2_FALSE;
-	else
-	{
-		if(NULL != navigator_impl->next)
-			return AXIS2_TRUE;
-	}		
-	return AXIS2_FALSE;
+   axis2_om_navigator_impl_t *navigator_impl = NULL;
+   AXIS2_ENV_CHECK(env, AXIS2_FALSE);
+   
+   navigator_impl = AXIS2_INTF_TO_IMPL(om_navigator);
+   if(AXIS2_TRUE == navigator_impl->end )
+      return AXIS2_FALSE;
+   else
+   {
+      if(NULL != navigator_impl->next)
+         return AXIS2_TRUE;
+   }      
+   return AXIS2_FALSE;
 }
 
 
@@ -166,8 +166,8 @@ axis2_bool_t AXIS2_CALL
 axis2_om_navigator_is_completed(axis2_om_navigator_t *om_navigator,
                                 const axis2_env_t *env)
 {
-	AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-	return AXIS2_INTF_TO_IMPL(om_navigator)->end;	
+   AXIS2_ENV_CHECK(env, AXIS2_FALSE);
+   return AXIS2_INTF_TO_IMPL(om_navigator)->end;   
 }
 
 
@@ -175,8 +175,8 @@ axis2_bool_t AXIS2_CALL
 axis2_om_navigator_visited(axis2_om_navigator_t *om_navigator,
                            const axis2_env_t *env)
 {
-	AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-	return AXIS2_INTF_TO_IMPL(om_navigator)->visited;	
+   AXIS2_ENV_CHECK(env, AXIS2_FALSE);
+   return AXIS2_INTF_TO_IMPL(om_navigator)->visited;   
 }
 
 
@@ -184,86 +184,86 @@ axis2_om_node_t* AXIS2_CALL
 axis2_om_navigator_next(axis2_om_navigator_t *om_navigator,
                         const axis2_env_t *env)
 {
-	axis2_om_navigator_impl_t *navigator_impl = NULL;
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	navigator_impl = AXIS2_INTF_TO_IMPL(om_navigator);
-	
-	if(NULL == navigator_impl->next)
-		return NULL;
-	
-	navigator_impl->node = navigator_impl->next;
-	navigator_impl->visited = navigator_impl->backtracked;
-	navigator_impl->backtracked = AXIS2_FALSE;
-	
-	axis2_om_navigator_update_next_node(om_navigator, env);
-	
-	
-	/** set the starting and ending flags */
-	if(navigator_impl->root == navigator_impl->next)
-	{
-		if(!(navigator_impl->start))
-		{
-			navigator_impl->end = AXIS2_TRUE;
-		}
-		else
-		{
-			navigator_impl->start = AXIS2_FALSE;
-		}			
-	}
-	return navigator_impl->node;	
+   axis2_om_navigator_impl_t *navigator_impl = NULL;
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   navigator_impl = AXIS2_INTF_TO_IMPL(om_navigator);
+   
+   if(NULL == navigator_impl->next)
+      return NULL;
+   
+   navigator_impl->node = navigator_impl->next;
+   navigator_impl->visited = navigator_impl->backtracked;
+   navigator_impl->backtracked = AXIS2_FALSE;
+   
+   axis2_om_navigator_update_next_node(om_navigator, env);
+   
+   
+   /** set the starting and ending flags */
+   if(navigator_impl->root == navigator_impl->next)
+   {
+      if(!(navigator_impl->start))
+      {
+         navigator_impl->end = AXIS2_TRUE;
+      }
+      else
+      {
+         navigator_impl->start = AXIS2_FALSE;
+      }         
+   }
+   return navigator_impl->node;   
 }
 /** this method encapsulate searching logic */
 static void 
 axis2_om_navigator_update_next_node(axis2_om_navigator_t *om_navigator,
-                        			const axis2_env_t *env)
+                                 const axis2_env_t *env)
 {
-	axis2_om_navigator_impl_t *navigator_impl = NULL;
-	if(!om_navigator)
-		return;
-	
-	navigator_impl = AXIS2_INTF_TO_IMPL(om_navigator);
-	
-	if(!navigator_impl->next)
-		return;		
-	
-	if((AXIS2_OM_ELEMENT == AXIS2_OM_NODE_GET_NODE_TYPE(navigator_impl->next, env)) &&
-		!(navigator_impl->visited))
-	{
-		if(NULL != AXIS2_OM_NODE_GET_FIRST_CHILD(navigator_impl->next, env))	
-		{
-			navigator_impl->next = 	AXIS2_OM_NODE_GET_FIRST_CHILD(navigator_impl->next, env);
-		}
-		else if(AXIS2_TRUE == AXIS2_OM_NODE_IS_COMPLETE(navigator_impl->next, env))
-		{
-			navigator_impl->backtracked = AXIS2_TRUE;				
-		}			
-		else
-		{
-			navigator_impl->next = NULL;
-		}			
-	}
-	else
-	{
-		axis2_om_node_t  *parent = NULL;
-		axis2_om_node_t *next_sibling = NULL;
-		
-		next_sibling = AXIS2_OM_NODE_GET_NEXT_SIBLING(navigator_impl->next, env);
-		
-		parent = AXIS2_OM_NODE_GET_PARENT(navigator_impl->next, env);	
-		
-		if(NULL != next_sibling)
-		{
-			navigator_impl->next = next_sibling;	
-		}			
-		else if((NULL != parent) && AXIS2_OM_NODE_IS_COMPLETE(parent, env))
-		{
-			navigator_impl->next = parent;
-			navigator_impl->backtracked = AXIS2_TRUE;	
-		}			
-		else
-		{
-			navigator_impl->next = NULL;	
-		}			
-	}
+   axis2_om_navigator_impl_t *navigator_impl = NULL;
+   if(!om_navigator)
+      return;
+   
+   navigator_impl = AXIS2_INTF_TO_IMPL(om_navigator);
+   
+   if(!navigator_impl->next)
+      return;      
+   
+   if((AXIS2_OM_ELEMENT == AXIS2_OM_NODE_GET_NODE_TYPE(navigator_impl->next, env)) &&
+      !(navigator_impl->visited))
+   {
+      if(NULL != AXIS2_OM_NODE_GET_FIRST_CHILD(navigator_impl->next, env))   
+      {
+         navigator_impl->next =    AXIS2_OM_NODE_GET_FIRST_CHILD(navigator_impl->next, env);
+      }
+      else if(AXIS2_TRUE == AXIS2_OM_NODE_IS_COMPLETE(navigator_impl->next, env))
+      {
+         navigator_impl->backtracked = AXIS2_TRUE;            
+      }         
+      else
+      {
+         navigator_impl->next = NULL;
+      }         
+   }
+   else
+   {
+      axis2_om_node_t  *parent = NULL;
+      axis2_om_node_t *next_sibling = NULL;
+      
+      next_sibling = AXIS2_OM_NODE_GET_NEXT_SIBLING(navigator_impl->next, env);
+      
+      parent = AXIS2_OM_NODE_GET_PARENT(navigator_impl->next, env);   
+      
+      if(NULL != next_sibling)
+      {
+         navigator_impl->next = next_sibling;   
+      }         
+      else if((NULL != parent) && AXIS2_OM_NODE_IS_COMPLETE(parent, env))
+      {
+         navigator_impl->next = parent;
+         navigator_impl->backtracked = AXIS2_TRUE;   
+      }         
+      else
+      {
+         navigator_impl->next = NULL;   
+      }         
+   }
 }

@@ -48,7 +48,7 @@ extern "C"
 
 struct axis2_woden_binding_msg_ref_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -161,30 +161,30 @@ axis2_woden_binding_msg_ref_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_BINDING_MSG_REF_FREE(binding_msg_ref, env) \
-		(((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->ops->free(binding_msg_ref, env))
+      (((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->ops->free(binding_msg_ref, env))
 
 #define AXIS2_WODEN_BINDING_MSG_REF_TO_BINDING_MSG_REF_FREE(binding_msg_ref, env) \
-		(((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->ops->to_binding_msg_ref_free(binding_msg_ref, env))
+      (((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->ops->to_binding_msg_ref_free(binding_msg_ref, env))
 
 #define AXIS2_WODEN_BINDING_MSG_REF_SUPER_OBJS(binding_msg_ref, env) \
-		(((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->ops->super_objs(binding_msg_ref, env))
+      (((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->ops->super_objs(binding_msg_ref, env))
 
 #define AXIS2_WODEN_BINDING_MSG_REF_TYPE(binding_msg_ref, env) \
-		(((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->ops->type(binding_msg_ref, env))
+      (((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->ops->type(binding_msg_ref, env))
 
 #define AXIS2_WODEN_BINDING_MSG_REF_GET_BASE_IMPL(binding_msg_ref, env) \
-		(((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->ops->get_base_impl(binding_msg_ref, env))
+      (((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->ops->get_base_impl(binding_msg_ref, env))
 
 #define AXIS2_WODEN_BINDING_MSG_REF_GET_INTERFACE_MSG_REF(binding_msg_ref, env) \
-		(((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->\
+      (((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->\
          get_interface_msg_ref(binding_msg_ref, env))
 
 #define AXIS2_WODEN_BINDING_MSG_REF_TO_ELEMENT(binding_msg_ref, env) \
-		(((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->ops->\
+      (((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->ops->\
          to_element(binding_msg_ref, env))
 
 #define AXIS2_WODEN_BINDING_MSG_REF_SET_INTERFACE_MSG_REF_ELEMENT(binding_msg_ref, env, int_msg_ref) \
-		(((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->\
+      (((axis2_woden_binding_msg_ref_t *) binding_msg_ref)->\
          set_interface_msg_ref_element(binding_msg_ref, env, int_msg_ref))
 
 /** @} */

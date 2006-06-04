@@ -51,7 +51,7 @@ extern "C"
 
 struct axis2_woden_feature_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -170,31 +170,31 @@ axis2_woden_feature_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_FEATURE_FREE(feature, env) \
-		(((axis2_woden_feature_t *) feature)->ops->free(feature, env))
+      (((axis2_woden_feature_t *) feature)->ops->free(feature, env))
 
 #define AXIS2_WODEN_FEATURE_SUPER_OBJS(feature, env) \
-		(((axis2_woden_feature_t *) feature)->ops->super_objs(feature, env))
+      (((axis2_woden_feature_t *) feature)->ops->super_objs(feature, env))
 
 #define AXIS2_WODEN_FEATURE_TYPE(feature, env) \
-		(((axis2_woden_feature_t *) feature)->ops->type(feature, env))
+      (((axis2_woden_feature_t *) feature)->ops->type(feature, env))
 
 #define AXIS2_WODEN_FEATURE_GET_BASE_IMPL(feature, env) \
-		(((axis2_woden_feature_t *) feature)->ops->get_base_impl(feature, env))
+      (((axis2_woden_feature_t *) feature)->ops->get_base_impl(feature, env))
 
 #define AXIS2_WODEN_FEATURE_GET_REF(feature, env) \
-		(((axis2_woden_feature_t *) feature)->\
+      (((axis2_woden_feature_t *) feature)->\
          get_ref(feature, env))
 
 #define AXIS2_WODEN_FEATURE_IS_REQUIRED(feature, env) \
-		(((axis2_woden_feature_t *) feature)->\
+      (((axis2_woden_feature_t *) feature)->\
          is_required(feature, env))
 
 #define AXIS2_WODEN_FEATURE_GET_PARENT(feature, env) \
-		(((axis2_woden_feature_t *) feature)->ops->\
+      (((axis2_woden_feature_t *) feature)->ops->\
          get_parent(feature, env))
 
 #define AXIS2_WODEN_FEATURE_TO_ELEMENT(feature, env) \
-		(((axis2_woden_feature_t *) feature)->ops->\
+      (((axis2_woden_feature_t *) feature)->ops->\
          to_element(feature, env))
 
 /** @} */

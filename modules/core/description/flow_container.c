@@ -18,11 +18,11 @@
 
 /** 
  * @brief Flow container struct impl
- *	Container for flows  
+ *   Container for flows  
  */ 
 typedef struct axis2_flow_container_impl
 {
-	axis2_flow_container_t flow_container;
+   axis2_flow_container_t flow_container;
     /**
      * Field in
      */
@@ -41,7 +41,7 @@ typedef struct axis2_flow_container_impl
 } axis2_flow_container_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(flow_container) \
-		((axis2_flow_container_impl_t *)flow_container)
+      ((axis2_flow_container_impl_t *)flow_container)
 
 /************************* Function prototypes ********************************/
 
@@ -92,35 +92,35 @@ axis2_flow_container_create (const axis2_env_t *env)
 {
     axis2_flow_container_impl_t *flow_container_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	flow_container_impl = (axis2_flow_container_impl_t *) AXIS2_MALLOC(env->
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   flow_container_impl = (axis2_flow_container_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_flow_container_impl_t));
-	
-	
-	if(NULL == flow_container_impl)
+   
+   
+   if(NULL == flow_container_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
     
     flow_container_impl->flow_container.ops = NULL;
-	flow_container_impl->in = NULL;
+   flow_container_impl->in = NULL;
     flow_container_impl->out = NULL;
     flow_container_impl->in_fault = NULL;
     flow_container_impl->out_fault = NULL;      
     
-	flow_container_impl->flow_container.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_flow_container_ops_t));
-	if(NULL == flow_container_impl->flow_container.ops)
+   flow_container_impl->flow_container.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_flow_container_ops_t));
+   if(NULL == flow_container_impl->flow_container.ops)
     {
         axis2_flow_container_free(&(flow_container_impl->flow_container), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	flow_container_impl->flow_container.ops->free =  axis2_flow_container_free;
-	flow_container_impl->flow_container.ops->get_inflow = 
+   flow_container_impl->flow_container.ops->free =  axis2_flow_container_free;
+   flow_container_impl->flow_container.ops->get_inflow = 
         axis2_flow_container_get_inflow;
     flow_container_impl->flow_container.ops->set_inflow = 
         axis2_flow_container_set_inflow;
@@ -136,8 +136,8 @@ axis2_flow_container_create (const axis2_env_t *env)
         axis2_flow_container_get_fault_outflow;
     flow_container_impl->flow_container.ops->set_fault_outflow = 
         axis2_flow_container_set_fault_outflow;
-		
-	return &(flow_container_impl->flow_container);
+      
+   return &(flow_container_impl->flow_container);
 }
 
 /*************************** Start of op impls *************************/

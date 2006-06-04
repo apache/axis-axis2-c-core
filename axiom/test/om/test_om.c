@@ -166,7 +166,7 @@ test_om_build (char *filename)
     printf ("Serialize pulled document\n");
     
     writer = axis2_xml_writer_create_for_memory(environment, NULL, AXIS2_TRUE, 0,
-													AXIS2_XML_PARSER_TYPE_BUFFER);
+                                       AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axis2_om_output_create (environment, writer);
 
     AXIS2_OM_NODE_SERIALIZE (node1, environment , om_output);
@@ -246,7 +246,7 @@ test_om_serialize ()
    
     /* serializing stuff */
     writer = axis2_xml_writer_create_for_memory(environment, NULL, AXIS2_TRUE, 0,
-												AXIS2_XML_PARSER_TYPE_BUFFER);
+                                    AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axis2_om_output_create (environment, writer);
 
     printf ("Serialize built document\n");

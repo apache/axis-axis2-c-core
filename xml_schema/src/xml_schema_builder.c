@@ -519,26 +519,26 @@ handle_xml_schema_element(
     
     /***********
          * for ( each childElement)
-         *		if( simpleTypeElement)
-         *			handleSimpleType
-         *		else if( complexType)
-         *			handleComplexType
-         *		else if( element)
-         *			handleElement
-         *		else if( include)
-         *			handleInclude
-         *		else if( import)
-         *			handleImport
-         *		else if (group)
-         *			handleGroup
-         *		else if (attributeGroup)
-         *			handleattributeGroup
-         *		else if( attribute)
-         *			handleattribute
-         *		else if (redefine)
-         *			handleRedefine
-         *		else if(notation)
-         *			handleNotation
+         *      if( simpleTypeElement)
+         *         handleSimpleType
+         *      else if( complexType)
+         *         handleComplexType
+         *      else if( element)
+         *         handleElement
+         *      else if( include)
+         *         handleInclude
+         *      else if( import)
+         *         handleImport
+         *      else if (group)
+         *         handleGroup
+         *      else if (attributeGroup)
+         *         handleattributeGroup
+         *      else if( attribute)
+         *         handleattribute
+         *      else if (redefine)
+         *         handleRedefine
+         *      else if(notation)
+         *         handleNotation
          */
         child_ele = axis2_om_util_get_first_child_element_with_uri(ele_node, env,
             AXIS2_XML_SCHEMA_NS, &child_ele_node);

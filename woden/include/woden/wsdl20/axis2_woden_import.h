@@ -46,7 +46,7 @@ extern "C"
 
 struct axis2_woden_import_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -129,23 +129,23 @@ axis2_woden_import_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_IMPORT_FREE(import, env) \
-		(((axis2_woden_import_t *) import)->ops->free(import, env))
+      (((axis2_woden_import_t *) import)->ops->free(import, env))
 
 #define AXIS2_WODEN_IMPORT_SUPER_OBJS(import, env) \
-		(((axis2_woden_import_t *) import)->ops->super_objs(import, env))
+      (((axis2_woden_import_t *) import)->ops->super_objs(import, env))
 
 #define AXIS2_WODEN_IMPORT_TYPE(import, env) \
-		(((axis2_woden_import_t *) import)->ops->type(import, env))
+      (((axis2_woden_import_t *) import)->ops->type(import, env))
 
 #define AXIS2_WODEN_IMPORT_GET_BASE_IMPL(import, env) \
-		(((axis2_woden_import_t *) import)->ops->get_base_impl(import, env))
+      (((axis2_woden_import_t *) import)->ops->get_base_impl(import, env))
 
 #define AXIS2_WODEN_IMPORT_GET_NAMESPACE(import, env) \
-		(((axis2_woden_import_t *) import)->\
+      (((axis2_woden_import_t *) import)->\
          get_namespace(import, env))
 
 #define AXIS2_WODEN_IMPORT_SET_NAMESPACE(import, env, ns_uri) \
-		(((axis2_woden_import_t *) import)->\
+      (((axis2_woden_import_t *) import)->\
          set_namespace(import, env, ns_uri))
 
 /** @} */

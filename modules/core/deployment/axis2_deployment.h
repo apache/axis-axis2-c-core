@@ -131,10 +131,10 @@ extern "C"
 
 #define AXIS2_ATTRIBUTE_DEFAULT_VERSION "version"
 #define AXIS2_DEFAULT_MODULE_VERSION "defaultModuleVersions"
-	
-/*********************************** Constants*********************************/	
-	
-	
+   
+/*********************************** Constants*********************************/   
+   
+   
 #ifdef __cplusplus
 }
 #endif

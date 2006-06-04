@@ -46,7 +46,7 @@ typedef struct axis2_xml_schema_obj_ops axis2_xml_schema_obj_ops_t;
 
 struct axis2_xml_schema_obj_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -117,35 +117,35 @@ axis2_xml_schema_obj_resolve_methods(axis2_xml_schema_obj_t *schema_obj,
                                         axis2_hash_t *methods);
 
 #define AXIS2_XML_SCHEMA_OBJ_FREE(obj, env) \
-		(((axis2_xml_schema_obj_t *) obj)->ops->free (obj, env))
+      (((axis2_xml_schema_obj_t *) obj)->ops->free (obj, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_SUPER_OBJS(obj, env) \
-		(((axis2_xml_schema_obj_t *) obj)->ops->super_objs (obj, env))
+      (((axis2_xml_schema_obj_t *) obj)->ops->super_objs (obj, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_TYPE(obj, env) \
-		(((axis2_xml_schema_obj_t *) obj)->ops->type (obj, env))
+      (((axis2_xml_schema_obj_t *) obj)->ops->type (obj, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_GET_LINE_NUM(obj, env) \
-		(((axis2_xml_schema_obj_t *) obj)->ops->get_line_num (obj, env))
+      (((axis2_xml_schema_obj_t *) obj)->ops->get_line_num (obj, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_SET_LINE_NUM(obj, env, line_num) \
-		(((axis2_xml_schema_obj_t *) obj)->ops->set_line_num (obj, env, line_num))
+      (((axis2_xml_schema_obj_t *) obj)->ops->set_line_num (obj, env, line_num))
 
 #define AXIS2_XML_SCHEMA_OBJ_GET_LINE_POS(obj, env) \
-		(((axis2_xml_schema_obj_t *) obj)->ops->get_line_pos (obj, env))
+      (((axis2_xml_schema_obj_t *) obj)->ops->get_line_pos (obj, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_SET_LINE_POS(obj, env, line_pos) \
-		(((axis2_xml_schema_obj_t *) obj)->ops->set_line_pos (obj, env, line_pos))
+      (((axis2_xml_schema_obj_t *) obj)->ops->set_line_pos (obj, env, line_pos))
 
 #define AXIS2_XML_SCHEMA_OBJ_GET_SOURCE_URI(obj, env) \
-		(((axis2_xml_schema_obj_t *) obj)->ops->get_source_uri (obj, env))
+      (((axis2_xml_schema_obj_t *) obj)->ops->get_source_uri (obj, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_SET_SOURCE_URI(obj, env, source_uri) \
-		(((axis2_xml_schema_obj_t *) obj)->ops->set_source_uri (obj, env, \
+      (((axis2_xml_schema_obj_t *) obj)->ops->set_source_uri (obj, env, \
                                                                 source_uri))
 
 #define AXIS2_XML_SCHEMA_OBJ_EQUALS(obj, env) \
-		(((axis2_xml_schema_obj_t *) obj)->ops->equals (obj, env))
+      (((axis2_xml_schema_obj_t *) obj)->ops->equals (obj, env))
 
 /** @} */
 #ifdef __cplusplus

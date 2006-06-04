@@ -48,7 +48,7 @@ extern "C"
 
 struct axis2_woden_configurable_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -106,19 +106,19 @@ axis2_woden_configurable_resolve_methods(
 
 
 #define AXIS2_WODEN_CONFIGURABLE_FREE(configurable, env) \
-		(((axis2_woden_configurable_t *) configurable)->ops->\
+      (((axis2_woden_configurable_t *) configurable)->ops->\
          free(configurable, env))
 
 #define AXIS2_WODEN_CONFIGURABLE_TO_CONFIGURABLE_FREE(configurable, env) \
-		(((axis2_woden_configurable_t *) configurable)->ops->\
+      (((axis2_woden_configurable_t *) configurable)->ops->\
          to_configurable_free(configurable, env))
 
 #define AXIS2_WODEN_CONFIGURABLE_SUPER_OBJS(configurable, env) \
-		(((axis2_woden_configurable_t *) configurable)->ops->\
+      (((axis2_woden_configurable_t *) configurable)->ops->\
          super_objs(configurable, env))
 
 #define AXIS2_WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env) \
-		(((axis2_woden_configurable_t *) configurable)->ops->\
+      (((axis2_woden_configurable_t *) configurable)->ops->\
          get_base_impl(configurable, env))
 
 /** @} */

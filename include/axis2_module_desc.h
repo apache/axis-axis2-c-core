@@ -51,10 +51,10 @@ extern "C"
 #endif
 
 struct axis2_op;
-struct axis2_conf;	
+struct axis2_conf;   
 typedef struct axis2_module_desc_ops axis2_module_desc_ops_t;
-typedef struct axis2_module_desc axis2_module_desc_t;	
-	
+typedef struct axis2_module_desc axis2_module_desc_t;   
+   
 
 /** @defgroup axis2_module_desc Module Description
   * @ingroup axis2_module_desc
@@ -235,7 +235,7 @@ struct axis2_module_desc_ops
  */
 struct axis2_module_desc
 {
-	axis2_module_desc_ops_t *ops;
+   axis2_module_desc_ops_t *ops;
     
     axis2_flow_container_t *flow_container;
     
@@ -266,11 +266,11 @@ axis2_module_desc_free_void_arg (void *module_desc,
                                         const axis2_env_t *env);
 
                                 
-/************************* Start of function macros	***************************/
-	
+/************************* Start of function macros   ***************************/
+   
 #define AXIS2_MODULE_DESC_FREE(module_desc, env) \
-		((module_desc)->ops->free(module_desc, env))
-	
+      ((module_desc)->ops->free(module_desc, env))
+   
 #define AXIS2_MODULE_DESC_GET_INFLOW(module_desc, env) \
         ((module_desc)->ops->get_inflow (module_desc, env))
 
@@ -278,23 +278,23 @@ axis2_module_desc_free_void_arg (void *module_desc,
         ((module_desc)->ops->set_inflow (module_desc, env, inflow))
 
 #define AXIS2_MODULE_DESC_GET_OUTFLOW(module_desc, env) \
-		((module_desc)->ops->get_outflow (module_desc, env))
-		
+      ((module_desc)->ops->get_outflow (module_desc, env))
+      
 #define AXIS2_MODULE_DESC_SET_OUTFLOW(module_desc, env, outflow) \
-		((module_desc)->ops->set_outflow (module_desc, env, outflow))
+      ((module_desc)->ops->set_outflow (module_desc, env, outflow))
 
 #define AXIS2_MODULE_DESC_GET_FAULT_INFLOW(module_desc, env) \
-		((module_desc)->ops->get_fault_inflow (module_desc, env))
+      ((module_desc)->ops->get_fault_inflow (module_desc, env))
         
 #define AXIS2_MODULE_DESC_SET_FAULT_INFLOW(module_desc, env, falut_inflow) \
         ((module_desc)->ops->set_fault_inflow(module_desc , env, falut_inflow))
-		
+      
 #define AXIS2_MODULE_DESC_GET_FAULT_OUTFLOW(module_desc, env) \
         ((module_desc)->ops->get_fault_outflow(module_desc , env))
-		
+      
 #define AXIS2_MODULE_DESC_SET_FAULT_OUTFLOW(module_desc, env, falut_outflow) \
         ((module_desc)->ops->set_fault_outflow(module_desc , env, falut_outflow))
-		
+      
 #define AXIS2_MODULE_DESC_GET_NAME(module_desc, env) \
         ((module_desc)->ops->get_name(module_desc, env))
 

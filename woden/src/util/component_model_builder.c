@@ -203,13 +203,13 @@ axis2_woden_component_model_builder_create(
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	builder_impl = (axis2_woden_component_model_builder_impl_t *) 
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   builder_impl = (axis2_woden_component_model_builder_impl_t *) 
         AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_woden_component_model_builder_impl_t));
-	
-	if(NULL == builder_impl)
+   
+   if(NULL == builder_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -221,12 +221,12 @@ axis2_woden_component_model_builder_create(
     builder_impl->f_svcs_done = NULL;
     
     builder_impl->builder.ops = 
-		AXIS2_MALLOC (env->allocator, 
+      AXIS2_MALLOC (env->allocator, 
                 sizeof(axis2_woden_component_model_builder_ops_t));
-	if(NULL == builder_impl->builder.ops)
+   if(NULL == builder_impl->builder.ops)
     {
         axis2_woden_component_model_builder_free(&(builder_impl->builder), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
@@ -237,7 +237,7 @@ axis2_woden_component_model_builder_create(
     builder_impl->f_desc = desc;
     axis2_woden_component_model_builder_init_components(&(builder_impl->builder), env, 
             builder_impl->f_desc);
-	return &(builder_impl->builder);
+   return &(builder_impl->builder);
 }
 
 /***************************Function implementation****************************/

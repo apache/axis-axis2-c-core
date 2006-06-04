@@ -839,7 +839,7 @@ axis2_om_node_to_string(axis2_om_node_t *om_node,
     AXIS2_PARAM_CHECK(env->error, om_node, NULL);    
     
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
-					AXIS2_XML_PARSER_TYPE_BUFFER);
+               AXIS2_XML_PARSER_TYPE_BUFFER);
     if(!xml_writer)
         return NULL;
     

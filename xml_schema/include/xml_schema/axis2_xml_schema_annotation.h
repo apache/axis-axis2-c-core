@@ -42,7 +42,7 @@ extern "C"
 
 struct axis2_xml_schema_annotation_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -82,23 +82,23 @@ axis2_xml_schema_annotation_create(const axis2_env_t *env);
 /***************** Macros *****************************************/
 
 #define AXIS2_XML_SCHEMA_ANNOTATION_FREE(annotation, env) \
-		(((axis2_xml_schema_annotation_t *) annotation)->ops->\
+      (((axis2_xml_schema_annotation_t *) annotation)->ops->\
             free(annotation, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATION_SUPER_OBJS(annotation, env) \
-		(((axis2_xml_schema_annotation_t *) annotation)->ops->\
+      (((axis2_xml_schema_annotation_t *) annotation)->ops->\
             super_objs(annotation, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATION_TYPE(annotation, env) \
-		(((axis2_xml_schema_annotation_t *) annotation)->ops->\
+      (((axis2_xml_schema_annotation_t *) annotation)->ops->\
             type(annotation, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATION_GET_ITEMS(annotation, env) \
-		(((axis2_xml_schema_annotation_t *) annotation)->ops->\
+      (((axis2_xml_schema_annotation_t *) annotation)->ops->\
             get_items(annotation, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATION_GET_BASE_IMPL(annotation, env) \
-		(((axis2_xml_schema_annotation_t *) annotation)->ops->\
+      (((axis2_xml_schema_annotation_t *) annotation)->ops->\
             get_base_impl(annotation, env))
 
 /************************ end macros *******************************/

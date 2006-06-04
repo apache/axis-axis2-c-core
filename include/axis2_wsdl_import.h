@@ -49,12 +49,12 @@ typedef struct axis2_wsdl_import_ops axis2_wsdl_import_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_import_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_import_t *wsdl_import,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
                                
     /**
      * Method get_namespace
@@ -100,11 +100,11 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_import_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_import
 {
-	axis2_wsdl_import_ops_t *ops;
+   axis2_wsdl_import_ops_t *ops;
     struct axis2_wsdl_component *wsdl_component;
 };
 
@@ -117,19 +117,19 @@ AXIS2_EXTERN axis2_wsdl_import_t *AXIS2_CALL axis2_wsdl_import_create (const axi
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_IMPORT_FREE(wsdl_import, env) \
-		((wsdl_import)->ops->free (wsdl_import, env))
+      ((wsdl_import)->ops->free (wsdl_import, env))
 
 #define AXIS2_WSDL_IMPORT_GET_NAMESPACE(wsdl_import, env) \
-		((wsdl_import)->ops->get_namespace (wsdl_import, env))
+      ((wsdl_import)->ops->get_namespace (wsdl_import, env))
 
 #define AXIS2_WSDL_IMPORT_SET_NAMESPACE(wsdl_import, env, namespace) \
-		((wsdl_import)->ops->set_namespace (wsdl_import, env, namespace))
+      ((wsdl_import)->ops->set_namespace (wsdl_import, env, namespace))
         
 #define AXIS2_WSDL_IMPORT_GET_LOCATION(wsdl_import, env) \
-		((wsdl_import)->ops->is_location (wsdl_import, env))
+      ((wsdl_import)->ops->is_location (wsdl_import, env))
 
 #define AXIS2_WSDL_IMPORT_SET_LOCATION(wsdl_import, env, location) \
-		((wsdl_import)->ops->set_location (wsdl_import, env, location))        
+      ((wsdl_import)->ops->set_location (wsdl_import, env, location))        
 
 /*************************** End of function macros ***************************/
 

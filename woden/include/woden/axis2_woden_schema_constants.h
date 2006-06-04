@@ -75,9 +75,9 @@ extern "C"
 #define AXIS2_Q_ELEM_REDEFINE_XSD_2001 "redefine|http://www.w3.org/2001/XMLSchema"
 
 
-/*********************************** Constants*********************************/	
-	
-	
+/*********************************** Constants*********************************/   
+   
+   
 #ifdef __cplusplus
 }
 #endif

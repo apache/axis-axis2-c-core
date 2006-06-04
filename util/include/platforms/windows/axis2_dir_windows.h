@@ -28,23 +28,23 @@
 /* struct dirent - same as Unix dirent.h */
 AXIS2_DECLARE_DATA struct dirent 
 {
-	long				d_ino;						/* inode number (always 1 in WIN32) */
-	off_t				d_off;					/* offset to this dirent */
-	unsigned short		d_reclen;		/* length of d_name */
-	char				d_name[_MAX_FNAME + 1];	/* filename (null terminated) */
-	/*unsigned char		d_type;*/		/*type of file*/
+   long            d_ino;                  /* inode number (always 1 in WIN32) */
+   off_t            d_off;               /* offset to this dirent */
+   unsigned short      d_reclen;      /* length of d_name */
+   char            d_name[_MAX_FNAME + 1];   /* filename (null terminated) */
+   /*unsigned char      d_type;*/      /*type of file*/
 };
 
 
 /* def struct DIR - different from Unix DIR */
 AXIS2_DECLARE_DATA typedef struct
 {
-	long				handle;						/* _findfirst/_findnext handle */
-	short				offset;						/* offset into directory */
-	short				finished;						/* 1 if there are not more files */
-	struct _finddata_t	fileinfo;		/* from _findfirst/_findnext */
-	char				*dirname;						/* the dir we are reading */
-	struct dirent		dent;					/* the dirent to return */
+   long            handle;                  /* _findfirst/_findnext handle */
+   short            offset;                  /* offset into directory */
+   short            finished;                  /* 1 if there are not more files */
+   struct _finddata_t   fileinfo;      /* from _findfirst/_findnext */
+   char            *dirname;                  /* the dir we are reading */
+   struct dirent      dent;               /* the dirent to return */
 } DIR;
 
 /* Function prototypes */

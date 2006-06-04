@@ -49,7 +49,7 @@ typedef struct axis2_xml_schema_obj_collection_ops
 
 struct axis2_xml_schema_obj_collection_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -108,28 +108,28 @@ axis2_xml_schema_obj_collection_create(const axis2_env_t *env);
 
 /******************* MACROS ***************************************************/
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_FREE(obj_collection, env) \
-		((obj_collection)->ops->free (obj_collection, env))
+      ((obj_collection)->ops->free (obj_collection, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_GET_COUNT(obj_collection, env) \
-		((obj_collection)->ops->get_count (obj_collection, env))
+      ((obj_collection)->ops->get_count (obj_collection, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(obj_collection, env, i) \
-		((obj_collection)->ops->get_item (obj_collection, env, i))
+      ((obj_collection)->ops->get_item (obj_collection, env, i))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_SET_ITEM(obj_collection, env, i, item) \
-		((obj_collection)->ops->set_item (obj_collection, env, i, item))
+      ((obj_collection)->ops->set_item (obj_collection, env, i, item))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(obj_collection, env, item) \
-		((obj_collection)->ops->add (obj_collection, env, item))
+      ((obj_collection)->ops->add (obj_collection, env, item))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_CONTAINS(obj_collection, env, item) \
-		((obj_collection)->ops->contains (obj_collection, env, item))
+      ((obj_collection)->ops->contains (obj_collection, env, item))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_INDEX_OF(obj_collection, env, item) \
-		((obj_collection)->ops->index_of (obj_collection, env, item))
+      ((obj_collection)->ops->index_of (obj_collection, env, item))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_REMOVE_AT(obj_collection, env, i) \
-		((obj_collection)->ops->remove_at (obj_collection, env, i))
+      ((obj_collection)->ops->remove_at (obj_collection, env, i))
 
 #define AXIS2_XML_SCHEMA_OBJ_COLLECTION_TO_ARRAY(obj_collection, env) \
         ((obj_collection)->ops->to_array(obj_collection, env))

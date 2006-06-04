@@ -50,7 +50,7 @@ extern "C"
 
 struct axis2_woden_endpoint_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -169,31 +169,31 @@ axis2_woden_endpoint_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_ENDPOINT_FREE(endpoint, env) \
-		(((axis2_woden_endpoint_t *) endpoint)->ops->free(endpoint, env))
+      (((axis2_woden_endpoint_t *) endpoint)->ops->free(endpoint, env))
 
 #define AXIS2_WODEN_ENDPOINT_SUPER_OBJS(endpoint, env) \
-		(((axis2_woden_endpoint_t *) endpoint)->ops->super_objs(endpoint, env))
+      (((axis2_woden_endpoint_t *) endpoint)->ops->super_objs(endpoint, env))
 
 #define AXIS2_WODEN_ENDPOINT_TYPE(endpoint, env) \
-		(((axis2_woden_endpoint_t *) endpoint)->ops->type(endpoint, env))
+      (((axis2_woden_endpoint_t *) endpoint)->ops->type(endpoint, env))
 
 #define AXIS2_WODEN_ENDPOINT_GET_BASE_IMPL(endpoint, env) \
-		(((axis2_woden_endpoint_t *) endpoint)->ops->get_base_impl(endpoint, env))
+      (((axis2_woden_endpoint_t *) endpoint)->ops->get_base_impl(endpoint, env))
 
 #define AXIS2_WODEN_ENDPOINT_GET_NAME(endpoint, env) \
-		(((axis2_woden_endpoint_t *) endpoint)->\
+      (((axis2_woden_endpoint_t *) endpoint)->\
          get_name(endpoint, env))
 
 #define AXIS2_WODEN_ENDPOINT_GET_BINDING(endpoint, env) \
-		(((axis2_woden_endpoint_t *) endpoint)->\
+      (((axis2_woden_endpoint_t *) endpoint)->\
          get_binding(endpoint, env))
 
 #define AXIS2_WODEN_ENDPOINT_GET_ADDRESS(endpoint, env) \
-		(((axis2_woden_endpoint_t *) endpoint)->ops->\
+      (((axis2_woden_endpoint_t *) endpoint)->ops->\
          get_address(endpoint, env))
 
 #define AXIS2_WODEN_ENDPOINT_SET_BINDING_ELEMENT(endpoint, env, binding) \
-		(((axis2_woden_endpoint_t *) endpoint)->ops->\
+      (((axis2_woden_endpoint_t *) endpoint)->ops->\
          set_binding_element(endpoint, env, binding))
 
 /** @} */

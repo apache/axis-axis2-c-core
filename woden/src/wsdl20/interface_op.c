@@ -26,7 +26,7 @@ typedef struct axis2_woden_interface_op_impl axis2_woden_interface_op_impl_t;
 
 /** 
  * @brief Interface Operation Struct Impl
- *	Axis2 Interface Operation  
+ *   Axis2 Interface Operation  
  */ 
 struct axis2_woden_interface_op_impl
 {

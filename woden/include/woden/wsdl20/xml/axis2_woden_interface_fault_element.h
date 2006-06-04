@@ -56,7 +56,7 @@ typedef union axis2_woden_interface_fault_element_base axis2_woden_interface_fau
 
 struct axis2_woden_interface_fault_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -147,31 +147,31 @@ axis2_woden_interface_fault_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_INTERFACE_FAULT_ELEMENT_FREE(interface_fault_element, env) \
-		(((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
+      (((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
          free (interface_fault_element, env))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_ELEMENT_TYPE(interface_fault_element, env) \
-		(((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
+      (((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
          type (interface_fault_element, env))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_ELEMENT_SET_QNAME(interface_fault_element, env, qname) \
-		(((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
+      (((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
          set_qname (interface_fault_element, env, qname))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_ELEMENT_GET_QNAME(interface_fault_element, env) \
-		(((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
+      (((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
         get_qname  (interface_fault_element, env))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_ELEMENT_SET_ELEMENT_QNAME(interface_fault_element, env, qname) \
-		(((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
+      (((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
          set_element_qname (interface_fault_element, env, qname))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_ELEMENT_GET_ELEMENT_QNAME(interface_fault_element, env) \
-		(((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
+      (((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
          get_element_qname (interface_fault_element, env))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_ELEMENT_GET_ELEMENT(interface_fault_element, env) \
-		(((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
+      (((axis2_woden_interface_fault_element_t *) interface_fault_element)->ops->\
          get_element (interface_fault_element, env))
 
 

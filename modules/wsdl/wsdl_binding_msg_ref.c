@@ -39,13 +39,13 @@ typedef struct axis2_wsdl_binding_msg_ref_impl
 } axis2_wsdl_binding_msg_ref_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(binding_msg_ref) \
-		((axis2_wsdl_binding_msg_ref_impl_t *)binding_msg_ref)
+      ((axis2_wsdl_binding_msg_ref_impl_t *)binding_msg_ref)
 
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-	axis2_wsdl_binding_msg_ref_free (axis2_wsdl_binding_msg_ref_t *binding_msg_ref,
-									const axis2_env_t *env);
+   axis2_wsdl_binding_msg_ref_free (axis2_wsdl_binding_msg_ref_t *binding_msg_ref,
+                           const axis2_env_t *env);
 
 axis2_char_t * AXIS2_CALL
 axis2_wsdl_binding_msg_ref_get_direction(axis2_wsdl_binding_msg_ref_t *binding_msg_ref,
@@ -72,13 +72,13 @@ axis2_wsdl_binding_msg_ref_create (const axis2_env_t *env)
 {
     axis2_wsdl_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	binding_msg_ref_impl = (axis2_wsdl_binding_msg_ref_impl_t *) 
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   binding_msg_ref_impl = (axis2_wsdl_binding_msg_ref_impl_t *) 
         AXIS2_MALLOC(env->allocator, sizeof(axis2_wsdl_binding_msg_ref_impl_t));
-	
-	
-	if(NULL == binding_msg_ref_impl)
+   
+   
+   if(NULL == binding_msg_ref_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -86,7 +86,7 @@ axis2_wsdl_binding_msg_ref_create (const axis2_env_t *env)
     
     binding_msg_ref_impl->msg_label = NULL;
     binding_msg_ref_impl->direction = NULL;
-    binding_msg_ref_impl->binding_msg_ref.extensible_component = NULL;	
+    binding_msg_ref_impl->binding_msg_ref.extensible_component = NULL;   
     binding_msg_ref_impl->binding_msg_ref.ops = NULL;
     
     binding_msg_ref_impl->binding_msg_ref.extensible_component = 
@@ -96,35 +96,35 @@ axis2_wsdl_binding_msg_ref_create (const axis2_env_t *env)
     {
         axis2_wsdl_binding_msg_ref_free(&(binding_msg_ref_impl->binding_msg_ref),
             env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	binding_msg_ref_impl->binding_msg_ref.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_binding_msg_ref_ops_t));
-	if(NULL == binding_msg_ref_impl->binding_msg_ref.ops)
+   binding_msg_ref_impl->binding_msg_ref.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_binding_msg_ref_ops_t));
+   if(NULL == binding_msg_ref_impl->binding_msg_ref.ops)
     {
         axis2_wsdl_binding_msg_ref_free(&(binding_msg_ref_impl->binding_msg_ref),
             env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	binding_msg_ref_impl->binding_msg_ref.ops->free =  axis2_wsdl_binding_msg_ref_free;
+   binding_msg_ref_impl->binding_msg_ref.ops->free =  axis2_wsdl_binding_msg_ref_free;
     
-	binding_msg_ref_impl->binding_msg_ref.ops->get_direction =  
+   binding_msg_ref_impl->binding_msg_ref.ops->get_direction =  
         axis2_wsdl_binding_msg_ref_get_direction;
     
-	binding_msg_ref_impl->binding_msg_ref.ops->set_direction =  
+   binding_msg_ref_impl->binding_msg_ref.ops->set_direction =  
         axis2_wsdl_binding_msg_ref_set_direction;
     
     binding_msg_ref_impl->binding_msg_ref.ops->get_msg_label =  
         axis2_wsdl_binding_msg_ref_get_msg_label;
     
-	binding_msg_ref_impl->binding_msg_ref.ops->set_msg_label =  
+   binding_msg_ref_impl->binding_msg_ref.ops->set_msg_label =  
         axis2_wsdl_binding_msg_ref_set_msg_label;
     
-	return &(binding_msg_ref_impl->binding_msg_ref);
+   return &(binding_msg_ref_impl->binding_msg_ref);
 }
 
 /***************************Function implementation****************************/
@@ -139,7 +139,7 @@ axis2_wsdl_binding_msg_ref_free (axis2_wsdl_binding_msg_ref_t *binding_msg_ref,
     
     binding_msg_ref_impl = AXIS2_INTF_TO_IMPL(binding_msg_ref);
     
-	if(NULL != binding_msg_ref->ops)
+   if(NULL != binding_msg_ref->ops)
     {
         AXIS2_FREE(env->allocator, binding_msg_ref->ops);
         binding_msg_ref->ops = NULL;
@@ -164,7 +164,7 @@ axis2_wsdl_binding_msg_ref_free (axis2_wsdl_binding_msg_ref_t *binding_msg_ref,
     if(binding_msg_ref_impl)
         AXIS2_FREE(env->allocator, binding_msg_ref_impl);
     binding_msg_ref_impl = NULL;
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_char_t * AXIS2_CALL

@@ -19,13 +19,13 @@
 
 /** 
  * @brief Message struct impl
- *	Axis2 Messages  
+ *   Axis2 Messages  
  */ 
 typedef struct axis2_msg_impl
 {
-	axis2_msg_t msg;
+   axis2_msg_t msg;
     /** parent operation */
-	axis2_op_t *parent;
+   axis2_op_t *parent;
     /** list of phases that represnt the flow  */
     axis2_array_list_t *flow;
     /** name of the message */
@@ -39,12 +39,12 @@ typedef struct axis2_msg_impl
 } axis2_msg_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(msg) ((axis2_msg_impl_t *)msg)
-	
+   
 /*************************** Function headers *********************************/
 
 axis2_status_t AXIS2_CALL
 axis2_msg_free (axis2_msg_t *msg, 
-    const axis2_env_t *env);	
+    const axis2_env_t *env);   
 
 axis2_status_t AXIS2_CALL 
 axis2_msg_add_param (axis2_msg_t *msg, 
@@ -111,7 +111,7 @@ axis2_msg_set_name(axis2_msg_t *msg,
     const axis2_char_t *name);
 
 
-/************************* End of function headers ****************************/	
+/************************* End of function headers ****************************/   
 
 AXIS2_EXTERN axis2_msg_t * AXIS2_CALL
 axis2_msg_create (const axis2_env_t *env)
@@ -119,19 +119,19 @@ axis2_msg_create (const axis2_env_t *env)
     axis2_msg_impl_t *msg_impl = NULL;
  
     AXIS2_ENV_CHECK(env, NULL);
-	
-	msg_impl =  (axis2_msg_impl_t *) AXIS2_MALLOC (env->allocator,
-		sizeof (axis2_msg_impl_t));
+   
+   msg_impl =  (axis2_msg_impl_t *) AXIS2_MALLOC (env->allocator,
+      sizeof (axis2_msg_impl_t));
      
-	if(NULL == msg_impl)
-	{
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+   if(NULL == msg_impl)
+   {
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
     msg_impl->msg.param_container = NULL;
     msg_impl->parent = NULL;
-	msg_impl->flow = NULL;
+   msg_impl->flow = NULL;
     msg_impl->name = NULL;
     msg_impl->soap_headers = NULL;
     msg_impl->element_qname = NULL;
@@ -139,52 +139,52 @@ axis2_msg_create (const axis2_env_t *env)
     msg_impl->msg.ops = NULL;
 
     msg_impl->msg.param_container = (axis2_param_container_t *)
-		axis2_param_container_create(env);		
-	if(NULL == msg_impl->msg.param_container)
-	{
+      axis2_param_container_create(env);      
+   if(NULL == msg_impl->msg.param_container)
+   {
         axis2_msg_free(&(msg_impl->msg), env);
         return NULL;        
-	}
+   }
 
     msg_impl->soap_headers = axis2_array_list_create(env, 0);
     if(NULL == msg_impl->soap_headers)
-	{
+   {
         axis2_msg_free(&(msg_impl->msg), env);
         return NULL;        
-	}
+   }
 
     msg_impl->flow = axis2_array_list_create(env, 0);
     if(NULL == msg_impl->flow)
-	{
+   {
         axis2_msg_free(&(msg_impl->msg), env);
         return NULL;        
-	}
+   }
     
     msg_impl->msg.ops = AXIS2_MALLOC(env->allocator, sizeof(axis2_msg_ops_t));
-	if(NULL == msg_impl->msg.ops)
-	{
+   if(NULL == msg_impl->msg.ops)
+   {
         axis2_msg_free(&(msg_impl->msg), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
-	
-	msg_impl->msg.ops->free = axis2_msg_free;
-	msg_impl->msg.ops->add_param = axis2_msg_add_param;
-	msg_impl->msg.ops->get_param = axis2_msg_get_param;
-	msg_impl->msg.ops->get_params = axis2_msg_get_params;
-	msg_impl->msg.ops->is_param_locked = axis2_msg_is_param_locked;
-	msg_impl->msg.ops->set_parent = axis2_msg_set_parent;
-	msg_impl->msg.ops->get_parent = axis2_msg_get_parent;
-	msg_impl->msg.ops->get_flow = axis2_msg_get_flow;
-	msg_impl->msg.ops->set_flow = axis2_msg_set_flow;
-	msg_impl->msg.ops->get_direction = axis2_msg_get_direction;
-	msg_impl->msg.ops->set_direction = axis2_msg_set_direction;
-	msg_impl->msg.ops->get_element_qname = axis2_msg_get_element_qname;
-	msg_impl->msg.ops->set_element_qname = axis2_msg_set_element_qname;
-	msg_impl->msg.ops->get_name = axis2_msg_get_name;
-	msg_impl->msg.ops->set_name = axis2_msg_set_name;
+   }
+   
+   msg_impl->msg.ops->free = axis2_msg_free;
+   msg_impl->msg.ops->add_param = axis2_msg_add_param;
+   msg_impl->msg.ops->get_param = axis2_msg_get_param;
+   msg_impl->msg.ops->get_params = axis2_msg_get_params;
+   msg_impl->msg.ops->is_param_locked = axis2_msg_is_param_locked;
+   msg_impl->msg.ops->set_parent = axis2_msg_set_parent;
+   msg_impl->msg.ops->get_parent = axis2_msg_get_parent;
+   msg_impl->msg.ops->get_flow = axis2_msg_get_flow;
+   msg_impl->msg.ops->set_flow = axis2_msg_set_flow;
+   msg_impl->msg.ops->get_direction = axis2_msg_get_direction;
+   msg_impl->msg.ops->set_direction = axis2_msg_set_direction;
+   msg_impl->msg.ops->get_element_qname = axis2_msg_get_element_qname;
+   msg_impl->msg.ops->set_element_qname = axis2_msg_set_element_qname;
+   msg_impl->msg.ops->get_name = axis2_msg_get_name;
+   msg_impl->msg.ops->set_name = axis2_msg_set_name;
     
-	return &(msg_impl->msg);
+   return &(msg_impl->msg);
 }
 
 /*************************** Start of msg impls *************************/
@@ -249,7 +249,7 @@ axis2_msg_free (axis2_msg_t *msg, const axis2_env_t *env)
     
     if(msg->param_container)
     {
-	    AXIS2_PARAM_CONTAINER_FREE(msg->param_container, env);
+       AXIS2_PARAM_CONTAINER_FREE(msg->param_container, env);
         msg->param_container = NULL;
     }
     
@@ -268,12 +268,12 @@ axis2_msg_free (axis2_msg_t *msg, const axis2_env_t *env)
     }
     
     return AXIS2_SUCCESS;
-}	
+}   
 
 axis2_status_t AXIS2_CALL 
 axis2_msg_add_param (axis2_msg_t *msg, 
                                 const axis2_env_t *env,       
-		                        axis2_param_t *param)
+                              axis2_param_t *param)
 {
     axis2_msg_impl_t *msg_impl = NULL;
     axis2_char_t *param_name = NULL;
@@ -281,7 +281,7 @@ axis2_msg_add_param (axis2_msg_t *msg,
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FALSE);
     msg_impl = AXIS2_INTF_TO_IMPL(msg);
-	
+   
     param_name = AXIS2_PARAM_GET_NAME(param, env);
     if(AXIS2_TRUE == axis2_msg_is_param_locked(msg, env, param_name))
     {
@@ -300,12 +300,12 @@ axis2_msg_add_param (axis2_msg_t *msg,
 axis2_param_t * AXIS2_CALL
 axis2_msg_get_param (axis2_msg_t *msg, 
                                 const axis2_env_t *env,
-		                        axis2_char_t *param_name)
+                              axis2_char_t *param_name)
 {
-	AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-	AXIS2_PARAM_CHECK(env->error, param_name, NULL);
+   AXIS2_ENV_CHECK(env, AXIS2_FALSE);
+   AXIS2_PARAM_CHECK(env->error, param_name, NULL);
 
-	return AXIS2_PARAM_CONTAINER_GET_PARAM(msg->param_container, env, param_name);
+   return AXIS2_PARAM_CONTAINER_GET_PARAM(msg->param_container, env, param_name);
 }
 
 axis2_array_list_t * AXIS2_CALL
@@ -314,7 +314,7 @@ axis2_msg_get_params(axis2_msg_t *msg,
 {
     axis2_msg_impl_t *msg_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, AXIS2_FALSE);
+   AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, msg->param_container, AXIS2_FALSE);
     msg_impl = AXIS2_INTF_TO_IMPL(msg);
    
@@ -324,20 +324,20 @@ axis2_msg_get_params(axis2_msg_t *msg,
 axis2_status_t AXIS2_CALL 
 axis2_msg_set_parent (axis2_msg_t *msg, 
                                 const axis2_env_t *env,
-		                        axis2_op_t *op)
+                              axis2_op_t *op)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(msg)->parent = op;
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_op_t * AXIS2_CALL
 axis2_msg_get_parent (axis2_msg_t *msg, 
                                 const axis2_env_t *env)
 {           
-	AXIS2_ENV_CHECK(env, NULL);
+   AXIS2_ENV_CHECK(env, NULL);
     
-	return AXIS2_INTF_TO_IMPL(msg)->parent;
+   return AXIS2_INTF_TO_IMPL(msg)->parent;
 }
 
 axis2_array_list_t *AXIS2_CALL
@@ -374,7 +374,7 @@ axis2_msg_is_param_locked(axis2_msg_t *msg,
     {
         param_l = axis2_msg_get_param(msg, env, param_name);   
     }
-	return (param_l != NULL && AXIS2_PARAM_IS_LOCKED(param_l, env));
+   return (param_l != NULL && AXIS2_PARAM_IS_LOCKED(param_l, env));
 }
 
 axis2_status_t AXIS2_CALL 

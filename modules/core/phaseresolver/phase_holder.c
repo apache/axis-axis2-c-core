@@ -23,7 +23,7 @@
  */ 
 typedef struct axis2_phase_holder_impl
 {
-	axis2_phase_holder_t phase_holder;
+   axis2_phase_holder_t phase_holder;
     axis2_array_list_t *phase_list;
     
 } axis2_phase_holder_impl_t;
@@ -33,9 +33,9 @@ typedef struct axis2_phase_holder_impl
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-	axis2_phase_holder_free (
+   axis2_phase_holder_free (
                 axis2_phase_holder_t *phase_holder,
-				const axis2_env_t *env);
+            const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
 axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder, 
@@ -65,12 +65,12 @@ axis2_phase_holder_create (const axis2_env_t *env)
 {
     axis2_phase_holder_impl_t *phase_holder_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	phase_holder_impl = (axis2_phase_holder_impl_t *) AXIS2_MALLOC(env->
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   phase_holder_impl = (axis2_phase_holder_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_phase_holder_impl_t));
-	
-	if(NULL == phase_holder_impl)
+   
+   if(NULL == phase_holder_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -79,26 +79,26 @@ axis2_phase_holder_create (const axis2_env_t *env)
     phase_holder_impl->phase_list = NULL;
     phase_holder_impl->phase_holder.ops = NULL;
     
-	phase_holder_impl->phase_holder.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_phase_holder_ops_t));
-	if(NULL == phase_holder_impl->phase_holder.ops)
+   phase_holder_impl->phase_holder.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_phase_holder_ops_t));
+   if(NULL == phase_holder_impl->phase_holder.ops)
     {
         axis2_phase_holder_free(&(phase_holder_impl->phase_holder), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
     phase_holder_impl->phase_holder.ops->free = axis2_phase_holder_free; 
-	phase_holder_impl->phase_holder.ops->is_phase_exist =  
+   phase_holder_impl->phase_holder.ops->is_phase_exist =  
             axis2_phase_holder_is_phase_exist;
-	phase_holder_impl->phase_holder.ops->add_handler =  
+   phase_holder_impl->phase_holder.ops->add_handler =  
             axis2_phase_holder_add_handler;
-	phase_holder_impl->phase_holder.ops->get_phase =  
+   phase_holder_impl->phase_holder.ops->get_phase =  
             axis2_phase_holder_get_phase;
-	phase_holder_impl->phase_holder.ops->build_transport_handler_chain = 
+   phase_holder_impl->phase_holder.ops->build_transport_handler_chain = 
             axis2_phase_holder_build_transport_handler_chain;
-	
-	return &(phase_holder_impl->phase_holder);
+   
+   return &(phase_holder_impl->phase_holder);
 }
 
 AXIS2_EXTERN axis2_phase_holder_t * AXIS2_CALL
@@ -136,7 +136,7 @@ axis2_phase_holder_free (axis2_phase_holder_t *phase_holder,
         AXIS2_ARRAY_LIST_FREE(phase_holder_impl->phase_list, env);
         phase_holder_impl->phase_list = NULL;
     }*/
-	
+   
     if(NULL != phase_holder->ops)
     {
         AXIS2_FREE(env->allocator, phase_holder->ops);
@@ -149,7 +149,7 @@ axis2_phase_holder_free (axis2_phase_holder_t *phase_holder,
         phase_holder_impl = NULL;
     }
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 /**

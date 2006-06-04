@@ -58,7 +58,7 @@ struct axis2_woden_ext_element;
 
 struct axis2_woden_soap_fault_subcodes_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status subcodes
      */
@@ -107,23 +107,23 @@ axis2_woden_soap_fault_subcodes_get_soap_fault_subcodes_any(
         const axis2_env_t *env);
 
 #define AXIS2_WODEN_SOAP_FAULT_SUBCODES_FREE(soap_fault_subcodes, env) \
-		(((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
+      (((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
          free (soap_fault_subcodes, env))
 
 #define AXIS2_WODEN_SOAP_FAULT_SUBCODES_IS_QNAMES(soap_fault_subcodes, env) \
-		(((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
+      (((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
          is_qnames (soap_fault_subcodes, env))
 
 #define AXIS2_WODEN_SOAP_FAULT_SUBCODES_IS_TOKEN(soap_fault_subcodes, env) \
-		(((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
+      (((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
          is_token (soap_fault_subcodes, env))
 
 #define AXIS2_WODEN_SOAP_FAULT_SUBCODES_GET_QNAMES(soap_fault_subcodes, env) \
-		(((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
+      (((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
          get_qnames (soap_fault_subcodes, env))
 
 #define AXIS2_WODEN_SOAP_FAULT_SUBCODES_GET_TOKEN(soap_fault_subcodes, env) \
-		(((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
+      (((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
          get_token (soap_fault_subcodes, env))
 
 

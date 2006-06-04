@@ -20,9 +20,9 @@
 
 typedef struct axis2_mime_body_part_impl
 {
-	axis2_mime_body_part_t mime_body_part;
-	/** hash map to hold header name, value pairs */
-	axis2_hash_t *header_map;
+   axis2_mime_body_part_t mime_body_part;
+   /** hash map to hold header name, value pairs */
+   axis2_hash_t *header_map;
     axis2_data_handler_t *data_handler;
 } axis2_mime_body_part_impl_t;
 
@@ -53,16 +53,16 @@ axis2_mime_body_part_create (const axis2_env_t *env)
 {
     axis2_mime_body_part_impl_t *mime_body_part_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	mime_body_part_impl = (axis2_mime_body_part_impl_t *) AXIS2_MALLOC(env->allocator, 
+   AXIS2_ENV_CHECK(env, NULL);
+   mime_body_part_impl = (axis2_mime_body_part_impl_t *) AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_mime_body_part_impl_t));
-		
-	if(NULL == mime_body_part_impl)
+      
+   if(NULL == mime_body_part_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-	
+   
     mime_body_part_impl->header_map = NULL;
     mime_body_part_impl->data_handler = NULL;
     mime_body_part_impl->mime_body_part.ops = NULL;
@@ -71,20 +71,20 @@ axis2_mime_body_part_create (const axis2_env_t *env)
     if (!(mime_body_part_impl->header_map))
     {
         axis2_mime_body_part_free(&(mime_body_part_impl->mime_body_part), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	mime_body_part_impl->mime_body_part.ops = AXIS2_MALLOC (env->allocator, 
+   mime_body_part_impl->mime_body_part.ops = AXIS2_MALLOC (env->allocator, 
         sizeof(axis2_mime_body_part_ops_t));
-	if(NULL == mime_body_part_impl->mime_body_part.ops)
+   if(NULL == mime_body_part_impl->mime_body_part.ops)
     {
         axis2_mime_body_part_free(&(mime_body_part_impl->mime_body_part), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-	mime_body_part_impl->mime_body_part.ops->free =  axis2_mime_body_part_free;
+   mime_body_part_impl->mime_body_part.ops->free =  axis2_mime_body_part_free;
     mime_body_part_impl->mime_body_part.ops->add_header = axis2_mime_body_part_add_header;
     mime_body_part_impl->mime_body_part.ops->set_data_handler = axis2_mime_body_part_set_data_handler; 
     mime_body_part_impl->mime_body_part.ops->write_to = axis2_mime_body_part_write_to;
@@ -144,7 +144,7 @@ axis2_status_t AXIS2_CALL
 axis2_mime_body_part_set_data_handler (axis2_mime_body_part_t *mime_body_part, 
     const axis2_env_t *env, axis2_data_handler_t *data_handler) 
 {
-	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(mime_body_part)->data_handler = data_handler;
     return AXIS2_SUCCESS;
 }
@@ -153,7 +153,7 @@ axis2_status_t AXIS2_CALL
 axis2_mime_body_part_write_to (axis2_mime_body_part_t *mime_body_part, const axis2_env_t *env, 
                                 axis2_byte_t **output_stream, int *output_stream_size) 
 {
-	axis2_mime_body_part_impl_t *mime_body_part_impl = NULL;
+   axis2_mime_body_part_impl_t *mime_body_part_impl = NULL;
     axis2_hash_index_t *hash_index = NULL;
     const void *key = NULL;
     void *value = NULL;
@@ -204,7 +204,7 @@ axis2_mime_body_part_write_to (axis2_mime_body_part_t *mime_body_part, const axi
     byte_stream = AXIS2_MALLOC(env->allocator, (size) * sizeof(axis2_byte_t));
     if (!byte_stream)
     {
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         if (data_handler_stream)
         {
             AXIS2_FREE(env->allocator, data_handler_stream);

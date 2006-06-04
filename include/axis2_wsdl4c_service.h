@@ -53,25 +53,25 @@ extern "C"
                                     int svc_ext_id);
  
    /**
-	* @param name of the port
-	* @return service extension id of the port
-	*/	
+   * @param name of the port
+   * @return service extension id of the port
+   */   
     int
     axis2_wsdl4c_service_get_port_extention(void *service,
                                             char *name);
  
    /**
-	* Get the binding associated with the port
-	* @param port name
-	* @return binding associated with the port
-	*/	
+   * Get the binding associated with the port
+   * @param port name
+   * @return binding associated with the port
+   */   
     void *
     axis2_wsdl4c_service_get_port_binding(void *service,
                                             char *name);
 
-	/**
-	 * return names of the ports associated with the service
-	 */
+   /**
+    * return names of the ports associated with the service
+    */
     axis2_array_list_t *
     axis2_wsdl4c_service_get_ports(void *service);
 

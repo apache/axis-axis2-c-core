@@ -26,7 +26,7 @@ typedef struct axis2_woden_binding_impl axis2_woden_binding_impl_t;
 
 /** 
  * @brief Binding Struct Impl
- *	Axis2 Binding  
+ *   Axis2 Binding  
  */ 
 struct axis2_woden_binding_impl
 {

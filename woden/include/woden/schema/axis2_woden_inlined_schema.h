@@ -42,7 +42,7 @@ extern "C"
 
 struct axis2_woden_inlined_schema_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -106,18 +106,18 @@ axis2_woden_inlined_schema_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_INLINED_SCHEMA_FREE(schema, env) \
-		(((axis2_woden_inlined_schema_t *) schema)->ops->free(schema, env))
+      (((axis2_woden_inlined_schema_t *) schema)->ops->free(schema, env))
 
 #define AXIS2_WODEN_INLINED_SCHEMA_GET_BASE_IMPL(schema, env) \
-		(((axis2_woden_inlined_schema_t *) schema)->ops->get_base_impl(schema, \
+      (((axis2_woden_inlined_schema_t *) schema)->ops->get_base_impl(schema, \
                                                                         env))
 
 #define AXIS2_WODEN_INLINED_SCHEMA_SET_ID(schema, env, id) \
-		(((axis2_woden_inlined_schema_t *) schema)->ops->set_id(schema, \
+      (((axis2_woden_inlined_schema_t *) schema)->ops->set_id(schema, \
                                                                     env, id))
 
 #define AXIS2_WODEN_INLINED_SCHEMA_GET_ID(schema, env) \
-		(((axis2_woden_inlined_schema_t *) schema)->ops->get_id(schema, \
+      (((axis2_woden_inlined_schema_t *) schema)->ops->get_id(schema, \
                                                                        env))
 
 /** @} */

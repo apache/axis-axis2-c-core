@@ -42,7 +42,7 @@ extern "C"
 
 struct axis2_xml_schema_use_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -83,19 +83,19 @@ axis2_xml_schema_use_create(const axis2_env_t *env,
 /******************* macros ***************************************/
 
 #define AXIS2_XML_SCHEMA_USE_FREE(use, env) \
-		(((axis2_xml_schema_use_t *) use)->ops->free(use, env))
+      (((axis2_xml_schema_use_t *) use)->ops->free(use, env))
 
 #define AXIS2_XML_SCHEMA_USE_SUPER_OBJS(use, env) \
-		(((axis2_xml_schema_use_t *) use)->ops->super_objs(use, env))
+      (((axis2_xml_schema_use_t *) use)->ops->super_objs(use, env))
 
 #define AXIS2_XML_SCHEMA_USE_TYPE(use, env) \
-		(((axis2_xml_schema_use_t *) use)->ops->type(use, env))
+      (((axis2_xml_schema_use_t *) use)->ops->type(use, env))
 
 #define AXIS2_XML_SCHEMA_USE_GET_BASE_IMPL(use, env) \
-		(((axis2_xml_schema_use_t *) use)->ops->get_base_impl(use, env))
+      (((axis2_xml_schema_use_t *) use)->ops->get_base_impl(use, env))
 
 #define AXIS2_XML_SCHEMA_USE_GET_VALUES(use, env) \
-		(((axis2_xml_schema_use_t *) use)->ops->values(use, env))
+      (((axis2_xml_schema_use_t *) use)->ops->values(use, env))
 
 /** @} */
 #ifdef __cplusplus

@@ -24,7 +24,7 @@
  */ 
 typedef struct axis2_repos_listener_impl
 {
-	axis2_repos_listener_t repos_listener;
+   axis2_repos_listener_t repos_listener;
     /**
      * Referance to a WSInfoList
      */
@@ -44,7 +44,7 @@ typedef struct axis2_repos_listener_impl
 
 #define AXIS2_INTF_TO_IMPL(repos_listener) \
         ((axis2_repos_listener_impl_t *) repos_listener)
-	
+   
 /*************************** Function headers *********************************/
 
 axis2_status_t AXIS2_CALL
@@ -84,7 +84,7 @@ axis2_repos_listener_search(axis2_repos_listener_t *listener,
                                 axis2_char_t *folder_name,
                                 int type);
 
-/************************* End of function headers ****************************/	
+/************************* End of function headers ****************************/   
 
 axis2_repos_listener_t *AXIS2_CALL
 axis2_repos_listener_create(const axis2_env_t *env)
@@ -94,9 +94,9 @@ axis2_repos_listener_create(const axis2_env_t *env)
     AXIS2_ENV_CHECK(env, NULL);
     
     listener_impl = (axis2_repos_listener_impl_t *) AXIS2_MALLOC (env->allocator
-		    , sizeof (axis2_repos_listener_impl_t));
+          , sizeof (axis2_repos_listener_impl_t));
     
-	if(NULL == listener_impl)
+   if(NULL == listener_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -109,11 +109,11 @@ axis2_repos_listener_create(const axis2_env_t *env)
     listener_impl->repos_listener.ops = (axis2_repos_listener_ops_t *) 
         AXIS2_MALLOC(env->allocator, sizeof(axis2_repos_listener_ops_t));
     
-	if(NULL == listener_impl->repos_listener.ops)
-	{
+   if(NULL == listener_impl->repos_listener.ops)
+   {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
     listener_impl->repos_listener.ops->free = axis2_repos_listener_free;
     listener_impl->repos_listener.ops->check_modules = 
@@ -151,7 +151,7 @@ axis2_repos_listener_create_with_folder_name_and_dep_engine(const axis2_env_t *e
     
     listener_impl = (axis2_repos_listener_impl_t *) axis2_repos_listener_create(env);
     
-	if(NULL == listener_impl)
+   if(NULL == listener_impl)
     {
         return NULL;
     } 
@@ -202,16 +202,16 @@ axis2_repos_listener_free (axis2_repos_listener_t *repos_listener,
         listener_impl->info_list = NULL;
     }
 
-	if(NULL != repos_listener->ops)
+   if(NULL != repos_listener->ops)
     {
-		AXIS2_FREE(env->allocator, repos_listener->ops);
+      AXIS2_FREE(env->allocator, repos_listener->ops);
         repos_listener->ops = NULL;
     }
     
     AXIS2_FREE(env->allocator, listener_impl);
     listener_impl = NULL;
 
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL

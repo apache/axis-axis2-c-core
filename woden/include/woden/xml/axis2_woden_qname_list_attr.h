@@ -45,7 +45,7 @@ extern "C"
 
 struct axis2_woden_qname_list_attr_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -132,26 +132,26 @@ axis2_woden_qname_list_attr_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_QNAME_LIST_ATTR_FREE(qname_list_attr, env) \
-		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->free(qname_list_attr, env))
+      (((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->free(qname_list_attr, env))
 
 #define AXIS2_WODEN_QNAME_LIST_ATTR_TO_QNAME_LIST_ATTR_FREE(qname_list_attr, env) \
-		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
+      (((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
          to_qname_list_attr_free(qname_list_attr, env))
 
 #define AXIS2_WODEN_QNAME_LIST_ATTR_TYPE(qname_list_attr, env) \
-		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
+      (((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
          type(qname_list_attr, env))
 
 #define AXIS2_WODEN_QNAME_LIST_ATTR_GET_BASE_IMPL(qname_list_attr, env) \
-		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
+      (((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
          get_base_impl(qname_list_attr, env))
 
 #define AXIS2_WODEN_QNAME_LIST_ATTR_GET_QNAMES(qname_list_attr, env) \
-		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
+      (((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
          get_qnames(qname_list_attr, env))
 
 #define AXIS2_WODEN_QNAME_LIST_ATTR_CONVERT(qname_list_attr, env) \
-		(((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
+      (((axis2_woden_qname_list_attr_t *) qname_list_attr)->ops->\
          convert(qname_list_attr, env))
 
 /** @} */

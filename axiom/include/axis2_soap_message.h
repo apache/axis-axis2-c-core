@@ -56,15 +56,15 @@ extern "C"
         */
 
         axis2_status_t (AXIS2_CALL *
-		free_fn)(axis2_soap_message_t *message,
+      free_fn)(axis2_soap_message_t *message,
                  const axis2_env_t *env);
                                              
         axis2_soap_envelope_t* (AXIS2_CALL *
-		get_soap_envelope)(axis2_soap_message_t *message,
+      get_soap_envelope)(axis2_soap_message_t *message,
                            const axis2_env_t *env);
                                              
         axis2_status_t (AXIS2_CALL *
-		serialize)(axis2_soap_message_t *message,
+      serialize)(axis2_soap_message_t *message,
                    const axis2_env_t *env,
                    axis2_om_output_t *om_output);
                                                        

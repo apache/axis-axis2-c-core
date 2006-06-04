@@ -36,8 +36,8 @@ extern "C"
 
 /*enum platform_error_codes
 {
-	PLATFORM_ERROR_UUID_NO_ADDRESS = 0,
-	PLATFORM_ERROR_OUT_OF_MEMORY = 1
+   PLATFORM_ERROR_UUID_NO_ADDRESS = 0,
+   PLATFORM_ERROR_OUT_OF_MEMORY = 1
 };*/
 
 #define _WINSOCKAPI_ /* Prevent inclusion of winsock.h in windows.h */
@@ -76,7 +76,7 @@ extern "C"
 #define AXIS2_PLATFORM_LOG_PATH            ""  /*/usr/local/axis2/log/axis2_log*/
 #define AXIS2_PLATFORM_CLIENTLOG_PATH      "" /* /usr/local/axis2/log/axis2_client_log*/
 #define AXIS2_PLATFORM_CONFIG_PATH         "" /* /etc/axiscpp.conf */
-#define AXIS2_PLATFORM_SECUREINFO			 "" 
+#define AXIS2_PLATFORM_SECUREINFO          "" 
 
 /**
  * Resource that contains the configuration
@@ -180,25 +180,25 @@ callLoadLib(LPCTSTR lib);
 /**
   * windows specific directory handling functions
   */
-#define AXIS2_SCANDIR		scandir
-#define AXIS2_ALPHASORT		alphasort
-#define AXIS2_OPENDIR		opendir
-#define AXIS2_CLOSEDIR		closedir
-#define AXIS2_READDIR		readdir
-#define AXIS2_READDIR_R		readdir_r
-#define AXIS2_REWINDDIR		rewinddir
+#define AXIS2_SCANDIR      scandir
+#define AXIS2_ALPHASORT      alphasort
+#define AXIS2_OPENDIR      opendir
+#define AXIS2_CLOSEDIR      closedir
+#define AXIS2_READDIR      readdir
+#define AXIS2_READDIR_R      readdir_r
+#define AXIS2_REWINDDIR      rewinddir
 
 /**
   * network specific functions and defs
   */
-#define axis2_socket_t						SOCKET
+#define axis2_socket_t                  SOCKET
 
-#define AXIS2_INVALID_SOCKET				INVALID_SOCKET
-#define AXIS2_INADDR_NONE					INADDR_NONE
-#define axis2_unsigned_short_t				u_short
-#define AXIS2_CLOSE_SOCKET(sock)			closesocket(sock)
-#define AXIS2_CLOSE_SOCKET_ON_EXIT(sock)	
-#define axis2_socket_len_t					int
+#define AXIS2_INVALID_SOCKET            INVALID_SOCKET
+#define AXIS2_INADDR_NONE               INADDR_NONE
+#define axis2_unsigned_short_t            u_short
+#define AXIS2_CLOSE_SOCKET(sock)         closesocket(sock)
+#define AXIS2_CLOSE_SOCKET_ON_EXIT(sock)   
+#define axis2_socket_len_t               int
 #define AXIS2_SHUT_WR                       SD_SEND
 
 /**

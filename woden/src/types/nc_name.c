@@ -21,7 +21,7 @@ typedef struct woden_nc_name_impl woden_nc_name_impl_t;
 
 /** 
  * @brief NC Name Struct Impl
- *	Axis2 NC Name  
+ *   Axis2 NC Name  
  */ 
 struct woden_nc_name_impl
 {

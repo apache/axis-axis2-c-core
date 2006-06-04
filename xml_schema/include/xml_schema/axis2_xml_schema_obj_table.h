@@ -54,7 +54,7 @@ typedef struct axis2_xml_schema_obj_table_ops
 
 struct axis2_xml_schema_obj_table_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -127,34 +127,34 @@ axis2_xml_schema_obj_table_create(const axis2_env_t *env);
 
 /********************* macros ************************************************/
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_FREE(obj_table, env) \
-		((obj_table)->ops->free (obj_table, env))
+      ((obj_table)->ops->free (obj_table, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_GET_COUNT(obj_table, env) \
-		((obj_table)->ops->get_count (obj_table, env))
+      ((obj_table)->ops->get_count (obj_table, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_GET_ITEM(obj_table, env, qname) \
-		((obj_table)->ops->get_item (obj_table, env, qname))
+      ((obj_table)->ops->get_item (obj_table, env, qname))
 
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_GET_NAMES(obj_table, env) \
-		((obj_table)->ops->get_names (obj_table, env))
+      ((obj_table)->ops->get_names (obj_table, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_GET_VALUES(obj_table, env) \
-		((obj_table)->ops->get_values (obj_table, env))
+      ((obj_table)->ops->get_values (obj_table, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_CONTAINS(obj_table, env, qname) \
-		((obj_table)->ops->contains (obj_table, env, qname))
+      ((obj_table)->ops->contains (obj_table, env, qname))
 
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_ADD(obj_table, env, qname, value) \
-		((obj_table)->ops->add (obj_table, env, qname, value))
-		
+      ((obj_table)->ops->add (obj_table, env, qname, value))
+      
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_PUT(obj_table, env, key, value) \
-		((obj_table)->ops->put(obj_table, env, key, value))
-		
+      ((obj_table)->ops->put(obj_table, env, key, value))
+      
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_GET(obj_table, env, key) \
-		((obj_table)->ops->get(obj_table, env, key))
-		
+      ((obj_table)->ops->get(obj_table, env, key))
+      
 #define AXIS2_XML_SCHEMA_OBJ_TABLE_GET_HASH_TABLE(obj_table, env) \
-		((obj_table)->ops->get_hash_table(obj_table, env))
+      ((obj_table)->ops->get_hash_table(obj_table, env))
 
 /** @} */
 #ifdef __cplusplus

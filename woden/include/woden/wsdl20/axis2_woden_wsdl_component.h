@@ -50,7 +50,7 @@ struct axis2_woden_component_exts;
 
 struct axis2_woden_wsdl_component_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -91,20 +91,20 @@ axis2_woden_wsdl_component_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_WSDL_COMPONENT_FREE(wsdl_component, env) \
-		(((axis2_woden_wsdl_component_t *) wsdl_component)->ops->\
+      (((axis2_woden_wsdl_component_t *) wsdl_component)->ops->\
          free (wsdl_component, env))
 
 #define AXIS2_WODEN_WSDL_COMPONENT_TO_WSDL_COMPONENT_FREE(wsdl_component, env) \
-		(((axis2_woden_wsdl_component_t *) wsdl_component)->ops->\
+      (((axis2_woden_wsdl_component_t *) wsdl_component)->ops->\
          to_wsdl_component_free (wsdl_component, env))
 
 #define AXIS2_WODEN_WSDL_COMPONENT_TYPE(wsdl_component, env) \
-		(((axis2_woden_wsdl_component_t *) wsdl_component)->ops->\
+      (((axis2_woden_wsdl_component_t *) wsdl_component)->ops->\
          type (wsdl_component, env))
 
 #define AXIS2_WODEN_WSDL_COMPONENT_GET_COMPONENT_EXTS_FOR_NAMESPACE(\
         wsdl_component, env, namespc) \
-		(((axis2_woden_wsdl_component_t *) wsdl_component)->ops->\
+      (((axis2_woden_wsdl_component_t *) wsdl_component)->ops->\
          get_component_exts_for_namespace(wsdl_component, env, namespc))
 
 /** @} */

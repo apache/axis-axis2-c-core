@@ -22,7 +22,7 @@ typedef struct axis2_woden_element_decl_impl axis2_woden_element_decl_impl_t;
 
 /** 
  * @brief Element Declaration Struct Impl
- *	Axis2 Element Declaration  
+ *   Axis2 Element Declaration  
  */ 
 struct axis2_woden_element_decl_impl
 {

@@ -18,11 +18,11 @@
 
 /** 
  * @brief Module Descripton struct impl
- *	Module Descripton 
+ *   Module Descripton 
  */ 
 typedef struct axis2_module_desc_impl
 {
-	axis2_module_desc_t module_desc;    
+   axis2_module_desc_t module_desc;    
     axis2_module_t *module;
     axis2_qname_t *qname;
     axis2_conf_t *parent;
@@ -140,12 +140,12 @@ axis2_module_desc_create (const axis2_env_t *env)
 {
     axis2_module_desc_impl_t *module_desc_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	module_desc_impl = (axis2_module_desc_impl_t *) AXIS2_MALLOC(env->allocator,
-			sizeof(axis2_module_desc_impl_t));
-		
-	if(NULL == module_desc_impl)
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   module_desc_impl = (axis2_module_desc_impl_t *) AXIS2_MALLOC(env->allocator,
+         sizeof(axis2_module_desc_impl_t));
+      
+   if(NULL == module_desc_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -153,7 +153,7 @@ axis2_module_desc_create (const axis2_env_t *env)
     
     module_desc_impl->qname = NULL;
     module_desc_impl->module = NULL;
-    module_desc_impl->parent = NULL;	
+    module_desc_impl->parent = NULL;   
     module_desc_impl->module_desc.params = NULL;
     module_desc_impl->module_desc.flow_container = NULL;
     module_desc_impl->ops = NULL;
@@ -182,16 +182,16 @@ axis2_module_desc_create (const axis2_env_t *env)
         return NULL;        
     }
     
-	module_desc_impl->module_desc.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_module_desc_ops_t));
-	if(NULL == module_desc_impl->module_desc.ops)
+   module_desc_impl->module_desc.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_module_desc_ops_t));
+   if(NULL == module_desc_impl->module_desc.ops)
     {
         axis2_module_desc_free(&(module_desc_impl->module_desc), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	module_desc_impl->module_desc.ops->free = axis2_module_desc_free;
+   module_desc_impl->module_desc.ops->free = axis2_module_desc_free;
     module_desc_impl->module_desc.ops->get_inflow = axis2_module_desc_get_inflow;
     module_desc_impl->module_desc.ops->set_inflow = axis2_module_desc_set_inflow;
     module_desc_impl->module_desc.ops->get_outflow = axis2_module_desc_get_outflow;
@@ -229,17 +229,17 @@ axis2_module_desc_create (const axis2_env_t *env)
     module_desc_impl->module_desc.ops->is_param_locked = 
             axis2_module_desc_is_param_locked;
     
-	return &(module_desc_impl->module_desc);
+   return &(module_desc_impl->module_desc);
 }
 
 AXIS2_EXTERN axis2_module_desc_t * AXIS2_CALL 
 axis2_module_desc_create_with_qname (const axis2_env_t *env, axis2_qname_t *qname)
 {
-	axis2_module_desc_impl_t *module_desc_impl = NULL;
-	AXIS2_ENV_CHECK(env, NULL);
+   axis2_module_desc_impl_t *module_desc_impl = NULL;
+   AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
-	
-	 module_desc_impl = AXIS2_INTF_TO_IMPL(axis2_module_desc_create(env));
+   
+    module_desc_impl = AXIS2_INTF_TO_IMPL(axis2_module_desc_create(env));
     if(NULL == module_desc_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -247,8 +247,8 @@ axis2_module_desc_create_with_qname (const axis2_env_t *env, axis2_qname_t *qnam
     }
     
     module_desc_impl->qname = qname;
-		
-	return &(module_desc_impl->module_desc);
+      
+   return &(module_desc_impl->module_desc);
 }
 
 
@@ -465,11 +465,11 @@ axis2_module_desc_add_op (axis2_module_desc_t *module_desc,
     
     module_desc_impl = AXIS2_INTF_TO_IMPL(module_desc);
     if (NULL == (module_desc_impl->ops))
-	{  
-		module_desc_impl->ops = axis2_hash_make (env);
+   {  
+      module_desc_impl->ops = axis2_hash_make (env);
         if(!module_desc_impl->ops)
             return AXIS2_FAILURE;
-	}	
+   }   
     
     op_qname = AXIS2_OP_GET_QNAME(op, env);
     

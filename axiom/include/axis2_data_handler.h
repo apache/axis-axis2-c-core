@@ -39,9 +39,9 @@ extern "C"
 
 /* This should be moved to header file later axis2_defines.h*/    
 #define axis2_byte_t char
-	
+   
 typedef struct axis2_data_handler_ops axis2_data_handler_ops_t;
-typedef struct axis2_data_handler axis2_data_handler_t;	
+typedef struct axis2_data_handler axis2_data_handler_t;   
 
 /*
       private final DataSource ds;
@@ -61,11 +61,11 @@ typedef struct axis2_data_handler axis2_data_handler_t;
  */
 struct axis2_data_handler_ops
 {
-	axis2_char_t *(AXIS2_CALL *
+   axis2_char_t *(AXIS2_CALL *
     get_content_type)(axis2_data_handler_t *data_handler, 
         const axis2_env_t *env); 
-	
-	axis2_byte_t* (AXIS2_CALL *
+   
+   axis2_byte_t* (AXIS2_CALL *
     get_input_stream)(axis2_data_handler_t *data_handler, 
         const axis2_env_t *env); 
 
@@ -98,16 +98,16 @@ struct axis2_data_handler_ops
 
 /** 
  * @brief Flow struct
- *	Flow  
+ *   Flow  
  */ 
 struct axis2_data_handler
 {
-	axis2_data_handler_ops_t *ops;
-	
-	/*
+   axis2_data_handler_ops_t *ops;
+   
+   /*
     axis2_char_t type;
-    *void handler;	
-	*/
+    *void handler;   
+   */
 };
 
 /**

@@ -25,7 +25,7 @@ typedef struct axis2_woden_desc_impl axis2_woden_desc_impl_t;
 
 /** 
  * @brief Description Struct Impl
- *	Axis2 Description  
+ *   Axis2 Description  
  */ 
 struct axis2_woden_desc_impl
 {

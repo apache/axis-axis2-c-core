@@ -63,7 +63,7 @@ struct axis2_xml_schema_type;
 
 struct axis2_woden_property_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -176,39 +176,39 @@ axis2_woden_property_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_PROPERTY_ELEMENT_FREE(doc_el, env) \
-		(((axis2_woden_property_element_t *) doc_el)->ops->\
+      (((axis2_woden_property_element_t *) doc_el)->ops->\
          free (doc_el, env))
 
 #define AXIS2_WODEN_PROPERTY_ELEMENT_TYPE(doc_el, env) \
-		(((axis2_woden_property_element_t *) doc_el)->ops->\
+      (((axis2_woden_property_element_t *) doc_el)->ops->\
          type (doc_el, env))
 
 #define AXIS2_WODEN_PROPERTY_ELEMENT_SET_REF(doc_el, env, uri) \
-		(((axis2_woden_property_element_t *) doc_el)->ops->\
+      (((axis2_woden_property_element_t *) doc_el)->ops->\
          set_ref(doc_el, env, uri))
 
 #define AXIS2_WODEN_PROPERTY_ELEMENT_GET_REF(doc_el, env) \
-		(((axis2_woden_property_element_t *) doc_el)->ops->\
+      (((axis2_woden_property_element_t *) doc_el)->ops->\
          get_ref(doc_el, env))
 
 #define AXIS2_WODEN_PROPERTY_ELEMENT_SET_CONSTRAINT_QNAME(doc_el, env, qname) \
-		(((axis2_woden_property_element_t *) doc_el)->ops->\
+      (((axis2_woden_property_element_t *) doc_el)->ops->\
          set_constraint_qname(doc_el, env, qname))
 
 #define AXIS2_WODEN_PROPERTY_ELEMENT_GET_CONSTRAINT_QNAME(doc_el, env) \
-		(((axis2_woden_property_element_t *) doc_el)->ops->\
+      (((axis2_woden_property_element_t *) doc_el)->ops->\
          get_constraint_qname(doc_el, env))
 
 #define AXIS2_WODEN_PROPERTY_ELEMENT_GET_CONSTRAINT(doc_el, env) \
-		(((axis2_woden_property_element_t *) doc_el)->ops->\
+      (((axis2_woden_property_element_t *) doc_el)->ops->\
          get_constraint(doc_el, env))
 
 #define AXIS2_WODEN_PROPERTY_ELEMENT_SET_HAS_VALUE_TOKEN(doc_el, env, b) \
-		(((axis2_woden_property_element_t *) doc_el)->ops->\
+      (((axis2_woden_property_element_t *) doc_el)->ops->\
          set_has_value_token(doc_el, env, b))
 
 #define AXIS2_WODEN_PROPERTY_ELEMENT_HAS_VALUE_TOKEN(doc_el, env) \
-		(((axis2_woden_property_element_t *) doc_el)->ops->\
+      (((axis2_woden_property_element_t *) doc_el)->ops->\
          has_value_token(doc_el, env))
 
 

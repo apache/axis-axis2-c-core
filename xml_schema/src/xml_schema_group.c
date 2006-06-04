@@ -22,7 +22,7 @@ typedef struct axis2_xml_schema_group_impl axis2_xml_schema_group_impl_t;
 
 /** 
  * @brief Other Extension Struct Impl
- *	Axis2 Other Extension  
+ *   Axis2 Other Extension  
  */ 
 struct axis2_xml_schema_group_impl
 {

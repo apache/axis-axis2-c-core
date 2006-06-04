@@ -51,7 +51,7 @@ extern "C"
 
 struct axis2_woden_svc_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -157,31 +157,31 @@ axis2_woden_svc_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_SVC_FREE(svc, env) \
-		(((axis2_woden_svc_t *) svc)->ops->free(svc, env))
+      (((axis2_woden_svc_t *) svc)->ops->free(svc, env))
 
 #define AXIS2_WODEN_SVC_SUPER_OBJS(svc, env) \
-		(((axis2_woden_svc_t *) svc)->ops->super_objs(svc, env))
+      (((axis2_woden_svc_t *) svc)->ops->super_objs(svc, env))
 
 #define AXIS2_WODEN_SVC_TYPE(svc, env) \
-		(((axis2_woden_svc_t *) svc)->ops->type(svc, env))
+      (((axis2_woden_svc_t *) svc)->ops->type(svc, env))
 
 #define AXIS2_WODEN_SVC_GET_BASE_IMPL(svc, env) \
-		(((axis2_woden_svc_t *) svc)->ops->get_base_impl(svc, env))
+      (((axis2_woden_svc_t *) svc)->ops->get_base_impl(svc, env))
 
 #define AXIS2_WODEN_SVC_GET_QNAME(svc, env) \
-		(((axis2_woden_svc_t *) svc)->\
+      (((axis2_woden_svc_t *) svc)->\
          get_qname(svc, env))
 
 #define AXIS2_WODEN_SVC_GET_INTERFACE(svc, env) \
-		(((axis2_woden_svc_t *) svc)->\
+      (((axis2_woden_svc_t *) svc)->\
          get_interface(svc, env))
 
 #define AXIS2_WODEN_SVC_GET_ENDPOINTS(svc, env) \
-		(((axis2_woden_svc_t *) svc)->ops->\
+      (((axis2_woden_svc_t *) svc)->ops->\
          get_endpoints(svc, env))
 
 #define AXIS2_WODEN_SVC_SET_INTERFACE_ELEMENT(svc, env, interface) \
-		(((axis2_woden_svc_t *) svc)->ops->\
+      (((axis2_woden_svc_t *) svc)->ops->\
          set_interface_element(svc, env, interface))
 
 /** @} */

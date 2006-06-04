@@ -46,7 +46,7 @@ extern "C"
 
 struct axis2_woden_bool_attr_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -131,26 +131,26 @@ axis2_woden_bool_attr_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_BOOL_ATTR_FREE(bool_attr, env) \
-		(((axis2_woden_bool_attr_t *) bool_attr)->ops->free(bool_attr, env))
+      (((axis2_woden_bool_attr_t *) bool_attr)->ops->free(bool_attr, env))
 
 #define AXIS2_WODEN_BOOL_ATTR_TO_BOOL_ATTR_FREE(bool_attr, env) \
-		(((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+      (((axis2_woden_bool_attr_t *) bool_attr)->ops->\
          to_bool_attr_free(bool_attr, env))
 
 #define AXIS2_WODEN_BOOL_ATTR_TYPE(bool_attr, env) \
-		(((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+      (((axis2_woden_bool_attr_t *) bool_attr)->ops->\
          type(bool_attr, env))
 
 #define AXIS2_WODEN_BOOL_ATTR_GET_BASE_IMPL(bool_attr, env) \
-		(((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+      (((axis2_woden_bool_attr_t *) bool_attr)->ops->\
          get_base_impl(bool_attr, env))
 
 #define AXIS2_WODEN_BOOL_ATTR_GET_BOOL(bool_attr, env) \
-		(((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+      (((axis2_woden_bool_attr_t *) bool_attr)->ops->\
          get_boolean(bool_attr, env))
 
 #define AXIS2_WODEN_BOOL_ATTR_CONVERT(bool_attr, env) \
-		(((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+      (((axis2_woden_bool_attr_t *) bool_attr)->ops->\
          convert(bool_attr, env))
 
 /** @} */

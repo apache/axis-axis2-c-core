@@ -54,7 +54,7 @@ typedef struct axis2_woden_documentation_element_ops
 
 struct axis2_woden_documentation_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -93,19 +93,19 @@ axis2_woden_documentation_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_DOCUMENTATION_ELEMENT_FREE(doc_el, env) \
-		(((axis2_woden_documentation_element_t *) doc_el)->ops->\
+      (((axis2_woden_documentation_element_t *) doc_el)->ops->\
          free (doc_el, env))
 
 #define AXIS2_WODEN_DOCUMENTATION_ELEMENT_TYPE(doc_el, env) \
-		(((axis2_woden_documentation_element_t *) doc_el)->ops->\
+      (((axis2_woden_documentation_element_t *) doc_el)->ops->\
          type (doc_el, env))
 
 #define AXIS2_WODEN_DOCUMENTATION_ELEMENT_SET_CONTENT(doc_el, env, doc_elem) \
-		(((axis2_woden_documentation_element_t *) doc_el)->ops->\
+      (((axis2_woden_documentation_element_t *) doc_el)->ops->\
          set_content(doc_el, env, doc_elem))
 
 #define AXIS2_WODEN_DOCUMENTATION_ELEMENT_GET_CONTENT(doc_el, env) \
-		(((axis2_woden_documentation_element_t *) doc_el)->ops->\
+      (((axis2_woden_documentation_element_t *) doc_el)->ops->\
          get_content(doc_el, env))
 
 

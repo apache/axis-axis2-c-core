@@ -85,7 +85,7 @@ axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
 AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
 axis2_strlen (const axis2_char_t * s)
 {
-	return strlen(s);
+   return strlen(s);
 }
 
 
@@ -93,8 +93,8 @@ AXIS2_EXTERN int AXIS2_CALL
 axis2_strcasecmp(const axis2_char_t *s1, axis2_char_t *s2)
 {
     while (toupper(*s1) == toupper(*s2++))
-	if (*s1++ == '\0')
-	    return(0);
+   if (*s1++ == '\0')
+       return(0);
     return(toupper(*s1) - toupper(*--s2));
 }
 
@@ -103,8 +103,8 @@ AXIS2_EXTERN int AXIS2_CALL
 axis2_strncasecmp(const axis2_char_t *s1, axis2_char_t *s2, int n)
 {
     while (--n >= 0 && toupper(*s1) == toupper(*s2++))
-	if (toupper(*s1++) == '\0')
-	    return(0);
+   if (toupper(*s1++) == '\0')
+       return(0);
     return(n < 0 ? 0 : toupper(*s1) - toupper(*--s2));
 }
 
@@ -112,7 +112,7 @@ AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_strstr (const axis2_char_t *heystack,
                 const axis2_char_t *needle)
 {
-	return strstr(heystack, needle);
+   return strstr(heystack, needle);
 }
 
 

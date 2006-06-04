@@ -23,7 +23,7 @@ typedef struct axis2_xml_schema_enum_impl
 
 /** 
  * @brief Xml Schema Enum Impl
- *	Axis2 Xml Schema Enum 
+ *   Axis2 Xml Schema Enum 
  */ 
 struct axis2_xml_schema_enum_impl
 {

@@ -124,41 +124,41 @@ axis2_xml_schema_attribute_resolve_methods(
 /******************************* Macros *************************************************/ 
  
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_FREE(attr_grp, env) \
-		(((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->free(attr_grp, env))
+      (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->free(attr_grp, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_GET_BASE_IMPL(attr_grp, env) \
-		(((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->get_base_impl(attr_grp, env))
+      (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->get_base_impl(attr_grp, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_TYPE(attr_grp, env) \
-		(((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->type(attr_grp, env))
-		
+      (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->type(attr_grp, env))
+      
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_SUPER_OBJS(attr_grp, env) \
-		(((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->super_objs(attr_grp, env))
-		
+      (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->super_objs(attr_grp, env))
+      
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_GET_ANY_ATTRIBUTE(attr_grp, env) \
-		(((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->\
-		    get_any_attribute(attr_grp, env))
+      (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->\
+          get_any_attribute(attr_grp, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_SET_ANY_ATTRIBUTE(attr_grp, env, any_attr) \
-		(((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->\
-		    set_any_attribute(attr_grp, env, any_attr))
+      (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->\
+          set_any_attribute(attr_grp, env, any_attr))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_SET_ATTRIBUTES(attr_grp, env, attrs) \
-		(((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->\
-		    set_attributes(attr_grp, env, attrs))
+      (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->\
+          set_attributes(attr_grp, env, attrs))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_GET_ATTRIBUTES(attr_grp, env) \
-		(((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->\
-		    get_attributes(attr_grp, env))
+      (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->\
+          get_attributes(attr_grp, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_GET_NAME(attr_grp, env) \
-		(((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->\
-		    get_name(attr_grp, env))
-		    
+      (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->\
+          get_name(attr_grp, env))
+          
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_SET_NAME(attr_grp, env, name) \
-		(((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->\
-		    set_name(attr_grp, env, name))
+      (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->\
+          set_name(attr_grp, env, name))
 
 /******************************* end macros ***********************************************/
 /** @} */

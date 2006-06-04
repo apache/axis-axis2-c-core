@@ -44,7 +44,7 @@ extern "C"
 
 struct axis2_xml_schema_app_info_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -102,31 +102,31 @@ axis2_xml_schema_app_info_create(const axis2_env_t *env);
 /*********************** macros ***********************************************/
 
 #define AXIS2_XML_SCHEMA_APP_INFO_FREE(app_info, env) \
-		(((axis2_xml_schema_app_info_t *) app_info)->ops->\
+      (((axis2_xml_schema_app_info_t *) app_info)->ops->\
             free(app_info, env))
 
 #define AXIS2_XML_SCHEMA_APP_INFO_SUPER_OBJS(app_info, env) \
-		(((axis2_xml_schema_app_info_t *) app_info)->ops->\
+      (((axis2_xml_schema_app_info_t *) app_info)->ops->\
             super_objs(app_info, env))
 
 #define AXIS2_XML_SCHEMA_APP_INFO_TYPE(app_info, env) \
-		(((axis2_xml_schema_app_info_t *) app_info)->ops->\
+      (((axis2_xml_schema_app_info_t *) app_info)->ops->\
             type(app_info, env))
 
 #define AXIS2_XML_SCHEMA_APP_INFO_GET_SOURCE(app_info, env) \
-		(((axis2_xml_schema_app_info_t *) app_info)->ops->\
+      (((axis2_xml_schema_app_info_t *) app_info)->ops->\
             get_source(app_info, env))
 
 #define AXIS2_XML_SCHEMA_APP_INFO_SET_SOURCE(app_info, env, source) \
-		(((axis2_xml_schema_app_info_t *) app_info)->ops->\
+      (((axis2_xml_schema_app_info_t *) app_info)->ops->\
             set_source(app_info, env, source))
 
 #define AXIS2_XML_SCHEMA_APP_INFO_GET_MARKUP(app_info, env) \
-		(((axis2_xml_schema_app_info_t *) app_info)->ops->\
+      (((axis2_xml_schema_app_info_t *) app_info)->ops->\
             get_markup(app_info, env))
 
 #define AXIS2_XML_SCHEMA_APP_INFO_SET_MARKUP(app_info, env, markup) \
-		(((axis2_xml_schema_app_info_t *) app_info)->ops->\
+      (((axis2_xml_schema_app_info_t *) app_info)->ops->\
             set_markup(app_info, env, markup))
 
 /************************ end macros ******************************************/

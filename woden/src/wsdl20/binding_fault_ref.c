@@ -26,7 +26,7 @@ typedef struct axis2_woden_binding_fault_ref_impl axis2_woden_binding_fault_ref_
 
 /** 
  * @brief Binding Fault Reference Struct Impl
- *	Axis2 Binding Fault Reference  
+ *   Axis2 Binding Fault Reference  
  */ 
 struct axis2_woden_binding_fault_ref_impl
 {

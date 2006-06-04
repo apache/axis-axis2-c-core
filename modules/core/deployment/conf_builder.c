@@ -27,9 +27,9 @@
  */
 typedef struct axis2_conf_builder_impl
 {
-	axis2_conf_builder_t conf_builder;
+   axis2_conf_builder_t conf_builder;
     axis2_conf_t *conf;
-    	
+       
 } axis2_conf_builder_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(conf_builder) \
@@ -84,13 +84,13 @@ axis2_conf_builder_create (const axis2_env_t *env)
 {
     axis2_conf_builder_impl_t *conf_builder_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	conf_builder_impl = (axis2_conf_builder_impl_t *) AXIS2_MALLOC(env->
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   conf_builder_impl = (axis2_conf_builder_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_conf_builder_impl_t));
-	
-	
-	if(NULL == conf_builder_impl)
+   
+   
+   if(NULL == conf_builder_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -99,22 +99,22 @@ axis2_conf_builder_create (const axis2_env_t *env)
     conf_builder_impl->conf = NULL;
     conf_builder_impl->conf_builder.ops = NULL;
     
-	conf_builder_impl->conf_builder.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_conf_builder_ops_t));
-	if(NULL == conf_builder_impl->conf_builder.ops)
+   conf_builder_impl->conf_builder.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_conf_builder_ops_t));
+   if(NULL == conf_builder_impl->conf_builder.ops)
     {
         axis2_conf_builder_free(&(conf_builder_impl->conf_builder), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	conf_builder_impl->conf_builder.ops->free = axis2_conf_builder_free;
+   conf_builder_impl->conf_builder.ops->free = axis2_conf_builder_free;
     conf_builder_impl->conf_builder.ops->populate_conf = 
         axis2_conf_builder_populate_conf;
     conf_builder_impl->conf_builder.ops->process_module_refs = 
         axis2_conf_builder_process_module_refs;
     
-	return &(conf_builder_impl->conf_builder);
+   return &(conf_builder_impl->conf_builder);
 }
 
 AXIS2_EXTERN axis2_conf_builder_t * AXIS2_CALL
@@ -125,11 +125,11 @@ axis2_conf_builder_create_with_file_and_dep_engine_and_conf (const axis2_env_t *
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	builder_impl = (axis2_conf_builder_impl_t *) axis2_conf_builder_create(
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   builder_impl = (axis2_conf_builder_impl_t *) axis2_conf_builder_create(
         env);
-	if(NULL == builder_impl)
+   if(NULL == builder_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -159,7 +159,7 @@ axis2_conf_builder_free (axis2_conf_builder_t *conf_builder,
         conf_builder->desc_builder = NULL;
     }
     
-	if(NULL != conf_builder->ops)
+   if(NULL != conf_builder->ops)
     {
         AXIS2_FREE(env->allocator, conf_builder->ops);
         conf_builder->ops = NULL;
@@ -171,7 +171,7 @@ axis2_conf_builder_free (axis2_conf_builder_t *conf_builder,
         conf_builder_impl = NULL;
     }
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL

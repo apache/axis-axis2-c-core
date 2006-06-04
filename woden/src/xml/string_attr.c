@@ -23,7 +23,7 @@ typedef struct axis2_woden_string_attr_impl axis2_woden_string_attr_impl_t;
 
 /** 
  * @brief String Attribute Struct Impl
- *	Axis2 String Attribute  
+ *   Axis2 String Attribute  
  */ 
 struct axis2_woden_string_attr_impl
 {

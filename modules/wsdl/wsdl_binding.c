@@ -18,11 +18,11 @@
 
 /** 
  * @brief Wsdl binding struct impl
- *	Wsdl features  
+ *   Wsdl features  
  */ 
 typedef struct axis2_wsdl_binding_impl
 {
-	axis2_wsdl_binding_t wsdl_binding;
+   axis2_wsdl_binding_t wsdl_binding;
     
     /**
      * Field name
@@ -47,13 +47,13 @@ typedef struct axis2_wsdl_binding_impl
 } axis2_wsdl_binding_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(wsdl_binding) \
-		((axis2_wsdl_binding_impl_t *)wsdl_binding)
+      ((axis2_wsdl_binding_impl_t *)wsdl_binding)
 
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-	axis2_wsdl_binding_free (axis2_wsdl_binding_t *wsdl_binding,
-									const axis2_env_t *env);
+   axis2_wsdl_binding_free (axis2_wsdl_binding_t *wsdl_binding,
+                           const axis2_env_t *env);
 
 
 axis2_wsdl_interface_t * AXIS2_CALL
@@ -122,12 +122,12 @@ axis2_wsdl_binding_t * AXIS2_CALL
 axis2_wsdl_binding_create (const axis2_env_t *env)
 {
     axis2_wsdl_binding_impl_t *wsdl_binding_impl = NULL;
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	wsdl_binding_impl = (axis2_wsdl_binding_impl_t *) AXIS2_MALLOC(env->allocator,
-			sizeof(axis2_wsdl_binding_impl_t));
-	
-	if(NULL == wsdl_binding_impl)
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   wsdl_binding_impl = (axis2_wsdl_binding_impl_t *) AXIS2_MALLOC(env->allocator,
+         sizeof(axis2_wsdl_binding_impl_t));
+   
+   if(NULL == wsdl_binding_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -135,7 +135,7 @@ axis2_wsdl_binding_create (const axis2_env_t *env)
     
     wsdl_binding_impl->qname = NULL;
     wsdl_binding_impl->bound_interface = NULL;
-	wsdl_binding_impl->binding_ops = NULL;
+   wsdl_binding_impl->binding_ops = NULL;
     wsdl_binding_impl->binding_faults = NULL;
     wsdl_binding_impl->wsdl_binding.extensible_component = NULL;
     wsdl_binding_impl->wsdl_binding.ops = NULL;
@@ -164,24 +164,24 @@ axis2_wsdl_binding_create (const axis2_env_t *env)
         return NULL;
     }
     
-	wsdl_binding_impl->wsdl_binding.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_binding_ops_t));
-	if(NULL == wsdl_binding_impl->wsdl_binding.ops)
+   wsdl_binding_impl->wsdl_binding.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_binding_ops_t));
+   if(NULL == wsdl_binding_impl->wsdl_binding.ops)
     {
         axis2_wsdl_binding_free(&(wsdl_binding_impl->wsdl_binding), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	wsdl_binding_impl->wsdl_binding.ops->free =  axis2_wsdl_binding_free;
+   wsdl_binding_impl->wsdl_binding.ops->free =  axis2_wsdl_binding_free;
     
-	wsdl_binding_impl->wsdl_binding.ops->get_bound_interface = 
+   wsdl_binding_impl->wsdl_binding.ops->get_bound_interface = 
         axis2_wsdl_binding_get_bound_interface;
     
     wsdl_binding_impl->wsdl_binding.ops->set_bound_interface = 
         axis2_wsdl_binding_set_bound_interface;
     
-	wsdl_binding_impl->wsdl_binding.ops->get_name = 
+   wsdl_binding_impl->wsdl_binding.ops->get_name = 
         axis2_wsdl_binding_get_name;
     
     wsdl_binding_impl->wsdl_binding.ops->set_name = 
@@ -192,7 +192,7 @@ axis2_wsdl_binding_create (const axis2_env_t *env)
     
     wsdl_binding_impl->wsdl_binding.ops->get_binding_faults = 
         axis2_wsdl_binding_get_binding_faults;
-	
+   
     wsdl_binding_impl->wsdl_binding.ops->set_binding_faults = 
         axis2_wsdl_binding_set_binding_faults;
         
@@ -213,8 +213,8 @@ axis2_wsdl_binding_create (const axis2_env_t *env)
         
     wsdl_binding_impl->wsdl_binding.ops->get_binding_fault = 
         axis2_wsdl_binding_get_binding_fault;       
-	
-	return &(wsdl_binding_impl->wsdl_binding);
+   
+   return &(wsdl_binding_impl->wsdl_binding);
 }
 
 /***************************Function implementation****************************/
@@ -229,7 +229,7 @@ axis2_wsdl_binding_free (axis2_wsdl_binding_t *wsdl_binding,
     
     binding_impl = AXIS2_INTF_TO_IMPL(wsdl_binding);
     
-	if(NULL != wsdl_binding->ops)
+   if(NULL != wsdl_binding->ops)
     {
         AXIS2_FREE(env->allocator, wsdl_binding->ops);
         wsdl_binding->ops = NULL;
@@ -302,7 +302,7 @@ axis2_wsdl_binding_free (axis2_wsdl_binding_t *wsdl_binding,
         AXIS2_FREE(env->allocator, binding_impl);
     binding_impl = NULL;
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_wsdl_interface_t * AXIS2_CALL

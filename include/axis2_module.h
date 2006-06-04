@@ -99,13 +99,13 @@ axis2_module_create (const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_MODULE_INIT(module, env) \
-		((module)->ops->init (module, env)) 
+      ((module)->ops->init (module, env)) 
 
 #define AXIS2_MODULE_SHUTDOWN(module, env) \
-		((module)->ops->shutdown (module, env)) 
+      ((module)->ops->shutdown (module, env)) 
 
 #define AXIS2_MODULE_FILL_HANDLER_CREATE_FUNC_MAP(module, env) \
-		((module)->ops->fill_handler_create_func_map (module, env))
+      ((module)->ops->fill_handler_create_func_map (module, env))
 
 /** @} */
 

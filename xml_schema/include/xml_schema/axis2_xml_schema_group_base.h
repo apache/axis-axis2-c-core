@@ -46,7 +46,7 @@ extern "C"
 
 struct axis2_xml_schema_group_base_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -112,19 +112,19 @@ axis2_xml_schema_group_base_resolve_methods(
 */
 /********************** macros ***********************************************/
 #define AXIS2_XML_SCHEMA_GROUP_BASE_FREE(group_base, env) \
-		(((axis2_xml_schema_group_base_t *) group_base)->ops->free(group_base, env))
+      (((axis2_xml_schema_group_base_t *) group_base)->ops->free(group_base, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_BASE_SUPER_OBJS(group_base, env) \
-		(((axis2_xml_schema_group_base_t *) group_base)->ops->super_objs(group_base, env))
+      (((axis2_xml_schema_group_base_t *) group_base)->ops->super_objs(group_base, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_BASE_TYPE(group_base, env) \
-		(((axis2_xml_schema_group_base_t *) group_base)->ops->type(group_base, env))
+      (((axis2_xml_schema_group_base_t *) group_base)->ops->type(group_base, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_BASE_GET_BASE_IMPL(group_base, env) \
-		(((axis2_xml_schema_group_base_t *) group_base)->ops->get_base_impl(group_base, env))
+      (((axis2_xml_schema_group_base_t *) group_base)->ops->get_base_impl(group_base, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_BASE_GET_ITEMS(group_base, env) \
-		(((axis2_xml_schema_group_base_t *) group_base)->ops->get_items(group_base, env))
+      (((axis2_xml_schema_group_base_t *) group_base)->ops->get_items(group_base, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_BASE_TO_STRING(group_base, env, prefix, tab) \
         (((axis2_xml_schema_group_base_t *) group_base)->ops->to_string(group_base, \

@@ -23,7 +23,7 @@ typedef struct axis2_woden_uri_attr_impl axis2_woden_uri_attr_impl_t;
 
 /** 
  * @brief URI Attribute Struct Impl
- *	Axis2 URI Attribute  
+ *   Axis2 URI Attribute  
  */ 
 struct axis2_woden_uri_attr_impl
 {

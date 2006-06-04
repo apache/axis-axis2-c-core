@@ -54,7 +54,7 @@ typedef union axis2_woden_binding_op_element_base axis2_woden_binding_op_element
 
 struct axis2_woden_binding_op_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -159,47 +159,47 @@ axis2_woden_binding_op_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_FREE(binding_op_element, env) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
+      (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
          free (binding_op_element, env))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_TYPE(binding_op_element, env) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
+      (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
          type (binding_op_element, env))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_SET_REF(binding_op_element, env, qname) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
+      (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
          set_ref (binding_op_element, env, qname))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_GET_REF(binding_op_element, env) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
+      (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
         get_ref  (binding_op_element, env))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_GET_INTERFACE_OP_ELEMENT(binding_op_element, env) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
+      (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
          get_interface_op_element (binding_op_element, env))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_ADD_BINDING_MSG_REF_ELEMENT(binding_op_element, env, msg_ref) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
+      (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
          add_msg_ref_element (binding_op_element, env, msg_ref))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_REMOVE_MSG_REF_ELEMENT(binding_op_element, env, msg_ref) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
+      (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
          remove_msg_ref_element (binding_op_element, env, msg_ref))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_GET_MSG_REF_ELEMENTS(binding_op_element, env) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
+      (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
          get_msg_ref_elements (binding_op_element, env))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_ADD_BINDING_FAULT_REF_ELEMENT(binding_op_element, env, fault_ref) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
+      (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
          add_fault_ref_element (binding_op_element, env, fault_ref))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_REMOVE_FAULT_REF_ELEMENT(binding_op_element, env, fault_ref) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
+      (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
          remove_fault_ref_element (binding_op_element, env, fault_ref))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_GET_FAULT_REF_ELEMENTS(binding_op_element, env) \
-		(((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
+      (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
          get_fault_ref_elements (binding_op_element, env))
 
 

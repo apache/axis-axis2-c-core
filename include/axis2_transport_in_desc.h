@@ -55,12 +55,12 @@ typedef struct axis2_transport_in_desc_ops axis2_transport_in_desc_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_transport_in_desc_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *free)(
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *free)(
                     axis2_transport_in_desc_t *transport_in_desc,
-			        const axis2_env_t *env);
+                 const axis2_env_t *env);
     
     /**
      * @return
@@ -150,7 +150,7 @@ AXIS2_DECLARE_DATA struct axis2_transport_in_desc_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_transport_in_desc
 {
-	axis2_transport_in_desc_ops_t *ops;
+   axis2_transport_in_desc_ops_t *ops;
     axis2_param_container_t *param_container;
 };
 
@@ -165,52 +165,52 @@ axis2_transport_in_desc_create_with_qname (const axis2_env_t *env,
 /*************************** Function macros **********************************/
 
 #define AXIS2_TRANSPORT_IN_DESC_FREE(transport_in_desc, env) \
-		((transport_in_desc)->ops->free (transport_in_desc, env))
+      ((transport_in_desc)->ops->free (transport_in_desc, env))
 
 #define AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport_in_desc, env) \
-		((transport_in_desc)->ops->get_qname (transport_in_desc, env))
+      ((transport_in_desc)->ops->get_qname (transport_in_desc, env))
 
 #define AXIS2_TRANSPORT_IN_DESC_SET_QNAME(transport_in_desc, env, qname) \
-		((transport_in_desc)->ops->set_qname (transport_in_desc, env, qname))
+      ((transport_in_desc)->ops->set_qname (transport_in_desc, env, qname))
 
 #define AXIS2_TRANSPORT_IN_DESC_GET_INFLOW(transport_in_desc, env) \
-		((transport_in_desc)->ops->get_inflow (transport_in_desc, env))
+      ((transport_in_desc)->ops->get_inflow (transport_in_desc, env))
 
 #define AXIS2_TRANSPORT_IN_DESC_SET_INFLOW(transport_in_desc, env, inflow) \
-		((transport_in_desc)->ops->set_inflow (transport_in_desc, env, inflow))       
+      ((transport_in_desc)->ops->set_inflow (transport_in_desc, env, inflow))       
 
 #define AXIS2_TRANSPORT_IN_DESC_GET_FAULTFLOW(transport_in_desc, env) \
-		((transport_in_desc)->ops->get_faultflow (transport_in_desc, env)) 
+      ((transport_in_desc)->ops->get_faultflow (transport_in_desc, env)) 
         
 #define AXIS2_TRANSPORT_IN_DESC_SET_FAULTFLOW(transport_in_desc, env, faultflow) \
-		((transport_in_desc)->ops->set_faultflow (transport_in_desc, env, faultflow)) 
+      ((transport_in_desc)->ops->set_faultflow (transport_in_desc, env, faultflow)) 
 
 #define AXIS2_TRANSPORT_IN_DESC_GET_RECV(transport_in_desc, env) \
-		((transport_in_desc)->ops->get_recv (transport_in_desc, env)) 
+      ((transport_in_desc)->ops->get_recv (transport_in_desc, env)) 
         
 #define AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in_desc, env, recv) \
-		((transport_in_desc)->ops->set_recv (transport_in_desc, env, recv)) 
+      ((transport_in_desc)->ops->set_recv (transport_in_desc, env, recv)) 
 
 #define AXIS2_TRANSPORT_IN_DESC_GET_IN_PHASE(transport_in_desc, env) \
-		((transport_in_desc)->ops->get_in_phase (transport_in_desc, env)) 
+      ((transport_in_desc)->ops->get_in_phase (transport_in_desc, env)) 
         
 #define AXIS2_TRANSPORT_IN_DESC_SET_IN_PHASE(transport_in_desc, env, in_phase) \
-		((transport_in_desc)->ops->set_in_phase (transport_in_desc, env, in_phase)) 
+      ((transport_in_desc)->ops->set_in_phase (transport_in_desc, env, in_phase)) 
 
 #define AXIS2_TRANSPORT_IN_DESC_GET_FAULTPHASE(transport_in_desc, env) \
-		((transport_in_desc)->ops->get_faultphase (transport_in_desc, env)) 
+      ((transport_in_desc)->ops->get_faultphase (transport_in_desc, env)) 
         
 #define AXIS2_TRANSPORT_IN_DESC_SET_FAULTPHASE(transport_in_desc, env, faultphase) \
-		((transport_in_desc)->ops->set_faultphase (transport_in_desc, env, faultphase))
+      ((transport_in_desc)->ops->set_faultphase (transport_in_desc, env, faultphase))
 
 #define AXIS2_TRANSPORT_IN_DESC_ADD_PARAM(transport_in_desc, env, param) \
-		((transport_in_desc)->ops->add_param (transport_in_desc, env, param)) 
+      ((transport_in_desc)->ops->add_param (transport_in_desc, env, param)) 
 
 #define AXIS2_TRANSPORT_IN_DESC_GET_PARAM(transport_in_desc, env, param_name) \
-		((transport_in_desc)->ops->get_param (transport_in_desc, env, param_name)) 
+      ((transport_in_desc)->ops->get_param (transport_in_desc, env, param_name)) 
 
 #define AXIS2_TRANSPORT_IN_DESC_IS_PARAM_LOCKED(transport_in_desc, env, param_name) \
-		((transport_in_desc)->ops->is_param_locked (transport_in_desc, env, param_name)) 
+      ((transport_in_desc)->ops->is_param_locked (transport_in_desc, env, param_name)) 
 
 /*************************** End of function macros ***************************/
 

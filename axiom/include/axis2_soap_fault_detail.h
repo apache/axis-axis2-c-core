@@ -55,20 +55,20 @@ extern "C"
         */
 
         axis2_status_t (AXIS2_CALL *
-		free_fn)(axis2_soap_fault_detail_t *fault_detail,
+      free_fn)(axis2_soap_fault_detail_t *fault_detail,
                  const axis2_env_t *env);
                                      
         axis2_status_t (AXIS2_CALL *
-		add_detail_entry)(axis2_soap_fault_detail_t *fault_detail,
+      add_detail_entry)(axis2_soap_fault_detail_t *fault_detail,
                           const axis2_env_t *env,
                           axis2_om_node_t *ele_node);
                                  
         axis2_om_children_iterator_t* (AXIS2_CALL *
-		get_all_detail_entries) (axis2_soap_fault_detail_t *fault_detail,
+      get_all_detail_entries) (axis2_soap_fault_detail_t *fault_detail,
                                  const axis2_env_t *env); 
 
         axis2_om_node_t* (AXIS2_CALL *
-		get_base_node)(axis2_soap_fault_detail_t *fault_code,
+      get_base_node)(axis2_soap_fault_detail_t *fault_code,
                        const axis2_env_t *env);
         
     };      

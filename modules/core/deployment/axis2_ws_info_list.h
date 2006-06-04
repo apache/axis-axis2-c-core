@@ -57,12 +57,12 @@ typedef struct axis2_ws_info_list_ops axis2_ws_info_list_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_ws_info_list_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free) (axis2_ws_info_list_t *ws_info_list,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
 
     /**
      * This method is used to initialize the vector
@@ -167,28 +167,28 @@ axis2_ws_info_list_create_with_dep_engine (const axis2_env_t *env,
 /*************************** Function macros **********************************/
 
 #define AXIS2_WS_INFO_LIST_FREE(ws_info_list, env) \
-		((ws_info_list)->ops->free (ws_info_list, env)) 
+      ((ws_info_list)->ops->free (ws_info_list, env)) 
 
 #define AXIS2_WS_INFO_LIST_INIT(ws_info_list, env) \
-		((ws_info_list)->ops->init (ws_info_list, env))
+      ((ws_info_list)->ops->init (ws_info_list, env))
 
 #define AXIS2_WS_INFO_LIST_ADD_WS_INFO_ITEM(ws_info_list, env, file, type) \
-		((ws_info_list)->ops->add_ws_info_item (ws_info_list, env, file, type))
+      ((ws_info_list)->ops->add_ws_info_item (ws_info_list, env, file, type))
 
 #define AXIS2_WS_INFO_LIST_GET_FILE_ITEM(ws_info_list, env, file_name) \
-		((ws_info_list)->ops->get_file_item (ws_info_list, env, file_name))
+      ((ws_info_list)->ops->get_file_item (ws_info_list, env, file_name))
         
 #define AXIS2_WS_INFO_LIST_IS_MODIFIED(ws_info_list, env, file, ws_info) \
-		((ws_info_list)->ops->is_modified (ws_info_list, env, file, ws_info))
+      ((ws_info_list)->ops->is_modified (ws_info_list, env, file, ws_info))
         
 #define AXIS2_WS_INFO_LIST_IS_FILE_EXIST(ws_info_list, env, file_name) \
-		((ws_info_list)->ops->is_file_exist (ws_info_list, env, file_name))
+      ((ws_info_list)->ops->is_file_exist (ws_info_list, env, file_name))
         
 #define AXIS2_WS_INFO_LIST_CHECK_FOR_UNDEPLOY(ws_info_list, env) \
-		((ws_info_list)->ops->check_for_undeploy (ws_info_list, env))
+      ((ws_info_list)->ops->check_for_undeploy (ws_info_list, env))
         
 #define AXIS2_WS_INFO_LIST_UPDATE(ws_info_list, env) \
-		((ws_info_list)->ops->update (ws_info_list, env))
+      ((ws_info_list)->ops->update (ws_info_list, env))
         
 
 

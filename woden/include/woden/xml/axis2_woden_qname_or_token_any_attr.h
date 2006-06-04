@@ -48,7 +48,7 @@ extern "C"
 
 struct axis2_woden_qname_or_token_any_attr_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -148,36 +148,36 @@ axis2_woden_qname_or_token_any_attr_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_FREE(token_attr, env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) \
+      (((axis2_woden_qname_or_token_any_attr_t *) \
           token_attr)->ops->free(token_attr, env))
 
 #define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_TYPE(token_attr, env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
+      (((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
          type(token_attr, env))
 
 #define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_GET_BASE_IMPL(token_attr, \
         env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
+      (((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
          get_base_impl(token_attr, env))
 
 #define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_IS_QNAME(token_attr, env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
+      (((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
          is_qname(token_attr, env))
 
 #define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_IS_TOKEN(token_attr, env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) \
+      (((axis2_woden_qname_or_token_any_attr_t *) \
           token_attr)->ops->is_token(token_attr, env))
 
 #define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_GET_QNAME(token_attr, env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
+      (((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
          get_qname(token_attr, env))
 
 #define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_GET_TOKEN(token_attr, env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
+      (((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
          get_token(token_attr, env))
 
 #define AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_CONVERT(token_attr, env) \
-		(((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
+      (((axis2_woden_qname_or_token_any_attr_t *) token_attr)->ops->\
          convert(token_attr, env))
 
 /** @} */

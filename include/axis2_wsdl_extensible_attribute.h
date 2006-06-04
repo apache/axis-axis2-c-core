@@ -48,12 +48,12 @@ typedef struct axis2_wsdl_extensible_attribute_ops axis2_wsdl_extensible_attribu
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_attribute_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *free)(
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *free)(
                     axis2_wsdl_extensible_attribute_t *wsdl_extensible_attribute,
-			        const axis2_env_t *env);
+                 const axis2_env_t *env);
 
     axis2_qname_t *(AXIS2_CALL *
     get_key) (axis2_wsdl_extensible_attribute_t *extensible_attribute,
@@ -76,11 +76,11 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_attribute_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_attribute
 {
-	axis2_wsdl_extensible_attribute_ops_t *ops;
+   axis2_wsdl_extensible_attribute_ops_t *ops;
 };
 
 /**
@@ -93,19 +93,19 @@ axis2_wsdl_extensible_attribute_create (const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_EXTENSIBLE_ATTRIBUTE_FREE(extensible_attribute, env) \
-		((extensible_attribute)->ops->free (extensible_attribute, env))
+      ((extensible_attribute)->ops->free (extensible_attribute, env))
 
 #define AXIS2_WSDL_EXTENSIBLE_ATTRIBUTE_GET_KEY(extensible_attribute, env) \
-		(extensible_attribute->ops->get_key (extensible_attribute, env))
+      (extensible_attribute->ops->get_key (extensible_attribute, env))
 
 #define AXIS2_WSDL_EXTENSIBLE_ATTRIBUTE_SET_KEY(extensible_attribute, env, key) \
-		((extensible_attribute)->ops->set_key (extensible_attribute, env, key))       
+      ((extensible_attribute)->ops->set_key (extensible_attribute, env, key))       
 
 #define AXIS2_WSDL_EXTENSIBLE_ATTRIBUTE_GET_VALUE(extensible_attribute, env) \
-		(extensible_attribute->ops->get_value (extensible_attribute, env))
+      (extensible_attribute->ops->get_value (extensible_attribute, env))
 
 #define AXIS2_WSDL_EXTENSIBLE_ATTRIBUTE_SET_VALUE(extensible_attribute, env, value) \
-		((extensible_attribute)->ops->set_value (extensible_attribute, env, value))       
+      ((extensible_attribute)->ops->set_value (extensible_attribute, env, value))       
 
 
 /*************************** End of function macros ***************************/

@@ -57,12 +57,12 @@ typedef struct axis2_dep_engine_ops axis2_dep_engine_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_dep_engine_t *dep_engine,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
     
     
     /**
@@ -84,7 +84,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     struct axis2_arch_file_data *(AXIS2_CALL *
     get_current_file_item) (axis2_dep_engine_t *dep_engine,
                                             const axis2_env_t *env);
-	 
+    
     /**
      * @param file
      */
@@ -240,65 +240,65 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
 
 
 #define AXIS2_DEP_ENGINE_FREE(dep_engine, env) \
-		((dep_engine)->ops->free (dep_engine, env))  
+      ((dep_engine)->ops->free (dep_engine, env))  
 
 #define AXIS2_DEP_ENGINE_ADD_MODULE(dep_engine, env, module_qname) \
-		((dep_engine)->ops->add_module (dep_engine, env, module_qname))
+      ((dep_engine)->ops->add_module (dep_engine, env, module_qname))
         
 #define AXIS2_DEP_ENGINE_GET_MODULE(dep_engine, env, module_qname) \
-		((dep_engine)->ops->get_module (dep_engine, env, module_qname))
+      ((dep_engine)->ops->get_module (dep_engine, env, module_qname))
         
 #define AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env) \
-		((dep_engine)->ops->get_current_file_item (dep_engine, env))        
+      ((dep_engine)->ops->get_current_file_item (dep_engine, env))        
  
 #define AXIS2_DEP_ENGINE_ADD_WS_TO_DEPLOY(dep_engine, env, file) \
-		((dep_engine)->ops->add_ws_to_deploy (dep_engine, env, file))  
+      ((dep_engine)->ops->add_ws_to_deploy (dep_engine, env, file))  
 
 
 #define AXIS2_DEP_ENGINE_ADD_WS_TO_UNDEPLOY(dep_engine, env, file) \
-		((dep_engine)->ops->add_ws_to_undeploy (dep_engine, env, file)) 
+      ((dep_engine)->ops->add_ws_to_undeploy (dep_engine, env, file)) 
 
 #define AXIS2_DEP_ENGINE_DO_DEPLOY(dep_engine, env) \
-		((dep_engine)->ops->do_deploy (dep_engine, env)) 
+      ((dep_engine)->ops->do_deploy (dep_engine, env)) 
 
 #define AXIS2_DEP_ENGINE_UNDEPLOY(dep_engine, env) \
-		((dep_engine)->ops->undeploy (dep_engine, env)) 
+      ((dep_engine)->ops->undeploy (dep_engine, env)) 
 
 #define AXIS2_DEP_ENGINE_GET_PHASES_INFO(dep_engine, env) \
-		((dep_engine)->ops->get_phases_info (dep_engine, env)) 
+      ((dep_engine)->ops->get_phases_info (dep_engine, env)) 
 
 #define AXIS2_DEP_ENGINE_GET_AXIS2_CONF(dep_engine, env) \
-		((dep_engine)->ops->get_axis_conf (dep_engine, env)) 
+      ((dep_engine)->ops->get_axis_conf (dep_engine, env)) 
 
 #define AXIS2_DEP_ENGINE_LOAD(dep_engine, env) \
-		((dep_engine)->ops->load (dep_engine, env))
+      ((dep_engine)->ops->load (dep_engine, env))
         
 #define AXIS2_DEP_ENGINE_LOAD_CLIENT(dep_engine, env, client_home) \
-		((dep_engine)->ops->load_client (dep_engine, env, client_home))
+      ((dep_engine)->ops->load_client (dep_engine, env, client_home))
 
 #define AXIS2_DEP_ENGINE_GET_HANDLER_DLL(dep_engine, env, dll_name) \
-		((dep_engine)->ops->get_handler_dll (dep_engine, env, dll_name))
+      ((dep_engine)->ops->get_handler_dll (dep_engine, env, dll_name))
         
 #define AXIS2_DEP_ENGINE_IS_HOT_UPDATE(dep_engine, env) \
-		((dep_engine)->ops->is_hot_update (dep_engine, env))
+      ((dep_engine)->ops->is_hot_update (dep_engine, env))
 
 #define AXIS2_DEP_ENGINE_SET_PHASES_INFO(dep_engine, env, phases_info) \
-		((dep_engine)->ops->set_phases_info (dep_engine, env, phases_info))
+      ((dep_engine)->ops->set_phases_info (dep_engine, env, phases_info))
         
 #define AXIS2_DEP_ENGINE_BUILD_SVC(dep_engine, env, svc, file_name) \
-		((dep_engine)->ops->build_svc (dep_engine, env, svc, file_name))
+      ((dep_engine)->ops->build_svc (dep_engine, env, svc, file_name))
 
 #define AXIS2_DEP_ENGINE_BUILD_MODULE(dep_engine, env, module_archive, conf) \
-		((dep_engine)->ops->build_module (dep_engine, env, module_archive, conf))
+      ((dep_engine)->ops->build_module (dep_engine, env, module_archive, conf))
 
 #define AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env) \
-		((dep_engine)->ops->get_repos_path (dep_engine, env))
+      ((dep_engine)->ops->get_repos_path (dep_engine, env))
  
 #define AXIS2_DEP_ENGINE_SET_CURRENT_FILE_ITEM(dep_engine, env, file_data) \
-		((dep_engine)->ops->set_current_file_item (dep_engine, env, file_data)) 
+      ((dep_engine)->ops->set_current_file_item (dep_engine, env, file_data)) 
         
 #define AXIS2_DEP_ENGINE_SET_ARCH_READER(dep_engine, env, arch_reader) \
-		((dep_engine)->ops->set_arch_reader (dep_engine, env, arch_reader)) 
+      ((dep_engine)->ops->set_arch_reader (dep_engine, env, arch_reader)) 
 
 /*************************** End of function macros ***************************/
 

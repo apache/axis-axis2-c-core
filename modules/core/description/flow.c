@@ -18,11 +18,11 @@
 
 /** 
  * @brief Flow struct impl
- *	Axis2 Flow impl  
+ *   Axis2 Flow impl  
  */
 typedef struct axis2_flow_impl
 {
-	axis2_flow_t flow;
+   axis2_flow_t flow;
     /**
      * Field list
      */
@@ -58,21 +58,21 @@ axis2_flow_create (const axis2_env_t *env)
 {
     axis2_flow_impl_t *flow_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	flow_impl = (axis2_flow_impl_t *) AXIS2_MALLOC(env->allocator, 
+   AXIS2_ENV_CHECK(env, NULL);
+   flow_impl = (axis2_flow_impl_t *) AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_flow_impl_t));
-		
-	if(NULL == flow_impl)
+      
+   if(NULL == flow_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-	
+   
     flow_impl->list = NULL;
     flow_impl->flow.ops = NULL;
     
     /*Create the list with the default size of 16 */
-	flow_impl->list = axis2_array_list_create (env, 20);
+   flow_impl->list = axis2_array_list_create (env, 20);
     if(NULL == flow_impl->list)
     {
         axis2_flow_free(&(flow_impl->flow), env);
@@ -80,21 +80,21 @@ axis2_flow_create (const axis2_env_t *env)
         return NULL;
     }       
     
-	flow_impl->flow.ops = AXIS2_MALLOC (env->allocator, 
+   flow_impl->flow.ops = AXIS2_MALLOC (env->allocator, 
         sizeof(axis2_flow_ops_t));
-	if(NULL == flow_impl->flow.ops)
+   if(NULL == flow_impl->flow.ops)
     {
         axis2_flow_free(&(flow_impl->flow), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	flow_impl->flow.ops->free =  axis2_flow_free;
+   flow_impl->flow.ops->free =  axis2_flow_free;
     flow_impl->flow.ops->add_handler =  axis2_flow_add_handler;
     flow_impl->flow.ops->get_handler =  axis2_flow_get_handler;
     flow_impl->flow.ops->get_handler_count =  axis2_flow_get_handler_count;
-    	
-	return &(flow_impl->flow);
+       
+   return &(flow_impl->flow);
 }
 
 /*************************** Start of op impls *************************/

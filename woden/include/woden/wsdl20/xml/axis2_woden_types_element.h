@@ -62,7 +62,7 @@ struct axis2_xml_schema;
 
 struct axis2_woden_types_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -181,44 +181,44 @@ axis2_woden_types_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_TYPES_ELEMENT_FREE(types_el, env) \
-		(((axis2_woden_types_element_t *) types_el)->ops->\
+      (((axis2_woden_types_element_t *) types_el)->ops->\
          free (types_el, env))
 
 #define AXIS2_WODEN_TYPES_ELEMENT_TYPE(types_el, env) \
-		(((axis2_woden_types_element_t *) types_el)->ops->\
+      (((axis2_woden_types_element_t *) types_el)->ops->\
          type (types_el, env))
 
 #define AXIS2_WODEN_TYPES_ELEMENT_SET_TYPE_SYSTEM(types_el, env, type_system) \
-		(((axis2_woden_types_element_t *) types_el)->ops->\
+      (((axis2_woden_types_element_t *) types_el)->ops->\
          set_type_system(types_el, env, type_system))
 
 #define AXIS2_WODEN_TYPES_ELEMENT_GET_TYPE_SYSTEM(types_el, env) \
-		(((axis2_woden_types_element_t *) types_el)->ops->\
+      (((axis2_woden_types_element_t *) types_el)->ops->\
          get_type_system(types_el, env))
 
 #define AXIS2_WODEN_TYPES_ELEMENT_ADD_SCHEMA(types_el, env, schema) \
-		(((axis2_woden_types_element_t *) types_el)->ops->\
+      (((axis2_woden_types_element_t *) types_el)->ops->\
          add_schema(types_el, env, schema))
 
 #define AXIS2_WODEN_TYPES_ELEMENT_REMOVE_SCHEMA(types_el, env, schema) \
-		(((axis2_woden_types_element_t *) types_el)->ops->\
+      (((axis2_woden_types_element_t *) types_el)->ops->\
          remove_schema(types_el, env, schema))
 
 #define AXIS2_WODEN_TYPES_ELEMENT_GET_SCHEMAS(types_el, env) \
-		(((axis2_woden_types_element_t *) types_el)->ops->\
+      (((axis2_woden_types_element_t *) types_el)->ops->\
          get_schemas(types_el, env))
 
 #define AXIS2_WODEN_TYPES_ELEMENT_GET_SCHEMAS_WITH_NAMESPACE(types_el, env, \
         namespc) \
-		(((axis2_woden_types_element_t *) types_el)->ops->\
+      (((axis2_woden_types_element_t *) types_el)->ops->\
          get_schemas_with_namespace(types_el, env, namespc))
 
 #define AXIS2_WODEN_TYPES_ELEMENT_GET_INLINED_SCHEMAS(types_el, env) \
-		(((axis2_woden_types_element_t *) types_el)->ops->\
+      (((axis2_woden_types_element_t *) types_el)->ops->\
          get_inlined_schemas(types_el, env))
 
 #define AXIS2_WODEN_TYPES_ELEMENT_GET_IMPORTED_SCHEMAS(types_el, env) \
-		(((axis2_woden_types_element_t *) types_el)->ops->\
+      (((axis2_woden_types_element_t *) types_el)->ops->\
          get_imported_schemas(types_el, env))
 
 /** @} */

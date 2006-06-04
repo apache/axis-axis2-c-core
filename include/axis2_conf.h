@@ -60,16 +60,16 @@ struct axis2_dep_engine;
  */
 struct axis2_conf_ops
 {
-	axis2_status_t (AXIS2_CALL *
+   axis2_status_t (AXIS2_CALL *
     free) (axis2_conf_t *conf, 
            const axis2_env_t *env);
     
-	axis2_status_t (AXIS2_CALL *
+   axis2_status_t (AXIS2_CALL *
     add_svc_grp) (axis2_conf_t *conf, 
                     const axis2_env_t *env, 
                     struct axis2_svc_grp *svc_grp);
     
-	struct axis2_svc_grp *(AXIS2_CALL *
+   struct axis2_svc_grp *(AXIS2_CALL *
     get_svc_grp) (  axis2_conf_t *conf, 
                     const axis2_env_t *env, 
                     axis2_char_t *svc_grp_name);
@@ -78,17 +78,17 @@ struct axis2_conf_ops
     get_svc_grps) (axis2_conf_t *conf, 
                    const axis2_env_t *env);
     
-	axis2_status_t (AXIS2_CALL *
+   axis2_status_t (AXIS2_CALL *
     add_svc) (axis2_conf_t *conf, 
                 const axis2_env_t *env, 
                 struct axis2_svc* svc);
     
-	struct axis2_svc *(AXIS2_CALL *
+   struct axis2_svc *(AXIS2_CALL *
     get_svc) (axis2_conf_t *conf, 
                 const axis2_env_t *env, 
                 axis2_char_t* svc_name);
     
-	axis2_status_t (AXIS2_CALL *
+   axis2_status_t (AXIS2_CALL *
     remove_svc) (axis2_conf_t *conf, 
                     const axis2_env_t *env, 
                     const axis2_char_t *name);
@@ -98,16 +98,16 @@ struct axis2_conf_ops
                     const axis2_env_t *env,
                     axis2_param_t *param);
 
-	axis2_param_t *(AXIS2_CALL *
+   axis2_param_t *(AXIS2_CALL *
     get_param) (axis2_conf_t *conf, 
                 const axis2_env_t *env,
                 const axis2_char_t *name);
 
-	axis2_array_list_t *(AXIS2_CALL *
+   axis2_array_list_t *(AXIS2_CALL *
     get_params) (axis2_conf_t *conf, 
                  const axis2_env_t *env);
-	
-	axis2_bool_t (AXIS2_CALL *
+   
+   axis2_bool_t (AXIS2_CALL *
     is_param_locked) (axis2_conf_t *conf, 
                         const axis2_env_t *env,
                         axis2_char_t *param_name);
@@ -338,7 +338,7 @@ struct axis2_conf_ops
  */
 struct axis2_conf
 {
-	axis2_conf_ops_t *ops;
+   axis2_conf_ops_t *ops;
     axis2_param_container_t *param_container;
 };
 
@@ -348,11 +348,11 @@ struct axis2_conf
 AXIS2_EXTERN axis2_conf_t * AXIS2_CALL 
 axis2_conf_create(const axis2_env_t *env);
 
-/************************* Start of function macros	***************************/
-	
+/************************* Start of function macros   ***************************/
+   
 #define AXIS2_CONF_FREE(conf, env) \
-		((conf)->ops->free(conf, env))
-	
+      ((conf)->ops->free(conf, env))
+   
 #define AXIS2_CONF_ADD_SVC_GRP(conf, env, svc_grp) \
         ((conf)->ops->add_svc_grp (conf, env, svc_grp))
 
@@ -363,23 +363,23 @@ axis2_conf_create(const axis2_env_t *env);
         ((conf)->ops->get_svc_grps (conf, env))
 
 #define AXIS2_CONF_ADD_SVC(conf, env, svc) \
-		((conf)->ops->add_svc (conf, env, svc))
-		
+      ((conf)->ops->add_svc (conf, env, svc))
+      
 #define AXIS2_CONF_GET_SVC(conf, env, svc_name) \
-		((conf)->ops->get_svc (conf, env, svc_name))
+      ((conf)->ops->get_svc (conf, env, svc_name))
 
 #define AXIS2_CONF_REMOVE_SVC(conf, env, svc_name) \
-		((conf)->ops->remove_svc (conf, env, svc_name))
+      ((conf)->ops->remove_svc (conf, env, svc_name))
         
 #define AXIS2_CONF_ADD_PARAM(conf, env, param) \
         ((conf)->ops->add_param(conf , env, param))
-		
+      
 #define AXIS2_CONF_GET_PARAM(conf, env, name) \
         ((conf)->ops->get_param(conf , env, name))
-		
+      
 #define AXIS2_CONF_GET_PARAMS(conf, env) \
         ((conf)->ops->get_params(conf , env))
-		
+      
 #define AXIS2_CONF_IS_PARAM_LOCKED(conf, env, param_name) \
         ((conf)->ops->is_param_locked(conf, env, param_name))
 

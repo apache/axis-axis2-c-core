@@ -50,25 +50,25 @@ typedef struct axis2_rest_sender axis2_rest_sender_t;
  */
 AXIS2_DECLARE_DATA struct axis2_rest_sender_ops
 {
-	axis2_status_t (AXIS2_CALL *send) 
+   axis2_status_t (AXIS2_CALL *send) 
                                 (axis2_rest_sender_t *sender, 
                                 const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
-								axis2_om_node_t *out, 
-								axis2_char_t *str_url);
-	
-	axis2_status_t (AXIS2_CALL *set_chunked) 
+                        axis2_om_node_t *out, 
+                        axis2_char_t *str_url);
+   
+   axis2_status_t (AXIS2_CALL *set_chunked) 
                                 (axis2_rest_sender_t *sender, 
                                 const axis2_env_t *env, axis2_bool_t chunked);
-	
-	axis2_status_t (AXIS2_CALL *set_om_output)
+   
+   axis2_status_t (AXIS2_CALL *set_om_output)
                                 (axis2_rest_sender_t *sender, 
                                 const axis2_env_t *env, axis2_om_output_t *om_output);
-	
-	axis2_status_t (AXIS2_CALL *set_http_version)
-								(axis2_rest_sender_t *sender, 
-								const axis2_env_t *env, axis2_char_t *version);
-	
-	axis2_status_t (AXIS2_CALL *free) 
+   
+   axis2_status_t (AXIS2_CALL *set_http_version)
+                        (axis2_rest_sender_t *sender, 
+                        const axis2_env_t *env, axis2_char_t *version);
+   
+   axis2_status_t (AXIS2_CALL *free) 
                                 (axis2_rest_sender_t *sender, 
                                 const axis2_env_t *env);
 };
@@ -76,19 +76,19 @@ AXIS2_DECLARE_DATA struct axis2_rest_sender_ops
     
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_get_header_info 
-								(axis2_rest_sender_t *sender, 
+                        (axis2_rest_sender_t *sender, 
                                 const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx, 
-								axis2_http_simple_response_t *response);
+                        axis2_http_simple_response_t *response);
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_process_response 
-								(axis2_rest_sender_t *sender, 
+                        (axis2_rest_sender_t *sender, 
                                 const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx, 
-								axis2_http_simple_response_t *response);
+                        axis2_http_simple_response_t *response);
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_get_timeout_values 
-								(axis2_rest_sender_t *sender, 
+                        (axis2_rest_sender_t *sender, 
                                 const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx);
 
 /**
@@ -97,14 +97,14 @@ axis2_rest_sender_get_timeout_values
  */
 AXIS2_DECLARE_DATA struct axis2_rest_sender
 {
-	axis2_rest_sender_ops_t *ops;
+   axis2_rest_sender_ops_t *ops;
 };
 
 
 AXIS2_EXTERN axis2_rest_sender_t * AXIS2_CALL 
 axis2_rest_sender_create(const axis2_env_t *env);
 
-/********************* Start of function macros	***************************/
+/********************* Start of function macros   ***************************/
 
 #define AXIS2_REST_SENDER_SEND(sender, env, msg_ctx, output, url)\
                         ((sender)->ops->send (sender, env, msg_ctx,output, url))

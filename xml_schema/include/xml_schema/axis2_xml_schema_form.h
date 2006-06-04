@@ -82,19 +82,19 @@ axis2_xml_schema_form_create(const axis2_env_t *env,
 /***************** Macros ************************************************/
 
 #define AXIS2_XML_SCHEMA_FORM_FREE(form, env) \
-		(((axis2_xml_schema_form_t *) form)->ops->free(form, env))
+      (((axis2_xml_schema_form_t *) form)->ops->free(form, env))
 
 #define AXIS2_XML_SCHEMA_FORM_SUPER_OBJS(form, env) \
-		(((axis2_xml_schema_form_t *) form)->ops->super_objs(form, env))
+      (((axis2_xml_schema_form_t *) form)->ops->super_objs(form, env))
 
 #define AXIS2_XML_SCHEMA_FORM_TYPE(form, env) \
-		(((axis2_xml_schema_form_t *) form)->ops->type(form, env))
+      (((axis2_xml_schema_form_t *) form)->ops->type(form, env))
 
 #define AXIS2_XML_SCHEMA_FORM_GET_BASE_IMPL(form, env) \
-		(((axis2_xml_schema_form_t *) form)->ops->get_base_impl(form, env))
+      (((axis2_xml_schema_form_t *) form)->ops->get_base_impl(form, env))
 
 #define AXIS2_XML_SCHEMA_FORM_GET_VALUES(form, env) \
-		(((axis2_xml_schema_form_t *) form)->ops->values(form, env))
+      (((axis2_xml_schema_form_t *) form)->ops->values(form, env))
 
 /** @} */
 #ifdef __cplusplus

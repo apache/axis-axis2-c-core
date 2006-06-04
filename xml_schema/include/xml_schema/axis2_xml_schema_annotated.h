@@ -116,45 +116,45 @@ axis2_xml_schema_annotated_resolve_methods(
 /*************** Macros *******************************************************/                                
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_FREE(annotated, env) \
-		(((axis2_xml_schema_annotated_t *) annotated)->ops->free(\
+      (((axis2_xml_schema_annotated_t *) annotated)->ops->free(\
             annotated, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env) \
-		(((axis2_xml_schema_annotated_t *) annotated)->ops->super_objs(\
+      (((axis2_xml_schema_annotated_t *) annotated)->ops->super_objs(\
             annotated, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_TYPE(annotated, env) \
-		(((axis2_xml_schema_annotated_t *) annotated)->ops->type(\
+      (((axis2_xml_schema_annotated_t *) annotated)->ops->type(\
             annotated, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env) \
-		(((axis2_xml_schema_annotated_t *) annotated)->ops->get_base_impl(\
+      (((axis2_xml_schema_annotated_t *) annotated)->ops->get_base_impl(\
             annotated, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_GET_ID(annotated, env) \
-		(((axis2_xml_schema_annotated_t *) annotated)->ops->get_id(\
+      (((axis2_xml_schema_annotated_t *) annotated)->ops->get_id(\
             annotated, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_SET_ID(annotated, env, id) \
-		(((axis2_xml_schema_annotated_t *) annotated)->ops->set_id(\
+      (((axis2_xml_schema_annotated_t *) annotated)->ops->set_id(\
             annotated, env, id))
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_GET_ANNOTATION(annotated, env) \
-		(((axis2_xml_schema_annotated_t *) annotated)->ops->get_annotation(\
+      (((axis2_xml_schema_annotated_t *) annotated)->ops->get_annotation(\
             annotated, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(annotated, env, \
         annotation) \
-		(((axis2_xml_schema_annotated_t *) annotated)->ops->set_annotation(\
+      (((axis2_xml_schema_annotated_t *) annotated)->ops->set_annotation(\
             annotated, env, annotation))
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_GET_UNHANDLED_ATTRS(annotated, env) \
-		(((axis2_xml_schema_annotated_t *) annotated)->ops->get_unhandled_attrs(\
+      (((axis2_xml_schema_annotated_t *) annotated)->ops->get_unhandled_attrs(\
             annotated, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_SET_UNHANDLED_ATTRS(annotated, \
         env, unhandled_attrs) \
-		(((axis2_xml_schema_annotated_t *) annotated)->ops->set_unhandled_attrs(\
+      (((axis2_xml_schema_annotated_t *) annotated)->ops->set_unhandled_attrs(\
             annotated, env, unhandled_attrs))
 
 /**************************** end macros ***************************************/

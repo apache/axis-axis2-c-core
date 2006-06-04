@@ -164,7 +164,7 @@ struct axis2_conf_ctx_ops
 
 /** 
  * @brief Message Context struct
-  *	Axis2 Message Context
+  *   Axis2 Message Context
  */
 struct axis2_conf_ctx
 {

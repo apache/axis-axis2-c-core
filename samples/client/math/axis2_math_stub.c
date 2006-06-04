@@ -25,7 +25,7 @@ axis2_math_stub_create_with_endpoint_ref_and_client_home(const axis2_env_t *env,
     axis2_stub_t *stub = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-	
+   
     stub = (axis2_stub_t *) 
     axis2_stub_create_with_endpoint_ref_and_client_home(env, endpoint_ref,
             client_home);
@@ -80,12 +80,12 @@ axis2_math_stub_create_with_endpoint_uri_and_client_home(const axis2_env_t *env,
 {
     axis2_stub_t *stub = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	stub = (axis2_stub_t *) 
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   stub = (axis2_stub_t *) 
         axis2_stub_create_with_endpoint_uri_and_client_home(env, endpoint_uri,
             client_home);
-	if(NULL == stub)
+   if(NULL == stub)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -93,7 +93,7 @@ axis2_math_stub_create_with_endpoint_uri_and_client_home(const axis2_env_t *env,
     
     axis2_populate_axis_service( stub, env);
     
-	return stub;
+   return stub;
 }
 
 /***************************Function implementation****************************/

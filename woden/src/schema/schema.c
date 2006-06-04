@@ -21,7 +21,7 @@ typedef struct axis2_woden_schema_impl axis2_woden_schema_impl_t;
 
 /** 
  * @brief Schema Struct Impl
- *	Axis2 Schema  
+ *   Axis2 Schema  
  */ 
 struct axis2_woden_schema_impl
 {

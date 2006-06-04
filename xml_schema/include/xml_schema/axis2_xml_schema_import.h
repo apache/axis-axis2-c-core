@@ -100,27 +100,27 @@ axis2_xml_schema_import_resolve_methods(
  
  
 #define AXIS2_XML_SCHEMA_IMPORT_FREE(import, env) \
-		(((axis2_xml_schema_import_t *) import)->ops->\
+      (((axis2_xml_schema_import_t *) import)->ops->\
             free(import, env))
 
 #define AXIS2_XML_SCHEMA_IMPORT_GET_BASE_IMPL(import, env) \
-		(((axis2_xml_schema_import_t *) import)->ops->\
+      (((axis2_xml_schema_import_t *) import)->ops->\
             get_base_impl(import, env))
             
 #define AXIS2_XML_SCHEMA_IMPORT_TYPE(import, env) \
-		(((axis2_xml_schema_import_t *) import)->ops->\
+      (((axis2_xml_schema_import_t *) import)->ops->\
             type(import, env))
             
 #define AXIS2_XML_SCHEMA_IMPORT_SUPER_OBJS(import, env) \
-		(((axis2_xml_schema_import_t *) import)->ops->\
+      (((axis2_xml_schema_import_t *) import)->ops->\
             super_objs(import, env))                        
 
 #define AXIS2_XML_SCHEMA_IMPORT_GET_NAMESPACE(import, env) \
-		(((axis2_xml_schema_import_t *) import)->ops->\
+      (((axis2_xml_schema_import_t *) import)->ops->\
             get_namespace(import, env))
 
 #define AXIS2_XML_SCHEMA_IMPORT_SET_NAMESPACE(import, env, ns) \
-		(((axis2_xml_schema_import_t *) import)->ops->\
+      (((axis2_xml_schema_import_t *) import)->ops->\
             set_namespace(import, env, ns))
 
 /** @} */

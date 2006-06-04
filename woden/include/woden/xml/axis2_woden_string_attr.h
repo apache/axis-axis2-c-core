@@ -43,7 +43,7 @@ extern "C"
 
 struct axis2_woden_string_attr_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -127,23 +127,23 @@ axis2_woden_string_attr_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_STRING_ATTR_FREE(string_attr, env) \
-		(((axis2_woden_string_attr_t *) string_attr)->ops->\
+      (((axis2_woden_string_attr_t *) string_attr)->ops->\
          free(string_attr, env))
 
 #define AXIS2_WODEN_STRING_ATTR_TYPE(string_attr, env) \
-		(((axis2_woden_string_attr_t *) string_attr)->ops->\
+      (((axis2_woden_string_attr_t *) string_attr)->ops->\
          type(string_attr, env))
 
 #define AXIS2_WODEN_STRING_ATTR_GET_BASE_IMPL(string_attr, env) \
-		(((axis2_woden_string_attr_t *) string_attr)->ops->\
+      (((axis2_woden_string_attr_t *) string_attr)->ops->\
          get_base_impl(string_attr, env))
 
 #define AXIS2_WODEN_STRING_ATTR_GET_STRING(string_attr, env) \
-		(((axis2_woden_string_attr_t *) string_attr)->ops->\
+      (((axis2_woden_string_attr_t *) string_attr)->ops->\
          get_string(string_attr, env))
 
 #define AXIS2_WODEN_STRING_ATTR_CONVERT(string_attr, env) \
-		(((axis2_woden_string_attr_t *) string_attr)->ops->\
+      (((axis2_woden_string_attr_t *) string_attr)->ops->\
          convert(string_attr, env))
 
 /** @} */

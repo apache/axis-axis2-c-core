@@ -29,10 +29,10 @@ typedef struct a
 
 axis2_env_t *test_init()
 {
-	axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+   axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     axis2_error_t *error = axis2_error_create (allocator);
     axis2_env_t *env = axis2_env_create_with_error(allocator, error);
-	return env;
+   return env;
 }
 
 void test_http_request_line(const axis2_env_t *env)
@@ -233,7 +233,7 @@ void test_https_client(const axis2_env_t *env)
 
 int main(void)
 {
-	const axis2_env_t *env = test_init();
+   const axis2_env_t *env = test_init();
     test_http_request_line(env);
     test_http_status_line(env);
     test_http_header(env);
@@ -244,5 +244,5 @@ int main(void)
     axis2_allocator_t *allocator = env->allocator;
     axis2_env_free(env);
     axis2_allocator_free(allocator);
-	return 0;	
+   return 0;   
 }

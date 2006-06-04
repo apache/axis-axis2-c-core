@@ -82,7 +82,7 @@ extern "C"
     * @return initialized allocator. NULL on error.
     */
     AXIS2_EXTERN axis2_allocator_t * AXIS2_CALL 
-	axis2_allocator_init (axis2_allocator_t *allocator);
+   axis2_allocator_init (axis2_allocator_t *allocator);
 
   /** 
     * This function should be used to deallocate memory if the default allocator provided by
@@ -90,16 +90,16 @@ extern "C"
     * @param allocator 
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-	axis2_allocator_free(axis2_allocator_t *allocator);
+   axis2_allocator_free(axis2_allocator_t *allocator);
 
 #define AXIS2_MALLOC(allocator, size) \
-		((allocator)->malloc(allocator, size))
-	
+      ((allocator)->malloc(allocator, size))
+   
 #define AXIS2_REALLOC(allocator, ptr, size) \
-		((allocator)->realloc(allocator, ptr, size))
-		
+      ((allocator)->realloc(allocator, ptr, size))
+      
 #define AXIS2_FREE(allocator, ptr) \
-		((allocator)->free(allocator, ptr))
+      ((allocator)->free(allocator, ptr))
 
 /** @} */
     

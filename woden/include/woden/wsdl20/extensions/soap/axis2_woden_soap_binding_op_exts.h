@@ -54,7 +54,7 @@ extern "C"
 
 struct axis2_woden_soap_binding_op_exts_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -120,27 +120,27 @@ axis2_woden_soap_binding_op_exts_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_SOAP_BINDING_OP_EXTS_FREE(soap_binding_op_exts, env) \
-		(((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->free(soap_binding_op_exts, env))
+      (((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->free(soap_binding_op_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_OP_EXTS_SUPER_OBJS(soap_binding_op_exts, env) \
-		(((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->super_objs(soap_binding_op_exts, env))
+      (((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->super_objs(soap_binding_op_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_OP_EXTS_TYPE(soap_binding_op_exts, env) \
-		(((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->type(soap_binding_op_exts, env))
+      (((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->type(soap_binding_op_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_OP_EXTS_GET_BASE_IMPL(soap_binding_op_exts, env) \
-		(((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->get_base_impl(soap_binding_op_exts, env))
+      (((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->get_base_impl(soap_binding_op_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_OP_EXTS_GET_SOAP_MEMP(soap_binding_op_exts, env) \
-		(((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->\
+      (((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->\
         get_soap_mep (soap_binding_op_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_OP_EXTS_GET_SOAP_ACTION(soap_binding_op_exts, env) \
-		(((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->\
+      (((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->\
         get_soap_action (soap_binding_op_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_OP_EXTS_GET_SOAP_MODULES(soap_binding_op_exts, env) \
-		(((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->\
+      (((axis2_woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->\
         get_soap_modules (soap_binding_op_exts, env))
 
 /** @} */

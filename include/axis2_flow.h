@@ -36,10 +36,10 @@
 extern "C"
 {
 #endif
-	
+   
 typedef struct axis2_flow_ops axis2_flow_ops_t;
-typedef struct axis2_flow axis2_flow_t;	
-	
+typedef struct axis2_flow axis2_flow_t;   
+   
 
 /** @defgroup axis2_flow Flow
   * @ingroup axis2_flow
@@ -52,11 +52,11 @@ typedef struct axis2_flow axis2_flow_t;
  */
 struct axis2_flow_ops
 {
-	/** Deallocate memory
+   /** Deallocate memory
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-	free) (axis2_flow_t *flow,
+   free) (axis2_flow_t *flow,
            const axis2_env_t *env);
 
     /**
@@ -64,7 +64,7 @@ struct axis2_flow_ops
      * @param handler handler description
      */
     axis2_status_t (AXIS2_CALL *
-	add_handler) (axis2_flow_t *flow,
+   add_handler) (axis2_flow_t *flow,
                   const axis2_env_t *env,
                   axis2_handler_desc_t *handler);
     
@@ -74,7 +74,7 @@ struct axis2_flow_ops
      * @return handler description
      */
     axis2_handler_desc_t * (AXIS2_CALL *
-	get_handler) (axis2_flow_t *flow,
+   get_handler) (axis2_flow_t *flow,
                   const axis2_env_t *env,
                   int index);
     
@@ -83,17 +83,17 @@ struct axis2_flow_ops
      * @return handler count
      */
     int (AXIS2_CALL *
-	get_handler_count) (axis2_flow_t *flow,
+   get_handler_count) (axis2_flow_t *flow,
                         const axis2_env_t *env);  
 };
 
 /** 
  * @brief Flow struct
- *	Flow  
+ *   Flow  
  */ 
 struct axis2_flow
 {
-	axis2_flow_ops_t *ops;
+   axis2_flow_ops_t *ops;
 };
 
 /**
@@ -117,13 +117,13 @@ axis2_flow_free_void_arg (void *flow,
 #define AXIS2_FLOW_FREE(flow, env) ((flow)->ops->free (flow, env))
 
 #define AXIS2_FLOW_ADD_HANDLER(flow, env, handler) \
-		((flow)->ops->add_handler (flow, env, handler))
+      ((flow)->ops->add_handler (flow, env, handler))
 
 #define AXIS2_FLOW_GET_HANDLER(flow, env, index) \
-		((flow)->ops->get_handler (flow, env, index))
+      ((flow)->ops->get_handler (flow, env, index))
 
 #define AXIS2_FLOW_GET_HANDLER_COUNT(flow, env) \
-		((flow)->ops->get_handler_count (flow, env))
+      ((flow)->ops->get_handler_count (flow, env))
 
 /*************************** End of function macros ***************************/
 

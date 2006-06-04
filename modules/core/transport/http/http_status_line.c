@@ -22,15 +22,15 @@
 
 /** 
  * @brief HTTP Status Line struct impl
- *	Axis2 HTTP Status Line impl  
+ *   Axis2 HTTP Status Line impl  
  */
 typedef struct axis2_http_status_line_impl axis2_http_status_line_impl_t;  
   
 struct axis2_http_status_line_impl
 {
-	axis2_http_status_line_t status_line;
+   axis2_http_status_line_t status_line;
     axis2_char_t *line;
-	axis2_char_t *http_version;
+   axis2_char_t *http_version;
     axis2_char_t *status_code;
     axis2_char_t *reason_phrase;
 };
@@ -61,7 +61,7 @@ axis2_http_status_line_to_string (axis2_http_status_line_t *status_line,
 
 axis2_status_t AXIS2_CALL 
 axis2_http_status_line_free (axis2_http_status_line_t *status_line, 
-                                    const axis2_env_t *env);	
+                                    const axis2_env_t *env);   
 /***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_http_status_line_t * AXIS2_CALL
@@ -80,12 +80,12 @@ axis2_http_status_line_create(const axis2_env_t *env, axis2_char_t *str)
     status_line_impl = (axis2_http_status_line_impl_t *)AXIS2_MALLOC 
                         (env->allocator, sizeof(
                         axis2_http_status_line_impl_t));
-	
+   
     if(NULL == status_line_impl)
-	{
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+   {
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     status_line_impl->status_line.ops = NULL;
     status_line_impl->line = (axis2_char_t *)AXIS2_STRDUP(str, env);
     status_line_impl->http_version = NULL;
@@ -164,12 +164,12 @@ axis2_http_status_line_create(const axis2_env_t *env, axis2_char_t *str)
     status_line_impl->status_line.ops = AXIS2_MALLOC(env->allocator,
                         sizeof(axis2_http_status_line_ops_t));
     if(NULL == status_line_impl->status_line.ops)
-	{
-		axis2_http_status_line_free((axis2_http_status_line_t*)
+   {
+      axis2_http_status_line_free((axis2_http_status_line_t*)
                          status_line_impl, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
     status_line_impl->status_line.ops->get_status_code =
                         axis2_http_status_line_get_status_code;
@@ -183,7 +183,7 @@ axis2_http_status_line_create(const axis2_env_t *env, axis2_char_t *str)
                         axis2_http_status_line_to_string;
     status_line_impl->status_line.ops->free =
                         axis2_http_status_line_free;
-	return &(status_line_impl->status_line);
+   return &(status_line_impl->status_line);
 }
 
 axis2_status_t AXIS2_CALL 
@@ -191,7 +191,7 @@ axis2_http_status_line_free (axis2_http_status_line_t *status_line,
                                     const axis2_env_t *env)
 {
     axis2_http_status_line_impl_t *status_line_impl = NULL;
-	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     status_line_impl = AXIS2_INTF_TO_IMPL(status_line);
     
     if(NULL != status_line_impl->line)
@@ -217,8 +217,8 @@ axis2_http_status_line_free (axis2_http_status_line_t *status_line,
     if(NULL != status_line->ops)
         AXIS2_FREE(env->allocator, status_line->ops);
     
-	AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(status_line));
-	return AXIS2_SUCCESS;
+   AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(status_line));
+   return AXIS2_SUCCESS;
 }
 
 

@@ -110,27 +110,27 @@ axis2_xml_schema_redefine_resolve_methods(
  */
  
 #define AXIS2_XML_SCHEMA_REDEFINE_FREE(redefine, env) \
-		(((axis2_xml_schema_redefine_t *) redefine)->ops->\
+      (((axis2_xml_schema_redefine_t *) redefine)->ops->\
             free(redefine, env))
 
 #define AXIS2_XML_SCHEMA_REDEFINE_GET_BASE_IMPL(redefine, env) \
-		(((axis2_xml_schema_redefine_t *) redefine)->ops->\
+      (((axis2_xml_schema_redefine_t *) redefine)->ops->\
             get_base_impl(redefine, env))
 
 #define AXIS2_XML_SCHEMA_REDEFINE_TYPE(redefine, env) \
-		(((axis2_xml_schema_redefine_t *) redefine)->ops->\
+      (((axis2_xml_schema_redefine_t *) redefine)->ops->\
             type(redefine, env))
 
 #define AXIS2_XML_SCHEMA_REDEFINE_SUPER_OBJS(redefine, env) \
-		(((axis2_xml_schema_redefine_t *) redefine)->ops->\
+      (((axis2_xml_schema_redefine_t *) redefine)->ops->\
             super_objs(redefine, env))
 
 #define AXIS2_XML_SCHEMA_REDEFINE_GET_ATTRIBUTE_GROUP(redefine, env) \
-		(((axis2_xml_schema_redefine_t *) redefine)->ops->\
+      (((axis2_xml_schema_redefine_t *) redefine)->ops->\
             get_attribute_group(redefine, env))
 
 #define AXIS2_XML_SCHEMA_REDEFINE_SET_ATTRIBUTE_GROUP(redefine, env, group) \
-		(((axis2_xml_schema_redefine_t *) redefine)->ops->\
+      (((axis2_xml_schema_redefine_t *) redefine)->ops->\
             set_attribute_group(redefine, env, group))
             
 #define AXIS2_XML_SCHEMA_REDEFINE_GET_ITEMS(redefine, env) \

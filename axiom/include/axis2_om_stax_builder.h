@@ -50,14 +50,14 @@ extern "C"
     {
       /**
         * Builds the next node from stream. Moves pull parser forward and reacts 
-		* to events.
+      * to events.
         * @param environment Environment. MUST NOT be NULL.
         * @param builder pointer to stax builder struct to be used
         * @return a pointer to the next node, or NULL if there are no more nodes.
         *           On erros sets the error and returns NULL.
         */
         axis2_om_node_t*(AXIS2_CALL *
-		next) (struct axis2_om_stax_builder *builder,
+      next) (struct axis2_om_stax_builder *builder,
                const axis2_env_t *env);
 
       /**
@@ -67,7 +67,7 @@ extern "C"
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *
-		discard_current_element)(struct axis2_om_stax_builder *builder,
+      discard_current_element)(struct axis2_om_stax_builder *builder,
                                  const axis2_env_t *env);
         /**
          * Free op
@@ -76,10 +76,10 @@ extern "C"
          * @return status of the op AXIS2_SUCCESS on success,
          *         AXIS2_FAILURE on error.
          */
-			 
-		axis2_status_t (AXIS2_CALL *
-		free)(struct axis2_om_stax_builder *builder,
-		      const axis2_env_t *env);
+          
+      axis2_status_t (AXIS2_CALL *
+      free)(struct axis2_om_stax_builder *builder,
+            const axis2_env_t *env);
         
        /** get the document associated with the builder  
         * @param builder axis2_om_stax_builder 
@@ -89,21 +89,21 @@ extern "C"
         *         NULL if an error occured.
         */                                             
         axis2_om_document_t* (AXIS2_CALL *
-		get_document)(struct axis2_om_stax_builder *builder,
+      get_document)(struct axis2_om_stax_builder *builder,
                       const axis2_env_t *env);
         /**
          * builder is finished building om structure
          */        
                                              
         axis2_bool_t (AXIS2_CALL *
-		is_complete)(struct axis2_om_stax_builder* builder,
+      is_complete)(struct axis2_om_stax_builder* builder,
                      const axis2_env_t *env);
         /**
          * moves the reader to next event and returns the token returned
-		 * by the xml_reader , returns -1 on error 
+       * by the xml_reader , returns -1 on error 
          */                                                
         int (AXIS2_CALL *
-		next_with_token)(struct axis2_om_stax_builder *builder,
+      next_with_token)(struct axis2_om_stax_builder *builder,
                          const axis2_env_t *env);                                                                                                                                                                                                                                                 
                                                         
     } axis2_om_stax_builder_ops_t;
@@ -145,7 +145,7 @@ extern "C"
 /** builder is finished building */        
 #define AXIS2_OM_STAX_BUILDER_IS_COMPLETE(builder, env) \
         ((builder)->ops->is_complete(builder, env))                       
-/** moves the builder to next event */	
+/** moves the builder to next event */   
 #define AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(builder, env) \
         ((builder)->ops->next_with_token(builder, env))                    
 

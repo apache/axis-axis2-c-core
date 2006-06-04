@@ -57,7 +57,7 @@ struct axis2_woden_ext_element;
 
 struct axis2_woden_wsdl_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -114,15 +114,15 @@ axis2_woden_wsdl_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_WSDL_ELEMENT_FREE(wsdl_element, env) \
-		(((axis2_woden_wsdl_element_t *) wsdl_element)->ops->\
+      (((axis2_woden_wsdl_element_t *) wsdl_element)->ops->\
          free (wsdl_element, env))
 
 #define AXIS2_WODEN_WSDL_ELEMENT_SUPER_OBJS(wsdl_element, env) \
-		(((axis2_woden_wsdl_element_t *) wsdl_element)->ops->\
+      (((axis2_woden_wsdl_element_t *) wsdl_element)->ops->\
          super_objs (wsdl_element, env))
 
 #define AXIS2_WODEN_WSDL_ELEMENT_TYPE(wsdl_element, env) \
-		(((axis2_woden_wsdl_element_t *) wsdl_element)->ops->\
+      (((axis2_woden_wsdl_element_t *) wsdl_element)->ops->\
          type (wsdl_element, env))
 
 /** @} */

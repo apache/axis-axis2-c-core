@@ -105,25 +105,25 @@ axis2_xml_schema_attribute_resolve_methods(
 /******************************* Macros *************************************************/ 
  
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_REF_FREE(grp_ref, env) \
-		(((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->free(grp_ref, env))
+      (((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->free(grp_ref, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_REF_GET_BASE_IMPL(grp_ref, env) \
-		(((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->get_base_impl(grp_ref, env))
+      (((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->get_base_impl(grp_ref, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_REF_TYPE(grp_ref, env) \
-		(((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->type(grp_ref, env))
-		
+      (((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->type(grp_ref, env))
+      
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_REF_SUPER_OBJS(grp_ref, env) \
-		(((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->super_objs(grp_ref, env))
-		
+      (((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->super_objs(grp_ref, env))
+      
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_REF_GET_REF_QNAME(grp_ref, env) \
-		(((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->\
-		    get_ref_qname(grp_ref, env))
+      (((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->\
+          get_ref_qname(grp_ref, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_REF_SET_REF_QNAME(grp_ref, env, ref_qname) \
-		(((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->\
-		    set_ref_qname(grp_ref, env, ref_qname))
+      (((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->\
+          set_ref_qname(grp_ref, env, ref_qname))
 
 /******************************* end macros ***********************************************/
 /** @} */

@@ -49,12 +49,12 @@ typedef struct axis2_wsdl_include_ops axis2_wsdl_include_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_include_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_include_t *wsdl_include,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
                                
     /**
      * Method get_namespace
@@ -100,11 +100,11 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_include_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_include
 {
-	axis2_wsdl_include_ops_t *ops;
+   axis2_wsdl_include_ops_t *ops;
     struct axis2_wsdl_component *wsdl_component;
 };
 
@@ -117,19 +117,19 @@ AXIS2_EXTERN axis2_wsdl_include_t *AXIS2_CALL axis2_wsdl_include_create (const a
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_INCLUDE_FREE(wsdl_include, env) \
-		((wsdl_include)->ops->free (wsdl_include, env))
+      ((wsdl_include)->ops->free (wsdl_include, env))
 
 #define AXIS2_WSDL_INCLUDE_GET_NAMESPACE(wsdl_include, env) \
-		((wsdl_include)->ops->get_namespace (wsdl_include, env))
+      ((wsdl_include)->ops->get_namespace (wsdl_include, env))
 
 #define AXIS2_WSDL_INCLUDE_SET_NAMESPACE(wsdl_include, env, namespace) \
-		((wsdl_include)->ops->set_namespace (wsdl_include, env, namespace))
+      ((wsdl_include)->ops->set_namespace (wsdl_include, env, namespace))
         
 #define AXIS2_WSDL_INCLUDE_GET_LOCATION(wsdl_include, env) \
-		((wsdl_include)->ops->is_location (wsdl_include, env))
+      ((wsdl_include)->ops->is_location (wsdl_include, env))
 
 #define AXIS2_WSDL_INCLUDE_SET_LOCATION(wsdl_include, env, location) \
-		((wsdl_include)->ops->set_location (wsdl_include, env, location))        
+      ((wsdl_include)->ops->set_location (wsdl_include, env, location))        
 
 /*************************** End of function macros ***************************/
 

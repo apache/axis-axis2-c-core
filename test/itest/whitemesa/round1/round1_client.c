@@ -362,7 +362,7 @@ build_soap_body_content (const axis2_env_t *env, axis2_char_t * echo_operation,
                      "\nSending OM node in XML : %s \n", buffer);
 
     writer = axis2_xml_writer_create_for_memory (env, NULL, AXIS2_TRUE, 0, 
-												AXIS2_XML_PARSER_TYPE_BUFFER);
+                                    AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axis2_om_output_create (env, writer);
     AXIS2_OM_NODE_SERIALIZE (envelope_node, env, om_output);
     buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML (writer, env);
@@ -378,7 +378,7 @@ print_invalid_om (const axis2_env_t *env, axis2_om_node_t * ret_node)
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
     writer = axis2_xml_writer_create_for_memory (env, NULL, AXIS2_TRUE, 0,
-													AXIS2_XML_PARSER_TYPE_BUFFER);
+                                       AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axis2_om_output_create (env, writer);
 
     AXIS2_OM_NODE_SERIALIZE (ret_node, env, om_output);

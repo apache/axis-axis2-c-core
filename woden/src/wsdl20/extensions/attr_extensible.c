@@ -23,7 +23,7 @@ typedef struct axis2_woden_attr_extensible_impl axis2_woden_attr_extensible_impl
 
 /** 
  * @brief Attribute Extensible Struct Impl
- *	Axis2 Attribute Extensible  
+ *   Axis2 Attribute Extensible  
  */ 
 struct axis2_woden_attr_extensible_impl
 {

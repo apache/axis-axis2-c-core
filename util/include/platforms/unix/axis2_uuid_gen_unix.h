@@ -38,11 +38,11 @@ extern "C"
 
 
 struct axis2_uuid {
-	unsigned int time_low;
-	unsigned short int time_mid;
-	unsigned short int time_high_version;
-	short int clock_variant;
-	unsigned char mac_addr[6];
+   unsigned int time_low;
+   unsigned short int time_mid;
+   unsigned short int time_high_version;
+   short int clock_variant;
+   unsigned char mac_addr[6];
 };
 
 /* bits  0-59 time field
@@ -52,7 +52,7 @@ struct axis2_uuid {
  * bits 80-107 node MAC address
  */
 struct axis2_uuid_st {
-    unsigned char   mac[6];		/* pre-determined MAC address */
+    unsigned char   mac[6];      /* pre-determined MAC address */
     struct timeval time_last;   /* last retrieved timestamp */
     unsigned long  time_seq;    /* last timestamp sequence counter */
     short int clock;            /* clock tick - incremented random number */

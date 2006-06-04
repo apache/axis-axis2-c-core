@@ -92,7 +92,7 @@ int main(int argc, char** argv)
     {
         printf("Error creating service client\n");
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-						" %d :: %s", env->error->error_number,
+                  " %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
     }
 
@@ -107,12 +107,12 @@ int main(int argc, char** argv)
     /* Create the callback object with default on_complete and on_error 
        callback functions */
     callback = axis2_callback_create(env);
-	
-	/* Set our on_complete fucntion pointer to the callback object */
-	AXIS2_CALLBACK_SET_ON_COMPLETE(callback, echo_callback_on_complete);
+   
+   /* Set our on_complete fucntion pointer to the callback object */
+   AXIS2_CALLBACK_SET_ON_COMPLETE(callback, echo_callback_on_complete);
 
-	/* Set our on_error function pointer to the callback object */
-	AXIS2_CALLBACK_SET_ON_ERROR(callback, echo_callback_on_error);
+   /* Set our on_error function pointer to the callback object */
+   AXIS2_CALLBACK_SET_ON_ERROR(callback, echo_callback_on_error);
 
     
     /* Send request */
@@ -120,17 +120,17 @@ int main(int argc, char** argv)
         payload, callback);
         
     /** Wait till callback is complete. Simply keep the parent thread running
-	    until our on_complete or on_error is invoked */
-	while(count < 30 )
-	{
-		if (isComplete)
-		{
-			/* We are done with the callback */
-			break;
-		}
+       until our on_complete or on_error is invoked */
+   while(count < 30 )
+   {
+      if (isComplete)
+      {
+         /* We are done with the callback */
+         break;
+      }
         AXIS2_SLEEP(1);
         count++;
-	}
+   }
     
     if (!(count < 30))
     {
@@ -150,25 +150,25 @@ axis2_status_t AXIS2_CALL
 echo_callback_on_complete(struct axis2_callback *callback,
                                   const axis2_env_t *env)
 {
-	/** SOAP response has arrived here; get the soap envelope 
-	  from the callback object and do whatever you want to do with it */
-	
-	axis2_soap_envelope_t *soap_envelope = NULL;
-	axis2_om_node_t *ret_node = NULL;
+   /** SOAP response has arrived here; get the soap envelope 
+     from the callback object and do whatever you want to do with it */
+   
+   axis2_soap_envelope_t *soap_envelope = NULL;
+   axis2_om_node_t *ret_node = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
-	
-	printf("inside on_complete_callback function\n");
-	
-	soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, env);
-	
-	if (!soap_envelope)
-	{
-		 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+   
+   printf("inside on_complete_callback function\n");
+   
+   soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, env);
+   
+   if (!soap_envelope)
+   {
+       AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
                      " %d :: %s", env->error->error_number,
                      AXIS2_ERROR_GET_MESSAGE(env->error));
-		printf("echo stub invoke FAILED!\n");
-		status = AXIS2_FAILURE;
-	}
+      printf("echo stub invoke FAILED!\n");
+      status = AXIS2_FAILURE;
+   }
     else
     {
         ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
@@ -191,7 +191,7 @@ echo_callback_on_complete(struct axis2_callback *callback,
         }
     }    
     isComplete = 1;
-	return status;
+   return status;
 }
 
 axis2_status_t AXIS2_CALL
@@ -199,9 +199,9 @@ echo_callback_on_error(struct axis2_callback *callback,
                             const axis2_env_t *env,
                             int exception)
 {
-	/** take necessary action on error */
-	printf("\necho client invike FAILED. Error code:%d ::%s", exception, 
-			AXIS2_ERROR_GET_MESSAGE(env->error));
-	isComplete = 1;
-	return AXIS2_SUCCESS;
+   /** take necessary action on error */
+   printf("\necho client invike FAILED. Error code:%d ::%s", exception, 
+         AXIS2_ERROR_GET_MESSAGE(env->error));
+   isComplete = 1;
+   return AXIS2_SUCCESS;
 }

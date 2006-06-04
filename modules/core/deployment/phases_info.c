@@ -2,11 +2,11 @@
 
 /** 
  * @brief Phases Info struct impl
- *	Axis2 Phases Info impl  
+ *   Axis2 Phases Info impl  
  */
 typedef struct axis2_phases_info_impl
 {
-	axis2_phases_info_t phases_info;
+   axis2_phases_info_t phases_info;
     axis2_array_list_t *in_phases;
     axis2_array_list_t *out_phases;
     axis2_array_list_t *in_faultphases;
@@ -88,34 +88,34 @@ axis2_phases_info_create (const axis2_env_t *env)
     axis2_phases_info_impl_t *phases_info_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     
-	phases_info_impl = (axis2_phases_info_impl_t *) AXIS2_MALLOC (env->allocator, 
+   phases_info_impl = (axis2_phases_info_impl_t *) AXIS2_MALLOC (env->allocator, 
         sizeof(axis2_phases_info_impl_t));
     
-	if(NULL == phases_info_impl)
-	{
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+   if(NULL == phases_info_impl)
+   {
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
        
     phases_info_impl->in_phases = NULL;
     phases_info_impl->out_phases = NULL;
     phases_info_impl->in_faultphases = NULL;
     phases_info_impl->out_faultphases = NULL;
-	
-	phases_info_impl->phases_info.ops = (axis2_phases_info_ops_t *)
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_phases_info_ops_t));
+   
+   phases_info_impl->phases_info.ops = (axis2_phases_info_ops_t *)
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_phases_info_ops_t));
     
-	if(NULL == phases_info_impl->phases_info.ops)
-	{
-		AXIS2_FREE (env->allocator, phases_info_impl);
+   if(NULL == phases_info_impl->phases_info.ops)
+   {
+      AXIS2_FREE (env->allocator, phases_info_impl);
         phases_info_impl = NULL;
-		AXIS2_ERROR_SET (env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET (env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
-	}
+   }
     
-	phases_info_impl->phases_info.ops->free = axis2_phases_info_free;
+   phases_info_impl->phases_info.ops->free = axis2_phases_info_free;
     
-	phases_info_impl->phases_info.ops->set_in_phases =
+   phases_info_impl->phases_info.ops->set_in_phases =
         axis2_phases_info_set_in_phases;
     
     phases_info_impl->phases_info.ops->set_out_phases =
@@ -132,7 +132,7 @@ axis2_phases_info_create (const axis2_env_t *env)
     
     phases_info_impl->phases_info.ops->get_out_phases = 
             axis2_phases_info_get_out_phases;
-	
+   
     phases_info_impl->phases_info.ops->get_in_faultphases = 
             axis2_phases_info_get_in_faultphases;
     
@@ -154,7 +154,7 @@ axis2_phases_info_create (const axis2_env_t *env)
     phases_info_impl->phases_info.ops->set_op_phases = 
             axis2_phases_info_set_op_phases;                                      
     
-	return &(phases_info_impl->phases_info);
+   return &(phases_info_impl->phases_info);
 }
 
 /******************************************************************************/
@@ -191,7 +191,7 @@ axis2_phases_info_free (axis2_phases_info_t *phases_info,
         phases_info_impl->out_faultphases = NULL;
     }
 
-	if(NULL != phases_info->ops)
+   if(NULL != phases_info->ops)
     {
         AXIS2_FREE(env->allocator, phases_info->ops);
         phases_info->ops = NULL;
@@ -203,7 +203,7 @@ axis2_phases_info_free (axis2_phases_info_t *phases_info,
         phases_info_impl = NULL;
     }
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 

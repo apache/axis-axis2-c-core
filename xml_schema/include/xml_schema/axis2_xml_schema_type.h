@@ -45,7 +45,7 @@ extern "C"
 
 struct axis2_xml_schema_type_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -143,35 +143,35 @@ axis2_xml_schema_type_resolve_methods(
                                 axis2_hash_t *methods);
 
 #define AXIS2_XML_SCHEMA_TYPE_FREE(type, env) \
-		(((axis2_xml_schema_type_t *) type)->ops->\
+      (((axis2_xml_schema_type_t *) type)->ops->\
             free(type, env))
 
 #define AXIS2_XML_SCHEMA_TYPE_GET_BASE_IMPL(type, env) \
-		(((axis2_xml_schema_type_t *) type)->ops->\
+      (((axis2_xml_schema_type_t *) type)->ops->\
             get_base_impl(type, env))
             
 #define AXIS2_XML_SCHEMA_TYPE_TYPE(type, env) \
-		(((axis2_xml_schema_type_t *) type)->ops->\
+      (((axis2_xml_schema_type_t *) type)->ops->\
            type(type, env)) 
            
 #define AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env) \
-		(((axis2_xml_schema_type_t *) type)->ops->\
+      (((axis2_xml_schema_type_t *) type)->ops->\
            super_objs(type, env))                       
 
 #define AXIS2_XML_SCHEMA_TYPE_GET_BASE_SCHEMA_TYPE(type, env) \
-		(((axis2_xml_schema_type_t *) type)->ops->\
+      (((axis2_xml_schema_type_t *) type)->ops->\
             get_base_schema_type(type, env))
 
 #define AXIS2_XML_SCHEMA_TYPE_GET_DATA_TYPE(type, env, max_occurs) \
-		(((axis2_xml_schema_type_t *) type)->ops->\
+      (((axis2_xml_schema_type_t *) type)->ops->\
             get_data_type(type, env, max_occurs))
 
 #define AXIS2_XML_SCHEMA_TYPE_DERIVE_BY(type, env) \
-		(((axis2_xml_schema_type_t *) type)->ops->\
+      (((axis2_xml_schema_type_t *) type)->ops->\
             get_derive_by(type, env))
 
 #define AXIS2_XML_SCHEMA_TYPE_GET_FINAL(type, env) \
-		(((axis2_xml_schema_type_t *) type)->ops->\
+      (((axis2_xml_schema_type_t *) type)->ops->\
             get_final(type, env))
 
 #define AXIS2_XML_SCHEMA_TYPE_SET_FINAL(type, env, final_derivation) \

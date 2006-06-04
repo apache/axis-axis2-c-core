@@ -48,7 +48,7 @@ extern "C"
 
 struct axis2_woden_qname_list_or_token_any_attr_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -148,49 +148,49 @@ axis2_woden_qname_list_or_token_any_attr_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_FREE(list_token_attr, env) \
-		(((axis2_woden_qname_list_or_token_any_attr_t *) \
+      (((axis2_woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->free(list_token_attr, env))
 
 #define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_TO_QNAME_LIST_OR_TOKEN_ANY_ATTR_FREE(\
         list_token_attr, env) \
-		(((axis2_woden_qname_list_or_token_any_attr_t *) list_token_attr)->ops->\
+      (((axis2_woden_qname_list_or_token_any_attr_t *) list_token_attr)->ops->\
          to_qname_list_or_token_any_attr_free(list_token_attr, env))
 
 #define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_TYPE(list_token_attr, env) \
-		(((axis2_woden_qname_list_or_token_any_attr_t *) list_token_attr)->ops->\
+      (((axis2_woden_qname_list_or_token_any_attr_t *) list_token_attr)->ops->\
          type(list_token_attr, env))
 
 #define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_GET_BASE_IMPL(list_token_attr, \
         env) \
-		(((axis2_woden_qname_list_or_token_any_attr_t *) \
+      (((axis2_woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->get_base_impl(list_token_attr, \
                                                           env))
 
 #define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_IS_QNAME_LIST(list_token_attr, \
         env) \
-		(((axis2_woden_qname_list_or_token_any_attr_t *) \
+      (((axis2_woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->is_qname_list(list_token_attr, \
                                                             env))
 
 #define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_IS_TOKEN(list_token_attr, env) \
-		(((axis2_woden_qname_list_or_token_any_attr_t *) \
+      (((axis2_woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->is_token(list_token_attr, \
                                                        env))
 
 #define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_GET_QNAMES(list_token_attr, \
         env) \
-		(((axis2_woden_qname_list_or_token_any_attr_t *) \
+      (((axis2_woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->get_qnames(list_token_attr, \
                                                          env))
 
 #define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_GET_TOKEN(list_token_attr, \
         env) \
-		(((axis2_woden_qname_list_or_token_any_attr_t *) \
+      (((axis2_woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->get_token(list_token_attr, \
                                                          env))
 
 #define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_CONVERT(list_token_attr, env) \
-		(((axis2_woden_qname_list_or_token_any_attr_t *) \
+      (((axis2_woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->convert(list_token_attr, \
                                                       env))
 

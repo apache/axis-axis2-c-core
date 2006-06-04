@@ -28,7 +28,7 @@ typedef struct axis2_woden_property_impl axis2_woden_property_impl_t;
 
 /** 
  * @brief Feature Struct Impl
- *	Axis2 Feature  
+ *   Axis2 Feature  
  */ 
 struct axis2_woden_property_impl
 {

@@ -50,7 +50,7 @@ struct axis2_xml_nc_name;
 
 struct woden_nc_name_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -94,18 +94,18 @@ woden_nc_name_create(
         axis2_char_t *value);
 
 #define WODEN_NC_NAME_FREE(nc_name, env) \
-		(((woden_nc_name_t *) nc_name)->ops->free (nc_name, env))
+      (((woden_nc_name_t *) nc_name)->ops->free (nc_name, env))
 
 #define WODEN_NC_NAME_IS_VALID(nc_name, env, st_value) \
-		(((woden_nc_name_t *) nc_name)->ops-> \
+      (((woden_nc_name_t *) nc_name)->ops-> \
          is_valid (nc_name, env, st_value))
 
 #define WODEN_NC_NAME_SET_VALUE(nc_name, env, value) \
-		(((woden_nc_name_t *) nc_name)->ops-> \
+      (((woden_nc_name_t *) nc_name)->ops-> \
          set_value (nc_name, env, value))
 
 #define WODEN_NC_NAME_TO_STRING(nc_name, env) \
-		(((woden_nc_name_t *) nc_name)->ops-> \
+      (((woden_nc_name_t *) nc_name)->ops-> \
          to_string (nc_name, env))
 
 

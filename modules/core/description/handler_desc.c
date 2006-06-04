@@ -21,8 +21,8 @@
 
 typedef struct axis2_handler_desc_impl
 {
-	/** handler description */
-	axis2_handler_desc_t handler_desc;
+   /** handler description */
+   axis2_handler_desc_t handler_desc;
     
     /** name */
     axis2_qname_t *qname;
@@ -32,7 +32,7 @@ typedef struct axis2_handler_desc_impl
     axis2_handler_t *handler;
     /** class qname */
     axis2_char_t *class_name;
-	/** parent param container */
+   /** parent param container */
     axis2_param_container_t *parent;
     
 } axis2_handler_desc_impl_t;
@@ -117,10 +117,10 @@ axis2_handler_desc_create_with_qname(const axis2_env_t *env,
     handler_desc_impl->rules = NULL;
     handler_desc_impl->handler = NULL;
     handler_desc_impl->class_name = NULL;
-	handler_desc_impl->parent = NULL;
+   handler_desc_impl->parent = NULL;
     handler_desc_impl->handler_desc.ops = NULL;
-	
-	handler_desc_impl->handler_desc.param_container  = 
+   
+   handler_desc_impl->handler_desc.param_container  = 
         axis2_param_container_create(env);
     if (!handler_desc_impl->handler_desc.param_container)
     {
@@ -381,12 +381,12 @@ axis2_status_t AXIS2_CALL axis2_handler_desc_free (struct axis2_handler_desc *ha
         handler_desc_impl->handler_desc.param_container = NULL;
     }    
     
-	if (handler_desc_impl->qname)
+   if (handler_desc_impl->qname)
     {
         AXIS2_QNAME_FREE(handler_desc_impl->qname, env);
         handler_desc_impl->qname = NULL;
     }
-	
+   
     if (handler_desc_impl->rules)
     {
         AXIS2_PHASE_RULE_FREE(handler_desc_impl->rules, env);

@@ -19,7 +19,7 @@
 #include <axis2_utils.h>
 /** 
  * @brief Other Extension Struct Impl
- *	Axis2 Other Extension  
+ *   Axis2 Other Extension  
  */ 
 typedef struct axis2_xml_schema_import_impl
 {

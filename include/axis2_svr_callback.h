@@ -76,7 +76,7 @@ struct axis2_svr_callback_ops
 
 /** 
  * @brief Server Callback struct
-  *	Axis2 Server Callback
+  *   Axis2 Server Callback
  */
 struct axis2_svr_callback
 {
@@ -96,10 +96,10 @@ axis2_svr_callback_create (const axis2_env_t *env);
         ((svr_callback)->ops->free (svr_callback, env))
 
 #define AXIS2_SVR_CALLBACK_HANDLER_RESULT(svr_callback, env, msg_ctx) \
-		((svr_callback)->ops->handle_result (svr_callback, env, msg_ctx))
+      ((svr_callback)->ops->handle_result (svr_callback, env, msg_ctx))
 
 #define AXIS2_SVR_CALLBACK_HANDLER_FAULT(svr_callback, env, msg_ctx) \
-		((svr_callback)->ops->handle_fault (svr_callback, env, msg_ctx))
+      ((svr_callback)->ops->handle_fault (svr_callback, env, msg_ctx))
 
 /************************** End of function macros ****************************/
     

@@ -22,7 +22,7 @@ typedef struct axis2_woden_inlined_schema_impl axis2_woden_inlined_schema_impl_t
 
 /** 
  * @brief Inlined Schema Struct Impl
- *	Axis2 Inlined Schema  
+ *   Axis2 Inlined Schema  
  */ 
 struct axis2_woden_inlined_schema_impl
 {

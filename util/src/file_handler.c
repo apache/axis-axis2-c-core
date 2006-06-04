@@ -27,22 +27,22 @@ axis2_file_handler_open(const axis2_char_t *file_name,
                             
 {
     FILE *file_ptr;
-	
-	if (!file_name)
-		return NULL;
+   
+   if (!file_name)
+      return NULL;
 
-	if (!options)
-		return NULL;
-	
-	file_ptr = fopen (file_name, options);
-	return file_ptr;
+   if (!options)
+      return NULL;
+   
+   file_ptr = fopen (file_name, options);
+   return file_ptr;
 }
 
 axis2_status_t AXIS2_CALL 
 axis2_file_handler_close(void *file_ptr)
 {
-	if(!file_ptr) return -1;
-	return (axis2_status_t) fclose(file_ptr);
+   if(!file_ptr) return -1;
+   return (axis2_status_t) fclose(file_ptr);
 }
 
 axis2_status_t AXIS2_CALL 

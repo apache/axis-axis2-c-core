@@ -54,7 +54,7 @@ AXIS2_DECLARE_DATA struct axis2_http_simple_request_ops
     axis2_http_request_line_t* (AXIS2_CALL *get_request_line)
                             (axis2_http_simple_request_t *simple_request, 
                             const axis2_env_t *env);
-	    
+       
     axis2_status_t (AXIS2_CALL *set_request_line)
                             (axis2_http_simple_request_t *simple_request, 
                             const axis2_env_t *env, 
@@ -99,10 +99,10 @@ AXIS2_DECLARE_DATA struct axis2_http_simple_request_ops
     axis2_ssize_t (AXIS2_CALL *get_body_bytes)
                             (axis2_http_simple_request_t *simple_request, 
                             const axis2_env_t *env, char **buf);
-							
-	axis2_status_t (AXIS2_CALL *set_body_string)
-                    		(axis2_http_simple_request_t *simple_request, 
-                    		const axis2_env_t *env, axis2_char_t *str);
+                     
+   axis2_status_t (AXIS2_CALL *set_body_string)
+                          (axis2_http_simple_request_t *simple_request, 
+                          const axis2_env_t *env, axis2_char_t *str);
 
     axis2_status_t (AXIS2_CALL *free)
                             (axis2_http_simple_request_t *simple_request, 

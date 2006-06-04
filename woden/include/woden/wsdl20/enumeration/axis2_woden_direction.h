@@ -71,7 +71,7 @@ struct axis2_woden_ext_element;
 
 struct axis2_woden_direction_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -110,19 +110,19 @@ axis2_woden_direction_create(
         axis2_char_t *value);
 
 #define AXIS2_WODEN_DIRECTION_FREE(direction, env) \
-		(((axis2_woden_direction_t *) direction)->ops->\
+      (((axis2_woden_direction_t *) direction)->ops->\
          free (direction, env))
 
 #define AXIS2_WODEN_DIRECTION_GET_DIRECTION_IN(direction, env) \
-		(((axis2_woden_direction_t *) direction)->ops->\
+      (((axis2_woden_direction_t *) direction)->ops->\
          get_direction_in (direction, env))
 
 #define AXIS2_WODEN_DIRECTION_GET_DIRECTION_OUT(direction, env) \
-		(((axis2_woden_direction_t *) direction)->ops->\
+      (((axis2_woden_direction_t *) direction)->ops->\
          get_direction_out (direction, env))
 
 #define AXIS2_WODEN_DIRECTION_TO_STRING(direction, env) \
-		(((axis2_woden_direction_t *) direction)->ops->\
+      (((axis2_woden_direction_t *) direction)->ops->\
          to_string (direction, env))
 
 

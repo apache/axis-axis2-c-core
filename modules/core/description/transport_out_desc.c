@@ -23,7 +23,7 @@
  */ 
 typedef struct axis2_transport_out_desc_impl
 {
-	axis2_transport_out_desc_t transport_out;
+   axis2_transport_out_desc_t transport_out;
     
     /** 
      * Field flowInclude 
@@ -64,7 +64,7 @@ typedef struct axis2_transport_out_desc_impl
 axis2_status_t AXIS2_CALL
 axis2_transport_out_desc_free (
                 axis2_transport_out_desc_t *transport_out,
-				const axis2_env_t *env);
+            const axis2_env_t *env);
 
 axis2_qname_t *AXIS2_CALL
 axis2_transport_out_desc_get_qname(axis2_transport_out_desc_t *transport_out,
@@ -143,13 +143,13 @@ axis2_transport_out_desc_create_with_qname (const axis2_env_t *env, axis2_qname_
 {
     axis2_transport_out_desc_impl_t *transport_out_impl = NULL;
      
-	AXIS2_ENV_CHECK(env, NULL);
+   AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
-	
-	transport_out_impl = (axis2_transport_out_desc_impl_t *) AXIS2_MALLOC(env->
+   
+   transport_out_impl = (axis2_transport_out_desc_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_transport_out_desc_impl_t));
-	
-	if(NULL == transport_out_impl)
+   
+   if(NULL == transport_out_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -174,24 +174,24 @@ axis2_transport_out_desc_create_with_qname (const axis2_env_t *env, axis2_qname_
     
     transport_out_impl->qname = AXIS2_QNAME_CLONE(qname, env);
     
-	transport_out_impl->transport_out.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_transport_out_desc_ops_t));
-	if(NULL == transport_out_impl->transport_out.ops)
+   transport_out_impl->transport_out.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_transport_out_desc_ops_t));
+   if(NULL == transport_out_impl->transport_out.ops)
     {
         axis2_transport_out_desc_free(&(transport_out_impl->transport_out), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
     transport_out_impl->transport_out.ops->free = axis2_transport_out_desc_free;
     
-	transport_out_impl->transport_out.ops->get_qname =  
+   transport_out_impl->transport_out.ops->get_qname =  
         axis2_transport_out_desc_get_qname;
-	transport_out_impl->transport_out.ops->set_qname =  
+   transport_out_impl->transport_out.ops->set_qname =  
         axis2_transport_out_desc_set_qname;
-	transport_out_impl->transport_out.ops->get_outflow =  
+   transport_out_impl->transport_out.ops->get_outflow =  
         axis2_transport_out_desc_get_outflow;
-	transport_out_impl->transport_out.ops->set_outflow = 
+   transport_out_impl->transport_out.ops->set_outflow = 
         axis2_transport_out_desc_set_outflow;
     transport_out_impl->transport_out.ops->get_faultflow = 
         axis2_transport_out_desc_get_faultflow;
@@ -216,7 +216,7 @@ axis2_transport_out_desc_create_with_qname (const axis2_env_t *env, axis2_qname_
     transport_out_impl->transport_out.ops->is_param_locked = 
     axis2_transport_out_desc_is_param_locked;
     
-	return &(transport_out_impl->transport_out);
+   return &(transport_out_impl->transport_out);
 }
 
 /***************************Function implementation****************************/
@@ -237,7 +237,7 @@ axis2_transport_out_desc_free (axis2_transport_out_desc_t *transport_out,
         transport_out_impl->sender = NULL;
     }
     
-	if(NULL != transport_out->ops)
+   if(NULL != transport_out->ops)
     {
         AXIS2_FREE(env->allocator, transport_out->ops);
         transport_out->ops = NULL;
@@ -281,7 +281,7 @@ axis2_transport_out_desc_free (axis2_transport_out_desc_t *transport_out,
     
     AXIS2_FREE(env->allocator, transport_out_impl);
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_qname_t *AXIS2_CALL

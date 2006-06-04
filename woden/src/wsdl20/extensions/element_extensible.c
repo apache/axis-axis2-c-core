@@ -23,7 +23,7 @@ typedef struct axis2_woden_element_extensible_impl axis2_woden_element_extensibl
 
 /** 
  * @brief Element Extensible Struct Impl
- *	Axis2 Element Extensible  
+ *   Axis2 Element Extensible  
  */ 
 struct axis2_woden_element_extensible_impl
 {

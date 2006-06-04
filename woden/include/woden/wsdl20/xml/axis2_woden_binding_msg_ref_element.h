@@ -54,7 +54,7 @@ typedef union axis2_woden_binding_msg_ref_element_base axis2_woden_binding_msg_r
 
 struct axis2_woden_binding_msg_ref_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -119,27 +119,27 @@ axis2_woden_binding_msg_ref_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_BINDING_MSG_REF_ELEMENT_FREE(binding_msg_ref_element, env) \
-		(((axis2_woden_binding_msg_ref_element_t *) binding_msg_ref_element)->ops->\
+      (((axis2_woden_binding_msg_ref_element_t *) binding_msg_ref_element)->ops->\
          free (binding_msg_ref_element, env))
 
 #define AXIS2_WODEN_BINDING_MSG_REF_ELEMENT_TYPE(binding_msg_ref_element, env) \
-		(((axis2_woden_binding_msg_ref_element_t *) binding_msg_ref_element)->ops->\
+      (((axis2_woden_binding_msg_ref_element_t *) binding_msg_ref_element)->ops->\
          type (binding_msg_ref_element, env))
 
 #define AXIS2_WODEN_BINDING_MSG_REF_ELEMENT_SET_MSG_LABEL(binding_msg_ref_element, env, msg_label) \
-		(((axis2_woden_binding_msg_ref_element_t *) binding_msg_ref_element)->ops->\
+      (((axis2_woden_binding_msg_ref_element_t *) binding_msg_ref_element)->ops->\
          set_msg_label (binding_msg_ref_element, env, msg_label))
 
 #define AXIS2_WODEN_BINDING_MSG_REF_ELEMENT_GET_MSG_LABEL(binding_msg_ref_element, env) \
-		(((axis2_woden_binding_msg_ref_element_t *) binding_msg_ref_element)->ops->\
+      (((axis2_woden_binding_msg_ref_element_t *) binding_msg_ref_element)->ops->\
         get_msg_label  (binding_msg_ref_element, env))
 
 #define AXIS2_WODEN_BINDING_MSG_REF_ELEMENT_SET_DIRECTION(binding_msg_ref_element, env, dir) \
-		(((axis2_woden_binding_msg_ref_element_t *) binding_msg_ref_element)->ops->\
+      (((axis2_woden_binding_msg_ref_element_t *) binding_msg_ref_element)->ops->\
          set_direction (binding_msg_ref_element, env, dir))
 
 #define AXIS2_WODEN_BINDING_MSG_REF_ELEMENT_GET_DIRECTION(binding_msg_ref_element, env) \
-		(((axis2_woden_binding_msg_ref_element_t *) binding_msg_ref_element)->ops->\
+      (((axis2_woden_binding_msg_ref_element_t *) binding_msg_ref_element)->ops->\
          get_direction (binding_msg_ref_element, env))
 
 

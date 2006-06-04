@@ -56,7 +56,7 @@ struct axis2_woden_ext_element;
 
 struct axis2_woden_soap_fault_code_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -105,23 +105,23 @@ axis2_woden_soap_fault_code_get_soap_fault_code_any(
         const axis2_env_t *env);
 
 #define AXIS2_WODEN_SOAP_FAULT_CODE_FREE(soap_fault_code, env) \
-		(((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
+      (((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
          free (soap_fault_code, env))
 
 #define AXIS2_WODEN_SOAP_FAULT_CODE_IS_QNAME(soap_fault_code, env) \
-		(((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
+      (((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
          is_qname (soap_fault_code, env))
 
 #define AXIS2_WODEN_SOAP_FAULT_CODE_IS_TOKEN(soap_fault_code, env) \
-		(((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
+      (((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
          is_token (soap_fault_code, env))
 
 #define AXIS2_WODEN_SOAP_FAULT_CODE_GET_QNAME(soap_fault_code, env) \
-		(((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
+      (((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
          get_qname (soap_fault_code, env))
 
 #define AXIS2_WODEN_SOAP_FAULT_CODE_GET_TOKEN(soap_fault_code, env) \
-		(((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
+      (((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
          get_token (soap_fault_code, env))
 
 

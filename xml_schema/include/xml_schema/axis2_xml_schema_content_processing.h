@@ -45,7 +45,7 @@ extern "C"
 
 struct axis2_xml_schema_content_processing_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -84,24 +84,24 @@ axis2_xml_schema_content_processing_create(const axis2_env_t *env,
 /*********************** macros ***********************************************/
 
 #define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_FREE(content_processing, env) \
-		(((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
+      (((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
          free(content_processing, env))
 
 #define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_SUPER_OBJS(content_processing, env) \
-		(((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
+      (((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
          super_objs(content_processing, env))
 
 #define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_TYPE(content_processing, env) \
-		(((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
+      (((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
          type(content_processing, env))
 
 
 #define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_GET_BASE_IMPL(content_processing, env) \
-		(((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
+      (((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
          get_base_impl(content_processing, env))
 
 #define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_GET_VALUES(content_processing, env) \
-		(((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
+      (((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
          get_values(content_processing, env))
 
 

@@ -50,12 +50,12 @@ typedef struct axis2_wsdl_ext_soap_address_ops axis2_wsdl_ext_soap_address_ops_t
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_address_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_ext_soap_address_t *ext_soap_address,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_location_uri) (axis2_wsdl_ext_soap_address_t *ext_soap_address,
@@ -73,14 +73,14 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_address_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  * This Extensibility Element is extended to handle particularly the
  * SOAP Adress or the Endpoint URL.
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_address
 {
     axis2_wsdl_ext_t base;
-	axis2_wsdl_ext_soap_address_ops_t *ops;
+   axis2_wsdl_ext_soap_address_ops_t *ops;
     struct axis2_wsdl_extensible_element *ext_element;
 };
 
@@ -95,13 +95,13 @@ axis2_wsdl_ext_soap_address_create (const axis2_env_t *env,
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_EXT_SOAP_ADDRESS_FREE(ext_soap_address, env) \
-		((ext_soap_address)->ops->free (ext_soap_address, env))
+      ((ext_soap_address)->ops->free (ext_soap_address, env))
 
 #define AXIS2_WSDL_EXT_SOAP_ADDRESS_GET_LOCATION_URI(ext_soap_address, env) \
-		((ext_soap_address)->ops->get_location_uri (ext_soap_address, env))
+      ((ext_soap_address)->ops->get_location_uri (ext_soap_address, env))
 
 #define AXIS2_WSDL_EXT_SOAP_ADDRESS_SET_LOCATION_URI(ext_soap_address, env, location_uri) \
-		((ext_soap_address)->ops->set_location_uri (ext_soap_address, env, location_uri))        
+      ((ext_soap_address)->ops->set_location_uri (ext_soap_address, env, location_uri))        
 
 /*************************** End of function macros ***************************/
 

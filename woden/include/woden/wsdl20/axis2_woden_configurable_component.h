@@ -51,7 +51,7 @@ typedef struct axis2_woden_configurable_component_ops axis2_woden_configurable_c
 
 struct axis2_woden_configurable_component_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -97,25 +97,25 @@ axis2_woden_configurable_component_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_CONFIGURABLE_COMPONENT_FREE(configurable_component, env) \
-		(((axis2_woden_configurable_component_t *) configurable_component)->ops->\
+      (((axis2_woden_configurable_component_t *) configurable_component)->ops->\
          free (configurable_component, env))
 
 #define AXIS2_WODEN_CONFIGURABLE_COMPONENT_TO_CONFIGURABLE_COMPONENT_FREE(configurable_component, env) \
-		(((axis2_woden_configurable_component_t *) configurable_component)->ops->\
+      (((axis2_woden_configurable_component_t *) configurable_component)->ops->\
          to_configurable_component_free (configurable_component, env))
 
 #define AXIS2_WODEN_CONFIGURABLE_COMPONENT_TYPE(configurable_component, env) \
-		(((axis2_woden_configurable_component_t *) configurable_component)->ops->\
+      (((axis2_woden_configurable_component_t *) configurable_component)->ops->\
          type (configurable_component, env))
 
 #define AXIS2_WODEN_CONFIGURABLE_COMPONENT_GET_FEATURES(\
         configurable_component, env) \
-		(((axis2_woden_configurable_component_t *) configurable_component)->ops->\
+      (((axis2_woden_configurable_component_t *) configurable_component)->ops->\
          get_features(configurable_component, env))
 
 #define AXIS2_WODEN_CONFIGURABLE_COMPONENT_GET_PROPERTIES(\
         configurable_component, env) \
-		(((axis2_woden_configurable_component_t *) configurable_component)->ops->\
+      (((axis2_woden_configurable_component_t *) configurable_component)->ops->\
          get_properties(configurable_component, env))
 
 /** @} */

@@ -26,7 +26,7 @@ typedef struct axis2_woden_binding_msg_ref_impl axis2_woden_binding_msg_ref_impl
 
 /** 
  * @brief Binding Message Reference Struct Impl
- *	Axis2 Binding Message Reference  
+ *   Axis2 Binding Message Reference  
  */ 
 struct axis2_woden_binding_msg_ref_impl
 {

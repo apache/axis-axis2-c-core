@@ -22,7 +22,7 @@
  */
 typedef struct axis2_ws_info_impl
 {
-	axis2_ws_info_t ws_info;
+   axis2_ws_info_t ws_info;
     
     axis2_char_t *file_name;
     long last_modified_date;
@@ -31,7 +31,7 @@ typedef struct axis2_ws_info_impl
      */
     int type;
     
-    	
+       
 } axis2_ws_info_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(ws_info) \
@@ -76,14 +76,14 @@ axis2_ws_info_create_with_file_name_and_last_modified_date (const axis2_env_t *e
 {
     axis2_ws_info_impl_t *ws_info_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
+   AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
-	
-	ws_info_impl = (axis2_ws_info_impl_t *) AXIS2_MALLOC(env->
+   
+   ws_info_impl = (axis2_ws_info_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_ws_info_impl_t));
-	
-	
-	if(NULL == ws_info_impl)
+   
+   
+   if(NULL == ws_info_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -98,22 +98,22 @@ axis2_ws_info_create_with_file_name_and_last_modified_date (const axis2_env_t *e
     if(!ws_info_impl->file_name)
     {
         axis2_ws_info_free(&(ws_info_impl->ws_info), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;   
     }
     
     ws_info_impl->last_modified_date = last_modified_date;
     
-	ws_info_impl->ws_info.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_ws_info_ops_t));
-	if(NULL == ws_info_impl->ws_info.ops)
+   ws_info_impl->ws_info.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_ws_info_ops_t));
+   if(NULL == ws_info_impl->ws_info.ops)
     {
         axis2_ws_info_free(&(ws_info_impl->ws_info), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	ws_info_impl->ws_info.ops->free =  axis2_ws_info_free;
+   ws_info_impl->ws_info.ops->free =  axis2_ws_info_free;
     ws_info_impl->ws_info.ops->get_file_name = axis2_ws_info_get_file_name;
     ws_info_impl->ws_info.ops->set_file_name = axis2_ws_info_set_file_name;
     ws_info_impl->ws_info.ops->get_last_modified_date = 
@@ -121,8 +121,8 @@ axis2_ws_info_create_with_file_name_and_last_modified_date (const axis2_env_t *e
     ws_info_impl->ws_info.ops->set_last_modified_date = 
         axis2_ws_info_set_last_modified_date;
     ws_info_impl->ws_info.ops->get_type = axis2_ws_info_get_type;
-	
-	return &(ws_info_impl->ws_info);
+   
+   return &(ws_info_impl->ws_info);
 }
 
 axis2_ws_info_t * AXIS2_CALL 
@@ -134,7 +134,7 @@ axis2_ws_info_create_with_file_name_and_last_modified_date_and_type (
 {
     axis2_ws_info_impl_t *ws_info_impl = NULL;
    
-	AXIS2_ENV_CHECK(env, NULL);
+   AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);
     
     ws_info_impl = (axis2_ws_info_impl_t *)
@@ -143,7 +143,7 @@ axis2_ws_info_create_with_file_name_and_last_modified_date_and_type (
     if(!ws_info_impl)
     {
         axis2_ws_info_free(&(ws_info_impl->ws_info), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;  
     }
     ws_info_impl->type = type;
@@ -162,7 +162,7 @@ axis2_ws_info_free (axis2_ws_info_t *ws_info,
     
     ws_info_impl = AXIS2_INTF_TO_IMPL(ws_info);
     
-	if(NULL != ws_info->ops)
+   if(NULL != ws_info->ops)
     {
         AXIS2_FREE(env->allocator, ws_info->ops);
         ws_info->ops = NULL;
@@ -180,7 +180,7 @@ axis2_ws_info_free (axis2_ws_info_t *ws_info,
         ws_info_impl = NULL;
     }
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_char_t *AXIS2_CALL

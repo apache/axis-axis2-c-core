@@ -574,7 +574,7 @@ axis2_om_element_find_namespace (axis2_om_element_t *om_element,
                     if(temp_nsuri && (AXIS2_STRCMP(temp_nsuri, uri) == 0))
                     {
                         /** namespace uri matches , so free hashindex and return ns*/
-		                AXIS2_FREE (env->allocator, hashindex);
+                      AXIS2_FREE (env->allocator, hashindex);
                         return (axis2_om_namespace_t *) (ns);
                     }
                     temp_ns = NULL;
@@ -724,7 +724,7 @@ axis2_om_element_find_declared_namespace (axis2_om_element_t *om_element,
                 
                 if (temp_nsuri && AXIS2_STRCMP(temp_nsuri, uri) == 0)
                 {
-		            AXIS2_FREE (env->allocator, hash_index);
+                  AXIS2_FREE (env->allocator, hash_index);
                     return temp_ns;
                 }
                 temp_ns = NULL;
@@ -1444,7 +1444,7 @@ axis2_om_element_to_string(axis2_om_element_t *om_element,
     AXIS2_PARAM_CHECK(env->error, element_node, NULL);    
     
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
-					AXIS2_XML_PARSER_TYPE_BUFFER);
+               AXIS2_XML_PARSER_TYPE_BUFFER);
     if(!xml_writer)
         return NULL;
     

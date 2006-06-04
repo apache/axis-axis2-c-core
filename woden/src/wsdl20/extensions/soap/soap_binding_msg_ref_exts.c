@@ -26,7 +26,7 @@ typedef struct axis2_woden_soap_binding_msg_ref_exts_impl axis2_woden_soap_bindi
 
 /** 
  * @brief Soap Binding Message Reference Extensions Struct Impl
- *	Axis2 Soap Binding Message Reference Extensions  
+ *   Axis2 Soap Binding Message Reference Extensions  
  */ 
 struct axis2_woden_soap_binding_msg_ref_exts_impl
 {

@@ -41,7 +41,7 @@ extern "C"
 
 struct axis2_xml_schema_derivation_method_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -79,26 +79,26 @@ axis2_xml_schema_derivation_method_create(const axis2_env_t *env,
 
 
 #define AXIS2_XML_SCHEMA_DERIVATION_METHOD_FREE(derivation_method, env) \
-		(((axis2_xml_schema_derivation_method_t *) \
-		 derivation_method)->ops->free(derivation_method, env))
+      (((axis2_xml_schema_derivation_method_t *) \
+       derivation_method)->ops->free(derivation_method, env))
 
 #define AXIS2_XML_SCHEMA_DERIVATION_METHOD_GET_BASE_IMPL(derivation_method, env) \
-		(((axis2_xml_schema_derivation_method_t *) \
-		derivation_method)->ops->get_base_impl(derivation_method, env))
+      (((axis2_xml_schema_derivation_method_t *) \
+      derivation_method)->ops->get_base_impl(derivation_method, env))
 
 #define AXIS2_XML_SCHEMA_DERIVATION_METHOD_GET_VALUES(derivation_method, env) \
-		(((axis2_xml_schema_derivation_method_t *) \
-		derivation_method)->ops->values(derivation_method, env))
+      (((axis2_xml_schema_derivation_method_t *) \
+      derivation_method)->ops->values(derivation_method, env))
 
 #define AXIS2_XML_SCHEMA_DERIVATION_METHOD_TYPE(derivation_method, env) \
-		(((axis2_xml_schema_derivation_method_t *) \
-		derivation_method)->ops->type(derivation_method, env))
-		
+      (((axis2_xml_schema_derivation_method_t *) \
+      derivation_method)->ops->type(derivation_method, env))
+      
 #define AXIS2_XML_SCHEMA_DERIVATION_METHOD_SUPER_OBJS(derivation_method, env) \
         (((axis2_xml_schema_derivation_method_t *) \
-		derivation_method)->ops->super_objs(derivation_method, env))
-		
-		
+      derivation_method)->ops->super_objs(derivation_method, env))
+      
+      
 /** @} */
 #ifdef __cplusplus
 }

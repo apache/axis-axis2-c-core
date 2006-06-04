@@ -42,7 +42,7 @@ extern "C"
 
 struct axis2_woden_imported_schema_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -106,18 +106,18 @@ axis2_woden_imported_schema_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_IMPORTED_SCHEMA_FREE(schema, env) \
-		(((axis2_woden_imported_schema_t *) schema)->ops->free(schema, env))
+      (((axis2_woden_imported_schema_t *) schema)->ops->free(schema, env))
 
 #define AXIS2_WODEN_IMPORTED_SCHEMA_GET_BASE_IMPL(schema, env) \
-		(((axis2_woden_imported_schema_t *) schema)->ops->get_base_impl(schema, \
+      (((axis2_woden_imported_schema_t *) schema)->ops->get_base_impl(schema, \
                                                                         env))
 
 #define AXIS2_WODEN_IMPORTED_SCHEMA_SET_LOCATION(schema, env, location) \
-		(((axis2_woden_imported_schema_t *) schema)->ops->set_location(schema, \
+      (((axis2_woden_imported_schema_t *) schema)->ops->set_location(schema, \
                                                                     env, location))
 
 #define AXIS2_WODEN_IMPORTED_SCHEMA_GET_LOCATION(schema, env) \
-		(((axis2_woden_imported_schema_t *) schema)->ops->get_location(schema, \
+      (((axis2_woden_imported_schema_t *) schema)->ops->get_location(schema, \
                                                                        env))
 
 /** @} */

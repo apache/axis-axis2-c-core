@@ -165,9 +165,9 @@ extern "C"
 #define AXIS2_SOAP_11_BINDING "http://schemas.xmlsoap.org/wsdl/soap/"
 #define AXIS2_SOAP_12_BINDING "http://schemas.xmlsoap.org/wsdl/soap12/"
 
-/*********************************** Constants*********************************/	
-	
-	
+/*********************************** Constants*********************************/   
+   
+   
 #ifdef __cplusplus
 }
 #endif

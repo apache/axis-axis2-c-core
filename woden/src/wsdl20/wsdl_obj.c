@@ -21,7 +21,7 @@ typedef struct axis2_woden_wsdl_obj_impl axis2_woden_wsdl_obj_impl_t;
 
 /** 
  * @brief Wsdl Object Struct Impl
- *	Axis2 Wsdl Object  
+ *   Axis2 Wsdl Object  
  */ 
 struct axis2_woden_wsdl_obj_impl
 {

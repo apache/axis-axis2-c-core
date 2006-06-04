@@ -34,7 +34,7 @@ extern "C"
  */
 
 #define CHAR_SET_ENCODING "UTF-8"
-#define XML_VERSION	"1.0"
+#define XML_VERSION   "1.0"
 
     struct axis2_om_document; 
     struct axis2_om_document_ops;

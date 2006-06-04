@@ -55,7 +55,7 @@ typedef union axis2_woden_endpoint_element_base axis2_woden_endpoint_element_bas
 
 struct axis2_woden_endpoint_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -131,39 +131,39 @@ axis2_woden_endpoint_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_ENDPOINT_ELEMENT_FREE(endpoint_el, env) \
-		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
+      (((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          free (endpoint_el, env))
 
 #define AXIS2_WODEN_ENDPOINT_ELEMENT_TYPE(endpoint_el, env) \
-		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
+      (((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          type (endpoint_el, env))
 
 #define AXIS2_WODEN_ENDPOINT_ELEMENT_SET_NAME(endpoint_el, env, name) \
-		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
+      (((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          set_name(endpoint_el, env, name))
 
 #define AXIS2_WODEN_ENDPOINT_ELEMENT_GET_NAME(endpoint_el, env) \
-		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
+      (((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          get_name(endpoint_el, env))
 
 #define AXIS2_WODEN_ENDPOINT_ELEMENT_SET_BINDING_QNAME(endpoint_el, env, qname) \
-		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
+      (((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          set_binding_qname(endpoint_el, env, qname))
 
 #define AXIS2_WODEN_ENDPOINT_ELEMENT_GET_BINDING_QNAME(endpoint_el, env) \
-		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
+      (((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          get_binding_qname(endpoint_el, env))
 
 #define AXIS2_WODEN_ENDPOINT_ELEMENT_GET_BINDING_ELEMENT(endpoint_el, env) \
-		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
+      (((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          get_binding_element(endpoint_el, env))
 
 #define AXIS2_WODEN_ENDPOINT_ELEMENT_SET_ADDRESS(endpoint_el, env, uri) \
-		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
+      (((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          set_address(endpoint_el, env, uri))
 
 #define AXIS2_WODEN_ENDPOINT_ELEMENT_GET_ADDRESS(endpoint_el, env) \
-		(((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
+      (((axis2_woden_endpoint_element_t *) endpoint_el)->ops->\
          get_address(endpoint_el, env))
 
 /** @} */

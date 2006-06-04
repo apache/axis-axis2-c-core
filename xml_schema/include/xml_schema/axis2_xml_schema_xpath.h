@@ -46,7 +46,7 @@ extern "C"
 
 struct axis2_xml_schema_xpath_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -101,27 +101,27 @@ axis2_xml_schema_xpath_resolve_methods(
  */
  
 #define AXIS2_XML_SCHEMA_XPATH_FREE(xpath, env) \
-		(((axis2_xml_schema_xpath_t *) xpath)->ops->\
+      (((axis2_xml_schema_xpath_t *) xpath)->ops->\
             free(xpath, env))
 
 #define AXIS2_XML_SCHEMA_XPATH_GET_BASE_IMPL(xpath, env) \
-		(((axis2_xml_schema_xpath_t *) xpath)->ops->\
+      (((axis2_xml_schema_xpath_t *) xpath)->ops->\
             get_base_impl(xpath, env))
 
 #define AXIS2_XML_SCHEMA_XPATH_TYPE(xpath, env) \
-		(((axis2_xml_schema_xpath_t *) xpath)->ops->\
+      (((axis2_xml_schema_xpath_t *) xpath)->ops->\
             type(xpath, env))
 
 #define AXIS2_XML_SCHEMA_XPATH_SUPER_OBJS(xpath, env) \
-		(((axis2_xml_schema_xpath_t *) xpath)->ops->\
+      (((axis2_xml_schema_xpath_t *) xpath)->ops->\
             super_objs(xpath, env))
 
 #define AXIS2_XML_SCHEMA_XPATH_GET_XPATH(xpath, env) \
-		(((axis2_xml_schema_xpath_t *) xpath)->ops->\
+      (((axis2_xml_schema_xpath_t *) xpath)->ops->\
             get_xpath(xpath, env))
 
 #define AXIS2_XML_SCHEMA_XPATH_SET_XPATH(xpath, env, x_path) \
-		(((axis2_xml_schema_xpath_t *) xpath)->ops->\
+      (((axis2_xml_schema_xpath_t *) xpath)->ops->\
             set_xpath(xpath, env, x_path))
 
 /** @} */

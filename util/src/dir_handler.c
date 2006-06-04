@@ -40,25 +40,25 @@ axis2_dir_handler_list_services_or_modules_in_dir(const axis2_env_t *env,
 { 
     axis2_array_list_t *file_list = NULL;
     struct stat *buf = NULL;
-	int count = 1;
+   int count = 1;
     int i = 0;
-	struct dirent **files = NULL;
-	int file_select();
+   struct dirent **files = NULL;
+   int file_select();
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, NULL);
     file_list = axis2_array_list_create(env, 100);
-	count = AXIS2_SCANDIR(pathname, &files, file_select, AXIS2_ALPHASORT);
-	/* If no files found, make a non-selectable menu item */
-	if (count <= 0)
-	{		 
+   count = AXIS2_SCANDIR(pathname, &files, file_select, AXIS2_ALPHASORT);
+   /* If no files found, make a non-selectable menu item */
+   if (count <= 0)
+   {       
         AXIS2_ARRAY_LIST_FREE(file_list, env);
         file_list = NULL;
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No files in the path %s.", pathname);
-		return NULL;
-	}
+      return NULL;
+   }
     
-	for (i = 1; i < (count + 1) ; ++i )
+   for (i = 1; i < (count + 1) ; ++i )
     {
         axis2_char_t *fname = NULL;
         axis2_file_t *arch_file = NULL;
@@ -192,9 +192,9 @@ axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
     struct stat *buf = NULL;
     int count = 1;
     int i = 0;
-	struct dirent **files = NULL;
-	char cwd[500];
-	
+   struct dirent **files = NULL;
+   char cwd[500];
+   
 /**FIXME:
  * This magic number 500 was selected as a temperary solution. It has to be
  * replaced with dinamic memory allocation. This will be done once the use of
@@ -203,28 +203,28 @@ axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
 
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, NULL);
-	/*if ((handle = opendir(pathname)) != NULL && (handle->finished == 1))
-	{
-		printf("Path Name does not exist:%s\n",pathname);
-		return NULL;
-	}*/
+   /*if ((handle = opendir(pathname)) != NULL && (handle->finished == 1))
+   {
+      printf("Path Name does not exist:%s\n",pathname);
+      return NULL;
+   }*/
     file_list = axis2_array_list_create(env, 0);
-	if (!getcwd(cwd, 500)) exit(1);
-	chdir(pathname);
-	axis2_archive_extract();
+   if (!getcwd(cwd, 500)) exit(1);
+   chdir(pathname);
+   axis2_archive_extract();
 
-	count = AXIS2_SCANDIR(pathname, &files, dir_select, AXIS2_ALPHASORT);
-	chdir(cwd);
+   count = AXIS2_SCANDIR(pathname, &files, dir_select, AXIS2_ALPHASORT);
+   chdir(cwd);
 
-	/* If no files found, make a non-selectable menu item */
-	if (count <= 0)
-	{		 
+   /* If no files found, make a non-selectable menu item */
+   if (count <= 0)
+   {       
         AXIS2_ARRAY_LIST_FREE(file_list, env);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "No files in the path %s.", pathname);
-		return NULL;
-	}
+      return NULL;
+   }
     
-	for (i = 1; i < (count + 1) ; ++i )
+   for (i = 1; i < (count + 1) ; ++i )
     {
         axis2_char_t *fname = NULL;
         axis2_file_t *arch_file = NULL;
@@ -357,43 +357,43 @@ axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
 int file_select(struct dirent *entry)
  
 {
-	axis2_char_t *ptr;
-	/*axis2_char_t *rindex(const axis2_char_t *s, int c);*/
+   axis2_char_t *ptr;
+   /*axis2_char_t *rindex(const axis2_char_t *s, int c);*/
  
-	if ((strcmp(entry->d_name, ".")== 0) ||
-			(strcmp(entry->d_name, "..") == 0))
-		return (AXIS2_FALSE);
+   if ((strcmp(entry->d_name, ".")== 0) ||
+         (strcmp(entry->d_name, "..") == 0))
+      return (AXIS2_FALSE);
  
-	/* Check for filename extensions */
-	ptr = AXIS2_RINDEX(entry->d_name, '.');
-	if ((ptr != NULL) &&
-		((strcmp(ptr, AXIS2_LIB_SUFFIX) == 0) ))
+   /* Check for filename extensions */
+   ptr = AXIS2_RINDEX(entry->d_name, '.');
+   if ((ptr != NULL) &&
+      ((strcmp(ptr, AXIS2_LIB_SUFFIX) == 0) ))
     {
-		return (AXIS2_TRUE);
+      return (AXIS2_TRUE);
     }
-	else
-		return(AXIS2_FALSE);
+   else
+      return(AXIS2_FALSE);
 }
 
 int dir_select(struct dirent *entry)
  
 {
-	struct stat stat_p;
+   struct stat stat_p;
 
-	if (-1 ==  stat (entry->d_name, &stat_p))
-		return (AXIS2_FALSE);
+   if (-1 ==  stat (entry->d_name, &stat_p))
+      return (AXIS2_FALSE);
 
-	if ((entry->d_name[0] == '.') || (!S_ISDIR(stat_p.st_mode)))
+   if ((entry->d_name[0] == '.') || (!S_ISDIR(stat_p.st_mode)))
     {
-		return (AXIS2_FALSE);
-	}
+      return (AXIS2_FALSE);
+   }
 
-	/* Check for filename extensions */
-	/*ptr = AXIS2_RINDEX(entry->d_name, '.');
-	if (ptr != NULL)
+   /* Check for filename extensions */
+   /*ptr = AXIS2_RINDEX(entry->d_name, '.');
+   if (ptr != NULL)
     {
-		return (AXIS2_FALSE);
+      return (AXIS2_FALSE);
     }*/
-	return AXIS2_TRUE;
+   return AXIS2_TRUE;
 }
 

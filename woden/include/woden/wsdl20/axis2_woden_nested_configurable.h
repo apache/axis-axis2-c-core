@@ -48,7 +48,7 @@ extern "C"
 
 struct axis2_woden_nested_configurable_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -105,19 +105,19 @@ axis2_woden_nested_configurable_resolve_methods(
 
 
 #define AXIS2_WODEN_NESTED_CONFIGURABLE_FREE(nested_configurable, env) \
-		(((axis2_woden_nested_configurable_t *) nested_configurable)->ops->\
+      (((axis2_woden_nested_configurable_t *) nested_configurable)->ops->\
          free(nested_configurable, env))
 
 #define AXIS2_WODEN_NESTED_CONFIGURABLE_TO_NESTED_CONFIGURABLE_FREE(nested_configurable, env) \
-		(((axis2_woden_nested_configurable_t *) nested_configurable)->ops->\
+      (((axis2_woden_nested_configurable_t *) nested_configurable)->ops->\
          to_nested_configurable_free(nested_configurable, env))
 
 #define AXIS2_WODEN_NESTED_CONFIGURABLE_SUPER_OBJS(nested_configurable, env) \
-		(((axis2_woden_nested_configurable_t *) nested_configurable)->ops->\
+      (((axis2_woden_nested_configurable_t *) nested_configurable)->ops->\
          super_objs(nested_configurable, env))
 
 #define AXIS2_WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_configurable, env) \
-		(((axis2_woden_nested_configurable_t *) nested_configurable)->ops->\
+      (((axis2_woden_nested_configurable_t *) nested_configurable)->ops->\
          get_base_impl(nested_configurable, env))
 
 /** @} */

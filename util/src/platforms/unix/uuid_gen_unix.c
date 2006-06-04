@@ -40,7 +40,7 @@
 #include <platforms/unix/axis2_uuid_gen_unix.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
-	
+   
 /* We need these static variables to track throughout the program execution */
 static axis2_bool_t axis2_uuid_gen_is_first = AXIS2_TRUE;
 static struct axis2_uuid_st axis2_uuid_static;
@@ -52,19 +52,19 @@ axis2_uuid_gen_v1()
     struct timeval time_now;
     struct timeval tv;
     unsigned long long time_val;
-	unsigned long long time_val2;
-	unsigned short int clck = 0;
-	axis2_uuid_t *ret_uuid = NULL;
-	unsigned short int time_high_version = 0;
-		
+   unsigned long long time_val2;
+   unsigned short int clck = 0;
+   axis2_uuid_t *ret_uuid = NULL;
+   unsigned short int time_high_version = 0;
+      
     if(AXIS2_TRUE == axis2_uuid_gen_is_first)
     {
         char *mac_addr = axis2_uuid_get_mac_addr();
         memcpy(axis2_uuid_static.mac, mac_addr, 6);
         axis2_uuid_static.time_seq = 0;
         axis2_uuid_static.clock = 0;
-		free(mac_addr);
-		axis2_uuid_gen_is_first = AXIS2_FALSE;
+      free(mac_addr);
+      axis2_uuid_gen_is_first = AXIS2_FALSE;
     }
     /*
      *  GENERATE TIME
@@ -77,16 +77,16 @@ axis2_uuid_gen_v1()
     /* check whether system time changed since last retrieve */
     if(!(time_now.tv_sec  == axis2_uuid_static.time_last.tv_sec
                         && time_now.tv_usec == 
-						axis2_uuid_static.time_last.tv_usec)) {
+                  axis2_uuid_static.time_last.tv_usec)) {
         /* reset time sequence counter and continue */
         axis2_uuid_static.time_seq = 0;
      }
 
     /* until we are out of UUIDs per tick, increment
     the time/tick sequence counter and continue */
-	while(axis2_uuid_static.time_seq < UUIDS_PER_TICK)
-	{	
-     	axis2_uuid_static.time_seq++;
+   while(axis2_uuid_static.time_seq < UUIDS_PER_TICK)
+   {   
+        axis2_uuid_static.time_seq++;
     }
     /* sleep for 1000ns (1us) */
     tv.tv_sec  = 0;
@@ -95,29 +95,29 @@ axis2_uuid_gen_v1()
 
     time_val = (unsigned long long)time_now.tv_sec * 10000000ull;
     time_val += (unsigned long long)time_now.tv_usec * 10ull;
-	
-	ret_uuid = malloc(sizeof(axis2_uuid_t));
-	
+   
+   ret_uuid = malloc(sizeof(axis2_uuid_t));
+   
     time_val += UUID_TIMEOFFSET;
     /* compensate for low resolution system clock by adding
        the time/tick sequence counter */
     if (axis2_uuid_static.time_seq > 0)
         time_val += (unsigned long long)axis2_uuid_static.time_seq;
-	
-	time_val2 = time_val;
-	ret_uuid->time_low = (unsigned long)time_val2;
-	time_val2 >>= 32;
-	ret_uuid->time_mid = (unsigned short int)time_val2;
-	time_val2 >>= 16;
-	time_high_version = (unsigned short int)time_val2;
-	
-	/* store the 60 LSB of the time in the UUID and make version 1*/
-	time_high_version <<= 4;
-	time_high_version &= 0xFFF0;
-	time_high_version |= 0x0001;
-	ret_uuid->time_high_version = time_high_version;
-	
-	/*
+   
+   time_val2 = time_val;
+   ret_uuid->time_low = (unsigned long)time_val2;
+   time_val2 >>= 32;
+   ret_uuid->time_mid = (unsigned short int)time_val2;
+   time_val2 >>= 16;
+   time_high_version = (unsigned short int)time_val2;
+   
+   /* store the 60 LSB of the time in the UUID and make version 1*/
+   time_high_version <<= 4;
+   time_high_version &= 0xFFF0;
+   time_high_version |= 0x0001;
+   ret_uuid->time_high_version = time_high_version;
+   
+   /*
      *  GENERATE CLOCK
      */
 
@@ -127,24 +127,24 @@ axis2_uuid_gen_v1()
     /* generate new random clock sequence (initially or if the
        time has stepped backwards) or else just increase it */
     if (clck == 0 || (time_now.tv_sec < axis2_uuid_static.time_last.tv_sec ||
-						(time_now.tv_sec == axis2_uuid_static.time_last.tv_sec
-                		&& time_now.tv_usec < 
-						axis2_uuid_static.time_last.tv_usec)))
-	{
-		srand(time_now.tv_usec);
-		clck = rand();
-	}
+                  (time_now.tv_sec == axis2_uuid_static.time_last.tv_sec
+                      && time_now.tv_usec < 
+                  axis2_uuid_static.time_last.tv_usec)))
+   {
+      srand(time_now.tv_usec);
+      clck = rand();
+   }
     else
-	{
+   {
         clck++;
-	}
+   }
     clck %= (2<<14);
 
     /* store back new clock sequence */
     axis2_uuid_static.clock = clck;
-	
+   
     clck &= 0x1FFF;
-	clck |= 0x2000;
+   clck |= 0x2000;
     
     /*
      *  FINISH
@@ -152,76 +152,76 @@ axis2_uuid_gen_v1()
     /* remember current system time for next iteration */
     axis2_uuid_static.time_last.tv_sec  = time_now.tv_sec;
     axis2_uuid_static.time_last.tv_usec = time_now.tv_usec;
-	    
-	if(NULL == ret_uuid)
-	{
-		return NULL;
-	}
-	ret_uuid->clock_variant = clck;
-	memcpy(ret_uuid->mac_addr, axis2_uuid_static.mac, 6);
-	return ret_uuid;
+       
+   if(NULL == ret_uuid)
+   {
+      return NULL;
+   }
+   ret_uuid->clock_variant = clck;
+   memcpy(ret_uuid->mac_addr, axis2_uuid_static.mac, 6);
+   return ret_uuid;
 }
 
 
 axis2_char_t* AXIS2_CALL
 axis2_platform_uuid_gen(char *s)
 {
-	axis2_uuid_t *uuid_struct = NULL;
-	axis2_char_t *uuid_str = NULL;
-	unsigned char mac[7];
-	char mac_hex[13];
+   axis2_uuid_t *uuid_struct = NULL;
+   axis2_char_t *uuid_str = NULL;
+   unsigned char mac[7];
+   char mac_hex[13];
 
     if(NULL == s)
     {
         return NULL;
-    }	
-	uuid_struct = axis2_uuid_gen_v1();
-	if(NULL == uuid_struct)
-	{
-		return NULL;
-	}
-	uuid_str = s;
-	if(NULL == uuid_str)	
-	{
-		return NULL;
-	}
-	memcpy(mac, uuid_struct->mac_addr, 6);
-	sprintf(mac_hex, "%02x%02x%02x%02x%02x%02x", mac[0], mac[1], mac[2], mac[3]
-						, mac[4], mac[5]);
-	sprintf(uuid_str, "%08x-%04x-%04x-%04x-%s", uuid_struct->time_low, 
-						uuid_struct->time_mid, uuid_struct->time_high_version, 
-						uuid_struct->clock_variant, mac_hex);
+    }   
+   uuid_struct = axis2_uuid_gen_v1();
+   if(NULL == uuid_struct)
+   {
+      return NULL;
+   }
+   uuid_str = s;
+   if(NULL == uuid_str)   
+   {
+      return NULL;
+   }
+   memcpy(mac, uuid_struct->mac_addr, 6);
+   sprintf(mac_hex, "%02x%02x%02x%02x%02x%02x", mac[0], mac[1], mac[2], mac[3]
+                  , mac[4], mac[5]);
+   sprintf(uuid_str, "%08x-%04x-%04x-%04x-%s", uuid_struct->time_low, 
+                  uuid_struct->time_mid, uuid_struct->time_high_version, 
+                  uuid_struct->clock_variant, mac_hex);
     free(uuid_struct);
     uuid_struct = NULL;
-	return uuid_str;	
+   return uuid_str;   
 }
 
 #ifdef HAVE_LINUX_IF_H
 char * AXIS2_CALL
 axis2_uuid_get_mac_addr()
 {
-	struct ifreq ifr;
-	struct sockaddr *sa;
-	int s = 0;
-	int i = 0;
-	char *buffer = NULL;
-	
-		
-	if ((s = socket(PF_INET, SOCK_DGRAM, 0)) < 0)
-		return NULL;
-	sprintf(ifr.ifr_name, "eth0");
-	if (ioctl(s, SIOCGIFHWADDR, &ifr) < 0) 
-	{
-		close(s);
-		return NULL;
-	}
-	buffer = (char*)malloc(6*sizeof(char));
-	
-	sa = (struct sockaddr *)&ifr.ifr_addr;
-	for (i = 0; i < 6; i++)
-		buffer[i] = (unsigned char)(sa->sa_data[i] & 0xff);
-	close(s);
-	return buffer;	
+   struct ifreq ifr;
+   struct sockaddr *sa;
+   int s = 0;
+   int i = 0;
+   char *buffer = NULL;
+   
+      
+   if ((s = socket(PF_INET, SOCK_DGRAM, 0)) < 0)
+      return NULL;
+   sprintf(ifr.ifr_name, "eth0");
+   if (ioctl(s, SIOCGIFHWADDR, &ifr) < 0) 
+   {
+      close(s);
+      return NULL;
+   }
+   buffer = (char*)malloc(6*sizeof(char));
+   
+   sa = (struct sockaddr *)&ifr.ifr_addr;
+   for (i = 0; i < 6; i++)
+      buffer[i] = (unsigned char)(sa->sa_data[i] & 0xff);
+   close(s);
+   return buffer;   
 }
 
 #else 
@@ -231,63 +231,63 @@ axis2_uuid_get_mac_addr()
 char * AXIS2_CALL
 axis2_uuid_get_mac_addr()
 {
-	unsigned char eth_addr[6];
-	int sock;
-	int i;
-	struct lifconf lic;
-	struct lifreq *lifrs;
-	struct lifnum num;
+   unsigned char eth_addr[6];
+   int sock;
+   int i;
+   struct lifconf lic;
+   struct lifreq *lifrs;
+   struct lifnum num;
 
-	/* How many interfaces do we have? */
-	sock=socket(PF_INET,SOCK_DGRAM,IPPROTO_IP);
-	num.lifn_family=AF_INET;
-	num.lifn_flags=0;
-	ioctl(sock,SIOCGLIFNUM,&num);
+   /* How many interfaces do we have? */
+   sock=socket(PF_INET,SOCK_DGRAM,IPPROTO_IP);
+   num.lifn_family=AF_INET;
+   num.lifn_flags=0;
+   ioctl(sock,SIOCGLIFNUM,&num);
 
-	/* get details of the interfaces */
-	lifrs = malloc( (num.lifn_count + 1) * sizeof(*lifrs));
-	if (NULL == lifrs) {
-		exit(1); /* what is the right error handling here ? */
-	}
-	lic.lifc_family=AF_INET;
-	lic.lifc_flags=0;
-	lic.lifc_len=sizeof(lifrs);
-	lic.lifc_buf=(caddr_t)lifrs;
-	ioctl(sock,SIOCGLIFCONF,&lic);
+   /* get details of the interfaces */
+   lifrs = malloc( (num.lifn_count + 1) * sizeof(*lifrs));
+   if (NULL == lifrs) {
+      exit(1); /* what is the right error handling here ? */
+   }
+   lic.lifc_family=AF_INET;
+   lic.lifc_flags=0;
+   lic.lifc_len=sizeof(lifrs);
+   lic.lifc_buf=(caddr_t)lifrs;
+   ioctl(sock,SIOCGLIFCONF,&lic);
 
-	/* Get the ethernet address for each of them */
-	for(i=0;i<num.lifn_count;i++)
-	{
-		struct sockaddr_in *soapip,*soapmac;
-		struct arpreq ar;
+   /* Get the ethernet address for each of them */
+   for(i=0;i<num.lifn_count;i++)
+   {
+      struct sockaddr_in *soapip,*soapmac;
+      struct arpreq ar;
 
-		/* Get IP address of interface i */
-		ioctl(sock,SIOCGLIFADDR,&(lifrs[ i ]));
-		soapip=(struct sockaddr_in *)&(lifrs[ i ].lifr_addr);
+      /* Get IP address of interface i */
+      ioctl(sock,SIOCGLIFADDR,&(lifrs[ i ]));
+      soapip=(struct sockaddr_in *)&(lifrs[ i ].lifr_addr);
 
 
-		/* Get ethernet address */
-		soapmac=(struct sockaddr_in *)&(ar.arp_pa);
-		*soapmac=*soapip;
+      /* Get ethernet address */
+      soapmac=(struct sockaddr_in *)&(ar.arp_pa);
+      *soapmac=*soapip;
 
-		if(ioctl(sock,SIOCGARP,&ar) == 0)
-		{
-			int j;
-			char *buffer = malloc(6);
+      if(ioctl(sock,SIOCGARP,&ar) == 0)
+      {
+         int j;
+         char *buffer = malloc(6);
 
-			if (buffer) {
-				for (j = 0 ; j < 6 ; ++j) {
-					buffer[j] = ((unsigned char *)&(ar.arp_ha.sa_data))[j];
-				}
-			}
-			close(sock);
-			free(lifrs);
-			return buffer;
-		}
-	}
-	close(sock);
-	free(lifrs);
-	return NULL;
+         if (buffer) {
+            for (j = 0 ; j < 6 ; ++j) {
+               buffer[j] = ((unsigned char *)&(ar.arp_ha.sa_data))[j];
+            }
+         }
+         close(sock);
+         free(lifrs);
+         return buffer;
+      }
+   }
+   close(sock);
+   free(lifrs);
+   return NULL;
 }
 
 #endif

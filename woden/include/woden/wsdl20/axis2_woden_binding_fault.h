@@ -47,7 +47,7 @@ extern "C"
 
 struct axis2_woden_binding_fault_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -157,27 +157,27 @@ axis2_woden_binding_fault_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_BINDING_FAULT_FREE(binding_fault, env) \
-		(((axis2_woden_binding_fault_t *) binding_fault)->ops->free(binding_fault, env))
+      (((axis2_woden_binding_fault_t *) binding_fault)->ops->free(binding_fault, env))
 
 #define AXIS2_WODEN_BINDING_FAULT_SUPER_OBJS(binding_fault, env) \
-		(((axis2_woden_binding_fault_t *) binding_fault)->ops->super_objs(binding_fault, env))
+      (((axis2_woden_binding_fault_t *) binding_fault)->ops->super_objs(binding_fault, env))
 
 #define AXIS2_WODEN_BINDING_FAULT_TYPE(binding_fault, env) \
-		(((axis2_woden_binding_fault_t *) binding_fault)->ops->type(binding_fault, env))
+      (((axis2_woden_binding_fault_t *) binding_fault)->ops->type(binding_fault, env))
 
 #define AXIS2_WODEN_BINDING_FAULT_GET_BASE_IMPL(binding_fault, env) \
-		(((axis2_woden_binding_fault_t *) binding_fault)->ops->get_base_impl(binding_fault, env))
+      (((axis2_woden_binding_fault_t *) binding_fault)->ops->get_base_impl(binding_fault, env))
 
 #define AXIS2_WODEN_BINDING_FAULT_GET_INTERFACE_FAULT(binding_fault, env) \
-		(((axis2_woden_binding_fault_t *) binding_fault)->\
+      (((axis2_woden_binding_fault_t *) binding_fault)->\
          get_interface_fault(binding_fault, env))
 
 #define AXIS2_WODEN_BINDING_FAULT_TO_ELEMENT(binding_fault, env) \
-		(((axis2_woden_binding_fault_t *) binding_fault)->ops->\
+      (((axis2_woden_binding_fault_t *) binding_fault)->ops->\
          to_element(binding_fault, env))
 
 #define AXIS2_WODEN_BINDING_FAULT_SET_INTERFACE_FAULT_ELEMENT(binding_fault, env, in_fault) \
-		(((axis2_woden_binding_fault_t *) binding_fault)->\
+      (((axis2_woden_binding_fault_t *) binding_fault)->\
          set_interface_fault_elment(binding_fault, env, in_fault))
 
 /** @} */

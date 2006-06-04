@@ -44,7 +44,7 @@ typedef struct axis2_xml_schema_simple_type_restriction_ops
 
 struct axis2_xml_schema_simple_type_restriction_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -125,41 +125,41 @@ axis2_xml_schema_simple_type_restriction_resolve_methods(
 
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_FREE(simple_type_restriction, env) \
-		(((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
+      (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
             free(simple_type_restriction, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_GET_BASE_IMPL(simple_type_restriction, env) \
-		(((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
+      (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
             get_base_impl(simple_type_restriction, env))
             
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_TYPE(simple_type_restriction, env) \
-		(((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
+      (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
             type(simple_type_restriction, env))
             
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_SUPER_OBJS(simple_type_restriction, env) \
-		(((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
+      (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
             super_objs(simple_type_restriction, env))                        
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_GET_BASE_TYPE(simple_type_restriction, env) \
-		(((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
+      (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
             get_max_occurs(simple_type_restriction, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_SET_BASE_TYPE(simple_type_restriction,\
          env, base_type) \
-		(((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
+      (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
             set_base_type(simple_type_restriction, env, base_type))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_GET_BASE_TYPE_NAME(simple_type_restriction, env) \
-		(((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
+      (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
             get_base_type_name(simple_type_restriction, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_SET_BASE_TYPE_NAME(simple_type_restriction, \
          env, base_type_name) \
-		(((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
+      (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
             set_base_type_name(simple_type_restriction, env, base_type_name))
             
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_GET_FACETS(simple_type_restriction, env) \
-		(((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
+      (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
             get_facets(simple_type_restriction, env))
             
 

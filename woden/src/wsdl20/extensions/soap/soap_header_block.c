@@ -25,7 +25,7 @@ typedef struct axis2_woden_soap_header_block_impl axis2_woden_soap_header_block_
 
 /** 
  * @brief Soap Header Blocks Struct Impl
- *	Axis2 Soap Header Blocks  
+ *   Axis2 Soap Header Blocks  
  */ 
 struct axis2_woden_soap_header_block_impl
 {

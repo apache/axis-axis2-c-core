@@ -84,16 +84,16 @@ axis2_svc_skeleton_create (const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_SVC_SKELETON_INIT(svc_skeleton, env) \
-		((svc_skeleton)->ops->init (svc_skeleton, env))
+      ((svc_skeleton)->ops->init (svc_skeleton, env))
 
 #define AXIS2_SVC_SKELETON_FREE(svc_skeleton, env) \
-		((svc_skeleton)->ops->free (svc_skeleton, env))
+      ((svc_skeleton)->ops->free (svc_skeleton, env))
 
 #define AXIS2_SVC_SKELETON_INVOKE(svc_skeleton, env, node, msg_ctx) \
-		((svc_skeleton)->ops->invoke (svc_skeleton, env, node, msg_ctx))
+      ((svc_skeleton)->ops->invoke (svc_skeleton, env, node, msg_ctx))
 
 #define AXIS2_SVC_SKELETON_ON_FAULT(svc_skeleton, env, node) \
-		((svc_skeleton)->ops->on_fault (svc_skeleton, env, node))
+      ((svc_skeleton)->ops->on_fault (svc_skeleton, env, node))
 
 
 /** @} */

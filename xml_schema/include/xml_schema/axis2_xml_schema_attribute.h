@@ -189,97 +189,97 @@ axis2_xml_schema_attribute_resolve_methods(
 /******************************* Macros *************************************************/ 
  
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_FREE(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->free(attr, env))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->free(attr, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_BASE_IMPL(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->get_base_impl(attr, env))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->get_base_impl(attr, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_TYPE(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->type(attr, env))
-		
+      (((axis2_xml_schema_attribute_t *) attr)->ops->type(attr, env))
+      
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SUPER_OBJS(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->super_objs(attr, env))
-		
+      (((axis2_xml_schema_attribute_t *) attr)->ops->super_objs(attr, env))
+      
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_ATTR_TYPE(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->get_namespace(attr, env))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->get_namespace(attr, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_DEFAULT_VALUE(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    get_default_value(attr, env))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          get_default_value(attr, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_DEFAULT_VALUE(attr, env, default_val) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    set_default_value(attr, env, default_val))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          set_default_value(attr, env, default_val))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_FIXED_VALUE(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    get_fixed_value(attr, env))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          get_fixed_value(attr, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_FIXED_VALUE(attr, env, default_val) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    set_fixed_value(attr, env, default_val))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          set_fixed_value(attr, env, default_val))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_SCHEMA_FORM(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    get_schema_form(attr, env))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          get_schema_form(attr, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_SCHEMA_FORM(attr, env, form) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    set_schema_form(attr, env, form))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          set_schema_form(attr, env, form))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_QNAME(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    get_qname(attr, env))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          get_qname(attr, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_QNAME(attr, env, qualified_name) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    set_qname(attr, env, qualified_name))
-		    
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          set_qname(attr, env, qualified_name))
+          
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_NAME(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    get_name(attr, env))
-		    
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          get_name(attr, env))
+          
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_NAME(attr, env, name) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    set_name(attr, env, name))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          set_name(attr, env, name))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_REF_NAME(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    get_ref_name(attr, env))
-		    
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          get_ref_name(attr, env))
+          
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_REF_NAME(attr, env, ref_name) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    set_ref_name(attr, env, ref_name))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          set_ref_name(attr, env, ref_name))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_SCHEMA_TYPE(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    get_schema_type(attr, env))
-		    
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          get_schema_type(attr, env))
+          
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_SCHEMA_TYPE(attr, env, sch_type) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    set_schema_type(attr, env, sch_type))
-		    
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          set_schema_type(attr, env, sch_type))
+          
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_SCHEMA_TYPE_NAME(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    get_schema_type_name(attr, env))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          get_schema_type_name(attr, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_SCHEMA_TYPE_NAME(attr, env, sch_type_name) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    set_schema_type_name(attr, env, sch_type_name))
-		    
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          set_schema_type_name(attr, env, sch_type_name))
+          
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_USE(attr, env) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    get_use(attr, env))
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          get_use(attr, env))
 
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SET_USE(attr, env, use) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    set_schema_type_name(attr, env, use))	
-		    
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          set_schema_type_name(attr, env, use))   
+          
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_TO_STRING(attr, env, prefix, tab) \
-		(((axis2_xml_schema_attribute_t *) attr)->ops->\
-		    to_string(attr, env, prefix, tab))	
-		    	    
+      (((axis2_xml_schema_attribute_t *) attr)->ops->\
+          to_string(attr, env, prefix, tab))   
+                 
 
 /******************************* end macros ***********************************************/
 /** @} */

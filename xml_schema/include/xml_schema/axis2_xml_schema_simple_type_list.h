@@ -44,7 +44,7 @@ typedef struct axis2_xml_schema_simple_type_list_ops
 
 struct axis2_xml_schema_simple_type_list_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -116,37 +116,37 @@ axis2_xml_schema_simple_type_list_resolve_methods(
  /********************** Macros ***********************************************/
  
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_FREE(simple_type_list, env) \
-		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
+      (((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             free(simple_type_list, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_GET_BASE_IMPL(simple_type_list, env) \
-		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
+      (((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             get_base_impl(simple_type_list, env))
             
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_TYPE(simple_type_list, env) \
-		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
+      (((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             type(simple_type_list, env))
             
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_SUPER_OBJS(simple_type_list, env) \
-		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
+      (((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             super_objs(simple_type_list, env))                        
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_GET_ITEM_TYPE(simple_type_list, env) \
-		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
+      (((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             get_item_type(simple_type_list, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_SET_ITEM_TYPE(simple_type_list,\
          env, base_type) \
-		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
+      (((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             set_item_type(simple_type_list, env, base_type))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_GET_ITEM_TYPE_NAME(simple_type_list, env) \
-		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
+      (((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             get_item_type_name(simple_type_list, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_SET_ITEM_TYPE_NAME(simple_type_list, \
          env, base_type_name) \
-		(((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
+      (((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
             set_item_type_name(simple_type_list, env, base_type_name))
 
 /************************ end macros **********************************************/

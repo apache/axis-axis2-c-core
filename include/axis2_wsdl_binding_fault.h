@@ -50,12 +50,12 @@ typedef struct axis2_wsdl_binding_fault_ops axis2_wsdl_binding_fault_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_binding_fault_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_binding_fault_t *binding_fault,
-		    const axis2_env_t *env);
+          const axis2_env_t *env);
 
     /**
      * Method getRef
@@ -82,7 +82,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_fault_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_binding_fault
 {
-	axis2_wsdl_binding_fault_ops_t *ops;
+   axis2_wsdl_binding_fault_ops_t *ops;
     struct axis2_wsdl_extensible_component *extensible_component;
 };
 
@@ -96,13 +96,13 @@ axis2_binding_fault_create (const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_BINDING_FAULT_FREE(binding_fault, env) \
-		((binding_fault)->ops->free (binding_fault, env))
+      ((binding_fault)->ops->free (binding_fault, env))
 
 #define AXIS2_WSDL_BINDING_FAULT_GET_REF(binding_fault, env) \
-		((binding_fault)->ops->get_ref (binding_fault, env))
+      ((binding_fault)->ops->get_ref (binding_fault, env))
 
 #define AXIS2_WSDL_BINDING_FAULT_SET_REF(binding_fault, env, ref) \
-		((binding_fault)->ops->set_ref (binding_fault, env, ref))       
+      ((binding_fault)->ops->set_ref (binding_fault, env, ref))       
 
 /*************************** End of function macros ***************************/
 

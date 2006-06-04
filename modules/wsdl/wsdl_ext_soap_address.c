@@ -19,23 +19,23 @@
 
 /** 
  * @brief Wsdl Extension Soap Address struct impl
- *	 Wsdl Extention Soap Address  
+ *    Wsdl Extention Soap Address  
  */ 
 typedef struct axis2_wsdl_ext_soap_address_impl
 {
-	axis2_wsdl_ext_soap_address_t ext_soap_address;
+   axis2_wsdl_ext_soap_address_t ext_soap_address;
     axis2_char_t *location_uri;
     
 } axis2_wsdl_ext_soap_address_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(ext_soap_address) \
-		((axis2_wsdl_ext_soap_address_impl_t *)ext_soap_address)
+      ((axis2_wsdl_ext_soap_address_impl_t *)ext_soap_address)
 
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-	axis2_wsdl_ext_soap_address_free (axis2_wsdl_ext_soap_address_t *ext_soap_address,
-									const axis2_env_t *env);
+   axis2_wsdl_ext_soap_address_free (axis2_wsdl_ext_soap_address_t *ext_soap_address,
+                           const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 axis2_wsdl_ext_soap_address_get_location_uri(axis2_wsdl_ext_soap_address_t *ext_soap_address,
@@ -54,13 +54,13 @@ axis2_wsdl_ext_soap_address_create (const axis2_env_t *env,
 {
     axis2_wsdl_ext_soap_address_impl_t *ext_soap_address_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	ext_soap_address_impl = (axis2_wsdl_ext_soap_address_impl_t *) AXIS2_MALLOC(env->allocator,
-			sizeof(axis2_wsdl_ext_soap_address_impl_t));
-	
-	
-	if(NULL == ext_soap_address_impl)
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   ext_soap_address_impl = (axis2_wsdl_ext_soap_address_impl_t *) AXIS2_MALLOC(env->allocator,
+         sizeof(axis2_wsdl_ext_soap_address_impl_t));
+   
+   
+   if(NULL == ext_soap_address_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -69,7 +69,7 @@ axis2_wsdl_ext_soap_address_create (const axis2_env_t *env,
     ext_soap_address_impl->location_uri = NULL;
     ext_soap_address_impl->ext_soap_address.ops = NULL;
     ext_soap_address_impl->ext_soap_address.ext_element = NULL;
-	
+   
 
     ext_soap_address_impl->ext_soap_address.ext_element = 
         axis2_wsdl_extensible_element_create(env);
@@ -80,12 +80,12 @@ axis2_wsdl_ext_soap_address_create (const axis2_env_t *env,
         return NULL;
     }    
     
-	ext_soap_address_impl->ext_soap_address.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_ext_soap_address_ops_t));
-	if(NULL == ext_soap_address_impl->ext_soap_address.ops)
+   ext_soap_address_impl->ext_soap_address.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_ext_soap_address_ops_t));
+   if(NULL == ext_soap_address_impl->ext_soap_address.ops)
     {
         axis2_wsdl_ext_soap_address_free(&(ext_soap_address_impl->ext_soap_address), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     if(!qtype)
@@ -96,13 +96,13 @@ axis2_wsdl_ext_soap_address_create (const axis2_env_t *env,
     AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_TYPE(
         (&(ext_soap_address_impl->ext_soap_address))->ext_element, env, qtype);
 
-	ext_soap_address_impl->ext_soap_address.ops->free =  axis2_wsdl_ext_soap_address_free;
-	ext_soap_address_impl->ext_soap_address.ops->get_location_uri = 
+   ext_soap_address_impl->ext_soap_address.ops->free =  axis2_wsdl_ext_soap_address_free;
+   ext_soap_address_impl->ext_soap_address.ops->get_location_uri = 
         axis2_wsdl_ext_soap_address_get_location_uri;
     ext_soap_address_impl->ext_soap_address.ops->set_location_uri = 
         axis2_wsdl_ext_soap_address_set_location_uri;
-	
-	return &(ext_soap_address_impl->ext_soap_address);
+   
+   return &(ext_soap_address_impl->ext_soap_address);
 }
 
 /***************************Function implementation****************************/
@@ -117,7 +117,7 @@ axis2_wsdl_ext_soap_address_free (axis2_wsdl_ext_soap_address_t *ext_soap_addres
     
     ext_soap_address_impl = AXIS2_INTF_TO_IMPL(ext_soap_address);
     
-	if(NULL != ext_soap_address->ops)
+   if(NULL != ext_soap_address->ops)
         AXIS2_FREE(env->allocator, ext_soap_address->ops);
     
     if(NULL != ext_soap_address_impl->location_uri)
@@ -129,7 +129,7 @@ axis2_wsdl_ext_soap_address_free (axis2_wsdl_ext_soap_address_t *ext_soap_addres
     AXIS2_FREE(env->allocator, ext_soap_address_impl);
     ext_soap_address_impl = NULL;
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_char_t *AXIS2_CALL

@@ -126,34 +126,34 @@ axis2_xml_schema_complex_content_restriction_create(const axis2_env_t *env);
 
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_FREE(cmp_content_res, env) \
-		(((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-		free(cmp_content_res, env))
+      (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
+      free(cmp_content_res, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_GET_BASE_IMPL(cmp_content_res, env) \
-		(((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-		    get_base_impl(cmp_content_res, env))
+      (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
+          get_base_impl(cmp_content_res, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_TYPE(cmp_content_res, env) \
-		(((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-		    type(cmp_content_res, env))
+      (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
+          type(cmp_content_res, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_SUPER_OBJS(cmp_content_res, env) \
-		(((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-		    super_objs(cmp_content_res, env))
+      (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
+          super_objs(cmp_content_res, env))
 
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_GET_ANY_ATTRIBUTE(cmp_content_res, env) \
-		(((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-		    get_any_attribute(cmp_content_res, env))
+      (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
+          get_any_attribute(cmp_content_res, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_SET_ANY_ATTRIBUTE(cmp_content_res,\
          env, any_attr)\
-		(((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-		    set_any_attribute(cmp_content_res, env, any_attr ))
+      (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
+          set_any_attribute(cmp_content_res, env, any_attr ))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_GET_ATTRIBUTES(cmp_content_res, env) \
-		(((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-		    get_attributes(cmp_content_res, env))
+      (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
+          get_attributes(cmp_content_res, env))
             
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_GET_BASE_TYPE_NAME(cmp_content_res, env)\
         (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\

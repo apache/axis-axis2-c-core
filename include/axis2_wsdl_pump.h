@@ -34,10 +34,10 @@
 extern "C"
 {
 #endif
-	
+   
 typedef struct axis2_wsdl_pump_ops axis2_wsdl_pump_ops_t;
-typedef struct axis2_wsdl_pump axis2_wsdl_pump_t;	
-struct axis2_wsdl_desc;	
+typedef struct axis2_wsdl_pump axis2_wsdl_pump_t;   
+struct axis2_wsdl_desc;   
 
 /** @defgroup axis2_wsdl_pump Wsdl Pump
   * @ingroup axis2_wsdl_pump
@@ -50,26 +50,26 @@ struct axis2_wsdl_desc;
  */
 struct axis2_wsdl_pump_ops
 {
-	/** Deallocate memory
+   /** Deallocate memory
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
     free) (axis2_wsdl_pump_t *wsdl_pump,
                             const axis2_env_t *env);
 
-	axis2_status_t (AXIS2_CALL *
-	pump) (axis2_wsdl_pump_t *wsdl_pump,
-						const axis2_env_t *env);
+   axis2_status_t (AXIS2_CALL *
+   pump) (axis2_wsdl_pump_t *wsdl_pump,
+                  const axis2_env_t *env);
 
 };
 
 /** 
  * @brief Wsdl Pump struct
- *	Wsdl Pump  
+ *   Wsdl Pump  
  */ 
 struct axis2_wsdl_pump
 {
-	axis2_wsdl_pump_ops_t *ops;
+   axis2_wsdl_pump_ops_t *ops;
 };
 
 /**
@@ -78,15 +78,15 @@ struct axis2_wsdl_pump
  */
 AXIS2_EXTERN axis2_wsdl_pump_t * AXIS2_CALL 
 axis2_wsdl_pump_create (const axis2_env_t *env,
-						struct axis2_wsdl_desc *wom_def,
-						void *wsdl_parser);
+                  struct axis2_wsdl_desc *wom_def,
+                  void *wsdl_parser);
 
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_PUMP_FREE(wsdl_pump, env) ((wsdl_pump)->ops->free (wsdl_pump, env))
 
 #define AXIS2_WSDL_PUMP_PUMP(wsdl_pump, env) \
-		((wsdl_pump)->ops->pump (wsdl_pump, env))
+      ((wsdl_pump)->ops->pump (wsdl_pump, env))
 
 /*************************** End of function macros ***************************/
 

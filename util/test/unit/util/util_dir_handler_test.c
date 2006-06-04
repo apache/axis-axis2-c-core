@@ -4,7 +4,7 @@
 
 void Testaxis2_dir_handler_list_dir(CuTest *tc)
 {
-	axis2_char_t *pathname = NULL;
+   axis2_char_t *pathname = NULL;
     axis2_array_list_t *file_list = NULL;
     int size = 0;
     axis2_char_t *expected = NULL;

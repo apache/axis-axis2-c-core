@@ -44,7 +44,7 @@ extern "C"
 
 struct axis2_xml_schema_particle_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -114,35 +114,35 @@ axis2_xml_schema_particle_resolve_methods(
                                 axis2_hash_t *methods);
 
 #define AXIS2_XML_SCHEMA_PARTICLE_FREE(particle, env) \
-		(((axis2_xml_schema_particle_t *) particle)->ops->\
+      (((axis2_xml_schema_particle_t *) particle)->ops->\
             free(particle, env))
 
 #define AXIS2_XML_SCHEMA_PARTICLE_SUPER_OBJS(particle, env) \
-		(((axis2_xml_schema_particle_t *) particle)->ops->\
+      (((axis2_xml_schema_particle_t *) particle)->ops->\
             super_objs(particle, env))
 
 #define AXIS2_XML_SCHEMA_PARTICLE_TYPE(particle, env) \
-		(((axis2_xml_schema_particle_t *) particle)->ops->\
+      (((axis2_xml_schema_particle_t *) particle)->ops->\
             type(particle, env))
 
 #define AXIS2_XML_SCHEMA_PARTICLE_GET_BASE_IMPL(particle, env) \
-		(((axis2_xml_schema_particle_t *) particle)->ops->\
+      (((axis2_xml_schema_particle_t *) particle)->ops->\
             get_base_impl(particle, env))
 
 #define AXIS2_XML_SCHEMA_PARTICLE_GET_MAX_OCCURS(particle, env) \
-		(((axis2_xml_schema_particle_t *) particle)->ops->\
+      (((axis2_xml_schema_particle_t *) particle)->ops->\
             get_max_occurs(particle, env))
 
 #define AXIS2_XML_SCHEMA_PARTICLE_SET_MAX_OCCURS(particle, env, max_occurs) \
-		(((axis2_xml_schema_particle_t *) particle)->ops->\
+      (((axis2_xml_schema_particle_t *) particle)->ops->\
             set_max_occurs(particle, env, max_occurs))
 
 #define AXIS2_XML_SCHEMA_PARTICLE_GET_MIN_OCCURS(particle, env) \
-		(((axis2_xml_schema_particle_t *) particle)->ops->\
+      (((axis2_xml_schema_particle_t *) particle)->ops->\
             get_min_occurs(particle, env))
 
 #define AXIS2_XML_SCHEMA_PARTICLE_SET_MIN_OCCURS(particle, env, min_occurs) \
-		(((axis2_xml_schema_particle_t *) particle)->ops->\
+      (((axis2_xml_schema_particle_t *) particle)->ops->\
             set_min_occurs(particle, env, min_occurs))
 
 /** @} */

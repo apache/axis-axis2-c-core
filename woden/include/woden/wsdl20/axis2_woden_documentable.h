@@ -47,7 +47,7 @@ extern "C"
 
 struct axis2_woden_documentable_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -115,28 +115,28 @@ axis2_woden_documentable_resolve_methods(
 
 
 #define AXIS2_WODEN_DOCUMENTABLE_FREE(documentable, env) \
-		(((axis2_woden_documentable_t *) documentable)->ops->\
+      (((axis2_woden_documentable_t *) documentable)->ops->\
          free(documentable, env))
 
 #define AXIS2_WODEN_DOCUMENTABLE_TO_DOCUMENTABLE_FREE(documentable, env) \
-		(((axis2_woden_documentable_t *) documentable)->ops->\
+      (((axis2_woden_documentable_t *) documentable)->ops->\
          to_documentable_free(documentable, env))
 
 #define AXIS2_WODEN_DOCUMENTABLE_SUPER_OBJS(documentable, env) \
-		(((axis2_woden_documentable_t *) documentable)->ops->\
+      (((axis2_woden_documentable_t *) documentable)->ops->\
          super_objs(documentable, env))
 
 #define AXIS2_WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env) \
-		(((axis2_woden_documentable_t *) documentable)->ops->\
+      (((axis2_woden_documentable_t *) documentable)->ops->\
          get_base_impl(documentable, env))
 
 #define AXIS2_WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(documentable, env, \
         documentation) \
-		(((axis2_woden_documentable_t *) documentable)->ops->\
+      (((axis2_woden_documentable_t *) documentable)->ops->\
          add_documentation_element(documentable, env, documentation))
 
 #define AXIS2_WODEN_DOCUMENTABLE_GET_DOCUMENTATION_ELEMENTS(documentable, env) \
-		(((axis2_woden_documentable_t *) documentable)->ops->\
+      (((axis2_woden_documentable_t *) documentable)->ops->\
          get_documentation_elements(documentable, env))
 
 /** @} */

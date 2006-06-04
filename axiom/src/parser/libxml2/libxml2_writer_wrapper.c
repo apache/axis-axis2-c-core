@@ -54,7 +54,7 @@ typedef struct axis2_libxml2_writer_wrapper_impl
     
     xmlBufferPtr buffer;
 
-	xmlDocPtr doc;
+   xmlDocPtr doc;
     
     int writer_type;
     
@@ -436,7 +436,7 @@ axis2_xml_writer_create_for_memory(const axis2_env_t *env,
                                    axis2_char_t *encoding, 
                                    int is_prefix_default,
                                    int compression,
-								   int type)
+                           int type)
 {
     axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -451,7 +451,7 @@ axis2_xml_writer_create_for_memory(const axis2_env_t *env,
     writer_impl->writer.ops = NULL;
     writer_impl->encoding = NULL;
     writer_impl->buffer = NULL;
-	writer_impl->doc = NULL;
+   writer_impl->doc = NULL;
     writer_impl->in_empty_element = AXIS2_FALSE;
     writer_impl->in_start_element = AXIS2_FALSE;
     writer_impl->stack = NULL;
@@ -459,31 +459,31 @@ axis2_xml_writer_create_for_memory(const axis2_env_t *env,
     writer_impl->default_lang_namespace = NULL;
     writer_impl->compression = compression;
    
-	if (AXIS2_XML_PARSER_TYPE_BUFFER == type)
-	{
-		writer_impl->writer_type = AXIS2_XML_PARSER_TYPE_BUFFER;
-    	writer_impl->buffer = xmlBufferCreate();
-    	if(writer_impl->buffer == NULL)
-    	{
-        	axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
-        	AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        	return NULL;
-    	}
+   if (AXIS2_XML_PARSER_TYPE_BUFFER == type)
+   {
+      writer_impl->writer_type = AXIS2_XML_PARSER_TYPE_BUFFER;
+       writer_impl->buffer = xmlBufferCreate();
+       if(writer_impl->buffer == NULL)
+       {
+           axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
+           AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+           return NULL;
+       }
     
-    	writer_impl->xml_writer = xmlNewTextWriterMemory(writer_impl->buffer, 0);
-	}
-	else if (AXIS2_XML_PARSER_TYPE_DOC == type)	
-	{
-    	writer_impl->writer_type = AXIS2_XML_PARSER_TYPE_DOC;
-    	writer_impl->xml_writer = xmlNewTextWriterDoc(&writer_impl->doc, 0);
-	}
-	else
-	{
-		axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE, AXIS2_FAILURE);
-		return NULL;
-	}
-		
+       writer_impl->xml_writer = xmlNewTextWriterMemory(writer_impl->buffer, 0);
+   }
+   else if (AXIS2_XML_PARSER_TYPE_DOC == type)   
+   {
+       writer_impl->writer_type = AXIS2_XML_PARSER_TYPE_DOC;
+       writer_impl->xml_writer = xmlNewTextWriterDoc(&writer_impl->doc, 0);
+   }
+   else
+   {
+      axis2_libxml2_writer_wrapper_free(&(writer_impl->writer), env);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE, AXIS2_FAILURE);
+      return NULL;
+   }
+      
     
     
     if(writer_impl->xml_writer == NULL)
@@ -613,8 +613,8 @@ axis2_libxml2_writer_wrapper_free(axis2_xml_writer_t *writer,
     if(NULL != writer_impl->buffer)
     {
         xmlBufferFree(writer_impl->buffer);
-    	writer_impl->buffer = NULL;
-    }    	
+       writer_impl->buffer = NULL;
+    }       
     if(NULL != writer_impl->encoding)
     {
         AXIS2_FREE(env->allocator, writer_impl->encoding);
@@ -1490,8 +1490,8 @@ axis2_libxml2_writer_wrapper_get_xml(axis2_xml_writer_t *writer,
     }
     if(writer_impl->writer_type == AXIS2_XML_PARSER_TYPE_BUFFER)
     {
-    	axis2_char_t *output = NULL;
-		
+       axis2_char_t *output = NULL;
+      
         if(writer_impl->buffer != NULL)
         {
            output = AXIS2_MALLOC(env->allocator,     
@@ -1500,12 +1500,12 @@ axis2_libxml2_writer_wrapper_get_xml(axis2_xml_writer_t *writer,
             sprintf(output, 
                     ((const axis2_char_t*)(writer_impl->buffer->content)));
         }
-		return (void*)output;
+      return (void*)output;
     }
-	else if (writer_impl->writer_type == AXIS2_XML_PARSER_TYPE_DOC)
-	{
-		return (void*)writer_impl->doc;
-	}
+   else if (writer_impl->writer_type == AXIS2_XML_PARSER_TYPE_DOC)
+   {
+      return (void*)writer_impl->doc;
+   }
     else if(writer_impl->writer_type == AXIS2_XML_PARSER_TYPE_FILE)
     {
         printf("axis2_libxml2_writer_wrapper_get_xml does not support file writer\n");
@@ -1521,7 +1521,7 @@ axis2_libxml2_writer_wrapper_get_type(axis2_xml_writer_t *writer,
     axis2_libxml2_writer_wrapper_impl_t *writer_impl = NULL;
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
 
-	return writer_impl->writer_type;
+   return writer_impl->writer_type;
 }
 
 static axis2_status_t

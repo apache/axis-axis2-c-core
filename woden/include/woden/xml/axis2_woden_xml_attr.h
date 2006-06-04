@@ -51,7 +51,7 @@ struct axis2_om_element;
 
 struct axis2_woden_xml_attr_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -144,37 +144,37 @@ axis2_woden_xml_attr_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_XML_ATTR_FREE(xml_attr, env) \
-		(((axis2_woden_xml_attr_t *) xml_attr)->ops->free (xml_attr, env))
+      (((axis2_woden_xml_attr_t *) xml_attr)->ops->free (xml_attr, env))
 
 #define AXIS2_WODEN_XML_ATTR_TYPE(xml_attr, env) \
-		(((axis2_woden_xml_attr_t *) xml_attr)->ops->type (xml_attr, env))
+      (((axis2_woden_xml_attr_t *) xml_attr)->ops->type (xml_attr, env))
 
 #define AXIS2_WODEN_XML_ATTR_INIT(xml_attr, env, owner_el, owner_node, \
         attr_type, attr_value) \
-		(((axis2_woden_xml_attr_t *) xml_attr)->ops->init(xml_attr, env, \
+      (((axis2_woden_xml_attr_t *) xml_attr)->ops->init(xml_attr, env, \
             owner_el, owner_node, attr_type, attr_value))
 
 #define AXIS2_WODEN_XML_ATTR_GET_ATTRIBUTE_TYPE(xml_attr, env) \
-		(((axis2_woden_xml_attr_t *) xml_attr)->ops->\
+      (((axis2_woden_xml_attr_t *) xml_attr)->ops->\
          get_attribute_type(xml_attr, env))
 
 #define AXIS2_WODEN_XML_ATTR_GET_CONTENT(xml_attr, env) \
-		(((axis2_woden_xml_attr_t *) xml_attr)->ops->get_content(xml_attr, env))
+      (((axis2_woden_xml_attr_t *) xml_attr)->ops->get_content(xml_attr, env))
 
 #define AXIS2_WODEN_XML_ATTR_TO_EXTERNAL_FORM(xml_attr, env) \
-		(((axis2_woden_xml_attr_t *) xml_attr)->ops->\
+      (((axis2_woden_xml_attr_t *) xml_attr)->ops->\
          to_external_form(xml_attr, env))
 
 #define AXIS2_WODEN_XML_ATTR_IS_VALID(xml_attr, env) \
-		(((axis2_woden_xml_attr_t *) xml_attr)->ops->is_valid(xml_attr, env))
+      (((axis2_woden_xml_attr_t *) xml_attr)->ops->is_valid(xml_attr, env))
 
 #define AXIS2_WODEN_XML_ATTR_CONVERT(xml_attr, env, owner_el, owner_node, \
         attr_type, attr_value) \
-		(((axis2_woden_xml_attr_t *) xml_attr)->ops->convert(xml_attr, env, \
+      (((axis2_woden_xml_attr_t *) xml_attr)->ops->convert(xml_attr, env, \
             owner_el, owner_node, attr_type, attr_value))
 
 #define AXIS2_WODEN_XML_ATTR_SET_VALID(xml_attr, env, validity) \
-		(((axis2_woden_xml_attr_t *) xml_attr)->ops->set_valid(xml_attr, \
+      (((axis2_woden_xml_attr_t *) xml_attr)->ops->set_valid(xml_attr, \
                                                   env, validity))
 
 /** @} */

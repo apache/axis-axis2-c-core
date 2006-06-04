@@ -43,7 +43,7 @@ typedef struct axis2_xml_schema_simple_type_content_ops
 
 struct axis2_xml_schema_simple_type_content_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -94,19 +94,19 @@ axis2_xml_schema_simple_type_content_resolve_methods(
 
 /*************************** Macros **********************************************/
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_CONTENT_FREE(sim_type_cont, env) \
-		(((axis2_xml_schema_simple_type_content_t *) sim_type_cont)->ops->\
+      (((axis2_xml_schema_simple_type_content_t *) sim_type_cont)->ops->\
             free(sim_type_cont, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_CONTENT_GET_BASE_IMPL(sim_type_cont, env) \
-		(((axis2_xml_schema_simple_type_content_t *) sim_type_cont)->ops->\
+      (((axis2_xml_schema_simple_type_content_t *) sim_type_cont)->ops->\
             get_base_impl(sim_type_cont, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_CONTENT_TYPE(sim_type_cont, env) \
-		(((axis2_xml_schema_simple_type_content_t *) sim_type_cont)->ops->\
+      (((axis2_xml_schema_simple_type_content_t *) sim_type_cont)->ops->\
             type(sim_type_cont, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_CONTENT_SUPER_OBJS(sim_type_cont, env) \
-		(((axis2_xml_schema_simple_type_content_t *) sim_type_cont)->ops->\
+      (((axis2_xml_schema_simple_type_content_t *) sim_type_cont)->ops->\
             super_objs(sim_type_cont, env))
 
 /************************ end macros *********************************************/

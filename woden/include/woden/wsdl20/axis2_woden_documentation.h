@@ -49,7 +49,7 @@ extern "C"
 
 struct axis2_woden_documentation_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -115,17 +115,17 @@ axis2_woden_documentation_resolve_methods(
 
 
 #define AXIS2_WODEN_DOCUMENTATION_FREE(documentation, env) \
-		(((axis2_woden_documentation_t *) documentation)->ops->free(documentation, env))
+      (((axis2_woden_documentation_t *) documentation)->ops->free(documentation, env))
 
 #define AXIS2_WODEN_DOCUMENTATION_SUPER_OBJS(documentation, env) \
-		(((axis2_woden_documentation_t *) documentation)->ops->\
+      (((axis2_woden_documentation_t *) documentation)->ops->\
          super_objs(documentation, env))
 
 #define AXIS2_WODEN_DOCUMENTATION_TYPE(documentation, env) \
-		(((axis2_woden_documentation_t *) documentation)->ops->type(documentation, env))
+      (((axis2_woden_documentation_t *) documentation)->ops->type(documentation, env))
 
 #define AXIS2_WODEN_DOCUMENTATION_GET_BASE_IMPL(documentation, env) \
-		(((axis2_woden_documentation_t *) documentation)->ops->\
+      (((axis2_woden_documentation_t *) documentation)->ops->\
          get_base_impl(documentation, env))
 
 

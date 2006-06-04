@@ -49,7 +49,7 @@ extern "C"
 
 struct axis2_xml_schema_complex_type_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -206,100 +206,100 @@ axis2_xml_schema_complex_type_create(const axis2_env_t *env,
 /************************** macros *******************************************/
 
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_FREE(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    free(complex_type, env))
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          free(complex_type, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_BASE_IMPL(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    get_base_impl(complex_type, env))
-		    
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          get_base_impl(complex_type, env))
+          
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_TYPE(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    type(complex_type, env))
-		    
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          type(complex_type, env))
+          
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_SUPER_OBJS(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    super_objs(complex_type, env))		    		    
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          super_objs(complex_type, env))                    
 
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_ANY_ATTRIBUTE(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    get_any_attribute(complex_type, env))
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          get_any_attribute(complex_type, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_ANY_ATTRIBUTE(complex_type, env, any_attr) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    set_any_attribute(complex_type, env, any_attr))
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          set_any_attribute(complex_type, env, any_attr))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_ATTRIBUTES(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    get_attributes(complex_type, env))
-		
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          get_attributes(complex_type, env))
+      
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_ATTRIBUTE_USE(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    get_attribute_use(complex_type, env))
-		
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          get_attribute_use(complex_type, env))
+      
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_ATTRIBUTE_WILDCARD(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    get_attribute_wildcard(complex_type, env))		
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          get_attribute_wildcard(complex_type, env))      
 
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_BLOCK(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    get_block(complex_type, env))
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          get_block(complex_type, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_BLOCK(complex_type, env, block) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    set_block(complex_type, env, block))
-		
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          set_block(complex_type, env, block))
+      
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_BLOCK_RESOLVED(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    get_block_resolved(complex_type, env))
-		
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          get_block_resolved(complex_type, env))
+      
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_CONTENT_MODEL(complex_type, env, cnt_mtype) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    get_content_model(complex_type, env, cnt_mtype))	
-		
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          get_content_model(complex_type, env, cnt_mtype))   
+      
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_CONTENT_MODEL(complex_type, env, cnt_model) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    set_content_model(complex_type, env, cnt_model))
-		    							
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          set_content_model(complex_type, env, cnt_model))
+                               
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_CONTENT_TYPE(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    get_content_type(complex_type, env))			
-		
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          get_content_type(complex_type, env))         
+      
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_CONTENT_TYPE(complex_type, env, cnt_type) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    set_content_type(complex_type, env, cnt_type))
-		
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          set_content_type(complex_type, env, cnt_type))
+      
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_CONTENT_TYPE_PARTICLE(complex_type, env) \
         (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
             get_content_type_particle(complex_type, env))
         
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_IS_ABSTRACT(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    is_abstract(complex_type, env))
-		
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          is_abstract(complex_type, env))
+      
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_ABSTRACT(complex_type, env, b) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    set_abstract(complex_type, env, b))	
-		
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          set_abstract(complex_type, env, b))   
+      
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_IS_MIXED(complex_type, env) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    is_mixed(complex_type, env))
-		
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          is_mixed(complex_type, env))
+      
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_MIXED(complex_type, env, b) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    set_mixed(complex_type, env, b))				        				
-		
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          set_mixed(complex_type, env, b))                                
+      
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(complex_type, env) \
         (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
             get_particle(complex_type, env))
         
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_SET_PARTICLE(complex_type, env, particle) \
         (((axis2_xml_schema_complex_type_t *)complex_type)->ops->\
-            set_particle(complex_type, env, particle))        		
-		
+            set_particle(complex_type, env, particle))              
+      
 #define AXIS2_XML_SCHEMA_COMPLEX_TYPE_TO_STRING(complex_type, env, prefix, tab) \
-		(((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
-		    to_string(complex_type, env, prefix, tab))
+      (((axis2_xml_schema_complex_type_t *) complex_type)->ops->\
+          to_string(complex_type, env, prefix, tab))
 
 /******************************** end macros **********************************/         
                                                   

@@ -394,7 +394,7 @@ axis2_hash_count (axis2_hash_t * ht)
 
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axis2_hash_overlay (const axis2_hash_t *overlay, const axis2_env_t *env
-		, const axis2_hash_t * base)
+      , const axis2_hash_t * base)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return axis2_hash_merge (overlay, env, base, NULL, NULL);
@@ -402,7 +402,7 @@ axis2_hash_overlay (const axis2_hash_t *overlay, const axis2_env_t *env
 
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
 axis2_hash_merge (const axis2_hash_t *overlay, const axis2_env_t *env
-			, const axis2_hash_t * base, void *(*merger) (const axis2_env_t * env
+         , const axis2_hash_t * base, void *(*merger) (const axis2_env_t * env
             , const void *key, axis2_ssize_t klen, const void *h1_val
             , const void *h2_val, const void *data), const void *data)
 {

@@ -18,7 +18,7 @@
 
 /** 
  * @brief Wsdl Service struct impl
- *	Axis2 Wsdl Service impl  
+ *   Axis2 Wsdl Service impl  
  */
 typedef struct axis2_wsdl_svc_impl axis2_wsdl_svc_impl_t;  
   
@@ -98,13 +98,13 @@ axis2_wsdl_svc_create (const axis2_env_t *env)
     
     AXIS2_ENV_CHECK(env, NULL);
     
-	wsdl_svc_impl = (axis2_wsdl_svc_impl_t *) AXIS2_MALLOC (env->allocator, 
+   wsdl_svc_impl = (axis2_wsdl_svc_impl_t *) AXIS2_MALLOC (env->allocator, 
             sizeof(axis2_wsdl_svc_impl_t));
-	if(NULL == wsdl_svc_impl)
-	{
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+   if(NULL == wsdl_svc_impl)
+   {
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
     wsdl_svc_impl->svc_interface = NULL;
     wsdl_svc_impl->wsdl_svc.wsdl_component = NULL;
@@ -114,7 +114,7 @@ axis2_wsdl_svc_create (const axis2_env_t *env)
     
     wsdl_svc_impl->wsdl_svc.wsdl_component = axis2_wsdl_component_create(env);
     if(NULL == wsdl_svc_impl->wsdl_svc.wsdl_component)
-	{
+   {
         axis2_wsdl_svc_free(&(wsdl_svc_impl->wsdl_svc), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY,AXIS2_FAILURE);
         return NULL;
@@ -128,17 +128,17 @@ axis2_wsdl_svc_create (const axis2_env_t *env)
         return NULL;
     }
     
-	wsdl_svc_impl->wsdl_svc.ops = (axis2_wsdl_svc_ops_t *) AXIS2_MALLOC (env->
+   wsdl_svc_impl->wsdl_svc.ops = (axis2_wsdl_svc_ops_t *) AXIS2_MALLOC (env->
         allocator, sizeof(axis2_wsdl_svc_ops_t));
     
-	if(NULL == wsdl_svc_impl->wsdl_svc.ops)
-	{
+   if(NULL == wsdl_svc_impl->wsdl_svc.ops)
+   {
         axis2_wsdl_svc_free(&(wsdl_svc_impl->wsdl_svc), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
-	}
+   }
     
-	wsdl_svc_impl->wsdl_svc.ops->free = axis2_wsdl_svc_free;
+   wsdl_svc_impl->wsdl_svc.ops->free = axis2_wsdl_svc_free;
     wsdl_svc_impl->wsdl_svc.ops->get_qname = axis2_wsdl_svc_get_qname;
     wsdl_svc_impl->wsdl_svc.ops->set_qname = axis2_wsdl_svc_set_qname;
     wsdl_svc_impl->wsdl_svc.ops->get_endpoints = axis2_wsdl_svc_get_endpoints; 
@@ -149,7 +149,7 @@ axis2_wsdl_svc_create (const axis2_env_t *env)
     wsdl_svc_impl->wsdl_svc.ops->get_svc_interface = axis2_wsdl_svc_get_svc_interface;
     wsdl_svc_impl->wsdl_svc.ops->set_svc_interface = axis2_wsdl_svc_set_svc_interface;
     
-	return &(wsdl_svc_impl->wsdl_svc);
+   return &(wsdl_svc_impl->wsdl_svc);
 }
 
 /******************************************************************************/
@@ -159,7 +159,7 @@ axis2_wsdl_svc_free (axis2_wsdl_svc_t *wsdl_svc,
                         const axis2_env_t *env)
 {
     axis2_wsdl_svc_impl_t *wsdl_svc_impl = NULL;
-	AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     wsdl_svc_impl = AXIS2_INTF_TO_IMPL(wsdl_svc);
     
@@ -209,10 +209,10 @@ axis2_wsdl_svc_free (axis2_wsdl_svc_t *wsdl_svc,
     }
     
     if(wsdl_svc_impl)
-	    AXIS2_FREE(env->allocator, wsdl_svc_impl);
+       AXIS2_FREE(env->allocator, wsdl_svc_impl);
     wsdl_svc_impl = NULL;
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_qname_t * AXIS2_CALL 

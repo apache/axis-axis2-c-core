@@ -24,7 +24,7 @@
  */ 
 typedef struct axis2_transport_in_desc_impl
 {
-	axis2_transport_in_desc_t transport_in;    
+   axis2_transport_in_desc_t transport_in;    
     /** 
      * Field flowInclude 
      * This will have a shallow copy and will not be freed by the descructor
@@ -58,7 +58,7 @@ typedef struct axis2_transport_in_desc_impl
 axis2_status_t AXIS2_CALL
 axis2_transport_in_desc_free (
                 axis2_transport_in_desc_t *transport_in,
-				const axis2_env_t *env);
+            const axis2_env_t *env);
 
 axis2_qname_t *AXIS2_CALL
 axis2_transport_in_desc_get_qname(axis2_transport_in_desc_t *transport_in,
@@ -143,8 +143,8 @@ axis2_transport_in_desc_create_with_qname (const axis2_env_t *env,
     
     transport_in_impl = (axis2_transport_in_desc_impl_t *) AXIS2_MALLOC(env->
         allocator, sizeof(axis2_transport_in_desc_impl_t));
-	
-	if(NULL == transport_in_impl)
+   
+   if(NULL == transport_in_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -169,24 +169,24 @@ axis2_transport_in_desc_create_with_qname (const axis2_env_t *env,
     
     transport_in_impl->qname = AXIS2_QNAME_CLONE(qname, env);
     
-	transport_in_impl->transport_in.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_transport_in_desc_ops_t));
-	if(NULL == transport_in_impl->transport_in.ops)
+   transport_in_impl->transport_in.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_transport_in_desc_ops_t));
+   if(NULL == transport_in_impl->transport_in.ops)
     {
         axis2_transport_in_desc_free(&(transport_in_impl->transport_in), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
     transport_in_impl->transport_in.ops->free = axis2_transport_in_desc_free;
     
-	transport_in_impl->transport_in.ops->get_qname =  
+   transport_in_impl->transport_in.ops->get_qname =  
         axis2_transport_in_desc_get_qname;
-	transport_in_impl->transport_in.ops->set_qname =  
+   transport_in_impl->transport_in.ops->set_qname =  
         axis2_transport_in_desc_set_qname;
-	transport_in_impl->transport_in.ops->get_inflow =  
+   transport_in_impl->transport_in.ops->get_inflow =  
         axis2_transport_in_desc_get_inflow;
-	transport_in_impl->transport_in.ops->set_inflow = 
+   transport_in_impl->transport_in.ops->set_inflow = 
         axis2_transport_in_desc_set_inflow;
     transport_in_impl->transport_in.ops->get_faultflow = 
         axis2_transport_in_desc_get_faultflow;
@@ -211,7 +211,7 @@ axis2_transport_in_desc_create_with_qname (const axis2_env_t *env,
     transport_in_impl->transport_in.ops->is_param_locked = 
     axis2_transport_in_desc_is_param_locked;
     
-	return &(transport_in_impl->transport_in);
+   return &(transport_in_impl->transport_in);
 }
 
 /***************************Function implementation****************************/
@@ -232,7 +232,7 @@ axis2_transport_in_desc_free (axis2_transport_in_desc_t *transport_in,
         transport_in_impl->recv = NULL;
     }
       
-	if(NULL != transport_in->ops)
+   if(NULL != transport_in->ops)
     {
         AXIS2_FREE(env->allocator, transport_in->ops);
         transport_in->ops = NULL;
@@ -276,7 +276,7 @@ axis2_transport_in_desc_free (axis2_transport_in_desc_t *transport_in,
     
     AXIS2_FREE(env->allocator, transport_in_impl);
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_qname_t *AXIS2_CALL

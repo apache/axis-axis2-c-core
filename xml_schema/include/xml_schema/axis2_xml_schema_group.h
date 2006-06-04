@@ -46,7 +46,7 @@ extern "C"
 
 struct axis2_xml_schema_group_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -110,35 +110,35 @@ axis2_xml_schema_group_resolve_methods(
 
 /**************************** Macros *************************************/
 #define AXIS2_XML_SCHEMA_GROUP_FREE(group, env) \
-		(((axis2_xml_schema_group_t *) group)->ops->\
+      (((axis2_xml_schema_group_t *) group)->ops->\
             free(group, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_SUPER_OBJS(group, env) \
-		(((axis2_xml_schema_group_t *) group)->ops->\
+      (((axis2_xml_schema_group_t *) group)->ops->\
             super_objs(group, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_TYPE(group, env) \
-		(((axis2_xml_schema_group_t *) group)->ops->\
+      (((axis2_xml_schema_group_t *) group)->ops->\
             type(group, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_GET_BASE_IMPL(group, env) \
-		(((axis2_xml_schema_group_t *) group)->ops->\
+      (((axis2_xml_schema_group_t *) group)->ops->\
             get_base_impl(group, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_GET_NAME(group, env) \
-		(((axis2_xml_schema_group_t *) group)->ops->\
+      (((axis2_xml_schema_group_t *) group)->ops->\
             get_name(group, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_SET_NAME(group, env, name) \
-		(((axis2_xml_schema_group_t *) group)->ops->\
+      (((axis2_xml_schema_group_t *) group)->ops->\
             set_name(group, env, name))
 
 #define AXIS2_XML_SCHEMA_GROUP_GET_PARTICLE(group, env) \
-		(((axis2_xml_schema_group_t *) group)->ops->\
+      (((axis2_xml_schema_group_t *) group)->ops->\
             get_particle(group, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_SET_PARTICLE(group, env, particle) \
-		(((axis2_xml_schema_group_t *) group)->ops->\
+      (((axis2_xml_schema_group_t *) group)->ops->\
             set_particle(group, env, particle))
 
 /** @} */

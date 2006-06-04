@@ -67,62 +67,62 @@ typedef struct axis2_svc axis2_svc_t;
  */    
 struct axis2_svc_ops
 {
-	axis2_status_t (AXIS2_CALL *
+   axis2_status_t (AXIS2_CALL *
     free) (axis2_svc_t *svc, 
             const axis2_env_t *env);
 
-	axis2_status_t (AXIS2_CALL *
+   axis2_status_t (AXIS2_CALL *
     add_op) (axis2_svc_t *svc, 
                     const axis2_env_t *env,
                     struct axis2_op *op);
 
-	struct axis2_op *(AXIS2_CALL *
+   struct axis2_op *(AXIS2_CALL *
     get_op_with_qname) (axis2_svc_t *svc, 
                                   const axis2_env_t *env,
                                   axis2_qname_t *op_qname);
 
-	struct axis2_op *(AXIS2_CALL *
+   struct axis2_op *(AXIS2_CALL *
     get_op_with_name) (axis2_svc_t *svc, 
                                 const axis2_env_t *env,
                                 const axis2_char_t * op_name);
 
-	axis2_hash_t *(AXIS2_CALL *
+   axis2_hash_t *(AXIS2_CALL *
     get_ops) (axis2_svc_t *svc, 
                      const axis2_env_t *env);
 
-	axis2_status_t (AXIS2_CALL *
+   axis2_status_t (AXIS2_CALL *
     set_parent) (axis2_svc_t *svc, 
                     const axis2_env_t *env,
                     struct axis2_svc_grp *svc_grp);
 
-	struct axis2_svc_grp *(AXIS2_CALL *
+   struct axis2_svc_grp *(AXIS2_CALL *
     get_parent) (axis2_svc_t *svc, 
                  const axis2_env_t *env);
-	
+   
     axis2_status_t (AXIS2_CALL *
     set_qname) (axis2_svc_t *svc, 
                 const axis2_env_t *env,
                 axis2_qname_t *qname);
     
-	axis2_qname_t *(AXIS2_CALL *
+   axis2_qname_t *(AXIS2_CALL *
     get_qname) (const axis2_svc_t *svc, 
                const axis2_env_t *env);
 
-	axis2_status_t (AXIS2_CALL *
+   axis2_status_t (AXIS2_CALL *
     add_param) (axis2_svc_t *svc, 
                 const axis2_env_t *env,
                 axis2_param_t *param);
 
-	axis2_param_t *(AXIS2_CALL *
+   axis2_param_t *(AXIS2_CALL *
     get_param) (axis2_svc_t *svc, 
                 const axis2_env_t *env,
                 const axis2_char_t *name);
 
-	axis2_array_list_t *(AXIS2_CALL *
+   axis2_array_list_t *(AXIS2_CALL *
     get_params) (axis2_svc_t *svc, 
                     const axis2_env_t *env);
-	
-	axis2_bool_t (AXIS2_CALL *
+   
+   axis2_bool_t (AXIS2_CALL *
     is_param_locked) (axis2_svc_t *svc, 
                         const axis2_env_t *env,
                         axis2_char_t *param_name);
@@ -406,11 +406,11 @@ struct axis2_svc_ops
 
 /** 
  * @brief Service struct
-  *	Axis2 Service  
+  *   Axis2 Service  
  */
 struct axis2_svc
 {
-	axis2_svc_ops_t *ops; 
+   axis2_svc_ops_t *ops; 
     struct axis2_param_container *param_container;
     struct axis2_flow_container *flow_container;
     struct axis2_wsdl_svc *wsdl_svc;    
@@ -447,13 +447,13 @@ axis2_svc_create_with_wsdl_svc (const axis2_env_t *env,
 #define AXIS2_SVC_FREE(svc, env) ((svc)->ops->free (svc, env))
 
 #define AXIS2_SVC_ADD_OP(svc, env, op) \
-		((svc)->ops->add_op (svc, env, op))
+      ((svc)->ops->add_op (svc, env, op))
 
 #define AXIS2_SVC_GET_OP_WITH_QNAME(svc, env, op_qname) \
-		((svc)->ops->get_op_with_qname (svc, env, op_qname))
+      ((svc)->ops->get_op_with_qname (svc, env, op_qname))
 
 #define AXIS2_SVC_GET_OP_WITH_NAME(svc, env, op_name) \
-		((svc)->ops->get_op_with_name (svc, env, op_name))
+      ((svc)->ops->get_op_with_name (svc, env, op_name))
 
 #define AXIS2_SVC_GET_OPS(svc, env) ((svc)->ops->get_ops (svc, env))
 
@@ -465,13 +465,13 @@ axis2_svc_create_with_wsdl_svc (const axis2_env_t *env,
 #define AXIS2_SVC_SET_QNAME(svc, env, qname) ((svc)->ops->set_qname(svc , env, qname))
 
 #define AXIS2_SVC_GET_QNAME(svc, env) ((svc)->ops->get_qname(svc , env))
-		
+      
 #define AXIS2_SVC_ADD_PARAM(svc, env, param) ((svc)->ops->add_param(svc , env, param))
-		
+      
 #define AXIS2_SVC_GET_PARAM(svc, env, name) ((svc)->ops->get_param(svc , env, name))
-		
+      
 #define AXIS2_SVC_GET_PARAMS(svc, env) ((svc)->ops->get_params(svc , env))
-		
+      
 #define AXIS2_SVC_IS_PARAM_LOCKED(svc, env, param_name) \
         ((svc)->ops->is_param_locked(svc, env, param_name))
 

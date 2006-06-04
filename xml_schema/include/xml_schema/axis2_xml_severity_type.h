@@ -45,7 +45,7 @@ extern "C"
 
 struct axis2_xml_severity_type_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -84,19 +84,19 @@ axis2_xml_severity_type_create(const axis2_env_t *env,
 /***************************** Macros ******************************************/
 
 #define AXIS2_XML_SEREVITY_TYPE_FREE(severity, env) \
-		(((axis2_xml_severity_type_t *) severity)->ops->free(severity, env))
+      (((axis2_xml_severity_type_t *) severity)->ops->free(severity, env))
 
 #define AXIS2_XML_SEREVITY_TYPE_GET_BASE_IMPL(severity, env) \
-		(((axis2_xml_severity_type_t *) severity)->ops->get_base_impl(severity, env))
+      (((axis2_xml_severity_type_t *) severity)->ops->get_base_impl(severity, env))
 
 #define AXIS2_XML_SEREVITY_TYPE_GET_VALUES(severity, env) \
-		(((axis2_xml_severity_type_t *) severity)->ops->values(severity, env))
+      (((axis2_xml_severity_type_t *) severity)->ops->values(severity, env))
 
 #define AXIS2_XML_SEREVITY_TYPE_TYPE(severity, env) \
-		(((axis2_xml_severity_type_t *) severity)->ops->type(severity, env))
+      (((axis2_xml_severity_type_t *) severity)->ops->type(severity, env))
 
 #define AXIS2_XML_SEREVITY_TYPE_SUPER_OBJS(severity, env) \
-		(((axis2_xml_severity_type_t *) severity)->ops->super_objs(severity, env))
+      (((axis2_xml_severity_type_t *) severity)->ops->super_objs(severity, env))
 
 /** @} */
 #ifdef __cplusplus

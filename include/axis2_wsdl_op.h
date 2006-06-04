@@ -41,11 +41,11 @@
 extern "C"
 {
 #endif
-struct axis2_wsdl_extensible_component;	
+struct axis2_wsdl_extensible_component;   
 struct axis2_wsdl_fault_ref;    
 typedef struct axis2_wsdl_op_ops axis2_wsdl_op_ops_t;
-typedef struct axis2_wsdl_op axis2_wsdl_op_t;	
-	
+typedef struct axis2_wsdl_op axis2_wsdl_op_t;   
+   
 
 /** @defgroup axis2_wsdl_op Wsdl Operation
   * @ingroup axis2_wsdl
@@ -54,7 +54,7 @@ typedef struct axis2_wsdl_op axis2_wsdl_op_t;
 
 struct axis2_wsdl_op_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -62,7 +62,7 @@ struct axis2_wsdl_op_ops
     free) (axis2_wsdl_op_t *wsdl_op,
             const axis2_env_t *env);
         
-	/** 
+   /** 
      * Deallocate memory
      * @param void wsdl_op to be freed
      * @return status code
@@ -253,7 +253,7 @@ struct axis2_wsdl_op_ops
 
 struct axis2_wsdl_op
 {
-	axis2_wsdl_op_ops_t *ops;
+   axis2_wsdl_op_ops_t *ops;
     struct axis2_wsdl_extensible_component *extensible_component;
 };
 
@@ -267,67 +267,67 @@ axis2_wsdl_op_free_void_arg(void *wsdl_op,
 /**************************** Start of function macros ************************/
 
 #define AXIS2_WSDL_OP_FREE(wsdl_op, env) \
-		((wsdl_op)->ops->free (wsdl_op, env))
+      ((wsdl_op)->ops->free (wsdl_op, env))
 
 #define AXIS2_WSDL_OP_FREE_VOID_ARG(wsdl_op, env) \
-		(((axis2_wsdl_op_t *) wsdl_op)->ops->free_void_arg(wsdl_op, env))
-	
+      (((axis2_wsdl_op_t *) wsdl_op)->ops->free_void_arg(wsdl_op, env))
+   
 #define AXIS2_WSDL_OP_GET_MSG_EXCHANGE_PATTERN(wsdl_op, env) \
-		((wsdl_op)->ops->get_msg_exchange_pattern(wsdl_op, env))
-		
+      ((wsdl_op)->ops->get_msg_exchange_pattern(wsdl_op, env))
+      
 #define AXIS2_WSDL_OP_SET_MSG_EXCHANGE_PATTERN(wsdl_op, env, pattern) \
-		((wsdl_op)->ops->set_msg_exchange_pattern(wsdl_op, env, pattern))
-		
+      ((wsdl_op)->ops->set_msg_exchange_pattern(wsdl_op, env, pattern))
+      
 #define AXIS2_WSDL_OP_GET_QNAME(wsdl_op, env) \
-		(((axis2_wsdl_op_t *) wsdl_op)->ops->get_qname(wsdl_op, env))
-		
+      (((axis2_wsdl_op_t *) wsdl_op)->ops->get_qname(wsdl_op, env))
+      
 #define AXIS2_WSDL_OP_SET_QNAME(wsdl_op, env, name) \
-		((wsdl_op)->ops->set_qname(wsdl_op, env, name))
-		
+      ((wsdl_op)->ops->set_qname(wsdl_op, env, name))
+      
 #define AXIS2_WSDL_OP_SET_STYLE(wsdl_op, env, style) \
-		((wsdl_op)->ops->set_style(wsdl_op, env, style))
-		
+      ((wsdl_op)->ops->set_style(wsdl_op, env, style))
+      
 #define AXIS2_WSDL_OP_GET_STYLE(wsdl_op, env) \
-		((wsdl_op)->ops->get_style(wsdl_op, env))
-		
+      ((wsdl_op)->ops->get_style(wsdl_op, env))
+      
 #define AXIS2_WSDL_OP_GET_IN_FAULTS(wsdl_op, env) \
-		((wsdl_op)->ops->get_in_faults(wsdl_op, env))
-		
+      ((wsdl_op)->ops->get_in_faults(wsdl_op, env))
+      
 #define AXIS2_WSDL_OP_SET_IN_FAULTS(wsdl_op, env, in_faults) \
-		((wsdl_op)->ops->set_in_faults(wsdl_op, env, in_faults))
+      ((wsdl_op)->ops->set_in_faults(wsdl_op, env, in_faults))
 
 #define AXIS2_WSDL_OP_GET_INPUT_MSG(wsdl_op, env) \
-		((wsdl_op)->ops->get_input_msg(wsdl_op, env))
-		
+      ((wsdl_op)->ops->get_input_msg(wsdl_op, env))
+      
 #define AXIS2_WSDL_OP_SET_INPUT_MSG(wsdl_op, env, input_msg) \
-		((wsdl_op)->ops->set_input_msg(wsdl_op, env, input_msg))		
+      ((wsdl_op)->ops->set_input_msg(wsdl_op, env, input_msg))      
 
 #define AXIS2_WSDL_OP_GET_OUT_FAULTS(wsdl_op, env) \
-		((wsdl_op)->ops->get_out_faults(wsdl_op, env))
-		
+      ((wsdl_op)->ops->get_out_faults(wsdl_op, env))
+      
 #define AXIS2_WSDL_OP_SET_OUT_FAULTS(wsdl_op, env, out_faults) \
-		((wsdl_op)->ops->set_out_faults(wsdl_op, env, out_faults))
+      ((wsdl_op)->ops->set_out_faults(wsdl_op, env, out_faults))
 
 #define AXIS2_WSDL_OP_GET_OUTPUT_MSG(wsdl_op, env) \
-		((wsdl_op)->ops->get_output_msg(wsdl_op, env))
-		
+      ((wsdl_op)->ops->get_output_msg(wsdl_op, env))
+      
 #define AXIS2_WSDL_OP_SET_OUTPUT_MSG(wsdl_op, env, output_msg) \
-		((wsdl_op)->ops->set_output_msg(wsdl_op, env, output_msg))
+      ((wsdl_op)->ops->set_output_msg(wsdl_op, env, output_msg))
 
 #define AXIS2_WSDL_OP_IS_SAFE(wsdl_op, env) \
-		((wsdl_op)->ops->is_safe(wsdl_op, env))
-		
+      ((wsdl_op)->ops->is_safe(wsdl_op, env))
+      
 #define AXIS2_WSDL_OP_SET_SAFETY(wsdl_op, env, safe) \
-		((wsdl_op)->ops->set_safety(wsdl_op, env, safe))
+      ((wsdl_op)->ops->set_safety(wsdl_op, env, safe))
         
 #define AXIS2_WSDL_OP_GET_TARGET_NAMESPACE(wsdl_op, env) \
-		((wsdl_op)->ops->get_target_namespace(wsdl_op, env))        
+      ((wsdl_op)->ops->get_target_namespace(wsdl_op, env))        
 
 #define AXIS2_WSDL_OP_ADD_IN_FAULT(wsdl_op, env, in_fault) \
-		((wsdl_op)->ops->add_in_fault(wsdl_op, env, in_fault))
-		
+      ((wsdl_op)->ops->add_in_fault(wsdl_op, env, in_fault))
+      
 #define AXIS2_WSDL_OP_ADD_OUT_FAULT(wsdl_op, env, out_fault) \
-		((wsdl_op)->ops->add_out_fault(wsdl_op, env, out_fault))
+      ((wsdl_op)->ops->add_out_fault(wsdl_op, env, out_fault))
 
 /**************************** End of function macros **************************/
 

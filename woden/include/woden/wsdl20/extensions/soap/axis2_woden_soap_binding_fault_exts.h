@@ -55,7 +55,7 @@ extern "C"
 
 struct axis2_woden_soap_binding_fault_exts_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -127,31 +127,31 @@ axis2_woden_soap_binding_fault_exts_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_EXTS_FREE(soap_binding_fault_exts, env) \
-		(((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->free(soap_binding_fault_exts, env))
+      (((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->free(soap_binding_fault_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_EXTS_SUPER_OBJS(soap_binding_fault_exts, env) \
-		(((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->super_objs(soap_binding_fault_exts, env))
+      (((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->super_objs(soap_binding_fault_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_EXTS_TYPE(soap_binding_fault_exts, env) \
-		(((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->type(soap_binding_fault_exts, env))
+      (((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->type(soap_binding_fault_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_EXTS_GET_BASE_IMPL(soap_binding_fault_exts, env) \
-		(((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->get_base_impl(soap_binding_fault_exts, env))
+      (((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->get_base_impl(soap_binding_fault_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_EXTS_GET_SOAP_FAULT_CODE(soap_binding_fault_exts, env) \
-		(((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->\
+      (((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->\
         get_soap_fault_code (soap_binding_fault_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_EXTS_GET_SOAP_FAULT_SUBCODES(soap_binding_fault_exts, env) \
-		(((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->\
+      (((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->\
         get_soap_fault_subcodes (soap_binding_fault_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_EXTS_GET_SOAP_MODULES(soap_binding_fault_exts, env) \
-		(((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->\
+      (((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->\
         get_soap_modules (soap_binding_fault_exts, env))
 
 #define AXIS2_WODEN_SOAP_BINDING_FAULT_EXTS_GET_SOAP_HEADERS(soap_binding_fault_exts, env) \
-		(((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->\
+      (((axis2_woden_soap_binding_fault_exts_t *) soap_binding_fault_exts)->ops->\
         get_soap_headers (soap_binding_fault_exts, env))
 
 /** @} */

@@ -50,12 +50,12 @@ typedef struct axis2_wsdl_fault_ref_ops axis2_wsdl_fault_ref_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_fault_ref_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_fault_ref_t *wsdl_fault_ref,
-		    const axis2_env_t *env);
+          const axis2_env_t *env);
 
     /**
      * Returns the direction of the Fault according the MEP
@@ -120,7 +120,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_fault_ref_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_fault_ref
 {
-	axis2_wsdl_fault_ref_ops_t *ops;
+   axis2_wsdl_fault_ref_ops_t *ops;
     struct axis2_wsdl_component *wsdl_component;
 };
 
@@ -134,25 +134,25 @@ axis2_wsdl_fault_ref_create (const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_FAULT_REF_FREE(wsdl_fault_ref, env) \
-		((wsdl_fault_ref)->ops->free (wsdl_fault_ref, env))
+      ((wsdl_fault_ref)->ops->free (wsdl_fault_ref, env))
 
 #define AXIS2_WSDL_FAULT_REF_GET_DIRECTION(wsdl_fault_ref, env) \
-		((wsdl_fault_ref)->ops->get_direction (wsdl_fault_ref, env))
+      ((wsdl_fault_ref)->ops->get_direction (wsdl_fault_ref, env))
 
 #define AXIS2_WSDL_FAULT_REF_SET_DIRECTION(wsdl_fault_ref, env, direction) \
-		((wsdl_fault_ref)->ops->set_direction (wsdl_fault_ref, env, direction))       
+      ((wsdl_fault_ref)->ops->set_direction (wsdl_fault_ref, env, direction))       
 
 #define AXIS2_WSDL_FAULT_REF_GET_MSG_LABEL(wsdl_fault_ref, env) \
-		((wsdl_fault_ref)->ops->get_msg_label (wsdl_fault_ref, env))
+      ((wsdl_fault_ref)->ops->get_msg_label (wsdl_fault_ref, env))
 
 #define AXIS2_WSDL_FAULT_REF_SET_MSG_LABEL(wsdl_fault_ref, env, msg_label) \
-		((wsdl_fault_ref)->ops->set_msg_label (wsdl_fault_ref, env, msg_label))
+      ((wsdl_fault_ref)->ops->set_msg_label (wsdl_fault_ref, env, msg_label))
         
 #define AXIS2_WSDL_FAULT_REF_GET_REF(wsdl_fault_ref, env) \
-		((wsdl_fault_ref)->ops->get_ref (wsdl_fault_ref, env))
+      ((wsdl_fault_ref)->ops->get_ref (wsdl_fault_ref, env))
 
 #define AXIS2_WSDL_FAULT_REF_SET_REF(wsdl_fault_ref, env, ref) \
-		((wsdl_fault_ref)->ops->set_ref (wsdl_fault_ref, env, ref))        
+      ((wsdl_fault_ref)->ops->set_ref (wsdl_fault_ref, env, ref))        
         
 /*************************** End of function macros ***************************/
 

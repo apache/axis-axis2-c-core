@@ -87,7 +87,7 @@ axis2_ctx_create(const axis2_env_t *env)
     }
 
     ctx_impl->persistent_map = NULL;
-	ctx_impl->non_persistent_map = NULL;
+   ctx_impl->non_persistent_map = NULL;
     
     ctx_impl->persistent_map = axis2_hash_make(env);
     if (!(ctx_impl->persistent_map))
@@ -96,13 +96,13 @@ axis2_ctx_create(const axis2_env_t *env)
         return NULL;
     }
     
-	ctx_impl->non_persistent_map = axis2_hash_make(env);
+   ctx_impl->non_persistent_map = axis2_hash_make(env);
     if (!(ctx_impl->non_persistent_map))
     {
         axis2_ctx_free(&(ctx_impl->ctx), env);
         return NULL;
     }
-	
+   
     /* initialize ops */
     ctx_impl->ctx.ops = NULL;
     ctx_impl->ctx.ops  = AXIS2_MALLOC( env->allocator, sizeof(axis2_ctx_ops_t) );

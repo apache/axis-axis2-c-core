@@ -87,7 +87,7 @@ int axis2_test_dep_engine_load()
                     {
                         axis2_qname_t *qname = NULL;
                         qname = AXIS2_OP_GET_QNAME((axis2_op_t *)op, env);
-					    oname = AXIS2_QNAME_GET_LOCALPART(qname, env);
+                   oname = AXIS2_QNAME_GET_LOCALPART(qname, env);
                         printf("op name = %s\n", oname);
                     }
                 }
@@ -310,7 +310,7 @@ int axis2_test_default_module_version()
 
 int main()
 {
-	axis2_allocator_t *allocator = NULL;
+   axis2_allocator_t *allocator = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
 
@@ -323,5 +323,5 @@ int main()
     axis2_test_transport_sender_load();*/
     axis2_test_dep_engine_load();
     axis2_test_default_module_version();
-	return 0;
+   return 0;
 }

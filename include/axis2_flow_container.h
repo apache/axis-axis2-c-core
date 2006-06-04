@@ -36,10 +36,10 @@
 extern "C"
 {
 #endif
-	
+   
 typedef struct axis2_flow_container_ops axis2_flow_container_ops_t;
-typedef struct axis2_flow_container axis2_flow_container_t;	
-	
+typedef struct axis2_flow_container axis2_flow_container_t;   
+   
 
 /** @defgroup axis2_flow_container Flow Container
   * @ingroup axis2_flow_container
@@ -52,11 +52,11 @@ typedef struct axis2_flow_container axis2_flow_container_t;
  */
 struct axis2_flow_container_ops
 {
-	/** Deallocate memory
+   /** Deallocate memory
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-	free) (axis2_flow_container_t *flow_container,
+   free) (axis2_flow_container_t *flow_container,
            const axis2_env_t *env);
 
     /**
@@ -64,7 +64,7 @@ struct axis2_flow_container_ops
      * @return in flow
      */
     axis2_flow_t *(AXIS2_CALL *
-	get_inflow)(axis2_flow_container_t *flow_container,
+   get_inflow)(axis2_flow_container_t *flow_container,
                 const axis2_env_t *env);
     
     /**
@@ -72,7 +72,7 @@ struct axis2_flow_container_ops
      * @param inflow in flow
      */
     axis2_status_t (AXIS2_CALL *
-	set_inflow)(axis2_flow_container_t *flow_container,
+   set_inflow)(axis2_flow_container_t *flow_container,
                 const axis2_env_t *env,
                 axis2_flow_t *inflow);
     
@@ -81,7 +81,7 @@ struct axis2_flow_container_ops
      * @return out flow
      */
     axis2_flow_t *(AXIS2_CALL *
-	get_outflow)(axis2_flow_container_t *flow_container,
+   get_outflow)(axis2_flow_container_t *flow_container,
                  const axis2_env_t *env);
     
     /**
@@ -89,7 +89,7 @@ struct axis2_flow_container_ops
      * @param outflow out flow
      */
     axis2_status_t (AXIS2_CALL *
-	set_outflow)(axis2_flow_container_t *flow_container,
+   set_outflow)(axis2_flow_container_t *flow_container,
                  const axis2_env_t *env,
                  axis2_flow_t *outflow);
     
@@ -98,7 +98,7 @@ struct axis2_flow_container_ops
      * @return fault in flow
      */
     axis2_flow_t * (AXIS2_CALL *
-	get_fault_inflow)(axis2_flow_container_t *flow_container,
+   get_fault_inflow)(axis2_flow_container_t *flow_container,
                       const axis2_env_t *env);
     
     /**
@@ -106,7 +106,7 @@ struct axis2_flow_container_ops
      * @param falut_inflow falut in flow
      */
     axis2_status_t (AXIS2_CALL *
-	set_fault_inflow)(axis2_flow_container_t *flow_container,
+   set_fault_inflow)(axis2_flow_container_t *flow_container,
                       const axis2_env_t *env,
                       axis2_flow_t *falut_inflow);
     /**
@@ -114,7 +114,7 @@ struct axis2_flow_container_ops
      * @return fault out flow
      */
     axis2_flow_t *(AXIS2_CALL *
-	get_fault_outflow)(axis2_flow_container_t *flow_container,
+   get_fault_outflow)(axis2_flow_container_t *flow_container,
                        const axis2_env_t *env);
     
     /**
@@ -122,18 +122,18 @@ struct axis2_flow_container_ops
      * @param fault_outflow fault out flow
      */
     axis2_status_t (AXIS2_CALL *
-	set_fault_outflow)(axis2_flow_container_t *flow_container,
+   set_fault_outflow)(axis2_flow_container_t *flow_container,
                        const axis2_env_t *env,
                        axis2_flow_t *fault_outflow);  
 };
 
 /** 
  * @brief Flow container struct
- *	Container for flows  
+ *   Container for flows  
  */ 
 struct axis2_flow_container
 {
-	axis2_flow_container_ops_t *ops;
+   axis2_flow_container_ops_t *ops;
 };
 
 /**

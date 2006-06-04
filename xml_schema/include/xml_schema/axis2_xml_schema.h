@@ -55,7 +55,7 @@ extern "C"
 
 struct axis2_xml_schema_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -234,19 +234,19 @@ axis2_xml_schema_resolve_methods(
                                 axis2_hash_t *methods);
 
 #define AXIS2_XML_SCHEMA_FREE(schema, env) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
             free(schema, env))
 
 #define AXIS2_XML_SCHEMA_SUPER_OBJS(schema, env) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
             super_objs(schema, env))
 
 #define AXIS2_XML_SCHEMA_TYPE(schema, env) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
             type(schema, env))
 
 #define AXIS2_XML_SCHEMA_GET_BASE_IMPL(schema, env) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
             get_base_impl(schema, env))
             
 #define AXIS2_XML_SCHEMA_GET_NAMESPACE(schema, env, prefix) \
@@ -254,36 +254,36 @@ axis2_xml_schema_resolve_methods(
             get_namespace(schema, env, prefix))            
 
 #define AXIS2_XML_SCHEMA_GET_ATTR_FORM_DEFAULT(schema, env) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
             get_attr_form_default(schema, env))
 
 #define AXIS2_XML_SCHEMA_SET_ATTR_FORM_DEFAULT(schema, env, attr_form) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
             set_attr_form_default(schema, env, attr_form))
 
 #define AXIS2_XML_SCHEMA_GET_ATTR_GROUPS(schema, env) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
            get_attr_groups(schema, env))
            
 #define AXIS2_XML_SCHEMA_GET_ATTRS(schema, env) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
            get_attrs(schema, env))           
 
 #define AXIS2_XML_SCHEMA_GET_BLOCK_DEFAULT(schema, env) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
            get_block_default(schema, env))
            
 
 #define AXIS2_XML_SCHEMA_SET_BLOCK_DEFAULT(schema, env, block_default) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
            set_block_default(schema, env, block_default))
            
 #define AXIS2_XML_SCHEMA_GET_ELEMENT_FORM_DEFAULT(schema, env) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
            get_element_form_default(schema, env))
 
 #define AXIS2_XML_SCHEMA_SET_ELEMENT_FORM_DEFAULT(schema, env, ele_form_default) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
            set_element_form_default(schema, env, ele_form_default))
            
 #define AXIS2_XML_SCHEMA_GET_ELEMENTS(schema, env) \
@@ -299,11 +299,11 @@ axis2_xml_schema_resolve_methods(
            get_type_by_qname(schema, env, qname))                  
 
 #define AXIS2_XML_SCHEMA_SET_FINAL_DEFAULT(schema, env, final_default) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
            set_final_default(schema, env, final_default))
 
 #define AXIS2_XML_SCHEMA_GET_FINAL_DEFAULT(schema, env) \
-		(((axis2_xml_schema_t *) schema)->ops->\
+      (((axis2_xml_schema_t *) schema)->ops->\
            get_final_default(schema, env))
            
 #define AXIS2_XML_SCHEMA_GET_GROUPS(schema, env) \

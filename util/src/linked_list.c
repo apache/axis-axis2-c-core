@@ -20,7 +20,7 @@
 typedef struct axis2_linked_list_impl
 {
     /** handler description */
-	axis2_linked_list_t linked_list;
+   axis2_linked_list_t linked_list;
     /**The number of elements in this list. */
     int size;
     

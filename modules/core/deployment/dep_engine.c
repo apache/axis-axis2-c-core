@@ -75,7 +75,7 @@ typedef struct axis2_dep_engine_impl
 } axis2_dep_engine_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(dep_engine) ((axis2_dep_engine_impl_t *) dep_engine)
-	
+   
 /*************************** Function headers *********************************/
 
 axis2_status_t AXIS2_CALL
@@ -280,7 +280,7 @@ axis2_char_t *AXIS2_CALL
 axis2_dep_engine_get_repos_path(axis2_dep_engine_t *dep_engine,
                                 const axis2_env_t *env);                                
   
-/************************* End of function headers ****************************/	
+/************************* End of function headers ****************************/   
 
 axis2_dep_engine_t *AXIS2_CALL
 axis2_dep_engine_create(const axis2_env_t *env)
@@ -290,9 +290,9 @@ axis2_dep_engine_create(const axis2_env_t *env)
     AXIS2_ENV_CHECK(env, NULL);
     
     dep_engine_impl = (axis2_dep_engine_impl_t *) AXIS2_MALLOC (env->allocator
-		    , sizeof (axis2_dep_engine_impl_t));
+          , sizeof (axis2_dep_engine_impl_t));
     
-	if(NULL == dep_engine_impl)
+   if(NULL == dep_engine_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -364,7 +364,7 @@ axis2_dep_engine_create(const axis2_env_t *env)
     dep_engine_impl->dep_engine.ops->set_current_file_item = 
             axis2_dep_engine_set_current_file_item;
     dep_engine_impl->dep_engine.ops->set_arch_reader = 
-	    axis2_dep_engine_set_arch_reader;
+       axis2_dep_engine_set_arch_reader;
     
     return &(dep_engine_impl->dep_engine);
 }
@@ -377,15 +377,15 @@ axis2_dep_engine_create_with_repos_name (
     
     AXIS2_ENV_CHECK(env, NULL);
     
-	dep_engine_impl = (axis2_dep_engine_impl_t *)
+   dep_engine_impl = (axis2_dep_engine_impl_t *)
         axis2_dep_engine_create_with_repos_name_and_svr_xml_file(env, 
             repos_path, AXIS2_SERVER_XML_FILE);
     if(!dep_engine_impl)
     {
         return NULL;
     }
-					
-	return &(dep_engine_impl->dep_engine);
+               
+   return &(dep_engine_impl->dep_engine);
 }
 
 axis2_dep_engine_t *AXIS2_CALL
@@ -409,7 +409,7 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axis2_env_t *env,
     
     dep_engine_impl = (axis2_dep_engine_impl_t *) axis2_dep_engine_create(env);
     
-	if(NULL == dep_engine_impl)
+   if(NULL == dep_engine_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -426,19 +426,19 @@ axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axis2_env_t *env,
     
     dep_engine_impl->folder_name = AXIS2_STRDUP(repos_path, env);
     if(NULL == dep_engine_impl->folder_name)
-	{
+   {
         axis2_dep_engine_free(&(dep_engine_impl->dep_engine), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
     
     dep_engine_impl->axis2_repos = AXIS2_STRDUP(repos_path, env);
     if(NULL == dep_engine_impl->axis2_repos)
-	{
+   {
         axis2_dep_engine_free(&(dep_engine_impl->dep_engine), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
-	}
+   }
    
     conf_file_l = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
     dep_engine_impl->conf_name = AXIS2_STRACAT(conf_file_l, svr_xml_file, env);
@@ -578,9 +578,9 @@ axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
         dep_engine_impl->repos_listener = NULL;
     }
 
-	if(NULL != dep_engine->ops)
+   if(NULL != dep_engine->ops)
     {
-		AXIS2_FREE(env->allocator, dep_engine->ops);
+      AXIS2_FREE(env->allocator, dep_engine->ops);
         dep_engine->ops = NULL;
     }
     
@@ -590,7 +590,7 @@ axis2_dep_engine_free (axis2_dep_engine_t *dep_engine,
         dep_engine_impl = NULL;
     }
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 
@@ -1520,8 +1520,8 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                     file_name = AXIS2_ARCH_FILE_DATA_GET_NAME(dep_engine_impl->
                         curr_file, env);
                     status = AXIS2_ARCH_READER_READ_MODULE_ARCH(
-		                dep_engine_impl->arch_reader, env, file_name, dep_engine, 
-			                meta_data);
+                      dep_engine_impl->arch_reader, env, file_name, dep_engine, 
+                         meta_data);
                     if(AXIS2_SUCCESS != status)
                     {
                         AXIS2_ARCH_READER_FREE(arch_reader, env);

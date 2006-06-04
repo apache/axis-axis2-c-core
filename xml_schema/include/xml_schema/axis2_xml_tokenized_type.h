@@ -42,7 +42,7 @@ extern "C"
 
 struct axis2_xml_tokenized_type_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -81,19 +81,19 @@ axis2_xml_tokenized_type_create(const axis2_env_t *env,
 /********************** Macros **************************************************************/
 
 #define AXIS2_XML_TOKENIZED_TYPE_FREE(tokenized_type, env) \
-		(((axis2_xml_tokenized_type_t *) tokenized_type)->ops->free(tokenized_type, env))
+      (((axis2_xml_tokenized_type_t *) tokenized_type)->ops->free(tokenized_type, env))
 
 #define AXIS2_XML_TOKENIZED_TYPE_GET_BASE_IMPL(tokenized_type, env) \
-		(((axis2_xml_tokenized_type_t *) tokenized_type)->ops->get_base_impl(tokenized_type, env))
+      (((axis2_xml_tokenized_type_t *) tokenized_type)->ops->get_base_impl(tokenized_type, env))
 
 #define AXIS2_XML_TOKENIZED_TYPE_GET_VALUES(tokenized_type, env) \
-		(((axis2_xml_tokenized_type_t *) tokenized_type)->ops->values(tokenized_type, env))
-		
+      (((axis2_xml_tokenized_type_t *) tokenized_type)->ops->values(tokenized_type, env))
+      
 #define AXIS2_XML_TOKENIZED_TYPE_SUPER_OBJS(tokenized_type, env) \
-		(((axis2_xml_tokenized_type_t *) tokenized_type)->ops->super_objs(tokenized_type, env))		
+      (((axis2_xml_tokenized_type_t *) tokenized_type)->ops->super_objs(tokenized_type, env))      
 
 #define AXIS2_XML_TOKENIZED_TYPE_TYPE(tokenized_type, env) \
-		(((axis2_xml_tokenized_type_t *) tokenized_type)->ops->type(tokenized_type, env))
+      (((axis2_xml_tokenized_type_t *) tokenized_type)->ops->type(tokenized_type, env))
 /** @} */
 #ifdef __cplusplus
 }

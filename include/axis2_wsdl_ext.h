@@ -49,24 +49,24 @@ typedef struct axis2_wsdl_ext_ops axis2_wsdl_ext_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_ext_t *ext,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
 
 };
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  * This Extensibility Element is extended to handle particularly the
  * SOAP Adress or the Endpoint URL.
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext
 {
-	axis2_wsdl_ext_ops_t *ops;
+   axis2_wsdl_ext_ops_t *ops;
     axis2_char_t *namespc;
 };
 
@@ -80,7 +80,7 @@ axis2_wsdl_ext_create (const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_EXT_FREE(ext, env) \
-		((ext)->ops->free (ext, env))
+      ((ext)->ops->free (ext, env))
 
 /*************************** End of function macros ***************************/
 

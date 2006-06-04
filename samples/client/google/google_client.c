@@ -88,7 +88,7 @@ int main(int argc, char** argv)
     {
         printf("Error creating service client\n");
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-						" %d :: %s", env->error->error_number,
+                  " %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
     }
 
@@ -134,8 +134,8 @@ int main(int argc, char** argv)
     }
     else
     {
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-						" %d :: %s", env->error->error_number,
+      AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+                  " %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("Google client invoke FAILED!\n");
     }
@@ -183,8 +183,8 @@ build_soap_body_content(const axis2_env_t *env, axis2_char_t *operation, axis2_c
     AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(text_om_ele, env,attri1, text_om_node);
     AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, word_to_spell, text_om_node);
     
-	buffer = AXIS2_OM_NODE_TO_STRING(google_om_node, env);
-	printf("%s\n", buffer);
+   buffer = AXIS2_OM_NODE_TO_STRING(google_om_node, env);
+   printf("%s\n", buffer);
     return google_om_node;
 }
 

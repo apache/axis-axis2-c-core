@@ -58,7 +58,7 @@ struct axis2_url;
 
 struct axis2_woden_ext_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -111,25 +111,25 @@ axis2_woden_ext_element_resolve_methods(
         axis2_hash_t *methods);
 
 #define AXIS2_WODEN_EXT_ELEMENT_FREE(ext_element, env) \
-		(((axis2_woden_ext_element_t *) ext_element)->ops->free (ext_element, env))
+      (((axis2_woden_ext_element_t *) ext_element)->ops->free (ext_element, env))
 
 #define AXIS2_WODEN_EXT_ELEMENT_ELEMENT_TYPE(ext_element, env) \
-		(((axis2_woden_ext_element_t *) ext_element)->ops->\
+      (((axis2_woden_ext_element_t *) ext_element)->ops->\
          type (ext_element, env))
 
 #define AXIS2_WODEN_EXT_ELEMENT_SET_EXT_TYPE(ext_element, env, qname) \
-		(((axis2_woden_ext_element_t *) ext_element)->ops->set_ext_type(ext_element, env, \
+      (((axis2_woden_ext_element_t *) ext_element)->ops->set_ext_type(ext_element, env, \
                                                                qname))
 
 #define AXIS2_WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env) \
-		(((axis2_woden_ext_element_t *) ext_element)->ops->get_ext_type(ext_element, env))
+      (((axis2_woden_ext_element_t *) ext_element)->ops->get_ext_type(ext_element, env))
 
 #define AXIS2_WODEN_EXT_ELEMENT_SET_REQUIRED(ext_element, env, required) \
-		(((axis2_woden_ext_element_t *) ext_element)->ops->set_required(ext_element, env, \
+      (((axis2_woden_ext_element_t *) ext_element)->ops->set_required(ext_element, env, \
                                                              required))
 
 #define AXIS2_WODEN_EXT_ELEMENT_IS_REQUIRED(ext_element, env) \
-		(((axis2_woden_ext_element_t *) ext_element)->ops->is_required(ext_element, env))
+      (((axis2_woden_ext_element_t *) ext_element)->ops->is_required(ext_element, env))
 
 
 /** @} */

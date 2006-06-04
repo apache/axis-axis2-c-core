@@ -22,7 +22,7 @@ extern "C"
 #define GUTHTHILA_FALSE 0
 
 /**
-  *	Exporting 
+  *   Exporting 
   */
 #if defined(WIN32)
 #define GUTHTHILA_EXPORT __declspec(dllexport)
@@ -31,7 +31,7 @@ extern "C"
 #endif
 
 /**
-  *	Importing
+  *   Importing
   */
 #if defined(WIN32)
 #define GUTHTHILA_IMPORT __declspec(dllimport)
@@ -40,7 +40,7 @@ extern "C"
 #endif
 
 /**
-  *	Calling Conventions
+  *   Calling Conventions
   */
 #if defined(__GNUC__)
 #define GUTHTHILA_CALL __attribute__((cdecl))

@@ -20,11 +20,11 @@
 
 /** 
  * @brief Wsdl Extension Soap Header struct impl
- *	 Wsdl Extention Soap Header  
+ *    Wsdl Extention Soap Header  
  */ 
 typedef struct axis2_wsdl_ext_soap_header_impl
 {
-	axis2_wsdl_ext_soap_header_t ext_soap_header;
+   axis2_wsdl_ext_soap_header_t ext_soap_header;
     
     axis2_qname_t *msg_qname;
     axis2_char_t *part;
@@ -32,13 +32,13 @@ typedef struct axis2_wsdl_ext_soap_header_impl
 } axis2_wsdl_ext_soap_header_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(ext_soap_header) \
-		((axis2_wsdl_ext_soap_header_impl_t *)ext_soap_header)
+      ((axis2_wsdl_ext_soap_header_impl_t *)ext_soap_header)
 
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-	axis2_wsdl_ext_soap_header_free (axis2_wsdl_ext_soap_header_t *ext_soap_header,
-									const axis2_env_t *env);
+   axis2_wsdl_ext_soap_header_free (axis2_wsdl_ext_soap_header_t *ext_soap_header,
+                           const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 axis2_wsdl_ext_soap_header_get_part(axis2_wsdl_ext_soap_header_t *ext_soap_header,
@@ -75,13 +75,13 @@ axis2_wsdl_ext_soap_header_create (const axis2_env_t *env,
 {
     axis2_wsdl_ext_soap_header_impl_t *ext_soap_header_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	ext_soap_header_impl = (axis2_wsdl_ext_soap_header_impl_t *) AXIS2_MALLOC(env->allocator,
-			sizeof(axis2_wsdl_ext_soap_header_impl_t));
-	
-	
-	if(NULL == ext_soap_header_impl)
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   ext_soap_header_impl = (axis2_wsdl_ext_soap_header_impl_t *) AXIS2_MALLOC(env->allocator,
+         sizeof(axis2_wsdl_ext_soap_header_impl_t));
+   
+   
+   if(NULL == ext_soap_header_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
@@ -92,7 +92,7 @@ axis2_wsdl_ext_soap_header_create (const axis2_env_t *env,
     ext_soap_header_impl->qelement = NULL;
     ext_soap_header_impl->ext_soap_header.ops = NULL;
     ext_soap_header_impl->ext_soap_header.ext_soap_body = NULL;
-	
+   
     ext_soap_header_impl->ext_soap_header.ext_soap_body = 
         axis2_wsdl_ext_soap_body_create(env, NULL);
     if(NULL == ext_soap_header_impl->ext_soap_header.ext_soap_body)
@@ -102,12 +102,12 @@ axis2_wsdl_ext_soap_header_create (const axis2_env_t *env,
         return NULL;
     }    
     
-	ext_soap_header_impl->ext_soap_header.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_ext_soap_header_ops_t));
-	if(NULL == ext_soap_header_impl->ext_soap_header.ops)
+   ext_soap_header_impl->ext_soap_header.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_ext_soap_header_ops_t));
+   if(NULL == ext_soap_header_impl->ext_soap_header.ops)
     {
         axis2_wsdl_ext_soap_header_free(&(ext_soap_header_impl->ext_soap_header), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     if(!qtype)
@@ -119,21 +119,21 @@ axis2_wsdl_ext_soap_header_create (const axis2_env_t *env,
         (&(ext_soap_header_impl->ext_soap_header))->ext_soap_body->ext_element, 
             env, qtype);
 
-	ext_soap_header_impl->ext_soap_header.ops->free =  axis2_wsdl_ext_soap_header_free;
-	ext_soap_header_impl->ext_soap_header.ops->get_part = 
+   ext_soap_header_impl->ext_soap_header.ops->free =  axis2_wsdl_ext_soap_header_free;
+   ext_soap_header_impl->ext_soap_header.ops->get_part = 
         axis2_wsdl_ext_soap_header_get_part;
     ext_soap_header_impl->ext_soap_header.ops->set_part = 
         axis2_wsdl_ext_soap_header_set_part;
-	ext_soap_header_impl->ext_soap_header.ops->get_msg_qname = 
+   ext_soap_header_impl->ext_soap_header.ops->get_msg_qname = 
         axis2_wsdl_ext_soap_header_get_msg_qname;
     ext_soap_header_impl->ext_soap_header.ops->set_msg_qname = 
         axis2_wsdl_ext_soap_header_set_msg_qname;
-	ext_soap_header_impl->ext_soap_header.ops->get_qelement = 
+   ext_soap_header_impl->ext_soap_header.ops->get_qelement = 
         axis2_wsdl_ext_soap_header_get_qelement;
     ext_soap_header_impl->ext_soap_header.ops->set_qelement = 
         axis2_wsdl_ext_soap_header_set_qelement;
-	
-	return &(ext_soap_header_impl->ext_soap_header);
+   
+   return &(ext_soap_header_impl->ext_soap_header);
 }
 
 /***************************Function implementation****************************/
@@ -148,7 +148,7 @@ axis2_wsdl_ext_soap_header_free (axis2_wsdl_ext_soap_header_t *ext_soap_header,
     
     exp_soap_header_impl = AXIS2_INTF_TO_IMPL(ext_soap_header);
     
-	if(NULL != ext_soap_header->ops)
+   if(NULL != ext_soap_header->ops)
         AXIS2_FREE(env->allocator, ext_soap_header->ops);
     
     if(NULL != exp_soap_header_impl->part)
@@ -178,7 +178,7 @@ axis2_wsdl_ext_soap_header_free (axis2_wsdl_ext_soap_header_t *ext_soap_header,
     AXIS2_FREE(env->allocator, exp_soap_header_impl);
     exp_soap_header_impl = NULL;
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_char_t *AXIS2_CALL

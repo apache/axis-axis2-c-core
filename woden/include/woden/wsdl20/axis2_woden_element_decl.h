@@ -61,7 +61,7 @@ struct axis2_woden_ext_element;
 
 struct axis2_woden_element_decl_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -198,52 +198,52 @@ axis2_woden_element_decl_resolve_methods(
         axis2_hash_t *methods);
 
 #define AXIS2_WODEN_ELEMENT_DECL_FREE(decl, env) \
-		(((axis2_woden_element_decl_t *) decl)->ops->\
+      (((axis2_woden_element_decl_t *) decl)->ops->\
          free (decl, env))
 
 #define AXIS2_WODEN_ELEMENT_DECL_TO_ELEMENT_DECL_FREE(decl, \
         env) \
-		(((axis2_woden_element_decl_t *) decl)->ops->\
+      (((axis2_woden_element_decl_t *) decl)->ops->\
          to_element_decl_free (decl, env))
 
 #define AXIS2_WODEN_ELEMENT_DECL_SUPER_OBJS(decl, env) \
-		(((axis2_woden_element_decl_t *) decl)->ops->\
+      (((axis2_woden_element_decl_t *) decl)->ops->\
          super_objs (decl, env))
 
 #define AXIS2_WODEN_ELEMENT_DECL_TYPE(decl, env) \
-		(((axis2_woden_element_decl_t *) decl)->ops->\
+      (((axis2_woden_element_decl_t *) decl)->ops->\
          type (decl, env))
 
 #define AXIS2_WODEN_ELEMENT_DECL_GET_QNAME(decl, env) \
-		(((axis2_woden_element_decl_t *) decl)->ops->\
+      (((axis2_woden_element_decl_t *) decl)->ops->\
          get_qname(decl, env))
 
 #define AXIS2_WODEN_ELEMENT_DECL_GET_SYSTEM(decl, env) \
-		(((axis2_woden_element_decl_t *) decl)->ops->\
+      (((axis2_woden_element_decl_t *) decl)->ops->\
          get_system(decl, env))
 
 #define AXIS2_WODEN_ELEMENT_DECL_GET_CONTENT_MODEL(decl, env) \
-		(((axis2_woden_element_decl_t *) decl)->ops->\
+      (((axis2_woden_element_decl_t *) decl)->ops->\
          get_content_model(decl, env))
 
 #define AXIS2_WODEN_ELEMENT_DECL_GET_CONTENT(decl, env) \
-		(((axis2_woden_element_decl_t *) decl)->ops->\
+      (((axis2_woden_element_decl_t *) decl)->ops->\
          get_content(decl, env))
 
 #define AXIS2_WODEN_ELEMENT_DECL_SET_QNAME(decl, env, qname) \
-		(((axis2_woden_element_decl_t *) decl)->ops->\
+      (((axis2_woden_element_decl_t *) decl)->ops->\
          set_qname(decl, env, qname))
 
 #define AXIS2_WODEN_ELEMENT_DECL_SET_SYSTEM(decl, env, type_system_uri) \
-		(((axis2_woden_element_decl_t *) decl)->ops->\
+      (((axis2_woden_element_decl_t *) decl)->ops->\
          set_system(decl, env, type_system_uri))
 
 #define AXIS2_WODEN_ELEMENT_DECL_SET_CONTENT_MODEL(decl, env, content_model) \
-		(((axis2_woden_element_decl_t *) decl)->ops->\
+      (((axis2_woden_element_decl_t *) decl)->ops->\
          set_content_model(decl, env, content_model))
 
 #define AXIS2_WODEN_ELEMENT_DECL_SET_CONTENT(decl, env, element_content) \
-		(((axis2_woden_element_decl_t *) decl)->ops->\
+      (((axis2_woden_element_decl_t *) decl)->ops->\
          set_content(decl, env, element_content))
 
 

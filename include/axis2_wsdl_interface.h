@@ -55,12 +55,12 @@ typedef struct axis2_wsdl_interface_ops axis2_wsdl_interface_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_interface_t *wsdl_interface,
-		    const axis2_env_t *env);
+          const axis2_env_t *env);
 
     /**
      * Method getDefinedOperations
@@ -210,11 +210,11 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_interface
 {
-	axis2_wsdl_interface_ops_t *ops;
+   axis2_wsdl_interface_ops_t *ops;
     struct axis2_wsdl_extensible_component *extensible_component;
 };
 
@@ -227,56 +227,56 @@ AXIS2_EXTERN axis2_wsdl_interface_t *AXIS2_CALL axis2_wsdl_interface_create (con
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_INTERFACE_FREE(wsdl_interface, env) \
-		((wsdl_interface)->ops->free (wsdl_interface, env))
+      ((wsdl_interface)->ops->free (wsdl_interface, env))
 
 #define AXIS2_WSDL_INTERFACE_GET_DEFINED_OPS(wsdl_interface, env) \
-		((wsdl_interface)->ops->get_defined_ops (wsdl_interface, env))
+      ((wsdl_interface)->ops->get_defined_ops (wsdl_interface, env))
 
 #define AXIS2_WSDL_INTERFACE_GET_FAULTS(wsdl_interface, env) \
-		((wsdl_interface)->ops->get_faults (wsdl_interface, env))
+      ((wsdl_interface)->ops->get_faults (wsdl_interface, env))
 
 #define AXIS2_WSDL_INTERFACE_GET_NAME(wsdl_interface, env) \
-		((wsdl_interface)->ops->get_name (wsdl_interface, env))
+      ((wsdl_interface)->ops->get_name (wsdl_interface, env))
 
 #define AXIS2_WSDL_INTERFACE_GET_OPS(wsdl_interface, env) \
-		((wsdl_interface)->ops->get_ops (wsdl_interface, env))
+      ((wsdl_interface)->ops->get_ops (wsdl_interface, env))
 
 #define AXIS2_WSDL_INTERFACE_GET_OP(wsdl_interface, env, nc_name) \
-		((wsdl_interface)->ops->get_op (wsdl_interface, env, nc_name))
+      ((wsdl_interface)->ops->get_op (wsdl_interface, env, nc_name))
         
 #define AXIS2_WSDL_INTERFACE_GET_SUPER_INTERFACES(wsdl_interface, env) \
-		((wsdl_interface)->ops->get_super_interfaces (wsdl_interface, env))
+      ((wsdl_interface)->ops->get_super_interfaces (wsdl_interface, env))
 
 #define AXIS2_WSDL_INTERFACE_GET_SUPER_INTERFACE(wsdl_interface, env) \
-		((wsdl_interface)->ops->get_super_interface (wsdl_interface, env))        
+      ((wsdl_interface)->ops->get_super_interface (wsdl_interface, env))        
 
 #define AXIS2_WSDL_INTERFACE_GET_TARGET_NAMESPACE(wsdl_interface, env) \
-		((wsdl_interface)->ops->get_target_namespace (wsdl_interface, env))
+      ((wsdl_interface)->ops->get_target_namespace (wsdl_interface, env))
         
 #define AXIS2_WSDL_INTERFACE_SET_FAULTS(wsdl_interface, env, list) \
-		((wsdl_interface)->ops->set_faults (wsdl_interface, env, list))
+      ((wsdl_interface)->ops->set_faults (wsdl_interface, env, list))
         
 #define AXIS2_WSDL_INTERFACE_SET_NAME(wsdl_interface, env, name) \
-		((wsdl_interface)->ops->set_name (wsdl_interface, env, name))
+      ((wsdl_interface)->ops->set_name (wsdl_interface, env, name))
         
 #define AXIS2_WSDL_INTERFACE_SET_OPS(wsdl_interface, env, list) \
-		((wsdl_interface)->ops->set_ops (wsdl_interface, env, list))
+      ((wsdl_interface)->ops->set_ops (wsdl_interface, env, list))
 
 #define AXIS2_WSDL_INTERFACE_SET_OP(wsdl_interface, env, op) \
-		((wsdl_interface)->ops->set_op (wsdl_interface, env, op))
+      ((wsdl_interface)->ops->set_op (wsdl_interface, env, op))
 
 #define AXIS2_WSDL_INTERFACE_SET_SUPER_INTERFACES(wsdl_interface, env, list) \
-		((wsdl_interface)->ops->set_super_interfaces (wsdl_interface, env, list))
+      ((wsdl_interface)->ops->set_super_interfaces (wsdl_interface, env, list))
         
 #define AXIS2_WSDL_INTERFACE_SET_SUPER_INTERFACE(wsdl_interface, env, interface) \
-		((wsdl_interface)->ops->set_super_interface (wsdl_interface, env, interface))
+      ((wsdl_interface)->ops->set_super_interface (wsdl_interface, env, interface))
         
 #define AXIS2_WSDL_INTERFACE_GET_STYLE_DEFAULT(wsdl_interface, env) \
-		((wsdl_interface)->ops->get_style_default (wsdl_interface, env))
+      ((wsdl_interface)->ops->get_style_default (wsdl_interface, env))
         
 #define AXIS2_WSDL_INTERFACE_SET_STYLE_DEFAULT(wsdl_interface, env, style_default) \
-		((wsdl_interface)->ops->set_style_default (wsdl_interface, env, style_default))
-	
+      ((wsdl_interface)->ops->set_style_default (wsdl_interface, env, style_default))
+   
 /*************************** End of function macros ***************************/
 
 /** @} */

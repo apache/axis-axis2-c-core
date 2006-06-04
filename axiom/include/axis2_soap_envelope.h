@@ -60,7 +60,7 @@ extern "C"
          * @return soap header null it no header is present
          */
         struct axis2_soap_header* (AXIS2_CALL *
-		get_header)(axis2_soap_envelope_t *envelope,
+      get_header)(axis2_soap_envelope_t *envelope,
                     const axis2_env_t *env);
         /**
          * Returns the soap body associated with this soap envelope
@@ -69,7 +69,7 @@ extern "C"
          * @return soap_body
          */
         struct axis2_soap_body* (AXIS2_CALL *
-		get_body)(axis2_soap_envelope_t *envelope,
+      get_body)(axis2_soap_envelope_t *envelope,
                   const axis2_env_t *env);
         /**
          * serialize function , serialize the soap envelope 
@@ -83,11 +83,11 @@ extern "C"
          *                 AXIS2_FAILURE otherwise
          */
         axis2_status_t (AXIS2_CALL *
-		serialize)(axis2_soap_envelope_t *envelope,
+      serialize)(axis2_soap_envelope_t *envelope,
                    const axis2_env_t *env,
                    axis2_om_output_t *om_output, 
                    axis2_bool_t cache);
-		
+      
         /**
          * Free function, This function deallocate all the resources associated 
          * with the soap_envelope
@@ -98,9 +98,9 @@ extern "C"
          * @return status code AXIS2_SUCCESS on success , AXIS2_FAILURE otherwise
          */         
         axis2_status_t (AXIS2_CALL *
-		free)(axis2_soap_envelope_t *envelope,
+      free)(axis2_soap_envelope_t *envelope,
               const axis2_env_t *env);
-			  
+           
         /**
          * returns the om_node associated with this soap envelope
          * @param envelope soap_envelope
@@ -108,7 +108,7 @@ extern "C"
          * @return axis2_om_node_t pointer
          */
         axis2_om_node_t* (AXIS2_CALL *
-		get_base_node)(axis2_soap_envelope_t *envelope,
+      get_base_node)(axis2_soap_envelope_t *envelope,
                        const axis2_env_t *env);
 
            
@@ -118,7 +118,7 @@ extern "C"
          * @return soap_version AXIS2_SOAP12 or AXIS2_SOAP11
          */         
         int (AXIS2_CALL *
-		get_soap_version)(axis2_soap_envelope_t *envelope,
+      get_soap_version)(axis2_soap_envelope_t *envelope,
                           const axis2_env_t *env);
                    
         /** return the soap envelope namespace 
@@ -127,7 +127,7 @@ extern "C"
          * @return axis2_om_namespace_t 
          */                                                
         axis2_om_namespace_t* (AXIS2_CALL *
-		get_namespace)(axis2_soap_envelope_t *envelope,
+      get_namespace)(axis2_soap_envelope_t *envelope,
                        const axis2_env_t *env);
 
         axis2_status_t (AXIS2_CALL *
@@ -154,7 +154,7 @@ struct axis2_soap_envelope
   */
 AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_envelope_create(const axis2_env_t *env, 
-						   axis2_om_namespace_t *ns);
+                     axis2_om_namespace_t *ns);
 
  /**
   * @param env Environment. MUST NOT be NULL
@@ -165,11 +165,11 @@ axis2_soap_envelope_create(const axis2_env_t *env,
   * if prefix is NULL default prefix is used
   * @returns a pointer to soap envelope struct
   * 
-  */						   
+  */                     
 AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_envelope_create_with_soap_version_prefix(const axis2_env_t *env,
                                                     int soap_version,
-                                                    axis2_char_t *prefix);						   
+                                                    axis2_char_t *prefix);                     
 
 AXIS2_EXTERN axis2_soap_envelope_t * AXIS2_CALL
 axis2_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
@@ -177,7 +177,7 @@ axis2_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
  
 AXIS2_EXTERN axis2_soap_envelope_t * AXIS2_CALL
 axis2_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
-		    axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version,
+          axis2_char_t *code_value, axis2_char_t *reason_text, int soap_version,
             axis2_array_list_t *sub_codes,
             axis2_om_node_t *detail_node);
 

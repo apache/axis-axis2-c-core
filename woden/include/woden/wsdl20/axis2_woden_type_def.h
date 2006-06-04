@@ -49,7 +49,7 @@ extern "C"
 
 struct axis2_woden_type_def_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -154,49 +154,49 @@ axis2_woden_type_def_resolve_methods(
 
 
 #define AXIS2_WODEN_TYPE_DEF_FREE(type_def, env) \
-		(((axis2_woden_type_def_t *) type_def)->ops->free(type_def, env))
+      (((axis2_woden_type_def_t *) type_def)->ops->free(type_def, env))
 
 #define AXIS2_WODEN_TYPE_DEF_SUPER_OBJS(type_def, env) \
-		(((axis2_woden_type_def_t *) type_def)->ops->\
+      (((axis2_woden_type_def_t *) type_def)->ops->\
          super_objs(type_def, env))
 
 #define AXIS2_WODEN_TYPE_DEF_TYPE(type_def, env) \
-		(((axis2_woden_type_def_t *) type_def)->ops->type(type_def, env))
+      (((axis2_woden_type_def_t *) type_def)->ops->type(type_def, env))
 
 #define AXIS2_WODEN_TYPE_DEF_GET_BASE_IMPL(type_def, env) \
-		(((axis2_woden_type_def_t *) type_def)->ops->\
+      (((axis2_woden_type_def_t *) type_def)->ops->\
          get_base_impl(type_def, env))
 
 #define AXIS2_WODEN_TYPE_DEF_SET_QNAME(type_def, env, qname) \
-		(((axis2_woden_type_def_t *) type_def)->ops->\
+      (((axis2_woden_type_def_t *) type_def)->ops->\
          set_qname(type_def, env, qname))
 
 #define AXIS2_WODEN_TYPE_DEF_GET_QNAME(type_def, env) \
-		(((axis2_woden_type_def_t *) type_def)->ops->\
+      (((axis2_woden_type_def_t *) type_def)->ops->\
          get_qname(type_def, env))
 
 #define AXIS2_WODEN_TYPE_DEF_SET_SYSTEM(type_def, env, type_system_uri) \
-		(((axis2_woden_type_def_t *) type_def)->ops->\
+      (((axis2_woden_type_def_t *) type_def)->ops->\
          set_system(type_def, env, type_system_uri))
 
 #define AXIS2_WODEN_TYPE_DEF_GET_SYSTEM(type_def, env) \
-		(((axis2_woden_type_def_t *) type_def)->ops->\
+      (((axis2_woden_type_def_t *) type_def)->ops->\
          get_system(type_def, env))
 
 #define AXIS2_WODEN_TYPE_DEF_SET_CONTENT_MODEL(type_def, env, content_model) \
-		(((axis2_woden_type_def_t *) type_def)->ops->\
+      (((axis2_woden_type_def_t *) type_def)->ops->\
          set_content_model(type_def, env, content_model))
 
 #define AXIS2_WODEN_TYPE_DEF_GET_CONTENT_MODEL(type_def, env) \
-		(((axis2_woden_type_def_t *) type_def)->ops->\
+      (((axis2_woden_type_def_t *) type_def)->ops->\
          get_content_model(type_def, env))
 
 #define AXIS2_WODEN_TYPE_DEF_SET_CONTENT(type_def, env, type_def_content) \
-		(((axis2_woden_type_def_t *) type_def)->ops->\
+      (((axis2_woden_type_def_t *) type_def)->ops->\
          set_content(type_def, env, type_def_content))
 
 #define AXIS2_WODEN_TYPE_DEF_GET_CONTENT(type_def, env) \
-		(((axis2_woden_type_def_t *) type_def)->ops->\
+      (((axis2_woden_type_def_t *) type_def)->ops->\
          get_content(type_def, env))
 
 /** @} */

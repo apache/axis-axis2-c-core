@@ -50,12 +50,12 @@ typedef struct axis2_wsdl_ext_soap_op_ops axis2_wsdl_ext_soap_op_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_op_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_ext_soap_op_t *ext_soap_op,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_soap_action) (axis2_wsdl_ext_soap_op_t *ext_soap_op,
@@ -79,12 +79,12 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_op_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_op
 {
     axis2_wsdl_ext_t base;
-	axis2_wsdl_ext_soap_op_ops_t *ops;
+   axis2_wsdl_ext_soap_op_ops_t *ops;
     struct axis2_wsdl_extensible_element *ext_element;
 };
 
@@ -99,19 +99,19 @@ axis2_wsdl_ext_soap_op_create (const axis2_env_t *env,
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_EXT_SOAP_OP_FREE(ext_soap_op, env) \
-		((ext_soap_op)->ops->free (ext_soap_op, env))
+      ((ext_soap_op)->ops->free (ext_soap_op, env))
 
 #define AXIS2_WSDL_EXT_SOAP_OP_GET_SOAP_ACTION(ext_soap_op, env) \
-		((ext_soap_op)->ops->get_soap_action (ext_soap_op, env))
+      ((ext_soap_op)->ops->get_soap_action (ext_soap_op, env))
 
 #define AXIS2_WSDL_EXT_SOAP_OP_SET_SOAP_ACTION(ext_soap_op, env, soap_action) \
-		((ext_soap_op)->ops->set_soap_action (ext_soap_op, env, soap_action))
+      ((ext_soap_op)->ops->set_soap_action (ext_soap_op, env, soap_action))
         
 #define AXIS2_WSDL_EXT_SOAP_OP_GET_STYLE(ext_soap_op, env) \
-		((ext_soap_op)->ops->get_style (ext_soap_op, env))
+      ((ext_soap_op)->ops->get_style (ext_soap_op, env))
 
 #define AXIS2_WSDL_EXT_SOAP_OP_SET_STYLE(ext_soap_op, env, style) \
-		((ext_soap_op)->ops->set_style (ext_soap_op, env, style))        
+      ((ext_soap_op)->ops->set_style (ext_soap_op, env, style))        
 
 /*************************** End of function macros ***************************/
 

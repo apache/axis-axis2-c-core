@@ -18,11 +18,11 @@
 
 /** 
  * @brief Wsdl extensible attribute struct impl
- *	Wsdl extensible attribute
+ *   Wsdl extensible attribute
  */ 
 typedef struct axis2_wsdl_extensible_attribute_impl
 {
-	axis2_wsdl_extensible_attribute_t extensible_attribute;
+   axis2_wsdl_extensible_attribute_t extensible_attribute;
     
     axis2_qname_t *key;
     axis2_qname_t *value;
@@ -31,14 +31,14 @@ typedef struct axis2_wsdl_extensible_attribute_impl
 } axis2_wsdl_extensible_attribute_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(extensible_attribute) \
-		((axis2_wsdl_extensible_attribute_impl_t *)extensible_attribute)
+      ((axis2_wsdl_extensible_attribute_impl_t *)extensible_attribute)
 
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-	axis2_wsdl_extensible_attribute_free (
+   axis2_wsdl_extensible_attribute_free (
                 axis2_wsdl_extensible_attribute_t *extensible_attribute,
-				const axis2_env_t *env);
+            const axis2_env_t *env);
 
 axis2_qname_t *AXIS2_CALL
 axis2_wsdl_extensible_attribute_get_key(
@@ -69,13 +69,13 @@ axis2_wsdl_extensible_attribute_create (const axis2_env_t *env)
 {
     axis2_wsdl_extensible_attribute_impl_t *extensible_attribute_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	extensible_attribute_impl = (axis2_wsdl_extensible_attribute_impl_t *) 
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   extensible_attribute_impl = (axis2_wsdl_extensible_attribute_impl_t *) 
         AXIS2_MALLOC(env->allocator, sizeof(axis2_wsdl_extensible_attribute_impl_t));
-	
-	
-	if(NULL == extensible_attribute_impl)
+   
+   
+   if(NULL == extensible_attribute_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;        
@@ -85,30 +85,30 @@ axis2_wsdl_extensible_attribute_create (const axis2_env_t *env)
     extensible_attribute_impl->value = NULL;
     extensible_attribute_impl->extensible_attribute.ops = NULL;
     
-	extensible_attribute_impl->extensible_attribute.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_extensible_attribute_ops_t));
-	if(NULL == extensible_attribute_impl->extensible_attribute.ops)
+   extensible_attribute_impl->extensible_attribute.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_extensible_attribute_ops_t));
+   if(NULL == extensible_attribute_impl->extensible_attribute.ops)
     {
         axis2_wsdl_extensible_attribute_free(&(extensible_attribute_impl->
             extensible_attribute), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
     extensible_attribute_impl->extensible_attribute.ops->free =  
         axis2_wsdl_extensible_attribute_free;
     
-	extensible_attribute_impl->extensible_attribute.ops->get_key =  
+   extensible_attribute_impl->extensible_attribute.ops->get_key =  
         axis2_wsdl_extensible_attribute_get_key;
-	extensible_attribute_impl->extensible_attribute.ops->set_key = 
+   extensible_attribute_impl->extensible_attribute.ops->set_key = 
         axis2_wsdl_extensible_attribute_set_key;
-	extensible_attribute_impl->extensible_attribute.ops->get_value =  
+   extensible_attribute_impl->extensible_attribute.ops->get_value =  
         axis2_wsdl_extensible_attribute_get_value;
-	extensible_attribute_impl->extensible_attribute.ops->set_value = 
+   extensible_attribute_impl->extensible_attribute.ops->set_value = 
         axis2_wsdl_extensible_attribute_set_value;
-	
+   
     
-	return &(extensible_attribute_impl->extensible_attribute);
+   return &(extensible_attribute_impl->extensible_attribute);
 }
 
 /***************************Function implementation****************************/
@@ -119,7 +119,7 @@ axis2_wsdl_extensible_attribute_free (
                         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-	if(NULL != extensible_attribute->ops)
+   if(NULL != extensible_attribute->ops)
         AXIS2_FREE(env->allocator, extensible_attribute->ops);
     
     if(NULL != AXIS2_INTF_TO_IMPL(extensible_attribute)->key)
@@ -138,7 +138,7 @@ axis2_wsdl_extensible_attribute_free (
     
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(extensible_attribute));
     
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 axis2_qname_t *AXIS2_CALL

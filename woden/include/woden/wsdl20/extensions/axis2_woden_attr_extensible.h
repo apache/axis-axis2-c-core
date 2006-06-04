@@ -51,7 +51,7 @@ struct axis2_woden_xml_attr;
 
 struct axis2_woden_attr_extensible_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -128,43 +128,43 @@ axis2_woden_attr_extensible_resolve_methods(
         axis2_hash_t *methods);
 
 #define AXIS2_WODEN_ATTR_EXTENSIBLE_FREE(extensible, env) \
-		(((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
          free (extensible, env))
 
 #define AXIS2_WODEN_ATTR_EXTENSIBLE_TO_ATTR_EXTENSIBLE_FREE(extensible, env) \
-		(((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
          to_attr_extensible_free (extensible, env))
 
 #define AXIS2_WODEN_ATTR_EXTENSIBLE_SUPER_OBJS(extensible, env) \
-		(((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
          super_objs (extensible, env))
 
 #define AXIS2_WODEN_ATTR_EXTENSIBLE_TYPE(extensible, env) \
-		(((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
          type (extensible, env))
 
 #define AXIS2_WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTR(extensible, env, attr_type, \
         attr) \
-		(((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
          set_ext_attr(extensible, env, attr_type, attr))
 
 #define AXIS2_WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(extensible, env, \
         attr_type) \
-		(((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
          get_ext_attr(extensible, env, attr_type))
 
 #define AXIS2_WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTRS(extensible, env) \
-		(((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
          get_ext_attrs(extensible, env))
 
 #define AXIS2_WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTRS_FOR_NAMESPACE(extensible, \
         env, namespc) \
-		(((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
          get_ext_attrs_for_namespace(extensible, env, namespc))
 
 #define AXIS2_WODEN_ATTR_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(\
         extensible, env, namespc) \
-		(((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
          has_ext_attrs_for_namespace(extensible, env, namespc))
 
 

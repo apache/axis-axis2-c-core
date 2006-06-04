@@ -194,14 +194,14 @@ axis2_xml_schema_collection_create(const axis2_env_t *env);
 /***************** MACROS *****************************************************/
 
 #define AXIS2_XML_SCHEMA_COLLECTION_FREE(collection, env) \
-		((collection)->ops->free (collection, env))
-		
+      ((collection)->ops->free (collection, env))
+      
 #define AXIS2_XML_SCHEMA_COLLECTION_SET_BASE_URI(collection, env, base_uri) \
-		((collection)->ops->set_base_uri (collection, env, base_uri))
-		
+      ((collection)->ops->set_base_uri (collection, env, base_uri))
+      
 #define AXIS2_XML_SCHEMA_COLLECTION_INIT(collection, env) \
-		((collection)->ops->init(collection, env))
-		
+      ((collection)->ops->init(collection, env))
+      
 #define AXIS2_XML_SCHEMA_COLLECTION_READ_WITH_READER(collection, env, reader) \
         ((collection)->ops->read_with_reader( \
         collection, env, reader))

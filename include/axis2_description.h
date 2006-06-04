@@ -118,10 +118,10 @@ extern "C"
  */
 #define AXIS2_SERVICE_CLASS_NAME "SERVICE_CLASS_NAME"
 
-	
-/*********************************** Constants*********************************/	
-	
-	
+   
+/*********************************** Constants*********************************/   
+   
+   
 #ifdef __cplusplus
 }
 #endif

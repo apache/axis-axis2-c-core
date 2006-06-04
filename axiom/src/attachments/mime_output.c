@@ -25,7 +25,7 @@ axis2_char_t AXIS2_CRLF[] =  { 13, 10 };
 
 typedef struct axis2_mime_output_impl
 {
-	axis2_mime_output_t mime_output;
+   axis2_mime_output_t mime_output;
 } axis2_mime_output_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(mime_output) ((axis2_mime_output_impl_t *)(mime_output))
@@ -50,7 +50,7 @@ axis2_char_2_byte(const axis2_env_t *env, axis2_char_t *char_buffer, axis2_byte_
     }
     *byte_buffer = bytes;
     *byte_buffer_size = length;
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 /***************************** Function headers *******************************/
@@ -106,31 +106,31 @@ axis2_mime_output_create (const axis2_env_t *env)
 {
     axis2_mime_output_impl_t *mime_output_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	mime_output_impl = (axis2_mime_output_impl_t *) AXIS2_MALLOC(env->allocator, 
+   AXIS2_ENV_CHECK(env, NULL);
+   mime_output_impl = (axis2_mime_output_impl_t *) AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_mime_output_impl_t));
-		
-	if(NULL == mime_output_impl)
+      
+   if(NULL == mime_output_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-	
+   
     mime_output_impl->mime_output.ops = NULL;
     
-	mime_output_impl->mime_output.ops = AXIS2_MALLOC (env->allocator, 
+   mime_output_impl->mime_output.ops = AXIS2_MALLOC (env->allocator, 
         sizeof(axis2_mime_output_ops_t));
-	if(NULL == mime_output_impl->mime_output.ops)
+   if(NULL == mime_output_impl->mime_output.ops)
     {
         axis2_mime_output_free(&(mime_output_impl->mime_output), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	mime_output_impl->mime_output.ops->free =  axis2_mime_output_free;
+   mime_output_impl->mime_output.ops->free =  axis2_mime_output_free;
     mime_output_impl->mime_output.ops->complete = axis2_mime_output_complete;
     mime_output_impl->mime_output.ops->get_content_type_for_mime = axis2_mime_output_get_content_type_for_mime; 
-	return &(mime_output_impl->mime_output);
+   return &(mime_output_impl->mime_output);
 }
 
 /*************************** Start of op impls *************************/
@@ -175,7 +175,7 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *header_value = NULL;
     axis2_char_t *content_id_string = NULL;
-	axis2_mime_body_part_t *root_mime_body_part = NULL;
+   axis2_mime_body_part_t *root_mime_body_part = NULL;
     axis2_byte_t *output_stream_start = NULL;
     int output_stream_start_size = 0;
     axis2_byte_t *output_stream_body = NULL;
@@ -280,7 +280,7 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
         soap_body_buffer_size = AXIS2_STRLEN(soap_body_buffer);
     }
     
-	stream_buffer_size = output_stream_start_size + output_stream_body_size + 
+   stream_buffer_size = output_stream_start_size + output_stream_body_size + 
             soap_body_buffer_size + output_stream_body_parts_size + 
             boundary_stream_size;
             
@@ -357,7 +357,7 @@ axis2_write_mime_boundary (axis2_mime_output_t *mime_output, const axis2_env_t *
     byte_stream = AXIS2_MALLOC(env->allocator, (size + 2) * sizeof(axis2_byte_t));
     if (!byte_stream)
     {
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 
@@ -403,7 +403,7 @@ axis2_create_mime_body_part (axis2_om_text_t *text, const axis2_env_t *env)
     AXIS2_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-type", content_type);
     AXIS2_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-transfer-encoding", "binary");
 
-	return mime_body_part;
+   return mime_body_part;
 }
 
 axis2_status_t AXIS2_CALL
@@ -427,7 +427,7 @@ axis2_write_body_part (axis2_mime_output_t *mime_output, const axis2_env_t *env,
     byte_stream = AXIS2_MALLOC(env->allocator, size * sizeof(axis2_byte_t));
     if (!byte_stream)
     {
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
 

@@ -44,7 +44,7 @@ extern "C"
 
 struct axis2_woden_soap_module_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -140,31 +140,31 @@ axis2_woden_soap_module_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_SOAP_MODULE_FREE(soap_module, env) \
-		(((axis2_woden_soap_module_t *) soap_module)->ops->free(soap_module, env))
+      (((axis2_woden_soap_module_t *) soap_module)->ops->free(soap_module, env))
 
 #define AXIS2_WODEN_SOAP_MODULE_SUPER_OBJS(soap_module, env) \
-		(((axis2_woden_soap_module_t *) soap_module)->ops->super_objs(soap_module, env))
+      (((axis2_woden_soap_module_t *) soap_module)->ops->super_objs(soap_module, env))
 
 #define AXIS2_WODEN_SOAP_MODULE_TYPE(soap_module, env) \
-		(((axis2_woden_soap_module_t *) soap_module)->ops->type(soap_module, env))
+      (((axis2_woden_soap_module_t *) soap_module)->ops->type(soap_module, env))
 
 #define AXIS2_WODEN_SOAP_MODULE_GET_BASE_IMPL(soap_module, env) \
-		(((axis2_woden_soap_module_t *) soap_module)->ops->get_base_impl(soap_module, env))
+      (((axis2_woden_soap_module_t *) soap_module)->ops->get_base_impl(soap_module, env))
 
 #define AXIS2_WODEN_SOAP_MODULE_GET_REF(soap_module, env) \
-		(((axis2_woden_soap_module_t *) soap_module)->\
+      (((axis2_woden_soap_module_t *) soap_module)->\
         get_ref (soap_module, env))
 
 #define AXIS2_WODEN_SOAP_MODULE_IS_REQUIRED(soap_module, env) \
-		(((axis2_woden_soap_module_t *) soap_module)->\
+      (((axis2_woden_soap_module_t *) soap_module)->\
         is_required (soap_module, env))
 
 #define AXIS2_WODEN_SOAP_MODULE_GET_PARENT(soap_module, env) \
-		(((axis2_woden_soap_module_t *) soap_module)->\
+      (((axis2_woden_soap_module_t *) soap_module)->\
         get_parent (soap_module, env))
 
 #define AXIS2_WODEN_SOAP_MODULE_TO_ELEMENT(soap_module, env) \
-		(((axis2_woden_soap_module_t *) soap_module)->\
+      (((axis2_woden_soap_module_t *) soap_module)->\
         to_element (soap_module, env))
 
 /** @} */

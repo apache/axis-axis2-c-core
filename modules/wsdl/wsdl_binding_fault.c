@@ -18,11 +18,11 @@
 
 /** 
  * @brief Wsdl Binding Fault struct impl
- *	Wsdl Binding Fault  
+ *   Wsdl Binding Fault  
  */ 
 typedef struct axis2_wsdl_binding_fault_impl
 {
-	axis2_wsdl_binding_fault_t binding_fault;
+   axis2_wsdl_binding_fault_t binding_fault;
     
     /**
      * Field ref
@@ -32,13 +32,13 @@ typedef struct axis2_wsdl_binding_fault_impl
 } axis2_wsdl_binding_fault_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(binding_fault) \
-		((axis2_wsdl_binding_fault_impl_t *)binding_fault)
+      ((axis2_wsdl_binding_fault_impl_t *)binding_fault)
 
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-	axis2_binding_fault_free (axis2_wsdl_binding_fault_t *binding_fault,
-									const axis2_env_t *env);
+   axis2_binding_fault_free (axis2_wsdl_binding_fault_t *binding_fault,
+                           const axis2_env_t *env);
 axis2_qname_t *AXIS2_CALL
 axis2_binding_fault_get_ref(axis2_wsdl_binding_fault_t *binding_fault,
                             const axis2_env_t *env);
@@ -55,18 +55,18 @@ axis2_binding_fault_create (const axis2_env_t *env)
 {
     axis2_wsdl_binding_fault_impl_t *binding_fault_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	
-	binding_fault_impl = (axis2_wsdl_binding_fault_impl_t *) 
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   binding_fault_impl = (axis2_wsdl_binding_fault_impl_t *) 
         AXIS2_MALLOC(env->allocator, sizeof(axis2_wsdl_binding_fault_impl_t));
-	
-	
-	if(NULL == binding_fault_impl)
+   
+   
+   if(NULL == binding_fault_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-	
+   
     binding_fault_impl->ref = NULL;
     binding_fault_impl->binding_fault.extensible_component = NULL;
     binding_fault_impl->binding_fault.ops = NULL;
@@ -77,28 +77,28 @@ axis2_binding_fault_create (const axis2_env_t *env)
     if(NULL == binding_fault_impl->binding_fault.extensible_component)
     {
         axis2_binding_fault_free(&(binding_fault_impl->binding_fault), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	binding_fault_impl->binding_fault.ops = 
-		AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_binding_fault_ops_t));
-	if(NULL == binding_fault_impl->binding_fault.ops)
+   binding_fault_impl->binding_fault.ops = 
+      AXIS2_MALLOC (env->allocator, sizeof(axis2_wsdl_binding_fault_ops_t));
+   if(NULL == binding_fault_impl->binding_fault.ops)
     {
         axis2_binding_fault_free(&(binding_fault_impl->binding_fault), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	binding_fault_impl->binding_fault.ops->free =  axis2_binding_fault_free;
+   binding_fault_impl->binding_fault.ops->free =  axis2_binding_fault_free;
     
-	binding_fault_impl->binding_fault.ops->get_ref =  
+   binding_fault_impl->binding_fault.ops->get_ref =  
         axis2_binding_fault_get_ref;
     
-	binding_fault_impl->binding_fault.ops->set_ref =  
+   binding_fault_impl->binding_fault.ops->set_ref =  
         axis2_binding_fault_set_ref;
     
-	return &(binding_fault_impl->binding_fault);
+   return &(binding_fault_impl->binding_fault);
 }
 
 /***************************Function implementation****************************/
@@ -112,7 +112,7 @@ axis2_binding_fault_free (axis2_wsdl_binding_fault_t *binding_fault,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     binding_fault_impl = AXIS2_INTF_TO_IMPL(binding_fault);
-	if(NULL != binding_fault->ops)
+   if(NULL != binding_fault->ops)
     {
         AXIS2_FREE(env->allocator, binding_fault->ops);
         binding_fault->ops = NULL;
@@ -132,7 +132,7 @@ axis2_binding_fault_free (axis2_wsdl_binding_fault_t *binding_fault,
     if(binding_fault_impl)
         AXIS2_FREE(env->allocator, binding_fault_impl);
     binding_fault_impl = NULL;
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
     
 

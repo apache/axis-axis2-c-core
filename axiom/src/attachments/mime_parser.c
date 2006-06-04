@@ -20,7 +20,7 @@
 
 typedef struct axis2_mime_parser_impl
 {
-	axis2_mime_parser_t mime_parser;
+   axis2_mime_parser_t mime_parser;
     axis2_hash_t *mime_parts_map;
     int soap_body_len;
     axis2_char_t* soap_body_str;
@@ -62,16 +62,16 @@ axis2_mime_parser_create (const axis2_env_t *env)
 {
     axis2_mime_parser_impl_t *mime_parser_impl = NULL;
     
-	AXIS2_ENV_CHECK(env, NULL);
-	mime_parser_impl = (axis2_mime_parser_impl_t *) AXIS2_MALLOC(env->allocator, 
+   AXIS2_ENV_CHECK(env, NULL);
+   mime_parser_impl = (axis2_mime_parser_impl_t *) AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_mime_parser_impl_t));
-		
-	if(NULL == mime_parser_impl)
+      
+   if(NULL == mime_parser_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-	
+   
     mime_parser_impl->mime_parser.ops = NULL;
     mime_parser_impl->mime_parts_map = NULL;
     mime_parser_impl->soap_body_len = 0;
@@ -84,22 +84,22 @@ axis2_mime_parser_create (const axis2_env_t *env)
         return NULL;
     }
     
-	mime_parser_impl->mime_parser.ops = AXIS2_MALLOC (env->allocator, 
+   mime_parser_impl->mime_parser.ops = AXIS2_MALLOC (env->allocator, 
         sizeof(axis2_mime_parser_ops_t));
-	if(NULL == mime_parser_impl->mime_parser.ops)
+   if(NULL == mime_parser_impl->mime_parser.ops)
     {
         axis2_mime_parser_free(&(mime_parser_impl->mime_parser), env);
-		AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-	mime_parser_impl->mime_parser.ops->free =  axis2_mime_parser_free;
+   mime_parser_impl->mime_parser.ops->free =  axis2_mime_parser_free;
     mime_parser_impl->mime_parser.ops->parse = axis2_mime_parser_parse;
     mime_parser_impl->mime_parser.ops->get_mime_parts_map = axis2_mime_parser_get_mime_parts_map;
-	mime_parser_impl->mime_parser.ops->get_soap_body_len = axis2_mime_parser_get_soap_body_len;
-	mime_parser_impl->mime_parser.ops->get_soap_body_str = axis2_mime_parser_get_soap_body_str;
+   mime_parser_impl->mime_parser.ops->get_soap_body_len = axis2_mime_parser_get_soap_body_len;
+   mime_parser_impl->mime_parser.ops->get_soap_body_str = axis2_mime_parser_get_soap_body_str;
     
-	return &(mime_parser_impl->mime_parser);
+   return &(mime_parser_impl->mime_parser);
 }
 
 /*************************** Start of op impls *************************/

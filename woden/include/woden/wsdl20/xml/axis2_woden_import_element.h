@@ -54,7 +54,7 @@ typedef union axis2_woden_import_element_base axis2_woden_import_element_base_t;
 
 struct axis2_woden_import_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -113,35 +113,35 @@ axis2_woden_import_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_IMPORT_ELEMENT_FREE(import_el, env) \
-		(((axis2_woden_import_element_t *) import_el)->ops->\
+      (((axis2_woden_import_element_t *) import_el)->ops->\
          free (import_el, env))
 
 #define AXIS2_WODEN_IMPORT_ELEMENT_TYPE(import_el, env) \
-		(((axis2_woden_import_element_t *) import_el)->ops->\
+      (((axis2_woden_import_element_t *) import_el)->ops->\
          type (import_el, env))
 
 #define AXIS2_WODEN_IMPORT_ELEMENT_SET_NAMESPACE(import_el, env, ns_uri) \
-		(((axis2_woden_import_element_t *) import_el)->ops->\
+      (((axis2_woden_import_element_t *) import_el)->ops->\
          set_namespace(import_el, env, ns_uri))
 
 #define AXIS2_WODEN_IMPORT_ELEMENT_GET_NAMESPACE(import_el, env) \
-		(((axis2_woden_import_element_t *) import_el)->ops->\
+      (((axis2_woden_import_element_t *) import_el)->ops->\
          get_namespace(import_el, env))
 
 #define AXIS2_WODEN_IMPORT_ELEMENT_SET_LOCATION(import_el, env, loc_uri) \
-		(((axis2_woden_import_element_t *) import_el)->ops->\
+      (((axis2_woden_import_element_t *) import_el)->ops->\
          set_location(import_el, env, loc_uri))
 
 #define AXIS2_WODEN_IMPORT_ELEMENT_GET_LOCATION(import_el, env) \
-		(((axis2_woden_import_element_t *) import_el)->ops->\
+      (((axis2_woden_import_element_t *) import_el)->ops->\
          get_location(import_el, env))
 
 #define AXIS2_WODEN_IMPORT_ELEMENT_SET_DESC_ELEMENT(import_el, env, desc) \
-		(((axis2_woden_import_element_t *) import_el)->ops->\
+      (((axis2_woden_import_element_t *) import_el)->ops->\
          set_desc_element(import_el, env, desc))
 
 #define AXIS2_WODEN_IMPORT_ELEMENT_GET_DESC_ELEMENT(import_el, env) \
-		(((axis2_woden_import_element_t *) import_el)->ops->\
+      (((axis2_woden_import_element_t *) import_el)->ops->\
          get_desc_element(import_el, env))
 
 /** @} */

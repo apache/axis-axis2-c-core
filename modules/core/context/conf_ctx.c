@@ -40,8 +40,8 @@ typedef struct axis2_conf_ctx_impl
 
     axis2_hash_t *svc_grp_ctx_map;
 
-	/* Mutex to syncronize the read/write operations */
-	axis2_thread_mutex_t *mutex;
+   /* Mutex to syncronize the read/write operations */
+   axis2_thread_mutex_t *mutex;
 } axis2_conf_ctx_impl_t;
 
 /** Interface to implementation conversion macro */
@@ -158,14 +158,14 @@ AXIS2_EXTERN axis2_conf_ctx_t* AXIS2_CALL
     conf_ctx_impl->svc_ctx_map = NULL;
     conf_ctx_impl->svc_grp_ctx_map = NULL;
     conf_ctx_impl->mutex = axis2_thread_mutex_create(env->allocator, 
-						AXIS2_THREAD_MUTEX_DEFAULT);
-	if(NULL == conf_ctx_impl->mutex)
-	{
-		axis2_conf_ctx_free(&(conf_ctx_impl->conf_ctx), env);
+                  AXIS2_THREAD_MUTEX_DEFAULT);
+   if(NULL == conf_ctx_impl->mutex)
+   {
+      axis2_conf_ctx_free(&(conf_ctx_impl->conf_ctx), env);
         return NULL;
-	}
+   }
     
-	if (conf)
+   if (conf)
         conf_ctx_impl->conf = conf;
     
     conf_ctx_impl->base = axis2_ctx_create(env);
@@ -182,13 +182,13 @@ AXIS2_EXTERN axis2_conf_ctx_t* AXIS2_CALL
         return NULL;
     }
     
-	conf_ctx_impl->svc_ctx_map = axis2_hash_make(env);
+   conf_ctx_impl->svc_ctx_map = axis2_hash_make(env);
     if (!(conf_ctx_impl->svc_ctx_map))
     {
         axis2_conf_ctx_free(&(conf_ctx_impl->conf_ctx), env);
         return NULL;
     }
-	
+   
     conf_ctx_impl->svc_grp_ctx_map = axis2_hash_make(env);
     if (!(conf_ctx_impl->svc_grp_ctx_map))
     {
@@ -349,14 +349,14 @@ axis2_conf_ctx_get_op_ctx(struct axis2_conf_ctx *conf_ctx,
     axis2_thread_mutex_lock(conf_ctx_impl->mutex);
     if (conf_ctx_impl->op_ctx_map)
     {
-		axis2_op_ctx_t *rv = NULL;
+      axis2_op_ctx_t *rv = NULL;
         rv = (axis2_op_ctx_t*)axis2_hash_get(conf_ctx_impl->op_ctx_map, 
-						message_id, AXIS2_HASH_KEY_STRING);
+                  message_id, AXIS2_HASH_KEY_STRING);
                         
-		axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
-		return rv;
+      axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
+      return rv;
     }
-	axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
+   axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
     return NULL;
 }
 
@@ -394,13 +394,13 @@ axis2_conf_ctx_get_svc_ctx(struct axis2_conf_ctx *conf_ctx,
     axis2_thread_mutex_lock(conf_ctx_impl->mutex);
     if (conf_ctx_impl->svc_ctx_map)
     {
-		axis2_svc_ctx_t *rv = NULL;	
+      axis2_svc_ctx_t *rv = NULL;   
         rv = (axis2_svc_ctx_t*)axis2_hash_get(conf_ctx_impl->svc_ctx_map, 
-						svc_id, AXIS2_HASH_KEY_STRING);
-		axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
-		return rv;
+                  svc_id, AXIS2_HASH_KEY_STRING);
+      axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
+      return rv;
     }
-	axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
+   axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
     return NULL;
 }
 
@@ -438,13 +438,13 @@ axis2_conf_ctx_get_svc_grp_ctx(struct axis2_conf_ctx *conf_ctx,
     axis2_thread_mutex_lock(conf_ctx_impl->mutex);
     if (conf_ctx_impl->svc_grp_ctx_map)
     {
-		axis2_svc_grp_ctx_t *rv = NULL;
+      axis2_svc_grp_ctx_t *rv = NULL;
         rv = (axis2_svc_grp_ctx_t*)axis2_hash_get(conf_ctx_impl->svc_grp_ctx_map
-						, svc_grp_id, AXIS2_HASH_KEY_STRING);
-		axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
-		return rv;
+                  , svc_grp_id, AXIS2_HASH_KEY_STRING);
+      axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
+      return rv;
     }
-	axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
+   axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
     return NULL;
 }
 
@@ -452,14 +452,14 @@ axis2_char_t* AXIS2_CALL
 axis2_conf_ctx_get_root_dir(struct axis2_conf_ctx *conf_ctx, 
                             const axis2_env_t *env) 
 {
-	axis2_char_t *rv = NULL;
-	axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
+   axis2_char_t *rv = NULL;
+   axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-	conf_ctx_impl = AXIS2_INTF_TO_IMPL(conf_ctx);
-	axis2_thread_mutex_lock(conf_ctx_impl->mutex);    
+   conf_ctx_impl = AXIS2_INTF_TO_IMPL(conf_ctx);
+   axis2_thread_mutex_lock(conf_ctx_impl->mutex);    
     rv = AXIS2_INTF_TO_IMPL(conf_ctx)->root_dir;
-	axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
-	return rv;
+   axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
+   return rv;
 }
 
 axis2_status_t AXIS2_CALL 
@@ -485,7 +485,7 @@ axis2_conf_ctx_set_root_dir(struct axis2_conf_ctx *conf_ctx,
         if (!(conf_ctx_impl->root_dir))
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-			axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
+         axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
             return AXIS2_FAILURE;
         }
     }
@@ -505,7 +505,7 @@ axis2_conf_ctx_init(struct axis2_conf_ctx *conf_ctx,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     conf_ctx_impl = AXIS2_INTF_TO_IMPL(conf_ctx);
-	axis2_thread_mutex_lock(conf_ctx_impl->mutex);
+   axis2_thread_mutex_lock(conf_ctx_impl->mutex);
     conf_ctx_impl->conf = conf;
     
     for (hi = axis2_hash_first (conf_ctx_impl->op_ctx_map, env);

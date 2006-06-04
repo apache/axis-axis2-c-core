@@ -18,7 +18,7 @@
 #include "axis2_error_default.h"
 
 axis2_char_t * AXIS2_CALL axis2_error_impl_get_message (axis2_error_t *error);
-		
+      
 axis2_status_t AXIS2_CALL
 axis2_error_impl_set_error_number (axis2_error_t *error, axis2_error_codes_t error_number);
 
@@ -293,8 +293,8 @@ axis2_error_init()
     /* wsdl */
     axis2_error_messages[AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING] =
         "Interface or Port Type not found for the binding";
-	axis2_error_messages[AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM] =
-	    "Interfaces or Ports not found for the partially built WOM";
+   axis2_error_messages[AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM] =
+       "Interfaces or Ports not found for the partially built WOM";
     axis2_error_messages[AXIS2_ERROR_INVALID_STATE_WSDL_OP] = 
         "Wsdl op accessed has invalid state";
     axis2_error_messages[AXIS2_ERROR_INVALID_STATE_WSDL_SVC] = 
@@ -374,9 +374,9 @@ axis2_error_init()
         "error occured in writing start element with namespace prefix";
     axis2_error_messages[AXIS2_ERROR_WRITING_CDATA] = 
         "error in writing cdata section";
-	axis2_error_messages[AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE] =
-		"AXIS2_XML_PARSER_TYPE_BUFFER or AXIS2_XML_PARSER_TYPE_DOC is expected";
-	
+   axis2_error_messages[AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE] =
+      "AXIS2_XML_PARSER_TYPE_BUFFER or AXIS2_XML_PARSER_TYPE_DOC is expected";
+   
     /* invalid type passed */
     axis2_error_messages[AXIS2_ERROR_INVALID_BASE_TYPE] = 
         "invalid type passed";
@@ -496,9 +496,9 @@ axis2_error_create (axis2_allocator_t * allocator)
     }
 
     error->ops->get_message = axis2_error_impl_get_message;
-	error->ops->set_error_number = axis2_error_impl_set_error_number;
-	error->ops->set_status_code = axis2_error_impl_set_status_code;
-	error->ops->get_status_code = axis2_error_impl_get_status_code;
+   error->ops->set_error_number = axis2_error_impl_set_error_number;
+   error->ops->set_status_code = axis2_error_impl_set_status_code;
+   error->ops->get_status_code = axis2_error_impl_get_status_code;
     error->ops->free            = axis2_error_impl_free;
 
     return error;

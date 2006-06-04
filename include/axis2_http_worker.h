@@ -83,8 +83,8 @@ axis2_http_worker_create (const axis2_env_t *env, axis2_conf_ctx_t *conf_ctx);
 
 
 #define AXIS2_HTTP_WORKER_PROCESS_REQUEST(http_worker, env, svr_conn,\
-				simple_request) ((http_worker)->ops->process_request(\
-				http_worker, env, svr_conn, simple_request))
+            simple_request) ((http_worker)->ops->process_request(\
+            http_worker, env, svr_conn, simple_request))
 #define AXIS2_HTTP_WORKER_SET_SVR_PORT(http_worker, env, port) \
                 ((http_worker)->ops->set_svr_port(http_worker, env, port))
 #define AXIS2_HTTP_WORKER_FREE(http_worker, env) \

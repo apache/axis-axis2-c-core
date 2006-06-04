@@ -46,7 +46,7 @@ extern "C"
 
 struct axis2_woden_binding_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -211,39 +211,39 @@ axis2_woden_binding_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_BINDING_FREE(binding, env) \
-		(((axis2_woden_binding_t *) binding)->ops->free(binding, env))
+      (((axis2_woden_binding_t *) binding)->ops->free(binding, env))
 
 #define AXIS2_WODEN_BINDING_SUPER_OBJS(binding, env) \
-		(((axis2_woden_binding_t *) binding)->ops->super_objs(binding, env))
+      (((axis2_woden_binding_t *) binding)->ops->super_objs(binding, env))
 
 #define AXIS2_WODEN_BINDING_TYPE(binding, env) \
-		(((axis2_woden_binding_t *) binding)->ops->type(binding, env))
+      (((axis2_woden_binding_t *) binding)->ops->type(binding, env))
 
 #define AXIS2_WODEN_BINDING_GET_BASE_IMPL(binding, env) \
-		(((axis2_woden_binding_t *) binding)->ops->get_base_impl(binding, env))
+      (((axis2_woden_binding_t *) binding)->ops->get_base_impl(binding, env))
 
 #define AXIS2_WODEN_BINDING_GET_QNAME(binding, env) \
-		(((axis2_woden_binding_t *) binding)->\
+      (((axis2_woden_binding_t *) binding)->\
          get_qname(binding, env))
 
 #define AXIS2_WODEN_BINDING_GET_INTERFACE(binding, env) \
-		(((axis2_woden_binding_t *) binding)->\
+      (((axis2_woden_binding_t *) binding)->\
          get_interface(binding, env))
 
 #define AXIS2_WODEN_BINDING_GET_TYPE(binding, env) \
-		(((axis2_woden_binding_t *) binding)->ops->\
+      (((axis2_woden_binding_t *) binding)->ops->\
          get_type(binding, env))
 
 #define AXIS2_WODEN_BINDING_GET_BINDING_FAULTS(binding, env, qname) \
-		(((axis2_woden_binding_t *) binding)->ops->\
+      (((axis2_woden_binding_t *) binding)->ops->\
          get_binding_faults(binding, env, qname))
 
 #define AXIS2_WODEN_BINDING_GET_BINDING_OPS(binding, env) \
-		(((axis2_woden_binding_t *) binding)->ops->\
+      (((axis2_woden_binding_t *) binding)->ops->\
          get_binding_ops(binding, env))
 
 #define AXIS2_WODEN_BINDING_TO_ELEMENT(binding, env) \
-		(((axis2_woden_binding_t *) binding)->ops->\
+      (((axis2_woden_binding_t *) binding)->ops->\
          to_element(binding, env))
 
 /** @} */

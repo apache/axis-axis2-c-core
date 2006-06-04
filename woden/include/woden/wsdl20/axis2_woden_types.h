@@ -58,7 +58,7 @@ extern "C"
 
 struct axis2_woden_types_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -253,43 +253,43 @@ axis2_woden_types_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_TYPES_FREE(types, env) \
-		(((axis2_woden_types_t *) types)->ops->free(types, env))
+      (((axis2_woden_types_t *) types)->ops->free(types, env))
 
 #define AXIS2_WODEN_TYPES_SUPER_OBJS(types, env) \
-		(((axis2_woden_types_t *) types)->ops->super_objs(types, env))
+      (((axis2_woden_types_t *) types)->ops->super_objs(types, env))
 
 #define AXIS2_WODEN_TYPES_TYPE(types, env) \
-		(((axis2_woden_types_t *) types)->ops->type(types, env))
+      (((axis2_woden_types_t *) types)->ops->type(types, env))
 
 #define AXIS2_WODEN_TYPES_GET_BASE_IMPL(types, env) \
-		(((axis2_woden_types_t *) types)->ops->get_base_impl(types, env))
+      (((axis2_woden_types_t *) types)->ops->get_base_impl(types, env))
 
 #define AXIS2_WODEN_TYPES_GET_ELEMENT_DECLARATION(types, env, qname) \
-		(((axis2_woden_types_t *) types)->ops->\
+      (((axis2_woden_types_t *) types)->ops->\
          get_element_declaration(types, env, qname))
 
 #define AXIS2_WODEN_TYPES_GET_TYPE_DEFINITION(types, env, qname) \
-		(((axis2_woden_types_t *) types)->ops->\
+      (((axis2_woden_types_t *) types)->ops->\
          get_type_definition(types, env, qname))
 
 #define AXIS2_WODEN_TYPES_GET_REFERENCEABLE_SCHEMA_DEFS(types, env) \
-		(((axis2_woden_types_t *) types)->ops->\
+      (((axis2_woden_types_t *) types)->ops->\
          get_referenceable_schema_defs(types, env))
 
 #define AXIS2_WODEN_TYPES_GET_REFERENCEABLE_SCHEMA_DEFS_WITH_NAMESPACE(types, env, namespc) \
-		(((axis2_woden_types_t *) types)->ops->\
+      (((axis2_woden_types_t *) types)->ops->\
          get_referenceable_schema_defs_with_namespace(types, env, namespc))
 
 #define AXIS2_WODEN_TYPES_IS_NAMESPACE_IN_SCOPE_WITH_NAMESPACE_URI(types, env, namespc_uri) \
-		(((axis2_woden_types_t *) types)->ops->\
+      (((axis2_woden_types_t *) types)->ops->\
          is_namespace_in_scope_with_namespace_uri(types, env, namespc_uri))
 
 #define AXIS2_WODEN_TYPES_IS_NAMESPACE_IN_SCOPE_WITH_QNAME(types, env, qname) \
-		(((axis2_woden_types_t *) types)->ops->\
+      (((axis2_woden_types_t *) types)->ops->\
          is_namespace_in_scope_with_qname(types, env, qname))
 
 #define AXIS2_WODEN_TYPES_IS_NAMESPACE_IN_SCOPE_WITH_NAMESPACE(types, env, namespc) \
-		(((axis2_woden_types_t *) types)->ops->\
+      (((axis2_woden_types_t *) types)->ops->\
          is_namespace_in_scope_with_namespace(types, env, namespc))
 
 /** @} */

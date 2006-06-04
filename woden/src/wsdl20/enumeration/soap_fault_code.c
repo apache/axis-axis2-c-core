@@ -20,7 +20,7 @@ typedef struct axis2_woden_soap_fault_code_impl axis2_woden_soap_fault_code_impl
 
 /** 
  * @brief Soap Fault Code Struct Impl
- *	Axis2 Soap Fault Code  
+ *   Axis2 Soap Fault Code  
  */ 
 struct axis2_woden_soap_fault_code_impl
 {

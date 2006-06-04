@@ -54,7 +54,7 @@ struct axis2_woden_component_exts;
 
 struct axis2_woden_nested_component_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -95,21 +95,21 @@ axis2_woden_nested_component_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_NESTED_COMPONENT_FREE(nested_component, env) \
-		(((axis2_woden_nested_component_t *) nested_component)->ops->\
+      (((axis2_woden_nested_component_t *) nested_component)->ops->\
          free (nested_component, env))
 
 #define AXIS2_WODEN_NESTED_COMPONENT_TO_NESTED_COMPONENT_FREE(nested_component, \
         env) \
-		(((axis2_woden_nested_component_t *) nested_component)->ops->\
+      (((axis2_woden_nested_component_t *) nested_component)->ops->\
          to_nested_component_free (nested_component, env))
 
 #define AXIS2_WODEN_NESTED_COMPONENT_TYPE(nested_component, env) \
-		(((axis2_woden_nested_component_t *) nested_component)->ops->\
+      (((axis2_woden_nested_component_t *) nested_component)->ops->\
          type (nested_component, env))
 
 #define AXIS2_WODEN_NESTED_COMPONENT_GET_PARENT(\
         nested_component, env) \
-		(((axis2_woden_nested_component_t *) nested_component)->ops->\
+      (((axis2_woden_nested_component_t *) nested_component)->ops->\
          get_parent(nested_component, env))
 
 /** @} */

@@ -28,8 +28,8 @@ typedef struct axis2_callback_impl
     axis2_soap_envelope_t *envelope;
     /** error code */
     int error;
-	/** to store callback specific data */
-	void *data;
+   /** to store callback specific data */
+   void *data;
 } axis2_callback_impl_t;
 
 /** Interface to implementation conversion macro */
@@ -86,15 +86,15 @@ axis2_callback_free (struct axis2_callback *callback,
 
 void AXIS2_CALL
 axis2_callback_set_on_complete(struct axis2_callback *callback,
-								on_complete_func_ptr f);
+                        on_complete_func_ptr f);
 
 void  AXIS2_CALL
 axis2_callback_set_on_error(struct axis2_callback *callback,
-							on_error_func_ptr f);
-		
+                     on_error_func_ptr f);
+      
 axis2_status_t AXIS2_CALL
 axis2_callback_set_data(struct axis2_callback *callback,
-						void *data);
+                  void *data);
 
 void* AXIS2_CALL
 axis2_callback_get_data(struct axis2_callback *callback);
@@ -117,7 +117,7 @@ axis2_callback_create(const axis2_env_t *env)
     callback_impl->complete = AXIS2_FALSE;
     callback_impl->envelope = NULL;
     callback_impl->error = AXIS2_ERROR_NONE;
-	callback_impl->data = NULL;
+   callback_impl->data = NULL;
     
     /* initialize ops */    
     callback_impl->callback.ops  = 
@@ -160,17 +160,17 @@ axis2_callback_create(const axis2_env_t *env)
     callback_impl->callback.ops->set_error = 
         axis2_callback_set_error;
 
-	callback_impl->callback.ops->set_data =
-		axis2_callback_set_data;
+   callback_impl->callback.ops->set_data =
+      axis2_callback_set_data;
 
-	callback_impl->callback.ops->get_data =
-		axis2_callback_get_data;
+   callback_impl->callback.ops->get_data =
+      axis2_callback_get_data;
 
-	callback_impl->callback.ops->set_on_complete = 
-		axis2_callback_set_on_complete;
+   callback_impl->callback.ops->set_on_complete = 
+      axis2_callback_set_on_complete;
 
-	callback_impl->callback.ops->set_on_error =
-		axis2_callback_set_on_error;
+   callback_impl->callback.ops->set_on_error =
+      axis2_callback_set_on_error;
 
     callback_impl->callback.ops->free = 
         axis2_callback_free;
@@ -275,39 +275,39 @@ axis2_callback_free (struct axis2_callback *callback,
 
 axis2_status_t AXIS2_CALL
 axis2_callback_set_data(struct axis2_callback *callback,
-							void *data)
+                     void *data)
 {
-	axis2_callback_impl_t *callback_impl = NULL;
-	
-	callback_impl = AXIS2_INTF_TO_IMPL(callback);
+   axis2_callback_impl_t *callback_impl = NULL;
+   
+   callback_impl = AXIS2_INTF_TO_IMPL(callback);
 
-	callback_impl->data = (void*)data;
+   callback_impl->data = (void*)data;
 
-	return AXIS2_SUCCESS;
+   return AXIS2_SUCCESS;
 }
 
 void * AXIS2_CALL
 axis2_callback_get_data(struct axis2_callback *callback)
 {
-	axis2_callback_impl_t *callback_impl = NULL;
+   axis2_callback_impl_t *callback_impl = NULL;
 
-	callback_impl = AXIS2_INTF_TO_IMPL(callback);
+   callback_impl = AXIS2_INTF_TO_IMPL(callback);
 
-	return callback_impl->data;
+   return callback_impl->data;
 }
 
 void AXIS2_CALL
 axis2_callback_set_on_complete(struct axis2_callback *callback,
-								on_complete_func_ptr func)
+                        on_complete_func_ptr func)
 {
-	callback->ops->on_complete = func;
+   callback->ops->on_complete = func;
 }
 
 void AXIS2_CALL
 axis2_callback_set_on_error(struct axis2_callback *callback,
-							on_error_func_ptr func)
+                     on_error_func_ptr func)
 {
-	callback->ops->on_error = func;
+   callback->ops->on_error = func;
 }
 
 axis2_status_t AXIS2_CALL 

@@ -60,17 +60,17 @@ struct axis2_callback_recv;
 struct axis2_op_client_ops
 {
 
-	/**
+   /**
      * Sets the options that should be used for this particular client. This
      * resets the entire set of options to use the new options - so you'd lose
      * any option cascading that may have been set up.
      *
      * @param options the options
      */
-	axis2_status_t (AXIS2_CALL *
-	set_options)(struct axis2_op_client *op_client,
-					const axis2_env_t *env,
-					axis2_options_t *options);
+   axis2_status_t (AXIS2_CALL *
+   set_options)(struct axis2_op_client *op_client,
+               const axis2_env_t *env,
+               axis2_options_t *options);
 
 
     /**
@@ -80,9 +80,9 @@ struct axis2_op_client_ops
      *
      * @return the options, which will never be null.
      */
-	axis2_options_t* (AXIS2_CALL *
-	get_options)(struct axis2_op_client *op_client,
-					const axis2_env_t *env);
+   axis2_options_t* (AXIS2_CALL *
+   get_options)(struct axis2_op_client *op_client,
+               const axis2_env_t *env);
 
     /**
      * Add a message context to the client for processing. This method must not
@@ -91,22 +91,22 @@ struct axis2_op_client_ops
      *
      * @param mc the message context
      */
-	axis2_status_t (AXIS2_CALL *
-	add_msg_ctx)(struct axis2_op_client *op_client,
-						const axis2_env_t *env,
-						axis2_msg_ctx_t *mc);
+   axis2_status_t (AXIS2_CALL *
+   add_msg_ctx)(struct axis2_op_client *op_client,
+                  const axis2_env_t *env,
+                  axis2_msg_ctx_t *mc);
 
-	/**
+   /**
      * Return a message from the client - will return null if the requested
      * message is not available.
      *
      * @param message_label the message label of the desired message context
      * @return the desired message context or null if its not available.
      */
-	axis2_msg_ctx_t* (AXIS2_CALL *
-	get_msg_ctx)(struct axis2_op_client *op_client,
-							const axis2_env_t *env,
-							axis2_char_t *message_label);
+   axis2_msg_ctx_t* (AXIS2_CALL *
+   get_msg_ctx)(struct axis2_op_client *op_client,
+                     const axis2_env_t *env,
+                     axis2_char_t *message_label);
 
     /**
      * Set the callback to be executed when a message comes into the MEP and the
@@ -118,12 +118,12 @@ struct axis2_op_client_ops
      * @param callback the callback to be used when the client decides its time to
      *                 use it
      */
-	axis2_status_t (AXIS2_CALL *
-	set_callback)(struct axis2_op_client *op_client,
-					const axis2_env_t *env,
-					axis2_callback_t *callback);
+   axis2_status_t (AXIS2_CALL *
+   set_callback)(struct axis2_op_client *op_client,
+               const axis2_env_t *env,
+               axis2_callback_t *callback);
 
-	 /**
+    /**
      * Execute the MEP. What this does depends on the specific operation client.
      * The basic idea is to have the operation client execute and do something
      * with the messages that have been added to it so far. For example, if its
@@ -135,10 +135,10 @@ struct axis2_op_client_ops
      *              block means is of course a function of the specific operation
      *              client.
      */
-	axis2_status_t (AXIS2_CALL *
-	execute)(struct axis2_op_client *op_client,
-				const axis2_env_t *env,
-				axis2_bool_t block);
+   axis2_status_t (AXIS2_CALL *
+   execute)(struct axis2_op_client *op_client,
+            const axis2_env_t *env,
+            axis2_bool_t block);
 
     /**
      * Reset the operation client to a clean status after the MEP has completed.
@@ -146,9 +146,9 @@ struct axis2_op_client_ops
      * the options; only the internal state so the client can be used again.
      *
      */
-	axis2_status_t (AXIS2_CALL *
-	reset)(struct axis2_op_client *op_client,
-				const axis2_env_t *env);
+   axis2_status_t (AXIS2_CALL *
+   reset)(struct axis2_op_client *op_client,
+            const axis2_env_t *env);
 
     /**
      * To close the tranport if necessary , can call this method. The most usage of thie method
@@ -158,17 +158,17 @@ struct axis2_op_client_ops
      *
      * @param mc : axis2_msg_ctx_t# which have all the trnport information
      */
-	axis2_status_t (AXIS2_CALL *
-	compelete)(struct axis2_op_client *op_client,
-				const axis2_env_t *env,
-				axis2_msg_ctx_t *mc);
+   axis2_status_t (AXIS2_CALL *
+   compelete)(struct axis2_op_client *op_client,
+            const axis2_env_t *env,
+            axis2_msg_ctx_t *mc);
 
-	/**
+   /**
      * To get the operation context of the operation cleint
      * @return Operation Context
      */
-	axis2_op_ctx_t* (AXIS2_CALL *
-	get_operation_context)(struct axis2_op_client *op_client);
+   axis2_op_ctx_t* (AXIS2_CALL *
+   get_operation_context)(struct axis2_op_client *op_client);
 
     axis2_status_t (AXIS2_CALL *
     set_callback_recv)(
@@ -176,14 +176,14 @@ struct axis2_op_client_ops
         const axis2_env_t *env,
         struct axis2_callback_recv *callback_recv);
 
-	axis2_status_t (AXIS2_CALL *
-	free)(struct axis2_op_client *op_client,
-				const axis2_env_t *env);
+   axis2_status_t (AXIS2_CALL *
+   free)(struct axis2_op_client *op_client,
+            const axis2_env_t *env);
 };
 
 /** 
  * @brief Operation Client struct
-  *	Axis2 Operation Client
+  *   Axis2 Operation Client
  */
 struct axis2_op_client
 {
@@ -191,44 +191,44 @@ struct axis2_op_client
 };
 
 AXIS2_EXTERN axis2_op_client_t* AXIS2_CALL axis2_op_client_create(const axis2_env_t *env,
-														axis2_op_t *op,
-														axis2_svc_ctx_t *svc_ctx,
-														axis2_options_t *options);
+                                          axis2_op_t *op,
+                                          axis2_svc_ctx_t *svc_ctx,
+                                          axis2_options_t *options);
     
 /************************** Start of function macros **************************/
 
 #define AXIS2_OP_CLIENT_SET_OPTIONS(op_client, env, options) \
-		((op_client)->ops->set_options(op_client, env, options))
+      ((op_client)->ops->set_options(op_client, env, options))
 
 #define AXIS2_OP_CLIENT_GET_OPTIONS(op_client, env) \
-		((op_client)->ops->get_options(op_client, env))
+      ((op_client)->ops->get_options(op_client, env))
 
 #define AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, mc) \
-		((op_client)->ops->add_msg_ctx(op_client, env, mc))
+      ((op_client)->ops->add_msg_ctx(op_client, env, mc))
 
 #define AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, message_label) \
-		((op_client)->ops->get_msg_ctx(op_client, env, message_label))
+      ((op_client)->ops->get_msg_ctx(op_client, env, message_label))
 
 #define AXIS2_OP_CLIENT_SET_CALLBACK(op_client, env, callback) \
-		((op_client)->ops->set_callback(op_client, env, callback))
+      ((op_client)->ops->set_callback(op_client, env, callback))
 
 #define AXIS2_OP_CLIENT_EXECUTE(op_client, env, block) \
-		((op_client)->ops->execute(op_client, env, block))
+      ((op_client)->ops->execute(op_client, env, block))
 
 #define AXIS2_OP_CLIENT_RESET(op_client, env) \
-		((op_client)->ops->reset(op_client, env))
+      ((op_client)->ops->reset(op_client, env))
 
 #define AXIS2_OP_CLIENT_COMPLETE(op_client, env, mc) \
-		((op_client)->ops->compelete(op_client, env, mc))
+      ((op_client)->ops->compelete(op_client, env, mc))
 
 #define AXIS2_OP_CLIENT_GET_OPERATION_CONTEXT(op_client, env) \
-		((op_client)->ops->get_operation_context(op_client, env))
+      ((op_client)->ops->get_operation_context(op_client, env))
 
 #define AXIS2_OP_CLIENT_FREE(op_client, env) \
-		((op_client)->ops->free(op_client, env))
+      ((op_client)->ops->free(op_client, env))
 
 #define AXIS2_OP_CLIENT_SET_CALLBACK_RECV(op_client, env, callback_recv) \
-		((op_client)->ops->set_callback_recv(op_client, env, callback_recv))
+      ((op_client)->ops->set_callback_recv(op_client, env, callback_recv))
 
 /************************** End of function macros ****************************/    
 

@@ -57,12 +57,12 @@ typedef struct axis2_phase_holder_ops axis2_phase_holder_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
-	free)(axis2_phase_holder_t *phase_holder,
-		  const axis2_env_t *env);
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
+   free)(axis2_phase_holder_t *phase_holder,
+        const axis2_env_t *env);
     
     /**
      * Method isPhaseExist
@@ -87,14 +87,14 @@ AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
     
     /**
      * this method is used to get the actual phase object given in the phase
-	 * array list
+    * array list
      * @param phaseName
      * @return
      */
     struct axis2_phase * (AXIS2_CALL *
     get_phase) (axis2_phase_holder_t *phase_holder, 
-				const axis2_env_t *env,
-				axis2_char_t *phase_name);
+            const axis2_env_t *env,
+            axis2_char_t *phase_name);
     
     /**
      * This method is to build the transport phase , here load the corresponding 
@@ -106,9 +106,9 @@ AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
      */
     axis2_status_t (AXIS2_CALL *
     build_transport_handler_chain) (axis2_phase_holder_t *phase_holder, 
-									const axis2_env_t *env,
-									struct axis2_phase *phase,
-									axis2_array_list_t *handlers);
+                           const axis2_env_t *env,
+                           struct axis2_phase *phase,
+                           axis2_array_list_t *handlers);
 
 
 
@@ -119,7 +119,7 @@ AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_phase_holder
 {
-	axis2_phase_holder_ops_t *ops;
+   axis2_phase_holder_ops_t *ops;
 };
 
 /**
@@ -136,24 +136,24 @@ axis2_phase_holder_create (const axis2_env_t *env);
  */
 AXIS2_EXTERN axis2_phase_holder_t * AXIS2_CALL 
 axis2_phase_holder_create_with_phases (const axis2_env_t *env, 
-									   axis2_array_list_t *phases);
+                              axis2_array_list_t *phases);
 
 /*************************** Function macros **********************************/
 
 #define AXIS2_PHASE_HOLDER_FREE(phase_holder, env) \
-		((phase_holder)->ops->free (phase_holder, env))
+      ((phase_holder)->ops->free (phase_holder, env))
 
 #define AXIS2_PHASE_HOLDER_IS_PHASE_EXIST(phase_holder, env, phase_name) \
-		((phase_holder)->ops->is_phase_exist (phase_holder, env, phase_name))
+      ((phase_holder)->ops->is_phase_exist (phase_holder, env, phase_name))
 
 #define AXIS2_PHASE_HOLDER_ADD_HANDLER(phase_holder, env, handler) \
-		((phase_holder)->ops->add_handler (phase_holder, env, handler))
+      ((phase_holder)->ops->add_handler (phase_holder, env, handler))
 
 #define AXIS2_PHASE_HOLDER_GET_PHASE(phase_holder, env, phase_name) \
-		((phase_holder)->ops->get_phase (phase_holder, env, phase_name))
+      ((phase_holder)->ops->get_phase (phase_holder, env, phase_name))
 
 #define AXIS2_PHASE_HOLDER_BUILD_TRANSPORT_HANDLER_CHAIN(phase_holder, env, phase, handlers) \
-		((phase_holder)->ops->build_transport_handler_chain (phase_holder, env, phase, handlers))       
+      ((phase_holder)->ops->build_transport_handler_chain (phase_holder, env, phase, handlers))       
 
 /*************************** End of function macros ***************************/
 

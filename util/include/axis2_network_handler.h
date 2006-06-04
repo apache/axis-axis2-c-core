@@ -45,8 +45,8 @@ extern "C"
  */ 
 AXIS2_EXTERN axis2_socket_t AXIS2_CALL 
 axis2_network_handler_open_socket(const axis2_env_t *env, 
-								  char *server, 
-								  int port);
+                          char *server, 
+                          int port);
 
 /**
  * creates a server socket for a given port
@@ -55,7 +55,7 @@ axis2_network_handler_open_socket(const axis2_env_t *env,
  */ 
 AXIS2_EXTERN axis2_socket_t AXIS2_CALL 
 axis2_network_handler_create_server_socket(const axis2_env_t *env, 
-										   int port);
+                                 int port);
 
 /**
  * closes a socket
@@ -64,7 +64,7 @@ axis2_network_handler_create_server_socket(const axis2_env_t *env,
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 axis2_network_handler_close_socket (const axis2_env_t *env, 
-									axis2_socket_t socket);
+                           axis2_socket_t socket);
 
 /**
  * used to set up socket options such as timeouts, non-blocking ..etc
@@ -75,17 +75,17 @@ axis2_network_handler_close_socket (const axis2_env_t *env,
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_network_handler_set_sock_option(const axis2_env_t *env, 
-									  axis2_socket_t socket, 
-									  int option,
-						              int value);
+                             axis2_socket_t socket, 
+                             int option,
+                                int value);
 /**
  * Accepts remote connections for a server socket
  * @param socket valid server socket (obtained by socket() or similar call)
  * @return created socket to handle the incoming client connection
- */						
-AXIS2_EXTERN axis2_socket_t AXIS2_CALL						
+ */                  
+AXIS2_EXTERN axis2_socket_t AXIS2_CALL                  
 axis2_network_handler_svr_socket_accept(const axis2_env_t *env, 
-										axis2_socket_t socket);
+                              axis2_socket_t socket);
 
 /**
  * Returns the ip address of the server associated with the socket
@@ -94,7 +94,7 @@ axis2_network_handler_svr_socket_accept(const axis2_env_t *env,
  */
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_network_handler_get_svr_ip(const axis2_env_t *env, 
-								 axis2_socket_t socket);
+                         axis2_socket_t socket);
 /** @} */
     
 #ifdef __cplusplus

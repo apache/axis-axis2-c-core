@@ -62,13 +62,13 @@ axis2_event_create(const axis2_env_t *env,
 
     event_impl->event.ops = NULL;
     event_impl->svc = NULL;
-	event_impl->event_type = event_type;
+   event_impl->event_type = event_type;
     
     if (svc)
     {
         event_impl->svc = svc;
     }
-	
+   
     /* initialize ops */
     event_impl->event.ops  = AXIS2_MALLOC( env->allocator, sizeof(axis2_event_ops_t) );
     if (!event_impl->event.ops)

@@ -191,8 +191,8 @@ int main(int argc, char** argv)
                 return AXIS2_FAILURE;
             }
             /*see if we have got a fault*/
-	    
-	    sprintf (echo_response_buff, "echo%sResponse", echo_operation);
+       
+       sprintf (echo_response_buff, "echo%sResponse", echo_operation);
             result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node, env);
             if (AXIS2_STRCMP(AXIS2_OM_ELEMENT_GET_LOCALNAME(result_ele, env), echo_response_buff) != 0 )
             {
@@ -209,15 +209,15 @@ int main(int argc, char** argv)
             result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node1, env);
             /*printf(AXIS2_OM_ELEMENT_GET_LOCALNAME(result_ele, env)); */
             result = AXIS2_OM_ELEMENT_GET_TEXT(result_ele, env, ret_node1);
-	    if (!strcmp( word_to_echo, result ) )
-	    {
-		printf("Success\n");
-	    }
-	    else
-	    {
-		printf("Fail\n" );
-	    }
-			    
+       if (!strcmp( word_to_echo, result ) )
+       {
+      printf("Success\n");
+       }
+       else
+       {
+      printf("Fail\n" );
+       }
+             
         }
         else
         {
@@ -227,8 +227,8 @@ int main(int argc, char** argv)
     }
     else
     {
-		AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke failed: Error code:"
-						" %d :: %s", env->error->error_number,
+      AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke failed: Error code:"
+                  " %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("test stub invoke failed!\n");
     }
@@ -249,7 +249,7 @@ build_soap_body_content(const axis2_env_t *env, axis2_char_t *echo_operation,
     axis2_om_node_t* text_om_node = NULL;
     axis2_om_element_t * text_om_ele = NULL;
     axis2_om_namespace_t *ns0 = NULL, *ns1 = NULL, *ns2 = NULL, *ns3 = NULL,
-			 *ns4 = NULL, *ns5 = NULL, *ns6 = NULL;
+          *ns4 = NULL, *ns5 = NULL, *ns6 = NULL;
     
     axis2_om_attribute_t* attri1 = NULL;
 
@@ -294,7 +294,7 @@ build_soap_body_content(const axis2_env_t *env, axis2_char_t *echo_operation,
     AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, word_to_echo, text_om_node);
     
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE, 
-														AXIS2_XML_PARSER_TYPE_BUFFER);
+                                          AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axis2_om_output_create( env, xml_writer);
     
     AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
@@ -311,7 +311,7 @@ void print_invalid_om(const axis2_env_t *env, axis2_om_node_t *ret_node)
     axis2_om_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
     writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0, 
-													AXIS2_XML_PARSER_TYPE_BUFFER);
+                                       AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axis2_om_output_create (env, writer);
 
     AXIS2_OM_NODE_SERIALIZE (ret_node, env, om_output);

@@ -51,32 +51,32 @@ typedef struct axis2_http_client axis2_http_client_t;
 AXIS2_DECLARE_DATA struct axis2_http_client_ops
 {
     axis2_status_t (AXIS2_CALL *send)
-						(axis2_http_client_t *client, const axis2_env_t *env,
-						axis2_http_simple_request_t *request);
-	int (AXIS2_CALL *recieve_header)
-						(axis2_http_client_t *client, const axis2_env_t *env);
-	axis2_http_simple_response_t* (AXIS2_CALL *get_response)
-						(axis2_http_client_t *client, const axis2_env_t *env);
+                  (axis2_http_client_t *client, const axis2_env_t *env,
+                  axis2_http_simple_request_t *request);
+   int (AXIS2_CALL *recieve_header)
+                  (axis2_http_client_t *client, const axis2_env_t *env);
+   axis2_http_simple_response_t* (AXIS2_CALL *get_response)
+                  (axis2_http_client_t *client, const axis2_env_t *env);
     
-	axis2_status_t (AXIS2_CALL *set_url) (axis2_http_client_t *client, 
+   axis2_status_t (AXIS2_CALL *set_url) (axis2_http_client_t *client, 
                     const axis2_env_t *env, axis2_url_t *url);
-	
-	axis2_url_t* (AXIS2_CALL *get_url) (axis2_http_client_t *client, 
+   
+   axis2_url_t* (AXIS2_CALL *get_url) (axis2_http_client_t *client, 
                     const axis2_env_t *env);
-	
+   
     axis2_status_t (AXIS2_CALL *set_timeout) (axis2_http_client_t *client, 
                     const axis2_env_t *env, int timeout_ms);
-	
+   
     int (AXIS2_CALL *get_timeout) (axis2_http_client_t *client, 
                     const axis2_env_t *env);
-	
+   
     axis2_status_t (AXIS2_CALL *set_proxy) (axis2_http_client_t *client, 
                     const axis2_env_t *env, axis2_char_t *proxy_host,
                     int proxy_port);
-	
+   
     axis2_char_t* (AXIS2_CALL *get_proxy) (axis2_http_client_t *client, 
                     const axis2_env_t *env);
-	
+   
     axis2_status_t (AXIS2_CALL *free) (axis2_http_client_t *client, 
                     const axis2_env_t *env);
 };
@@ -116,12 +116,12 @@ axis2_http_client_free_void_arg (void *client, const axis2_env_t *env);
                                 ((client)->ops->get_url(client, env))
 #define AXIS2_HTTP_CLIENT_SET_TIMEOUT(client, env, timeout) \
                                 ((client)->ops->set_timeout(client, env,\
-								timeout))
+                        timeout))
 #define AXIS2_HTTP_CLIENT_GET_TIMEOUT(client, env) \
                                 ((client)->ops->get_url(client, env))
 #define AXIS2_HTTP_CLIENT_SET_PROXY(client, env, proxy_host, proxy_port) \
                                 ((client)->ops->set_proxy(client, env,\
-								proxy_host, proxy_port))
+                        proxy_host, proxy_port))
 #define AXIS2_HTTP_CLIENT_GET_PROXY(client, env) \
                                 ((client)->ops->get_proxy(client, env))
 #define AXIS2_HTTP_CLIENT_FREE(client, env) \

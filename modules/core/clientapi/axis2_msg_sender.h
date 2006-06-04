@@ -55,9 +55,9 @@ struct axis2_msg_sender_ops
      */    
     axis2_status_t (AXIS2_CALL *
     send)(axis2_msg_sender_t *msg_sender, 
-		  const axis2_env_t *env,
-		  axis2_op_t *op,
-		  axis2_msg_ctx_t *msg_ctx);
+        const axis2_env_t *env,
+        axis2_op_t *op,
+        axis2_msg_ctx_t *msg_ctx);
 
     /**
      * set the transport to used for sending the SOAP Message
@@ -65,48 +65,48 @@ struct axis2_msg_sender_ops
      */
     axis2_status_t (AXIS2_CALL *
     set_transport_info)(axis2_msg_sender_t *msg_sender, 
-						const axis2_env_t *env,
-						axis2_char_t *sender_transport);
+                  const axis2_env_t *env,
+                  axis2_char_t *sender_transport);
 
-	/**
-	 * Send an om node
-	 *
-	 * @param op - this will be used to identify the operation in the client 
-	 * side, without dispatching
-	 * @param om_node_to_send - This should be OM Element (payload)
-	 * @return
-	 */
+   /**
+    * Send an om node
+    *
+    * @param op - this will be used to identify the operation in the client 
+    * side, without dispatching
+    * @param om_node_to_send - This should be OM Element (payload)
+    * @return
+    */
     axis2_status_t (AXIS2_CALL *
     send_with_om)(struct axis2_msg_sender *msg_sender, 
-				  const axis2_env_t *env,
-				  axis2_char_t *op_name, 
-				  axis2_om_node_t *om_node_to_send);
-	
-	/**
-	 * Send the SOAP Message, the actual worker
-	 *
-	 */
+              const axis2_env_t *env,
+              axis2_char_t *op_name, 
+              axis2_om_node_t *om_node_to_send);
+   
+   /**
+    * Send the SOAP Message, the actual worker
+    *
+    */
     axis2_status_t (AXIS2_CALL *
     send_with_soap)(axis2_msg_sender_t *msg_sender, 
-        			const axis2_env_t *env,
-        			axis2_char_t *op_name, 
-					axis2_soap_envelope_t *envelope);
-	/**
-	 * Get the message information header object. All the sets to 
-	 * msg_info_headers should be done via get_msg_info and a set
-	 */					
-	axis2_msg_info_headers_t* (AXIS2_CALL *
+                 const axis2_env_t *env,
+                 axis2_char_t *op_name, 
+               axis2_soap_envelope_t *envelope);
+   /**
+    * Get the message information header object. All the sets to 
+    * msg_info_headers should be done via get_msg_info and a set
+    */               
+   axis2_msg_info_headers_t* (AXIS2_CALL *
     get_msg_info_headers)(axis2_msg_sender_t *msg_sender, 
                           const axis2_env_t *env);
-						
+                  
     axis2_status_t (AXIS2_CALL *
     free)(struct axis2_msg_sender *msg_sender, 
-		  const axis2_env_t *env);
+        const axis2_env_t *env);
 };
 
 /** 
  * @brief Message Sender struct
-  *	Axis2 Message Sender
+  *   Axis2 Message Sender
  */
 struct axis2_msg_sender
 {
@@ -115,16 +115,16 @@ struct axis2_msg_sender
 
 AXIS2_EXTERN axis2_msg_sender_t* AXIS2_CALL 
 axis2_msg_sender_create(const axis2_env_t *env, 
-						axis2_svc_ctx_t *svc_ctx);
+                  axis2_svc_ctx_t *svc_ctx);
 
     
 /************************** Start of function macros **************************/
 
 #define AXIS2_MSG_SENDER_SEND(msg_sender, env, op, msg_ctx) \
-		((msg_sender)->ops->send(msg_sender, env, op, msg_ctx))
+      ((msg_sender)->ops->send(msg_sender, env, op, msg_ctx))
         
 #define AXIS2_MSG_SENDER_SET_TRANSPORT_INFO(msg_sender, env, sender_transport)\
-		((msg_sender)->ops->set_transport_info(msg_sender, env,	sender_transport))
+      ((msg_sender)->ops->set_transport_info(msg_sender, env,   sender_transport))
         
 #define AXIS2_MSG_SENDER_SEND_WITH_OM(msg_sender, env, op_name, om_node_to_send) \
         ((msg_sender)->ops->send_with_om(msg_sender, env, op_name, om_node_to_send))

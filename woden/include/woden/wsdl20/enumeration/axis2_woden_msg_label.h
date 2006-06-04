@@ -72,7 +72,7 @@ struct axis2_woden_ext_element;
 
 struct axis2_woden_msg_label_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -123,27 +123,27 @@ axis2_woden_msg_label_create(
         axis2_bool_t valid);
 
 #define AXIS2_WODEN_MSG_LABEL_FREE(msg_label, env) \
-		(((axis2_woden_msg_label_t *) msg_label)->ops->\
+      (((axis2_woden_msg_label_t *) msg_label)->ops->\
          free (msg_label, env))
 
 #define AXIS2_WODEN_MSG_LABEL_GET_MSG_LABEL_IN(msg_label, env) \
-		(((axis2_woden_msg_label_t *) msg_label)->ops->\
+      (((axis2_woden_msg_label_t *) msg_label)->ops->\
          get_msg_label_in (msg_label, env))
 
 #define AXIS2_WODEN_MSG_LABEL_GET_MSG_LABEL_OUT(msg_label, env) \
-		(((axis2_woden_msg_label_t *) msg_label)->ops->\
+      (((axis2_woden_msg_label_t *) msg_label)->ops->\
          get_msg_label_out (msg_label, env))
 
 #define AXIS2_WODEN_MSG_LABEL_TO_STRING(msg_label, env) \
-		(((axis2_woden_msg_label_t *) msg_label)->ops->\
+      (((axis2_woden_msg_label_t *) msg_label)->ops->\
          to_string (msg_label, env))
 
 #define AXIS2_WODEN_MSG_LABEL_IS_VALID(msg_label, env) \
-		(((axis2_woden_msg_label_t *) msg_label)->ops->\
+      (((axis2_woden_msg_label_t *) msg_label)->ops->\
          is_valid (msg_label, env))
 
 #define AXIS2_WODEN_MSG_LABEL_EQUALS(msg_label, env, other) \
-		(((axis2_woden_msg_label_t *) msg_label)->ops->\
+      (((axis2_woden_msg_label_t *) msg_label)->ops->\
          equals (msg_label, env, other))
 
 

@@ -51,7 +51,7 @@ extern "C"
 
 struct axis2_woden_property_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -175,35 +175,35 @@ axis2_woden_property_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_PROPERTY_FREE(property, env) \
-		(((axis2_woden_property_t *) property)->ops->free(property, env))
+      (((axis2_woden_property_t *) property)->ops->free(property, env))
 
 #define AXIS2_WODEN_PROPERTY_SUPER_OBJS(property, env) \
-		(((axis2_woden_property_t *) property)->ops->super_objs(property, env))
+      (((axis2_woden_property_t *) property)->ops->super_objs(property, env))
 
 #define AXIS2_WODEN_PROPERTY_TYPE(property, env) \
-		(((axis2_woden_property_t *) property)->ops->type(property, env))
+      (((axis2_woden_property_t *) property)->ops->type(property, env))
 
 #define AXIS2_WODEN_PROPERTY_GET_BASE_IMPL(property, env) \
-		(((axis2_woden_property_t *) property)->ops->get_base_impl(property, env))
+      (((axis2_woden_property_t *) property)->ops->get_base_impl(property, env))
 
 #define AXIS2_WODEN_PROPERTY_GET_REF(property, env) \
-		(((axis2_woden_property_t *) property)->\
+      (((axis2_woden_property_t *) property)->\
          get_ref(property, env))
 
 #define AXIS2_WODEN_PROPERTY_GET_VALUE_CONSTRAINT(property, env) \
-		(((axis2_woden_property_t *) property)->\
+      (((axis2_woden_property_t *) property)->\
          get_value_constraint(property, env))
 
 #define AXIS2_WODEN_PROPERTY_GET_VALUE(property, env) \
-		(((axis2_woden_property_t *) property)->\
+      (((axis2_woden_property_t *) property)->\
          get_value(property, env))
 
 #define AXIS2_WODEN_PROPERTY_GET_PARENT(property, env) \
-		(((axis2_woden_property_t *) property)->ops->\
+      (((axis2_woden_property_t *) property)->ops->\
          get_parent(property, env))
 
 #define AXIS2_WODEN_PROPERTY_TO_ELEMENT(property, env) \
-		(((axis2_woden_property_t *) property)->ops->\
+      (((axis2_woden_property_t *) property)->ops->\
          to_element(property, env))
 
 /** @} */

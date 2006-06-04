@@ -34,10 +34,10 @@ extern "C"
  */
 
 #if defined( WIN32 )
-	#include "windows/axis2_windows.h"
-	#include "windows/axis2_dir_windows.h"
-	#include "windows/axis2_uuid_gen_windows.h"
-	#include "windows/axis2_getopt_windows.h"
+   #include "windows/axis2_windows.h"
+   #include "windows/axis2_dir_windows.h"
+   #include "windows/axis2_uuid_gen_windows.h"
+   #include "windows/axis2_getopt_windows.h"
 #elif defined ( __OS400__  )
   #include <os400/axis2_os400.h>
 #elif defined ( AIX )

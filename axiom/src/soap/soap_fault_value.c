@@ -48,13 +48,13 @@ axis2_soap_fault_value_get_base_node(axis2_soap_fault_value_t *fault_value,
                                   
 axis2_char_t* AXIS2_CALL
 axis2_soap_fault_value_get_text(axis2_soap_fault_value_t *fault_value,
-									const axis2_env_t *env);
-									
+                           const axis2_env_t *env);
+                           
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_value_set_text(axis2_soap_fault_value_t *fault_value,
-								const axis2_env_t *env,
-								axis2_char_t *text);									
-									
+                        const axis2_env_t *env,
+                        axis2_char_t *text);                           
+                           
 /*************************** function implementations *************************/
 
 AXIS2_EXTERN axis2_soap_fault_value_t * AXIS2_CALL
@@ -90,11 +90,11 @@ axis2_soap_fault_value_create(const axis2_env_t *env)
     fault_val_impl->fault_value.ops->get_base_node =
         axis2_soap_fault_value_get_base_node;
 
-	fault_val_impl->fault_value.ops->get_text =
-		axis2_soap_fault_value_get_text;
-		
+   fault_val_impl->fault_value.ops->get_text =
+      axis2_soap_fault_value_get_text;
+      
     fault_val_impl->fault_value.ops->set_text =
-        axis2_soap_fault_value_set_text;       		
+        axis2_soap_fault_value_set_text;             
         
     return &(fault_val_impl->fault_value);
 }
@@ -275,29 +275,29 @@ axis2_soap_fault_value_get_base_node(axis2_soap_fault_value_t *fault_value,
 
 axis2_char_t* AXIS2_CALL
 axis2_soap_fault_value_get_text(axis2_soap_fault_value_t *fault_value,
-								const axis2_env_t *env)
+                        const axis2_env_t *env)
 {
-	axis2_om_node_t *value_node = NULL;
-	axis2_om_element_t *value_element = NULL;
-	
-	value_node = axis2_soap_fault_value_get_base_node(fault_value, env);
-	
-	if (!value_node)
-		return NULL;
+   axis2_om_node_t *value_node = NULL;
+   axis2_om_element_t *value_element = NULL;
+   
+   value_node = axis2_soap_fault_value_get_base_node(fault_value, env);
+   
+   if (!value_node)
+      return NULL;
 
-	value_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(
-		value_node, env);
-	
-	if (!value_element)
-		return NULL;
-	
-	return AXIS2_OM_ELEMENT_GET_TEXT(value_element, env, value_node);
+   value_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(
+      value_node, env);
+   
+   if (!value_element)
+      return NULL;
+   
+   return AXIS2_OM_ELEMENT_GET_TEXT(value_element, env, value_node);
 }
 
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_value_set_text(axis2_soap_fault_value_t *fault_value,
-								const axis2_env_t *env,
-								axis2_char_t *text)
+                        const axis2_env_t *env,
+                        axis2_char_t *text)
 {
     axis2_soap_fault_value_impl_t *fault_value_impl = NULL;
     
@@ -313,4 +313,4 @@ axis2_soap_fault_value_set_text(axis2_soap_fault_value_t *fault_value,
         return AXIS2_OM_ELEMENT_SET_TEXT(om_ele, env, text, fault_value_impl->om_ele_node);
     }
     return AXIS2_FAILURE;
-}								
+}                        

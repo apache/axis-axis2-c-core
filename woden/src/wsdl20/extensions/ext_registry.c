@@ -23,7 +23,7 @@ typedef struct axis2_woden_ext_registry_impl axis2_woden_ext_registry_impl_t;
 
 /** 
  * @brief Extension Registry Struct Impl
- *	Axis2 Extension Registry  
+ *   Axis2 Extension Registry  
  */ 
 struct axis2_woden_ext_registry_impl
 {

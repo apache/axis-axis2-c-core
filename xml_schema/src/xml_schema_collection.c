@@ -32,7 +32,7 @@ typedef struct axis2_xml_schema_collection_impl
 
 /** 
  * @brief Xml Schema Obj Struct Impl
- *	Axis2 Xml Schema Obj  
+ *   Axis2 Xml Schema Obj  
  */ 
 struct axis2_xml_schema_collection_impl
 {

@@ -64,7 +64,7 @@ AXIS2_DECLARE_DATA struct axis2_msg_ops
     axis2_status_t (AXIS2_CALL *
     free)(
         axis2_msg_t *msg, 
-        const axis2_env_t *env);	
+        const axis2_env_t *env);   
     
     axis2_status_t (AXIS2_CALL *
     add_param)(
@@ -147,11 +147,11 @@ AXIS2_DECLARE_DATA struct axis2_msg_ops
 
 /** 
  * @brief message struct
- *	Axis2 message   
+ *   Axis2 message   
  */  
 AXIS2_DECLARE_DATA struct axis2_msg
 {
-	axis2_msg_ops_t *ops;
+   axis2_msg_ops_t *ops;
     struct axis2_param_container *param_container;
 };
 
@@ -168,13 +168,13 @@ axis2_msg_create (const axis2_env_t *env);
         ((msg)->ops->free (msg, env))
 
 #define AXIS2_MSG_ADD_PARAM(msg, env, param) \
-		((msg)->ops->add_param (msg, env, param))
+      ((msg)->ops->add_param (msg, env, param))
 
 #define AXIS2_MSG_GET_PARAM(msg, env, key) \
-		((msg)->ops->get_param (msg, env, key))
+      ((msg)->ops->get_param (msg, env, key))
 
 #define AXIS2_MSG_GET_PARAMS(msg, env) \
-		((msg)->ops->get_params (msg, env))
+      ((msg)->ops->get_params (msg, env))
 
 #define AXIS2_MSG_IS_PARAM_LOCKED(msg, env, param_name) \
         ((msg)->ops->is_param_locked(msg, env, param_name))
@@ -183,31 +183,31 @@ axis2_msg_create (const axis2_env_t *env);
         ((msg)->ops->set_parent (msg, env, service_desc))
 
 #define AXIS2_MSG_GET_PARENT(msg, env) \
-		((msg)->ops->get_parent (msg, env))
+      ((msg)->ops->get_parent (msg, env))
 
 #define AXIS2_MSG_GET_FLOW(msg, env) \
-		((msg)->ops->get_flow (msg, env))
+      ((msg)->ops->get_flow (msg, env))
 
 #define AXIS2_MSG_SET_FLOW(msg, env, flow) \
-		((msg)->ops->set_flow (msg, env, flow))
+      ((msg)->ops->set_flow (msg, env, flow))
 
 #define AXIS2_MSG_GET_DIRECTION(msg, env) \
-		((msg)->ops->get_direction (msg, env))
+      ((msg)->ops->get_direction (msg, env))
     
 #define AXIS2_MSG_SET_DIRECTION(msg, env, direction) \
-		((msg)->ops->set_direction (msg, env, direction))
+      ((msg)->ops->set_direction (msg, env, direction))
 
 #define AXIS2_MSG_GET_ELEMENT_QNAME(msg, env) \
-		((msg)->ops->get_element_qname(msg, env))
+      ((msg)->ops->get_element_qname(msg, env))
     
 #define AXIS2_MSG_SET_ELEMENT_QNAME(msg, env, element_qname) \
-		((msg)->ops->set_element_qname(msg, env, element_qname))
+      ((msg)->ops->set_element_qname(msg, env, element_qname))
 
 #define AXIS2_MSG_GET_NAME(msg, env) \
-		((msg)->ops->get_name(msg, env))
+      ((msg)->ops->get_name(msg, env))
     
 #define AXIS2_MSG_SET_NAME(msg, env, name) \
-		((msg)->ops->set_name(msg, env, name))
+      ((msg)->ops->set_name(msg, env, name))
 
 /************************** End of function macros ****************************/
 

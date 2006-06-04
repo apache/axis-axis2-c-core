@@ -55,11 +55,11 @@ struct axis2_soap_builder;
         */
 
         axis2_status_t (AXIS2_CALL *
-		free_fn)(axis2_soap_fault_reason_t *fault_reason,
+      free_fn)(axis2_soap_fault_reason_t *fault_reason,
                  const axis2_env_t *env);
 
         struct axis2_soap_fault_text* (AXIS2_CALL *
-		get_soap_fault_text)(axis2_soap_fault_reason_t *fault_reason,
+      get_soap_fault_text)(axis2_soap_fault_reason_t *fault_reason,
                              const axis2_env_t *env,
                              axis2_char_t *lang);
                              
@@ -77,7 +77,7 @@ struct axis2_soap_builder;
                              struct axis2_soap_fault_text *fault_text);
                                            
         axis2_om_node_t* (AXIS2_CALL *
-		get_base_node)(axis2_soap_fault_reason_t *fault_reason,
+      get_base_node)(axis2_soap_fault_reason_t *fault_reason,
                        const axis2_env_t *env);
                                  
     };      

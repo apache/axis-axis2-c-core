@@ -52,7 +52,7 @@ typedef union axis2_woden_feature_element_base axis2_woden_feature_element_base_
 
 struct axis2_woden_feature_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -106,27 +106,27 @@ axis2_woden_feature_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_FEATURE_ELEMENT_FREE(doc_el, env) \
-		(((axis2_woden_feature_element_t *) doc_el)->ops->\
+      (((axis2_woden_feature_element_t *) doc_el)->ops->\
          free (doc_el, env))
 
 #define AXIS2_WODEN_FEATURE_ELEMENT_TYPE(doc_el, env) \
-		(((axis2_woden_feature_element_t *) doc_el)->ops->\
+      (((axis2_woden_feature_element_t *) doc_el)->ops->\
          type (doc_el, env))
 
 #define AXIS2_WODEN_FEATURE_ELEMENT_SET_REF(doc_el, env, uri) \
-		(((axis2_woden_feature_element_t *) doc_el)->ops->\
+      (((axis2_woden_feature_element_t *) doc_el)->ops->\
          set_ref(doc_el, env, uri))
 
 #define AXIS2_WODEN_FEATURE_ELEMENT_GET_REF(doc_el, env) \
-		(((axis2_woden_feature_element_t *) doc_el)->ops->\
+      (((axis2_woden_feature_element_t *) doc_el)->ops->\
          get_ref(doc_el, env))
 
 #define AXIS2_WODEN_FEATURE_ELEMENT_SET_REQUIRED(doc_el, env, required) \
-		(((axis2_woden_feature_element_t *) doc_el)->ops->\
+      (((axis2_woden_feature_element_t *) doc_el)->ops->\
          set_required(doc_el, env, required))
 
 #define AXIS2_WODEN_FEATURE_ELEMENT_IS_REQUIRED(doc_el, env) \
-		(((axis2_woden_feature_element_t *) doc_el)->ops->\
+      (((axis2_woden_feature_element_t *) doc_el)->ops->\
          is_required(doc_el, env))
 
 /** @} */

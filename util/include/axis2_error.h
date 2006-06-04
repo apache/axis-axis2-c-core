@@ -269,8 +269,8 @@ extern "C"
         AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM,
         /* We got a NULL strem in the response body */
         AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY,
-		/** URL NULL in http client */
-		AXIS2_ERROR_NULL_URL,
+      /** URL NULL in http client */
+      AXIS2_ERROR_NULL_URL,
         /* We need transport_info in msg_ctx*/
         AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL,
         /*Content-Type header missing in HTTP response" */
@@ -296,14 +296,14 @@ extern "C"
        /*
         * Group - utils
         */
-		/** Could not open the axis2 file */
-		AXIS2_ERROR_COULD_NOT_OPEN_FILE,
+      /** Could not open the axis2 file */
+      AXIS2_ERROR_COULD_NOT_OPEN_FILE,
         /* Failed in creating DLL */
         AXIS2_ERROR_DLL_CREATE_FAILED,
         /* DLL loading failed */
         AXIS2_ERROR_DLL_LOADING_FAILED,
-		/** Environment passed is null */
-		AXIS2_ERROR_ENVIRONMENT_IS_NULL,
+      /** Environment passed is null */
+      AXIS2_ERROR_ENVIRONMENT_IS_NULL,
         /* Axis2 File does not have a file name */
         AXIS2_ERROR_FILE_NAME_NOT_SET,
         /* DLL Description Info Object has invalid state */
@@ -312,12 +312,12 @@ extern "C"
         AXIS2_ERROR_HANDLER_CREATION_FAILED,
         /** Array list index out of bounds */
         AXIS2_ERROR_INDEX_OUT_OF_BOUNDS,
-		/** Invalid IP or hostname */
-		AXIS2_ERROR_INVALID_ADDRESS,
-		/** Trying to do operation on invalid file descriptor */
-		AXIS2_ERROR_INVALID_FD,
-		/** Trying to do operation on closed/not opened socket */
-		AXIS2_ERROR_INVALID_SOCKET,
+      /** Invalid IP or hostname */
+      AXIS2_ERROR_INVALID_ADDRESS,
+      /** Trying to do operation on invalid file descriptor */
+      AXIS2_ERROR_INVALID_FD,
+      /** Trying to do operation on closed/not opened socket */
+      AXIS2_ERROR_INVALID_SOCKET,
         /** Parameter not set */
         AXIS2_ERROR_INVALID_STATE_PARAM,
         /* Module create failed */
@@ -326,10 +326,10 @@ extern "C"
         AXIS2_ERROR_MSG_RECV_CREATION_FAILED,
         /** No such element */
         AXIS2_ERROR_NO_SUCH_ELEMENT,
-		/** Socket bind failed. Another process may be already using this port*/
-		AXIS2_ERROR_SOCKET_BIND_FAILED,
-		/** Error creating a socket. Most probably error returned by OS */
-		AXIS2_ERROR_SOCKET_ERROR,
+      /** Socket bind failed. Another process may be already using this port*/
+      AXIS2_ERROR_SOCKET_BIND_FAILED,
+      /** Error creating a socket. Most probably error returned by OS */
+      AXIS2_ERROR_SOCKET_ERROR,
         /* Listen failed for the server socket */
         AXIS2_ERROR_SOCKET_LISTEN_FAILED,
         /* Failed in creating Service Skeleton */
@@ -345,8 +345,8 @@ extern "C"
         */
         /* Interface or Port Type not found for the binding */
         AXIS2_ERROR_INTERFACE_OR_PORT_TYPE_NOT_FOUND_FOR_THE_BINDING,
-		/* Interfaces or Ports not found for the partially built WOM */
-		AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM,
+      /* Interfaces or Ports not found for the partially built WOM */
+      AXIS2_ERROR_INTERFACES_OR_PORTS_NOT_FOUND_FOR_PARTIALLY_BUILT_WOM,
         /** Wsdl op accessed has invalid state */
         AXIS2_ERROR_INVALID_STATE_WSDL_OP,
         /** Wsdl Service accessed has invalid state */
@@ -435,9 +435,9 @@ extern "C"
         AXIS2_ERROR_WRITING_START_ELEMENT_WITH_NAMESPACE_PREFIX,
         /** error in writing cdata section */
         AXIS2_ERROR_WRITING_CDATA,
-		/** AXIS2_XML_PARSER_TYPE_BUFFER or AXIS2_XML_PARSER_TYPE_DOC is expected */
-		AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE,
-		
+      /** AXIS2_XML_PARSER_TYPE_BUFFER or AXIS2_XML_PARSER_TYPE_DOC is expected */
+      AXIS2_ERROR_XML_PARSER_INVALID_MEM_TYPE,
+      
        /*
         * Group - xml:soap
         */
@@ -527,8 +527,8 @@ extern "C"
         
     struct axis2_error;
     struct axis2_error_ops;
-	typedef enum axis2_status_codes axis2_status_codes_t;
-	typedef enum axis2_error_codes axis2_error_codes_t;
+   typedef enum axis2_status_codes axis2_status_codes_t;
+   typedef enum axis2_error_codes axis2_error_codes_t;
 
 /**
  * @defgroup axis2_error Error
@@ -556,15 +556,15 @@ extern "C"
         * @return error message for the last error. NULL on error.
         */
          axis2_char_t * (AXIS2_CALL *get_message) (struct axis2_error *error);
-		
-		 axis2_status_t  (AXIS2_CALL *set_error_number) (struct axis2_error *error
-				,  axis2_error_codes_t error_number);
-		
+      
+       axis2_status_t  (AXIS2_CALL *set_error_number) (struct axis2_error *error
+            ,  axis2_error_codes_t error_number);
+      
          axis2_status_t  (AXIS2_CALL *set_status_code) (struct axis2_error *error
-				, axis2_status_codes_t status_code);
-		
+            , axis2_status_codes_t status_code);
+      
          axis2_status_t  (AXIS2_CALL *get_status_code) (struct axis2_error *error);
-			 
+          
     } axis2_error_ops_t;
 
   /** 
@@ -592,7 +592,7 @@ axis2_status_t AXIS2_CALL axis2_error_init();
 
 #define AXIS2_ERROR_SET_ERROR_NUMBER(error, error_number) \
         ((error)->ops->set_error_number(error, error_number))
-	
+   
 #define AXIS2_ERROR_SET_STATUS_CODE(error, status_code) \
         ((error)->ops->set_status_code(error, status_code))
         

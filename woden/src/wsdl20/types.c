@@ -25,7 +25,7 @@ typedef struct axis2_woden_types_impl axis2_woden_types_impl_t;
 
 /** 
  * @brief Types Struct Impl
- *	Axis2 Types  
+ *   Axis2 Types  
  */ 
 struct axis2_woden_types_impl
 {

@@ -108,27 +108,27 @@ axis2_xml_schema_simple_content_resolve_methods(
  */
  
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_FREE(sim_content, env) \
-		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
+      (((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
             free(sim_content, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_GET_BASE_IMPL(sim_content, env) \
-		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
+      (((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
             get_base_impl(sim_content, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_SUPER_OBJS(sim_content, env) \
-		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
+      (((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
             super_objs(sim_content, env))
             
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_TYPE(sim_content, env) \
-		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
+      (((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
             type(sim_content, env))
                         
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_GET_CONTENT(sim_content, env) \
-		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
+      (((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
             get_content(sim_content, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_SET_CONTENT(sim_content, env, content) \
-		(((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
+      (((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
             set_content(sim_content, env, content))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_TO_STRING(sim_content, env, prefix, tab) \

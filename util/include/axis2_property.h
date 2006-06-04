@@ -74,7 +74,7 @@ AXIS2_DECLARE_DATA struct axis2_property_ops
      */ 
 AXIS2_DECLARE_DATA struct axis2_property
 {
-	axis2_property_ops_t *ops;
+   axis2_property_ops_t *ops;
 };
 
 /**
@@ -87,16 +87,16 @@ axis2_property_create(const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_PROPERTY_FREE(property, env) \
-		((property)->ops->free (property, env))
+      ((property)->ops->free (property, env))
 
 #define AXIS2_PROPERTY_SET_FREE_FUNC(property, env, free_func) \
-		((property)->ops->set_free_func (property, env, free_func))  
+      ((property)->ops->set_free_func (property, env, free_func))  
 
 #define AXIS2_PROPERTY_SET_SCOPE(property, env, scope) \
-		((property)->ops->set_scope (property, env, scope)) 
+      ((property)->ops->set_scope (property, env, scope)) 
 
 #define AXIS2_PROPERTY_SET_VALUE(property, env, value) \
-		((property)->ops->set_value (property, env, value))
+      ((property)->ops->set_value (property, env, value))
 
 #define AXIS2_PROPERTY_GET_VALUE(property, env) \
         ((property)->ops->get_value(property, env))

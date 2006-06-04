@@ -46,7 +46,7 @@ extern "C"
 
 struct axis2_xml_schema_any_attribute_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -108,31 +108,31 @@ axis2_xml_schema_any_attribute_resolve_methods(
 /******************************* Macros *************************************************/ 
  
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_FREE(any_attr, env) \
-		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->free(any_attr, env))
+      (((axis2_xml_schema_any_attribute_t *) any_attr)->ops->free(any_attr, env))
 
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_GET_BASE_IMPL(any_attr, env) \
-		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->get_base_impl(any_attr, env))
+      (((axis2_xml_schema_any_attribute_t *) any_attr)->ops->get_base_impl(any_attr, env))
 
 
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_TYPE(any_attr, env) \
-		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->type(any_attr, env))
-		
-		
+      (((axis2_xml_schema_any_attribute_t *) any_attr)->ops->type(any_attr, env))
+      
+      
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_SUPER_OBJS(any_attr, env) \
-		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->super_objs(any_attr, env))
-		
-		
+      (((axis2_xml_schema_any_attribute_t *) any_attr)->ops->super_objs(any_attr, env))
+      
+      
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_GET_NAMESPACE(any_attr, env) \
-		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->get_namespace(any_attr, env))
+      (((axis2_xml_schema_any_attribute_t *) any_attr)->ops->get_namespace(any_attr, env))
 
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_SET_NAMESPACE(any_attr, env, namespc) \
-		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->set_namespace(any_attr, env, namespc))
+      (((axis2_xml_schema_any_attribute_t *) any_attr)->ops->set_namespace(any_attr, env, namespc))
 
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_GET_PROCESS_CONTENT(any_attr, env) \
-		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->get_process_content(any_attr, env))
+      (((axis2_xml_schema_any_attribute_t *) any_attr)->ops->get_process_content(any_attr, env))
 
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_SET_PROCESS_CONTENT(any_attr, env, process_content) \
-		(((axis2_xml_schema_any_attribute_t *) any_attr)->ops->set_process_content(any_attr, env, process_content))
+      (((axis2_xml_schema_any_attribute_t *) any_attr)->ops->set_process_content(any_attr, env, process_content))
 
 /******************************* end macros ***********************************************/
 /** @} */

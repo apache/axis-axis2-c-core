@@ -52,7 +52,7 @@ typedef union axis2_woden_binding_element_base axis2_woden_binding_element_base_
 
 struct axis2_woden_binding_element_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -178,59 +178,59 @@ axis2_woden_binding_element_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_BINDING_ELEMENT_FREE(binding_element, env) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
          free (binding_element, env))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_SUPER_OBJS(binding_element, env) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
          super_objs (binding_element, env))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_TYPE(binding_element, env) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
          type (binding_element, env))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_SET_QNAME(binding_element, env, qname) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
          set_qname (binding_element, env, qname))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_GET_QNAME(binding_element, env) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
         get_qname  (binding_element, env))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_SET_INTERFACE_QNAME(binding_element, env, qname) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
          set_interface_qname (binding_element, env, qname))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_GET_INTERFACE_QNAME(binding_element, env) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
          get_interface_qname (binding_element, env))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_GET_INTERFACE_ELEMENT(binding_element, env) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
         get_interface_element  (binding_element, env))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_SET_TYPE(binding_element, env, type) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
          set_type (binding_element, env, type))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_GET_TYPE(binding_element, env) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
         get_type  (binding_element, env))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_ADD_BINDING_FAULT_ELEMENT(binding_element, env, fault) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
         add_binding_fault_element  (binding_element, env, fault))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_GET_BINDING_FAULT_ELEMENTS(binding_element, env) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
         get_binding_fault_elements  (binding_element, env))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_ADD_BINDING_OP_ELEMENT(binding_element, env, op) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
          add_binding_op_element (binding_element, env, op))
 
 #define AXIS2_WODEN_BINDING_ELEMENT_GET_BINDING_OP_ELEMENTS(binding_element, env) \
-		(((axis2_woden_binding_element_t *) binding_element)->ops->\
+      (((axis2_woden_binding_element_t *) binding_element)->ops->\
          get_binding_op_elements (binding_element, env))
 
 /** @} */

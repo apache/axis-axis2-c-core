@@ -49,12 +49,12 @@ typedef struct axis2_wsdl_ext_soap_binding_ops axis2_wsdl_ext_soap_binding_ops_t
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_binding_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_ext_soap_binding_t *ext_soap_binding,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
     get_style) (axis2_wsdl_ext_soap_binding_t *ext_soap_binding,
@@ -78,11 +78,11 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_binding_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_binding
 {
-	axis2_wsdl_ext_soap_binding_ops_t *ops;
+   axis2_wsdl_ext_soap_binding_ops_t *ops;
     struct axis2_wsdl_extensible_element *ext_element;
 };
 
@@ -97,19 +97,19 @@ axis2_wsdl_ext_soap_binding_create (const axis2_env_t *env,
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_EXT_SOAP_BINDING_FREE(ext_soap_binding, env) \
-		((ext_soap_binding)->ops->free (ext_soap_binding, env))
+      ((ext_soap_binding)->ops->free (ext_soap_binding, env))
 
 #define AXIS2_WSDL_EXT_SOAP_BINDING_GET_STYLE(ext_soap_binding, env) \
-		((ext_soap_binding)->ops->get_style (ext_soap_binding, env))
+      ((ext_soap_binding)->ops->get_style (ext_soap_binding, env))
 
 #define AXIS2_WSDL_EXT_SOAP_BINDING_SET_STYLE(ext_soap_binding, env, style) \
-		((ext_soap_binding)->ops->set_style (ext_soap_binding, env, style))
+      ((ext_soap_binding)->ops->set_style (ext_soap_binding, env, style))
         
 #define AXIS2_WSDL_EXT_SOAP_BINDING_GET_TRANSPORT_URI(ext_soap_binding, env) \
-		((ext_soap_binding)->ops->get_transport_uri (ext_soap_binding, env))
+      ((ext_soap_binding)->ops->get_transport_uri (ext_soap_binding, env))
 
 #define AXIS2_WSDL_EXT_SOAP_BINDING_SET_TRANSPORT_URI(ext_soap_binding, env, transport_uri) \
-		((ext_soap_binding)->ops->set_transport_uri (wsdl_feature, env, transport_uri))        
+      ((ext_soap_binding)->ops->set_transport_uri (wsdl_feature, env, transport_uri))        
 
 /*************************** End of function macros ***************************/
 

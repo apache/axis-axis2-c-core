@@ -195,7 +195,7 @@ axis2_listener_manager_make_sure_started(struct axis2_listener_manager *listener
                                         sizeof(axis2_listener_manager_worker_func_args_t));
                         if(NULL == arg_list)
                         {
-                            return AXIS2_FAILURE;			
+                            return AXIS2_FAILURE;         
                         }
                         arg_list->env = env;
                         arg_list->listner_manager = listener_manager_impl;
@@ -351,14 +351,14 @@ void * AXIS2_THREAD_FUNC
 axis2_listener_manager_worker_func(axis2_thread_t *thd, void *data)
 {
     axis2_listener_manager_worker_func_args_t *args_list = NULL;
-	const axis2_env_t *th_env = NULL;
+   const axis2_env_t *th_env = NULL;
     
     args_list = (axis2_listener_manager_worker_func_args_t *) data;
     if (!args_list)
        return NULL;    
 
     AXIS2_ENV_CHECK(args_list->env, AXIS2_FAILURE);
-	th_env = axis2_init_thread_env(args_list->env);
+   th_env = axis2_init_thread_env(args_list->env);
     if (args_list->listener)
     {
         AXIS2_TRANSPORT_RECEIVER_START(args_list->listener, th_env);

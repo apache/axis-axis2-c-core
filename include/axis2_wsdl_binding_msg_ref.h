@@ -50,12 +50,12 @@ typedef struct axis2_wsdl_binding_msg_ref_ops axis2_wsdl_binding_msg_ref_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_binding_msg_ref_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_binding_msg_ref_t *wsdl_binding_msg_ref,
-		    const axis2_env_t *env);
+          const axis2_env_t *env);
 
     /**
      * Method getDirection
@@ -101,7 +101,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_msg_ref_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_binding_msg_ref
 {
-	axis2_wsdl_binding_msg_ref_ops_t *ops;
+   axis2_wsdl_binding_msg_ref_ops_t *ops;
     struct axis2_wsdl_extensible_component *extensible_component;
 };
 
@@ -115,19 +115,19 @@ axis2_wsdl_binding_msg_ref_create (const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_BINDING_MSG_REF_FREE(wsdl_binding_msg_ref, env) \
-		((wsdl_binding_msg_ref)->ops->free (wsdl_binding_msg_ref, env))
+      ((wsdl_binding_msg_ref)->ops->free (wsdl_binding_msg_ref, env))
 
 #define AXIS2_WSDL_BINDING_MSG_REF_GET_DIRECTION(wsdl_binding_msg_ref, env) \
-		((wsdl_binding_msg_ref)->ops->get_direction (wsdl_binding_msg_ref, env))
+      ((wsdl_binding_msg_ref)->ops->get_direction (wsdl_binding_msg_ref, env))
 
 #define AXIS2_WSDL_BINDING_MSG_REF_SET_DIRECTION(wsdl_binding_msg_ref, env, direction) \
-		((wsdl_binding_msg_ref)->ops->set_direction (wsdl_binding_msg_ref, env, direction))       
+      ((wsdl_binding_msg_ref)->ops->set_direction (wsdl_binding_msg_ref, env, direction))       
 
 #define AXIS2_WSDL_BINDING_MSG_REF_GET_MSG_LABEL(wsdl_binding_msg_ref, env) \
-		((wsdl_binding_msg_ref)->ops->get_msg_label (wsdl_binding_msg_ref, env))
+      ((wsdl_binding_msg_ref)->ops->get_msg_label (wsdl_binding_msg_ref, env))
 
 #define AXIS2_WSDL_BINDING_MSG_REF_SET_MSG_LABEL(wsdl_binding_msg_ref, env, ref) \
-		((wsdl_binding_msg_ref)->ops->set_msg_label (wsdl_binding_msg_ref, env, msg_label))
+      ((wsdl_binding_msg_ref)->ops->set_msg_label (wsdl_binding_msg_ref, env, msg_label))
         
 /*************************** End of function macros ***************************/
 

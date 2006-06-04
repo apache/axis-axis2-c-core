@@ -66,12 +66,12 @@ typedef struct axis2_wsdl_desc_ops axis2_wsdl_desc_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_wsdl_desc_t *wsdl_desc,
-		    const axis2_env_t *env);
+          const axis2_env_t *env);
 
     /**
      * Returns a Map of <code>wsdl_bindings</code> Objects keyed by the 
@@ -360,11 +360,11 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_desc_ops
 
 /** 
  * @brief Wsdl container struct
- *	Property for params  
+ *   Property for params  
  */  
 AXIS2_DECLARE_DATA struct axis2_wsdl_desc
 {
-	axis2_wsdl_desc_ops_t *ops;
+   axis2_wsdl_desc_ops_t *ops;
     struct axis2_wsdl_component *component;
 };
 
@@ -378,89 +378,89 @@ axis2_wsdl_desc_create (const axis2_env_t *env);
 /*************************** Function macros **********************************/
 
 #define AXIS2_WSDL_DESC_FREE(wsdl_desc, env) \
-		((wsdl_desc)->ops->free (wsdl_desc, env))
+      ((wsdl_desc)->ops->free (wsdl_desc, env))
 
 #define AXIS2_WSDL_DESC_GET_BINDINGS(wsdl_desc, env) \
-		((wsdl_desc)->ops->get_bindings (wsdl_desc, env))
+      ((wsdl_desc)->ops->get_bindings (wsdl_desc, env))
 
 #define AXIS2_WSDL_DESC_SET_BINDINGS(wsdl_desc, env, bindings) \
-		((wsdl_desc)->ops->set_bindings (wsdl_desc, env, bindings))
+      ((wsdl_desc)->ops->set_bindings (wsdl_desc, env, bindings))
 
 #define AXIS2_WSDL_DESC_ADD_BINDING(wsdl_desc, env, binding) \
-		((wsdl_desc)->ops->add_binding (wsdl_desc, env, binding))
+      ((wsdl_desc)->ops->add_binding (wsdl_desc, env, binding))
 
 #define AXIS2_WSDL_DESC_GET_BINDING(wsdl_desc, env, qname) \
-		((wsdl_desc)->ops->get_binding (wsdl_desc, env, qname))
+      ((wsdl_desc)->ops->get_binding (wsdl_desc, env, qname))
 
 #define AXIS2_WSDL_DESC_ADD_INTERFACE(wsdl_desc, env, interface) \
-		((wsdl_desc)->ops->add_interface (wsdl_desc, env, interface))
+      ((wsdl_desc)->ops->add_interface (wsdl_desc, env, interface))
         
 #define AXIS2_WSDL_DESC_GET_INTERFACE(wsdl_desc, env, qname) \
-		((wsdl_desc)->ops->get_interface (wsdl_desc, env, qname))
+      ((wsdl_desc)->ops->get_interface (wsdl_desc, env, qname))
 
 #define AXIS2_WSDL_DESC_GET_INTERFACES(wsdl_desc, env) \
-		((wsdl_desc)->ops->get_interfaces (wsdl_desc, env))        
+      ((wsdl_desc)->ops->get_interfaces (wsdl_desc, env))        
 
 #define AXIS2_WSDL_DESC_SET_INTERFACES(wsdl_desc, env, interfaces) \
-		((wsdl_desc)->ops->set_interfaces (wsdl_desc, env, interfaces))
+      ((wsdl_desc)->ops->set_interfaces (wsdl_desc, env, interfaces))
         
 #define AXIS2_WSDL_DESC_GET_SVCS(wsdl_desc, env) \
-		((wsdl_desc)->ops->get_svcs (wsdl_desc, env))
+      ((wsdl_desc)->ops->get_svcs (wsdl_desc, env))
         
 #define AXIS2_WSDL_DESC_SET_SVCS(wsdl_desc, env, svcs) \
-		((wsdl_desc)->ops->set_svcs (wsdl_desc, env, svcs))
+      ((wsdl_desc)->ops->set_svcs (wsdl_desc, env, svcs))
         
 #define AXIS2_WSDL_DESC_GET_SVC(wsdl_desc, env, qname) \
-		((wsdl_desc)->ops->get_svc (wsdl_desc, env, qname))
+      ((wsdl_desc)->ops->get_svc (wsdl_desc, env, qname))
 
 #define AXIS2_WSDL_DESC_ADD_SVC(wsdl_desc, env, svc) \
-		((wsdl_desc)->ops->add_svc (wsdl_desc, env, svc))
+      ((wsdl_desc)->ops->add_svc (wsdl_desc, env, svc))
 
 #define AXIS2_WSDL_DESC_GET_TARGET_NAMESPACE(wsdl_desc, env) \
-		((wsdl_desc)->ops->get_target_namespace (wsdl_desc, env))
+      ((wsdl_desc)->ops->get_target_namespace (wsdl_desc, env))
         
 #define AXIS2_WSDL_DESC_SET_TARGET_NAMESPACE(wsdl_desc, env, target_namespace) \
-		((wsdl_desc)->ops->set_target_namespace (wsdl_desc, env, target_namespace))
+      ((wsdl_desc)->ops->set_target_namespace (wsdl_desc, env, target_namespace))
         
 #define AXIS2_WSDL_DESC_GET_TYPES(wsdl_desc, env) \
-		((wsdl_desc)->ops->get_types (wsdl_desc, env))
+      ((wsdl_desc)->ops->get_types (wsdl_desc, env))
         
 #define AXIS2_WSDL_DESC_SET_TYPES(wsdl_desc, env, types) \
-		((wsdl_desc)->ops->set_types (wsdl_desc, env, types))
+      ((wsdl_desc)->ops->set_types (wsdl_desc, env, types))
 
 #define AXIS2_WSDL_DESC_GET_WSDL1_DEF_NAME(wsdl_desc, env) \
-		((wsdl_desc)->ops->get_wsdl1_def_name (wsdl_desc, env))
+      ((wsdl_desc)->ops->get_wsdl1_def_name (wsdl_desc, env))
         
 #define AXIS2_WSDL_DESC_SET_WSDL1_DEF_NAME(wsdl_desc, env, wsdl1_def_qname) \
-		((wsdl_desc)->ops->set_wsdl1_def_name (wsdl_desc, env, wsdl1_def_qname))
+      ((wsdl_desc)->ops->set_wsdl1_def_name (wsdl_desc, env, wsdl1_def_qname))
 
 #define AXIS2_WSDL_DESC_GET_NAMESPACE(wsdl_desc, env, prefix) \
-		((wsdl_desc)->ops->get_namespace (wsdl_desc, env, prefix))
+      ((wsdl_desc)->ops->get_namespace (wsdl_desc, env, prefix))
 
 #define AXIS2_WSDL_DESC_GET_NAMESPACES(wsdl_desc, env) \
-		((wsdl_desc)->ops->get_namespaces (wsdl_desc, env))
+      ((wsdl_desc)->ops->get_namespaces (wsdl_desc, env))
         
 #define AXIS2_WSDL_DESC_SET_NAMESPACES(wsdl_desc, env, namespaces) \
-		((wsdl_desc)->ops->set_namespace (wsdl_desc, env, namespaces))
+      ((wsdl_desc)->ops->set_namespace (wsdl_desc, env, namespaces))
         
 #define AXIS2_WSDL_DESC_GET_IMPORTS(wsdl_desc, env) \
-		((wsdl_desc)->ops->get_imports (wsdl_desc, env))
+      ((wsdl_desc)->ops->get_imports (wsdl_desc, env))
         
 #define AXIS2_WSDL_DESC_SET_IMPORTS(wsdl_desc, env, imports) \
-		((wsdl_desc)->ops->set_imports (wsdl_desc, env, imports))
+      ((wsdl_desc)->ops->set_imports (wsdl_desc, env, imports))
 
 #define AXIS2_WSDL_DESC_ADD_IMPORT(wsdl_desc, env, wsdl_import) \
-		((wsdl_desc)->ops->add_import (wsdl_desc, env, wsdl_import))
+      ((wsdl_desc)->ops->add_import (wsdl_desc, env, wsdl_import))
         
 #define AXIS2_WSDL_DESC_GET_INCLUDES(wsdl_desc, env) \
-		((wsdl_desc)->ops->get_includes (wsdl_desc, env))
+      ((wsdl_desc)->ops->get_includes (wsdl_desc, env))
 
 #define AXIS2_WSDL_DESC_SET_INCLUDES(wsdl_desc, env, includes) \
-		((wsdl_desc)->ops->set_includes (wsdl_desc, env, includes))
+      ((wsdl_desc)->ops->set_includes (wsdl_desc, env, includes))
 
 #define AXIS2_WSDL_DESC_ADD_INCLUDE(wsdl_desc, env, wsdl_include) \
-		((wsdl_desc)->ops->add_include (wsdl_desc, env, wsdl_include))
-        	
+      ((wsdl_desc)->ops->add_include (wsdl_desc, env, wsdl_include))
+           
 /*************************** End of function macros ***************************/
 
 /** @} */

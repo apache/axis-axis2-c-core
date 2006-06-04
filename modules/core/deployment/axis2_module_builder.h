@@ -51,12 +51,12 @@ typedef struct axis2_module_builder_ops axis2_module_builder_ops_t;
  */
 AXIS2_DECLARE_DATA struct axis2_module_builder_ops
 {
-	/** De-allocate memory
-  	 * @return status code
-  	 */
-	axis2_status_t (AXIS2_CALL *
+   /** De-allocate memory
+      * @return status code
+      */
+   axis2_status_t (AXIS2_CALL *
     free)(axis2_module_builder_t *module_builder,
-	        const axis2_env_t *env);
+           const axis2_env_t *env);
                                
     axis2_status_t (AXIS2_CALL *
     populate_module) (axis2_module_builder_t *module_builder,
@@ -69,7 +69,7 @@ AXIS2_DECLARE_DATA struct axis2_module_builder_ops
  */  
 AXIS2_DECLARE_DATA struct axis2_module_builder
 {
-	axis2_module_builder_ops_t *ops;
+   axis2_module_builder_ops_t *ops;
     struct axis2_desc_builder *desc_builder;
 };
 
@@ -96,10 +96,10 @@ axis2_module_builder_create_with_file_and_dep_engine_and_module (const axis2_env
 /*************************** Function macros **********************************/
 
 #define AXIS2_MODULE_BUILDER_FREE(module_builder, env) \
-		((module_builder)->ops->free (module_builder, env))
+      ((module_builder)->ops->free (module_builder, env))
 
 #define AXIS2_MODULE_BUILDER_POPULATE_MODULE(module_builder, env) \
-		((module_builder)->ops->populate_module (module_builder, env))
+      ((module_builder)->ops->populate_module (module_builder, env))
 
 /*************************** End of function macros ***************************/
 
