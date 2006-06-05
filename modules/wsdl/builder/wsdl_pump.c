@@ -974,7 +974,7 @@ axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
    axis2_char_t *qname_prefix = NULL;
    axis2_char_t *temp = NULL;
    int i = 0, size = 0;
-   axis2_char_t *mep = NULL;
+   const axis2_char_t *mep = NULL;
 
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK(env->error, namespc_of_op, AXIS2_FAILURE);

@@ -519,7 +519,7 @@ axis2_msg_set_name(axis2_msg_t *msg,
     
     if (name)
     {
-        msg_impl->name = AXIS2_STRDUP(env, name);
+        msg_impl->name = AXIS2_STRDUP(name, env);
         if (!(msg_impl->name))
         {
             return AXIS2_FAILURE;

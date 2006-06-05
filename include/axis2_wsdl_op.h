@@ -79,7 +79,7 @@ struct axis2_wsdl_op_ops
     axis2_status_t (AXIS2_CALL *
     set_msg_exchange_pattern) (axis2_wsdl_op_t *wsdl_op, 
                                 const axis2_env_t *env, 
-                                axis2_char_t *msg_exchange_pattern);
+                                const axis2_char_t *msg_exchange_pattern);
   
     /**
      * get the message exchange pattern

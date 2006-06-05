@@ -73,7 +73,7 @@ axis2_wsdl_op_free (axis2_wsdl_op_t *wsdl_op,
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_op_set_msg_exchange_pattern (axis2_wsdl_op_t *wsdl_op,
                                         const axis2_env_t *env,
-                                        axis2_char_t *msg_exchange_pattern);
+                                        const axis2_char_t *msg_exchange_pattern);
 
 axis2_char_t * AXIS2_CALL 
 axis2_wsdl_op_get_msg_exchange_pattern (axis2_wsdl_op_t *wsdl_op, 
@@ -360,7 +360,7 @@ axis2_wsdl_op_free_void_arg(void *wsdl_op,
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_op_set_msg_exchange_pattern (axis2_wsdl_op_t *wsdl_op, 
                                         const axis2_env_t *env, 
-                                      axis2_char_t *msg_exchange_pattern)
+                                      const axis2_char_t *msg_exchange_pattern)
 {
     axis2_wsdl_op_impl_t *wsdl_op_impl = NULL;
     

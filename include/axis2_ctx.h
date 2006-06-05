@@ -67,11 +67,12 @@ struct axis2_ctx_ops
      * @param persistent
      * @return
      */
-    axis2_property_t* (AXIS2_CALL *
-    get_property)(struct axis2_ctx *ctx, 
-                    const axis2_env_t *env, 
-                    axis2_char_t *key, 
-                    axis2_bool_t persistent);
+    axis2_property_t *(AXIS2_CALL *
+    get_property)(
+        struct axis2_ctx *ctx, 
+        const axis2_env_t *env, 
+        const axis2_char_t *key, 
+        const axis2_bool_t persistent);
     
     axis2_hash_t* (AXIS2_CALL *get_non_persistent_map)(struct axis2_ctx *ctx, 
                                                            const axis2_env_t *env);

@@ -17,7 +17,7 @@
 #include <axis2_wsdl4c_operation.h>
 #include <axis2_wsdl.h>
 
-axis2_char_t *AXIS2_CALL
+const axis2_char_t *AXIS2_CALL
 axis2_wsdl11_mep_finder_get_mep(void *op,
                               const axis2_env_t *env) 
 {

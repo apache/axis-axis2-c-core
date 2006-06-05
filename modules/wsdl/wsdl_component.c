@@ -46,14 +46,14 @@ axis2_status_t AXIS2_CALL
 axis2_wsdl_component_set_component_property(
                                        axis2_wsdl_component_t *wsdl_component, 
                                         const axis2_env_t *env,
-                                        axis2_char_t *key, 
+                                        const axis2_char_t *key, 
                                         void *value);
                                         
 void * AXIS2_CALL
 axis2_wsdl_component_get_component_property(
                                       axis2_wsdl_component_t *wsdl_component,
                                         const axis2_env_t *env,
-                                        axis2_char_t *key);
+                                        const axis2_char_t *key);
 
 
                                         
@@ -236,7 +236,7 @@ axis2_status_t AXIS2_CALL
 axis2_wsdl_component_set_component_property(
                                         axis2_wsdl_component_t *wsdl_component, 
                                         const axis2_env_t *env,
-                                        axis2_char_t *key, 
+                                        const axis2_char_t *key, 
                                         void *value) 
 {
     axis2_wsdl_component_impl_t *component_impl = NULL;
@@ -256,7 +256,7 @@ void *AXIS2_CALL
 axis2_wsdl_component_get_component_property(
                                       axis2_wsdl_component_t *wsdl_component,
                                         const axis2_env_t *env, 
-                                        axis2_char_t *key) 
+                                        const axis2_char_t *key) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, key, NULL);

@@ -54,7 +54,7 @@ axis2_wsdl_binding_msg_ref_get_direction(axis2_wsdl_binding_msg_ref_t *binding_m
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_binding_msg_ref_set_direction(axis2_wsdl_binding_msg_ref_t *binding_msg_ref,
                                             const axis2_env_t *env,
-                                            axis2_char_t *direction);
+                                            const axis2_char_t *direction);
 
 axis2_char_t * AXIS2_CALL
 axis2_wsdl_binding_msg_ref_get_msg_label(axis2_wsdl_binding_msg_ref_t *binding_msg_ref,
@@ -63,7 +63,7 @@ axis2_wsdl_binding_msg_ref_get_msg_label(axis2_wsdl_binding_msg_ref_t *binding_m
 axis2_status_t AXIS2_CALL
 axis2_wsdl_binding_msg_ref_set_msg_label(axis2_wsdl_binding_msg_ref_t *binding_msg_ref,
                                             const axis2_env_t *env,
-                                            axis2_char_t *msg_label);
+                                            const axis2_char_t *msg_label);
 
 /************************** End of function prototypes ************************/
 
@@ -178,7 +178,7 @@ axis2_wsdl_binding_msg_ref_get_direction(axis2_wsdl_binding_msg_ref_t *binding_m
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_binding_msg_ref_set_direction(axis2_wsdl_binding_msg_ref_t *binding_msg_ref,
                                             const axis2_env_t *env,
-                                            axis2_char_t *direction) 
+                                            const axis2_char_t *direction) 
 {
     axis2_wsdl_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
     
@@ -192,7 +192,7 @@ axis2_wsdl_binding_msg_ref_set_direction(axis2_wsdl_binding_msg_ref_t *binding_m
         AXIS2_FREE(env->allocator, binding_msg_ref_impl->direction);
         binding_msg_ref_impl->direction = NULL;
     }
-    binding_msg_ref_impl->direction = direction;
+    binding_msg_ref_impl->direction = (axis2_char_t *)direction;
     return AXIS2_SUCCESS;
 }
 
@@ -207,7 +207,7 @@ axis2_wsdl_binding_msg_ref_get_msg_label(axis2_wsdl_binding_msg_ref_t *binding_m
 axis2_status_t AXIS2_CALL
 axis2_wsdl_binding_msg_ref_set_msg_label(axis2_wsdl_binding_msg_ref_t *binding_msg_ref,
                                             const axis2_env_t *env,
-                                            axis2_char_t *msg_label) 
+                                            const axis2_char_t *msg_label) 
 {
     axis2_wsdl_binding_msg_ref_impl_t *binding_msg_ref_impl = NULL;
     
@@ -221,6 +221,6 @@ axis2_wsdl_binding_msg_ref_set_msg_label(axis2_wsdl_binding_msg_ref_t *binding_m
         AXIS2_FREE(env->allocator, binding_msg_ref_impl->msg_label);
         binding_msg_ref_impl->direction = NULL;
     }
-    AXIS2_INTF_TO_IMPL(binding_msg_ref)->msg_label = msg_label;
+    AXIS2_INTF_TO_IMPL(binding_msg_ref)->msg_label = (axis2_char_t *)msg_label;
     return AXIS2_SUCCESS;
 }
