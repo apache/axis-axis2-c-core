@@ -285,7 +285,8 @@ axis2_xml_schema_enum_set_value(void *schema_enum,
 {
     axis2_xml_schema_enum_impl_t *schema_enum_impl = NULL;
     axis2_hash_t *super = NULL;
- 
+    /** TODO fix this method to match the list of values 
+        in sub class with 'value' */
     super = AXIS2_XML_SCHEMA_ENUM_SUPER_OBJS(schema_enum, env);
     schema_enum_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_XML_SCHEMA_ENUM", AXIS2_HASH_KEY_STRING));

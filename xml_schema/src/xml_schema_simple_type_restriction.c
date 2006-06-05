@@ -174,7 +174,10 @@ axis2_xml_schema_simple_type_restriction_create(const axis2_env_t *env)
     simple_type_restriction_impl->sim_type_content = 
         axis2_xml_schema_simple_type_content_create(env);
         
-    if(!simple_type_restriction_impl->sim_type_content)
+    simple_type_restriction_impl->facets = axis2_xml_schema_obj_collection_create(env);        
+        
+    if(!simple_type_restriction_impl->sim_type_content || 
+        !simple_type_restriction_impl->facets)
     {
         axis2_xml_schema_simple_type_restriction_free(
             &(simple_type_restriction_impl->simple_type_restriction), env);

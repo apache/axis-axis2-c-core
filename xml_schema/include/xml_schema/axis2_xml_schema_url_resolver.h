@@ -29,7 +29,7 @@ extern "C"
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_xml_schema_url_resolver_resolve_entity(
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_char_t *ns,
         axis2_char_t *schema_location,
         axis2_char_t *base_uri);

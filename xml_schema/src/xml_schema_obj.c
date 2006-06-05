@@ -252,40 +252,22 @@ axis2_xml_schema_obj_resolve_methods(
     obj->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
 
-    obj->ops->get_line_num = axis2_hash_get(methods,
-            "get_line_num", AXIS2_HASH_KEY_STRING);
-    if(!obj->ops->get_line_num)
-            obj->ops->get_line_num = 
+    obj->ops->get_line_num = 
             obj_impl_l->obj.ops->get_line_num;
     
-    obj->ops->set_line_num = axis2_hash_get(methods,
-            "set_line_num", AXIS2_HASH_KEY_STRING);
-    if(!obj->ops->set_line_num)
-            obj->ops->set_line_num = 
+    obj->ops->set_line_num = 
             obj_impl_l->obj.ops->set_line_num; 
     
-    obj->ops->get_line_pos = axis2_hash_get(methods,
-            "get_line_pos", AXIS2_HASH_KEY_STRING);
-    if(!obj->ops->get_line_pos)
-            obj->ops->get_line_pos = 
+    obj->ops->get_line_pos = 
             obj_impl_l->obj.ops->get_line_pos;
     
-    obj->ops->set_line_pos = axis2_hash_get(methods,
-            "set_line_pos", AXIS2_HASH_KEY_STRING);
-    if(!obj->ops->set_line_pos)
-            obj->ops->set_line_pos = 
+    obj->ops->set_line_pos = 
             obj_impl_l->obj.ops->set_line_pos; 
     
-    obj->ops->get_source_uri = axis2_hash_get(methods,
-            "get_source_uri", AXIS2_HASH_KEY_STRING);
-    if(!obj->ops->get_source_uri)
-            obj->ops->get_source_uri = 
+    obj->ops->get_source_uri = 
             obj_impl_l->obj.ops->get_source_uri;
     
-    obj->ops->set_source_uri = axis2_hash_get(methods,
-            "set_source_uri", AXIS2_HASH_KEY_STRING);
-    if(!obj->ops->set_source_uri)
-            obj->ops->set_source_uri = 
+    obj->ops->set_source_uri = 
             obj_impl_l->obj.ops->set_source_uri; 
 
     obj->ops->equals = obj_impl_l->obj.ops->equals;
@@ -302,8 +284,8 @@ axis2_xml_schema_obj_get_line_num(void *obj,
     super = AXIS2_XML_SCHEMA_OBJ_SUPER_OBJS(obj, env);
     if(NULL != super)
     {
-        obj_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, "AXIS2_XML_SCHEMA_OBJ", 
-                    AXIS2_HASH_KEY_STRING));
+        obj_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, 
+            "AXIS2_XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING));
         if(NULL != obj_impl)
             return obj_impl->line_num;
     }
@@ -326,8 +308,7 @@ axis2_xml_schema_obj_set_line_num(void *obj,
     }
     else
     {
-        
-    
+        return AXIS2_FAILURE;
     }
     obj_impl->line_num = line_num;
 

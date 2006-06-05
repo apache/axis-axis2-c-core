@@ -41,7 +41,6 @@ typedef struct axis2_xml_schema_builder_impl
 #define AXIS2_INTF_TO_IMPL(builder) \
         ((axis2_xml_schema_builder_impl_t*)builder)
 
-/************************* function prototypes ********************************/
 
 axis2_xml_schema_t* AXIS2_CALL
 axis2_xml_schema_builder_build(
@@ -320,12 +319,14 @@ get_from_default(
         
 static axis2_xml_schema_t *
 resolve_xml_schema(
+        axis2_xml_schema_builder_t *builder,
         const axis2_env_t *env,
         axis2_char_t *target_namespace,
         axis2_char_t *schema_location);
         
 static axis2_xml_schema_t *
 resolve_xml_schema_with_uri(
+        axis2_xml_schema_builder_t *builder,
         const axis2_env_t *env,
         axis2_char_t *target_namespace,
         axis2_char_t *schema_location,
@@ -335,20 +336,21 @@ static axis2_xml_schema_annotation_t*
 handle_annotation_with_element(
         axis2_xml_schema_builder_t *builder,
         const axis2_env_t *env,
-        axis2_om_node_t *ann_node);                                 
+        axis2_om_node_t *ann_node); 
         
-/*************** end function prototypes **************************************/
-
 AXIS2_EXTERN axis2_xml_schema_builder_t * AXIS2_CALL
 axis2_xml_schema_builder_create(
         const axis2_env_t *env,
         axis2_xml_schema_collection_t *sch_collection)
 {
     axis2_xml_schema_builder_impl_t *builder_impl = NULL;
+    
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, sch_collection, NULL);
-    builder_impl = (axis2_xml_schema_builder_impl_t *)AXIS2_MALLOC(env->allocator,
-        sizeof(axis2_xml_schema_builder_impl_t));
+    
+    builder_impl = (axis2_xml_schema_builder_impl_t *)
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_xml_schema_builder_impl_t));
+        
     if(!builder_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -356,11 +358,17 @@ axis2_xml_schema_builder_create(
     }        
     
     builder_impl->builder.ops = NULL;
+    
     builder_impl->collection = NULL;
+    
     builder_impl->om_doc = NULL;
+    
     builder_impl->root_node = NULL;
+    
     builder_impl->schema = NULL;
+    
     builder_impl->gen_no = 0;
+    
     
     builder_impl->schema = axis2_xml_schema_create(env, NULL, sch_collection);
     if(!builder_impl->schema)
@@ -368,6 +376,7 @@ axis2_xml_schema_builder_create(
         axis2_xml_schema_builder_free(&(builder_impl->builder), env);
         return NULL;
     }
+    
     builder_impl->collection = sch_collection;
     
     builder_impl->builder.ops = AXIS2_MALLOC(env->allocator, 
@@ -399,13 +408,21 @@ axis2_xml_schema_builder_build(
         axis2_char_t *uri)
 {
     axis2_xml_schema_builder_impl_t *builder_impl = NULL;
+    
     AXIS2_PARAM_CHECK(env->error, om_doc, NULL);
+    
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    
     builder_impl->om_doc = om_doc;
-    builder_impl->root_node = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(om_doc, env);            
+    
+    builder_impl->root_node = 
+        AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(om_doc, env);            
+    
     if(!builder_impl->root_node)
         return NULL;        
-    return handle_xml_schema_element(builder, env, builder_impl->root_node, uri);
+    
+    return handle_xml_schema_element(builder, env, 
+        builder_impl->root_node, uri);
 }
         
 axis2_xml_schema_t* AXIS2_CALL
@@ -426,7 +443,19 @@ axis2_xml_schema_builder_free(
     axis2_xml_schema_builder_impl_t *builder_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    if(NULL != builder_impl->collection)
+    {
+        AXIS2_XML_SCHEMA_COLLECTION_FREE(builder_impl->collection, env);
+    }
     
+    if(NULL != builder_impl->builder.ops)
+    {
+        AXIS2_FREE(env->allocator, builder_impl->builder.ops);
+        builder_impl->builder.ops = NULL;
+    }
+    AXIS2_FREE(env->allocator, builder_impl);
+    builder_impl = NULL;
+        
     return AXIS2_SUCCESS;
 } 
 
@@ -445,6 +474,8 @@ handle_xml_schema_element(
     axis2_hash_t *namespaces     = NULL;
     axis2_char_t *target_ns = NULL;
     
+    axis2_char_t *system_id = NULL;
+    
     /** element form default */
     void *ele_form = NULL;   
     void *attr_form = NULL;
@@ -462,19 +493,17 @@ handle_xml_schema_element(
     
     set_namespace_attributes( builder, env, builder_impl->schema, ele_node);
     
-    
     if(NULL != uri)
     {
         ht_sch2schemas = AXIS2_XML_SCHEMA_COLLECTION_GET_SYSTEMID2_SCHEMAS(
             builder_impl->collection, env);
-            
+        
         if(NULL != ht_sch2schemas)
         {
             axis2_hash_set(ht_sch2schemas, uri, 
                 AXIS2_HASH_KEY_STRING, builder_impl->schema);
         }                
     }
-    
     schemas = 
         AXIS2_XML_SCHEMA_COLLECTION_GET_SCHEMAS(builder_impl->collection, env);
     if(NULL != schemas)
@@ -517,6 +546,8 @@ handle_xml_schema_element(
     drv = get_derivation(env, ele_node, "finalDefault");
     AXIS2_XML_SCHEMA_SET_FINAL_DEFAULT(builder_impl->schema, env, drv);
     
+    if(NULL != uri)
+        AXIS2_XML_SCHEMA_OBJ_SET_SOURCE_URI(builder_impl->schema, env, uri);
     /***********
          * for ( each childElement)
          *      if( simpleTypeElement)
@@ -566,11 +597,16 @@ handle_xml_schema_element(
                 AXIS2_XML_SCHEMA_ADD_TYPE(builder_impl->schema, env, type);
                 if(NULL != items)
                 {
-                    AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(items, env, type);
+                    AXIS2_XML_SCHEMA_ADD_TYPE(builder_impl->schema, env, type);
                 }
                 qn = AXIS2_XML_SCHEMA_TYPE_GET_QNAME(type, env);
                 if(NULL != qn)
                 {
+                    axis2_char_t *u = NULL;
+                    axis2_char_t *p = NULL;
+                    
+                    u = AXIS2_QNAME_GET_URI(qn, env);
+                    p = AXIS2_QNAME_GET_LOCALPART(qn, env);
                     AXIS2_XML_SCHEMA_COLLECTION_RESOLVE_TYPE(builder_impl->collection, 
                         env, qn, type);
                 }
@@ -704,8 +740,6 @@ handle_xml_schema_element(
                 annotation = handle_annotation(builder, env, child_ele_node, ele_node);
                     AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(
                         builder_impl->schema, env, annotation);
-                
-            
             }
         child_ele = NULL;
         child_ele = axis2_om_util_get_next_sibling_element_with_uri(child_ele_node, env, 
@@ -722,9 +756,13 @@ handle_annotation(
         axis2_om_node_t *sch_node)
 {
     void *annotation = NULL;
+
     axis2_om_element_t *child_ele = NULL;
+
     axis2_om_node_t *child_node   = NULL;
+
     axis2_om_element_t *ann_ele = NULL;
+
     axis2_xml_schema_obj_collection_t *collection = NULL;
     
     AXIS2_PARAM_CHECK(env->error, builder, NULL);
@@ -732,6 +770,7 @@ handle_annotation(
     AXIS2_PARAM_CHECK(env->error, sch_node, NULL);
 
     annotation = axis2_xml_schema_annotation_create(env);
+
     collection = AXIS2_XML_SCHEMA_ANNOTATION_GET_ITEMS(annotation, env);
     
     ann_ele = AXIS2_OM_NODE_GET_DATA_ELEMENT(ann_node, env);
@@ -742,7 +781,9 @@ handle_annotation(
     while(NULL != child_ele)
     {
         axis2_char_t *localname  = NULL;
+
         localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(child_ele, env);
+
         if(NULL != localname && AXIS2_STRCMP(localname, "documentation") == 0)
         {
             void *documentation = NULL;
@@ -788,17 +829,24 @@ handle_redefine(
         return NULL;
 
     redefine = axis2_xml_schema_redefine_create(env);
-    schema_location = 
-    AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(redefine_ele, env, "schemaLocation");
+    schema_location = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(
+        redefine_ele, env, "schemaLocation");
+                
+                    
+        
     AXIS2_XML_SCHEMA_EXTERNAL_SET_SCHEMA_LOCATION(redefine, env, schema_location);
     
-    schema = resolve_xml_schema(env, NULL, schema_location);
+    schema = resolve_xml_schema(builder, env, NULL, schema_location);
+    
+    AXIS2_XML_SCHEMA_EXTERNAL_SET_SCHEMA(redefine, env, schema);
     
     schema_types = AXIS2_XML_SCHEMA_REDEFINE_GET_SCHEMA_TYPES(redefine, env);
+    
     items =  AXIS2_XML_SCHEMA_REDEFINE_GET_ITEMS(redefine, env);
     
     child_ele = axis2_om_util_get_first_child_element_with_uri(
         redefine_node, env, AXIS2_XML_SCHEMA_NS, &child_ele_node);
+    
     while(NULL != child_ele)
     {
         axis2_char_t *localname = NULL;
@@ -808,19 +856,27 @@ handle_redefine(
         {
             void *type = NULL;
             axis2_qname_t *qn = NULL;
+            
             type = handle_simple_type(builder, env, child_ele_node, sch_node);
+            
             qn = AXIS2_XML_SCHEMA_TYPE_GET_QNAME(type, env);
+            
             AXIS2_XML_SCHEMA_OBJ_TABLE_ADD(schema_types, env, qn, type);
+            
             AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(items, env, type);
+            
         }            
         else if(AXIS2_STRCMP(localname,"complexType") == 0)
         {
             void *type = NULL;
             axis2_qname_t *qn = NULL;
+            
             type = handle_complex_type(builder, env, child_ele_node, sch_node);
+            
             qn = AXIS2_XML_SCHEMA_TYPE_GET_QNAME(type, env);
             
             AXIS2_XML_SCHEMA_OBJ_TABLE_ADD(schema_types, env, qn, type);
+
             AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(items, env, type);
         }
         else if(AXIS2_STRCMP(localname,"group") == 0)
@@ -828,11 +884,15 @@ handle_redefine(
             void *grp = NULL;
             axis2_char_t *name = NULL;
             axis2_xml_schema_obj_table_t *groups = NULL;
+
             groups = AXIS2_XML_SCHEMA_REDEFINE_GET_GROUP(redefine, env);
+
             grp = handle_group(builder, env, child_ele_node, sch_node);
+
             name = AXIS2_XML_SCHEMA_GROUP_GET_NAME(grp, env);
             
             AXIS2_XML_SCHEMA_OBJ_TABLE_PUT(groups, env, name, grp);
+
             AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(items, env, grp);
         }
         else if(AXIS2_STRCMP(localname, "attributeGroup") == 0)
@@ -842,16 +902,19 @@ handle_redefine(
             axis2_char_t *name = NULL;
             
             attr_grp = handle_attribute_group(builder, env, child_ele_node, sch_node);
+
             groups = AXIS2_XML_SCHEMA_REDEFINE_GET_ATTRIBUTE_GROUP(redefine, env);
+
             name = AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_GET_NAME(attr_grp, env);
+
             AXIS2_XML_SCHEMA_OBJ_TABLE_PUT(groups, env, name, attr_grp);
+
         }
         else if(AXIS2_STRCMP(localname, "annotation") == 0)
         {
             void *annotation = NULL;
             annotation = handle_annotation_with_element(builder, env, child_ele_node);
             AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(redefine, env, annotation);
-            
         }
     }       
     return redefine; 
@@ -876,11 +939,14 @@ set_namespace_attributes(
     
     AXIS2_PARAM_CHECK(env->error, schema, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, sch_node, AXIS2_FAILURE);
+
     if(AXIS2_OM_NODE_GET_NODE_TYPE(sch_node, env) != AXIS2_OM_ELEMENT)
         return AXIS2_FAILURE;
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
+
     parent_node = AXIS2_OM_NODE_GET_PARENT(sch_node, env);
+
     if(NULL != parent_node && 
         AXIS2_OM_NODE_GET_NODE_TYPE(sch_node, env) == AXIS2_OM_ELEMENT)
     {
@@ -913,14 +979,12 @@ set_namespace_attributes(
             uri = AXIS2_OM_NAMESPACE_GET_URI((axis2_om_namespace_t*)val, env);
             prefix = 
                 AXIS2_OM_NAMESPACE_GET_PREFIX((axis2_om_namespace_t*)val, env);
-            /**  if (map.item(i).getNodeName().startsWith("xmlns:")) {
-                schema.namespaces.put(map.item(i).getLocalName(),
-                        map.item(i).getNodeValue());
-             */
+
             if(NULL != prefix && AXIS2_STRCMP(prefix,"") != 0)
             {                              
-                axis2_hash_set(ht_sch_ns, prefix, AXIS2_HASH_KEY_STRING,
-                    uri);
+                axis2_hash_set(ht_sch_ns, prefix, 
+                    AXIS2_HASH_KEY_STRING, uri);
+                    
                 if(NULL != uri && AXIS2_STRCMP(uri, AXIS2_XML_SCHEMA_NS) == 0)
                 {
                     AXIS2_XML_SCHEMA_SET_SCHEMA_NS_PREFIX(schema, env, prefix);
@@ -933,12 +997,16 @@ set_namespace_attributes(
             }
         }    
     }
+    
     target_ns_qn = axis2_qname_create(env, "targetNamespace", NULL, NULL);
+    
     contain = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE(om_ele, env, target_ns_qn);
+    
     if(NULL != target_ns_qn)
         AXIS2_QNAME_FREE(target_ns_qn, env);
 
-    if(NULL != contain && (value_exist_in_hash(env, ht_sch_ns, contain)) == AXIS2_FALSE)
+    if(NULL != contain && 
+        (value_exist_in_hash(env, ht_sch_ns, contain)) == AXIS2_FALSE)
     {
         put_namespace(builder, env, "", contain);
         if(AXIS2_STRCMP(contain,"") != 0)
@@ -964,9 +1032,12 @@ put_namespace(
     axis2_xml_schema_builder_impl_t *builder_impl = NULL;
     axis2_hash_t *ht_sch_ns = NULL;
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    
     AXIS2_PARAM_CHECK(env->error, prefix, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ns , AXIS2_FAILURE);
+    
     ht_sch_ns = AXIS2_XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
+    
     if(NULL != axis2_hash_get(ht_sch_ns, prefix, AXIS2_HASH_KEY_STRING))
     {
         /** key already exist */
@@ -974,7 +1045,9 @@ put_namespace(
         sprintf(gen_prefix, "gen%d", builder_impl->gen_no++);
         axis2_hash_set(ht_sch_ns, gen_prefix, AXIS2_HASH_KEY_STRING, ns);            
     }
+    
     axis2_hash_set(ht_sch_ns, prefix, AXIS2_HASH_KEY_STRING, ns);
+    
     return AXIS2_SUCCESS;    
 }              
 
@@ -1064,7 +1137,7 @@ handle_simple_type(
         axis2_om_element_t *ele1         = NULL;
         axis2_om_node_t    *node1        = NULL;
         
-        axis2_char_t *attribute_value           = NULL;
+        axis2_char_t *attribute_value   = NULL;
         
         restriction = axis2_xml_schema_simple_type_restriction_create(env);
         
@@ -1151,6 +1224,8 @@ handle_simple_type(
                 facets = AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_GET_FACETS(restriction, env);
                 AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(facets, env, facet);
             }
+            ele1 = axis2_om_util_get_next_sibling_element_with_uri(node1, env, 
+                AXIS2_XML_SCHEMA_NS, &node1);
         }       
         AXIS2_XML_SCHEMA_SIMPLE_TYPE_SET_CONTENT(sim_type, env, restriction);
     }
@@ -1309,21 +1384,30 @@ handle_simple_type(
             axis2_char_t *sim_type_name = NULL;
             
             union_sim_type = handle_simple_type(builder, env, inline_uni_node, sch_node);
+            
             base_types = AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_GET_BASE_TYPES(sch_union, env);
+            
             AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(base_types, env, union_sim_type);
+            
             sim_type_name = AXIS2_XML_SCHEMA_TYPE_GET_NAME(union_sim_type, env);
+            
             mem_types = AXIS2_MALLOC(env->allocator, sizeof(strlen(sim_type_name)+ 3));
+            
             sprintf(mem_types, " %s", sim_type_name);
+            
             AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_SET_MEMBER_TYPES_SOURCE(union_sim_type, 
+            
                 env, mem_types);
             AXIS2_FREE(env->allocator, mem_types);                
         
             inline_uni_ele = axis2_om_util_get_next_sibling_element_with_uri_localname(
+            
             union_ele, env, union_node, "simpleType", AXIS2_XML_SCHEMA_NS, &inline_uni_node);                    
         }            
         
         union_ann_ele = axis2_om_util_get_first_child_element_with_uri_localname(union_ele, 
             env, union_node, "annotation", AXIS2_XML_SCHEMA_NS, &union_ann_node);
+        
         if(NULL != union_ann_ele)
         {
             void *union_annotation = NULL;
@@ -1666,14 +1750,21 @@ handle_simple_content_restriction(
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     attr_value = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(res_ele, env, "base");
+    
     if(NULL != attr_value)
     {
         axis2_char_t *ns_from_ele = "";
+    
         axis2_array_list_t *list = NULL;
+    
         axis2_hash_t *namespaces = NULL;
+    
         axis2_char_t *result = NULL;
+    
         axis2_array_list_t* last_list = NULL;
+    
         axis2_char_t *name = NULL;
+    
         axis2_qname_t *qn = NULL;
         
         if(NULL != strchr(attr_value, ':'))
@@ -1682,7 +1773,6 @@ handle_simple_content_restriction(
             ns_from_ele = AXIS2_ARRAY_LIST_GET(list, env, 0);
         }
        
-                
         namespaces = AXIS2_XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(builder_impl->schema, env);
         
         result = axis2_hash_get(namespaces, ns_from_ele, AXIS2_HASH_KEY_STRING);
@@ -1719,27 +1809,36 @@ handle_simple_content_restriction(
             void *attribute = NULL;
             axis2_xml_schema_obj_collection_t *attributes = NULL;
             attribute = handle_attribute(builder, env, node1, schema_node);
+
             attributes = AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_GET_ATTRIBUTES(sim_cnt_res, env);
+
             AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(attributes, env, attribute);
         }
         else if(AXIS2_STRCMP(localname, "attributeGroup") == 0)
         {
             void *attr_grp_ref = NULL;
             axis2_xml_schema_obj_collection_t *attributes = NULL;
+
             attr_grp_ref = handle_attribute_group_ref(builder, env, node1, schema_node);
+
             attributes = AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_GET_ATTRIBUTES(sim_cnt_res, env);
+
             AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(attributes, env, attr_grp_ref);
         }
         else if(AXIS2_STRCMP(localname, "simpleType") == 0)
         {
             void *simple_type = NULL;
+
             simple_type = handle_simple_type(builder, env, node1, schema_node);
+
             AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_SET_BASE_TYPE(sim_cnt_res, env, simple_type);
         }
         else if(AXIS2_STRCMP(localname, "annotation") == 0)
         {
             void *annotation = NULL;
+
             annotation = handle_annotation_with_element(builder, env, node1);
+
             AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(sim_cnt_res, env, annotation);
         }
         else
@@ -1755,13 +1854,17 @@ handle_simple_content_restriction(
             while(NULL != child_ele)
             {
                 void *annotation = NULL;
+                
                 annotation = handle_annotation_with_element(builder, env, child_node);
+                
                 AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(facet, env, annotation);            
+                
                 child_ele = axis2_om_util_get_next_sibling_element_with_uri_localname(child_ele,
                     env, child_node, "annotation", AXIS2_XML_SCHEMA_NS, &child_node);            
             }                
                     
             facets = AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_GET_FACETS(sim_cnt_res, env);
+            
             AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(facets, env, facet);                    
         }
     }
@@ -2186,7 +2289,7 @@ handle_sequence(
         const axis2_env_t *env,
         axis2_om_node_t *seq_node,
         axis2_om_node_t *schema_node)
-{
+ {
     void *sequence = NULL;
     axis2_om_element_t *seq_ele = NULL;
     
@@ -2800,12 +2903,14 @@ handle_attribute(
             
             ht_ns = AXIS2_OM_ELEMENT_GET_NAMESPACES(attr_ele, env);
             prefix = AXIS2_ARRAY_LIST_GET(args, env, 0);
-                        
-            ns = axis2_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
-            if(NULL != ns)
-            {
-                namesp = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
-            }
+            if(NULL != ht_ns)
+            {            
+                ns = axis2_hash_get(ht_ns, prefix, AXIS2_HASH_KEY_STRING);
+                if(NULL != ns)
+                {
+                    namesp = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+                }
+            }                
             else
             {
                 namesp = AXIS2_XML_SCHEMA_GET_NAMESPACE(builder_impl->schema,
@@ -3064,7 +3169,7 @@ handle_element(
         form_def = axis2_xml_schema_form_create(env, attr_value);
         AXIS2_XML_SCHEMA_ELEMENT_SET_FORM(sch_ele, env, form_def);
         
-        if(AXIS2_STRCMP(attr_value, "form") == 0)
+        if(AXIS2_STRCMP(attr_value, "qualified") == 0)
             is_qualified = AXIS2_TRUE;
     }    
     
@@ -3170,8 +3275,8 @@ handle_element(
         {
             axis2_char_t *result = NULL;
                         
-            args = AXIS2_ARRAY_LIST_GET(args, env, 0);                        
-            result = axis2_hash_get(ht_ns, args, AXIS2_HASH_KEY_STRING);
+            args0 = AXIS2_ARRAY_LIST_GET(args, env, 0);                        
+            result = axis2_hash_get(ht_ns, args0, AXIS2_HASH_KEY_STRING);
             if(!result)
             {
                 /**TODO set error */
@@ -3581,8 +3686,8 @@ handle_import(
         AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(import, env, import_ann);
     }            
 
-    ns = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_ele, env, "schemaLocation");
-    sch_location = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_ele, env, "namespace");
+    ns = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_ele, env, "namespace");
+    sch_location = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_ele, env, "schemaLocation");
     
     
     AXIS2_XML_SCHEMA_IMPORT_SET_NAMESPACE(import, env, ns);
@@ -3592,17 +3697,16 @@ handle_import(
     {
         axis2_char_t *source_uri = NULL;
         source_uri = AXIS2_XML_SCHEMA_OBJ_GET_SOURCE_URI(builder_impl->schema, env);
-        
         if(NULL != source_uri)
         {
             void *schema = NULL;
-            schema = resolve_xml_schema_with_uri(env, ns, sch_location, source_uri);
+            schema = resolve_xml_schema_with_uri(builder , env, ns, sch_location, source_uri);
             AXIS2_XML_SCHEMA_EXTERNAL_SET_SCHEMA(import, env, schema);        
         }
         else
         {
              void *schema = NULL;
-            schema = resolve_xml_schema(env, ns, sch_location);
+            schema = resolve_xml_schema(builder, env, ns, sch_location);
             AXIS2_XML_SCHEMA_EXTERNAL_SET_SCHEMA(import, env, schema);
         }
     }
@@ -3622,6 +3726,10 @@ handle_include(
     axis2_om_node_t *ann_node = NULL;
     axis2_char_t *sch_location = NULL;
     axis2_char_t *source_uri = NULL;
+    axis2_hash_t *ht_sch2schemas = NULL;
+    axis2_char_t *key_uri = NULL;
+    
+    
     axis2_xml_schema_builder_impl_t *builder_impl = NULL;
     void *sch = NULL;
     AXIS2_PARAM_CHECK(env->error, include_node, NULL);
@@ -3643,16 +3751,29 @@ handle_include(
         AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(inc_ele, env, "schemaLocation");
     
     source_uri = AXIS2_XML_SCHEMA_OBJ_GET_SOURCE_URI(builder_impl->schema, env);
+    
+    /***************************************************/
+    ht_sch2schemas = AXIS2_XML_SCHEMA_COLLECTION_GET_SYSTEMID2_SCHEMAS(
+        builder_impl->collection, env);
+    
+    key_uri = axis2_xml_schema_url_resolver_resolve_entity(
+        env, NULL, sch_location, source_uri);            
+    if(NULL != ht_sch2schemas)
+    {
+        axis2_hash_set(ht_sch2schemas, key_uri, 
+            AXIS2_HASH_KEY_STRING, builder_impl->schema);
+    }                
+    /***************************************************/
     if(NULL != source_uri)
     {
         sch_location = AXIS2_XML_SCHEMA_EXTERNAL_GET_SCHEMA_LOCATION(include, env);
-        sch =  resolve_xml_schema_with_uri(env, NULL, sch_location, source_uri);
+        sch =  resolve_xml_schema_with_uri(builder, env, NULL, sch_location, source_uri);
         AXIS2_XML_SCHEMA_EXTERNAL_SET_SCHEMA(include, env ,sch);
     }
     else
     {
         sch_location = AXIS2_XML_SCHEMA_EXTERNAL_GET_SCHEMA_LOCATION(include, env);
-        sch = resolve_xml_schema(env, NULL,  sch_location);      
+        sch = resolve_xml_schema(builder, env, NULL,  sch_location);      
     }
     return include;
 }
@@ -3863,25 +3984,14 @@ get_enum_string(
     attr_value = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, attr_name);
     if(NULL != attr_value)
     {
-        /** TODO trim attr_value */
-        return attr_value;
+        axis2_char_t *atr_val = NULL;
+        atr_val = AXIS2_STRDUP(attr_value, env);
+        
+        return AXIS2_STRTRIM(atr_val, NULL);
     }        
     return AXIS2_XML_SCHEMA_CONST_NONE;
 }
         
-axis2_xml_schema_t* AXIS2_CALL
-axis2_xml_schema_builder_resolve_xml_schema(
-        axis2_xml_schema_builder_t *builder,
-        const axis2_env_t *env,
-        axis2_char_t *target_namespace,
-        axis2_char_t *schema_location,
-        axis2_char_t *base_uri)
-{
-    
-    return NULL;
-}
-
-
 static axis2_bool_t 
 value_exist_in_hash(
         const axis2_env_t *env,
@@ -3930,16 +4040,19 @@ get_from_default(
 
 static axis2_xml_schema_t *
 resolve_xml_schema(
+        axis2_xml_schema_builder_t *builder,
         const axis2_env_t *env,
         axis2_char_t *target_namespace,
         axis2_char_t *schema_location)
 {
-    return NULL;
+    return resolve_xml_schema_with_uri(builder,env, 
+            target_namespace, schema_location,  NULL);
 }     
 
 
 static axis2_xml_schema_t *
 resolve_xml_schema_with_uri(
+        axis2_xml_schema_builder_t *builder,
         const axis2_env_t *env,
         axis2_char_t *target_namespace,
         axis2_char_t *schema_location,
@@ -3949,10 +4062,30 @@ resolve_xml_schema_with_uri(
     axis2_om_document_t *om_doc = NULL;
     axis2_om_stax_builder_t *om_builder = NULL;
     axis2_xml_schema_collection_t *collection = NULL;
-    axis2_xml_schema_builder_t *builder = NULL;
     axis2_char_t *filename = NULL;
+    axis2_hash_t *sysid2schemas = NULL;
+    axis2_xml_schema_t *schema = NULL;        
+        
+    axis2_xml_schema_builder_impl_t *sch_builder_impl = NULL;
+    sch_builder_impl = AXIS2_INTF_TO_IMPL(builder);
     filename = axis2_xml_schema_url_resolver_resolve_entity(env, 
         target_namespace, schema_location, base_uri);
+    /*        
+    if(!sch_builder_impl->collection)
+        return NULL;                
+    sysid2schemas = AXIS2_XML_SCHEMA_COLLECTION_GET_SYSTEMID2_SCHEMAS(
+        sch_builder_impl->collection, env);
+        
+    if(!sysid2schemas)
+        return NULL;
+    if(NULL != base_uri)        
+        schema = axis2_hash_get(sysid2schemas, filename, AXIS2_HASH_KEY_STRING);
+   
+    if(NULL != schema)
+    {
+        return schema;
+    }        
+    */
     xml_reader = axis2_xml_reader_create_for_file(env, filename, NULL);
     if(!xml_reader)
         return NULL;        
@@ -3961,8 +4094,8 @@ resolve_xml_schema_with_uri(
         return NULL;
     om_doc = axis2_om_document_create(env, NULL, om_builder);
     AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
-    collection = axis2_xml_schema_collection_create(env);
-    return AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(collection, env, om_doc, base_uri);        
-            
-    return NULL;
+    return AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(
+        sch_builder_impl->collection , env, om_doc, base_uri);        
 }            
+
+        

@@ -68,29 +68,29 @@ struct axis2_xml_schema_obj_collection_ops
 
     axis2_status_t (AXIS2_CALL *
     set_item) (axis2_xml_schema_obj_collection_t *obj_collection,
-                    const axis2_env_t *env,
-                    int i,
-                    axis2_xml_schema_obj_t *item);
+                const axis2_env_t *env,
+                int i,
+                void *item);
 
     axis2_status_t (AXIS2_CALL *
     add) (axis2_xml_schema_obj_collection_t *obj_collection,
-                    const axis2_env_t *env,
-                    axis2_xml_schema_obj_t *item);
+          const axis2_env_t *env,
+          void *item);
 
     axis2_bool_t (AXIS2_CALL *
-    contains) (axis2_xml_schema_obj_collection_t *obj_collection,
-                        const axis2_env_t *env,
-                        axis2_xml_schema_obj_t *item);
+    contains)(axis2_xml_schema_obj_collection_t *obj_collection,
+              const axis2_env_t *env,
+              void *item);
 
     axis2_status_t (AXIS2_CALL *
     index_of) (axis2_xml_schema_obj_collection_t *obj_collection,
-                        const axis2_env_t *env,
-                        axis2_xml_schema_obj_t *item);
+               const axis2_env_t *env,
+               void *item);
 
     void* (AXIS2_CALL *
-    remove_at) (axis2_xml_schema_obj_collection_t *obj_collection,
-                const axis2_env_t *env,
-                int i);
+    remove_at)(axis2_xml_schema_obj_collection_t *obj_collection,
+               const axis2_env_t *env,
+               int i);
                 
     axis2_array_list_t* (AXIS2_CALL *
     to_array)(axis2_xml_schema_obj_collection_t *obj_collection,

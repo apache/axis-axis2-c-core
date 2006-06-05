@@ -249,6 +249,8 @@ axis2_xml_schema_attribute_create(const axis2_env_t *env)
         axis2_xml_schema_attribute_set_qname;
     attr_impl->attr.ops->get_name =
         axis2_xml_schema_attribute_get_name;
+    attr_impl->attr.ops->set_name =
+        axis2_xml_schema_attribute_set_name;        
     attr_impl->attr.ops->set_ref_name =
         axis2_xml_schema_attribute_set_ref_name;
     attr_impl->attr.ops->get_schema_type =

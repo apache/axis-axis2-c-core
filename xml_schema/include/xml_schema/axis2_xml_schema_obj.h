@@ -46,10 +46,6 @@ typedef struct axis2_xml_schema_obj_ops axis2_xml_schema_obj_ops_t;
 
 struct axis2_xml_schema_obj_ops
 {
-   /** 
-     * Deallocate memory
-     * @return status code
-     */
     axis2_status_t (AXIS2_CALL *
     free) (
             void *obj,
@@ -94,8 +90,8 @@ struct axis2_xml_schema_obj_ops
 
     axis2_bool_t (AXIS2_CALL *
     equals) (void *obj,
-                const axis2_env_t *env,
-                void *obj_comp);
+             const axis2_env_t *env,
+             void *obj_comp);
 
 };
 

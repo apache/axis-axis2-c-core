@@ -75,14 +75,14 @@ struct axis2_xml_schema_facet_ops
                     const axis2_env_t *env,
                     axis2_bool_t fixed);
     
-    void *(AXIS2_CALL *
+    axis2_char_t *(AXIS2_CALL *
     get_value)(void *facet,
-                const axis2_env_t *env);
+               const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_value)(void *facet,
-                    const axis2_env_t *env,
-                    void *value);
+               const axis2_env_t *env,
+               axis2_char_t *value);
     
     axis2_status_t (AXIS2_CALL *
     set_facet_type)(void *facet,
@@ -106,16 +106,6 @@ axis2_xml_schema_facet_create(const axis2_env_t *env,
                               axis2_bool_t fixed,
                               axis2_xml_schema_types_t type);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_facet_resolve_methods(
-                                axis2_xml_schema_facet_t *facet,
-                                const axis2_env_t *env,
-                                axis2_xml_schema_facet_t *facet_impl,
-                                axis2_hash_t *methods);
-*/                                
 AXIS2_EXTERN axis2_xml_schema_facet_t * AXIS2_CALL
 axis2_xml_schema_facet_construct(const axis2_env_t *env,
                                  axis2_om_node_t *node);

@@ -149,10 +149,11 @@ axis2_xml_schema_type_resolve_methods(
 #define AXIS2_XML_SCHEMA_TYPE_GET_BASE_IMPL(type, env) \
       (((axis2_xml_schema_type_t *) type)->ops->\
             get_base_impl(type, env))
-            
-#define AXIS2_XML_SCHEMA_TYPE_TYPE(type, env) \
-      (((axis2_xml_schema_type_t *) type)->ops->\
-           type(type, env)) 
+
+#define AXIS2_XML_SCHEMA_TYPE_TYPE(sch_type, env) \
+		(((axis2_xml_schema_type_t *) sch_type)->ops->\
+           type(sch_type, env))
+
            
 #define AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env) \
       (((axis2_xml_schema_type_t *) type)->ops->\

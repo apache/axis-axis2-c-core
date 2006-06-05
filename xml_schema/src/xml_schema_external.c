@@ -101,6 +101,7 @@ axis2_xml_schema_external_create(const axis2_env_t *env)
     external_impl->external.ops = NULL;
     external_impl->external.base.ops = NULL;
     external_impl->ht_super = NULL;
+    external_impl->schema_location = NULL;
     external_impl->obj_type = AXIS2_XML_SCHEMA_EXTERNAL;
     
     external_impl->external.ops = AXIS2_MALLOC(env->allocator, 

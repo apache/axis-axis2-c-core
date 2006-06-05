@@ -60,152 +60,184 @@ struct axis2_xml_schema_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (void *schema,
+    free)(
+            void *schema,
             const axis2_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
-    super_objs) (void *schema,
+    super_objs)(
+            void *schema,
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (void *schema,
+    type)(  void *schema,
             const axis2_env_t *env);
     
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
-    get_base_impl) (void *schema,
-                    const axis2_env_t *env);
+    get_base_impl)(
+            void *schema,
+            const axis2_env_t *env);
 
     axis2_char_t *(AXIS2_CALL *
-    get_namespace) (void *schema,
-                         const axis2_env_t *env,
-                         axis2_char_t *prefix);
+    get_namespace)(
+            void *schema,
+            const axis2_env_t *env,
+            axis2_char_t *prefix);
 
     struct axis2_xml_schema_form *(AXIS2_CALL *
-    get_attr_form_default) (void *schema,
-                            const axis2_env_t *env);
+    get_attr_form_default)(
+            void *schema,
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
-    set_attr_form_default) (void *schema,
-                         const axis2_env_t *env,
-                         struct axis2_xml_schema_form *value);
+    set_attr_form_default)(
+            void *schema,
+            const axis2_env_t *env,
+            struct axis2_xml_schema_form *value);
 
     struct axis2_xml_schema_obj_table *(AXIS2_CALL *
-    get_attr_groups) (void *schema,
-                         const axis2_env_t *env);
+    get_attr_groups)(
+            void *schema,
+            const axis2_env_t *env);
 
     struct axis2_xml_schema_obj_table *(AXIS2_CALL *
-    get_attrs) (void *schema,
-                         const axis2_env_t *env);
+    get_attrs)(
+            void *schema,
+            const axis2_env_t *env);
 
     struct axis2_xml_schema_derivation_method *(AXIS2_CALL *
-    get_block_default) (void *schema,
-                            const axis2_env_t *env); 
+    get_block_default)(
+            void *schema,
+            const axis2_env_t *env); 
 
     axis2_status_t (AXIS2_CALL *
-    set_block_default) (void *schema,
-                    const axis2_env_t *env,
-                    struct axis2_xml_schema_derivation_method *block_default); 
+    set_block_default)(
+            void *schema,
+            const axis2_env_t *env,
+            struct axis2_xml_schema_derivation_method *block_default); 
 
     struct axis2_xml_schema_form *(AXIS2_CALL *
-    get_element_form_default) (void *schema,
-                                    const axis2_env_t *env); 
+    get_element_form_default)(
+            void *schema,
+            const axis2_env_t *env); 
 
     axis2_status_t (AXIS2_CALL *
-    set_element_form_default) (void *schema,
-                               const axis2_env_t *env,
-                               struct axis2_xml_schema_form *element_form_default); 
+    set_element_form_default)(
+            void *schema,
+            const axis2_env_t *env,
+            struct axis2_xml_schema_form *element_form_default); 
 
     struct axis2_xml_schema_obj_table *(AXIS2_CALL *
-    get_elements) (void *schema,
-                        const axis2_env_t *env); 
+    get_elements)(
+            void *schema,
+            const axis2_env_t *env); 
 
     struct axis2_xml_schema_element *(AXIS2_CALL *
-    get_element_by_qname) (void *schema,
-                                const axis2_env_t *env,
-                                axis2_qname_t *qname); 
+    get_element_by_qname)(
+            void *schema,
+            const axis2_env_t *env,
+            axis2_qname_t *qname); 
 
     struct axis2_xml_schema_type *(AXIS2_CALL *
-    get_type_by_qname) (void *schema,
-                            const axis2_env_t *env,
-                            axis2_qname_t *qname); 
+    get_type_by_qname)(
+            void *schema,
+            const axis2_env_t *env,
+            axis2_qname_t *qname); 
 
     struct axis2_xml_schema_derivation_method *(AXIS2_CALL *
-    get_final_default) (void *schema,
-                            const axis2_env_t *env); 
+    get_final_default)(
+            void *schema,
+            const axis2_env_t *env); 
 
     axis2_status_t (AXIS2_CALL *
-    set_final_default) (void *schema,
-                const axis2_env_t *env,
-                struct axis2_xml_schema_derivation_method *final_default); 
+    set_final_default)(
+            void *schema,
+            const axis2_env_t *env,
+            struct axis2_xml_schema_derivation_method *final_default); 
 
     struct axis2_xml_schema_obj_table *(AXIS2_CALL *
-    get_groups) (void *schema,
-                    const axis2_env_t *env); 
+    get_groups)(
+            void *schema,
+            const axis2_env_t *env); 
 
     struct axis2_xml_schema_obj_collection *(AXIS2_CALL *
-    get_includes) (void *schema,
-                        const axis2_env_t *env); 
+    get_includes)(
+            void *schema,
+            const axis2_env_t *env); 
 
     axis2_bool_t (AXIS2_CALL *
-    is_compiled) (void *schema,
-                     const axis2_env_t *env); 
+    is_compiled)(
+            void *schema,
+            const axis2_env_t *env); 
 
     struct axis2_xml_schema_obj_collection *(AXIS2_CALL *
-    get_items) (void *schema,
-                   const axis2_env_t *env); 
+    get_items)(
+            void *schema,
+            const axis2_env_t *env); 
 
     struct axis2_xml_schema_obj_table *(AXIS2_CALL *
-    get_notations) (void *schema,
-                        const axis2_env_t *env); 
+    get_notations)(
+            void *schema,
+            const axis2_env_t *env); 
 
     struct axis2_xml_schema_obj_table *(AXIS2_CALL *
-    get_schema_types) (void *schema,
-                            const axis2_env_t *env); 
+    get_schema_types)(
+            void *schema,
+            const axis2_env_t *env); 
 
     axis2_char_t *(AXIS2_CALL *
-    get_target_namespace) (void *schema,
-                                const axis2_env_t *env);
+    get_target_namespace)(
+            void *schema,
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
-    set_target_namespace) (void *schema,
-                                const axis2_env_t *env,
-                                axis2_char_t *target_namespace); 
+    set_target_namespace)(
+            void *schema,
+            const axis2_env_t *env,
+            axis2_char_t *target_namespace); 
 
     axis2_char_t *(AXIS2_CALL *
-    get_version) (void *schema,
-                        const axis2_env_t *env);
+    get_version)(
+            void *schema,
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
-    compile) (void *schema,
-                    const axis2_env_t *env);
+    compile)(void *schema,
+             const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
-    write_with_out) (void *schema,
-                        const axis2_env_t *env,
-                        void *outstream); 
+    write_with_out)(
+            void *schema,
+            const axis2_env_t *env,
+            void *outstream); 
 
     axis2_status_t (AXIS2_CALL *
-    write_with_writer) (void *schema,
-                        void *writer); 
+    write_with_writer)(
+            void *schema,
+            void *writer); 
 
     axis2_hash_t *(AXIS2_CALL *
-    get_prefix_to_namespace_map) (void *schema,
-                                        const axis2_env_t *env);
+    get_prefix_to_namespace_map)(
+            void *schema,
+            const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
-    set_prefix_to_namespace_map) (void *schema,
-                                        const axis2_env_t *env,
-                                        axis2_hash_t *map);
+    set_prefix_to_namespace_map)(
+            void *schema,
+            const axis2_env_t *env,
+            axis2_hash_t *map);
 
     axis2_status_t (AXIS2_CALL *
-    add_type) (void *schema,
-                    const axis2_env_t *env,
-                    struct axis2_xml_schema_type *type);
-                    
+    add_type)(
+            void *schema,
+            const axis2_env_t *env,
+            struct axis2_xml_schema_type *type);
+            
     axis2_status_t (AXIS2_CALL *
-    set_schema_ns_prefix)(void *schema,
-                          const axis2_env_t *env,
-                          axis2_char_t *ns_prefix);                    
+    set_schema_ns_prefix)(
+            void *schema,
+            const axis2_env_t *env,
+            axis2_char_t *ns_prefix);                    
 
 };
 
@@ -222,16 +254,6 @@ AXIS2_EXTERN axis2_xml_schema_t * AXIS2_CALL
 axis2_xml_schema_create(const axis2_env_t *env,
                                 axis2_char_t *namespc,
                                 struct axis2_xml_schema_collection *parent);
-
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_resolve_methods(
-                                axis2_xml_schema_t *schema,
-                                const axis2_env_t *env,
-                                axis2_xml_schema_t *schema_impl,
-                                axis2_hash_t *methods);
 
 #define AXIS2_XML_SCHEMA_FREE(schema, env) \
       (((axis2_xml_schema_t *) schema)->ops->\

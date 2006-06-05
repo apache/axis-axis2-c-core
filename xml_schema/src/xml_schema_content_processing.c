@@ -149,7 +149,7 @@ axis2_xml_schema_content_processing_create(const axis2_env_t *env,
     axis2_hash_set(content_processing_impl->methods, "get_values", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_content_processing_get_values);
     
-    content_processing_impl->schema_enum = axis2_xml_schema_enum_create(env, NULL);
+    content_processing_impl->schema_enum = axis2_xml_schema_enum_create(env, value);
     
     content_processing_impl->ht_super = axis2_hash_make(env);
     if(!content_processing_impl->ht_super)

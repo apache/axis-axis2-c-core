@@ -41,11 +41,12 @@ extern "C"
 {
 #endif
 
-typedef struct axis2_xml_schema_collection axis2_xml_schema_collection_t;
-typedef struct axis2_xml_schema_collection_ops axis2_xml_schema_collection_ops_t;
+typedef struct axis2_xml_schema_collection 
+                axis2_xml_schema_collection_t;
+typedef struct axis2_xml_schema_collection_ops 
+                axis2_xml_schema_collection_ops_t;
 struct axis2_xml_schema;
 struct axis2_om_node;
-struct axis2_xml_schema_type_receiver;
 struct axis2_xml_schema_type;
 
 /** @defgroup axis2_xml_schema_collection Xml Schema Collection

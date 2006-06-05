@@ -133,6 +133,7 @@ axis2_xml_schema_complex_content_extension_create(const axis2_env_t *env)
     
     cmp_cnt_ext_impl->annotated = NULL;
     cmp_cnt_ext_impl->cmp_cnt_ext.ops = NULL;
+    cmp_cnt_ext_impl->cmp_cnt_ext.base.ops = NULL;
     cmp_cnt_ext_impl->attributes = NULL;
     cmp_cnt_ext_impl->base_type_name = NULL;
     cmp_cnt_ext_impl->any_attribute = NULL;
@@ -213,6 +214,8 @@ axis2_xml_schema_complex_content_extension_create(const axis2_env_t *env)
     axis2_hash_set(cmp_cnt_ext_impl->methods,"free", AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_complex_content_extension_to_string);            
                 
+    cmp_cnt_ext_impl->annotated = axis2_xml_schema_annotated_create(env);
+                    
     if(!cmp_cnt_ext_impl->annotated)
     {
         axis2_xml_schema_complex_content_extension_free(

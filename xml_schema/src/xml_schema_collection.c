@@ -14,26 +14,12 @@
  * limitations under the License.
  */
  
-#include <xml_schema/axis2_xml_schema_collection.h>
-#include <xml_schema/axis2_xml_schema_element.h>
-#include <xml_schema/axis2_xml_schema_type.h>
-#include <xml_schema/axis2_xml_schema.h>
+#include <xml_schema/axis2_xml_schema_includes.h>
 #include <axis2_hash.h>
-#include <xml_schema/axis2_xml_schema_type.h>
-#include <xml_schema/axis2_xml_schema_element.h>
-#include <xml_schema/axis2_xml_schema_simple_type.h>
-#include <xml_schema/axis2_xml_schema_constants.h>
-#include <xml_schema/axis2_xml_schema_builder.h>
-#include <xml_schema/axis2_xml_schema.h>
-
 
 typedef struct axis2_xml_schema_collection_impl 
                 axis2_xml_schema_collection_impl_t;
 
-/** 
- * @brief Xml Schema Obj Struct Impl
- *   Axis2 Xml Schema Obj  
- */ 
 struct axis2_xml_schema_collection_impl
 {
     axis2_xml_schema_collection_t collection;
@@ -56,9 +42,6 @@ struct axis2_xml_schema_collection_impl
 
 #define AXIS2_INTF_TO_IMPL(collection) \
         ((axis2_xml_schema_collection_impl_t *) collection)
-
-
-/************* function prototypes *******************************************/
 
 
 axis2_status_t AXIS2_CALL
@@ -179,8 +162,6 @@ axis2_xml_schema_collection_get_namespaces(
         const axis2_env_t *env);                
         
 
-/*************** end function prototypes ****************************/                    
-
 AXIS2_EXTERN axis2_xml_schema_collection_t * AXIS2_CALL
 axis2_xml_schema_collection_create(const axis2_env_t *env)
 {
@@ -263,19 +244,20 @@ axis2_xml_schema_collection_create(const axis2_env_t *env)
     collection_impl->collection.ops->get_namespaces = 
             axis2_xml_schema_collection_get_namespaces;
 
-    collection_impl->xsd = axis2_xml_schema_create(env, AXIS2_XML_SCHEMA_NS ,&(collection_impl->collection));
+    collection_impl->xsd = axis2_xml_schema_create(
+        env, AXIS2_XML_SCHEMA_NS ,&(collection_impl->collection));
+    
     if(!collection_impl->xsd)
     {
         axis2_xml_schema_collection_free(&(collection_impl->collection), env);
         return NULL;
     }        
     
-    /** create hash maps */
-    collection_impl->namespaces = axis2_hash_make(env);
+    collection_impl->namespaces          = axis2_hash_make(env);
     collection_impl->in_scope_namespaces = axis2_hash_make(env);
-    collection_impl->systemid2_schemas = axis2_hash_make(env);
-    collection_impl->schemas = axis2_array_list_create(env, 10);
-    collection_impl->unresolved_types = axis2_hash_make(env);
+    collection_impl->systemid2_schemas   = axis2_hash_make(env);
+    collection_impl->schemas             = axis2_array_list_create(env, 10);
+    collection_impl->unresolved_types    = axis2_hash_make(env);
     
     if(!collection_impl->namespaces || !collection_impl->in_scope_namespaces ||
             !collection_impl->systemid2_schemas || !collection_impl->schemas ||
@@ -287,29 +269,41 @@ axis2_xml_schema_collection_create(const axis2_env_t *env)
     }            
     
     axis2_xml_schema_collection_init(&(collection_impl->collection), env);
-
     return &(collection_impl->collection);
 }
 
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_collection_free(axis2_xml_schema_collection_t *collection,
-                                 const axis2_env_t *env)
+axis2_xml_schema_collection_free(
+    axis2_xml_schema_collection_t *collection,
+    const axis2_env_t *env)
 {
     if(NULL != collection->ops)
     {
         AXIS2_FREE(env->allocator, collection->ops);
         collection->ops = NULL;
     }
+    /** TODO */
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(collection));
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_collection_set_base_uri(axis2_xml_schema_collection_t*collection,
-                                            const axis2_env_t *env,
-                                            axis2_char_t *base_uri)
+axis2_xml_schema_collection_set_base_uri(
+        axis2_xml_schema_collection_t*collection,
+        const axis2_env_t *env,
+        axis2_char_t *base_uri)
 {
+    axis2_xml_schema_collection_impl_t *collec_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, base_uri, AXIS2_FAILURE);
+    
+    collec_impl = AXIS2_INTF_TO_IMPL(collection);
+    
+    if(NULL != collec_impl->base_uri)
+    {
+        AXIS2_FREE(env->allocator, collec_impl->base_uri);
+    }
     return AXIS2_SUCCESS;
 }
 
@@ -465,7 +459,6 @@ axis2_xml_schema_collection_read_element(
     
     if(!sch_builder)
         return NULL;
-        
     return AXIS2_XML_SCHEMA_BUILDER_BUILD_WITH_ROOT_NODE(sch_builder, env, node, NULL);
 }
 
@@ -476,7 +469,14 @@ axis2_xml_schema_collection_read_document_with_uri(
         axis2_om_document_t *document,
         axis2_char_t *uri)
 {
-    return NULL;
+    axis2_xml_schema_collection_impl_t *sch_col_impl = NULL;
+    axis2_xml_schema_builder_t *sch_builder = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error , document, NULL);
+    
+    sch_builder = axis2_xml_schema_builder_create(env, collection);
+    return AXIS2_XML_SCHEMA_BUILDER_BUILD(sch_builder, env, document, uri); 
 }
 
 axis2_xml_schema_t * AXIS2_CALL
@@ -486,7 +486,16 @@ axis2_xml_schema_collection_read_element_with_uri(
         axis2_om_node_t *node,
         axis2_char_t *uri)
 {
-    return NULL;
+    axis2_xml_schema_builder_t *sch_builder = NULL;
+    
+    AXIS2_PARAM_CHECK(env->error, node, NULL);
+    
+    sch_builder = axis2_xml_schema_builder_create(env, collection);
+    
+    if(!sch_builder)
+        return NULL;
+    return AXIS2_XML_SCHEMA_BUILDER_BUILD_WITH_ROOT_NODE(sch_builder, env, node, uri);
+    
 }
 
 axis2_xml_schema_element_t * AXIS2_CALL
@@ -507,8 +516,9 @@ axis2_xml_schema_collection_get_element_by_qname(
     if(NULL != collec_impl->namespaces)
         schema = axis2_hash_get(collec_impl->namespaces, uri, AXIS2_HASH_KEY_STRING);              
 
-    if(NULL != schema)
+    if(!schema)
         return NULL;
+        
     return AXIS2_XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qname);
 }
 
@@ -518,14 +528,19 @@ axis2_xml_schema_collection_get_type_by_qname(
         const axis2_env_t *env,
         axis2_qname_t *schema_type_qname)
 {
+    
     axis2_xml_schema_collection_impl_t *collecion_impl = NULL;
+    
     axis2_char_t *uri = NULL;
+    
     axis2_xml_schema_t *schema = NULL;
     
     AXIS2_PARAM_CHECK(env->error, schema_type_qname, NULL);
     collecion_impl = AXIS2_INTF_TO_IMPL(collection);
+
     uri = AXIS2_QNAME_GET_URI(schema_type_qname, env);
-    if(NULL != collecion_impl->namespaces)
+
+    if(NULL != collecion_impl->namespaces && NULL != uri)
         schema = axis2_hash_get(collecion_impl->namespaces, uri, AXIS2_HASH_KEY_STRING);
     
     if(!schema)
