@@ -4,7 +4,7 @@
   What is it?
   -----------
 
-  xml_schema/C is a general purpose schema model that can be used when
+  Apache xml_schema/C is a general purpose schema model that can be used when
   an object tree representation of an xml_schema is required. This is an effort
   to implement Xml schema in C. Please have a look at
 

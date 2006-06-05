@@ -5,7 +5,7 @@
   -----------
 
 
-  Woden C Woden project is aimed at writing a wsdl parser capable of parsing
+  Apache Woden C Woden project is aimed at writing a wsdl parser capable of parsing
   the documents conforming to both Wsdl 2.0 and Wsdl 1.0 specifications.
   Axis2 C project use Woden C to parse Wsdl's into a component model.
   
