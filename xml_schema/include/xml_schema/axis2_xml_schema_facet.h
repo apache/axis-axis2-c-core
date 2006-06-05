@@ -102,7 +102,7 @@ struct axis2_xml_schema_facet
  */
 AXIS2_EXTERN axis2_xml_schema_facet_t * AXIS2_CALL
 axis2_xml_schema_facet_create(const axis2_env_t *env,
-                              void *value,
+                              axis2_char_t *value,
                               axis2_bool_t fixed,
                               axis2_xml_schema_types_t type);
 
