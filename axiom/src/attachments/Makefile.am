@@ -1,4 +1,3 @@
-TESTS =
 noinst_LTLIBRARIES = libaxis2_attachments.la
 AM_CPPFLAGS = $(CPPFLAGS)
 libaxis2_attachments_la_SOURCES = mime_output.c \

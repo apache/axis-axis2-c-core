@@ -1,4 +1,3 @@
-TESTS =
 lib_LTLIBRARIES = libaxis2_guththila.la
 SUBDIRS = impl
 libaxis2_guththila_la_SOURCES = guththila_xml_writer_wrapper.c \

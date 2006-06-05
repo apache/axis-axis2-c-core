@@ -1,4 +1,3 @@
-TESTS =
 lib_LTLIBRARIES = libaxis2_axiom.la
 libaxis2_axiom_la_SOURCES = om_attribute.c \
                         om_document.c \
