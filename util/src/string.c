@@ -27,7 +27,7 @@ axis2_strdup (const void *ptr, const axis2_env_t *env)
     AXIS2_ENV_CHECK(env, NULL);
     if (ptr)
     {
-        int len = strlen(ptr);
+        int len = axis2_strlen(ptr);
         axis2_char_t * str = (axis2_char_t *) AXIS2_MALLOC( env->allocator, 
             sizeof(axis2_char_t) * (len + 1 ));
         if (!str)
@@ -85,7 +85,10 @@ axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
 AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
 axis2_strlen (const axis2_char_t * s)
 {
-   return strlen(s);
+	if (s)   
+		return strlen(s);
+	else
+		return -1;
 }
 
 
@@ -93,7 +96,7 @@ AXIS2_EXTERN int AXIS2_CALL
 axis2_strcasecmp(const axis2_char_t *s1, const axis2_char_t *s2)
 {
     while (toupper(*s1) == toupper(*s2++))
-   if (*s1++ == '\0')
+   	if (*s1++ == '\0')
        return(0);
     return(toupper(*s1) - toupper(*--s2));
 }
@@ -122,15 +125,15 @@ axis2_strstr (const axis2_char_t *heystack,
 AXIS2_EXTERN axis2_char_t * AXIS2_CALL
 axis2_rindex(const axis2_char_t *_s, axis2_char_t _ch)
 {
-        int i,ilen = strlen(_s);
-        if (ilen < 1)
-                return NULL;
-        for (i=ilen-1;i>=0;i--)
-        {
-                if (_s[i] == _ch)
-                        return (axis2_char_t *)(_s+i);
-        }
-        return NULL;
+    int i,ilen = axis2_strlen(_s);
+    if (ilen < 1)
+    	return NULL;
+    for (i=ilen-1;i>=0;i--)
+    {
+    	if (_s[i] == _ch)
+        	return (axis2_char_t *)(_s+i);
+    }
+    return NULL;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
@@ -153,4 +156,45 @@ axis2_replace(axis2_env_t *env,
         index = strchr(newstr, s1);
     }
     return newstr;
-}                
+}
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL axis2_strltrim(axis2_char_t *_s, 
+													const axis2_char_t *_trim)
+{
+    if(!_s)
+        return NULL;
+    if(!_trim)
+        _trim = " \t\r\n";
+
+    while(*_s)
+    {
+        if(!strchr(_trim, *_s))
+            return _s;
+        ++_s;
+    }
+    return _s;
+}
+           
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL axis2_strrtrim(axis2_char_t *_s, 
+													const axis2_char_t *_trim)
+{
+    axis2_char_t *__tail;
+    if(!_s)
+        return NULL;
+    __tail = _s + axis2_strlen(_s);
+    if(!_trim)
+        _trim = " \t\n\r";
+    while(_s < __tail--)
+    {
+        if(!strchr(_trim, *__tail))
+            return _s;
+        *__tail = 0;
+    }
+    return _s;
+}    
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL axis2_strtrim(axis2_char_t *_s, 
+													const axis2_char_t *_trim)
+{
+    return axis2_strltrim(axis2_strrtrim(_s, _trim), _trim);
+}

@@ -76,7 +76,17 @@ extern "C"
                   int s1,
                   int s2);
                                    
+	AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+	axis2_strltrim(axis2_char_t *_s,
+			      const axis2_char_t *_trim);
 
+	AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+	axis2_strrtrim(axis2_char_t *_s,
+			      const axis2_char_t *_trim);
+
+	AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+	axis2_strtrim(axis2_char_t *_s,
+	             const axis2_char_t *_trim);
 #define AXIS2_STRDUP(pts, env) \
         axis2_strdup(pts, env)
         
@@ -103,6 +113,15 @@ extern "C"
         
 #define AXIS2_REPLACE(env, str, s1, s2) \
         axis2_replace(env, str, s1, s2)        
+
+#define AXIS2_STRLTRIM(s, trim) \
+		axis2_strltrim(s, trim)
+
+#define AXIS2_STRRTRIM(s, trim) \
+		axis2_strrtrim(s, trim)
+
+#define AXIS2_STRTRIM(s, trim) \
+		axis2_strtrim(s, trim)
 
 /** @} */
     
