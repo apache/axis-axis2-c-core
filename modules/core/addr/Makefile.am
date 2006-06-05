@@ -1,5 +1,3 @@
-TESTS =
-
 noinst_LTLIBRARIES = libaxis2_addr.la
 
 libaxis2_addr_la_SOURCES = \

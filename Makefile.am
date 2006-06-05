@@ -1,4 +1,3 @@
-TESTS =
 datadir=$(prefix)
 logsdir=$(prefix)/logs
 SUBDIRS = modules $(TESTDIR) include ides

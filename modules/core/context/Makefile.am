@@ -1,4 +1,3 @@
-TESTS =
 noinst_LTLIBRARIES = libaxis2_context.la
 
 libaxis2_context_la_SOURCES = \

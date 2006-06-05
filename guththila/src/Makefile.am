@@ -1,4 +1,3 @@
-TESTS =
 lib_LTLIBRARIES = libguththila.la
 libguththila_la_SOURCES = guththila_token.c \
                             guththila_xml_pull_parser.c \

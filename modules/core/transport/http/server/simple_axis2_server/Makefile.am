@@ -1,4 +1,3 @@
-TESTS =
 prgbindir=$(prefix)/bin/
 prgbin_PROGRAMS = axis2_http_server
 SUBDIRS =

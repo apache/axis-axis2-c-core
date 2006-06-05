@@ -1,4 +1,3 @@
-TESTS =
 lib_LTLIBRARIES = libaxis2_http_receiver.la
 libaxis2_http_receiver_la_LIBADD= -laxis2_util
 

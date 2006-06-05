@@ -1,4 +1,3 @@
-TESTS =
 lib_LTLIBRARIES = libaxis2_diclient.la
 libaxis2_diclient_la_SOURCES = \
 								di_client.c

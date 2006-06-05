@@ -1,4 +1,3 @@
-TESTS =
 SUBDIRS = builder
 lib_LTLIBRARIES = libaxis2_wsdl.la
 libaxis2_wsdl_la_SOURCES = wsdl_op.c \

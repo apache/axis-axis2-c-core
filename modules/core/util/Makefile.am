@@ -1,4 +1,3 @@
-TESTS =
 noinst_LTLIBRARIES = libaxis2_core_utils.la
 noinst_HEADERS = axis2_core_utils.h
 

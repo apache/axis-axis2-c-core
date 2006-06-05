@@ -1,4 +1,3 @@
-TESTS =
 prglibdir=$(prefix)/modules/addressing
 prglib_LTLIBRARIES = libaxis2_mod_addr.la
 prglib_DATA= module.xml

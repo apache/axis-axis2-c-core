@@ -1,4 +1,3 @@
-TESTS =
 lib_LTLIBRARIES = libaxis2_engine.la
 noinst_HEADERS = axis2_engine.h \
                     axis2_event.h

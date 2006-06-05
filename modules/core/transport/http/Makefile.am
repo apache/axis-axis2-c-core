@@ -1,4 +1,3 @@
-TESTS =
 SUBDIRS = 
 noinst_LTLIBRARIES = libaxis2_http.la
 

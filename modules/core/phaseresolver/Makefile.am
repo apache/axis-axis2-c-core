@@ -1,4 +1,3 @@
-TESTS =
 noinst_LTLIBRARIES = libaxis2_phaseresolver.la
 
 libaxis2_phaseresolver_la_SOURCES = \
