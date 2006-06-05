@@ -1,4 +1,3 @@
-TESTS =
 lib_LTLIBRARIES = libaxis2_minizip.la
 
 

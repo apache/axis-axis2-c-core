@@ -1,5 +1,3 @@
-TESTS =
-
 noinst_LTLIBRARIES = libaxis2_unix.la
 
 libaxis2_unix_la_SOURCES = uuid_gen_unix.c\

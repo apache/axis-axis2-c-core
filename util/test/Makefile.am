@@ -1,3 +1,2 @@
-TESTS =
 SUBDIRS = util unit
 

@@ -1,4 +1,3 @@
-TESTS =
 datadir=$(prefix)
 SUBDIRS = src $(TESTDIR) include
 include_HEADERS=$(top_builddir)/include/*.h
