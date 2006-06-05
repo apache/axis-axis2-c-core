@@ -83,7 +83,7 @@ axis2_op_client_add_msg_ctx(struct axis2_op_client *op_client,
 axis2_msg_ctx_t* AXIS2_CALL 
 axis2_op_client_get_msg_ctx(struct axis2_op_client *op_client,
                                      const axis2_env_t *env,
-                                     axis2_char_t *message_label);
+                                     const axis2_char_t *message_label);
 
 axis2_status_t AXIS2_CALL 
 axis2_op_client_set_callback(struct axis2_op_client *op_client,
@@ -265,7 +265,7 @@ axis2_op_client_add_msg_ctx(struct axis2_op_client *op_client,
 axis2_msg_ctx_t* AXIS2_CALL 
 axis2_op_client_get_msg_ctx(struct axis2_op_client *op_client,
                                      const axis2_env_t *env,
-                                     axis2_char_t *message_label)
+                                     const axis2_char_t *message_label)
 {
 
     axis2_op_client_impl_t *op_client_impl = NULL;

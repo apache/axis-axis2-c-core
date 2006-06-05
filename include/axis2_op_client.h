@@ -106,7 +106,7 @@ struct axis2_op_client_ops
    axis2_msg_ctx_t* (AXIS2_CALL *
    get_msg_ctx)(struct axis2_op_client *op_client,
                      const axis2_env_t *env,
-                     axis2_char_t *message_label);
+                     const axis2_char_t *message_label);
 
     /**
      * Set the callback to be executed when a message comes into the MEP and the

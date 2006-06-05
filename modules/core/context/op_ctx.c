@@ -86,7 +86,7 @@ axis2_op_ctx_add_msg_ctx(struct axis2_op_ctx *op_ctx,
 axis2_msg_ctx_t* AXIS2_CALL 
 axis2_op_ctx_get_msg_ctx(struct axis2_op_ctx *op_ctx, 
                         const axis2_env_t *env, 
-                        axis2_char_t *messageLabel);
+                        const axis2_char_t *messageLabel);
                         
 axis2_bool_t AXIS2_CALL 
 axis2_op_ctx_get_is_complete(struct axis2_op_ctx *op_ctx, 
@@ -395,7 +395,7 @@ axis2_op_ctx_add_msg_ctx(struct axis2_op_ctx *op_ctx,
 axis2_msg_ctx_t* AXIS2_CALL 
 axis2_op_ctx_get_msg_ctx(struct axis2_op_ctx *op_ctx, 
                          const axis2_env_t *env, 
-                         axis2_char_t *message_id)
+                         const axis2_char_t *message_id)
 {
     axis2_op_ctx_impl_t *op_ctx_impl = NULL;
     

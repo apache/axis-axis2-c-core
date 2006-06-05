@@ -57,13 +57,13 @@ struct axis2_listener_manager_ops
     axis2_status_t (AXIS2_CALL *
     make_sure_started)(struct axis2_listener_manager *listener_manager, 
                        const axis2_env_t *env, 
-                       axis2_char_t *transport,
+                       const axis2_char_t *transport,
                        axis2_conf_ctx_t *conf_ctx);
                        
     axis2_status_t (AXIS2_CALL *
     stop)(struct axis2_listener_manager *listener_manager, 
           const axis2_env_t *env, 
-          axis2_char_t *transport);
+          const axis2_char_t *transport);
     /**
      * @param serviceName
      * @param transport

@@ -111,8 +111,8 @@ extern "C"
  */
 AXIS2_EXTERN axis2_relates_to_t* AXIS2_CALL
 axis2_relates_to_create(const axis2_env_t *env, 
-                  axis2_char_t *value, 
-                  axis2_char_t *relationship_type);
+                  const axis2_char_t *value, 
+                  const axis2_char_t *relationship_type);
     
 #define AXIS2_RELATES_TO_GET_VALUE(relates_to, env) \
       ((relates_to)->ops->get_value(relates_to, env))

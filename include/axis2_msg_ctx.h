@@ -310,7 +310,7 @@ struct axis2_msg_ctx_ops
     axis2_status_t (AXIS2_CALL *
    set_wsa_action)(struct axis2_msg_ctx *msg_ctx, 
                     const axis2_env_t *env, 
-                    axis2_char_t *action_uri);
+                    const axis2_char_t *action_uri);
     
     axis2_char_t* (AXIS2_CALL *
    get_wsa_action)(struct axis2_msg_ctx *msg_ctx, 
@@ -464,7 +464,7 @@ struct axis2_msg_ctx_ops
     axis2_param_t* (AXIS2_CALL *
    get_parameter)(struct axis2_msg_ctx *msg_ctx, 
                    const axis2_env_t *env, 
-                  axis2_char_t *key);
+                  const axis2_char_t *key);
     
     /**
      * This method is to retrive both module configuration parameters and othere paramerts
@@ -514,7 +514,7 @@ struct axis2_msg_ctx_ops
     axis2_status_t (AXIS2_CALL *
    set_property)(struct axis2_msg_ctx *msg_ctx, 
                const axis2_env_t *env, 
-               axis2_char_t *key, 
+               const axis2_char_t *key, 
                axis2_property_t *value,
                axis2_bool_t persistent);
     /**

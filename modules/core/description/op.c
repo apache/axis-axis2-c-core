@@ -97,7 +97,7 @@ axis2_op_get_qname (void *op,
 axis2_status_t AXIS2_CALL
 axis2_op_set_msg_exchange_pattern (axis2_op_t *op, 
                                             const axis2_env_t *env,
-                                            axis2_char_t *pattern);
+                                            const axis2_char_t *pattern);
       
 axis2_char_t * AXIS2_CALL
 axis2_op_get_msg_exchange_pattern (axis2_op_t *op, 
@@ -974,7 +974,7 @@ axis2_op_get_qname (void *op,
 axis2_status_t AXIS2_CALL 
 axis2_op_set_msg_exchange_pattern (axis2_op_t *op, 
                                             const axis2_env_t *env,
-                                          axis2_char_t *pattern)
+                                          const axis2_char_t *pattern)
 {
     axis2_op_impl_t *op_impl = NULL;
     

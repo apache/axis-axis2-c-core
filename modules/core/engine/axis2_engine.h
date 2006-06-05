@@ -173,7 +173,7 @@ struct axis2_engine_ops
                            axis2_char_t *soap_namespace);
 
                            
-    axis2_char_t* (AXIS2_CALL *
+    const axis2_char_t* (AXIS2_CALL *
     get_receiver_fault_code)(struct axis2_engine *engine, 
                              const axis2_env_t *env, 
                              axis2_char_t *soap_namespace);

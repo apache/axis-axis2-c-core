@@ -75,7 +75,7 @@ axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
 axis2_status_t AXIS2_CALL
 axis2_msg_recv_set_scope(axis2_msg_recv_t *msg_recv,
                             const axis2_env_t *env,
-                            axis2_char_t *scope);
+                            const axis2_char_t *scope);
                                    
 axis2_char_t * AXIS2_CALL
 axis2_msg_recv_get_scope(axis2_msg_recv_t *msg_recv,
@@ -299,7 +299,7 @@ axis2_msg_recv_get_impl_obj(axis2_msg_recv_t *msg_recv,
 axis2_status_t AXIS2_CALL
 axis2_msg_recv_set_scope(axis2_msg_recv_t *msg_recv,
                             const axis2_env_t *env,
-                            axis2_char_t *scope)
+                            const axis2_char_t *scope)
 {
     axis2_msg_recv_impl_t *msg_recv_impl = NULL;
     

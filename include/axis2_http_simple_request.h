@@ -62,7 +62,8 @@ AXIS2_DECLARE_DATA struct axis2_http_simple_request_ops
     
     axis2_bool_t (AXIS2_CALL *contains_header)
                             (axis2_http_simple_request_t *simple_request, 
-                            const axis2_env_t *env, axis2_char_t *name);
+                            const axis2_env_t *env, 
+                            const axis2_char_t *name);
 
     axis2_array_list_t* (AXIS2_CALL *get_headers)
                             (axis2_http_simple_request_t *simple_request, 
@@ -80,11 +81,11 @@ AXIS2_DECLARE_DATA struct axis2_http_simple_request_ops
                             (axis2_http_simple_request_t *simple_request, 
                             const axis2_env_t *env, axis2_http_header_t *header);
 
-    axis2_char_t* (AXIS2_CALL *get_content_type)
+    const axis2_char_t* (AXIS2_CALL *get_content_type)
                             (axis2_http_simple_request_t *simple_request, 
                             const axis2_env_t *env);
 
-    axis2_char_t* (AXIS2_CALL *get_charset)
+    const axis2_char_t* (AXIS2_CALL *get_charset)
                             (axis2_http_simple_request_t *simple_request, 
                             const axis2_env_t *env);
 

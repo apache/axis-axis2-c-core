@@ -40,24 +40,31 @@
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_http_transport_utils_process_http_post_request
-                        (const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx, 
-                        axis2_stream_t *in_stream, axis2_stream_t *out_stream,
-                  axis2_char_t *content_type, int content_length,
+                        (const axis2_env_t *env, 
+                        axis2_msg_ctx_t *msg_ctx, 
+                        axis2_stream_t *in_stream, 
+                        axis2_stream_t *out_stream,
+                        const axis2_char_t *content_type, 
+                        const int content_length,
                         axis2_char_t *soap_action_header,
-                        axis2_char_t *request_uri);
+                        const axis2_char_t *request_uri);
     
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
 axis2_http_transport_utils_process_http_get_request
-                        (const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
-                        axis2_stream_t *in_stream, axis2_stream_t *out_stream,
-                  axis2_char_t *content_type,
+                        (const axis2_env_t *env, 
+                        axis2_msg_ctx_t *msg_ctx,
+                        axis2_stream_t *in_stream, 
+                        axis2_stream_t *out_stream,
+                        const axis2_char_t *content_type,
                         axis2_char_t *soap_action_header, 
-                        axis2_char_t *request_uri, axis2_conf_ctx_t *conf_ctx, 
+                        const axis2_char_t *request_uri, 
+                        axis2_conf_ctx_t *conf_ctx, 
                         axis2_hash_t *request_params);
     
 AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_http_transport_utils_create_envelope_from_get_request
-                        (const axis2_env_t *env, axis2_char_t *request_uri,
+                        (const axis2_env_t *env, 
+                        const axis2_char_t *request_uri,
                         axis2_hash_t *request_params);
     
 AXIS2_EXTERN axis2_om_stax_builder_t*  AXIS2_CALL
@@ -94,25 +101,30 @@ axis2_http_transport_utils_get_services_html(const axis2_env_t *env,
                      axis2_conf_ctx_t *conf_ctx);
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_http_transport_utils_get_charset_enc(const axis2_env_t *env, 
-                  axis2_char_t *content_type);
+                  const axis2_char_t *content_type);
 int AXIS2_CALL
 axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx);
 
 AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env, 
-                        axis2_msg_ctx_t *msg_ctx, axis2_char_t *soap_ns_uri);
+                        axis2_msg_ctx_t *msg_ctx, 
+                        const axis2_char_t *soap_ns_uri);
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_http_transport_utils_get_value_from_content_type(const axis2_env_t *env, 
-                  axis2_char_t *content_type, axis2_char_t *key);
+                  const axis2_char_t *content_type, 
+                  const axis2_char_t *key);
 /***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_status_t  AXIS2_CALL 
 axis2_http_transport_utils_process_http_post_request
-                        (const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx, 
-                        axis2_stream_t *in_stream, axis2_stream_t *out_stream,
-                  axis2_char_t *content_type, int content_length, 
+                        (const axis2_env_t *env, 
+                        axis2_msg_ctx_t *msg_ctx, 
+                        axis2_stream_t *in_stream, 
+                        axis2_stream_t *out_stream,
+                        const axis2_char_t *content_type, 
+                        const int content_length, 
                         axis2_char_t *soap_action_header,
-                        axis2_char_t *request_uri)
+                        const axis2_char_t *request_uri)
 {
    axis2_soap_envelope_t *soap_envelope = NULL;
    axis2_soap_builder_t *soap_builder = NULL;
@@ -411,11 +423,14 @@ axis2_http_transport_utils_process_http_post_request
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL 
 axis2_http_transport_utils_process_http_get_request
-                        (const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
-                        axis2_stream_t *in_stream, axis2_stream_t *out_stream,
-                  axis2_char_t *content_type,
+                        (const axis2_env_t *env, 
+                        axis2_msg_ctx_t *msg_ctx,
+                        axis2_stream_t *in_stream, 
+                        axis2_stream_t *out_stream,
+                        const axis2_char_t *content_type,
                         axis2_char_t *soap_action_header, 
-                        axis2_char_t *request_uri, axis2_conf_ctx_t *conf_ctx, 
+                        const axis2_char_t *request_uri, 
+                        axis2_conf_ctx_t *conf_ctx, 
                         axis2_hash_t *request_params)
 {
    axis2_soap_envelope_t *soap_envelope = NULL;
@@ -476,7 +491,8 @@ axis2_http_transport_utils_process_http_get_request
 
 AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_http_transport_utils_create_envelope_from_get_request
-                        (const axis2_env_t *env, axis2_char_t *request_uri,
+                        (const axis2_env_t *env, 
+                        const axis2_char_t *request_uri,
                         axis2_hash_t *request_params)
 {
    axis2_char_t **values = NULL;
@@ -722,7 +738,7 @@ axis2_http_transport_utils_get_services_html(const axis2_env_t *env,
    axis2_hash_t *services_map = NULL;
    axis2_hash_t *errorneous_svc_map = NULL;
    axis2_char_t *ret = NULL;
-   axis2_char_t *tmp2 = "<h2>Deployed Services</h2>";
+   axis2_char_t *tmp2 = (axis2_char_t *)"<h2>Deployed Services</h2>";
    axis2_hash_index_t *hi = NULL;
    axis2_bool_t svcs_exists = AXIS2_FALSE;
    
@@ -836,7 +852,7 @@ axis2_http_transport_utils_get_services_html(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_http_transport_utils_get_charset_enc(const axis2_env_t *env, 
-                  axis2_char_t *content_type)
+                  const axis2_char_t *content_type)
 {
    axis2_char_t *tmp = NULL;
    axis2_char_t *tmp_content_type = NULL;
@@ -955,10 +971,11 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
 
 AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env, 
-                        axis2_msg_ctx_t *msg_ctx, axis2_char_t *soap_ns_uri)
+                        axis2_msg_ctx_t *msg_ctx, 
+                        const axis2_char_t *soap_ns_uri)
 {
     axis2_op_ctx_t *op_ctx = NULL;
-    axis2_char_t *char_set_enc = NULL;
+    const axis2_char_t *char_set_enc = NULL;
     axis2_char_t *content_type = NULL;
     axis2_stream_t *in_stream = NULL;
     axis2_callback_info_t *callback_ctx = NULL;
@@ -1133,7 +1150,8 @@ axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 axis2_http_transport_utils_get_value_from_content_type(const axis2_env_t *env, 
-                  axis2_char_t *content_type, axis2_char_t *key)
+                  const axis2_char_t *content_type, 
+                  const axis2_char_t *key)
 {
    axis2_char_t *tmp = NULL;
    axis2_char_t *tmp_content_type = NULL;

@@ -60,7 +60,9 @@ axis2_svc_ctx_t* AXIS2_CALL axis2_mep_client_get_svc_ctx(struct axis2_mep_client
 axis2_status_t AXIS2_CALL axis2_mep_client_free (struct axis2_mep_client *mep_client, 
                                    const axis2_env_t *env);
 
-axis2_mep_client_t* AXIS2_CALL axis2_mep_client_create(const axis2_env_t *env, axis2_svc_ctx_t *svc_ctx, axis2_char_t *mep)
+axis2_mep_client_t* AXIS2_CALL axis2_mep_client_create(const axis2_env_t *env, 
+    axis2_svc_ctx_t *svc_ctx, 
+    const axis2_char_t *mep)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     
@@ -523,7 +525,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_two_way_send(const axis2_env_t *env
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_op_t *op = NULL;
     axis2_soap_envelope_t *response_envelope = NULL;
-    axis2_char_t *soap_ns_uri = NULL;
+    const axis2_char_t *soap_ns_uri = NULL;
     axis2_property_t *property = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
@@ -619,7 +621,7 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_receive(const axis2_env_t *env, axi
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_op_t *op = NULL;
     axis2_soap_envelope_t *response_envelope = NULL;
-    axis2_char_t *soap_ns_uri = NULL;
+    const axis2_char_t *soap_ns_uri = NULL;
     axis2_property_t *property = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);

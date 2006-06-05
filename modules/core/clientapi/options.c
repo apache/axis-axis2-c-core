@@ -88,7 +88,7 @@ axis2_transport_in_desc_t* AXIS2_CALL
 axis2_options_get_transport_in(struct axis2_options *options,
                                const axis2_env_t *env);
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_options_get_transport_in_protocol(struct axis2_options *options,
                                          const axis2_env_t *env);
 
@@ -122,7 +122,7 @@ axis2_char_t* AXIS2_CALL
 axis2_options_get_sender_transport_protocol(struct axis2_options *options,
                                           const axis2_env_t *env);
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_options_get_soap_version_uri(struct axis2_options *options,
                                   const axis2_env_t *env);
 
@@ -197,7 +197,7 @@ axis2_options_set_properties(struct axis2_options *options,
 void AXIS2_CALL 
 axis2_options_set_property(struct axis2_options *options,
                           const axis2_env_t *env,
-                          axis2_char_t *property_key,
+                          const axis2_char_t *property_key,
                           void *property);
 
 
@@ -226,7 +226,7 @@ axis2_options_set_sender_transport(struct axis2_options *options,
 void AXIS2_CALL 
 axis2_options_set_soap_version_uri(struct axis2_options *options,
                                   const axis2_env_t *env,
-                                  axis2_char_t *soap_version_uri);
+                                  const axis2_char_t *soap_version_uri);
 
 void AXIS2_CALL 
 axis2_options_set_timeout_in_milli_seconds(struct axis2_options *options,
@@ -446,7 +446,7 @@ axis2_options_get_transport_in(struct axis2_options *options,
    return options_impl->transport_in;
 }
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_options_get_transport_in_protocol(struct axis2_options *options,
                                          const axis2_env_t *env)
 {
@@ -599,7 +599,7 @@ axis2_options_get_sender_transport_protocol(struct axis2_options *options,
    return options_impl->sender_transport_protocol;
 }
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_options_get_soap_version_uri(struct axis2_options *options,
                                   const axis2_env_t *env)
 {
@@ -835,7 +835,7 @@ axis2_options_set_properties(struct axis2_options *options,
 void AXIS2_CALL 
 axis2_options_set_property(struct axis2_options *options,
                           const axis2_env_t *env,
-                          axis2_char_t *property_key,
+                          const axis2_char_t *property_key,
                           void *property)
 {
    axis2_options_impl_t *options_impl = NULL;
@@ -916,7 +916,7 @@ axis2_options_set_sender_transport(struct axis2_options *options,
 void AXIS2_CALL 
 axis2_options_set_soap_version_uri(struct axis2_options *options,
                                   const axis2_env_t *env,
-                                  axis2_char_t *soap_version_uri)
+                                  const axis2_char_t *soap_version_uri)
 {
    axis2_options_impl_t *options_impl = NULL;
 

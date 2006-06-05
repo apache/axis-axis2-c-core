@@ -834,7 +834,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(struct axis2_svc_client
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_op_client_t *op_client = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
-    axis2_char_t *transport_in_protocol = NULL;
+    const axis2_char_t *transport_in_protocol = NULL;
 
    svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
 
@@ -921,7 +921,7 @@ axis2_svc_client_finalize_invoke(struct axis2_svc_client *svc_client,
                         const axis2_env_t *env)
 {
    axis2_svc_client_impl_t *svc_client_impl = NULL;
-   axis2_char_t *transport_in_protocol = NULL;
+   const axis2_char_t *transport_in_protocol = NULL;
 
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -1247,7 +1247,7 @@ axis2_svc_client_free(struct axis2_svc_client *svc_client,
 static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env, axis2_svc_client_impl_t *svc_client_impl,
                         axis2_msg_ctx_t *msg_ctx, axis2_om_node_t *payload)
 {
-   axis2_char_t *soap_version_uri;
+   const axis2_char_t *soap_version_uri;
    int soap_version;
    axis2_soap_envelope_t *envelope = NULL;
 

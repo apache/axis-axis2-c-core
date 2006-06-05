@@ -72,7 +72,8 @@ axis2_http_simple_response_get_status_line
 axis2_bool_t AXIS2_CALL 
 axis2_http_simple_response_contains_header 
                     (axis2_http_simple_response_t *simple_response, 
-                    const axis2_env_t *env, axis2_char_t *name);
+                    const axis2_env_t *env, 
+                    const axis2_char_t *name);
 
 axis2_array_list_t* AXIS2_CALL 
 axis2_http_simple_response_get_headers 
@@ -82,7 +83,8 @@ axis2_http_simple_response_get_headers
 axis2_http_header_t* AXIS2_CALL 
 axis2_http_simple_response_get_first_header
                     (axis2_http_simple_response_t *simple_response, 
-                    const axis2_env_t *env, axis2_char_t *str);
+                    const axis2_env_t *env, 
+                    const axis2_char_t *str);
     
 axis2_status_t AXIS2_CALL 
 axis2_http_simple_response_remove_headers 
@@ -94,7 +96,7 @@ axis2_http_simple_response_set_header
                     (axis2_http_simple_response_t *simple_response, 
                     const axis2_env_t *env, axis2_http_header_t* header);
     
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_http_simple_response_get_charset
                     (axis2_http_simple_response_t *simple_response, 
                     const axis2_env_t *env);
@@ -104,7 +106,7 @@ axis2_http_simple_response_get_content_length
                     (axis2_http_simple_response_t *simple_response, 
                     const axis2_env_t *env);
     
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_http_simple_response_get_content_type
                     (axis2_http_simple_response_t *simple_response, 
                     const axis2_env_t *env);
@@ -391,7 +393,8 @@ axis2_http_simple_response_get_headers
 axis2_http_header_t* AXIS2_CALL 
 axis2_http_simple_response_get_first_header
                         (axis2_http_simple_response_t *simple_response, 
-                        const axis2_env_t *env, axis2_char_t *str)
+                        const axis2_env_t *env, 
+                        const axis2_char_t *str)
 {
     axis2_http_simple_response_impl_t *simple_response_impl = NULL;
     axis2_http_header_t *tmp_header = NULL;
@@ -524,7 +527,7 @@ axis2_http_simple_response_set_header
 }
 
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_http_simple_response_get_charset
                         (axis2_http_simple_response_t *simple_response, 
                         const axis2_env_t *env)
@@ -566,7 +569,7 @@ axis2_http_simple_response_get_content_length
 }
 
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_http_simple_response_get_content_type
                         (axis2_http_simple_response_t *simple_response, 
                         const axis2_env_t *env)
@@ -684,7 +687,8 @@ axis2_http_simple_response_get_body_bytes
 axis2_bool_t AXIS2_CALL 
 axis2_http_simple_response_contains_header 
                     (axis2_http_simple_response_t *simple_response, 
-                    const axis2_env_t *env, axis2_char_t *name)
+                    const axis2_env_t *env, 
+                    const axis2_char_t *name)
 {
     axis2_char_t *header_name = NULL;
    axis2_http_simple_response_impl_t *simple_response_impl = NULL;

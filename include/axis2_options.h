@@ -79,7 +79,7 @@ struct axis2_options_ops
    get_transport_in)(struct axis2_options *options,
                      const axis2_env_t *env);      
 
-   axis2_char_t* (AXIS2_CALL *
+   const axis2_char_t* (AXIS2_CALL *
    get_transport_in_protocol)(struct axis2_options *options,
                         const axis2_env_t *env);
 
@@ -117,7 +117,7 @@ struct axis2_options_ops
    get_sender_transport_protocol)(struct axis2_options *options,
                            const axis2_env_t *env);
 
-   axis2_char_t* (AXIS2_CALL *
+   const axis2_char_t* (AXIS2_CALL *
    get_soap_version_uri)(struct axis2_options *options,
                      const axis2_env_t *env);
 
@@ -220,7 +220,7 @@ struct axis2_options_ops
    void (AXIS2_CALL *
    set_property)(struct axis2_options *options,
                const axis2_env_t *env,
-               axis2_char_t *property_key,
+               const axis2_char_t *property_key,
                void *property);      
             
 
@@ -248,7 +248,7 @@ struct axis2_options_ops
    void (AXIS2_CALL *   
    set_soap_version_uri)(struct axis2_options *options,
                      const axis2_env_t *env,
-                     axis2_char_t *soap_version_uri);
+                     const axis2_char_t *soap_version_uri);
 
    void (AXIS2_CALL *
    set_timeout_in_milli_seconds)(struct axis2_options *options,

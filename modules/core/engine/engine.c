@@ -103,7 +103,7 @@ axis2_engine_get_sender_fault_code(struct axis2_engine *engine,
                                    axis2_char_t *soap_namespace);
 
                                    
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_engine_get_receiver_fault_code(struct axis2_engine *engine, 
                                      const axis2_env_t *env, 
                                      axis2_char_t *soap_namespace);
@@ -589,7 +589,7 @@ axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine,
     axis2_endpoint_ref_t *reply_to = NULL;
     axis2_property_t *property = NULL;
     axis2_soap_envelope_t *envelope = NULL;
-    axis2_char_t *wsa_action = NULL;
+    const axis2_char_t *wsa_action = NULL;
     axis2_char_t *msg_id = NULL;
     axis2_relates_to_t *relates_to = NULL;
     axis2_char_t *msg_uuid = NULL;
@@ -951,7 +951,7 @@ axis2_engine_get_sender_fault_code(struct axis2_engine *engine,
     return NULL;
 }
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_engine_get_receiver_fault_code(struct axis2_engine *engine, 
                                      const axis2_env_t *env, 
                                      axis2_char_t *soap_namespace) 

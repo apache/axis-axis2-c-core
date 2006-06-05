@@ -230,7 +230,7 @@ axis2_msg_ctx_set_new_thread_required(struct axis2_msg_ctx *msg_ctx,
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_wsa_action(struct axis2_msg_ctx *msg_ctx, 
                                 const axis2_env_t *env, 
-                                axis2_char_t *action_uri);
+                                const axis2_char_t *action_uri);
 axis2_char_t* AXIS2_CALL
 axis2_msg_ctx_get_wsa_action(struct axis2_msg_ctx *msg_ctx, 
                              const axis2_env_t *env);
@@ -307,7 +307,8 @@ axis2_msg_ctx_set_msg_info_headers(struct axis2_msg_ctx *msg_ctx,
                                     axis2_msg_info_headers_t *msg_info_headers);
 axis2_param_t* AXIS2_CALL
 axis2_msg_ctx_get_parameter(struct axis2_msg_ctx *msg_ctx, 
-                            const axis2_env_t *env, axis2_char_t *key);
+                            const axis2_env_t *env, 
+                            const axis2_char_t *key);
 axis2_param_t* AXIS2_CALL
 axis2_msg_ctx_get_module_parameter(struct axis2_msg_ctx *msg_ctx, 
                                     const axis2_env_t *env, 
@@ -321,7 +322,7 @@ axis2_msg_ctx_get_property(struct axis2_msg_ctx *msg_ctx,
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_property(struct axis2_msg_ctx *msg_ctx, 
                             const axis2_env_t *env, 
-                            axis2_char_t *key, 
+                            const axis2_char_t *key, 
                             axis2_property_t *value, 
                             axis2_bool_t persistent);
 axis2_qname_t* AXIS2_CALL
@@ -1105,7 +1106,8 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_new_thread_required(struct axis2_msg
 }
 
 axis2_status_t AXIS2_CALL axis2_msg_ctx_set_wsa_action(struct axis2_msg_ctx *msg_ctx, 
-                                            const axis2_env_t *env, axis2_char_t *action_uri) 
+    const axis2_env_t *env, 
+    const axis2_char_t *action_uri) 
 {
     axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
     
@@ -1400,7 +1402,8 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_msg_info_headers(struct axis2_msg_ct
 
 
 axis2_param_t *AXIS2_CALL axis2_msg_ctx_get_parameter(struct axis2_msg_ctx *msg_ctx, 
-                                            const axis2_env_t *env, axis2_char_t *key) 
+    const axis2_env_t *env, 
+    const axis2_char_t *key) 
 {
     axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
     axis2_param_t *param = NULL;
@@ -1655,7 +1658,7 @@ axis2_msg_ctx_get_property(struct axis2_msg_ctx *msg_ctx,
 
 axis2_status_t AXIS2_CALL axis2_msg_ctx_set_property(struct axis2_msg_ctx *msg_ctx, 
                                 const axis2_env_t *env, 
-                                axis2_char_t *key, 
+                                const axis2_char_t *key, 
                                 axis2_property_t *value, 
                                 axis2_bool_t persistent)
 {

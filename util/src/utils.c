@@ -22,7 +22,7 @@
 
 AXIS2_EXTERN axis2_char_t** AXIS2_CALL
 axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env, 
-                                                axis2_char_t *request)
+                                                const axis2_char_t *request)
 
 {
     axis2_char_t **ret = NULL;
@@ -33,7 +33,7 @@ axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env,
     ret  = AXIS2_MALLOC(env->allocator, 
                                         2*(sizeof(axis2_char_t *)));
     memset(ret, 0, 2*sizeof(axis2_char_t*)); 
-    tmp = request;
+    tmp = (const axis2_char_t *)request;
 
     
     while(1)

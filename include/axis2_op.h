@@ -142,7 +142,7 @@ AXIS2_DECLARE_DATA struct axis2_op_ops
    axis2_status_t (AXIS2_CALL *
     set_msg_exchange_pattern) (axis2_op_t *op, 
                                 const axis2_env_t *env,
-                                axis2_char_t *pattern);
+                                const axis2_char_t *pattern);
 
    axis2_char_t *(AXIS2_CALL *
     get_msg_exchange_pattern) (axis2_op_t *op, 

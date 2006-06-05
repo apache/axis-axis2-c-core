@@ -114,7 +114,7 @@ struct axis2_op_ctx_ops
     axis2_msg_ctx_t* (AXIS2_CALL *
    get_msg_ctx)(struct axis2_op_ctx *op_ctx, 
                  const axis2_env_t *env, 
-                axis2_char_t *message_id);
+                const axis2_char_t *message_id);
     
     /**
      * Checks to see if the MEP is complete. i.e. whether all the messages that

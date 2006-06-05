@@ -179,7 +179,7 @@ axis2_endpoint_ref_free (struct axis2_endpoint_ref *endpoint_ref,
 
 axis2_endpoint_ref_t* AXIS2_CALL 
 axis2_endpoint_ref_create(const axis2_env_t *env, 
-                          axis2_char_t *address) 
+                          const axis2_char_t *address) 
 {
     axis2_endpoint_ref_impl_t *endpoint_ref_impl = NULL;
     

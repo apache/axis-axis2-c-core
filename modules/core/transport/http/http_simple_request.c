@@ -55,7 +55,8 @@ axis2_http_simple_request_set_request_line
 axis2_bool_t AXIS2_CALL 
 axis2_http_simple_request_contains_header
                         (axis2_http_simple_request_t *simple_request, 
-                        const axis2_env_t *env, axis2_char_t *name);
+                        const axis2_env_t *env, 
+                        const axis2_char_t *name);
 
 axis2_array_list_t* AXIS2_CALL 
 axis2_http_simple_request_get_headers
@@ -77,12 +78,12 @@ axis2_http_simple_request_add_header
                         (axis2_http_simple_request_t *simple_request, 
                         const axis2_env_t *env, axis2_http_header_t *header);
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_http_simple_request_get_content_type
                         (axis2_http_simple_request_t *simple_request, 
                         const axis2_env_t *env);
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_http_simple_request_get_charset
                         (axis2_http_simple_request_t *simple_request, 
                         const axis2_env_t *env);
@@ -280,7 +281,8 @@ axis2_http_simple_request_set_request_line
 axis2_bool_t AXIS2_CALL 
 axis2_http_simple_request_contains_header
                         (axis2_http_simple_request_t *simple_request, 
-                        const axis2_env_t *env, axis2_char_t *name)
+                        const axis2_env_t *env, 
+                        const axis2_char_t *name)
 {
     int i = 0;
     axis2_char_t *header_name = NULL;
@@ -435,7 +437,7 @@ axis2_http_simple_request_add_header
 }
 
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_http_simple_request_get_content_type
                         (axis2_http_simple_request_t *simple_request, 
                         const axis2_env_t *env)
@@ -451,7 +453,7 @@ axis2_http_simple_request_get_content_type
 }
 
 
-axis2_char_t* AXIS2_CALL 
+const axis2_char_t* AXIS2_CALL 
 axis2_http_simple_request_get_charset
                         (axis2_http_simple_request_t *simple_request, 
                         const axis2_env_t *env)

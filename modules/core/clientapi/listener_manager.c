@@ -57,13 +57,13 @@ axis2_listener_manager_worker_func(axis2_thread_t *thd, void *data);
 axis2_status_t AXIS2_CALL 
 axis2_listener_manager_make_sure_started(struct axis2_listener_manager *listener_manager, 
                                         const axis2_env_t *env, 
-                                        axis2_char_t *transport,
+                                        const axis2_char_t *transport,
                                         axis2_conf_ctx_t *conf_ctx);
                                         
 axis2_status_t AXIS2_CALL 
 axis2_listener_manager_stop(struct axis2_listener_manager *listener_manager, 
                             const axis2_env_t *env, 
-                            axis2_char_t *transport);
+                            const axis2_char_t *transport);
                             
 axis2_endpoint_ref_t* AXIS2_CALL 
 axis2_listener_manager_reply_to_epr(struct axis2_listener_manager *listener_manager, 
@@ -140,7 +140,7 @@ axis2_listener_manager_create(const axis2_env_t *env)
 axis2_status_t AXIS2_CALL 
 axis2_listener_manager_make_sure_started(struct axis2_listener_manager *listener_manager, 
                                         const axis2_env_t *env, 
-                                        axis2_char_t *transport,
+                                        const axis2_char_t *transport,
                                         axis2_conf_ctx_t *conf_ctx)
 {
     axis2_listener_manager_impl_t *listener_manager_impl = NULL;
@@ -259,7 +259,7 @@ axis2_listener_manager_make_sure_started(struct axis2_listener_manager *listener
 axis2_status_t AXIS2_CALL 
 axis2_listener_manager_stop(struct axis2_listener_manager *listener_manager, 
                             const axis2_env_t *env, 
-                            axis2_char_t *transport)
+                            const axis2_char_t *transport)
 {
     axis2_listener_manager_impl_t *listener_manager_impl = NULL;
     axis2_transport_listener_state_t *tl_state = NULL;

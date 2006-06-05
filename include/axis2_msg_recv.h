@@ -176,7 +176,7 @@ struct axis2_msg_recv_ops
     axis2_status_t (AXIS2_CALL *
     set_scope) (axis2_msg_recv_t *msg_recv,
                                 const axis2_env_t *env,
-                                axis2_char_t *scope);
+                                const axis2_char_t *scope);
 
     
     /**

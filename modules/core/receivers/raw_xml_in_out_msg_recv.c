@@ -83,7 +83,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     axis2_om_node_t *out_node = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_bool_t skel_invoked = AXIS2_FALSE;
-    axis2_char_t *soap_ns = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    const axis2_char_t *soap_ns = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     int soap_version = AXIS2_SOAP12;
     axis2_om_namespace_t *env_ns = NULL;
    
@@ -280,9 +280,9 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     if (status != AXIS2_SUCCESS)
     {
         /* something went wrong. set a SOAP Fault*/
-        axis2_char_t *fault_value_str = "env:Sender";
-        axis2_char_t *fault_reason_str = NULL;
-        axis2_char_t *err_msg = NULL;
+        const axis2_char_t *fault_value_str = "env:Sender";
+        const axis2_char_t *fault_reason_str = NULL;
+        const axis2_char_t *err_msg = NULL;
         
         if (!skel_invoked)
             fault_value_str = "env:Receiver";

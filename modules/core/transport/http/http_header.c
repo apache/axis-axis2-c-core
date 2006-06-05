@@ -53,8 +53,9 @@ axis2_http_header_free (axis2_http_header_t *header, const axis2_env_t *env);
 /***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_http_header_t * AXIS2_CALL AXIS2_CALL
-axis2_http_header_create (const axis2_env_t *env, axis2_char_t *name, 
-                            axis2_char_t *value)
+axis2_http_header_create (const axis2_env_t *env, 
+    const axis2_char_t *name, 
+    const axis2_char_t *value)
 {
     axis2_http_header_impl_t *http_header_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
