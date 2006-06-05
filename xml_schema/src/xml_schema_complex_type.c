@@ -48,7 +48,8 @@ struct axis2_xml_schema_complex_type_impl
     
     axis2_xml_schema_content_type_t *content_type;
     
-    axis2_xml_schema_particle_t *particle_type, *particle;
+    void *particle_type;
+    void *particle;
     
     axis2_bool_t is_abstract, is_mixed;
     
@@ -186,7 +187,7 @@ axis2_status_t AXIS2_CALL
 axis2_xml_schema_complex_type_set_particle(
         void *cmp_type,
         const axis2_env_t *env,
-        axis2_xml_schema_particle_t *particle);
+        void *particle);
                     
 axis2_char_t* AXIS2_CALL
 axis2_xml_schema_complex_type_to_string(
@@ -629,7 +630,7 @@ axis2_status_t AXIS2_CALL
 axis2_xml_schema_complex_type_set_particle(
         void *cmp_type,
         const axis2_env_t *env,
-        axis2_xml_schema_particle_t *particle)
+        void *particle)
 {
     axis2_xml_schema_complex_type_impl_t *cmp_type_impl = NULL;
     cmp_type_impl = AXIS2_INTF_TO_IMPL(cmp_type);

@@ -652,9 +652,9 @@ axis2_xml_schema_type_get_qname(void *type,
     }
     if(NULL != type_impl->qname)
     {
-        AXIS2_QNAME_FREE(type_impl->qname, env);
-        type_impl->qname = NULL;
+        return type_impl->qname;
     }
+    
     if(NULL != type_impl->schema)
     {
         target_ns = 

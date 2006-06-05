@@ -589,6 +589,7 @@ handle_xml_schema_element(
             if(AXIS2_STRCMP(localname,"simpleType") == 0)
             {
                 void *type = NULL;
+                void *t = NULL;
                 axis2_qname_t *qn = NULL;
                 
                 
@@ -597,9 +598,10 @@ handle_xml_schema_element(
                 AXIS2_XML_SCHEMA_ADD_TYPE(builder_impl->schema, env, type);
                 if(NULL != items)
                 {
-                    AXIS2_XML_SCHEMA_ADD_TYPE(builder_impl->schema, env, type);
+                    AXIS2_XML_SCHEMA_OBJ_COLLECTION_ADD(items, env, type);
                 }
                 qn = AXIS2_XML_SCHEMA_TYPE_GET_QNAME(type, env);
+                t =  AXIS2_XML_SCHEMA_GET_TYPE_BY_QNAME(builder_impl->schema, env, qn);
                 if(NULL != qn)
                 {
                     axis2_char_t *u = NULL;
@@ -610,6 +612,8 @@ handle_xml_schema_element(
                     AXIS2_XML_SCHEMA_COLLECTION_RESOLVE_TYPE(builder_impl->collection, 
                         env, qn, type);
                 }
+                
+                
             }        
             else if(AXIS2_STRCMP(localname, "complexType") == 0)
             {

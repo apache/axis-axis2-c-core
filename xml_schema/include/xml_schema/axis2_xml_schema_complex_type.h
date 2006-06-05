@@ -163,7 +163,7 @@ struct axis2_xml_schema_complex_type_ops
             const axis2_env_t *env,
             axis2_bool_t b);
             
-    axis2_xml_schema_particle_t* (AXIS2_CALL *
+    void* (AXIS2_CALL *
     get_particle)(
             void *cmp_type,
             const axis2_env_t *env);
@@ -172,7 +172,7 @@ struct axis2_xml_schema_complex_type_ops
     set_particle)(
             void *cmp_type,
             const axis2_env_t *env,
-            axis2_xml_schema_particle_t *particle);
+            void *particle);
                         
             
             
