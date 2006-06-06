@@ -85,10 +85,10 @@ axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
 AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
 axis2_strlen (const axis2_char_t * s)
 {
-	if (s)   
-		return strlen(s);
-	else
-		return -1;
+   if (s)   
+      return strlen(s);
+   else
+      return -1;
 }
 
 
@@ -96,7 +96,7 @@ AXIS2_EXTERN int AXIS2_CALL
 axis2_strcasecmp(const axis2_char_t *s1, const axis2_char_t *s2)
 {
     while (toupper(*s1) == toupper(*s2++))
-   	if (*s1++ == '\0')
+      if (*s1++ == '\0')
        return(0);
     return(toupper(*s1) - toupper(*--s2));
 }
@@ -127,11 +127,11 @@ axis2_rindex(const axis2_char_t *_s, axis2_char_t _ch)
 {
     int i,ilen = axis2_strlen(_s);
     if (ilen < 1)
-    	return NULL;
+       return NULL;
     for (i=ilen-1;i>=0;i--)
     {
-    	if (_s[i] == _ch)
-        	return (axis2_char_t *)(_s+i);
+       if (_s[i] == _ch)
+           return (axis2_char_t *)(_s+i);
     }
     return NULL;
 }
@@ -159,7 +159,7 @@ axis2_replace(axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL axis2_strltrim(axis2_char_t *_s, 
-													const axis2_char_t *_trim)
+                                       const axis2_char_t *_trim)
 {
     if(!_s)
         return NULL;
@@ -176,7 +176,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL axis2_strltrim(axis2_char_t *_s,
 }
            
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL axis2_strrtrim(axis2_char_t *_s, 
-													const axis2_char_t *_trim)
+                                       const axis2_char_t *_trim)
 {
     axis2_char_t *__tail;
     if(!_s)
@@ -194,7 +194,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL axis2_strrtrim(axis2_char_t *_s,
 }    
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL axis2_strtrim(axis2_char_t *_s, 
-													const axis2_char_t *_trim)
+                                       const axis2_char_t *_trim)
 {
     return axis2_strltrim(axis2_strrtrim(_s, _trim), _trim);
 }

@@ -151,7 +151,7 @@ axis2_xml_schema_type_resolve_methods(
             get_base_impl(type, env))
 
 #define AXIS2_XML_SCHEMA_TYPE_TYPE(sch_type, env) \
-		(((axis2_xml_schema_type_t *) sch_type)->ops->\
+      (((axis2_xml_schema_type_t *) sch_type)->ops->\
            type(sch_type, env))
 
            
