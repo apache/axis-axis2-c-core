@@ -202,7 +202,6 @@ void test_circular_schema(CuTest *tc)
     axis2_om_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
-    axis2_qname_t *qn = NULL;
     axis2_char_t *filename = NULL;
     axis2_array_list_t *schemas = NULL;
     
@@ -238,9 +237,7 @@ void test_schema_import1(CuTest *tc)
     axis2_om_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
-    axis2_qname_t *qn = NULL;
     axis2_char_t *filename = NULL;
-    axis2_array_list_t *schemas = NULL;
     
     env = axis2_env_create_all("test.log", 1);
     
@@ -444,10 +441,6 @@ void test_forward_refs(CuTest *tc)
     axis2_qname_t *qn = NULL;
     axis2_char_t *filename = NULL;
     void *element = NULL;
-    void *cmp_type = NULL;
-    void *items = NULL;
-    int count = 0;
-    int i =0;
     void *sch_type = NULL;
     int type = 0;
     void *seq = NULL;
@@ -492,16 +485,6 @@ void test_local_unnamed_simple_type(CuTest *tc)
     axis2_om_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
-    axis2_qname_t *qn = NULL;
-    axis2_char_t *filename = NULL;
-    void *element = NULL;
-    void *cmp_type = NULL;
-    void *items = NULL;
-    int count = 0;
-    int i =0;
-    void *sch_type = NULL;
-    int type = 0;
-    void *seq = NULL;
     axis2_char_t *xml = NULL;
     axis2_xml_reader_t *reader = NULL;
     axis2_om_stax_builder_t *builder = NULL;
@@ -553,14 +536,7 @@ void test_simple_restriction(CuTest *tc)
     axis2_xml_schema_t *schema = NULL;
     axis2_qname_t *type_qname = NULL;
     axis2_qname_t *element_qname = NULL;
-    axis2_char_t *filename = NULL;
     void *element = NULL;
-    void *cmp_type = NULL;
-    axis2_xml_schema_obj_collection_t *items = NULL;
-    int count = 0;
-    int i =0;
-    void *sch_type = NULL;
-    int type = 0;
     void *simple_type = NULL;
     
     
@@ -599,7 +575,6 @@ void test_unqualified_schemas(CuTest *tc)
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_qname_t *element_qname = NULL;
-    axis2_char_t *filename = NULL;
     
     void *element = NULL;
     
@@ -611,13 +586,8 @@ void test_unqualified_schemas(CuTest *tc)
     
     int i =0;
     
-    void *sch_type = NULL;
-    
-    int type = 0;
-    
     void *particle = NULL;
     
-    void *seq = NULL;
     
     env = axis2_env_create_all("test.log", 1);
 
