@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -n 'Running aclocal...'
+echo -n 'Running libtoolize...'
 if libtoolize --force > /dev/null 2>&1; then
 	echo 'done.'
 else
