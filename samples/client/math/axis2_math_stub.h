@@ -70,8 +70,8 @@ axis2_math_stub_create_with_endpoint_ref_and_client_home(const axis2_env_t *env,
  */
 axis2_stub_t *
 axis2_math_stub_create_with_endpoint_uri_and_client_home(const axis2_env_t *env,
-                                            axis2_char_t *endpoint_uri,
-                                            axis2_char_t *client_home);
+                                            const axis2_char_t *endpoint_uri,
+                                            const axis2_char_t *client_home);
 /** @} */
 
 #ifdef __cplusplus

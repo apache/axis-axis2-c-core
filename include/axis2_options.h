@@ -154,7 +154,7 @@ struct axis2_options_ops
    void (AXIS2_CALL *
    set_action)(struct axis2_options *options,
             const axis2_env_t *env,
-            axis2_char_t *action);
+            const axis2_char_t *action);
 
    void (AXIS2_CALL *
    set_fault_to)(struct axis2_options *options,
@@ -221,7 +221,7 @@ struct axis2_options_ops
    set_property)(struct axis2_options *options,
                const axis2_env_t *env,
                const axis2_char_t *property_key,
-               void *property);      
+               const void *property);      
             
 
    void (AXIS2_CALL *

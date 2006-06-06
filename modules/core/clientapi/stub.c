@@ -173,8 +173,8 @@ axis2_stub_create_with_endpoint_ref_and_client_home (const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_stub_t * AXIS2_CALL 
 axis2_stub_create_with_endpoint_uri_and_client_home (const axis2_env_t *env,
-                                        axis2_char_t *endpoint_uri,
-                                        axis2_char_t *client_home)
+                                        const axis2_char_t *endpoint_uri,
+                                        const axis2_char_t *client_home)
 {
     axis2_stub_impl_t *stub_impl = NULL;
     axis2_endpoint_ref_t *endpoint_ref = NULL;

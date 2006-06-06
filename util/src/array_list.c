@@ -77,13 +77,13 @@ axis2_array_list_set(struct axis2_array_list *array_list,
 axis2_status_t AXIS2_CALL 
 axis2_array_list_add(struct axis2_array_list *array_list, 
                      const axis2_env_t *env, 
-                     void* e);
+                     const void* e);
                      
 axis2_status_t AXIS2_CALL 
 axis2_array_list_add_at(struct axis2_array_list *array_list, 
                         const axis2_env_t *env, 
-                        int index, 
-                        void* e);    
+                        const int index, 
+                        const void* e);    
                         
 void* AXIS2_CALL 
 axis2_array_list_remove(struct axis2_array_list *array_list, 
@@ -265,7 +265,9 @@ void* AXIS2_CALL axis2_array_list_set(struct axis2_array_list *array_list, const
     return result;
 }
 
-axis2_status_t AXIS2_CALL axis2_array_list_add(struct axis2_array_list *array_list, const axis2_env_t *env, void* e)
+axis2_status_t AXIS2_CALL axis2_array_list_add(struct axis2_array_list *array_list, 
+    const axis2_env_t *env, 
+    const void* e)
 {
     axis2_array_list_impl_t *array_list_impl = NULL;
     
@@ -280,7 +282,10 @@ axis2_status_t AXIS2_CALL axis2_array_list_add(struct axis2_array_list *array_li
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL axis2_array_list_add_at(struct axis2_array_list *array_list, const axis2_env_t *env, int index, void* e)
+axis2_status_t AXIS2_CALL axis2_array_list_add_at(struct axis2_array_list *array_list, 
+    const axis2_env_t *env, 
+    const int index, 
+    const void* e)
 {
     int i = 0;
     axis2_array_list_impl_t *array_list_impl = NULL;

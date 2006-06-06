@@ -41,7 +41,6 @@ axis2_math_stub_create_with_endpoint_ref_and_client_home(const axis2_env_t *env,
 void axis2_populate_axis_service( axis2_stub_t* stub, const axis2_env_t *env)
 {
    axis2_svc_client_t* svc_client = NULL;
-   axis2_qname_t *svc_qname =  NULL;
    axis2_qname_t *op_qname =  NULL;
    axis2_svc_t* svc = NULL;
    axis2_op_t* op = NULL;
@@ -75,8 +74,8 @@ void axis2_populate_axis_service( axis2_stub_t* stub, const axis2_env_t *env)
 
 axis2_stub_t *
 axis2_math_stub_create_with_endpoint_uri_and_client_home(const axis2_env_t *env,
-                                            axis2_char_t *endpoint_uri,
-                                            axis2_char_t *client_home)
+                                            const axis2_char_t *endpoint_uri,
+                                            const axis2_char_t *client_home)
 {
     axis2_stub_t *stub = NULL;
     

@@ -22,7 +22,10 @@
 #include <axis2_client.h>
 
 axis2_om_node_t *
-build_om_programatically(const axis2_env_t *env, axis2_char_t *operation, axis2_char_t *param1, axis2_char_t *param2);
+build_om_programatically(const axis2_env_t *env, 
+    const axis2_char_t *operation, 
+    const axis2_char_t *param1, 
+    const axis2_char_t *param2);
 
 int main(int argc, char** argv)
 {
@@ -30,13 +33,13 @@ int main(int argc, char** argv)
     axis2_om_node_t *node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     const axis2_env_t *env = NULL;
-    axis2_char_t *address = NULL;
-    axis2_char_t *client_home = NULL;
+    const axis2_char_t *address = NULL;
+    const axis2_char_t *client_home = NULL;
     axis2_om_node_t *ret_node = NULL;
 
-    axis2_char_t *operation = "add";
-    axis2_char_t *param1 = "40";
-    axis2_char_t *param2 = "8";
+    const axis2_char_t *operation = "add";
+    const axis2_char_t *param1 = "40";
+    const axis2_char_t *param2 = "8";
    
     env = axis2_env_create_all( "math_blocking.log", AXIS2_LOG_LEVEL_TRACE);
 
@@ -123,7 +126,10 @@ int main(int argc, char** argv)
 }
 
 axis2_om_node_t *
-build_om_programatically(const axis2_env_t *env, axis2_char_t *operation, axis2_char_t *param1, axis2_char_t *param2)
+build_om_programatically(const axis2_env_t *env, 
+    const axis2_char_t *operation, 
+    const axis2_char_t *param1, 
+    const axis2_char_t *param2)
 {
     axis2_om_node_t *math_om_node = NULL;
     axis2_om_element_t* math_om_ele = NULL;

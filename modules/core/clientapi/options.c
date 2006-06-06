@@ -151,7 +151,7 @@ axis2_options_set_parent(struct axis2_options *options,
 void AXIS2_CALL 
 axis2_options_set_action(struct axis2_options *options,
                          const axis2_env_t *env,
-                         axis2_char_t *action);
+                         const axis2_char_t *action);
 
 void AXIS2_CALL 
 axis2_options_set_fault_to(struct axis2_options *options,
@@ -198,7 +198,7 @@ void AXIS2_CALL
 axis2_options_set_property(struct axis2_options *options,
                           const axis2_env_t *env,
                           const axis2_char_t *property_key,
-                          void *property);
+                          const void *property);
 
 
 void AXIS2_CALL 
@@ -715,7 +715,7 @@ axis2_options_set_parent(struct axis2_options *options,
 void AXIS2_CALL 
 axis2_options_set_action(struct axis2_options *options,
                          const axis2_env_t *env,
-                         axis2_char_t *action)
+                         const axis2_char_t *action)
 {
    axis2_options_impl_t *options_impl = NULL;
     /*AXIS2_ENV_CHECK(env, NULL);*/
@@ -836,7 +836,7 @@ void AXIS2_CALL
 axis2_options_set_property(struct axis2_options *options,
                           const axis2_env_t *env,
                           const axis2_char_t *property_key,
-                          void *property)
+                          const void *property)
 {
    axis2_options_impl_t *options_impl = NULL;
 

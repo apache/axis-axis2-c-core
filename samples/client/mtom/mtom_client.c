@@ -21,20 +21,22 @@
 #include <axis2_client.h>
 
 axis2_om_node_t *
-build_om_programatically(const axis2_env_t *env, axis2_char_t *image_name, axis2_char_t *to_save_name);
+build_om_programatically(const axis2_env_t *env, 
+    const axis2_char_t *image_name, 
+    const axis2_char_t *to_save_name);
 
 int main(int argc, char** argv)
 {
     const axis2_env_t *env = NULL;
-    axis2_char_t *address = NULL;
+    const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
-    axis2_char_t *client_home = NULL;
+    const axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
     axis2_om_node_t *payload = NULL;
     axis2_om_node_t *ret_node = NULL;
-    axis2_char_t *image_name = "resources/axis2.jpg";
-    axis2_char_t *to_save_name = "test.jpg";
+    const axis2_char_t *image_name = "resources/axis2.jpg";
+    const axis2_char_t *to_save_name = "test.jpg";
 
    
     /* Set up the environment */
@@ -132,7 +134,9 @@ int main(int argc, char** argv)
 
 /* build SOAP request message content using OM */
 axis2_om_node_t *
-build_om_programatically(const axis2_env_t *env, axis2_char_t *image_name, axis2_char_t *to_save_name)
+build_om_programatically(const axis2_env_t *env, 
+    const axis2_char_t *image_name, 
+    const axis2_char_t *to_save_name)
 {
     axis2_om_node_t *mtom_om_node = NULL;
     axis2_om_element_t* mtom_om_ele = NULL;

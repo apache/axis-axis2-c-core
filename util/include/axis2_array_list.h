@@ -167,7 +167,7 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         add) (
                 struct axis2_array_list *array_list, 
                 const axis2_env_t *env, 
-                void* e);
+                const void* e);
         
        /**
         * Adds the supplied element at the specified index, shifting all
@@ -182,8 +182,8 @@ static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
         add_at) (
                 struct axis2_array_list *array_list, 
                 const axis2_env_t *env, 
-                int index, 
-                void* e);
+                const int index, 
+                const void* e);
         
        /**
         * Removes the element at the user-supplied index.

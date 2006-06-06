@@ -42,9 +42,9 @@ axis2_ctx_get_property(struct axis2_ctx *ctx,
 axis2_status_t AXIS2_CALL 
 axis2_ctx_set_property(struct axis2_ctx *ctx, 
                        const axis2_env_t *env, 
-                       axis2_char_t *key, 
+                       const axis2_char_t *key, 
                        axis2_property_t *value, 
-                       axis2_bool_t persistent);
+                       const axis2_bool_t persistent);
 
 axis2_hash_t* AXIS2_CALL 
 axis2_ctx_get_non_persistent_map(struct axis2_ctx *ctx, 
@@ -127,9 +127,9 @@ axis2_ctx_create(const axis2_env_t *env)
 axis2_status_t AXIS2_CALL 
 axis2_ctx_set_property(struct axis2_ctx *ctx, 
                        const axis2_env_t *env, 
-                       axis2_char_t *key, 
+                       const axis2_char_t *key, 
                        axis2_property_t *value, 
-                       axis2_bool_t persistent) 
+                       const axis2_bool_t persistent) 
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     

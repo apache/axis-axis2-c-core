@@ -111,8 +111,6 @@ build_om_programatically(const axis2_env_t *env, axis2_char_t *text)
 {
     axis2_om_node_t *mtom_om_node = NULL;
     axis2_om_element_t* mtom_om_ele = NULL;
-    axis2_om_node_t* text_om_node = NULL;
-    axis2_om_element_t * text_om_ele = NULL;
     axis2_om_namespace_t *ns1 = NULL;
     
     ns1 = axis2_om_namespace_create (env, "http://ws.apache.org/axis2/c/samples", "ns1");

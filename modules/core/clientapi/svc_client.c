@@ -97,12 +97,12 @@ axis2_svc_client_get_override_options(struct axis2_svc_client *svc_client,
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_engage_module(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_char_t *module_name);
+                    const axis2_char_t *module_name);
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_disengage_module(struct axis2_svc_client *svc_client,
                         const axis2_env_t *env,
-                        axis2_char_t *module_name);
+                        const axis2_char_t *module_name);
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_add_header(struct axis2_svc_client *svc_client,
@@ -201,7 +201,7 @@ axis2_svc_client_free(struct axis2_svc_client *svc_client,
                   const axis2_env_t *env);
 
 axis2_svc_client_t* AXIS2_CALL
-axis2_svc_client_create(const axis2_env_t *env, axis2_char_t *client_home)
+axis2_svc_client_create(const axis2_env_t *env, const axis2_char_t *client_home)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     
@@ -219,7 +219,7 @@ axis2_svc_client_t* AXIS2_CALL
 axis2_svc_client_create_with_conf_ctx_and_svc(const axis2_env_t *env,
                                             axis2_conf_ctx_t *conf_ctx,
                                             axis2_svc_t *svc,
-                                 axis2_char_t *client_home)
+                                 const axis2_char_t *client_home)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
    axis2_svc_grp_t *svc_grp = NULL;
@@ -393,7 +393,7 @@ axis2_svc_client_get_override_options(struct axis2_svc_client *svc_client,
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_engage_module(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_char_t *module_name)
+                    const axis2_char_t *module_name)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
    axis2_module_desc_t *module = NULL;
@@ -418,7 +418,7 @@ axis2_svc_client_engage_module(struct axis2_svc_client *svc_client,
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_disengage_module(struct axis2_svc_client *svc_client,
                         const axis2_env_t *env,
-                        axis2_char_t *module_name)
+                        const axis2_char_t *module_name)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
    axis2_module_desc_t *module = NULL;

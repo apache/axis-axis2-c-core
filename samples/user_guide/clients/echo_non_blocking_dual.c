@@ -36,11 +36,11 @@ int isComplete = 0;
 int main(int argc, char** argv)
 {
     const axis2_env_t *env = NULL;
-    axis2_char_t *address = NULL;
+    const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_endpoint_ref_t* reply_to = NULL;
     axis2_options_t *options = NULL;
-    axis2_char_t *client_home = NULL;
+    const axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
     axis2_om_node_t *payload = NULL;
     axis2_callback_t *callback = NULL;

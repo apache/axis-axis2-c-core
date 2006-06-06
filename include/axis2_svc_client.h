@@ -137,7 +137,7 @@ struct axis2_svc_client_ops
     engage_module)(
         struct axis2_svc_client *svc_client,
         const axis2_env_t *env,
-        axis2_char_t *module_name);
+        const axis2_char_t *module_name);
 
   /**
     * Dis-engages the named module 
@@ -150,7 +150,7 @@ struct axis2_svc_client_ops
     disengage_module)(
         struct axis2_svc_client *svc_client,
         const axis2_env_t *env,
-        axis2_char_t *module_name);
+        const axis2_char_t *module_name);
     
   /**
     * Adds an XML element as a header to be sent to server side.
@@ -444,7 +444,7 @@ struct axis2_svc_client
 AXIS2_EXTERN axis2_svc_client_t* AXIS2_CALL 
 axis2_svc_client_create(
     const axis2_env_t *env, 
-    axis2_char_t *client_home);
+    const axis2_char_t *client_home);
 
 /**
  * Creates a service client struct, for the given service and the configuration
@@ -461,7 +461,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     const axis2_env_t *env,
     axis2_conf_ctx_t *conf_ctx,
     axis2_svc_t *svc,
-    axis2_char_t *client_home);
+    const axis2_char_t *client_home);
    
 /************************** Start of function macros **************************/
 /** Gets the service consumed by service client */

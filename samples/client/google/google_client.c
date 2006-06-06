@@ -21,25 +21,27 @@
 #include <axis2_client.h>
 
 axis2_om_node_t *
-build_soap_body_content(const axis2_env_t *env, axis2_char_t *operation, axis2_char_t *google_key, 
-                        axis2_char_t *word_to_spell);
+build_soap_body_content(const axis2_env_t *env, 
+    const axis2_char_t *operation, 
+    const axis2_char_t *google_key, 
+    const axis2_char_t *word_to_spell);
 
 void print_invalid_om(const axis2_env_t *env, axis2_om_node_t *ret_node);
 
 int main(int argc, char** argv)
 {
     const axis2_env_t *env = NULL;
-    axis2_char_t *address = NULL;
+    const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
-    axis2_char_t *client_home = NULL;
+    const axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
     axis2_om_node_t *payload = NULL;
     axis2_om_node_t *ret_node = NULL;
     
-    axis2_char_t *google_key = NULL;
-    axis2_char_t *word_to_spell = NULL;
-    axis2_char_t *operation = NULL;
+    const axis2_char_t *google_key = NULL;
+    const axis2_char_t *word_to_spell = NULL;
+    const axis2_char_t *operation = NULL;
 
     operation = "doSpellingSuggestion";
     google_key = "00000000000000000000000000000000";
@@ -150,8 +152,10 @@ int main(int argc, char** argv)
 }
 
 axis2_om_node_t *
-build_soap_body_content(const axis2_env_t *env, axis2_char_t *operation, axis2_char_t *google_key, 
-                        axis2_char_t *word_to_spell)
+build_soap_body_content(const axis2_env_t *env, 
+    const axis2_char_t *operation, 
+    const axis2_char_t *google_key, 
+    const axis2_char_t *word_to_spell)
 {
     axis2_om_node_t *google_om_node = NULL;
     axis2_om_element_t* google_om_ele = NULL;

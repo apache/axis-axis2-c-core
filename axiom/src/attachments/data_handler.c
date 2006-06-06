@@ -60,7 +60,9 @@ axis2_data_handler_set_file_name(axis2_data_handler_t *data_handler, const axis2
 /************************** End of Function headers ************************/
 
 AXIS2_EXTERN axis2_data_handler_t * AXIS2_CALL
-axis2_data_handler_create (const axis2_env_t *env, axis2_char_t *file_name, axis2_char_t *mime_type)
+axis2_data_handler_create (const axis2_env_t *env, 
+    const axis2_char_t *file_name, 
+    const axis2_char_t *mime_type)
 {
     axis2_data_handler_impl_t *data_handler_impl = NULL;
     
