@@ -7,7 +7,7 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
    axis2_char_t *pathname = NULL;
     axis2_array_list_t *file_list = NULL;
     int size = 0;
-    axis2_char_t *expected = NULL;
+    const axis2_char_t *expected = NULL;
     axis2_char_t *actual = NULL;
     int i = 0;
     axis2_char_t *axis2c_home = NULL;
@@ -26,6 +26,8 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
     size = AXIS2_ARRAY_LIST_SIZE(file_list, env);
     for (i = 0; i < size; i++) 
     {
+        const axis2_char_t *name = NULL;
+        
         axis2_file_t *arch_file = NULL;
         arch_file = (axis2_file_t *) AXIS2_ARRAY_LIST_GET(file_list, env, i);
         if(!arch_file)
@@ -33,7 +35,8 @@ void Testaxis2_dir_handler_list_dir(CuTest *tc)
             printf("arch file is null\n");
             continue;
         }
-        if(0 == AXIS2_STRCMP(AXIS2_FILE_GET_NAME(arch_file, env), expected))
+        name = AXIS2_FILE_GET_NAME(arch_file, env);
+        if(0 == AXIS2_STRCMP(name, expected))
         {
             actual = AXIS2_FILE_GET_NAME(arch_file, env);
         }   

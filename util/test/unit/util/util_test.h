@@ -10,6 +10,8 @@
 #include "util_error_test.h"
 #include "util_dir_handler_test.h"
 #include "util_class_loader_test.h"
+#include "util_url_test.h"
+#include "util_string_test.h"
 
 CuSuite* axis2_utilGetSuite();
 

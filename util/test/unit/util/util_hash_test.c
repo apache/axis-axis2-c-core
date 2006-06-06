@@ -58,7 +58,7 @@ void Testaxis2_hash_while(CuTest *tc)
     void *v = NULL;
     const void *k = NULL;
 
-    char *key = NULL;
+    const char *key = NULL;
     char *key1 = "key1";
     char *key2 = "key2";
     char *key3 = "key3";
@@ -87,11 +87,13 @@ void Testaxis2_hash_while(CuTest *tc)
     index_i = axis2_hash_first (ht, environment);
     do 
     {
+        const char *key2 = "key2";
+
         axis2_hash_this (index_i, &k, NULL, &v);
         
         key = (char *)k;
         
-        if(0 == AXIS2_STRCMP(key, "key2"))
+        if(0 == AXIS2_STRCMP(key, key2))
         {
             actual = (a *) v;
             break;
