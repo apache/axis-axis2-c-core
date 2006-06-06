@@ -64,17 +64,19 @@ struct axis2_woden_documentation_element_ops
             const axis2_env_t *env);
     
     axis2_woden_obj_types_t (AXIS2_CALL *
-    type) (void *doc_el,
+    type) (
+            void *doc_el,
             const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_content) (void *doc_el,
-                        const axis2_env_t *env,
-                        void *doc_elem);
+            const axis2_env_t *env,
+            void *doc_elem);
 
     void *(AXIS2_CALL *
-    get_content) (void *doc_el,
-                        const axis2_env_t *env);
+    get_content) (
+            void *doc_el,
+            const axis2_env_t *env);
 
 };
 

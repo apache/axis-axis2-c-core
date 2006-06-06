@@ -85,6 +85,19 @@ struct axis2_woden_interface_fault_ops
             void *interface_fault,
             const axis2_env_t *env);
 
+    axis2_status_t (AXIS2_CALL *
+    set_element_declaration) (
+            void *interface_fault,
+            const axis2_env_t *env,
+            void *element_decl);
+
+    axis2_status_t (AXIS2_CALL *
+    set_types) (
+            void *interface_fault,
+            const axis2_env_t *env,
+            void *types);
+
+
 };
 
 union axis2_woden_interface_fault_base
@@ -107,6 +120,11 @@ axis2_woden_interface_fault_create(
 /***************************Woden C Internal Methods***************************/
 AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
 axis2_woden_interface_fault_to_interface_fault_element(
+        void *interface_fault,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_nested_element(
         void *interface_fault,
         const axis2_env_t *env);
 
@@ -151,6 +169,14 @@ axis2_woden_interface_fault_resolve_methods(
 #define AXIS2_WODEN_INTERFACE_FAULT_TO_ELEMENT(interface_fault, env) \
       (((axis2_woden_interface_fault_t *) interface_fault)->ops->\
          to_element(interface_fault, env))
+
+#define AXIS2_WODEN_INTERFACE_FAULT_SET_ELEMENT_DECLARATION(interface_fault, env, element_decl) \
+		(((axis2_woden_interface_fault_t *) interface_fault)->ops->\
+        set_element_declaration (interface_fault, env, element_decl))
+
+#define AXIS2_WODEN_INTERFACE_FAULT_SET_TYPES(interface_fault, env, types) \
+		(((axis2_woden_interface_fault_t *) interface_fault)->ops->\
+        set_types (interface_fault, env, types))
 
 /** @} */
 #ifdef __cplusplus

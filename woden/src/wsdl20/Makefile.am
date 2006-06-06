@@ -1,7 +1,7 @@
 SUBDIRS = enumeration xml extensions
-noinst_LTLIBRARIES = libaxis2_woden_wsdl20.la
+lib_LTLIBRARIES = libwoden_wsdl20.la
 
-libaxis2_woden_wsdl20_la_SOURCES = \
+libwoden_wsdl20_la_SOURCES = \
 							wsdl_element.c \
 							wsdl_obj.c \
 							documentable.c \

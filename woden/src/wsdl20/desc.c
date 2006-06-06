@@ -321,13 +321,13 @@ axis2_woden_desc_create_property_element(
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_woden_desc_set_extension_registry(
+axis2_woden_desc_set_ext_registry(
         void *desc,
         const axis2_env_t *env,
         void *ext_reg);
 
 void *AXIS2_CALL
-axis2_woden_desc_get_extension_registry(
+axis2_woden_desc_get_ext_registry(
         void *desc,
         const axis2_env_t *env);
 
@@ -726,12 +726,12 @@ create(const axis2_env_t *env)
     axis2_hash_set(desc_impl->methods, "create_property_element", 
             AXIS2_HASH_KEY_STRING, 
             axis2_woden_desc_create_property_element);
-    axis2_hash_set(desc_impl->methods, "set_extension_registry", 
+    axis2_hash_set(desc_impl->methods, "set_ext_registry", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_desc_set_extension_registry);
-    axis2_hash_set(desc_impl->methods, "get_extension_registry", 
+            axis2_woden_desc_set_ext_registry);
+    axis2_hash_set(desc_impl->methods, "get_ext_registry", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_desc_get_extension_registry);
+            axis2_woden_desc_get_ext_registry);
     axis2_hash_set(desc_impl->methods, "to_component", 
             AXIS2_HASH_KEY_STRING, 
             axis2_woden_desc_to_component);
@@ -1562,130 +1562,130 @@ void *AXIS2_CALL
 axis2_woden_desc_create_documentation_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_documentation(env);
+    return axis2_woden_documentation_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_import_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_import(env);
+    return axis2_woden_import_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_include_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_include(env);
+    return axis2_woden_include_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_types_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_types(env);
+    return axis2_woden_types_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_interface(env);
+    return axis2_woden_interface_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_fault_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_interface_fault(env);
+    return axis2_woden_interface_fault_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_op_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_interface_op(env);
+    return axis2_woden_interface_op_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_fault_ref_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_interface_fault_ref(env);
+    return axis2_woden_interface_fault_ref_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_interface_msg_ref_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_interface_msg_ref(env);
+    return axis2_woden_interface_msg_ref_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_binding(env);
+    return axis2_woden_binding_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_fault_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_binding_fault(env);
+    return axis2_woden_binding_fault_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_op_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_binding_op(env);
+    return axis2_woden_binding_op_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_fault_ref_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_binding_fault_ref(env);
+    return axis2_woden_binding_fault_ref_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_binding_msg_ref_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_binding_msg_ref(env);
+    return axis2_woden_binding_msg_ref_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_svc_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_svc(env);
+    return axis2_woden_svc_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_endpoint_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_endpoint(env);
+    return axis2_woden_endpoint_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_feature_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_feature(env);
+    return axis2_woden_feature_create(env);
 }
 
 void *AXIS2_CALL
 axis2_woden_desc_create_property_element(
         const axis2_env_t *env)
 {
-    return axis2_woden_property(env);
+    return axis2_woden_property_create(env);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_desc_set_extension_registry(
+axis2_woden_desc_set_ext_registry(
         void *desc,
         const axis2_env_t *env,
         void *ext_reg)
@@ -1708,7 +1708,7 @@ axis2_woden_desc_set_extension_registry(
 }
 
 void *AXIS2_CALL
-axis2_woden_desc_get_extension_registry(
+axis2_woden_desc_get_ext_registry(
         void *desc,
         const axis2_env_t *env)
 {

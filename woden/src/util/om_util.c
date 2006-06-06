@@ -18,6 +18,95 @@
 #include <axis2_om_element.h>
 #include <axis2_array_list.h>
 
+
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
+axis2_om_util_get_first_child_element_with_uri(
+        axis2_om_node_t *ele_node,
+        const axis2_env_t *env,
+        axis2_char_t *uri,
+        axis2_om_node_t **child)
+{
+    axis2_om_node_t *child_node = NULL;
+    
+    if(!ele_node || !uri)
+    {
+        AXIS2_ERROR_SET(env->error, 
+            AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    child_node = AXIS2_OM_NODE_GET_FIRST_CHILD(ele_node, env);
+    while(NULL != child_node)
+    {
+        if(AXIS2_OM_NODE_GET_NODE_TYPE(child_node, env) == AXIS2_OM_ELEMENT)
+        {
+            axis2_om_element_t *child_ele = NULL;
+            axis2_om_namespace_t *ns = NULL;
+            
+            child_ele = (axis2_om_element_t*)
+                AXIS2_OM_NODE_GET_DATA_ELEMENT(child_node, env);
+            ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(child_ele, env, child_node);
+            if(NULL != ns)
+            {
+                axis2_char_t *child_uri = NULL;
+                child_uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+                if(NULL != child_uri && AXIS2_STRCMP(child_uri, uri) == 0)
+                {
+                    (*child) = child_node;
+                    return child_ele;
+                }
+            }
+        }    
+        child_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(child_node, env);
+    }
+    return NULL;
+}        
+        
+        
+AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
+axis2_om_util_get_next_sibling_element_with_uri(
+        axis2_om_node_t *ele_node,
+        const axis2_env_t *env,
+        axis2_char_t *uri,
+        axis2_om_node_t **next_node)
+{
+    axis2_om_node_t *next_sib_node = NULL;
+    if(!ele_node || !uri)
+    {
+        AXIS2_ERROR_SET(env->error, 
+            AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    next_sib_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(ele_node, env);
+    while(NULL != next_sib_node)
+    {
+        if(AXIS2_OM_NODE_GET_NODE_TYPE(next_sib_node, env) == AXIS2_OM_ELEMENT)
+        {
+            axis2_om_element_t *sib_ele = NULL;
+            axis2_om_namespace_t *ns = NULL;
+            
+            sib_ele = (axis2_om_element_t*)
+                AXIS2_OM_NODE_GET_DATA_ELEMENT(next_sib_node, env);
+            ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(sib_ele, env, next_sib_node);
+            if(NULL != ns)
+            {
+                axis2_char_t *sib_uri = NULL;
+                sib_uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+                if(NULL != sib_uri && AXIS2_STRCMP(sib_uri, uri) == 0)
+                {
+                    (*next_node) = next_sib_node;
+                    return sib_ele;
+                }
+            }
+        }    
+        next_sib_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(next_sib_node, env);
+    }
+    return NULL;
+}        
+        
+        
+
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_first_child_element(axis2_om_element_t *ele,
                                       const axis2_env_t *env,
@@ -26,7 +115,8 @@ axis2_om_util_get_first_child_element(axis2_om_element_t *ele,
 {
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
-    AXIS2_PARAM_CHECK(env->error, *child_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, child_node, NULL);
+    
     return AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(ele, env, ele_node, child_node);
 }                                      
                                       
@@ -39,7 +129,8 @@ axis2_om_util_get_last_child_element(axis2_om_element_t *ele,
     axis2_om_node_t *last_node = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
-    AXIS2_PARAM_CHECK(env->error, *child_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, child_node, NULL);
+    
     last_node = AXIS2_OM_NODE_GET_LAST_CHILD(ele_node, env);
     while(NULL != last_node)
     {
@@ -92,7 +183,7 @@ axis2_om_util_get_first_child_element_with_localname(axis2_om_element_t *ele,
     axis2_om_element_t *om_ele  = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
-    AXIS2_PARAM_CHECK(env->error, *child_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
     
     child = AXIS2_OM_NODE_GET_FIRST_CHILD(ele_node, env);
@@ -155,7 +246,7 @@ axis2_om_util_get_last_child_element_with_localname(axis2_om_element_t *ele,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
-    AXIS2_PARAM_CHECK(env->error, *child_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     
     child = AXIS2_OM_NODE_GET_LAST_CHILD(ele_node, env);
     while(NULL != child)
@@ -185,7 +276,7 @@ axis2_om_util_get_last_child_element_with_localname(axis2_om_element_t *ele,
                                                                                          
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_next_siblng_element_with_localname(axis2_om_element_t *ele,
-                                             const axis2_env_t  *env,
+                                             axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_om_node_t **next_node)
@@ -193,6 +284,7 @@ axis2_om_util_get_next_siblng_element_with_localname(axis2_om_element_t *ele,
     axis2_om_node_t *next_sibling = NULL;
     axis2_om_element_t *om_ele    = NULL;
     axis2_char_t *ele_localname   = NULL;
+    
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
 
@@ -222,7 +314,7 @@ axis2_om_util_get_next_siblng_element_with_localname(axis2_om_element_t *ele,
                                              
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_first_child_element_with_uri_localname(axis2_om_element_t *ele,
-                                             const axis2_env_t  *env,
+                                             axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *uri,
@@ -237,38 +329,40 @@ axis2_om_util_get_first_child_element_with_uri_localname(axis2_om_element_t *ele
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
-    AXIS2_PARAM_CHECK(env->error, *child_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
-     AXIS2_PARAM_CHECK(env->error, uri, NULL);
+    AXIS2_PARAM_CHECK(env->error, uri, NULL);
      
     child = AXIS2_OM_NODE_GET_FIRST_CHILD(ele_node, env);
-    if(NULL != child)
+    if(!child)
     {
-        if(AXIS2_OM_NODE_GET_NODE_TYPE(ele_node, env) == AXIS2_OM_ELEMENT)
-        {
-            om_ele = (axis2_om_element_t *)
-                        AXIS2_OM_NODE_GET_DATA_ELEMENT(child , env);
-            if(NULL != om_ele)
-            {
-                child_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env);
-                ns              = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env, child);
-                if(NULL != ns)
-                    ns_uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
-                    
-                if((NULL != child_localname) && 
-                    (AXIS2_STRCMP(child_localname, localname) == 0) && (NULL != ns_uri) 
-                     && (AXIS2_STRCMP(ns_uri, uri) == 0))
-                {
-                    *child_node = child;
-                    return om_ele;
-                }
-            }                        
-        }
-        om_ele = NULL;
-        child_localname = NULL;
-        ns = NULL;
-        ns_uri = NULL;
+        return NULL;
+        
     }
+    if(AXIS2_OM_NODE_GET_NODE_TYPE(ele_node, env) == AXIS2_OM_ELEMENT)
+    {
+        om_ele = (axis2_om_element_t *)
+                    AXIS2_OM_NODE_GET_DATA_ELEMENT(child , env);
+        if(NULL != om_ele)
+        {
+            child_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env);
+            ns              = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env, child);
+            if(NULL != ns)
+                ns_uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+                
+            if((NULL != child_localname) && 
+                (AXIS2_STRCMP(child_localname, localname) == 0) && (NULL != ns_uri) 
+                    && (AXIS2_STRCMP(ns_uri, uri) == 0))
+            {
+                *child_node = child;
+                return om_ele;
+            }
+        }                        
+    }
+    om_ele = NULL;
+    child_localname = NULL;
+    ns = NULL;
+    ns_uri = NULL;
     
     next_sibling = AXIS2_OM_NODE_GET_NEXT_SIBLING(child, env);
     while(NULL != next_sibling)
@@ -303,7 +397,7 @@ axis2_om_util_get_first_child_element_with_uri_localname(axis2_om_element_t *ele
 }                                                                                                                                                             
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_last_child_element_with_uri_localname(axis2_om_element_t *ele,
-                                             const axis2_env_t  *env,
+                                             axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *uri,
@@ -318,7 +412,7 @@ axis2_om_util_get_last_child_element_with_uri_localname(axis2_om_element_t *ele,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
-    AXIS2_PARAM_CHECK(env->error, *child_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     AXIS2_PARAM_CHECK(env->error, uri, NULL);        
     
     child = AXIS2_OM_NODE_GET_LAST_CHILD(ele_node, env);
@@ -354,7 +448,7 @@ axis2_om_util_get_last_child_element_with_uri_localname(axis2_om_element_t *ele,
                                              
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_next_sibling_element_with_uri_localname(axis2_om_element_t *ele,
-                                             const axis2_env_t  *env,
+                                             axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *uri,
@@ -401,7 +495,7 @@ axis2_om_util_get_next_sibling_element_with_uri_localname(axis2_om_element_t *el
                                              
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_first_child_element_with_localnames(axis2_om_element_t *ele,
-                                             const axis2_env_t  *env,
+                                             axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_array_list_t *names,
                                              axis2_om_node_t **child_node)
@@ -415,7 +509,7 @@ axis2_om_util_get_first_child_element_with_localnames(axis2_om_element_t *ele,
     int i    = 0;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
-    AXIS2_PARAM_CHECK(env->error, *child_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     AXIS2_PARAM_CHECK(env->error, names, NULL);
     
     child = AXIS2_OM_NODE_GET_FIRST_CHILD(ele_node, env);
@@ -485,7 +579,7 @@ axis2_om_util_get_first_child_element_with_localnames(axis2_om_element_t *ele,
                                              
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_last_child_element_with_localnames(axis2_om_element_t *ele,
-                                             const axis2_env_t  *env,
+                                             axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_array_list_t *names,
                                              axis2_om_node_t **child_node)
@@ -500,7 +594,7 @@ axis2_om_util_get_last_child_element_with_localnames(axis2_om_element_t *ele,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, names, NULL);
-    AXIS2_PARAM_CHECK(env->error, *child_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     
     child = AXIS2_OM_NODE_GET_LAST_CHILD(ele_node, env);
     while(NULL != child)
@@ -535,7 +629,7 @@ axis2_om_util_get_last_child_element_with_localnames(axis2_om_element_t *ele,
                                                                                          
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_next_siblng_element_with_localnames(axis2_om_element_t *ele,
-                                             const axis2_env_t  *env,
+                                             axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_array_list_t *names,
                                              axis2_om_node_t **next_node)
@@ -549,7 +643,7 @@ axis2_om_util_get_next_siblng_element_with_localnames(axis2_om_element_t *ele,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, names, NULL);
-    AXIS2_PARAM_CHECK(env->error, *next_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, next_node, NULL);
     
 
     next_sibling = AXIS2_OM_NODE_GET_NEXT_SIBLING(ele_node, env);
@@ -585,7 +679,7 @@ axis2_om_util_get_next_siblng_element_with_localnames(axis2_om_element_t *ele,
                                              
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_first_child_element_with_localname_attr(axis2_om_element_t *ele,
-                                             const axis2_env_t  *env,
+                                             axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *attr_name,
@@ -604,7 +698,7 @@ axis2_om_util_get_first_child_element_with_localname_attr(axis2_om_element_t *el
    
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
-    AXIS2_PARAM_CHECK(env->error, *child_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
     AXIS2_PARAM_CHECK(env->error, attr_name, NULL);
     AXIS2_PARAM_CHECK(env->error, attr_value, NULL);
@@ -717,7 +811,7 @@ axis2_om_util_get_first_child_element_with_localname_attr(axis2_om_element_t *el
                                              
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_last_child_element_with_localname_attr(axis2_om_element_t *ele,
-                                             const axis2_env_t  *env,
+                                             axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *attr_name,
@@ -736,7 +830,7 @@ axis2_om_util_get_last_child_element_with_localname_attr(axis2_om_element_t *ele
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
-    AXIS2_PARAM_CHECK(env->error, *child_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, child_node, NULL);
     
     child = AXIS2_OM_NODE_GET_LAST_CHILD(ele_node, env);
     while(NULL != child)
@@ -796,7 +890,7 @@ axis2_om_util_get_last_child_element_with_localname_attr(axis2_om_element_t *ele
                                                                                          
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_next_siblng_element_with_localname_attr(axis2_om_element_t *ele,
-                                             const axis2_env_t  *env,
+                                             axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *attr_name,
@@ -924,6 +1018,24 @@ axis2_om_util_get_node_namespace_uri(axis2_om_node_t *om_node,
         om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env, om_node);
         if(NULL != om_ns)
             return AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);                    
+    }        
+    return NULL;
+} 
+
+AXIS2_EXTERN axis2_om_child_element_iterator_t* AXIS2_CALL
+axis2_om_util_get_child_elements(axis2_om_element_t *om_ele, 
+                                 const axis2_env_t *env,
+                                 axis2_om_node_t *om_node)
+{
+    axis2_om_element_t *first_ele = NULL;
+    axis2_om_node_t *first_node   = NULL;
+    AXIS2_PARAM_CHECK(env->error, om_node, NULL);
+    AXIS2_PARAM_CHECK(env->error, om_ele, NULL);
+    first_ele = 
+        AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(om_ele, env, om_node, &first_node);
+    if(NULL != first_ele)
+    {
+        return axis2_om_child_element_iterator_create(env, first_node);
     }        
     return NULL;
 }

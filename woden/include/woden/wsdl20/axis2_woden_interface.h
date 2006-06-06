@@ -138,7 +138,22 @@ axis2_woden_interface_to_documentable_element(
         const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_woden_interface_t * AXIS2_CALL
+axis2_woden_interface_to_documentable(
+        void *interface,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_t * AXIS2_CALL
 axis2_woden_interface_to_configurable(
+        void *interface,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_t * AXIS2_CALL
+axis2_woden_interface_to_attr_extensible(
+        void *interface,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_t * AXIS2_CALL
+axis2_woden_interface_to_element_extensible(
         void *interface,
         const axis2_env_t *env);
 

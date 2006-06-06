@@ -309,13 +309,13 @@ struct axis2_woden_desc_element_ops
             const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
-    set_extension_registry) (
+    set_ext_registry) (
             void *desc_ele,
             const axis2_env_t *env,
             void *ext_reg);
     
     void *(AXIS2_CALL *
-    get_extension_registry) (
+    get_ext_registry) (
             void *desc_ele,
             const axis2_env_t *env);
 
@@ -504,13 +504,13 @@ axis2_woden_desc_element_resolve_methods(
       (((axis2_woden_desc_element_t *) desc_el)->ops->\
         get_svc_elements (desc_el, env))
 
-#define AXIS2_WODEN_DESC_ELEMENT_SET_EXTENSION_REGISTRY(desc_el, env, ext_reg) \
+#define AXIS2_WODEN_DESC_ELEMENT_SET_EXT_REGISTRY(desc_el, env, ext_reg) \
       (((axis2_woden_desc_element_t *) desc_el)->ops->\
-        set_extension_registry (desc_el, env, ext_reg))
+        set_ext_registry (desc_el, env, ext_reg))
 
-#define AXIS2_WODEN_DESC_ELEMENT_GET_EXTENSION_REGISTRY(desc_el, env) \
+#define AXIS2_WODEN_DESC_ELEMENT_GET_EXT_REGISTRY(desc_el, env) \
       (((axis2_woden_desc_element_t *) desc_el)->ops->\
-        get_extension_registry (desc_el, env))
+        get_ext_registry (desc_el, env))
 
 #define AXIS2_WODEN_DESC_ELEMENT_TO_COMPONENT(desc_el, env) \
       (((axis2_woden_desc_element_t *) desc_el)->ops->\

@@ -51,11 +51,6 @@ struct axis2_woden_imported_schema_ops
             void *schema,
             const axis2_env_t *env);
     
-    axis2_status_t (AXIS2_CALL *
-    to_imported_schema_free) (
-            void *schema,
-            const axis2_env_t *env);
-
     axis2_woden_obj_types_t (AXIS2_CALL *
     type) (
             void *schema,
@@ -107,6 +102,9 @@ axis2_woden_imported_schema_resolve_methods(
 
 #define AXIS2_WODEN_IMPORTED_SCHEMA_FREE(schema, env) \
       (((axis2_woden_imported_schema_t *) schema)->ops->free(schema, env))
+
+#define AXIS2_WODEN_IMPORTED_SCHEMA_TYPE(schema, env) \
+		(((axis2_woden_imported_schema_t *) schema)->ops->type(schema, env))
 
 #define AXIS2_WODEN_IMPORTED_SCHEMA_GET_BASE_IMPL(schema, env) \
       (((axis2_woden_imported_schema_t *) schema)->ops->get_base_impl(schema, \

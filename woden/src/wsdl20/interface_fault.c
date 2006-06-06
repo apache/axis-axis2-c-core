@@ -210,6 +210,32 @@ axis2_woden_interface_fault_to_configurable(
     return interface_fault;
 }
 
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_nested_element(
+        void *interface_fault,
+        const axis2_env_t *env)
+{
+    axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_fault)
+    {
+        interface_fault_impl = (axis2_woden_interface_fault_impl_t *) create(env);
+    }
+    else
+        interface_fault_impl = (axis2_woden_interface_fault_impl_t *) interface_fault;
+
+    axis2_woden_interface_fault_free_ops(interface_fault, env);
+
+    interface_fault_impl->interface_fault.base.interface_fault_element.base.nested_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_nested_element_ops_t));
+    axis2_woden_interface_fault_element_resolve_methods(&(interface_fault_impl->interface_fault.base.
+            interface_fault_element.base.nested_element), env, interface_fault_impl->methods);
+    return interface_fault;
+}
+
+
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_interface_fault_t *
 create(const axis2_env_t *env)
@@ -232,6 +258,8 @@ create(const axis2_env_t *env)
     interface_fault_impl->interface_fault.base.nested_configurable.ops = NULL;
     interface_fault_impl->interface_fault.base.nested_configurable.base.configurable.ops = 
             NULL;
+    interface_fault_impl->interface_fault.base.interface_fault_element.base.
+        nested_element.ops = NULL;
     
     interface_fault_impl->interface_fault.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_interface_fault_ops_t));
@@ -246,6 +274,10 @@ create(const axis2_env_t *env)
         axis2_woden_interface_fault_get_element_declaration;
     interface_fault_impl->interface_fault.ops->to_element = 
         axis2_woden_interface_fault_to_element;
+    interface_fault_impl->interface_fault.ops->set_element_declaration = 
+        axis2_woden_interface_fault_set_element_declaration;
+    interface_fault_impl->interface_fault.ops->set_types = 
+        axis2_woden_interface_fault_set_types;
  
     interface_fault_impl->methods = axis2_hash_make(env);
     if(!interface_fault_impl->methods) 
@@ -347,12 +379,23 @@ axis2_woden_interface_fault_free_ops(
             NULL;
     }
     
-    if(interface_fault_impl->interface_fault.base.nested_configurable.base.configurable.ops)
+    if(interface_fault_impl->interface_fault.base.nested_configurable.base.
+            configurable.ops)
     {
         AXIS2_FREE(env->allocator, interface_fault_impl->interface_fault.base.
                 nested_configurable.base.configurable.ops);
-        interface_fault_impl->interface_fault.base.nested_configurable.base.configurable.ops = 
+        interface_fault_impl->interface_fault.base.nested_configurable.base.
+            configurable.ops = 
             NULL;
+    }
+
+    if(interface_fault_impl->interface_fault.base.interface_fault_element.base.
+            nested_element.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_fault_impl->interface_fault.base.
+                interface_fault_element.base.nested_element.ops);
+        interface_fault_impl->interface_fault.base.interface_fault_element.base.
+            nested_element.ops = NULL;
     }
     
     return AXIS2_SUCCESS;
@@ -499,6 +542,18 @@ axis2_woden_interface_fault_resolve_methods(
     if(!interface_fault->ops->to_element && interface_fault_impl_l)
             interface_fault->ops->to_element = 
             interface_fault_impl_l->interface_fault.ops->to_element;
+    
+    interface_fault->ops->set_element_declaration = axis2_hash_get(methods, 
+            "set_element_declaration", AXIS2_HASH_KEY_STRING);
+    if(!interface_fault->ops->set_element_declaration && interface_fault_impl_l)
+            interface_fault->ops->set_element_declaration = 
+            interface_fault_impl_l->interface_fault.ops->set_element_declaration;
+    
+    interface_fault->ops->set_types = axis2_hash_get(methods, 
+            "set_types", AXIS2_HASH_KEY_STRING);
+    if(!interface_fault->ops->set_types && interface_fault_impl_l)
+            interface_fault->ops->set_types = 
+            interface_fault_impl_l->interface_fault.ops->set_types;
    
     return AXIS2_SUCCESS;
 }

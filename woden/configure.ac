@@ -126,7 +126,9 @@ AC_CONFIG_FILES([Makefile \
     src/wsdl20/xml/Makefile \
     src/wsdl20/enumeration/Makefile \
     src/wsdl20/extensions/Makefile \
-    src/wsdl20/extensions/soap/Makefile
+    src/wsdl20/extensions/soap/Makefile \
+    src/builder/Makefile \
+    test/Makefile
     ])
     
 AC_OUTPUT

@@ -106,10 +106,10 @@ axis2_woden_desc_element_resolve_methods(
             "add_svc_element", AXIS2_HASH_KEY_STRING);
     desc_element->ops->get_svc_elements = axis2_hash_get(methods,
             "get_svc_elements", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->set_extension_registry = axis2_hash_get(methods,
-            "set_extension_registry", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->get_extension_registry = axis2_hash_get(methods,
-            "get_extension_registry", AXIS2_HASH_KEY_STRING);
+    desc_element->ops->set_ext_registry = axis2_hash_get(methods,
+            "set_ext_registry", AXIS2_HASH_KEY_STRING);
+    desc_element->ops->get_ext_registry = axis2_hash_get(methods,
+            "get_ext_registry", AXIS2_HASH_KEY_STRING);
     desc_element->ops->to_component = axis2_hash_get(methods,
             "to_component", AXIS2_HASH_KEY_STRING);
 
