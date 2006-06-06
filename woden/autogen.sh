@@ -1,14 +1,43 @@
 #!/bin/bash
-  
-for i in libtoolize aclocal autoconf autoheader
-do
-    echo -n "Running $i..."
-    $i || exit 1
-    echo 'done.'
-done
-  
-echo -n 'Running automake...'
-automake --add-missing
-echo 'done.'
-exit 0
 
+echo -n 'Running libtoolize...'
+if libtoolize --force > /dev/null 2>&1; then
+	echo 'done.'
+else
+	echo 'failed.'
+	exit 1
+fi
+
+echo -n 'Running aclocal...'
+if aclocal > /dev/null 2>&1; then
+	echo 'done.'
+else
+	echo 'failed.'
+	exit 1
+fi
+
+echo -n 'Running autoheader...'
+if autoheader > /dev/null 2>&1; then
+	echo 'done.'
+else
+	echo 'failed.'
+	exit 1
+fi
+
+echo -n 'Running autoconf...'
+if autoconf > /dev/null 2>&1; then
+	echo 'done.'
+else
+	echo 'failed.'
+	exit 1
+fi
+
+echo -n 'Running automake...'
+if automake --add-missing > /dev/null 2>&1; then
+	echo 'done.'
+else
+	echo 'failed.'
+	exit 1
+fi
+
+echo 'done'
