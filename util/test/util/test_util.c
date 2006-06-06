@@ -155,11 +155,11 @@ int test_file_diff(const axis2_env_t *env)
 
 char* test_funct_for_test_env_null(const axis2_env_t *env)
 {
-   if(NULL == *env)
+   if(NULL == env)
    {
       axis2_allocator_t *allocator = axis2_allocator_init (NULL);
       axis2_error_t *error = axis2_error_create (allocator);
-        *env = axis2_env_create_with_error(allocator, error);
+        env = axis2_env_create_with_error(allocator, error);
       AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
       AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);   
       return AXIS2_STRDUP("env is null!!!", env);
