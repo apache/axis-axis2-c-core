@@ -259,7 +259,7 @@ int aar_extract(axis2_char_t *d_name)
       strncpy(filename_try, zipfilename,MAXFILENAME-1);
       filename_try[ MAXFILENAME ] = '\0';
       
-      fill_win32_filefunc(&ffunc);
+      axis2_fill_win32_filefunc(&ffunc);
       uf = AXIS2_UNZOPEN2(zipfilename,ffunc);
       if (uf==NULL)
       {
