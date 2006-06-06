@@ -294,61 +294,10 @@ axis2_xml_schema_group_base_get_base_impl(
     return group_base_impl->particle;
 }
 
-/*
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_group_base_resolve_methods(
-       axis2_xml_schema_group_base_t *group_base,
-       const axis2_env_t *env,
-       axis2_xml_schema_group_base_t *group_base_impl,
-       axis2_hash_t *methods)
-{
-    axis2_xml_schema_group_base_impl_t *group_base_impl_l = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, group_base_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
-    
-    group_base_impl_l = (axis2_xml_schema_group_base_impl_t *) group_base_impl;
-    
-    group_base->ops = AXIS2_MALLOC(env->allocator, 
-            sizeof(axis2_xml_schema_group_base_ops_t));
-    if(!group_base->ops)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return AXIS2_FAILURE;
-    }
-            
-    group_base->ops->free = axis2_hash_get(methods, "free", 
-            AXIS2_HASH_KEY_STRING);
-    group_base->ops->super_objs = axis2_hash_get(methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING);
-    group_base->ops->type = axis2_hash_get(methods, "type", 
-            AXIS2_HASH_KEY_STRING);
-    
-    group_base->ops->get_items = axis2_hash_get(methods, "get_items", 
-            AXIS2_HASH_KEY_STRING);
-    if(!group_base->ops->get_items)
-            group_base->ops->get_items = 
-            group_base_impl_l->group_base.ops->get_items;
-    
-    return axis2_xml_schema_particle_resolve_methods(&(group_base->base), 
-            env, group_base_impl_l->particle, methods);
-}
-*/
-
-axis2_xml_schema_obj_collection_t *AXIS2_CALL
+axis2_xml_schema_obj_collection_t* AXIS2_CALL
 axis2_xml_schema_group_base_get_items(void *group_base,
                                         const axis2_env_t *env)
 {
-    /*
-    axis2_xml_schema_group_base_impl_t *group_base_impl = NULL;
-    axis2_hash_t *super = NULL;
-    
-    AXIS2_ENV_CHECK(env, NULL);
-    super = AXIS2_XML_SCHEMA_GROUP_BASE_SUPER_OBJS(group_base, env); 
-    group_base_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_XML_SCHEMA_GROUP_BASE", AXIS2_HASH_KEY_STRING));
-    */
     return AXIS2_INTF_TO_IMPL(group_base)->items;
 }
 
@@ -360,4 +309,5 @@ axis2_xml_schema_group_base_to_string(void *group_base,
 {
     /** TODO */
     return AXIS2_SUCCESS;
-}                                      
+}
+

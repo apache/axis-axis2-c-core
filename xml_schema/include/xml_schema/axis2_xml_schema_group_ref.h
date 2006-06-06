@@ -46,13 +46,9 @@ extern "C"
 
 struct axis2_xml_schema_group_ref_ops
 {
-   /** 
-     * Deallocate memory
-     * @return status code
-     */
     axis2_status_t (AXIS2_CALL *
     free) (void *group_ref,
-            const axis2_env_t *env);
+           const axis2_env_t *env);
 
     axis2_hash_t *(AXIS2_CALL *
     super_objs) (
@@ -77,9 +73,9 @@ struct axis2_xml_schema_group_ref_ops
                     const axis2_env_t *env,
                     axis2_qname_t *ref_qname);
     
-    struct axis2_xml_schema_group_base *(AXIS2_CALL *
+    void *(AXIS2_CALL *
     get_particle)(void *group_ref,
-                    const axis2_env_t *env);
+                  const axis2_env_t *env);
                     
     axis2_status_t (AXIS2_CALL *
     set_particle)(void *group_ref,
@@ -101,17 +97,6 @@ struct axis2_xml_schema_group_ref
 AXIS2_EXTERN axis2_xml_schema_group_ref_t * AXIS2_CALL
 axis2_xml_schema_group_ref_create(const axis2_env_t *env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_group_ref_resolve_methods(
-                                axis2_xml_schema_group_ref_t *group_ref,
-                                const axis2_env_t *env,
-                                axis2_xml_schema_group_ref_t *group_ref_impl,
-                                axis2_hash_t *methods);
- */
- 
 /******************* Macros ******************************************************/ 
 #define AXIS2_XML_SCHEMA_GROUP_REF_FREE(group_ref, env) \
       (((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
@@ -142,7 +127,9 @@ axis2_xml_schema_group_ref_resolve_methods(
 #define AXIS2_XML_SCHEMA_GROUP_REF_SET_PARTICLE(group_ref, env, particle) \
       (((axis2_xml_schema_group_ref_t *) group_ref)->ops->\
             set_particle(group_ref, env, particle))
+
 /*************************** end macros ****************************************/
+
 /** @} */
 #ifdef __cplusplus
 }

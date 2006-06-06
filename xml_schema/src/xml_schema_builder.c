@@ -231,14 +231,14 @@ handle_element(
         axis2_om_node_t *ele_node,
         axis2_om_node_t *schema_node,
         axis2_bool_t is_global);                                            
-
+/*
 static axis2_status_t
 populate_element_namespaces(
         axis2_xml_schema_builder_t *builder,
         const axis2_env_t *env,
         axis2_om_node_t *ele_node,
         axis2_hash_t* ele_to_ns_map);
-
+*/
 static axis2_xml_schema_identity_constraint_t*
 handle_constraint(
         axis2_xml_schema_builder_t *builder,
@@ -473,8 +473,6 @@ handle_xml_schema_element(
     axis2_array_list_t *schemas        = NULL;
     axis2_hash_t *namespaces     = NULL;
     axis2_char_t *target_ns = NULL;
-    
-    axis2_char_t *system_id = NULL;
     
     /** element form default */
     void *ele_form = NULL;   
@@ -1313,8 +1311,6 @@ handle_simple_type(
             "union", AXIS2_XML_SCHEMA_NS, &union_node)))
     {
         void *sch_union = NULL;
-        
-        axis2_array_list_t *v = NULL;
         
         axis2_char_t *attr_value = NULL;
         
@@ -3456,7 +3452,7 @@ handle_element(
     AXIS2_XML_SCHEMA_PARTICLE_SET_MIN_OCCURS(sch_ele, env, min_occurs);
     return sch_ele;    
 }                                            
-
+/*
 static axis2_status_t
 populate_element_namespaces(
         axis2_xml_schema_builder_t *builder,
@@ -3497,7 +3493,7 @@ populate_element_namespaces(
     }
     return AXIS2_SUCCESS;
 }
-
+*/
 static axis2_xml_schema_identity_constraint_t*
 handle_constraint(
         axis2_xml_schema_builder_t *builder,
@@ -4065,7 +4061,6 @@ resolve_xml_schema_with_uri(
     axis2_xml_reader_t *xml_reader = NULL;
     axis2_om_document_t *om_doc = NULL;
     axis2_om_stax_builder_t *om_builder = NULL;
-    axis2_xml_schema_collection_t *collection = NULL;
     axis2_char_t *filename = NULL;
     axis2_hash_t *sysid2schemas = NULL;
     axis2_xml_schema_t *schema = NULL;        

@@ -200,12 +200,12 @@ axis2_xml_schema_complex_type_to_string(
 /************************** end ***********************************************/                                
 
 AXIS2_EXTERN axis2_xml_schema_complex_type_t * AXIS2_CALL
-axis2_xml_schema_complex_type_create(const axis2_env_t *env,
-                                    axis2_xml_schema_t *schema)
+axis2_xml_schema_complex_type_create(
+        const axis2_env_t *env,
+        axis2_xml_schema_t *schema)
 {
     axis2_xml_schema_complex_type_impl_t *complex_type_impl = NULL;
     axis2_xml_schema_annotated_t *annotated = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
 
     complex_type_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_complex_type_impl_t));
@@ -393,7 +393,6 @@ axis2_xml_schema_complex_type_create(const axis2_env_t *env,
     axis2_xml_schema_type_resolve_methods(&(complex_type_impl->complex_type.base), env,
         complex_type_impl->schema_type, complex_type_impl->methods);
             
-        
     return &(complex_type_impl->complex_type);
 }
 

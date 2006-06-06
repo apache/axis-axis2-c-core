@@ -685,4 +685,5 @@ axis2_xml_schema_attribute_to_string(void *attr,
 {
     /** TODO */
     return NULL;
-}                                         
+}
+
