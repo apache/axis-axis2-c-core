@@ -1038,4 +1038,5 @@ axis2_om_util_get_child_elements(axis2_om_element_t *om_ele,
         return axis2_om_child_element_iterator_create(env, first_node);
     }        
     return NULL;
-}                                                                                                             
+}
+

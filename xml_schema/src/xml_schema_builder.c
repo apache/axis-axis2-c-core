@@ -1071,9 +1071,6 @@ handle_simple_type(
     axis2_om_element_t *union_ele = NULL;
     axis2_om_node_t *union_node = NULL;
     
-    axis2_om_element_t *rest_ele = NULL;
-    axis2_om_node_t *rest_node = NULL;
-    
     axis2_om_element_t *list_ele = NULL;
     axis2_om_node_t    *list_node = NULL;
     
@@ -1237,8 +1234,6 @@ handle_simple_type(
         void *list = NULL;
         
         axis2_om_element_t *inline_list_ele = NULL;
-        axis2_om_node_t *inline_list_node   = NULL;
-        
         axis2_om_element_t *list_ann_ele = NULL;
         axis2_om_node_t *list_ann_node   = NULL;
         
@@ -1501,7 +1496,6 @@ handle_complex_type(
         else if(AXIS2_STRCMP(localname, "group") == 0)
         {
             void *grp = NULL;
-            void *cmp_type_particle = NULL;
             void *grp_particle = NULL;
             grp = handle_group(builder, env, node1, schema_node);
             grp_particle = AXIS2_XML_SCHEMA_GROUP_GET_PARTICLE(grp, env);
@@ -2291,8 +2285,6 @@ handle_sequence(
         axis2_om_node_t *schema_node)
  {
     void *sequence = NULL;
-    axis2_om_element_t *seq_ele = NULL;
-    
     axis2_om_element_t *ele1 = NULL;
     axis2_om_node_t    *node1 = NULL;
     axis2_xml_schema_obj_collection_t *items = NULL;
@@ -2506,9 +2498,7 @@ handle_all(
     
     axis2_om_element_t *ele1 = NULL;
     axis2_om_node_t *node1   = NULL;
-    
-    axis2_om_node_t *all_ele = NULL;
-    
+
     all = axis2_xml_schema_all_create(env);
     
     ele1 = axis2_om_util_get_first_child_element_with_uri(all_node, env,
@@ -2899,8 +2889,6 @@ handle_attribute(
         {
             axis2_hash_t *ht_ns = NULL;
             axis2_om_namespace_t *ns = NULL;
-            axis2_char_t *uri        = NULL;
-            
             ht_ns = AXIS2_OM_ELEMENT_GET_NAMESPACES(attr_ele, env);
             prefix = AXIS2_ARRAY_LIST_GET(args, env, 0);
             if(NULL != ht_ns)
@@ -3214,8 +3202,6 @@ handle_element(
         {
             axis2_hash_t *ht_ns = NULL;
             axis2_om_namespace_t *ns = NULL;
-            axis2_char_t *uri        = NULL;
-            
             ht_ns = AXIS2_OM_ELEMENT_GET_NAMESPACES(om_ele, env);
             prefix = AXIS2_ARRAY_LIST_GET(args, env, 0);
             if(NULL != ht_ns)
@@ -3359,8 +3345,8 @@ handle_element(
             {
                 axis2_char_t *result = NULL;
                             
-                args = AXIS2_ARRAY_LIST_GET(args, env, 0);                        
-                result = axis2_hash_get(ht_ns, args, AXIS2_HASH_KEY_STRING);
+                args0 = AXIS2_ARRAY_LIST_GET(args, env, 0);                        
+                result = axis2_hash_get(ht_ns, args0, AXIS2_HASH_KEY_STRING);
                 if(!result)
                 {
                     /**TODO set error */
@@ -3611,7 +3597,6 @@ handle_constraint(
         else if(AXIS2_STRCMP(localname, "field") == 0)
         {
             void *field_xpath = NULL;
-            void *annotation = NULL;
             axis2_om_element_t *ann_ele = NULL;
             axis2_om_node_t    *ann_node = NULL;
 
@@ -3644,8 +3629,6 @@ handle_constraint(
             void *constraint_annotation = handle_annotation_with_element(builder, env, node1);
             AXIS2_XML_SCHEMA_ANNOTATED_SET_ANNOTATION(constraint, env, constraint_annotation);
         }
-        
-        
         ele1 = axis2_om_util_get_next_sibling_element_with_uri(node1, env,
                 AXIS2_XML_SCHEMA_NS, &node1); 
     }
@@ -3987,7 +3970,7 @@ get_enum_string(
         axis2_char_t *atr_val = NULL;
         atr_val = AXIS2_STRDUP(attr_value, env);
         
-        return AXIS2_STRTRIM(atr_val, NULL);
+        return (axis2_char_t*)AXIS2_STRTRIM(atr_val, NULL);
     }        
     return AXIS2_XML_SCHEMA_CONST_NONE;
 }
@@ -4062,8 +4045,8 @@ resolve_xml_schema_with_uri(
     axis2_om_document_t *om_doc = NULL;
     axis2_om_stax_builder_t *om_builder = NULL;
     axis2_char_t *filename = NULL;
-    axis2_hash_t *sysid2schemas = NULL;
-    axis2_xml_schema_t *schema = NULL;        
+/*  axis2_hash_t *sysid2schemas = NULL; 
+    axis2_xml_schema_t *schema = NULL;  */      
         
     axis2_xml_schema_builder_impl_t *sch_builder_impl = NULL;
     sch_builder_impl = AXIS2_INTF_TO_IMPL(builder);
@@ -4095,6 +4078,4 @@ resolve_xml_schema_with_uri(
     AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
     return AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(
         sch_builder_impl->collection , env, om_doc, base_uri);        
-}            
-
-        
+}

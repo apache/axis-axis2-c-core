@@ -22,8 +22,7 @@ typedef struct axis2_xml_schema_any_attribute_impl
                 axis2_xml_schema_any_attribute_impl_t;
 
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
+ *   @breaf  axis2_xml_schema_any_attribute_impl
  */ 
 struct axis2_xml_schema_any_attribute_impl
 {
@@ -88,7 +87,6 @@ AXIS2_EXTERN axis2_xml_schema_any_attribute_t * AXIS2_CALL
 axis2_xml_schema_any_attribute_create(const axis2_env_t *env)
 {
     axis2_xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
     
     any_attr_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(axis2_xml_schema_any_attribute_impl_t));
@@ -192,7 +190,7 @@ axis2_xml_schema_any_attribute_create(const axis2_env_t *env)
             AXIS2_HASH_KEY_STRING, 
             AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(any_attr_impl->annotated, env));
                             
-    status = axis2_xml_schema_annotated_resolve_methods(
+    axis2_xml_schema_annotated_resolve_methods(
             &(any_attr_impl->any_attr.base), env, any_attr_impl->annotated, 
             any_attr_impl->methods); 
     return &(any_attr_impl->any_attr);
@@ -335,4 +333,5 @@ axis2_xml_schema_any_attribute_super_objs(void *any_attr,
                                         const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(any_attr)->ht_super;
-}                                        
+}
+

@@ -69,7 +69,6 @@ get_url(const axis2_env_t *env,
 {
     axis2_char_t *modified_path = NULL;
     axis2_char_t *final_path = NULL;
-    int length = 0; 
        
     if(NULL != path)
     {

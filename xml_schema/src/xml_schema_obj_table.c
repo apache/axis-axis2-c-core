@@ -246,7 +246,7 @@ axis2_xml_schema_obj_table_get_names(axis2_xml_schema_obj_table_t *obj_table,
              hi = axis2_hash_next ( env, hi))
     {
         void *val = NULL;
-        axis2_hash_this (hi, &val, NULL, NULL);
+        axis2_hash_this (hi, NULL, NULL, &val);
         AXIS2_ARRAY_LIST_ADD(obj_table_impl->names, env, val);
         val = NULL;
     }

@@ -677,4 +677,5 @@ axis2_xml_schema_type_super_objs(void *type,
                                 const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(type)->ht_super;
-}                                
+}
+

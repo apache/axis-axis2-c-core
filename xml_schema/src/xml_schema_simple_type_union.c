@@ -21,8 +21,8 @@ typedef struct axis2_xml_schema_simple_type_union_impl
                     axis2_xml_schema_simple_type_union_impl_t;
 
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
+ * @brief axis2_xml_schema_simple_type_union_impl
+ *   
  */ 
 struct axis2_xml_schema_simple_type_union_impl
 {
@@ -401,4 +401,5 @@ axis2_xml_schema_simple_type_union_set_member_types_qnames(
     sim_type_union_impl = AXIS2_INTF_TO_IMPL(simple_type_union);
     sim_type_union_impl->member_types_qnames = qns;
     return AXIS2_FAILURE;
-}        
+}
+

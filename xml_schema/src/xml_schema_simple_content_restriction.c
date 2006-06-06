@@ -21,8 +21,8 @@ typedef struct axis2_xml_schema_simple_content_restriction_impl
                     axis2_xml_schema_simple_content_restriction_impl_t;
 
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
+ * @brief axis2_xml_schema_simple_content_restriction_impl
+ * 
  */ 
 struct axis2_xml_schema_simple_content_restriction_impl
 {
@@ -135,7 +135,6 @@ AXIS2_EXTERN axis2_xml_schema_simple_content_restriction_t * AXIS2_CALL
 axis2_xml_schema_simple_content_restriction_create(const axis2_env_t *env)
 {
     axis2_xml_schema_simple_content_restriction_impl_t *sim_content_res_impl = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
 
     sim_content_res_impl = (axis2_xml_schema_simple_content_restriction_impl_t*)
         AXIS2_MALLOC(env->allocator, sizeof(axis2_xml_schema_simple_content_restriction_impl_t));
@@ -465,4 +464,5 @@ axis2_xml_schema_simple_content_restriction_super_objs(
         const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(sim_content_res)->ht_super;
-}                                                        
+}
+

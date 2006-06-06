@@ -22,8 +22,8 @@ typedef struct axis2_xml_schema_simple_type_restriction_impl
                     axis2_xml_schema_simple_type_restriction_impl_t;
 
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
+ * @brief axis2_xml_schema_simple_type_restriction_impl
+ * 
  */ 
 struct axis2_xml_schema_simple_type_restriction_impl
 {

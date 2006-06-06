@@ -21,8 +21,8 @@ typedef struct axis2_xml_schema_simple_type_list_impl
                     axis2_xml_schema_simple_type_list_impl_t;
 
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
+ * @brief axis2_xml_schema_simple_type_list_impl
+ *   
  */ 
 struct axis2_xml_schema_simple_type_list_impl
 {
@@ -369,4 +369,5 @@ axis2_xml_schema_simple_type_list_type(void *simple_type_list,
                                        const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(simple_type_list)->obj_type;
-}                                                                               
+}
+

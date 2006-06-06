@@ -107,7 +107,6 @@ AXIS2_EXTERN axis2_xml_schema_simple_content_extension_t * AXIS2_CALL
 axis2_xml_schema_simple_content_extension_create(const axis2_env_t *env)
 {
     axis2_xml_schema_simple_content_extension_impl_t *sim_content_ext_impl = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
 
     sim_content_ext_impl = (axis2_xml_schema_simple_content_extension_impl_t*)
         AXIS2_MALLOC(env->allocator, sizeof(axis2_xml_schema_simple_content_extension_impl_t));
