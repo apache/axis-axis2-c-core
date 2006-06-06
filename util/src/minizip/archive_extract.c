@@ -247,7 +247,6 @@ int aar_extract(axis2_char_t *d_name)
    int opt_extractdir=0;
    const axis2_char_t *dir_name=NULL;
    unzFile uf=NULL;
-   zlib_filefunc_def ffunc;
 
    if (zipfilename == NULL)
       zipfilename = d_name;
@@ -259,13 +258,13 @@ int aar_extract(axis2_char_t *d_name)
       strncpy(filename_try, zipfilename,MAXFILENAME-1);
       filename_try[ MAXFILENAME ] = '\0';
       
-      axis2_fill_win32_filefunc(&ffunc);
-      uf = AXIS2_UNZOPEN2(zipfilename,ffunc);
+      axis2_fill_win32_filefunc(&zlib_filefunc_def);
+      uf = AXIS2_UNZOPEN2(zipfilename,zlib_filefunc_def);
       if (uf==NULL)
       {
          strcat(filename_try,".zip");
 
-         uf = AXIS2_UNZOPEN2(zipfilename,ffunc);
+         uf = AXIS2_UNZOPEN2(zipfilename,zlib_filefunc_def);
       }
    }
 
