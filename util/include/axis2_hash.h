@@ -209,7 +209,19 @@ extern "C"
             , axis2_ssize_t klen, const void *h1_val, const void *h2_val
             , const void *data), const void *data);
 
-                           
+/**
+ * Query whether the hash table provided as parameter contains the
+ * key provided as parameter.
+ *
+ * @param ht hash table to be queried for key
+ * @return return whether hash table contains key
+ */
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_hash_contains_key (
+        axis2_hash_t *ht, 
+        const axis2_env_t *env,
+        const axis2_char_t *key);
+									
 /**
  * @param ht hash table to be freed
  * @param env The environment to use for hash table

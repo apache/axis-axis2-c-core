@@ -16,9 +16,7 @@
 
 #include "axis2_hash.h"
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <axis2_string.h>
 
 /*
  * The internal form of a hash table.
@@ -504,6 +502,30 @@ axis2_hash_merge (const axis2_hash_t *overlay, const axis2_env_t *env
     }
     return res;
 }
+
+AXIS2_EXTERN axis2_bool_t AXIS2_CALL
+axis2_hash_contains_key (
+        axis2_hash_t *ht, 
+        const axis2_env_t *env,
+        const axis2_char_t *key)
+{
+    axis2_hash_index_t *i = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
+    
+    for (i = axis2_hash_first (ht, env); i; i = axis2_hash_next (env, i))
+    {
+        const void *v = NULL;
+        const axis2_char_t *key_l = NULL;
+        
+        axis2_hash_this (i, &v, NULL, NULL);
+        key_l = (const axis2_char_t *) v;
+        if(0 == AXIS2_STRCMP(key, key_l))
+            return AXIS2_TRUE;
+    }
+
+    return AXIS2_FALSE;
+} 
 
 static axis2_status_t
 axis2_hash_entry_free (const axis2_env_t *env, axis2_hash_entry_t *hash_entry)

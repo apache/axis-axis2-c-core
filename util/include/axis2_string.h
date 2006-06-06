@@ -37,6 +37,41 @@ extern "C"
     axis2_strdup (const void *ptr, 
                   const axis2_env_t *env);
 
+    /**
+     * duplicate the first n characters of a string into memory allocated 
+     * the new string will be null-terminated
+     * @param ptr The string to duplicate
+     * @param n The number of characters to duplicate
+     * @return The new string
+     */
+    AXIS2_EXTERN void* AXIS2_CALL
+    axis2_strndup (
+            const void *ptr, 
+            int n, 
+            const axis2_env_t *env );
+
+    /**
+     * Create a null-terminated string by making a copy of a sequence
+     * of characters and appending a null byte
+     * @param ptr The block of characters to duplicate
+     * @param n The number of characters to duplicate
+     * @return The new string
+     * @remark This is a faster alternative to axis2_strndup, for use
+     *         when you know that the string being duplicated really
+     *         has 'n' or more characters.  If the string might contain
+     *         fewer characters, use axis2_strndup.
+     */
+    AXIS2_EXTERN void * AXIS2_CALL
+    axis2_strmemdup(const void *ptr, 
+            size_t n, 
+            const axis2_env_t *env);
+
+    AXIS2_EXTERN void * AXIS2_CALL
+    memchr (
+            const void *ptr, 
+            int c, 
+            size_t n);
+
     AXIS2_EXTERN int AXIS2_CALL
     axis2_strcmp (const axis2_char_t * s1, 
                   const axis2_char_t * s2);
@@ -61,7 +96,15 @@ extern "C"
     axis2_stracat(const axis2_char_t *s1, 
                   const axis2_char_t *s2, 
                   const axis2_env_t *env);
-    
+
+    /**
+     * Concatenate multiple strings, allocating memory
+     * @param ... The strings to concatenate.  The final string must be NULL
+     * @return The new string
+     */
+    AXIS2_DECLARE_NONSTD(axis2_char_t *) 
+    axis2_strcat(axis2_env_t *env, ...);
+        
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_strstr (const axis2_char_t *heystack,
                   const axis2_char_t *needle);
@@ -87,8 +130,18 @@ extern "C"
    AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
    axis2_strtrim(axis2_char_t *_s,
                 const axis2_char_t *_trim);
+
 #define AXIS2_STRDUP(pts, env) \
         axis2_strdup(pts, env)
+
+#define AXIS2_STRNDUP(pts, n, env) \
+        axis2_strndup(pts, n, env)
+
+#define AXIS2_STRMEMDUP(pts, n, env) \
+        axis2_strmemdup(pts, n, env)
+
+#define AXIS2_MEMCHR(pts, c, n) \
+        axis2_memchr(pts, c, n)
         
 #define AXIS2_STRCMP(s1, s2) \
         axis2_strcmp(s1, s2)
@@ -104,6 +157,9 @@ extern "C"
         
 #define AXIS2_STRACAT(s1, s2, env) \
         axis2_stracat(s1, s2, env)
+        
+#define AXIS2_STRCAT(env, ...) \
+        axis2_strcat(env, ...)
         
 #define AXIS2_STRSTR(s1, s2) \
         axis2_strstr(s1, s2)

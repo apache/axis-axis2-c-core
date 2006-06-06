@@ -85,11 +85,12 @@ axis2_url_clone(
 /***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_url_t * AXIS2_CALL 
-axis2_url_create (const axis2_env_t *env, 
-    const axis2_char_t *protocol, 
-    const axis2_char_t *server, 
-    const int port, 
-    const axis2_char_t *path)
+axis2_url_create (
+        const axis2_env_t *env, 
+        const axis2_char_t *protocol, 
+		const axis2_char_t *server, 
+        const int port, 
+        const axis2_char_t *path)
 {
     axis2_url_impl_t *url_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -327,7 +328,6 @@ axis2_url_free (axis2_url_t *url, const axis2_env_t *env)
    return AXIS2_SUCCESS;
 }
 
-
 axis2_char_t* AXIS2_CALL 
 axis2_url_to_external_form (axis2_url_t *url, 
                 const axis2_env_t *env)
@@ -337,6 +337,8 @@ axis2_url_to_external_form (axis2_url_t *url,
     axis2_ssize_t len = 0;
     axis2_char_t port_str[8];
     AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, url, NULL);
+
     url_impl = AXIS2_INTF_TO_IMPL(url);
     sprintf(port_str, "%d", url_impl->port); 
     len = AXIS2_STRLEN(url_impl->protocol) + 
@@ -451,5 +453,4 @@ axis2_url_clone(
                         url_impl->port,
                         url_impl->path);
 }
-
 

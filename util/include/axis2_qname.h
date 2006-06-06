@@ -135,7 +135,7 @@ axis2_qname_create (const axis2_env_t *env,
 
 
 /**
- * returns a newly created qname using a string genarated form 
+ * returns a newly created qname using a string genarated from
  * axis2_qname_to_string method 
  * freeing the returned qname is users responsibility
  */           

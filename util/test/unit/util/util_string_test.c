@@ -23,3 +23,24 @@ void Testaxis2_strndup(CuTest *tc)
 
     CuAssertStrEquals(tc, expected, actual);
 }
+
+void Testaxis2_strcat(CuTest *tc) 
+{
+    axis2_char_t *actual = NULL;
+    int n = 3;
+    axis2_char_t *expected = "damitha_kumarage";
+    
+    printf("******************************************\n");
+    printf("testing axis2_strcat\n");
+    printf("******************************************\n");
+    
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axis2_error_t *error = axis2_error_create(allocator);
+    const axis2_env_t *env = axis2_env_create_with_error(allocator, error);
+
+    actual = axis2_strcat(env, "damitha", "_kumarage", NULL);
+    printf("actual:%s\n", actual);
+
+    CuAssertStrEquals(tc, expected, actual);
+}
+

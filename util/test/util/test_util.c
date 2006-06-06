@@ -78,9 +78,7 @@ int test_hash_get (const axis2_env_t *env)
     axis2_hash_set (ht, key2, AXIS2_HASH_KEY_STRING, a2);
     for (i = axis2_hash_first (ht, env); i; i = axis2_hash_next (env, i))
     {
-
         axis2_hash_this (i, NULL, NULL, &v);
-
         printf ("\n %s \n", ((a *) v)->value);
     }
 
@@ -150,44 +148,6 @@ int test_file_diff(const axis2_env_t *env)
    axis2_char_t *expected_file_name = AXIS2_STRDUP("expected", env);
     axis2_char_t *actual_file_name = AXIS2_STRDUP("actual", env);   
     axis2_file_diff(env, expected_file_name, actual_file_name);
-   return 0;
-}
-
-char* test_funct_for_test_env_null(const axis2_env_t *env)
-{
-   if(NULL == env)
-   {
-      axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-      axis2_error_t *error = axis2_error_create (allocator);
-        env = axis2_env_create_with_error(allocator, error);
-      AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_FAILURE);
-      AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_ENVIRONMENT_IS_NULL);   
-      return AXIS2_STRDUP("env is null!!!", env);
-   }
-    
-    AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS);
-   return AXIS2_STRDUP("env not null, so be happy", env);   
-}
-
-int test_env_null()
-{
-   const axis2_env_t *env = NULL;
-   char *msg;
-   int status;
-   /* Suppose we did properly initialized env here */
-   /* But here we mistakenly make env to null */
-   env = NULL;
-   /*Now we call an axis2 mock function called
-    * test_funct_for_test_env_null
-    */
-   msg = test_funct_for_test_env_null(env);
-   status = axis2_env_check_status(env);
-   if(AXIS2_SUCCESS == status)
-      printf("%s\n", msg);
-   else
-      printf("status code is:%d\n", status);
-
-    AXIS2_FREE((env)->allocator, msg);
    return 0;
 }
 
@@ -300,7 +260,6 @@ int main(void)
    const axis2_env_t *env = test_init();
    test_file_diff(env);
    test_hash_get(env);
-   test_env_null(); 
     test_array_list(env);
     test_uuid_gen(env);
    run_test_log();

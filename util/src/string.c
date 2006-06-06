@@ -20,6 +20,10 @@
 #include <axis2_utils.h>
 #include <axis2_utils_defines.h>
 #include <ctype.h>
+#include <stdarg.h> /* NULL */
+
+/** this is used to cache lengths in axis2_strcat */
+#define MAX_SAVED_LENGTHS  6
 
 AXIS2_EXTERN void* AXIS2_CALL
 axis2_strdup (const void *ptr, const axis2_env_t *env)
@@ -42,6 +46,136 @@ axis2_strdup (const void *ptr, const axis2_env_t *env)
     {
         return NULL;
     }
+}
+
+AXIS2_EXTERN void * AXIS2_CALL
+axis2_strmemdup(const void *ptr, 
+        size_t n, 
+        const axis2_env_t *env)
+{
+    axis2_char_t *str;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, ptr, NULL);
+
+    str = (axis2_char_t *) AXIS2_MALLOC( env->allocator, 
+        sizeof(axis2_char_t) * (n + 1 ));
+    if (!str)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    memcpy(str, ptr, n);
+    str[n] = '\0';
+
+    return (void *) str;
+}
+
+AXIS2_EXTERN void * AXIS2_CALL
+memchr (
+        const void *ptr, 
+        int c, 
+        size_t n)
+{
+    const axis2_char_t *cp;
+    
+    for (cp = ptr; n > 0; n--, cp++) {
+        if (*cp == c)
+            return (char *) cp; /* Casting away the const here */
+    }
+
+    return NULL;
+}
+
+AXIS2_EXTERN void* AXIS2_CALL
+axis2_strndup (
+        const void *ptr, 
+        int n, 
+        const axis2_env_t *env )
+{
+    const axis2_char_t *end;
+    axis2_char_t *str;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, ptr, NULL);
+
+    end = memchr(ptr, '\0', n);
+    if(NULL != end)
+        n = end - (axis2_char_t *) ptr;
+    str = (axis2_char_t *) AXIS2_MALLOC( env->allocator, 
+        sizeof(axis2_char_t) * (n + 1 ));
+    if (!str)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    memcpy(str, ptr, n);
+    str[n] = '\0';
+
+    return (void *) str;
+}
+
+AXIS2_DECLARE_NONSTD(axis2_char_t *) 
+axis2_strcat(axis2_env_t *env, ...)
+{
+    axis2_char_t *cp, *argp, *str;
+    size_t saved_lengths[MAX_SAVED_LENGTHS];
+    int nargs = 0;
+
+    /* Pass one --- find length of required string */
+
+    size_t len = 0;
+    va_list adummy;
+
+    va_start(adummy, env);
+
+    while ((cp = va_arg(adummy, axis2_char_t *)) != NULL) 
+    {
+        size_t cplen = strlen(cp);
+        if (nargs < MAX_SAVED_LENGTHS) 
+        {
+            saved_lengths[nargs++] = cplen;
+        }
+        len += cplen;
+    }
+
+    va_end(adummy);
+
+    /* Allocate the required string */
+
+    str = (axis2_char_t *) AXIS2_MALLOC( env->allocator, 
+        sizeof(axis2_char_t) * (len + 1 ));
+    if (!str)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    cp = str;
+
+    /* Pass two --- copy the argument strings into the result space */
+
+    va_start(adummy, env);
+
+    nargs = 0;
+    while ((argp = va_arg(adummy, axis2_char_t *)) != NULL) {
+        if (nargs < MAX_SAVED_LENGTHS) {
+            len = saved_lengths[nargs++];
+        }
+        else {
+            len = strlen(argp);
+        }
+ 
+        memcpy(cp, argp, len);
+        cp += len;
+    }
+
+    va_end(adummy);
+
+    /* Return the result string */
+
+    *cp = '\0';
+
+    return str;
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
