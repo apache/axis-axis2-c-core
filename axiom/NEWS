@@ -1,0 +1,6 @@
+Axiom module seperated from Axis2/C
+======================================
+Initially this was inside Axis2/C code base as axiom directory. As the 
+project expands this started as a seperate project called Apache Axiom/C
+
+-- Axis2-C team <axis-c-dev@ws.apache.org>  Thu, 18 May 2006
