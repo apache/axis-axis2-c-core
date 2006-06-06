@@ -504,7 +504,7 @@ int AXIS2_CALL
 axis2_stream_skip_file (axis2_stream_t *stream, const axis2_env_t *env, int count)
 {
    axis2_stream_impl_t *stream_impl = NULL;
-   axis2_char_t c = -1;
+   int c = -1;
    int i = count;
    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
    if(NULL == AXIS2_INTF_TO_IMPL(stream)->fp)
