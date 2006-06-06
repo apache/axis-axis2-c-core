@@ -149,12 +149,12 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
 axis2_conf_t *AXIS2_CALL
 axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
                                 const axis2_env_t *env,
-                                axis2_char_t *client_home);
+                                const axis2_char_t *client_home);
 
 static axis2_status_t
 axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
                                     const axis2_env_t *env,
-                                    axis2_char_t *client_home);
+                                    const axis2_char_t *client_home);
 
 /**
  * This methode used to check the modules referd by server.xml
@@ -371,7 +371,7 @@ axis2_dep_engine_create(const axis2_env_t *env)
 axis2_dep_engine_t *AXIS2_CALL 
 axis2_dep_engine_create_with_repos_name (
                                         const axis2_env_t *env, 
-                                        axis2_char_t *repos_path)
+                                        const axis2_char_t *repos_path)
 {
     axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     
@@ -390,8 +390,8 @@ axis2_dep_engine_create_with_repos_name (
 
 axis2_dep_engine_t *AXIS2_CALL
 axis2_dep_engine_create_with_repos_name_and_svr_xml_file(const axis2_env_t *env,
-                                                    axis2_char_t *repos_path,
-                                                    axis2_char_t *svr_xml_file)
+                                                    const axis2_char_t *repos_path,
+                                                    const axis2_char_t *svr_xml_file)
 {
     axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_char_t *conf_file_l = NULL;
@@ -844,7 +844,7 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
 axis2_conf_t *AXIS2_CALL
 axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
                                 const axis2_env_t *env,
-                                axis2_char_t *client_home) 
+                                const axis2_char_t *client_home) 
 {
     axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_bool_t is_repos_exist = AXIS2_FALSE;
@@ -933,7 +933,7 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
 static axis2_status_t
 axis2_dep_engine_check_client_home(axis2_dep_engine_t *dep_engine,
                                     const axis2_env_t *env,
-                                    axis2_char_t *client_home)
+                                    const axis2_char_t *client_home)
 {
     axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_char_t *path_l = NULL;

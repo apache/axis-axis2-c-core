@@ -74,7 +74,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref_ops
     axis2_status_t (AXIS2_CALL *
     set_direction) (axis2_wsdl_msg_ref_t *msg_ref,
                                                 const axis2_env_t *env,
-                                                axis2_char_t *direction);
+                                                const axis2_char_t *direction);
     
     /**
      * Method getMessageLabel
@@ -93,7 +93,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_msg_ref_ops
     axis2_status_t (AXIS2_CALL *
     set_msg_label) (axis2_wsdl_msg_ref_t *msg_ref,
                                                 const axis2_env_t *env,
-                                                axis2_char_t *msg_label);
+                                                const axis2_char_t *msg_label);
                                                 
     /**
      * Returns an Element which refers to the actual message that will get 

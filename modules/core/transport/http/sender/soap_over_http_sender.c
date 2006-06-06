@@ -70,8 +70,9 @@ axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_send 
                   (axis2_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
-                  axis2_soap_envelope_t *out, axis2_char_t *str_url, 
-                  axis2_char_t *soap_action);
+                  axis2_soap_envelope_t *out, 
+                  const axis2_char_t *str_url, 
+                  const axis2_char_t *soap_action);
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_over_http_sender_set_chunked
@@ -116,7 +117,7 @@ axis2_soap_over_http_sender_create(const axis2_env_t *env)
         return NULL;
    }
    
-    sender_impl->http_version = AXIS2_HTTP_HEADER_PROTOCOL_11;
+    sender_impl->http_version = (axis2_char_t *)AXIS2_HTTP_HEADER_PROTOCOL_11;
     sender_impl->so_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
     sender_impl->connection_timeout = AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
    /* unlike the java impl we don't have a default om output
@@ -178,30 +179,31 @@ axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_send 
                   (axis2_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
-                  axis2_soap_envelope_t *out, axis2_char_t *str_url, 
-                  axis2_char_t *soap_action)
+                  axis2_soap_envelope_t *out, 
+                  const axis2_char_t *str_url, 
+                  const axis2_char_t *soap_action)
 {
-   axis2_http_simple_request_t *request = NULL;
-   axis2_http_request_line_t *request_line = NULL;
-   axis2_url_t *url = NULL;
-   axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
-   axis2_xml_writer_t *xml_writer = NULL;
-   axis2_char_t *buffer = NULL;
-   axis2_char_t *char_set_enc = NULL;
-   int status_code = -1;
-   axis2_http_header_t *http_header = NULL;
-   axis2_http_simple_response_t *response = NULL;
-   axis2_char_t *content_type = NULL;
+    axis2_http_simple_request_t *request = NULL;
+    axis2_http_request_line_t *request_line = NULL;
+    axis2_url_t *url = NULL;
+    axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
+    axis2_xml_writer_t *xml_writer = NULL;
+    axis2_char_t *buffer = NULL;
+    const axis2_char_t *char_set_enc = NULL;
+    int status_code = -1;
+    axis2_http_header_t *http_header = NULL;
+    axis2_http_simple_response_t *response = NULL;
+    axis2_char_t *content_type = NULL;
     axis2_property_t *property = NULL;
     axis2_byte_t *output_stream = NULL;
     int output_stream_size = 0;
     axis2_bool_t doing_mtom = AXIS2_FALSE;
       
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-   AXIS2_PARAM_CHECK(env->error, out, AXIS2_FAILURE);
-   AXIS2_PARAM_CHECK(env->error, str_url, AXIS2_FAILURE);
-   AXIS2_PARAM_CHECK(env->error, soap_action, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, out, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, str_url, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, soap_action, AXIS2_FAILURE);
    
    url = axis2_url_parse_string(env, str_url);
    sender_impl = AXIS2_INTF_TO_IMPL(sender);
@@ -337,18 +339,18 @@ axis2_soap_over_http_sender_send
    /* TODO we need to set the content type with soap action header for soap12*/
     if (doing_mtom)
     {
-        content_type = AXIS2_OM_OUTPUT_GET_CONTENT_TYPE(sender_impl->om_output, 
+        content_type = (axis2_char_t *)AXIS2_OM_OUTPUT_GET_CONTENT_TYPE(sender_impl->om_output, 
                         env);
     }
    else if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
    {
-      content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
+        content_type = (axis2_char_t *)AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
         content_type = AXIS2_STRACAT(content_type, ";charset=", env);
         content_type = AXIS2_STRACAT(content_type, char_set_enc, env);
    }
    else
    {
-      content_type = AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP;
+        content_type = (axis2_char_t *)AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP;
         content_type = AXIS2_STRACAT(content_type, ";charset=", env);
         content_type = AXIS2_STRACAT(content_type, char_set_enc, env);
         content_type = AXIS2_STRACAT(content_type, ";action=", env);

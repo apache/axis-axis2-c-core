@@ -74,7 +74,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_fault_ref_ops
     axis2_status_t (AXIS2_CALL *
     set_direction) (axis2_wsdl_fault_ref_t *fault_ref,
                                                 const axis2_env_t *env,
-                                                axis2_char_t *direction);
+                                                const axis2_char_t *direction);
     
     /**
      * Method getMessageLabel

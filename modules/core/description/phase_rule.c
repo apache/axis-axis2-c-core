@@ -46,7 +46,7 @@ axis2_phase_rule_get_before (struct axis2_phase_rule *phase_rule,
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_before (struct axis2_phase_rule *phase_rule, 
                              const axis2_env_t *env, 
-                             axis2_char_t *before);
+                             const axis2_char_t *before);
                              
 axis2_char_t* AXIS2_CALL 
 axis2_phase_rule_get_after (struct axis2_phase_rule * phase_rule, 
@@ -55,7 +55,7 @@ axis2_phase_rule_get_after (struct axis2_phase_rule * phase_rule,
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_after (struct axis2_phase_rule * phase_rule, 
                             const axis2_env_t *env, 
-                            axis2_char_t *after);
+                            const axis2_char_t *after);
                             
 axis2_char_t* AXIS2_CALL 
 axis2_phase_rule_get_name (struct axis2_phase_rule * phase_rule, 
@@ -100,7 +100,7 @@ axis2_phase_rule_clone (struct axis2_phase_rule *phase_rule,
 
 AXIS2_EXTERN axis2_phase_rule_t* AXIS2_CALL
 axis2_phase_rule_create(const axis2_env_t *env, 
-                        axis2_char_t *name)
+                        const axis2_char_t *name)
 {
     axis2_phase_rule_impl_t *phase_rule_impl = NULL;
     
@@ -187,7 +187,7 @@ axis2_phase_rule_get_before (struct axis2_phase_rule *phase_rule,
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_before (struct axis2_phase_rule *phase_rule, 
                              const axis2_env_t *env, 
-                             axis2_char_t *before)
+                             const axis2_char_t *before)
 {
     axis2_phase_rule_impl_t *phase_rule_impl = NULL;
     
@@ -225,7 +225,7 @@ axis2_phase_rule_get_after (struct axis2_phase_rule * phase_rule,
 axis2_status_t AXIS2_CALL 
 axis2_phase_rule_set_after (struct axis2_phase_rule * phase_rule, 
                             const axis2_env_t *env, 
-                            axis2_char_t *after)
+                            const axis2_char_t *after)
 {
     axis2_phase_rule_impl_t *phase_rule_impl = NULL;
     

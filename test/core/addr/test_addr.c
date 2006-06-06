@@ -15,7 +15,7 @@ int axis2_test_msg_info_headers()
    axis2_msg_info_headers_t *axis2_msg_info_headers = NULL;
    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
    const axis2_env_t *env = axis2_env_create (allocator);
-   axis2_char_t *action = "test action";
+   const axis2_char_t *action = "test action";
    axis2_char_t *get_action = NULL;
    to = axis2_endpoint_ref_create(env, "to");
    from = axis2_endpoint_ref_create(env, "from");

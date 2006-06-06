@@ -106,7 +106,7 @@ AXIS2_DECLARE_DATA struct axis2_op_ops
    axis2_param_t *(AXIS2_CALL *
     get_param)(axis2_op_t *op, 
                 const axis2_env_t *env,
-                axis2_char_t *name);
+                const axis2_char_t *name);
 
 
    axis2_array_list_t *(AXIS2_CALL *

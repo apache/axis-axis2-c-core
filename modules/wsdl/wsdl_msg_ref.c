@@ -56,7 +56,7 @@ axis2_wsdl_msg_ref_get_direction(axis2_wsdl_msg_ref_t *msg_ref,
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_msg_ref_set_direction(axis2_wsdl_msg_ref_t *msg_ref,
                                  const axis2_env_t *env,
-                                 axis2_char_t *direction);
+                                 const axis2_char_t *direction);
 
 axis2_char_t * AXIS2_CALL
 axis2_wsdl_msg_ref_get_msg_label(axis2_wsdl_msg_ref_t *msg_ref,
@@ -65,7 +65,7 @@ axis2_wsdl_msg_ref_get_msg_label(axis2_wsdl_msg_ref_t *msg_ref,
 axis2_status_t AXIS2_CALL
 axis2_wsdl_msg_ref_set_msg_label(axis2_wsdl_msg_ref_t *msg_ref,
                                  const axis2_env_t *env,
-                                 axis2_char_t *msg_label);
+                                 const axis2_char_t *msg_label);
                                             
 axis2_qname_t * AXIS2_CALL
 axis2_wsdl_msg_ref_get_element(axis2_wsdl_msg_ref_t *msg_ref,
@@ -176,12 +176,12 @@ axis2_wsdl_msg_ref_get_direction(axis2_wsdl_msg_ref_t *msg_ref,
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_msg_ref_set_direction(axis2_wsdl_msg_ref_t *msg_ref,
                                             const axis2_env_t *env,
-                                            axis2_char_t *direction) 
+                                            const axis2_char_t *direction) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, direction, AXIS2_FAILURE);
 
-    AXIS2_INTF_TO_IMPL(msg_ref)->direction = direction;
+    AXIS2_INTF_TO_IMPL(msg_ref)->direction = (axis2_char_t *)direction;
     return AXIS2_SUCCESS;
 }
 
@@ -196,12 +196,12 @@ axis2_wsdl_msg_ref_get_msg_label(axis2_wsdl_msg_ref_t *msg_ref,
 axis2_status_t AXIS2_CALL
 axis2_wsdl_msg_ref_set_msg_label(axis2_wsdl_msg_ref_t *msg_ref,
                                             const axis2_env_t *env,
-                                            axis2_char_t *msg_label) 
+                                            const axis2_char_t *msg_label) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_label, AXIS2_FAILURE);
 
-    AXIS2_INTF_TO_IMPL(msg_ref)->msg_label = msg_label;
+    AXIS2_INTF_TO_IMPL(msg_ref)->msg_label = (axis2_char_t *)msg_label;
     return AXIS2_SUCCESS;
 }
 

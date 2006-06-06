@@ -59,7 +59,7 @@ axis2_wsdl_fault_ref_get_direction(axis2_wsdl_fault_ref_t *fault_ref,
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_fault_ref_set_direction(axis2_wsdl_fault_ref_t *fault_ref,
                                             const axis2_env_t *env,
-                                            axis2_char_t *direction);
+                                            const axis2_char_t *direction);
 
 axis2_char_t * AXIS2_CALL
 axis2_wsdl_fault_ref_get_msg_label(axis2_wsdl_fault_ref_t *fault_ref,
@@ -202,7 +202,7 @@ axis2_wsdl_fault_ref_get_direction(axis2_wsdl_fault_ref_t *fault_ref,
 axis2_status_t AXIS2_CALL 
 axis2_wsdl_fault_ref_set_direction(axis2_wsdl_fault_ref_t *fault_ref,
                                             const axis2_env_t *env,
-                                            axis2_char_t *direction) 
+                                            const axis2_char_t *direction) 
 {
     axis2_wsdl_fault_ref_impl_t *fault_ref_impl = NULL;
     

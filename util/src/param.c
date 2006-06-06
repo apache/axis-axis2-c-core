@@ -49,12 +49,12 @@ axis2_param_get_value(axis2_param_t *param,
 axis2_status_t AXIS2_CALL 
 axis2_param_set_name(axis2_param_t *param, 
                      const axis2_env_t *env, 
-                     axis2_char_t *name);
+                     const axis2_char_t *name);
 
 axis2_status_t AXIS2_CALL 
 axis2_param_set_value(axis2_param_t *param, 
                      const axis2_env_t *env, 
-                     void *value);
+                     const void *value);
 
 axis2_bool_t AXIS2_CALL 
 axis2_param_is_locked(axis2_param_t *param, 
@@ -179,7 +179,7 @@ axis2_param_get_value(axis2_param_t *param,
 axis2_status_t AXIS2_CALL 
 axis2_param_set_name(axis2_param_t *param, 
                      const axis2_env_t *env, 
-                     axis2_char_t *name)
+                     const axis2_char_t *name)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -190,7 +190,7 @@ axis2_param_set_name(axis2_param_t *param,
 axis2_status_t AXIS2_CALL 
 axis2_param_set_value(axis2_param_t *param, 
                      const axis2_env_t *env, 
-                     void *value)
+                     const void *value)
 {
     void *param_value = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -207,7 +207,7 @@ axis2_param_set_value(axis2_param_t *param,
             AXIS2_FREE(env->allocator, param_value);
         }
     }
-    AXIS2_INTF_TO_IMPL(param)->value = value;
+    AXIS2_INTF_TO_IMPL(param)->value = (void *)value;
     return AXIS2_SUCCESS;
 }
 

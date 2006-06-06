@@ -34,16 +34,17 @@ axis2_addr_out_handler_invoke (struct axis2_handler *handler,
 axis2_status_t 
 axis2_addr_out_handler_add_to_soap_header (const axis2_env_t *env,
                                            axis2_endpoint_ref_t *
-                                           endpoint_ref, axis2_char_t * type,
+                                           endpoint_ref, 
+                                           const axis2_char_t * type,
                                            axis2_soap_header_t * soap_header,
-                                           axis2_char_t * addr_ns);
+                                           const axis2_char_t * addr_ns);
 
 
 axis2_status_t
 axis2_addr_out_handler_add_to_header (const axis2_env_t *env,
                                       axis2_endpoint_ref_t * epr,
                                       axis2_om_node_t ** parent_node,
-                                      axis2_char_t * addr_ns);
+                                      const axis2_char_t * addr_ns);
 
 axis2_status_t
 axis2_addr_out_handler_process_any_content_type (const axis2_env_t *env,
@@ -51,13 +52,13 @@ axis2_addr_out_handler_process_any_content_type (const axis2_env_t *env,
                                                  reference_values,
                                                  axis2_om_node_t *
                                                  parent_ele_node,
-                                                 axis2_char_t * addr_ns);
+                                                 const axis2_char_t * addr_ns);
 
 axis2_om_node_t *axis2_addr_out_handler_process_string_info (const axis2_env_t *env,
-                                                             axis2_char_t *value,
-                                                             axis2_char_t *type,
+                                                             const axis2_char_t *value,
+                                                             const axis2_char_t *type,
                                                              axis2_soap_header_t **soap_header,
-                                                             axis2_char_t *addr_ns);
+                                                             const axis2_char_t *addr_ns);
 
 
 AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
@@ -110,7 +111,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                                const axis2_env_t *env, axis2_msg_ctx_t * msg_ctx)
 {
     axis2_char_t *addressing_version_from_msg_ctx = NULL;
-    axis2_char_t *addr_ns = NULL;
+    const axis2_char_t *addr_ns = NULL;
     axis2_msg_info_headers_t *msg_info_headers = NULL;
     axis2_ctx_t *ctx = NULL;
     axis2_om_namespace_t *addressing_namespace = NULL;
@@ -298,7 +299,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         epr = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO (msg_info_headers, env);
         if (!epr)
         {
-            axis2_char_t *anonymous_uri = NULL;
+            const axis2_char_t *anonymous_uri = NULL;
             axis2_bool_t anonymous = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO_ANONYMOUS(msg_info_headers, env);
             axis2_bool_t none = AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO_NONE(msg_info_headers, env);
             if (AXIS2_STRCMP (addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
@@ -352,7 +353,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         epr = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO (msg_info_headers, env);
         if (!epr)
         {
-            axis2_char_t *anonymous_uri = NULL;
+            const axis2_char_t *anonymous_uri = NULL;
             axis2_bool_t anonymous = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO_ANONYMOUS(msg_info_headers, env);
             axis2_bool_t none = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO_NONE(msg_info_headers, env);
             if (AXIS2_STRCMP (addr_ns, AXIS2_WSA_NAMESPACE_SUBMISSION) == 0)
@@ -465,11 +466,11 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
 
 axis2_om_node_t *
 axis2_addr_out_handler_process_string_info (const axis2_env_t *env,
-                                            axis2_char_t * value,
-                                            axis2_char_t * type,
+                                            const axis2_char_t * value,
+                                            const axis2_char_t * type,
                                             axis2_soap_header_t **
                                             soap_header_p,
-                                            axis2_char_t * addr_ns)
+                                            const axis2_char_t * addr_ns)
 {
     axis2_soap_header_t *soap_header = NULL;
     axis2_soap_header_block_t *header_block = NULL;
@@ -518,9 +519,10 @@ axis2_addr_out_handler_process_string_info (const axis2_env_t *env,
 axis2_status_t
 axis2_addr_out_handler_add_to_soap_header (const axis2_env_t *env,
                                            axis2_endpoint_ref_t *
-                                           endpoint_ref, axis2_char_t * type,
+                                           endpoint_ref, 
+                                           const axis2_char_t * type,
                                            axis2_soap_header_t * soap_header,
-                                           axis2_char_t * addr_ns)
+                                           const axis2_char_t * addr_ns)
 {
     axis2_soap_header_block_t *header_block = NULL;
     axis2_char_t *address = NULL;
@@ -719,13 +721,13 @@ axis2_status_t
 axis2_addr_out_handler_add_to_header (const axis2_env_t *env,
                                       axis2_endpoint_ref_t * epr,
                                       axis2_om_node_t ** parent_node_p,
-                                      axis2_char_t * addr_ns)
+                                      const axis2_char_t * addr_ns)
 {
     axis2_om_node_t *parent_node = NULL;
     axis2_qname_t *interface_qname = NULL;
     axis2_om_node_t *interface_node = NULL;
     axis2_om_element_t *interface_ele = NULL;
-    axis2_char_t *element_localname = NULL;
+    const axis2_char_t *element_localname = NULL;
     axis2_svc_name_t *service_name = NULL;
     axis2_om_namespace_t *addr_ns_obj = NULL;
 
@@ -795,7 +797,7 @@ axis2_addr_out_handler_process_any_content_type (const axis2_env_t *env,
                                                  reference_values,
                                                  axis2_om_node_t *
                                                  parent_ele_node,
-                                                 axis2_char_t * addr_ns)
+                                                 const axis2_char_t * addr_ns)
 {
     axis2_hash_t *value_ht = NULL;
     axis2_hash_index_t *hash_index = NULL;

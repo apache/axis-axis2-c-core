@@ -278,7 +278,7 @@ axis2_status_t AXIS2_CALL axis2_array_list_add(struct axis2_array_list *array_li
     if (array_list_impl->size == array_list_impl->capacity)
       if (axis2_array_list_ensure_capacity(array_list, env, array_list_impl->size + 1) != AXIS2_SUCCESS )
           return AXIS2_FAILURE;
-    array_list_impl->data[array_list_impl->size++] = e;
+    array_list_impl->data[array_list_impl->size++] = (void *)e;
     return AXIS2_SUCCESS;
 }
 
@@ -309,7 +309,7 @@ axis2_status_t AXIS2_CALL axis2_array_list_add_at(struct axis2_array_list *array
             array_list_impl->data[i] = array_list_impl->data[i - 1];
     }
     
-    array_list_impl->data[index] = e;
+    array_list_impl->data[index] = (void *)e;
     array_list_impl->size++;
     return AXIS2_SUCCESS;
 }

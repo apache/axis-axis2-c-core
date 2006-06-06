@@ -277,7 +277,7 @@ extern "C"
      * @param namespace
      */
     void *
-    axis2_wsdl4c_parser_get_extensibility_handler_a_ns(void *parser, char *ns);
+    axis2_wsdl4c_parser_get_extensibility_handler_a_ns(void *parser, const char *ns);
 
     /** 
      * Return the extensibility handler for the given id.

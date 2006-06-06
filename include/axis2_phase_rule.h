@@ -52,7 +52,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
       set_before) (struct axis2_phase_rule *phase_rule, 
                      const axis2_env_t *env, 
-                axis2_char_t *before);
+                const axis2_char_t *before);
       
         axis2_char_t* (AXIS2_CALL *
       get_after) (struct axis2_phase_rule * phase_rule, 
@@ -61,7 +61,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
       set_after) (struct axis2_phase_rule * phase_rule, 
                     const axis2_env_t *env, 
-               axis2_char_t *after);
+               const axis2_char_t *after);
       
         axis2_char_t* (AXIS2_CALL *
       get_name) (struct axis2_phase_rule * phase_rule, 
@@ -115,7 +115,7 @@ extern "C"
  */
 AXIS2_EXTERN axis2_phase_rule_t* AXIS2_CALL 
 axis2_phase_rule_create(const axis2_env_t *env, 
-                  axis2_char_t *phase_name);
+                  const axis2_char_t *phase_name);
     
 #define AXIS2_PHASE_RULE_GET_BEFORE(phase_rule, env) \
       ((phase_rule)->ops->get_before(phase_rule, env))

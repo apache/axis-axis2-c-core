@@ -65,7 +65,7 @@ axis2_http_status_line_free (axis2_http_status_line_t *status_line,
 /***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_http_status_line_t * AXIS2_CALL
-axis2_http_status_line_create(const axis2_env_t *env, axis2_char_t *str)
+axis2_http_status_line_create(const axis2_env_t *env, const axis2_char_t *str)
 {
     axis2_char_t *tmp_status_line = NULL;
     axis2_char_t *reason_phrase = NULL;

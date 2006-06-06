@@ -56,7 +56,7 @@ axis2_op_add_param (axis2_op_t *op,
 axis2_param_t * AXIS2_CALL
 axis2_op_get_param (axis2_op_t *op, 
                             const axis2_env_t *env,
-                            axis2_char_t *name);
+                            const axis2_char_t *name);
 
 axis2_array_list_t * AXIS2_CALL
 axis2_op_get_params (axis2_op_t *op, 
@@ -820,7 +820,7 @@ axis2_op_add_param (axis2_op_t *op,
 axis2_param_t * AXIS2_CALL
 axis2_op_get_param (axis2_op_t *op, 
                                 const axis2_env_t *env,
-                              axis2_char_t *param_name)
+                              const axis2_char_t *param_name)
 {
     axis2_op_impl_t *op_impl = NULL;
     axis2_param_container_t *param_container_l = NULL;

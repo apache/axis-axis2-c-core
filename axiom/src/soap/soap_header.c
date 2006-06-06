@@ -57,7 +57,7 @@ axis2_soap_header_free(axis2_soap_header_t *header,
 axis2_soap_header_block_t* AXIS2_CALL 
 axis2_soap_header_add_header_block(axis2_soap_header_t* header,
                                    const axis2_env_t *env,
-                                   axis2_char_t *localname,
+                                   const axis2_char_t *localname,
                                    axis2_om_namespace_t *ns); 
 axis2_hash_t* AXIS2_CALL 
 axis2_soap_header_examine_header_blocks
@@ -88,7 +88,7 @@ axis2_array_list_t* AXIS2_CALL
 axis2_soap_header_get_header_blocks_with_namespace_uri
                                         (axis2_soap_header_t* header,
                                          const axis2_env_t *env,
-                                         axis2_char_t *ns_uri);  
+                                         const axis2_char_t *ns_uri);  
 
 axis2_hash_t* AXIS2_CALL 
 axis2_soap_header_get_all_header_blocks(axis2_soap_header_t *header,
@@ -292,7 +292,7 @@ axis2_soap_header_free(axis2_soap_header_t *header,
 axis2_soap_header_block_t* AXIS2_CALL 
 axis2_soap_header_add_header_block(axis2_soap_header_t* header,
                                    const axis2_env_t *env,
-                                   axis2_char_t *localname,
+                                   const axis2_char_t *localname,
                                    axis2_om_namespace_t *ns)
 {
     axis2_soap_header_impl_t *header_impl = NULL;
@@ -557,7 +557,7 @@ axis2_array_list_t* AXIS2_CALL
 axis2_soap_header_get_header_blocks_with_namespace_uri
                                         (axis2_soap_header_t* header,
                                          const axis2_env_t *env,
-                                         axis2_char_t *ns_uri)
+                                         const axis2_char_t *ns_uri)
 {
     axis2_soap_header_impl_t *header_impl = NULL;
     

@@ -58,20 +58,20 @@ axis2_status_t
 axis2_addr_in_extract_to_epr_ref_params(const axis2_env_t *env,
                           axis2_endpoint_ref_t * to_epr,
                           axis2_soap_header_t *soap_header,
-                          axis2_char_t *addr_ns);
+                          const axis2_char_t *addr_ns);
                           
 axis2_status_t 
 axis2_addr_in_extract_epr_information(const axis2_env_t *env,
                         axis2_soap_header_block_t *soap_header_block,
                         axis2_endpoint_ref_t *endpoint_ref,
-                        axis2_char_t *addr_ns);
+                        const axis2_char_t *addr_ns);
                         
 axis2_status_t
 axis2_addr_in_extract_addr_params(const axis2_env_t *env,
                     axis2_soap_header_t *soap_header,
                     axis2_msg_info_headers_t **msg_info_headers,
                     axis2_array_list_t *addr_headers,
-                    axis2_char_t *addr_ns,
+                    const axis2_char_t *addr_ns,
                     axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t axis2_addr_in_extract_addr_submission_info(const axis2_env_t *env,
@@ -82,8 +82,8 @@ axis2_status_t axis2_addr_in_extract_addr_submission_info(const axis2_env_t *env
 
 void 
 axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
-        axis2_char_t *header_name,
-        axis2_char_t *addr_ns_str,
+        const axis2_char_t *header_name,
+        const axis2_char_t *addr_ns_str,
         axis2_msg_ctx_t *msg_ctx);
 
 /******************************************************************************/                         
@@ -274,7 +274,7 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
                     axis2_soap_header_t *soap_header,
                     axis2_msg_info_headers_t **msg_info_headers_p,
                     axis2_array_list_t *addr_headers,
-                    axis2_char_t *addr_ns_str,
+                    const axis2_char_t *addr_ns_str,
                     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_hash_t *header_block_ht = NULL;
@@ -449,8 +449,8 @@ axis2_addr_in_extract_addr_params(const axis2_env_t *env,
             axis2_char_t *address = NULL;
             axis2_qname_t *rqn = NULL;
             axis2_om_attribute_t *relationship_type = NULL;
-            axis2_char_t *relationship_type_default_value =  NULL;
-            axis2_char_t *relationship_type_value = NULL;
+            const axis2_char_t *relationship_type_default_value =  NULL;
+            const axis2_char_t *relationship_type_value = NULL;
             axis2_relates_to_t *relates_to =  NULL;
             if(AXIS2_STRCMP(AXIS2_WSA_NAMESPACE_SUBMISSION , addr_ns_str) == 0)
             {
@@ -498,7 +498,7 @@ axis2_status_t
 axis2_addr_in_extract_epr_information(const axis2_env_t *env,
                         axis2_soap_header_block_t *soap_header_block,
                         axis2_endpoint_ref_t *endpoint_ref,
-                        axis2_char_t *addr_ns_str) 
+                        const axis2_char_t *addr_ns_str) 
 {
     axis2_qname_t *epr_addr_qn = NULL;
     axis2_qname_t *epr_ref_qn = NULL;
@@ -622,7 +622,7 @@ axis2_status_t
 axis2_addr_in_extract_to_epr_ref_params(const axis2_env_t *env,
                           axis2_endpoint_ref_t * to_epr,
                           axis2_soap_header_t *soap_header,
-                          axis2_char_t *addr_ns_str)
+                          const axis2_char_t *addr_ns_str)
 {
     axis2_hash_t *header_blocks_ht = NULL;
     axis2_hash_index_t *hash_index = NULL;
@@ -701,8 +701,8 @@ axis2_addr_in_check_element(const axis2_env_t *env,
 
 void 
 axis2_addr_in_create_fault_envelope(const axis2_env_t *env,
-        axis2_char_t *header_name,
-        axis2_char_t *addr_ns_str,
+        const axis2_char_t *header_name,
+        const axis2_char_t *addr_ns_str,
         axis2_msg_ctx_t *msg_ctx)
 {
     axis2_soap_envelope_t *envelope = NULL;

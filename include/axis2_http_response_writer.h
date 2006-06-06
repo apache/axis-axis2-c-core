@@ -72,7 +72,8 @@ AXIS2_DECLARE_DATA struct axis2_http_response_writer_ops
 
     axis2_status_t (AXIS2_CALL *print_str) 
                     (axis2_http_response_writer_t *response_writer, 
-                    const axis2_env_t *env, char *str);
+                    const axis2_env_t *env, 
+                    const char *str);
     
     axis2_status_t (AXIS2_CALL *print_int) 
                     (axis2_http_response_writer_t *response_writer, 
@@ -80,7 +81,8 @@ AXIS2_DECLARE_DATA struct axis2_http_response_writer_ops
     
     axis2_status_t (AXIS2_CALL *println_str) 
                     (axis2_http_response_writer_t *response_writer, 
-                    const axis2_env_t *env, char *str);
+                    const axis2_env_t *env, 
+                    const char *str);
     
     axis2_status_t (AXIS2_CALL *println) 
                     (axis2_http_response_writer_t *response_writer, 

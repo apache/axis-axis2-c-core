@@ -18,7 +18,7 @@ int axis2_test_op_engage_module()
     printf("******************************************\n");
 
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-   const axis2_env_t *env = axis2_env_create (allocator);
+   axis2_env_t *env = axis2_env_create (allocator);
    axis2_op_t *op = axis2_op_create(env);
 
     moduleref = axis2_module_desc_create(env);

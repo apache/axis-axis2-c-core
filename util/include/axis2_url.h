@@ -122,7 +122,7 @@ axis2_url_create (const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_url_t * AXIS2_CALL
 axis2_url_parse_string(const axis2_env_t *env, 
-                       axis2_char_t *str_url);
+                       const axis2_char_t *str_url);
 
 /************************** Start of function macros **************************/
 

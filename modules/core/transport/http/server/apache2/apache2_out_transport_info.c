@@ -42,12 +42,12 @@ struct axis2_apache2_out_transport_info_impl
 axis2_status_t AXIS2_CALL 
 axis2_http_out_transport_info_set_content_type 
             (axis2_http_out_transport_info_t *info, const axis2_env_t *env, 
-            axis2_char_t *content_type);
+            const axis2_char_t *content_type);
     
 axis2_status_t AXIS2_CALL 
 axis2_http_out_transport_info_set_char_encoding 
             (axis2_http_out_transport_info_t *info, const axis2_env_t *env,
-            axis2_char_t *encoding);
+            const axis2_char_t *encoding);
     
 axis2_status_t AXIS2_CALL 
 axis2_http_out_transport_info_free 
@@ -131,7 +131,7 @@ axis2_apache2_out_transport_info_free_void_arg (void *transport_info,
 axis2_status_t AXIS2_CALL 
 axis2_http_out_transport_info_set_content_type 
             (axis2_http_out_transport_info_t *info, const axis2_env_t *env, 
-            axis2_char_t *content_type)
+            const axis2_char_t *content_type)
 {
     axis2_char_t *tmp1 = NULL;
    axis2_char_t *tmp2 = NULL;
@@ -164,7 +164,7 @@ axis2_http_out_transport_info_set_content_type
 axis2_status_t AXIS2_CALL 
 axis2_http_out_transport_info_set_char_encoding 
             (axis2_http_out_transport_info_t *info, const axis2_env_t *env,
-            axis2_char_t *encoding)
+            const axis2_char_t *encoding)
 {
     axis2_apache2_out_transport_info_impl_t *info_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

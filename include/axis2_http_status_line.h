@@ -83,7 +83,7 @@ AXIS2_DECLARE_DATA struct axis2_http_status_line
 
 AXIS2_EXTERN axis2_http_status_line_t * AXIS2_CALL 
 axis2_http_status_line_create(const axis2_env_t *env, 
-                              axis2_char_t *str);
+                              const axis2_char_t *str);
 
 /************************* Start of function macros    ***************************/
 

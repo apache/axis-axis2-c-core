@@ -68,8 +68,10 @@ axis2_http_request_line_free(axis2_http_request_line_t *request_line,
 /***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_http_request_line_t * AXIS2_CALL 
-axis2_http_request_line_create(const axis2_env_t *env, axis2_char_t *method, 
-                                axis2_char_t *uri, axis2_char_t *http_version)
+axis2_http_request_line_create(const axis2_env_t *env, 
+    const axis2_char_t *method, 
+    const axis2_char_t *uri, 
+    const axis2_char_t *http_version)
 {
     axis2_http_request_line_impl_t *request_line_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);

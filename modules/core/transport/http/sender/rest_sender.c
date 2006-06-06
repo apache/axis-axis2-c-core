@@ -100,7 +100,7 @@ axis2_rest_sender_create(const axis2_env_t *env)
         return NULL;
    }
    
-    sender_impl->http_version = AXIS2_HTTP_HEADER_PROTOCOL_11;
+    sender_impl->http_version = (axis2_char_t *)AXIS2_HTTP_HEADER_PROTOCOL_11;
     sender_impl->so_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
     sender_impl->connection_timeout = AXIS2_HTTP_DEFAULT_CONNECTION_TIMEOUT;
    sender_impl->om_output = NULL;
@@ -166,11 +166,11 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
    axis2_rest_sender_impl_t *sender_impl = NULL;
    axis2_xml_writer_t *xml_writer = NULL;
    axis2_char_t *buffer = NULL;
-   axis2_char_t *char_set_enc = NULL;
+   const axis2_char_t *char_set_enc = NULL;
    int status_code = -1;
    axis2_http_header_t *http_header = NULL;
    axis2_http_simple_response_t *response = NULL;
-   axis2_char_t *content_type = NULL;
+   const axis2_char_t *content_type = NULL;
     axis2_property_t *property = NULL;
       
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

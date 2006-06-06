@@ -37,7 +37,7 @@ axis2_env_t *test_init()
 
 void test_http_request_line(const axis2_env_t *env)
 {
-    char *request_line_str = "POST http://ws.apache.org/axis2/c/services/test_svc/test_op?x=1 HTTP/1.1\r\n";
+    const char *request_line_str = "POST http://ws.apache.org/axis2/c/services/test_svc/test_op?x=1 HTTP/1.1\r\n";
     axis2_http_request_line_t *request_line;
 
     printf("Starting http_request_line tests\n");
@@ -52,7 +52,7 @@ void test_http_request_line(const axis2_env_t *env)
 
 void test_http_status_line(const axis2_env_t *env)
 {
-    char *status_line_str = "HTTP/1.1 202 Accepted\r\n";
+    const char *status_line_str = "HTTP/1.1 202 Accepted\r\n";
     axis2_http_status_line_t *status_line;
 
     printf("Starting http_status_line tests\n");
@@ -70,9 +70,9 @@ void test_http_status_line(const axis2_env_t *env)
 
 void test_http_header(const axis2_env_t *env)
 {
-    char *header_name = "Content-Type";
-    char *header_value = "text/xml";
-    char *str_header = "Content-Type: text/xml; charset=UTF-8\r\n";
+    const char *header_name = "Content-Type";
+    const char *header_value = "text/xml";
+    const char *str_header = "Content-Type: text/xml; charset=UTF-8\r\n";
     axis2_http_header_t *http_header;
     axis2_char_t *external_form = NULL;
 
@@ -92,7 +92,7 @@ void test_http_header(const axis2_env_t *env)
 
 void test_url(const axis2_env_t *env)
 {
-    axis2_char_t *str_url = "http://ws.apache.org/axis2/";
+    const axis2_char_t *str_url = "http://ws.apache.org/axis2/";
     axis2_url_t *url = axis2_url_parse_string(env, str_url);
     if(NULL == url)
     {
@@ -233,7 +233,7 @@ void test_https_client(const axis2_env_t *env)
 
 int main(void)
 {
-   const axis2_env_t *env = test_init();
+    axis2_env_t *env = test_init();
     test_http_request_line(env);
     test_http_status_line(env);
     test_http_header(env);

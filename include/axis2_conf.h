@@ -310,11 +310,11 @@ struct axis2_conf_ops
     axis2_char_t * (AXIS2_CALL *
     get_default_module_version)(axis2_conf_t *conf, 
                                 const axis2_env_t *env, 
-                                axis2_char_t* module_name);
+                                const axis2_char_t* module_name);
                                 
     struct axis2_module_desc * (AXIS2_CALL *
     get_default_module)(axis2_conf_t *conf,const axis2_env_t *env, 
-                                axis2_char_t *module_name);
+                                const axis2_char_t *module_name);
 
     axis2_status_t (AXIS2_CALL *
     add_default_module_version)(axis2_conf_t *conf, const axis2_env_t *env,
@@ -323,8 +323,8 @@ struct axis2_conf_ops
 
     axis2_status_t (AXIS2_CALL *
     engage_module_with_version)(axis2_conf_t *conf, const axis2_env_t *env,
-                                            axis2_char_t *module_name,
-                                            axis2_char_t *version_id);
+                                            const axis2_char_t *module_name,
+                                            const axis2_char_t *version_id);
                                 
 };
 

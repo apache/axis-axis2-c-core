@@ -78,8 +78,10 @@ AXIS2_DECLARE_DATA struct axis2_http_request_line
 
 
 AXIS2_EXTERN axis2_http_request_line_t * AXIS2_CALL 
-axis2_http_request_line_create(const axis2_env_t *env, axis2_char_t *method, 
-                                axis2_char_t *uri, axis2_char_t *http_version);
+axis2_http_request_line_create(const axis2_env_t *env, 
+    const axis2_char_t *method, 
+    const axis2_char_t *uri, 
+    const axis2_char_t *http_version);
 
 AXIS2_EXTERN axis2_http_request_line_t* AXIS2_CALL
 axis2_http_request_line_parse_line(const axis2_env_t *env, const axis2_char_t *str);

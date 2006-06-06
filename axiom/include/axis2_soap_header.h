@@ -76,7 +76,7 @@ struct axis2_soap_builder;
         struct axis2_soap_header_block* (AXIS2_CALL *
       add_header_block)(axis2_soap_header_t* header,
                       const axis2_env_t *env,
-                    axis2_char_t *localname,
+                    const axis2_char_t *localname,
                     axis2_om_namespace_t *ns); 
        /**
         * returns a hash_table of all the soap_header_block_t  struct in this
@@ -104,7 +104,7 @@ struct axis2_soap_builder;
         axis2_array_list_t* (AXIS2_CALL *
       get_header_blocks_with_namespace_uri)(axis2_soap_header_t* header,
                                               const axis2_env_t *env,
-                                              axis2_char_t *ns_uri);
+                                              const axis2_char_t *ns_uri);
        /**
         * returns an iterator to iterate through all soap header block's om nodes 
         * @param header 

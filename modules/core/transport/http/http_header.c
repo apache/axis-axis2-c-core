@@ -94,7 +94,7 @@ axis2_http_header_create (const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_http_header_t * AXIS2_CALL AXIS2_CALL
-axis2_http_header_create_by_str (const axis2_env_t *env, axis2_char_t *str)
+axis2_http_header_create_by_str (const axis2_env_t *env, const axis2_char_t *str)
 {
    axis2_char_t *tmp_str = NULL;
    axis2_char_t *ch = NULL;

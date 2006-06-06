@@ -197,8 +197,9 @@ axis2_core_utils_reset_out_msg_ctx(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_qname_t* AXIS2_CALL
-axis2_core_utils_get_module_qname(const axis2_env_t *env, axis2_char_t *name, 
-                                axis2_char_t *version)
+axis2_core_utils_get_module_qname(const axis2_env_t *env, 
+    const axis2_char_t *name, 
+    const axis2_char_t *version)
 {
     axis2_qname_t *ret_qname = NULL;
     AXIS2_ENV_CHECK(env, NULL);

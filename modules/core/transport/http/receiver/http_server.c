@@ -70,7 +70,9 @@ axis2_http_server_free (axis2_transport_receiver_t *server, const axis2_env_t *e
 /***************************** End of function headers ************************/
 
 AXIS2_EXTERN axis2_transport_receiver_t * AXIS2_CALL 
-axis2_http_server_create (const axis2_env_t *env, axis2_char_t *repo, int port)
+axis2_http_server_create (const axis2_env_t *env, 
+    const axis2_char_t *repo, 
+    const int port)
 {
     axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -242,7 +244,7 @@ axis2_http_server_get_reply_to_epr(axis2_transport_receiver_t *server,
                   const axis2_env_t *env, axis2_char_t *svc_name)
 {
    axis2_endpoint_ref_t *epr = NULL;
-   axis2_char_t *host_address = NULL;
+   const axis2_char_t *host_address = NULL;
    axis2_char_t *svc_path = NULL;
    axis2_url_t *url = NULL;
     AXIS2_ENV_CHECK(env, NULL);

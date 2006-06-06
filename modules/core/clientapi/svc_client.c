@@ -63,7 +63,7 @@ typedef struct axis2_svc_client_impl
 static axis2_bool_t axis2_svc_client_init_transports_from_conf_ctx(const axis2_env_t *env, 
                            axis2_svc_client_impl_t *svc_client_impl,
                            axis2_conf_ctx_t *conf_ctx,
-                           axis2_char_t *client_home);
+                           const axis2_char_t *client_home);
 static axis2_bool_t axis2_svc_client_init_data(const axis2_env_t *env,
                            axis2_svc_client_impl_t *svc_client_impl);
 static void axis2_svc_client_init_ops(axis2_svc_client_t *svc_client);
@@ -1006,7 +1006,7 @@ axis2_svc_client_get_svc_ctx(struct axis2_svc_client *svc_client,
 static axis2_bool_t axis2_svc_client_init_transports_from_conf_ctx(const axis2_env_t *env,
                                     axis2_svc_client_impl_t *svc_client_impl,
                                     axis2_conf_ctx_t *conf_ctx,
-                           axis2_char_t *client_home)
+                           const axis2_char_t *client_home)
 {
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

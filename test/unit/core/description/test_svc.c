@@ -64,8 +64,8 @@ void Testaxis2_svc_add_param(CuTest *tc)
 
     svc = axis2_svc_create(env);
     axis2_param_t *param = NULL;
-    axis2_char_t *param_name = NULL;
-    axis2_char_t *param_value = NULL;
+    const axis2_char_t *param_name = NULL;
+    const axis2_char_t *param_value = NULL;
 
     param_name = "damitha";
     param_value = "kumarage";

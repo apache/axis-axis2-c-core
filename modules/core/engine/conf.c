@@ -295,11 +295,11 @@ axis2_conf_set_repos(axis2_conf_t *conf,
                         
 axis2_char_t * AXIS2_CALL
 axis2_conf_get_default_module_version(axis2_conf_t *conf, const axis2_env_t *env, 
-                                    axis2_char_t* module_name);
+                                    const axis2_char_t* module_name);
                                     
 axis2_module_desc_t* AXIS2_CALL
 axis2_conf_get_default_module(axis2_conf_t *conf,const axis2_env_t *env, 
-                                axis2_char_t *module_name);
+                                const axis2_char_t *module_name);
                                 
 axis2_status_t AXIS2_CALL
 axis2_conf_add_default_module_version(axis2_conf_t *conf, const axis2_env_t *env,
@@ -308,8 +308,8 @@ axis2_conf_add_default_module_version(axis2_conf_t *conf, const axis2_env_t *env
                                         
 axis2_status_t AXIS2_CALL
 axis2_conf_engage_module_with_version(axis2_conf_t *conf, const axis2_env_t *env,
-                                            axis2_char_t *module_name,
-                                            axis2_char_t *version_id);
+                                            const axis2_char_t *module_name,
+                                            const axis2_char_t *version_id);
 
 /************************** End of function prototypes ************************/
 
@@ -2095,7 +2095,7 @@ axis2_conf_set_dep_engine(axis2_conf_t *conf,
 
 axis2_char_t * AXIS2_CALL
 axis2_conf_get_default_module_version(axis2_conf_t *conf, const axis2_env_t *env, 
-                                    axis2_char_t* module_name)
+                                    const axis2_char_t* module_name)
 {
     axis2_hash_t *def_ver_map = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -2111,7 +2111,7 @@ axis2_conf_get_default_module_version(axis2_conf_t *conf, const axis2_env_t *env
 
 axis2_module_desc_t* AXIS2_CALL
 axis2_conf_get_default_module(axis2_conf_t *conf,const axis2_env_t *env, 
-                                axis2_char_t *module_name)
+                                const axis2_char_t *module_name)
 {
     axis2_module_desc_t *ret_mod = NULL;
     axis2_char_t *mod_name = NULL;
@@ -2200,8 +2200,8 @@ axis2_conf_add_default_module_version(axis2_conf_t *conf, const axis2_env_t *env
  */
 axis2_status_t AXIS2_CALL
 axis2_conf_engage_module_with_version(axis2_conf_t *conf, const axis2_env_t *env,
-                                            axis2_char_t *module_name,
-                                            axis2_char_t *version_id)
+                                            const axis2_char_t *module_name,
+                                            const axis2_char_t *version_id)
 {
     axis2_qname_t *module_qname = NULL;
     axis2_status_t status = AXIS2_FAILURE;

@@ -151,7 +151,7 @@ axis2_url_create (const axis2_env_t *env,
 }
 
 axis2_url_t * AXIS2_CALL
-axis2_url_parse_string(const axis2_env_t *env, axis2_char_t *str_url)
+axis2_url_parse_string(const axis2_env_t *env, const axis2_char_t *str_url)
 {
    /**
     * Only accepted format is : 

@@ -80,7 +80,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
      axis2_status_t (AXIS2_CALL *
     set_name)(struct axis2_param *param, 
              const axis2_env_t *env, 
-              axis2_char_t *name);
+              const axis2_char_t *name);
 
     /**
      * Method setValue
@@ -90,7 +90,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_ops
      axis2_status_t (AXIS2_CALL *
     set_value)(struct axis2_param *param, 
              const axis2_env_t *env, 
-             void *value);
+             const void *value);
 
     /**
      * Method isLocked

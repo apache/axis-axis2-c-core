@@ -152,14 +152,14 @@ axis2_http_transport_sender_invoke
                      (axis2_transport_sender_t *transport_sender, 
                           const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx)
 {
-    axis2_char_t *char_set_enc = NULL;
-   axis2_endpoint_ref_t *epr = NULL;
-   axis2_char_t *transport_url = NULL;
-   axis2_xml_writer_t *xml_writer = NULL;
-   axis2_om_output_t *om_output = NULL;
-   axis2_char_t *buffer = NULL;
-   axis2_soap_envelope_t *soap_data_out = NULL;
-   axis2_bool_t do_mtom;
+    const axis2_char_t *char_set_enc = NULL;
+    axis2_endpoint_ref_t *epr = NULL;
+    axis2_char_t *transport_url = NULL;
+    axis2_xml_writer_t *xml_writer = NULL;
+    axis2_om_output_t *om_output = NULL;
+    axis2_char_t *buffer = NULL;
+    axis2_soap_envelope_t *soap_data_out = NULL;
+    axis2_bool_t do_mtom;
     axis2_property_t *property = NULL;
     axis2_om_node_t *data_out = NULL;
    
@@ -532,7 +532,7 @@ axis2_http_transport_sender_write_message
                      axis2_soap_envelope_t *out, 
                      axis2_om_output_t *om_output)
 {
-   axis2_char_t *soap_action = NULL;
+   const axis2_char_t *soap_action = NULL;
    axis2_char_t *url = NULL;
    axis2_soap_over_http_sender_t *sender = NULL;
     axis2_status_t status = AXIS2_FAILURE;

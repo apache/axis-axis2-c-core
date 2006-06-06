@@ -220,7 +220,7 @@ axis2_arch_file_data_create_with_type_and_file(const axis2_env_t *env,
 AXIS2_EXTERN axis2_arch_file_data_t * AXIS2_CALL
 axis2_arch_file_data_create_with_type_and_name(const axis2_env_t *env,
                                                     int type,
-                                                    axis2_char_t *name)
+                                                    const axis2_char_t *name)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     file_data_impl = (axis2_arch_file_data_impl_t *)

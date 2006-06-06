@@ -122,7 +122,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     struct axis2_conf *(AXIS2_CALL *
     load_client) (axis2_dep_engine_t *dep_engine,
                                     const axis2_env_t *env,
-                                    axis2_char_t *client_home);
+                                    const axis2_char_t *client_home);
     
     
     void * (AXIS2_CALL *
@@ -221,7 +221,7 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     AXIS2_EXTERN axis2_dep_engine_t * AXIS2_CALL
     axis2_dep_engine_create_with_repos_name (
                                             const axis2_env_t *env, 
-                                            axis2_char_t *repos_path);
+                                            const axis2_char_t *repos_path);
     /**
      * Creates deployment engine struct
      * @param repos_path is the path to which Repositary Listner should listen.
@@ -231,8 +231,8 @@ AXIS2_DECLARE_DATA struct axis2_dep_engine_ops
     AXIS2_EXTERN axis2_dep_engine_t * AXIS2_CALL 
     axis2_dep_engine_create_with_repos_name_and_svr_xml_file (
                                             const axis2_env_t *env, 
-                                            axis2_char_t *repos_path, 
-                                            axis2_char_t *svr_xml_file);                                            
+                                            const axis2_char_t *repos_path, 
+                                            const axis2_char_t *svr_xml_file);                                            
 
 
 

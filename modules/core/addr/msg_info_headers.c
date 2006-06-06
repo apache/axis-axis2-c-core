@@ -129,7 +129,7 @@ axis2_msg_info_headers_get_action(struct axis2_msg_info_headers *msg_info_header
 axis2_status_t AXIS2_CALL 
 axis2_msg_info_headers_set_action(struct axis2_msg_info_headers *msg_info_headers, 
                                   const axis2_env_t *env, 
-                                  axis2_char_t *action);
+                                  const axis2_char_t *action);
                                   
 axis2_char_t* AXIS2_CALL 
 axis2_msg_info_headers_get_message_id(struct axis2_msg_info_headers *msg_info_headers, 
@@ -171,8 +171,9 @@ axis2_msg_info_headers_free(struct axis2_msg_info_headers *msg_info_headers,
  * @param action
  */
 axis2_msg_info_headers_t* AXIS2_CALL 
-axis2_msg_info_headers_create(const axis2_env_t *env, axis2_endpoint_ref_t *to,
-                              axis2_char_t *action) 
+axis2_msg_info_headers_create(const axis2_env_t *env, 
+    axis2_endpoint_ref_t *to,
+    const axis2_char_t *action) 
 {
     axis2_msg_info_headers_impl_t *msg_info_headers_impl = NULL;
     
@@ -451,7 +452,7 @@ axis2_msg_info_headers_get_action(struct axis2_msg_info_headers *msg_info_header
 axis2_status_t AXIS2_CALL 
 axis2_msg_info_headers_set_action(struct axis2_msg_info_headers *msg_info_headers, 
                                   const axis2_env_t *env, 
-                                  axis2_char_t *action) 
+                                  const axis2_char_t *action) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(NULL != AXIS2_INTF_TO_IMPL(msg_info_headers)->action)

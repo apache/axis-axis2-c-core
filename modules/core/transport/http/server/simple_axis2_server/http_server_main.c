@@ -30,12 +30,14 @@
 axis2_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
 /***************************** Function headers *******************************/
-axis2_env_t* init_syetem_env(axis2_allocator_t *allocator, axis2_char_t *log_file);
+axis2_env_t* init_syetem_env(axis2_allocator_t *allocator, 
+    const axis2_char_t *log_file);
 void system_exit(axis2_env_t *env, int status);
 void usage(axis2_char_t* prog_name);
 void sig_handler(int signal);
 /***************************** End of function headers ************************/
-axis2_env_t* init_syetem_env(axis2_allocator_t *allocator, axis2_char_t *log_file)
+axis2_env_t* init_syetem_env(axis2_allocator_t *allocator, 
+    const axis2_char_t *log_file)
 {
    axis2_error_t *error = axis2_error_create(allocator);
    axis2_log_t *log = axis2_log_create(allocator, NULL, log_file);
@@ -74,9 +76,9 @@ int main(int argc, char *argv[])
     int c;
 
     axis2_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
-    axis2_char_t *log_file = "axis2.log";
+    const axis2_char_t *log_file = "axis2.log";
    int port = 9090;
-    axis2_char_t *repo_path = "../";
+    const axis2_char_t *repo_path = "../";
    axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
 
     while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:f:")) != -1)

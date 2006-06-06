@@ -170,7 +170,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
       set_action)(struct axis2_msg_info_headers *msg_info_headers, 
                     const axis2_env_t *env, 
-                  axis2_char_t *action);
+                  const axis2_char_t *action);
         /**
          * Method get_message_id
          *
@@ -240,8 +240,9 @@ extern "C"
  * @param relationship_type
  */
 AXIS2_EXTERN axis2_msg_info_headers_t* AXIS2_CALL 
-axis2_msg_info_headers_create(const axis2_env_t *env, axis2_endpoint_ref_t *to,
-                              axis2_char_t *action);
+axis2_msg_info_headers_create(const axis2_env_t *env, 
+    axis2_endpoint_ref_t *to,
+    const axis2_char_t *action);
     
 
 #define AXIS2_MSG_INFO_HEADERS_GET_TO(msg_info_headers, env) \

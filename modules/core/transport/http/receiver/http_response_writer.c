@@ -64,7 +64,8 @@ axis2_http_response_writer_write_buf
 axis2_status_t AXIS2_CALL 
 axis2_http_response_writer_print_str
                 (axis2_http_response_writer_t *response_writer, 
-                const axis2_env_t *env, char *str);
+                const axis2_env_t *env, 
+                const char *str);
 
 axis2_status_t AXIS2_CALL 
 axis2_http_response_writer_print_int
@@ -74,7 +75,8 @@ axis2_http_response_writer_print_int
 axis2_status_t AXIS2_CALL 
 axis2_http_response_writer_println_str
                 (axis2_http_response_writer_t *response_writer, 
-                const axis2_env_t *env, char *str);
+                const axis2_env_t *env, 
+                const char *str);
 
 axis2_status_t AXIS2_CALL 
 axis2_http_response_writer_println
@@ -252,7 +254,8 @@ axis2_http_response_writer_write_buf
 axis2_status_t AXIS2_CALL 
 axis2_http_response_writer_print_str
                 (axis2_http_response_writer_t *response_writer, 
-                const axis2_env_t *env, char *str)
+                const axis2_env_t *env, 
+                const char *str)
 {
    axis2_http_response_writer_impl_t *writer_impl = NULL;
    int write = -1;
@@ -291,7 +294,8 @@ axis2_http_response_writer_print_int
 axis2_status_t AXIS2_CALL 
 axis2_http_response_writer_println_str
                 (axis2_http_response_writer_t *response_writer, 
-                const axis2_env_t *env, char *str)
+                const axis2_env_t *env, 
+                const char *str)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, str, AXIS2_FAILURE);

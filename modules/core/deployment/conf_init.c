@@ -25,7 +25,7 @@ axis2_status_t AXIS2_CALL axis2_init_transports(const axis2_env_t *env,
     
 AXIS2_EXTERN axis2_conf_ctx_t* AXIS2_CALL 
 build_conf_ctx (const axis2_env_t *env,
-    axis2_char_t *repo_name)
+    const axis2_char_t *repo_name)
 {    
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_dep_engine_t *dep_engine = NULL;
@@ -66,7 +66,7 @@ build_conf_ctx (const axis2_env_t *env,
 }
 
  axis2_conf_ctx_t* AXIS2_CALL build_client_conf_ctx(const axis2_env_t *env,
-        axis2_char_t *axis2_home)
+        const axis2_char_t *axis2_home)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_dep_engine_t *dep_engine = NULL;

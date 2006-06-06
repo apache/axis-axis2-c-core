@@ -983,7 +983,7 @@ axis2_desc_builder_get_short_file_name(axis2_desc_builder_t *desc_builder,
                                         const axis2_env_t *env,
                                         axis2_char_t *file_name) 
 {
-    axis2_char_t *separator = NULL;
+    const axis2_char_t *separator = NULL;
     axis2_char_t *value = NULL;
     axis2_char_t *file_name_l = NULL;
     axis2_char_t *short_name = NULL;
@@ -1034,7 +1034,7 @@ axis2_desc_builder_get_value(axis2_desc_builder_t *desc_builder,
                                 const axis2_env_t *env,
                                 axis2_char_t *in) 
 {
-    axis2_char_t *separator = ":";
+    const axis2_char_t *separator = ":";
     axis2_char_t *value = NULL;
     axis2_char_t *in_l = NULL;
     

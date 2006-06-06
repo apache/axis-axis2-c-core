@@ -46,7 +46,7 @@ axis2_file_handler_close(void *file_ptr)
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_file_handler_access(axis2_char_t *path, 
+axis2_file_handler_access(const axis2_char_t *path, 
                             int mode)
 {
     int i = 0;
