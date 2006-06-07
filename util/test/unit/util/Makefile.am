@@ -27,11 +27,10 @@ INCLUDES = -I$(top_builddir)/include \
 prgbin_PROGRAMS = util_test
 check_PROGRAMS = util_test
 util_test_SOURCES = main.c
-util_test_LDADD   =   \
+util_test_LDADD   =   libtest_util.la \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                     -lpthread \
-                     $(top_builddir)/test/unit/util/libtest_util.la \
                     $(top_builddir)/src/libaxis2_util.la \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
