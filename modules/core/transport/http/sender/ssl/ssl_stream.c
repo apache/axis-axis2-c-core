@@ -17,6 +17,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ssl_stream.h"
+#include "ssl_utils.h"
 
 
 /** 
@@ -132,9 +133,10 @@ axis2_ssl_stream_read(axis2_stream_t *stream, const axis2_env_t *env,
                   void *buffer, size_t count)
 {
     ssl_stream_impl_t *stream_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     int read = -1;
     int len = -1;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
     
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
 

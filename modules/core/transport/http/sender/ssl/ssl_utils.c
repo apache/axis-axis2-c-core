@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 #include "ssl_utils.h"
+BIO *bio_err = 0;
 
-
-AXIS2_DECLARE (SSL_CTX *)
+AXIS2_EXTERN SSL_CTX* AXIS2_CALL
 axis2_ssl_utils_initialize_ctx(const axis2_env_t *env)
 {
     SSL_METHOD *meth = NULL;
@@ -69,7 +69,7 @@ axis2_ssl_utils_initialize_ctx(const axis2_env_t *env)
     return ctx;
 }
 
-AXIS2_DECLARE (SSL *)
+AXIS2_EXTERN SSL* AXIS2_CALL
 axis2_ssl_utils_initialize_ssl(const axis2_env_t *env, SSL_CTX *ctx, 
                         axis2_socket_t socket)
 {
@@ -99,7 +99,7 @@ axis2_ssl_utils_initialize_ssl(const axis2_env_t *env, SSL_CTX *ctx,
     return ssl;
 }
 
-AXIS2_DECLARE (axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_ssl_utils_cleanup_ssl(const axis2_env_t *env, SSL_CTX *ctx, SSL *ssl)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

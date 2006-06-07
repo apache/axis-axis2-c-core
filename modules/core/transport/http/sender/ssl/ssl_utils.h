@@ -27,16 +27,16 @@
 extern "C"
 {
 #endif
-BIO *bio_err = 0;
 
-AXIS2_DECLARE (SSL_CTX *)
+
+AXIS2_EXTERN SSL_CTX* AXIS2_CALL
 axis2_ssl_utils_initialize_ctx(const axis2_env_t *env);
 
-AXIS2_DECLARE (SSL *)
+AXIS2_EXTERN SSL* AXIS2_CALL
 axis2_ssl_utils_initialize_ssl(const axis2_env_t *env, SSL_CTX *ctx, 
                         axis2_socket_t socket);
                         
-AXIS2_DECLARE (axis2_status_t)
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_ssl_utils_cleanup_ssl(const axis2_env_t *env, SSL_CTX *ctx, SSL *ssl);
 
 #ifdef __cplusplus
