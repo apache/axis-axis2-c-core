@@ -63,7 +63,7 @@ void** AXIS2_CALL
 axis2_array_list_to_array(struct axis2_array_list *array_list, 
                           const axis2_env_t *env);
                           
-void* AXIS2_CALL 
+static void* AXIS2_CALL 
 axis2_array_list_get(struct axis2_array_list *array_list, 
                      const axis2_env_t *env, 
                     int index);
@@ -238,7 +238,7 @@ void** AXIS2_CALL axis2_array_list_to_array(struct axis2_array_list *array_list,
     return AXIS2_INTF_TO_IMPL(array_list)->data;
 }
 
-void* AXIS2_CALL axis2_array_list_get(struct axis2_array_list *array_list, const axis2_env_t *env, int index)
+static void* AXIS2_CALL axis2_array_list_get(struct axis2_array_list *array_list, const axis2_env_t *env, int index)
 {
     AXIS2_ENV_CHECK(env, NULL);
     if (axis2_array_list_check_bound_exclusive(array_list, env, index) )

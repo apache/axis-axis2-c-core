@@ -16,10 +16,8 @@
 
 #include <axis2_string.h>
 #include <stdlib.h>
-#include <string.h>
 #include <axis2_utils.h>
 #include <axis2_utils_defines.h>
-#include <ctype.h>
 #include <stdarg.h> /* NULL */
 
 /** this is used to cache lengths in axis2_strcat */
@@ -72,7 +70,7 @@ axis2_strmemdup(const void *ptr,
 }
 
 AXIS2_EXTERN void * AXIS2_CALL
-memchr (
+axis2_memchr (
         const void *ptr, 
         int c, 
         size_t n)
@@ -99,7 +97,7 @@ axis2_strndup (
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ptr, NULL);
 
-    end = memchr(ptr, '\0', n);
+    end = axis2_memchr(ptr, '\0', n);
     if(NULL != end)
         n = end - (axis2_char_t *) ptr;
     str = (axis2_char_t *) AXIS2_MALLOC( env->allocator, 

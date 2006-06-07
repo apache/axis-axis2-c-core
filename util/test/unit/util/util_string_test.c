@@ -27,7 +27,6 @@ void Testaxis2_strndup(CuTest *tc)
 void Testaxis2_strcat(CuTest *tc) 
 {
     axis2_char_t *actual = NULL;
-    int n = 3;
     axis2_char_t *expected = "damitha_kumarage";
     
     printf("******************************************\n");

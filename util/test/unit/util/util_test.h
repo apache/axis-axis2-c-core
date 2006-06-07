@@ -12,6 +12,7 @@
 #include "util_class_loader_test.h"
 #include "util_url_test.h"
 #include "util_string_test.h"
+#include "util_uri_test.h"
 
 CuSuite* axis2_utilGetSuite();
 

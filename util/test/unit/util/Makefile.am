@@ -14,7 +14,8 @@ libtest_util_la_SOURCES = \
                             util_dir_handler_test.c \
                             util_class_loader_test.c \
                             util_string_test.c \
-                            util_url_test.c
+                            util_url_test.c \
+                            util_uri_test.c
 
 noinst_HEADERS=$(top_builddir)/test/unit/util/*.h
 

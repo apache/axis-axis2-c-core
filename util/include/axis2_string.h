@@ -67,7 +67,7 @@ extern "C"
             const axis2_env_t *env);
 
     AXIS2_EXTERN void * AXIS2_CALL
-    memchr (
+    axis2_memchr (
             const void *ptr, 
             int c, 
             size_t n);
@@ -157,9 +157,6 @@ extern "C"
         
 #define AXIS2_STRACAT(s1, s2, env) \
         axis2_stracat(s1, s2, env)
-        
-#define AXIS2_STRCAT(env, ...) \
-        axis2_strcat(env, ...)
         
 #define AXIS2_STRSTR(s1, s2) \
         axis2_strstr(s1, s2)

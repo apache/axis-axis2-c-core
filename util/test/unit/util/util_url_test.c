@@ -1,4 +1,4 @@
-#include "util_class_loader_test.h"
+#include "util_url_test.h"
 #include <axis2_url.h>
 #include <axis2_utils.h>
 #include <axis2_string.h>
@@ -7,7 +7,7 @@
 void Testaxis2_url_parse_string(CuTest *tc)
 {
     axis2_char_t *actual = NULL;
-    axis2_char_t *expected = NULL;
+    axis2_char_t *expected = "file://home/damitha/temp/checkout.sh";
     axis2_url_t *url = NULL;
     axis2_char_t *url_str = NULL;
 
