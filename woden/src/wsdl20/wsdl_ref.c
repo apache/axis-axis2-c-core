@@ -31,7 +31,7 @@ struct axis2_woden_wsdl_ref_impl
     axis2_hash_t *super;
     axis2_woden_obj_types_t obj_type;
     axis2_array_list_t *f_documentation_elements;
-    axis2_url_t *f_location;
+    axis2_uri_t *f_location;
     axis2_woden_desc_element_t *f_desc_element;
 };
 
@@ -52,7 +52,7 @@ axis2_woden_wsdl_ref_get_base_impl(
         void *wsdl_ref,
         const axis2_env_t *env);
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_wsdl_ref_get_location(
         void *wsdl_ref,
         const axis2_env_t *env);
@@ -61,7 +61,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_wsdl_ref_set_location(
         void *wsdl_ref,
         const axis2_env_t *env,
-        axis2_url_t *loc_uri);
+        axis2_uri_t *loc_uri);
 
 void *AXIS2_CALL
 axis2_woden_wsdl_ref_get_desc_element(
@@ -269,7 +269,7 @@ axis2_woden_wsdl_ref_resolve_methods(
     return AXIS2_SUCCESS;
 }
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_wsdl_ref_get_location(
         void *wsdl_ref,
         const axis2_env_t *env)
@@ -289,7 +289,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_wsdl_ref_set_location(
         void *wsdl_ref,
         const axis2_env_t *env,
-        axis2_url_t *loc_uri)
+        axis2_uri_t *loc_uri)
 {
     axis2_woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
     axis2_hash_t *super = NULL;

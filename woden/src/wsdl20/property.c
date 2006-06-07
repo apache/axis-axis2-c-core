@@ -38,7 +38,7 @@ struct axis2_woden_property_impl
     axis2_hash_t *super;
     axis2_hash_t *methods;
     /* WSDL Component model data */
-    axis2_url_t *f_ref;
+    axis2_uri_t *f_ref;
     axis2_generic_obj_t *f_value;
     axis2_woden_type_def_t *f_value_constraint;
     void *f_parent;
@@ -74,9 +74,9 @@ axis2_status_t AXIS2_CALL
 axis2_woden_property_set_ref(
         void *property,
         const axis2_env_t *env,
-        axis2_url_t *ref);
+        axis2_uri_t *ref);
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_property_get_ref(
         void *property,
         const axis2_env_t *env);
@@ -627,7 +627,7 @@ axis2_woden_property_free(void *property,
 
     if(property_impl->f_ref)
     {
-        AXIS2_URL_FREE(property_impl->f_ref, env);
+        AXIS2_URI_FREE(property_impl->f_ref, env);
         property_impl->f_ref = NULL;
     }
    
@@ -762,7 +762,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_property_set_ref(
         void *property,
         const axis2_env_t *env,
-        axis2_url_t *ref)
+        axis2_uri_t *ref)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -774,13 +774,13 @@ axis2_woden_property_set_ref(
 
     if(property_impl->f_ref)
     {
-        AXIS2_URL_FREE(property_impl->f_ref, env);
+        AXIS2_URI_FREE(property_impl->f_ref, env);
     }
     property_impl->f_ref = ref;
     return AXIS2_SUCCESS;
 }
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_property_get_ref(
         void *property,
         const axis2_env_t *env)

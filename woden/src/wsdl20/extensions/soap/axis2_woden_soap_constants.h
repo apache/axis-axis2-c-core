@@ -23,7 +23,7 @@
  *          Constants for XML Soap elements, attributes and URIs.
  */
  
-#include <axis2_const.h>
+#include <axis2_utils.h>
 
 #ifdef __cplusplus
 extern "C" 

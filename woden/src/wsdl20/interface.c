@@ -112,7 +112,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_interface_add_style_default_uri(
         void *interface,
         const axis2_env_t *env,
-        axis2_url_t *uri);
+        axis2_uri_t *uri);
 
 void *AXIS2_CALL
 axis2_woden_interface_get_style_default(
@@ -891,7 +891,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_interface_add_style_default_uri(
         void *interface,
         const axis2_env_t *env,
-        axis2_url_t *uri)
+        axis2_uri_t *uri)
 {
     axis2_woden_interface_impl_t *interface_impl = NULL;
     axis2_hash_t *super = NULL;

@@ -16,7 +16,7 @@
  
 #include <woden/wsdl20/extensions/axis2_woden_element_extensible.h>
 #include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_woden_element_extensible_impl axis2_woden_element_extensible_impl_t;
@@ -79,7 +79,7 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_element_extensible_has_ext_elements_for_namespace(
         void *extensible,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 
 
@@ -364,7 +364,7 @@ axis2_woden_element_extensible_get_ext_elements_of_type(void *extensible,
 axis2_bool_t AXIS2_CALL 
 axis2_woden_element_extensible_has_ext_elements_for_namespace(void *extensible,
                                                                 const axis2_env_t *env,
-                                                                axis2_url_t *namespc)
+                                                                axis2_uri_t *namespc)
 {
     axis2_woden_element_extensible_impl_t *extensible_impl = NULL;
     axis2_bool_t result = AXIS2_FALSE;
@@ -379,7 +379,7 @@ axis2_woden_element_extensible_has_ext_elements_for_namespace(void *extensible,
     extensible_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_ELEMENT_EXTENSIBLE", AXIS2_HASH_KEY_STRING)); 
 
-    ext_ns = AXIS2_URL_TO_EXTERNAL_FORM(namespc, env);
+    ext_ns = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     size = AXIS2_ARRAY_LIST_SIZE(extensible_impl->f_ext_elements, env);
     for(i = 0; i < size; i++)
     {

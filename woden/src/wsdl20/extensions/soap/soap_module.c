@@ -40,7 +40,7 @@ struct axis2_woden_soap_module_impl
     axis2_bool_t f_required;
     void *f_attr_ext;
     void *f_elem_ext;
-    axis2_url_t *f_ref;
+    axis2_uri_t *f_ref;
 };
 
 #define INTF_TO_IMPL(module) ((axis2_woden_soap_module_impl_t *) module)
@@ -64,7 +64,7 @@ axis2_woden_soap_module_type(
  *  Component model methods (SOAPHeaderBlock interface), some shared with Element model
  * ***********************************************************************/
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_soap_module_get_ref(
         void *module,
         axis2_env_t *env);
@@ -92,7 +92,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_soap_module_set_ref(
         void *module,
         axis2_env_t *env,
-        axis2_url_t *uri); 
+        axis2_uri_t *uri); 
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_module_set_parent_element(
@@ -154,7 +154,7 @@ axis2_array_list_t *AXIS2_CALL
 axis2_woden_soap_module_get_ext_attrs_for_namespace(
         void *module,
         axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_module_get_ext_attrs(
@@ -165,7 +165,7 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_soap_module_has_ext_attrs_for_namespace(
         void *module,
         axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_module_add_ext_element(
@@ -194,7 +194,7 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_soap_module_has_ext_elements_for_namespace(
         void *module,
         axis2_env_t *env,
-        axis2_url_t *namespc); 
+        axis2_uri_t *namespc); 
 
 static axis2_woden_soap_module_t *
 create(const axis2_env_t *env);
@@ -568,7 +568,7 @@ axis2_woden_soap_module_free(void *module,
 
     if(module_impl->f_ref)
     {
-        AXIS2_URL_FREE(module_impl->f_ref, env);
+        AXIS2_URI_FREE(module_impl->f_ref, env);
         module_impl->f_ref = NULL;
     }
 
@@ -665,7 +665,7 @@ axis2_woden_soap_module_resolve_methods(
  *  Component model methods (SOAPHeaderBlock interface), some shared with Element model
  * ***********************************************************************/
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_soap_module_get_ref(
         void *module,
         axis2_env_t *env) 
@@ -738,7 +738,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_soap_module_set_ref(
         void *module,
         axis2_env_t *env,
-        axis2_url_t *uri) 
+        axis2_uri_t *uri) 
 {
     axis2_woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -751,11 +751,11 @@ axis2_woden_soap_module_set_ref(
 
     if(module_impl->f_ref)
     {
-        AXIS2_URL_FREE(module_impl->f_ref, env);
+        AXIS2_URI_FREE(module_impl->f_ref, env);
         module_impl->f_ref = NULL;
     }
 
-    module_impl->f_ref = AXIS2_URL_CLONE(uri, env);
+    module_impl->f_ref = AXIS2_URI_CLONE(uri, env);
 
     return AXIS2_SUCCESS;
 
@@ -954,7 +954,7 @@ axis2_array_list_t *AXIS2_CALL
 axis2_woden_soap_module_get_ext_attrs_for_namespace(
         void *module,
         axis2_env_t *env,
-        axis2_url_t *namespc) 
+        axis2_uri_t *namespc) 
 {
     axis2_woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -990,7 +990,7 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_soap_module_has_ext_attrs_for_namespace(
         void *module,
         axis2_env_t *env,
-        axis2_url_t *namespc) 
+        axis2_uri_t *namespc) 
 {
     axis2_woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1085,7 +1085,7 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_soap_module_has_ext_elements_for_namespace(
         void *module,
         axis2_env_t *env,
-        axis2_url_t *namespc) 
+        axis2_uri_t *namespc) 
 {
     axis2_woden_soap_module_impl_t *module_impl = NULL;
     axis2_hash_t *super = NULL;

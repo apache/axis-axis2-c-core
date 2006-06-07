@@ -19,7 +19,7 @@
 #include <woden/wsdl20/extensions/axis2_woden_attr_extensible.h>
 #include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
 #include <woden/xml/axis2_woden_xml_attr.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_woden_wsdl_element_impl axis2_woden_wsdl_element_impl_t;
@@ -78,13 +78,13 @@ axis2_array_list_t *AXIS2_CALL
 axis2_woden_wsdl_element_get_ext_attrs_for_namespace(
         void *wsdl_element,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 axis2_bool_t AXIS2_CALL 
 axis2_woden_wsdl_element_has_ext_attrs_for_namespace(
         void *wsdl_element,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_wsdl_element_add_ext_element(
@@ -113,7 +113,7 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_wsdl_element_has_ext_elements_for_namespace(
         void *wsdl_element,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_wsdl_element_add_ext_element(
@@ -142,7 +142,7 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_wsdl_element_has_ext_elements_for_namespace(
         void *wsdl_element,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 static axis2_woden_wsdl_element_t *
 create(
@@ -498,7 +498,7 @@ axis2_array_list_t *AXIS2_CALL
 axis2_woden_wsdl_element_get_ext_attrs_for_namespace(
         void *wsdl_element,
         const axis2_env_t *env,
-        axis2_url_t *namespc) 
+        axis2_uri_t *namespc) 
 {
     axis2_woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -517,7 +517,7 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_wsdl_element_has_ext_attrs_for_namespace(
         void *wsdl_element,
         const axis2_env_t *env,
-        axis2_url_t *namespc)
+        axis2_uri_t *namespc)
 {
     axis2_woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -611,7 +611,7 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_wsdl_element_has_ext_elements_for_namespace(
         void *wsdl_element,
         const axis2_env_t *env,
-        axis2_url_t *namespc)
+        axis2_uri_t *namespc)
 {
     axis2_woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     axis2_hash_t *super = NULL;

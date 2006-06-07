@@ -37,7 +37,7 @@ struct axis2_woden_endpoint_impl
     woden_nc_name_t *f_name;
     axis2_qname_t *f_binding_qname;
     void *f_binding;
-    axis2_url_t *f_address;
+    axis2_uri_t *f_address;
 };
 
 #define INTF_TO_IMPL(endpoint) ((axis2_woden_endpoint_impl_t *) endpoint)
@@ -76,7 +76,7 @@ axis2_woden_endpoint_get_binding(
         void *endpoint,
         const axis2_env_t *env);
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_endpoint_get_address(
         void *endpoint,
         const axis2_env_t *env);
@@ -110,7 +110,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_set_address(
         void *endpoint,
         const axis2_env_t *env,
-        axis2_url_t *uri);
+        axis2_uri_t *uri);
 
 /******************************************************************************
  *  Non-API implementation methods
@@ -552,7 +552,7 @@ axis2_woden_endpoint_free(void *endpoint,
 
     if(endpoint_impl->f_address)
     {
-        AXIS2_URL_FREE(endpoint_impl->f_address, env);
+        AXIS2_URI_FREE(endpoint_impl->f_address, env);
         endpoint_impl->f_address = NULL;
     }
    
@@ -713,7 +713,7 @@ axis2_woden_endpoint_get_binding(
     return endpoint_impl->f_binding;
 }
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_endpoint_get_address(
         void *endpoint,
         const axis2_env_t *env)
@@ -813,7 +813,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_endpoint_set_address(
         void *endpoint,
         const axis2_env_t *env,
-        axis2_url_t *uri)
+        axis2_uri_t *uri)
 {
     axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;

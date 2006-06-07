@@ -15,7 +15,7 @@
  */
  
 #include <woden/wsdl20/axis2_woden_element_decl.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_woden_element_decl_impl axis2_woden_element_decl_impl_t;
@@ -30,7 +30,7 @@ struct axis2_woden_element_decl_impl
     axis2_woden_obj_types_t obj_type;
     axis2_hash_t *super;
     axis2_qname_t *f_qname;
-    axis2_url_t *f_system;
+    axis2_uri_t *f_system;
     axis2_char_t *f_content_model;
     axis2_generic_obj_t *f_content;
 };
@@ -61,7 +61,7 @@ axis2_woden_element_decl_get_qname(
         void *decl,
         const axis2_env_t *env); 
 
-axis2_url_t *AXIS2_CALL 
+axis2_uri_t *AXIS2_CALL 
 axis2_woden_element_decl_get_system(
         void *decl,
         const axis2_env_t *env); 
@@ -90,7 +90,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_element_decl_set_system(
         void *decl,
         const axis2_env_t *env,
-        axis2_url_t *type_system_uri); 
+        axis2_uri_t *type_system_uri); 
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_element_decl_set_content_model(
@@ -306,7 +306,7 @@ axis2_woden_element_decl_get_qname(
     return decl_impl->f_qname;
 }
 
-axis2_url_t *AXIS2_CALL 
+axis2_uri_t *AXIS2_CALL 
 axis2_woden_element_decl_get_system(
         void *decl,
         const axis2_env_t *env) 
@@ -389,7 +389,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_element_decl_set_system(
         void *decl,
         const axis2_env_t *env,
-        axis2_url_t *type_system_uri) 
+        axis2_uri_t *type_system_uri) 
 {
     axis2_woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -402,7 +402,7 @@ axis2_woden_element_decl_set_system(
 
     if(decl_impl->f_system)
     {
-        AXIS2_URL_FREE(decl_impl->f_system, env);
+        AXIS2_URI_FREE(decl_impl->f_system, env);
     }
     decl_impl->f_system = type_system_uri;
     return AXIS2_SUCCESS;

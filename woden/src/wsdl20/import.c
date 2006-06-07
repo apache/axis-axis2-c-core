@@ -34,7 +34,7 @@ struct axis2_woden_import_impl
     axis2_hash_t *super;
     axis2_hash_t *methods;
     
-    axis2_url_t *f_namespc;
+    axis2_uri_t *f_namespc;
 };
 
 #define INTF_TO_IMPL(import) ((axis2_woden_import_impl_t *) import)
@@ -63,9 +63,9 @@ axis2_status_t AXIS2_CALL
 axis2_woden_import_set_namespace(
         void *import,
         const axis2_env_t *env,
-        axis2_url_t *ns_uri);
+        axis2_uri_t *ns_uri);
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_import_get_namespace(
         void *import,
         const axis2_env_t *env);
@@ -314,7 +314,7 @@ axis2_woden_import_free(void *import,
 
     if(import_impl->f_namespc)
     {
-        AXIS2_URL_FREE(import_impl->f_namespc, env);
+        AXIS2_URI_FREE(import_impl->f_namespc, env);
         import_impl->f_namespc = NULL;
     }
    
@@ -429,7 +429,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_import_set_namespace(
         void *import,
         const axis2_env_t *env,
-        axis2_url_t *ns_uri)
+        axis2_uri_t *ns_uri)
 {
     axis2_woden_import_impl_t *import_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -445,12 +445,12 @@ axis2_woden_import_set_namespace(
         AXIS2_URI_FREE(import_impl->f_namespc, env);
         import_impl->f_namespc = NULL;
     }
-    import_impl->f_namespc = AXIS2_URL_CLONE(ns_uri, env);
+    import_impl->f_namespc = AXIS2_URI_CLONE(ns_uri, env);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_import_get_namespace(
         void *import,
         const axis2_env_t *env)

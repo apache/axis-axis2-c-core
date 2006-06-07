@@ -39,7 +39,7 @@ struct axis2_woden_binding_impl
     axis2_qname_t *f_qname;
     axis2_qname_t *f_interface_qname;
     void *f_interface;
-    axis2_url_t *f_type;
+    axis2_uri_t *f_type;
     /*
      * Binding faults and operations may be referred to specifically by the qname represented by
      * their 'ref' attribute. This typically suggests a Map implementation keyed by 'ref' qname. 
@@ -88,7 +88,7 @@ axis2_woden_binding_get_interface(
         void *binding,
         const axis2_env_t *env);
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_binding_get_type(
         void *binding,
         const axis2_env_t *env);
@@ -137,7 +137,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_binding_set_type(
         void *binding,
         const axis2_env_t *env,
-        axis2_url_t *type);
+        axis2_uri_t *type);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_binding_add_binding_fault_element(
@@ -654,7 +654,7 @@ axis2_woden_binding_free(void *binding,
 
     if(binding_impl->f_type)
     {
-        AXIS2_URL_FREE(binding_impl->f_type, env);
+        AXIS2_URI_FREE(binding_impl->f_type, env);
         binding_impl->f_type = NULL;
     }
 
@@ -855,7 +855,7 @@ axis2_woden_binding_get_interface(
     return binding_impl->f_interface;
 }
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_binding_get_type(
         void *binding,
         const axis2_env_t *env)
@@ -1007,7 +1007,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_binding_set_type(
         void *binding,
         const axis2_env_t *env,
-        axis2_url_t *type)
+        axis2_uri_t *type)
 {
     axis2_woden_binding_impl_t *binding_impl = NULL;
     axis2_hash_t *super = NULL;

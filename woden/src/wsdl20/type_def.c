@@ -32,7 +32,7 @@ struct axis2_woden_type_def_impl
     axis2_hash_t *super;
     axis2_hash_t *methods;
     axis2_qname_t *f_qname;
-    axis2_url_t *f_system;
+    axis2_uri_t *f_system;
     axis2_char_t *f_content_model;
     axis2_generic_obj_t *f_content;
 };
@@ -69,9 +69,9 @@ axis2_status_t AXIS2_CALL
 axis2_woden_type_def_set_system(
         void *type_def,
         const axis2_env_t *env,
-        axis2_url_t *type_system_uri);
+        axis2_uri_t *type_system_uri);
 
-axis2_url_t *AXIS2_CALL 
+axis2_uri_t *AXIS2_CALL 
 axis2_woden_type_def_get_system(
         void *type_def,
         const axis2_env_t *env);
@@ -366,7 +366,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_type_def_set_system(
         void *type_def,
         const axis2_env_t *env,
-        axis2_url_t *type_system_uri)
+        axis2_uri_t *type_system_uri)
 {
     axis2_woden_type_def_impl_t *type_def_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -385,7 +385,7 @@ axis2_woden_type_def_set_system(
     return AXIS2_SUCCESS;
 }
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_type_def_get_system(
         void *type_def,
         const axis2_env_t *env)

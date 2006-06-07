@@ -16,7 +16,7 @@
  
 #include <woden/wsdl20/extensions/axis2_woden_ext_registry.h>
 #include <woden/wsdl20/xml/axis2_woden_wsdl_element.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_woden_ext_registry_impl axis2_woden_ext_registry_impl_t;
@@ -131,7 +131,7 @@ axis2_woden_ext_registry_register_component_ext(
         void *registry,
         const axis2_env_t *env,
         axis2_char_t *parent_class,
-        axis2_url_t *ext_namespc,
+        axis2_uri_t *ext_namespc,
         void *comp_ext);
 
 void *AXIS2_CALL
@@ -139,7 +139,7 @@ axis2_woden_ext_registry_query_component_ext(
         void *registry,
         const axis2_env_t *env,
         axis2_char_t *parent_class,
-        axis2_url_t *ext_namespc);
+        axis2_uri_t *ext_namespc);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_ext_registry_query_component_ext_namespaces(
@@ -559,7 +559,7 @@ axis2_woden_ext_registry_register_component_ext(
         void *registry,
         const axis2_env_t *env,
         axis2_char_t *parent_class,
-        axis2_url_t *ext_namespc,
+        axis2_uri_t *ext_namespc,
         void *comp_ext)
 {
     axis2_woden_ext_registry_impl_t *registry_impl = NULL;
@@ -577,7 +577,7 @@ axis2_woden_ext_registry_register_component_ext(
         axis2_hash_set(registry_impl->comp_ext_reg, parent_class, 
                 AXIS2_HASH_KEY_STRING, inner_comp_ext_reg);
     }
-    namespc = AXIS2_URL_TO_EXTERNAL_FORM(ext_namespc, env);
+    namespc = AXIS2_URI_TO_STRING(ext_namespc, env);
     axis2_hash_set(inner_comp_ext_reg, namespc, AXIS2_HASH_KEY_STRING, comp_ext);
     return AXIS2_SUCCESS;
 }
@@ -595,7 +595,7 @@ axis2_woden_ext_registry_query_component_ext(
         void *registry,
         const axis2_env_t *env,
         axis2_char_t *parent_class,
-        axis2_url_t *ext_namespc)
+        axis2_uri_t *ext_namespc)
 {
     axis2_woden_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_comp_ext_reg = NULL;
@@ -607,7 +607,7 @@ axis2_woden_ext_registry_query_component_ext(
 
     inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg, 
             parent_class, AXIS2_HASH_KEY_STRING);
-    namespc = AXIS2_URL_TO_EXTERNAL_FORM(ext_namespc, env);
+    namespc = AXIS2_URI_TO_STRING(ext_namespc, env);
     if(NULL != inner_comp_ext_reg)
     {
         comp_ext = axis2_hash_get(inner_comp_ext_reg, namespc, 

@@ -230,7 +230,7 @@ axis2_woden_interface_fault_to_nested_element(
     interface_fault_impl->interface_fault.base.interface_fault_element.base.nested_element.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_nested_element_ops_t));
-    axis2_woden_interface_fault_element_resolve_methods(&(interface_fault_impl->interface_fault.base.
+    axis2_woden_nested_element_resolve_methods(&(interface_fault_impl->interface_fault.base.
             interface_fault_element.base.nested_element), env, interface_fault_impl->methods);
     return interface_fault;
 }

@@ -16,7 +16,7 @@
  
 #include <woden/wsdl20/extensions/axis2_woden_attr_extensible.h>
 #include <woden/xml/axis2_woden_xml_attr.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <axis2_hash.h>
 
 typedef struct axis2_woden_attr_extensible_impl axis2_woden_attr_extensible_impl_t;
@@ -74,13 +74,13 @@ axis2_array_list_t *AXIS2_CALL
 axis2_woden_attr_extensible_get_ext_attrs_for_namespace(
         void *extensible,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 axis2_bool_t AXIS2_CALL 
 axis2_woden_attr_extensible_has_ext_attrs_for_namespace(
         void *extensible,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 
 
@@ -356,7 +356,7 @@ axis2_woden_attr_extensible_get_ext_attrs(
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_attr_extensible_get_ext_attrs_for_namespace(void *extensible,
         const axis2_env_t *env,
-        axis2_url_t *namespc) 
+        axis2_uri_t *namespc) 
 {
     axis2_woden_attr_extensible_impl_t *extensible_impl = NULL;
     axis2_char_t *str_namespc = NULL;
@@ -369,7 +369,7 @@ axis2_woden_attr_extensible_get_ext_attrs_for_namespace(void *extensible,
     extensible_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_ATTR_EXTENSIBLE", AXIS2_HASH_KEY_STRING)); 
 
-    str_namespc = AXIS2_URL_TO_EXTERNAL_FORM(namespc, env);
+    str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     if(extensible_impl->temp_attrs)
     {
         int size = 0, i = 0;
@@ -401,7 +401,7 @@ axis2_woden_attr_extensible_get_ext_attrs_for_namespace(void *extensible,
 axis2_bool_t AXIS2_CALL 
 axis2_woden_attr_extensible_has_ext_attrs_for_namespace(void *extensible,
         const axis2_env_t *env,
-        axis2_url_t *namespc)
+        axis2_uri_t *namespc)
 {
     axis2_woden_attr_extensible_impl_t *extensible_impl = NULL;
     axis2_bool_t result = AXIS2_FALSE;
@@ -415,7 +415,7 @@ axis2_woden_attr_extensible_has_ext_attrs_for_namespace(void *extensible,
     extensible_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_ATTR_EXTENSIBLE", AXIS2_HASH_KEY_STRING)); 
 
-    str_namespc = AXIS2_URL_TO_EXTERNAL_FORM(namespc, env);
+    str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     for (index = axis2_hash_first (extensible_impl->f_ext_attrs, env); index; 
             index = axis2_hash_next (env, index))
     {

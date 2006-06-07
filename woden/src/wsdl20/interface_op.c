@@ -36,7 +36,7 @@ struct axis2_woden_interface_op_impl
     axis2_hash_t *super;
     axis2_hash_t *methods;
     axis2_qname_t *f_qname;
-    axis2_url_t *f_msg_exchange_pattern;
+    axis2_uri_t *f_msg_exchange_pattern;
     axis2_array_list_t *f_style;
     axis2_array_list_t *f_msg_refs;
     axis2_array_list_t *f_fault_refs;
@@ -73,7 +73,7 @@ axis2_woden_interface_op_get_qname(
         void *interface_op,
         const axis2_env_t *env);
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_interface_op_get_msg_exchange_pattern(
         void *interface_op,
         const axis2_env_t *env);
@@ -112,9 +112,9 @@ axis2_status_t AXIS2_CALL
 axis2_woden_interface_op_set_pattern(
         void *interface_op,
         const axis2_env_t *env,
-        axis2_url_t *uri);
+        axis2_uri_t *uri);
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_interface_op_get_pattern(
         void *interface_op,
         const axis2_env_t *env);
@@ -123,13 +123,13 @@ axis2_status_t AXIS2_CALL
 axis2_woden_interface_op_add_style_uri(
         void *interface_op,
         const axis2_env_t *env,
-        axis2_url_t *uri);
+        axis2_uri_t *uri);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_interface_op_remove_style_uri(
         void *interface_op,
         const axis2_env_t *env,
-        axis2_url_t *uri);
+        axis2_uri_t *uri);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_interface_op_add_interface_msg_ref_element(
@@ -452,7 +452,7 @@ axis2_woden_interface_op_free(
 
     if(interface_op_impl->f_msg_exchange_pattern)
     {
-        AXIS2_URL_FREE(interface_op_impl->f_msg_exchange_pattern, env);
+        AXIS2_URI_FREE(interface_op_impl->f_msg_exchange_pattern, env);
         interface_op_impl->f_msg_exchange_pattern = NULL;
     }
 
@@ -627,7 +627,7 @@ axis2_woden_interface_op_get_qname(
     return interface_op_impl->f_qname;
 }
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_interface_op_get_msg_exchange_pattern(
         void *interface_op,
         const axis2_env_t *env)
@@ -740,7 +740,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_interface_op_set_pattern(
         void *interface_op,
         const axis2_env_t *env,
-        axis2_url_t *uri)
+        axis2_uri_t *uri)
 {
     axis2_woden_interface_op_impl_t *interface_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -761,7 +761,7 @@ axis2_woden_interface_op_set_pattern(
     return AXIS2_SUCCESS;
 }
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_interface_op_get_pattern(
         void *interface_op,
         const axis2_env_t *env)
@@ -781,7 +781,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_interface_op_add_style_uri(
         void *interface_op,
         const axis2_env_t *env,
-        axis2_url_t *uri)
+        axis2_uri_t *uri)
 {
     axis2_woden_interface_op_impl_t *interface_op_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -809,7 +809,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_interface_op_remove_style_uri(
         void *interface_op,
         const axis2_env_t *env,
-        axis2_url_t *uri)
+        axis2_uri_t *uri)
 {
     axis2_woden_interface_op_impl_t *interface_op_impl = NULL;
     axis2_hash_t *super = NULL;

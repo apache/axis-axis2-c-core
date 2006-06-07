@@ -93,7 +93,7 @@ axis2_array_list_t *AXIS2_CALL
 axis2_woden_types_get_schemas_with_namespace(
         void *types,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_types_get_inlined_schemas(
@@ -132,7 +132,7 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_types_is_namespace_in_scope_with_namespace_uri(
         void *types,
         const axis2_env_t *env,
-        axis2_url_t *namespc_uri);
+        axis2_uri_t *namespc_uri);
 
 axis2_bool_t AXIS2_CALL 
 axis2_woden_types_is_namespace_in_scope_with_qname(
@@ -815,7 +815,7 @@ axis2_array_list_t *AXIS2_CALL
 axis2_woden_types_get_schemas_with_namespace(
         void *types,
         const axis2_env_t *env,
-        axis2_url_t *namespc)
+        axis2_uri_t *namespc)
 {
     axis2_woden_types_impl_t *types_impl = NULL;
     int i = 0, size = 0;
@@ -828,7 +828,7 @@ axis2_woden_types_get_schemas_with_namespace(
                 "AXIS2_WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     if(namespc)
-        str_namespc = AXIS2_URL_TO_EXTERNAL_FORM(namespc, env);
+        str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     size = AXIS2_ARRAY_LIST_SIZE(types_impl->f_schemas, env);
     for(i = 0; i < size; i++)
     {
@@ -1076,7 +1076,7 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_types_is_namespace_in_scope_with_namespace_uri(
         void *types,
         const axis2_env_t *env,
-        axis2_url_t *namespc_uri)
+        axis2_uri_t *namespc_uri)
 {
     axis2_woden_types_impl_t *types_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, namespc_uri, AXIS2_FAILURE);
@@ -1088,7 +1088,7 @@ axis2_woden_types_is_namespace_in_scope_with_namespace_uri(
     types_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
-    str_uri = AXIS2_URL_TO_EXTERNAL_FORM(namespc_uri, env);
+    str_uri = AXIS2_URI_TO_STRING(namespc_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
     return is_namespace_in_scope_with_namespace(types, env, str_uri);
 }
 
@@ -1100,7 +1100,7 @@ axis2_woden_types_is_namespace_in_scope_with_qname(
 {
     axis2_woden_types_impl_t *types_impl = NULL;
     axis2_char_t *str_uri = NULL;
-    axis2_url_t *uri = NULL;
+    axis2_uri_t *uri = NULL;
     axis2_hash_t *super = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1110,7 +1110,7 @@ axis2_woden_types_is_namespace_in_scope_with_qname(
                 "AXIS2_WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     str_uri = AXIS2_QNAME_GET_URI(qname, env);
-    uri = axis2_url_parse_string(env, str_uri);
+    uri = axis2_uri_parse_string(env, str_uri);
     return is_namespace_in_scope_with_namespace_uri(types, env, uri);
 }
 

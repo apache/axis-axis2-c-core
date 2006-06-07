@@ -91,13 +91,13 @@ axis2_array_list_t *AXIS2_CALL
 axis2_woden_documentation_get_ext_attrs_for_namespace(
         void *documentation,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 axis2_bool_t AXIS2_CALL 
 axis2_woden_documentation_has_ext_attrs_for_namespace(
         void *documentation,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_documentation_add_ext_element(
@@ -126,7 +126,7 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_documentation_has_ext_elements_for_namespace(
         void *documentation,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 static axis2_woden_documentation_t *
 create(const axis2_env_t *env);

@@ -53,13 +53,13 @@ axis2_woden_component_exts_t *AXIS2_CALL
 axis2_woden_wsdl_obj_get_component_exts_for_namespace(
         void *wsdl_obj,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL
 axis2_woden_wsdl_obj_set_component_exts(
         void *wsdl_obj,
        const axis2_env_t *env,
-       axis2_url_t *namespc,
+       axis2_uri_t *namespc,
        axis2_woden_component_exts_t *exts);
 
 static axis2_woden_wsdl_obj_t *
@@ -219,7 +219,7 @@ axis2_woden_component_exts_t *AXIS2_CALL
 axis2_woden_wsdl_obj_get_component_exts_for_namespace(
         void *wsdl_obj,
         const axis2_env_t *env,
-        axis2_url_t *namespc)
+        axis2_uri_t *namespc)
 {
     axis2_woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
     axis2_char_t *str_namespc = NULL;
@@ -230,7 +230,7 @@ axis2_woden_wsdl_obj_get_component_exts_for_namespace(
     wsdl_obj_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING));
 
-    str_namespc = AXIS2_URL_TO_EXTERNAL_FORM(namespc, env);
+    str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     return (axis2_woden_component_exts_t *)axis2_hash_get(wsdl_obj_impl->
             f_comp_exts, str_namespc, AXIS2_HASH_KEY_STRING);
 }
@@ -239,7 +239,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_wsdl_obj_set_component_exts(
         void *wsdl_obj,
         const axis2_env_t *env,
-        axis2_url_t *namespc,
+        axis2_uri_t *namespc,
         axis2_woden_component_exts_t *exts)
 {
     axis2_woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;

@@ -65,12 +65,12 @@ axis2_woden_soap_binding_exts_get_soap_version(
         void *binding_exts,
         const axis2_env_t *env);
 
-axis2_url_t *AXIS2_CALL 
+axis2_uri_t *AXIS2_CALL 
 axis2_woden_soap_binding_exts_get_soap_underlying_protocol(
         void *binding_exts,
         const axis2_env_t *env);
 
-axis2_url_t *AXIS2_CALL 
+axis2_uri_t *AXIS2_CALL 
 axis2_woden_soap_binding_exts_get_soap_mep_default(
         void *binding_exts,
         const axis2_env_t *env);
@@ -384,7 +384,7 @@ axis2_woden_soap_binding_exts_get_soap_version(
         NULL;
 }
 
-axis2_url_t *AXIS2_CALL 
+axis2_uri_t *AXIS2_CALL 
 axis2_woden_soap_binding_exts_get_soap_underlying_protocol(
         void *binding_exts,
         const axis2_env_t *env) 
@@ -407,7 +407,7 @@ axis2_woden_soap_binding_exts_get_soap_underlying_protocol(
     return protocol != NULL ? AXIS2_WODEN_URI_ATTR_GET_URI(protocol, env) : NULL;
 }
 
-axis2_url_t *AXIS2_CALL 
+axis2_uri_t *AXIS2_CALL 
 axis2_woden_soap_binding_exts_get_soap_mep_default(
         void *binding_exts,
         const axis2_env_t *env) 
