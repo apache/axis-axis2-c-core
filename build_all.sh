@@ -111,3 +111,5 @@ if [ "$?" -ne 0 ]
 then
 exit
 fi
+
+cd ..
