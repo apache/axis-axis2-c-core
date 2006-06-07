@@ -22,7 +22,7 @@ typedef struct woden_reader_impl woden_reader_impl_t;
 
 /** 
  * @brief Woden Wsdl Reader Struct Impl
- *	Woden Wsdl Reader  
+ *   Woden Wsdl Reader  
  */ 
 struct woden_reader_impl
 {

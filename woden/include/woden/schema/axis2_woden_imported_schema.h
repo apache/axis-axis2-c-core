@@ -104,7 +104,7 @@ axis2_woden_imported_schema_resolve_methods(
       (((axis2_woden_imported_schema_t *) schema)->ops->free(schema, env))
 
 #define AXIS2_WODEN_IMPORTED_SCHEMA_TYPE(schema, env) \
-		(((axis2_woden_imported_schema_t *) schema)->ops->type(schema, env))
+      (((axis2_woden_imported_schema_t *) schema)->ops->type(schema, env))
 
 #define AXIS2_WODEN_IMPORTED_SCHEMA_GET_BASE_IMPL(schema, env) \
       (((axis2_woden_imported_schema_t *) schema)->ops->get_base_impl(schema, \

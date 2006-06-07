@@ -88,7 +88,7 @@ AXIS2_EXTERN axis2_url_t * AXIS2_CALL
 axis2_url_create (
         const axis2_env_t *env, 
         const axis2_char_t *protocol, 
-		const axis2_char_t *server, 
+      const axis2_char_t *server, 
         const int port, 
         const axis2_char_t *path)
 {

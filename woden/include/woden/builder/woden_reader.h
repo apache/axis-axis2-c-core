@@ -51,7 +51,7 @@ extern "C"
 
 struct woden_reader_ops
 {
-	/** 
+   /** 
      * Deallocate memory
      * @return status code
      */
@@ -72,7 +72,7 @@ woden_reader_create(
         const axis2_env_t *env);
 
 #define WODEN_READER_FREE(reader, env) \
-		(((woden_reader_t *) reader)->ops->free(reader, env))
+      (((woden_reader_t *) reader)->ops->free(reader, env))
 
 /** @} */
 #ifdef __cplusplus

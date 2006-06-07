@@ -171,11 +171,11 @@ axis2_woden_interface_fault_resolve_methods(
          to_element(interface_fault, env))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_SET_ELEMENT_DECLARATION(interface_fault, env, element_decl) \
-		(((axis2_woden_interface_fault_t *) interface_fault)->ops->\
+      (((axis2_woden_interface_fault_t *) interface_fault)->ops->\
         set_element_declaration (interface_fault, env, element_decl))
 
 #define AXIS2_WODEN_INTERFACE_FAULT_SET_TYPES(interface_fault, env, types) \
-		(((axis2_woden_interface_fault_t *) interface_fault)->ops->\
+      (((axis2_woden_interface_fault_t *) interface_fault)->ops->\
         set_types (interface_fault, env, types))
 
 /** @} */
