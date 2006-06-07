@@ -14,15 +14,15 @@
  * limitations under the License.
  */
  
-#include <woden_om_node.h>
-#include <woden_om_element.h>
+#include <woden_om_util.h>
 #include <axis2_qname.h>
+#include <axis2_om_element.h>
 
 
 AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
 woden_om_util_get_qname(
         const axis2_env_t *env,
-        woden_om_node_t *context_el_node,
+        axis2_om_node_t *context_el_node,
         axis2_char_t *prefixed_value,
         void *desc)
 {
@@ -30,14 +30,19 @@ woden_om_util_get_qname(
     axis2_char_t *prefix = "";
     axis2_char_t *localpart = NULL;
     axis2_char_t *namespc_uri_str = NULL;
+    axis2_om_element_t *context_el = NULL;
+    axis2_om_namespace_t *namespc_uri = NULL;
 
     index = axis2_rindex(prefixed_value, ':');
     localpart = index + 1;
     index[0] = '\0';
     prefix = prefixed_value;
 
-    namespc_uri_str = woden_om_util_get_namespace_uri_from_prefix(
-            env, context_el_node, prefix);
+    context_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(context_el_node, env);
+
+    namespc_uri = AXIS2_OM_ELEMENT_FIND_NAMESPACE_URI(context_el,
+            env, prefix, context_el_node);
+    namespc_uri_str = AXIS2_OM_NAMESPACE_GET_URI(namespc_uri, env);
     if(NULL != namespc_uri_str)
     {
         woden_om_util_register_unique_prefix(env, prefix, namespc_uri_str, desc);
@@ -47,7 +52,7 @@ woden_om_util_get_qname(
 }        
  
 AXIS2_EXTERN axis2_status_t  AXIS2_CALL
-woden_om_util_get_qname(
+woden_om_util_register_unique_prefix(
         const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_char_t *namespc_uri_str,
@@ -82,42 +87,3 @@ woden_om_util_get_qname(
     return AXIS2_WODEN_DESC_ELEMENT_ADD_NAMESPACE(desc, env, namespc_uri_str);
 }
  
-/**
-* Given a prefix and a node, return the namespace URI that the prefix
-* has been associated with. This method is useful in resolving the
-* namespace URI of attribute values which are being interpreted as
-* QNames. If prefix is null, this method will return the default
-* namespace.
-*
-* @param context the starting node (looks up recursively from here)
-* @param prefix the prefix to find an xmlns:prefix=uri for
-*
-* @return the namespace URI or null if not found
-*/
-AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
-woden_om_util_get_namespace_uri_from_prefix(
-        const axis2_env_t *env,
-        axis2_om_node_t *context_el_node,
-        axis2_char_t *prefix)
-{
-    axis2_om_types_t node_type = AXIS2_OM_INVALID;
-    axis2_om_node_t *temp_node = NULL;
-    axis2_om_element_t *
-
-    node_type = AXIS2_OM_NODE_GET_NODE_TYPE(context_el_node, env);
-    switch(node_type)
-    {
-        case AXIS2_OM_ATTRIBUTE:
-        {
-            temp_node = context_el_node;
-        }
-        case AXIS2_OM_ELEMENT:
-        {
-            temp_node = AXIS2_OM_NODE_GET_PARENT(context_el_node, env);
-        }
-        default:
-        {
-        }
-    }
-}
-
