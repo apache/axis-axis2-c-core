@@ -174,13 +174,25 @@ axis2_uri_parse_hostinfo(
         const axis2_env_t *env, 
         const axis2_char_t *hostinfo);
 
-/* Resolve relative to a base.  This means host/etc, and (crucially) path */
+/** Resolve relative to a base.  This means host/etc, and (crucially) path */
 AXIS2_EXTERN axis2_uri_t *AXIS2_CALL 
 axis2_uri_resolve_relative(
         const axis2_env_t *env,
         const axis2_uri_t* base,
         axis2_uri_t* uptr);
 
+/**
+ * Return a URI created from a context URI and a relative URI.
+ * If a valid URI cannot be created the only other possibility
+ * this method will consider is that an absolute file path has
+ * been passed in as the relative URI argument, and it will try
+ * to create a 'file' URI from it.
+ *
+ * @param context_uri the document base URI
+ * @param uri a file URI relative to the context_uri or an
+ * absolute file path
+ * @return the URIcreated from context_uri and uri
+ */
 AXIS2_EXTERN axis2_uri_t *AXIS2_CALL 
 axis2_uri_parse_relative(
         const axis2_env_t *env,
