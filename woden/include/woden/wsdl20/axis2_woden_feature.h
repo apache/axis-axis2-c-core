@@ -74,7 +74,7 @@ struct axis2_woden_feature_ops
             void *feature,
             const axis2_env_t *env);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_ref) (
             void *feature,
             const axis2_env_t *env);

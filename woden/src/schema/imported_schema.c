@@ -16,7 +16,7 @@
 
 #include <woden/schema/axis2_woden_imported_schema.h>
 #include <xml_schema/axis2_xml_schema.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 
 typedef struct axis2_woden_imported_schema_impl axis2_woden_imported_schema_impl_t;
 
@@ -30,7 +30,7 @@ struct axis2_woden_imported_schema_impl
     axis2_woden_schema_t *schema;
     axis2_woden_obj_types_t obj_type;
     axis2_hash_t *methods;
-    axis2_url_t *f_schema_location;
+    axis2_uri_t *f_schema_location;
 };
 
 #define INTF_TO_IMPL(schema) \
@@ -55,9 +55,9 @@ axis2_status_t AXIS2_CALL
 axis2_woden_imported_schema_set_location(
         void *schema,
         const axis2_env_t *env,
-        axis2_url_t *location);
+        axis2_uri_t *location);
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_imported_schema_get_location(
         void *schema,
         const axis2_env_t *env);
@@ -66,9 +66,9 @@ axis2_status_t AXIS2_CALL
 axis2_woden_imported_schema_set_namespace(
         void *schema,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
-axis2_url_t *AXIS2_CALL 
+axis2_uri_t *AXIS2_CALL 
 axis2_woden_imported_schema_get_namespace(
         void *schema,
         const axis2_env_t *env);
@@ -261,7 +261,7 @@ axis2_woden_imported_schema_free(
 
     if(schema_impl->f_schema_location)
     {
-        AXIS2_URL_FREE(schema_impl->f_schema_location, env);
+        AXIS2_URI_FREE(schema_impl->f_schema_location, env);
         schema_impl->f_schema_location = NULL;
     }
  
@@ -332,7 +332,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_imported_schema_set_location(
         void *schema,
         const axis2_env_t *env,
-        axis2_url_t *location)
+        axis2_uri_t *location)
 {
     axis2_woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -341,14 +341,14 @@ axis2_woden_imported_schema_set_location(
 
     if(schema_impl->f_schema_location)
     {
-        AXIS2_URL_FREE(schema_impl->f_schema_location, env);
+        AXIS2_URI_FREE(schema_impl->f_schema_location, env);
         schema_impl->f_schema_location = NULL;
     }
     schema_impl->f_schema_location = location;
     return AXIS2_SUCCESS;
 }
 
-axis2_url_t *AXIS2_CALL 
+axis2_uri_t *AXIS2_CALL 
 axis2_woden_imported_schema_get_location(
         void *schema,
         const axis2_env_t *env)
@@ -365,7 +365,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_imported_schema_set_namespace(
         void *schema,
         const axis2_env_t *env,
-        axis2_url_t *namespc)
+        axis2_uri_t *namespc)
 {
     axis2_woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -376,7 +376,7 @@ axis2_woden_imported_schema_set_namespace(
     return AXIS2_WODEN_SCHEMA_SET_NAMESPACE(schema_impl->schema, env, namespc);
 }
 
-axis2_url_t *AXIS2_CALL 
+axis2_uri_t *AXIS2_CALL 
 axis2_woden_imported_schema_get_namespace(
         void *schema,
         const axis2_env_t *env)

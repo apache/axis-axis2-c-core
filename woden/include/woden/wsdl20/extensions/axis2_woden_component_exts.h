@@ -43,10 +43,10 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <woden/axis2_woden.h>
 
 #ifdef __cplusplus
@@ -88,7 +88,7 @@ struct axis2_woden_component_exts_ops
     type) (void *component_exts,
             const axis2_env_t *env);
     
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_namespace) (
             void *component_exts,
             const axis2_env_t *env);
@@ -98,7 +98,7 @@ struct axis2_woden_component_exts_ops
             void *component_exts,
             const axis2_env_t *env,
             struct axis2_woden_wsdl_element *parent_el,
-            axis2_url_t *namespc);
+            axis2_uri_t *namespc);
 
     void *(AXIS2_CALL *
     get_parent_element) (

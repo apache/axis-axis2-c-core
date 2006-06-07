@@ -166,9 +166,9 @@ parse_desc(
     woden_reader_impl_t *reader_impl = NULL;
     void *desc = NULL;
     void *ext_reg = NULL;
-    axis2_url_t *uri = NULL;
+    axis2_uri_t *uri = NULL;
     axis2_char_t *target_namespc = NULL;
-    axis2_url_t *target_namespc_uri = NULL;
+    axis2_uri_t *target_namespc_uri = NULL;
     axis2_om_element_t *desc_el = NULL;
     axis2_hash_t *attrs = NULL;
     axis2_hash_index_t *index = NULL;
@@ -461,7 +461,7 @@ parse_import(
 
     if(NULL != namespc_uri) 
     {
-        axis2_url_t *uri = NULL;
+        axis2_uri_t *uri = NULL;
 
         /* TODO handle missing namespace attribute (REQUIRED attr) */
         uri = get_uri(reader, env, namespc_uri);
@@ -470,7 +470,7 @@ parse_import(
     
     if(NULL != location_uri)
     {
-        axis2_url_t *uri = NULL;
+        axis2_uri_t *uri = NULL;
         void *imported_desc = NULL;
         
         /* TODO handle missing locationURI (OPTIONAL attr) */
@@ -617,9 +617,9 @@ parse_schema_import(
 {
     woden_reader_impl_t *reader_impl = NULL;
     void *schema = NULL;
-    axis2_url_t *uri = NULL;
+    axis2_uri_t *uri = NULL;
     void *schema_def = NULL; 
-    axis2_url_t *context_uri = NULL;
+    axis2_uri_t *context_uri = NULL;
     axis2_char_t *shcema_loc = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -658,7 +658,7 @@ parse_schema_import(
     desc = axis2_woden_desc_to_desc_element(desc, env);
     context_uri = AXIS2_WODEN_DESC_ELEMENT_GET_DOCUMENT_BASE_URI(desc, env);
     uri = AXIS2_WODEN_IMPORTED_SCHEMA_GET_LOCATION(schema, env);
-    schema_loc = AXIS2_URL_TO_EXTERNAL_FORM(uri, env);
+    schema_loc = AXIS2_URI_TO_STRING(uri, env);
     uri = axis2_string_util_get_url(env, context_uri, schema_loc);
     if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
@@ -726,11 +726,11 @@ void *parse_interface(
     if(NULL != name)
     {
         axis2_qname_t *qname = NULL;
-        axis2_url_t *namespc = NULL;
+        axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
 
         namespc = AXIS2_WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
-        namespc_str = AXIS2_URL_TO_EXTERNAL_FORM(namespc, env);
+        namespc_str = AXIS2_URI_TO_STRING(namespc, env);
         qname = axis2_qname_create(env, name, namespc_str, NULL);
         intface = axis2_woden_interface_to_interface_element(intface, env);
         AXIS2_WODEN_INTERFACE_ELEMENT_SET_QNAME(intface, env, qname);
@@ -751,7 +751,7 @@ void *parse_interface(
         for(i = 0; i < size; i++)
         {
             uri_str = AXIS2_ARRAY_LIST_GET(string_list, env, i);
-            axis2_url_t *uri = NULL;
+            axis2_uri_t *uri = NULL;
             intface = axis2_woden_interface_to_interface_element(intface, env);
             uri = get_uri(reader, env, uri_str);
             AXIS2_WODEN_INTERFACE_ELMENT_ADD_STYLE_DEFAULT_URI(intface, env, uri);
@@ -877,13 +877,13 @@ void *parse_interface_fault(
     if(NULL != name)
     {
         axis2_qname_t *qname = NULL;
-        axis2_url_t *namespc = NULL;
+        axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
 
         ns = AXIS2_WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         if(!ns)
             ns_str = WODEN_VALUE_EMPTY_STRING;
-        ns_str = AXIS2_URL_TO_EXTERNAL_FORM(ns, env);
+        ns_str = AXIS2_URI_TO_STRING(ns, env);
         qname = axis2_qname_create(env, name, ns_str, NULL);
         fault = axis2_woden_interface_to_interface_fault_element(fault, env);
         AXIS2_WODEN_INTERFACE_FAULT_ELEMENT_SET_QNAME(fault, env, qname);
@@ -2357,8 +2357,8 @@ get_wsdl_from_location(
         void *desc,
         axis2_hash_t *wsdl_modules)
 {
-    axis2_url_t *context_uri = NULL;
-    axis2_url_t *location_uri = NULL;
+    axis2_uri_t *context_uri = NULL;
+    axis2_uri_t *location_uri = NULL;
     axis2_char_t *location_str = NULL;
     void *referenced_desc = NULL;
 
@@ -2372,7 +2372,7 @@ get_wsdl_from_location(
         /* Can't continue import with a bad URL.*/
         return NULL;
     }
-    location_str = AXIS2_URL_TO_EXTERNAL_FORM(location_uri, env);
+    location_str = AXIS2_URI_TO_STRING(location_uri, env);
 
     /* Check if WSDL imported or included previously from this location.*/
     referenced_desc = axis2_hash_get(wsdl_modules, location_str, AXIS2_HASH_KEY_STRING);
@@ -2512,7 +2512,7 @@ class WSDLEntityResolver implements org.xml.sax.EntityResolver
     
 }
 
-static axis2_url_t *
+static axis2_uri_t *
 get_uri(
         void *reader,
         static axis2_env_t *env,
@@ -2526,10 +2526,10 @@ get_uri(
 
     if(reader_impl->uri)
     {
-        AXIS2_URL_FREE(reader_impl->uri, env);
+        AXIS2_URI_FREE(reader_impl->uri, env);
         reader_impl->uri = NULL;
     }
-    reader_impl->uri = axis2_url_parse_string(env, uri_str);
+    reader_impl->uri = axis2_uri_parse_string(env, uri_str);
     
     return reader_impl->uri;
 }

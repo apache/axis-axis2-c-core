@@ -26,7 +26,7 @@ typedef struct axis2_woden_schema_impl axis2_woden_schema_impl_t;
 struct axis2_woden_schema_impl
 {
     axis2_woden_schema_t schema;
-    axis2_url_t *f_namespc;
+    axis2_uri_t *f_namespc;
     axis2_xml_schema_t *f_schema_def;
     axis2_bool_t f_is_referenceable;
 };
@@ -42,9 +42,9 @@ axis2_status_t AXIS2_CALL
 axis2_woden_schema_set_namespace(
         void *schema,
         const axis2_env_t *env,
-        axis2_url_t *namespc);
+        axis2_uri_t *namespc);
 
-axis2_url_t *AXIS2_CALL 
+axis2_uri_t *AXIS2_CALL 
 axis2_woden_schema_get_namespace(
         void *schema,
         const axis2_env_t *env);
@@ -176,7 +176,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_schema_set_namespace(
         void *schema,
         const axis2_env_t *env,
-        axis2_url_t *namespc)
+        axis2_uri_t *namespc)
 {
     axis2_woden_schema_impl_t *schema_impl = NULL;
 
@@ -186,7 +186,7 @@ axis2_woden_schema_set_namespace(
 
     if(schema_impl->f_namespc)
     {
-        AXIS2_URL_FREE(schema_impl->f_namespc, env);
+        AXIS2_URI_FREE(schema_impl->f_namespc, env);
         schema_impl->f_namespc = NULL;
     }
     schema_impl->f_namespc = namespc;
@@ -194,7 +194,7 @@ axis2_woden_schema_set_namespace(
     return AXIS2_SUCCESS;
 }
 
-axis2_url_t *AXIS2_CALL 
+axis2_uri_t *AXIS2_CALL 
 axis2_woden_schema_get_namespace(
         void *schema,
         const axis2_env_t *env)
@@ -282,6 +282,6 @@ axis2_woden_schema_get_namespace_as_string(
     schema_impl = INTF_TO_IMPL(schema);
 
     return schema_impl->f_namespc != NULL ? 
-        AXIS2_URL_TO_EXTERNAL_FORM(schema_impl->f_namespc, env) : NULL;
+        AXIS2_URI_TO_STRING(schema_impl->f_namespc, env) : NULL;
 }
 

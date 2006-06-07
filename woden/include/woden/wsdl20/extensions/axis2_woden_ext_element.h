@@ -36,7 +36,7 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <woden/axis2_woden.h>
@@ -49,7 +49,7 @@ extern "C"
 typedef struct axis2_woden_ext_element axis2_woden_ext_element_t;
 typedef struct axis2_woden_ext_element_ops axis2_woden_ext_element_ops_t;
 struct axis2_xml_ext_element;
-struct axis2_url;
+struct axis2_uri;
 
 /** @defgroup axis2_woden_ext_element Extension Element
   * @ingroup axis2_wsdl

@@ -1,1 +1,1 @@
-SUBDIRS = util types schema xml wsdl20 builder
+SUBDIRS = util types schema xml wsdl20

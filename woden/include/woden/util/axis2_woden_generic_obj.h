@@ -20,7 +20,7 @@
 #include <axis2_defines.h>
 #include <axis2_error.h>
 #include <axis2_env.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 
 
 #ifdef __cplusplus

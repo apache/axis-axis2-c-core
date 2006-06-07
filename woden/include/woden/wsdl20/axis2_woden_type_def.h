@@ -31,7 +31,7 @@
 #include <woden/axis2_woden.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 
 /** @defgroup axis2_woden_type_def Type Definition
   * @ingroup axis2_wsdl
@@ -87,9 +87,9 @@ struct axis2_woden_type_def_ops
     set_system) (
             void *type_def,
             const axis2_env_t *env,
-            axis2_url_t *type_system_uri);
+            axis2_uri_t *type_system_uri);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_system) (
             void *type_def,
             const axis2_env_t *env);

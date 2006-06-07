@@ -29,10 +29,10 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <axis2_array_list.h>
 #include <woden/axis2_woden.h>
 #include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
@@ -73,9 +73,9 @@ struct axis2_woden_soap_module_element_ops
     set_ref) (
             void *soap_module_element,
             const axis2_env_t *env,
-            axis2_url_t *uri);
+            axis2_uri_t *uri);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_ref) (
             void *soap_module_element,
             const axis2_env_t *env); 

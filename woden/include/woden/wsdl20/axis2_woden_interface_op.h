@@ -73,7 +73,7 @@ struct axis2_woden_interface_op_ops
             void *interface_op,
             const axis2_env_t *env);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_msg_exchange_pattern) (
             void *interface_op,
             const axis2_env_t *env);

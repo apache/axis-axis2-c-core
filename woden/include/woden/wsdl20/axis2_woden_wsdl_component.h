@@ -29,9 +29,9 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_hash.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <woden/axis2_woden.h>
 
 #ifdef __cplusplus
@@ -73,7 +73,7 @@ struct axis2_woden_wsdl_component_ops
     get_component_exts_for_namespace) (
             void *wsdl_component,
             const axis2_env_t *env,
-            axis2_url_t *namespc);
+            axis2_uri_t *namespc);
 
 };
 

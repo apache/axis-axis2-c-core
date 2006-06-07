@@ -44,7 +44,7 @@ build_element_decls(
         void *builder,
         const axis2_env_t *env,
         void *schema_def,
-        axis2_url_t *type_system_uri);
+        axis2_uri_t *type_system_uri);
     
 /*
  * Extract the type definitions from the given schema. 
@@ -54,7 +54,7 @@ build_type_defs(
         void *builder,
         const axis2_env_t *env,
         void *schema_def,
-        axis2_url_t *type_system_uri);
+        axis2_uri_t *type_system_uri);
 
 /* *******************************************************************************
  *  INTERFACE
@@ -172,7 +172,7 @@ create_component_exts(
         const axis2_env_t *env,
         axis2_char_t *parent_class,
         void *parent_elem,
-        axis2_url_t *ext_ns);
+        axis2_uri_t *ext_ns);
 
 /* *******************************************************************************
  *  SERVICE
@@ -328,7 +328,7 @@ build_elements_and_types(
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
     void *types = NULL;
-    axis2_url_t *type_system_uri = NULL;
+    axis2_uri_t *type_system_uri = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
@@ -336,7 +336,7 @@ build_elements_and_types(
 
     types = AXIS2_WODEN_DESC_GET_TYPES_ELEMENT(desc, env);
     
-    type_system_uri = axis2_url_parse_string(env, WODEN_TYPE_XSD_2001);
+    type_system_uri = axis2_uri_parse_string(env, WODEN_TYPE_XSD_2001);
     
     if(NULL != types)
     {
@@ -395,7 +395,7 @@ build_element_decls(
         void *builder,
         const axis2_env_t *env,
         void *schema_def,
-        axis2_url_t *type_system_uri)
+        axis2_uri_t *type_system_uri)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
     axis2_char_t *schema_tns = NULL;
@@ -451,7 +451,7 @@ build_type_defs(
         void *builder,
         const axis2_env_t *env,
         void *schema_def,
-        axis2_url_t *type_system_uri)
+        axis2_uri_t *type_system_uri)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
     axis2_char_t *schema_tns = NULL;
@@ -923,7 +923,7 @@ build_binding_exts(
     axis2_array_list_t *ext_namespcs = NULL;
     int i = 0, size = 0;
     void *parent_element = NULL;
-    axis2_url_t *binding_type = NULL;
+    axis2_uri_t *binding_type = NULL;
     axis2_char_t *binding_type_str = NULL;
 
     er = AXIS2_WODEN_DESC_GET_EXT_REGISTRY(builder_impl->f_desc, env);
@@ -937,7 +937,7 @@ build_binding_exts(
     size = AXIS2_ARRAY_LIST_SIZE(ext_namespcs, env);
     for(i = 0; i < size; i++)
     {
-        axis2_url_t *ext_ns = NULL;
+        axis2_uri_t *ext_ns = NULL;
         axis2_bool_t temp1 = AXIS2_FALSE;
         axis2_bool_t temp2 = AXIS2_FALSE;
         
@@ -970,7 +970,7 @@ build_binding_exts(
      * extensions can be registered in some way and interpreted here at run time.
      */
     binding_type = AXIS2_WODEN_BINDING_GET_TYPE(binding, env);
-    binding_type_str = AXIS2_URL_TO_EXTERNAL_FORM(binding_type, env);
+    binding_type_str = AXIS2_URI_TO_STRING(binding_type, env);
     if(0 == AXIS2_STRCMP(AXIS2_WODEN_URI_NS_SOAP, binding_type_str))
     {
         void *sbe = NULL;
@@ -1009,7 +1009,7 @@ build_binding_fault_ref_exts(
     axis2_array_list_t *ext_namespcs = NULL;
     int i = 0, size = 0;
     void *parent_element = NULL;
-    axis2_url_t *binding_type = NULL;
+    axis2_uri_t *binding_type = NULL;
     axis2_char_t *binding_type_str = NULL;
 
     er = AXIS2_WODEN_DESC_GET_EXT_REGISTRY(builder_impl->f_desc, env);
@@ -1023,7 +1023,7 @@ build_binding_fault_ref_exts(
     size = AXIS2_ARRAY_LIST_SIZE(ext_namespcs, env);
     for(i = 0; i < size; i++)
     {
-        axis2_url_t *ext_ns = NULL;
+        axis2_uri_t *ext_ns = NULL;
         axis2_bool_t temp1 = AXIS2_FALSE;
         axis2_bool_t temp2 = AXIS2_FALSE;
         
@@ -1059,7 +1059,7 @@ build_binding_fault_ref_exts(
     parent_element = AXIS2_WODEN_NESTED_ELEMENT_GET_PARENT_ELEMENT(bind_fault, env);
     parent_element = axis2_woden_binding_to_binding_element(parent_element, env);
     binding_type = AXIS2_WODEN_BINDING_ELEMENT_GET_TYPE(parent_element, env);
-    binding_type_str = AXIS2_URL_TO_EXTERNAL_FORM(binding_type, env);
+    binding_type_str = AXIS2_URI_TO_STRING(binding_type, env);
     if(0 == AXIS2_STRCMP(AXIS2_WODEN_URI_NS_SOAP, binding_type_str))
     {
         /* If the binding type is SOAP, the {soap fault code} and {soap fault subcodes} properties
@@ -1100,7 +1100,7 @@ build_binding_op_exts(
      */
     for(i = 0; i < size; i++)
     {
-        axis2_url_t *ext_ns = NULL;
+        axis2_uri_t *ext_ns = NULL;
         axis2_bool_t temp1 = AXIS2_FALSE;
         axis2_bool_t temp2 = AXIS2_FALSE;
 
@@ -1136,7 +1136,7 @@ build_binding_op_exts(
     parent_element = AXIS2_WODEN_NESTED_ELEMENT_GET_PARENT_ELEMENT(bind_op, env);
     parent_element = axis2_woden_binding_to_binding_element(parent_element, env);
     binding_type = AXIS2_WODEN_BINDING_ELEMENT_GET_TYPE(parent_element, env);
-    binding_type_str = AXIS2_URL_TO_EXTERNAL_FORM(binding_type, env);
+    binding_type_str = AXIS2_URI_TO_STRING(binding_type, env);
     if(0 == AXIS2_STRCMP(AXIS2_WODEN_URI_NS_SOAP, binding_type_str))
     {
         /*
@@ -1178,7 +1178,7 @@ build_binding_msg_ref_exts(
         size = AXIS2_ARRAY_LIST_SIZE(ext_namespcs, env);
     for(i = 0; i < size; i++)
     {
-        axis2_url_t *ext_ns = NULL;
+        axis2_uri_t *ext_ns = NULL;
         axis2_bool_t temp1 = AXIS2_FALSE;
         axis2_bool_t temp2 = AXIS2_FALSE;
 
@@ -1219,7 +1219,7 @@ build_binding_fault_ref_exts(
         size = AXIS2_ARRAY_LIST_SIZE(ext_namespcs, env);
     for(i = 0; i < size; i++)
     {
-        axis2_url_t *ext_ns = NULL;
+        axis2_uri_t *ext_ns = NULL;
         axis2_bool_t temp1 = AXIS2_FALSE;
         axis2_bool_t temp2 = AXIS2_FALSE;
 
@@ -1256,7 +1256,7 @@ create_component_exts(
         const axis2_env_t *env,
         axis2_char_t *parent_class,
         void *parent_elem,
-        axis2_url_t *ext_ns)
+        axis2_uri_t *ext_ns)
 {
     axis2_woden_component_model_builder_impl_t *builder_impl = NULL;
     axis2_woden_ext_registry_t *er = NULL;

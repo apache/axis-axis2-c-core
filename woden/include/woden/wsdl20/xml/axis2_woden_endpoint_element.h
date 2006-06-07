@@ -29,10 +29,10 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <woden/axis2_woden.h>
 #include <woden/wsdl20/xml/axis2_woden_documentable_element.h>
 #include <woden/wsdl20/xml/axis2_woden_configurable_element.h>
@@ -100,9 +100,9 @@ struct axis2_woden_endpoint_element_ops
     set_address) (
             void *endpoint_el,
             const axis2_env_t *env,
-            axis2_url_t *uri);
+            axis2_uri_t *uri);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_address) (
             void *endpoint_el,
             const axis2_env_t *env);

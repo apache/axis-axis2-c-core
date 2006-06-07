@@ -44,7 +44,7 @@
 #include <axis2_string.h>
 #include <axis2_utils.h>
 #include <axis2_hash.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <woden/axis2_woden.h>
 
 #ifdef __cplusplus

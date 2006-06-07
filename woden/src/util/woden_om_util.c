@@ -53,14 +53,14 @@ woden_om_util_get_qname(
         axis2_char_t *namespc_uri_str,
         void *desc)
 {
-    axis2_url_t *ns_uri = NULL;
-    axis2_url_t *uri = NULL;
+    axis2_uri_t *ns_uri = NULL;
+    axis2_uri_t *uri = NULL;
     axis2_char_t *ns_uri_str = NULL;
     axis2_char_t *tmp_prefix = NULL;
 
     desc = axis2_woden_desc_to_desc_element(desc, env);
     ns_uri = AXIS2_WODEN_DESC_ELEMENT_GET_NAMESPACE(desc, env, prefix);
-    ns_uri_str = AXIS2_URL_TO_EXTERNAL_FORM(ns_uri, env);
+    ns_uri_str = AXIS2_URI_TO_STRING(ns_uri, env);
     if(NULL != ns_uri_str && 0 == AXIS2_STRCMP(ns_uri_str, namespc_uri_str))
     {
         return; 
@@ -72,12 +72,12 @@ woden_om_util_get_qname(
 
         temp = AXIS2_STRACAT(tmp_prefix, "_", env); 
         ns_uri = AXIS2_WODEN_DESC_ELEMENT_GET_NAMESPACE(desc, env, temp);
-        ns_uri_str = AXIS2_URL_TO_EXTERNAL_FORM(ns_uri, env);
+        ns_uri_str = AXIS2_URI_TO_STRING(ns_uri, env);
         AXIS2_FREE(env->allocator, tmp_prefix);
         tmp_prefix = AXIS2_STRDUP(temp, env);
         AXIS2_FREE(env->allocator, temp);
     }
-    uri = axis2_url_parse_string(env, namespc_uri_str);
+    uri = axis2_uri_parse_string(env, namespc_uri_str);
 
     return AXIS2_WODEN_DESC_ELEMENT_ADD_NAMESPACE(desc, env, namespc_uri_str);
 }

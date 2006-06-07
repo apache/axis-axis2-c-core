@@ -67,9 +67,9 @@ struct axis2_woden_imported_schema_ops
     set_location) (
             void *schema,
             const axis2_env_t *env,
-            struct axis2_url *location);
+            struct axis2_uri *location);
 
-    struct axis2_url *(AXIS2_CALL *
+    struct axis2_uri *(AXIS2_CALL *
     get_location) (
             void *schema,
             const axis2_env_t *env);

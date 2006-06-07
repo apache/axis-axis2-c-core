@@ -15,7 +15,7 @@
  */
 
 #include <woden/xml/axis2_woden_uri_attr.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <axis2_om_element.h>
 #include <axis2_om_node.h>
 
@@ -51,7 +51,7 @@ axis2_woden_uri_attr_get_base_impl(
         void *uri_attr,
         const axis2_env_t *env);
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_uri_attr_get_uri(
         void *uri_attr,
         const axis2_env_t *env);
@@ -207,7 +207,7 @@ axis2_woden_uri_attr_resolve_methods(
     return AXIS2_SUCCESS;
 }
 
-axis2_url_t *AXIS2_CALL
+axis2_uri_t *AXIS2_CALL
 axis2_woden_uri_attr_get_uri(
         void *uri_attr,
         const axis2_env_t *env)
@@ -216,7 +216,7 @@ axis2_woden_uri_attr_get_uri(
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     uri_attr_impl = INTF_TO_IMPL(uri_attr);
-    return (axis2_url_t *) AXIS2_WODEN_XML_ATTR_GET_CONTENT(
+    return (axis2_uri_t *) AXIS2_WODEN_XML_ATTR_GET_CONTENT(
             uri_attr_impl->xml_attr, env);
 }
 
@@ -229,14 +229,14 @@ axis2_woden_uri_attr_convert(
         axis2_char_t *attr_value)
 {
     axis2_woden_uri_attr_impl_t *uri_attr_impl = NULL;
-    axis2_url_t *url = NULL;
+    axis2_uri_t *url = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     uri_attr_impl = INTF_TO_IMPL(uri_attr);
 
     if(attr_value)
     {
-         /* TODO url = axis2_url_create(env, attr_value);*/
+         /* TODO url = axis2_uri_create(env, attr_value);*/
     }
     
     if(!url)

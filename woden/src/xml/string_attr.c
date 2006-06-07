@@ -15,7 +15,7 @@
  */
 
 #include <woden/xml/axis2_woden_string_attr.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <axis2_om_element.h>
 #include <axis2_om_node.h>
 

@@ -30,10 +30,10 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <woden/axis2_woden.h>
 #include <woden/wsdl20/xml/axis2_woden_documentable_element.h>
 #include <woden/wsdl20/xml/axis2_woden_nested_element.h>
@@ -70,9 +70,9 @@ struct axis2_woden_include_element_ops
     axis2_status_t (AXIS2_CALL *
     set_location) (void *include_el,
             const axis2_env_t *env,
-            axis2_url_t *loc_uri);
+            axis2_uri_t *loc_uri);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_location) (void *include_el,
             const axis2_env_t *env);
 

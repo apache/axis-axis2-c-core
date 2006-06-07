@@ -69,7 +69,7 @@ struct axis2_woden_import_ops
             void *import,
             const axis2_env_t *env);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_namespace) (
             void *import,
             const axis2_env_t *env);
@@ -78,7 +78,7 @@ struct axis2_woden_import_ops
     set_namespace) (
             void *import,
             const axis2_env_t *env,
-            axis2_url_t *ns_uri);
+            axis2_uri_t *ns_uri);
 
 };
 

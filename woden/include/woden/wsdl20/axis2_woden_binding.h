@@ -79,7 +79,7 @@ struct axis2_woden_binding_ops
             void *binding,
             const axis2_env_t *env);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_type) (
             void *binding,
             const axis2_env_t *env);

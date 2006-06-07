@@ -28,10 +28,10 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <woden/axis2_woden.h>
 #include <woden/wsdl20/xml/axis2_woden_documentable_element.h>
 #include <woden/wsdl20/xml/axis2_woden_configurable_element.h>

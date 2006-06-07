@@ -27,10 +27,10 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <axis2_array_list.h>
 #include <woden/axis2_woden.h>
 
@@ -217,7 +217,7 @@ struct axis2_woden_ext_registry_ops
             void *registry,
             const axis2_env_t *env,
             axis2_char_t *parent_class,
-            axis2_url_t *ext_namespc,
+            axis2_uri_t *ext_namespc,
             void *comp_ext);
 
     /**
@@ -233,7 +233,7 @@ struct axis2_woden_ext_registry_ops
             void *registry,
             const axis2_env_t *env,
             axis2_char_t *parent_class,
-            axis2_url_t *ext_namespc);
+            axis2_uri_t *ext_namespc);
 
     /**
     * Return the extension namespaces registered for the specified WSDL Component class.

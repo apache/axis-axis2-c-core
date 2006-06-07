@@ -35,10 +35,10 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <woden/axis2_woden.h>
 #include <woden/wsdl20/xml/axis2_woden_documentable_element.h>
 #include <woden/wsdl20/xml/axis2_woden_nested_element.h>
@@ -76,9 +76,9 @@ struct axis2_woden_desc_element_ops
     set_document_base_uri) (
             void *desc_ele,
             const axis2_env_t *env,
-            axis2_url_t *document_base_uri);
+            axis2_uri_t *document_base_uri);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_document_base_uri) (
             void *desc_ele,
             const axis2_env_t *env);
@@ -90,9 +90,9 @@ struct axis2_woden_desc_element_ops
     set_target_namespace) (
             void *desc_ele,
             const axis2_env_t *env,
-            axis2_url_t *namespace_uri);
+            axis2_uri_t *namespace_uri);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_target_namespace) (
             void *desc_ele,
             const axis2_env_t *env);
@@ -115,7 +115,7 @@ struct axis2_woden_desc_element_ops
             void *desc_el,
             const axis2_env_t *env,
             axis2_char_t *prefix,
-            axis2_url_t *namespc);
+            axis2_uri_t *namespc);
     
     axis2_status_t (AXIS2_CALL *
     remove_namespace) (
@@ -128,10 +128,10 @@ struct axis2_woden_desc_element_ops
      * there is no namespace URI associated with this prefix. This is
      * unrelated to the &lt;wsdl:import&gt; element.
      *
-     * @see #add_namespace(axis2_char_t , axis2_url_t)
+     * @see #add_namespace(axis2_char_t , axis2_uri_t)
      * @see #get_prefix(axis2_char_t)
      */
-    axis2_url_t *(AXIS2_CALL * 
+    axis2_uri_t *(AXIS2_CALL * 
     get_namespace) (
             void *desc_el,
             const axis2_env_t *env,

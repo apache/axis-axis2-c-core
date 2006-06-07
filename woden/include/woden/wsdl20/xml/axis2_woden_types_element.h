@@ -38,10 +38,10 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <woden/axis2_woden.h>
 #include <woden/wsdl20/xml/axis2_woden_documentable_element.h>
 #include <xml_schema/axis2_xml_schema.h>
@@ -141,7 +141,7 @@ struct axis2_woden_types_element_ops
     get_schemas_with_namespace) (
             void *types_el,
             const axis2_env_t *env,
-            axis2_url_t *namespc);
+            axis2_uri_t *namespc);
 
     /**
      * Return all schemas inlined within the &lt;types&gt; element, in the order

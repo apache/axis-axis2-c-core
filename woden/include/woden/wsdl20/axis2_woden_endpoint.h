@@ -87,7 +87,7 @@ struct axis2_woden_endpoint_ops
             void *endpoint,
             const axis2_env_t *env);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_address) (
             void *endpoint,
             const axis2_env_t *env);

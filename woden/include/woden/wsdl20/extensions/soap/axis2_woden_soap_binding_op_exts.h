@@ -77,12 +77,12 @@ struct axis2_woden_soap_binding_op_exts_ops
             void *soap_binding_op_exts,
             const axis2_env_t *env);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_soap_mep) (
             void *binding_op_exts,
             const axis2_env_t *env);
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_soap_action) (
             void *binding_op_exts,
             const axis2_env_t *env); 

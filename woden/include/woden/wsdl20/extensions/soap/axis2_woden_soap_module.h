@@ -73,7 +73,7 @@ struct axis2_woden_soap_module_ops
      *  Component model methods (SOAPHeaderBlock interface), some shared with Element model
      * ***********************************************************************/
 
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_ref) (
             void *module,
             axis2_env_t *env);

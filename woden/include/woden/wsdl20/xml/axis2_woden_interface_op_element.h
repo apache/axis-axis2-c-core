@@ -30,10 +30,10 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <axis2_array_list.h>
 #include <woden/axis2_woden.h>
 #include <woden/wsdl20/xml/axis2_woden_documentable_element.h>
@@ -85,9 +85,9 @@ struct axis2_woden_interface_op_element_ops
     set_pattern) (
             void *iface_op_ele,
             const axis2_env_t *env,
-            axis2_url_t *uri);
+            axis2_uri_t *uri);
     
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_pattern) (
             void *iface_op_ele,
             const axis2_env_t *env);
@@ -96,15 +96,15 @@ struct axis2_woden_interface_op_element_ops
     add_style_uri) (
             void *iface_op_ele,
             const axis2_env_t *env,
-            axis2_url_t *uri);
+            axis2_uri_t *uri);
 
     axis2_status_t (AXIS2_CALL *
     remove_style_uri) (
             void *iface_op_ele,
             const axis2_env_t *env,
-            axis2_url_t *uri);
+            axis2_uri_t *uri);
     
-    axis2_url_t *(AXIS2_CALL *
+    axis2_uri_t *(AXIS2_CALL *
     get_style) (
             void *iface_op_ele,
             const axis2_env_t *env);

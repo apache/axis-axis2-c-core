@@ -139,6 +139,7 @@ AC_CONFIG_FILES([Makefile \
     src/parser/libxml2/Makefile \
     src/soap/Makefile \
     src/om/Makefile \
+    src/util/Makefile \
     src/attachments/Makefile \
     test/Makefile \
     test/om/Makefile \

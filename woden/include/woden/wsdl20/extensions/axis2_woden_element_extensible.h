@@ -28,10 +28,10 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_string.h>
-#include <axis2_const.h>
+#include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <axis2_url.h>
+#include <axis2_uri.h>
 #include <axis2_array_list.h>
 #include <woden/axis2_woden.h>
 
@@ -99,7 +99,7 @@ struct axis2_woden_element_extensible_ops
     has_ext_elements_for_namespace) (
             void *extensible,
             const axis2_env_t *env,
-            axis2_url_t *namespc);
+            axis2_uri_t *namespc);
  
 };
 
