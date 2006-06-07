@@ -79,7 +79,7 @@ struct axis2_svc_ops
    struct axis2_op *(AXIS2_CALL *
     get_op_with_qname) (axis2_svc_t *svc, 
                                   const axis2_env_t *env,
-                                  axis2_qname_t *op_qname);
+                                  const axis2_qname_t *op_qname);
 
    struct axis2_op *(AXIS2_CALL *
     get_op_with_name) (axis2_svc_t *svc, 

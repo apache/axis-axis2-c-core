@@ -83,15 +83,15 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
            const axis2_env_t *env);
                                        
     axis2_char_t* (AXIS2_CALL *
-   get_uri)(struct axis2_qname *qname,
+   get_uri)(const struct axis2_qname *qname,
              const axis2_env_t *env);
                                         
     axis2_char_t* (AXIS2_CALL *
-   get_prefix)(struct axis2_qname *qname,
+   get_prefix)(const struct axis2_qname *qname,
                 const axis2_env_t *env);
 
     axis2_char_t* (AXIS2_CALL *
-   get_localpart)(struct axis2_qname *qname,
+   get_localpart)(const struct axis2_qname *qname,
                    const axis2_env_t *env);
                                               
     /**
@@ -101,7 +101,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
      * The returned char* is freed when qname free function is called.
      */
     axis2_char_t* (AXIS2_CALL *
-   to_string)(struct axis2_qname *qname,
+   to_string)(const struct axis2_qname *qname,
                const axis2_env_t *env); 
                
    

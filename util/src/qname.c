@@ -37,19 +37,19 @@ axis2_qname_clone(axis2_qname_t *qname,
                   const axis2_env_t *env);
                                       
 axis2_char_t* AXIS2_CALL
-axis2_qname_get_uri(axis2_qname_t *qname,
+axis2_qname_get_uri(const axis2_qname_t *qname,
                     const axis2_env_t *env);
                                         
 axis2_char_t* AXIS2_CALL 
-axis2_qname_get_prefix(axis2_qname_t *qname,
+axis2_qname_get_prefix(const axis2_qname_t *qname,
                         const axis2_env_t *env);
 
 axis2_char_t* AXIS2_CALL 
-axis2_qname_get_localpart(axis2_qname_t *qname,
+axis2_qname_get_localpart(const axis2_qname_t *qname,
                           const axis2_env_t *env);
                           
 axis2_char_t* AXIS2_CALL
-axis2_qname_to_string(axis2_qname_t *qname,
+axis2_qname_to_string(const axis2_qname_t *qname,
                       const axis2_env_t *env);                          
                                             
 /*************************************** qname struct *********************/
@@ -285,7 +285,7 @@ axis2_qname_clone(axis2_qname_t *qname,
 
                   
 axis2_char_t* AXIS2_CALL
-axis2_qname_get_uri(axis2_qname_t *qname,
+axis2_qname_get_uri(const axis2_qname_t *qname,
                     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env,NULL);
@@ -293,7 +293,7 @@ axis2_qname_get_uri(axis2_qname_t *qname,
 }                    
                                         
 axis2_char_t* AXIS2_CALL 
-axis2_qname_get_prefix(axis2_qname_t *qname,
+axis2_qname_get_prefix(const axis2_qname_t *qname,
                         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env,NULL);
@@ -302,7 +302,7 @@ axis2_qname_get_prefix(axis2_qname_t *qname,
 
 
 axis2_char_t* AXIS2_CALL 
-axis2_qname_get_localpart(axis2_qname_t *qname,
+axis2_qname_get_localpart(const axis2_qname_t *qname,
                           const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env,NULL);
@@ -310,7 +310,7 @@ axis2_qname_get_localpart(axis2_qname_t *qname,
 } 
 
 axis2_char_t* AXIS2_CALL
-axis2_qname_to_string(axis2_qname_t *qname,
+axis2_qname_to_string(const axis2_qname_t *qname,
                       const axis2_env_t *env)
 {
     axis2_qname_impl_t *qname_impl = NULL;

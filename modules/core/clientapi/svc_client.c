@@ -68,30 +68,32 @@ static axis2_bool_t axis2_svc_client_init_data(const axis2_env_t *env,
                            axis2_svc_client_impl_t *svc_client_impl);
 static void axis2_svc_client_init_ops(axis2_svc_client_t *svc_client);
 static axis2_svc_t* axis2_svc_client_create_annonymous_svc(const axis2_env_t *env);
-static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env, axis2_svc_client_impl_t *svc_client_impl,
-                                axis2_msg_ctx_t *msg_ctx, axis2_om_node_t *payload);
+static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env, 
+    axis2_svc_client_impl_t *svc_client_impl,
+    axis2_msg_ctx_t *msg_ctx, 
+    const axis2_om_node_t *payload);
 
 /** public funcitons */
 axis2_svc_t* AXIS2_CALL 
-axis2_svc_client_get_svc(struct axis2_svc_client *svc_client, 
+axis2_svc_client_get_svc(const axis2_svc_client_t *svc_client, 
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_set_options(struct axis2_svc_client *svc_client,
                 const axis2_env_t *env,
-                axis2_options_t *options);
+                const axis2_options_t *options);
 
 axis2_options_t* AXIS2_CALL 
-axis2_svc_client_get_options(struct axis2_svc_client *svc_client,
+axis2_svc_client_get_options(const axis2_svc_client_t *svc_client,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_set_override_options(struct axis2_svc_client *svc_client,
     const axis2_env_t *env,
-    axis2_options_t *override_options);
+    const axis2_options_t *override_options);
 
 axis2_options_t* AXIS2_CALL 
-axis2_svc_client_get_override_options(struct axis2_svc_client *svc_client,
+axis2_svc_client_get_override_options(const axis2_svc_client_t *svc_client,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
@@ -110,76 +112,76 @@ axis2_svc_client_add_header(struct axis2_svc_client *svc_client,
                             axis2_om_node_t *header);
 
 axis2_status_t AXIS2_CALL 
-axis2_svc_client_remove_headers(struct axis2_svc_client *svc_client,
+axis2_svc_client_remove_all_headers(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_add_header_with_text(struct axis2_svc_client *svc_client,
                         const axis2_env_t *env,
-                        axis2_qname_t *header_name,
-                        axis2_char_t *header_text);
+                        const axis2_qname_t *header_name,
+                        const axis2_char_t *header_text);
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_send_robust(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_om_node_t *payload);
+                    const axis2_om_node_t *payload);
 
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_send_robust_with_op_qname(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_qname_t *op_qname,
-                    axis2_om_node_t *payload);
+                    const axis2_qname_t *op_qname,
+                    const axis2_om_node_t *payload);
 
 void AXIS2_CALL 
 axis2_svc_client_fire_and_forget(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_om_node_t *payload);
+                    const axis2_om_node_t *payload);
 
 
 void AXIS2_CALL 
 axis2_svc_client_fire_and_forget_with_op_qname(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_qname_t *op_qname,
-                    axis2_om_node_t *payload);
+                    const axis2_qname_t *op_qname,
+                    const axis2_om_node_t *payload);
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_om_node_t *payload);
+                    const axis2_om_node_t *payload);
 
 
 axis2_om_node_t* AXIS2_CALL 
 axis2_svc_client_send_receive_with_op_qname(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_qname_t *op_qname,
-                    axis2_om_node_t *payload);
+                    const axis2_qname_t *op_qname,
+                    const axis2_om_node_t *payload);
 
 
 void AXIS2_CALL 
 axis2_svc_client_send_receive_non_blocking(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_om_node_t *payload,
+                    const axis2_om_node_t *payload,
                     axis2_callback_t *callback);
 
 void AXIS2_CALL 
 axis2_svc_client_send_receive_non_blocking_with_op_qname(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_qname_t *op_qname,
-                    axis2_om_node_t *payload,
+                    const axis2_qname_t *op_qname,
+                    const axis2_om_node_t *payload,
                     axis2_callback_t *callback);
 
 axis2_op_client_t* AXIS2_CALL 
 axis2_svc_client_create_op_client(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_qname_t *op_qname);
+                    const axis2_qname_t *op_qname);
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_finalize_invoke(struct axis2_svc_client *svc_client,
                         const axis2_env_t *env);
     
 axis2_endpoint_ref_t* AXIS2_CALL 
-axis2_svc_client_get_my_epr(struct axis2_svc_client *svc_client,
+axis2_svc_client_get_own_endpoint_ref(struct axis2_svc_client *svc_client,
                 const axis2_env_t *env,
                 axis2_char_t *transport);
 
@@ -193,7 +195,7 @@ axis2_svc_client_set_target_epr(struct axis2_svc_client *svc_client,
                     axis2_endpoint_ref_t *target_epr);
     
 axis2_svc_ctx_t* AXIS2_CALL 
-axis2_svc_client_get_svc_ctx(struct axis2_svc_client *svc_client,
+axis2_svc_client_get_svc_ctx(const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -201,13 +203,14 @@ axis2_svc_client_free(struct axis2_svc_client *svc_client,
                   const axis2_env_t *env);
 
 axis2_svc_client_t* AXIS2_CALL
-axis2_svc_client_create(const axis2_env_t *env, const axis2_char_t *client_home)
+axis2_svc_client_create(const axis2_env_t *env, 
+    const axis2_char_t *client_home)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
       svc_client_impl = AXIS2_INTF_TO_IMPL(axis2_svc_client_create_with_conf_ctx_and_svc
-                                 (env, NULL, NULL, client_home));
+                                 (env, client_home, NULL, NULL));
    
    if (!svc_client_impl)
       return NULL;
@@ -217,9 +220,9 @@ axis2_svc_client_create(const axis2_env_t *env, const axis2_char_t *client_home)
 
 axis2_svc_client_t* AXIS2_CALL
 axis2_svc_client_create_with_conf_ctx_and_svc(const axis2_env_t *env,
-                                            axis2_conf_ctx_t *conf_ctx,
-                                            axis2_svc_t *svc,
-                                 const axis2_char_t *client_home)
+    const axis2_char_t *client_home,
+    axis2_conf_ctx_t *conf_ctx,
+    axis2_svc_t *svc)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
    axis2_svc_grp_t *svc_grp = NULL;
@@ -326,7 +329,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(const axis2_env_t *env,
 
 
 axis2_svc_t* AXIS2_CALL 
-axis2_svc_client_get_svc(struct axis2_svc_client *svc_client, const axis2_env_t *env)
+axis2_svc_client_get_svc(const axis2_svc_client_t *svc_client, const axis2_env_t *env)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -337,7 +340,7 @@ axis2_svc_client_get_svc(struct axis2_svc_client *svc_client, const axis2_env_t 
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_set_options(struct axis2_svc_client *svc_client,
                 const axis2_env_t *env,
-                axis2_options_t *options)
+                const axis2_options_t *options)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
 
@@ -348,12 +351,12 @@ axis2_svc_client_set_options(struct axis2_svc_client *svc_client,
    /*TODO:double check whether we need to free*/
    if (svc_client_impl->options)
       AXIS2_OPTIONS_FREE(svc_client_impl->options, env);
-      svc_client_impl->options = options;
+      svc_client_impl->options = (axis2_options_t *)options;
    return AXIS2_SUCCESS;   
 }
 
 axis2_options_t* AXIS2_CALL 
-axis2_svc_client_get_options(struct axis2_svc_client *svc_client, 
+axis2_svc_client_get_options(const axis2_svc_client_t *svc_client, 
     const axis2_env_t *env)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
@@ -366,7 +369,7 @@ axis2_svc_client_get_options(struct axis2_svc_client *svc_client,
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_set_override_options(struct axis2_svc_client *svc_client,
                         const axis2_env_t *env,
-                        axis2_options_t *override_options)
+                        const axis2_options_t *override_options)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -375,13 +378,13 @@ axis2_svc_client_set_override_options(struct axis2_svc_client *svc_client,
    if (svc_client_impl->override_options)
       AXIS2_OPTIONS_FREE(svc_client_impl->override_options, env);
 
-   svc_client_impl->override_options = override_options;
+   svc_client_impl->override_options = (axis2_options_t *)override_options;
 
    return AXIS2_SUCCESS;
 }
 
 axis2_options_t* AXIS2_CALL 
-axis2_svc_client_get_override_options(struct axis2_svc_client *svc_client,
+axis2_svc_client_get_override_options(const axis2_svc_client_t *svc_client,
     const axis2_env_t *env)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
@@ -469,7 +472,7 @@ axis2_svc_client_add_header(struct axis2_svc_client *svc_client,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_svc_client_remove_headers(struct axis2_svc_client *svc_client,
+axis2_svc_client_remove_all_headers(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
@@ -498,8 +501,8 @@ axis2_svc_client_remove_headers(struct axis2_svc_client *svc_client,
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_add_header_with_text(struct axis2_svc_client *svc_client,
                         const axis2_env_t *env,
-                        axis2_qname_t *header_name,
-                        axis2_char_t *header_text)
+                        const axis2_qname_t *header_name,
+                        const axis2_char_t *header_text)
 {
    axis2_om_node_t *node_name, *node_text;
    axis2_om_element_t *element = NULL;
@@ -529,7 +532,7 @@ axis2_svc_client_add_header_with_text(struct axis2_svc_client *svc_client,
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_send_robust(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_om_node_t *payload)
+                    const axis2_om_node_t *payload)
 {
     
    axis2_svc_client_impl_t *svc_client_impl = NULL;
@@ -547,8 +550,8 @@ axis2_svc_client_send_robust(struct axis2_svc_client *svc_client,
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_send_robust_with_op_qname(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_qname_t *op_qname,
-                    axis2_om_node_t *payload)
+                    const axis2_qname_t *op_qname,
+                    const axis2_om_node_t *payload)
 {
    axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_op_client_t *op_client = NULL;
@@ -579,7 +582,7 @@ axis2_svc_client_send_robust_with_op_qname(struct axis2_svc_client *svc_client,
 void AXIS2_CALL 
 axis2_svc_client_fire_and_forget(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_om_node_t *payload)
+                    const axis2_om_node_t *payload)
 {
    axis2_svc_client_impl_t *svc_client_impl = NULL;
    axis2_qname_t *op_qname = NULL;
@@ -598,8 +601,8 @@ axis2_svc_client_fire_and_forget(struct axis2_svc_client *svc_client,
 void AXIS2_CALL 
 axis2_svc_client_fire_and_forget_with_op_qname(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_qname_t *op_qname,
-                    axis2_om_node_t *payload)
+                    const axis2_qname_t *op_qname,
+                    const axis2_om_node_t *payload)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_op_client_t *op_client = NULL;
@@ -632,7 +635,7 @@ axis2_svc_client_fire_and_forget_with_op_qname(struct axis2_svc_client *svc_clie
 axis2_om_node_t* AXIS2_CALL 
 axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_om_node_t *payload)
+                    const axis2_om_node_t *payload)
 {
    axis2_svc_client_impl_t *svc_client_impl = NULL;
    axis2_qname_t *op_qname = NULL;
@@ -649,8 +652,8 @@ axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
 axis2_om_node_t* AXIS2_CALL 
 axis2_svc_client_send_receive_with_op_qname(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_qname_t *op_qname,
-                    axis2_om_node_t *payload)
+                    const axis2_qname_t *op_qname,
+                    const axis2_om_node_t *payload)
 {
    axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_soap_envelope_t *soap_envelope = NULL;
@@ -810,7 +813,7 @@ axis2_svc_client_send_receive_with_op_qname(struct axis2_svc_client *svc_client,
 void AXIS2_CALL 
 axis2_svc_client_send_receive_non_blocking(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_om_node_t *payload,
+                    const axis2_om_node_t *payload,
                     axis2_callback_t *callback)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
@@ -827,8 +830,8 @@ axis2_svc_client_send_receive_non_blocking(struct axis2_svc_client *svc_client,
 void AXIS2_CALL 
 axis2_svc_client_send_receive_non_blocking_with_op_qname(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_qname_t *op_qname,
-                    axis2_om_node_t *payload,
+                    const axis2_qname_t *op_qname,
+                    const axis2_om_node_t *payload,
                     axis2_callback_t *callback)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
@@ -880,7 +883,7 @@ axis2_svc_client_send_receive_non_blocking_with_op_qname(struct axis2_svc_client
 axis2_op_client_t* AXIS2_CALL 
 axis2_svc_client_create_op_client(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
-                    axis2_qname_t *op_qname)
+                    const axis2_qname_t *op_qname)
 {
    axis2_op_t *op = NULL;
    axis2_svc_client_impl_t *svc_client_impl = NULL;
@@ -942,7 +945,7 @@ axis2_svc_client_finalize_invoke(struct axis2_svc_client *svc_client,
 }
     
 axis2_endpoint_ref_t* AXIS2_CALL 
-axis2_svc_client_get_my_epr(struct axis2_svc_client *svc_client,
+axis2_svc_client_get_own_endpoint_ref(struct axis2_svc_client *svc_client,
                 const axis2_env_t *env,
                 axis2_char_t *transport)
 {
@@ -951,7 +954,7 @@ axis2_svc_client_get_my_epr(struct axis2_svc_client *svc_client,
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
    svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
-   /*TODO:implement-issue - there's not get_my_epr in svc_ctx*/
+   /*TODO:implement-issue - there's not get_own_endpoint_ref in svc_ctx*/
    
    return NULL;
 }
@@ -986,7 +989,7 @@ axis2_svc_client_set_target_epr(struct axis2_svc_client *svc_client,
 }
     
 axis2_svc_ctx_t* AXIS2_CALL 
-axis2_svc_client_get_svc_ctx(struct axis2_svc_client *svc_client,
+axis2_svc_client_get_svc_ctx(const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env)
 {
    axis2_svc_client_impl_t *svc_client_impl = NULL;
@@ -1076,7 +1079,7 @@ static void axis2_svc_client_init_ops(axis2_svc_client_t *svc_client)
    svc_client->ops->engage_module = axis2_svc_client_engage_module;
    svc_client->ops->disengage_module = axis2_svc_client_disengage_module;
    svc_client->ops->add_header = axis2_svc_client_add_header;
-   svc_client->ops->remove_headers = axis2_svc_client_remove_headers;
+   svc_client->ops->remove_all_headers = axis2_svc_client_remove_all_headers;
    svc_client->ops->add_header_with_text = axis2_svc_client_add_header_with_text;
    svc_client->ops->send_robust = axis2_svc_client_send_robust;
    svc_client->ops->send_robust_with_op_qname = axis2_svc_client_send_robust_with_op_qname;
@@ -1088,7 +1091,7 @@ static void axis2_svc_client_init_ops(axis2_svc_client_t *svc_client)
    svc_client->ops->send_receive_non_blocking_with_op_qname = axis2_svc_client_send_receive_non_blocking_with_op_qname;
    svc_client->ops->create_op_client = axis2_svc_client_create_op_client;
    svc_client->ops->finalize_invoke = axis2_svc_client_finalize_invoke;
-   svc_client->ops->get_my_epr = axis2_svc_client_get_my_epr;
+   svc_client->ops->get_own_endpoint_ref = axis2_svc_client_get_own_endpoint_ref;
    svc_client->ops->get_target_epr = axis2_svc_client_get_target_epr;
    svc_client->ops->set_target_epr = axis2_svc_client_set_target_epr;
    svc_client->ops->get_svc_ctx = axis2_svc_client_get_svc_ctx;
@@ -1244,8 +1247,10 @@ axis2_svc_client_free(struct axis2_svc_client *svc_client,
     return AXIS2_SUCCESS;
 }
 
-static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env, axis2_svc_client_impl_t *svc_client_impl,
-                        axis2_msg_ctx_t *msg_ctx, axis2_om_node_t *payload)
+static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env, 
+    axis2_svc_client_impl_t *svc_client_impl,
+    axis2_msg_ctx_t *msg_ctx, 
+    const axis2_om_node_t *payload)
 {
    const axis2_char_t *soap_version_uri;
    int soap_version;
@@ -1309,7 +1314,7 @@ static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env, 
             node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
             if (node)
             {
-                AXIS2_OM_NODE_ADD_CHILD(node, env, payload);
+                AXIS2_OM_NODE_ADD_CHILD(node, env, (axis2_om_node_t *)payload);
             }
         }
     }

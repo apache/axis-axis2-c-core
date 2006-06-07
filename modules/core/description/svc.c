@@ -52,7 +52,7 @@ axis2_svc_add_op (axis2_svc_t *svc, const axis2_env_t *env
 
 axis2_op_t * AXIS2_CALL
 axis2_svc_get_op_with_qname (axis2_svc_t *svc, const axis2_env_t *env,
-                                  axis2_qname_t *op_name);
+                                  const axis2_qname_t *op_name);
       
 axis2_op_t * AXIS2_CALL
 axis2_svc_get_op_with_name (axis2_svc_t *svc, const axis2_env_t *env,
@@ -613,7 +613,7 @@ axis2_svc_add_op (axis2_svc_t *svc,
 axis2_op_t * AXIS2_CALL
 axis2_svc_get_op_with_qname (axis2_svc_t *svc,
                                         const axis2_env_t *env,
-                                      axis2_qname_t *op_name)
+                                      const axis2_qname_t *op_name)
 {
     axis2_svc_impl_t *svc_impl = NULL;
     axis2_op_t *op_l = NULL;

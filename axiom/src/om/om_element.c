@@ -436,7 +436,7 @@ axis2_om_element_create (const axis2_env_t *env,
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_element_create_with_qname (const axis2_env_t *env,
                                     axis2_om_node_t *parent,
-                                    axis2_qname_t *qname,
+                                    const axis2_qname_t *qname,
                                     axis2_om_node_t ** node)
 {
     axis2_om_element_t *element = NULL;
