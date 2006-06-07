@@ -470,7 +470,7 @@ void test_forward_refs(CuTest *tc)
     
     CuAssertPtrNotNull(tc, sch_type);
  
-    type =  AXIS2_XML_SCHEMA_TYPE_TYPE(sch_type, env);
+    type =  AXIS2_XML_SCHEMA_TYPE_GET_TYPE(sch_type, env);
 
     CuAssertIntEquals(tc, AXIS2_XML_SCHEMA_COMPLEX_TYPE, type);
     

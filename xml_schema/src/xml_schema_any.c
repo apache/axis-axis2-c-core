@@ -56,7 +56,7 @@ axis2_xml_schema_any_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_any_type(
+axis2_xml_schema_any_get_type(
         void *any,
         const axis2_env_t *env);
 
@@ -131,8 +131,8 @@ axis2_xml_schema_any_create(const axis2_env_t *env)
         axis2_xml_schema_any_free;
     any_impl->any.ops->super_objs = 
         axis2_xml_schema_any_super_objs;
-    any_impl->any.ops->type = 
-        axis2_xml_schema_any_type;
+    any_impl->any.ops->get_type = 
+        axis2_xml_schema_any_get_type;
     any_impl->any.ops->get_base_impl = 
         axis2_xml_schema_any_get_base_impl;
     any_impl->any.ops->get_namespace = 
@@ -154,8 +154,8 @@ axis2_xml_schema_any_create(const axis2_env_t *env)
             axis2_xml_schema_any_free);
     axis2_hash_set(any_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_any_super_objs);
-    axis2_hash_set(any_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_any_type);
+    axis2_hash_set(any_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_any_get_type);
     axis2_hash_set(any_impl->methods, "get_namespace", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_any_get_namespace);
     axis2_hash_set(any_impl->methods, "set_namespace", AXIS2_HASH_KEY_STRING, 
@@ -255,7 +255,7 @@ axis2_xml_schema_any_free(void *any,
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_any_type(void *any,
+axis2_xml_schema_any_get_type(void *any,
                                 const axis2_env_t *env)
 {
     axis2_xml_schema_any_impl_t *any_impl = NULL;
@@ -313,9 +313,11 @@ axis2_xml_schema_any_resolve_methods(
     any->ops->super_objs = axis2_hash_get(methods, "super_objs", 
             AXIS2_HASH_KEY_STRING);
             
-    any->ops->type = axis2_hash_get(methods, "type", 
+    any->ops->get_type = axis2_hash_get(methods, "get_type", 
             AXIS2_HASH_KEY_STRING);
-            
+    if(!any->ops->get_type)
+        any->ops->get_type =
+            sch_any_impl->any.ops->get_type;            
     
     any->ops->get_namespace = axis2_hash_get(methods, 
             "get_namespace", AXIS2_HASH_KEY_STRING);

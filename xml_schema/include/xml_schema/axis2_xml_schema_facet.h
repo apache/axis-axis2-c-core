@@ -59,7 +59,7 @@ struct axis2_xml_schema_facet_ops
                     const axis2_env_t *env);
     
     axis2_xml_schema_types_t (AXIS2_CALL*
-    type)(void *facet,
+    get_type)(void *facet,
           const axis2_env_t *env);
           
     axis2_hash_t* (AXIS2_CALL *
@@ -120,9 +120,9 @@ axis2_xml_schema_facet_construct(const axis2_env_t *env,
       (((axis2_xml_schema_facet_t *) facet)->ops->\
             get_base_impl(facet, env))
 
-#define AXIS2_XML_SCHEMA_FACET_TYPE(facet, env) \
+#define AXIS2_XML_SCHEMA_FACET_GET_TYPE(facet, env) \
       (((axis2_xml_schema_facet_t *) facet)->ops->\
-            type(facet, env))
+            get_type(facet, env))
 
 #define AXIS2_XML_SCHEMA_FACET_SUPER_OBJS(facet, env) \
         (((axis2_xml_schema_facet_t *) facet)->ops->\

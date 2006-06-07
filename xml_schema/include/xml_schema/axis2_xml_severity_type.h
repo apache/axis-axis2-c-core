@@ -66,7 +66,7 @@ struct axis2_xml_severity_type_ops
                 const axis2_env_t *env);
                 
     axis2_xml_schema_types_t (AXIS2_CALL*
-    type)(void *severity,
+    get_type)(void *severity,
           const axis2_env_t *env);                              
     
 };
@@ -92,8 +92,8 @@ axis2_xml_severity_type_create(const axis2_env_t *env,
 #define AXIS2_XML_SEREVITY_TYPE_GET_VALUES(severity, env) \
       (((axis2_xml_severity_type_t *) severity)->ops->values(severity, env))
 
-#define AXIS2_XML_SEREVITY_TYPE_TYPE(severity, env) \
-      (((axis2_xml_severity_type_t *) severity)->ops->type(severity, env))
+#define AXIS2_XML_SEREVITY_TYPE_GET_TYPE(severity, env) \
+      (((axis2_xml_severity_type_t *) severity)->ops->get_type(severity, env))
 
 #define AXIS2_XML_SEREVITY_TYPE_SUPER_OBJS(severity, env) \
       (((axis2_xml_severity_type_t *) severity)->ops->super_objs(severity, env))

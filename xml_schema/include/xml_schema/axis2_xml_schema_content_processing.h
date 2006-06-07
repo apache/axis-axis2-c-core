@@ -58,7 +58,7 @@ struct axis2_xml_schema_content_processing_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (void *content_processing,
+    get_type) (void *content_processing,
             const axis2_env_t *env);
 
     axis2_xml_schema_enum_t *(AXIS2_CALL *
@@ -91,9 +91,9 @@ axis2_xml_schema_content_processing_create(const axis2_env_t *env,
       (((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
          super_objs(content_processing, env))
 
-#define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_TYPE(content_processing, env) \
+#define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_GET_TYPE(content_processing, env) \
       (((axis2_xml_schema_content_processing_t *) content_processing)->ops->\
-         type(content_processing, env))
+         get_type(content_processing, env))
 
 
 #define AXIS2_XML_SCHEMA_CONTENT_PROCESSING_GET_BASE_IMPL(content_processing, env) \

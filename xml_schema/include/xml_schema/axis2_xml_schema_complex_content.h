@@ -55,7 +55,7 @@ struct axis2_xml_schema_complex_content_ops
                     const axis2_env_t *env);
                     
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (void *complex_content,
+    get_type) (void *complex_content,
             const axis2_env_t *env);
                     
     axis2_hash_t *(AXIS2_CALL *
@@ -101,17 +101,6 @@ struct axis2_xml_schema_complex_content
 AXIS2_EXTERN axis2_xml_schema_complex_content_t * AXIS2_CALL
 axis2_xml_schema_complex_content_create(const axis2_env_t *env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_complex_content_resolve_methods(
-                                axis2_xml_schema_complex_content_t *complex_content,
-                                const axis2_env_t *env,
-                                axis2_xml_schema_complex_content_t *group_impl,
-                                axis2_hash_t *methods);
-*/
-
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_FREE(complex_content, env) \
       (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
             free(complex_content, env))
@@ -120,9 +109,9 @@ axis2_xml_schema_complex_content_resolve_methods(
       (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
             get_base_impl(complex_content, env))
             
-#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_TYPE(complex_content, env) \
+#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_GET_TYPE(complex_content, env) \
       (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\
-            type(complex_content, env))
+            get_type(complex_content, env))
             
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_SUPER_OBJS(complex_content, env) \
       (((axis2_xml_schema_complex_content_t *) complex_content)->ops->\

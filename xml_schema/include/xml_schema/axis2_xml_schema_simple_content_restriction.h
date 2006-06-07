@@ -66,7 +66,7 @@ struct axis2_xml_schema_simple_content_restriction_ops
             const axis2_env_t *env);
             
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(
+    get_type)(
             void *sim_content_res,
             const axis2_env_t *env);                        
 
@@ -173,9 +173,9 @@ axis2_xml_schema_simple_content_restriction_create(const axis2_env_t *env);
       (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
       super_objs(sim_content_res, env))  
       
-#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_TYPE(sim_content_res, env) \
+#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION_GET_TYPE(sim_content_res, env) \
       (((axis2_xml_schema_simple_content_restriction_t *)sim_content_res)->ops->\
-      type(sim_content_res, env))                                          
+      get_type(sim_content_res, env))                                          
 /** @} */
 #ifdef __cplusplus
 }

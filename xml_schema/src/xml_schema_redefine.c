@@ -18,8 +18,7 @@
 #include  <xml_schema/axis2_xml_schema.h>
 
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
+ * @brief axis2_xml_schema_redefine_impl
  */ 
 typedef struct axis2_xml_schema_redefine_impl
 {
@@ -57,7 +56,7 @@ axis2_xml_schema_redefine_get_base_impl(void *redefine,
                                         const axis2_env_t *env);
                                         
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_redefine_type(void *redefine,
+axis2_xml_schema_redefine_get_type(void *redefine,
                                 const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
@@ -129,8 +128,8 @@ axis2_xml_schema_redefine_create(const axis2_env_t *env)
         axis2_xml_schema_redefine_free;
     redefine_impl->redefine.ops->get_base_impl = 
         axis2_xml_schema_redefine_get_base_impl;
-    redefine_impl->redefine.ops->type =
-        axis2_xml_schema_redefine_type;
+    redefine_impl->redefine.ops->get_type =
+        axis2_xml_schema_redefine_get_type;
     redefine_impl->redefine.ops->super_objs =
         axis2_xml_schema_redefine_super_objs;
     redefine_impl->redefine.ops->get_items = 
@@ -155,8 +154,8 @@ axis2_xml_schema_redefine_create(const axis2_env_t *env)
 
     axis2_hash_set(redefine_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_redefine_free);
-    axis2_hash_set(redefine_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_redefine_type);
+    axis2_hash_set(redefine_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_redefine_get_type);
     axis2_hash_set(redefine_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_redefine_super_objs);
     axis2_hash_set(redefine_impl->methods, "get_items", 
@@ -330,7 +329,7 @@ axis2_xml_schema_redefine_get_group(void *redefine,
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_redefine_type(void *redefine,
+axis2_xml_schema_redefine_get_type(void *redefine,
                                 const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(redefine)->obj_type;

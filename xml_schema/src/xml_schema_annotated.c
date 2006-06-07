@@ -60,7 +60,7 @@ axis2_xml_schema_annotated_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_annotated_type(
+axis2_xml_schema_annotated_get_type(
         void *annotated,
         const axis2_env_t *env);
 
@@ -137,8 +137,8 @@ axis2_xml_schema_annotated_create(const axis2_env_t *env)
             axis2_xml_schema_annotated_free;
     annotated_impl->annotated.ops->super_objs = 
             axis2_xml_schema_annotated_super_objs;
-    annotated_impl->annotated.ops->type = 
-            axis2_xml_schema_annotated_type;
+    annotated_impl->annotated.ops->get_type = 
+            axis2_xml_schema_annotated_get_type;
     annotated_impl->annotated.ops->get_base_impl = 
             axis2_xml_schema_annotated_get_base_impl;
     annotated_impl->annotated.ops->get_id = 
@@ -164,8 +164,8 @@ axis2_xml_schema_annotated_create(const axis2_env_t *env)
             axis2_xml_schema_annotated_free);
     axis2_hash_set(annotated_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_annotated_super_objs);
-    axis2_hash_set(annotated_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_annotated_type);
+    axis2_hash_set(annotated_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_annotated_get_type);
     axis2_hash_set(annotated_impl->methods, "get_id", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_annotated_get_id);
     axis2_hash_set(annotated_impl->methods, "set_id", AXIS2_HASH_KEY_STRING, 
@@ -275,7 +275,7 @@ axis2_xml_schema_annotated_super_objs(
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_annotated_type(
+axis2_xml_schema_annotated_get_type(
         void *annotated,
         const axis2_env_t *env)
 {
@@ -317,7 +317,7 @@ axis2_xml_schema_annotated_resolve_methods(
     annotated->ops->super_objs = axis2_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
 
-    annotated->ops->type = axis2_hash_get(methods, "type", 
+    annotated->ops->get_type = axis2_hash_get(methods, "get_type", 
             AXIS2_HASH_KEY_STRING);
 
     annotated->ops->get_id = axis2_hash_get(methods, "get_id", 

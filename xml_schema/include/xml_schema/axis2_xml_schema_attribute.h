@@ -56,7 +56,7 @@ struct axis2_xml_schema_attribute_ops
             const axis2_env_t *env);
             
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(
+    get_type)(
             void *attr,
             const axis2_env_t *env);
           
@@ -185,8 +185,8 @@ axis2_xml_schema_attribute_create(const axis2_env_t *env);
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_BASE_IMPL(attr, env) \
       (((axis2_xml_schema_attribute_t *) attr)->ops->get_base_impl(attr, env))
 
-#define AXIS2_XML_SCHEMA_ATTRIBUTE_TYPE(attr, env) \
-      (((axis2_xml_schema_attribute_t *) attr)->ops->type(attr, env))
+#define AXIS2_XML_SCHEMA_ATTRIBUTE_GET_TYPE(attr, env) \
+      (((axis2_xml_schema_attribute_t *) attr)->ops->get_type(attr, env))
       
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_SUPER_OBJS(attr, env) \
       (((axis2_xml_schema_attribute_t *) attr)->ops->super_objs(attr, env))

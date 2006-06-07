@@ -56,7 +56,7 @@ axis2_xml_schema_any_attribute_get_base_impl(void *any_attr,
                                     const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_any_attribute_type(void *any_attr,
+axis2_xml_schema_any_attribute_get_type(void *any_attr,
                                     const axis2_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
@@ -123,8 +123,8 @@ axis2_xml_schema_any_attribute_create(const axis2_env_t *env)
     any_attr_impl->any_attr.ops->free = 
         axis2_xml_schema_any_attribute_free;
         
-    any_attr_impl->any_attr.ops->type =
-        axis2_xml_schema_any_attribute_type;
+    any_attr_impl->any_attr.ops->get_type =
+        axis2_xml_schema_any_attribute_get_type;
     
     any_attr_impl->any_attr.ops->super_objs =
         axis2_xml_schema_any_attribute_super_objs;                
@@ -152,8 +152,8 @@ axis2_xml_schema_any_attribute_create(const axis2_env_t *env)
     }
     axis2_hash_set(any_attr_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_any_attribute_free);
-    axis2_hash_set(any_attr_impl->methods, "type", AXIS2_HASH_KEY_STRING,
-            axis2_xml_schema_any_attribute_type);
+    axis2_hash_set(any_attr_impl->methods, "get_type", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_any_attribute_get_type);
     axis2_hash_set(any_attr_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_any_attribute_super_objs);            
     axis2_hash_set(any_attr_impl->methods, "get_namespace", AXIS2_HASH_KEY_STRING, 
@@ -322,7 +322,7 @@ axis2_xml_schema_any_attribute_set_process_content(
 
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_any_attribute_type(void *any_attr,
+axis2_xml_schema_any_attribute_get_type(void *any_attr,
                                     const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(any_attr)->obj_type;    

@@ -59,7 +59,7 @@ struct axis2_xml_schema_external_ops
             const axis2_env_t *env);            
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(
+    get_type)(
             void *external,
             const axis2_env_t *env);            
 
@@ -131,9 +131,9 @@ axis2_xml_schema_external_resolve_methods(
       (((axis2_xml_schema_external_t *) external)->ops->\
             super_objs(external, env))
 
-#define AXIS2_XML_SCHEMA_EXTERNAL_TYPE(external, env) \
+#define AXIS2_XML_SCHEMA_EXTERNAL_GET_TYPE(external, env) \
       (((axis2_xml_schema_external_t *) external)->ops->\
-            type(external, env))
+            get_type(external, env))
 
 #define AXIS2_XML_SCHEMA_EXTERNAL_GET_SCHEMA(external, env) \
       (((axis2_xml_schema_external_t *) external)->ops->\

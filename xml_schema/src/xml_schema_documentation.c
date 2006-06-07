@@ -22,8 +22,6 @@ typedef struct axis2_xml_schema_documentation_impl
                 axis2_xml_schema_documentation_impl_t;
 
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
  */ 
 struct axis2_xml_schema_documentation_impl
 {
@@ -58,7 +56,7 @@ axis2_xml_schema_documentation_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_documentation_type(
+axis2_xml_schema_documentation_get_type(
         void *documentation,
         const axis2_env_t *env);
 
@@ -137,8 +135,8 @@ axis2_xml_schema_documentation_create(const axis2_env_t *env)
     documentation_impl->documentation.ops->super_objs = 
         axis2_xml_schema_documentation_super_objs;
     
-    documentation_impl->documentation.ops->type = 
-        axis2_xml_schema_documentation_type;
+    documentation_impl->documentation.ops->get_type = 
+        axis2_xml_schema_documentation_get_type;
     
     documentation_impl->documentation.ops->get_base_impl = 
         axis2_xml_schema_documentation_get_base_impl;
@@ -175,8 +173,8 @@ axis2_xml_schema_documentation_create(const axis2_env_t *env)
     axis2_hash_set(documentation_impl->methods, "super_objs", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_documentation_super_objs);
     
-    axis2_hash_set(documentation_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_documentation_type);
+    axis2_hash_set(documentation_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_documentation_get_type);
     
     axis2_hash_set(documentation_impl->methods, "get_source", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_documentation_get_source);
@@ -278,7 +276,7 @@ axis2_xml_schema_documentation_super_objs(
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_documentation_type(
+axis2_xml_schema_documentation_get_type(
         void *documentation,
         const axis2_env_t *env)
 {

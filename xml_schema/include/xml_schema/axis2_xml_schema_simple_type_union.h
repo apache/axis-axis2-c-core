@@ -59,7 +59,7 @@ struct axis2_xml_schema_simple_type_union_ops
             const axis2_env_t *env);                    
     
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(
+    get_type)(
             void *sim_type_union,
             const axis2_env_t *env);
 
@@ -109,18 +109,7 @@ struct axis2_xml_schema_simple_type_union
 AXIS2_EXTERN axis2_xml_schema_simple_type_union_t * AXIS2_CALL
 axis2_xml_schema_simple_type_union_create(const axis2_env_t *env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_simple_type_union_resolve_methods(
-                    axis2_xml_schema_simple_type_union_t *sim_type_union,
-                    const axis2_env_t *env,
-                    axis2_xml_schema_simple_type_union_t *simple_type_union_impl,
-                    axis2_hash_t *methods);
- */
- 
- #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_FREE(sim_type_union, env) \
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_FREE(sim_type_union, env) \
       (((axis2_xml_schema_simple_type_union_t *) sim_type_union)->ops->\
             free(sim_type_union, env))
 
@@ -132,9 +121,9 @@ axis2_xml_schema_simple_type_union_resolve_methods(
       (((axis2_xml_schema_simple_type_union_t *) sim_type_union)->ops->\
             super_objs(sim_type_union, env))
 
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_TYPE(sim_type_union, env) \
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_GET_TYPE(sim_type_union, env) \
       (((axis2_xml_schema_simple_type_union_t *) sim_type_union)->ops->\
-            type(sim_type_union, env))
+            get_type(sim_type_union, env))
 
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_UNION_GET_BASE_TYPES(sim_type_union, env) \
       (((axis2_xml_schema_simple_type_union_t *) sim_type_union)->ops->\

@@ -65,7 +65,7 @@ struct axis2_xml_schema_identity_constraint_ops
                 
                         
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (void *id_constr,
+    get_type) (void *id_constr,
             const axis2_env_t *env);   
         
     /** xml schema keyref method */            
@@ -122,17 +122,7 @@ axis2_xml_schema_keyref_create(const axis2_env_t *env);
 AXIS2_EXTERN axis2_xml_schema_identity_constraint_t * AXIS2_CALL
 axis2_xml_schema_key_create(const axis2_env_t *env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_identity_constraint_resolve_methods(
-                axis2_xml_schema_identity_constraint_t *identity_constraint,
-                const axis2_env_t *env,
-                axis2_xml_schema_identity_constraint_t *identity_constraint_impl,
-                axis2_hash_t *methods);
-*/                
-/**************** Macros *****************************************************/                
+/**************** Macros *****************************************************/        
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_FREE(id_constr, env) \
       (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
@@ -143,9 +133,9 @@ axis2_xml_schema_identity_constraint_resolve_methods(
             get_base_impl(id_constr, env))
 
 
-#define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_TYPE(id_constr, env) \
+#define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_GET_TYPE(id_constr, env) \
       (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\
-            type(id_constr, env))
+            get_type(id_constr, env))
 
 #define AXIS2_XML_SCHEMA_IDENTITY_CONSTRAINT_SUPER_OBJS(id_constr, env) \
       (((axis2_xml_schema_identity_constraint_t *) id_constr)->ops->\

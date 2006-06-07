@@ -18,8 +18,7 @@
 #include  <xml_schema/axis2_xml_schema.h>
 #include <axis2_utils.h>
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
+ * @brief axis2_xml_schema_import_impl
  */ 
 typedef struct axis2_xml_schema_import_impl
 {
@@ -51,7 +50,7 @@ axis2_xml_schema_import_get_base_impl(void *import,
                                         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_import_type(void *import,
+axis2_xml_schema_import_get_type(void *import,
                             const axis2_env_t *env);
                             
 axis2_hash_t *AXIS2_CALL
@@ -104,8 +103,8 @@ axis2_xml_schema_import_create(const axis2_env_t *env)
         axis2_xml_schema_import_free;
     import_impl->import.ops->get_base_impl = 
         axis2_xml_schema_import_get_base_impl;
-    import_impl->import.ops->type =
-        axis2_xml_schema_import_type;
+    import_impl->import.ops->get_type =
+        axis2_xml_schema_import_get_type;
     import_impl->import.ops->super_objs =
         axis2_xml_schema_import_super_objs;        
     import_impl->import.ops->get_namespace = 
@@ -124,8 +123,8 @@ axis2_xml_schema_import_create(const axis2_env_t *env)
 
     axis2_hash_set(import_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_import_free);
-    axis2_hash_set(import_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_import_type);
+    axis2_hash_set(import_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_import_get_type);
     axis2_hash_set(import_impl->methods, "super_objs", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_import_super_objs);
     axis2_hash_set(import_impl->methods, "get_namespace", 
@@ -214,39 +213,6 @@ axis2_xml_schema_import_get_base_impl(void *import,
     return import_impl->external;
 }
 
-/*
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_import_resolve_methods(
-                                axis2_xml_schema_import_t *import,
-                                const axis2_env_t *env,
-                                axis2_xml_schema_import_t *import_impl,
-                                axis2_hash_t *methods)
-{
-    axis2_xml_schema_import_impl_t *import_impl_l = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, import_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
-    
-    import_impl_l = (axis2_xml_schema_import_impl_t *) import_impl;
-    
-    import->ops = AXIS2_MALLOC(env->allocator, 
-            sizeof(axis2_xml_schema_import_ops_t));
-            
-    import->ops->free = axis2_hash_get(methods, "free", 
-            AXIS2_HASH_KEY_STRING);
-            
-    import->ops->get_base_impl = 
-        import_impl_l->import.ops->get_base_impl;
-    import->ops->set_namespace = 
-        import_impl_l->import.ops->set_namespace;
-    import->ops->get_namespace = 
-        import_impl_l->import.ops->get_namespace;
-        
-    return axis2_xml_schema_external_resolve_methods(&(import->base), 
-            env, import_impl_l->external, methods);
-}
-*/
 axis2_char_t * AXIS2_CALL
 axis2_xml_schema_import_get_namespace(void *import,
                                             const axis2_env_t *env)
@@ -273,7 +239,7 @@ axis2_xml_schema_import_set_namespace(void *import,
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_import_type(void *import,
+axis2_xml_schema_import_get_type(void *import,
                             const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(import)->obj_type;

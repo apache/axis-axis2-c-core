@@ -38,7 +38,8 @@ struct axis2_xml_schema_form_impl
     axis2_array_list_t *members;
 };
 
-#define AXIS2_INTF_TO_IMPL(form) ((axis2_xml_schema_form_impl_t *) form)
+#define AXIS2_INTF_TO_IMPL(form) \
+        ((axis2_xml_schema_form_impl_t *) form)
 
 axis2_status_t AXIS2_CALL 
 axis2_xml_schema_form_free(
@@ -51,7 +52,7 @@ axis2_xml_schema_form_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_form_type(
+axis2_xml_schema_form_get_type(
         void *form,
         const axis2_env_t *env);
 
@@ -109,8 +110,8 @@ axis2_xml_schema_form_create(const axis2_env_t *env,
     form_impl->form.ops->super_objs = 
         axis2_xml_schema_form_super_objs;
         
-    form_impl->form.ops->type = 
-        axis2_xml_schema_form_type;
+    form_impl->form.ops->get_type = 
+        axis2_xml_schema_form_get_type;
         
     form_impl->form.ops->get_base_impl = 
         axis2_xml_schema_form_get_base_impl;
@@ -149,8 +150,8 @@ axis2_xml_schema_form_create(const axis2_env_t *env,
     axis2_hash_set(form_impl->methods, "super_objs", 
         AXIS2_HASH_KEY_STRING, axis2_xml_schema_form_super_objs);
         
-    axis2_hash_set(form_impl->methods, "type", 
-        AXIS2_HASH_KEY_STRING, axis2_xml_schema_form_type);
+    axis2_hash_set(form_impl->methods, "get_type", 
+        AXIS2_HASH_KEY_STRING, axis2_xml_schema_form_get_type);
         
     axis2_hash_set(form_impl->methods, "get_values", 
         AXIS2_HASH_KEY_STRING, axis2_xml_schema_form_get_values);
@@ -264,7 +265,7 @@ axis2_xml_schema_form_super_objs(void *form,
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_form_type(void *form,
+axis2_xml_schema_form_get_type(void *form,
                                 const axis2_env_t *env)
 {
     axis2_xml_schema_form_impl_t *form_impl = NULL;

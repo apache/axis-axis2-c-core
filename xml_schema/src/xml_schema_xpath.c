@@ -45,7 +45,7 @@ axis2_xml_schema_xpath_get_base_impl(void *xpath,
                                         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_xpath_type(void *xpath,
+axis2_xml_schema_xpath_get_type(void *xpath,
                             const axis2_env_t *env);
                                         
 axis2_hash_t *AXIS2_CALL
@@ -85,8 +85,8 @@ axis2_xml_schema_xpath_create(const axis2_env_t *env)
             axis2_xml_schema_xpath_get_xpath;
     xpath_impl->xpath.ops->set_xpath = 
             axis2_xml_schema_xpath_set_xpath;
-    xpath_impl->xpath.ops->type =
-            axis2_xml_schema_xpath_type; 
+    xpath_impl->xpath.ops->get_type =
+            axis2_xml_schema_xpath_get_type; 
     xpath_impl->xpath.ops->super_objs =
             axis2_xml_schema_xpath_super_objs;                       
    
@@ -250,7 +250,7 @@ axis2_xml_schema_xpath_set_xpath(void *xpath,
     return AXIS2_SUCCESS;
 }
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_xpath_type(void *xpath,
+axis2_xml_schema_xpath_get_type(void *xpath,
                             const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(xpath)->obj_type;

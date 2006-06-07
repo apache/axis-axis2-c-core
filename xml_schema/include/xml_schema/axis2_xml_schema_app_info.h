@@ -59,7 +59,7 @@ struct axis2_xml_schema_app_info_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (
+    get_type) (
             void *app_info,
             const axis2_env_t *env);
 
@@ -109,9 +109,9 @@ axis2_xml_schema_app_info_create(const axis2_env_t *env);
       (((axis2_xml_schema_app_info_t *) app_info)->ops->\
             super_objs(app_info, env))
 
-#define AXIS2_XML_SCHEMA_APP_INFO_TYPE(app_info, env) \
+#define AXIS2_XML_SCHEMA_APP_INFO_GET_TYPE(app_info, env) \
       (((axis2_xml_schema_app_info_t *) app_info)->ops->\
-            type(app_info, env))
+            get_type(app_info, env))
 
 #define AXIS2_XML_SCHEMA_APP_INFO_GET_SOURCE(app_info, env) \
       (((axis2_xml_schema_app_info_t *) app_info)->ops->\

@@ -21,12 +21,6 @@
 typedef struct axis2_xml_schema_facet_impl 
                 axis2_xml_schema_facet_impl_t;
                 
-               
-
-/** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
- */ 
 struct axis2_xml_schema_facet_impl
 {
     axis2_xml_schema_facet_t facet;
@@ -88,7 +82,7 @@ axis2_xml_schema_facet_set_facet_type(
         int facet_type);
             
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_facet_type(
+axis2_xml_schema_facet_get_type(
         void *facet,
         const axis2_env_t *env);
                                                                                
@@ -144,8 +138,8 @@ axis2_xml_schema_facet_create(const axis2_env_t *env,
         axis2_xml_schema_facet_get_value;
     facet_impl->facet.ops->set_value = 
         axis2_xml_schema_facet_set_value;
-    facet_impl->facet.ops->type = 
-        axis2_xml_schema_facet_type; 
+    facet_impl->facet.ops->get_type = 
+        axis2_xml_schema_facet_get_type; 
     facet_impl->facet.ops->set_facet_type =
         axis2_xml_schema_facet_set_facet_type;
     facet_impl->facet.ops->super_objs =
@@ -169,8 +163,8 @@ axis2_xml_schema_facet_create(const axis2_env_t *env,
     axis2_hash_set(facet_impl->methods, "set_value", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_facet_set_value);
 
-    axis2_hash_set(facet_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_facet_type);
+    axis2_hash_set(facet_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_facet_get_type);
     axis2_hash_set(facet_impl->methods, "super_objs",
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_facet_super_objs);
             
@@ -394,7 +388,7 @@ axis2_xml_schema_facet_set_facet_type(void *facet,
 }                                      
                                       
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_facet_type(void *facet,
+axis2_xml_schema_facet_get_type(void *facet,
                                       const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(facet)->obj_type;

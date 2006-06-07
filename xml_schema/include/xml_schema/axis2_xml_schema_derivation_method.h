@@ -62,7 +62,7 @@ struct axis2_xml_schema_derivation_method_ops
                 const axis2_env_t *env);
     
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(void *derivation_method,
+    get_type)(void *derivation_method,
           const axis2_env_t *env);                                
     
 };
@@ -90,9 +90,9 @@ axis2_xml_schema_derivation_method_create(const axis2_env_t *env,
       (((axis2_xml_schema_derivation_method_t *) \
       derivation_method)->ops->values(derivation_method, env))
 
-#define AXIS2_XML_SCHEMA_DERIVATION_METHOD_TYPE(derivation_method, env) \
+#define AXIS2_XML_SCHEMA_DERIVATION_METHOD_GET_TYPE(derivation_method, env) \
       (((axis2_xml_schema_derivation_method_t *) \
-      derivation_method)->ops->type(derivation_method, env))
+      derivation_method)->ops->get_type(derivation_method, env))
       
 #define AXIS2_XML_SCHEMA_DERIVATION_METHOD_SUPER_OBJS(derivation_method, env) \
         (((axis2_xml_schema_derivation_method_t *) \

@@ -56,7 +56,7 @@ struct axis2_xml_schema_group_ref_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (
+    get_type) (
             void *group_ref,
             const axis2_env_t *env);
 
@@ -105,8 +105,8 @@ axis2_xml_schema_group_ref_create(const axis2_env_t *env);
 #define AXIS2_XML_SCHEMA_GROUP_REF_SUPER_OBJS(group_ref, env) \
       (((axis2_xml_schema_group_ref_t *) group_ref)->ops->super_objs(group_ref, env))
 
-#define AXIS2_XML_SCHEMA_GROUP_REF_TYPE(group_ref, env) \
-      (((axis2_xml_schema_group_ref_t *) group_ref)->ops->type(group_ref, env))
+#define AXIS2_XML_SCHEMA_GROUP_REF_GET_TYPE(group_ref, env) \
+      (((axis2_xml_schema_group_ref_t *) group_ref)->ops->get_type(group_ref, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_REF_GET_BASE_IMPL(group_ref, env) \
       (((axis2_xml_schema_group_ref_t *) group_ref)->ops->\

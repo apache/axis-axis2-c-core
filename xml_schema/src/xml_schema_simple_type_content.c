@@ -51,7 +51,7 @@ axis2_xml_schema_simple_type_content_get_base_impl(void *sim_type_cont,
                                         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_simple_type_content_type(void *sim_type_cont,
+axis2_xml_schema_simple_type_content_get_type(void *sim_type_cont,
                                             const axis2_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
@@ -96,8 +96,8 @@ axis2_xml_schema_simple_type_content_create(const axis2_env_t *env)
             axis2_xml_schema_simple_type_content_free;
     sim_type_cont_impl->sim_type_cont.ops->get_base_impl = 
             axis2_xml_schema_simple_type_content_get_base_impl;
-    sim_type_cont_impl->sim_type_cont.ops->type = 
-            axis2_xml_schema_simple_type_content_type;
+    sim_type_cont_impl->sim_type_cont.ops->get_type = 
+            axis2_xml_schema_simple_type_content_get_type;
     sim_type_cont_impl->sim_type_cont.ops->super_objs = 
             axis2_xml_schema_simple_type_content_super_objs;
    
@@ -111,8 +111,8 @@ axis2_xml_schema_simple_type_content_create(const axis2_env_t *env)
     }
     axis2_hash_set(sim_type_cont_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_simple_type_content_free);
-    axis2_hash_set(sim_type_cont_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_content_type);
+    axis2_hash_set(sim_type_cont_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_content_get_type);
     axis2_hash_set(sim_type_cont_impl->methods, "super_objs", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_content_super_objs);
 
@@ -221,7 +221,7 @@ axis2_xml_schema_simple_type_content_resolve_methods(
     
     sim_type_cont->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    sim_type_cont->ops->type = axis2_hash_get(methods, "type", 
+    sim_type_cont->ops->get_type = axis2_hash_get(methods, "get_type", 
             AXIS2_HASH_KEY_STRING);
     sim_type_cont->ops->super_objs = axis2_hash_get(methods, "super_objs", 
             AXIS2_HASH_KEY_STRING);
@@ -232,7 +232,7 @@ axis2_xml_schema_simple_type_content_resolve_methods(
 
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_simple_type_content_type(void *sim_type_cont,
+axis2_xml_schema_simple_type_content_get_type(void *sim_type_cont,
                                             const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(sim_type_cont)->obj_type;

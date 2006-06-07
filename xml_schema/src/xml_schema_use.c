@@ -20,8 +20,7 @@
 typedef struct axis2_xml_schema_use_impl axis2_xml_schema_use_impl_t;
 
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
+ * @brief axis2_xml_schema_use_impl
  */ 
 struct axis2_xml_schema_use_impl
 {
@@ -50,7 +49,7 @@ axis2_xml_schema_use_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_use_type(
+axis2_xml_schema_use_get_type(
         void *use,
         const axis2_env_t *env);
 
@@ -102,7 +101,7 @@ axis2_xml_schema_use_create(const axis2_env_t *env,
     }
     use_impl->use.ops->free = axis2_xml_schema_use_free;
     use_impl->use.ops->super_objs = axis2_xml_schema_use_super_objs;
-    use_impl->use.ops->type = axis2_xml_schema_use_type;
+    use_impl->use.ops->get_type = axis2_xml_schema_use_get_type;
     use_impl->use.ops->get_base_impl = axis2_xml_schema_use_get_base_impl;
     use_impl->use.ops->get_values = 
             axis2_xml_schema_use_get_values;
@@ -131,8 +130,8 @@ axis2_xml_schema_use_create(const axis2_env_t *env,
     axis2_hash_set(use_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_use_super_objs);
 
-    axis2_hash_set(use_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_use_type);
+    axis2_hash_set(use_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_use_get_type);
 
     axis2_hash_set(use_impl->methods, "get_values", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_use_get_values);
@@ -231,7 +230,7 @@ axis2_xml_schema_use_super_objs(
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_use_type(
+axis2_xml_schema_use_get_type(
         void *use,
         const axis2_env_t *env)
 {

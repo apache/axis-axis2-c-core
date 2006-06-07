@@ -59,7 +59,7 @@ axis2_xml_severity_type_super_objs(void *severity_type,
                                    const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_severity_type_type(void *severity_type,
+axis2_xml_severity_type_get_type(void *severity_type,
                             const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_xml_severity_type_t * AXIS2_CALL
@@ -99,8 +99,8 @@ axis2_xml_severity_type_create(const axis2_env_t *env,
             axis2_xml_severity_type_get_base_impl;
     severity_type_impl->severity_type.ops->get_values = 
             axis2_xml_severity_type_get_values;
-    severity_type_impl->severity_type.ops->type =
-            axis2_xml_severity_type_type;
+    severity_type_impl->severity_type.ops->get_type =
+            axis2_xml_severity_type_get_type;
     severity_type_impl->severity_type.ops->super_objs =
             axis2_xml_severity_type_super_objs;
                            
@@ -129,8 +129,9 @@ axis2_xml_severity_type_create(const axis2_env_t *env,
             axis2_xml_severity_type_get_values);
     axis2_hash_set(severity_type_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
             axis2_xml_severity_type_super_objs);
-    axis2_hash_set(severity_type_impl->methods, "type", AXIS2_HASH_KEY_STRING,
-            axis2_xml_severity_type_type);
+    axis2_hash_set(severity_type_impl->methods, "get_type",
+            AXIS2_HASH_KEY_STRING,
+            axis2_xml_severity_type_get_type);
             
     severity_type_impl->schema_enum = axis2_xml_schema_enum_create(env, value);
     if(!severity_type_impl->schema_enum)
@@ -251,7 +252,7 @@ axis2_xml_severity_type_super_objs(void *severity_type,
 }                                   
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_severity_type_type(void *severity_type,
+axis2_xml_severity_type_get_type(void *severity_type,
                             const axis2_env_t *env)
 {                            
     return AXIS2_INTF_TO_IMPL(severity_type)->type;

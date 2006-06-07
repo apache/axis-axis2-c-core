@@ -18,11 +18,11 @@
 #include <xml_schema/axis2_xml_schema_group_base.h>
 #include <axis2_utils.h>
 
-typedef struct axis2_xml_schema_group_impl axis2_xml_schema_group_impl_t;
+typedef struct axis2_xml_schema_group_impl 
+                axis2_xml_schema_group_impl_t;
 
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
+ * @brief axis2_xml_schema_group_impl
  */ 
 struct axis2_xml_schema_group_impl
 {
@@ -48,7 +48,7 @@ axis2_xml_schema_group_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_group_type(
+axis2_xml_schema_group_get_type(
         void *group,
         const axis2_env_t *env);
 
@@ -111,8 +111,8 @@ axis2_xml_schema_group_create(const axis2_env_t *env)
             axis2_xml_schema_group_free;
     group_impl->group.ops->super_objs = 
             axis2_xml_schema_group_super_objs;
-    group_impl->group.ops->type = 
-            axis2_xml_schema_group_type;
+    group_impl->group.ops->get_type = 
+            axis2_xml_schema_group_get_type;
     group_impl->group.ops->get_base_impl = 
             axis2_xml_schema_group_get_base_impl;
     group_impl->group.ops->get_name = 
@@ -135,8 +135,8 @@ axis2_xml_schema_group_create(const axis2_env_t *env)
             axis2_xml_schema_group_free);
     axis2_hash_set(group_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_group_super_objs);
-    axis2_hash_set(group_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_group_type);
+    axis2_hash_set(group_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_group_get_type);
     axis2_hash_set(group_impl->methods, "get_name", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_group_get_name);
     axis2_hash_set(group_impl->methods, "set_name", 
@@ -239,7 +239,7 @@ axis2_xml_schema_group_super_objs(void *group,
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_group_type(void *group,
+axis2_xml_schema_group_get_type(void *group,
                                 const axis2_env_t *env)
 {
     axis2_xml_schema_group_impl_t *group_impl = NULL;

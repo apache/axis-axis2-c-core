@@ -56,7 +56,7 @@ axis2_xml_schema_annotation_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_annotation_type(
+axis2_xml_schema_annotation_get_type(
         void *annotation,
         const axis2_env_t *env);
 
@@ -106,8 +106,8 @@ axis2_xml_schema_annotation_create(const axis2_env_t *env)
     annotation_impl->annotation.ops->super_objs = 
         axis2_xml_schema_annotation_super_objs;
     
-    annotation_impl->annotation.ops->type = 
-        axis2_xml_schema_annotation_type;
+    annotation_impl->annotation.ops->get_type = 
+        axis2_xml_schema_annotation_get_type;
     
     annotation_impl->annotation.ops->get_base_impl = 
         axis2_xml_schema_annotation_get_base_impl;
@@ -136,8 +136,8 @@ axis2_xml_schema_annotation_create(const axis2_env_t *env)
             
     axis2_hash_set(annotation_impl->methods, "super_objs", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_annotation_super_objs);
-    axis2_hash_set(annotation_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_annotation_type);
+    axis2_hash_set(annotation_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_annotation_get_type);
     
     axis2_hash_set(annotation_impl->methods, "get_items", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_annotation_get_items);
@@ -262,7 +262,7 @@ axis2_xml_schema_annotation_super_objs(
 }
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_annotation_type(
+axis2_xml_schema_annotation_get_type(
         void *annotation,
         const axis2_env_t *env)
 {

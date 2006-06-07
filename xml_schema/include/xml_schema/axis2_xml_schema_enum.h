@@ -57,7 +57,7 @@ struct axis2_xml_schema_enum_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (
+    get_type) (
             void *schema_enum,
             const axis2_env_t *env);
 
@@ -115,8 +115,8 @@ axis2_xml_schema_enum_index(axis2_char_t *value,
 #define AXIS2_XML_SCHEMA_ENUM_SUPER_OBJS(schema_enum, env) \
       (((axis2_xml_schema_enum_t *) schema_enum)->ops->super_objs (schema_enum, env))
 
-#define AXIS2_XML_SCHEMA_ENUM_TYPE(schema_enum, env) \
-      (((axis2_xml_schema_enum_t *) schema_enum)->ops->type (schema_enum, env))
+#define AXIS2_XML_SCHEMA_ENUM_GET_TYPE(schema_enum, env) \
+      (((axis2_xml_schema_enum_t *) schema_enum)->ops->get_type(schema_enum, env))
 
 #define AXIS2_XML_SCHEMA_ENUM_GET_VALUE(schema_enum, env) \
       (((axis2_xml_schema_enum_t *) schema_enum)->ops->get_value \

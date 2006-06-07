@@ -64,7 +64,7 @@ axis2_xml_schema_complex_content_restriction_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_complex_content_restriction_type(
+axis2_xml_schema_complex_content_restriction_get_type(
         void *cmp_content_res,
         const axis2_env_t *env);
 
@@ -157,8 +157,8 @@ axis2_xml_schema_complex_content_restriction_create(const axis2_env_t *env)
     cmp_content_res_impl->cmp_content_res.ops->free = 
             axis2_xml_schema_complex_content_restriction_free;
             
-    cmp_content_res_impl->cmp_content_res.ops->type = 
-            axis2_xml_schema_complex_content_restriction_type;
+    cmp_content_res_impl->cmp_content_res.ops->get_type = 
+            axis2_xml_schema_complex_content_restriction_get_type;
             
     cmp_content_res_impl->cmp_content_res.ops->super_objs = 
             axis2_xml_schema_complex_content_restriction_super_objs;                        
@@ -203,8 +203,8 @@ axis2_xml_schema_complex_content_restriction_create(const axis2_env_t *env)
     axis2_hash_set(cmp_content_res_impl->methods,"free", AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_complex_content_restriction_free);
             
-    axis2_hash_set(cmp_content_res_impl->methods,"type", AXIS2_HASH_KEY_STRING,
-            axis2_xml_schema_complex_content_restriction_type);
+    axis2_hash_set(cmp_content_res_impl->methods,"get_type", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_complex_content_restriction_get_type);
             
     axis2_hash_set(cmp_content_res_impl->methods,"super_objs", AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_complex_content_restriction_super_objs);                        
@@ -439,7 +439,7 @@ axis2_xml_schema_complex_content_restriction_super_objs(
 }        
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_complex_content_restriction_type(
+axis2_xml_schema_complex_content_restriction_get_type(
         void *cmp_content_res,
         const axis2_env_t *env)
 {

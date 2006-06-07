@@ -62,7 +62,7 @@ struct axis2_xml_schema_simple_content_ops
                 const axis2_env_t *env);
                     
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (void *sim_content,
+    get_type) (void *sim_content,
            const axis2_env_t *env);                                        
 
     void* (AXIS2_CALL *
@@ -96,16 +96,6 @@ struct axis2_xml_schema_simple_content
 AXIS2_EXTERN axis2_xml_schema_simple_content_t * AXIS2_CALL
 axis2_xml_schema_simple_content_create(const axis2_env_t *env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_simple_content_resolve_methods(
-                                axis2_xml_schema_simple_content_t *sim_content,
-                                const axis2_env_t *env,
-                                axis2_xml_schema_simple_content_t *group_impl,
-                                axis2_hash_t *methods);
- */
  
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_FREE(sim_content, env) \
       (((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
@@ -119,9 +109,9 @@ axis2_xml_schema_simple_content_resolve_methods(
       (((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
             super_objs(sim_content, env))
             
-#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_TYPE(sim_content, env) \
+#define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_GET_TYPE(sim_content, env) \
       (((axis2_xml_schema_simple_content_t *) sim_content)->ops->\
-            type(sim_content, env))
+            get_type(sim_content, env))
                         
 #define AXIS2_XML_SCHEMA_SIMPLE_CONTENT_GET_CONTENT(sim_content, env) \
       (((axis2_xml_schema_simple_content_t *) sim_content)->ops->\

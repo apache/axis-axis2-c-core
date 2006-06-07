@@ -62,7 +62,7 @@ axis2_xml_schema_particle_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_particle_type(
+axis2_xml_schema_particle_get_type(
         void *particle,
         const axis2_env_t *env);
 
@@ -131,8 +131,8 @@ axis2_xml_schema_particle_create(const axis2_env_t *env)
     particle_impl->particle.ops->super_objs = 
             axis2_xml_schema_particle_super_objs;
     
-    particle_impl->particle.ops->type = 
-            axis2_xml_schema_particle_type;
+    particle_impl->particle.ops->get_type = 
+            axis2_xml_schema_particle_get_type;
     
     particle_impl->particle.ops->get_base_impl = 
             axis2_xml_schema_particle_get_base_impl;
@@ -160,8 +160,8 @@ axis2_xml_schema_particle_create(const axis2_env_t *env)
             axis2_xml_schema_particle_free);
     axis2_hash_set(particle_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_particle_super_objs);
-    axis2_hash_set(particle_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_particle_type);
+    axis2_hash_set(particle_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_particle_get_type);
     axis2_hash_set(particle_impl->methods, "get_max_occurs", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_particle_get_max_occurs);
     axis2_hash_set(particle_impl->methods, "set_max_occurs", 
@@ -257,7 +257,7 @@ axis2_xml_schema_particle_super_objs(void *particle,
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_particle_type(void *particle,
+axis2_xml_schema_particle_get_type(void *particle,
                                 const axis2_env_t *env)
 {
     axis2_xml_schema_particle_impl_t *particle_impl = NULL;
@@ -303,7 +303,7 @@ axis2_xml_schema_particle_resolve_methods(
             AXIS2_HASH_KEY_STRING);
     particle->ops->super_objs = axis2_hash_get(methods, "super_objs", 
             AXIS2_HASH_KEY_STRING);
-    particle->ops->type = axis2_hash_get(methods, "type", 
+    particle->ops->get_type = axis2_hash_get(methods, "get_type", 
             AXIS2_HASH_KEY_STRING);
 
     particle->ops->get_max_occurs = axis2_hash_get(methods, "get_max_occurs", 

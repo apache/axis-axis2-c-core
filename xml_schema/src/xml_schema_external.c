@@ -18,8 +18,7 @@
 #include <xml_schema/axis2_xml_schema.h>
 
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
+ * @brief axis2_xml_schema_external_impl
  */ 
 typedef struct axis2_xml_schema_external_impl
 {
@@ -57,7 +56,7 @@ axis2_xml_schema_external_super_objs(void *external,
                                         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_external_type(void *external,
+axis2_xml_schema_external_get_type(void *external,
                                 const axis2_env_t *env);
 
 
@@ -118,8 +117,8 @@ axis2_xml_schema_external_create(const axis2_env_t *env)
         axis2_xml_schema_external_free;
     external_impl->external.ops->get_base_impl = 
         axis2_xml_schema_external_get_base_impl;
-    external_impl->external.ops->type =    
-        axis2_xml_schema_external_type;
+    external_impl->external.ops->get_type =    
+        axis2_xml_schema_external_get_type;
     external_impl->external.ops->super_objs =
         axis2_xml_schema_external_super_objs;        
     external_impl->external.ops->get_schema = 
@@ -141,24 +140,37 @@ axis2_xml_schema_external_create(const axis2_env_t *env)
         return NULL;
     }
 
-    axis2_hash_set(external_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(external_impl->methods, "free", 
+            AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_external_free);
-    axis2_hash_set(external_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_external_type);
-    axis2_hash_set(external_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
+    
+    axis2_hash_set(external_impl->methods, "get_type",
+            AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_external_get_type);
+    
+    axis2_hash_set(external_impl->methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_external_super_objs);
-    axis2_hash_set(external_impl->methods, "get_schema_location", AXIS2_HASH_KEY_STRING, 
+            
+    axis2_hash_set(external_impl->methods, "get_schema_location",
+            AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_external_get_schema_location);
-    axis2_hash_set(external_impl->methods, "set_schema_location", AXIS2_HASH_KEY_STRING, 
+            
+    axis2_hash_set(external_impl->methods, "set_schema_location", 
+            AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_external_set_schema_location);
+            
     axis2_hash_set(external_impl->methods, "get_schema", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_external_get_schema);
+            AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_external_get_schema);
+            
     axis2_hash_set(external_impl->methods, "set_schema", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_external_set_schema);
-
+            AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_external_set_schema);
 
     external_impl->annotated = axis2_xml_schema_annotated_create(env);
-     if(!external_impl->annotated)
+
+    if(!external_impl->annotated)
     {
         axis2_xml_schema_external_free(&(external_impl->external), env);
         return NULL;
@@ -263,7 +275,7 @@ axis2_xml_schema_external_resolve_methods(
             AXIS2_HASH_KEY_STRING);
     external->ops->super_objs = axis2_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    external->ops->type = axis2_hash_get(methods, "type",
+    external->ops->get_type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
                                    
     external->ops->set_schema = 
@@ -333,7 +345,7 @@ axis2_xml_schema_external_super_objs(void *external,
 }                                        
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_external_type(void *external,
+axis2_xml_schema_external_get_type(void *external,
                                 const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(external)->obj_type;

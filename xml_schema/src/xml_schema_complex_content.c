@@ -55,7 +55,7 @@ axis2_xml_schema_complex_content_get_base_impl(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_complex_content_type(
+axis2_xml_schema_complex_content_get_type(
         void *complex_content,
         const axis2_env_t *env);
 
@@ -132,8 +132,8 @@ axis2_xml_schema_complex_content_create(const axis2_env_t *env)
             axis2_xml_schema_complex_content_free;
     complex_content_impl->complex_content.ops->get_base_impl = 
             axis2_xml_schema_complex_content_get_base_impl;
-    complex_content_impl->complex_content.ops->type = 
-            axis2_xml_schema_complex_content_type;
+    complex_content_impl->complex_content.ops->get_type = 
+            axis2_xml_schema_complex_content_get_type;
     complex_content_impl->complex_content.ops->super_objs = 
             axis2_xml_schema_complex_content_super_objs;
     complex_content_impl->complex_content.ops->set_content = 
@@ -160,8 +160,8 @@ axis2_xml_schema_complex_content_create(const axis2_env_t *env)
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_complex_content_get_content);
     axis2_hash_set(complex_content_impl->methods, "set_content", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_complex_content_set_content);
-    axis2_hash_set(complex_content_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_complex_content_type);
+    axis2_hash_set(complex_content_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_complex_content_get_type);
     axis2_hash_set(complex_content_impl->methods, "super_objs", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_complex_content_super_objs);
     axis2_hash_set(complex_content_impl->methods, "to_string", 
@@ -353,7 +353,7 @@ axis2_xml_schema_complex_content_set_mixed(
 }
                                            
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_complex_content_type(
+axis2_xml_schema_complex_content_get_type(
         void *complex_content,
         const axis2_env_t *env)
 {

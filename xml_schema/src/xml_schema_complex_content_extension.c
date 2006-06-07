@@ -59,7 +59,7 @@ axis2_xml_schema_complex_content_extension_get_base_impl(
         const axis2_env_t *env);
         
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_complex_content_extension_type(
+axis2_xml_schema_complex_content_extension_get_type(
         void *cmp_cnt_ext,
         const axis2_env_t *env);
         
@@ -154,8 +154,8 @@ axis2_xml_schema_complex_content_extension_create(const axis2_env_t *env)
 
     cmp_cnt_ext_impl->cmp_cnt_ext.ops->free = 
             axis2_xml_schema_complex_content_extension_free;
-    cmp_cnt_ext_impl->cmp_cnt_ext.ops->type = 
-            axis2_xml_schema_complex_content_extension_type;            
+    cmp_cnt_ext_impl->cmp_cnt_ext.ops->get_type = 
+            axis2_xml_schema_complex_content_extension_get_type;            
     cmp_cnt_ext_impl->cmp_cnt_ext.ops->super_objs = 
             axis2_xml_schema_complex_content_extension_super_objs;            
     cmp_cnt_ext_impl->cmp_cnt_ext.ops->get_base_impl = 
@@ -189,8 +189,8 @@ axis2_xml_schema_complex_content_extension_create(const axis2_env_t *env)
     axis2_hash_set(cmp_cnt_ext_impl->methods,"free", AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_complex_content_extension_free);
 
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"type", AXIS2_HASH_KEY_STRING,
-            axis2_xml_schema_complex_content_extension_type);            
+    axis2_hash_set(cmp_cnt_ext_impl->methods,"get_type", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_complex_content_extension_get_type);            
     
     axis2_hash_set(cmp_cnt_ext_impl->methods,"super_objs", AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_complex_content_extension_super_objs);            
@@ -399,7 +399,7 @@ axis2_xml_schema_complex_content_extension_to_string(
 } 
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_complex_content_extension_type(
+axis2_xml_schema_complex_content_extension_get_type(
         void *cmp_cnt_ext,
         const axis2_env_t *env)
 {

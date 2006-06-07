@@ -54,7 +54,7 @@ axis2_xml_schema_content_processing_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_content_processing_type(
+axis2_xml_schema_content_processing_get_type(
         void *content_processing,
         const axis2_env_t *env);
 
@@ -105,8 +105,8 @@ axis2_xml_schema_content_processing_create(const axis2_env_t *env,
             axis2_xml_schema_content_processing_free;
     content_processing_impl->content_processing.ops->super_objs = 
             axis2_xml_schema_content_processing_super_objs;
-    content_processing_impl->content_processing.ops->type = 
-            axis2_xml_schema_content_processing_type;
+    content_processing_impl->content_processing.ops->get_type = 
+            axis2_xml_schema_content_processing_get_type;
     content_processing_impl->content_processing.ops->get_base_impl = 
             axis2_xml_schema_content_processing_get_base_impl;
     content_processing_impl->content_processing.ops->get_values = 
@@ -143,8 +143,8 @@ axis2_xml_schema_content_processing_create(const axis2_env_t *env,
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_content_processing_free);
     axis2_hash_set(content_processing_impl->methods, "super_objs", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_content_processing_super_objs);
-    axis2_hash_set(content_processing_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_content_processing_type);
+    axis2_hash_set(content_processing_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_content_processing_get_type);
             
     axis2_hash_set(content_processing_impl->methods, "get_values", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_content_processing_get_values);
@@ -253,7 +253,7 @@ axis2_xml_schema_content_processing_super_objs(
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_content_processing_type(
+axis2_xml_schema_content_processing_get_type(
         void *content_processing,
         const axis2_env_t *env)
 {

@@ -75,7 +75,7 @@ axis2_xml_schema_type_get_base_impl(void *type,
                                         const axis2_env_t *env);
                                         
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_type_type(void *type,
+axis2_xml_schema_type_get_type(void *type,
                            const axis2_env_t *env); 
                                         
 axis2_hash_t*  AXIS2_CALL
@@ -178,8 +178,8 @@ axis2_xml_schema_type_create(const axis2_env_t *env,
             axis2_xml_schema_type_free;
     type_impl->type.ops->get_base_impl = 
             axis2_xml_schema_type_get_base_impl;
-    type_impl->type.ops->type =
-            axis2_xml_schema_type_type;
+    type_impl->type.ops->get_type =
+            axis2_xml_schema_type_get_type;
     type_impl->type.ops->super_objs =
             axis2_xml_schema_type_super_objs;
     type_impl->type.ops->get_base_schema_type = 
@@ -225,8 +225,8 @@ axis2_xml_schema_type_create(const axis2_env_t *env,
             axis2_xml_schema_type_free);
     axis2_hash_set(type_impl->methods, "get_base_schema_type", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_type_get_base_schema_type);
-    axis2_hash_set(type_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_type_type);
+    axis2_hash_set(type_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_type_get_type);
     axis2_hash_set(type_impl->methods, "super_objs", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_type_super_objs);            
     axis2_hash_set(type_impl->methods, "get_data_type", 
@@ -351,7 +351,7 @@ axis2_xml_schema_type_resolve_methods(
             
     type->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
-    type->ops->type = axis2_hash_get(methods, "type",
+    type->ops->get_type = axis2_hash_get(methods, "get_type",
             AXIS2_HASH_KEY_STRING);
     type->ops->super_objs = axis2_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);                        
@@ -666,7 +666,7 @@ axis2_xml_schema_type_get_qname(void *type,
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_type_type(void *type,
+axis2_xml_schema_type_get_type(void *type,
                            const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(type)->obj_type;

@@ -61,7 +61,7 @@ struct axis2_xml_schema_complex_content_restriction_ops
             const axis2_env_t *env);
             
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(
+    get_type)(
             void *cmp_content_res,
             const axis2_env_t *env);                        
 
@@ -133,9 +133,9 @@ axis2_xml_schema_complex_content_restriction_create(const axis2_env_t *env);
       (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
           get_base_impl(cmp_content_res, env))
 
-#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_TYPE(cmp_content_res, env) \
+#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_GET_TYPE(cmp_content_res, env) \
       (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\
-          type(cmp_content_res, env))
+          get_type(cmp_content_res, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION_SUPER_OBJS(cmp_content_res, env) \
       (((axis2_xml_schema_complex_content_restriction_t *) cmp_content_res)->ops->\

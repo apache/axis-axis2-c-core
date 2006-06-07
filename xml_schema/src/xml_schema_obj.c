@@ -56,7 +56,7 @@ axis2_xml_schema_obj_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_obj_type(
+axis2_xml_schema_obj_get_type(
         void *obj,
         const axis2_env_t *env);
 
@@ -137,8 +137,8 @@ axis2_xml_schema_obj_create(const axis2_env_t *env)
         axis2_xml_schema_obj_free;
     obj_impl->obj.ops->super_objs = 
         axis2_xml_schema_obj_super_objs;
-    obj_impl->obj.ops->type = 
-        axis2_xml_schema_obj_type;
+    obj_impl->obj.ops->get_type = 
+        axis2_xml_schema_obj_get_type;
     obj_impl->obj.ops->get_line_num = 
         axis2_xml_schema_obj_get_line_num;
     obj_impl->obj.ops->set_line_num = 
@@ -211,7 +211,7 @@ axis2_xml_schema_obj_super_objs(void *obj,
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_obj_type(
+axis2_xml_schema_obj_get_type(
         void *obj,
         const axis2_env_t *env)
 {
@@ -249,7 +249,7 @@ axis2_xml_schema_obj_resolve_methods(
     obj->ops->super_objs = axis2_hash_get(methods, "super_objs", 
             AXIS2_HASH_KEY_STRING);
             
-    obj->ops->type = axis2_hash_get(methods, "type", 
+    obj->ops->get_type = axis2_hash_get(methods, "get_type", 
             AXIS2_HASH_KEY_STRING);
 
     obj->ops->get_line_num = 

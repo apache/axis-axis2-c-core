@@ -52,7 +52,7 @@ axis2_xml_schema_enum_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_enum_type(
+axis2_xml_schema_enum_get_type(
         void *schema_enum,
         const axis2_env_t *env);
 
@@ -118,8 +118,8 @@ axis2_xml_schema_enum_create(const axis2_env_t *env,
     schema_enum_impl->schema_enum.ops->super_objs = 
             axis2_xml_schema_enum_super_objs;
 
-    schema_enum_impl->schema_enum.ops->type = 
-            axis2_xml_schema_enum_type;
+    schema_enum_impl->schema_enum.ops->get_type = 
+            axis2_xml_schema_enum_get_type;
             
     schema_enum_impl->schema_enum.ops->get_value = 
             axis2_xml_schema_enum_get_value;
@@ -203,7 +203,7 @@ axis2_xml_schema_enum_super_objs(
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_enum_type(
+axis2_xml_schema_enum_get_type(
         void *schema_enum,
         const axis2_env_t *env)
 {
@@ -242,7 +242,7 @@ axis2_xml_schema_enum_resolve_methods(
     
     schema_enum->ops->super_objs = axis2_hash_get(methods, "super_objs", 
             AXIS2_HASH_KEY_STRING);
-    schema_enum->ops->type = axis2_hash_get(methods, "type", 
+    schema_enum->ops->get_type = axis2_hash_get(methods, "get_type", 
             AXIS2_HASH_KEY_STRING);
     
     schema_enum->ops->get_value = 

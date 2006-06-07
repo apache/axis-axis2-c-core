@@ -63,7 +63,7 @@ axis2_xml_schema_simple_type_restriction_get_base_type(void *simple_type_restric
                                             const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_simple_type_restriction_type(void *simple_type_restriction,
+axis2_xml_schema_simple_type_restriction_get_type(void *simple_type_restriction,
                                             const axis2_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
@@ -133,8 +133,8 @@ axis2_xml_schema_simple_type_restriction_create(const axis2_env_t *env)
             axis2_xml_schema_simple_type_restriction_free;
     simple_type_restriction_impl->simple_type_restriction.ops->get_base_impl = 
             axis2_xml_schema_simple_type_restriction_get_base_impl;
-    simple_type_restriction_impl->simple_type_restriction.ops->type = 
-            axis2_xml_schema_simple_type_restriction_type;
+    simple_type_restriction_impl->simple_type_restriction.ops->get_type = 
+            axis2_xml_schema_simple_type_restriction_get_type;
     simple_type_restriction_impl->simple_type_restriction.ops->super_objs = 
             axis2_xml_schema_simple_type_restriction_super_objs;
     simple_type_restriction_impl->simple_type_restriction.ops->get_base_type = 
@@ -161,8 +161,8 @@ axis2_xml_schema_simple_type_restriction_create(const axis2_env_t *env)
             axis2_xml_schema_simple_type_restriction_free);
     axis2_hash_set(simple_type_restriction_impl->methods, "get_base_type", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_restriction_get_base_type);
-    axis2_hash_set(simple_type_restriction_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_restriction_type);
+    axis2_hash_set(simple_type_restriction_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_restriction_get_type);
     axis2_hash_set(simple_type_restriction_impl->methods, "super_objs", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_restriction_super_objs);            axis2_hash_set(simple_type_restriction_impl->methods, "set_base_type", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_restriction_set_base_type);
@@ -386,7 +386,7 @@ axis2_xml_schema_simple_type_restriction_get_facets(void *simple_type_restrictio
 }                                            
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_simple_type_restriction_type(void *simple_type_restriction,
+axis2_xml_schema_simple_type_restriction_get_type(void *simple_type_restriction,
                                             const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(simple_type_restriction)->obj_type;

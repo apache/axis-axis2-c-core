@@ -21,8 +21,7 @@ typedef struct axis2_xml_schema_simple_content_extension_impl
                     axis2_xml_schema_simple_content_extension_impl_t;
 
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
+ * @brief axis2_xml_schema_simple_content_extension_impl
  */ 
 struct axis2_xml_schema_simple_content_extension_impl
 {
@@ -58,7 +57,7 @@ axis2_xml_schema_simple_content_extension_get_base_impl(
         const axis2_env_t *env);
         
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_simple_content_extension_type(
+axis2_xml_schema_simple_content_extension_get_type(
         void *sim_content_ext,
         const axis2_env_t *env);
         
@@ -141,8 +140,8 @@ axis2_xml_schema_simple_content_extension_create(const axis2_env_t *env)
             axis2_xml_schema_simple_content_extension_free;
     sim_content_ext_impl->sim_content_ext.ops->get_base_impl = 
             axis2_xml_schema_simple_content_extension_get_base_impl;
-    sim_content_ext_impl->sim_content_ext.ops->type = 
-            axis2_xml_schema_simple_content_extension_type;            
+    sim_content_ext_impl->sim_content_ext.ops->get_type = 
+            axis2_xml_schema_simple_content_extension_get_type;            
     sim_content_ext_impl->sim_content_ext.ops->super_objs = 
             axis2_xml_schema_simple_content_extension_super_objs;            
             
@@ -168,8 +167,8 @@ axis2_xml_schema_simple_content_extension_create(const axis2_env_t *env)
     
     axis2_hash_set(sim_content_ext_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_simple_content_extension_free);
-     axis2_hash_set(sim_content_ext_impl->methods, "type", AXIS2_HASH_KEY_STRING,
-            axis2_xml_schema_simple_content_extension_type);            
+     axis2_hash_set(sim_content_ext_impl->methods, "get_type", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_simple_content_extension_get_type);            
       axis2_hash_set(sim_content_ext_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_simple_content_extension_super_objs);            
             
@@ -342,7 +341,7 @@ axis2_xml_schema_simple_content_extension_set_base_type_name(
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_simple_content_extension_type(
+axis2_xml_schema_simple_content_extension_get_type(
         void *sim_content_ext,
         const axis2_env_t *env)
 {

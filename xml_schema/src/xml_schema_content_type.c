@@ -52,19 +52,12 @@ axis2_xml_schema_enum_t *AXIS2_CALL
 axis2_xml_schema_content_type_get_base_impl(void *content_type,
                                 const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_content_type_resolve_methods(
-                                axis2_xml_schema_content_type_t *content_type,
-                                const axis2_env_t *env,
-                                axis2_xml_schema_content_type_t *content_type_impl,
-                                axis2_hash_t *methods);
-
 axis2_array_list_t *AXIS2_CALL
 axis2_xml_schema_content_type_get_values(void *content_type,
                         const axis2_env_t *env);
                         
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_content_type_type(void *content_type,
+axis2_xml_schema_content_type_get_type(void *content_type,
                                    const axis2_env_t *env);
                                    
 axis2_hash_t* AXIS2_CALL
@@ -111,8 +104,8 @@ axis2_xml_schema_content_type_create(const axis2_env_t *env,
             axis2_xml_schema_content_type_get_base_impl;
     content_type_impl->content_type.ops->get_values = 
             axis2_xml_schema_content_type_get_values;
-    content_type_impl->content_type.ops->type =
-            axis2_xml_schema_content_type_type;
+    content_type_impl->content_type.ops->get_type =
+            axis2_xml_schema_content_type_get_type;
     content_type_impl->content_type.ops->super_objs =
             axis2_xml_schema_content_type_super_objs;                
                 
@@ -146,8 +139,8 @@ axis2_xml_schema_content_type_create(const axis2_env_t *env,
             axis2_xml_schema_content_type_free);
     axis2_hash_set(content_type_impl->methods, "get_values", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_content_type_get_values);
-    axis2_hash_set(content_type_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_content_type_type);
+    axis2_hash_set(content_type_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_content_type_get_type);
     axis2_hash_set(content_type_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_content_type_super_objs);                        
             
@@ -241,17 +234,11 @@ axis2_array_list_t* AXIS2_CALL
 axis2_xml_schema_content_type_get_values(void *content_type,
                                 const axis2_env_t *env)
 {
-/*    axis2_xml_schema_content_type_impl_t *schema_impl = NULL;
-    axis2_hash_t *super = NULL;
-    super = AXIS2_XML_SCHEMA_CONTENT_TYPE_SUPER_OBJS(content_type, env);
-    if(NULL != super)
-        schema_impl = axis2_hash_get(super,
-         "AXIS2_XML_SCHEMA_CONTENT_TYPE", AXIS2_HASH_KEY_STRING); */
     return AXIS2_INTF_TO_IMPL(content_type)->members;
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_content_type_type(void *content_type,
+axis2_xml_schema_content_type_get_type(void *content_type,
                                    const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(content_type)->obj_type;

@@ -56,7 +56,7 @@ axis2_xml_schema_app_info_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_app_info_type(
+axis2_xml_schema_app_info_get_type(
         void *app_info,
         const axis2_env_t *env);
 
@@ -123,8 +123,8 @@ axis2_xml_schema_app_info_create(const axis2_env_t *env)
     app_info_impl->app_info.ops->super_objs = 
         axis2_xml_schema_app_info_super_objs;
     
-    app_info_impl->app_info.ops->type = 
-        axis2_xml_schema_app_info_type;
+    app_info_impl->app_info.ops->get_type = 
+        axis2_xml_schema_app_info_get_type;
     
     app_info_impl->app_info.ops->get_base_impl = 
         axis2_xml_schema_app_info_get_base_impl;
@@ -154,8 +154,8 @@ axis2_xml_schema_app_info_create(const axis2_env_t *env)
     axis2_hash_set(app_info_impl->methods, "super_objs", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_app_info_super_objs);
     
-    axis2_hash_set(app_info_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_app_info_type);
+    axis2_hash_set(app_info_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_app_info_get_type);
     
     axis2_hash_set(app_info_impl->methods, "get_source", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_app_info_get_source);
@@ -257,7 +257,7 @@ axis2_xml_schema_app_info_super_objs(
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_app_info_type(
+axis2_xml_schema_app_info_get_type(
         void *app_info,
         const axis2_env_t *env)
 {

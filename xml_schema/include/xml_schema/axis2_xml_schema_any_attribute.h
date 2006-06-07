@@ -55,7 +55,7 @@ struct axis2_xml_schema_any_attribute_ops
             const axis2_env_t *env);
             
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(void *any_attr,
+    get_type)(void *any_attr,
           const axis2_env_t *env);
           
     axis2_hash_t* (AXIS2_CALL *
@@ -114,8 +114,8 @@ axis2_xml_schema_any_attribute_resolve_methods(
       (((axis2_xml_schema_any_attribute_t *) any_attr)->ops->get_base_impl(any_attr, env))
 
 
-#define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_TYPE(any_attr, env) \
-      (((axis2_xml_schema_any_attribute_t *) any_attr)->ops->type(any_attr, env))
+#define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_GET_TYPE(any_attr, env) \
+      (((axis2_xml_schema_any_attribute_t *) any_attr)->ops->get_type(any_attr, env))
       
       
 #define AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_SUPER_OBJS(any_attr, env) \

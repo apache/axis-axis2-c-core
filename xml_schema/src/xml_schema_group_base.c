@@ -54,7 +54,7 @@ axis2_xml_schema_group_base_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_group_base_type(
+axis2_xml_schema_group_base_get_type(
         void *group_base,
         const axis2_env_t *env);
 
@@ -112,8 +112,8 @@ axis2_xml_schema_group_base_create(const axis2_env_t *env)
     group_base_impl->group_base.ops->super_objs = 
         axis2_xml_schema_group_base_super_objs;
     
-    group_base_impl->group_base.ops->type = 
-        axis2_xml_schema_group_base_type;
+    group_base_impl->group_base.ops->get_type = 
+        axis2_xml_schema_group_base_get_type;
     
     group_base_impl->group_base.ops->get_base_impl = 
         axis2_xml_schema_group_base_get_base_impl;
@@ -131,15 +131,24 @@ axis2_xml_schema_group_base_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(group_base_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(group_base_impl->methods, "free", 
+            AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_group_base_free);
-    axis2_hash_set(group_base_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_group_base_type);
-    axis2_hash_set(group_base_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
+            
+    axis2_hash_set(group_base_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_group_base_get_type);
+            
+    axis2_hash_set(group_base_impl->methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_group_base_super_objs);
-    axis2_hash_set(group_base_impl->methods, "get_items", AXIS2_HASH_KEY_STRING, 
+            
+    axis2_hash_set(group_base_impl->methods, "get_items", 
+            AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_group_base_get_items);
-    axis2_hash_set(group_base_impl->methods, "to_string", AXIS2_HASH_KEY_STRING,
+            
+    axis2_hash_set(group_base_impl->methods, "to_string", 
+            AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_group_base_to_string);            
     
     group_base_impl->particle = axis2_xml_schema_particle_create(env);
@@ -273,7 +282,7 @@ axis2_xml_schema_group_base_super_objs(
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_group_base_type(
+axis2_xml_schema_group_base_get_type(
         void *group_base,
         const axis2_env_t *env)
 {

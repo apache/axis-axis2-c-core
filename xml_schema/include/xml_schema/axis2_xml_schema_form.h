@@ -56,7 +56,7 @@ struct axis2_xml_schema_form_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (void *form,
+    get_type) (void *form,
             const axis2_env_t *env);
 
     axis2_xml_schema_enum_t *(AXIS2_CALL *
@@ -87,7 +87,7 @@ axis2_xml_schema_form_create(const axis2_env_t *env,
 #define AXIS2_XML_SCHEMA_FORM_SUPER_OBJS(form, env) \
       (((axis2_xml_schema_form_t *) form)->ops->super_objs(form, env))
 
-#define AXIS2_XML_SCHEMA_FORM_TYPE(form, env) \
+#define AXIS2_XML_SCHEMA_FORM_GET_TYPE(form, env) \
       (((axis2_xml_schema_form_t *) form)->ops->type(form, env))
 
 #define AXIS2_XML_SCHEMA_FORM_GET_BASE_IMPL(form, env) \

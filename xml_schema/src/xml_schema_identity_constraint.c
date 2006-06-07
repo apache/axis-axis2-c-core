@@ -54,7 +54,7 @@ axis2_xml_schema_identity_constraint_get_base_impl(void *id_constr,
                                         
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_identity_constraint_type(void *id_constr,
+axis2_xml_schema_identity_constraint_get_type(void *id_constr,
                                         const axis2_env_t *env);
                                         
 
@@ -134,8 +134,8 @@ axis2_xml_schema_identity_constraint_create(const axis2_env_t *env)
             axis2_xml_schema_identity_constraint_get_refer;
     id_cns_impl->id_constr.ops->set_refer = 
             axis2_xml_schema_identity_constraint_set_refer;
-    id_cns_impl->id_constr.ops->type = 
-            axis2_xml_schema_identity_constraint_type;
+    id_cns_impl->id_constr.ops->get_type = 
+            axis2_xml_schema_identity_constraint_get_type;
     id_cns_impl->id_constr.ops->super_objs = 
             axis2_xml_schema_identity_constraint_super_objs;
     id_cns_impl->id_constr.ops->get_fields = 
@@ -162,8 +162,8 @@ axis2_xml_schema_identity_constraint_create(const axis2_env_t *env)
             axis2_xml_schema_identity_constraint_free);
     axis2_hash_set(id_cns_impl->methods, "get_fields", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_identity_constraint_get_fields);
-    axis2_hash_set(id_cns_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_identity_constraint_type);
+    axis2_hash_set(id_cns_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_identity_constraint_get_type);
     axis2_hash_set(id_cns_impl->methods, "super_objs", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_identity_constraint_super_objs);
     axis2_hash_set(id_cns_impl->methods, "get_refer", 
@@ -416,7 +416,7 @@ axis2_xml_schema_identity_constraint_set_selector(void *id_constr,
 
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_identity_constraint_type(void *id_constr,
+axis2_xml_schema_identity_constraint_get_type(void *id_constr,
                                         const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(id_constr)->obj_type;

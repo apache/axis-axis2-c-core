@@ -56,7 +56,7 @@ axis2_xml_tokenized_type_get_values(void *tokenized_type,
                         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_tokenized_type_type(void *tokenized_type,
+axis2_xml_tokenized_type_get_type(void *tokenized_type,
                         const axis2_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
@@ -105,8 +105,8 @@ axis2_xml_tokenized_type_create(const axis2_env_t *env,
     tokenized_type_impl->tokenized_type.ops->get_values = 
             axis2_xml_tokenized_type_get_values;
    
-    tokenized_type_impl->tokenized_type.ops->type = 
-            axis2_xml_tokenized_type_type;
+    tokenized_type_impl->tokenized_type.ops->get_type = 
+            axis2_xml_tokenized_type_get_type;
             
     tokenized_type_impl->tokenized_type.ops->super_objs = 
             axis2_xml_tokenized_type_super_objs; 
@@ -158,8 +158,8 @@ axis2_xml_tokenized_type_create(const axis2_env_t *env,
     axis2_hash_set(tokenized_type_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
             axis2_xml_tokenized_type_super_objs);
 
-    axis2_hash_set(tokenized_type_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_tokenized_type_type);
+    axis2_hash_set(tokenized_type_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_tokenized_type_get_type);
 
     tokenized_type_impl->schema_enum = axis2_xml_schema_enum_create(env, value);
 
@@ -262,7 +262,7 @@ axis2_xml_tokenized_type_get_values(void *tokenized_type,
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_tokenized_type_type(void *tokenized_type,
+axis2_xml_tokenized_type_get_type(void *tokenized_type,
                         const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(tokenized_type)->obj_type;

@@ -56,7 +56,7 @@ struct axis2_xml_schema_attribute_group_ops
             const axis2_env_t *env);
             
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(
+    get_type)(
             void *attr_grp,
             const axis2_env_t *env);
           
@@ -111,16 +111,6 @@ struct axis2_xml_schema_attribute_group
 AXIS2_EXTERN axis2_xml_schema_attribute_group_t * AXIS2_CALL
 axis2_xml_schema_attribute_group_create(const axis2_env_t *env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_attribute_resolve_methods(
-                                axis2_xml_schema_attribute_t *attr,
-                                const axis2_env_t *env,
-                                axis2_xml_schema_attribute_t *any_impl,
-                                axis2_hash_t *methods);
- */
 /******************************* Macros *************************************************/ 
  
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_FREE(attr_grp, env) \
@@ -129,8 +119,8 @@ axis2_xml_schema_attribute_resolve_methods(
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_GET_BASE_IMPL(attr_grp, env) \
       (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->get_base_impl(attr_grp, env))
 
-#define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_TYPE(attr_grp, env) \
-      (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->type(attr_grp, env))
+#define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_GET_TYPE(attr_grp, env) \
+      (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->get_type(attr_grp, env))
       
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_SUPER_OBJS(attr_grp, env) \
       (((axis2_xml_schema_attribute_group_t *) attr_grp)->ops->super_objs(attr_grp, env))

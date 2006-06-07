@@ -60,7 +60,7 @@ struct axis2_xml_schema_redefine_ops
                 const axis2_env_t *env);            
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(void *redefine,
+    get_type)(void *redefine,
           const axis2_env_t *env);            
 
     axis2_xml_schema_obj_table_t* (AXIS2_CALL *
@@ -98,17 +98,6 @@ struct axis2_xml_schema_redefine
 AXIS2_EXTERN axis2_xml_schema_redefine_t * AXIS2_CALL
 axis2_xml_schema_redefine_create(const axis2_env_t *env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_redefine_resolve_methods(
-                                axis2_xml_schema_redefine_t *redefine,
-                                const axis2_env_t *env,
-                                axis2_xml_schema_redefine_t *redefine_impl,
-                                axis2_hash_t *methods);
- */
- 
 #define AXIS2_XML_SCHEMA_REDEFINE_FREE(redefine, env) \
       (((axis2_xml_schema_redefine_t *) redefine)->ops->\
             free(redefine, env))
@@ -117,9 +106,9 @@ axis2_xml_schema_redefine_resolve_methods(
       (((axis2_xml_schema_redefine_t *) redefine)->ops->\
             get_base_impl(redefine, env))
 
-#define AXIS2_XML_SCHEMA_REDEFINE_TYPE(redefine, env) \
+#define AXIS2_XML_SCHEMA_REDEFINE_GET_TYPE(redefine, env) \
       (((axis2_xml_schema_redefine_t *) redefine)->ops->\
-            type(redefine, env))
+            get_type(redefine, env))
 
 #define AXIS2_XML_SCHEMA_REDEFINE_SUPER_OBJS(redefine, env) \
       (((axis2_xml_schema_redefine_t *) redefine)->ops->\

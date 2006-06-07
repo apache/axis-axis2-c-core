@@ -83,7 +83,7 @@ axis2_xml_schema_super_objs(
         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_type(
+axis2_xml_schema_get_type(
         void *schema,
         const axis2_env_t *env);
 
@@ -316,7 +316,7 @@ axis2_xml_schema_create(const axis2_env_t *env,
 
     schema_impl->schema.ops->free = axis2_xml_schema_free;
     schema_impl->schema.ops->super_objs = axis2_xml_schema_super_objs;
-    schema_impl->schema.ops->type = axis2_xml_schema_type;
+    schema_impl->schema.ops->get_type = axis2_xml_schema_get_type;
     schema_impl->schema.ops->get_base_impl = 
             axis2_xml_schema_get_base_impl;
     schema_impl->schema.ops->get_namespace = 
@@ -427,8 +427,8 @@ axis2_xml_schema_create(const axis2_env_t *env,
             axis2_xml_schema_free);
     axis2_hash_set(schema_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
             axis2_xml_schema_super_objs);
-    axis2_hash_set(schema_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_type);
+    axis2_hash_set(schema_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
+            axis2_xml_schema_get_type);
     axis2_hash_set(schema_impl->methods, "get_namespace", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_get_namespace);
     axis2_hash_set(schema_impl->methods, "get_attr_form_default", 
@@ -556,7 +556,7 @@ axis2_xml_schema_free(
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_type(
+axis2_xml_schema_get_type(
         void *schema,
         const axis2_env_t *env)
 {

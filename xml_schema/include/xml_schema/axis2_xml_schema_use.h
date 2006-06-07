@@ -56,7 +56,7 @@ struct axis2_xml_schema_use_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (
+    get_type) (
             void *use,
             const axis2_env_t *env);
 
@@ -88,8 +88,8 @@ axis2_xml_schema_use_create(const axis2_env_t *env,
 #define AXIS2_XML_SCHEMA_USE_SUPER_OBJS(use, env) \
       (((axis2_xml_schema_use_t *) use)->ops->super_objs(use, env))
 
-#define AXIS2_XML_SCHEMA_USE_TYPE(use, env) \
-      (((axis2_xml_schema_use_t *) use)->ops->type(use, env))
+#define AXIS2_XML_SCHEMA_USE_GET_TYPE(use, env) \
+      (((axis2_xml_schema_use_t *) use)->ops->get_type(use, env))
 
 #define AXIS2_XML_SCHEMA_USE_GET_BASE_IMPL(use, env) \
       (((axis2_xml_schema_use_t *) use)->ops->get_base_impl(use, env))

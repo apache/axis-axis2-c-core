@@ -56,7 +56,7 @@ struct axis2_xml_schema_attribute_group_ref_ops
             const axis2_env_t *env);
             
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(
+    get_type)(
             void *grp_ref,
             const axis2_env_t *env);
           
@@ -92,16 +92,6 @@ struct axis2_xml_schema_attribute_group_ref
 AXIS2_EXTERN axis2_xml_schema_attribute_group_ref_t * AXIS2_CALL
 axis2_xml_schema_attribute_group_ref_create(const axis2_env_t *env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_attribute_resolve_methods(
-                                axis2_xml_schema_attribute_t *attr,
-                                const axis2_env_t *env,
-                                axis2_xml_schema_attribute_t *any_impl,
-                                axis2_hash_t *methods);
- */
 /******************************* Macros *************************************************/ 
  
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_REF_FREE(grp_ref, env) \
@@ -110,8 +100,8 @@ axis2_xml_schema_attribute_resolve_methods(
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_REF_GET_BASE_IMPL(grp_ref, env) \
       (((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->get_base_impl(grp_ref, env))
 
-#define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_REF_TYPE(grp_ref, env) \
-      (((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->type(grp_ref, env))
+#define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_REF_GET_TYPE(grp_ref, env) \
+      (((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->get_type(grp_ref, env))
       
 #define AXIS2_XML_SCHEMA_ATTRIBUTE_GROUP_REF_SUPER_OBJS(grp_ref, env) \
       (((axis2_xml_schema_attribute_group_ref_t *) grp_ref)->ops->super_objs(grp_ref, env))

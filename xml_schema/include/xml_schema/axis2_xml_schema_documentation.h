@@ -35,8 +35,10 @@
   * @{
   */
 
-typedef struct axis2_xml_schema_documentation axis2_xml_schema_documentation_t;
-typedef struct axis2_xml_schema_documentation_ops axis2_xml_schema_documentation_ops_t;
+typedef struct axis2_xml_schema_documentation 
+                    axis2_xml_schema_documentation_t;
+typedef struct axis2_xml_schema_documentation_ops 
+                    axis2_xml_schema_documentation_ops_t;
 
 #ifdef __cplusplus
 extern "C"
@@ -60,7 +62,7 @@ struct axis2_xml_schema_documentation_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (
+    get_type) (
             void *documentation,
             const axis2_env_t *env);
 
@@ -118,9 +120,9 @@ axis2_xml_schema_documentation_create(const axis2_env_t *env);
       (((axis2_xml_schema_documentation_t *) documentation)->ops->\
             super_objs(documentation, env))
 
-#define AXIS2_XML_SCHEMA_DOCUMENTATION_TYPE(documentation, env) \
+#define AXIS2_XML_SCHEMA_DOCUMENTATION_GET_TYPE(documentation, env) \
       (((axis2_xml_schema_documentation_t *) documentation)->ops->\
-            type(documentation, env))
+            GET_type(documentation, env))
 
 #define AXIS2_XML_SCHEMA_DOCUMENTATION_GET_SOURCE(documentation, env) \
       (((axis2_xml_schema_documentation_t *) documentation)->ops->\

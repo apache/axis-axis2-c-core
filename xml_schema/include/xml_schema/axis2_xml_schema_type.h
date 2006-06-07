@@ -45,10 +45,6 @@ extern "C"
 
 struct axis2_xml_schema_type_ops
 {
-   /** 
-     * Deallocate memory
-     * @return status code
-     */
     axis2_status_t (AXIS2_CALL *
     free) (void *type,
             const axis2_env_t *env);
@@ -62,7 +58,7 @@ struct axis2_xml_schema_type_ops
                 const axis2_env_t *env);
                    
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(void *type,
+    get_type)(void *type,
           const axis2_env_t *env);                                                  
 
     void *(AXIS2_CALL *
@@ -150,9 +146,9 @@ axis2_xml_schema_type_resolve_methods(
       (((axis2_xml_schema_type_t *) type)->ops->\
             get_base_impl(type, env))
 
-#define AXIS2_XML_SCHEMA_TYPE_TYPE(sch_type, env) \
+#define AXIS2_XML_SCHEMA_TYPE_GET_TYPE(sch_type, env) \
       (((axis2_xml_schema_type_t *) sch_type)->ops->\
-           type(sch_type, env))
+           get_type(sch_type, env))
 
            
 #define AXIS2_XML_SCHEMA_TYPE_SUPER_OBJS(type, env) \

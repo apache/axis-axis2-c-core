@@ -61,7 +61,7 @@ struct axis2_xml_schema_any_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (
+    get_type) (
             void *any,
             const axis2_env_t *env);
 
@@ -116,8 +116,8 @@ axis2_xml_schema_any_resolve_methods(
 #define AXIS2_XML_SCHEMA_ANY_SUPER_OBJS(any, env) \
       (((axis2_xml_schema_any_t *) any)->ops->super_objs(any, env))
 
-#define AXIS2_XML_SCHEMA_ANY_TYPE(any, env) \
-      (((axis2_xml_schema_any_t *) any)->ops->type(any, env))
+#define AXIS2_XML_SCHEMA_ANY_GET_TYPE(any, env) \
+      (((axis2_xml_schema_any_t *) any)->ops->get_type(any, env))
 
 #define AXIS2_XML_SCHEMA_ANY_GET_BASE_IMPL(any, env) \
       (((axis2_xml_schema_any_t *) any)->ops->get_base_impl(any, env))

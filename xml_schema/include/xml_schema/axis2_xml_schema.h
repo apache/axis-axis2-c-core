@@ -70,7 +70,7 @@ struct axis2_xml_schema_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(  void *schema,
+    get_type)(  void *schema,
             const axis2_env_t *env);
     
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
@@ -263,9 +263,9 @@ axis2_xml_schema_create(const axis2_env_t *env,
       (((axis2_xml_schema_t *) schema)->ops->\
             super_objs(schema, env))
 
-#define AXIS2_XML_SCHEMA_TYPE(schema, env) \
+#define AXIS2_XML_SCHEMA_GET_TYPE(schema, env) \
       (((axis2_xml_schema_t *) schema)->ops->\
-            type(schema, env))
+            get_type(schema, env))
 
 #define AXIS2_XML_SCHEMA_GET_BASE_IMPL(schema, env) \
       (((axis2_xml_schema_t *) schema)->ops->\

@@ -52,7 +52,7 @@ struct axis2_xml_schema_annotated_ops
             const axis2_env_t *env);
     
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(
+    get_type)(
             void *annotated,
             const axis2_env_t *env);
 
@@ -123,8 +123,8 @@ axis2_xml_schema_annotated_resolve_methods(
       (((axis2_xml_schema_annotated_t *) annotated)->ops->super_objs(\
             annotated, env))
 
-#define AXIS2_XML_SCHEMA_ANNOTATED_TYPE(annotated, env) \
-      (((axis2_xml_schema_annotated_t *) annotated)->ops->type(\
+#define AXIS2_XML_SCHEMA_ANNOTATED_GET_TYPE(annotated, env) \
+      (((axis2_xml_schema_annotated_t *) annotated)->ops->get_type(\
             annotated, env))
 
 #define AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env) \

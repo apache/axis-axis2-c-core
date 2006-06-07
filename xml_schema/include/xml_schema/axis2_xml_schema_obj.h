@@ -57,7 +57,7 @@ struct axis2_xml_schema_obj_ops
             const axis2_env_t *env);
     
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (
+    get_type) (
             void *obj,
             const axis2_env_t *env);
 
@@ -118,8 +118,8 @@ axis2_xml_schema_obj_resolve_methods(axis2_xml_schema_obj_t *schema_obj,
 #define AXIS2_XML_SCHEMA_OBJ_SUPER_OBJS(obj, env) \
       (((axis2_xml_schema_obj_t *) obj)->ops->super_objs (obj, env))
 
-#define AXIS2_XML_SCHEMA_OBJ_TYPE(obj, env) \
-      (((axis2_xml_schema_obj_t *) obj)->ops->type (obj, env))
+#define AXIS2_XML_SCHEMA_OBJ_GET_TYPE(obj, env) \
+      (((axis2_xml_schema_obj_t *) obj)->ops->get_type (obj, env))
 
 #define AXIS2_XML_SCHEMA_OBJ_GET_LINE_NUM(obj, env) \
       (((axis2_xml_schema_obj_t *) obj)->ops->get_line_num (obj, env))

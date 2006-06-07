@@ -59,7 +59,7 @@ struct axis2_xml_schema_group_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (void *group,
+    get_type) (void *group,
             const axis2_env_t *env);
 
     axis2_xml_schema_annotated_t *(AXIS2_CALL *
@@ -97,17 +97,6 @@ struct axis2_xml_schema_group
 AXIS2_EXTERN axis2_xml_schema_group_t * AXIS2_CALL
 axis2_xml_schema_group_create(const axis2_env_t *env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_group_resolve_methods(
-                                axis2_xml_schema_group_t *group,
-                                const axis2_env_t *env,
-                                axis2_xml_schema_group_t *group_impl,
-                                axis2_hash_t *methods);
-*/
-
 /**************************** Macros *************************************/
 #define AXIS2_XML_SCHEMA_GROUP_FREE(group, env) \
       (((axis2_xml_schema_group_t *) group)->ops->\
@@ -117,9 +106,9 @@ axis2_xml_schema_group_resolve_methods(
       (((axis2_xml_schema_group_t *) group)->ops->\
             super_objs(group, env))
 
-#define AXIS2_XML_SCHEMA_GROUP_TYPE(group, env) \
+#define AXIS2_XML_SCHEMA_GROUP_GET_TYPE(group, env) \
       (((axis2_xml_schema_group_t *) group)->ops->\
-            type(group, env))
+            get_type(group, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_GET_BASE_IMPL(group, env) \
       (((axis2_xml_schema_group_t *) group)->ops->\

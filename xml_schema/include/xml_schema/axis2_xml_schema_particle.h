@@ -59,7 +59,7 @@ struct axis2_xml_schema_particle_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (
+    get_type) (
             void *particle,
             const axis2_env_t *env);
 
@@ -121,9 +121,9 @@ axis2_xml_schema_particle_resolve_methods(
       (((axis2_xml_schema_particle_t *) particle)->ops->\
             super_objs(particle, env))
 
-#define AXIS2_XML_SCHEMA_PARTICLE_TYPE(particle, env) \
+#define AXIS2_XML_SCHEMA_PARTICLE_GET_TYPE(particle, env) \
       (((axis2_xml_schema_particle_t *) particle)->ops->\
-            type(particle, env))
+            get_type(particle, env))
 
 #define AXIS2_XML_SCHEMA_PARTICLE_GET_BASE_IMPL(particle, env) \
       (((axis2_xml_schema_particle_t *) particle)->ops->\

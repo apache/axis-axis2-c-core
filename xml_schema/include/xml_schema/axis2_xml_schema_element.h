@@ -58,7 +58,7 @@ struct axis2_xml_schema_element_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(void *element,
+    get_type)(void *element,
           const axis2_env_t *env);
           
     axis2_hash_t* (AXIS2_CALL *
@@ -253,8 +253,8 @@ axis2_xml_schema_element_create(const axis2_env_t *env);
       (((axis2_xml_schema_element_t *) element)->ops->get_base_impl(\
             element, env))
 
-#define AXIS2_XML_SCHEMA_ELEMENT_TYPE(element, env) \
-      (((axis2_xml_schema_element_t *) element)->ops->type(\
+#define AXIS2_XML_SCHEMA_ELEMENT_GET_TYPE(element, env) \
+      (((axis2_xml_schema_element_t *) element)->ops->get_type(\
             element, env))
 
 #define AXIS2_XML_SCHEMA_ELEMENT_SUPER_OBJS(element, env) \

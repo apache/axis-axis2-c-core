@@ -59,7 +59,7 @@ struct axis2_xml_schema_group_base_ops
             const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (void *group_base,
+    get_type) (void *group_base,
             const axis2_env_t *env);
 
     axis2_xml_schema_particle_t *(AXIS2_CALL *
@@ -100,16 +100,6 @@ axis2_xml_schema_sequence_create(const axis2_env_t *env);
 AXIS2_EXTERN axis2_xml_schema_group_base_t * AXIS2_CALL
 axis2_xml_schema_choice_create(const axis2_env_t *env);
 
-
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_group_base_resolve_methods(
-                                axis2_xml_schema_group_base_t *group_base,
-                                const axis2_env_t *env,
-                                axis2_xml_schema_group_base_t *group_base_impl,
-                                axis2_hash_t *methods);
-*/
 /********************** macros ***********************************************/
 #define AXIS2_XML_SCHEMA_GROUP_BASE_FREE(group_base, env) \
       (((axis2_xml_schema_group_base_t *) group_base)->ops->free(group_base, env))
@@ -117,8 +107,8 @@ axis2_xml_schema_group_base_resolve_methods(
 #define AXIS2_XML_SCHEMA_GROUP_BASE_SUPER_OBJS(group_base, env) \
       (((axis2_xml_schema_group_base_t *) group_base)->ops->super_objs(group_base, env))
 
-#define AXIS2_XML_SCHEMA_GROUP_BASE_TYPE(group_base, env) \
-      (((axis2_xml_schema_group_base_t *) group_base)->ops->type(group_base, env))
+#define AXIS2_XML_SCHEMA_GROUP_BASE_GET_TYPE(group_base, env) \
+      (((axis2_xml_schema_group_base_t *) group_base)->ops->get_type(group_base, env))
 
 #define AXIS2_XML_SCHEMA_GROUP_BASE_GET_BASE_IMPL(group_base, env) \
       (((axis2_xml_schema_group_base_t *) group_base)->ops->get_base_impl(group_base, env))

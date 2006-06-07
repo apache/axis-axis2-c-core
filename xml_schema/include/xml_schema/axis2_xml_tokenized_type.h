@@ -63,7 +63,7 @@ struct axis2_xml_tokenized_type_ops
                 const axis2_env_t *env);
                 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(void *tokenized_type,
+    get_type)(void *tokenized_type,
           const axis2_env_t *env);                                
     
 };
@@ -92,8 +92,9 @@ axis2_xml_tokenized_type_create(const axis2_env_t *env,
 #define AXIS2_XML_TOKENIZED_TYPE_SUPER_OBJS(tokenized_type, env) \
       (((axis2_xml_tokenized_type_t *) tokenized_type)->ops->super_objs(tokenized_type, env))      
 
-#define AXIS2_XML_TOKENIZED_TYPE_TYPE(tokenized_type, env) \
-      (((axis2_xml_tokenized_type_t *) tokenized_type)->ops->type(tokenized_type, env))
+#define AXIS2_XML_TOKENIZED_TYPE_GET_TYPE(tokenized_type, env) \
+      (((axis2_xml_tokenized_type_t *) tokenized_type)->ops->\
+        get_type(tokenized_type, env))
 /** @} */
 #ifdef __cplusplus
 }

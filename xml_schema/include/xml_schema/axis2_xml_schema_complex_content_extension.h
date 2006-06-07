@@ -54,7 +54,7 @@ struct axis2_xml_schema_complex_content_extension_ops
             const axis2_env_t *env);
             
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type) (
+    get_type) (
             void *cmp_content_ext,
             const axis2_env_t *env);  
             
@@ -129,9 +129,9 @@ axis2_xml_schema_complex_content_extension_create(const axis2_env_t *env);
       (((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->\
           get_base_impl(cmp_content_ext, env))
 
-#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_TYPE(cmp_content_ext, env) \
+#define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_GET_TYPE(cmp_content_ext, env) \
       (((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->\
-          type(cmp_content_ext, env))
+          get_type(cmp_content_ext, env))
 
 #define AXIS2_XML_SCHEMA_COMPLEX_CONTENT_EXTENSION_SUPER_OBJS(cmp_content_ext, env) \
       (((axis2_xml_schema_complex_content_extension_t *)cmp_content_ext)->ops->\

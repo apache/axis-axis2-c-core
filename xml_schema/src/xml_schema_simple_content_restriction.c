@@ -61,7 +61,7 @@ axis2_xml_schema_simple_content_restriction_get_base_impl(
         const axis2_env_t *env);
         
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_simple_content_restriction_type(
+axis2_xml_schema_simple_content_restriction_get_type(
         void *sim_content_res,
         const axis2_env_t *env);
 
@@ -71,7 +71,7 @@ axis2_xml_schema_simple_content_restriction_super_objs(
         const axis2_env_t *env);        
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_simple_content_restriction_type(
+axis2_xml_schema_simple_content_restriction_get_type(
         void *sim_content_res,
         const axis2_env_t *env);
         
@@ -173,8 +173,8 @@ axis2_xml_schema_simple_content_restriction_create(const axis2_env_t *env)
     sim_content_res_impl->sim_content_res.ops->free = 
             axis2_xml_schema_simple_content_restriction_free;
             
-    sim_content_res_impl->sim_content_res.ops->type = 
-            axis2_xml_schema_simple_content_restriction_type;
+    sim_content_res_impl->sim_content_res.ops->get_type = 
+            axis2_xml_schema_simple_content_restriction_get_type;
     
     sim_content_res_impl->sim_content_res.ops->super_objs = 
             axis2_xml_schema_simple_content_restriction_super_objs;
@@ -217,18 +217,22 @@ axis2_xml_schema_simple_content_restriction_create(const axis2_env_t *env)
     axis2_hash_set(sim_content_res_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_simple_content_restriction_free);;
             
-    axis2_hash_set(sim_content_res_impl->methods, "type", AXIS2_HASH_KEY_STRING,                             axis2_xml_schema_simple_content_restriction_type);
+    axis2_hash_set(sim_content_res_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING,                                                                  axis2_xml_schema_simple_content_restriction_get_type);
     
-    axis2_hash_set(sim_content_res_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(sim_content_res_impl->methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_simple_content_restriction_super_objs);
                                 
-    axis2_hash_set(sim_content_res_impl->methods, "get_any_attribute", AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(sim_content_res_impl->methods, "get_any_attribute",                              AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_simple_content_restriction_get_any_attribute);
             
-    axis2_hash_set(sim_content_res_impl->methods, "set_any_attribute", AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(sim_content_res_impl->methods, "set_any_attribute",
+            AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_simple_content_restriction_set_any_attribute);
             
-    axis2_hash_set(sim_content_res_impl->methods, "get_attribute", AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(sim_content_res_impl->methods, "get_attribute", 
+            AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_simple_content_restriction_get_attributes);
             
     axis2_hash_set(sim_content_res_impl->methods, "get_base_type_name", AXIS2_HASH_KEY_STRING,
@@ -451,7 +455,7 @@ axis2_xml_schema_simple_content_restriction_get_facets(
 }       
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_simple_content_restriction_type(
+axis2_xml_schema_simple_content_restriction_get_type(
         void *sim_content_res,
         const axis2_env_t *env)
 {

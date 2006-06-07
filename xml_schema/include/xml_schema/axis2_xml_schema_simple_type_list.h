@@ -57,7 +57,7 @@ struct axis2_xml_schema_simple_type_list_ops
                     const axis2_env_t *env);
 
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(void *simple_type_list,
+    get_type)(void *simple_type_list,
           const axis2_env_t *env);
     
     axis2_hash_t* (AXIS2_CALL *
@@ -102,17 +102,6 @@ struct axis2_xml_schema_simple_type_list
 AXIS2_EXTERN axis2_xml_schema_simple_type_list_t * AXIS2_CALL
 axis2_xml_schema_simple_type_list_create(const axis2_env_t *env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_simple_type_list_resolve_methods(
-                    axis2_xml_schema_simple_type_list_t *simple_type_list,
-                    const axis2_env_t *env,
-                    axis2_xml_schema_simple_type_list_t *simple_type_list_impl,
-                    axis2_hash_t *methods);
- */
- 
  /********************** Macros ***********************************************/
  
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_FREE(simple_type_list, env) \
@@ -125,7 +114,7 @@ axis2_xml_schema_simple_type_list_resolve_methods(
             
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_TYPE(simple_type_list, env) \
       (((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\
-            type(simple_type_list, env))
+            get_type(simple_type_list, env))
             
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_LIST_SUPER_OBJS(simple_type_list, env) \
       (((axis2_xml_schema_simple_type_list_t *) simple_type_list)->ops->\

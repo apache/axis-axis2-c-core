@@ -49,7 +49,7 @@ axis2_xml_schema_derivation_method_super_objs(void *derivation_method,
                                               const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_derivation_method_type(void *derivation_method,
+axis2_xml_schema_derivation_method_get_type(void *derivation_method,
                                         const axis2_env_t *env); 
 
 axis2_status_t AXIS2_CALL 
@@ -108,8 +108,8 @@ axis2_xml_schema_derivation_method_create(const axis2_env_t *env,
             axis2_xml_schema_derivation_method_get_values;
     derivation_method_impl->derivation_method.ops->super_objs = 
             axis2_xml_schema_derivation_method_super_objs;
-    derivation_method_impl->derivation_method.ops->type =
-            axis2_xml_schema_derivation_method_type;
+    derivation_method_impl->derivation_method.ops->get_type =
+            axis2_xml_schema_derivation_method_get_type;
                                     
     derivation_method_impl->members = axis2_array_list_create(env, 0);
     
@@ -162,8 +162,8 @@ axis2_xml_schema_derivation_method_create(const axis2_env_t *env,
     axis2_hash_set(derivation_method_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
             axis2_xml_schema_derivation_method_super_objs);
             
-    axis2_hash_set(derivation_method_impl->methods, "type", AXIS2_HASH_KEY_STRING,
-            axis2_xml_schema_derivation_method_type);
+    axis2_hash_set(derivation_method_impl->methods, "get_type", AXIS2_HASH_KEY_STRING,
+            axis2_xml_schema_derivation_method_get_type);
     
     derivation_method_impl->schema_enum = 
         axis2_xml_schema_enum_create(env, value);
@@ -257,18 +257,6 @@ axis2_array_list_t *AXIS2_CALL
 axis2_xml_schema_derivation_method_get_values(void *derivation_method,
                                         const axis2_env_t *env)
 {
-/*
-    axis2_xml_schema_derivation_method_impl_t *deri_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
-    ht_super = AXIS2_XML_SCHEMA_DERIVATION_METHOD_SUPER_OBJS(derivation_method, env);
-    if(NULL != ht_super)
-    {
-        deri_impl = (axis2_xml_schema_derivation_method_impl_t*)
-            axis2_hash_get(ht_super, "AXIS2_XML_SCHEMA_DERIVATION_METHOD", AXIS2_HASH_KEY_STRING);
-        if(NULL != deri_impl)
-            return deri_impl->members;            
-    }
-*/    
     return AXIS2_INTF_TO_IMPL(derivation_method)->members;
 }
 
@@ -280,7 +268,7 @@ axis2_xml_schema_derivation_method_super_objs(void *derivation_method,
 }                                              
 
 axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_derivation_method_type(void *derivation_method,
+axis2_xml_schema_derivation_method_get_type(void *derivation_method,
                                         const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(derivation_method)->type;

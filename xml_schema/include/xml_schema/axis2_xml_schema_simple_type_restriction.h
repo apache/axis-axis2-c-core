@@ -44,10 +44,6 @@ typedef struct axis2_xml_schema_simple_type_restriction_ops
 
 struct axis2_xml_schema_simple_type_restriction_ops
 {
-   /** 
-     * Deallocate memory
-     * @return status code
-     */
     axis2_status_t (AXIS2_CALL *
     free) (void *simple_type_restriction,
             const axis2_env_t *env);
@@ -57,7 +53,7 @@ struct axis2_xml_schema_simple_type_restriction_ops
                     const axis2_env_t *env);
                     
     axis2_xml_schema_types_t (AXIS2_CALL *
-    type)(void *simple_type_restriction,
+    get_type)(void *simple_type_restriction,
                 const axis2_env_t *env);
                 
     axis2_hash_t *(AXIS2_CALL *
@@ -112,18 +108,6 @@ struct axis2_xml_schema_simple_type_restriction
 AXIS2_EXTERN axis2_xml_schema_simple_type_restriction_t * AXIS2_CALL
 axis2_xml_schema_simple_type_restriction_create(const axis2_env_t *env);
 
-/**
- * This method is internal to Axis2 C. It is called from Child Constructor
- 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_simple_type_restriction_resolve_methods(
-                    axis2_xml_schema_simple_type_restriction_t *simple_type_restriction,
-                    const axis2_env_t *env,
-                    axis2_xml_schema_simple_type_restriction_t *simple_type_restriction_impl,
-                    axis2_hash_t *methods);
-*/
-
-
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_FREE(simple_type_restriction, env) \
       (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
             free(simple_type_restriction, env))
@@ -132,9 +116,9 @@ axis2_xml_schema_simple_type_restriction_resolve_methods(
       (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
             get_base_impl(simple_type_restriction, env))
             
-#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_TYPE(simple_type_restriction, env) \
+#define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_GET_TYPE(simple_type_restriction, env) \
       (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
-            type(simple_type_restriction, env))
+            get_type(simple_type_restriction, env))
             
 #define AXIS2_XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_SUPER_OBJS(simple_type_restriction, env) \
       (((axis2_xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\

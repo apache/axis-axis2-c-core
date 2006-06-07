@@ -53,7 +53,7 @@ axis2_xml_schema_simple_type_union_free(void *simple_type_union,
                         const axis2_env_t *env);
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_simple_type_union_type(void *simple_type_union,
+axis2_xml_schema_simple_type_union_get_type(void *simple_type_union,
                                         const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
@@ -135,8 +135,8 @@ axis2_xml_schema_simple_type_union_create(const axis2_env_t *env)
             axis2_xml_schema_simple_type_union_free;
     simple_type_union_impl->simple_type_union.ops->get_base_impl = 
             axis2_xml_schema_simple_type_union_get_base_impl;
-    simple_type_union_impl->simple_type_union.ops->type =
-            axis2_xml_schema_simple_type_union_type;
+    simple_type_union_impl->simple_type_union.ops->get_type =
+            axis2_xml_schema_simple_type_union_get_type;
     simple_type_union_impl->simple_type_union.ops->super_objs =
             axis2_xml_schema_simple_type_union_super_objs;
     simple_type_union_impl->simple_type_union.ops->get_base_types = 
@@ -165,8 +165,8 @@ axis2_xml_schema_simple_type_union_create(const axis2_env_t *env)
             axis2_xml_schema_simple_type_union_free);
     axis2_hash_set(simple_type_union_impl->methods, "get_base_types", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_union_get_base_types);
-    axis2_hash_set(simple_type_union_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_union_type);
+    axis2_hash_set(simple_type_union_impl->methods, "get_type", 
+            AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_union_get_type);
     axis2_hash_set(simple_type_union_impl->methods, "super_objs", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_union_super_objs);                 axis2_hash_set(simple_type_union_impl->methods, "set_member_types_source", 
             AXIS2_HASH_KEY_STRING, axis2_xml_schema_simple_type_union_set_member_types_source);
@@ -377,7 +377,7 @@ axis2_xml_schema_simple_type_union_get_member_types_qnames(void *simple_type_uni
 }
 
 axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_simple_type_union_type(void *simple_type_union,
+axis2_xml_schema_simple_type_union_get_type(void *simple_type_union,
                                         const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(simple_type_union)->obj_type;
