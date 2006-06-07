@@ -8,4 +8,6 @@ void Testaxis2_uri_parse_string(CuTest *tc);
 
 void Testaxis2_uri_parse_relative(CuTest *tc);
 
+void Testaxis2_uri_clone(CuTest *tc);
+
 #endif /* UTIL_URI_TEST_H*/

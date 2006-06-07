@@ -7,7 +7,7 @@
 void Testaxis2_uri_parse_string(CuTest *tc)
 {
     axis2_char_t *actual = NULL;
-    axis2_char_t *expected = "/home/damitha/temp/checkout.sh";
+    axis2_char_t *expected = "temp/checkout.sh";
     axis2_uri_t *uri = NULL;
     axis2_char_t *uri_str = NULL;
 
@@ -20,20 +20,15 @@ void Testaxis2_uri_parse_string(CuTest *tc)
     /*uri_str = "http://myserver:80/home/damitha/temp/checkout.sh";*/
     /*uri_str = "../temp/checkout.sh";*/
     uri_str = "temp/checkout.sh";
-    printf("came1\n");
     uri = axis2_uri_parse_string(env, uri_str);
     CuAssertPtrNotNull(tc, uri);
-    if(uri->ops)
-        printf("came11\n");
-    CuAssertPtrNotNull(tc, uri->ops);
-    printf("came2\n");
 
-    actual = AXIS2_URI_TO_STRING(uri, env, AXIS2_URI_UNP_OMITSITEPART);
-    printf("came3\n");
+    actual = AXIS2_URI_TO_STRING(uri, env, AXIS2_URI_UNP_OMITUSERINFO);
    
     printf("actual:%s\n", actual);
     
     CuAssertStrEquals(tc, expected, actual);
+    AXIS2_URI_FREE(uri, env);
 }
 
 void Testaxis2_uri_parse_relative(CuTest *tc)
@@ -55,10 +50,39 @@ void Testaxis2_uri_parse_relative(CuTest *tc)
     uri_str = "../../temp/checkout.sh";
     base = axis2_uri_parse_string(env, base_str);
     new_uri = axis2_uri_parse_relative(env, base, uri_str);
-    actual = AXIS2_URI_TO_STRING(new_uri, env, AXIS2_URI_UNP_OMITPASSWORD);
+    actual = AXIS2_URI_TO_STRING(new_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
    
     printf("actual:%s\n", actual);
     
     CuAssertStrEquals(tc, expected, actual);
+    AXIS2_URI_FREE(new_uri, env);
+}
+
+void Testaxis2_uri_clone(CuTest *tc)
+{
+    axis2_char_t *actual = NULL;
+    axis2_char_t *expected = "http://myserver/home/damitha/temp";
+    axis2_uri_t *uri = NULL;
+    axis2_uri_t *new_uri = NULL;
+    axis2_char_t *uri_str = NULL;
+
+    printf("******************************************\n");
+    printf("testing axis2_uri_clone\n");
+    printf("******************************************\n");
+    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
+    const axis2_env_t *env = axis2_env_create (allocator);
+
+    uri_str = "http://myserver:80/home/damitha/temp";
+    uri = axis2_uri_parse_string(env, uri_str);
+    new_uri = AXIS2_URI_CLONE(uri, env);
+    CuAssertPtrNotNull(tc, new_uri);
+
+    actual = AXIS2_URI_TO_STRING(new_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
+   
+    printf("actual:%s\n", actual);
+    
+    CuAssertStrEquals(tc, expected, actual);
+    AXIS2_URI_FREE(uri, env);
+
 }
 

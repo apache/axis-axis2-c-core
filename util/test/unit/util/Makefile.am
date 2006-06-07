@@ -1,8 +1,8 @@
-TESTS =  util_test
-prgbindir=$(prefix)/bin/unit_test
+TESTS = util_test
 prglibdir=$(prefix)/lib/unit_test
+prgbindir=$(prefix)/bin/unit_test
+noinst_HEADERS = $(top_builddir)/test/unit/util/*.h
 prglib_LTLIBRARIES = libtest_util.la
-
 libtest_util_la_SOURCES = \
 						  	util_hash_test.c \
                             util_stream_test.c \
@@ -17,21 +17,18 @@ libtest_util_la_SOURCES = \
                             util_url_test.c \
                             util_uri_test.c
 
-noinst_HEADERS=$(top_builddir)/test/unit/util/*.h
-
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
-            -I$(top_builddir)/src \
-            -I$(top_builddir)/src/platforms
+            -I$(top_builddir)/src/util \
+			@UTILINC@ 
 
-prgbin_PROGRAMS = util_test
 check_PROGRAMS = util_test
+prgbin_PROGRAMS = util_test
 util_test_SOURCES = main.c
-util_test_LDADD   =   libtest_util.la \
-                     -L$(CUTEST_HOME)/lib \
-                     -lcutest \
-                    -lpthread \
-                    $(top_builddir)/src/libaxis2_util.la \
-                    $(GUTHTHILA_LIBS) \
-                    $(LIBXML2_LIBS)
-
+util_test_LDADD   =   libtest_util.la  \
+                    -L$(CUTEST_HOME)/lib \
+                    -lcutest \
+					$(top_builddir)/src/libaxis2_util.la \
+                    $(LIBXML2_LIBS) \
+                    $(GUTHTHILA_LIBS)
+                    

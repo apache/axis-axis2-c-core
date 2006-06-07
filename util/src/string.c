@@ -114,7 +114,8 @@ axis2_strndup (
 }
 
 AXIS2_DECLARE_NONSTD(axis2_char_t *) 
-axis2_strcat(axis2_env_t *env, ...)
+axis2_strcat(
+        const axis2_env_t *env, ...)
 {
     axis2_char_t *cp, *argp, *str;
     size_t saved_lengths[MAX_SAVED_LENGTHS];

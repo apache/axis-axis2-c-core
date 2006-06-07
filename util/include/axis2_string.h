@@ -103,7 +103,8 @@ extern "C"
      * @return The new string
      */
     AXIS2_DECLARE_NONSTD(axis2_char_t *) 
-    axis2_strcat(axis2_env_t *env, ...);
+    axis2_strcat(
+            const axis2_env_t *env, ...);
         
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_strstr (const axis2_char_t *heystack,

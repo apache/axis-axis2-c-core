@@ -23,7 +23,7 @@ AC_CHECK_LIB(cutest, CuTestInit)
 AC_CHECK_LIB(z, inflate)
 
 #CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
-CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE -g"
+CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
     CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration"
 fi
@@ -45,6 +45,40 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
+AC_MSG_CHECKING(whether to build guththila xml parser library)
+AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    GUTHTHILA_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    GUTHTHILA_DIR="guththila"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  GUTHTHILA_DIR=""
+)
+
+AC_MSG_CHECKING(whether to build libxml2 xml parser library)
+AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=yes],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    LIBXML2_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    LIBXML2_DIR="libxml2"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  LIBXML2_DIR="libxml2"
+)
+
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
 [ case "${enableval}" in
@@ -62,6 +96,18 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
   TESTDIR=""
 )
 
+
+PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
+CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
+
+UTILINC=$axis2_utilinc
+
+AC_SUBST(UTILINC)
+AC_SUBST(LIBXML2_CFLAGS)
+AC_SUBST(LIBXML2_LIBS)
+AC_SUBST(LIBXML2_DIR)
+AC_SUBST(GUTHTHILA_DIR)
+AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(TESTDIR)
 
 AC_CONFIG_FILES([Makefile \

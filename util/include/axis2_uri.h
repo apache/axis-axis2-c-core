@@ -75,49 +75,83 @@ extern "C" {
 #define AXIS2_URI_UNP_OMITQUERY       (1U<<5)
 
 /** @see axis2_uri_t */
-typedef struct axis2_uri_t axis2_uri_t;
 typedef  unsigned short  axis2_port_t;
+/* axis2_uri.c */
 
-/**
- * A structure to encompass all of the fields in a uri
- */
-struct axis2_uri_t 
-{
-    /** scheme ("http"/"ftp"/...) */
-    axis2_char_t *scheme;
-    /** combined [user[:password]\@]host[:port] */
-    axis2_char_t *hostinfo;
-    /** user name, as in http://user:passwd\@host:port/ */
-    axis2_char_t *user;
-    /** password, as in http://user:passwd\@host:port/ */
-    axis2_char_t *password;
-    /** hostname from URI (or from Host: header) */
-    axis2_char_t *hostname;
-    /** port string (integer representation is in "port") */
-    axis2_char_t *port_str;
-    /** the request path (or "/" if only scheme://host was given) */
-    axis2_char_t *path;
-    /** Everything after a '?' in the path, if present */
-    axis2_char_t *query;
-    /** Trailing "#fragment" string, if present */
-    axis2_char_t *fragment;
 
-    /** structure returned from gethostbyname() */
-    struct hostent *hostent;
+typedef struct axis2_uri_ops axis2_uri_ops_t;
+typedef struct axis2_uri axis2_uri_t;
 
-    /** The port number, numeric, valid only if port_str != NULL */
-    axis2_port_t port;
     
-    /** has the structure been initialized */
-    unsigned is_initialized:1;
+/** 
+ * @brief URI ops struct
+ * Encapsulator struct for ops of axis2_uri
+ */  
+AXIS2_DECLARE_DATA struct axis2_uri_ops
+{
 
-    /** has the DNS been looked up yet */
-    unsigned dns_looked_up:1;
-    /** has the dns been resolved yet */
-    unsigned dns_resolved:1;
+    axis2_status_t (AXIS2_CALL *
+    free) (
+            axis2_uri_t *uri, 
+            const axis2_env_t *env);
+ 
+    /**
+     * Unparse a axis2_uri_t structure to an URI string.  Optionally 
+     * suppress the password for security reasons.
+     * @param uptr All of the parts of the uri
+     * @param flags How to unparse the uri.  One of:
+     * <PRE>
+     *    AXIS2_URI_UNP_OMITSITEPART        Suppress "scheme://user\@site:port" 
+     *    AXIS2_URI_UNP_OMITUSER            Just omit user 
+     *    AXIS2_URI_UNP_OMITPASSWORD        Just omit password 
+     *    AXIS2_URI_UNP_OMITUSERINFO        Omit "user:password\@" part
+     *    AXIS2_URI_UNP_REVEALPASSWORD      Show plain text password (default: show XXXXXXXX)
+     *    AXIS2_URI_UNP_OMITPATHINFO        Show "scheme://user\@site:port" only 
+     *    AXIS2_URI_UNP_OMITQUERY           Omit "?queryarg" or "#fragment" 
+     * </PRE>
+     * @return The uri as a string
+     */
+    axis2_char_t* (AXIS2_CALL *
+    to_string) (
+            const axis2_uri_t *uri, 
+            const axis2_env_t *env,
+            unsigned flags);
+   
+    axis2_char_t* (AXIS2_CALL *
+    get_protocol) (
+            axis2_uri_t *uri, 
+            const axis2_env_t *env);
+   
+    axis2_char_t* (AXIS2_CALL *
+    get_server)(
+            axis2_uri_t *uri, 
+            const axis2_env_t *env);
+            
+    axis2_port_t (AXIS2_CALL *
+    get_port) (
+            axis2_uri_t *uri, 
+            const axis2_env_t *env);
+            
+    axis2_char_t* (AXIS2_CALL *
+    get_path)(
+            axis2_uri_t *uri, 
+            const axis2_env_t *env);
+
+    axis2_uri_t* (AXIS2_CALL *
+    clone) (
+            const axis2_uri_t *uri,
+            const axis2_env_t *env);
 };
 
-/* axis2_uri.c */
+/** 
+ * @brief URI struct
+ *    Axis2 URI
+ */
+AXIS2_DECLARE_DATA struct axis2_uri
+{
+    axis2_uri_ops_t *ops;    
+};
+
 /**
  * Return the default port for a given scheme.  The schemes recognized are
  * http, ftp, https, gopher, wais, nntp, snews, and prospero
@@ -127,28 +161,6 @@ struct axis2_uri_t
 AXIS2_EXTERN axis2_port_t AXIS2_CALL
 axis2_uri_port_of_scheme(
         const axis2_char_t *scheme_str);
-
-/**
- * Unparse a axis2_uri_t structure to an URI string.  Optionally 
- * suppress the password for security reasons.
- * @param uptr All of the parts of the uri
- * @param flags How to unparse the uri.  One of:
- * <PRE>
- *    AXIS2_URI_UNP_OMITSITEPART        Suppress "scheme://user\@site:port" 
- *    AXIS2_URI_UNP_OMITUSER            Just omit user 
- *    AXIS2_URI_UNP_OMITPASSWORD        Just omit password 
- *    AXIS2_URI_UNP_OMITUSERINFO        Omit "user:password\@" part
- *    AXIS2_URI_UNP_REVEALPASSWORD      Show plain text password (default: show XXXXXXXX)
- *    AXIS2_URI_UNP_OMITPATHINFO        Show "scheme://user\@site:port" only 
- *    AXIS2_URI_UNP_OMITQUERY           Omit "?queryarg" or "#fragment" 
- * </PRE>
- * @return The uri as a string
- */
-AXIS2_EXTERN axis2_char_t * AXIS2_CALL
-axis2_uri_to_string(
-        const axis2_env_t *env, 
-        const axis2_uri_t *uptr,
-        unsigned flags);
 
 /**
  * Parse a given URI, fill in all supplied fields of a axis2_uri_t
@@ -199,6 +211,30 @@ axis2_uri_parse_relative(
         const axis2_uri_t* base,
         const char* uri);
 
+/************************** Start of function macros **************************/
+      
+#define AXIS2_URI_FREE(uri, env) \
+      ((uri)->ops->free(uri, env))
+
+#define AXIS2_URI_TO_STRING(uri, env, flags) \
+      (((axis2_uri_t *) uri)->ops->to_string(uri, env, flags))
+
+#define AXIS2_URI_GET_PROTOCOL(uri, env) \
+      ((uri)->ops->get_protocol(uri, env))
+      
+#define AXIS2_URI_GET_SERVER(uri, env) \
+      ((uri)->ops->get_server(uri, env))
+      
+#define AXIS2_URI_GET_PORT(uri, env) \
+      ((uri)->ops->get_port(uri, env))
+      
+#define AXIS2_URI_GET_PATH(uri, env) \
+      ((uri)->ops->get_path(uri, env))
+      
+#define AXIS2_URI_CLONE(uri, env) \
+      ((uri)->ops->clone(uri, env))
+
+/************************** End of function macros ****************************/    
 
 /** @} */
 #ifdef __cplusplus
