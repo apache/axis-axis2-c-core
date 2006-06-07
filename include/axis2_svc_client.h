@@ -25,8 +25,8 @@
   * client and then invoke an operation on a given service. There are several 
   * ways of invoking a service operation, basically they are based on the
   * concept of message exchange pattern (MEP). The two basic MEP APIs 
-  * supported out-only and out-in. To achieve asynchrony, one could also 
-  * use the non-blocking modes of those methods.
+  * supported by service client are out-only and out-in. To achieve asynchrony,
+  * one could also use the non-blocking modes of those methods.
   * The operation invocations using service client API is based on the XML
   * in/out principle. This means that the payload to be sent to the service
   * is given in XML, using the AXIOM representation and the result from 
@@ -69,18 +69,18 @@ extern "C"
 
     /** Type name for struct axis2_svc_client_ops */
     typedef struct axis2_svc_client_ops axis2_svc_client_ops_t;
-    /** Type name for axis2_svc_client_t */
+    /** Type name for struct axis2_svc_client */
     typedef struct axis2_svc_client axis2_svc_client_t;
 
 
     /**
-     * @brief service client ops struct
+     * service client ops struct.
      * Encapsulator struct for operations of axis2_svc_client
      */
     struct axis2_svc_client_ops
     {
         /**
-          * Returns the axis2_svc_t this it is a client for. This is primarily 
+          * Returns the axis2_svc_t this is a client for. This is primarily 
           * useful when the service is created anonymously or from WSDL.
           * @param svc_client pointer to service client struct
           * @param env pointer to environment struct. 
@@ -133,7 +133,7 @@ extern "C"
                     const axis2_options_t *override_options);
 
         /**
-          * Gets the overriding options
+          * Gets the overriding options.
           * @param svc_client pointer to service client struct
           * @param env pointer to environment struct. 
           * @return pointer to overriding options struct
@@ -146,7 +146,7 @@ extern "C"
         /**
           * Engages the named module. The engaged modules extend the message
           * processing when consuming services. Modules help to apply QoS
-          * norms in messaging. Once a module is engaged to service client,
+          * norms in messaging. Once a module is engaged to a service client,
           * the axis2_engine makes sure to invoke the module for all the 
           * interactions between the client and the service.
           * @param svc_client pointer to service client struct
@@ -161,9 +161,9 @@ extern "C"
                     const axis2_char_t *module_name);
 
         /**
-          * Dis-engages the named module. Dis-engaging a module on service 
+          * Dis-engages the named module. Dis-engaging a module on a service 
           * client ensures that the axis2_engine would not invoke the named 
-          * module wen sending and receiving messages.
+          * module when sending and receiving messages.
           * @param svc_client pointer to service client struct
           * @param env pointer to environment struct. 
           * @param module_name name of the module to be dis-engaged
@@ -176,7 +176,7 @@ extern "C"
                     const axis2_char_t *module_name);
 
         /**
-          * Adds an XML element as a header to be sent to server side.
+          * Adds an XML element as a header to be sent to the server side.
           * This allows users to go a bit beyond the simple XML in/out pattern,
           * and send custom SOAP headers. Once added, service client would own
           * the header and would clean up in free.
@@ -223,8 +223,8 @@ extern "C"
           * Robust In-Only. This method can be used to simply send a bit of XML.
           * @param svc_client pointer to service client struct
           * @param env pointer to environment struct. 
-          * @param op_qname operation qname. Can be NULL. If NULL, assumes the operation name to be
-          * "__OPERATION_ROBUST_OUT_ONLY__"
+          * @param op_qname operation qname. Can be NULL. If NULL, assumes the 
+          * operation name to be "__OPERATION_ROBUST_OUT_ONLY__"
           * @param payload pointer to OM node representing the XML payload to be sent
           * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
           */
@@ -240,13 +240,10 @@ extern "C"
           * a service operation whose MEP is In-Only. That is, there is no
           * opportunity to get an error from the service via this method; one may still
           * get client-side errors, such as host unknown etc.
-          * The difference between this method and "fire_and_forget" is that this
-          * method has to be given the operation name as a qname, where as
-          * "fire_and_forget" assumes the operation name to be
-          * "__OPERATION_OUT_ONLY__"
           * @param svc_client pointer to service client struct
           * @param env pointer to environment struct. 
-          * @param op_qname operation qname
+          * @param op_qname operation qname. Can be NULL. If NULL, assumes the 
+          * operation name to be __OPERATION_OUT_ONLY__
           * @param payload pointer to OM node representing the XML payload to be sent
           */
         void (AXIS2_CALL *
@@ -259,13 +256,10 @@ extern "C"
         /**
           * Sends XML request and receives XML response.
           * This method is used to interact with a service operation whose MEP is In-Out.
-          * The difference between this method and "send_receive" is that this
-          * method has to be given the operation name as a qname, where as
-          * "send_receive" assumes the operation name to be
-          * "__OPERATION_OUT_IN__"
           * @param svc_client pointer to service client struct
           * @param env pointer to environment struct. 
-          * @param op_qname operation qname
+          * @param op_qname operation qname. Can be NULL. If NULL, assumes the 
+          * operation name to be __OPERATION_OUT_IN__
           * @param payload pointer to OM node representing the XML payload to be sent
           * @return pointer to OM node representing the XML response
           */
@@ -280,13 +274,10 @@ extern "C"
           * Sends XML request and receives XML response, but do not block for response.
           * This method is used to interact with a service operation whose MEP is In-Out,
           * in a non blocking mode.
-          * The difference between this method and "send_receive_non_blocking" is that this
-          * method has to be given the operation name as a qname, where as
-          * "send_receive_non_blocking" assumes the operation name to be
-          * "__OPERATION_OUT_IN__"
           * @param svc_client pointer to service client struct
           * @param env pointer to environment struct. 
-          * @param op_qname operation qname
+          * @param op_qname operation qname. Can be NULL. If NULL, assumes the 
+          * operation name to be __OPERATION_OUT_IN__
           * @param payload pointer to OM node representing the XML payload to be sent
           * @callback pointer to callback struct used to capture response
           */
@@ -314,8 +305,9 @@ extern "C"
                     const axis2_qname_t *op_qname);
 
         /**
-          * This will close the output stream and/or remove entry from waiting
-          * queue of the transport listener queue.
+          * Cleans up service client invocation. This will close the output 
+          * stream and/or remove entry from waiting queue of the transport 
+          * listener queue.
           * @param svc_client pointer to service client struct
           * @param env pointer to environment struct. 
           * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
