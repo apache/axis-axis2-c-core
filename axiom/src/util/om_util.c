@@ -448,7 +448,7 @@ axis2_om_util_get_last_child_element_with_uri_localname(axis2_om_element_t *ele,
                                              
 AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
 axis2_om_util_get_next_sibling_element_with_uri_localname(axis2_om_element_t *ele,
-                                             axis2_env_t  *env,
+                                             const axis2_env_t  *env,
                                              axis2_om_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *uri,
