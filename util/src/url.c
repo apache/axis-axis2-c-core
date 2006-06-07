@@ -454,3 +454,19 @@ axis2_url_clone(
                         url_impl->path);
 }
 
+axis2_uri_t *AXIS2_CALL
+axis2_url_to_uri(
+        axis2_url_t *url,
+        const axis2_env_t *env)
+{
+    axis2_url_impl_t *url_impl = NULL;
+    axis2_char_t *url_str = NULL;
+    axis2_uri_t *uri = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+
+    url_str = axis2_url_to_external_form(url, env);
+    uri = axis2_uri_parse_string(url_str, env);
+    
+    return uri;
+}
