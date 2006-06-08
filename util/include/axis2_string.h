@@ -115,7 +115,7 @@ extern "C"
                  axis2_char_t c);
                  
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-    axis2_replace(axis2_env_t *env,
+    axis2_replace(const axis2_env_t *env,
                   axis2_char_t *str,
                   int s1,
                   int s2);
