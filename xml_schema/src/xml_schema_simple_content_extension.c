@@ -95,11 +95,6 @@ axis2_xml_schema_simple_content_extension_get_base_type_name(
         void *sim_content_ext,
         const axis2_env_t *env);
                                           
-int AXIS2_CALL 
-axis2_xml_schema_simple_content_extension_get_type(
-        void *sim_content_ext,
-        const axis2_env_t *env);                                          
-                                          
 /*************************** end function protos **********************************/                
                           
 AXIS2_EXTERN axis2_xml_schema_simple_content_extension_t * AXIS2_CALL

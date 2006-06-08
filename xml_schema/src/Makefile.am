@@ -40,7 +40,6 @@ libaxis2_xml_schema_la_SOURCES = \
                                  xml_schema_simple_type_union.c \
                                  xml_schema_complex_type.c \
                                  xml_schema_documentation.c \
-                                 om_util.c \
                                  xml_schema_url_resolver.c \
                                  xml_schema_attribute.c \
                                  xml_schema_complex_content_extension.c \
