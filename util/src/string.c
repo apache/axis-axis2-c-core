@@ -270,10 +270,10 @@ axis2_rindex(const axis2_char_t *_s, axis2_char_t _ch)
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-axis2_replace(axis2_env_t *env,
-                axis2_char_t *str,
-                int s1,
-                int s2)
+axis2_replace(const axis2_env_t *env,
+              axis2_char_t *str,
+              int s1,
+              int s2)
 {
     axis2_char_t *newstr = NULL;
     axis2_char_t *index = NULL;
