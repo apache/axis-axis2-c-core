@@ -267,5 +267,6 @@ int main(void)
    axis2_allocator_t *allocator = env->allocator;
     axis2_env_free(env);
     axis2_allocator_free(allocator);
+    run_test_string(env);
    return 0;   
 }

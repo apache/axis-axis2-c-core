@@ -291,43 +291,62 @@ axis2_replace(const axis2_env_t *env,
     return newstr;
 }
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL axis2_strltrim(axis2_char_t *_s, 
-                                       const axis2_char_t *_trim)
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+axis2_strltrim(
+        const axis2_env_t *env,
+        const axis2_char_t *_s, 
+        const axis2_char_t *_trim)
 {
+    axis2_char_t *_p = NULL;
+
     if(!_s)
         return NULL;
+    _p = (axis2_char_t *) _s;
     if(!_trim)
         _trim = " \t\r\n";
 
-    while(*_s)
+    while(*_p)
     {
-        if(!strchr(_trim, *_s))
-            return _s;
-        ++_s;
+        if(!strchr(_trim, *_p))
+            return _p;
+        ++_p;
     }
-    return _s;
+    return AXIS2_STRDUP(_p, env);
 }
            
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL axis2_strrtrim(axis2_char_t *_s, 
-                                       const axis2_char_t *_trim)
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+axis2_strrtrim(
+        const axis2_env_t *env,
+        const axis2_char_t *_s, 
+        const axis2_char_t *_trim)
 {
     axis2_char_t *__tail;
     if(!_s)
         return NULL;
-    __tail = _s + axis2_strlen(_s);
+    __tail = (axis2_char_t *) _s + axis2_strlen(_s);
     if(!_trim)
         _trim = " \t\n\r";
     while(_s < __tail--)
     {
         if(!strchr(_trim, *__tail))
-            return _s;
+            return (axis2_char_t *) _s;
         *__tail = 0;
     }
-    return _s;
+    return AXIS2_STRDUP(_s, env);
 }    
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL axis2_strtrim(axis2_char_t *_s, 
-                                       const axis2_char_t *_trim)
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
+axis2_strtrim(
+        const axis2_env_t *env,
+        const axis2_char_t *_s, 
+        const axis2_char_t *_trim)
 {
-    return axis2_strltrim(axis2_strrtrim(_s, _trim), _trim);
+    axis2_char_t *_p = NULL;
+    axis2_char_t *_q = NULL;
+
+    _p = axis2_strrtrim(env, _s, _trim);
+    _q = axis2_strltrim(env, _p, _trim);
+    AXIS2_FREE(env->allocator,_p);
+    return _q;
 }
+

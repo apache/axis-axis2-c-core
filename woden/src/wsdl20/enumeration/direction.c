@@ -38,16 +38,6 @@ axis2_woden_direction_free(
         void *direction,
         const axis2_env_t *env);
 
-void *AXIS2_CALL
-axis2_woden_direction_get_direction_in(
-        void *direction,
-        const axis2_env_t *env);
-
-void *AXIS2_CALL
-axis2_woden_direction_get_direction_out(
-        void *direction,
-        const axis2_env_t *env);
-
 axis2_char_t *AXIS2_CALL
 axis2_woden_direction_to_string(
         void *direction,
@@ -70,10 +60,6 @@ create(
     
     direction_impl->direction.ops->free = axis2_woden_direction_free;
 
-    direction_impl->direction.ops->get_direction_in = 
-        axis2_woden_direction_get_direction_in;
-    direction_impl->direction.ops->get_direction_out = 
-        axis2_woden_direction_get_direction_out;
     direction_impl->direction.ops->to_string = axis2_woden_direction_to_string;
     
 
@@ -93,6 +79,29 @@ axis2_woden_direction_create(
     direction_impl->f_value = AXIS2_STRDUP(value, env);
 
     return &(direction_impl->direction);
+}
+
+AXIS2_EXTERN axis2_woden_direction_t *AXIS2_CALL
+axis2_woden_direction_get_direction_in(
+        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    if(!WODEN_DIRECTION_IN)
+        WODEN_DIRECTION_IN = axis2_woden_direction_create(env, "in");
+
+    return WODEN_DIRECTION_IN;
+}
+
+AXIS2_EXTERN axis2_woden_direction_t *AXIS2_CALL
+axis2_woden_direction_get_direction_out(
+        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    if(!WODEN_DIRECTION_OUT)
+        WODEN_DIRECTION_OUT = axis2_woden_direction_create(env, "out");
+    return WODEN_DIRECTION_OUT;
 }
 
 axis2_status_t AXIS2_CALL
@@ -123,37 +132,6 @@ axis2_woden_direction_free(
         direction_impl = NULL;
     }
     return AXIS2_SUCCESS;
-}
-
-void *AXIS2_CALL
-axis2_woden_direction_get_direction_in(
-        void *direction,
-        const axis2_env_t *env)
-{
-    axis2_woden_direction_impl_t *direction_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    direction_impl = INTF_TO_IMPL(direction);
-    
-    if(!WODEN_DIRECTION_IN)
-        WODEN_DIRECTION_IN = axis2_woden_direction_create(env, "in");
-
-    return WODEN_DIRECTION_IN;
-}
-
-void *AXIS2_CALL
-axis2_woden_direction_get_direction_out(
-        void *direction,
-        const axis2_env_t *env)
-{
-    axis2_woden_direction_impl_t *direction_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    direction_impl = INTF_TO_IMPL(direction);
-
-    if(!WODEN_DIRECTION_OUT)
-        WODEN_DIRECTION_OUT = axis2_woden_direction_create(env, "out");
-    return WODEN_DIRECTION_OUT;
 }
 
 axis2_char_t *AXIS2_CALL

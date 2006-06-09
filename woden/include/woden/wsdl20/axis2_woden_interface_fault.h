@@ -124,17 +124,42 @@ axis2_woden_interface_fault_to_interface_fault_element(
         const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
-axis2_woden_interface_fault_to_nested_element(
-        void *interface_fault,
-        const axis2_env_t *env);
-
-AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
 axis2_woden_interface_fault_to_nested_configurable(
         void *interface_fault,
         const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
 axis2_woden_interface_fault_to_configurable(
+        void *interface_fault,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_nested_element(
+        void *interface_fault,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_configurable_element(
+        void *interface_fault,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_documentable_element(
+        void *interface_fault,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_documentable(
+        void *interface_fault,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_attr_extensible(
+        void *interface_fault,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_element_extensible(
         void *interface_fault,
         const axis2_env_t *env);
 

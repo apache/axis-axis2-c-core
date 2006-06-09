@@ -235,6 +235,137 @@ axis2_woden_interface_fault_to_nested_element(
     return interface_fault;
 }
 
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_configurable_element(
+        void *interface_fault,
+        const axis2_env_t *env)
+{
+    axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_fault)
+    {
+        interface_fault_impl = (axis2_woden_interface_fault_impl_t *) create(env);
+    }
+    else
+        interface_fault_impl = (axis2_woden_interface_fault_impl_t *) interface_fault;
+
+    axis2_woden_interface_free_ops(interface_fault, env);
+
+    interface_fault_impl->interface_fault.base.interface_fault_element.base.configurable_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_configurable_element_ops_t));
+    axis2_woden_configurable_element_resolve_methods(&(interface_fault_impl->interface_fault.base.
+            interface_fault_element.base.configurable_element), env, interface_fault_impl->methods);
+    return interface_fault;
+}
+
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_documentable_element(
+        void *interface_fault,
+        const axis2_env_t *env)
+{
+    axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_fault)
+    {
+        interface_fault_impl = (axis2_woden_interface_fault_impl_t *) create(env);
+    }
+    else
+        interface_fault_impl = (axis2_woden_interface_fault_impl_t *) interface_fault;
+
+    axis2_woden_interface_free_ops(interface_fault, env);
+
+    interface_fault_impl->interface_fault.base.interface_fault_element.base.documentable_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_documentable_element_ops_t));
+    axis2_woden_documentable_element_resolve_methods(&(interface_fault_impl->interface_fault.base.
+            interface_fault_element.base.documentable_element), env, 
+            interface_fault_impl->methods);
+    return interface_fault;
+}
+
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_documentable(
+        void *interface_fault,
+        const axis2_env_t *env)
+{
+    axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_fault)
+    {
+        interface_fault_impl = (axis2_woden_interface_fault_impl_t *) create(env);
+    }
+    else
+        interface_fault_impl = (axis2_woden_interface_fault_impl_t *) interface_fault;
+
+    axis2_woden_interface_free_ops(interface_fault, env);
+
+    interface_fault_impl->interface_fault.base.nested_configurable.base.
+        configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_documentable_ops_t));
+    axis2_woden_documentable_resolve_methods(&(interface_fault_impl->interface_fault.base.
+            nested_configurable.base.configurable.base.documentable), env, NULL,
+            interface_fault_impl->methods);
+    return interface_fault;
+}
+
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_attr_extensible(
+        void *interface_fault,
+        const axis2_env_t *env)
+{
+    axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_fault)
+    {
+        interface_fault_impl = (axis2_woden_interface_fault_impl_t *) create(env);
+    }
+    else
+        interface_fault_impl = (axis2_woden_interface_fault_impl_t *) interface_fault;
+
+    axis2_woden_interface_free_ops(interface_fault, env);
+
+    interface_fault_impl->interface_fault.base.interface_fault_element.base.documentable_element.
+        wsdl_element.base.attr_extensible.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_attr_extensible_ops_t));
+    axis2_woden_attr_extensible_resolve_methods(&(interface_fault_impl->interface_fault.base.
+            interface_fault_element.base.documentable_element.wsdl_element.base.
+            attr_extensible), env, NULL, interface_fault_impl->methods);
+    return interface_fault;
+}
+
+
+AXIS2_EXTERN axis2_woden_interface_fault_t * AXIS2_CALL
+axis2_woden_interface_fault_to_element_extensible(
+        void *interface_fault,
+        const axis2_env_t *env)
+{
+    axis2_woden_interface_fault_impl_t *interface_fault_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_fault)
+    {
+        interface_fault_impl = (axis2_woden_interface_fault_impl_t *) create(env);
+    }
+    else
+        interface_fault_impl = (axis2_woden_interface_fault_impl_t *) interface_fault;
+
+    axis2_woden_interface_free_ops(interface_fault, env);
+
+    interface_fault_impl->interface_fault.base.interface_fault_element.base.documentable_element.
+        wsdl_element.base.element_extensible.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_element_extensible_ops_t));
+    axis2_woden_element_extensible_resolve_methods(&(interface_fault_impl->interface_fault.base.
+            interface_fault_element.base.documentable_element.wsdl_element.base.
+            element_extensible), env, NULL, interface_fault_impl->methods);
+    return interface_fault;
+}
 
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_interface_fault_t *
@@ -260,6 +391,16 @@ create(const axis2_env_t *env)
             NULL;
     interface_fault_impl->interface_fault.base.interface_fault_element.base.
         nested_element.ops = NULL;
+    interface_fault_impl->interface_fault.base.interface_fault_element.base.
+        configurable_element.ops = NULL;
+    interface_fault_impl->interface_fault.base.interface_fault_element.base.
+        documentable_element.ops = NULL;
+    interface_fault_impl->interface_fault.base.nested_configurable.base.configurable.base.
+        documentable.ops = NULL;
+    interface_fault_impl->interface_fault.base.interface_fault_element.base.
+        documentable_element.wsdl_element.base.attr_extensible.ops = NULL;
+    interface_fault_impl->interface_fault.base.interface_fault_element.base.
+        documentable_element.wsdl_element.base.element_extensible.ops = NULL;
     
     interface_fault_impl->interface_fault.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_interface_fault_ops_t));
@@ -397,7 +538,54 @@ axis2_woden_interface_fault_free_ops(
         interface_fault_impl->interface_fault.base.interface_fault_element.base.
             nested_element.ops = NULL;
     }
+ 
+    if(interface_fault_impl->interface_fault.base.interface_fault_element.base.
+            configurable_element.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_fault_impl->interface_fault.base.
+                interface_fault_element.base.configurable_element.ops);
+        interface_fault_impl->interface_fault.base.interface_fault_element.base.
+            configurable_element.ops = NULL;
+    }
     
+    if(interface_fault_impl->interface_fault.base.interface_fault_element.base.
+            documentable_element.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_fault_impl->interface_fault.base.
+                interface_fault_element.base.documentable_element.ops);
+        interface_fault_impl->interface_fault.base.interface_fault_element.base.
+            documentable_element.ops = NULL;
+    }
+     
+    if(interface_fault_impl->interface_fault.base.nested_configurable.base.
+            configurable.base.documentable.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_fault_impl->interface_fault.base.
+                nested_configurable.base.configurable.base.documentable.ops);
+        interface_fault_impl->interface_fault.base.nested_configurable.base.
+            configurable.base.documentable.ops = NULL;
+    }
+      
+    if(interface_fault_impl->interface_fault.base.interface_fault_element.base.
+            documentable_element.wsdl_element.base.attr_extensible.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_fault_impl->interface_fault.base.
+                interface_fault_element.base.documentable_element.wsdl_element.base.
+                attr_extensible.ops);
+        interface_fault_impl->interface_fault.base.interface_fault_element.base.
+            documentable_element.wsdl_element.base.attr_extensible.ops = NULL;
+    }
+      
+    if(interface_fault_impl->interface_fault.base.interface_fault_element.base.
+            documentable_element.wsdl_element.base.element_extensible.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_fault_impl->interface_fault.base.
+                interface_fault_element.base.documentable_element.wsdl_element.base.
+                element_extensible.ops);
+        interface_fault_impl->interface_fault.base.interface_fault_element.base.
+            documentable_element.wsdl_element.base.element_extensible.ops = NULL;
+    }
+  
     return AXIS2_SUCCESS;
 }
 

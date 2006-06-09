@@ -126,6 +126,37 @@ axis2_woden_interface_fault_ref_to_configurable(
         void *interface_fault_ref,
         const axis2_env_t *env);
 
+AXIS2_EXTERN axis2_woden_interface_fault_ref_t * AXIS2_CALL
+axis2_woden_interface_fault_ref_to_nested_element(
+        void *interface_fault_ref,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_fault_ref_t * AXIS2_CALL
+axis2_woden_interface_fault_ref_to_configurable_element(
+        void *interface_fault_ref,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_fault_ref_t * AXIS2_CALL
+axis2_woden_interface_fault_ref_to_documentable_element(
+        void *interface_fault_ref,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_fault_ref_t * AXIS2_CALL
+axis2_woden_interface_fault_ref_to_documentable(
+        void *interface_fault_ref,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_fault_ref_t * AXIS2_CALL
+axis2_woden_interface_fault_ref_to_attr_extensible(
+        void *interface_fault_ref,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_fault_ref_t * AXIS2_CALL
+axis2_woden_interface_fault_ref_to_element_extensible(
+        void *interface_fault_ref,
+        const axis2_env_t *env);
+
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_interface_fault_ref_resolve_methods(
         axis2_woden_interface_fault_ref_t *interface_fault_ref,

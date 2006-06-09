@@ -7,7 +7,7 @@ void test_strltrim(const axis2_env_t *env)
 {
 	axis2_char_t s[100]=" 	abcd efgh 	";
 	axis2_char_t *trimmed;
-	trimmed = AXIS2_STRLTRIM(s, " \t\r\n");
+	trimmed = AXIS2_STRLTRIM(env, s, " \t\r\n");
 	if (0 == AXIS2_STRCMP(trimmed, "abcd efgh 	"))
 		printf("AXIS2_STRLTRIM successful\n");
 	else
@@ -18,7 +18,7 @@ void test_strrtrim(const axis2_env_t *env)
 {
 	axis2_char_t s[100]=" 	abcd efgh 	";
 	axis2_char_t *trimmed;
-	trimmed = AXIS2_STRRTRIM(s, " \t\r\n");
+	trimmed = AXIS2_STRRTRIM(env, s, " \t\r\n");
 	if (0 == AXIS2_STRCMP(trimmed, " 	abcd efgh"))
 		printf("AXIS2_STRRTRIM successful\n");
 	else
@@ -29,7 +29,7 @@ void test_strtrim(const axis2_env_t *env)
 {
 	axis2_char_t s[100]=" 	abcd efgh 	";
 	axis2_char_t *trimmed;
-	trimmed = AXIS2_STRTRIM(s, " \t\r\n");
+	trimmed = AXIS2_STRTRIM(env, s, " \t\r\n");
 	if (0 == AXIS2_STRCMP(trimmed, "abcd efgh"))
 		printf("AXIS2_STRTRIM successful\n");
 	else

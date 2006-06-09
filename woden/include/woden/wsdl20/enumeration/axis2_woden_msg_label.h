@@ -81,16 +81,6 @@ struct axis2_woden_msg_label_ops
             void *msg_label,
             const axis2_env_t *env);
 
-    void *(AXIS2_CALL *
-    get_msg_label_in) (
-            void *msg_label,
-            const axis2_env_t *env);
-
-    void *(AXIS2_CALL *
-    get_msg_label_out) (
-            void *msg_label,
-            const axis2_env_t *env);
-
     axis2_char_t *(AXIS2_CALL *
     to_string) (
             void *msg_label,
@@ -116,23 +106,22 @@ struct axis2_woden_msg_label
     
 };
 
-AXIS2_EXTERN axis2_woden_msg_label_t * AXIS2_CALL
-axis2_woden_msg_label_create(
+AXIS2_EXTERN axis2_woden_msg_label_t *AXIS2_CALL
+axis2_woden_msg_label_get_msg_label_in(
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_msg_label_t *AXIS2_CALL
+axis2_woden_msg_label_get_msg_label_out(
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_msg_label_t *AXIS2_CALL
+axis2_woden_msg_label_get_invalid_value(
         const axis2_env_t *env,
-        axis2_char_t *value,
-        axis2_bool_t valid);
+        const axis2_char_t *value);
 
 #define AXIS2_WODEN_MSG_LABEL_FREE(msg_label, env) \
       (((axis2_woden_msg_label_t *) msg_label)->ops->\
          free (msg_label, env))
-
-#define AXIS2_WODEN_MSG_LABEL_GET_MSG_LABEL_IN(msg_label, env) \
-      (((axis2_woden_msg_label_t *) msg_label)->ops->\
-         get_msg_label_in (msg_label, env))
-
-#define AXIS2_WODEN_MSG_LABEL_GET_MSG_LABEL_OUT(msg_label, env) \
-      (((axis2_woden_msg_label_t *) msg_label)->ops->\
-         get_msg_label_out (msg_label, env))
 
 #define AXIS2_WODEN_MSG_LABEL_TO_STRING(msg_label, env) \
       (((axis2_woden_msg_label_t *) msg_label)->ops->\

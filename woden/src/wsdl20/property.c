@@ -106,18 +106,12 @@ axis2_status_t AXIS2_CALL
 axis2_woden_property_set_value(
         void *property,
         const axis2_env_t *env,
-        void *value);
+        axis2_generic_obj_t *value);
 
 void *AXIS2_CALL
 axis2_woden_property_get_value(
         void *property,
         const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_woden_property_set_value_constraint(
-        void *property,
-        const axis2_env_t *env,
-        void *type_def);
 
 void *AXIS2_CALL
 axis2_woden_property_get_value_constraint(
@@ -141,12 +135,6 @@ axis2_woden_property_get_constraint(
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_woden_property_set_types(
-        void *property,
-        const axis2_env_t *env,
-        void *types);
-
-axis2_status_t AXIS2_CALL
 axis2_woden_property_set_has_value_token(
         void *property,
         const axis2_env_t *env,
@@ -156,6 +144,21 @@ axis2_bool_t AXIS2_CALL
 axis2_woden_property_has_value_token(
         void *property,
         const axis2_env_t *env);
+
+/* ****************************************************************************
+ * Non-API implementation methods
+ * ***************************************************************************/
+axis2_status_t AXIS2_CALL
+axis2_woden_property_set_value_constraint(
+        void *property,
+        const axis2_env_t *env,
+        void *type_def);
+
+axis2_status_t AXIS2_CALL
+axis2_woden_property_set_types(
+        void *property,
+        const axis2_env_t *env,
+        void *types);
 
 static axis2_woden_property_t *
 create(const axis2_env_t *env);
@@ -870,7 +873,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_property_set_value(
         void *property,
         const axis2_env_t *env,
-        void *value)
+        axis2_generic_obj_t *value)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;

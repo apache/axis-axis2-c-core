@@ -99,6 +99,21 @@ struct axis2_woden_property_ops
             void *property,
             const axis2_env_t *env);
 
+    /* ****************************************************************************
+     * Non-API implementation methods
+     * ***************************************************************************/
+    axis2_status_t (AXIS2_CALL *
+    set_value_constraint) (
+            void *property,
+            const axis2_env_t *env,
+            void *type_def);
+
+    axis2_status_t (AXIS2_CALL *
+    set_types) (
+            void *property,
+            const axis2_env_t *env,
+            void *types);
+
 };
 
 union axis2_woden_property_base
@@ -205,6 +220,14 @@ axis2_woden_property_resolve_methods(
 #define AXIS2_WODEN_PROPERTY_TO_ELEMENT(property, env) \
       (((axis2_woden_property_t *) property)->ops->\
          to_element(property, env))
+
+#define AXIS2_WODEN_PROPERTY_SET_VALUE_CONSTRAINT(property, env, type_def) \
+      (((axis2_woden_property_t *) property)->ops->\
+         set_value_constraint(property, env, type_def))
+
+#define AXIS2_WODEN_PROPERTY_SET_TYPES(property, env, types) \
+      (((axis2_woden_property_t *) property)->ops->\
+         set_types(property, env, types))
 
 /** @} */
 #ifdef __cplusplus

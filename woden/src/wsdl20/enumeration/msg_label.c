@@ -39,16 +39,6 @@ axis2_woden_msg_label_free(
         void *msg_label,
         const axis2_env_t *env);
 
-void *AXIS2_CALL
-axis2_woden_msg_label_get_msg_label_in(
-        void *msg_label,
-        const axis2_env_t *env);
-
-void *AXIS2_CALL
-axis2_woden_msg_label_get_msg_label_out(
-        void *msg_label,
-        const axis2_env_t *env);
-
 axis2_char_t *AXIS2_CALL
 axis2_woden_msg_label_to_string(
         void *msg_label,
@@ -83,10 +73,6 @@ create(
     
     msg_label_impl->msg_label.ops->free = axis2_woden_msg_label_free;
 
-    msg_label_impl->msg_label.ops->get_msg_label_in = 
-        axis2_woden_msg_label_get_msg_label_in;
-    msg_label_impl->msg_label.ops->get_msg_label_out = 
-        axis2_woden_msg_label_get_msg_label_out;
     msg_label_impl->msg_label.ops->to_string = axis2_woden_msg_label_to_string;
     msg_label_impl->msg_label.ops->is_valid = axis2_woden_msg_label_is_valid;
     msg_label_impl->msg_label.ops->equals = axis2_woden_msg_label_equals;
@@ -110,6 +96,46 @@ axis2_woden_msg_label_create(
     msg_label_impl->f_valid = valid;
 
     return &(msg_label_impl->msg_label);
+}
+
+AXIS2_EXTERN axis2_woden_msg_label_t *AXIS2_CALL
+axis2_woden_msg_label_get_msg_label_in(
+        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    if(!WODEN_MSG_LABEL_IN)
+        WODEN_MSG_LABEL_IN = axis2_woden_msg_label_create(env, "In", 
+                AXIS2_TRUE);
+
+    return WODEN_MSG_LABEL_IN;
+}
+
+AXIS2_EXTERN axis2_woden_msg_label_t *AXIS2_CALL
+axis2_woden_msg_label_get_msg_label_out(
+        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    if(!WODEN_MSG_LABEL_OUT)
+        WODEN_MSG_LABEL_OUT = axis2_woden_msg_label_create(env, "Out", 
+                AXIS2_TRUE);
+
+    return WODEN_MSG_LABEL_OUT;
+}
+
+AXIS2_EXTERN axis2_woden_msg_label_t *AXIS2_CALL
+axis2_woden_msg_label_get_invalid_value(
+        const axis2_env_t *env,
+        const axis2_char_t *value)
+{
+    axis2_woden_msg_label_t *msg_label = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    msg_label = axis2_woden_msg_label_create(env, value, AXIS2_FALSE);
+
+    return msg_label;
 }
 
 axis2_status_t AXIS2_CALL
@@ -140,38 +166,6 @@ axis2_woden_msg_label_free(
         msg_label_impl = NULL;
     }
     return AXIS2_SUCCESS;
-}
-
-void *AXIS2_CALL
-axis2_woden_msg_label_get_msg_label_in(
-        void *msg_label,
-        const axis2_env_t *env)
-{
-    axis2_woden_msg_label_impl_t *msg_label_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    msg_label_impl = INTF_TO_IMPL(msg_label);
-
-    if(!WODEN_MSG_LABEL_IN)
-        WODEN_MSG_LABEL_IN = axis2_woden_msg_label_create(env, "In", AXIS2_TRUE);
-
-    return WODEN_MSG_LABEL_IN;
-}
-
-void *AXIS2_CALL
-axis2_woden_msg_label_get_msg_label_out(
-        void *msg_label,
-        const axis2_env_t *env)
-{
-    axis2_woden_msg_label_impl_t *msg_label_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    msg_label_impl = INTF_TO_IMPL(msg_label);
-
-    if(!WODEN_MSG_LABEL_OUT)
-        WODEN_MSG_LABEL_OUT = axis2_woden_msg_label_create(env, "Out", AXIS2_TRUE);
-
-    return WODEN_MSG_LABEL_OUT;
 }
 
 axis2_char_t *AXIS2_CALL

@@ -237,6 +237,165 @@ axis2_woden_interface_msg_ref_to_configurable(
     return interface_msg_ref;
 }
 
+AXIS2_EXTERN axis2_woden_interface_msg_ref_t * AXIS2_CALL
+axis2_woden_interface_msg_ref_to_nested_element(
+        void *interface_msg_ref,
+        const axis2_env_t *env)
+{
+    axis2_woden_interface_msg_ref_impl_t *interface_msg_ref_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_msg_ref)
+    {
+        interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) create(env);
+    }
+    else
+        interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) interface_msg_ref;
+
+    axis2_woden_interface_msg_ref_free_ops(interface_msg_ref, env);
+
+    interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.nested_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_nested_element_ops_t));
+    axis2_woden_nested_element_resolve_methods(&(interface_msg_ref_impl->interface_msg_ref.base.
+            interface_msg_ref_element.base.nested_element), env, interface_msg_ref_impl->methods);
+    return interface_msg_ref;
+}
+
+
+AXIS2_EXTERN axis2_woden_interface_msg_ref_t * AXIS2_CALL
+axis2_woden_interface_msg_ref_to_configurable_element(
+        void *interface_msg_ref,
+        const axis2_env_t *env)
+{
+    axis2_woden_interface_msg_ref_impl_t *interface_msg_ref_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_msg_ref)
+    {
+        interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) create(env);
+    }
+    else
+        interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) interface_msg_ref;
+
+    axis2_woden_interface_free_ops(interface_msg_ref, env);
+
+    interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.configurable_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_configurable_element_ops_t));
+    axis2_woden_configurable_element_resolve_methods(&(interface_msg_ref_impl->interface_msg_ref.base.
+            interface_msg_ref_element.base.configurable_element), env, interface_msg_ref_impl->methods);
+    return interface_msg_ref;
+}
+
+AXIS2_EXTERN axis2_woden_interface_msg_ref_t * AXIS2_CALL
+axis2_woden_interface_msg_ref_to_documentable_element(
+        void *interface_msg_ref,
+        const axis2_env_t *env)
+{
+    axis2_woden_interface_msg_ref_impl_t *interface_msg_ref_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_msg_ref)
+    {
+        interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) create(env);
+    }
+    else
+        interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) interface_msg_ref;
+
+    axis2_woden_interface_free_ops(interface_msg_ref, env);
+
+    interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.documentable_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_documentable_element_ops_t));
+    axis2_woden_documentable_element_resolve_methods(&(interface_msg_ref_impl->interface_msg_ref.base.
+            interface_msg_ref_element.base.documentable_element), env, 
+            interface_msg_ref_impl->methods);
+    return interface_msg_ref;
+}
+
+AXIS2_EXTERN axis2_woden_interface_msg_ref_t * AXIS2_CALL
+axis2_woden_interface_msg_ref_to_documentable(
+        void *interface_msg_ref,
+        const axis2_env_t *env)
+{
+    axis2_woden_interface_msg_ref_impl_t *interface_msg_ref_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_msg_ref)
+    {
+        interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) create(env);
+    }
+    else
+        interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) interface_msg_ref;
+
+    axis2_woden_interface_free_ops(interface_msg_ref, env);
+
+    interface_msg_ref_impl->interface_msg_ref.base.nested_configurable.base.
+        configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_documentable_ops_t));
+    axis2_woden_documentable_resolve_methods(&(interface_msg_ref_impl->interface_msg_ref.base.
+            nested_configurable.base.configurable.base.documentable), env, NULL,
+            interface_msg_ref_impl->methods);
+    return interface_msg_ref;
+}
+
+AXIS2_EXTERN axis2_woden_interface_msg_ref_t * AXIS2_CALL
+axis2_woden_interface_msg_ref_to_attr_extensible(
+        void *interface_msg_ref,
+        const axis2_env_t *env)
+{
+    axis2_woden_interface_msg_ref_impl_t *interface_msg_ref_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_msg_ref)
+    {
+        interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) create(env);
+    }
+    else
+        interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) interface_msg_ref;
+
+    axis2_woden_interface_free_ops(interface_msg_ref, env);
+
+    interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.documentable_element.
+        wsdl_element.base.attr_extensible.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_attr_extensible_ops_t));
+    axis2_woden_attr_extensible_resolve_methods(&(interface_msg_ref_impl->interface_msg_ref.base.
+            interface_msg_ref_element.base.documentable_element.wsdl_element.base.
+            attr_extensible), env, NULL, interface_msg_ref_impl->methods);
+    return interface_msg_ref;
+}
+
+
+AXIS2_EXTERN axis2_woden_interface_msg_ref_t * AXIS2_CALL
+axis2_woden_interface_msg_ref_to_element_extensible(
+        void *interface_msg_ref,
+        const axis2_env_t *env)
+{
+    axis2_woden_interface_msg_ref_impl_t *interface_msg_ref_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_msg_ref)
+    {
+        interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) create(env);
+    }
+    else
+        interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) interface_msg_ref;
+
+    axis2_woden_interface_free_ops(interface_msg_ref, env);
+
+    interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.documentable_element.
+        wsdl_element.base.element_extensible.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_element_extensible_ops_t));
+    axis2_woden_element_extensible_resolve_methods(&(interface_msg_ref_impl->interface_msg_ref.base.
+            interface_msg_ref_element.base.documentable_element.wsdl_element.base.
+            element_extensible), env, NULL, interface_msg_ref_impl->methods);
+    return interface_msg_ref;
+}
+
+
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_interface_msg_ref_t *
 create(const axis2_env_t *env)
@@ -260,7 +419,20 @@ create(const axis2_env_t *env)
     interface_msg_ref_impl->interface_msg_ref.base.nested_configurable.ops = NULL;
     interface_msg_ref_impl->interface_msg_ref.base.nested_configurable.base.configurable.ops = 
             NULL;
-    
+    interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+        nested_element.ops = NULL;
+    interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+        configurable_element.ops = NULL;
+    interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+        documentable_element.ops = NULL;
+    interface_msg_ref_impl->interface_msg_ref.base.nested_configurable.base.configurable.base.
+        documentable.ops = NULL;
+    interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+        documentable_element.wsdl_element.base.attr_extensible.ops = NULL;
+    interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+        documentable_element.wsdl_element.base.element_extensible.ops = NULL;
+
+
     interface_msg_ref_impl->interface_msg_ref.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_interface_msg_ref_ops_t));
 
@@ -403,7 +575,63 @@ axis2_woden_interface_msg_ref_free_ops(
         interface_msg_ref_impl->interface_msg_ref.base.nested_configurable.base.configurable.ops = 
             NULL;
     }
+   
+    if(interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+            nested_element.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_msg_ref_impl->interface_msg_ref.base.
+                interface_msg_ref_element.base.nested_element.ops);
+        interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+            nested_element.ops = NULL;
+    }
+ 
+    if(interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+            configurable_element.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_msg_ref_impl->interface_msg_ref.base.
+                interface_msg_ref_element.base.configurable_element.ops);
+        interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+            configurable_element.ops = NULL;
+    }
     
+    if(interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+            documentable_element.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_msg_ref_impl->interface_msg_ref.base.
+                interface_msg_ref_element.base.documentable_element.ops);
+        interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+            documentable_element.ops = NULL;
+    }
+     
+    if(interface_msg_ref_impl->interface_msg_ref.base.nested_configurable.base.
+            configurable.base.documentable.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_msg_ref_impl->interface_msg_ref.base.
+                nested_configurable.base.configurable.base.documentable.ops);
+        interface_msg_ref_impl->interface_msg_ref.base.nested_configurable.base.
+            configurable.base.documentable.ops = NULL;
+    }
+      
+    if(interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+            documentable_element.wsdl_element.base.attr_extensible.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_msg_ref_impl->interface_msg_ref.base.
+                interface_msg_ref_element.base.documentable_element.wsdl_element.base.
+                attr_extensible.ops);
+        interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+            documentable_element.wsdl_element.base.attr_extensible.ops = NULL;
+    }
+      
+    if(interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+            documentable_element.wsdl_element.base.element_extensible.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_msg_ref_impl->interface_msg_ref.base.
+                interface_msg_ref_element.base.documentable_element.wsdl_element.base.
+                element_extensible.ops);
+        interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.
+            documentable_element.wsdl_element.base.element_extensible.ops = NULL;
+    }
+      
     return AXIS2_SUCCESS;
 }
 

@@ -80,16 +80,6 @@ struct axis2_woden_direction_ops
             void *direction,
             const axis2_env_t *env);
     
-    void *(AXIS2_CALL *
-    get_direction_in) (
-            void *direction,
-            const axis2_env_t *env);
-
-    void *(AXIS2_CALL *
-    get_direction_out) (
-            void *direction,
-            const axis2_env_t *env);
-
     axis2_char_t *(AXIS2_CALL *
     to_string) (
             void *direction,
@@ -104,22 +94,17 @@ struct axis2_woden_direction
     
 };
 
-AXIS2_EXTERN axis2_woden_direction_t * AXIS2_CALL
-axis2_woden_direction_create(
-        const axis2_env_t *env,
-        axis2_char_t *value);
+AXIS2_EXTERN axis2_woden_direction_t *AXIS2_CALL
+axis2_woden_direction_get_direction_in(
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_direction_t *AXIS2_CALL
+axis2_woden_direction_get_direction_out(
+        const axis2_env_t *env);
 
 #define AXIS2_WODEN_DIRECTION_FREE(direction, env) \
       (((axis2_woden_direction_t *) direction)->ops->\
          free (direction, env))
-
-#define AXIS2_WODEN_DIRECTION_GET_DIRECTION_IN(direction, env) \
-      (((axis2_woden_direction_t *) direction)->ops->\
-         get_direction_in (direction, env))
-
-#define AXIS2_WODEN_DIRECTION_GET_DIRECTION_OUT(direction, env) \
-      (((axis2_woden_direction_t *) direction)->ops->\
-         get_direction_out (direction, env))
 
 #define AXIS2_WODEN_DIRECTION_TO_STRING(direction, env) \
       (((axis2_woden_direction_t *) direction)->ops->\

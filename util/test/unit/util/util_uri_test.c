@@ -62,8 +62,9 @@ void Testaxis2_uri_parse_relative(CuTest *tc)
     axis2_allocator_t *allocator = axis2_allocator_init (NULL);
     const axis2_env_t *env = axis2_env_create (allocator);
 
-    base_str = "http://myserver:80/home/damitha";
-    uri_str = "../../temp/checkout.sh";
+    /*base_str = "http://myserver:80/home/damitha";*/
+    base_str = "file://home/damitha/temp";
+    uri_str = "temp/checkout.sh";
     base = axis2_uri_parse_string(env, base_str);
     new_uri = axis2_uri_parse_relative(env, base, uri_str);
     actual = AXIS2_URI_TO_STRING(new_uri, env, AXIS2_URI_UNP_OMITUSERINFO);

@@ -133,6 +133,37 @@ axis2_woden_interface_op_to_configurable(
         void *interface_op,
         const axis2_env_t *env);
 
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
+axis2_woden_interface_op_to_nested_element(
+        void *interface_op,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
+axis2_woden_interface_op_to_configurable_element(
+        void *interface_op,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
+axis2_woden_interface_op_to_documentable_element(
+        void *interface_op,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
+axis2_woden_interface_op_to_documentable(
+        void *interface_op,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
+axis2_woden_interface_op_to_attr_extensible(
+        void *interface_op,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
+axis2_woden_interface_op_to_element_extensible(
+        void *interface_op,
+        const axis2_env_t *env);
+
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_interface_op_resolve_methods(
         axis2_woden_interface_op_t *interface_op,
