@@ -1274,18 +1274,18 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
                     {
                         return AXIS2_FAILURE;
                     }
-                    /*if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
+                    if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
                         (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
                         (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
                         (0 != AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
-                    {*/
+                    {
                         status = AXIS2_PHASE_HOLDER_ADD_HANDLER(resolver_impl->
                             phase_holder, env, metadata);
                        /* if(AXIS2_SUCCESS != status)
                         {
                             return status;
-                        }
-                    }*/
+                        }*/
+                    }
                 }
             }
         }
