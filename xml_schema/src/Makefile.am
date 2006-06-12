@@ -50,7 +50,6 @@ libaxis2_xml_schema_la_SOURCES = \
                                  
 
 INCLUDES = -I$(top_builddir)/include \
-           -I$(top_builddir)/xml_schema/include \
            @AXIOMINC@ \
 		   @UTILINC@
 

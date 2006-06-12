@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_includes.h>
+#include <axis2_xml_schema_includes.h>
 #include <stdio.h>
 #include <axis2_env.h>
 #include <axis2_utils_defines.h>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_form.h>
+#include <axis2_xml_schema_form.h>
 #include <axis2_utils.h>
 typedef struct axis2_xml_schema_form_impl 
                 axis2_xml_schema_form_impl_t;

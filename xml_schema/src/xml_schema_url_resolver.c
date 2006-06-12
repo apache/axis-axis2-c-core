@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_url_resolver.h>
+#include <axis2_xml_schema_url_resolver.h>
 #include <axis2_url.h>
 #include <axis2_file_handler.h>
 #include <platforms/axis2_platform_auto_sense.h>

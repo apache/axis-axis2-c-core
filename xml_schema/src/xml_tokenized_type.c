@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_tokenized_type.h>
+#include <axis2_xml_tokenized_type.h>
 #include <axis2_utils.h>
 
 typedef struct axis2_xml_tokenized_type_impl axis2_xml_tokenized_type_impl_t;

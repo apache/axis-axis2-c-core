@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_simple_type_restriction.h>
-#include <xml_schema/axis2_xml_schema_obj_collection.h>
+#include <axis2_xml_schema_simple_type_restriction.h>
+#include <axis2_xml_schema_obj_collection.h>
 #include <axis2_utils.h>
 
 typedef struct axis2_xml_schema_simple_type_restriction_impl 

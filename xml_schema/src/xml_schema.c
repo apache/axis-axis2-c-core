@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_includes.h>
+#include <axis2_xml_schema_includes.h>
 
 #define AXIS2_XML_SCHEMA_DEFAULT_TARGET_NS "DEFAULT"
 

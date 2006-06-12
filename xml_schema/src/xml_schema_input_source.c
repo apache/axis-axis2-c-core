@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
- #include <xml_schema/axis2_xml_schema_includes.h>
+ #include <axis2_xml_schema_includes.h>
  #include <axis2_env.h>
  
  typedef struct xml_schema_input_source_impl 

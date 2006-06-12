@@ -17,7 +17,7 @@
 #include <CuTest.h>
 #include <stdio.h>
 #include <axiom.h>
-#include <xml_schema/axis2_xml_schema_includes.h>
+#include <axis2_xml_schema_includes.h>
 #include <axis2_env.h>
 #include "xml_schema_test.h"
 

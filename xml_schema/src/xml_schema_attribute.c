@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_attribute.h>
+#include <axis2_xml_schema_attribute.h>
 #include <axis2_utils.h>
 
 typedef struct axis2_xml_schema_attribute_impl 

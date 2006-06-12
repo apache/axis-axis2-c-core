@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <xml_schema/axis2_xml_schema_facet.h>
+#include <axis2_xml_schema_facet.h>
 #include <axiom_element.h>
 #include <axiom_node.h>
 
