@@ -21,18 +21,24 @@
  * @file axis2_xml_schema_url_resolver.h
  */
 #include <axis2_url.h>
+#include <xml_schema/xml_schema_input_source.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+AXIS2_EXTERN xml_schema_input_source_t* AXIS2_CALL
 axis2_xml_schema_url_resolver_resolve_entity(
         const axis2_env_t *env,
         axis2_char_t *ns,
         axis2_char_t *schema_location,
         axis2_char_t *base_uri);
+        
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+get_file_url(const axis2_env_t *env,
+        axis2_char_t *path);        
         
 /** @} */
 #ifdef __cplusplus

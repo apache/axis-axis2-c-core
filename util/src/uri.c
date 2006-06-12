@@ -477,7 +477,7 @@ deal_with_host:
             v6_offset2 = 2;
             s = AXIS2_MEMCHR(hostinfo, ']', uri - hostinfo);
             if (s == NULL) {
-                return AXIS2_FAILURE;
+                return NULL;
             }
             if (*++s != ':') {
                 s = NULL; /* no port */
@@ -507,7 +507,7 @@ deal_with_host:
                 goto deal_with_path;
             }
             /* Invalid characters after ':' found */
-            return AXIS2_FAILURE;
+            return NULL;
         }
         uri_impl->port = axis2_uri_port_of_scheme(uri_impl->scheme);
         goto deal_with_path;
@@ -781,11 +781,11 @@ axis2_uri_to_string(
         unsigned flags)
 {
     axis2_uri_impl_t *uri_impl = NULL;
-    
+    axis2_char_t *ret = "";
     AXIS2_ENV_CHECK(env, NULL);
     uri_impl = AXIS2_INTF_TO_IMPL(uri);
 
-    axis2_char_t *ret = "";
+    
 
     /* If suppressing the site part, omit both user name & scheme://hostname */
     if (!(flags & AXIS2_URI_UNP_OMITSITEPART)) 

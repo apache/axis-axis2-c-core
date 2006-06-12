@@ -55,8 +55,9 @@ CuSuite* xml_schema_GetSuite()
     SUITE_ADD_TEST(suite, test_simple_restriction);
     SUITE_ADD_TEST(suite, test_unqualified_schemas);
     SUITE_ADD_TEST(suite, test_local_unnamed_simple_type);
+    SUITE_ADD_TEST(suite, test_schema_import1);
     
-/*  
+/*
     SUITE_ADD_TEST(suite, test_circular_schema); 
     SUITE_ADD_TEST(suite, test_two_schmes);
 */    

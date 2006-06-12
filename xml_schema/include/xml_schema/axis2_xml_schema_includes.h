@@ -58,7 +58,6 @@
 #include "axis2_xml_schema_particle.h"
 #include "axis2_xml_schema_enum.h"
 #include "axis2_xml_schema_content_processing.h"
-#include "axis2_om_util.h"
 #include "axis2_xml_schema_simple_content_restriction.h"
 #include "axis2_xml_schema_documentation.h"
 #include "axis2_xml_schema_data_type.h"
@@ -73,6 +72,7 @@
 #include "axis2_xml_schema_redefine.h"
 #include "axis2_xml_schema_type.h"
 #include "axis2_xml_schema_url_resolver.h"
+#include "xml_schema_input_source.h"
 
 #ifdef _cplusplus
 extern "C"

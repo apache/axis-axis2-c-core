@@ -66,6 +66,12 @@ struct axis2_xml_schema_collection_ops
             axis2_xml_schema_collection_t* collection,
             const axis2_env_t *env,
             axis2_char_t *base_uri);
+            
+    axis2_char_t* (AXIS2_CALL*
+    get_base_uri)(
+            axis2_xml_schema_collection_t* collection,
+            const axis2_env_t *env);
+                        
                    
     axis2_status_t (AXIS2_CALL * 
     init)(
@@ -106,8 +112,8 @@ struct axis2_xml_schema_collection_ops
             axis2_om_node_t *ele_node,
             axis2_char_t *uri);
             
-    const axis2_hash_t* (AXIS2_CALL *
-    get_xml_schema)(
+    struct axis2_xml_schema* (AXIS2_CALL *
+    get_schema)(
             axis2_xml_schema_collection_t* collection,
             const axis2_env_t *env,
             axis2_char_t *system_id);
@@ -197,9 +203,6 @@ axis2_xml_schema_collection_create(const axis2_env_t *env);
 #define AXIS2_XML_SCHEMA_COLLECTION_FREE(collection, env) \
       ((collection)->ops->free (collection, env))
       
-#define AXIS2_XML_SCHEMA_COLLECTION_SET_BASE_URI(collection, env, base_uri) \
-      ((collection)->ops->set_base_uri (collection, env, base_uri))
-      
 #define AXIS2_XML_SCHEMA_COLLECTION_INIT(collection, env) \
       ((collection)->ops->init(collection, env))
       
@@ -252,7 +255,15 @@ axis2_xml_schema_collection_create(const axis2_env_t *env);
         
 #define AXIS2_XML_SCHEMA_COLLECTION_SET_NAMESPACES(collection, env, ht_ns) \
         ((collection)->ops->set_namespaces(collection, env, ht_ns))                
-                
+        
+#define AXIS2_XML_SCHEMA_COLLECTION_GET_SCHEMA(collection, env, system_id) \
+        ((collection)->ops->get_schema(collection, env, system_id))
+        
+#define AXIS2_XML_SCHEMA_COLLECTION_SET_BASE_URI(collection, env, base_uri) \
+      ((collection)->ops->set_base_uri (collection, env, base_uri))
+      
+#define AXIS2_XML_SCHEMA_COLLECTION_GET_BASE_URI(collection, env) \
+        ((collection)->ops->get_base_uri(collection, env))
         
 /** @} */
 #ifdef __cplusplus

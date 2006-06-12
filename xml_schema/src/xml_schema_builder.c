@@ -26,8 +26,6 @@ typedef struct axis2_xml_schema_builder_impl
 {
     axis2_xml_schema_builder_t builder;
 
-    axis2_om_document_t *om_doc;
-    
     axis2_om_node_t *root_node;
     
     void *schema;
@@ -36,6 +34,10 @@ typedef struct axis2_xml_schema_builder_impl
     
     int gen_no;
 
+    axis2_array_list_t *document_list;
+    
+    axis2_om_node_t *schema_element;
+    
 }axis2_xml_schema_builder_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(builder) \
@@ -361,13 +363,13 @@ axis2_xml_schema_builder_create(
     
     builder_impl->collection = NULL;
     
-    builder_impl->om_doc = NULL;
-    
     builder_impl->root_node = NULL;
     
     builder_impl->schema = NULL;
     
     builder_impl->gen_no = 0;
+    
+    builder_impl->document_list = NULL;
     
     
     builder_impl->schema = axis2_xml_schema_create(env, NULL, sch_collection);
@@ -387,6 +389,8 @@ axis2_xml_schema_builder_create(
         axis2_xml_schema_builder_free(&(builder_impl->builder), env);
         return NULL;
     }            
+    
+    builder_impl->document_list = axis2_array_list_create(env, 2);
 
     builder_impl->builder.ops->free =
         axis2_xml_schema_builder_free;
@@ -408,21 +412,20 @@ axis2_xml_schema_builder_build(
         axis2_char_t *uri)
 {
     axis2_xml_schema_builder_impl_t *builder_impl = NULL;
+    axis2_om_node_t *root_node = NULL;
     
     AXIS2_PARAM_CHECK(env->error, om_doc, NULL);
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
+
+    AXIS2_ARRAY_LIST_ADD(builder_impl->document_list, env, om_doc);
+        
+    root_node = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(om_doc, env);            
     
-    builder_impl->om_doc = om_doc;
-    
-    builder_impl->root_node = 
-        AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(om_doc, env);            
-    
-    if(!builder_impl->root_node)
+    if(!root_node)
         return NULL;        
     
-    return handle_xml_schema_element(builder, env, 
-        builder_impl->root_node, uri);
+    return handle_xml_schema_element(builder, env, root_node, uri);
 }
         
 axis2_xml_schema_t* AXIS2_CALL
@@ -3118,7 +3121,6 @@ handle_element(
     int min_occurs = 0;
     
     
-    axis2_char_t *ele_n = NULL; /* to be removed */
     
     AXIS2_PARAM_CHECK(env->error, ele_node, NULL);
 
@@ -3131,8 +3133,6 @@ handle_element(
     element_name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env,
             "name");
       
-    ele_n = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env);
-          
     if(NULL != element_name)
     {
         AXIS2_XML_SCHEMA_ELEMENT_SET_NAME(sch_ele, env, element_name);
@@ -3735,18 +3735,6 @@ handle_include(
     
     source_uri = AXIS2_XML_SCHEMA_OBJ_GET_SOURCE_URI(builder_impl->schema, env);
     
-    /***************************************************/
-    ht_sch2schemas = AXIS2_XML_SCHEMA_COLLECTION_GET_SYSTEMID2_SCHEMAS(
-        builder_impl->collection, env);
-    
-    key_uri = axis2_xml_schema_url_resolver_resolve_entity(
-        env, NULL, sch_location, source_uri);            
-    if(NULL != ht_sch2schemas)
-    {
-        axis2_hash_set(ht_sch2schemas, key_uri, 
-            AXIS2_HASH_KEY_STRING, builder_impl->schema);
-    }                
-    /***************************************************/
     if(NULL != source_uri)
     {
         sch_location = AXIS2_XML_SCHEMA_EXTERNAL_GET_SCHEMA_LOCATION(include, env);
@@ -3970,7 +3958,7 @@ get_enum_string(
         axis2_char_t *atr_val = NULL;
         atr_val = AXIS2_STRDUP(attr_value, env);
         
-        return (axis2_char_t*)AXIS2_STRTRIM(atr_val, NULL);
+        return (axis2_char_t*)AXIS2_STRTRIM(env, atr_val, NULL);
     }        
     return AXIS2_XML_SCHEMA_CONST_NONE;
 }
@@ -4028,8 +4016,16 @@ resolve_xml_schema(
         axis2_char_t *target_namespace,
         axis2_char_t *schema_location)
 {
+    axis2_char_t *base_uri = NULL;
+    axis2_xml_schema_builder_impl_t *builder_impl = NULL;
+    
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
+    
+    base_uri = AXIS2_XML_SCHEMA_COLLECTION_GET_BASE_URI(
+        builder_impl->collection, env);
+    
     return resolve_xml_schema_with_uri(builder,env, 
-            target_namespace, schema_location,  NULL);
+            target_namespace, schema_location,  base_uri);
 }     
 
 
@@ -4045,37 +4041,49 @@ resolve_xml_schema_with_uri(
     axis2_om_document_t *om_doc = NULL;
     axis2_om_stax_builder_t *om_builder = NULL;
     axis2_char_t *filename = NULL;
-/*  axis2_hash_t *sysid2schemas = NULL; 
-    axis2_xml_schema_t *schema = NULL;  */      
-        
+    axis2_hash_t *sysid2schemas = NULL; 
+    axis2_xml_schema_t *schema = NULL;
     axis2_xml_schema_builder_impl_t *sch_builder_impl = NULL;
+    xml_schema_input_source_t *input_source = NULL;
+    axis2_char_t *system_id = NULL;
+
     sch_builder_impl = AXIS2_INTF_TO_IMPL(builder);
-    filename = axis2_xml_schema_url_resolver_resolve_entity(env, 
+
+    input_source = axis2_xml_schema_url_resolver_resolve_entity(env, 
         target_namespace, schema_location, base_uri);
-    /*        
+
     if(!sch_builder_impl->collection)
         return NULL;                
-    sysid2schemas = AXIS2_XML_SCHEMA_COLLECTION_GET_SYSTEMID2_SCHEMAS(
-        sch_builder_impl->collection, env);
-        
-    if(!sysid2schemas)
+
+    if(NULL != input_source)
+    {
+        system_id = XML_SCHEMA_INPUT_SOURCE_GET_SYSTEM_ID(input_source, env);
+        if(NULL != system_id)
+        {
+            schema = AXIS2_XML_SCHEMA_COLLECTION_GET_SCHEMA(
+                sch_builder_impl->collection, env, system_id);
+        }
+    }
+    else
+    {
         return NULL;
-    if(NULL != base_uri)        
-        schema = axis2_hash_get(sysid2schemas, filename, AXIS2_HASH_KEY_STRING);
-   
+    }
     if(NULL != schema)
     {
         return schema;
-    }        
-    */
-    xml_reader = axis2_xml_reader_create_for_file(env, filename, NULL);
+    }
+
+    xml_reader = axis2_xml_reader_create_for_file(env, system_id, NULL);
     if(!xml_reader)
         return NULL;        
     om_builder = axis2_om_stax_builder_create(env, xml_reader);
     if(!om_builder)
         return NULL;
+
     om_doc = axis2_om_document_create(env, NULL, om_builder);
+
     AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
+
     return AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(
         sch_builder_impl->collection , env, om_doc, base_uri);        
 }

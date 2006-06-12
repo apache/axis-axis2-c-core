@@ -466,7 +466,7 @@ axis2_url_to_uri(
     AXIS2_ENV_CHECK(env, NULL);
 
     url_str = axis2_url_to_external_form(url, env);
-    uri = axis2_uri_parse_string(url_str, env);
+    uri = axis2_uri_parse_string( env, url_str);
     
     return uri;
 }

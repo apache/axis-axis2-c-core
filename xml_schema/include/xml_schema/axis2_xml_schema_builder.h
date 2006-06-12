@@ -31,6 +31,7 @@
 #include <axis2_om.h>
 #include <axis2_hash.h>
 #include <xml_schema/axis2_xml_schema_collection.h>
+#include <axis2_om_util.h>
 /** @defgroup axis2_xml_schema_builder Xml Schema
   * @ingroup axis2_xml_schema_builder
   * @{

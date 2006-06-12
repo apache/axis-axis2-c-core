@@ -102,9 +102,8 @@ extern "C"
      * @param ... The strings to concatenate.  The final string must be NULL
      * @return The new string
      */
-    AXIS2_DECLARE_NONSTD(axis2_char_t *) 
-    axis2_strcat(
-            const axis2_env_t *env, ...);
+    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
+    axis2_strcat(const axis2_env_t *env, ...);
         
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_strstr (const axis2_char_t *heystack,
@@ -113,7 +112,7 @@ extern "C"
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_rindex(const axis2_char_t *s, 
                  axis2_char_t c);
-                 
+    /* replaces s1 with s2 */                 
     AXIS2_EXTERN axis2_char_t* AXIS2_CALL
     axis2_replace(const axis2_env_t *env,
                   axis2_char_t *str,

@@ -19,36 +19,55 @@
 #include <axis2_file_handler.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
-#ifndef S_ISDIR
-#   define S_ISDIR(m) ((m & S_IFMT) == S_IFDIR)
-#endif
-
-
 static axis2_bool_t 
 is_absolute_url(const axis2_char_t *url);
 
-static axis2_char_t*
-get_url(const axis2_env_t *env,
-        axis2_char_t *path,
-        axis2_char_t *spec);
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+get_file_url(const axis2_env_t *env,
+        axis2_char_t *path);
+
+AXIS2_EXTERN xml_schema_input_source_t* AXIS2_CALL
 axis2_xml_schema_url_resolver_resolve_entity(
         const axis2_env_t *env,
         axis2_char_t *ns,
         axis2_char_t *schema_location,
         axis2_char_t *base_uri)
 {
-    if(!base_uri)
-        return schema_location;
-        
-    if(!is_absolute_url(schema_location))
+    axis2_uri_t *uri1 = NULL;
+    axis2_uri_t *uri2 = NULL;
+    
+    if(NULL != base_uri && NULL != schema_location)
     {
-        axis2_char_t *path = NULL;
-        path = get_url(env, base_uri, schema_location);        
-        return path;
-    }
-    return schema_location;
+        axis2_uri_t *uri1 = NULL;
+        axis2_uri_t *uri2 = NULL;
+        axis2_char_t *abs_path = NULL;
+        axis2_char_t *ref = NULL;
+        /*
+        if(axis2_file_handler_access(base_uri, AXIS2_F_OK))
+        {
+             abs_path = AXIS2_GETCWD(base_uri);
+            uri1 = axis2_uri_parse_string(env, get_file_url(env, bas));
+
+        }
+        */        
+        abs_path = get_file_url(env, base_uri);
+        
+        uri1 = axis2_uri_parse_string(env, abs_path);
+                                
+        if(NULL != uri1)
+        {
+            uri2 = axis2_uri_parse_relative(env, uri1, schema_location);
+            if(NULL != uri2)
+            {
+                ref = AXIS2_URI_TO_STRING(uri2, env, 1);
+                /* AXIS2_URI_FREE(uri2, env);  */
+                return xml_schema_input_source_create_with_system_id(env, ref);
+            }
+        }
+        return NULL;                    
+    }        
+    return xml_schema_input_source_create_with_system_id(env, schema_location);
 }        
 
 static axis2_bool_t 
@@ -62,48 +81,27 @@ is_absolute_url(const axis2_char_t *url)
     return AXIS2_FALSE;
 }
 
-static axis2_char_t*
-get_url(const axis2_env_t *env,
-        axis2_char_t *path,
-        axis2_char_t *spec)
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+get_file_url(const axis2_env_t *env,
+        axis2_char_t *path)
 {
     axis2_char_t *modified_path = NULL;
     axis2_char_t *final_path = NULL;
-       
-    if(NULL != path)
-    {
-        modified_path = AXIS2_STRDUP(spec, env);
-    }
-    /** create a path */
-    modified_path = AXIS2_REPLACE(env, modified_path, '\\','/');
-    
+    if(!path)
+        return NULL;
+    modified_path = AXIS2_STRDUP(path, env);
+    AXIS2_REPLACE(env, modified_path, '\\', '/');
     if(strncmp(modified_path, "/", 1) == 0)
     {
-        final_path = AXIS2_STRACAT(path, modified_path, env);
+        final_path = AXIS2_STRACAT("file://", modified_path, env);
     }
     else
     {
-        axis2_char_t *temp_path = NULL;
-        temp_path = AXIS2_STRACAT(path, "/",env);
-        final_path = AXIS2_STRACAT(temp_path, modified_path, env);
+        final_path = AXIS2_STRACAT("file:///", modified_path, env);
+    }
+    if(NULL != modified_path)
+    {
         AXIS2_FREE(env->allocator, modified_path);
-    }
-        
-    if(NULL != final_path)
-    {       
-        if(strncmp(final_path,"file:///", 8) == 0)
-        {
-            axis2_char_t *real_path = NULL;
-            axis2_char_t *start = NULL;
-            start = final_path+8*sizeof(axis2_char_t);
-            real_path = AXIS2_STRDUP(start, env);
-            AXIS2_FREE(env->allocator, final_path);
-            if(axis2_file_handler_access(real_path, AXIS2_F_OK))
-                return real_path;
-        } 
-        else
-            if(axis2_file_handler_access(final_path, AXIS2_F_OK))
-                return final_path;
-    }
-    return NULL;
-}        
+    }                
+    return final_path;        
+}
