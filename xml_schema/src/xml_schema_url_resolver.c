@@ -19,9 +19,10 @@
 #include <axis2_file_handler.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
+/*
 static axis2_bool_t 
 is_absolute_url(const axis2_char_t *url);
-
+*/
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 get_file_url(const axis2_env_t *env,
@@ -34,9 +35,6 @@ axis2_xml_schema_url_resolver_resolve_entity(
         axis2_char_t *schema_location,
         axis2_char_t *base_uri)
 {
-    axis2_uri_t *uri1 = NULL;
-    axis2_uri_t *uri2 = NULL;
-    
     if(NULL != base_uri && NULL != schema_location)
     {
         axis2_uri_t *uri1 = NULL;
@@ -69,7 +67,7 @@ axis2_xml_schema_url_resolver_resolve_entity(
     }        
     return xml_schema_input_source_create_with_system_id(env, schema_location);
 }        
-
+/*
 static axis2_bool_t 
 is_absolute_url(const axis2_char_t *url)
 {
@@ -80,7 +78,7 @@ is_absolute_url(const axis2_char_t *url)
     }
     return AXIS2_FALSE;
 }
-
+*/
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 get_file_url(const axis2_env_t *env,
         axis2_char_t *path)

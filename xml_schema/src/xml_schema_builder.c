@@ -21,6 +21,7 @@
 #include <axis2_string_util.h>
 #include <axis2_allocator.h>
 #include <limits.h>
+#include <axis2_string.h>
 
 typedef struct axis2_xml_schema_builder_impl 
 {
@@ -3709,9 +3710,6 @@ handle_include(
     axis2_om_node_t *ann_node = NULL;
     axis2_char_t *sch_location = NULL;
     axis2_char_t *source_uri = NULL;
-    axis2_hash_t *ht_sch2schemas = NULL;
-    axis2_char_t *key_uri = NULL;
-    
     
     axis2_xml_schema_builder_impl_t *builder_impl = NULL;
     void *sch = NULL;
@@ -4040,8 +4038,6 @@ resolve_xml_schema_with_uri(
     axis2_xml_reader_t *xml_reader = NULL;
     axis2_om_document_t *om_doc = NULL;
     axis2_om_stax_builder_t *om_builder = NULL;
-    axis2_char_t *filename = NULL;
-    axis2_hash_t *sysid2schemas = NULL; 
     axis2_xml_schema_t *schema = NULL;
     axis2_xml_schema_builder_impl_t *sch_builder_impl = NULL;
     xml_schema_input_source_t *input_source = NULL;

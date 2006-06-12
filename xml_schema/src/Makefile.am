@@ -45,6 +45,7 @@ libaxis2_xml_schema_la_SOURCES = \
                                  xml_schema_complex_content_extension.c \
                                  xml_schema_complex_content.c \
                                  xml_schema_attribute_group_ref.c \
+                                 xml_schema_input_source.c \
                                  xml_schema.c 
                                  
 
