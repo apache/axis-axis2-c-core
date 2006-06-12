@@ -49,7 +49,7 @@ axis2_soap_fault_code_set_sub_code(axis2_soap_fault_code_t *fault_code,
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_code_set_base_node(axis2_soap_fault_code_t *fault_code,
                                     const axis2_env_t *env,
-                                    axis2_om_node_t *node);
+                                    axiom_node_t *node);
 axis2_status_t AXIS2_CALL
 axis2_soap_fault_code_set_builder(axis2_soap_fault_code_t *fault_code,
                                   const axis2_env_t *env,

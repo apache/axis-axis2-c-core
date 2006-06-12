@@ -18,7 +18,7 @@
 #define AXIS2_MIME_CONST_H
 
 /**
-* @file axis2_om.h
+* @file axiom.h
 * @brief includes all headers in MIME_CONST
 */
 #ifdef __cplusplus

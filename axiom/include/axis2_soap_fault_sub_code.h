@@ -65,7 +65,7 @@ extern "C"
       get_value)(axis2_soap_fault_sub_code_t *fault_sub_code,
                    const axis2_env_t *env);
                                      
-        axis2_om_node_t* (AXIS2_CALL *
+        axiom_node_t* (AXIS2_CALL *
       get_base_node) (axis2_soap_fault_sub_code_t *fault_sub_code,
                         const axis2_env_t *env);
 

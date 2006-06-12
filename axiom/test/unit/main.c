@@ -22,7 +22,7 @@ void RunAllTests(void) {
     CuString *output = CuStringNew();
     CuSuite* suite = CuSuiteNew();
 
-    CuSuiteAddSuite(suite, axis2_omGetSuite());
+    CuSuiteAddSuite(suite, axiomGetSuite());
     
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);

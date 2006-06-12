@@ -66,7 +66,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
       serialize)(axis2_soap_message_t *message,
                    const axis2_env_t *env,
-                   axis2_om_output_t *om_output);
+                   axiom_output_t *om_output);
                                                        
                                                                                             
     };
@@ -89,7 +89,7 @@ extern "C"
 AXIS2_EXTERN axis2_soap_message_t * AXIS2_CALL
 axis2_soap_message_create(const axis2_env_t *env,
                           axis2_soap_builder_t *soap_builder,
-                          axis2_om_document_t *om_doc);
+                          axiom_document_t *om_doc);
 
 /******************** Macros **************************************************/
     

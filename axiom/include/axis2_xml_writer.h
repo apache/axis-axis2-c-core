@@ -35,7 +35,7 @@ typedef struct axis2_xml_writer axis2_xml_writer_t;
 
 /**
  * @defgroup axis2_xml_writer 
- * @ingroup axis2_om_parser
+ * @ingroup axiom_parser
  * @{
  */
 

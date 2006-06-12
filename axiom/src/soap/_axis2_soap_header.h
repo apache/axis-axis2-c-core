@@ -41,7 +41,7 @@ extern "C"
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_set_base_node(axis2_soap_header_t *header,
                                 const axis2_env_t *env,
-                                axis2_om_node_t *node);
+                                axiom_node_t *node);
 
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_set_soap_version(axis2_soap_header_t *header,

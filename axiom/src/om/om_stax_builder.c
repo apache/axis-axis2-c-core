@@ -14,55 +14,55 @@
  * limitations under the License.
  */
 
-#include <axis2_om_stax_builder.h>
-#include <axis2_om_element.h>
-#include <axis2_om_text.h>
-#include <axis2_om_processing_instruction.h>
-#include <axis2_om_comment.h>
+#include <axiom_stax_builder.h>
+#include <axiom_element.h>
+#include <axiom_text.h>
+#include <axiom_processing_instruction.h>
+#include <axiom_comment.h>
 #include <axis2_string.h>
 #include <axis2_xml_writer.h>
-#include <axis2_om_doctype.h>
-#include "axis2_om_node_internal.h"
-#include "axis2_om_stax_builder_internal.h"
+#include <axiom_doctype.h>
+#include "axiom_node_internal.h"
+#include "axiom_stax_builder_internal.h"
 /**************************** function prototypes *****************************/
 
-axis2_om_node_t * AXIS2_CALL 
-axis2_om_stax_builder_next (axis2_om_stax_builder_t *builder,
+axiom_node_t * AXIS2_CALL 
+axiom_stax_builder_next (axiom_stax_builder_t *builder,
                             const axis2_env_t *env);
                                  
 axis2_status_t AXIS2_CALL 
-axis2_om_stax_builder_discard_current_element (axis2_om_stax_builder_t *builder,
+axiom_stax_builder_discard_current_element (axiom_stax_builder_t *builder,
                                                const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
-axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
+axiom_stax_builder_free(axiom_stax_builder_t *builder,
                            const axis2_env_t *env);
 
                                             
-axis2_om_document_t* AXIS2_CALL
-axis2_om_stax_builder_get_document (axis2_om_stax_builder_t *builder,
+axiom_document_t* AXIS2_CALL
+axiom_stax_builder_get_document (axiom_stax_builder_t *builder,
                                     const axis2_env_t *env);
                                             
 axis2_bool_t  AXIS2_CALL
-axis2_om_stax_builder_is_complete(axis2_om_stax_builder_t *builder,
+axiom_stax_builder_is_complete(axiom_stax_builder_t *builder,
                                    const axis2_env_t *env);
                                                                                                
 int AXIS2_CALL 
-axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
+axiom_stax_builder_next_with_token(axiom_stax_builder_t *builder,
                                           const axis2_env_t *env);                                                                                                                                                                             
                                        
-/********************************* axis2_om_stax_builder_impl_t struct ********/
-typedef struct axis2_om_stax_builder_impl_t
+/********************************* axiom_stax_builder_impl_t struct ********/
+typedef struct axiom_stax_builder_impl_t
 {
-    axis2_om_stax_builder_t om_stax_builder;
+    axiom_stax_builder_t om_stax_builder;
     /** pull parser instance used by the builder */
     axis2_xml_reader_t *parser;
     /** last node the builder found */
-    axis2_om_node_t *lastnode;
+    axiom_node_t *lastnode;
     
-    axis2_om_node_t *root_node;
+    axiom_node_t *root_node;
     /** document associated with the builder */
-    axis2_om_document_t *document;
+    axiom_document_t *document;
     /** done building the document? */
     axis2_bool_t done;
     /** parser was accessed? */
@@ -74,25 +74,25 @@ typedef struct axis2_om_stax_builder_impl_t
     
     int element_level;
         
-}axis2_om_stax_builder_impl_t;
+}axiom_stax_builder_impl_t;
 
 /************************************** Macro *********************************/            
 
-#define AXIS2_INTF_TO_IMPL(builder) ((axis2_om_stax_builder_impl_t*)builder)
+#define AXIS2_INTF_TO_IMPL(builder) ((axiom_stax_builder_impl_t*)builder)
 
 /******************************************************************************/
 
                                        
-AXIS2_EXTERN axis2_om_stax_builder_t * AXIS2_CALL
-axis2_om_stax_builder_create (const axis2_env_t *env,
+AXIS2_EXTERN axiom_stax_builder_t * AXIS2_CALL
+axiom_stax_builder_create (const axis2_env_t *env,
                               axis2_xml_reader_t *parser)
 {
-    axis2_om_stax_builder_impl_t *builder = NULL;
+    axiom_stax_builder_impl_t *builder = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, parser, NULL);
     
-    builder = (axis2_om_stax_builder_impl_t *)AXIS2_MALLOC (
-                env->allocator, sizeof(axis2_om_stax_builder_impl_t));
+    builder = (axiom_stax_builder_impl_t *)AXIS2_MALLOC (
+                env->allocator, sizeof(axiom_stax_builder_impl_t));
 
     if (!builder)
     {
@@ -110,7 +110,7 @@ axis2_om_stax_builder_create (const axis2_env_t *env,
     builder->root_node = NULL;
     builder->element_level = 0;
   
-    builder->document = axis2_om_document_create(env, NULL, &(builder->om_stax_builder));
+    builder->document = axiom_document_create(env, NULL, &(builder->om_stax_builder));
     if(!builder->document)
     {
         AXIS2_FREE(env->allocator, builder);
@@ -119,9 +119,9 @@ axis2_om_stax_builder_create (const axis2_env_t *env,
   
     /* ops */
     builder->om_stax_builder.ops = NULL;
-    builder->om_stax_builder.ops = (axis2_om_stax_builder_ops_t *) AXIS2_MALLOC(
+    builder->om_stax_builder.ops = (axiom_stax_builder_ops_t *) AXIS2_MALLOC(
                                         env->allocator, 
-                                        sizeof(axis2_om_stax_builder_ops_t));
+                                        sizeof(axiom_stax_builder_ops_t));
 
     if (!builder->om_stax_builder.ops)
     {
@@ -132,21 +132,21 @@ axis2_om_stax_builder_create (const axis2_env_t *env,
     }
 
     builder->om_stax_builder.ops->next = 
-            axis2_om_stax_builder_next;
+            axiom_stax_builder_next;
     builder->om_stax_builder.ops->discard_current_element = 
-            axis2_om_stax_builder_discard_current_element;
+            axiom_stax_builder_discard_current_element;
         
    builder->om_stax_builder.ops->free = 
-           axis2_om_stax_builder_free;
+           axiom_stax_builder_free;
 
     builder->om_stax_builder.ops->get_document = 
-            axis2_om_stax_builder_get_document;
+            axiom_stax_builder_get_document;
     
     builder->om_stax_builder.ops->next_with_token =
-            axis2_om_stax_builder_next_with_token;                       
+            axiom_stax_builder_next_with_token;                       
             
     builder->om_stax_builder.ops->is_complete =
-            axis2_om_stax_builder_is_complete;
+            axiom_stax_builder_is_complete;
                                                
    
     return &(builder->om_stax_builder);
@@ -154,20 +154,20 @@ axis2_om_stax_builder_create (const axis2_env_t *env,
 
 
 axis2_status_t
-axis2_om_stax_builder_process_attributes (axis2_om_stax_builder_t *om_builder,
+axiom_stax_builder_process_attributes (axiom_stax_builder_t *om_builder,
                                           const axis2_env_t *env,
-                                          axis2_om_node_t *element_node)
+                                          axiom_node_t *element_node)
 {
     int i = 0;
     int attribute_count;
-    axis2_om_attribute_t *attribute = NULL;
-    axis2_om_namespace_t *ns = NULL;
+    axiom_attribute_t *attribute = NULL;
+    axiom_namespace_t *ns = NULL;
     axis2_char_t *uri = NULL;
     axis2_char_t *prefix = NULL;
     axis2_char_t *attr_name = NULL;
     axis2_char_t *attr_value = NULL;
     
-    axis2_om_stax_builder_impl_t *builder_impl = NULL;
+    axiom_stax_builder_impl_t *builder_impl = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -179,7 +179,7 @@ axis2_om_stax_builder_process_attributes (axis2_om_stax_builder_t *om_builder,
                                builder_impl->parser,env);
     for (i=1; i <= attribute_count ; i++)
     {
-        axis2_om_element_t *temp_ele =  NULL;
+        axiom_element_t *temp_ele =  NULL;
         
         uri =  AXIS2_XML_READER_GET_ATTRIBUTE_NAMESPACE_BY_NUMBER(
                        builder_impl->parser, env, i);
@@ -190,17 +190,17 @@ axis2_om_stax_builder_process_attributes (axis2_om_stax_builder_t *om_builder,
         {
             if (axis2_strcmp (uri, "") != 0)
             {
-                axis2_om_element_t *om_ele = NULL;
-                om_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(element_node,env);
+                axiom_element_t *om_ele = NULL;
+                om_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(element_node,env);
                 if(om_ele)
                 {
-                    ns = AXIS2_OM_ELEMENT_FIND_NAMESPACE ( om_ele ,
+                    ns = AXIOM_ELEMENT_FIND_NAMESPACE ( om_ele ,
                         env , element_node, uri, prefix);
         
         /* newly added to handle "xml:*" attributes" (AXIS2_STRCMP(prefix, "xml") == 0) && */
                     if(!ns)
                     {
-                        ns = axis2_om_namespace_create(env, uri, prefix);
+                        ns = axiom_namespace_create(env, uri, prefix);
                     }
                 }                        
             }
@@ -213,14 +213,14 @@ axis2_om_stax_builder_process_attributes (axis2_om_stax_builder_t *om_builder,
                                  builder_impl->parser, env, i);
         if(NULL != attr_name)
         {   
-            attribute = axis2_om_attribute_create (env, attr_name, attr_value, ns);
+            attribute = axiom_attribute_create (env, attr_name, attr_value, ns);
             if(!attribute)
                 return AXIS2_FAILURE;
             
-            temp_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(element_node,env);
+            temp_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(element_node,env);
             if(NULL != temp_ele)
             {
-                status = AXIS2_OM_ELEMENT_ADD_ATTRIBUTE (temp_ele, env, attribute, element_node);
+                status = AXIOM_ELEMENT_ADD_ATTRIBUTE (temp_ele, env, attribute, element_node);
             }
         }                        
         if(uri)
@@ -238,13 +238,13 @@ axis2_om_stax_builder_process_attributes (axis2_om_stax_builder_t *om_builder,
 }
 
 
-axis2_om_node_t *
-axis2_om_stax_builder_create_om_text (axis2_om_stax_builder_t * om_stax_builder,
+axiom_node_t *
+axiom_stax_builder_create_om_text (axiom_stax_builder_t * om_stax_builder,
                                       const axis2_env_t *env)
 {
     axis2_char_t *temp_value = NULL;
-    axis2_om_node_t *node = NULL;
-    axis2_om_stax_builder_impl_t *builder = NULL;
+    axiom_node_t *node = NULL;
+    axiom_stax_builder_impl_t *builder = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     builder = AXIS2_INTF_TO_IMPL(om_stax_builder);
@@ -263,19 +263,19 @@ axis2_om_stax_builder_create_om_text (axis2_om_stax_builder_t * om_stax_builder,
         return NULL;
     }
   
-    if (AXIS2_OM_NODE_IS_COMPLETE(builder->lastnode, env))
+    if (AXIOM_NODE_IS_COMPLETE(builder->lastnode, env))
     {
-        axis2_om_text_create (env, 
-                              AXIS2_OM_NODE_GET_PARENT(builder->lastnode, env),
+        axiom_text_create (env, 
+                              AXIOM_NODE_GET_PARENT(builder->lastnode, env),
                               temp_value, &node);
   
     }
     else
     {
-        axis2_om_text_create (env, builder->lastnode, temp_value, &node);
+        axiom_text_create (env, builder->lastnode, temp_value, &node);
     }
 
-    axis2_om_node_set_complete(node , env, AXIS2_TRUE);
+    axiom_node_set_complete(node , env, AXIS2_TRUE);
     builder->lastnode = node;
     
     AXIS2_XML_READER_XML_FREE(builder->parser , env, temp_value);
@@ -284,13 +284,13 @@ axis2_om_stax_builder_create_om_text (axis2_om_stax_builder_t * om_stax_builder,
 
 
 axis2_status_t AXIS2_CALL
-axis2_om_stax_builder_discard_current_element (axis2_om_stax_builder_t *om_stax_builder,
+axiom_stax_builder_discard_current_element (axiom_stax_builder_t *om_stax_builder,
                                                const axis2_env_t *env)
 {
-    axis2_om_node_t *element = NULL;
-    axis2_om_node_t *prev_node = NULL;
-    axis2_om_node_t *parent = NULL;
-    axis2_om_stax_builder_impl_t *builder = NULL;
+    axiom_node_t *element = NULL;
+    axiom_node_t *prev_node = NULL;
+    axiom_node_t *parent = NULL;
+    axiom_stax_builder_impl_t *builder = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -298,7 +298,7 @@ axis2_om_stax_builder_discard_current_element (axis2_om_stax_builder_t *om_stax_
     
     element = builder->lastnode;
 
-    if (AXIS2_OM_NODE_IS_COMPLETE(element, env) || !(builder->cache))
+    if (AXIOM_NODE_IS_COMPLETE(element, env) || !(builder->cache))
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_BUILDER_STATE_CANNOT_DISCARD, AXIS2_FAILURE);
@@ -312,21 +312,21 @@ axis2_om_stax_builder_discard_current_element (axis2_om_stax_builder_t *om_stax_
         while (AXIS2_XML_READER_NEXT (builder->parser, env)
                 != AXIS2_XML_READER_END_ELEMENT);
     }
-    while (!(AXIS2_OM_NODE_IS_COMPLETE(element, env)));
+    while (!(AXIOM_NODE_IS_COMPLETE(element, env)));
 
     /*All children of this element is pulled now */
 
-    prev_node = AXIS2_OM_NODE_GET_PREVIOUS_SIBLING(element, env);
+    prev_node = AXIOM_NODE_GET_PREVIOUS_SIBLING(element, env);
     if (prev_node)
     {
-        AXIS2_OM_NODE_FREE_TREE(AXIS2_OM_NODE_GET_NEXT_SIBLING(prev_node, env), env);
-        axis2_om_node_set_next_sibling(prev_node, env, NULL);        
+        AXIOM_NODE_FREE_TREE(AXIOM_NODE_GET_NEXT_SIBLING(prev_node, env), env);
+        axiom_node_set_next_sibling(prev_node, env, NULL);        
     }
     else
     {
-        parent = AXIS2_OM_NODE_GET_PARENT(element, env);
-        AXIS2_OM_NODE_FREE_TREE(AXIS2_OM_NODE_GET_FIRST_CHILD(parent, env), env);
-        axis2_om_node_set_first_child(parent, env, NULL);
+        parent = AXIOM_NODE_GET_PARENT(element, env);
+        AXIOM_NODE_FREE_TREE(AXIOM_NODE_GET_FIRST_CHILD(parent, env), env);
+        axiom_node_set_first_child(parent, env, NULL);
         builder->lastnode = parent;
     }
     builder->cache = AXIS2_TRUE;
@@ -335,21 +335,21 @@ axis2_om_stax_builder_discard_current_element (axis2_om_stax_builder_t *om_stax_
 }
 
 axis2_status_t
-axis2_om_stax_builder_process_namespaces (axis2_om_stax_builder_t *om_stax_builder,
+axiom_stax_builder_process_namespaces (axiom_stax_builder_t *om_stax_builder,
                                           const axis2_env_t *env,
-                                          axis2_om_node_t *node,
+                                          axiom_node_t *node,
                                           int is_soap_element)
 {
     axis2_status_t status = AXIS2_SUCCESS;
     int namespace_count = 0;
-    axis2_om_namespace_t *om_ns = NULL;
-    axis2_om_namespace_t *temp_ns = NULL;
+    axiom_namespace_t *om_ns = NULL;
+    axiom_namespace_t *temp_ns = NULL;
     /* temp values */
     axis2_char_t *temp_prefix = NULL;
     axis2_char_t *temp_ns_prefix = NULL;
     axis2_char_t *temp_ns_uri    = NULL;
     
-    axis2_om_stax_builder_impl_t *builder = NULL;
+    axiom_stax_builder_impl_t *builder = NULL;
     int i=0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -369,40 +369,40 @@ axis2_om_stax_builder_process_namespaces (axis2_om_stax_builder_t *om_stax_build
         {
             /** default namespace case */
             /** !temp_ns_prefix is for guththila */         
-             axis2_om_element_t *om_ele = NULL;
-             om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
+             axiom_element_t *om_ele = NULL;
+             om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
             
-             om_ns = axis2_om_namespace_create ( env, temp_ns_uri, "");
+             om_ns = axiom_namespace_create ( env, temp_ns_uri, "");
              if(!om_ns || !om_ele)
                  return AXIS2_FAILURE;
              
-             status = AXIS2_OM_ELEMENT_DECLARE_NAMESPACE( om_ele, env, node, om_ns);
+             status = AXIOM_ELEMENT_DECLARE_NAMESPACE( om_ele, env, node, om_ns);
             
-             temp_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(om_ele, env, temp_ns_uri, NULL);
+             temp_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(om_ele, env, temp_ns_uri, NULL);
              /*
              if(temp_ns)
              {
-                AXIS2_OM_ELEMENT_SET_NAMESPACE (om_ele, env, om_ns, node); 
+                AXIOM_ELEMENT_SET_NAMESPACE (om_ele, env, om_ns, node); 
              } 
              */                
              if(!temp_ns)
              {
-                AXIS2_OM_NAMESPACE_FREE(om_ns, env);
+                AXIOM_NAMESPACE_FREE(om_ns, env);
                 om_ns = NULL;
              }
         }
         else
         {       
-            axis2_om_element_t *om_ele = NULL;
-            om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
+            axiom_element_t *om_ele = NULL;
+            om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
             
-            om_ns = axis2_om_namespace_create ( env, temp_ns_uri, temp_ns_prefix );
+            om_ns = axiom_namespace_create ( env, temp_ns_uri, temp_ns_prefix );
             if(!om_ns || !om_ele)
                 return AXIS2_FAILURE;
             
-            status = AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(om_ele, env, node, om_ns);
+            status = AXIOM_ELEMENT_DECLARE_NAMESPACE(om_ele, env, node, om_ns);
            /*        
-            temp_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(om_ele, 
+            temp_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(om_ele, 
                             env, temp_ns_uri,temp_ns_prefix);
            */
         }        
@@ -418,16 +418,16 @@ axis2_om_stax_builder_process_namespaces (axis2_om_stax_builder_t *om_stax_build
     temp_prefix = AXIS2_XML_READER_GET_PREFIX ( builder->parser, env);
     if (temp_prefix)
     {
-        om_ns = AXIS2_OM_ELEMENT_FIND_NAMESPACE (
-                    (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env),
+        om_ns = AXIOM_ELEMENT_FIND_NAMESPACE (
+                    (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env),
                     env, node, NULL, temp_prefix);
        
         if (om_ns)
         {
-            axis2_om_element_t *om_ele = NULL;
-            om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
+            axiom_element_t *om_ele = NULL;
+            om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
             if(om_ele)
-                AXIS2_OM_ELEMENT_SET_NAMESPACE (om_ele, env, om_ns, node);
+                AXIOM_ELEMENT_SET_NAMESPACE (om_ele, env, om_ns, node);
         }
         else
         {
@@ -442,13 +442,13 @@ axis2_om_stax_builder_process_namespaces (axis2_om_stax_builder_t *om_stax_build
     return status;
 }
 
-axis2_om_node_t *
-axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builder,
+axiom_node_t *
+axiom_stax_builder_create_om_element (axiom_stax_builder_t *om_stax_builder,
                                          const axis2_env_t *env)
 {
-    axis2_om_node_t *element_node = NULL;
-    axis2_om_element_t *om_ele = NULL;
-    axis2_om_stax_builder_impl_t *builder_impl = NULL;
+    axiom_node_t *element_node = NULL;
+    axiom_element_t *om_ele = NULL;
+    axiom_stax_builder_impl_t *builder_impl = NULL;
     axis2_char_t *temp_localname = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
@@ -468,57 +468,57 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
     
     if (!(builder_impl->lastnode))
     {
-        om_ele = axis2_om_element_create (env , NULL, temp_localname, NULL, &element_node);
+        om_ele = axiom_element_create (env , NULL, temp_localname, NULL, &element_node);
         if(!om_ele)
             return NULL;
             
         builder_impl->root_node = element_node;
                 
-        axis2_om_node_set_builder(element_node, env, om_stax_builder);        
+        axiom_node_set_builder(element_node, env, om_stax_builder);        
    
         if(builder_impl->document)        
         {
-            axis2_om_node_set_document(element_node, env, builder_impl->document);
-            AXIS2_OM_DOCUMENT_SET_ROOT_ELEMENT(builder_impl->document, env, element_node);
+            axiom_node_set_document(element_node, env, builder_impl->document);
+            AXIOM_DOCUMENT_SET_ROOT_ELEMENT(builder_impl->document, env, element_node);
         }
     }
-    else if(AXIS2_OM_NODE_IS_COMPLETE(builder_impl->lastnode, env))
+    else if(AXIOM_NODE_IS_COMPLETE(builder_impl->lastnode, env))
     {   
-        axis2_om_element_t *om_ele = NULL;
+        axiom_element_t *om_ele = NULL;
         
-        om_ele = axis2_om_element_create (env, 
-                    AXIS2_OM_NODE_GET_PARENT(builder_impl->lastnode, env),
+        om_ele = axiom_element_create (env, 
+                    AXIOM_NODE_GET_PARENT(builder_impl->lastnode, env),
                     temp_localname, NULL, &element_node);
         if(!om_ele)
             return NULL;
             
         if(element_node)
         {
-            axis2_om_node_set_next_sibling(builder_impl->lastnode, env, element_node);                                 
-            axis2_om_node_set_previous_sibling(element_node , env, builder_impl->lastnode);
-            axis2_om_node_set_document(element_node, env, builder_impl->document); 
-            axis2_om_node_set_builder(element_node, env, om_stax_builder);
+            axiom_node_set_next_sibling(builder_impl->lastnode, env, element_node);                                 
+            axiom_node_set_previous_sibling(element_node , env, builder_impl->lastnode);
+            axiom_node_set_document(element_node, env, builder_impl->document); 
+            axiom_node_set_builder(element_node, env, om_stax_builder);
         }            
     }
     else
     {
-        axis2_om_element_t *om_ele = NULL;
-        om_ele = axis2_om_element_create ( env, builder_impl->lastnode,
+        axiom_element_t *om_ele = NULL;
+        om_ele = axiom_element_create ( env, builder_impl->lastnode,
                                  temp_localname, NULL, &element_node);
         if(element_node)
         {
-            axis2_om_node_set_first_child(builder_impl->lastnode , env, element_node);                     
-            axis2_om_node_set_parent(element_node , env, builder_impl->lastnode);
-            axis2_om_node_set_document(element_node, env, builder_impl->document); 
-            axis2_om_node_set_builder(element_node, env, om_stax_builder);
+            axiom_node_set_first_child(builder_impl->lastnode , env, element_node);                     
+            axiom_node_set_parent(element_node , env, builder_impl->lastnode);
+            axiom_node_set_document(element_node, env, builder_impl->document); 
+            axiom_node_set_builder(element_node, env, om_stax_builder);
         }            
     }
     if(temp_localname)
         AXIS2_XML_READER_XML_FREE(builder_impl->parser , env, temp_localname);
 
     /** order of processing namespaces first is important */
-    axis2_om_stax_builder_process_namespaces ( om_stax_builder, env, element_node, 0);
-    axis2_om_stax_builder_process_attributes ( om_stax_builder, env, element_node);
+    axiom_stax_builder_process_namespaces ( om_stax_builder, env, element_node, 0);
+    axiom_stax_builder_process_attributes ( om_stax_builder, env, element_node);
 
     builder_impl->lastnode = element_node;
    
@@ -526,12 +526,12 @@ axis2_om_stax_builder_create_om_element (axis2_om_stax_builder_t *om_stax_builde
 }
 
 
-axis2_om_node_t *
-axis2_om_stax_builder_create_om_comment (axis2_om_stax_builder_t *builder,
+axiom_node_t *
+axiom_stax_builder_create_om_comment (axiom_stax_builder_t *builder,
                                          const axis2_env_t *env)
 {
-    axis2_om_node_t *comment_node = NULL;
-    axis2_om_stax_builder_impl_t *builder_impl = NULL;
+    axiom_node_t *comment_node = NULL;
+    axiom_stax_builder_impl_t *builder_impl = NULL;
     axis2_char_t *comment_value = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
@@ -549,22 +549,22 @@ axis2_om_stax_builder_create_om_comment (axis2_om_stax_builder_t *builder,
         AXIS2_XML_READER_XML_FREE(builder_impl->parser , env, comment_value);
         return NULL;   
     }
-    else if (AXIS2_OM_NODE_IS_COMPLETE(builder_impl->lastnode, env))
+    else if (AXIOM_NODE_IS_COMPLETE(builder_impl->lastnode, env))
     {
-        axis2_om_comment_create (env, 
-                AXIS2_OM_NODE_GET_PARENT(builder_impl->lastnode, env),
+        axiom_comment_create (env, 
+                AXIOM_NODE_GET_PARENT(builder_impl->lastnode, env),
                 comment_value , &comment_node);
        
-       axis2_om_node_set_next_sibling(builder_impl->lastnode, env, comment_node);                                 
-        axis2_om_node_set_previous_sibling(comment_node , env, builder_impl->lastnode);
+       axiom_node_set_next_sibling(builder_impl->lastnode, env, comment_node);                                 
+        axiom_node_set_previous_sibling(comment_node , env, builder_impl->lastnode);
     }
     else
     {
-        axis2_om_comment_create( env, builder_impl->lastnode,
+        axiom_comment_create( env, builder_impl->lastnode,
                                  comment_value ,&comment_node);
         
-        axis2_om_node_set_first_child(builder_impl->lastnode , env, comment_node);                     
-        axis2_om_node_set_parent(comment_node , env, builder_impl->lastnode);
+        axiom_node_set_first_child(builder_impl->lastnode , env, comment_node);                     
+        axiom_node_set_parent(comment_node , env, builder_impl->lastnode);
     }
     
     builder_impl->element_level++;
@@ -578,12 +578,12 @@ axis2_om_stax_builder_create_om_comment (axis2_om_stax_builder_t *builder,
 }
 
 
-axis2_om_node_t * 
-axis2_om_stax_builder_create_om_doctype (axis2_om_stax_builder_t * builder,
+axiom_node_t * 
+axiom_stax_builder_create_om_doctype (axiom_stax_builder_t * builder,
                                          const axis2_env_t *env)
 {
-    axis2_om_stax_builder_impl_t *builder_impl;
-    axis2_om_node_t *doctype_node = NULL;
+    axiom_stax_builder_impl_t *builder_impl;
+    axiom_node_t *doctype_node = NULL;
     axis2_char_t *doc_value = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
@@ -594,10 +594,10 @@ axis2_om_stax_builder_create_om_doctype (axis2_om_stax_builder_t * builder,
         return NULL;
     if(!(builder_impl->lastnode))
     {
-        axis2_om_doctype_create(env, NULL, doc_value, &doctype_node);
+        axiom_doctype_create(env, NULL, doc_value, &doctype_node);
         if(builder_impl->document)
         {            
-            AXIS2_OM_DOCUMENT_SET_ROOT_ELEMENT(builder_impl->document, 
+            AXIOM_DOCUMENT_SET_ROOT_ELEMENT(builder_impl->document, 
                                         env, doctype_node);
         }            
     }
@@ -607,12 +607,12 @@ axis2_om_stax_builder_create_om_doctype (axis2_om_stax_builder_t * builder,
 }
 
  
-axis2_om_node_t * 
-axis2_om_stax_builder_create_om_processing_instruction (axis2_om_stax_builder_t *builder,
+axiom_node_t * 
+axiom_stax_builder_create_om_processing_instruction (axiom_stax_builder_t *builder,
                                                         const axis2_env_t *env)
 {
-    axis2_om_node_t *pi_node = NULL;
-    axis2_om_stax_builder_impl_t *builder_impl = NULL;
+    axiom_node_t *pi_node = NULL;
+    axiom_stax_builder_impl_t *builder_impl = NULL;
     axis2_char_t *target = NULL;
     axis2_char_t *value  = NULL;
     
@@ -635,22 +635,22 @@ axis2_om_stax_builder_create_om_processing_instruction (axis2_om_stax_builder_t 
         AXIS2_XML_READER_XML_FREE(builder_impl->parser , env, value);
         return NULL;
     }
-    else if (AXIS2_OM_NODE_IS_COMPLETE(builder_impl->lastnode, env) ||
-     (AXIS2_OM_NODE_GET_NODE_TYPE(builder_impl->lastnode, env) == AXIS2_OM_TEXT))
+    else if (AXIOM_NODE_IS_COMPLETE(builder_impl->lastnode, env) ||
+     (AXIOM_NODE_GET_NODE_TYPE(builder_impl->lastnode, env) == AXIOM_TEXT))
     {
-        axis2_om_processing_instruction_create(env,
-                        AXIS2_OM_NODE_GET_PARENT(builder_impl->lastnode, env),
+        axiom_processing_instruction_create(env,
+                        AXIOM_NODE_GET_PARENT(builder_impl->lastnode, env),
                         target, value, &pi_node);
                  
-        axis2_om_node_set_next_sibling(builder_impl->lastnode, env, pi_node);                                 
-        axis2_om_node_set_previous_sibling(pi_node , env, builder_impl->lastnode);
+        axiom_node_set_next_sibling(builder_impl->lastnode, env, pi_node);                                 
+        axiom_node_set_previous_sibling(pi_node , env, builder_impl->lastnode);
     }
     else
     {
-        axis2_om_processing_instruction_create( env, builder_impl->lastnode,
+        axiom_processing_instruction_create( env, builder_impl->lastnode,
                                  target, value, &pi_node);
-        axis2_om_node_set_first_child(builder_impl->lastnode , env, pi_node);                     
-        axis2_om_node_set_parent(pi_node , env, builder_impl->lastnode);
+        axiom_node_set_first_child(builder_impl->lastnode , env, pi_node);                     
+        axiom_node_set_parent(pi_node , env, builder_impl->lastnode);
     }
     
     builder_impl->element_level++;
@@ -665,11 +665,11 @@ axis2_om_stax_builder_create_om_processing_instruction (axis2_om_stax_builder_t 
 }
 
 axis2_status_t AXIS2_CALL
-axis2_om_stax_builder_end_element (axis2_om_stax_builder_t *om_stax_builder,
+axiom_stax_builder_end_element (axiom_stax_builder_t *om_stax_builder,
                                    const axis2_env_t *env)
 {
-    axis2_om_node_t *parent = NULL;
-    axis2_om_stax_builder_impl_t *builder = NULL;
+    axiom_node_t *parent = NULL;
+    axiom_stax_builder_impl_t *builder = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE );
     builder = AXIS2_INTF_TO_IMPL(om_stax_builder);
@@ -678,23 +678,23 @@ axis2_om_stax_builder_end_element (axis2_om_stax_builder_t *om_stax_builder,
     
     if (builder->lastnode)
     {
-        if (AXIS2_OM_NODE_IS_COMPLETE((builder->lastnode), env))
+        if (AXIOM_NODE_IS_COMPLETE((builder->lastnode), env))
         {
-            parent = AXIS2_OM_NODE_GET_PARENT((builder->lastnode), env);
+            parent = AXIOM_NODE_GET_PARENT((builder->lastnode), env);
             if (parent)
             {
-                axis2_om_node_set_complete(parent, env, AXIS2_TRUE);
+                axiom_node_set_complete(parent, env, AXIS2_TRUE);
                 builder->lastnode= parent;
             }
         }
         else
         {
-            axis2_om_node_set_complete((builder->lastnode), env, AXIS2_TRUE);
+            axiom_node_set_complete((builder->lastnode), env, AXIS2_TRUE);
         }
     }
     if(builder->root_node)
     {
-        if(AXIS2_OM_NODE_IS_COMPLETE(builder->root_node , env))
+        if(AXIOM_NODE_IS_COMPLETE(builder->root_node , env))
         {
             builder->done = AXIS2_TRUE;
         }   
@@ -703,13 +703,13 @@ axis2_om_stax_builder_end_element (axis2_om_stax_builder_t *om_stax_builder,
 }
 
 
-axis2_om_node_t * AXIS2_CALL
-axis2_om_stax_builder_next (axis2_om_stax_builder_t *om_stax_builder,
+axiom_node_t * AXIS2_CALL
+axiom_stax_builder_next (axiom_stax_builder_t *om_stax_builder,
                             const axis2_env_t *env)
 {
     int token = 0;
-    axis2_om_stax_builder_impl_t *builder_impl = NULL;
-    axis2_om_node_t *node = NULL;
+    axiom_stax_builder_impl_t *builder_impl = NULL;
+    axiom_node_t *node = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     builder_impl = AXIS2_INTF_TO_IMPL(om_stax_builder);
@@ -743,16 +743,16 @@ axis2_om_stax_builder_next (axis2_om_stax_builder_t *om_stax_builder,
             break;
         
         case AXIS2_XML_READER_START_ELEMENT:
-           node = axis2_om_stax_builder_create_om_element (
+           node = axiom_stax_builder_create_om_element (
                         om_stax_builder, env); 
             break;
         
         case AXIS2_XML_READER_EMPTY_ELEMENT:
-            node = axis2_om_stax_builder_create_om_element (
+            node = axiom_stax_builder_create_om_element (
                         om_stax_builder, env);
         
         case AXIS2_XML_READER_END_ELEMENT:
-            axis2_om_stax_builder_end_element (om_stax_builder, env);
+            axiom_stax_builder_end_element (om_stax_builder, env);
             break;
         
         
@@ -761,7 +761,7 @@ axis2_om_stax_builder_next (axis2_om_stax_builder_t *om_stax_builder,
             break;
         
         case AXIS2_XML_READER_CHARACTER:
-            node = axis2_om_stax_builder_create_om_text(om_stax_builder, env);
+            node = axiom_stax_builder_create_om_text(om_stax_builder, env);
             break;
                 
         case AXIS2_XML_READER_ENTITY_REFERENCE:
@@ -769,16 +769,16 @@ axis2_om_stax_builder_next (axis2_om_stax_builder_t *om_stax_builder,
         
         case AXIS2_XML_READER_COMMENT:
             
-             node = axis2_om_stax_builder_create_om_comment(om_stax_builder, env);
-                axis2_om_stax_builder_end_element (om_stax_builder, env);
+             node = axiom_stax_builder_create_om_comment(om_stax_builder, env);
+                axiom_stax_builder_end_element (om_stax_builder, env);
         
             break;
         
         case AXIS2_XML_READER_PROCESSING_INSTRUCTION:
             
-            node = axis2_om_stax_builder_create_om_processing_instruction(
+            node = axiom_stax_builder_create_om_processing_instruction(
                                         om_stax_builder , env );
-            axis2_om_stax_builder_end_element (om_stax_builder, env);
+            axiom_stax_builder_end_element (om_stax_builder, env);
           
             break;
         
@@ -786,7 +786,7 @@ axis2_om_stax_builder_next (axis2_om_stax_builder_t *om_stax_builder,
             break;
         
         case AXIS2_XML_READER_DOCUMENT_TYPE:
-        /* node = axis2_om_stax_builder_create_om_doctype(om_stax_builder, env);
+        /* node = axiom_stax_builder_create_om_doctype(om_stax_builder, env);
         */          
         break;
         
@@ -800,10 +800,10 @@ axis2_om_stax_builder_next (axis2_om_stax_builder_t *om_stax_builder,
 
 
 axis2_status_t 
-AXIS2_CALL axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
+AXIS2_CALL axiom_stax_builder_free(axiom_stax_builder_t *builder,
                                       const axis2_env_t *env)
 {
-    axis2_om_stax_builder_impl_t *builder_impl =  NULL;
+    axiom_stax_builder_impl_t *builder_impl =  NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!builder)
         return AXIS2_FAILURE;
@@ -817,14 +817,14 @@ AXIS2_CALL axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
     }
     if(builder_impl->document)
     {
-        AXIS2_OM_DOCUMENT_FREE(builder_impl->document, env);
+        AXIOM_DOCUMENT_FREE(builder_impl->document, env);
         builder_impl->document = NULL;
     }
     else
     {
         if(NULL != builder_impl->root_node )
         {
-            AXIS2_OM_NODE_FREE_TREE(builder_impl->root_node, env);
+            AXIOM_NODE_FREE_TREE(builder_impl->root_node, env);
             builder_impl->root_node = NULL;
         }
     }
@@ -838,8 +838,8 @@ AXIS2_CALL axis2_om_stax_builder_free(axis2_om_stax_builder_t *builder,
 }
 
 
-axis2_om_document_t* AXIS2_CALL
-axis2_om_stax_builder_get_document (axis2_om_stax_builder_t *builder,
+axiom_document_t* AXIS2_CALL
+axiom_stax_builder_get_document (axiom_stax_builder_t *builder,
                                     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env,NULL);
@@ -851,7 +851,7 @@ axis2_om_stax_builder_get_document (axis2_om_stax_builder_t *builder,
 */
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_om_stax_builder_get_current_event(axis2_om_stax_builder_t *builder,
+axiom_stax_builder_get_current_event(axiom_stax_builder_t *builder,
                                         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, -1);
@@ -861,8 +861,8 @@ axis2_om_stax_builder_get_current_event(axis2_om_stax_builder_t *builder,
 /**
  This is an internal function 
 */
-AXIS2_EXTERN axis2_om_node_t* AXIS2_CALL
-axis2_om_stax_builder_get_lastnode(axis2_om_stax_builder_t *builder,
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+axiom_stax_builder_get_lastnode(axiom_stax_builder_t *builder,
                                     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -873,10 +873,10 @@ axis2_om_stax_builder_get_lastnode(axis2_om_stax_builder_t *builder,
 This is an internal function 
 */
 axis2_bool_t AXIS2_CALL
-axis2_om_stax_builder_is_complete(axis2_om_stax_builder_t *builder,
+axiom_stax_builder_is_complete(axiom_stax_builder_t *builder,
                                    const axis2_env_t *env)
 {
-    axis2_om_stax_builder_impl_t *builder_impl = NULL;
+    axiom_stax_builder_impl_t *builder_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     return builder_impl->done;    
@@ -885,11 +885,11 @@ axis2_om_stax_builder_is_complete(axis2_om_stax_builder_t *builder,
 This is an internal function to be used by soap builder only
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_stax_builder_set_lastnode(axis2_om_stax_builder_t *builder,
+axiom_stax_builder_set_lastnode(axiom_stax_builder_t *builder,
                                     const axis2_env_t *env,
-                                    axis2_om_node_t *om_node)
+                                    axiom_node_t *om_node)
 {
-    axis2_om_stax_builder_impl_t *builder_impl = NULL;
+    axiom_stax_builder_impl_t *builder_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, builder, AXIS2_FAILURE);
     
@@ -901,10 +901,10 @@ axis2_om_stax_builder_set_lastnode(axis2_om_stax_builder_t *builder,
 internal function for soap builder only
 */
 AXIS2_EXTERN int AXIS2_CALL
-axis2_om_stax_builder_get_element_level(axis2_om_stax_builder_t* builder,
+axiom_stax_builder_get_element_level(axiom_stax_builder_t* builder,
                                         const axis2_env_t *env)
 {
-    axis2_om_stax_builder_impl_t *builder_impl = NULL;
+    axiom_stax_builder_impl_t *builder_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, builder, -1);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     return builder_impl->element_level;    
@@ -913,11 +913,11 @@ axis2_om_stax_builder_get_element_level(axis2_om_stax_builder_t* builder,
 internal function for soap builder only
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_stax_builder_set_element_level(axis2_om_stax_builder_t* builder,
+axiom_stax_builder_set_element_level(axiom_stax_builder_t* builder,
                                         const axis2_env_t *env,
                                         int element_level)
 {
-    axis2_om_stax_builder_impl_t *builder_impl = NULL;
+    axiom_stax_builder_impl_t *builder_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, builder, AXIS2_FAILURE);
     
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
@@ -926,14 +926,14 @@ axis2_om_stax_builder_set_element_level(axis2_om_stax_builder_t* builder,
 } 
 
 int AXIS2_CALL 
-axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
+axiom_stax_builder_next_with_token(axiom_stax_builder_t *builder,
                                           const axis2_env_t *env)
 {
 
     int token = 0;
     void *val = NULL;
     
-    axis2_om_stax_builder_impl_t *builder_impl = NULL;
+    axiom_stax_builder_impl_t *builder_impl = NULL;
     
     if(!builder) return -1;
     
@@ -966,7 +966,7 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
         break;
         
         case AXIS2_XML_READER_START_ELEMENT:
-            val = axis2_om_stax_builder_create_om_element (
+            val = axiom_stax_builder_create_om_element (
                         builder, env); 
             if(!val)    
                 return -1;
@@ -974,12 +974,12 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
             break;
         
         case AXIS2_XML_READER_EMPTY_ELEMENT:
-            val = axis2_om_stax_builder_create_om_element (
+            val = axiom_stax_builder_create_om_element (
                         builder, env);
             if(!val)
                return -1;
         case AXIS2_XML_READER_END_ELEMENT:
-            axis2_om_stax_builder_end_element (builder, env);
+            axiom_stax_builder_end_element (builder, env);
             break;
         
         
@@ -988,7 +988,7 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
             break;
         
         case AXIS2_XML_READER_CHARACTER:
-            val = axis2_om_stax_builder_create_om_text(builder, env);
+            val = axiom_stax_builder_create_om_text(builder, env);
             if(!val)
                 return -1;
             break;
@@ -997,18 +997,18 @@ axis2_om_stax_builder_next_with_token(axis2_om_stax_builder_t *builder,
             break;
         
         case AXIS2_XML_READER_COMMENT:
-            val = axis2_om_stax_builder_create_om_comment(builder, env);
+            val = axiom_stax_builder_create_om_comment(builder, env);
             if(!val)
                 return -1;
-            axis2_om_stax_builder_end_element (builder, env);
+            axiom_stax_builder_end_element (builder, env);
             break;
         
         case AXIS2_XML_READER_PROCESSING_INSTRUCTION:
-            val = axis2_om_stax_builder_create_om_processing_instruction(
+            val = axiom_stax_builder_create_om_processing_instruction(
                                         builder , env );
             if(!val)
                 return -1;
-            axis2_om_stax_builder_end_element (builder, env);
+            axiom_stax_builder_end_element (builder, env);
             break;
         
         case AXIS2_XML_READER_CDATA:

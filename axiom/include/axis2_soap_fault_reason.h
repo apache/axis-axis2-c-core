@@ -76,7 +76,7 @@ struct axis2_soap_builder;
                              const axis2_env_t *env,
                              struct axis2_soap_fault_text *fault_text);
                                            
-        axis2_om_node_t* (AXIS2_CALL *
+        axiom_node_t* (AXIS2_CALL *
       get_base_node)(axis2_soap_fault_reason_t *fault_reason,
                        const axis2_env_t *env);
                                  

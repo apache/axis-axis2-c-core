@@ -23,7 +23,7 @@
  #include <axis2_soap_const.h>
  #include "_axis2_soap_body.h"
  #include "_axis2_soap_header_block.h"
- #include <axis2_om_stax_builder_internal.h>
+ #include <axiom_stax_builder_internal.h>
  #include "_axis2_soap_fault.h"
  /*********************** impl struct *****************************************/
  
@@ -31,7 +31,7 @@
  {
     axis2_soap_builder_t soap_builder;
     
-    axis2_om_stax_builder_t *om_builder;
+    axiom_stax_builder_t *om_builder;
     
     axis2_soap_message_t *soap_message;
     
@@ -55,7 +55,7 @@
     
     void *builder_helper;
     
-    axis2_om_namespace_t *envelope_ns;
+    axiom_namespace_t *envelope_ns;
     
     int soap_version;
     
@@ -91,7 +91,7 @@ axis2_soap_builder_get_soap_envelope
                                 (axis2_soap_builder_t *builder,
                                  const axis2_env_t *env);
                                 
-axis2_om_document_t* AXIS2_CALL 
+axiom_document_t* AXIS2_CALL 
 axis2_soap_builder_get_document
                                 (axis2_soap_builder_t *builder,
                                  const axis2_env_t *env);
@@ -100,7 +100,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap_builder_next(axis2_soap_builder_t *builder,
                               const axis2_env_t *env);
                                     
-axis2_om_node_t* AXIS2_CALL
+axiom_node_t* AXIS2_CALL
 axis2_soap_builder_get_document_element
                                 (axis2_soap_builder_t *builder,
                                  const axis2_env_t *env); 
@@ -109,14 +109,14 @@ axis2_status_t
 axis2_soap_builder_create_om_element
                                 (axis2_soap_builder_t *builder,
                                  const axis2_env_t *env,
-                                 axis2_om_node_t *current_node,
+                                 axiom_node_t *current_node,
                                  int current_event);
                                  
 axis2_status_t AXIS2_CALL
 axis2_soap_builder_process_namespace_data
                                 (axis2_soap_builder_t *builder,
                                  const axis2_env_t *env,
-                                 axis2_om_node_t *om_node,
+                                 axiom_node_t *om_node,
                                  int is_soap_element);
 
 static axis2_status_t
@@ -127,16 +127,16 @@ axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
 static axis2_status_t
 axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
                                 const axis2_env_t *env,
-                                axis2_om_node_t *parent,
-                                axis2_om_node_t *element_node,
+                                axiom_node_t *parent,
+                                axiom_node_t *element_node,
                                 axis2_bool_t is_soap_envelope);
 
 static axis2_status_t
 axis2_soap_builder_construct_node_for_empty_element
                                (axis2_soap_builder_t *builder,
                                 const axis2_env_t *env,
-                                axis2_om_node_t *parent,
-                                axis2_om_node_t *element_node);
+                                axiom_node_t *parent,
+                                axiom_node_t *element_node);
 
 static axis2_status_t 
 axis2_soap_builder_parse_headers(axis2_soap_builder_t *builder,
@@ -172,7 +172,7 @@ axis2_soap_builder_set_mime_body_parts
 
 AXIS2_EXTERN axis2_soap_builder_t * AXIS2_CALL
 axis2_soap_builder_create(const axis2_env_t *env,
-                                axis2_om_stax_builder_t *builder,
+                                axiom_stax_builder_t *builder,
                                 const axis2_char_t *soap_version)
 {
     axis2_soap_builder_impl_t *builder_impl = NULL;
@@ -279,7 +279,7 @@ axis2_soap_builder_free(axis2_soap_builder_t *builder,
     }
     if(NULL != builder_impl->om_builder)
     {
-        AXIS2_OM_STAX_BUILDER_FREE(builder_impl->om_builder, env);
+        AXIOM_STAX_BUILDER_FREE(builder_impl->om_builder, env);
         builder_impl->om_builder = NULL;
     }
     if(NULL != builder->ops)
@@ -309,7 +309,7 @@ axis2_soap_builder_get_soap_envelope
         return NULL;
     
     while(!(builder_impl->soap_envelope) && 
-        !AXIS2_OM_STAX_BUILDER_IS_COMPLETE(builder_impl->om_builder, env))
+        !AXIOM_STAX_BUILDER_IS_COMPLETE(builder_impl->om_builder, env))
     {
        status = axis2_soap_builder_next(builder, env); 
             if(status == AXIS2_FAILURE)
@@ -319,7 +319,7 @@ axis2_soap_builder_get_soap_envelope
     return builder_impl->soap_envelope;
 }
                                 
-axis2_om_document_t* AXIS2_CALL 
+axiom_document_t* AXIS2_CALL 
 axis2_soap_builder_get_document
                                 (axis2_soap_builder_t *builder,
                                  const axis2_env_t *env)
@@ -331,7 +331,7 @@ axis2_soap_builder_get_document
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     if(builder_impl->om_builder)
     {
-        return AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(builder_impl->om_builder, env);
+        return AXIOM_STAX_BUILDER_GET_DOCUMENT(builder_impl->om_builder, env);
     }
     else
         return NULL;
@@ -342,9 +342,9 @@ axis2_soap_builder_next(axis2_soap_builder_t *builder,
                               const axis2_env_t *env)
 {
     axis2_soap_builder_impl_t *builder_impl = NULL;
-    axis2_om_node_t *lastnode = NULL;
+    axiom_node_t *lastnode = NULL;
     int current_event = AXIS2_MAX_EVENT;
-    axis2_om_node_t *current_node =  NULL;
+    axiom_node_t *current_node =  NULL;
     int status = AXIS2_SUCCESS;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!builder)
@@ -357,7 +357,7 @@ axis2_soap_builder_next(axis2_soap_builder_t *builder,
     if(!(builder_impl->om_builder))
         return AXIS2_FAILURE;
    
-    lastnode = axis2_om_stax_builder_get_lastnode(builder_impl->om_builder, env);
+    lastnode = axiom_stax_builder_get_lastnode(builder_impl->om_builder, env);
     
     if(!lastnode)
     {
@@ -367,7 +367,7 @@ axis2_soap_builder_next(axis2_soap_builder_t *builder,
     {
         builder_impl->last_node_status = AXIS2_BUILDER_LAST_NODE_NOT_NULL;
     }
-    current_event = AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(builder_impl->om_builder, env);
+    current_event = AXIOM_STAX_BUILDER_NEXT_WITH_TOKEN(builder_impl->om_builder, env);
     if(current_event == -1)
     {
         builder_impl->done = AXIS2_TRUE;
@@ -376,7 +376,7 @@ axis2_soap_builder_next(axis2_soap_builder_t *builder,
     if(current_event == AXIS2_XML_READER_EMPTY_ELEMENT ||
         current_event ==  AXIS2_XML_READER_START_ELEMENT)
     {
-      current_node = axis2_om_stax_builder_get_lastnode(builder_impl->om_builder, env);
+      current_node = axiom_stax_builder_get_lastnode(builder_impl->om_builder, env);
       if(current_node) 
           status = axis2_soap_builder_create_om_element(builder, env, current_node, current_event);
       else
@@ -386,7 +386,7 @@ axis2_soap_builder_next(axis2_soap_builder_t *builder,
     return status;
 }
                                     
-axis2_om_node_t* AXIS2_CALL
+axiom_node_t* AXIS2_CALL
 axis2_soap_builder_get_document_element
                                 (axis2_soap_builder_t *builder,
                                  const axis2_env_t *env)
@@ -408,7 +408,7 @@ axis2_status_t
 axis2_soap_builder_create_om_element
                                 (axis2_soap_builder_t *builder,
                                  const axis2_env_t *env,
-                                 axis2_om_node_t *current_node,
+                                 axiom_node_t *current_node,
                                  int current_event)
 {
     axis2_soap_builder_impl_t *builder_impl = NULL;
@@ -426,12 +426,12 @@ axis2_soap_builder_create_om_element
     else
     {
        int element_level = 0;
-       axis2_om_node_t *parent_node = NULL;
-       parent_node = AXIS2_OM_NODE_GET_PARENT(current_node, env);
+       axiom_node_t *parent_node = NULL;
+       parent_node = AXIOM_NODE_GET_PARENT(current_node, env);
        if(!builder_impl->om_builder)
            return  AXIS2_FAILURE;
        
-       element_level = axis2_om_stax_builder_get_element_level(
+       element_level = axiom_stax_builder_get_element_level(
                         builder_impl->om_builder, env);
        if(parent_node && element_level == 1 && current_event == AXIS2_XML_READER_EMPTY_ELEMENT)
        {
@@ -450,16 +450,16 @@ axis2_soap_builder_create_om_element
 static axis2_status_t
 axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
                                 const axis2_env_t *env,
-                                axis2_om_node_t *parent,
-                                axis2_om_node_t *om_element_node,
+                                axiom_node_t *parent,
+                                axiom_node_t *om_element_node,
                                 axis2_bool_t is_soap_envelope)
 {
     axis2_soap_builder_impl_t *builder_impl = NULL;
     
-    axis2_om_element_t *parent_ele  = NULL;
+    axiom_element_t *parent_ele  = NULL;
     axis2_char_t *parent_localname = NULL;
     
-    axis2_om_element_t *om_element = NULL;
+    axiom_element_t *om_element = NULL;
     const axis2_char_t *ele_localname = NULL;
     
     int element_level = 0;
@@ -474,26 +474,26 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
     if(!builder_impl->om_builder)
         return AXIS2_FAILURE;
     /** get element level of this om element */
-    element_level = axis2_om_stax_builder_get_element_level(
+    element_level = axiom_stax_builder_get_element_level(
                         builder_impl->om_builder, env);
     /* get om element struct from node */
-    om_element = (axis2_om_element_t *)
-                AXIS2_OM_NODE_GET_DATA_ELEMENT(om_element_node, env);
+    om_element = (axiom_element_t *)
+                AXIOM_NODE_GET_DATA_ELEMENT(om_element_node, env);
     if(!om_element)
         return AXIS2_FAILURE;
     /* get element localname */    
-    ele_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_element, env);
+    ele_localname = AXIOM_ELEMENT_GET_LOCALNAME(om_element, env);
     if(!ele_localname)
         return AXIS2_FAILURE;
    
     /* start: handle MTOM stuff */
     if (AXIS2_STRCMP(ele_localname, AXIS2_XOP_INCLUDE) == 0)
     {
-        axis2_om_namespace_t *ns = NULL;
-        ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_element, env, om_element_node);
+        axiom_namespace_t *ns = NULL;
+        ns = AXIOM_ELEMENT_GET_NAMESPACE(om_element, env, om_element_node);
         if (ns)
         {
-            axis2_char_t *uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+            axis2_char_t *uri = AXIOM_NAMESPACE_GET_URI(ns, env);
             if (uri)
             {
                 if (AXIS2_STRCMP(uri, AXIS2_XOP_NAMESPACE_URI) == 0)
@@ -503,7 +503,7 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
                     if (qname)
                     {
                         axis2_char_t *id = NULL;
-                        id = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE(om_element, env, qname);                        
+                        id = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE(om_element, env, qname);                        
                         if (id)
                         {
                             axis2_char_t *pos = NULL;
@@ -519,9 +519,9 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
                                         (void*)id, AXIS2_HASH_KEY_STRING);
                                     if (data_handler)
                                     {
-                                        axis2_om_text_t *data_text = NULL;
-                                        axis2_om_node_t *data_om_node = NULL;
-                                        data_text = axis2_om_text_create_with_data_handler(
+                                        axiom_text_t *data_text = NULL;
+                                        axiom_node_t *data_om_node = NULL;
+                                        data_text = axiom_text_create_with_data_handler(
                                             env, om_element_node, data_handler, &data_om_node);
                                     }
                                 }
@@ -537,9 +537,9 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
     if(parent)
     {
         /** a parent node exist , so not soap envelope element */
-        parent_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(parent, env);
+        parent_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(parent, env);
         if(parent_ele)
-            parent_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(parent_ele, env);
+            parent_localname = AXIOM_ELEMENT_GET_LOCALNAME(parent_ele, env);
     }
     if(!parent && is_soap_envelope)
     {   
@@ -667,7 +667,7 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
     {
             axis2_soap_body_t *soap_body = NULL;
             axis2_soap_fault_t *soap_fault = NULL;
-            axis2_om_namespace_t *env_ns = NULL;
+            axiom_namespace_t *env_ns = NULL;
             
             env_ns = AXIS2_SOAP_ENVELOPE_GET_NAMESPACE(builder_impl->soap_envelope, env);
             if(!env_ns)
@@ -691,14 +691,14 @@ axis2_soap_builder_construct_node(axis2_soap_builder_t *builder,
             builder_impl->processing_mandatory_fault_elements = AXIS2_TRUE; 
             
             if(AXIS2_STRCMP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, 
-                AXIS2_OM_NAMESPACE_GET_URI(env_ns , env)) == 0)
+                AXIOM_NAMESPACE_GET_URI(env_ns , env)) == 0)
             {
                 builder_impl->builder_helper = axis2_soap12_builder_helper_create(env, builder);
                 if(!(builder_impl->builder_helper))
                     return AXIS2_FAILURE;
             }
             else if(AXIS2_STRCMP(AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, 
-                AXIS2_OM_NAMESPACE_GET_URI(env_ns , env)) == 0)
+                AXIOM_NAMESPACE_GET_URI(env_ns , env)) == 0)
             {   
                 builder_impl->builder_helper = axis2_soap11_builder_helper_create(env, builder, builder_impl->om_builder);                 if(!(builder_impl->builder_helper))
                     return AXIS2_FAILURE;
@@ -729,11 +729,11 @@ axis2_status_t AXIS2_CALL
 axis2_soap_builder_process_namespace_data
                                 (axis2_soap_builder_t *builder,
                                  const axis2_env_t *env,
-                                 axis2_om_node_t *om_node,
+                                 axiom_node_t *om_node,
                                  int is_soap_element)
 {
-    axis2_om_element_t *om_ele = NULL;
-    axis2_om_namespace_t *om_ns = NULL;
+    axiom_element_t *om_ele = NULL;
+    axiom_namespace_t *om_ns = NULL;
     axis2_char_t *ns_uri = NULL;
   
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -744,15 +744,15 @@ axis2_soap_builder_process_namespace_data
     if(!is_soap_element)
         return AXIS2_SUCCESS;
     
-    if(AXIS2_OM_NODE_GET_NODE_TYPE(om_node, env) == AXIS2_OM_ELEMENT)
+    if(AXIOM_NODE_GET_NODE_TYPE(om_node, env) == AXIOM_ELEMENT)
     {
-        om_ele = (axis2_om_element_t *) AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);
+        om_ele = (axiom_element_t *) AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
         if(om_ele)
         {
-            om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env, om_node);
+            om_ns = AXIOM_ELEMENT_GET_NAMESPACE(om_ele, env, om_node);
             if(om_ns)
             {
-                ns_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
+                ns_uri = AXIOM_NAMESPACE_GET_URI(om_ns, env);
                 if(ns_uri && 
                     (AXIS2_STRCMP(ns_uri, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) != 0) &&
                     (AXIS2_STRCMP(ns_uri, AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) != 0))
@@ -774,9 +774,9 @@ axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
                       const axis2_char_t* soap_version_uri_from_transport)
 {
     axis2_soap_builder_impl_t *builder_impl = NULL;
-    axis2_om_namespace_t *om_ns = NULL;
-    axis2_om_node_t *envelope_node = NULL;
-    axis2_om_element_t *om_ele = NULL;
+    axiom_namespace_t *om_ns = NULL;
+    axiom_node_t *envelope_node = NULL;
+    axiom_element_t *om_ele = NULL;
     axis2_char_t *ns_uri = NULL;
     
     AXIS2_PARAM_CHECK(env->error, soap_version_uri_from_transport, AXIS2_FAILURE);    
@@ -801,15 +801,15 @@ axis2_soap_builder_identify_soap_version(axis2_soap_builder_t *builder,
     if(!envelope_node)
         return AXIS2_FAILURE;
         
-    om_ele = (axis2_om_element_t *) AXIS2_OM_NODE_GET_DATA_ELEMENT(envelope_node, env);
+    om_ele = (axiom_element_t *) AXIOM_NODE_GET_DATA_ELEMENT(envelope_node, env);
     if(!om_ele)
         return AXIS2_FAILURE;
         
-    om_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(om_ele, env, envelope_node);
+    om_ns = AXIOM_ELEMENT_GET_NAMESPACE(om_ele, env, envelope_node);
     if(!om_ns)
         return AXIS2_FAILURE;
         
-    ns_uri = AXIS2_OM_NAMESPACE_GET_URI(om_ns, env);
+    ns_uri = AXIOM_NAMESPACE_GET_URI(om_ns, env);
     
     if(ns_uri != NULL)
     {        
@@ -853,7 +853,7 @@ axis2_soap_builder_parse_headers(axis2_soap_builder_t *builder,
               const axis2_env_t *env)
 {
     axis2_soap_builder_impl_t *builder_impl = NULL;
-    axis2_om_node_t *om_node = NULL;
+    axiom_node_t *om_node = NULL;
     axis2_soap_header_t *soap_header = NULL;
     int status = AXIS2_SUCCESS;
     if(!builder)
@@ -872,7 +872,7 @@ axis2_soap_builder_parse_headers(axis2_soap_builder_t *builder,
     {
         om_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
         if(om_node)
-        {        while(!AXIS2_OM_NODE_IS_COMPLETE(om_node, env))
+        {        while(!AXIOM_NODE_IS_COMPLETE(om_node, env))
                 {
                     status = axis2_soap_builder_next(builder, env);
                     if(status == AXIS2_FAILURE)
@@ -880,7 +880,7 @@ axis2_soap_builder_parse_headers(axis2_soap_builder_t *builder,
                 }
                 /*HACK: to fix AXIS2C-129 - Samisa*/
                 /*
-                axis2_om_stax_builder_set_element_level(
+                axiom_stax_builder_set_element_level(
                         builder_impl->om_builder, env, 1);
                 */                        
         }                
@@ -950,16 +950,16 @@ static axis2_status_t
 axis2_soap_builder_construct_node_for_empty_element
                                (axis2_soap_builder_t *builder,
                                 const axis2_env_t *env,
-                                axis2_om_node_t *parent,
-                                axis2_om_node_t *om_element_node)
+                                axiom_node_t *parent,
+                                axiom_node_t *om_element_node)
 {
     
     axis2_soap_builder_impl_t *builder_impl = NULL;
     
-    axis2_om_element_t *parent_ele  = NULL;
+    axiom_element_t *parent_ele  = NULL;
     axis2_char_t *parent_localname = NULL;
     
-    axis2_om_element_t *om_element = NULL;
+    axiom_element_t *om_element = NULL;
     axis2_char_t *ele_localname = NULL;
     
     int element_level = 0;
@@ -974,15 +974,15 @@ axis2_soap_builder_construct_node_for_empty_element
     if(!builder_impl->om_builder)
         return AXIS2_FAILURE;
 
-    element_level = axis2_om_stax_builder_get_element_level(
+    element_level = axiom_stax_builder_get_element_level(
                         builder_impl->om_builder, env);
 
-    om_element = (axis2_om_element_t *)
-                AXIS2_OM_NODE_GET_DATA_ELEMENT(om_element_node, env);
+    om_element = (axiom_element_t *)
+                AXIOM_NODE_GET_DATA_ELEMENT(om_element_node, env);
     if(!om_element)
         return AXIS2_FAILURE;
 
-    ele_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_element, env);
+    ele_localname = AXIOM_ELEMENT_GET_LOCALNAME(om_element, env);
     if(!ele_localname)
         return AXIS2_FAILURE;
     
@@ -990,11 +990,11 @@ axis2_soap_builder_construct_node_for_empty_element
         return AXIS2_FAILURE;
         
 
-    parent_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(parent, env);
+    parent_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(parent, env);
     if(!parent_ele)
         return AXIS2_FAILURE;
     
-    parent_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(parent_ele, env);
+    parent_localname = AXIOM_ELEMENT_GET_LOCALNAME(parent_ele, env);
     if(!parent_localname)
         return AXIS2_FAILURE;
     

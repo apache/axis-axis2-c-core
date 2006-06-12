@@ -14,18 +14,18 @@
  * limitations under the License.
  */
  
- #ifndef AXIS2_OM_NODE_INTERNAL_H
- #define AXIS2_OM_NODE_INTERNAL_H
+ #ifndef AXIOM_NODE_INTERNAL_H
+ #define AXIOM_NODE_INTERNAL_H
  
  
- /** @defgroup axis2_om AXIOM (Axis Object Model)
+ /** @defgroup axiom AXIOM (Axis Object Model)
   * @ingroup axis2
   * @{
   */
   
 /** @} */
 
-#include <axis2_om_node.h>
+#include <axiom_node.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -33,12 +33,12 @@ extern "C"
 #endif
   
 /**
- * @defgroup axis2_om_node  OM Node
- * @ingroup axis2_om 
+ * @defgroup axiom_node  OM Node
+ * @ingroup axiom 
  * @{
  */
-struct axis2_om_document;
-struct axis2_om_stax_builder;    
+struct axiom_document;
+struct axiom_stax_builder;    
     
 /**
  * Sets a parent node to a given node, if a parent already exist for this node
@@ -50,9 +50,9 @@ struct axis2_om_stax_builder;
  */
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_node_set_parent (axis2_om_node_t * om_node,
+axiom_node_set_parent (axiom_node_t * om_node,
                           const axis2_env_t *env,
-                          axis2_om_node_t * parent);
+                          axiom_node_t * parent);
 
 /**
 *   sets a node as first child of om_node
@@ -61,9 +61,9 @@ axis2_om_node_set_parent (axis2_om_node_t * om_node,
 * @param first_child child to be set as first child
 */  
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_node_set_first_child(axis2_om_node_t *om_node,
+axiom_node_set_first_child(axiom_node_t *om_node,
                               const axis2_env_t *env,
-                              axis2_om_node_t *first_child); 
+                              axiom_node_t *first_child); 
 /**
 * set previous sibling
 * @param om_node 
@@ -75,9 +75,9 @@ axis2_om_node_set_first_child(axis2_om_node_t *om_node,
     
      
 AXIS2_EXTERN axis2_status_t AXIS2_CALL  
-axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,                                  
+axiom_node_set_previous_sibling(axiom_node_t *om_node,                                  
                                    const axis2_env_t *env,
-                                   axis2_om_node_t *prev_sibling); 
+                                   axiom_node_t *prev_sibling); 
 /**
 * set next sibling
 * @param om_node 
@@ -88,9 +88,9 @@ axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,
 */                                                  
  
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
+axiom_node_set_next_sibling(axiom_node_t *om_node,
                                const axis2_env_t *env,
-                               axis2_om_node_t *next_sibling);
+                               axiom_node_t *next_sibling);
 /**
 *   set node type
 * @param om_node    
@@ -100,9 +100,9 @@ axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
 *                       AXIS2_FAILURE on error
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axis2_om_node_set_node_type(axis2_om_node_t *om_node,
+axiom_node_set_node_type(axiom_node_t *om_node,
                             const axis2_env_t *env,
-                            axis2_om_types_t type);
+                            axiom_types_t type);
 
 /**
 * set data element
@@ -113,7 +113,7 @@ axis2_om_node_set_node_type(axis2_om_node_t *om_node,
 *                       AXIS2_FAILURE on error
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axis2_om_node_set_data_element(axis2_om_node_t *om_node,
+axiom_node_set_data_element(axiom_node_t *om_node,
                                const axis2_env_t *env,
                                void* data_element);
 /**
@@ -124,7 +124,7 @@ axis2_om_node_set_data_element(axis2_om_node_t *om_node,
 * @param done                   
 */                                    
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_node_set_complete(axis2_om_node_t *om_node,
+axiom_node_set_complete(axiom_node_t *om_node,
                                const axis2_env_t *env,
                                axis2_bool_t done);  
   
@@ -133,20 +133,20 @@ axis2_om_node_set_complete(axis2_om_node_t *om_node,
 * do not use this function
 */  
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_node_set_document(axis2_om_node_t *om_node,
+axiom_node_set_document(axiom_node_t *om_node,
                            const axis2_env_t *env,
-                           struct axis2_om_document *om_doc);
+                           struct axiom_document *om_doc);
 /**
 *    sets the builder 
 *
 */                           
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_node_set_builder(axis2_om_node_t *om_node,
+axiom_node_set_builder(axiom_node_t *om_node,
                           const axis2_env_t *env,
-                          struct axis2_om_stax_builder *builder);                           
+                          struct axiom_stax_builder *builder);                           
 
-AXIS2_EXTERN struct axis2_om_stax_builder * AXIS2_CALL
-axis2_om_node_get_builder(axis2_om_node_t *om_node,
+AXIS2_EXTERN struct axiom_stax_builder * AXIS2_CALL
+axiom_node_get_builder(axiom_node_t *om_node,
                           const axis2_env_t *env);                                
 /** @} */
     
@@ -154,4 +154,4 @@ axis2_om_node_get_builder(axis2_om_node_t *om_node,
 }
 #endif
 
-#endif /** AXIS2_OM_NODE_INTERNAL_H */
+#endif /** AXIOM_NODE_INTERNAL_H */

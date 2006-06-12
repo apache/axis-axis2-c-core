@@ -24,8 +24,8 @@
     */
 #include <axis2_soap_const.h> 
 #include <axis2_env.h>
-#include <axis2_om_node.h>
-#include <axis2_om_element.h>
+#include <axiom_node.h>
+#include <axiom_element.h>
 
 
 #ifdef __cplusplus
@@ -142,14 +142,14 @@ struct axis2_soap_builder;
                         const axis2_env_t *env,
                         axis2_char_t *exception);                                                                                             
      /**
-       * returns the axis2_om_node_t struct which is wrapped by
+       * returns the axiom_node_t struct which is wrapped by
        * this soap fault struct
        * @param fault soap fault struct
        * @param env environment must not be NULL
-       * @returns a pointer to  axis2_om_node_t struct if an om node is associated 
+       * @returns a pointer to  axiom_node_t struct if an om node is associated 
        * with this soap fault struct, otherwise return NULL
        */
-        axis2_om_node_t* (AXIS2_CALL *
+        axiom_node_t* (AXIS2_CALL *
       get_base_node)(axis2_soap_fault_t *fault,
                        const axis2_env_t *env);
                        

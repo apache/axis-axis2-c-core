@@ -23,9 +23,9 @@
  */
  
 #include <axis2_env.h>
-#include <axis2_om_node.h>
-#include <axis2_om_element.h>
-#include <axis2_om_namespace.h>
+#include <axiom_node.h>
+#include <axiom_element.h>
+#include <axiom_namespace.h>
 #include <axis2_soap_fault.h>
 #include <axis2_soap_envelope.h>    
 
@@ -100,9 +100,9 @@ struct axis2_soap_builder;
          * get the underlying om_node 
          * @param body soap_body
          * @param env environment must not be null
-         * @returns axis2_om_node_t
+         * @returns axiom_node_t
          */
-        axis2_om_node_t* (AXIS2_CALL *
+        axiom_node_t* (AXIS2_CALL *
       get_base_node)(axis2_soap_body_t *body,
                        const axis2_env_t *env);
                   
@@ -136,7 +136,7 @@ struct axis2_soap_builder;
         axis2_status_t (AXIS2_CALL *
         add_child)(axis2_soap_body_t *body,
                    const axis2_env_t *env,
-                   axis2_om_node_t *child);
+                   axiom_node_t *child);
                    
 
 };                                                      

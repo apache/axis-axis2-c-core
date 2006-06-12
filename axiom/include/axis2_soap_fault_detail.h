@@ -24,7 +24,7 @@
  
 #include <axis2_env.h>
 #include <axis2_soap_fault.h>
-#include <axis2_om_children_iterator.h>
+#include <axiom_children_iterator.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -61,13 +61,13 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
       add_detail_entry)(axis2_soap_fault_detail_t *fault_detail,
                           const axis2_env_t *env,
-                          axis2_om_node_t *ele_node);
+                          axiom_node_t *ele_node);
                                  
-        axis2_om_children_iterator_t* (AXIS2_CALL *
+        axiom_children_iterator_t* (AXIS2_CALL *
       get_all_detail_entries) (axis2_soap_fault_detail_t *fault_detail,
                                  const axis2_env_t *env); 
 
-        axis2_om_node_t* (AXIS2_CALL *
+        axiom_node_t* (AXIS2_CALL *
       get_base_node)(axis2_soap_fault_detail_t *fault_code,
                        const axis2_env_t *env);
         

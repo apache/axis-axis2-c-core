@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_OM_ELEMENT_H
-#define AXIS2_OM_ELEMENT_H
+#ifndef AXIOM_ELEMENT_H
+#define AXIOM_ELEMENT_H
 
-#include <axis2_om_namespace.h>
-#include <axis2_om_attribute.h>
-#include <axis2_om_output.h>
-#include <axis2_om_node.h>
-#include <axis2_om_children_iterator.h>
-#include <axis2_om_children_qname_iterator.h>
-#include <axis2_om_child_element_iterator.h>
+#include <axiom_namespace.h>
+#include <axiom_attribute.h>
+#include <axiom_output.h>
+#include <axiom_node.h>
+#include <axiom_children_iterator.h>
+#include <axiom_children_qname_iterator.h>
+#include <axiom_child_element_iterator.h>
 #include <axis2_hash.h>
 #include <axis2_utils.h>
 
@@ -32,21 +32,21 @@ extern "C"
 {
 #endif
 
-    typedef struct axis2_om_element axis2_om_element_t;
-    typedef struct axis2_om_element_ops axis2_om_element_ops_t;
+    typedef struct axiom_element axiom_element_t;
+    typedef struct axiom_element_ops axiom_element_ops_t;
 
 /**
- * @defgroup axis2_om_element OM Element
- * @ingroup axis2_om 
+ * @defgroup axiom_element OM Element
+ * @ingroup axiom 
  * @{
  */
 
 
     /** 
     * @brief OM element ops struct
-    * Encapsulator struct for ops of axis2_om_element
+    * Encapsulator struct for ops of axiom_element
     */
-AXIS2_DECLARE_DATA   struct axis2_om_element_ops
+AXIS2_DECLARE_DATA   struct axiom_element_ops
     {
        /*
         * Find a namespace in the scope of the document.
@@ -60,10 +60,10 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         * @return pointer to the namespace, if found, else NULL. On error, returns 
         *           NULL and sets error code in environment,s error
         */
-        axis2_om_namespace_t* (AXIS2_CALL *
-        find_namespace)(axis2_om_element_t *om_element,
+        axiom_namespace_t* (AXIS2_CALL *
+        find_namespace)(axiom_element_t *om_element,
                         const axis2_env_t *env,
-                        axis2_om_node_t *node,
+                        axiom_node_t *node,
                         const axis2_char_t *uri,
                         const axis2_char_t *prefix);
       /**
@@ -76,10 +76,10 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *
-        declare_namespace)(axis2_om_element_t *om_element,
+        declare_namespace)(axiom_element_t *om_element,
                            const axis2_env_t *env,
-                           axis2_om_node_t *node,
-                           axis2_om_namespace_t * ns);
+                           axiom_node_t *node,
+                           axiom_namespace_t * ns);
        /**
         * Finds a namespace using qname
         * Start to find from the given node and go up the hierarchy.
@@ -90,10 +90,10 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         * @return pointer to the namespace, if found, else NULL. On error, returns 
         *           NULL and sets the error code in environment's error struct.
         */
-         axis2_om_namespace_t *(AXIS2_CALL *
-         find_namespace_with_qname)(axis2_om_element_t *om_element,
+         axiom_namespace_t *(AXIS2_CALL *
+         find_namespace_with_qname)(axiom_element_t *om_element,
                                     const axis2_env_t *env,
-                                    axis2_om_node_t *node,
+                                    axiom_node_t *node,
                                     axis2_qname_t *qname);
 
       /**
@@ -101,14 +101,14 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         * @param om_element element to which the attribute is to be added.cannot be NULL.
         * @param env Environment. MUST NOT be NULL.
         * @param attribute attribute to be added.
-        * @param node axis2_om_node_t node that om_element is contained in
+        * @param node axiom_node_t node that om_element is contained in
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
          axis2_status_t (AXIS2_CALL *
-         add_attribute)(axis2_om_element_t *om_element,
+         add_attribute)(axiom_element_t *om_element,
                         const axis2_env_t *env,
-                        axis2_om_attribute_t *attribute,
-                        axis2_om_node_t *node);
+                        axiom_attribute_t *attribute,
+                        axiom_node_t *node);
 
       /**
         * Gets (finds) the attribute with the given qname
@@ -118,8 +118,8 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         * @return a pointer to the attribute with given qname if found, else NULL.
         *           On error, returns NULL and sets the error code in environment's error struct.
         */
-         axis2_om_attribute_t *(AXIS2_CALL *
-         get_attribute) (axis2_om_element_t *om_element,
+         axiom_attribute_t *(AXIS2_CALL *
+         get_attribute) (axiom_element_t *om_element,
                          const axis2_env_t *env,
                          axis2_qname_t * qname);
                          
@@ -132,7 +132,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         *  On error, returns NULL and sets the error code in environment's error struct.
         */
          axis2_char_t *(AXIS2_CALL *
-         get_attribute_value) (axis2_om_element_t *om_element,
+         get_attribute_value) (axiom_element_t *om_element,
                                const axis2_env_t *env,
                                axis2_qname_t * qname);                         
         
@@ -143,7 +143,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          * @return satus of the op. AXIS2_SUCCESS on success ,AXIS2_FAILURE on error.
         */
          axis2_status_t (AXIS2_CALL *
-         free) (axis2_om_element_t *element,
+         free) (axiom_element_t *element,
                 const axis2_env_t *env);
 
       /**
@@ -154,10 +154,10 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *
-        serialize_start_part)(axis2_om_element_t *om_element,
+        serialize_start_part)(axiom_element_t *om_element,
                               const axis2_env_t *env,
-                              axis2_om_output_t * om_output,
-                              axis2_om_node_t *ele_node);
+                              axiom_output_t * om_output,
+                              axiom_node_t *ele_node);
 
       /**
         * Serializes the end part of the given element. serialize_start_part must 
@@ -168,20 +168,20 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *
-        serialize_end_part)(axis2_om_element_t *om_element,
+        serialize_end_part)(axiom_element_t *om_element,
                             const axis2_env_t *env,
-                            axis2_om_output_t * om_output);
+                            axiom_output_t * om_output);
        /**
         *  finds a namespace in current elements scope
         * @param om_element
         * @param env environemt must not be null
         * @param uri namespace uri
         * @param prefix prefix 
-        * @return axis2_om_namespace_t if found, else return NULL
+        * @return axiom_namespace_t if found, else return NULL
         */ 
         
-        axis2_om_namespace_t* (AXIS2_CALL *
-        find_declared_namespace)(axis2_om_element_t *om_element,
+        axiom_namespace_t* (AXIS2_CALL *
+        find_declared_namespace)(axiom_element_t *om_element,
                                  const axis2_env_t *env,
                                  const axis2_char_t *uri,
                                  const axis2_char_t *prefix);
@@ -194,7 +194,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         * @returns localname of element, returns NULL on error.
         */        
         axis2_char_t* (AXIS2_CALL *
-        get_localname)(axis2_om_element_t *om_element,
+        get_localname)(axiom_element_t *om_element,
                        const axis2_env_t *env);
        /**
         * set the localname of this element
@@ -205,21 +205,21 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         *                   AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *
-        set_localname)(axis2_om_element_t *om_element,
+        set_localname)(axiom_element_t *om_element,
                        const axis2_env_t *env,
                        const axis2_char_t *localname);
         /**
          * get the namespace  of om_element 
          * @param om_element om_element struct
          * @param env environemt, MUST NOT be NULL.
-         * @returns pointer to axis2_om_namespace_t struct 
+         * @returns pointer to axiom_namespace_t struct 
          *          NULL if there is no namespace associated with the element,
          *          NULL on error with error code set to environment's error
          */
-        axis2_om_namespace_t *(AXIS2_CALL *
-        get_namespace)(axis2_om_element_t *om_element,
+        axiom_namespace_t *(AXIS2_CALL *
+        get_namespace)(axiom_element_t *om_element,
                        const axis2_env_t *env,
-                       axis2_om_node_t *ele_node);
+                       axiom_node_t *ele_node);
        /**
         * set the namespace of the element
         * @param om_element Om_element struct
@@ -229,10 +229,10 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         *                  set to environment's error
         */                                         
         axis2_status_t (AXIS2_CALL *
-        set_namespace)(axis2_om_element_t *om_element,
+        set_namespace)(axiom_element_t *om_element,
                        const axis2_env_t *env,
-                       axis2_om_namespace_t *ns,
-                       axis2_om_node_t *node);
+                       axiom_namespace_t *ns,
+                       axiom_node_t *node);
         /**
          * get  the attribute list of the element 
          * @param om_element om element
@@ -241,7 +241,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          * This hash table is read only 
          */
         axis2_hash_t* (AXIS2_CALL *
-        get_all_attributes)(axis2_om_element_t *om_element,
+        get_all_attributes)(axiom_element_t *om_element,
                             const axis2_env_t *env);
         /**
          * get the namespace list of the element
@@ -251,7 +251,7 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          * this hash table is read only
          */                                             
         axis2_hash_t* (AXIS2_CALL *
-        get_namespaces)(axis2_om_element_t *om_element,
+        get_namespaces)(axiom_element_t *om_element,
                         const axis2_env_t *env);
         /**
          *@return qname of this element
@@ -261,18 +261,18 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          * @returns axis2_qname_t struct , NULL on failure
          */
         axis2_qname_t* (AXIS2_CALL *
-        get_qname)(axis2_om_element_t *om_element,
+        get_qname)(axiom_element_t *om_element,
                    const axis2_env_t *env,
-                   axis2_om_node_t *ele_node);
+                   axiom_node_t *ele_node);
         
        /**
         *   returns a list of children iterator
         *   iterators free function must be called by user
         */        
-        axis2_om_children_iterator_t*(AXIS2_CALL *
-        get_children)(axis2_om_element_t *om_element,
+        axiom_children_iterator_t*(AXIS2_CALL *
+        get_children)(axiom_element_t *om_element,
                       const axis2_env_t *env,
-                     axis2_om_node_t *element_node);
+                     axiom_node_t *element_node);
                                       
        /**
         *   returns a list of children iterator with qname
@@ -285,21 +285,21 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
         * @returns children qname iterator struct
         */        
                                                 
-        axis2_om_children_qname_iterator_t *(AXIS2_CALL *
-        get_children_with_qname)(axis2_om_element_t *om_element,
+        axiom_children_qname_iterator_t *(AXIS2_CALL *
+        get_children_with_qname)(axiom_element_t *om_element,
                                  const axis2_env_t *env,
                                  axis2_qname_t *element_qname,
-                                 axis2_om_node_t* element_node);
+                                 axiom_node_t* element_node);
         /**
          * returns the om_element corresponding to element_qname
          */                            
         
-        axis2_om_element_t* (AXIS2_CALL *
-        get_first_child_with_qname)(axis2_om_element_t *om_element,
+        axiom_element_t* (AXIS2_CALL *
+        get_first_child_with_qname)(axiom_element_t *om_element,
                                      const axis2_env_t *env,
                                      axis2_qname_t *element_qname,
-                                     axis2_om_node_t* element_node,
-                                     axis2_om_node_t **child_node);                       
+                                     axiom_node_t* element_node,
+                                     axiom_node_t **child_node);                       
         /**
          * removes an attribute from the element attribute list
          * user must free this attribute, element free function does not free 
@@ -311,19 +311,19 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          *           AXIS2_FAILURE
          */         
         axis2_status_t (AXIS2_CALL *
-        remove_attribute)(axis2_om_element_t *om_element,
+        remove_attribute)(axiom_element_t *om_element,
                           const axis2_env_t *env,
-                          axis2_om_attribute_t *om_attribute); 
+                          axiom_attribute_t *om_attribute); 
         /**
          * Sets the text of the given element.
          *caution - This method will wipe out all the text elements (and hence any
          * mixed content) before setting the text
          */
         axis2_status_t (AXIS2_CALL *
-        set_text)(axis2_om_element_t *om_element,
+        set_text)(axiom_element_t *om_element,
                   const axis2_env_t *env,
                   const axis2_char_t *text,
-                  axis2_om_node_t *element_node); 
+                  axiom_node_t *element_node); 
         /**
          * select all the text children and concat them to a single string
          * @param element node , the container node of this om element
@@ -332,21 +332,21 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */                                              
         axis2_char_t* (AXIS2_CALL *
         get_text)(
-                axis2_om_element_t *om_element,
+                axiom_element_t *om_element,
                 const axis2_env_t *env,
-                axis2_om_node_t *element_node);
+                axiom_node_t *element_node);
     
         /**
          * returns the first child om element of this om element node
          * @param element_node the container node of this om_element
          * @return om_element if one is availble otherwise return NULL
          */
-        axis2_om_element_t* (AXIS2_CALL *
+        axiom_element_t* (AXIS2_CALL *
         get_first_element)(
-                axis2_om_element_t *om_element,
+                axiom_element_t *om_element,
                 const axis2_env_t *env,
-                axis2_om_node_t *element_node,
-                axis2_om_node_t **first_element_node);  
+                axiom_node_t *element_node,
+                axiom_node_t **first_element_node);  
         /**
          * returns the serilized text of this element and its children
          * @param element_node the container node this on element is contained 
@@ -354,22 +354,22 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */
         axis2_char_t* (AXIS2_CALL *
         to_string)(
-                axis2_om_element_t *om_element,
+                axiom_element_t *om_element,
             const axis2_env_t *env,
-            axis2_om_node_t *element_node);
+            axiom_node_t *element_node);
         /** 
-         * returns an iterator with child elements of type AXIS2_OM_ELEMENT
+         * returns an iterator with child elements of type AXIOM_ELEMENT
          * iterator is freed when om_element node is freed
          * @param om_element
          * @param element_node
          * @param env enviroment must not be null
-         * @returns axis2_om_child_element_iterator_t , NULL on error                                             
+         * @returns axiom_child_element_iterator_t , NULL on error                                             
          */
-         axis2_om_child_element_iterator_t* (AXIS2_CALL *
+         axiom_child_element_iterator_t* (AXIS2_CALL *
          get_child_elements)(
-                axis2_om_element_t *om_element,
+                axiom_element_t *om_element,
                 const axis2_env_t *env,
-                axis2_om_node_t *element_node);                                                                            
+                axiom_node_t *element_node);                                                                            
         /**
          * builds this om_element_node completely, This is only possible 
          * if the om_stax_builder is associated with the om_element_node,
@@ -381,9 +381,9 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          * otherwise returns AXIS2_FAILURE
          */
          axis2_status_t (AXIS2_CALL *
-         build)(axis2_om_element_t *om_element,
+         build)(axiom_element_t *om_element,
                 const axis2_env_t *env,
-                axis2_om_node_t *element_node);
+                axiom_node_t *element_node);
                 
         /** 
          * retrieves the default namespace of this element , if available,
@@ -391,11 +391,11 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          * @param env axis2_environment MUST Not be NULL
          * @returns pointer to default namespace if availale , NULL otherwise
          */
-         axis2_om_namespace_t* (AXIS2_CALL *
+         axiom_namespace_t* (AXIS2_CALL *
          get_default_namespace)(
-                axis2_om_element_t *om_element,
+                axiom_element_t *om_element,
                 const axis2_env_t *env,
-                axis2_om_node_t *element_node);
+                axiom_node_t *element_node);
                                 
         /**
          * declared a default namespace explicitly 
@@ -404,9 +404,9 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          * @param uri namespace uri of the default namespace
          * @returns the declared namespace
                                                      */
-         axis2_om_namespace_t* (AXIS2_CALL *
+         axiom_namespace_t* (AXIS2_CALL *
          declare_default_namespace)(
-                axis2_om_element_t *om_element,
+                axiom_element_t *om_element,
                 const axis2_env_t *env,
                 axis2_char_t *uri);
                 
@@ -419,12 +419,12 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          * @returns pointer to relevent namespace 
          */
          
-         axis2_om_namespace_t* (AXIS2_CALL *
+         axiom_namespace_t* (AXIS2_CALL *
          find_namespace_uri)(
-                axis2_om_element_t *om_element,
+                axiom_element_t *om_element,
                 const axis2_env_t *env,
                 axis2_char_t *prefix,
-                axis2_om_node_t *element_node);  
+                axiom_node_t *element_node);  
         /**
          *This will not search the namespace in the scope nor will 
          * declare in the current element, as in set_namespace. This will
@@ -434,9 +434,9 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */
          axis2_status_t (AXIS2_CALL *
          set_namespace_with_no_find_in_current_scope)(
-                axis2_om_element_t *om_element,
+                axiom_element_t *om_element,
                 const axis2_env_t *env,
-                axis2_om_namespace_t *om_ns); 
+                axiom_namespace_t *om_ns); 
                 
         /**
          *  Extract attributes , returns a clones hash table of attributes,
@@ -444,13 +444,13 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
          */                                                       
          axis2_hash_t* (AXIS2_CALL *
          extract_attributes)(
-                axis2_om_element_t *om_element,
+                axiom_element_t *om_element,
                 const axis2_env_t *env,
-                axis2_om_node_t *ele_node);
+                axiom_node_t *ele_node);
                 
          axis2_char_t* (AXIS2_CALL*
          get_attribute_value_by_name)(
-                axis2_om_element_t *om_ele,
+                axiom_element_t *om_ele,
                 const axis2_env_t *env,
                 axis2_char_t *attr_name);
                 
@@ -461,10 +461,10 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
     * \brief OM element struct
     * Handles the XML element in OM
     */
-    struct axis2_om_element
+    struct axiom_element
     {
         /** ops of attribute struct */
-        axis2_om_element_ops_t *ops;
+        axiom_element_ops_t *ops;
 
     };
 
@@ -476,15 +476,15 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
     * @param ns namespace of the element.  can be NULL.
     * @param node This is an out parameter. cannot be NULL.
     *                       Returns the node corresponding to the comment created.
-    *                       Node type will be set to AXIS2_OM_ELEMENT
+    *                       Node type will be set to AXIOM_ELEMENT
     * @return a pointer to the newly created element struct
     */
-    AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL
-    axis2_om_element_create (const axis2_env_t *env,
-                             axis2_om_node_t *parent,
+    AXIS2_EXTERN axiom_element_t * AXIS2_CALL
+    axiom_element_create (const axis2_env_t *env,
+                             axiom_node_t *parent,
                              const axis2_char_t *localname,
-                             axis2_om_namespace_t *ns,
-                             axis2_om_node_t **node);
+                             axiom_namespace_t *ns,
+                             axiom_node_t **node);
 
   /**
     * Creates an OM element with given qname
@@ -493,125 +493,125 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
     * @param qname qname of the elment.cannot be NULL.
     * @param node This is an out parameter. cannot be NULL.
     *                       Returns the node corresponding to the comment created.
-    *                       Node type will be set to AXIS2_OM_ELEMENT
+    *                       Node type will be set to AXIOM_ELEMENT
     * @return a pointer to the newly created element struct
     */
-    AXIS2_EXTERN axis2_om_element_t * AXIS2_CALL 
-    axis2_om_element_create_with_qname (const axis2_env_t *env,
-                                        axis2_om_node_t *parent,
+    AXIS2_EXTERN axiom_element_t * AXIS2_CALL 
+    axiom_element_create_with_qname (const axis2_env_t *env,
+                                        axiom_node_t *parent,
                                         const axis2_qname_t *qname,
-                                        axis2_om_node_t ** node);
+                                        axiom_node_t ** node);
 
 /** finds given namespace with respect to given node */
-#define AXIS2_OM_ELEMENT_FIND_NAMESPACE(om_element,env,om_node, uri, prefix) \
+#define AXIOM_ELEMENT_FIND_NAMESPACE(om_element,env,om_node, uri, prefix) \
         ((om_element)->ops->find_namespace (om_element, env,om_node, uri, prefix))
         
 /** declares given namespace with respect to the given node */
-#define AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(om_element, env , om_node, ns) \
+#define AXIOM_ELEMENT_DECLARE_NAMESPACE(om_element, env , om_node, ns) \
         ((om_element)->ops->declare_namespace (om_element, env, om_node, ns))
 
 /** finds namespace with given qname */
-#define AXIS2_OM_ELEMENT_FIND_NAMESPACE_WITH_QNAME (om_element, env, om_node, qname) \
+#define AXIOM_ELEMENT_FIND_NAMESPACE_WITH_QNAME (om_element, env, om_node, qname) \
         ((om_element)->ops->find_namespace_with_qname (om_element, environment, om_node, qname))
         
 /** adds given attribute to given element */
-#define AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(om_element, env, attribute, element_node) \
+#define AXIOM_ELEMENT_ADD_ATTRIBUTE(om_element, env, attribute, element_node) \
         ((om_element)->ops->add_attribute(om_element , env, attribute, element_node))
         
 /** gets (finds) given attribute in given element */
-#define AXIS2_OM_ELEMENT_GET_ATTRIBUTE(om_element, env, qname) \
+#define AXIOM_ELEMENT_GET_ATTRIBUTE(om_element, env, qname) \
         ((om_element)->ops->get_attribute(om_element, env, qname))
         
 /** free an om element */
-#define AXIS2_OM_ELEMENT_FREE(om_element, env) \
+#define AXIOM_ELEMENT_FREE(om_element, env) \
         ((om_element)->ops->free(om_element, env))
         
 /** serialize the start part of given element */
-#define AXIS2_OM_ELEMENT_SERIALIZE_START_PART(om_element, env, om_output, ele_node) \
+#define AXIOM_ELEMENT_SERIALIZE_START_PART(om_element, env, om_output, ele_node) \
         ((om_element)->ops->serialize_start_part(om_element, env, om_output, ele_node))
         
 /** serialize the end part of given element */
-#define AXIS2_OM_ELEMENT_SERIALIZE_END_PART(om_element, env, om_output) \
+#define AXIOM_ELEMENT_SERIALIZE_END_PART(om_element, env, om_output) \
         ((om_element)->ops->serialize_end_part(om_element, env, om_output))
 /** get localname */
-#define AXIS2_OM_ELEMENT_GET_LOCALNAME(om_element, env)\
+#define AXIOM_ELEMENT_GET_LOCALNAME(om_element, env)\
         ((om_element)->ops->get_localname(om_element,env))
 /** get namespace of this element */        
-#define AXIS2_OM_ELEMENT_GET_NAMESPACE(om_element, env, ele_node) \
+#define AXIOM_ELEMENT_GET_NAMESPACE(om_element, env, ele_node) \
         ((om_element)->ops->get_namespace(om_element, env, ele_node))
 /** set localname */        
-#define AXIS2_OM_ELEMENT_SET_LOCALNAME(om_element, env, localname) \
+#define AXIOM_ELEMENT_SET_LOCALNAME(om_element, env, localname) \
         ((om_element)->ops->set_localname(om_element, env, localname))
 /** set namespace */        
-#define AXIS2_OM_ELEMENT_SET_NAMESPACE(om_element, env, ns , node) \
+#define AXIOM_ELEMENT_SET_NAMESPACE(om_element, env, ns , node) \
         ((om_element)->ops->set_namespace(om_element, env, ns, node))
 
-#define AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(om_element, env, uri, prefix) \
+#define AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(om_element, env, uri, prefix) \
         ((om_element)->ops->find_declared_namespace(om_element, env, uri, prefix))        
         
-#define AXIS2_OM_ELEMENT_GET_QNAME(om_element, env, ele_node) \
+#define AXIOM_ELEMENT_GET_QNAME(om_element, env, ele_node) \
         ((om_element)->ops->get_qname(om_element, env, ele_node))
 
-#define AXIS2_OM_ELEMENT_GET_ALL_ATTRIBUTES(om_element, env) \
+#define AXIOM_ELEMENT_GET_ALL_ATTRIBUTES(om_element, env) \
         ((om_element)->ops->get_all_attributes(om_element, env))
 
-#define AXIS2_OM_ELEMENT_GET_NAMESPACES(om_element, env) \
+#define AXIOM_ELEMENT_GET_NAMESPACES(om_element, env) \
         ((om_element)->ops->get_namespaces(om_element, env)) 
         
-#define AXIS2_OM_ELEMENT_GET_CHILDREN(om_element, env, element_node) \
+#define AXIOM_ELEMENT_GET_CHILDREN(om_element, env, element_node) \
         ((om_element)->ops->get_children(om_element, env, element_node))
 
-#define AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(om_element, env, \
+#define AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(om_element, env, \
             element_qname, element_node) \
         ((om_element)->ops->get_children_with_qname(om_element,\
             env, element_qname, element_node))
 
-#define AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(om_element, env,\
+#define AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(om_element, env,\
             element_qname, element_node , child_node) \
         ((om_element)->ops->get_first_child_with_qname(om_element, env, \
             element_qname, element_node, child_node))
 
-#define AXIS2_OM_ELEMENT_REMOVE_ATTRIBUTE(om_element, env, om_attribute) \
+#define AXIOM_ELEMENT_REMOVE_ATTRIBUTE(om_element, env, om_attribute) \
         ((om_element)->ops->remove_attribute(om_element, env, om_attribute))
 
-#define AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(om_element, env, element_node, first_node) \
+#define AXIOM_ELEMENT_GET_FIRST_ELEMENT(om_element, env, element_node, first_node) \
         ((om_element)->ops->get_first_element(om_element, env, element_node, first_node))
 
-#define AXIS2_OM_ELEMENT_GET_TEXT(om_element, env, element_node) \
+#define AXIOM_ELEMENT_GET_TEXT(om_element, env, element_node) \
         ((om_element)->ops->get_text(om_element, env, element_node))
 
-#define AXIS2_OM_ELEMENT_SET_TEXT(om_element, env, text, element_node) \
+#define AXIOM_ELEMENT_SET_TEXT(om_element, env, text, element_node) \
         ((om_element)->ops->set_text(om_element, env, text, element_node))
 
-#define AXIS2_OM_ELEMENT_TO_STRING(om_element, env, element_node) \
+#define AXIOM_ELEMENT_TO_STRING(om_element, env, element_node) \
         ((om_element)->ops->to_string(om_element, env, element_node)) 
                
-#define AXIS2_OM_ELEMENT_GET_CHILD_ELEMENTS(om_element, env, element_node) \
+#define AXIOM_ELEMENT_GET_CHILD_ELEMENTS(om_element, env, element_node) \
         ((om_element)->ops->get_child_elements(om_element, env, element_node))
 
-#define AXIS2_OM_ELEMENT_BUILD(om_element, env, element_node) \
+#define AXIOM_ELEMENT_BUILD(om_element, env, element_node) \
         ((om_element)->ops->build(om_element, env, element_node))
         
-#define AXIS2_OM_ELEMENT_GET_DEFAULT_NAMESPACE(om_element, env, element_node) \
+#define AXIOM_ELEMENT_GET_DEFAULT_NAMESPACE(om_element, env, element_node) \
         ((om_element)->ops->get_default_namespace(om_element, env, element_node))
         
-#define AXIS2_OM_ELEMENT_DECLARE_DEFAULT_NAMESPACE(om_element, env, uri) \
+#define AXIOM_ELEMENT_DECLARE_DEFAULT_NAMESPACE(om_element, env, uri) \
         ((om_element)->ops->declare_default_namespace(om_element, env, uri))
         
-#define AXIS2_OM_ELEMENT_FIND_NAMESPACE_URI(om_element, env, prefix, element_node) \
+#define AXIOM_ELEMENT_FIND_NAMESPACE_URI(om_element, env, prefix, element_node) \
         ((om_element)->ops->find_namespace_uri(om_element, env, prefix, element_node))
         
-#define AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE(om_element, env, qname) \
+#define AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE(om_element, env, qname) \
         ((om_element)->ops->get_attribute_value(om_element, env, qname))
 
-#define AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_element, env, attr_name) \
+#define AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_element, env, attr_name) \
         ((om_element)->ops->get_attribute_value_by_name(om_element, env, attr_name))
         
                 
-#define AXIS2_OM_ELEMENT_SET_NAMESPACE_WITH_NO_FIND_IN_CURRENT_SCOPE(om_element, env, om_ns) \
+#define AXIOM_ELEMENT_SET_NAMESPACE_WITH_NO_FIND_IN_CURRENT_SCOPE(om_element, env, om_ns) \
         ((om_element)->ops->set_namespace_with_no_find_in_current_scope(om_element, env, om_ns))
                
-#define AXIS2_OM_ELEMENT_EXTRACT_ATTRIBUTES(om_element, env, ele_node) \
+#define AXIOM_ELEMENT_EXTRACT_ATTRIBUTES(om_element, env, ele_node) \
         ((om_element)->ops->extract_attributes(om_element, env, ele_node))
         
 
@@ -623,4 +623,4 @@ AXIS2_DECLARE_DATA   struct axis2_om_element_ops
 }
 #endif
 
-#endif    /* AXIS2_OM_ELEMENT_H */
+#endif    /* AXIOM_ELEMENT_H */

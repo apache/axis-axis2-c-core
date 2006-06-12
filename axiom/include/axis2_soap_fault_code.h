@@ -74,7 +74,7 @@ extern "C"
                                     (axis2_soap_fault_code_t *fault_code,
                                      const axis2_env_t *env);
                                      
-        axis2_om_node_t* (AXIS2_CALL *
+        axiom_node_t* (AXIS2_CALL *
       get_base_node)(axis2_soap_fault_code_t *fault_code,
                        const axis2_env_t *env);
                                  

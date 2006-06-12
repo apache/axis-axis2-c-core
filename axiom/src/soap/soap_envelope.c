@@ -27,14 +27,14 @@
  #include <axis2_soap_fault_role.h>
  #include <axis2_soap_fault_value.h> 
  #include <axis2_soap_fault_text.h>
- #include <axis2_om_namespace_internal.h>
+ #include <axiom_namespace_internal.h>
  /******************* impl struct *********************************************/
  
  typedef struct axis2_soap_envelope_impl_t
  {
     axis2_soap_envelope_t soap_envelope;
     /* corresponding om element node */    
-    axis2_om_node_t *om_ele_node;
+    axiom_node_t *om_ele_node;
     /* soap version */
     int soap_version;
     /* soap header */
@@ -71,13 +71,13 @@ axis2_soap_envelope_get_body(axis2_soap_envelope_t *envelope,
 axis2_status_t AXIS2_CALL 
 axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                                 const axis2_env_t *env,
-                                axis2_om_output_t *om_output, 
+                                axiom_output_t *om_output, 
                                 axis2_bool_t cache);
                                 
 axis2_status_t AXIS2_CALL
 axis2_soap_envelope_free(axis2_soap_envelope_t *envelope,
                             const axis2_env_t *env);
-axis2_om_node_t* AXIS2_CALL 
+axiom_node_t* AXIS2_CALL 
 axis2_soap_envelope_get_base_node(axis2_soap_envelope_t *envelope,
                              const axis2_env_t *env);
                              
@@ -86,14 +86,14 @@ int AXIS2_CALL
 axis2_soap_envelope_get_soap_version(axis2_soap_envelope_t *envelope,
                                    const axis2_env_t *env);
                                    
-axis2_om_namespace_t* AXIS2_CALL 
+axiom_namespace_t* AXIS2_CALL 
 axis2_soap_envelope_get_namespace(axis2_soap_envelope_t *envelope,
                                   const axis2_env_t *env);
                                   
 static axis2_status_t
 check_and_set_soap_version(axis2_soap_envelope_t *env_impl, 
                            const axis2_env_t *env, 
-                           axis2_om_namespace_t *ns);
+                           axiom_namespace_t *ns);
 
 
 axis2_status_t AXIS2_CALL
@@ -160,11 +160,11 @@ axis2_soap_envelope_create_null(const axis2_env_t *env)
 
 AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_envelope_create(const axis2_env_t *env, 
-                           axis2_om_namespace_t *ns)
+                           axiom_namespace_t *ns)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     axis2_soap_envelope_t *envelope = NULL;
-    axis2_om_element_t *ele = NULL;
+    axiom_element_t *ele = NULL;
     int status = AXIS2_SUCCESS;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ns, NULL);
@@ -181,7 +181,7 @@ axis2_soap_envelope_create(const axis2_env_t *env,
         return NULL; 
     }
      
-    ele = axis2_om_element_create(env, NULL, 
+    ele = axiom_element_create(env, NULL, 
                                   AXIS2_SOAP_ENVELOPE_LOCAL_NAME, ns, 
                                   &(envelope_impl->om_ele_node));
     if (!ele)
@@ -198,7 +198,7 @@ axis2_soap_envelope_create_with_soap_version_prefix(const axis2_env_t *env,
                                                     int soap_version,
                                                     const axis2_char_t *prefix)
 {
-    axis2_om_namespace_t *ns        = NULL;
+    axiom_namespace_t *ns        = NULL;
     const axis2_char_t *ns_prefix = NULL;
     const axis2_char_t *ns_uri    = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -224,7 +224,7 @@ axis2_soap_envelope_create_with_soap_version_prefix(const axis2_env_t *env,
         ns_prefix = prefix;
     }
     
-    ns = axis2_om_namespace_create(env, ns_uri, ns_prefix);
+    ns = axiom_namespace_create(env, ns_uri, ns_prefix);
     if(!ns)
         return NULL;
     return axis2_soap_envelope_create(env, ns);
@@ -262,7 +262,7 @@ axis2_soap_envelope_free(axis2_soap_envelope_t *envelope,
         }
         else
         {
-            AXIS2_OM_NODE_FREE_TREE(envelope_impl->om_ele_node, env); 
+            AXIOM_NODE_FREE_TREE(envelope_impl->om_ele_node, env); 
             envelope_impl->om_ele_node = NULL;
         }
     }
@@ -272,7 +272,7 @@ axis2_soap_envelope_free(axis2_soap_envelope_t *envelope,
     return AXIS2_SUCCESS;
 }
     
-axis2_om_node_t* AXIS2_CALL 
+axiom_node_t* AXIS2_CALL 
 axis2_soap_envelope_get_base_node(axis2_soap_envelope_t *envelope,
                                 const axis2_env_t *env)
 {
@@ -283,13 +283,13 @@ axis2_soap_envelope_get_base_node(axis2_soap_envelope_t *envelope,
 axis2_status_t AXIS2_CALL 
 axis2_soap_envelope_set_base_node(axis2_soap_envelope_t *envelope,
                                   const axis2_env_t *env,
-                                  axis2_om_node_t *node)
+                                  axiom_node_t *node)
 {
    axis2_soap_envelope_impl_t *envelope_impl = NULL;
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
    envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
-   if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
+   if(AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
    {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -335,7 +335,7 @@ axis2_soap_envelope_get_header(axis2_soap_envelope_t *envelope,
     }
     else if(envelope_impl->soap_builder)
     {
-        while(!(envelope_impl->header) && !AXIS2_OM_NODE_IS_COMPLETE(
+        while(!(envelope_impl->header) && !AXIOM_NODE_IS_COMPLETE(
                 envelope_impl->om_ele_node, env))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(envelope_impl->soap_builder, env);  
@@ -354,7 +354,7 @@ axis2_soap_envelope_add_header(axis2_soap_envelope_t *envelope,
                                 axis2_char_t *name)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
-    axis2_om_namespace_t *ns = NULL;
+    axiom_namespace_t *ns = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     
@@ -364,7 +364,7 @@ axis2_soap_envelope_add_header(axis2_soap_envelope_t *envelope,
     
     if (namespace_uri)
     {
-        ns = axis2_om_namespace_create(env, namespace_uri, NULL);
+        ns = axiom_namespace_create(env, namespace_uri, NULL);
     }
     
     return axis2_soap_header_block_create_with_parent(env, name, ns, envelope_impl->header);
@@ -385,7 +385,7 @@ axis2_soap_envelope_get_body(axis2_soap_envelope_t *envelope,
     }
     else if(envelope_impl->soap_builder)
     {
-        while(!(envelope_impl->body)  && !AXIS2_OM_NODE_IS_COMPLETE(envelope_impl->om_ele_node, env))
+        while(!(envelope_impl->body)  && !AXIOM_NODE_IS_COMPLETE(envelope_impl->om_ele_node, env))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(envelope_impl->soap_builder, env);
             if(status == AXIS2_FAILURE)
@@ -400,7 +400,7 @@ axis2_soap_envelope_get_body(axis2_soap_envelope_t *envelope,
 axis2_status_t AXIS2_CALL 
 axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                               const axis2_env_t *env,
-                              axis2_om_output_t *om_output, 
+                              axiom_output_t *om_output, 
                               axis2_bool_t cache)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
@@ -434,21 +434,21 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                     fault_code = AXIS2_SOAP_FAULT_GET_CODE(soap_fault, env);
                     if(fault_code)
                     {
-                        axis2_om_node_t *fault_code_om_node = NULL;
-                        axis2_om_element_t *fault_code_om_ele = NULL;
-                        axis2_om_node_t *fault_value_om_node = NULL;
-                        axis2_om_element_t *fault_value_om_ele = NULL;
+                        axiom_node_t *fault_code_om_node = NULL;
+                        axiom_element_t *fault_code_om_ele = NULL;
+                        axiom_node_t *fault_value_om_node = NULL;
+                        axiom_element_t *fault_value_om_ele = NULL;
                         axis2_soap_fault_value_t *fault_value = NULL;
                         axis2_char_t *text = NULL;
 
                         fault_code_om_node = AXIS2_SOAP_FAULT_CODE_GET_BASE_NODE(fault_code, env);
                         if(NULL != fault_code_om_node)
                         {
-                           fault_code_om_ele = (axis2_om_element_t *)
-                           AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_code_om_node, env);
+                           fault_code_om_ele = (axiom_element_t *)
+                           AXIOM_NODE_GET_DATA_ELEMENT(fault_code_om_node, env);
                            if(NULL != fault_code_om_ele)
                            {                               
-                                AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_code_om_ele, 
+                                AXIOM_ELEMENT_SET_LOCALNAME(fault_code_om_ele, 
                                     env, AXIS2_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME); 
                                 
                                 fault_value = AXIS2_SOAP_FAULT_CODE_GET_VALUE(fault_code, env);
@@ -458,17 +458,17 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                                     fault_value_om_node = AXIS2_SOAP_FAULT_VALUE_GET_BASE_NODE(fault_value, env);
                                     if(fault_value_om_node)
                                     {
-                                       fault_value_om_node =  AXIS2_OM_NODE_DETACH(fault_value_om_node, env);
-                                        fault_value_om_ele = (axis2_om_element_t *)
-                                        AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_value_om_node, env);
+                                       fault_value_om_node =  AXIOM_NODE_DETACH(fault_value_om_node, env);
+                                        fault_value_om_ele = (axiom_element_t *)
+                                        AXIOM_NODE_GET_DATA_ELEMENT(fault_value_om_node, env);
                                         if(fault_value_om_ele)
                                         {
-                                            text = AXIS2_OM_ELEMENT_GET_TEXT(fault_value_om_ele, env, fault_value_om_node);
+                                            text = AXIOM_ELEMENT_GET_TEXT(fault_value_om_ele, env, fault_value_om_node);
                                             if(NULL != text)
                                             {
-                                                AXIS2_OM_ELEMENT_SET_TEXT(fault_code_om_ele, env, text, fault_code_om_node);
+                                                AXIOM_ELEMENT_SET_TEXT(fault_code_om_ele, env, text, fault_code_om_node);
                                              }
-                                             AXIS2_OM_NODE_FREE_TREE(fault_value_om_node, env);
+                                             AXIOM_NODE_FREE_TREE(fault_value_om_node, env);
                                         }
                                         
                                     }
@@ -479,23 +479,23 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                     fault_reason = AXIS2_SOAP_FAULT_GET_REASON(soap_fault, env);
                     if(fault_reason)
                     {
-                        axis2_om_node_t *fault_reason_om_node = NULL;
-                        axis2_om_element_t *fault_reason_om_ele = NULL;
-                        axis2_om_node_t *fault_text_om_node = NULL;
-                        axis2_om_element_t *fault_text_om_ele = NULL;
+                        axiom_node_t *fault_reason_om_node = NULL;
+                        axiom_element_t *fault_reason_om_ele = NULL;
+                        axiom_node_t *fault_text_om_node = NULL;
+                        axiom_element_t *fault_text_om_ele = NULL;
                         axis2_soap_fault_text_t *fault_text = NULL;
                         axis2_char_t *text =  NULL;                        
                     
                         fault_reason_om_node = AXIS2_SOAP_FAULT_REASON_GET_BASE_NODE(fault_reason, env);
                         if(fault_reason_om_node)
                         {
-                            fault_reason_om_ele  = (axis2_om_element_t *)
-                                AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_reason_om_node, env);
+                            fault_reason_om_ele  = (axiom_element_t *)
+                                AXIOM_NODE_GET_DATA_ELEMENT(fault_reason_om_node, env);
                         
                             if(fault_reason_om_ele)
                             {
                                 
-                                AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_reason_om_ele, 
+                                AXIOM_ELEMENT_SET_LOCALNAME(fault_reason_om_ele, 
                                     env, AXIS2_SOAP11_SOAP_FAULT_STRING_LOCAL_NAME);
                         
                                 fault_text = 
@@ -505,18 +505,18 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                                     fault_text_om_node = AXIS2_SOAP_FAULT_TEXT_GET_BASE_NODE(fault_text, env);
                                     if(fault_text_om_node)
                                     {
-                                        fault_text_om_node = AXIS2_OM_NODE_DETACH(fault_text_om_node, env);                                                        fault_text_om_ele  = (axis2_om_element_t *)
-                                        AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_text_om_node, env);
+                                        fault_text_om_node = AXIOM_NODE_DETACH(fault_text_om_node, env);                                                        fault_text_om_ele  = (axiom_element_t *)
+                                        AXIOM_NODE_GET_DATA_ELEMENT(fault_text_om_node, env);
                                         if(fault_text_om_ele)
                                         {
-                                            text = AXIS2_OM_ELEMENT_GET_TEXT(fault_text_om_ele, env, fault_text_om_node);
+                                            text = AXIOM_ELEMENT_GET_TEXT(fault_text_om_ele, env, fault_text_om_node);
                                             if(NULL != text)
                                             {
-                                                AXIS2_OM_ELEMENT_SET_TEXT( fault_reason_om_ele, 
+                                                AXIOM_ELEMENT_SET_TEXT( fault_reason_om_ele, 
                                                     env, text, fault_reason_om_node);   
                                             }   
                                         }                     
-                                        AXIS2_OM_NODE_FREE_TREE(fault_text_om_node, env);
+                                        AXIOM_NODE_FREE_TREE(fault_text_om_node, env);
                                     }
                                 }
                             }
@@ -526,17 +526,17 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                     fault_role = AXIS2_SOAP_FAULT_GET_ROLE(soap_fault, env);
                     if(fault_role)
                     {
-                        axis2_om_node_t *fault_role_om_node = NULL;
-                        axis2_om_element_t *fault_role_om_ele = NULL;
+                        axiom_node_t *fault_role_om_node = NULL;
+                        axiom_element_t *fault_role_om_ele = NULL;
                         
                         fault_role_om_node = AXIS2_SOAP_FAULT_ROLE_GET_BASE_NODE(fault_role, env);
                         if(fault_role_om_node)
                         {
-                            fault_role_om_ele = (axis2_om_element_t *)
-                                AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_role_om_node, env);
+                            fault_role_om_ele = (axiom_element_t *)
+                                AXIOM_NODE_GET_DATA_ELEMENT(fault_role_om_node, env);
                             if(fault_role_om_ele)
                             {
-                                AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_role_om_ele, env, 
+                                AXIOM_ELEMENT_SET_LOCALNAME(fault_role_om_ele, env, 
                                     AXIS2_SOAP11_SOAP_FAULT_ACTOR_LOCAL_NAME);
                             }                                
                         }
@@ -545,16 +545,16 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
                     fault_detail = AXIS2_SOAP_FAULT_GET_DETAIL(soap_fault, env);
                     if(fault_detail)
                     {
-                        axis2_om_node_t *fault_detail_om_node = NULL;
-                        axis2_om_element_t *fault_detail_om_ele = NULL;
+                        axiom_node_t *fault_detail_om_node = NULL;
+                        axiom_element_t *fault_detail_om_ele = NULL;
                         fault_detail_om_node = AXIS2_SOAP_FAULT_DETAIL_GET_BASE_NODE(fault_detail, env);
                         if(fault_detail_om_node)
                         {
-                            fault_detail_om_ele = (axis2_om_element_t *)
-                                AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_detail_om_node, env);
+                            fault_detail_om_ele = (axiom_element_t *)
+                                AXIOM_NODE_GET_DATA_ELEMENT(fault_detail_om_node, env);
                             if(fault_detail_om_ele)
                             {
-                            AXIS2_OM_ELEMENT_SET_LOCALNAME(fault_detail_om_ele, 
+                            AXIOM_ELEMENT_SET_LOCALNAME(fault_detail_om_ele, 
                                 env, AXIS2_SOAP11_SOAP_FAULT_DETAIL_LOCAL_NAME);
                             }
                         }
@@ -567,8 +567,8 @@ axis2_soap_envelope_serialize(axis2_soap_envelope_t *envelope,
        These should be set to om output before calling the serialize function
        Otherwise default values will be written
     */
-    AXIS2_OM_OUTPUT_WRITE_XML_VERSION_ENCODING(om_output, env);
-    return AXIS2_OM_NODE_SERIALIZE(envelope_impl->om_ele_node, env, om_output);
+    AXIOM_OUTPUT_WRITE_XML_VERSION_ENCODING(om_output, env);
+    return AXIOM_NODE_SERIALIZE(envelope_impl->om_ele_node, env, om_output);
 }
 
 axis2_status_t AXIS2_CALL 
@@ -613,7 +613,7 @@ axis2_status_t AXIS2_CALL axis2_soap_envelope_set_header(axis2_soap_envelope_t *
     return AXIS2_SUCCESS;
 }
 
-axis2_om_namespace_t* AXIS2_CALL 
+axiom_namespace_t* AXIS2_CALL 
 axis2_soap_envelope_get_namespace(axis2_soap_envelope_t *envelope,
                                   const axis2_env_t *env)
 {
@@ -623,13 +623,13 @@ axis2_soap_envelope_get_namespace(axis2_soap_envelope_t *envelope,
     
     if (envelope_impl->om_ele_node)
     {
-        axis2_om_element_t *ele = NULL;
-        if (AXIS2_OM_NODE_GET_NODE_TYPE(envelope_impl->om_ele_node, env) == AXIS2_OM_ELEMENT)
+        axiom_element_t *ele = NULL;
+        if (AXIOM_NODE_GET_NODE_TYPE(envelope_impl->om_ele_node, env) == AXIOM_ELEMENT)
         {
-            ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(envelope_impl->om_ele_node, env);
+            ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(envelope_impl->om_ele_node, env);
             if (ele)
             {
-                return AXIS2_OM_ELEMENT_GET_NAMESPACE(ele, env, envelope_impl->om_ele_node);
+                return AXIOM_ELEMENT_GET_NAMESPACE(ele, env, envelope_impl->om_ele_node);
             }
         }
     }
@@ -656,12 +656,12 @@ axis2_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
     axis2_soap_envelope_t *soap_env = NULL;
     axis2_soap_header_t *soap_header = NULL;
     axis2_soap_body_t *soap_body = NULL;
-    axis2_om_namespace_t *om_ns = NULL;
+    axiom_namespace_t *om_ns = NULL;
     axis2_soap_envelope_impl_t *env_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     if(soap_version == AXIS2_SOAP11)
     {
-        om_ns = axis2_om_namespace_create(env,
+        om_ns = axiom_namespace_create(env,
             AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, 
             AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX);
         if(!om_ns)
@@ -677,7 +677,7 @@ axis2_soap_envelope_create_default_soap_envelope(const axis2_env_t *env,
     }
     else if(soap_version == AXIS2_SOAP12)
     {
-        om_ns = axis2_om_namespace_create(env,
+        om_ns = axiom_namespace_create(env,
             AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, 
             AXIS2_SOAP_DEFAULT_NAMESPACE_PREFIX);
         if(!om_ns)
@@ -703,7 +703,7 @@ axis2_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
     const axis2_char_t *reason_text, 
     const int soap_version,
     axis2_array_list_t *sub_codes,
-    axis2_om_node_t *detail_node)
+    axiom_node_t *detail_node)
 {
     axis2_soap_envelope_t *soap_env = NULL;
     axis2_soap_body_t *soap_body = NULL;
@@ -774,7 +774,7 @@ axis2_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
 static axis2_status_t
 check_and_set_soap_version(axis2_soap_envelope_t *envelope,
                            const axis2_env_t *env,
-                           axis2_om_namespace_t *ns)
+                           axiom_namespace_t *ns)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
     axis2_char_t *uri = NULL;
@@ -785,7 +785,7 @@ check_and_set_soap_version(axis2_soap_envelope_t *envelope,
          
     envelope_impl = AXIS2_INTF_TO_IMPL(envelope);
     
-    uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+    uri = AXIOM_NAMESPACE_GET_URI(ns, env);
     if(!uri)
         return AXIS2_FAILURE;
         
@@ -813,8 +813,8 @@ axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *soap_envelope,
                                      int soap_version)
 {
     axis2_soap_envelope_impl_t *envelope_impl = NULL;
-    axis2_om_element_t *env_ele  = NULL;
-    axis2_om_namespace_t *env_ns = NULL;
+    axiom_element_t *env_ele  = NULL;
+    axiom_namespace_t *env_ns = NULL;
     const axis2_char_t *ns_uri         = NULL;
     int status = AXIS2_SUCCESS;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -834,19 +834,19 @@ axis2_soap_envelope_set_soap_version(axis2_soap_envelope_t *soap_envelope,
         return AXIS2_FAILURE;
     }
     
-    env_ele = (axis2_om_element_t*)
-        AXIS2_OM_NODE_GET_DATA_ELEMENT(envelope_impl->om_ele_node,
+    env_ele = (axiom_element_t*)
+        AXIOM_NODE_GET_DATA_ELEMENT(envelope_impl->om_ele_node,
                                        env);
     if(!env_ele)
     {
         return AXIS2_FAILURE;
     }
                                            
-    env_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(env_ele, env, envelope_impl->om_ele_node);
+    env_ns = AXIOM_ELEMENT_GET_NAMESPACE(env_ele, env, envelope_impl->om_ele_node);
     if(!env_ns)
         return AXIS2_FAILURE;
 
-    status = axis2_om_namespace_set_uri(env_ns, env, ns_uri);
+    status = axiom_namespace_set_uri(env_ns, env, ns_uri);
     if(status == AXIS2_SUCCESS)
     {
         axis2_soap_envelope_set_soap_version_internal(soap_envelope, env, soap_version);

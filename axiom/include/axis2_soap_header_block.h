@@ -23,8 +23,8 @@
     * @brief axis2_soap_header_block struct
     */
 #include <axis2_env.h>
-#include <axis2_om_node.h>
-#include <axis2_om_element.h>
+#include <axiom_node.h>
+#include <axiom_element.h>
 #include <axis2_array_list.h>
 #include <axis2_soap_header.h>
 
@@ -106,7 +106,7 @@ extern "C"
                        axis2_char_t *soap_envelope_namespace_uri);                            
                                        
                                               
-        axis2_om_node_t* (AXIS2_CALL *
+        axiom_node_t* (AXIS2_CALL *
       get_base_node)(axis2_soap_header_block_t *header_block,
                        const axis2_env_t *env);
         
@@ -137,7 +137,7 @@ extern "C"
 AXIS2_EXTERN axis2_soap_header_block_t * AXIS2_CALL
 axis2_soap_header_block_create_with_parent(const axis2_env_t *env,
                                            const axis2_char_t *localname,
-                                           axis2_om_namespace_t *ns,
+                                           axiom_namespace_t *ns,
                                            struct axis2_soap_header *parent);
                             
 /******************** Macros **************************************************/

@@ -36,7 +36,7 @@ typedef struct axis2_xml_reader axis2_xml_reader_t;
 
 /**
  * @defgroup axis2_xml_reader 
- * @ingroup axis2_om_parser
+ * @ingroup axiom_parser
  * @{
  */
 

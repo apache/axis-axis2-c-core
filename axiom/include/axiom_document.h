@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_OM_DOCUMENT_H
-#define AXIS2_OM_DOCUMENT_H
+#ifndef AXIOM_DOCUMENT_H
+#define AXIOM_DOCUMENT_H
 
 #include <axis2_env.h>
-#include <axis2_om_node.h>
+#include <axiom_node.h>
 #include <axis2_utils_defines.h>
-#include <axis2_om_output.h>
+#include <axiom_output.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -29,38 +29,38 @@ extern "C"
 
 
 /**
- * @file axis2_om_document.h
+ * @file axiom_document.h
  * @brief om_document represents an XML document
  */
 
 #define CHAR_SET_ENCODING "UTF-8"
 #define XML_VERSION   "1.0"
 
-    struct axis2_om_document; 
-    struct axis2_om_document_ops;
-    struct axis2_om_stax_builder;
+    struct axiom_document; 
+    struct axiom_document_ops;
+    struct axiom_stax_builder;
 
 /**
- * @defgroup axis2_om_document OM Document
- * @ingroup axis2_om 
+ * @defgroup axiom_document OM Document
+ * @ingroup axiom 
  * @{
  */
 
   /** 
     * @brief OM document ops struct
-    * Encapsulator struct for ops of axis2_om_document_t
+    * Encapsulator struct for ops of axiom_document_t
     */
- AXIS2_DECLARE_DATA   typedef struct axis2_om_document_ops
+ AXIS2_DECLARE_DATA   typedef struct axiom_document_ops
     {
 
       /** 
         * Free document struct
-        * @param document pointer to axis2_om_document_t struct to be freed
+        * @param document pointer to axiom_document_t struct to be freed
         * @param env Environment. MUST NOT be NULL    
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *
-        free) (struct axis2_om_document *document,
+        free) (struct axiom_document *document,
                const axis2_env_t *env);
 
       /** Builds the next node if the builder is not finished with input xml stream
@@ -69,8 +69,8 @@ extern "C"
         * @return pointer to the next node. NULL on error.
         */
       
-      axis2_om_node_t* (AXIS2_CALL *
-      build_next) (struct axis2_om_document *document,
+      axiom_node_t* (AXIS2_CALL *
+      build_next) (struct axiom_document *document,
                    const axis2_env_t *env);
 
       /**
@@ -80,8 +80,8 @@ extern "C"
         * @return returns a pointer to the root node. If no root present,
         *            this method tries to build the root. Returns NULL on error. 
         */
-        axis2_om_node_t* (AXIS2_CALL *
-        get_root_element)(struct axis2_om_document *document,
+        axiom_node_t* (AXIS2_CALL *
+        get_root_element)(struct axiom_document *document,
                           const axis2_env_t *env);
 
       /**
@@ -93,85 +93,85 @@ extern "C"
         */        
                                                         
         axis2_status_t (AXIS2_CALL *
-        set_root_element)(struct axis2_om_document *document,
+        set_root_element)(struct axiom_document *document,
                           const axis2_env_t *env,
-                          axis2_om_node_t *om_node);
+                          axiom_node_t *om_node);
        /**
         * This method builds the rest of the xml input stream from current position till
         * the root element is completed .
-        *@param document pointer to axis2_om_document_t struct to be built.
+        *@param document pointer to axiom_document_t struct to be built.
         *@param env environment MUST NOT be NULL.
         */
-        axis2_om_node_t* (AXIS2_CALL *
-        build_all)(struct axis2_om_document *document,
+        axiom_node_t* (AXIS2_CALL *
+        build_all)(struct axiom_document *document,
                    const axis2_env_t *env); 
         /**
          * get builder
          * @return builder , returns NULL if a builder is not associated with 
          *                   document
          */
-        struct axis2_om_stax_builder* (AXIS2_CALL *
-        get_builder)(struct axis2_om_document *document,
+        struct axiom_stax_builder* (AXIS2_CALL *
+        get_builder)(struct axiom_document *document,
                      const axis2_env_t *env);                                                         
         /**
          * @param om_document
          * @return status code AXIS2_SUCCESS on success , otherwise AXIS2_FAILURE
          */                                                  
         axis2_status_t (AXIS2_CALL *
-        serialize)(struct axis2_om_document *document,
+        serialize)(struct axiom_document *document,
                    const axis2_env_t *env,
-                   axis2_om_output_t *om_output);
+                   axiom_output_t *om_output);
                                                            
-    } axis2_om_document_ops_t;
+    } axiom_document_ops_t;
 
   /**
     * \brief OM document struct
     * Handles the XML document in OM
     */
-    typedef struct axis2_om_document
+    typedef struct axiom_document
     {
         /** ops of document struct */
-        axis2_om_document_ops_t *ops;
+        axiom_document_ops_t *ops;
       
-    } axis2_om_document_t;
+    } axiom_document_t;
 
   /**
-    * creates an axis2_om_document_t struct
+    * creates an axiom_document_t struct
     * @param env Environment. MUST NOT be NULL.
     * @param root pointer to document's root node. Optional, can be NULL
-    * @param builder pointer to axis2_om_stax_builder 
+    * @param builder pointer to axiom_stax_builder 
     * @return pointer to the newly created document.
     */
-    AXIS2_EXTERN axis2_om_document_t * AXIS2_CALL
-    axis2_om_document_create (const axis2_env_t *env,
-                              axis2_om_node_t * root,
-                              struct axis2_om_stax_builder *builder);
+    AXIS2_EXTERN axiom_document_t * AXIS2_CALL
+    axiom_document_create (const axis2_env_t *env,
+                              axiom_node_t * root,
+                              struct axiom_stax_builder *builder);
 
 /** frees given document */
-#define AXIS2_OM_DOCUMENT_FREE(document,env) \
+#define AXIOM_DOCUMENT_FREE(document,env) \
         ((document)->ops->free(document,env))
         
 /** builds next node of document */
-#define AXIS2_OM_DOCUMENT_BUILD_NEXT(document,env) \
+#define AXIOM_DOCUMENT_BUILD_NEXT(document,env) \
         ((document)->ops->build_next(document,env))
         
 /** gets the root eleemnt of given document */
-#define AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(document,env) \
+#define AXIOM_DOCUMENT_GET_ROOT_ELEMENT(document,env) \
         ((document)->ops->get_root_element(document,env))
 /** sets the root node */
-#define AXIS2_OM_DOCUMENT_SET_ROOT_ELEMENT(document,env,om_node) \
+#define AXIOM_DOCUMENT_SET_ROOT_ELEMENT(document,env,om_node) \
         ((document)->ops->set_root_element(document,env,om_node))
                
 /** build till the root node is complete */
-#define AXIS2_OM_DOCUMENT_BUILD_ALL(document,env) \
+#define AXIOM_DOCUMENT_BUILD_ALL(document,env) \
         ((document)->ops->build_all(document,env))
         
 /** returns the builder */
-#define AXIS2_OM_DOCUMENT_GET_BUILDER(document, env) \
+#define AXIOM_DOCUMENT_GET_BUILDER(document, env) \
         ((document)->ops->get_builder(document, env))
         
 /** serialize opertation */
-#define AXIS2_OM_DOCUMENT_SERIALIZE(document, env, om_output) \
+#define AXIOM_DOCUMENT_SERIALIZE(document, env, om_output) \
         ((document)->ops->serialize(document, env, om_output))                
 
 /** @} */
@@ -180,4 +180,4 @@ extern "C"
 }
 #endif
 
-#endif /* AXIS2_OM_DOCUMENT_H */
+#endif /* AXIOM_DOCUMENT_H */

@@ -14,16 +14,16 @@
  * limitations under the License.
  */
  
- #ifndef AXIS2_OM_CHILD_ELEMENT_ITERATOR_H
- #define AXIS2_OM_CHILD_ELEMENT_ITERATOR_H
+ #ifndef AXIOM_CHILD_ELEMENT_ITERATOR_H
+ #define AXIOM_CHILD_ELEMENT_ITERATOR_H
  
  /**
- *@file axis2_om_child_element_iterator.h   
+ *@file axiom_child_element_iterator.h   
  *@brief this is the iterator for om elemnts 
  */
   
-#include <axis2_om_node.h>
-#include <axis2_om_text.h>
+#include <axiom_node.h>
+#include <axiom_text.h>
   
 
 #ifdef __cplusplus
@@ -31,20 +31,20 @@ extern "C"
 {
 #endif
 
-typedef struct axis2_om_child_element_iterator_ops axis2_om_child_element_iterator_ops_t;
-typedef struct axis2_om_child_element_iterator axis2_om_child_element_iterator_t;
+typedef struct axiom_child_element_iterator_ops axiom_child_element_iterator_ops_t;
+typedef struct axiom_child_element_iterator axiom_child_element_iterator_t;
 
 /**
  * @defgroup axis2_xml_writer 
- * @ingroup axis2_om_parser
+ * @ingroup axiom_parser
  * @{
  */
  
    /**
-    * \brief axis2_om_child_element_iterator ops
-    * Encapsulator struct for ops of axis2_om_iterator
+    * \brief axiom_child_element_iterator ops
+    * Encapsulator struct for ops of axiom_iterator
     */
-    AXIS2_DECLARE_DATA struct axis2_om_child_element_iterator_ops
+    AXIS2_DECLARE_DATA struct axiom_child_element_iterator_ops
     {
         axis2_status_t (AXIS2_CALL *free_fn)
                             (void *iterator,
@@ -58,7 +58,7 @@ typedef struct axis2_om_child_element_iterator axis2_om_child_element_iterator_t
         * progress in any way other than by calling this method.
         */                                              
         axis2_status_t (AXIS2_CALL *
-      remove)(axis2_om_child_element_iterator_t *iterator,
+      remove)(axiom_child_element_iterator_t *iterator,
                 const axis2_env_t *env);
                              
        /**
@@ -67,46 +67,46 @@ typedef struct axis2_om_child_element_iterator axis2_om_child_element_iterator_t
         * rather than null with an error code set to environments error
         */                             
         axis2_bool_t (AXIS2_CALL *
-      has_next)(axis2_om_child_element_iterator_t *iterator,
+      has_next)(axiom_child_element_iterator_t *iterator,
                   const axis2_env_t *env);
     
        /**
         * Returns the next element in the iteration. Returns null if there 
       * is no more elements 
         */
-        axis2_om_node_t* (AXIS2_CALL *
-      next)(axis2_om_child_element_iterator_t *iterator,
+        axiom_node_t* (AXIS2_CALL *
+      next)(axiom_child_element_iterator_t *iterator,
               const axis2_env_t *env);
     };
     
     
-struct axis2_om_child_element_iterator
+struct axiom_child_element_iterator
 {
-    axis2_om_child_element_iterator_ops_t *ops;
+    axiom_child_element_iterator_ops_t *ops;
 };    
 
 /** 
  * @param current child
  * @param env environment 
- * return axis2_om_child_element_iterator_t 
+ * return axiom_child_element_iterator_t 
  */
 
-AXIS2_EXTERN  axis2_om_child_element_iterator_t * AXIS2_CALL
-axis2_om_child_element_iterator_create(const axis2_env_t *env, 
-                                       axis2_om_node_t *current_child);
+AXIS2_EXTERN  axiom_child_element_iterator_t * AXIS2_CALL
+axiom_child_element_iterator_create(const axis2_env_t *env, 
+                                       axiom_node_t *current_child);
                                   
 /************ Macros *********************************************/
 
-#define AXIS2_OM_CHILD_ELEMENT_ITERATOR_FREE(iterator, env) \
-        (((axis2_om_child_element_iterator_t *) iterator)->ops->free_fn(iterator, env))
+#define AXIOM_CHILD_ELEMENT_ITERATOR_FREE(iterator, env) \
+        (((axiom_child_element_iterator_t *) iterator)->ops->free_fn(iterator, env))
 
-#define AXIS2_OM_CHILD_ELEMENT_ITERATOR_REMOVE(iterator, env) \
+#define AXIOM_CHILD_ELEMENT_ITERATOR_REMOVE(iterator, env) \
         ((iterator)->ops->remove(iterator, env))
         
-#define AXIS2_OM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(iterator, env) \
+#define AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(iterator, env) \
         ((iterator)->ops->has_next(iterator, env))
         
-#define AXIS2_OM_CHILD_ELEMENT_ITERATOR_NEXT(iterator, env) \
+#define AXIOM_CHILD_ELEMENT_ITERATOR_NEXT(iterator, env) \
         ((iterator)->ops->next(iterator, env))        
         
 /** @} */
@@ -116,4 +116,4 @@ axis2_om_child_element_iterator_create(const axis2_env_t *env,
 #endif
 
 
-#endif /* AXIS2_OM_CHILD_ELEMENT_ITERATOR_H */
+#endif /* AXIOM_CHILD_ELEMENT_ITERATOR_H */

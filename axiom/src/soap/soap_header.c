@@ -21,7 +21,7 @@
  #include <axis2_soap_const.h>
  #include <axis2_soap_builder.h>
  #include <stdio.h>
- #include <axis2_om_node_internal.h>
+ #include <axiom_node_internal.h>
  #include <axis2_array_list.h>
  
  /******************* impl struct *********************************************/
@@ -30,7 +30,7 @@
  {
     axis2_soap_header_t soap_header;
     
-    axis2_om_node_t *om_ele_node;
+    axiom_node_t *om_ele_node;
     
     int soap_version;
     
@@ -58,25 +58,25 @@ axis2_soap_header_block_t* AXIS2_CALL
 axis2_soap_header_add_header_block(axis2_soap_header_t* header,
                                    const axis2_env_t *env,
                                    const axis2_char_t *localname,
-                                   axis2_om_namespace_t *ns); 
+                                   axiom_namespace_t *ns); 
 axis2_hash_t* AXIS2_CALL 
 axis2_soap_header_examine_header_blocks
                                 (axis2_soap_header_t* header,
                                  const axis2_env_t *env,
                                  axis2_char_t* param_role);
     
-axis2_om_children_qname_iterator_t* AXIS2_CALL 
+axiom_children_qname_iterator_t* AXIS2_CALL 
 axis2_soap_header_examine_all_header_blocks
                                 (axis2_soap_header_t* header,
                                  const axis2_env_t *env);
         
-axis2_om_children_with_specific_attribute_iterator_t *
+axiom_children_with_specific_attribute_iterator_t *
 AXIS2_CALL axis2_soap_header_extract_header_blocks
                                 (axis2_soap_header_t *header,
                                  const axis2_env_t *env,
                                  axis2_char_t *role);
 
-axis2_om_node_t* AXIS2_CALL 
+axiom_node_t* AXIS2_CALL 
 axis2_soap_header_get_base_node(axis2_soap_header_t *header,
                                 const axis2_env_t *env);
                                              
@@ -171,13 +171,13 @@ axis2_soap_header_create_with_parent(const axis2_env_t *env,
     axis2_soap_header_impl_t *header_impl = NULL;
     axis2_soap_header_t *header = NULL;
     
-    axis2_om_element_t *this_ele = NULL;
-    axis2_om_node_t *this_node = NULL;
-    axis2_om_node_t *body_node = NULL;    
-    axis2_om_node_t *parent_node = NULL;
-    axis2_om_element_t *parent_ele = NULL;
+    axiom_element_t *this_ele = NULL;
+    axiom_node_t *this_node = NULL;
+    axiom_node_t *body_node = NULL;    
+    axiom_node_t *parent_node = NULL;
+    axiom_element_t *parent_ele = NULL;
     
-    axis2_om_namespace_t *parent_ns = NULL;
+    axiom_namespace_t *parent_ns = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, envelope, NULL);
@@ -194,27 +194,27 @@ axis2_soap_header_create_with_parent(const axis2_env_t *env,
     parent_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(envelope, env);
     
     if(!parent_node || 
-            AXIS2_OM_NODE_GET_NODE_TYPE(parent_node, env) != AXIS2_OM_ELEMENT)
+            AXIOM_NODE_GET_NODE_TYPE(parent_node, env) != AXIOM_ELEMENT)
     {
         AXIS2_SOAP_HEADER_FREE(header, env);
         return NULL;
     }        
 
-    parent_ele = (axis2_om_element_t *)
-                    AXIS2_OM_NODE_GET_DATA_ELEMENT(parent_node, env);
+    parent_ele = (axiom_element_t *)
+                    AXIOM_NODE_GET_DATA_ELEMENT(parent_node, env);
     if(!parent_ele)
     {
         AXIS2_SOAP_HEADER_FREE(header, env);
         return NULL;
     }
-    if(NULL != AXIS2_OM_NODE_GET_FIRST_CHILD(parent_node, env))
+    if(NULL != AXIOM_NODE_GET_FIRST_CHILD(parent_node, env))
     {
-        body_node = AXIS2_OM_NODE_GET_FIRST_CHILD(parent_node, env);
-        AXIS2_OM_NODE_DETACH(body_node, env);
+        body_node = AXIOM_NODE_GET_FIRST_CHILD(parent_node, env);
+        AXIOM_NODE_DETACH(body_node, env);
     }
 
-    parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
-    this_ele = axis2_om_element_create(env, parent_node,
+    parent_ns = AXIOM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+    this_ele = axiom_element_create(env, parent_node,
                  AXIS2_SOAP_HEADER_LOCAL_NAME, parent_ns, &this_node);
     if(!this_ele)
     {
@@ -227,7 +227,7 @@ axis2_soap_header_create_with_parent(const axis2_env_t *env,
     
     if(NULL != body_node)
     {
-        AXIS2_OM_NODE_ADD_CHILD(parent_node, env, body_node);
+        AXIOM_NODE_ADD_CHILD(parent_node, env, body_node);
     }
     return &(header_impl->soap_header);                 
 }
@@ -293,14 +293,14 @@ axis2_soap_header_block_t* AXIS2_CALL
 axis2_soap_header_add_header_block(axis2_soap_header_t* header,
                                    const axis2_env_t *env,
                                    const axis2_char_t *localname,
-                                   axis2_om_namespace_t *ns)
+                                   axiom_namespace_t *ns)
 {
     axis2_soap_header_impl_t *header_impl = NULL;
     axis2_soap_header_block_t *header_block = NULL;
     
-    axis2_om_namespace_t *cloned_ns = NULL;
+    axiom_namespace_t *cloned_ns = NULL;
     
-    axis2_om_node_t* header_block_node = NULL;
+    axiom_node_t* header_block_node = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, localname, NULL);
@@ -308,7 +308,7 @@ axis2_soap_header_add_header_block(axis2_soap_header_t* header,
     
     header_impl = AXIS2_INTF_TO_IMPL(header);
     
-    cloned_ns = AXIS2_OM_NAMESPACE_CLONE(ns, env);
+    cloned_ns = AXIOM_NAMESPACE_CLONE(ns, env);
     if(!cloned_ns)
         return NULL;
         
@@ -322,25 +322,25 @@ axis2_soap_header_add_header_block(axis2_soap_header_t* header,
     
     if(header_block_node)
     {
-        axis2_om_element_t *hb_ele =  NULL;
+        axiom_element_t *hb_ele =  NULL;
         axis2_char_t *uri = NULL;
         axis2_char_t *prefix = NULL;
         
-        axis2_om_node_set_complete(header_block_node, env, AXIS2_TRUE);
+        axiom_node_set_complete(header_block_node, env, AXIS2_TRUE);
         
-        hb_ele = (axis2_om_element_t *)
-            AXIS2_OM_NODE_GET_DATA_ELEMENT(header_block_node, env);
+        hb_ele = (axiom_element_t *)
+            AXIOM_NODE_GET_DATA_ELEMENT(header_block_node, env);
         if(hb_ele)
         {
-            axis2_om_namespace_t *dec_ns = NULL;
-            uri = AXIS2_OM_NAMESPACE_GET_URI(cloned_ns, env);
-            prefix = AXIS2_OM_NAMESPACE_GET_PREFIX(cloned_ns, env);
+            axiom_namespace_t *dec_ns = NULL;
+            uri = AXIOM_NAMESPACE_GET_URI(cloned_ns, env);
+            prefix = AXIOM_NAMESPACE_GET_PREFIX(cloned_ns, env);
 
-            dec_ns = AXIS2_OM_ELEMENT_FIND_DECLARED_NAMESPACE(hb_ele, env, uri, prefix);
+            dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(hb_ele, env, uri, prefix);
             if(!dec_ns)
             {
                 /** this namespace it not in hb_ele list so free it */
-                AXIS2_OM_NAMESPACE_FREE(cloned_ns, env);
+                AXIOM_NAMESPACE_FREE(cloned_ns, env);
                 cloned_ns = NULL;
             }
         
@@ -364,13 +364,13 @@ axis2_soap_header_examine_header_blocks
     return AXIS2_INTF_TO_IMPL(header)->header_blocks;
 }
     
-axis2_om_children_qname_iterator_t* AXIS2_CALL 
+axiom_children_qname_iterator_t* AXIS2_CALL 
 axis2_soap_header_examine_all_header_blocks
                                 (axis2_soap_header_t* header,
                                  const axis2_env_t *env)
 {
     axis2_soap_header_impl_t *header_impl = NULL;
-    axis2_om_element_t *om_ele = NULL;
+    axiom_element_t *om_ele = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
@@ -378,18 +378,18 @@ axis2_soap_header_examine_all_header_blocks
     if(!header_impl->om_ele_node)
         return NULL;
         
-    om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(header_impl->om_ele_node, env);
+    om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(header_impl->om_ele_node, env);
     
     if(om_ele)
     {
-    return AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(om_ele,
+    return AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(om_ele,
                 env, NULL, header_impl->om_ele_node);
     }
     else
         return NULL;
 }
         
-axis2_om_children_with_specific_attribute_iterator_t *
+axiom_children_with_specific_attribute_iterator_t *
 AXIS2_CALL axis2_soap_header_extract_header_blocks
                                 (axis2_soap_header_t *header,
                                  const axis2_env_t *env,
@@ -400,13 +400,13 @@ AXIS2_CALL axis2_soap_header_extract_header_blocks
     const axis2_char_t *localname = NULL;
     const axis2_char_t *nsuri     = NULL;
     
-    axis2_om_node_t *first_node = NULL;
-    axis2_om_element_t *first_ele =  NULL;
+    axiom_node_t *first_node = NULL;
+    axiom_element_t *first_ele =  NULL;
     
     axis2_qname_t *qn = NULL;
     
-    axis2_om_element_t *header_om_ele = NULL;
-    axis2_om_children_with_specific_attribute_iterator_t* iter = NULL;
+    axiom_element_t *header_om_ele = NULL;
+    axiom_children_with_specific_attribute_iterator_t* iter = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
@@ -429,16 +429,16 @@ AXIS2_CALL axis2_soap_header_extract_header_blocks
     if(!qn)
         return NULL;
     
-    header_om_ele = (axis2_om_element_t*)
-        AXIS2_OM_NODE_GET_DATA_ELEMENT(header_impl->om_ele_node, env);
+    header_om_ele = (axiom_element_t*)
+        AXIOM_NODE_GET_DATA_ELEMENT(header_impl->om_ele_node, env);
     
     if(header_om_ele)
     {
-        first_ele = AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(header_om_ele, env,
+        first_ele = AXIOM_ELEMENT_GET_FIRST_ELEMENT(header_om_ele, env,
                 header_impl->om_ele_node, &first_node);
         if(NULL != first_node)
         {
-            return axis2_om_children_with_specific_attribute_iterator_create(env, 
+            return axiom_children_with_specific_attribute_iterator_create(env, 
                     first_node, qn, role,   AXIS2_TRUE);
         }                    
     }
@@ -452,7 +452,7 @@ AXIS2_CALL axis2_soap_header_extract_header_blocks
 axis2_status_t AXIS2_CALL 
 axis2_soap_header_set_base_node(axis2_soap_header_t *header,
                                 const axis2_env_t *env,
-                                axis2_om_node_t *node)
+                                axiom_node_t *node)
 {
     axis2_soap_header_impl_t *header_impl = NULL;
     
@@ -461,7 +461,7 @@ axis2_soap_header_set_base_node(axis2_soap_header_t *header,
     
     header_impl = AXIS2_INTF_TO_IMPL(header);
    
-   if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
+   if(AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
    {
         AXIS2_ERROR_SET(env->error, 
             AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
@@ -473,7 +473,7 @@ axis2_soap_header_set_base_node(axis2_soap_header_t *header,
    return AXIS2_SUCCESS;
 }
 
-axis2_om_node_t* AXIS2_CALL 
+axiom_node_t* AXIS2_CALL 
 axis2_soap_header_get_base_node(axis2_soap_header_t *header,
                                 const axis2_env_t *env)
 {
@@ -566,10 +566,10 @@ axis2_soap_header_get_header_blocks_with_namespace_uri
     
     axis2_soap_header_block_t *header_block = NULL;
     
-    axis2_om_node_t *header_block_om_node = NULL;
-    axis2_om_element_t *header_block_om_ele = NULL;
+    axiom_node_t *header_block_om_node = NULL;
+    axiom_element_t *header_block_om_ele = NULL;
     
-    axis2_om_namespace_t *ns = NULL;
+    axiom_namespace_t *ns = NULL;
     axis2_char_t *hb_namespace_uri = NULL;
     
     int found = 0;
@@ -598,15 +598,15 @@ axis2_soap_header_get_header_blocks_with_namespace_uri
             header_block_om_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env);
             if(header_block_om_node)
             {
-                header_block_om_ele  = (axis2_om_element_t *)
-                    AXIS2_OM_NODE_GET_DATA_ELEMENT(header_block_om_node, env);
+                header_block_om_ele  = (axiom_element_t *)
+                    AXIOM_NODE_GET_DATA_ELEMENT(header_block_om_node, env);
                 if(header_block_om_ele)
                 {
-                    ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(header_block_om_ele, env,
+                    ns = AXIOM_ELEMENT_GET_NAMESPACE(header_block_om_ele, env,
                              header_block_om_node);
                     if(NULL != ns)
                     {
-                        hb_namespace_uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+                        hb_namespace_uri = AXIOM_NAMESPACE_GET_URI(ns, env);
                         if(AXIS2_STRCMP(hb_namespace_uri, ns_uri) == 0)
                         {
                             AXIS2_ARRAY_LIST_ADD(header_block_list, env, header_block);

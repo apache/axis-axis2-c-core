@@ -14,18 +14,18 @@
  * limitations under the License.
  */
  
- #ifndef AXIS2_OM_NAMESPACE_INTERNAL_H
- #define AXIS2_OM_NAMESPACE_INTERNAL_H
+ #ifndef AXIOM_NAMESPACE_INTERNAL_H
+ #define AXIOM_NAMESPACE_INTERNAL_H
  
  
- /** @defgroup axis2_om AXIOM (Axis Object Model)
+ /** @defgroup axiom AXIOM (Axis Object Model)
   * @ingroup axis2
   * @{
   */
   
 /** @} */
 
-#include <axis2_om_namespace.h>
+#include <axiom_namespace.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -33,7 +33,7 @@ extern "C"
 #endif
    
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_namespace_set_uri(axis2_om_namespace_t *ns,
+axiom_namespace_set_uri(axiom_namespace_t *ns,
                           const axis2_env_t *env,
                           const axis2_char_t *ns_uri);
                           
@@ -41,4 +41,4 @@ axis2_om_namespace_set_uri(axis2_om_namespace_t *ns,
 }
 #endif
 
-#endif /** AXIS2_OM_NAMESPACE_H */
+#endif /** AXIOM_NAMESPACE_H */

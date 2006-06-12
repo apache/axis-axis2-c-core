@@ -15,78 +15,78 @@
  */
 
 
-#include <axis2_om_document.h>
-#include <axis2_om_stax_builder.h>
+#include <axiom_document.h>
+#include <axiom_stax_builder.h>
 #include <axis2_string.h>
 
 axis2_status_t AXIS2_CALL 
-axis2_om_document_free (axis2_om_document_t * document,
+axiom_document_free (axiom_document_t * document,
                         const axis2_env_t *env);
                         
-axis2_om_node_t * AXIS2_CALL
-axis2_om_document_build_next (axis2_om_document_t *document,
+axiom_node_t * AXIS2_CALL
+axiom_document_build_next (axiom_document_t *document,
                               const axis2_env_t *env);
                               
-axis2_om_node_t * AXIS2_CALL 
-axis2_om_document_get_root_element (axis2_om_document_t *document,
+axiom_node_t * AXIS2_CALL 
+axiom_document_get_root_element (axiom_document_t *document,
                                     const axis2_env_t *env);
                                    
 axis2_status_t  AXIS2_CALL
-axis2_om_document_set_root_element(axis2_om_document_t *document,
+axiom_document_set_root_element(axiom_document_t *document,
                                    const axis2_env_t *env,
-                                   axis2_om_node_t *node);  
+                                   axiom_node_t *node);  
 
-axis2_om_node_t* AXIS2_CALL
-axis2_om_document_build_all(axis2_om_document_t *document,
+axiom_node_t* AXIS2_CALL
+axiom_document_build_all(axiom_document_t *document,
                             const axis2_env_t *env);
 
-axis2_om_stax_builder_t* AXIS2_CALL
-axis2_om_document_get_builder(axis2_om_document_t *document,
+axiom_stax_builder_t* AXIS2_CALL
+axiom_document_get_builder(axiom_document_t *document,
                               const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_om_document_serialize(axis2_om_document_t *document,
+axiom_document_serialize(axiom_document_t *document,
                             const axis2_env_t *env,
-                            axis2_om_output_t *om_output);                              
+                            axiom_output_t *om_output);                              
                                  
 /********************************* end of function pointers ******************/
 
-typedef struct axis2_om_document_impl_t
+typedef struct axiom_document_impl_t
 {
-    axis2_om_document_t om_document;
+    axiom_document_t om_document;
     /** root element */
-    axis2_om_node_t *root_element;
+    axiom_node_t *root_element;
     /** last child */
-    axis2_om_node_t *last_child;
+    axiom_node_t *last_child;
     /** first child */
-    axis2_om_node_t *first_child;
+    axiom_node_t *first_child;
     /** done building the document */
     axis2_bool_t done;
     /** builder of the document */
-    struct axis2_om_stax_builder *builder;
+    struct axiom_stax_builder *builder;
     /** char set encoding */        
     axis2_char_t *char_set_encoding;
     /** XML version */
     axis2_char_t *xml_version;
-}axis2_om_document_impl_t;        
+}axiom_document_impl_t;        
 
 /************************************ Macro ************************************/ 
 
-#define AXIS2_INTF_TO_IMPL(document) ((axis2_om_document_impl_t*)document)
+#define AXIS2_INTF_TO_IMPL(document) ((axiom_document_impl_t*)document)
 
 /*******************************************************************************/
 
-AXIS2_EXTERN axis2_om_document_t * AXIS2_CALL
-axis2_om_document_create (const axis2_env_t *env,
-                          axis2_om_node_t *root,
-                          axis2_om_stax_builder_t *builder)
+AXIS2_EXTERN axiom_document_t * AXIS2_CALL
+axiom_document_create (const axis2_env_t *env,
+                          axiom_node_t *root,
+                          axiom_stax_builder_t *builder)
 {
-    axis2_om_document_impl_t *document = NULL;
+    axiom_document_impl_t *document = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
-    document = (axis2_om_document_impl_t *) AXIS2_MALLOC (
-                env->allocator, sizeof (axis2_om_document_impl_t));
+    document = (axiom_document_impl_t *) AXIS2_MALLOC (
+                env->allocator, sizeof (axiom_document_impl_t));
     
     if (!document)
     {
@@ -121,8 +121,8 @@ axis2_om_document_create (const axis2_env_t *env,
         return NULL;
     }
     
-    document->om_document.ops = (axis2_om_document_ops_t *) AXIS2_MALLOC (env->allocator,
-                                                  sizeof(axis2_om_document_ops_t));
+    document->om_document.ops = (axiom_document_ops_t *) AXIS2_MALLOC (env->allocator,
+                                                  sizeof(axiom_document_ops_t));
     if (!document->om_document.ops)
     {
         
@@ -133,22 +133,22 @@ axis2_om_document_create (const axis2_env_t *env,
         return NULL;
     }
   
-    document->om_document.ops->free = axis2_om_document_free;
-    document->om_document.ops->build_next = axis2_om_document_build_next;
-    document->om_document.ops->get_root_element = axis2_om_document_get_root_element;
-    document->om_document.ops->set_root_element = axis2_om_document_set_root_element;
-    document->om_document.ops->build_all = axis2_om_document_build_all;
-    document->om_document.ops->get_builder = axis2_om_document_get_builder;
-    document->om_document.ops->serialize = axis2_om_document_serialize;
+    document->om_document.ops->free = axiom_document_free;
+    document->om_document.ops->build_next = axiom_document_build_next;
+    document->om_document.ops->get_root_element = axiom_document_get_root_element;
+    document->om_document.ops->set_root_element = axiom_document_set_root_element;
+    document->om_document.ops->build_all = axiom_document_build_all;
+    document->om_document.ops->get_builder = axiom_document_get_builder;
+    document->om_document.ops->serialize = axiom_document_serialize;
     
     return &(document->om_document);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_om_document_free (axis2_om_document_t *om_document,
+axiom_document_free (axiom_document_t *om_document,
                         const axis2_env_t *env)
 {
-    axis2_om_document_impl_t *document = NULL;
+    axiom_document_impl_t *document = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     document = AXIS2_INTF_TO_IMPL(om_document);
@@ -166,7 +166,7 @@ axis2_om_document_free (axis2_om_document_t *om_document,
     if(document->root_element)
     {
     
-        AXIS2_OM_NODE_FREE_TREE(document->root_element, env);
+        AXIOM_NODE_FREE_TREE(document->root_element, env);
         document->root_element = NULL;
     }
     if(document->om_document.ops)
@@ -179,12 +179,12 @@ axis2_om_document_free (axis2_om_document_t *om_document,
 }
 
 
-axis2_om_node_t* AXIS2_CALL
-axis2_om_document_build_next (axis2_om_document_t *om_document,
+axiom_node_t* AXIS2_CALL
+axiom_document_build_next (axiom_document_t *om_document,
                                    const axis2_env_t *env)
 {
-    axis2_om_document_impl_t *document = NULL;
-    axis2_om_node_t  *last_child = NULL;
+    axiom_document_impl_t *document = NULL;
+    axiom_node_t  *last_child = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
   
@@ -194,7 +194,7 @@ axis2_om_document_build_next (axis2_om_document_t *om_document,
    
     if (!(document->root_element))
     {
-        last_child = AXIS2_OM_STAX_BUILDER_NEXT (document->builder, env);
+        last_child = AXIOM_STAX_BUILDER_NEXT (document->builder, env);
         if(NULL != last_child)
         {
             document->last_child = last_child;
@@ -203,22 +203,22 @@ axis2_om_document_build_next (axis2_om_document_t *om_document,
         return last_child;
     }
     else if ((NULL != document->root_element) &&
-        (AXIS2_OM_NODE_IS_COMPLETE(document->root_element, env) == AXIS2_TRUE))
+        (AXIOM_NODE_IS_COMPLETE(document->root_element, env) == AXIS2_TRUE))
         return NULL;            /* Nothing wrong but done with pulling */
     
-    last_child = AXIS2_OM_STAX_BUILDER_NEXT (document->builder, env);
+    last_child = AXIOM_STAX_BUILDER_NEXT (document->builder, env);
     if(NULL != last_child)
         document->last_child = last_child;
     return last_child;
 }
 
 
-axis2_om_node_t * AXIS2_CALL
-axis2_om_document_get_root_element (axis2_om_document_t * document,
+axiom_node_t * AXIS2_CALL
+axiom_document_get_root_element (axiom_document_t * document,
                                     const axis2_env_t *env)
 {
-    axis2_om_node_t *node = NULL;
-    axis2_om_document_impl_t *doc_impl = NULL;
+    axiom_node_t *node = NULL;
+    axiom_document_impl_t *doc_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     doc_impl = AXIS2_INTF_TO_IMPL(document);
     
@@ -228,7 +228,7 @@ axis2_om_document_get_root_element (axis2_om_document_t * document,
     }
     else
     {  
-        node = axis2_om_document_build_next(document, env);
+        node = axiom_document_build_next(document, env);
             
         if(NULL != doc_impl->root_element)
         {
@@ -246,12 +246,12 @@ axis2_om_document_get_root_element (axis2_om_document_t * document,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_om_document_set_root_element(axis2_om_document_t *document,
+axiom_document_set_root_element(axiom_document_t *document,
                                    const axis2_env_t *env,
-                                   axis2_om_node_t *node)
+                                   axiom_node_t *node)
 {
     int status = AXIS2_SUCCESS;
-    axis2_om_document_impl_t *document_impl = NULL;
+    axiom_document_impl_t *document_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node, AXIS2_FAILURE);
@@ -260,7 +260,7 @@ axis2_om_document_set_root_element(axis2_om_document_t *document,
     
     if(NULL != document_impl->root_element)
     {
-        status = AXIS2_OM_NODE_FREE_TREE(document_impl->root_element, env);
+        status = AXIOM_NODE_FREE_TREE(document_impl->root_element, env);
         if(status == AXIS2_SUCCESS)
         {
             document_impl->root_element = node;
@@ -275,27 +275,27 @@ axis2_om_document_set_root_element(axis2_om_document_t *document,
     return AXIS2_SUCCESS;
 }
 
-axis2_om_node_t* AXIS2_CALL
-axis2_om_document_build_all(struct axis2_om_document *document,
+axiom_node_t* AXIS2_CALL
+axiom_document_build_all(struct axiom_document *document,
                             const axis2_env_t *env)
 {   
-    axis2_om_document_impl_t *doc_impl = NULL;
+    axiom_document_impl_t *doc_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     if(!document)
         return NULL;
     doc_impl = AXIS2_INTF_TO_IMPL(document);
     if(!doc_impl->root_element)
     {
-        axis2_om_document_get_root_element(document, env);
+        axiom_document_get_root_element(document, env);
     }
     if(NULL != doc_impl->root_element)
     {
          do{ 
-            axis2_om_node_t *ret_val = NULL;
-            ret_val = AXIS2_OM_DOCUMENT_BUILD_NEXT(document,env);
+            axiom_node_t *ret_val = NULL;
+            ret_val = AXIOM_DOCUMENT_BUILD_NEXT(document,env);
                 if(!ret_val)
                 {
-                    if(AXIS2_OM_NODE_IS_COMPLETE(doc_impl->root_element, env) 
+                    if(AXIOM_NODE_IS_COMPLETE(doc_impl->root_element, env) 
                             == AXIS2_TRUE)
                     {
                         /** document is completly build */
@@ -307,15 +307,15 @@ axis2_om_document_build_all(struct axis2_om_document *document,
                         return NULL;
                     }            
                 }
-           }while( !AXIS2_OM_NODE_IS_COMPLETE(doc_impl->root_element,env));
+           }while( !AXIOM_NODE_IS_COMPLETE(doc_impl->root_element,env));
         return doc_impl->root_element;
     }
     else
         return NULL;
 }
 
-axis2_om_stax_builder_t* AXIS2_CALL
-axis2_om_document_get_builder(axis2_om_document_t *document,
+axiom_stax_builder_t* AXIS2_CALL
+axiom_document_get_builder(axiom_document_t *document,
                               const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -323,11 +323,11 @@ axis2_om_document_get_builder(axis2_om_document_t *document,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_om_document_serialize(axis2_om_document_t *document,
+axiom_document_serialize(axiom_document_t *document,
                             const axis2_env_t *env,
-                            axis2_om_output_t *om_output)
+                            axiom_output_t *om_output)
 {
-    axis2_om_document_impl_t *document_impl = NULL;
+    axiom_document_impl_t *document_impl = NULL;
     if(!document)
         return AXIS2_FAILURE;
         
@@ -335,11 +335,11 @@ axis2_om_document_serialize(axis2_om_document_t *document,
     document_impl = AXIS2_INTF_TO_IMPL(document);
     if(!(document_impl->root_element))
     {
-        axis2_om_document_get_root_element(document, env);        
+        axiom_document_get_root_element(document, env);        
     }
     if(NULL != document_impl->root_element)
     {    
-        return AXIS2_OM_NODE_SERIALIZE(document_impl->root_element, 
+        return AXIOM_NODE_SERIALIZE(document_impl->root_element, 
                     env, om_output);
     }
     else

@@ -14,37 +14,37 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_OM_COMMENT_H
-#define AXIS2_OM_COMMENT_H
+#ifndef AXIOM_COMMENT_H
+#define AXIOM_COMMENT_H
 
 /**
- * @file axis2_om_comment.h
- * @brief defines axis2_om_comment_t struct, and manipulation functions
+ * @file axiom_comment.h
+ * @brief defines axiom_comment_t struct, and manipulation functions
  */
 
-#include <axis2_om_node.h>
-#include <axis2_om_output.h>
+#include <axiom_node.h>
+#include <axiom_output.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    struct axis2_om_comment;
-    struct axis2_om_comment_ops;
+    struct axiom_comment;
+    struct axiom_comment_ops;
 
 /**
- * @defgroup axis2_om_comment OM Comment
- * @ingroup axis2_om 
+ * @defgroup axiom_comment OM Comment
+ * @ingroup axiom 
  * @{
  */
 
 
   /** 
     *   @brief OM comment ops struct
-    *   Encapsulator struct for ops of axis2_om_comment_t
+    *   Encapsulator struct for ops of axiom_comment_t
     */
- AXIS2_DECLARE_DATA  typedef struct axis2_om_comment_ops
+ AXIS2_DECLARE_DATA  typedef struct axiom_comment_ops
     {
       /**
         * Free a axis2_comment_t struct
@@ -54,53 +54,53 @@ extern "C"
         *                AXIS2_SUCCESS on success ,AXIS2_FAILURE on error.
         */
         axis2_status_t (AXIS2_CALL *
-        free) (struct axis2_om_comment *om_comment,
+        free) (struct axiom_comment *om_comment,
                const axis2_env_t *env);
        /** get the comments data
-        * @param om_comment a pointer to axis2_om_comment_t struct
+        * @param om_comment a pointer to axiom_comment_t struct
         * @param env environment, MUST NOT be NULL 
         * @returns comment text
         */
                
         axis2_char_t* (AXIS2_CALL *
-        get_value)(struct axis2_om_comment *om_comment,
+        get_value)(struct axiom_comment *om_comment,
                    const axis2_env_t *env);
        /**
         * set comment data
-        * @param om_comment pointer to axis2_om_comment_t struct
+        * @param om_comment pointer to axiom_comment_t struct
         * @param env environment, MUST NOT be NULL.
         * @param value comment text
         * @returns AXIS2_SUCCESS on success , AXIS2_FAILURE on error
         */
         axis2_status_t (AXIS2_CALL *
-        set_value)(struct axis2_om_comment *om_comment,
+        set_value)(struct axiom_comment *om_comment,
                   const axis2_env_t *env,
                   const axis2_char_t* value);
         /**
          *  serialize function 
-         *  @param om_comment pointer to axis2_om_comment_t struct
+         *  @param om_comment pointer to axiom_comment_t struct
          *  @param env environment, MUST NOT be NULL.
          *  @param om_output pointer to om_output_t struct
          *  @return AXIS2_SUCCESS on success, AXIS2_FAILURE on error.
          */
         axis2_status_t (AXIS2_CALL *
-        serialize)(struct axis2_om_comment *om_comment,
+        serialize)(struct axiom_comment *om_comment,
                    const axis2_env_t *env,
-                   axis2_om_output_t *om_output);
+                   axiom_output_t *om_output);
                                                                                             
                                               
-    } axis2_om_comment_ops_t;
+    } axiom_comment_ops_t;
 
   /** 
     * \brief OM comment struct
     * Handles the XML comment in OM
     */
-    typedef struct axis2_om_comment
+    typedef struct axiom_comment
     {
         /** ops struct */
-        axis2_om_comment_ops_t *ops;
+        axiom_comment_ops_t *ops;
 
-    } axis2_om_comment_t;
+    } axiom_comment_t;
 
   /**
     * Creates a comment struct
@@ -109,27 +109,27 @@ extern "C"
     * @param value comment text
     * @param node This is an out parameter.cannot be NULL.
     *        Returns the node corresponding to the comment created.
-    *        Node type will be set to AXIS2_OM_COMMENT
+    *        Node type will be set to AXIOM_COMMENT
     * @return a pointer to the newly created comment struct
     */
-    AXIS2_EXTERN axis2_om_comment_t * AXIS2_CALL 
-    axis2_om_comment_create (const axis2_env_t *env,
-                             axis2_om_node_t *parent,
+    AXIS2_EXTERN axiom_comment_t * AXIS2_CALL 
+    axiom_comment_create (const axis2_env_t *env,
+                             axiom_node_t *parent,
                              const axis2_char_t *value,
-                             axis2_om_node_t **node);
+                             axiom_node_t **node);
 
 
 /** free given comment */
-#define AXIS2_OM_COMMENT_FREE(om_comment, env) \
+#define AXIOM_COMMENT_FREE(om_comment, env) \
         ((om_comment)->ops->free(om_comment, env))
 /** get comment text */
-#define AXIS2_OM_COMMENT_GET_VALUE(om_comment, env) \
+#define AXIOM_COMMENT_GET_VALUE(om_comment, env) \
         ((om_comment)->ops->get_value(om_comment, env))
 /** set comment text */        
-#define AXIS2_OM_COMMENT_SET_VALUE(om_comment, env, value) \
+#define AXIOM_COMMENT_SET_VALUE(om_comment, env, value) \
         ((om_comment)->ops->set_value(om_comment, env, value))
 /** serialize */
-#define AXIS2_OM_COMMENT_SERIALIZE(om_comment, env, om_output) \
+#define AXIOM_COMMENT_SERIALIZE(om_comment, env, om_output) \
         ((om_comment)->ops->serialize(om_comment, env, om_output))
 
 /** @} */
@@ -138,4 +138,4 @@ extern "C"
 }
 #endif
 
-#endif                          /* AXIS2_OM_COMMENT_H */
+#endif                          /* AXIOM_COMMENT_H */

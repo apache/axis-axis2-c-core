@@ -72,7 +72,7 @@ typedef struct axis2_soap_fault_value axis2_soap_fault_value_t;
         * @param env Environment. MUST NOT BE NULL
         * @param text value to be set
         */
-        axis2_om_node_t* (AXIS2_CALL *
+        axiom_node_t* (AXIS2_CALL *
       get_base_node)(axis2_soap_fault_value_t *fault_value,
                        const axis2_env_t *env);
         /**

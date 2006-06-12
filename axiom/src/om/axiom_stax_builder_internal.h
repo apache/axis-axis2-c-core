@@ -14,18 +14,18 @@
  * limitations under the License.
  */
  
- #ifndef AXIS2_OM_STAX_BUILDER_INTERNAL_H
- #define AXIS2_OM_STAX_BUILDER_INTERNAL_H
+ #ifndef AXIOM_STAX_BUILDER_INTERNAL_H
+ #define AXIOM_STAX_BUILDER_INTERNAL_H
  
  
- /** @defgroup axis2_om AXIOM (Axis Object Model)
+ /** @defgroup axiom AXIOM (Axis Object Model)
   * @ingroup axis2
   * @{
   */
   
 /** @} */
 
-#include <axis2_om_stax_builder.h>
+#include <axiom_stax_builder.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -33,30 +33,30 @@ extern "C"
 #endif
   
 /**
- * @defgroup axis2_om_stax builder
- * @ingroup axis2_om 
+ * @defgroup axiom_stax builder
+ * @ingroup axiom 
  * @{
  */
     
 AXIS2_EXTERN int AXIS2_CALL
-axis2_om_stax_builder_get_current_event(axis2_om_stax_builder_t *builder,
+axiom_stax_builder_get_current_event(axiom_stax_builder_t *builder,
                                         const axis2_env_t *env);
                                         
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_stax_builder_set_lastnode(axis2_om_stax_builder_t *builder,
+axiom_stax_builder_set_lastnode(axiom_stax_builder_t *builder,
                                     const axis2_env_t *env,
-                                    axis2_om_node_t *om_node);
+                                    axiom_node_t *om_node);
                                     
 AXIS2_EXTERN int AXIS2_CALL
-axis2_om_stax_builder_get_element_level(axis2_om_stax_builder_t* builder,
+axiom_stax_builder_get_element_level(axiom_stax_builder_t* builder,
                                         const axis2_env_t *env); 
                                             
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_stax_builder_set_element_level(axis2_om_stax_builder_t* builder,
+axiom_stax_builder_set_element_level(axiom_stax_builder_t* builder,
                                         const axis2_env_t *env,
                                         int element_level);  
-AXIS2_EXTERN axis2_om_node_t* AXIS2_CALL
-axis2_om_stax_builder_get_lastnode(axis2_om_stax_builder_t *builder,
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+axiom_stax_builder_get_lastnode(axiom_stax_builder_t *builder,
                                    const axis2_env_t *env);
   
 /** @} */
@@ -65,4 +65,4 @@ axis2_om_stax_builder_get_lastnode(axis2_om_stax_builder_t *builder,
 }
 #endif
 
-#endif /** AXIS2_OM_STAX_BUILDER_INTERNAL_H */
+#endif /** AXIOM_STAX_BUILDER_INTERNAL_H */

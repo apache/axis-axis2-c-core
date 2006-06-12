@@ -14,29 +14,29 @@
  * limitations under the License.
  */
  
-#ifndef AXIS2_OM_H
-#define AXIS2_OM_H
-#include <axis2_om_node.h>
-#include <axis2_om_attribute.h>
-#include <axis2_om_child_element_iterator.h>
-#include <axis2_om_children_iterator.h>
-#include <axis2_om_children_qname_iterator.h>
-#include <axis2_om_children_with_specific_attribute_iterator.h>
-#include <axis2_om_comment.h>
-#include <axis2_om_doctype.h>
-#include <axis2_om_document.h>
-#include <axis2_om_element.h>
-#include <axis2_om_namespace.h>
-#include <axis2_om_navigator.h>
-#include <axis2_om_output.h>
-#include <axis2_om_processing_instruction.h>
-#include <axis2_om_stax_builder.h>
-#include <axis2_om_text.h>
+#ifndef AXIOM_H
+#define AXIOM_H
+#include <axiom_node.h>
+#include <axiom_attribute.h>
+#include <axiom_child_element_iterator.h>
+#include <axiom_children_iterator.h>
+#include <axiom_children_qname_iterator.h>
+#include <axiom_children_with_specific_attribute_iterator.h>
+#include <axiom_comment.h>
+#include <axiom_doctype.h>
+#include <axiom_document.h>
+#include <axiom_element.h>
+#include <axiom_namespace.h>
+#include <axiom_navigator.h>
+#include <axiom_output.h>
+#include <axiom_processing_instruction.h>
+#include <axiom_stax_builder.h>
+#include <axiom_text.h>
 #include <axis2_xml_reader.h>
 #include <axis2_xml_writer.h>
 
 /**
-* @file axis2_om.h
+* @file axiom.h
 * @brief includes all headers in OM
 */
 #ifdef __cplusplus
@@ -50,4 +50,4 @@ extern "C"
 }
 #endif
 
-#endif /* AXIS2_OM_H */
+#endif /* AXIOM_H */

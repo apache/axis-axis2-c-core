@@ -48,7 +48,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap_fault_reason_set_base_node
                                 (axis2_soap_fault_reason_t *fault_reason,
                                  const axis2_env_t *env,
-                                 axis2_om_node_t *node);   
+                                 axiom_node_t *node);   
     
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_reason_set_soap_fault_text

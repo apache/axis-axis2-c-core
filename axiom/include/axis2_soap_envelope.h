@@ -23,9 +23,9 @@
  *        corresponds to root element of soap message
  */
 #include <axis2_env.h>
-#include <axis2_om_node.h>
-#include <axis2_om_element.h>
-#include <axis2_om_namespace.h>
+#include <axiom_node.h>
+#include <axiom_element.h>
+#include <axiom_namespace.h>
 #include <axis2_array_list.h>
 
 #ifdef __cplusplus
@@ -85,14 +85,14 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
       serialize)(axis2_soap_envelope_t *envelope,
                    const axis2_env_t *env,
-                   axis2_om_output_t *om_output, 
+                   axiom_output_t *om_output, 
                    axis2_bool_t cache);
       
         /**
          * Free function, This function deallocate all the resources associated 
          * with the soap_envelope
          * IT frees it's soap body and soap headers as well as the underlying
-         * om node tree by calling AXIS2_OM_NODE_FREE_TREE function
+         * om node tree by calling AXIOM_NODE_FREE_TREE function
          * @param envelope soap_envelope
          * @param env environment
          * @return status code AXIS2_SUCCESS on success , AXIS2_FAILURE otherwise
@@ -105,9 +105,9 @@ extern "C"
          * returns the om_node associated with this soap envelope
          * @param envelope soap_envelope
          * @param env environment
-         * @return axis2_om_node_t pointer
+         * @return axiom_node_t pointer
          */
-        axis2_om_node_t* (AXIS2_CALL *
+        axiom_node_t* (AXIS2_CALL *
       get_base_node)(axis2_soap_envelope_t *envelope,
                        const axis2_env_t *env);
 
@@ -124,9 +124,9 @@ extern "C"
         /** return the soap envelope namespace 
          * @param envelope 
          * @param env 
-         * @return axis2_om_namespace_t 
+         * @return axiom_namespace_t 
          */                                                
-        axis2_om_namespace_t* (AXIS2_CALL *
+        axiom_namespace_t* (AXIS2_CALL *
       get_namespace)(axis2_soap_envelope_t *envelope,
                        const axis2_env_t *env);
 
@@ -154,7 +154,7 @@ struct axis2_soap_envelope
   */
 AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
 axis2_soap_envelope_create(const axis2_env_t *env, 
-                     axis2_om_namespace_t *ns);
+                     axiom_namespace_t *ns);
 
  /**
   * @param env Environment. MUST NOT be NULL
@@ -181,7 +181,7 @@ axis2_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
     const axis2_char_t *reason_text, 
     const int soap_version,
     axis2_array_list_t *sub_codes,
-    axis2_om_node_t *detail_node);
+    axiom_node_t *detail_node);
 
 /******************** Macros **************************************************/
 

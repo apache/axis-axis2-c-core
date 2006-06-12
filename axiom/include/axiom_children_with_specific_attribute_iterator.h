@@ -14,16 +14,16 @@
  * limitations under the License.
  */
  
- #ifndef AXIS2_OM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_H
- #define AXIS2_OM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_H
+ #ifndef AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_H
+ #define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_H
  
  /**
- *@file axis2_om_children_with_specific_attribute_iterator.h   
+ *@file axiom_children_with_specific_attribute_iterator.h   
  *@brief this is the iterator for om nodes 
  */
   
-#include <axis2_om_node.h>
-#include <axis2_om_text.h>
+#include <axiom_node.h>
+#include <axiom_text.h>
 #include <axis2_qname.h>
   
 
@@ -32,29 +32,29 @@ extern "C"
 {
 #endif
 
-typedef struct axis2_om_children_with_specific_attribute_iterator_ops 
-                    axis2_om_children_with_specific_attribute_iterator_ops_t;
+typedef struct axiom_children_with_specific_attribute_iterator_ops 
+                    axiom_children_with_specific_attribute_iterator_ops_t;
 
-typedef struct axis2_om_children_with_specific_attribute_iterator 
-                    axis2_om_children_with_specific_attribute_iterator_t;
+typedef struct axiom_children_with_specific_attribute_iterator 
+                    axiom_children_with_specific_attribute_iterator_t;
 
 /**
  * @defgroup axis2_xml_writer 
- * @ingroup axis2_om_parser
+ * @ingroup axiom_parser
  * @{
  */
  
    /**
-    * \brief axis2_om_children_with_specific_attribute_iterator ops
-    * Encapsulator struct for ops of axis2_om_iterator
+    * \brief axiom_children_with_specific_attribute_iterator ops
+    * Encapsulator struct for ops of axiom_iterator
     */
-    AXIS2_DECLARE_DATA struct axis2_om_children_with_specific_attribute_iterator_ops
+    AXIS2_DECLARE_DATA struct axiom_children_with_specific_attribute_iterator_ops
     {
       /**
       * Free function free the om_children_with_specific_attribute_iterator struct
       */
         axis2_status_t (AXIS2_CALL *
-      free_fn)(axis2_om_children_with_specific_attribute_iterator_t *iterator,
+      free_fn)(axiom_children_with_specific_attribute_iterator_t *iterator,
                  const axis2_env_t *env);
                              
         /**
@@ -65,25 +65,25 @@ typedef struct axis2_om_children_with_specific_attribute_iterator
         * progress in any way other than by calling this method.
         */                                              
         axis2_status_t (AXIS2_CALL *
-      remove)(axis2_om_children_with_specific_attribute_iterator_t *iterator,
+      remove)(axiom_children_with_specific_attribute_iterator_t *iterator,
                 const axis2_env_t *env);
                              
        /**
         * Returns true< if the iteration has more elements. (In other
-        * words, returns true if next would return an axis2_om_node_t struct
+        * words, returns true if next would return an axiom_node_t struct
         * rather than NULL with error code set in environment
         */                             
         
         axis2_bool_t (AXIS2_CALL *
-      has_next)(axis2_om_children_with_specific_attribute_iterator_t *iterator,
+      has_next)(axiom_children_with_specific_attribute_iterator_t *iterator,
                   const axis2_env_t *env);
     
        /**
         * Returns the next element in the iteration. returns null if there is no 
       * more elements in the iteration
         */
-        axis2_om_node_t* (AXIS2_CALL *
-      next)(axis2_om_children_with_specific_attribute_iterator_t *iterator,
+        axiom_node_t* (AXIS2_CALL *
+      next)(axiom_children_with_specific_attribute_iterator_t *iterator,
               const axis2_env_t *env);
     
     
@@ -91,37 +91,37 @@ typedef struct axis2_om_children_with_specific_attribute_iterator
     };
     
     
-struct axis2_om_children_with_specific_attribute_iterator
+struct axiom_children_with_specific_attribute_iterator
 {
-    axis2_om_children_with_specific_attribute_iterator_ops_t *ops;
+    axiom_children_with_specific_attribute_iterator_ops_t *ops;
 };    
 
 /** 
  * @param current child
  * @param env environment 
- * return axis2_om_children_with_specific_attribute_iterator_t 
+ * return axiom_children_with_specific_attribute_iterator_t 
  */
 
-AXIS2_EXTERN  axis2_om_children_with_specific_attribute_iterator_t * AXIS2_CALL
-axis2_om_children_with_specific_attribute_iterator_create(
+AXIS2_EXTERN  axiom_children_with_specific_attribute_iterator_t * AXIS2_CALL
+axiom_children_with_specific_attribute_iterator_create(
                                   const axis2_env_t *env, 
-                                  axis2_om_node_t *current_child,
+                                  axiom_node_t *current_child,
                                   axis2_qname_t *attr_qname,
                                   axis2_char_t *attr_value,
                                   axis2_bool_t detach);
                                   
 /************ Macros *********************************************/
 
-#define AXIS2_OM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_FREE(iterator, env) \
+#define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_FREE(iterator, env) \
         ((iterator)->ops->free_fn(iterator, env))
 
-#define AXIS2_OM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_REMOVE(iterator, env) \
+#define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_REMOVE(iterator, env) \
         ((iterator)->ops->remove(iterator, env))
         
-#define AXIS2_OM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_HAS_NEXT(iterator, env) \
+#define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_HAS_NEXT(iterator, env) \
         ((iterator)->ops->has_next(iterator, env))
         
-#define AXIS2_OM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_NEXT(iterator, env) \
+#define AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_NEXT(iterator, env) \
         ((iterator)->ops->next(iterator, env))        
         
               
@@ -132,4 +132,4 @@ axis2_om_children_with_specific_attribute_iterator_create(
 #endif
 
 
-#endif /* AXIS2_OM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_H */
+#endif /* AXIOM_CHILDREN_WITH_SPECIFIC_ATTRIBUTE_ITERATOR_H */

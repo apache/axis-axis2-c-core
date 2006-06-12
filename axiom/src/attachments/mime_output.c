@@ -18,7 +18,7 @@
 #include "axis2_data_handler.h"
 #include "axis2_mime_body_part.h"
 #include <axis2_string.h>
-#include <axis2_om_text.h>
+#include <axiom_text.h>
 #include <axis2_mime_const.h>
 
 axis2_char_t AXIS2_CRLF[] =  { 13, 10 };
@@ -75,7 +75,7 @@ axis2_start_writing_mime (axis2_mime_output_t *mime_output,
                             int *output_stream_size, axis2_char_t *boundary);
 
 axis2_mime_body_part_t * AXIS2_CALL
-axis2_create_mime_body_part (axis2_om_text_t *text, const axis2_env_t *env);
+axis2_create_mime_body_part (axiom_text_t *text, const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_write_body_part (axis2_mime_output_t *mime_output, const axis2_env_t *env, 
@@ -225,7 +225,7 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
         int temp_size = 0;
         for (j = 0; j < AXIS2_ARRAY_LIST_SIZE(binary_node_list, env); j++)
         {
-            axis2_om_text_t *text = (axis2_om_text_t *)AXIS2_ARRAY_LIST_GET(binary_node_list, env, j);
+            axiom_text_t *text = (axiom_text_t *)AXIS2_ARRAY_LIST_GET(binary_node_list, env, j);
             if (text)
             {
                 axis2_mime_body_part_t *mime_body_part = NULL;
@@ -379,7 +379,7 @@ axis2_write_mime_boundary (axis2_mime_output_t *mime_output, const axis2_env_t *
 }
 
 axis2_mime_body_part_t * AXIS2_CALL
-axis2_create_mime_body_part (axis2_om_text_t *text, const axis2_env_t *env)
+axis2_create_mime_body_part (axiom_text_t *text, const axis2_env_t *env)
 {
     axis2_data_handler_t *data_handler = NULL;
     const axis2_char_t *content_type = "application/octet-stream";
@@ -387,7 +387,7 @@ axis2_create_mime_body_part (axis2_om_text_t *text, const axis2_env_t *env)
     axis2_char_t *content_id = (axis2_char_t *)"<";
     if (!mime_body_part)
         return NULL;
-    data_handler = AXIS2_OM_TEXT_SET_GET_DATA_HANDLER(text, env);
+    data_handler = AXIOM_TEXT_SET_GET_DATA_HANDLER(text, env);
 
     if (data_handler)
     {
@@ -397,7 +397,7 @@ axis2_create_mime_body_part (axis2_om_text_t *text, const axis2_env_t *env)
     AXIS2_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env, 
             data_handler);
     content_id = AXIS2_STRACAT(content_id, 
-        AXIS2_OM_TEXT_SET_GET_CONTENT_ID(text, env), env);
+        AXIOM_TEXT_SET_GET_CONTENT_ID(text, env), env);
     content_id = AXIS2_STRACAT(content_id, ">", env); 
     AXIS2_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-id", content_id);
     AXIS2_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-type", content_type);

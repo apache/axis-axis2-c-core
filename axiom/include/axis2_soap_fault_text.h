@@ -64,7 +64,7 @@ extern "C"
       get_lang)(axis2_soap_fault_text_t *fault_text,
                   const axis2_env_t *env);
     
-        axis2_om_node_t* (AXIS2_CALL *
+        axiom_node_t* (AXIS2_CALL *
       get_base_node)(axis2_soap_fault_text_t *fault_text,
                        const axis2_env_t *env);
                        

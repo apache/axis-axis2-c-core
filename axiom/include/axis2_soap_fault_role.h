@@ -65,7 +65,7 @@ extern "C"
       get_role_value)(axis2_soap_fault_role_t *fault_role,
                         const axis2_env_t *env);
                                      
-        axis2_om_node_t* (AXIS2_CALL *
+        axiom_node_t* (AXIS2_CALL *
       get_base_node)(axis2_soap_fault_role_t *fault_role,
                        const axis2_env_t *env);
                                                                                                                    

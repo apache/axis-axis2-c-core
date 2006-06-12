@@ -19,6 +19,6 @@
 
 #include <CuTest.h>
 
-CuSuite* axis2_omGetSuite();
+CuSuite* axiomGetSuite();
 
 #endif /* OM_TEST_H */

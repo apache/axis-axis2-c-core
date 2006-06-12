@@ -26,7 +26,7 @@
  {
     axis2_soap_fault_code_t fault_code;
     
-    axis2_om_node_t *om_ele_node;
+    axiom_node_t *om_ele_node;
     
     axis2_soap_fault_sub_code_t *subcode;
     
@@ -57,7 +57,7 @@ axis2_soap_fault_code_get_value(axis2_soap_fault_code_t *fault_code,
                                 const axis2_env_t *env);
                                      
 
-axis2_om_node_t* AXIS2_CALL 
+axiom_node_t* AXIS2_CALL 
 axis2_soap_fault_code_get_base_node(axis2_soap_fault_code_t *fault_code,
                                     const axis2_env_t *env);
  
@@ -116,13 +116,13 @@ axis2_soap_fault_code_create_with_parent(const axis2_env_t *env,
     axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
     axis2_soap_fault_code_t *fault_code = NULL;
     
-    axis2_om_element_t *this_ele = NULL;
-    axis2_om_node_t *this_node = NULL;
+    axiom_element_t *this_ele = NULL;
+    axiom_node_t *this_node = NULL;
     
-    axis2_om_node_t *parent_node = NULL;
-    axis2_om_element_t *parent_ele = NULL;
+    axiom_node_t *parent_node = NULL;
+    axiom_element_t *parent_ele = NULL;
     
-    axis2_om_namespace_t *parent_ns = NULL;
+    axiom_namespace_t *parent_ns = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, fault, NULL);
@@ -139,7 +139,7 @@ axis2_soap_fault_code_create_with_parent(const axis2_env_t *env,
         AXIS2_SOAP_FAULT_CODE_FREE(fault_code, env);
         return NULL;
     }        
-    parent_ele  = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(
+    parent_ele  = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
                         parent_node, env);
     
     if(!parent_ele)
@@ -151,9 +151,9 @@ axis2_soap_fault_code_create_with_parent(const axis2_env_t *env,
                     axis2_soap_fault_get_soap_version(fault, env);
     if(fault_code_impl->soap_version == AXIS2_SOAP12)
     {
-        parent_ns = AXIS2_OM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
+        parent_ns = AXIOM_ELEMENT_GET_NAMESPACE(parent_ele, env, parent_node);
     }
-    this_ele = axis2_om_element_create(env, 
+    this_ele = axiom_element_create(env, 
                                        parent_node,                             
                                        AXIS2_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME,
                                        parent_ns,
@@ -290,7 +290,7 @@ axis2_soap_fault_code_get_sub_code(axis2_soap_fault_code_t *fault_code,
     else if(NULL != fault_code_impl->builder)
     {
         while(!(fault_code_impl->subcode) && 
-            !(AXIS2_OM_NODE_IS_COMPLETE(fault_code_impl->om_ele_node, env)))
+            !(AXIOM_NODE_IS_COMPLETE(fault_code_impl->om_ele_node, env)))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(fault_code_impl->builder, env);
             if(status == AXIS2_FAILURE)
@@ -321,7 +321,7 @@ axis2_soap_fault_code_get_value(axis2_soap_fault_code_t *fault_code,
     else if(fault_code_impl->builder)
     {
         while(!(fault_code_impl->value) && 
-            !(AXIS2_OM_NODE_IS_COMPLETE(fault_code_impl->om_ele_node, env)))
+            !(AXIOM_NODE_IS_COMPLETE(fault_code_impl->om_ele_node, env)))
         {
             status = AXIS2_SOAP_BUILDER_NEXT(fault_code_impl->builder, env);
             if(status == AXIS2_FAILURE)
@@ -336,7 +336,7 @@ axis2_soap_fault_code_get_value(axis2_soap_fault_code_t *fault_code,
 axis2_status_t AXIS2_CALL 
 axis2_soap_fault_code_set_base_node(axis2_soap_fault_code_t *fault_code,
                                     const axis2_env_t *env,
-                                    axis2_om_node_t *node)
+                                    axiom_node_t *node)
 {
    axis2_soap_fault_code_impl_t *fault_code_impl = NULL;
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -344,7 +344,7 @@ axis2_soap_fault_code_set_base_node(axis2_soap_fault_code_t *fault_code,
    
    fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
    
-   if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
+   if(AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
    {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_BASE_TYPE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -354,7 +354,7 @@ axis2_soap_fault_code_set_base_node(axis2_soap_fault_code_t *fault_code,
 
 }
 
-axis2_om_node_t* AXIS2_CALL 
+axiom_node_t* AXIS2_CALL 
 axis2_soap_fault_code_get_base_node(axis2_soap_fault_code_t *fault_code,
                                     const axis2_env_t *env)
 {

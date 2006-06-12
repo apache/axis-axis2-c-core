@@ -17,7 +17,7 @@
  #ifndef AXIS2_SOAP_BUILDER_H
  #define AXIS2_SOAP_BUILDER_H
  
- #include <axis2_om_stax_builder.h>
+ #include <axiom_stax_builder.h>
  #include <axis2_soap_envelope.h>
  
 /**
@@ -54,7 +54,7 @@ AXIS2_DECLARE_DATA   struct axis2_soap_builder_ops
                                          (axis2_soap_builder_t *builder,
                                           const axis2_env_t *env);
                                           
-        axis2_om_document_t* (AXIS2_CALL *get_document)
+        axiom_document_t* (AXIS2_CALL *get_document)
                                          (axis2_soap_builder_t *builder,
                                           const axis2_env_t *env);
                                           
@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA   struct axis2_soap_builder_ops
                                 const axis2_env_t *env);
                                 
                                                      
-        axis2_om_node_t* (AXIS2_CALL *get_document_element)
+        axiom_node_t* (AXIS2_CALL *get_document_element)
                                             (axis2_soap_builder_t *builder,
                                              const axis2_env_t *env); 
                                              
@@ -87,7 +87,7 @@ AXIS2_DECLARE_DATA   struct axis2_soap_builder_ops
         axis2_status_t (AXIS2_CALL *process_namespace_data)
                                           (axis2_soap_builder_t *builder,
                                            const axis2_env_t *env,
-                                           axis2_om_node_t *om_node,
+                                           axiom_node_t *om_node,
                                            axis2_bool_t is_soap_element);
         axis2_status_t (AXIS2_CALL *
         set_mime_body_parts)
@@ -115,7 +115,7 @@ struct axis2_soap_builder
 
 AXIS2_EXTERN axis2_soap_builder_t * AXIS2_CALL
 axis2_soap_builder_create(const axis2_env_t *env,
-                                axis2_om_stax_builder_t *builder,
+                                axiom_stax_builder_t *builder,
                                 const axis2_char_t *soap_version);
 
 /******************** Macros **************************************************/

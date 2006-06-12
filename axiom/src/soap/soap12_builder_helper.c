@@ -80,7 +80,7 @@ axis2_status_t AXIS2_CALL
 axis2_soap12_builder_helper_handle_event
                             (axis2_soap12_builder_helper_t *builder_helper,
                              const axis2_env_t *env,
-                             axis2_om_node_t *om_element_node,
+                             axiom_node_t *om_element_node,
                              int element_level);
                              
 /******************** function implementations ********************************/
@@ -163,13 +163,13 @@ axis2_soap12_builder_helper_free(axis2_soap12_builder_helper_t *builder_helper,
 axis2_status_t AXIS2_CALL 
 axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder_helper,
                              const axis2_env_t *env,
-                             axis2_om_node_t *om_ele_node,
+                             axiom_node_t *om_ele_node,
                              int element_level)
 {
     axis2_soap12_builder_helper_impl_t *builder_helper_impl = NULL;
     
     axis2_char_t* ele_localname = NULL;
-    axis2_om_element_t *om_ele = NULL;
+    axiom_element_t *om_ele = NULL;
     
     axis2_soap_body_t *soap_body = NULL;
     axis2_soap_fault_t *soap_fault = NULL;
@@ -179,11 +179,11 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
     AXIS2_PARAM_CHECK(env->error, om_ele_node, AXIS2_FAILURE);
     builder_helper_impl = AXIS2_INTF_TO_IMPL(builder_helper);
     
-    om_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(om_ele_node, env);
+    om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(om_ele_node, env);
     if(!om_ele)
         return AXIS2_FAILURE;
         
-    ele_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env);
+    ele_localname = AXIOM_ELEMENT_GET_LOCALNAME(om_ele, env);
     if(!ele_localname)
         return AXIS2_FAILURE;
     
@@ -416,18 +416,18 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
     }
     else if(element_level == 5)
     {
-        axis2_om_node_t *parent_node = NULL;
-        axis2_om_element_t *parent_ele = NULL;
+        axiom_node_t *parent_node = NULL;
+        axiom_element_t *parent_ele = NULL;
         axis2_char_t *parent_localname = NULL;
-        parent_node = AXIS2_OM_NODE_GET_PARENT(om_ele_node, env);
+        parent_node = AXIOM_NODE_GET_PARENT(om_ele_node, env);
         if(!parent_node)
             return AXIS2_FAILURE;
        
-        parent_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(parent_node, env);
+        parent_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(parent_node, env);
         if(!parent_ele)
             return AXIS2_FAILURE;
 
-        parent_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(parent_ele, env);
+        parent_localname = AXIOM_ELEMENT_GET_LOCALNAME(parent_ele, env);
         if(!parent_localname)
             return AXIS2_FAILURE;
             
@@ -533,7 +533,7 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                     
                 AXIS2_SOAP_FAULT_REASON_ADD_SOAP_FAULT_TEXT (fault_reason, env, soap_fault_text);
                 /*****************
-                AXIS2_OM_NODE_SET_BUILD_STATUS(om_ele_node, env, AXIS2_FALSE);
+                AXIOM_NODE_SET_BUILD_STATUS(om_ele_node, env, AXIS2_FALSE);
                 ******************/
                 builder_helper_impl->reason_processing = AXIS2_FALSE;
                 
@@ -566,19 +566,19 @@ axis2_soap12_builder_helper_handle_event (axis2_soap12_builder_helper_t *builder
                 
     }else if(element_level > 5)
     {
-        axis2_om_node_t *parent_node = NULL;
-        axis2_om_element_t *parent_ele = NULL;
+        axiom_node_t *parent_node = NULL;
+        axiom_element_t *parent_ele = NULL;
         axis2_char_t *parent_localname = NULL;
         
-        parent_node = AXIS2_OM_NODE_GET_PARENT(om_ele_node, env);
+        parent_node = AXIOM_NODE_GET_PARENT(om_ele_node, env);
         if(!parent_node)
             return AXIS2_FAILURE;
                
-        parent_ele = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(parent_node, env);
+        parent_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(parent_node, env);
         if(!parent_ele)
             return AXIS2_FAILURE;
             
-        parent_localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(parent_ele, env);   
+        parent_localname = AXIOM_ELEMENT_GET_LOCALNAME(parent_ele, env);   
         if(!parent_localname)
             return AXIS2_FAILURE;
 

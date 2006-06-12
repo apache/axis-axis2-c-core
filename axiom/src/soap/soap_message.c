@@ -15,8 +15,8 @@
  */
  
  #include <axis2_soap_message.h>
- #include <axis2_om_document.h>
- #include <axis2_om_output.h>
+ #include <axiom_document.h>
+ #include <axiom_output.h>
  #include "_axis2_soap_envelope.h"
 
 /*************************** impl struct **************************************/
@@ -25,7 +25,7 @@ typedef struct axis2_soap_message_impl_t
 {
     axis2_soap_message_t soap_message;
     
-    axis2_om_document_t *om_doc;
+    axiom_document_t *om_doc;
     
     axis2_soap_envelope_t *soap_envelope;
     
@@ -49,14 +49,14 @@ axis2_soap_message_get_soap_envelope(axis2_soap_message_t *message,
 axis2_status_t AXIS2_CALL
 axis2_soap_message_serialize(axis2_soap_message_t *message,
                              const axis2_env_t *env,
-                             axis2_om_output_t *om_output);
+                             axiom_output_t *om_output);
                              
 /************************** function implementations **************************/
 
 AXIS2_EXTERN axis2_soap_message_t* AXIS2_CALL
 axis2_soap_message_create(const axis2_env_t *env,
                           axis2_soap_builder_t *builder,
-                          axis2_om_document_t *om_doc)
+                          axiom_document_t *om_doc)
 {
     axis2_soap_message_impl_t *soap_message_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -108,7 +108,7 @@ axis2_soap_message_free(axis2_soap_message_t *message,
     soap_message_impl = AXIS2_INTF_TO_IMPL(message);
     if(soap_message_impl->om_doc)
     {
-        AXIS2_OM_DOCUMENT_FREE(soap_message_impl->om_doc, env);
+        AXIOM_DOCUMENT_FREE(soap_message_impl->om_doc, env);
         soap_message_impl->om_doc = NULL;
     }
     if(soap_message_impl->soap_envelope)
@@ -148,11 +148,11 @@ axis2_soap_message_get_soap_envelope(axis2_soap_message_t *message,
 axis2_status_t AXIS2_CALL
 axis2_soap_message_serialize(axis2_soap_message_t *message,
                              const axis2_env_t *env,
-                             axis2_om_output_t *om_output)
+                             axiom_output_t *om_output)
 {
     axis2_soap_message_impl_t *soap_message_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     soap_message_impl = AXIS2_INTF_TO_IMPL(message);
-    return AXIS2_OM_DOCUMENT_SERIALIZE(soap_message_impl->om_doc, env, om_output);
+    return AXIOM_DOCUMENT_SERIALIZE(soap_message_impl->om_doc, env, om_output);
 }                             
                                      

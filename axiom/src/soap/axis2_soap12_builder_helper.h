@@ -51,7 +51,7 @@ typedef struct axis2_soap12_builder_helper_ops  axis2_soap12_builder_helper_ops_
         axis2_status_t (AXIS2_CALL *handle_event)
                     (axis2_soap12_builder_helper_t *builder_helper,
                      const axis2_env_t *env,
-                     axis2_om_node_t *om_element_node,
+                     axiom_node_t *om_element_node,
                      int element_level);
     };                                                      
 

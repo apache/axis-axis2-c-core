@@ -14,143 +14,143 @@
  * limitations under the License.
  */
 
-#include "axis2_om_node_internal.h"
-#include <axis2_om_element.h>
-#include <axis2_om_text.h>
-#include <axis2_om_comment.h>
-#include <axis2_om_processing_instruction.h>
-#include <axis2_om_doctype.h>
-#include <axis2_om_document.h>
-#include <axis2_om_stax_builder.h>
+#include "axiom_node_internal.h"
+#include <axiom_element.h>
+#include <axiom_text.h>
+#include <axiom_comment.h>
+#include <axiom_processing_instruction.h>
+#include <axiom_doctype.h>
+#include <axiom_document.h>
+#include <axiom_stax_builder.h>
 
 
 /*************************** function prototypes ******************************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_om_node_free_tree (axis2_om_node_t * om_node,
+axiom_node_free_tree (axiom_node_t * om_node,
                         const axis2_env_t *env);
 
 
 axis2_status_t AXIS2_CALL 
-axis2_om_node_add_child (axis2_om_node_t *om_node,
+axiom_node_add_child (axiom_node_t *om_node,
                          const axis2_env_t *env,
-                         axis2_om_node_t * child);
+                         axiom_node_t * child);
                               
-axis2_om_node_t * AXIS2_CALL 
-axis2_om_node_detach (axis2_om_node_t *om_node,
+axiom_node_t * AXIS2_CALL 
+axiom_node_detach (axiom_node_t *om_node,
                       const axis2_env_t *env);
 
 
 axis2_status_t AXIS2_CALL 
-axis2_om_node_insert_sibling_after (axis2_om_node_t *om_node,
+axiom_node_insert_sibling_after (axiom_node_t *om_node,
                                    const axis2_env_t *env,
-                                   axis2_om_node_t *node_to_insert);
+                                   axiom_node_t *node_to_insert);
                                          
 axis2_status_t AXIS2_CALL 
-axis2_om_node_insert_sibling_before (axis2_om_node_t *om_node,
+axiom_node_insert_sibling_before (axiom_node_t *om_node,
                                      const axis2_env_t *env, 
-                                     axis2_om_node_t *node_to_insert);
+                                     axiom_node_t *node_to_insert);
                                                                              
 axis2_status_t AXIS2_CALL 
-axis2_om_node_serialize (axis2_om_node_t * om_node,
+axiom_node_serialize (axiom_node_t * om_node,
                          const axis2_env_t *env,
-                         axis2_om_output_t * om_output);
+                         axiom_output_t * om_output);
                          
 axis2_char_t * AXIS2_CALL
-axis2_om_node_to_string(axis2_om_node_t *om_node,
+axiom_node_to_string(axiom_node_t *om_node,
                         const axis2_env_t *env);                         
                               
                               
 /****************************** accessor mutator *********************************************/
-axis2_om_node_t* AXIS2_CALL 
-axis2_om_node_get_parent(axis2_om_node_t *om_node,
+axiom_node_t* AXIS2_CALL 
+axiom_node_get_parent(axiom_node_t *om_node,
                          const axis2_env_t *env);
 
-axis2_om_node_t* AXIS2_CALL 
-axis2_om_node_get_first_child(axis2_om_node_t *om_node,
+axiom_node_t* AXIS2_CALL 
+axiom_node_get_first_child(axiom_node_t *om_node,
                               const axis2_env_t *env);
         
-axis2_om_node_t* AXIS2_CALL
-axis2_om_node_get_last_child(axis2_om_node_t *om_node,
+axiom_node_t* AXIS2_CALL
+axiom_node_get_last_child(axiom_node_t *om_node,
                              const axis2_env_t *env);
 
-axis2_om_node_t* AXIS2_CALL 
-axis2_om_node_get_previous_sibling(axis2_om_node_t *om_node,
+axiom_node_t* AXIS2_CALL 
+axiom_node_get_previous_sibling(axiom_node_t *om_node,
                                    const axis2_env_t *env);
 
-axis2_om_node_t* AXIS2_CALL 
-axis2_om_node_get_next_sibling(axis2_om_node_t *om_node,
+axiom_node_t* AXIS2_CALL 
+axiom_node_get_next_sibling(axiom_node_t *om_node,
                                 const axis2_env_t *env);
 
-axis2_om_types_t AXIS2_CALL 
-axis2_om_node_get_node_type(axis2_om_node_t *om_node,
+axiom_types_t AXIS2_CALL 
+axiom_node_get_node_type(axiom_node_t *om_node,
                             const axis2_env_t *env);
                                  
 void* AXIS2_CALL 
-axis2_om_node_get_data_element(axis2_om_node_t *om_node,
+axiom_node_get_data_element(axiom_node_t *om_node,
                                const axis2_env_t *env);                                
 
 axis2_bool_t AXIS2_CALL
-axis2_om_node_is_complete(axis2_om_node_t *om_node,
+axiom_node_is_complete(axiom_node_t *om_node,
                                const axis2_env_t *env);
 
-struct axis2_om_document* AXIS2_CALL
-axis2_om_node_get_document(axis2_om_node_t *om_node,
+struct axiom_document* AXIS2_CALL
+axiom_node_get_document(axiom_node_t *om_node,
                            const axis2_env_t *env);
 
 /************************************************************************************/
 
-typedef struct axis2_om_node_impl
+typedef struct axiom_node_impl
 {
-     axis2_om_node_t om_node;
+     axiom_node_t om_node;
     
      /** document only availble if build through builder */   
-     struct axis2_om_document *om_doc;
+     struct axiom_document *om_doc;
      
-     axis2_om_stax_builder_t *builder;
+     axiom_stax_builder_t *builder;
      /** parent node */
-     axis2_om_node_t *parent;
+     axiom_node_t *parent;
      /** previous sibling */
-     axis2_om_node_t *prev_sibling;
+     axiom_node_t *prev_sibling;
      /** next sibling */
-     axis2_om_node_t *next_sibling;
+     axiom_node_t *next_sibling;
      /** first child */
-     axis2_om_node_t *first_child;
+     axiom_node_t *first_child;
      /** last child */
-     axis2_om_node_t *last_child;
+     axiom_node_t *last_child;
      /** node type, indicates the type stored in data_element */
-     axis2_om_types_t node_type;
+     axiom_types_t node_type;
      /** done true means that this node is completely built , false otherwise */
      int done;
      
      /** instances of an om struct, whose type is defined by node type */
      void *data_element;
      
-}axis2_om_node_impl_t;
+}axiom_node_impl_t;
 
 
 /****************************** Macro  ***************************************/
 
-#define AXIS2_INTF_TO_IMPL(node) ((axis2_om_node_impl_t *)node)
+#define AXIS2_INTF_TO_IMPL(node) ((axiom_node_impl_t *)node)
                                
 
 
 /*****************************************************************************/
-AXIS2_EXTERN axis2_om_node_t * AXIS2_CALL
-axis2_om_node_create (const axis2_env_t *env)
+AXIS2_EXTERN axiom_node_t * AXIS2_CALL
+axiom_node_create (const axis2_env_t *env)
 {
-    axis2_om_node_impl_t *node = NULL;
+    axiom_node_impl_t *node = NULL;
     AXIS2_ENV_CHECK(env,NULL);
     
-    node = (axis2_om_node_impl_t *) AXIS2_MALLOC (env->allocator,
-                    sizeof (axis2_om_node_impl_t));
+    node = (axiom_node_impl_t *) AXIS2_MALLOC (env->allocator,
+                    sizeof (axiom_node_impl_t));
     if (!node)
     {
         env->error->error_number = AXIS2_ERROR_NO_MEMORY;
         return NULL;
     }
-    node->om_node.ops = (axis2_om_node_ops_t *) AXIS2_MALLOC
-                             (env->allocator,sizeof (axis2_om_node_ops_t));
+    node->om_node.ops = (axiom_node_ops_t *) AXIS2_MALLOC
+                             (env->allocator,sizeof (axiom_node_ops_t));
                              
     if (!(node->om_node.ops))
     {   
@@ -164,30 +164,30 @@ axis2_om_node_create (const axis2_env_t *env)
     node->next_sibling = NULL;
     node->prev_sibling = NULL;
     node->parent = NULL;
-    node->node_type = AXIS2_OM_INVALID;
+    node->node_type = AXIOM_INVALID;
     node->done = AXIS2_FALSE;
     node->data_element = NULL;
     node->om_doc = NULL;
     node->builder = NULL;
 
     /* assign fucn pointers */
-    node->om_node.ops->add_child = axis2_om_node_add_child;
-    node->om_node.ops->free = axis2_om_node_free_tree;
-    node->om_node.ops->detach = axis2_om_node_detach;
-    node->om_node.ops->to_string = axis2_om_node_to_string;    
-    node->om_node.ops->insert_sibling_after = axis2_om_node_insert_sibling_after;
-    node->om_node.ops->insert_sibling_before = axis2_om_node_insert_sibling_before;
-    node->om_node.ops->serialize = axis2_om_node_serialize;
+    node->om_node.ops->add_child = axiom_node_add_child;
+    node->om_node.ops->free = axiom_node_free_tree;
+    node->om_node.ops->detach = axiom_node_detach;
+    node->om_node.ops->to_string = axiom_node_to_string;    
+    node->om_node.ops->insert_sibling_after = axiom_node_insert_sibling_after;
+    node->om_node.ops->insert_sibling_before = axiom_node_insert_sibling_before;
+    node->om_node.ops->serialize = axiom_node_serialize;
 
-    node->om_node.ops->get_first_child = axis2_om_node_get_first_child;
-    node->om_node.ops->get_last_child = axis2_om_node_get_last_child;
-    node->om_node.ops->get_next_sibling = axis2_om_node_get_next_sibling;
-    node->om_node.ops->get_previous_sibling = axis2_om_node_get_previous_sibling;
-    node->om_node.ops->get_parent = axis2_om_node_get_parent ;
-    node->om_node.ops->get_node_type = axis2_om_node_get_node_type;
-    node->om_node.ops->is_complete = axis2_om_node_is_complete;
-    node->om_node.ops->get_data_element = axis2_om_node_get_data_element;
-    node->om_node.ops->get_document = axis2_om_node_get_document;
+    node->om_node.ops->get_first_child = axiom_node_get_first_child;
+    node->om_node.ops->get_last_child = axiom_node_get_last_child;
+    node->om_node.ops->get_next_sibling = axiom_node_get_next_sibling;
+    node->om_node.ops->get_previous_sibling = axiom_node_get_previous_sibling;
+    node->om_node.ops->get_parent = axiom_node_get_parent ;
+    node->om_node.ops->get_node_type = axiom_node_get_node_type;
+    node->om_node.ops->is_complete = axiom_node_is_complete;
+    node->om_node.ops->get_data_element = axiom_node_get_data_element;
+    node->om_node.ops->get_document = axiom_node_get_document;
         
     return &(node->om_node);
 }
@@ -198,11 +198,11 @@ axis2_om_node_create (const axis2_env_t *env)
 */ 
 
 axis2_status_t AXIS2_CALL 
-axis2_om_node_free_tree(axis2_om_node_t *om_node,
+axiom_node_free_tree(axiom_node_t *om_node,
                         const axis2_env_t *env)
 {
-    axis2_om_node_impl_t *node_impl = NULL;   
-    axis2_om_node_t *child_node = NULL;
+    axiom_node_impl_t *node_impl = NULL;   
+    axiom_node_t *child_node = NULL;
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     if(!om_node)
         return AXIS2_FAILURE;
@@ -213,10 +213,10 @@ axis2_om_node_free_tree(axis2_om_node_t *om_node,
     {   
         while (NULL != (node_impl->first_child))
         {
-            child_node = AXIS2_OM_NODE_DETACH (node_impl->first_child, env);
+            child_node = AXIOM_NODE_DETACH (node_impl->first_child, env);
             if (NULL != child_node)
             {
-                AXIS2_OM_NODE_FREE_TREE ( child_node , env); 
+                AXIOM_NODE_FREE_TREE ( child_node , env); 
                 child_node = NULL;
             }
         }
@@ -224,29 +224,29 @@ axis2_om_node_free_tree(axis2_om_node_t *om_node,
     
     switch (node_impl->node_type)
     {
-    case AXIS2_OM_ELEMENT:
+    case AXIOM_ELEMENT:
        if(NULL != node_impl->data_element)
-            AXIS2_OM_ELEMENT_FREE((axis2_om_element_t*)(node_impl->data_element), env);
+            AXIOM_ELEMENT_FREE((axiom_element_t*)(node_impl->data_element), env);
        
        break;
 
-    case AXIS2_OM_COMMENT:
+    case AXIOM_COMMENT:
         if(NULL != node_impl->data_element)
-            AXIS2_OM_COMMENT_FREE((axis2_om_comment_t*)(node_impl->data_element), env);
+            AXIOM_COMMENT_FREE((axiom_comment_t*)(node_impl->data_element), env);
         
         break;
-    case AXIS2_OM_DOCTYPE:
-        /*AXIS2_OM_DOCTYPE_FREE((axis2_om_doctype_t*)(node_impl->data_element), env);*/
+    case AXIOM_DOCTYPE:
+        /*AXIOM_DOCTYPE_FREE((axiom_doctype_t*)(node_impl->data_element), env);*/
         break;
-    case AXIS2_OM_PROCESSING_INSTRUCTION:
+    case AXIOM_PROCESSING_INSTRUCTION:
          if(NULL != node_impl->data_element)
-                AXIS2_OM_PROCESSING_INSTRUCTION_FREE(
-                (axis2_om_processing_instruction_t*)(node_impl->data_element), env);
+                AXIOM_PROCESSING_INSTRUCTION_FREE(
+                (axiom_processing_instruction_t*)(node_impl->data_element), env);
         
         break;
-    case AXIS2_OM_TEXT:
+    case AXIOM_TEXT:
         if(NULL != node_impl->data_element)
-            AXIS2_OM_TEXT_FREE((axis2_om_text_t*)(node_impl->data_element),env);
+            AXIOM_TEXT_FREE((axiom_text_t*)(node_impl->data_element),env);
     
         break;
 
@@ -264,9 +264,9 @@ axis2_om_node_free_tree(axis2_om_node_t *om_node,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_om_node_add_child (axis2_om_node_t *om_node,
+axiom_node_add_child (axiom_node_t *om_node,
                          const axis2_env_t *env,
-                         axis2_om_node_t *child)
+                         axiom_node_t *child)
 {
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, child, AXIS2_FAILURE);
@@ -274,7 +274,7 @@ axis2_om_node_add_child (axis2_om_node_t *om_node,
     
     if(AXIS2_INTF_TO_IMPL(child)->parent)
     {
-        child = AXIS2_OM_NODE_DETACH(child, env);
+        child = AXIOM_NODE_DETACH(child, env);
     }
 
     if (AXIS2_INTF_TO_IMPL(om_node)->first_child  == NULL)
@@ -283,7 +283,7 @@ axis2_om_node_add_child (axis2_om_node_t *om_node,
     }
     else
     {
-       axis2_om_node_t *last_sib = NULL;
+       axiom_node_t *last_sib = NULL;
        last_sib  = AXIS2_INTF_TO_IMPL(om_node)->last_child;
        if(last_sib)
        {           
@@ -297,11 +297,11 @@ axis2_om_node_add_child (axis2_om_node_t *om_node,
     return AXIS2_SUCCESS;
 }
 
-axis2_om_node_t* AXIS2_CALL
-axis2_om_node_detach (axis2_om_node_t *om_node,
+axiom_node_t* AXIS2_CALL
+axiom_node_detach (axiom_node_t *om_node,
                       const axis2_env_t *env)
 {
-    axis2_om_node_t *parent = NULL;
+    axiom_node_t *parent = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     
@@ -317,7 +317,7 @@ axis2_om_node_detach (axis2_om_node_t *om_node,
     }
     else
     {    
-        axis2_om_node_t *prev_sib = NULL;
+        axiom_node_t *prev_sib = NULL;
         prev_sib  = AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
         if(prev_sib)
         {   AXIS2_INTF_TO_IMPL(prev_sib)->next_sibling = 
@@ -327,7 +327,7 @@ axis2_om_node_detach (axis2_om_node_t *om_node,
     
     if (AXIS2_INTF_TO_IMPL(om_node)->next_sibling)
     {
-        axis2_om_node_t *next_sibling = NULL;
+        axiom_node_t *next_sibling = NULL;
         next_sibling = AXIS2_INTF_TO_IMPL(om_node)->next_sibling;
         if(next_sibling)
             AXIS2_INTF_TO_IMPL(next_sibling)->prev_sibling =
@@ -353,11 +353,11 @@ not to be used by users
 
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_node_set_parent (axis2_om_node_t *om_node,
+axiom_node_set_parent (axiom_node_t *om_node,
                           const axis2_env_t *env,
-                          axis2_om_node_t * parent)
+                          axiom_node_t * parent)
 {
-    axis2_om_node_impl_t *node_impl = NULL;
+    axiom_node_impl_t *node_impl = NULL;
     AXIS2_ENV_CHECK(env,AXIS2_FAILURE);
     if(!om_node)
         return AXIS2_FAILURE;
@@ -376,7 +376,7 @@ axis2_om_node_set_parent (axis2_om_node_t *om_node,
      */
     if(NULL != node_impl->parent)
     {
-       om_node =  axis2_om_node_detach(om_node, env);
+       om_node =  axiom_node_detach(om_node, env);
     }
     
     node_impl->parent = parent;
@@ -392,11 +392,11 @@ axis2_om_node_set_parent (axis2_om_node_t *om_node,
  */
 
 axis2_status_t AXIS2_CALL
-axis2_om_node_insert_sibling_after (axis2_om_node_t * om_node,
+axiom_node_insert_sibling_after (axiom_node_t * om_node,
                                     const axis2_env_t *env,
-                                    axis2_om_node_t * node_to_insert)
+                                    axiom_node_t * node_to_insert)
 {
-    axis2_om_node_t *next_sib = NULL;
+    axiom_node_t *next_sib = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -422,11 +422,11 @@ axis2_om_node_insert_sibling_after (axis2_om_node_t * om_node,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_om_node_insert_sibling_before (axis2_om_node_t *om_node,
+axiom_node_insert_sibling_before (axiom_node_t *om_node,
                                      const axis2_env_t *env,
-                                     axis2_om_node_t * node_to_insert)
+                                     axiom_node_t * node_to_insert)
 {
-    axis2_om_node_t *prev_sibling = NULL;
+    axiom_node_t *prev_sibling = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, node_to_insert, AXIS2_FAILURE);
@@ -443,12 +443,12 @@ axis2_om_node_insert_sibling_before (axis2_om_node_t *om_node,
     
     if (!prev_sibling)
     {
-        axis2_om_node_t *parent = AXIS2_INTF_TO_IMPL(om_node)->parent;
+        axiom_node_t *parent = AXIS2_INTF_TO_IMPL(om_node)->parent;
         AXIS2_INTF_TO_IMPL(parent)->first_child = node_to_insert;
     }
     else
     {
-        axis2_om_node_t *prev_sibling = AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
+        axiom_node_t *prev_sibling = AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
         if(prev_sibling)
             AXIS2_INTF_TO_IMPL(prev_sibling)->next_sibling = node_to_insert;
     }
@@ -457,14 +457,14 @@ axis2_om_node_insert_sibling_before (axis2_om_node_t *om_node,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_om_node_serialize (axis2_om_node_t *om_node,
+axiom_node_serialize (axiom_node_t *om_node,
                          const axis2_env_t *env,
-                         axis2_om_output_t *om_output)
+                         axiom_output_t *om_output)
 {
     
     int status = AXIS2_SUCCESS;
-    axis2_om_node_impl_t *node_impl = NULL;
-    axis2_om_node_t *temp_node = NULL;
+    axiom_node_impl_t *node_impl = NULL;
+    axiom_node_t *temp_node = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -478,11 +478,11 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
 
     switch (node_impl->node_type)
     {
-     case AXIS2_OM_ELEMENT:
+     case AXIOM_ELEMENT:
         if(NULL != node_impl->data_element)
         {
-             status = AXIS2_OM_ELEMENT_SERIALIZE_START_PART(
-               (axis2_om_element_t *)(node_impl->data_element),
+             status = AXIOM_ELEMENT_SERIALIZE_START_PART(
+               (axiom_element_t *)(node_impl->data_element),
                 env, 
                 om_output,
                 om_node);
@@ -492,11 +492,11 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
         
         break;
     
-    case AXIS2_OM_TEXT:
+    case AXIOM_TEXT:
         if(NULL !=  node_impl->data_element)
         {
-            status = AXIS2_OM_TEXT_SERIALIZE (
-                (axis2_om_text_t*)(node_impl->data_element),
+            status = AXIOM_TEXT_SERIALIZE (
+                (axiom_text_t*)(node_impl->data_element),
                 env, om_output);
         }
         if(status != AXIS2_SUCCESS)
@@ -504,11 +504,11 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
     
         break;
     
-    case AXIS2_OM_COMMENT:
+    case AXIOM_COMMENT:
         if(NULL !=  node_impl->data_element)
         {
-            status = AXIS2_OM_COMMENT_SERIALIZE(
-                    (axis2_om_comment_t*)(node_impl->data_element),
+            status = AXIOM_COMMENT_SERIALIZE(
+                    (axiom_comment_t*)(node_impl->data_element),
                     env, om_output);
         }                
         if( status != AXIS2_SUCCESS)
@@ -516,11 +516,11 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
         
         break;    
     
-    case AXIS2_OM_DOCTYPE:
+    case AXIOM_DOCTYPE:
         if(NULL != node_impl->data_element)
         {
-            status = AXIS2_OM_DOCTYPE_SERIALIZE(        
-                    (axis2_om_doctype_t*)(node_impl->data_element),
+            status = AXIOM_DOCTYPE_SERIALIZE(        
+                    (axiom_doctype_t*)(node_impl->data_element),
                      env, om_output);
         }                 
         if( status != AXIS2_SUCCESS)
@@ -528,11 +528,11 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
         
         break;
         
-    case AXIS2_OM_PROCESSING_INSTRUCTION:
+    case AXIOM_PROCESSING_INSTRUCTION:
         if(NULL != node_impl->data_element)
         {
-            status = AXIS2_OM_PROCESSING_INSTRUCTION_SERIALIZE(
-                    (axis2_om_processing_instruction_t*)(node_impl->data_element), 
+            status = AXIOM_PROCESSING_INSTRUCTION_SERIALIZE(
+                    (axiom_processing_instruction_t*)(node_impl->data_element), 
                     env, om_output);
         }                    
     
@@ -545,21 +545,21 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
     }
     
 
-    temp_node = axis2_om_node_get_first_child(om_node, env);
+    temp_node = axiom_node_get_first_child(om_node, env);
     /* serialize children of this node */
     while(NULL != temp_node)
     {
-        status =  axis2_om_node_serialize(temp_node, env, om_output);
-        temp_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(temp_node, env);
+        status =  axiom_node_serialize(temp_node, env, om_output);
+        temp_node = AXIOM_NODE_GET_NEXT_SIBLING(temp_node, env);
     }
     
     switch (node_impl->node_type)
     {
-    case AXIS2_OM_ELEMENT:
+    case AXIOM_ELEMENT:
         if(NULL != node_impl->data_element)
         {
-            status = AXIS2_OM_ELEMENT_SERIALIZE_END_PART (
-                        (axis2_om_element_t *)(node_impl->data_element),
+            status = AXIOM_ELEMENT_SERIALIZE_END_PART (
+                        (axiom_element_t *)(node_impl->data_element),
                         env, om_output);
         }
         if (status != AXIS2_SUCCESS)
@@ -574,19 +574,19 @@ axis2_om_node_serialize (axis2_om_node_t *om_node,
     return status;
 }
 
-axis2_om_node_t* AXIS2_CALL 
-axis2_om_node_get_parent(axis2_om_node_t *om_node,
+axiom_node_t* AXIS2_CALL 
+axiom_node_get_parent(axiom_node_t *om_node,
                          const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_node)->parent;
 }
 
-axis2_om_node_t* AXIS2_CALL 
-axis2_om_node_get_first_child(axis2_om_node_t *om_node,
+axiom_node_t* AXIS2_CALL 
+axiom_node_get_first_child(axiom_node_t *om_node,
                               const axis2_env_t *env)
 {   
-    axis2_om_node_impl_t *om_node_impl = NULL;
+    axiom_node_impl_t *om_node_impl = NULL;
     int token = 0;
     if(! om_node)
         return NULL;
@@ -597,7 +597,7 @@ axis2_om_node_get_first_child(axis2_om_node_t *om_node,
     while(!(om_node_impl->first_child) && !(om_node_impl->done) 
         && om_node_impl->builder)
     {
-        token = AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
+        token = AXIOM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
         if(token == -1)
             return NULL;
     }
@@ -605,8 +605,8 @@ axis2_om_node_get_first_child(axis2_om_node_t *om_node,
     return om_node_impl->first_child;
 }
         
-axis2_om_node_t* AXIS2_CALL
-axis2_om_node_get_last_child(axis2_om_node_t *om_node,
+axiom_node_t* AXIS2_CALL
+axiom_node_get_last_child(axiom_node_t *om_node,
                              const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -614,19 +614,19 @@ axis2_om_node_get_last_child(axis2_om_node_t *om_node,
 
 }
 
-axis2_om_node_t* AXIS2_CALL 
-axis2_om_node_get_previous_sibling(axis2_om_node_t *om_node,
+axiom_node_t* AXIS2_CALL 
+axiom_node_get_previous_sibling(axiom_node_t *om_node,
                                    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
 }
 
-axis2_om_node_t* AXIS2_CALL 
-axis2_om_node_get_next_sibling(axis2_om_node_t *om_node,
+axiom_node_t* AXIS2_CALL 
+axiom_node_get_next_sibling(axiom_node_t *om_node,
                                 const axis2_env_t *env)
 {
-    axis2_om_node_impl_t *om_node_impl = NULL;
+    axiom_node_impl_t *om_node_impl = NULL;
     int token = 0;
     
     if(!om_node)
@@ -636,9 +636,9 @@ axis2_om_node_get_next_sibling(axis2_om_node_t *om_node,
     om_node_impl = AXIS2_INTF_TO_IMPL(om_node);
     /*****************************************************/
     while(!(om_node_impl->next_sibling) && om_node_impl->parent &&
-    om_node_impl->builder && !(AXIS2_OM_NODE_IS_COMPLETE(om_node_impl->parent, env)))
+    om_node_impl->builder && !(AXIOM_NODE_IS_COMPLETE(om_node_impl->parent, env)))
     {
-        token = AXIS2_OM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
+        token = AXIOM_STAX_BUILDER_NEXT_WITH_TOKEN(om_node_impl->builder, env);
         if(token == -1)
            return NULL;
     }
@@ -646,16 +646,16 @@ axis2_om_node_get_next_sibling(axis2_om_node_t *om_node,
     return om_node_impl->next_sibling;
 }
 
-axis2_om_types_t AXIS2_CALL 
-axis2_om_node_get_node_type(axis2_om_node_t *om_node,
+axiom_types_t AXIS2_CALL 
+axiom_node_get_node_type(axiom_node_t *om_node,
                             const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_OM_INVALID);
+    AXIS2_ENV_CHECK(env, AXIOM_INVALID);
     return AXIS2_INTF_TO_IMPL(om_node)->node_type;
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_om_node_is_complete(axis2_om_node_t *om_node,
+axiom_node_is_complete(axiom_node_t *om_node,
                                const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -663,8 +663,8 @@ axis2_om_node_is_complete(axis2_om_node_t *om_node,
 
 }
 
-struct axis2_om_document* AXIS2_CALL
-axis2_om_node_get_document(axis2_om_node_t *om_node,
+struct axiom_document* AXIS2_CALL
+axiom_node_get_document(axiom_node_t *om_node,
                            const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -672,7 +672,7 @@ axis2_om_node_get_document(axis2_om_node_t *om_node,
 }                           
 
 void* AXIS2_CALL 
-axis2_om_node_get_data_element(axis2_om_node_t *om_node,
+axiom_node_get_data_element(axiom_node_t *om_node,
                                const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -684,14 +684,14 @@ axis2_om_node_get_data_element(axis2_om_node_t *om_node,
   only sets the first_child link because this is needed by builder
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axis2_om_node_set_first_child(axis2_om_node_t *om_node,const axis2_env_t *env,
-                              axis2_om_node_t *first_child)
+axiom_node_set_first_child(axiom_node_t *om_node,const axis2_env_t *env,
+                              axiom_node_t *first_child)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, first_child, AXIS2_FAILURE);
     /** set the parent */
-    axis2_om_node_set_parent(first_child, env, om_node);
+    axiom_node_set_parent(first_child, env, om_node);
     
     AXIS2_INTF_TO_IMPL(om_node)->first_child = first_child;
     return AXIS2_SUCCESS;
@@ -702,9 +702,9 @@ axis2_om_node_set_first_child(axis2_om_node_t *om_node,const axis2_env_t *env,
 
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL  
-axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,                                  
+axiom_node_set_previous_sibling(axiom_node_t *om_node,                                  
                                    const axis2_env_t *env,
-                                   axis2_om_node_t *prev_sibling)
+                                   axiom_node_t *prev_sibling)
 {
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -720,9 +720,9 @@ axis2_om_node_set_previous_sibling(axis2_om_node_t *om_node,
   only sets the next sibling link;
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL  
-axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
+axiom_node_set_next_sibling(axiom_node_t *om_node,
                                const axis2_env_t *env,
-                               axis2_om_node_t *next_sibling)
+                               axiom_node_t *next_sibling)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
@@ -737,9 +737,9 @@ axis2_om_node_set_next_sibling(axis2_om_node_t *om_node,
 */
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL  
-axis2_om_node_set_node_type(axis2_om_node_t *om_node,
+axiom_node_set_node_type(axiom_node_t *om_node,
                             const axis2_env_t *env,
-                            axis2_om_types_t type)
+                            axiom_types_t type)
 {
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -752,7 +752,7 @@ axis2_om_node_set_node_type(axis2_om_node_t *om_node,
    only used in om and soap
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axis2_om_node_set_data_element(axis2_om_node_t *om_node,
+axiom_node_set_data_element(axiom_node_t *om_node,
                                const axis2_env_t *env,
                                void* data_element)
 {                               
@@ -770,7 +770,7 @@ axis2_om_node_set_data_element(axis2_om_node_t *om_node,
 
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_node_set_complete(axis2_om_node_t *om_node,
+axiom_node_set_complete(axiom_node_t *om_node,
                                const axis2_env_t *env,
                                axis2_bool_t done)
 {
@@ -785,9 +785,9 @@ axis2_om_node_set_complete(axis2_om_node_t *om_node,
 
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_node_set_document(axis2_om_node_t *om_node,
+axiom_node_set_document(axiom_node_t *om_node,
                            const axis2_env_t *env,
-                           struct axis2_om_document *om_doc)
+                           struct axiom_document *om_doc)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_node, AXIS2_FAILURE);
@@ -803,9 +803,9 @@ axis2_om_node_set_document(axis2_om_node_t *om_node,
 */
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_om_node_set_builder(axis2_om_node_t *om_node,
+axiom_node_set_builder(axiom_node_t *om_node,
                            const axis2_env_t *env,
-                           axis2_om_stax_builder_t* builder)
+                           axiom_stax_builder_t* builder)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, builder, AXIS2_FAILURE);
@@ -817,8 +817,8 @@ axis2_om_node_set_builder(axis2_om_node_t *om_node,
 /**
  * This is an internal function 
  */
-AXIS2_EXTERN axis2_om_stax_builder_t * AXIS2_CALL
-axis2_om_node_get_builder(axis2_om_node_t *om_node,
+AXIS2_EXTERN axiom_stax_builder_t * AXIS2_CALL
+axiom_node_get_builder(axiom_node_t *om_node,
                           const axis2_env_t *env)
 {
     if(!om_node)
@@ -827,12 +827,12 @@ axis2_om_node_get_builder(axis2_om_node_t *om_node,
 }
 
 axis2_char_t * AXIS2_CALL
-axis2_om_node_to_string(axis2_om_node_t *om_node,
+axiom_node_to_string(axiom_node_t *om_node,
                         const axis2_env_t *env)
 {
 
     int status = AXIS2_SUCCESS;
-    axis2_om_output_t *om_output = NULL;
+    axiom_output_t *om_output = NULL;
     axis2_xml_writer_t *xml_writer = NULL;
     axis2_char_t *xml = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -843,17 +843,17 @@ axis2_om_node_to_string(axis2_om_node_t *om_node,
     if(!xml_writer)
         return NULL;
     
-    om_output = axis2_om_output_create(env, xml_writer);
+    om_output = axiom_output_create(env, xml_writer);
     if(!om_output)
     {
         AXIS2_XML_WRITER_FREE(xml_writer, env);
         return NULL;
     }
-    status = AXIS2_OM_NODE_SERIALIZE(om_node, env, om_output);
+    status = AXIOM_NODE_SERIALIZE(om_node, env, om_output);
     if(status == AXIS2_SUCCESS)
     {
         xml = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
     }
-    AXIS2_OM_OUTPUT_FREE(om_output, env);
+    AXIOM_OUTPUT_FREE(om_output, env);
     return xml;    
 }                        
