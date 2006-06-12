@@ -18,7 +18,7 @@
 #include <axis2_string.h>
 #include <axis2_http_transport.h>
 #include <string.h>
-#include <axis2_om_output.h>
+#include <axiom_output.h>
 #include <axis2_op_ctx.h>
 #include <axis2_ctx.h>
 #include <axis2_http_client.h>
@@ -41,7 +41,7 @@ struct axis2_soap_over_http_sender_impl
    axis2_bool_t chunked;
    int so_timeout;
    int connection_timeout;
-   axis2_om_output_t *om_output;
+   axiom_output_t *om_output;
    axis2_http_client_t *client;
 };
 
@@ -82,7 +82,7 @@ axis2_soap_over_http_sender_set_chunked
 axis2_status_t AXIS2_CALL 
 axis2_soap_over_http_sender_set_om_output
                   (axis2_soap_over_http_sender_t *sender, 
-                  const axis2_env_t *env, axis2_om_output_t *om_output);
+                  const axis2_env_t *env, axiom_output_t *om_output);
                   
 axis2_status_t AXIS2_CALL
 axis2_soap_over_http_sender_set_http_version
@@ -245,7 +245,7 @@ axis2_soap_over_http_sender_send
                   AXIS2_FAILURE);
       return AXIS2_FAILURE;
    }
-   xml_writer = AXIS2_OM_OUTPUT_GET_XML_WRITER(sender_impl->om_output, env);
+   xml_writer = AXIOM_OUTPUT_GET_XML_WRITER(sender_impl->om_output, env);
    
    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
                      AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
@@ -259,7 +259,7 @@ axis2_soap_over_http_sender_send
       char_set_enc = AXIS2_DEFAULT_CHAR_SET_ENCODING;
    }
    
-    AXIS2_OM_OUTPUT_SET_DO_OPTIMIZE(sender_impl->om_output, env, 
+    AXIOM_OUTPUT_SET_DO_OPTIMIZE(sender_impl->om_output, env, 
                doing_mtom);
    
    AXIS2_SOAP_ENVELOPE_SERIALIZE (out, env, sender_impl->om_output, 
@@ -267,7 +267,7 @@ axis2_soap_over_http_sender_send
 
     if (doing_mtom)
     {
-        AXIS2_OM_OUTPUT_FLUSH(sender_impl->om_output, env, &output_stream,
+        AXIOM_OUTPUT_FLUSH(sender_impl->om_output, env, &output_stream,
                                     &output_stream_size);
     }
     else
@@ -339,7 +339,7 @@ axis2_soap_over_http_sender_send
    /* TODO we need to set the content type with soap action header for soap12*/
     if (doing_mtom)
     {
-        content_type = (axis2_char_t *)AXIS2_OM_OUTPUT_GET_CONTENT_TYPE(sender_impl->om_output, 
+        content_type = (axis2_char_t *)AXIOM_OUTPUT_GET_CONTENT_TYPE(sender_impl->om_output, 
                         env);
     }
    else if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
@@ -459,7 +459,7 @@ axis2_soap_over_http_sender_set_chunked
 axis2_status_t AXIS2_CALL 
 axis2_soap_over_http_sender_set_om_output
                   (axis2_soap_over_http_sender_t *sender, 
-                  const axis2_env_t *env, axis2_om_output_t *om_output)
+                  const axis2_env_t *env, axiom_output_t *om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(sender)->om_output = om_output;
@@ -697,8 +697,8 @@ axis2_soap_over_http_sender_configure_proxy(axis2_soap_over_http_sender_t *sende
         if(NULL != transport_attrs)
         {
             axis2_generic_obj_t *obj = NULL;
-            axis2_om_attribute_t *host_attr = NULL;
-            axis2_om_attribute_t *port_attr = NULL;
+            axiom_attribute_t *host_attr = NULL;
+            axiom_attribute_t *port_attr = NULL;
             axis2_char_t *proxy_host = NULL;
             axis2_char_t *proxy_port = NULL;
             
@@ -708,13 +708,13 @@ axis2_soap_over_http_sender_configure_proxy(axis2_soap_over_http_sender_t *sende
             {
                 return AXIS2_FAILURE;
             }
-            host_attr = (axis2_om_attribute_t*)AXIS2_GENERIC_OBJ_GET_VALUE(obj,
+            host_attr = (axiom_attribute_t*)AXIS2_GENERIC_OBJ_GET_VALUE(obj,
                         env);
             if(NULL == host_attr)
             {
                 return AXIS2_FAILURE;
             }
-            proxy_host = AXIS2_OM_ATTRIBUTE_GET_VALUE(host_attr, env);
+            proxy_host = AXIOM_ATTRIBUTE_GET_VALUE(host_attr, env);
             if(NULL == proxy_host)
             {
                 return AXIS2_FAILURE;
@@ -724,13 +724,13 @@ axis2_soap_over_http_sender_configure_proxy(axis2_soap_over_http_sender_t *sende
             
             obj = axis2_hash_get(transport_attrs, AXIS2_PROXY_HOST_PORT,
                         AXIS2_HASH_KEY_STRING);
-            port_attr = (axis2_om_attribute_t*)AXIS2_GENERIC_OBJ_GET_VALUE(obj,
+            port_attr = (axiom_attribute_t*)AXIS2_GENERIC_OBJ_GET_VALUE(obj,
                         env);
             if(NULL == port_attr)
             {
                 return AXIS2_FAILURE;
             }
-            proxy_port = AXIS2_OM_ATTRIBUTE_GET_VALUE(port_attr, env);
+            proxy_port = AXIOM_ATTRIBUTE_GET_VALUE(port_attr, env);
             if(NULL == proxy_port)
             {
                 return AXIS2_FAILURE;

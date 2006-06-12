@@ -952,14 +952,14 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_soap_envelope(struct axis2_msg_ctx *
     
     if (soap_envelope)
     {
-        axis2_om_namespace_t *ns = NULL;
+        axiom_namespace_t *ns = NULL;
         axis2_char_t *soap_ns = NULL;
         
         AXIS2_INTF_TO_IMPL(msg_ctx)->soap_envelope  = soap_envelope ;
         ns = AXIS2_SOAP_ENVELOPE_GET_NAMESPACE(soap_envelope, env);
         if (ns)
         {
-            soap_ns = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+            soap_ns = AXIOM_NAMESPACE_GET_URI(ns, env);
             if (soap_ns)
             {
                 if (AXIS2_STRCASECMP(soap_ns, AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0)

@@ -40,7 +40,7 @@ extern "C"
 typedef struct axis2_diclient_ops axis2_diclient_ops_t;
 typedef struct axis2_diclient axis2_diclient_t; 
 
-struct axis2_om_node;
+struct axiom_node;
 struct axis2_op;
 
 /** 
@@ -63,7 +63,7 @@ struct axis2_diclient_ops
     axis2_status_t (AXIS2_CALL *
     invoke) (axis2_diclient_t *diclient,
              const axis2_env_t *env,
-             axis2_om_node_t *node,
+             axiom_node_t *node,
              struct axis2_op *op);
    
     /**

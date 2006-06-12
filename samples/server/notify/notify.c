@@ -17,9 +17,9 @@
 #include <stdio.h>
 
 void
-axis2_notify_notify (const axis2_env_t *env, axis2_om_node_t *node)
+axis2_notify_notify (const axis2_env_t *env, axiom_node_t *node)
 {
-    axis2_om_node_t *text_node = NULL;
+    axiom_node_t *text_node = NULL;
 
     if (!env || !env)
         return;
@@ -34,7 +34,7 @@ axis2_notify_notify (const axis2_env_t *env, axis2_om_node_t *node)
         return;
     }
 
-    text_node = AXIS2_OM_NODE_GET_FIRST_CHILD(node, env);
+    text_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);
     if (!node) /* actual text to notify */
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
@@ -42,12 +42,12 @@ axis2_notify_notify (const axis2_env_t *env, axis2_om_node_t *node)
         return;
     }
     
-    if (AXIS2_OM_NODE_GET_NODE_TYPE(text_node, env) == AXIS2_OM_TEXT)
+    if (AXIOM_NODE_GET_NODE_TYPE(text_node, env) == AXIOM_TEXT)
     {
-        axis2_om_text_t *text = (axis2_om_text_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(text_node, env);
-        if( text && AXIS2_OM_TEXT_GET_VALUE(text , env))
+        axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(text_node, env);
+        if( text && AXIOM_TEXT_GET_VALUE(text , env))
         {
-            axis2_char_t *text_str = AXIS2_OM_TEXT_GET_VALUE(text, env);
+            axis2_char_t *text_str = AXIOM_TEXT_GET_VALUE(text, env);
             printf("Notification received :  %s \n", text_str);
         }
     }

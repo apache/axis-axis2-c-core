@@ -28,10 +28,10 @@ echo_free_void_arg(void *svc_skeleton,
 /*
  * This method invokes the right service method 
  */
-axis2_om_node_t* AXIS2_CALL 
+axiom_node_t* AXIS2_CALL 
 echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
             const axis2_env_t *env,
-            axis2_om_node_t *node,
+            axiom_node_t *node,
             axis2_msg_ctx_t *msg_ctx);
             
 
@@ -39,9 +39,9 @@ int AXIS2_CALL
 echo_init(axis2_svc_skeleton_t *svc_skeleton,
           const axis2_env_t *env);
 
-axis2_om_node_t* AXIS2_CALL
+axiom_node_t* AXIS2_CALL
 echo_on_fault(axis2_svc_skeleton_t *svc_skeli, 
-              const axis2_env_t *env, axis2_om_node_t *node);
+              const axis2_env_t *env, axiom_node_t *node);
 
 /*Create function */
 axis2_svc_skeleton_t *
@@ -82,10 +82,10 @@ echo_init(axis2_svc_skeleton_t *svc_skeleton,
 /*
  * This method invokes the right service method 
  */
-axis2_om_node_t* AXIS2_CALL
+axiom_node_t* AXIS2_CALL
 echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
             const axis2_env_t *env,
-            axis2_om_node_t *node,
+            axiom_node_t *node,
             axis2_msg_ctx_t *msg_ctx)
 {
     /* Invoke the business logic.
@@ -98,19 +98,19 @@ echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
 }
 
 /* On fault, handle the fault */
-axis2_om_node_t* AXIS2_CALL
+axiom_node_t* AXIS2_CALL
 echo_on_fault(axis2_svc_skeleton_t *svc_skeli, 
-              const axis2_env_t *env, axis2_om_node_t *node)
+              const axis2_env_t *env, axiom_node_t *node)
 {
    /* Here we are just setting a simple error message inside an element 
     * called 'EchoServiceError' 
     */
-    axis2_om_node_t *error_node = NULL;
-    axis2_om_node_t* text_node = NULL;
-    axis2_om_element_t *error_ele = NULL;
-    error_ele = axis2_om_element_create(env, node, "EchoServiceError", NULL, 
+    axiom_node_t *error_node = NULL;
+    axiom_node_t* text_node = NULL;
+    axiom_element_t *error_ele = NULL;
+    error_ele = axiom_element_create(env, node, "EchoServiceError", NULL, 
         &error_node);
-    AXIS2_OM_ELEMENT_SET_TEXT(error_ele, env, "Echo service failed ", 
+    AXIOM_ELEMENT_SET_TEXT(error_ele, env, "Echo service failed ", 
         text_node);
     return error_node;
 }

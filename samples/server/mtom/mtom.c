@@ -16,15 +16,15 @@
 #include "mtom.h"
 #include <stdio.h>
 
-axis2_om_node_t *
+axiom_node_t *
 build_om_programatically(const axis2_env_t *env, axis2_char_t *text);
 
-axis2_om_node_t *
-axis2_mtom_mtom (const axis2_env_t *env, axis2_om_node_t *node)
+axiom_node_t *
+axis2_mtom_mtom (const axis2_env_t *env, axiom_node_t *node)
 {
-    axis2_om_node_t *file_name_node = NULL;
-    axis2_om_node_t *file_text_node = NULL;
-    axis2_om_node_t *ret_node = NULL;
+    axiom_node_t *file_name_node = NULL;
+    axiom_node_t *file_text_node = NULL;
+    axiom_node_t *ret_node = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
    
@@ -43,7 +43,7 @@ axis2_mtom_mtom (const axis2_env_t *env, axis2_om_node_t *node)
         return NULL;
     }
 
-    file_name_node = AXIS2_OM_NODE_GET_FIRST_CHILD(node, env);
+    file_name_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);
     if (!file_name_node) /* 'text' node */
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
@@ -51,7 +51,7 @@ axis2_mtom_mtom (const axis2_env_t *env, axis2_om_node_t *node)
         return NULL;
     }
     
-    file_text_node = AXIS2_OM_NODE_GET_FIRST_CHILD(file_name_node, env);
+    file_text_node = AXIOM_NODE_GET_FIRST_CHILD(file_name_node, env);
     if (!file_text_node) /* actual text to mtom */
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
@@ -59,30 +59,30 @@ axis2_mtom_mtom (const axis2_env_t *env, axis2_om_node_t *node)
         return NULL;
     }
     
-    if (AXIS2_OM_NODE_GET_NODE_TYPE(file_text_node, env) == AXIS2_OM_TEXT)
+    if (AXIOM_NODE_GET_NODE_TYPE(file_text_node, env) == AXIOM_TEXT)
     {
-        axis2_om_text_t *text = (axis2_om_text_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(file_text_node, env);
-        if( text && AXIS2_OM_TEXT_GET_VALUE(text , env))
+        axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(file_text_node, env);
+        if( text && AXIOM_TEXT_GET_VALUE(text , env))
         {
-            axis2_om_node_t *image_node = NULL;
-            axis2_char_t *text_str = AXIS2_OM_TEXT_GET_VALUE(text, env);
+            axiom_node_t *image_node = NULL;
+            axis2_char_t *text_str = AXIOM_TEXT_GET_VALUE(text, env);
             printf("File Name  %s \n", text_str);
             
-            image_node = AXIS2_OM_NODE_GET_NEXT_SIBLING(file_name_node, env);
+            image_node = AXIOM_NODE_GET_NEXT_SIBLING(file_name_node, env);
             if (image_node)
             {
-                axis2_om_node_t *inc_node = NULL;
-                inc_node = AXIS2_OM_NODE_GET_FIRST_CHILD(image_node, env);
+                axiom_node_t *inc_node = NULL;
+                inc_node = AXIOM_NODE_GET_FIRST_CHILD(image_node, env);
                 if (inc_node)
                 {
-                    axis2_om_node_t *binary_node = NULL;
-                    binary_node = AXIS2_OM_NODE_GET_FIRST_CHILD(inc_node, env);
+                    axiom_node_t *binary_node = NULL;
+                    binary_node = AXIOM_NODE_GET_FIRST_CHILD(inc_node, env);
                     if (binary_node)
                     {
                         axis2_data_handler_t *data_handler = NULL;
-                        axis2_om_text_t *bin_text = (axis2_om_text_t *)
-                            AXIS2_OM_NODE_GET_DATA_ELEMENT(binary_node, env);
-                        data_handler = AXIS2_OM_TEXT_SET_GET_DATA_HANDLER(bin_text, env);
+                        axiom_text_t *bin_text = (axiom_text_t *)
+                            AXIOM_NODE_GET_DATA_ELEMENT(binary_node, env);
+                        data_handler = AXIOM_TEXT_SET_GET_DATA_HANDLER(bin_text, env);
                         if (data_handler)
                         {
                             AXIS2_DATA_HANDLER_SET_FILE_NAME(data_handler, env, text_str);
@@ -106,18 +106,18 @@ axis2_mtom_mtom (const axis2_env_t *env, axis2_om_node_t *node)
 }
 
 /* Builds the response content */
-axis2_om_node_t *
+axiom_node_t *
 build_om_programatically(const axis2_env_t *env, axis2_char_t *text)
 {
-    axis2_om_node_t *mtom_om_node = NULL;
-    axis2_om_element_t* mtom_om_ele = NULL;
-    axis2_om_namespace_t *ns1 = NULL;
+    axiom_node_t *mtom_om_node = NULL;
+    axiom_element_t* mtom_om_ele = NULL;
+    axiom_namespace_t *ns1 = NULL;
     
-    ns1 = axis2_om_namespace_create (env, "http://ws.apache.org/axis2/c/samples", "ns1");
+    ns1 = axiom_namespace_create (env, "http://ws.apache.org/axis2/c/samples", "ns1");
 
-    mtom_om_ele = axis2_om_element_create(env, NULL, "response", ns1, &mtom_om_node);
+    mtom_om_ele = axiom_element_create(env, NULL, "response", ns1, &mtom_om_node);
     
-    AXIS2_OM_ELEMENT_SET_TEXT(mtom_om_ele, env, "Image Saved", mtom_om_node);
+    AXIOM_ELEMENT_SET_TEXT(mtom_om_ele, env, "Image Saved", mtom_om_node);
     
     return mtom_om_node;
 }

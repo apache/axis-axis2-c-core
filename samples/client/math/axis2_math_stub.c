@@ -97,13 +97,13 @@ axis2_math_stub_create_with_endpoint_uri_and_client_home(const axis2_env_t *env,
 
 /***************************Function implementation****************************/
 
-axis2_om_node_t *
+axiom_node_t *
 axis2_math_stub_add(axis2_stub_t *stub,
                         const axis2_env_t *env,
-                        axis2_om_node_t *node)
+                        axiom_node_t *node)
 {
     axis2_svc_client_t *svc_client = NULL;
-    axis2_om_node_t *ret_node = NULL;
+    axiom_node_t *ret_node = NULL;
     axis2_qname_t *op_qname =  NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -115,13 +115,13 @@ axis2_math_stub_add(axis2_stub_t *stub,
     return ret_node;
 }
 
-axis2_om_node_t *
+axiom_node_t *
 axis2_math_stub_sub(axis2_stub_t *stub,
                         const axis2_env_t *env,
-                        axis2_om_node_t *node)
+                        axiom_node_t *node)
 {
     axis2_svc_client_t *svc_client = NULL;
-    axis2_om_node_t *ret_node = NULL;
+    axiom_node_t *ret_node = NULL;
     axis2_qname_t *op_qname =  NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -133,13 +133,13 @@ axis2_math_stub_sub(axis2_stub_t *stub,
     return ret_node;
 }
 
-axis2_om_node_t *
+axiom_node_t *
 axis2_math_stub_mul(axis2_stub_t *stub,
                         const axis2_env_t *env,
-                        axis2_om_node_t *node)
+                        axiom_node_t *node)
 {
     axis2_svc_client_t *svc_client = NULL;
-    axis2_om_node_t *ret_node = NULL;
+    axiom_node_t *ret_node = NULL;
     axis2_qname_t *op_qname =  NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -151,13 +151,13 @@ axis2_math_stub_mul(axis2_stub_t *stub,
     return ret_node;
 }
 
-axis2_om_node_t *
+axiom_node_t *
 axis2_math_stub_div(axis2_stub_t *stub,
                         const axis2_env_t *env,
-                        axis2_om_node_t *node)
+                        axiom_node_t *node)
 {
     axis2_svc_client_t *svc_client = NULL;
-    axis2_om_node_t *ret_node = NULL;
+    axiom_node_t *ret_node = NULL;
     axis2_qname_t *op_qname =  NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

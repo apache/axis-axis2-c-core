@@ -38,7 +38,7 @@
 #include <axis2_svc.h>
 #include <axis2_options.h>
 #include <axis2_qname.h>
-#include <axis2_om_element.h>
+#include <axiom_element.h>
 #include <axis2_callback.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_svc_ctx.h>
@@ -189,7 +189,7 @@ extern "C"
                 add_header)(
                     axis2_svc_client_t *svc_client,
                     const axis2_env_t *env,
-                    axis2_om_node_t *header);
+                    axiom_node_t *header);
 
         /**
           * Removes all the headers added to service client.
@@ -233,7 +233,7 @@ extern "C"
                     axis2_svc_client_t *svc_client,
                     const axis2_env_t *env,
                     const axis2_qname_t *op_qname,
-                    const axis2_om_node_t *payload);
+                    const axiom_node_t *payload);
 
         /**
           * Sends a bit of XML and forget about it. This method is used to interact with
@@ -251,7 +251,7 @@ extern "C"
                     axis2_svc_client_t *svc_client,
                     const axis2_env_t *env,
                     const axis2_qname_t *op_qname,
-                    const axis2_om_node_t *payload);
+                    const axiom_node_t *payload);
 
         /**
           * Sends XML request and receives XML response.
@@ -263,12 +263,12 @@ extern "C"
           * @param payload pointer to OM node representing the XML payload to be sent
           * @return pointer to OM node representing the XML response
           */
-        axis2_om_node_t *(AXIS2_CALL *
+        axiom_node_t *(AXIS2_CALL *
                 send_receive)(
                     axis2_svc_client_t *svc_client,
                     const axis2_env_t *env,
                     const axis2_qname_t *op_qname,
-                    const axis2_om_node_t *payload);
+                    const axiom_node_t *payload);
 
         /**
           * Sends XML request and receives XML response, but do not block for response.
@@ -286,7 +286,7 @@ extern "C"
                     axis2_svc_client_t *svc_client,
                     const axis2_env_t *env,
                     const axis2_qname_t *op_qname,
-                    const axis2_om_node_t *payload,
+                    const axiom_node_t *payload,
                     axis2_callback_t *callback);
 
         /**

@@ -64,12 +64,12 @@ AXIS2_DECLARE_DATA struct axis2_svc_grp_builder_ops
     
     /**
      * To get the list og modules that is requird to be engage globally
-     * @param module_refs  <code>axis2_om_children_qname_iterator_t</code>
+     * @param module_refs  <code>axiom_children_qname_iterator_t</code>
      */
     axis2_status_t (AXIS2_CALL *
     process_module_refs) (axis2_svc_grp_builder_t *grp_builder,
                                                 const axis2_env_t *env,
-                                       axis2_om_children_qname_iterator_t *module_refs ,
+                                       axiom_children_qname_iterator_t *module_refs ,
                                                 axis2_svc_grp_t *svc_grp);
 
 };
@@ -98,7 +98,7 @@ axis2_svc_grp_builder_create (const axis2_env_t *env);
  */
 AXIS2_EXTERN axis2_svc_grp_builder_t * AXIS2_CALL 
 axis2_svc_grp_builder_create_with_svc_and_dep_engine (const axis2_env_t *env,
-                                                axis2_om_node_t *svc,
+                                                axiom_node_t *svc,
                                                 axis2_dep_engine_t *dep_engine);
 
 /*************************** Function macros **********************************/

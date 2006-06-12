@@ -31,7 +31,7 @@
 #include <axis2_desc_builder.h>
 #include <axis2_conf.h>
 #include <axis2_dep_engine.h>
-#include <axis2_om_children_qname_iterator.h>
+#include <axiom_children_qname_iterator.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -71,7 +71,7 @@ AXIS2_DECLARE_DATA struct axis2_conf_builder_ops
     axis2_status_t (AXIS2_CALL *
     process_module_refs) (axis2_conf_builder_t *conf_builder,
                             const axis2_env_t *env,
-                            axis2_om_children_qname_iterator_t *module_refs);
+                            axiom_children_qname_iterator_t *module_refs);
                                
  
 

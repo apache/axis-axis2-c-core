@@ -101,16 +101,16 @@
 
 #include <xml_schema/axis2_xml_schema_collection.h>
 
-#include <axis2_om_node.h>
-#include <axis2_om_element.h>
-#include <axis2_om_attribute.h>
-#include <axis2_om_child_element_iterator.h>
-#include <axis2_om_namespace.h>
-#include <axis2_om_text.h>
-#include <axis2_om_document.h>
-#include <axis2_om_stax_builder.h>
+#include <axiom_node.h>
+#include <axiom_element.h>
+#include <axiom_attribute.h>
+#include <axiom_child_element_iterator.h>
+#include <axiom_namespace.h>
+#include <axiom_text.h>
+#include <axiom_document.h>
+#include <axiom_stax_builder.h>
 #include <axis2_xml_reader.h>
-#include <axis2_om_util.h>
+#include <axiom_util.h>
 
 #include <axis2_string_util.h>
 
@@ -124,8 +124,8 @@ struct woden_reader_impl
 {
     woden_reader_t reader;
 
-    axis2_om_document_t *om_doc;
-    axis2_om_node_t *root_node;
+    axiom_document_t *om_doc;
+    axiom_node_t *root_node;
     /* A map of imported schema definitions keyed by schema location URI */
     axis2_hash_t *f_imported_schemas;
     axis2_woden_ext_registry_t *f_ext_reg;
@@ -144,7 +144,7 @@ void *AXIS2_CALL
 woden_reader_read_wsdl(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_document_t *om_doc,
+        axiom_document_t *om_doc,
         axis2_char_t *uri);
 
 axis2_status_t AXIS2_CALL
@@ -172,21 +172,21 @@ parse_desc(
         void *reader,
         const axis2_env_t *env,
         axis2_char_t *document_base_uri, 
-        axis2_om_node_t *desc_el_node,
+        axiom_node_t *desc_el_node,
         axis2_hash_t *wsdl_modules);
 
 static void *
 parse_documentation(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *doc_el_node,
+        axiom_node_t *doc_el_node,
         void *desc);
 
 static void *
 parse_import(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *import_el_node,
+        axiom_node_t *import_el_node,
         void *desc,
         axis2_hash_t *wsdl_modules);
     
@@ -194,7 +194,7 @@ static void *
 parse_include(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *include_el_node,
+        axiom_node_t *include_el_node,
         void *desc,
         axis2_hash_t *wsdl_modules);
  
@@ -208,14 +208,14 @@ static void *
 parse_types(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *types_el_node,
+        axiom_node_t *types_el_node,
         void *desc);
 
 static void *
 parse_schema_inline(
         void *reader, 
         const axis2_env_t *env,
-        axis2_om_node_t *schema_el_node,
+        axiom_node_t *schema_el_node,
         void *desc);
 
 /*
@@ -235,14 +235,14 @@ static void *
 parse_schema_import(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *import_el_node,
+        axiom_node_t *import_el_node,
         void *desc);
 
 static void *
 parse_interface(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *interface_el_node,
+        axiom_node_t *interface_el_node,
         void *desc);
 
 /* Parse the attributes and child elements of interface <fault>. 
@@ -256,7 +256,7 @@ static void *
 parse_interface_fault(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *fault_el_node,
+        axiom_node_t *fault_el_node,
         void *desc,
         void *parent);
 
@@ -264,7 +264,7 @@ static void *
 parse_interface_op(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *op_el_node,
+        axiom_node_t *op_el_node,
         void *desc,
         void *parent);
 
@@ -272,7 +272,7 @@ static void *
 parse_interface_fault_ref(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *fault_ref_el_node,
+        axiom_node_t *fault_ref_el_node,
         void *desc,
         void *parent);
 
@@ -280,7 +280,7 @@ static void *
 parse_interface_msg_ref(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *msg_ref_el_node,
+        axiom_node_t *msg_ref_el_node,
         void *desc,
         void *parent);
 
@@ -288,14 +288,14 @@ static void *
 parse_binding(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *binding_el_node,
+        axiom_node_t *binding_el_node,
         void *desc);
 
 static void *
 parse_binding_fault(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *fault_el_node,
+        axiom_node_t *fault_el_node,
         void *desc,
         void *parent);
 
@@ -303,7 +303,7 @@ static void *
 parse_binding_op(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *op_el_node,
+        axiom_node_t *op_el_node,
         void *desc,
         void *parent);
 
@@ -311,7 +311,7 @@ static void *
 parse_binding_fault_ref(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *fault_ref_el_node,
+        axiom_node_t *fault_ref_el_node,
         void *desc,
         void *parent);
 
@@ -319,7 +319,7 @@ static void *
 parse_binding_msg_ref(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *msg_ref_el_node,
+        axiom_node_t *msg_ref_el_node,
         void *desc,
         void *parent);
 
@@ -327,14 +327,14 @@ static void *
 parse_svc(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *svc_el_node,
+        axiom_node_t *svc_el_node,
         void *desc);
 
 static void *
 parse_endpoint(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *endpoint_el_node,
+        axiom_node_t *endpoint_el_node,
         void *desc,
         void *parent);
 
@@ -342,7 +342,7 @@ static void *
 parse_feature(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *feature_el_node,
+        axiom_node_t *feature_el_node,
         void *desc,
         void *parent);
 
@@ -374,7 +374,7 @@ static void *
 parse_property(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *property_el_node,
+        axiom_node_t *property_el_node,
         void *desc,
         void *parent);
 
@@ -382,7 +382,7 @@ axis2_status_t AXIS2_CALL
 parse_ext_attributes(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *om_el_node,
+        axiom_node_t *om_el_node,
         axis2_char_t *wsdl_class,
         void *wsdl_obj,
         void *desc);
@@ -393,7 +393,7 @@ parse_ext_element(
         const axis2_env_t *env,
         axis2_char_t *parent_type,
         void *parent,
-        axis2_om_node_t *el_node,
+        axiom_node_t *el_node,
         void *desc);
 
 /* ************************************************************
@@ -410,7 +410,7 @@ static axis2_status_t
 check_element_qname(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *el_node,
+        axiom_node_t *el_node,
         axis2_qname_t *qname);
     
 /*
@@ -562,7 +562,7 @@ void *AXIS2_CALL
 woden_reader_read_wsdl(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_document_t *om_doc,
+        axiom_document_t *om_doc,
         axis2_char_t *uri) 
 {
     woden_reader_impl_t *reader_impl = NULL;
@@ -575,7 +575,7 @@ woden_reader_read_wsdl(
         
     /* TODO add WSDL locator for resolving URIs */
     reader_impl->om_doc = om_doc;
-    reader_impl->root_node = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(om_doc, env);            
+    reader_impl->root_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(om_doc, env);            
     if(!reader_impl->root_node)
         return NULL;
     desc = parse_desc(reader, env, uri, reader_impl->root_node, NULL);
@@ -603,7 +603,7 @@ parse_desc(
         void *reader,
         const axis2_env_t *env,
         axis2_char_t *document_base_uri, 
-        axis2_om_node_t *desc_el_node,
+        axiom_node_t *desc_el_node,
         axis2_hash_t *wsdl_modules)
 {
     woden_reader_impl_t *reader_impl = NULL;
@@ -612,19 +612,19 @@ parse_desc(
     axis2_uri_t *uri = NULL;
     axis2_char_t *target_namespc = NULL;
     axis2_uri_t *target_namespc_uri = NULL;
-    axis2_om_element_t *desc_el = NULL;
+    axiom_element_t *desc_el = NULL;
     axis2_hash_t *attrs = NULL;
     axis2_hash_index_t *index = NULL;
-    axis2_om_element_t *temp_el = NULL;
-    axis2_om_node_t *temp_el_node = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
     void *types = NULL;
     axis2_qname_t *qname = NULL;
     void *schema = NULL;
-    axis2_om_attribute_t *attr_ns = NULL;
-    axis2_om_attribute_t *attr_loc = NULL;
-    axis2_om_element_t *schema_elem = NULL;
-    axis2_om_node_t *schema_elem_node = NULL;
-    axis2_om_namespace_t *schema_ns = NULL;
+    axiom_attribute_t *attr_ns = NULL;
+    axiom_attribute_t *attr_loc = NULL;
+    axiom_element_t *schema_elem = NULL;
+    axiom_node_t *schema_elem_node = NULL;
+    axiom_namespace_t *schema_ns = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, document_base_uri, NULL);
@@ -655,8 +655,8 @@ parse_desc(
     uri = get_uri(reader, env, document_base_uri);
     AXIS2_WODEN_DESC_ELEMENT_SET_DOCUMENT_BASE_URI(desc, env, uri);
 
-    desc_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(desc_el_node, env);
-    target_namespc = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(desc_el, 
+    desc_el = AXIOM_NODE_GET_DATA_ELEMENT(desc_el_node, env);
+    target_namespc = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(desc_el, 
             env, WODEN_ATTR_TARGET_NAMESPACE); 
     
     if(NULL != target_namespc)
@@ -666,23 +666,23 @@ parse_desc(
     }
     
     /* parse the namespace declarations */
-    attrs = AXIS2_OM_ELEMENT_GET_ALL_ATTRIBUTES(desc_el, env);
+    attrs = AXIOM_ELEMENT_GET_ALL_ATTRIBUTES(desc_el, env);
     for (index = axis2_hash_first (attrs, env); index; index = axis2_hash_next (
                 env, index))
     {
         void *v = NULL;
-        axis2_om_attribute_t *attr = NULL;
-        axis2_om_namespace_t *namespc = NULL;
+        axiom_attribute_t *attr = NULL;
+        axiom_namespace_t *namespc = NULL;
         axis2_char_t *namespc_uri = NULL;
         axis2_char_t *local_part = NULL;
         axis2_char_t *value = NULL;
         
         axis2_hash_this (index, NULL, NULL, &v);
-        attr = (axis2_om_attribute_t *) v;
-        namespc = AXIS2_OM_ATTRIBUTE_GET_NAMESPACE(attr, env);
-        namespc_uri = AXIS2_OM_NAMESPACE_GET_URI(namespc, env);
-        local_part = AXIS2_OM_ATTRIBUTE_GET_LOCALNAME(attr, env);
-        value = AXIS2_OM_ATTRIBUTE_GET_VALUE(attr, env);
+        attr = (axiom_attribute_t *) v;
+        namespc = AXIOM_ATTRIBUTE_GET_NAMESPACE(attr, env);
+        namespc_uri = AXIOM_NAMESPACE_GET_URI(namespc, env);
+        local_part = AXIOM_ATTRIBUTE_GET_LOCALNAME(attr, env);
+        value = AXIOM_ATTRIBUTE_GET_VALUE(attr, env);
         uri = get_uri(reader, env, value);
         if(0 == AXIS2_STRCMP(WODEN_NS_URI_XMLNS, namespc_uri))
         {
@@ -702,7 +702,7 @@ parse_desc(
     parse_ext_attributes(reader, env, desc_el_node, "description_element", desc, desc);
     
     /* Parse the child elements */
-    temp_el = axis2_om_util_get_first_child_element(desc_el, env, desc_el_node, 
+    temp_el = axiom_util_get_first_child_element(desc_el, env, desc_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -806,7 +806,7 @@ parse_desc(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(desc, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
    
@@ -830,16 +830,16 @@ parse_desc(
         AXIS2_WODEN_TYPES_ELEMENT_SET_TYPE_SYSTEM(types, env, WODEN_TYPE_XSD_2001);
         AXIS2_WODEN_DESC_ELEMENT_SET_TYPES_ELEMENT(desc, env, types);
     }
-    schema_ns = axis2_om_namespace_create(env, 
+    schema_ns = axiom_namespace_create(env, 
             "http://www.w3.org/2001/XMLSchema", "import");
-    schema_elem = axis2_om_element_create(env, desc_el_node, "import", 
+    schema_elem = axiom_element_create(env, desc_el_node, "import", 
             schema_ns, &schema_elem_node);
-    attr_ns = axis2_om_attribute_create(env, "namespace", 
+    attr_ns = axiom_attribute_create(env, "namespace", 
             "http://www.w3.org/2001/XMLSchema", NULL);
-    attr_loc = axis2_om_attribute_create(env, "schemaLocation", 
+    attr_loc = axiom_attribute_create(env, "schemaLocation", 
             "http://www.w3.org/2001/XMLSchema.xsd", NULL);
-    AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(schema_elem, env, attr_ns, schema_elem_node);
-    AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(schema_elem, env, attr_loc, schema_elem_node);
+    AXIOM_ELEMENT_ADD_ATTRIBUTE(schema_elem, env, attr_ns, schema_elem_node);
+    AXIOM_ELEMENT_ADD_ATTRIBUTE(schema_elem, env, attr_loc, schema_elem_node);
     
     schema = parse_schema_import(reader, env, schema_elem_node, desc);
     types = axis2_woden_types_to_types_element(types, env);
@@ -852,13 +852,13 @@ static void *
 parse_documentation(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *doc_el_node,
+        axiom_node_t *doc_el_node,
         void *desc)
 {
     void *documentation = NULL;
-    axis2_om_element_t *doc_el = NULL;
-    axis2_om_element_t *temp_el = NULL;
-    axis2_om_node_t *temp_el_node = NULL;
+    axiom_element_t *doc_el = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
     
     desc = axis2_woden_desc_to_desc_element(desc, env);
     documentation = AXIS2_WODEN_DESC_ELEMENT_CREATE_DOCUMENTATION_ELEMENT(desc, 
@@ -875,8 +875,8 @@ parse_documentation(
     parse_ext_attributes(reader, env, doc_el_node, "documentation_element", 
             documentation, desc); 
 
-    doc_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(doc_el_node, env);
-    temp_el = axis2_om_util_get_first_child_element(doc_el, env, doc_el_node, 
+    doc_el = AXIOM_NODE_GET_DATA_ELEMENT(doc_el_node, env);
+    temp_el = axiom_util_get_first_child_element(doc_el, env, doc_el_node, 
             &temp_el_node); 
 
     while (NULL != temp_el)
@@ -889,7 +889,7 @@ parse_documentation(
                 documentation, env);
         AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(documentation, env, 
                 ext_el);
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -900,21 +900,21 @@ static void *
 parse_import(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *import_el_node,
+        axiom_node_t *import_el_node,
         void *desc,
         axis2_hash_t *wsdl_modules)
 {
     void *imp = NULL;
-    axis2_om_element_t *import_el = NULL;
+    axiom_element_t *import_el = NULL;
     axis2_char_t *namespc_uri = NULL;
     axis2_char_t *location_uri = NULL;
 
     imp = AXIS2_WODEN_DESC_ELEMENT_CREATE_IMPORT_ELEMENT(desc, env);
-    import_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(import_el_node, env);
+    import_el = AXIOM_NODE_GET_DATA_ELEMENT(import_el_node, env);
     
-    namespc_uri = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env, 
+    namespc_uri = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env, 
             WODEN_ATTR_NAMESPACE); 
-    location_uri = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env, 
+    location_uri = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env, 
             WODEN_ATTR_LOCATION); 
   
     imp = axis2_woden_import_to_attr_extensible(imp, env);
@@ -951,18 +951,18 @@ static void *
 parse_include(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *include_el_node,
+        axiom_node_t *include_el_node,
         void *desc,
         axis2_hash_t *wsdl_modules)
 {
     void *include = NULL;
-    axis2_om_element_t *include_el = NULL;
+    axiom_element_t *include_el = NULL;
     axis2_char_t *location_uri = NULL;
 
     include = AXIS2_WODEN_DESC_ELEMENT_CREATE_INCLUDE_ELEMENT(desc, env);
-    include_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(include_el_node, env);
+    include_el = AXIOM_NODE_GET_DATA_ELEMENT(include_el_node, env);
     
-    location_uri = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(include_el, env, 
+    location_uri = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(include_el, env, 
             WODEN_ATTR_LOCATION); 
   
     include = axis2_woden_include_to_attr_extensible(include, env);
@@ -996,13 +996,13 @@ static void *
 parse_types(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *types_el_node,
+        axiom_node_t *types_el_node,
         void *desc)
 {
     void *types = NULL;
-    axis2_om_element_t *types_el = NULL;
-    axis2_om_element_t *temp_el = NULL;
-    axis2_om_node_t *temp_el_node = NULL;
+    axiom_element_t *types_el = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
     
     desc = axis2_woden_desc_to_desc_element(desc, env);
     types = AXIS2_WODEN_DESC_ELEMENT_CREATE_TYPES_ELEMENT(desc, env);
@@ -1013,8 +1013,8 @@ parse_types(
     parse_ext_attributes(reader, env, types_el_node, "types_element", 
             types, desc);
     
-    types_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(types_el_node, env);
-    temp_el = axis2_om_util_get_first_child_element(types_el, env, types_el_node, 
+    types_el = AXIOM_NODE_GET_DATA_ELEMENT(types_el_node, env);
+    temp_el = axiom_util_get_first_child_element(types_el, env, types_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -1062,7 +1062,7 @@ parse_types(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(types, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -1073,7 +1073,7 @@ static void *
 parse_schema_inline(
         void *reader, 
         const axis2_env_t *env,
-        axis2_om_node_t *schema_el_node,
+        axiom_node_t *schema_el_node,
         void *desc)
 {
     void *schema = axis2_woden_inlined_schema_create(env);
@@ -1083,13 +1083,13 @@ parse_schema_inline(
     axis2_char_t *base_uri_str = NULL;
     axis2_xml_schema_t *schema_def = NULL;
     axis2_xml_schema_collection_t *xsc = NULL;
-    axis2_om_element_t *schema_el = NULL;
+    axiom_element_t *schema_el = NULL;
   
-    schema_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(schema_el_node, env);
-    attr_id = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(schema_el, env, 
+    schema_el = AXIOM_NODE_GET_DATA_ELEMENT(schema_el_node, env);
+    attr_id = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(schema_el, env, 
             WODEN_ATTR_ID); 
     AXIS2_WODEN_INLINED_SCHEMA_SET_ID(schema, env, attr_id);
-    tns = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(schema_el, env, 
+    tns = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(schema_el, env, 
             WODEN_ATTR_TARGET_NAMESPACE); 
    
     if(NULL != tns)
@@ -1141,7 +1141,7 @@ static void *
 parse_schema_import(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *import_el_node,
+        axiom_node_t *import_el_node,
         void *desc)
 {
     woden_reader_impl_t *reader_impl = NULL;
@@ -1153,14 +1153,14 @@ parse_schema_import(
     void *schema_def = NULL; 
     axis2_uri_t *context_uri = NULL;
     axis2_char_t *schema_loc = NULL;
-    axis2_om_element_t *import_el = NULL;
+    axiom_element_t *import_el = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
     reader_impl = INTF_TO_IMPL(reader);
 
-    import_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(import_el_node, env);
-    ns = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env, 
+    import_el = AXIOM_NODE_GET_DATA_ELEMENT(import_el_node, env);
+    ns = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env, 
             WODEN_ATTR_NAMESPACE);
     if(NULL != ns)
     {
@@ -1168,7 +1168,7 @@ parse_schema_import(
         schema = axis2_woden_imported_schema_to_schema(schema, env);
         AXIS2_WODEN_SCHEMA_SET_NAMESPACE(schema, env, uri);
     }
-    sloc = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env, 
+    sloc = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env, 
             WODEN_ATTR_SCHEMA_LOCATION);
     if(NULL != sloc)
     {
@@ -1219,16 +1219,16 @@ parse_schema_import(
         /* Not previously imported, so retrieve it now. */
         axis2_xml_schema_collection_t *schema_col = NULL;
         axis2_xml_reader_t *xml_reader = NULL;
-        axis2_om_document_t *imported_schema_doc = NULL;
-        axis2_om_stax_builder_t *xml_builder = NULL;
+        axiom_document_t *imported_schema_doc = NULL;
+        axiom_stax_builder_t *xml_builder = NULL;
 
         schema_col = axis2_xml_schema_collection_create(env);
         /* TODO Temporarily assume that imported schemas are stored as files
          * with the url as file name
          */
         xml_reader = axis2_xml_reader_create_for_file(env, schema_uri, NULL);
-        xml_builder = axis2_om_stax_builder_create(env, reader);
-        imported_schema_doc = axis2_om_document_create(env, NULL, xml_builder);
+        xml_builder = axiom_stax_builder_create(env, reader);
+        imported_schema_doc = axiom_document_create(env, NULL, xml_builder);
         schema_def = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(schema_col, 
                 env, imported_schema_doc);
         if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
@@ -1256,21 +1256,21 @@ static void *
 parse_interface(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *interface_el_node,
+        axiom_node_t *interface_el_node,
         void *desc)
 {
     void *intface = NULL;
     axis2_char_t *name = NULL;
     axis2_char_t *style_default = NULL;
-    axis2_om_element_t *interface_el = NULL;
-    axis2_om_element_t *temp_el = NULL;
-    axis2_om_node_t *temp_el_node = NULL;
+    axiom_element_t *interface_el = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
 
     desc = axis2_woden_desc_to_desc_element(desc, env);
     intface = AXIS2_WODEN_DESC_ELEMENT_CREATE_INTERFACE_ELEMENT(desc, env);
 
-    interface_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(interface_el_node, env);
-    name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(interface_el, env, WODEN_ATTR_NAME);
+    interface_el = AXIOM_NODE_GET_DATA_ELEMENT(interface_el_node, env);
+    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(interface_el, env, WODEN_ATTR_NAME);
    
 /*
  *
@@ -1301,7 +1301,7 @@ parse_interface(
         AXIS2_WODEN_INTERFACE_ELEMENT_SET_QNAME(intface, env, qname);
     }
     
-    style_default = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(interface_el, 
+    style_default = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(interface_el, 
             env, WODEN_ATTR_STYLE_DEFAULT);
     
     if(NULL != style_default)
@@ -1335,7 +1335,7 @@ parse_interface(
      * <fault> <operation> <feature> <property> or extension elements in any order
      * TODO validate that the elements are in correct order
      */ 
-    temp_el = axis2_om_util_get_first_child_element(interface_el, env, interface_el_node, 
+    temp_el = axiom_util_get_first_child_element(interface_el, env, interface_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -1409,7 +1409,7 @@ parse_interface(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(intface, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -1427,16 +1427,16 @@ static void *
 parse_interface_fault(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *fault_el_node,
+        axiom_node_t *fault_el_node,
         void *desc,
         void *parent)
 {
     void *fault = NULL;
     axis2_char_t *name = NULL;
     axis2_char_t *element = NULL;
-    axis2_om_element_t *fault_el = NULL;
-    axis2_om_element_t *temp_el = NULL;
-    axis2_om_node_t *temp_el_node = NULL;
+    axiom_element_t *fault_el = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
     void *types = NULL;
 
     desc = axis2_woden_desc_to_desc_element(desc, env);
@@ -1446,8 +1446,8 @@ parse_interface_fault(
     types = AXIS2_WODEN_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
     AXIS2_WODEN_INTERFACE_FAULT_SET_TYPES(fault, env, types);
 
-    fault_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_el_node, env);
-    name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_el, env, WODEN_ATTR_NAME);
+    fault_el = AXIOM_NODE_GET_DATA_ELEMENT(fault_el_node, env);
+    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_el, env, WODEN_ATTR_NAME);
     
     if(NULL != name)
     {
@@ -1464,7 +1464,7 @@ parse_interface_fault(
         AXIS2_WODEN_INTERFACE_FAULT_ELEMENT_SET_QNAME(fault, env, qname);
     }
     
-    element = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_el, env, WODEN_ATTR_ELEMENT);
+    element = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_el, env, WODEN_ATTR_ELEMENT);
     
     if(NULL != element)
     {
@@ -1480,7 +1480,7 @@ parse_interface_fault(
     parse_ext_attributes(reader, env, fault_el_node, "interface_fault_element", 
             fault, desc);
     
-    temp_el = axis2_om_util_get_first_child_element(fault_el, env, fault_el_node, 
+    temp_el = axiom_util_get_first_child_element(fault_el, env, fault_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -1533,7 +1533,7 @@ parse_interface_fault(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(fault, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -1544,7 +1544,7 @@ static void *
 parse_interface_op(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *op_el_node,
+        axiom_node_t *op_el_node,
         void *desc,
         void *parent)
 {
@@ -1552,17 +1552,17 @@ parse_interface_op(
     axis2_char_t *name = NULL;
     axis2_char_t *style = NULL;
     axis2_char_t *pat = NULL;
-    axis2_om_element_t *op_el = NULL;
-    axis2_om_element_t *temp_el = NULL;
-    axis2_om_node_t *temp_el_node = NULL;
+    axiom_element_t *op_el = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
 
     desc = axis2_woden_desc_to_desc_element(desc, env);
     op = AXIS2_WODEN_DESC_ELEMENT_CREATE_INTERFACE_OP_ELEMENT(desc, env);
     op = axis2_woden_interface_op_to_nested_element(op, env);
     AXIS2_WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(op, env, parent); 
 
-    op_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(op_el_node, env);
-    name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_ATTR_NAME);
+    op_el = AXIOM_NODE_GET_DATA_ELEMENT(op_el_node, env);
+    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_ATTR_NAME);
     
     if(NULL != name)
     {
@@ -1577,7 +1577,7 @@ parse_interface_op(
         AXIS2_WODEN_INTERFACE_OP_ELEMENT_SET_QNAME(op, env, qname);
     }
     
-    style = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_ATTR_STYLE);
+    style = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_ATTR_STYLE);
     
     if(NULL != style)
     {
@@ -1597,7 +1597,7 @@ parse_interface_op(
         }
     }
      
-    pat = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_ATTR_PATTERN);
+    pat = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_ATTR_PATTERN);
     
     if(NULL != pat)
     {
@@ -1617,7 +1617,7 @@ parse_interface_op(
      * <input> <output> <infault> <outfault> <feature> <property> or extension elements in any order
      * TODO validate that the elements are in correct order
      */ 
-    temp_el = axis2_om_util_get_first_child_element(op_el, env, op_el_node, 
+    temp_el = axiom_util_get_first_child_element(op_el, env, op_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -1718,7 +1718,7 @@ parse_interface_op(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(op, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -1729,7 +1729,7 @@ static void *
 parse_interface_fault_ref(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *fault_ref_el_node,
+        axiom_node_t *fault_ref_el_node,
         void *desc,
         void *parent)
 {
@@ -1737,9 +1737,9 @@ parse_interface_fault_ref(
     axis2_char_t *ref = NULL;
     axis2_char_t *localname = NULL;
     axis2_char_t *msg_label_str = NULL;
-    axis2_om_element_t *fault_ref_el = NULL;
-    axis2_om_element_t *temp_el = NULL;
-    axis2_om_node_t *temp_el_node = NULL;
+    axiom_element_t *fault_ref_el = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
     axis2_qname_t *attr_ref = NULL;
 
     desc = axis2_woden_desc_to_desc_element(desc, env);
@@ -1748,8 +1748,8 @@ parse_interface_fault_ref(
     fault_ref = axis2_woden_interface_op_to_nested_element(fault_ref, env);
     AXIS2_WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(fault_ref, env, parent); 
 
-    fault_ref_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_ref_el_node, env);
-    localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(fault_ref_el, env);
+    fault_ref_el = AXIOM_NODE_GET_DATA_ELEMENT(fault_ref_el_node, env);
+    localname = AXIOM_ELEMENT_GET_LOCALNAME(fault_ref_el, env);
     if(0 == AXIS2_STRCMP(WODEN_ELEM_INFAULT, localname))
     {
         axis2_woden_direction_t *direction_in = NULL;
@@ -1766,7 +1766,7 @@ parse_interface_fault_ref(
     }
     
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
-    ref = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, WODEN_ATTR_REF);
+    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, WODEN_ATTR_REF);
     
     if(NULL != ref)
     {
@@ -1779,7 +1779,7 @@ parse_interface_fault_ref(
         AXIS2_WODEN_INTERFACE_FAULT_REF_ELEMENT_SET_REF(fault_ref, env, qname);
     }
     
-    msg_label_str = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, 
+    msg_label_str = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, 
             WODEN_ATTR_MESSAGE_LABEL);
     
     if(NULL != msg_label_str)
@@ -1827,7 +1827,7 @@ parse_interface_fault_ref(
     parse_ext_attributes(reader, env, fault_ref_el_node, "interface_fault_ref_element", 
             fault_ref, desc);
     
-    temp_el = axis2_om_util_get_first_child_element(fault_ref_el, env, fault_ref_el_node, 
+    temp_el = axiom_util_get_first_child_element(fault_ref_el, env, fault_ref_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -1880,7 +1880,7 @@ parse_interface_fault_ref(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(fault_ref, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -1891,7 +1891,7 @@ static void *
 parse_interface_msg_ref(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *msg_ref_el_node,
+        axiom_node_t *msg_ref_el_node,
         void *desc,
         void *parent)
 {
@@ -1899,9 +1899,9 @@ parse_interface_msg_ref(
     axis2_char_t *ref = NULL;
     axis2_char_t *localname = NULL;
     axis2_char_t *msg_label_str = NULL;
-    axis2_om_element_t *msg_ref_el;
-    axis2_om_element_t *temp_el;
-    axis2_om_node_t *temp_el_node;
+    axiom_element_t *msg_ref_el;
+    axiom_element_t *temp_el;
+    axiom_node_t *temp_el_node;
     axis2_qname_t *attr_ref = NULL;
 
     desc = axis2_woden_desc_to_desc_element(desc, env);
@@ -1910,8 +1910,8 @@ parse_interface_msg_ref(
     msg_ref = axis2_woden_interface_op_to_nested_element(msg_ref, env);
     AXIS2_WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(msg_ref, env, parent); 
 
-    msg_ref_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(msg_ref_el_node, env);
-    localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(msg_ref_el, env);
+    msg_ref_el = AXIOM_NODE_GET_DATA_ELEMENT(msg_ref_el_node, env);
+    localname = AXIOM_ELEMENT_GET_LOCALNAME(msg_ref_el, env);
     if(0 == AXIS2_STRCMP(WODEN_ELEM_INFAULT, localname))
     {
         axis2_woden_direction_t *direction_in = NULL;
@@ -1928,7 +1928,7 @@ parse_interface_msg_ref(
     }
     
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
-    ref = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, WODEN_ATTR_REF);
+    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, WODEN_ATTR_REF);
     
     if(NULL != ref)
     {
@@ -1941,7 +1941,7 @@ parse_interface_msg_ref(
         AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_REF(msg_ref, env, qname);
     }
     
-    msg_label_str = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, 
+    msg_label_str = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, 
             WODEN_ATTR_MESSAGE_LABEL);
     
     if(NULL != msg_label_str)
@@ -1988,7 +1988,7 @@ parse_interface_msg_ref(
     parse_ext_attributes(reader, env, msg_ref_el_node, "interface_msg_ref_element", 
             msg_ref, desc);
     
-    temp_el = axis2_om_util_get_first_child_element(msg_ref_el, env, msg_ref_el_node, 
+    temp_el = axiom_util_get_first_child_element(msg_ref_el, env, msg_ref_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -2041,7 +2041,7 @@ parse_interface_msg_ref(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(msg_ref, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -2052,23 +2052,23 @@ static void *
 parse_binding(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *binding_el_node,
+        axiom_node_t *binding_el_node,
         void *desc)
 {
     void *binding = NULL;
     axis2_char_t *name = NULL;
     axis2_char_t *type = NULL;
     axis2_char_t *intface = NULL;
-    axis2_om_element_t *binding_el;
-    axis2_om_element_t *temp_el;
-    axis2_om_node_t *temp_el_node;
+    axiom_element_t *binding_el;
+    axiom_element_t *temp_el;
+    axiom_node_t *temp_el_node;
     axis2_qname_t *intface_qn = NULL;
 
     desc = axis2_woden_desc_to_desc_element(desc, env);
     binding = AXIS2_WODEN_DESC_ELEMENT_CREATE_BINDING_ELEMENT(desc, env);
 
-    binding_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(binding_el_node, env);
-    name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(binding_el, env, WODEN_ATTR_NAME);
+    binding_el = AXIOM_NODE_GET_DATA_ELEMENT(binding_el_node, env);
+    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(binding_el, env, WODEN_ATTR_NAME);
    
     if(NULL != name)
     {
@@ -2083,7 +2083,7 @@ parse_binding(
         AXIS2_WODEN_BINDING_ELEMENT_SET_QNAME(binding, env, qname);
     }
  
-    intface = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(binding_el, env, WODEN_ATTR_INTERFACE);
+    intface = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(binding_el, env, WODEN_ATTR_INTERFACE);
     if(NULL != intface)
     {
         intface_qn = woden_om_util_get_qname(env, binding_el_node, intface, desc);
@@ -2114,7 +2114,7 @@ parse_binding(
         }
     }
     
-    type = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(binding_el, env, WODEN_ATTR_TYPE);
+    type = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(binding_el, env, WODEN_ATTR_TYPE);
     
     if(NULL != type)
     {
@@ -2137,7 +2137,7 @@ parse_binding(
      * <fault> <operation> <feature> <property> or extension elements in any order
      * TODO validate that the elements are in correct order
      */ 
-    temp_el = axis2_om_util_get_first_child_element(binding_el, env, binding_el_node, 
+    temp_el = axiom_util_get_first_child_element(binding_el, env, binding_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -2210,7 +2210,7 @@ parse_binding(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(binding, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -2221,15 +2221,15 @@ static void *
 parse_binding_fault(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *fault_el_node,
+        axiom_node_t *fault_el_node,
         void *desc,
         void *parent)
 {
     void *fault = NULL;
     axis2_char_t *ref = NULL;
-    axis2_om_element_t *fault_el;
-    axis2_om_element_t *temp_el;
-    axis2_om_node_t *temp_el_node;
+    axiom_element_t *fault_el;
+    axiom_element_t *temp_el;
+    axiom_node_t *temp_el_node;
     axis2_qname_t *attr_ref = NULL;
     axis2_qname_t *int_flt_qn = NULL;
 
@@ -2239,8 +2239,8 @@ parse_binding_fault(
     AXIS2_WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(fault, env, parent); 
 
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_NAME);
-    fault_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(fault_el_node, env);
-    ref = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_el, env, WODEN_ATTR_REF);
+    fault_el = AXIOM_NODE_GET_DATA_ELEMENT(fault_el_node, env);
+    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_el, env, WODEN_ATTR_REF);
     
     if(NULL != ref)
     {
@@ -2287,7 +2287,7 @@ parse_binding_fault(
     parse_ext_attributes(reader, env, fault_el_node, "binding_fault_element", 
             fault, desc);
     
-    temp_el = axis2_om_util_get_first_child_element(fault_el, env, fault_el_node, 
+    temp_el = axiom_util_get_first_child_element(fault_el, env, fault_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -2340,7 +2340,7 @@ parse_binding_fault(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(fault, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -2351,15 +2351,15 @@ static void *
 parse_binding_op(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *op_el_node,
+        axiom_node_t *op_el_node,
         void *desc,
         void *parent)
 {
     void *op = NULL;
     axis2_char_t *ref = NULL;
-    axis2_om_element_t *op_el;
-    axis2_om_element_t *temp_el;
-    axis2_om_node_t *temp_el_node;
+    axiom_element_t *op_el;
+    axiom_element_t *temp_el;
+    axiom_node_t *temp_el_node;
     axis2_qname_t *attr_ref = NULL;
     axis2_qname_t *ref_qn = NULL;
 
@@ -2369,8 +2369,8 @@ parse_binding_op(
     AXIS2_WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(op, env, parent); 
 
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
-    op_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(op_el_node, env);
-    ref = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_ATTR_REF);
+    op_el = AXIOM_NODE_GET_DATA_ELEMENT(op_el_node, env);
+    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_ATTR_REF);
     
     if(NULL != ref)
     {
@@ -2418,7 +2418,7 @@ parse_binding_op(
      * <input> <output> <infault> <outfault> <feature> <property> or extension elements in any order
      * TODO validate that the elements are in correct order
      */ 
-    temp_el = axis2_om_util_get_first_child_element(op_el, env, op_el_node, 
+    temp_el = axiom_util_get_first_child_element(op_el, env, op_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -2519,7 +2519,7 @@ parse_binding_op(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(op, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -2530,16 +2530,16 @@ static void *
 parse_binding_fault_ref(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *fault_ref_el_node,
+        axiom_node_t *fault_ref_el_node,
         void *desc,
         void *parent)
 {
     void *fault_ref = NULL;
     axis2_char_t *ref = NULL;
     axis2_char_t *msg_label_str = NULL;
-    axis2_om_element_t *fault_ref_el;
-    axis2_om_element_t *temp_el;
-    axis2_om_node_t *temp_el_node;
+    axiom_element_t *fault_ref_el;
+    axiom_element_t *temp_el;
+    axiom_node_t *temp_el_node;
     axis2_qname_t *attr_ref = NULL;
     axis2_qname_t *ref_qn = NULL;
     axis2_qname_t *qref = NULL;
@@ -2553,7 +2553,7 @@ parse_binding_fault_ref(
     AXIS2_WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(fault_ref, env, parent); 
 
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
-    ref = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, WODEN_ATTR_REF);
+    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, WODEN_ATTR_REF);
     
     if(NULL != ref)
     {
@@ -2563,7 +2563,7 @@ parse_binding_fault_ref(
         AXIS2_WODEN_BINDING_FAULT_REF_ELEMENT_SET_REF(fault_ref, env, ref_qn);
     }
     
-    msg_label_str = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, 
+    msg_label_str = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, 
             WODEN_ATTR_MESSAGE_LABEL);
     
     if(NULL != msg_label_str)
@@ -2671,7 +2671,7 @@ parse_binding_fault_ref(
     parse_ext_attributes(reader, env, fault_ref_el_node, "binding_fault_ref_element", 
             fault_ref, desc);
     
-    temp_el = axis2_om_util_get_first_child_element(fault_ref_el, env, fault_ref_el_node, 
+    temp_el = axiom_util_get_first_child_element(fault_ref_el, env, fault_ref_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -2724,7 +2724,7 @@ parse_binding_fault_ref(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(fault_ref, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -2735,15 +2735,15 @@ static void *
 parse_binding_msg_ref(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *msg_ref_el_node,
+        axiom_node_t *msg_ref_el_node,
         void *desc,
         void *parent)
 {
     void *msg_ref = NULL;
     axis2_char_t *msg_label_str = NULL;
-    axis2_om_element_t *msg_ref_el = NULL;
-    axis2_om_element_t *temp_el = NULL;
-    axis2_om_node_t *temp_el_node = NULL;
+    axiom_element_t *msg_ref_el = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
     axis2_char_t *localname = NULL;
     axis2_woden_msg_label_t *msg_label = NULL;
     axis2_woden_msg_label_t *msg_label_in = NULL;
@@ -2754,8 +2754,8 @@ parse_binding_msg_ref(
     msg_ref = axis2_woden_binding_op_to_nested_element(msg_ref, env);
     AXIS2_WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(msg_ref, env, parent); 
 
-    msg_ref_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(msg_ref_el_node, env);
-    localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(msg_ref_el, env);
+    msg_ref_el = AXIOM_NODE_GET_DATA_ELEMENT(msg_ref_el_node, env);
+    localname = AXIOM_ELEMENT_GET_LOCALNAME(msg_ref_el, env);
     if(0 == AXIS2_STRCMP(WODEN_ELEM_INPUT, localname))
     {
         axis2_woden_direction_t *direction_in = NULL;
@@ -2771,7 +2771,7 @@ parse_binding_msg_ref(
         AXIS2_WODEN_BINDING_MSG_REF_SET_DIRECTION(msg_ref, env, direction_out);
     }
     
-    msg_label_str = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, 
+    msg_label_str = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, 
             WODEN_ATTR_MESSAGE_LABEL);
     
     if(NULL != msg_label_str)
@@ -2911,7 +2911,7 @@ parse_binding_msg_ref(
      * <feature> <property> or extension elements in any order
      * TODO validate that the elements are in correct order
      */ 
-    temp_el = axis2_om_util_get_first_child_element(msg_ref_el, env, msg_ref_el_node, 
+    temp_el = axiom_util_get_first_child_element(msg_ref_el, env, msg_ref_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -2964,7 +2964,7 @@ parse_binding_msg_ref(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(msg_ref, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -2975,7 +2975,7 @@ static void *
 parse_svc(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *svc_el_node,
+        axiom_node_t *svc_el_node,
         void *desc)
 
 {
@@ -2983,16 +2983,16 @@ parse_svc(
     axis2_char_t *name = NULL;
     axis2_char_t *intface = NULL;
     axis2_qname_t *intface_qn = NULL;
-    axis2_om_element_t *svc_el = NULL;
-    axis2_om_element_t *temp_el = NULL;
-    axis2_om_node_t *temp_el_node = NULL;
+    axiom_element_t *svc_el = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
     
-    svc_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(svc_el_node, env);
+    svc_el = AXIOM_NODE_GET_DATA_ELEMENT(svc_el_node, env);
     desc = axis2_woden_desc_to_desc_element(desc, env);
     svc = AXIS2_WODEN_DESC_ELEMENT_CREATE_SVC_ELEMENT(desc, env);
 
-    svc_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(svc_el_node, env);
-    name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(svc_el, env, WODEN_ATTR_NAME);
+    svc_el = AXIOM_NODE_GET_DATA_ELEMENT(svc_el_node, env);
+    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(svc_el, env, WODEN_ATTR_NAME);
    
     if(NULL != name)
     {
@@ -3007,7 +3007,7 @@ parse_svc(
         AXIS2_WODEN_SVC_ELEMENT_SET_QNAME(svc, env, qname);
     }
  
-    intface = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(svc_el, env, WODEN_ATTR_INTERFACE);
+    intface = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(svc_el, env, WODEN_ATTR_INTERFACE);
     if(NULL != intface)
     {
         intface_qn = woden_om_util_get_qname(env, svc_el_node, intface, desc);
@@ -3050,7 +3050,7 @@ parse_svc(
      * <feature> <property> or extension elements in any order
      * TODO validate that the elements are in correct order
      */ 
-    temp_el = axis2_om_util_get_first_child_element(svc_el, env, svc_el_node, 
+    temp_el = axiom_util_get_first_child_element(svc_el, env, svc_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -3111,7 +3111,7 @@ parse_svc(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(svc, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -3122,7 +3122,7 @@ static void *
 parse_endpoint(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *endpoint_el_node,
+        axiom_node_t *endpoint_el_node,
         void *desc,
         void *parent)
 
@@ -3135,9 +3135,9 @@ parse_endpoint(
     axis2_qname_t *attr_binding = NULL;
     axis2_qname_t *attr_address = NULL;
     axis2_uri_t *address_uri = NULL;
-    axis2_om_element_t *endpoint_el = NULL;
-    axis2_om_element_t *temp_el = NULL;
-    axis2_om_node_t *temp_el_node = NULL;
+    axiom_element_t *endpoint_el = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
     
     desc = axis2_woden_desc_to_desc_element(desc, env);
     endpoint = AXIS2_WODEN_DESC_ELEMENT_CREATE_ENDPOINT_ELEMENT(desc, env);
@@ -3145,8 +3145,8 @@ parse_endpoint(
     AXIS2_WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(endpoint, env, parent); 
 
 
-    endpoint_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(endpoint_el_node, env);
-    name = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(endpoint_el, env, WODEN_ATTR_NAME);
+    endpoint_el = AXIOM_NODE_GET_DATA_ELEMENT(endpoint_el_node, env);
+    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(endpoint_el, env, WODEN_ATTR_NAME);
    
     if(NULL != name)
     {
@@ -3156,7 +3156,7 @@ parse_endpoint(
     }
  
     attr_binding = axis2_qname_create_from_string(env, WODEN_ATTR_BINDING);
-    binding = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(endpoint_el, env, WODEN_ATTR_BINDING);
+    binding = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(endpoint_el, env, WODEN_ATTR_BINDING);
     if(NULL != binding)
     {
         binding_qn = woden_om_util_get_qname(env, endpoint_el_node, binding, desc);
@@ -3188,8 +3188,8 @@ parse_endpoint(
     }
     
     attr_address = axis2_qname_create_from_string(env, WODEN_ATTR_ADDRESS);
-    endpoint_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(endpoint_el_node, env);
-    address = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(endpoint_el, env, WODEN_ATTR_ADDRESS);
+    endpoint_el = AXIOM_NODE_GET_DATA_ELEMENT(endpoint_el_node, env);
+    address = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(endpoint_el, env, WODEN_ATTR_ADDRESS);
    
     if(NULL != address)
     {
@@ -3208,7 +3208,7 @@ parse_endpoint(
      * <feature> <property> or extension elements in any order
      * TODO validate that the elements are in correct order
      */ 
-    temp_el = axis2_om_util_get_first_child_element(endpoint_el, env, endpoint_el_node, 
+    temp_el = axiom_util_get_first_child_element(endpoint_el, env, endpoint_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -3258,7 +3258,7 @@ parse_endpoint(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(endpoint, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -3269,7 +3269,7 @@ static void *
 parse_feature(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *feature_el_node,
+        axiom_node_t *feature_el_node,
         void *desc,
         void *parent)
 
@@ -3279,9 +3279,9 @@ parse_feature(
     axis2_char_t *req = NULL;
     axis2_qname_t *attr_ref = NULL;
     axis2_qname_t *attr_req = NULL;
-    axis2_om_element_t *feature_el = NULL;
-    axis2_om_element_t *temp_el = NULL;
-    axis2_om_node_t *temp_el_node = NULL;
+    axiom_element_t *feature_el = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
     axis2_bool_t required = AXIS2_FALSE;
     
     desc = axis2_woden_desc_to_desc_element(desc, env);
@@ -3291,8 +3291,8 @@ parse_feature(
 
 
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
-    feature_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(feature_el_node, env);
-    ref = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(feature_el, env, WODEN_ATTR_REF);
+    feature_el = AXIOM_NODE_GET_DATA_ELEMENT(feature_el_node, env);
+    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(feature_el, env, WODEN_ATTR_REF);
    
     if(NULL != ref)
     {
@@ -3303,7 +3303,7 @@ parse_feature(
  
     attr_req = axis2_qname_create_from_string(env, WODEN_ATTR_REQUIRED);
     
-    req = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(feature_el, env, WODEN_ATTR_REQUIRED);
+    req = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(feature_el, env, WODEN_ATTR_REQUIRED);
     if(NULL != req && 0 == AXIS2_STRCMP(WODEN_VALUE_TRUE, req))
             required = AXIS2_TRUE;
     else
@@ -3324,7 +3324,7 @@ parse_feature(
      * extension elements.
      * TODO validate that the elements are in correct order
      */ 
-    temp_el = axis2_om_util_get_first_child_element(feature_el, env, feature_el_node, 
+    temp_el = axiom_util_get_first_child_element(feature_el, env, feature_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -3352,7 +3352,7 @@ parse_feature(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(feature, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -3387,7 +3387,7 @@ static void *
 parse_property(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *property_el_node,
+        axiom_node_t *property_el_node,
         void *desc,
         void *parent)
 
@@ -3396,9 +3396,9 @@ parse_property(
     axis2_char_t *ref = NULL;
     axis2_qname_t *attr_ref = NULL;
     void *types = NULL;
-    axis2_om_element_t *property_el = NULL;
-    axis2_om_element_t *temp_el = NULL;
-    axis2_om_node_t *temp_el_node = NULL;
+    axiom_element_t *property_el = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
     
     desc = axis2_woden_desc_to_desc_element(desc, env);
     property = AXIS2_WODEN_DESC_ELEMENT_CREATE_PROPERTY_ELEMENT(desc, env);
@@ -3408,8 +3408,8 @@ parse_property(
     AXIS2_WODEN_PROPERTY_SET_TYPES(property, env, types);
 
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
-    property_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(property_el_node, env);
-    ref = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(property_el, env, WODEN_ATTR_REF);
+    property_el = AXIOM_NODE_GET_DATA_ELEMENT(property_el_node, env);
+    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(property_el, env, WODEN_ATTR_REF);
    
     if(NULL != ref)
     {
@@ -3422,7 +3422,7 @@ parse_property(
     parse_ext_attributes(reader, env, property_el_node, "property_element", 
             property, desc);
     
-    temp_el = axis2_om_util_get_first_child_element(property_el, env, property_el_node, 
+    temp_el = axiom_util_get_first_child_element(property_el, env, property_el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
@@ -3450,11 +3450,11 @@ parse_property(
         if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_value, temp_el_node))
         {
-            axis2_om_child_element_iterator_t *node_list = NULL;
+            axiom_child_element_iterator_t *node_list = NULL;
             axis2_generic_obj_t *node_list_obj = NULL;
             
             /* The property value consists of the child info items of <value> */
-            node_list = AXIS2_OM_ELEMENT_GET_CHILD_ELEMENTS(temp_el, env, temp_el_node);
+            node_list = AXIOM_ELEMENT_GET_CHILD_ELEMENTS(temp_el, env, temp_el_node);
             AXIS2_GENERIC_OBJ_SET_VALUE(node_list_obj, env, node_list);
             AXIS2_GENERIC_OBJ_SET_FREE_FUNC(node_list_obj, env, node_list->ops->free_fn);
             property = axis2_woden_property_to_property_element(property, env);
@@ -3463,22 +3463,22 @@ parse_property(
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_constraint, temp_el_node))
         {
-            axis2_om_node_t *node = NULL;
+            axiom_node_t *node = NULL;
             axis2_char_t *text_value = NULL;
             
             /* TODO t.b.c. Assume <constraint> has just '#value' or a qname 
              * and don't check for extraneous text or child elements?
              */
-            node = AXIS2_OM_NODE_GET_FIRST_CHILD(temp_el_node, env);
-            if(NULL != node && AXIS2_OM_TEXT == AXIS2_OM_NODE_GET_NODE_TYPE(
+            node = AXIOM_NODE_GET_FIRST_CHILD(temp_el_node, env);
+            if(NULL != node && AXIOM_TEXT == AXIOM_NODE_GET_NODE_TYPE(
                         node, env))
             {
                 axis2_char_t *temp_str = NULL;
                 int len = 0;
-                axis2_om_text_t *text_node = NULL;
+                axiom_text_t *text_node = NULL;
 
-                text_node = AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
-                temp_str = AXIS2_OM_TEXT_GET_VALUE(text_node, env);
+                text_node = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+                temp_str = AXIOM_TEXT_GET_VALUE(text_node, env);
                 text_value = AXIS2_STRTRIM(env, temp_str, NULL);
                 len = AXIS2_STRLEN(text_value);
                 if(len > 0)
@@ -3510,7 +3510,7 @@ parse_property(
             AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(property, env, ext_element);
         }
 
-        temp_el = axis2_om_util_get_next_sibling_element(temp_el, env, 
+        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
     
@@ -3521,32 +3521,32 @@ axis2_status_t AXIS2_CALL
 parse_ext_attributes(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *om_el_node,
+        axiom_node_t *om_el_node,
         axis2_char_t *wsdl_class,
         void *wsdl_obj,
         void *desc)
 {
     axis2_hash_t *node_map = NULL;
-    axis2_om_element_t *om_el = NULL;
+    axiom_element_t *om_el = NULL;
     axis2_hash_index_t *index = NULL;
 
-    om_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(om_el_node, env);
-    node_map = AXIS2_OM_ELEMENT_GET_ALL_ATTRIBUTES(om_el, env);
+    om_el = AXIOM_NODE_GET_DATA_ELEMENT(om_el_node, env);
+    node_map = AXIOM_ELEMENT_GET_ALL_ATTRIBUTES(om_el, env);
     for (index = axis2_hash_first (node_map, env); index; index = 
             axis2_hash_next(env, index))
     {
         void *om_attr = NULL;
         axis2_char_t *localname = NULL;
-        axis2_om_namespace_t *namespc = NULL;
+        axiom_namespace_t *namespc = NULL;
         axis2_char_t *namespc_uri_str = NULL;
         axis2_char_t *prefix = NULL;
         axis2_qname_t *attr_type = NULL;
         
         axis2_hash_this (index, NULL, NULL, &om_attr);
-        localname = AXIS2_OM_ATTRIBUTE_GET_LOCALNAME((axis2_om_attribute_t *) om_attr, env);
-        namespc = AXIS2_OM_ATTRIBUTE_GET_NAMESPACE((axis2_om_attribute_t *) om_attr, env);
-        namespc_uri_str = AXIS2_OM_NAMESPACE_GET_URI(namespc, env);
-        prefix = AXIS2_OM_NAMESPACE_GET_PREFIX(namespc, env);
+        localname = AXIOM_ATTRIBUTE_GET_LOCALNAME((axiom_attribute_t *) om_attr, env);
+        namespc = AXIOM_ATTRIBUTE_GET_NAMESPACE((axiom_attribute_t *) om_attr, env);
+        namespc_uri_str = AXIOM_NAMESPACE_GET_URI(namespc, env);
+        prefix = AXIOM_NAMESPACE_GET_PREFIX(namespc, env);
         if(!prefix) prefix = "";
         attr_type = axis2_qname_create(env, localname, namespc_uri_str, prefix);
         if(NULL != namespc_uri_str && 0 != AXIS2_STRCMP(namespc_uri_str, 
@@ -3568,7 +3568,7 @@ parse_ext_attributes(
                     {
                         axis2_char_t *attr_value = NULL;
 
-                        attr_value = AXIS2_OM_ATTRIBUTE_GET_VALUE((axis2_om_attribute_t *) om_attr, env);
+                        attr_value = AXIOM_ATTRIBUTE_GET_VALUE((axiom_attribute_t *) om_attr, env);
                         AXIS2_WODEN_XML_ATTR_INIT(xml_attr, env, om_el, 
                                 om_el_node, attr_type, attr_value);
                         AXIS2_WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTR(wsdl_obj, env, 
@@ -3602,22 +3602,22 @@ parse_ext_element(
         const axis2_env_t *env,
         axis2_char_t *parent_type,
         void *parent,
-        axis2_om_node_t *el_node,
+        axiom_node_t *el_node,
         void *desc)
 {
     axis2_qname_t *element_type = NULL;
     axis2_char_t *namespc_uri_str = NULL;
-    axis2_om_namespace_t *namespc = NULL;
-    axis2_om_element_t *el = NULL;
+    axiom_namespace_t *namespc = NULL;
+    axiom_element_t *el = NULL;
     axis2_woden_ext_registry_t *ext_reg = NULL;
     void *ext_ds = NULL;
     void *ext_el = NULL;
 
     element_type = axis2_qname_util_new_qname(env, el_node);
     
-    el = AXIS2_OM_NODE_GET_DATA_ELEMENT(el_node, env);
-    namespc = AXIS2_OM_ELEMENT_GET_NAMESPACE(el, env, el_node);
-    namespc_uri_str = AXIS2_OM_NAMESPACE_GET_URI(namespc, env);
+    el = AXIOM_NODE_GET_DATA_ELEMENT(el_node, env);
+    namespc = AXIOM_ELEMENT_GET_NAMESPACE(el, env, el_node);
+    namespc_uri_str = AXIOM_NAMESPACE_GET_URI(namespc, env);
     if(NULL == namespc_uri_str || (0 == AXIS2_STRCMP(namespc_uri_str, WODEN_NS_URI_WSDL20)))
     {
         /* TODO Set error message */
@@ -3656,7 +3656,7 @@ static axis2_status_t
 check_element_qname(
         void *reader,
         const axis2_env_t *env,
-        axis2_om_node_t *el_node,
+        axiom_node_t *el_node,
         axis2_qname_t *qname)
 {
     if(AXIS2_TRUE != axis2_qname_util_matches(env, qname, el_node))
@@ -3685,7 +3685,7 @@ get_wsdl_from_location(
     axis2_uri_t *location_uri = NULL;
     axis2_char_t *location_str = NULL;
     void *referenced_desc = NULL;
-    axis2_om_node_t *doc_el_node = NULL;
+    axiom_node_t *doc_el_node = NULL;
 
     desc = axis2_woden_desc_to_desc_element(desc, env);
     context_uri = AXIS2_WODEN_DESC_ELEMENT_GET_DOCUMENT_BASE_URI(desc, env);
@@ -3705,15 +3705,15 @@ get_wsdl_from_location(
         /* not previously imported or included, so retrieve the WSDL.*/
         void *schema_col = NULL;
         void *xml_reader = NULL;
-        axis2_om_stax_builder_t *builder = NULL;
-        axis2_om_document_t *doc = NULL;
+        axiom_stax_builder_t *builder = NULL;
+        axiom_document_t *doc = NULL;
         axis2_qname_t *qname = NULL;
 
         schema_col = axis2_xml_schema_collection_create(env);
         xml_reader = axis2_xml_reader_create_for_file(env, location_str, NULL);
-        builder = axis2_om_stax_builder_create(env, xml_reader);
-        doc = AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(builder, env);
-        doc_el_node = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(doc, env); 
+        builder = axiom_stax_builder_create(env, xml_reader);
+        doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(builder, env);
+        doc_el_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(doc, env); 
         if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
             /* Cannot contine without the referenced document */

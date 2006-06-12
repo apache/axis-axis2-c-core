@@ -16,7 +16,7 @@
  
 #include <axis2_raw_xml_in_out_msg_recv.h>
 #include <string.h>
-#include <axis2_om_element.h>
+#include <axiom_element.h>
 #include <axis2_soap_envelope.h>
 #include <axis2_soap_header.h>
 #include <axis2_soap_body.h>
@@ -70,22 +70,22 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_op_t *op_desc = NULL;
     axis2_char_t *style = NULL;
-    axis2_om_node_t *om_node = NULL;
-    axis2_om_element_t *om_element = NULL;
+    axiom_node_t *om_node = NULL;
+    axiom_element_t *om_element = NULL;
     axis2_char_t *local_name = NULL;
-    axis2_om_node_t *result_node = NULL;
-    axis2_om_node_t *body_content_node = NULL;
-    axis2_om_element_t *body_content_element = NULL;
+    axiom_node_t *result_node = NULL;
+    axiom_node_t *body_content_node = NULL;
+    axiom_element_t *body_content_element = NULL;
     axis2_soap_envelope_t *default_envelope = NULL;
     axis2_soap_body_t *out_body = NULL;
     axis2_soap_header_t *out_header = NULL;
     axis2_soap_fault_t *soap_fault = NULL;
-    axis2_om_node_t *out_node = NULL;
+    axiom_node_t *out_node = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_bool_t skel_invoked = AXIS2_FALSE;
     const axis2_char_t *soap_ns = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     int soap_version = AXIS2_SOAP12;
-    axis2_om_namespace_t *env_ns = NULL;
+    axiom_namespace_t *env_ns = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -116,23 +116,23 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
             envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
             body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
             om_node = AXIS2_SOAP_BODY_GET_BASE_NODE(body, env);
-            om_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);
-            om_node = AXIS2_OM_NODE_GET_FIRST_CHILD(om_node, env);            
+            om_element = AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
+            om_node = AXIOM_NODE_GET_FIRST_CHILD(om_node, env);            
         }
         else if(0 == AXIS2_STRCMP(AXIS2_STYLE_RPC, style))
         {
             axis2_soap_envelope_t *envelope = NULL;
             axis2_soap_body_t *body = NULL;
-            axis2_om_node_t *op_node = NULL;
-            axis2_om_element_t *op_element = NULL;
+            axiom_node_t *op_node = NULL;
+            axiom_element_t *op_element = NULL;
             
             envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
             body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
             op_node = AXIS2_SOAP_BODY_GET_BASE_NODE(body, env);
-            op_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(op_node, env);
+            op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
             if(NULL != op_element)
             {
-                local_name = AXIS2_OM_ELEMENT_GET_LOCALNAME(op_element, env);
+                local_name = AXIOM_ELEMENT_GET_LOCALNAME(op_element, env);
                 if(NULL != local_name)
                 {
                     axis2_array_list_t *function_arr = NULL;
@@ -161,8 +161,8 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
 
                     if(AXIS2_TRUE == matches)
                     {
-                        om_node = AXIS2_OM_NODE_GET_FIRST_CHILD(op_node, env);
-                        om_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(om_node, env);   
+                        om_node = AXIOM_NODE_GET_FIRST_CHILD(op_node, env);
+                        om_element = AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);   
                     }
                     else
                     {
@@ -203,20 +203,20 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         {
             if(0 == AXIS2_STRCMP(style, AXIS2_STYLE_RPC))
             {
-                axis2_om_namespace_t *ns = NULL;
+                axiom_namespace_t *ns = NULL;
                 axis2_char_t *res_name = NULL;
                 
                 res_name = AXIS2_STRACAT(local_name, "Response", env);
-                ns = axis2_om_namespace_create(env, "http://soapenc/", "res");
+                ns = axiom_namespace_create(env, "http://soapenc/", "res");
                 if(!ns)
                 {
                     status = AXIS2_FAILURE;
                 }
                 else 
                 {
-                    body_content_element = axis2_om_element_create(env, NULL, res_name, 
+                    body_content_element = axiom_element_create(env, NULL, res_name, 
                         ns, &body_content_node);
-                    AXIS2_OM_NODE_ADD_CHILD(body_content_node, env, result_node);
+                    AXIOM_NODE_ADD_CHILD(body_content_node, env, result_node);
                 }
                 
             }
@@ -246,7 +246,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     }
     
     /* create the soap envelope here*/
-    env_ns = axis2_om_namespace_create(env, soap_ns, "soapenv"); 
+    env_ns = axiom_namespace_create(env, soap_ns, "soapenv"); 
     if (!env_ns)
     {
         return AXIS2_FAILURE;
@@ -303,7 +303,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
 
     if (body_content_node)
     {
-        AXIS2_OM_NODE_ADD_CHILD(out_node , env, body_content_node);
+        AXIOM_NODE_ADD_CHILD(out_node , env, body_content_node);
         status = AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(new_msg_ctx, env, default_envelope);
     }
     else if (soap_fault)

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <axis2_om_stax_builder.h>
-#include <axis2_om_document.h>
-#include <axis2_om_node.h>
-#include <axis2_om_element.h>
-#include <axis2_om_text.h>
+#include <axiom_stax_builder.h>
+#include <axiom_document.h>
+#include <axiom_node.h>
+#include <axiom_element.h>
+#include <axiom_text.h>
 #include <axis2_stream.h>
 #include <axis2_log_default.h>
 #include <axis2_error_default.h>
@@ -36,20 +36,20 @@
 #include <axis2_soap_fault.h>
 #include <axis2_soap_fault_code.h>
 #include <axis2_soap_fault_role.h>
-#include <axis2_om_node.h>
+#include <axiom_node.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_call.h>
 #include <ctype.h>
 
-axis2_om_node_t *
+axiom_node_t *
 build_soap_body_content(const axis2_env_t *env, axis2_char_t *echo_operation,
-                        axis2_char_t *word_to_echo, axis2_om_node_t *body_node);
+                        axis2_char_t *word_to_echo, axiom_node_t *body_node);
 
-void print_invalid_om(const axis2_env_t *env, axis2_om_node_t *ret_node);
+void print_invalid_om(const axis2_env_t *env, axiom_node_t *ret_node);
 
 int main(int argc, char** argv)
 {
-    axis2_om_node_t *node = NULL;
+    axiom_node_t *node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     const axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
@@ -57,7 +57,7 @@ int main(int argc, char** argv)
     axis2_allocator_t *allocator = NULL;
     axis2_char_t *address = NULL;
     axis2_char_t *client_home = NULL;
-    axis2_om_node_t *ret_node = NULL;
+    axiom_node_t *ret_node = NULL;
     axis2_svc_t *svc = NULL;
     axis2_op_t *op = NULL;
     axis2_call_t *call = NULL;
@@ -68,8 +68,8 @@ int main(int argc, char** argv)
     axis2_msg_ctx_t *response_ctx = NULL;
     axis2_soap_envelope_t *soap_envelope = NULL;
     axis2_soap_body_t *soap_body = NULL;
-    axis2_om_namespace_t *env_ns = NULL;
-    axis2_om_node_t *body_node = NULL;
+    axiom_namespace_t *env_ns = NULL;
+    axiom_node_t *body_node = NULL;
     axis2_char_t *echo_operation = NULL;
     axis2_char_t *word_to_echo = NULL;
     axis2_char_t operation[32] ;
@@ -112,7 +112,7 @@ int main(int argc, char** argv)
     call = axis2_call_create(env, NULL, client_home);
     mep_client = AXIS2_CALL_GET_BASE(call, env);
     /* prepare SOAP envelope */
-    env_ns = axis2_om_namespace_create(env, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, "soap"); 
+    env_ns = axiom_namespace_create(env, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, "soap"); 
     soap_envelope = axis2_soap_envelope_create(env, env_ns);
     soap_body = axis2_soap_body_create_with_parent(env, soap_envelope);
     body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
@@ -171,20 +171,20 @@ int main(int argc, char** argv)
 
     if(ret_node)
     {
-        if (AXIS2_OM_NODE_GET_NODE_TYPE(ret_node, env) == AXIS2_OM_ELEMENT)
+        if (AXIOM_NODE_GET_NODE_TYPE(ret_node, env) == AXIOM_ELEMENT)
         {
             axis2_char_t *result = NULL;
-            axis2_om_element_t *result_ele = NULL;
-            axis2_om_node_t *ret_node1 = NULL;
+            axiom_element_t *result_ele = NULL;
+            axiom_node_t *ret_node1 = NULL;
             axis2_char_t echo_response_buff[32];
             
-            ret_node1 = AXIS2_OM_NODE_GET_FIRST_CHILD(ret_node, env); /*Body*/
+            ret_node1 = AXIOM_NODE_GET_FIRST_CHILD(ret_node, env); /*Body*/
             if (!ret_node1)
             {
                 print_invalid_om(env, ret_node);
                 return AXIS2_FAILURE;
             }
-            ret_node = AXIS2_OM_NODE_GET_FIRST_CHILD(ret_node1, env); /*GetTypeResponse*/
+            ret_node = AXIOM_NODE_GET_FIRST_CHILD(ret_node1, env); /*GetTypeResponse*/
             if (!ret_node)
             {
                 print_invalid_om(env, ret_node1);
@@ -193,22 +193,22 @@ int main(int argc, char** argv)
             /*see if we have got a fault*/
        
        sprintf (echo_response_buff, "echo%sResponse", echo_operation);
-            result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node, env);
-            if (AXIS2_STRCMP(AXIS2_OM_ELEMENT_GET_LOCALNAME(result_ele, env), echo_response_buff) != 0 )
+            result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
+            if (AXIS2_STRCMP(AXIOM_ELEMENT_GET_LOCALNAME(result_ele, env), echo_response_buff) != 0 )
             {
                 print_invalid_om(env, ret_node1);
                 return AXIS2_FAILURE;
             }
             
-            ret_node1 = AXIS2_OM_NODE_GET_FIRST_CHILD(ret_node, env); /*return*/
+            ret_node1 = AXIOM_NODE_GET_FIRST_CHILD(ret_node, env); /*return*/
             if (!ret_node1)
             {
                 print_invalid_om(env, ret_node);
                 return AXIS2_FAILURE;
             }
-            result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node1, env);
-            /*printf(AXIS2_OM_ELEMENT_GET_LOCALNAME(result_ele, env)); */
-            result = AXIS2_OM_ELEMENT_GET_TEXT(result_ele, env, ret_node1);
+            result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node1, env);
+            /*printf(AXIOM_ELEMENT_GET_LOCALNAME(result_ele, env)); */
+            result = AXIOM_ELEMENT_GET_TEXT(result_ele, env, ret_node1);
        if (!strcmp( word_to_echo, result ) )
        {
       printf("Success\n");
@@ -236,25 +236,25 @@ int main(int argc, char** argv)
     return status;
 }
 
-axis2_om_node_t *
+axiom_node_t *
 build_soap_body_content(const axis2_env_t *env, axis2_char_t *echo_operation,
-                        axis2_char_t *word_to_echo, axis2_om_node_t *body_node)
+                        axis2_char_t *word_to_echo, axiom_node_t *body_node)
 {
-    axis2_om_node_t* envelope_node = NULL;
-    axis2_om_element_t* envelope_element = NULL;
-    axis2_om_element_t* body_om_ele = NULL;
+    axiom_node_t* envelope_node = NULL;
+    axiom_element_t* envelope_element = NULL;
+    axiom_element_t* body_om_ele = NULL;
     
-    axis2_om_node_t *echo_om_node = NULL;
-    axis2_om_element_t* echo_om_ele = NULL;
-    axis2_om_node_t* text_om_node = NULL;
-    axis2_om_element_t * text_om_ele = NULL;
-    axis2_om_namespace_t *ns0 = NULL, *ns1 = NULL, *ns2 = NULL, *ns3 = NULL,
+    axiom_node_t *echo_om_node = NULL;
+    axiom_element_t* echo_om_ele = NULL;
+    axiom_node_t* text_om_node = NULL;
+    axiom_element_t * text_om_ele = NULL;
+    axiom_namespace_t *ns0 = NULL, *ns1 = NULL, *ns2 = NULL, *ns3 = NULL,
           *ns4 = NULL, *ns5 = NULL, *ns6 = NULL;
     
-    axis2_om_attribute_t* attri1 = NULL;
+    axiom_attribute_t* attri1 = NULL;
 
     axis2_xml_writer_t *xml_writer = NULL;
-    axis2_om_output_t *om_output = NULL;
+    axiom_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
 
     axis2_char_t echo_operation_buff[32];
@@ -267,54 +267,54 @@ build_soap_body_content(const axis2_env_t *env, axis2_char_t *echo_operation,
     sprintf( echo_operation_buff,  "echo%s", echo_operation );
     sprintf( input_type_buff,  "input%s", echo_operation );
 
-    ns1 = axis2_om_namespace_create (env, "http://www.w3.org/2001/XMLSchema-instance", "xsi");
-    ns2 = axis2_om_namespace_create (env, "http://www.w3.org/2001/XMLSchema", "xsd");
-    ns3 = axis2_om_namespace_create (env, "http://schemas.xmlsoap.org/soap/encoding/","soapenc");
-    ns4 = axis2_om_namespace_create (env, "http://soapinterop.org/","tns");
-    ns5 = axis2_om_namespace_create (env, "http://soapinterop.org/encodedTypes","types");
+    ns1 = axiom_namespace_create (env, "http://www.w3.org/2001/XMLSchema-instance", "xsi");
+    ns2 = axiom_namespace_create (env, "http://www.w3.org/2001/XMLSchema", "xsd");
+    ns3 = axiom_namespace_create (env, "http://schemas.xmlsoap.org/soap/encoding/","soapenc");
+    ns4 = axiom_namespace_create (env, "http://soapinterop.org/","tns");
+    ns5 = axiom_namespace_create (env, "http://soapinterop.org/encodedTypes","types");
 
-    envelope_node = AXIS2_OM_NODE_GET_PARENT(body_node, env);
-    envelope_element = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(envelope_node, env);
-    AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns1);
-    AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns2);
-    AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns3);
-    AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns4);
-    AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns5);
-    AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns6);
-    ns0 = AXIS2_OM_ELEMENT_GET_NAMESPACE(envelope_element, env, envelope_node);
-    attri1 = axis2_om_attribute_create (env, "encodingStyle", "http://schemas.xmlsoap.org/soap/encoding/", ns0);
+    envelope_node = AXIOM_NODE_GET_PARENT(body_node, env);
+    envelope_element = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(envelope_node, env);
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns1);
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns2);
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns3);
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns4);
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns5);
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(envelope_element, env, envelope_node, ns6);
+    ns0 = AXIOM_ELEMENT_GET_NAMESPACE(envelope_element, env, envelope_node);
+    attri1 = axiom_attribute_create (env, "encodingStyle", "http://schemas.xmlsoap.org/soap/encoding/", ns0);
     
-    body_om_ele = AXIS2_OM_NODE_GET_DATA_ELEMENT( body_node, env );
-    AXIS2_OM_ELEMENT_ADD_ATTRIBUTE(body_om_ele, env, attri1, body_node);
+    body_om_ele = AXIOM_NODE_GET_DATA_ELEMENT( body_node, env );
+    AXIOM_ELEMENT_ADD_ATTRIBUTE(body_om_ele, env, attri1, body_node);
     
-    echo_om_ele = axis2_om_element_create(env, body_node, echo_operation_buff, ns4, &echo_om_node);
-    AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(echo_om_ele, env, echo_om_node, ns4);
+    echo_om_ele = axiom_element_create(env, body_node, echo_operation_buff, ns4, &echo_om_node);
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(echo_om_ele, env, echo_om_node, ns4);
     
-    text_om_ele = axis2_om_element_create(env, echo_om_node, input_type_buff, NULL, &text_om_node);
-    AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, word_to_echo, text_om_node);
+    text_om_ele = axiom_element_create(env, echo_om_node, input_type_buff, NULL, &text_om_node);
+    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, word_to_echo, text_om_node);
     
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE, 
                                           AXIS2_XML_PARSER_TYPE_BUFFER);
-    om_output = axis2_om_output_create( env, xml_writer);
+    om_output = axiom_output_create( env, xml_writer);
     
-    AXIS2_OM_NODE_SERIALIZE(echo_om_node, env, om_output);
+    AXIOM_NODE_SERIALIZE(echo_om_node, env, om_output);
     buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "\nSending OM node in XML : %s \n",  buffer); 
 
     return echo_om_node;
 }
 
-void print_invalid_om(const axis2_env_t *env, axis2_om_node_t *ret_node)
+void print_invalid_om(const axis2_env_t *env, axiom_node_t *ret_node)
 {
 
     axis2_xml_writer_t *writer = NULL;
-    axis2_om_output_t *om_output = NULL;
+    axiom_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
     writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0, 
                                        AXIS2_XML_PARSER_TYPE_BUFFER);
-    om_output = axis2_om_output_create (env, writer);
+    om_output = axiom_output_create (env, writer);
 
-    AXIS2_OM_NODE_SERIALIZE (ret_node, env, om_output);
+    AXIOM_NODE_SERIALIZE (ret_node, env, om_output);
     buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(writer, env);
     printf ("\nReceived OM as result : %s\n", buffer);
 }

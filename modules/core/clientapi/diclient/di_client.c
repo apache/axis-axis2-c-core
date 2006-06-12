@@ -16,11 +16,11 @@
 
 #include <axis2_call.h>
 #include <axis2_di_client.h>
-#include <axis2_om_stax_builder.h>
-#include <axis2_om_document.h>
-#include <axis2_om_node.h>
-#include <axis2_om_element.h>
-#include <axis2_om_text.h>
+#include <axiom_stax_builder.h>
+#include <axiom_document.h>
+#include <axiom_node.h>
+#include <axiom_element.h>
+#include <axiom_text.h>
 #include <axis2_stream.h>
 #include <axis2_log_default.h>
 #include <axis2_error_default.h>
@@ -79,7 +79,7 @@ axis2_status_t AXIS2_CALL
 axis2_status_t AXIS2_CALL
 axis2_diclient_invoke(axis2_diclient_t *diclient,
                         const axis2_env_t *env,
-                      axis2_om_node_t *node,
+                      axiom_node_t *node,
                         axis2_op_t *op);
                                 
 axis2_status_t AXIS2_CALL
@@ -358,12 +358,12 @@ axis2_diclient_init(axis2_diclient_t *diclient,
 axis2_status_t AXIS2_CALL
 axis2_diclient_invoke(axis2_diclient_t *diclient,
                         const axis2_env_t *env,
-                      axis2_om_node_t *node,
+                      axiom_node_t *node,
                         axis2_op_t *op)
 {    
     axis2_diclient_impl_t *diclient_impl = NULL;
     axis2_char_t *client_home = NULL;
-    axis2_om_node_t *ret_node = NULL;
+    axiom_node_t *ret_node = NULL;
     axis2_call_t *call = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
     axis2_mep_client_t *mep_client = NULL;
@@ -449,15 +449,15 @@ axis2_diclient_invoke(axis2_diclient_t *diclient,
     {
         /* Get the response value from the SOAP message */
         axis2_xml_writer_t *writer = NULL;
-        axis2_om_output_t *om_output = NULL;
+        axiom_output_t *om_output = NULL;
         axis2_char_t *buffer = NULL;
         
         printf("\necho stub invoke SUCCESSFUL!\n");
         writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
                AXIS2_XML_PARSER_TYPE_BUFFER);
-        om_output = axis2_om_output_create (env, writer);
+        om_output = axiom_output_create (env, writer);
 
-        AXIS2_OM_NODE_SERIALIZE (ret_node, env, om_output);
+        AXIOM_NODE_SERIALIZE (ret_node, env, om_output);
         buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(writer, env);
         printf ("\nReceived OM node in XML : %s\n", buffer);
     }

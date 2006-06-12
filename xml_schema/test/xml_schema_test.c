@@ -16,13 +16,13 @@
 
 #include <CuTest.h>
 #include <stdio.h>
-#include <axis2_om.h>
+#include <axiom.h>
 #include <xml_schema/axis2_xml_schema_includes.h>
 #include <axis2_env.h>
 #include "xml_schema_test.h"
 
 
-static axis2_om_document_t* 
+static axiom_document_t* 
 get_document_from_filename(const axis2_env_t *env, 
                                axis2_char_t *filename);
 
@@ -67,7 +67,7 @@ CuSuite* xml_schema_GetSuite()
 void test_simple_type_schema_generation(CuTest *tc)
 {
     const axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_xml_schema_obj_table_t *obj_table = NULL;
@@ -107,13 +107,13 @@ void test_simple_type_schema_generation(CuTest *tc)
         ele = NULL;
         sch_type = NULL;
     }
-    AXIS2_OM_DOCUMENT_FREE(om_doc, env);
+    AXIOM_DOCUMENT_FREE(om_doc, env);
 }    
 
 void test_any_attribute(CuTest *tc)
 {
     axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
@@ -161,7 +161,7 @@ void test_any_attribute(CuTest *tc)
 void test_block_content(CuTest *tc)
 {
     axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
@@ -200,7 +200,7 @@ void test_block_content(CuTest *tc)
 void test_circular_schema(CuTest *tc)
 {
     axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_char_t *filename = NULL;
@@ -214,7 +214,7 @@ void test_circular_schema(CuTest *tc)
     
     om_doc = get_document_from_filename(env, filename);
     
-    AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
+    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     
     CuAssertPtrNotNull(tc, om_doc);
     
@@ -235,7 +235,7 @@ void test_circular_schema(CuTest *tc)
 void test_schema_import1(CuTest *tc)
 {
     axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_char_t *filename = NULL;
@@ -248,7 +248,7 @@ void test_schema_import1(CuTest *tc)
    
     om_doc = get_document_from_filename(env, filename);
     
-    AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
+    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     
     CuAssertPtrNotNull(tc, om_doc);
     
@@ -268,7 +268,7 @@ void test_schema_import1(CuTest *tc)
 void test_mixed_content(CuTest *tc)
 {
     axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
@@ -299,7 +299,7 @@ void test_mixed_content(CuTest *tc)
 void test_local_elements(CuTest *tc)
 {
     axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
@@ -376,7 +376,7 @@ void test_local_elements(CuTest *tc)
 void test_element_refs(CuTest *tc)
 {
     axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
@@ -436,7 +436,7 @@ void test_element_refs(CuTest *tc)
 void test_forward_refs(CuTest *tc)
 {
     axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
@@ -483,12 +483,12 @@ void test_forward_refs(CuTest *tc)
 void test_local_unnamed_simple_type(CuTest *tc)
 {
     axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_char_t *xml = NULL;
     axis2_xml_reader_t *reader = NULL;
-    axis2_om_stax_builder_t *builder = NULL;
+    axiom_stax_builder_t *builder = NULL;
     
     xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" 
              "<schema xmlns=\"http://www.w3.org/2001/XMLSchema\"\n" 
@@ -516,11 +516,11 @@ void test_local_unnamed_simple_type(CuTest *tc)
     reader = axis2_xml_reader_create_for_memory(env, xml, AXIS2_STRLEN(xml), NULL,
         AXIS2_XML_PARSER_TYPE_BUFFER);
 
-    builder = axis2_om_stax_builder_create(env, reader);
+    builder = axiom_stax_builder_create(env, reader);
     
-    om_doc = axis2_om_document_create(env, NULL, builder);
+    om_doc = axiom_document_create(env, NULL, builder);
     
-    AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
+    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     
     sch_collection = axis2_xml_schema_collection_create(env);
     
@@ -532,7 +532,7 @@ void test_local_unnamed_simple_type(CuTest *tc)
 void test_simple_restriction(CuTest *tc)
 {
     axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_qname_t *type_qname = NULL;
@@ -546,7 +546,7 @@ void test_simple_restriction(CuTest *tc)
     om_doc = get_document_from_filename(env, 
         "./../test-resources/SimpleContentRestriction.xsd");
     
-    AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
+    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     
     sch_collection = axis2_xml_schema_collection_create(env);
     
@@ -572,7 +572,7 @@ void test_simple_restriction(CuTest *tc)
 void test_unqualified_schemas(CuTest *tc)
 {
     axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_qname_t *element_qname = NULL;
@@ -595,7 +595,7 @@ void test_unqualified_schemas(CuTest *tc)
     om_doc = get_document_from_filename(env, 
         "./../test-resources/unqualifiedTypes.xsd");
     
-    AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
+    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     
     sch_collection = axis2_xml_schema_collection_create(env);
     
@@ -639,17 +639,17 @@ void test_two_schmes(CuTest *tc)
 {
 }
 
-static axis2_om_document_t* 
+static axiom_document_t* 
 get_document_from_filename(const axis2_env_t *env, 
                                axis2_char_t *filename)
 {
     axis2_xml_reader_t *reader = NULL;
-    axis2_om_stax_builder_t *om_builder = NULL;
-    axis2_om_document_t *doc   = NULL;
+    axiom_stax_builder_t *om_builder = NULL;
+    axiom_document_t *doc   = NULL;
     reader = axis2_xml_reader_create_for_file(env, filename, NULL);
-    om_builder = axis2_om_stax_builder_create(env, reader);
-    doc = axis2_om_document_create(env, NULL, om_builder); 
-    AXIS2_OM_DOCUMENT_BUILD_ALL(doc, env);
+    om_builder = axiom_stax_builder_create(env, reader);
+    doc = axiom_document_create(env, NULL, om_builder); 
+    AXIOM_DOCUMENT_BUILD_ALL(doc, env);
     return doc;    
 }
 

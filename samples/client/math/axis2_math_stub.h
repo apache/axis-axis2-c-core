@@ -29,25 +29,25 @@ extern "C"
 {
 #endif
 
-axis2_om_node_t *
+axiom_node_t *
 axis2_math_stub_add(axis2_stub_t *stub,
                         const axis2_env_t *env,
-                        axis2_om_node_t *node);
+                        axiom_node_t *node);
 
-axis2_om_node_t *
+axiom_node_t *
 axis2_math_stub_sub(axis2_stub_t *stub,
                         const axis2_env_t *env,
-                        axis2_om_node_t *node);
+                        axiom_node_t *node);
 
-axis2_om_node_t *
+axiom_node_t *
 axis2_math_stub_mul(axis2_stub_t *stub,
                         const axis2_env_t *env,
-                        axis2_om_node_t *node);
+                        axiom_node_t *node);
 
-axis2_om_node_t *
+axiom_node_t *
 axis2_math_stub_div(axis2_stub_t *stub,
                         const axis2_env_t *env,
-                        axis2_om_node_t *node);
+                        axiom_node_t *node);
 /**
  * populate services
  */

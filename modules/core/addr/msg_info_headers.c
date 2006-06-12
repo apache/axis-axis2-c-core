@@ -156,7 +156,7 @@ axis2_msg_info_headers_get_ref_params(struct axis2_msg_info_headers *msg_info_he
 axis2_status_t AXIS2_CALL 
 axis2_msg_info_headers_add_ref_param(struct axis2_msg_info_headers *msg_info_headers, 
                                      const axis2_env_t *env, 
-                                     axis2_om_node_t *ref_param);
+                                     axiom_node_t *ref_param);
                                      
 axis2_status_t AXIS2_CALL 
 axis2_msg_info_headers_free(struct axis2_msg_info_headers *msg_info_headers, 
@@ -556,7 +556,7 @@ axis2_msg_info_headers_get_ref_params(struct axis2_msg_info_headers *msg_info_he
 axis2_status_t AXIS2_CALL 
 axis2_msg_info_headers_add_ref_param(struct axis2_msg_info_headers *msg_info_headers, 
                                      const axis2_env_t *env, 
-                                     axis2_om_node_t *ref_param) 
+                                     axiom_node_t *ref_param) 
 {
     axis2_msg_info_headers_impl_t *msg_info_headers_impl = NULL;
     

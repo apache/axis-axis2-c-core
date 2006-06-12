@@ -20,13 +20,13 @@
 #include <axis2_svc_skeleton.h>
 #include <axis2_log_default.h>
 #include <axis2_error_default.h>
-#include <axis2_om_text.h>
-#include <axis2_om_node.h>
-#include <axis2_om_element.h>
+#include <axiom_text.h>
+#include <axiom_node.h>
+#include <axiom_element.h>
 
-axis2_om_node_t *axis2_math_add(const axis2_env_t *env, axis2_om_node_t *node);
-axis2_om_node_t *axis2_math_sub(const axis2_env_t *env, axis2_om_node_t *node);
-axis2_om_node_t *axis2_math_mul(const axis2_env_t *env, axis2_om_node_t *node);
-axis2_om_node_t *axis2_math_div(const axis2_env_t *env, axis2_om_node_t *node);
+axiom_node_t *axis2_math_add(const axis2_env_t *env, axiom_node_t *node);
+axiom_node_t *axis2_math_sub(const axis2_env_t *env, axiom_node_t *node);
+axiom_node_t *axis2_math_mul(const axis2_env_t *env, axiom_node_t *node);
+axiom_node_t *axis2_math_div(const axis2_env_t *env, axiom_node_t *node);
 
 #endif /* MATH_H*/

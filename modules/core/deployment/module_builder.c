@@ -45,7 +45,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
 axis2_array_list_t *AXIS2_CALL
 axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
             const axis2_env_t *env,
-            axis2_om_children_qname_iterator_t *op_itr);
+            axiom_children_qname_iterator_t *op_itr);
                                 
 /************************** End of function prototypes ************************/
 
@@ -150,8 +150,8 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
                                         const axis2_env_t *env)
 {
     axis2_module_builder_impl_t *builder_impl = NULL;
-    axis2_om_element_t *module_element = NULL;
-    axis2_om_node_t *module_node = NULL;
+    axiom_element_t *module_element = NULL;
+    axiom_node_t *module_node = NULL;
     axis2_qname_t *qdllname = NULL;
     axis2_qname_t *qparamst = NULL;
     axis2_qname_t *qinflowst = NULL;
@@ -159,17 +159,17 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     axis2_qname_t *qinfaultflow = NULL;
     axis2_qname_t *qoutfaultflow = NULL;
     axis2_qname_t *qopst = NULL; 
-    axis2_om_attribute_t *module_dll_att = NULL;
-    axis2_om_children_qname_iterator_t *itr = NULL;
-    axis2_om_children_qname_iterator_t *op_itr = NULL;
-    axis2_om_element_t *in_flow_element = NULL;
-    axis2_om_node_t *in_flow_node = NULL;
-    axis2_om_element_t *out_flow_element = NULL;
-    axis2_om_node_t *out_flow_node = NULL;
-    axis2_om_element_t *in_fault_flow_element = NULL;
-    axis2_om_node_t *in_fault_flow_node = NULL;
-    axis2_om_element_t *out_fault_flow_element = NULL;
-    axis2_om_node_t *out_fault_flow_node = NULL;
+    axiom_attribute_t *module_dll_att = NULL;
+    axiom_children_qname_iterator_t *itr = NULL;
+    axiom_children_qname_iterator_t *op_itr = NULL;
+    axiom_element_t *in_flow_element = NULL;
+    axiom_node_t *in_flow_node = NULL;
+    axiom_element_t *out_flow_element = NULL;
+    axiom_node_t *out_flow_node = NULL;
+    axiom_element_t *in_fault_flow_element = NULL;
+    axiom_node_t *in_fault_flow_node = NULL;
+    axiom_element_t *out_fault_flow_element = NULL;
+    axiom_node_t *out_fault_flow_node = NULL;
     axis2_conf_t *parent = NULL;
     axis2_array_list_t *ops = NULL;
     axis2_param_container_t *parent_container = NULL;
@@ -183,14 +183,14 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     builder_impl = AXIS2_INTF_TO_IMPL(module_builder);
     
     module_node = AXIS2_DESC_BUILDER_BUILD_OM(module_builder->desc_builder, env);
-    module_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(module_node, env);
+    module_element = AXIOM_NODE_GET_DATA_ELEMENT(module_node, env);
     if(!module_element)
     {
         return AXIS2_FAILURE;
     }
     /* Setting Module Name */
     /*qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-    module_name_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(module_element, env, 
+    module_name_att = AXIOM_ELEMENT_GET_ATTRIBUTE(module_element, env, 
         qattname);
     if(qattname)
         AXIS2_QNAME_FREE(qattname, env);
@@ -198,7 +198,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     {
         axis2_char_t *module_name = NULL;
         
-        module_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_name_att, env);
+        module_name = AXIOM_ATTRIBUTE_GET_VALUE(module_name_att, env);
         if(NULL != module_name && (0 != AXIS2_STRCMP("", module_name)))
         {
             axis2_qname_t *qmodule_name = NULL;
@@ -246,7 +246,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     /* Setting Module Dll Name , if it is there */
     
     qdllname = axis2_qname_create(env, AXIS2_CLASSNAME, NULL, NULL);
-    module_dll_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(module_element, env, qdllname);
+    module_dll_att = AXIOM_ELEMENT_GET_ATTRIBUTE(module_element, env, qdllname);
     if(qdllname)
         AXIS2_QNAME_FREE(qdllname, env);
     
@@ -255,7 +255,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         axis2_char_t *class_name = NULL;
         
         
-        class_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_dll_att, env);
+        class_name = AXIOM_ATTRIBUTE_GET_VALUE(module_dll_att, env);
         if(NULL != class_name && (0 != AXIS2_STRCMP("", class_name)))
         {
             if(NULL != module_builder->desc_builder->engine)
@@ -275,7 +275,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     /* Processing service level paramters */
     
     qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
-    itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(module_element, env,
+    itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(module_element, env,
         qparamst, module_node);
     if(qparamst)
         AXIS2_QNAME_FREE(qparamst, env);
@@ -288,7 +288,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
 
     /* process INFLOW */
     qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL);
-    in_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
+    in_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
         env, qinflowst, module_node, &in_flow_node);
     if(qinflowst)
         AXIS2_QNAME_FREE(qinflowst, env);
@@ -310,7 +310,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     }
     
     qoutflowst = axis2_qname_create(env, AXIS2_OUTFLOWST, NULL, NULL);
-    out_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
+    out_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
         env, qoutflowst, module_node, &out_flow_node);
     if(qoutflowst)
         AXIS2_QNAME_FREE(qoutflowst, env);
@@ -331,7 +331,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     }
 
     qinfaultflow = axis2_qname_create(env, AXIS2_IN_FAILTFLOW, NULL, NULL);
-    in_fault_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
+    in_fault_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
         env, qinfaultflow, module_node, &in_fault_flow_node);
     if(qinfaultflow)
         AXIS2_QNAME_FREE(qinfaultflow, env);
@@ -352,7 +352,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     }
     
     qoutfaultflow = axis2_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL, NULL);
-    out_fault_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
+    out_fault_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
         env, qoutfaultflow, module_node, &out_fault_flow_node);
     if(qoutfaultflow)
         AXIS2_QNAME_FREE(qoutfaultflow, env);
@@ -375,7 +375,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
 
     /* processing Operations */
     qopst = axis2_qname_create(env, AXIS2_OPERATIONST, NULL, NULL);
-    op_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(module_element, env,
+    op_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(module_element, env,
         qopst, module_node);
     if(qopst)
         AXIS2_QNAME_FREE(qopst, env);
@@ -397,7 +397,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
 axis2_array_list_t *AXIS2_CALL
 axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
             const axis2_env_t *env,
-            axis2_om_children_qname_iterator_t *op_itr)
+            axiom_children_qname_iterator_t *op_itr)
 {
     axis2_module_builder_impl_t *builder_impl = NULL;
     axis2_array_list_t *ops = NULL;
@@ -407,12 +407,12 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
     builder_impl = AXIS2_INTF_TO_IMPL(module_builder);
     
     ops = axis2_array_list_create(env, 0);
-    while(AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(op_itr, env))
+    while(AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(op_itr, env))
     {
-        axis2_om_element_t *op_element = NULL;
-        axis2_om_node_t *op_node = NULL;
-        axis2_om_attribute_t *op_name_att = NULL;
-        axis2_om_attribute_t *op_mep_att = NULL;
+        axiom_element_t *op_element = NULL;
+        axiom_node_t *op_node = NULL;
+        axiom_attribute_t *op_name_att = NULL;
+        axiom_attribute_t *op_mep_att = NULL;
         axis2_qname_t *qattname = NULL;
         axis2_char_t *mep_url = NULL;
         axis2_char_t *op_name = NULL;
@@ -421,19 +421,19 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         axis2_qname_t *qparamst = NULL;
         axis2_qname_t *qmodulest = NULL;
         axis2_qname_t *qmep = NULL;
-        axis2_om_children_qname_iterator_t *params = NULL;
-        axis2_om_children_qname_iterator_t *modules = NULL;
-        axis2_om_element_t *recv_element = NULL;
-        axis2_om_node_t *recv_node = NULL;
+        axiom_children_qname_iterator_t *params = NULL;
+        axiom_children_qname_iterator_t *modules = NULL;
+        axiom_element_t *recv_element = NULL;
+        axiom_node_t *recv_node = NULL;
         axis2_phases_info_t *info = NULL;
         axis2_op_t *op_desc = NULL;
         
-        op_node = (axis2_om_node_t *) AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(
+        op_node = (axiom_node_t *) AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(
             op_itr, env);
-        op_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(op_node, env);
+        op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
         /* getting operation name */
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-        op_name_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(op_element, env, qattname);
+        op_name_att = AXIOM_ELEMENT_GET_ATTRIBUTE(op_element, env, qattname);
         if(qattname)
             AXIS2_QNAME_FREE(qattname, env);
 
@@ -444,13 +444,13 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
             return NULL;
         }
         qmep = axis2_qname_create(env, AXIS2_MEP, NULL, NULL);
-        op_mep_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(op_element, env, qmep);
+        op_mep_att = AXIOM_ELEMENT_GET_ATTRIBUTE(op_element, env, qmep);
         if(qmep)
             AXIS2_QNAME_FREE(qmep, env);
         
         if(NULL != op_mep_att)
         {
-            mep_url = AXIS2_OM_ATTRIBUTE_GET_VALUE(op_mep_att, env);
+            mep_url = AXIOM_ATTRIBUTE_GET_VALUE(op_mep_att, env);
         }
         if(NULL == mep_url)
         {
@@ -465,7 +465,7 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
             op_desc = axis2_op_create(env);
         }
         
-        op_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(op_name_att, env);
+        op_name = AXIOM_ATTRIBUTE_GET_VALUE(op_name_att, env);
         qopname = axis2_qname_create(env, op_name, NULL, NULL);
         AXIS2_OP_SET_QNAME(op_desc, env, qopname);
         if(qopname)
@@ -473,7 +473,7 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
 
         /* Operation parameters */
         qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
-        params = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env, 
+        params = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env, 
             qparamst, op_node);
         if(qparamst)
             AXIS2_QNAME_FREE(qparamst, env);
@@ -484,7 +484,7 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         
         /* loading the message receivers */
         qmsgrecv = axis2_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);
-        recv_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(op_element, 
+        recv_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(op_element, 
             env, qmsgrecv, op_node, &recv_node);
         if(qmsgrecv)
             AXIS2_QNAME_FREE(qmsgrecv, env);
@@ -507,7 +507,7 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         }
         /* Process Module Refs */
         qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
-        modules = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env, 
+        modules = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env, 
             qmodulest, op_node);
         if(qmodulest)
             AXIS2_QNAME_FREE(qmodulest, env);

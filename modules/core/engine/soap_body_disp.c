@@ -104,24 +104,24 @@ axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
         axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
         if (soap_body)
         {
-            axis2_om_node_t *body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+            axiom_node_t *body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
             if (body_node)
             {
-                axis2_om_node_t *body_first_child_node = 
-                    AXIS2_OM_NODE_GET_FIRST_CHILD(body_node, env);
+                axiom_node_t *body_first_child_node = 
+                    AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
                 if (body_first_child_node)
                 {                    
-                    if (AXIS2_OM_NODE_GET_NODE_TYPE(body_first_child_node, env) == AXIS2_OM_ELEMENT)
+                    if (AXIOM_NODE_GET_NODE_TYPE(body_first_child_node, env) == AXIOM_ELEMENT)
                     {
-                        axis2_om_element_t *element = NULL;                        
-                        element = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(body_first_child_node, env);
+                        axiom_element_t *element = NULL;                        
+                        element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(body_first_child_node, env);
                         if (element)
                         {
-                            axis2_om_namespace_t *ns = 
-                                AXIS2_OM_ELEMENT_GET_NAMESPACE(element, env, body_first_child_node);
+                            axiom_namespace_t *ns = 
+                                AXIOM_ELEMENT_GET_NAMESPACE(element, env, body_first_child_node);
                             if (ns)
                             {
-                                axis2_char_t *uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);
+                                axis2_char_t *uri = AXIOM_NAMESPACE_GET_URI(ns, env);
                                 if (uri)
                                 {
                                     axis2_char_t **url_tokens = NULL;
@@ -191,20 +191,20 @@ axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx,
         axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
         if (soap_body)
         {
-            axis2_om_node_t *body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+            axiom_node_t *body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
             if (body_node)
             {
-                axis2_om_node_t *body_first_child_node = 
-                    AXIS2_OM_NODE_GET_FIRST_CHILD(body_node, env);
+                axiom_node_t *body_first_child_node = 
+                    AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
                 if (body_first_child_node)
                 {                    
-                    if (AXIS2_OM_NODE_GET_NODE_TYPE(body_first_child_node, env) == AXIS2_OM_ELEMENT)
+                    if (AXIOM_NODE_GET_NODE_TYPE(body_first_child_node, env) == AXIOM_ELEMENT)
                     {
-                        axis2_om_element_t *element = NULL;                        
-                        element = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(body_first_child_node, env);
+                        axiom_element_t *element = NULL;                        
+                        element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(body_first_child_node, env);
                         if (element)
                         {
-                            axis2_char_t *element_name = AXIS2_OM_ELEMENT_GET_LOCALNAME(element, env);
+                            axis2_char_t *element_name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
                             if (element_name)
                             {
                                 axis2_qname_t *op_qname = NULL;

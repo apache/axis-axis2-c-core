@@ -71,7 +71,7 @@ static axis2_svc_t* axis2_svc_client_create_annonymous_svc(const axis2_env_t *en
 static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env, 
     axis2_svc_client_impl_t *svc_client_impl,
     axis2_msg_ctx_t *msg_ctx, 
-    const axis2_om_node_t *payload);
+    const axiom_node_t *payload);
 
 /** public funcitons */
 axis2_svc_t* AXIS2_CALL 
@@ -109,7 +109,7 @@ axis2_svc_client_disengage_module(struct axis2_svc_client *svc_client,
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_add_header(struct axis2_svc_client *svc_client,
                             const axis2_env_t *env,
-                            axis2_om_node_t *header);
+                            axiom_node_t *header);
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_remove_all_headers(struct axis2_svc_client *svc_client,
@@ -125,25 +125,25 @@ axis2_status_t AXIS2_CALL
 axis2_svc_client_send_robust(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
                     const axis2_qname_t *op_qname,
-                    const axis2_om_node_t *payload);
+                    const axiom_node_t *payload);
 
 void AXIS2_CALL 
 axis2_svc_client_fire_and_forget(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
                     const axis2_qname_t *op_qname,
-                    const axis2_om_node_t *payload);
+                    const axiom_node_t *payload);
 
-axis2_om_node_t* AXIS2_CALL 
+axiom_node_t* AXIS2_CALL 
 axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
                     const axis2_qname_t *op_qname,
-                    const axis2_om_node_t *payload);
+                    const axiom_node_t *payload);
 
 void AXIS2_CALL 
 axis2_svc_client_send_receive_non_blocking(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
                     const axis2_qname_t *op_qname,
-                    const axis2_om_node_t *payload,
+                    const axiom_node_t *payload,
                     axis2_callback_t *callback);
 
 axis2_op_client_t* AXIS2_CALL 
@@ -425,7 +425,7 @@ axis2_svc_client_disengage_module(struct axis2_svc_client *svc_client,
 axis2_status_t AXIS2_CALL 
 axis2_svc_client_add_header(struct axis2_svc_client *svc_client,
                             const axis2_env_t *env,
-                            axis2_om_node_t *header)
+                            axiom_node_t *header)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -462,11 +462,11 @@ axis2_svc_client_remove_all_headers(struct axis2_svc_client *svc_client,
    size = AXIS2_ARRAY_LIST_SIZE(svc_client_impl->headers, env);
    for (i = 0; i < size; i++)
    {
-      axis2_om_node_t *node = NULL;
+      axiom_node_t *node = NULL;
       node = AXIS2_ARRAY_LIST_GET(svc_client_impl->headers, env, i);
       if (node)
       {
-         AXIS2_OM_NODE_FREE_TREE(node, env);
+         AXIOM_NODE_FREE_TREE(node, env);
          node = NULL;
       }
    }
@@ -479,24 +479,24 @@ axis2_svc_client_add_header_with_text(struct axis2_svc_client *svc_client,
                         const axis2_qname_t *header_name,
                         const axis2_char_t *header_text)
 {
-   axis2_om_node_t *node_name, *node_text;
-   axis2_om_element_t *element = NULL;
-   axis2_om_text_t *text = NULL;
+   axiom_node_t *node_name, *node_text;
+   axiom_element_t *element = NULL;
+   axiom_text_t *text = NULL;
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
    svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
 
-   element = axis2_om_element_create_with_qname(env, NULL, header_name, &node_name);
+   element = axiom_element_create_with_qname(env, NULL, header_name, &node_name);
    if (!element)
    {
       AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
       return AXIS2_FAILURE;
    }
-   text = axis2_om_text_create(env, node_name, header_text, &node_text);
+   text = axiom_text_create(env, node_name, header_text, &node_text);
    if (!text)
    {
-      AXIS2_OM_ELEMENT_FREE(element, env);
+      AXIOM_ELEMENT_FREE(element, env);
       AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
       return AXIS2_FAILURE;
    }
@@ -508,7 +508,7 @@ axis2_status_t AXIS2_CALL
 axis2_svc_client_send_robust(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
                     const axis2_qname_t *op_qname,
-                    const axis2_om_node_t *payload)
+                    const axiom_node_t *payload)
 {
    axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_op_client_t *op_client = NULL;
@@ -545,7 +545,7 @@ void AXIS2_CALL
 axis2_svc_client_fire_and_forget(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
                     const axis2_qname_t *op_qname,
-                    const axis2_om_node_t *payload)
+                    const axiom_node_t *payload)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_op_client_t *op_client = NULL;
@@ -580,16 +580,16 @@ axis2_svc_client_fire_and_forget(struct axis2_svc_client *svc_client,
     return;
 }
 
-axis2_om_node_t* AXIS2_CALL 
+axiom_node_t* AXIS2_CALL 
 axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
                     const axis2_qname_t *op_qname,
-                    const axis2_om_node_t *payload)
+                    const axiom_node_t *payload)
 {
    axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_soap_envelope_t *soap_envelope = NULL;
     axis2_soap_body_t *soap_body = NULL;
-    axis2_om_node_t *soap_node = NULL;
+    axiom_node_t *soap_node = NULL;
 
    AXIS2_ENV_CHECK(env, NULL);
 
@@ -657,7 +657,7 @@ axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
                                 soap_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
                                 if (soap_node)
                                 {
-                                    return AXIS2_OM_NODE_GET_FIRST_CHILD(soap_node, env);
+                                    return AXIOM_NODE_GET_FIRST_CHILD(soap_node, env);
                                 }
                             }
                         }
@@ -742,7 +742,7 @@ axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
     {
         return NULL;
     }
-    return AXIS2_OM_NODE_GET_FIRST_CHILD(soap_node, env);
+    return AXIOM_NODE_GET_FIRST_CHILD(soap_node, env);
 }
 
 
@@ -750,7 +750,7 @@ void AXIS2_CALL
 axis2_svc_client_send_receive_non_blocking(struct axis2_svc_client *svc_client,
                     const axis2_env_t *env,
                     const axis2_qname_t *op_qname,
-                    const axis2_om_node_t *payload,
+                    const axiom_node_t *payload,
                     axis2_callback_t *callback)
 {
     axis2_svc_client_impl_t *svc_client_impl = NULL;
@@ -1170,7 +1170,7 @@ axis2_svc_client_free(struct axis2_svc_client *svc_client,
 static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env, 
     axis2_svc_client_impl_t *svc_client_impl,
     axis2_msg_ctx_t *msg_ctx, 
-    const axis2_om_node_t *payload)
+    const axiom_node_t *payload)
 {
    const axis2_char_t *soap_version_uri;
    int soap_version;
@@ -1203,7 +1203,7 @@ static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env,
     
         if (soap_header)
         {
-            axis2_om_node_t *header_node = NULL;
+            axiom_node_t *header_node = NULL;
             header_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
 
             if (header_node)
@@ -1213,11 +1213,11 @@ static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env,
                 size = AXIS2_ARRAY_LIST_SIZE(svc_client_impl->headers, env);
                 for (i = 0; i < size; i++)
                 {
-                    axis2_om_node_t *node = NULL;
+                    axiom_node_t *node = NULL;
                     node = AXIS2_ARRAY_LIST_GET(svc_client_impl->headers, env, i);
                     if (node)
                     {
-                        AXIS2_OM_NODE_ADD_CHILD(header_node, env, node);
+                        AXIOM_NODE_ADD_CHILD(header_node, env, node);
                     }
                 }
             }
@@ -1230,11 +1230,11 @@ static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env,
         soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
         if (soap_body)
         {
-            axis2_om_node_t *node = NULL;
+            axiom_node_t *node = NULL;
             node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
             if (node)
             {
-                AXIS2_OM_NODE_ADD_CHILD(node, env, (axis2_om_node_t *)payload);
+                AXIOM_NODE_ADD_CHILD(node, env, (axiom_node_t *)payload);
             }
         }
     }

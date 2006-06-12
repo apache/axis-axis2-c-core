@@ -78,26 +78,26 @@ axis2_xml_schema_t * AXIS2_CALL
 axis2_xml_schema_collection_read_document(
         axis2_xml_schema_collection_t* collection,
         const axis2_env_t *env,
-        axis2_om_document_t* document);
+        axiom_document_t* document);
 
 axis2_xml_schema_t * AXIS2_CALL
 axis2_xml_schema_collection_read_element(
         axis2_xml_schema_collection_t* collection,
         const axis2_env_t *env,
-        axis2_om_node_t *node);
+        axiom_node_t *node);
 
 axis2_xml_schema_t* AXIS2_CALL
 axis2_xml_schema_collection_read_document_with_uri(
         axis2_xml_schema_collection_t* collection,
         const axis2_env_t *env,
-        axis2_om_document_t *document,
+        axiom_document_t *document,
         axis2_char_t *uri);
 
 axis2_xml_schema_t * AXIS2_CALL
 axis2_xml_schema_collection_read_element_with_uri(
         axis2_xml_schema_collection_t* collection,
         const axis2_env_t *env,
-        axis2_om_node_t *node,
+        axiom_node_t *node,
         axis2_char_t *uri);
 
 axis2_xml_schema_element_t * AXIS2_CALL
@@ -428,27 +428,27 @@ axis2_xml_schema_collection_read_with_reader(
         axis2_xml_reader_t *reader)
 {
     axis2_xml_schema_builder_t *sch_builder = NULL;
-    axis2_om_document_t *om_doc = NULL;
-    axis2_om_stax_builder_t *om_builder = NULL;
+    axiom_document_t *om_doc = NULL;
+    axiom_stax_builder_t *om_builder = NULL;
     
     AXIS2_PARAM_CHECK(env->error, reader, NULL);
     
-    om_builder = axis2_om_stax_builder_create(env, reader);
+    om_builder = axiom_stax_builder_create(env, reader);
     if(!om_builder)
         return NULL;
         
-    om_doc = axis2_om_document_create(env, NULL, om_builder);
+    om_doc = axiom_document_create(env, NULL, om_builder);
     if(!om_doc)
     {
-        AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+        AXIOM_STAX_BUILDER_FREE(om_builder, env);
         return NULL;
     }    
-    AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
+    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     
     sch_builder = axis2_xml_schema_builder_create(env, collection);
     if(!sch_builder)
     {
-        AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+        AXIOM_STAX_BUILDER_FREE(om_builder, env);
         return NULL;
     }
     
@@ -459,7 +459,7 @@ axis2_xml_schema_t * AXIS2_CALL
 axis2_xml_schema_collection_read_document(
         axis2_xml_schema_collection_t* collection,
         const axis2_env_t *env,
-        axis2_om_document_t* document)
+        axiom_document_t* document)
 {
     axis2_xml_schema_builder_t *sch_builder = NULL;
     AXIS2_PARAM_CHECK(env->error , document, NULL);
@@ -471,7 +471,7 @@ axis2_xml_schema_t * AXIS2_CALL
 axis2_xml_schema_collection_read_element(
         axis2_xml_schema_collection_t* collection,
         const axis2_env_t *env,
-        axis2_om_node_t *node)
+        axiom_node_t *node)
 {
     axis2_xml_schema_builder_t *sch_builder = NULL;
     
@@ -488,7 +488,7 @@ axis2_xml_schema_t* AXIS2_CALL
 axis2_xml_schema_collection_read_document_with_uri(
         axis2_xml_schema_collection_t* collection,
         const axis2_env_t *env,
-        axis2_om_document_t *document,
+        axiom_document_t *document,
         axis2_char_t *uri)
 {
     axis2_xml_schema_builder_t *sch_builder = NULL;
@@ -502,7 +502,7 @@ axis2_xml_schema_t * AXIS2_CALL
 axis2_xml_schema_collection_read_element_with_uri(
         axis2_xml_schema_collection_t* collection,
         const axis2_env_t *env,
-        axis2_om_node_t *node,
+        axiom_node_t *node,
         axis2_char_t *uri)
 {
     axis2_xml_schema_builder_t *sch_builder = NULL;

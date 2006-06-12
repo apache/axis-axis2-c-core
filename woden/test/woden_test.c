@@ -16,12 +16,12 @@
 
 #include <CuTest.h>
 #include <stdio.h>
-#include <axis2_om.h>
+#include <axiom.h>
 #include <axis2_env.h>
 #include "woden_test.h"
 
 
-static axis2_om_document_t* 
+static axiom_document_t* 
 get_root_element_from_filename(
         const axis2_env_t *env, 
         axis2_char_t *filename);
@@ -42,7 +42,7 @@ void test_mixed_content(
         CuTest *tc)
 {
     axis2_env_t *env = NULL;
-    axis2_om_document_t *om_doc = NULL;
+    axiom_document_t *om_doc = NULL;
     axis2_xml_schema_collection_t *sch_collection = NULL;
     axis2_xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
@@ -115,19 +115,19 @@ void test_mixed_content(
     
 }
 
-static axis2_om_document_t* 
+static axiom_document_t* 
 get_root_element_from_filename(
         const axis2_env_t *env, 
         axis2_char_t *filename)
 {
     axis2_xml_reader_t *reader = NULL;
-    axis2_om_stax_builder_t *om_builder = NULL;
-    axis2_om_document_t *doc   = NULL;
+    axiom_stax_builder_t *om_builder = NULL;
+    axiom_document_t *doc   = NULL;
 
     reader = axis2_xml_reader_create_for_file(env, filename, NULL);
-    om_builder = axis2_om_stax_builder_create(env, reader);
-    doc = axis2_om_document_create(env, NULL, om_builder); 
-    AXIS2_OM_DOCUMENT_BUILD_ALL(doc, env);
+    om_builder = axiom_stax_builder_create(env, reader);
+    doc = axiom_document_create(env, NULL, om_builder); 
+    AXIOM_DOCUMENT_BUILD_ALL(doc, env);
 
     return doc;    
 }

@@ -50,7 +50,7 @@ axis2_status_t AXIS2_CALL
 axis2_msg_sender_send_with_om(struct axis2_msg_sender *msg_sender, 
                   const axis2_env_t *env,
                   axis2_char_t *op_name, 
-                  axis2_om_node_t *om_node_to_send);
+                  axiom_node_t *om_node_to_send);
 
 axis2_status_t AXIS2_CALL 
 axis2_msg_sender_send_with_soap(axis2_msg_sender_t *msg_sender, 
@@ -245,7 +245,7 @@ axis2_status_t AXIS2_CALL
 axis2_msg_sender_send_with_om(struct axis2_msg_sender *msg_sender, 
                   const axis2_env_t *env,
                   axis2_char_t *op_name, 
-                  axis2_om_node_t *om_node_to_send)
+                  axiom_node_t *om_node_to_send)
 {
     axis2_msg_sender_impl_t *msg_sender_impl = NULL;
     axis2_soap_envelope_t *soap_envelope = NULL;

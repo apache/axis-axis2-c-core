@@ -25,10 +25,10 @@ math_free(axis2_svc_skeleton_t *svc_skeleton,
 /*
  * This method invokes the right service method 
  */
-axis2_om_node_t* AXIS2_CALL 
+axiom_node_t* AXIS2_CALL 
 math_invoke(axis2_svc_skeleton_t *svc_skeleton,
             const axis2_env_t *env,
-            axis2_om_node_t *node,
+            axiom_node_t *node,
             axis2_msg_ctx_t *msg_ctx);
 
 int AXIS2_CALL math_init(axis2_svc_skeleton_t *svc_skeleton,
@@ -97,10 +97,10 @@ math_free(axis2_svc_skeleton_t *svc_skeleton,
 /*
  * This method invokes the right service method 
  */
-axis2_om_node_t* AXIS2_CALL
+axiom_node_t* AXIS2_CALL
 math_invoke(axis2_svc_skeleton_t *svc_skeleton,
             const axis2_env_t *env,
-            axis2_om_node_t *node,
+            axiom_node_t *node,
             axis2_msg_ctx_t *msg_ctx)
 {
     /* Depending on the function name invoke the
@@ -108,13 +108,13 @@ math_invoke(axis2_svc_skeleton_t *svc_skeleton,
      */
     if (node)
     {
-        if (AXIS2_OM_NODE_GET_NODE_TYPE(node, env) == AXIS2_OM_ELEMENT)
+        if (AXIOM_NODE_GET_NODE_TYPE(node, env) == AXIOM_ELEMENT)
         {
-            axis2_om_element_t *element = NULL;
-            element = (axis2_om_element_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
+            axiom_element_t *element = NULL;
+            element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
             if (element)
             {
-                axis2_char_t *op_name = AXIS2_OM_ELEMENT_GET_LOCALNAME(element, env);
+                axis2_char_t *op_name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
                 if (op_name)
                 {
                     if ( AXIS2_STRCMP(op_name, "add") == 0 )

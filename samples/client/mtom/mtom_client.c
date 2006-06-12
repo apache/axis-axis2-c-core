@@ -15,12 +15,12 @@
  */
 
 #include <stdio.h>
-#include <axis2_om.h>
+#include <axiom.h>
 #include <axis2_util.h>
 #include <axis2_soap.h>
 #include <axis2_client.h>
 
-axis2_om_node_t *
+axiom_node_t *
 build_om_programatically(const axis2_env_t *env, 
     const axis2_char_t *image_name, 
     const axis2_char_t *to_save_name);
@@ -33,8 +33,8 @@ int main(int argc, char** argv)
     axis2_options_t *options = NULL;
     const axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
-    axis2_om_node_t *payload = NULL;
-    axis2_om_node_t *ret_node = NULL;
+    axiom_node_t *payload = NULL;
+    axiom_node_t *ret_node = NULL;
     const axis2_char_t *image_name = "resources/axis2.jpg";
     const axis2_char_t *to_save_name = "test.jpg";
 
@@ -104,7 +104,7 @@ int main(int argc, char** argv)
     if(ret_node)
     {
         axis2_char_t *om_str = NULL;
-        om_str = AXIS2_OM_NODE_TO_STRING(ret_node, env);
+        om_str = AXIOM_NODE_TO_STRING(ret_node, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
         printf("\nmtom client invoke SUCCESSFUL!\n");
@@ -133,33 +133,33 @@ int main(int argc, char** argv)
 }
 
 /* build SOAP request message content using OM */
-axis2_om_node_t *
+axiom_node_t *
 build_om_programatically(const axis2_env_t *env, 
     const axis2_char_t *image_name, 
     const axis2_char_t *to_save_name)
 {
-    axis2_om_node_t *mtom_om_node = NULL;
-    axis2_om_element_t* mtom_om_ele = NULL;
-    axis2_om_node_t* image_om_node = NULL;
-    axis2_om_element_t * image_om_ele = NULL;
-    axis2_om_node_t* file_om_node = NULL;
-    axis2_om_element_t * file_om_ele = NULL;
-    axis2_om_node_t* data_om_node = NULL;
-    axis2_om_text_t * data_text = NULL;
-    axis2_om_namespace_t *ns1 = NULL;
+    axiom_node_t *mtom_om_node = NULL;
+    axiom_element_t* mtom_om_ele = NULL;
+    axiom_node_t* image_om_node = NULL;
+    axiom_element_t * image_om_ele = NULL;
+    axiom_node_t* file_om_node = NULL;
+    axiom_element_t * file_om_ele = NULL;
+    axiom_node_t* data_om_node = NULL;
+    axiom_text_t * data_text = NULL;
+    axiom_namespace_t *ns1 = NULL;
 
     axis2_data_handler_t *data_handler = NULL;
     
-    ns1 = axis2_om_namespace_create (env, "http://ws.apache.org/axis2/c/samples/mtom", "ns1");
-    mtom_om_ele = axis2_om_element_create(env, NULL, "mtomSample", ns1, &mtom_om_node);
+    ns1 = axiom_namespace_create (env, "http://ws.apache.org/axis2/c/samples/mtom", "ns1");
+    mtom_om_ele = axiom_element_create(env, NULL, "mtomSample", ns1, &mtom_om_node);
     
-    file_om_ele = axis2_om_element_create(env, mtom_om_node, "fileName", ns1, &file_om_node);
-    AXIS2_OM_ELEMENT_SET_TEXT(file_om_ele, env, to_save_name, file_om_node);
+    file_om_ele = axiom_element_create(env, mtom_om_node, "fileName", ns1, &file_om_node);
+    AXIOM_ELEMENT_SET_TEXT(file_om_ele, env, to_save_name, file_om_node);
 
-    image_om_ele = axis2_om_element_create(env, mtom_om_node, "image", ns1, &image_om_node);
+    image_om_ele = axiom_element_create(env, mtom_om_node, "image", ns1, &image_om_node);
 
     data_handler = axis2_data_handler_create(env, image_name, "image/jpeg");
-    data_text = axis2_om_text_create_with_data_handler(env, image_om_node, data_handler, &data_om_node);
+    data_text = axiom_text_create_with_data_handler(env, image_om_node, data_handler, &data_om_node);
 
     return mtom_om_node;
 }

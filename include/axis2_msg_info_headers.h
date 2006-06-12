@@ -30,7 +30,7 @@
 #include <axis2_any_content_type.h>
 #include <axis2_svc_name.h>
 #include <axis2_relates_to.h>
-#include <axis2_om_node.h>
+#include <axiom_node.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -215,7 +215,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
       add_ref_param)(struct axis2_msg_info_headers *msg_info_headers, 
                        const axis2_env_t *env, 
-                     axis2_om_node_t *ref_param);
+                     axiom_node_t *ref_param);
       
         axis2_status_t (AXIS2_CALL *
       free)(struct axis2_msg_info_headers *msg_info_headers, 

@@ -15,12 +15,12 @@
  */
 
 #include <stdio.h>
-#include <axis2_om.h>
+#include <axiom.h>
 #include <axis2_util.h>
 #include <axis2_soap.h>
 #include <axis2_client.h>
 
-axis2_om_node_t *
+axiom_node_t *
 build_om_programatically(const axis2_env_t *env);
 
 int main(int argc, char** argv)
@@ -31,7 +31,7 @@ int main(int argc, char** argv)
     axis2_options_t *options = NULL;
     const axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
-    axis2_om_node_t *payload = NULL;
+    axiom_node_t *payload = NULL;
     axis2_status_t status = AXIS2_FAILURE;
    
     /* Set up the environment */
@@ -117,19 +117,19 @@ int main(int argc, char** argv)
 }
 
 /* build SOAP request message content using OM */
-axis2_om_node_t *
+axiom_node_t *
 build_om_programatically(const axis2_env_t *env)
 {
-    axis2_om_node_t *notify_om_node = NULL;
-    axis2_om_element_t* notify_om_ele = NULL;
-    axis2_om_namespace_t *ns1 = NULL;
+    axiom_node_t *notify_om_node = NULL;
+    axiom_element_t* notify_om_ele = NULL;
+    axiom_namespace_t *ns1 = NULL;
     axis2_char_t *buffer = NULL;
     
-    ns1 = axis2_om_namespace_create (env, "http://example.org/notify", "m");
-    notify_om_ele = axis2_om_element_create(env, NULL, "notify", ns1, &notify_om_node);
-    AXIS2_OM_ELEMENT_SET_TEXT(notify_om_ele, env, "notify5", notify_om_node);
+    ns1 = axiom_namespace_create (env, "http://example.org/notify", "m");
+    notify_om_ele = axiom_element_create(env, NULL, "notify", ns1, &notify_om_node);
+    AXIOM_ELEMENT_SET_TEXT(notify_om_ele, env, "notify5", notify_om_node);
     
-    buffer = AXIS2_OM_NODE_TO_STRING(notify_om_node, env);
+    buffer = AXIOM_NODE_TO_STRING(notify_om_node, env);
     printf("\nSending OM node in XML : %s \n",  buffer); 
 
     return notify_om_node;

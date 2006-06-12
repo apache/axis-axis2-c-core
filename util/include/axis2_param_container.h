@@ -31,7 +31,7 @@
 #include <axis2_array_list.h>
 #include <axis2_hash.h>
 
-/*#include <axis2_om_element.h>*/
+/*#include <axiom_element.h>*/
 #include <axis2_qname.h>
 #include <axis2_param.h>
 

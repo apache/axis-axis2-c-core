@@ -28,8 +28,8 @@
 #include <axis2_array_list.h>
 #include <axis2_any_content_type.h>
 #include <axis2_svc_name.h>
-#include <axis2_om_node.h>
-#include <axis2_om_attribute.h>
+#include <axiom_node.h>
+#include <axiom_attribute.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -119,27 +119,27 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
         add_ref_param)(struct axis2_endpoint_ref *endpoint_ref,
                                   const axis2_env_t *env,
-                                  axis2_om_node_t* ref_param_node);
+                                  axiom_node_t* ref_param_node);
 
         axis2_status_t (AXIS2_CALL *
         add_meta_data)(struct axis2_endpoint_ref *endpoint_ref,
                                   const axis2_env_t *env,
-                                  axis2_om_node_t* meta_data_node);
+                                  axiom_node_t* meta_data_node);
 
         axis2_status_t (AXIS2_CALL *
         add_ref_attribute)(struct axis2_endpoint_ref *endpoint_ref,
                                           const axis2_env_t *env,
-                                          axis2_om_attribute_t* attr);
+                                          axiom_attribute_t* attr);
 
         axis2_status_t (AXIS2_CALL *
         add_meta_attribute)(struct axis2_endpoint_ref *endpoint_ref,
                                           const axis2_env_t *env,
-                                          axis2_om_attribute_t* attr);
+                                          axiom_attribute_t* attr);
 
         axis2_status_t (AXIS2_CALL *
         add_extension)(struct axis2_endpoint_ref *endpoint_ref,
                                           const axis2_env_t *env, 
-                                          axis2_om_node_t* extension_node);
+                                          axiom_node_t* extension_node);
 
         /**
          * Method get_ref_params
@@ -171,14 +171,14 @@ extern "C"
                  axis2_svc_name_t *svc_name);
       
       
-/*        axis2_om_node_t* (AXIS2_CALL *
+/*        axiom_node_t* (AXIS2_CALL *
       get_policies)(struct axis2_endpoint_ref *endpoint_ref, 
                       const axis2_env_t *env);
       
         axis2_status_t (AXIS2_CALL *
       set_policies)(struct axis2_endpoint_ref *endpoint_ref, 
                       const axis2_env_t *env, 
-                 axis2_om_node_t *policies);
+                 axiom_node_t *policies);
 */      
 /*        axis2_any_content_type_t* (AXIS2_CALL *
       get_metadata)(struct axis2_endpoint_ref *endpoint_ref, 

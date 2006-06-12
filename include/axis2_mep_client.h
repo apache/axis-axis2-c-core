@@ -27,7 +27,7 @@
 #include <axis2_env.h>
 #include <axis2_error.h>
 #include <axis2_op.h>
-#include <axis2_om_node.h>
+#include <axiom_node.h>
 #include <axis2_soap_envelope.h>
 
 #ifdef __cplusplus
@@ -72,7 +72,7 @@ struct axis2_mep_client_ops
     axis2_msg_ctx_t* (AXIS2_CALL *
    prepare_soap_envelope)(struct axis2_mep_client *mep_client, 
                            const axis2_env_t *env, 
-                           axis2_om_node_t *to_send);
+                           axiom_node_t *to_send);
     /**
      * try to infer the transport looking at the URL, the URL can be http://
      * tcp:// mail:// local://. The method will look for the trnasport name as the

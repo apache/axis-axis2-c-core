@@ -39,7 +39,7 @@ struct axis2_xml_schema_documentation_impl
 
     axis2_char_t *source;
     
-    axis2_om_child_element_iterator_t *markup; 
+    axiom_child_element_iterator_t *markup; 
 };
 
 #define AXIS2_INTF_TO_IMPL(documentation) \
@@ -73,7 +73,7 @@ axis2_xml_schema_documentation_set_source(void *documentation,
                                         const axis2_env_t *env,
                                         axis2_char_t *source);
 
-axis2_om_child_element_iterator_t *AXIS2_CALL
+axiom_child_element_iterator_t *AXIS2_CALL
 axis2_xml_schema_documentation_get_markup(void *documentation,
                                         const axis2_env_t *env);
 
@@ -81,7 +81,7 @@ axis2_status_t AXIS2_CALL
 axis2_xml_schema_documentation_set_markup(
         void *documentation,
         const axis2_env_t *env,
-        axis2_om_child_element_iterator_t *markup);
+        axiom_child_element_iterator_t *markup);
         
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_documentation_set_language(
@@ -344,7 +344,7 @@ axis2_xml_schema_documentation_set_source(void *documentation,
     return AXIS2_SUCCESS;
 }
 
-axis2_om_child_element_iterator_t *AXIS2_CALL
+axiom_child_element_iterator_t *AXIS2_CALL
 axis2_xml_schema_documentation_get_markup(void *documentation,
                                         const axis2_env_t *env)
 {
@@ -365,7 +365,7 @@ axis2_xml_schema_documentation_get_markup(void *documentation,
 axis2_status_t AXIS2_CALL
 axis2_xml_schema_documentation_set_markup(void *documentation,
                                         const axis2_env_t *env,
-                                        axis2_om_child_element_iterator_t *markup)
+                                        axiom_child_element_iterator_t *markup)
 {
     axis2_xml_schema_documentation_impl_t *documentation_impl = NULL;
     axis2_hash_t *ht_super = NULL;

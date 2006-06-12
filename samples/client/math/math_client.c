@@ -16,12 +16,12 @@
 
 #include "axis2_math_stub.h"
 #include <stdio.h>
-#include <axis2_om.h>
+#include <axiom.h>
 #include <axis2_util.h>
 #include <axis2_soap.h>
 #include <axis2_client.h>
 
-axis2_om_node_t *
+axiom_node_t *
 build_om_programatically(const axis2_env_t *env, 
     const axis2_char_t *operation, 
     const axis2_char_t *param1, 
@@ -30,12 +30,12 @@ build_om_programatically(const axis2_env_t *env,
 int main(int argc, char** argv)
 {
     axis2_stub_t *stub = NULL;
-    axis2_om_node_t *node = NULL;
+    axiom_node_t *node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     const axis2_env_t *env = NULL;
     const axis2_char_t *address = NULL;
     const axis2_char_t *client_home = NULL;
-    axis2_om_node_t *ret_node = NULL;
+    axiom_node_t *ret_node = NULL;
 
     const axis2_char_t *operation = "add";
     const axis2_char_t *param1 = "40";
@@ -78,24 +78,24 @@ int main(int argc, char** argv)
     ret_node = axis2_math_stub_add(stub, env, node);
     if(ret_node)
     {
-        if (AXIS2_OM_NODE_GET_NODE_TYPE(ret_node, env) == AXIS2_OM_ELEMENT)
+        if (AXIOM_NODE_GET_NODE_TYPE(ret_node, env) == AXIOM_ELEMENT)
         {
             axis2_char_t *result = NULL;
-            axis2_om_element_t *result_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT(ret_node, env);
+            axiom_element_t *result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
             
-            result = AXIS2_OM_ELEMENT_GET_TEXT(result_ele, env, ret_node);
+            result = AXIOM_ELEMENT_GET_TEXT(result_ele, env, ret_node);
             printf( "\nResult = %s\n", result);
         }
         else
         {
             axis2_xml_writer_t *writer = NULL;
-            axis2_om_output_t *om_output = NULL;
+            axiom_output_t *om_output = NULL;
             axis2_char_t *buffer = NULL;
             writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
                AXIS2_XML_PARSER_TYPE_BUFFER);
-            om_output = axis2_om_output_create (env, writer);
+            om_output = axiom_output_create (env, writer);
 
-            AXIS2_OM_NODE_SERIALIZE (ret_node, env, om_output);
+            AXIOM_NODE_SERIALIZE (ret_node, env, om_output);
             buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(writer, env);
             printf ("\nReceived invalid OM as result : %s\n", buffer);
             if(NULL != buffer)
@@ -105,7 +105,7 @@ int main(int argc, char** argv)
             }
             if(NULL != om_output)
             {
-                AXIS2_OM_OUTPUT_FREE(om_output, env);
+                AXIOM_OUTPUT_FREE(om_output, env);
                 om_output = NULL;
             }
         }
@@ -125,38 +125,38 @@ int main(int argc, char** argv)
     return status;
 }
 
-axis2_om_node_t *
+axiom_node_t *
 build_om_programatically(const axis2_env_t *env, 
     const axis2_char_t *operation, 
     const axis2_char_t *param1, 
     const axis2_char_t *param2)
 {
-    axis2_om_node_t *math_om_node = NULL;
-    axis2_om_element_t* math_om_ele = NULL;
-    axis2_om_node_t* text_om_node = NULL;
-    axis2_om_element_t * text_om_ele = NULL;
-    axis2_om_namespace_t *ns1 = NULL;
+    axiom_node_t *math_om_node = NULL;
+    axiom_element_t* math_om_ele = NULL;
+    axiom_node_t* text_om_node = NULL;
+    axiom_element_t * text_om_ele = NULL;
+    axiom_namespace_t *ns1 = NULL;
     
 
     axis2_xml_writer_t *xml_writer = NULL;
-    axis2_om_output_t *om_output = NULL;
+    axiom_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
 
-    ns1 = axis2_om_namespace_create (env, "http://ws.apache.org/axis2/c/samplesmath", "ns1");
+    ns1 = axiom_namespace_create (env, "http://ws.apache.org/axis2/c/samplesmath", "ns1");
 
-    math_om_ele = axis2_om_element_create(env, NULL, operation, ns1, &math_om_node);
+    math_om_ele = axiom_element_create(env, NULL, operation, ns1, &math_om_node);
     
-    text_om_ele = axis2_om_element_create(env, math_om_node, "param1", NULL, &text_om_node);
-    AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, param1, text_om_node);
+    text_om_ele = axiom_element_create(env, math_om_node, "param1", NULL, &text_om_node);
+    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, param1, text_om_node);
     
-    text_om_ele = axis2_om_element_create(env, math_om_node, "param2", NULL, &text_om_node);
-    AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, param2, text_om_node);
+    text_om_ele = axiom_element_create(env, math_om_node, "param2", NULL, &text_om_node);
+    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, param2, text_om_node);
     
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE,
                AXIS2_XML_PARSER_TYPE_BUFFER);
-    om_output = axis2_om_output_create( env, xml_writer);
+    om_output = axiom_output_create( env, xml_writer);
     
-    AXIS2_OM_NODE_SERIALIZE(math_om_node, env, om_output);
+    AXIOM_NODE_SERIALIZE(math_om_node, env, om_output);
     buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "\nSending OM node in XML : %s \n",  buffer); 
     if(NULL != buffer)
@@ -166,7 +166,7 @@ build_om_programatically(const axis2_env_t *env,
     }
     if(NULL != om_output)
     {
-        AXIS2_OM_OUTPUT_FREE(om_output, env);
+        AXIOM_OUTPUT_FREE(om_output, env);
         om_output = NULL;
     }
 

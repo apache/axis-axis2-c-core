@@ -65,13 +65,13 @@ AXIS2_DECLARE_DATA struct axis2_svc_builder_ops
     axis2_status_t (AXIS2_CALL *
     populate_svc) (axis2_svc_builder_t *svc_builder,
                                     const axis2_env_t *env,
-                                    axis2_om_node_t *svc_node);
+                                    axiom_node_t *svc_node);
     
     
     axis2_status_t (AXIS2_CALL *
     process_svc_module_conf) (axis2_svc_builder_t *svc_builder,
                                     const axis2_env_t *env,
-                                    axis2_om_children_qname_iterator_t *module_confs,
+                                    axiom_children_qname_iterator_t *module_confs,
                                     axis2_param_container_t *parent, 
                                     axis2_svc_t *svc);
     
@@ -82,7 +82,7 @@ AXIS2_DECLARE_DATA struct axis2_svc_builder_ops
     axis2_status_t (AXIS2_CALL *
     process_module_refs) (axis2_svc_builder_t *svc_builder,
                             const axis2_env_t *env,
-                            axis2_om_children_qname_iterator_t *module_refs);
+                            axiom_children_qname_iterator_t *module_refs);
  
 
 };

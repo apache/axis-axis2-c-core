@@ -34,7 +34,7 @@
 #include <axis2_qname.h>
 #include <xml_schema/axis2_xml_schema_obj.h>
 #include <axis2_xml_reader.h>
-#include <axis2_om_document.h>
+#include <axiom_document.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -46,7 +46,7 @@ typedef struct axis2_xml_schema_collection
 typedef struct axis2_xml_schema_collection_ops 
                 axis2_xml_schema_collection_ops_t;
 struct axis2_xml_schema;
-struct axis2_om_node;
+struct axiom_node;
 struct axis2_xml_schema_type;
 
 /** @defgroup axis2_xml_schema_collection Xml Schema Collection
@@ -90,26 +90,26 @@ struct axis2_xml_schema_collection_ops
     read_document) (
             axis2_xml_schema_collection_t* collection,
             const axis2_env_t *env,
-            axis2_om_document_t *document);
+            axiom_document_t *document);
 
     struct axis2_xml_schema *(AXIS2_CALL *
     read_element)(
             axis2_xml_schema_collection_t* collection,
             const axis2_env_t *env,
-            axis2_om_node_t *ele_node);
+            axiom_node_t *ele_node);
 
     struct axis2_xml_schema* (AXIS2_CALL *
     read_document_with_uri) (
             axis2_xml_schema_collection_t* collection,
             const axis2_env_t *env,
-            axis2_om_document_t *document,
+            axiom_document_t *document,
             axis2_char_t *uri); 
 
     struct axis2_xml_schema *(AXIS2_CALL *
     read_element_with_uri)(
             axis2_xml_schema_collection_t* collection,
             const axis2_env_t *env,
-            axis2_om_node_t *ele_node,
+            axiom_node_t *ele_node,
             axis2_char_t *uri);
             
     struct axis2_xml_schema* (AXIS2_CALL *

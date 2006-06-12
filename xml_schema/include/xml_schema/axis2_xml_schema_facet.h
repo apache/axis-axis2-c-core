@@ -26,8 +26,8 @@
 
 #include <xml_schema/axis2_xml_schema_annotated.h>
 #include <xml_schema/axis2_xml_schema_defines.h>
-#include <axis2_om_element.h>
-#include <axis2_om_node.h>
+#include <axiom_element.h>
+#include <axiom_node.h>
 #include <axis2_hash.h>
 
 /** @defgroup axis2_xml_schema_facet Xml Schema Facet
@@ -108,7 +108,7 @@ axis2_xml_schema_facet_create(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_xml_schema_facet_t * AXIS2_CALL
 axis2_xml_schema_facet_construct(const axis2_env_t *env,
-                                 axis2_om_node_t *node);
+                                 axiom_node_t *node);
                                                                  
 /************************* macros *********************************************/
 

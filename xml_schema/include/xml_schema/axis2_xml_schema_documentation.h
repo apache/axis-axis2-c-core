@@ -28,7 +28,7 @@
 #include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_obj.h>
 #include <axis2_hash.h>
-#include <axis2_om.h>
+#include <axiom.h>
 
 /** @defgroup axis2_xml_schema_documentation Xml Schema App Info
   * @ingroup axis2_xml_schema
@@ -79,14 +79,14 @@ struct axis2_xml_schema_documentation_ops
                 const axis2_env_t *env,
                 axis2_char_t *source);
 
-    axis2_om_child_element_iterator_t *(AXIS2_CALL *
+    axiom_child_element_iterator_t *(AXIS2_CALL *
     get_markup) (void *documentation,
                     const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
     set_markup) (void *documentation,
                  const axis2_env_t *env,
-                 axis2_om_child_element_iterator_t *markup);
+                 axiom_child_element_iterator_t *markup);
                  
     axis2_char_t *(AXIS2_CALL *
     get_language)(

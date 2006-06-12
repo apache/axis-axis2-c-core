@@ -25,8 +25,8 @@ xml_schema_test(
         axis2_char_t *filename)
 {
     axis2_xml_reader_t *xml_reader      = NULL;
-    axis2_om_stax_builder_t *om_builder = NULL;
-    axis2_om_document_t *om_doc         = NULL;
+    axiom_stax_builder_t *om_builder = NULL;
+    axiom_document_t *om_doc         = NULL;
     axis2_xml_schema_collection_t *schema_collection = NULL;
     axis2_xml_schema_t *schema          = NULL;
     
@@ -35,11 +35,11 @@ xml_schema_test(
     if(!xml_reader)
         return AXIS2_FAILURE;   
     
-    om_builder = axis2_om_stax_builder_create(env, xml_reader);
+    om_builder = axiom_stax_builder_create(env, xml_reader);
     
-    om_doc = axis2_om_document_create(env, NULL, om_builder);
+    om_doc = axiom_document_create(env, NULL, om_builder);
     
-    AXIS2_OM_DOCUMENT_BUILD_ALL(om_doc, env);
+    AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     
     schema_collection = axis2_xml_schema_collection_create(env);
     

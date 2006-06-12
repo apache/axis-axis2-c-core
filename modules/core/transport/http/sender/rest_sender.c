@@ -18,7 +18,7 @@
 #include <axis2_string.h>
 #include <axis2_http_transport.h>
 #include <string.h>
-#include <axis2_om_output.h>
+#include <axiom_output.h>
 #include <axis2_op_ctx.h>
 #include <axis2_ctx.h>
 #include <axis2_http_client.h>
@@ -40,7 +40,7 @@ struct axis2_rest_sender_impl
    axis2_bool_t chunked;
    int so_timeout;
    int connection_timeout;
-   axis2_om_output_t *om_output;
+   axiom_output_t *om_output;
    axis2_http_client_t *client;
 };
 
@@ -65,7 +65,7 @@ axis2_rest_sender_get_timeout_values(axis2_rest_sender_t *sender,
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_send(axis2_rest_sender_t *sender, 
                   const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
-                  axis2_om_node_t *out, axis2_char_t *str_url);
+                  axiom_node_t *out, axis2_char_t *str_url);
 
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_set_chunked(axis2_rest_sender_t *sender, 
@@ -73,7 +73,7 @@ axis2_rest_sender_set_chunked(axis2_rest_sender_t *sender,
 
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_set_om_output(axis2_rest_sender_t *sender, 
-                  const axis2_env_t *env, axis2_om_output_t *om_output);
+                  const axis2_env_t *env, axiom_output_t *om_output);
                   
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_set_http_version(axis2_rest_sender_t *sender, 
@@ -158,7 +158,7 @@ axis2_rest_sender_free (axis2_rest_sender_t *sender,
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_send(axis2_rest_sender_t *sender, 
                   const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
-                  axis2_om_node_t *out, axis2_char_t *str_url)
+                  axiom_node_t *out, axis2_char_t *str_url)
 {
    axis2_http_simple_request_t *request = NULL;
    axis2_http_request_line_t *request_line = NULL;
@@ -213,7 +213,7 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
                   AXIS2_FAILURE);
       return AXIS2_FAILURE;
    }
-   xml_writer = AXIS2_OM_OUTPUT_GET_XML_WRITER(sender_impl->om_output, env);
+   xml_writer = AXIOM_OUTPUT_GET_XML_WRITER(sender_impl->om_output, env);
    
    property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
                      AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);
@@ -226,10 +226,10 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
    {
       char_set_enc = AXIS2_DEFAULT_CHAR_SET_ENCODING;
    }
-   /* AXIS2_OM_OUTPUT_SET_DO_OPTIMIZE(om_output, env, 
+   /* AXIOM_OUTPUT_SET_DO_OPTIMIZE(om_output, env, 
     *            AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
     */
-   AXIS2_OM_NODE_SERIALIZE (out, env, sender_impl->om_output);
+   AXIOM_NODE_SERIALIZE (out, env, sender_impl->om_output);
    buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
 
     if(NULL == buffer)
@@ -345,7 +345,7 @@ axis2_rest_sender_set_chunked(axis2_rest_sender_t *sender,
 
 axis2_status_t AXIS2_CALL 
 axis2_rest_sender_set_om_output(axis2_rest_sender_t *sender, 
-                  const axis2_env_t *env, axis2_om_output_t *om_output)
+                  const axis2_env_t *env, axiom_output_t *om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(sender)->om_output = om_output;

@@ -31,7 +31,7 @@
 #include <axis2_relates_to.h>
 #include <axis2_transport_out_desc.h>
 #include <axis2_transport_receiver.h> /*still in modules/core/transports*/
-#include <axis2_om_element.h>
+#include <axiom_element.h>
 #include <axis2_msg_info_headers.h>
 
 #define AXIS2_DEFAULT_TIMEOUT_MILLISECONDS 30000
@@ -271,7 +271,7 @@ struct axis2_options_ops
    void (AXIS2_CALL *   
    add_reference_parameter)(struct axis2_options *options,
                      const axis2_env_t *env,
-                     axis2_om_node_t *reference_parameter);
+                     axiom_node_t *reference_parameter);
 
    axis2_bool_t (AXIS2_CALL *   
    is_manage_session)(struct axis2_options *options,

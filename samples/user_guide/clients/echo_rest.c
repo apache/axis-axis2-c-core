@@ -27,8 +27,8 @@ int main(int argc, char** argv)
     axis2_options_t *options = NULL;
     const axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
-    axis2_om_node_t *payload = NULL;
-    axis2_om_node_t *ret_node = NULL;
+    axiom_node_t *payload = NULL;
+    axiom_node_t *ret_node = NULL;
    
     /* Set up the environment */
     env = axis2_env_create_all("echo_rest.log", AXIS2_LOG_LEVEL_TRACE);
@@ -87,7 +87,7 @@ int main(int argc, char** argv)
     if(ret_node)
     {
         axis2_char_t *om_str = NULL;
-        om_str = AXIS2_OM_NODE_TO_STRING(ret_node, env);
+        om_str = AXIOM_NODE_TO_STRING(ret_node, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
         printf("\necho client invoke SUCCESSFUL!\n");

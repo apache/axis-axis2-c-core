@@ -32,7 +32,7 @@
 #include <axis2_utils.h>
 #include <axis2_qname.h>
 #include <axis2_hash.h>
-#include <axis2_om_node.h>
+#include <axiom_node.h>
 #include <woden/axis2_woden.h>
 #include <woden/wsdl20/extensions/axis2_woden_ext_registry.h>
 
@@ -72,7 +72,7 @@ struct axis2_woden_ext_deserializer_ops
             axis2_char_t *parent_type,
             void *parent,
             axis2_qname_t *ext_type,
-            axis2_om_node_t *ext_el_node,
+            axiom_node_t *ext_el_node,
             void *desc,
             axis2_woden_ext_registry_t *ext_reg);
 

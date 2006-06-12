@@ -32,7 +32,7 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <woden/axis2_woden.h>
-#include <axis2_om_node.h>
+#include <axiom_node.h>
 #include <woden/wsdl20/axis2_woden_desc.h>
 
 #ifdef __cplusplus
@@ -48,7 +48,7 @@ extern "C"
 AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
 woden_om_util_get_qname(
         const axis2_env_t *env,
-        axis2_om_node_t *context_el_node,
+        axiom_node_t *context_el_node,
         axis2_char_t *prefixed_value,
         void *desc);
  

@@ -16,14 +16,14 @@
  
 #include <woden_om_util.h>
 #include <axis2_qname.h>
-#include <axis2_om_element.h>
+#include <axiom_element.h>
 #include <axis2_uri.h>
 
 
 AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
 woden_om_util_get_qname(
         const axis2_env_t *env,
-        axis2_om_node_t *context_el_node,
+        axiom_node_t *context_el_node,
         axis2_char_t *prefixed_value,
         void *desc)
 {
@@ -31,19 +31,19 @@ woden_om_util_get_qname(
     axis2_char_t *prefix = "";
     axis2_char_t *localpart = NULL;
     axis2_char_t *namespc_uri_str = NULL;
-    axis2_om_element_t *context_el = NULL;
-    axis2_om_namespace_t *namespc_uri = NULL;
+    axiom_element_t *context_el = NULL;
+    axiom_namespace_t *namespc_uri = NULL;
 
     index = axis2_rindex(prefixed_value, ':');
     localpart = index + 1;
     index[0] = '\0';
     prefix = prefixed_value;
 
-    context_el = AXIS2_OM_NODE_GET_DATA_ELEMENT(context_el_node, env);
+    context_el = AXIOM_NODE_GET_DATA_ELEMENT(context_el_node, env);
 
-    namespc_uri = AXIS2_OM_ELEMENT_FIND_NAMESPACE_URI(context_el,
+    namespc_uri = AXIOM_ELEMENT_FIND_NAMESPACE_URI(context_el,
             env, prefix, context_el_node);
-    namespc_uri_str = AXIS2_OM_NAMESPACE_GET_URI(namespc_uri, env);
+    namespc_uri_str = AXIOM_NAMESPACE_GET_URI(namespc_uri, env);
     if(NULL != namespc_uri_str)
     {
         woden_om_util_register_unique_prefix(env, prefix, namespc_uri_str, desc);

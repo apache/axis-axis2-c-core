@@ -33,8 +33,8 @@
 
 typedef struct axis2_woden_qname_attr axis2_woden_qname_attr_t;
 typedef struct axis2_woden_qname_attr_ops axis2_woden_qname_attr_ops_t;
-struct axis2_om_element;
-struct axis2_om_node;
+struct axiom_element;
+struct axiom_node;
 
 #ifdef __cplusplus
 extern "C"
@@ -92,8 +92,8 @@ struct axis2_woden_qname_attr_ops
     convert) (
             void *qname_attr,
             const axis2_env_t *env,
-            struct axis2_om_element *owner_el,
-            struct axis2_om_node *owner_node,
+            struct axiom_element *owner_el,
+            struct axiom_node *owner_node,
             axis2_char_t *attr_value);
 
   
@@ -112,8 +112,8 @@ struct axis2_woden_qname_attr
 AXIS2_EXTERN axis2_woden_qname_attr_t * AXIS2_CALL
 axis2_woden_qname_attr_create(
         const axis2_env_t *env,
-        struct axis2_om_element *owner_el,
-        struct axis2_om_node *owner_node,
+        struct axiom_element *owner_el,
+        struct axiom_node *owner_node,
         axis2_qname_t *attr_type,
         axis2_char_t *attr_value);
 

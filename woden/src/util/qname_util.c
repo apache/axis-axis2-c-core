@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
-#include <axis2_om_node.h>
-#include <axis2_om_element.h>
+#include <axiom_node.h>
+#include <axiom_element.h>
 #include <woden/util/axis2_qname_util.h>
 
 
@@ -23,7 +23,7 @@ AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_qname_util_matches(
         const axis2_env_t *env,
         axis2_qname_t *qname,
-        axis2_om_node_t *node)
+        axiom_node_t *node)
 {
     axis2_qname_t *qname_l = NULL;
     axis2_bool_t ret = AXIS2_FALSE;
@@ -38,22 +38,22 @@ axis2_qname_util_matches(
 AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
 axis2_qname_util_new_qname(
         const axis2_env_t *env,
-        axis2_om_node_t *node)
+        axiom_node_t *node)
 {
-    axis2_om_element_t *element = NULL;
+    axiom_element_t *element = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     if(NULL != node)
     {
-        axis2_om_namespace_t *namespc = NULL;
+        axiom_namespace_t *namespc = NULL;
         axis2_char_t *uri_str = NULL;
         axis2_char_t *localname = NULL;
 
-        element = AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
-        namespc = AXIS2_OM_ELEMENT_GET_NAMESPACE(element, env, node);
-        uri_str = AXIS2_OM_NAMESPACE_GET_URI(namespc, env);
-        localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(element, env);
+        element = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+        namespc = AXIOM_ELEMENT_GET_NAMESPACE(element, env, node);
+        uri_str = AXIOM_NAMESPACE_GET_URI(namespc, env);
+        localname = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
         return axis2_qname_create(env, localname, uri_str, NULL);
     }
         

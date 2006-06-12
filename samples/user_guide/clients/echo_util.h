@@ -18,9 +18,9 @@
 #define AXIS2_UG_ECHO_UTIL_H
 
 #include <stdio.h>
-#include <axis2_om.h>
+#include <axiom.h>
 
-axis2_om_node_t *
+axiom_node_t *
 build_om_payload_for_echo_svc(const axis2_env_t *env);
 
 #endif

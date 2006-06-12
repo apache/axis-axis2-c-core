@@ -22,7 +22,7 @@
 #include <axis2_flow.h>
 #include <axis2_arch_reader.h>
 #include <axis2_svc_builder.h>
-#include <axis2_om_node.h>
+#include <axiom_node.h>
 #include <axis2_class_loader.h>
 #include <axis2_string.h>
 #include <axis2_utils.h>
@@ -1653,7 +1653,7 @@ axis2_dep_engine_build_svc(axis2_dep_engine_t *dep_engine,
                             axis2_char_t *file_name)
 {
     axis2_dep_engine_impl_t *dep_engine_impl = NULL;
-    axis2_om_node_t *node = NULL;
+    axiom_node_t *node = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, file_name, NULL);

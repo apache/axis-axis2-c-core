@@ -19,7 +19,7 @@
 #include <axis2_endpoint_ref.h>
 #include <axis2_addr.h>
 #include <axis2_xml_writer.h>
-#include <axis2_om_output.h>
+#include <axiom_output.h>
 #include <axis2_http_transport_utils.h>
 #include <axis2_http_out_transport_info.h>
 #include <axis2_http_transport.h>
@@ -72,7 +72,7 @@ axis2_http_transport_sender_write_message
                           const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
                      axis2_endpoint_ref_t *epr, 
                      axis2_soap_envelope_t *out, 
-                     axis2_om_output_t *om_output);
+                     axiom_output_t *om_output);
     
 axis2_status_t AXIS2_CALL 
 axis2_http_transport_sender_free 
@@ -156,12 +156,12 @@ axis2_http_transport_sender_invoke
     axis2_endpoint_ref_t *epr = NULL;
     axis2_char_t *transport_url = NULL;
     axis2_xml_writer_t *xml_writer = NULL;
-    axis2_om_output_t *om_output = NULL;
+    axiom_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
     axis2_soap_envelope_t *soap_data_out = NULL;
     axis2_bool_t do_mtom;
     axis2_property_t *property = NULL;
-    axis2_om_node_t *data_out = NULL;
+    axiom_node_t *data_out = NULL;
    
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -246,7 +246,7 @@ axis2_http_transport_sender_invoke
     {
         return AXIS2_FAILURE;
     }
-    om_output = axis2_om_output_create(env, xml_writer);
+    om_output = axiom_output_create(env, xml_writer);
     if(NULL == om_output)
     {
         AXIS2_XML_WRITER_FREE(xml_writer, env);
@@ -300,13 +300,13 @@ axis2_http_transport_sender_invoke
          {
             AXIS2_ERROR_SET(env->error, 
                      AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL, AXIS2_FAILURE);
-                AXIS2_OM_OUTPUT_FREE(om_output, env);
+                AXIOM_OUTPUT_FREE(om_output, env);
                 om_output = NULL;
                 xml_writer = NULL;
             return AXIS2_FAILURE;
          }
          is_soap11 = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env);
-         /* AXIS2_OM_OUTPUT_SET_SOAP11(om_output, env, is_soap_11);
+         /* AXIOM_OUTPUT_SET_SOAP11(om_output, env, is_soap_11);
           */
          AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CHAR_ENCODING(out_info, env, 
                      char_set_enc);
@@ -322,13 +322,13 @@ axis2_http_transport_sender_invoke
             }
             /*
             AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info, env, 
-                     AXIS2_OM_OUTPUT_GET_CONTENT_TYPE(om_output, env));*/
-         /* AXIS2_OM_OUTPUT_SET_DO_OPTIMIZE(om_output, env, 
+                     AXIOM_OUTPUT_GET_CONTENT_TYPE(om_output, env));*/
+         /* AXIOM_OUTPUT_SET_DO_OPTIMIZE(om_output, env, 
           *            AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
           */
             if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env))
             {
-                axis2_om_node_t *body_node = NULL;
+                axiom_node_t *body_node = NULL;
                 axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(
                                 soap_data_out, env);
                 
@@ -339,7 +339,7 @@ axis2_http_transport_sender_invoke
                                 AXIS2_FAILURE);
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "%s", 
                                 AXIS2_ERROR_GET_MESSAGE(env->error));
-                    AXIS2_OM_OUTPUT_FREE(om_output, env);
+                    AXIOM_OUTPUT_FREE(om_output, env);
                     om_output = NULL;
                     xml_writer = NULL;
                     return AXIS2_FAILURE;
@@ -347,21 +347,21 @@ axis2_http_transport_sender_invoke
                 body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body,env);
                 if(NULL == body_node)
                 {
-                    AXIS2_OM_OUTPUT_FREE(om_output, env);
+                    AXIOM_OUTPUT_FREE(om_output, env);
                     om_output = NULL;
                     xml_writer = NULL;
                     return AXIS2_FAILURE;
                 }
-                data_out = AXIS2_OM_NODE_GET_FIRST_CHILD(body_node, env);
-                if(NULL == data_out || AXIS2_OM_NODE_GET_NODE_TYPE(data_out,env)
-                                != AXIS2_OM_ELEMENT)
+                data_out = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+                if(NULL == data_out || AXIOM_NODE_GET_NODE_TYPE(data_out,env)
+                                != AXIOM_ELEMENT)
                 {
-                    AXIS2_OM_OUTPUT_FREE(om_output, env);
+                    AXIOM_OUTPUT_FREE(om_output, env);
                     om_output = NULL;
                     xml_writer = NULL;
                     return AXIS2_FAILURE;
                 }
-                AXIS2_OM_NODE_SERIALIZE(data_out, env, om_output);
+                AXIOM_NODE_SERIALIZE(data_out, env, om_output);
                 buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
             }
             else
@@ -392,7 +392,7 @@ axis2_http_transport_sender_invoke
             
       }
    }
-   AXIS2_OM_OUTPUT_FREE(om_output, env);
+   AXIOM_OUTPUT_FREE(om_output, env);
    om_output = NULL;
    xml_writer = NULL;
 
@@ -530,7 +530,7 @@ axis2_http_transport_sender_write_message
                           const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
                      axis2_endpoint_ref_t *epr, 
                      axis2_soap_envelope_t *out, 
-                     axis2_om_output_t *om_output)
+                     axiom_output_t *om_output)
 {
    const axis2_char_t *soap_action = NULL;
    axis2_char_t *url = NULL;
@@ -554,8 +554,8 @@ axis2_http_transport_sender_write_message
    }
    if(AXIS2_TRUE == AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env))
     {
-        axis2_om_node_t *data_out = NULL;
-        axis2_om_node_t *body_node = NULL;
+        axiom_node_t *data_out = NULL;
+        axiom_node_t *body_node = NULL;
         axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(out, env);
         axis2_rest_sender_t *sender = NULL;
         
@@ -573,9 +573,9 @@ axis2_http_transport_sender_write_message
         {
             return AXIS2_FAILURE;
         }
-        data_out = AXIS2_OM_NODE_GET_FIRST_CHILD(body_node, env);
-        if(NULL == data_out || AXIS2_OM_NODE_GET_NODE_TYPE(data_out, env)
-                        != AXIS2_OM_ELEMENT)
+        data_out = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+        if(NULL == data_out || AXIOM_NODE_GET_NODE_TYPE(data_out, env)
+                        != AXIOM_ELEMENT)
         {
             return AXIS2_FAILURE;
         }

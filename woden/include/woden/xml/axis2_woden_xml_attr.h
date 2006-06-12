@@ -41,8 +41,8 @@ extern "C"
 
 typedef struct axis2_woden_xml_attr axis2_woden_xml_attr_t;
 typedef struct axis2_woden_xml_attr_ops axis2_woden_xml_attr_ops_t;
-struct axis2_om_node;
-struct axis2_om_element;
+struct axiom_node;
+struct axiom_element;
 
 /** @defgroup axis2_woden_xml_attr Xml Attribute
   * @ingroup axis2_wsdl
@@ -69,8 +69,8 @@ struct axis2_woden_xml_attr_ops
     init) (
             void *xml_attr,
             const axis2_env_t *env,
-            struct axis2_om_element *owner_el,
-            struct axis2_om_node *owner_node,
+            struct axiom_element *owner_el,
+            struct axiom_node *owner_node,
             axis2_qname_t *attr_type, 
             axis2_char_t *attr_value);
 
@@ -102,8 +102,8 @@ struct axis2_woden_xml_attr_ops
     convert) (
             void *xml_attr,
             const axis2_env_t *env,
-            struct axis2_om_element *owner_el,
-            struct axis2_om_node *ownder_node,
+            struct axiom_element *owner_el,
+            struct axiom_node *ownder_node,
             axis2_char_t *attr_value);
 
     /*
@@ -130,8 +130,8 @@ struct axis2_woden_xml_attr
 AXIS2_EXTERN axis2_woden_xml_attr_t * AXIS2_CALL
 axis2_woden_xml_attr_create(
         const axis2_env_t *env,
-        struct axis2_om_element *owner_el,
-        struct axis2_om_node *owner_node,
+        struct axiom_element *owner_el,
+        struct axiom_node *owner_node,
         axis2_qname_t *attr_type, 
         axis2_char_t *attr_value);
 

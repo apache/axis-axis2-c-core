@@ -28,10 +28,10 @@
 #include <xml_schema/axis2_xml_schema_defines.h>
 #include <xml_schema/axis2_xml_schema_annotated.h>
 #include <xml_schema/axis2_xml_schema.h>
-#include <axis2_om.h>
+#include <axiom.h>
 #include <axis2_hash.h>
 #include <xml_schema/axis2_xml_schema_collection.h>
-#include <axis2_om_util.h>
+#include <axiom_util.h>
 /** @defgroup axis2_xml_schema_builder Xml Schema
   * @ingroup axis2_xml_schema_builder
   * @{
@@ -55,14 +55,14 @@ struct axis2_xml_schema_builder_ops
     build)(
             axis2_xml_schema_builder_t *builder,
             const axis2_env_t *env,
-            axis2_om_document_t *om_doc,
+            axiom_document_t *om_doc,
             axis2_char_t *uri);
            
     axis2_xml_schema_t* (AXIS2_CALL *
     build_with_root_node)(
             axis2_xml_schema_builder_t *builder,
             const axis2_env_t *env,
-            axis2_om_node_t *om_node,
+            axiom_node_t *om_node,
             axis2_char_t *uri);
             
     axis2_status_t (AXIS2_CALL *

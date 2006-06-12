@@ -15,8 +15,8 @@
  */
 
 #include <xml_schema/axis2_xml_schema_facet.h>
-#include <axis2_om_element.h>
-#include <axis2_om_node.h>
+#include <axiom_element.h>
+#include <axiom_node.h>
 
 typedef struct axis2_xml_schema_facet_impl 
                 axis2_xml_schema_facet_impl_t;
@@ -290,9 +290,9 @@ axis2_xml_schema_facet_set_value(void *facet,
 
 AXIS2_EXTERN axis2_xml_schema_facet_t* AXIS2_CALL
 axis2_xml_schema_facet_construct (const axis2_env_t *env,
-                                  axis2_om_node_t *node)
+                                  axiom_node_t *node)
 {
-    axis2_om_element_t *om_ele = NULL;
+    axiom_element_t *om_ele = NULL;
     axis2_char_t *localname = NULL;
     axis2_char_t *attr_value = NULL;
     axis2_bool_t is_fixed = AXIS2_FALSE;
@@ -302,11 +302,11 @@ axis2_xml_schema_facet_construct (const axis2_env_t *env,
     int facet_type;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, node, NULL);
-    if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) != AXIS2_OM_ELEMENT)
+    if(AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
         return NULL;
     
-    om_ele = AXIS2_OM_NODE_GET_DATA_ELEMENT(node, env);
-    localname = AXIS2_OM_ELEMENT_GET_LOCALNAME(om_ele, env);
+    om_ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+    localname = AXIOM_ELEMENT_GET_LOCALNAME(om_ele, env);
 
     if(AXIS2_STRCMP(localname,"enumeration") == 0)
     {
@@ -359,12 +359,12 @@ axis2_xml_schema_facet_construct (const axis2_env_t *env,
     else 
         return NULL;
     
-    attr_value = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, "fixed");
+    attr_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, "fixed");
     if(NULL != attr_value && AXIS2_STRCMP(attr_value, "fixed") == 0)
         is_fixed = AXIS2_TRUE;
     
     attr_value = NULL;
-    attr_value = AXIS2_OM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, "value");
+    attr_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, "value");
     if(NULL != attr_value)
         value = attr_value;
     else

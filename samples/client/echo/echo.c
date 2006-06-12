@@ -15,12 +15,12 @@
  */
 
 #include <stdio.h>
-#include <axis2_om.h>
+#include <axiom.h>
 #include <axis2_util.h>
 #include <axis2_soap.h>
 #include <axis2_client.h>
 
-axis2_om_node_t *
+axiom_node_t *
 build_om_payload_for_echo_svc(const axis2_env_t *env);
 
 
@@ -32,8 +32,8 @@ int main(int argc, char** argv)
     axis2_options_t *options = NULL;
     const axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
-    axis2_om_node_t *payload = NULL;
-    axis2_om_node_t *ret_node = NULL;
+    axiom_node_t *payload = NULL;
+    axiom_node_t *ret_node = NULL;
    
     /* Set up the environment */
     env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
@@ -95,7 +95,7 @@ int main(int argc, char** argv)
     if(ret_node)
     {
         axis2_char_t *om_str = NULL;
-        om_str = AXIS2_OM_NODE_TO_STRING(ret_node, env);
+        om_str = AXIOM_NODE_TO_STRING(ret_node, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
         printf("\necho client invoke SUCCESSFUL!\n");
@@ -122,22 +122,22 @@ int main(int argc, char** argv)
 }
 
 /* build SOAP request message content using OM */
-axis2_om_node_t *
+axiom_node_t *
 build_om_payload_for_echo_svc(const axis2_env_t *env)
 {
-    axis2_om_node_t *echo_om_node = NULL;
-    axis2_om_element_t* echo_om_ele = NULL;
-    axis2_om_node_t* text_om_node = NULL;
-    axis2_om_element_t * text_om_ele = NULL;
-    axis2_om_namespace_t *ns1 = NULL;
+    axiom_node_t *echo_om_node = NULL;
+    axiom_element_t* echo_om_ele = NULL;
+    axiom_node_t* text_om_node = NULL;
+    axiom_element_t * text_om_ele = NULL;
+    axiom_namespace_t *ns1 = NULL;
     axis2_char_t *om_str = NULL;
     
-    ns1 = axis2_om_namespace_create (env, "http://ws.apache.org/axis2/c/samples", "ns1");
-    echo_om_ele = axis2_om_element_create(env, NULL, "echoString", ns1, &echo_om_node);
-    text_om_ele = axis2_om_element_create(env, echo_om_node, "text", NULL, &text_om_node);
-    AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, "echo5", text_om_node);
+    ns1 = axiom_namespace_create (env, "http://ws.apache.org/axis2/c/samples", "ns1");
+    echo_om_ele = axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
+    text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
+    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, "echo5", text_om_node);
     
-    om_str = AXIS2_OM_NODE_TO_STRING(echo_om_node, env);
+    om_str = AXIOM_NODE_TO_STRING(echo_om_node, env);
     if (om_str)
         printf("\nSending OM : %s\n", om_str);
 

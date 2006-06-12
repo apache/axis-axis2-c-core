@@ -80,7 +80,7 @@ struct axis2_msg_sender_ops
     send_with_om)(struct axis2_msg_sender *msg_sender, 
               const axis2_env_t *env,
               axis2_char_t *op_name, 
-              axis2_om_node_t *om_node_to_send);
+              axiom_node_t *om_node_to_send);
    
    /**
     * Send the SOAP Message, the actual worker

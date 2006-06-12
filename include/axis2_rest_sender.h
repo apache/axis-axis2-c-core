@@ -26,7 +26,7 @@
 #include <axis2_utils_defines.h>
 #include <axis2_env.h>
 #include <axis2_msg_ctx.h>
-#include <axis2_om_output.h>
+#include <axiom_output.h>
 #include <axis2_http_simple_response.h>
 #include <axis2_soap_envelope.h>
 
@@ -53,7 +53,7 @@ AXIS2_DECLARE_DATA struct axis2_rest_sender_ops
    axis2_status_t (AXIS2_CALL *send) 
                                 (axis2_rest_sender_t *sender, 
                                 const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
-                        axis2_om_node_t *out, 
+                        axiom_node_t *out, 
                         axis2_char_t *str_url);
    
    axis2_status_t (AXIS2_CALL *set_chunked) 
@@ -62,7 +62,7 @@ AXIS2_DECLARE_DATA struct axis2_rest_sender_ops
    
    axis2_status_t (AXIS2_CALL *set_om_output)
                                 (axis2_rest_sender_t *sender, 
-                                const axis2_env_t *env, axis2_om_output_t *om_output);
+                                const axis2_env_t *env, axiom_output_t *om_output);
    
    axis2_status_t (AXIS2_CALL *set_http_version)
                         (axis2_rest_sender_t *sender, 

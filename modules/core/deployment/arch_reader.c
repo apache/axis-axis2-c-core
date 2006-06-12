@@ -373,8 +373,8 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
 {                       
     axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     axis2_char_t *root_element_name = NULL;
-    axis2_om_node_t *svcs = NULL;
-    axis2_om_element_t *svcs_element = NULL;
+    axiom_node_t *svcs = NULL;
+    axiom_element_t *svcs_element = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -396,8 +396,8 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
         return AXIS2_FAILURE;
     }
     svcs = AXIS2_DESC_BUILDER_BUILD_OM(arch_reader_impl->desc_builder, env);
-    svcs_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(svcs, env);
-    root_element_name = AXIS2_OM_ELEMENT_GET_LOCALNAME(svcs_element, env);
+    svcs_element = AXIOM_NODE_GET_DATA_ELEMENT(svcs, env);
+    root_element_name = AXIOM_ELEMENT_GET_LOCALNAME(svcs_element, env);
     if(0 == AXIS2_STRCMP(AXIS2_SVC_ELEMENT, root_element_name))
     {
         axis2_svc_t *svc = NULL;

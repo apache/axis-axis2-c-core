@@ -249,7 +249,7 @@ axis2_options_set_use_seperate_listener(struct axis2_options *options,
 void AXIS2_CALL 
 axis2_options_add_reference_parameter(struct axis2_options *options,
                             const axis2_env_t *env,
-                            axis2_om_node_t *reference_parameter);
+                            axiom_node_t *reference_parameter);
 
 void AXIS2_CALL 
 axis2_options_set_manage_session(struct axis2_options *options,
@@ -996,7 +996,7 @@ axis2_options_set_use_seperate_listener(struct axis2_options *options,
 void AXIS2_CALL
 axis2_options_add_reference_parameter(struct axis2_options *options,
                             const axis2_env_t *env,
-                            axis2_om_node_t *reference_parameter)
+                            axiom_node_t *reference_parameter)
 {
 
    axis2_options_impl_t *options_impl = NULL;

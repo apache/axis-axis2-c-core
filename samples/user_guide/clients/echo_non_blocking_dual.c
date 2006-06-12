@@ -42,7 +42,7 @@ int main(int argc, char** argv)
     axis2_options_t *options = NULL;
     const axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
-    axis2_om_node_t *payload = NULL;
+    axiom_node_t *payload = NULL;
     axis2_callback_t *callback = NULL;
     int count = 0;
    
@@ -154,7 +154,7 @@ echo_callback_on_complete(struct axis2_callback *callback,
      from the callback object and do whatever you want to do with it */
    
    axis2_soap_envelope_t *soap_envelope = NULL;
-   axis2_om_node_t *ret_node = NULL;
+   axiom_node_t *ret_node = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
    
    printf("inside on_complete_callback function\n");
@@ -184,7 +184,7 @@ echo_callback_on_complete(struct axis2_callback *callback,
         else
         {
             axis2_char_t *om_str = NULL;
-            om_str = AXIS2_OM_NODE_TO_STRING(ret_node, env);
+            om_str = AXIOM_NODE_TO_STRING(ret_node, env);
             if (om_str)
                 printf("\nReceived OM : %s\n", om_str);
             printf("\necho client invoke SUCCESSFUL!\n");

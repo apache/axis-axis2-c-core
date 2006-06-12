@@ -17,7 +17,7 @@
 #ifndef AXIS2_SVC_SKELETON_H
 #define AXIS2_SVC_SKELETON_H
 
-#include <axis2_om_node.h>
+#include <axiom_node.h>
 #include <axis2_array_list.h>
 #include <axis2_msg_ctx.h>
 
@@ -54,16 +54,16 @@ AXIS2_DECLARE_DATA struct axis2_svc_skeleton_ops
     free_void_arg)(void *svc_skeli,
           const axis2_env_t *env);
     
-    axis2_om_node_t *(AXIS2_CALL* 
+    axiom_node_t *(AXIS2_CALL* 
     invoke)(axis2_svc_skeleton_t *svc_skeli, 
             const axis2_env_t *env,
-            axis2_om_node_t *node,
+            axiom_node_t *node,
             axis2_msg_ctx_t *msg_ctx);
     
-    axis2_om_node_t *(AXIS2_CALL* 
+    axiom_node_t *(AXIS2_CALL* 
     on_fault)(axis2_svc_skeleton_t *svc_skeli, 
                 const axis2_env_t *env,
-                axis2_om_node_t *node);
+                axiom_node_t *node);
     
 
 } ;

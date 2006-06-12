@@ -46,18 +46,18 @@ axis2_svc_builder_free (axis2_svc_builder_t *svc_builder,
 axis2_status_t AXIS2_CALL
 axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
                                 const axis2_env_t *env,
-                                axis2_om_node_t *svc_node);
+                                axiom_node_t *svc_node);
 
 static axis2_array_list_t *
 axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
                     const axis2_env_t *env,
-                    axis2_om_children_qname_iterator_t *op_itr);
+                    axiom_children_qname_iterator_t *op_itr);
 
 
 axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
                                 const axis2_env_t *env,
-                                axis2_om_children_qname_iterator_t *module_confs,
+                                axiom_children_qname_iterator_t *module_confs,
                                 axis2_param_container_t *parent, 
                                 axis2_svc_t *svc);
 
@@ -68,7 +68,7 @@ axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
 axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
                                     const axis2_env_t *env,
-                                    axis2_om_children_qname_iterator_t *module_refs);
+                                    axiom_children_qname_iterator_t *module_refs);
 
 /************************** End of function prototypes ************************/
 
@@ -204,13 +204,13 @@ axis2_svc_builder_free (axis2_svc_builder_t *svc_builder,
 axis2_status_t AXIS2_CALL
 axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
                                 const axis2_env_t *env,
-                                axis2_om_node_t *svc_node)
+                                axiom_node_t *svc_node)
 {
     axis2_svc_builder_impl_t *builder_impl = NULL;
-    axis2_om_element_t *svc_element = NULL;
-    axis2_om_children_qname_iterator_t *itr = NULL;
-    axis2_om_children_qname_iterator_t *operation_itr = NULL;
-    /*axis2_om_children_qname_iterator_t *module_configs_itr = NULL; */
+    axiom_element_t *svc_element = NULL;
+    axiom_children_qname_iterator_t *itr = NULL;
+    axiom_children_qname_iterator_t *operation_itr = NULL;
+    /*axiom_children_qname_iterator_t *module_configs_itr = NULL; */
     axis2_qname_t *qparamst = NULL;
     /*axis2_qname_t *qdesc = NULL;*/
     axis2_qname_t *qmodulest = NULL;
@@ -223,19 +223,19 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     /*axis2_qname_t *qmodule_config = NULL; */
     axis2_status_t status = AXIS2_FAILURE;
     axis2_svc_grp_t *parent = NULL;
-    /*axis2_om_element_t *desc_element = NULL;
-    axis2_om_node_t *desc_node = NULL;
+    /*axiom_element_t *desc_element = NULL;
+    axiom_node_t *desc_node = NULL;
     */
-    axis2_om_children_qname_iterator_t *module_refs = NULL;
-    axis2_om_node_t *in_flow_node = NULL;
-    axis2_om_element_t *in_flow_element = NULL;
-    axis2_om_node_t *out_flow_node = NULL;
-    axis2_om_element_t *out_flow_element = NULL;
-    axis2_om_node_t *in_faultflow_node = NULL;
-    axis2_om_element_t *in_faultflow_element = NULL;
-    axis2_om_node_t *out_faultflow_node = NULL;
-    axis2_om_element_t *out_faultflow_element = NULL;
-    axis2_om_attribute_t *name_attr = NULL;
+    axiom_children_qname_iterator_t *module_refs = NULL;
+    axiom_node_t *in_flow_node = NULL;
+    axiom_element_t *in_flow_element = NULL;
+    axiom_node_t *out_flow_node = NULL;
+    axiom_element_t *out_flow_element = NULL;
+    axiom_node_t *in_faultflow_node = NULL;
+    axiom_element_t *in_faultflow_element = NULL;
+    axiom_node_t *out_faultflow_node = NULL;
+    axiom_element_t *out_faultflow_element = NULL;
+    axiom_attribute_t *name_attr = NULL;
     axis2_array_list_t *ops = NULL;
     axis2_char_t *svc_name = NULL;
     axis2_char_t *class_name = NULL;
@@ -257,7 +257,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     AXIS2_PARAM_CHECK(env->error, svc_node, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
 
-    svc_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(svc_node, env);
+    svc_element = AXIOM_NODE_GET_DATA_ELEMENT(svc_node, env);
     /* Processing service level paramters */
     qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
     if(!qparamst)
@@ -265,7 +265,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
-    itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env, qparamst,
+    itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env, qparamst,
         svc_node);
     AXIS2_QNAME_FREE(qparamst, env);
     qparamst = NULL;
@@ -288,18 +288,18 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
      * name
      */
     /*qdesc = axis2_qname_create(env, AXIS2_DESCRIPTION, NULL, NULL);
-    desc_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, env,
+    desc_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, env,
         qdesc, svc_node, &desc_node);
     AXIS2_QNAME_FREE(qdesc, env) ;
     qdesc = NULL;
     if(NULL != desc_element)
     {
-        axis2_om_element_t *desc_value_element = NULL;
-        axis2_om_node_t *desc_value_node = NULL;
+        axiom_element_t *desc_value_element = NULL;
+        axiom_node_t *desc_value_node = NULL;
         axis2_xml_writer_t *xml_writer = NULL;
-        axis2_om_output_t *om_output = NULL;
+        axiom_output_t *om_output = NULL;
         
-        desc_value_element = AXIS2_OM_ELEMENT_GET_FIRST_ELEMENT(desc_element, 
+        desc_value_element = AXIOM_ELEMENT_GET_FIRST_ELEMENT(desc_element, 
             env, desc_node, &desc_value_node);
         if(NULL != desc_value_element && NULL != desc_value_node)
         {
@@ -307,8 +307,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
             
             xml_writer = axis2_xml_writer_create_for_memory(env, NULL, 
                 AXIS2_TRUE, 0, AXIS2_XML_PARSERT_TYPE_BUFFER);
-            om_output = axis2_om_output_create(env, xml_writer);
-            status = AXIS2_OM_NODE_SERIALIZE(desc_value_node, env, om_output);
+            om_output = axiom_output_create(env, xml_writer);
+            status = AXIOM_NODE_SERIALIZE(desc_value_node, env, om_output);
             if(status != AXIS2_SUCCESS)
             {
                 return AXIS2_FAILURE;
@@ -316,13 +316,13 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
             svc_name = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
             AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, 
                 svc_name);
-            AXIS2_OM_OUTPUT_FREE(om_output, env);
+            AXIOM_OUTPUT_FREE(om_output, env);
         }
         else
         {
             axis2_char_t *svc_name = NULL;
             
-            svc_name = AXIS2_OM_ELEMENT_GET_TEXT(desc_element, env, desc_node);
+            svc_name = AXIOM_ELEMENT_GET_TEXT(desc_element, env, desc_node);
             AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, 
                 svc_name);
         }
@@ -330,8 +330,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     */
     /* my logic to get set service name */
     qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-    name_attr = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(svc_element, env, qattname);
-    svc_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(name_attr, env);
+    name_attr = AXIOM_ELEMENT_GET_ATTRIBUTE(svc_element, env, qattname);
+    svc_name = AXIOM_ATTRIBUTE_GET_VALUE(name_attr, env);
     AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, svc_name);
     AXIS2_QNAME_FREE(qattname, env);
     
@@ -382,7 +382,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     /* end of my logic */
     /* processing service wide modules which required to engage globally */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
-    module_refs = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env,
+    module_refs = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env,
         qmodulest, svc_node);
     AXIS2_QNAME_FREE(qmodulest, env) ;
     qmodulest = NULL;
@@ -394,7 +394,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
 
     /* process INFLOW */
     qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL);
-    in_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, 
+    in_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, 
         env, qinflowst, svc_node, &in_flow_node);
     AXIS2_QNAME_FREE(qinflowst, env) ;
     qinflowst = NULL; 
@@ -413,7 +413,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     }
 
     qoutflowst = axis2_qname_create(env, AXIS2_OUTFLOWST, NULL, NULL);
-    out_flow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
+    out_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
         env, qoutflowst, svc_node, &out_flow_node);
     AXIS2_QNAME_FREE(qoutflowst, env) ;
     qoutflowst = NULL;
@@ -432,7 +432,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     }
 
     qin_faultflowst = axis2_qname_create(env, AXIS2_IN_FAILTFLOW, NULL, NULL);
-    in_faultflow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, 
+    in_faultflow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, 
         env, qin_faultflowst, svc_node, &in_faultflow_node);
     AXIS2_QNAME_FREE(qin_faultflowst, env) ;
     qin_faultflowst = NULL;
@@ -453,7 +453,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     }
 
     qout_faultflowst = axis2_qname_create(env, AXIS2_OUT_FAILTFLOW, NULL, NULL);
-    out_faultflow_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
+    out_faultflow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
         env, qoutflowst, svc_node, &out_faultflow_node);
     AXIS2_QNAME_FREE(qout_faultflowst, env) ;
     qout_faultflowst = NULL;
@@ -475,7 +475,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
 
     /* processing operations */
     qopst = axis2_qname_create(env, AXIS2_OPERATIONST, NULL, NULL);
-    operation_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env,
+    operation_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element, env,
         qopst, svc_node);
     AXIS2_QNAME_FREE(qopst, env) ;
     qopst = NULL; 
@@ -515,7 +515,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     AXIS2_ARRAY_LIST_FREE(ops, env);
     /*
     qmodule_config = axis2_qname_create(env, AXIS2_MODULECONFIG, NULL, NULL);
-    module_configs_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element,
+    module_configs_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_element,
         env, qmodule_config, svc_node);
     AXIS2_QNAME_FREE(qmodule_config, env) ;
     status = axis2_svc_builder_process_svc_module_conf(svc_builder, env, 
@@ -527,7 +527,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
 static axis2_array_list_t *
 axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
                     const axis2_env_t *env,
-                    axis2_om_children_qname_iterator_t *op_itr)
+                    axiom_children_qname_iterator_t *op_itr)
 {
     axis2_svc_builder_impl_t *builder_impl = NULL;
     axis2_array_list_t *ops = NULL;
@@ -537,12 +537,12 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
     builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
     
     ops = axis2_array_list_create(env, 0);
-    while(AXIS2_TRUE == AXIS2_OM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(op_itr, env))
+    while(AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(op_itr, env))
     {
-        axis2_om_element_t *op_element = NULL;
-        axis2_om_node_t *op_node = NULL;
-        axis2_om_attribute_t *op_name_att = NULL;
-        axis2_om_attribute_t *op_mep_att = NULL;
+        axiom_element_t *op_element = NULL;
+        axiom_node_t *op_node = NULL;
+        axiom_attribute_t *op_name_att = NULL;
+        axiom_attribute_t *op_mep_att = NULL;
         axis2_qname_t *qmep = NULL;
         axis2_qname_t *qopname = NULL;
         axis2_qname_t *qparamst = NULL;
@@ -553,17 +553,17 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         axis2_char_t *op_name = NULL;
         axis2_wsdl_op_t *wsdl_op = NULL;
         axis2_op_t *op_desc = NULL;
-        axis2_om_children_qname_iterator_t *params_itr = NULL;
-        axis2_om_children_qname_iterator_t *module_itr = NULL;
-        axis2_om_element_t *recv_element = NULL;
-        axis2_om_node_t *recv_node = NULL;
+        axiom_children_qname_iterator_t *params_itr = NULL;
+        axiom_children_qname_iterator_t *module_itr = NULL;
+        axiom_element_t *recv_element = NULL;
+        axiom_node_t *recv_node = NULL;
         axis2_status_t status = AXIS2_FAILURE;
         
-        op_node = AXIS2_OM_CHILDREN_QNAME_ITERATOR_NEXT(op_itr, env);
+        op_node = AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(op_itr, env);
         /* getting operation name */
-        op_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(op_node, env);
+        op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-        op_name_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(op_element, env, qattname);
+        op_name_att = AXIOM_ELEMENT_GET_ATTRIBUTE(op_element, env, qattname);
         AXIS2_QNAME_FREE(qattname, env);
         qattname = NULL;
         if(NULL == op_name_att)
@@ -574,19 +574,19 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         }
         /* set the mep of the operation */
         qmep = axis2_qname_create(env, AXIS2_MEP, NULL, NULL);
-        op_mep_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(op_element, env, qmep);
+        op_mep_att = AXIOM_ELEMENT_GET_ATTRIBUTE(op_element, env, qmep);
         AXIS2_QNAME_FREE(qmep, env);
         qmep = NULL;
         if(NULL != op_mep_att)
         {
-            mep_url = AXIS2_OM_ATTRIBUTE_GET_VALUE(op_mep_att, env);
+            mep_url = AXIOM_ATTRIBUTE_GET_VALUE(op_mep_att, env);
             /*
             TODO value has to be validate
             TODO
              op_descrip.setMessageExchangePattern(mep);
             */
         }
-        op_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(op_name_att, env);
+        op_name = AXIOM_ATTRIBUTE_GET_VALUE(op_name_att, env);
         qopname = axis2_qname_create(env, op_name, NULL, NULL);
         wsdl_op = AXIS2_SVC_GET_WSDL_OP(builder_impl->svc, env, qopname);
         if(NULL == wsdl_op)
@@ -624,7 +624,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         qopname = NULL;
         /* operation parameters */
         qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
-        params_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env,
+        params_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env,
             qparamst, op_node);
         AXIS2_QNAME_FREE(qparamst, env);
         qparamst = NULL;
@@ -634,7 +634,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         /* loading the message receivers */
         
         qmsgrecv = axis2_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);
-        recv_element = AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(op_element, 
+        recv_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(op_element, 
             env, qmsgrecv, op_node, &recv_node);
         AXIS2_QNAME_FREE(qmsgrecv, env);
         qmsgrecv = NULL;
@@ -656,7 +656,7 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
         }
         /* process module refs */
         qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
-        module_itr = AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env,
+        module_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(op_element, env,
             qmodulest, op_node);
         AXIS2_QNAME_FREE(qmodulest, env);
         qmodulest = NULL;
@@ -684,22 +684,22 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
 axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
                                 const axis2_env_t *env,
-                                axis2_om_children_qname_iterator_t *module_confs,
+                                axiom_children_qname_iterator_t *module_confs,
                                 axis2_param_container_t *parent, 
                                 axis2_svc_t *svc)
 {
-    while(AXIS2_TRUE == AXIS2_OM_CHILDREN_ITERATOR_HAS_NEXT(module_confs, env))
+    while(AXIS2_TRUE == AXIOM_CHILDREN_ITERATOR_HAS_NEXT(module_confs, env))
     {
-        axis2_om_element_t *module_conf_element = NULL;
-        axis2_om_node_t *module_conf_node = NULL;
-        axis2_om_attribute_t *module_name_att = NULL;
+        axiom_element_t *module_conf_element = NULL;
+        axiom_node_t *module_conf_node = NULL;
+        axiom_attribute_t *module_name_att = NULL;
         axis2_qname_t *qattname = NULL;
         
-        module_conf_node = AXIS2_OM_CHILDREN_ITERATOR_NEXT(module_confs, env);
-        module_conf_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(module_conf_node,
+        module_conf_node = AXIOM_CHILDREN_ITERATOR_NEXT(module_confs, env);
+        module_conf_element = AXIOM_NODE_GET_DATA_ELEMENT(module_conf_node,
             env);
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
-        module_name_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(module_conf_element,
+        module_name_att = AXIOM_ELEMENT_GET_ATTRIBUTE(module_conf_element,
             env, qattname);
         AXIS2_QNAME_FREE(qattname, env);
         qattname = NULL;
@@ -717,7 +717,7 @@ axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
 axis2_status_t AXIS2_CALL
 axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
                                         const axis2_env_t *env,
-                                        axis2_om_children_qname_iterator_t *
+                                        axiom_children_qname_iterator_t *
                                             module_refs)
 {
     axis2_svc_builder_impl_t *builder_impl = NULL;
@@ -726,18 +726,18 @@ axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
     AXIS2_PARAM_CHECK(env->error, module_refs, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(svc_builder);
     
-    while(AXIS2_TRUE == AXIS2_OM_CHILDREN_ITERATOR_HAS_NEXT(module_refs, env))
+    while(AXIS2_TRUE == AXIOM_CHILDREN_ITERATOR_HAS_NEXT(module_refs, env))
     {
-        axis2_om_element_t *module_ref_element = NULL;
-        axis2_om_node_t *module_ref_node = NULL;
-        axis2_om_attribute_t *module_ref_att = NULL;
+        axiom_element_t *module_ref_element = NULL;
+        axiom_node_t *module_ref_node = NULL;
+        axiom_attribute_t *module_ref_att = NULL;
         axis2_qname_t *qref = NULL;
         
-        module_ref_node = AXIS2_OM_CHILDREN_ITERATOR_NEXT(module_refs, env);
-        module_ref_element = AXIS2_OM_NODE_GET_DATA_ELEMENT(module_ref_node,
+        module_ref_node = AXIOM_CHILDREN_ITERATOR_NEXT(module_refs, env);
+        module_ref_element = AXIOM_NODE_GET_DATA_ELEMENT(module_ref_node,
             env);
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
-        module_ref_att = AXIS2_OM_ELEMENT_GET_ATTRIBUTE(module_ref_element,
+        module_ref_att = AXIOM_ELEMENT_GET_ATTRIBUTE(module_ref_element,
             env, qref);
         AXIS2_QNAME_FREE(qref, env);
         if(NULL != module_ref_att)
@@ -745,7 +745,7 @@ axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
             axis2_char_t *ref_name = NULL;
             axis2_qname_t *qrefname = NULL;
             
-            ref_name = AXIS2_OM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
+            ref_name = AXIOM_ATTRIBUTE_GET_VALUE(module_ref_att, env);
             qrefname = axis2_qname_create(env, ref_name, NULL, NULL);
             if(NULL == AXIS2_DEP_ENGINE_GET_MODULE(svc_builder->desc_builder->
                 engine, env, qrefname))

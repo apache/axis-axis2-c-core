@@ -46,7 +46,7 @@ axis2_char_t* AXIS2_CALL axis2_mep_client_get_soap_action(struct axis2_mep_clien
 axis2_status_t AXIS2_CALL axis2_mep_client_prepare_invocation(struct axis2_mep_client *mep_client, const axis2_env_t *env, axis2_op_t *op, axis2_msg_ctx_t *msg_ctx);
 axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_mep_client *mep_client, 
     const axis2_env_t *env, 
-    axis2_om_node_t *to_send);
+    axiom_node_t *to_send);
 axis2_transport_out_desc_t* AXIS2_CALL axis2_mep_client_infer_transport(struct axis2_mep_client *mep_client, const axis2_env_t *env, 
             axis2_endpoint_ref_t *epr);
 axis2_soap_envelope_t* AXIS2_CALL axis2_mep_client_create_default_soap_envelope(struct axis2_mep_client *mep_client, 
@@ -197,7 +197,7 @@ axis2_status_t AXIS2_CALL axis2_mep_client_prepare_invocation(struct axis2_mep_c
 
 axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_mep_client *mep_client, 
     const axis2_env_t *env, 
-    axis2_om_node_t *to_send)  
+    axiom_node_t *to_send)  
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
@@ -241,11 +241,11 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_
         soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
         if (soap_body)
         {
-            axis2_om_node_t *node = NULL;
+            axiom_node_t *node = NULL;
             node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
             if (node)
             {
-                AXIS2_OM_NODE_ADD_CHILD(node, env, to_send);
+                AXIOM_NODE_ADD_CHILD(node, env, to_send);
             }
         }       
     }
