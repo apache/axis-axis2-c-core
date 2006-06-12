@@ -20,7 +20,7 @@
  
 axis2_status_t AXIS2_CALL 
 axis2_om_child_element_iterator_free
-                    (axis2_om_child_element_iterator_t *iterator,
+                    (void *iterator,
                      const axis2_env_t *env);
                                 
 axis2_status_t AXIS2_CALL
@@ -108,14 +108,17 @@ axis2_om_child_element_iterator_create(const axis2_env_t *env,
 
 axis2_status_t AXIS2_CALL 
 axis2_om_child_element_iterator_free
-            (axis2_om_child_element_iterator_t *iterator,
+            (void *iterator,
              const axis2_env_t *env)
 {
+    axis2_om_child_element_iterator_impl_t *iterator_impl = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if(iterator->ops)
-        AXIS2_FREE(env->allocator, iterator->ops);
+    iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
+    if(iterator_impl->iterator.ops)
+        AXIS2_FREE(env->allocator, iterator_impl->iterator.ops);
         
-    AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(iterator));        
+    AXIS2_FREE(env->allocator, iterator_impl);        
     return AXIS2_SUCCESS;
 }                                
                                 

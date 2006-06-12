@@ -47,7 +47,7 @@ typedef struct axis2_om_child_element_iterator axis2_om_child_element_iterator_t
     AXIS2_DECLARE_DATA struct axis2_om_child_element_iterator_ops
     {
         axis2_status_t (AXIS2_CALL *free_fn)
-                            (axis2_om_child_element_iterator_t *iterator,
+                            (void *iterator,
                              const axis2_env_t *env);
                              
         /**
@@ -98,7 +98,7 @@ axis2_om_child_element_iterator_create(const axis2_env_t *env,
 /************ Macros *********************************************/
 
 #define AXIS2_OM_CHILD_ELEMENT_ITERATOR_FREE(iterator, env) \
-        ((iterator)->ops->free_fn(iterator, env))
+        (((axis2_om_child_element_iterator_t *) iterator)->ops->free_fn(iterator, env))
 
 #define AXIS2_OM_CHILD_ELEMENT_ITERATOR_REMOVE(iterator, env) \
         ((iterator)->ops->remove(iterator, env))
