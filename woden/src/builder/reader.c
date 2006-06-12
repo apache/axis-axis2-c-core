@@ -129,6 +129,7 @@ struct woden_reader_impl
     /* A map of imported schema definitions keyed by schema location URI */
     axis2_hash_t *f_imported_schemas;
     axis2_woden_ext_registry_t *f_ext_reg;
+    axis2_uri_t *f_uri;
 
 };
 
@@ -449,6 +450,7 @@ create(
 
     reader_impl->f_imported_schemas = NULL;
     reader_impl->f_ext_reg = NULL;
+    reader_impl->f_uri = NULL;
     
     reader_impl->reader.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_reader_ops_t));
@@ -497,6 +499,12 @@ woden_reader_free(
     {
         AXIS2_WODEN_EXT_REGISTRY_FREE(reader_impl->f_ext_reg, env);
         reader_impl->f_ext_reg = NULL;
+    }
+
+    if(reader_impl->f_uri)
+    {
+        AXIS2_URI_FREE(reader_impl->f_uri, env);
+        reader_impl->f_uri = NULL;
     }
 
     if((&(reader_impl->reader))->ops)
@@ -3751,13 +3759,13 @@ get_uri(
     AXIS2_PARAM_CHECK(env->error, uri_str, NULL);
     reader_impl = INTF_TO_IMPL(reader);
 
-    if(reader_impl->uri)
+    if(reader_impl->f_uri)
     {
-        AXIS2_URI_FREE(reader_impl->uri, env);
-        reader_impl->uri = NULL;
+        AXIS2_URI_FREE(reader_impl->f_uri, env);
+        reader_impl->f_uri = NULL;
     }
-    reader_impl->uri = axis2_uri_parse_string(env, uri_str);
+    reader_impl->f_uri = axis2_uri_parse_string(env, uri_str);
     
-    return reader_impl->uri;
+    return reader_impl->f_uri;
 }
 
