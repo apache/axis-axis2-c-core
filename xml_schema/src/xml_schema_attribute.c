@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_attribute.h>
+#include <xml_schema_attribute.h>
 #include <axis2_utils.h>
 
-typedef struct axis2_xml_schema_attribute_impl 
-                axis2_xml_schema_attribute_impl_t;
+typedef struct xml_schema_attribute_impl 
+                xml_schema_attribute_impl_t;
 
 /** 
  * @brief Other Extension Struct Impl
  *   Axis2 Other Extension  
  */ 
-struct axis2_xml_schema_attribute_impl
+struct xml_schema_attribute_impl
 {
-    axis2_xml_schema_attribute_t attr;
+    xml_schema_attribute_t attr;
     
-    axis2_xml_schema_annotated_t *annotated;
+    xml_schema_annotated_t *annotated;
 
-    axis2_xml_schema_form_t *form;
+    xml_schema_form_t *form;
     
-    axis2_xml_schema_use_t *use;
+    xml_schema_use_t *use;
     
     void *attribute_type;
     
@@ -42,7 +42,7 @@ struct axis2_xml_schema_attribute_impl
     
     axis2_char_t *name;
     
-    axis2_xml_schema_simple_type_t *schema_type;
+    xml_schema_simple_type_t *schema_type;
     
     axis2_qname_t *schema_type_name;    
     
@@ -52,135 +52,135 @@ struct axis2_xml_schema_attribute_impl
     
     axis2_hash_t *methods; 
          
-    axis2_xml_schema_types_t obj_type;
+    xml_schema_types_t obj_type;
     
     axis2_hash_t* ht_super;
 };
 
 #define AXIS2_INTF_TO_IMPL(attr) \
-        ((axis2_xml_schema_attribute_impl_t *) attr)
+        ((xml_schema_attribute_impl_t *) attr)
 
 /******************* function prototypes **********************************/
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_attribute_free(void *attr,
+xml_schema_attribute_free(void *attr,
                         const axis2_env_t *env);
 
-axis2_xml_schema_annotated_t *AXIS2_CALL
-axis2_xml_schema_attribute_get_base_impl(void *attr,
+xml_schema_annotated_t *AXIS2_CALL
+xml_schema_attribute_get_base_impl(void *attr,
                                     const axis2_env_t *env);
 
-axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_attribute_get_type(void *attr,
+xml_schema_types_t AXIS2_CALL
+xml_schema_attribute_get_type(void *attr,
                                     const axis2_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
-axis2_xml_schema_attribute_super_objs(void *attr,
+xml_schema_attribute_super_objs(void *attr,
                                         const axis2_env_t *env);
 
 void * AXIS2_CALL 
-axis2_xml_schema_attribute_get_attr_type(
+xml_schema_attribute_get_attr_type(
             void *attr,
             const axis2_env_t *env);
 
 axis2_char_t * AXIS2_CALL 
-axis2_xml_schema_attribute_get_default_value(
+xml_schema_attribute_get_default_value(
             void *attr,
             const axis2_env_t *env);                        
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_attribute_set_default_value(
+xml_schema_attribute_set_default_value(
             void *attr,
             const axis2_env_t *env,
             axis2_char_t *default_value);  
     
 axis2_char_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_fixed_value(void *attr,
+xml_schema_attribute_get_fixed_value(void *attr,
                         const axis2_env_t *env);
 
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_fixed_value(void *attr,
+xml_schema_attribute_set_fixed_value(void *attr,
                      const axis2_env_t *env,
                      axis2_char_t *fixed_value);
 
-axis2_xml_schema_form_t* AXIS2_CALL 
-axis2_xml_schema_attribute_get_schema_form (void *attr,
+xml_schema_form_t* AXIS2_CALL 
+xml_schema_attribute_get_schema_form (void *attr,
                       const axis2_env_t *env);
 
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_schema_form(void *attr,
+xml_schema_attribute_set_schema_form(void *attr,
                      const axis2_env_t *env,
-                     axis2_xml_schema_form_t *schema_form);
+                     xml_schema_form_t *schema_form);
                      
 axis2_qname_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_qname(void *attr,
+xml_schema_attribute_get_qname(void *attr,
                const axis2_env_t *env);
                
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_qname(void *attr,
+xml_schema_attribute_set_qname(void *attr,
                const axis2_env_t *env,
                axis2_qname_t *qualified_name);
                
 axis2_char_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_name(void *attr,
+xml_schema_attribute_get_name(void *attr,
               const axis2_env_t *env);
               
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_name(void *attr,
+xml_schema_attribute_set_name(void *attr,
               const axis2_env_t *env,
               axis2_char_t *name);
               
 axis2_qname_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_ref_name(void *attr,
+xml_schema_attribute_get_ref_name(void *attr,
                   const axis2_env_t *env);
                                               
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_ref_name(void *attr,
+xml_schema_attribute_set_ref_name(void *attr,
                   const axis2_env_t *env,
                   axis2_qname_t *ref_name);
                   
-axis2_xml_schema_simple_type_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_schema_type(void *attr,
+xml_schema_simple_type_t*  AXIS2_CALL 
+xml_schema_attribute_get_schema_type(void *attr,
                      const axis2_env_t *env);
                      
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_schema_type(void *attr,
+xml_schema_attribute_set_schema_type(void *attr,
                      const axis2_env_t *env,
-                     axis2_xml_schema_simple_type_t* sch_type);                     
+                     xml_schema_simple_type_t* sch_type);                     
                      
 axis2_qname_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_schema_type_name(void *attr,
+xml_schema_attribute_get_schema_type_name(void *attr,
                           const axis2_env_t *env);
                           
                               
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_schema_type_name(void *attr,
+xml_schema_attribute_set_schema_type_name(void *attr,
                           const axis2_env_t *env,
                           axis2_qname_t *sch_type_name);
                           
-axis2_xml_schema_use_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_use(void *attr,
+xml_schema_use_t*  AXIS2_CALL 
+xml_schema_attribute_get_use(void *attr,
              const axis2_env_t *env);
              
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_use(void *attr,
+xml_schema_attribute_set_use(void *attr,
              const axis2_env_t *env,
-             axis2_xml_schema_use_t *use);
+             xml_schema_use_t *use);
              
 axis2_char_t*  AXIS2_CALL
-axis2_xml_schema_attribute_to_string(void *attr,
+xml_schema_attribute_to_string(void *attr,
                const axis2_env_t *env,
                axis2_char_t *prefix,
                int tab);                                                  
  /************************ end function prototypes ******************************/
  
-AXIS2_EXTERN axis2_xml_schema_attribute_t * AXIS2_CALL
-axis2_xml_schema_attribute_create(const axis2_env_t *env)
+AXIS2_EXTERN xml_schema_attribute_t * AXIS2_CALL
+xml_schema_attribute_create(const axis2_env_t *env)
 {
-    axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
+    xml_schema_attribute_impl_t *attr_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     attr_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_attribute_impl_t));
+                    sizeof(xml_schema_attribute_impl_t));
     if(!attr_impl)
     {
         AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -196,7 +196,7 @@ axis2_xml_schema_attribute_create(const axis2_env_t *env)
     attr_impl->fixed_value = NULL;
     attr_impl->form = NULL;
     attr_impl->use = NULL;
-    attr_impl->obj_type = AXIS2_XML_SCHEMA_ATTRIBUTE;
+    attr_impl->obj_type = XML_SCHEMA_ATTRIBUTE;
     attr_impl->schema_type_name = NULL;
     attr_impl->schema_type = NULL;
     attr_impl->qualified_name = NULL;
@@ -204,69 +204,69 @@ axis2_xml_schema_attribute_create(const axis2_env_t *env)
     attr_impl->ref_name = NULL;
         
     attr_impl->attr.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_attribute_ops_t));
+                    sizeof(xml_schema_attribute_ops_t));
 
     if(!attr_impl->attr.ops)
     {
-        axis2_xml_schema_attribute_free(&(attr_impl->attr), env);
+        xml_schema_attribute_free(&(attr_impl->attr), env);
         AXIS2_ERROR_SET(env->error , 
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    attr_impl->use = axis2_xml_schema_use_create(env, "none");
-    attr_impl->form = axis2_xml_schema_form_create(env, "none");
+    attr_impl->use = xml_schema_use_create(env, "none");
+    attr_impl->form = xml_schema_form_create(env, "none");
     
     if(!attr_impl->use || !attr_impl->form)
     {
-        axis2_xml_schema_attribute_free(&(attr_impl->attr), env);
+        xml_schema_attribute_free(&(attr_impl->attr), env);
         return NULL;
     }            
     attr_impl->attr.ops->free = 
-        axis2_xml_schema_attribute_free;
+        xml_schema_attribute_free;
     attr_impl->attr.ops->get_type =
-        axis2_xml_schema_attribute_get_type;
+        xml_schema_attribute_get_type;
     attr_impl->attr.ops->super_objs =
-        axis2_xml_schema_attribute_super_objs;                
+        xml_schema_attribute_super_objs;                
     attr_impl->attr.ops->get_base_impl = 
-        axis2_xml_schema_attribute_get_base_impl;
+        xml_schema_attribute_get_base_impl;
     attr_impl->attr.ops->get_attr_type =
-        axis2_xml_schema_attribute_get_attr_type;
+        xml_schema_attribute_get_attr_type;
     attr_impl->attr.ops->get_default_value =
-        axis2_xml_schema_attribute_get_default_value;        
+        xml_schema_attribute_get_default_value;        
     attr_impl->attr.ops->set_default_value =
-        axis2_xml_schema_attribute_set_default_value;
+        xml_schema_attribute_set_default_value;
     attr_impl->attr.ops->get_fixed_value =
-        axis2_xml_schema_attribute_get_fixed_value;
+        xml_schema_attribute_get_fixed_value;
     attr_impl->attr.ops->set_fixed_value =
-        axis2_xml_schema_attribute_set_fixed_value;
+        xml_schema_attribute_set_fixed_value;
     attr_impl->attr.ops->get_schema_form =
-        axis2_xml_schema_attribute_get_schema_form;
+        xml_schema_attribute_get_schema_form;
     attr_impl->attr.ops->set_schema_form =
-        axis2_xml_schema_attribute_set_schema_form;
+        xml_schema_attribute_set_schema_form;
     attr_impl->attr.ops->get_qname =
-        axis2_xml_schema_attribute_get_qname;
+        xml_schema_attribute_get_qname;
     attr_impl->attr.ops->set_qname =
-        axis2_xml_schema_attribute_set_qname;
+        xml_schema_attribute_set_qname;
     attr_impl->attr.ops->get_name =
-        axis2_xml_schema_attribute_get_name;
+        xml_schema_attribute_get_name;
     attr_impl->attr.ops->set_name =
-        axis2_xml_schema_attribute_set_name;        
+        xml_schema_attribute_set_name;        
     attr_impl->attr.ops->set_ref_name =
-        axis2_xml_schema_attribute_set_ref_name;
+        xml_schema_attribute_set_ref_name;
     attr_impl->attr.ops->get_schema_type =
-        axis2_xml_schema_attribute_get_schema_type;
+        xml_schema_attribute_get_schema_type;
     attr_impl->attr.ops->set_schema_type =
-        axis2_xml_schema_attribute_set_schema_type;
+        xml_schema_attribute_set_schema_type;
     attr_impl->attr.ops->get_schema_type_name =
-        axis2_xml_schema_attribute_get_schema_type_name;
+        xml_schema_attribute_get_schema_type_name;
     attr_impl->attr.ops->set_schema_type_name =
-        axis2_xml_schema_attribute_set_schema_type_name;
+        xml_schema_attribute_set_schema_type_name;
     attr_impl->attr.ops->get_use =
-        axis2_xml_schema_attribute_get_use;
+        xml_schema_attribute_get_use;
     attr_impl->attr.ops->set_use =
-        axis2_xml_schema_attribute_set_use;
+        xml_schema_attribute_set_use;
     attr_impl->attr.ops->to_string =
-        axis2_xml_schema_attribute_to_string;
+        xml_schema_attribute_to_string;
                                                                     
     attr_impl->methods = axis2_hash_make(env);
     attr_impl->ht_super = axis2_hash_make(env);
@@ -276,41 +276,41 @@ axis2_xml_schema_attribute_create(const axis2_env_t *env)
         return NULL;
     }
     axis2_hash_set(attr_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_attribute_free);
+            xml_schema_attribute_free);
     axis2_hash_set(attr_impl->methods, "get_type", AXIS2_HASH_KEY_STRING,
-            axis2_xml_schema_attribute_get_type);
+            xml_schema_attribute_get_type);
     axis2_hash_set(attr_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
-            axis2_xml_schema_attribute_super_objs);            
+            xml_schema_attribute_super_objs);            
     
-    attr_impl->annotated = axis2_xml_schema_annotated_create(env);
+    attr_impl->annotated = xml_schema_annotated_create(env);
     if(!attr_impl->methods)
     {
-        axis2_xml_schema_attribute_free(&(attr_impl->attr), env);
+        xml_schema_attribute_free(&(attr_impl->attr), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-    axis2_hash_set(attr_impl->ht_super, "AXIS2_XML_SCHEMA_ATTRIBUTE", 
+    axis2_hash_set(attr_impl->ht_super, "XML_SCHEMA_ATTRIBUTE", 
             AXIS2_HASH_KEY_STRING, &(attr_impl->attr));
             
-    axis2_hash_set(attr_impl->ht_super, "AXIS2_XML_SCHEMA_ANNOTATED", 
+    axis2_hash_set(attr_impl->ht_super, "XML_SCHEMA_ANNOTATED", 
             AXIS2_HASH_KEY_STRING, attr_impl->annotated);
 
-    axis2_hash_set(attr_impl->ht_super, "AXIS2_XML_SCHEMA_OBJ", 
+    axis2_hash_set(attr_impl->ht_super, "XML_SCHEMA_OBJ", 
             AXIS2_HASH_KEY_STRING, 
-            AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(attr_impl->annotated, env));
+            XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(attr_impl->annotated, env));
                             
-    status = axis2_xml_schema_annotated_resolve_methods(
+    status = xml_schema_annotated_resolve_methods(
             &(attr_impl->attr.base), env, attr_impl->annotated, 
             attr_impl->methods); 
     return &(attr_impl->attr);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_attribute_free(void *attr,
+xml_schema_attribute_free(void *attr,
                             const axis2_env_t *env)
 {
-    axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
+    xml_schema_attribute_impl_t *attr_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
@@ -342,12 +342,12 @@ axis2_xml_schema_attribute_free(void *attr,
     
     if(NULL != attr_impl->form)
     {
-        AXIS2_XML_SCHEMA_FORM_FREE(attr_impl->form, env);
+        XML_SCHEMA_FORM_FREE(attr_impl->form, env);
         attr_impl->form = NULL;
     }
     if(NULL != attr_impl->use)
     {
-        AXIS2_XML_SCHEMA_USE_FREE(attr_impl->use, env);
+        XML_SCHEMA_USE_FREE(attr_impl->use, env);
         attr_impl->use = NULL;
     }
     
@@ -359,7 +359,7 @@ axis2_xml_schema_attribute_free(void *attr,
    
     if(NULL != attr_impl->annotated)
     {
-        AXIS2_XML_SCHEMA_ANNOTATED_FREE(attr_impl->annotated, env);
+        XML_SCHEMA_ANNOTATED_FREE(attr_impl->annotated, env);
         attr_impl->annotated = NULL;
     }
     
@@ -379,33 +379,33 @@ axis2_xml_schema_attribute_free(void *attr,
     return AXIS2_SUCCESS;
 }
 
-axis2_xml_schema_annotated_t *AXIS2_CALL
-axis2_xml_schema_attribute_get_base_impl(void *attr,
+xml_schema_annotated_t *AXIS2_CALL
+xml_schema_attribute_get_base_impl(void *attr,
                                 const axis2_env_t *env)
 {
-    axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
+    xml_schema_attribute_impl_t *attr_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
     return attr_impl->annotated;
 }
 
-axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_attribute_get_type(void *attr,
+xml_schema_types_t AXIS2_CALL
+xml_schema_attribute_get_type(void *attr,
                                     const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(attr)->obj_type;    
 }                                    
 
 axis2_hash_t* AXIS2_CALL
-axis2_xml_schema_attribute_super_objs(void *attr,
+xml_schema_attribute_super_objs(void *attr,
                                         const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(attr)->ht_super;
 }
 
 void * AXIS2_CALL 
-axis2_xml_schema_attribute_get_attr_type(
+xml_schema_attribute_get_attr_type(
             void *attr,
             const axis2_env_t *env)
 {
@@ -413,7 +413,7 @@ axis2_xml_schema_attribute_get_attr_type(
 }            
 
 axis2_char_t * AXIS2_CALL 
-axis2_xml_schema_attribute_get_default_value(
+xml_schema_attribute_get_default_value(
             void *attr,
             const axis2_env_t *env)
 {
@@ -421,12 +421,12 @@ axis2_xml_schema_attribute_get_default_value(
 }                                    
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_attribute_set_default_value(
+xml_schema_attribute_set_default_value(
             void *attr,
             const axis2_env_t *env,
             axis2_char_t *default_value)
 {
-    axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
+    xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, default_value, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
     if(NULL != attr_impl->default_value)
@@ -439,18 +439,18 @@ axis2_xml_schema_attribute_set_default_value(
 }            
     
 axis2_char_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_fixed_value(void *attr,
+xml_schema_attribute_get_fixed_value(void *attr,
                         const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(attr)->fixed_value;
 }
 
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_fixed_value(void *attr,
+xml_schema_attribute_set_fixed_value(void *attr,
                      const axis2_env_t *env,
                      axis2_char_t *fixed_value)
 {
-    axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
+    xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, fixed_value, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
     if(NULL != attr_impl->fixed_value)
@@ -462,19 +462,19 @@ axis2_xml_schema_attribute_set_fixed_value(void *attr,
     return AXIS2_SUCCESS;
 }
 
-axis2_xml_schema_form_t* AXIS2_CALL 
-axis2_xml_schema_attribute_get_schema_form(void *attr,
+xml_schema_form_t* AXIS2_CALL 
+xml_schema_attribute_get_schema_form(void *attr,
                       const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(attr)->form;
 }
 
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_schema_form(void *attr,
+xml_schema_attribute_set_schema_form(void *attr,
                      const axis2_env_t *env,
-                     axis2_xml_schema_form_t *schema_form)
+                     xml_schema_form_t *schema_form)
 {
-    axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
+    xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, schema_form, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
     if(NULL != attr_impl->form)
@@ -487,18 +487,18 @@ axis2_xml_schema_attribute_set_schema_form(void *attr,
 }
                      
 axis2_qname_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_qname(void *attr,
+xml_schema_attribute_get_qname(void *attr,
                const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(attr)->qualified_name;
 }
                
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_qname(void *attr,
+xml_schema_attribute_set_qname(void *attr,
                const axis2_env_t *env,
                axis2_qname_t *qualified_name)
 {
-    axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
+    xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, qualified_name, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
     if(NULL != attr_impl->qualified_name)
@@ -513,18 +513,18 @@ axis2_xml_schema_attribute_set_qname(void *attr,
 }
                
 axis2_char_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_name(void *attr,
+xml_schema_attribute_get_name(void *attr,
               const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(attr)->name;
 }
               
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_name(void *attr,
+xml_schema_attribute_set_name(void *attr,
               const axis2_env_t *env,
               axis2_char_t *name)
 {
-    axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
+    xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
     if(NULL != attr_impl->name)
@@ -537,18 +537,18 @@ axis2_xml_schema_attribute_set_name(void *attr,
 }
               
 axis2_qname_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_ref_name(void *attr,
+xml_schema_attribute_get_ref_name(void *attr,
                   const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(attr)->ref_name;
 }
                                               
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_ref_name(void *attr,
+xml_schema_attribute_set_ref_name(void *attr,
                   const axis2_env_t *env,
                   axis2_qname_t *ref_name)
 {
-    axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
+    xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, ref_name, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
     if(NULL != attr_impl->ref_name)
@@ -559,19 +559,19 @@ axis2_xml_schema_attribute_set_ref_name(void *attr,
     return AXIS2_SUCCESS;    
 }
                   
-axis2_xml_schema_simple_type_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_schema_type(void *attr,
+xml_schema_simple_type_t*  AXIS2_CALL 
+xml_schema_attribute_get_schema_type(void *attr,
                      const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(attr)->schema_type;
 }
                      
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_schema_type(void *attr,
+xml_schema_attribute_set_schema_type(void *attr,
                      const axis2_env_t *env,
-                     axis2_xml_schema_simple_type_t* sch_type)
+                     xml_schema_simple_type_t* sch_type)
 {
-    axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
+    xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, sch_type, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
     if(NULL != attr_impl->schema_type)
@@ -584,7 +584,7 @@ axis2_xml_schema_attribute_set_schema_type(void *attr,
 }                     
                      
 axis2_qname_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_schema_type_name(void *attr,
+xml_schema_attribute_get_schema_type_name(void *attr,
                           const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(attr)->schema_type_name;
@@ -592,11 +592,11 @@ axis2_xml_schema_attribute_get_schema_type_name(void *attr,
                           
                               
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_schema_type_name(void *attr,
+xml_schema_attribute_set_schema_type_name(void *attr,
                           const axis2_env_t *env,
                           axis2_qname_t *sch_type_name)
 {
-    axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
+    xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, sch_type_name, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
     if(NULL != attr_impl->schema_type_name)
@@ -608,19 +608,19 @@ axis2_xml_schema_attribute_set_schema_type_name(void *attr,
 
 }
                           
-axis2_xml_schema_use_t*  AXIS2_CALL 
-axis2_xml_schema_attribute_get_use(void *attr,
+xml_schema_use_t*  AXIS2_CALL 
+xml_schema_attribute_get_use(void *attr,
              const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(attr)->use;
 }
              
 axis2_status_t  AXIS2_CALL 
-axis2_xml_schema_attribute_set_use(void *attr,
+xml_schema_attribute_set_use(void *attr,
              const axis2_env_t *env,
-             axis2_xml_schema_use_t *use)
+             xml_schema_use_t *use)
 {
-    axis2_xml_schema_attribute_impl_t *attr_impl = NULL;
+    xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, use, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
     if(NULL != attr_impl->use)
@@ -633,7 +633,7 @@ axis2_xml_schema_attribute_set_use(void *attr,
 }
              
 axis2_char_t*  AXIS2_CALL
-axis2_xml_schema_attribute_to_string(void *attr,
+xml_schema_attribute_to_string(void *attr,
                const axis2_env_t *env,
                axis2_char_t *prefix,
                int tab)

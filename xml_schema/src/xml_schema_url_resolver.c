@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_url_resolver.h>
+#include <xml_schema_url_resolver.h>
 #include <axis2_url.h>
 #include <axis2_file_handler.h>
 #include <platforms/axis2_platform_auto_sense.h>
@@ -29,7 +29,7 @@ get_file_url(const axis2_env_t *env,
         axis2_char_t *path);
 
 AXIS2_EXTERN xml_schema_input_source_t* AXIS2_CALL
-axis2_xml_schema_url_resolver_resolve_entity(
+xml_schema_url_resolver_resolve_entity(
         const axis2_env_t *env,
         axis2_char_t *ns,
         axis2_char_t *schema_location,

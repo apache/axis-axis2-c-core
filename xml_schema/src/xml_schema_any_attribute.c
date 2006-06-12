@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_any_attribute.h>
+#include <xml_schema_any_attribute.h>
 #include <axis2_utils.h>
 
 
-typedef struct axis2_xml_schema_any_attribute_impl 
-                axis2_xml_schema_any_attribute_impl_t;
+typedef struct xml_schema_any_attribute_impl 
+                xml_schema_any_attribute_impl_t;
 
 /** 
- *   @breaf  axis2_xml_schema_any_attribute_impl
+ *   @breaf  xml_schema_any_attribute_impl
  */ 
-struct axis2_xml_schema_any_attribute_impl
+struct xml_schema_any_attribute_impl
 {
-    axis2_xml_schema_any_attribute_t any_attr;
+    xml_schema_any_attribute_t any_attr;
     
-    axis2_xml_schema_annotated_t *annotated;
+    xml_schema_annotated_t *annotated;
     
     axis2_hash_t *methods;
     
-    axis2_xml_schema_content_processing_t *process_content;
+    xml_schema_content_processing_t *process_content;
     /**
      * Namespaces containing the elements that can be used.
      */
-    axis2_xml_schema_types_t obj_type;
+    xml_schema_types_t obj_type;
     
     axis2_hash_t* ht_super;
          
@@ -44,52 +44,52 @@ struct axis2_xml_schema_any_attribute_impl
 };
 
 #define AXIS2_INTF_TO_IMPL(any_attr) \
-        ((axis2_xml_schema_any_attribute_impl_t *) any_attr)
+        ((xml_schema_any_attribute_impl_t *) any_attr)
 
 /******************* function prototypes **********************************/
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_any_attribute_free(void *any_attr,
+xml_schema_any_attribute_free(void *any_attr,
                         const axis2_env_t *env);
 
-axis2_xml_schema_annotated_t *AXIS2_CALL
-axis2_xml_schema_any_attribute_get_base_impl(void *any_attr,
+xml_schema_annotated_t *AXIS2_CALL
+xml_schema_any_attribute_get_base_impl(void *any_attr,
                                     const axis2_env_t *env);
 
-axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_any_attribute_get_type(void *any_attr,
+xml_schema_types_t AXIS2_CALL
+xml_schema_any_attribute_get_type(void *any_attr,
                                     const axis2_env_t *env);
 
 axis2_hash_t* AXIS2_CALL
-axis2_xml_schema_any_attribute_super_objs(void *any_attr,
+xml_schema_any_attribute_super_objs(void *any_attr,
                                         const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
-axis2_xml_schema_any_attribute_get_namespace(void *any_attr,
+xml_schema_any_attribute_get_namespace(void *any_attr,
                                     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_any_attribute_set_namespace(void *any_attr,
+xml_schema_any_attribute_set_namespace(void *any_attr,
                                             const axis2_env_t *env,
                                             axis2_char_t *ns);
 
-axis2_xml_schema_content_processing_t *AXIS2_CALL
-axis2_xml_schema_any_attribute_get_process_content(void *any_attr,
+xml_schema_content_processing_t *AXIS2_CALL
+xml_schema_any_attribute_get_process_content(void *any_attr,
                                             const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_any_attribute_set_process_content(void *any_attr,
+xml_schema_any_attribute_set_process_content(void *any_attr,
                         const axis2_env_t *env,
-                        axis2_xml_schema_content_processing_t *process_content);
+                        xml_schema_content_processing_t *process_content);
                                                 
  /************************ end function prototypes ******************************/
  
-AXIS2_EXTERN axis2_xml_schema_any_attribute_t * AXIS2_CALL
-axis2_xml_schema_any_attribute_create(const axis2_env_t *env)
+AXIS2_EXTERN xml_schema_any_attribute_t * AXIS2_CALL
+xml_schema_any_attribute_create(const axis2_env_t *env)
 {
-    axis2_xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
+    xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
     
     any_attr_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_any_attribute_impl_t));
+                    sizeof(xml_schema_any_attribute_impl_t));
     if(!any_attr_impl)
     {
         AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -102,47 +102,47 @@ axis2_xml_schema_any_attribute_create(const axis2_env_t *env)
     any_attr_impl->process_content = NULL;
     any_attr_impl->methods = NULL;
     any_attr_impl->ht_super = NULL;
-    any_attr_impl->obj_type = AXIS2_XML_SCHEMA_ANY_ATTRIBUTE;
+    any_attr_impl->obj_type = XML_SCHEMA_ANY_ATTRIBUTE;
     any_attr_impl->any_attr.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_any_attribute_ops_t));
+                    sizeof(xml_schema_any_attribute_ops_t));
 
     if(!any_attr_impl->any_attr.ops)
     {
-        axis2_xml_schema_any_attribute_free(&(any_attr_impl->any_attr), env);
+        xml_schema_any_attribute_free(&(any_attr_impl->any_attr), env);
         AXIS2_ERROR_SET(env->error , 
             AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    any_attr_impl->process_content = axis2_xml_schema_content_processing_create(env, 
+    any_attr_impl->process_content = xml_schema_content_processing_create(env, 
             "none");
     if(!any_attr_impl->process_content)
     {
-        axis2_xml_schema_any_attribute_free(&(any_attr_impl->any_attr), env);
+        xml_schema_any_attribute_free(&(any_attr_impl->any_attr), env);
         return NULL;
     }            
     any_attr_impl->any_attr.ops->free = 
-        axis2_xml_schema_any_attribute_free;
+        xml_schema_any_attribute_free;
         
     any_attr_impl->any_attr.ops->get_type =
-        axis2_xml_schema_any_attribute_get_type;
+        xml_schema_any_attribute_get_type;
     
     any_attr_impl->any_attr.ops->super_objs =
-        axis2_xml_schema_any_attribute_super_objs;                
+        xml_schema_any_attribute_super_objs;                
     
     any_attr_impl->any_attr.ops->get_base_impl = 
-        axis2_xml_schema_any_attribute_get_base_impl;
+        xml_schema_any_attribute_get_base_impl;
     
     any_attr_impl->any_attr.ops->get_namespace = 
-        axis2_xml_schema_any_attribute_get_namespace;
+        xml_schema_any_attribute_get_namespace;
     
     any_attr_impl->any_attr.ops->set_namespace = 
-        axis2_xml_schema_any_attribute_set_namespace;
+        xml_schema_any_attribute_set_namespace;
     
     any_attr_impl->any_attr.ops->get_process_content = 
-        axis2_xml_schema_any_attribute_get_process_content;
+        xml_schema_any_attribute_get_process_content;
     
     any_attr_impl->any_attr.ops->set_process_content = 
-        axis2_xml_schema_any_attribute_set_process_content;
+        xml_schema_any_attribute_set_process_content;
 
     any_attr_impl->methods = axis2_hash_make(env);
     if(!any_attr_impl->methods)
@@ -151,24 +151,24 @@ axis2_xml_schema_any_attribute_create(const axis2_env_t *env)
         return NULL;
     }
     axis2_hash_set(any_attr_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_any_attribute_free);
+            xml_schema_any_attribute_free);
     axis2_hash_set(any_attr_impl->methods, "get_type", AXIS2_HASH_KEY_STRING,
-            axis2_xml_schema_any_attribute_get_type);
+            xml_schema_any_attribute_get_type);
     axis2_hash_set(any_attr_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
-            axis2_xml_schema_any_attribute_super_objs);            
+            xml_schema_any_attribute_super_objs);            
     axis2_hash_set(any_attr_impl->methods, "get_namespace", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_any_attribute_get_namespace);
+            xml_schema_any_attribute_get_namespace);
     axis2_hash_set(any_attr_impl->methods, "set_namespace", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_any_attribute_set_namespace);
+            xml_schema_any_attribute_set_namespace);
     axis2_hash_set(any_attr_impl->methods, "get_process_content", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_any_attribute_get_process_content);
+            AXIS2_HASH_KEY_STRING, xml_schema_any_attribute_get_process_content);
     axis2_hash_set(any_attr_impl->methods, "set_process_content", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_any_attribute_set_process_content);
+            AXIS2_HASH_KEY_STRING, xml_schema_any_attribute_set_process_content);
     
-    any_attr_impl->annotated = axis2_xml_schema_annotated_create(env);
+    any_attr_impl->annotated = xml_schema_annotated_create(env);
     if(!any_attr_impl->methods)
     {
-        axis2_xml_schema_any_attribute_free(&(any_attr_impl->any_attr), env);
+        xml_schema_any_attribute_free(&(any_attr_impl->any_attr), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
@@ -176,31 +176,31 @@ axis2_xml_schema_any_attribute_create(const axis2_env_t *env)
     any_attr_impl->ht_super = axis2_hash_make(env);
     if(!any_attr_impl->methods)
     {
-        axis2_xml_schema_any_attribute_free(&(any_attr_impl->any_attr), env);
+        xml_schema_any_attribute_free(&(any_attr_impl->any_attr), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(any_attr_impl->ht_super, "AXIS2_XML_SCHEMA_ANY_ATTRIBUTE", 
+    axis2_hash_set(any_attr_impl->ht_super, "XML_SCHEMA_ANY_ATTRIBUTE", 
             AXIS2_HASH_KEY_STRING, &(any_attr_impl->any_attr));
             
-    axis2_hash_set(any_attr_impl->ht_super, "AXIS2_XML_SCHEMA_ANNOTATED", 
+    axis2_hash_set(any_attr_impl->ht_super, "XML_SCHEMA_ANNOTATED", 
             AXIS2_HASH_KEY_STRING, any_attr_impl->annotated);
 
-    axis2_hash_set(any_attr_impl->ht_super, "AXIS2_XML_SCHEMA_OBJ", 
+    axis2_hash_set(any_attr_impl->ht_super, "XML_SCHEMA_OBJ", 
             AXIS2_HASH_KEY_STRING, 
-            AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(any_attr_impl->annotated, env));
+            XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(any_attr_impl->annotated, env));
                             
-    axis2_xml_schema_annotated_resolve_methods(
+    xml_schema_annotated_resolve_methods(
             &(any_attr_impl->any_attr.base), env, any_attr_impl->annotated, 
             any_attr_impl->methods); 
     return &(any_attr_impl->any_attr);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_any_attribute_free(void *any_attr,
+xml_schema_any_attribute_free(void *any_attr,
                             const axis2_env_t *env)
 {
-    axis2_xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
+    xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     any_attr_impl = AXIS2_INTF_TO_IMPL(any_attr);
@@ -217,7 +217,7 @@ axis2_xml_schema_any_attribute_free(void *any_attr,
     }
     if(NULL != any_attr_impl->process_content)
     {
-        AXIS2_XML_SCHEMA_CONTENT_PROCESSING_FREE(any_attr_impl->process_content, env);
+        XML_SCHEMA_CONTENT_PROCESSING_FREE(any_attr_impl->process_content, env);
         any_attr_impl->process_content = NULL;
     }
  
@@ -229,7 +229,7 @@ axis2_xml_schema_any_attribute_free(void *any_attr,
    
     if(NULL != any_attr_impl->annotated)
     {
-        AXIS2_XML_SCHEMA_ANNOTATED_FREE(any_attr_impl->annotated, env);
+        XML_SCHEMA_ANNOTATED_FREE(any_attr_impl->annotated, env);
         any_attr_impl->annotated = NULL;
     }
     
@@ -249,11 +249,11 @@ axis2_xml_schema_any_attribute_free(void *any_attr,
     return AXIS2_SUCCESS;
 }
 
-axis2_xml_schema_annotated_t *AXIS2_CALL
-axis2_xml_schema_any_attribute_get_base_impl(void *any_attr,
+xml_schema_annotated_t *AXIS2_CALL
+xml_schema_any_attribute_get_base_impl(void *any_attr,
                                 const axis2_env_t *env)
 {
-    axis2_xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
+    xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     any_attr_impl = AXIS2_INTF_TO_IMPL(any_attr);
@@ -261,21 +261,21 @@ axis2_xml_schema_any_attribute_get_base_impl(void *any_attr,
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_xml_schema_any_attribute_get_namespace(void *any_attr,
+xml_schema_any_attribute_get_namespace(void *any_attr,
                                     const axis2_env_t *env)
 {
-    axis2_xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
+    xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
     any_attr_impl = AXIS2_INTF_TO_IMPL(any_attr);
     
     return any_attr_impl->ns;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_any_attribute_set_namespace(void *any_attr,
+xml_schema_any_attribute_set_namespace(void *any_attr,
                                             const axis2_env_t *env,
                                             axis2_char_t *namespc)
 {
-    axis2_xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
+    xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     any_attr_impl = AXIS2_INTF_TO_IMPL(any_attr);
@@ -291,8 +291,8 @@ axis2_xml_schema_any_attribute_set_namespace(void *any_attr,
     return AXIS2_SUCCESS;
 }
 
-axis2_xml_schema_content_processing_t *AXIS2_CALL
-axis2_xml_schema_any_attribute_get_process_content(void *any_attr,
+xml_schema_content_processing_t *AXIS2_CALL
+xml_schema_any_attribute_get_process_content(void *any_attr,
                                             const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(any_attr)->process_content;
@@ -300,19 +300,19 @@ axis2_xml_schema_any_attribute_get_process_content(void *any_attr,
 
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_any_attribute_set_process_content(
+xml_schema_any_attribute_set_process_content(
         void *any_attr,
         const axis2_env_t *env,
-        axis2_xml_schema_content_processing_t *process_content)
+        xml_schema_content_processing_t *process_content)
 {
-    axis2_xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
+    xml_schema_any_attribute_impl_t *any_attr_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     any_attr_impl = AXIS2_INTF_TO_IMPL(any_attr);
     
     if(NULL != any_attr_impl->process_content)
     {
-        AXIS2_XML_SCHEMA_CONTENT_PROCESSING_FREE(
+        XML_SCHEMA_CONTENT_PROCESSING_FREE(
             any_attr_impl->process_content, env);
         any_attr_impl->process_content = NULL;
     }
@@ -321,15 +321,15 @@ axis2_xml_schema_any_attribute_set_process_content(
 }
 
 
-axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_any_attribute_get_type(void *any_attr,
+xml_schema_types_t AXIS2_CALL
+xml_schema_any_attribute_get_type(void *any_attr,
                                     const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(any_attr)->obj_type;    
 }                                    
 
 axis2_hash_t* AXIS2_CALL
-axis2_xml_schema_any_attribute_super_objs(void *any_attr,
+xml_schema_any_attribute_super_objs(void *any_attr,
                                         const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(any_attr)->ht_super;

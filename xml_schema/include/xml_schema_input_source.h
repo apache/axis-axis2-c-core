@@ -18,11 +18,11 @@
 #define XML_SCHEMA_INPUT_SOURCE_H
  
 /**
- * @file axis2_xml_schema_input_source.h
+ * @file xml_schema_input_source.h
  */ 
 
-/** @defgroup axis2_xml_schema
-  * @ingroup axis2_xml_schema
+/** @defgroup xml_schema
+  * @ingroup xml_schema
   * @{
   */ 
 

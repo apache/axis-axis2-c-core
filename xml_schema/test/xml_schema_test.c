@@ -17,7 +17,7 @@
 #include <CuTest.h>
 #include <stdio.h>
 #include <axiom.h>
-#include <axis2_xml_schema_includes.h>
+#include <xml_schema_includes.h>
 #include <axis2_env.h>
 #include "xml_schema_test.h"
 
@@ -68,9 +68,9 @@ void test_simple_type_schema_generation(CuTest *tc)
 {
     const axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
-    axis2_xml_schema_obj_table_t *obj_table = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
+    xml_schema_obj_table_t *obj_table = NULL;
     axis2_array_list_t *list = NULL;
     int i = 0;
     
@@ -80,17 +80,17 @@ void test_simple_type_schema_generation(CuTest *tc)
     
     env = axis2_env_create_all("test.log", 1);
     om_doc = get_document_from_filename(env, filename);
-    sch_collection = axis2_xml_schema_collection_create(env);
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(
+    sch_collection = xml_schema_collection_create(env);
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
         sch_collection, env, om_doc);
     
     CuAssertPtrNotNull(tc, schema); 
     
-    obj_table = AXIS2_XML_SCHEMA_GET_ELEMENTS(schema, env);
+    obj_table = XML_SCHEMA_GET_ELEMENTS(schema, env);
     
     CuAssertPtrNotNull(tc, obj_table); 
     
-    list = AXIS2_XML_SCHEMA_OBJ_TABLE_GET_VALUES(obj_table, env);
+    list = XML_SCHEMA_OBJ_TABLE_GET_VALUES(obj_table, env);
     
     CuAssertPtrNotNull(tc, list);
     
@@ -100,7 +100,7 @@ void test_simple_type_schema_generation(CuTest *tc)
             
         CuAssertPtrNotNull(tc, ele);
         
-        sch_type = AXIS2_XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele, env);
+        sch_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele, env);
         
         CuAssertPtrNotNull(tc, sch_type);
         
@@ -114,8 +114,8 @@ void test_any_attribute(CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
     void *ele = NULL;
     void *sch_type = NULL;
@@ -129,32 +129,32 @@ void test_any_attribute(CuTest *tc)
     
     om_doc = get_document_from_filename(env, filename);
     
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
         sch_collection, env, om_doc);
     
     qn = axis2_qname_create(env, "AnyAttContainer",
             "http://unqualified-elements.example.com", NULL);
     
-    ele = AXIS2_XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
+    ele = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
 
     CuAssertPtrNotNull(tc, ele);
     
-    sch_type = AXIS2_XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele, env);
+    sch_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele, env);
     
     CuAssertPtrNotNull(tc, sch_type);    
 
-    particle = AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(sch_type, env);
+    particle = XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(sch_type, env);
     
     CuAssertPtrNotNull(tc, particle);
     
-    any_attr = AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_ANY_ATTRIBUTE(sch_type, env);
+    any_attr = XML_SCHEMA_COMPLEX_TYPE_GET_ANY_ATTRIBUTE(sch_type, env);
     
     CuAssertPtrNotNull(tc, any_attr);
     
     
-    cnt_processing = AXIS2_XML_SCHEMA_ANY_ATTRIBUTE_GET_PROCESS_CONTENT(any_attr, env);
+    cnt_processing = XML_SCHEMA_ANY_ATTRIBUTE_GET_PROCESS_CONTENT(any_attr, env);
     
 }
 
@@ -162,8 +162,8 @@ void test_block_content(CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
     void *ele = NULL;
     void *block = NULL;
@@ -175,23 +175,23 @@ void test_block_content(CuTest *tc)
     
     om_doc = get_document_from_filename(env, filename);
     
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
         sch_collection, env, om_doc);
     
     qn = axis2_qname_create(env, "complexElt",
             "http://soapinterop.org/xsd", NULL);
     
-    ele = AXIS2_XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
+    ele = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
 
     CuAssertPtrNotNull(tc, ele);
     
-    block = AXIS2_XML_SCHEMA_ELEMENT_GET_BLOCK(ele, env);
+    block = XML_SCHEMA_ELEMENT_GET_BLOCK(ele, env);
     
     CuAssertPtrNotNull(tc, block); 
     
-    value = AXIS2_XML_SCHEMA_ENUM_GET_VALUE(block, env);
+    value = XML_SCHEMA_ENUM_GET_VALUE(block, env);
     
     CuAssertPtrNotNull(tc, value);
 }
@@ -201,14 +201,14 @@ void test_circular_schema(CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
     axis2_char_t *filename = NULL;
     axis2_array_list_t *schemas = NULL;
     
     env = axis2_env_create_all("test.log", 1);
 
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
 
     filename = "./../test-resources/circular/a.xsd";
     
@@ -218,12 +218,12 @@ void test_circular_schema(CuTest *tc)
     
     CuAssertPtrNotNull(tc, om_doc);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(sch_collection, env,
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(sch_collection, env,
         om_doc, "./../test-resources/circular");
     
     CuAssertPtrNotNull(tc, schema);
     
-    schemas = AXIS2_XML_SCHEMA_COLLECTION_GET_SCHEMAS(sch_collection, env);
+    schemas = XML_SCHEMA_COLLECTION_GET_SCHEMAS(sch_collection, env);
     
     CuAssertPtrNotNull(tc, schemas);
     
@@ -236,13 +236,13 @@ void test_schema_import1(CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
     axis2_char_t *filename = NULL;
     
     env = axis2_env_create_all("test.log", 1);
     
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
    
     filename = "./..//test-resources/importBase.xsd";
    
@@ -252,14 +252,14 @@ void test_schema_import1(CuTest *tc)
     
     CuAssertPtrNotNull(tc, om_doc);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(sch_collection, env,
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(sch_collection, env,
         om_doc, "./../test-resources");
     
     CuAssertPtrNotNull(tc, schema);
 
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(sch_collection, env,
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(sch_collection, env,
         om_doc, "./../test-resources/");
         
     CuAssertPtrNotNull(tc, schema);        
@@ -269,8 +269,8 @@ void test_mixed_content(CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
     void *sch_ele = NULL;
     
@@ -283,14 +283,14 @@ void test_mixed_content(CuTest *tc)
     
     om_doc = get_document_from_filename(env, filename);
     
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(sch_collection,
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT_WITH_URI(sch_collection,
         env, om_doc, NULL);        
     
     CuAssertPtrNotNull(tc, schema);
     
-    sch_ele = AXIS2_XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
+    sch_ele = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
     
     CuAssertPtrNotNull(tc, sch_ele);
     
@@ -300,13 +300,13 @@ void test_local_elements(CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
     void *ele = NULL;
     void *cmp_type = NULL;
     void *seq = NULL;
-    axis2_xml_schema_obj_collection_t *items = NULL;
+    xml_schema_obj_collection_t *items = NULL;
     void *sub_element1 = NULL;
     axis2_qname_t *qn1 = NULL;
     axis2_char_t *uri1 = NULL;
@@ -322,35 +322,35 @@ void test_local_elements(CuTest *tc)
     
     om_doc = get_document_from_filename(env, filename);
     
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
         sch_collection, env, om_doc);
     
     qn = axis2_qname_create(env, "unQualifiedLocals",
             "http://unqualified-elements.example.com", NULL);
     
-    ele = AXIS2_XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
+    ele = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
 
     CuAssertPtrNotNull(tc, ele);
     
-    cmp_type = AXIS2_XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele, env);
+    cmp_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele, env);
     
     CuAssertPtrNotNull(tc, cmp_type); 
     
-    seq = AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(cmp_type, env);
+    seq = XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(cmp_type, env);
     
     CuAssertPtrNotNull(tc, seq);
     
-    items = AXIS2_XML_SCHEMA_GROUP_BASE_GET_ITEMS(seq, env);
+    items = XML_SCHEMA_GROUP_BASE_GET_ITEMS(seq, env);
     
     CuAssertPtrNotNull(tc, items);
     
-    sub_element1 = AXIS2_XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, 0);
+    sub_element1 = XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, 0);
     
     CuAssertPtrNotNull(tc, sub_element1);
     
-    qn1 = AXIS2_XML_SCHEMA_ELEMENT_GET_QNAME(sub_element1, env);
+    qn1 = XML_SCHEMA_ELEMENT_GET_QNAME(sub_element1, env);
     
     CuAssertPtrNotNull(tc, qn1);
     
@@ -358,11 +358,11 @@ void test_local_elements(CuTest *tc)
     
     CuAssertPtrNotNull(tc, uri1);
     
-    sub_element2 = AXIS2_XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, 1);
+    sub_element2 = XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, 1);
     
     CuAssertPtrNotNull(tc, sub_element2);
     
-    qn2 = AXIS2_XML_SCHEMA_ELEMENT_GET_QNAME(sub_element2, env);
+    qn2 = XML_SCHEMA_ELEMENT_GET_QNAME(sub_element2, env);
     
     CuAssertPtrNotNull(tc, qn2);
     
@@ -377,14 +377,14 @@ void test_element_refs(CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
     axis2_char_t *filename = NULL;
     void *element = NULL;
     void *cmp_type = NULL;
     void *particle = NULL;
-    axis2_xml_schema_obj_collection_t *items = NULL;
+    xml_schema_obj_collection_t *items = NULL;
     int count = 0;
     int i =0;
     
@@ -394,39 +394,39 @@ void test_element_refs(CuTest *tc)
     
     om_doc = get_document_from_filename(env, filename);
     
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(sch_collection, env, om_doc);
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(sch_collection, env, om_doc);
     
     CuAssertPtrNotNull(tc, schema);
     
     qn = axis2_qname_create(env, "attTests" , "http://soapinterop.org/types", NULL);
     
-    element = AXIS2_XML_SCHEMA_COLLECTION_GET_ELEMENT_BY_QNAME(
+    element = XML_SCHEMA_COLLECTION_GET_ELEMENT_BY_QNAME(
         sch_collection, env, qn);
     
     CuAssertPtrNotNull(tc, element);
     
-    cmp_type = AXIS2_XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(element, env);
+    cmp_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(element, env);
     
     CuAssertPtrNotNull(tc, cmp_type);
     
-    particle = AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(cmp_type, env);
+    particle = XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(cmp_type, env);
     
-    items = AXIS2_XML_SCHEMA_GROUP_BASE_GET_ITEMS(particle, env);
+    items = XML_SCHEMA_GROUP_BASE_GET_ITEMS(particle, env);
     
     CuAssertPtrNotNull(tc, items);
     
-    count = AXIS2_XML_SCHEMA_OBJ_COLLECTION_GET_COUNT(items, env);
+    count = XML_SCHEMA_OBJ_COLLECTION_GET_COUNT(items, env);
     
     for(i = 0; i< count; i++)
     {
         axis2_qname_t *name = NULL;
         void *inner_ele = NULL;
-        inner_ele = AXIS2_XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, i);
+        inner_ele = XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, i);
         CuAssertPtrNotNull(tc, inner_ele);
         
-        name = AXIS2_XML_SCHEMA_ELEMENT_GET_REF_NAME(inner_ele, env);
+        name = XML_SCHEMA_ELEMENT_GET_REF_NAME(inner_ele, env);
         
         CuAssertPtrNotNull(tc, name);
         
@@ -437,8 +437,8 @@ void test_forward_refs(CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
     axis2_char_t *filename = NULL;
     void *element = NULL;
@@ -453,29 +453,29 @@ void test_forward_refs(CuTest *tc)
 
     om_doc = get_document_from_filename(env, filename);
     
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(sch_collection, env, om_doc);
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(sch_collection, env, om_doc);
     
     CuAssertPtrNotNull(tc, schema);
 
     qn = axis2_qname_create(env, "attrTest",
         "http://soapinterop.org/types", NULL);
         
-    element = AXIS2_XML_SCHEMA_COLLECTION_GET_ELEMENT_BY_QNAME(
+    element = XML_SCHEMA_COLLECTION_GET_ELEMENT_BY_QNAME(
         sch_collection, env, qn);
         
     CuAssertPtrNotNull(tc, element);
     
-    sch_type = AXIS2_XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(element, env);
+    sch_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(element, env);
     
     CuAssertPtrNotNull(tc, sch_type);
  
-    type =  AXIS2_XML_SCHEMA_TYPE_GET_TYPE(sch_type, env);
+    type =  XML_SCHEMA_TYPE_GET_TYPE(sch_type, env);
 
-    CuAssertIntEquals(tc, AXIS2_XML_SCHEMA_COMPLEX_TYPE, type);
+    CuAssertIntEquals(tc, XML_SCHEMA_COMPLEX_TYPE, type);
     
-    seq = AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(sch_type, env);
+    seq = XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(sch_type, env);
     
     CuAssertPtrNotNull(tc, seq);
 }
@@ -484,8 +484,8 @@ void test_local_unnamed_simple_type(CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
     axis2_char_t *xml = NULL;
     axis2_xml_reader_t *reader = NULL;
     axiom_stax_builder_t *builder = NULL;
@@ -514,7 +514,7 @@ void test_local_unnamed_simple_type(CuTest *tc)
     env = axis2_env_create_all("test.log", 1);
     
     reader = axis2_xml_reader_create_for_memory(env, xml, AXIS2_STRLEN(xml), NULL,
-        AXIS2_XML_PARSER_TYPE_BUFFER);
+        XML_SCHEMA_PARSER_TYPE_BUFFER);
 
     builder = axiom_stax_builder_create(env, reader);
     
@@ -522,9 +522,9 @@ void test_local_unnamed_simple_type(CuTest *tc)
     
     AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(sch_collection, env, om_doc);
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(sch_collection, env, om_doc);
   
     CuAssertPtrNotNull(tc, schema);  
 }
@@ -533,8 +533,8 @@ void test_simple_restriction(CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
     axis2_qname_t *type_qname = NULL;
     axis2_qname_t *element_qname = NULL;
     void *element = NULL;
@@ -548,23 +548,23 @@ void test_simple_restriction(CuTest *tc)
     
     AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(sch_collection, env, om_doc);
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(sch_collection, env, om_doc);
   
     CuAssertPtrNotNull(tc, schema);      
 
     type_qname = axis2_qname_create(env, "layoutComponentType",
         "http://soapinterop.org/types", NULL);
         
-    simple_type = AXIS2_XML_SCHEMA_GET_TYPE_BY_QNAME(schema, env, type_qname);
+    simple_type = XML_SCHEMA_GET_TYPE_BY_QNAME(schema, env, type_qname);
     
     CuAssertPtrNotNull(tc, simple_type);
 
     element_qname = axis2_qname_create(env, "foo", 
         "http://soapinterop.org/types", NULL);
         
-    element = AXIS2_XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, element_qname);
+    element = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, element_qname);
     
     CuAssertPtrNotNull(tc, element);        
 }
@@ -573,15 +573,15 @@ void test_unqualified_schemas(CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
     axis2_qname_t *element_qname = NULL;
     
     void *element = NULL;
     
     void *cmp_type = NULL;
     
-    axis2_xml_schema_obj_collection_t *items = NULL;
+    xml_schema_obj_collection_t *items = NULL;
     
     int count = 0;
     
@@ -597,39 +597,39 @@ void test_unqualified_schemas(CuTest *tc)
     
     AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(sch_collection, env, om_doc);
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(sch_collection, env, om_doc);
   
     CuAssertPtrNotNull(tc, schema);      
 
     element_qname = axis2_qname_create(env, "complexElt",
         "http://soapinterop.org/xsd", NULL);
         
-    element = AXIS2_XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, element_qname);
+    element = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, element_qname);
     
     CuAssertPtrNotNull(tc, element);
     
-    cmp_type = AXIS2_XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(element, env);
+    cmp_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(element, env);
     
     CuAssertPtrNotNull(tc, cmp_type);
     
-    particle = AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(cmp_type, env);
+    particle = XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(cmp_type, env);
     
     CuAssertPtrNotNull(tc, particle);
 
-    items = AXIS2_XML_SCHEMA_GROUP_BASE_GET_ITEMS(particle, env);
+    items = XML_SCHEMA_GROUP_BASE_GET_ITEMS(particle, env);
     
-    count = AXIS2_XML_SCHEMA_OBJ_COLLECTION_GET_COUNT(items, env);
+    count = XML_SCHEMA_OBJ_COLLECTION_GET_COUNT(items, env);
     
     for(i = 0; i < count; i++)
     {
         void *ele2 = NULL;
         void *ele_sch_type = NULL;
         
-        ele2 = AXIS2_XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, i);
+        ele2 = XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, i);
         
-        ele_sch_type = AXIS2_XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele2, env);
+        ele_sch_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele2, env);
         
         CuAssertPtrNotNull(tc, ele_sch_type);
     }    

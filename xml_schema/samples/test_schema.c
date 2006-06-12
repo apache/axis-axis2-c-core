@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_includes.h>
+#include <xml_schema_includes.h>
 #include <stdio.h>
 #include <axis2_env.h>
 #include <axis2_utils_defines.h>
@@ -27,8 +27,8 @@ xml_schema_test(
     axis2_xml_reader_t *xml_reader      = NULL;
     axiom_stax_builder_t *om_builder = NULL;
     axiom_document_t *om_doc         = NULL;
-    axis2_xml_schema_collection_t *schema_collection = NULL;
-    axis2_xml_schema_t *schema          = NULL;
+    xml_schema_collection_t *schema_collection = NULL;
+    xml_schema_t *schema          = NULL;
     
     xml_reader = 
     axis2_xml_reader_create_for_file(env, filename, NULL);
@@ -41,9 +41,9 @@ xml_schema_test(
     
     AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     
-    schema_collection = axis2_xml_schema_collection_create(env);
+    schema_collection = xml_schema_collection_create(env);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
         schema_collection, env, om_doc);
         
     if(NULL != schema)

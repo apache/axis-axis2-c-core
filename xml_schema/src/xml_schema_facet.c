@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_facet.h>
+#include <xml_schema_facet.h>
 #include <axiom_element.h>
 #include <axiom_node.h>
 
-typedef struct axis2_xml_schema_facet_impl 
-                axis2_xml_schema_facet_impl_t;
+typedef struct xml_schema_facet_impl 
+                xml_schema_facet_impl_t;
                 
-struct axis2_xml_schema_facet_impl
+struct xml_schema_facet_impl
 {
-    axis2_xml_schema_facet_t facet;
+    xml_schema_facet_t facet;
     
-    axis2_xml_schema_annotated_t *annotated;
+    xml_schema_annotated_t *annotated;
     
     axis2_hash_t *methods;
     
@@ -39,71 +39,71 @@ struct axis2_xml_schema_facet_impl
 };
 
 #define AXIS2_INTF_TO_IMPL(facet) \
-        ((axis2_xml_schema_facet_impl_t *) facet)
+        ((xml_schema_facet_impl_t *) facet)
 
 /****************** function prototypes ***************************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_facet_free(
+xml_schema_facet_free(
         void *facet,
         const axis2_env_t *env);
 
-axis2_xml_schema_annotated_t *AXIS2_CALL
-axis2_xml_schema_facet_get_base_impl(
+xml_schema_annotated_t *AXIS2_CALL
+xml_schema_facet_get_base_impl(
         void *facet,
         const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
-axis2_xml_schema_facet_is_fixed(
+xml_schema_facet_is_fixed(
         void *facet,
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_facet_set_fixed(
+xml_schema_facet_set_fixed(
         void *facet,
         const axis2_env_t *env,
         axis2_bool_t fixed);
 
 axis2_char_t *AXIS2_CALL
-axis2_xml_schema_facet_get_value(
+xml_schema_facet_get_value(
         void *facet,
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_facet_set_value(
+xml_schema_facet_set_value(
         void *facet,
         const axis2_env_t *env,
         axis2_char_t *value);
             
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_facet_set_facet_type(
+xml_schema_facet_set_facet_type(
         void *facet,
         const axis2_env_t *env,
         int facet_type);
             
-axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_facet_get_type(
+xml_schema_types_t AXIS2_CALL
+xml_schema_facet_get_type(
         void *facet,
         const axis2_env_t *env);
                                                                                
 axis2_hash_t* AXIS2_CALL
-axis2_xml_schema_facet_super_objs(
+xml_schema_facet_super_objs(
         void *facet,
         const axis2_env_t *env);
                                                                
 /********************** end function prototypes *******************************/
 
-AXIS2_EXTERN axis2_xml_schema_facet_t * AXIS2_CALL
-axis2_xml_schema_facet_create(const axis2_env_t *env,
+AXIS2_EXTERN xml_schema_facet_t * AXIS2_CALL
+xml_schema_facet_create(const axis2_env_t *env,
                               axis2_char_t *value,
                               axis2_bool_t fixed,
-                              axis2_xml_schema_types_t type)
+                              xml_schema_types_t type)
 {
-    axis2_xml_schema_facet_impl_t *facet_impl = NULL;
+    xml_schema_facet_impl_t *facet_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     facet_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_facet_impl_t));
+                    sizeof(xml_schema_facet_impl_t));
     if(!facet_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -119,79 +119,79 @@ axis2_xml_schema_facet_create(const axis2_env_t *env,
     facet_impl->value = AXIS2_STRDUP(value, env);
     
     facet_impl->facet.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_facet_ops_t));
+                    sizeof(xml_schema_facet_ops_t));
     if(!facet_impl->facet.ops)
     {
-        axis2_xml_schema_facet_free(&(facet_impl->facet), env);
+        xml_schema_facet_free(&(facet_impl->facet), env);
         return NULL;
     }
     
     facet_impl->facet.ops->free = 
-        axis2_xml_schema_facet_free;
+        xml_schema_facet_free;
     facet_impl->facet.ops->get_base_impl = 
-        axis2_xml_schema_facet_get_base_impl;
+        xml_schema_facet_get_base_impl;
     facet_impl->facet.ops->is_fixed = 
-        axis2_xml_schema_facet_is_fixed;
+        xml_schema_facet_is_fixed;
     facet_impl->facet.ops->set_fixed = 
-        axis2_xml_schema_facet_set_fixed;
+        xml_schema_facet_set_fixed;
     facet_impl->facet.ops->get_value = 
-        axis2_xml_schema_facet_get_value;
+        xml_schema_facet_get_value;
     facet_impl->facet.ops->set_value = 
-        axis2_xml_schema_facet_set_value;
+        xml_schema_facet_set_value;
     facet_impl->facet.ops->get_type = 
-        axis2_xml_schema_facet_get_type; 
+        xml_schema_facet_get_type; 
     facet_impl->facet.ops->set_facet_type =
-        axis2_xml_schema_facet_set_facet_type;
+        xml_schema_facet_set_facet_type;
     facet_impl->facet.ops->super_objs =
-        axis2_xml_schema_facet_super_objs;                       
+        xml_schema_facet_super_objs;                       
    
     facet_impl->methods = axis2_hash_make(env);
     if(!facet_impl->methods)
     {
-        axis2_xml_schema_facet_free(&(facet_impl->facet), env);
+        xml_schema_facet_free(&(facet_impl->facet), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(facet_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_facet_free);
+            xml_schema_facet_free);
     axis2_hash_set(facet_impl->methods, "is_fixed", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_facet_is_fixed);
+            AXIS2_HASH_KEY_STRING, xml_schema_facet_is_fixed);
     axis2_hash_set(facet_impl->methods, "set_fixed", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_facet_set_fixed);
+            AXIS2_HASH_KEY_STRING, xml_schema_facet_set_fixed);
     axis2_hash_set(facet_impl->methods, "get_value", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_facet_get_value);
+            AXIS2_HASH_KEY_STRING, xml_schema_facet_get_value);
     axis2_hash_set(facet_impl->methods, "set_value", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_facet_set_value);
+            AXIS2_HASH_KEY_STRING, xml_schema_facet_set_value);
 
     axis2_hash_set(facet_impl->methods, "get_type", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_facet_get_type);
+            AXIS2_HASH_KEY_STRING, xml_schema_facet_get_type);
     axis2_hash_set(facet_impl->methods, "super_objs",
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_facet_super_objs);
+            AXIS2_HASH_KEY_STRING, xml_schema_facet_super_objs);
             
 
-    facet_impl->annotated = axis2_xml_schema_annotated_create(env);
+    facet_impl->annotated = xml_schema_annotated_create(env);
     if(!facet_impl->annotated)
     {
-        axis2_xml_schema_facet_free(&(facet_impl->facet), env);
+        xml_schema_facet_free(&(facet_impl->facet), env);
         return NULL;
     }
     
     facet_impl->ht_super = axis2_hash_make(env);
     if(!facet_impl->ht_super)
     {
-        axis2_xml_schema_facet_free(&(facet_impl->facet), env);
+        xml_schema_facet_free(&(facet_impl->facet), env);
         return NULL;
     }
-    axis2_hash_set(facet_impl->ht_super, "AXIS2_XML_SCHEMA_FACET",
+    axis2_hash_set(facet_impl->ht_super, "XML_SCHEMA_FACET",
             AXIS2_HASH_KEY_STRING, &(facet_impl->facet));
-    axis2_hash_set(facet_impl->ht_super, "AXIS2_XML_SCHEMA_ANNOTATED",
+    axis2_hash_set(facet_impl->ht_super, "XML_SCHEMA_ANNOTATED",
             AXIS2_HASH_KEY_STRING, facet_impl->annotated);
-    axis2_hash_set(facet_impl->ht_super, "AXIS2_XML_SCHEMA_OBJ",
+    axis2_hash_set(facet_impl->ht_super, "XML_SCHEMA_OBJ",
             AXIS2_HASH_KEY_STRING, 
-            AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(
+            XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(
                 facet_impl->annotated, env));
             
-    status = axis2_xml_schema_annotated_resolve_methods(
+    status = xml_schema_annotated_resolve_methods(
             &(facet_impl->facet.base), env, facet_impl->annotated, 
             facet_impl->methods);
     
@@ -199,10 +199,10 @@ axis2_xml_schema_facet_create(const axis2_env_t *env,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_facet_free(void *facet,
+xml_schema_facet_free(void *facet,
                             const axis2_env_t *env)
 {
-    axis2_xml_schema_facet_impl_t *facet_impl = NULL;
+    xml_schema_facet_impl_t *facet_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     facet_impl = AXIS2_INTF_TO_IMPL(facet);
@@ -213,7 +213,7 @@ axis2_xml_schema_facet_free(void *facet,
     }
     if(NULL != facet_impl->annotated)
     {
-        AXIS2_XML_SCHEMA_ANNOTATED_FREE(facet_impl->annotated, env);
+        XML_SCHEMA_ANNOTATED_FREE(facet_impl->annotated, env);
         facet_impl->annotated = NULL;
     }
     
@@ -235,18 +235,18 @@ axis2_xml_schema_facet_free(void *facet,
     return AXIS2_SUCCESS;
 }
 
-axis2_xml_schema_annotated_t *AXIS2_CALL
-axis2_xml_schema_facet_get_base_impl(void *facet,
+xml_schema_annotated_t *AXIS2_CALL
+xml_schema_facet_get_base_impl(void *facet,
                                 const axis2_env_t *env)
 {
-    axis2_xml_schema_facet_impl_t *facet_impl = NULL;
+    xml_schema_facet_impl_t *facet_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     facet_impl = AXIS2_INTF_TO_IMPL(facet);
     return facet_impl->annotated;
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_xml_schema_facet_is_fixed(void *facet,
+xml_schema_facet_is_fixed(void *facet,
                                             const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -254,7 +254,7 @@ axis2_xml_schema_facet_is_fixed(void *facet,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_facet_set_fixed(void *facet,
+xml_schema_facet_set_fixed(void *facet,
                                   const axis2_env_t *env,
                                   axis2_bool_t fixed)
 {
@@ -264,7 +264,7 @@ axis2_xml_schema_facet_set_fixed(void *facet,
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_xml_schema_facet_get_value(void *facet,
+xml_schema_facet_get_value(void *facet,
                                  const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -272,11 +272,11 @@ axis2_xml_schema_facet_get_value(void *facet,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_facet_set_value(void *facet,
+xml_schema_facet_set_value(void *facet,
                                  const axis2_env_t *env,
                                  axis2_char_t *value)
 {
-    axis2_xml_schema_facet_impl_t *facet_impl = NULL;
+    xml_schema_facet_impl_t *facet_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     facet_impl =  AXIS2_INTF_TO_IMPL(facet);
     if(NULL != facet_impl->value)
@@ -288,8 +288,8 @@ axis2_xml_schema_facet_set_value(void *facet,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_xml_schema_facet_t* AXIS2_CALL
-axis2_xml_schema_facet_construct (const axis2_env_t *env,
+AXIS2_EXTERN xml_schema_facet_t* AXIS2_CALL
+xml_schema_facet_construct (const axis2_env_t *env,
                                   axiom_node_t *node)
 {
     axiom_element_t *om_ele = NULL;
@@ -310,51 +310,51 @@ axis2_xml_schema_facet_construct (const axis2_env_t *env,
 
     if(AXIS2_STRCMP(localname,"enumeration") == 0)
     {
-        facet_type = AXIS2_XML_SCHEMA_ENUMARATION_FACET;
+        facet_type = XML_SCHEMA_ENUMARATION_FACET;
     }
     else if(AXIS2_STRCMP(localname,"maxExclusive") == 0)
     {
-        facet_type = AXIS2_XML_SCHEMA_MAX_EXCLUSIVE_FACET;
+        facet_type = XML_SCHEMA_MAX_EXCLUSIVE_FACET;
     }
     else if(AXIS2_STRCMP(localname,"maxInclusive") == 0)
     {
-        facet_type = AXIS2_XML_SCHEMA_MAX_INCLUSIVE_FACET;
+        facet_type = XML_SCHEMA_MAX_INCLUSIVE_FACET;
     }
     else if(AXIS2_STRCMP(localname,"minExclusive") == 0)
     {
-        facet_type = AXIS2_XML_SCHEMA_MIN_EXCLUSIVE_FACET;
+        facet_type = XML_SCHEMA_MIN_EXCLUSIVE_FACET;
     }
     else if(AXIS2_STRCMP(localname,"maxInclusive") == 0)
     {
-        facet_type = AXIS2_XML_SCHEMA_MIN_INCLUSIVE_FACET;
+        facet_type = XML_SCHEMA_MIN_INCLUSIVE_FACET;
     }
     else if(AXIS2_STRCMP(localname,"pattern") == 0)
     {
-        facet_type = AXIS2_XML_SCHEMA_PATTERN_FACET;
+        facet_type = XML_SCHEMA_PATTERN_FACET;
     }
     else if(AXIS2_STRCMP(localname,"whiteSpace") == 0)
     {
-        facet_type = AXIS2_XML_SCHEMA_WHITE_SPACE_FACET;
+        facet_type = XML_SCHEMA_WHITE_SPACE_FACET;
     }
     else if(AXIS2_STRCMP(localname,"fractionDigits") == 0)
     {
-        facet_type = AXIS2_XML_SCHEMA_FRACTION_DIGITS_FACET;
+        facet_type = XML_SCHEMA_FRACTION_DIGITS_FACET;
     }
     else if(AXIS2_STRCMP(localname,"length") == 0)
     {
-        facet_type = AXIS2_XML_SCHEMA_LENGTH_FACET;
+        facet_type = XML_SCHEMA_LENGTH_FACET;
     }
     else if(AXIS2_STRCMP(localname,"maxLength") == 0)
     {
-        facet_type = AXIS2_XML_SCHEMA_MAX_LENGTH_FACET;
+        facet_type = XML_SCHEMA_MAX_LENGTH_FACET;
     }
     else if(AXIS2_STRCMP(localname,"minLength") == 0)
     {
-        facet_type = AXIS2_XML_SCHEMA_MIN_LENGTH_FACET;
+        facet_type = XML_SCHEMA_MIN_LENGTH_FACET;
     }
     else if(AXIS2_STRCMP(localname,"totalDigits") == 0)
     {
-        facet_type = AXIS2_XML_SCHEMA_TATAL_DIGITS_FACET;
+        facet_type = XML_SCHEMA_TATAL_DIGITS_FACET;
     }
     else 
         return NULL;
@@ -370,32 +370,32 @@ axis2_xml_schema_facet_construct (const axis2_env_t *env,
     else
         return NULL;
         
-    facet = axis2_xml_schema_facet_create(env, value, is_fixed, facet_type);
+    facet = xml_schema_facet_create(env, value, is_fixed, facet_type);
     if(NULL != facet)
         return facet;            
     return NULL;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_facet_set_facet_type(void *facet,
+xml_schema_facet_set_facet_type(void *facet,
                                       const axis2_env_t *env,
                                       int facet_type)
 {
-    axis2_xml_schema_facet_impl_t *facet_impl = NULL;
+    xml_schema_facet_impl_t *facet_impl = NULL;
     facet_impl = AXIS2_INTF_TO_IMPL(facet);
     facet_impl->obj_type = facet_type;
     return AXIS2_SUCCESS;
 }                                      
                                       
-axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_facet_get_type(void *facet,
+xml_schema_types_t AXIS2_CALL
+xml_schema_facet_get_type(void *facet,
                                       const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(facet)->obj_type;
 } 
 
 axis2_hash_t* AXIS2_CALL
-axis2_xml_schema_facet_super_objs(void *facet,
+xml_schema_facet_super_objs(void *facet,
                                   const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(facet)->ht_super;

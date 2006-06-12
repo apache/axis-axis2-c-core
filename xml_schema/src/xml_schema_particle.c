@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_particle.h>
+#include <xml_schema_particle.h>
 #include <axis2_utils.h>
 
-typedef struct axis2_xml_schema_particle_impl 
-                    axis2_xml_schema_particle_impl_t;
+typedef struct xml_schema_particle_impl 
+                    xml_schema_particle_impl_t;
 
 /** 
  * @brief Other Extension Struct Impl
  *   Axis2 Other Extension  
  */ 
-struct axis2_xml_schema_particle_impl
+struct xml_schema_particle_impl
 {
-    axis2_xml_schema_particle_t particle;
+    xml_schema_particle_t particle;
     
-    axis2_xml_schema_annotated_t *annotated;
+    xml_schema_annotated_t *annotated;
     
-    axis2_xml_schema_types_t obj_type;
+    xml_schema_types_t obj_type;
     
     axis2_hash_t *ht_super;
     
@@ -47,57 +47,57 @@ struct axis2_xml_schema_particle_impl
 };
 
 #define AXIS2_INTF_TO_IMPL(particle) \
-        ((axis2_xml_schema_particle_impl_t *) particle)
+        ((xml_schema_particle_impl_t *) particle)
         
 /*************** function prototypes *****************************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_particle_free(
+xml_schema_particle_free(
         void *particle,
         const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
-axis2_xml_schema_particle_super_objs(
+xml_schema_particle_super_objs(
         void *particle,
         const axis2_env_t *env);
 
-axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_particle_get_type(
+xml_schema_types_t AXIS2_CALL 
+xml_schema_particle_get_type(
         void *particle,
         const axis2_env_t *env);
 
-axis2_xml_schema_annotated_t *AXIS2_CALL
-axis2_xml_schema_particle_get_base_impl(void *particle,
+xml_schema_annotated_t *AXIS2_CALL
+xml_schema_particle_get_base_impl(void *particle,
                                         const axis2_env_t *env);
 
 long AXIS2_CALL
-axis2_xml_schema_particle_get_max_occurs(void *particle,
+xml_schema_particle_get_max_occurs(void *particle,
                                             const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_particle_set_max_occurs(void *particle,
+xml_schema_particle_set_max_occurs(void *particle,
                                             const axis2_env_t *env,
                                             long max_occurs);
 
 long AXIS2_CALL
-axis2_xml_schema_particle_get_min_occurs(void *particle,
+xml_schema_particle_get_min_occurs(void *particle,
                                             const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_particle_set_min_occurs(void *particle,
+xml_schema_particle_set_min_occurs(void *particle,
                                             const axis2_env_t *env,
                                             long min_occurs);
 
 /*************** function prototypes *****************************************/
 
-AXIS2_EXTERN axis2_xml_schema_particle_t * AXIS2_CALL
-axis2_xml_schema_particle_create(const axis2_env_t *env)
+AXIS2_EXTERN xml_schema_particle_t * AXIS2_CALL
+xml_schema_particle_create(const axis2_env_t *env)
 {
-    axis2_xml_schema_particle_impl_t *particle_impl = NULL;
+    xml_schema_particle_impl_t *particle_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     particle_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_particle_impl_t));
+                    sizeof(xml_schema_particle_impl_t));
     
     if(!particle_impl)
     {
@@ -106,7 +106,7 @@ axis2_xml_schema_particle_create(const axis2_env_t *env)
         return NULL;
     }
     particle_impl->annotated = NULL;
-    particle_impl->obj_type = AXIS2_XML_SCHEMA_PARTICLE;
+    particle_impl->obj_type = XML_SCHEMA_PARTICLE;
     particle_impl->ht_super = NULL;
     particle_impl->particle.ops = NULL;
     particle_impl->particle.base.ops = NULL;
@@ -116,84 +116,84 @@ axis2_xml_schema_particle_create(const axis2_env_t *env)
     
     
     particle_impl->particle.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_particle_ops_t));
+                    sizeof(xml_schema_particle_ops_t));
 
     if(!particle_impl->particle.ops)
     {
-        axis2_xml_schema_particle_free(&(particle_impl->particle), env);
+        xml_schema_particle_free(&(particle_impl->particle), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
     particle_impl->particle.ops->free = 
-            axis2_xml_schema_particle_free;
+            xml_schema_particle_free;
     
     particle_impl->particle.ops->super_objs = 
-            axis2_xml_schema_particle_super_objs;
+            xml_schema_particle_super_objs;
     
     particle_impl->particle.ops->get_type = 
-            axis2_xml_schema_particle_get_type;
+            xml_schema_particle_get_type;
     
     particle_impl->particle.ops->get_base_impl = 
-            axis2_xml_schema_particle_get_base_impl;
+            xml_schema_particle_get_base_impl;
     
     particle_impl->particle.ops->get_max_occurs = 
-            axis2_xml_schema_particle_get_max_occurs;
+            xml_schema_particle_get_max_occurs;
     
     particle_impl->particle.ops->set_max_occurs = 
-            axis2_xml_schema_particle_set_max_occurs;
+            xml_schema_particle_set_max_occurs;
     
     particle_impl->particle.ops->get_min_occurs = 
-            axis2_xml_schema_particle_get_min_occurs;
+            xml_schema_particle_get_min_occurs;
     
     particle_impl->particle.ops->set_min_occurs = 
-            axis2_xml_schema_particle_set_min_occurs;
+            xml_schema_particle_set_min_occurs;
    
     particle_impl->methods = axis2_hash_make(env);
     if(!particle_impl->methods)
     {
-        axis2_xml_schema_particle_free(&(particle_impl->particle), env);
+        xml_schema_particle_free(&(particle_impl->particle), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     axis2_hash_set(particle_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_particle_free);
+            xml_schema_particle_free);
     axis2_hash_set(particle_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_particle_super_objs);
+            xml_schema_particle_super_objs);
     axis2_hash_set(particle_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_particle_get_type);
+            xml_schema_particle_get_type);
     axis2_hash_set(particle_impl->methods, "get_max_occurs", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_particle_get_max_occurs);
+            AXIS2_HASH_KEY_STRING, xml_schema_particle_get_max_occurs);
     axis2_hash_set(particle_impl->methods, "set_max_occurs", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_particle_set_max_occurs);
+            AXIS2_HASH_KEY_STRING, xml_schema_particle_set_max_occurs);
     axis2_hash_set(particle_impl->methods, "get_min_occurs", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_particle_get_min_occurs);
+            AXIS2_HASH_KEY_STRING, xml_schema_particle_get_min_occurs);
     axis2_hash_set(particle_impl->methods, "set_min_occurs", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_particle_set_min_occurs);
+            AXIS2_HASH_KEY_STRING, xml_schema_particle_set_min_occurs);
     
-    particle_impl->annotated = axis2_xml_schema_annotated_create(env);
+    particle_impl->annotated = xml_schema_annotated_create(env);
     if(!particle_impl->annotated)
     {
-        axis2_xml_schema_particle_free(&(particle_impl->particle), env);
+        xml_schema_particle_free(&(particle_impl->particle), env);
         return NULL;        
     }
 
     particle_impl->ht_super = axis2_hash_make(env);
     if(!particle_impl->ht_super)
     {
-        axis2_xml_schema_particle_free(&(particle_impl->particle), env);
+        xml_schema_particle_free(&(particle_impl->particle), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(particle_impl->ht_super, "AXIS2_XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(particle_impl->ht_super, "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING, 
             &(particle_impl->particle));
-    axis2_hash_set(particle_impl->ht_super, "AXIS2_XML_SCHEMA_ANNOTATED", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(particle_impl->ht_super, "XML_SCHEMA_ANNOTATED", AXIS2_HASH_KEY_STRING, 
             particle_impl->annotated);
             
-    axis2_hash_set(particle_impl->ht_super, "AXIS2_XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING,
-            AXIS2_XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(particle_impl->annotated, env));           
+    axis2_hash_set(particle_impl->ht_super, "XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING,
+            XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(particle_impl->annotated, env));           
             
-    status = axis2_xml_schema_annotated_resolve_methods(
+    status = xml_schema_annotated_resolve_methods(
             &(particle_impl->particle.base), env, particle_impl->annotated, 
             particle_impl->methods);
     
@@ -201,10 +201,10 @@ axis2_xml_schema_particle_create(const axis2_env_t *env)
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_particle_free(void *particle,
+xml_schema_particle_free(void *particle,
                                     const axis2_env_t *env)
 {
-    axis2_xml_schema_particle_impl_t *particle_impl = NULL;
+    xml_schema_particle_impl_t *particle_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     particle_impl = AXIS2_INTF_TO_IMPL(particle);
@@ -223,7 +223,7 @@ axis2_xml_schema_particle_free(void *particle,
 
     if(NULL != particle_impl->annotated)
     {
-        AXIS2_XML_SCHEMA_ANNOTATED_FREE(particle_impl->annotated, env);
+        XML_SCHEMA_ANNOTATED_FREE(particle_impl->annotated, env);
         particle_impl->annotated = NULL;
     }
     
@@ -247,52 +247,52 @@ axis2_xml_schema_particle_free(void *particle,
 }
 
 axis2_hash_t *AXIS2_CALL
-axis2_xml_schema_particle_super_objs(void *particle,
+xml_schema_particle_super_objs(void *particle,
                                 const axis2_env_t *env)
 {
-    axis2_xml_schema_particle_impl_t *particle_impl = NULL;
+    xml_schema_particle_impl_t *particle_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     particle_impl = AXIS2_INTF_TO_IMPL(particle);
     return particle_impl->ht_super;
 }
 
-axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_particle_get_type(void *particle,
+xml_schema_types_t AXIS2_CALL
+xml_schema_particle_get_type(void *particle,
                                 const axis2_env_t *env)
 {
-    axis2_xml_schema_particle_impl_t *particle_impl = NULL;
+    xml_schema_particle_impl_t *particle_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     particle_impl = AXIS2_INTF_TO_IMPL(particle);
     return particle_impl->obj_type;
 }
 
-axis2_xml_schema_annotated_t *AXIS2_CALL
-axis2_xml_schema_particle_get_base_impl(void *particle,
+xml_schema_annotated_t *AXIS2_CALL
+xml_schema_particle_get_base_impl(void *particle,
                                 const axis2_env_t *env)
 {
-    axis2_xml_schema_particle_impl_t *particle_impl = NULL;
+    xml_schema_particle_impl_t *particle_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     particle_impl = AXIS2_INTF_TO_IMPL(particle);
     return particle_impl->annotated;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_particle_resolve_methods(
-                                axis2_xml_schema_particle_t *particle,
+xml_schema_particle_resolve_methods(
+                                xml_schema_particle_t *particle,
                                 const axis2_env_t *env,
-                                axis2_xml_schema_particle_t *particle_impl,
+                                xml_schema_particle_t *particle_impl,
                                 axis2_hash_t *methods)
 {
-    axis2_xml_schema_particle_impl_t *sch_particle_impl = NULL;
+    xml_schema_particle_impl_t *sch_particle_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, particle_impl, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
-    sch_particle_impl = (axis2_xml_schema_particle_impl_t *) particle_impl;
+    sch_particle_impl = (xml_schema_particle_impl_t *) particle_impl;
     
     particle->ops = AXIS2_MALLOC(env->allocator, 
-            sizeof(axis2_xml_schema_particle_ops_t));
+            sizeof(xml_schema_particle_ops_t));
     if(!particle->ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -330,23 +330,23 @@ axis2_xml_schema_particle_resolve_methods(
             particle->ops->set_min_occurs = 
             sch_particle_impl->particle.ops->set_min_occurs;
     
-    return axis2_xml_schema_annotated_resolve_methods(&(particle->base), 
+    return xml_schema_annotated_resolve_methods(&(particle->base), 
             env, sch_particle_impl->annotated, methods);
 }
 
 long AXIS2_CALL
-axis2_xml_schema_particle_get_max_occurs(void *particle,
+xml_schema_particle_get_max_occurs(void *particle,
                                             const axis2_env_t *env)
 {
-    axis2_xml_schema_particle_impl_t *particle_impl = NULL;
+    xml_schema_particle_impl_t *particle_impl = NULL;
     axis2_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    ht_super = AXIS2_XML_SCHEMA_PARTICLE_SUPER_OBJS(particle, env);
+    ht_super = XML_SCHEMA_PARTICLE_SUPER_OBJS(particle, env);
     if(NULL != ht_super)
     {
         particle_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
-                "AXIS2_XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING));
+                "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING));
         if(!particle_impl)
             return AXIS2_FAILURE;                
     }
@@ -354,19 +354,19 @@ axis2_xml_schema_particle_get_max_occurs(void *particle,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_particle_set_max_occurs(void *particle,
+xml_schema_particle_set_max_occurs(void *particle,
                                             const axis2_env_t *env,
                                             long max_occurs)
 {
-    axis2_xml_schema_particle_impl_t *particle_impl = NULL;
+    xml_schema_particle_impl_t *particle_impl = NULL;
     axis2_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    ht_super = AXIS2_XML_SCHEMA_PARTICLE_SUPER_OBJS(particle, env);
+    ht_super = XML_SCHEMA_PARTICLE_SUPER_OBJS(particle, env);
     if(NULL != ht_super)
     {
         particle_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
-                "AXIS2_XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING));
+                "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING));
         if(!particle_impl)
             return AXIS2_FAILURE;                
     }
@@ -376,18 +376,18 @@ axis2_xml_schema_particle_set_max_occurs(void *particle,
 }
 
 long AXIS2_CALL
-axis2_xml_schema_particle_get_min_occurs(void *particle,
+xml_schema_particle_get_min_occurs(void *particle,
                                             const axis2_env_t *env)
 {
-    axis2_xml_schema_particle_impl_t *particle_impl = NULL;
+    xml_schema_particle_impl_t *particle_impl = NULL;
     axis2_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    ht_super = AXIS2_XML_SCHEMA_PARTICLE_SUPER_OBJS(particle, env);
+    ht_super = XML_SCHEMA_PARTICLE_SUPER_OBJS(particle, env);
     if(NULL != ht_super)
     {
         particle_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
-                "AXIS2_XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING));
+                "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING));
         if(!particle_impl)
             return AXIS2_FAILURE;                
     }
@@ -396,19 +396,19 @@ axis2_xml_schema_particle_get_min_occurs(void *particle,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_particle_set_min_occurs(void *particle,
+xml_schema_particle_set_min_occurs(void *particle,
                                             const axis2_env_t *env,
                                             long min_occurs)
 {
-    axis2_xml_schema_particle_impl_t *particle_impl = NULL;
+    xml_schema_particle_impl_t *particle_impl = NULL;
     axis2_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    ht_super = AXIS2_XML_SCHEMA_PARTICLE_SUPER_OBJS(particle, env);
+    ht_super = XML_SCHEMA_PARTICLE_SUPER_OBJS(particle, env);
     if(NULL != ht_super)
     {
         particle_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, 
-                "AXIS2_XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING));
+                "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING));
         if(!particle_impl)
             return AXIS2_FAILURE;                
     }

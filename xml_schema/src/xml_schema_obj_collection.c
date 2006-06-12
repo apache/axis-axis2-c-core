@@ -14,89 +14,89 @@
  * limitations under the License.
  */
  
-#include <axis2_xml_schema_obj_collection.h>
+#include <xml_schema_obj_collection.h>
 #include <axis2_hash.h>
 #include <axis2_utils.h>
 
-typedef struct axis2_xml_schema_obj_collection_impl 
-                axis2_xml_schema_obj_collection_impl_t;
+typedef struct xml_schema_obj_collection_impl 
+                xml_schema_obj_collection_impl_t;
 
 /** 
  * @brief Xml Schema Obj Struct Impl
  *   Axis2 Xml Schema Obj  
  */ 
-struct axis2_xml_schema_obj_collection_impl
+struct xml_schema_obj_collection_impl
 {
-    axis2_xml_schema_obj_collection_t obj_collection;
+    xml_schema_obj_collection_t obj_collection;
     axis2_array_list_t *objs;
 };
 
 #define AXIS2_INTF_TO_IMPL(obj_collection) \
-        ((axis2_xml_schema_obj_collection_impl_t *) obj_collection)
+        ((xml_schema_obj_collection_impl_t *) obj_collection)
 
 /**************************** end function prototypes ************************/ 
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_obj_collection_free(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_free(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env);
 
 int AXIS2_CALL
-axis2_xml_schema_obj_collection_get_count(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_get_count(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env);
 
-axis2_xml_schema_obj_t *AXIS2_CALL
-axis2_xml_schema_obj_collection_get_item(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_t *AXIS2_CALL
+xml_schema_obj_collection_get_item(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env,
         int i);
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_obj_collection_set_item(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_set_item(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env,
         int i,
         void *item);
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_obj_collection_add(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_add(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env,
         void *item);
 
 axis2_bool_t AXIS2_CALL
-axis2_xml_schema_obj_collection_contains(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_contains(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env,
         void *item);
 
 int AXIS2_CALL
-axis2_xml_schema_obj_collection_index_of(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_index_of(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env,
         void *item);
 
 void* AXIS2_CALL
-axis2_xml_schema_obj_collection_remove_at(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_remove_at(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env,
         int index);
         
 axis2_array_list_t* AXIS2_CALL
-axis2_xml_schema_obj_collection_to_array(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_to_array(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env); 
         
                   
 
-AXIS2_EXTERN axis2_xml_schema_obj_collection_t * AXIS2_CALL
-axis2_xml_schema_obj_collection_create(const axis2_env_t *env)
+AXIS2_EXTERN xml_schema_obj_collection_t * AXIS2_CALL
+xml_schema_obj_collection_create(const axis2_env_t *env)
 {
-    axis2_xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
+    xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
     
     obj_collection_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_obj_collection_impl_t));
+                    sizeof(xml_schema_obj_collection_impl_t));
     if(!obj_collection_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -105,48 +105,48 @@ axis2_xml_schema_obj_collection_create(const axis2_env_t *env)
 
     obj_collection_impl->objs = NULL;
     obj_collection_impl->obj_collection.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_obj_collection_ops_t)); 
+                    sizeof(xml_schema_obj_collection_ops_t)); 
 
     if(!obj_collection_impl->obj_collection.ops)
     {
-        AXIS2_XML_SCHEMA_OBJ_COLLECTION_FREE(&(obj_collection_impl->obj_collection), env);
+        XML_SCHEMA_OBJ_COLLECTION_FREE(&(obj_collection_impl->obj_collection), env);
         return NULL;            
     }
     
     obj_collection_impl->objs = axis2_array_list_create(env, 0);
     if(!obj_collection_impl->objs)
     {
-        axis2_xml_schema_obj_collection_free(&(obj_collection_impl->obj_collection), env);
+        xml_schema_obj_collection_free(&(obj_collection_impl->obj_collection), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     obj_collection_impl->obj_collection.ops->free = 
-            axis2_xml_schema_obj_collection_free;
+            xml_schema_obj_collection_free;
     obj_collection_impl->obj_collection.ops->get_count = 
-            axis2_xml_schema_obj_collection_get_count;
+            xml_schema_obj_collection_get_count;
     obj_collection_impl->obj_collection.ops->get_item = 
-            axis2_xml_schema_obj_collection_get_item;
+            xml_schema_obj_collection_get_item;
     obj_collection_impl->obj_collection.ops->set_item = 
-            axis2_xml_schema_obj_collection_set_item;
+            xml_schema_obj_collection_set_item;
     obj_collection_impl->obj_collection.ops->add = 
-            axis2_xml_schema_obj_collection_add;
+            xml_schema_obj_collection_add;
     obj_collection_impl->obj_collection.ops->contains = 
-            axis2_xml_schema_obj_collection_contains;
+            xml_schema_obj_collection_contains;
     obj_collection_impl->obj_collection.ops->index_of = 
-            axis2_xml_schema_obj_collection_index_of;
+            xml_schema_obj_collection_index_of;
     obj_collection_impl->obj_collection.ops->remove_at = 
-            axis2_xml_schema_obj_collection_remove_at;
+            xml_schema_obj_collection_remove_at;
 
     return &(obj_collection_impl->obj_collection);
 }
 
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_obj_collection_free(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_free(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env)
 {
-    axis2_xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
+    xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
 
     obj_collection_impl = AXIS2_INTF_TO_IMPL(obj_collection);
 
@@ -169,23 +169,23 @@ axis2_xml_schema_obj_collection_free(
 
 
 int AXIS2_CALL
-axis2_xml_schema_obj_collection_get_count(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_get_count(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env)
 {
-    axis2_xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
+    xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     obj_collection_impl = AXIS2_INTF_TO_IMPL(obj_collection);
     return AXIS2_ARRAY_LIST_SIZE(obj_collection_impl->objs, env);
 }
 
-axis2_xml_schema_obj_t *AXIS2_CALL
-axis2_xml_schema_obj_collection_get_item(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_t *AXIS2_CALL
+xml_schema_obj_collection_get_item(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env,
         int i)
 {
-    axis2_xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
+    xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     obj_collection_impl = AXIS2_INTF_TO_IMPL(obj_collection);
@@ -193,13 +193,13 @@ axis2_xml_schema_obj_collection_get_item(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_obj_collection_set_item(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_set_item(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env,
         int i,
         void *item)
 {
-    axis2_xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
+    xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, item, AXIS2_FAILURE);
@@ -210,12 +210,12 @@ axis2_xml_schema_obj_collection_set_item(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_obj_collection_add(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_add(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env,
         void *item)
 {
-    axis2_xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
+    xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, item, AXIS2_FAILURE);
@@ -224,12 +224,12 @@ axis2_xml_schema_obj_collection_add(
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_xml_schema_obj_collection_contains(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_contains(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env,
         void *item)
 {
-    axis2_xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
+    xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, item, AXIS2_FAILURE);
@@ -239,12 +239,12 @@ axis2_xml_schema_obj_collection_contains(
 }
 
 int AXIS2_CALL
-axis2_xml_schema_obj_collection_index_of(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_index_of(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env,
         void *item)
 {
-    axis2_xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
+    xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, item, AXIS2_FAILURE);
@@ -253,12 +253,12 @@ axis2_xml_schema_obj_collection_index_of(
 }
 
 void* AXIS2_CALL
-axis2_xml_schema_obj_collection_remove_at(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_remove_at(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env,
         int index)
 {
-    axis2_xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
+    xml_schema_obj_collection_impl_t *obj_collection_impl = NULL;
     void *item = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     obj_collection_impl = AXIS2_INTF_TO_IMPL(obj_collection);
@@ -267,8 +267,8 @@ axis2_xml_schema_obj_collection_remove_at(
 }
 
 axis2_array_list_t* AXIS2_CALL
-axis2_xml_schema_obj_collection_to_array(
-        axis2_xml_schema_obj_collection_t *obj_collection,
+xml_schema_obj_collection_to_array(
+        xml_schema_obj_collection_t *obj_collection,
         const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(obj_collection)->objs;

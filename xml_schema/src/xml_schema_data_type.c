@@ -14,56 +14,56 @@
  * limitations under the License.
  */
  
-#include <axis2_xml_schema_data_type.h>
-#include <axis2_xml_tokenized_type.h>
+#include <xml_schema_data_type.h>
+#include <xml_schema_tokenized_type.h>
 #include <axis2_hash.h>
 #include <axis2_utils.h>
 
-typedef struct axis2_xml_schema_data_type_impl 
-            axis2_xml_schema_data_type_impl_t;
+typedef struct xml_schema_data_type_impl 
+            xml_schema_data_type_impl_t;
 
 /** 
  * @brief Xml Schema Data Type Struct Impl
  *   Axis2 Xml Schema Data Type  
  */ 
-struct axis2_xml_schema_data_type_impl
+struct xml_schema_data_type_impl
 {
-    axis2_xml_schema_data_type_t data_type;
+    xml_schema_data_type_t data_type;
 };
 
 #define AXIS2_INTF_TO_IMPL(data_type) \
-        ((axis2_xml_schema_data_type_impl_t *) data_type)
+        ((xml_schema_data_type_impl_t *) data_type)
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_data_type_free(void *data_type,
+xml_schema_data_type_free(void *data_type,
                 const axis2_env_t *env);
 
 void * AXIS2_CALL
-axis2_xml_schema_data_type_parse_value(void *data_type,
+xml_schema_data_type_parse_value(void *data_type,
                         const axis2_env_t *env,
                         void *input);
 
 void *AXIS2_CALL
-axis2_xml_schema_data_type_value_type(void *data_type,
+xml_schema_data_type_value_type(void *data_type,
                         const axis2_env_t *env);
 
-axis2_xml_tokenized_type_t *AXIS2_CALL
-axis2_xml_schema_data_type_tokenized_type(void *data_type,
+xml_schema_tokenized_type_t *AXIS2_CALL
+xml_schema_data_type_tokenized_type(void *data_type,
                                             const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_xml_schema_data_type_t * AXIS2_CALL
-axis2_xml_schema_data_type_create(const axis2_env_t *env)
+AXIS2_EXTERN xml_schema_data_type_t * AXIS2_CALL
+xml_schema_data_type_create(const axis2_env_t *env)
 {
-    axis2_xml_schema_data_type_impl_t *data_type_impl = NULL;
+    xml_schema_data_type_impl_t *data_type_impl = NULL;
     
     data_type_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_data_type_impl_t));
+                    sizeof(xml_schema_data_type_impl_t));
     if(NULL != data_type_impl)
     {
         return NULL;
     }
     data_type_impl->data_type.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_data_type_ops_t)); 
+                    sizeof(xml_schema_data_type_ops_t)); 
      if(NULL != data_type_impl->data_type.ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -71,23 +71,23 @@ axis2_xml_schema_data_type_create(const axis2_env_t *env)
     }
 
     data_type_impl->data_type.ops->free = 
-        axis2_xml_schema_data_type_free;
+        xml_schema_data_type_free;
     data_type_impl->data_type.ops->parse_value = 
-        axis2_xml_schema_data_type_parse_value;
+        xml_schema_data_type_parse_value;
     data_type_impl->data_type.ops->value_type = 
-        axis2_xml_schema_data_type_value_type;
+        xml_schema_data_type_value_type;
     data_type_impl->data_type.ops->tokenized_type = 
-        axis2_xml_schema_data_type_tokenized_type;
+        xml_schema_data_type_tokenized_type;
 
     return &(data_type_impl->data_type);
 }
 
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_data_type_free(void *data_type,
+xml_schema_data_type_free(void *data_type,
                 const axis2_env_t *env)
 {
-    axis2_xml_schema_data_type_impl_t *data_type_impl = NULL;
+    xml_schema_data_type_impl_t *data_type_impl = NULL;
 
     data_type_impl = AXIS2_INTF_TO_IMPL(data_type);
 
@@ -106,11 +106,11 @@ axis2_xml_schema_data_type_free(void *data_type,
 }
 
 void * AXIS2_CALL
-axis2_xml_schema_data_type_parse_value(void *data_type,
+xml_schema_data_type_parse_value(void *data_type,
                         const axis2_env_t *env,
                         void *input)
 {
-    axis2_xml_schema_data_type_impl_t *data_type_impl = NULL;
+    xml_schema_data_type_impl_t *data_type_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     data_type_impl = AXIS2_INTF_TO_IMPL(data_type);
@@ -118,10 +118,10 @@ axis2_xml_schema_data_type_parse_value(void *data_type,
 }
 
 void *AXIS2_CALL
-axis2_xml_schema_data_type_value_type(void *data_type,
+xml_schema_data_type_value_type(void *data_type,
                         const axis2_env_t *env)
 {
-    axis2_xml_schema_data_type_impl_t *data_type_impl = NULL;
+    xml_schema_data_type_impl_t *data_type_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     data_type_impl = AXIS2_INTF_TO_IMPL(data_type);
@@ -129,11 +129,11 @@ axis2_xml_schema_data_type_value_type(void *data_type,
     return NULL;
 }
 
-axis2_xml_tokenized_type_t *AXIS2_CALL
-axis2_xml_schema_data_type_tokenized_type(void *data_type,
+xml_schema_tokenized_type_t *AXIS2_CALL
+xml_schema_data_type_tokenized_type(void *data_type,
                                             const axis2_env_t *env)
 {
-    axis2_xml_schema_data_type_impl_t *data_type_impl = NULL;
+    xml_schema_data_type_impl_t *data_type_impl = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     data_type_impl = AXIS2_INTF_TO_IMPL(data_type);

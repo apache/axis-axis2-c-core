@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-#include <axis2_xml_schema_annotated.h>
-#include <axis2_xml_schema_annotation.h>
+#include <xml_schema_annotated.h>
+#include <xml_schema_annotation.h>
 #include <axis2_utils.h>
 
-typedef struct axis2_xml_schema_annotated_impl 
-                    axis2_xml_schema_annotated_impl_t;
+typedef struct xml_schema_annotated_impl 
+                    xml_schema_annotated_impl_t;
 
 /** 
  * @brief Other Extension Struct Impl
  *   Axis2 Other Extension  
  */ 
-struct axis2_xml_schema_annotated_impl
+struct xml_schema_annotated_impl
 {
-    axis2_xml_schema_annotated_t annotated;
+    xml_schema_annotated_t annotated;
     
-    axis2_xml_schema_obj_t *schema_obj;
+    xml_schema_obj_t *schema_obj;
    
-    axis2_xml_schema_types_t obj_type;
+    xml_schema_types_t obj_type;
 
     axis2_hash_t *ht_super;
 
     axis2_hash_t *methods;
     
-    axis2_xml_schema_annotation_t *annotation;
+    xml_schema_annotation_t *annotation;
     
     axis2_char_t *id;
     
@@ -45,69 +45,69 @@ struct axis2_xml_schema_annotated_impl
 };
 
 #define AXIS2_INTF_TO_IMPL(annotated) \
-        ((axis2_xml_schema_annotated_impl_t *) annotated)
+        ((xml_schema_annotated_impl_t *) annotated)
 
 /*************** function prototypes *****************************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_xml_schema_annotated_free(
+xml_schema_annotated_free(
         void *annotated,
         const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
-axis2_xml_schema_annotated_super_objs(
+xml_schema_annotated_super_objs(
         void *annotated,
         const axis2_env_t *env);
 
-axis2_xml_schema_types_t AXIS2_CALL 
-axis2_xml_schema_annotated_get_type(
+xml_schema_types_t AXIS2_CALL 
+xml_schema_annotated_get_type(
         void *annotated,
         const axis2_env_t *env);
 
-axis2_xml_schema_obj_t *AXIS2_CALL
-axis2_xml_schema_annotated_get_base_impl(void *annotated,
+xml_schema_obj_t *AXIS2_CALL
+xml_schema_annotated_get_base_impl(void *annotated,
                                             const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
-axis2_xml_schema_annotated_get_id(void *annotated,
+xml_schema_annotated_get_id(void *annotated,
                                         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_annotated_set_id(void *annotated,
+xml_schema_annotated_set_id(void *annotated,
                                             const axis2_env_t *env,
                                             axis2_char_t *id);
 
-axis2_xml_schema_annotation_t *AXIS2_CALL
-axis2_xml_schema_annotated_get_annotation(void *annotated,
+xml_schema_annotation_t *AXIS2_CALL
+xml_schema_annotated_get_annotation(void *annotated,
                                         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_annotated_set_annotation(void *annotated,
+xml_schema_annotated_set_annotation(void *annotated,
                                             const axis2_env_t *env,
-                                            axis2_xml_schema_annotation_t *
+                                            xml_schema_annotation_t *
                                                 annotation);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_xml_schema_annotated_get_unhandled_attrs(void *annotated,
+xml_schema_annotated_get_unhandled_attrs(void *annotated,
                                                 const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_annotated_set_unhandled_attrs(void *annotated,
+xml_schema_annotated_set_unhandled_attrs(void *annotated,
                                                 const axis2_env_t *env,
                                                 axis2_array_list_t *
                                                     unhandled_attrs);
 
 /******************* implementation functions ********************************/
 
-AXIS2_EXTERN axis2_xml_schema_annotated_t * AXIS2_CALL
-axis2_xml_schema_annotated_create(const axis2_env_t *env)
+AXIS2_EXTERN xml_schema_annotated_t * AXIS2_CALL
+xml_schema_annotated_create(const axis2_env_t *env)
 {
-    axis2_xml_schema_annotated_impl_t *annotated_impl = NULL;
+    xml_schema_annotated_impl_t *annotated_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, NULL);
 
     annotated_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_annotated_impl_t));
+                    sizeof(xml_schema_annotated_impl_t));
     if(!annotated_impl)
     {
         AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -115,7 +115,7 @@ axis2_xml_schema_annotated_create(const axis2_env_t *env)
     }
     
     annotated_impl->schema_obj = NULL;
-    annotated_impl->obj_type = AXIS2_XML_SCHEMA_ANNOTATED;
+    annotated_impl->obj_type = XML_SCHEMA_ANNOTATED;
     annotated_impl->ht_super = NULL;
     annotated_impl->methods = NULL;
     annotated_impl->id = NULL;
@@ -125,34 +125,34 @@ axis2_xml_schema_annotated_create(const axis2_env_t *env)
     annotated_impl->annotated.base.ops = NULL;
     
     annotated_impl->annotated.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_xml_schema_annotated_ops_t));
+                    sizeof(xml_schema_annotated_ops_t));
     if(!annotated_impl->annotated.ops)
     {
-        axis2_xml_schema_annotated_free(&(annotated_impl->annotated), env);
+        xml_schema_annotated_free(&(annotated_impl->annotated), env);
         AXIS2_ERROR_SET(env->error , AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
     annotated_impl->annotated.ops->free = 
-            axis2_xml_schema_annotated_free;
+            xml_schema_annotated_free;
     annotated_impl->annotated.ops->super_objs = 
-            axis2_xml_schema_annotated_super_objs;
+            xml_schema_annotated_super_objs;
     annotated_impl->annotated.ops->get_type = 
-            axis2_xml_schema_annotated_get_type;
+            xml_schema_annotated_get_type;
     annotated_impl->annotated.ops->get_base_impl = 
-            axis2_xml_schema_annotated_get_base_impl;
+            xml_schema_annotated_get_base_impl;
     annotated_impl->annotated.ops->get_id = 
-            axis2_xml_schema_annotated_get_id;
+            xml_schema_annotated_get_id;
     annotated_impl->annotated.ops->set_id = 
-            axis2_xml_schema_annotated_set_id;
+            xml_schema_annotated_set_id;
     annotated_impl->annotated.ops->get_annotation = 
-            axis2_xml_schema_annotated_get_annotation;
+            xml_schema_annotated_get_annotation;
     annotated_impl->annotated.ops->set_annotation = 
-            axis2_xml_schema_annotated_set_annotation;
+            xml_schema_annotated_set_annotation;
     annotated_impl->annotated.ops->get_unhandled_attrs = 
-            axis2_xml_schema_annotated_get_unhandled_attrs;
+            xml_schema_annotated_get_unhandled_attrs;
     annotated_impl->annotated.ops->set_unhandled_attrs = 
-            axis2_xml_schema_annotated_set_unhandled_attrs;
+            xml_schema_annotated_set_unhandled_attrs;
    
     annotated_impl->methods = axis2_hash_make(env);
     if(!annotated_impl->methods)
@@ -161,28 +161,28 @@ axis2_xml_schema_annotated_create(const axis2_env_t *env)
         return NULL;
     }
     axis2_hash_set(annotated_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_annotated_free);
+            xml_schema_annotated_free);
     axis2_hash_set(annotated_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_annotated_super_objs);
+            xml_schema_annotated_super_objs);
     axis2_hash_set(annotated_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_annotated_get_type);
+            xml_schema_annotated_get_type);
     axis2_hash_set(annotated_impl->methods, "get_id", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_annotated_get_id);
+            xml_schema_annotated_get_id);
     axis2_hash_set(annotated_impl->methods, "set_id", AXIS2_HASH_KEY_STRING, 
-            axis2_xml_schema_annotated_set_id);
+            xml_schema_annotated_set_id);
     axis2_hash_set(annotated_impl->methods, "get_annotation", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_annotated_get_annotation);
+            AXIS2_HASH_KEY_STRING, xml_schema_annotated_get_annotation);
     axis2_hash_set(annotated_impl->methods, "set_annotation", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_annotated_set_annotation);
+            AXIS2_HASH_KEY_STRING, xml_schema_annotated_set_annotation);
     axis2_hash_set(annotated_impl->methods, "get_unhandled_attrs", 
-            AXIS2_HASH_KEY_STRING, axis2_xml_schema_annotated_get_unhandled_attrs);
+            AXIS2_HASH_KEY_STRING, xml_schema_annotated_get_unhandled_attrs);
     axis2_hash_set(annotated_impl->methods, "set_unhandled_attrs", 
-       AXIS2_HASH_KEY_STRING, axis2_xml_schema_annotated_set_unhandled_attrs);
+       AXIS2_HASH_KEY_STRING, xml_schema_annotated_set_unhandled_attrs);
 
-    annotated_impl->schema_obj = axis2_xml_schema_obj_create(env);
+    annotated_impl->schema_obj = xml_schema_obj_create(env);
     if(!annotated_impl->schema_obj)
     {
-        axis2_xml_schema_annotated_free(&(annotated_impl->annotated), env);
+        xml_schema_annotated_free(&(annotated_impl->annotated), env);
         return NULL;
     }
 
@@ -192,12 +192,12 @@ axis2_xml_schema_annotated_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(annotated_impl->ht_super, "AXIS2_XML_SCHEMA_ANNOTATED", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(annotated_impl->ht_super, "XML_SCHEMA_ANNOTATED", AXIS2_HASH_KEY_STRING, 
            &(annotated_impl->annotated) );
-    axis2_hash_set(annotated_impl->ht_super, "AXIS2_XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(annotated_impl->ht_super, "XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING, 
            annotated_impl->schema_obj );
 
-    status = axis2_xml_schema_obj_resolve_methods(
+    status = xml_schema_obj_resolve_methods(
             &(annotated_impl->annotated.base), env, annotated_impl->schema_obj, 
             annotated_impl->methods);
             
@@ -205,10 +205,10 @@ axis2_xml_schema_annotated_create(const axis2_env_t *env)
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_annotated_free(void *annotated,
+xml_schema_annotated_free(void *annotated,
                                 const axis2_env_t *env)
 {
-    axis2_xml_schema_annotated_impl_t *annotated_impl = NULL;
+    xml_schema_annotated_impl_t *annotated_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     annotated_impl = AXIS2_INTF_TO_IMPL(annotated);
@@ -221,7 +221,7 @@ axis2_xml_schema_annotated_free(void *annotated,
 
     if(NULL != annotated_impl->annotation)
     {
-        AXIS2_XML_SCHEMA_ANNOTATION_FREE(annotated_impl->annotation, env);
+        XML_SCHEMA_ANNOTATION_FREE(annotated_impl->annotation, env);
         annotated_impl->annotation = NULL;
     }
  
@@ -246,7 +246,7 @@ axis2_xml_schema_annotated_free(void *annotated,
     
     if(NULL != annotated_impl->schema_obj)
     {
-        AXIS2_XML_SCHEMA_OBJ_FREE(annotated_impl->schema_obj, env);
+        XML_SCHEMA_OBJ_FREE(annotated_impl->schema_obj, env);
         annotated_impl->schema_obj = NULL;
     }
     
@@ -267,45 +267,45 @@ axis2_xml_schema_annotated_free(void *annotated,
 }
 
 axis2_hash_t *AXIS2_CALL
-axis2_xml_schema_annotated_super_objs(
+xml_schema_annotated_super_objs(
         void *annotated,
         const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(annotated)->ht_super;
 }
 
-axis2_xml_schema_types_t AXIS2_CALL
-axis2_xml_schema_annotated_get_type(
+xml_schema_types_t AXIS2_CALL
+xml_schema_annotated_get_type(
         void *annotated,
         const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(annotated)->obj_type;
 }
 
-axis2_xml_schema_obj_t *AXIS2_CALL
-axis2_xml_schema_annotated_get_base_impl(void *annotated,
+xml_schema_obj_t *AXIS2_CALL
+xml_schema_annotated_get_base_impl(void *annotated,
                                 const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(annotated)->schema_obj;
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_xml_schema_annotated_resolve_methods(
-                                axis2_xml_schema_annotated_t *annotated,
+xml_schema_annotated_resolve_methods(
+                                xml_schema_annotated_t *annotated,
                                 const axis2_env_t *env,
-                                axis2_xml_schema_annotated_t *annotated_impl,
+                                xml_schema_annotated_t *annotated_impl,
                                 axis2_hash_t *methods)
 {
-    axis2_xml_schema_annotated_impl_t *sch_annotated_impl = NULL;
+    xml_schema_annotated_impl_t *sch_annotated_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, annotated_impl, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
-    sch_annotated_impl = (axis2_xml_schema_annotated_impl_t *) annotated_impl;
+    sch_annotated_impl = (xml_schema_annotated_impl_t *) annotated_impl;
 
     annotated->ops = AXIS2_MALLOC(env->allocator, 
-            sizeof(axis2_xml_schema_annotated_ops_t));
+            sizeof(xml_schema_annotated_ops_t));
     if(!annotated->ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -354,23 +354,23 @@ axis2_xml_schema_annotated_resolve_methods(
             annotated->ops->set_unhandled_attrs = 
             sch_annotated_impl->annotated.ops->set_unhandled_attrs;
 
-    return axis2_xml_schema_obj_resolve_methods(&(annotated->base), 
+    return xml_schema_obj_resolve_methods(&(annotated->base), 
             env, sch_annotated_impl->schema_obj, methods);
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_xml_schema_annotated_get_id(void *annotated,
+xml_schema_annotated_get_id(void *annotated,
                                         const axis2_env_t *env)
 {
-    axis2_xml_schema_annotated_impl_t *annotated_impl = NULL;
+    xml_schema_annotated_impl_t *annotated_impl = NULL;
     axis2_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    ht_super = AXIS2_XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
+    ht_super = XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
     if(NULL != ht_super)
     {
-        annotated_impl = (axis2_xml_schema_annotated_impl_t*)
-            axis2_hash_get(ht_super, "AXIS2_XML_SCHEMA_ANNOTATED",
+        annotated_impl = (xml_schema_annotated_impl_t*)
+            axis2_hash_get(ht_super, "XML_SCHEMA_ANNOTATED",
                 AXIS2_HASH_KEY_STRING);
         if(!annotated_impl)
            return NULL;
@@ -380,21 +380,21 @@ axis2_xml_schema_annotated_get_id(void *annotated,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_annotated_set_id(void *annotated,
+xml_schema_annotated_set_id(void *annotated,
                                             const axis2_env_t *env,
                                             axis2_char_t *id)
 {
-    axis2_xml_schema_annotated_impl_t *annotated_impl = NULL;
+    xml_schema_annotated_impl_t *annotated_impl = NULL;
     axis2_hash_t *ht_super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, id,AXIS2_FAILURE );
     
-    ht_super = AXIS2_XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
+    ht_super = XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
     if(NULL != ht_super)
     {
-        annotated_impl = (axis2_xml_schema_annotated_impl_t*)
-            axis2_hash_get(ht_super, "AXIS2_XML_SCHEMA_ANNOTATED",
+        annotated_impl = (xml_schema_annotated_impl_t*)
+            axis2_hash_get(ht_super, "XML_SCHEMA_ANNOTATED",
                 AXIS2_HASH_KEY_STRING);
         if(!annotated_impl)
             return AXIS2_FAILURE;
@@ -409,18 +409,18 @@ axis2_xml_schema_annotated_set_id(void *annotated,
         
 }
 
-axis2_xml_schema_annotation_t *AXIS2_CALL
-axis2_xml_schema_annotated_get_annotation(void *annotated,
+xml_schema_annotation_t *AXIS2_CALL
+xml_schema_annotated_get_annotation(void *annotated,
                                         const axis2_env_t *env)
 {
-    axis2_xml_schema_annotated_impl_t *annotated_impl = NULL;
+    xml_schema_annotated_impl_t *annotated_impl = NULL;
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    ht_super = AXIS2_XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
+    ht_super = XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
     if(NULL != ht_super)
     {
-        annotated_impl = (axis2_xml_schema_annotated_impl_t*)
-            axis2_hash_get(ht_super, "AXIS2_XML_SCHEMA_ANNOTATED",
+        annotated_impl = (xml_schema_annotated_impl_t*)
+            axis2_hash_get(ht_super, "XML_SCHEMA_ANNOTATED",
                 AXIS2_HASH_KEY_STRING);
         if(!annotated_impl)
             return NULL;
@@ -428,19 +428,19 @@ axis2_xml_schema_annotated_get_annotation(void *annotated,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_annotated_set_annotation(void *annotated,
+xml_schema_annotated_set_annotation(void *annotated,
                                             const axis2_env_t *env,
-                                            axis2_xml_schema_annotation_t *
+                                            xml_schema_annotation_t *
                                                 annotation)
 {
-    axis2_xml_schema_annotated_impl_t *annotated_impl = NULL;
+    xml_schema_annotated_impl_t *annotated_impl = NULL;
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    ht_super = AXIS2_XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
+    ht_super = XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
     if(NULL != ht_super)
     {
-        annotated_impl = (axis2_xml_schema_annotated_impl_t*)
-            axis2_hash_get(ht_super, "AXIS2_XML_SCHEMA_ANNOTATED",
+        annotated_impl = (xml_schema_annotated_impl_t*)
+            axis2_hash_get(ht_super, "XML_SCHEMA_ANNOTATED",
                 AXIS2_HASH_KEY_STRING);
         if(!annotated_impl)
             return AXIS2_FAILURE;
@@ -448,7 +448,7 @@ axis2_xml_schema_annotated_set_annotation(void *annotated,
     if(NULL != annotated_impl->annotation)
     {
         /* TODO Free annotation 
-        AXIS2_XML_SCHEMA_ANNOTATED_FREE(annotated_impl->annotation, env);
+        XML_SCHEMA_ANNOTATED_FREE(annotated_impl->annotation, env);
         */
     }
     annotated_impl->annotation = annotation;
@@ -457,17 +457,17 @@ axis2_xml_schema_annotated_set_annotation(void *annotated,
 }
 
 axis2_array_list_t *AXIS2_CALL
-axis2_xml_schema_annotated_get_unhandled_attrs(void *annotated,
+xml_schema_annotated_get_unhandled_attrs(void *annotated,
                                                 const axis2_env_t *env)
 {
-    axis2_xml_schema_annotated_impl_t *annotated_impl = NULL;
+    xml_schema_annotated_impl_t *annotated_impl = NULL;
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    ht_super = AXIS2_XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
+    ht_super = XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
     if(NULL != ht_super)
     {
-        annotated_impl = (axis2_xml_schema_annotated_impl_t*)
-            axis2_hash_get(ht_super, "AXIS2_XML_SCHEMA_ANNOTATED",
+        annotated_impl = (xml_schema_annotated_impl_t*)
+            axis2_hash_get(ht_super, "XML_SCHEMA_ANNOTATED",
                 AXIS2_HASH_KEY_STRING);
         if(!annotated_impl)
             return NULL;
@@ -476,19 +476,19 @@ axis2_xml_schema_annotated_get_unhandled_attrs(void *annotated,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_xml_schema_annotated_set_unhandled_attrs(void *annotated,
+xml_schema_annotated_set_unhandled_attrs(void *annotated,
                                                 const axis2_env_t *env,
                                                 axis2_array_list_t *
                                                     unhandled_attrs)
 {
-    axis2_xml_schema_annotated_impl_t *annotated_impl = NULL;
+    xml_schema_annotated_impl_t *annotated_impl = NULL;
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    ht_super = AXIS2_XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
+    ht_super = XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
     if(NULL != ht_super)
     {
-        annotated_impl = (axis2_xml_schema_annotated_impl_t*)
-            axis2_hash_get(ht_super, "AXIS2_XML_SCHEMA_ANNOTATED",
+        annotated_impl = (xml_schema_annotated_impl_t*)
+            axis2_hash_get(ht_super, "XML_SCHEMA_ANNOTATED",
                 AXIS2_HASH_KEY_STRING);
         if(!annotated_impl)
             return AXIS2_FAILURE;
