@@ -19,13 +19,13 @@
 #include <axis2_string.h>
 #include <axis2_xml_writer.h>
 #include <axiom_text.h>
-#include <axis2_soap_const.h>
+#include <axiom_soap_const.h>
 #include <axis2_array_list.h>
 #include <axis2_uuid_gen.h>
-#include <axis2_mime_output.h>
+#include <axiom_mime_output.h>
 
 #define AXIS2_DEFAULT_CHAR_SET_ENCODING  "UTF-8"
-/** also defined in axis2_soap.h */
+/** also defined in axiom_soap.h */
 
 /** max args for om_output_write function */
 #define MAX_ARGS  4
@@ -60,7 +60,7 @@ typedef struct axiom_output_impl_t
   
     axis2_array_list_t *binary_node_list;    
 
-    axis2_mime_output_t *mime_output;
+    axiom_mime_output_t *mime_output;
     
     axis2_char_t *mime_boundry;
 
@@ -467,14 +467,14 @@ axiom_output_get_content_type(axiom_output_t *om_output,
     {
         if(AXIS2_TRUE == output_impl->is_soap11)
         {
-            soap_content_type = AXIS2_SOAP11_CONTENT_TYPE;
+            soap_content_type = AXIOM_SOAP11_CONTENT_TYPE;
         }
         else
         {
-            soap_content_type = AXIS2_SOAP12_CONTENT_TYPE;
+            soap_content_type = AXIOM_SOAP12_CONTENT_TYPE;
         }    
 
-        return AXIS2_MIME_OUTPUT_GET_CONTENT_TYPE_FOR_MIME(
+        return AXIOM_MIME_OUTPUT_GET_CONTENT_TYPE_FOR_MIME(
             output_impl->mime_output, 
             env, output_impl->mime_boundry,
             output_impl->root_content_id, output_impl->char_set_encoding, 
@@ -484,11 +484,11 @@ axiom_output_get_content_type(axiom_output_t *om_output,
     {
         if(AXIS2_TRUE == output_impl->is_soap11)
         {
-            return AXIS2_SOAP11_CONTENT_TYPE;
+            return AXIOM_SOAP11_CONTENT_TYPE;
         }
         else
         {
-            return AXIS2_SOAP12_CONTENT_TYPE;
+            return AXIOM_SOAP12_CONTENT_TYPE;
         }
     }
     return NULL;
@@ -807,16 +807,16 @@ axiom_output_flush(axiom_output_t *om_output,
         int stream_size = 0;
         if (output_impl->is_soap11)
         {
-            soap_content_type = AXIS2_SOAP11_CONTENT_TYPE;
+            soap_content_type = AXIOM_SOAP11_CONTENT_TYPE;
         }
         else
         {
-            soap_content_type = AXIS2_SOAP12_CONTENT_TYPE;
+            soap_content_type = AXIOM_SOAP12_CONTENT_TYPE;
         }
-        output_impl->mime_output = axis2_mime_output_create(env);
+        output_impl->mime_output = axiom_mime_output_create(env);
         output_impl->mime_boundry = axiom_output_get_mime_boundry(om_output, env);
         root_content_id = axiom_output_get_root_content_id(om_output, env);
-        AXIS2_MIME_OUTPUT_COMPLETE(output_impl->mime_output, env, &byte_stream, &stream_size,
+        AXIOM_MIME_OUTPUT_COMPLETE(output_impl->mime_output, env, &byte_stream, &stream_size,
             buffer, output_impl->binary_node_list, output_impl->mime_boundry, 
             output_impl->root_content_id, output_impl->char_set_encoding,
             soap_content_type); 

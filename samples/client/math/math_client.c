@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <axiom.h>
 #include <axis2_util.h>
-#include <axis2_soap.h>
+#include <axiom_soap.h>
 #include <axis2_client.h>
 
 axiom_node_t *

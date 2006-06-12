@@ -23,8 +23,8 @@
 #include <axis2_engine.h>
 #include <axis2_core_utils.h>
 #include <axis2_property.h>
-#include <axis2_soap_envelope.h>
-#include <axis2_soap_body.h>
+#include <axiom_soap_envelope.h>
+#include <axiom_soap_body.h>
 
 /** 
  * @brief Message Receiver struct impl
@@ -427,15 +427,15 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(axis2_msg_recv_t *msg_recv,
     }       
     if (AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(out_msg_ctx, env))
     {
-        axis2_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE (out_msg_ctx, env);
+        axiom_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE (out_msg_ctx, env);
         if (soap_envelope)
         {
-            axis2_soap_body_t *body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+            axiom_soap_body_t *body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
             if (body)
             {
                 /* in case of a SOAP fault, we got to return failure so that 
                    transport gets to know that it should send 500 */
-                if (AXIS2_SOAP_BODY_HAS_FAULT(body, env))
+                if (AXIOM_SOAP_BODY_HAS_FAULT(body, env))
                 {
                     status = AXIS2_FAILURE;
                     AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);

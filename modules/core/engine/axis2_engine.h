@@ -41,7 +41,7 @@ extern "C"
 typedef struct axis2_engine_ops axis2_engine_ops_t;
 typedef struct axis2_engine axis2_engine_t; 
 
-struct axis2_soap_fault;
+struct axiom_soap_fault;
 
     
 /** 
@@ -144,7 +144,7 @@ struct axis2_engine_ops
     extract_fault_info_from_msg_ctx)(struct axis2_engine *engine, 
                                      const axis2_env_t *env,
                                      axis2_msg_ctx_t *msg_ctx,
-                                     struct axis2_soap_fault *fault);
+                                     struct axiom_soap_fault *fault);
 
                                      
     axis2_status_t (AXIS2_CALL *

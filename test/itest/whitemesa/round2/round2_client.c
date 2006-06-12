@@ -26,16 +26,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <axis2_xml_writer.h>
-#include <axis2_soap_builder.h>
-#include <axis2_soap_const.h>
-#include <axis2_soap_envelope.h>
-#include <axis2_soap_body.h>
-#include <axis2_soap_header.h>
-#include <axis2_soap_message.h>
-#include <axis2_soap_header_block.h>
-#include <axis2_soap_fault.h>
-#include <axis2_soap_fault_code.h>
-#include <axis2_soap_fault_role.h>
+#include <axiom_soap_builder.h>
+#include <axiom_soap_const.h>
+#include <axiom_soap_envelope.h>
+#include <axiom_soap_body.h>
+#include <axiom_soap_header.h>
+#include <axiom_soap_message.h>
+#include <axiom_soap_header_block.h>
+#include <axiom_soap_fault.h>
+#include <axiom_soap_fault_code.h>
+#include <axiom_soap_fault_role.h>
 #include <axiom_node.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_call.h>
@@ -66,8 +66,8 @@ int main(int argc, char** argv)
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_conf_t *conf = NULL;
     axis2_msg_ctx_t *response_ctx = NULL;
-    axis2_soap_envelope_t *soap_envelope = NULL;
-    axis2_soap_body_t *soap_body = NULL;
+    axiom_soap_envelope_t *soap_envelope = NULL;
+    axiom_soap_body_t *soap_body = NULL;
     axiom_namespace_t *env_ns = NULL;
     axiom_node_t *body_node = NULL;
     axis2_char_t *echo_operation = NULL;
@@ -112,10 +112,10 @@ int main(int argc, char** argv)
     call = axis2_call_create(env, NULL, client_home);
     mep_client = AXIS2_CALL_GET_BASE(call, env);
     /* prepare SOAP envelope */
-    env_ns = axiom_namespace_create(env, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, "soap"); 
-    soap_envelope = axis2_soap_envelope_create(env, env_ns);
-    soap_body = axis2_soap_body_create_with_parent(env, soap_envelope);
-    body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+    env_ns = axiom_namespace_create(env, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, "soap"); 
+    soap_envelope = axiom_soap_envelope_create(env, env_ns);
+    soap_body = axiom_soap_body_create_with_parent(env, soap_envelope);
+    body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
     build_soap_body_content(env, echo_operation, word_to_echo, body_node);
 
     
@@ -165,8 +165,8 @@ int main(int argc, char** argv)
 
     if (response_ctx)
     {
-        axis2_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(response_ctx, env);
-        ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
+        axiom_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(response_ctx, env);
+        ret_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
     }
 
     if(ret_node)

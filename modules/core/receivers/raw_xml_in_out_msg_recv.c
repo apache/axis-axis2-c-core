@@ -17,10 +17,10 @@
 #include <axis2_raw_xml_in_out_msg_recv.h>
 #include <string.h>
 #include <axiom_element.h>
-#include <axis2_soap_envelope.h>
-#include <axis2_soap_header.h>
-#include <axis2_soap_body.h>
-#include <axis2_soap_fault.h>
+#include <axiom_soap_envelope.h>
+#include <axiom_soap_header.h>
+#include <axiom_soap_body.h>
+#include <axiom_soap_fault.h>
 
 
 /************************* Function prototypes ********************************/
@@ -76,15 +76,15 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     axiom_node_t *result_node = NULL;
     axiom_node_t *body_content_node = NULL;
     axiom_element_t *body_content_element = NULL;
-    axis2_soap_envelope_t *default_envelope = NULL;
-    axis2_soap_body_t *out_body = NULL;
-    axis2_soap_header_t *out_header = NULL;
-    axis2_soap_fault_t *soap_fault = NULL;
+    axiom_soap_envelope_t *default_envelope = NULL;
+    axiom_soap_body_t *out_body = NULL;
+    axiom_soap_header_t *out_header = NULL;
+    axiom_soap_fault_t *soap_fault = NULL;
     axiom_node_t *out_node = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_bool_t skel_invoked = AXIS2_FALSE;
-    const axis2_char_t *soap_ns = AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
-    int soap_version = AXIS2_SOAP12;
+    const axis2_char_t *soap_ns = AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+    int soap_version = AXIOM_SOAP12;
     axiom_namespace_t *env_ns = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -110,25 +110,25 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         style = AXIS2_OP_GET_STYLE(op_desc, env);
         if(0 == AXIS2_STRCMP(AXIS2_STYLE_DOC, style))
         {
-            axis2_soap_envelope_t *envelope = NULL;
-            axis2_soap_body_t *body = NULL;
+            axiom_soap_envelope_t *envelope = NULL;
+            axiom_soap_body_t *body = NULL;
             
             envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
-            body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
-            om_node = AXIS2_SOAP_BODY_GET_BASE_NODE(body, env);
+            body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
+            om_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
             om_element = AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
             om_node = AXIOM_NODE_GET_FIRST_CHILD(om_node, env);            
         }
         else if(0 == AXIS2_STRCMP(AXIS2_STYLE_RPC, style))
         {
-            axis2_soap_envelope_t *envelope = NULL;
-            axis2_soap_body_t *body = NULL;
+            axiom_soap_envelope_t *envelope = NULL;
+            axiom_soap_body_t *body = NULL;
             axiom_node_t *op_node = NULL;
             axiom_element_t *op_element = NULL;
             
             envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
-            body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
-            op_node = AXIS2_SOAP_BODY_GET_BASE_NODE(body, env);
+            body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
+            op_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
             op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
             if(NULL != op_element)
             {
@@ -233,8 +233,8 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     
     if (msg_ctx && AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
     {
-        soap_ns = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI; /* default is 1.2 */
-        soap_version = AXIS2_SOAP11;
+        soap_ns = AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI; /* default is 1.2 */
+        soap_version = AXIOM_SOAP11;
     }
 
     if (AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(new_msg_ctx, env))
@@ -252,26 +252,26 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
         return AXIS2_FAILURE;
     }
     
-    default_envelope = axis2_soap_envelope_create(env, env_ns);
+    default_envelope = axiom_soap_envelope_create(env, env_ns);
 
     if (!default_envelope)
     {
         return AXIS2_FAILURE;
     }
 
-    out_header = axis2_soap_header_create_with_parent(env, default_envelope);
+    out_header = axiom_soap_header_create_with_parent(env, default_envelope);
     if (!out_header)
     {
         return AXIS2_FAILURE;
     }
 
-    out_body = axis2_soap_body_create_with_parent(env, default_envelope);
+    out_body = axiom_soap_body_create_with_parent(env, default_envelope);
     if (!out_body)
     {
         return AXIS2_FAILURE;
     }
 
-    out_node = AXIS2_SOAP_BODY_GET_BASE_NODE(out_body, env);
+    out_node = AXIOM_SOAP_BODY_GET_BASE_NODE(out_body, env);
     if (!out_node)
     {
         return AXIS2_FAILURE;
@@ -297,7 +297,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
             fault_reason_str = "Something went wrong";
         }
             
-        soap_fault = axis2_soap_fault_create_default_fault(env, out_body, 
+        soap_fault = axiom_soap_fault_create_default_fault(env, out_body, 
             fault_value_str, fault_reason_str, soap_version);
     }
 
@@ -314,7 +314,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     else
     {
         /* we should free the memory as the envelope is not used, one way case */
-        AXIS2_SOAP_ENVELOPE_FREE(default_envelope, env);
+        AXIOM_SOAP_ENVELOPE_FREE(default_envelope, env);
         default_envelope = NULL;
     }
     

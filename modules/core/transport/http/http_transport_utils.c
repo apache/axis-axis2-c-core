@@ -21,20 +21,20 @@
 #include <axis2_op.h>
 #include <axis2_qname.h>
 #include <axis2_http_transport.h>
-#include <axis2_soap_builder.h>
+#include <axiom_soap_builder.h>
 #include <axis2_engine.h>
-#include <axis2_soap_body.h>
+#include <axiom_soap_body.h>
 #include <axis2_utils.h>
 #include <axiom_namespace.h>
 #include <axiom_node.h>
 #include <axis2_hash.h>
-#include <axis2_soap_const.h>
+#include <axiom_soap_const.h>
 #include <axis2_http_header.h>
 #include <axis2_property.h>
 #include <axis2_utils.h>
-#include <axis2_mime_parser.h>
+#include <axiom_mime_parser.h>
 
-#define AXIS2_MIME_BOUNDARY_BYTE 45
+#define AXIOM_MIME_BOUNDARY_BYTE 45
 
 /***************************** Function headers *******************************/
 
@@ -61,7 +61,7 @@ axis2_http_transport_utils_process_http_get_request
                         axis2_conf_ctx_t *conf_ctx, 
                         axis2_hash_t *request_params);
     
-AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
+AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 axis2_http_transport_utils_create_envelope_from_get_request
                         (const axis2_env_t *env, 
                         const axis2_char_t *request_uri,
@@ -105,7 +105,7 @@ axis2_http_transport_utils_get_charset_enc(const axis2_env_t *env,
 int AXIS2_CALL
 axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx);
 
-AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
+AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env, 
                         axis2_msg_ctx_t *msg_ctx, 
                         const axis2_char_t *soap_ns_uri);
@@ -126,8 +126,8 @@ axis2_http_transport_utils_process_http_post_request
                         axis2_char_t *soap_action_header,
                         const axis2_char_t *request_uri)
 {
-   axis2_soap_envelope_t *soap_envelope = NULL;
-   axis2_soap_builder_t *soap_builder = NULL;
+   axiom_soap_envelope_t *soap_envelope = NULL;
+   axiom_soap_builder_t *soap_builder = NULL;
    axiom_stax_builder_t *om_builder = NULL;
    axis2_bool_t is_soap11 = AXIS2_FALSE;
    axis2_xml_reader_t *xml_reader = NULL;
@@ -137,7 +137,7 @@ axis2_http_transport_utils_process_http_post_request
    axis2_callback_info_t callback_ctx;
    axis2_hash_t *headers = NULL;
    axis2_engine_t *engine = NULL;
-   axis2_soap_body_t *soap_body = NULL;
+   axiom_soap_body_t *soap_body = NULL;
     axis2_property_t *property = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_hash_t *binary_data_map = NULL;
@@ -212,21 +212,21 @@ axis2_http_transport_utils_process_http_post_request
 
         if (mime_boundary)
         {
-            axis2_mime_parser_t *mime_parser = NULL;
+            axiom_mime_parser_t *mime_parser = NULL;
             axis2_stream_t *stream = NULL;
             int soap_body_len = 0;
             axis2_char_t* soap_body_str = NULL;
             
-            mime_parser = axis2_mime_parser_create(env);
+            mime_parser = axiom_mime_parser_create(env);
             if (mime_parser)
             {
-                binary_data_map = AXIS2_MIME_PARSER_PARSE(mime_parser, env, 
+                binary_data_map = AXIOM_MIME_PARSER_PARSE(mime_parser, env, 
                     axis2_http_transport_utils_on_data_request, 
                     (void*)&callback_ctx, mime_boundary);
                 
-                soap_body_len = AXIS2_MIME_PARSER_GET_SOAP_BODY_LENGTH(
+                soap_body_len = AXIOM_MIME_PARSER_GET_SOAP_BODY_LENGTH(
                     mime_parser, env);
-                soap_body_str = AXIS2_MIME_PARSER_GET_SOAP_BODY_STR(
+                soap_body_str = AXIOM_MIME_PARSER_GET_SOAP_BODY_STR(
                     mime_parser, env);
             }
             
@@ -281,26 +281,26 @@ axis2_http_transport_utils_process_http_post_request
    if(NULL != strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP))
    {
       is_soap11 = AXIS2_FALSE;
-      soap_builder = axis2_soap_builder_create(env, om_builder, 
-                    AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+      soap_builder = axiom_soap_builder_create(env, om_builder, 
+                    AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
       if(NULL == soap_builder)
       {
          /* We should not be freeing om_builder here as it is done by
-            axis2_soap_builder_create in case of error - Samisa*/
+            axiom_soap_builder_create in case of error - Samisa*/
             /*AXIOM_STAX_BUILDER_FREE(om_builder, env);*/
          om_builder = NULL;
          xml_reader = NULL;
          return AXIS2_FAILURE;
       }
 
-      soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder,
+      soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder,
                env);
       if(NULL == soap_envelope)
       {
          AXIOM_STAX_BUILDER_FREE(om_builder, env);
          om_builder = NULL;
          xml_reader = NULL;
-         AXIS2_SOAP_BUILDER_FREE(soap_builder, env);
+         AXIOM_SOAP_BUILDER_FREE(soap_builder, env);
          soap_builder = NULL;
          return AXIS2_FAILURE;
       }
@@ -310,22 +310,22 @@ axis2_http_transport_utils_process_http_post_request
       is_soap11 = AXIS2_TRUE;
       if(NULL != soap_action_header)
       {
-         soap_builder = axis2_soap_builder_create(env, om_builder, 
-                  AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
+         soap_builder = axiom_soap_builder_create(env, om_builder, 
+                  AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
          if(NULL == soap_builder)
          {
              /* We should not be freeing om_builder here as it is done by
-                axis2_soap_builder_create in case of error - Samisa*/
+                axiom_soap_builder_create in case of error - Samisa*/
             /*AXIOM_STAX_BUILDER_FREE(om_builder, env);*/
             om_builder = NULL;
             xml_reader = NULL;
             return AXIS2_FAILURE;
          }
-         soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(
+         soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(
                soap_builder, env);
          if(NULL == soap_envelope)
          {
-            AXIS2_SOAP_BUILDER_FREE(soap_builder, env);
+            AXIOM_SOAP_BUILDER_FREE(soap_builder, env);
             om_builder = NULL;
             xml_reader = NULL;
             soap_builder = NULL;
@@ -341,15 +341,15 @@ axis2_http_transport_utils_process_http_post_request
                         AXIS2_PARAM_GET_VALUE(rest_param, env)))
             {
                 /* TODO we have to check for NULLs */
-                axis2_soap_body_t *def_body = NULL;
+                axiom_soap_body_t *def_body = NULL;
                 axiom_document_t *om_doc = NULL;
                 axiom_node_t *root_node = NULL;
-                soap_envelope = axis2_soap_envelope_create_default_soap_envelope
-                            (env, AXIS2_SOAP11);
-                def_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+                soap_envelope = axiom_soap_envelope_create_default_soap_envelope
+                            (env, AXIOM_SOAP11);
+                def_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
                 om_doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
                 root_node = AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
-                AXIS2_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
+                AXIOM_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
                 AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, env, AXIS2_TRUE);
             }
         }
@@ -358,7 +358,7 @@ axis2_http_transport_utils_process_http_post_request
     
     if (binary_data_map)
     {
-        AXIS2_SOAP_BUILDER_SET_MIME_BODY_PARTS(soap_builder, env, 
+        AXIOM_SOAP_BUILDER_SET_MIME_BODY_PARTS(soap_builder, env, 
             binary_data_map);
     }
         
@@ -370,7 +370,7 @@ axis2_http_transport_utils_process_http_post_request
     *{
     *   AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CHARSET_MISMATCH, 
     *               AXIS2_FAILURE);
-    *   AXIS2_SOAP_ENVELOPE_FREE(envelope, env);
+    *   AXIOM_SOAP_ENVELOPE_FREE(envelope, env);
     *   envelope = NULL;
     *   AXIS2_XML_READER_FREE(xml_reader, env);
     *   xml_reader = NULL;
@@ -378,7 +378,7 @@ axis2_http_transport_utils_process_http_post_request
     *   om_builder = NULL;
     *   if(NULL != soap_builder)
     *   {
-    *       AXIS2_SOAP_BUILDER_FREE(soap_builder, env);
+    *       AXIOM_SOAP_BUILDER_FREE(soap_builder, env);
     *       soap_builder = NULL;
     *   }
     *   return AXIS2_FAILURE;
@@ -392,13 +392,13 @@ axis2_http_transport_utils_process_http_post_request
     if (!soap_envelope)
         return AXIS2_FAILURE;
     
-    soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, 
+    soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, 
                   env);
     
     if (NULL == soap_body)
         return AXIS2_FAILURE;
     
-   if(AXIS2_TRUE == AXIS2_SOAP_BODY_HAS_FAULT(soap_body, env))
+   if(AXIS2_TRUE == AXIOM_SOAP_BODY_HAS_FAULT(soap_body, env))
    {
       status = AXIS2_ENGINE_RECEIVE_FAULT(engine, env, msg_ctx);
    }
@@ -409,8 +409,8 @@ axis2_http_transport_utils_process_http_post_request
    if(NULL == AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env) && 
                   AXIS2_FALSE == is_soap11)
    {
-      axis2_soap_envelope_t *def_envelope = 
-            axis2_soap_envelope_create_default_soap_envelope(env, AXIS2_SOAP12);
+      axiom_soap_envelope_t *def_envelope = 
+            axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP12);
       AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, def_envelope);
    }
     if(NULL != engine)
@@ -433,7 +433,7 @@ axis2_http_transport_utils_process_http_get_request
                         axis2_conf_ctx_t *conf_ctx, 
                         axis2_hash_t *request_params)
 {
-   axis2_soap_envelope_t *soap_envelope = NULL;
+   axiom_soap_envelope_t *soap_envelope = NULL;
    axis2_engine_t *engine = NULL;
     axis2_property_t *property = NULL;
       
@@ -489,14 +489,14 @@ axis2_http_transport_utils_process_http_get_request
 }
 
 
-AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
+AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 axis2_http_transport_utils_create_envelope_from_get_request
                         (const axis2_env_t *env, 
                         const axis2_char_t *request_uri,
                         axis2_hash_t *request_params)
 {
    axis2_char_t **values = NULL;
-   axis2_soap_envelope_t *envelope = NULL;
+   axiom_soap_envelope_t *envelope = NULL;
    axiom_namespace_t *om_ns = NULL;
    axiom_namespace_t *def_om_ns = NULL;
    axiom_node_t *document_node = NULL;
@@ -528,13 +528,13 @@ axis2_http_transport_utils_create_envelope_from_get_request
       AXIS2_FREE(env->allocator, values);
       return NULL;
    }
-   envelope = axis2_soap_envelope_create_default_soap_envelope(env, AXIS2_SOAP12);
+   envelope = axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP12);
     
    om_ns = axiom_namespace_create(env, values[0], "services");
    
     def_om_ns = axiom_namespace_create(env, "", NULL);
    
-    document_node = AXIS2_SOAP_BODY_GET_BASE_NODE(AXIS2_SOAP_ENVELOPE_GET_BODY(
+    document_node = AXIOM_SOAP_BODY_GET_BASE_NODE(AXIOM_SOAP_ENVELOPE_GET_BODY(
                   envelope, env), env);
    op_ele = axiom_element_create(env, document_node, values[1], om_ns, 
                   &op_node);
@@ -969,7 +969,7 @@ axis2_http_transport_utils_on_data_request(char *buffer, int size, void *ctx)
    return 0;   
 }
 
-AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
+AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env, 
                         axis2_msg_ctx_t *msg_ctx, 
                         const axis2_char_t *soap_ns_uri)
@@ -1082,8 +1082,8 @@ axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env,
     {
         axis2_xml_reader_t *xml_reader = NULL;
         axiom_stax_builder_t *om_builder = NULL;
-        axis2_soap_builder_t *soap_builder = NULL;
-        axis2_soap_envelope_t *soap_envelope = NULL;
+        axiom_soap_builder_t *soap_builder = NULL;
+        axiom_soap_envelope_t *soap_envelope = NULL;
         
         xml_reader = axis2_xml_reader_create_for_io(env,
                         axis2_http_transport_utils_on_data_request,NULL,
@@ -1099,26 +1099,26 @@ axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env,
             xml_reader = NULL;
             return NULL;
         }
-        soap_builder = axis2_soap_builder_create(env, om_builder,
+        soap_builder = axiom_soap_builder_create(env, om_builder,
                         soap_ns_uri);
         if(NULL == soap_builder)
         {
          /* We should not be freeing om_builder here as it is done by
-            axis2_soap_builder_create in case of error - Samisa*/
+            axiom_soap_builder_create in case of error - Samisa*/
             /*AXIOM_STAX_BUILDER_FREE(om_builder, env);*/
             om_builder = NULL;
             xml_reader = NULL;
             return NULL;
         }
-        soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
+        soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
         return soap_envelope;
     }
     else
     {
         axis2_xml_reader_t *xml_reader = NULL;
         axiom_stax_builder_t *om_builder = NULL;
-        axis2_soap_envelope_t *soap_envelope = NULL;
-        axis2_soap_body_t *def_body = NULL;
+        axiom_soap_envelope_t *soap_envelope = NULL;
+        axiom_soap_body_t *def_body = NULL;
         axiom_document_t *om_doc = NULL;
         axiom_node_t *root_node = NULL;
 
@@ -1136,12 +1136,12 @@ axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env,
             xml_reader = NULL;
             return NULL;
         }
-        soap_envelope = axis2_soap_envelope_create_default_soap_envelope
-                            (env, AXIS2_SOAP11);
-        def_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+        soap_envelope = axiom_soap_envelope_create_default_soap_envelope
+                            (env, AXIOM_SOAP11);
+        def_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
         om_doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
         root_node = AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
-        AXIS2_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
+        AXIOM_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
         return soap_envelope;
     }
     return NULL;

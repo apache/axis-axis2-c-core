@@ -28,7 +28,7 @@
 #include <axis2_msg_ctx.h>
 #include <axiom_output.h>
 #include <axis2_http_simple_response.h>
-#include <axis2_soap_envelope.h>
+#include <axiom_soap_envelope.h>
 
 
 #ifdef __cplusplus

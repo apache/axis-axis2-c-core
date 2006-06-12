@@ -18,9 +18,9 @@
 #include <axis2_const.h>
 #include <axis2_hash.h>
 #include "callback_recv.h"
-#include <axis2_soap_const.h>
-#include <axis2_soap_body.h>
-#include <axis2_soap_header.h>
+#include <axiom_soap_const.h>
+#include <axiom_soap_body.h>
+#include <axiom_soap_header.h>
 #include "listener_manager.h"
 #include <axis2_module_desc.h>
 #include <axis2_array_list.h>
@@ -587,8 +587,8 @@ axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
                     const axiom_node_t *payload)
 {
    axis2_svc_client_impl_t *svc_client_impl = NULL;
-    axis2_soap_envelope_t *soap_envelope = NULL;
-    axis2_soap_body_t *soap_body = NULL;
+    axiom_soap_envelope_t *soap_envelope = NULL;
+    axiom_soap_body_t *soap_body = NULL;
     axiom_node_t *soap_node = NULL;
 
    AXIS2_ENV_CHECK(env, NULL);
@@ -650,11 +650,11 @@ axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
                         soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(res_msg_ctx, env);
                         if (soap_envelope)
                         {
-                            soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+                            soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
                         
                             if (soap_body)
                             {
-                                soap_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+                                soap_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
                                 if (soap_node)
                                 {
                                     return AXIOM_NODE_GET_FIRST_CHILD(soap_node, env);
@@ -730,14 +730,14 @@ axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
     {
         return NULL;
     }
-    soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+    soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
 
     if (!soap_body)
     {
         return NULL;
     }
     
-    soap_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+    soap_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
     if (!soap_node)
     {
         return NULL;
@@ -1174,7 +1174,7 @@ static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env,
 {
    const axis2_char_t *soap_version_uri;
    int soap_version;
-   axis2_soap_envelope_t *envelope = NULL;
+   axiom_soap_envelope_t *envelope = NULL;
 
    soap_version_uri = AXIS2_OPTIONS_GET_SOAP_VERSION_URI(svc_client_impl->options, env);
 
@@ -1184,13 +1184,13 @@ static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env,
    }
 
     if (AXIS2_STRCMP(soap_version_uri,
-                AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
-       soap_version = AXIS2_SOAP11;
+                AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+       soap_version = AXIOM_SOAP11;
     else
-       soap_version = AXIS2_SOAP12;
+       soap_version = AXIOM_SOAP12;
     
 
-    envelope = axis2_soap_envelope_create_default_soap_envelope(env, soap_version);
+    envelope = axiom_soap_envelope_create_default_soap_envelope(env, soap_version);
     if (!envelope)
     {
         return AXIS2_FALSE;
@@ -1198,13 +1198,13 @@ static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env,
 
     if (svc_client_impl->headers)
     {
-        axis2_soap_header_t *soap_header = NULL;
-        soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(envelope, env);
+        axiom_soap_header_t *soap_header = NULL;
+        soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(envelope, env);
     
         if (soap_header)
         {
             axiom_node_t *header_node = NULL;
-            header_node = AXIS2_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
+            header_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
 
             if (header_node)
             {
@@ -1226,12 +1226,12 @@ static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env,
 
     if (payload)
     {
-        axis2_soap_body_t *soap_body = NULL;
-        soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
+        axiom_soap_body_t *soap_body = NULL;
+        soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
         if (soap_body)
         {
             axiom_node_t *node = NULL;
-            node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+            node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
             if (node)
             {
                 AXIOM_NODE_ADD_CHILD(node, env, (axiom_node_t *)payload);

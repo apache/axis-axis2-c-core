@@ -25,7 +25,7 @@ typedef struct axis2_callback_impl
     /** callback complete? */
     axis2_bool_t complete;
     /** envelope corresponding to the result */
-    axis2_soap_envelope_t *envelope;
+    axiom_soap_envelope_t *envelope;
     /** error code */
     int error;
    /** to store callback specific data */
@@ -63,14 +63,14 @@ axis2_callback_set_complete(struct axis2_callback *callback,
                             const axis2_env_t *env, 
                             axis2_bool_t complete);
                             
-axis2_soap_envelope_t* AXIS2_CALL 
+axiom_soap_envelope_t* AXIS2_CALL 
 axis2_callback_get_envelope(struct axis2_callback *callback, 
                             const axis2_env_t *env);
                             
 axis2_status_t AXIS2_CALL 
 axis2_callback_set_envelope(struct axis2_callback *callback, 
                             const axis2_env_t *env, 
-                            axis2_soap_envelope_t *envelope);
+                            axiom_soap_envelope_t *envelope);
                             
 int AXIS2_CALL 
 axis2_callback_get_error(struct axis2_callback *callback, 
@@ -216,7 +216,7 @@ axis2_callback_set_complete(struct axis2_callback *callback,
     return AXIS2_SUCCESS;
 }
 
-axis2_soap_envelope_t* AXIS2_CALL 
+axiom_soap_envelope_t* AXIS2_CALL 
 axis2_callback_get_envelope(struct axis2_callback *callback, 
                             const axis2_env_t *env)
 {
@@ -227,7 +227,7 @@ axis2_callback_get_envelope(struct axis2_callback *callback,
 axis2_status_t AXIS2_CALL 
 axis2_callback_set_envelope(struct axis2_callback *callback, 
                             const axis2_env_t *env, 
-                            axis2_soap_envelope_t *envelope)
+                            axiom_soap_envelope_t *envelope)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(callback)->envelope = envelope;

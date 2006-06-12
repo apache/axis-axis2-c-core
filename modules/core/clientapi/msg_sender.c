@@ -56,7 +56,7 @@ axis2_status_t AXIS2_CALL
 axis2_msg_sender_send_with_soap(axis2_msg_sender_t *msg_sender, 
                   const axis2_env_t *env,
                   axis2_char_t *op_name, 
-                  axis2_soap_envelope_t *envelope);
+                  axiom_soap_envelope_t *envelope);
 axis2_msg_info_headers_t* AXIS2_CALL 
 axis2_msg_sender_get_msg_info_headers(axis2_msg_sender_t *msg_sender, 
                   const axis2_env_t *env);
@@ -248,7 +248,7 @@ axis2_msg_sender_send_with_om(struct axis2_msg_sender *msg_sender,
                   axiom_node_t *om_node_to_send)
 {
     axis2_msg_sender_impl_t *msg_sender_impl = NULL;
-    axis2_soap_envelope_t *soap_envelope = NULL;
+    axiom_soap_envelope_t *soap_envelope = NULL;
    axis2_status_t status = AXIS2_FAILURE;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -258,12 +258,12 @@ axis2_msg_sender_send_with_om(struct axis2_msg_sender *msg_sender,
     msg_sender_impl = AXIS2_INTF_TO_IMPL(msg_sender);
    soap_envelope = AXIS2_MEP_CLIENT_CREATE_DEFAULT_SOAP_ENVELOPE(
                   msg_sender_impl->base, env);
-   /* TODO AXIS2_SOAP_BODY_ADD_CHILD(AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env), 
+   /* TODO AXIOM_SOAP_BODY_ADD_CHILD(AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env), 
                   env, om_node_to_send); */
     
    status =  axis2_msg_sender_send_with_soap(msg_sender, env, op_name, 
                   soap_envelope);
-   AXIS2_SOAP_ENVELOPE_FREE(soap_envelope, env);
+   AXIOM_SOAP_ENVELOPE_FREE(soap_envelope, env);
    return status;
 }
 
@@ -271,7 +271,7 @@ axis2_status_t AXIS2_CALL
 axis2_msg_sender_send_with_soap(axis2_msg_sender_t *msg_sender, 
                   const axis2_env_t *env,
                   axis2_char_t *op_name, 
-                  axis2_soap_envelope_t *envelope)
+                  axiom_soap_envelope_t *envelope)
 {
     axis2_msg_sender_impl_t *msg_sender_impl = NULL;
     axis2_qname_t *op_qname = NULL;

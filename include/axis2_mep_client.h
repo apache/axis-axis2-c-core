@@ -28,7 +28,7 @@
 #include <axis2_error.h>
 #include <axis2_op.h>
 #include <axiom_node.h>
-#include <axis2_soap_envelope.h>
+#include <axiom_soap_envelope.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -92,7 +92,7 @@ struct axis2_mep_client_ops
      * @return
      * @
      */
-    axis2_soap_envelope_t* (AXIS2_CALL *
+    axiom_soap_envelope_t* (AXIS2_CALL *
    create_default_soap_envelope)(struct axis2_mep_client *mep_client, 
                                   const axis2_env_t *env);
     /**

@@ -17,12 +17,12 @@
 #include <axis2_engine.h>
 #include <axis2_const.h>
 #include <axis2_hash.h>
-#include <axis2_soap_const.h>
-#include <axis2_soap_envelope.h>
-#include <axis2_soap_body.h>
-#include <axis2_soap_fault.h>
-#include <axis2_soap_header.h>
-#include <axis2_soap_header_block.h>
+#include <axiom_soap_const.h>
+#include <axiom_soap_envelope.h>
+#include <axiom_soap_body.h>
+#include <axiom_soap_fault.h>
+#include <axiom_soap_header.h>
+#include <axiom_soap_header_block.h>
 #include <axis2_transport_sender.h>
 #include <axis2_http_transport.h>
 #include <axis2_addr.h>
@@ -77,7 +77,7 @@ axis2_status_t AXIS2_CALL
 axis2_engine_extract_fault_info_from_msg_ctx(struct axis2_engine *engine, 
                                              const axis2_env_t *env,
                                              axis2_msg_ctx_t *msg_ctx,
-                                             struct axis2_soap_fault *fault);
+                                             struct axiom_soap_fault *fault);
                                              
 axis2_status_t AXIS2_CALL 
 axis2_engine_verify_ctx_built(struct axis2_engine *engine, 
@@ -588,7 +588,7 @@ axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine,
     axis2_endpoint_ref_t *fault_to = NULL;
     axis2_endpoint_ref_t *reply_to = NULL;
     axis2_property_t *property = NULL;
-    axis2_soap_envelope_t *envelope = NULL;
+    axiom_soap_envelope_t *envelope = NULL;
     const axis2_char_t *wsa_action = NULL;
     axis2_char_t *msg_id = NULL;
     axis2_relates_to_t *relates_to = NULL;
@@ -697,20 +697,20 @@ axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine,
     {
         if (AXIS2_MSG_CTX_GET_IS_SOAP_11(processing_context, env)) 
         {
-            envelope = axis2_soap_envelope_create_default_soap_envelope(env, AXIS2_SOAP11);
+            envelope = axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP11);
             
         } 
         else 
         {
-            envelope = axis2_soap_envelope_create_default_soap_envelope(env, AXIS2_SOAP12);
+            envelope = axiom_soap_envelope_create_default_soap_envelope(env, AXIOM_SOAP12);
         }
 
         if (envelope)
         {
-            axis2_soap_body_t *body = AXIS2_SOAP_ENVELOPE_GET_BODY(envelope, env);
+            axiom_soap_body_t *body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
             if (body)
             {
-                axis2_soap_fault_t *fault = AXIS2_SOAP_BODY_GET_FAULT(body, env);
+                axiom_soap_fault_t *fault = AXIOM_SOAP_BODY_GET_FAULT(body, env);
                 axis2_engine_extract_fault_info_from_msg_ctx(engine, env, 
                         processing_context, fault);
             }
@@ -763,7 +763,7 @@ axis2_status_t AXIS2_CALL
 axis2_engine_extract_fault_info_from_msg_ctx(struct axis2_engine *engine, 
                                              const axis2_env_t *env,
                                              axis2_msg_ctx_t *msg_ctx,
-                                             struct axis2_soap_fault *fault)
+                                             struct axiom_soap_fault *fault)
 {
     /*axis2_char_t *soap_namespace_uri = NULL;*/
     
@@ -774,36 +774,36 @@ axis2_engine_extract_fault_info_from_msg_ctx(struct axis2_engine *engine,
     /* get the current SOAP version */
     /*if (AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
     {
-        soap_namespace_uri = AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
+        soap_namespace_uri = AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
     }
     else
     {
         soap_namespace_uri = AXI2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
     }
 
-    void *fault_code = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME);
+    void *fault_code = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIOM_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME);
     axis2_char_t *soap_fault_code = "";
     if (fault_code) 
     {
-        AXIS2_SOAP_FAULT_SET_CODE(fault, env, fault_code);
+        AXIOM_SOAP_FAULT_SET_CODE(fault, env, fault_code);
     }*/
 
     /* defaulting to fault code Sender, if no message is available */
     /*soap_fault_code = get_sender_fault_code(soap_namespace_uri);
      fault.getCode().getValue().setText(soap_fault_code); 
 
-    void *fault_Reason = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME);
+    void *fault_Reason = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIOM_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME);
     axis2_char_t * message = "";
     if (fault_Reason) 
     {
-        AXIS2_SOAP_FAULT_SET_REASON(fault, env, fault_Reason);
+        AXIOM_SOAP_FAULT_SET_REASON(fault, env, fault_Reason);
     } 
 */
     /* defaulting to reason, unknown, if no reason is available */
   /*  message = "unknown";
      fault.getReason().getSOAPText().setText(message); 
 
-    void *fault_role = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME);
+    void *fault_role = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIOM_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME);
     if (fault_role) 
     {
         fault.getRole().setText((axis2_char_t *) fault_role); 
@@ -814,7 +814,7 @@ axis2_engine_extract_fault_info_from_msg_ctx(struct axis2_engine *engine,
         fault.getRole().setText("http://myAxisServer/role/default"); 
     }
 
-    void *fault_node = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_SOAP12_SOAP_FAULT_NODE_LOCAL_NAME);
+    void *fault_node = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIOM_SOAP12_SOAP_FAULT_NODE_LOCAL_NAME);
     if (fault_node) 
     {
         fault.getNode().setText((axis2_char_t *) fault_node);
@@ -825,10 +825,10 @@ axis2_engine_extract_fault_info_from_msg_ctx(struct axis2_engine *engine,
         fault.getNode().setText("http://myAxisServer/role/default"); 
     }
 
-    void *fault_detail = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME);
+    void *fault_detail = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIOM_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME);
     if (fault_detail)
     {
-        AXIS2_SOAP_FAULT_SET_DETAIL(fault, env, fault_detail);
+        AXIOM_SOAP_FAULT_SET_DETAIL(fault, env, fault_detail);
     } 
     */
     return AXIS2_SUCCESS;
@@ -943,10 +943,10 @@ axis2_engine_get_sender_fault_code(struct axis2_engine *engine,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, soap_namespace, AXIS2_FAILURE);
     
-    /*if (AXIS2_STRCMP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, soap_namespace))
-        return AXIS2_SOAP12_FAULT_CODE_SENDER;
+    /*if (AXIS2_STRCMP(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, soap_namespace))
+        return AXIOM_SOAP12_FAULT_CODE_SENDER;
     else
-        return AXIS2_SOAP11_FAULT_CODE_SENDER;
+        return AXIOM_SOAP11_FAULT_CODE_SENDER;
         */
     return NULL;
 }
@@ -959,18 +959,18 @@ axis2_engine_get_receiver_fault_code(struct axis2_engine *engine,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, soap_namespace, AXIS2_FAILURE);
     
-    if (AXIS2_STRCMP(AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, soap_namespace))
-        return AXIS2_SOAP12_FAULT_CODE_RECEIVER;
+    if (AXIS2_STRCMP(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, soap_namespace))
+        return AXIOM_SOAP12_FAULT_CODE_RECEIVER;
     else
-        return AXIS2_SOAP11_FAULT_CODE_RECEIVER;
+        return AXIOM_SOAP11_FAULT_CODE_RECEIVER;
     return NULL;
 }
 
 axis2_status_t axis2_engine_check_must_understand_headers(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx) 
 {
-    axis2_soap_envelope_t *soap_envelope = NULL;
-    axis2_soap_header_t *soap_header = NULL;
+    axiom_soap_envelope_t *soap_envelope = NULL;
+    axiom_soap_header_t *soap_header = NULL;
     axis2_hash_t *header_block_ht = NULL;
     axis2_hash_index_t *hash_index = NULL;
 
@@ -981,11 +981,11 @@ axis2_status_t axis2_engine_check_must_understand_headers(const axis2_env_t *env
     if (!soap_envelope)
         return AXIS2_FAILURE;
 
-    soap_header = AXIS2_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
+    soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
     if (!soap_header)
         return AXIS2_SUCCESS;
 
-    header_block_ht = AXIS2_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(soap_header, env);
+    header_block_ht = AXIOM_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(soap_header, env);
     if(!header_block_ht)
         return AXIS2_SUCCESS;            
     
@@ -993,16 +993,16 @@ axis2_status_t axis2_engine_check_must_understand_headers(const axis2_env_t *env
             hash_index = axis2_hash_next(env, hash_index))
     {   
         void *hb = NULL;
-        axis2_soap_header_block_t *header_block = NULL;
+        axiom_soap_header_block_t *header_block = NULL;
         axis2_char_t *role = NULL;
         
         axis2_hash_this(hash_index, NULL, NULL, &hb);
-        header_block = (axis2_soap_header_block_t *)hb;
+        header_block = (axiom_soap_header_block_t *)hb;
 
         if (header_block)
         {
-            if (AXIS2_SOAP_HEADER_BLOCK_IS_PROCESSED(header_block , env) ||
-                    !AXIS2_SOAP_HEADER_BLOCK_GET_MUST_UNDERSTAND(header_block, env))
+            if (AXIOM_SOAP_HEADER_BLOCK_IS_PROCESSED(header_block , env) ||
+                    !AXIOM_SOAP_HEADER_BLOCK_GET_MUST_UNDERSTAND(header_block, env))
             {
                 continue;
             }
@@ -1012,18 +1012,18 @@ axis2_status_t axis2_engine_check_must_understand_headers(const axis2_env_t *env
                need to fix this to allow the engine/service to be in one or more
                additional roles and then to check that any headers targetted for
                that role too have been dealt with. */
-            role = AXIS2_SOAP_HEADER_BLOCK_GET_ROLE(header_block, env);
+            role = AXIOM_SOAP_HEADER_BLOCK_GET_ROLE(header_block, env);
             
             if (AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) != AXIS2_TRUE )
             {
                 /* SOAP 1.2 */
-                if (!role || AXIS2_STRCMP(role, AXIS2_SOAP12_SOAP_ROLE_NEXT) != 0 )
+                if (!role || AXIS2_STRCMP(role, AXIOM_SOAP12_SOAP_ROLE_NEXT) != 0 )
                 {
-                    axis2_soap_envelope_t *temp_env = 
-                            axis2_soap_envelope_create_default_soap_fault_envelope(env,
+                    axiom_soap_envelope_t *temp_env = 
+                            axiom_soap_envelope_create_default_soap_fault_envelope(env,
                                     "soapenv:MustUnderstand",
                                     "Header not understood",
-                                    AXIS2_SOAP12, NULL, NULL);
+                                    AXIOM_SOAP12, NULL, NULL);
                     AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, temp_env);
                     AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env,
                              "http://www.w3.org/2005/08/addressing/fault");
@@ -1033,13 +1033,13 @@ axis2_status_t axis2_engine_check_must_understand_headers(const axis2_env_t *env
             else
             {
                 /* SOAP 1.1 */
-                if (!role || AXIS2_STRCMP(role, AXIS2_SOAP11_SOAP_ACTOR_NEXT) != 0 )
+                if (!role || AXIS2_STRCMP(role, AXIOM_SOAP11_SOAP_ACTOR_NEXT) != 0 )
                 {
-                    axis2_soap_envelope_t *temp_env = 
-                            axis2_soap_envelope_create_default_soap_fault_envelope(env,
+                    axiom_soap_envelope_t *temp_env = 
+                            axiom_soap_envelope_create_default_soap_fault_envelope(env,
                                     "soapenv:MustUnderstand",
                                     "Header not understood",
-                                    AXIS2_SOAP11, NULL, NULL);
+                                    AXIOM_SOAP11, NULL, NULL);
                     AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, temp_env);
                     AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env,
                              "http://www.w3.org/2005/08/addressing/fault");

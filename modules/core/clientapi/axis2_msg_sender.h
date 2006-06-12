@@ -26,7 +26,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_mep_client.h>
-#include <axis2_soap_envelope.h>
+#include <axiom_soap_envelope.h>
 
 
 #ifdef __cplusplus
@@ -90,7 +90,7 @@ struct axis2_msg_sender_ops
     send_with_soap)(axis2_msg_sender_t *msg_sender, 
                  const axis2_env_t *env,
                  axis2_char_t *op_name, 
-               axis2_soap_envelope_t *envelope);
+               axiom_soap_envelope_t *envelope);
    /**
     * Get the message information header object. All the sets to 
     * msg_info_headers should be done via get_msg_info and a set

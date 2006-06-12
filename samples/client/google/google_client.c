@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <axiom.h>
 #include <axis2_util.h>
-#include <axis2_soap.h>
+#include <axiom_soap.h>
 #include <axis2_client.h>
 
 axiom_node_t *
@@ -77,7 +77,7 @@ int main(int argc, char** argv)
     /* Setup options */
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIS2_SOAP11);
+    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
     
      /* Set up deploy folder.*/
     client_home = AXIS2_GETENV("AXIS2C_HOME");
@@ -165,7 +165,7 @@ build_soap_body_content(const axis2_env_t *env,
     axiom_attribute_t* attri1 = NULL;
     axis2_char_t *buffer = NULL;
 
-    ns0 = axiom_namespace_create (env, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, "soapenv");
+    ns0 = axiom_namespace_create (env, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, "soapenv");
     ns1 = axiom_namespace_create (env, "urn:GoogleSearch", "ns1");
     ns2 = axiom_namespace_create (env, "http://www.w3.org/1999/XMLSchema-instance", "xsi");
     ns3 = axiom_namespace_create (env, "http://www.w3.org/1999/XMLSchema", "xsd");

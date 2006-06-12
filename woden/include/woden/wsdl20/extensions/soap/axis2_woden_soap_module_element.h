@@ -49,7 +49,7 @@ typedef struct axis2_woden_soap_module_element_ops axis2_woden_soap_module_eleme
 typedef union axis2_woden_soap_module_element_base axis2_woden_soap_module_element_base_t;
 
 /** @defgroup axis2_woden_soap_module_element Soap Module Element
-  * @ingroup axis2_soap_module
+  * @ingroup axiom_soap_module
   * @{
   */
 

@@ -73,7 +73,7 @@ struct axis2_svc_grp_ctx;
 struct axis2_svc_ctx;
 struct axis2_op_ctx;
 struct axis2_conf;
-struct axis2_soap_envelope;
+struct axiom_soap_envelope;
 struct axis2_options;
     
 /** 
@@ -138,11 +138,11 @@ struct axis2_msg_ctx_ops
     /**
      * @return
      */
-    struct axis2_soap_envelope* (AXIS2_CALL *
+    struct axiom_soap_envelope* (AXIS2_CALL *
    get_soap_envelope)(struct axis2_msg_ctx *msg_ctx, 
                        const axis2_env_t *env);
     
-    struct axis2_soap_envelope* (AXIS2_CALL *
+    struct axiom_soap_envelope* (AXIS2_CALL *
    get_fault_soap_envelope)(struct axis2_msg_ctx *msg_ctx, 
                        const axis2_env_t *env);
     
@@ -226,12 +226,12 @@ struct axis2_msg_ctx_ops
     axis2_status_t (AXIS2_CALL *
    set_soap_envelope)(struct axis2_msg_ctx *msg_ctx, 
                   const axis2_env_t *env, 
-                  struct axis2_soap_envelope *soap_envelope);
+                  struct axiom_soap_envelope *soap_envelope);
     
     axis2_status_t (AXIS2_CALL *
    set_fault_soap_envelope)(struct axis2_msg_ctx *msg_ctx, 
                   const axis2_env_t *env, 
-                  struct axis2_soap_envelope *soap_envelope);
+                  struct axiom_soap_envelope *soap_envelope);
     
     /**
      * @param string

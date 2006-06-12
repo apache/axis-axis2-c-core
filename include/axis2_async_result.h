@@ -26,7 +26,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_msg_ctx.h>
-#include <axis2_soap_envelope.h>
+#include <axiom_soap_envelope.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -48,7 +48,7 @@ typedef struct axis2_async_result axis2_async_result_t;
  */  
 struct axis2_async_result_ops
 {
-    axis2_soap_envelope_t* (AXIS2_CALL *
+    axiom_soap_envelope_t* (AXIS2_CALL *
    get_envelope)(struct axis2_async_result *async_result, 
               const axis2_env_t *env);
    

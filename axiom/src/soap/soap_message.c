@@ -14,57 +14,57 @@
  * limitations under the License.
  */
  
- #include <axis2_soap_message.h>
+ #include <axiom_soap_message.h>
  #include <axiom_document.h>
  #include <axiom_output.h>
- #include "_axis2_soap_envelope.h"
+ #include "_axiom_soap_envelope.h"
 
 /*************************** impl struct **************************************/
 
-typedef struct axis2_soap_message_impl_t
+typedef struct axiom_soap_message_impl_t
 {
-    axis2_soap_message_t soap_message;
+    axiom_soap_message_t soap_message;
     
     axiom_document_t *om_doc;
     
-    axis2_soap_envelope_t *soap_envelope;
+    axiom_soap_envelope_t *soap_envelope;
     
-}axis2_soap_message_impl_t;
+}axiom_soap_message_impl_t;
 
 /*************************** Macro ********************************************/
 
-#define AXIS2_INTF_TO_IMPL(message) ((axis2_soap_message_impl_t*)message) 
+#define AXIS2_INTF_TO_IMPL(message) ((axiom_soap_message_impl_t*)message) 
 
 /******************************************************************************/
 
 axis2_status_t AXIS2_CALL
-axis2_soap_message_free(axis2_soap_message_t *message,
+axiom_soap_message_free(axiom_soap_message_t *message,
                         const axis2_env_t *env);
                                         
-axis2_soap_envelope_t* AXIS2_CALL
-axis2_soap_message_get_soap_envelope(axis2_soap_message_t *message,
+axiom_soap_envelope_t* AXIS2_CALL
+axiom_soap_message_get_soap_envelope(axiom_soap_message_t *message,
                                      const axis2_env_t *env);
                                         
                                         
 axis2_status_t AXIS2_CALL
-axis2_soap_message_serialize(axis2_soap_message_t *message,
+axiom_soap_message_serialize(axiom_soap_message_t *message,
                              const axis2_env_t *env,
                              axiom_output_t *om_output);
                              
 /************************** function implementations **************************/
 
-AXIS2_EXTERN axis2_soap_message_t* AXIS2_CALL
-axis2_soap_message_create(const axis2_env_t *env,
-                          axis2_soap_builder_t *builder,
+AXIS2_EXTERN axiom_soap_message_t* AXIS2_CALL
+axiom_soap_message_create(const axis2_env_t *env,
+                          axiom_soap_builder_t *builder,
                           axiom_document_t *om_doc)
 {
-    axis2_soap_message_impl_t *soap_message_impl = NULL;
+    axiom_soap_message_impl_t *soap_message_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, om_doc, NULL);
     AXIS2_PARAM_CHECK(env->error, builder, NULL);
     
-    soap_message_impl = (axis2_soap_message_impl_t *)AXIS2_MALLOC(env->allocator, 
-                            sizeof(axis2_soap_message_impl_t));
+    soap_message_impl = (axiom_soap_message_impl_t *)AXIS2_MALLOC(env->allocator, 
+                            sizeof(axiom_soap_message_impl_t));
     if(!soap_message_impl)                            
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -75,8 +75,8 @@ axis2_soap_message_create(const axis2_env_t *env,
     soap_message_impl->om_doc = NULL;
     soap_message_impl->soap_envelope = NULL;
     
-    soap_message_impl->soap_message.ops = (axis2_soap_message_ops_t*)AXIS2_MALLOC(env->allocator,
-                                            sizeof(axis2_soap_message_ops_t));
+    soap_message_impl->soap_message.ops = (axiom_soap_message_ops_t*)AXIS2_MALLOC(env->allocator,
+                                            sizeof(axiom_soap_message_ops_t));
                                             
     if(!(soap_message_impl->soap_message.ops))
     {
@@ -89,21 +89,21 @@ axis2_soap_message_create(const axis2_env_t *env,
     soap_message_impl->om_doc = om_doc;
     
     soap_message_impl->soap_message.ops->free_fn =
-            axis2_soap_message_free;
+            axiom_soap_message_free;
     soap_message_impl->soap_message.ops->serialize =
-            axis2_soap_message_serialize;
+            axiom_soap_message_serialize;
     soap_message_impl->soap_message.ops->get_soap_envelope =
-            axis2_soap_message_get_soap_envelope;
+            axiom_soap_message_get_soap_envelope;
                         
             
     return &(soap_message_impl->soap_message);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_soap_message_free(axis2_soap_message_t *message,
+axiom_soap_message_free(axiom_soap_message_t *message,
                         const axis2_env_t *env)
 {
-    axis2_soap_message_impl_t *soap_message_impl = NULL;
+    axiom_soap_message_impl_t *soap_message_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     soap_message_impl = AXIS2_INTF_TO_IMPL(message);
     if(soap_message_impl->om_doc)
@@ -113,7 +113,7 @@ axis2_soap_message_free(axis2_soap_message_t *message,
     }
     if(soap_message_impl->soap_envelope)
     {
-        AXIS2_SOAP_ENVELOPE_FREE(soap_message_impl->soap_envelope, env);
+        AXIOM_SOAP_ENVELOPE_FREE(soap_message_impl->soap_envelope, env);
         soap_message_impl->soap_envelope = NULL;
     }   
     if(soap_message_impl->soap_message.ops)
@@ -126,11 +126,11 @@ axis2_soap_message_free(axis2_soap_message_t *message,
     return AXIS2_SUCCESS;
 }
 
-axis2_soap_envelope_t* AXIS2_CALL
-axis2_soap_message_get_soap_envelope(axis2_soap_message_t *message,
+axiom_soap_envelope_t* AXIS2_CALL
+axiom_soap_message_get_soap_envelope(axiom_soap_message_t *message,
                                      const axis2_env_t *env)
 {
-    axis2_soap_message_impl_t* soap_message_impl = NULL;
+    axiom_soap_message_impl_t* soap_message_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     soap_message_impl = AXIS2_INTF_TO_IMPL(message);
     if(soap_message_impl->soap_envelope)
@@ -139,18 +139,18 @@ axis2_soap_message_get_soap_envelope(axis2_soap_message_t *message,
     }    
     else 
     {
-        soap_message_impl->soap_envelope = axis2_soap_envelope_create_null(env);
+        soap_message_impl->soap_envelope = axiom_soap_envelope_create_null(env);
         
         return soap_message_impl->soap_envelope;        
     }
 }    
 
 axis2_status_t AXIS2_CALL
-axis2_soap_message_serialize(axis2_soap_message_t *message,
+axiom_soap_message_serialize(axiom_soap_message_t *message,
                              const axis2_env_t *env,
                              axiom_output_t *om_output)
 {
-    axis2_soap_message_impl_t *soap_message_impl = NULL;
+    axiom_soap_message_impl_t *soap_message_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     soap_message_impl = AXIS2_INTF_TO_IMPL(message);
     return AXIOM_DOCUMENT_SERIALIZE(soap_message_impl->om_doc, env, om_output);

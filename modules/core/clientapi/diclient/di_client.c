@@ -27,16 +27,16 @@
 #include <axis2_xml_reader.h>
 #include <stdio.h>
 #include <axis2_xml_writer.h>
-#include <axis2_soap_builder.h>
-#include <axis2_soap_const.h>
-#include <axis2_soap_envelope.h>
-#include <axis2_soap_body.h>
-#include <axis2_soap_header.h>
-#include <axis2_soap_message.h>
-#include <axis2_soap_header_block.h>
-#include <axis2_soap_fault.h>
-#include <axis2_soap_fault_code.h>
-#include <axis2_soap_fault_role.h>
+#include <axiom_soap_builder.h>
+#include <axiom_soap_const.h>
+#include <axiom_soap_envelope.h>
+#include <axiom_soap_body.h>
+#include <axiom_soap_header.h>
+#include <axiom_soap_message.h>
+#include <axiom_soap_header_block.h>
+#include <axiom_soap_fault.h>
+#include <axiom_soap_fault_code.h>
+#include <axiom_soap_fault_role.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <axis2_wsdl4c_parser.h>
 #include <axis2_wsdl_pump.h>
@@ -441,8 +441,8 @@ axis2_diclient_invoke(axis2_diclient_t *diclient,
     if (response_ctx)
     {
         /* Get the response SOAP message from response message context */
-        axis2_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(response_ctx, env);
-        ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
+        axiom_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(response_ctx, env);
+        ret_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
     }
                                                         
     if(ret_node)

@@ -40,8 +40,8 @@ extern "C"
  * @{
  */    
  
-#define AXIS2_SOAP_11 0
-#define AXIS2_SOAP_12 1
+#define AXIOM_SOAP_11 0
+#define AXIOM_SOAP_12 1
 
 typedef struct axis2_stub_ops axis2_stub_ops_t;   
 typedef struct axis2_stub axis2_stub_t;

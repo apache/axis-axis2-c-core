@@ -17,10 +17,10 @@
 #include <axis2_handler_desc.h>
 #include <axis2_qname.h>
 #include <axis2_svc.h>
-#include <axis2_soap_header.h>
-#include <axis2_soap_body.h>
+#include <axiom_soap_header.h>
+#include <axiom_soap_body.h>
 #include <axis2_addr.h>
-#include <axis2_soap_header_block.h>
+#include <axiom_soap_header_block.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_property.h>
 #include <stdio.h>
@@ -36,7 +36,7 @@ axis2_addr_out_handler_add_to_soap_header (const axis2_env_t *env,
                                            axis2_endpoint_ref_t *
                                            endpoint_ref, 
                                            const axis2_char_t * type,
-                                           axis2_soap_header_t * soap_header,
+                                           axiom_soap_header_t * soap_header,
                                            const axis2_char_t * addr_ns);
 
 
@@ -57,7 +57,7 @@ axis2_addr_out_handler_process_any_content_type (const axis2_env_t *env,
 axiom_node_t *axis2_addr_out_handler_process_string_info (const axis2_env_t *env,
                                                              const axis2_char_t *value,
                                                              const axis2_char_t *type,
-                                                             axis2_soap_header_t **soap_header,
+                                                             axiom_soap_header_t **soap_header,
                                                              const axis2_char_t *addr_ns);
 
 
@@ -115,8 +115,8 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
     axis2_msg_info_headers_t *msg_info_headers = NULL;
     axis2_ctx_t *ctx = NULL;
     axiom_namespace_t *addressing_namespace = NULL;
-    axis2_soap_envelope_t *soap_envelope = NULL;
-    axis2_soap_header_t *soap_header = NULL;
+    axiom_soap_envelope_t *soap_envelope = NULL;
+    axiom_soap_header_t *soap_header = NULL;
     axiom_node_t *soap_header_node = NULL;
     axiom_element_t *soap_header_ele = NULL;
     axis2_endpoint_ref_t *epr = NULL;
@@ -204,7 +204,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         AXIOM_NAMESPACE_FREE(addressing_namespace, env);
         return AXIS2_SUCCESS; /* can happen in case of one way services/clients */
     }
-    soap_header  = AXIS2_SOAP_ENVELOPE_GET_HEADER (soap_envelope, env);
+    soap_header  = AXIOM_SOAP_ENVELOPE_GET_HEADER (soap_envelope, env);
   
     if (!soap_header)
     {
@@ -226,7 +226,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         axiom_node_t *relates_to_header_node = NULL;
         axiom_element_t *relates_to_header_ele = NULL;
 
-        soap_header_node = AXIS2_SOAP_HEADER_GET_BASE_NODE (soap_header, env);
+        soap_header_node = AXIOM_SOAP_HEADER_GET_BASE_NODE (soap_header, env);
         soap_header_ele =
             (axiom_element_t *)
             AXIOM_NODE_GET_DATA_ELEMENT (soap_header_node, env);
@@ -237,12 +237,12 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
 
         if (soap_envelope && epr)
         {
-            axis2_soap_body_t *body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+            axiom_soap_body_t *body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
             if (body)
             {
                 /* in case of a SOAP fault, we got to send the response to 
                    the adress specified by FaultTo */
-                if (AXIS2_SOAP_BODY_HAS_FAULT( body, env))
+                if (AXIOM_SOAP_BODY_HAS_FAULT( body, env))
                 {
                     axis2_endpoint_ref_t *fault_epr = AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO (msg_info_headers, env); 
                     if (fault_epr)
@@ -267,14 +267,14 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
             if (address && AXIS2_STRCMP (address, "") != 0)
             {
                 axiom_node_t *to_header_block_node = NULL;
-                axis2_soap_header_block_t *to_header_block = NULL;
+                axiom_soap_header_block_t *to_header_block = NULL;
                 
                 to_header_block  =
-                    AXIS2_SOAP_HEADER_ADD_HEADER_BLOCK (soap_header, env,
+                    AXIOM_SOAP_HEADER_ADD_HEADER_BLOCK (soap_header, env,
                                                         AXIS2_WSA_TO,
                                                         addressing_namespace);
                 to_header_block_node =
-                    AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE (to_header_block, env);
+                    AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE (to_header_block, env);
                 if (to_header_block_node)
                 {
                     axiom_element_t *to_header_block_element = NULL;
@@ -468,12 +468,12 @@ axiom_node_t *
 axis2_addr_out_handler_process_string_info (const axis2_env_t *env,
                                             const axis2_char_t * value,
                                             const axis2_char_t * type,
-                                            axis2_soap_header_t **
+                                            axiom_soap_header_t **
                                             soap_header_p,
                                             const axis2_char_t * addr_ns)
 {
-    axis2_soap_header_t *soap_header = NULL;
-    axis2_soap_header_block_t *header_block = NULL;
+    axiom_soap_header_t *soap_header = NULL;
+    axiom_soap_header_block_t *header_block = NULL;
     axiom_node_t *header_block_node = NULL;
     axiom_element_t *header_block_ele = NULL;
 
@@ -492,10 +492,10 @@ axis2_addr_out_handler_process_string_info (const axis2_env_t *env,
             axiom_namespace_create (env, addr_ns,
                                        AXIS2_WSA_DEFAULT_PREFIX);
         header_block =
-            AXIS2_SOAP_HEADER_ADD_HEADER_BLOCK (soap_header, env, type,
+            AXIOM_SOAP_HEADER_ADD_HEADER_BLOCK (soap_header, env, type,
                                                 addr_ns_obj);
         header_block_node =
-            AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE (header_block, env);
+            AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE (header_block, env);
         header_block_ele =
             (axiom_element_t *)
             AXIOM_NODE_GET_DATA_ELEMENT (header_block_node, env);
@@ -521,10 +521,10 @@ axis2_addr_out_handler_add_to_soap_header (const axis2_env_t *env,
                                            axis2_endpoint_ref_t *
                                            endpoint_ref, 
                                            const axis2_char_t * type,
-                                           axis2_soap_header_t * soap_header,
+                                           axiom_soap_header_t * soap_header,
                                            const axis2_char_t * addr_ns)
 {
-    axis2_soap_header_block_t *header_block = NULL;
+    axiom_soap_header_block_t *header_block = NULL;
     axis2_char_t *address = NULL;
     axis2_array_list_t *ref_param_list = NULL;
     axis2_array_list_t *meta_data_list = NULL;
@@ -538,12 +538,12 @@ axis2_addr_out_handler_add_to_soap_header (const axis2_env_t *env,
     AXIS2_PARAM_CHECK (env->error, type, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK (env->error, soap_header, AXIS2_FAILURE);
 
-    header_node = AXIS2_SOAP_HEADER_GET_BASE_NODE (soap_header, env);
+    header_node = AXIOM_SOAP_HEADER_GET_BASE_NODE (soap_header, env);
     
     addr_ns_obj = axiom_namespace_create (env, 
                         addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
     header_block =
-        AXIS2_SOAP_HEADER_ADD_HEADER_BLOCK (soap_header, env, type,
+        AXIOM_SOAP_HEADER_ADD_HEADER_BLOCK (soap_header, env, type,
                                             addr_ns_obj);
 
     if(NULL !=  addr_ns_obj)
@@ -559,7 +559,7 @@ axis2_addr_out_handler_add_to_soap_header (const axis2_env_t *env,
         axiom_element_t *hb_ele = NULL;
         axiom_node_t *address_node = NULL;
         axiom_element_t *address_ele = NULL;
-        hb_node = AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE (header_block, env);
+        hb_node = AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE (header_block, env);
         hb_ele = (axiom_element_t *) 
                     AXIOM_NODE_GET_DATA_ELEMENT (hb_node, env);
 
@@ -583,7 +583,7 @@ axis2_addr_out_handler_add_to_soap_header (const axis2_env_t *env,
     }
 
     header_block_node =
-        AXIS2_SOAP_HEADER_BLOCK_GET_BASE_NODE (header_block, env);
+        AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE (header_block, env);
     axis2_addr_out_handler_add_to_header (env, endpoint_ref,
                                           &header_block_node, addr_ns);
 

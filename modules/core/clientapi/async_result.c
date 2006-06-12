@@ -30,7 +30,7 @@ typedef struct axis2_async_result_impl
 #define AXIS2_INTF_TO_IMPL(async_result) ((axis2_async_result_impl_t *)async_result)
 
 
-axis2_soap_envelope_t* AXIS2_CALL 
+axiom_soap_envelope_t* AXIS2_CALL 
 axis2_async_result_get_envelope(struct axis2_async_result *async_result, 
                                 const axis2_env_t *env);
                                 
@@ -88,7 +88,7 @@ axis2_async_result_create(const axis2_env_t *env,
     return &(async_result_impl->async_result);
 }
 
-axis2_soap_envelope_t* AXIS2_CALL 
+axiom_soap_envelope_t* AXIS2_CALL 
 axis2_async_result_get_envelope(struct axis2_async_result *async_result, 
                                 const axis2_env_t *env)
 {

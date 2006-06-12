@@ -17,7 +17,7 @@
 #include <axis2_options.h>
 #include <axis2_const.h>
 #include <axis2_hash.h>
-#include <axis2_soap_const.h>
+#include <axiom_soap_const.h>
 #include <axis2_msg_info_headers.h>
 #include <axis2_array_list.h>
 
@@ -618,7 +618,7 @@ axis2_options_get_soap_version_uri(struct axis2_options *options,
       return options_impl->soap_version_uri;
    }
    /**TODO:java returns 11- isn't the default is 12?*/
-   return AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI; 
+   return AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI; 
 
 }
 
@@ -1106,7 +1106,7 @@ static void axis2_options_init_data(axis2_options_impl_t *options_impl)
    options_impl->parent = NULL;
    options_impl->properties = NULL;
    options_impl->soap_version_uri = NULL;
-   /*AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;*/
+   /*AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;*/
    options_impl->timeout_in_milli_seconds = -1;
    /*AXIS2_DEFAULT_TIMEOUT_MILLISECONDS;*/
    options_impl->use_seperate_listener = -1;
@@ -1118,7 +1118,7 @@ static void axis2_options_init_data(axis2_options_impl_t *options_impl)
    options_impl->transport_out = NULL;
    options_impl->sender_transport_protocol = NULL;
    options_impl->manage_session = -1;
-    options_impl->soap_version = AXIS2_SOAP12;
+    options_impl->soap_version = AXIOM_SOAP12;
     options_impl->enable_mtom = AXIS2_FALSE;
 }
 
@@ -1192,17 +1192,17 @@ axis2_options_set_soap_version(struct axis2_options *options,
 
    options_impl = AXIS2_INTF_TO_IMPL(options);
     
-    if (soap_version == AXIS2_SOAP11)
+    if (soap_version == AXIOM_SOAP11)
     {
         options_impl->soap_version = soap_version;
         axis2_options_set_soap_version_uri(options, env, 
-            AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
+            AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);
     }
     else
     {
-        options_impl->soap_version = AXIS2_SOAP12;
+        options_impl->soap_version = AXIOM_SOAP12;
         axis2_options_set_soap_version_uri(options, env, 
-            AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
+            AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI);
     }
     return AXIS2_SUCCESS;
 }

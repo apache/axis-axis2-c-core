@@ -31,12 +31,12 @@
  * @brief SOAP over HTTP sender struct impl
  *   Axis2 SOAP over HTTP sender impl  
  */
-typedef struct axis2_soap_over_http_sender_impl 
-                  axis2_soap_over_http_sender_impl_t;  
+typedef struct axiom_soap_over_http_sender_impl 
+                  axiom_soap_over_http_sender_impl_t;  
   
-struct axis2_soap_over_http_sender_impl
+struct axiom_soap_over_http_sender_impl
 {
-   axis2_soap_over_http_sender_t sender;
+   axiom_soap_over_http_sender_t sender;
    axis2_char_t *http_version;
    axis2_bool_t chunked;
    int so_timeout;
@@ -46,70 +46,70 @@ struct axis2_soap_over_http_sender_impl
 };
 
 #define AXIS2_INTF_TO_IMPL(sender) \
-                       ((axis2_soap_over_http_sender_impl_t *)(sender))
+                       ((axiom_soap_over_http_sender_impl_t *)(sender))
 
 /***************************** Function headers *******************************/
 axis2_status_t AXIS2_CALL 
-axis2_soap_over_http_sender_get_header_info 
-                  (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_get_header_info 
+                  (axiom_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
                   axis2_http_simple_response_t *response);
 
 axis2_status_t AXIS2_CALL
-axis2_soap_over_http_sender_process_response 
-                  (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_process_response 
+                  (axiom_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx, 
                   axis2_http_simple_response_t *response);
 
 axis2_status_t AXIS2_CALL
-axis2_soap_over_http_sender_get_timeout_values 
-                  (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_get_timeout_values 
+                  (axiom_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL 
-axis2_soap_over_http_sender_send 
-                  (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_send 
+                  (axiom_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
-                  axis2_soap_envelope_t *out, 
+                  axiom_soap_envelope_t *out, 
                   const axis2_char_t *str_url, 
                   const axis2_char_t *soap_action);
 
 axis2_status_t AXIS2_CALL 
-axis2_soap_over_http_sender_set_chunked
-                  (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_set_chunked
+                  (axiom_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env, axis2_bool_t chunked);
 
 axis2_status_t AXIS2_CALL 
-axis2_soap_over_http_sender_set_om_output
-                  (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_set_om_output
+                  (axiom_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env, axiom_output_t *om_output);
                   
 axis2_status_t AXIS2_CALL
-axis2_soap_over_http_sender_set_http_version
-                           (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_set_http_version
+                           (axiom_soap_over_http_sender_t *sender, 
                            const axis2_env_t *env, axis2_char_t *version);
                                     
 axis2_status_t AXIS2_CALL
-axis2_soap_over_http_sender_configure_proxy(
-                                    axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_configure_proxy(
+                                    axiom_soap_over_http_sender_t *sender, 
                            const axis2_env_t *env, 
                                     axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL 
-axis2_soap_over_http_sender_free
-                  (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_free
+                  (axiom_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env);
 /***************************** End of function headers ************************/
 
-axis2_soap_over_http_sender_t * AXIS2_CALL 
-axis2_soap_over_http_sender_create(const axis2_env_t *env)
+axiom_soap_over_http_sender_t * AXIS2_CALL 
+axiom_soap_over_http_sender_create(const axis2_env_t *env)
 {
-    axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
+    axiom_soap_over_http_sender_impl_t *sender_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    sender_impl =  (axis2_soap_over_http_sender_impl_t *)AXIS2_MALLOC 
+    sender_impl =  (axiom_soap_over_http_sender_impl_t *)AXIS2_MALLOC 
                         (env->allocator, sizeof(
-                        axis2_soap_over_http_sender_impl_t));
+                        axiom_soap_over_http_sender_impl_t));
    
     if(NULL == sender_impl)
    {
@@ -128,33 +128,33 @@ axis2_soap_over_http_sender_create(const axis2_env_t *env)
    sender_impl->client = NULL;
     
     sender_impl->sender.ops = AXIS2_MALLOC(env->allocator,
-                        sizeof(axis2_soap_over_http_sender_ops_t));
+                        sizeof(axiom_soap_over_http_sender_ops_t));
     if(NULL == sender_impl->sender.ops)
    {
-      axis2_soap_over_http_sender_free((axis2_soap_over_http_sender_t*)
+      axiom_soap_over_http_sender_free((axiom_soap_over_http_sender_t*)
                   sender_impl, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
    }
     
     sender_impl->sender.ops->send =
-                        axis2_soap_over_http_sender_send;
+                        axiom_soap_over_http_sender_send;
     sender_impl->sender.ops->set_chunked =
-                        axis2_soap_over_http_sender_set_chunked;
+                        axiom_soap_over_http_sender_set_chunked;
     sender_impl->sender.ops->set_om_output =
-                        axis2_soap_over_http_sender_set_om_output;
+                        axiom_soap_over_http_sender_set_om_output;
    sender_impl->sender.ops->set_http_version =
-                  axis2_soap_over_http_sender_set_http_version;
+                  axiom_soap_over_http_sender_set_http_version;
     sender_impl->sender.ops->free =
-                        axis2_soap_over_http_sender_free;
+                        axiom_soap_over_http_sender_free;
    return &(sender_impl->sender);
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_soap_over_http_sender_free (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_free (axiom_soap_over_http_sender_t *sender, 
                         const axis2_env_t *env)
 {
-    axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
+    axiom_soap_over_http_sender_impl_t *sender_impl = NULL;
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     sender_impl = AXIS2_INTF_TO_IMPL(sender);
@@ -176,17 +176,17 @@ axis2_soap_over_http_sender_free (axis2_soap_over_http_sender_t *sender,
 
 
 axis2_status_t AXIS2_CALL 
-axis2_soap_over_http_sender_send 
-                  (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_send 
+                  (axiom_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
-                  axis2_soap_envelope_t *out, 
+                  axiom_soap_envelope_t *out, 
                   const axis2_char_t *str_url, 
                   const axis2_char_t *soap_action)
 {
     axis2_http_simple_request_t *request = NULL;
     axis2_http_request_line_t *request_line = NULL;
     axis2_url_t *url = NULL;
-    axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
+    axiom_soap_over_http_sender_impl_t *sender_impl = NULL;
     axis2_xml_writer_t *xml_writer = NULL;
     axis2_char_t *buffer = NULL;
     const axis2_char_t *char_set_enc = NULL;
@@ -225,7 +225,7 @@ axis2_soap_over_http_sender_send
    }
     /* configure proxy settings if we have set so 
      */
-    axis2_soap_over_http_sender_configure_proxy(sender, env, msg_ctx);
+    axiom_soap_over_http_sender_configure_proxy(sender, env, msg_ctx);
     /* We put the client into msg_ctx so that we can free it once the processing
      * is done at client side
      */
@@ -262,7 +262,7 @@ axis2_soap_over_http_sender_send
     AXIOM_OUTPUT_SET_DO_OPTIMIZE(sender_impl->om_output, env, 
                doing_mtom);
    
-   AXIS2_SOAP_ENVELOPE_SERIALIZE (out, env, sender_impl->om_output, 
+   AXIOM_SOAP_ENVELOPE_SERIALIZE (out, env, sender_impl->om_output, 
                   AXIS2_FALSE);
 
     if (doing_mtom)
@@ -396,7 +396,7 @@ axis2_soap_over_http_sender_send
         AXIS2_HTTP_SIMPLE_REQUEST_SET_BODY_STRING(request, env, buffer);
     }
     
-   axis2_soap_over_http_sender_get_timeout_values(sender, env, msg_ctx);
+   axiom_soap_over_http_sender_get_timeout_values(sender, env, msg_ctx);
    AXIS2_HTTP_CLIENT_SET_TIMEOUT(sender_impl->client, env, 
                   sender_impl->so_timeout);
    
@@ -418,7 +418,7 @@ axis2_soap_over_http_sender_send
     if(AXIS2_HTTP_RESPONSE_OK_CODE_VAL == status_code || 
                         AXIS2_HTTP_RESPONSE_ACK_CODE_VAL == status_code)
     {
-        return axis2_soap_over_http_sender_process_response(sender, env, 
+        return axiom_soap_over_http_sender_process_response(sender, env, 
                         msg_ctx, response);
     }
     else if(AXIS2_HTTP_RESPONSE_INTERNAL_SERVER_ERROR_CODE_VAL == status_code)
@@ -435,7 +435,7 @@ axis2_soap_over_http_sender_send
                         AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP) || AXIS2_STRSTR(
                         tmp_header_val, AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML)))
         {
-            return axis2_soap_over_http_sender_process_response(sender, env, 
+            return axiom_soap_over_http_sender_process_response(sender, env, 
                         msg_ctx, response);
         }
     }
@@ -446,8 +446,8 @@ axis2_soap_over_http_sender_send
 
 
 axis2_status_t AXIS2_CALL 
-axis2_soap_over_http_sender_set_chunked
-                  (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_set_chunked
+                  (axiom_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env, axis2_bool_t chunked)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -457,8 +457,8 @@ axis2_soap_over_http_sender_set_chunked
 
 
 axis2_status_t AXIS2_CALL 
-axis2_soap_over_http_sender_set_om_output
-                  (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_set_om_output
+                  (axiom_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env, axiom_output_t *om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -468,14 +468,14 @@ axis2_soap_over_http_sender_set_om_output
 
 
 axis2_status_t AXIS2_CALL 
-axis2_soap_over_http_sender_get_header_info 
-                  (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_get_header_info 
+                  (axiom_soap_over_http_sender_t *sender, 
                   const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx, 
                   axis2_http_simple_response_t *response)
 {
    axis2_array_list_t *headers = NULL;
    axis2_char_t *charset = NULL;
-   axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
+   axiom_soap_over_http_sender_impl_t *sender_impl = NULL;
    int i = 0;
    axis2_bool_t response_chunked = AXIS2_FALSE;
    int *content_length = NULL;
@@ -568,8 +568,8 @@ axis2_soap_over_http_sender_get_header_info
 }
 
 axis2_status_t AXIS2_CALL
-axis2_soap_over_http_sender_process_response 
-                        (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_process_response 
+                        (axiom_soap_over_http_sender_t *sender, 
                                 const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx, 
                         axis2_http_simple_response_t *response)
 {
@@ -588,7 +588,7 @@ axis2_soap_over_http_sender_process_response
       return AXIS2_FAILURE;
    }
    
-   axis2_soap_over_http_sender_get_header_info(sender, env, msg_ctx, response);
+   axiom_soap_over_http_sender_get_header_info(sender, env, msg_ctx, response);
    /*axis_ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env), 
                   env);*/
     property = axis2_property_create(env);
@@ -603,8 +603,8 @@ axis2_soap_over_http_sender_process_response
 }
 
 axis2_status_t AXIS2_CALL
-axis2_soap_over_http_sender_get_timeout_values 
-                        (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_get_timeout_values 
+                        (axiom_soap_over_http_sender_t *sender, 
                                 const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx)
 {
     axis2_char_t *so_str = NULL;
@@ -640,8 +640,8 @@ axis2_soap_over_http_sender_get_timeout_values
 }
 
 axis2_status_t AXIS2_CALL
-axis2_soap_over_http_sender_set_http_version
-                           (axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_set_http_version
+                           (axiom_soap_over_http_sender_t *sender, 
                            const axis2_env_t *env, axis2_char_t *version)
 {
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -654,7 +654,7 @@ axis2_soap_over_http_sender_set_http_version
 }
 
 axis2_status_t AXIS2_CALL
-axis2_soap_over_http_sender_configure_proxy(axis2_soap_over_http_sender_t *sender, 
+axiom_soap_over_http_sender_configure_proxy(axiom_soap_over_http_sender_t *sender, 
                            const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -663,7 +663,7 @@ axis2_soap_over_http_sender_configure_proxy(axis2_soap_over_http_sender_t *sende
     axis2_param_t *proxy_param = NULL;
     axis2_qname_t *transport_qname = NULL;
     axis2_hash_t *transport_attrs = NULL;
-    axis2_soap_over_http_sender_impl_t *sender_impl = NULL;
+    axiom_soap_over_http_sender_impl_t *sender_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);

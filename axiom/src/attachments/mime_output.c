@@ -14,21 +14,21 @@
  * limitations under the License.
  */
  
-#include "axis2_mime_output.h"
+#include "axiom_mime_output.h"
 #include "axis2_data_handler.h"
-#include "axis2_mime_body_part.h"
+#include "axiom_mime_body_part.h"
 #include <axis2_string.h>
 #include <axiom_text.h>
-#include <axis2_mime_const.h>
+#include <axiom_mime_const.h>
 
 axis2_char_t AXIS2_CRLF[] =  { 13, 10 };
 
-typedef struct axis2_mime_output_impl
+typedef struct axiom_mime_output_impl
 {
-   axis2_mime_output_t mime_output;
-} axis2_mime_output_impl_t;
+   axiom_mime_output_t mime_output;
+} axiom_mime_output_impl_t;
 
-#define AXIS2_INTF_TO_IMPL(mime_output) ((axis2_mime_output_impl_t *)(mime_output))
+#define AXIS2_INTF_TO_IMPL(mime_output) ((axiom_mime_output_impl_t *)(mime_output))
 
 
 axis2_status_t axis2_char_2_byte(const axis2_env_t *env, axis2_char_t *char_buffer, axis2_byte_t **byte_buffer, int *byte_buffer_size);
@@ -56,10 +56,10 @@ axis2_char_2_byte(const axis2_env_t *env, axis2_char_t *char_buffer, axis2_byte_
 /***************************** Function headers *******************************/
 
 axis2_status_t AXIS2_CALL
-axis2_mime_output_free (axis2_mime_output_t *mime_output, const axis2_env_t *env);
+axiom_mime_output_free (axiom_mime_output_t *mime_output, const axis2_env_t *env);
 
 axis2_byte_t * AXIS2_CALL
-axis2_mime_output_complete(axis2_mime_output_t *mime_output,
+axiom_mime_output_complete(axiom_mime_output_t *mime_output,
                             const axis2_env_t *env, 
                             axis2_byte_t **output_stream, 
                             int *output_stream_size, 
@@ -70,29 +70,29 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
                             axis2_char_t *char_set_encoding,
                             const axis2_char_t *soap_content_type);
 axis2_status_t AXIS2_CALL
-axis2_start_writing_mime (axis2_mime_output_t *mime_output, 
+axis2_start_writing_mime (axiom_mime_output_t *mime_output, 
                             const axis2_env_t *env, axis2_byte_t **output_stream, 
                             int *output_stream_size, axis2_char_t *boundary);
 
-axis2_mime_body_part_t * AXIS2_CALL
+axiom_mime_body_part_t * AXIS2_CALL
 axis2_create_mime_body_part (axiom_text_t *text, const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_write_body_part (axis2_mime_output_t *mime_output, const axis2_env_t *env, 
+axis2_write_body_part (axiom_mime_output_t *mime_output, const axis2_env_t *env, 
                         axis2_byte_t **output_stream, int *output_stream_size, 
-                        axis2_mime_body_part_t *part, axis2_char_t *boundary);
+                        axiom_mime_body_part_t *part, axis2_char_t *boundary);
 
 axis2_status_t AXIS2_CALL
-axis2_write_mime_boundary (axis2_mime_output_t *mime_output, const axis2_env_t *env, 
+axis2_write_mime_boundary (axiom_mime_output_t *mime_output, const axis2_env_t *env, 
                             axis2_byte_t **output_stream, int *output_stream_size, 
                             axis2_char_t *boundary);
 
 axis2_status_t AXIS2_CALL
-axis2_write_finish_writing_mime (axis2_mime_output_t *mime_output, const axis2_env_t *env, 
+axis2_write_finish_writing_mime (axiom_mime_output_t *mime_output, const axis2_env_t *env, 
                         axis2_byte_t **output_stream, int *output_stream_size, axis2_char_t *boundary);
 
 const axis2_char_t * AXIS2_CALL
-axis2_mime_output_get_content_type_for_mime (axis2_mime_output_t *mime_output, 
+axiom_mime_output_get_content_type_for_mime (axiom_mime_output_t *mime_output, 
         const axis2_env_t *env, 
         axis2_char_t *boundary, 
         axis2_char_t *content_id, 
@@ -101,14 +101,14 @@ axis2_mime_output_get_content_type_for_mime (axis2_mime_output_t *mime_output,
 
 /************************** End of Function headers ************************/
 
-AXIS2_EXTERN axis2_mime_output_t * AXIS2_CALL
-axis2_mime_output_create (const axis2_env_t *env)
+AXIS2_EXTERN axiom_mime_output_t * AXIS2_CALL
+axiom_mime_output_create (const axis2_env_t *env)
 {
-    axis2_mime_output_impl_t *mime_output_impl = NULL;
+    axiom_mime_output_impl_t *mime_output_impl = NULL;
     
    AXIS2_ENV_CHECK(env, NULL);
-   mime_output_impl = (axis2_mime_output_impl_t *) AXIS2_MALLOC(env->allocator, 
-        sizeof(axis2_mime_output_impl_t));
+   mime_output_impl = (axiom_mime_output_impl_t *) AXIS2_MALLOC(env->allocator, 
+        sizeof(axiom_mime_output_impl_t));
       
    if(NULL == mime_output_impl)
     {
@@ -119,17 +119,17 @@ axis2_mime_output_create (const axis2_env_t *env)
     mime_output_impl->mime_output.ops = NULL;
     
    mime_output_impl->mime_output.ops = AXIS2_MALLOC (env->allocator, 
-        sizeof(axis2_mime_output_ops_t));
+        sizeof(axiom_mime_output_ops_t));
    if(NULL == mime_output_impl->mime_output.ops)
     {
-        axis2_mime_output_free(&(mime_output_impl->mime_output), env);
+        axiom_mime_output_free(&(mime_output_impl->mime_output), env);
       AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-   mime_output_impl->mime_output.ops->free =  axis2_mime_output_free;
-    mime_output_impl->mime_output.ops->complete = axis2_mime_output_complete;
-    mime_output_impl->mime_output.ops->get_content_type_for_mime = axis2_mime_output_get_content_type_for_mime; 
+   mime_output_impl->mime_output.ops->free =  axiom_mime_output_free;
+    mime_output_impl->mime_output.ops->complete = axiom_mime_output_complete;
+    mime_output_impl->mime_output.ops->get_content_type_for_mime = axiom_mime_output_get_content_type_for_mime; 
    return &(mime_output_impl->mime_output);
 }
 
@@ -137,9 +137,9 @@ axis2_mime_output_create (const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL    
 
-axis2_mime_output_free (axis2_mime_output_t *mime_output, const axis2_env_t *env)
+axiom_mime_output_free (axiom_mime_output_t *mime_output, const axis2_env_t *env)
 {
-    axis2_mime_output_impl_t *mime_output_impl = NULL;
+    axiom_mime_output_impl_t *mime_output_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     mime_output_impl = AXIS2_INTF_TO_IMPL(mime_output);
@@ -161,7 +161,7 @@ axis2_mime_output_free (axis2_mime_output_t *mime_output, const axis2_env_t *env
 
 
 axis2_byte_t * AXIS2_CALL
-axis2_mime_output_complete(axis2_mime_output_t *mime_output,
+axiom_mime_output_complete(axiom_mime_output_t *mime_output,
                             const axis2_env_t *env, 
                             axis2_byte_t **output_stream, 
                             int *output_stream_size, 
@@ -175,7 +175,7 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *header_value = NULL;
     axis2_char_t *content_id_string = NULL;
-   axis2_mime_body_part_t *root_mime_body_part = NULL;
+   axiom_mime_body_part_t *root_mime_body_part = NULL;
     axis2_byte_t *output_stream_start = NULL;
     int output_stream_start_size = 0;
     axis2_byte_t *output_stream_body = NULL;
@@ -195,7 +195,7 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
         return NULL;
     
 
-    root_mime_body_part = axis2_mime_body_part_create(env);
+    root_mime_body_part = axiom_mime_body_part_create(env);
 
     /* content-type */
     header_value = AXIS2_STRDUP("application/xop+xml; charset=", env);
@@ -203,16 +203,16 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
     header_value = AXIS2_STRACAT(header_value, "; type=\"", env);
     header_value = AXIS2_STRACAT(header_value, soap_content_type, env);
     header_value = AXIS2_STRACAT(header_value, "\";", env);
-    AXIS2_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-type", header_value);
+    AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-type", header_value);
     
     /* content-transfer-encoding */
-    AXIS2_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-transfer-encoding", "binary");
+    AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-transfer-encoding", "binary");
 
     /* content-id */
     content_id_string = (axis2_char_t *)"<";
     content_id_string = AXIS2_STRACAT(content_id_string, content_id, env);
     content_id_string = AXIS2_STRACAT(content_id_string, ">", env);
-    AXIS2_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-id", content_id_string);
+    AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-id", content_id_string);
     
     axis2_write_body_part (mime_output, env, &output_stream_body, &output_stream_body_size, root_mime_body_part, boundary);
             
@@ -228,7 +228,7 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
             axiom_text_t *text = (axiom_text_t *)AXIS2_ARRAY_LIST_GET(binary_node_list, env, j);
             if (text)
             {
-                axis2_mime_body_part_t *mime_body_part = NULL;
+                axiom_mime_body_part_t *mime_body_part = NULL;
                 mime_body_part = axis2_create_mime_body_part(text, env);
                 axis2_write_body_part(mime_output, env, &temp_stream, 
                     &temp_stream_size, mime_body_part, boundary);
@@ -332,7 +332,7 @@ axis2_mime_output_complete(axis2_mime_output_t *mime_output,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_start_writing_mime (axis2_mime_output_t *mime_output,
+axis2_start_writing_mime (axiom_mime_output_t *mime_output,
                             const axis2_env_t *env, axis2_byte_t **output_stream,
                             int *output_stream_size, axis2_char_t *boundary)
 {
@@ -341,7 +341,7 @@ axis2_start_writing_mime (axis2_mime_output_t *mime_output,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_write_mime_boundary (axis2_mime_output_t *mime_output, const axis2_env_t *env,
+axis2_write_mime_boundary (axiom_mime_output_t *mime_output, const axis2_env_t *env,
                             axis2_byte_t **output_stream, int *output_stream_size, 
                             axis2_char_t *boundary)
 {
@@ -361,8 +361,8 @@ axis2_write_mime_boundary (axis2_mime_output_t *mime_output, const axis2_env_t *
         return AXIS2_FAILURE;
     }
 
-    byte_stream[0] = AXIS2_MIME_BOUNDARY_BYTE;
-    byte_stream[1] = AXIS2_MIME_BOUNDARY_BYTE;
+    byte_stream[0] = AXIOM_MIME_BOUNDARY_BYTE;
+    byte_stream[1] = AXIOM_MIME_BOUNDARY_BYTE;
     if (byte_buffer)
     {
         memcpy (byte_stream + 2, byte_buffer, size);
@@ -378,12 +378,12 @@ axis2_write_mime_boundary (axis2_mime_output_t *mime_output, const axis2_env_t *
     return AXIS2_SUCCESS;
 }
 
-axis2_mime_body_part_t * AXIS2_CALL
+axiom_mime_body_part_t * AXIS2_CALL
 axis2_create_mime_body_part (axiom_text_t *text, const axis2_env_t *env)
 {
     axis2_data_handler_t *data_handler = NULL;
     const axis2_char_t *content_type = "application/octet-stream";
-    axis2_mime_body_part_t * mime_body_part = axis2_mime_body_part_create(env);
+    axiom_mime_body_part_t * mime_body_part = axiom_mime_body_part_create(env);
     axis2_char_t *content_id = (axis2_char_t *)"<";
     if (!mime_body_part)
         return NULL;
@@ -394,22 +394,22 @@ axis2_create_mime_body_part (axiom_text_t *text, const axis2_env_t *env)
         content_type = AXIS2_DATA_HANDLER_GET_CONTENT_TYPE(data_handler, env);
     }
     
-    AXIS2_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env, 
+    AXIOM_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env, 
             data_handler);
     content_id = AXIS2_STRACAT(content_id, 
         AXIOM_TEXT_SET_GET_CONTENT_ID(text, env), env);
     content_id = AXIS2_STRACAT(content_id, ">", env); 
-    AXIS2_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-id", content_id);
-    AXIS2_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-type", content_type);
-    AXIS2_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-transfer-encoding", "binary");
+    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-id", content_id);
+    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-type", content_type);
+    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-transfer-encoding", "binary");
 
    return mime_body_part;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_write_body_part (axis2_mime_output_t *mime_output, const axis2_env_t *env, 
+axis2_write_body_part (axiom_mime_output_t *mime_output, const axis2_env_t *env, 
                         axis2_byte_t **output_stream, int *output_stream_size, 
-                        axis2_mime_body_part_t *part, axis2_char_t *boundary)
+                        axiom_mime_body_part_t *part, axis2_char_t *boundary)
 {
     axis2_byte_t *byte_buffer = NULL;
     axis2_byte_t *byte_stream = NULL;
@@ -420,7 +420,7 @@ axis2_write_body_part (axis2_mime_output_t *mime_output, const axis2_env_t *env,
         
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    AXIS2_MIME_BODY_PART_WRITE_TO(part, env, &body_stream, &body_stream_size);
+    AXIOM_MIME_BODY_PART_WRITE_TO(part, env, &body_stream, &body_stream_size);
     
     size = byte_buffer_size + body_stream_size + 4;
         
@@ -459,7 +459,7 @@ axis2_write_body_part (axis2_mime_output_t *mime_output, const axis2_env_t *env,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_write_finish_writing_mime (axis2_mime_output_t *mime_output, const axis2_env_t *env, 
+axis2_write_finish_writing_mime (axiom_mime_output_t *mime_output, const axis2_env_t *env, 
                         axis2_byte_t **output_stream, int *output_stream_size, axis2_char_t *boundary)
 {
     axis2_byte_t *byte_buffer;
@@ -471,8 +471,8 @@ axis2_write_finish_writing_mime (axis2_mime_output_t *mime_output, const axis2_e
     axis2_char_2_byte(env, boundary, &byte_buffer, &size);
     byte_stream = AXIS2_MALLOC(env->allocator, (size + 4) * sizeof(axis2_byte_t));
     
-    byte_stream[0] = AXIS2_MIME_BOUNDARY_BYTE;
-    byte_stream[1] = AXIS2_MIME_BOUNDARY_BYTE;
+    byte_stream[0] = AXIOM_MIME_BOUNDARY_BYTE;
+    byte_stream[1] = AXIOM_MIME_BOUNDARY_BYTE;
     if (byte_buffer)
     {
         memcpy (byte_stream + 2, byte_buffer, size);
@@ -480,8 +480,8 @@ axis2_write_finish_writing_mime (axis2_mime_output_t *mime_output, const axis2_e
         byte_buffer = NULL;
     }
     
-    byte_stream[size + 2] = AXIS2_MIME_BOUNDARY_BYTE;
-    byte_stream[size + 3] = AXIS2_MIME_BOUNDARY_BYTE;
+    byte_stream[size + 2] = AXIOM_MIME_BOUNDARY_BYTE;
+    byte_stream[size + 3] = AXIOM_MIME_BOUNDARY_BYTE;
     
     AXIS2_FREE(env->allocator, byte_buffer);
     
@@ -493,7 +493,7 @@ axis2_write_finish_writing_mime (axis2_mime_output_t *mime_output, const axis2_e
 }
 
 const axis2_char_t * AXIS2_CALL
-axis2_mime_output_get_content_type_for_mime (axis2_mime_output_t *mime_output, 
+axiom_mime_output_get_content_type_for_mime (axiom_mime_output_t *mime_output, 
         const axis2_env_t *env, 
         axis2_char_t *boundary, 
         axis2_char_t *content_id, 

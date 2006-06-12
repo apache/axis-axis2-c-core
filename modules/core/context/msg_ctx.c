@@ -22,8 +22,8 @@
 #include <axis2_conf.h>
 #include <axis2_transport_in_desc.h>
 #include <axis2_transport_out_desc.h>
-#include <axis2_soap_envelope.h>
-#include <axis2_soap_const.h>
+#include <axiom_soap_envelope.h>
+#include <axiom_soap_const.h>
 #include <axis2_options.h>
 
 typedef struct axis2_msg_ctx_impl axis2_msg_ctx_impl_t;
@@ -66,9 +66,9 @@ struct axis2_msg_ctx_impl
     axis2_transport_out_desc_t *transport_out_desc;
 
     /** SOAP envelope */
-    axis2_soap_envelope_t *soap_envelope;
+    axiom_soap_envelope_t *soap_envelope;
     /** SOAP Fault envelope */
-    axis2_soap_envelope_t *fault_soap_envelope;
+    axiom_soap_envelope_t *fault_soap_envelope;
     /** response written? */
     axis2_bool_t response_written;
     /** in fault flow? */
@@ -144,10 +144,10 @@ axis2_msg_ctx_get_from(struct axis2_msg_ctx *msg_ctx,
 axis2_bool_t AXIS2_CALL
 axis2_msg_ctx_get_in_fault_flow(struct axis2_msg_ctx *msg_ctx, 
                                 const axis2_env_t *env);
-axis2_soap_envelope_t* AXIS2_CALL
+axiom_soap_envelope_t* AXIS2_CALL
 axis2_msg_ctx_get_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
                                 const axis2_env_t *env);
-axis2_soap_envelope_t* AXIS2_CALL
+axiom_soap_envelope_t* AXIS2_CALL
 axis2_msg_ctx_get_fault_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
                                 const axis2_env_t *env);
 axis2_char_t* AXIS2_CALL
@@ -187,11 +187,11 @@ axis2_msg_ctx_set_in_fault_flow(struct axis2_msg_ctx *msg_ctx,
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
                             const axis2_env_t *env, 
-                            axis2_soap_envelope_t *soap_envelope);
+                            axiom_soap_envelope_t *soap_envelope);
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_fault_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
                             const axis2_env_t *env, 
-                            axis2_soap_envelope_t *soap_envelope);
+                            axiom_soap_envelope_t *soap_envelope);
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_message_id(struct axis2_msg_ctx *msg_ctx, 
                                 const axis2_env_t *env, 
@@ -692,13 +692,13 @@ axis2_msg_ctx_free (axis2_msg_ctx_t *msg_ctx,
     
     if (msg_ctx_impl->soap_envelope)
     {
-        AXIS2_SOAP_ENVELOPE_FREE(msg_ctx_impl->soap_envelope, env);
+        AXIOM_SOAP_ENVELOPE_FREE(msg_ctx_impl->soap_envelope, env);
         msg_ctx_impl->soap_envelope = NULL;
     }
 
     if (msg_ctx_impl->fault_soap_envelope)
     {
-        AXIS2_SOAP_ENVELOPE_FREE(msg_ctx_impl->fault_soap_envelope, env);
+        AXIOM_SOAP_ENVELOPE_FREE(msg_ctx_impl->fault_soap_envelope, env);
         msg_ctx_impl->fault_soap_envelope = NULL;
     }
 
@@ -796,14 +796,14 @@ axis2_bool_t AXIS2_CALL axis2_msg_ctx_get_in_fault_flow(struct axis2_msg_ctx *ms
     return AXIS2_INTF_TO_IMPL(msg_ctx)->in_fault_flow;
 }
 
-axis2_soap_envelope_t* AXIS2_CALL axis2_msg_ctx_get_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
+axiom_soap_envelope_t* AXIS2_CALL axis2_msg_ctx_get_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
                                             const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(msg_ctx)->soap_envelope;
 }
 
-axis2_soap_envelope_t* AXIS2_CALL axis2_msg_ctx_get_fault_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
+axiom_soap_envelope_t* AXIS2_CALL axis2_msg_ctx_get_fault_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
                                             const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -946,7 +946,7 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_in_fault_flow(struct axis2_msg_ctx *
 }
 
 axis2_status_t AXIS2_CALL axis2_msg_ctx_set_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
-                                            const axis2_env_t *env, axis2_soap_envelope_t *soap_envelope) 
+                                            const axis2_env_t *env, axiom_soap_envelope_t *soap_envelope) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -956,15 +956,15 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_soap_envelope(struct axis2_msg_ctx *
         axis2_char_t *soap_ns = NULL;
         
         AXIS2_INTF_TO_IMPL(msg_ctx)->soap_envelope  = soap_envelope ;
-        ns = AXIS2_SOAP_ENVELOPE_GET_NAMESPACE(soap_envelope, env);
+        ns = AXIOM_SOAP_ENVELOPE_GET_NAMESPACE(soap_envelope, env);
         if (ns)
         {
             soap_ns = AXIOM_NAMESPACE_GET_URI(ns, env);
             if (soap_ns)
             {
-                if (AXIS2_STRCASECMP(soap_ns, AXIS2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+                if (AXIS2_STRCASECMP(soap_ns, AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
                     AXIS2_INTF_TO_IMPL(msg_ctx)->is_soap_11 = AXIS2_FALSE;
-                else if (AXIS2_STRCASECMP(soap_ns, AXIS2_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
+                else if (AXIS2_STRCASECMP(soap_ns, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
                     AXIS2_INTF_TO_IMPL(msg_ctx)->is_soap_11 = AXIS2_TRUE;
                 else
                 {
@@ -985,7 +985,7 @@ axis2_status_t AXIS2_CALL axis2_msg_ctx_set_soap_envelope(struct axis2_msg_ctx *
 }
 
 axis2_status_t AXIS2_CALL axis2_msg_ctx_set_fault_soap_envelope(struct axis2_msg_ctx *msg_ctx, 
-                                            const axis2_env_t *env, axis2_soap_envelope_t *soap_envelope) 
+                                            const axis2_env_t *env, axiom_soap_envelope_t *soap_envelope) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(msg_ctx)->fault_soap_envelope  = soap_envelope ;

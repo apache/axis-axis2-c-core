@@ -112,7 +112,7 @@ axis2_wsdl_ext_soap_header_create (const axis2_env_t *env,
     }
     if(!qtype)
     {
-        qtype = axis2_qname_create(env, "header", AXIS2_SOAP_11_HEADER, NULL);
+        qtype = axis2_qname_create(env, "header", AXIOM_SOAP_11_HEADER, NULL);
         if(!qtype) return NULL;
     }    
     AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_TYPE(

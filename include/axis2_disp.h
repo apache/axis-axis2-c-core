@@ -105,8 +105,8 @@ axis2_status_t AXIS2_CALL axis2_disp_invoke(struct axis2_handler * handler,
                                                     
 axis2_disp_t* AXIS2_CALL axis2_addr_disp_create(const axis2_env_t *env);
 axis2_disp_t* AXIS2_CALL axis2_req_uri_disp_create(const axis2_env_t *env);
-axis2_disp_t* AXIS2_CALL axis2_soap_body_disp_create(const axis2_env_t *env);
-axis2_disp_t* AXIS2_CALL axis2_soap_action_disp_create(const axis2_env_t *env);
+axis2_disp_t* AXIS2_CALL axiom_soap_body_disp_create(const axis2_env_t *env);
+axis2_disp_t* AXIS2_CALL axiom_soap_action_disp_create(const axis2_env_t *env);
                                                 
 /** @} */
     

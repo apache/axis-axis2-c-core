@@ -21,27 +21,27 @@
 #include <axis2_const.h>
 #include <axis2_conf_ctx.h>
 #include <axis2_utils.h>
-#include <axis2_soap_envelope.h>
-#include <axis2_soap_body.h>
+#include <axiom_soap_envelope.h>
+#include <axiom_soap_body.h>
 
 axis2_status_t AXIS2_CALL 
-axis2_soap_body_disp_invoke (struct axis2_handler * handler, 
+axiom_soap_body_disp_invoke (struct axis2_handler * handler, 
                              const axis2_env_t *env,
                              struct axis2_msg_ctx *msg_ctx);
                              
 axis2_svc_t* AXIS2_CALL 
-axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
+axiom_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
                               const axis2_env_t *env);
 
                               
 axis2_op_t* AXIS2_CALL 
-axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
+axiom_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
                              const axis2_env_t *env,
                              axis2_svc_t *svc);
 
 
 axis2_disp_t* AXIS2_CALL 
-axis2_soap_body_disp_create(const axis2_env_t *env) 
+axiom_soap_body_disp_create(const axis2_env_t *env) 
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
@@ -69,7 +69,7 @@ axis2_soap_body_disp_create(const axis2_env_t *env)
         return NULL;        
     }
 
-    handler->ops->invoke = axis2_soap_body_disp_invoke;
+    handler->ops->invoke = axiom_soap_body_disp_invoke;
     
     AXIS2_QNAME_FREE(qname, env);
     
@@ -91,20 +91,20 @@ axis2_soap_body_disp_create(const axis2_env_t *env)
  * @return
  */
 axis2_svc_t* AXIS2_CALL 
-axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx, 
+axiom_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx, 
                               const axis2_env_t *env) 
 {    
-    axis2_soap_envelope_t *soap_envelope = NULL;
+    axiom_soap_envelope_t *soap_envelope = NULL;
     axis2_svc_t *svc = NULL;
     
     AXIS2_ENV_CHECK(env, NULL); 
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
     if (soap_envelope)
     {
-        axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+        axiom_soap_body_t *soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
         if (soap_body)
         {
-            axiom_node_t *body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+            axiom_node_t *body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
             if (body_node)
             {
                 axiom_node_t *body_first_child_node = 
@@ -175,11 +175,11 @@ axis2_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
  * @return
  */
 axis2_op_t* AXIS2_CALL 
-axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
+axiom_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
                              const axis2_env_t *env,
                              axis2_svc_t *svc)
 {
-    axis2_soap_envelope_t *soap_envelope = NULL;
+    axiom_soap_envelope_t *soap_envelope = NULL;
     axis2_op_t *op = NULL;
     
     AXIS2_ENV_CHECK(env, NULL); 
@@ -188,10 +188,10 @@ axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx,
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
     if (soap_envelope)
     {
-        axis2_soap_body_t *soap_body = AXIS2_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+        axiom_soap_body_t *soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
         if (soap_body)
         {
-            axiom_node_t *body_node = AXIS2_SOAP_BODY_GET_BASE_NODE(soap_body, env);
+            axiom_node_t *body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
             if (body_node)
             {
                 axiom_node_t *body_first_child_node = 
@@ -231,14 +231,14 @@ axis2_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx,
 }
             
 axis2_status_t AXIS2_CALL 
-axis2_soap_body_disp_invoke(struct axis2_handler * handler, 
+axiom_soap_body_disp_invoke(struct axis2_handler * handler, 
                             const axis2_env_t *env,
                             struct axis2_msg_ctx *msg_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);    
     
-    msg_ctx->ops->find_svc = axis2_soap_body_disp_find_svc;
-    msg_ctx->ops->find_op = axis2_soap_body_disp_find_op;
+    msg_ctx->ops->find_svc = axiom_soap_body_disp_find_svc;
+    msg_ctx->ops->find_op = axiom_soap_body_disp_find_op;
     
     return axis2_disp_invoke(handler, env, msg_ctx);
 }

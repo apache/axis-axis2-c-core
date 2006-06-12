@@ -16,7 +16,7 @@
 
 #include "echo_util.h"
 #include <axis2_util.h>
-#include <axis2_soap.h>
+#include <axiom_soap.h>
 #include <axis2_client.h>
 
 int main(int argc, char** argv)
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
     /* Setup options */
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIS2_SOAP11);
+    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
 
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
      * using the axis2.xml file.

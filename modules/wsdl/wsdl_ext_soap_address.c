@@ -90,7 +90,7 @@ axis2_wsdl_ext_soap_address_create (const axis2_env_t *env,
     }
     if(!qtype)
     {
-        qtype = axis2_qname_create(env, "address", AXIS2_SOAP_11_ADDRESS, NULL);
+        qtype = axis2_qname_create(env, "address", AXIOM_SOAP_11_ADDRESS, NULL);
         if(!qtype) return NULL;
     }    
     AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_TYPE(

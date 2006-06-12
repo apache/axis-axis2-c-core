@@ -14,50 +14,50 @@
  * limitations under the License.
  */
  
-#include <axis2_mime_body_part.h>
+#include <axiom_mime_body_part.h>
 #include <axis2_data_handler.h>
 #include <axis2_hash.h>
 
-typedef struct axis2_mime_body_part_impl
+typedef struct axiom_mime_body_part_impl
 {
-   axis2_mime_body_part_t mime_body_part;
+   axiom_mime_body_part_t mime_body_part;
    /** hash map to hold header name, value pairs */
    axis2_hash_t *header_map;
     axis2_data_handler_t *data_handler;
-} axis2_mime_body_part_impl_t;
+} axiom_mime_body_part_impl_t;
 
 extern axis2_char_t AXIS2_CRLF[];
 
 
-#define AXIS2_INTF_TO_IMPL(mime_body_part) ((axis2_mime_body_part_impl_t *)(mime_body_part))
+#define AXIS2_INTF_TO_IMPL(mime_body_part) ((axiom_mime_body_part_impl_t *)(mime_body_part))
 
 /***************************** Function headers *******************************/
 
 axis2_status_t AXIS2_CALL
-axis2_mime_body_part_free (axis2_mime_body_part_t *mime_body_part, const axis2_env_t *env);
+axiom_mime_body_part_free (axiom_mime_body_part_t *mime_body_part, const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_mime_body_part_add_header (axis2_mime_body_part_t *mime_body_part, 
+axiom_mime_body_part_add_header (axiom_mime_body_part_t *mime_body_part, 
     const axis2_env_t *env,
     const axis2_char_t *name, 
     const axis2_char_t *value);
 
 axis2_status_t AXIS2_CALL
-axis2_mime_body_part_set_data_handler (axis2_mime_body_part_t *mime_body_part, const axis2_env_t *env, axis2_data_handler_t *data_handler); 
+axiom_mime_body_part_set_data_handler (axiom_mime_body_part_t *mime_body_part, const axis2_env_t *env, axis2_data_handler_t *data_handler); 
 
 axis2_status_t AXIS2_CALL
-axis2_mime_body_part_write_to (axis2_mime_body_part_t *mime_body_part, const axis2_env_t *env, 
+axiom_mime_body_part_write_to (axiom_mime_body_part_t *mime_body_part, const axis2_env_t *env, 
                                 axis2_byte_t **output_stream, int *output_stream_size);
 /************************** End of Function headers ************************/
 
-AXIS2_EXTERN axis2_mime_body_part_t * AXIS2_CALL
-axis2_mime_body_part_create (const axis2_env_t *env)
+AXIS2_EXTERN axiom_mime_body_part_t * AXIS2_CALL
+axiom_mime_body_part_create (const axis2_env_t *env)
 {
-    axis2_mime_body_part_impl_t *mime_body_part_impl = NULL;
+    axiom_mime_body_part_impl_t *mime_body_part_impl = NULL;
     
    AXIS2_ENV_CHECK(env, NULL);
-   mime_body_part_impl = (axis2_mime_body_part_impl_t *) AXIS2_MALLOC(env->allocator, 
-        sizeof(axis2_mime_body_part_impl_t));
+   mime_body_part_impl = (axiom_mime_body_part_impl_t *) AXIS2_MALLOC(env->allocator, 
+        sizeof(axiom_mime_body_part_impl_t));
       
    if(NULL == mime_body_part_impl)
     {
@@ -72,24 +72,24 @@ axis2_mime_body_part_create (const axis2_env_t *env)
     mime_body_part_impl->header_map = axis2_hash_make(env);
     if (!(mime_body_part_impl->header_map))
     {
-        axis2_mime_body_part_free(&(mime_body_part_impl->mime_body_part), env);
+        axiom_mime_body_part_free(&(mime_body_part_impl->mime_body_part), env);
       AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
    mime_body_part_impl->mime_body_part.ops = AXIS2_MALLOC (env->allocator, 
-        sizeof(axis2_mime_body_part_ops_t));
+        sizeof(axiom_mime_body_part_ops_t));
    if(NULL == mime_body_part_impl->mime_body_part.ops)
     {
-        axis2_mime_body_part_free(&(mime_body_part_impl->mime_body_part), env);
+        axiom_mime_body_part_free(&(mime_body_part_impl->mime_body_part), env);
       AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-   mime_body_part_impl->mime_body_part.ops->free =  axis2_mime_body_part_free;
-    mime_body_part_impl->mime_body_part.ops->add_header = axis2_mime_body_part_add_header;
-    mime_body_part_impl->mime_body_part.ops->set_data_handler = axis2_mime_body_part_set_data_handler; 
-    mime_body_part_impl->mime_body_part.ops->write_to = axis2_mime_body_part_write_to;
+   mime_body_part_impl->mime_body_part.ops->free =  axiom_mime_body_part_free;
+    mime_body_part_impl->mime_body_part.ops->add_header = axiom_mime_body_part_add_header;
+    mime_body_part_impl->mime_body_part.ops->set_data_handler = axiom_mime_body_part_set_data_handler; 
+    mime_body_part_impl->mime_body_part.ops->write_to = axiom_mime_body_part_write_to;
     
     return &(mime_body_part_impl->mime_body_part);
 }
@@ -97,9 +97,9 @@ axis2_mime_body_part_create (const axis2_env_t *env)
 /*************************** Start of op impls *************************/
 
 axis2_status_t AXIS2_CALL
-axis2_mime_body_part_free (axis2_mime_body_part_t *mime_body_part, const axis2_env_t *env)
+axiom_mime_body_part_free (axiom_mime_body_part_t *mime_body_part, const axis2_env_t *env)
 {
-    axis2_mime_body_part_impl_t *mime_body_part_impl = NULL;
+    axiom_mime_body_part_impl_t *mime_body_part_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     mime_body_part_impl = AXIS2_INTF_TO_IMPL(mime_body_part);
@@ -127,12 +127,12 @@ axis2_mime_body_part_free (axis2_mime_body_part_t *mime_body_part, const axis2_e
 
 
 axis2_status_t AXIS2_CALL
-axis2_mime_body_part_add_header (axis2_mime_body_part_t *mime_body_part, 
+axiom_mime_body_part_add_header (axiom_mime_body_part_t *mime_body_part, 
     const axis2_env_t *env,
     const axis2_char_t *name, 
     const axis2_char_t *value) 
 {
-    axis2_mime_body_part_impl_t *mime_body_part_impl = NULL;
+    axiom_mime_body_part_impl_t *mime_body_part_impl = NULL;
        
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
@@ -145,7 +145,7 @@ axis2_mime_body_part_add_header (axis2_mime_body_part_t *mime_body_part,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_mime_body_part_set_data_handler (axis2_mime_body_part_t *mime_body_part, 
+axiom_mime_body_part_set_data_handler (axiom_mime_body_part_t *mime_body_part, 
     const axis2_env_t *env, axis2_data_handler_t *data_handler) 
 {
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -154,10 +154,10 @@ axis2_mime_body_part_set_data_handler (axis2_mime_body_part_t *mime_body_part,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_mime_body_part_write_to (axis2_mime_body_part_t *mime_body_part, const axis2_env_t *env, 
+axiom_mime_body_part_write_to (axiom_mime_body_part_t *mime_body_part, const axis2_env_t *env, 
                                 axis2_byte_t **output_stream, int *output_stream_size) 
 {
-   axis2_mime_body_part_impl_t *mime_body_part_impl = NULL;
+   axiom_mime_body_part_impl_t *mime_body_part_impl = NULL;
     axis2_hash_index_t *hash_index = NULL;
     const void *key = NULL;
     void *value = NULL;

@@ -48,7 +48,7 @@ typedef struct axis2_woden_soap_header_block_element_ops axis2_woden_soap_header
 typedef union axis2_woden_soap_header_block_element_base axis2_woden_soap_header_block_element_base_t;
 
 /** @defgroup axis2_woden_soap_header_block_element Soap Header Block Element
-  * @ingroup axis2_soap_header_block
+  * @ingroup axiom_soap_header_block
   * @{
   */
 

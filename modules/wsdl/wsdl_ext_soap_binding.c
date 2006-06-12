@@ -100,7 +100,7 @@ axis2_wsdl_ext_soap_binding_create (const axis2_env_t *env,
     }
     if(!qtype)
     {
-        qtype = axis2_qname_create(env, "binding", AXIS2_SOAP_11_BINDING, NULL);
+        qtype = axis2_qname_create(env, "binding", AXIOM_SOAP_11_BINDING, NULL);
         if(!qtype) return NULL;
     }    
     AXIS2_WSDL_EXTENSIBLE_ELEMENT_SET_TYPE(

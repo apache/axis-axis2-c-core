@@ -18,7 +18,7 @@
 #define AXIS2_WODEN_SOAP_CONSTANTS_H
 
 /**
- * @file axis2_soap_constants.h
+ * @file axiom_soap_constants.h
  * @brief Axis2 Xml Soap Constants
  *          Constants for XML Soap elements, attributes and URIs.
  */

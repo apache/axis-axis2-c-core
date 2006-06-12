@@ -1398,7 +1398,7 @@ axis2_svc_get_op_by_soap_action_and_endpoint(axis2_svc_t *svc,
         
     svc_impl = AXIS2_INTF_TO_IMPL(svc);
     
-    type_1 = axis2_qname_create(env, "op", AXIS2_SOAP_11_OP, NULL);
+    type_1 = axis2_qname_create(env, "op", AXIOM_SOAP_11_OP, NULL);
     wsdl_endpoint = axis2_svc_get_endpoint(svc, env, endpoint);
     wsdl_binding = AXIS2_WSDL_ENDPOINT_GET_BINDING(wsdl_endpoint, env);
     binding_ops = AXIS2_WSDL_BINDING_GET_BINDING_OPS(wsdl_binding, env);

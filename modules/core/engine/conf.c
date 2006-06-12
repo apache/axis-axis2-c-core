@@ -1824,7 +1824,7 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
     
-    soap_action_based_dispatch = axis2_soap_action_disp_create(env);
+    soap_action_based_dispatch = axiom_soap_action_disp_create(env);
     if(!soap_action_based_dispatch)
     {
         return AXIS2_FAILURE;
@@ -1836,7 +1836,7 @@ axis2_conf_set_default_dispatchers(axis2_conf_t *conf,
     AXIS2_ARRAY_LIST_ADD(config_impl->handlers, env, AXIS2_HANDLER_GET_HANDLER_DESC(handler, env));
     handler = NULL;
     
-    soap_msg_body_based_dispatch = axis2_soap_body_disp_create(env);
+    soap_msg_body_based_dispatch = axiom_soap_body_disp_create(env);
     if(!soap_msg_body_based_dispatch)
     {
         return AXIS2_FAILURE;

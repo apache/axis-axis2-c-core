@@ -24,7 +24,7 @@
 #include <axis2_transport_out_desc.h>
 #include <listener_manager.h>
 #include <callback_recv.h>
-#include <axis2_soap_body.h>
+#include <axiom_soap_body.h>
 #include <axis2_msg_ctx.h>
 #include <axis2_conf_ctx.h>
 #include <platforms/axis2_platform_auto_sense.h>

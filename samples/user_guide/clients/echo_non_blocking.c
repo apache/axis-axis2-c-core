@@ -16,7 +16,7 @@
 
 #include "echo_util.h"
 #include <axis2_util.h>
-#include <axis2_soap.h>
+#include <axiom_soap.h>
 #include <axis2_client.h>
 
 /* my on_complete callback function */
@@ -143,7 +143,7 @@ echo_callback_on_complete(struct axis2_callback *callback,
    /** SOAP response has arrived here; get the soap envelope 
      from the callback object and do whatever you want to do with it */
    
-   axis2_soap_envelope_t *soap_envelope = NULL;
+   axiom_soap_envelope_t *soap_envelope = NULL;
    axiom_node_t *ret_node = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
    
@@ -161,7 +161,7 @@ echo_callback_on_complete(struct axis2_callback *callback,
    }
     else
     {
-        ret_node = AXIS2_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
+        ret_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
     
         if(!ret_node)
         {

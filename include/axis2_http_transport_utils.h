@@ -32,7 +32,7 @@
 #include <axis2_hash.h>
 #include <axiom_element.h>
 #include <axis2_stream.h>
-#include <axis2_soap_envelope.h>
+#include <axiom_soap_envelope.h>
 #include <axis2_http_chunked_stream.h>
 
 #ifdef __cplusplus
@@ -81,7 +81,7 @@ axis2_http_transport_utils_process_http_get_request
                         axis2_conf_ctx_t *conf_ctx, 
                         axis2_hash_t *request_params);
     
-AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
+AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 axis2_http_transport_utils_create_envelope_from_get_request
                         (const axis2_env_t *env, 
                         const axis2_char_t *request_uri,
@@ -117,7 +117,7 @@ AXIS2_EXTERN axis2_hash_t * AXIS2_CALL
 axis2_http_transport_utils_get_request_params(const axis2_env_t *env, 
                   axis2_char_t *request_uri);
 
-AXIS2_EXTERN axis2_soap_envelope_t* AXIS2_CALL
+AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
 axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env, 
                         axis2_msg_ctx_t *msg_ctx, 
                         const axis2_char_t *soap_ns_uri);
