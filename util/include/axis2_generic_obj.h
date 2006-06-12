@@ -66,13 +66,13 @@ AXIS2_DECLARE_DATA struct axis2_generic_obj_ops
     axis2_status_t (AXIS2_CALL *
     set_type) (
             axis2_generic_obj_t *generic_obj,
-            const axis2_env_t **env,
+            const axis2_env_t *env,
             int type);
 
     int (AXIS2_CALL *
     get_type) (
             axis2_generic_obj_t *generic_obj,
-            const axis2_env_t **env);
+            const axis2_env_t *env);
 
 
 };

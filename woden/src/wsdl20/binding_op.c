@@ -319,6 +319,85 @@ axis2_woden_binding_op_to_wsdl_component(
     return binding_op;
 }
 
+AXIS2_EXTERN axis2_woden_binding_op_t * AXIS2_CALL
+axis2_woden_binding_op_to_configurable_element(
+        void *binding_op,
+        const axis2_env_t *env)
+{
+    axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!binding_op)
+    {
+        binding_op_impl = (axis2_woden_binding_op_impl_t *) create(env);
+    }
+    else
+        binding_op_impl = (axis2_woden_binding_op_impl_t *) binding_op;
+
+    axis2_woden_binding_free_ops(binding_op, env);
+
+    binding_op_impl->binding_op.base.binding_op_element.base.configurable_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_configurable_element_ops_t));
+    axis2_woden_configurable_element_resolve_methods(&(binding_op_impl->binding_op.base.
+            binding_op_element.base.configurable_element), env, binding_op_impl->methods);
+    return binding_op;
+}
+
+
+AXIS2_EXTERN axis2_woden_binding_op_t * AXIS2_CALL
+axis2_woden_binding_op_to_documentable_element(
+        void *binding_op,
+        const axis2_env_t *env)
+{
+    axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!binding_op)
+    {
+        binding_op_impl = (axis2_woden_binding_op_impl_t *) create(env);
+    }
+    else
+        binding_op_impl = (axis2_woden_binding_op_impl_t *) binding_op;
+
+    axis2_woden_binding_free_ops(binding_op, env);
+
+    binding_op_impl->binding_op.base.binding_op_element.base.documentable_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_documentable_element_ops_t));
+    axis2_woden_documentable_element_resolve_methods(&(binding_op_impl->binding_op.base.
+            binding_op_element.base.documentable_element), env, 
+            binding_op_impl->methods);
+    return binding_op;
+}
+
+AXIS2_EXTERN axis2_woden_binding_op_t * AXIS2_CALL
+axis2_woden_binding_op_to_documentable(
+        void *binding_op,
+        const axis2_env_t *env)
+{
+    axis2_woden_binding_op_impl_t *binding_op_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!binding_op)
+    {
+        binding_op_impl = (axis2_woden_binding_op_impl_t *) create(env);
+    }
+    else
+        binding_op_impl = (axis2_woden_binding_op_impl_t *) binding_op;
+
+    axis2_woden_binding_free_ops(binding_op, env);
+
+    binding_op_impl->binding_op.base.nested_configurable.base.
+        configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_documentable_ops_t));
+    axis2_woden_documentable_resolve_methods(&(binding_op_impl->binding_op.base.
+            nested_configurable.base.configurable.base.documentable), env, NULL,
+            binding_op_impl->methods);
+    return binding_op;
+}
+
+
 
 AXIS2_EXTERN axis2_woden_binding_op_t * AXIS2_CALL
 axis2_woden_binding_op_to_attr_extensible(
@@ -395,6 +474,18 @@ create(const axis2_env_t *env)
     binding_op_impl->binding_op.base.nested_configurable.ops = NULL;
     binding_op_impl->binding_op.base.nested_configurable.base.configurable.ops = 
             NULL;
+    binding_op_impl->binding_op.base.binding_op_element.base.
+        nested_element.ops = NULL;
+    binding_op_impl->binding_op.base.binding_op_element.base.
+        configurable_element.ops = NULL;
+    binding_op_impl->binding_op.base.binding_op_element.base.
+        documentable_element.ops = NULL;
+    binding_op_impl->binding_op.base.nested_configurable.base.configurable.base.
+        documentable.ops = NULL;
+    binding_op_impl->binding_op.base.binding_op_element.base.
+        documentable_element.wsdl_element.base.attr_extensible.ops = NULL;
+    binding_op_impl->binding_op.base.binding_op_element.base.
+        documentable_element.wsdl_element.base.element_extensible.ops = NULL;
     
     binding_op_impl->binding_op.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_binding_op_ops_t));
@@ -562,7 +653,34 @@ axis2_woden_binding_op_free_ops(
         binding_op_impl->binding_op.base.nested_configurable.base.
             nested_element.ops = NULL;
     }
+  
+    if(binding_op_impl->binding_op.base.binding_op_element.base.
+            configurable_element.ops)
+    {
+        AXIS2_FREE(env->allocator, binding_op_impl->binding_op.base.
+                binding_op_element.base.configurable_element.ops);
+        binding_op_impl->binding_op.base.binding_op_element.base.
+            configurable_element.ops = NULL;
+    }
+    
 
+    if(binding_op_impl->binding_op.base.binding_op_element.base.
+            documentable_element.ops)
+    {
+        AXIS2_FREE(env->allocator, binding_op_impl->binding_op.base.
+                binding_op_element.base.documentable_element.ops);
+        binding_op_impl->binding_op.base.binding_op_element.base.
+            documentable_element.ops = NULL;
+    }
+     
+    if(binding_op_impl->binding_op.base.nested_configurable.base.
+            configurable.base.documentable.ops)
+    {
+        AXIS2_FREE(env->allocator, binding_op_impl->binding_op.base.
+                nested_configurable.base.configurable.base.documentable.ops);
+        binding_op_impl->binding_op.base.nested_configurable.base.
+            configurable.base.documentable.ops = NULL;
+    }
     if(binding_op_impl->binding_op.base.binding_op_element.
             base.documentable_element.wsdl_element.base.attr_extensible.ops)
     {

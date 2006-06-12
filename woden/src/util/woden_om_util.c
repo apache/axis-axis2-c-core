@@ -17,6 +17,7 @@
 #include <woden_om_util.h>
 #include <axis2_qname.h>
 #include <axis2_om_element.h>
+#include <axis2_uri.h>
 
 
 AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
@@ -26,7 +27,7 @@ woden_om_util_get_qname(
         axis2_char_t *prefixed_value,
         void *desc)
 {
-    int index = 0;
+    axis2_char_t *index = NULL;
     axis2_char_t *prefix = "";
     axis2_char_t *localpart = NULL;
     axis2_char_t *namespc_uri_str = NULL;
@@ -65,10 +66,11 @@ woden_om_util_register_unique_prefix(
 
     desc = axis2_woden_desc_to_desc_element(desc, env);
     ns_uri = AXIS2_WODEN_DESC_ELEMENT_GET_NAMESPACE(desc, env, prefix);
-    ns_uri_str = AXIS2_URI_TO_STRING(ns_uri, env);
+    ns_uri_str = AXIS2_URI_TO_STRING(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
     if(NULL != ns_uri_str && 0 == AXIS2_STRCMP(ns_uri_str, namespc_uri_str))
     {
-        return; 
+        /* Namespace already registerd */
+        return AXIS2_SUCCESS; 
     }
     tmp_prefix = AXIS2_STRDUP(prefix, env);
     while(NULL != ns_uri_str && 0 != AXIS2_STRCMP(ns_uri_str, namespc_uri_str))
@@ -77,13 +79,13 @@ woden_om_util_register_unique_prefix(
 
         temp = AXIS2_STRACAT(tmp_prefix, "_", env); 
         ns_uri = AXIS2_WODEN_DESC_ELEMENT_GET_NAMESPACE(desc, env, temp);
-        ns_uri_str = AXIS2_URI_TO_STRING(ns_uri, env);
+        ns_uri_str = AXIS2_URI_TO_STRING(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
         AXIS2_FREE(env->allocator, tmp_prefix);
         tmp_prefix = AXIS2_STRDUP(temp, env);
         AXIS2_FREE(env->allocator, temp);
     }
     uri = axis2_uri_parse_string(env, namespc_uri_str);
-
-    return AXIS2_WODEN_DESC_ELEMENT_ADD_NAMESPACE(desc, env, namespc_uri_str);
+    
+    return AXIS2_WODEN_DESC_ELEMENT_ADD_NAMESPACE(desc, env, prefix, uri);
 }
  

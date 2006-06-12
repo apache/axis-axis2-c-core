@@ -265,6 +265,32 @@ axis2_woden_binding_to_documentable_element(
 }
 
 AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
+axis2_woden_binding_to_documentable(
+        void *binding,
+        const axis2_env_t *env)
+{
+    axis2_woden_binding_impl_t *binding_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!binding)
+    {
+        binding_impl = (axis2_woden_binding_impl_t *) create(env);
+    }
+    else
+        binding_impl = (axis2_woden_binding_impl_t *) binding;
+
+    axis2_woden_binding_free_ops(binding, env);
+
+    binding_impl->binding.base.configurable.base.documentable.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_documentable_ops_t));
+    axis2_woden_documentable_resolve_methods(&(binding_impl->binding.base.
+            configurable.base.documentable), env, NULL,
+            binding_impl->methods);
+    return binding;
+}
+
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_configurable(
         void *binding,
         const axis2_env_t *env)
@@ -420,6 +446,7 @@ create(const axis2_env_t *env)
     
     binding_impl->binding.base.binding_element.ops = NULL;
     binding_impl->binding.base.binding_element.base.documentable_element.ops = NULL;
+    binding_impl->binding.base.configurable.base.documentable.ops = NULL;
     binding_impl->binding.base.binding_element.base.configurable_element.ops = NULL;
     binding_impl->binding.base.configurable.ops = NULL;
     
@@ -571,6 +598,14 @@ axis2_woden_binding_free_ops(
         AXIS2_FREE(env->allocator, binding_impl->binding.base.
                 binding_element.base.documentable_element.ops);
         binding_impl->binding.base.binding_element.base.documentable_element.ops = 
+            NULL;
+    }
+     
+    if(binding_impl->binding.base.configurable.base.documentable.ops)
+    {
+        AXIS2_FREE(env->allocator, binding_impl->binding.base.
+                configurable.base.documentable.ops);
+        binding_impl->binding.base.configurable.base.documentable.ops = 
             NULL;
     }
     

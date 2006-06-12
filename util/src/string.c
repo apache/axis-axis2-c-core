@@ -298,6 +298,7 @@ axis2_strltrim(
         const axis2_char_t *_trim)
 {
     axis2_char_t *_p = NULL;
+    axis2_char_t *ret = NULL;
 
     if(!_s)
         return NULL;
@@ -308,10 +309,13 @@ axis2_strltrim(
     while(*_p)
     {
         if(!strchr(_trim, *_p))
-            return _p;
+        {
+            ret = (axis2_char_t *) AXIS2_STRDUP(_p, env);
+            break;
+        }
         ++_p;
     }
-    return AXIS2_STRDUP(_p, env);
+    return ret;
 }
            
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
@@ -321,18 +325,23 @@ axis2_strrtrim(
         const axis2_char_t *_trim)
 {
     axis2_char_t *__tail;
+    axis2_char_t *ret = NULL;
+    
     if(!_s)
         return NULL;
-    __tail = (axis2_char_t *) _s + axis2_strlen(_s);
+    __tail =  ((axis2_char_t *) _s) + axis2_strlen(_s);
     if(!_trim)
         _trim = " \t\n\r";
     while(_s < __tail--)
     {
         if(!strchr(_trim, *__tail))
-            return (axis2_char_t *) _s;
+        {
+            ret =  (axis2_char_t *) AXIS2_STRDUP(_s, env);
+            break;
+        }
         *__tail = 0;
     }
-    return AXIS2_STRDUP(_s, env);
+    return ret;
 }    
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
@@ -344,9 +353,10 @@ axis2_strtrim(
     axis2_char_t *_p = NULL;
     axis2_char_t *_q = NULL;
 
-    _p = axis2_strrtrim(env, _s, _trim);
-    _q = axis2_strltrim(env, _p, _trim);
-    AXIS2_FREE(env->allocator,_p);
+    _p = axis2_strltrim(env, _s, _trim);
+    _q = axis2_strrtrim(env, _p, _trim);
+    if(_p)
+        AXIS2_FREE(env->allocator, _p);
     return _q;
 }
 

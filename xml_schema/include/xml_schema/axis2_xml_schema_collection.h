@@ -220,8 +220,8 @@ axis2_xml_schema_collection_create(const axis2_env_t *env);
 #define AXIS2_XML_SCHEMA_COLLECTION_READ_ELEMENT(collection, env, uri) \
         ((collection)->ops->read_element(collection, env, uri))
         
-#define AXIS2_XML_SCHEMA_COLLECTION_READ_ELEMENT_WITH_URI(collection, env, uri ) \
-        ((collection)->ops->read_element_with_uri(collection, env, uri ))
+#define AXIS2_XML_SCHEMA_COLLECTION_READ_ELEMENT_WITH_URI(collection, env, ele_node, uri ) \
+        ((collection)->ops->read_element_with_uri(collection, env, ele_node, uri ))
         
 #define AXIS2_XML_SCHEMA_COLLECTION_GET_ELEMENT_BY_QNAME(collection, env, qname) \
         ((collection)->ops->get_element_by_qname(collection, env, qname))

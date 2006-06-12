@@ -146,6 +146,21 @@ axis2_woden_binding_fault_ref_to_wsdl_component(
         void *binding_fault_ref,
         const axis2_env_t *env);
 
+AXIS2_EXTERN axis2_woden_binding_fault_ref_t * AXIS2_CALL
+axis2_woden_binding_fault_ref_to_configurable_element(
+        void *binding_fault_ref,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_binding_fault_ref_t * AXIS2_CALL
+axis2_woden_binding_fault_ref_to_documentable_element(
+        void *binding_fault_ref,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_binding_fault_ref_t * AXIS2_CALL
+axis2_woden_binding_fault_ref_to_documentable(
+        void *binding_fault_ref,
+        const axis2_env_t *env);
+
 
 AXIS2_EXTERN axis2_woden_binding_fault_ref_t * AXIS2_CALL
 axis2_woden_binding_fault_ref_to_attr_extensible(

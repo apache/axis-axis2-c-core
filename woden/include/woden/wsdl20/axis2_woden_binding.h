@@ -172,6 +172,11 @@ axis2_woden_binding_to_documentable_element(
         const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
+axis2_woden_binding_to_documentable(
+        void *binding,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_binding_t * AXIS2_CALL
 axis2_woden_binding_to_configurable(
         void *binding,
         const axis2_env_t *env);

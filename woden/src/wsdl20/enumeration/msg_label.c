@@ -84,7 +84,7 @@ create(
 AXIS2_EXTERN axis2_woden_msg_label_t * AXIS2_CALL
 axis2_woden_msg_label_create(
         const axis2_env_t *env,
-        axis2_char_t *value,
+        const axis2_char_t *value,
         axis2_bool_t valid)
 {
     axis2_woden_msg_label_impl_t *msg_label_impl = NULL;

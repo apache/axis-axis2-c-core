@@ -340,6 +340,112 @@ axis2_woden_endpoint_to_wsdl_component(
     return endpoint;
 }
 
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
+axis2_woden_endpoint_to_configurable_element(
+        void *endpoint,
+        const axis2_env_t *env)
+{
+    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!endpoint)
+    {
+        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+    }
+    else
+        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+
+    axis2_woden_interface_free_ops(endpoint, env);
+
+    endpoint_impl->endpoint.base.endpoint_element.base.configurable_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_configurable_element_ops_t));
+    axis2_woden_configurable_element_resolve_methods(&(endpoint_impl->endpoint.base.
+            endpoint_element.base.configurable_element), env, endpoint_impl->methods);
+    return endpoint;
+}
+
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
+axis2_woden_endpoint_to_documentable(
+        void *endpoint,
+        const axis2_env_t *env)
+{
+    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!endpoint)
+    {
+        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+    }
+    else
+        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+
+    axis2_woden_interface_free_ops(endpoint, env);
+
+    endpoint_impl->endpoint.base.nested_configurable.base.
+        configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_documentable_ops_t));
+    axis2_woden_documentable_resolve_methods(&(endpoint_impl->endpoint.base.
+            nested_configurable.base.configurable.base.documentable), env, NULL,
+            endpoint_impl->methods);
+    return endpoint;
+}
+
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
+axis2_woden_endpoint_to_attr_extensible(
+        void *endpoint,
+        const axis2_env_t *env)
+{
+    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!endpoint)
+    {
+        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+    }
+    else
+        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+
+    axis2_woden_interface_free_ops(endpoint, env);
+
+    endpoint_impl->endpoint.base.endpoint_element.base.documentable_element.
+        wsdl_element.base.attr_extensible.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_attr_extensible_ops_t));
+    axis2_woden_attr_extensible_resolve_methods(&(endpoint_impl->endpoint.base.
+            endpoint_element.base.documentable_element.wsdl_element.base.
+            attr_extensible), env, NULL, endpoint_impl->methods);
+    return endpoint;
+}
+
+
+AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
+axis2_woden_endpoint_to_element_extensible(
+        void *endpoint,
+        const axis2_env_t *env)
+{
+    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!endpoint)
+    {
+        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+    }
+    else
+        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+
+    axis2_woden_interface_free_ops(endpoint, env);
+
+    endpoint_impl->endpoint.base.endpoint_element.base.documentable_element.
+        wsdl_element.base.element_extensible.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_element_extensible_ops_t));
+    axis2_woden_element_extensible_resolve_methods(&(endpoint_impl->endpoint.base.
+            endpoint_element.base.documentable_element.wsdl_element.base.
+            element_extensible), env, NULL, endpoint_impl->methods);
+    return endpoint;
+}
+
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_endpoint_t *
 create(const axis2_env_t *env)
@@ -367,7 +473,15 @@ create(const axis2_env_t *env)
     endpoint_impl->endpoint.base.nested_configurable.base.nested_component.ops = NULL; 
     endpoint_impl->endpoint.base.configurable_component.ops = NULL;
     endpoint_impl->endpoint.base.configurable_component.wsdl_component.ops = NULL;
-    
+    endpoint_impl->endpoint.base.endpoint_element.base.
+        configurable_element.ops = NULL;
+    endpoint_impl->endpoint.base.nested_configurable.base.configurable.base.
+        documentable.ops = NULL;
+    endpoint_impl->endpoint.base.endpoint_element.base.
+        documentable_element.wsdl_element.base.attr_extensible.ops = NULL;
+    endpoint_impl->endpoint.base.endpoint_element.base.
+        documentable_element.wsdl_element.base.element_extensible.ops = NULL;
+ 
     endpoint_impl->endpoint.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_endpoint_ops_t));
 
@@ -518,6 +632,45 @@ axis2_woden_endpoint_free_ops(
                 configurable_component.wsdl_component.ops);
         endpoint_impl->endpoint.base.configurable_component.wsdl_component.ops = NULL;
     }
+ 
+    if(endpoint_impl->endpoint.base.endpoint_element.base.
+            configurable_element.ops)
+    {
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
+                endpoint_element.base.configurable_element.ops);
+        endpoint_impl->endpoint.base.endpoint_element.base.
+            configurable_element.ops = NULL;
+    }
+    
+    if(endpoint_impl->endpoint.base.nested_configurable.base.
+            configurable.base.documentable.ops)
+    {
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
+                nested_configurable.base.configurable.base.documentable.ops);
+        endpoint_impl->endpoint.base.nested_configurable.base.
+            configurable.base.documentable.ops = NULL;
+    }
+      
+    if(endpoint_impl->endpoint.base.endpoint_element.base.
+            documentable_element.wsdl_element.base.attr_extensible.ops)
+    {
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
+                endpoint_element.base.documentable_element.wsdl_element.base.
+                attr_extensible.ops);
+        endpoint_impl->endpoint.base.endpoint_element.base.
+            documentable_element.wsdl_element.base.attr_extensible.ops = NULL;
+    }
+      
+    if(endpoint_impl->endpoint.base.endpoint_element.base.
+            documentable_element.wsdl_element.base.element_extensible.ops)
+    {
+        AXIS2_FREE(env->allocator, endpoint_impl->endpoint.base.
+                endpoint_element.base.documentable_element.wsdl_element.base.
+                element_extensible.ops);
+        endpoint_impl->endpoint.base.endpoint_element.base.
+            documentable_element.wsdl_element.base.element_extensible.ops = NULL;
+    }
+  
 
     return AXIS2_SUCCESS;
 }

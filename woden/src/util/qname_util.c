@@ -26,7 +26,7 @@ axis2_qname_util_matches(
         axis2_om_node_t *node)
 {
     axis2_qname_t *qname_l = NULL;
-    axis2_bool_t *ret = NULL;
+    axis2_bool_t ret = AXIS2_FALSE;
 
     qname_l = axis2_qname_util_new_qname(env, node);
     ret = (NULL != node && AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l));

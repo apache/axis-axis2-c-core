@@ -356,7 +356,7 @@ axis2_woden_desc_element_resolve_methods(
       (((axis2_woden_desc_element_t *) desc_el)->ops->\
          set_document_base_uri(desc_el, env, document_base_uri))
 
-#define AXIS2_WODEN_DESC_ELEMENT_GET_DOCUMENT_BASE_UTI(desc_el, env) \
+#define AXIS2_WODEN_DESC_ELEMENT_GET_DOCUMENT_BASE_URI(desc_el, env) \
       (((axis2_woden_desc_element_t *) desc_el)->ops->\
          get_document_base_uri(desc_el, env))
 
@@ -368,9 +368,9 @@ axis2_woden_desc_element_resolve_methods(
       (((axis2_woden_desc_element_t *) desc_el)->ops->\
          get_target_namespace(desc_el, env))
 
-#define AXIS2_WODEN_DESC_ELEMENT_ADD_NAMESPACE(desc_el, env, namespc) \
+#define AXIS2_WODEN_DESC_ELEMENT_ADD_NAMESPACE(desc_el, env, prefix, namespc) \
       (((axis2_woden_desc_element_t *) desc_el)->ops->\
-        add_namespace (desc_el, env, namespc))
+        add_namespace (desc_el, env, prefix, namespc))
 
 #define AXIS2_WODEN_DESC_ELEMENT_REMOVE_NAMESPACE(desc_el, env, prefix) \
       (((axis2_woden_desc_element_t *) desc_el)->ops->\
@@ -396,7 +396,7 @@ axis2_woden_desc_element_resolve_methods(
       (((axis2_woden_desc_element_t *) desc_el)->ops->\
         create_include_element (desc_el, env))
 
-#define AXIS2_WODEN_DESC_ELEMENT_CREATET_TYPES_ELEMENT(desc_el, env) \
+#define AXIS2_WODEN_DESC_ELEMENT_CREATE_TYPES_ELEMENT(desc_el, env) \
       (((axis2_woden_desc_element_t *) desc_el)->ops->\
         create_types_element (desc_el, env))
 
@@ -410,11 +410,11 @@ axis2_woden_desc_element_resolve_methods(
 
 #define AXIS2_WODEN_DESC_ELEMENT_CREATE_INTERFACE_OP_ELEMENT(desc_el, env) \
       (((axis2_woden_desc_element_t *) desc_el)->ops->\
-        create_interace_op_element (desc_el, env))
+        create_interface_op_element (desc_el, env))
 
 #define AXIS2_WODEN_DESC_ELEMENT_CREATE_INTERFACE_FAULT_REF_ELEMENT(desc_el, env) \
       (((axis2_woden_desc_element_t *) desc_el)->ops->\
-        craete_interface_fault_ref_element (desc_el, env))
+        create_interface_fault_ref_element (desc_el, env))
 
 #define AXIS2_WODEN_DESC_ELEMENT_CREATE_INTERFACE_MSG_REF_ELEMENT(desc_el, env) \
       (((axis2_woden_desc_element_t *) desc_el)->ops->\

@@ -150,6 +150,20 @@ axis2_woden_binding_op_to_wsdl_component(
         void *binding_op,
         const axis2_env_t *env);
 
+AXIS2_EXTERN axis2_woden_binding_op_t * AXIS2_CALL
+axis2_woden_binding_op_to_configurable_element(
+        void *binding_op,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_binding_op_t * AXIS2_CALL
+axis2_woden_binding_op_to_documentable_element(
+        void *binding_op,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_binding_op_t * AXIS2_CALL
+axis2_woden_binding_op_to_documentable(
+        void *binding_op,
+        const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_woden_binding_op_t * AXIS2_CALL
 axis2_woden_binding_op_to_attr_extensible(

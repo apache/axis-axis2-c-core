@@ -282,6 +282,6 @@ axis2_woden_schema_get_namespace_as_string(
     schema_impl = INTF_TO_IMPL(schema);
 
     return schema_impl->f_namespc != NULL ? 
-        AXIS2_URI_TO_STRING(schema_impl->f_namespc, env) : NULL;
+        AXIS2_URI_TO_STRING(schema_impl->f_namespc, env, AXIS2_URI_UNP_OMITUSERINFO) : NULL;
 }
 

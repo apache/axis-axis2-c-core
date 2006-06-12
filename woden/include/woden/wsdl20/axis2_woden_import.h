@@ -141,12 +141,12 @@ axis2_woden_import_resolve_methods(
       (((axis2_woden_import_t *) import)->ops->get_base_impl(import, env))
 
 #define AXIS2_WODEN_IMPORT_GET_NAMESPACE(import, env) \
-      (((axis2_woden_import_t *) import)->\
+      (((axis2_woden_import_t *) import)->ops->\
          get_namespace(import, env))
 
 #define AXIS2_WODEN_IMPORT_SET_NAMESPACE(import, env, ns_uri) \
-      (((axis2_woden_import_t *) import)->\
-         set_namespace(import, env, ns_uri))
+      (((axis2_woden_import_t *) import)->ops->\
+       set_namespace(import, env, ns_uri))
 
 /** @} */
 #ifdef __cplusplus

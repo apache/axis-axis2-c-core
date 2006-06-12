@@ -33,6 +33,7 @@
 #include <axis2_qname.h>
 #include <woden/axis2_woden.h>
 #include <axis2_om_node.h>
+#include <woden/wsdl20/axis2_woden_desc.h>
 
 #ifdef __cplusplus
 extern "C"

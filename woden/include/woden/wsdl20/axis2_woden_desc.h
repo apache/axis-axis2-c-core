@@ -219,6 +219,16 @@ axis2_woden_desc_to_wsdl_component(
         void *desc,
         const axis2_env_t *env);
 
+AXIS2_EXTERN axis2_woden_desc_t * AXIS2_CALL
+axis2_woden_desc_to_attr_extensible(
+        void *desc,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_desc_t * AXIS2_CALL
+axis2_woden_desc_to_element_extensible(
+        void *desc,
+        const axis2_env_t *env);
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_desc_resolve_methods(
         axis2_woden_desc_t *desc,

@@ -129,12 +129,27 @@ axis2_woden_binding_fault_to_wsdl_obj(
         const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_woden_binding_fault_t * AXIS2_CALL
+axis2_woden_binding_fault_to_documentable_element(
+        void *binding_fault,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_binding_fault_t * AXIS2_CALL
+axis2_woden_binding_fault_to_documentable(
+        void *binding_fault,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_binding_fault_t * AXIS2_CALL
 axis2_woden_binding_fault_to_nested_element(
         void *binding_fault,
         const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_woden_binding_fault_t * AXIS2_CALL
 axis2_woden_binding_fault_to_wsdl_component(
+        void *binding_fault,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_binding_fault_t * AXIS2_CALL
+axis2_woden_binding_fault_to_configurable_element(
         void *binding_fault,
         const axis2_env_t *env);
 
@@ -169,7 +184,7 @@ axis2_woden_binding_fault_resolve_methods(
       (((axis2_woden_binding_fault_t *) binding_fault)->ops->get_base_impl(binding_fault, env))
 
 #define AXIS2_WODEN_BINDING_FAULT_GET_INTERFACE_FAULT(binding_fault, env) \
-      (((axis2_woden_binding_fault_t *) binding_fault)->\
+      (((axis2_woden_binding_fault_t *) binding_fault)->ops->\
          get_interface_fault(binding_fault, env))
 
 #define AXIS2_WODEN_BINDING_FAULT_TO_ELEMENT(binding_fault, env) \
@@ -177,8 +192,8 @@ axis2_woden_binding_fault_resolve_methods(
          to_element(binding_fault, env))
 
 #define AXIS2_WODEN_BINDING_FAULT_SET_INTERFACE_FAULT_ELEMENT(binding_fault, env, in_fault) \
-      (((axis2_woden_binding_fault_t *) binding_fault)->\
-         set_interface_fault_elment(binding_fault, env, in_fault))
+      (((axis2_woden_binding_fault_t *) binding_fault)->ops->\
+         set_interface_fault_element(binding_fault, env, in_fault))
 
 /** @} */
 #ifdef __cplusplus

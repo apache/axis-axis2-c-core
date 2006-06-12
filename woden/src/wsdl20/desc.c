@@ -509,6 +509,61 @@ axis2_woden_desc_to_wsdl_component(
     return desc;
 }
 
+AXIS2_EXTERN axis2_woden_desc_t * AXIS2_CALL
+axis2_woden_desc_to_attr_extensible(
+        void *desc,
+        const axis2_env_t *env)
+{
+    axis2_woden_desc_impl_t *desc_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!desc)
+    {
+        desc_impl = (axis2_woden_desc_impl_t *) create(env);
+    }
+    else
+        desc_impl = (axis2_woden_desc_impl_t *) desc;
+
+    axis2_woden_desc_free_ops(desc, env);
+
+    desc_impl->desc.base.desc_element.base.documentable_element.
+        wsdl_element.base.attr_extensible.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_attr_extensible_ops_t));
+    axis2_woden_attr_extensible_resolve_methods(&(desc_impl->desc.base.
+            desc_element.base.documentable_element.wsdl_element.base.
+            attr_extensible), env, NULL, desc_impl->methods);
+    return desc;
+}
+
+AXIS2_EXTERN axis2_woden_desc_t * AXIS2_CALL
+axis2_woden_desc_to_element_extensible(
+        void *desc,
+        const axis2_env_t *env)
+{
+    axis2_woden_desc_impl_t *desc_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!desc)
+    {
+        desc_impl = (axis2_woden_desc_impl_t *) create(env);
+    }
+    else
+        desc_impl = (axis2_woden_desc_impl_t *) desc;
+
+    axis2_woden_desc_free_ops(desc, env);
+
+    desc_impl->desc.base.desc_element.base.documentable_element.
+        wsdl_element.base.element_extensible.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_element_extensible_ops_t));
+    axis2_woden_element_extensible_resolve_methods(&(desc_impl->desc.base.
+            desc_element.base.documentable_element.wsdl_element.base.
+            element_extensible), env, NULL, desc_impl->methods);
+    return desc;
+}
+
+
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_desc_t *
 create(const axis2_env_t *env)
@@ -541,11 +596,9 @@ create(const axis2_env_t *env)
     desc_impl->f_ext_reg = NULL;
 
     desc_impl->desc.base.desc_element.ops = NULL;
-    desc_impl->desc.base.desc_element.base.nested_element.ops = NULL;
     desc_impl->desc.base.desc_element.base.documentable_element.ops = 
             NULL;
     desc_impl->desc.base.documentable.ops = NULL;
-    desc_impl->desc.base.nested_component.ops = NULL; 
     desc_impl->desc.base.nested_component.wsdl_component.ops = NULL;
     desc_impl->desc.base.documentable.base.wsdl_obj.ops = NULL;
     desc_impl->desc.base.documentable.base.wsdl_obj.base.wsdl_element.
@@ -819,6 +872,26 @@ axis2_woden_desc_free_ops(
         AXIS2_FREE(env->allocator, desc_impl->desc.base.
                 nested_component.wsdl_component.ops);
         desc_impl->desc.base.nested_component.wsdl_component.ops = NULL;
+    }
+  
+    if(desc_impl->desc.base.desc_element.base.
+            documentable_element.wsdl_element.base.element_extensible.ops)
+    {
+        AXIS2_FREE(env->allocator, desc_impl->desc.base.
+                desc_element.base.documentable_element.wsdl_element.base.
+                element_extensible.ops);
+        desc_impl->desc.base.desc_element.base.
+            documentable_element.wsdl_element.base.element_extensible.ops = NULL;
+    }
+ 
+    if(desc_impl->desc.base.desc_element.base.
+            documentable_element.wsdl_element.base.attr_extensible.ops)
+    {
+        AXIS2_FREE(env->allocator, desc_impl->desc.base.
+                desc_element.base.documentable_element.wsdl_element.base.
+                attr_extensible.ops);
+        desc_impl->desc.base.desc_element.base.
+            documentable_element.wsdl_element.base.attr_extensible.ops = NULL;
     }
 
     return AXIS2_SUCCESS;

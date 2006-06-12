@@ -50,13 +50,13 @@ axis2_generic_obj_get_value(axis2_generic_obj_t *generic_obj,
 axis2_status_t AXIS2_CALL
 axis2_generic_obj_set_type(
         axis2_generic_obj_t *generic_obj,
-        const axis2_env_t **env,
+        const axis2_env_t *env,
         int type);
 
 int AXIS2_CALL
 axis2_generic_obj_get_type(
         axis2_generic_obj_t *generic_obj,
-        const axis2_env_t **env);
+        const axis2_env_t *env);
 
 /************************** End of function prototypes ************************/
 
@@ -176,7 +176,7 @@ axis2_generic_obj_get_value(axis2_generic_obj_t *generic_obj,
 axis2_status_t AXIS2_CALL
 axis2_generic_obj_set_type(
         axis2_generic_obj_t *generic_obj,
-        const axis2_env_t **env,
+        const axis2_env_t *env,
         int type)
 {
     axis2_generic_obj_impl_t *generic_obj_impl = NULL;
@@ -191,7 +191,7 @@ axis2_generic_obj_set_type(
 int AXIS2_CALL
 axis2_generic_obj_get_type(
         axis2_generic_obj_t *generic_obj,
-        const axis2_env_t **env)
+        const axis2_env_t *env)
 {
     axis2_generic_obj_impl_t *generic_obj_impl = NULL;
 

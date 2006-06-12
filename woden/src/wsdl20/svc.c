@@ -263,6 +263,113 @@ axis2_woden_svc_to_wsdl_component(
     return svc;
 }
 
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
+axis2_woden_svc_to_configurable_element(
+        void *svc,
+        const axis2_env_t *env)
+{
+    axis2_woden_svc_impl_t *svc_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!svc)
+    {
+        svc_impl = (axis2_woden_svc_impl_t *) create(env);
+    }
+    else
+        svc_impl = (axis2_woden_svc_impl_t *) svc;
+
+    axis2_woden_interface_free_ops(svc, env);
+
+    svc_impl->svc.base.svc_element.base.configurable_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_configurable_element_ops_t));
+    axis2_woden_configurable_element_resolve_methods(&(svc_impl->svc.base.
+            svc_element.base.configurable_element), env, svc_impl->methods);
+    return svc;
+}
+
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
+axis2_woden_svc_to_documentable(
+        void *svc,
+        const axis2_env_t *env)
+{
+    axis2_woden_svc_impl_t *svc_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!svc)
+    {
+        svc_impl = (axis2_woden_svc_impl_t *) create(env);
+    }
+    else
+        svc_impl = (axis2_woden_svc_impl_t *) svc;
+
+    axis2_woden_interface_free_ops(svc, env);
+
+    svc_impl->svc.base.
+        configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_documentable_ops_t));
+    axis2_woden_documentable_resolve_methods(&(svc_impl->svc.base.
+            configurable.base.documentable), env, NULL,
+            svc_impl->methods);
+    return svc;
+}
+
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
+axis2_woden_svc_to_attr_extensible(
+        void *svc,
+        const axis2_env_t *env)
+{
+    axis2_woden_svc_impl_t *svc_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!svc)
+    {
+        svc_impl = (axis2_woden_svc_impl_t *) create(env);
+    }
+    else
+        svc_impl = (axis2_woden_svc_impl_t *) svc;
+
+    axis2_woden_interface_free_ops(svc, env);
+
+    svc_impl->svc.base.svc_element.base.documentable_element.
+        wsdl_element.base.attr_extensible.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_attr_extensible_ops_t));
+    axis2_woden_attr_extensible_resolve_methods(&(svc_impl->svc.base.
+            svc_element.base.documentable_element.wsdl_element.base.
+            attr_extensible), env, NULL, svc_impl->methods);
+    return svc;
+}
+
+
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
+axis2_woden_svc_to_element_extensible(
+        void *svc,
+        const axis2_env_t *env)
+{
+    axis2_woden_svc_impl_t *svc_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!svc)
+    {
+        svc_impl = (axis2_woden_svc_impl_t *) create(env);
+    }
+    else
+        svc_impl = (axis2_woden_svc_impl_t *) svc;
+
+    axis2_woden_interface_free_ops(svc, env);
+
+    svc_impl->svc.base.svc_element.base.documentable_element.
+        wsdl_element.base.element_extensible.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_element_extensible_ops_t));
+    axis2_woden_element_extensible_resolve_methods(&(svc_impl->svc.base.
+            svc_element.base.documentable_element.wsdl_element.base.
+            element_extensible), env, NULL, svc_impl->methods);
+    return svc;
+}
+
+
 /************************End of Woden C Internal Methods***********************/
 static axis2_woden_svc_t *
 create(const axis2_env_t *env)
@@ -287,7 +394,15 @@ create(const axis2_env_t *env)
     svc_impl->svc.base.configurable.ops = NULL;
     svc_impl->svc.base.configurable_component.ops = NULL;
     svc_impl->svc.base.configurable_component.wsdl_component.ops = NULL;
-    
+    svc_impl->svc.base.svc_element.base.
+        configurable_element.ops = NULL;
+    svc_impl->svc.base.configurable.base.
+        documentable.ops = NULL;
+    svc_impl->svc.base.svc_element.base.
+        documentable_element.wsdl_element.base.attr_extensible.ops = NULL;
+    svc_impl->svc.base.svc_element.base.
+        documentable_element.wsdl_element.base.element_extensible.ops = NULL;
+ 
     svc_impl->svc.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_svc_ops_t));
 
@@ -420,6 +535,45 @@ axis2_woden_svc_free_ops(
                 configurable_component.wsdl_component.ops);
         svc_impl->svc.base.configurable_component.wsdl_component.ops = NULL;
     }
+ 
+    if(svc_impl->svc.base.svc_element.base.
+            configurable_element.ops)
+    {
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
+                svc_element.base.configurable_element.ops);
+        svc_impl->svc.base.svc_element.base.
+            configurable_element.ops = NULL;
+    }
+    
+    if(svc_impl->svc.base.
+            configurable.base.documentable.ops)
+    {
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
+                configurable.base.documentable.ops);
+        svc_impl->svc.base.
+            configurable.base.documentable.ops = NULL;
+    }
+      
+    if(svc_impl->svc.base.svc_element.base.
+            documentable_element.wsdl_element.base.attr_extensible.ops)
+    {
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
+                svc_element.base.documentable_element.wsdl_element.base.
+                attr_extensible.ops);
+        svc_impl->svc.base.svc_element.base.
+            documentable_element.wsdl_element.base.attr_extensible.ops = NULL;
+    }
+      
+    if(svc_impl->svc.base.svc_element.base.
+            documentable_element.wsdl_element.base.element_extensible.ops)
+    {
+        AXIS2_FREE(env->allocator, svc_impl->svc.base.
+                svc_element.base.documentable_element.wsdl_element.base.
+                element_extensible.ops);
+        svc_impl->svc.base.svc_element.base.
+            documentable_element.wsdl_element.base.element_extensible.ops = NULL;
+    }
+  
 
     return AXIS2_SUCCESS;
 }

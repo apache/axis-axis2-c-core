@@ -388,15 +388,15 @@ axis2_woden_soap_binding_fault_exts_get_soap_fault_code(
     if(NULL == code)
     {
         /* defaults to xs:token #any if the attribute is omitted from the WSDL.*/
-        return axis2_woden_soap_fault_code_get_soap_fault_code_any(env);
+        return (void *) axis2_woden_soap_fault_code_get_soap_fault_code_any(env);
     }
     if(AXIS2_TRUE == AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_IS_TOKEN(code, env))
     {
-        return axis2_woden_soap_fault_code_get_soap_fault_code_any(env);
+        return (void *) axis2_woden_soap_fault_code_get_soap_fault_code_any(env);
     }
     if(AXIS2_TRUE == AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_IS_QNAME(code, env))
     {
-        return axis2_woden_soap_fault_code_create(env, NULL, 
+        return (void *) axis2_woden_soap_fault_code_create(env, NULL, 
                 AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR_GET_QNAME(code, env));
     }
     else
@@ -436,16 +436,16 @@ axis2_woden_soap_binding_fault_exts_get_soap_fault_subcodes(
     if(NULL == subcodes)
     {
         /* defaults to xs:token #any if the attribute is omitted from the WSDL.*/
-        return axis2_woden_soap_fault_subcodes_get_soap_fault_subcodes_any(env);
+        return (void *) axis2_woden_soap_fault_subcodes_get_soap_fault_subcodes_any(env);
     }
     if(AXIS2_TRUE == AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_IS_TOKEN(subcodes, env))
     {
-        return axis2_woden_soap_fault_subcodes_get_soap_fault_subcodes_any(env);
+        return (void *) axis2_woden_soap_fault_subcodes_get_soap_fault_subcodes_any(env);
     }
     if(AXIS2_TRUE == AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_IS_QNAME_LIST(subcodes, 
                 env))
     {
-        return axis2_woden_soap_fault_subcodes_create(env, NULL, 
+        return (void *) axis2_woden_soap_fault_subcodes_create(env, NULL, 
                 AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_GET_QNAMES(subcodes, env));
     }
     else

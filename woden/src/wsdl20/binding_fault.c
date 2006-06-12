@@ -248,6 +248,59 @@ axis2_woden_binding_fault_to_nested_element(
 }
 
 AXIS2_EXTERN axis2_woden_binding_fault_t * AXIS2_CALL
+axis2_woden_binding_fault_to_documentable_element(
+        void *binding_fault,
+        const axis2_env_t *env)
+{
+    axis2_woden_binding_fault_impl_t *binding_fault_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!binding_fault)
+    {
+        binding_fault_impl = (axis2_woden_binding_fault_impl_t *) create(env);
+    }
+    else
+        binding_fault_impl = (axis2_woden_binding_fault_impl_t *) binding_fault;
+
+    axis2_woden_binding_free_ops(binding_fault, env);
+
+    binding_fault_impl->binding_fault.base.binding_fault_element.base.documentable_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_documentable_element_ops_t));
+    axis2_woden_documentable_element_resolve_methods(&(binding_fault_impl->binding_fault.base.
+            binding_fault_element.base.documentable_element), env, 
+            binding_fault_impl->methods);
+    return binding_fault;
+}
+
+AXIS2_EXTERN axis2_woden_binding_fault_t * AXIS2_CALL
+axis2_woden_binding_fault_to_documentable(
+        void *binding_fault,
+        const axis2_env_t *env)
+{
+    axis2_woden_binding_fault_impl_t *binding_fault_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!binding_fault)
+    {
+        binding_fault_impl = (axis2_woden_binding_fault_impl_t *) create(env);
+    }
+    else
+        binding_fault_impl = (axis2_woden_binding_fault_impl_t *) binding_fault;
+
+    axis2_woden_binding_free_ops(binding_fault, env);
+
+    binding_fault_impl->binding_fault.base.nested_configurable.base.
+        configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_documentable_ops_t));
+    axis2_woden_documentable_resolve_methods(&(binding_fault_impl->binding_fault.base.
+            nested_configurable.base.configurable.base.documentable), env, NULL,
+            binding_fault_impl->methods);
+    return binding_fault;
+}
+
+
+AXIS2_EXTERN axis2_woden_binding_fault_t * AXIS2_CALL
 axis2_woden_binding_fault_to_wsdl_component(
         void *binding_fault,
         const axis2_env_t *env)
@@ -271,6 +324,32 @@ axis2_woden_binding_fault_to_wsdl_component(
             env, binding_fault_impl->methods);
     return binding_fault;
 }
+
+AXIS2_EXTERN axis2_woden_binding_fault_t * AXIS2_CALL
+axis2_woden_binding_fault_to_configurable_element(
+        void *binding_fault,
+        const axis2_env_t *env)
+{
+    axis2_woden_binding_fault_impl_t *binding_fault_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!binding_fault)
+    {
+        binding_fault_impl = (axis2_woden_binding_fault_impl_t *) create(env);
+    }
+    else
+        binding_fault_impl = (axis2_woden_binding_fault_impl_t *) binding_fault;
+
+    axis2_woden_binding_free_ops(binding_fault, env);
+
+    binding_fault_impl->binding_fault.base.binding_fault_element.base.configurable_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(axis2_woden_configurable_element_ops_t));
+    axis2_woden_configurable_element_resolve_methods(&(binding_fault_impl->binding_fault.base.
+            binding_fault_element.base.configurable_element), env, binding_fault_impl->methods);
+    return binding_fault;
+}
+
 
 AXIS2_EXTERN axis2_woden_binding_fault_t * AXIS2_CALL
 axis2_woden_binding_fault_to_attr_extensible(
@@ -345,6 +424,20 @@ create(const axis2_env_t *env)
     binding_fault_impl->binding_fault.base.nested_configurable.ops = NULL;
     binding_fault_impl->binding_fault.base.nested_configurable.base.configurable.ops = 
             NULL;
+    binding_fault_impl->binding_fault.base.binding_fault_element.base.
+        nested_element.ops = NULL;
+    binding_fault_impl->binding_fault.base.binding_fault_element.base.
+        configurable_element.ops = NULL;
+    binding_fault_impl->binding_fault.base.binding_fault_element.base.
+        documentable_element.ops = NULL;
+    binding_fault_impl->binding_fault.base.nested_configurable.base.configurable.base.
+        documentable.ops = NULL;
+    binding_fault_impl->binding_fault.base.binding_fault_element.base.
+        configurable_element.ops = NULL;
+    binding_fault_impl->binding_fault.base.binding_fault_element.base.
+        documentable_element.wsdl_element.base.attr_extensible.ops = NULL;
+    binding_fault_impl->binding_fault.base.binding_fault_element.base.
+        documentable_element.wsdl_element.base.element_extensible.ops = NULL;
     
     binding_fault_impl->binding_fault.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(axis2_woden_binding_fault_ops_t));
@@ -468,7 +561,35 @@ axis2_woden_binding_fault_free_ops(
         binding_fault_impl->binding_fault.base.nested_configurable.base.
             configurable.base.documentable.base.wsdl_obj.ops = NULL;
     }
-    
+ 
+    if(binding_fault_impl->binding_fault.base.binding_fault_element.base.
+            configurable_element.ops)
+    {
+        AXIS2_FREE(env->allocator, binding_fault_impl->binding_fault.base.
+                binding_fault_element.base.configurable_element.ops);
+        binding_fault_impl->binding_fault.base.binding_fault_element.base.
+            configurable_element.ops = NULL;
+    }
+     
+    if(binding_fault_impl->binding_fault.base.binding_fault_element.base.
+            documentable_element.ops)
+    {
+        AXIS2_FREE(env->allocator, binding_fault_impl->binding_fault.base.
+                binding_fault_element.base.documentable_element.ops);
+        binding_fault_impl->binding_fault.base.binding_fault_element.base.
+            documentable_element.ops = NULL;
+    }
+     
+    if(binding_fault_impl->binding_fault.base.nested_configurable.base.
+            configurable.base.documentable.ops)
+    {
+        AXIS2_FREE(env->allocator, binding_fault_impl->binding_fault.base.
+                nested_configurable.base.configurable.base.documentable.ops);
+        binding_fault_impl->binding_fault.base.nested_configurable.base.
+            configurable.base.documentable.ops = NULL;
+    }
+      
+
     if(binding_fault_impl->binding_fault.base.nested_configurable.base.
             nested_component.wsdl_component.ops)
     {

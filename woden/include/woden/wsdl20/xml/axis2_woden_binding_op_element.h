@@ -180,7 +180,7 @@ axis2_woden_binding_op_element_resolve_methods(
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_ADD_BINDING_MSG_REF_ELEMENT(binding_op_element, env, msg_ref) \
       (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
-         add_msg_ref_element (binding_op_element, env, msg_ref))
+         add_binding_msg_ref_element (binding_op_element, env, msg_ref))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_REMOVE_MSG_REF_ELEMENT(binding_op_element, env, msg_ref) \
       (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
@@ -192,7 +192,7 @@ axis2_woden_binding_op_element_resolve_methods(
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_ADD_BINDING_FAULT_REF_ELEMENT(binding_op_element, env, fault_ref) \
       (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\
-         add_fault_ref_element (binding_op_element, env, fault_ref))
+         add_binding_fault_ref_element (binding_op_element, env, fault_ref))
 
 #define AXIS2_WODEN_BINDING_OP_ELEMENT_REMOVE_FAULT_REF_ELEMENT(binding_op_element, env, fault_ref) \
       (((axis2_woden_binding_op_element_t *) binding_op_element)->ops->\

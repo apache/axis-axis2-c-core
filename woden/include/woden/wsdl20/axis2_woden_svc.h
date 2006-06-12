@@ -148,6 +148,27 @@ axis2_woden_svc_to_wsdl_component(
         void *svc,
         const axis2_env_t *env);
 
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
+axis2_woden_svc_to_configurable_element(
+        void *svc,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
+axis2_woden_svc_to_documentable(
+        void *svc,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
+axis2_woden_svc_to_attr_extensible(
+        void *svc,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_woden_svc_t * AXIS2_CALL
+axis2_woden_svc_to_element_extensible(
+        void *svc,
+        const axis2_env_t *env);
+
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_woden_svc_resolve_methods(
         axis2_woden_svc_t *svc,

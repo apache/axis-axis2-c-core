@@ -209,27 +209,27 @@ axis2_woden_interface_op_element_resolve_methods(
 
 #define AXIS2_WODEN_INTERFACE_OP_ELEMENT_ADD_INTERFACE_MSG_REF_ELEMENT(interface_op_element, env, msg_ref) \
       (((axis2_woden_interface_op_element_t *) interface_op_element)->ops->\
-         add_msg_ref_element (interface_op_element, env, msg_ref))
+         add_interface_msg_ref_element (interface_op_element, env, msg_ref))
 
 #define AXIS2_WODEN_INTERFACE_OP_ELEMENT_REMOVE_MSG_REF_ELEMENT(interface_op_element, env, msg_ref) \
       (((axis2_woden_interface_op_element_t *) interface_op_element)->ops->\
          remove_msg_ref_element (interface_op_element, env, msg_ref))
 
-#define AXIS2_WODEN_INTERFACE_OP_ELEMENT_GET_MSG_REF_ELEMENTS(interface_op_element, env) \
+#define AXIS2_WODEN_INTERFACE_OP_ELEMENT_GET_INTERFACE_MSG_REF_ELEMENTS(interface_op_element, env) \
       (((axis2_woden_interface_op_element_t *) interface_op_element)->ops->\
-         get_msg_ref_elements (interface_op_element, env))
+         get_interface_msg_ref_elements (interface_op_element, env))
 
 #define AXIS2_WODEN_INTERFACE_OP_ELEMENT_ADD_INTERFACE_FAULT_REF_ELEMENT(interface_op_element, env, fault_ref) \
       (((axis2_woden_interface_op_element_t *) interface_op_element)->ops->\
-         add_fault_ref_element (interface_op_element, env, fault_ref))
+         add_interface_fault_ref_element (interface_op_element, env, fault_ref))
 
 #define AXIS2_WODEN_INTERFACE_OP_ELEMENT_REMOVE_FAULT_REF_ELEMENT(interface_op_element, env, fault_ref) \
       (((axis2_woden_interface_op_element_t *) interface_op_element)->ops->\
          remove_fault_ref_element (interface_op_element, env, fault_ref))
 
-#define AXIS2_WODEN_INTERFACE_OP_ELEMENT_GET_FAULT_REF_ELEMENTS(interface_op_element, env) \
+#define AXIS2_WODEN_INTERFACE_OP_ELEMENT_GET_INTERFACE_FAULT_REF_ELEMENTS(interface_op_element, env) \
       (((axis2_woden_interface_op_element_t *) interface_op_element)->ops->\
-         get_fault_ref_elements (interface_op_element, env))
+         get_interface_fault_ref_elements (interface_op_element, env))
 
 
 
