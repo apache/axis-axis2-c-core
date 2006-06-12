@@ -44,7 +44,7 @@
 #include <axis2_uri.h>
 #include <woden/axis2_woden.h>
 #include <woden/wsdl20/xml/axis2_woden_documentable_element.h>
-#include <xml_schema/axis2_xml_schema.h>
+#include <xml_schema.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -53,7 +53,7 @@ extern "C"
 
 typedef struct axis2_woden_types_element axis2_woden_types_element_t;
 typedef struct axis2_woden_types_element_ops axis2_woden_types_element_ops_t;
-struct axis2_xml_schema;
+struct xml_schema;
 
 /** @defgroup axis2_woden_types_element Types Element
   * @ingroup axis2_wsdl
@@ -103,7 +103,7 @@ struct axis2_woden_types_element_ops
     axis2_status_t (AXIS2_CALL *
     add_schema) (void *types_el,
             const axis2_env_t *env,
-            struct axis2_xml_schema *schema);
+            struct xml_schema *schema);
 
     /**
      * Delete the specified Schema object.
@@ -112,7 +112,7 @@ struct axis2_woden_types_element_ops
     remove_schema) (
             void *types_el,
             const axis2_env_t *env,
-            struct axis2_xml_schema *schema);
+            struct xml_schema *schema);
     
     /**
      * Return the Schemas representing all inlined schemas or schema imports,

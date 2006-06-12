@@ -99,7 +99,7 @@
 #include "../wsdl20/woden_constants.h"
 #include "../util/woden_om_util.h"
 
-#include <xml_schema/axis2_xml_schema_collection.h>
+#include <xml_schema_collection.h>
 
 #include <axiom_node.h>
 #include <axiom_element.h>
@@ -843,7 +843,7 @@ parse_desc(
     
     schema = parse_schema_import(reader, env, schema_elem_node, desc);
     types = axis2_woden_types_to_types_element(types, env);
-    AXIS2_WODEN_TYPES_ELEMENT_ADD_SCHEMA(types, env, (axis2_xml_schema_t *) schema);
+    AXIS2_WODEN_TYPES_ELEMENT_ADD_SCHEMA(types, env, (xml_schema_t *) schema);
     
     return desc;
 }
@@ -1041,7 +1041,7 @@ parse_types(
 
             schema = parse_schema_import(reader, env, temp_el_node, desc);
             types = axis2_woden_types_to_types_element(types, env);
-            AXIS2_WODEN_TYPES_ELEMENT_ADD_SCHEMA(types, env, (axis2_xml_schema_t *) schema);
+            AXIS2_WODEN_TYPES_ELEMENT_ADD_SCHEMA(types, env, (xml_schema_t *) schema);
         }
         if(AXIS2_TRUE == woden_schema_constants_compare_schema(q_temp_el_type, env))
         {
@@ -1050,7 +1050,7 @@ parse_types(
             schema = parse_schema_inline(reader, env, temp_el_node, desc);
             types = axis2_woden_types_to_types_element(types, env);
             AXIS2_WODEN_TYPES_ELEMENT_ADD_SCHEMA(types, env, 
-                    (axis2_xml_schema_t *) schema);
+                    (xml_schema_t *) schema);
         }
         else
         {
@@ -1081,8 +1081,8 @@ parse_schema_inline(
     axis2_char_t *tns = NULL;
     axis2_uri_t *base_uri = NULL;
     axis2_char_t *base_uri_str = NULL;
-    axis2_xml_schema_t *schema_def = NULL;
-    axis2_xml_schema_collection_t *xsc = NULL;
+    xml_schema_t *schema_def = NULL;
+    xml_schema_collection_t *xsc = NULL;
     axiom_element_t *schema_el = NULL;
   
     schema_el = AXIOM_NODE_GET_DATA_ELEMENT(schema_el_node, env);
@@ -1104,11 +1104,11 @@ parse_schema_inline(
         base_uri_str = AXIS2_URI_TO_STRING(base_uri, env, 
                 AXIS2_URI_UNP_OMITUSERINFO);
    
-    xsc = axis2_xml_schema_collection_create(env);
+    xsc = xml_schema_collection_create(env);
     /* TODO Temporarily assume that imported schemas are stored as files
      * with the url as file name
      */
-    schema_def = AXIS2_XML_SCHEMA_COLLECTION_READ_ELEMENT_WITH_URI(xsc, 
+    schema_def = XML_SCHEMA_COLLECTION_READ_ELEMENT_WITH_URI(xsc, 
             env, schema_el_node, base_uri_str);
     if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
@@ -1217,19 +1217,19 @@ parse_schema_import(
     if(NULL != schema_def)
     {
         /* Not previously imported, so retrieve it now. */
-        axis2_xml_schema_collection_t *schema_col = NULL;
+        xml_schema_collection_t *schema_col = NULL;
         axis2_xml_reader_t *xml_reader = NULL;
         axiom_document_t *imported_schema_doc = NULL;
         axiom_stax_builder_t *xml_builder = NULL;
 
-        schema_col = axis2_xml_schema_collection_create(env);
+        schema_col = xml_schema_collection_create(env);
         /* TODO Temporarily assume that imported schemas are stored as files
          * with the url as file name
          */
         xml_reader = axis2_xml_reader_create_for_file(env, schema_uri, NULL);
         xml_builder = axiom_stax_builder_create(env, reader);
         imported_schema_doc = axiom_document_create(env, NULL, xml_builder);
-        schema_def = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(schema_col, 
+        schema_def = XML_SCHEMA_COLLECTION_READ_DOCUMENT(schema_col, 
                 env, imported_schema_doc);
         if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
@@ -1243,7 +1243,7 @@ parse_schema_import(
     
     if(NULL != schema_def) 
     {
-        AXIS2_XML_SCHEMA_SET_SCHEMA_DEF(schema, env, schema_def);
+        XML_SCHEMA_SET_SCHEMA_DEF(schema, env, schema_def);
     } else 
     {
         AXIS2_WODEN_SCHEMA_SET_REFERENCEABLE(schema, env, AXIS2_FALSE);
@@ -3709,7 +3709,7 @@ get_wsdl_from_location(
         axiom_document_t *doc = NULL;
         axis2_qname_t *qname = NULL;
 
-        schema_col = axis2_xml_schema_collection_create(env);
+        schema_col = xml_schema_collection_create(env);
         xml_reader = axis2_xml_reader_create_for_file(env, location_str, NULL);
         builder = axiom_stax_builder_create(env, xml_reader);
         doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(builder, env);

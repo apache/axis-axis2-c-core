@@ -15,7 +15,7 @@
  */
 
 #include <woden/schema/axis2_woden_imported_schema.h>
-#include <xml_schema/axis2_xml_schema.h>
+#include <xml_schema.h>
 #include <axis2_uri.h>
 
 typedef struct axis2_woden_imported_schema_impl axis2_woden_imported_schema_impl_t;
@@ -77,9 +77,9 @@ axis2_status_t AXIS2_CALL
 axis2_woden_imported_schema_set_schema_def(
         void *schema,
         const axis2_env_t *env,
-        axis2_xml_schema_t *schema_def);
+        xml_schema_t *schema_def);
 
-axis2_xml_schema_t *AXIS2_CALL 
+xml_schema_t *AXIS2_CALL 
 axis2_woden_imported_schema_get_schema_def(
         void *schema,
         const axis2_env_t *env);
@@ -393,7 +393,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_imported_schema_set_schema_def(
         void *schema,
         const axis2_env_t *env,
-        axis2_xml_schema_t *schema_def)
+        xml_schema_t *schema_def)
 {
     axis2_woden_imported_schema_impl_t *schema_impl = NULL;
 
@@ -405,7 +405,7 @@ axis2_woden_imported_schema_set_schema_def(
             schema_def);
 }
 
-axis2_xml_schema_t *AXIS2_CALL 
+xml_schema_t *AXIS2_CALL 
 axis2_woden_imported_schema_get_schema_def(
         void *schema,
         const axis2_env_t *env)

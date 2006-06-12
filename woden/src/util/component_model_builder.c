@@ -405,15 +405,15 @@ build_element_decls(
     AXIS2_PARAM_CHECK(env->error, type_system_uri, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
-    schema_tns = AXIS2_XML_SCHEMA_GET_TARGET_NAMESPACE(schema_def, env);
+    schema_tns = XML_SCHEMA_GET_TARGET_NAMESPACE(schema_def, env);
     if(NULL != schema_tns)
     {
         void *element_table = NULL;
         axis2_array_list_t *qnames = NULL;
         int i = 0, size = 0;
 
-        element_table = AXIS2_XML_SCHEMA_GET_ELEMENTS(schema_def, env);
-        qnames = AXIS2_XML_SCHEMA_OBJ_TABLE_GET_NAMES(element_table, env);
+        element_table = XML_SCHEMA_GET_ELEMENTS(schema_def, env);
+        qnames = XML_SCHEMA_OBJ_TABLE_GET_NAMES(element_table, env);
         if(qnames)
             size = AXIS2_ARRAY_LIST_SIZE(qnames, env);
         for(i = 0; i < size; i++)
@@ -434,7 +434,7 @@ build_element_decls(
                 AXIS2_WODEN_ELEMENT_DECL_SET_CONTENT_MODEL(ed, env, 
                         WODEN_API_APACHE_WS_XS);
                 AXIS2_WODEN_ELEMENT_DECL_SET_CONTENT(ed, env, 
-                        AXIS2_XML_SCHEMA_OBJ_TABLE_GET_ITEM(element_table, env, 
+                        XML_SCHEMA_OBJ_TABLE_GET_ITEM(element_table, env, 
                             qname));
                 AXIS2_WODEN_DESC_ADD_TO_ALL_ELEMENT_DECLS(builder_impl->f_desc, 
                         env, ed);
@@ -461,15 +461,15 @@ build_type_defs(
     AXIS2_PARAM_CHECK(env->error, type_system_uri, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
-    schema_tns = AXIS2_XML_SCHEMA_GET_TARGET_NAMESPACE(schema_def, env);
+    schema_tns = XML_SCHEMA_GET_TARGET_NAMESPACE(schema_def, env);
     if(NULL != schema_tns)
     {
         void *type_table = NULL;
         axis2_array_list_t *qnames = NULL;
         int i = 0, size = 0;
 
-        type_table = AXIS2_XML_SCHEMA_GET_SCHEMA_TYPES(schema_def, env);
-        qnames = AXIS2_XML_SCHEMA_OBJ_TABLE_GET_NAMES(element_table, env);
+        type_table = XML_SCHEMA_GET_SCHEMA_TYPES(schema_def, env);
+        qnames = XML_SCHEMA_OBJ_TABLE_GET_NAMES(element_table, env);
         if(qnames)
             size = AXIS2_ARRAY_LIST_SIZE(qnames, env);
         for(i = 0; i < size; i++)
@@ -490,7 +490,7 @@ build_type_defs(
                 AXIS2_WODEN_TYPE_DEF_SET_CONTENT_MODEL(td, env, 
                         WODEN_API_APACHE_WS_XS);
                 AXIS2_WODEN_TYPE_DEF_SET_CONTENT(td, env, 
-                        AXIS2_XML_SCHEMA_OBJ_TABLE_GET_ITEM(type_table, env, 
+                        XML_SCHEMA_OBJ_TABLE_GET_ITEM(type_table, env, 
                             qname));
                 AXIS2_WODEN_DESC_ADD_TO_ALL_TYPE_DEFS(builder_impl->f_desc, 
                         env, td);

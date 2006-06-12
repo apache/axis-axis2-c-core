@@ -15,7 +15,7 @@
  */
  
 #include <woden/schema/axis2_woden_schema.h>
-#include <xml_schema/axis2_xml_schema.h>
+#include <xml_schema.h>
 
 typedef struct axis2_woden_schema_impl axis2_woden_schema_impl_t;
 
@@ -27,7 +27,7 @@ struct axis2_woden_schema_impl
 {
     axis2_woden_schema_t schema;
     axis2_uri_t *f_namespc;
-    axis2_xml_schema_t *f_schema_def;
+    xml_schema_t *f_schema_def;
     axis2_bool_t f_is_referenceable;
 };
 
@@ -53,9 +53,9 @@ axis2_status_t AXIS2_CALL
 axis2_woden_schema_set_schema_def(
         void *schema,
         const axis2_env_t *env,
-        axis2_xml_schema_t *schema_def);
+        xml_schema_t *schema_def);
 
-axis2_xml_schema_t *AXIS2_CALL 
+xml_schema_t *AXIS2_CALL 
 axis2_woden_schema_get_schema_def(
         void *schema,
         const axis2_env_t *env);
@@ -126,7 +126,7 @@ axis2_woden_schema_free(
     
     if(schema_impl->f_schema_def)
     {
-        AXIS2_XML_SCHEMA_FREE(schema_impl->f_schema_def, env);
+        XML_SCHEMA_FREE(schema_impl->f_schema_def, env);
         schema_impl->f_schema_def = NULL;
     }
     
@@ -211,7 +211,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_schema_set_schema_def(
         void *schema,
         const axis2_env_t *env,
-        axis2_xml_schema_t *schema_def)
+        xml_schema_t *schema_def)
 {
     axis2_woden_schema_impl_t *schema_impl = NULL;
 
@@ -221,7 +221,7 @@ axis2_woden_schema_set_schema_def(
     
     if(schema_impl->f_schema_def)
     {
-        AXIS2_XML_SCHEMA_FREE(schema_impl->f_schema_def, env);
+        XML_SCHEMA_FREE(schema_impl->f_schema_def, env);
         schema_impl->f_schema_def = NULL;
     }
     schema_impl->f_schema_def = schema_def;
@@ -229,7 +229,7 @@ axis2_woden_schema_set_schema_def(
     return AXIS2_SUCCESS;
 }
 
-axis2_xml_schema_t *AXIS2_CALL 
+xml_schema_t *AXIS2_CALL 
 axis2_woden_schema_get_schema_def(
         void *schema,
         const axis2_env_t *env)

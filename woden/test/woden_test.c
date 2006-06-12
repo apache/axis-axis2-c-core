@@ -43,13 +43,13 @@ void test_mixed_content(
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    axis2_xml_schema_collection_t *sch_collection = NULL;
-    axis2_xml_schema_t *schema = NULL;
+    xml_schema_collection_t *sch_collection = NULL;
+    xml_schema_t *schema = NULL;
     axis2_qname_t *qn = NULL;
     void *ele = NULL;
     void *cmp_type = NULL;
     void *seq = NULL;
-    axis2_xml_schema_obj_collection_t *items = NULL;
+    xml_schema_obj_collection_t *items = NULL;
     void *sub_element = NULL;
     axis2_qname_t *qn1 = NULL;
     axis2_char_t *uri = NULL;
@@ -61,35 +61,35 @@ void test_mixed_content(
     
     om_doc = get_root_element_from_filename(env, filename);
     
-    sch_collection = axis2_xml_schema_collection_create(env);
+    sch_collection = xml_schema_collection_create(env);
     
-    schema = AXIS2_XML_SCHEMA_COLLECTION_READ_DOCUMENT(
+    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
         sch_collection, env, om_doc);
     
     qn = axis2_qname_create(env, "unQualifiedLocals",
             "http://unqualified-elements.example.com", NULL);
     
-    ele = AXIS2_XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
+    ele = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
 
     CuAssertPtrNotNull(tc, ele);
     
-    cmp_type = AXIS2_XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele, env);
+    cmp_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele, env);
     
     CuAssertPtrNotNull(tc, cmp_type); 
     
-    seq = AXIS2_XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(cmp_type, env);
+    seq = XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(cmp_type, env);
     
     CuAssertPtrNotNull(tc, seq);
     
-    items = AXIS2_XML_SCHEMA_GROUP_BASE_GET_ITEMS(seq, env);
+    items = XML_SCHEMA_GROUP_BASE_GET_ITEMS(seq, env);
     
     CuAssertPtrNotNull(tc, items);
     
-    sub_element = AXIS2_XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, 0);
+    sub_element = XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, 0);
     
     CuAssertPtrNotNull(tc, sub_element);
     
-    qn1 = AXIS2_XML_SCHEMA_ELEMENT_GET_QNAME(sub_element, env);
+    qn1 = XML_SCHEMA_ELEMENT_GET_QNAME(sub_element, env);
     
     CuAssertPtrNotNull(tc, qn1);
     
@@ -101,11 +101,11 @@ void test_mixed_content(
     qn1 = NULL;
     uri = NULL;
     
-    sub_element = AXIS2_XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, 0);
+    sub_element = XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, 0);
     
     CuAssertPtrNotNull(tc, sub_element);
     
-    qn1 = AXIS2_XML_SCHEMA_ELEMENT_GET_QNAME(sub_element, env);
+    qn1 = XML_SCHEMA_ELEMENT_GET_QNAME(sub_element, env);
     
     CuAssertPtrNotNull(tc, qn1);
     

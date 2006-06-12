@@ -39,7 +39,7 @@ extern "C"
 
 typedef struct axis2_woden_schema axis2_woden_schema_t;
 typedef struct axis2_woden_schema_ops axis2_woden_schema_ops_t;
-struct axis2_xml_schema;
+struct xml_schema;
 
 /** @defgroup axis2_woden_schema Schema
   * @ingroup axis2_wsdl
@@ -77,9 +77,9 @@ struct axis2_woden_schema_ops
     set_schema_def) (
             void *schema,
             const axis2_env_t *env,
-            struct axis2_xml_schema *schema_def);
+            struct xml_schema *schema_def);
 
-    struct axis2_xml_schema *(AXIS2_CALL *
+    struct xml_schema *(AXIS2_CALL *
     get_schema_def) (
             void *schema,
             const axis2_env_t *env);

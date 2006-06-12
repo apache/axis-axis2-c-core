@@ -22,7 +22,7 @@
 #include <woden/wsdl20/xml/axis2_woden_documentation_element.h>
 #include <woden/wsdl20/axis2_woden_type_def.h>
 #include <woden/util/axis2_woden_generic_obj.h>
-#include <xml_schema/axis2_xml_schema_type.h>
+#include <xml_schema_type.h>
 
 typedef struct axis2_woden_property_impl axis2_woden_property_impl_t;
 
@@ -993,7 +993,7 @@ axis2_woden_property_get_constraint(
         const axis2_env_t *env)
 {
     axis2_woden_property_impl_t *property_impl = NULL;
-    axis2_xml_schema_type_t *xst = NULL;
+    xml_schema_type_t *xst = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -1003,7 +1003,7 @@ axis2_woden_property_get_constraint(
    
     if(property_impl->f_constraint_qname && property_impl->f_types)
     {
-        xst = (axis2_xml_schema_type_t *) 
+        xst = (xml_schema_type_t *) 
             AXIS2_WODEN_TYPES_GET_TYPE_DEFINITION(property_impl->f_types, env, 
                 property_impl->f_constraint_qname);
     }

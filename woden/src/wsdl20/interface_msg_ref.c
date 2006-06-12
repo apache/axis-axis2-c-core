@@ -20,7 +20,7 @@
 #include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
 #include <woden/xml/axis2_woden_xml_attr.h>
 #include <woden/wsdl20/xml/axis2_woden_documentation_element.h>
-#include <xml_schema/axis2_xml_schema_element.h>
+#include <xml_schema_element.h>
 
 typedef struct axis2_woden_interface_msg_ref_impl axis2_woden_interface_msg_ref_impl_t;
 
@@ -1029,7 +1029,7 @@ axis2_woden_interface_msg_ref_get_element(
 {
     axis2_woden_interface_msg_ref_impl_t *interface_msg_ref_impl = NULL;
     axis2_hash_t *super = NULL;
-    axis2_xml_schema_element_t *xse = NULL;
+    xml_schema_element_t *xse = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = AXIS2_WODEN_INTERFACE_MSG_REF_SUPER_OBJS(interface_msg_ref, env);
@@ -1038,7 +1038,7 @@ axis2_woden_interface_msg_ref_get_element(
 
     if(interface_msg_ref_impl->f_types)
     {
-        xse = (axis2_xml_schema_element_t *) 
+        xse = (xml_schema_element_t *) 
             AXIS2_WODEN_TYPE_IMPL_GET_ELEMENT_DECLARATION(
             interface_msg_ref_impl->f_types, env);
     }

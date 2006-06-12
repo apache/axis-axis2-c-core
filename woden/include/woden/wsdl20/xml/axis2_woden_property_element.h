@@ -55,7 +55,7 @@ extern "C"
 typedef struct axis2_woden_property_element axis2_woden_property_element_t;
 typedef struct axis2_woden_property_element_ops axis2_woden_property_element_ops_t;
 typedef union axis2_woden_property_element_base axis2_woden_property_element_base_t;
-struct axis2_xml_schema_type;
+struct xml_schema_type;
 
 /** @defgroup axis2_woden_property_element Property Element
   * @ingroup axis2_wsdl
@@ -125,7 +125,7 @@ struct axis2_woden_property_element_ops
      * 
      * @return the Xml Schema Type identified by the &lt;constraint&gt; element
      */
-    struct axis2_xml_schema_type *(AXIS2_CALL *
+    struct xml_schema_type *(AXIS2_CALL *
     get_constraint) (
             void *property_el,
             const axis2_env_t *env);

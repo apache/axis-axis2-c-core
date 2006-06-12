@@ -31,9 +31,9 @@
 #include <woden/wsdl20/axis2_woden_documentable.h>
 #include <woden/wsdl20/axis2_woden_nested_component.h>
 #include <woden/axis2_woden_wsdl_obj.h>
-#include <xml_schema/axis2_xml_schema.h>
-#include <xml_schema/axis2_xml_schema_element.h>
-#include <xml_schema/axis2_xml_schema_type.h>
+#include <xml_schema.h>
+#include <xml_schema_element.h>
+#include <xml_schema_type.h>
 #include <axis2_array_list.h>
 
 
@@ -47,9 +47,9 @@ typedef struct axis2_woden_types axis2_woden_types_t;
 typedef struct axis2_woden_types_ops axis2_woden_types_ops_t;
 struct axis2_woden_documentation_element;
 struct axis2_woden_documentation;
-struct axis2_xml_schema;
-struct axis2_xml_schema_element;
-struct axis2_xml_schema_type;
+struct xml_schema;
+struct xml_schema_element;
+struct xml_schema_type;
 
 #ifdef __cplusplus
 extern "C"

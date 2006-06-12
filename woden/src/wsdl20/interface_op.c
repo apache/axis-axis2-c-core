@@ -20,7 +20,7 @@
 #include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
 #include <woden/xml/axis2_woden_xml_attr.h>
 #include <woden/wsdl20/xml/axis2_woden_documentation_element.h>
-#include <xml_schema/axis2_xml_schema_element.h>
+#include <xml_schema_element.h>
 
 typedef struct axis2_woden_interface_op_impl axis2_woden_interface_op_impl_t;
 

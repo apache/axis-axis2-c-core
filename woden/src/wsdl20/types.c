@@ -76,13 +76,13 @@ axis2_status_t AXIS2_CALL
 axis2_woden_types_add_schema(
         void *types,
         const axis2_env_t *env,
-        axis2_xml_schema_t *schema);
+        xml_schema_t *schema);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_types_remove_schema(
         void *types,
         const axis2_env_t *env,
-        axis2_xml_schema_t *schema);
+        xml_schema_t *schema);
 
 axis2_array_list_t *AXIS2_CALL
 axis2_woden_types_get_schemas(
@@ -759,7 +759,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_types_add_schema(
         void *types,
         const axis2_env_t *env,
-        axis2_xml_schema_t *schema)
+        xml_schema_t *schema)
 {
     axis2_woden_types_impl_t *types_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -777,7 +777,7 @@ axis2_status_t AXIS2_CALL
 axis2_woden_types_remove_schema(
         void *types,
         const axis2_env_t *env,
-        axis2_xml_schema_t *schema)
+        xml_schema_t *schema)
 {
     axis2_woden_types_impl_t *types_impl = NULL;
     int index = 0;
@@ -909,7 +909,7 @@ axis2_woden_types_get_element_declaration(
         axis2_qname_t *qname)
 {
     axis2_woden_types_impl_t *types_impl = NULL;
-    axis2_xml_schema_element_t *xml_schema_el = NULL;
+    xml_schema_element_t *xml_schema_el = NULL;
     axis2_array_list_t *schemas = NULL;
     axis2_hash_t *super = NULL;
     
@@ -932,9 +932,9 @@ axis2_woden_types_get_element_declaration(
         size = AXIS2_ARRAY_LIST_SIZE(schemas, env);
         for(i = 0; i < size; i++)
         {
-            axis2_xml_schema_t *xml_schema = (axis2_xml_schema_t *)
+            xml_schema_t *xml_schema = (xml_schema_t *)
                 AXIS2_ARRAY_LIST_GET(schemas, env, i);
-            xml_schema_el = AXIS2_XML_SCHEMA_GET_ELEMENT_BY_QNAME(xml_schema, 
+            xml_schema_el = XML_SCHEMA_GET_ELEMENT_BY_QNAME(xml_schema, 
                     env, qname);
             if(xml_schema_el) 
             {
@@ -952,7 +952,7 @@ axis2_woden_types_get_type_definition(
         axis2_qname_t *qname)
 {
     axis2_woden_types_impl_t *types_impl = NULL;
-    axis2_xml_schema_type_t *xml_schema_type = NULL;
+    xml_schema_type_t *xml_schema_type = NULL;
     axis2_array_list_t *schema_refs = NULL;
     axis2_hash_t *super = NULL;
     
@@ -975,9 +975,9 @@ axis2_woden_types_get_type_definition(
             size = AXIS2_ARRAY_LIST_SIZE(schema_refs, env);
             for(i = 0; i < size; i++)
             {
-                axis2_xml_schema_t *xml_schema = (axis2_xml_schema_t *)
+                xml_schema_t *xml_schema = (xml_schema_t *)
                     AXIS2_ARRAY_LIST_GET(schema_refs, env, i);
-                xml_schema_type = AXIS2_XML_SCHEMA_GET_TYPE_BY_QNAME(xml_schema, 
+                xml_schema_type = XML_SCHEMA_GET_TYPE_BY_QNAME(xml_schema, 
                         env, qname);
                 if(xml_schema_type) 
                 {
@@ -1026,7 +1026,7 @@ axis2_woden_types_get_referenceable_schema_defs(
     {
         axis2_woden_schema_t *s = (axis2_woden_schema_t *) 
             AXIS2_ARRAY_LIST_GET(types_impl->f_schemas, env, i);
-        axis2_xml_schema_t *schema_def = AXIS2_WODEN_SCHEMA_GET_SCHEMA_DEF(s, 
+        xml_schema_t *schema_def = AXIS2_WODEN_SCHEMA_GET_SCHEMA_DEF(s, 
                 env);
         if(AXIS2_TRUE == AXIS2_WODEN_SCHEMA_IS_REFERENCEABLE(s, env) &&
                 NULL != schema_def)
@@ -1061,7 +1061,7 @@ axis2_woden_types_get_referenceable_schema_defs_with_namespace(
              env, i);
         axis2_char_t *namespc_l = 
             AXIS2_WODEN_SCHEMA_GET_NAMESPACE_AS_STRING(schema, env);
-        axis2_xml_schema_t *schema_def = 
+        xml_schema_t *schema_def = 
             AXIS2_WODEN_SCHEMA_GET_SCHEMA_DEF(schema, env);
         if(AXIS2_TRUE == AXIS2_WODEN_SCHEMA_IS_REFERENCEABLE(schema, env) &&
                 0 == AXIS2_STRCMP(namespc, namespc_l) && NULL != schema_def)
