@@ -16,9 +16,11 @@
 
 #include <woden/axis2_woden_wsdl_obj.h>
 #include <woden/wsdl20/axis2_woden_interface_msg_ref.h>
+#include <woden/wsdl20/axis2_woden_types.h>
 #include <woden/wsdl20/axis2_woden_nested_configurable.h>
 #include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
 #include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
+#include <woden/wsdl20/enumeration/axis2_woden_msg_label.h>
 #include <woden/xml/axis2_woden_xml_attr.h>
 #include <woden/wsdl20/xml/axis2_woden_documentation_element.h>
 #include <xml_schema_element.h>
@@ -279,7 +281,7 @@ axis2_woden_interface_msg_ref_to_configurable_element(
     else
         interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) interface_msg_ref;
 
-    axis2_woden_interface_free_ops(interface_msg_ref, env);
+    axis2_woden_interface_msg_ref_free_ops(interface_msg_ref, env);
 
     interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.configurable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
@@ -304,7 +306,7 @@ axis2_woden_interface_msg_ref_to_documentable_element(
     else
         interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) interface_msg_ref;
 
-    axis2_woden_interface_free_ops(interface_msg_ref, env);
+    axis2_woden_interface_msg_ref_free_ops(interface_msg_ref, env);
 
     interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.documentable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
@@ -330,7 +332,7 @@ axis2_woden_interface_msg_ref_to_documentable(
     else
         interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) interface_msg_ref;
 
-    axis2_woden_interface_free_ops(interface_msg_ref, env);
+    axis2_woden_interface_msg_ref_free_ops(interface_msg_ref, env);
 
     interface_msg_ref_impl->interface_msg_ref.base.nested_configurable.base.
         configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
@@ -356,7 +358,7 @@ axis2_woden_interface_msg_ref_to_attr_extensible(
     else
         interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) interface_msg_ref;
 
-    axis2_woden_interface_free_ops(interface_msg_ref, env);
+    axis2_woden_interface_msg_ref_free_ops(interface_msg_ref, env);
 
     interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.documentable_element.
         wsdl_element.base.attr_extensible.ops = 
@@ -384,7 +386,7 @@ axis2_woden_interface_msg_ref_to_element_extensible(
     else
         interface_msg_ref_impl = (axis2_woden_interface_msg_ref_impl_t *) interface_msg_ref;
 
-    axis2_woden_interface_free_ops(interface_msg_ref, env);
+    axis2_woden_interface_msg_ref_free_ops(interface_msg_ref, env);
 
     interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.base.documentable_element.
         wsdl_element.base.element_extensible.ops = 
@@ -679,7 +681,7 @@ axis2_woden_interface_msg_ref_free(void *interface_msg_ref,
 
     if(interface_msg_ref_impl->f_types)
     {
-        AXIS2_TYPES_IMPL_FREE(interface_msg_ref_impl->f_types, env);
+        AXIS2_WODEN_TYPES_FREE(interface_msg_ref_impl->f_types, env);
         interface_msg_ref_impl->f_types = NULL;
     }
 
@@ -1040,8 +1042,9 @@ axis2_woden_interface_msg_ref_get_element(
     if(interface_msg_ref_impl->f_types)
     {
         xse = (xml_schema_element_t *) 
-            AXIS2_WODEN_TYPE_IMPL_GET_ELEMENT_DECLARATION(
-            interface_msg_ref_impl->f_types, env);
+            AXIS2_WODEN_TYPES_GET_ELEMENT_DECLARATION(
+            interface_msg_ref_impl->f_types, env, interface_msg_ref_impl->
+            f_element_qname);
     }
 
     return xse;

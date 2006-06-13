@@ -357,7 +357,7 @@ axis2_woden_endpoint_to_configurable_element(
     else
         endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_interface_free_ops(endpoint, env);
+    axis2_woden_endpoint_free_ops(endpoint, env);
 
     endpoint_impl->endpoint.base.endpoint_element.base.configurable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
@@ -382,7 +382,7 @@ axis2_woden_endpoint_to_documentable(
     else
         endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_interface_free_ops(endpoint, env);
+    axis2_woden_endpoint_free_ops(endpoint, env);
 
     endpoint_impl->endpoint.base.nested_configurable.base.
         configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
@@ -408,7 +408,7 @@ axis2_woden_endpoint_to_attr_extensible(
     else
         endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_interface_free_ops(endpoint, env);
+    axis2_woden_endpoint_free_ops(endpoint, env);
 
     endpoint_impl->endpoint.base.endpoint_element.base.documentable_element.
         wsdl_element.base.attr_extensible.ops = 
@@ -436,7 +436,7 @@ axis2_woden_endpoint_to_element_extensible(
     else
         endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_interface_free_ops(endpoint, env);
+    axis2_woden_endpoint_free_ops(endpoint, env);
 
     endpoint_impl->endpoint.base.endpoint_element.base.documentable_element.
         wsdl_element.base.element_extensible.ops = 
@@ -695,7 +695,7 @@ axis2_woden_endpoint_free(void *endpoint,
 
     if(endpoint_impl->f_binding_qname)
     {
-        WODEN_QNAME_FREE(endpoint_impl->f_binding_qname, env);
+        AXIS2_QNAME_FREE(endpoint_impl->f_binding_qname, env);
         endpoint_impl->f_binding_qname = NULL;
     }
 

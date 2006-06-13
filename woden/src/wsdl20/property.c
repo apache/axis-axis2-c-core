@@ -24,6 +24,7 @@
 #include <woden/wsdl20/axis2_woden_type_def.h>
 #include <woden/util/axis2_woden_generic_obj.h>
 #include <xml_schema_type.h>
+#include <axis2_generic_obj.h>
 
 typedef struct axis2_woden_property_impl axis2_woden_property_impl_t;
 
@@ -886,7 +887,7 @@ axis2_woden_property_set_value(
 
     if(property_impl->f_value)
     {
-        AXIS2_WODEN_GENERIC_OBJ_FREE(property_impl->f_value, env);
+        AXIS2_GENERIC_OBJ_FREE(property_impl->f_value, env);
         property_impl->f_value = NULL;
     }
     property_impl->f_value = value;

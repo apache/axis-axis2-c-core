@@ -279,7 +279,7 @@ axis2_woden_svc_to_configurable_element(
     else
         svc_impl = (axis2_woden_svc_impl_t *) svc;
 
-    axis2_woden_interface_free_ops(svc, env);
+    axis2_woden_svc_free_ops(svc, env);
 
     svc_impl->svc.base.svc_element.base.configurable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
@@ -304,7 +304,7 @@ axis2_woden_svc_to_documentable(
     else
         svc_impl = (axis2_woden_svc_impl_t *) svc;
 
-    axis2_woden_interface_free_ops(svc, env);
+    axis2_woden_svc_free_ops(svc, env);
 
     svc_impl->svc.base.
         configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
@@ -330,7 +330,7 @@ axis2_woden_svc_to_attr_extensible(
     else
         svc_impl = (axis2_woden_svc_impl_t *) svc;
 
-    axis2_woden_interface_free_ops(svc, env);
+    axis2_woden_svc_free_ops(svc, env);
 
     svc_impl->svc.base.svc_element.base.documentable_element.
         wsdl_element.base.attr_extensible.ops = 
@@ -358,7 +358,7 @@ axis2_woden_svc_to_element_extensible(
     else
         svc_impl = (axis2_woden_svc_impl_t *) svc;
 
-    axis2_woden_interface_free_ops(svc, env);
+    axis2_woden_svc_free_ops(svc, env);
 
     svc_impl->svc.base.svc_element.base.documentable_element.
         wsdl_element.base.element_extensible.ops = 
@@ -591,13 +591,13 @@ axis2_woden_svc_free(void *svc,
 
     if(svc_impl->f_qname)
     {
-        WODEN_QNAME_FREE(svc_impl->f_qname, env);
+        AXIS2_QNAME_FREE(svc_impl->f_qname, env);
         svc_impl->f_qname = NULL;
     }
 
     if(svc_impl->f_interface_qname)
     {
-        WODEN_QNAME_FREE(svc_impl->f_interface_qname, env);
+        AXIS2_QNAME_FREE(svc_impl->f_interface_qname, env);
         svc_impl->f_interface_qname = NULL;
     }
 

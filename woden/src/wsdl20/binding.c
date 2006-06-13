@@ -20,6 +20,7 @@
 #include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
 #include <woden/xml/axis2_woden_xml_attr.h>
 #include <woden/wsdl20/xml/axis2_woden_documentation_element.h>
+#include <woden/wsdl20/xml/axis2_woden_binding_fault_element.h>
 /*#include <woden/wsdl20/axis2_woden_binding_fault.h>*/
 
 typedef struct axis2_woden_binding_impl axis2_woden_binding_impl_t;
@@ -1180,7 +1181,7 @@ axis2_woden_binding_get_binding_fault_element(
         
         bind_fault = AXIS2_ARRAY_LIST_GET(binding_impl->f_faults, 
                 env, i);
-        qname_l = (axis2_qname_t *) AXIS2_BINDING_FAULT_ELEMENT_GET_REF(
+        qname_l = (axis2_qname_t *) AXIS2_WODEN_BINDING_FAULT_ELEMENT_GET_REF(
                 bind_fault, env);
         if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l))
         {

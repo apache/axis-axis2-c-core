@@ -256,7 +256,7 @@ axis2_woden_interface_fault_ref_to_configurable_element(
     else
         interface_fault_ref_impl = (axis2_woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    axis2_woden_interface_free_ops(interface_fault_ref, env);
+    axis2_woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.interface_fault_ref_element.base.configurable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
@@ -281,7 +281,7 @@ axis2_woden_interface_fault_ref_to_documentable_element(
     else
         interface_fault_ref_impl = (axis2_woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    axis2_woden_interface_free_ops(interface_fault_ref, env);
+    axis2_woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.interface_fault_ref_element.base.documentable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
@@ -307,7 +307,7 @@ axis2_woden_interface_fault_ref_to_documentable(
     else
         interface_fault_ref_impl = (axis2_woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    axis2_woden_interface_free_ops(interface_fault_ref, env);
+    axis2_woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.nested_configurable.base.
         configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
@@ -333,7 +333,7 @@ axis2_woden_interface_fault_ref_to_attr_extensible(
     else
         interface_fault_ref_impl = (axis2_woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    axis2_woden_interface_free_ops(interface_fault_ref, env);
+    axis2_woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.interface_fault_ref_element.base.documentable_element.
         wsdl_element.base.attr_extensible.ops = 
@@ -361,7 +361,7 @@ axis2_woden_interface_fault_ref_to_element_extensible(
     else
         interface_fault_ref_impl = (axis2_woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    axis2_woden_interface_free_ops(interface_fault_ref, env);
+    axis2_woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.interface_fault_ref_element.base.documentable_element.
         wsdl_element.base.element_extensible.ops = 

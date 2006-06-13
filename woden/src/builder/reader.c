@@ -112,6 +112,7 @@
 #include <axiom_stax_builder.h>
 #include <axis2_xml_reader.h>
 #include <axiom_util.h>
+#include <axis2_utils.h>
 
 #include <axis2_string_util.h>
 
@@ -459,7 +460,7 @@ create(
     reader_impl->f_imported_schemas = axis2_hash_make(env);
     if(reader_impl->f_imported_schemas)
     {
-        AXIS2_SET_ERROR(env->error, AXIS2_ERROR_NO_MEMORY, NULL);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
