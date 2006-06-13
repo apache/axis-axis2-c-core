@@ -27,5 +27,4 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/attachments \
 			@UTILINC@
 
-EXTRA_DIST=axis2_om_node_internal.h axis2_om_stax_builder_internal.h axis2_om_namespace_internal.h \
-			maven.xml project.xml
+EXTRA_DIST= maven.xml project.xml

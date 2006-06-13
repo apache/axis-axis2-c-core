@@ -22,12 +22,4 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/om \
 			@UTILINC@
 
-EXTRA_DIST=_axis2_soap_body.h _axis2_soap_fault.h _axis2_soap_fault_code.h \
-		_axis2_soap_fault_reason.h _axis2_soap_fault_value.h \
-		_axis2_soap_fault_detail.h _axis2_soap_fault_role.h \
-		 _axis2_soap_header_block.h _axis2_soap_body.h \
-		 _axis2_soap_fault.h _axis2_soap_fault_sub_code.h \
-		_axis2_soap_header.h _axis2_soap_envelope.h \
-		_axis2_soap_fault_node.h _axis2_soap_fault_text.h \
-		axis2_soap11_builder_helper.h axis2_soap12_builder_helper.h \
-		maven.xml project.xml
+EXTRA_DIST=maven.xml project.xml
