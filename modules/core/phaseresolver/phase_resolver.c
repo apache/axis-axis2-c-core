@@ -303,7 +303,6 @@ axis2_phase_resolver_build_chains(axis2_phase_resolver_t *phase_resolver,
         {
             status = axis2_phase_resolver_build_execution_chains(phase_resolver,
                 env, j, op );
-            
         }
     }
 

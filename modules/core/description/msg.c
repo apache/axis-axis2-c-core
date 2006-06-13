@@ -90,7 +90,7 @@ axis2_msg_get_direction(axis2_msg_t *msg,
 axis2_status_t AXIS2_CALL 
 axis2_msg_set_direction(axis2_msg_t *msg, 
     const axis2_env_t *env,
-    axis2_char_t *direction);
+    const axis2_char_t *direction);
 
 axis2_qname_t *AXIS2_CALL 
 axis2_msg_get_element_qname(axis2_msg_t *msg, 
@@ -410,7 +410,7 @@ axis2_msg_get_direction(axis2_msg_t *msg,
 axis2_status_t AXIS2_CALL 
 axis2_msg_set_direction(axis2_msg_t *msg, 
     const axis2_env_t *env,
-    axis2_char_t *direction) 
+    const axis2_char_t *direction) 
 {
     axis2_msg_impl_t *msg_impl = NULL;
     

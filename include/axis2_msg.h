@@ -28,6 +28,12 @@
 #include <axis2_description.h>
 #include <axis2_phase_meta.h>
 
+#define AXIS2_MSG_IN            "InMessage"
+#define AXIS2_MSG_OUT           "OutMessage"
+#define AXIS2_MSG_IN_FAULT      "InFaultMessage"
+#define AXIS2_MSG_OUT_FAULT     "OutFaultMessage"
+
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -38,20 +44,6 @@ extern "C"
   * @{
   */
 
-struct axis2_wsdl_op;    
-struct axis2_svc;
-struct axis2_msg_recv;
-struct axis2_param_container;
-struct axis2_module_desc; 
-struct axis2_op;
-struct axis2_wsdl_feature;
-struct axis2_wsdl_property; 
-struct axis2_wsdl_fault_ref;  
-struct axis2_relates_to;
-struct axis2_msg_ctx;
-struct axis2_svc_ctx;    
-struct axis2_msg_ctx; 
-struct axis2_conf_ctx;    
 typedef struct axis2_msg_ops axis2_msg_ops_t;    
 typedef struct axis2_msg axis2_msg_t;    
     
@@ -120,7 +112,7 @@ AXIS2_DECLARE_DATA struct axis2_msg_ops
     set_direction)(
         axis2_msg_t *msg, 
         const axis2_env_t *env,
-        axis2_char_t *direction);
+        const axis2_char_t *direction);
     
     axis2_qname_t *(AXIS2_CALL *
     get_element_qname)(

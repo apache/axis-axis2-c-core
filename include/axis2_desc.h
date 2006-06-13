@@ -18,8 +18,8 @@
 #define AXIS2_DESC_H
 
 /**
-  * @file axis2_msg.h
-  * @brief axis2 msg interface
+  * @file axis2_desc.h
+  * @brief axis2 desc interface
   */
 
 #include <axis2_param_container.h>
@@ -41,7 +41,7 @@ typedef struct axis2_desc axis2_desc_t;
     
 /** 
  * @brief message ops struct
- * Encapsulator struct for ops of axis2_msg
+ * Encapsulator struct for ops of axis2_desc
  */    
 AXIS2_DECLARE_DATA struct axis2_desc_ops
 {
@@ -116,46 +116,46 @@ AXIS2_DECLARE_DATA struct axis2_desc
 };
 
 /** 
- * Creates msg struct
- * @return pointer to newly created msg
+ * Creates desc struct
+ * @return pointer to newly created desc
  */
 AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
 axis2_desc_create (const axis2_env_t *env);
 
 /************************** Start of function macros **************************/
 
-#define AXIS2_DESC_FREE(msg, env) \
-        ((msg)->ops->free (msg, env))
+#define AXIS2_DESC_FREE(desc, env) \
+        ((desc)->ops->free (desc, env))
 
-#define AXIS2_DESC_ADD_PARAM(msg, env, param) \
-      ((msg)->ops->add_param (msg, env, param))
+#define AXIS2_DESC_ADD_PARAM(desc, env, param) \
+      ((desc)->ops->add_param (desc, env, param))
 
-#define AXIS2_DESC_GET_PARAM(msg, env, key) \
-      ((msg)->ops->get_param (msg, env, key))
+#define AXIS2_DESC_GET_PARAM(desc, env, key) \
+      ((desc)->ops->get_param (desc, env, key))
 
-#define AXIS2_DESC_GET_ALL_PARAMS(msg, env) \
-      ((msg)->ops->get_all_params (msg, env))
+#define AXIS2_DESC_GET_ALL_PARAMS(desc, env) \
+      ((desc)->ops->get_all_params (desc, env))
 
-#define AXIS2_DESC_IS_PARAM_LOCKED(msg, env, param_name) \
-        ((msg)->ops->is_param_locked(msg, env, param_name))
+#define AXIS2_DESC_IS_PARAM_LOCKED(desc, env, param_name) \
+        ((desc)->ops->is_param_locked(desc, env, param_name))
 
 #define AXIS2_DESC_SET_POLICY_INCLUDE(desc, env, policy_container) \
-    ((msg)->ops->set_policy_include(desc, env, policy_container))
+    ((desc)->ops->set_policy_include(desc, env, policy_container))
 
 #define AXIS2_DESC_GET_POLICY_INCLUDE(desc, env) \
-    ((msg)->ops->get_policy_container(desc, env))
+    ((desc)->ops->get_policy_container(desc, env))
     
 #define AXIS2_DESC_ADD_CHILD(desc, env, key, child) \
-    ((msg)->ops->add_child(desc, env, key, child))
+    ((desc)->ops->add_child(desc, env, key, child))
     
 #define AXIS2_DESC_GET_ALL_CHILDREN(desc, env) \
-    ((msg)->ops->get_all_children(desc, env))
+    ((desc)->ops->get_all_children(desc, env))
     
 #define AXIS2_DESC_GET_CHILD(desc, env, key) \
-    ((msg)->ops->get_child(desc, env, key))
+    ((desc)->ops->get_child(desc, env, key))
     
 #define AXIS2_DESC_REMOVE_CHILD(desc, env, key) \
-    ((msg)->ops->remove_child(desc, env, key))
+    ((desc)->ops->remove_child(desc, env, key))
 
 /** @} */
 #ifdef __cplusplus

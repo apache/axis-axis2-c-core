@@ -61,6 +61,7 @@ struct axis2_op_ctx;
 struct axis2_svc_ctx;    
 struct axis2_msg_ctx; 
 struct axis2_conf_ctx;    
+struct axis2_msg;
 typedef struct axis2_op_ops axis2_op_ops_t;    
 typedef struct axis2_op axis2_op_t;    
     
@@ -385,6 +386,20 @@ AXIS2_DECLARE_DATA struct axis2_op_ops
                  const axis2_env_t *env,
                  struct axis2_msg_ctx *msg_ctx,
                  struct axis2_op_ctx *op_ctx);                                    
+
+    struct axis2_msg *(AXIS2_CALL *
+    get_msg)(
+        const axis2_op_t *op, 
+        const axis2_env_t *env, 
+        const axis2_char_t *label);
+    
+    axis2_status_t (AXIS2_CALL *
+    add_msg)(
+        const axis2_op_t *op, 
+        const axis2_env_t *env, 
+        const axis2_char_t *label, 
+        const struct axis2_msg *msg);
+
 };
 
 /** 
@@ -581,7 +596,13 @@ axis2_op_free_void_arg(void *op,
 
 #define AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, wsdl_op) \
       ((op)->ops->register_op_ctx (op, env, msg_ctx, wsdl_op))
-   
+
+#define AXIS2_OP_GET_MSG(op, env, label) \
+      ((op)->ops->get_msg(op, env, label))
+
+#define AXIS2_OP_ADD_MSG(op, env, label, msg) \
+      ((op)->ops->add_msg(op, env, label, msg))
+
 
 /************************** End of function macros ****************************/
 
