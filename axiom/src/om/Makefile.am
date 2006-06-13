@@ -27,4 +27,7 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/attachments \
 			@UTILINC@
 
-EXTRA_DIST= maven.xml project.xml
+EXTRA_DIST = maven.xml project.xml \
+		axiom_namespace_internal.h axiom_node_internal.h \
+		axiom_stax_builder_internal.h
+

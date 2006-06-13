@@ -9,3 +9,6 @@ libaxis2_attachments_la_LIBADD =  -laxis2_util
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/parser \
 			@UTILINC@
+
+EXTRA_DIST = axiom_mime_body_part.h axiom_mime_output.h
+
