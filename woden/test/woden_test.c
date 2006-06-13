@@ -17,11 +17,15 @@
 #include <CuTest.h>
 #include <stdio.h>
 #include <axiom.h>
+#include <axis2_xml_reader.h>
 #include <axis2_env.h>
 #include <axis2_utils.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <woden/builder/woden_reader.h>
 #include <woden/wsdl20/axis2_woden_desc.h>
+#include <woden/wsdl20/axis2_woden_interface.h>
+
+#include <axiom.h>
 #include "woden_test.h"
 
 

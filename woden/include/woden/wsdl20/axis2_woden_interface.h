@@ -178,11 +178,11 @@ axis2_woden_interface_resolve_methods(
       (((axis2_woden_interface_t *) interface)->ops->get_base_impl(interface, env))
 
 #define AXIS2_WODEN_INTERFACE_GET_QNAME(interface, env) \
-      (((axis2_woden_interface_t *) interface)->\
+      (((axis2_woden_interface_t *) interface)->ops->\
          get_qname(interface, env))
 
 #define AXIS2_WODEN_INTERFACE_GET_EXTENDED_INTERFACES(interface, env) \
-      (((axis2_woden_interface_t *) interface)->\
+      (((axis2_woden_interface_t *) interface)->ops->\
          get_extended_interfaces(interface, env))
 
 #define AXIS2_WODEN_INTERFACE_GET_INTERFACE_FAULTS(interface, env) \

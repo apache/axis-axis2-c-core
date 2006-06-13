@@ -15,6 +15,7 @@
  */
 
 #include <woden/xml/axis2_woden_qname_list_attr.h>
+#include <woden/xml/axis2_woden_xml_attr.h>
 #include <axiom_element.h>
 #include <axiom_node.h>
 
