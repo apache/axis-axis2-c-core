@@ -17,6 +17,7 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <axis2_array_list.h>
+#include <axiom_util.h>
 
 
 AXIS2_EXTERN axiom_element_t * AXIS2_CALL
