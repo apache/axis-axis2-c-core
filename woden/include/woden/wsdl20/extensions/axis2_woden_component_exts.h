@@ -62,8 +62,8 @@ struct axis2_woden_wsdl_element;
 /**
  * Namespace URIs for extensions defined by WSDL 2.0 Specification.
  */
-#define AXIS2_WODEN_URI_NS_SOAP "http://www.w3.org/2006/01/wsdl/soap"
-#define AXIS2_WODEN_URI_NS_HTTP "http://www.w3.org/2006/01/wsdl/http"
+#define WODEN_URI_NS_SOAP "http://www.w3.org/2006/01/wsdl/soap"
+#define WODEN_URI_NS_HTTP "http://www.w3.org/2006/01/wsdl/http"
     
 /** @defgroup axis2_woden_component_exts Component Extensions
   * @ingroup axis2_wsdl

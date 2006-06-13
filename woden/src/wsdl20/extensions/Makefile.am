@@ -6,7 +6,8 @@ libaxis2_woden_extensions_la_SOURCES = \
 							attr_extensible.c \
 							component_exts.c \
 							ext_element.c \
-							ext_deserializer.c
+							ext_deserializer.c \
+							ext_registry.c
 
 INCLUDES = -I$(top_builddir)/include \
 			@AXIOMINC@ \

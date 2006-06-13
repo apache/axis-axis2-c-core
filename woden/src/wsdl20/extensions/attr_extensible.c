@@ -419,7 +419,7 @@ axis2_woden_attr_extensible_has_ext_attrs_for_namespace(void *extensible,
     for (index = axis2_hash_first (extensible_impl->f_ext_attrs, env); index; 
             index = axis2_hash_next (env, index))
     {
-        void *v = NULL;
+        const void *v = NULL;
         axis2_qname_t *key = NULL;
         axis2_char_t *str_ns = NULL;
         
