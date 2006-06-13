@@ -39,7 +39,7 @@
 #include <woden/wsdl20/xml/axis2_woden_desc_element.h>
 #include <woden/axis2_woden_wsdl_obj.h>
 #include <woden/wsdl20/axis2_woden_documentable.h>
-#include <woden/wsdl20/axis2_woden_nested_component.h>
+#include <woden/wsdl20/axis2_woden_wsdl_component.h>
 
 /** @defgroup axis2_woden_desc Description
   * @ingroup axis2_wsdl
@@ -179,7 +179,7 @@ union axis2_woden_desc_base
 {
     axis2_woden_documentable_t documentable;
     axis2_woden_desc_element_t desc_element;
-    axis2_woden_nested_component_t nested_component;
+    axis2_woden_wsdl_component_t wsdl_component;
 };
 
 struct axis2_woden_desc
@@ -253,11 +253,11 @@ axis2_woden_desc_resolve_methods(
       (((axis2_woden_desc_t *) desc)->ops->get_base_impl(desc, env))
 
 #define AXIS2_WODEN_DESC_GET_INTERFACES(desc, env) \
-      (((axis2_woden_desc_t *) desc)->\
+      (((axis2_woden_desc_t *) desc)->ops->\
         get_interfaces (desc, env))
 
 #define AXIS2_WODEN_DESC_GET_BINDINGS(desc, env) \
-      (((axis2_woden_desc_t *) desc)->\
+      (((axis2_woden_desc_t *) desc)->ops->\
          get_bindings(desc, env))
 
 #define AXIS2_WODEN_DESC_GET_SVCS(desc, env) \

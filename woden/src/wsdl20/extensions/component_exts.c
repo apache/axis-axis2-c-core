@@ -96,7 +96,7 @@ axis2_woden_component_exts_free(
 
     if(component_exts_impl->f_parent_element)
     {
-        AXIS2_WODEN_ELEMENT_FREE(component_exts_impl->f_parent_element, env);
+        AXIS2_WODEN_WSDL_ELEMENT_FREE(component_exts_impl->f_parent_element, env);
         component_exts_impl->f_parent_element = NULL;
     }
     

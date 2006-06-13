@@ -21,6 +21,7 @@
 #include <woden/wsdl20/xml/axis2_woden_desc_element.h>
 #include <woden/wsdl20/axis2_woden_documentation.h>
 #include <woden/wsdl20/xml/axis2_woden_documentation_element.h>
+#include "../../../util/woden_om_util.h"
 #include "../../woden_constants.h"
 #include "axis2_woden_soap_constants.h"
 #include <axiom_element.h>
@@ -340,10 +341,11 @@ axis2_woden_soap_header_block_deserializer_marshall(
             WODEN_ATTR_ELEMENT); 
     if(NULL != element_decl_qn)
     {
-        axis2_uri_t *uri = axis2_uri_parse_string(env, element_decl_qn);
+        axis2_qname_t *qname = woden_om_util_get_qname(env, ext_el_node, 
+                element_decl_qn, desc);
         
         soap_hdr = axis2_woden_soap_header_block_to_soap_header_block_element(soap_hdr, env);
-        AXIS2_WODEN_SOAP_HEADER_BLOCK_ELEMENT_SET_REF(soap_hdr, env, uri);
+        AXIS2_WODEN_SOAP_HEADER_BLOCK_ELEMENT_SET_SET_ELEMENT_QNAME(soap_hdr, env, qname);
     }
     must_understand = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ext_el, env, 
             WODEN_ATTR_MUSTUNDERSTAND);
@@ -352,7 +354,7 @@ axis2_woden_soap_header_block_deserializer_marshall(
     else
             understood = AXIS2_FALSE;
     soap_hdr = axis2_woden_soap_header_block_to_soap_header_block_element(soap_hdr, env);
-    AXIS2_WODEN_EXT_ELEMENT_SET_MUST_UNDERSTAND(soap_hdr, env, understood);
+    AXIS2_WODEN_SOAP_HEADER_BLOCK_ELEMENT_SET_MUST_UNDERSTAND(soap_hdr, env, understood);
 
     req = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ext_el, env, 
             WODEN_ATTR_REQUIRED);

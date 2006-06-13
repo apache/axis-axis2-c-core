@@ -1,6 +1,6 @@
-noinst_LTLIBRARIES = libaxis2_woden_schema.la
+noinst_LTLIBRARIES = libwoden_schema.la
 
-libaxis2_woden_schema_la_SOURCES = \
+libwoden_schema_la_SOURCES = \
 							schema.c \
 							imported_schema.c \
 							inlined_schema.c \

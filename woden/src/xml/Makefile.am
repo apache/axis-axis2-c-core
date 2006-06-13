@@ -1,6 +1,6 @@
-noinst_LTLIBRARIES = libaxis2_woden_xml.la
+noinst_LTLIBRARIES = libwoden_xml.la
 
-libaxis2_woden_xml_la_SOURCES = \
+libwoden_xml_la_SOURCES = \
 							xml_attr.c \
 							qname_attr.c \
 							uri_attr.c \

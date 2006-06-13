@@ -1,7 +1,7 @@
-noinst_LTLIBRARIES = libaxis2_woden_extensions.la
+noinst_LTLIBRARIES = libwoden_extensions.la
 SUBDIRS = soap
 
-libaxis2_woden_extensions_la_SOURCES = \
+libwoden_extensions_la_SOURCES = \
 							element_extensible.c \
 							attr_extensible.c \
 							component_exts.c \

@@ -16,6 +16,7 @@
 
 #include <woden/axis2_woden_wsdl_obj.h>
 #include <woden/wsdl20/axis2_woden_binding_msg_ref.h>
+#include <woden/wsdl20/axis2_woden_nested_configurable.h>
 #include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
 #include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
 #include <woden/xml/axis2_woden_xml_attr.h>
@@ -671,7 +672,7 @@ axis2_woden_binding_msg_ref_free(void *binding_msg_ref,
 
     if(binding_msg_ref_impl->f_interface_msg_ref)
     {
-        AXIS2_INTERFACE_MSG_REF_FREE(binding_msg_ref_impl->f_interface_msg_ref, env);
+        AXIS2_WODEN_INTERFACE_MSG_REF_FREE(binding_msg_ref_impl->f_interface_msg_ref, env);
         binding_msg_ref_impl->f_interface_msg_ref = NULL;
     }
 

@@ -251,6 +251,18 @@ axis2_woden_binding_resolve_methods(
       (((axis2_woden_binding_t *) binding)->ops->\
          to_element(binding, env))
 
+#define AXIS2_WODEN_BINDING_GET_BINDING_FAULT_ELEMENT(binding, env, qname) \
+      (((axis2_woden_binding_t *) binding)->ops->\
+       get_binding_fault_element  (binding, env, qname))
+
+#define AXIS2_WODEN_BINDING_GET_BINDING_OP_ELEMENT(binding, env, qname) \
+      (((axis2_woden_binding_t *) binding)->ops->\
+        get_binding_op_element (binding, env, qname))
+
+#define AXIS2_WODEN_BINDING_SET_INTERFACE_ELEMENT(binding, env, interface) \
+      (((axis2_woden_binding_t *) binding)->ops->\
+        set_interface_element (binding, env, interface))
+
 /** @} */
 #ifdef __cplusplus
 }

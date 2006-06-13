@@ -1,6 +1,6 @@
-noinst_LTLIBRARIES = libaxis2_woden_enumeration.la
+noinst_LTLIBRARIES = libwoden_enumeration.la
 
-libaxis2_woden_enumeration_la_SOURCES = \
+libwoden_enumeration_la_SOURCES = \
 							msg_label.c \
 							direction.c \
 							soap_fault_code.c \

@@ -16,6 +16,7 @@
 
 #include <woden/axis2_woden_wsdl_obj.h>
 #include <woden/wsdl20/axis2_woden_interface_fault_ref.h>
+#include <woden/wsdl20/axis2_woden_nested_configurable.h>
 #include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
 #include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
 #include <woden/xml/axis2_woden_xml_attr.h>
@@ -644,7 +645,7 @@ axis2_woden_interface_fault_ref_free(
         interface_fault_ref_impl->nested_configurable = NULL;
     }
 
-    axis2_interface_fault_ref_free_ops(interface_fault_ref, env);
+    axis2_woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     if((&(interface_fault_ref_impl->interface_fault_ref))->ops)
     {

@@ -17,7 +17,7 @@
 #include <woden/wsdl20/xml/axis2_woden_interface_fault_ref_element.h>
 
 axis2_status_t AXIS2_CALL
-axis2_woden_interface_fault_ref_element_resolve_methods(
+axis2_woden_fault_ref_element_resolve_methods(
         axis2_woden_interface_fault_ref_element_t *interface_fault_ref_element,
         const axis2_env_t *env,
         axis2_hash_t *methods)

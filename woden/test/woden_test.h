@@ -14,27 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef XML_SCHEMA_TEST_H
-#define XML_SCHEMA_TEST_H
+#ifndef WODEN_TEST_H
+#define WODEN_TEST_H
 
 #include <CuTest.h>
 #include <stdio.h>
 
-CuSuite* xml_schema_GetSuite();
+CuSuite* woden_GetSuite();
 
-void test_simple_type_schema_generation(CuTest *tc);
-void test_any_attribute(CuTest *tc);
-void test_block_content(CuTest *tc);
-void test_circular_schema(CuTest *tc);
-void test_schema_import1(CuTest *tc);
-void test_schema_import2(CuTest *tc);
-void test_mixed_content(CuTest *tc);
-void test_local_elements(CuTest *tc);
-void test_element_refs(CuTest *tc);
-void test_forward_refs(CuTest *tc);
-void test_local_unnamed_simple_type(CuTest *tc);
-void test_simple_restriction(CuTest *tc);
-void test_unqualified_schemas(CuTest *tc);
-void test_two_schmes(CuTest *tc);
+void test_read_wsdl(CuTest *tc);
 
-#endif /* XML_SCHEMA_TEST_H */
+#endif /* WODEN_TEST_H */

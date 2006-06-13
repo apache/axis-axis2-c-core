@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#include "woden.h"
+#include "woden_test.h"
 
 void RunAllTests(
         void) 
 {
     CuString *output = CuStringNew();
-    CuSuite* suite = xml_schema_GetSuite();
+    CuSuite* suite = woden_GetSuite();
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);
     CuSuiteDetails(suite, output);

@@ -1,6 +1,6 @@
-noinst_LTLIBRARIES = libaxis2_woden_xml.la
+noinst_LTLIBRARIES = libwoden_wsdl20_xml.la
 
-libaxis2_woden_xml_la_SOURCES = \
+libwoden_wsdl20_xml_la_SOURCES = \
 							feature_element.c \
 							property_element.c \
 							documentation_element.c \

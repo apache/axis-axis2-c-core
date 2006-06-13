@@ -155,7 +155,7 @@ axis2_woden_wsdl_obj_free(
 }
 
 axis2_hash_t *AXIS2_CALL
-axis2_woden_wsdl_obj_super(
+axis2_woden_wsdl_obj_super_objs(
         void *wsdl_obj,
         const axis2_env_t *env)
 {

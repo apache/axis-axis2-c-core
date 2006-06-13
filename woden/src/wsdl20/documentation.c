@@ -69,65 +69,6 @@ axis2_woden_documentation_get_content(
         void *documentation,
         const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL 
-axis2_woden_documentation_set_ext_attr(
-        void *documentation,
-        const axis2_env_t *env,
-        axis2_qname_t *attr_type,
-        axis2_woden_xml_attr_t *attr);
-
-axis2_woden_xml_attr_t *AXIS2_CALL 
-axis2_woden_documentation_get_ext_attr(
-        void *documentation,
-        const axis2_env_t *env,
-        axis2_qname_t *attr_type);
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_documentation_get_ext_attrs(
-        void *documentation,
-        const axis2_env_t *env);
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_documentation_get_ext_attrs_for_namespace(
-        void *documentation,
-        const axis2_env_t *env,
-        axis2_uri_t *namespc);
-
-axis2_bool_t AXIS2_CALL 
-axis2_woden_documentation_has_ext_attrs_for_namespace(
-        void *documentation,
-        const axis2_env_t *env,
-        axis2_uri_t *namespc);
-
-axis2_status_t AXIS2_CALL 
-axis2_woden_documentation_add_ext_element(
-        void *documentation,
-        const axis2_env_t *env,
-        axis2_woden_ext_element_t *ext_el);
-
-axis2_status_t AXIS2_CALL 
-axis2_woden_documentation_remove_ext_element(
-        void *documentation,
-        const axis2_env_t *env,
-        axis2_woden_ext_element_t *ext_el);
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_documentation_get_ext_elements(
-        void *documentation,
-        const axis2_env_t *env);
-
-axis2_array_list_t *AXIS2_CALL 
-axis2_woden_documentation_get_ext_elements_of_type(
-        void *documentation,
-        const axis2_env_t *env,
-        axis2_qname_t *ext_type);
-
-axis2_bool_t AXIS2_CALL 
-axis2_woden_documentation_has_ext_elements_for_namespace(
-        void *documentation,
-        const axis2_env_t *env,
-        axis2_uri_t *namespc);
-
 static axis2_woden_documentation_t *
 create(const axis2_env_t *env);
 
@@ -261,26 +202,6 @@ create(const axis2_env_t *env)
             AXIS2_HASH_KEY_STRING, axis2_woden_documentation_set_content);
     axis2_hash_set(documentation_impl->methods, "get_content", 
             AXIS2_HASH_KEY_STRING, axis2_woden_documentation_get_content);
-    axis2_hash_set(documentation_impl->methods, "set_ext_attr", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_documentation_set_ext_attr);
-    axis2_hash_set(documentation_impl->methods, "get_ext_attr", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_documentation_get_ext_attr);
-    axis2_hash_set(documentation_impl->methods, "get_ext_attrs", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_documentation_get_ext_attrs);
-    axis2_hash_set(documentation_impl->methods, "get_ext_attrs_for_namespace", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_documentation_get_ext_attrs_for_namespace);
-    axis2_hash_set(documentation_impl->methods, "has_ext_attrs_for_namespace", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_documentation_has_ext_attrs_for_namespace);
-    axis2_hash_set(documentation_impl->methods, "add_ext_element", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_documentation_add_ext_element);
-    axis2_hash_set(documentation_impl->methods, "remove_ext_element", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_documentation_remove_ext_element);
-    axis2_hash_set(documentation_impl->methods, "get_ext_elements", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_documentation_get_ext_elements);
-    axis2_hash_set(documentation_impl->methods, "get_ext_elements_of_type", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_documentation_get_ext_elements_of_type);
-    axis2_hash_set(documentation_impl->methods, "has_ext_elements_for_namespace", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_documentation_has_ext_elements_for_namespace);
     
     return &(documentation_impl->documentation);
 }

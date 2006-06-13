@@ -16,6 +16,7 @@
  
 #include <woden/wsdl20/extensions/axis2_woden_element_extensible.h>
 #include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
+#include <woden/xml/axis2_woden_xml_attr.h>
 #include <axis2_uri.h>
 #include <axis2_hash.h>
 

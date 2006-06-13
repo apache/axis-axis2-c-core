@@ -18,6 +18,10 @@
 #include <stdio.h>
 #include <axiom.h>
 #include <axis2_env.h>
+#include <axis2_utils.h>
+#include <platforms/axis2_platform_auto_sense.h>
+#include <woden/builder/woden_reader.h>
+#include <woden/wsdl20/axis2_woden_desc.h>
 #include "woden_test.h"
 
 
@@ -26,33 +30,30 @@ get_root_element_from_filename(
         const axis2_env_t *env, 
         axis2_char_t *filename);
 
-void test_mixed_content(
+void test_read_wsdl(
         CuTest *tc);
 
-CuSuite* xml_schema_GetSuite()
+CuSuite* woden_GetSuite()
 {
     CuSuite* suite = CuSuiteNew();
     
-    SUITE_ADD_TEST(suite, test_mixed_content);
+    SUITE_ADD_TEST(suite, test_read_wsdl);
 
     return suite;
 }
 
-void test_mixed_content(
+void test_read_wsdl(
         CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
-    xml_schema_collection_t *sch_collection = NULL;
-    xml_schema_t *schema = NULL;
-    axis2_qname_t *qn = NULL;
-    void *ele = NULL;
-    void *cmp_type = NULL;
-    void *seq = NULL;
-    xml_schema_obj_collection_t *items = NULL;
-    void *sub_element = NULL;
-    axis2_qname_t *qn1 = NULL;
-    axis2_char_t *uri = NULL;
+    axis2_char_t *doc_base_uri = NULL;
+    axis2_char_t *axis2c_home = NULL;
+    void *reader = NULL;
+    void *desc = NULL;
+    void *intface = NULL;
+    axis2_array_list_t *intfaces = NULL;
+    axis2_qname_t *intface_qname = NULL;
     
     
     axis2_char_t *filename = "./resources/Calculator.wsdl"; 
@@ -60,59 +61,18 @@ void test_mixed_content(
     env = axis2_env_create_all("test.log", 1);
     
     om_doc = get_root_element_from_filename(env, filename);
+    axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
+    doc_base_uri = AXIS2_STRACAT (axis2c_home, "/woden", env);
+    reader = woden_reader_create(env);
     
-    sch_collection = xml_schema_collection_create(env);
-    
-    schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
-        sch_collection, env, om_doc);
-    
-    qn = axis2_qname_create(env, "unQualifiedLocals",
-            "http://unqualified-elements.example.com", NULL);
-    
-    ele = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, qn);
-
-    CuAssertPtrNotNull(tc, ele);
-    
-    cmp_type = XML_SCHEMA_ELEMENT_GET_SCHEMA_TYPE(ele, env);
-    
-    CuAssertPtrNotNull(tc, cmp_type); 
-    
-    seq = XML_SCHEMA_COMPLEX_TYPE_GET_PARTICLE(cmp_type, env);
-    
-    CuAssertPtrNotNull(tc, seq);
-    
-    items = XML_SCHEMA_GROUP_BASE_GET_ITEMS(seq, env);
-    
-    CuAssertPtrNotNull(tc, items);
-    
-    sub_element = XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, 0);
-    
-    CuAssertPtrNotNull(tc, sub_element);
-    
-    qn1 = XML_SCHEMA_ELEMENT_GET_QNAME(sub_element, env);
-    
-    CuAssertPtrNotNull(tc, qn1);
-    
-    uri = AXIS2_QNAME_GET_URI(qn1, env);
-    
-    CuAssertPtrNotNull(tc, uri);
-    
-    sub_element = NULL;
-    qn1 = NULL;
-    uri = NULL;
-    
-    sub_element = XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(items, env, 0);
-    
-    CuAssertPtrNotNull(tc, sub_element);
-    
-    qn1 = XML_SCHEMA_ELEMENT_GET_QNAME(sub_element, env);
-    
-    CuAssertPtrNotNull(tc, qn1);
-    
-    uri = AXIS2_QNAME_GET_URI(qn1, env);
-    
-    CuAssertPtrNotNull(tc, uri);
-    
+    desc = WODEN_READER_READ_WSDL(reader, env, om_doc, doc_base_uri);
+    CuAssertPtrNotNull(tc, desc);
+    intfaces = AXIS2_WODEN_DESC_GET_INTERFACES(desc, env);
+    CuAssertPtrNotNull(tc, intfaces);
+    intface = AXIS2_ARRAY_LIST_GET(intfaces, env, 0);
+    CuAssertPtrNotNull(tc, intface);
+    intface_qname = AXIS2_WODEN_INTERFACE_GET_QNAME(intface, env);
+    CuAssertPtrNotNull(tc, intface_qname);
 }
 
 static axiom_document_t* 

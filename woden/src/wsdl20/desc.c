@@ -16,6 +16,27 @@
 
 #include <woden/axis2_woden_wsdl_obj.h>
 #include <woden/wsdl20/axis2_woden_desc.h>
+#include <woden/wsdl20/axis2_woden_element_decl.h>
+#include <woden/wsdl20/axis2_woden_type_def.h>
+#include <woden/wsdl20/axis2_woden_documentation.h>
+#include <woden/wsdl20/axis2_woden_import.h>
+#include <woden/wsdl20/axis2_woden_include.h>
+#include <woden/wsdl20/axis2_woden_types.h>
+#include <woden/wsdl20/axis2_woden_interface.h>
+#include <woden/wsdl20/axis2_woden_interface_fault.h>
+#include <woden/wsdl20/axis2_woden_interface_op.h>
+#include <woden/wsdl20/axis2_woden_interface_fault_ref.h>
+#include <woden/wsdl20/axis2_woden_interface_msg_ref.h>
+#include <woden/wsdl20/axis2_woden_binding.h>
+#include <woden/wsdl20/axis2_woden_binding_fault.h>
+#include <woden/wsdl20/axis2_woden_binding_op.h>
+#include <woden/wsdl20/axis2_woden_binding_fault_ref.h>
+#include <woden/wsdl20/axis2_woden_binding_msg_ref.h>
+#include <woden/wsdl20/axis2_woden_svc.h>
+#include <woden/wsdl20/axis2_woden_endpoint.h>
+#include <woden/wsdl20/axis2_woden_feature.h>
+#include <woden/wsdl20/axis2_woden_property.h>
+
 #include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
 #include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
 #include <woden/xml/axis2_woden_xml_attr.h>
@@ -140,6 +161,11 @@ axis2_woden_desc_set_document_base_uri(
         const axis2_env_t *env,
         axis2_uri_t *doc_base_uri);
 
+axis2_uri_t *AXIS2_CALL
+axis2_woden_desc_get_document_base_uri(
+        void *desc,
+        const axis2_env_t *env);
+
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_set_target_namespace(
         void *desc,
@@ -170,7 +196,7 @@ axis2_woden_desc_get_namespace(
         const axis2_env_t *env,
         axis2_char_t *prefix);
 
-axis2_array_list_t *AXIS2_CALL
+axis2_hash_t *AXIS2_CALL
 axis2_woden_desc_get_namespaces(
         void *desc,
         const axis2_env_t *env);
@@ -330,7 +356,6 @@ void *AXIS2_CALL
 axis2_woden_desc_to_component(
         void *desc,
         const axis2_env_t *env);
-}
 /* ************************************************************
  *  Non-API implementation methods
  * ************************************************************/
@@ -424,11 +449,11 @@ axis2_woden_desc_to_documentable_element(
         desc_impl = (axis2_woden_desc_impl_t *) desc;
 
     axis2_woden_desc_free_ops(desc, env);
-    desc_impl->desc.base.desc_element.base.documentable_element.ops = 
+    desc_impl->desc.base.desc_element.documentable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_documentable_element_ops_t));
     axis2_woden_documentable_element_resolve_methods(&(desc_impl->desc.base.
-            desc_element.base.documentable_element), env, 
+            desc_element.documentable_element), env, 
             desc_impl->methods);
     return desc;
 }
@@ -505,7 +530,7 @@ axis2_woden_desc_to_wsdl_component(
         AXIS2_MALLOC(env->allocator, 
         sizeof(axis2_woden_wsdl_component_ops_t));
     axis2_woden_wsdl_component_resolve_methods(&(desc_impl->desc.base.
-            wsdl_component), env, desc_impl->methods);
+                wsdl_component), env, desc_impl->methods);
     return desc;
 }
 
@@ -526,12 +551,12 @@ axis2_woden_desc_to_attr_extensible(
 
     axis2_woden_desc_free_ops(desc, env);
 
-    desc_impl->desc.base.desc_element.base.documentable_element.
+    desc_impl->desc.base.desc_element.documentable_element.
         wsdl_element.base.attr_extensible.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_attr_extensible_ops_t));
     axis2_woden_attr_extensible_resolve_methods(&(desc_impl->desc.base.
-            desc_element.base.documentable_element.wsdl_element.base.
+            desc_element.documentable_element.wsdl_element.base.
             attr_extensible), env, NULL, desc_impl->methods);
     return desc;
 }
@@ -553,12 +578,12 @@ axis2_woden_desc_to_element_extensible(
 
     axis2_woden_desc_free_ops(desc, env);
 
-    desc_impl->desc.base.desc_element.base.documentable_element.
+    desc_impl->desc.base.desc_element.documentable_element.
         wsdl_element.base.element_extensible.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(axis2_woden_element_extensible_ops_t));
     axis2_woden_element_extensible_resolve_methods(&(desc_impl->desc.base.
-            desc_element.base.documentable_element.wsdl_element.base.
+            desc_element.documentable_element.wsdl_element.base.
             element_extensible), env, NULL, desc_impl->methods);
     return desc;
 }
@@ -596,10 +621,10 @@ create(const axis2_env_t *env)
     desc_impl->f_ext_reg = NULL;
 
     desc_impl->desc.base.desc_element.ops = NULL;
-    desc_impl->desc.base.desc_element.base.documentable_element.ops = 
+    desc_impl->desc.base.desc_element.documentable_element.ops = 
             NULL;
     desc_impl->desc.base.documentable.ops = NULL;
-    desc_impl->desc.base.nested_component.wsdl_component.ops = NULL;
+    desc_impl->desc.base.wsdl_component.ops = NULL;
     desc_impl->desc.base.documentable.base.wsdl_obj.ops = NULL;
     desc_impl->desc.base.documentable.base.wsdl_obj.base.wsdl_element.
             base.attr_extensible.ops = NULL;
@@ -843,11 +868,11 @@ axis2_woden_desc_free_ops(
         desc_impl->desc.base.desc_element.ops = NULL;
     }
 
-    if(desc_impl->desc.base.desc_element.base.documentable_element.ops)
+    if(desc_impl->desc.base.desc_element.documentable_element.ops)
     {
         AXIS2_FREE(env->allocator, desc_impl->desc.base.
-                desc_element.base.documentable_element.ops);
-        desc_impl->desc.base.desc_element.base.documentable_element.ops = 
+                desc_element.documentable_element.ops);
+        desc_impl->desc.base.desc_element.documentable_element.ops = 
             NULL;
     }
     
@@ -867,30 +892,30 @@ axis2_woden_desc_free_ops(
             NULL;
     }
 
-    if(desc_impl->desc.base.nested_component.wsdl_component.ops)
+    if(desc_impl->desc.base.wsdl_component.ops)
     {
         AXIS2_FREE(env->allocator, desc_impl->desc.base.
-                nested_component.wsdl_component.ops);
-        desc_impl->desc.base.nested_component.wsdl_component.ops = NULL;
+                wsdl_component.ops);
+        desc_impl->desc.base.wsdl_component.ops = NULL;
     }
   
-    if(desc_impl->desc.base.desc_element.base.
+    if(desc_impl->desc.base.desc_element.
             documentable_element.wsdl_element.base.element_extensible.ops)
     {
         AXIS2_FREE(env->allocator, desc_impl->desc.base.
-                desc_element.base.documentable_element.wsdl_element.base.
+                desc_element.documentable_element.wsdl_element.base.
                 element_extensible.ops);
-        desc_impl->desc.base.desc_element.base.
+        desc_impl->desc.base.desc_element.
             documentable_element.wsdl_element.base.element_extensible.ops = NULL;
     }
  
-    if(desc_impl->desc.base.desc_element.base.
+    if(desc_impl->desc.base.desc_element.
             documentable_element.wsdl_element.base.attr_extensible.ops)
     {
         AXIS2_FREE(env->allocator, desc_impl->desc.base.
-                desc_element.base.documentable_element.wsdl_element.base.
+                desc_element.documentable_element.wsdl_element.base.
                 attr_extensible.ops);
-        desc_impl->desc.base.desc_element.base.
+        desc_impl->desc.base.desc_element.
             documentable_element.wsdl_element.base.attr_extensible.ops = NULL;
     }
 
@@ -908,12 +933,6 @@ axis2_woden_desc_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     desc_impl = INTF_TO_IMPL(desc);
 
-    if(desc_impl->f_ref)
-    {
-        AXIS2_URI_FREE(desc_impl->f_ref, env);
-        desc_impl->f_ref = NULL;
-    }
-   
     /* TODO free f_parent */
     
     if(desc_impl->super)
@@ -933,6 +952,7 @@ axis2_woden_desc_free(
         AXIS2_WODEN_DOCUMENTABLE_FREE(desc_impl->documentable, env);
         desc_impl->documentable = NULL;
     }
+
     axis2_woden_desc_free_ops(desc, env);
 
     if((&(desc_impl->desc))->ops)
@@ -1032,25 +1052,25 @@ axis2_woden_desc_resolve_methods(
             desc->ops->get_element_decls = 
             desc_impl_l->desc.ops->get_element_decls;
     
-    desc->ops->get_get_element_decl = axis2_hash_get(methods, 
-            "get_", AXIS2_HASH_KEY_STRING);
-    if(!desc->ops->get_ && desc_impl_l)
-            desc->ops->get_ = 
-            desc_impl_l->desc.ops->get_;
+    desc->ops->get_element_decl = axis2_hash_get(methods, 
+            "get_element_decl", AXIS2_HASH_KEY_STRING);
+    if(!desc->ops->get_element_decl && desc_impl_l)
+            desc->ops->get_element_decl = 
+            desc_impl_l->desc.ops->get_element_decl;
     
-    desc->ops->get_get_type_defs = axis2_hash_get(methods, 
-            "get_", AXIS2_HASH_KEY_STRING);
-    if(!desc->ops->get_ && desc_impl_l)
-            desc->ops->get_ = 
-            desc_impl_l->desc.ops->get_;
+    desc->ops->get_type_defs = axis2_hash_get(methods, 
+            "get_type_defs", AXIS2_HASH_KEY_STRING);
+    if(!desc->ops->get_type_defs && desc_impl_l)
+            desc->ops->get_type_defs = 
+            desc_impl_l->desc.ops->get_type_defs;
     
-    desc->ops->get_get_type_def = axis2_hash_get(methods, 
-            "get_", AXIS2_HASH_KEY_STRING);
-    if(!desc->ops->get_ && desc_impl_l)
-            desc->ops->get_ = 
-            desc_impl_l->desc.ops->get_;
+    desc->ops->get_type_def = axis2_hash_get(methods, 
+            "get_type_def", AXIS2_HASH_KEY_STRING);
+    if(!desc->ops->get_type_def && desc_impl_l)
+            desc->ops->get_type_def = 
+            desc_impl_l->desc.ops->get_type_def;
     
-    desc->ops->get_to_element = axis2_hash_get(methods, 
+    desc->ops->to_element = axis2_hash_get(methods, 
             "to_element", AXIS2_HASH_KEY_STRING);
     if(!desc->ops->to_element && desc_impl_l)
             desc->ops->to_element = 
@@ -1173,6 +1193,7 @@ axis2_woden_desc_get_element_decl(
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
     void *el_decl = NULL;
+    int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
@@ -1186,9 +1207,9 @@ axis2_woden_desc_get_element_decl(
     for(i = 0; i < size; i++)
     {
         axis2_qname_t *qname_l = NULL;
-        void *ed = AXIS2_ARRAY_LIST_NEXT(desc_impl->f_all_element_decls, env, i);
-        qname_l = AXIS2_ELEMENT_DECL_GET_QNAME(ed, env);
-        if(0 == AXIS2_QNAME_EQUALS(qname, qname_l))
+        void *ed = AXIS2_ARRAY_LIST_GET(desc_impl->f_all_element_decls, env, i);
+        qname_l = AXIS2_WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
+        if(0 == AXIS2_QNAME_EQUALS(qname, env, qname_l))
         {
             el_decl = ed;
             break;
@@ -1224,6 +1245,7 @@ axis2_woden_desc_get_type_def(
     axis2_woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
     void *type_def = NULL;
+    int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
@@ -1237,11 +1259,11 @@ axis2_woden_desc_get_type_def(
     for(i = 0; i < size; i++)
     {
         axis2_qname_t *qname_l = NULL;
-        void *td = AXIS2_ARRAY_LIST_NEXT(desc_impl->f_all_element_decls, env, i);
-        qname_l = AXIS2_TYPE_DEF_GET_QNAME(ed, env);
-        if(0 == AXIS2_QNAME_EQUALS(qname, qname_l))
+        void *ed = AXIS2_ARRAY_LIST_GET(desc_impl->f_all_element_decls, env, i);
+        qname_l = AXIS2_WODEN_TYPE_DEF_GET_QNAME(ed, env);
+        if(0 == AXIS2_QNAME_EQUALS(qname, env, qname_l))
         {
-            type_def = td;
+            type_def = ed;
             break;
         }
     }
@@ -1290,6 +1312,23 @@ axis2_woden_desc_set_document_base_uri(
     desc_impl->f_doc_base_uri = doc_base_uri;
     return AXIS2_SUCCESS;
 }
+
+axis2_uri_t *AXIS2_CALL
+axis2_woden_desc_get_document_base_uri(
+        void *desc,
+        const axis2_env_t *env)
+{
+    axis2_woden_desc_impl_t *desc_impl = NULL;
+    axis2_hash_t *super = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
+    desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
+   
+    return desc_impl->f_doc_base_uri;
+}
+
 
 axis2_status_t AXIS2_CALL
 axis2_woden_desc_set_target_namespace(
@@ -1394,7 +1433,7 @@ axis2_woden_desc_get_namespace(
     return axis2_hash_get(desc_impl->f_namespcs, pfx, AXIS2_HASH_KEY_STRING);
 }
 
-axis2_array_list_t *AXIS2_CALL
+axis2_hash_t *AXIS2_CALL
 axis2_woden_desc_get_namespaces(
         void *desc,
         const axis2_env_t *env)
@@ -1454,7 +1493,7 @@ axis2_woden_desc_add_include_element(
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, import_el, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, include_el, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1561,7 +1600,7 @@ axis2_woden_desc_add_binding_element(
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, binding_el, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, binding, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1916,31 +1955,12 @@ axis2_woden_desc_init_components(
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, binding, AXIS2_FAILURE);
     super = AXIS2_WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "AXIS2_WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
-    desc_impl->f_components_initialized = AXIS2_TRUE;
+    desc_impl->f_component_initialized = AXIS2_TRUE;
     return axis2_woden_component_model_builder_create(env, &(desc_impl->desc));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

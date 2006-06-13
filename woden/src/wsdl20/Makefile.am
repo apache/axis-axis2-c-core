@@ -30,7 +30,19 @@ libwoden_wsdl20_la_SOURCES = \
 							wsdl_ref.c \
 							element_decl.c \
 							import.c \
-							include.c
+							include.c \
+							desc.c
+
+libwoden_wsdl20_la_LIBADD =  \
+                    $(top_builddir)/src/xml/libwoden_xml.la \
+                    $(top_builddir)/src/util/libwoden_util.la \
+                    $(top_builddir)/src/types/libwoden_types.la \
+                    $(top_builddir)/src/builder/libwoden_builder.la \
+                    $(top_builddir)/src/schema/libwoden_schema.la \
+                    $(top_builddir)/src/wsdl20/xml/libwoden_wsdl20_xml.la \
+                    $(top_builddir)/src/wsdl20/enumeration/libwoden_enumeration.la \
+                    $(top_builddir)/src/wsdl20/extensions/libwoden_extensions.la \
+                    $(top_builddir)/src/wsdl20/extensions/soap/libwoden_extensions_soap.la
 
 INCLUDES = -I$(top_builddir)/include \
 			@AXIOMINC@ \

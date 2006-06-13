@@ -15,6 +15,7 @@
  */
 
 #include <woden/wsdl20/axis2_woden_svc.h>
+#include <woden/wsdl20/axis2_woden_nested_configurable.h>
 #include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
 #include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
 #include <woden/xml/axis2_woden_xml_attr.h>

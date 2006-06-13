@@ -99,6 +99,7 @@
 #include "../wsdl20/woden_constants.h"
 #include "../util/woden_om_util.h"
 
+#include <xml_schema.h>
 #include <xml_schema_collection.h>
 
 #include <axiom_node.h>
@@ -1246,7 +1247,7 @@ parse_schema_import(
     
     if(NULL != schema_def) 
     {
-        XML_SCHEMA_SET_SCHEMA_DEF(schema, env, schema_def);
+        AXIS2_WODEN_XML_SCHEMA_SET_SCHEMA_DEF(schema, env, schema_def);
     } else 
     {
         AXIS2_WODEN_SCHEMA_SET_REFERENCEABLE(schema, env, AXIS2_FALSE);
@@ -1920,14 +1921,18 @@ parse_interface_msg_ref(
         axis2_woden_direction_t *direction_in = NULL;
         
         direction_in = axis2_woden_direction_get_direction_in(env);
-        AXIS2_WODEN_INTERFACE_MSG_REF_SET_DIRECTION(msg_ref, env, direction_in);
+        msg_ref = axis2_woden_interface_msg_ref_to_interface_msg_ref_element(
+                msg_ref, env);
+        AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_in);
     }
     if(0 == AXIS2_STRCMP(WODEN_ELEM_OUTFAULT, localname))
     {
         axis2_woden_direction_t *direction_out = NULL;
         
         direction_out = axis2_woden_direction_get_direction_out(env);
-        AXIS2_WODEN_INTERFACE_MSG_REF_SET_DIRECTION(msg_ref, env, direction_out);
+        msg_ref = axis2_woden_interface_msg_ref_to_interface_msg_ref_element(
+                msg_ref, env);
+        AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_out);
     }
     
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
@@ -3312,7 +3317,7 @@ parse_feature(
     else
             required = AXIS2_FALSE;
     feature = axis2_woden_feature_to_feature_element(feature, env);
-    AXIS2_WODEN_ENDPOINT_ELEMENT_SET_REQUIRED(feature, env, required);
+    AXIS2_WODEN_FEATURE_ELEMENT_SET_REQUIRED(feature, env, required);
     /*TODO t.b.c. what if attr value is not 'true' or 'false'? (eg, missing, 
      * mispelt or not lower case.
      */
