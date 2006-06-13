@@ -20,20 +20,13 @@
 /**
  * @file woden_reader.h
  * @brief Woden Wsdl Reader Interface
- * This interface declares the WSDL reader API for parsing WSDL documents.
- * <p>
- * TODO after WSDL 2.0 parsing is implemented, consider if/how to make this reader
- * API independent of the WSDL version (definition/description) or whether to make it
- * support both versions.
- * <p>
- * TODO add to the API methods to get/set features and properties of the
- * Woden framework (i.e. as distinct from features/properties of the WSDL 2.0
- * component model). A named feature will be turned on or off with a boolean. 
- * A named property will be set with some object representing the property value.
+ * Implements the wsdl_reader behaviour for AXIOM-based parsing.
  * 
  */
 
 #include <woden/axis2_woden.h>
+#include <woden/wsdl20/extensions/axis2_woden_ext_registry.h>
+#include <axiom_document.h>
 
 /** @defgroup woden_reader Woden Wsdl Reader
   * @ingroup axis2_wsdl
@@ -59,7 +52,26 @@ struct woden_reader_ops
     free) (
             void *reader,
             const axis2_env_t *env);
-    
+ 
+    void *(AXIS2_CALL *
+    read_wsdl) (
+            void *reader,
+            const axis2_env_t *env,
+            axiom_document_t *om_doc,
+            axis2_char_t *uri);
+
+    axis2_status_t (AXIS2_CALL *
+    set_ext_registry) (
+            void *reader,
+            const axis2_env_t *env,
+            axis2_woden_ext_registry_t *ext_reg);
+
+    axis2_woden_ext_registry_t *(AXIS2_CALL *
+    get_ext_registry) (
+            void *reader,
+            const axis2_env_t *env);
+
+   
 };
 
 struct woden_reader
@@ -73,6 +85,18 @@ woden_reader_create(
 
 #define WODEN_READER_FREE(reader, env) \
       (((woden_reader_t *) reader)->ops->free(reader, env))
+
+#define WODEN_READER_READ_WSDL(reader, env, om_doc, uri) \
+      (((woden_reader_t *) reader)->ops->\
+      read_wsdl (reader, env, om_doc, uri))
+
+#define WODEN_READER_SET_EXT_REGISTRY(reader, env, ext_reg) \
+      (((woden_reader_t *) reader)->ops->\
+      set_ext_registry (reader, env, ext_reg))
+
+#define WODEN_READER_GET_EXT_REGISTRY(reader, env) \
+      (((woden_reader_t *) reader)->ops->\
+       get_ext_registry(reader, env))
 
 /** @} */
 #ifdef __cplusplus

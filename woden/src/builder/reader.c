@@ -463,6 +463,9 @@ create(
     }
     
     reader_impl->reader.ops->free = woden_reader_free;
+    reader_impl->reader.ops->read_wsdl = woden_reader_read_wsdl;
+    reader_impl->reader.ops->set_ext_registry = woden_reader_set_ext_registry;
+    reader_impl->reader.ops->get_ext_registry = woden_reader_get_ext_registry;
 
     return &(reader_impl->reader);
 }
