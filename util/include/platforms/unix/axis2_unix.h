@@ -237,7 +237,7 @@ extern "C"
 
 /** minizip functions */
 #define axis2_fill_win32_filefunc(ffunc) 
-#define AXIS2_UNZOPEN2(zipfilename,ffunc)    unzOpen2(zipfilename,NULL)
+#define AXIS2_UNZOPEN2(zipfilename,ffunc) unzOpen2(zipfilename,NULL); memset(&ffunc, 0, sizeof(ffunc)); 
 
 /**
   * handling variable number of arguments (for log.c)
