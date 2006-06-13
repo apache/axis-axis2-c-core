@@ -56,7 +56,7 @@ axis2_svc_ctx_init(struct axis2_svc_ctx *svc_ctx,
                    axis2_conf_t *conf);
                    
 axis2_char_t* AXIS2_CALL 
-axis2_svc_ctx_get_svc_id(struct axis2_svc_ctx *svc_ctx, 
+axis2_svc_ctx_get_svc_id(const struct axis2_svc_ctx *svc_ctx, 
                          const axis2_env_t *env);
                          
 axis2_svc_t* AXIS2_CALL 
@@ -221,7 +221,7 @@ axis2_svc_ctx_init(struct axis2_svc_ctx *svc_ctx,
  * @return Returns the svc_id.
  */
 axis2_char_t* AXIS2_CALL 
-axis2_svc_ctx_get_svc_id(struct axis2_svc_ctx *svc_ctx, 
+axis2_svc_ctx_get_svc_id(const struct axis2_svc_ctx *svc_ctx, 
                          const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);

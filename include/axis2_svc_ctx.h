@@ -75,7 +75,7 @@ struct axis2_svc_ctx_ops
      * @return Returns the svc_id.
      */
     axis2_char_t* (AXIS2_CALL *
-   get_svc_id)(struct axis2_svc_ctx *svc_ctx,
+   get_svc_id)(const struct axis2_svc_ctx *svc_ctx,
               const axis2_env_t *env);
    
    

@@ -330,13 +330,13 @@ axis2_stub_get_svc_ctx_id(axis2_stub_t *stub,
                             const axis2_env_t *env)
 {
     axis2_stub_impl_t *stub_impl = NULL;
-    axis2_svc_ctx_t *svc_ctx = NULL;
+    const axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_char_t *svc_ctx_id = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     stub_impl = AXIS2_INTF_TO_IMPL(stub);
    
-    svc_ctx = AXIS2_SVC_CLIENT_GET_SERVICE_CONTEXT(stub_impl->svc_client,
+    svc_ctx = AXIS2_SVC_CLIENT_GET_SVC_CTX(stub_impl->svc_client,
                                             env );
     svc_ctx_id = AXIS2_SVC_CTX_GET_SVC_ID ( svc_ctx, env );
     return svc_ctx_id;
