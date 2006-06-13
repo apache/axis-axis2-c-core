@@ -198,7 +198,7 @@ collection after each service request.</p>
     return svc_skeleton;
 }</pre>
 
-<p>SOAP engine frees the memory allocated for the axis2_om_node_t struct that
+<p>SOAP engine frees the memory allocated for the axiom_node_t struct that
 is used to from the response SOAP message. However, it is the responsibility
 of the service developer to clean any additional memory allocated.</p>
 
@@ -302,20 +302,20 @@ new function and call it from the main method.</p>
 <p>To test the OM module, you need to create a file named test_om.c under the
 directory modules/test/xml/om. A sample test_om.c might look like as
 follows.</p>
-<pre class="code">#include &lt;axis2_om_stax_builder.h&gt;
-#include &lt;axis2_om_document.h&gt;
-#include &lt;axis2_om_node.h&gt;
-#include &lt;axis2_om_element.h&gt;
-#include &lt;axis2_om_text.h&gt;
+<pre class="code">#include &lt;axiom_stax_builder.h&gt;
+#include &lt;axiom_document.h&gt;
+#include &lt;axiom_node.h&gt;
+#include &lt;axiom_element.h&gt;
+#include &lt;axiom_text.h&gt;
 #include &lt;axis2_xml_reader.h&gt;
 
 int test_om_build()
 {
     axis2_xml_reader_t *reader = NULL;  
-    axis2_om_node_t *node1 = NULL ,*node2 = NULL ,*node3 = NULL;
-    axis2_om_element_t *ele1=NULL,*ele2=NULL,*ele3 = NULL;
+    axiom_node_t *node1 = NULL ,*node2 = NULL ,*node3 = NULL;
+    axiom_element_t *ele1=NULL,*ele2=NULL,*ele3 = NULL;
     axis2_stax_om_builder_t *builder = NULL;
-    axis2_om_document_t *document = NULL;
+    axiom_document_t *document = NULL;
     
     ...
 }

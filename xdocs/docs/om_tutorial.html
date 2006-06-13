@@ -203,15 +203,15 @@ more about this)</p>
 
 <p>eg.</p>
 
-<p>axis2_om_node_t *node = NULL;</p>
+<p>axiom_node_t *node = NULL;</p>
 
-<p>axis2_om_node_t *child = NULL;</p>
+<p>axiom_node_t *child = NULL;</p>
 
-<p>node = axis2_om_node_create(env);</p>
+<p>node = axiom_node_create(env);</p>
 
 <p>Note that 'env' is a double pointer to the environment struct.</p>
 
-<p>child = AXIS2_OM_NODE_GET_FIRST_CHILD(node, env);</p>
+<p>child = AXIOM_NODE_GET_FIRST_CHILD(node, env);</p>
 
 <p>Note that we are parsing the node (pointer to om_node_t ) as the first
 argument and double pointer to environment.</p>
@@ -232,53 +232,53 @@ existing document or programmatically. OM provides a notion of a builder to
 create objects. Since OM is tightly bound to StAX, a StAX compliant reader
 should be created first with the desired input stream.</p>
 
-<p>In our OM implementation we define a struct 'axis2_om_node_t' which acts
+<p>In our OM implementation we define a struct 'axiom_node_t' which acts
 as the container of the other structs and it maintains the links that form
 the Link List OM in C.</p>
 
-<p>So to traverse the structure the functions defined in axis2_om_node.h must
+<p>So to traverse the structure the functions defined in axiom_node.h must
 be used. To access xml information, the 'data element' struct stored in
-axis2_om_node_t must be obtained using the AXIS2_OM_NODE_GET_DATA_ELEMENT
-macro. The type of the struct stored in the 'axis2_om_node_t' struct can be
-obtained by AXIS2_OM_NODE_GET_NODE_TYPE macro. When we create
-axis2_om_element_t , axis2_om_text_t etc .., it is required to parse a double
+axiom_node_t must be obtained using the AXIOM_NODE_GET_DATA_ELEMENT
+macro. The type of the struct stored in the 'axiom_node_t' struct can be
+obtained by AXIOM_NODE_GET_NODE_TYPE macro. When we create
+axiom_element_t , axiom_text_t etc .., it is required to parse a double
 pointer to the node struct as the last parameter of the create function so
 that the correponding node struct can be referenced using that pointer.</p>
 
 <p>Ex.</p>
 
-<p>axis2_om_node_t *my_node = NULL;</p>
+<p>axiom_node_t *my_node = NULL;</p>
 
-<p>axis2_om_element_t *my_ele = NULL;</p>
+<p>axiom_element_t *my_ele = NULL;</p>
 
-<p>my_ele = axis2_om_element_create(env, NULL, "MY_ELEMENT", NULL,
+<p>my_ele = axiom_element_create(env, NULL, "MY_ELEMENT", NULL,
 &amp;my_node);</p>
 
-<p>Now if we call AXIS2_OM_NODE_GET_NODE_TYPE macro on 'my_node' pointer we
-will get the value as AXIS2_OM_ELEMENT .</p>
+<p>Now if we call AXIOM_NODE_GET_NODE_TYPE macro on 'my_node' pointer we
+will get the value as AXIOM_ELEMENT .</p>
 
 <div>
 <p><b>Code Listing 1</b></p>
 </div>
 <pre>axis2_xml_reader_t *xml_reader = NULL;<br />
-axis2_om_stax_builder_t *om_builder = NULL;<br />
-axis2_soap_builder_t *soap_builder = NULL;<br />
-axis2_soap_envelope_t *soap_envelope = NULL;<br />
+axiom_stax_builder_t *om_builder = NULL;<br />
+axiom_soap_builder_t *soap_builder = NULL;<br />
+axiom_soap_envelope_t *soap_envelope = NULL;<br />
 <i>/** create the parser */</i><br />
 axis2_xml_reader_t *xml_reader = axis2_xml_reader_create_for_file(env, "test_soap.xml",NULL);<br />
 <i>/** create the OM builder */</i><br />
-om_builder = axis2_om_stax_builder_create(env, xml_reader);<br />
+om_builder = axiom_stax_builder_create(env, xml_reader);<br />
 <i>/** create SOAP builder */</i><br />
-soap_builder = axis2_soap_builder_create(env, om_builder , AXIS2_SOAP_ENVELOPE_NAMESPACE_URI);<br />
+soap_builder = axiom_soap_builder_create(env, om_builder , AXIOM_SOAP_ENVELOPE_NAMESPACE_URI);<br />
 <i>/** get soap envelope */</i><br />
-soap_envelope = AXIS2_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);<br /></pre>
+soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);<br /></pre>
 <br />
 
 
 <p>As the example shows, creating an OM from xml_reader is pretty straight
 forward. However elements and nodes can be created programmatically to modify
 the structure as well. Currently OM has two builders, namely the
-axis2_om_stax_builder_t and the axis2_soap_builder_t. These builders provide
+axiom_stax_builder_t and the axiom_soap_builder_t. These builders provide
 the necessary information to the XML info set model to build itself.</p>
 
 <div>
@@ -286,28 +286,28 @@ the necessary information to the XML info set model to build itself.</p>
 </div>
 
 <p class="img-title"><b></b></p>
-<pre class="code">axis2_om_namespace_t *ns1 = NULL;
-axis2_om_namespace_t *ns2 = NULL;
+<pre class="code">axiom_namespace_t *ns1 = NULL;
+axiom_namespace_t *ns2 = NULL;
 
-axis2_om_element_t* root_ele = NULL;
-axis2_om_node_t*    root_ele_node = NULL;
+axiom_element_t* root_ele = NULL;
+axiom_node_t*    root_ele_node = NULL;
 
-axis2_om_element_t *ele1      = NULL;
-axis2_om_node_t *ele1_node = NULL;
+axiom_element_t *ele1      = NULL;
+axiom_node_t *ele1_node = NULL;
 
-ns1 = axis2_om_namespace_create(env, "bar", "x");
-ns2 = axis2_om_namespace_create(env, "bar1", "y");
+ns1 = axiom_namespace_create(env, "bar", "x");
+ns2 = axiom_namespace_create(env, "bar1", "y");
 
 
-root_ele = axis2_om_element_create(env, NULL, "root", ns1, &amp;root_ele_node);
-ele1     = axis2_om_element_create(env, root_node, "foo1", ns2, &amp;ele1_node);</pre>
+root_ele = axiom_element_create(env, NULL, "root", ns1, &amp;root_ele_node);
+ele1     = axiom_element_create(env, root_node, "foo1", ns2, &amp;ele1_node);</pre>
 
 <p>Several differences exist between a programmatically created
-axis2_om_node_t and a conventionally built axis2_om_node_t. The most
+axiom_node_t and a conventionally built axiom_node_t. The most
 important difference is that the latter will have a pointer to its builder,
 where as the former does not have that information. As stated earlier in this
 tutorial, since the OM is built as and when required, each and every
-axis2_om_node_t struct should have a reference to its builder. If this
+axiom_node_t struct should have a reference to its builder. If this
 information is not available, it is due to the struct being created without a
 builder.</p>
 
@@ -323,7 +323,7 @@ Need an image here -->
 
 <h3>Addition and Detaching of Nodes</h3>
 
-<p>Addition and removal methods are defined in the axis2_om_node.h header.
+<p>Addition and removal methods are defined in the axiom_node.h header.
 The following are the most important in adding nodes.</p>
 
 <div>
@@ -332,13 +332,13 @@ The following are the most important in adding nodes.</p>
 
 <p>Add child operation</p>
 <pre class="code">axis2_status_t
-axis2_om_node_add_child( axis2_om_node_t *om_node,  
+axiom_node_add_child( axiom_node_t *om_node,  
                          axis2_env_t **env, 
-                         axis2_om_node_t *child_node);</pre>
+                         axiom_node_t *child_node);</pre>
 
 <p>Detach operation</p>
-<pre class="code">axis2_om_node_t*
-axis2_om_node_detach (axis2_om_node_t *om_node, 
+<pre class="code">axiom_node_t*
+axiom_node_detach (axiom_node_t *om_node, 
                       axis2_env_t **env);</pre>
 
 <p>The detach operation resets the links and remove a node from om
@@ -352,21 +352,21 @@ related to the code segment shown in the creation section.</p>
 <div>
 <p><b>Code Listing 4</b></p>
 </div>
-<pre class="code">axis2_om_node_t *foo_node = NULL;
-axis2_om_element_t *foo_ele = NULL;
-axis2_om_node_t *bar_node = NULL;
-axis2_om_element_t *bar_ele = NULL;
+<pre class="code">axiom_node_t *foo_node = NULL;
+axiom_element_t *foo_ele = NULL;
+axiom_node_t *bar_node = NULL;
+axiom_element_t *bar_ele = NULL;
 
-foo_ele = axis2_om_element_create(env, NULL, "FOO", NULL, &amp;foo_node);
-bar_ele = axis2_om_element_create(env, NULL, "BAR", NULL. &amp;bar_node); </pre>
+foo_ele = axiom_element_create(env, NULL, "FOO", NULL, &amp;foo_node);
+bar_ele = axiom_element_create(env, NULL, "BAR", NULL. &amp;bar_node); </pre>
 
 <p>Now if we want to make 'BAR' element, a child of 'FOO' element we can use
 add_child MACRO.</p>
-<pre class="code"> AXIS2_OM_NODE_ADD_CHILD(foo_node, env, bar_node); </pre>
+<pre class="code"> AXIOM_NODE_ADD_CHILD(foo_node, env, bar_node); </pre>
 
 <p>Or we can parse the foo_node as the parent node at the time of creating to
 bar_ele as follows.</p>
-<pre> bar_ele = axis2_om_element_create(env, foo_node, "BAR", NULL, &amp;bar_node);</pre>
+<pre> bar_ele = axiom_element_create(env, foo_node, "BAR", NULL, &amp;bar_node);</pre>
 <ul>
   <li>add_child function will always add the child as the first child of the
     parent.</li>
@@ -377,41 +377,41 @@ bar_ele as follows.</p>
   </li>
   <li>Namespaces are a tricky part of any XML object model and is the same in
     OM. However the interface to the namespace have been made very simple.
-    axis2_om_namespace_t * is the struct that represents a namespace and we
-    do not have setter functions. This makes the axis2_om_namespace
+    axiom_namespace_t * is the struct that represents a namespace and we
+    do not have setter functions. This makes the axiom_namespace
   immutable.</li>
 </ul>
 
-<p>Following are the important methods available in axis2_om_element to
+<p>Following are the important methods available in axiom_element to
 handle namespaces.</p>
 
 <div>
 <p><b>Code Listing 5</b></p>
 </div>
-<pre class="code">axis2_om_namespace_t* 
-axis2_om_element_declare_namespace(axis2_om_element_t *om_ele,  
+<pre class="code">axiom_namespace_t* 
+axiom_element_declare_namespace(axiom_element_t *om_ele,  
                                    axis2_env_t **env, 
-                                   axis2_om_node_t *om_node, 
-                                   axis2_om_namespace_t *om_ns);
+                                   axiom_node_t *om_node, 
+                                   axiom_namespace_t *om_ns);
 
-axis2_om_namespace_t* 
-axis2_om_element_find_namespace(axis2_om_element_t *om_ele,
+axiom_namespace_t* 
+axiom_element_find_namespace(axiom_element_t *om_ele,
                                 axis2_env_t **env, 
-                                axis2_om_node_t *om_node, 
+                                axiom_node_t *om_node, 
                                 axis2_char_t *uri, 
                                 axis2_char_t *prefix);
 
-axis2_om_namespace_t*
-axis2_om_element_find_declared_namespace(axis2_om_element_t *om_element,
+axiom_namespace_t*
+axiom_element_find_declared_namespace(axiom_element_t *om_element,
                                          axis2_env_t **env,
                                          axis2_char_t *uri,
                                          axis2_char_t *prefix);
 
 axis2_status_t
-axis2_om_element_set_namespace(axis2_om_element_t *om_element,
+axiom_element_set_namespace(axiom_element_t *om_element,
                                axis2_env_t **env,
                                axis2_namespace_t *ns,
-                               axis2_om_node_t *element_node);</pre>
+                               axiom_node_t *element_node);</pre>
 
 <p>An om_element has a namespace list [declared namespaces] and a pointer to
 its own namespace if one exists.</p>
@@ -441,25 +441,25 @@ in OM</p>
 <div>
 <p><b>Code Listing 6</b></p>
 </div>
-<pre class="code">axis2_om_namespace_t *ns1 = NULL;
-axis2_om_namespace_t *ns2 = NULL;
-axis2_om_namespace_t *ns3 = NULL;
+<pre class="code">axiom_namespace_t *ns1 = NULL;
+axiom_namespace_t *ns2 = NULL;
+axiom_namespace_t *ns3 = NULL;
 
-axis2_om_node_t *root_node = NULL;
-axis2_om_element_t *root_ele = NULL;
+axiom_node_t *root_node = NULL;
+axiom_element_t *root_ele = NULL;
 
-axis2_om_node_t *ele1_node = NULL;
-axis2_om_element_t *ele1   = NULL;
+axiom_node_t *ele1_node = NULL;
+axiom_element_t *ele1   = NULL;
 
-axis2_om_node_t *text_node = NULL;
-axis2_om_text_t *om_text   = NULL;
+axiom_node_t *text_node = NULL;
+axiom_text_t *om_text   = NULL;
 
-ns1 = axis2_om_namespace_create(env, "bar", "x");
-ns2 = axis2_om_namespace_create(env, "bar1", "y");
+ns1 = axiom_namespace_create(env, "bar", "x");
+ns2 = axiom_namespace_create(env, "bar1", "y");
 
-root_ele = axis2_om_element_create(env, NULL , "root", ns1, &amp;root_node);
-ele1     = axis2_om_element_create(env, root_node, "foo", ns2, &amp;ele1_node);
-om_text  = axis2_om_text_create(env, ele1_node, "blah", &amp;text_node);</pre>
+root_ele = axiom_element_create(env, NULL , "root", ns1, &amp;root_node);
+ele1     = axiom_element_create(env, root_node, "foo", ns2, &amp;ele1_node);
+om_text  = axiom_text_create(env, ele1_node, "blah", &amp;text_node);</pre>
 
 <p>Serilization of the root element produces the following XML</p>
 <pre class="xml">&lt;x:root xmlns:x="bar"&gt;
@@ -473,22 +473,22 @@ om_text  = axis2_om_text_create(env, ele1_node, "blah", &amp;text_node);</pre>
 <pre class="xml">&lt;x:foo xmlns:x="bar" xmlns:y="bar1"&gt;Test&lt;/x:foo&gt;</pre>
 
 <p>we can use set_namespace and declare namespace functions as follows</p>
-<pre class="code">axis2_om_node_t *foo_node = NULL;
-axis2_om_element_t *foo_ele  = NULL;
-axis2_om_namespace_t *ns1 = NULL;
-axis2_om_namespace_t *ns2 = NULL;
+<pre class="code">axiom_node_t *foo_node = NULL;
+axiom_element_t *foo_ele  = NULL;
+axiom_namespace_t *ns1 = NULL;
+axiom_namespace_t *ns2 = NULL;
 
-foo_ele = axis2_om_element_create(env, NULL,"foo" ,NULL, &amp;foo_node);
+foo_ele = axiom_element_create(env, NULL,"foo" ,NULL, &amp;foo_node);
 
-ns1 = axis2_om_namespace_create(env, "bar", "x");
+ns1 = axiom_namespace_create(env, "bar", "x");
 
-ns2 = axis2_om_namespace_create(env, "bar1","y");
+ns2 = axiom_namespace_create(env, "bar1","y");
 
-AXIS2_OM_ELEMENT_SET_NAMESPACE(foo_ele, env, ns1, foo_node);
+AXIOM_ELEMENT_SET_NAMESPACE(foo_ele, env, ns1, foo_node);
 
-AXIS2_OM_ELEMENT_DECLARE_NAMESPACE(foo_ele, env, ns2, foo_node);
+AXIOM_ELEMENT_DECLARE_NAMESPACE(foo_ele, env, ns2, foo_node);
 
-AXIS2_OM_ELEMENT_SET_TEXT(foo_ele, env, "Test", &amp;foo_node);</pre>
+AXIOM_ELEMENT_SET_TEXT(foo_ele, env, "Test", &amp;foo_node);</pre>
 
 <h3>Traversing</h3>
 
@@ -497,30 +497,30 @@ You can either call the appropriate function on OM element or create the
 iterator manually. OM C offers three iterators to traverse the OM structure.
 They are</p>
 <ul>
-  <li>axis2_om_children_iterator_t</li>
-  <li>axis2_om_child_element_iterator_t</li>
-  <li>axis2_om_children_qname_iterator_t</li>
+  <li>axiom_children_iterator_t</li>
+  <li>axiom_child_element_iterator_t</li>
+  <li>axiom_children_qname_iterator_t</li>
 </ul>
 
 <p>The Iterator supports the 'OM way' of accessing elements and is more
 convenient than a list for sequential access. The following code sample shows
-how the children can be accessed. The children can be of type AXIS2_OM_TEXT
-or AXIS2_OM_ELEMENT.</p>
+how the children can be accessed. The children can be of type AXIOM_TEXT
+or AXIOM_ELEMENT.</p>
 
 <div>
 <p><b>Code Listing 7</b></p>
 </div>
-<pre class="code">axis2_om_children_iterator_t *children_iter = NULL;
-children_iter = AXIS2_OM_ELEMENT_GET_CHILDREN(om_ele, env, om_node);
+<pre class="code">axiom_children_iterator_t *children_iter = NULL;
+children_iter = AXIOM_ELEMENT_GET_CHILDREN(om_ele, env, om_node);
 if(NULL != children_iter )
 {
-    while(AXIS2_OM_CHILDREN_ITERATOR_HAS_NEXT(children_iter, env))
+    while(AXIOM_CHILDREN_ITERATOR_HAS_NEXT(children_iter, env))
     {
-        axis2_om_node_t *node = NULL;
-        node = AXIS2_OM_CHILDREN_ITERATOR_NEXT(children_iter, env);
+        axiom_node_t *node = NULL;
+        node = AXIOM_CHILDREN_ITERATOR_NEXT(children_iter, env);
         if(NULL != node)
         {
-           if(AXIS2_OM_NODE_GET_NODE_TYPE(node, env) == AXIS2_OM_ELEMENT)
+           if(AXIOM_NODE_GET_NODE_TYPE(node, env) == AXIOM_ELEMENT)
            {
                /** any processing */
            }
@@ -529,14 +529,14 @@ if(NULL != children_iter )
     }
 }</pre>
 
-<p>Apart from this, every axis2_om_node_t struct has links to its siblings.
-If a thorough navigation is needed the AXIS2_OM_NODE_GET_NEXT_SIBLING() and
-AXIS2_OM_NODE_GET_PREVIOUS_SIBLING() macros can be used. A restrictive set
-can be chosen by using AXIS2_OM_ELEMENT_XXX_WITH_QNAME() methods. The
-AXIS2_OM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME() method returns the first child
+<p>Apart from this, every axiom_node_t struct has links to its siblings.
+If a thorough navigation is needed the AXIOM_NODE_GET_NEXT_SIBLING() and
+AXIOM_NODE_GET_PREVIOUS_SIBLING() macros can be used. A restrictive set
+can be chosen by using AXIOM_ELEMENT_XXX_WITH_QNAME() methods. The
+AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME() method returns the first child
 that matches the given axis2_qname_t and
-AXIS2_OM_ELEMENT_GET_CHILDREN_WITH_QNAME() returns
-axis2_om_children_qname_iterator_t which can be used to travese all the
+AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME() returns
+axiom_children_qname_iterator_t which can be used to travese all the
 matching children. The advantage of these iterators are that they won't build
 the whole object structure at once; it builds only what is required.</p>
 <!-- Special section -->
@@ -557,8 +557,8 @@ the whole object structure at once; it builds only what is required.</p>
 
 <p><b>Serialization</b></p>
 
-<p>OM can be serialized using AXIS2_OM_NODE_SERIALIZE macro .The
-serialization uses axis2_xml_writer.h and axis2_om_output.h APIs.</p>
+<p>OM can be serialized using AXIOM_NODE_SERIALIZE macro .The
+serialization uses axis2_xml_writer.h and axiom_output.h APIs.</p>
 
 <p>Here is an example that shows how to write the output to the console, (We
 serialize the SOAP envelope created in code listing 1).</p>
@@ -567,15 +567,15 @@ serialize the SOAP envelope created in code listing 1).</p>
 <p><b>Code Listing 8</b></p>
 </div>
 <pre class="code">axis2_xml_writer_t *xml_writer = NULL;
-axis2_om_output_t *om_output = NULL;
+axiom_output_t *om_output = NULL;
 axis2_char_t *buffer = NULL;
 
 ..............
 
 xml_writer = axis2_xml_writer_create(env, NULL, 0, 0);
-om_output = axis2_om_output_create(env, xml_writer);
+om_output = axiom_output_create(env, xml_writer);
 
-AXIS2_SOAP_ENVELOPE_SERIALIZE(envelope, env, om_output);
+AXIOM_SOAP_ENVELOPE_SERIALIZE(envelope, env, om_output);
 buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
 printf("%s ", buffer);</pre>
 
@@ -583,17 +583,17 @@ printf("%s ", buffer);</pre>
 
 <p><b>Code Listing 9</b></p>
 <pre class="code">axis2_char_t *xml_output = NULL; 
-axis2_om_node_t *foo_node = NULL;
-axis2_om_element_t *foo_ele = NULL;
-axis2_om_namespace_t* ns = NULL;
+axiom_node_t *foo_node = NULL;
+axiom_element_t *foo_ele = NULL;
+axiom_namespace_t* ns = NULL;
 
-ns = axis2_om_namespace_create(env, "bar","x");
+ns = axiom_namespace_create(env, "bar","x");
 
-foo_ele = axis2_om_element_create(env, NULL, "foo", ns, &amp;foo_node);
+foo_ele = axiom_element_create(env, NULL, "foo", ns, &amp;foo_node);
 
-AXIS2_OM_ELEMENT_SET_TEXT(foo_ele, env, "EASY SERAILIZATION", foo_node);
+AXIOM_ELEMENT_SET_TEXT(foo_ele, env, "EASY SERAILIZATION", foo_node);
 
-xml_output = AXIS2_OM_ELEMENT_TO_STRING(foo_ele, env, foo_node);
+xml_output = AXIOM_ELEMENT_TO_STRING(foo_ele, env, foo_node);
 
 printf("%s", xml_output);
 AXIS2_FREE((*env)-&gt;allocator, xml_output);</pre>
@@ -637,7 +637,7 @@ when this om_element is freed, Therefore same pointer to a namespace or an
 attribute should not be passed twice to a create , add or set function.</p>
 
 <p>To avoid the inconvenience, clone functions have been implemented for both
-axis2_om_namespace and axis2_om_attribute structures.</p>
+axiom_namespace and axiom_attribute structures.</p>
 
 <p>2. OM returns shallow references to its string values , Therefore when
 using the returned values , AXIS2_STRDUP () function should be used</p>
@@ -647,13 +647,13 @@ free errors.</p>
 
 <p>Example:</p>
 
-<p>axis2_om_namespace_t *ns = NULL;</p>
+<p>axiom_namespace_t *ns = NULL;</p>
 
 <p>axis2_char_t *uri = NULL;</p>
 
-<p>ns = axis2_om_namespace_create(env, "http://ws.apache.org", "om");</p>
+<p>ns = axiom_namespace_create(env, "http://ws.apache.org", "om");</p>
 
-<p>uri = AXIS2_OM_NAMESPACE_GET_URI(ns, env);</p>
+<p>uri = AXIOM_NAMESPACE_GET_URI(ns, env);</p>
 
 <p>/** now uri points to the same place where namespace structs uri pointer
 is pointing */</p>
@@ -662,7 +662,7 @@ is pointing */</p>
 
 <p>AXIS2_FREE((*env)-&gt;allocator, uri);</p>
 
-<p>AXIS2_OM_NAMESPACE_FREE(ns, env);</p>
+<p>AXIOM_NAMESPACE_FREE(ns, env);</p>
 
 <p>3. when creating om programatically , if you are declaring a namespace to
 an om elment it is advisible to find whether the namespace is already
@@ -682,17 +682,17 @@ console.</p>
 
 <p></p>
 </div>
-<pre>#include &lt;axis2_om_node.h&gt;
+<pre>#include &lt;axiom_node.h&gt;
 #include &lt;axis2.h&gt;
 #include &lt;axis2_env.h&gt;
-#include &lt;axis2_om_element.h&gt;
-#include &lt;axis2_om_document.h&gt;
-#include &lt;axis2_om_stax_builder.h&gt;
+#include &lt;axiom_element.h&gt;
+#include &lt;axiom_document.h&gt;
+#include &lt;axiom_stax_builder.h&gt;
 #include &lt;axis2_xml_reader.h&gt;
 #include &lt;axis2_log_default.h&gt;
 #include &lt;axis2_error_default.h&gt;
 #include &lt;axis2_xml_writer.h&gt;
-#include &lt;axis2_om_output.h&gt;
+#include &lt;axiom_output.h&gt;
 #include &lt;stdio.h&gt;
 
 
@@ -725,15 +725,15 @@ axis2_env_t * create_environment()
 
 build_and_serialize_om(axis2_env_t **env)
 {
-    axis2_om_node_t *root_node = NULL;
+    axiom_node_t *root_node = NULL;
 
-    axis2_om_element_t *root_ele = NULL;
-    axis2_om_document_t *document = NULL;
-    axis2_om_stax_builder_t *om_builder = NULL;
+    axiom_element_t *root_ele = NULL;
+    axiom_document_t *document = NULL;
+    axiom_stax_builder_t *om_builder = NULL;
 
     axis2_xml_reader_t *xml_reader = NULL;
     axis2_xml_writer_t *xml_writer = NULL;
-    axis2_om_output_t *om_output = NULL;
+    axiom_output_t *om_output = NULL;
 
     axis2_char_t *buffer = NULL;
     
@@ -743,43 +743,43 @@ build_and_serialize_om(axis2_env_t **env)
     <b>if</b>(!xml_reader)
         <b>return</b> -1;
 
-    om_builder = axis2_om_stax_builder_create(env, xml_reader);
+    om_builder = axiom_stax_builder_create(env, xml_reader);
     <b>if</b>(!om_builder)
     {
         AXIS2_XML_READER_FREE(xml_reader, env);
         <b>return</b> AXIS2_FAILURE;
     }
-    document = AXIS2_OM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
+    document = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
     <b>if</b>(!document)
     {
-        AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+        AXIOM_STAX_BUILDER_FREE(om_builder, env);
         <b>return</b> AXIS2_FAILURE;
     }
     
-    root_node = AXIS2_OM_DOCUMENT_GET_ROOT_ELEMENT(document, env);
+    root_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(document, env);
     <b>if</b>(!root_node)
     {
-        AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+        AXIOM_STAX_BUILDER_FREE(om_builder, env);
         <b>return</b> AXIS2_FAILURE;
     }        
     <b>if</b>(root_node)
     {
-        <b>if</b>(AXIS2_OM_NODE_GET_NODE_TYPE(root_node, env) == AXIS2_OM_ELEMENT)
+        <b>if</b>(AXIOM_NODE_GET_NODE_TYPE(root_node, env) == AXIOM_ELEMENT)
         {
-            root_ele = (axis2_om_element_t*)AXIS2_OM_NODE_GET_DATA_ELEMENT (root_node, env);
+            root_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT (root_node, env);
             <b>if</b>(root_ele)
             {
-                printf(" %s" , AXIS2_OM_ELEMENT_GET_LOCALNAME(root_ele, env));
+                printf(" %s" , AXIOM_ELEMENT_GET_LOCALNAME(root_ele, env));
             }
         }
     }
-    AXIS2_OM_DOCUMENT_BUILD_ALL(document, env);
+    AXIOM_DOCUMENT_BUILD_ALL(document, env);
     
     xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0, AXIS2_XML_PARSER_TYPE_BUFFER);
     
-    om_output = axis2_om_output_create(env, xml_writer);
+    om_output = axiom_output_create(env, xml_writer);
     
-    AXIS2_OM_NODE_SERIALIZE(root_node, env, om_output);
+    AXIOM_NODE_SERIALIZE(root_node, env, om_output);
     buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
 
     printf("The output XML is -&gt;&gt;&gt;&gt;\n %s ", buffer);
@@ -787,10 +787,10 @@ build_and_serialize_om(axis2_env_t **env)
     
     <i>/** when om_output is freed xml_writer is also freed */</i>
     
-    AXIS2_OM_OUTPUT_FREE(om_output, env);
+    AXIOM_OUTPUT_FREE(om_output, env);
     
     <i>/** when om_builder is freed , the builder, om_document and the entire om structure is freed */</i>
-    AXIS2_OM_STAX_BUILDER_FREE(om_builder, env);
+    AXIOM_STAX_BUILDER_FREE(om_builder, env);
     
     AXIS2_FREE((*env)-&gt;allocator, buffer);
     

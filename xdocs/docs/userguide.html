@@ -145,7 +145,7 @@ service)</a></h4>
 <p>First let's see how we can write a simple Web Service (echo service) using
 Axis2/C's primary interfaces and deploy it. For this purpose we will create a
 Web Service with one operation as follows.</p>
-<pre><br />axis2_om_node_t* axis2_echo_echo(axis2_om_node_t *echo_node){}<br /> </pre>
+<pre><br />axiom_node_t* axis2_echo_echo(axiom_node_t *echo_node){}<br /> </pre>
 
 <p>You can have a peek at the complete source code for this example echo
 service located in the "AXIS2C_HOME/samples/server/echo" directory .</p>
@@ -181,11 +181,11 @@ assigned by a service skeleton.</p>
 <pre class="code">int (AXIS2_CALL * init) (axis2_svc_skeleton_t *svc_skeleton,
                          axis2_env_t **env);
 
-axis2_om_node_t * (AXIS2_CALL* invoke)(axis2_svc_skeleton_t *svc_skeli, 
-                    axis2_env_t **env, axis2_om_node_t *node);
+axiom_node_t * (AXIS2_CALL* invoke)(axis2_svc_skeleton_t *svc_skeli, 
+                    axis2_env_t **env, axiom_node_t *node);
 
-axis2_om_node_t *(AXIS2_CALL* on_fault)(axis2_svc_skeleton_t *svc_skeli,
-                    axis2_env_t **env, axis2_om_node_t *node);
+axiom_node_t *(AXIS2_CALL* on_fault)(axis2_svc_skeleton_t *svc_skeli,
+                    axis2_env_t **env, axiom_node_t *node);
 
 int (AXIS2_CALL *free)(axis2_svc_skeleton_t *svc_skeli, 
                        axis2_env_t **env);</pre>
@@ -210,10 +210,10 @@ echo_init(axis2_svc_skeleton_t *svc_skeleton,<br />
 <i>/*<br />
  * This method invokes the right service method <br />
  */</i><br />
-axis2_om_node_t* AXIS2_CALL<br />
+axiom_node_t* AXIS2_CALL<br />
 echo_invoke(axis2_svc_skeleton_t *svc_skeleton,<br />
             axis2_env_t **env,<br />
-            axis2_om_node_t *node)<br />
+            axiom_node_t *node)<br />
 {<br />
     <i>/* Invoke the business logic.<br />
      * Depending on the function name invoke the correct impl method.<br />
@@ -225,21 +225,21 @@ echo_invoke(axis2_svc_skeleton_t *svc_skeleton,<br />
 }<br />
 <br />
 <i>/* On fault, handle the fault */</i><br />
-axis2_om_node_t* AXIS2_CALL<br />
+axiom_node_t* AXIS2_CALL<br />
 echo_on_fault(axis2_svc_skeleton_t *svc_skeli, <br />
-              axis2_env_t **env, axis2_om_node_t *node)<br />
+              axis2_env_t **env, axiom_node_t *node)<br />
 {<br />
    <i>/* Here we are just setting a simple error message inside an element <br
 />
     * called 'EchoServiceError' <br />
     */</i><br />
-    axis2_om_node_t *error_node = NULL;<br />
-    axis2_om_node_t* text_node = NULL;<br />
-    axis2_om_element_t *error_ele = NULL;<br />
-    error_ele = axis2_om_element_create(env, node, "EchoServiceError", NULL, <br
+    axiom_node_t *error_node = NULL;<br />
+    axiom_node_t* text_node = NULL;<br />
+    axiom_element_t *error_ele = NULL;<br />
+    error_ele = axiom_element_create(env, node, "EchoServiceError", NULL, <br
 />
         &amp;error_node);<br />
-    AXIS2_OM_ELEMENT_SET_TEXT(error_ele, env, "Echo service failed ", <br />
+    AXIOM_ELEMENT_SET_TEXT(error_ele, env, "Echo service failed ", <br />
         text_node);<br />
     <b>return</b> error_node;<br />
 }<br />
@@ -345,12 +345,12 @@ be called by Axis2/C engine.</p>
 
 <h4>Step2 : Now we can write the echo service in a file echo.c</h4>
 
-<p><a id="Step3">axis2_om_node_t *<br />
-axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)<br />
+<p><a id="Step3">axiom_node_t *<br />
+axis2_echo_echo (axis2_env_t **env, axiom_node_t *node)<br />
 {<br />
-    axis2_om_node_t *text_parent_node = NULL;<br />
-    axis2_om_node_t *text_node = NULL;<br />
-    axis2_om_node_t *ret_node = NULL;<br />
+    axiom_node_t *text_parent_node = NULL;<br />
+    axiom_node_t *text_node = NULL;<br />
+    axiom_node_t *ret_node = NULL;<br />
 <br />
     AXIS2_ENV_CHECK(env, NULL);<br />
    <br />
@@ -368,7 +368,7 @@ axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)<br />
         <b>return</b> NULL;<br />
     }<br />
 <br />
-    text_parent_node = AXIS2_OM_NODE_GET_FIRST_CHILD(node, env);<br />
+    text_parent_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);<br />
     <b>if</b> (!text_parent_node) <i>/* 'text' node */</i><br />
     {<br />
         AXIS2_ERROR_SET((*env)-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);<br
@@ -377,7 +377,7 @@ axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)<br />
         <b>return</b> NULL;<br />
     }<br />
     <br />
-    text_node = AXIS2_OM_NODE_GET_FIRST_CHILD(text_parent_node, env);<br />
+    text_node = AXIOM_NODE_GET_FIRST_CHILD(text_parent_node, env);<br />
     <b>if</b> (!text_node) <i>/* actual text to echo */</i><br />
     {<br />
         AXIS2_ERROR_SET((*env)-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);<br
@@ -386,14 +386,14 @@ axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)<br />
         <b>return</b> NULL;<br />
     }<br />
     <br />
-    <b>if</b> (AXIS2_OM_NODE_GET_NODE_TYPE(text_node, env) == AXIS2_OM_TEXT)<br
+    <b>if</b> (AXIOM_NODE_GET_NODE_TYPE(text_node, env) == AXIOM_TEXT)<br
 />
     {<br />
-        axis2_om_text_t *text = (axis2_om_text_t *)AXIS2_OM_NODE_GET_DATA_ELEMENT(text_node, env);<br
+        axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(text_node, env);<br
 />
-        <b>if</b>( text &amp;&amp; AXIS2_OM_TEXT_GET_VALUE(text , env))<br />
+        <b>if</b>( text &amp;&amp; AXIOM_TEXT_GET_VALUE(text , env))<br />
         {<br />
-            axis2_char_t *text_str = AXIS2_OM_TEXT_GET_VALUE(text, env);<br />
+            axis2_char_t *text_str = AXIOM_TEXT_GET_VALUE(text, env);<br />
             printf("Echoing text value  %s \n", text_str);<br />
             ret_node = build_om_programatically(env, text_str);<br />
         }<br />
@@ -410,25 +410,25 @@ axis2_echo_echo (axis2_env_t **env, axis2_om_node_t *node)<br />
 }<br />
 <br />
 <i>/* Builds the response content */</i><br />
-axis2_om_node_t *<br />
+axiom_node_t *<br />
 build_om_programatically(axis2_env_t **env, axis2_char_t *text)<br />
 {<br />
-    axis2_om_node_t *echo_om_node = NULL;<br />
-    axis2_om_element_t* echo_om_ele = NULL;<br />
-    axis2_om_node_t* text_om_node = NULL;<br />
-    axis2_om_element_t * text_om_ele = NULL;<br />
-    axis2_om_namespace_t *ns1 = NULL;<br />
+    axiom_node_t *echo_om_node = NULL;<br />
+    axiom_element_t* echo_om_ele = NULL;<br />
+    axiom_node_t* text_om_node = NULL;<br />
+    axiom_element_t * text_om_ele = NULL;<br />
+    axiom_namespace_t *ns1 = NULL;<br />
     <br />
-    ns1 = axis2_om_namespace_create (env, "http://localhost:9090/axis2/services/echo", "ns1");<br
+    ns1 = axiom_namespace_create (env, "http://localhost:9090/axis2/services/echo", "ns1");<br
 />
 <br />
-    echo_om_ele = axis2_om_element_create(env, NULL, "echoString", ns1, &amp;echo_om_node);<br
+    echo_om_ele = axiom_element_create(env, NULL, "echoString", ns1, &amp;echo_om_node);<br
 />
     <br />
-    text_om_ele = axis2_om_element_create(env, echo_om_node, "text", NULL, &amp;text_om_node);<br
+    text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &amp;text_om_node);<br
 />
 <br />
-    AXIS2_OM_ELEMENT_SET_TEXT(text_om_ele, env, text, text_om_node);<br />
+    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, text, text_om_node);<br />
     <br />
     <b>return</b> echo_om_node;<br />
 }<br />
@@ -642,7 +642,7 @@ blocking invocation. The client code you need to write is as follows.</p>
     if(ret_node)
     {
         axis2_char_t *om_str = NULL;
-        om_str = AXIS2_OM_NODE_TO_STRING(ret_node, &amp;env);
+        om_str = AXIOM_NODE_TO_STRING(ret_node, &amp;env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
         printf("\necho client invoke SUCCESSFUL!\n");
