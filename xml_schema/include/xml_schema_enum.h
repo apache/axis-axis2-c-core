@@ -70,7 +70,7 @@ struct xml_schema_enum_ops
     set_value)(
             void *schema_enum,
             const axis2_env_t *env,
-            axis2_char_t *value);
+            const axis2_char_t *value);
 
     axis2_bool_t (AXIS2_CALL *
     equals)(void *schema_enum,
@@ -91,7 +91,7 @@ struct xml_schema_enum
 
 AXIS2_EXTERN xml_schema_enum_t * AXIS2_CALL
 xml_schema_enum_create(const axis2_env_t *env,
-                             axis2_char_t *value);
+                       const axis2_char_t *value);
 
 /**
  * This method is internal to Axis2 C. It is called from Child Constructor

@@ -298,13 +298,21 @@ xml_schema_facet_construct (const axis2_env_t *env,
     axis2_bool_t is_fixed = AXIS2_FALSE;
     axis2_char_t *value = NULL;
 
+    axis2_char_t *fixed_value = NULL;
+    axis2_char_t *value_v     = NULL;
     void *facet = NULL;
     int facet_type;
+
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, node, NULL);
+  
+  
     if(AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
         return NULL;
     
+    fixed_value = AXIS2_STRDUP("fixed", env);
+    value_v = AXIS2_STRDUP("value", env);
+
     om_ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
     localname = AXIOM_ELEMENT_GET_LOCALNAME(om_ele, env);
 
@@ -359,12 +367,12 @@ xml_schema_facet_construct (const axis2_env_t *env,
     else 
         return NULL;
     
-    attr_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, "fixed");
+    attr_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, fixed_value);
     if(NULL != attr_value && AXIS2_STRCMP(attr_value, "fixed") == 0)
         is_fixed = AXIS2_TRUE;
     
     attr_value = NULL;
-    attr_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, "value");
+    attr_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, value_v);
     if(NULL != attr_value)
         value = attr_value;
     else

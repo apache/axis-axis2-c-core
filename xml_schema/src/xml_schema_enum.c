@@ -65,7 +65,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_enum_set_value(
         void *schema_enum,
         const axis2_env_t *env,
-        axis2_char_t *value);
+        const axis2_char_t *value);
 
 axis2_bool_t AXIS2_CALL
 xml_schema_enum_equals(
@@ -82,7 +82,7 @@ xml_schema_enum_get_values(
 
 AXIS2_EXTERN xml_schema_enum_t * AXIS2_CALL
 xml_schema_enum_create(const axis2_env_t *env,
-                                axis2_char_t *value)
+                       const axis2_char_t *value)
 {
     xml_schema_enum_impl_t *schema_enum_impl = NULL;
     
@@ -281,7 +281,7 @@ xml_schema_enum_get_value(void *schema_enum,
 axis2_status_t AXIS2_CALL
 xml_schema_enum_set_value(void *schema_enum,
                         const axis2_env_t *env,
-                        axis2_char_t *value)
+                        const axis2_char_t *value)
 {
     xml_schema_enum_impl_t *schema_enum_impl = NULL;
     axis2_hash_t *super = NULL;

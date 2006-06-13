@@ -19,7 +19,6 @@
 #include <axis2_array_list.h>
 #include <axiom_util.h>
 
-
 AXIS2_EXTERN axiom_element_t * AXIS2_CALL
 axiom_util_get_first_child_element_with_uri(
         axiom_node_t *ele_node,
@@ -277,7 +276,7 @@ axiom_util_get_last_child_element_with_localname(axiom_element_t *ele,
                                                                                          
 AXIS2_EXTERN axiom_element_t * AXIS2_CALL
 axiom_util_get_next_siblng_element_with_localname(axiom_element_t *ele,
-                                             axis2_env_t  *env,
+                                             const axis2_env_t  *env,
                                              axiom_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axiom_node_t **next_node)
@@ -315,7 +314,7 @@ axiom_util_get_next_siblng_element_with_localname(axiom_element_t *ele,
                                              
 AXIS2_EXTERN axiom_element_t * AXIS2_CALL
 axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
-                                             axis2_env_t  *env,
+                                             const axis2_env_t  *env,
                                              axiom_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *uri,
@@ -398,7 +397,7 @@ axiom_util_get_first_child_element_with_uri_localname(axiom_element_t *ele,
 }                                                                                                                                                             
 AXIS2_EXTERN axiom_element_t * AXIS2_CALL
 axiom_util_get_last_child_element_with_uri_localname(axiom_element_t *ele,
-                                             axis2_env_t  *env,
+                                             const axis2_env_t  *env,
                                              axiom_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *uri,
@@ -496,7 +495,7 @@ axiom_util_get_next_sibling_element_with_uri_localname(axiom_element_t *ele,
                                              
 AXIS2_EXTERN axiom_element_t * AXIS2_CALL
 axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
-                                             axis2_env_t  *env,
+                                             const axis2_env_t  *env,
                                              axiom_node_t *ele_node,
                                              axis2_array_list_t *names,
                                              axiom_node_t **child_node)
@@ -580,7 +579,7 @@ axiom_util_get_first_child_element_with_localnames(axiom_element_t *ele,
                                              
 AXIS2_EXTERN axiom_element_t * AXIS2_CALL
 axiom_util_get_last_child_element_with_localnames(axiom_element_t *ele,
-                                             axis2_env_t  *env,
+                                             const axis2_env_t  *env,
                                              axiom_node_t *ele_node,
                                              axis2_array_list_t *names,
                                              axiom_node_t **child_node)
@@ -630,7 +629,7 @@ axiom_util_get_last_child_element_with_localnames(axiom_element_t *ele,
                                                                                          
 AXIS2_EXTERN axiom_element_t * AXIS2_CALL
 axiom_util_get_next_siblng_element_with_localnames(axiom_element_t *ele,
-                                             axis2_env_t  *env,
+                                             const axis2_env_t  *env,
                                              axiom_node_t *ele_node,
                                              axis2_array_list_t *names,
                                              axiom_node_t **next_node)
@@ -680,7 +679,7 @@ axiom_util_get_next_siblng_element_with_localnames(axiom_element_t *ele,
                                              
 AXIS2_EXTERN axiom_element_t * AXIS2_CALL
 axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
-                                             axis2_env_t  *env,
+                                             const axis2_env_t  *env,
                                              axiom_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *attr_name,
@@ -812,7 +811,7 @@ axiom_util_get_first_child_element_with_localname_attr(axiom_element_t *ele,
                                              
 AXIS2_EXTERN axiom_element_t * AXIS2_CALL
 axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
-                                             axis2_env_t  *env,
+                                             const axis2_env_t  *env,
                                              axiom_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *attr_name,
@@ -891,7 +890,7 @@ axiom_util_get_last_child_element_with_localname_attr(axiom_element_t *ele,
                                                                                          
 AXIS2_EXTERN axiom_element_t * AXIS2_CALL
 axiom_util_get_next_siblng_element_with_localname_attr(axiom_element_t *ele,
-                                             axis2_env_t  *env,
+                                             const axis2_env_t  *env,
                                              axiom_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *attr_name,

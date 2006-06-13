@@ -69,7 +69,7 @@ xml_schema_content_processing_get_values(void *content_processing,
 
 AXIS2_EXTERN xml_schema_content_processing_t * AXIS2_CALL
 xml_schema_content_processing_create(const axis2_env_t *env,
-                            axis2_char_t *value)
+                            const axis2_char_t *value)
 {
     xml_schema_content_processing_impl_t *content_processing_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;

@@ -19,15 +19,11 @@ libaxis2_axiom_la_SOURCES = om_attribute.c \
 libaxis2_axiom_la_LIBADD =  \
                     $(top_builddir)/src/soap/libaxis2_soap.la \
 					$(top_builddir)/src/attachments/libaxis2_attachments.la \
+                    $(top_builddir)/src/util/libaxis2_axiom_util.la \
 					-laxis2_util
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/parser \
             -I$(top_builddir)/src/om \
-            -I$(top_builddir)/src/attachments \
-			@UTILINC@
-
-EXTRA_DIST = maven.xml project.xml \
-		axiom_namespace_internal.h axiom_node_internal.h \
 		axiom_stax_builder_internal.h
 
