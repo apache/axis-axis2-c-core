@@ -675,8 +675,8 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *header,
     for(hi = axis2_hash_first(header_impl->header_blocks, env);
         hi; hi = axis2_hash_next(env, hi))
     {
+        const void *key = NULL;
         void *val = NULL;
-        void *key = NULL;
         
         axis2_hash_this(hi, &key, NULL, &val);
         if(NULL != val)
@@ -689,10 +689,6 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *header,
             node = AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env);
             if(NULL != node)
             {
-                axis2_char_t *localname = NULL;
-                axiom_namespace_t *ns        = NULL;
-                axis2_char_t *prefix = NULL;
-                axis2_char_t *ns_uri = NULL;
                 axis2_qname_t *element_qname = NULL;
                                 
                 ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
@@ -747,3 +743,5 @@ axiom_soap_header_qname_matches(const axis2_env_t *env,
     
     return lparts_match && uris_match;   
 }
+
+
