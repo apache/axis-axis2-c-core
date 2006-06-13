@@ -32,11 +32,6 @@ typedef struct axis2_op_impl
     axis2_msg_recv_t *msg_recv;
     axis2_wsdl_op_t *wsdl_op;
         
-/*    axis2_array_list_t *remaining_phases_inflow;
-    axis2_array_list_t *phases_outflow;
-    axis2_array_list_t *phases_in_fault_flow;
-    axis2_array_list_t *phases_out_fault_flow;*/
-    
     int mep;
     /*To store deploytime module refs */
     axis2_array_list_t *modulerefs;
@@ -354,7 +349,6 @@ axis2_op_create (const axis2_env_t *env)
     axis2_array_list_t *array_list_l = NULL;
     axis2_op_impl_t *op_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_phase_t *policy_determination = NULL;
     axis2_phase_t *message_processing = NULL;
     axis2_phase_t *message_out = NULL;
     axis2_property_t *property = NULL;
@@ -377,10 +371,6 @@ axis2_op_create (const axis2_env_t *env)
     op_impl->mep = AXIS2_MEP_CONSTANT_INVALID;
     op_impl->op.param_container = NULL;
     op_impl->wsdl_op = NULL;
-    /*op_impl->remaining_phases_inflow = NULL;
-    op_impl->phases_outflow = NULL;
-    op_impl->phases_in_fault_flow = NULL;
-    op_impl->phases_out_fault_flow = NULL;*/
     op_impl->modulerefs = NULL;
     op_impl->op.ops = NULL;
     
@@ -459,29 +449,7 @@ axis2_op_create (const axis2_env_t *env)
     op_impl->op.base.ops->free_void_arg = axis2_op_free_void_arg;
     op_impl->op.base.ops->get_qname = axis2_op_get_qname;
 
-    /*op_impl->remaining_phases_inflow = axis2_array_list_create(env, 0);
-    if(NULL == op_impl->remaining_phases_inflow)
-    {
-        axis2_op_free(&(op_impl->op), env);
-        return NULL;
-    }*/
-    /*policy_determination = axis2_phase_create(env, 
-        AXIS2_PHASE_POLICY_DETERMINATION);
-    status = AXIS2_ARRAY_LIST_ADD(op_impl->remaining_phases_inflow, env, 
-        policy_determination);
-    if(AXIS2_SUCCESS != status)
-    {
-        AXIS2_PHASE_FREE(policy_determination, env);
-        policy_determination = NULL;
-        return NULL;
-    }
-    policy_determination = NULL;*/
     message_processing = axis2_phase_create(env, AXIS2_PHASE_MESSAGE_PROCESSING);
-    /* TODO
-     * Add soap processing model checker handler to this when the handler once
-     * handler is written
-     */
-
     if (op_impl->base)
     {
         axis2_msg_t *msg = NULL;
@@ -503,33 +471,11 @@ axis2_op_create (const axis2_env_t *env)
     
     if(AXIS2_SUCCESS != status)
     {
-        /*AXIS2_PHASE_FREE(policy_determination, env);*/
         AXIS2_PHASE_FREE(message_processing, env);
-        policy_determination = NULL;
         message_processing = NULL;
         return NULL;
     }
     message_processing = NULL;
-    
-    
-    /*op_impl->phases_outflow = axis2_array_list_create(env, 0);
-    if(NULL == op_impl->phases_outflow)
-    {
-        axis2_op_free(&(op_impl->op), env);
-        return NULL;
-    }*/
-   
-    policy_determination = axis2_phase_create(env, 
-        AXIS2_PHASE_POLICY_DETERMINATION);
-    /*status = AXIS2_ARRAY_LIST_ADD(op_impl->phases_outflow, env, 
-        policy_determination);
-    if(AXIS2_SUCCESS != status)
-    {
-        AXIS2_PHASE_FREE(policy_determination, env);
-        policy_determination = NULL;
-        return NULL;
-    }
-    policy_determination = NULL;*/
     
     message_out = axis2_phase_create(env, AXIS2_PHASE_MESSAGE_OUT);
     if (op_impl->base)
@@ -542,8 +488,6 @@ axis2_op_create (const axis2_env_t *env)
             if (list)
             {
                 status = AXIS2_ARRAY_LIST_ADD(list, env,
-                    policy_determination);
-                status = AXIS2_ARRAY_LIST_ADD(list, env,
                     message_out);
             }
             else
@@ -552,12 +496,10 @@ axis2_op_create (const axis2_env_t *env)
             }
         }
     }
-    /*status = AXIS2_ARRAY_LIST_ADD(op_impl->phases_outflow, env, message_out);*/
+
     if(AXIS2_SUCCESS != status)
     {
-        /*AXIS2_PHASE_FREE(policy_determination, env);*/
         AXIS2_PHASE_FREE(message_out, env);
-        policy_determination = NULL;
         message_out = NULL;
         return NULL;
     }
@@ -743,88 +685,6 @@ axis2_op_free (axis2_op_t *op, const axis2_env_t *env)
         AXIS2_DESC_FREE(op_impl->base, env);
         op_impl->base = NULL;
     }
-
-    /*if(op_impl->remaining_phases_inflow)
-    {
-        int i = 0;
-        int size = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(op_impl->remaining_phases_inflow, env);
-        for (i = 0; i < size; i++)
-        {
-            axis2_phase_t *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(op_impl->remaining_phases_inflow, env, 
-                i);
-            if (phase)
-            {
-                AXIS2_PHASE_FREE (phase, env);
-                phase = NULL;
-            }
-      
-        }
-   
-        AXIS2_ARRAY_LIST_FREE(op_impl->remaining_phases_inflow, env);
-        op_impl->remaining_phases_inflow = NULL;
-    }*/
-    
-    /*if(NULL != op_impl->phases_outflow)
-    {
-        int i = 0;
-        int size = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_outflow, env);
-        for (i = 0; i < size; i++)
-        {
-            axis2_phase_t *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_outflow, env, i);
-            if (phase)
-            {
-                AXIS2_PHASE_FREE (phase, env);
-                phase = NULL;
-            }
-               
-        }
-        AXIS2_ARRAY_LIST_FREE(op_impl->phases_outflow, env);
-        op_impl->phases_outflow = NULL;
-    }*/
-    /*
-    if(NULL != op_impl->phases_in_fault_flow)
-    {
-        int i = 0;
-        int size = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_in_fault_flow, env);
-        for (i = 0; i < size; i++)
-        {
-            axis2_phase_t *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_in_fault_flow, env, i);
-            if (phase)
-            {
-                AXIS2_PHASE_FREE (phase, env);
-                phase = NULL;
-            }
-               
-        }
-        AXIS2_ARRAY_LIST_FREE(op_impl->phases_in_fault_flow, env);
-        op_impl->phases_in_fault_flow = NULL;
-    }*/
-    
-    /*if(NULL != op_impl->phases_out_fault_flow)
-    {
-        int i = 0;
-        int size = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_out_fault_flow, env);
-        for (i = 0; i < size; i++)
-        {
-            axis2_phase_t *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_out_fault_flow, env, i);
-            if (phase)
-            {
-                AXIS2_PHASE_FREE (phase, env);
-                phase = NULL;
-            }
-              
-        }
-        AXIS2_ARRAY_LIST_FREE(op_impl->phases_out_fault_flow, env);
-        op_impl->phases_out_fault_flow = NULL;
-    }*/
 
     if(NULL != op->param_container)
     {
@@ -1441,30 +1301,6 @@ axis2_op_set_phases_in_fault_flow(axis2_op_t *op,
             return AXIS2_MSG_SET_FLOW(msg, env, list);
         }
     }
-    /*
-    if(op_impl->phases_in_fault_flow)
-    {
-        int i = 0;
-        int size = 0;
-        
-        size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_in_fault_flow, env);
-        for (i = 0; i < size; i++)
-        {
-            axis2_phase_t *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_in_fault_flow, env, i);
-            
-            if (phase)
-            {
-                AXIS2_PHASE_FREE (phase, env);
-                phase = NULL;
-            }
-               
-        }
-        AXIS2_ARRAY_LIST_FREE(op_impl->phases_in_fault_flow, env);
-        op_impl->phases_in_fault_flow = NULL;
-    }
-    
-    op_impl->phases_in_fault_flow = list;*/
     return AXIS2_FAILURE;
 }
 
@@ -1488,27 +1324,6 @@ axis2_op_set_phases_out_fault_flow(axis2_op_t *op,
             return AXIS2_MSG_SET_FLOW(msg, env, list);
         }
     }
-    /*
-    if(op_impl->phases_out_fault_flow)
-    {
-        int i = 0;
-        int size = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_out_fault_flow, env);
-        for (i = 0; i < size; i++)
-        {
-            axis2_phase_t *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_out_fault_flow, env, i);
-            if (phase)
-            {
-                AXIS2_PHASE_FREE (phase, env);
-                phase = NULL;
-            } 
-        }
-        AXIS2_ARRAY_LIST_FREE(op_impl->phases_out_fault_flow, env);
-        op_impl->phases_out_fault_flow = NULL;
-    }
-    
-    op_impl->phases_out_fault_flow = list;*/
     return AXIS2_FAILURE;
 }
 
@@ -1533,26 +1348,6 @@ axis2_op_set_phases_outflow(axis2_op_t *op,
         }
     }
     
-    /*if(op_impl->phases_outflow)
-    {
-        int i = 0;
-        int size = 0;
-        size = AXIS2_ARRAY_LIST_SIZE(op_impl->phases_outflow, env);
-        for (i = 0; i < size; i++)
-        {
-            axis2_phase_t *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(op_impl->phases_outflow, env, i);
-            if (phase)
-            {
-                AXIS2_PHASE_FREE (phase, env);
-                phase = NULL;
-            }
-        }
-        AXIS2_ARRAY_LIST_FREE(op_impl->phases_outflow, env);
-        op_impl->phases_outflow = NULL;
-    }
-    
-    op_impl->phases_outflow = list;*/
     return AXIS2_FAILURE;
 }
 
@@ -1576,27 +1371,6 @@ axis2_op_set_remaining_phases_inflow(axis2_op_t *op,
             return AXIS2_MSG_SET_FLOW(msg, env, list);
         }
     }
-    /*if(op_impl->remaining_phases_inflow)
-    {
-        int i = 0;
-        int size = 0;
-        
-        size = AXIS2_ARRAY_LIST_SIZE(op_impl->remaining_phases_inflow, env);
-        for (i = 0; i < size; i++)
-        {
-            axis2_phase_t *phase = NULL;
-            phase = AXIS2_ARRAY_LIST_GET(op_impl->remaining_phases_inflow, env, i);
-            if (phase)
-            {
-                AXIS2_PHASE_FREE (phase, env);
-                phase = NULL;
-            }
-               
-        }
-        AXIS2_ARRAY_LIST_FREE(op_impl->remaining_phases_inflow, env);
-        op_impl->remaining_phases_inflow = NULL;
-    }
-    op_impl->remaining_phases_inflow = list;*/
     return AXIS2_FAILURE;
 }
 
