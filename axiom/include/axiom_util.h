@@ -102,7 +102,9 @@ axiom_util_get_last_child_element_with_uri_localname(axiom_element_t *ele,
                                              axiom_node_t *ele_node,
                                              axis2_char_t *localname,
                                              axis2_char_t *uri,
-                                             axiom_node_t **child_node);                        AXIS2_EXTERN axiom_element_t * AXIS2_CALL
+                                             axiom_node_t **child_node);
+
+AXIS2_EXTERN axiom_element_t * AXIS2_CALL
 axiom_util_get_next_sibling_element_with_uri_localname(axiom_element_t *ele,
                                              const axis2_env_t  *env,
                                              axiom_node_t *ele_node,

@@ -22,6 +22,7 @@
 #include <axis2_allocator.h>
 #include <limits.h>
 #include <axis2_string.h>
+#include <axiom_util.h>
 
 typedef struct xml_schema_builder_impl 
 {

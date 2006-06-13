@@ -514,7 +514,7 @@ void test_local_unnamed_simple_type(CuTest *tc)
     env = axis2_env_create_all("test.log", 1);
     
     reader = axis2_xml_reader_create_for_memory(env, xml, AXIS2_STRLEN(xml), NULL,
-        XML_SCHEMA_PARSER_TYPE_BUFFER);
+        AXIS2_XML_PARSER_TYPE_BUFFER);
 
     builder = axiom_stax_builder_create(env, reader);
     
