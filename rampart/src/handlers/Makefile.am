@@ -1,9 +1,8 @@
 TESTS =
-noinst_LTLIBRARIES = libaxis2_woden_handlers.la
+noinst_LTLIBRARIES = librampart_handlers.la
 
-libaxis2_woden_handlers_la_SOURCES = \
-				om_util.c \
-				generic_obj.c
-
+librampart_handlers_la_SOURCES = \
+				rampart_out_handler.c\
+				rampart_in_handler.c
 INCLUDES = -I$(top_builddir)/include \
 			@UTILINC@

@@ -118,7 +118,15 @@ AC_SUBST(XMLSCHEMAINC)
 
 AC_CONFIG_FILES([Makefile \
     src/Makefile \
-    src/handlers/Makefile
+    src/handlers/Makefile \
+    src/core/Makefile\
+    src/util/Makefile\
+    test/Makefile \
+    test/util/Makefile\
+    samples/Makefile \
+    samples/callback/Makefile \
+    samples/client/Makefile \
+    samples/client/echo/Makefile
     ])
     
 AC_OUTPUT
