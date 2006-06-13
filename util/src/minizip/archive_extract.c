@@ -255,17 +255,17 @@ int aar_extract(axis2_char_t *d_name)
    
    if (zipfilename!=NULL)
    {
-/*      zlib_filefunc_def ffunc; */
+      zlib_filefunc_def ffunc;
       strncpy(filename_try, zipfilename,MAXFILENAME-1);
       filename_try[ MAXFILENAME ] = '\0';
       
-      axis2_fill_win32_filefunc(&zlib_filefunc_def);
-      uf = AXIS2_UNZOPEN2(zipfilename,zlib_filefunc_def);
+      axis2_fill_win32_filefunc(&ffunc);
+      uf = AXIS2_UNZOPEN2(zipfilename,ffunc);
       if (uf==NULL)
       {
          strcat(filename_try,".zip");
 
-         uf = AXIS2_UNZOPEN2(zipfilename,zlib_filefunc_def);
+         uf = AXIS2_UNZOPEN2(zipfilename,ffunc);
       }
    }
 
