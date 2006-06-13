@@ -150,12 +150,23 @@ struct axiom_soap_builder;
         
          
        /**
-       * @returns a hash table of all header_blocks in this header
-      */
-       axis2_hash_t* (AXIS2_CALL *
-      get_all_header_blocks)(axiom_soap_header_t *header,
+        * @returns a hash table of all header_blocks in this header
+        * the returned hash is a readonly hash should not be modified
+        */
+        axis2_hash_t* (AXIS2_CALL *
+        get_all_header_blocks)(axiom_soap_header_t *header,
                                const axis2_env_t *env);                                                
-                                         
+       /**
+        * remove header block that matches to the given qname
+        * qname should not be null
+        * 
+        */                                  
+        axis2_status_t (AXIS2_CALL *
+        remove_header_block)(axiom_soap_header_t *header,
+                             const axis2_env_t *env,
+                             axis2_qname_t *qname);
+        
+        
     };
 
   /**
@@ -210,6 +221,9 @@ axiom_soap_header_create_with_parent(const axis2_env_t *env,
 
 #define AXIOM_SOAP_HEADER_GET_ALL_HEADER_BLOCKS(header, env) \
         ((header)->ops->get_all_header_blocks(header, env))
+        
+#define AXIOM_SOAP_HEADER_REMOVE_HEADER_BLOCK(header, env, qname) \
+        ((header)->ops->remove_header_block(header, env, qname))        
 
 /** @} */
 #ifdef __cplusplus
