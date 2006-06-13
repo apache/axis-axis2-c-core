@@ -76,27 +76,27 @@ struct axis2_woden_soap_header_block_ops
     void *(AXIS2_CALL *
     get_element_decl) (
             void *header_block,
-            axis2_env_t *env);
+            const axis2_env_t *env);
 
     axis2_bool_t (AXIS2_CALL * 
     must_understand) (
             void *header_block,
-            axis2_env_t *env);
+            const axis2_env_t *env);
 
     axis2_bool_t (AXIS2_CALL * 
     is_required) (
             void *header_block,
-            axis2_env_t *env);
+            const axis2_env_t *env);
 
     void *(AXIS2_CALL *
     get_parent) (
             void *header_block,
-            axis2_env_t *env);
+            const axis2_env_t *env);
 
     void *(AXIS2_CALL *
     to_element) (
             void *header_block,
-            axis2_env_t *env);
+            const axis2_env_t *env);
 
     /* ************************************************************
      *  Non-API implementation methods
@@ -105,13 +105,13 @@ struct axis2_woden_soap_header_block_ops
     axis2_status_t (AXIS2_CALL * 
     set_element_decl) (
             void *header_block,
-            axis2_env_t *env,
+            const axis2_env_t *env,
             void *element_decl);
 
     axis2_status_t (AXIS2_CALL * 
     set_types) (
             void *header_block,
-            axis2_env_t *env,
+            const axis2_env_t *env,
             void *types);
 
 
@@ -163,43 +163,47 @@ axis2_woden_soap_header_block_resolve_methods(
 /************************End of Woden C Internal Methods***********************/
 
 #define AXIS2_WODEN_SOAP_HEADER_BLOCK_FREE(soap_header_block, env) \
-      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->free(soap_header_block, env))
+      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->\
+       free(soap_header_block, env))
 
 #define AXIS2_WODEN_SOAP_HEADER_BLOCK_SUPER_OBJS(soap_header_block, env) \
-      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->super_objs(soap_header_block, env))
+      (((axis2_woden_soap_header_block_t *) soap_header_block)->\
+       ops->super_objs(soap_header_block, env))
 
 #define AXIS2_WODEN_SOAP_HEADER_BLOCK_TYPE(soap_header_block, env) \
-      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->type(soap_header_block, env))
+      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->\
+       type(soap_header_block, env))
 
 #define AXIS2_WODEN_SOAP_HEADER_BLOCK_GET_BASE_IMPL(soap_header_block, env) \
-      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->get_base_impl(soap_header_block, env))
+      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->\
+       get_base_impl(soap_header_block, env))
 
 #define AXIS2_WODEN_SOAP_HEADER_BLOCK_GET_ELEMENT_DECL(soap_header_block, env) \
-      (((axis2_woden_soap_header_block_t *) soap_header_block)->\
+      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->\
         get_element_decl (soap_header_block, env))
 
 #define AXIS2_WODEN_SOAP_HEADER_BLOCK_MUST_UNDERSTAND(soap_header_block, env) \
-      (((axis2_woden_soap_header_block_t *) soap_header_block)->\
+      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->\
         must_understand (soap_header_block, env))
 
 #define AXIS2_WODEN_SOAP_HEADER_BLOCK_IS_REQUIRED(soap_header_block, env) \
-      (((axis2_woden_soap_header_block_t *) soap_header_block)->\
+      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->\
         is_required (soap_header_block, env))
 
 #define AXIS2_WODEN_SOAP_HEADER_BLOCK_GET_PARENT(soap_header_block, env) \
-      (((axis2_woden_soap_header_block_t *) soap_header_block)->\
+      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->\
         get_parent (soap_header_block, env))
 
 #define AXIS2_WODEN_SOAP_HEADER_BLOCK_TO_ELEMENT(soap_header_block, env) \
-      (((axis2_woden_soap_header_block_t *) soap_header_block)->\
+      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->\
         to_element (soap_header_block, env))
 
 #define AXIS2_WODEN_SOAP_HEADER_BLOCK_SET_ELEMENT_DECL(soap_header_block, env, element_decl) \
-      (((axis2_woden_soap_header_block_t *) soap_header_block)->\
+      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->\
         set_element_decl (soap_header_block, env, element_decl))
 
 #define AXIS2_WODEN_SOAP_HEADER_BLOCK_SET_TYPES(soap_header_block, env, types) \
-      (((axis2_woden_soap_header_block_t *) soap_header_block)->\
+      (((axis2_woden_soap_header_block_t *) soap_header_block)->ops->\
         set_types (soap_header_block, env, types))
 
 /** @} */

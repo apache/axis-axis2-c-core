@@ -70,27 +70,27 @@ axis2_woden_soap_header_block_type(
 void *AXIS2_CALL
 axis2_woden_soap_header_block_get_element_decl(
         void *header_block,
-        axis2_env_t *env);
+        const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL 
 axis2_woden_soap_header_block_must_understand(
         void *header_block,
-        axis2_env_t *env);
+        const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL 
 axis2_woden_soap_header_block_is_required(
         void *header_block,
-        axis2_env_t *env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_soap_header_block_get_parent(
         void *header_block,
-        axis2_env_t *env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_soap_header_block_to_element(
         void *header_block,
-        axis2_env_t *env);
+        const axis2_env_t *env);
 
 /* ***********************************************************************
  *  Element model-only methods (SOAPHeaderBlockElement interface)
@@ -99,62 +99,62 @@ axis2_woden_soap_header_block_to_element(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_element_qname(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_qname_t *qname); 
 
 axis2_qname_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_element_qname(
         void *header_block,
-        axis2_env_t *env);
+        const axis2_env_t *env);
 
 void *AXIS2_CALL
 axis2_woden_soap_header_block_get_element(
         void *header_block,
-        axis2_env_t *env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_must_understand(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_bool_t understood);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_parent_element(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *wsdl_el);
 
 void *AXIS2_CALL
 axis2_woden_soap_header_block_get_parent_element(
         void *header_block,
-        axis2_env_t *env); 
+        const axis2_env_t *env); 
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_add_documentation_element(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *doc_el);
 
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_documentation_elements(
         void *header_block,
-        axis2_env_t *env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_extension_type(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_qname_t *qname); 
 
 axis2_qname_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_extension_type(
         void *header_block,
-        axis2_env_t *env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_required(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_bool_t required);
 
 /* ***********************************************************************
@@ -164,60 +164,60 @@ axis2_woden_soap_header_block_set_required(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_ext_attr(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_qname_t *attr_type, 
         void *attr);
 
 void *AXIS2_CALL
 axis2_woden_soap_header_block_get_ext_attr(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_qname_t *attr_type);
 
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_ext_attrs_for_namespace(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_uri_t *namespc);
 
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_ext_attrs(
         void *header_block,
-        axis2_env_t *env);
+        const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL 
 axis2_woden_soap_header_block_has_ext_attrs_for_namespace(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_add_ext_element(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *ext_el);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_remove_ext_element(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *ext_el);
 
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_ext_elements(
         void *header_block,
-        axis2_env_t *env);
+        const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_ext_elements_of_type(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_qname_t *ext_type); 
 
 axis2_bool_t AXIS2_CALL 
 axis2_woden_soap_header_block_has_ext_elements_for_namespace(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_uri_t *namespc); 
 
 /* ************************************************************
@@ -227,13 +227,13 @@ axis2_woden_soap_header_block_has_ext_elements_for_namespace(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_element_decl(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *element_decl);
 
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_types(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *types);
 
 static axis2_woden_soap_header_block_t *
@@ -776,7 +776,7 @@ axis2_woden_soap_header_block_resolve_methods(
 void *AXIS2_CALL
 axis2_woden_soap_header_block_get_element_decl(
         void *header_block,
-        axis2_env_t *env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -792,7 +792,7 @@ axis2_woden_soap_header_block_get_element_decl(
 axis2_bool_t AXIS2_CALL 
 axis2_woden_soap_header_block_must_understand(
         void *header_block,
-        axis2_env_t *env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -808,7 +808,7 @@ axis2_woden_soap_header_block_must_understand(
 axis2_bool_t AXIS2_CALL 
 axis2_woden_soap_header_block_is_required(
         void *header_block,
-        axis2_env_t *env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -824,7 +824,7 @@ axis2_woden_soap_header_block_is_required(
 void *AXIS2_CALL
 axis2_woden_soap_header_block_get_parent(
         void *header_block,
-        axis2_env_t *env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -840,7 +840,7 @@ axis2_woden_soap_header_block_get_parent(
 void *AXIS2_CALL
 axis2_woden_soap_header_block_to_element(
         void *header_block,
-        axis2_env_t *env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -861,7 +861,7 @@ axis2_woden_soap_header_block_to_element(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_element_qname(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_qname_t *qname) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -887,7 +887,7 @@ axis2_woden_soap_header_block_set_element_qname(
 axis2_qname_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_element_qname(
         void *header_block,
-        axis2_env_t *env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -903,7 +903,7 @@ axis2_woden_soap_header_block_get_element_qname(
 void *AXIS2_CALL
 axis2_woden_soap_header_block_get_element(
         void *header_block,
-        axis2_env_t *env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -926,7 +926,7 @@ axis2_woden_soap_header_block_get_element(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_must_understand(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_bool_t understood) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -946,7 +946,7 @@ axis2_woden_soap_header_block_set_must_understand(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_parent_element(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *wsdl_el) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -970,7 +970,7 @@ axis2_woden_soap_header_block_set_parent_element(
 void *AXIS2_CALL
 axis2_woden_soap_header_block_get_parent_element(
         void *header_block,
-        axis2_env_t *env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -986,7 +986,7 @@ axis2_woden_soap_header_block_get_parent_element(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_add_documentation_element(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *doc_el) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -1015,7 +1015,7 @@ axis2_woden_soap_header_block_add_documentation_element(
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_documentation_elements(
         void *header_block,
-        axis2_env_t *env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1031,7 +1031,7 @@ axis2_woden_soap_header_block_get_documentation_elements(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_extension_type(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_qname_t *qname) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -1056,7 +1056,7 @@ axis2_woden_soap_header_block_set_extension_type(
 axis2_qname_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_extension_type(
         void *header_block,
-        axis2_env_t *env) 
+        const axis2_env_t *env) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1072,7 +1072,7 @@ axis2_woden_soap_header_block_get_extension_type(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_required(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_bool_t required) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -1095,7 +1095,7 @@ axis2_woden_soap_header_block_set_required(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_ext_attr(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_qname_t *attr_type, 
         void *attr) 
 {
@@ -1116,7 +1116,7 @@ axis2_woden_soap_header_block_set_ext_attr(
 void *AXIS2_CALL
 axis2_woden_soap_header_block_get_ext_attr(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_qname_t *attr_type) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -1135,7 +1135,7 @@ axis2_woden_soap_header_block_get_ext_attr(
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_ext_attrs_for_namespace(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_uri_t *namespc) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -1154,7 +1154,7 @@ axis2_woden_soap_header_block_get_ext_attrs_for_namespace(
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_ext_attrs(
         void *header_block,
-        axis2_env_t *env)
+        const axis2_env_t *env)
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1171,7 +1171,7 @@ axis2_woden_soap_header_block_get_ext_attrs(
 axis2_bool_t AXIS2_CALL 
 axis2_woden_soap_header_block_has_ext_attrs_for_namespace(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_uri_t *namespc) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -1190,7 +1190,7 @@ axis2_woden_soap_header_block_has_ext_attrs_for_namespace(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_add_ext_element(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *ext_el) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -1209,7 +1209,7 @@ axis2_woden_soap_header_block_add_ext_element(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_remove_ext_element(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *ext_el) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -1230,7 +1230,7 @@ axis2_woden_soap_header_block_remove_ext_element(
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_ext_elements(
         void *header_block,
-        axis2_env_t *env)
+        const axis2_env_t *env)
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1247,7 +1247,7 @@ axis2_woden_soap_header_block_get_ext_elements(
 axis2_array_list_t *AXIS2_CALL 
 axis2_woden_soap_header_block_get_ext_elements_of_type(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_qname_t *ext_type) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -1266,7 +1266,7 @@ axis2_woden_soap_header_block_get_ext_elements_of_type(
 axis2_bool_t AXIS2_CALL 
 axis2_woden_soap_header_block_has_ext_elements_for_namespace(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         axis2_uri_t *namespc) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -1289,7 +1289,7 @@ axis2_woden_soap_header_block_has_ext_elements_for_namespace(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_element_decl(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *element_decl)
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;
@@ -1315,7 +1315,7 @@ axis2_woden_soap_header_block_set_element_decl(
 axis2_status_t AXIS2_CALL 
 axis2_woden_soap_header_block_set_types(
         void *header_block,
-        axis2_env_t *env,
+        const axis2_env_t *env,
         void *types) 
 {
     axis2_woden_soap_header_block_impl_t *header_block_impl = NULL;

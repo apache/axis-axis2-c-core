@@ -9,7 +9,9 @@ libaxis2_woden_extensions_soap_la_SOURCES = \
 											soap_header_block_element.c \
 											soap_module_element.c \
 											soap_header_block.c \
-											soap_module.c
+											soap_module.c \
+											soap_module_deserializer.c \
+											soap_header_block_deserializer.c
 
 INCLUDES = -I$(top_builddir)/include \
 			@AXIOMINC@ \
