@@ -48,7 +48,7 @@ xml_schema_test(
         
     if(NULL != schema)
     {
-        printf(" parsing schema is successful ");
+        printf("\n parsing schema is successful \n");
     }                
     
     return AXIS2_SUCCESS;
