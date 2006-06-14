@@ -15,11 +15,50 @@
  */
  
 #include <woden_component_model_builder.h>
-#include ../wsdl20/woden_constants.h"
+#include <woden_desc_element.h>
+#include <woden_include_element.h>
+#include <woden_import_element.h>
+#include <woden_desc.h>
+#include <woden_types.h>
+#include <woden_element_decl.h>
+#include <woden_type_def.h>
+#include <woden_configurable.h>
+#include <woden_configurable_element.h>
+#include <woden_interface.h>
+#include <woden_interface_element.h>
+#include <woden_interface_fault.h>
+#include <woden_interface_fault_element.h>
+#include <woden_interface_op.h>
+#include <woden_interface_op_element.h>
+#include <woden_interface_fault_ref.h>
+#include <woden_interface_fault_ref_element.h>
+#include <woden_interface_msg_ref.h>
+#include <woden_interface_msg_ref_element.h>
+#include <woden_binding.h>
+#include <woden_binding_element.h>
+#include <woden_binding_fault.h>
+#include <woden_binding_fault_element.h>
+#include <woden_binding_op.h>
+#include <woden_binding_op_element.h>
+#include <woden_binding_fault_ref.h>
+#include <woden_binding_fault_ref_element.h>
+#include <woden_binding_msg_ref.h>
+#include <woden_binding_msg_ref_element.h>
+#include <woden_ext_registry.h>
+#include <woden_component_exts.h>
+#include <woden_property.h>
+#include <woden_property_element.h>
+
+#include <xml_schema.h>
+#include <xml_schema_obj_table.h>
+
+#include "../wsdl20/woden_constants.h"
+#include <axis2_array_list.h>
+#include <axis2_uri.h>
 
 typedef struct woden_component_model_builder_impl
 {
-    woden_component_model_builder_t component_model_builder;
+    woden_component_model_builder_t builder;
     void *f_desc;
     axis2_array_list_t *f_schemas_done;
     axis2_array_list_t *f_interfaces_done;
@@ -33,8 +72,18 @@ typedef struct woden_component_model_builder_impl
 
 axis2_status_t AXIS2_CALL
 woden_component_model_builder_free (
-        woden_component_model_builder_t *builder, 
+        void *builder, 
         const axis2_env_t *env); 
+
+/*
+ * Extract from the collections of in-scope schemas
+ * the element declarations and type definitions.
+ */
+static axis2_status_t
+build_elements_and_types(
+        void *builder,
+        const axis2_env_t *env,
+        void *desc);
 
 /*
  * Extract the element declarations from the given schema. 
@@ -139,7 +188,7 @@ build_binding_exts(
         void *binding);
 
 static axis2_status_t
-build_binding_fault_ref_exts(
+build_binding_fault_exts(
         void *builder,
         const axis2_env_t *env,
         void *bind_fault);
@@ -244,7 +293,7 @@ woden_component_model_builder_create(
 
 axis2_status_t AXIS2_CALL 
 woden_component_model_builder_free (
-        woden_component_model_builder_t *builder, 
+        void *builder, 
         const axis2_env_t *env)
 {
     woden_component_model_builder_impl_t *builder_impl = NULL;
@@ -276,12 +325,13 @@ init_components(
     axis2_array_list_t *imports = NULL;
     int i = 0, size = 0;
     
-    build_elements_and_types(builder, env);
-    build_interfaces(builder, env);
-    build_bindings(builder, env);
-    build_svcs(builder, env);
+    build_elements_and_types(builder, env, desc);
+    build_interfaces(builder, env, desc);
+    build_bindings(builder, env, desc);
+    build_svcs(builder, env, desc);
     
-    includes = WODEN_DESC_GET_INCLUDE_ELEMENTS(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    includes = WODEN_DESC_ELEMENT_GET_INCLUDE_ELEMENTS(desc, env);
     size = AXIS2_ARRAY_LIST_SIZE(includes, env);
     for(i = 0; i < size; i++)
     {
@@ -296,7 +346,7 @@ init_components(
         }
     }
      
-    imports = WODEN_DESC_GET_IMPORT_ELEMENTS(desc, env);
+    imports = WODEN_DESC_ELEMENT_GET_IMPORT_ELEMENTS(desc, env);
     size = AXIS2_ARRAY_LIST_SIZE(imports, env);
     for(i = 0; i < size; i++)
     {
@@ -310,6 +360,7 @@ init_components(
             init_components(builder, env, imp_desc);
         }
     }
+    return AXIS2_SUCCESS;
 }
 
 /* *******************************************************************************
@@ -334,7 +385,8 @@ build_elements_and_types(
     AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
-    types = WODEN_DESC_GET_TYPES_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    types = WODEN_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
     
     type_system_uri = axis2_uri_parse_string(env, WODEN_TYPE_XSD_2001);
     
@@ -345,7 +397,7 @@ build_elements_and_types(
 
         referenceable_schema_defs = 
             WODEN_TYPES_GET_REFERENCEABLE_SCHEMA_DEFS(types, env);
-        if(referenceable_shcema_defs)
+        if(referenceable_schema_defs)
             size = AXIS2_ARRAY_LIST_SIZE(referenceable_schema_defs, env);
         for(i = 0; i < size; i++)
         {
@@ -385,6 +437,7 @@ build_elements_and_types(
             }
         }
     }
+    return AXIS2_SUCCESS;
 }
 
 /*
@@ -408,7 +461,7 @@ build_element_decls(
     schema_tns = XML_SCHEMA_GET_TARGET_NAMESPACE(schema_def, env);
     if(NULL != schema_tns)
     {
-        void *element_table = NULL;
+        xml_schema_obj_table_t *element_table = NULL;
         axis2_array_list_t *qnames = NULL;
         int i = 0, size = 0;
 
@@ -441,6 +494,7 @@ build_element_decls(
             }
         }
     }
+    return AXIS2_SUCCESS;
 }
     
 /*
@@ -464,12 +518,12 @@ build_type_defs(
     schema_tns = XML_SCHEMA_GET_TARGET_NAMESPACE(schema_def, env);
     if(NULL != schema_tns)
     {
-        void *type_table = NULL;
+        xml_schema_obj_table_t *type_table = NULL;
         axis2_array_list_t *qnames = NULL;
         int i = 0, size = 0;
 
         type_table = XML_SCHEMA_GET_SCHEMA_TYPES(schema_def, env);
-        qnames = XML_SCHEMA_OBJ_TABLE_GET_NAMES(element_table, env);
+        qnames = XML_SCHEMA_OBJ_TABLE_GET_NAMES(type_table, env);
         if(qnames)
             size = AXIS2_ARRAY_LIST_SIZE(qnames, env);
         for(i = 0; i < size; i++)
@@ -497,6 +551,7 @@ build_type_defs(
             }
         }
     }
+    return AXIS2_SUCCESS;
 }
  
 
@@ -522,7 +577,8 @@ build_interfaces(
     AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
-    interface_els = WODEN_DESC_GET_INTERFACE_ELEMENTS(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    interface_els = WODEN_DESC_ELEMENT_GET_INTERFACE_ELEMENTS(desc, env);
     if(NULL != interface_els)
     {
         size = AXIS2_ARRAY_LIST_SIZE(interface_els, env);
@@ -537,7 +593,8 @@ build_interfaces(
             axis2_array_list_t *property_els = NULL;
             WODEN_DESC_ADD_TO_ALL_INTERFACES(builder_impl->f_desc, 
                     env, int_impl);
-            property_els = WODEN_INTERFACE_GET_PROPERTY_ELEMENTS(int_impl, 
+            int_impl = woden_interface_to_configurable_element(int_impl, env);
+            property_els = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(int_impl, 
                     env);
             build_properties(builder, env, property_els, int_impl);
             build_interface_faults(builder, env, int_impl);
@@ -578,13 +635,16 @@ build_interface_faults(
     {
         void *fault = NULL;
         axis2_array_list_t *property_elements = NULL;
+        axis2_qname_t *qname = NULL;
         
         fault = AXIS2_ARRAY_LIST_GET(faults, env, i);
-        property_elements = WODEN_INTERFACE_FAULT_GET_PROPERTY_ELEMENTS(
+        fault = woden_interface_fault_to_configurable_element(fault, env);
+        property_elements = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(
                 fault, env);
         build_properties(builder, env, property_elements, fault);
-        qname = WODEN_INTERFACE_FAULT_GET_ELEMENT_QNAME(fault, env);
-        if(NULL ! = qname)
+        fault = woden_interface_fault_to_interface_fault_element(fault, env);
+        qname = WODEN_INTERFACE_FAULT_ELEMENT_GET_ELEMENT_QNAME(fault, env);
+        if(NULL != qname)
         {
             void *element_decl = NULL;
             
@@ -621,7 +681,8 @@ build_interface_ops(
         axis2_array_list_t *property_elements = NULL;
         
         op = AXIS2_ARRAY_LIST_GET(ops, env, i);
-        property_elements = WODEN_INTERFACE_OP_GET_PROPERTY_ELEMENTS(
+        op = woden_interface_op_to_configurable_element(op, env);
+        property_elements = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(
                 op, env);
         build_properties(builder, env, property_elements, op);
         build_interface_fault_refs(builder, env, op);
@@ -644,8 +705,8 @@ build_interface_fault_refs(
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
-    op = woden__interface_op_to_interface_op_element(op, env);
-    fault_refs = WODEN_INTERFACE_OP_ELEMENT_GET_FAULT_REF_ELEMENTS(
+    op = woden_interface_op_to_interface_op_element(op, env);
+    fault_refs = WODEN_INTERFACE_OP_ELEMENT_GET_INTERFACE_FAULT_REF_ELEMENTS(
             op, env);
     if(fault_refs)
         size = AXIS2_ARRAY_LIST_SIZE(fault_refs, env);
@@ -653,19 +714,24 @@ build_interface_fault_refs(
     {
         void *fault_ref = NULL;
         axis2_array_list_t *property_elements = NULL;
+        axis2_qname_t *qname = NULL;
         
         fault_ref = AXIS2_ARRAY_LIST_GET(fault_refs, env, i);
-        property_elements = WODEN_INTERFACE_FAULT_REF_GET_PROPERTY_ELEMENTS(
+        fault_ref = woden_interface_fault_ref_to_configurable_element(fault_ref, env);
+        property_elements = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(
                 fault_ref, env);
         build_properties(builder, env, property_elements, fault_ref);
-        qname = WODEN_INTERFACE_FAULT_REF_GET_REF(fault_ref, env);
-        if(NULL ! = qname)
+        fault_ref = woden_interface_fault_ref_to_interface_fault_ref_element(
+                fault_ref, env);
+        qname = WODEN_INTERFACE_FAULT_REF_ELEMENT_GET_REF(fault_ref, env);
+        if(NULL != qname)
         {
             void *interface = NULL;
             void *interface_fault = NULL;
-            
-            interface = WODEN_INTERFACE_OP_GET_PARENT(op, env);
-            interface_fault = WODEN_INTERFACE_GET_INTERFACE_FAULT(interface, env, qname)
+           
+            op = woden_interface_op_to_nested_component(op, env);
+            interface = WODEN_NESTED_COMPONENT_GET_PARENT(op, env);
+            interface_fault = WODEN_INTERFACE_GET_INTERFACE_FAULT(interface, env, qname);
             WODEN_INTERFACE_FAULT_REF_SET_INTERFACE_FAULT(fault_ref, env, interface_fault);
         }
     }
@@ -687,9 +753,9 @@ build_interface_msg_refs(
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     op = woden_interface_op_to_interface_op_element(op, env);
-    msgs = WODEN_INTERFACE_OP_ELEMENT_GET_MSG_REF_ELEMENTS(
+    msgs = WODEN_INTERFACE_OP_ELEMENT_GET_INTERFACE_MSG_REF_ELEMENTS(
             op, env);
-    if(fault_refs)
+    if(msgs)
         size = AXIS2_ARRAY_LIST_SIZE(msgs, env);
     for(i = 0; i < size; i++)
     {
@@ -697,8 +763,9 @@ build_interface_msg_refs(
         axis2_array_list_t *property_elements = NULL;
         axis2_char_t *msg_content_model = NULL;
         
-        fault_ref = AXIS2_ARRAY_LIST_GET(fault_refs, env, i);
-        property_elements = WODEN_INTERFACE_FAULT_REF_GET_PROPERTY_ELEMENTS(
+        msg = AXIS2_ARRAY_LIST_GET(msgs, env, i);
+        msg = woden_interface_msg_ref_to_configurable_element(msg, env);
+        property_elements = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(
                 msg, env);
         build_properties(builder, env, property_elements, msg);
         msg_content_model = WODEN_INTERFACE_MSG_REF_GET_MSG_CONTENT_MODEL(
@@ -706,8 +773,8 @@ build_interface_msg_refs(
         if(0 == AXIS2_STRCMP(WODEN_NMTOKEN_ELEMENT, msg_content_model))
         {
             axis2_qname_t *qname = NULL;
-
-            qname = WODEN_INTERFACE_MSG_REF_GET_ELEMENT_QNAME(msg, env);
+            msg = woden_interface_msg_ref_to_interface_msg_ref_element(msg, env);
+            qname = WODEN_INTERFACE_MSG_REF_ELEMENT_GET_ELEMENT_QNAME(msg, env);
             if(qname)
             {
                 void *element_decl = WODEN_DESC_GET_ELEMENT_DECL(
@@ -742,7 +809,8 @@ build_bindings(
     AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
-    binding_els = WODEN_DESC_GET_BINDING_ELEMENTS(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    binding_els = WODEN_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc, env);
     if(binding_els)
         size = AXIS2_ARRAY_LIST_SIZE(binding_els, env);
     for(i = 0; i < size; i++)
@@ -758,12 +826,13 @@ build_bindings(
 
             WODEN_DESC_ADD_TO_ALL_BINDINGS(builder_impl->f_desc, 
                     env, bind_impl);
-            property_elements = WODEN_BINDING_GET_PROPERTY_ELEMENTS(
+            bind_impl = woden_binding_to_configurable_element(bind_impl, env);
+            property_elements = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(
                     bind_impl, env);
             build_properties(builder, env, property_elements, bind_impl);
             build_binding_faults(builder, env, bind_impl);
             build_binding_ops(builder, env, bind_impl);
-            build_binding_extensions(builder, env, bind_impl);
+            build_binding_exts(builder, env, bind_impl);
             if(!builder_impl->f_bindings_done)
             {
                 builder_impl->f_bindings_done = axis2_array_list_create(env, 0);
@@ -803,10 +872,11 @@ build_binding_faults(
         axis2_array_list_t *property_elements = NULL;
         
         fault = AXIS2_ARRAY_LIST_GET(faults, env, i);
-        property_elements = WODEN_BINDING_FAULT_GET_PROPERTY_ELEMENTS(
+        fault = woden_binding_fault_to_configurable_element(fault, env);
+        property_elements = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(
                 fault, env);
         build_properties(builder, env, property_elements, fault);
-        build_binding_fault_extensions(builder, env, fault);
+        build_binding_fault_exts(builder, env, fault);
     }
     return AXIS2_SUCCESS;
 }
@@ -836,12 +906,13 @@ build_binding_ops(
         axis2_array_list_t *property_elements = NULL;
         
         op = AXIS2_ARRAY_LIST_GET(ops, env, i);
-        property_elements = WODEN_INTERFACE_OP_GET_PROPERTY_ELEMENTS(
+        op = woden_binding_op_to_configurable_element(op, env);
+        property_elements = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(
                 op, env);
         build_properties(builder, env, property_elements, op);
         build_binding_fault_refs(builder, env, op);
         build_binding_msg_refs(builder, env, op);
-        build_binding_op_extensions(builder, env, op);
+        build_binding_op_exts(builder, env, op);
     }
     return AXIS2_SUCCESS;
 }
@@ -861,7 +932,8 @@ build_binding_fault_refs(
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     op = woden_binding_op_to_binding_op_element(op, env);
-    fault_refs = WODEN_BINDING_OP_ELEMENT_GET_FAULT_REF_ELEMENTS(
+    op = woden_binding_op_to_binding_op_element(op, env);
+    fault_refs = WODEN_BINDING_OP_ELEMENT_GET_BINDING_FAULT_REF_ELEMENTS(
             op, env);
     if(fault_refs)
         size = AXIS2_ARRAY_LIST_SIZE(fault_refs, env);
@@ -871,10 +943,11 @@ build_binding_fault_refs(
         axis2_array_list_t *property_elements = NULL;
         
         fault_ref = AXIS2_ARRAY_LIST_GET(fault_refs, env, i);
-        property_elements = WODEN_INTERFACE_FAULT_REF_GET_PROPERTY_ELEMENTS(
+        fault_ref = woden_binding_fault_ref_to_configurable_element(fault_ref, env); 
+        property_elements = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(
                 fault_ref, env);
         build_properties(builder, env, property_elements, fault_ref);
-        build_binding_fault_ref_extensions(builder, env, fault_ref);
+        build_binding_fault_ref_exts(builder, env, fault_ref);
     }
     return AXIS2_SUCCESS;
 }
@@ -894,21 +967,21 @@ build_binding_msg_refs(
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     op = woden_binding_op_to_binding_op_element(op, env);
-    msgs = WODEN_BINDING_OP_ELEMENT_GET_MSG_REF_ELEMENTS(
+    msgs = WODEN_BINDING_OP_ELEMENT_GET_BINDING_MSG_REF_ELEMENTS(
             op, env);
-    if(fault_refs)
+    if(msgs)
         size = AXIS2_ARRAY_LIST_SIZE(msgs, env);
     for(i = 0; i < size; i++)
     {
         void *msg = NULL;
         axis2_array_list_t *property_elements = NULL;
-        axis2_char_t *msg_content_model = NULL;
         
-        fault_ref = AXIS2_ARRAY_LIST_GET(fault_refs, env, i);
-        property_elements = WODEN_INTERFACE_FAULT_REF_GET_PROPERTY_ELEMENTS(
+        msg = AXIS2_ARRAY_LIST_GET(msgs, env, i);
+        msg = woden_binding_msg_ref_to_configurable_element(msg, env);
+        property_elements = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(
                 msg, env);
         build_properties(builder, env, property_elements, msg);
-        build_binding_msg_ref_extensions(builder, env, msg);
+        build_binding_msg_ref_exts(builder, env, msg);
     }
     return AXIS2_SUCCESS;
 }
@@ -919,14 +992,19 @@ build_binding_exts(
         const axis2_env_t *env,
         void *binding)
 {
+    woden_component_model_builder_impl_t *builder_impl = NULL;
     woden_ext_registry_t *er = NULL;
     axis2_array_list_t *ext_namespcs = NULL;
     int i = 0, size = 0;
-    void *parent_element = NULL;
     axis2_uri_t *binding_type = NULL;
     axis2_char_t *binding_type_str = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, binding, AXIS2_FAILURE);
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
-    er = WODEN_DESC_GET_EXT_REGISTRY(builder_impl->f_desc, env);
+    builder_impl->f_desc = woden_desc_to_desc_element(builder_impl->f_desc, env);
+    er = WODEN_DESC_ELEMENT_GET_EXT_REGISTRY(builder_impl->f_desc, env);
     ext_namespcs = WODEN_EXT_REGISTRY_QUERY_COMPONENT_EXT_NAMESPACES(er, 
             env, "binding");
     
@@ -955,7 +1033,7 @@ build_binding_exts(
             void *comp_ext = NULL;
 
             comp_ext = create_component_exts(builder, env, "binding", 
-                    bind_fault, ext_ns);
+                    binding, ext_ns);
             binding = woden_binding_to_wsdl_obj(binding, env);
             WODEN_WSDL_OBJ_SET_COMPONENT_EXTS(binding, env, ext_ns, comp_ext);
         }
@@ -970,29 +1048,31 @@ build_binding_exts(
      * extensions can be registered in some way and interpreted here at run time.
      */
     binding_type = WODEN_BINDING_GET_TYPE(binding, env);
-    binding_type_str = AXIS2_URI_TO_STRING(binding_type, env);
+    binding_type_str = AXIS2_URI_TO_STRING(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
     if(0 == AXIS2_STRCMP(WODEN_URI_NS_SOAP, binding_type_str))
     {
         void *sbe = NULL;
+        axis2_uri_t *uri_ns_soap = NULL;
 
         /* If the binding type is SOAP, the {soap version} property defaults to "1.2" so if a
          * a SOAP Binding Extensions object has not already been created, create one now to handle
          * this default value.
          */
         binding = woden_binding_to_wsdl_component(binding, env);
+        uri_ns_soap = axis2_uri_parse_string(env, WODEN_URI_NS_SOAP);
         if(NULL == WODEN_WSDL_COMPONENT_GET_COMPONENT_EXTS_FOR_NAMESPACE(binding, 
-                    env, WODEN_URI_NS_SOAP))
+                    env, uri_ns_soap))
         {
             void *comp_ext = NULL;
 
             comp_ext = create_component_exts(builder, env, "binding", 
-                    binding, WODEN_URI_NS_SOAP);
+                    binding, uri_ns_soap);
             binding = woden_binding_to_wsdl_obj(binding, env);
             WODEN_WSDL_OBJ_SET_COMPONENT_EXTS(binding, env, 
-                    WODEN_URI_NS_SOAP, comp_ext);
+                    uri_ns_soap, comp_ext);
         }
         sbe = WODEN_WSDL_COMPONENT_GET_COMPONENT_EXTS_FOR_NAMESPACE(binding, 
-                    env, WODEN_URI_NS_SOAP)
+                    env, uri_ns_soap);
         /* TODO Complete this */
     }
     return AXIS2_SUCCESS;
@@ -1000,11 +1080,12 @@ build_binding_exts(
 
 
 static axis2_status_t
-build_binding_fault_ref_exts(
+build_binding_fault_exts(
         void *builder,
         const axis2_env_t *env,
         void *bind_fault)
 {
+    woden_component_model_builder_impl_t *builder_impl = NULL;
     woden_ext_registry_t *er = NULL;
     axis2_array_list_t *ext_namespcs = NULL;
     int i = 0, size = 0;
@@ -1012,7 +1093,13 @@ build_binding_fault_ref_exts(
     axis2_uri_t *binding_type = NULL;
     axis2_char_t *binding_type_str = NULL;
 
-    er = WODEN_DESC_GET_EXT_REGISTRY(builder_impl->f_desc, env);
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, bind_fault, AXIS2_FAILURE);
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
+
+    builder_impl->f_desc = woden_desc_to_desc_element(builder_impl->f_desc, env);
+    er = WODEN_DESC_ELEMENT_GET_EXT_REGISTRY(builder_impl->f_desc, env);
     ext_namespcs = WODEN_EXT_REGISTRY_QUERY_COMPONENT_EXT_NAMESPACES(er, 
             env, "binding_fault");
     
@@ -1055,28 +1142,30 @@ build_binding_fault_ref_exts(
      * TODO chg this hardcoded behaviour so that any default rules for SOAP, HTTP or user-defined
      * extensions can be registered in some way and interpreted here at run time.
      */
-    bind_fault = woden_binding_fault_to_nested_element(bind_fault);
+    bind_fault = woden_binding_fault_to_nested_element(bind_fault, env);
     parent_element = WODEN_NESTED_ELEMENT_GET_PARENT_ELEMENT(bind_fault, env);
     parent_element = woden_binding_to_binding_element(parent_element, env);
     binding_type = WODEN_BINDING_ELEMENT_GET_TYPE(parent_element, env);
-    binding_type_str = AXIS2_URI_TO_STRING(binding_type, env);
+    binding_type_str = AXIS2_URI_TO_STRING(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
     if(0 == AXIS2_STRCMP(WODEN_URI_NS_SOAP, binding_type_str))
     {
+        axis2_uri_t *uri_ns_soap = axis2_uri_parse_string(env, WODEN_URI_NS_SOAP);
+
         /* If the binding type is SOAP, the {soap fault code} and {soap fault subcodes} properties
          * default to xs:token "#any", so if a SOAP Binding Fault Extensions object has not already 
          * been created, create one now to handle these default values.
          */
         bind_fault = woden_binding_fault_to_wsdl_component(bind_fault, env);
         if(NULL == WODEN_WSDL_COMPONENT_GET_COMPONENT_EXTS_FOR_NAMESPACE(bind_fault, 
-                    env, WODEN_URI_NS_SOAP))
+                    env, uri_ns_soap))
         {
             void *comp_ext = NULL;
 
             comp_ext = create_component_exts(builder, env, "binding_fault", 
-                    bind_fault, WODEN_URI_NS_SOAP);
+                    bind_fault, uri_ns_soap);
             bind_fault = woden_binding_fault_to_wsdl_obj(bind_fault, env);
             WODEN_WSDL_OBJ_SET_COMPONENT_EXTS(bind_fault, env, 
-                    WODEN_URI_NS_SOAP, comp_ext);
+                    uri_ns_soap, comp_ext);
         }
     }
     return AXIS2_SUCCESS;
@@ -1088,9 +1177,20 @@ build_binding_op_exts(
         const axis2_env_t *env,
         void *bind_op)
 {
-    axis2_ext_registry_t *er = NULL;
+    woden_component_model_builder_impl_t *builder_impl = NULL;
+    woden_ext_registry_t *er = NULL;
+    axis2_array_list_t *ext_namespcs = NULL;
+    int i = 0, size = 0;
+    void *parent_element = NULL;
+    axis2_uri_t *binding_type = NULL;
+    axis2_char_t *binding_type_str = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, bind_op, AXIS2_FAILURE);
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
-    er = WODEN_DESC_GET_EXT_REGISTRY(builder_impl->f_desc, env);
+    builder_impl->f_desc = woden_desc_to_desc_element(builder_impl->f_desc, env);
+    er = WODEN_DESC_ELEMENT_GET_EXT_REGISTRY(builder_impl->f_desc, env);
     ext_namespcs = WODEN_EXT_REGISTRY_QUERY_COMPONENT_EXT_NAMESPACES(er, env, "binding_op");
     if(ext_namespcs)
         size = AXIS2_ARRAY_LIST_SIZE(ext_namespcs, env);
@@ -1119,7 +1219,7 @@ build_binding_op_exts(
 
             comp_ext = create_component_exts(builder, env, "binding_op", 
                     bind_op, ext_ns);
-            binding_op = woden_binding_op_to_wsdl_obj(binding_op, env);
+            bind_op = woden_binding_op_to_wsdl_obj(bind_op, env);
             WODEN_WSDL_OBJ_SET_COMPONENT_EXTS(bind_op, env, 
                     ext_ns, comp_ext);
         }
@@ -1132,13 +1232,14 @@ build_binding_op_exts(
      * TODO chg this hardcoded behaviour so that any default rules for SOAP, HTTP or user-defined
      * extensions can be registered in some way and interpreted here at run time.
      */
-    bind_op = woden_binding_op_to_nested_element(bind_op);
+    bind_op = woden_binding_op_to_nested_element(bind_op, env);
     parent_element = WODEN_NESTED_ELEMENT_GET_PARENT_ELEMENT(bind_op, env);
     parent_element = woden_binding_to_binding_element(parent_element, env);
     binding_type = WODEN_BINDING_ELEMENT_GET_TYPE(parent_element, env);
-    binding_type_str = AXIS2_URI_TO_STRING(binding_type, env);
+    binding_type_str = AXIS2_URI_TO_STRING(binding_type, env, AXIS2_URI_UNP_OMITUSERINFO);
     if(0 == AXIS2_STRCMP(WODEN_URI_NS_SOAP, binding_type_str))
     {
+        axis2_uri_t *uri_ns_soap = axis2_uri_parse_string(env, WODEN_URI_NS_SOAP);
         /*
          * If the binding type is HTTP then the {http input serialization} and {http output serialization} 
          * properties have default values defined by the HTTP Binding rules in the WSDL 2.0 Part 2 Adjuncts
@@ -1149,7 +1250,7 @@ build_binding_op_exts(
          */
         bind_op = woden_binding_op_to_wsdl_component(bind_op, env);
         if(NULL == WODEN_WSDL_COMPONENT_GET_COMPONENT_EXTS_FOR_NAMESPACE(bind_op, 
-                    env, WODEN_URI_NS_SOAP))
+                    env, uri_ns_soap))
         {
             /*void *comp_ext = NULL;
 
@@ -1170,9 +1271,17 @@ build_binding_msg_ref_exts(
         const axis2_env_t *env,
         void *bind_msg_ref)
 {
-    axis2_ext_registry_t *er = NULL;
+    woden_component_model_builder_impl_t *builder_impl = NULL;
+    woden_ext_registry_t *er = NULL;
+    axis2_array_list_t *ext_namespcs = NULL;
+    int i = 0, size = 0;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, bind_msg_ref, AXIS2_FAILURE);
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
-    er = WODEN_DESC_GET_EXT_REGISTRY(builder_impl->f_desc, env);
+    builder_impl->f_desc = woden_desc_to_desc_element(builder_impl->f_desc, env);
+    er = WODEN_DESC_ELEMENT_GET_EXT_REGISTRY(builder_impl->f_desc, env);
     ext_namespcs = WODEN_EXT_REGISTRY_QUERY_COMPONENT_EXT_NAMESPACES(er, env, "binding_msg_ref");
     if(ext_namespcs)
         size = AXIS2_ARRAY_LIST_SIZE(ext_namespcs, env);
@@ -1211,9 +1320,17 @@ build_binding_fault_ref_exts(
         const axis2_env_t *env,
         void *bind_fault_ref)
 {
-    axis2_ext_registry_t *er = NULL;
+    woden_component_model_builder_impl_t *builder_impl = NULL;
+    woden_ext_registry_t *er = NULL;
+    axis2_array_list_t *ext_namespcs = NULL;
+    int i = 0, size = 0;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, bind_fault_ref, AXIS2_FAILURE);
+    builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
-    er = WODEN_DESC_GET_EXT_REGISTRY(builder_impl->f_desc, env);
+    builder_impl->f_desc = woden_desc_to_desc_element(builder_impl->f_desc, env);
+    er = WODEN_DESC_ELEMENT_GET_EXT_REGISTRY(builder_impl->f_desc, env);
     ext_namespcs = WODEN_EXT_REGISTRY_QUERY_COMPONENT_EXT_NAMESPACES(er, env, "binding_fault_ref");
     if(ext_namespcs)
         size = AXIS2_ARRAY_LIST_SIZE(ext_namespcs, env);
@@ -1268,7 +1385,8 @@ create_component_exts(
     AXIS2_PARAM_CHECK(env->error, ext_ns, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
         
-    er = WODEN_DESC_GET_EXT_REGISTRY(builder_impl->f_desc, env);
+    builder_impl->f_desc = woden_desc_to_desc_element(builder_impl->f_desc, env);
+    er = WODEN_DESC_ELEMENT_GET_EXT_REGISTRY(builder_impl->f_desc, env);
     comp_ext = WODEN_EXT_REGISTRY_QUERY_COMPONENT_EXT(er, env, 
             parent_class, ext_ns);
     WODEN_COMPONENT_EXTS_INIT(comp_ext, env, parent_elem, ext_ns);
@@ -1288,12 +1406,14 @@ build_svcs(
 {
     woden_component_model_builder_impl_t *builder_impl = NULL;
     axis2_array_list_t *svcs = NULL;
+    int i = 0, size = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
-    svcs = WODEN_DESC_GET_SVC_ELEMENTS(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    svcs = WODEN_DESC_ELEMENT_GET_SVC_ELEMENTS(desc, env);
     if(svcs)
         size = AXIS2_ARRAY_LIST_SIZE(svcs, env);
     for(i = 0; i < size; i++)
@@ -1347,8 +1467,9 @@ build_properties(
         void *prop = NULL;
         axis2_qname_t *qname = NULL;
 
-        prop = AXIS2_ARRAY_LIST_GET(props_el, env, i);
-        qname = WODEN_PROPERTY_GET_CONSTRAINT_QNAME(prop, env);
+        prop = AXIS2_ARRAY_LIST_GET(prop_els, env, i);
+        prop = woden_property_to_property_element(prop, env);
+        qname = WODEN_PROPERTY_ELEMENT_GET_CONSTRAINT_QNAME(prop, env);
         if(NULL != qname)
         {
             void *value = NULL;
