@@ -345,7 +345,7 @@ woden_soap_header_block_deserializer_marshall(
                 element_decl_qn, desc);
         
         soap_hdr = woden_soap_header_block_to_soap_header_block_element(soap_hdr, env);
-        WODEN_SOAP_HEADER_BLOCK_ELEMENT_SET_SET_ELEMENT_QNAME(soap_hdr, env, qname);
+        WODEN_SOAP_HEADER_BLOCK_ELEMENT_SET_ELEMENT_QNAME(soap_hdr, env, qname);
     }
     must_understand = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ext_el, env, 
             WODEN_ATTR_MUSTUNDERSTAND);
