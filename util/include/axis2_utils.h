@@ -28,7 +28,7 @@ extern "C"
 
 /**
  * @defgroup axis2_utils Utils
- * @ingroup axis2_utils
+ * @ingroup axis2
  * @{
  */
 
