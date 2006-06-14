@@ -80,7 +80,7 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library w
 )
 
 AC_MSG_CHECKING(whether to build tests)
-AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
+AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
@@ -92,8 +92,8 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
 
     ;;
   esac ],
-  AC_MSG_RESULT(no)
-  TESTDIR=""
+  AC_MSG_RESULT(yes)
+  TESTDIR="test"
 )
 
 
