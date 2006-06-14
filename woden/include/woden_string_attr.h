@@ -24,7 +24,7 @@
  */
 
 #include <woden_xml_attr.h>
-#include <woden/woden.h>
+#include <woden.h>
 
 /** @defgroup woden_string_attr String Attribute
   * @ingroup axis2_wsdl

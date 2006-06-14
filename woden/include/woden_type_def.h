@@ -28,7 +28,7 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>

@@ -37,7 +37,7 @@
 
 #include <woden.h>
 #include <woden_desc_element.h>
-#include <woden/woden_wsdl_obj.h>
+#include <woden_wsdl_obj.h>
 #include <woden_documentable.h>
 #include <woden_wsdl_component.h>
 

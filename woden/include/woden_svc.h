@@ -25,12 +25,12 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_svc_element.h>
-#include <woden/woden_wsdl_obj.h>
+#include <woden_wsdl_obj.h>
 #include <woden_configurable.h>
 #include <woden_configurable_component.h>
-#include <woden/types/woden_nc_name.h>
+#include <woden_nc_name.h>
 
 /** @defgroup woden_svc Service
   * @ingroup axis2_wsdl

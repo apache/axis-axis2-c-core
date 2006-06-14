@@ -33,7 +33,7 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_component_exts.h>
 #include <axis2_array_list.h>
 

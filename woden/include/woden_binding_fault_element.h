@@ -32,7 +32,7 @@
 #include <axis2_qname.h>
 #include <axis2_uri.h>
 #include <axis2_array_list.h>
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_documentable_element.h>
 #include <woden_configurable_element.h>
 #include <woden_nested_element.h>

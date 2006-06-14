@@ -21,7 +21,7 @@
 #include <axis2_env.h>
 #include <axis2_utils.h>
 #include <platforms/axis2_platform_auto_sense.h>
-#include <woden/builder/woden_reader.h>
+#include <builder/woden_reader.h>
 #include <woden_desc.h>
 #include <woden_interface.h>
 

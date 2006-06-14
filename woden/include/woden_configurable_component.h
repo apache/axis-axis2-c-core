@@ -33,7 +33,7 @@
 #include <axis2_hash.h>
 #include <axis2_uri.h>
 #include <axis2_array_list.h>
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_wsdl_component.h>
 
 #ifdef __cplusplus

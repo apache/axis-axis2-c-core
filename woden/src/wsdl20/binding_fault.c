@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <woden/woden_wsdl_obj.h>
+#include <woden_wsdl_obj.h>
 #include <woden_binding_fault.h>
 #include <woden_nested_configurable.h>
 #include <woden_ext_element.h>

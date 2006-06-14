@@ -26,9 +26,9 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_documentable_element.h>
-#include <woden/woden_wsdl_obj.h>
+#include <woden_wsdl_obj.h>
 
 /** @defgroup woden_documentable Documentable
   * @ingroup axis2_wsdl

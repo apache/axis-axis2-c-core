@@ -54,7 +54,7 @@
 #include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <woden/woden.h>
+#include <woden.h>
 
 #ifdef __cplusplus
 extern "C"

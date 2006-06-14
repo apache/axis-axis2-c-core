@@ -39,7 +39,7 @@
 #include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <woden/woden.h>
+#include <woden.h>
 #include <axis2_array_list.h>
 
 #ifdef __cplusplus

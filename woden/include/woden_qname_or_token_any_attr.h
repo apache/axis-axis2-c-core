@@ -25,7 +25,7 @@
  *          (e.g. the wsoap:code extension attribute of binding fault).
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_xml_attr.h>
 #include <axis2_array_list.h>
 

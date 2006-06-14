@@ -22,8 +22,8 @@
 #include <axis2_hash.h>
 #include <axis2_uri.h>
 #include <axis2_qname.h>
-#include <woden/woden.h>
-#include <woden/woden_schema_constants.h>
+#include <woden.h>
+#include <woden_schema_constants.h>
 
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_schema(

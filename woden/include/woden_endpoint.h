@@ -24,12 +24,12 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_endpoint_element.h>
 #include <woden_nested_configurable.h>
 #include <woden_nested_component.h>
 #include <woden_configurable_component.h>
-#include <woden/types/woden_nc_name.h>
+#include <woden_nc_name.h>
 
 /** @defgroup woden_endpoint Endpoint
   * @ingroup axis2_wsdl

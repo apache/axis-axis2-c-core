@@ -35,7 +35,7 @@
 #include <axis2_string.h>
 #include <axis2_utils.h>
 #include <axis2_hash.h>
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_wsdl_component.h>
 
 #ifdef __cplusplus

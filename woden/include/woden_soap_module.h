@@ -25,7 +25,7 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_soap_module_element.h>
 
 /** @defgroup woden_soap_module Soap Module

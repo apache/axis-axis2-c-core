@@ -23,7 +23,7 @@
  *          This class represents XML attribute information items of type xs:QName.
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_xml_attr.h>
 
 /** @defgroup woden_qname_attr Qname Attribute

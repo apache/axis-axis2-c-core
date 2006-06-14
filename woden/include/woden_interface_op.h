@@ -23,7 +23,7 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_interface_op_element.h>
 #include <woden_nested_configurable.h>
 #include <axis2_qname.h>

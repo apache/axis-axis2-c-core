@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
-#include <woden/types/woden_nc_name.h>
-#include <woden/types/woden_xml_char.h>
+#include <woden_nc_name.h>
+#include <woden_xml_char.h>
 
 typedef struct woden_nc_name_impl woden_nc_name_impl_t;
 

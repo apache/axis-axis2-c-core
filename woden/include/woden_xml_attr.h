@@ -32,7 +32,7 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <axis2_generic_obj.h>
-#include <woden/woden.h>
+#include <woden.h>
 
 #ifdef __cplusplus
 extern "C"

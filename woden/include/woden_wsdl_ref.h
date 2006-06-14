@@ -27,7 +27,7 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_wsdl_element.h>
 #include <woden_wsdl_component.h>
 

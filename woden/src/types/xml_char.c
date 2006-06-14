@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <woden/types/woden_xml_char.h>
+#include <woden_xml_char.h>
  
 /** Character flags. */
 static axis2_char_t CHARS[1 << 16];

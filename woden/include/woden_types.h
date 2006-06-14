@@ -26,11 +26,11 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_types_element.h>
 #include <woden_documentable.h>
 #include <woden_nested_component.h>
-#include <woden/woden_wsdl_obj.h>
+#include <woden_wsdl_obj.h>
 #include <xml_schema.h>
 #include <xml_schema_element.h>
 #include <xml_schema_type.h>

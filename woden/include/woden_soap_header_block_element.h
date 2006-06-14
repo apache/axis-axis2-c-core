@@ -33,7 +33,7 @@
 #include <axis2_qname.h>
 #include <axis2_uri.h>
 #include <axis2_array_list.h>
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_ext_element.h>
 #include <woden_attr_extensible.h>
 #include <woden_element_extensible.h>

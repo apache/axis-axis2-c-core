@@ -25,7 +25,7 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_soap_header_block_element.h>
 
 /** @defgroup woden_soap_header_block Soap Header Block

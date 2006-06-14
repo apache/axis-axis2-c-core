@@ -24,7 +24,7 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_ext_registry.h>
 #include <axiom_document.h>
 

@@ -24,7 +24,7 @@
  *          xs:list of QNames.
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_xml_attr.h>
 #include <axis2_array_list.h>
 

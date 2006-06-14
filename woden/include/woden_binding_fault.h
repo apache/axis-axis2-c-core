@@ -25,7 +25,7 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_binding_fault_element.h>
 #include <woden_nested_configurable.h>
 #include <axis2_qname.h>

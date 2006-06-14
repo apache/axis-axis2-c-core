@@ -42,10 +42,10 @@
 #include <axis2_qname.h>
 #include <axis2_generic_obj.h>
 #include <axis2_uri.h>
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_documentable_element.h>
 #include <woden_nested_element.h>
-#include <woden/woden.h>
+#include <woden.h>
 
 #ifdef __cplusplus
 extern "C"

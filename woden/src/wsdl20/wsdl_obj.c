@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <woden/woden_wsdl_obj.h>
+#include <woden_wsdl_obj.h>
 #include <woden_component_exts.h>
 
 typedef struct woden_wsdl_obj_impl woden_wsdl_obj_impl_t;

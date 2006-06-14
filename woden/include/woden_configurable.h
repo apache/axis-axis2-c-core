@@ -26,7 +26,7 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_configurable_element.h>
 #include <woden_configurable_component.h>
 #include <woden_documentable.h>

@@ -23,7 +23,7 @@
  *          This class represents XML attribute information items of type xs:anyURI.
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <axis2_uri.h>
 #include <woden_xml_attr.h>
 

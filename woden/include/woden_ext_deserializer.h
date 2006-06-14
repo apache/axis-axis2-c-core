@@ -33,7 +33,7 @@
 #include <axis2_qname.h>
 #include <axis2_hash.h>
 #include <axiom_node.h>
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_ext_registry.h>
 
 #ifdef __cplusplus

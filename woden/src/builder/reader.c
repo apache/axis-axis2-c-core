@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <woden/builder/woden_reader.h>
-#include <woden/woden_schema_constants.h>
+#include <woden_reader.h>
+#include <woden_schema_constants.h>
 #include <woden_qname_util.h>
 
 #include <woden_binding_fault.h>

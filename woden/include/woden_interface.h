@@ -27,7 +27,7 @@
  * 
  */
 
-#include <woden/woden.h>
+#include <woden.h>
 #include <woden_interface_element.h>
 #include <woden_configurable.h>
 

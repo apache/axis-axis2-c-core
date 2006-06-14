@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <woden/woden_wsdl_obj.h>
+#include <woden_wsdl_obj.h>
 #include <woden_desc.h>
 #include <woden_element_decl.h>
 #include <woden_type_def.h>
