@@ -24,6 +24,8 @@
 #include <woden_xml_attr.h>
 #include <woden_documentation_element.h>
 #include <xml_schema_element.h>
+#include <woden_element_decl.h>
+#include <woden_direction.h>
 
 typedef struct woden_interface_msg_ref_impl woden_interface_msg_ref_impl_t;
 

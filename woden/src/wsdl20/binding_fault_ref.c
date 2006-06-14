@@ -24,6 +24,7 @@
 #include <woden_xml_attr.h>
 #include <woden_documentation_element.h>
 #include <xml_schema_element.h>
+#include <woden_direction.h>
 
 typedef struct woden_binding_fault_ref_impl woden_binding_fault_ref_impl_t;
 

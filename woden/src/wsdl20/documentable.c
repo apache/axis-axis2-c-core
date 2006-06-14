@@ -16,6 +16,7 @@
 
 #include <woden_documentable.h>
 #include <woden_documentation_element.h>
+#include <woden_wsdl_obj.h>
 
 typedef struct woden_documentable_impl woden_documentable_impl_t;
 
