@@ -21,7 +21,7 @@
 #include <axis2_env.h>
 #include <axis2_utils.h>
 #include <platforms/axis2_platform_auto_sense.h>
-#include <builder/woden_reader.h>
+#include <woden_reader.h>
 #include <woden_desc.h>
 #include <woden_interface.h>
 
@@ -67,9 +67,9 @@ void test_read_wsdl(
     om_doc = get_root_element_from_filename(env, filename);
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     doc_base_uri = AXIS2_STRACAT (axis2c_home, "/woden", env);
-    reader = woden_reader_create(env);
+    reader = (void *)woden_reader_create(env);
     
-    desc = WODEN_READER_READ_WSDL(reader, env, om_doc, doc_base_uri);
+    desc = (void *)WODEN_READER_READ_WSDL(reader, env, om_doc, doc_base_uri);
     CuAssertPtrNotNull(tc, desc);
     intfaces = WODEN_DESC_GET_INTERFACES(desc, env);
     CuAssertPtrNotNull(tc, intfaces);
