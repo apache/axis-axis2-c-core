@@ -183,6 +183,19 @@ woden_wsdl_ref_free(
 }
 
 axis2_hash_t *AXIS2_CALL
+woden_wsdl_ref_super_objs(
+        void *wsdl_ref,
+        const axis2_env_t *env)
+{
+    woden_wsdl_ref_impl_t *wsdl_ref_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    wsdl_ref_impl = INTF_TO_IMPL(wsdl_ref);
+
+    return wsdl_ref_impl->super;
+}
+
+axis2_hash_t *AXIS2_CALL
 woden_wsdl_ref_super(
         void *wsdl_ref,
         const axis2_env_t *env)

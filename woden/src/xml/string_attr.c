@@ -159,6 +159,19 @@ woden_string_attr_free(
     return AXIS2_SUCCESS;
 }
 
+woden_obj_types_t AXIS2_CALL
+woden_string_attr_type(
+        void *string_attr,
+        const axis2_env_t *env)
+{
+    woden_string_attr_impl_t *string_attr_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    string_attr_impl = INTF_TO_IMPL(string_attr);
+
+    return string_attr_impl->obj_type;
+}
+
 woden_xml_attr_t *AXIS2_CALL
 woden_string_attr_get_base_impl(
         void *string_attr,
