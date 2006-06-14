@@ -1324,7 +1324,7 @@ parse_interface(
             axis2_uri_t *uri = NULL;
             intface = woden_interface_to_interface_element(intface, env);
             uri = get_uri(reader, env, uri_str);
-            WODEN_INTERFACE_ELMENT_ADD_STYLE_DEFAULT_URI(intface, env, uri);
+            WODEN_INTERFACE_ELEMENT_ADD_STYLE_DEFAULT_URI(intface, env, uri);
         }
     }
     
