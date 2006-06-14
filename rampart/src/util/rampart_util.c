@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <rampart/rampart_util.h>
 #include <axis2_util.h>
+#include <axis2_base64.h>
 #include <time.h>
 
 /*Calculate the hash of concatenated string of 
@@ -34,12 +35,13 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_nonce(const axis2_env_t *
 {
 	int num;
 	char* rand_str = NULL;
+	axis2_char_t* encoded_str=NULL;
 	num=rand();
 	rand_str= AXIS2_MALLOC(env->allocator,16);
 	sprintf(rand_str, "%16d", num);
 
-	axis2_char_t* encoded_str=NULL;
-    encoded_str = AXIS2_MALLOC(env->allocator, axis2_base64_encode_len(SIZE_NONCE));
+
+    encoded_str = AXIS2_MALLOC(env->allocator, sizeof(SIZE_NONCE));
     axis2_base64_encode(encoded_str,rand_str,AXIS2_STRLEN(rand_str));
     AXIS2_FREE(env->allocator, rand_str);
 	return encoded_str;
@@ -71,8 +73,9 @@ rampart_format_date_zulu_to_mili(const axis2_env_t *env, axis2_char_t *str)
     return 1000000;/*TODO*/
 }
 
-AXIS2_EXTERN axis2_status_t* AXIS2_CALL 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 rampart_print_info(const axis2_env_t *env, axis2_char_t* info)
 {
     /*printf("[rampart]: %s\n", info);*/
+    return AXIS2_SUCCESS;
 }

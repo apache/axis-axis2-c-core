@@ -27,6 +27,8 @@
 #include <rampart/rampart_constants.h>
 #include <rampart/username_token.h>
 #include <rampart/rampart_handler_util.h>
+#include <rampart/timestamp_token.h>
+#include <rampart/rampart_util.h>
 
 /*************************** Function headers *********************************/
 
@@ -83,6 +85,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
         soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
         if (soap_header)
         { 
+            axis2_char_t* item = NULL;
             rampart_print_info(env,"soap header found");
             /*Check InFlowSecurity parameters*/
 
@@ -131,14 +134,15 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 return AXIS2_FAILURE;
             }
                  
-            axis2_char_t* item = NULL;
+            
             item = strtok (items," ");
             while (item != NULL)
             {
                 if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL)) )
                 {
+                        axis2_status_t valid_user = AXIS2_FAILURE;
                         rampart_print_info(env,"Validate usernametoken ");
-                        axis2_status_t valid_user = rampart_validate_username_token(env, msg_ctx,soap_header, param_action);
+                        valid_user = rampart_validate_username_token(env, msg_ctx,soap_header, param_action);
                         if(valid_user)
                         {
                             rampart_print_info(env,"I know this user ");
@@ -149,11 +153,13 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                         }
                     
                 }else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, AXIS2_STRTRIM(env, item, NULL))){
+                         axis2_qname_t *qname = NULL;
+                         axis2_status_t valid_ts = AXIS2_FAILURE;
                          rampart_print_info(env,"Validate timestamp ");
                          sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
                          sec_ele = AXIOM_NODE_GET_DATA_ELEMENT(sec_node, env);
                     
-                         axis2_qname_t *qname = NULL;
+                        
                          qname = axis2_qname_create(env,
                                      RAMPART_SECURITY_TIMESTAMP,
                                      RAMPART_WSU_XMLNS,
@@ -167,7 +173,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                                  return AXIS2_FAILURE;
                              }
                          }
-                         axis2_status_t valid_ts = rampart_validate_timestamp(env, ts_node);               
+                         valid_ts = rampart_validate_timestamp(env, ts_node);               
                          if(valid_ts)
                         {
                             rampart_print_info(env,"Timestamp is valid ");

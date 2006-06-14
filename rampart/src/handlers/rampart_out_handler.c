@@ -18,14 +18,14 @@
 #include <axis2_handler_desc.h>
 #include <axis2_qname.h>
 #include <axis2_svc.h>
-#include <axiom_soap_header.h>
-#include <axiom_soap_body.h>
-#include <axiom_soap_header_block.h>
+#include <axiom_soap.h>
+#include <rampart/rampart_util.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_property.h>
 #include <rampart/rampart_constants.h>
 #include <rampart/username_token.h>
 #include <rampart/rampart_handler_util.h>
+#include <rampart/timestamp_token.h>
 
 /*********************** Function headers *********************************/
 
@@ -126,11 +126,12 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
     /*if the soap header is available then add the security header*/
     if (soap_header)
     {
+        axiom_soap_header_block_t *sec_header_block = NULL;
+        axiom_namespace_t *sec_ns_obj = NULL;
         soap_header_node=AXIOM_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
         soap_header_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT (soap_header_node, env);
 
-        axiom_soap_header_block_t *sec_header_block = NULL;
-        axiom_namespace_t *sec_ns_obj = NULL;  
+         
         ctx = AXIS2_MSG_CTX_GET_BASE (msg_ctx, env);   
         param_out_flow_security = rampart_get_security_param( env,msg_ctx, RAMPART_OUTFLOW_SECURITY);
 

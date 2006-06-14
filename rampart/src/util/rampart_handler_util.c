@@ -30,7 +30,7 @@
 
 AXIS2_EXTERN axis2_param_t* AXIS2_CALL
 rampart_get_security_param( const axis2_env_t *env,
-		                const axis2_msg_ctx_t *msg_ctx,
+		                    axis2_msg_ctx_t *msg_ctx,
                          const axis2_char_t *parameter);
                          
 AXIS2_EXTERN axis2_array_list_t* AXIS2_CALL
@@ -59,7 +59,7 @@ rampart_callback_pw( const axis2_env_t *env,
 
 axis2_param_t* AXIS2_CALL
 rampart_get_security_param( const axis2_env_t *env,
-		                const axis2_msg_ctx_t *msg_ctx,
+		                    axis2_msg_ctx_t *msg_ctx,
                          const axis2_char_t *parameter)
 {
   
@@ -90,6 +90,7 @@ rampart_get_actions( const axis2_env_t *env,
         const axis2_param_t *param_x_flow_security)
 {
     axis2_array_list_t *action_list = NULL;
+    int param_type;
     if(!param_x_flow_security)
     {
         AXIS2_LOG_INFO(env->log,"param_in_flow_security is NULL");
@@ -97,7 +98,7 @@ rampart_get_actions( const axis2_env_t *env,
     }
     
     /*ERROR HERE param returns TEXT even for DOM*/
-    int param_type = AXIS2_PARAM_GET_PARAM_TYPE(param_x_flow_security, env);
+    param_type = AXIS2_PARAM_GET_PARAM_TYPE(param_x_flow_security, env);
 
     action_list = AXIS2_PARAM_GET_VALUE_LIST(param_x_flow_security, env);
     if(!action_list)
@@ -114,18 +115,19 @@ rampart_get_action_params( const axis2_env_t *env,
                    const axis2_param_t *param_action,
                    const axis2_char_t *key)
 {
-    axis2_char_t *value, *tmp_key = NULL;
+    axis2_char_t *value= NULL, *tmp_key = NULL;
     axis2_array_list_t *param_list = NULL;
     axis2_param_t *param = NULL;
-    
+    int param_type;
+    axis2_char_t * param_name = NULL;
     int i, size = 0;
     if(!param_action)
     {
         printf("param_action is NULL");
     }
     
-    int param_type = AXIS2_PARAM_GET_PARAM_TYPE(param_action, env);
-    axis2_char_t * param_name = AXIS2_PARAM_GET_NAME(param_action, env);
+    param_type = AXIS2_PARAM_GET_PARAM_TYPE(param_action, env);
+    param_name = AXIS2_PARAM_GET_NAME(param_action, env);
     printf(" parameter Type =%d Name = %s", param_type, param_name);
     
     param_list = AXIS2_PARAM_GET_VALUE_LIST(param_action, env);

@@ -253,7 +253,7 @@ rampart_validate_username_token(const axis2_env_t *env,
     axis2_char_t *username, *password, *nonce, *created, *password_type = NULL;    
     axis2_char_t *pw_callback_module, *password_from_svr , *password_to_compare = NULL;
     axis2_ctx_t *ctx = NULL;
-
+    axis2_qname_t *qname = NULL;
     sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
     if(!sec_node)
     {
@@ -269,7 +269,7 @@ rampart_validate_username_token(const axis2_env_t *env,
     }
 
     /*TODO Get sec_ele with QNAME*/
-    axis2_qname_t *qname = NULL;
+
     qname = axis2_qname_create(env,
                                  RAMPART_SECURITY_USERNAMETOKEN,
                                  RAMPART_WSSE_XMLNS,

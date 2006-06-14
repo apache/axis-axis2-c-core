@@ -16,6 +16,7 @@
 
 #include <rampart/user_sec_param.h>
 #include <axis2_env.h>
+#include <axis2_string.h>
 #include <axis2_utils.h>
 
 /********************************** Function prototypes *****************/
