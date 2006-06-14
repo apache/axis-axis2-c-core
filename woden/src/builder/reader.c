@@ -1901,20 +1901,23 @@ parse_interface_msg_ref(
         void *parent)
 {
     void *msg_ref = NULL;
-    axis2_char_t *ref = NULL;
+    axis2_char_t *element = NULL;
     axis2_char_t *localname = NULL;
     axis2_char_t *msg_label_str = NULL;
     axiom_element_t *msg_ref_el;
     axiom_element_t *temp_el;
     axiom_node_t *temp_el_node;
-    axis2_qname_t *attr_ref = NULL;
+    void *types = NULL;
 
     desc = axis2_woden_desc_to_desc_element(desc, env);
     msg_ref = AXIS2_WODEN_DESC_ELEMENT_CREATE_INTERFACE_MSG_REF_ELEMENT(desc, 
             env);
     msg_ref = axis2_woden_interface_op_to_nested_element(msg_ref, env);
     AXIS2_WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(msg_ref, env, parent); 
-
+    desc = axis2_woden_desc_to_desc_element(desc, env);
+    types = AXIS2_WODEN_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
+    AXIS2_WODEN_INTERFACE_MSG_REF_SET_TYPES(msg_ref, env, types);
+    
     msg_ref_el = AXIOM_NODE_GET_DATA_ELEMENT(msg_ref_el_node, env);
     localname = AXIOM_ELEMENT_GET_LOCALNAME(msg_ref_el, env);
     if(0 == AXIS2_STRCMP(WODEN_ELEM_INFAULT, localname))
@@ -1935,21 +1938,7 @@ parse_interface_msg_ref(
                 msg_ref, env);
         AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_out);
     }
-    
-    attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
-    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, WODEN_ATTR_REF);
-    
-    if(NULL != ref)
-    {
-        axis2_qname_t *qname = NULL;
-
-        qname = woden_om_util_get_qname(env, msg_ref_el_node, ref, desc);
-        msg_ref = 
-            axis2_woden_interface_msg_ref_to_interface_msg_ref_element(
-                    msg_ref, env);
-        AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_REF(msg_ref, env, qname);
-    }
-    
+        
     msg_label_str = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, 
             WODEN_ATTR_MESSAGE_LABEL);
     
@@ -1993,6 +1982,84 @@ parse_interface_msg_ref(
                     env, msg_label_invalid);
         }
     }
+    else
+    {
+        axis2_woden_direction_t *direction = NULL;
+        axis2_woden_direction_t *direction_in = NULL;
+        axis2_woden_direction_t *direction_out = NULL;
+        axis2_woden_msg_label_t *msg_label_in = NULL;
+        axis2_woden_msg_label_t *msg_label_out = NULL;
+
+        msg_label_in = axis2_woden_msg_label_get_msg_label_in(env);
+        msg_label_out = axis2_woden_msg_label_get_msg_label_out(env);
+        direction = AXIS2_WODEN_INTERFACE_MSG_REF_GET_DIRECTION(msg_ref, env);
+        direction_in = axis2_woden_direction_get_direction_in(env);
+        direction_out = axis2_woden_direction_get_direction_out(env);
+        /* This is a temp fix, correct action is to use MEP to determine default 
+         */
+        if(direction == direction_in)
+        {
+            msg_ref = 
+                axis2_woden_interface_msg_ref_to_interface_msg_ref_element(
+                    msg_ref, env);
+            AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_MSG_LABEL(msg_ref, 
+                    env, msg_label_in);
+        }
+        else
+        {
+            msg_ref = 
+                axis2_woden_interface_msg_ref_to_interface_msg_ref_element(
+                    msg_ref, env);
+            AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_MSG_LABEL(msg_ref, 
+                    env, msg_label_out);
+        }
+    }
+
+    element = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, WODEN_ATTR_ELEMENT);
+    
+    if(NULL != element)
+    {
+        if(0 == AXIS2_STRCMP(element, WODEN_NMTOKEN_ANY) ||
+                0 == AXIS2_STRCMP(element, WODEN_NMTOKEN_NONE) ||
+                0 == AXIS2_STRCMP(element, WODEN_NMTOKEN_OTHER))
+        {
+            msg_ref = 
+                axis2_woden_interface_msg_ref_to_interface_msg_ref_element(
+                    msg_ref, env);
+            AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_MSG_CONTENT_MODEL(msg_ref, 
+                    env, element);
+        }
+        else
+        {
+            axis2_qname_t *qname = NULL;
+
+            /* element is not #any, #none or #other, so it must be an element 
+             * qname 
+             */
+            msg_ref = 
+                axis2_woden_interface_msg_ref_to_interface_msg_ref_element(
+                    msg_ref, env);
+            AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_MSG_CONTENT_MODEL(msg_ref, 
+                    env, element);
+
+            qname = woden_om_util_get_qname(env, msg_ref_el_node, element, desc);
+            AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_ELEMENT_QNAME(msg_ref, 
+                    env, qname);
+        }
+    }
+    else
+    {
+        /* Per mapping defined in WSDL2.0 Part2 spec section 2.5.3,
+         * if element attribute not present, message content model is #other
+         */
+        msg_ref = 
+            axis2_woden_interface_msg_ref_to_interface_msg_ref_element(
+                    msg_ref, env);
+        AXIS2_WODEN_INTERFACE_MSG_REF_ELEMENT_SET_MSG_CONTENT_MODEL(msg_ref, env, 
+                WODEN_NMTOKEN_OTHER);
+
+    }
+
     msg_ref = axis2_woden_interface_msg_ref_to_attr_extensible(msg_ref, env); 
     parse_ext_attributes(reader, env, msg_ref_el_node, "interface_msg_ref_element", 
             msg_ref, desc);
