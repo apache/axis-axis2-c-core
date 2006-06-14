@@ -1218,7 +1218,7 @@ woden_binding_get_binding_op_element(
         
         bind_op = AXIS2_ARRAY_LIST_GET(binding_impl->f_ops, 
                 env, i);
-        qname_l = (axis2_qname_t *) AXIS2_BINDING_OP_ELEMENT_GET_REF(
+        qname_l = (axis2_qname_t *) WODEN_BINDING_OP_ELEMENT_GET_REF(
                 bind_op, env);
         if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l))
         {
