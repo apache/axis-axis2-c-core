@@ -301,7 +301,7 @@ woden_binding_msg_ref_to_configurable_element(
     else
         binding_msg_ref_impl = (woden_binding_msg_ref_impl_t *) binding_msg_ref;
 
-    woden_binding_free_ops(binding_msg_ref, env);
+    woden_binding_msg_ref_free_ops(binding_msg_ref, env);
 
     binding_msg_ref_impl->binding_msg_ref.base.binding_msg_ref_element.base.configurable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
@@ -327,7 +327,7 @@ woden_binding_msg_ref_to_documentable_element(
     else
         binding_msg_ref_impl = (woden_binding_msg_ref_impl_t *) binding_msg_ref;
 
-    woden_binding_free_ops(binding_msg_ref, env);
+    woden_binding_msg_ref_free_ops(binding_msg_ref, env);
 
     binding_msg_ref_impl->binding_msg_ref.base.binding_msg_ref_element.base.documentable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
@@ -353,7 +353,7 @@ woden_binding_msg_ref_to_documentable(
     else
         binding_msg_ref_impl = (woden_binding_msg_ref_impl_t *) binding_msg_ref;
 
-    woden_binding_free_ops(binding_msg_ref, env);
+    woden_binding_msg_ref_free_ops(binding_msg_ref, env);
 
     binding_msg_ref_impl->binding_msg_ref.base.nested_configurable.base.
         configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
@@ -384,9 +384,9 @@ woden_binding_msg_ref_to_attr_extensible(
         base.documentable_element.wsdl_element.base.attr_extensible.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(woden_attr_extensible_ops_t));
-    woden_element_ext_resolve_methods(&(binding_msg_ref_impl->binding_msg_ref.base.
+    woden_attr_extensible_resolve_methods(&(binding_msg_ref_impl->binding_msg_ref.base.
             binding_msg_ref_element.base.documentable_element.
-            wsdl_element.base.attr_extensible), env, binding_msg_ref_impl->methods);
+            wsdl_element.base.attr_extensible), env, NULL, binding_msg_ref_impl->methods);
     return binding_msg_ref;
 }
 
@@ -412,9 +412,9 @@ woden_binding_msg_ref_to_element_extensible(
         base.documentable_element.wsdl_element.base.element_extensible.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(woden_element_extensible_ops_t));
-    woden_element_ext_resolve_methods(&(binding_msg_ref_impl->binding_msg_ref.base.
+    woden_element_extensible_resolve_methods(&(binding_msg_ref_impl->binding_msg_ref.base.
             binding_msg_ref_element.base.documentable_element.
-            wsdl_element.base.element_extensible), env, binding_msg_ref_impl->methods);
+            wsdl_element.base.element_extensible), env, NULL, binding_msg_ref_impl->methods);
     return binding_msg_ref;
 }
 

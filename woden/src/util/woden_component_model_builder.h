@@ -30,12 +30,8 @@
   * @{
   */
 
-typedef union woden_component_model_builder_base woden_component_model_builder_base_t;
 typedef struct woden_component_model_builder woden_component_model_builder_t;
 typedef struct woden_component_model_builder_ops woden_component_model_builder_ops_t;
-struct woden_documentation_element;
-struct woden_wsdl_component;
-struct woden_documentable;
 
 #ifdef __cplusplus
 extern "C"
@@ -59,7 +55,7 @@ struct woden_component_model_builder
     woden_component_model_builder_ops_t *ops;
 };
 
-AXIS2_EXTERN woden_component_model_builder_t * AXIS2_CALL
+AXIS2_EXTERN woden_component_model_builder_t *AXIS2_CALL 
 woden_component_model_builder_create(
         const axis2_env_t *env,
         void *desc);

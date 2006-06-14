@@ -75,6 +75,12 @@ woden_component_model_builder_free (
         void *builder, 
         const axis2_env_t *env); 
 
+static axis2_status_t
+init_components(
+        void *builder,
+        const axis2_env_t *env,
+        void *desc);
+
 /*
  * Extract from the collections of in-scope schemas
  * the element declarations and type definitions.
@@ -245,7 +251,7 @@ build_properties(
 
 /************************** End of function prototypes ************************/
 
-woden_component_model_builder_t *AXIS2_CALL 
+AXIS2_EXTERN woden_component_model_builder_t *AXIS2_CALL 
 woden_component_model_builder_create(
         const axis2_env_t *env,
         void *desc)
@@ -284,8 +290,7 @@ woden_component_model_builder_create(
         woden_component_model_builder_free;
     
     builder_impl->f_desc = desc;
-    woden_component_model_builder_init_components(&(builder_impl->builder), env, 
-            builder_impl->f_desc);
+    init_components(&(builder_impl->builder), env, builder_impl->f_desc);
    return &(builder_impl->builder);
 }
 
@@ -1026,7 +1031,7 @@ build_binding_exts(
                 binding, env, ext_ns);
         binding = woden_binding_to_element_extensible(
                 binding, env);
-        temp2 = WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(
+        temp2 = WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ELEMENTS_FOR_NAMESPACE(
                 binding, env, ext_ns);
         if(AXIS2_TRUE == temp1 || AXIS2_TRUE == temp2)
         {
@@ -1121,7 +1126,7 @@ build_binding_fault_exts(
                 bind_fault, env, ext_ns);
         bind_fault = woden_binding_fault_to_element_extensible(
                 bind_fault, env);
-        temp2 = WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(
+        temp2 = WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ELEMENTS_FOR_NAMESPACE(
                 bind_fault, env, ext_ns);
         if(AXIS2_TRUE == temp1 || AXIS2_TRUE == temp2)
         {
@@ -1211,7 +1216,7 @@ build_binding_op_exts(
                 bind_op, env, ext_ns);
         bind_op = woden_binding_op_to_element_extensible(
                 bind_op, env);
-        temp2 = WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(
+        temp2 = WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ELEMENTS_FOR_NAMESPACE(
                 bind_op, env, ext_ns);
         if(AXIS2_TRUE == temp1 || AXIS2_TRUE == temp2)
         {
@@ -1298,7 +1303,7 @@ build_binding_msg_ref_exts(
                 bind_msg_ref, env, ext_ns);
         bind_msg_ref = woden_binding_msg_ref_to_element_extensible(
                 bind_msg_ref, env);
-        temp2 = WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(
+        temp2 = WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ELEMENTS_FOR_NAMESPACE(
                 bind_msg_ref, env, ext_ns);
         if(AXIS2_TRUE == temp1 || AXIS2_TRUE == temp2)
         {
@@ -1347,7 +1352,7 @@ build_binding_fault_ref_exts(
                 bind_fault_ref, env, ext_ns);
         bind_fault_ref = woden_binding_fault_ref_to_element_extensible(
                 bind_fault_ref, env);
-        temp2 = WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(
+        temp2 = WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ELEMENTS_FOR_NAMESPACE(
                 bind_fault_ref, env, ext_ns);
         if(AXIS2_TRUE == temp1 || AXIS2_TRUE == temp2)
         {

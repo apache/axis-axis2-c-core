@@ -20,8 +20,8 @@
 
 #include <woden_binding_fault.h>
 #include <woden_binding_fault_ref.h>
-#include <woden_binding.h>
 #include <woden_binding_msg_ref.h>
+#include <woden_binding.h>
 #include <woden_binding_op.h>
 #include <woden_configurable_component.h>
 #include <woden_configurable.h>
@@ -115,6 +115,7 @@
 #include <axis2_xml_reader.h>
 #include <axiom_util.h>
 #include <axis2_utils.h>
+#include <axis2_generic_obj.h>
 
 #include <axis2_string_util.h>
 
@@ -2839,14 +2840,16 @@ parse_binding_msg_ref(
         woden_direction_t *direction_in = NULL;
         
         direction_in = woden_direction_get_direction_in(env);
-        WODEN_BINDING_MSG_REF_SET_DIRECTION(msg_ref, env, direction_in);
+        msg_ref = woden_binding_msg_ref_to_binding_msg_ref_element(msg_ref, env);
+        WODEN_BINDING_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_in);
     }
     if(0 == AXIS2_STRCMP(WODEN_ELEM_OUTPUT, localname))
     {
         woden_direction_t *direction_out = NULL;
         
         direction_out = woden_direction_get_direction_out(env);
-        WODEN_BINDING_MSG_REF_SET_DIRECTION(msg_ref, env, direction_out);
+        msg_ref = woden_binding_msg_ref_to_binding_msg_ref_element(msg_ref, env);
+        WODEN_BINDING_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_out);
     }
     
     msg_label_str = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, 
@@ -2912,7 +2915,7 @@ parse_binding_msg_ref(
         label_out_str = WODEN_MSG_LABEL_TO_STRING(msg_label_out, env);
         direction_in = woden_direction_get_direction_in(env); 
         direction_out = woden_direction_get_direction_out(env); 
-        if(AXIS2_TRUE == WODEN_DIRECTION_EQUALS(direction, direction_in))
+        if(direction == direction_in)
         {
             msg_ref = 
                 woden_binding_msg_ref_to_binding_msg_ref_element(
@@ -3533,10 +3536,11 @@ parse_property(
             
             /* The property value consists of the child info items of <value> */
             node_list = AXIOM_ELEMENT_GET_CHILD_ELEMENTS(temp_el, env, temp_el_node);
+            node_list_obj = axis2_generic_obj_create(env);
             AXIS2_GENERIC_OBJ_SET_VALUE(node_list_obj, env, node_list);
             AXIS2_GENERIC_OBJ_SET_FREE_FUNC(node_list_obj, env, node_list->ops->free_fn);
             property = woden_property_to_property_element(property, env);
-            AXIS2_PROPERTY_ELEMENT_SET_VALUE(property, env);
+            WODEN_PROPERTY_ELEMENT_SET_VALUE(property, env, node_list_obj);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_constraint, temp_el_node))

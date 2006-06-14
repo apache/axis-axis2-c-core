@@ -158,7 +158,7 @@ woden_soap_fault_code_get_soap_fault_code_any(
 }
 
 axis2_bool_t AXIS2_CALL
-woden_soap_fault_code_get_soap_fault_code_is_qname(
+woden_soap_fault_code_is_qname(
         void *soap_fault_code,
         const axis2_env_t *env)
 {

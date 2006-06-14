@@ -41,6 +41,7 @@
 #include <woden_component_exts.h>
 #include <woden_xml_attr.h>
 #include <woden_documentation_element.h>
+#include "../util/woden_component_model_builder.h"
 
 typedef struct woden_desc_impl woden_desc_impl_t;
 
@@ -1960,7 +1961,9 @@ woden_desc_init_components(
                 "WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
     desc_impl->f_component_initialized = AXIS2_TRUE;
-    return woden_component_model_builder_create(env, &(desc_impl->desc));
+    woden_component_model_builder_create(env, &(desc_impl->desc));
+    
+    return AXIS2_SUCCESS;
 }
 
 

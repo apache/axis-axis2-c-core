@@ -23,6 +23,7 @@
 #include <woden_binding_fault_element.h>
 #include <woden_interface.h>
 #include <woden_binding_op_element.h>
+#include <woden_element_extensible.h>
 
 typedef struct woden_binding_impl woden_binding_impl_t;
 
@@ -393,9 +394,9 @@ woden_binding_to_attr_extensible(
         base.documentable_element.wsdl_element.base.attr_extensible.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(woden_attr_extensible_ops_t));
-    woden_element_ext_resolve_methods(&(binding_impl->binding.base.
+    woden_attr_extensible_resolve_methods(&(binding_impl->binding.base.
             binding_element.base.documentable_element.
-            wsdl_element.base.attr_extensible), env, binding_impl->methods);
+            wsdl_element.base.attr_extensible), env, NULL, binding_impl->methods);
     return binding;
 }
 
@@ -419,9 +420,9 @@ woden_binding_to_element_extensible(
         base.documentable_element.wsdl_element.base.element_extensible.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(woden_element_extensible_ops_t));
-    woden_element_ext_resolve_methods(&(binding_impl->binding.base.
+    woden_element_extensible_resolve_methods(&(binding_impl->binding.base.
             binding_element.base.documentable_element.
-            wsdl_element.base.element_extensible), env, binding_impl->methods);
+            wsdl_element.base.element_extensible), env, NULL, binding_impl->methods);
     return binding;
 }
 

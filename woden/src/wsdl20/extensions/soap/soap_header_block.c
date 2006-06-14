@@ -1110,7 +1110,7 @@ woden_soap_header_block_set_ext_attr(
     header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
-    return WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTRIBUTE(
+    return WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTR(
             header_block_impl->f_attr_ext, env, attr_type, attr);
 }
 

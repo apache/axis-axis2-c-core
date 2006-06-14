@@ -927,7 +927,7 @@ woden_soap_module_set_ext_attr(
     module_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
 
-    return WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTRIBUTE(
+    return WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTR(
             module_impl->f_attr_ext, env, attr_type, attr);
 }
 

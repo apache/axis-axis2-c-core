@@ -706,7 +706,7 @@ woden_interface_msg_ref_free(void *interface_msg_ref,
         interface_msg_ref_impl->nested_configurable = NULL;
     }
 
-    axis2_interface_msg_ref_free_ops(interface_msg_ref, env);
+    woden_interface_msg_ref_free_ops(interface_msg_ref, env);
 
     if((&(interface_msg_ref_impl->interface_msg_ref))->ops)
     {

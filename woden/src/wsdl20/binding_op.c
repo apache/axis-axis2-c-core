@@ -336,7 +336,7 @@ woden_binding_op_to_configurable_element(
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
 
-    woden_binding_free_ops(binding_op, env);
+    woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.binding_op_element.base.configurable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
@@ -362,7 +362,7 @@ woden_binding_op_to_documentable_element(
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
 
-    woden_binding_free_ops(binding_op, env);
+    woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.binding_op_element.base.documentable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
@@ -388,7 +388,7 @@ woden_binding_op_to_documentable(
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
 
-    woden_binding_free_ops(binding_op, env);
+    woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.nested_configurable.base.
         configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
@@ -421,9 +421,9 @@ woden_binding_op_to_attr_extensible(
         base.documentable_element.wsdl_element.base.attr_extensible.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(woden_attr_extensible_ops_t));
-    woden_element_ext_resolve_methods(&(binding_op_impl->binding_op.base.
+    woden_attr_extensible_resolve_methods(&(binding_op_impl->binding_op.base.
             binding_op_element.base.documentable_element.
-            wsdl_element.base.attr_extensible), env, binding_op_impl->methods);
+            wsdl_element.base.attr_extensible), env, NULL, binding_op_impl->methods);
     return binding_op;
 }
 
@@ -447,9 +447,9 @@ woden_binding_op_to_element_extensible(
         base.documentable_element.wsdl_element.base.element_extensible.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(woden_element_extensible_ops_t));
-    woden_element_ext_resolve_methods(&(binding_op_impl->binding_op.base.
+    woden_element_extensible_resolve_methods(&(binding_op_impl->binding_op.base.
             binding_op_element.base.documentable_element.
-            wsdl_element.base.element_extensible), env, binding_op_impl->methods);
+            wsdl_element.base.element_extensible), env, NULL, binding_op_impl->methods);
     return binding_op;
 }
 

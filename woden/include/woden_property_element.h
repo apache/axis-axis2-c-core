@@ -190,7 +190,16 @@ woden_property_element_resolve_methods(
 
 #define WODEN_PROPERTY_ELEMENT_GET_REF(doc_el, env) \
       (((woden_property_element_t *) doc_el)->ops->\
-         get_ref(doc_el, env))
+         get_value(doc_el, env))
+
+#define WODEN_PROPERTY_ELEMENT_SET_VALUE(doc_el, env, value) \
+      (((woden_property_element_t *) doc_el)->ops->\
+         set_value(doc_el, env, value))
+
+#define WODEN_PROPERTY_ELEMENT_GET_VALUE(doc_el, env) \
+      (((woden_property_element_t *) doc_el)->ops->\
+         get_value(doc_el, env))
+
 
 #define WODEN_PROPERTY_ELEMENT_SET_CONSTRAINT_QNAME(doc_el, env, qname) \
       (((woden_property_element_t *) doc_el)->ops->\
