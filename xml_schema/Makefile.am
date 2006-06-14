@@ -1,3 +1,3 @@
 TESTS =
-SUBDIRS = src
+SUBDIRS = src samples
                                  

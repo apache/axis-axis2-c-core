@@ -64,4 +64,6 @@ int main(int argc, char *argv[])
         return 0;        
     env = axis2_env_create_all("test.log", 1);   
     xml_schema_test(env, filename);
+    return 0;
 }
+
