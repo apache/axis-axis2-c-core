@@ -25,6 +25,7 @@ woden_test_LDADD   =  \
                    	-laxis2_util \
 					-laxis2_axiom \
 					-laxis2_xml_schema \
+                    -laxis2_parser \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
 
