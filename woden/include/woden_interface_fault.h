@@ -195,7 +195,7 @@ woden_interface_fault_resolve_methods(
       (((woden_interface_fault_t *) interface_fault)->ops->\
          to_element(interface_fault, env))
 
-#define WODEN_INTERFACE_FAULT_SET_ELEMENT_DECLARATION(interface_fault, env, element_decl) \
+#define WODEN_INTERFACE_FAULT_SET_ELEMENT_DECL(interface_fault, env, element_decl) \
       (((woden_interface_fault_t *) interface_fault)->ops->\
         set_element_declaration (interface_fault, env, element_decl))
 
