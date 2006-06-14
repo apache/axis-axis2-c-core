@@ -184,7 +184,7 @@ woden_interface_fault_resolve_methods(
       (((woden_interface_fault_t *) interface_fault)->ops->get_base_impl(interface_fault, env))
 
 #define WODEN_INTERFACE_FAULT_GET_QNAME(interface_fault, env) \
-      (((woden_interface_fault_t *) interface_fault)->\
+      (((woden_interface_fault_t *) interface_fault)->ops->\
          get_qname(interface_fault, env))
 
 #define WODEN_INTERFACE_FAULT_GET_ELEMENT_DECLARATION(interface_fault, env) \

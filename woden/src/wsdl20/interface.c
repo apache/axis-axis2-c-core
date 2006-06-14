@@ -818,7 +818,7 @@ woden_interface_get_interface_fault(
         
         flt = AXIS2_ARRAY_LIST_GET(interface_impl->f_interface_fault_elements, 
                 env, i);
-        qname_l = (axis2_qname_t *) AXIS2_INTERFACE_FAULT_GET_QNAME(flt, env);
+        qname_l = (axis2_qname_t *) WODEN_INTERFACE_FAULT_GET_QNAME(flt, env);
         if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l))
         {
             fault = flt;
