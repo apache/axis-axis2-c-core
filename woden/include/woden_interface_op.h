@@ -129,6 +129,11 @@ woden_interface_op_to_nested_configurable(
         const axis2_env_t *env);
 
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
+woden_interface_op_to_nested_component(
+        void *interface_op,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
 woden_interface_op_to_configurable(
         void *interface_op,
         const axis2_env_t *env);

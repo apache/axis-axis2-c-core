@@ -186,9 +186,9 @@ woden_binding_op_element_resolve_methods(
       (((woden_binding_op_element_t *) binding_op_element)->ops->\
          remove_msg_ref_element (binding_op_element, env, msg_ref))
 
-#define WODEN_BINDING_OP_ELEMENT_GET_MSG_REF_ELEMENTS(binding_op_element, env) \
+#define WODEN_BINDING_OP_ELEMENT_GET_BINDING_MSG_REF_ELEMENTS(binding_op_element, env) \
       (((woden_binding_op_element_t *) binding_op_element)->ops->\
-         get_msg_ref_elements (binding_op_element, env))
+         get_binding_msg_ref_elements (binding_op_element, env))
 
 #define WODEN_BINDING_OP_ELEMENT_ADD_BINDING_FAULT_REF_ELEMENT(binding_op_element, env, fault_ref) \
       (((woden_binding_op_element_t *) binding_op_element)->ops->\
@@ -198,9 +198,9 @@ woden_binding_op_element_resolve_methods(
       (((woden_binding_op_element_t *) binding_op_element)->ops->\
          remove_fault_ref_element (binding_op_element, env, fault_ref))
 
-#define WODEN_BINDING_OP_ELEMENT_GET_FAULT_REF_ELEMENTS(binding_op_element, env) \
+#define WODEN_BINDING_OP_ELEMENT_GET_BINDING_FAULT_REF_ELEMENTS(binding_op_element, env) \
       (((woden_binding_op_element_t *) binding_op_element)->ops->\
-         get_fault_ref_elements (binding_op_element, env))
+         get_binding_fault_ref_elements (binding_op_element, env))
 
 
 

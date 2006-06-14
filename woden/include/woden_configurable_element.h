@@ -139,7 +139,7 @@ woden_configurable_element_resolve_methods(
 
 #define WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(conf_el, env) \
       (((woden_configurable_element_t *) conf_el)->ops->\
-         get_propertyelements(conf_el, env))
+         get_property_elements(conf_el, env))
 
 
 

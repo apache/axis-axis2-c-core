@@ -227,6 +227,31 @@ woden_interface_op_to_nested_configurable(
 }
 
 AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
+woden_interface_op_to_nested_component(
+        void *interface_op,
+        const axis2_env_t *env)
+{
+    woden_interface_op_impl_t *interface_op_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!interface_op)
+    {
+        interface_op_impl = (woden_interface_op_impl_t *) create(env);
+    }
+    else
+        interface_op_impl = (woden_interface_op_impl_t *) interface_op;
+
+    woden_interface_op_free_ops(interface_op, env);
+
+    interface_op_impl->interface_op.base.nested_configurable.base.nested_component.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(woden_nested_component_ops_t));
+    woden_nested_component_resolve_methods(&(interface_op_impl->interface_op.base.
+            nested_configurable.base.nested_component), env, interface_op_impl->methods);
+    return interface_op;
+}
+
+AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
 woden_interface_op_to_configurable(
         void *interface_op,
         const axis2_env_t *env)
@@ -434,6 +459,8 @@ create(const axis2_env_t *env)
     
     interface_op_impl->interface_op.base.interface_op_element.ops = NULL;
     interface_op_impl->interface_op.base.nested_configurable.ops = NULL;
+    interface_op_impl->interface_op.base.nested_configurable.base.
+        nested_component.ops = NULL;
     interface_op_impl->interface_op.base.nested_configurable.base.configurable.ops = 
             NULL;
     interface_op_impl->interface_op.base.interface_op_element.base.
@@ -592,6 +619,15 @@ woden_interface_op_free_ops(
                 nested_configurable.ops);
         interface_op_impl->interface_op.base.nested_configurable.ops = 
             NULL;
+    }
+ 
+    if(interface_op_impl->interface_op.base.nested_configurable.base.
+            nested_component.ops)
+    {
+        AXIS2_FREE(env->allocator, interface_op_impl->interface_op.base.
+                nested_configurable.base.nested_component.ops);
+        interface_op_impl->interface_op.base.nested_configurable.base.
+            nested_component.ops = NULL;
     }
     
     if(interface_op_impl->interface_op.base.nested_configurable.base.
