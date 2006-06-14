@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_SOAP_FAULT_CODE_H
-#define AXIS2_WODEN_SOAP_FAULT_CODE_H
+#ifndef WODEN_SOAP_FAULT_CODE_H
+#define WODEN_SOAP_FAULT_CODE_H
 
 /**
- * @file axis2_woden_soap_fault_code.h
+ * @file woden_soap_fault_code.h
  * @brief Axis2 Soap Fault Code Interface
  * This class represents the {soap fault code} property that forms part of the 
- * SOAP extensions to the WSDL <code>axis2_woden_binding_fault</code> component.
+ * SOAP extensions to the WSDL <code>woden_binding_fault</code> component.
  * This property may contain either a QName representing the code or the xs:token #any.
  * <p>
  * This class will restrict the possible values to a QName reference or the string "#any".
@@ -38,23 +38,23 @@
 #include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <woden/axis2_woden.h>
+#include <woden/woden.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_soap_fault_code axis2_woden_soap_fault_code_t;
-typedef struct axis2_woden_soap_fault_code_ops axis2_woden_soap_fault_code_ops_t;
-struct axis2_woden_ext_element;
+typedef struct woden_soap_fault_code woden_soap_fault_code_t;
+typedef struct woden_soap_fault_code_ops woden_soap_fault_code_ops_t;
+struct woden_ext_element;
 
-/** @defgroup axis2_woden_soap_fault_code Soap Fault Code
+/** @defgroup woden_soap_fault_code Soap Fault Code
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_soap_fault_code_ops
+struct woden_soap_fault_code_ops
 {
    /** 
      * Deallocate memory
@@ -88,40 +88,40 @@ struct axis2_woden_soap_fault_code_ops
 
 };
 
-struct axis2_woden_soap_fault_code
+struct woden_soap_fault_code
 {
-    axis2_woden_soap_fault_code_ops_t *ops;
+    woden_soap_fault_code_ops_t *ops;
     
 };
 
-AXIS2_EXTERN axis2_woden_soap_fault_code_t * AXIS2_CALL
-axis2_woden_soap_fault_code_create(
+AXIS2_EXTERN woden_soap_fault_code_t * AXIS2_CALL
+woden_soap_fault_code_create(
         const axis2_env_t *env,
         axis2_char_t *token,
         axis2_qname_t *code_qn);
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_woden_soap_fault_code_get_soap_fault_code_any(
+woden_soap_fault_code_get_soap_fault_code_any(
         const axis2_env_t *env);
 
-#define AXIS2_WODEN_SOAP_FAULT_CODE_FREE(soap_fault_code, env) \
-      (((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
+#define WODEN_SOAP_FAULT_CODE_FREE(soap_fault_code, env) \
+      (((woden_soap_fault_code_t *) soap_fault_code)->ops->\
          free (soap_fault_code, env))
 
-#define AXIS2_WODEN_SOAP_FAULT_CODE_IS_QNAME(soap_fault_code, env) \
-      (((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
+#define WODEN_SOAP_FAULT_CODE_IS_QNAME(soap_fault_code, env) \
+      (((woden_soap_fault_code_t *) soap_fault_code)->ops->\
          is_qname (soap_fault_code, env))
 
-#define AXIS2_WODEN_SOAP_FAULT_CODE_IS_TOKEN(soap_fault_code, env) \
-      (((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
+#define WODEN_SOAP_FAULT_CODE_IS_TOKEN(soap_fault_code, env) \
+      (((woden_soap_fault_code_t *) soap_fault_code)->ops->\
          is_token (soap_fault_code, env))
 
-#define AXIS2_WODEN_SOAP_FAULT_CODE_GET_QNAME(soap_fault_code, env) \
-      (((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
+#define WODEN_SOAP_FAULT_CODE_GET_QNAME(soap_fault_code, env) \
+      (((woden_soap_fault_code_t *) soap_fault_code)->ops->\
          get_qname (soap_fault_code, env))
 
-#define AXIS2_WODEN_SOAP_FAULT_CODE_GET_TOKEN(soap_fault_code, env) \
-      (((axis2_woden_soap_fault_code_t *) soap_fault_code)->ops->\
+#define WODEN_SOAP_FAULT_CODE_GET_TOKEN(soap_fault_code, env) \
+      (((woden_soap_fault_code_t *) soap_fault_code)->ops->\
          get_token (soap_fault_code, env))
 
 
@@ -129,4 +129,4 @@ axis2_woden_soap_fault_code_get_soap_fault_code_any(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_SOAP_FAULT_CODE_H */
+#endif /* WODEN_SOAP_FAULT_CODE_H */

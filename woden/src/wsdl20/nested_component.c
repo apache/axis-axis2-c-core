@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <woden/wsdl20/axis2_woden_nested_component.h>
+#include <woden_nested_component.h>
 
 axis2_status_t AXIS2_CALL
-axis2_woden_nested_component_resolve_methods(
-        axis2_woden_nested_component_t *nested_component,
+woden_nested_component_resolve_methods(
+        woden_nested_component_t *nested_component,
         const axis2_env_t *env,
         axis2_hash_t *methods)
 {

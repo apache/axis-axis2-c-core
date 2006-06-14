@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_DOCUMENTATION_ELEMENT_H
-#define AXIS2_WODEN_DOCUMENTATION_ELEMENT_H
+#ifndef WODEN_DOCUMENTATION_ELEMENT_H
+#define WODEN_DOCUMENTATION_ELEMENT_H
 
 /**
- * @file axis2_woden_documentation_element.h
+ * @file woden_documentation_element.h
  * @brief Axis2 Documentation Element Interface
  * This interface represents the WSDL 2.0 &lt;wsdl:documentation&gt; XML element.
  * The &lt;wsdl:documentation&gt; element may contain mixed content, but this 
@@ -34,25 +34,25 @@
 #include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <woden/wsdl20/xml/axis2_woden_wsdl_element.h>
-#include <woden/axis2_woden.h>
+#include <woden_wsdl_element.h>
+#include <woden/woden.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_documentation_element 
-        axis2_woden_documentation_element_t;
-typedef struct axis2_woden_documentation_element_ops 
-        axis2_woden_documentation_element_ops_t;
+typedef struct woden_documentation_element 
+        woden_documentation_element_t;
+typedef struct woden_documentation_element_ops 
+        woden_documentation_element_ops_t;
 
-/** @defgroup axis2_woden_documentation_element Documentation Element
+/** @defgroup woden_documentation_element Documentation Element
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_documentation_element_ops
+struct woden_documentation_element_ops
 {
    /** 
      * Deallocate memory
@@ -63,7 +63,7 @@ struct axis2_woden_documentation_element_ops
             void *doc_el,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *doc_el,
             const axis2_env_t *env);
@@ -80,34 +80,34 @@ struct axis2_woden_documentation_element_ops
 
 };
 
-struct axis2_woden_documentation_element
+struct woden_documentation_element
 {
-    axis2_woden_wsdl_element_t wsdl_element;
-    axis2_woden_documentation_element_ops_t *ops;
+    woden_wsdl_element_t wsdl_element;
+    woden_documentation_element_ops_t *ops;
 };
 
 /************************Woden C Internal Methods******************************/
 axis2_status_t AXIS2_CALL
-axis2_woden_documentation_element_resolve_methods(
-        axis2_woden_documentation_element_t *documentation_element,
+woden_documentation_element_resolve_methods(
+        woden_documentation_element_t *documentation_element,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_DOCUMENTATION_ELEMENT_FREE(doc_el, env) \
-      (((axis2_woden_documentation_element_t *) doc_el)->ops->\
+#define WODEN_DOCUMENTATION_ELEMENT_FREE(doc_el, env) \
+      (((woden_documentation_element_t *) doc_el)->ops->\
          free (doc_el, env))
 
-#define AXIS2_WODEN_DOCUMENTATION_ELEMENT_TYPE(doc_el, env) \
-      (((axis2_woden_documentation_element_t *) doc_el)->ops->\
+#define WODEN_DOCUMENTATION_ELEMENT_TYPE(doc_el, env) \
+      (((woden_documentation_element_t *) doc_el)->ops->\
          type (doc_el, env))
 
-#define AXIS2_WODEN_DOCUMENTATION_ELEMENT_SET_CONTENT(doc_el, env, doc_elem) \
-      (((axis2_woden_documentation_element_t *) doc_el)->ops->\
+#define WODEN_DOCUMENTATION_ELEMENT_SET_CONTENT(doc_el, env, doc_elem) \
+      (((woden_documentation_element_t *) doc_el)->ops->\
          set_content(doc_el, env, doc_elem))
 
-#define AXIS2_WODEN_DOCUMENTATION_ELEMENT_GET_CONTENT(doc_el, env) \
-      (((axis2_woden_documentation_element_t *) doc_el)->ops->\
+#define WODEN_DOCUMENTATION_ELEMENT_GET_CONTENT(doc_el, env) \
+      (((woden_documentation_element_t *) doc_el)->ops->\
          get_content(doc_el, env))
 
 
@@ -115,4 +115,4 @@ axis2_woden_documentation_element_resolve_methods(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_DOCUMENTATION_ELEMENT_H */
+#endif /* WODEN_DOCUMENTATION_ELEMENT_H */

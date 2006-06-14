@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_NESTED_ELEMENT_H
-#define AXIS2_WODEN_NESTED_ELEMENT_H
+#ifndef WODEN_NESTED_ELEMENT_H
+#define WODEN_NESTED_ELEMENT_H
 
 /**
- * @file axis2_woden_nested_element.h
+ * @file woden_nested_element.h
  * @brief Axis2 Nested Element Interface
  * Elements which are nested within a 'top-level' WSDL element will
  * extend this interface. These are &lt;feature&gt;, &lt;property&gt;
@@ -39,24 +39,24 @@
 #include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/xml/axis2_woden_wsdl_element.h>
+#include <woden/woden.h>
+#include <woden_wsdl_element.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_nested_element axis2_woden_nested_element_t;
-typedef struct axis2_woden_nested_element_ops axis2_woden_nested_element_ops_t;
-struct axis2_woden_wsdl_element;
+typedef struct woden_nested_element woden_nested_element_t;
+typedef struct woden_nested_element_ops woden_nested_element_ops_t;
+struct woden_wsdl_element;
 
-/** @defgroup axis2_woden_nested_element Nested Element
+/** @defgroup woden_nested_element Nested Element
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_nested_element_ops
+struct woden_nested_element_ops
 {
    /** 
      * Deallocate memory
@@ -67,7 +67,7 @@ struct axis2_woden_nested_element_ops
             void *doc_el,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *doc_el,
             const axis2_env_t *env);
@@ -76,7 +76,7 @@ struct axis2_woden_nested_element_ops
     set_parent_element) (
             void *doc_el,
             const axis2_env_t *env,
-            struct axis2_woden_wsdl_element *parent);
+            struct woden_wsdl_element *parent);
 
     void *(AXIS2_CALL *
     get_parent_element) (
@@ -85,34 +85,34 @@ struct axis2_woden_nested_element_ops
 
 };
 
-struct axis2_woden_nested_element
+struct woden_nested_element
 {
-    axis2_woden_wsdl_element_t wsdl_element;
-    axis2_woden_nested_element_ops_t *ops;
+    woden_wsdl_element_t wsdl_element;
+    woden_nested_element_ops_t *ops;
 };
 
 /************************Woden C Internal Methods*****************************/
 axis2_status_t AXIS2_CALL
-axis2_woden_nested_element_resolve_methods(
-        axis2_woden_nested_element_t *nested_element,
+woden_nested_element_resolve_methods(
+        woden_nested_element_t *nested_element,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_NESTED_ELEMENT_FREE(doc_el, env) \
-      (((axis2_woden_nested_element_t *) doc_el)->ops->\
+#define WODEN_NESTED_ELEMENT_FREE(doc_el, env) \
+      (((woden_nested_element_t *) doc_el)->ops->\
          free (doc_el, env))
 
-#define AXIS2_WODEN_NESTED_ELEMENT_TYPE(doc_el, env) \
-      (((axis2_woden_nested_element_t *) doc_el)->ops->\
+#define WODEN_NESTED_ELEMENT_TYPE(doc_el, env) \
+      (((woden_nested_element_t *) doc_el)->ops->\
          type (doc_el, env))
 
-#define AXIS2_WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(doc_el, env, parent) \
-      (((axis2_woden_nested_element_t *) doc_el)->ops->\
+#define WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(doc_el, env, parent) \
+      (((woden_nested_element_t *) doc_el)->ops->\
          set_parent_element(doc_el, env, parent))
 
-#define AXIS2_WODEN_NESTED_ELEMENT_GET_PARENT_ELEMENT(doc_el, env) \
-      (((axis2_woden_nested_element_t *) doc_el)->ops->\
+#define WODEN_NESTED_ELEMENT_GET_PARENT_ELEMENT(doc_el, env) \
+      (((woden_nested_element_t *) doc_el)->ops->\
          get_parent_element(doc_el, env))
 
 
@@ -120,4 +120,4 @@ axis2_woden_nested_element_resolve_methods(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_NESTED_ELEMENT_H */
+#endif /* WODEN_NESTED_ELEMENT_H */

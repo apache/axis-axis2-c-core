@@ -14,30 +14,30 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_H
-#define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_H
+#ifndef WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_H
+#define WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_H
 
 /**
- * @file axis2_woden_qname_list_or_token_any_attr.h
+ * @file woden_qname_list_or_token_any_attr.h
  * @brief Axis2 QName List or Token Any Attribute Interface
  *          This class represents XML attribute information items of type
  * "        Union of list of QName or xs:token #any"
  *          (e.g. the wsoap:subcodes extension attribute of binding fault).
  */
 
-#include <woden/axis2_woden.h>
-#include <woden/xml/axis2_woden_xml_attr.h>
+#include <woden/woden.h>
+#include <woden_xml_attr.h>
 #include <axis2_array_list.h>
 
-/** @defgroup axis2_woden_qname_list_or_token_any_attr QName List or Token Any Attribute
+/** @defgroup woden_qname_list_or_token_any_attr QName List or Token Any Attribute
   * @ingroup axis2_wsdl
   * @{
   */
 
-typedef struct axis2_woden_qname_list_or_token_any_attr 
-        axis2_woden_qname_list_or_token_any_attr_t;
-typedef struct axis2_woden_qname_list_or_token_any_attr_ops 
-        axis2_woden_qname_list_or_token_any_attr_ops_t;
+typedef struct woden_qname_list_or_token_any_attr 
+        woden_qname_list_or_token_any_attr_t;
+typedef struct woden_qname_list_or_token_any_attr_ops 
+        woden_qname_list_or_token_any_attr_ops_t;
 struct axiom_element;
 struct axiom_node;
 
@@ -46,7 +46,7 @@ extern "C"
 {
 #endif
 
-struct axis2_woden_qname_list_or_token_any_attr_ops
+struct woden_qname_list_or_token_any_attr_ops
 {
    /** 
      * Deallocate memory
@@ -62,7 +62,7 @@ struct axis2_woden_qname_list_or_token_any_attr_ops
             void *list_token_attr,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *list_token_attr,
             const axis2_env_t *env);
@@ -70,7 +70,7 @@ struct axis2_woden_qname_list_or_token_any_attr_ops
     /**
      * @return the base implementation class
      */
-    axis2_woden_xml_attr_t *(AXIS2_CALL *
+    woden_xml_attr_t *(AXIS2_CALL *
     get_base_impl) (
             void *list_token_attr,
             const axis2_env_t *env);
@@ -120,18 +120,18 @@ struct axis2_woden_qname_list_or_token_any_attr_ops
 
 };
 
-struct axis2_woden_qname_list_or_token_any_attr
+struct woden_qname_list_or_token_any_attr
 {
-    axis2_woden_xml_attr_t base;
-    axis2_woden_qname_list_or_token_any_attr_ops_t *ops;
+    woden_xml_attr_t base;
+    woden_qname_list_or_token_any_attr_ops_t *ops;
 };
 
 /*
  * TODO This constructor is not used for extension attributes, but may be useful if
  * parsing of native WSDL attributes is changed to use the XMLAttr interface.
  */
-AXIS2_EXTERN axis2_woden_qname_list_or_token_any_attr_t * AXIS2_CALL
-axis2_woden_qname_list_or_token_any_attr_create(
+AXIS2_EXTERN woden_qname_list_or_token_any_attr_t * AXIS2_CALL
+woden_qname_list_or_token_any_attr_create(
         const axis2_env_t *env,
         struct axiom_element *owner_el,
         struct axiom_node *owner_node,
@@ -141,56 +141,56 @@ axis2_woden_qname_list_or_token_any_attr_create(
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_qname_list_or_token_any_attr_resolve_methods(
-        axis2_woden_qname_list_or_token_any_attr_t *list_token_attr,
+woden_qname_list_or_token_any_attr_resolve_methods(
+        woden_qname_list_or_token_any_attr_t *list_token_attr,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_FREE(list_token_attr, env) \
-      (((axis2_woden_qname_list_or_token_any_attr_t *) \
+#define WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_FREE(list_token_attr, env) \
+      (((woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->free(list_token_attr, env))
 
-#define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_TO_QNAME_LIST_OR_TOKEN_ANY_ATTR_FREE(\
+#define WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_TO_QNAME_LIST_OR_TOKEN_ANY_ATTR_FREE(\
         list_token_attr, env) \
-      (((axis2_woden_qname_list_or_token_any_attr_t *) list_token_attr)->ops->\
+      (((woden_qname_list_or_token_any_attr_t *) list_token_attr)->ops->\
          to_qname_list_or_token_any_attr_free(list_token_attr, env))
 
-#define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_TYPE(list_token_attr, env) \
-      (((axis2_woden_qname_list_or_token_any_attr_t *) list_token_attr)->ops->\
+#define WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_TYPE(list_token_attr, env) \
+      (((woden_qname_list_or_token_any_attr_t *) list_token_attr)->ops->\
          type(list_token_attr, env))
 
-#define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_GET_BASE_IMPL(list_token_attr, \
+#define WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_GET_BASE_IMPL(list_token_attr, \
         env) \
-      (((axis2_woden_qname_list_or_token_any_attr_t *) \
+      (((woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->get_base_impl(list_token_attr, \
                                                           env))
 
-#define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_IS_QNAME_LIST(list_token_attr, \
+#define WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_IS_QNAME_LIST(list_token_attr, \
         env) \
-      (((axis2_woden_qname_list_or_token_any_attr_t *) \
+      (((woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->is_qname_list(list_token_attr, \
                                                             env))
 
-#define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_IS_TOKEN(list_token_attr, env) \
-      (((axis2_woden_qname_list_or_token_any_attr_t *) \
+#define WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_IS_TOKEN(list_token_attr, env) \
+      (((woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->is_token(list_token_attr, \
                                                        env))
 
-#define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_GET_QNAMES(list_token_attr, \
+#define WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_GET_QNAMES(list_token_attr, \
         env) \
-      (((axis2_woden_qname_list_or_token_any_attr_t *) \
+      (((woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->get_qnames(list_token_attr, \
                                                          env))
 
-#define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_GET_TOKEN(list_token_attr, \
+#define WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_GET_TOKEN(list_token_attr, \
         env) \
-      (((axis2_woden_qname_list_or_token_any_attr_t *) \
+      (((woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->get_token(list_token_attr, \
                                                          env))
 
-#define AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_CONVERT(list_token_attr, env) \
-      (((axis2_woden_qname_list_or_token_any_attr_t *) \
+#define WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_CONVERT(list_token_attr, env) \
+      (((woden_qname_list_or_token_any_attr_t *) \
           list_token_attr)->ops->convert(list_token_attr, \
                                                       env))
 
@@ -198,4 +198,4 @@ axis2_woden_qname_list_or_token_any_attr_resolve_methods(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_H */
+#endif /* WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR_H */

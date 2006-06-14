@@ -33,13 +33,13 @@ typedef struct axis2_generic_obj_ops axis2_generic_obj_ops_t;
     
 /**
  * @defgroup axis2_generic_obj Generic Obj
- * @ingroup axis2_woden_util 
+ * @ingroup woden_util 
  * @{
  */
 
 /** 
  * @brief Generic Obj ops struct
- * Encapsulator struct for ops of axis2_woden_generic_obj
+ * Encapsulator struct for ops of woden_generic_obj
  */
 AXIS2_DECLARE_DATA struct axis2_generic_obj_ops
 {

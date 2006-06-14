@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_MSG_LABEL_H
-#define AXIS2_WODEN_MSG_LABEL_H
+#ifndef WODEN_MSG_LABEL_H
+#define WODEN_MSG_LABEL_H
 
 /**
- * @file axis2_woden_msg_label.h
+ * @file woden_msg_label.h
  * @brief Axis2 Message Label Interface
  * This class defines the values of the {msg_label} property of
  * Interface Message Reference and Interface Fault Reference. This property 
@@ -39,8 +39,8 @@
  * <p>
  * Examples:
  * <pre>
- *     AXIS2_WODEN_INTERFACE_MSG_REF_SET_MSG_LABEL(msg_ref, env, msg_ref->AXIS2_WODEN_IN);
- *     if(msg_ref->AXIS2_WODEN_IN == AXIS2_WODEN_INTERFACE_MSG_REF_GET_MSG_LABEL(msg_ref, env))
+ *     WODEN_INTERFACE_MSG_REF_SET_MSG_LABEL(msg_ref, env, msg_ref->WODEN_IN);
+ *     if(msg_ref->WODEN_IN == WODEN_INTERFACE_MSG_REF_GET_MSG_LABEL(msg_ref, env))
  *          ...
  *     
  * </pre>
@@ -54,23 +54,23 @@
 #include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <woden/axis2_woden.h>
+#include <woden/woden.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_msg_label axis2_woden_msg_label_t;
-typedef struct axis2_woden_msg_label_ops axis2_woden_msg_label_ops_t;
-struct axis2_woden_ext_element;
+typedef struct woden_msg_label woden_msg_label_t;
+typedef struct woden_msg_label_ops woden_msg_label_ops_t;
+struct woden_ext_element;
 
-/** @defgroup axis2_woden_msg_label Message Label
+/** @defgroup woden_msg_label Message Label
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_msg_label_ops
+struct woden_msg_label_ops
 {
    /** 
      * Deallocate memory
@@ -95,44 +95,44 @@ struct axis2_woden_msg_label_ops
     equals) (
             void *msg_label,
             const axis2_env_t *env,
-            axis2_woden_msg_label_t *other);
+            woden_msg_label_t *other);
 
 
 };
 
-struct axis2_woden_msg_label
+struct woden_msg_label
 {
-    axis2_woden_msg_label_ops_t *ops;
+    woden_msg_label_ops_t *ops;
     
 };
 
-AXIS2_EXTERN axis2_woden_msg_label_t *AXIS2_CALL
-axis2_woden_msg_label_get_msg_label_in(
+AXIS2_EXTERN woden_msg_label_t *AXIS2_CALL
+woden_msg_label_get_msg_label_in(
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_msg_label_t *AXIS2_CALL
-axis2_woden_msg_label_get_msg_label_out(
+AXIS2_EXTERN woden_msg_label_t *AXIS2_CALL
+woden_msg_label_get_msg_label_out(
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_msg_label_t *AXIS2_CALL
-axis2_woden_msg_label_get_invalid_value(
+AXIS2_EXTERN woden_msg_label_t *AXIS2_CALL
+woden_msg_label_get_invalid_value(
         const axis2_env_t *env,
         const axis2_char_t *value);
 
-#define AXIS2_WODEN_MSG_LABEL_FREE(msg_label, env) \
-      (((axis2_woden_msg_label_t *) msg_label)->ops->\
+#define WODEN_MSG_LABEL_FREE(msg_label, env) \
+      (((woden_msg_label_t *) msg_label)->ops->\
          free (msg_label, env))
 
-#define AXIS2_WODEN_MSG_LABEL_TO_STRING(msg_label, env) \
-      (((axis2_woden_msg_label_t *) msg_label)->ops->\
+#define WODEN_MSG_LABEL_TO_STRING(msg_label, env) \
+      (((woden_msg_label_t *) msg_label)->ops->\
          to_string (msg_label, env))
 
-#define AXIS2_WODEN_MSG_LABEL_IS_VALID(msg_label, env) \
-      (((axis2_woden_msg_label_t *) msg_label)->ops->\
+#define WODEN_MSG_LABEL_IS_VALID(msg_label, env) \
+      (((woden_msg_label_t *) msg_label)->ops->\
          is_valid (msg_label, env))
 
-#define AXIS2_WODEN_MSG_LABEL_EQUALS(msg_label, env, other) \
-      (((axis2_woden_msg_label_t *) msg_label)->ops->\
+#define WODEN_MSG_LABEL_EQUALS(msg_label, env, other) \
+      (((woden_msg_label_t *) msg_label)->ops->\
          equals (msg_label, env, other))
 
 
@@ -140,4 +140,4 @@ axis2_woden_msg_label_get_invalid_value(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_MSG_LABEL_H */
+#endif /* WODEN_MSG_LABEL_H */

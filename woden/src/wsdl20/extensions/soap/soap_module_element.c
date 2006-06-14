@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <woden/wsdl20/extensions/soap/axis2_woden_soap_module_element.h>
+#include <woden_soap_module_element.h>
 
 axis2_status_t AXIS2_CALL
-axis2_woden_soap_module_element_resolve_methods(
-        axis2_woden_soap_module_element_t *soap_module_element,
+woden_soap_module_element_resolve_methods(
+        woden_soap_module_element_t *soap_module_element,
         const axis2_env_t *env,
         axis2_hash_t *methods)
 {

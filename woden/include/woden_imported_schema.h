@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_IMPORTED_SCHEMA_H
-#define AXIS2_WODEN_IMPORTED_SCHEMA_H
+#ifndef WODEN_IMPORTED_SCHEMA_H
+#define WODEN_IMPORTED_SCHEMA_H
 
 /**
- * @file axis2_woden_imported_schema.h
+ * @file woden_imported_schema.h
  * @brief Axis2 Imported Schema Interface
  *          This interface represents a schema import, &lt;xs:import&gt;. It 
  *          extends the abstract class SchemaImpl, adding support for the 
  *          <code>schemaLocation</code> attribute.
  */
 
-#include <woden/schema/axis2_woden_schema.h>
+#include <woden_schema.h>
 
-/** @defgroup axis2_woden_imported_schema Imported Schema
+/** @defgroup woden_imported_schema Imported Schema
   * @ingroup axis2_wsdl
   * @{
   */
 
-typedef struct axis2_woden_imported_schema axis2_woden_imported_schema_t;
-typedef struct axis2_woden_imported_schema_ops axis2_woden_imported_schema_ops_t;
+typedef struct woden_imported_schema woden_imported_schema_t;
+typedef struct woden_imported_schema_ops woden_imported_schema_ops_t;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-struct axis2_woden_imported_schema_ops
+struct woden_imported_schema_ops
 {
    /** 
      * Deallocate memory
@@ -51,14 +51,14 @@ struct axis2_woden_imported_schema_ops
             void *schema,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *schema,
             const axis2_env_t *env);
     /**
      * @return the base implementation class
      */
-    axis2_woden_schema_t *(AXIS2_CALL *
+    woden_schema_t *(AXIS2_CALL *
     get_base_impl) (
             void *schema,
             const axis2_env_t *env);
@@ -77,49 +77,49 @@ struct axis2_woden_imported_schema_ops
   
 };
 
-struct axis2_woden_imported_schema
+struct woden_imported_schema
 {
-    axis2_woden_schema_t schema;
-    axis2_woden_imported_schema_ops_t *ops;
+    woden_schema_t schema;
+    woden_imported_schema_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_imported_schema_t * AXIS2_CALL
-axis2_woden_imported_schema_create(
+AXIS2_EXTERN woden_imported_schema_t * AXIS2_CALL
+woden_imported_schema_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_EXTERN axis2_woden_imported_schema_t * AXIS2_CALL
-axis2_woden_imported_schema_to_schema(
+AXIS2_EXTERN woden_imported_schema_t * AXIS2_CALL
+woden_imported_schema_to_schema(
         void *schema,
         const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_imported_schema_resolve_methods(
-        axis2_woden_imported_schema_t *schema,
+woden_imported_schema_resolve_methods(
+        woden_imported_schema_t *schema,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_IMPORTED_SCHEMA_FREE(schema, env) \
-      (((axis2_woden_imported_schema_t *) schema)->ops->free(schema, env))
+#define WODEN_IMPORTED_SCHEMA_FREE(schema, env) \
+      (((woden_imported_schema_t *) schema)->ops->free(schema, env))
 
-#define AXIS2_WODEN_IMPORTED_SCHEMA_TYPE(schema, env) \
-      (((axis2_woden_imported_schema_t *) schema)->ops->type(schema, env))
+#define WODEN_IMPORTED_SCHEMA_TYPE(schema, env) \
+      (((woden_imported_schema_t *) schema)->ops->type(schema, env))
 
-#define AXIS2_WODEN_IMPORTED_SCHEMA_GET_BASE_IMPL(schema, env) \
-      (((axis2_woden_imported_schema_t *) schema)->ops->get_base_impl(schema, \
+#define WODEN_IMPORTED_SCHEMA_GET_BASE_IMPL(schema, env) \
+      (((woden_imported_schema_t *) schema)->ops->get_base_impl(schema, \
                                                                         env))
 
-#define AXIS2_WODEN_IMPORTED_SCHEMA_SET_LOCATION(schema, env, location) \
-      (((axis2_woden_imported_schema_t *) schema)->ops->set_location(schema, \
+#define WODEN_IMPORTED_SCHEMA_SET_LOCATION(schema, env, location) \
+      (((woden_imported_schema_t *) schema)->ops->set_location(schema, \
                                                                     env, location))
 
-#define AXIS2_WODEN_IMPORTED_SCHEMA_GET_LOCATION(schema, env) \
-      (((axis2_woden_imported_schema_t *) schema)->ops->get_location(schema, \
+#define WODEN_IMPORTED_SCHEMA_GET_LOCATION(schema, env) \
+      (((woden_imported_schema_t *) schema)->ops->get_location(schema, \
                                                                        env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_IMPORTED_SCHEMA_H */
+#endif /* WODEN_IMPORTED_SCHEMA_H */

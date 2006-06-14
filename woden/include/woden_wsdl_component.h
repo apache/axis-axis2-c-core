@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_WSDL_COMPONENT_H
-#define AXIS2_WODEN_WSDL_COMPONENT_H
+#ifndef WODEN_WSDL_COMPONENT_H
+#define WODEN_WSDL_COMPONENT_H
 
 /**
- * @file axis2_woden_wsdl_component.h
+ * @file woden_wsdl_component.h
  * @brief Axis2 Wsdl Component Interface
  * All components directly or indirectly extend this interface, so it provides 
  * a common term of reference for all components.
@@ -32,23 +32,23 @@
 #include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_uri.h>
-#include <woden/axis2_woden.h>
+#include <woden/woden.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_wsdl_component axis2_woden_wsdl_component_t;
-typedef struct axis2_woden_wsdl_component_ops axis2_woden_wsdl_component_ops_t;
-struct axis2_woden_component_exts;
+typedef struct woden_wsdl_component woden_wsdl_component_t;
+typedef struct woden_wsdl_component_ops woden_wsdl_component_ops_t;
+struct woden_component_exts;
 
-/** @defgroup axis2_woden_wsdl_component Wsdl Component
+/** @defgroup woden_wsdl_component Wsdl Component
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_wsdl_component_ops
+struct woden_wsdl_component_ops
 {
    /** 
      * Deallocate memory
@@ -64,7 +64,7 @@ struct axis2_woden_wsdl_component_ops
             void *wsdl_component,
             const axis2_env_t *env);
 
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *wsdl_component,
             const axis2_env_t *env);
@@ -77,38 +77,38 @@ struct axis2_woden_wsdl_component_ops
 
 };
 
-struct axis2_woden_wsdl_component
+struct woden_wsdl_component
 {
-    axis2_woden_wsdl_component_ops_t *ops;
+    woden_wsdl_component_ops_t *ops;
 };
 
 /************************Woden C Internal Methods******************************/
 axis2_status_t AXIS2_CALL
-axis2_woden_wsdl_component_resolve_methods(
-        axis2_woden_wsdl_component_t *wsdl_component,
+woden_wsdl_component_resolve_methods(
+        woden_wsdl_component_t *wsdl_component,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_WSDL_COMPONENT_FREE(wsdl_component, env) \
-      (((axis2_woden_wsdl_component_t *) wsdl_component)->ops->\
+#define WODEN_WSDL_COMPONENT_FREE(wsdl_component, env) \
+      (((woden_wsdl_component_t *) wsdl_component)->ops->\
          free (wsdl_component, env))
 
-#define AXIS2_WODEN_WSDL_COMPONENT_TO_WSDL_COMPONENT_FREE(wsdl_component, env) \
-      (((axis2_woden_wsdl_component_t *) wsdl_component)->ops->\
+#define WODEN_WSDL_COMPONENT_TO_WSDL_COMPONENT_FREE(wsdl_component, env) \
+      (((woden_wsdl_component_t *) wsdl_component)->ops->\
          to_wsdl_component_free (wsdl_component, env))
 
-#define AXIS2_WODEN_WSDL_COMPONENT_TYPE(wsdl_component, env) \
-      (((axis2_woden_wsdl_component_t *) wsdl_component)->ops->\
+#define WODEN_WSDL_COMPONENT_TYPE(wsdl_component, env) \
+      (((woden_wsdl_component_t *) wsdl_component)->ops->\
          type (wsdl_component, env))
 
-#define AXIS2_WODEN_WSDL_COMPONENT_GET_COMPONENT_EXTS_FOR_NAMESPACE(\
+#define WODEN_WSDL_COMPONENT_GET_COMPONENT_EXTS_FOR_NAMESPACE(\
         wsdl_component, env, namespc) \
-      (((axis2_woden_wsdl_component_t *) wsdl_component)->ops->\
+      (((woden_wsdl_component_t *) wsdl_component)->ops->\
          get_component_exts_for_namespace(wsdl_component, env, namespc))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_WSDL_COMPONENT_H */
+#endif /* WODEN_WSDL_COMPONENT_H */

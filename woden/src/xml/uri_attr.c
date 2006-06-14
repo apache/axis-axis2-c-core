@@ -14,51 +14,51 @@
  * limitations under the License.
  */
 
-#include <woden/xml/axis2_woden_uri_attr.h>
-#include <woden/xml/axis2_woden_xml_attr.h>
+#include <woden_uri_attr.h>
+#include <woden_xml_attr.h>
 #include <axis2_uri.h>
 #include <axiom_element.h>
 #include <axiom_node.h>
 
-typedef struct axis2_woden_uri_attr_impl axis2_woden_uri_attr_impl_t;
+typedef struct woden_uri_attr_impl woden_uri_attr_impl_t;
 
 /** 
  * @brief URI Attribute Struct Impl
  *   Axis2 URI Attribute  
  */ 
-struct axis2_woden_uri_attr_impl
+struct woden_uri_attr_impl
 {
-    axis2_woden_uri_attr_t uri_attr;
-    axis2_woden_xml_attr_t *xml_attr;
-    axis2_woden_obj_types_t obj_type;
+    woden_uri_attr_t uri_attr;
+    woden_xml_attr_t *xml_attr;
+    woden_obj_types_t obj_type;
     axis2_hash_t *methods;
 };
 
 #define INTF_TO_IMPL(uri_attr) \
-    ((axis2_woden_uri_attr_impl_t *) uri_attr)
+    ((woden_uri_attr_impl_t *) uri_attr)
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_uri_attr_free(
+woden_uri_attr_free(
         void *uri_attr,
         const axis2_env_t *env);
 
-axis2_woden_obj_types_t AXIS2_CALL 
-axis2_woden_uri_attr_type(
+woden_obj_types_t AXIS2_CALL 
+woden_uri_attr_type(
         void *uri_attr,
         const axis2_env_t *env);
 
-axis2_woden_xml_attr_t *AXIS2_CALL
-axis2_woden_uri_attr_get_base_impl(
+woden_xml_attr_t *AXIS2_CALL
+woden_uri_attr_get_base_impl(
         void *uri_attr,
         const axis2_env_t *env);
 
 axis2_uri_t *AXIS2_CALL
-axis2_woden_uri_attr_get_uri(
+woden_uri_attr_get_uri(
         void *uri_attr,
         const axis2_env_t *env);
 
 void *AXIS2_CALL
-axis2_woden_uri_attr_convert(
+woden_uri_attr_convert(
         void *uri_attr,
         const axis2_env_t *env,
         axiom_element_t *owner_el,
@@ -69,37 +69,37 @@ axis2_woden_uri_attr_convert(
  * TODO This constructor is not used for extension attributes, but may be useful if
  * parsing of native WSDL attributes is changed to use the XMLAttr interface.
  */
-AXIS2_EXTERN axis2_woden_uri_attr_t * AXIS2_CALL
-axis2_woden_uri_attr_create(
+AXIS2_EXTERN woden_uri_attr_t * AXIS2_CALL
+woden_uri_attr_create(
         const axis2_env_t *env,
         axiom_element_t *owner_el,
         axiom_node_t *owner_node,
         axis2_qname_t *attr_type,
         axis2_char_t *attr_value)
 {
-    axis2_woden_uri_attr_impl_t *uri_attr_impl = NULL;
+    woden_uri_attr_impl_t *uri_attr_impl = NULL;
      
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     uri_attr_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_uri_attr_impl_t));
+                    sizeof(woden_uri_attr_impl_t));
 
-    uri_attr_impl->obj_type = AXIS2_WODEN_URI_ATTR;
+    uri_attr_impl->obj_type = WODEN_URI_ATTR;
     uri_attr_impl->xml_attr = NULL;
     uri_attr_impl->methods = NULL;
     uri_attr_impl->uri_attr.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_uri_attr_ops_t));
+                sizeof(woden_uri_attr_ops_t));
 
     uri_attr_impl->uri_attr.ops->free = 
-        axis2_woden_uri_attr_free;
+        woden_uri_attr_free;
     uri_attr_impl->uri_attr.ops->type = 
-        axis2_woden_uri_attr_type;
+        woden_uri_attr_type;
     uri_attr_impl->uri_attr.ops->get_base_impl = 
-        axis2_woden_uri_attr_get_base_impl;
+        woden_uri_attr_get_base_impl;
     uri_attr_impl->uri_attr.ops->get_uri = 
-        axis2_woden_uri_attr_get_uri;
+        woden_uri_attr_get_uri;
     uri_attr_impl->uri_attr.ops->convert = 
-        axis2_woden_uri_attr_convert;
+        woden_uri_attr_convert;
     
     
     uri_attr_impl->methods = axis2_hash_make(env);
@@ -109,26 +109,26 @@ axis2_woden_uri_attr_create(
         return NULL;
     }
     axis2_hash_set(uri_attr_impl->methods, "free", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_uri_attr_free);
+            AXIS2_HASH_KEY_STRING, woden_uri_attr_free);
     axis2_hash_set(uri_attr_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_uri_attr_type);
+            AXIS2_HASH_KEY_STRING, woden_uri_attr_type);
     axis2_hash_set(uri_attr_impl->methods, "get_uri", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_uri_attr_get_uri);
+            AXIS2_HASH_KEY_STRING, woden_uri_attr_get_uri);
     axis2_hash_set(uri_attr_impl->methods, "convert", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_uri_attr_convert);
+            AXIS2_HASH_KEY_STRING, woden_uri_attr_convert);
 
-    uri_attr_impl->xml_attr = axis2_woden_xml_attr_create(env, owner_el, 
+    uri_attr_impl->xml_attr = woden_xml_attr_create(env, owner_el, 
             owner_node, attr_type, attr_value);
     
     return &(uri_attr_impl->uri_attr);
 }
 
-axis2_woden_obj_types_t AXIS2_CALL
-axis2_woden_uri_attr_type(
+woden_obj_types_t AXIS2_CALL
+woden_uri_attr_type(
         void *uri_attr,
         const axis2_env_t *env)
 {
-    axis2_woden_uri_attr_impl_t *uri_attr_impl = NULL;
+    woden_uri_attr_impl_t *uri_attr_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     uri_attr_impl = INTF_TO_IMPL(uri_attr);
@@ -137,11 +137,11 @@ axis2_woden_uri_attr_type(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_uri_attr_free(
+woden_uri_attr_free(
         void *uri_attr,
         const axis2_env_t *env)
 {
-    axis2_woden_uri_attr_impl_t *uri_attr_impl = NULL;
+    woden_uri_attr_impl_t *uri_attr_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     uri_attr_impl = INTF_TO_IMPL(uri_attr);
@@ -154,7 +154,7 @@ axis2_woden_uri_attr_free(
 
     if(uri_attr_impl->xml_attr)
     {
-        AXIS2_WODEN_XML_ATTR_FREE(uri_attr_impl->xml_attr, env);
+        WODEN_XML_ATTR_FREE(uri_attr_impl->xml_attr, env);
         uri_attr_impl->xml_attr = NULL;
     }
     
@@ -172,12 +172,12 @@ axis2_woden_uri_attr_free(
     return AXIS2_SUCCESS;
 }
 
-axis2_woden_xml_attr_t *AXIS2_CALL
-axis2_woden_uri_attr_get_base_impl(
+woden_xml_attr_t *AXIS2_CALL
+woden_uri_attr_get_base_impl(
         void *uri_attr,
         const axis2_env_t *env)
 {
-    axis2_woden_uri_attr_impl_t *uri_attr_impl = NULL;
+    woden_uri_attr_impl_t *uri_attr_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     uri_attr_impl = INTF_TO_IMPL(uri_attr);
@@ -186,8 +186,8 @@ axis2_woden_uri_attr_get_base_impl(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_uri_attr_resolve_methods(
-        axis2_woden_uri_attr_t *uri_attr,
+woden_uri_attr_resolve_methods(
+        woden_uri_attr_t *uri_attr,
         const axis2_env_t *env,
         axis2_hash_t *methods)
 {
@@ -209,27 +209,27 @@ axis2_woden_uri_attr_resolve_methods(
 }
 
 axis2_uri_t *AXIS2_CALL
-axis2_woden_uri_attr_get_uri(
+woden_uri_attr_get_uri(
         void *uri_attr,
         const axis2_env_t *env)
 {
-    axis2_woden_uri_attr_impl_t *uri_attr_impl = NULL;
+    woden_uri_attr_impl_t *uri_attr_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     uri_attr_impl = INTF_TO_IMPL(uri_attr);
-    return (axis2_uri_t *) AXIS2_WODEN_XML_ATTR_GET_CONTENT(
+    return (axis2_uri_t *) WODEN_XML_ATTR_GET_CONTENT(
             uri_attr_impl->xml_attr, env);
 }
 
 void *AXIS2_CALL
-axis2_woden_uri_attr_convert(
+woden_uri_attr_convert(
         void *uri_attr,
         const axis2_env_t *env,
         axiom_element_t *owner_el,
         axiom_node_t *owner_node,
         axis2_char_t *attr_value)
 {
-    axis2_woden_uri_attr_impl_t *uri_attr_impl = NULL;
+    woden_uri_attr_impl_t *uri_attr_impl = NULL;
     axis2_uri_t *url = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -242,7 +242,7 @@ axis2_woden_uri_attr_convert(
     
     if(!url)
     {
-        AXIS2_WODEN_XML_ATTR_SET_VALID(uri_attr_impl->xml_attr, env, AXIS2_FALSE);
+        WODEN_XML_ATTR_SET_VALID(uri_attr_impl->xml_attr, env, AXIS2_FALSE);
         /* TODO handler error */
     }
     

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_BOOL_ATTR_H
-#define AXIS2_WODEN_BOOL_ATTR_H
+#ifndef WODEN_BOOL_ATTR_H
+#define WODEN_BOOL_ATTR_H
 
 /**
- * @file axis2_woden_bool_attr.h
+ * @file woden_bool_attr.h
  * @brief Axis2 Boolean Attribute Interface
  *          This class represents XML attribute information items of type 
  *          xs:boolean. If the attribute value is not "true" or "false" 
@@ -26,16 +26,16 @@
  *          but the isValid() method will return "false".
  */
 
-#include <woden/xml/axis2_woden_xml_attr.h>
-#include <woden/axis2_woden.h>
+#include <woden_xml_attr.h>
+#include <woden/woden.h>
 
-/** @defgroup axis2_woden_bool_attr Boolean Attribute
+/** @defgroup woden_bool_attr Boolean Attribute
   * @ingroup axis2_wsdl
   * @{
   */
 
-typedef struct axis2_woden_bool_attr axis2_woden_bool_attr_t;
-typedef struct axis2_woden_bool_attr_ops axis2_woden_bool_attr_ops_t;
+typedef struct woden_bool_attr woden_bool_attr_t;
+typedef struct woden_bool_attr_ops woden_bool_attr_ops_t;
 struct axiom_element;
 struct axiom_node;
 
@@ -44,7 +44,7 @@ extern "C"
 {
 #endif
 
-struct axis2_woden_bool_attr_ops
+struct woden_bool_attr_ops
 {
    /** 
      * Deallocate memory
@@ -60,7 +60,7 @@ struct axis2_woden_bool_attr_ops
             void *bool_attr,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *bool_attr,
             const axis2_env_t *env);
@@ -68,7 +68,7 @@ struct axis2_woden_bool_attr_ops
     /**
      * @return the base implementation class
      */
-    axis2_woden_xml_attr_t *(AXIS2_CALL *
+    woden_xml_attr_t *(AXIS2_CALL *
     get_base_impl) (
             void *bool_attr,
             const axis2_env_t *env);
@@ -103,18 +103,18 @@ struct axis2_woden_bool_attr_ops
   
 };
 
-struct axis2_woden_bool_attr
+struct woden_bool_attr
 {
-    axis2_woden_xml_attr_t base;
-    axis2_woden_bool_attr_ops_t *ops;
+    woden_xml_attr_t base;
+    woden_bool_attr_ops_t *ops;
 };
 
 /*
  * TODO This constructor is not used for extension attributes, but may be useful if
  * parsing of native WSDL attributes is changed to use the axis2_xml_attr interface.
  */
-AXIS2_EXTERN axis2_woden_bool_attr_t * AXIS2_CALL
-axis2_woden_bool_attr_create(
+AXIS2_EXTERN woden_bool_attr_t * AXIS2_CALL
+woden_bool_attr_create(
         const axis2_env_t *env,
         struct axiom_element *owner_el,
         struct axiom_node *owner_node,
@@ -124,37 +124,37 @@ axis2_woden_bool_attr_create(
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_bool_attr_resolve_methods(
-        axis2_woden_bool_attr_t *bool_attr,
+woden_bool_attr_resolve_methods(
+        woden_bool_attr_t *bool_attr,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_BOOL_ATTR_FREE(bool_attr, env) \
-      (((axis2_woden_bool_attr_t *) bool_attr)->ops->free(bool_attr, env))
+#define WODEN_BOOL_ATTR_FREE(bool_attr, env) \
+      (((woden_bool_attr_t *) bool_attr)->ops->free(bool_attr, env))
 
-#define AXIS2_WODEN_BOOL_ATTR_TO_BOOL_ATTR_FREE(bool_attr, env) \
-      (((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+#define WODEN_BOOL_ATTR_TO_BOOL_ATTR_FREE(bool_attr, env) \
+      (((woden_bool_attr_t *) bool_attr)->ops->\
          to_bool_attr_free(bool_attr, env))
 
-#define AXIS2_WODEN_BOOL_ATTR_TYPE(bool_attr, env) \
-      (((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+#define WODEN_BOOL_ATTR_TYPE(bool_attr, env) \
+      (((woden_bool_attr_t *) bool_attr)->ops->\
          type(bool_attr, env))
 
-#define AXIS2_WODEN_BOOL_ATTR_GET_BASE_IMPL(bool_attr, env) \
-      (((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+#define WODEN_BOOL_ATTR_GET_BASE_IMPL(bool_attr, env) \
+      (((woden_bool_attr_t *) bool_attr)->ops->\
          get_base_impl(bool_attr, env))
 
-#define AXIS2_WODEN_BOOL_ATTR_GET_BOOL(bool_attr, env) \
-      (((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+#define WODEN_BOOL_ATTR_GET_BOOL(bool_attr, env) \
+      (((woden_bool_attr_t *) bool_attr)->ops->\
          get_boolean(bool_attr, env))
 
-#define AXIS2_WODEN_BOOL_ATTR_CONVERT(bool_attr, env) \
-      (((axis2_woden_bool_attr_t *) bool_attr)->ops->\
+#define WODEN_BOOL_ATTR_CONVERT(bool_attr, env) \
+      (((woden_bool_attr_t *) bool_attr)->ops->\
          convert(bool_attr, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_BOOL_ATTR_H */
+#endif /* WODEN_BOOL_ATTR_H */

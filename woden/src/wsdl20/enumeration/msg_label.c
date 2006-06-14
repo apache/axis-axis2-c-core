@@ -14,83 +14,83 @@
  * limitations under the License.
  */
 
-#include <woden/wsdl20/enumeration/axis2_woden_msg_label.h>
+#include <woden_msg_label.h>
 
-typedef struct axis2_woden_msg_label_impl axis2_woden_msg_label_impl_t;
+typedef struct woden_msg_label_impl woden_msg_label_impl_t;
 
 /** 
  * @brief Message Label Struct Impl
  *   Axis2 Message Label  
  */ 
-struct axis2_woden_msg_label_impl
+struct woden_msg_label_impl
 {
-    axis2_woden_msg_label_t msg_label;
+    woden_msg_label_t msg_label;
     axis2_char_t *f_value;
     axis2_bool_t f_valid;
 };
 
-#define INTF_TO_IMPL(msg_label) ((axis2_woden_msg_label_impl_t *) msg_label)
+#define INTF_TO_IMPL(msg_label) ((woden_msg_label_impl_t *) msg_label)
 
-static axis2_woden_msg_label_t *WODEN_MSG_LABEL_IN = NULL;
-static axis2_woden_msg_label_t *WODEN_MSG_LABEL_OUT = NULL;
+static woden_msg_label_t *WODEN_MSG_LABEL_IN = NULL;
+static woden_msg_label_t *WODEN_MSG_LABEL_OUT = NULL;
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_msg_label_free(
+woden_msg_label_free(
         void *msg_label,
         const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
-axis2_woden_msg_label_to_string(
+woden_msg_label_to_string(
         void *msg_label,
         const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
-axis2_woden_msg_label_is_valid(
+woden_msg_label_is_valid(
         void *msg_label,
         const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
-axis2_woden_msg_label_equals(
+woden_msg_label_equals(
         void *msg_label,
         const axis2_env_t *env,
-        axis2_woden_msg_label_t *other);
+        woden_msg_label_t *other);
 
-static axis2_woden_msg_label_t *
+static woden_msg_label_t *
 create(
         const axis2_env_t *env)
 {
-    axis2_woden_msg_label_impl_t *msg_label_impl = NULL;
+    woden_msg_label_impl_t *msg_label_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg_label_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_msg_label_impl_t));
+                    sizeof(woden_msg_label_impl_t));
 
     msg_label_impl->f_value = NULL;
     msg_label_impl->f_valid = AXIS2_TRUE;
    
     msg_label_impl->msg_label.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_msg_label_ops_t));
+                    sizeof(woden_msg_label_ops_t));
     
-    msg_label_impl->msg_label.ops->free = axis2_woden_msg_label_free;
+    msg_label_impl->msg_label.ops->free = woden_msg_label_free;
 
-    msg_label_impl->msg_label.ops->to_string = axis2_woden_msg_label_to_string;
-    msg_label_impl->msg_label.ops->is_valid = axis2_woden_msg_label_is_valid;
-    msg_label_impl->msg_label.ops->equals = axis2_woden_msg_label_equals;
+    msg_label_impl->msg_label.ops->to_string = woden_msg_label_to_string;
+    msg_label_impl->msg_label.ops->is_valid = woden_msg_label_is_valid;
+    msg_label_impl->msg_label.ops->equals = woden_msg_label_equals;
     
 
     return &(msg_label_impl->msg_label);
 }
 
-AXIS2_EXTERN axis2_woden_msg_label_t * AXIS2_CALL
-axis2_woden_msg_label_create(
+AXIS2_EXTERN woden_msg_label_t * AXIS2_CALL
+woden_msg_label_create(
         const axis2_env_t *env,
         const axis2_char_t *value,
         axis2_bool_t valid)
 {
-    axis2_woden_msg_label_impl_t *msg_label_impl = NULL;
+    woden_msg_label_impl_t *msg_label_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    msg_label_impl = (axis2_woden_msg_label_impl_t *) create(env);
+    msg_label_impl = (woden_msg_label_impl_t *) create(env);
 
     msg_label_impl->f_value = AXIS2_STRDUP(value, env);
     msg_label_impl->f_valid = valid;
@@ -98,52 +98,52 @@ axis2_woden_msg_label_create(
     return &(msg_label_impl->msg_label);
 }
 
-AXIS2_EXTERN axis2_woden_msg_label_t *AXIS2_CALL
-axis2_woden_msg_label_get_msg_label_in(
+AXIS2_EXTERN woden_msg_label_t *AXIS2_CALL
+woden_msg_label_get_msg_label_in(
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if(!WODEN_MSG_LABEL_IN)
-        WODEN_MSG_LABEL_IN = axis2_woden_msg_label_create(env, "In", 
+        WODEN_MSG_LABEL_IN = woden_msg_label_create(env, "In", 
                 AXIS2_TRUE);
 
     return WODEN_MSG_LABEL_IN;
 }
 
-AXIS2_EXTERN axis2_woden_msg_label_t *AXIS2_CALL
-axis2_woden_msg_label_get_msg_label_out(
+AXIS2_EXTERN woden_msg_label_t *AXIS2_CALL
+woden_msg_label_get_msg_label_out(
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if(!WODEN_MSG_LABEL_OUT)
-        WODEN_MSG_LABEL_OUT = axis2_woden_msg_label_create(env, "Out", 
+        WODEN_MSG_LABEL_OUT = woden_msg_label_create(env, "Out", 
                 AXIS2_TRUE);
 
     return WODEN_MSG_LABEL_OUT;
 }
 
-AXIS2_EXTERN axis2_woden_msg_label_t *AXIS2_CALL
-axis2_woden_msg_label_get_invalid_value(
+AXIS2_EXTERN woden_msg_label_t *AXIS2_CALL
+woden_msg_label_get_invalid_value(
         const axis2_env_t *env,
         const axis2_char_t *value)
 {
-    axis2_woden_msg_label_t *msg_label = NULL;
+    woden_msg_label_t *msg_label = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    msg_label = axis2_woden_msg_label_create(env, value, AXIS2_FALSE);
+    msg_label = woden_msg_label_create(env, value, AXIS2_FALSE);
 
     return msg_label;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_msg_label_free(
+woden_msg_label_free(
         void *msg_label,
         const axis2_env_t *env)
 {
-    axis2_woden_msg_label_impl_t *msg_label_impl = NULL;
+    woden_msg_label_impl_t *msg_label_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg_label_impl = INTF_TO_IMPL(msg_label);
@@ -169,11 +169,11 @@ axis2_woden_msg_label_free(
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_woden_msg_label_to_string(
+woden_msg_label_to_string(
         void *msg_label,
         const axis2_env_t *env)
 {
-    axis2_woden_msg_label_impl_t *msg_label_impl = NULL;
+    woden_msg_label_impl_t *msg_label_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg_label_impl = INTF_TO_IMPL(msg_label);
@@ -182,11 +182,11 @@ axis2_woden_msg_label_to_string(
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_woden_msg_label_is_valid(
+woden_msg_label_is_valid(
         void *msg_label,
         const axis2_env_t *env)
 {
-    axis2_woden_msg_label_impl_t *msg_label_impl = NULL;
+    woden_msg_label_impl_t *msg_label_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg_label_impl = INTF_TO_IMPL(msg_label);
@@ -195,19 +195,19 @@ axis2_woden_msg_label_is_valid(
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_woden_msg_label_equals(
+woden_msg_label_equals(
         void *msg_label,
         const axis2_env_t *env,
-        axis2_woden_msg_label_t *other)
+        woden_msg_label_t *other)
 {
-    axis2_woden_msg_label_impl_t *msg_label_impl = NULL;
+    woden_msg_label_impl_t *msg_label_impl = NULL;
     axis2_char_t *value = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, other, AXIS2_FAILURE);
     msg_label_impl = INTF_TO_IMPL(msg_label);
 
-    value = AXIS2_WODEN_MSG_LABEL_TO_STRING(other, env);
+    value = WODEN_MSG_LABEL_TO_STRING(other, env);
     if(0 == AXIS2_STRCMP(msg_label_impl->f_value, value))
     {
         return AXIS2_TRUE;

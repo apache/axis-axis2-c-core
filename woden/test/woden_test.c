@@ -22,8 +22,8 @@
 #include <axis2_utils.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <woden/builder/woden_reader.h>
-#include <woden/wsdl20/axis2_woden_desc.h>
-#include <woden/wsdl20/axis2_woden_interface.h>
+#include <woden_desc.h>
+#include <woden_interface.h>
 
 #include <axiom.h>
 #include "woden_test.h"
@@ -71,11 +71,11 @@ void test_read_wsdl(
     
     desc = WODEN_READER_READ_WSDL(reader, env, om_doc, doc_base_uri);
     CuAssertPtrNotNull(tc, desc);
-    intfaces = AXIS2_WODEN_DESC_GET_INTERFACES(desc, env);
+    intfaces = WODEN_DESC_GET_INTERFACES(desc, env);
     CuAssertPtrNotNull(tc, intfaces);
     intface = AXIS2_ARRAY_LIST_GET(intfaces, env, 0);
     CuAssertPtrNotNull(tc, intface);
-    intface_qname = AXIS2_WODEN_INTERFACE_GET_QNAME(intface, env);
+    intface_qname = WODEN_INTERFACE_GET_QNAME(intface, env);
     CuAssertPtrNotNull(tc, intface_qname);
 }
 

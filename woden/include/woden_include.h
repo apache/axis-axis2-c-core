@@ -14,37 +14,37 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_INCLUDE_H
-#define AXIS2_WODEN_INCLUDE_H
+#ifndef WODEN_INCLUDE_H
+#define WODEN_INCLUDE_H
 
 /**
- * @file axis2_woden_include.h
+ * @file woden_include.h
  * @brief Axis2 Include Interface
  * This class implements the &lt;wsdl:include&gt; element. 
  * 
  */
 
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/xml/axis2_woden_include_element.h>
-#include <woden/axis2_woden_wsdl_obj.h>
-#include <woden/wsdl20/axis2_woden_wsdl_ref.h>
+#include <woden/woden.h>
+#include <woden_include_element.h>
+#include <woden/woden_wsdl_obj.h>
+#include <woden_wsdl_ref.h>
 
-/** @defgroup axis2_woden_include Include
+/** @defgroup woden_include Include
   * @ingroup axis2_wsdl
   * @{
   */
 
-typedef union axis2_woden_include_base axis2_woden_include_base_t;
-typedef struct axis2_woden_include axis2_woden_include_t;
-typedef struct axis2_woden_include_ops axis2_woden_include_ops_t;
-struct axis2_woden_wsdl_ref;
+typedef union woden_include_base woden_include_base_t;
+typedef struct woden_include woden_include_t;
+typedef struct woden_include_ops woden_include_ops_t;
+struct woden_wsdl_ref;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-struct axis2_woden_include_ops
+struct woden_include_ops
 {
    /** 
      * Deallocate memory
@@ -58,83 +58,83 @@ struct axis2_woden_include_ops
     super_objs) (void *include,
             const axis2_env_t *env);
 
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (void *include,
             const axis2_env_t *env);
     /**
      * @return the base implementation class
      */
-    struct axis2_woden_wsdl_ref *(AXIS2_CALL *
+    struct woden_wsdl_ref *(AXIS2_CALL *
     get_base_impl) (
             void *include,
             const axis2_env_t *env);
 
     /* No additional definitions required. This class inherits all of its behaviour 
-     * from axis2_woden_wsdl_ref. We just need this subclass so we can create an
+     * from woden_wsdl_ref. We just need this subclass so we can create an
      * object representing include_element, which maps to <wsdl:include>.
      */
 };
 
-union axis2_woden_include_base
+union woden_include_base
 {
-    axis2_woden_include_element_t include_element;
-    axis2_woden_wsdl_ref_t wsdl_ref;
+    woden_include_element_t include_element;
+    woden_wsdl_ref_t wsdl_ref;
 };
 
-struct axis2_woden_include
+struct woden_include
 {
-    axis2_woden_include_base_t base;
-    axis2_woden_include_ops_t *ops;
+    woden_include_base_t base;
+    woden_include_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_include_t * AXIS2_CALL
-axis2_woden_include_create(
+AXIS2_EXTERN woden_include_t * AXIS2_CALL
+woden_include_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_EXTERN axis2_woden_include_t * AXIS2_CALL
-axis2_woden_include_to_include_element(
+AXIS2_EXTERN woden_include_t * AXIS2_CALL
+woden_include_to_include_element(
         void *include,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_include_t * AXIS2_CALL
-axis2_woden_include_to_wsdl_ref(
+AXIS2_EXTERN woden_include_t * AXIS2_CALL
+woden_include_to_wsdl_ref(
         void *include,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_include_t * AXIS2_CALL
-axis2_woden_include_to_attr_extensible(
+AXIS2_EXTERN woden_include_t * AXIS2_CALL
+woden_include_to_attr_extensible(
         void *include,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_include_t * AXIS2_CALL
-axis2_woden_include_to_element_extensible(
+AXIS2_EXTERN woden_include_t * AXIS2_CALL
+woden_include_to_element_extensible(
         void *include,
         const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_include_resolve_methods(
-        axis2_woden_include_t *include,
+woden_include_resolve_methods(
+        woden_include_t *include,
         const axis2_env_t *env,
-        axis2_woden_include_t *include_impl,
+        woden_include_t *include_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_INCLUDE_FREE(include, env) \
-      (((axis2_woden_include_t *) include)->ops->free(include, env))
+#define WODEN_INCLUDE_FREE(include, env) \
+      (((woden_include_t *) include)->ops->free(include, env))
 
-#define AXIS2_WODEN_INCLUDE_SUPER_OBJS(include, env) \
-      (((axis2_woden_include_t *) include)->ops->super_objs(include, env))
+#define WODEN_INCLUDE_SUPER_OBJS(include, env) \
+      (((woden_include_t *) include)->ops->super_objs(include, env))
 
-#define AXIS2_WODEN_INCLUDE_TYPE(include, env) \
-      (((axis2_woden_include_t *) include)->ops->type(include, env))
+#define WODEN_INCLUDE_TYPE(include, env) \
+      (((woden_include_t *) include)->ops->type(include, env))
 
-#define AXIS2_WODEN_INCLUDE_GET_BASE_IMPL(include, env) \
-      (((axis2_woden_include_t *) include)->ops->get_base_impl(include, env))
+#define WODEN_INCLUDE_GET_BASE_IMPL(include, env) \
+      (((woden_include_t *) include)->ops->get_base_impl(include, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_INCLUDE_H */
+#endif /* WODEN_INCLUDE_H */

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_DIRECTION_H
-#define AXIS2_WODEN_DIRECTION_H
+#ifndef WODEN_DIRECTION_H
+#define WODEN_DIRECTION_H
 
 /**
- * @file axis2_woden_direction.h
+ * @file woden_direction.h
  * @brief Axis2 Direction Interface
  * This class defines the values of the {direction} property of
  * Interface Message Reference and Interface Fault Reference. This property 
@@ -39,8 +39,8 @@
  * <p>
  * Examples:
  * <pre>
- *      AXIS2_WODEN_INTERFACE_MSG_REF_SET_DIRECTION(intf_msg_ref, env, WODEN_IN);
- *      if(0 == AXIS2_STRCMP(WODEN_IN,AXIS2_WODEN_INTERFACE_GET_DIRECTION(
+ *      WODEN_INTERFACE_MSG_REF_SET_DIRECTION(intf_msg_ref, env, WODEN_IN);
+ *      if(0 == AXIS2_STRCMP(WODEN_IN,WODEN_INTERFACE_GET_DIRECTION(
  *          intf_msg_ref, env)) ...
  * </pre>
  * 
@@ -53,23 +53,23 @@
 #include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <woden/axis2_woden.h>
+#include <woden/woden.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_direction axis2_woden_direction_t;
-typedef struct axis2_woden_direction_ops axis2_woden_direction_ops_t;
-struct axis2_woden_ext_element;
+typedef struct woden_direction woden_direction_t;
+typedef struct woden_direction_ops woden_direction_ops_t;
+struct woden_ext_element;
 
-/** @defgroup axis2_woden_direction Direction
+/** @defgroup woden_direction Direction
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_direction_ops
+struct woden_direction_ops
 {
    /** 
      * Deallocate memory
@@ -88,26 +88,26 @@ struct axis2_woden_direction_ops
 
 };
 
-struct axis2_woden_direction
+struct woden_direction
 {
-    axis2_woden_direction_ops_t *ops;
+    woden_direction_ops_t *ops;
     
 };
 
-AXIS2_EXTERN axis2_woden_direction_t *AXIS2_CALL
-axis2_woden_direction_get_direction_in(
+AXIS2_EXTERN woden_direction_t *AXIS2_CALL
+woden_direction_get_direction_in(
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_direction_t *AXIS2_CALL
-axis2_woden_direction_get_direction_out(
+AXIS2_EXTERN woden_direction_t *AXIS2_CALL
+woden_direction_get_direction_out(
         const axis2_env_t *env);
 
-#define AXIS2_WODEN_DIRECTION_FREE(direction, env) \
-      (((axis2_woden_direction_t *) direction)->ops->\
+#define WODEN_DIRECTION_FREE(direction, env) \
+      (((woden_direction_t *) direction)->ops->\
          free (direction, env))
 
-#define AXIS2_WODEN_DIRECTION_TO_STRING(direction, env) \
-      (((axis2_woden_direction_t *) direction)->ops->\
+#define WODEN_DIRECTION_TO_STRING(direction, env) \
+      (((woden_direction_t *) direction)->ops->\
          to_string (direction, env))
 
 
@@ -115,4 +115,4 @@ axis2_woden_direction_get_direction_out(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_DIRECTION_H */
+#endif /* WODEN_DIRECTION_H */

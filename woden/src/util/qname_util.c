@@ -16,7 +16,7 @@
  
 #include <axiom_node.h>
 #include <axiom_element.h>
-#include <woden/util/axis2_qname_util.h>
+#include <woden_qname_util.h>
 
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL

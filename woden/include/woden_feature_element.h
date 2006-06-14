@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_FEATURE_ELEMENT_H
-#define AXIS2_WODEN_FEATURE_ELEMENT_H
+#ifndef WODEN_FEATURE_ELEMENT_H
+#define WODEN_FEATURE_ELEMENT_H
 
 /**
- * @file axis2_woden_feature_element.h
+ * @file woden_feature_element.h
  * @brief Axis2 Feature Element Interface
  * Represents the &lt;feature&gt; element.
  *
@@ -32,25 +32,25 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/xml/axis2_woden_documentable_element.h>
-#include <woden/wsdl20/xml/axis2_woden_nested_element.h>
+#include <woden/woden.h>
+#include <woden_documentable_element.h>
+#include <woden_nested_element.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_feature_element axis2_woden_feature_element_t;
-typedef struct axis2_woden_feature_element_ops axis2_woden_feature_element_ops_t;
-typedef union axis2_woden_feature_element_base axis2_woden_feature_element_base_t;
+typedef struct woden_feature_element woden_feature_element_t;
+typedef struct woden_feature_element_ops woden_feature_element_ops_t;
+typedef union woden_feature_element_base woden_feature_element_base_t;
 
-/** @defgroup axis2_woden_feature_element Feature Element
+/** @defgroup woden_feature_element Feature Element
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_feature_element_ops
+struct woden_feature_element_ops
 {
    /** 
      * Deallocate memory
@@ -61,7 +61,7 @@ struct axis2_woden_feature_element_ops
             void *doc_el,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (void *doc_el,
             const axis2_env_t *env);
     
@@ -85,52 +85,52 @@ struct axis2_woden_feature_element_ops
 
 };
 
-union axis2_woden_feature_element_base
+union woden_feature_element_base
 {
-    axis2_woden_documentable_element_t documentable_element;
-    axis2_woden_nested_element_t nested_element;
+    woden_documentable_element_t documentable_element;
+    woden_nested_element_t nested_element;
 };
 
-struct axis2_woden_feature_element
+struct woden_feature_element
 {
-    axis2_woden_feature_element_base_t base;
-    axis2_woden_feature_element_ops_t *ops;
+    woden_feature_element_base_t base;
+    woden_feature_element_ops_t *ops;
 };
 
 /************************Woden C Internal Methods******************************/
 axis2_status_t AXIS2_CALL
-axis2_woden_feature_element_resolve_methods(
-        axis2_woden_feature_element_t *feature_element,
+woden_feature_element_resolve_methods(
+        woden_feature_element_t *feature_element,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_FREE(doc_el, env) \
-      (((axis2_woden_feature_element_t *) doc_el)->ops->\
+#define WODEN_FEATURE_ELEMENT_FREE(doc_el, env) \
+      (((woden_feature_element_t *) doc_el)->ops->\
          free (doc_el, env))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_TYPE(doc_el, env) \
-      (((axis2_woden_feature_element_t *) doc_el)->ops->\
+#define WODEN_FEATURE_ELEMENT_TYPE(doc_el, env) \
+      (((woden_feature_element_t *) doc_el)->ops->\
          type (doc_el, env))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_SET_REF(doc_el, env, uri) \
-      (((axis2_woden_feature_element_t *) doc_el)->ops->\
+#define WODEN_FEATURE_ELEMENT_SET_REF(doc_el, env, uri) \
+      (((woden_feature_element_t *) doc_el)->ops->\
          set_ref(doc_el, env, uri))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_GET_REF(doc_el, env) \
-      (((axis2_woden_feature_element_t *) doc_el)->ops->\
+#define WODEN_FEATURE_ELEMENT_GET_REF(doc_el, env) \
+      (((woden_feature_element_t *) doc_el)->ops->\
          get_ref(doc_el, env))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_SET_REQUIRED(doc_el, env, required) \
-      (((axis2_woden_feature_element_t *) doc_el)->ops->\
+#define WODEN_FEATURE_ELEMENT_SET_REQUIRED(doc_el, env, required) \
+      (((woden_feature_element_t *) doc_el)->ops->\
          set_required(doc_el, env, required))
 
-#define AXIS2_WODEN_FEATURE_ELEMENT_IS_REQUIRED(doc_el, env) \
-      (((axis2_woden_feature_element_t *) doc_el)->ops->\
+#define WODEN_FEATURE_ELEMENT_IS_REQUIRED(doc_el, env) \
+      (((woden_feature_element_t *) doc_el)->ops->\
          is_required(doc_el, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_FEATURE_ELEMENT_H */
+#endif /* WODEN_FEATURE_ELEMENT_H */

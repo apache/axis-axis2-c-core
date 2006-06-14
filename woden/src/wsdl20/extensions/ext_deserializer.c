@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <woden/wsdl20/extensions/axis2_woden_ext_deserializer.h>
+#include <woden_ext_deserializer.h>
 
 axis2_status_t AXIS2_CALL
-axis2_woden_ext_deserializer_resolve_methods(
-        axis2_woden_ext_deserializer_t *ext_deserializer,
+woden_ext_deserializer_resolve_methods(
+        woden_ext_deserializer_t *ext_deserializer,
         const axis2_env_t *env,
         axis2_hash_t *methods)
 {

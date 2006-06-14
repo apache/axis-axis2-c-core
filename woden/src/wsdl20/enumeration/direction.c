@@ -14,102 +14,102 @@
  * limitations under the License.
  */
 
-#include <woden/wsdl20/enumeration/axis2_woden_direction.h>
+#include <woden_direction.h>
 
-typedef struct axis2_woden_direction_impl axis2_woden_direction_impl_t;
+typedef struct woden_direction_impl woden_direction_impl_t;
 
 /** 
  * @brief Direction Struct Impl
  *   Axis2 Direction  
  */ 
-struct axis2_woden_direction_impl
+struct woden_direction_impl
 {
-    axis2_woden_direction_t direction;
+    woden_direction_t direction;
     axis2_char_t *f_value;
 };
 
-#define INTF_TO_IMPL(direction) ((axis2_woden_direction_impl_t *) direction)
+#define INTF_TO_IMPL(direction) ((woden_direction_impl_t *) direction)
 
-static axis2_woden_direction_t *WODEN_DIRECTION_IN = NULL;
-static axis2_woden_direction_t *WODEN_DIRECTION_OUT = NULL;
+static woden_direction_t *WODEN_DIRECTION_IN = NULL;
+static woden_direction_t *WODEN_DIRECTION_OUT = NULL;
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_direction_free(
+woden_direction_free(
         void *direction,
         const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
-axis2_woden_direction_to_string(
+woden_direction_to_string(
         void *direction,
         const axis2_env_t *env);
 
-static axis2_woden_direction_t *
+static woden_direction_t *
 create(
         const axis2_env_t *env)
 {
-    axis2_woden_direction_impl_t *direction_impl = NULL;
+    woden_direction_impl_t *direction_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     direction_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_direction_impl_t));
+                    sizeof(woden_direction_impl_t));
 
     direction_impl->f_value = NULL;
    
     direction_impl->direction.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_direction_ops_t));
+                    sizeof(woden_direction_ops_t));
     
-    direction_impl->direction.ops->free = axis2_woden_direction_free;
+    direction_impl->direction.ops->free = woden_direction_free;
 
-    direction_impl->direction.ops->to_string = axis2_woden_direction_to_string;
+    direction_impl->direction.ops->to_string = woden_direction_to_string;
     
 
     return &(direction_impl->direction);
 }
 
-AXIS2_EXTERN axis2_woden_direction_t * AXIS2_CALL
-axis2_woden_direction_create(
+AXIS2_EXTERN woden_direction_t * AXIS2_CALL
+woden_direction_create(
         const axis2_env_t *env,
         axis2_char_t *value)
 {
-    axis2_woden_direction_impl_t *direction_impl = NULL;
+    woden_direction_impl_t *direction_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    direction_impl = (axis2_woden_direction_impl_t *) create(env);
+    direction_impl = (woden_direction_impl_t *) create(env);
 
     direction_impl->f_value = AXIS2_STRDUP(value, env);
 
     return &(direction_impl->direction);
 }
 
-AXIS2_EXTERN axis2_woden_direction_t *AXIS2_CALL
-axis2_woden_direction_get_direction_in(
+AXIS2_EXTERN woden_direction_t *AXIS2_CALL
+woden_direction_get_direction_in(
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
     if(!WODEN_DIRECTION_IN)
-        WODEN_DIRECTION_IN = axis2_woden_direction_create(env, "in");
+        WODEN_DIRECTION_IN = woden_direction_create(env, "in");
 
     return WODEN_DIRECTION_IN;
 }
 
-AXIS2_EXTERN axis2_woden_direction_t *AXIS2_CALL
-axis2_woden_direction_get_direction_out(
+AXIS2_EXTERN woden_direction_t *AXIS2_CALL
+woden_direction_get_direction_out(
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if(!WODEN_DIRECTION_OUT)
-        WODEN_DIRECTION_OUT = axis2_woden_direction_create(env, "out");
+        WODEN_DIRECTION_OUT = woden_direction_create(env, "out");
     return WODEN_DIRECTION_OUT;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_direction_free(
+woden_direction_free(
         void *direction,
         const axis2_env_t *env)
 {
-    axis2_woden_direction_impl_t *direction_impl = NULL;
+    woden_direction_impl_t *direction_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     direction_impl = INTF_TO_IMPL(direction);
@@ -135,11 +135,11 @@ axis2_woden_direction_free(
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_woden_direction_to_string(
+woden_direction_to_string(
         void *direction,
         const axis2_env_t *env)
 {
-    axis2_woden_direction_impl_t *direction_impl = NULL;
+    woden_direction_impl_t *direction_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     direction_impl = INTF_TO_IMPL(direction);

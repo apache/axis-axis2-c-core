@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
-#ifndef AXIS2_WODEN_SOAP_CONSTANTS_H
-#define AXIS2_WODEN_SOAP_CONSTANTS_H
+#ifndef WODEN_SOAP_CONSTANTS_H
+#define WODEN_SOAP_CONSTANTS_H
 
 /**
  * @file axiom_soap_constants.h
@@ -30,8 +30,8 @@ extern "C"
 {
 #endif
     
-/** @defgroup axis2_woden_soap_constants 
-  * @ingroup axis2_woden_soap
+/** @defgroup woden_soap_constants 
+  * @ingroup woden_soap
   * @{
   */
 /*********************************** Constansts********************************/
@@ -91,6 +91,6 @@ extern "C"
 }
 #endif
 
-#endif /* AXIS2_WODEN_SOAP_CONSTANTS_H */
+#endif /* WODEN_SOAP_CONSTANTS_H */
 
 

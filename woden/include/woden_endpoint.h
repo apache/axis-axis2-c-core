@@ -14,41 +14,41 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_ENDPOINT_H
-#define AXIS2_WODEN_ENDPOINT_H
+#ifndef WODEN_ENDPOINT_H
+#define WODEN_ENDPOINT_H
 
 /**
- * @file axis2_woden_endpoint.h
+ * @file woden_endpoint.h
  * @brief Axis2 Endpoint Interface
  * This class represents the Endpoint component and the &lt;endpoint&gt; element.
  * 
  */
 
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/xml/axis2_woden_endpoint_element.h>
-#include <woden/wsdl20/axis2_woden_nested_configurable.h>
-#include <woden/wsdl20/axis2_woden_nested_component.h>
-#include <woden/wsdl20/axis2_woden_configurable_component.h>
+#include <woden/woden.h>
+#include <woden_endpoint_element.h>
+#include <woden_nested_configurable.h>
+#include <woden_nested_component.h>
+#include <woden_configurable_component.h>
 #include <woden/types/woden_nc_name.h>
 
-/** @defgroup axis2_woden_endpoint Endpoint
+/** @defgroup woden_endpoint Endpoint
   * @ingroup axis2_wsdl
   * @{
   */
 
-typedef union axis2_woden_endpoint_base axis2_woden_endpoint_base_t;
-typedef struct axis2_woden_endpoint axis2_woden_endpoint_t;
-typedef struct axis2_woden_endpoint_ops axis2_woden_endpoint_ops_t;
-struct axis2_woden_documentation_element;
-struct axis2_woden_wsdl_component;
-struct axis2_woden_documentable;
+typedef union woden_endpoint_base woden_endpoint_base_t;
+typedef struct woden_endpoint woden_endpoint_t;
+typedef struct woden_endpoint_ops woden_endpoint_ops_t;
+struct woden_documentation_element;
+struct woden_wsdl_component;
+struct woden_documentable;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-struct axis2_woden_endpoint_ops
+struct woden_endpoint_ops
 {
    /** 
      * Deallocate memory
@@ -62,13 +62,13 @@ struct axis2_woden_endpoint_ops
     super_objs) (void *endpoint,
             const axis2_env_t *env);
 
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (void *endpoint,
             const axis2_env_t *env);
     /**
      * @return the base implementation class
      */
-    struct axis2_woden_nested_configurable *(AXIS2_CALL *
+    struct woden_nested_configurable *(AXIS2_CALL *
     get_base_impl) (
             void *endpoint,
             const axis2_env_t *env);
@@ -100,125 +100,125 @@ struct axis2_woden_endpoint_ops
 
 };
 
-union axis2_woden_endpoint_base
+union woden_endpoint_base
 {
-    axis2_woden_nested_configurable_t nested_configurable;
-    axis2_woden_endpoint_element_t endpoint_element;
-    axis2_woden_configurable_component_t configurable_component;
-    axis2_woden_configurable_component_t nested_component;
+    woden_nested_configurable_t nested_configurable;
+    woden_endpoint_element_t endpoint_element;
+    woden_configurable_component_t configurable_component;
+    woden_configurable_component_t nested_component;
 };
 
-struct axis2_woden_endpoint
+struct woden_endpoint
 {
-    axis2_woden_endpoint_base_t base;
-    axis2_woden_endpoint_ops_t *ops;
+    woden_endpoint_base_t base;
+    woden_endpoint_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_create(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_endpoint_element(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_endpoint_element(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_nested_element(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_nested_element(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_documentable_element(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_documentable_element(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_nested_configurable(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_nested_configurable(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_configurable(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_configurable(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_nested_component(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_nested_component(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_configurable_component(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_configurable_component(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_wsdl_component(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_wsdl_component(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_configurable_element(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_configurable_element(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_documentable(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_documentable(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_attr_extensible(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_attr_extensible(
         void *endpoint,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_element_extensible(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_element_extensible(
         void *endpoint,
         const axis2_env_t *env);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_endpoint_resolve_methods(
-        axis2_woden_endpoint_t *endpoint,
+woden_endpoint_resolve_methods(
+        woden_endpoint_t *endpoint,
         const axis2_env_t *env,
-        axis2_woden_endpoint_t *endpoint_impl,
+        woden_endpoint_t *endpoint_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_ENDPOINT_FREE(endpoint, env) \
-      (((axis2_woden_endpoint_t *) endpoint)->ops->free(endpoint, env))
+#define WODEN_ENDPOINT_FREE(endpoint, env) \
+      (((woden_endpoint_t *) endpoint)->ops->free(endpoint, env))
 
-#define AXIS2_WODEN_ENDPOINT_SUPER_OBJS(endpoint, env) \
-      (((axis2_woden_endpoint_t *) endpoint)->ops->super_objs(endpoint, env))
+#define WODEN_ENDPOINT_SUPER_OBJS(endpoint, env) \
+      (((woden_endpoint_t *) endpoint)->ops->super_objs(endpoint, env))
 
-#define AXIS2_WODEN_ENDPOINT_TYPE(endpoint, env) \
-      (((axis2_woden_endpoint_t *) endpoint)->ops->type(endpoint, env))
+#define WODEN_ENDPOINT_TYPE(endpoint, env) \
+      (((woden_endpoint_t *) endpoint)->ops->type(endpoint, env))
 
-#define AXIS2_WODEN_ENDPOINT_GET_BASE_IMPL(endpoint, env) \
-      (((axis2_woden_endpoint_t *) endpoint)->ops->get_base_impl(endpoint, env))
+#define WODEN_ENDPOINT_GET_BASE_IMPL(endpoint, env) \
+      (((woden_endpoint_t *) endpoint)->ops->get_base_impl(endpoint, env))
 
-#define AXIS2_WODEN_ENDPOINT_GET_NAME(endpoint, env) \
-      (((axis2_woden_endpoint_t *) endpoint)->\
+#define WODEN_ENDPOINT_GET_NAME(endpoint, env) \
+      (((woden_endpoint_t *) endpoint)->\
          get_name(endpoint, env))
 
-#define AXIS2_WODEN_ENDPOINT_GET_BINDING(endpoint, env) \
-      (((axis2_woden_endpoint_t *) endpoint)->\
+#define WODEN_ENDPOINT_GET_BINDING(endpoint, env) \
+      (((woden_endpoint_t *) endpoint)->\
          get_binding(endpoint, env))
 
-#define AXIS2_WODEN_ENDPOINT_GET_ADDRESS(endpoint, env) \
-      (((axis2_woden_endpoint_t *) endpoint)->ops->\
+#define WODEN_ENDPOINT_GET_ADDRESS(endpoint, env) \
+      (((woden_endpoint_t *) endpoint)->ops->\
          get_address(endpoint, env))
 
-#define AXIS2_WODEN_ENDPOINT_SET_BINDING_ELEMENT(endpoint, env, binding) \
-      (((axis2_woden_endpoint_t *) endpoint)->ops->\
+#define WODEN_ENDPOINT_SET_BINDING_ELEMENT(endpoint, env, binding) \
+      (((woden_endpoint_t *) endpoint)->ops->\
          set_binding_element(endpoint, env, binding))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_ENDPOINT_H */
+#endif /* WODEN_ENDPOINT_H */

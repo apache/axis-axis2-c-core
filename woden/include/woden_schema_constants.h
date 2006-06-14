@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
-#ifndef AXIS2_WODEN_SCHEMA_CONSTANTS_H
-#define AXIS2_WODEN_SCHEMA_CONSTANTS_H
+#ifndef WODEN_SCHEMA_CONSTANTS_H
+#define WODEN_SCHEMA_CONSTANTS_H
 
 /**
  * @file axis2_schema_constants.h
@@ -31,8 +31,8 @@ extern "C"
 {
 #endif
     
-/** @defgroup axis2_woden_schema_constants 
-  * @ingroup axis2_woden_schema
+/** @defgroup woden_schema_constants 
+  * @ingroup woden_schema
   * @{
   */
 /*********************************** Constansts********************************/
@@ -102,6 +102,6 @@ woden_schema_constants_compare_redefine(
 }
 #endif
 
-#endif /* AXIS2_WODEN_SCHEMA_CONSTANTS_H */
+#endif /* WODEN_SCHEMA_CONSTANTS_H */
 
 

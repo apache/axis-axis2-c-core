@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_COMPONENT_EXTS_H
-#define AXIS2_WODEN_COMPONENT_EXTS_H
+#ifndef WODEN_COMPONENT_EXTS_H
+#define WODEN_COMPONENT_EXTS_H
 
 /**
- * @file axis2_woden_component_exts.h
+ * @file woden_component_exts.h
  * @brief Axis2 Component Extensions Interface
  * This interface represents a group of properties that extend a <code>wsdl_component</code>.
  * These properties share the same namespace and it is different to the WSDL 2.0 namespace.
@@ -47,16 +47,16 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
-#include <woden/axis2_woden.h>
+#include <woden/woden.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_component_exts axis2_woden_component_exts_t;
-typedef struct axis2_woden_component_exts_ops axis2_woden_component_exts_ops_t;
-struct axis2_woden_wsdl_element;
+typedef struct woden_component_exts woden_component_exts_t;
+typedef struct woden_component_exts_ops woden_component_exts_ops_t;
+struct woden_wsdl_element;
 
     
 /**
@@ -65,12 +65,12 @@ struct axis2_woden_wsdl_element;
 #define WODEN_URI_NS_SOAP "http://www.w3.org/2006/01/wsdl/soap"
 #define WODEN_URI_NS_HTTP "http://www.w3.org/2006/01/wsdl/http"
     
-/** @defgroup axis2_woden_component_exts Component Extensions
+/** @defgroup woden_component_exts Component Extensions
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_component_exts_ops
+struct woden_component_exts_ops
 {
    /** 
      * Deallocate memory
@@ -84,7 +84,7 @@ struct axis2_woden_component_exts_ops
     to_component_exts_free) (void *component_exts,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (void *component_exts,
             const axis2_env_t *env);
     
@@ -97,7 +97,7 @@ struct axis2_woden_component_exts_ops
     init) (
             void *component_exts,
             const axis2_env_t *env,
-            struct axis2_woden_wsdl_element *parent_el,
+            struct woden_wsdl_element *parent_el,
             axis2_uri_t *namespc);
 
     void *(AXIS2_CALL *
@@ -106,51 +106,51 @@ struct axis2_woden_component_exts_ops
             const axis2_env_t *env);
 };
 
-struct axis2_woden_component_exts
+struct woden_component_exts
 {
-    axis2_woden_component_exts_ops_t *ops;
+    woden_component_exts_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_component_exts_t * AXIS2_CALL
-axis2_woden_component_exts_create(const axis2_env_t *env);
+AXIS2_EXTERN woden_component_exts_t * AXIS2_CALL
+woden_component_exts_create(const axis2_env_t *env);
 
 /**
  * This is an Axis2 C internal method. This is used only from constructor
  * of the child class
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_component_exts_resolve_methods(
-        axis2_woden_component_exts_t *component_exts,
+woden_component_exts_resolve_methods(
+        woden_component_exts_t *component_exts,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 
-#define AXIS2_WODEN_COMPONENT_EXTS_FREE(component_exts, env) \
-      (((axis2_woden_component_exts_t *) component_exts)->ops->\
+#define WODEN_COMPONENT_EXTS_FREE(component_exts, env) \
+      (((woden_component_exts_t *) component_exts)->ops->\
          free (component_exts, env))
 
-#define AXIS2_WODEN_COMPONENT_EXTS_TO_COMPONENT_EXTS_FREE(component_exts, env) \
-      (((axis2_woden_component_exts_t *) component_exts)->ops->\
+#define WODEN_COMPONENT_EXTS_TO_COMPONENT_EXTS_FREE(component_exts, env) \
+      (((woden_component_exts_t *) component_exts)->ops->\
          to_component_exts_free (component_exts, env))
 
-#define AXIS2_WODEN_COMPONENT_EXTS_TYPE(component_exts, env) \
-      (((axis2_woden_component_exts_t *) component_exts)->ops->\
+#define WODEN_COMPONENT_EXTS_TYPE(component_exts, env) \
+      (((woden_component_exts_t *) component_exts)->ops->\
          type (component_exts, env))
 
-#define AXIS2_WODEN_COMPONENT_EXTS_INIT(component_exts, env, parent_el, namespc) \
-      (((axis2_woden_component_exts_t *) component_exts)->ops->\
+#define WODEN_COMPONENT_EXTS_INIT(component_exts, env, parent_el, namespc) \
+      (((woden_component_exts_t *) component_exts)->ops->\
          init(component_exts, env, \
             parent_el, namespc))
 
-#define AXIS2_WODEN_COMPONENT_EXTS_GET_NAMESPACE(component_exts, env) \
-      (((axis2_woden_component_exts_t *) component_exts)->ops->\
+#define WODEN_COMPONENT_EXTS_GET_NAMESPACE(component_exts, env) \
+      (((woden_component_exts_t *) component_exts)->ops->\
          get_namespace(component_exts, env))
 
-#define AXIS2_WODEN_COMPONENT_EXTS_GET_PARENT_ELEMENT(component_exts, env) \
-      (((axis2_woden_component_exts_t *) component_exts)->ops->\
+#define WODEN_COMPONENT_EXTS_GET_PARENT_ELEMENT(component_exts, env) \
+      (((woden_component_exts_t *) component_exts)->ops->\
          get_parent_element(component_exts, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_COMPONENT_EXTS_H */
+#endif /* WODEN_COMPONENT_EXTS_H */

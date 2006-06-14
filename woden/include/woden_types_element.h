@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_TYPES_ELEMENT_H
-#define AXIS2_WODEN_TYPES_ELEMENT_H
+#ifndef WODEN_TYPES_ELEMENT_H
+#define WODEN_TYPES_ELEMENT_H
 
 /**
- * @file axis2_woden_types_element.h
+ * @file woden_types_element.h
  * @brief Axis2 Types Element Interface
  * This interface represents the &lt;wsdl:types&gt; element. 
  * It supports parsing, creating and manipulating a &lt;types&gt; element.
@@ -42,8 +42,8 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/xml/axis2_woden_documentable_element.h>
+#include <woden/woden.h>
+#include <woden_documentable_element.h>
 #include <xml_schema.h>
 
 #ifdef __cplusplus
@@ -51,16 +51,16 @@ extern "C"
 {
 #endif
 
-typedef struct axis2_woden_types_element axis2_woden_types_element_t;
-typedef struct axis2_woden_types_element_ops axis2_woden_types_element_ops_t;
+typedef struct woden_types_element woden_types_element_t;
+typedef struct woden_types_element_ops woden_types_element_ops_t;
 struct xml_schema;
 
-/** @defgroup axis2_woden_types_element Types Element
+/** @defgroup woden_types_element Types Element
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_types_element_ops
+struct woden_types_element_ops
 {
    /** 
      * Deallocate memory
@@ -71,7 +71,7 @@ struct axis2_woden_types_element_ops
             void *types_el,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (void *types_el,
             const axis2_env_t *env);
     
@@ -166,63 +166,63 @@ struct axis2_woden_types_element_ops
             const axis2_env_t *env);
 };
 
-struct axis2_woden_types_element
+struct woden_types_element
 {
-    axis2_woden_documentable_element_t documentable_element;
-    axis2_woden_types_element_ops_t *ops;
+    woden_documentable_element_t documentable_element;
+    woden_types_element_ops_t *ops;
 };
 
 /************************Woden C Internal Methods******************************/
 axis2_status_t AXIS2_CALL
-axis2_woden_types_element_resolve_methods(
-        axis2_woden_types_element_t *types_element,
+woden_types_element_resolve_methods(
+        woden_types_element_t *types_element,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_TYPES_ELEMENT_FREE(types_el, env) \
-      (((axis2_woden_types_element_t *) types_el)->ops->\
+#define WODEN_TYPES_ELEMENT_FREE(types_el, env) \
+      (((woden_types_element_t *) types_el)->ops->\
          free (types_el, env))
 
-#define AXIS2_WODEN_TYPES_ELEMENT_TYPE(types_el, env) \
-      (((axis2_woden_types_element_t *) types_el)->ops->\
+#define WODEN_TYPES_ELEMENT_TYPE(types_el, env) \
+      (((woden_types_element_t *) types_el)->ops->\
          type (types_el, env))
 
-#define AXIS2_WODEN_TYPES_ELEMENT_SET_TYPE_SYSTEM(types_el, env, type_system) \
-      (((axis2_woden_types_element_t *) types_el)->ops->\
+#define WODEN_TYPES_ELEMENT_SET_TYPE_SYSTEM(types_el, env, type_system) \
+      (((woden_types_element_t *) types_el)->ops->\
          set_type_system(types_el, env, type_system))
 
-#define AXIS2_WODEN_TYPES_ELEMENT_GET_TYPE_SYSTEM(types_el, env) \
-      (((axis2_woden_types_element_t *) types_el)->ops->\
+#define WODEN_TYPES_ELEMENT_GET_TYPE_SYSTEM(types_el, env) \
+      (((woden_types_element_t *) types_el)->ops->\
          get_type_system(types_el, env))
 
-#define AXIS2_WODEN_TYPES_ELEMENT_ADD_SCHEMA(types_el, env, schema) \
-      (((axis2_woden_types_element_t *) types_el)->ops->\
+#define WODEN_TYPES_ELEMENT_ADD_SCHEMA(types_el, env, schema) \
+      (((woden_types_element_t *) types_el)->ops->\
          add_schema(types_el, env, schema))
 
-#define AXIS2_WODEN_TYPES_ELEMENT_REMOVE_SCHEMA(types_el, env, schema) \
-      (((axis2_woden_types_element_t *) types_el)->ops->\
+#define WODEN_TYPES_ELEMENT_REMOVE_SCHEMA(types_el, env, schema) \
+      (((woden_types_element_t *) types_el)->ops->\
          remove_schema(types_el, env, schema))
 
-#define AXIS2_WODEN_TYPES_ELEMENT_GET_SCHEMAS(types_el, env) \
-      (((axis2_woden_types_element_t *) types_el)->ops->\
+#define WODEN_TYPES_ELEMENT_GET_SCHEMAS(types_el, env) \
+      (((woden_types_element_t *) types_el)->ops->\
          get_schemas(types_el, env))
 
-#define AXIS2_WODEN_TYPES_ELEMENT_GET_SCHEMAS_WITH_NAMESPACE(types_el, env, \
+#define WODEN_TYPES_ELEMENT_GET_SCHEMAS_WITH_NAMESPACE(types_el, env, \
         namespc) \
-      (((axis2_woden_types_element_t *) types_el)->ops->\
+      (((woden_types_element_t *) types_el)->ops->\
          get_schemas_with_namespace(types_el, env, namespc))
 
-#define AXIS2_WODEN_TYPES_ELEMENT_GET_INLINED_SCHEMAS(types_el, env) \
-      (((axis2_woden_types_element_t *) types_el)->ops->\
+#define WODEN_TYPES_ELEMENT_GET_INLINED_SCHEMAS(types_el, env) \
+      (((woden_types_element_t *) types_el)->ops->\
          get_inlined_schemas(types_el, env))
 
-#define AXIS2_WODEN_TYPES_ELEMENT_GET_IMPORTED_SCHEMAS(types_el, env) \
-      (((axis2_woden_types_element_t *) types_el)->ops->\
+#define WODEN_TYPES_ELEMENT_GET_IMPORTED_SCHEMAS(types_el, env) \
+      (((woden_types_element_t *) types_el)->ops->\
          get_imported_schemas(types_el, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_TYPES_ELEMENT_H */
+#endif /* WODEN_TYPES_ELEMENT_H */

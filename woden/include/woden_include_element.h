@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_INCLUDE_ELEMENT_H
-#define AXIS2_WODEN_INCLUDE_ELEMENT_H
+#ifndef WODEN_INCLUDE_ELEMENT_H
+#define WODEN_INCLUDE_ELEMENT_H
 
 /**
- * @file axis2_woden_include_element.h
+ * @file woden_include_element.h
  * @brief Axis2 Include Element Interface
  * This interface represents a &lt;include&gt; XML element 
  * information item. It declares the behaviour required to support 
@@ -34,25 +34,25 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/xml/axis2_woden_documentable_element.h>
-#include <woden/wsdl20/xml/axis2_woden_nested_element.h>
+#include <woden/woden.h>
+#include <woden_documentable_element.h>
+#include <woden_nested_element.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_include_element axis2_woden_include_element_t;
-typedef struct axis2_woden_include_element_ops axis2_woden_include_element_ops_t;
-typedef union axis2_woden_include_element_base axis2_woden_include_element_base_t;
+typedef struct woden_include_element woden_include_element_t;
+typedef struct woden_include_element_ops woden_include_element_ops_t;
+typedef union woden_include_element_base woden_include_element_base_t;
 
-/** @defgroup axis2_woden_include_element Include Element
+/** @defgroup woden_include_element Include Element
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_include_element_ops
+struct woden_include_element_ops
 {
    /** 
      * Deallocate memory
@@ -63,7 +63,7 @@ struct axis2_woden_include_element_ops
             void *include_el,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (void *include_el,
             const axis2_env_t *env);
     
@@ -88,46 +88,46 @@ struct axis2_woden_include_element_ops
 };
 
 
-struct axis2_woden_include_element
+struct woden_include_element
 {
-    axis2_woden_documentable_element_t documentable_element;
-    axis2_woden_include_element_ops_t *ops;
+    woden_documentable_element_t documentable_element;
+    woden_include_element_ops_t *ops;
 };
 
 /************************Woden C Internal Methods******************************/
 axis2_status_t AXIS2_CALL
-axis2_woden_include_element_resolve_methods(
-        axis2_woden_include_element_t *include_element,
+woden_include_element_resolve_methods(
+        woden_include_element_t *include_element,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_INCLUDE_ELEMENT_FREE(include_el, env) \
-      (((axis2_woden_include_element_t *) include_el)->ops->\
+#define WODEN_INCLUDE_ELEMENT_FREE(include_el, env) \
+      (((woden_include_element_t *) include_el)->ops->\
          free (include_el, env))
 
-#define AXIS2_WODEN_INCLUDE_ELEMENT_TYPE(include_el, env) \
-      (((axis2_woden_include_element_t *) include_el)->ops->\
+#define WODEN_INCLUDE_ELEMENT_TYPE(include_el, env) \
+      (((woden_include_element_t *) include_el)->ops->\
          type (include_el, env))
 
-#define AXIS2_WODEN_INCLUDE_ELEMENT_SET_LOCATION(include_el, env, loc_uri) \
-      (((axis2_woden_include_element_t *) include_el)->ops->\
+#define WODEN_INCLUDE_ELEMENT_SET_LOCATION(include_el, env, loc_uri) \
+      (((woden_include_element_t *) include_el)->ops->\
          set_location(include_el, env, loc_uri))
 
-#define AXIS2_WODEN_INCLUDE_ELEMENT_GET_LOCATION(include_el, env) \
-      (((axis2_woden_include_element_t *) include_el)->ops->\
+#define WODEN_INCLUDE_ELEMENT_GET_LOCATION(include_el, env) \
+      (((woden_include_element_t *) include_el)->ops->\
          get_location(include_el, env))
 
-#define AXIS2_WODEN_INCLUDE_ELEMENT_SET_DESC_ELEMENT(include_el, env, desc) \
-      (((axis2_woden_include_element_t *) include_el)->ops->\
+#define WODEN_INCLUDE_ELEMENT_SET_DESC_ELEMENT(include_el, env, desc) \
+      (((woden_include_element_t *) include_el)->ops->\
          set_desc_element(include_el, env, desc))
 
-#define AXIS2_WODEN_INCLUDE_ELEMENT_GET_DESC_ELEMENT(include_el, env) \
-      (((axis2_woden_include_element_t *) include_el)->ops->\
+#define WODEN_INCLUDE_ELEMENT_GET_DESC_ELEMENT(include_el, env) \
+      (((woden_include_element_t *) include_el)->ops->\
          get_desc_element(include_el, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_INCLUDE_ELEMENT_H */
+#endif /* WODEN_INCLUDE_ELEMENT_H */

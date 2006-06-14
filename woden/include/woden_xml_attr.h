@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_XML_ATTR_H
-#define AXIS2_WODEN_XML_ATTR_H
+#ifndef WODEN_XML_ATTR_H
+#define WODEN_XML_ATTR_H
 
 /**
- * @file axis2_woden_xml_attr.h
+ * @file woden_xml_attr.h
  * @brief Axis2 Xml Attribute Interface
  *          This is an abstract superclass for all classes representing different
  *          types of XML attribute information items.
@@ -32,24 +32,24 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <axis2_generic_obj.h>
-#include <woden/axis2_woden.h>
+#include <woden/woden.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_xml_attr axis2_woden_xml_attr_t;
-typedef struct axis2_woden_xml_attr_ops axis2_woden_xml_attr_ops_t;
+typedef struct woden_xml_attr woden_xml_attr_t;
+typedef struct woden_xml_attr_ops woden_xml_attr_ops_t;
 struct axiom_node;
 struct axiom_element;
 
-/** @defgroup axis2_woden_xml_attr Xml Attribute
+/** @defgroup woden_xml_attr Xml Attribute
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_xml_attr_ops
+struct woden_xml_attr_ops
 {
    /** 
      * Deallocate memory
@@ -60,7 +60,7 @@ struct axis2_woden_xml_attr_ops
             void *xml_attr,
             const axis2_env_t *env);
       
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *xml_attr,
             const axis2_env_t *env);
@@ -122,13 +122,13 @@ struct axis2_woden_xml_attr_ops
       
 };
 
-struct axis2_woden_xml_attr
+struct woden_xml_attr
 {
-    axis2_woden_xml_attr_ops_t *ops;
+    woden_xml_attr_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_xml_attr_t * AXIS2_CALL
-axis2_woden_xml_attr_create(
+AXIS2_EXTERN woden_xml_attr_t * AXIS2_CALL
+woden_xml_attr_create(
         const axis2_env_t *env,
         struct axiom_element *owner_el,
         struct axiom_node *owner_node,
@@ -137,48 +137,48 @@ axis2_woden_xml_attr_create(
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_xml_attr_resolve_methods(
-        axis2_woden_xml_attr_t *xml_attr,
+woden_xml_attr_resolve_methods(
+        woden_xml_attr_t *xml_attr,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_XML_ATTR_FREE(xml_attr, env) \
-      (((axis2_woden_xml_attr_t *) xml_attr)->ops->free (xml_attr, env))
+#define WODEN_XML_ATTR_FREE(xml_attr, env) \
+      (((woden_xml_attr_t *) xml_attr)->ops->free (xml_attr, env))
 
-#define AXIS2_WODEN_XML_ATTR_TYPE(xml_attr, env) \
-      (((axis2_woden_xml_attr_t *) xml_attr)->ops->type (xml_attr, env))
+#define WODEN_XML_ATTR_TYPE(xml_attr, env) \
+      (((woden_xml_attr_t *) xml_attr)->ops->type (xml_attr, env))
 
-#define AXIS2_WODEN_XML_ATTR_INIT(xml_attr, env, owner_el, owner_node, \
+#define WODEN_XML_ATTR_INIT(xml_attr, env, owner_el, owner_node, \
         attr_type, attr_value) \
-      (((axis2_woden_xml_attr_t *) xml_attr)->ops->init(xml_attr, env, \
+      (((woden_xml_attr_t *) xml_attr)->ops->init(xml_attr, env, \
             owner_el, owner_node, attr_type, attr_value))
 
-#define AXIS2_WODEN_XML_ATTR_GET_ATTRIBUTE_TYPE(xml_attr, env) \
-      (((axis2_woden_xml_attr_t *) xml_attr)->ops->\
+#define WODEN_XML_ATTR_GET_ATTRIBUTE_TYPE(xml_attr, env) \
+      (((woden_xml_attr_t *) xml_attr)->ops->\
          get_attribute_type(xml_attr, env))
 
-#define AXIS2_WODEN_XML_ATTR_GET_CONTENT(xml_attr, env) \
-      (((axis2_woden_xml_attr_t *) xml_attr)->ops->get_content(xml_attr, env))
+#define WODEN_XML_ATTR_GET_CONTENT(xml_attr, env) \
+      (((woden_xml_attr_t *) xml_attr)->ops->get_content(xml_attr, env))
 
-#define AXIS2_WODEN_XML_ATTR_TO_EXTERNAL_FORM(xml_attr, env) \
-      (((axis2_woden_xml_attr_t *) xml_attr)->ops->\
+#define WODEN_XML_ATTR_TO_EXTERNAL_FORM(xml_attr, env) \
+      (((woden_xml_attr_t *) xml_attr)->ops->\
          to_external_form(xml_attr, env))
 
-#define AXIS2_WODEN_XML_ATTR_IS_VALID(xml_attr, env) \
-      (((axis2_woden_xml_attr_t *) xml_attr)->ops->is_valid(xml_attr, env))
+#define WODEN_XML_ATTR_IS_VALID(xml_attr, env) \
+      (((woden_xml_attr_t *) xml_attr)->ops->is_valid(xml_attr, env))
 
-#define AXIS2_WODEN_XML_ATTR_CONVERT(xml_attr, env, owner_el, owner_node, \
+#define WODEN_XML_ATTR_CONVERT(xml_attr, env, owner_el, owner_node, \
         attr_type, attr_value) \
-      (((axis2_woden_xml_attr_t *) xml_attr)->ops->convert(xml_attr, env, \
+      (((woden_xml_attr_t *) xml_attr)->ops->convert(xml_attr, env, \
             owner_el, owner_node, attr_type, attr_value))
 
-#define AXIS2_WODEN_XML_ATTR_SET_VALID(xml_attr, env, validity) \
-      (((axis2_woden_xml_attr_t *) xml_attr)->ops->set_valid(xml_attr, \
+#define WODEN_XML_ATTR_SET_VALID(xml_attr, env, validity) \
+      (((woden_xml_attr_t *) xml_attr)->ops->set_valid(xml_attr, \
                                                   env, validity))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_XML_ATTR_H */
+#endif /* WODEN_XML_ATTR_H */

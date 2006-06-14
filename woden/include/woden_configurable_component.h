@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_CONFIGURABLE_COMPONENT_H
-#define AXIS2_WODEN_CONFIGURABLE_COMPONENT_H
+#ifndef WODEN_CONFIGURABLE_COMPONENT_H
+#define WODEN_CONFIGURABLE_COMPONENT_H
 
 /**
- * @file axis2_woden_configurable_component.h
+ * @file woden_configurable_component.h
  * @brief Axis2 Configurable Component Interface
  * All components directly or indirectly extend this interface, so it provides 
  * a common term of reference for all components.
@@ -33,23 +33,23 @@
 #include <axis2_hash.h>
 #include <axis2_uri.h>
 #include <axis2_array_list.h>
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/axis2_woden_wsdl_component.h>
+#include <woden/woden.h>
+#include <woden_wsdl_component.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_configurable_component axis2_woden_configurable_component_t;
-typedef struct axis2_woden_configurable_component_ops axis2_woden_configurable_component_ops_t;
+typedef struct woden_configurable_component woden_configurable_component_t;
+typedef struct woden_configurable_component_ops woden_configurable_component_ops_t;
 
-/** @defgroup axis2_woden_configurable_component Configurable Component
+/** @defgroup woden_configurable_component Configurable Component
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_configurable_component_ops
+struct woden_configurable_component_ops
 {
    /** 
      * Deallocate memory
@@ -65,7 +65,7 @@ struct axis2_woden_configurable_component_ops
             void *configurable_component,
             const axis2_env_t *env);
 
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *configurable_component,
             const axis2_env_t *env);
@@ -82,44 +82,44 @@ struct axis2_woden_configurable_component_ops
 
 };
 
-struct axis2_woden_configurable_component
+struct woden_configurable_component
 {
-    axis2_woden_wsdl_component_t wsdl_component;
-    axis2_woden_configurable_component_ops_t *ops;
+    woden_wsdl_component_t wsdl_component;
+    woden_configurable_component_ops_t *ops;
 };
 
 /************************Woden C Internal Methods******************************/
 axis2_status_t AXIS2_CALL
-axis2_woden_configurable_component_resolve_methods(
-        axis2_woden_configurable_component_t *configurable_component,
+woden_configurable_component_resolve_methods(
+        woden_configurable_component_t *configurable_component,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_CONFIGURABLE_COMPONENT_FREE(configurable_component, env) \
-      (((axis2_woden_configurable_component_t *) configurable_component)->ops->\
+#define WODEN_CONFIGURABLE_COMPONENT_FREE(configurable_component, env) \
+      (((woden_configurable_component_t *) configurable_component)->ops->\
          free (configurable_component, env))
 
-#define AXIS2_WODEN_CONFIGURABLE_COMPONENT_TO_CONFIGURABLE_COMPONENT_FREE(configurable_component, env) \
-      (((axis2_woden_configurable_component_t *) configurable_component)->ops->\
+#define WODEN_CONFIGURABLE_COMPONENT_TO_CONFIGURABLE_COMPONENT_FREE(configurable_component, env) \
+      (((woden_configurable_component_t *) configurable_component)->ops->\
          to_configurable_component_free (configurable_component, env))
 
-#define AXIS2_WODEN_CONFIGURABLE_COMPONENT_TYPE(configurable_component, env) \
-      (((axis2_woden_configurable_component_t *) configurable_component)->ops->\
+#define WODEN_CONFIGURABLE_COMPONENT_TYPE(configurable_component, env) \
+      (((woden_configurable_component_t *) configurable_component)->ops->\
          type (configurable_component, env))
 
-#define AXIS2_WODEN_CONFIGURABLE_COMPONENT_GET_FEATURES(\
+#define WODEN_CONFIGURABLE_COMPONENT_GET_FEATURES(\
         configurable_component, env) \
-      (((axis2_woden_configurable_component_t *) configurable_component)->ops->\
+      (((woden_configurable_component_t *) configurable_component)->ops->\
          get_features(configurable_component, env))
 
-#define AXIS2_WODEN_CONFIGURABLE_COMPONENT_GET_PROPERTIES(\
+#define WODEN_CONFIGURABLE_COMPONENT_GET_PROPERTIES(\
         configurable_component, env) \
-      (((axis2_woden_configurable_component_t *) configurable_component)->ops->\
+      (((woden_configurable_component_t *) configurable_component)->ops->\
          get_properties(configurable_component, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_CONFIGURABLE_COMPONENT_H */
+#endif /* WODEN_CONFIGURABLE_COMPONENT_H */

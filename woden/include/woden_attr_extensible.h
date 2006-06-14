@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_ATTR_EXTENSIBLE_H
-#define AXIS2_WODEN_ATTR_EXTENSIBLE_H
+#ifndef WODEN_ATTR_EXTENSIBLE_H
+#define WODEN_ATTR_EXTENSIBLE_H
 
 /**
- * @file axis2_woden_attr_extensible.h
+ * @file woden_attr_extensible.h
  * @brief Axis2 Attribute Extensible Interface
  * Common code for handling extension attributes. 
  * Can be reused by inheritance or by delegation.
@@ -33,23 +33,23 @@
 #include <axis2_qname.h>
 #include <axis2_uri.h>
 #include <axis2_array_list.h>
-#include <woden/axis2_woden.h>
+#include <woden/woden.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_attr_extensible axis2_woden_attr_extensible_t;
-typedef struct axis2_woden_attr_extensible_ops axis2_woden_attr_extensible_ops_t;
-struct axis2_woden_xml_attr;
+typedef struct woden_attr_extensible woden_attr_extensible_t;
+typedef struct woden_attr_extensible_ops woden_attr_extensible_ops_t;
+struct woden_xml_attr;
 
-/** @defgroup axis2_woden_attr_extensible Attribute Extensible
+/** @defgroup woden_attr_extensible Attribute Extensible
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_attr_extensible_ops
+struct woden_attr_extensible_ops
 {
    /** 
      * Deallocate memory
@@ -70,7 +70,7 @@ struct axis2_woden_attr_extensible_ops
             void *attr_extensible,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *attr_extensible,
             const axis2_env_t *env);
@@ -80,7 +80,7 @@ struct axis2_woden_attr_extensible_ops
             void *extensible,
             const axis2_env_t *env,
             axis2_qname_t *attr_type,
-            struct axis2_woden_xml_attr *attr); 
+            struct woden_xml_attr *attr); 
 
     void *(AXIS2_CALL *
     get_ext_attr) (
@@ -108,63 +108,63 @@ struct axis2_woden_attr_extensible_ops
 
 };
 
-struct axis2_woden_attr_extensible
+struct woden_attr_extensible
 {
-    axis2_woden_attr_extensible_ops_t *ops;
+    woden_attr_extensible_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_attr_extensible_t * AXIS2_CALL
-axis2_woden_attr_extensible_create(const axis2_env_t *env);
+AXIS2_EXTERN woden_attr_extensible_t * AXIS2_CALL
+woden_attr_extensible_create(const axis2_env_t *env);
 
 /**
  * This is an Axis2 C internal method. This is used only from constructor
  * of the child class
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_attr_extensible_resolve_methods(
-        axis2_woden_attr_extensible_t *extensible,
+woden_attr_extensible_resolve_methods(
+        woden_attr_extensible_t *extensible,
         const axis2_env_t *env,
-        axis2_woden_attr_extensible_t *extensible_impl,
+        woden_attr_extensible_t *extensible_impl,
         axis2_hash_t *methods);
 
-#define AXIS2_WODEN_ATTR_EXTENSIBLE_FREE(extensible, env) \
-      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
+#define WODEN_ATTR_EXTENSIBLE_FREE(extensible, env) \
+      (((woden_attr_extensible_t *) extensible)->ops->\
          free (extensible, env))
 
-#define AXIS2_WODEN_ATTR_EXTENSIBLE_TO_ATTR_EXTENSIBLE_FREE(extensible, env) \
-      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
+#define WODEN_ATTR_EXTENSIBLE_TO_ATTR_EXTENSIBLE_FREE(extensible, env) \
+      (((woden_attr_extensible_t *) extensible)->ops->\
          to_attr_extensible_free (extensible, env))
 
-#define AXIS2_WODEN_ATTR_EXTENSIBLE_SUPER_OBJS(extensible, env) \
-      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
+#define WODEN_ATTR_EXTENSIBLE_SUPER_OBJS(extensible, env) \
+      (((woden_attr_extensible_t *) extensible)->ops->\
          super_objs (extensible, env))
 
-#define AXIS2_WODEN_ATTR_EXTENSIBLE_TYPE(extensible, env) \
-      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
+#define WODEN_ATTR_EXTENSIBLE_TYPE(extensible, env) \
+      (((woden_attr_extensible_t *) extensible)->ops->\
          type (extensible, env))
 
-#define AXIS2_WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTR(extensible, env, attr_type, \
+#define WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTR(extensible, env, attr_type, \
         attr) \
-      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((woden_attr_extensible_t *) extensible)->ops->\
          set_ext_attr(extensible, env, attr_type, attr))
 
-#define AXIS2_WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(extensible, env, \
+#define WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(extensible, env, \
         attr_type) \
-      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((woden_attr_extensible_t *) extensible)->ops->\
          get_ext_attr(extensible, env, attr_type))
 
-#define AXIS2_WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTRS(extensible, env) \
-      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
+#define WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTRS(extensible, env) \
+      (((woden_attr_extensible_t *) extensible)->ops->\
          get_ext_attrs(extensible, env))
 
-#define AXIS2_WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTRS_FOR_NAMESPACE(extensible, \
+#define WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTRS_FOR_NAMESPACE(extensible, \
         env, namespc) \
-      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((woden_attr_extensible_t *) extensible)->ops->\
          get_ext_attrs_for_namespace(extensible, env, namespc))
 
-#define AXIS2_WODEN_ATTR_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(\
+#define WODEN_ATTR_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(\
         extensible, env, namespc) \
-      (((axis2_woden_attr_extensible_t *) extensible)->ops->\
+      (((woden_attr_extensible_t *) extensible)->ops->\
          has_ext_attrs_for_namespace(extensible, env, namespc))
 
 
@@ -172,4 +172,4 @@ axis2_woden_attr_extensible_resolve_methods(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_ATTR_EXTENSIBLE_H */
+#endif /* WODEN_ATTR_EXTENSIBLE_H */

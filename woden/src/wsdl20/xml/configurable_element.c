@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <woden/wsdl20/xml/axis2_woden_configurable_element.h>
+#include <woden_configurable_element.h>
 
 axis2_status_t AXIS2_CALL
-axis2_woden_configurable_element_resolve_methods(
-        axis2_woden_configurable_element_t *configurable_element,
+woden_configurable_element_resolve_methods(
+        woden_configurable_element_t *configurable_element,
         const axis2_env_t *env,
         axis2_hash_t *methods)
 {

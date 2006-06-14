@@ -14,26 +14,26 @@
  * limitations under the License.
  */
 
-#include <woden/axis2_woden_wsdl_obj.h>
-#include <woden/wsdl20/axis2_woden_endpoint.h>
-#include <woden/wsdl20/axis2_woden_binding.h>
-#include <woden/wsdl20/axis2_woden_nested_configurable.h>
-#include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
-#include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
-#include <woden/xml/axis2_woden_xml_attr.h>
-#include <woden/wsdl20/xml/axis2_woden_documentation_element.h>
+#include <woden/woden_wsdl_obj.h>
+#include <woden_endpoint.h>
+#include <woden_binding.h>
+#include <woden_nested_configurable.h>
+#include <woden_ext_element.h>
+#include <woden_component_exts.h>
+#include <woden_xml_attr.h>
+#include <woden_documentation_element.h>
 
-typedef struct axis2_woden_endpoint_impl axis2_woden_endpoint_impl_t;
+typedef struct woden_endpoint_impl woden_endpoint_impl_t;
 
 /** 
  * @brief Endpoint Struct Impl
  *   Axis2 Endpoint  
  */ 
-struct axis2_woden_endpoint_impl
+struct woden_endpoint_impl
 {
-    axis2_woden_endpoint_t endpoint;
-    axis2_woden_obj_types_t obj_type;
-    axis2_woden_nested_configurable_t *nested_configurable;
+    woden_endpoint_t endpoint;
+    woden_obj_types_t obj_type;
+    woden_nested_configurable_t *nested_configurable;
     axis2_hash_t *super;
     axis2_hash_t *methods;
     woden_nc_name_t *f_name;
@@ -42,25 +42,25 @@ struct axis2_woden_endpoint_impl
     axis2_uri_t *f_address;
 };
 
-#define INTF_TO_IMPL(endpoint) ((axis2_woden_endpoint_impl_t *) endpoint)
+#define INTF_TO_IMPL(endpoint) ((woden_endpoint_impl_t *) endpoint)
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_endpoint_free(
+woden_endpoint_free(
         void *endpoint,
         const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
-axis2_woden_endpoint_super_objs(
+woden_endpoint_super_objs(
         void *endpoint,
         const axis2_env_t *env);
 
-axis2_woden_obj_types_t AXIS2_CALL 
-axis2_woden_endpoint_type(
+woden_obj_types_t AXIS2_CALL 
+woden_endpoint_type(
         void *endpoint,
         const axis2_env_t *env);
 
-axis2_woden_nested_configurable_t *AXIS2_CALL
-axis2_woden_endpoint_get_base_impl(
+woden_nested_configurable_t *AXIS2_CALL
+woden_endpoint_get_base_impl(
         void *endpoint,
         const axis2_env_t *env);
 
@@ -69,17 +69,17 @@ axis2_woden_endpoint_get_base_impl(
  * ************************************************************/
 
 woden_nc_name_t *AXIS2_CALL
-axis2_woden_endpoint_get_name(
+woden_endpoint_get_name(
         void *endpoint,
         const axis2_env_t *env);
 
 void *AXIS2_CALL
-axis2_woden_endpoint_get_binding(
+woden_endpoint_get_binding(
         void *endpoint,
         const axis2_env_t *env);
 
 axis2_uri_t *AXIS2_CALL
-axis2_woden_endpoint_get_address(
+woden_endpoint_get_address(
         void *endpoint,
         const axis2_env_t *env);
 /* ************************************************************
@@ -87,29 +87,29 @@ axis2_woden_endpoint_get_address(
  * ************************************************************/
 
 axis2_status_t AXIS2_CALL
-axis2_woden_endpoint_set_name(
+woden_endpoint_set_name(
         void *endpoint,
         const axis2_env_t *env,
         woden_nc_name_t *name);
 
 axis2_status_t AXIS2_CALL
-axis2_woden_endpoint_set_binding_qname(
+woden_endpoint_set_binding_qname(
         void *endpoint,
         const axis2_env_t *env,
         axis2_qname_t *binding_qname);
 
 axis2_qname_t *AXIS2_CALL
-axis2_woden_endpoint_get_binding_qname(
+woden_endpoint_get_binding_qname(
         void *endpoint,
         const axis2_env_t *env);
 
 void *AXIS2_CALL
-axis2_woden_endpoint_get_binding_element(
+woden_endpoint_get_binding_element(
         void *endpoint,
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_woden_endpoint_set_address(
+woden_endpoint_set_address(
         void *endpoint,
         const axis2_env_t *env,
         axis2_uri_t *uri);
@@ -119,346 +119,346 @@ axis2_woden_endpoint_set_address(
  *****************************************************************************/  
 
 axis2_status_t AXIS2_CALL
-axis2_woden_endpoint_set_binding_element(
+woden_endpoint_set_binding_element(
         void *endpoint,
         const axis2_env_t *env,
         void *binding);
 
-static axis2_woden_endpoint_t *
+static woden_endpoint_t *
 create(const axis2_env_t *env);
 
 static axis2_status_t
-axis2_woden_endpoint_free_ops(
+woden_endpoint_free_ops(
         void *endpoint,
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_endpoint_element(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_endpoint_element(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!endpoint)
     {
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+        endpoint_impl = (woden_endpoint_impl_t *) create(env);
     }
     else
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+        endpoint_impl = (woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
 
     endpoint_impl->endpoint.base.endpoint_element.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_endpoint_element_ops_t));
-    axis2_woden_endpoint_element_resolve_methods(&(endpoint_impl->endpoint.base.
+                sizeof(woden_endpoint_element_ops_t));
+    woden_endpoint_element_resolve_methods(&(endpoint_impl->endpoint.base.
             endpoint_element), env, endpoint_impl->methods);
     return endpoint;
 }
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_nested_element(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_nested_element(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!endpoint)
     {
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+        endpoint_impl = (woden_endpoint_impl_t *) create(env);
     }
     else
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+        endpoint_impl = (woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
 
 
     endpoint_impl->endpoint.base.endpoint_element.base.nested_element.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_nested_element_ops_t));
-    axis2_woden_nested_element_resolve_methods(&(endpoint_impl->endpoint.base.
+                sizeof(woden_nested_element_ops_t));
+    woden_nested_element_resolve_methods(&(endpoint_impl->endpoint.base.
             endpoint_element.base.nested_element), env, endpoint_impl->methods);
     return endpoint;
 }
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_documentable_element(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_documentable_element(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!endpoint)
     {
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+        endpoint_impl = (woden_endpoint_impl_t *) create(env);
     }
     else
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+        endpoint_impl = (woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
 
 
     endpoint_impl->endpoint.base.endpoint_element.base.documentable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_documentable_element_ops_t));
-    axis2_woden_documentable_element_resolve_methods(&(endpoint_impl->endpoint.base.
+                sizeof(woden_documentable_element_ops_t));
+    woden_documentable_element_resolve_methods(&(endpoint_impl->endpoint.base.
             endpoint_element.base.documentable_element), env, 
             endpoint_impl->methods);
     return endpoint;
 }
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_nested_configurable(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_nested_configurable(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!endpoint)
     {
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+        endpoint_impl = (woden_endpoint_impl_t *) create(env);
     }
     else
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+        endpoint_impl = (woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
 
     endpoint_impl->endpoint.base.nested_configurable.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_nested_configurable_ops_t));
-    axis2_woden_nested_configurable_resolve_methods(&(endpoint_impl->endpoint.base.
+                sizeof(woden_nested_configurable_ops_t));
+    woden_nested_configurable_resolve_methods(&(endpoint_impl->endpoint.base.
             nested_configurable), env, endpoint_impl->nested_configurable, 
             endpoint_impl->methods);
     return endpoint;
 }
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_configurable(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_configurable(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
     void *configurable = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!endpoint)
     {
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+        endpoint_impl = (woden_endpoint_impl_t *) create(env);
     }
     else
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+        endpoint_impl = (woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
 
     endpoint_impl->endpoint.base.nested_configurable.base.configurable.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_configurable_ops_t));
-    configurable = AXIS2_WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(
+                sizeof(woden_configurable_ops_t));
+    configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(
             endpoint_impl->nested_configurable, env);
-    axis2_woden_configurable_resolve_methods(&(endpoint_impl->endpoint.base.
+    woden_configurable_resolve_methods(&(endpoint_impl->endpoint.base.
             nested_configurable.base.configurable), env, configurable, 
             endpoint_impl->methods);
     return endpoint;
 }
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_nested_component(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_nested_component(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!endpoint)
     {
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+        endpoint_impl = (woden_endpoint_impl_t *) create(env);
     }
     else
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+        endpoint_impl = (woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
   
     endpoint_impl->endpoint.base.nested_configurable.base.nested_component.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_nested_component_ops_t));
-    axis2_woden_nested_component_resolve_methods(&(endpoint_impl->endpoint.base.
+                sizeof(woden_nested_component_ops_t));
+    woden_nested_component_resolve_methods(&(endpoint_impl->endpoint.base.
             nested_configurable.base.nested_component), env, endpoint_impl->methods);
     return endpoint;
 }
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_configurable_component(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_configurable_component(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!endpoint)
     {
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+        endpoint_impl = (woden_endpoint_impl_t *) create(env);
     }
     else
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+        endpoint_impl = (woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
   
     endpoint_impl->endpoint.base.configurable_component.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_configurable_component_ops_t));
-    axis2_woden_configurable_component_resolve_methods(&(endpoint_impl->endpoint.base.
+                sizeof(woden_configurable_component_ops_t));
+    woden_configurable_component_resolve_methods(&(endpoint_impl->endpoint.base.
             configurable_component), env, endpoint_impl->methods);
     return endpoint;
 }
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_wsdl_component(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_wsdl_component(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if(!endpoint)
     {
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+        endpoint_impl = (woden_endpoint_impl_t *) create(env);
     }
     else
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+        endpoint_impl = (woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
 
     endpoint_impl->endpoint.base.configurable_component.wsdl_component.ops = 
         AXIS2_MALLOC(env->allocator, 
-        sizeof(axis2_woden_wsdl_component_ops_t));
-    axis2_woden_wsdl_component_resolve_methods(&(endpoint_impl->endpoint.base.
+        sizeof(woden_wsdl_component_ops_t));
+    woden_wsdl_component_resolve_methods(&(endpoint_impl->endpoint.base.
             configurable_component.wsdl_component), env, endpoint_impl->methods);
     return endpoint;
 }
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_configurable_element(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_configurable_element(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!endpoint)
     {
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+        endpoint_impl = (woden_endpoint_impl_t *) create(env);
     }
     else
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+        endpoint_impl = (woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
 
     endpoint_impl->endpoint.base.endpoint_element.base.configurable_element.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_configurable_element_ops_t));
-    axis2_woden_configurable_element_resolve_methods(&(endpoint_impl->endpoint.base.
+                sizeof(woden_configurable_element_ops_t));
+    woden_configurable_element_resolve_methods(&(endpoint_impl->endpoint.base.
             endpoint_element.base.configurable_element), env, endpoint_impl->methods);
     return endpoint;
 }
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_documentable(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_documentable(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!endpoint)
     {
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+        endpoint_impl = (woden_endpoint_impl_t *) create(env);
     }
     else
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+        endpoint_impl = (woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
 
     endpoint_impl->endpoint.base.nested_configurable.base.
         configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_documentable_ops_t));
-    axis2_woden_documentable_resolve_methods(&(endpoint_impl->endpoint.base.
+                sizeof(woden_documentable_ops_t));
+    woden_documentable_resolve_methods(&(endpoint_impl->endpoint.base.
             nested_configurable.base.configurable.base.documentable), env, NULL,
             endpoint_impl->methods);
     return endpoint;
 }
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_attr_extensible(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_attr_extensible(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!endpoint)
     {
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+        endpoint_impl = (woden_endpoint_impl_t *) create(env);
     }
     else
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+        endpoint_impl = (woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
 
     endpoint_impl->endpoint.base.endpoint_element.base.documentable_element.
         wsdl_element.base.attr_extensible.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_attr_extensible_ops_t));
-    axis2_woden_attr_extensible_resolve_methods(&(endpoint_impl->endpoint.base.
+                sizeof(woden_attr_extensible_ops_t));
+    woden_attr_extensible_resolve_methods(&(endpoint_impl->endpoint.base.
             endpoint_element.base.documentable_element.wsdl_element.base.
             attr_extensible), env, NULL, endpoint_impl->methods);
     return endpoint;
 }
 
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_to_element_extensible(
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_to_element_extensible(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!endpoint)
     {
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+        endpoint_impl = (woden_endpoint_impl_t *) create(env);
     }
     else
-        endpoint_impl = (axis2_woden_endpoint_impl_t *) endpoint;
+        endpoint_impl = (woden_endpoint_impl_t *) endpoint;
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
 
     endpoint_impl->endpoint.base.endpoint_element.base.documentable_element.
         wsdl_element.base.element_extensible.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_element_extensible_ops_t));
-    axis2_woden_element_extensible_resolve_methods(&(endpoint_impl->endpoint.base.
+                sizeof(woden_element_extensible_ops_t));
+    woden_element_extensible_resolve_methods(&(endpoint_impl->endpoint.base.
             endpoint_element.base.documentable_element.wsdl_element.base.
             element_extensible), env, NULL, endpoint_impl->methods);
     return endpoint;
 }
 
 /************************End of Woden C Internal Methods***********************/
-static axis2_woden_endpoint_t *
+static woden_endpoint_t *
 create(const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     endpoint_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_endpoint_impl_t));
+                    sizeof(woden_endpoint_impl_t));
 
-    endpoint_impl->obj_type= AXIS2_WODEN_ENDPOINT;
+    endpoint_impl->obj_type= WODEN_ENDPOINT;
     endpoint_impl->super = NULL;
     endpoint_impl->methods = NULL;
     endpoint_impl->f_name = NULL;
@@ -485,17 +485,17 @@ create(const axis2_env_t *env)
         documentable_element.wsdl_element.base.element_extensible.ops = NULL;
  
     endpoint_impl->endpoint.ops = AXIS2_MALLOC(env->allocator, 
-            sizeof(axis2_woden_endpoint_ops_t));
+            sizeof(woden_endpoint_ops_t));
 
-    endpoint_impl->endpoint.ops->free = axis2_woden_endpoint_free;
-    endpoint_impl->endpoint.ops->super_objs = axis2_woden_endpoint_super_objs;
-    endpoint_impl->endpoint.ops->type = axis2_woden_endpoint_type;
-    endpoint_impl->endpoint.ops->get_base_impl = axis2_woden_endpoint_get_base_impl;
+    endpoint_impl->endpoint.ops->free = woden_endpoint_free;
+    endpoint_impl->endpoint.ops->super_objs = woden_endpoint_super_objs;
+    endpoint_impl->endpoint.ops->type = woden_endpoint_type;
+    endpoint_impl->endpoint.ops->get_base_impl = woden_endpoint_get_base_impl;
 
-    endpoint_impl->endpoint.ops->get_name = axis2_woden_endpoint_get_name;
-    endpoint_impl->endpoint.ops->get_binding = axis2_woden_endpoint_get_binding;
+    endpoint_impl->endpoint.ops->get_name = woden_endpoint_get_name;
+    endpoint_impl->endpoint.ops->get_binding = woden_endpoint_get_binding;
     endpoint_impl->endpoint.ops->get_address = 
-        axis2_woden_endpoint_get_address;
+        woden_endpoint_get_address;
  
     endpoint_impl->methods = axis2_hash_make(env);
     if(!endpoint_impl->methods) 
@@ -504,52 +504,52 @@ create(const axis2_env_t *env)
         return NULL;
     }
     axis2_hash_set(endpoint_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            axis2_woden_endpoint_free);
+            woden_endpoint_free);
     axis2_hash_set(endpoint_impl->methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_endpoint_super_objs);
+            AXIS2_HASH_KEY_STRING, woden_endpoint_super_objs);
     axis2_hash_set(endpoint_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_endpoint_type);
+            AXIS2_HASH_KEY_STRING, woden_endpoint_type);
 
     axis2_hash_set(endpoint_impl->methods, "get_name", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_endpoint_get_name);
+            woden_endpoint_get_name);
     axis2_hash_set(endpoint_impl->methods, "get_binding", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_endpoint_get_binding);
+            woden_endpoint_get_binding);
     axis2_hash_set(endpoint_impl->methods, "get_address", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_endpoint_get_address);
+            woden_endpoint_get_address);
     axis2_hash_set(endpoint_impl->methods, "set_name", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_endpoint_set_name);
+            woden_endpoint_set_name);
     axis2_hash_set(endpoint_impl->methods, "set_binding_qname", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_endpoint_set_binding_qname);
+            woden_endpoint_set_binding_qname);
     axis2_hash_set(endpoint_impl->methods, "get_binding_qname", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_endpoint_get_binding_qname);
+            woden_endpoint_get_binding_qname);
     axis2_hash_set(endpoint_impl->methods, "get_binding_element", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_endpoint_get_binding_element);
+            woden_endpoint_get_binding_element);
     axis2_hash_set(endpoint_impl->methods, "set_address", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_endpoint_set_address);
+            woden_endpoint_set_address);
     axis2_hash_set(endpoint_impl->methods, "set_binding_element", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_endpoint_set_binding_element);
+            woden_endpoint_set_binding_element);
 
     return &(endpoint_impl->endpoint);
 }
 
-AXIS2_EXTERN axis2_woden_endpoint_t * AXIS2_CALL
-axis2_woden_endpoint_create(const axis2_env_t *env)
+AXIS2_EXTERN woden_endpoint_t * AXIS2_CALL
+woden_endpoint_create(const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    endpoint_impl = (axis2_woden_endpoint_impl_t *) create(env);
+    endpoint_impl = (woden_endpoint_impl_t *) create(env);
 
-    endpoint_impl->nested_configurable = axis2_woden_nested_configurable_create(env);
+    endpoint_impl->nested_configurable = woden_nested_configurable_create(env);
 
     endpoint_impl->super = axis2_hash_make(env);
     if(!endpoint_impl->super) 
@@ -557,20 +557,20 @@ axis2_woden_endpoint_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(endpoint_impl->super, "AXIS2_WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(endpoint_impl->super, "WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING, 
             &(endpoint_impl->endpoint));
-    axis2_hash_set(endpoint_impl->super, "AXIS2_WODEN_NESTED_CONFIGURABLE", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(endpoint_impl->super, "WODEN_NESTED_CONFIGURABLE", AXIS2_HASH_KEY_STRING, 
             endpoint_impl->nested_configurable);
  
     return &(endpoint_impl->endpoint);
 }
 
 static axis2_status_t
-axis2_woden_endpoint_free_ops(
+woden_endpoint_free_ops(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     endpoint_impl = INTF_TO_IMPL(endpoint);
@@ -679,10 +679,10 @@ axis2_woden_endpoint_free_ops(
 
 
 axis2_status_t AXIS2_CALL
-axis2_woden_endpoint_free(void *endpoint,
+woden_endpoint_free(void *endpoint,
                         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     endpoint_impl = INTF_TO_IMPL(endpoint);
@@ -701,7 +701,7 @@ axis2_woden_endpoint_free(void *endpoint,
 
     if(endpoint_impl->f_binding)
     {
-        AXIS2_WODEN_BINDING_FREE(endpoint_impl->f_binding, env);
+        WODEN_BINDING_FREE(endpoint_impl->f_binding, env);
         endpoint_impl->f_binding = NULL;
     }
 
@@ -727,11 +727,11 @@ axis2_woden_endpoint_free(void *endpoint,
 
     if(endpoint_impl->nested_configurable)
     {
-        AXIS2_WODEN_NESTED_CONFIGURABLE_FREE(endpoint_impl->nested_configurable, env);
+        WODEN_NESTED_CONFIGURABLE_FREE(endpoint_impl->nested_configurable, env);
         endpoint_impl->nested_configurable = NULL;
     }
 
-    axis2_woden_endpoint_free_ops(endpoint, env);
+    woden_endpoint_free_ops(endpoint, env);
 
     if((&(endpoint_impl->endpoint))->ops)
     {
@@ -748,11 +748,11 @@ axis2_woden_endpoint_free(void *endpoint,
 }
 
 axis2_hash_t *AXIS2_CALL
-axis2_woden_endpoint_super_objs(
+woden_endpoint_super_objs(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     endpoint_impl = INTF_TO_IMPL(endpoint);
@@ -760,12 +760,12 @@ axis2_woden_endpoint_super_objs(
     return endpoint_impl->super;
 }
 
-axis2_woden_obj_types_t AXIS2_CALL
-axis2_woden_endpoint_type(
+woden_obj_types_t AXIS2_CALL
+woden_endpoint_type(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     endpoint_impl = INTF_TO_IMPL(endpoint);
@@ -773,12 +773,12 @@ axis2_woden_endpoint_type(
     return endpoint_impl->obj_type;
 }
 
-axis2_woden_nested_configurable_t *AXIS2_CALL
-axis2_woden_endpoint_get_base_impl(
+woden_nested_configurable_t *AXIS2_CALL
+woden_endpoint_get_base_impl(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     endpoint_impl = INTF_TO_IMPL(endpoint);
@@ -787,13 +787,13 @@ axis2_woden_endpoint_get_base_impl(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_endpoint_resolve_methods(
-        axis2_woden_endpoint_t *endpoint,
+woden_endpoint_resolve_methods(
+        woden_endpoint_t *endpoint,
         const axis2_env_t *env,
-        axis2_woden_endpoint_t *endpoint_impl,
+        woden_endpoint_t *endpoint_impl,
         axis2_hash_t *methods)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl_l = NULL;
+    woden_endpoint_impl_t *endpoint_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
@@ -837,49 +837,49 @@ axis2_woden_endpoint_resolve_methods(
  * ************************************************************/
 
 woden_nc_name_t *AXIS2_CALL
-axis2_woden_endpoint_get_name(
+woden_endpoint_get_name(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    super = AXIS2_WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
+    super = WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
     endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
+                "WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
     
     return endpoint_impl->f_name;
 }
 
 void *AXIS2_CALL
-axis2_woden_endpoint_get_binding(
+woden_endpoint_get_binding(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    super = AXIS2_WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
+    super = WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
     endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
+                "WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
     
     return endpoint_impl->f_binding;
 }
 
 axis2_uri_t *AXIS2_CALL
-axis2_woden_endpoint_get_address(
+woden_endpoint_get_address(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    super = AXIS2_WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
+    super = WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
     endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
+                "WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
     
     return endpoint_impl->f_address;
 }
@@ -888,18 +888,18 @@ axis2_woden_endpoint_get_address(
  * ************************************************************/
 
 axis2_status_t AXIS2_CALL
-axis2_woden_endpoint_set_name(
+woden_endpoint_set_name(
         void *endpoint,
         const axis2_env_t *env,
         woden_nc_name_t *name)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    super = AXIS2_WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
+    super = WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
     endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
+                "WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
     if(endpoint_impl->f_name)
     {
@@ -910,18 +910,18 @@ axis2_woden_endpoint_set_name(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_endpoint_set_binding_qname(
+woden_endpoint_set_binding_qname(
         void *endpoint,
         const axis2_env_t *env,
         axis2_qname_t *binding_qname)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    super = AXIS2_WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
+    super = WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
     endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
+                "WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
     if(endpoint_impl->f_binding_qname)
     {
@@ -933,50 +933,50 @@ axis2_woden_endpoint_set_binding_qname(
 }
 
 axis2_qname_t *AXIS2_CALL
-axis2_woden_endpoint_get_binding_qname(
+woden_endpoint_get_binding_qname(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    super = AXIS2_WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
+    super = WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
     endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
+                "WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
     return endpoint_impl->f_binding_qname;
 }
 
 void *AXIS2_CALL
-axis2_woden_endpoint_get_binding_element(
+woden_endpoint_get_binding_element(
         void *endpoint,
         const axis2_env_t *env)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    super = AXIS2_WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
+    super = WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
     endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
+                "WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
     return endpoint_impl->f_binding;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_endpoint_set_address(
+woden_endpoint_set_address(
         void *endpoint,
         const axis2_env_t *env,
         axis2_uri_t *uri)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    super = AXIS2_WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
+    super = WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
     endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
+                "WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
     if(endpoint_impl->f_binding_qname)
     {
@@ -992,18 +992,18 @@ axis2_woden_endpoint_set_address(
  *****************************************************************************/  
 
 axis2_status_t AXIS2_CALL
-axis2_woden_endpoint_set_binding_element(
+woden_endpoint_set_binding_element(
         void *endpoint,
         const axis2_env_t *env,
         void *binding)
 {
-    axis2_woden_endpoint_impl_t *endpoint_impl = NULL;
+    woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    super = AXIS2_WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
+    super = WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
     endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
+                "WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
 
     if(endpoint_impl->f_binding)
     {

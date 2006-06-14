@@ -14,89 +14,89 @@
  * limitations under the License.
  */
  
-#include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
-#include <woden/wsdl20/xml/axis2_woden_wsdl_element.h>
+#include <woden_component_exts.h>
+#include <woden_wsdl_element.h>
 #include <axis2_uri.h>
 #include <axis2_hash.h>
 
-typedef struct axis2_woden_component_exts_impl axis2_woden_component_exts_impl_t;
+typedef struct woden_component_exts_impl woden_component_exts_impl_t;
 
 /** 
  * @brief Component Extensions Struct Impl
  *   Axis2 Component Extensions  
  */ 
-struct axis2_woden_component_exts_impl
+struct woden_component_exts_impl
 {
-    axis2_woden_component_exts_t component_exts;
+    woden_component_exts_t component_exts;
     void *f_parent_element;
     axis2_uri_t *f_namespc;
 };
 
-#define INTF_TO_IMPL(component_exts) ((axis2_woden_component_exts_impl_t *) component_exts)
+#define INTF_TO_IMPL(component_exts) ((woden_component_exts_impl_t *) component_exts)
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_component_exts_free(
+woden_component_exts_free(
         void *component_exts,
         const axis2_env_t *envv);
 
 axis2_uri_t *AXIS2_CALL
-axis2_woden_component_exts_get_namespace(
+woden_component_exts_get_namespace(
         void *component_exts,
         const axis2_env_t *env);
 
 void *AXIS2_CALL
-axis2_woden_component_exts_get_parent_element(
+woden_component_exts_get_parent_element(
         void *component_exts,
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_woden_component_exts_init(
+woden_component_exts_init(
         void *component_exts,
         const axis2_env_t *env,
-        axis2_woden_wsdl_element_t *parent_el,
+        woden_wsdl_element_t *parent_el,
         axis2_uri_t *namespc);
  
-AXIS2_EXTERN axis2_woden_component_exts_t * AXIS2_CALL
-axis2_woden_component_exts_create(
+AXIS2_EXTERN woden_component_exts_t * AXIS2_CALL
+woden_component_exts_create(
         const axis2_env_t *env)
 {
-    axis2_woden_component_exts_impl_t *component_exts_impl = NULL;
+    woden_component_exts_impl_t *component_exts_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     component_exts_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_component_exts_impl_t));
+                    sizeof(woden_component_exts_impl_t));
 
     component_exts_impl->f_parent_element = NULL;
     component_exts_impl->f_namespc = NULL;
 
     component_exts_impl->component_exts.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_component_exts_ops_t)); 
+                    sizeof(woden_component_exts_ops_t)); 
     
     component_exts_impl->component_exts.ops->free = 
-            axis2_woden_component_exts_free;
+            woden_component_exts_free;
     component_exts_impl->component_exts.ops->init = 
-            axis2_woden_component_exts_init;
+            woden_component_exts_init;
     component_exts_impl->component_exts.ops->get_namespace = 
-            axis2_woden_component_exts_get_namespace;
+            woden_component_exts_get_namespace;
     component_exts_impl->component_exts.ops->get_parent_element = 
-            axis2_woden_component_exts_get_parent_element;
+            woden_component_exts_get_parent_element;
     
     return &(component_exts_impl->component_exts);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_component_exts_free(
+woden_component_exts_free(
         void *component_exts,
         const axis2_env_t *env)
 {
-    axis2_woden_component_exts_impl_t *component_exts_impl = NULL;
+    woden_component_exts_impl_t *component_exts_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     component_exts_impl = INTF_TO_IMPL(component_exts);
 
     if(component_exts_impl->f_parent_element)
     {
-        AXIS2_WODEN_WSDL_ELEMENT_FREE(component_exts_impl->f_parent_element, env);
+        WODEN_WSDL_ELEMENT_FREE(component_exts_impl->f_parent_element, env);
         component_exts_impl->f_parent_element = NULL;
     }
     
@@ -121,8 +121,8 @@ axis2_woden_component_exts_free(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_component_exts_resolve_methods(
-        axis2_woden_component_exts_t *component_exts,
+woden_component_exts_resolve_methods(
+        woden_component_exts_t *component_exts,
         const axis2_env_t *env,
         axis2_hash_t *methods)
 {
@@ -130,7 +130,7 @@ axis2_woden_component_exts_resolve_methods(
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     component_exts->ops = AXIS2_MALLOC(env->allocator, 
-            sizeof(axis2_woden_component_exts_ops_t));
+            sizeof(woden_component_exts_ops_t));
     component_exts->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
     component_exts->ops->get_parent_element = axis2_hash_get(methods, 
@@ -148,11 +148,11 @@ axis2_woden_component_exts_resolve_methods(
 }
 
 axis2_uri_t *AXIS2_CALL
-axis2_woden_component_exts_get_namespace(
+woden_component_exts_get_namespace(
         void *component_exts,
         const axis2_env_t *env)
 {
-    axis2_woden_component_exts_impl_t *component_exts_impl = NULL;
+    woden_component_exts_impl_t *component_exts_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     component_exts_impl = INTF_TO_IMPL(component_exts);
@@ -160,11 +160,11 @@ axis2_woden_component_exts_get_namespace(
 }
 
 void *AXIS2_CALL
-axis2_woden_component_exts_get_parent_element(
+woden_component_exts_get_parent_element(
         void *component_exts,
         const axis2_env_t *env)
 {
-    axis2_woden_component_exts_impl_t *component_exts_impl = NULL;
+    woden_component_exts_impl_t *component_exts_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     component_exts_impl = INTF_TO_IMPL(component_exts);
@@ -172,13 +172,13 @@ axis2_woden_component_exts_get_parent_element(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_component_exts_init(
+woden_component_exts_init(
         void *component_exts,
         const axis2_env_t *env,
-        axis2_woden_wsdl_element_t *parent_el,
+        woden_wsdl_element_t *parent_el,
         axis2_uri_t *namespc) 
 {
-    axis2_woden_component_exts_impl_t *component_exts_impl = NULL;
+    woden_component_exts_impl_t *component_exts_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     component_exts_impl = INTF_TO_IMPL(component_exts);

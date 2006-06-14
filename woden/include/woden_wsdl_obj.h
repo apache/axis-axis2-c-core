@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_WSDL_OBJ_H
-#define AXIS2_WODEN_WSDL_OBJ_H
+#ifndef WODEN_WSDL_OBJ_H
+#define WODEN_WSDL_OBJ_H
 
 /**
- * @file axis2_woden_wsdl_obj.h
+ * @file woden_wsdl_obj.h
  * @brief Axis2 Wsdl Object Interface
  * All classes implementing the WSDL 2.0 Component and Element
  * model interfaces directly or indirectly extend this 
@@ -30,26 +30,26 @@
  * 
  */
 
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/xml/axis2_woden_wsdl_element.h>
-#include <woden/wsdl20/axis2_woden_wsdl_component.h>
+#include <woden/woden.h>
+#include <woden_wsdl_element.h>
+#include <woden_wsdl_component.h>
 
-/** @defgroup axis2_woden_wsdl_obj Wsdl Object
+/** @defgroup woden_wsdl_obj Wsdl Object
   * @ingroup axis2_wsdl
   * @{
   */
 
-typedef union axis2_woden_wsdl_obj_base axis2_woden_wsdl_obj_base_t;
-typedef struct axis2_woden_wsdl_obj axis2_woden_wsdl_obj_t;
-typedef struct axis2_woden_wsdl_obj_ops axis2_woden_wsdl_obj_ops_t;
-struct axis2_woden_component_exts;
+typedef union woden_wsdl_obj_base woden_wsdl_obj_base_t;
+typedef struct woden_wsdl_obj woden_wsdl_obj_t;
+typedef struct woden_wsdl_obj_ops woden_wsdl_obj_ops_t;
+struct woden_component_exts;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-struct axis2_woden_wsdl_obj_ops
+struct woden_wsdl_obj_ops
 {
    /** 
      * Deallocate memory
@@ -65,7 +65,7 @@ struct axis2_woden_wsdl_obj_ops
             void *wsdl_obj,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *wsdl_obj,
             const axis2_env_t *env);
@@ -73,12 +73,12 @@ struct axis2_woden_wsdl_obj_ops
     /**
      * @return the base implementation class
      */
-    axis2_woden_wsdl_element_t *(AXIS2_CALL *
+    woden_wsdl_element_t *(AXIS2_CALL *
     get_base_impl) (
             void *wsdl_obj,
             const axis2_env_t *env);
 
-    struct axis2_woden_component_exts *(AXIS2_CALL *
+    struct woden_component_exts *(AXIS2_CALL *
     get_component_exts_for_namespace) (
             void *wsdl_obj,
             const axis2_env_t *env,
@@ -94,57 +94,57 @@ struct axis2_woden_wsdl_obj_ops
             void *wsdl_obj,
             const axis2_env_t *env,
             axis2_uri_t *namespc,
-            struct axis2_woden_component_exts *exts);
+            struct woden_component_exts *exts);
 };
 
-union axis2_woden_wsdl_obj_base
+union woden_wsdl_obj_base
 {
-    axis2_woden_wsdl_element_t wsdl_element;
-    axis2_woden_wsdl_component_t wsdl_component;
+    woden_wsdl_element_t wsdl_element;
+    woden_wsdl_component_t wsdl_component;
 };
 
-struct axis2_woden_wsdl_obj
+struct woden_wsdl_obj
 {
-    axis2_woden_wsdl_obj_base_t base;
-    axis2_woden_wsdl_obj_ops_t *ops;
+    woden_wsdl_obj_base_t base;
+    woden_wsdl_obj_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_wsdl_obj_t * AXIS2_CALL
-axis2_woden_wsdl_obj_create(
+AXIS2_EXTERN woden_wsdl_obj_t * AXIS2_CALL
+woden_wsdl_obj_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_wsdl_obj_resolve_methods(
-        axis2_woden_wsdl_obj_t *wsdl_obj,
+woden_wsdl_obj_resolve_methods(
+        woden_wsdl_obj_t *wsdl_obj,
         const axis2_env_t *env,
-        axis2_woden_wsdl_obj_t *wsdl_obj_impl,
+        woden_wsdl_obj_t *wsdl_obj_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_WSDL_OBJ_FREE(wsdl_obj, env) \
-      (((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->free(wsdl_obj, env))
+#define WODEN_WSDL_OBJ_FREE(wsdl_obj, env) \
+      (((woden_wsdl_obj_t *) wsdl_obj)->ops->free(wsdl_obj, env))
 
-#define AXIS2_WODEN_WSDL_OBJ_SUPER_OBJS(wsdl_obj, env) \
-      (((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->super_objs(wsdl_obj, env))
+#define WODEN_WSDL_OBJ_SUPER_OBJS(wsdl_obj, env) \
+      (((woden_wsdl_obj_t *) wsdl_obj)->ops->super_objs(wsdl_obj, env))
 
-#define AXIS2_WODEN_WSDL_OBJ_TYPE(wsdl_obj, env) \
-      (((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->type(wsdl_obj, env))
+#define WODEN_WSDL_OBJ_TYPE(wsdl_obj, env) \
+      (((woden_wsdl_obj_t *) wsdl_obj)->ops->type(wsdl_obj, env))
 
-#define AXIS2_WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env) \
-      (((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->get_base_impl(wsdl_obj, env))
+#define WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env) \
+      (((woden_wsdl_obj_t *) wsdl_obj)->ops->get_base_impl(wsdl_obj, env))
 
-#define AXIS2_WODEN_WSDL_OBJ_GET_COMPONENT_EXTS_FOR_NAMESPACE(wsdl_obj, env, \
+#define WODEN_WSDL_OBJ_GET_COMPONENT_EXTS_FOR_NAMESPACE(wsdl_obj, env, \
                         namespc) \
-      (((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->\
+      (((woden_wsdl_obj_t *) wsdl_obj)->ops->\
          get_component_exts_for_namespace(wsdl_obj, env, namespc))
 
-#define AXIS2_WODEN_WSDL_OBJ_SET_COMPONENT_EXTS(wsdl_obj, env, namespc, exts) \
-      (((axis2_woden_wsdl_obj_t *) wsdl_obj)->ops->set_component_exts(\
+#define WODEN_WSDL_OBJ_SET_COMPONENT_EXTS(wsdl_obj, env, namespc, exts) \
+      (((woden_wsdl_obj_t *) wsdl_obj)->ops->set_component_exts(\
         wsdl_obj, env, namespc, exts))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_WSDL_OBJ_H */
+#endif /* WODEN_WSDL_OBJ_H */

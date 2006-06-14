@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <woden/wsdl20/axis2_woden_wsdl_component.h>
+#include <woden_wsdl_component.h>
 
 axis2_status_t AXIS2_CALL
-axis2_woden_wsdl_component_resolve_methods(
-        axis2_woden_wsdl_component_t *wsdl_component,
+woden_wsdl_component_resolve_methods(
+        woden_wsdl_component_t *wsdl_component,
         const axis2_env_t *env,
         axis2_hash_t *methods)
 {

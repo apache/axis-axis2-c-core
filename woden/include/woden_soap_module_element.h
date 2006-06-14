@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_SOAP_MODULE_ELEMENT_H
-#define AXIS2_WODEN_SOAP_MODULE_ELEMENT_H
+#ifndef WODEN_SOAP_MODULE_ELEMENT_H
+#define WODEN_SOAP_MODULE_ELEMENT_H
 
 /**
- * @file axis2_woden_soap_module_element.h
+ * @file woden_soap_module_element.h
  * @brief Axis2 Soap Module Element Soap Module
  * This interface represents the &lt;wsoap:module&gt; extension element that 
  * can appear within a Binding, Binding Fault, Binding Operation, Binding
@@ -34,26 +34,26 @@
 #include <axis2_qname.h>
 #include <axis2_uri.h>
 #include <axis2_array_list.h>
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
-#include <woden/wsdl20/extensions/axis2_woden_attr_extensible.h>
-#include <woden/wsdl20/extensions/axis2_woden_element_extensible.h>
+#include <woden/woden.h>
+#include <woden_ext_element.h>
+#include <woden_attr_extensible.h>
+#include <woden_element_extensible.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_soap_module_element axis2_woden_soap_module_element_t;
-typedef struct axis2_woden_soap_module_element_ops axis2_woden_soap_module_element_ops_t;
-typedef union axis2_woden_soap_module_element_base axis2_woden_soap_module_element_base_t;
+typedef struct woden_soap_module_element woden_soap_module_element_t;
+typedef struct woden_soap_module_element_ops woden_soap_module_element_ops_t;
+typedef union woden_soap_module_element_base woden_soap_module_element_base_t;
 
-/** @defgroup axis2_woden_soap_module_element Soap Module Element
+/** @defgroup woden_soap_module_element Soap Module Element
   * @ingroup axiom_soap_module
   * @{
   */
 
-struct axis2_woden_soap_module_element_ops
+struct woden_soap_module_element_ops
 {
    /** 
      * Deallocate memory
@@ -64,7 +64,7 @@ struct axis2_woden_soap_module_element_ops
             void *soap_module_element,
             const axis2_env_t *env);
  
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *soap_module_element,
             const axis2_env_t *env);
@@ -104,65 +104,65 @@ struct axis2_woden_soap_module_element_ops
  
 };
 
-union axis2_woden_soap_module_element_base
+union woden_soap_module_element_base
 {
-    axis2_woden_ext_element_t ext_element;
-    axis2_woden_attr_extensible_t attr_extensible;
-    axis2_woden_element_extensible_t element_extensible;
+    woden_ext_element_t ext_element;
+    woden_attr_extensible_t attr_extensible;
+    woden_element_extensible_t element_extensible;
 };
 
-struct axis2_woden_soap_module_element
+struct woden_soap_module_element
 {
-    axis2_woden_soap_module_element_base_t base;
-    axis2_woden_soap_module_element_ops_t *ops;
+    woden_soap_module_element_base_t base;
+    woden_soap_module_element_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_soap_module_element_t * AXIS2_CALL
-axis2_woden_soap_module_element_create(
+AXIS2_EXTERN woden_soap_module_element_t * AXIS2_CALL
+woden_soap_module_element_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_soap_module_element_resolve_methods(
-        axis2_woden_soap_module_element_t *soap_module_element,
+woden_soap_module_element_resolve_methods(
+        woden_soap_module_element_t *soap_module_element,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_SOAP_MODULE_ELEMENT_FREE(soap_module_element, env) \
-      (((axis2_woden_soap_module_element_t *) soap_module_element)->ops->\
+#define WODEN_SOAP_MODULE_ELEMENT_FREE(soap_module_element, env) \
+      (((woden_soap_module_element_t *) soap_module_element)->ops->\
          free (soap_module_element, env))
 
-#define AXIS2_WODEN_SOAP_MODULE_ELEMENT_TYPE(soap_module_element, env) \
-      (((axis2_woden_soap_module_element_t *) soap_module_element)->ops->\
+#define WODEN_SOAP_MODULE_ELEMENT_TYPE(soap_module_element, env) \
+      (((woden_soap_module_element_t *) soap_module_element)->ops->\
          type (soap_module_element, env))
 
-#define AXIS2_WODEN_SOAP_MODULE_ELEMENT_SET_REF(soap_module_element, env, uri) \
-      (((axis2_woden_soap_module_element_t *) soap_module_element)->ops->\
+#define WODEN_SOAP_MODULE_ELEMENT_SET_REF(soap_module_element, env, uri) \
+      (((woden_soap_module_element_t *) soap_module_element)->ops->\
          set_ref (soap_module_element, env, uri))
 
-#define AXIS2_WODEN_SOAP_MODULE_ELEMENT_GET_REF(soap_module_element, env) \
-      (((axis2_woden_soap_module_element_t *) soap_module_element)->ops->\
+#define WODEN_SOAP_MODULE_ELEMENT_GET_REF(soap_module_element, env) \
+      (((woden_soap_module_element_t *) soap_module_element)->ops->\
         get_ref  (soap_module_element, env))
 
-#define AXIS2_WODEN_SOAP_MODULE_ELEMENT_SET_PARENT_ELEMENT(soap_module_element, env, wsdl_el) \
-      (((axis2_woden_soap_module_element_t *) soap_module_element)->ops->\
+#define WODEN_SOAP_MODULE_ELEMENT_SET_PARENT_ELEMENT(soap_module_element, env, wsdl_el) \
+      (((woden_soap_module_element_t *) soap_module_element)->ops->\
          set_parent_element (soap_module_element, env, wsdl_el))
 
-#define AXIS2_WODEN_SOAP_MODULE_ELEMENT_GET_PARENT_ELEMENT(soap_module_element, env) \
-      (((axis2_woden_soap_module_element_t *) soap_module_element)->ops->\
+#define WODEN_SOAP_MODULE_ELEMENT_GET_PARENT_ELEMENT(soap_module_element, env) \
+      (((woden_soap_module_element_t *) soap_module_element)->ops->\
         get_parent_element  (soap_module_element, env))
 
-#define AXIS2_WODEN_SOAP_MODULE_ELEMENT_ADD_DOCUMENTATION_ELEMENT(soap_module_element, env, doc_el) \
-      (((axis2_woden_soap_module_element_t *) soap_module_element)->ops->\
+#define WODEN_SOAP_MODULE_ELEMENT_ADD_DOCUMENTATION_ELEMENT(soap_module_element, env, doc_el) \
+      (((woden_soap_module_element_t *) soap_module_element)->ops->\
         add_documentation_element  (soap_module_element, env, doc_el))
 
-#define AXIS2_WODEN_SOAP_MODULE_ELEMENT_GET_DOCUMENTATION_ELEMENTS(soap_module_element, env) \
-      (((axis2_woden_soap_module_element_t *) soap_module_element)->ops->\
+#define WODEN_SOAP_MODULE_ELEMENT_GET_DOCUMENTATION_ELEMENTS(soap_module_element, env) \
+      (((woden_soap_module_element_t *) soap_module_element)->ops->\
         get_documentation_elements  (soap_module_element, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_SOAP_MODULE_ELEMENT_H */
+#endif /* WODEN_SOAP_MODULE_ELEMENT_H */

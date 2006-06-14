@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_SOAP_FAULT_SUBCODES_H
-#define AXIS2_WODEN_SOAP_FAULT_SUBCODES_H
+#ifndef WODEN_SOAP_FAULT_SUBCODES_H
+#define WODEN_SOAP_FAULT_SUBCODES_H
 
 /**
- * @file axis2_woden_soap_fault_subcodes.h
+ * @file woden_soap_fault_subcodes.h
  * @brief Axis2 Soap Fault Subcodes Interface
  * This class represents the {soap fault subcodes} property that forms part of the 
  * SOAP extensions to the WSDL <code>woden_binding_fault</code> component.
@@ -39,7 +39,7 @@
 #include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <woden/axis2_woden.h>
+#include <woden/woden.h>
 #include <axis2_array_list.h>
 
 #ifdef __cplusplus
@@ -47,16 +47,16 @@ extern "C"
 {
 #endif
 
-typedef struct axis2_woden_soap_fault_subcodes axis2_woden_soap_fault_subcodes_t;
-typedef struct axis2_woden_soap_fault_subcodes_ops axis2_woden_soap_fault_subcodes_ops_t;
-struct axis2_woden_ext_element;
+typedef struct woden_soap_fault_subcodes woden_soap_fault_subcodes_t;
+typedef struct woden_soap_fault_subcodes_ops woden_soap_fault_subcodes_ops_t;
+struct woden_ext_element;
 
-/** @defgroup axis2_woden_soap_fault_subcodes Soap Fault Subcodes
+/** @defgroup woden_soap_fault_subcodes Soap Fault Subcodes
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_soap_fault_subcodes_ops
+struct woden_soap_fault_subcodes_ops
 {
    /** 
      * Deallocate memory
@@ -90,40 +90,40 @@ struct axis2_woden_soap_fault_subcodes_ops
 
 };
 
-struct axis2_woden_soap_fault_subcodes
+struct woden_soap_fault_subcodes
 {
-    axis2_woden_soap_fault_subcodes_ops_t *ops;
+    woden_soap_fault_subcodes_ops_t *ops;
     
 };
 
-AXIS2_EXTERN axis2_woden_soap_fault_subcodes_t * AXIS2_CALL
-axis2_woden_soap_fault_subcodes_create(
+AXIS2_EXTERN woden_soap_fault_subcodes_t * AXIS2_CALL
+woden_soap_fault_subcodes_create(
         const axis2_env_t *env,
         axis2_char_t *token,
         axis2_array_list_t *subcode_qns);
 
 AXIS2_EXTERN void * AXIS2_CALL
-axis2_woden_soap_fault_subcodes_get_soap_fault_subcodes_any(
+woden_soap_fault_subcodes_get_soap_fault_subcodes_any(
         const axis2_env_t *env);
 
-#define AXIS2_WODEN_SOAP_FAULT_SUBCODES_FREE(soap_fault_subcodes, env) \
-      (((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
+#define WODEN_SOAP_FAULT_SUBCODES_FREE(soap_fault_subcodes, env) \
+      (((woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
          free (soap_fault_subcodes, env))
 
-#define AXIS2_WODEN_SOAP_FAULT_SUBCODES_IS_QNAMES(soap_fault_subcodes, env) \
-      (((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
+#define WODEN_SOAP_FAULT_SUBCODES_IS_QNAMES(soap_fault_subcodes, env) \
+      (((woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
          is_qnames (soap_fault_subcodes, env))
 
-#define AXIS2_WODEN_SOAP_FAULT_SUBCODES_IS_TOKEN(soap_fault_subcodes, env) \
-      (((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
+#define WODEN_SOAP_FAULT_SUBCODES_IS_TOKEN(soap_fault_subcodes, env) \
+      (((woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
          is_token (soap_fault_subcodes, env))
 
-#define AXIS2_WODEN_SOAP_FAULT_SUBCODES_GET_QNAMES(soap_fault_subcodes, env) \
-      (((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
+#define WODEN_SOAP_FAULT_SUBCODES_GET_QNAMES(soap_fault_subcodes, env) \
+      (((woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
          get_qnames (soap_fault_subcodes, env))
 
-#define AXIS2_WODEN_SOAP_FAULT_SUBCODES_GET_TOKEN(soap_fault_subcodes, env) \
-      (((axis2_woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
+#define WODEN_SOAP_FAULT_SUBCODES_GET_TOKEN(soap_fault_subcodes, env) \
+      (((woden_soap_fault_subcodes_t *) soap_fault_subcodes)->ops->\
          get_token (soap_fault_subcodes, env))
 
 
@@ -131,4 +131,4 @@ axis2_woden_soap_fault_subcodes_get_soap_fault_subcodes_any(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_SOAP_FAULT_SUBCODES_H */
+#endif /* WODEN_SOAP_FAULT_SUBCODES_H */

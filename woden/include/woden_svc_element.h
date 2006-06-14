@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_SVC_ELEMENT_H
-#define AXIS2_WODEN_SVC_ELEMENT_H
+#ifndef WODEN_SVC_ELEMENT_H
+#define WODEN_SVC_ELEMENT_H
 
 /**
- * @file axis2_woden_svc_element.h
+ * @file woden_svc_element.h
  * @brief Axis2 Service Element Interface
  * This interface represents the &lt;service&gt; element. 
  *
@@ -32,10 +32,10 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <axis2_uri.h>
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/xml/axis2_woden_documentable_element.h>
-#include <woden/wsdl20/xml/axis2_woden_configurable_element.h>
-#include <woden/wsdl20/xml/axis2_woden_nested_element.h>
+#include <woden/woden.h>
+#include <woden_documentable_element.h>
+#include <woden_configurable_element.h>
+#include <woden_nested_element.h>
 #include <woden/types/woden_nc_name.h>
 
 #ifdef __cplusplus
@@ -43,16 +43,16 @@ extern "C"
 {
 #endif
 
-typedef struct axis2_woden_svc_element axis2_woden_svc_element_t;
-typedef struct axis2_woden_svc_element_ops axis2_woden_svc_element_ops_t;
-typedef union axis2_woden_svc_element_base axis2_woden_svc_element_base_t;
+typedef struct woden_svc_element woden_svc_element_t;
+typedef struct woden_svc_element_ops woden_svc_element_ops_t;
+typedef union woden_svc_element_base woden_svc_element_base_t;
 
-/** @defgroup axis2_woden_svc_element Service Element
+/** @defgroup woden_svc_element Service Element
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_svc_element_ops
+struct woden_svc_element_ops
 {
    /** 
      * Deallocate memory
@@ -63,7 +63,7 @@ struct axis2_woden_svc_element_ops
             void *svc_el,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *svc_el,
             const axis2_env_t *env);
@@ -108,65 +108,65 @@ struct axis2_woden_svc_element_ops
 
 };
 
-union axis2_woden_svc_element_base
+union woden_svc_element_base
 {
-    axis2_woden_documentable_element_t documentable_element;
-    axis2_woden_configurable_element_t configurable_element;
-    axis2_woden_nested_element_t nested_element;
+    woden_documentable_element_t documentable_element;
+    woden_configurable_element_t configurable_element;
+    woden_nested_element_t nested_element;
 };
 
-struct axis2_woden_svc_element
+struct woden_svc_element
 {
-    axis2_woden_svc_element_base_t base;
-    axis2_woden_svc_element_ops_t *ops;
+    woden_svc_element_base_t base;
+    woden_svc_element_ops_t *ops;
 };
 
 /************************Woden C Internal Methods******************************/
 axis2_status_t AXIS2_CALL
-axis2_woden_svc_element_resolve_methods(
-        axis2_woden_svc_element_t *svc_element,
+woden_svc_element_resolve_methods(
+        woden_svc_element_t *svc_element,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_SVC_ELEMENT_FREE(svc_el, env) \
-      (((axis2_woden_svc_element_t *) svc_el)->ops->\
+#define WODEN_SVC_ELEMENT_FREE(svc_el, env) \
+      (((woden_svc_element_t *) svc_el)->ops->\
          free (svc_el, env))
 
-#define AXIS2_WODEN_SVC_ELEMENT_TYPE(svc_el, env) \
-      (((axis2_woden_svc_element_t *) svc_el)->ops->\
+#define WODEN_SVC_ELEMENT_TYPE(svc_el, env) \
+      (((woden_svc_element_t *) svc_el)->ops->\
          type (svc_el, env))
 
-#define AXIS2_WODEN_SVC_ELEMENT_SET_QNAME(svc_el, env, name) \
-      (((axis2_woden_svc_element_t *) svc_el)->ops->\
+#define WODEN_SVC_ELEMENT_SET_QNAME(svc_el, env, name) \
+      (((woden_svc_element_t *) svc_el)->ops->\
          set_qname(svc_el, env, qname))
 
-#define AXIS2_WODEN_SVC_ELEMENT_GET_QNAME(svc_el, env) \
-      (((axis2_woden_svc_element_t *) svc_el)->ops->\
+#define WODEN_SVC_ELEMENT_GET_QNAME(svc_el, env) \
+      (((woden_svc_element_t *) svc_el)->ops->\
          get_qname(svc_el, env))
 
-#define AXIS2_WODEN_SVC_ELEMENT_SET_INTERFACE_QNAME(svc_el, env, qname) \
-      (((axis2_woden_svc_element_t *) svc_el)->ops->\
+#define WODEN_SVC_ELEMENT_SET_INTERFACE_QNAME(svc_el, env, qname) \
+      (((woden_svc_element_t *) svc_el)->ops->\
          set_interface_qname(svc_el, env, qname))
 
-#define AXIS2_WODEN_SVC_ELEMENT_GET_INTERFACE_QNAME(svc_el, env) \
-      (((axis2_woden_svc_element_t *) svc_el)->ops->\
+#define WODEN_SVC_ELEMENT_GET_INTERFACE_QNAME(svc_el, env) \
+      (((woden_svc_element_t *) svc_el)->ops->\
          get_interface_qname(svc_el, env))
 
-#define AXIS2_WODEN_SVC_ELEMENT_GET_INTERFACE_ELEMENT(svc_el, env) \
-      (((axis2_woden_svc_element_t *) svc_el)->ops->\
+#define WODEN_SVC_ELEMENT_GET_INTERFACE_ELEMENT(svc_el, env) \
+      (((woden_svc_element_t *) svc_el)->ops->\
          get_interface_element(svc_el, env))
 
-#define AXIS2_WODEN_SVC_ELEMENT_ADD_ENDPOINT_ELEMENT(svc_el, env, uri) \
-      (((axis2_woden_svc_element_t *) svc_el)->ops->\
+#define WODEN_SVC_ELEMENT_ADD_ENDPOINT_ELEMENT(svc_el, env, uri) \
+      (((woden_svc_element_t *) svc_el)->ops->\
          add_endpoint_element(svc_el, env, endpoint))
 
-#define AXIS2_WODEN_SVC_ELEMENT_GET_ENDPOINT_ELEMENTS(svc_el, env) \
-      (((axis2_woden_svc_element_t *) svc_el)->ops->\
+#define WODEN_SVC_ELEMENT_GET_ENDPOINT_ELEMENTS(svc_el, env) \
+      (((woden_svc_element_t *) svc_el)->ops->\
          get_endpoint_elements(svc_el, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_SVC_ELEMENT_H */
+#endif /* WODEN_SVC_ELEMENT_H */

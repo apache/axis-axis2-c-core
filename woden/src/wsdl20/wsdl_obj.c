@@ -14,96 +14,96 @@
  * limitations under the License.
  */
 
-#include <woden/axis2_woden_wsdl_obj.h>
-#include <woden/wsdl20/extensions/axis2_woden_component_exts.h>
+#include <woden/woden_wsdl_obj.h>
+#include <woden_component_exts.h>
 
-typedef struct axis2_woden_wsdl_obj_impl axis2_woden_wsdl_obj_impl_t;
+typedef struct woden_wsdl_obj_impl woden_wsdl_obj_impl_t;
 
 /** 
  * @brief Wsdl Object Struct Impl
  *   Axis2 Wsdl Object  
  */ 
-struct axis2_woden_wsdl_obj_impl
+struct woden_wsdl_obj_impl
 {
-    axis2_woden_wsdl_obj_t wsdl_obj;
-    axis2_woden_wsdl_element_t *wsdl_element;
+    woden_wsdl_obj_t wsdl_obj;
+    woden_wsdl_element_t *wsdl_element;
     axis2_hash_t *super;
-    axis2_woden_obj_types_t obj_type;
+    woden_obj_types_t obj_type;
     axis2_hash_t *f_comp_exts;
 };
 
-#define INTF_TO_IMPL(wsdl_obj) ((axis2_woden_wsdl_obj_impl_t *) wsdl_obj)
+#define INTF_TO_IMPL(wsdl_obj) ((woden_wsdl_obj_impl_t *) wsdl_obj)
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_wsdl_obj_free(
+woden_wsdl_obj_free(
         void *wsdl_obj,
         const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
-axis2_woden_wsdl_obj_super_objs(
+woden_wsdl_obj_super_objs(
         void *wsdl_obj,
         const axis2_env_t *env);
 
-axis2_woden_wsdl_element_t *AXIS2_CALL
-axis2_woden_wsdl_obj_get_base_impl(
+woden_wsdl_element_t *AXIS2_CALL
+woden_wsdl_obj_get_base_impl(
         void *wsdl_obj,
                                 const axis2_env_t *env);
 
-axis2_woden_component_exts_t *AXIS2_CALL
-axis2_woden_wsdl_obj_get_component_exts_for_namespace(
+woden_component_exts_t *AXIS2_CALL
+woden_wsdl_obj_get_component_exts_for_namespace(
         void *wsdl_obj,
         const axis2_env_t *env,
         axis2_uri_t *namespc);
 
 axis2_status_t AXIS2_CALL
-axis2_woden_wsdl_obj_set_component_exts(
+woden_wsdl_obj_set_component_exts(
         void *wsdl_obj,
        const axis2_env_t *env,
        axis2_uri_t *namespc,
-       axis2_woden_component_exts_t *exts);
+       woden_component_exts_t *exts);
 
-static axis2_woden_wsdl_obj_t *
+static woden_wsdl_obj_t *
 create(
         const axis2_env_t *env)
 {
-    axis2_woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
+    woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     wsdl_obj_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_wsdl_obj_impl_t));
+                    sizeof(woden_wsdl_obj_impl_t));
 
     wsdl_obj_impl->wsdl_element = NULL;
     wsdl_obj_impl->f_comp_exts = NULL;
    
     wsdl_obj_impl->wsdl_obj.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_wsdl_obj_ops_t));
+                    sizeof(woden_wsdl_obj_ops_t));
     wsdl_obj_impl->f_comp_exts = axis2_hash_make(env);
     if(!wsdl_obj_impl->f_comp_exts)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    wsdl_obj_impl->wsdl_obj.ops->free = axis2_woden_wsdl_obj_free;
-    wsdl_obj_impl->wsdl_obj.ops->super_objs = axis2_woden_wsdl_obj_super_objs;
-    wsdl_obj_impl->wsdl_obj.ops->get_base_impl = axis2_woden_wsdl_obj_get_base_impl;
+    wsdl_obj_impl->wsdl_obj.ops->free = woden_wsdl_obj_free;
+    wsdl_obj_impl->wsdl_obj.ops->super_objs = woden_wsdl_obj_super_objs;
+    wsdl_obj_impl->wsdl_obj.ops->get_base_impl = woden_wsdl_obj_get_base_impl;
     wsdl_obj_impl->wsdl_obj.ops->get_component_exts_for_namespace = 
-        axis2_woden_wsdl_obj_get_component_exts_for_namespace;
+        woden_wsdl_obj_get_component_exts_for_namespace;
     wsdl_obj_impl->wsdl_obj.ops->set_component_exts = 
-        axis2_woden_wsdl_obj_set_component_exts;
+        woden_wsdl_obj_set_component_exts;
 
     return &(wsdl_obj_impl->wsdl_obj);
 }
 
-AXIS2_EXTERN axis2_woden_wsdl_obj_t * AXIS2_CALL
-axis2_woden_wsdl_obj_create(
+AXIS2_EXTERN woden_wsdl_obj_t * AXIS2_CALL
+woden_wsdl_obj_create(
         const axis2_env_t *env)
 {
-    axis2_woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
+    woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    wsdl_obj_impl = (axis2_woden_wsdl_obj_impl_t *) create(env);
+    wsdl_obj_impl = (woden_wsdl_obj_impl_t *) create(env);
 
-    wsdl_obj_impl->wsdl_element = axis2_woden_wsdl_element_create(env);
+    wsdl_obj_impl->wsdl_element = woden_wsdl_element_create(env);
 
     wsdl_obj_impl->super = axis2_hash_make(env);
     if(!wsdl_obj_impl->super) 
@@ -111,26 +111,26 @@ axis2_woden_wsdl_obj_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(wsdl_obj_impl->super, "AXIS2_WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(wsdl_obj_impl->super, "WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING, 
             &(wsdl_obj_impl->wsdl_obj));
-    axis2_hash_set(wsdl_obj_impl->super, "AXIS2_WODEN_WSDL_ELEMENT", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(wsdl_obj_impl->super, "WODEN_WSDL_ELEMENT", AXIS2_HASH_KEY_STRING, 
             wsdl_obj_impl->wsdl_element);
     return &(wsdl_obj_impl->wsdl_obj);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_wsdl_obj_free(
+woden_wsdl_obj_free(
         void *wsdl_obj,
         const axis2_env_t *env)
 {
-    axis2_woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
+    woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     wsdl_obj_impl = INTF_TO_IMPL(wsdl_obj);
 
     if(wsdl_obj_impl->wsdl_element)
     {
-        AXIS2_WODEN_WSDL_ELEMENT_FREE(wsdl_obj_impl->wsdl_element, env);
+        WODEN_WSDL_ELEMENT_FREE(wsdl_obj_impl->wsdl_element, env);
         wsdl_obj_impl->wsdl_element = NULL;
     }
 
@@ -155,11 +155,11 @@ axis2_woden_wsdl_obj_free(
 }
 
 axis2_hash_t *AXIS2_CALL
-axis2_woden_wsdl_obj_super_objs(
+woden_wsdl_obj_super_objs(
         void *wsdl_obj,
         const axis2_env_t *env)
 {
-    axis2_woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
+    woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     wsdl_obj_impl = INTF_TO_IMPL(wsdl_obj);
@@ -167,12 +167,12 @@ axis2_woden_wsdl_obj_super_objs(
     return wsdl_obj_impl->super;
 }
 
-axis2_woden_wsdl_element_t *AXIS2_CALL
-axis2_woden_wsdl_obj_get_base_impl(
+woden_wsdl_element_t *AXIS2_CALL
+woden_wsdl_obj_get_base_impl(
         void *wsdl_obj,
         const axis2_env_t *env)
 {
-    axis2_woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
+    woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     wsdl_obj_impl = INTF_TO_IMPL(wsdl_obj);
@@ -181,13 +181,13 @@ axis2_woden_wsdl_obj_get_base_impl(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_wsdl_obj_resolve_methods(
-        axis2_woden_wsdl_obj_t *wsdl_obj,
+woden_wsdl_obj_resolve_methods(
+        woden_wsdl_obj_t *wsdl_obj,
         const axis2_env_t *env,
-        axis2_woden_wsdl_obj_t *wsdl_obj_impl,
+        woden_wsdl_obj_t *wsdl_obj_impl,
         axis2_hash_t *methods)
 {
-    axis2_woden_wsdl_obj_impl_t *wsdl_obj_impl_l = NULL;
+    woden_wsdl_obj_impl_t *wsdl_obj_impl_l = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
@@ -215,41 +215,41 @@ axis2_woden_wsdl_obj_resolve_methods(
     return AXIS2_SUCCESS;
 }
 
-axis2_woden_component_exts_t *AXIS2_CALL
-axis2_woden_wsdl_obj_get_component_exts_for_namespace(
+woden_component_exts_t *AXIS2_CALL
+woden_wsdl_obj_get_component_exts_for_namespace(
         void *wsdl_obj,
         const axis2_env_t *env,
         axis2_uri_t *namespc)
 {
-    axis2_woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
+    woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
     axis2_char_t *str_namespc = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    super = AXIS2_WODEN_WSDL_OBJ_SUPER_OBJS(wsdl_obj, env);
+    super = WODEN_WSDL_OBJ_SUPER_OBJS(wsdl_obj, env);
     wsdl_obj_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING));
+                "WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING));
 
     str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
-    return (axis2_woden_component_exts_t *)axis2_hash_get(wsdl_obj_impl->
+    return (woden_component_exts_t *)axis2_hash_get(wsdl_obj_impl->
             f_comp_exts, str_namespc, AXIS2_HASH_KEY_STRING);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_wsdl_obj_set_component_exts(
+woden_wsdl_obj_set_component_exts(
         void *wsdl_obj,
         const axis2_env_t *env,
         axis2_uri_t *namespc,
-        axis2_woden_component_exts_t *exts)
+        woden_component_exts_t *exts)
 {
-    axis2_woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
+    woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
     axis2_char_t *str_namespc;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    super = AXIS2_WODEN_WSDL_OBJ_SUPER_OBJS(wsdl_obj, env);
+    super = WODEN_WSDL_OBJ_SUPER_OBJS(wsdl_obj, env);
     wsdl_obj_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING));
+                "WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING));
 
     if(exts)
     {

@@ -14,67 +14,67 @@
  * limitations under the License.
  */
 
-#include <woden/xml/axis2_woden_qname_or_token_any_attr.h>
-#include <woden/xml/axis2_woden_xml_attr.h>
+#include <woden_qname_or_token_any_attr.h>
+#include <woden_xml_attr.h>
 #include <axiom_element.h>
 #include <axiom_node.h>
 
-typedef struct axis2_woden_qname_or_token_any_attr_impl 
-        axis2_woden_qname_or_token_any_attr_impl_t;
+typedef struct woden_qname_or_token_any_attr_impl 
+        woden_qname_or_token_any_attr_impl_t;
 
 /** 
  * @brief QName or Token Any Attribute Struct Impl
  *   Axis2 QName or Token Any Attribute  
  */ 
-struct axis2_woden_qname_or_token_any_attr_impl
+struct woden_qname_or_token_any_attr_impl
 {
-    axis2_woden_qname_or_token_any_attr_t token_attr;
-    axis2_woden_xml_attr_t *xml_attr;
-    axis2_woden_obj_types_t obj_type;
+    woden_qname_or_token_any_attr_t token_attr;
+    woden_xml_attr_t *xml_attr;
+    woden_obj_types_t obj_type;
     axis2_hash_t *methods;
 };
 
 #define INTF_TO_IMPL(token_attr) \
-    ((axis2_woden_qname_or_token_any_attr_impl_t *) \
+    ((woden_qname_or_token_any_attr_impl_t *) \
      token_attr)
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_qname_or_token_any_attr_free(
+woden_qname_or_token_any_attr_free(
         void *token_attr,
         const axis2_env_t *env);
 
-axis2_woden_obj_types_t AXIS2_CALL 
-axis2_woden_qname_or_token_any_attr_type(
+woden_obj_types_t AXIS2_CALL 
+woden_qname_or_token_any_attr_type(
         void *token_attr,
         const axis2_env_t *env);
 
-axis2_woden_xml_attr_t *AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_get_base_impl(
+woden_xml_attr_t *AXIS2_CALL
+woden_qname_or_token_any_attr_get_base_impl(
         void *token_attr,
         const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_is_qname(
+woden_qname_or_token_any_attr_is_qname(
         void *token_attr,
         const axis2_env_t *env); 
 
 axis2_bool_t AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_is_token(
+woden_qname_or_token_any_attr_is_token(
         void *token_attr,
         const axis2_env_t *env);
 
 axis2_qname_t *AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_get_qname(
+woden_qname_or_token_any_attr_get_qname(
         void *token_attr,
         const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_get_token(
+woden_qname_or_token_any_attr_get_token(
         void *token_attr,
         const axis2_env_t *env);
 
 void *AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_convert(
+woden_qname_or_token_any_attr_convert(
         void *token_attr,
         const axis2_env_t *env,
         axiom_element_t *owner_el,
@@ -85,45 +85,45 @@ axis2_woden_qname_or_token_any_attr_convert(
  * TODO This constructor is not used for extension attributes, but may be useful if
  * parsing of native WSDL attributes is changed to use the XMLAttr interface.
  */
-AXIS2_EXTERN axis2_woden_qname_or_token_any_attr_t * AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_create(const axis2_env_t *env,
+AXIS2_EXTERN woden_qname_or_token_any_attr_t * AXIS2_CALL
+woden_qname_or_token_any_attr_create(const axis2_env_t *env,
         axiom_element_t *owner_el,
         axiom_node_t *owner_node,
         axis2_qname_t *attr_type,
         axis2_char_t *attr_value)
 {
-    axis2_woden_qname_or_token_any_attr_impl_t *
+    woden_qname_or_token_any_attr_impl_t *
             token_attr_impl = NULL;
      
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     token_attr_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_qname_or_token_any_attr_impl_t));
+                    sizeof(woden_qname_or_token_any_attr_impl_t));
 
-    token_attr_impl->obj_type = AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR;
+    token_attr_impl->obj_type = WODEN_QNAME_OR_TOKEN_ANY_ATTR;
     token_attr_impl->xml_attr = NULL;
     token_attr_impl->methods = NULL;
 
     token_attr_impl->token_attr.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_qname_or_token_any_attr_ops_t));
+                sizeof(woden_qname_or_token_any_attr_ops_t));
 
     token_attr_impl->token_attr.ops->free = 
-        axis2_woden_qname_or_token_any_attr_free;
+        woden_qname_or_token_any_attr_free;
     token_attr_impl->token_attr.ops->type = 
-        axis2_woden_qname_or_token_any_attr_type;
+        woden_qname_or_token_any_attr_type;
     token_attr_impl->token_attr.ops->get_base_impl = 
-        axis2_woden_qname_or_token_any_attr_get_base_impl;
+        woden_qname_or_token_any_attr_get_base_impl;
 
     token_attr_impl->token_attr.ops->is_qname = 
-        axis2_woden_qname_or_token_any_attr_is_qname;
+        woden_qname_or_token_any_attr_is_qname;
     token_attr_impl->token_attr.ops->is_token = 
-        axis2_woden_qname_or_token_any_attr_is_token;
+        woden_qname_or_token_any_attr_is_token;
     token_attr_impl->token_attr.ops->get_qname = 
-        axis2_woden_qname_or_token_any_attr_get_qname;
+        woden_qname_or_token_any_attr_get_qname;
     token_attr_impl->token_attr.ops->get_token = 
-        axis2_woden_qname_or_token_any_attr_get_token;
+        woden_qname_or_token_any_attr_get_token;
     token_attr_impl->token_attr.ops->convert = 
-        axis2_woden_qname_or_token_any_attr_convert;
+        woden_qname_or_token_any_attr_convert;
     
     
     token_attr_impl->methods = axis2_hash_make(env);
@@ -133,38 +133,38 @@ axis2_woden_qname_or_token_any_attr_create(const axis2_env_t *env,
         return NULL;
     }
     axis2_hash_set(token_attr_impl->methods, "free", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_qname_or_token_any_attr_free);
+            AXIS2_HASH_KEY_STRING, woden_qname_or_token_any_attr_free);
     axis2_hash_set(token_attr_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_qname_or_token_any_attr_type);
+            AXIS2_HASH_KEY_STRING, woden_qname_or_token_any_attr_type);
 
     axis2_hash_set(token_attr_impl->methods, "is_qname", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_qname_or_token_any_attr_is_qname);
+            woden_qname_or_token_any_attr_is_qname);
     axis2_hash_set(token_attr_impl->methods, "is_token", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_qname_or_token_any_attr_is_token);
+            woden_qname_or_token_any_attr_is_token);
     axis2_hash_set(token_attr_impl->methods, "get_qname", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_qname_or_token_any_attr_get_qname);
+            woden_qname_or_token_any_attr_get_qname);
     axis2_hash_set(token_attr_impl->methods, "get_token", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_qname_or_token_any_attr_get_token);
+            woden_qname_or_token_any_attr_get_token);
     axis2_hash_set(token_attr_impl->methods, "convert", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_qname_or_token_any_attr_convert);
+            woden_qname_or_token_any_attr_convert);
 
-    token_attr_impl->xml_attr = axis2_woden_xml_attr_create(
+    token_attr_impl->xml_attr = woden_xml_attr_create(
             env, owner_el, owner_node, attr_type, attr_value);
     
     return &(token_attr_impl->token_attr);
 }
 
-axis2_woden_obj_types_t AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_type(
+woden_obj_types_t AXIS2_CALL
+woden_qname_or_token_any_attr_type(
         void *token_attr,
         const axis2_env_t *env)
 {
-    axis2_woden_qname_or_token_any_attr_impl_t *
+    woden_qname_or_token_any_attr_impl_t *
             token_attr_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -174,11 +174,11 @@ axis2_woden_qname_or_token_any_attr_type(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_free(
+woden_qname_or_token_any_attr_free(
         void *token_attr,
         const axis2_env_t *env)
 {
-    axis2_woden_qname_or_token_any_attr_impl_t *
+    woden_qname_or_token_any_attr_impl_t *
             token_attr_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -192,7 +192,7 @@ axis2_woden_qname_or_token_any_attr_free(
 
     if(token_attr_impl->xml_attr)
     {
-        AXIS2_WODEN_XML_ATTR_FREE(token_attr_impl->xml_attr, 
+        WODEN_XML_ATTR_FREE(token_attr_impl->xml_attr, 
                 env);
         token_attr_impl->xml_attr = NULL;
     }
@@ -213,12 +213,12 @@ axis2_woden_qname_or_token_any_attr_free(
     return AXIS2_SUCCESS;
 }
 
-axis2_woden_xml_attr_t *AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_get_base_impl(
+woden_xml_attr_t *AXIS2_CALL
+woden_qname_or_token_any_attr_get_base_impl(
         void *token_attr,
         const axis2_env_t *env)
 {
-    axis2_woden_qname_or_token_any_attr_impl_t *
+    woden_qname_or_token_any_attr_impl_t *
             token_attr_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -229,8 +229,8 @@ axis2_woden_qname_or_token_any_attr_get_base_impl(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_resolve_methods(
-        axis2_woden_qname_or_token_any_attr_t *
+woden_qname_or_token_any_attr_resolve_methods(
+        woden_qname_or_token_any_attr_t *
         token_attr,
         const axis2_env_t *env,
         axis2_hash_t *methods)
@@ -258,11 +258,11 @@ axis2_woden_qname_or_token_any_attr_resolve_methods(
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_is_qname(
+woden_qname_or_token_any_attr_is_qname(
         void *token_attr,
         const axis2_env_t *env) 
 {
-    axis2_woden_qname_or_token_any_attr_impl_t *
+    woden_qname_or_token_any_attr_impl_t *
             token_attr_impl = NULL;
     axis2_generic_obj_t *content = NULL;
     
@@ -271,28 +271,28 @@ axis2_woden_qname_or_token_any_attr_is_qname(
     /* TODO Check this. We need to check whether the
      * f_content is an instance of qname
      */
-    if(AXIS2_FALSE == axis2_woden_qname_or_token_any_attr_is_token(token_attr, 
+    if(AXIS2_FALSE == woden_qname_or_token_any_attr_is_token(token_attr, 
                 env))
         return AXIS2_TRUE;
-    content = AXIS2_WODEN_XML_ATTR_GET_CONTENT(token_attr_impl->xml_attr, env);
+    content = WODEN_XML_ATTR_GET_CONTENT(token_attr_impl->xml_attr, env);
     if(AXIS2_QNAME == AXIS2_GENERIC_OBJ_GET_TYPE(content, env))
         return AXIS2_TRUE;
     return AXIS2_FALSE;
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_is_token(
+woden_qname_or_token_any_attr_is_token(
         void *token_attr,
         const axis2_env_t *env) 
 {
-    axis2_woden_qname_or_token_any_attr_impl_t *
+    woden_qname_or_token_any_attr_impl_t *
             token_attr_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     token_attr_impl = INTF_TO_IMPL(token_attr);
 
-    if(AXIS2_TRUE != axis2_woden_qname_or_token_any_attr_is_qname(token_attr, 
-                env) && AXIS2_TRUE == AXIS2_WODEN_XML_ATTR_IS_VALID(
+    if(AXIS2_TRUE != woden_qname_or_token_any_attr_is_qname(token_attr, 
+                env) && AXIS2_TRUE == WODEN_XML_ATTR_IS_VALID(
                     token_attr_impl->xml_attr, env))
     {
         return AXIS2_TRUE;
@@ -303,39 +303,39 @@ axis2_woden_qname_or_token_any_attr_is_token(
 }
 
 axis2_qname_t *AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_get_qname(
+woden_qname_or_token_any_attr_get_qname(
         void *token_attr,
         const axis2_env_t *env)
 {
-    axis2_woden_qname_or_token_any_attr_impl_t *
+    woden_qname_or_token_any_attr_impl_t *
             token_attr_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     token_attr_impl = INTF_TO_IMPL(token_attr);
 
-    if(AXIS2_TRUE == axis2_woden_qname_or_token_any_attr_is_qname(token_attr, 
+    if(AXIS2_TRUE == woden_qname_or_token_any_attr_is_qname(token_attr, 
                 env))
-        return (axis2_qname_t *) AXIS2_WODEN_XML_ATTR_GET_CONTENT(
+        return (axis2_qname_t *) WODEN_XML_ATTR_GET_CONTENT(
                 token_attr_impl->xml_attr, env);
     else
         return NULL;
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_get_token(
+woden_qname_or_token_any_attr_get_token(
         void *token_attr,
         const axis2_env_t *env)
 {
-    axis2_woden_qname_or_token_any_attr_impl_t *
+    woden_qname_or_token_any_attr_impl_t *
             token_attr_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     token_attr_impl = INTF_TO_IMPL(token_attr);
-    if(AXIS2_TRUE == axis2_woden_qname_or_token_any_attr_is_qname(token_attr, 
-                env) && AXIS2_TRUE == AXIS2_WODEN_XML_ATTR_IS_VALID(
+    if(AXIS2_TRUE == woden_qname_or_token_any_attr_is_qname(token_attr, 
+                env) && AXIS2_TRUE == WODEN_XML_ATTR_IS_VALID(
                     token_attr_impl->xml_attr, env) )
     {
-        return (axis2_char_t *) AXIS2_WODEN_XML_ATTR_GET_CONTENT(
+        return (axis2_char_t *) WODEN_XML_ATTR_GET_CONTENT(
                 token_attr_impl->xml_attr, env);
     } else 
     {
@@ -344,14 +344,14 @@ axis2_woden_qname_or_token_any_attr_get_token(
 }
 
 void *AXIS2_CALL
-axis2_woden_qname_or_token_any_attr_convert(
+woden_qname_or_token_any_attr_convert(
         void *token_attr,
         const axis2_env_t *env,
         axiom_element_t *owner_el,
         axiom_node_t *owner_node,
         axis2_char_t *attr_value)
 {
-    axis2_woden_qname_or_token_any_attr_impl_t *
+    woden_qname_or_token_any_attr_impl_t *
             token_attr_impl = NULL;
     axis2_qname_t *qn = NULL;
     
@@ -369,7 +369,7 @@ axis2_woden_qname_or_token_any_attr_convert(
     
     if(!qn)
     {
-        AXIS2_WODEN_XML_ATTR_SET_VALID(token_attr_impl->
+        WODEN_XML_ATTR_SET_VALID(token_attr_impl->
                 xml_attr, env, AXIS2_FALSE);
         /* TODO handler error */
     }

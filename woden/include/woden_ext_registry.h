@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_EXT_REGISTRY_H
-#define AXIS2_WODEN_EXT_REGISTRY_H
+#ifndef WODEN_EXT_REGISTRY_H
+#define WODEN_EXT_REGISTRY_H
 
 /**
- * @file axis2_woden_ext_registry.h
+ * @file woden_ext_registry.h
  * @brief Axis2 Extension Registry Interface
  * 
  */
@@ -32,23 +32,23 @@
 #include <axis2_qname.h>
 #include <axis2_uri.h>
 #include <axis2_array_list.h>
-#include <woden/axis2_woden.h>
+#include <woden/woden.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_ext_registry axis2_woden_ext_registry_t;
-typedef struct axis2_woden_ext_registry_ops axis2_woden_ext_registry_ops_t;
-struct axis2_woden_wsdl_element;
+typedef struct woden_ext_registry woden_ext_registry_t;
+typedef struct woden_ext_registry_ops woden_ext_registry_ops_t;
+struct woden_wsdl_element;
     
-/** @defgroup axis2_woden_ext_registry Extension Registry
+/** @defgroup woden_ext_registry Extension Registry
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_ext_registry_ops
+struct woden_ext_registry_ops
 {
    /** 
      * Deallocate memory
@@ -67,7 +67,7 @@ struct axis2_woden_ext_registry_ops
     *
     * @param parent type a class object indicating where in the WSDL
     * document this extensibility element was encountered. For
-    * example, axis2_woden_binding would be used to indicate
+    * example, woden_binding would be used to indicate
     * this element was encountered as an immediate child of
     * a &lt;wsdl:binding&gt; element.
     * @param element QN the qname of the extensibility element
@@ -89,7 +89,7 @@ struct axis2_woden_ext_registry_ops
     *
     * @param parent type a class object indicating where in the WSDL
     * document this extensibility element was encountered. For
-    * example, axis2_woden_binding would be used to indicate
+    * example, woden_binding would be used to indicate
     * this element was encountered as an immediate child of
     * a &lt;wsdl:binding&gt; element.
     * @param element QN the qname of the extensibility element
@@ -111,7 +111,7 @@ struct axis2_woden_ext_registry_ops
     *
     * @param parent type a class object indicating where in the WSDL
     * document this extensibility attribute was encountered. For
-    * example, axis2_woden_binding would be used to indicate
+    * example, woden_binding would be used to indicate
     * this attribute was defined on a &lt;wsdl:binding> element.
     * @param attr name the qname of the extensibility attribute
     *
@@ -147,7 +147,7 @@ struct axis2_woden_ext_registry_ops
     *
     * @param parentType a class object indicating where in the WSDL
     * definition this extension would exist. For example,
-    * axis2_woden_binding would be used to indicate
+    * woden_binding would be used to indicate
     * this extensibility element would be added to the list of
     * extensibility elements belonging to a javax.wsdl.Binding,
     * after being instantiated.
@@ -171,7 +171,7 @@ struct axis2_woden_ext_registry_ops
     *
     * @param parent_type a class object indicating where in the WSDL
     * document this extensibility attribute was encountered. For
-    * example, axis2_woden_bindin would be used to indicate
+    * example, woden_bindin would be used to indicate
     * this attribute was defined on a &lt;wsdl:binding> element.
     * @param attr_qname the qname of the extensibility attribute
     * @param attr_type one of the constants defined on the Attribute Extensible
@@ -191,7 +191,7 @@ struct axis2_woden_ext_registry_ops
     *
     * @param parentType a class object indicating where in the WSDL
     * document this extensibility attribute was encountered. For
-    * example, axis2_woden_binding would be used to indicate
+    * example, woden_binding would be used to indicate
     * this attribute was defined on a &lt;wsdl:binding> element.
     * @param attr_qname the qname of the extensibility attribute
     *
@@ -248,56 +248,56 @@ struct axis2_woden_ext_registry_ops
             axis2_char_t *parent_class);
 };
 
-struct axis2_woden_ext_registry
+struct woden_ext_registry
 {
-    axis2_woden_ext_registry_ops_t *ops;
+    woden_ext_registry_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_ext_registry_t * AXIS2_CALL
-axis2_woden_ext_registry_create(const axis2_env_t *env);
+AXIS2_EXTERN woden_ext_registry_t * AXIS2_CALL
+woden_ext_registry_create(const axis2_env_t *env);
 
-#define AXIS2_WODEN_EXT_REGISTRY_FREE(ext_registry, env) \
-      (((axis2_woden_ext_registry_t *) ext_registry)->ops->\
+#define WODEN_EXT_REGISTRY_FREE(ext_registry, env) \
+      (((woden_ext_registry_t *) ext_registry)->ops->\
          free (ext_registry, env))
 
-#define AXIS2_WODEN_EXT_REGISTRY_REGISTER_DESERIALIZER(ext_registry, env, parent_type, element_qtype, ed) \
-      (((axis2_woden_ext_registry_t *) ext_registry)->ops->\
+#define WODEN_EXT_REGISTRY_REGISTER_DESERIALIZER(ext_registry, env, parent_type, element_qtype, ed) \
+      (((woden_ext_registry_t *) ext_registry)->ops->\
          register_deserializer (ext_registry, env, parent_type, element_qtype, ed))
 
-#define AXIS2_WODEN_EXT_REGISTRY_QUERY_DESERIALIZER(ext_registry, env, parent_type, element_type) \
-      (((axis2_woden_ext_registry_t *) ext_registry)->ops->\
+#define WODEN_EXT_REGISTRY_QUERY_DESERIALIZER(ext_registry, env, parent_type, element_type) \
+      (((woden_ext_registry_t *) ext_registry)->ops->\
          query_deserializer (ext_registry, env, parent_type, element_type))
 
-#define AXIS2_WODEN_EXT_REGISTRY_QUERY_EXT_ELEMENT_TYPE(ext_registry, env, parent_class, elem_qn) \
-      (((axis2_woden_ext_registry_t *) ext_registry)->ops->\
+#define WODEN_EXT_REGISTRY_QUERY_EXT_ELEMENT_TYPE(ext_registry, env, parent_class, elem_qn) \
+      (((woden_ext_registry_t *) ext_registry)->ops->\
          query_ext_element_type (ext_registry, env, parent_class, elem_qn))
 
-#define AXIS2_WODEN_EXT_REGISTRY_GET_ALLOWABLE_EXTS(ext_registry, env, parent_type) \
-      (((axis2_woden_ext_registry_t *) ext_registry)->ops->\
+#define WODEN_EXT_REGISTRY_GET_ALLOWABLE_EXTS(ext_registry, env, parent_type) \
+      (((woden_ext_registry_t *) ext_registry)->ops->\
          get_allowable_exts (ext_registry, env, parent_type))
 
-#define AXIS2_WODEN_EXT_REGISTRY_REGISTER_EXT_ELEMENT_TYPE(ext_registry, env, parent_type, element_qtype, element) \
-      (((axis2_woden_ext_registry_t *) ext_registry)->ops->\
+#define WODEN_EXT_REGISTRY_REGISTER_EXT_ELEMENT_TYPE(ext_registry, env, parent_type, element_qtype, element) \
+      (((woden_ext_registry_t *) ext_registry)->ops->\
          register_ext_element_type (ext_registry, env, parent_type, element_qtype, element))
 
-#define AXIS2_WODEN_EXT_REGISTRY_REGISTER_EXT_ATTR_TYPE(ext_registry, env, owner_class, attr_qname, attr) \
-      (((axis2_woden_ext_registry_t *) ext_registry)->ops->\
+#define WODEN_EXT_REGISTRY_REGISTER_EXT_ATTR_TYPE(ext_registry, env, owner_class, attr_qname, attr) \
+      (((woden_ext_registry_t *) ext_registry)->ops->\
          register_ext_attr_type (ext_registry, env, owner_class, attr_qname, attr))
 
-#define AXIS2_WODEN_EXT_REGISTRY_QUERY_EXT_ATTR_TYPE(ext_registry, env, parent_class, attr_qn) \
-      (((axis2_woden_ext_registry_t *) ext_registry)->ops->\
+#define WODEN_EXT_REGISTRY_QUERY_EXT_ATTR_TYPE(ext_registry, env, parent_class, attr_qn) \
+      (((woden_ext_registry_t *) ext_registry)->ops->\
          query_ext_attr_type (ext_registry, env, parent_class, attr_qn))
 
-#define AXIS2_WODEN_EXT_REGISTRY_REGISTER_COMPONENT_EXT(ext_registry, env, parent_class, ext_namespc, comp_ext) \
-      (((axis2_woden_ext_registry_t *) ext_registry)->ops->\
+#define WODEN_EXT_REGISTRY_REGISTER_COMPONENT_EXT(ext_registry, env, parent_class, ext_namespc, comp_ext) \
+      (((woden_ext_registry_t *) ext_registry)->ops->\
          register_component_ext (ext_registry, env, parent_class, ext_namespc, comp_ext))
 
-#define AXIS2_WODEN_EXT_REGISTRY_QUERY_COMPONENT_EXT(ext_registry, env, parent_class, ext_namespc) \
-      (((axis2_woden_ext_registry_t *) ext_registry)->ops->\
+#define WODEN_EXT_REGISTRY_QUERY_COMPONENT_EXT(ext_registry, env, parent_class, ext_namespc) \
+      (((woden_ext_registry_t *) ext_registry)->ops->\
          query_component_ext (ext_registry, env, parent_class, ext_namespc))
 
-#define AXIS2_WODEN_EXT_REGISTRY_QUERY_COMPONENT_EXT_NAMESPACES(ext_registry, env, parent_class) \
-      (((axis2_woden_ext_registry_t *) ext_registry)->ops->\
+#define WODEN_EXT_REGISTRY_QUERY_COMPONENT_EXT_NAMESPACES(ext_registry, env, parent_class) \
+      (((woden_ext_registry_t *) ext_registry)->ops->\
          query_component_ext_namespaces (ext_registry, env, parent_class))
 
 
@@ -305,4 +305,4 @@ axis2_woden_ext_registry_create(const axis2_env_t *env);
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_EXT_REGISTRY_H */
+#endif /* WODEN_EXT_REGISTRY_H */

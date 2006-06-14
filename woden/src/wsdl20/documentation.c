@@ -14,146 +14,146 @@
  * limitations under the License.
  */
 
-#include <woden/wsdl20/axis2_woden_documentation.h>
-#include <woden/wsdl20/xml/axis2_woden_documentation_element.h>
-#include <woden/wsdl20/extensions/axis2_woden_ext_element.h>
-#include <woden/xml/axis2_woden_xml_attr.h>
+#include <woden_documentation.h>
+#include <woden_documentation_element.h>
+#include <woden_ext_element.h>
+#include <woden_xml_attr.h>
 
-typedef struct axis2_woden_documentation_impl axis2_woden_documentation_impl_t;
+typedef struct woden_documentation_impl woden_documentation_impl_t;
 
 /** 
  * @brief Documentation Struct Impl
  *   Axis2 Documentation  
  */ 
-struct axis2_woden_documentation_impl
+struct woden_documentation_impl
 {
-    axis2_woden_documentation_t documentation;
-    axis2_woden_obj_types_t obj_type;
-    axis2_woden_wsdl_element_t *wsdl_element;
+    woden_documentation_t documentation;
+    woden_obj_types_t obj_type;
+    woden_wsdl_element_t *wsdl_element;
     axis2_hash_t *super;
     axis2_hash_t *methods;
 
     void *f_content;
 };
 
-#define INTF_TO_IMPL(documentation) ((axis2_woden_documentation_impl_t *) documentation)
+#define INTF_TO_IMPL(documentation) ((woden_documentation_impl_t *) documentation)
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_documentation_free(
+woden_documentation_free(
         void *documentation,
         const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
-axis2_woden_documentation_super_objs(
+woden_documentation_super_objs(
         void *documentation,
         const axis2_env_t *env);
 
-axis2_woden_obj_types_t AXIS2_CALL
-axis2_woden_documentation_type(
+woden_obj_types_t AXIS2_CALL
+woden_documentation_type(
         void *documentation,
         const axis2_env_t *env);
 
-axis2_woden_wsdl_element_t *AXIS2_CALL
-axis2_woden_documentation_get_base_impl(
+woden_wsdl_element_t *AXIS2_CALL
+woden_documentation_get_base_impl(
         void *documentation,
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_woden_documentation_set_content(
+woden_documentation_set_content(
         void *documentation,
         const axis2_env_t *env,
         void *doc_el);
 
 void *AXIS2_CALL
-axis2_woden_documentation_get_content(
+woden_documentation_get_content(
         void *documentation,
         const axis2_env_t *env);
 
-static axis2_woden_documentation_t *
+static woden_documentation_t *
 create(const axis2_env_t *env);
 
 static axis2_status_t
-axis2_woden_documentation_free_ops(
+woden_documentation_free_ops(
         void *documentation,
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_EXTERN axis2_woden_documentation_t * AXIS2_CALL
-axis2_woden_documentation_to_documentation_element(
+AXIS2_EXTERN woden_documentation_t * AXIS2_CALL
+woden_documentation_to_documentation_element(
         void *documentation,
         const axis2_env_t *env)
 {
-    axis2_woden_documentation_impl_t *documentation_impl = NULL;
+    woden_documentation_impl_t *documentation_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!documentation)
     {
-        documentation_impl = (axis2_woden_documentation_impl_t *) create(env);
+        documentation_impl = (woden_documentation_impl_t *) create(env);
     }
     else
-        documentation_impl = (axis2_woden_documentation_impl_t *) documentation;
+        documentation_impl = (woden_documentation_impl_t *) documentation;
 
-    axis2_woden_documentation_free_ops(documentation, env);
+    woden_documentation_free_ops(documentation, env);
 
     documentation_impl->documentation.base.documentation_element.ops = 
         AXIS2_MALLOC(env->allocator, 
-        sizeof(axis2_woden_documentation_element_ops_t));
-    axis2_woden_documentation_element_resolve_methods(&(documentation_impl->
+        sizeof(woden_documentation_element_ops_t));
+    woden_documentation_element_resolve_methods(&(documentation_impl->
             documentation.base.documentation_element), env, 
             documentation_impl->methods);
     return documentation;
 }
 
-AXIS2_EXTERN axis2_woden_documentation_t * AXIS2_CALL
-axis2_woden_documentation_to_attr_extensible(
+AXIS2_EXTERN woden_documentation_t * AXIS2_CALL
+woden_documentation_to_attr_extensible(
         void *documentation,
         const axis2_env_t *env)
 {
-    axis2_woden_documentation_impl_t *documentation_impl = NULL;
+    woden_documentation_impl_t *documentation_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if(!documentation)
     {
-        documentation_impl = (axis2_woden_documentation_impl_t *) create(env);
+        documentation_impl = (woden_documentation_impl_t *) create(env);
     }
     else
-        documentation_impl = (axis2_woden_documentation_impl_t *) documentation;
+        documentation_impl = (woden_documentation_impl_t *) documentation;
 
-    axis2_woden_documentation_free_ops(documentation, env);
+    woden_documentation_free_ops(documentation, env);
 
     documentation_impl->documentation.base.wsdl_element.base.attr_extensible.
             ops = AXIS2_MALLOC(env->allocator, 
-            sizeof(axis2_woden_attr_extensible_ops_t));
-    axis2_woden_attr_extensible_resolve_methods(&(documentation_impl->
+            sizeof(woden_attr_extensible_ops_t));
+    woden_attr_extensible_resolve_methods(&(documentation_impl->
             documentation.base.wsdl_element.base.attr_extensible), env, 
             NULL, documentation_impl->methods);
     return documentation;
 
 }
 
-AXIS2_EXTERN axis2_woden_documentation_t * AXIS2_CALL
-axis2_woden_documentation_to_element_extensible(
+AXIS2_EXTERN woden_documentation_t * AXIS2_CALL
+woden_documentation_to_element_extensible(
         void *documentation,
         const axis2_env_t *env)
 {
-    axis2_woden_documentation_impl_t *documentation_impl = NULL;
+    woden_documentation_impl_t *documentation_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if(!documentation)
     {
-        documentation_impl = (axis2_woden_documentation_impl_t *) create(env);
+        documentation_impl = (woden_documentation_impl_t *) create(env);
     }
     else
-        documentation_impl = (axis2_woden_documentation_impl_t *) documentation;
+        documentation_impl = (woden_documentation_impl_t *) documentation;
 
-    axis2_woden_documentation_free_ops(documentation, env);
+    woden_documentation_free_ops(documentation, env);
 
     documentation_impl->documentation.base.wsdl_element.base.
         element_extensible.ops = AXIS2_MALLOC(env->allocator, 
-        sizeof(axis2_woden_element_extensible_ops_t));
-    axis2_woden_element_extensible_resolve_methods(&(documentation_impl->
+        sizeof(woden_element_extensible_ops_t));
+    woden_element_extensible_resolve_methods(&(documentation_impl->
             documentation.base.wsdl_element.base.element_extensible), 
             env, NULL, documentation_impl->methods);
     return documentation;
@@ -161,30 +161,30 @@ axis2_woden_documentation_to_element_extensible(
 }
 
 /************************End of Woden C Internal Methods***********************/
-static axis2_woden_documentation_t *
+static woden_documentation_t *
 create(const axis2_env_t *env)
 {
-    axis2_woden_documentation_impl_t *documentation_impl = NULL;
+    woden_documentation_impl_t *documentation_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     documentation_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_documentation_impl_t));
+                    sizeof(woden_documentation_impl_t));
 
     documentation_impl->wsdl_element = NULL;
     documentation_impl->super = NULL;
-    documentation_impl->obj_type = AXIS2_WODEN_DOCUMENTATION;
+    documentation_impl->obj_type = WODEN_DOCUMENTATION;
     documentation_impl->f_content = NULL;
     documentation_impl->methods = NULL;
     
     documentation_impl->documentation.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_documentation_ops_t));
+                    sizeof(woden_documentation_ops_t));
 
-    documentation_impl->documentation.ops->free = axis2_woden_documentation_free;
+    documentation_impl->documentation.ops->free = woden_documentation_free;
     documentation_impl->documentation.ops->super_objs = 
-        axis2_woden_documentation_super_objs;
-    documentation_impl->documentation.ops->type = axis2_woden_documentation_type;
+        woden_documentation_super_objs;
+    documentation_impl->documentation.ops->type = woden_documentation_type;
     documentation_impl->documentation.ops->get_base_impl = 
-        axis2_woden_documentation_get_base_impl;
+        woden_documentation_get_base_impl;
 
     documentation_impl->methods = axis2_hash_make(env);
     if(!documentation_impl->methods) 
@@ -193,29 +193,29 @@ create(const axis2_env_t *env)
         return NULL;
     }
     axis2_hash_set(documentation_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            axis2_woden_documentation_free);
+            woden_documentation_free);
     axis2_hash_set(documentation_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            axis2_woden_documentation_super_objs);
+            woden_documentation_super_objs);
     axis2_hash_set(documentation_impl->methods, "type", AXIS2_HASH_KEY_STRING, 
-            axis2_woden_documentation_type);
+            woden_documentation_type);
     axis2_hash_set(documentation_impl->methods, "set_content", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_documentation_set_content);
+            AXIS2_HASH_KEY_STRING, woden_documentation_set_content);
     axis2_hash_set(documentation_impl->methods, "get_content", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_documentation_get_content);
+            AXIS2_HASH_KEY_STRING, woden_documentation_get_content);
     
     return &(documentation_impl->documentation);
 }
 
-AXIS2_EXTERN axis2_woden_documentation_t * AXIS2_CALL
-axis2_woden_documentation_create(
+AXIS2_EXTERN woden_documentation_t * AXIS2_CALL
+woden_documentation_create(
         const axis2_env_t *env)
 {
-    axis2_woden_documentation_impl_t *documentation_impl = NULL;
+    woden_documentation_impl_t *documentation_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    documentation_impl = (axis2_woden_documentation_impl_t *) create(env);
+    documentation_impl = (woden_documentation_impl_t *) create(env);
 
-    documentation_impl->wsdl_element = axis2_woden_wsdl_element_create(env);
+    documentation_impl->wsdl_element = woden_wsdl_element_create(env);
 
     documentation_impl->super = axis2_hash_make(env);
     if(!documentation_impl->super) 
@@ -223,20 +223,20 @@ axis2_woden_documentation_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(documentation_impl->super, "AXIS2_WODEN_DOCUMENTATION", 
+    axis2_hash_set(documentation_impl->super, "WODEN_DOCUMENTATION", 
             AXIS2_HASH_KEY_STRING, &(documentation_impl->documentation));
-    axis2_hash_set(documentation_impl->super, "AXIS2_WODEN_WSDL_ELEMENT", 
+    axis2_hash_set(documentation_impl->super, "WODEN_WSDL_ELEMENT", 
             AXIS2_HASH_KEY_STRING, documentation_impl->wsdl_element);
 
     return &(documentation_impl->documentation);
 }
 
 static axis2_status_t
-axis2_woden_documentation_free_ops(
+woden_documentation_free_ops(
         void *documentation,
         const axis2_env_t *env)
 {
-    axis2_woden_documentation_impl_t *documentation_impl = NULL;
+    woden_documentation_impl_t *documentation_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     documentation_impl = INTF_TO_IMPL(documentation);
@@ -272,11 +272,11 @@ axis2_woden_documentation_free_ops(
 
 
 axis2_status_t AXIS2_CALL
-axis2_woden_documentation_free(
+woden_documentation_free(
         void *documentation,
         const axis2_env_t *env)
 {
-    axis2_woden_documentation_impl_t *documentation_impl = NULL;
+    woden_documentation_impl_t *documentation_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     documentation_impl = INTF_TO_IMPL(documentation);
@@ -301,11 +301,11 @@ axis2_woden_documentation_free(
 
     if(documentation_impl->wsdl_element)
     {
-        AXIS2_WODEN_WSDL_OBJ_FREE(documentation_impl->wsdl_element, env);
+        WODEN_WSDL_OBJ_FREE(documentation_impl->wsdl_element, env);
         documentation_impl->wsdl_element = NULL;
     }
 
-    axis2_woden_documentation_free_ops(documentation, env);
+    woden_documentation_free_ops(documentation, env);
 
     if((&(documentation_impl->documentation))->ops)
     {
@@ -322,11 +322,11 @@ axis2_woden_documentation_free(
 }
 
 axis2_hash_t *AXIS2_CALL
-axis2_woden_documentation_super_objs(
+woden_documentation_super_objs(
         void *documentation,
         const axis2_env_t *env)
 {
-    axis2_woden_documentation_impl_t *documentation_impl = NULL;
+    woden_documentation_impl_t *documentation_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     documentation_impl = INTF_TO_IMPL(documentation);
@@ -334,11 +334,11 @@ axis2_woden_documentation_super_objs(
     return documentation_impl->super;
 }
 
-axis2_woden_obj_types_t AXIS2_CALL
-axis2_woden_documentation_type(void *documentation,
+woden_obj_types_t AXIS2_CALL
+woden_documentation_type(void *documentation,
         const axis2_env_t *env)
 {
-    axis2_woden_documentation_impl_t *documentation_impl = NULL;
+    woden_documentation_impl_t *documentation_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     documentation_impl = INTF_TO_IMPL(documentation);
@@ -346,12 +346,12 @@ axis2_woden_documentation_type(void *documentation,
     return documentation_impl->obj_type;
 }
 
-axis2_woden_wsdl_element_t *AXIS2_CALL
-axis2_woden_documentation_get_base_impl(
+woden_wsdl_element_t *AXIS2_CALL
+woden_documentation_get_base_impl(
         void *documentation,
         const axis2_env_t *env)
 {
-    axis2_woden_documentation_impl_t *documentation_impl = NULL;
+    woden_documentation_impl_t *documentation_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     documentation_impl = INTF_TO_IMPL(documentation);
@@ -360,20 +360,20 @@ axis2_woden_documentation_get_base_impl(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_documentation_resolve_methods(
-        axis2_woden_documentation_t *documentation,
+woden_documentation_resolve_methods(
+        woden_documentation_t *documentation,
         const axis2_env_t *env,
-        axis2_woden_documentation_t *documentation_impl,
+        woden_documentation_t *documentation_impl,
         axis2_hash_t *methods)
 {
-    axis2_woden_documentation_impl_t *documentation_impl_l = NULL;
+    woden_documentation_impl_t *documentation_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     documentation_impl_l = INTF_TO_IMPL (documentation_impl);
     
     documentation->ops = AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_documentation_ops_t));
+                sizeof(woden_documentation_ops_t));
     
     documentation->ops->free = axis2_hash_get(methods, "free", 
             AXIS2_HASH_KEY_STRING);
@@ -386,19 +386,19 @@ axis2_woden_documentation_resolve_methods(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_documentation_set_content(
+woden_documentation_set_content(
         void *documentation,
         const axis2_env_t *env,
         void *doc_el)
 {
-    axis2_woden_documentation_impl_t *documentation_impl = NULL;
+    woden_documentation_impl_t *documentation_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, documentation, AXIS2_FAILURE);
-    super = AXIS2_WODEN_DOCUMENTATION_SUPER_OBJS(documentation, env);
+    super = WODEN_DOCUMENTATION_SUPER_OBJS(documentation, env);
     documentation_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_DOCUMENTATION", AXIS2_HASH_KEY_STRING));
+                "WODEN_DOCUMENTATION", AXIS2_HASH_KEY_STRING));
    
     if(documentation_impl->f_content)
     {
@@ -409,17 +409,17 @@ axis2_woden_documentation_set_content(
 }
 
 void *AXIS2_CALL
-axis2_woden_documentation_get_content(
+woden_documentation_get_content(
         void *documentation,
         const axis2_env_t *env)
 {
-    axis2_woden_documentation_impl_t *documentation_impl = NULL;
+    woden_documentation_impl_t *documentation_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    super = AXIS2_WODEN_DOCUMENTATION_SUPER_OBJS(documentation, env);
+    super = WODEN_DOCUMENTATION_SUPER_OBJS(documentation, env);
     documentation_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_DOCUMENTATION", AXIS2_HASH_KEY_STRING));
+                "WODEN_DOCUMENTATION", AXIS2_HASH_KEY_STRING));
 
     return documentation_impl->f_content;
 }

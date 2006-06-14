@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_OM_UTIL_H
-#define AXIS2_WODEN_OM_UTIL_H
+#ifndef WODEN_OM_UTIL_H
+#define WODEN_OM_UTIL_H
 
 /**
- * @file axis2_woden_om_util.h
+ * @file woden_om_util.h
  * @brief Axis2 Woden OM Util Interface
  *          This is an abstract superclass for all classes representing different
  *          types of XML attribute information items.
@@ -31,16 +31,16 @@
 #include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <woden/axis2_woden.h>
+#include <woden.h>
 #include <axiom_node.h>
-#include <woden/wsdl20/axis2_woden_desc.h>
+#include <woden_desc.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-/** @defgroup axis2_woden_om_util Woden OM Util
+/** @defgroup woden_om_util Woden OM Util
   * @ingroup axis2_wsdl
   * @{
   */
@@ -64,5 +64,5 @@ woden_om_util_register_unique_prefix(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_OM_UTIL_H */
+#endif /* WODEN_OM_UTIL_H */
 

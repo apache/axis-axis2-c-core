@@ -14,168 +14,168 @@
  * limitations under the License.
  */
 
-#include <woden/axis2_woden_wsdl_obj.h>
-#include <woden/wsdl20/axis2_woden_import.h>
-#include <woden/xml/axis2_woden_xml_attr.h>
-#include <woden/wsdl20/xml/axis2_woden_documentation_element.h>
-#include <woden/util/axis2_woden_generic_obj.h>
+#include <woden/woden_wsdl_obj.h>
+#include <woden_import.h>
+#include <woden_xml_attr.h>
+#include <woden_documentation_element.h>
+#include <woden_generic_obj.h>
 
-typedef struct axis2_woden_import_impl axis2_woden_import_impl_t;
+typedef struct woden_import_impl woden_import_impl_t;
 
 /** 
  * @brief Feature Struct Impl
  *   Axis2 Feature  
  */ 
-struct axis2_woden_import_impl
+struct woden_import_impl
 {
-    axis2_woden_import_t import;
-    axis2_woden_obj_types_t obj_type;
-    axis2_woden_wsdl_ref_t *wsdl_ref;
+    woden_import_t import;
+    woden_obj_types_t obj_type;
+    woden_wsdl_ref_t *wsdl_ref;
     axis2_hash_t *super;
     axis2_hash_t *methods;
     
     axis2_uri_t *f_namespc;
 };
 
-#define INTF_TO_IMPL(import) ((axis2_woden_import_impl_t *) import)
+#define INTF_TO_IMPL(import) ((woden_import_impl_t *) import)
 
 axis2_status_t AXIS2_CALL 
-axis2_woden_import_free(
+woden_import_free(
         void *import,
         const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL 
-axis2_woden_import_super_objs(
+woden_import_super_objs(
         void *import,
         const axis2_env_t *env);
 
-axis2_woden_obj_types_t AXIS2_CALL 
-axis2_woden_import_type(
+woden_obj_types_t AXIS2_CALL 
+woden_import_type(
         void *import,
         const axis2_env_t *env);
 
-axis2_woden_wsdl_ref_t *AXIS2_CALL
-axis2_woden_import_get_base_impl(
+woden_wsdl_ref_t *AXIS2_CALL
+woden_import_get_base_impl(
         void *import,
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_woden_import_set_namespace(
+woden_import_set_namespace(
         void *import,
         const axis2_env_t *env,
         axis2_uri_t *ns_uri);
 
 axis2_uri_t *AXIS2_CALL
-axis2_woden_import_get_namespace(
+woden_import_get_namespace(
         void *import,
         const axis2_env_t *env);
 
-static axis2_woden_import_t *
+static woden_import_t *
 create(const axis2_env_t *env);
 
 static axis2_status_t
-axis2_woden_import_free_ops(
+woden_import_free_ops(
         void *import,
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
-AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
-axis2_woden_import_to_import_element(
+AXIS2_EXTERN woden_import_t * AXIS2_CALL
+woden_import_to_import_element(
         void *import,
         const axis2_env_t *env)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!import)
     {
-        import_impl = (axis2_woden_import_impl_t *) create(env);
+        import_impl = (woden_import_impl_t *) create(env);
     }
     else
-        import_impl = (axis2_woden_import_impl_t *) import;
+        import_impl = (woden_import_impl_t *) import;
 
-    axis2_woden_import_free_ops(import, env);
+    woden_import_free_ops(import, env);
 
     import_impl->import.base.import_element.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_import_element_ops_t));
-    axis2_woden_import_element_resolve_methods(&(import_impl->import.base.
+                sizeof(woden_import_element_ops_t));
+    woden_import_element_resolve_methods(&(import_impl->import.base.
             import_element), env, import_impl->methods);
     return import;
 }
 
-AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
-axis2_woden_import_to_wsdl_ref(
+AXIS2_EXTERN woden_import_t * AXIS2_CALL
+woden_import_to_wsdl_ref(
         void *import,
         const axis2_env_t *env)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     if(!import)
     {
-        import_impl = (axis2_woden_import_impl_t *) create(env);
+        import_impl = (woden_import_impl_t *) create(env);
     }
     else
-        import_impl = (axis2_woden_import_impl_t *) import;
-    axis2_woden_import_free_ops(import, env);
+        import_impl = (woden_import_impl_t *) import;
+    woden_import_free_ops(import, env);
 
     import_impl->import.base.wsdl_ref.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_wsdl_ref_ops_t));
-    axis2_woden_documentable_resolve_methods(&(import_impl->import.base.
+                sizeof(woden_wsdl_ref_ops_t));
+    woden_documentable_resolve_methods(&(import_impl->import.base.
             wsdl_ref), env, import_impl->wsdl_ref, import_impl->methods);
     return import;
 }
 
-AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
-axis2_woden_import_to_attr_extensible(
+AXIS2_EXTERN woden_import_t * AXIS2_CALL
+woden_import_to_attr_extensible(
         void *import,
         const axis2_env_t *env)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if(!import)
     {
-        import_impl = (axis2_woden_import_impl_t *) create(env);
+        import_impl = (woden_import_impl_t *) create(env);
     }
     else
-        import_impl = (axis2_woden_import_impl_t *) import;
-    axis2_woden_import_free_ops(import, env);
+        import_impl = (woden_import_impl_t *) import;
+    woden_import_free_ops(import, env);
 
     import_impl->import.base.wsdl_ref.wsdl_element.base.
             attr_extensible.ops =
             AXIS2_MALLOC(env->allocator, 
-            sizeof(axis2_woden_attr_extensible_ops_t));
-    axis2_woden_attr_extensible_resolve_methods(&(import_impl->import.base.
+            sizeof(woden_attr_extensible_ops_t));
+    woden_attr_extensible_resolve_methods(&(import_impl->import.base.
             wsdl_ref.wsdl_element.base.attr_extensible), 
             env, NULL, import_impl->methods);
     return import;
 
 }
 
-AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
-axis2_woden_import_to_element_extensible(
+AXIS2_EXTERN woden_import_t * AXIS2_CALL
+woden_import_to_element_extensible(
         void *import,
         const axis2_env_t *env)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     if(!import)
     {
-        import_impl = (axis2_woden_import_impl_t *) create(env);
+        import_impl = (woden_import_impl_t *) create(env);
     }
     else
-        import_impl = (axis2_woden_import_impl_t *) import;
-    axis2_woden_import_free_ops(import, env);
+        import_impl = (woden_import_impl_t *) import;
+    woden_import_free_ops(import, env);
     import_impl->import.base.wsdl_ref.wsdl_element.
                 base.element_extensible.ops = AXIS2_MALLOC(env->allocator, 
-                sizeof(axis2_woden_element_extensible_ops_t));
-    axis2_woden_element_extensible_resolve_methods(&(import_impl->import.base.
+                sizeof(woden_element_extensible_ops_t));
+    woden_element_extensible_resolve_methods(&(import_impl->import.base.
             wsdl_ref.wsdl_element.base.element_extensible), 
             env, NULL, import_impl->methods);
     return import;
@@ -183,16 +183,16 @@ axis2_woden_import_to_element_extensible(
 }
 
 /************************End of Woden C Internal Methods***********************/
-static axis2_woden_import_t *
+static woden_import_t *
 create(const axis2_env_t *env)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     import_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(axis2_woden_import_impl_t));
+                    sizeof(woden_import_impl_t));
 
-    import_impl->obj_type= AXIS2_WODEN_IMPORT;
+    import_impl->obj_type= WODEN_IMPORT;
     import_impl->super = NULL;
     import_impl->methods = NULL;
     import_impl->f_namespc = NULL;
@@ -203,15 +203,15 @@ create(const axis2_env_t *env)
     import_impl->import.base.wsdl_ref.wsdl_element.base.element_extensible.ops = NULL;
     
     import_impl->import.ops = AXIS2_MALLOC(env->allocator, 
-            sizeof(axis2_woden_import_ops_t));
+            sizeof(woden_import_ops_t));
 
-    import_impl->import.ops->free = axis2_woden_import_free;
-    import_impl->import.ops->super_objs = axis2_woden_import_super_objs;
-    import_impl->import.ops->type = axis2_woden_import_type;
-    import_impl->import.ops->get_base_impl = axis2_woden_import_get_base_impl;
+    import_impl->import.ops->free = woden_import_free;
+    import_impl->import.ops->super_objs = woden_import_super_objs;
+    import_impl->import.ops->type = woden_import_type;
+    import_impl->import.ops->get_base_impl = woden_import_get_base_impl;
 
-    import_impl->import.ops->get_namespace = axis2_woden_import_get_namespace;
-    import_impl->import.ops->set_namespace = axis2_woden_import_set_namespace;
+    import_impl->import.ops->get_namespace = woden_import_get_namespace;
+    import_impl->import.ops->set_namespace = woden_import_set_namespace;
  
     import_impl->methods = axis2_hash_make(env);
     if(!import_impl->methods) 
@@ -220,31 +220,31 @@ create(const axis2_env_t *env)
         return NULL;
     }
     axis2_hash_set(import_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            axis2_woden_import_free);
+            woden_import_free);
     axis2_hash_set(import_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            axis2_woden_import_super_objs);
+            woden_import_super_objs);
     axis2_hash_set(import_impl->methods, "type", 
-            AXIS2_HASH_KEY_STRING, axis2_woden_import_type);
+            AXIS2_HASH_KEY_STRING, woden_import_type);
 
     axis2_hash_set(import_impl->methods, "set_namespace", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_import_set_namespace);
+            woden_import_set_namespace);
     axis2_hash_set(import_impl->methods, "get_namespace", 
             AXIS2_HASH_KEY_STRING, 
-            axis2_woden_import_get_namespace);
+            woden_import_get_namespace);
 
     return &(import_impl->import);
 }
 
-AXIS2_EXTERN axis2_woden_import_t * AXIS2_CALL
-axis2_woden_import_create(const axis2_env_t *env)
+AXIS2_EXTERN woden_import_t * AXIS2_CALL
+woden_import_create(const axis2_env_t *env)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    import_impl = (axis2_woden_import_impl_t *) create(env);
+    import_impl = (woden_import_impl_t *) create(env);
 
-    import_impl->wsdl_ref = axis2_woden_wsdl_ref_create(env);
+    import_impl->wsdl_ref = woden_wsdl_ref_create(env);
 
     import_impl->super = axis2_hash_make(env);
     if(!import_impl->super) 
@@ -252,20 +252,20 @@ axis2_woden_import_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(import_impl->super, "AXIS2_WODEN_IMPORT", 
+    axis2_hash_set(import_impl->super, "WODEN_IMPORT", 
             AXIS2_HASH_KEY_STRING, &(import_impl->import));
-    axis2_hash_set(import_impl->super, "AXIS2_WODEN_WSDL_REF", 
+    axis2_hash_set(import_impl->super, "WODEN_WSDL_REF", 
             AXIS2_HASH_KEY_STRING, import_impl->wsdl_ref);
     
     return &(import_impl->import);
 }
 
 static axis2_status_t
-axis2_woden_import_free_ops(
+woden_import_free_ops(
         void *import,
         const axis2_env_t *env)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     import_impl = INTF_TO_IMPL(import);
@@ -304,10 +304,10 @@ axis2_woden_import_free_ops(
 
 
 axis2_status_t AXIS2_CALL
-axis2_woden_import_free(void *import,
+woden_import_free(void *import,
                         const axis2_env_t *env)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     import_impl = INTF_TO_IMPL(import);
@@ -332,11 +332,11 @@ axis2_woden_import_free(void *import,
 
     if(import_impl->wsdl_ref)
     {
-        AXIS2_WODEN_WSDL_REF_FREE(import_impl->wsdl_ref, env);
+        WODEN_WSDL_REF_FREE(import_impl->wsdl_ref, env);
         import_impl->wsdl_ref = NULL;
     }
 
-    axis2_woden_import_free_ops(import, env);
+    woden_import_free_ops(import, env);
 
     if((&(import_impl->import))->ops)
     {
@@ -353,11 +353,11 @@ axis2_woden_import_free(void *import,
 }
 
 axis2_hash_t *AXIS2_CALL
-axis2_woden_import_super_objs(
+woden_import_super_objs(
         void *import,
         const axis2_env_t *env)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     import_impl = INTF_TO_IMPL(import);
@@ -365,12 +365,12 @@ axis2_woden_import_super_objs(
     return import_impl->super;
 }
 
-axis2_woden_obj_types_t AXIS2_CALL
-axis2_woden_import_type(
+woden_obj_types_t AXIS2_CALL
+woden_import_type(
         void *import,
         const axis2_env_t *env)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     import_impl = INTF_TO_IMPL(import);
@@ -378,11 +378,11 @@ axis2_woden_import_type(
     return import_impl->obj_type;
 }
 
-axis2_woden_wsdl_ref_t *AXIS2_CALL
-axis2_woden_import_get_base_impl(void *import,
+woden_wsdl_ref_t *AXIS2_CALL
+woden_import_get_base_impl(void *import,
                                 const axis2_env_t *env)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     import_impl = INTF_TO_IMPL(import);
@@ -391,13 +391,13 @@ axis2_woden_import_get_base_impl(void *import,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_import_resolve_methods(
-        axis2_woden_import_t *import,
+woden_import_resolve_methods(
+        woden_import_t *import,
         const axis2_env_t *env,
-        axis2_woden_import_t *import_impl,
+        woden_import_t *import_impl,
         axis2_hash_t *methods)
 {
-    axis2_woden_import_impl_t *import_impl_l = NULL;
+    woden_import_impl_t *import_impl_l = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
@@ -426,19 +426,19 @@ axis2_woden_import_resolve_methods(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_woden_import_set_namespace(
+woden_import_set_namespace(
         void *import,
         const axis2_env_t *env,
         axis2_uri_t *ns_uri)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ns_uri, AXIS2_FAILURE);
-    super = AXIS2_WODEN_IMPORT_SUPER_OBJS(import, env);
+    super = WODEN_IMPORT_SUPER_OBJS(import, env);
     import_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_IMPORT", AXIS2_HASH_KEY_STRING));
+                "WODEN_IMPORT", AXIS2_HASH_KEY_STRING));
 
     if(import_impl->f_namespc)
     {
@@ -451,17 +451,17 @@ axis2_woden_import_set_namespace(
 }
 
 axis2_uri_t *AXIS2_CALL
-axis2_woden_import_get_namespace(
+woden_import_get_namespace(
         void *import,
         const axis2_env_t *env)
 {
-    axis2_woden_import_impl_t *import_impl = NULL;
+    woden_import_impl_t *import_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    super = AXIS2_WODEN_IMPORT_SUPER_OBJS(import, env);
+    super = WODEN_IMPORT_SUPER_OBJS(import, env);
     import_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "AXIS2_WODEN_IMPORT", AXIS2_HASH_KEY_STRING));
+                "WODEN_IMPORT", AXIS2_HASH_KEY_STRING));
 
     return import_impl->f_namespc;
 }

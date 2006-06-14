@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_EXT_DESERIALIZER_H
-#define AXIS2_WODEN_EXT_DESERIALIZER_H
+#ifndef WODEN_EXT_DESERIALIZER_H
+#define WODEN_EXT_DESERIALIZER_H
 
 /**
- * @file axis2_woden_ext_deserializer.h
+ * @file woden_ext_deserializer.h
  * @brief Axis2 Extension Deserializer Interface
  * This interface represents a &lt;ext_deserializer&gt; XML element 
  * information item. It declares the behaviour required to support 
@@ -33,23 +33,23 @@
 #include <axis2_qname.h>
 #include <axis2_hash.h>
 #include <axiom_node.h>
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/extensions/axis2_woden_ext_registry.h>
+#include <woden/woden.h>
+#include <woden_ext_registry.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_ext_deserializer axis2_woden_ext_deserializer_t;
-typedef struct axis2_woden_ext_deserializer_ops axis2_woden_ext_deserializer_ops_t;
+typedef struct woden_ext_deserializer woden_ext_deserializer_t;
+typedef struct woden_ext_deserializer_ops woden_ext_deserializer_ops_t;
 
-/** @defgroup axis2_woden_ext_deserializer Extension Deserializer
+/** @defgroup woden_ext_deserializer Extension Deserializer
   * @ingroup axis2_ext_deserializer
   * @{
   */
 
-struct axis2_woden_ext_deserializer_ops
+struct woden_ext_deserializer_ops
 {
    /** 
      * Deallocate memory
@@ -60,7 +60,7 @@ struct axis2_woden_ext_deserializer_ops
             void *ext_deserializer,
             const axis2_env_t *env);
  
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *ext_deserializer,
             const axis2_env_t *env);
@@ -74,38 +74,38 @@ struct axis2_woden_ext_deserializer_ops
             axis2_qname_t *ext_type,
             axiom_node_t *ext_el_node,
             void *desc,
-            axis2_woden_ext_registry_t *ext_reg);
+            woden_ext_registry_t *ext_reg);
 
 };
 
-struct axis2_woden_ext_deserializer
+struct woden_ext_deserializer
 {
-    axis2_woden_ext_deserializer_ops_t *ops;
+    woden_ext_deserializer_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_ext_deserializer_t * AXIS2_CALL
-axis2_woden_ext_deserializer_create(
+AXIS2_EXTERN woden_ext_deserializer_t * AXIS2_CALL
+woden_ext_deserializer_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_ext_deserializer_resolve_methods(
-        axis2_woden_ext_deserializer_t *ext_deserializer,
+woden_ext_deserializer_resolve_methods(
+        woden_ext_deserializer_t *ext_deserializer,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_EXT_DESERIALIZER_FREE(ext_deserializer, env) \
-      (((axis2_woden_ext_deserializer_t *) ext_deserializer)->ops->\
+#define WODEN_EXT_DESERIALIZER_FREE(ext_deserializer, env) \
+      (((woden_ext_deserializer_t *) ext_deserializer)->ops->\
          free (ext_deserializer, env))
 
-#define AXIS2_WODEN_EXT_DESERIALIZER_TYPE(ext_deserializer, env) \
-      (((axis2_woden_ext_deserializer_t *) ext_deserializer)->ops->\
+#define WODEN_EXT_DESERIALIZER_TYPE(ext_deserializer, env) \
+      (((woden_ext_deserializer_t *) ext_deserializer)->ops->\
          type (ext_deserializer, env))
 
-#define AXIS2_WODEN_EXT_DESERIALIZER_UNMARSHALL(ext_deserializer, env, \
+#define WODEN_EXT_DESERIALIZER_UNMARSHALL(ext_deserializer, env, \
         parent_type, parent, ext_type, ext_el_node, desc, ext_reg) \
-      (((axis2_woden_ext_deserializer_t *) ext_deserializer)->ops->\
+      (((woden_ext_deserializer_t *) ext_deserializer)->ops->\
          unmarshall (ext_deserializer, env, parent_type, parent, ext_type, \
              ext_el_node, desc, ext_reg))
 
@@ -113,4 +113,4 @@ axis2_woden_ext_deserializer_resolve_methods(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_EXT_DESERIALIZER_H */
+#endif /* WODEN_EXT_DESERIALIZER_H */

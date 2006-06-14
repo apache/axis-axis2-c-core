@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_WSDL_REF_H
-#define AXIS2_WODEN_WSDL_REF_H
+#ifndef WODEN_WSDL_REF_H
+#define WODEN_WSDL_REF_H
 
 /**
- * @file axis2_woden_wsdl_ref.h
+ * @file woden_wsdl_ref.h
  * @brief Axis2 Wsdl Ref Interface
  * This abstract class defines the common behaviour for referencing WSDL
  * documents via the &lt;wsdl:import&gt; and &lt;wsdl:include&gt; elements.
@@ -27,26 +27,26 @@
  * 
  */
 
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/xml/axis2_woden_wsdl_element.h>
-#include <woden/wsdl20/axis2_woden_wsdl_component.h>
+#include <woden/woden.h>
+#include <woden_wsdl_element.h>
+#include <woden_wsdl_component.h>
 
-/** @defgroup axis2_woden_wsdl_ref Wsdl Ref
+/** @defgroup woden_wsdl_ref Wsdl Ref
   * @ingroup axis2_wsdl
   * @{
   */
 
-typedef union axis2_woden_wsdl_ref_base axis2_woden_wsdl_ref_base_t;
-typedef struct axis2_woden_wsdl_ref axis2_woden_wsdl_ref_t;
-typedef struct axis2_woden_wsdl_ref_ops axis2_woden_wsdl_ref_ops_t;
-struct axis2_woden_component_exts;
+typedef union woden_wsdl_ref_base woden_wsdl_ref_base_t;
+typedef struct woden_wsdl_ref woden_wsdl_ref_t;
+typedef struct woden_wsdl_ref_ops woden_wsdl_ref_ops_t;
+struct woden_component_exts;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-struct axis2_woden_wsdl_ref_ops
+struct woden_wsdl_ref_ops
 {
    /** 
      * Deallocate memory
@@ -62,7 +62,7 @@ struct axis2_woden_wsdl_ref_ops
             void *wsdl_ref,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *wsdl_ref,
             const axis2_env_t *env);
@@ -70,7 +70,7 @@ struct axis2_woden_wsdl_ref_ops
     /**
      * @return the base implementation class
      */
-    axis2_woden_wsdl_element_t *(AXIS2_CALL *
+    woden_wsdl_element_t *(AXIS2_CALL *
     get_base_impl) (
             void *wsdl_ref,
             const axis2_env_t *env);
@@ -111,63 +111,63 @@ struct axis2_woden_wsdl_ref_ops
 
 };
 
-struct axis2_woden_wsdl_ref
+struct woden_wsdl_ref
 {
-    axis2_woden_wsdl_element_t wsdl_element;
-    axis2_woden_wsdl_ref_ops_t *ops;
+    woden_wsdl_element_t wsdl_element;
+    woden_wsdl_ref_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_wsdl_ref_t * AXIS2_CALL
-axis2_woden_wsdl_ref_create(
+AXIS2_EXTERN woden_wsdl_ref_t * AXIS2_CALL
+woden_wsdl_ref_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_wsdl_ref_resolve_methods(
-        axis2_woden_wsdl_ref_t *wsdl_ref,
+woden_wsdl_ref_resolve_methods(
+        woden_wsdl_ref_t *wsdl_ref,
         const axis2_env_t *env,
-        axis2_woden_wsdl_ref_t *wsdl_ref_impl,
+        woden_wsdl_ref_t *wsdl_ref_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_WSDL_REF_FREE(wsdl_ref, env) \
-      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->free(wsdl_ref, env))
+#define WODEN_WSDL_REF_FREE(wsdl_ref, env) \
+      (((woden_wsdl_ref_t *) wsdl_ref)->ops->free(wsdl_ref, env))
 
-#define AXIS2_WODEN_WSDL_REF_SUPER_OBJS(wsdl_ref, env) \
-      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->super_objs(wsdl_ref, env))
+#define WODEN_WSDL_REF_SUPER_OBJS(wsdl_ref, env) \
+      (((woden_wsdl_ref_t *) wsdl_ref)->ops->super_objs(wsdl_ref, env))
 
-#define AXIS2_WODEN_WSDL_REF_TYPE(wsdl_ref, env) \
-      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->type(wsdl_ref, env))
+#define WODEN_WSDL_REF_TYPE(wsdl_ref, env) \
+      (((woden_wsdl_ref_t *) wsdl_ref)->ops->type(wsdl_ref, env))
 
-#define AXIS2_WODEN_WSDL_REF_GET_BASE_IMPL(wsdl_ref, env) \
-      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->get_base_impl(wsdl_ref, env))
+#define WODEN_WSDL_REF_GET_BASE_IMPL(wsdl_ref, env) \
+      (((woden_wsdl_ref_t *) wsdl_ref)->ops->get_base_impl(wsdl_ref, env))
 
-#define AXIS2_WODEN_WSDL_REF_GET_LOCATION(wsdl_ref, env) \
-      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
+#define WODEN_WSDL_REF_GET_LOCATION(wsdl_ref, env) \
+      (((woden_wsdl_ref_t *) wsdl_ref)->ops->\
         get_location (wsdl_ref, env))
 
-#define AXIS2_WODEN_WSDL_REF_SET_LOCATION(wsdl_ref, env, loc_uri) \
-      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
+#define WODEN_WSDL_REF_SET_LOCATION(wsdl_ref, env, loc_uri) \
+      (((woden_wsdl_ref_t *) wsdl_ref)->ops->\
          set_location(wsdl_ref, env, loc_uri))
 
-#define AXIS2_WODEN_WSDL_REF_GET_DESC_ELEMENT(wsdl_ref, env) \
-      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
+#define WODEN_WSDL_REF_GET_DESC_ELEMENT(wsdl_ref, env) \
+      (((woden_wsdl_ref_t *) wsdl_ref)->ops->\
         get_desc_element (wsdl_ref, env))
 
-#define AXIS2_WODEN_WSDL_REF_SET_DESC_ELEMENT(wsdl_ref, env, desc) \
-      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
+#define WODEN_WSDL_REF_SET_DESC_ELEMENT(wsdl_ref, env, desc) \
+      (((woden_wsdl_ref_t *) wsdl_ref)->ops->\
          set_desc_element(wsdl_ref, env, desc))
 
-#define AXIS2_WODEN_WSDL_REF_ADD_DOCUMENTATION_ELEMENT(wsdl_ref, env, doc_el) \
-      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
+#define WODEN_WSDL_REF_ADD_DOCUMENTATION_ELEMENT(wsdl_ref, env, doc_el) \
+      (((woden_wsdl_ref_t *) wsdl_ref)->ops->\
         add_documentation_element (wsdl_ref, env, doc_el))
 
-#define AXIS2_WODEN_WSDL_REF_GET_DOCUMENTATION_ELEMENTS(wsdl_ref, env) \
-      (((axis2_woden_wsdl_ref_t *) wsdl_ref)->ops->\
+#define WODEN_WSDL_REF_GET_DOCUMENTATION_ELEMENTS(wsdl_ref, env) \
+      (((woden_wsdl_ref_t *) wsdl_ref)->ops->\
          get_documentation_elements(wsdl_ref, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_WSDL_REF_H */
+#endif /* WODEN_WSDL_REF_H */

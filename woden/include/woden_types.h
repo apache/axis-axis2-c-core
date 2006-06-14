@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_TYPES_H
-#define AXIS2_WODEN_TYPES_H
+#ifndef WODEN_TYPES_H
+#define WODEN_TYPES_H
 
 /**
- * @file axis2_woden_types.h
+ * @file woden_types.h
  * @brief Axis2 Types Interface
  * An abstract superclass for WSDL 2.0 elements which can have &lt;documentation&gt; 
  * child elements. That is, all WSDL 2.0 elements except the &lt;documentation&gt; 
@@ -26,27 +26,27 @@
  * 
  */
 
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/xml/axis2_woden_types_element.h>
-#include <woden/wsdl20/axis2_woden_documentable.h>
-#include <woden/wsdl20/axis2_woden_nested_component.h>
-#include <woden/axis2_woden_wsdl_obj.h>
+#include <woden/woden.h>
+#include <woden_types_element.h>
+#include <woden_documentable.h>
+#include <woden_nested_component.h>
+#include <woden/woden_wsdl_obj.h>
 #include <xml_schema.h>
 #include <xml_schema_element.h>
 #include <xml_schema_type.h>
 #include <axis2_array_list.h>
 
 
-/** @defgroup axis2_woden_types Types
+/** @defgroup woden_types Types
   * @ingroup axis2_wsdl
   * @{
   */
 
-typedef union axis2_woden_types_base axis2_woden_types_base_t;
-typedef struct axis2_woden_types axis2_woden_types_t;
-typedef struct axis2_woden_types_ops axis2_woden_types_ops_t;
-struct axis2_woden_documentation_element;
-struct axis2_woden_documentation;
+typedef union woden_types_base woden_types_base_t;
+typedef struct woden_types woden_types_t;
+typedef struct woden_types_ops woden_types_ops_t;
+struct woden_documentation_element;
+struct woden_documentation;
 struct xml_schema;
 struct xml_schema_element;
 struct xml_schema_type;
@@ -56,7 +56,7 @@ extern "C"
 {
 #endif
 
-struct axis2_woden_types_ops
+struct woden_types_ops
 {
    /** 
      * Deallocate memory
@@ -70,13 +70,13 @@ struct axis2_woden_types_ops
     super_objs) (void *types,
             const axis2_env_t *env);
 
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (void *types,
             const axis2_env_t *env);
     /**
      * @return the base implementation class
      */
-    struct axis2_woden_documentable *(AXIS2_CALL *
+    struct woden_documentable *(AXIS2_CALL *
     get_base_impl) (
             void *types,
             const axis2_env_t *env);
@@ -179,121 +179,121 @@ struct axis2_woden_types_ops
 
 };
 
-union axis2_woden_types_base
+union woden_types_base
 {
-    axis2_woden_documentable_t documentable;
-    axis2_woden_types_element_t types_element;
-    axis2_woden_nested_component_t nested_component;
+    woden_documentable_t documentable;
+    woden_types_element_t types_element;
+    woden_nested_component_t nested_component;
 };
 
-struct axis2_woden_types
+struct woden_types
 {
-    axis2_woden_types_base_t base;
-    axis2_woden_types_ops_t *ops;
+    woden_types_base_t base;
+    woden_types_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
-axis2_woden_types_create(
+AXIS2_EXTERN woden_types_t * AXIS2_CALL
+woden_types_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
-axis2_woden_types_to_types_element(
+AXIS2_EXTERN woden_types_t * AXIS2_CALL
+woden_types_to_types_element(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
-axis2_woden_types_to_nested_element(
+AXIS2_EXTERN woden_types_t * AXIS2_CALL
+woden_types_to_nested_element(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
-axis2_woden_types_to_documentable_element(
+AXIS2_EXTERN woden_types_t * AXIS2_CALL
+woden_types_to_documentable_element(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
-axis2_woden_types_to_documentable(
+AXIS2_EXTERN woden_types_t * AXIS2_CALL
+woden_types_to_documentable(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
-axis2_woden_types_to_wsdl_obj(
+AXIS2_EXTERN woden_types_t * AXIS2_CALL
+woden_types_to_wsdl_obj(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
-axis2_woden_types_to_nested_component(
+AXIS2_EXTERN woden_types_t * AXIS2_CALL
+woden_types_to_nested_component(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
-axis2_woden_types_to_wsdl_component(
+AXIS2_EXTERN woden_types_t * AXIS2_CALL
+woden_types_to_wsdl_component(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
-axis2_woden_types_to_element_extensible(
+AXIS2_EXTERN woden_types_t * AXIS2_CALL
+woden_types_to_element_extensible(
         void *types,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_types_t * AXIS2_CALL
-axis2_woden_types_to_attr_extensible(
+AXIS2_EXTERN woden_types_t * AXIS2_CALL
+woden_types_to_attr_extensible(
         void *types,
         const axis2_env_t *env);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_types_resolve_methods(
-        axis2_woden_types_t *types,
+woden_types_resolve_methods(
+        woden_types_t *types,
         const axis2_env_t *env,
-        axis2_woden_types_t *types_impl,
+        woden_types_t *types_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_TYPES_FREE(types, env) \
-      (((axis2_woden_types_t *) types)->ops->free(types, env))
+#define WODEN_TYPES_FREE(types, env) \
+      (((woden_types_t *) types)->ops->free(types, env))
 
-#define AXIS2_WODEN_TYPES_SUPER_OBJS(types, env) \
-      (((axis2_woden_types_t *) types)->ops->super_objs(types, env))
+#define WODEN_TYPES_SUPER_OBJS(types, env) \
+      (((woden_types_t *) types)->ops->super_objs(types, env))
 
-#define AXIS2_WODEN_TYPES_TYPE(types, env) \
-      (((axis2_woden_types_t *) types)->ops->type(types, env))
+#define WODEN_TYPES_TYPE(types, env) \
+      (((woden_types_t *) types)->ops->type(types, env))
 
-#define AXIS2_WODEN_TYPES_GET_BASE_IMPL(types, env) \
-      (((axis2_woden_types_t *) types)->ops->get_base_impl(types, env))
+#define WODEN_TYPES_GET_BASE_IMPL(types, env) \
+      (((woden_types_t *) types)->ops->get_base_impl(types, env))
 
-#define AXIS2_WODEN_TYPES_GET_ELEMENT_DECLARATION(types, env, qname) \
-      (((axis2_woden_types_t *) types)->ops->\
+#define WODEN_TYPES_GET_ELEMENT_DECLARATION(types, env, qname) \
+      (((woden_types_t *) types)->ops->\
          get_element_declaration(types, env, qname))
 
-#define AXIS2_WODEN_TYPES_GET_TYPE_DEFINITION(types, env, qname) \
-      (((axis2_woden_types_t *) types)->ops->\
+#define WODEN_TYPES_GET_TYPE_DEFINITION(types, env, qname) \
+      (((woden_types_t *) types)->ops->\
          get_type_definition(types, env, qname))
 
-#define AXIS2_WODEN_TYPES_GET_REFERENCEABLE_SCHEMA_DEFS(types, env) \
-      (((axis2_woden_types_t *) types)->ops->\
+#define WODEN_TYPES_GET_REFERENCEABLE_SCHEMA_DEFS(types, env) \
+      (((woden_types_t *) types)->ops->\
          get_referenceable_schema_defs(types, env))
 
-#define AXIS2_WODEN_TYPES_GET_REFERENCEABLE_SCHEMA_DEFS_WITH_NAMESPACE(types, env, namespc) \
-      (((axis2_woden_types_t *) types)->ops->\
+#define WODEN_TYPES_GET_REFERENCEABLE_SCHEMA_DEFS_WITH_NAMESPACE(types, env, namespc) \
+      (((woden_types_t *) types)->ops->\
          get_referenceable_schema_defs_with_namespace(types, env, namespc))
 
-#define AXIS2_WODEN_TYPES_IS_NAMESPACE_IN_SCOPE_WITH_NAMESPACE_URI(types, env, namespc_uri) \
-      (((axis2_woden_types_t *) types)->ops->\
+#define WODEN_TYPES_IS_NAMESPACE_IN_SCOPE_WITH_NAMESPACE_URI(types, env, namespc_uri) \
+      (((woden_types_t *) types)->ops->\
          is_namespace_in_scope_with_namespace_uri(types, env, namespc_uri))
 
-#define AXIS2_WODEN_TYPES_IS_NAMESPACE_IN_SCOPE_WITH_QNAME(types, env, qname) \
-      (((axis2_woden_types_t *) types)->ops->\
+#define WODEN_TYPES_IS_NAMESPACE_IN_SCOPE_WITH_QNAME(types, env, qname) \
+      (((woden_types_t *) types)->ops->\
          is_namespace_in_scope_with_qname(types, env, qname))
 
-#define AXIS2_WODEN_TYPES_IS_NAMESPACE_IN_SCOPE_WITH_NAMESPACE(types, env, namespc) \
-      (((axis2_woden_types_t *) types)->ops->\
+#define WODEN_TYPES_IS_NAMESPACE_IN_SCOPE_WITH_NAMESPACE(types, env, namespc) \
+      (((woden_types_t *) types)->ops->\
          is_namespace_in_scope_with_namespace(types, env, namespc))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_TYPES_H */
+#endif /* WODEN_TYPES_H */

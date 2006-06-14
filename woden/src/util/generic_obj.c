@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <woden/util/axis2_woden_generic_obj.h>
+#include <woden_generic_obj.h>
 
 typedef struct axis2_generic_obj_impl
 {

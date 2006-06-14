@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_H
-#define AXIS2_WODEN_H
+#ifndef WODEN_H
+#define WODEN_H
 
 /**
- * @file axis2_woden.h
+ * @file woden.h
  * @brief Axis2c specific global declarations
  */
 
@@ -30,8 +30,8 @@ extern "C"
 #endif
 
 
-/** @defgroup axis2_woden Woden/C project
-  * @ingroup axis2_woden
+/** @defgroup woden Woden/C project
+  * @ingroup woden
   * @{
   */
 /** @defgroup axis2 Woden/C project
@@ -43,55 +43,55 @@ extern "C"
     *
     * All Woden/C types
     */
-    typedef enum axis2_woden_obj_types
+    typedef enum woden_obj_types
     {
-        AXIS2_WODEN_SCHEMA = 0,
-        AXIS2_WODEN_IMPORTED_SCHEMA,
-        AXIS2_WODEN_INLINED_SCHEMA,
-        AXIS2_WODEN_XML_ATTR,
-        AXIS2_WODEN_QNAME_ATTR,
-        AXIS2_WODEN_URI_ATTR,
-        AXIS2_WODEN_QNAME_LIST_ATTR,
-        AXIS2_WODEN_STRING_ATTR,
-        AXIS2_WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR,
-        AXIS2_WODEN_QNAME_OR_TOKEN_ANY_ATTR,
-        AXIS2_WODEN_BOOL_ATTR,
-        AXIS2_WODEN_WSDL_ELEMENT,
-        AXIS2_WODEN_ATTR_EXTENSIBLE,
-        AXIS2_WODEN_ELEMENT_EXTENSIBLE,
-        AXIS2_WODEN_FEATURE,
-        AXIS2_WODEN_PROPERTY,
-        AXIS2_WODEN_DESC,
-        AXIS2_WODEN_TYPES,
-        AXIS2_WODEN_DOCUMENTATION,
-        AXIS2_WODEN_TYPE_DEF,
-        AXIS2_WODEN_INTERFACE,
-        AXIS2_WODEN_INTERFACE_FAULT,
-        AXIS2_WODEN_INTERFACE_FAULT_REF,
-        AXIS2_WODEN_INTERFACE_MSG_REF,
-        AXIS2_WODEN_INTERFACE_OP,
-        AXIS2_WODEN_BINDING,
-        AXIS2_WODEN_BINDING_FAULT,
-        AXIS2_WODEN_BINDING_FAULT_REF,
-        AXIS2_WODEN_BINDING_MSG_REF,
-        AXIS2_WODEN_BINDING_OP,
-        AXIS2_WODEN_ENDPOINT,
-        AXIS2_WODEN_SVC,
-        AXIS2_WODEN_ELEMENT_DECL,
-        AXIS2_WODEN_SOAP_BINDING_EXTS,
-        AXIS2_WODEN_SOAP_BINDING_FAULT_EXTS,
-        AXIS2_WODEN_SOAP_BINDING_FAULT_REF_EXTS,
-        AXIS2_WODEN_SOAP_BINDING_MSG_REF_EXTS,
-        AXIS2_WODEN_SOAP_BINDING_OP_EXTS,
-        AXIS2_WODEN_IMPORT,
-        AXIS2_WODEN_INCLUDE,
+        WODEN_SCHEMA = 0,
+        WODEN_IMPORTED_SCHEMA,
+        WODEN_INLINED_SCHEMA,
+        WODEN_XML_ATTR,
+        WODEN_QNAME_ATTR,
+        WODEN_URI_ATTR,
+        WODEN_QNAME_LIST_ATTR,
+        WODEN_STRING_ATTR,
+        WODEN_QNAME_LIST_OR_TOKEN_ANY_ATTR,
+        WODEN_QNAME_OR_TOKEN_ANY_ATTR,
+        WODEN_BOOL_ATTR,
+        WODEN_WSDL_ELEMENT,
+        WODEN_ATTR_EXTENSIBLE,
+        WODEN_ELEMENT_EXTENSIBLE,
+        WODEN_FEATURE,
+        WODEN_PROPERTY,
+        WODEN_DESC,
+        WODEN_TYPES,
+        WODEN_DOCUMENTATION,
+        WODEN_TYPE_DEF,
+        WODEN_INTERFACE,
+        WODEN_INTERFACE_FAULT,
+        WODEN_INTERFACE_FAULT_REF,
+        WODEN_INTERFACE_MSG_REF,
+        WODEN_INTERFACE_OP,
+        WODEN_BINDING,
+        WODEN_BINDING_FAULT,
+        WODEN_BINDING_FAULT_REF,
+        WODEN_BINDING_MSG_REF,
+        WODEN_BINDING_OP,
+        WODEN_ENDPOINT,
+        WODEN_SVC,
+        WODEN_ELEMENT_DECL,
+        WODEN_SOAP_BINDING_EXTS,
+        WODEN_SOAP_BINDING_FAULT_EXTS,
+        WODEN_SOAP_BINDING_FAULT_REF_EXTS,
+        WODEN_SOAP_BINDING_MSG_REF_EXTS,
+        WODEN_SOAP_BINDING_OP_EXTS,
+        WODEN_IMPORT,
+        WODEN_INCLUDE,
         AXIS2_QNAME,
         AXIS2_QNAME_LIST,
-        AXIS2_WODEN_SOAP_HEADER_BLOCK,
-        AXIS2_WODEN_SOAP_MODULE,
-        AXIS2_WODEN_SOAP_MODULE_DESERIALIZER,
-        AXIS2_WODEN_SOAP_HEADER_BLOCK_DESERIALIZER
-    } axis2_woden_obj_types_t;
+        WODEN_SOAP_HEADER_BLOCK,
+        WODEN_SOAP_MODULE,
+        WODEN_SOAP_MODULE_DESERIALIZER,
+        WODEN_SOAP_HEADER_BLOCK_DESERIALIZER
+    } woden_obj_types_t;
 
 /** @} */
 
@@ -99,4 +99,4 @@ extern "C"
 }
 #endif
 
-#endif /* AXIS2_WODEN_H */
+#endif /* WODEN_H */

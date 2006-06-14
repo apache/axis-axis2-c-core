@@ -24,8 +24,8 @@
  * 
  */
 
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/extensions/axis2_woden_ext_registry.h>
+#include <woden/woden.h>
+#include <woden_ext_registry.h>
 #include <axiom_document.h>
 
 /** @defgroup woden_reader Woden Wsdl Reader
@@ -64,9 +64,9 @@ struct woden_reader_ops
     set_ext_registry) (
             void *reader,
             const axis2_env_t *env,
-            axis2_woden_ext_registry_t *ext_reg);
+            woden_ext_registry_t *ext_reg);
 
-    axis2_woden_ext_registry_t *(AXIS2_CALL *
+    woden_ext_registry_t *(AXIS2_CALL *
     get_ext_registry) (
             void *reader,
             const axis2_env_t *env);

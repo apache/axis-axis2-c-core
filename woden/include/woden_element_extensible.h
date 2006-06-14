@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_ELEMENT_EXTENSIBLE_H
-#define AXIS2_WODEN_ELEMENT_EXTENSIBLE_H
+#ifndef WODEN_ELEMENT_EXTENSIBLE_H
+#define WODEN_ELEMENT_EXTENSIBLE_H
 
 /**
- * @file axis2_woden_element_extensible.h
+ * @file woden_element_extensible.h
  * @brief Axis2 Element Extensible Interface
  *          Common code for handling extension elements. 
  *          Can be reused by inheritance or by delegation.
@@ -33,23 +33,23 @@
 #include <axis2_qname.h>
 #include <axis2_uri.h>
 #include <axis2_array_list.h>
-#include <woden/axis2_woden.h>
+#include <woden/woden.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_element_extensible axis2_woden_element_extensible_t;
-typedef struct axis2_woden_element_extensible_ops axis2_woden_element_extensible_ops_t;
-struct axis2_woden_ext_element;
+typedef struct woden_element_extensible woden_element_extensible_t;
+typedef struct woden_element_extensible_ops woden_element_extensible_ops_t;
+struct woden_ext_element;
 
-/** @defgroup axis2_woden_element_extensible Element Extensible
+/** @defgroup woden_element_extensible Element Extensible
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_element_extensible_ops
+struct woden_element_extensible_ops
 {
    /** 
      * Deallocate memory
@@ -67,7 +67,7 @@ struct axis2_woden_element_extensible_ops
             element_extensible,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *element_extensible,
             const axis2_env_t *env);
@@ -76,13 +76,13 @@ struct axis2_woden_element_extensible_ops
     add_ext_element) (
             void *extensible,
             const axis2_env_t *env,
-            struct axis2_woden_ext_element *ext_el); 
+            struct woden_ext_element *ext_el); 
 
     axis2_status_t (AXIS2_CALL *
     remove_ext_element) (
             void *extensible,
             const axis2_env_t *env,
-            struct axis2_woden_ext_element *ext_el); 
+            struct woden_ext_element *ext_el); 
 
     axis2_array_list_t *(AXIS2_CALL *
     get_ext_elements) (
@@ -103,58 +103,58 @@ struct axis2_woden_element_extensible_ops
  
 };
 
-struct axis2_woden_element_extensible
+struct woden_element_extensible
 {
-    axis2_woden_element_extensible_ops_t *ops;
+    woden_element_extensible_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_element_extensible_t * AXIS2_CALL
-axis2_woden_element_extensible_create(const axis2_env_t *env);
+AXIS2_EXTERN woden_element_extensible_t * AXIS2_CALL
+woden_element_extensible_create(const axis2_env_t *env);
 
 /**
  * This is an Axis2 C internal method. This is used only from constructor
  * of the child class
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_element_extensible_resolve_methods(
-        axis2_woden_element_extensible_t *extensible,
+woden_element_extensible_resolve_methods(
+        woden_element_extensible_t *extensible,
         const axis2_env_t *env,
-        axis2_woden_element_extensible_t *extensible_impl,
+        woden_element_extensible_t *extensible_impl,
         axis2_hash_t *methods);
 
-#define AXIS2_WODEN_ELEMENT_EXTENSIBLE_FREE(extensible, env) \
-      (((axis2_woden_element_extensible_t *) extensible)->ops->\
+#define WODEN_ELEMENT_EXTENSIBLE_FREE(extensible, env) \
+      (((woden_element_extensible_t *) extensible)->ops->\
          free (extensible, env))
 
-#define AXIS2_WODEN_ELEMENT_EXTENSIBLE_SUPER_OBJS(extensible, env) \
-      (((axis2_woden_element_extensible_t *) extensible)->ops->\
+#define WODEN_ELEMENT_EXTENSIBLE_SUPER_OBJS(extensible, env) \
+      (((woden_element_extensible_t *) extensible)->ops->\
          super_objs (extensible, env))
 
-#define AXIS2_WODEN_ELEMENT_EXTENSIBLE_TYPE(extensible, env) \
-      (((axis2_woden_element_extensible_t *) extensible)->ops->\
+#define WODEN_ELEMENT_EXTENSIBLE_TYPE(extensible, env) \
+      (((woden_element_extensible_t *) extensible)->ops->\
          type (extensible, env))
 
-#define AXIS2_WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(extensible, env, ext_el) \
-      (((axis2_woden_element_extensible_t *) extensible)->ops->\
+#define WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(extensible, env, ext_el) \
+      (((woden_element_extensible_t *) extensible)->ops->\
          add_ext_element(extensible, env, ext_el))
 
-#define AXIS2_WODEN_ELEMENT_EXTENSIBLE_REMOVE_EXT_ELEMENT(extensible, env, \
+#define WODEN_ELEMENT_EXTENSIBLE_REMOVE_EXT_ELEMENT(extensible, env, \
         ext_el) \
-      (((axis2_woden_element_extensible_t *) extensible)->ops->\
+      (((woden_element_extensible_t *) extensible)->ops->\
          remove_ext_element(extensible, env, ext_el))
 
-#define AXIS2_WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(extensible, env) \
-      (((axis2_woden_element_extensible_t *) extensible)->ops->\
+#define WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(extensible, env) \
+      (((woden_element_extensible_t *) extensible)->ops->\
          get_ext_elements(extensible, env))
 
-#define AXIS2_WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS_OF_TYPE(extensible, \
+#define WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS_OF_TYPE(extensible, \
         env, ext_type) \
-      (((axis2_woden_element_extensible_t *) extensible)->ops->\
+      (((woden_element_extensible_t *) extensible)->ops->\
          get_ext_elements_of_type(extensible, env, ext_type))
 
-#define AXIS2_WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ELEMENTS_FOR_NAMESPACE(\
+#define WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ELEMENTS_FOR_NAMESPACE(\
         extensible, env, namespc) \
-      (((axis2_woden_element_extensible_t *) extensible)->ops->\
+      (((woden_element_extensible_t *) extensible)->ops->\
          has_ext_elements_for_namespace(extensible, env, namespc))
 
 
@@ -162,4 +162,4 @@ axis2_woden_element_extensible_resolve_methods(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_ELEMENT_EXTENSIBLE_H */
+#endif /* WODEN_ELEMENT_EXTENSIBLE_H */

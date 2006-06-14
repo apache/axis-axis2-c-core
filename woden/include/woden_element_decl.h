@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_ELEMENT_DECL_H
-#define AXIS2_WODEN_ELEMENT_DECL_H
+#ifndef WODEN_ELEMENT_DECL_H
+#define WODEN_ELEMENT_DECL_H
 
 /**
- * @file axis2_woden_element_decl.h
+ * @file woden_element_decl.h
  * @brief Axis2 Element Declaration Interface
  * This interface represents the Element Declaration component described
  * in the WSDL 2.0 Component Model specification (within the Description 
@@ -43,23 +43,23 @@
 #include <axis2_uri.h>
 #include <axis2_array_list.h>
 #include <axis2_generic_obj.h>
-#include <woden/axis2_woden.h>
+#include <woden/woden.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_element_decl axis2_woden_element_decl_t;
-typedef struct axis2_woden_element_decl_ops axis2_woden_element_decl_ops_t;
-struct axis2_woden_ext_element;
+typedef struct woden_element_decl woden_element_decl_t;
+typedef struct woden_element_decl_ops woden_element_decl_ops_t;
+struct woden_ext_element;
 
-/** @defgroup axis2_woden_element_decl Element Declaration
+/** @defgroup woden_element_decl Element Declaration
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_element_decl_ops
+struct woden_element_decl_ops
 {
    /** 
      * Deallocate memory
@@ -83,7 +83,7 @@ struct axis2_woden_element_decl_ops
             element_decl,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *element_decl,
             const axis2_env_t *env);
@@ -178,72 +178,72 @@ struct axis2_woden_element_decl_ops
 
 };
 
-struct axis2_woden_element_decl
+struct woden_element_decl
 {
-    axis2_woden_element_decl_ops_t *ops;
+    woden_element_decl_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_element_decl_t * AXIS2_CALL
-axis2_woden_element_decl_create(const axis2_env_t *env);
+AXIS2_EXTERN woden_element_decl_t * AXIS2_CALL
+woden_element_decl_create(const axis2_env_t *env);
 
 /**
  * This is an Axis2 C internal method. This is used only from constructor
  * of the child class
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_element_decl_resolve_methods(
-        axis2_woden_element_decl_t *decl,
+woden_element_decl_resolve_methods(
+        woden_element_decl_t *decl,
         const axis2_env_t *env,
-        axis2_woden_element_decl_t *decl_impl,
+        woden_element_decl_t *decl_impl,
         axis2_hash_t *methods);
 
-#define AXIS2_WODEN_ELEMENT_DECL_FREE(decl, env) \
-      (((axis2_woden_element_decl_t *) decl)->ops->\
+#define WODEN_ELEMENT_DECL_FREE(decl, env) \
+      (((woden_element_decl_t *) decl)->ops->\
          free (decl, env))
 
-#define AXIS2_WODEN_ELEMENT_DECL_TO_ELEMENT_DECL_FREE(decl, \
+#define WODEN_ELEMENT_DECL_TO_ELEMENT_DECL_FREE(decl, \
         env) \
-      (((axis2_woden_element_decl_t *) decl)->ops->\
+      (((woden_element_decl_t *) decl)->ops->\
          to_element_decl_free (decl, env))
 
-#define AXIS2_WODEN_ELEMENT_DECL_SUPER_OBJS(decl, env) \
-      (((axis2_woden_element_decl_t *) decl)->ops->\
+#define WODEN_ELEMENT_DECL_SUPER_OBJS(decl, env) \
+      (((woden_element_decl_t *) decl)->ops->\
          super_objs (decl, env))
 
-#define AXIS2_WODEN_ELEMENT_DECL_TYPE(decl, env) \
-      (((axis2_woden_element_decl_t *) decl)->ops->\
+#define WODEN_ELEMENT_DECL_TYPE(decl, env) \
+      (((woden_element_decl_t *) decl)->ops->\
          type (decl, env))
 
-#define AXIS2_WODEN_ELEMENT_DECL_GET_QNAME(decl, env) \
-      (((axis2_woden_element_decl_t *) decl)->ops->\
+#define WODEN_ELEMENT_DECL_GET_QNAME(decl, env) \
+      (((woden_element_decl_t *) decl)->ops->\
          get_qname(decl, env))
 
-#define AXIS2_WODEN_ELEMENT_DECL_GET_SYSTEM(decl, env) \
-      (((axis2_woden_element_decl_t *) decl)->ops->\
+#define WODEN_ELEMENT_DECL_GET_SYSTEM(decl, env) \
+      (((woden_element_decl_t *) decl)->ops->\
          get_system(decl, env))
 
-#define AXIS2_WODEN_ELEMENT_DECL_GET_CONTENT_MODEL(decl, env) \
-      (((axis2_woden_element_decl_t *) decl)->ops->\
+#define WODEN_ELEMENT_DECL_GET_CONTENT_MODEL(decl, env) \
+      (((woden_element_decl_t *) decl)->ops->\
          get_content_model(decl, env))
 
-#define AXIS2_WODEN_ELEMENT_DECL_GET_CONTENT(decl, env) \
-      (((axis2_woden_element_decl_t *) decl)->ops->\
+#define WODEN_ELEMENT_DECL_GET_CONTENT(decl, env) \
+      (((woden_element_decl_t *) decl)->ops->\
          get_content(decl, env))
 
-#define AXIS2_WODEN_ELEMENT_DECL_SET_QNAME(decl, env, qname) \
-      (((axis2_woden_element_decl_t *) decl)->ops->\
+#define WODEN_ELEMENT_DECL_SET_QNAME(decl, env, qname) \
+      (((woden_element_decl_t *) decl)->ops->\
          set_qname(decl, env, qname))
 
-#define AXIS2_WODEN_ELEMENT_DECL_SET_SYSTEM(decl, env, type_system_uri) \
-      (((axis2_woden_element_decl_t *) decl)->ops->\
+#define WODEN_ELEMENT_DECL_SET_SYSTEM(decl, env, type_system_uri) \
+      (((woden_element_decl_t *) decl)->ops->\
          set_system(decl, env, type_system_uri))
 
-#define AXIS2_WODEN_ELEMENT_DECL_SET_CONTENT_MODEL(decl, env, content_model) \
-      (((axis2_woden_element_decl_t *) decl)->ops->\
+#define WODEN_ELEMENT_DECL_SET_CONTENT_MODEL(decl, env, content_model) \
+      (((woden_element_decl_t *) decl)->ops->\
          set_content_model(decl, env, content_model))
 
-#define AXIS2_WODEN_ELEMENT_DECL_SET_CONTENT(decl, env, element_content) \
-      (((axis2_woden_element_decl_t *) decl)->ops->\
+#define WODEN_ELEMENT_DECL_SET_CONTENT(decl, env, element_content) \
+      (((woden_element_decl_t *) decl)->ops->\
          set_content(decl, env, element_content))
 
 
@@ -251,4 +251,4 @@ axis2_woden_element_decl_resolve_methods(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_ELEMENT_DECL_H */
+#endif /* WODEN_ELEMENT_DECL_H */

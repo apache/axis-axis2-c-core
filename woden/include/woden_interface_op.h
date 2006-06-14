@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_INTERFACE_OP_H
-#define AXIS2_WODEN_INTERFACE_OP_H
+#ifndef WODEN_INTERFACE_OP_H
+#define WODEN_INTERFACE_OP_H
 
 /**
- * @file axis2_woden_interface_op.h
+ * @file woden_interface_op.h
  * @brief Axis2 Interface Operation Interface Operation
  * 
  */
 
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/xml/axis2_woden_interface_op_element.h>
-#include <woden/wsdl20/axis2_woden_nested_configurable.h>
+#include <woden/woden.h>
+#include <woden_interface_op_element.h>
+#include <woden_nested_configurable.h>
 #include <axis2_qname.h>
 
-/** @defgroup axis2_woden_interface_op Interface Operation
+/** @defgroup woden_interface_op Interface Operation
   * @ingroup axis2_wsdl
   * @{
   */
 
-typedef union axis2_woden_interface_op_base axis2_woden_interface_op_base_t;
-typedef struct axis2_woden_interface_op axis2_woden_interface_op_t;
-typedef struct axis2_woden_interface_op_ops axis2_woden_interface_op_ops_t;
+typedef union woden_interface_op_base woden_interface_op_base_t;
+typedef struct woden_interface_op woden_interface_op_t;
+typedef struct woden_interface_op_ops woden_interface_op_ops_t;
 
 
 #ifdef __cplusplus
@@ -43,7 +43,7 @@ extern "C"
 {
 #endif
 
-struct axis2_woden_interface_op_ops
+struct woden_interface_op_ops
 {
    /** 
      * Deallocate memory
@@ -57,13 +57,13 @@ struct axis2_woden_interface_op_ops
     super_objs) (void *interface_op,
             const axis2_env_t *env);
 
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (void *interface_op,
             const axis2_env_t *env);
     /**
      * @return the base implementation class
      */
-    struct axis2_woden_nested_configurable *(AXIS2_CALL *
+    struct woden_nested_configurable *(AXIS2_CALL *
     get_base_impl) (
             void *interface_op,
             const axis2_env_t *env);
@@ -100,116 +100,116 @@ struct axis2_woden_interface_op_ops
 
 };
 
-union axis2_woden_interface_op_base
+union woden_interface_op_base
 {
-    axis2_woden_nested_configurable_t nested_configurable;
-    axis2_woden_interface_op_element_t interface_op_element;
+    woden_nested_configurable_t nested_configurable;
+    woden_interface_op_element_t interface_op_element;
 };
 
-struct axis2_woden_interface_op
+struct woden_interface_op
 {
-    axis2_woden_interface_op_base_t base;
-    axis2_woden_interface_op_ops_t *ops;
+    woden_interface_op_base_t base;
+    woden_interface_op_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
-axis2_woden_interface_op_create(
+AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
+woden_interface_op_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
-axis2_woden_interface_op_to_interface_op_element(
+AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
+woden_interface_op_to_interface_op_element(
         void *interface_op,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
-axis2_woden_interface_op_to_nested_configurable(
+AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
+woden_interface_op_to_nested_configurable(
         void *interface_op,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
-axis2_woden_interface_op_to_configurable(
+AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
+woden_interface_op_to_configurable(
         void *interface_op,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
-axis2_woden_interface_op_to_nested_element(
+AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
+woden_interface_op_to_nested_element(
         void *interface_op,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
-axis2_woden_interface_op_to_configurable_element(
+AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
+woden_interface_op_to_configurable_element(
         void *interface_op,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
-axis2_woden_interface_op_to_documentable_element(
+AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
+woden_interface_op_to_documentable_element(
         void *interface_op,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
-axis2_woden_interface_op_to_documentable(
+AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
+woden_interface_op_to_documentable(
         void *interface_op,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
-axis2_woden_interface_op_to_attr_extensible(
+AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
+woden_interface_op_to_attr_extensible(
         void *interface_op,
         const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_woden_interface_op_t * AXIS2_CALL
-axis2_woden_interface_op_to_element_extensible(
+AXIS2_EXTERN woden_interface_op_t * AXIS2_CALL
+woden_interface_op_to_element_extensible(
         void *interface_op,
         const axis2_env_t *env);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-axis2_woden_interface_op_resolve_methods(
-        axis2_woden_interface_op_t *interface_op,
+woden_interface_op_resolve_methods(
+        woden_interface_op_t *interface_op,
         const axis2_env_t *env,
-        axis2_woden_interface_op_t *interface_op_impl,
+        woden_interface_op_t *interface_op_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_INTERFACE_OP_FREE(interface_op, env) \
-      (((axis2_woden_interface_op_t *) interface_op)->ops->free(interface_op, env))
+#define WODEN_INTERFACE_OP_FREE(interface_op, env) \
+      (((woden_interface_op_t *) interface_op)->ops->free(interface_op, env))
 
-#define AXIS2_WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env) \
-      (((axis2_woden_interface_op_t *) interface_op)->ops->super_objs(interface_op, env))
+#define WODEN_INTERFACE_OP_SUPER_OBJS(interface_op, env) \
+      (((woden_interface_op_t *) interface_op)->ops->super_objs(interface_op, env))
 
-#define AXIS2_WODEN_INTERFACE_OP_TYPE(interface_op, env) \
-      (((axis2_woden_interface_op_t *) interface_op)->ops->type(interface_op, env))
+#define WODEN_INTERFACE_OP_TYPE(interface_op, env) \
+      (((woden_interface_op_t *) interface_op)->ops->type(interface_op, env))
 
-#define AXIS2_WODEN_INTERFACE_OP_GET_BASE_IMPL(interface_op, env) \
-      (((axis2_woden_interface_op_t *) interface_op)->ops->get_base_impl(interface_op, env))
+#define WODEN_INTERFACE_OP_GET_BASE_IMPL(interface_op, env) \
+      (((woden_interface_op_t *) interface_op)->ops->get_base_impl(interface_op, env))
 
-#define AXIS2_WODEN_INTERFACE_OP_GET_QNAME(interface_op, env) \
-      (((axis2_woden_interface_op_t *) interface_op)->\
+#define WODEN_INTERFACE_OP_GET_QNAME(interface_op, env) \
+      (((woden_interface_op_t *) interface_op)->\
          get_qname(interface_op, env))
 
-#define AXIS2_WODEN_INTERFACE_OP_GET_MSG_EXCHANGE_PATTERN(interface_op, env) \
-      (((axis2_woden_interface_op_t *) interface_op)->\
+#define WODEN_INTERFACE_OP_GET_MSG_EXCHANGE_PATTERN(interface_op, env) \
+      (((woden_interface_op_t *) interface_op)->\
          get_msg_exchange_pattern(interface_op, env))
 
-#define AXIS2_WODEN_INTERFACE_OP_GET_INTERFACE_MSG_REFS(interface_op, env) \
-      (((axis2_woden_interface_op_t *) interface_op)->\
+#define WODEN_INTERFACE_OP_GET_INTERFACE_MSG_REFS(interface_op, env) \
+      (((woden_interface_op_t *) interface_op)->\
          get_interface_msg_refs(interface_op, env))
 
-#define AXIS2_WODEN_INTERFACE_OP_GET_INTERFACE_FAULT_REFS(interface_op, env) \
-      (((axis2_woden_interface_op_t *) interface_op)->\
+#define WODEN_INTERFACE_OP_GET_INTERFACE_FAULT_REFS(interface_op, env) \
+      (((woden_interface_op_t *) interface_op)->\
          get_interface_fault_refs(interface_op, env))
 
-#define AXIS2_WODEN_INTERFACE_OP_GET_STYLE(interface_op, env) \
-      (((axis2_woden_interface_op_t *) interface_op)->\
+#define WODEN_INTERFACE_OP_GET_STYLE(interface_op, env) \
+      (((woden_interface_op_t *) interface_op)->\
          get_style(interface_op, env))
 
-#define AXIS2_WODEN_INTERFACE_OP_TO_ELEMENT(interface_op, env) \
-      (((axis2_woden_interface_op_t *) interface_op)->ops->\
+#define WODEN_INTERFACE_OP_TO_ELEMENT(interface_op, env) \
+      (((woden_interface_op_t *) interface_op)->ops->\
          to_element(interface_op, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_INTERFACE_OP_H */
+#endif /* WODEN_INTERFACE_OP_H */

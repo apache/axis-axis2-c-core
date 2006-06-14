@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_CONFIGURABLE_ELEMENT_H
-#define AXIS2_WODEN_CONFIGURABLE_ELEMENT_H
+#ifndef WODEN_CONFIGURABLE_ELEMENT_H
+#define WODEN_CONFIGURABLE_ELEMENT_H
 
 /**
- * @file axis2_woden_configurable_element.h
+ * @file woden_configurable_element.h
  * @brief Axis2 Configurable Element Interface
  * Interfaces for elements which can have &lt;feature&gt; and &lt;property&gt;
  * child elements will extend this interface. That is, &lt;types&gt;, 
@@ -40,27 +40,27 @@
 #include <axis2_utils.h>
 #include <axis2_hash.h>
 #include <axis2_qname.h>
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/xml/axis2_woden_wsdl_element.h>
+#include <woden/woden.h>
+#include <woden_wsdl_element.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_configurable_element 
-        axis2_woden_configurable_element_t;
-typedef struct axis2_woden_configurable_element_ops 
-        axis2_woden_configurable_element_ops_t;
-struct axis2_woden_feature_element;
-struct axis2_woden_property_element;
+typedef struct woden_configurable_element 
+        woden_configurable_element_t;
+typedef struct woden_configurable_element_ops 
+        woden_configurable_element_ops_t;
+struct woden_feature_element;
+struct woden_property_element;
 
-/** @defgroup axis2_woden_configurable_element Configurable Element
+/** @defgroup woden_configurable_element Configurable Element
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_configurable_element_ops
+struct woden_configurable_element_ops
 {
    /** 
      * Deallocate memory
@@ -71,7 +71,7 @@ struct axis2_woden_configurable_element_ops
             void *conf_el,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *conf_el,
             const axis2_env_t *env);
@@ -80,7 +80,7 @@ struct axis2_woden_configurable_element_ops
     add_feature_element) (
             void *conf_el,
             const axis2_env_t *env,
-            struct axis2_woden_feature_element *feature);
+            struct woden_feature_element *feature);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_feature_elements) (
@@ -91,7 +91,7 @@ struct axis2_woden_configurable_element_ops
     add_property_element) (
             void *conf_el,
             const axis2_env_t *env,
-            struct axis2_woden_property_element *feature);
+            struct woden_property_element *feature);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_property_elements) (
@@ -101,44 +101,44 @@ struct axis2_woden_configurable_element_ops
 
 };
 
-struct axis2_woden_configurable_element
+struct woden_configurable_element
 {
-    axis2_woden_wsdl_element_t wsdl_element;
-    axis2_woden_configurable_element_ops_t *ops;
+    woden_wsdl_element_t wsdl_element;
+    woden_configurable_element_ops_t *ops;
 };
 
 /************************Woden C Internal Methods*****************************/
 axis2_status_t AXIS2_CALL
-axis2_woden_configurable_element_resolve_methods(
-        axis2_woden_configurable_element_t *configurable_element,
+woden_configurable_element_resolve_methods(
+        woden_configurable_element_t *configurable_element,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_CONFIGURABLE_ELEMENT_FREE(conf_el, env) \
-      (((axis2_woden_configurable_element_t *) conf_el)->ops->\
+#define WODEN_CONFIGURABLE_ELEMENT_FREE(conf_el, env) \
+      (((woden_configurable_element_t *) conf_el)->ops->\
          free (conf_el, env))
 
-#define AXIS2_WODEN_CONFIGURABLE_ELEMENT_TYPE(conf_el, env) \
-      (((axis2_woden_configurable_element_t *) conf_el)->ops->\
+#define WODEN_CONFIGURABLE_ELEMENT_TYPE(conf_el, env) \
+      (((woden_configurable_element_t *) conf_el)->ops->\
          type (conf_el, env))
 
-#define AXIS2_WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(conf_el, env, \
+#define WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(conf_el, env, \
         feature) \
-      (((axis2_woden_configurable_element_t *) conf_el)->ops->\
+      (((woden_configurable_element_t *) conf_el)->ops->\
          add_feature_element(conf_el, env, feature))
 
-#define AXIS2_WODEN_CONFIGURABLE_ELEMENT_GET_FEATURE_ELEMENTS(conf_el, env) \
-      (((axis2_woden_configurable_element_t *) conf_el)->ops->\
+#define WODEN_CONFIGURABLE_ELEMENT_GET_FEATURE_ELEMENTS(conf_el, env) \
+      (((woden_configurable_element_t *) conf_el)->ops->\
          get_feature_elements(conf_el, env))
 
-#define AXIS2_WODEN_CONFIGURABLE_ELEMENT_ADD_PROPERTY_ELEMENT(conf_el, env, \
+#define WODEN_CONFIGURABLE_ELEMENT_ADD_PROPERTY_ELEMENT(conf_el, env, \
         property) \
-      (((axis2_woden_configurable_element_t *) conf_el)->ops->\
+      (((woden_configurable_element_t *) conf_el)->ops->\
          add_property_element(conf_el, env, property))
 
-#define AXIS2_WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(conf_el, env) \
-      (((axis2_woden_configurable_element_t *) conf_el)->ops->\
+#define WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(conf_el, env) \
+      (((woden_configurable_element_t *) conf_el)->ops->\
          get_propertyelements(conf_el, env))
 
 
@@ -147,4 +147,4 @@ axis2_woden_configurable_element_resolve_methods(
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_CONFIGURABLE_ELEMENT_H */
+#endif /* WODEN_CONFIGURABLE_ELEMENT_H */

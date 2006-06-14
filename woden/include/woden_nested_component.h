@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef AXIS2_WODEN_NESTED_COMPONENT_H
-#define AXIS2_WODEN_NESTED_COMPONENT_H
+#ifndef WODEN_NESTED_COMPONENT_H
+#define WODEN_NESTED_COMPONENT_H
 
 /**
- * @file axis2_woden_nested_component.h
+ * @file woden_nested_component.h
  * @brief Axis2 Nested Component Interface
  * Components which are nested within a 'top-level' component will extend
  * this interface. These are Property, Feature and the sub components of
@@ -35,24 +35,24 @@
 #include <axis2_string.h>
 #include <axis2_utils.h>
 #include <axis2_hash.h>
-#include <woden/axis2_woden.h>
-#include <woden/wsdl20/axis2_woden_wsdl_component.h>
+#include <woden/woden.h>
+#include <woden_wsdl_component.h>
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-typedef struct axis2_woden_nested_component axis2_woden_nested_component_t;
-typedef struct axis2_woden_nested_component_ops axis2_woden_nested_component_ops_t;
-struct axis2_woden_component_exts;
+typedef struct woden_nested_component woden_nested_component_t;
+typedef struct woden_nested_component_ops woden_nested_component_ops_t;
+struct woden_component_exts;
 
-/** @defgroup axis2_woden_nested_component Nested Component
+/** @defgroup woden_nested_component Nested Component
   * @ingroup axis2_wsdl
   * @{
   */
 
-struct axis2_woden_nested_component_ops
+struct woden_nested_component_ops
 {
    /** 
      * Deallocate memory
@@ -68,7 +68,7 @@ struct axis2_woden_nested_component_ops
             void *nested_component,
             const axis2_env_t *env);
     
-    axis2_woden_obj_types_t (AXIS2_CALL *
+    woden_obj_types_t (AXIS2_CALL *
     type) (
             void *nested_component,
             const axis2_env_t *env);
@@ -80,40 +80,40 @@ struct axis2_woden_nested_component_ops
 
 };
 
-struct axis2_woden_nested_component
+struct woden_nested_component
 {
-    axis2_woden_wsdl_component_t wsdl_component;
-    axis2_woden_nested_component_ops_t *ops;
+    woden_wsdl_component_t wsdl_component;
+    woden_nested_component_ops_t *ops;
 };
 
 /************************Woden C Internal Methods******************************/
 axis2_status_t AXIS2_CALL
-axis2_woden_nested_component_resolve_methods(
-        axis2_woden_nested_component_t *nested_component,
+woden_nested_component_resolve_methods(
+        woden_nested_component_t *nested_component,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define AXIS2_WODEN_NESTED_COMPONENT_FREE(nested_component, env) \
-      (((axis2_woden_nested_component_t *) nested_component)->ops->\
+#define WODEN_NESTED_COMPONENT_FREE(nested_component, env) \
+      (((woden_nested_component_t *) nested_component)->ops->\
          free (nested_component, env))
 
-#define AXIS2_WODEN_NESTED_COMPONENT_TO_NESTED_COMPONENT_FREE(nested_component, \
+#define WODEN_NESTED_COMPONENT_TO_NESTED_COMPONENT_FREE(nested_component, \
         env) \
-      (((axis2_woden_nested_component_t *) nested_component)->ops->\
+      (((woden_nested_component_t *) nested_component)->ops->\
          to_nested_component_free (nested_component, env))
 
-#define AXIS2_WODEN_NESTED_COMPONENT_TYPE(nested_component, env) \
-      (((axis2_woden_nested_component_t *) nested_component)->ops->\
+#define WODEN_NESTED_COMPONENT_TYPE(nested_component, env) \
+      (((woden_nested_component_t *) nested_component)->ops->\
          type (nested_component, env))
 
-#define AXIS2_WODEN_NESTED_COMPONENT_GET_PARENT(\
+#define WODEN_NESTED_COMPONENT_GET_PARENT(\
         nested_component, env) \
-      (((axis2_woden_nested_component_t *) nested_component)->ops->\
+      (((woden_nested_component_t *) nested_component)->ops->\
          get_parent(nested_component, env))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* AXIS2_WODEN_NESTED_COMPONENT_H */
+#endif /* WODEN_NESTED_COMPONENT_H */
