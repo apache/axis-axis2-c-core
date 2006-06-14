@@ -27,3 +27,6 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/om \
             -I$(top_builddir)/src/attachments \
 			@UTILINC@
+
+EXTRA_DIST = axiom_namespace_internal.h  axiom_node_internal.h  axiom_stax_builder_internal.h
+
