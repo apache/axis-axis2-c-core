@@ -1248,7 +1248,7 @@ parse_schema_import(
     
     if(NULL != schema_def) 
     {
-        WODEN_XML_SCHEMA_SET_SCHEMA_DEF(schema, env, schema_def);
+        WODEN_SCHEMA_SET_SCHEMA_DEF(schema, env, schema_def);
     } else 
     {
         WODEN_SCHEMA_SET_REFERENCEABLE(schema, env, AXIS2_FALSE);
