@@ -622,7 +622,7 @@ woden_interface_fault_free(
 
     if(interface_fault_impl->f_types)
     {
-        WODEN_TYPES_IMPL_FREE(interface_fault_impl->f_types, env);
+        WODEN_TYPES_FREE(interface_fault_impl->f_types, env);
         interface_fault_impl->f_types = NULL;
     }
 
