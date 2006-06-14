@@ -23,6 +23,7 @@
 #include <woden_documentation_element.h>
 #include <xml_schema_element.h>
 #include <woden_element_decl.h>
+#include <woden_types.h>
 
 typedef struct woden_interface_fault_impl woden_interface_fault_impl_t;
 

@@ -18,6 +18,7 @@
 #include <woden_documentation_element.h>
 #include <woden_ext_element.h>
 #include <woden_xml_attr.h>
+#include <woden_wsdl_obj.h>
 
 typedef struct woden_documentation_impl woden_documentation_impl_t;
 

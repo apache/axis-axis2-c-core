@@ -1089,7 +1089,7 @@ woden_types_is_namespace_in_scope_with_namespace_uri(
                 "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
 
     str_uri = AXIS2_URI_TO_STRING(namespc_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
-    return is_namespace_in_scope_with_namespace(types, env, str_uri);
+    return woden_types_is_namespace_in_scope_with_namespace(types, env, str_uri);
 }
 
 axis2_bool_t AXIS2_CALL 
@@ -1111,7 +1111,7 @@ woden_types_is_namespace_in_scope_with_qname(
 
     str_uri = AXIS2_QNAME_GET_URI(qname, env);
     uri = axis2_uri_parse_string(env, str_uri);
-    return is_namespace_in_scope_with_namespace_uri(types, env, uri);
+    return woden_types_is_namespace_in_scope_with_namespace_uri(types, env, uri);
 }
 
 axis2_bool_t AXIS2_CALL 
