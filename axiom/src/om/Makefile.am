@@ -25,5 +25,5 @@ libaxis2_axiom_la_LIBADD =  \
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/parser \
             -I$(top_builddir)/src/om \
-		axiom_stax_builder_internal.h
-
+            -I$(top_builddir)/src/attachments \
+			@UTILINC@
