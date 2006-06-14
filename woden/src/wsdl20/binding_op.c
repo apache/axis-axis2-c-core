@@ -738,7 +738,7 @@ woden_binding_op_free(void *binding_op,
 
     if(binding_op_impl->f_interface_op)
     {
-        AXIS2_INTERFACE_OP_FREE(binding_op_impl->f_interface_op, env);
+        WODEN_INTERFACE_OP_FREE(binding_op_impl->f_interface_op, env);
         binding_op_impl->f_interface_op = NULL;
     }
 

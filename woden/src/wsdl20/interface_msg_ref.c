@@ -669,7 +669,7 @@ woden_interface_msg_ref_free(void *interface_msg_ref,
 
     if(interface_msg_ref_impl->f_element_decl)
     {
-        AXIS2_ELEMENT_DECLARATION_FREE(interface_msg_ref_impl->f_element_decl, env);
+        WODEN_ELEMENT_DECL_FREE(interface_msg_ref_impl->f_element_decl, env);
         interface_msg_ref_impl->f_element_decl = NULL;
     }
 

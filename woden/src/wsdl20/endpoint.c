@@ -903,7 +903,7 @@ woden_endpoint_set_name(
 
     if(endpoint_impl->f_name)
     {
-        AXIS2_NC_NAME_FREE(endpoint_impl->f_name, env);
+        WODEN_NC_NAME_FREE(endpoint_impl->f_name, env);
     }
     endpoint_impl->f_name = name;
     return AXIS2_SUCCESS;
