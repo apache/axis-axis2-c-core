@@ -31,10 +31,10 @@ extern "C"
 
 /**
  * Get the password for given outflow security configuration
- * @param env
+ * @param env pointer to environment struct
  * @param ctx axis2 context
  * @param Outflow security parameter
- * @return 
+ * @return password
  */ 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_get_password( const axis2_env_t *env,
@@ -43,10 +43,11 @@ rampart_get_password( const axis2_env_t *env,
 
   
 /**
- * 
- * @param 
- * @param 
- * @return 
+ * Get the value for a given key from the axis2 context. The key is the parameter and 
+ * value is the property value.
+ * @param env pointer to environment struct
+ * @param ctx axis2 context
+ * @return property value
  */         
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_get_value( const axis2_env_t *env,
@@ -56,12 +57,12 @@ rampart_get_value( const axis2_env_t *env,
   
 /**
  * Build username token 
- * @param 
- * @param 
- * @param 
- * @param 
- * @param 
- * @return 
+ * @param env pointer to environment struct
+ * @param ctx axis2 context 
+ * @param param_action action parameter
+ * @param sec_node security node
+ * @param sec_ns_obj security namespace object
+ * @return UsernameToken as a node
  */              
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 rampart_build_username_token(const axis2_env_t *env,
@@ -73,10 +74,10 @@ rampart_build_username_token(const axis2_env_t *env,
   
 /**
  * Validates the given username token 
- * @param 
- * @param 
- * @param 
- * @return 
+ * @param env pointer to environment struct
+ * @param msg_ctx axis2 message context
+ * @param sopa_header SOAP Header
+ * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
  */   
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_validate_username_token(const axis2_env_t *env,

@@ -102,7 +102,6 @@ rampart_get_security_token(const axis2_env_t *env,
  * @param env pointer to environment struct
  * @return password
  */
-
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_callback_pw( const axis2_env_t *env,
                      const axis2_char_t *callback_module_name,

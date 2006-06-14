@@ -30,10 +30,15 @@ extern "C"
      * @{
      */
 
-    /** Type name for struct rampart_callback_ops */
+    /** 
+     * Type name for struct rampart_callback_ops 
+     */
     typedef struct rampart_callback_ops rampart_callback_ops_t;
 
-    /** Type name for struct rampart_callback */
+    /**
+     * Type name for struct rampart_callback
+     */
+
     typedef struct rampart_callback rampart_callback_t;
     
     /**
@@ -41,7 +46,7 @@ extern "C"
      * User should prvide a function pointer to this
      */
     AXIS2_DECLARE_DATA struct rampart_callback_ops
-    {
+    {            
             axis2_char_t *(AXIS2_CALL*
             get_password)(rampart_callback_t *rcb,
             const axis2_env_t *env, const axis2_char_t *username);

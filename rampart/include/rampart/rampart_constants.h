@@ -42,7 +42,7 @@ extern "C"
 #define RAMPART_WSU_XMLNS "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
 #define RAMPART_PASSWORD_DIGEST_URI "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest"  
 
-  /* Inflow outflow security parameter    */
+/* Inflow outflow security parameter    */
 #define RAMPART_INFLOW_SECURITY  "InflowSecurity"
 #define RAMPART_OUTFLOW_SECURITY "OutflowSecurity"
 #define RAMPART_ACTION "action"

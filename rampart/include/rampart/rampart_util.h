@@ -36,7 +36,7 @@ extern "C" {
   */
 
 												                                        
- /** 
+ /**
     * Generates the nonce. Nonce is a base64 encoded random string.
     * @return generated nonce
     */ 	
@@ -44,12 +44,13 @@ extern "C" {
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 	rampart_generate_nonce(const axis2_env_t *env);
 
- /* Generates the nonce. Nonce is a base64 encoded random string.
-  * @return generated nonce
- **/ 	
+  /**
+    * Generates the nonce. Nonce is a base64 encoded random string.
+    * @param ttl Time to live. The time difference between created and expired in mili seconds.
+    * @return generated nonce
+    **/ 	
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
 rampart_generate_time(const axis2_env_t *env, int ttl);
-
 
 AXIS2_EXTERN int AXIS2_CALL 
 rampart_format_date_zulu_to_mili(const axis2_env_t *env, axis2_char_t *str);

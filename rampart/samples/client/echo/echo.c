@@ -62,8 +62,12 @@ int main(int argc, char** argv)
 
 
 
-        /*Set security params*/
-/*
+   /*
+    * Set security params. If you need to enable dynamic settings uncomment
+    * following code section.
+    */
+
+    /*
 	un_property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_VALUE(un_property, env, "Malinda");
 	AXIS2_OPTIONS_SET_PROPERTY(options, env, "user", un_property);
@@ -71,7 +75,8 @@ int main(int argc, char** argv)
 	pw_property = axis2_property_create(env);
 	AXIS2_PROPERTY_SET_VALUE(pw_property, env, "MyBigSecret");
 	AXIS2_OPTIONS_SET_PROPERTY(options, env, "password", pw_property);
-*/
+    
+    */
 					
 #if 0
 	client_home = AXIS2_GETENV("AXIS2C_HOME");

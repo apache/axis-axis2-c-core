@@ -9,16 +9,15 @@ This can be done using the following command sequence:
 
 Engage rampart with axis2/C
 ==================================
-Steps:
 
-Configuring server:
+Configuring:
 -----------------------------------
 1. Run build.sh in axis2/c/rampart directory
 2. Copy rampart directory created in rampart/target to AXIS2C_HOME/deploy/modules
-3. To engage rampart add to axis.xml
+3. To engage rampart add to axis2.xml
     <module ref="rampart"/>
 
-4. To set inflow security parameters add following to global configuration file or service configuration file
+4. To set inflow security parameters add followings to global configuration file or service configuration file
     <parameter name="InflowSecurity">
       <action>
         <items>UsernameToken</items>
@@ -26,9 +25,8 @@ Configuring server:
       </action>
     </parameter>
 
-Configure client:
------------------------------------
-1. To set outflow security parameters add following to global configuration file or service configuration file
+
+5. To set outflow security parameters add following to global configuration file or service configuration file
    <parameter name="OutflowSecurity">
       <action>
         <items>UsernameToken</items>
@@ -37,6 +35,8 @@ Configure client:
         <passwordCallbackClass>/your/module/to/load/passwordcallback.so</passwordCallbackClass>
       </action>
     </parameter>
+
+6. Configure the client similarly adding In/Outflow parameters to axis2.xml file. 
 
 Writing callback modules:
 -----------------------------------

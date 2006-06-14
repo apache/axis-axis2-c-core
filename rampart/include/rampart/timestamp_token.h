@@ -28,10 +28,13 @@ extern "C"
 #include <rampart/rampart_constants.h>
 
 /*
- * 
- * @param 
- * @param 
- * @return 
+ * Builds timestamp token.
+ * @param env pointer to environment struct    	
+ * @param ctx axis2 context
+ * @param sec_node security node
+ * @param sec_ns_obj Security namespace object
+ * @param ttl Time to live. The time difference btwn Created and Expired
+ * @return timestamp token.
  */ 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 rampart_build_timestamp_token(const axis2_env_t *env,
@@ -41,11 +44,12 @@ rampart_build_timestamp_token(const axis2_env_t *env,
                                 int ttl
                                 );
 
-/*
- * 
- * @param 
- * @param 
- * @return 
+/**
+ * Validates time stamp token. Validation is based in expiration time of the 
+ * Expired element.
+ * @param env pointer to environment struct    
+ * @param ts_node Timestamp node
+ * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
  */     
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_validate_timestamp(const axis2_env_t *env,

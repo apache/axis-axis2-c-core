@@ -1,1 +1,24 @@
-AWAIT : Timestamp token
+We are happy to announce the first release of Rampart/C which is the security module for Apache Axis2/C
+
+You can get the lates version from https://svn.apache.org/repos/asf/webservices/axis2/trunk/c/rampart
+
+Key features
+-------------
+1. Ability to send and verify UsernameTokens with 
+    1. PlainText password
+    2. Digested password
+
+2. Support for callback mechanism
+3. Ability to send Timestamp tokens
+4. Support for both dynamic and static configurations.
+
+Un-Implemented Architecture Features 
+------------------------------------
+1. Timestamptoken verification
+2. Support for Signing and Encrypting messages
+
+
+We welcome your early feedback on this implementation.
+Thanks for your interest in Rampart/C
+
+
