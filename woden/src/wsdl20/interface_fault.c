@@ -883,8 +883,8 @@ woden_interface_fault_get_element(
 
     if(interface_fault_impl->f_types)
     {
-        xse = (xml_schema_element_t *) WODEN_TYPES_IMPL_GET_ELEMENT_DECLARATION(
-                interface_fault_impl->f_element_qname, env);
+        xse = (xml_schema_element_t *) WODEN_TYPES_GET_ELEMENT_DECLARATION(
+                interface_fault_impl->f_element_qname, env, NULL);
     }
     return xse;
 }

@@ -21,7 +21,8 @@
 #include <woden_xml_attr.h>
 #include <woden_documentation_element.h>
 #include <woden_binding_fault_element.h>
-/*#include <woden_binding_fault.h>*/
+#include <woden_interface.h>
+#include <woden_binding_op_element.h>
 
 typedef struct woden_binding_impl woden_binding_impl_t;
 

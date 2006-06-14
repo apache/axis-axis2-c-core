@@ -20,6 +20,7 @@
 #include <woden_component_exts.h>
 #include <woden_xml_attr.h>
 #include <woden_documentation_element.h>
+#include <woden_interface.h>
 
 typedef struct woden_svc_impl woden_svc_impl_t;
 
