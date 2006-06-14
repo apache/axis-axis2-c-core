@@ -1760,14 +1760,14 @@ parse_interface_fault_ref(
         woden_direction_t *direction_in = NULL;
         
         direction_in = woden_direction_get_direction_in(env);
-        WODEN_INTERFACE_FAULT_REF_SET_DIRECTION(fault_ref, env, direction_in);
+        WODEN_INTERFACE_FAULT_REF_ELEMENT_SET_DIRECTION(fault_ref, env, direction_in);
     }
     if(0 == AXIS2_STRCMP(WODEN_ELEM_OUTFAULT, localname))
     {
         woden_direction_t *direction_out = NULL;
         
         direction_out = woden_direction_get_direction_out(env);
-        WODEN_INTERFACE_FAULT_REF_SET_DIRECTION(fault_ref, env, direction_out);
+        WODEN_INTERFACE_FAULT_REF_ELEMENT_SET_DIRECTION(fault_ref, env, direction_out);
     }
     
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
