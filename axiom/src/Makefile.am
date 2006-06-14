@@ -1,2 +1,2 @@
-SUBDIRS = parser attachments soap om util
+SUBDIRS = parser attachments soap util om 
 
