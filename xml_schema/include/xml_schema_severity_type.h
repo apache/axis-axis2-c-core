@@ -32,8 +32,10 @@
   * @{
   */
 
-typedef struct axis2_xml_severity_type axis2_xml_severity_type_t;
-typedef struct axis2_xml_severity_type_ops axis2_xml_severity_type_ops_t;
+typedef struct xml_schema_severity_type
+                    xml_schema_severity_type_t;
+typedef struct xml_schema_severity_type_ops 
+                    xml_schema_severity_type_ops_t;
 
 #define XML_SCHEMA_ERROR "error"
 #define XML_SCHEMA_WARNING "warning"
@@ -43,7 +45,7 @@ extern "C"
 {
 #endif
 
-struct axis2_xml_severity_type_ops
+struct xml_schema_severity_type_ops
 {
    /** 
      * Deallocate memory
@@ -71,32 +73,32 @@ struct axis2_xml_severity_type_ops
     
 };
 
-struct axis2_xml_severity_type
+struct xml_schema_severity_type
 {
     xml_schema_enum_t base;
-    axis2_xml_severity_type_ops_t *ops;
+    xml_schema_severity_type_ops_t *ops;
 };
 
-AXIS2_EXTERN axis2_xml_severity_type_t * AXIS2_CALL
+AXIS2_EXTERN xml_schema_severity_type_t * AXIS2_CALL
 axis2_xml_severity_type_create(const axis2_env_t *env,
                                     axis2_char_t* value);
 
 /***************************** Macros ******************************************/
 
 #define XML_SCHEMA_SEREVITY_TYPE_FREE(severity, env) \
-      (((axis2_xml_severity_type_t *) severity)->ops->free(severity, env))
+      (((xml_schema_severity_type_t *) severity)->ops->free(severity, env))
 
 #define XML_SCHEMA_SEREVITY_TYPE_GET_BASE_IMPL(severity, env) \
-      (((axis2_xml_severity_type_t *) severity)->ops->get_base_impl(severity, env))
+      (((xml_schema_severity_type_t *) severity)->ops->get_base_impl(severity, env))
 
 #define XML_SCHEMA_SEREVITY_TYPE_GET_VALUES(severity, env) \
-      (((axis2_xml_severity_type_t *) severity)->ops->values(severity, env))
+      (((xml_schema_severity_type_t *) severity)->ops->values(severity, env))
 
 #define XML_SCHEMA_SEREVITY_TYPE_GET_TYPE(severity, env) \
-      (((axis2_xml_severity_type_t *) severity)->ops->get_type(severity, env))
+      (((xml_schema_severity_type_t *) severity)->ops->get_type(severity, env))
 
 #define XML_SCHEMA_SEREVITY_TYPE_SUPER_OBJS(severity, env) \
-      (((axis2_xml_severity_type_t *) severity)->ops->super_objs(severity, env))
+      (((xml_schema_severity_type_t *) severity)->ops->super_objs(severity, env))
 
 /** @} */
 #ifdef __cplusplus
