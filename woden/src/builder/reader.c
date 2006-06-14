@@ -96,6 +96,8 @@
 #include <woden_imported_schema.h>
 #include <woden_inlined_schema.h>
 
+#include <woden_ext_deserializer.h>
+
 #include "../wsdl20/woden_constants.h"
 #include "../util/woden_om_util.h"
 
