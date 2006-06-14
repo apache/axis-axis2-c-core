@@ -20,6 +20,7 @@
 #include <woden_uri_attr.h>
 #include <woden_types.h>
 #include "woden_soap_constants.h"
+#include <woden_element_decl.h>
 
 typedef struct woden_soap_header_block_impl woden_soap_header_block_impl_t;
 
