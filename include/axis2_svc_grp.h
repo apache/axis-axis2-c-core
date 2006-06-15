@@ -61,7 +61,7 @@ struct axis2_svc_grp_ops
      * @return status_code
      */
     axis2_status_t (AXIS2_CALL *
-    set_svc_grp_name) (axis2_svc_grp_t *svc_grp, 
+    set_name) (axis2_svc_grp_t *svc_grp, 
                 const axis2_env_t *env, 
                 axis2_char_t *svc_grp_name);
    /** 
@@ -69,7 +69,7 @@ struct axis2_svc_grp_ops
      * @return service group name
      */
     axis2_char_t *(AXIS2_CALL *
-    get_svc_grp_name) (axis2_svc_grp_t *svc_grp, 
+    get_name) (axis2_svc_grp_t *svc_grp, 
                const axis2_env_t *env) ;
     /** 
      * Add a service to the serivce group
@@ -199,10 +199,10 @@ axis2_svc_grp_create_with_conf (const axis2_env_t *env,
 #define AXIS2_SVC_GRP_FREE(svc_grp, env) ((svc_grp)->ops->free (svc_grp , env))
    
 #define AXIS2_SVC_GRP_SET_NAME(svc_grp, env , svc_grp_name) \
-        ((svc_grp)->ops->set_svc_grp_name (svc_grp, env, svc_grp_name))
+        ((svc_grp)->ops->set_name (svc_grp, env, svc_grp_name))
       
 #define AXIS2_SVC_GRP_GET_NAME(svc_grp, env) \
-        ((svc_grp)->ops->get_svc_grp_name(svc_grp, env))
+        ((svc_grp)->ops->get_name(svc_grp, env))
 
 #define AXIS2_SVC_GRP_ADD_SVC(svc_grp, env , svc) \
         ((svc_grp)->ops->add_svc (svc_grp, env, svc))

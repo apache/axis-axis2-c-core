@@ -43,12 +43,12 @@ axis2_svc_grp_free (axis2_svc_grp_t *svc_grp,
                     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
-axis2_svc_grp_set_svc_grp_name (axis2_svc_grp_t *svc_grp, 
+axis2_svc_grp_set_name (axis2_svc_grp_t *svc_grp, 
                         const axis2_env_t *env,
                       axis2_char_t *name);
 
 axis2_char_t * AXIS2_CALL 
-axis2_svc_grp_get_svc_grp_name (axis2_svc_grp_t *svc_grp, 
+axis2_svc_grp_get_name (axis2_svc_grp_t *svc_grp, 
                         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
@@ -202,8 +202,8 @@ axis2_svc_grp_create (const axis2_env_t *env)
    }
     
    svc_grp_impl->svc_grp.ops->free = axis2_svc_grp_free;
-   svc_grp_impl->svc_grp.ops->set_svc_grp_name = axis2_svc_grp_set_svc_grp_name;
-   svc_grp_impl->svc_grp.ops->get_svc_grp_name = axis2_svc_grp_get_svc_grp_name;
+   svc_grp_impl->svc_grp.ops->set_name = axis2_svc_grp_set_name;
+   svc_grp_impl->svc_grp.ops->get_name = axis2_svc_grp_get_name;
    svc_grp_impl->svc_grp.ops->add_svc = axis2_svc_grp_add_svc;
    svc_grp_impl->svc_grp.ops->get_svc = axis2_svc_grp_get_svc;
     svc_grp_impl->svc_grp.ops->get_svcs = axis2_svc_grp_get_svcs;
@@ -301,7 +301,7 @@ axis2_svc_grp_free (axis2_svc_grp_t *svc_grp,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_svc_grp_set_svc_grp_name (axis2_svc_grp_t *svc_grp, 
+axis2_svc_grp_set_name (axis2_svc_grp_t *svc_grp, 
                         const axis2_env_t *env,
                       axis2_char_t *name)
 {
@@ -323,7 +323,7 @@ axis2_svc_grp_set_svc_grp_name (axis2_svc_grp_t *svc_grp,
 }
 
 axis2_char_t * AXIS2_CALL 
-axis2_svc_grp_get_svc_grp_name (axis2_svc_grp_t *svc_grp, 
+axis2_svc_grp_get_name (axis2_svc_grp_t *svc_grp, 
                         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
