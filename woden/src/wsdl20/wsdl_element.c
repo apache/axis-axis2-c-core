@@ -281,8 +281,8 @@ woden_wsdl_element_create(
 {
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    wsdl_element_impl = (woden_wsdl_element_impl_t *) create;
+    AXIS2_ENV_CHECK(env, NULL);
+    wsdl_element_impl = (woden_wsdl_element_impl_t *) create(env);
 
     wsdl_element_impl->f_attr_ext = woden_attr_extensible_create(env);
     if(!wsdl_element_impl->f_attr_ext)
