@@ -124,9 +124,6 @@ AC_CONFIG_FILES([Makefile \
     server/notify/Makefile \
     server/sg_math/Makefile \
     server/mtom/Makefile \
-    server/WSDLInteropTestDocLitService/Makefile \
-    server/InteropTestPortTypeDocService/Makefile \
-    server/Calculator/Makefile \
     client/Makefile \
     client/echo/Makefile \
     client/math/Makefile \
@@ -134,9 +131,6 @@ AC_CONFIG_FILES([Makefile \
     client/mtom/resources/Makefile \
     client/notify/Makefile \
     client/google/Makefile \
-    client/WSDLInteropTestDocLitService/Makefile \
-    client/InteropTestPortTypeDocService/Makefile \
-    client/Calculator/Makefile \
     user_guide/Makefile \
     user_guide/clients/Makefile \
     ])

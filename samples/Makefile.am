@@ -3,3 +3,5 @@ samples_DATA=AUTHORS autogen.sh ChangeLog configure.ac Makefile.am NEWS README c
 SUBDIRS = server client user_guide
 install-data-hook:
 	chmod 755 $(samplesdir)/configure $(samplesdir)/autogen.sh
+
+EXTRA_DIST=codegen
