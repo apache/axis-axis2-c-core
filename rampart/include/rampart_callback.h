@@ -50,10 +50,14 @@ extern "C"
             axis2_char_t *(AXIS2_CALL*
             get_password)(rampart_callback_t *rcb,
             const axis2_env_t *env, const axis2_char_t *username);
+            
+            axis2_status_t (AXIS2_CALL*
+            free)(rampart_callback_t *rcb,
+                  const axis2_env_t* env);
 
     };
 
-    AXIS2_DECLARE_DATA struct rampart_callback
+    struct rampart_callback
     {
         rampart_callback_ops_t *ops;
     };

@@ -5,9 +5,12 @@
 #include <axis2_utils.h>
 #include <rampart_callback.h>
 #include <axis2_string.h>
+#include <axis2_svc_skeleton.h>
+#include <axis2_string.h>
 
 
-axis2_char_t* get_sample_password(rampart_callback_t *rcb,
+axis2_char_t* AXIS2_CALL
+get_sample_password(rampart_callback_t *rcb,
             const axis2_env_t *env, const axis2_char_t *username)
 {
     axis2_char_t * pw = NULL;

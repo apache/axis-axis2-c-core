@@ -223,11 +223,11 @@ rampart_build_username_token(const axis2_env_t *env,
                 AXIOM_ELEMENT_SET_NAMESPACE(created_ele, env, wsu_ns_obj, created_node);
 
             }       
-            
+            /*
             AXIS2_FREE(env->allocator, nonce_val);
             AXIS2_FREE(env->allocator, created_val);
             AXIS2_FREE(env->allocator, digest_val);
-            
+            */
         }else /*default is passwordText*/ 
         {
             pw_ele = axiom_element_create (env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_PASSWORD, sec_ns_obj,
@@ -312,6 +312,12 @@ rampart_validate_username_token(const axis2_env_t *env,
                     password_type = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(element, 
                                             env,
                                             RAMPART_SECURITY_USERNAMETOKEN_PASSWORD_ATTR_TYPE);
+                                            
+                    if(!password_type)
+                    {
+                        password_type = RAMPART_PASSWORD_TEXT_URI;
+                    } 
+                       
 
                     password = AXIOM_ELEMENT_GET_TEXT(element, env, node);        
 
@@ -347,7 +353,6 @@ rampart_validate_username_token(const axis2_env_t *env,
     {
         return AXIS2_FAILURE; 
     }
-
     /*Alright NOW we have the password. Is digest needed?*/
     if(0 == AXIS2_STRCMP(password_type, RAMPART_PASSWORD_DIGEST_URI))
     {
@@ -363,5 +368,5 @@ rampart_validate_username_token(const axis2_env_t *env,
     }else{
         return AXIS2_FAILURE;
     }
-    
+       return AXIS2_SUCCESS;
 }

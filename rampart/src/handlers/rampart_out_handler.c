@@ -176,37 +176,42 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
         sec_ns_obj =  axiom_namespace_create (env, RAMPART_WSSE_XMLNS,
                                       RAMPART_WSSE);   
             
-        sec_header_block = AXIOM_SOAP_HEADER_ADD_HEADER_BLOCK (soap_header,
-                                                                 env, RAMPART_SECURITY,
-                                                                 sec_ns_obj);
+        sec_header_block = AXIOM_SOAP_HEADER_ADD_HEADER_BLOCK(soap_header,
+                            env, RAMPART_SECURITY, sec_ns_obj);
+                            
         if(sec_header_block)
         {           
             axis2_char_t* item = NULL;
             sec_node = AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE (sec_header_block, env);    
             sec_ele = (axiom_element_t *) 
                  AXIOM_NODE_GET_DATA_ELEMENT (sec_node, env);
-
+            /*
             AXIOM_ELEMENT_DECLARE_NAMESPACE (sec_ele, env,
                                            sec_node, sec_ns_obj);
-
+            */
             item = strtok (items," ");
 
             while (item != NULL)
             {
-                if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN , AXIS2_STRTRIM(env, item, NULL)))
+                if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN , 
+                        AXIS2_STRTRIM(env, item, NULL)))
                 {
-                    sec_node = rampart_build_username_token(env, ctx, param_action,  sec_node, sec_ns_obj);
+                    sec_node = rampart_build_username_token(env, 
+                        ctx, param_action,  sec_node, sec_ns_obj);
                     if(!sec_node)
                           return AXIS2_FAILURE;
     
-                }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, AXIS2_STRTRIM(env, item, NULL)))
+                }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, 
+                    AXIS2_STRTRIM(env, item, NULL)))
                 {
-                    sec_node = rampart_build_timestamp_token(env, ctx, sec_node, sec_ns_obj, 300);
+                    sec_node = rampart_build_timestamp_token(env, 
+                        ctx, sec_node, sec_ns_obj, 300);
                     if(!sec_node)
                           return AXIS2_FAILURE;
                 }else
                 {
-                    rampart_print_info(env," Rampart happy to see usernametokens and timestamps at the moment");
+                    rampart_print_info(env,
+                        " Rampart happy to see usernametokens and timestamps at the moment");
                 }
                 item = strtok (NULL, " ");
            }     

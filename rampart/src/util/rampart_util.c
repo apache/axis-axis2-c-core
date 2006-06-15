@@ -43,7 +43,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_nonce(const axis2_env_t *
 
     encoded_str = AXIS2_MALLOC(env->allocator, sizeof(char)*SIZE_NONCE);
     axis2_base64_encode(encoded_str,rand_str,AXIS2_STRLEN(rand_str));
-    AXIS2_FREE(env->allocator, rand_str);
+    /* AXIS2_FREE(env->allocator, rand_str); */
 	return encoded_str;
 }
 
