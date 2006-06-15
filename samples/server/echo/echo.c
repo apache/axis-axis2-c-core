@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #include "echo.h"
-#include <axis2_xml_writer.h>
+#include <axiom_writer.h>
 #include <stdio.h>
 
 axiom_node_t *
@@ -42,16 +42,16 @@ axis2_echo_echo (const axis2_env_t *env, axiom_node_t *node)
     }
    else
    {
-      axis2_xml_writer_t *writer = NULL;
+      axiom_writer_t *writer = NULL;
       axiom_output_t *om_output = NULL;
       axis2_char_t *buffer = NULL;
    
-      writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+      writer = axiom_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
             AXIS2_XML_PARSER_TYPE_BUFFER);
       om_output = axiom_output_create (env, writer);
 
       AXIOM_NODE_SERIALIZE (node, env, om_output);
-      buffer = AXIS2_XML_WRITER_GET_XML(writer, env);
+      buffer = AXIOM_WRITER_GET_XML(writer, env);
       printf("buffer = %s \n", buffer);
    }
 

@@ -15,7 +15,7 @@
  */
  
 #include <axiom_mime_body_part.h>
-#include <axis2_data_handler.h>
+#include <axiom_data_handler.h>
 #include <axis2_hash.h>
 
 typedef struct axiom_mime_body_part_impl
@@ -23,7 +23,7 @@ typedef struct axiom_mime_body_part_impl
    axiom_mime_body_part_t mime_body_part;
    /** hash map to hold header name, value pairs */
    axis2_hash_t *header_map;
-    axis2_data_handler_t *data_handler;
+    axiom_data_handler_t *data_handler;
 } axiom_mime_body_part_impl_t;
 
 extern axis2_char_t AXIS2_CRLF[];
@@ -43,7 +43,7 @@ axiom_mime_body_part_add_header (axiom_mime_body_part_t *mime_body_part,
     const axis2_char_t *value);
 
 axis2_status_t AXIS2_CALL
-axiom_mime_body_part_set_data_handler (axiom_mime_body_part_t *mime_body_part, const axis2_env_t *env, axis2_data_handler_t *data_handler); 
+axiom_mime_body_part_set_data_handler (axiom_mime_body_part_t *mime_body_part, const axis2_env_t *env, axiom_data_handler_t *data_handler); 
 
 axis2_status_t AXIS2_CALL
 axiom_mime_body_part_write_to (axiom_mime_body_part_t *mime_body_part, const axis2_env_t *env, 
@@ -146,7 +146,7 @@ axiom_mime_body_part_add_header (axiom_mime_body_part_t *mime_body_part,
 
 axis2_status_t AXIS2_CALL
 axiom_mime_body_part_set_data_handler (axiom_mime_body_part_t *mime_body_part, 
-    const axis2_env_t *env, axis2_data_handler_t *data_handler) 
+    const axis2_env_t *env, axiom_data_handler_t *data_handler) 
 {
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(mime_body_part)->data_handler = data_handler;
@@ -198,7 +198,7 @@ axiom_mime_body_part_write_to (axiom_mime_body_part_t *mime_body_part, const axi
     */
     if (mime_body_part_impl->data_handler)
     {
-        status = AXIS2_DATA_HANDLER_READ_FROM(mime_body_part_impl->data_handler, env,
+        status = AXIOM_DATA_HANDLER_READ_FROM(mime_body_part_impl->data_handler, env,
                     &data_handler_stream, &data_handler_stream_size);
         if (status == AXIS2_FAILURE)
             return AXIS2_FAILURE;

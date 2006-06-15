@@ -15,7 +15,7 @@
  *
  */
  
-#include <axis2_xml_reader.h>
+#include <axiom_reader.h>
 #include <axis2_env.h>
 #include <axis2_utils.h>
 #include <guththila_xml_pull_parser.h>
@@ -25,84 +25,84 @@
 
 
 int AXIS2_CALL 
-guththila_xml_reader_wrapper_next(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_next(axiom_reader_t *parser,
                              const axis2_env_t *env);
 
         
 axis2_status_t AXIS2_CALL 
-guththila_xml_reader_wrapper_free(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_free(axiom_reader_t *parser,
                              const axis2_env_t *env);
            
         
 int AXIS2_CALL 
-guththila_xml_reader_wrapper_get_attribute_count(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_attribute_count(axiom_reader_t *parser,
                                             const axis2_env_t *env);
         
 axis2_char_t* AXIS2_CALL 
-guththila_xml_reader_wrapper_get_attribute_name_by_number(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_attribute_name_by_number(axiom_reader_t *parser,
                                                      const axis2_env_t *env,
                                                      int i);
         
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_attribute_prefix_by_number(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_attribute_prefix_by_number(axiom_reader_t *parser,
                                                        const axis2_env_t *env,
                                                        int i);
                                                      
 axis2_char_t* AXIS2_CALL
 guththila_xml_reader_wrapper_get_attribute_value_by_number(
-                                                axis2_xml_reader_t *parser,
+                                                axiom_reader_t *parser,
                                                 const axis2_env_t *env,
                                                 int i);
         
         
 axis2_char_t* AXIS2_CALL 
 guththila_xml_reader_wrapper_get_attribute_namespace_by_number(
-                                                 axis2_xml_reader_t *parser,
+                                                 axiom_reader_t *parser,
                                                  const axis2_env_t *env,
                                                  int i);
 
                                 
 axis2_char_t* AXIS2_CALL 
-guththila_xml_reader_wrapper_get_value(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_value(axiom_reader_t *parser,
                                   const axis2_env_t *env);
                                                       
 int AXIS2_CALL 
-guththila_xml_reader_wrapper_get_namespace_count(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_namespace_count(axiom_reader_t *parser,
                                             const axis2_env_t *env);
 
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_namespace_uri_by_number(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_namespace_uri_by_number(axiom_reader_t *parser,
                                                     const axis2_env_t *env,
                                                     int i);
                                                
 axis2_char_t* AXIS2_CALL
 guththila_xml_reader_wrapper_get_namespace_prefix_by_number(
-                                                axis2_xml_reader_t *parser,
+                                                axiom_reader_t *parser,
                                                 const axis2_env_t *env,
                                                 int i); 
                                                 
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_prefix(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_prefix(axiom_reader_t *parser,
                                    const axis2_env_t *env);   
         
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_name(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_name(axiom_reader_t *parser,
                                  const axis2_env_t *env); 
 
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_pi_target(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_pi_target(axiom_reader_t *parser,
                                       const axis2_env_t *env);
 
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_pi_data(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_pi_data(axiom_reader_t *parser,
                                      const axis2_env_t *env);
 
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_dtd(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_dtd(axiom_reader_t *parser,
                                      const axis2_env_t *env);                                     
 
 axis2_status_t AXIS2_CALL
-guththila_xml_reader_wrapper_xml_free(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_xml_free(axiom_reader_t *parser,
                                  const axis2_env_t *env,
                                  void *data);
 
@@ -111,7 +111,7 @@ guththila_xml_reader_wrapper_xml_free(axis2_xml_reader_t *parser,
 
 typedef struct guththila_xml_reader_wrapper_impl
 {
-    axis2_xml_reader_t parser;    
+    axiom_reader_t parser;    
     guththila_xml_pull_parser_t *guththila_parser;
     guththila_environment_t *guththila_env;
     guththila_reader_t *reader;
@@ -132,14 +132,14 @@ static axis2_status_t guththila_xml_reader_wrapper_init_map(
 {
     if(parser)
     {
-        parser->event_map[GUTHTHILA_START_DOCUMENT] = AXIS2_XML_READER_START_DOCUMENT;
-        parser->event_map[GUTHTHILA_START_ELEMENT]  = AXIS2_XML_READER_START_ELEMENT;
-        parser->event_map[GUTHTHILA_END_ELEMENT]    = AXIS2_XML_READER_END_ELEMENT;
-        parser->event_map[GUTHTHILA_SPACE]          = AXIS2_XML_READER_SPACE;
-        parser->event_map[GUTHTHILA_EMPTY_ELEMENT]  = AXIS2_XML_READER_EMPTY_ELEMENT;
-        parser->event_map[GUTHTHILA_CHARACTER]      = AXIS2_XML_READER_CHARACTER;
-        parser->event_map[GUTHTHILA_ENTITY_REFERANCE] = AXIS2_XML_READER_ENTITY_REFERANCE;
-        parser->event_map[GUTHTHILA_COMMENT]          = AXIS2_XML_READER_COMMENT;
+        parser->event_map[GUTHTHILA_START_DOCUMENT] = AXIOM_READER_START_DOCUMENT;
+        parser->event_map[GUTHTHILA_START_ELEMENT]  = AXIOM_READER_START_ELEMENT;
+        parser->event_map[GUTHTHILA_END_ELEMENT]    = AXIOM_READER_END_ELEMENT;
+        parser->event_map[GUTHTHILA_SPACE]          = AXIOM_READER_SPACE;
+        parser->event_map[GUTHTHILA_EMPTY_ELEMENT]  = AXIOM_READER_EMPTY_ELEMENT;
+        parser->event_map[GUTHTHILA_CHARACTER]      = AXIOM_READER_CHARACTER;
+        parser->event_map[GUTHTHILA_ENTITY_REFERANCE] = AXIOM_READER_ENTITY_REFERANCE;
+        parser->event_map[GUTHTHILA_COMMENT]          = AXIOM_READER_COMMENT;
         return AXIS2_SUCCESS;
     }
     return AXIS2_FAILURE;
@@ -147,8 +147,8 @@ static axis2_status_t guththila_xml_reader_wrapper_init_map(
 
 /********************************************************************************/
 
-AXIS2_EXTERN axis2_xml_reader_t * AXIS2_CALL
-axis2_xml_reader_create_for_file(const axis2_env_t *env,
+AXIS2_EXTERN axiom_reader_t * AXIS2_CALL
+axiom_reader_create_for_file(const axis2_env_t *env,
                                   char* filename,
                                   const char *encoding)
 {
@@ -194,9 +194,9 @@ axis2_xml_reader_create_for_file(const axis2_env_t *env,
     guththila_impl->guththila_parser = guththila;
     guththila_impl->guththila_env = guththila_env;
     guththila_impl->parser.ops = NULL;
-    guththila_impl->parser.ops = (axis2_xml_reader_ops_t*)AXIS2_MALLOC(
+    guththila_impl->parser.ops = (axiom_reader_ops_t*)AXIS2_MALLOC(
                                       env->allocator,
-                                       sizeof(axis2_xml_reader_ops_t));
+                                       sizeof(axiom_reader_ops_t));
     if(!(guththila_impl->parser.ops))
     {   guththila_xml_pull_parser_free( guththila_env, guththila);
         AXIS2_FREE(env->allocator,guththila_impl);
@@ -246,8 +246,8 @@ axis2_xml_reader_create_for_file(const axis2_env_t *env,
 /****** pull parser for io create function ***************************/
 
 
-AXIS2_EXTERN axis2_xml_reader_t * AXIS2_CALL
-axis2_xml_reader_create_for_io(const axis2_env_t *env,
+AXIS2_EXTERN axiom_reader_t * AXIS2_CALL
+axiom_reader_create_for_io(const axis2_env_t *env,
                                     int (*read_input_callback)(char *buffer,int size,void* ctx),
                                     int (*close_input_callback)(void *ctx),
                                     void *ctx,
@@ -296,9 +296,9 @@ axis2_xml_reader_create_for_io(const axis2_env_t *env,
     guththila_impl->guththila_parser = guththila;
     guththila_impl->guththila_env = guththila_env;
     guththila_impl->parser.ops = NULL;
-    guththila_impl->parser.ops = (axis2_xml_reader_ops_t*)AXIS2_MALLOC(
+    guththila_impl->parser.ops = (axiom_reader_ops_t*)AXIS2_MALLOC(
                                       env->allocator,
-                                       sizeof(axis2_xml_reader_ops_t));
+                                       sizeof(axiom_reader_ops_t));
     if(!(guththila_impl->parser.ops))
     {   guththila_xml_pull_parser_free( guththila_env, guththila);
         AXIS2_FREE(env->allocator,guththila_impl);
@@ -348,7 +348,7 @@ axis2_xml_reader_create_for_io(const axis2_env_t *env,
 
 
 int AXIS2_CALL 
-guththila_xml_reader_wrapper_next(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_next(axiom_reader_t *parser,
                              const axis2_env_t *env)
 {
     int i =-1;
@@ -361,7 +361,7 @@ guththila_xml_reader_wrapper_next(axis2_xml_reader_t *parser,
 
         
 axis2_status_t AXIS2_CALL 
-guththila_xml_reader_wrapper_free(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_free(axiom_reader_t *parser,
                              const axis2_env_t *env)
 {
     guththila_xml_reader_wrapper_impl_t *parser_impl = NULL;
@@ -386,7 +386,7 @@ guththila_xml_reader_wrapper_free(axis2_xml_reader_t *parser,
            
         
 int AXIS2_CALL 
-guththila_xml_reader_wrapper_get_attribute_count(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_attribute_count(axiom_reader_t *parser,
                                             const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
@@ -396,7 +396,7 @@ guththila_xml_reader_wrapper_get_attribute_count(axis2_xml_reader_t *parser,
 }
         
 axis2_char_t* AXIS2_CALL 
-guththila_xml_reader_wrapper_get_attribute_name_by_number(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_attribute_name_by_number(axiom_reader_t *parser,
                                                      const axis2_env_t *env,
                                                      int i)
 {
@@ -409,7 +409,7 @@ guththila_xml_reader_wrapper_get_attribute_name_by_number(axis2_xml_reader_t *pa
 }
         
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_attribute_prefix_by_number(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_attribute_prefix_by_number(axiom_reader_t *parser,
                                                        const axis2_env_t *env,
                                                        int i)
 {
@@ -423,7 +423,7 @@ guththila_xml_reader_wrapper_get_attribute_prefix_by_number(axis2_xml_reader_t *
 
                                                      
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_attribute_value_by_number(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_attribute_value_by_number(axiom_reader_t *parser,
                                                       const axis2_env_t *env,
                                                       int i)
 {
@@ -438,7 +438,7 @@ guththila_xml_reader_wrapper_get_attribute_value_by_number(axis2_xml_reader_t *p
         
 axis2_char_t* AXIS2_CALL 
 guththila_xml_reader_wrapper_get_attribute_namespace_by_number(
-                                                 axis2_xml_reader_t *parser,
+                                                 axiom_reader_t *parser,
                                                  const axis2_env_t *env,
                                                  int i)
 {
@@ -452,7 +452,7 @@ guththila_xml_reader_wrapper_get_attribute_namespace_by_number(
 
                                 
 axis2_char_t* AXIS2_CALL 
-guththila_xml_reader_wrapper_get_value(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_value(axiom_reader_t *parser,
                                   const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -464,7 +464,7 @@ guththila_xml_reader_wrapper_get_value(axis2_xml_reader_t *parser,
 }
                                                       
 int AXIS2_CALL 
-guththila_xml_reader_wrapper_get_namespace_count(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_namespace_count(axiom_reader_t *parser,
                                             const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -476,7 +476,7 @@ guththila_xml_reader_wrapper_get_namespace_count(axis2_xml_reader_t *parser,
 }
 
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_namespace_uri_by_number(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_namespace_uri_by_number(axiom_reader_t *parser,
                                                     const axis2_env_t *env,
                                                     int i)
 {
@@ -490,7 +490,7 @@ guththila_xml_reader_wrapper_get_namespace_uri_by_number(axis2_xml_reader_t *par
                                                
 axis2_char_t* AXIS2_CALL
 guththila_xml_reader_wrapper_get_namespace_prefix_by_number(
-                                                axis2_xml_reader_t *parser,
+                                                axiom_reader_t *parser,
                                                 const axis2_env_t *env,
                                                 int i)
 {
@@ -503,7 +503,7 @@ guththila_xml_reader_wrapper_get_namespace_prefix_by_number(
 }
                                                 
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_prefix(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_prefix(axiom_reader_t *parser,
                                    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -515,7 +515,7 @@ guththila_xml_reader_wrapper_get_prefix(axis2_xml_reader_t *parser,
 }
         
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_name(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_name(axiom_reader_t *parser,
                                  const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -527,7 +527,7 @@ guththila_xml_reader_wrapper_get_name(axis2_xml_reader_t *parser,
 }
 
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_pi_target(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_pi_target(axiom_reader_t *parser,
                                       const axis2_env_t *env)
 {   
     /* guththila_does not support pi's yet*/
@@ -535,7 +535,7 @@ guththila_xml_reader_wrapper_get_pi_target(axis2_xml_reader_t *parser,
  }
 
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_pi_data(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_pi_data(axiom_reader_t *parser,
                                      const axis2_env_t *env)
  {
     /* guththila_dose not support yet */
@@ -543,7 +543,7 @@ guththila_xml_reader_wrapper_get_pi_data(axis2_xml_reader_t *parser,
  }
 
 axis2_char_t* AXIS2_CALL
-guththila_xml_reader_wrapper_get_dtd(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_get_dtd(axiom_reader_t *parser,
                                      const axis2_env_t *env)
 {
     printf("not implemented in guththila");
@@ -551,7 +551,7 @@ guththila_xml_reader_wrapper_get_dtd(axis2_xml_reader_t *parser,
 }
  
 axis2_status_t AXIS2_CALL
-guththila_xml_reader_wrapper_xml_free(axis2_xml_reader_t *parser,
+guththila_xml_reader_wrapper_xml_free(axiom_reader_t *parser,
                                  const axis2_env_t *env,
                                  void *data)
 {

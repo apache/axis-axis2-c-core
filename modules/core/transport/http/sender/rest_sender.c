@@ -22,7 +22,7 @@
 #include <axis2_op_ctx.h>
 #include <axis2_ctx.h>
 #include <axis2_http_client.h>
-#include <axis2_xml_writer.h>
+#include <axiom_writer.h>
 #include <axis2_property.h>
 #include <axis2_types.h>
 
@@ -164,7 +164,7 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
    axis2_http_request_line_t *request_line = NULL;
    axis2_url_t *url = NULL;
    axis2_rest_sender_impl_t *sender_impl = NULL;
-   axis2_xml_writer_t *xml_writer = NULL;
+   axiom_writer_t *xml_writer = NULL;
    axis2_char_t *buffer = NULL;
    const axis2_char_t *char_set_enc = NULL;
    int status_code = -1;
@@ -230,7 +230,7 @@ axis2_rest_sender_send(axis2_rest_sender_t *sender,
     *            AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
     */
    AXIOM_NODE_SERIALIZE (out, env, sender_impl->om_output);
-   buffer = AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+   buffer = AXIOM_WRITER_GET_XML(xml_writer, env);
 
     if(NULL == buffer)
     {

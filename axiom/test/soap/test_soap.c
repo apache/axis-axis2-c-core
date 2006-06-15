@@ -22,9 +22,9 @@
 #include <axis2_stream.h>
 #include <axis2_log_default.h>
 #include <axis2_error_default.h>
-#include <axis2_xml_reader.h>
+#include <axiom_reader.h>
 #include <stdio.h>
-#include <axis2_xml_writer.h>
+#include <axiom_writer.h>
 #include <axiom_soap_builder.h>
 #include <axiom_soap_const.h>
 #include <axiom_soap_envelope.h>
@@ -104,7 +104,7 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
 {
     axiom_stax_builder_t *om_builder = NULL;
     
-    axis2_xml_reader_t *xml_reader = NULL;
+    axiom_reader_t *xml_reader = NULL;
     
     axiom_soap_builder_t *soap_builder = NULL;
     axiom_soap_envelope_t *soap_envelope = NULL;
@@ -112,7 +112,7 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
     axiom_node_t *om_node = NULL;
     axis2_char_t *buffer = NULL;
     
-    axis2_xml_writer_t *xml_writer = NULL;
+    axiom_writer_t *xml_writer = NULL;
     axiom_output_t *om_output = NULL;
     
     axiom_soap_body_t *soap_body = NULL;
@@ -128,7 +128,7 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
         return -1;
     printf(" \n\n _________ Test SOAP BUILD ___________ \n\n ");
     
-    xml_reader = axis2_xml_reader_create_for_io(env, read_soap,close_soap ,NULL, NULL);
+    xml_reader = axiom_reader_create_for_io(env, read_soap,close_soap ,NULL, NULL);
     if(!xml_reader)
     {
         printf("%s \n", AXIS2_ERROR_GET_MESSAGE(env->error));
@@ -139,7 +139,7 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
     om_builder = axiom_stax_builder_create(env, xml_reader);
     if(!om_builder)
     {
-        AXIS2_XML_READER_FREE(xml_reader, env);
+        AXIOM_READER_FREE(xml_reader, env);
         printf("%s \n", AXIS2_ERROR_GET_MESSAGE(env->error));
         return AXIS2_FAILURE;
     }
@@ -219,7 +219,7 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
         }
     }
     
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE, 
+    xml_writer = axiom_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE, 
                                           AXIS2_XML_PARSER_TYPE_BUFFER);
     if(!xml_writer)
     {
@@ -231,14 +231,14 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
     if(!om_output)
     {
         AXIOM_SOAP_BUILDER_FREE(soap_builder, env);
-        AXIS2_XML_WRITER_FREE(xml_writer, env);
+        AXIOM_WRITER_FREE(xml_writer, env);
         return AXIS2_FAILURE;
     }
 
     
     AXIOM_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
     
-    buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
+    buffer = (axis2_char_t*)AXIOM_WRITER_GET_XML(xml_writer, env);         
     
     printf("\n\nThe serialized xml is >>>>>>>>>>>>>\n\n\n%s \n\n\n", buffer);
     
@@ -268,7 +268,7 @@ int build_soap_programatically(const axis2_env_t *env)
     axiom_namespace_t *test_ns = NULL;
     axiom_namespace_t *role_ns = NULL;
     
-    axis2_xml_writer_t *xml_writer = NULL;
+    axiom_writer_t *xml_writer = NULL;
     axiom_output_t *om_output = NULL;
     
     axis2_char_t *buffer = NULL;
@@ -311,14 +311,14 @@ int build_soap_programatically(const axis2_env_t *env)
     
     fault_code = axiom_soap_fault_code_create_with_parent(env, soap_fault);
     
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE, 
+    xml_writer = axiom_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE, 
                                           AXIS2_XML_PARSER_TYPE_BUFFER);
     
     om_output = axiom_output_create( env, xml_writer);
     
     AXIOM_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
     
-    buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);         
+    buffer = (axis2_char_t*)AXIOM_WRITER_GET_XML(xml_writer, env);         
     
     printf("%s \n",  buffer); 
 
@@ -340,7 +340,7 @@ int create_soap_fault(const axis2_env_t *env)
     axiom_soap_envelope_t *soap_envelope= NULL;
     axiom_soap_body_t *soap_body = NULL;
     axiom_soap_fault_t *soap_fault = NULL;
-    axis2_xml_writer_t *xml_writer = NULL;
+    axiom_writer_t *xml_writer = NULL;
     axiom_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
 
@@ -353,11 +353,11 @@ int create_soap_fault(const axis2_env_t *env)
     
     axiom_soap_fault_detail_create_with_parent(env, soap_fault);
     axiom_soap_fault_role_create_with_parent(env, soap_fault);
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE, 
+    xml_writer = axiom_writer_create_for_memory(env, NULL, AXIS2_FALSE, AXIS2_FALSE, 
                                           AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axiom_output_create( env, xml_writer);
     AXIOM_SOAP_ENVELOPE_SERIALIZE(soap_envelope, env, om_output, AXIS2_FALSE);
-    buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+    buffer = (axis2_char_t*)AXIOM_WRITER_GET_XML(xml_writer, env);
         printf("%s \n",  buffer);
     AXIS2_FREE(env->allocator, buffer);
     AXIOM_SOAP_ENVELOPE_FREE(soap_envelope, env);

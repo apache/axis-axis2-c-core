@@ -25,7 +25,7 @@
 #include <axis2_env.h>
 #include <axiom_node.h>
 #include <axiom_output.h>
-#include <axis2_data_handler.h>
+#include <axiom_data_handler.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -114,7 +114,7 @@ extern "C"
                        const axis2_env_t *env,
                        axis2_bool_t is_binary);
         
-        axis2_data_handler_t* (AXIS2_CALL *
+        axiom_data_handler_t* (AXIS2_CALL *
         get_data_handler)(struct axiom_text *om_text,
                         const axis2_env_t *env);
         
@@ -167,7 +167,7 @@ extern "C"
     AXIS2_EXTERN axiom_text_t* AXIS2_CALL
     axiom_text_create_with_data_handler (const axis2_env_t *env,
                           axiom_node_t * parent,
-                          axis2_data_handler_t* data_handler,
+                          axiom_data_handler_t* data_handler,
                           axiom_node_t **node);
 
 /** frees given text */

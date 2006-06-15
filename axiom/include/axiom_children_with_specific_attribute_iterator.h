@@ -39,7 +39,7 @@ typedef struct axiom_children_with_specific_attribute_iterator
                     axiom_children_with_specific_attribute_iterator_t;
 
 /**
- * @defgroup axis2_xml_writer 
+ * @defgroup axiom_writer 
  * @ingroup axiom_parser
  * @{
  */

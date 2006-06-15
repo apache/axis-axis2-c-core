@@ -333,9 +333,9 @@ axis2_error_init()
     axis2_error_messages[AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED] = 
         "Document root is NULL, when it is not supposed to be NULL";
     axis2_error_messages[AXIS2_ERROR_XML_READER_ELEMENT_NULL] = 
-        "axis2_xml_reader returned NULL element";
+        "axiom_reader returned NULL element";
     axis2_error_messages[AXIS2_ERROR_XML_READER_VALUE_NULL] = 
-        "axis2_xml_reader returned NULL value";
+        "axiom_reader returned NULL value";
     /* xml:parser */
     axis2_error_messages[AXIS2_ERROR_CREATING_XML_STREAM_READER] = 
         "error occured creating xml stream writer";

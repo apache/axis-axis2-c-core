@@ -15,7 +15,7 @@
  */
  
 #include "axiom_mime_output.h"
-#include "axis2_data_handler.h"
+#include "axiom_data_handler.h"
 #include "axiom_mime_body_part.h"
 #include <axis2_string.h>
 #include <axiom_text.h>
@@ -381,7 +381,7 @@ axis2_write_mime_boundary (axiom_mime_output_t *mime_output, const axis2_env_t *
 axiom_mime_body_part_t * AXIS2_CALL
 axis2_create_mime_body_part (axiom_text_t *text, const axis2_env_t *env)
 {
-    axis2_data_handler_t *data_handler = NULL;
+    axiom_data_handler_t *data_handler = NULL;
     const axis2_char_t *content_type = "application/octet-stream";
     axiom_mime_body_part_t * mime_body_part = axiom_mime_body_part_create(env);
     axis2_char_t *content_id = (axis2_char_t *)"<";
@@ -391,7 +391,7 @@ axis2_create_mime_body_part (axiom_text_t *text, const axis2_env_t *env)
 
     if (data_handler)
     {
-        content_type = AXIS2_DATA_HANDLER_GET_CONTENT_TYPE(data_handler, env);
+        content_type = AXIOM_DATA_HANDLER_GET_CONTENT_TYPE(data_handler, env);
     }
     
     AXIOM_MIME_BODY_PART_SET_DATA_HANDLER(mime_body_part, env, 

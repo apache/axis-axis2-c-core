@@ -296,7 +296,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     {
         axiom_element_t *desc_value_element = NULL;
         axiom_node_t *desc_value_node = NULL;
-        axis2_xml_writer_t *xml_writer = NULL;
+        axiom_writer_t *xml_writer = NULL;
         axiom_output_t *om_output = NULL;
         
         desc_value_element = AXIOM_ELEMENT_GET_FIRST_ELEMENT(desc_element, 
@@ -305,7 +305,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         {
             axis2_char_t *svc_name = NULL;
             
-            xml_writer = axis2_xml_writer_create_for_memory(env, NULL, 
+            xml_writer = axiom_writer_create_for_memory(env, NULL, 
                 AXIS2_TRUE, 0, AXIS2_XML_PARSERT_TYPE_BUFFER);
             om_output = axiom_output_create(env, xml_writer);
             status = AXIOM_NODE_SERIALIZE(desc_value_node, env, om_output);
@@ -313,7 +313,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
             {
                 return AXIS2_FAILURE;
             }
-            svc_name = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+            svc_name = (axis2_char_t*)AXIOM_WRITER_GET_XML(xml_writer, env);
             AXIS2_SVC_SET_NAME(builder_impl->svc, env, 
                 svc_name);
             AXIOM_OUTPUT_FREE(om_output, env);

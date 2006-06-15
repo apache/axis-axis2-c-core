@@ -18,7 +18,7 @@
 #include <axis2_string.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_addr.h>
-#include <axis2_xml_writer.h>
+#include <axiom_writer.h>
 #include <axiom_output.h>
 #include <axis2_http_transport_utils.h>
 #include <axis2_http_out_transport_info.h>
@@ -155,7 +155,7 @@ axis2_http_transport_sender_invoke
     const axis2_char_t *char_set_enc = NULL;
     axis2_endpoint_ref_t *epr = NULL;
     axis2_char_t *transport_url = NULL;
-    axis2_xml_writer_t *xml_writer = NULL;
+    axiom_writer_t *xml_writer = NULL;
     axiom_output_t *om_output = NULL;
     axis2_char_t *buffer = NULL;
     axiom_soap_envelope_t *soap_data_out = NULL;
@@ -240,7 +240,7 @@ axis2_http_transport_sender_invoke
                         AXIS2_ERROR_GET_MESSAGE(env->error));
         return AXIS2_FAILURE;
     }
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, 
+    xml_writer = axiom_writer_create_for_memory(env, NULL, 
                     AXIS2_TRUE, 0, AXIS2_XML_PARSER_TYPE_BUFFER);
     if(NULL == xml_writer)
     {
@@ -249,7 +249,7 @@ axis2_http_transport_sender_invoke
     om_output = axiom_output_create(env, xml_writer);
     if(NULL == om_output)
     {
-        AXIS2_XML_WRITER_FREE(xml_writer, env);
+        AXIOM_WRITER_FREE(xml_writer, env);
         xml_writer = NULL;
         return AXIS2_FAILURE;
     }
@@ -362,13 +362,13 @@ axis2_http_transport_sender_invoke
                     return AXIS2_FAILURE;
                 }
                 AXIOM_NODE_SERIALIZE(data_out, env, om_output);
-                buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+                buffer = (axis2_char_t*)AXIOM_WRITER_GET_XML(xml_writer, env);
             }
             else
             {
                 AXIOM_SOAP_ENVELOPE_SERIALIZE (soap_data_out, env, om_output, 
                             AXIS2_FALSE);
-                buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+                buffer = (axis2_char_t*)AXIOM_WRITER_GET_XML(xml_writer, env);
             }
          AXIS2_STREAM_WRITE(out_stream, env, buffer, AXIS2_STRLEN(buffer));            
          AXIS2_FREE(env->allocator, buffer);

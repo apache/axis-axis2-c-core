@@ -24,14 +24,14 @@ xml_schema_test(
         axis2_env_t *env,
         axis2_char_t *filename)
 {
-    axis2_xml_reader_t *xml_reader      = NULL;
+    axiom_reader_t *xml_reader      = NULL;
     axiom_stax_builder_t *om_builder = NULL;
     axiom_document_t *om_doc         = NULL;
     xml_schema_collection_t *schema_collection = NULL;
     xml_schema_t *schema          = NULL;
     
     xml_reader = 
-    axis2_xml_reader_create_for_file(env, filename, NULL);
+    axiom_reader_create_for_file(env, filename, NULL);
     if(!xml_reader)
         return AXIS2_FAILURE;   
     

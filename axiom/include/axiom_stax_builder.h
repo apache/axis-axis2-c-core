@@ -23,7 +23,7 @@
  */
 
 #include <axiom_node.h>
-#include <axis2_xml_reader.h>
+#include <axiom_reader.h>
 #include <axiom_document.h>
 #include <axis2_env.h>
 
@@ -126,7 +126,7 @@ extern "C"
     */
     AXIS2_EXTERN axiom_stax_builder_t * AXIS2_CALL
     axiom_stax_builder_create(const axis2_env_t *env,
-                                 axis2_xml_reader_t *parser);
+                                 axiom_reader_t *parser);
 
 
 /** builds next node */

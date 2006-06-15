@@ -833,12 +833,12 @@ axiom_node_to_string(axiom_node_t *om_node,
 
     int status = AXIS2_SUCCESS;
     axiom_output_t *om_output = NULL;
-    axis2_xml_writer_t *xml_writer = NULL;
+    axiom_writer_t *xml_writer = NULL;
     axis2_char_t *xml = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, om_node, NULL);    
     
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+    xml_writer = axiom_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
                AXIS2_XML_PARSER_TYPE_BUFFER);
     if(!xml_writer)
         return NULL;
@@ -846,13 +846,13 @@ axiom_node_to_string(axiom_node_t *om_node,
     om_output = axiom_output_create(env, xml_writer);
     if(!om_output)
     {
-        AXIS2_XML_WRITER_FREE(xml_writer, env);
+        AXIOM_WRITER_FREE(xml_writer, env);
         return NULL;
     }
     status = AXIOM_NODE_SERIALIZE(om_node, env, om_output);
     if(status == AXIS2_SUCCESS)
     {
-        xml = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
+        xml = (axis2_char_t*)AXIOM_WRITER_GET_XML(xml_writer, env);
     }
     AXIOM_OUTPUT_FREE(om_output, env);
     return xml;    

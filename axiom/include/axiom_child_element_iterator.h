@@ -35,7 +35,7 @@ typedef struct axiom_child_element_iterator_ops axiom_child_element_iterator_ops
 typedef struct axiom_child_element_iterator axiom_child_element_iterator_t;
 
 /**
- * @defgroup axis2_xml_writer 
+ * @defgroup axiom_writer 
  * @ingroup axiom_parser
  * @{
  */

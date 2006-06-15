@@ -390,9 +390,9 @@ extern "C"
         /** remove method has alread been called once so cann't remove till 
          next method is called valid for any om children iterator*/
         AXIS2_ERROR_ITERATOR_REMOVE_HAS_ALREADY_BEING_CALLED,
-        /** axis2_xml_reader returned NULL element */
+        /** axiom_reader returned NULL element */
         AXIS2_ERROR_XML_READER_ELEMENT_NULL,
-        /** axis2_xml_reader returned NULL value */
+        /** axiom_reader returned NULL value */
         AXIS2_ERROR_XML_READER_VALUE_NULL,
        /*
         * Group - xml:parser

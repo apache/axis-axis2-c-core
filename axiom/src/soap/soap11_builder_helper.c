@@ -357,9 +357,9 @@ axiom_soap11_builder_helper_process_text(axiom_soap11_builder_helper_t *builder_
     if(token == -1)
         return AXIS2_FAILURE;
    
-    while(token != AXIS2_XML_READER_END_ELEMENT )
+    while(token != AXIOM_READER_END_ELEMENT )
     {
-        if(token != AXIS2_XML_READER_CHARACTER)
+        if(token != AXIOM_READER_CHARACTER)
         {
             AXIS2_ERROR_SET(env->error, 
                 AXIS2_ERROR_ONLY_CHARACTERS_ARE_ALLOWED_HERE, AXIS2_FAILURE);

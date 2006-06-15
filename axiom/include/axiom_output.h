@@ -26,7 +26,7 @@
 #include <axis2_utils.h>
 #include <axis2_env.h>
 #include <axiom_node.h>
-#include <axis2_xml_writer.h>
+#include <axiom_writer.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -128,7 +128,7 @@ AXIS2_DECLARE_DATA struct axiom_output_ops
    /**
      * returns the xml writer
      */    
-   axis2_xml_writer_t* (AXIS2_CALL *
+   axiom_writer_t* (AXIS2_CALL *
    get_xml_writer)(axiom_output_t *om_output,
                const axis2_env_t *env);                                                                                                                                                  /**
      *  returns the content type
@@ -198,7 +198,7 @@ struct axiom_output
 
 AXIS2_EXTERN axiom_output_t* AXIS2_CALL 
 axiom_output_create (const axis2_env_t *env,
-                        axis2_xml_writer_t *xml_writer);
+                        axiom_writer_t *xml_writer);
 
 
    /**

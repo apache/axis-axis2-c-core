@@ -72,7 +72,7 @@ xml_schema_t* AXIS2_CALL
 xml_schema_collection_read_with_reader(
         xml_schema_collection_t* collection,
         const axis2_env_t *env,
-        axis2_xml_reader_t *reader);
+        axiom_reader_t *reader);
                             
 xml_schema_t * AXIS2_CALL
 xml_schema_collection_read_document(
@@ -425,7 +425,7 @@ xml_schema_t* AXIS2_CALL
 xml_schema_collection_read_with_reader(
         xml_schema_collection_t* collection,
         const axis2_env_t *env,
-        axis2_xml_reader_t *reader)
+        axiom_reader_t *reader)
 {
     xml_schema_builder_t *sch_builder = NULL;
     axiom_document_t *om_doc = NULL;

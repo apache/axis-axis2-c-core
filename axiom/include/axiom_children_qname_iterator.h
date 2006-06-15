@@ -36,7 +36,7 @@ typedef struct axiom_children_qname_iterator_ops axiom_children_qname_iterator_o
 typedef struct axiom_children_qname_iterator axiom_children_qname_iterator_t;
 
 /**
- * @defgroup axis2_xml_writer 
+ * @defgroup axiom_writer 
  * @ingroup axiom_parser
  * @{
  */

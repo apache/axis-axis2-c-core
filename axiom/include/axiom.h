@@ -32,8 +32,8 @@
 #include <axiom_processing_instruction.h>
 #include <axiom_stax_builder.h>
 #include <axiom_text.h>
-#include <axis2_xml_reader.h>
-#include <axis2_xml_writer.h>
+#include <axiom_reader.h>
+#include <axiom_writer.h>
 
 /**
 * @file axiom.h

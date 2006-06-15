@@ -18,7 +18,7 @@
 #include <axiom_output.h>
 #include <axis2_string.h>
 #include "axiom_node_internal.h"
-#include <axis2_xml_writer.h>
+#include <axiom_writer.h>
 #include <axiom_output.h>
 #include <axiom_attribute.h>
 #include <axiom_namespace.h>
@@ -106,7 +106,7 @@ axis2_char_t* AXIS2_CALL
 axiom_text_get_text(axiom_text_t *om_text,
                         const axis2_env_t *env);
 
-axis2_data_handler_t *AXIS2_CALL
+axiom_data_handler_t *AXIS2_CALL
 axiom_text_get_data_handler(axiom_text_t *om_text,
                         const axis2_env_t *env);
 
@@ -125,7 +125,7 @@ typedef struct axiom_text_impl_t
     axis2_char_t *content_id;
     axiom_attribute_t *om_attribute;    
     axiom_namespace_t *ns;
-    axis2_data_handler_t *data_handler;
+    axiom_data_handler_t *data_handler;
 }axiom_text_impl_t;
 
 
@@ -217,7 +217,7 @@ axiom_text_create (const axis2_env_t *env,
 AXIS2_EXTERN axiom_text_t* AXIS2_CALL
 axiom_text_create_with_data_handler (const axis2_env_t *env,
                       axiom_node_t * parent,
-                      axis2_data_handler_t* data_handler,
+                      axiom_data_handler_t* data_handler,
                       axiom_node_t **node)
 {
 
@@ -279,7 +279,7 @@ axiom_text_serialize (axiom_text_t *om_text,
     axiom_text_impl_t *om_text_impl = NULL;
     axis2_char_t *attribute_value = NULL;
     axis2_char_t *text = NULL;
-    axis2_xml_writer_t *om_output_xml_writer = NULL;
+    axiom_writer_t *om_output_xml_writer = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
@@ -316,7 +316,7 @@ axiom_text_serialize (axiom_text_t *om_text,
         else
         {
             text = axiom_text_get_text(om_text, env);
-            AXIS2_XML_WRITER_WRITE_CHARACTERS(om_output_xml_writer, env, text);
+            AXIOM_WRITER_WRITE_CHARACTERS(om_output_xml_writer, env, text);
         }
     }
     return status;    
@@ -506,7 +506,7 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
                         axiom_output_t *om_output, 
                         axiom_attribute_t *om_attribute)
 {
-    axis2_xml_writer_t *xml_writer = NULL;
+    axiom_writer_t *xml_writer = NULL;
     axiom_namespace_t *om_namespace = NULL;
     
     axiom_text_impl_t *om_text_impl = NULL;
@@ -517,7 +517,7 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+    xml_writer = axiom_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
             AXIS2_XML_PARSER_TYPE_BUFFER);
     om_namespace = axiom_namespace_create(env, "" , "");
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
@@ -532,12 +532,12 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
         attribute_value = AXIOM_ATTRIBUTE_GET_VALUE(om_attribute, env);
         if (prefix != NULL) 
         {
-            AXIS2_XML_WRITER_WRITE_ATTRIBUTE(xml_writer, env, attribute_local_name, attribute_value);
+            AXIOM_WRITER_WRITE_ATTRIBUTE(xml_writer, env, attribute_local_name, attribute_value);
         } else {
-            AXIS2_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE(xml_writer, env, attribute_local_name, attribute_value, namespace_uri);            
+            AXIOM_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE(xml_writer, env, attribute_local_name, attribute_value, namespace_uri);            
         }
     } else {
-        AXIS2_XML_WRITER_WRITE_ATTRIBUTE(xml_writer, env, attribute_local_name, attribute_value);
+        AXIOM_WRITER_WRITE_ATTRIBUTE(xml_writer, env, attribute_local_name, attribute_value);
     }
     AXIOM_NAMESPACE_FREE(om_namespace, env);
     return AXIS2_SUCCESS;    
@@ -549,14 +549,14 @@ axiom_text_serialize_namespace(axiom_text_t *om_text,
                         const axiom_namespace_t *om_namespace, 
                         axiom_output_t *om_output)
 {
-    axis2_xml_writer_t *xml_writer = NULL;
+    axiom_writer_t *xml_writer = NULL;
     axiom_text_impl_t *om_text_impl = NULL;
     axis2_char_t *namespace_uri = NULL;
     axis2_char_t *namespace_prefix = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    xml_writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+    xml_writer = axiom_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
                AXIS2_XML_PARSER_TYPE_BUFFER);
     om_namespace = axiom_namespace_create(env, "" , "");
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
@@ -565,8 +565,8 @@ axiom_text_serialize_namespace(axiom_text_t *om_text,
     {
         namespace_uri = AXIOM_NAMESPACE_GET_URI(om_text_impl->ns, env);
         namespace_prefix = AXIOM_NAMESPACE_GET_PREFIX(om_text_impl->ns, env);    
-        AXIS2_XML_WRITER_WRITE_NAMESPACE(xml_writer, env, namespace_prefix, namespace_uri);
-        AXIS2_XML_WRITER_SET_PREFIX(xml_writer, env, namespace_prefix, namespace_uri);  
+        AXIOM_WRITER_WRITE_NAMESPACE(xml_writer, env, namespace_prefix, namespace_uri);
+        AXIOM_WRITER_SET_PREFIX(xml_writer, env, namespace_prefix, namespace_uri);  
     }
     return AXIS2_SUCCESS;    
 }
@@ -591,7 +591,7 @@ axiom_text_get_text(axiom_text_t *om_text,
         {
             int encoded_len = 0;
             axis2_char_t *encoded_str = NULL;
-            AXIS2_DATA_HANDLER_READ_FROM(om_text_impl->data_handler, env,
+            AXIOM_DATA_HANDLER_READ_FROM(om_text_impl->data_handler, env,
                         &data_handler_stream, &data_handler_stream_size);
             if (data_handler_stream)
             {
@@ -610,7 +610,7 @@ axiom_text_get_text(axiom_text_t *om_text,
     return om_text_impl->value;    
 }
 
-axis2_data_handler_t *AXIS2_CALL
+axiom_data_handler_t *AXIS2_CALL
 axiom_text_get_data_handler(axiom_text_t *om_text,
                         const axis2_env_t *env)
 {

@@ -24,9 +24,9 @@
 #include <axis2_stream.h>
 #include <axis2_log_default.h>
 #include <axis2_error_default.h>
-#include <axis2_xml_reader.h>
+#include <axiom_reader.h>
 #include <stdio.h>
-#include <axis2_xml_writer.h>
+#include <axiom_writer.h>
 #include <axiom_soap_builder.h>
 #include <axiom_soap_const.h>
 #include <axiom_soap_envelope.h>
@@ -448,17 +448,17 @@ axis2_diclient_invoke(axis2_diclient_t *diclient,
     if(ret_node)
     {
         /* Get the response value from the SOAP message */
-        axis2_xml_writer_t *writer = NULL;
+        axiom_writer_t *writer = NULL;
         axiom_output_t *om_output = NULL;
         axis2_char_t *buffer = NULL;
         
         printf("\necho stub invoke SUCCESSFUL!\n");
-        writer = axis2_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+        writer = axiom_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
                AXIS2_XML_PARSER_TYPE_BUFFER);
         om_output = axiom_output_create (env, writer);
 
         AXIOM_NODE_SERIALIZE (ret_node, env, om_output);
-        buffer = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(writer, env);
+        buffer = (axis2_char_t*)AXIOM_WRITER_GET_XML(writer, env);
         printf ("\nReceived OM node in XML : %s\n", buffer);
     }
     else

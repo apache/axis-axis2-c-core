@@ -148,7 +148,7 @@ build_om_programatically(const axis2_env_t *env,
     axiom_text_t * data_text = NULL;
     axiom_namespace_t *ns1 = NULL;
 
-    axis2_data_handler_t *data_handler = NULL;
+    axiom_data_handler_t *data_handler = NULL;
     
     ns1 = axiom_namespace_create (env, "http://ws.apache.org/axis2/c/samples/mtom", "ns1");
     mtom_om_ele = axiom_element_create(env, NULL, "mtomSample", ns1, &mtom_om_node);
@@ -158,7 +158,7 @@ build_om_programatically(const axis2_env_t *env,
 
     image_om_ele = axiom_element_create(env, mtom_om_node, "image", ns1, &image_om_node);
 
-    data_handler = axis2_data_handler_create(env, image_name, "image/jpeg");
+    data_handler = axiom_data_handler_create(env, image_name, "image/jpeg");
     data_text = axiom_text_create_with_data_handler(env, image_om_node, data_handler, &data_om_node);
 
     return mtom_om_node;

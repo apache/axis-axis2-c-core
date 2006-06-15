@@ -24,7 +24,7 @@
 #include <axis2_error_default.h>
 #include <axis2_log_default.h>
 #include <axis2_thread_pool.h>
-#include <axis2_xml_reader.h>
+#include <axiom_reader.h>
 
 /* Configuration structure populated by apache2.conf */
 typedef struct axis2_config_rec
@@ -80,7 +80,7 @@ static void * axis2_create_svr(apr_pool_t *p, server_rec *s)
     conf->log_level = AXIS2_LOG_LEVEL_DEBUG;
     /* We need to init xml readers before we go into threaded env
      */
-    axis2_xml_reader_init();
+    axiom_reader_init();
     return conf;
 }
 

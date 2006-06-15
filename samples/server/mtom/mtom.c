@@ -79,14 +79,14 @@ axis2_mtom_mtom (const axis2_env_t *env, axiom_node_t *node)
                     binary_node = AXIOM_NODE_GET_FIRST_CHILD(inc_node, env);
                     if (binary_node)
                     {
-                        axis2_data_handler_t *data_handler = NULL;
+                        axiom_data_handler_t *data_handler = NULL;
                         axiom_text_t *bin_text = (axiom_text_t *)
                             AXIOM_NODE_GET_DATA_ELEMENT(binary_node, env);
                         data_handler = AXIOM_TEXT_SET_GET_DATA_HANDLER(bin_text, env);
                         if (data_handler)
                         {
-                            AXIS2_DATA_HANDLER_SET_FILE_NAME(data_handler, env, text_str);
-                            AXIS2_DATA_HANDLER_WRITE_TO(data_handler, env);
+                            AXIOM_DATA_HANDLER_SET_FILE_NAME(data_handler, env, text_str);
+                            AXIOM_DATA_HANDLER_WRITE_TO(data_handler, env);
                             ret_node = build_om_programatically(env, text_str);
                         }
                     }

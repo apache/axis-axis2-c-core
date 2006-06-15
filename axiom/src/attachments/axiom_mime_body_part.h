@@ -29,7 +29,7 @@
 #include <axis2_allocator.h>
 #include <axis2_string.h>
 #include <axis2_array_list.h>
-#include <axis2_data_handler.h>
+#include <axiom_data_handler.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -60,7 +60,7 @@ struct axiom_mime_body_part_ops
     axis2_status_t (AXIS2_CALL *
     set_data_handler)(axiom_mime_body_part_t *mime_body_part, 
             const axis2_env_t *env, 
-            axis2_data_handler_t *data_handler); 
+            axiom_data_handler_t *data_handler); 
 
     axis2_status_t (AXIS2_CALL *
     write_to)(axiom_mime_body_part_t *mime_body_part, 

@@ -16,7 +16,7 @@
  
 #include <axiom_mime_parser.h>
 #include <axis2_string.h>
-#include <axis2_data_handler.h>
+#include <axiom_data_handler.h>
 
 typedef struct axiom_mime_parser_impl
 {
@@ -419,11 +419,11 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                             if (mime_id)
                             {
                                 
-                                axis2_data_handler_t *data_handler = NULL;
+                                axiom_data_handler_t *data_handler = NULL;
                                 memcpy(mime_id, id, mime_id_len);
                                 mime_id[mime_id_len] = '\0';
-                                data_handler = axis2_data_handler_create(env, NULL, NULL);
-                                AXIS2_DATA_HANDLER_SET_BINARY_DATA(data_handler, env,
+                                data_handler = axiom_data_handler_create(env, NULL, NULL);
+                                AXIOM_DATA_HANDLER_SET_BINARY_DATA(data_handler, env,
                                     mime_binary, mime_binary_len);                                        
                                 axis2_hash_set(mime_parser_impl->mime_parts_map, mime_id,
                                     AXIS2_HASH_KEY_STRING, data_handler);                                        
