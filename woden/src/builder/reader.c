@@ -688,6 +688,8 @@ parse_desc(
         axis2_hash_this (index, NULL, NULL, &v);
         attr = (axiom_attribute_t *) v;
         namespc = AXIOM_ATTRIBUTE_GET_NAMESPACE(attr, env);
+        if(!namespc)
+            continue;
         namespc_uri = AXIOM_NAMESPACE_GET_URI(namespc, env);
         local_part = AXIOM_ATTRIBUTE_GET_LOCALNAME(attr, env);
         value = AXIOM_ATTRIBUTE_GET_VALUE(attr, env);
@@ -3627,8 +3629,11 @@ parse_ext_attributes(
         axis2_hash_this (index, NULL, NULL, &om_attr);
         localname = AXIOM_ATTRIBUTE_GET_LOCALNAME((axiom_attribute_t *) om_attr, env);
         namespc = AXIOM_ATTRIBUTE_GET_NAMESPACE((axiom_attribute_t *) om_attr, env);
-        namespc_uri_str = AXIOM_NAMESPACE_GET_URI(namespc, env);
-        prefix = AXIOM_NAMESPACE_GET_PREFIX(namespc, env);
+        if(namespc)
+        {
+            namespc_uri_str = AXIOM_NAMESPACE_GET_URI(namespc, env);
+            prefix = AXIOM_NAMESPACE_GET_PREFIX(namespc, env);
+        }
         if(!prefix) prefix = "";
         attr_type = axis2_qname_create(env, localname, namespc_uri_str, prefix);
         if(NULL != namespc_uri_str && 0 != AXIS2_STRCMP(namespc_uri_str, 

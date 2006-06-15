@@ -163,13 +163,14 @@ woden_documentation_to_element_extensible(
 
 /************************End of Woden C Internal Methods***********************/
 static woden_documentation_t *
-create(const axis2_env_t *env)
+create(
+        const axis2_env_t *env)
 {
     woden_documentation_impl_t *documentation_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    documentation_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(woden_documentation_impl_t));
+    AXIS2_ENV_CHECK(env, NULL);
+    documentation_impl = AXIS2_MALLOC(env->allocator, sizeof(
+                woden_documentation_impl_t));
 
     documentation_impl->wsdl_element = NULL;
     documentation_impl->super = NULL;
@@ -213,7 +214,6 @@ woden_documentation_create(
 {
     woden_documentation_impl_t *documentation_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     documentation_impl = (woden_documentation_impl_t *) create(env);
 
     documentation_impl->wsdl_element = woden_wsdl_element_create(env);
