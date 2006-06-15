@@ -20,6 +20,8 @@
 #include <axis2_utils_defines.h>
 #include <axis2_error.h>
 #include <axis2_env.h>
+#include <axis2_date_time.h>
+#include <axis2_base64_binary.h>
 
 #ifdef __cplusplus
 extern "C"

@@ -1,7 +1,7 @@
 SUBDIRS = platforms/unix minizip
 lib_LTLIBRARIES = libaxis2_util.la
 libaxis2_util_la_SOURCES = \
-			hash.c \
+                        hash.c \
                         allocator.c \
                         env.c \
                         error.c \
@@ -23,18 +23,20 @@ libaxis2_util_la_SOURCES = \
                         thread_pool.c \
                         property.c \
                         types.c \
-						param.c \
-						param_container.c \
-						dll_desc.c\
-						url.c\
+                        param.c \
+                        param_container.c \
+                        dll_desc.c\
+                        url.c\
                         stack.c \
-						generic_obj.c \
+                        generic_obj.c \
                         base64.c \
-						uri.c
-
+                        uri.c \
+                        date_time.c \
+                        base64_binary.c
+                        
 libaxis2_util_la_LIBADD =  \
-					$(top_builddir)/src/platforms/unix/libaxis2_unix.la \
-					$(top_builddir)/src/minizip/libaxis2_minizip.la
+                    $(top_builddir)/src/platforms/unix/libaxis2_unix.la \
+                    $(top_builddir)/src/minizip/libaxis2_minizip.la
 
 INCLUDES = -I$(top_builddir)/include
 
