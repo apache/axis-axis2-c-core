@@ -7,6 +7,7 @@
 # nmake install to install axis2 with server all modules and services
 
 
+
 # install directory will be (default)deploy or if the user a specified  directory
 # then the directory structure is following
 #      AXIS2_INSTALL_DIR
@@ -131,12 +132,6 @@ AXIS2_HTTP_RECEIVER_SRC = $(AXIS2_SOURCE_DIR)\modules\core\transport\http\receiv
 
 AXIS2_MOD_ADDR_SRC = $(AXIS2_SOURCE_DIR)\modules\mod_addr\*.c
 
-#rampart module
-MOD_RAMPART_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\core\*.c \
-		$(AXIS2_SOURCE_DIR)\rampart\src\handlers\*.c \
-		$(AXIS2_SOURCE_DIR)\rampart\src\util\*.c
-
-MOD_RAMPART_INCLUDE_PATH = $(AXIS2_SOURCE_DIR)\rampart\include
 
 
 #compiler options
@@ -287,21 +282,6 @@ axis2_mod_addr:
 	del *.dll
 	del *.lib
 	copy $(AXIS2_SOURCE_DIR)\modules\mod_addr\module.xml $(AXIS2_MODULES)\addressing
-
-
-mod_rampart:
-	$(CC) $(CFLAGS) /I$(MOD_RAMPART_INCLUDE_PATH) $(MOD_RAMPART_SRC) /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
-	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:mod_rampart.dll  /IMPLIB:mod_rampart.lib
-	del *.obj
-	
-	if not exist $(AXIS2_MODULES)\rampart mkdir $(AXIS2_MODULES)\rampart
-
-	copy mod_rampart.dll $(AXIS2_MODULES)\rampart\
-	
-	del *.dll
-	del *.lib
-	copy $(AXIS2_SOURCE_DIR)\rampart\src\data\module.xml $(AXIS2_MODULES)\rampart
 
 
 ############# end modules  ###################
@@ -581,6 +561,8 @@ copy_extra:
 	copy $(AXIS2_SOURCE_DIR)\INSTALL $(AXIS2_INSTALL_DIR)
 	copy $(AXIS2_SOURCE_DIR)\LICENSE $(AXIS2_INSTALL_DIR)
 	copy $(AXIS2_SOURCE_DIR)\CREDITS $(AXIS2_INSTALL_DIR)
+	copy $(AXIS2_SOURCE_DIR)\README $(AXIS2_INSTALL_DIR)
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\xdocs $(AXIS2_INSTALL_DIR)\xdocs
 
 copy_samples:
 	if not exist $(AXIS2_INSTALL_DIR)\samples mkdir $(AXIS2_INSTALL_DIR)\samples
@@ -641,13 +623,118 @@ mv_dist:
 	xcopy /E /I $(AXIS2_INSTALL_DIR) ..\axis2c-bin-$(RELEASE_VER)-win32
 	rmdir /S /Q $(AXIS2_INSTALL_DIR)
 
+
 all_services: axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom
 all_clients: axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_notify axis2_client_mtom axis2_client_userguide
-all_core_modules: axis2_util axis2_parser axiom axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver
-other_modules: axis2_mod_addr mod_rampart
+all_core_modules: axis2_util axis2_parser axiom axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr
 
-all: clean_make_dir clean deploy all_core_modules other_modules all_services all_clients axis2_server   copy_include clean_make_dir 
+
+################################ other porjects #########################################
+
+#rampart module
+
+MOD_RAMPART_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\core\*.c \
+		$(AXIS2_SOURCE_DIR)\rampart\src\handlers\*.c \
+		$(AXIS2_SOURCE_DIR)\rampart\src\util\*.c
+
+MOD_RAMPART_INCLUDE_PATH = $(AXIS2_SOURCE_DIR)\rampart\include
+
+mod_rampart:
+	$(CC) $(CFLAGS) /I$(MOD_RAMPART_INCLUDE_PATH) $(MOD_RAMPART_SRC) /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:mod_rampart.dll  /IMPLIB:mod_rampart.lib
+	del *.obj
+	
+	if not exist $(AXIS2_INSTALL_DIR)\rampart mkdir $(AXIS2_INSTALL_DIR)\rampart
+
+	if not exist $(AXIS2_INSTALL_DIR)\rampart\rampart mkdir $(AXIS2_INSTALL_DIR)\rampart\rampart
+
+	copy mod_rampart.dll $(AXIS2_INSTALL_DIR)\rampart\rampart
+	
+	del *.dll
+	del *.lib
+	del *.exp
+	copy $(AXIS2_SOURCE_DIR)\rampart\src\data\module.xml $(AXIS2_INSTALL_DIR)\rampart\rampart
+	
+mod_rampart_pwcb: 
+	$(CC) $(CFLAGS) /I$(MOD_RAMPART_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\rampart\samples\callback\pwcb.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib /DLL /OUT:pwcb.dll /IMPLIB:pwcb.lib
+
+	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples mkdir $(AXIS2_INSTALL_DIR)\rampart\samples
+	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\callback mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\callback
+	
+	copy pwcb.dll $(AXIS2_INSTALL_DIR)\rampart\samples\callback\pwcb.dll
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\callback\pwcb.c $(AXIS2_INSTALL_DIR)\rampart\samples\callback
+	del pwcb.*
+
+mod_rampart_samples:
+	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client
+	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
+	
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) \
+	$(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\echo.c /c
+	$(LD) $(LDFLAGS) echo.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /OUT:echo.exe
+
+	del *.obj
+	copy echo.exe $(AXIS2_INSTALL_DIR)\rampart\samples\echo
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\README.txt $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
+	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\echo.c $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
+	
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\data $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo\data
+	del echo.exe
+
+mod_rampart_copy_include:
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\include $(AXIS2_INSTALL_DIR)\rampart\include
+	copy $(AXIS2_SOURCE_DIR)\rampart\README $(AXIS2_INSTALL_DIR)\rampart
+
+mod_rampart_all: mod_rampart mod_rampart_pwcb mod_rampart_samples mod_rampart_copy_include
+
+
+
+####################################
+#xml schema project ################
+
+XML_SCHEMA_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\xml_schema\include
+
+xml_schema:
+	$(CC) $(CFLAGS) $(XML_SCHEMA_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\xml_schema\src\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib /DLL /OUT:xml_schema.dll /IMPLIB:xml_schema.lib
+
+	if not exist $(AXIS2_INSTALL_DIR)\xml_schema mkdir $(AXIS2_INSTALL_DIR)\xml_schema
+	if not exist $(AXIS2_INSTALL_DIR)\xml_schema\bin mkdir $(AXIS2_INSTALL_DIR)\xml_schema\bin
+	if not exist $(AXIS2_INSTALL_DIR)\xml_schema\lib mkdir $(AXIS2_INSTALL_DIR)\xml_schema\lib
+	
+	copy xml_schema.dll $(AXIS2_INSTALL_DIR)\xml_schema\bin\xml_schema.dll
+	copy xml_schema.lib $(AXIS2_INSTALL_DIR)\xml_schema\lib\xml_schema.lib
+	copy $(AXIS2_SOURCE_DIR)\xml_schema\README $(AXIS2_INSTALL_DIR)\xml_schema
+	del *.obj
+	del xml_schema.*
+
+xml_schema_copy_include:
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\xml_schema\include $(AXIS2_INSTALL_DIR)\xml_schema\include
+
+xml_schema_copy_resources:
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\xml_schema\test-resources $(AXIS2_INSTALL_DIR)\xml_schema\test-resources
+	if not exist $(AXIS2_INSTALL_DIR)\xml_schema\samples mkdir $(AXIS2_INSTALL_DIR)\xml_schema\samples
+	copy $(AXIS2_SOURCE_DIR)\xml_schema\samples\test_schema.c $(AXIS2_INSTALL_DIR)\xml_schema\samples\
+	
+xml_schema_sample:
+	$(CC) $(CFLAGS) $(XML_SCHEMA_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\xml_schema\samples\test_schema.c /c
+	$(LD) $(LDFLAGS) test_schema.obj $(AXIS2_UTIL).lib $(AXIS2_PARSER).lib $(AXIOM).lib \
+	$(AXIS2_INSTALL_DIR)\xml_schema\lib\xml_schema.lib \
+	/OUT:test_schema.exe
+	if not exist $(AXIS2_INSTALL_DIR)\xml_schema\bin\samples mkdir $(AXIS2_INSTALL_DIR)\xml_schema\bin\samples
+	copy test_schema.exe $(AXIS2_INSTALL_DIR)\xml_schema\bin\samples
+	del test*.*
+
+xml_schema_all: xml_schema xml_schema_sample xml_schema_copy_include xml_schema_copy_resources
+
+	
+##############################################################################################
+
+all: clean_make_dir clean deploy all_core_modules all_services all_clients axis2_server   copy_include clean_make_dir 
  
 install: all
 
-dist: all axis2_apache_module copy_extra copy_samples mv_dist
+dist: all axis2_apache_module mod_rampart_all xml_schema_all copy_extra copy_samples mv_dist
