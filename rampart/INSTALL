@@ -1,22 +1,33 @@
 Getting Rampart/C source working on Linux
-=============================================
+============================================
+
+-----------------------------------
 Build the source
+-----------------------------------
+
 This can be done using the following command sequence:
         ./configure
         make
         make install
-        use './configure --help' for options
+
 
 Engage rampart with axis2/C
-==================================
-Prerequisites
+============================================
+
+
+-----------------------------------
+Prerequisites:
 -----------------------------------
 You must have openssl installed in you system.
 
+-----------------------------------
 Configuring:
 -----------------------------------
+
 1. Run build.sh in axis2/c/rampart directory
-2. Copy rampart directory created in rampart/target to AXIS2C_HOME/deploy/modules
+
+2. Copy rampart directory created in AXIS2C_HOME/deploy/rampart to AXIS2C_HOME/deploy/modules
+
 3. To engage rampart add to axis2.xml
     <module ref="rampart"/>
 
@@ -39,11 +50,16 @@ Configuring:
       </action>
     </parameter>
 
+
 6. Configure the client similarly adding In/Outflow parameters to axis2.xml file. 
 
+NOTE: See the README file in samples/client/echo for more information.
+
+-----------------------------------
 Writing callback modules:
 -----------------------------------
-User can specify which .so module to use to callback the password.
+
+User can specify which .so (or DLL) library to use to callback the password.
 For this user must provide a function pointer for get_password() operation in rampart_callback_t
 See rampart/samples/callback/pwcb.c for clarity
 

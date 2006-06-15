@@ -22,9 +22,10 @@
     <parameter name="OutflowSecurity">
       <action>
         <items>UsernameToken  Timestamp</items>
-        <user>Tintin</user>
+        <user>Raigama</user>
         <passwordType>passwordDigest</passwordType>
-        <passwordCallbackClass>/home/kau/axis2/c/rampart/target/libpwcb.so</passwordCallbackClass>
+        <!--Following shoud change with your DLL or SO path-->
+        <passwordCallbackClass>/home/kau/axis2/c/deploy/rampart/libpwcb.so</passwordCallbackClass>
       </action>
     </parameter>
 
@@ -32,11 +33,10 @@
     <parameter name="InflowSecurity">
       <action>
         <items>UsernameToken Timestamp</items>
-        <passwordCallbackClass>/home/kau/axis2/c/rampart/target/libpwcb.so</passwordCallbackClass>
+        <!--Following shoud change with your DLL or SO path-->
+        <passwordCallbackClass>/home/kau/axis2/c/deploy/rampart/libpwcb.so</passwordCallbackClass>
       </action>
     </parameter>
-
-
     <!--Rampart client configuration END -->
 
 

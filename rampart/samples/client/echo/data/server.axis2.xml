@@ -17,13 +17,15 @@
         <ip>127.0.0.1</ip>
         <port>5555</port>
     </hostConfiguration>
-
+    
+    <!--Rampart configurations START -->
     <parameter name="OutflowSecurity">
       <action>
         <items>UsernameToken  Timestamp</items>
-        <user>Kau</user>
+        <user>Gampola</user>
         <passwordType>passwordText</passwordType>
-        <passwordCallbackClass>/home/kau/axis2/c/rampart/target/libpwcb.so</passwordCallbackClass>
+        <!--Following shoud change with your DLL or SO path-->
+        <passwordCallbackClass>/home/kau/axis2/c/deploy/rampart/libpwcb.so</passwordCallbackClass>
       </action>
     </parameter>
 
@@ -31,9 +33,11 @@
     <parameter name="InflowSecurity">
       <action>
         <items>UsernameToken Timestamp</items>
-        <passwordCallbackClass>/home/kau/axis2/c/rampart/target/libpwcb.so</passwordCallbackClass>
+        <!--Following shoud change with your DLL or SO path-->
+        <passwordCallbackClass>/home/kau/axis2/c/deploy/rampart/libpwcb.so</passwordCallbackClass>
       </action>
     </parameter>
+    <!--Rampart configurations END -->
 
 
     <!--if you want to extract the service archive file and work with that please uncomment this-->
@@ -106,6 +110,8 @@
     <!-- ================================================= -->
     <!-- Comment this to disable Addressing -->
     <!--module ref="addressing"/-->
+    
+    <!-- Comment this to disable Security -->
     <module ref="rampart"/>
 
 

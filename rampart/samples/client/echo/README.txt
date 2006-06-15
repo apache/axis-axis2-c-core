@@ -8,13 +8,13 @@ How to run
     make install
 
 2. Create client repository
-    e.g. ~/client_repo [CLIENT_REPO]
+    e.g. ~/client_home [CLIENT_HOME]
     
 3. Copy rampart/samples/client/data/axis2.xml to CLIENT_REPO
 
-4. Copy AXIS2_HOME/lib to CLIENT_REPO
+4. Copy AXIS2_HOME/lib to CLIENT_HOME
 
-5. Copy AXIS2_HOME/modules to CLIENT_REPO
+5. Copy AXIS2_HOME/modules to CLIENT_HOME
    
 6. Enable rampart in axis2.xml in the AXIS2_HOME and add In/Outflow parameters as
     in rampart/samples/client/data/server.axis2.xml. (Or copy the
@@ -32,7 +32,14 @@ How to run
     </action>
     
     NOTE: Right now this sample callback will provide only two pairs of
-    Username/password. You may add more by editing the get_password() function
+    Username/passwords.
+
+    Username    Password
+    --------------------
+    Raigama     RaigamaPW
+    Gampola     GampolaPW
+
+    You may add more by editing the get_password() function
     in pwcb.c
     
     
@@ -42,8 +49,13 @@ How to run
 9. Start server in port 8080 
      ./axis2_http_server -p8080
 
-10. Run the echo sample as ./echo
+10. Run the echo sample 
+     Syntax : ./echo [service_address] [client_home]
+     e.g.   : ./echo http://localhost:9090/axis2/services/echo /home/kau/client_home   
 
 11. You should be able to see the security token is attached to the header of
-    the SOAP message.
+    the SOAP message in the TCP Monitor. The client request is using UsernamToken with diegested 
+    password, while the server response is using a PlainText password.
+
 NOTE : Also you can use other samples available under AXIS2C.
+

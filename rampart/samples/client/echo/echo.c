@@ -41,15 +41,21 @@ int main(int argc, char** argv)
 
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/echo";
-    if (argc > 1 )
+    if (argc > 2 )
+    {
         address = argv[1];
+        client_home = argv[2];
+        printf ("Using endpoint : %s\n", address);
+        printf ("Using client_home : %s\n", client_home);
+    } 
+    
     if (AXIS2_STRCMP(address, "-h") == 0)
     {
-        printf("Usage : %s [endpoint_url]\n", argv[0]);
+        printf("Usage : %s [endpoint_url] [client_home]\n", argv[0]);
         printf("use -h for help\n");
         return 0;
     }
-    printf ("Using endpoint : %s\n", address);
+
     
     /* Create EPR with given address */
     endpoint_ref = axis2_endpoint_ref_create(env, address);
@@ -78,13 +84,11 @@ int main(int argc, char** argv)
     
     */
 					
-#if 0
-	client_home = AXIS2_GETENV("AXIS2C_HOME");
-	if (!client_home)
-		client_home = "../../deploy";
-#else
- 	       client_home="/home/kau/client_repo";
-#endif
+    if(!client_home)
+    {
+	    client_home = AXIS2_GETENV("AXIS2C_HOME");
+        printf("\nNo client_home specified. Using default %s", client_home);
+    }
 		       
     
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
@@ -96,7 +100,6 @@ int main(int argc, char** argv)
      */
 /*    if (!client_home)
         client_home = "../../deploy";
- 	       client_home="/home/kau/client_repo";
 */
 
     /* Create service client */

@@ -14,11 +14,11 @@ get_sample_password(rampart_callback_t *rcb,
             const axis2_env_t *env, const axis2_char_t *username)
 {
     axis2_char_t * pw = NULL;
-    if(0 == AXIS2_STRCMP(username, "Kau"))
+    if(0 == AXIS2_STRCMP(username, "Raigama"))
     {
-        pw = "KauPW" ;
-    }else if(0 == AXIS2_STRCMP(username, "TinTin")){
-        pw = "TinTinPW";
+        pw = "RaigamaPW" ;
+    }else if(0 == AXIS2_STRCMP(username, "Gampola")){
+        pw = "GampolaPW";
     }else{
     }
     return pw;
