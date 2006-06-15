@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/samples
+prgbindir=$(prefix)/bin/samples/woden
 prgbin_PROGRAMS = test_wsdl2
 check_PROGRAMS = test_wsdl2
 test_wsdl2_SOURCES = test_wsdl2.c
