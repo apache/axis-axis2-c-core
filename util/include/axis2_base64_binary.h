@@ -135,7 +135,7 @@ AXIS2_DECLARE_DATA struct axis2_base64_binary
  * @param env double pointer to environment struct. MUST NOT be NULL
  * @return pointer to newly created axis2_base64_binary struct
  */
-AXIS2_EXTERN axis2_base64_binary_t*
+AXIS2_EXTERN axis2_base64_binary_t* AXIS2_CALL
 axis2_base64_binary_create(const axis2_env_t *env );
 
 /**
@@ -144,7 +144,7 @@ axis2_base64_binary_create(const axis2_env_t *env );
  * @param plain_binary binary buffer to initialize
  * @return pointer to newly created axis2_base64_binary struct
  */
-AXIS2_EXTERN axis2_base64_binary_t*
+AXIS2_EXTERN axis2_base64_binary_t* AXIS2_CALL
 axis2_base64_binary_create_with_plain_binary(const axis2_env_t *env,
                                         const unsigned char *plain_binary,
                                         int plain_binary_len);
@@ -155,7 +155,7 @@ axis2_base64_binary_create_with_plain_binary(const axis2_env_t *env,
  * @param encoded_binary binary buffer to initialize 
  * @return pointer to newly created axis2_base64_binary struct
  */
-AXIS2_EXTERN axis2_base64_binary_t*
+AXIS2_EXTERN axis2_base64_binary_t* AXIS2_CALL
 axis2_base64_binary_create_with_encoded_binary(const axis2_env_t *env,
                                        const char *encoded_binary );
 
