@@ -502,8 +502,6 @@ axis2_error_create (axis2_allocator_t * allocator)
     error->ops->get_status_code = axis2_error_impl_get_status_code;
     error->ops->free            = axis2_error_impl_free;
 
-    error->status_code = AXIS2_SUCCESS;
-
     return error;
 }
 
