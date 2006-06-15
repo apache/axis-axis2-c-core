@@ -76,7 +76,7 @@ struct woden_interface_fault_ops
             const axis2_env_t *env);
 
     void *(AXIS2_CALL *
-    get_element_declaration) (
+    get_element_decl) (
             void *interface_fault,
             const axis2_env_t *env);
 
@@ -86,7 +86,7 @@ struct woden_interface_fault_ops
             const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
-    set_element_declaration) (
+    set_element_decl) (
             void *interface_fault,
             const axis2_env_t *env,
             void *element_decl);
@@ -96,8 +96,6 @@ struct woden_interface_fault_ops
             void *interface_fault,
             const axis2_env_t *env,
             void *types);
-
-
 };
 
 union woden_interface_fault_base
@@ -197,7 +195,7 @@ woden_interface_fault_resolve_methods(
 
 #define WODEN_INTERFACE_FAULT_SET_ELEMENT_DECL(interface_fault, env, element_decl) \
       (((woden_interface_fault_t *) interface_fault)->ops->\
-        set_element_declaration (interface_fault, env, element_decl))
+        set_element_decl (interface_fault, env, element_decl))
 
 #define WODEN_INTERFACE_FAULT_SET_TYPES(interface_fault, env, types) \
       (((woden_interface_fault_t *) interface_fault)->ops->\

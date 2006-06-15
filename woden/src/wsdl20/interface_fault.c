@@ -75,7 +75,7 @@ woden_interface_fault_get_qname(
         const axis2_env_t *env);
 
 void *AXIS2_CALL
-woden_interface_fault_get_element_declaration(
+woden_interface_fault_get_element_decl(
         void *interface_fault,
         const axis2_env_t *env);
 
@@ -114,7 +114,7 @@ woden_interface_fault_get_element(
  * ******************************************************************/
 
 axis2_status_t AXIS2_CALL
-woden_interface_fault_set_element_declaration(
+woden_interface_fault_set_element_decl(
         void *interface_fault,
         const axis2_env_t *env,
         void *element_decl);
@@ -414,12 +414,12 @@ create(const axis2_env_t *env)
     interface_fault_impl->interface_fault.ops->get_base_impl = woden_interface_fault_get_base_impl;
     
     interface_fault_impl->interface_fault.ops->get_qname = woden_interface_fault_get_qname;
-    interface_fault_impl->interface_fault.ops->get_element_declaration = 
-        woden_interface_fault_get_element_declaration;
+    interface_fault_impl->interface_fault.ops->get_element_decl = 
+        woden_interface_fault_get_element_decl;
     interface_fault_impl->interface_fault.ops->to_element = 
         woden_interface_fault_to_element;
-    interface_fault_impl->interface_fault.ops->set_element_declaration = 
-        woden_interface_fault_set_element_declaration;
+    interface_fault_impl->interface_fault.ops->set_element_decl = 
+        woden_interface_fault_set_element_decl;
     interface_fault_impl->interface_fault.ops->set_types = 
         woden_interface_fault_set_types;
  
@@ -439,9 +439,9 @@ create(const axis2_env_t *env)
     axis2_hash_set(interface_fault_impl->methods, "get_qname", 
             AXIS2_HASH_KEY_STRING, 
             woden_interface_fault_get_qname);
-    axis2_hash_set(interface_fault_impl->methods, "get_element_declaration", 
+    axis2_hash_set(interface_fault_impl->methods, "get_element_decl", 
             AXIS2_HASH_KEY_STRING, 
-            woden_interface_fault_get_element_declaration);
+            woden_interface_fault_get_element_decl);
     axis2_hash_set(interface_fault_impl->methods, "to_element", 
             AXIS2_HASH_KEY_STRING, 
             woden_interface_fault_to_element);
@@ -457,9 +457,9 @@ create(const axis2_env_t *env)
     axis2_hash_set(interface_fault_impl->methods, "get_element", 
             AXIS2_HASH_KEY_STRING, 
             woden_interface_fault_get_element);
-    axis2_hash_set(interface_fault_impl->methods, "set_element_declaration", 
+    axis2_hash_set(interface_fault_impl->methods, "set_element_decl", 
             AXIS2_HASH_KEY_STRING, 
-            woden_interface_fault_set_element_declaration);
+            woden_interface_fault_set_element_decl);
     axis2_hash_set(interface_fault_impl->methods, "set_types", 
             AXIS2_HASH_KEY_STRING, 
             woden_interface_fault_set_types);
@@ -722,11 +722,11 @@ woden_interface_fault_resolve_methods(
             interface_fault->ops->get_qname = 
             interface_fault_impl_l->interface_fault.ops->get_qname;
     
-    interface_fault->ops->get_element_declaration = axis2_hash_get(methods, 
-            "get_element_declaration", AXIS2_HASH_KEY_STRING);
-    if(!interface_fault->ops->get_element_declaration && interface_fault_impl_l)
-            interface_fault->ops->get_element_declaration = 
-            interface_fault_impl_l->interface_fault.ops->get_element_declaration;
+    interface_fault->ops->get_element_decl = axis2_hash_get(methods, 
+            "get_element_decl", AXIS2_HASH_KEY_STRING);
+    if(!interface_fault->ops->get_element_decl && interface_fault_impl_l)
+            interface_fault->ops->get_element_decl = 
+            interface_fault_impl_l->interface_fault.ops->get_element_decl;
     
     interface_fault->ops->to_element = axis2_hash_get(methods, 
             "to_element", AXIS2_HASH_KEY_STRING);
@@ -734,11 +734,11 @@ woden_interface_fault_resolve_methods(
             interface_fault->ops->to_element = 
             interface_fault_impl_l->interface_fault.ops->to_element;
     
-    interface_fault->ops->set_element_declaration = axis2_hash_get(methods, 
-            "set_element_declaration", AXIS2_HASH_KEY_STRING);
-    if(!interface_fault->ops->set_element_declaration && interface_fault_impl_l)
-            interface_fault->ops->set_element_declaration = 
-            interface_fault_impl_l->interface_fault.ops->set_element_declaration;
+    interface_fault->ops->set_element_decl = axis2_hash_get(methods, 
+            "set_element_decl", AXIS2_HASH_KEY_STRING);
+    if(!interface_fault->ops->set_element_decl && interface_fault_impl_l)
+            interface_fault->ops->set_element_decl = 
+            interface_fault_impl_l->interface_fault.ops->set_element_decl;
     
     interface_fault->ops->set_types = axis2_hash_get(methods, 
             "set_types", AXIS2_HASH_KEY_STRING);
@@ -769,7 +769,7 @@ woden_interface_fault_get_qname(
 }
 
 void *AXIS2_CALL
-woden_interface_fault_get_element_declaration(
+woden_interface_fault_get_element_decl(
         void *interface_fault,
         const axis2_env_t *env)
 {
@@ -890,7 +890,7 @@ woden_interface_fault_get_element(
 }
 
 axis2_status_t AXIS2_CALL
-woden_interface_fault_set_element_declaration(
+woden_interface_fault_set_element_decl(
         void *interface_fault,
         const axis2_env_t *env,
         void *element_decl)

@@ -128,6 +128,7 @@ AC_CONFIG_FILES([Makefile \
     src/wsdl20/extensions/Makefile \
     src/wsdl20/extensions/soap/Makefile \
     src/builder/Makefile \
+    samples/Makefile \
     test/Makefile
     ])
     

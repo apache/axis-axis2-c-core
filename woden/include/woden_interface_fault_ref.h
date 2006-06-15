@@ -91,6 +91,15 @@ struct woden_interface_fault_ref_ops
             void *interface_fault_ref,
             const axis2_env_t *env);
 
+    /* ************************************************************
+     *  Non-API implementation methods
+     * ************************************************************/
+    axis2_status_t (AXIS2_CALL *
+    set_interface_fault) (
+        void *interface_fault_ref,
+        const axis2_env_t *env,
+        void *fault);
+
 };
 
 union woden_interface_fault_ref_base
@@ -192,6 +201,10 @@ woden_interface_fault_ref_resolve_methods(
 #define WODEN_INTERFACE_FAULT_REF_TO_ELEMENT(interface_fault_ref, env) \
       (((woden_interface_fault_ref_t *) interface_fault_ref)->ops->\
          to_element(interface_fault_ref, env))
+
+#define WODEN_INTERFACE_FAULT_REF_SET_INTERFACE_FAULT(interface_fault_ref, env, fault) \
+      (((woden_interface_fault_ref_t *) interface_fault_ref)->ops->\
+         set_interface_fault(interface_fault_ref, env, fault))
 
 /** @} */
 #ifdef __cplusplus

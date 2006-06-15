@@ -167,7 +167,7 @@ woden_soap_fault_subcodes_get_soap_fault_subcodes_any(
 }
 
 axis2_bool_t AXIS2_CALL
-woden_soap_fault_subcodes_get_soap_fault_subcodes_is_qnames(
+woden_soap_fault_subcodes_is_qnames(
         void *soap_fault_subcodes,
         const axis2_env_t *env)
 {

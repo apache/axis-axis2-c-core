@@ -461,7 +461,7 @@ create(
                     sizeof(woden_reader_ops_t));
     
     reader_impl->f_imported_schemas = axis2_hash_make(env);
-    if(reader_impl->f_imported_schemas)
+    if(!reader_impl->f_imported_schemas)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -481,7 +481,7 @@ woden_reader_create(
 {
     woden_reader_impl_t *reader_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     reader_impl = (woden_reader_impl_t *) create(env);
 
     return &(reader_impl->reader);
