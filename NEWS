@@ -31,7 +31,10 @@ Major Changes Since Last Release
    4. Archive based deployment Model (for services and modules)
    5. Code generation for WSDL using Java WSDL2Code tool
    6. ADB support (with Java WSDL2Code tool)
-   7. Changed double pointer environment parameters into pointer parameters to improve efficiency
+   7. WS-Security usernameToken support
+   8. Initial implementation of the XML Schema parser (To be used in WSDL parser and REST support)
+   9. Initial implementation of WSDL parser (To be used in dynamic invocation)
+  10. Changed double pointer environment parameters into pointer parameters to improve efficiency
 
 Un-Implemented Architecture Features (TBD in 1.0)
 
