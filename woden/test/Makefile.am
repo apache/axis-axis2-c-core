@@ -1,7 +1,5 @@
 TESTS = woden_test
-prgbindir=$(prefix)/bin/unit_test
-prglibdir=$(prefix)/lib/unit_test
-prglib_LTLIBRARIES = libtest_woden.la
+lib_LTLIBRARIES = libtest_woden.la
 libtest_woden_la_SOURCES = \
 						   woden_test.c
 
@@ -14,7 +12,7 @@ INCLUDES = -I$(top_builddir)/include \
 			@UTILINC@ \
 			@XMLSCHEMAINC@
 
-prgbin_PROGRAMS = woden_test
+bin_PROGRAMS = woden_test
 check_PROGRAMS = woden_test
 woden_test_SOURCES = main.c
 woden_test_LDADD   =  \
