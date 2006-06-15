@@ -1,5 +1,5 @@
 TESTS = xml_schema_test
-bin_PROGRAMS = xml_schema_test
+noinst_PROGRAMS = xml_schema_test
 check_PROGRAMS = xml_schema_test
 SUBDIRS =
 

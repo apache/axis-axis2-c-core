@@ -12,7 +12,7 @@ INCLUDES = -I$(top_builddir)/include \
 			@UTILINC@ \
 			@XMLSCHEMAINC@
 
-bin_PROGRAMS = woden_test
+noinst_PROGRAMS = woden_test
 check_PROGRAMS = woden_test
 woden_test_SOURCES = main.c
 woden_test_LDADD   =  \
