@@ -57,8 +57,8 @@ typedef struct axis2_foo axis2_foo_t;
 
 struct axis2_foo_ops
 {
-    void (AXIS2_CALL *bar)(axis2_foo_t *foo, axis2_env_t **env, void *data);
-    axis2_status_t (AXIS2_CALL *free)(axis2_foo_t *foo, axis2_env_t **env);
+    void (AXIS2_CALL *bar)(axis2_foo_t *foo, const axis2_env_t *env, void *data);
+    axis2_status_t (AXIS2_CALL *free)(axis2_foo_t *foo, const axis2_env_t *env);
 };
 
 struct axis2_foo
@@ -67,7 +67,7 @@ struct axis2_foo
 }
 
 
-axis2_foo_t * axis2_foo_create(axis2_env_t **env);
+axis2_foo_t * axis2_foo_create(const axis2_env_t *env);
 
 /* Macros are provided to access functions defined in the ops (operations structure)*/
 
@@ -91,10 +91,10 @@ struct axis2_foo_impl
 /* Function Headers */
 
 void AXIS2_CALL axis2_foo_bar(void *data);
-axis2_status_t AXIS2_CALL axis2_foo_free(axis2_env_t **env, axis2_foo_t *foo);
+axis2_status_t AXIS2_CALL axis2_foo_free(const axis2_env_t *env, axis2_foo_t *foo);
 
 /* Function Implementation */
-axis2_foo_t * AXIS2_CALL axis2_foo_create(axis2_env_t **env)
+axis2_foo_t * AXIS2_CALL axis2_foo_create(const axis2_env_t *env)
 {
     axis2_foo_impl_t * foo_impl = NULL;
     /* create axis2_foo_t and initialize private data */
@@ -112,7 +112,7 @@ void AXIS2_CALL axis2_foo_bar(void *data)
     /* do something */
 }
 
-axis2_status_t AXIS2_CALL axis2_foo_free(axis2_env_t **env, axis2_foo_t *foo)
+axis2_status_t AXIS2_CALL axis2_foo_free(const axis2_env_t *env, axis2_foo_t *foo)
 {
     /* do the dirty work of cleaning the allocated memory */
 }</pre>
@@ -137,7 +137,7 @@ at the service skeleton interface which is defined in
 <strong>axis2_svc_skeleton.h</strong></p>
 <pre class="code">AXIS2_DECLARE_DATA struct axis2_svc_skeleton_ops
 {
-    int (AXIS2_CALL * free)(axis2_svc_skeleton_t *svc_skeli, axis2_env_t **env);
+    int (AXIS2_CALL * free)(axis2_svc_skeleton_t *svc_skeli, const axis2_env_t *env);
     ...
 };
 
@@ -161,11 +161,11 @@ allocated for operations struct, function array and service skeleton struct
 are cleaned in this. You may clean additional memory here if you have
 allocated any specific memory blocks in math_create function or elsewhere
 depending on your implementation specifics.</p>
-<pre class="code">int AXIS2_CALL math_free(axis2_svc_skeleton_t *svc_skeleton, axis2_env_t **env)
+<pre class="code">int AXIS2_CALL math_free(axis2_svc_skeleton_t *svc_skeleton, const axis2_env_t *env)
 {
     if(svc_skeleton-&gt;ops)
     {
-        AXIS2_FREE((*env)-&gt;allocator, svc_skeleton-&gt;ops);
+        AXIS2_FREE(env-&gt;allocator, svc_skeleton-&gt;ops);
         svc_skeleton-&gt;ops = NULL;
     }
     if(svc_skeleton-&gt;func_array)
@@ -175,7 +175,7 @@ depending on your implementation specifics.</p>
     }
     if(svc_skeleton)
     {
-        AXIS2_FREE((*env)-&gt;allocator, svc_skeleton);
+        AXIS2_FREE(env-&gt;allocator, svc_skeleton);
         svc_skeleton = NULL;
     }
     return AXIS2_SUCCESS;
@@ -185,12 +185,12 @@ depending on your implementation specifics.</p>
 math_free function to the free function of the operations struct. As you can
 see, now the SOAP engine has a function reference to perform garbage
 collection after each service request.</p>
-<pre class="code">AXIS2_DECLARE(axis2_svc_skeleton_t *) axis2_math_create(axis2_env_t **env)
+<pre class="code">AXIS2_EXTERN axis2_svc_skeleton_t * AXIS2_CALL axis2_math_create(const axis2_env_t *env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;
-    svc_skeleton = AXIS2_MALLOC((*env)-&gt;allocator, sizeof(axis2_svc_skeleton_t));
+    svc_skeleton = AXIS2_MALLOC(env-&gt;allocator, sizeof(axis2_svc_skeleton_t));
 
-    svc_skeleton-&gt;ops = AXIS2_MALLOC((*env)-&gt;allocator, sizeof(axis2_svc_skeleton_ops_t));
+    svc_skeleton-&gt;ops = AXIS2_MALLOC(env-&gt;allocator, sizeof(axis2_svc_skeleton_ops_t));
 
 
     svc_skeleton-&gt;ops-&gt;free = math_free;

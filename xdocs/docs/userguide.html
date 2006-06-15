@@ -179,23 +179,23 @@ assigned by a service skeleton.</p>
 
 <p>They are:-</p>
 <pre class="code">int (AXIS2_CALL * init) (axis2_svc_skeleton_t *svc_skeleton,
-                         axis2_env_t **env);
+                         const axis2_env_t *env);
 
 axiom_node_t * (AXIS2_CALL* invoke)(axis2_svc_skeleton_t *svc_skeli, 
-                    axis2_env_t **env, axiom_node_t *node);
+                    const axis2_env_t *env, axiom_node_t *node);
 
 axiom_node_t *(AXIS2_CALL* on_fault)(axis2_svc_skeleton_t *svc_skeli,
-                    axis2_env_t **env, axiom_node_t *node);
+                    const axis2_env_t *env, axiom_node_t *node);
 
 int (AXIS2_CALL *free)(axis2_svc_skeleton_t *svc_skeli, 
-                       axis2_env_t **env);</pre>
+                       const axis2_env_t *env);</pre>
 
 <p>Lets implement the above functions for echo service.</p>
 
 <p><i>/* Initialize the service */</i><br />
 int AXIS2_CALL<br />
 echo_init(axis2_svc_skeleton_t *svc_skeleton,<br />
-                        axis2_env_t **env)<br />
+                        const axis2_env_t *env)<br />
 {<br />
     svc_skeleton-&gt;func_array = axis2_array_list_create(env, 0);<br />
     <i>/* Add the implemented operation names of the service to  <br />
@@ -212,7 +212,7 @@ echo_init(axis2_svc_skeleton_t *svc_skeleton,<br />
  */</i><br />
 axiom_node_t* AXIS2_CALL<br />
 echo_invoke(axis2_svc_skeleton_t *svc_skeleton,<br />
-            axis2_env_t **env,<br />
+            const axis2_env_t *env,<br />
             axiom_node_t *node)<br />
 {<br />
     <i>/* Invoke the business logic.<br />
@@ -227,7 +227,7 @@ echo_invoke(axis2_svc_skeleton_t *svc_skeleton,<br />
 <i>/* On fault, handle the fault */</i><br />
 axiom_node_t* AXIS2_CALL<br />
 echo_on_fault(axis2_svc_skeleton_t *svc_skeli, <br />
-              axis2_env_t **env, axiom_node_t *node)<br />
+              const axis2_env_t *env, axiom_node_t *node)<br />
 {<br />
    <i>/* Here we are just setting a simple error message inside an element <br
 />
@@ -247,7 +247,7 @@ echo_on_fault(axis2_svc_skeleton_t *svc_skeli, <br />
 <i>/* Free the resources used */</i><br />
 int AXIS2_CALL<br />
 echo_free(axis2_svc_skeleton_t *svc_skeleton,<br />
-            axis2_env_t **env)<br />
+            const axis2_env_t *env)<br />
 {<br />
     <i>/* Free the function array */</i><br />
     <b>if</b>(svc_skeleton-&gt;func_array)<br />
@@ -259,14 +259,14 @@ echo_free(axis2_svc_skeleton_t *svc_skeleton,<br />
     <i>/* Free the function array */</i><br />
     <b>if</b>(svc_skeleton-&gt;ops)<br />
     {<br />
-        AXIS2_FREE((*env)-&gt;allocator, svc_skeleton-&gt;ops);<br />
+        AXIS2_FREE(env-&gt;allocator, svc_skeleton-&gt;ops);<br />
         svc_skeleton-&gt;ops = NULL;<br />
     }<br />
     <br />
     <i>/* Free the service skeleton */</i><br />
     <b>if</b>(svc_skeleton)<br />
     {<br />
-        AXIS2_FREE((*env)-&gt;allocator, svc_skeleton);<br />
+        AXIS2_FREE(env-&gt;allocator, svc_skeleton);<br />
         svc_skeleton = NULL;<br />
     }<br />
 <br />
@@ -279,15 +279,15 @@ follows.</p>
 
 <p><i>/*Create function */<br />
 </i> axis2_svc_skeleton_t *<br />
-axis2_echo_create(axis2_env_t **env)<br />
+axis2_echo_create(const axis2_env_t *env)<br />
 {<br />
     axis2_svc_skeleton_t *svc_skeleton = NULL;<br />
     <i>/* Allocate memory for the structs */</i><br />
-    svc_skeleton = AXIS2_MALLOC((*env)-&gt;allocator, <br />
+    svc_skeleton = AXIS2_MALLOC(env-&gt;allocator, <br />
         <b>sizeof</b>(axis2_svc_skeleton_t));<br />
 <br />
     svc_skeleton-&gt;ops = AXIS2_MALLOC(<br />
-        (*env)-&gt;allocator, <b>sizeof</b>(axis2_svc_skeleton_ops_t));<br />
+        env-&gt;allocator, <b>sizeof</b>(axis2_svc_skeleton_ops_t));<br />
 <br />
     <i>/* Assign function pointers */</i><br />
     svc_skeleton-&gt;ops-&gt;free = echo_free;<br />
@@ -309,7 +309,7 @@ file.</p>
 
 <p>AXIS2_EXPORT int <br />
 axis2_get_instance(axis2_svc_skeleton_t **inst,<br />
-                   axis2_env_t **env)<br />
+                   const axis2_env_t *env)<br />
 {<br />
     *inst = axis2_echo_create(env);<br />
     <b>if</b>(!(*inst))<br />
@@ -321,7 +321,7 @@ axis2_get_instance(axis2_svc_skeleton_t **inst,<br />
 <br />
 AXIS2_EXPORT int <br />
 axis2_remove_instance(axis2_svc_skeleton_t *inst,<br />
-                      axis2_env_t **env)<br />
+                      const axis2_env_t *env)<br />
 {<br />
     axis2_status_t status = AXIS2_FAILURE;<br />
     <b>if</b> (inst)<br />
@@ -346,7 +346,7 @@ be called by Axis2/C engine.</p>
 <h4>Step2 : Now we can write the echo service in a file echo.c</h4>
 
 <p><a id="Step3">axiom_node_t *<br />
-axis2_echo_echo (axis2_env_t **env, axiom_node_t *node)<br />
+axis2_echo_echo (const axis2_env_t *env, axiom_node_t *node)<br />
 {<br />
     axiom_node_t *text_parent_node = NULL;<br />
     axiom_node_t *text_node = NULL;<br />
@@ -362,7 +362,7 @@ axis2_echo_echo (axis2_env_t **env, axiom_node_t *node)<br />
      */</i><br />
     <b>if</b> (!node) <i>/* 'echoString' node */</i><br />
     {<br />
-        AXIS2_ERROR_SET((*env)-&gt;error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL, AXIS2_FAILURE);<br
+        AXIS2_ERROR_SET(env-&gt;error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL, AXIS2_FAILURE);<br
 />
         printf("Echo client ERROR: input parameter NULL\n");<br />
         <b>return</b> NULL;<br />
@@ -371,7 +371,7 @@ axis2_echo_echo (axis2_env_t **env, axiom_node_t *node)<br />
     text_parent_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);<br />
     <b>if</b> (!text_parent_node) <i>/* 'text' node */</i><br />
     {<br />
-        AXIS2_ERROR_SET((*env)-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);<br
+        AXIS2_ERROR_SET(env-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);<br
 />
         printf("Echo client ERROR: invalid XML in request\n");<br />
         <b>return</b> NULL;<br />
@@ -380,7 +380,7 @@ axis2_echo_echo (axis2_env_t **env, axiom_node_t *node)<br />
     text_node = AXIOM_NODE_GET_FIRST_CHILD(text_parent_node, env);<br />
     <b>if</b> (!text_node) <i>/* actual text to echo */</i><br />
     {<br />
-        AXIS2_ERROR_SET((*env)-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);<br
+        AXIS2_ERROR_SET(env-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);<br
 />
         printf("Echo client ERROR: invalid XML in request\n");<br />
         <b>return</b> NULL;<br />
@@ -400,7 +400,7 @@ axis2_echo_echo (axis2_env_t **env, axiom_node_t *node)<br />
     }<br />
     <b>else</b><br />
     {<br />
-        AXIS2_ERROR_SET((*env)-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);<br
+        AXIS2_ERROR_SET(env-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);<br
 />
         printf("Echo client ERROR: invalid XML in request\n");<br />
         <b>return</b> NULL;<br />
@@ -411,7 +411,7 @@ axis2_echo_echo (axis2_env_t **env, axiom_node_t *node)<br />
 <br />
 <i>/* Builds the response content */</i><br />
 axiom_node_t *<br />
-build_om_programatically(axis2_env_t **env, axis2_char_t *text)<br />
+build_om_programatically(const axis2_env_t *env, axis2_char_t *text)<br />
 {<br />
     axiom_node_t *echo_om_node = NULL;<br />
     axiom_element_t* echo_om_ele = NULL;<br />
@@ -608,11 +608,11 @@ client to invoke "echo" operation of "echo" service using the simplest
 blocking invocation. The client code you need to write is as follows.</p>
 <pre>    
     <span style="color: #24C113">/* Create EPR with given address */</span>
-    endpoint_ref = axis2_endpoint_ref_create(&amp;env, address);
+    endpoint_ref = axis2_endpoint_ref_create(env, address);
 
     <span style="color: #24C113">/* Setup options */</span>
-    options = axis2_options_create(&amp;env);
-    AXIS2_OPTIONS_SET_TO(options, &amp;env, endpoint_ref);
+    options = axis2_options_create(env);
+    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
 
     <span style="color: #24C113">/* Set the deploy folder */</span>
     client_home = AXIS2_GETENV("AXIS2C_HOME");
@@ -620,7 +620,7 @@ blocking invocation. The client code you need to write is as follows.</p>
         client_home = "../../deploy";
 
     <span style="color: #24C113">/* Create service client */</span>
-    svc_client = axis2_svc_client_create(&amp;env, client_home);
+    svc_client = axis2_svc_client_create(env, client_home);
     if (!svc_client)
     {
         printf("Error creating service client\n");
@@ -630,19 +630,19 @@ blocking invocation. The client code you need to write is as follows.</p>
     }
 
     <span style="color: #24C113">/* Set service client options */</span>
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, &amp;env, options);    
+    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);    
 
     <span style="color: #24C113">/* Build the SOAP request message payload using OM API.*/</span>
-    payload = build_om_payload_for_echo_svc(&amp;env);
+    payload = build_om_payload_for_echo_svc(env);
     
     <span style="color: #24C113">/* Send request */</span>
-    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, &amp;env, payload);
+    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
     
     <span style="color: #24C113">/* Print result */</span>
     if(ret_node)
     {
         axis2_char_t *om_str = NULL;
-        om_str = AXIOM_NODE_TO_STRING(ret_node, &amp;env);
+        om_str = AXIOM_NODE_TO_STRING(ret_node, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
         printf("\necho client invoke SUCCESSFUL!\n");
@@ -689,7 +689,7 @@ API for users.</p>
 "Axis2CHome/samples/user_guide/clients" with the name echo_non_blocking.c.
 The changes that user may have to do with respect to the "echo_blocking"
 client to make it non-blocking would be as follows:</p>
-<pre style="margin-bottom: 0.2in">AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, &amp;env, payload, callback);</pre>
+<pre style="margin-bottom: 0.2in">AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);</pre>
 
 <p>Unlike "send_receive", "send_receive_non_blocking" accepts a callback
 struct in addition to payload. Axis2/C client API provides a callback struct
@@ -697,18 +697,18 @@ with the following associated functions:</p>
 <pre>axis2_status_t (AXIS2_CALL *
 on_complete)(
     struct axis2_callback *callback,
-    axis2_env_t **env);
+    const axis2_env_t *env);
 
 axis2_status_t (AXIS2_CALL *
 on_error)(
     struct axis2_callback *callback,
-    axis2_env_t **env,
+    const axis2_env_t *env,
     int exception);
 
 axis2_bool_t (AXIS2_CALL *
 get_complete)(
     struct axis2_callback *callback,
-    axis2_env_t **env);</pre>
+    const axis2_env_t *env);</pre>
 
 <p>The user is expected to implement the "on_complete " and "on_error "
 functions and set them on the callback using the "set_on_complete" and
@@ -751,7 +751,7 @@ clients with two transport connections. By simply using a boolean flag, the
 same API can be used to invoke Web Services (IN-OUT operations) using two
 separate transport connections. All that you have to do is to set
 "use_separate_listener" to true in options:</p>
-<pre>AXIS2_OPTIONS_SET_USE_SEPERATE_LISTENER(options, &amp;env, AXIS2_TRUE);</pre>
+<pre>AXIS2_OPTIONS_SET_USE_SEPERATE_LISTENER(options, env, AXIS2_TRUE);</pre>
 
 <p>In addition to setting the use_separate_listener to true, to use dual
 transports one has to"engage" addressing module.</p>
@@ -778,7 +778,7 @@ folder.</p>
 
 <p>The second method is to engage the module on service client using the
 service_client API.</p>
-<pre>AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, &amp;env, AXIS2_MODULE_ADDRESSING);</pre>
+<pre>AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);</pre>
 
 <p>Once addressing is engaged, echo_non_blocking_dual client would work
 perfectly. Note that by default, Axis2/C comes with addressing enabled
