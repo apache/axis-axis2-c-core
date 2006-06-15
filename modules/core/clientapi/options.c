@@ -245,7 +245,6 @@ void AXIS2_CALL
 axis2_options_set_use_seperate_listener(struct axis2_options *options,
                                       const axis2_env_t *env,
                                       axis2_bool_t use_seperate_listener);
-/*TODO:check - changed om_element to om_node*/
 void AXIS2_CALL 
 axis2_options_add_reference_parameter(struct axis2_options *options,
                             const axis2_env_t *env,
@@ -483,9 +482,6 @@ axis2_options_get_message_id(struct axis2_options *options,
    return message_id;
 }
 
-/*TODO:pointer is returned; do we need to copy to a new axis2_hash_t 
-  as java does??
-  */
 axis2_hash_t* AXIS2_CALL 
 axis2_options_get_properties(struct axis2_options *options,
                              const axis2_env_t *env)
@@ -617,7 +613,6 @@ axis2_options_get_soap_version_uri(struct axis2_options *options,
    {
       return options_impl->soap_version_uri;
    }
-   /**TODO:java returns 11- isn't the default is 12?*/
    return AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI; 
 
 }
