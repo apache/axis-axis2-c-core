@@ -84,6 +84,23 @@ AC_ARG_WITH(axis2_util,
   AC_MSG_RESULT(no)
 )
 
+AC_MSG_CHECKING(whether to build tests)
+AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
+[ case "${enableval}" in
+  no)
+	AC_MSG_RESULT(no)
+        TESTDIR=""
+	;;
+	*)
+	AC_MSG_RESULT(yes)
+	TESTDIR="test"
+
+	;;
+	esac ],
+	AC_MSG_RESULT(yes)
+	TESTDIR="test"
+)
+
 UTILINC=$axis2_utilinc
 AXIOMINC=$axiominc
 
