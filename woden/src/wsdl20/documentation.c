@@ -178,6 +178,12 @@ create(
     documentation_impl->f_content = NULL;
     documentation_impl->methods = NULL;
     
+    documentation_impl->documentation.base.documentation_element.ops = NULL; 
+    documentation_impl->documentation.base.wsdl_element.base.attr_extensible.
+        ops = NULL; 
+    documentation_impl->documentation.base.wsdl_element.base.element_extensible.
+        ops = NULL; 
+   
     documentation_impl->documentation.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_documentation_ops_t));
 

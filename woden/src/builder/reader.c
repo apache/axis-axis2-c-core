@@ -2618,9 +2618,9 @@ parse_binding_fault_ref(
     void *fault_ref = NULL;
     axis2_char_t *ref = NULL;
     axis2_char_t *msg_label_str = NULL;
-    axiom_element_t *fault_ref_el;
-    axiom_element_t *temp_el;
-    axiom_node_t *temp_el_node;
+    axiom_element_t *fault_ref_el = NULL;
+    axiom_element_t *temp_el = NULL;
+    axiom_node_t *temp_el_node = NULL;
     axis2_qname_t *attr_ref = NULL;
     axis2_qname_t *ref_qn = NULL;
     axis2_qname_t *qref = NULL;
@@ -2633,6 +2633,7 @@ parse_binding_fault_ref(
     fault_ref = woden_binding_op_to_nested_element(fault_ref, env);
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(fault_ref, env, parent); 
 
+    fault_ref_el = AXIOM_NODE_GET_DATA_ELEMENT(fault_ref_el_node, env);
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
     ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, WODEN_ATTR_REF);
     
@@ -3616,6 +3617,13 @@ parse_ext_attributes(
 
     om_el = AXIOM_NODE_GET_DATA_ELEMENT(om_el_node, env);
     node_map = AXIOM_ELEMENT_GET_ALL_ATTRIBUTES(om_el, env);
+    if(!node_map)
+    {
+        /* If no error condition occured then this will return
+         * AXIS2_SUCCESS as default
+         */
+        return AXIS2_ERROR_GET_STATUS_CODE(env->error);
+    }
     for (index = axis2_hash_first (node_map, env); index; index = 
             axis2_hash_next(env, index))
     {
