@@ -9,6 +9,7 @@ EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE samples/server/axis2.log sample
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
 	rm -rf `find $(distdir)/ -type d -name .deps`
+	sh dist.sh
 
 bindist: $(bin_PROGRAMS)
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux

@@ -20,3 +20,5 @@ echo_LDADD   = $(LDFLAGS) \
 INCLUDES = -I$(AXIS2C_HOME)/include \
 			@UTILINC@ \
 			@AXIOMINC@
+
+EXTRA_DIST = README.txt

@@ -118,6 +118,7 @@ AC_SUBST(XMLSCHEMAINC)
 
 AC_CONFIG_FILES([Makefile \
     src/Makefile \
+    src/data/Makefile \
     src/handlers/Makefile \
     src/core/Makefile\
     src/util/Makefile\

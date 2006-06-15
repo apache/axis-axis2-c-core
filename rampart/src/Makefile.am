@@ -1,1 +1,1 @@
-SUBDIRS = handlers util core
+SUBDIRS = handlers util core data
