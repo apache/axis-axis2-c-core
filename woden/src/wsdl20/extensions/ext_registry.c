@@ -226,7 +226,13 @@ woden_ext_registry_create(
             woden_ext_registry_query_component_ext;
     registry_impl->registry.ops->query_component_ext_namespaces = 
             woden_ext_registry_query_component_ext_namespaces;
-
+    
+    registry_impl->ext_attr_reg = axis2_hash_make(env);
+    if(!registry_impl->ext_attr_reg)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     woden_ext_registry_populate(&(registry_impl->registry), env);
     
     return &(registry_impl->registry);
