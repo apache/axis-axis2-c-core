@@ -48,3 +48,6 @@ INCLUDES = -I$(top_builddir)/include \
 			@AXIOMINC@ \
 			@UTILINC@ \
 			@XMLSCHEMAINC@
+
+EXTRA_DIST = woden_constants.h
+

@@ -10,3 +10,6 @@ INCLUDES = -I$(top_builddir)/include \
 			@AXIOMINC@ \
 			@UTILINC@ \
 			@XMLSCHEMAINC@
+
+EXTRA_DIST = woden_component_model_builder.h  woden_om_util.h
+
