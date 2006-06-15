@@ -711,7 +711,7 @@ parse_desc(
     }
     desc = woden_desc_to_attr_extensible(desc, env); 
     status = parse_ext_attributes(reader, env, desc_el_node, "description_element", desc, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     /* Parse the child elements */
@@ -889,7 +889,7 @@ parse_documentation(
             env);
     status = parse_ext_attributes(reader, env, doc_el_node, "documentation_element", 
             documentation, desc); 
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
 
     doc_el = AXIOM_NODE_GET_DATA_ELEMENT(doc_el_node, env);
@@ -937,7 +937,7 @@ parse_import(
   
     imp = woden_import_to_attr_extensible(imp, env);
     status = parse_ext_attributes(reader, env, import_el_node, "import_element", imp, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
 
     if(NULL != namespc_uri) 
@@ -989,7 +989,7 @@ parse_include(
     include = woden_include_to_attr_extensible(include, env);
     status = parse_ext_attributes(reader, env, include_el_node, "include_element", 
             include, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
 
     if(NULL != location_uri)
@@ -1036,7 +1036,7 @@ parse_types(
     types = woden_types_to_attr_extensible(types, env); 
     status = parse_ext_attributes(reader, env, types_el_node, "types_element", 
             types, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     types_el = AXIOM_NODE_GET_DATA_ELEMENT(types_el_node, env);
@@ -1355,7 +1355,7 @@ parse_interface(
     intface = woden_interface_to_attr_extensible(intface, env);
     status = parse_ext_attributes(reader, env, interface_el_node, "interface_element", 
             intface, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     /* Parse the child elements of <interface>. 
@@ -1509,7 +1509,7 @@ parse_interface_fault(
     fault = woden_interface_fault_to_attr_extensible(fault, env);
     status = parse_ext_attributes(reader, env, fault_el_node, "interface_fault_element", 
             fault, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     temp_el = axiom_util_get_first_child_element(fault_el, env, fault_el_node, 
@@ -1643,7 +1643,7 @@ parse_interface_op(
     op = woden_interface_op_to_attr_extensible(op, env);
     status = parse_ext_attributes(reader, env, op_el_node, "interface_op_element", 
             op, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     /* Parse the child elements of interface <operation>. 
@@ -1862,7 +1862,7 @@ parse_interface_fault_ref(
     fault_ref = woden_interface_fault_ref_to_attr_extensible(fault_ref, env);
     status = parse_ext_attributes(reader, env, fault_ref_el_node, "interface_fault_ref_element", 
             fault_ref, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     temp_el = axiom_util_get_first_child_element(fault_ref_el, env, fault_ref_el_node, 
@@ -2097,7 +2097,7 @@ parse_interface_msg_ref(
     msg_ref = woden_interface_msg_ref_to_attr_extensible(msg_ref, env); 
     status = parse_ext_attributes(reader, env, msg_ref_el_node, "interface_msg_ref_element", 
             msg_ref, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     temp_el = axiom_util_get_first_child_element(msg_ref_el, env, msg_ref_el_node, 
@@ -2243,7 +2243,7 @@ parse_binding(
     binding = woden_binding_to_attr_extensible(binding, env);
     status = parse_ext_attributes(reader, env, binding_el_node, "binding_element", 
             binding, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     /* Parse the child elements of <binding>. 
@@ -2402,7 +2402,7 @@ parse_binding_fault(
     fault = woden_binding_fault_to_attr_extensible(fault, env);
     status = parse_ext_attributes(reader, env, fault_el_node, "binding_fault_element", 
             fault, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     temp_el = axiom_util_get_first_child_element(fault_el, env, fault_el_node, 
@@ -2530,7 +2530,7 @@ parse_binding_op(
     op = woden_binding_op_to_attr_extensible(op, env);
     status = parse_ext_attributes(reader, env, op_el_node, "binding_op_element", 
             op, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     /* Parse the child elements of binding <operation>. 
@@ -2793,7 +2793,7 @@ parse_binding_fault_ref(
     fault_ref = woden_binding_fault_ref_to_attr_extensible(fault_ref, env);
     status = parse_ext_attributes(reader, env, fault_ref_el_node, "binding_fault_ref_element", 
             fault_ref, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     temp_el = axiom_util_get_first_child_element(fault_ref_el, env, fault_ref_el_node, 
@@ -3032,7 +3032,7 @@ parse_binding_msg_ref(
     msg_ref = woden_binding_msg_ref_to_attr_extensible(msg_ref, env);
     status = parse_ext_attributes(reader, env, msg_ref_el_node, "binding_msg_ref_element", 
             msg_ref, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
 
     /* Parse the child elements of binding operation <input> or <output>. 
@@ -3173,7 +3173,7 @@ parse_svc(
     svc = woden_svc_to_attr_extensible(svc, env); 
     status = parse_ext_attributes(reader, env, svc_el_node, "svc_element", 
             svc, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     /* Parse the child elements of <service>. 
@@ -3335,7 +3335,7 @@ parse_endpoint(
     endpoint = woden_endpoint_to_attr_extensible(endpoint, env); 
     status = parse_ext_attributes(reader, env, endpoint_el_node, "endpoint_element", 
             endpoint, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     /* Parse the child elements of <endpoint>. 
@@ -3454,7 +3454,7 @@ parse_feature(
     feature = woden_feature_to_attr_extensible(feature, env); 
     status = parse_ext_attributes(reader, env, feature_el_node, "feature_element", 
             feature, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     /* Parse the child elements of <feature>. 
@@ -3561,7 +3561,7 @@ parse_property(
     property = woden_property_to_attr_extensible(property, env); 
     status = parse_ext_attributes(reader, env, property_el_node, "property_element", 
             property, desc);
-    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         return NULL;
     
     temp_el = axiom_util_get_first_child_element(property_el, env, property_el_node, 
