@@ -8,13 +8,13 @@ Key features
     1. PlainText password
     2. Digested password
 
-2. Support for callback mechanism
-3. Ability to send Timestamp tokens
+2. Ability to send Timestamp tokens
+3. Support for callback mechanism
 4. Support for both dynamic and static configurations.
 
 Un-Implemented Architecture Features 
 ------------------------------------
-1. Timestamptoken verification
+1. Timestamp token verification
 2. Support for Signing and Encrypting messages
 
 

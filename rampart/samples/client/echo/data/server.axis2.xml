@@ -18,6 +18,16 @@
         <port>5555</port>
     </hostConfiguration>
 
+    <parameter name="OutflowSecurity">
+      <action>
+        <items>UsernameToken  Timestamp</items>
+        <user>Kau</user>
+        <passwordType>passwordText</passwordType>
+        <passwordCallbackClass>/home/kau/axis2/c/rampart/target/libpwcb.so</passwordCallbackClass>
+      </action>
+    </parameter>
+
+
     <parameter name="InflowSecurity">
       <action>
         <items>UsernameToken Timestamp</items>

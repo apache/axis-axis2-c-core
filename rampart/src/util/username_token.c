@@ -128,8 +128,12 @@ rampart_build_username_token(const axis2_env_t *env,
     username = rampart_get_action_params(env, ctx, param_action, RAMPART_USER);
     password_type= rampart_get_action_params(env, ctx, param_action, RAMPART_PASSWORD_TYPE);
 
-    /*Override static configs with dynamic values*/     
     password = rampart_get_password(env, ctx, param_action);
+    
+    if(!password)
+    {
+        return NULL;
+    }   
     
     if(rampart_get_value(env, ctx,RAMPART_USER))    
         username = rampart_get_value(env, ctx,RAMPART_USER);

@@ -9,6 +9,9 @@ This can be done using the following command sequence:
 
 Engage rampart with axis2/C
 ==================================
+Prerequisites
+-----------------------------------
+You must have openssl installed in you system.
 
 Configuring:
 -----------------------------------

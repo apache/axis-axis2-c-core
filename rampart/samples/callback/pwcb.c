@@ -10,7 +10,6 @@
 axis2_char_t* get_sample_password(rampart_callback_t *rcb,
             const axis2_env_t *env, const axis2_char_t *username)
 {
-    printf("\nget_sample_password for [%s]", username);
     axis2_char_t * pw = NULL;
     if(0 == AXIS2_STRCMP(username, "Kau"))
     {
@@ -18,7 +17,6 @@ axis2_char_t* get_sample_password(rampart_callback_t *rcb,
     }else if(0 == AXIS2_STRCMP(username, "TinTin")){
         pw = "TinTinPW";
     }else{
-        printf("\nWho is this? [%s]", username);
     }
     return pw;
 };
@@ -31,7 +29,6 @@ AXIS2_EXPORT int
 axis2_get_instance(rampart_callback_t **inst,
                    const axis2_env_t *env)
 {
-    printf("\naxis2_get_instance");
     rampart_callback_t* rcb = NULL;
 
     rcb = AXIS2_MALLOC(env->allocator,

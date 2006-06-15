@@ -196,10 +196,14 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
                 if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN , AXIS2_STRTRIM(env, item, NULL)))
                 {
                     sec_node = rampart_build_username_token(env, ctx, param_action,  sec_node, sec_ns_obj);
+                    if(!sec_node)
+                          return AXIS2_FAILURE;
     
                 }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, AXIS2_STRTRIM(env, item, NULL)))
                 {
                     sec_node = rampart_build_timestamp_token(env, ctx, sec_node, sec_ns_obj, 300);
+                    if(!sec_node)
+                          return AXIS2_FAILURE;
                 }else
                 {
                     rampart_print_info(env," Rampart happy to see usernametokens and timestamps at the moment");

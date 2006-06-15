@@ -27,7 +27,18 @@
         <passwordCallbackClass>/home/kau/axis2/c/rampart/target/libpwcb.so</passwordCallbackClass>
       </action>
     </parameter>
+
+
+    <parameter name="InflowSecurity">
+      <action>
+        <items>UsernameToken Timestamp</items>
+        <passwordCallbackClass>/home/kau/axis2/c/rampart/target/libpwcb.so</passwordCallbackClass>
+      </action>
+    </parameter>
+
+
     <!--Rampart client configuration END -->
+
 
 
     <!--if you want to extract the service archive file and work with that please uncomment this-->
