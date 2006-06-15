@@ -59,9 +59,15 @@ int main(int argc, char *argv[])
     axis2_env_t *env = NULL;
     axis2_char_t *filename = NULL;
     if(argc > 1)
+    {
         filename = argv[1];
+        printf("filename:%s\n", filename);
+    }
     else
+    {
+        printf("Give an XML schema file as the first argument\n");
         return 0;        
+    }
     env = axis2_env_create_all("test.log", 1);   
     xml_schema_test(env, filename);
     return 0;
