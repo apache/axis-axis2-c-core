@@ -22,3 +22,4 @@ INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
             @UTILINC@
 
+EXTRA_DIST = xml_schema_test.h
