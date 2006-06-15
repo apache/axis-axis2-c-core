@@ -112,7 +112,7 @@
 #include <axiom_text.h>
 #include <axiom_document.h>
 #include <axiom_stax_builder.h>
-#include <axiom_reader.h>
+#include <axiom_xml_reader.h>
 #include <axiom_util.h>
 #include <axis2_utils.h>
 #include <axis2_generic_obj.h>
@@ -1244,7 +1244,7 @@ parse_schema_import(
     {
         /* Not previously imported, so retrieve it now. */
         xml_schema_collection_t *schema_col = NULL;
-        axiom_reader_t *xml_reader = NULL;
+        axiom_xml_reader_t *xml_reader = NULL;
         axiom_document_t *imported_schema_doc = NULL;
         axiom_stax_builder_t *xml_builder = NULL;
 
@@ -1252,7 +1252,7 @@ parse_schema_import(
         /* TODO Temporarily assume that imported schemas are stored as files
          * with the url as file name
          */
-        xml_reader = axiom_reader_create_for_file(env, schema_uri, NULL);
+        xml_reader = axiom_xml_reader_create_for_file(env, schema_uri, NULL);
         xml_builder = axiom_stax_builder_create(env, reader);
         imported_schema_doc = axiom_document_create(env, NULL, xml_builder);
         schema_def = XML_SCHEMA_COLLECTION_READ_DOCUMENT(schema_col, 
@@ -3863,7 +3863,7 @@ get_wsdl_from_location(
         axis2_qname_t *qname = NULL;
 
         schema_col = xml_schema_collection_create(env);
-        xml_reader = axiom_reader_create_for_file(env, location_str, NULL);
+        xml_reader = axiom_xml_reader_create_for_file(env, location_str, NULL);
         builder = axiom_stax_builder_create(env, xml_reader);
         doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(builder, env);
         doc_el_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(doc, env); 

@@ -18,7 +18,7 @@
 #include "axiom_node_internal.h"
 #include <axiom_attribute.h>
 #include <axiom_namespace.h>
-#include <axiom_writer.h>
+#include <axiom_xml_writer.h>
 #include <axiom_stax_builder.h>
 #include <string.h>
 #include <stdio.h>
@@ -1438,12 +1438,12 @@ axiom_element_to_string(axiom_element_t *om_element,
 {
     int status = AXIS2_SUCCESS;
     axiom_output_t *om_output = NULL;
-    axiom_writer_t *xml_writer = NULL;
+    axiom_xml_writer_t *xml_writer = NULL;
     axis2_char_t *xml = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, element_node, NULL);    
     
-    xml_writer = axiom_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
                AXIS2_XML_PARSER_TYPE_BUFFER);
     if(!xml_writer)
         return NULL;
@@ -1455,7 +1455,7 @@ axiom_element_to_string(axiom_element_t *om_element,
     status = AXIOM_NODE_SERIALIZE(element_node, env, om_output);
     if(status == AXIS2_SUCCESS)
     {
-        xml = (axis2_char_t*)AXIOM_WRITER_GET_XML(xml_writer, env);
+        xml = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env);
     }
     AXIOM_OUTPUT_FREE(om_output, env);
     return xml;                

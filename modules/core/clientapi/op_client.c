@@ -22,7 +22,7 @@
 #include "listener_manager.h"
 #include <axis2_engine.h>
 #include "callback_recv.h"
-#include <axiom_reader.h>
+#include <axiom_xml_reader.h>
 
 typedef struct axis2_op_client_impl
 {
@@ -185,7 +185,7 @@ axis2_op_client_create(const axis2_env_t *env, axis2_op_t *op,
 
    axis2_op_client_init_ops(&(op_client_impl->op_client));
     /** initialize parser for thread safty */
-    axiom_reader_init();
+    axiom_xml_reader_init();
    return &(op_client_impl->op_client);
 }
 
@@ -590,7 +590,7 @@ axis2_op_client_free(struct axis2_op_client *op_client,
 
     AXIS2_FREE(env->allocator, op_client_impl);
     op_client_impl = NULL;
-    axiom_reader_cleanup();
+    axiom_xml_reader_cleanup();
    return AXIS2_SUCCESS;
 }
 /** private functions - implementation */

@@ -373,8 +373,8 @@ axiom_soap_builder_next(axiom_soap_builder_t *builder,
         builder_impl->done = AXIS2_TRUE;
         return AXIS2_FAILURE;
     }
-    if(current_event == AXIOM_READER_EMPTY_ELEMENT ||
-        current_event ==  AXIOM_READER_START_ELEMENT)
+    if(current_event == AXIOM_XML_READER_EMPTY_ELEMENT ||
+        current_event ==  AXIOM_XML_READER_START_ELEMENT)
     {
       current_node = axiom_stax_builder_get_lastnode(builder_impl->om_builder, env);
       if(current_node) 
@@ -433,7 +433,7 @@ axiom_soap_builder_create_om_element
        
        element_level = axiom_stax_builder_get_element_level(
                         builder_impl->om_builder, env);
-       if(parent_node && element_level == 1 && current_event == AXIOM_READER_EMPTY_ELEMENT)
+       if(parent_node && element_level == 1 && current_event == AXIOM_XML_READER_EMPTY_ELEMENT)
        {
            ret_val = axiom_soap_builder_construct_node_for_empty_element(builder, env, parent_node , current_node);
        }

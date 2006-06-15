@@ -20,7 +20,7 @@
 #include <axis2_endpoint_ref.h>
 #include <axis2_svc_client.h>
 #include <axis2_options.h>
-#include <axiom_reader.h>
+#include <axiom_xml_reader.h>
 #include <axis2_property.h>
 
 

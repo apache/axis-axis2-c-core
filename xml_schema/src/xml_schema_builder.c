@@ -4036,7 +4036,7 @@ resolve_xml_schema_with_uri(
         axis2_char_t *schema_location,
         axis2_char_t *base_uri)
 {
-    axiom_reader_t *xml_reader = NULL;
+    axiom_xml_reader_t *xml_reader = NULL;
     axiom_document_t *om_doc = NULL;
     axiom_stax_builder_t *om_builder = NULL;
     xml_schema_t *schema = NULL;
@@ -4070,7 +4070,7 @@ resolve_xml_schema_with_uri(
         return schema;
     }
 
-    xml_reader = axiom_reader_create_for_file(env, system_id, NULL);
+    xml_reader = axiom_xml_reader_create_for_file(env, system_id, NULL);
     if(!xml_reader)
         return NULL;        
     om_builder = axiom_stax_builder_create(env, xml_reader);

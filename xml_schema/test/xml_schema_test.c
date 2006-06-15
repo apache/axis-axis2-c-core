@@ -487,7 +487,7 @@ void test_local_unnamed_simple_type(CuTest *tc)
     xml_schema_collection_t *sch_collection = NULL;
     xml_schema_t *schema = NULL;
     axis2_char_t *xml = NULL;
-    axiom_reader_t *reader = NULL;
+    axiom_xml_reader_t *reader = NULL;
     axiom_stax_builder_t *builder = NULL;
     
     xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" 
@@ -513,7 +513,7 @@ void test_local_unnamed_simple_type(CuTest *tc)
     
     env = axis2_env_create_all("test.log", 1);
     
-    reader = axiom_reader_create_for_memory(env, xml, AXIS2_STRLEN(xml), NULL,
+    reader = axiom_xml_reader_create_for_memory(env, xml, AXIS2_STRLEN(xml), NULL,
         AXIS2_XML_PARSER_TYPE_BUFFER);
 
     builder = axiom_stax_builder_create(env, reader);
@@ -643,10 +643,10 @@ static axiom_document_t*
 get_document_from_filename(const axis2_env_t *env, 
                                axis2_char_t *filename)
 {
-    axiom_reader_t *reader = NULL;
+    axiom_xml_reader_t *reader = NULL;
     axiom_stax_builder_t *om_builder = NULL;
     axiom_document_t *doc   = NULL;
-    reader = axiom_reader_create_for_file(env, filename, NULL);
+    reader = axiom_xml_reader_create_for_file(env, filename, NULL);
     om_builder = axiom_stax_builder_create(env, reader);
     doc = axiom_document_create(env, NULL, om_builder); 
     AXIOM_DOCUMENT_BUILD_ALL(doc, env);

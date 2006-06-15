@@ -265,7 +265,7 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
                 const axis2_env_t *env) 
 {
     axis2_desc_builder_impl_t *desc_builder_impl = NULL;
-    axiom_reader_t *reader = NULL;
+    axiom_xml_reader_t *reader = NULL;
     axiom_document_t *document = NULL;
     axiom_node_t *root = NULL;
     
@@ -279,7 +279,7 @@ axis2_build_OM(axis2_desc_builder_t *desc_builder,
         return NULL;
     }
     /** create pull parser using the file path to configuration file */
-    reader = axiom_reader_create_for_file(env, desc_builder_impl->file_name,
+    reader = axiom_xml_reader_create_for_file(env, desc_builder_impl->file_name,
         NULL);
 
     if(!reader)

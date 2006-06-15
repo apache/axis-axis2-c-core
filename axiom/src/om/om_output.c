@@ -17,7 +17,7 @@
 #include <axiom_output.h>
 #include <stdarg.h>
 #include <axis2_string.h>
-#include <axiom_writer.h>
+#include <axiom_xml_writer.h>
 #include <axiom_text.h>
 #include <axiom_soap_const.h>
 #include <axis2_array_list.h>
@@ -36,9 +36,9 @@ typedef struct axiom_output_impl_t
 {
     axiom_output_t om_output;
 
-    /** axiom_writer. any xml writer which 
-        implemet axiom_writer.h interface  */
-    axiom_writer_t *xml_writer;
+    /** axiom_xml_writer. any xml writer which 
+        implemet axiom_xml_writer.h interface  */
+    axiom_xml_writer_t *xml_writer;
 
     axis2_bool_t do_optimize;
 
@@ -122,7 +122,7 @@ axis2_bool_t AXIS2_CALL
 axiom_output_is_optimized(axiom_output_t *om_output,
                              const axis2_env_t *env);
                             
-axiom_writer_t* AXIS2_CALL
+axiom_xml_writer_t* AXIS2_CALL
 axiom_output_get_xml_writer(axiom_output_t *om_output,
                                const axis2_env_t *env);  
                                                                                           
@@ -163,7 +163,7 @@ axiom_output_write_optimized(axiom_output_t *om_output,
 
 AXIS2_EXTERN axiom_output_t * AXIS2_CALL
 axiom_output_create (const axis2_env_t *env, 
-                        axiom_writer_t *xml_writer)
+                        axiom_xml_writer_t *xml_writer)
 {
     axiom_output_impl_t *om_output_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -303,7 +303,7 @@ axiom_output_create (const axis2_env_t *env,
     
     if(NULL != om_output_impl->xml_writer)
     {
-        AXIOM_WRITER_FREE(om_output_impl->xml_writer, env);
+        AXIOM_XML_WRITER_FREE(om_output_impl->xml_writer, env);
         om_output_impl->xml_writer = NULL;
     }        
     
@@ -439,7 +439,7 @@ axiom_output_set_do_optimize
     return AXIS2_SUCCESS;    
 } 
                             
-axiom_writer_t* AXIS2_CALL
+axiom_xml_writer_t* AXIS2_CALL
 axiom_output_get_xml_writer
                             (axiom_output_t *om_output,
                             const axis2_env_t *env)
@@ -660,16 +660,16 @@ axiom_output_write (axiom_output_t * om_output,
         {
         case 0:
             status =
-                AXIOM_WRITER_WRITE_END_ELEMENT(om_output_impl->xml_writer,
+                AXIOM_XML_WRITER_WRITE_END_ELEMENT(om_output_impl->xml_writer,
                                                    env);
             break;
         case 1:
             status = 
-                AXIOM_WRITER_WRITE_START_ELEMENT(om_output_impl->xml_writer,
+                AXIOM_XML_WRITER_WRITE_START_ELEMENT(om_output_impl->xml_writer,
                                                      env, args_list[0]);
         break;
         case 2:
-            status = AXIOM_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE(
+            status = AXIOM_XML_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE(
                                                 om_output_impl->xml_writer,
                                                 env, 
                                                 args_list[0],
@@ -677,7 +677,7 @@ axiom_output_write (axiom_output_t * om_output,
         break;
         case 3:
             status = 
-                AXIOM_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE_PREFIX(
+                AXIOM_XML_WRITER_WRITE_START_ELEMENT_WITH_NAMESPACE_PREFIX(
                                                 om_output_impl->xml_writer,
                                                 env,
                                                 args_list[0],
@@ -692,13 +692,13 @@ axiom_output_write (axiom_output_t * om_output,
         {
         case 2:
             status = 
-                AXIOM_WRITER_WRITE_ATTRIBUTE(om_output_impl->xml_writer,
+                AXIOM_XML_WRITER_WRITE_ATTRIBUTE(om_output_impl->xml_writer,
                                                 env,
                                                 args_list[0],
                                                 args_list[1]);
         break;
         case 3:
-            status = AXIOM_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE(
+            status = AXIOM_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE(
                                                 om_output_impl->xml_writer,env,
                                                 args_list[0],
                                                 args_list[1],
@@ -706,7 +706,7 @@ axiom_output_write (axiom_output_t * om_output,
         break;
         case 4:
             status = 
-                AXIOM_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE_PREFIX(
+                AXIOM_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE_PREFIX(
                                                 om_output_impl->xml_writer, env,
                                                 args_list[0],
                                                 args_list[1],
@@ -719,18 +719,18 @@ axiom_output_write (axiom_output_t * om_output,
         break;
 
     case AXIOM_NAMESPACE:
-        status = AXIOM_WRITER_WRITE_NAMESPACE(om_output_impl->xml_writer,
+        status = AXIOM_XML_WRITER_WRITE_NAMESPACE(om_output_impl->xml_writer,
                                                   env,
                                                   args_list[0],
                                                   args_list[1]);
         break;
     case AXIOM_TEXT:
-        status = AXIOM_WRITER_WRITE_CHARACTERS(om_output_impl->xml_writer,
+        status = AXIOM_XML_WRITER_WRITE_CHARACTERS(om_output_impl->xml_writer,
                                                    env,
                                                    args_list[0]);
         break;
     case AXIOM_COMMENT:
-        status = AXIOM_WRITER_WRITE_COMMENT(om_output_impl->xml_writer,
+        status = AXIOM_XML_WRITER_WRITE_COMMENT(om_output_impl->xml_writer,
                                                 env,
                                                 args_list[0]);
         break;
@@ -740,13 +740,13 @@ axiom_output_write (axiom_output_t * om_output,
          case 1:
             
             status = 
-                    AXIOM_WRITER_WRITE_PROCESSING_INSTRUCTION(
+                    AXIOM_XML_WRITER_WRITE_PROCESSING_INSTRUCTION(
                                                 om_output_impl->xml_writer,
                                                 env, args_list[0]);
             break;
          case 2:
              
-            status = AXIOM_WRITER_WRITE_PROCESSING_INSTRUCTION_DATA(
+            status = AXIOM_XML_WRITER_WRITE_PROCESSING_INSTRUCTION_DATA(
                                                 om_output_impl->xml_writer, 
                                                 env, 
                                                 args_list[0], 
@@ -755,7 +755,7 @@ axiom_output_write (axiom_output_t * om_output,
         }
          break;
     case AXIOM_DOCTYPE:
-        status = AXIOM_WRITER_WRITE_DTD(om_output_impl->xml_writer, 
+        status = AXIOM_XML_WRITER_WRITE_DTD(om_output_impl->xml_writer, 
                                             env, 
                                             args_list[0]);
         break;
@@ -779,7 +779,7 @@ axiom_output_write_xml_version_encoding(axiom_output_t *om_output,
     axiom_output_impl_t *output_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     output_impl = AXIS2_INTF_TO_IMPL(om_output);
-    return AXIOM_WRITER_WRITE_START_DOCUMENT_WITH_VERSION_ENCODING(
+    return AXIOM_XML_WRITER_WRITE_START_DOCUMENT_WITH_VERSION_ENCODING(
                                 output_impl->xml_writer, 
                                 env, 
                                 output_impl->xml_version, 
@@ -803,7 +803,7 @@ axiom_output_flush(axiom_output_t *om_output,
     {
         axis2_byte_t* byte_stream = NULL;
         axis2_char_t *root_content_id = NULL;
-        axis2_char_t *buffer = (axis2_char_t*)AXIOM_WRITER_GET_XML(output_impl->xml_writer, env);
+        axis2_char_t *buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(output_impl->xml_writer, env);
         int stream_size = 0;
         if (output_impl->is_soap11)
         {

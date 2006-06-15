@@ -25,7 +25,7 @@
 #include <signal.h>
 #include <axis2_types.h>
 #include <ctype.h>
-#include <axiom_reader.h>
+#include <axiom_xml_reader.h>
 
 axis2_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
@@ -45,7 +45,7 @@ axis2_env_t* init_syetem_env(axis2_allocator_t *allocator,
     /* We need to init the parser in main thread before spawning child 
      * threads
      */
-    axiom_reader_init(); 
+    axiom_xml_reader_init(); 
    return axis2_env_create_with_error_log_thread_pool(allocator, error, log, 
                   thread_pool);
 }
@@ -63,7 +63,7 @@ void system_exit(axis2_env_t *env, int status)
       axis2_env_free(env);
    }
     axis2_allocator_free(allocator);
-    axiom_reader_cleanup();
+    axiom_xml_reader_cleanup();
    _exit(status);
 }
 

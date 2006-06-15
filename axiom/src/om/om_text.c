@@ -18,7 +18,7 @@
 #include <axiom_output.h>
 #include <axis2_string.h>
 #include "axiom_node_internal.h"
-#include <axiom_writer.h>
+#include <axiom_xml_writer.h>
 #include <axiom_output.h>
 #include <axiom_attribute.h>
 #include <axiom_namespace.h>
@@ -279,7 +279,7 @@ axiom_text_serialize (axiom_text_t *om_text,
     axiom_text_impl_t *om_text_impl = NULL;
     axis2_char_t *attribute_value = NULL;
     axis2_char_t *text = NULL;
-    axiom_writer_t *om_output_xml_writer = NULL;
+    axiom_xml_writer_t *om_output_xml_writer = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
@@ -316,7 +316,7 @@ axiom_text_serialize (axiom_text_t *om_text,
         else
         {
             text = axiom_text_get_text(om_text, env);
-            AXIOM_WRITER_WRITE_CHARACTERS(om_output_xml_writer, env, text);
+            AXIOM_XML_WRITER_WRITE_CHARACTERS(om_output_xml_writer, env, text);
         }
     }
     return status;    
@@ -506,7 +506,7 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
                         axiom_output_t *om_output, 
                         axiom_attribute_t *om_attribute)
 {
-    axiom_writer_t *xml_writer = NULL;
+    axiom_xml_writer_t *xml_writer = NULL;
     axiom_namespace_t *om_namespace = NULL;
     
     axiom_text_impl_t *om_text_impl = NULL;
@@ -517,7 +517,7 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    xml_writer = axiom_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
             AXIS2_XML_PARSER_TYPE_BUFFER);
     om_namespace = axiom_namespace_create(env, "" , "");
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
@@ -532,12 +532,12 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
         attribute_value = AXIOM_ATTRIBUTE_GET_VALUE(om_attribute, env);
         if (prefix != NULL) 
         {
-            AXIOM_WRITER_WRITE_ATTRIBUTE(xml_writer, env, attribute_local_name, attribute_value);
+            AXIOM_XML_WRITER_WRITE_ATTRIBUTE(xml_writer, env, attribute_local_name, attribute_value);
         } else {
-            AXIOM_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE(xml_writer, env, attribute_local_name, attribute_value, namespace_uri);            
+            AXIOM_XML_WRITER_WRITE_ATTRIBUTE_WITH_NAMESPACE(xml_writer, env, attribute_local_name, attribute_value, namespace_uri);            
         }
     } else {
-        AXIOM_WRITER_WRITE_ATTRIBUTE(xml_writer, env, attribute_local_name, attribute_value);
+        AXIOM_XML_WRITER_WRITE_ATTRIBUTE(xml_writer, env, attribute_local_name, attribute_value);
     }
     AXIOM_NAMESPACE_FREE(om_namespace, env);
     return AXIS2_SUCCESS;    
@@ -549,14 +549,14 @@ axiom_text_serialize_namespace(axiom_text_t *om_text,
                         const axiom_namespace_t *om_namespace, 
                         axiom_output_t *om_output)
 {
-    axiom_writer_t *xml_writer = NULL;
+    axiom_xml_writer_t *xml_writer = NULL;
     axiom_text_impl_t *om_text_impl = NULL;
     axis2_char_t *namespace_uri = NULL;
     axis2_char_t *namespace_prefix = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
-    xml_writer = axiom_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
+    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
                AXIS2_XML_PARSER_TYPE_BUFFER);
     om_namespace = axiom_namespace_create(env, "" , "");
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
@@ -565,8 +565,8 @@ axiom_text_serialize_namespace(axiom_text_t *om_text,
     {
         namespace_uri = AXIOM_NAMESPACE_GET_URI(om_text_impl->ns, env);
         namespace_prefix = AXIOM_NAMESPACE_GET_PREFIX(om_text_impl->ns, env);    
-        AXIOM_WRITER_WRITE_NAMESPACE(xml_writer, env, namespace_prefix, namespace_uri);
-        AXIOM_WRITER_SET_PREFIX(xml_writer, env, namespace_prefix, namespace_uri);  
+        AXIOM_XML_WRITER_WRITE_NAMESPACE(xml_writer, env, namespace_prefix, namespace_uri);
+        AXIOM_XML_WRITER_SET_PREFIX(xml_writer, env, namespace_prefix, namespace_uri);  
     }
     return AXIS2_SUCCESS;    
 }

@@ -38,7 +38,7 @@
 #include <axis2_param_container.h>
 #include <axis2_handler_desc.h>
 #include <axiom_attribute.h>
-#include <axiom_reader.h>
+#include <axiom_xml_reader.h>
 #include <axis2_handler_desc.h>
 #include <axis2_op.h>
 #include <axiom_children_with_specific_attribute_iterator.h>

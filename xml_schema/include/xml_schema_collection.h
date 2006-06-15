@@ -33,7 +33,7 @@
 #include <axis2_hash.h>
 #include <axis2_qname.h>
 #include <xml_schema_obj.h>
-#include <axiom_reader.h>
+#include <axiom_xml_reader.h>
 #include <axiom_document.h>
 
 #ifdef __cplusplus
@@ -83,7 +83,7 @@ struct xml_schema_collection_ops
     read_with_reader)(
             xml_schema_collection_t* collection,
             const axis2_env_t *env,
-            axiom_reader_t *reader); 
+            axiom_xml_reader_t *reader); 
 
     
     struct xml_schema *(AXIS2_CALL *

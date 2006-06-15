@@ -22,9 +22,9 @@
 #include <axis2_stream.h>
 #include <axis2_log_default.h>
 #include <axis2_error_default.h>
-#include <axiom_reader.h>
+#include <axiom_xml_reader.h>
 #include <stdio.h>
-#include <axiom_writer.h>
+#include <axiom_xml_writer.h>
 #include <axis2_env.h>
 /** 
    Define the environment related variables globaly so that they are available 
@@ -65,15 +65,15 @@ test_om_build (const char *filename)
     axiom_node_t *node1 = NULL, *node2 = NULL;
     axiom_output_t *om_output = NULL;
     axiom_namespace_t* ns = NULL;
-    axiom_reader_t *reader = NULL;
-    axiom_writer_t *writer = NULL;
+    axiom_xml_reader_t *reader = NULL;
+    axiom_xml_writer_t *writer = NULL;
     char *buffer = NULL;
     f =fopen(filename, "r");
     if(!f)
         return -1;
       
     /** create pull parser */
-     reader = axiom_reader_create_for_io(environment, read_input,NULL ,NULL, NULL);
+     reader = axiom_xml_reader_create_for_io(environment, read_input,NULL ,NULL, NULL);
     
     if(!reader)
     {
@@ -165,13 +165,13 @@ test_om_build (const char *filename)
 
     printf ("Serialize pulled document\n");
     
-    writer = axiom_writer_create_for_memory(environment, NULL, AXIS2_TRUE, 0,
+    writer = axiom_xml_writer_create_for_memory(environment, NULL, AXIS2_TRUE, 0,
                                        AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axiom_output_create (environment, writer);
 
     AXIOM_NODE_SERIALIZE (node1, environment , om_output);
     
-    buffer = (axis2_char_t*)AXIOM_WRITER_GET_XML(writer, environment);
+    buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(writer, environment);
     
     AXIOM_OUTPUT_FREE(om_output, environment);  
     if(buffer)
@@ -212,7 +212,7 @@ test_om_serialize ()
     axiom_namespace_t *ns1 = NULL, *ns2 = NULL;
     axiom_text_t *text1 = NULL;
     axiom_output_t *om_output = NULL;
-    axiom_writer_t *writer = NULL;
+    axiom_xml_writer_t *writer = NULL;
     axis2_char_t *output_buffer = NULL;
 
     ns1 =
@@ -245,7 +245,7 @@ test_om_serialize ()
     
    
     /* serializing stuff */
-    writer = axiom_writer_create_for_memory(environment, NULL, AXIS2_TRUE, 0,
+    writer = axiom_xml_writer_create_for_memory(environment, NULL, AXIS2_TRUE, 0,
                                     AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axiom_output_create (environment, writer);
 
@@ -261,7 +261,7 @@ test_om_serialize ()
     /* end serializing stuff */
 
      AXIOM_NODE_FREE_TREE(node1,environment);
-     output_buffer = (axis2_char_t*)AXIOM_WRITER_GET_XML(writer, environment);
+     output_buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(writer, environment);
      
      AXIOM_OUTPUT_FREE(om_output, environment);
      if(output_buffer)
