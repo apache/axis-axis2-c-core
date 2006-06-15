@@ -509,6 +509,8 @@ xml_schema_collection_read_element_with_uri(
     xml_schema_collection_impl_t *collection_impl = NULL;
     
     AXIS2_PARAM_CHECK(env->error, node, NULL);
+    collection_impl = AXIS2_INTF_TO_IMPL(collection);
+    
     sch_builder = xml_schema_builder_create(env, collection);
     if(!sch_builder)
         return NULL;
