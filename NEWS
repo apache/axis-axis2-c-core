@@ -1,61 +1,51 @@
-We are pleased to announce the release of Apache Axis2/C version 0.91.
+We are pleased to announce the release of Apache Axis2/C version 0.92.
 You can download this release from
 http://ws.apache.org/axis2/c/download.cgi
 
 Key Features
 
-  1. AXIOM, an XML object model optimized for SOAP 1.1/1.2 messages.
-This has complete XML infoset support.
-  2. Support for One-Way Messaging (In-Only) and Request Response
-Messaging (In-Out)
-  3. Module architecture, mechanism to extend the SOAP processing model
-  4. Context hierarchy
-  5. Directory based deployment model
-  6. Raw XML providers
-  7. WS-Addressing, both the submission (2004/08) and final (2005/08)
-versions
-  8. Transports: HTTP
-         * Both simple axis server and Apache2 httpd module
-         * SSL client transport - New
-  9. Service Groups - New
- 10. Service client and operation client APIs - New
- 11. REST support (POST case) - New
- 12. Module version support - New
- 13. MTOM support - New
+   1. AXIOM, an XML object model optimized for SOAP 1.1/1.2 Messages. This has complete XML infoset support.
+   2. Support for One-Way Messaging (In-Only) and Request Response Messaging (In-Out)
+   3. Module Architecture, mechanism to extend the SOAP processing model
+   4. Context hierarchy
+   5. Directory based deployment model
+   6. Raw XML providers
+   7. WS-Addressing, both the submission (2004/08) and final (2005/08) versions
+   8. Transports supports: HTTP
+            * Both simple axis server and Apache2 httpd module o SSL client transport
+   9. Service Groups
+  10. Service client and operation client APIs
+  11. REST support (POST case)
+  12. Module version support
+  13. Archive based deployment Model
+  14. MTOM support
+  15. WSDL Code Generation Tool for Stub and skeletons (based on Java tool) New
+            * Axis Data Binding - ADB New
+  16. Security module, usernameToken support New
 
-Other notes
+Major Changes Since Last Release
 
-  1. Interoperability tested with Axis2/Java for XML in/out client and
-services
-  2. Addressing 1.0 interoperability
-
-Major changes since last release
-
-  1. Full Addressing 1.0 support
-  2. Improved fault handling model
-  3. SSL client transport
-  4. MTOM implementation
-  5. Implementation of easy to use service client and operation client
-APIs for client side programming
-  6. REST support (POST case)
-  7. Module version support
-  8. Service groups
-  9. Numerous bug fixes since last release
+   1. Completed MTOM implementation with multiple attachment support and non-optimized case
+   2. Completed service client API with send robust and fire and forget
+   3. Added "message" to description hierarchy
+   4. Archive based deployment Model (for services and modules)
+   5. Code generation for WSDL using Java WSDL2Code tool
+   6. ADB support (with Java WSDL2Code tool)
+   7. Changed double pointer environment parameters into pointer parameters to improve efficiency
 
 Un-Implemented Architecture Features (TBD in 1.0)
 
-  1. Sessions scoping for application, SOAP, transport and request levels
-  2. Different character encoding support
-  3. Dynamic invocation
-  4. Archive based deployment Model
+   1. Sessions scoping for Application, SOAP, Transport and Request levels
+   2. Different character encoding support
+   3. REST (REpresentational State Transfer) Support (GET case)
+   4. Dynamic client invocation (given a WSDL, consume services dynamically)
 
 Un-Implemented Architecture Features (TBD post 1.0)
 
-  1. WSDL code generation tool for stub and skeletons (based on Java tool)
-  2. Security module
-  3. REST (REpresentational State Transfer) support (GET case)
-  4. Web Services policy support
-  5. Axis2 Web application (Web App)
+   1. Security module with encryption and signing
+   2. Server side Web Service Policy support
+   3. C2WSDL
+   4. WSDL2C
 
 We welcome your early feedback on this implementation.
 Thanks for your interest in Axis2C
