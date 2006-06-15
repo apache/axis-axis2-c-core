@@ -270,7 +270,6 @@ AC_CONFIG_FILES([Makefile \
     test/core/description/Makefile \
     test/core/deployment/Makefile \
     test/core/context/Makefile \
-    test/core/clientapi/Makefile \
     test/core/engine/Makefile \
     test/core/addr/Makefile \
     test/unit/Makefile \
