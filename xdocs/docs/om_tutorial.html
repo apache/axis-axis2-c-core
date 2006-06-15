@@ -195,9 +195,9 @@ to axis2_env_create_with_error_log() function.</p>
 ANSI C complient. Further, platform dependent funtions are also
 abstracted.</p>
 
-<p>As a rule of thumb, all "create" functions take a double pointer to the
+<p>As a rule of thumb, all "create" functions take a pointer to the
 environment as its first argument and all other functions take pointer to
-'this' struct as the first argument and a double pointer to environment as
+'this' struct as the first argument and a pointer to the environment as
 the second argument. (Please refer to our coding convention page to learn
 more about this)</p>
 
@@ -209,12 +209,10 @@ more about this)</p>
 
 <p>node = axiom_node_create(env);</p>
 
-<p>Note that 'env' is a double pointer to the environment struct.</p>
-
 <p>child = AXIOM_NODE_GET_FIRST_CHILD(node, env);</p>
 
-<p>Note that we are parsing the node (pointer to om_node_t ) as the first
-argument and double pointer to environment.</p>
+<p>Note that we are passing the node (pointer to axiom_node_t ) as the first
+argument and the pointer to the environment as the second.</p>
 
 <p></p>
 
@@ -315,7 +313,7 @@ builder.</p>
 
 <p>The SOAP struct hierarchy is made in the most natural way for a
 programmer. It acts as a wrapper layer on top of OM implementation. The SOAP
-structs wraps the correspoding om_node_t structs to store information in
+structs wraps the correspoding axiom_node_t structs to store information in
 xml.</p>
 <!--  The following illustration of the actual class diagram will be helpful in understanding this.
 Need an image here -->
@@ -333,13 +331,13 @@ The following are the most important in adding nodes.</p>
 <p>Add child operation</p>
 <pre class="code">axis2_status_t
 axiom_node_add_child( axiom_node_t *om_node,  
-                         axis2_env_t **env, 
+                         const axis2_env_t *env, 
                          axiom_node_t *child_node);</pre>
 
 <p>Detach operation</p>
 <pre class="code">axiom_node_t*
 axiom_node_detach (axiom_node_t *om_node, 
-                      axis2_env_t **env);</pre>
+                      const axis2_env_t *env);</pre>
 
 <p>The detach operation resets the links and remove a node from om
 structure.</p>
@@ -390,26 +388,26 @@ handle namespaces.</p>
 </div>
 <pre class="code">axiom_namespace_t* 
 axiom_element_declare_namespace(axiom_element_t *om_ele,  
-                                   axis2_env_t **env, 
+                                   const axis2_env_t *env, 
                                    axiom_node_t *om_node, 
                                    axiom_namespace_t *om_ns);
 
 axiom_namespace_t* 
 axiom_element_find_namespace(axiom_element_t *om_ele,
-                                axis2_env_t **env, 
+                                const axis2_env_t *env, 
                                 axiom_node_t *om_node, 
                                 axis2_char_t *uri, 
                                 axis2_char_t *prefix);
 
 axiom_namespace_t*
 axiom_element_find_declared_namespace(axiom_element_t *om_element,
-                                         axis2_env_t **env,
+                                         const axis2_env_t *env,
                                          axis2_char_t *uri,
                                          axis2_char_t *prefix);
 
 axis2_status_t
 axiom_element_set_namespace(axiom_element_t *om_element,
-                               axis2_env_t **env,
+                               const axis2_env_t *env,
                                axis2_namespace_t *ns,
                                axiom_node_t *element_node);</pre>
 
@@ -596,7 +594,7 @@ AXIOM_ELEMENT_SET_TEXT(foo_ele, env, "EASY SERAILIZATION", foo_node);
 xml_output = AXIOM_ELEMENT_TO_STRING(foo_ele, env, foo_node);
 
 printf("%s", xml_output);
-AXIS2_FREE((*env)-&gt;allocator, xml_output);</pre>
+AXIS2_FREE(env-&gt;allocator, xml_output);</pre>
 
 <p>Note that freing the returned buffer is users responsibility</p>
 
@@ -660,7 +658,7 @@ is pointing */</p>
 
 <p>Therefore following will cause a double free */</p>
 
-<p>AXIS2_FREE((*env)-&gt;allocator, uri);</p>
+<p>AXIS2_FREE(env-&gt;allocator, uri);</p>
 
 <p>AXIOM_NAMESPACE_FREE(ns, env);</p>
 
@@ -792,7 +790,7 @@ build_and_serialize_om(axis2_env_t **env)
     <i>/** when om_builder is freed , the builder, om_document and the entire om structure is freed */</i>
     AXIOM_STAX_BUILDER_FREE(om_builder, env);
     
-    AXIS2_FREE((*env)-&gt;allocator, buffer);
+    AXIS2_FREE(env-&gt;allocator, buffer);
     
     <b>return</b> AXIS2_SUCCESS;
     
@@ -805,7 +803,7 @@ int main()
     axis2_allocator_t *allocator = NULL;
     env = create_environment();
 <br />
-    status = build_and_serialize_om(&amp;env);
+    status = build_and_serialize_om(env);
 
     <b>if</b>(status == AXIS2_FAILURE)
     {
