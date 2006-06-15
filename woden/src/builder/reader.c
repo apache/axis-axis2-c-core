@@ -633,6 +633,7 @@ parse_desc(
     axiom_element_t *schema_elem = NULL;
     axiom_node_t *schema_elem_node = NULL;
     axiom_namespace_t *schema_ns = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, document_base_uri, NULL);
@@ -709,7 +710,9 @@ parse_desc(
 
     }
     desc = woden_desc_to_attr_extensible(desc, env); 
-    parse_ext_attributes(reader, env, desc_el_node, "description_element", desc, desc);
+    status = parse_ext_attributes(reader, env, desc_el_node, "description_element", desc, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     /* Parse the child elements */
     temp_el = axiom_util_get_first_child_element(desc_el, env, desc_el_node, 
@@ -739,6 +742,7 @@ parse_desc(
             void *documentation = NULL;
 
             documentation = parse_documentation(reader, env, temp_el_node, desc);
+            
             desc = woden_desc_to_documentable(desc, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(desc, env, documentation);
         }
@@ -869,6 +873,7 @@ parse_documentation(
     axiom_element_t *doc_el = NULL;
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     desc = woden_desc_to_desc_element(desc, env);
     documentation = WODEN_DESC_ELEMENT_CREATE_DOCUMENTATION_ELEMENT(desc, 
@@ -882,8 +887,10 @@ parse_documentation(
     /* Now parse any extensibility attributes or elements */
     documentation = woden_documentation_to_attr_extensible(documentation, 
             env);
-    parse_ext_attributes(reader, env, doc_el_node, "documentation_element", 
+    status = parse_ext_attributes(reader, env, doc_el_node, "documentation_element", 
             documentation, desc); 
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
 
     doc_el = AXIOM_NODE_GET_DATA_ELEMENT(doc_el_node, env);
     temp_el = axiom_util_get_first_child_element(doc_el, env, doc_el_node, 
@@ -918,6 +925,7 @@ parse_import(
     axiom_element_t *import_el = NULL;
     axis2_char_t *namespc_uri = NULL;
     axis2_char_t *location_uri = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     imp = WODEN_DESC_ELEMENT_CREATE_IMPORT_ELEMENT(desc, env);
     import_el = AXIOM_NODE_GET_DATA_ELEMENT(import_el_node, env);
@@ -928,7 +936,9 @@ parse_import(
             WODEN_ATTR_LOCATION); 
   
     imp = woden_import_to_attr_extensible(imp, env);
-    parse_ext_attributes(reader, env, import_el_node, "import_element", imp, desc);
+    status = parse_ext_attributes(reader, env, import_el_node, "import_element", imp, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
 
     if(NULL != namespc_uri) 
     {
@@ -968,6 +978,7 @@ parse_include(
     void *include = NULL;
     axiom_element_t *include_el = NULL;
     axis2_char_t *location_uri = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     include = WODEN_DESC_ELEMENT_CREATE_INCLUDE_ELEMENT(desc, env);
     include_el = AXIOM_NODE_GET_DATA_ELEMENT(include_el_node, env);
@@ -976,8 +987,10 @@ parse_include(
             WODEN_ATTR_LOCATION); 
   
     include = woden_include_to_attr_extensible(include, env);
-    parse_ext_attributes(reader, env, include_el_node, "include_element", 
+    status = parse_ext_attributes(reader, env, include_el_node, "include_element", 
             include, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
 
     if(NULL != location_uri)
     {
@@ -1013,6 +1026,7 @@ parse_types(
     axiom_element_t *types_el = NULL;
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     desc = woden_desc_to_desc_element(desc, env);
     types = WODEN_DESC_ELEMENT_CREATE_TYPES_ELEMENT(desc, env);
@@ -1020,8 +1034,10 @@ parse_types(
     WODEN_TYPES_ELEMENT_SET_TYPE_SYSTEM(types, env, WODEN_TYPE_XSD_2001);
  
     types = woden_types_to_attr_extensible(types, env); 
-    parse_ext_attributes(reader, env, types_el_node, "types_element", 
+    status = parse_ext_attributes(reader, env, types_el_node, "types_element", 
             types, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     types_el = AXIOM_NODE_GET_DATA_ELEMENT(types_el_node, env);
     temp_el = axiom_util_get_first_child_element(types_el, env, types_el_node, 
@@ -1275,6 +1291,7 @@ parse_interface(
     axiom_element_t *interface_el = NULL;
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     intface = WODEN_DESC_ELEMENT_CREATE_INTERFACE_ELEMENT(desc, env);
@@ -1336,8 +1353,10 @@ parse_interface(
     /* TODO extends attribute */
   
     intface = woden_interface_to_attr_extensible(intface, env);
-    parse_ext_attributes(reader, env, interface_el_node, "interface_element", 
+    status = parse_ext_attributes(reader, env, interface_el_node, "interface_element", 
             intface, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     /* Parse the child elements of <interface>. 
      * As per WSDL 2.0 spec, they must be in the following order if present:
@@ -1448,6 +1467,7 @@ parse_interface_fault(
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
     void *types = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     fault = WODEN_DESC_ELEMENT_CREATE_INTERFACE_FAULT_ELEMENT(desc, env);
@@ -1487,8 +1507,10 @@ parse_interface_fault(
     /* TODO extends attribute */
    
     fault = woden_interface_fault_to_attr_extensible(fault, env);
-    parse_ext_attributes(reader, env, fault_el_node, "interface_fault_element", 
+    status = parse_ext_attributes(reader, env, fault_el_node, "interface_fault_element", 
             fault, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     temp_el = axiom_util_get_first_child_element(fault_el, env, fault_el_node, 
             &temp_el_node);
@@ -1565,6 +1587,7 @@ parse_interface_op(
     axiom_element_t *op_el = NULL;
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     op = WODEN_DESC_ELEMENT_CREATE_INTERFACE_OP_ELEMENT(desc, env);
@@ -1618,8 +1641,10 @@ parse_interface_op(
         WODEN_INTERFACE_OP_ELEMENT_SET_PATTERN(op, env, uri);
     }
     op = woden_interface_op_to_attr_extensible(op, env);
-    parse_ext_attributes(reader, env, op_el_node, "interface_op_element", 
+    status = parse_ext_attributes(reader, env, op_el_node, "interface_op_element", 
             op, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     /* Parse the child elements of interface <operation>. 
      * As per WSDL 2.0 spec, they must be in the following order if present:
@@ -1751,6 +1776,7 @@ parse_interface_fault_ref(
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
     axis2_qname_t *attr_ref = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     fault_ref = WODEN_DESC_ELEMENT_CREATE_INTERFACE_FAULT_REF_ELEMENT(desc, 
@@ -1834,8 +1860,10 @@ parse_interface_fault_ref(
     }
     
     fault_ref = woden_interface_fault_ref_to_attr_extensible(fault_ref, env);
-    parse_ext_attributes(reader, env, fault_ref_el_node, "interface_fault_ref_element", 
+    status = parse_ext_attributes(reader, env, fault_ref_el_node, "interface_fault_ref_element", 
             fault_ref, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     temp_el = axiom_util_get_first_child_element(fault_ref_el, env, fault_ref_el_node, 
             &temp_el_node);
@@ -1913,6 +1941,7 @@ parse_interface_msg_ref(
     axiom_element_t *temp_el;
     axiom_node_t *temp_el_node;
     void *types = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     msg_ref = WODEN_DESC_ELEMENT_CREATE_INTERFACE_MSG_REF_ELEMENT(desc, 
@@ -2066,8 +2095,10 @@ parse_interface_msg_ref(
     }
 
     msg_ref = woden_interface_msg_ref_to_attr_extensible(msg_ref, env); 
-    parse_ext_attributes(reader, env, msg_ref_el_node, "interface_msg_ref_element", 
+    status = parse_ext_attributes(reader, env, msg_ref_el_node, "interface_msg_ref_element", 
             msg_ref, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     temp_el = axiom_util_get_first_child_element(msg_ref_el, env, msg_ref_el_node, 
             &temp_el_node);
@@ -2144,6 +2175,7 @@ parse_binding(
     axiom_element_t *temp_el;
     axiom_node_t *temp_el_node;
     axis2_qname_t *intface_qn = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     binding = WODEN_DESC_ELEMENT_CREATE_BINDING_ELEMENT(desc, env);
@@ -2209,8 +2241,10 @@ parse_binding(
     /* TODO extends attribute */
   
     binding = woden_binding_to_attr_extensible(binding, env);
-    parse_ext_attributes(reader, env, binding_el_node, "binding_element", 
+    status = parse_ext_attributes(reader, env, binding_el_node, "binding_element", 
             binding, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     /* Parse the child elements of <binding>. 
      * As per WSDL 2.0 spec, they must be in the following order if present:
@@ -2313,6 +2347,7 @@ parse_binding_fault(
     axiom_node_t *temp_el_node;
     axis2_qname_t *attr_ref = NULL;
     axis2_qname_t *int_flt_qn = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     fault = WODEN_DESC_ELEMENT_CREATE_BINDING_FAULT_ELEMENT(desc, env);
@@ -2365,8 +2400,10 @@ parse_binding_fault(
         }
     }
     fault = woden_binding_fault_to_attr_extensible(fault, env);
-    parse_ext_attributes(reader, env, fault_el_node, "binding_fault_element", 
+    status = parse_ext_attributes(reader, env, fault_el_node, "binding_fault_element", 
             fault, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     temp_el = axiom_util_get_first_child_element(fault_el, env, fault_el_node, 
             &temp_el_node);
@@ -2443,6 +2480,7 @@ parse_binding_op(
     axiom_node_t *temp_el_node;
     axis2_qname_t *attr_ref = NULL;
     axis2_qname_t *ref_qn = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     op = WODEN_DESC_ELEMENT_CREATE_BINDING_OP_ELEMENT(desc, env);
@@ -2490,8 +2528,10 @@ parse_binding_op(
     }
 
     op = woden_binding_op_to_attr_extensible(op, env);
-    parse_ext_attributes(reader, env, op_el_node, "binding_op_element", 
+    status = parse_ext_attributes(reader, env, op_el_node, "binding_op_element", 
             op, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     /* Parse the child elements of binding <operation>. 
      * As per WSDL 2.0 spec, they must be in the following order if present:
@@ -2627,6 +2667,7 @@ parse_binding_fault_ref(
     woden_msg_label_t *msg_label = NULL;
     woden_msg_label_t *msg_label_in = NULL;
     woden_msg_label_t *msg_label_out = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     fault_ref = WODEN_DESC_ELEMENT_CREATE_BINDING_FAULT_REF_ELEMENT(desc, env);
@@ -2750,8 +2791,10 @@ parse_binding_fault_ref(
      */
  
     fault_ref = woden_binding_fault_ref_to_attr_extensible(fault_ref, env);
-    parse_ext_attributes(reader, env, fault_ref_el_node, "binding_fault_ref_element", 
+    status = parse_ext_attributes(reader, env, fault_ref_el_node, "binding_fault_ref_element", 
             fault_ref, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     temp_el = axiom_util_get_first_child_element(fault_ref_el, env, fault_ref_el_node, 
             &temp_el_node);
@@ -2830,6 +2873,7 @@ parse_binding_msg_ref(
     woden_msg_label_t *msg_label = NULL;
     woden_msg_label_t *msg_label_in = NULL;
     woden_msg_label_t *msg_label_out = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     msg_ref = WODEN_DESC_ELEMENT_CREATE_BINDING_MSG_REF_ELEMENT(desc, env);
@@ -2986,8 +3030,10 @@ parse_binding_msg_ref(
     }
     
     msg_ref = woden_binding_msg_ref_to_attr_extensible(msg_ref, env);
-    parse_ext_attributes(reader, env, msg_ref_el_node, "binding_msg_ref_element", 
+    status = parse_ext_attributes(reader, env, msg_ref_el_node, "binding_msg_ref_element", 
             msg_ref, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
 
     /* Parse the child elements of binding operation <input> or <output>. 
      * As per WSDL 2.0 spec, they must be in the following order if present:
@@ -3070,6 +3116,7 @@ parse_svc(
     axiom_element_t *svc_el = NULL;
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     svc_el = AXIOM_NODE_GET_DATA_ELEMENT(svc_el_node, env);
     desc = woden_desc_to_desc_element(desc, env);
@@ -3124,8 +3171,10 @@ parse_svc(
     
     /* TODO extends attribute */
     svc = woden_svc_to_attr_extensible(svc, env); 
-    parse_ext_attributes(reader, env, svc_el_node, "svc_element", 
+    status = parse_ext_attributes(reader, env, svc_el_node, "svc_element", 
             svc, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     /* Parse the child elements of <service>. 
      * As per WSDL 2.0 spec, they must be in the following order if present:
@@ -3222,6 +3271,7 @@ parse_endpoint(
     axiom_element_t *endpoint_el = NULL;
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     desc = woden_desc_to_desc_element(desc, env);
     endpoint = WODEN_DESC_ELEMENT_CREATE_ENDPOINT_ELEMENT(desc, env);
@@ -3283,8 +3333,10 @@ parse_endpoint(
     }
     
     endpoint = woden_endpoint_to_attr_extensible(endpoint, env); 
-    parse_ext_attributes(reader, env, endpoint_el_node, "endpoint_element", 
+    status = parse_ext_attributes(reader, env, endpoint_el_node, "endpoint_element", 
             endpoint, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     /* Parse the child elements of <endpoint>. 
      * As per WSDL 2.0 spec, they must be in the following order if present:
@@ -3367,6 +3419,7 @@ parse_feature(
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
     axis2_bool_t required = AXIS2_FALSE;
+    axis2_status_t status = AXIS2_FAILURE;
     
     desc = woden_desc_to_desc_element(desc, env);
     feature = WODEN_DESC_ELEMENT_CREATE_FEATURE_ELEMENT(desc, env);
@@ -3399,8 +3452,10 @@ parse_feature(
      */
     
     feature = woden_feature_to_attr_extensible(feature, env); 
-    parse_ext_attributes(reader, env, feature_el_node, "feature_element", 
+    status = parse_ext_attributes(reader, env, feature_el_node, "feature_element", 
             feature, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     /* Parse the child elements of <feature>. 
      * As per WSDL 2.0 spec, they must be in the following order if present:
@@ -3483,6 +3538,7 @@ parse_property(
     axiom_element_t *property_el = NULL;
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     desc = woden_desc_to_desc_element(desc, env);
     property = WODEN_DESC_ELEMENT_CREATE_PROPERTY_ELEMENT(desc, env);
@@ -3503,8 +3559,10 @@ parse_property(
     }
  
     property = woden_property_to_attr_extensible(property, env); 
-    parse_ext_attributes(reader, env, property_el_node, "property_element", 
+    status = parse_ext_attributes(reader, env, property_el_node, "property_element", 
             property, desc);
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        return NULL;
     
     temp_el = axiom_util_get_first_child_element(property_el, env, property_el_node, 
             &temp_el_node);
