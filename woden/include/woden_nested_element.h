@@ -64,23 +64,23 @@ struct woden_nested_element_ops
      */
     axis2_status_t (AXIS2_CALL *
     free) (
-            void *doc_el,
+            void *nested_el,
             const axis2_env_t *env);
     
     woden_obj_types_t (AXIS2_CALL *
     type) (
-            void *doc_el,
+            void *nested_el,
             const axis2_env_t *env);
     
     axis2_status_t (AXIS2_CALL *
     set_parent_element) (
-            void *doc_el,
+            void *nested_el,
             const axis2_env_t *env,
             struct woden_wsdl_element *parent);
 
     void *(AXIS2_CALL *
     get_parent_element) (
-            void *doc_el,
+            void *nested_el,
             const axis2_env_t *env);
 
 };
@@ -99,21 +99,21 @@ woden_nested_element_resolve_methods(
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define WODEN_NESTED_ELEMENT_FREE(doc_el, env) \
-      (((woden_nested_element_t *) doc_el)->ops->\
-         free (doc_el, env))
+#define WODEN_NESTED_ELEMENT_FREE(nested_el, env) \
+      (((woden_nested_element_t *) nested_el)->ops->\
+         free (nested_el, env))
 
-#define WODEN_NESTED_ELEMENT_TYPE(doc_el, env) \
-      (((woden_nested_element_t *) doc_el)->ops->\
-         type (doc_el, env))
+#define WODEN_NESTED_ELEMENT_TYPE(nested_el, env) \
+      (((woden_nested_element_t *) nested_el)->ops->\
+         type (nested_el, env))
 
-#define WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(doc_el, env, parent) \
-      (((woden_nested_element_t *) doc_el)->ops->\
-         set_parent_element(doc_el, env, parent))
+#define WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_el, env, parent) \
+      (((woden_nested_element_t *) nested_el)->ops->\
+         set_parent_element(nested_el, env, parent))
 
-#define WODEN_NESTED_ELEMENT_GET_PARENT_ELEMENT(doc_el, env) \
-      (((woden_nested_element_t *) doc_el)->ops->\
-         get_parent_element(doc_el, env))
+#define WODEN_NESTED_ELEMENT_GET_PARENT_ELEMENT(nested_el, env) \
+      (((woden_nested_element_t *) nested_el)->ops->\
+         get_parent_element(nested_el, env))
 
 
 /** @} */
