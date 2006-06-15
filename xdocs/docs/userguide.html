@@ -21,7 +21,7 @@
   </li>
   <li><a href="#Web_Services_Using_Axis2">Web Services Using Axis2/C</a>
     <ul>
-      <li><a href="#Writing_Web_Services_Using%20Axis2_C">Writing Web
+      <li><a href="#Writing_Web_Services_Using_Axis2_C">Writing Web
         Services Using Axis2/C</a>
         <ul>
           <li><a href="#Creating_Web_Service__MyService_">Creating Web
@@ -38,6 +38,18 @@
                 services folder.</a></li>
             </ul>
           </li>
+        </ul>
+      </li>
+      <li><a href="#Writing_Web_Services_Using_Code_Generator">
+        Writing Web Services Skeleton Using Code Generator</a>
+        <ul>
+          <li><a href="#WSDL2Code_tool">WSDL2Code tool</a></li>
+          <li><a href="#Implement the Business Logic">Implement the Business Logic
+              </a></li>
+          <li><a href="#echoString">echoString</a></li>
+          <li><a href="#echoStringArray">echoStringArray</a></li>
+          <li><a href="#echoStruct">echoStruct</a></li>
+          <li><a href="#services_xml">services.xml</a></li>
         </ul>
       </li>
       <li><a href="#deploy">Deploy the Web Service</a></li>
@@ -58,6 +70,17 @@
           <li><a href="#EchoBlockingDualClient">echo_blocking_dual
           Client</a></li>
         </ul>
+      <li><a href="#Writing_Web_Clients_Using_Code_Generator">
+        Writing Web Service Clients using Code Generation with Data Binding Support</a>
+        <ul>
+          <li><a href="#Codegenerator_Client_echoString">
+                      Client for echoString operation</a></li>
+          <li><a href="#Codegenerator_Client_echoStringArray">
+                      Client for echoStringArray operation</a></li>
+          <li><a href="#Codegenerator_Client_echoStruct">
+                      Client for echoStruct operation</a></li>
+        </ul>
+      </li>
       </li>
     </ul>
   </li>
@@ -129,7 +152,8 @@ and services.</p>
 
 <p></p>
 
-<p>Web Services Using Axis2/C</p>
+<a id="Web_Services_Using_Axis2"></a>
+<h2>Web Services Using Axis2/C</h2>
 
 <p>Before starting, please make sure that you have installed Axis2/C
 correctly and check whether you can run the axis2_http_server located in
@@ -345,7 +369,7 @@ be called by Axis2/C engine.</p>
 
 <h4>Step2 : Now we can write the echo service in a file echo.c</h4>
 
-<p><a id="Step3">axiom_node_t *<br />
+<p>axiom_node_t *<br />
 axis2_echo_echo (const axis2_env_t *env, axiom_node_t *node)<br />
 {<br />
     axiom_node_t *text_parent_node = NULL;<br />
@@ -432,8 +456,8 @@ build_om_programatically(const axis2_env_t *env, axis2_char_t *text)<br />
     <br />
     <b>return</b> echo_om_node;<br />
 }<br />
-</a></p>
-
+</p>
+<a id="Step3"></a>
 <h4>Step3 :Write the services.xml file</h4>
 
 <p>Axis2/C uses "services.xml" to keep configurations for a Web Service. Each
@@ -492,8 +516,173 @@ service) and the services.xml file which describe the web service. So in this
 example case we will have a folder named echo which contain the services,xml
 file and echo dll.</p>
 
-<p><a id="deploy"></a></p>
+<p><a id="Writing_Web_Services_Using_Code_Generator"></a></p>
+<h3>Writing Web Services Skeleton Using Code Generator</h3>
 
+<h4><a id="WSDL2Code_tool">WSDL2Code tool</a></h4>
+
+<p>Axis2/Java WSDL2Code tool support generation code for Axis2/C stub and
+skel from onward Axis2/Java source svn revision 414253. 
+A basic guide for the tool can be found at <a href=
+"http://ws.apache.org/axis2/1_0/userguide2.html#Writing_Web_Services_by_Code_Generating_Skeleton">
+here</a></p>
+
+<p>We will run the tool with the following parameters and generate the
+skeleton and the other required files for support ADB. (In order to run
+the tool set all the .jar library files in the Axis2/Java to the 
+classpath. To generate code with no data binding support just replace -d adb -u
+to -d none</p>
+
+<pre><br />java WSDL2Code -Dorg.apache.adb.properties=/org/apache/axis2/schema/c-schema-compile.properties
+ -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u<br /> </pre>
+
+<p>If you need a XML in/out framework you can just ignore the data binding support
+by setting following parameters</p>
+
+<pre><br />java WSDL2Code -uri interoptestdoclitparameters.wsdl -ss -sd -d none<br /> </pre>
+
+<p>The WSDL interoptestdoclitparameters.wsdl can be found in 
+&lt;axis2_src_dir&gt;/test/resources directory. This is used to generate
+stub and skeleton code throughout this user guide. </p>
+
+<h4><a id="Implement_the_Business_Logic">Implement the Business Logic</a></h4>
+
+Locate the skeleton source file from the generated files. In this samples it is
+"axis2_WSDLInteropTestDocLitService.c". You can go through rest of the guide to
+complete the business logic on following service operations in the WSDL.
+
+<ul>
+ <li>echoString  - Operation that echoes a String value</li>
+ <li>echoStringArray - Operation that accept string array as the input and echoes them back</li>
+ <li>echoStruct - Operation that accept a Struct as the input and echoes them back</li>
+</ul>
+
+Completed skeleton source file for the above operations can be found under 
+&lt;axis2_src_dir&gt;/samples/codegen/server/interop_doc2 directory with the name 
+"axis2_WSDLInteropTestDocLitService.c". 
+
+<h4><a id="echoString">echoString</a></h4>
+
+If you generate code with data binding support you will find the following code segment
+in the "axis2_WSDLInteropTestDocLitService.c"
+Fill the business logic inside this function as shown below.
+
+<pre width="80"><strong><font color="#4169E1">axis2_echoStringResponse_t*
+axis2_WSDLInteropTestDocLitService_echoString
+                     (const axis2_env_t* env  ,axis2_echoString_t* param6 )</font></strong>
+{
+    <font color="#B22222">/* Todo fill this with the necessary business logic */</font>
+}
+</pre>
+
+Once filled with the business logic it will be as follows. The code is simple 
+and the explanations are given as comments.
+
+<pre width="80"><strong><font color="#4169E1">axis2_echoStringResponse_t*
+axis2_WSDLInteropTestDocLitService_echoString
+               (const axis2_env_t* env  ,axis2_echoString_t* param6 )</font></strong>
+{
+          axis2_echoString_t* echo_in = param6;
+          axis2_echoStringResponse_t* echo_out = NULL;
+
+          char* echo_string = NULL;
+          
+          <font color="#B22222">/* retrieve the string input */</font>
+          echo_string = AXIS2_ECHOSTRING_GET_PARAM0 ( echo_in, env );
+
+          <font color="#B22222">/* create the response and set the output string */</font>
+          echo_out = axis2_echoStringResponse_create ( env );
+          AXIS2_ECHOSTRUCTRESPONSE_SET_RETURN ( echo_out, env, echo_string );
+
+          <font color="#4169E1">return</font> echo_out;
+}
+</pre>
+
+<h4><a id="echoStringArray">echoStringArray</a></h4>
+
+<pre width="80"><strong><font color="#4169E1">axis2_echoStringArrayResponse_t*
+axis2_WSDLInteropTestDocLitService_echoStringArray
+                    (const axis2_env_t* env  ,axis2_echoStringArray_t* param2 )</font></strong>
+
+{
+          axis2_echoStringArray_t* echo_in = param2;
+          axis2_echoStringArrayResponse_t* echo_out = NULL;
+          axis2_ArrayOfstring_literal_t* array_in = NULL;
+          axis2_ArrayOfstring_literal_t* array_out = NULL;
+          char ** string_array = NULL;
+          int string_array_length = 0;
+        
+          <font color="#B22222">/* retrieve the array from input*/</font>
+          array_in = AXIS2_ECHOSTRINGARRAY_GET_PARAM0( echo_in, env);
+          <font color="#B22222">/* retrieve the string_array and array length */</font>
+          string_array =
+             AXIS2_ARRAYOFSTRING_LITERAL_GET_STRING 
+                    (array_in, env,&amp;string_array_length );
+        
+          <font color="#B22222">/* create the output array and set the string array and length */</font>
+          array_out = axis2_ArrayOfstring_literal_create ( env );
+          AXIS2_ARRAYOFSTRING_LITERAL_SET_STRING(
+                   array_out, env, string_array, string_array_length );
+        
+          <font color="#B22222">/* create the response and set the output*/</font>
+          echo_out = axis2_echoStringArrayResponse_create ( env );
+          AXIS2_ECHOSTRINGARRAYRESPONSE_SET_RETURN
+                                   (echo_out, env , array_out );
+        
+          <font color="#4169E1">return</font> echo_out;
+
+}
+</pre>
+
+<h4><a id="echoStruct">echoStruct</a></h4>
+
+<pre width="80"><strong><font color="#4169E1">axis2_echoStructResponse_t*
+axis2_WSDLInteropTestDocLitService_echoStruct
+                (const axis2_env_t* env  ,axis2_echoStruct_t* param4 )</font></strong>
+
+{
+         axis2_echoStruct_t* echo_in = param4;
+         axis2_echoStructResponse_t* echo_out = NULL;
+         axis2_SOAPStruct_t* struct_in = NULL;
+         axis2_SOAPStruct_t* struct_out = NULL;
+        
+         float float_val = 0;
+         int int_val = 0;
+         char* string_val = NULL;
+        
+         <font color="#B22222">/* retrieve the structure from input */</font>
+         struct_in = AXIS2_ECHOSTRUCT_GET_PARAM0( echo_in, env);
+
+         <font color="#B22222">/* retrieve each value from the structure */</font>        
+         float_val = AXIS2_SOAPSTRUCT_GET_VARFLOAT ( struct_in, env);
+         int_val = AXIS2_SOAPSTRUCT_GET_VARINT ( struct_in, env);
+         string_val = AXIS2_SOAPSTRUCT_GET_VARSTRING ( struct_in, env);
+        
+         <font color="#B22222">/* create the output structure and set values */</font>
+         struct_out = axis2_SOAPStruct_create( env );
+         AXIS2_SOAPSTRUCT_SET_VARFLOAT ( struct_out, env, float_val );
+         AXIS2_SOAPSTRUCT_SET_VARINT ( struct_out, env, int_val );
+         AXIS2_SOAPSTRUCT_SET_VARSTRING ( struct_out, env, string_val );
+        
+         <font color="#B22222">/* create the response and set the output structure*/</font>
+         echo_out = axis2_echoStructResponse_create ( env );
+         AXIS2_ECHOSTRUCTRESPONSE_SET_RETURN ( echo_out, env, struct_out );
+        
+         <font color="#4169E1">return</font> echo_out;
+}
+</pre>
+
+
+<h4><a id="services_xml">services.xml</a></h4>
+Axis2 uses "services.xml" to hold the configurations for a particular Web 
+service deployed in the Axis2 engine. When we generate the skeleton using 
+the WSDL2Java tool, it will also generate the required services.xml for this 
+Web service as well. This is essential to <a href="#deploy">deploy the service</a>. refere to 
+<a href="#step3">Write the services.xml</a> section of this guide to learn
+more about services.xml
+
+
+<p><a id="deploy"></a></p>
 <h3>Deploy the Web Service</h3>
 
 <p>Deploying the service means putting the service folder to the services
@@ -783,8 +972,8 @@ service_client API.</p>
 <p>Once addressing is engaged, echo_non_blocking_dual client would work
 perfectly. Note that by default, Axis2/C comes with addressing enabled
 globally.</p>
-<a id="EchoBlockingDualClient"></a>
 
+<a id="EchoBlockingDualClient"></a>
 <h4>echo_blocking_dual Client</h4>
 
 <p>This is again a Two-Way transport request/response client, but this time,
@@ -796,5 +985,198 @@ here we do not use a callback object to handle response. This is a very
 useful mechanism when the service invocation is IN-OUT in nature and the
 transports are One-Way (e.g. SMTP). For the sample client we use two HTTP
 connections for request and response.</p>
+
+<a id="Writing_Web_Clients_Using_Code_Generator"></a>
+<h3>Writing Web Service Clients using Code Generation with Data Binding Support</h3>
+
+
+<p>Axis2 codegenerator provides the data binding support for Web Service client
+as well. The user can generate the required stubs from a given WSDL with the 
+other supporting files. Use following parameters to generate the
+Axis2/C stub code with data binding support. You should have Axis2/Java source
+after the svn revision 414253 to generate Axis2/C code</p>
+
+<pre><br />java WSDL2Code -Dorg.apache.adb.properties=/org/apache/axis2/schema/c-schema-compile.properties
+ -uri interoptestdoclitparameters.wsdl -d adb -u<br /> </pre>
+
+<p>In order to ignore the databinding support just use following parameters.</p>
+
+<pre><br />java WSDL2Code -uri interoptestdoclitparameters.wsdl -d none<br /> </pre>
+
+<p>The following part will demostrate the use of generated code  using 
+"interoptestdoclitparameters.wsdl" which was used to generate the skeleton earier
+in the user guide</p>
+
+<a id="Codegenerator_Client_echoString"></a>
+<h4>Client for echoString operation</h4>
+
+<pre width="80">
+<font color="#A020F0">#include </font><font color="#666666">"axis2_WSDLInteropTestDocLitService_stub.h"</font><font color="#A020F0"></font>
+
+<font color="#B22222">/*
+ * demonstates how to execute the service using databinding
+ */</font>
+<strong><font color="#4169E1">void invoke_service_using_databinding ( axis2_stub_t* stub,
+                                       const axis2_env_t* env )</font></strong>;
+<strong><font color="#4169E1"><a name="main"></a>int main(int argc, char** argv)</font></strong>
+{
+    <font color="#B22222">/* variables to keep the environment */</font>
+    axis2_env_t* env = NULL;
+    axis2_char_t* client_home = NULL;
+    axis2_char_t* endpoint_uri =NULL;
+    axis2_stub_t* stub= NULL;
+    
+    <font color="#B22222">/* endpoint uri: if it is NULL endpoint will be picked from the WSDL */</font>    
+    endpoint_uri = <font color="#666666">"http://localhost:9090/axis2/services/interop_doc2"</font>;
+
+    env = axis2_env_create_all( <font color="#666666">"codegen_utest_blocking.log"</font>, 
+                                                  AXIS2_LOG_LEVEL_TRACE);
+
+    <font color="#B22222">/* Set up deploy folder.*/</font>
+    client_home = AXIS2_GETENV(<font color="#666666">"AXIS2C_HOME"</font>);
+    <font color="#4169E1">if</font> (!client_home)
+        client_home = <font color="#666666">"../../../deploy"</font>;
+    
+    <font color="#B22222">/* create the stub using generated code */</font>
+    stub = axis2_WSDLInteropTestDocLitService_stub_create( env, client_home , endpoint_uri); 
+    
+    <font color="#B22222">/* calls the service*/</font>
+    invoke_service_using_databinding ( stub, env );
+
+    <font color="#4169E1">return</font> 0;
+}
+
+<strong><font color="#4169E1"><a name="invoke_service_using_databinding"></a>void invoke_service_using_databinding ( axis2_stub_t* stub,
+                                       const axis2_env_t* env )</font></strong>
+{
+    <font color="#B22222">/* variables used by databinding */</font>
+    axis2_echoString_t* echo_in = NULL;
+    axis2_echoStringResponse_t* echo_out = NULL;
+    
+    <font color="#B22222">/* variables to store data */</font>
+    char* echo_str = <font color="#666666">"hello"</font>;
+    char* return_echo_str = NULL;
+
+    <font color="#B22222">/* create the input params using databinding */</font>
+    echo_in = axis2_echoString_create( env );
+    AXIS2_ECHOSTRING_SET_PARAM0( echo_in, env, echo_str );
+
+    <font color="#B22222">/* invoke the web service method*/</font>
+    echo_out = axis2_echoString( stub, env, echo_in );
+    
+    <font color="#B22222">/* return the output params using databinding */</font>
+    return_echo_str  = AXIS2_ECHOSTRUCTRESPONSE_GET_RETURN( echo_out, env );
+    
+    <font color="#B22222">/* print the result */</font>
+    printf ( <font color="#666666">"returned string %s\n"</font>, return_echo_str );
+
+}
+</pre>
+
+<a id="Codegenerator_Client_echoStringArray"></a>
+<h4>Client for echoStringArray operation</h4>
+
+You can change the invoke_service_using_databinding function to invoke the echoStringArray
+operation just like following.
+
+<pre width="80">
+<strong><font color="#4169E1"><a name="invoke_service_using_databinding"></a>void invoke_service_using_databinding ( axis2_stub_t* stub,
+                                       const axis2_env_t* env )</font></strong>
+{
+    <font color="#B22222">/* variables used by databinding */</font>
+    axis2_echoStringArray_t* echo_in = NULL;
+    axis2_echoStringArrayResponse_t* echo_out = NULL;
+    axis2_ArrayOfstring_literal_t* array_in = NULL;
+    axis2_ArrayOfstring_literal_t* array_out = NULL;
+
+        <font color="#B22222">/* variables to store data */</font>
+    char *string_array[]= { <font color="#666666">"test"</font>,<font color="#666666">"this"</font>,<font color="#666666">"array"</font> };
+    int array_length = 3;
+
+    char **string_return_string_array = NULL;
+    int return_array_length = 0;
+    int i = 0; 
+        
+        <font color="#B22222">/*create the input array and set the string array and length*/</font>
+    array_in = axis2_ArrayOfstring_literal_create (env );
+    AXIS2_ARRAYOFSTRING_LITERAL_SET_STRING( array_in, env,
+                    string_array, array_length );
+
+    <font color="#B22222">/* create the request and set the inputs */</font>
+    echo_in = axis2_echoStringArray_create ( env );
+    AXIS2_ECHOSTRINGARRAY_SET_PARAM0( echo_in, env, array_in );
+
+    <font color="#B22222">/* invoke the web service method*/</font>
+    echo_out = axis2_echoStringArray(  stub, env, echo_in );
+
+    <font color="#B22222">/* return the output params using databinding */</font>
+    array_out = AXIS2_ECHOSTRINGARRAYRESPONSE_GET_RETURN( echo_out, env );        
+    
+        <font color="#B22222">/* retrieve the string array values and length */</font>
+        string_return_string_array = AXIS2_ARRAYOFSTRING_LITERAL_GET_STRING
+            ( array_out, env, &amp;return_array_length );
+
+    <font color="#B22222">/* print the output */</font>
+    <font color="#4169E1">for</font> ( i = 0; i &lt; return_array_length ; i ++ )
+    {
+        printf(<font color="#666666">"value%d: %s \n"</font>, i, string_return_string_array[i] );
+    }
+}
+</pre>
+
+<a id="Codegenerator_Client_echoStruct"></a>
+<h4>Client for echoStruct operation</h4>
+
+<pre width="80">
+<strong><font color="#4169E1"><a name="invoke_service_using_databinding"></a>void invoke_service_using_databinding ( axis2_stub_t* stub,
+                                       const axis2_env_t* env )</font></strong>
+{
+    <font color="#B22222">/* variables used by databinding */</font>
+    axis2_echoStruct_t* echo_in = NULL;
+    axis2_echoStructResponse_t* echo_out = NULL;
+    axis2_SOAPStruct_t* struct_in = NULL;
+    axis2_SOAPStruct_t* struct_out = NULL;
+
+
+        <font color="#B22222">/* variables to store data */</font>
+    float float_val = 11;
+    int int_val = 10;
+    char* string_val = <font color="#666666">"hello struct"</font>;
+
+    int ret_int_val = 0;
+    float ret_float_val = 0;
+    char* ret_string_val = <font color="#666666">""</font>;
+    
+        <font color="#B22222">/* create the struct and set input values*/</font>
+    struct_in = axis2_SOAPStruct_create( env );
+    AXIS2_SOAPSTRUCT_SET_VARFLOAT ( struct_in, env, float_val );
+    AXIS2_SOAPSTRUCT_SET_VARINT ( struct_in, env, int_val );
+    AXIS2_SOAPSTRUCT_SET_VARSTRING ( struct_in, env, string_val );
+
+    <font color="#B22222">/* create the request and set the struct */</font>
+    echo_in = axis2_echoStruct_create( env );
+    AXIS2_ECHOSTRUCT_SET_PARAM0( echo_in, env, struct_in );
+
+    <font color="#B22222">/* invoke the web service method */</font>
+    echo_out = axis2_echoStruct(  stub, env, echo_in );
+
+    <font color="#B22222">/* retrieve the structure from response */</font>
+    struct_out = AXIS2_ECHOSTRUCTRESPONSE_GET_RETURN( echo_out, env );
+
+    <font color="#B22222">/* retrieve each value from the structure */</font>
+    ret_float_val = AXIS2_SOAPSTRUCT_GET_VARFLOAT ( struct_out, env );
+    ret_int_val = AXIS2_SOAPSTRUCT_GET_VARINT ( struct_out, env );
+    ret_string_val = AXIS2_SOAPSTRUCT_GET_VARSTRING ( struct_out, env );
+
+    <font color="#B22222">/* print the values */</font>
+    printf ( <font color="#666666">"returned values \n"</font>);
+    printf (<font color="#666666">" float %f\n"</font>, ret_float_val );
+    printf (<font color="#666666">" int %d \n"</font>, ret_int_val );
+    printf (<font color="#666666">" string %s \n"</font>, ret_string_val);
+        
+        
+}
+</pre>
+
 </body>
 </html>
