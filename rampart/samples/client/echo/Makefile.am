@@ -1,4 +1,4 @@
-prgbindir=$(prefix)/bin/samples
+prgbindir=$(prefix)/bin/samples/rampart
 prgbin_PROGRAMS = echo
 samplesdir=$(prefix)/samples/client/echo
 samples_DATA=echo.c README.txt Makefile.am Makefile.in
