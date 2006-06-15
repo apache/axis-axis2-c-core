@@ -90,7 +90,7 @@ woden_attr_extensible_create(
 {
     woden_attr_extensible_impl_t *extensible_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     extensible_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_attr_extensible_impl_t));
 

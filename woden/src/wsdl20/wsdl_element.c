@@ -215,7 +215,7 @@ create(
 {
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     wsdl_element_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_wsdl_element_impl_t));
 
@@ -227,8 +227,7 @@ create(
 
     wsdl_element_impl->wsdl_element.base.attr_extensible.ops = NULL;
     wsdl_element_impl->wsdl_element.base.element_extensible.ops = NULL;
-    wsdl_element_impl->wsdl_element.ops = 
-            AXIS2_MALLOC(env->allocator, 
+    wsdl_element_impl->wsdl_element.ops = AXIS2_MALLOC(env->allocator, 
             sizeof(woden_wsdl_element_ops_t)); 
    
     wsdl_element_impl->wsdl_element.ops->free = woden_wsdl_element_free;
