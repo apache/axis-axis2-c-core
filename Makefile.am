@@ -16,7 +16,7 @@ bindist: $(bin_PROGRAMS)
 	make
 	make install
 	mkdir axis2c-bin-${PACKAGE_VERSION}-linux
+	sh bindist.sh
 	cp -r ${AXIS2C_HOME}/* axis2c-bin-${PACKAGE_VERSION}-linux
-	tar cf axis2c-bin-${PACKAGE_VERSION}-linux.tar.gz axis2c-bin-${PACKAGE_VERSION}-linux
+	tar -cf - axis2c-bin-${PACKAGE_VERSION}-linux | gzip -c > axis2c-bin-${PACKAGE_VERSION}-linux.tar.gz
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
-
