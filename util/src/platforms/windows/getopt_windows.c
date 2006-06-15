@@ -20,13 +20,13 @@
 
 #include <platforms/windows/axis2_getopt_windows.h>
 
-int      opterr = 1; /*default - log error*/
 int      optind = 1;
+int      opterr = 1;
 int      optopt;
 char*   optarg;
 
 #define AXIS2_OPT_ERR_NO_ARG         1
-#define   AXIS2_OPT_ERR_INVALID_OPTION   2
+#define AXIS2_OPT_ERR_INVALID_OPTION   2
 #define AXIS2_OPT_ERR_BAD_ARG         3
 
 

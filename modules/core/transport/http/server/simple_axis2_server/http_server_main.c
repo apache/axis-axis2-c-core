@@ -71,14 +71,14 @@ int main(int argc, char *argv[])
 {
    axis2_allocator_t *allocator = NULL;
    axis2_env_t *env = NULL;
-    extern char *optarg;
-    extern int optopt;
-    int c;
-
-    axis2_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
-    const axis2_char_t *log_file = "axis2.log";
+   extern char *optarg;
+   extern int optopt;
+   int c;
+   axis2_log_levels_t log_level = AXIS2_LOG_LEVEL_DEBUG;
+   const axis2_char_t *log_file = "axis2.log";
    int port = 9090;
-    const axis2_char_t *repo_path = "../";
+   const axis2_char_t *repo_path = "../";
+   
    axis2_http_socket_read_timeout = AXIS2_HTTP_DEFAULT_SO_TIMEOUT;
 
     while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:f:")) != -1)

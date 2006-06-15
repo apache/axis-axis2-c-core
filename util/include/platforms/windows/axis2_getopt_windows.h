@@ -32,9 +32,9 @@ extern "C" {
  * @{
  */
 
-AXIS2_DECLARE_DATA  int   opterr;
-AXIS2_DECLARE_DATA  int    optopt;   
-AXIS2_DECLARE_DATA  char   *optarg;
+AXIS2_IMPORT extern int   opterr;
+AXIS2_IMPORT extern int optopt;   
+AXIS2_IMPORT extern char  *optarg;
 
 /**
   * return and log error
