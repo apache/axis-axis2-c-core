@@ -75,11 +75,11 @@ int main(int argc, char** argv)
 
     /*
 	un_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(un_property, env, "Malinda");
+    AXIS2_PROPERTY_SET_VALUE(un_property, env, "Raigama");
 	AXIS2_OPTIONS_SET_PROPERTY(options, env, "user", un_property);
 
 	pw_property = axis2_property_create(env);
-	AXIS2_PROPERTY_SET_VALUE(pw_property, env, "MyBigSecret");
+	AXIS2_PROPERTY_SET_VALUE(pw_property, env, "RaigamaPW");
 	AXIS2_OPTIONS_SET_PROPERTY(options, env, "password", pw_property);
     
     */

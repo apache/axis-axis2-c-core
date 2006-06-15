@@ -25,7 +25,7 @@
         <user>Raigama</user>
         <passwordType>passwordDigest</passwordType>
         <!--Following shoud change with your DLL or SO path-->
-        <passwordCallbackClass>/home/kau/axis2/c/deploy/rampart/libpwcb.so</passwordCallbackClass>
+        <passwordCallbackClass>/home/kau/axis2/c/deploy/rampart/samples/callback/libpwcb.so</passwordCallbackClass>
       </action>
     </parameter>
 
@@ -34,7 +34,7 @@
       <action>
         <items>UsernameToken Timestamp</items>
         <!--Following shoud change with your DLL or SO path-->
-        <passwordCallbackClass>/home/kau/axis2/c/deploy/rampart/libpwcb.so</passwordCallbackClass>
+        <passwordCallbackClass>/home/kau/axis2/c/deploy/rampart/samples/callback/libpwcb.so</passwordCallbackClass>
       </action>
     </parameter>
     <!--Rampart client configuration END -->
