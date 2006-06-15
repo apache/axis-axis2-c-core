@@ -239,6 +239,18 @@ woden_ext_registry_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    registry_impl->ext_element_reg = axis2_hash_make(env);
+    if(!registry_impl->ext_element_reg)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    registry_impl->comp_ext_reg = axis2_hash_make(env);
+    if(!registry_impl->comp_ext_reg)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     woden_ext_registry_populate(&(registry_impl->registry), env);
     
     return &(registry_impl->registry);
