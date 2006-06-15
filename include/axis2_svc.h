@@ -329,7 +329,7 @@ struct axis2_svc_ops
      * @return axis2_char_t *
      */
     axis2_char_t * (AXIS2_CALL *
-    get_axis2_svc_name) (axis2_svc_t *svc,
+    get_name) (axis2_svc_t *svc,
                                 const axis2_env_t *env);
     
     /**
@@ -338,7 +338,7 @@ struct axis2_svc_ops
      * @param axissvcname
      */
     axis2_status_t (AXIS2_CALL *
-    set_axis2_svc_name) (axis2_svc_t *svc,
+    set_name) (axis2_svc_t *svc,
                                 const axis2_env_t *env,
                                 axis2_char_t *axis2_svc_name);
     
@@ -538,11 +538,11 @@ axis2_svc_create_with_wsdl_svc (const axis2_env_t *env,
 #define AXIS2_SVC_GET_OP_BY_SOAP_ACTION_AND_ENDPOINT(svc, env, soap_action, endpoint) \
         ((svc)->ops->get_op_by_soap_action_and_endpoint(svc, env, soap_action, endpoint))
 
-#define AXIS2_SVC_GET_AXIS2_SVC_NAME(svc, env) \
-        ((svc)->ops->get_axis2_svc_name(svc, env))
+#define AXIS2_SVC_GET_NAME(svc, env) \
+        ((svc)->ops->get_name(svc, env))
 
-#define AXIS2_SVC_SET_AXIS2_SVC_NAME(svc, env, axis2_svc_name) \
-        ((svc)->ops->set_axis2_svc_name(svc, env, axis2_svc_name))
+#define AXIS2_SVC_SET_NAME(svc, env, axis2_svc_name) \
+        ((svc)->ops->set_name(svc, env, axis2_svc_name))
 
 #define AXIS2_SVC_SET_LAST_UPDATE(svc, env) \
         ((svc)->ops->set_last_update(svc, env))

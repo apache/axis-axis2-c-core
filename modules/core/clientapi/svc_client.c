@@ -250,7 +250,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(const axis2_env_t *env,
    
    /** add the service to the config context if it isn't in there already */
    if (NULL == AXIS2_CONF_GET_SVC(svc_client_impl->conf, env, 
-               AXIS2_SVC_GET_AXIS2_SVC_NAME(svc_client_impl->svc, env)))
+               AXIS2_SVC_GET_NAME(svc_client_impl->svc, env)))
    {
       AXIS2_CONF_ADD_SVC(svc_client_impl->conf, env, svc_client_impl->svc);
    }
@@ -276,7 +276,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(const axis2_env_t *env,
       svc_grp_name, svc_grp_ctx);
     
    svc_client_impl->svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env,
-              AXIS2_SVC_GET_AXIS2_SVC_NAME(svc_client_impl->svc, env));
+              AXIS2_SVC_GET_NAME(svc_client_impl->svc, env));
     
     /* create ops */
     svc_client_impl->svc_client.ops  =

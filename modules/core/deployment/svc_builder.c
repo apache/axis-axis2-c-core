@@ -314,7 +314,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
                 return AXIS2_FAILURE;
             }
             svc_name = (axis2_char_t*)AXIS2_XML_WRITER_GET_XML(xml_writer, env);
-            AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, 
+            AXIS2_SVC_SET_NAME(builder_impl->svc, env, 
                 svc_name);
             AXIOM_OUTPUT_FREE(om_output, env);
         }
@@ -323,7 +323,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
             axis2_char_t *svc_name = NULL;
             
             svc_name = AXIOM_ELEMENT_GET_TEXT(desc_element, env, desc_node);
-            AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, 
+            AXIS2_SVC_SET_NAME(builder_impl->svc, env, 
                 svc_name);
         }
     }
@@ -332,7 +332,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
     name_attr = AXIOM_ELEMENT_GET_ATTRIBUTE(svc_element, env, qattname);
     svc_name = AXIOM_ATTRIBUTE_GET_VALUE(name_attr, env);
-    AXIS2_SVC_SET_AXIS2_SVC_NAME(builder_impl->svc, env, svc_name);
+    AXIS2_SVC_SET_NAME(builder_impl->svc, env, svc_name);
     AXIS2_QNAME_FREE(qattname, env);
     
     /* create dll_desc and set it in a parameter. then set that param in param

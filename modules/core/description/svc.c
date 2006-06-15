@@ -199,11 +199,11 @@ axis2_svc_get_op_by_soap_action_and_endpoint(axis2_svc_t *svc,
                                         axis2_qname_t * endpoint);       
 
 axis2_char_t * AXIS2_CALL
-axis2_svc_get_axis2_svc_name(axis2_svc_t *svc,
+axis2_svc_get_name(axis2_svc_t *svc,
                             const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_svc_set_axis2_svc_name(axis2_svc_t *svc,
+axis2_svc_set_name(axis2_svc_t *svc,
                             const axis2_env_t *env,
                             axis2_char_t *axis_svc_name);
 
@@ -433,8 +433,8 @@ axis2_svc_create (const axis2_env_t *env)
     svc_impl->svc.ops->get_op_by_soap_action = axis2_svc_get_op_by_soap_action;
     svc_impl->svc.ops->get_op_by_soap_action_and_endpoint = 
             axis2_svc_get_op_by_soap_action_and_endpoint;
-    svc_impl->svc.ops->get_axis2_svc_name = axis2_svc_get_axis2_svc_name;
-    svc_impl->svc.ops->set_axis2_svc_name = axis2_svc_set_axis2_svc_name;
+    svc_impl->svc.ops->get_name = axis2_svc_get_name;
+    svc_impl->svc.ops->set_name = axis2_svc_set_name;
     svc_impl->svc.ops->set_last_update = axis2_svc_set_last_update;
     svc_impl->svc.ops->get_last_update = axis2_svc_get_last_update;
     svc_impl->svc.ops->get_filename = axis2_svc_get_filename;
@@ -1462,7 +1462,7 @@ axis2_svc_get_op_by_soap_action_and_endpoint(axis2_svc_t *svc,
 }
        
 axis2_char_t * AXIS2_CALL
-axis2_svc_get_axis2_svc_name(axis2_svc_t *svc,
+axis2_svc_get_name(axis2_svc_t *svc,
                             const axis2_env_t *env) 
 {
     axis2_svc_impl_t *svc_impl = NULL;
@@ -1485,7 +1485,7 @@ axis2_svc_get_axis2_svc_name(axis2_svc_t *svc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_svc_set_axis2_svc_name(axis2_svc_t *svc,
+axis2_svc_set_name(axis2_svc_t *svc,
                             const axis2_env_t *env,
                             axis2_char_t *axis_svc_name) 
 {
