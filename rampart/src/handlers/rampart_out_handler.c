@@ -99,7 +99,7 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
     axis2_param_t *param_out_flow_security = NULL;
     axiom_node_t *sec_node =  NULL;    
     axiom_element_t *sec_ele = NULL;
-	axis2_array_list_t *action_list = NULL;
+   axis2_array_list_t *action_list = NULL;
     axis2_param_t *param_action = NULL;
     axis2_char_t *items = NULL;
 
@@ -170,8 +170,8 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
         if(!items)
         {
             rampart_print_info(env,"No items ... ");
-	        return AXIS2_FAILURE;
-    	}
+           return AXIS2_FAILURE;
+       }
   
         sec_ns_obj =  axiom_namespace_create (env, RAMPART_WSSE_XMLNS,
                                       RAMPART_WSSE);   

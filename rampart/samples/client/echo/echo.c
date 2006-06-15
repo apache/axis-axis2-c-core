@@ -74,22 +74,22 @@ int main(int argc, char** argv)
     */
 
     /*
-	un_property = axis2_property_create(env);
+   un_property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_VALUE(un_property, env, "Raigama");
-	AXIS2_OPTIONS_SET_PROPERTY(options, env, "user", un_property);
+   AXIS2_OPTIONS_SET_PROPERTY(options, env, "user", un_property);
 
-	pw_property = axis2_property_create(env);
-	AXIS2_PROPERTY_SET_VALUE(pw_property, env, "RaigamaPW");
-	AXIS2_OPTIONS_SET_PROPERTY(options, env, "password", pw_property);
+   pw_property = axis2_property_create(env);
+   AXIS2_PROPERTY_SET_VALUE(pw_property, env, "RaigamaPW");
+   AXIS2_OPTIONS_SET_PROPERTY(options, env, "password", pw_property);
     
     */
-					
+               
     if(!client_home)
     {
-	    client_home = AXIS2_GETENV("AXIS2C_HOME");
+       client_home = AXIS2_GETENV("AXIS2C_HOME");
         printf("\nNo client_home specified. Using default %s", client_home);
     }
-		       
+             
     
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
      * using the axis2.xml file.

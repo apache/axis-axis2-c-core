@@ -30,28 +30,28 @@
 #define SIZE_HASH 32
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_crypto_sha1(const axis2_env_t *env, 
-					const axis2_char_t *nonce,
-					const axis2_char_t *created,
-					const axis2_char_t *password)
-					
+               const axis2_char_t *nonce,
+               const axis2_char_t *created,
+               const axis2_char_t *password)
+               
 {
-	axis2_char_t *result = NULL;
-	char* input = NULL;
-	axis2_char_t* encoded_str=NULL;
+   axis2_char_t *result = NULL;
+   char* input = NULL;
+   axis2_char_t* encoded_str=NULL;
 
-	input= AXIS2_MALLOC(env->allocator, AXIS2_STRLEN(nonce) + 
-		    AXIS2_STRLEN(created) + AXIS2_STRLEN(password) + 1);
-	sprintf(input, "%s%s%s", nonce, created, password);
-	result = AXIS2_MALLOC(env->allocator, SHA_DIGEST_LENGTH + 1);
+   input= AXIS2_MALLOC(env->allocator, AXIS2_STRLEN(nonce) + 
+          AXIS2_STRLEN(created) + AXIS2_STRLEN(password) + 1);
+   sprintf(input, "%s%s%s", nonce, created, password);
+   result = AXIS2_MALLOC(env->allocator, SHA_DIGEST_LENGTH + 1);
     
-	SHA1(input,SHA_DIGEST_LENGTH, result);
-	result[SHA_DIGEST_LENGTH] = '\0';
-	  
-	encoded_str = AXIS2_MALLOC(env->allocator, axis2_base64_encode_len(SIZE_HASH));
-	axis2_base64_encode(encoded_str, result, AXIS2_STRLEN(result));
-	
+   SHA1(input,SHA_DIGEST_LENGTH, result);
+   result[SHA_DIGEST_LENGTH] = '\0';
+     
+   encoded_str = AXIS2_MALLOC(env->allocator, axis2_base64_encode_len(SIZE_HASH));
+   axis2_base64_encode(encoded_str, result, AXIS2_STRLEN(result));
+   
     AXIS2_FREE(env->allocator, input);
     AXIS2_FREE(env->allocator, result);
 
-	return encoded_str;
+   return encoded_str;
 }

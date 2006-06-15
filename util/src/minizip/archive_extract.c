@@ -252,9 +252,9 @@ int aar_extract(axis2_char_t *d_name)
    
     if (zipfilename!=NULL)
     {
-      	 zlib_filefunc_def ffunc;
-      	 strncpy(filename_try, zipfilename,MAXFILENAME-1);
-      	 filename_try[ MAXFILENAME ] = '\0';
+          zlib_filefunc_def ffunc;
+          strncpy(filename_try, zipfilename,MAXFILENAME-1);
+          filename_try[ MAXFILENAME ] = '\0';
       
          axis2_fill_win32_filefunc(&ffunc);
       

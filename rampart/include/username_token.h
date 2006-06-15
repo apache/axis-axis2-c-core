@@ -52,7 +52,7 @@ rampart_get_password( const axis2_env_t *env,
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_get_value( const axis2_env_t *env,
                    axis2_ctx_t *ctx,
-		           const axis2_char_t *key);
+                 const axis2_char_t *key);
                    
   
 /**

@@ -255,16 +255,16 @@ woden_wsdl_obj_set_component_exts(
     str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
     if(NULL != str_namespc)
     {
-    	if(exts)
-    	{
-        	axis2_hash_set(wsdl_obj_impl->f_comp_exts, str_namespc, 
-                	AXIS2_HASH_KEY_STRING, exts);
-    	}
-    	else
-    	{
-        	axis2_hash_set(wsdl_obj_impl->f_comp_exts, str_namespc, 
-                	AXIS2_HASH_KEY_STRING, NULL);
-    	}
+       if(exts)
+       {
+           axis2_hash_set(wsdl_obj_impl->f_comp_exts, str_namespc, 
+                   AXIS2_HASH_KEY_STRING, exts);
+       }
+       else
+       {
+           axis2_hash_set(wsdl_obj_impl->f_comp_exts, str_namespc, 
+                   AXIS2_HASH_KEY_STRING, NULL);
+       }
     }
     return AXIS2_SUCCESS;
 }

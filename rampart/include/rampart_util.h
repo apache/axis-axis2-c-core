@@ -35,20 +35,20 @@ extern "C" {
   * @ingroup Rampart_Util
   */
 
-												                                        
+                                                                            
  /**
     * Generates the nonce. Nonce is a base64 encoded random string.
     * @return generated nonce
-    */ 	
+    */    
 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-	rampart_generate_nonce(const axis2_env_t *env);
+   rampart_generate_nonce(const axis2_env_t *env);
 
   /**
     * Generates the nonce. Nonce is a base64 encoded random string.
     * @param ttl Time to live. The time difference between created and expired in mili seconds.
     * @return generated nonce
-    **/ 	
+    **/    
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
 rampart_generate_time(const axis2_env_t *env, int ttl);
 

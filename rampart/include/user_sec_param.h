@@ -42,24 +42,24 @@ AXIS2_DECLARE_DATA typedef struct user_sec_param_ops
      *  @return Status code
      */
     axis2_status_t (AXIS2_CALL *
-	free) (struct user_sec_param * user_sec_param,
+   free) (struct user_sec_param * user_sec_param,
            const axis2_env_t *env);                                   
-										   
-	axis2_char_t* (AXIS2_CALL *
-		get_user)(struct user_sec_param * user_sec_param,
-				const axis2_env_t *env);	
+                                 
+   axis2_char_t* (AXIS2_CALL *
+      get_user)(struct user_sec_param * user_sec_param,
+            const axis2_env_t *env);   
 } user_sec_param_ops_t;
 
 
 typedef struct user_sec_param
 {
-	/** Parameter related ops */
-	user_sec_param_ops_t *ops;
+   /** Parameter related ops */
+   user_sec_param_ops_t *ops;
 }user_sec_param_t;
 
 
 /**
- *	creates a user_sec_param struct
+ *   creates a user_sec_param struct
  *  returns a pointer to a user_sec_param struct
  *  @user   optional
  *  @password      optional  

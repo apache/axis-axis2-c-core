@@ -36,7 +36,7 @@ rampart_get_password( const axis2_env_t *env,
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_get_value( const axis2_env_t *env,
                    axis2_ctx_t *ctx,
-		           const axis2_char_t *key);
+                 const axis2_char_t *key);
                    
                    
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
@@ -82,12 +82,12 @@ rampart_get_password( const axis2_env_t *env,
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_get_value( const axis2_env_t *env,
         axis2_ctx_t *ctx,
-	    const axis2_char_t *key)
+       const axis2_char_t *key)
 
 {
-	axis2_property_t* property = NULL;
-	axis2_char_t* str_property = NULL;
-	
+   axis2_property_t* property = NULL;
+   axis2_char_t* str_property = NULL;
+   
     /*Get value from the dynamic settings... if not get it from the outflow security parameter*/
     
     property = AXIS2_CTX_GET_PROPERTY (ctx, env, key, AXIS2_FALSE);
@@ -99,7 +99,7 @@ rampart_get_value( const axis2_env_t *env,
 
     if(str_property)
     {
-    	return str_property;
+       return str_property;
     }else{
        /* printf(" Cannot find dynamic settings for %s ", key);*/
     }

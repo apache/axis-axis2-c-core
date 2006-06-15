@@ -11,7 +11,7 @@
 
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -26,7 +26,7 @@
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -41,7 +41,7 @@
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -56,21 +56,21 @@
           axis2_echoDateResponse_t* echo_out = NULL;
           
           axis2_date_time_t* echo_date = NULL;  
-	  axis2_char_t* recieved_date_str  = NULL;
+     axis2_char_t* recieved_date_str  = NULL;
 
-	  echo_date = AXIS2_ECHODATE_GET_ARG_0_10 ( echo_in, env );
+     echo_date = AXIS2_ECHODATE_GET_ARG_0_10 ( echo_in, env );
 
           recieved_date_str = AXIS2_DATE_TIME_SERIALIZE_DATE_TIME(echo_date, env);
           printf ("echoing date %s\n", recieved_date_str );
 
           echo_out = axis2_echoDateResponse_create ( env );
-	  AXIS2_ECHODATERESPONSE_SET_ECHODATERETURN ( echo_out, env , echo_date);
+     AXIS2_ECHODATERESPONSE_SET_ECHODATERETURN ( echo_out, env , echo_date);
 
           return echo_out;
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -85,7 +85,7 @@
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -100,7 +100,7 @@
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -115,7 +115,7 @@
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -130,7 +130,7 @@
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -145,7 +145,7 @@
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -160,7 +160,7 @@
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -175,7 +175,7 @@
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -190,7 +190,7 @@
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -205,7 +205,7 @@
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          
@@ -219,31 +219,31 @@
          axis2_echoStructArray_t* echo_in =  param24;
          axis2_echoStructArrayResponse_t* echo_out = NULL;
 
-	 axis2_SOAPStruct_t** echo_struct_arr = NULL;
-	 int arr_size = 0;
+    axis2_SOAPStruct_t** echo_struct_arr = NULL;
+    int arr_size = 0;
 
-	 int i = 0;
+    int i = 0;
 
-	 echo_struct_arr = 
-		 AXIS2_ECHOSTRUCTARRAY_GET_ARG_0_7 ( echo_in, env, &arr_size );
+    echo_struct_arr = 
+       AXIS2_ECHOSTRUCTARRAY_GET_ARG_0_7 ( echo_in, env, &arr_size );
 
-	 for ( i = 0;  i < arr_size ; i ++ )
-	 {
-	      printf ( "echoing turn %d\n string %s\n int %d\n float %f\n\n", i,
-					AXIS2_SOAPSTRUCT_GET_VARSTRING ( echo_struct_arr[i], env ),
-					AXIS2_SOAPSTRUCT_GET_VARINT ( echo_struct_arr[i], env ),
-					AXIS2_SOAPSTRUCT_GET_VARFLOAT ( echo_struct_arr[i], env ) );
+    for ( i = 0;  i < arr_size ; i ++ )
+    {
+         printf ( "echoing turn %d\n string %s\n int %d\n float %f\n\n", i,
+               AXIS2_SOAPSTRUCT_GET_VARSTRING ( echo_struct_arr[i], env ),
+               AXIS2_SOAPSTRUCT_GET_VARINT ( echo_struct_arr[i], env ),
+               AXIS2_SOAPSTRUCT_GET_VARFLOAT ( echo_struct_arr[i], env ) );
          }
 
-	 echo_out = axis2_echoStructArrayResponse_create (env );
-	 AXIS2_ECHOSTRUCTARRAYRESPONSE_SET_ECHOSTRUCTARRAYRETURN 
-		 ( echo_out, env, echo_struct_arr, arr_size );
+    echo_out = axis2_echoStructArrayResponse_create (env );
+    AXIS2_ECHOSTRUCTARRAYRESPONSE_SET_ECHOSTRUCTARRAYRETURN 
+       ( echo_out, env, echo_struct_arr, arr_size );
          return echo_out;
 
         }
      
 
-		 
+       
         /**
          * Auto generated function definition
          

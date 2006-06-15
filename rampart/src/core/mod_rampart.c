@@ -112,7 +112,7 @@ AXIS2_EXPORT int
 axis2_get_instance(axis2_module_t **inst,
                    const axis2_env_t *env)
 {
-	*inst = mod_rampart_create(env);
+   *inst = mod_rampart_create(env);
     if(!(*inst))
     {
         return AXIS2_FAILURE;
@@ -126,8 +126,8 @@ axis2_remove_instance(axis2_module_t *inst,
                       const axis2_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
-	if (inst)
-	{
+   if (inst)
+   {
         status = mod_rampart_shutdown(inst, env);
     }
     return status;

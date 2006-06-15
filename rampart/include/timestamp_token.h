@@ -29,7 +29,7 @@ extern "C"
 
 /*
  * Builds timestamp token.
- * @param env pointer to environment struct    	
+ * @param env pointer to environment struct       
  * @param ctx axis2 context
  * @param sec_node security node
  * @param sec_ns_obj Security namespace object

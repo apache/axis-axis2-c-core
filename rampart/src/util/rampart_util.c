@@ -33,34 +33,34 @@
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_nonce(const axis2_env_t *env)
 {
-	int num;
-	char* rand_str = NULL;
-	axis2_char_t* encoded_str=NULL;
-	num=rand();
-	rand_str= AXIS2_MALLOC(env->allocator,sizeof(char)*16);
-	sprintf(rand_str, "%16d", num);
+   int num;
+   char* rand_str = NULL;
+   axis2_char_t* encoded_str=NULL;
+   num=rand();
+   rand_str= AXIS2_MALLOC(env->allocator,sizeof(char)*16);
+   sprintf(rand_str, "%16d", num);
 
 
     encoded_str = AXIS2_MALLOC(env->allocator, sizeof(char)*SIZE_NONCE);
     axis2_base64_encode(encoded_str,rand_str,AXIS2_STRLEN(rand_str));
     /* AXIS2_FREE(env->allocator, rand_str); */
-	return encoded_str;
+   return encoded_str;
 }
 
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_time(const axis2_env_t *env, int ttl)
 {
-	char buffer[SIZE];
-	time_t curtime;
-	struct tm *loctime;
-	axis2_char_t* created_str=NULL;
+   char buffer[SIZE];
+   time_t curtime;
+   struct tm *loctime;
+   axis2_char_t* created_str=NULL;
  
-	curtime = time (NULL) + ttl;
-	loctime = localtime (&curtime);
-  	strftime (buffer, SIZE, "%Y-%m-%dT%H:%M:%SZ\n", loctime);
+   curtime = time (NULL) + ttl;
+   loctime = localtime (&curtime);
+     strftime (buffer, SIZE, "%Y-%m-%dT%H:%M:%SZ\n", loctime);
     created_str = AXIS2_STRDUP(buffer, env);
     
-	return created_str;
+   return created_str;
 }
 
 AXIS2_EXTERN int AXIS2_CALL 

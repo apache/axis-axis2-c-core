@@ -37,7 +37,7 @@ extern "C"
  */   
 AXIS2_EXTERN axis2_handler_t* AXIS2_CALL
 rampart_in_handler_create(const axis2_env_t *env, 
-							axis2_qname_t *qname);
+                     axis2_qname_t *qname);
 
 /**
  * Creates Out handler
@@ -47,7 +47,7 @@ rampart_in_handler_create(const axis2_env_t *env,
  */   
 AXIS2_EXTERN axis2_handler_t* AXIS2_CALL 
 rampart_out_handler_create(const axis2_env_t *env, 
-							  axis2_qname_t *qname);
+                       axis2_qname_t *qname);
     
 /** @} */
     

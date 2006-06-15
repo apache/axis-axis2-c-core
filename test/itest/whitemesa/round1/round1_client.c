@@ -55,7 +55,7 @@ main (int argc, char **argv)
     {
         printf ("\nUsage : %s [echo_operation] [echo_value] [XSD_type]\n",
                 argv[0]);
-		printf("use -h for help\n");
+      printf("use -h for help\n");
         return 0;
     }
 
@@ -68,7 +68,7 @@ main (int argc, char **argv)
     
     /* address = "http://localhost:7070/cgi-bin/interopserver"; */
     address = "http://easysoap.sourceforge.net/cgi-bin/interopserver";
-	
+   
     sprintf (operation, "echo%s", echo_operation);
 
     printf ("Using endpoint : %s\n", address);
@@ -79,7 +79,7 @@ main (int argc, char **argv)
     env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Create EPR with given address */
-	
+   
     endpoint_ref = axis2_endpoint_ref_create(env, address);
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
@@ -126,7 +126,7 @@ main (int argc, char **argv)
                 (AXIOM_ELEMENT_GET_LOCALNAME (ret_ele, env),
                  echo_response_buff) != 0)
             {
-	        printf ( "%s != %s\n", AXIOM_ELEMENT_GET_LOCALNAME (ret_ele, env), echo_response_buff);
+           printf ( "%s != %s\n", AXIOM_ELEMENT_GET_LOCALNAME (ret_ele, env), echo_response_buff);
                 printf ("\nFAIL\n\n");
                 return AXIS2_FAILURE;
             }
@@ -213,7 +213,7 @@ build_soap_body_content (const axis2_env_t *env, axis2_char_t * echo_operation,
                                    "types");
 
     operation_om_ele = axiom_element_create(env, NULL, echo_operation_buff,
-		                               ns4, &operation_om_node);
+                                     ns4, &operation_om_node);
    
     AXIOM_ELEMENT_DECLARE_NAMESPACE (operation_om_ele, env,
                                           operation_om_node, ns0);

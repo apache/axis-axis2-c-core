@@ -39,7 +39,7 @@ int main(int argc, char** argv)
     array_in = axis2_ArrayOfstring_literal_create (env );
 
     AXIS2_ARRAYOFSTRING_LITERAL_SET_STRING( array_in, env,
-		    string_array, array_length );
+          string_array, array_length );
     
     /* create the input params using databinding */
     echo_in = axis2_echoStringArray_create ( env );
@@ -52,7 +52,7 @@ int main(int argc, char** argv)
     array_out = AXIS2_ECHOSTRINGARRAYRESPONSE_GET_RETURN( echo_out, env );
 
     string_return_string_array = AXIS2_ARRAYOFSTRING_LITERAL_GET_STRING
-	    ( array_out, env, &return_array_length );
+       ( array_out, env, &return_array_length );
 
     for ( i = 0; i < return_array_length ; i ++ )
     {

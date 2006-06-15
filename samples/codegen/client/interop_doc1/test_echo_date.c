@@ -20,10 +20,10 @@ int main(int argc, char** argv)
     axis2_char_t* return_date_str = NULL;
          
     endpoint_uri = 
-	    "http://localhost:9090/axis2/services/interop_doc1";
+       "http://localhost:9090/axis2/services/interop_doc1";
 
     env = axis2_env_create_all( "codegen_utest_blocking.log",
-		       AXIS2_LOG_LEVEL_TRACE);
+             AXIS2_LOG_LEVEL_TRACE);
 
     /* Set up deploy folder.*/
     client_home = AXIS2_GETENV("AXIS2C_HOME");
@@ -31,7 +31,7 @@ int main(int argc, char** argv)
         client_home = "../../../deploy";
     
     stub = axis2_InteropTestPortTypeDocService_stub_create( env,
-		         client_home , endpoint_uri); 
+               client_home , endpoint_uri); 
 
     /* create the struct */
     echo_date = axis2_date_time_create (env); /* default to current date */

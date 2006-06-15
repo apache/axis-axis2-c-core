@@ -34,7 +34,7 @@ int main(int argc, char** argv)
         client_home = "../../../deploy";
     
     stub = axis2_WSDLInteropTestDocLitService_stub_create( env,
-		    client_home , endpoint_uri); 
+          client_home , endpoint_uri); 
 
     /* create the struct */
     struct_in = axis2_SOAPStruct_create( env );

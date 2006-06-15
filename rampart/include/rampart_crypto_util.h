@@ -45,11 +45,11 @@ extern "C" {
   * @return calculated hash
   */ 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-	rampart_crypto_sha1(const axis2_env_t *env,
-				const axis2_char_t *nonce,
-	                	const axis2_char_t *created,
-	                	const axis2_char_t *password);
-												                                        
+   rampart_crypto_sha1(const axis2_env_t *env,
+            const axis2_char_t *nonce,
+                      const axis2_char_t *created,
+                      const axis2_char_t *password);
+                                                                            
 
 /* @} */
 #ifdef __cplusplus

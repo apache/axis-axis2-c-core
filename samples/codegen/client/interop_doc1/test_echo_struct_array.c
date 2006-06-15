@@ -22,10 +22,10 @@ int main(int argc, char** argv)
 
          
     endpoint_uri = 
-	    "http://localhost:9090/axis2/services/interop_doc1";
+       "http://localhost:9090/axis2/services/interop_doc1";
 
     env = axis2_env_create_all( "codegen_utest_blocking.log",
-		       AXIS2_LOG_LEVEL_TRACE);
+             AXIS2_LOG_LEVEL_TRACE);
 
     /* Set up deploy folder.*/
     client_home = AXIS2_GETENV("AXIS2C_HOME");
@@ -33,12 +33,12 @@ int main(int argc, char** argv)
         client_home = "../../../deploy";
     
     stub = axis2_InteropTestPortTypeDocService_stub_create( env,
-		         client_home , endpoint_uri); 
+               client_home , endpoint_uri); 
 
     /* create the struct array */
     arr_size = 3;
     echo_struct_arr = ( axis2_SOAPStruct_t** ) malloc
-	    ( arr_size * sizeof ( axis2_SOAPStruct_t* ) );
+       ( arr_size * sizeof ( axis2_SOAPStruct_t* ) );
     
     echo_struct_arr[0] = axis2_SOAPStruct_create ( env );
     AXIS2_SOAPSTRUCT_SET_VARSTRING ( echo_struct_arr[0], env, "sturct0" );
@@ -63,14 +63,14 @@ int main(int argc, char** argv)
     echo_out = axis2_echoStructArray(  stub, env, echo_in );
     
     ret_echo_struct_arr = 
-	    AXIS2_ECHOSTRUCTARRAYRESPONSE_GET_ECHOSTRUCTARRAYRETURN 
-	    ( echo_out, env ,&ret_arr_size);
+       AXIS2_ECHOSTRUCTARRAYRESPONSE_GET_ECHOSTRUCTARRAYRETURN 
+       ( echo_out, env ,&ret_arr_size);
     for ( i = 0;  i < ret_arr_size ; i ++ )
     {
       printf ( "recieved turn %d \n string %s\n int %d\n float %f\n\n", i,
-		       AXIS2_SOAPSTRUCT_GET_VARSTRING ( ret_echo_struct_arr[i], env ),
-		       AXIS2_SOAPSTRUCT_GET_VARINT ( ret_echo_struct_arr[i], env ),
-		       AXIS2_SOAPSTRUCT_GET_VARFLOAT ( ret_echo_struct_arr[i], env ) );
+             AXIS2_SOAPSTRUCT_GET_VARSTRING ( ret_echo_struct_arr[i], env ),
+             AXIS2_SOAPSTRUCT_GET_VARINT ( ret_echo_struct_arr[i], env ),
+             AXIS2_SOAPSTRUCT_GET_VARFLOAT ( ret_echo_struct_arr[i], env ) );
     }
     return 0;
 }
