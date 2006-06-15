@@ -25,7 +25,7 @@
 #include <axis2_msg_ctx.h>
 #include <axis2_msg_info_headers.h>
 #include <axis2_property.h>
-#include <rampart/rampart_constants.h>
+#include <rampart_constants.h>
 
 
 

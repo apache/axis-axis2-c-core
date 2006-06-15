@@ -20,11 +20,11 @@
 #include <axiom_soap_header_block.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_property.h>
-#include <rampart/username_token.h>
-#include <rampart/rampart_constants.h>
-#include <rampart/rampart_crypto_util.h>
-#include <rampart/rampart_util.h>
-#include <rampart/rampart_handler_util.h>
+#include <username_token.h>
+#include <rampart_constants.h>
+#include <rampart_crypto_util.h>
+#include <rampart_util.h>
+#include <rampart_handler_util.h>
 
 /*************************** Function headers *********************************/
                                 

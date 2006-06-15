@@ -25,7 +25,7 @@ extern "C"
     
     
 #include <axis2_env.h>
-#include <rampart/rampart_constants.h>
+#include <rampart_constants.h>
 
 /*
  * Builds timestamp token.

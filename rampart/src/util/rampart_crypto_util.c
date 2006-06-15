@@ -18,7 +18,7 @@
  * 
  */
 #include <stdio.h>
-#include <rampart/rampart_crypto_util.h>
+#include <rampart_crypto_util.h>
 #include <axis2_util.h>
 #include <axis2_base64.h>
 

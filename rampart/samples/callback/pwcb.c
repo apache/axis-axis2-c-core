@@ -3,7 +3,7 @@
 #include <axis2_error.h>
 #include <axis2_env.h>
 #include <axis2_utils.h>
-#include <rampart/rampart_callback.h>
+#include <rampart_callback.h>
 #include <axis2_string.h>
 
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <rampart/rampart_handler_util.h>
+#include <rampart_handler_util.h>
 #include <axis2_handler_desc.h>
 #include <axis2_qname.h>
 #include <axis2_svc.h>
@@ -23,8 +23,8 @@
 #include <axiom_soap_header_block.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_property.h>
-#include <rampart/rampart_constants.h>
-#include <rampart/rampart_callback.h>
+#include <rampart_constants.h>
+#include <rampart_callback.h>
 #include <axis2_dll_desc.h>
 #include <axis2_class_loader.h>
 

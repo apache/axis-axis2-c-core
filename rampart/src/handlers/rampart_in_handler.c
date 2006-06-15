@@ -24,11 +24,11 @@
 #include <axis2_msg_ctx.h>
 #include <axis2_msg_info_headers.h>
 #include <axis2_property.h>
-#include <rampart/rampart_constants.h>
-#include <rampart/username_token.h>
-#include <rampart/rampart_handler_util.h>
-#include <rampart/timestamp_token.h>
-#include <rampart/rampart_util.h>
+#include <rampart_constants.h>
+#include <username_token.h>
+#include <rampart_handler_util.h>
+#include <timestamp_token.h>
+#include <rampart_util.h>
 
 /*************************** Function headers *********************************/
 

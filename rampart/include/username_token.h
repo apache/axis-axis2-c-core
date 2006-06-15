@@ -25,9 +25,9 @@ extern "C"
 
 
 #include <axis2_env.h>
-#include <rampart/username_token.h>
-#include <rampart/rampart_constants.h>
-#include <rampart/rampart_crypto_util.h>
+#include <username_token.h>
+#include <rampart_constants.h>
+#include <rampart_crypto_util.h>
 
 /**
  * Get the password for given outflow security configuration

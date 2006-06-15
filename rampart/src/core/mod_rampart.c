@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 #include <axis2_module.h>
-#include <rampart/rampart_mod.h>
+#include <rampart_mod.h>
 
 axis2_status_t AXIS2_CALL
 mod_rampart_shutdown(axis2_module_t *module,

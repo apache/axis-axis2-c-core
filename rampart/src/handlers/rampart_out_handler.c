@@ -19,13 +19,13 @@
 #include <axis2_qname.h>
 #include <axis2_svc.h>
 #include <axiom_soap.h>
-#include <rampart/rampart_util.h>
+#include <rampart_util.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_property.h>
-#include <rampart/rampart_constants.h>
-#include <rampart/username_token.h>
-#include <rampart/rampart_handler_util.h>
-#include <rampart/timestamp_token.h>
+#include <rampart_constants.h>
+#include <username_token.h>
+#include <rampart_handler_util.h>
+#include <timestamp_token.h>
 
 /*********************** Function headers *********************************/
 
