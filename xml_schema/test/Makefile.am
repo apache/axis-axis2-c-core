@@ -1,6 +1,5 @@
 TESTS = xml_schema_test
-prgbin_PROGRAMS = xml_schema_test
-prgbindir=
+bin_PROGRAMS = xml_schema_test
 check_PROGRAMS = xml_schema_test
 SUBDIRS =
 

@@ -106,6 +106,7 @@ AXIOMINC=$axiominc
 
 AC_SUBST(UTILINC)
 AC_SUBST(AXIOMINC)
+AC_SUBST(TESTDIR)
 
 AC_CONFIG_FILES([Makefile
     src/Makefile \

@@ -1,5 +1,5 @@
 TESTS = test_schema
-prgbindir=$(prefix)/bin/system_test
+prgbindir=$(prefix)/bin/samples/xml_schema
 prgbin_PROGRAMS = test_schema
 check_PROGRAMS = test_schema
 test_schema_SOURCES = test_schema.c
