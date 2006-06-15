@@ -243,23 +243,28 @@ woden_wsdl_obj_set_component_exts(
         woden_component_exts_t *exts)
 {
     woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
-    axis2_char_t *str_namespc;
+    axis2_char_t *str_namespc = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, namespc, AXIS2_FAILURE);
     super = WODEN_WSDL_OBJ_SUPER_OBJS(wsdl_obj, env);
     wsdl_obj_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING));
 
-    if(exts)
+    str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
+    if(NULL != str_namespc)
     {
-        axis2_hash_set(wsdl_obj_impl->f_comp_exts, str_namespc, 
-                AXIS2_HASH_KEY_STRING, exts);
-    }
-    else
-    {
-        axis2_hash_set(wsdl_obj_impl->f_comp_exts, str_namespc, 
-                AXIS2_HASH_KEY_STRING, NULL);
+    	if(exts)
+    	{
+        	axis2_hash_set(wsdl_obj_impl->f_comp_exts, str_namespc, 
+                	AXIS2_HASH_KEY_STRING, exts);
+    	}
+    	else
+    	{
+        	axis2_hash_set(wsdl_obj_impl->f_comp_exts, str_namespc, 
+                	AXIS2_HASH_KEY_STRING, NULL);
+    	}
     }
     return AXIS2_SUCCESS;
 }

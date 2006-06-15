@@ -802,9 +802,9 @@ woden_interface_get_interface_fault(
     woden_interface_impl_t *interface_impl = NULL;
     axis2_hash_t *super = NULL;
     int i = 0, size = 0;
-    void *fault;
+    void *fault = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, qname, NULL);
     super = WODEN_INTERFACE_SUPER_OBJS(interface, env);
     interface_impl = INTF_TO_IMPL(axis2_hash_get(super, 
