@@ -912,7 +912,7 @@ woden_types_get_element_declaration(
     xml_schema_element_t *xml_schema_el = NULL;
     axis2_array_list_t *schemas = NULL;
     axis2_hash_t *super = NULL;
-    
+    axis2_char_t *uri = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
     types_impl = INTF_TO_IMPL(axis2_hash_get(super, 
@@ -921,7 +921,7 @@ woden_types_get_element_declaration(
     if(NULL == qname)
       return NULL;
    
-    axis2_char_t *uri = AXIS2_QNAME_GET_URI(qname, env);
+    uri = AXIS2_QNAME_GET_URI(qname, env);
     schemas = woden_types_get_referenceable_schema_defs_with_namespace(
             types, env, uri);
     if(schemas)
@@ -1013,7 +1013,7 @@ woden_types_get_referenceable_schema_defs(
                     types_impl->schema_defs, env, i);
             WODEN_SCHEMA_FREE(schema, env);
         }
-        axis2_array_list_free(types_impl->schema_defs, env);
+        AXIS2_ARRAY_LIST_FREE(types_impl->schema_defs, env);
     }
     types_impl->schema_defs = axis2_array_list_create(env, 0);
     if(!types_impl->schema_defs)
@@ -1037,7 +1037,7 @@ woden_types_get_referenceable_schema_defs(
     return types_impl->schema_defs;
 }
 
-static axis2_array_list_t *AXIS2_CALL 
+static axis2_array_list_t *
 woden_types_get_referenceable_schema_defs_with_namespace(
         void *types,
         const axis2_env_t *env,
@@ -1079,10 +1079,11 @@ woden_types_is_namespace_in_scope_with_namespace_uri(
         axis2_uri_t *namespc_uri)
 {
     woden_types_impl_t *types_impl = NULL;
-    AXIS2_PARAM_CHECK(env->error, namespc_uri, AXIS2_FAILURE);
     axis2_char_t *str_uri = NULL;
     axis2_hash_t *super = NULL;
 
+    AXIS2_PARAM_CHECK(env->error, namespc_uri, AXIS2_FAILURE);
+  
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
     types_impl = INTF_TO_IMPL(axis2_hash_get(super, 

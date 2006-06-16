@@ -449,7 +449,7 @@ create(
 {
     woden_reader_impl_t *reader_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     reader_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_reader_impl_t));
 
@@ -560,7 +560,7 @@ woden_reader_get_ext_registry(
 {
     woden_reader_impl_t *reader_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     reader_impl = INTF_TO_IMPL(reader);
 
     return reader_impl->f_ext_reg;
@@ -576,9 +576,9 @@ woden_reader_read_wsdl(
     woden_reader_impl_t *reader_impl = NULL;
     void *desc = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, om_doc, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, om_doc, NULL);
+    AXIS2_PARAM_CHECK(env->error, uri, NULL);
     reader_impl = INTF_TO_IMPL(reader);
         
     /* TODO add WSDL locator for resolving URIs */
@@ -1181,8 +1181,8 @@ parse_schema_import(
     axis2_char_t *schema_loc = NULL;
     axiom_element_t *import_el = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, desc, NULL);
     reader_impl = INTF_TO_IMPL(reader);
 
     schema = woden_imported_schema_create(env);
@@ -1345,8 +1345,8 @@ parse_interface(
             size = AXIS2_ARRAY_LIST_SIZE(string_list, env);
         for(i = 0; i < size; i++)
         {
-            uri_str = AXIS2_ARRAY_LIST_GET(string_list, env, i);
             axis2_uri_t *uri = NULL;
+            uri_str = AXIS2_ARRAY_LIST_GET(string_list, env, i);
             intface = woden_interface_to_interface_element(intface, env);
             uri = get_uri(reader, env, uri_str);
             WODEN_INTERFACE_ELEMENT_ADD_STYLE_DEFAULT_URI(intface, env, uri);

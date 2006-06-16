@@ -161,7 +161,7 @@ woden_wsdl_element_to_attr_extensible(
 {
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!wsdl_element)
     {
@@ -188,7 +188,8 @@ woden_wsdl_element_to_element_extensible(
 {
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!wsdl_element)
     {
@@ -392,7 +393,7 @@ woden_wsdl_element_super_objs(
 {
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     wsdl_element_impl = INTF_TO_IMPL(wsdl_element);
     
     return wsdl_element_impl->super;
@@ -466,8 +467,8 @@ woden_wsdl_element_get_ext_attr(
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, attr_type, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, attr_type, NULL);
     super = WODEN_WSDL_ELEMENT_SUPER_OBJS(wsdl_element, env);
     wsdl_element_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL_ELEMENT", AXIS2_HASH_KEY_STRING)); 
@@ -484,7 +485,7 @@ woden_wsdl_element_get_ext_attrs(
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     axis2_hash_t *super = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL_ELEMENT_SUPER_OBJS(wsdl_element, env);
     wsdl_element_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL_ELEMENT", AXIS2_HASH_KEY_STRING)); 
@@ -502,8 +503,8 @@ woden_wsdl_element_get_ext_attrs_for_namespace(
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     axis2_hash_t *super = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, namespc, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, namespc, NULL);
     super = WODEN_WSDL_ELEMENT_SUPER_OBJS(wsdl_element, env);
     wsdl_element_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL_ELEMENT", AXIS2_HASH_KEY_STRING)); 
@@ -577,7 +578,7 @@ const axis2_env_t *env)
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL_ELEMENT_SUPER_OBJS(wsdl_element, env);
     wsdl_element_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL_ELEMENT", AXIS2_HASH_KEY_STRING)); 
@@ -593,10 +594,10 @@ woden_wsdl_element_get_ext_elements_of_type(
 axis2_qname_t *ext_type) 
 {
     woden_wsdl_element_impl_t *wsdl_element_impl = NULL;
-    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, ext_type, AXIS2_FAILURE);
     axis2_hash_t *super = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, ext_type, NULL);
 
     super = WODEN_WSDL_ELEMENT_SUPER_OBJS(wsdl_element, env);
     wsdl_element_impl = INTF_TO_IMPL(axis2_hash_get(super, 

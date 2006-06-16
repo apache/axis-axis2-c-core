@@ -94,7 +94,7 @@ woden_soap_module_deserializer_to_ext_deserializer(
 {
     woden_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!mod_deser)
     {
         mod_deser_impl = (woden_soap_module_deserializer_impl_t *) 
@@ -120,7 +120,7 @@ create(const axis2_env_t *env)
 {
     woden_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     mod_deser_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_soap_module_deserializer_impl_t));
 
@@ -168,7 +168,7 @@ woden_soap_module_deserializer_create(const axis2_env_t *env)
 {
     woden_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     mod_deser_impl = (woden_soap_module_deserializer_impl_t *) create(env);
 
     mod_deser_impl->super = axis2_hash_make(env);
@@ -250,7 +250,7 @@ woden_soap_module_deserializer_super_objs(
 {
     woden_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     mod_deser_impl = INTF_TO_IMPL(mod_deser);
 
     return mod_deser_impl->super;

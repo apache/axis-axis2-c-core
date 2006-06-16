@@ -26,6 +26,7 @@
 #include "woden_soap_constants.h"
 #include <axiom_element.h>
 #include <axiom_util.h>
+#include <woden_qname_util.h>
 
 
 typedef struct woden_soap_header_block_deserializer_impl 
@@ -96,7 +97,7 @@ woden_soap_header_block_deserializer_to_ext_deserializer(
 {
     woden_soap_header_block_deserializer_impl_t *header_deser_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!header_deser)
     {
         header_deser_impl = (woden_soap_header_block_deserializer_impl_t *) 
@@ -122,7 +123,7 @@ create(const axis2_env_t *env)
 {
     woden_soap_header_block_deserializer_impl_t *header_deser_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     header_deser_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_soap_header_block_deserializer_impl_t));
 
@@ -170,7 +171,7 @@ woden_soap_header_block_deserializer_create(const axis2_env_t *env)
 {
     woden_soap_header_block_deserializer_impl_t *header_deser_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     header_deser_impl = (woden_soap_header_block_deserializer_impl_t *) create(env);
 
     header_deser_impl->super = axis2_hash_make(env);
@@ -252,7 +253,7 @@ woden_soap_header_block_deserializer_super_objs(
 {
     woden_soap_header_block_deserializer_impl_t *header_deser_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     header_deser_impl = INTF_TO_IMPL(header_deser);
 
     return header_deser_impl->super;
