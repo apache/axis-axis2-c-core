@@ -337,34 +337,41 @@ init_components(
     
     desc = woden_desc_to_desc_element(desc, env);
     includes = WODEN_DESC_ELEMENT_GET_INCLUDE_ELEMENTS(desc, env);
-    size = AXIS2_ARRAY_LIST_SIZE(includes, env);
-    for(i = 0; i < size; i++)
+    if (includes)
     {
-        void *incl_desc = NULL;
-        void *incl_el = NULL;
-
-        incl_el = AXIS2_ARRAY_LIST_GET(includes, env, i);
-        incl_desc = WODEN_INCLUDE_ELEMENT_GET_DESC_ELEMENT(incl_el, env);
-        if(NULL != incl_desc)
+        size = AXIS2_ARRAY_LIST_SIZE(includes, env);
+        for(i = 0; i < size; i++)
         {
-            init_components(builder, env, incl_desc);
+            void *incl_desc = NULL;
+            void *incl_el = NULL;
+
+            incl_el = AXIS2_ARRAY_LIST_GET(includes, env, i);
+            incl_desc = WODEN_INCLUDE_ELEMENT_GET_DESC_ELEMENT(incl_el, env);
+            if(NULL != incl_desc)
+            {
+                init_components(builder, env, incl_desc);
+            }
         }
     }
      
     imports = WODEN_DESC_ELEMENT_GET_IMPORT_ELEMENTS(desc, env);
-    size = AXIS2_ARRAY_LIST_SIZE(imports, env);
-    for(i = 0; i < size; i++)
+    if (imports)
     {
-        void *imp_desc = NULL;
-        void *imp_el = NULL;
-
-        imp_el = AXIS2_ARRAY_LIST_GET(imports, env, i);
-        imp_desc = WODEN_IMPORT_ELEMENT_GET_DESC_ELEMENT(imp_el, env);
-        if(NULL != imp_desc)
+        size = AXIS2_ARRAY_LIST_SIZE(imports, env);
+        for(i = 0; i < size; i++)
         {
-            init_components(builder, env, imp_desc);
+            void *imp_desc = NULL;
+            void *imp_el = NULL;
+
+            imp_el = AXIS2_ARRAY_LIST_GET(imports, env, i);
+            imp_desc = WODEN_IMPORT_ELEMENT_GET_DESC_ELEMENT(imp_el, env);
+            if(NULL != imp_desc)
+            {
+                init_components(builder, env, imp_desc);
+            }
         }
     }
+    
     return AXIS2_SUCCESS;
 }
 
@@ -1426,8 +1433,9 @@ build_svcs(
         void *svc = NULL;
 
         svc = AXIS2_ARRAY_LIST_GET(svcs, env, i);
-        if(AXIS2_TRUE != AXIS2_ARRAY_LIST_CONTAINS(builder_impl->f_svcs_done, 
-                    env, svc))
+        if( builder_impl->f_svcs_done && 
+            (AXIS2_TRUE != AXIS2_ARRAY_LIST_CONTAINS(builder_impl->f_svcs_done, 
+                    env, svc)))
         {
             WODEN_DESC_ADD_TO_ALL_SVCS(builder_impl->f_desc, env, svc);
             if(!builder_impl->f_svcs_done)

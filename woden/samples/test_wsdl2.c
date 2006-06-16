@@ -23,6 +23,7 @@
 #include <woden_reader.h>
 #include <woden_desc.h>
 #include <woden_interface.h>
+#include <woden_svc.h>
 
 #include <axiom.h>
 
@@ -43,6 +44,7 @@ int main(int argc, char *argv[])
     axis2_array_list_t *intfaces = NULL;
     axis2_qname_t *intface_qname = NULL;
     axis2_char_t *filename = NULL;
+    axis2_array_list_t *svc_list = NULL;
     
     if(argc > 1)
     {
@@ -66,6 +68,21 @@ int main(int argc, char *argv[])
     intfaces = WODEN_DESC_GET_INTERFACES(desc, env);
     intface = AXIS2_ARRAY_LIST_GET(intfaces, env, 0);
     intface_qname = WODEN_INTERFACE_GET_QNAME(intface, env);
+    printf("Interface qname is %s\n", AXIS2_QNAME_TO_STRING(intface_qname, env));
+    svc_list = WODEN_DESC_ELEMENT_GET_SVC_ELEMENTS(desc, env);
+    if (svc_list)
+    {
+        void *svc = NULL;
+        svc = AXIS2_ARRAY_LIST_GET(svc_list, env, 0);
+        if (svc)
+        {
+            axis2_qname_t *svc_qname = WODEN_SVC_GET_QNAME(svc, env);
+            if (svc_qname)
+            {
+                printf("First service qname is %s\n", AXIS2_QNAME_TO_STRING(svc_qname, env));
+            }
+        }
+    }
     return 0;
 }
 

@@ -190,11 +190,11 @@ woden_svc_resolve_methods(
       (((woden_svc_t *) svc)->ops->get_base_impl(svc, env))
 
 #define WODEN_SVC_GET_QNAME(svc, env) \
-      (((woden_svc_t *) svc)->\
+      (((woden_svc_t *) svc)->ops->\
          get_qname(svc, env))
 
 #define WODEN_SVC_GET_INTERFACE(svc, env) \
-      (((woden_svc_t *) svc)->\
+      (((woden_svc_t *) svc)->ops->\
          get_interface(svc, env))
 
 #define WODEN_SVC_GET_ENDPOINTS(svc, env) \
