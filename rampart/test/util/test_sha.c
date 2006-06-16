@@ -47,7 +47,7 @@ int main()
    created=rampart_generate_time(env, 300);
    printf("CREATED: %s",created);
    printf("\n----End of testings----------------------------------------\n");
-   return;
+   return 0;
 }
 
 

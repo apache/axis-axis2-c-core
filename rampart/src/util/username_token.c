@@ -31,7 +31,7 @@
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_get_password( const axis2_env_t *env,
                       axis2_ctx_t *ctx,
-                      const axis2_param_t *param_out_flow_security);          
+                      axis2_param_t *param_out_flow_security);          
            
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_get_value( const axis2_env_t *env,
@@ -58,7 +58,7 @@ rampart_validate_username_token(const axis2_env_t *env,
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 rampart_get_password( const axis2_env_t *env,
         axis2_ctx_t *ctx,
-        const axis2_param_t *param_action)
+         axis2_param_t *param_action)
 {
     axis2_char_t *password, *username, *pw_callback_module = NULL;
 

@@ -44,7 +44,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_crypto_sha1(const axis2_env_t *env
    sprintf(input, "%s%s%s", nonce, created, password);
    result = AXIS2_MALLOC(env->allocator, SHA_DIGEST_LENGTH + 1);
     
-   SHA1(input,SHA_DIGEST_LENGTH, result);
+   SHA1((unsigned char*)input,SHA_DIGEST_LENGTH,(unsigned char*)result);
    result[SHA_DIGEST_LENGTH] = '\0';
      
    encoded_str = AXIS2_MALLOC(env->allocator, axis2_base64_encode_len(SIZE_HASH));

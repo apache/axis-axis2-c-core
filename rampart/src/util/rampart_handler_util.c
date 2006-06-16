@@ -31,27 +31,27 @@
 AXIS2_EXTERN axis2_param_t* AXIS2_CALL
 rampart_get_security_param( const axis2_env_t *env,
                           axis2_msg_ctx_t *msg_ctx,
-                         const axis2_char_t *parameter);
+                          axis2_char_t *parameter);
                          
 AXIS2_EXTERN axis2_array_list_t* AXIS2_CALL
 rampart_get_actions( const axis2_env_t *env,
-                                            const axis2_ctx_t *ctx,
-                                          const axis2_param_t *param_x_flow_security);
+                                          axis2_ctx_t *ctx,
+                                          axis2_param_t *param_x_flow_security);
                                             
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_get_action_params( const axis2_env_t *env,
-                   const axis2_ctx_t *ctx,
-                   const axis2_param_t *param_action,
+                   axis2_ctx_t *ctx,
+                   axis2_param_t *param_action,
                    const axis2_char_t *key);
                         
  AXIS2_EXTERN axiom_node_t *AXIS2_CALL
 rampart_get_security_token(const axis2_env_t *env,
-                                const axis2_msg_ctx_t *msg_ctx,
+                                axis2_msg_ctx_t *msg_ctx,
                                 axiom_soap_header_t *soap_header);
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_callback_pw( const axis2_env_t *env,
-                     const axis2_char_t *callback_module_name,
+                     axis2_char_t *callback_module_name,
                      const axis2_char_t *username);
 
 /**********************end of header functions ****************************/
@@ -60,7 +60,7 @@ rampart_callback_pw( const axis2_env_t *env,
 axis2_param_t* AXIS2_CALL
 rampart_get_security_param( const axis2_env_t *env,
                           axis2_msg_ctx_t *msg_ctx,
-                         const axis2_char_t *parameter)
+                          axis2_char_t *parameter)
 {
   
   
@@ -86,8 +86,8 @@ rampart_get_security_param( const axis2_env_t *env,
 
 axis2_array_list_t *AXIS2_CALL
 rampart_get_actions( const axis2_env_t *env,
-        const axis2_ctx_t *ctx,
-        const axis2_param_t *param_x_flow_security)
+        axis2_ctx_t *ctx,
+        axis2_param_t *param_x_flow_security)
 {
     axis2_array_list_t *action_list = NULL;
     int param_type;
@@ -111,8 +111,8 @@ rampart_get_actions( const axis2_env_t *env,
 
 axis2_char_t* AXIS2_CALL
 rampart_get_action_params( const axis2_env_t *env,
-                   const axis2_ctx_t *ctx,
-                   const axis2_param_t *param_action,
+                   axis2_ctx_t *ctx,
+                   axis2_param_t *param_action,
                    const axis2_char_t *key)
 {
     axis2_char_t *value= NULL, *tmp_key = NULL;
@@ -157,16 +157,14 @@ rampart_get_action_params( const axis2_env_t *env,
 
 axiom_node_t *AXIS2_CALL
 rampart_get_security_token(const axis2_env_t *env,
-                                const axis2_msg_ctx_t *msg_ctx,
+                                axis2_msg_ctx_t *msg_ctx,
                                 axiom_soap_header_t *soap_header
                                 )
 {
     axis2_array_list_t *sec_headers = NULL;
     axis2_char_t *sec_ns_str = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
     axis2_hash_index_t *hash_index =  NULL;
     axis2_hash_t *header_block_ht = NULL;
-    axis2_msg_info_headers_t *msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
     axiom_element_t *header_block_ele = NULL;
     axiom_node_t *header_block_node = NULL;
 
@@ -207,7 +205,7 @@ rampart_get_security_token(const axis2_env_t *env,
 
 axis2_char_t* AXIS2_CALL
 rampart_callback_pw( const axis2_env_t *env,
-                     const axis2_char_t *callback_module_name,
+                     axis2_char_t *callback_module_name,
                      const axis2_char_t *username)
 {
     rampart_callback_t* rcb = NULL;
