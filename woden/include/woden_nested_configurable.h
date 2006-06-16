@@ -95,6 +95,11 @@ woden_nested_configurable_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
+AXIS2_EXTERN woden_nested_configurable_t * AXIS2_CALL
+woden_nested_configurable_to_nested_element(
+        void *nested_configurable,
+        const axis2_env_t *env);
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_nested_configurable_resolve_methods(
         woden_nested_configurable_t *nested_configurable,

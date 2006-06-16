@@ -1185,6 +1185,9 @@ parse_schema_import(
     AXIS2_PARAM_CHECK(env->error, desc, AXIS2_FAILURE);
     reader_impl = INTF_TO_IMPL(reader);
 
+    schema = woden_imported_schema_create(env);
+    if(!schema)
+        return NULL;
     import_el = AXIOM_NODE_GET_DATA_ELEMENT(import_el_node, env);
     ns = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env, 
             WODEN_ATTR_NAMESPACE);
@@ -1467,12 +1470,14 @@ parse_interface_fault(
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
     void *types = NULL;
+    void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     fault = WODEN_DESC_ELEMENT_CREATE_INTERFACE_FAULT_ELEMENT(desc, env);
-    fault = woden_interface_fault_to_nested_element(fault, env);
-    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(fault, env, parent); 
+    nested_configurable = WODEN_INTERFACE_FAULT_GET_BASE_IMPL(fault, env);
+    nested_configurable = woden_nested_configurable_to_nested_element(nested_configurable, env);
+    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
     types = WODEN_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
     WODEN_INTERFACE_FAULT_SET_TYPES(fault, env, types);
 
@@ -1499,6 +1504,7 @@ parse_interface_fault(
     if(NULL != element)
     {
         axis2_qname_t *qname = NULL;
+
         qname = woden_om_util_get_qname(env, fault_el_node, element, desc);
         fault = woden_interface_fault_to_interface_fault_element(fault, env);
         WODEN_INTERFACE_FAULT_ELEMENT_SET_QNAME(fault, env, qname);
@@ -1587,12 +1593,15 @@ parse_interface_op(
     axiom_element_t *op_el = NULL;
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
+    void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     op = WODEN_DESC_ELEMENT_CREATE_INTERFACE_OP_ELEMENT(desc, env);
-    op = woden_interface_op_to_nested_element(op, env);
-    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(op, env, parent); 
+    nested_configurable = WODEN_INTERFACE_OP_GET_BASE_IMPL(op, env);
+    nested_configurable = woden_nested_configurable_to_nested_element(
+            nested_configurable, env);
+    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
 
     op_el = AXIOM_NODE_GET_DATA_ELEMENT(op_el_node, env);
     name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(op_el, env, WODEN_ATTR_NAME);
@@ -1776,13 +1785,16 @@ parse_interface_fault_ref(
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
     axis2_qname_t *attr_ref = NULL;
+    void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     fault_ref = WODEN_DESC_ELEMENT_CREATE_INTERFACE_FAULT_REF_ELEMENT(desc, 
             env);
-    fault_ref = woden_interface_op_to_nested_element(fault_ref, env);
-    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(fault_ref, env, parent); 
+    nested_configurable = WODEN_INTERFACE_FAULT_REF_GET_BASE_IMPL(fault_ref, env);
+    nested_configurable = woden_nested_configurable_to_nested_element(
+            nested_configurable, env);
+    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
 
     fault_ref_el = AXIOM_NODE_GET_DATA_ELEMENT(fault_ref_el_node, env);
     localname = AXIOM_ELEMENT_GET_LOCALNAME(fault_ref_el, env);
@@ -1798,6 +1810,8 @@ parse_interface_fault_ref(
         woden_direction_t *direction_out = NULL;
         
         direction_out = woden_direction_get_direction_out(env);
+        fault_ref = woden_interface_fault_ref_to_interface_fault_ref_element(
+                fault_ref, env);
         WODEN_INTERFACE_FAULT_REF_ELEMENT_SET_DIRECTION(fault_ref, env, direction_out);
     }
     
@@ -1941,13 +1955,16 @@ parse_interface_msg_ref(
     axiom_element_t *temp_el;
     axiom_node_t *temp_el_node;
     void *types = NULL;
+    void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     msg_ref = WODEN_DESC_ELEMENT_CREATE_INTERFACE_MSG_REF_ELEMENT(desc, 
             env);
-    msg_ref = woden_interface_op_to_nested_element(msg_ref, env);
-    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(msg_ref, env, parent); 
+    nested_configurable = WODEN_INTERFACE_MSG_REF_GET_BASE_IMPL(msg_ref, env);
+    nested_configurable = woden_nested_configurable_to_nested_element(
+            nested_configurable, env);
+    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
     desc = woden_desc_to_desc_element(desc, env);
     types = WODEN_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
     WODEN_INTERFACE_MSG_REF_SET_TYPES(msg_ref, env, types);
@@ -2347,12 +2364,15 @@ parse_binding_fault(
     axiom_node_t *temp_el_node;
     axis2_qname_t *attr_ref = NULL;
     axis2_qname_t *int_flt_qn = NULL;
+    void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     fault = WODEN_DESC_ELEMENT_CREATE_BINDING_FAULT_ELEMENT(desc, env);
-    fault = woden_binding_fault_to_nested_element(fault, env);
-    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(fault, env, parent); 
+    nested_configurable = WODEN_BINDING_FAULT_GET_BASE_IMPL(fault, env);
+    nested_configurable = woden_nested_configurable_to_nested_element(
+            nested_configurable, env);
+    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
 
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_NAME);
     fault_el = AXIOM_NODE_GET_DATA_ELEMENT(fault_el_node, env);
@@ -2388,8 +2408,13 @@ parse_binding_fault(
                
                 intface_flt = AXIS2_ARRAY_LIST_GET(int_faults, env, i);
                 if(intface_flt)
+                {
+                    intface_flt = 
+                        woden_interface_fault_to_interface_fault_element(
+                                intface_flt, env);
                     qname = WODEN_INTERFACE_FAULT_ELEMENT_GET_QNAME(
                         intface_flt, env);
+                }
                 if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(int_flt_qn, env, qname))
                 {
                     WODEN_BINDING_FAULT_SET_INTERFACE_FAULT_ELEMENT(fault, 
@@ -2480,12 +2505,15 @@ parse_binding_op(
     axiom_node_t *temp_el_node;
     axis2_qname_t *attr_ref = NULL;
     axis2_qname_t *ref_qn = NULL;
+    void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     op = WODEN_DESC_ELEMENT_CREATE_BINDING_OP_ELEMENT(desc, env);
-    op = woden_binding_op_to_nested_element(op, env);
-    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(op, env, parent); 
+    nested_configurable = WODEN_BINDING_OP_GET_BASE_IMPL(op, env);
+    nested_configurable = woden_nested_configurable_to_nested_element(
+            nested_configurable, env);
+    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
 
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
     op_el = AXIOM_NODE_GET_DATA_ELEMENT(op_el_node, env);
@@ -2667,12 +2695,15 @@ parse_binding_fault_ref(
     woden_msg_label_t *msg_label = NULL;
     woden_msg_label_t *msg_label_in = NULL;
     woden_msg_label_t *msg_label_out = NULL;
+    void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     fault_ref = WODEN_DESC_ELEMENT_CREATE_BINDING_FAULT_REF_ELEMENT(desc, env);
-    fault_ref = woden_binding_op_to_nested_element(fault_ref, env);
-    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(fault_ref, env, parent); 
+    nested_configurable = WODEN_BINDING_FAULT_REF_GET_BASE_IMPL(fault_ref, env);
+    nested_configurable = woden_nested_configurable_to_nested_element(
+            nested_configurable, env);
+    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
 
     fault_ref_el = AXIOM_NODE_GET_DATA_ELEMENT(fault_ref_el_node, env);
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
@@ -2873,12 +2904,15 @@ parse_binding_msg_ref(
     woden_msg_label_t *msg_label = NULL;
     woden_msg_label_t *msg_label_in = NULL;
     woden_msg_label_t *msg_label_out = NULL;
+    void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
     msg_ref = WODEN_DESC_ELEMENT_CREATE_BINDING_MSG_REF_ELEMENT(desc, env);
-    msg_ref = woden_binding_op_to_nested_element(msg_ref, env);
-    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(msg_ref, env, parent); 
+    nested_configurable = WODEN_BINDING_MSG_REF_GET_BASE_IMPL(msg_ref, env);
+    nested_configurable = woden_nested_configurable_to_nested_element(
+            nested_configurable, env);
+    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
 
     msg_ref_el = AXIOM_NODE_GET_DATA_ELEMENT(msg_ref_el_node, env);
     localname = AXIOM_ELEMENT_GET_LOCALNAME(msg_ref_el, env);
@@ -3153,7 +3187,8 @@ parse_svc(
         
         desc = woden_desc_to_desc_element(desc, env);
         interfaces = WODEN_DESC_ELEMENT_GET_INTERFACE_ELEMENTS(desc, env);
-        size = AXIS2_ARRAY_LIST_SIZE(interfaces, env);
+        if(interfaces)
+            size = AXIS2_ARRAY_LIST_SIZE(interfaces, env);
         for(i = 0; i < size; i++)
         {
             void *intface = NULL;
@@ -3271,12 +3306,15 @@ parse_endpoint(
     axiom_element_t *endpoint_el = NULL;
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
+    void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     desc = woden_desc_to_desc_element(desc, env);
     endpoint = WODEN_DESC_ELEMENT_CREATE_ENDPOINT_ELEMENT(desc, env);
-    endpoint = woden_endpoint_to_nested_element(endpoint, env);
-    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(endpoint, env, parent); 
+    nested_configurable = WODEN_ENDPOINT_GET_BASE_IMPL(endpoint, env);
+    nested_configurable = woden_nested_configurable_to_nested_element(
+            nested_configurable, env);
+    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
 
 
     endpoint_el = AXIOM_NODE_GET_DATA_ELEMENT(endpoint_el_node, env);
@@ -3305,7 +3343,8 @@ parse_endpoint(
         
         desc = woden_desc_to_desc_element(desc, env);
         bindings = WODEN_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc, env);
-        size = AXIS2_ARRAY_LIST_SIZE(bindings, env);
+        if(bindings)
+            size = AXIS2_ARRAY_LIST_SIZE(bindings, env);
         for(i = 0; i < size; i++)
         {
             void *binding = NULL;

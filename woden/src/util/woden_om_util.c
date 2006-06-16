@@ -66,7 +66,8 @@ woden_om_util_register_unique_prefix(
 
     desc = woden_desc_to_desc_element(desc, env);
     ns_uri = WODEN_DESC_ELEMENT_GET_NAMESPACE(desc, env, prefix);
-    ns_uri_str = AXIS2_URI_TO_STRING(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
+    if(ns_uri)
+        ns_uri_str = AXIS2_URI_TO_STRING(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
     if(NULL != ns_uri_str && 0 == AXIS2_STRCMP(ns_uri_str, namespc_uri_str))
     {
         /* Namespace already registerd */

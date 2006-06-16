@@ -129,10 +129,9 @@ woden_imported_schema_to_schema(
     woden_imported_schema_free_ops(schema, env);
             
     schema_impl->imported_schema.schema.ops = 
-            AXIS2_MALLOC(env->allocator, 
-            sizeof(woden_schema_ops_t));
+            AXIS2_MALLOC(env->allocator, sizeof(woden_schema_ops_t));
     woden_schema_resolve_methods(&(schema_impl->imported_schema.schema), 
-            env, schema_impl->methods);
+            env, schema_impl->schema, schema_impl->methods);
 
     return schema;
 }
@@ -310,20 +309,31 @@ axis2_status_t AXIS2_CALL
 woden_imported_schema_resolve_methods(
         woden_imported_schema_t *schema,
         const axis2_env_t *env,
+        woden_imported_schema_t *schema_impl,
         axis2_hash_t *methods)
 {
+    woden_imported_schema_impl_t *schema_impl_l = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
+    schema_impl_l = INTF_TO_IMPL(schema_impl);
     
     schema->ops->free = 
                 axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
     schema->ops->type = 
                 axis2_hash_get(methods, "type", AXIS2_HASH_KEY_STRING);
 
-    schema->ops->set_location = axis2_hash_get(methods, "set_location", 
-            AXIS2_HASH_KEY_STRING);
-    schema->ops->get_location = axis2_hash_get(methods, "get_location", 
-            AXIS2_HASH_KEY_STRING);;
+    schema->ops->set_location = axis2_hash_get(methods, 
+            "set_location", AXIS2_HASH_KEY_STRING);
+    if(!schema->ops->set_location && schema_impl_l)
+            schema->ops->set_location = 
+            schema_impl_l->imported_schema.ops->set_location;
+    
+    schema->ops->get_location = axis2_hash_get(methods, 
+            "get_location", AXIS2_HASH_KEY_STRING);
+    if(!schema->ops->get_location && schema_impl_l)
+            schema->ops->get_location = 
+            schema_impl_l->imported_schema.ops->get_location;
     
     return AXIS2_SUCCESS;
 }

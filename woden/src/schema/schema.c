@@ -148,26 +148,58 @@ axis2_status_t AXIS2_CALL
 woden_schema_resolve_methods(
         woden_schema_t *schema,
         const axis2_env_t *env,
+        woden_schema_t *schema_impl,
         axis2_hash_t *methods)
 {
+    woden_schema_impl_t *schema_impl_l = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
+    schema_impl_l = INTF_TO_IMPL(schema_impl);
     
     schema->ops->free = axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
-    schema->ops->set_namespace = axis2_hash_get(methods, "set_namespace", 
-            AXIS2_HASH_KEY_STRING);
+
+    schema->ops->set_namespace = axis2_hash_get(methods, 
+            "set_namespace", AXIS2_HASH_KEY_STRING);
+    if(!schema->ops->set_namespace && schema_impl_l)
+            schema->ops->set_namespace = 
+            schema_impl_l->schema.ops->set_namespace;
+    
     schema->ops->get_namespace = axis2_hash_get(methods, 
             "get_namespace", AXIS2_HASH_KEY_STRING);
+    if(!schema->ops->get_namespace && schema_impl_l)
+            schema->ops->get_namespace = 
+            schema_impl_l->schema.ops->get_namespace;
+    
     schema->ops->set_schema_def = axis2_hash_get(methods, 
             "set_schema_def", AXIS2_HASH_KEY_STRING);
+    if(!schema->ops->set_schema_def && schema_impl_l)
+            schema->ops->set_schema_def = 
+            schema_impl_l->schema.ops->set_schema_def;
+    
     schema->ops->get_schema_def = axis2_hash_get(methods, 
             "get_schema_def", AXIS2_HASH_KEY_STRING);
+    if(!schema->ops->get_schema_def && schema_impl_l)
+            schema->ops->get_schema_def = 
+            schema_impl_l->schema.ops->get_schema_def;
+    
     schema->ops->set_referenceable = axis2_hash_get(methods, 
             "set_referenceable", AXIS2_HASH_KEY_STRING);
+    if(!schema->ops->set_referenceable && schema_impl_l)
+            schema->ops->set_referenceable = 
+            schema_impl_l->schema.ops->set_referenceable;
+    
     schema->ops->is_referenceable = axis2_hash_get(methods, 
             "is_referenceable", AXIS2_HASH_KEY_STRING);
+    if(!schema->ops->is_referenceable && schema_impl_l)
+            schema->ops->is_referenceable = 
+            schema_impl_l->schema.ops->is_referenceable;
+    
     schema->ops->get_namespace_as_string = axis2_hash_get(methods, 
             "get_namespace_as_string", AXIS2_HASH_KEY_STRING);
+    if(!schema->ops->get_namespace_as_string && schema_impl_l)
+            schema->ops->get_namespace_as_string = 
+            schema_impl_l->schema.ops->get_namespace_as_string;
 
     return AXIS2_SUCCESS;    
 }

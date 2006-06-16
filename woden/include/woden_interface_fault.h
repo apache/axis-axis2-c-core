@@ -132,11 +132,6 @@ woden_interface_fault_to_configurable(
         const axis2_env_t *env);
 
 AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
-woden_interface_fault_to_nested_element(
-        void *interface_fault,
-        const axis2_env_t *env);
-
-AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
 woden_interface_fault_to_configurable_element(
         void *interface_fault,
         const axis2_env_t *env);

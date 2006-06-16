@@ -960,7 +960,7 @@ woden_binding_op_set_ref(
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
 
-    if(!binding_op_impl->f_ref)
+    if(binding_op_impl->f_ref)
     {
         AXIS2_QNAME_FREE(binding_op_impl->f_ref, env);
         binding_op_impl->f_ref = NULL;
@@ -1158,7 +1158,7 @@ woden_binding_op_set_interface_op_element(
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
 
-    if(!binding_op_impl->f_interface_op)
+    if(binding_op_impl->f_interface_op)
     {
         /* TODO */
     }

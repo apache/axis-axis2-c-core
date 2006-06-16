@@ -97,6 +97,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_inlined_schema_resolve_methods(
         woden_inlined_schema_t *schema,
         const axis2_env_t *env,
+        woden_inlined_schema_t *schema_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 

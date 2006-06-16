@@ -666,7 +666,25 @@ create(const axis2_env_t *env)
     desc_impl->desc.ops->get_type_defs = woden_desc_get_type_defs;
     desc_impl->desc.ops->get_type_def = woden_desc_get_type_def;
     desc_impl->desc.ops->to_element = woden_desc_to_element;
- 
+
+    desc_impl->f_namespcs = axis2_hash_make(env);
+    if(!desc_impl->f_namespcs) 
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
+    desc_impl->f_binding_elements = axis2_array_list_create(env, 0);
+    desc_impl->f_interface_elements = axis2_array_list_create(env, 0);
+    desc_impl->f_svc_elements = axis2_array_list_create(env, 0);
+    if(!desc_impl->f_interface_elements ||
+            !desc_impl->f_svc_elements || 
+            !desc_impl->f_binding_elements) 
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
     desc_impl->methods = axis2_hash_make(env);
     if(!desc_impl->methods) 
     {

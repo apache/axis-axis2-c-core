@@ -214,31 +214,6 @@ woden_interface_fault_to_configurable(
 }
 
 AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
-woden_interface_fault_to_nested_element(
-        void *interface_fault,
-        const axis2_env_t *env)
-{
-    woden_interface_fault_impl_t *interface_fault_impl = NULL;
-   
-    AXIS2_ENV_CHECK(env, NULL);
-    if(!interface_fault)
-    {
-        interface_fault_impl = (woden_interface_fault_impl_t *) create(env);
-    }
-    else
-        interface_fault_impl = (woden_interface_fault_impl_t *) interface_fault;
-
-    woden_interface_fault_free_ops(interface_fault, env);
-
-    interface_fault_impl->interface_fault.base.interface_fault_element.base.nested_element.ops = 
-        AXIS2_MALLOC(env->allocator, 
-                sizeof(woden_nested_element_ops_t));
-    woden_nested_element_resolve_methods(&(interface_fault_impl->interface_fault.base.
-            interface_fault_element.base.nested_element), env, interface_fault_impl->methods);
-    return interface_fault;
-}
-
-AXIS2_EXTERN woden_interface_fault_t * AXIS2_CALL
 woden_interface_fault_to_configurable_element(
         void *interface_fault,
         const axis2_env_t *env)
@@ -393,8 +368,6 @@ create(const axis2_env_t *env)
     interface_fault_impl->interface_fault.base.nested_configurable.base.configurable.ops = 
             NULL;
     interface_fault_impl->interface_fault.base.interface_fault_element.base.
-        nested_element.ops = NULL;
-    interface_fault_impl->interface_fault.base.interface_fault_element.base.
         configurable_element.ops = NULL;
     interface_fault_impl->interface_fault.base.interface_fault_element.base.
         documentable_element.ops = NULL;
@@ -423,6 +396,9 @@ create(const axis2_env_t *env)
     interface_fault_impl->interface_fault.ops->set_types = 
         woden_interface_fault_set_types;
  
+    interface_fault_impl->nested_configurable = 
+        woden_nested_configurable_create(env);
+
     interface_fault_impl->methods = axis2_hash_make(env);
     if(!interface_fault_impl->methods) 
     {
@@ -476,7 +452,6 @@ woden_interface_fault_create(const axis2_env_t *env)
     AXIS2_ENV_CHECK(env, NULL);
     interface_fault_impl = (woden_interface_fault_impl_t *) create(env);
 
-    interface_fault_impl->nested_configurable = woden_nested_configurable_create(env);
 
     interface_fault_impl->super = axis2_hash_make(env);
     if(!interface_fault_impl->super) 
@@ -533,15 +508,6 @@ woden_interface_fault_free_ops(
             NULL;
     }
 
-    if(interface_fault_impl->interface_fault.base.interface_fault_element.base.
-            nested_element.ops)
-    {
-        AXIS2_FREE(env->allocator, interface_fault_impl->interface_fault.base.
-                interface_fault_element.base.nested_element.ops);
-        interface_fault_impl->interface_fault.base.interface_fault_element.base.
-            nested_element.ops = NULL;
-    }
- 
     if(interface_fault_impl->interface_fault.base.interface_fault_element.base.
             configurable_element.ops)
     {

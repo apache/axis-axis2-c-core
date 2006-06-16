@@ -419,6 +419,7 @@ create(const axis2_env_t *env)
     interface_msg_ref_impl->f_msg_content_model = NULL;
     interface_msg_ref_impl->f_element_decl = NULL;
     interface_msg_ref_impl->f_types = NULL;
+    interface_msg_ref_impl->f_element_qname = NULL;
     
     interface_msg_ref_impl->interface_msg_ref.base.interface_msg_ref_element.ops = NULL;
     interface_msg_ref_impl->interface_msg_ref.base.nested_configurable.ops = NULL;

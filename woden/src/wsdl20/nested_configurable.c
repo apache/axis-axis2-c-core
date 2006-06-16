@@ -28,6 +28,7 @@ struct woden_nested_configurable_impl
 {
     woden_nested_configurable_t nested_configurable;
     woden_configurable_t *configurable;
+    axis2_hash_t *methods;
     axis2_hash_t *super;
     axis2_array_list_t *f_parent;
 };
@@ -67,6 +68,41 @@ woden_nested_configurable_get_parent_element(
 
 static woden_nested_configurable_t *
 create(
+        const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+woden_nested_configurable_free_ops(
+        void *nested_configurable,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN woden_nested_configurable_t * AXIS2_CALL
+woden_nested_configurable_to_nested_element(
+        void *nested_configurable,
+        const axis2_env_t *env)
+{
+    woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, NULL);
+    if(!nested_configurable)
+    {
+        nested_configurable_impl = (woden_nested_configurable_impl_t *) create(env);
+    }
+    else
+        nested_configurable_impl = (woden_nested_configurable_impl_t *) nested_configurable;
+
+    woden_nested_configurable_free_ops(nested_configurable, env);
+
+    nested_configurable_impl->nested_configurable.base.nested_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(woden_nested_element_ops_t));
+    woden_nested_element_resolve_methods(&(nested_configurable_impl->nested_configurable.base.
+            nested_element), env, nested_configurable_impl->methods);
+    return nested_configurable;
+}
+
+
+static woden_nested_configurable_t *
+create(
         const axis2_env_t *env)
 {
     woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
@@ -76,11 +112,24 @@ create(
                     sizeof(woden_nested_configurable_impl_t));
 
     nested_configurable_impl->super = NULL;
+    nested_configurable_impl->methods = NULL;
     nested_configurable_impl->f_parent = NULL;
+    
+    nested_configurable_impl->nested_configurable.base.nested_element.ops = NULL;
     
     nested_configurable_impl->nested_configurable.ops = 
             AXIS2_MALLOC(env->allocator, 
             sizeof(woden_nested_configurable_ops_t));
+    
+    nested_configurable_impl->super = axis2_hash_make(env);
+    if(!nested_configurable_impl->super) 
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    axis2_hash_set(nested_configurable_impl->super, "WODEN_CONFIGURABLE", 
+            AXIS2_HASH_KEY_STRING, 
+            &(nested_configurable_impl->nested_configurable));
 
     nested_configurable_impl->nested_configurable.ops->free = 
         woden_nested_configurable_free;
@@ -88,6 +137,22 @@ create(
         woden_nested_configurable_super_objs;
     nested_configurable_impl->nested_configurable.ops->get_base_impl = 
         woden_nested_configurable_get_base_impl;
+
+    nested_configurable_impl->methods = axis2_hash_make(env);
+    if(!nested_configurable_impl->methods) 
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    axis2_hash_set(nested_configurable_impl->methods, 
+            "get_parent", AXIS2_HASH_KEY_STRING, 
+            woden_nested_configurable_get_parent);
+    axis2_hash_set(nested_configurable_impl->methods, 
+            "set_parent_element", AXIS2_HASH_KEY_STRING, 
+            woden_nested_configurable_set_parent_element);
+    axis2_hash_set(nested_configurable_impl->methods, 
+            "get_parent_element", AXIS2_HASH_KEY_STRING, 
+            woden_nested_configurable_get_parent_element);
 
     return &(nested_configurable_impl->nested_configurable);
 }
@@ -123,6 +188,28 @@ woden_nested_configurable_create(
 }
 
 axis2_status_t AXIS2_CALL
+woden_nested_configurable_free_ops(
+        void *nested_configurable,
+        const axis2_env_t *env)
+{
+    woden_nested_configurable_impl_t *nested_configurable_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    nested_configurable_impl = INTF_TO_IMPL(nested_configurable);
+
+    if(nested_configurable_impl->nested_configurable.base.nested_element.ops)
+    {
+        AXIS2_FREE(env->allocator, nested_configurable_impl->nested_configurable.
+                base.nested_element.ops);
+        nested_configurable_impl->nested_configurable.base.nested_element.ops = 
+            NULL;
+    }
+    
+    return AXIS2_SUCCESS;
+}
+
+
+axis2_status_t AXIS2_CALL
 woden_nested_configurable_free(
         void *nested_configurable,
         const axis2_env_t *env)
@@ -150,6 +237,8 @@ woden_nested_configurable_free(
         axis2_hash_free(nested_configurable_impl->super, env);
         nested_configurable_impl->super = NULL;
     }
+    
+    woden_nested_configurable_free_ops(nested_configurable, env);
     
     if(nested_configurable_impl->nested_configurable.ops)
     {
@@ -243,6 +332,7 @@ woden_nested_configurable_set_parent_element(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, parent, AXIS2_FAILURE);
+
     super = WODEN_NESTED_CONFIGURABLE_SUPER_OBJS(nested_configurable, env);
     nested_configurable_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_NESTED_CONFIGURABLE", AXIS2_HASH_KEY_STRING));

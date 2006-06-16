@@ -132,7 +132,7 @@ woden_inlined_schema_to_schema(
             AXIS2_MALLOC(env->allocator, 
             sizeof(woden_schema_ops_t));
     woden_schema_resolve_methods(&(schema_impl->inlined_schema.schema), 
-            env, schema_impl->methods);
+            env, schema_impl->schema, schema_impl->methods);
 
     return schema;
 }
@@ -311,10 +311,14 @@ axis2_status_t AXIS2_CALL
 woden_inlined_schema_resolve_methods(
         woden_inlined_schema_t *schema,
         const axis2_env_t *env,
+        woden_inlined_schema_t *schema_impl,
         axis2_hash_t *methods)
 {
+    woden_inlined_schema_impl_t *schema_impl_l = NULL;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
+    schema_impl_l = INTF_TO_IMPL(schema_impl);
     
     schema->ops->free = 
                 axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
@@ -326,6 +330,17 @@ woden_inlined_schema_resolve_methods(
     schema->ops->get_id = axis2_hash_get(methods, "get_id", 
             AXIS2_HASH_KEY_STRING);;
     
+    schema->ops->set_id = axis2_hash_get(methods, 
+            "set_id", AXIS2_HASH_KEY_STRING);
+    if(!schema->ops->set_id && schema_impl_l)
+            schema->ops->set_id = 
+            schema_impl_l->inlined_schema.ops->set_id;
+    
+    schema->ops->get_id = axis2_hash_get(methods, 
+            "get_id", AXIS2_HASH_KEY_STRING);
+    if(!schema->ops->get_id && schema_impl_l)
+            schema->ops->get_id = 
+            schema_impl_l->inlined_schema.ops->get_id;
     return AXIS2_SUCCESS;
 }
 

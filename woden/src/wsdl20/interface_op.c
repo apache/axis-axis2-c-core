@@ -992,7 +992,7 @@ woden_interface_op_set_qname(
     interface_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_INTERFACE_OP", AXIS2_HASH_KEY_STRING));
 
-    if(!interface_op_impl->f_qname)
+    if(interface_op_impl->f_qname)
     {
         AXIS2_QNAME_FREE(interface_op_impl->f_qname, env);
         interface_op_impl->f_qname = NULL;
