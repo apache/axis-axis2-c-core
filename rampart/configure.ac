@@ -85,32 +85,9 @@ AC_ARG_WITH(axis2_util,
 )
 
 AC_MSG_CHECKING(To Use Xml Schema. This is a compulsory module to build Woden C)
-AC_ARG_WITH(axis2_xml_schema,
-[  --with-axis2_xml_schema[=PATH]      use axis2_xml_schema.],
-[ case "$withval" in
-  no)
-    AC_MSG_RESULT(no)
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    dnl Find axis2_xml_schema include dir in the path
-    if test -d $withval; then
-        axis2_xml_schemainc="-I$withval"
-    dnl else find the axis2_xml_schema include dir in $(AXIS2C_HOME)/include
-    elif test -d '$(AXIS2C_HOME)/include'; then
-        axis2_xml_schemainc="-I$(AXIS2C_HOME)/include"
-    else
-        AC_MSG_ERROR(could not find axis2_xml_schema. stop)
-    fi
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-)
-
 
 AXIOMINC=$axiominc
 UTILINC=$axis2_utilinc
-XMLSCHEMAINC=$axis2_xml_schemainc
 
 AC_SUBST(AXIOMINC)
 AC_SUBST(UTILINC)

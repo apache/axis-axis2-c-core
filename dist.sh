@@ -153,7 +153,19 @@ then
 exit 1
 fi
 
-cd rampart
+cd samples
+if [ "$?" -ne 0 ]
+then
+exit 1
+fi
+
+make clean
+if [ "$?" -ne 0 ]
+then
+exit 1
+fi
+
+cd ../rampart
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -252,4 +264,14 @@ doxygen doxygenconf
 cd ../..
 cp -r xdocs/api/html target/docs/api/
 cp -r target/docs axis2c-src-0.92
+
+for i in `find . -name "*.la"`
+do
+	rm $i
+done
+
+for i in `find . -name "*.a"`
+do
+	rm $i
+done
 
