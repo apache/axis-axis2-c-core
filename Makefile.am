@@ -10,6 +10,7 @@ dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
 	rm -rf `find $(distdir)/ -type d -name .deps`
 	sh dist.sh
+	tar -cf - axis2c-src-${PACKAGE_VERSION} | gzip -c > axis2c-src-${PACKAGE_VERSION}.tar.gz
 
 bindist: $(bin_PROGRAMS)
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
