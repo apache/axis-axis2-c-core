@@ -521,22 +521,22 @@ file and echo dll.</p>
 
 <h4><a id="WSDL2Code_tool">WSDL2Code tool</a></h4>
 
-<p>Axis2/Java WSDL2Code tool support generation code for Axis2/C stub and
-skel from onward Axis2/Java source svn revision 414253. 
-A basic guide for the tool can be found at <a href=
+<p>Axis2/Java WSDL2Code tool supports generation of Axis2/C stub and
+skel. Axis2/Java svn revision 414253 and later versions provides this facility.. 
+A basic guide for the tool can be found <a href=
 "http://ws.apache.org/axis2/1_0/userguide2.html#Writing_Web_Services_by_Code_Generating_Skeleton">
 here</a></p>
 
 <p>We will run the tool with the following parameters and generate the
-skeleton and the other required files for support ADB. (In order to run
-the tool set all the .jar library files in the Axis2/Java to the 
-classpath. To generate code with no data binding support just replace -d adb -u
-to -d none</p>
+skeleton and the other required files to support ADB (Axis Data Binding). In order to run
+the tool, set all the .jar library files in the Axis2/Java to the 
+classpath. To generate code with no data binding support, just replace -d adb -u
+with -d none</p>
 
 <pre><br />java WSDL2Code -Dorg.apache.adb.properties=/org/apache/axis2/schema/c-schema-compile.properties
  -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u<br /> </pre>
 
-<p>If you need a XML in/out framework you can just ignore the data binding support
+<p>If you need an XML in/out programming model, you can just ignore the data binding support
 by setting following parameters</p>
 
 <pre><br />java WSDL2Code -uri interoptestdoclitparameters.wsdl -ss -sd -d none<br /> </pre>
@@ -547,9 +547,9 @@ stub and skeleton code throughout this user guide. </p>
 
 <h4><a id="Implement_the_Business_Logic">Implement the Business Logic</a></h4>
 
-Locate the skeleton source file from the generated files. In this samples it is
-"axis2_WSDLInteropTestDocLitService.c". You can go through rest of the guide to
-complete the business logic on following service operations in the WSDL.
+Locate the skeleton source file from the generated files: 
+"axis2_WSDLInteropTestDocLitService.c". You can go through the rest of the guide to
+add the business logic to the following operations in the WSDL.
 
 <ul>
  <li>echoString  - Operation that echoes a String value</li>
@@ -557,13 +557,13 @@ complete the business logic on following service operations in the WSDL.
  <li>echoStruct - Operation that accept a Struct as the input and echoes them back</li>
 </ul>
 
-Completed skeleton source file for the above operations can be found under 
+Complete skeleton source file for the above operations can be found under 
 &lt;axis2_src_dir&gt;/samples/codegen/server/interop_doc2 directory with the name 
 "axis2_WSDLInteropTestDocLitService.c". 
 
 <h4><a id="echoString">echoString</a></h4>
 
-<p>If you generate code with data binding support you will find the following code segment
+<p>If you generate the code with data binding support, you will find the following code segment
 in the "axis2_WSDLInteropTestDocLitService.c"
 Fill the business logic inside this function as shown below.</p>
 
@@ -575,8 +575,8 @@ axis2_WSDLInteropTestDocLitService_echoString
 }
 </pre>
 
-<p>Once filled with the business logic it will be as follows. The code is simple 
-and the explanations are given as comments.</p>
+<p>Once filled with the business logic, it will be as follows. The code is simple 
+and the inline comments provide some explanation.</p>
 
 <pre width="80">axis2_echoStringResponse_t*
 axis2_WSDLInteropTestDocLitService_echoString
@@ -677,7 +677,7 @@ axis2_WSDLInteropTestDocLitService_echoStruct
 Axis2 uses "services.xml" to hold the configurations for a particular Web 
 service deployed in the Axis2 engine. When we generate the skeleton using 
 the WSDL2Java tool, it will also generate the required services.xml for this 
-Web service as well. This is essential to <a href="#deploy">deploy the service</a>. refere to 
+Web service as well. This is essential to <a href="#deploy">deploy the service</a>. Please refer to the 
 <a href="#step3">Write the services.xml</a> section of this guide to learn
 more about services.xml
 
@@ -685,9 +685,9 @@ more about services.xml
 <p><a id="deploy"></a></p>
 <h3>Deploy the Web Service</h3>
 
-<p>Deploying the service means putting the service folder to the services
-directory. At the moment the server has to be restarted for the service to be
-deployed since hot deployment has not yet been implemented.</p>
+<p>We simply put our service folder to the services
+directory. You need restart the server for the engine to pick this service.
+</p>
 <a id="Web_Service_Clients_Using_Axis2"></a>
 
 <h2>Web Service Clients UsingAxis2/C</h2>
@@ -990,22 +990,22 @@ connections for request and response.</p>
 <h3>Writing Web Service Clients using Code Generation with Data Binding Support</h3>
 
 
-<p>Axis2 codegenerator provides the data binding support for Web Service client
-as well. The user can generate the required stubs from a given WSDL with the 
-other supporting files. Use following parameters to generate the
-Axis2/C stub code with data binding support. You should have Axis2/Java source
-after the svn revision 414253 to generate Axis2/C code</p>
+<p>Axis2 code generator provides the data binding support for Web Service client
+generation as well. You can generate the required stubs from a given WSDL with the 
+other supporting files. Use the following parameters to generate the
+Axis2/C stub code with the data binding support. You should have Axis2/Java source
+svn revision 414253 or later to generate Axis2/C code</p>
 
 <pre><br />java WSDL2Code -Dorg.apache.adb.properties=/org/apache/axis2/schema/c-schema-compile.properties
  -uri interoptestdoclitparameters.wsdl -d adb -u<br /> </pre>
 
-<p>In order to ignore the databinding support just use following parameters.</p>
+<p>In order to ignore the databinding support (to use XML in/out model), just use following parameters.</p>
 
 <pre><br />java WSDL2Code -uri interoptestdoclitparameters.wsdl -d none<br /> </pre>
 
-<p>The following part will demostrate the use of generated code  using 
-"interoptestdoclitparameters.wsdl" which was used to generate the skeleton earier
-in the user guide</p>
+<p>The following section demonstrates how to use the generated code using 
+the wsdl file "interoptestdoclitparameters.wsdl" to implement the client business logic.
+</p>
 
 <a id="Codegenerator_Client_echoString"></a>
 <h4>Client for echoString operation</h4>
@@ -1014,7 +1014,7 @@ in the user guide</p>
 #include "axis2_WSDLInteropTestDocLitService_stub.h"
 
 /*
- * demonstates how to execute the service using databinding
+ * demonstrates how to execute the service using databinding
  */
 void invoke_service_using_databinding ( axis2_stub_t* stub,
                                        const axis2_env_t* env );
@@ -1077,7 +1077,7 @@ void invoke_service_using_databinding ( axis2_stub_t* stub,
 <h4>Client for echoStringArray operation</h4>
 
 You can change the invoke_service_using_databinding function to invoke the echoStringArray
-operation just like following.
+operation as follows.
 
 <pre width="80">
 void invoke_service_using_databinding ( axis2_stub_t* stub,
