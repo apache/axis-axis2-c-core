@@ -1,3 +1,3 @@
 TESTS =
-SUBDIRS = unit core tools
+SUBDIRS = unit core tools itest
 EXTRA_DIST=wsdl
