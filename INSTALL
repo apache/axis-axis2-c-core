@@ -63,7 +63,8 @@ NOTE: If you run into shared lib problems, set the LD_LIBRARY_PATH
 5. Build the source
 This can be done by running the the following command sequence in the 
 sub folders util, axiom and then in the root folder of source extract
-in that order:
+in that order. Please see the build.sh files in the sub folders for more
+information:
         ./configure
         make
         make install
