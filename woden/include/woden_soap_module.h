@@ -95,10 +95,6 @@ struct woden_soap_module_ops
 
 };
 
-union woden_soap_module_base
-{
-};
-
 struct woden_soap_module
 {
     woden_soap_module_element_t module_element;

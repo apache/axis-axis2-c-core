@@ -118,10 +118,6 @@ struct woden_soap_header_block_ops
     
 };
 
-union woden_soap_header_block_base
-{
-};
-
 struct woden_soap_header_block
 {
     woden_soap_header_block_element_t header_block_element;
