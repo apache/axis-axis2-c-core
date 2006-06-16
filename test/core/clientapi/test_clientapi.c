@@ -17,73 +17,83 @@
 #include <axis2_const.h>
 #include <axis2_env.h>
 #include <axis2_engine.h>
-#include <axis2_call.h>
 #include <axis2_allocator.h>
-#include <axis2_transport_receiver.h>
-#include <axis2_transport_in_desc.h>
-#include <axis2_transport_out_desc.h>
-#include <listener_manager.h>
-#include <callback_recv.h>
-#include <axiom_soap_body.h>
-#include <axis2_msg_ctx.h>
-#include <axis2_conf_ctx.h>
+#include <axis2_svc_client.h>
+#include <axis2_options.h>
 #include <platforms/axis2_platform_auto_sense.h>
 
-void axis2_test_call_invoke_blocking()
+axiom_node_t *
+build_om_payload_for_echo_svc(const axis2_env_t *env,
+		              axis2_char_t* echo_str);
+
+void axis2_test_svc_client_blocking()
 {
-   struct axis2_conf_ctx *conf_ctx = NULL;
-   struct axis2_msg_ctx *msg_ctx = NULL;
-   struct axis2_msg_ctx *msg_ctx_res = NULL;
-   struct axis2_op *op = NULL;
-   struct axis2_qname *qname = NULL;
-   struct axis2_svc *svc = NULL;
-   struct axis2_svc_ctx *svc_ctx = NULL;
-   struct axis2_svc_grp_ctx *svc_grp_ctx = NULL;
-   struct axis2_call *call = NULL;
-   struct axis2_svc_grp *svc_grp = NULL;
-    struct axis2_conf *conf = NULL;
-    axis2_char_t *axis2c_home;
-   
+   axis2_env_t* env = NULL;
+   axis2_options_t *options = NULL;
+   axis2_char_t *client_home = NULL;
+   axis2_svc_client_t* svc_client = NULL;
+   axiom_node_t *payload = NULL;
+   axiom_node_t *ret_node = NULL;
+   axis2_char_t *address = NULL;
+   axis2_endpoint_ref_t* endpoint_ref = NULL;
+
    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-   const axis2_env_t *env = axis2_env_create (allocator);
+   env = axis2_env_create (allocator);
+   axiom_element_t *result_ele = NULL;
+   axis2_char_t* echo_text = "echo_text";
+   axis2_char_t* result = NULL;
     
-    axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-   conf = axis2_conf_create(env);
-   conf_ctx = axis2_conf_ctx_create(env, conf);
+   address = "http://localhost:9090/axis2/services/echo/echo";
+   endpoint_ref = axis2_endpoint_ref_create(env, address);
+   client_home = AXIS2_GETENV("AXIS2C_HOME");
+   if (!client_home)
+       client_home = "../../deploy";
 
-   op  = axis2_op_create(env);
+   svc_client = axis2_svc_client_create(env, client_home);
 
-   qname = axis2_qname_create(env, "name1", NULL, NULL);
-   svc = axis2_svc_create_with_qname(env, qname);
-
-   svc_grp = axis2_svc_grp_create(env);
-   svc_grp_ctx = axis2_svc_grp_ctx_create(env, svc_grp, conf_ctx);
-
-   svc_ctx = axis2_svc_ctx_create(env, svc, svc_grp_ctx);
-
-   call = axis2_call_create(env, svc_ctx, axis2c_home);
-
-   msg_ctx = axis2_msg_ctx_create(env, conf_ctx, NULL, NULL);
+   options = axis2_options_create(env);
+   AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+   AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
    
-   msg_ctx_res = AXIS2_CALL_INVOKE_BLOCKING(call, env, op, msg_ctx);
+   payload = build_om_payload_for_echo_svc(env, echo_text );
+   ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
+   if ( ret_node )
+   {
+      if (AXIOM_NODE_GET_NODE_TYPE(ret_node, env) == AXIOM_ELEMENT )
+      {
+        ret_node = AXIOM_NODE_GET_FIRST_CHILD ( ret_node, env);
+	result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
+	result = AXIOM_ELEMENT_GET_TEXT(result_ele, env, ret_node);
+        if (!strcmp( result, echo_text) )
+            printf("axis2_test SVC_CLIENT_SEND_RECEIVE SUCCESS\n");
+        else
+            printf("axis2_test SVC_CLIENT_SEND_RECEIVE FAILURE\n");
+      }
+   }
+   AXIS2_SVC_CLIENT_FREE(svc_client, env);    
+}
 
-    if (msg_ctx_res)
-        printf("axis2_test_call_invoke_blocking SUCCESS\n");
-    else
-        printf("axis2_test_call_invoke_blocking FAILURE\n");
+/* build SOAP request message content using OM */
+axiom_node_t *
+build_om_payload_for_echo_svc(const axis2_env_t *env,
+		              axis2_char_t* echo_text)
+{
+    axiom_node_t *echo_om_node = NULL;
+    axiom_element_t* echo_om_ele = NULL;
+    axiom_node_t* text_om_node = NULL;
+    axiom_element_t * text_om_ele = NULL;
+    axiom_namespace_t *ns1 = NULL;
 
-    AXIS2_CALL_FREE(call, env);    
-    AXIS2_MSG_CTX_FREE(msg_ctx, env);    
-    AXIS2_QNAME_FREE(qname, env);    
-    AXIS2_SVC_GRP_CTX_FREE(svc_grp_ctx, env);    
-    AXIS2_SVC_CTX_FREE(svc_ctx, env);    
-    AXIS2_SVC_FREE(svc, env);    
-    AXIS2_OP_FREE(op, env);    
+    ns1 = axiom_namespace_create (env, "http://ws.apache.org/axis2/c/samples", "ns1");
+    echo_om_ele = axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
+    text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
+    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, echo_text, text_om_node);
 
+    return echo_om_node;
 }
 
 int main()
 {
-   axis2_test_call_invoke_blocking();
+   axis2_test_svc_client_blocking();
    return 0;
 }

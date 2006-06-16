@@ -268,6 +268,7 @@ AC_CONFIG_FILES([Makefile \
     test/wsdl/builder/print/Makefile \
     test/core/Makefile \
     test/core/description/Makefile \
+    test/core/clientapi/Makefile \
     test/core/deployment/Makefile \
     test/core/context/Makefile \
     test/core/engine/Makefile \

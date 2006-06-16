@@ -1,2 +1,2 @@
 TESTS =
-SUBDIRS = description context engine deployment addr transport
+SUBDIRS = description context engine deployment addr transport clientapi
