@@ -245,3 +245,11 @@ then
 exit 1
 fi
 
+rm -rf xdocs/api/html
+maven site
+cd xdocs/api
+doxygen doxygenconf
+cd ../..
+cp -r xdocs/api/html target/docs/api/
+cp -r target/docs axis2c-src-0.92
+
