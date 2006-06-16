@@ -111,8 +111,9 @@ woden_include_to_wsdl_ref(
     include_impl->include.base.wsdl_ref.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(woden_wsdl_ref_ops_t));
-    woden_documentable_resolve_methods(&(include_impl->include.base.
-            wsdl_ref), env, include_impl->wsdl_ref, include_impl->methods);
+    woden_documentable_resolve_methods((woden_documentable_t *)&(include_impl->include.base.
+            wsdl_ref), env, (woden_documentable_t *)include_impl->wsdl_ref, 
+            include_impl->methods);
     return include;
 }
 

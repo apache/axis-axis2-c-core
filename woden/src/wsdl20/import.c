@@ -124,8 +124,8 @@ woden_import_to_wsdl_ref(
     import_impl->import.base.wsdl_ref.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(woden_wsdl_ref_ops_t));
-    woden_documentable_resolve_methods(&(import_impl->import.base.
-            wsdl_ref), env, import_impl->wsdl_ref, import_impl->methods);
+    woden_documentable_resolve_methods((woden_documentable_t *)&(import_impl->import.base.
+            wsdl_ref), env, (woden_documentable_t *)import_impl->wsdl_ref, import_impl->methods);
     return import;
 }
 
