@@ -254,8 +254,9 @@ rampart_validate_username_token(const axis2_env_t *env,
     axiom_element_t *sec_ele, *ut_ele = NULL;
     axiom_node_t *sec_node, *ut_node = NULL;
     axiom_child_element_iterator_t *children = NULL;
-    axis2_char_t *username, *password, *nonce, *created, *password_type = NULL;    
-    axis2_char_t *pw_callback_module, *password_from_svr , *password_to_compare = NULL;
+    axis2_char_t *username = NULL, 
+		 *password = NULL, *nonce = NULL, *created = NULL, *password_type = NULL;    
+    axis2_char_t *pw_callback_module = NULL, *password_from_svr = NULL, *password_to_compare = NULL;
     axis2_ctx_t *ctx = NULL;
     axis2_qname_t *qname = NULL;
     sec_node = rampart_get_security_token(env, msg_ctx, soap_header);

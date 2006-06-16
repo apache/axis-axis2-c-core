@@ -93,10 +93,10 @@ rampart_validate_timestamp(const axis2_env_t *env,
                                                         axiom_node_t *ts_node)
 {
     axis2_status_t validity = AXIS2_FAILURE;
-    axis2_qname_t *created_qname, *expires_qname = NULL;
-    axiom_element_t *created_ele, *expires_ele , *ts_ele= NULL;
-    axiom_node_t *created_node, *expires_node = NULL;
-    axis2_char_t *created_val, *expires_val = NULL;    
+    axis2_qname_t *created_qname = NULL, *expires_qname = NULL;
+    axiom_element_t *created_ele = NULL, *expires_ele = NULL, *ts_ele= NULL;
+    axiom_node_t *created_node = NULL, *expires_node = NULL;
+    axis2_char_t *created_val = NULL, *expires_val = NULL;    
     
     ts_ele = AXIOM_NODE_GET_DATA_ELEMENT(ts_node, env);
     
