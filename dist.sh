@@ -37,6 +37,8 @@ then
 exit 1
 fi
 
+rm -rf util
+
 mv axis2c-src-0.92 util
 if [ "$?" -ne 0 ]
 then
@@ -66,6 +68,8 @@ if [ "$?" -ne 0 ]
 then
 exit 1
 fi
+
+rm -rf axiom
 
 mv axis2c-src-0.92 axiom
 if [ "$?" -ne 0 ]
@@ -97,6 +101,8 @@ then
 exit 1
 fi
 
+rm -rf xml_schema
+
 mv axis2c-src-0.92 xml_schema
 if [ "$?" -ne 0 ]
 then
@@ -126,6 +132,8 @@ if [ "$?" -ne 0 ]
 then
 exit 1
 fi
+
+rm -rf woden
 
 mv axis2c-src-0.92 woden
 if [ "$?" -ne 0 ]
@@ -169,6 +177,8 @@ then
 exit 1
 fi
 
+rm -rf rampart
+
 mv axis2c-src-0.92 rampart
 if [ "$?" -ne 0 ]
 then
@@ -181,13 +191,7 @@ then
 exit 1
 fi
 
-mv ../axis2c-src-0.92.tar.gz .
-if [ "$?" -ne 0 ]
-then
-exit 1
-fi
-
-tar xf axis2c-src-0.92.tar.gz
+mv ../axis2c-src-0.92 .
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -224,12 +228,6 @@ exit 1
 fi
 
 cd ..
-if [ "$?" -ne 0 ]
-then
-exit 1
-fi
-
-rm -rf axis2c-src-0.92.tar.gz
 if [ "$?" -ne 0 ]
 then
 exit 1
