@@ -253,7 +253,7 @@ woden_soap_header_block_to_soap_header_block_element(
 {
     woden_soap_header_block_impl_t *header_block_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!header_block)
     {
         header_block_impl = (woden_soap_header_block_impl_t *) create(env);
@@ -277,7 +277,7 @@ woden_soap_header_block_to_ext_element(
 {
     woden_soap_header_block_impl_t *header_block_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!header_block)
     {
         header_block_impl = (woden_soap_header_block_impl_t *) create(env);
@@ -301,7 +301,7 @@ woden_soap_header_block_to_attr_extensible(
 {
     woden_soap_header_block_impl_t *header_block_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!header_block)
     {
         header_block_impl = (woden_soap_header_block_impl_t *) create(env);
@@ -325,7 +325,7 @@ woden_soap_header_block_to_element_extensible(
 {
     woden_soap_header_block_impl_t *header_block_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!header_block)
     {
         header_block_impl = (woden_soap_header_block_impl_t *) create(env);
@@ -348,7 +348,7 @@ create(const axis2_env_t *env)
 {
     woden_soap_header_block_impl_t *header_block_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     header_block_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_soap_header_block_impl_t));
 
@@ -535,7 +535,7 @@ woden_soap_header_block_create(const axis2_env_t *env)
 {
     woden_soap_header_block_impl_t *header_block_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     header_block_impl = (woden_soap_header_block_impl_t *) create(env);
 
     header_block_impl->super = axis2_hash_make(env);
@@ -684,7 +684,7 @@ woden_soap_header_block_super_objs(
 {
     woden_soap_header_block_impl_t *header_block_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     header_block_impl = INTF_TO_IMPL(header_block);
 
     return header_block_impl->super;

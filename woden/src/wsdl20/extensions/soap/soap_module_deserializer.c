@@ -24,6 +24,7 @@
 #include "../../woden_constants.h"
 #include <axiom_element.h>
 #include <axiom_util.h>
+#include <woden_qname_util.h>
 
 
 typedef struct woden_soap_module_deserializer_impl 

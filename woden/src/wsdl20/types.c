@@ -162,7 +162,7 @@ woden_types_to_types_element(
 {
     woden_types_impl_t *types_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!types)
     {
         types_impl = (woden_types_impl_t *) create(env);
@@ -187,7 +187,7 @@ woden_types_to_documentable_element(
 {
     woden_types_impl_t *types_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!types)
     {
         types_impl = (woden_types_impl_t *) create(env);
@@ -213,7 +213,7 @@ woden_types_to_documentable(
 {
     woden_types_impl_t *types_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!types)
     {
         types_impl = (woden_types_impl_t *) create(env);
@@ -240,7 +240,7 @@ woden_types_to_wsdl_obj(
     woden_types_impl_t *types_impl = NULL;
     void *wsdl_obj = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!types)
     {
         types_impl = (woden_types_impl_t *) create(env);
@@ -267,7 +267,7 @@ woden_types_to_wsdl_component(
 {
     woden_types_impl_t *types_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!types)
     {
@@ -294,7 +294,7 @@ woden_types_to_attr_extensible(
 {
     woden_types_impl_t *types_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!types)
     {
@@ -323,7 +323,7 @@ woden_types_to_element_extensible(
 {
     woden_types_impl_t *types_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!types)
     {
@@ -350,7 +350,7 @@ create(const axis2_env_t *env)
 {
     woden_types_impl_t *types_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     types_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_types_impl_t));
 
@@ -462,7 +462,7 @@ woden_types_create(const axis2_env_t *env)
 {
     woden_types_impl_t *types_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     types_impl = (woden_types_impl_t *) create(env);
 
     types_impl->documentable = woden_documentable_create(env);
@@ -620,7 +620,7 @@ woden_types_super_objs(
 {
     woden_types_impl_t *types_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     types_impl = INTF_TO_IMPL(types);
 
     return types_impl->super;
@@ -748,7 +748,7 @@ woden_types_get_type_system(
     woden_types_impl_t *types_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
     types_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
@@ -804,7 +804,7 @@ woden_types_get_schemas(
     woden_types_impl_t *types_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
     types_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
@@ -822,7 +822,7 @@ woden_types_get_schemas_with_namespace(
     axis2_char_t *str_namespc = NULL;
     axis2_hash_t *super = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
     types_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
@@ -857,7 +857,7 @@ woden_types_get_inlined_schemas(
     int i = 0, size = 0;
     axis2_hash_t *super = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
     types_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
@@ -884,7 +884,7 @@ woden_types_get_imported_schemas(
     int i = 0, size = 0;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
     types_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
@@ -913,7 +913,7 @@ woden_types_get_element_declaration(
     axis2_array_list_t *schemas = NULL;
     axis2_hash_t *super = NULL;
     axis2_char_t *uri = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
     types_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
@@ -956,7 +956,7 @@ woden_types_get_type_definition(
     axis2_array_list_t *schema_refs = NULL;
     axis2_hash_t *super = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
     types_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
@@ -998,7 +998,7 @@ woden_types_get_referenceable_schema_defs(
     int i = 0, size = 0;
     axis2_hash_t *super = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
     types_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_TYPES", AXIS2_HASH_KEY_STRING));
@@ -1047,7 +1047,7 @@ woden_types_get_referenceable_schema_defs_with_namespace(
     int i = 0, size = 0;
     axis2_hash_t *super = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, namespc, NULL);
     super = WODEN_TYPES_SUPER_OBJS(types, env);
     types_impl = INTF_TO_IMPL(axis2_hash_get(super, 

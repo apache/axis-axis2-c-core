@@ -111,7 +111,7 @@ woden_element_decl_create(
 {
     woden_element_decl_impl_t *decl_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     decl_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_element_decl_impl_t));
 
@@ -196,7 +196,7 @@ woden_element_decl_super_objs(
 {
     woden_element_decl_impl_t *decl_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     decl_impl = INTF_TO_IMPL(decl);
 
     return decl_impl->super;
@@ -298,7 +298,7 @@ woden_element_decl_get_qname(
     woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_ELEMENT_DECL_SUPER_OBJS(decl, env);
     decl_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_ELEMENT_DECL", AXIS2_HASH_KEY_STRING)); 
@@ -314,7 +314,7 @@ woden_element_decl_get_system(
     woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_ELEMENT_DECL_SUPER_OBJS(decl, env);
     decl_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_ELEMENT_DECL", AXIS2_HASH_KEY_STRING)); 
@@ -330,7 +330,7 @@ woden_element_decl_get_content_model(
     woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_ELEMENT_DECL_SUPER_OBJS(decl, env);
     decl_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_ELEMENT_DECL", AXIS2_HASH_KEY_STRING)); 
@@ -346,7 +346,7 @@ woden_element_decl_get_content(
     woden_element_decl_impl_t *decl_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_ELEMENT_DECL_SUPER_OBJS(decl, env);
     decl_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_ELEMENT_DECL", AXIS2_HASH_KEY_STRING)); 

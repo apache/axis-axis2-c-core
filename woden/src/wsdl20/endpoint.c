@@ -140,7 +140,7 @@ woden_endpoint_to_endpoint_element(
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!endpoint)
     {
         endpoint_impl = (woden_endpoint_impl_t *) create(env);
@@ -165,7 +165,7 @@ woden_endpoint_to_nested_element(
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!endpoint)
     {
         endpoint_impl = (woden_endpoint_impl_t *) create(env);
@@ -191,7 +191,7 @@ woden_endpoint_to_documentable_element(
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!endpoint)
     {
         endpoint_impl = (woden_endpoint_impl_t *) create(env);
@@ -218,7 +218,7 @@ woden_endpoint_to_nested_configurable(
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!endpoint)
     {
         endpoint_impl = (woden_endpoint_impl_t *) create(env);
@@ -245,7 +245,7 @@ woden_endpoint_to_configurable(
     woden_endpoint_impl_t *endpoint_impl = NULL;
     void *configurable = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!endpoint)
     {
         endpoint_impl = (woden_endpoint_impl_t *) create(env);
@@ -273,7 +273,7 @@ woden_endpoint_to_nested_component(
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!endpoint)
     {
         endpoint_impl = (woden_endpoint_impl_t *) create(env);
@@ -298,7 +298,7 @@ woden_endpoint_to_configurable_component(
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!endpoint)
     {
         endpoint_impl = (woden_endpoint_impl_t *) create(env);
@@ -323,7 +323,7 @@ woden_endpoint_to_wsdl_component(
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!endpoint)
     {
@@ -349,7 +349,7 @@ woden_endpoint_to_configurable_element(
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!endpoint)
     {
         endpoint_impl = (woden_endpoint_impl_t *) create(env);
@@ -374,7 +374,7 @@ woden_endpoint_to_documentable(
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!endpoint)
     {
         endpoint_impl = (woden_endpoint_impl_t *) create(env);
@@ -400,7 +400,7 @@ woden_endpoint_to_attr_extensible(
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!endpoint)
     {
         endpoint_impl = (woden_endpoint_impl_t *) create(env);
@@ -428,7 +428,7 @@ woden_endpoint_to_element_extensible(
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!endpoint)
     {
         endpoint_impl = (woden_endpoint_impl_t *) create(env);
@@ -454,7 +454,7 @@ create(const axis2_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     endpoint_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_endpoint_impl_t));
 
@@ -546,7 +546,7 @@ woden_endpoint_create(const axis2_env_t *env)
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     endpoint_impl = (woden_endpoint_impl_t *) create(env);
 
     endpoint_impl->nested_configurable = woden_nested_configurable_create(env);
@@ -754,7 +754,7 @@ woden_endpoint_super_objs(
 {
     woden_endpoint_impl_t *endpoint_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     endpoint_impl = INTF_TO_IMPL(endpoint);
 
     return endpoint_impl->super;
@@ -940,7 +940,7 @@ woden_endpoint_get_binding_qname(
     woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
     endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));
@@ -956,7 +956,7 @@ woden_endpoint_get_binding_element(
     woden_endpoint_impl_t *endpoint_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_ENDPOINT_SUPER_OBJS(endpoint, env);
     endpoint_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_ENDPOINT", AXIS2_HASH_KEY_STRING));

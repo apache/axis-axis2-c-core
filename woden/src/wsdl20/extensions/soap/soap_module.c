@@ -212,7 +212,7 @@ woden_soap_module_to_soap_module_element(
 {
     woden_soap_module_impl_t *module_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!module)
     {
         module_impl = (woden_soap_module_impl_t *) create(env);
@@ -236,7 +236,7 @@ woden_soap_module_to_ext_element(
 {
     woden_soap_module_impl_t *module_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!module)
     {
         module_impl = (woden_soap_module_impl_t *) create(env);
@@ -260,7 +260,7 @@ woden_soap_module_to_attr_extensible(
 {
     woden_soap_module_impl_t *module_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!module)
     {
         module_impl = (woden_soap_module_impl_t *) create(env);
@@ -284,7 +284,7 @@ woden_soap_module_to_element_extensible(
 {
     woden_soap_module_impl_t *module_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!module)
     {
         module_impl = (woden_soap_module_impl_t *) create(env);
@@ -307,7 +307,7 @@ create(const axis2_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     module_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_soap_module_impl_t));
 
@@ -458,7 +458,7 @@ woden_soap_module_create(const axis2_env_t *env)
 {
     woden_soap_module_impl_t *module_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     module_impl = (woden_soap_module_impl_t *) create(env);
 
     module_impl->super = axis2_hash_make(env);
@@ -595,7 +595,7 @@ woden_soap_module_super_objs(
 {
     woden_soap_module_impl_t *module_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     module_impl = INTF_TO_IMPL(module);
 
     return module_impl->super;

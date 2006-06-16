@@ -77,7 +77,7 @@ woden_documentable_to_documentable_element(
 {
     woden_documentable_impl_t *documentable_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!documentable)
     {
         documentable_impl = (woden_documentable_impl_t *) create(env);
@@ -103,7 +103,7 @@ create(
 {
     woden_documentable_impl_t *documentable_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     documentable_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_documentable_impl_t));
 
@@ -138,7 +138,7 @@ woden_documentable_create(
 {
     woden_documentable_impl_t *documentable_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     documentable_impl = (woden_documentable_impl_t *) create(env);
 
     documentable_impl->wsdl_obj = woden_wsdl_obj_create(env);
@@ -323,7 +323,7 @@ woden_documentable_get_documentation_elements(
     woden_documentable_impl_t *documentable_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_DOCUMENTABLE_SUPER_OBJS(documentable, env);
     documentable_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_DOCUMENTABLE", AXIS2_HASH_KEY_STRING));

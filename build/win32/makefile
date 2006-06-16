@@ -562,7 +562,7 @@ copy_extra:
 	copy $(AXIS2_SOURCE_DIR)\LICENSE $(AXIS2_INSTALL_DIR)
 	copy $(AXIS2_SOURCE_DIR)\CREDITS $(AXIS2_INSTALL_DIR)
 	copy $(AXIS2_SOURCE_DIR)\README $(AXIS2_INSTALL_DIR)
-	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\xdocs $(AXIS2_INSTALL_DIR)\xdocs
+	if exist $(AXIS2_SOURCE_DIR) xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\docs $(AXIS2_INSTALL_DIR)\docs
 
 copy_samples:
 	if not exist $(AXIS2_INSTALL_DIR)\samples mkdir $(AXIS2_INSTALL_DIR)\samples
@@ -637,10 +637,17 @@ MOD_RAMPART_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\core\*.c \
 		$(AXIS2_SOURCE_DIR)\rampart\src\handlers\*.c \
 		$(AXIS2_SOURCE_DIR)\rampart\src\util\*.c
 
-MOD_RAMPART_INCLUDE_PATH = $(AXIS2_SOURCE_DIR)\rampart\include
+MOD_RAMPART_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\rampart\include
+
+!if "$(ENABLE_SSL)" == "0"
+MOD_RAMPART_INCLUDE_PATH = $(MOD_RAMPART_INCLUDE_PATH) /I$(OPENSSL_INSTALL_DIR)\include
+LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_INSTALL_DIR)\lib\vc
+LIBS = $(LIBS) libeay32MT.lib ssleay32MT.lib
+!endif
+
 
 mod_rampart:
-	$(CC) $(CFLAGS) /I$(MOD_RAMPART_INCLUDE_PATH) $(MOD_RAMPART_SRC) /c
+	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(MOD_RAMPART_SRC) /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
 	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:mod_rampart.dll  /IMPLIB:mod_rampart.lib
 	del *.obj
@@ -657,7 +664,7 @@ mod_rampart:
 	copy $(AXIS2_SOURCE_DIR)\rampart\src\data\module.xml $(AXIS2_INSTALL_DIR)\rampart\rampart
 	
 mod_rampart_pwcb: 
-	$(CC) $(CFLAGS) /I$(MOD_RAMPART_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\rampart\samples\callback\pwcb.c /c
+	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\rampart\samples\callback\pwcb.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib /DLL /OUT:pwcb.dll /IMPLIB:pwcb.lib
 
 	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples mkdir $(AXIS2_INSTALL_DIR)\rampart\samples
@@ -677,7 +684,7 @@ mod_rampart_samples:
 	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /OUT:echo.exe
 
 	del *.obj
-	copy echo.exe $(AXIS2_INSTALL_DIR)\rampart\samples\echo
+	copy echo.exe $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
 	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\README.txt $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
 	copy $(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\echo.c $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
 	
@@ -701,18 +708,13 @@ xml_schema:
 	$(CC) $(CFLAGS) $(XML_SCHEMA_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\xml_schema\src\*.c /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib /DLL /OUT:xml_schema.dll /IMPLIB:xml_schema.lib
 
-	if not exist $(AXIS2_INSTALL_DIR)\xml_schema mkdir $(AXIS2_INSTALL_DIR)\xml_schema
-	if not exist $(AXIS2_INSTALL_DIR)\xml_schema\bin mkdir $(AXIS2_INSTALL_DIR)\xml_schema\bin
-	if not exist $(AXIS2_INSTALL_DIR)\xml_schema\lib mkdir $(AXIS2_INSTALL_DIR)\xml_schema\lib
-	
-	copy xml_schema.dll $(AXIS2_INSTALL_DIR)\xml_schema\bin\xml_schema.dll
-	copy xml_schema.lib $(AXIS2_INSTALL_DIR)\xml_schema\lib\xml_schema.lib
-	copy $(AXIS2_SOURCE_DIR)\xml_schema\README $(AXIS2_INSTALL_DIR)\xml_schema
+	copy xml_schema.dll $(AXIS2_INSTALL_DIR)\lib\xml_schema.dll
+	copy xml_schema.lib $(AXIS2_INSTALL_DIR)\lib\xml_schema.lib
 	del *.obj
 	del xml_schema.*
 
 xml_schema_copy_include:
-	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\xml_schema\include $(AXIS2_INSTALL_DIR)\xml_schema\include
+	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\xml_schema\include $(AXIS2_INSTALL_DIR)\include
 
 xml_schema_copy_resources:
 	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\xml_schema\test-resources $(AXIS2_INSTALL_DIR)\xml_schema\test-resources
@@ -722,13 +724,14 @@ xml_schema_copy_resources:
 xml_schema_sample:
 	$(CC) $(CFLAGS) $(XML_SCHEMA_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\xml_schema\samples\test_schema.c /c
 	$(LD) $(LDFLAGS) test_schema.obj $(AXIS2_UTIL).lib $(AXIS2_PARSER).lib $(AXIOM).lib \
-	$(AXIS2_INSTALL_DIR)\xml_schema\lib\xml_schema.lib \
+	$(AXIS2_INSTALL_DIR)\lib\xml_schema.lib \
 	/OUT:test_schema.exe
-	if not exist $(AXIS2_INSTALL_DIR)\xml_schema\bin\samples mkdir $(AXIS2_INSTALL_DIR)\xml_schema\bin\samples
-	copy test_schema.exe $(AXIS2_INSTALL_DIR)\xml_schema\bin\samples
+	if not exist $(AXIS2_INSTALL_DIR)\bin\system_tests mkdir $(AXIS2_INSTALL_DIR)\bin\system_tests
+
+	copy test_schema.exe $(AXIS2_INSTALL_DIR)\bin\system_tests
 	del test*.*
 
-xml_schema_all: xml_schema xml_schema_sample xml_schema_copy_include xml_schema_copy_resources
+xml_schema_all: xml_schema xml_schema_sample xml_schema_copy_include
 
 	
 ##############################################################################################

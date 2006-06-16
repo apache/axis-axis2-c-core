@@ -1,4 +1,4 @@
-This sample demostrates the use of code generation using Axis2/Java WSDL2Java
+This sample demonstrates the use of code generation using Axis2/Java WSDL2Java
 tool (Axis2/Java source revision 414253).
 
 wsdl                 $AXIS2C_HOME/test/resources/wsdl/InteropTestRound1Doc.wsdl

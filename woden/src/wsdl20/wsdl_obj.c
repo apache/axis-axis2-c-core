@@ -68,7 +68,7 @@ create(
 {
     woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     wsdl_obj_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_wsdl_obj_impl_t));
 
@@ -100,7 +100,7 @@ woden_wsdl_obj_create(
 {
     woden_wsdl_obj_impl_t *wsdl_obj_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     wsdl_obj_impl = (woden_wsdl_obj_impl_t *) create(env);
 
     wsdl_obj_impl->wsdl_element = woden_wsdl_element_create(env);
@@ -225,7 +225,7 @@ woden_wsdl_obj_get_component_exts_for_namespace(
     axis2_char_t *str_namespc = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL_OBJ_SUPER_OBJS(wsdl_obj, env);
     wsdl_obj_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING));

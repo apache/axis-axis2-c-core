@@ -83,7 +83,7 @@ woden_soap_binding_fault_ref_exts_to_component_exts(
 {
     woden_soap_binding_fault_ref_exts_impl_t *binding_fault_ref_exts_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_fault_ref_exts)
     {
         binding_fault_ref_exts_impl = (woden_soap_binding_fault_ref_exts_impl_t *) create(env);
@@ -106,7 +106,7 @@ create(const axis2_env_t *env)
 {
     woden_soap_binding_fault_ref_exts_impl_t *binding_fault_ref_exts_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_fault_ref_exts_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_soap_binding_fault_ref_exts_impl_t));
 
@@ -158,7 +158,7 @@ woden_soap_binding_fault_ref_exts_create(const axis2_env_t *env)
 {
     woden_soap_binding_fault_ref_exts_impl_t *binding_fault_ref_exts_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_fault_ref_exts_impl = (woden_soap_binding_fault_ref_exts_impl_t *) create(env);
 
     binding_fault_ref_exts_impl->component_exts = woden_component_exts_create(env);
@@ -253,7 +253,7 @@ woden_soap_binding_fault_ref_exts_super_objs(
 {
     woden_soap_binding_fault_ref_exts_impl_t *binding_fault_ref_exts_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_fault_ref_exts_impl = INTF_TO_IMPL(binding_fault_ref_exts);
 
     return binding_fault_ref_exts_impl->super;
@@ -323,7 +323,7 @@ woden_soap_binding_fault_ref_exts_get_soap_modules(
     axis2_array_list_t *soap_mods = NULL;
     void *parent_element = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_fault_ref_exts_impl = INTF_TO_IMPL(binding_fault_ref_exts);
 
     parent_element = WODEN_COMPONENT_EXTS_GET_PARENT_ELEMENT(

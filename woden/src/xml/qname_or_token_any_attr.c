@@ -95,7 +95,7 @@ woden_qname_or_token_any_attr_create(const axis2_env_t *env,
     woden_qname_or_token_any_attr_impl_t *
             token_attr_impl = NULL;
      
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     token_attr_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_qname_or_token_any_attr_impl_t));
 
@@ -310,7 +310,7 @@ woden_qname_or_token_any_attr_get_qname(
     woden_qname_or_token_any_attr_impl_t *
             token_attr_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     token_attr_impl = INTF_TO_IMPL(token_attr);
 
     if(AXIS2_TRUE == woden_qname_or_token_any_attr_is_qname(token_attr, 
@@ -329,7 +329,7 @@ woden_qname_or_token_any_attr_get_token(
     woden_qname_or_token_any_attr_impl_t *
             token_attr_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     token_attr_impl = INTF_TO_IMPL(token_attr);
     if(AXIS2_TRUE == woden_qname_or_token_any_attr_is_qname(token_attr, 
                 env) && AXIS2_TRUE == WODEN_XML_ATTR_IS_VALID(
@@ -355,7 +355,7 @@ woden_qname_or_token_any_attr_convert(
             token_attr_impl = NULL;
     axis2_qname_t *qn = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     token_attr_impl = INTF_TO_IMPL(token_attr);
 
     /* First, check if the attribute contains the xs:token '#any'.*/

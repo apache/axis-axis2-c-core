@@ -177,7 +177,7 @@ woden_ext_registry_create(
 {
     woden_ext_registry_impl_t *registry_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     registry_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_ext_registry_impl_t));
 
@@ -372,7 +372,7 @@ woden_ext_registry_query_deserializer(
     axis2_char_t *elem_name = NULL;
     void *ed = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
     inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg, 
@@ -411,7 +411,7 @@ woden_ext_registry_query_ext_element_type(
     axis2_char_t *elem_name = NULL;
     void *element = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
     inner_ext_attr_reg = axis2_hash_get(registry_impl->ext_attr_reg, 
@@ -442,7 +442,7 @@ woden_ext_registry_get_allowable_exts(
     woden_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_deserializer_reg = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
     inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg, 
@@ -575,7 +575,7 @@ woden_ext_registry_query_ext_attr_type(
     void *attr = NULL;
     axis2_char_t *attr_name = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
     inner_ext_attr_reg = axis2_hash_get(registry_impl->ext_attr_reg, 
@@ -645,7 +645,7 @@ woden_ext_registry_query_component_ext(
     void *comp_ext = NULL;
     axis2_char_t *namespc = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
     inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg, 
@@ -674,7 +674,7 @@ woden_ext_registry_query_component_ext_namespaces(
     woden_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_comp_ext_reg = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
     inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg, 

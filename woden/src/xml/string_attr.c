@@ -79,7 +79,7 @@ woden_string_attr_create(
 {
     woden_string_attr_impl_t *string_attr_impl = NULL;
      
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     string_attr_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_string_attr_impl_t));
 
@@ -215,7 +215,7 @@ woden_string_attr_get_string(
 {
     woden_string_attr_impl_t *string_attr_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     string_attr_impl = INTF_TO_IMPL(string_attr);
     return (axis2_char_t *) WODEN_XML_ATTR_GET_CONTENT(
             string_attr_impl->xml_attr, env);
@@ -232,7 +232,7 @@ woden_string_attr_convert(
     woden_string_attr_impl_t *string_attr_impl = NULL;
     axis2_char_t *str = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     string_attr_impl = INTF_TO_IMPL(string_attr);
 
     if(attr_value)

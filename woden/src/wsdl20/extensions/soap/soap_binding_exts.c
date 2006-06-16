@@ -97,7 +97,7 @@ woden_soap_binding_exts_to_component_exts(
 {
     woden_soap_binding_exts_impl_t *binding_exts_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_exts)
     {
         binding_exts_impl = (woden_soap_binding_exts_impl_t *) create(env);
@@ -120,7 +120,7 @@ create(const axis2_env_t *env)
 {
     woden_soap_binding_exts_impl_t *binding_exts_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_exts_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_soap_binding_exts_impl_t));
 
@@ -187,7 +187,7 @@ woden_soap_binding_exts_create(const axis2_env_t *env)
 {
     woden_soap_binding_exts_impl_t *binding_exts_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_exts_impl = (woden_soap_binding_exts_impl_t *) create(env);
 
     binding_exts_impl->component_exts = woden_component_exts_create(env);
@@ -282,7 +282,7 @@ woden_soap_binding_exts_super_objs(
 {
     woden_soap_binding_exts_impl_t *binding_exts_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_exts_impl = INTF_TO_IMPL(binding_exts);
 
     return binding_exts_impl->super;
@@ -370,7 +370,7 @@ woden_soap_binding_exts_get_soap_version(
     woden_string_attr_t *version = NULL;
     void *parent_element = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_exts_impl = INTF_TO_IMPL(binding_exts);
 
     parent_element = WODEN_COMPONENT_EXTS_GET_PARENT_ELEMENT(
@@ -393,7 +393,7 @@ woden_soap_binding_exts_get_soap_underlying_protocol(
     woden_uri_attr_t *protocol = NULL;
     void *parent_element = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_exts_impl = INTF_TO_IMPL(binding_exts);
 
     parent_element = WODEN_COMPONENT_EXTS_GET_PARENT_ELEMENT(
@@ -416,7 +416,7 @@ woden_soap_binding_exts_get_soap_mep_default(
     woden_uri_attr_t *mep_default = NULL;
     void *parent_element = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_exts_impl = INTF_TO_IMPL(binding_exts);
 
     parent_element = WODEN_COMPONENT_EXTS_GET_PARENT_ELEMENT(
@@ -440,7 +440,7 @@ woden_soap_binding_exts_get_soap_modules(
     axis2_array_list_t *ext_els = NULL;
     void *parent_element = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_exts_impl = INTF_TO_IMPL(binding_exts);
 
     parent_element = WODEN_COMPONENT_EXTS_GET_PARENT_ELEMENT(

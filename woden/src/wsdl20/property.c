@@ -178,7 +178,7 @@ woden_property_to_property_element(
 {
     woden_property_impl_t *property_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!property)
     {
         property_impl = (woden_property_impl_t *) create(env);
@@ -203,7 +203,7 @@ woden_property_to_nested_element(
 {
     woden_property_impl_t *property_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!property)
     {
         property_impl = (woden_property_impl_t *) create(env);
@@ -227,7 +227,7 @@ woden_property_to_documentable_element(
 {
     woden_property_impl_t *property_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!property)
     {
         property_impl = (woden_property_impl_t *) create(env);
@@ -252,7 +252,7 @@ woden_property_to_documentable(
 {
     woden_property_impl_t *property_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!property)
     {
         property_impl = (woden_property_impl_t *) create(env);
@@ -277,7 +277,7 @@ woden_property_to_wsdl_obj(
     woden_property_impl_t *property_impl = NULL;
     woden_wsdl_obj_t *wsdl_obj = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!property)
     {
         property_impl = (woden_property_impl_t *) create(env);
@@ -303,7 +303,7 @@ woden_property_to_nested_component(
 {
     woden_property_impl_t *property_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!property)
     {
         property_impl = (woden_property_impl_t *) create(env);
@@ -327,7 +327,7 @@ woden_property_to_wsdl_component(
 {
     woden_property_impl_t *property_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!property)
     {
@@ -351,7 +351,7 @@ woden_property_to_attr_extensible(
 {
     woden_property_impl_t *property_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!property)
     {
@@ -379,7 +379,7 @@ woden_property_to_element_extensible(
 {
     woden_property_impl_t *property_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!property)
     {
@@ -404,7 +404,7 @@ create(const axis2_env_t *env)
 {
     woden_property_impl_t *property_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     property_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_property_impl_t));
 
@@ -517,7 +517,7 @@ woden_property_create(const axis2_env_t *env)
 {
     woden_property_impl_t *property_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     property_impl = (woden_property_impl_t *) create(env);
 
     property_impl->documentable = woden_documentable_create(env);
@@ -679,7 +679,7 @@ woden_property_super_objs(
 {
     woden_property_impl_t *property_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     property_impl = INTF_TO_IMPL(property);
 
     return property_impl->super;
@@ -831,7 +831,7 @@ woden_property_get_parent_element(
     woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
     property_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
@@ -847,7 +847,7 @@ woden_property_get_parent(
     woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
     property_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));
@@ -863,7 +863,7 @@ woden_property_to_element(
     woden_property_impl_t *property_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_PROPERTY_SUPER_OBJS(property, env);
     property_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_PROPERTY", AXIS2_HASH_KEY_STRING));

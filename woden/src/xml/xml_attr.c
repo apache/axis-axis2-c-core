@@ -87,7 +87,7 @@ woden_xml_attr_create(
 {
     woden_xml_attr_impl_t *xml_attr_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     xml_attr_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_xml_attr_impl_t));
 
@@ -227,7 +227,7 @@ woden_xml_attr_get_attribute_type(
 {
     woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     xml_attr_impl = INTF_TO_IMPL(xml_attr);
 
     return xml_attr_impl->f_attr_type;
@@ -240,7 +240,7 @@ woden_xml_attr_get_content(
 {
     woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     xml_attr_impl = INTF_TO_IMPL(xml_attr);
     return xml_attr_impl->f_content;
 }
@@ -252,7 +252,7 @@ woden_xml_attr_to_external_form(
 {
     woden_xml_attr_impl_t *xml_attr_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     xml_attr_impl = INTF_TO_IMPL(xml_attr);
     return xml_attr_impl->f_external_form;
 }

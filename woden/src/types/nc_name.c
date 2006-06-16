@@ -60,7 +60,7 @@ woden_nc_name_create(
 {
     woden_nc_name_impl_t *nc_name_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     nc_name_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_nc_name_impl_t));
 
@@ -167,7 +167,7 @@ woden_nc_name_to_string(
 {
     woden_nc_name_impl_t *nc_name_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     nc_name_impl = INTF_TO_IMPL(nc_name);
 
     return nc_name_impl->f_value;

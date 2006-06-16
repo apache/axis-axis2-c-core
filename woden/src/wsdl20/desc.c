@@ -435,7 +435,7 @@ woden_desc_to_desc_element(
 {
     woden_desc_impl_t *desc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!desc)
     {
         desc_impl = (woden_desc_impl_t *) create(env);
@@ -459,7 +459,7 @@ woden_desc_to_documentable_element(
 {
     woden_desc_impl_t *desc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!desc)
     {
         desc_impl = (woden_desc_impl_t *) create(env);
@@ -484,7 +484,7 @@ woden_desc_to_documentable(
 {
     woden_desc_impl_t *desc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!desc)
     {
         desc_impl = (woden_desc_impl_t *) create(env);
@@ -510,7 +510,7 @@ woden_desc_to_wsdl_obj(
     woden_desc_impl_t *desc_impl = NULL;
     void *wsdl_obj = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!desc)
     {
         desc_impl = (woden_desc_impl_t *) create(env);
@@ -536,7 +536,7 @@ woden_desc_to_wsdl_component(
 {
     woden_desc_impl_t *desc_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!desc)
     {
@@ -560,7 +560,7 @@ woden_desc_to_attr_extensible(
 {
     woden_desc_impl_t *desc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!desc)
     {
         desc_impl = (woden_desc_impl_t *) create(env);
@@ -587,7 +587,7 @@ woden_desc_to_element_extensible(
 {
     woden_desc_impl_t *desc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!desc)
     {
         desc_impl = (woden_desc_impl_t *) create(env);
@@ -614,7 +614,7 @@ create(const axis2_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     desc_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_desc_impl_t));
 
@@ -869,7 +869,7 @@ woden_desc_create(const axis2_env_t *env)
 {
     woden_desc_impl_t *desc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     desc_impl = (woden_desc_impl_t *) create(env);
 
     desc_impl->documentable = woden_documentable_create(env);
@@ -1013,7 +1013,7 @@ woden_desc_super_objs(
 {
     woden_desc_impl_t *desc_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     desc_impl = INTF_TO_IMPL(desc);
 
     return desc_impl->super;
@@ -1461,7 +1461,7 @@ woden_desc_get_namespace(
     axis2_hash_t *super = NULL;
     axis2_char_t *pfx = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1478,7 +1478,7 @@ woden_desc_get_namespaces(
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1512,7 +1512,7 @@ woden_desc_get_import_elements(
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1546,7 +1546,7 @@ woden_desc_get_include_elements(
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1619,7 +1619,7 @@ woden_desc_get_interface_elements(
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1653,7 +1653,7 @@ woden_desc_get_binding_elements(
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_DESC", AXIS2_HASH_KEY_STRING));
@@ -1687,7 +1687,7 @@ woden_desc_get_svc_elements(
     woden_desc_impl_t *desc_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_DESC", AXIS2_HASH_KEY_STRING));

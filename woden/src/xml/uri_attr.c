@@ -79,7 +79,7 @@ woden_uri_attr_create(
 {
     woden_uri_attr_impl_t *uri_attr_impl = NULL;
      
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     uri_attr_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_uri_attr_impl_t));
 
@@ -215,7 +215,7 @@ woden_uri_attr_get_uri(
 {
     woden_uri_attr_impl_t *uri_attr_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     uri_attr_impl = INTF_TO_IMPL(uri_attr);
     return (axis2_uri_t *) WODEN_XML_ATTR_GET_CONTENT(
             uri_attr_impl->xml_attr, env);
@@ -232,7 +232,7 @@ woden_uri_attr_convert(
     woden_uri_attr_impl_t *uri_attr_impl = NULL;
     axis2_uri_t *url = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     uri_attr_impl = INTF_TO_IMPL(uri_attr);
 
     if(attr_value)

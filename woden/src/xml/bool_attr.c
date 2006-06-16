@@ -65,7 +65,7 @@ create(
 {
     woden_bool_attr_impl_t *bool_attr_impl = NULL;
      
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     bool_attr_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_bool_attr_impl_t));
 
@@ -119,7 +119,7 @@ woden_bool_attr_create(
 {
     woden_bool_attr_impl_t *bool_attr_impl = NULL;
      
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     bool_attr_impl = (woden_bool_attr_impl_t *) create(env);
 
     bool_attr_impl->xml_attr = woden_xml_attr_create(env, owner_el, 
@@ -234,7 +234,7 @@ woden_bool_attr_convert(void *bool_attr,
     woden_bool_attr_impl_t *bool_attr_impl = NULL;
     axis2_qname_t *qn = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     bool_attr_impl = INTF_TO_IMPL(bool_attr);
 
     if(attr_value)

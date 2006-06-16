@@ -49,7 +49,7 @@ create(
 {
     woden_direction_impl_t *direction_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     direction_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_direction_impl_t));
 
@@ -73,7 +73,7 @@ woden_direction_create(
 {
     woden_direction_impl_t *direction_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     direction_impl = (woden_direction_impl_t *) create(env);
 
     direction_impl->f_value = AXIS2_STRDUP(value, env);
@@ -85,7 +85,7 @@ AXIS2_EXTERN woden_direction_t *AXIS2_CALL
 woden_direction_get_direction_in(
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     
     if(!WODEN_DIRECTION_IN)
         WODEN_DIRECTION_IN = woden_direction_create(env, "in");
@@ -97,7 +97,7 @@ AXIS2_EXTERN woden_direction_t *AXIS2_CALL
 woden_direction_get_direction_out(
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!WODEN_DIRECTION_OUT)
         WODEN_DIRECTION_OUT = woden_direction_create(env, "out");
@@ -141,7 +141,7 @@ woden_direction_to_string(
 {
     woden_direction_impl_t *direction_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     direction_impl = INTF_TO_IMPL(direction);
 
     return direction_impl->f_value;

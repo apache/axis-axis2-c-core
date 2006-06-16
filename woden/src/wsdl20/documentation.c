@@ -86,7 +86,7 @@ woden_documentation_to_documentation_element(
 {
     woden_documentation_impl_t *documentation_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!documentation)
     {
         documentation_impl = (woden_documentation_impl_t *) create(env);
@@ -112,7 +112,7 @@ woden_documentation_to_attr_extensible(
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!documentation)
     {
@@ -140,7 +140,7 @@ woden_documentation_to_element_extensible(
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!documentation)
     {
@@ -335,7 +335,7 @@ woden_documentation_super_objs(
 {
     woden_documentation_impl_t *documentation_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     documentation_impl = INTF_TO_IMPL(documentation);
 
     return documentation_impl->super;
@@ -423,7 +423,7 @@ woden_documentation_get_content(
     woden_documentation_impl_t *documentation_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_DOCUMENTATION_SUPER_OBJS(documentation, env);
     documentation_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_DOCUMENTATION", AXIS2_HASH_KEY_STRING));

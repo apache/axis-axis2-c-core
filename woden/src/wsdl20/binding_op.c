@@ -168,7 +168,7 @@ woden_binding_op_to_binding_op_element(
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
     {
         binding_op_impl = (woden_binding_op_impl_t *) create(env);
@@ -192,7 +192,7 @@ woden_binding_op_to_nested_configurable(
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
     {
         binding_op_impl = (woden_binding_op_impl_t *) create(env);
@@ -218,7 +218,7 @@ woden_binding_op_to_configurable(
     woden_binding_op_impl_t *binding_op_impl = NULL;
     void *configurable = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
     {
         binding_op_impl = (woden_binding_op_impl_t *) create(env);
@@ -247,7 +247,7 @@ woden_binding_op_to_wsdl_obj(
     void *documentable = NULL;
     void *wsdl_obj = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
     {
         binding_op_impl = (woden_binding_op_impl_t *) create(env);
@@ -278,7 +278,7 @@ woden_binding_op_to_nested_element(
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
     {
         binding_op_impl = (woden_binding_op_impl_t *) create(env);
@@ -303,7 +303,7 @@ woden_binding_op_to_wsdl_component(
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
     {
         binding_op_impl = (woden_binding_op_impl_t *) create(env);
@@ -328,7 +328,7 @@ woden_binding_op_to_configurable_element(
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
     {
         binding_op_impl = (woden_binding_op_impl_t *) create(env);
@@ -354,7 +354,7 @@ woden_binding_op_to_documentable_element(
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
     {
         binding_op_impl = (woden_binding_op_impl_t *) create(env);
@@ -380,7 +380,7 @@ woden_binding_op_to_documentable(
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
     {
         binding_op_impl = (woden_binding_op_impl_t *) create(env);
@@ -408,7 +408,7 @@ woden_binding_op_to_attr_extensible(
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
     {
         binding_op_impl = (woden_binding_op_impl_t *) create(env);
@@ -434,7 +434,7 @@ woden_binding_op_to_element_extensible(
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
     {
         binding_op_impl = (woden_binding_op_impl_t *) create(env);
@@ -460,7 +460,7 @@ create(const axis2_env_t *env)
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_op_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_binding_op_impl_t));
 
@@ -571,7 +571,7 @@ woden_binding_op_create(const axis2_env_t *env)
     woden_binding_op_impl_t *binding_op_impl = NULL;
     void *configurable = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_op_impl = (woden_binding_op_impl_t *) create(env);
 
     binding_op_impl->nested_configurable = woden_nested_configurable_create(env);
@@ -784,7 +784,7 @@ woden_binding_op_super_objs(
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     binding_op_impl = INTF_TO_IMPL(binding_op);
 
     return binding_op_impl->super;
@@ -918,7 +918,7 @@ woden_binding_op_to_element(
     woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_BINDING_OP_SUPER_OBJS(binding_op, env);
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
@@ -934,7 +934,7 @@ woden_binding_op_get_interface_op(
     woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_BINDING_OP_SUPER_OBJS(binding_op, env);
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
@@ -978,7 +978,7 @@ woden_binding_op_get_ref(
     woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_BINDING_OP_SUPER_OBJS(binding_op, env);
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
@@ -994,7 +994,7 @@ woden_binding_op_get_interface_op_element(
     woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_BINDING_OP_SUPER_OBJS(binding_op, env);
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
@@ -1062,7 +1062,7 @@ woden_binding_op_get_binding_msg_ref_elements(
     woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_BINDING_OP_SUPER_OBJS(binding_op, env);
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));
@@ -1129,7 +1129,7 @@ woden_binding_op_get_binding_fault_ref_elements(
     woden_binding_op_impl_t *binding_op_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_BINDING_OP_SUPER_OBJS(binding_op, env);
     binding_op_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_BINDING_OP", AXIS2_HASH_KEY_STRING));

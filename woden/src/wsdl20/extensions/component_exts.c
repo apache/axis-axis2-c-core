@@ -62,7 +62,7 @@ woden_component_exts_create(
 {
     woden_component_exts_impl_t *component_exts_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     component_exts_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_component_exts_impl_t));
 
@@ -154,7 +154,7 @@ woden_component_exts_get_namespace(
 {
     woden_component_exts_impl_t *component_exts_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     component_exts_impl = INTF_TO_IMPL(component_exts);
     return component_exts_impl->f_namespc;
 }
@@ -166,7 +166,7 @@ woden_component_exts_get_parent_element(
 {
     woden_component_exts_impl_t *component_exts_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     component_exts_impl = INTF_TO_IMPL(component_exts);
     return component_exts_impl->f_parent_element;
 }

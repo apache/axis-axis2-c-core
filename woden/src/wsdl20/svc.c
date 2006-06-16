@@ -144,7 +144,7 @@ woden_svc_to_svc_element(
 {
     woden_svc_impl_t *svc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!svc)
     {
         svc_impl = (woden_svc_impl_t *) create(env);
@@ -169,7 +169,7 @@ woden_svc_to_documentable_element(
 {
     woden_svc_impl_t *svc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!svc)
     {
         svc_impl = (woden_svc_impl_t *) create(env);
@@ -195,7 +195,7 @@ woden_svc_to_configurable(
 {
     woden_svc_impl_t *svc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!svc)
     {
         svc_impl = (woden_svc_impl_t *) create(env);
@@ -221,7 +221,7 @@ woden_svc_to_configurable_component(
 {
     woden_svc_impl_t *svc_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!svc)
     {
         svc_impl = (woden_svc_impl_t *) create(env);
@@ -246,7 +246,7 @@ woden_svc_to_wsdl_component(
 {
     woden_svc_impl_t *svc_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!svc)
     {
@@ -272,7 +272,7 @@ woden_svc_to_configurable_element(
 {
     woden_svc_impl_t *svc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!svc)
     {
         svc_impl = (woden_svc_impl_t *) create(env);
@@ -297,7 +297,7 @@ woden_svc_to_documentable(
 {
     woden_svc_impl_t *svc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!svc)
     {
         svc_impl = (woden_svc_impl_t *) create(env);
@@ -323,7 +323,7 @@ woden_svc_to_attr_extensible(
 {
     woden_svc_impl_t *svc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!svc)
     {
         svc_impl = (woden_svc_impl_t *) create(env);
@@ -351,7 +351,7 @@ woden_svc_to_element_extensible(
 {
     woden_svc_impl_t *svc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!svc)
     {
         svc_impl = (woden_svc_impl_t *) create(env);
@@ -378,7 +378,7 @@ create(const axis2_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     svc_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_svc_impl_t));
 
@@ -472,7 +472,7 @@ woden_svc_create(const axis2_env_t *env)
 {
     woden_svc_impl_t *svc_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     svc_impl = (woden_svc_impl_t *) create(env);
 
     svc_impl->configurable = woden_configurable_create(env);
@@ -657,7 +657,7 @@ woden_svc_super_objs(
 {
     woden_svc_impl_t *svc_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     svc_impl = INTF_TO_IMPL(svc);
 
     return svc_impl->super;
@@ -843,7 +843,7 @@ woden_svc_get_interface_qname(
     woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SVC_SUPER_OBJS(svc, env);
     svc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_SVC", AXIS2_HASH_KEY_STRING));
@@ -859,7 +859,7 @@ woden_svc_get_interface_element(
     woden_svc_impl_t *svc_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_SVC_SUPER_OBJS(svc, env);
     svc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_SVC", AXIS2_HASH_KEY_STRING));

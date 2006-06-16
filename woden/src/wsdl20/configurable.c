@@ -100,7 +100,7 @@ woden_configurable_to_configurable_element(
 {
     woden_configurable_impl_t *configurable_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!configurable)
     {
         configurable_impl = (woden_configurable_impl_t *) create(env);
@@ -124,7 +124,7 @@ create(
 {
     woden_configurable_impl_t *configurable_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     configurable_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_configurable_impl_t));
 
@@ -159,7 +159,7 @@ woden_configurable_create(
 {
     woden_configurable_impl_t *configurable_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     configurable_impl = (woden_configurable_impl_t *) create(env);
 
     configurable_impl->documentable = woden_documentable_create(env);
@@ -306,7 +306,7 @@ woden_configurable_get_features(
     woden_configurable_impl_t *configurable_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_CONFIGURABLE_SUPER_OBJS(configurable, env);
     configurable_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_CONFIGURABLE", AXIS2_HASH_KEY_STRING));
@@ -322,7 +322,7 @@ woden_configurable_get_properties(
     woden_configurable_impl_t *configurable_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_CONFIGURABLE_SUPER_OBJS(configurable, env);
     configurable_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_CONFIGURABLE", AXIS2_HASH_KEY_STRING));
@@ -366,7 +366,7 @@ woden_configurable_get_feature_elements(
     woden_configurable_impl_t *configurable_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_CONFIGURABLE_SUPER_OBJS(configurable, env);
     configurable_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_CONFIGURABLE", AXIS2_HASH_KEY_STRING));
@@ -410,7 +410,7 @@ woden_configurable_get_property_elements(
     woden_configurable_impl_t *configurable_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_CONFIGURABLE_SUPER_OBJS(configurable, env);
     configurable_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_CONFIGURABLE", AXIS2_HASH_KEY_STRING));

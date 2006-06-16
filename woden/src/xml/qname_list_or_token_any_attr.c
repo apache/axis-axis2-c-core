@@ -97,7 +97,7 @@ woden_qname_list_or_token_any_attr_create(
     woden_qname_list_or_token_any_attr_impl_t *
             list_token_attr_impl = NULL;
      
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     list_token_attr_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_qname_list_or_token_any_attr_impl_t));
 
@@ -307,7 +307,7 @@ woden_qname_list_or_token_any_attr_get_qnames(
     woden_qname_list_or_token_any_attr_impl_t *
             list_token_attr_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     list_token_attr_impl = INTF_TO_IMPL(list_token_attr);
     return (axis2_array_list_t *) WODEN_XML_ATTR_GET_CONTENT(
             list_token_attr_impl->xml_attr, env);
@@ -321,7 +321,7 @@ woden_qname_list_or_token_any_attr_get_token(
     woden_qname_list_or_token_any_attr_impl_t *
             list_token_attr_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     list_token_attr_impl = INTF_TO_IMPL(list_token_attr);
     if(AXIS2_TRUE == 
             woden_qname_list_or_token_any_attr_is_token(list_token_attr, 
@@ -347,7 +347,7 @@ woden_qname_list_or_token_any_attr_convert(
             list_token_attr_impl = NULL;
     axis2_array_list_t *qn_array = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     list_token_attr_impl = INTF_TO_IMPL(list_token_attr);
 
     /* First, check if the attribute contains the xs:token '#any'.*/

@@ -19,6 +19,7 @@
 #include <woden_xml_attr.h>
 #include <woden_documentation_element.h>
 #include <woden_generic_obj.h>
+#include <woden_documentable.h>
 
 typedef struct woden_include_impl woden_include_impl_t;
 
@@ -73,7 +74,7 @@ woden_include_to_include_element(
 {
     woden_include_impl_t *include_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!include)
     {
         include_impl = (woden_include_impl_t *) create(env);
@@ -98,7 +99,7 @@ woden_include_to_wsdl_ref(
 {
     woden_include_impl_t *include_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!include)
     {
         include_impl = (woden_include_impl_t *) create(env);
@@ -122,7 +123,7 @@ woden_include_to_attr_extensible(
 {
     woden_include_impl_t *include_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!include)
     {
@@ -150,7 +151,7 @@ woden_include_to_element_extensible(
 {
     woden_include_impl_t *include_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!include)
     {
@@ -175,7 +176,7 @@ create(const axis2_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     include_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_include_impl_t));
 
@@ -217,7 +218,7 @@ woden_include_create(const axis2_env_t *env)
 {
     woden_include_impl_t *include_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     include_impl = (woden_include_impl_t *) create(env);
 
     include_impl->wsdl_ref = woden_wsdl_ref_create(env);
@@ -329,7 +330,7 @@ woden_include_super_objs(
 {
     woden_include_impl_t *include_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     include_impl = INTF_TO_IMPL(include);
 
     return include_impl->super;

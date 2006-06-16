@@ -78,7 +78,7 @@ woden_qname_list_attr_create(
 {
     woden_qname_list_attr_impl_t *qname_list_attr_impl = NULL;
      
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     qname_list_attr_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_qname_list_attr_impl_t));
 
@@ -214,7 +214,7 @@ woden_qname_list_attr_get_qnames(
 {
     woden_qname_list_attr_impl_t *qname_list_attr_impl = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     qname_list_attr_impl = INTF_TO_IMPL(qname_list_attr);
     return (axis2_array_list_t *) WODEN_XML_ATTR_GET_CONTENT(
             qname_list_attr_impl->xml_attr, env);
@@ -231,7 +231,7 @@ woden_qname_list_attr_convert(
     woden_qname_list_attr_impl_t *qname_list_attr_impl = NULL;
     axis2_qname_t *qn = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     qname_list_attr_impl = INTF_TO_IMPL(qname_list_attr);
 
     if(attr_value)

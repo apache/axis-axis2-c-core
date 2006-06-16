@@ -117,7 +117,7 @@ woden_imported_schema_to_schema(
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!schema)
     {
@@ -144,7 +144,7 @@ create(
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
      
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     schema_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_imported_schema_impl_t));
 
@@ -208,7 +208,7 @@ woden_imported_schema_create(
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
      
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     schema_impl = (woden_imported_schema_impl_t *) create(env);
 
     schema_impl->schema = woden_schema_create(env);
@@ -365,7 +365,7 @@ woden_imported_schema_get_location(
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     schema_impl = INTF_TO_IMPL(schema);
 
     return schema_impl->f_schema_location;
@@ -393,7 +393,7 @@ woden_imported_schema_get_namespace(
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     schema_impl = INTF_TO_IMPL(schema);
 
     return WODEN_SCHEMA_GET_NAMESPACE(schema_impl->schema, env);
@@ -422,7 +422,7 @@ woden_imported_schema_get_schema_def(
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     schema_impl = INTF_TO_IMPL(schema);
 
     return WODEN_SCHEMA_GET_SCHEMA_DEF(schema_impl->schema, env);
@@ -463,7 +463,7 @@ woden_imported_schema_get_namespace_as_string(
 {
     woden_imported_schema_impl_t *schema_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     schema_impl = INTF_TO_IMPL(schema);
 
     return WODEN_SCHEMA_GET_NAMESPACE_AS_STRING(schema_impl->schema, env);

@@ -107,7 +107,7 @@ create(const axis2_env_t *env)
 {
     woden_type_def_impl_t *type_def_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     type_def_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_type_def_impl_t));
 
@@ -166,7 +166,7 @@ woden_type_def_create(
 {
     woden_type_def_impl_t *type_def_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     type_def_impl = (woden_type_def_impl_t *) create(env);
 
     type_def_impl->super = axis2_hash_make(env);
@@ -230,7 +230,7 @@ woden_type_def_super_objs(
 {
     woden_type_def_impl_t *type_def_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     type_def_impl = INTF_TO_IMPL(type_def);
 
     return type_def_impl->super;
@@ -354,7 +354,7 @@ woden_type_def_get_qname(
     woden_type_def_impl_t *type_def_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPE_DEF_SUPER_OBJS(type_def, env);
     type_def_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_TYPE_DEF", AXIS2_HASH_KEY_STRING));
@@ -393,7 +393,7 @@ woden_type_def_get_system(
     woden_type_def_impl_t *type_def_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPE_DEF_SUPER_OBJS(type_def, env);
     type_def_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_TYPE_DEF", AXIS2_HASH_KEY_STRING));
@@ -432,7 +432,7 @@ woden_type_def_get_content_model(
     woden_type_def_impl_t *type_def_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPE_DEF_SUPER_OBJS(type_def, env);
     type_def_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_TYPE_DEF", AXIS2_HASH_KEY_STRING));
@@ -471,7 +471,7 @@ woden_type_def_get_content(
     woden_type_def_impl_t *type_def_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_TYPE_DEF_SUPER_OBJS(type_def, env);
     type_def_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_TYPE_DEF", AXIS2_HASH_KEY_STRING));

@@ -65,7 +65,7 @@ create(
 {
     woden_soap_fault_subcodes_impl_t *soap_fault_subcodes_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     soap_fault_subcodes_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_soap_fault_subcodes_impl_t));
 
@@ -98,7 +98,7 @@ woden_soap_fault_subcodes_create(
 {
     woden_soap_fault_subcodes_impl_t *soap_fault_subcodes_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     soap_fault_subcodes_impl = (woden_soap_fault_subcodes_impl_t *) create(env);
 
     soap_fault_subcodes_impl->f_token = AXIS2_STRDUP(token, env);
@@ -157,7 +157,7 @@ void *AXIS2_CALL
 woden_soap_fault_subcodes_get_soap_fault_subcodes_any(
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
 
     if(!WODEN_SOAP_FAULT_SUBCODES_ANY)
         WODEN_SOAP_FAULT_SUBCODES_ANY = woden_soap_fault_subcodes_create(env, 
@@ -201,7 +201,7 @@ woden_soap_fault_subcodes_get_qnames(
 {
     woden_soap_fault_subcodes_impl_t *soap_fault_subcodes_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     soap_fault_subcodes_impl = INTF_TO_IMPL(soap_fault_subcodes);
 
     return soap_fault_subcodes_impl->f_subcode_qns;
@@ -214,7 +214,7 @@ woden_soap_fault_subcodes_get_token(
 {
     woden_soap_fault_subcodes_impl_t *soap_fault_subcodes_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     soap_fault_subcodes_impl = INTF_TO_IMPL(soap_fault_subcodes);
 
     return soap_fault_subcodes_impl->f_token;
