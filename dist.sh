@@ -1,3 +1,5 @@
+#!/bin/bash
+
 rm -rf release
 if [ "$?" -ne 0 ]
 then

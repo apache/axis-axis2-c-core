@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd util
 sh build.sh
 cd ../axiom
