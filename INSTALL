@@ -61,7 +61,9 @@ NOTE: If you run into shared lib problems, set the LD_LIBRARY_PATH
     Include path and library path to parser should be set. For libxml2 this is automatically
     resolved by configure script.
 5. Build the source
-This can be done using the following command sequence:
+This can be done by running the the following command sequence in the 
+sub folders util, axiom and then in the root folder of source extract
+in that order:
         ./configure
         make
         make install
