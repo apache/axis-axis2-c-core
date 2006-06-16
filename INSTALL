@@ -62,7 +62,10 @@ NOTE: If you run into shared lib problems, set the LD_LIBRARY_PATH
     resolved by configure script.
 5. Build the source
 This can be done by running the the following command sequence in the 
-sub folders util, axiom and then in the root folder of source extract
+sub folders 
+    1. util
+    2. axiom; and then in 
+    3. root folder of source extract
 in that order. Please see the build.sh files in the sub folders for more
 information:
         ./configure
@@ -79,6 +82,9 @@ To build samples:
     ./configure --prefix=${AXIS2C_HOME}
     make
     make install
+
+You can also build the rampart, xml_schema and woden sub systems if you wish 
+to test them.
 
 6. go to where you installed axis2c.
 
