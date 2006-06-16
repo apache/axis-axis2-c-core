@@ -99,7 +99,7 @@ struct woden_svc_element_ops
     add_endpoint_element) (
             void *svc_el,
             const axis2_env_t *env,
-            void *interface);
+            void *winterface);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_endpoint_elements) (

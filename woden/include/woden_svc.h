@@ -99,7 +99,7 @@ struct woden_svc_ops
     set_interface_element) (
             void *svc,
             const axis2_env_t *env,
-            void *interface);
+            void *winterface);
 
 
 };

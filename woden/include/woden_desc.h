@@ -148,7 +148,7 @@ struct woden_desc_ops
     add_to_all_interfaces) (
             void *desc,
             const axis2_env_t *env,
-            void *interface);
+            void *interface_);
 
     axis2_status_t (AXIS2_CALL *
     add_to_all_bindings) (

@@ -726,18 +726,64 @@ xml_schema_sample:
 	$(LD) $(LDFLAGS) test_schema.obj $(AXIS2_UTIL).lib $(AXIS2_PARSER).lib $(AXIOM).lib \
 	$(AXIS2_INSTALL_DIR)\lib\xml_schema.lib \
 	/OUT:test_schema.exe
-	if not exist $(AXIS2_INSTALL_DIR)\bin\system_tests mkdir $(AXIS2_INSTALL_DIR)\bin\system_tests
+	if not exist $(AXIS2_INSTALL_DIR)\bin\samples\xml_schema mkdir $(AXIS2_INSTALL_DIR)\bin\samples\xml_schema
 
-	copy test_schema.exe $(AXIS2_INSTALL_DIR)\bin\system_tests
+	copy test_schema.exe $(AXIS2_INSTALL_DIR)\bin\samples\xml_schema
 	del test*.*
 
 xml_schema_all: xml_schema xml_schema_sample xml_schema_copy_include
 
+########################################
+############## woden ###################
+
+WODEN_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\woden\include \
+		     /I$(AXIS2_SOURCE_DIR)\xml_schema\include \
+		     /I$(AXIS2_SOURCE_DIR)\woden\src\util 
+
+
+
+
+WODEN_SRC_DIR = $(AXIS2_SOURCE_DIR)\woden\src\builder\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\schema\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\types\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\util\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\enumeration\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\extensions\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\extensions\soap\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\xml\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\xml\*.c 
+woden : 
+	$(CC) $(CFLAGS) $(WODEN_INCLUDE_PATH) $(WODEN_SRC_DIR) /c
+	$(LD) $(LDFLAGS) *.obj xml_schema.lib $(AXIS2_UTIL).lib $(AXIS2_PARSER).lib \
+	$(AXIOM).lib /DLL /OUT:woden.dll /IMPLIB:woden.lib 
 	
+	copy woden.lib $(AXIS2_INSTALL_DIR)\lib
+	copy woden.dll $(AXIS2_INSTALL_DIR)\lib
+	del *.obj
+	del woden.dll
+	del woden.lib
+	del woden.exp
+
+woden_copy_include:
+	xcopy /Y /I /E $(AXIS2_SOURCE_DIR)\woden\include $(AXIS2_INSTALL_DIR)\include 
+
+woden_sample:
+	$(CC) $(CFLAGS) $(WODEN_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\woden\samples\test_wsdl2.c /c
+	$(LD) $(LDFLAGS) test_wsdl2.obj $(AXIS2_UTIL).lib $(AXIS2_PARSER).lib $(AXIOM).lib \
+	$(AXIS2_INSTALL_DIR)\lib\woden.lib $(AXIS2_INSTALL_DIR)\lib\woden.lib\
+	/OUT:test_woden.exe
+	if not exist $(AXIS2_INSTALL_DIR)\bin\samples\woden mkdir $(AXIS2_INSTALL_DIR)\bin\samples\woden
+
+	copy test_woden.exe $(AXIS2_INSTALL_DIR)\bin\samples\woden
+	del test*.*
+	
+woden_all: woden woden_sample woden_copy_include
+ 
 ##############################################################################################
 
 all: clean_make_dir clean deploy all_core_modules all_services all_clients axis2_server   copy_include clean_make_dir 
  
 install: all
 
-dist: all axis2_apache_module mod_rampart_all xml_schema_all copy_extra copy_samples mv_dist
+dist: all axis2_apache_module mod_rampart_all xml_schema_all woden_all copy_extra copy_samples mv_dist
