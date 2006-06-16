@@ -22,18 +22,18 @@
 #include <string.h>
 
 axiom_node_t *build_soap_body_content (const axis2_env_t *env,
-                                          axis2_char_t * echo_operation,
-                                          axis2_char_t * echo_type,
-                                          axis2_char_t * word_to_echo);
+                                          const axis2_char_t * echo_operation,
+                                          const axis2_char_t * echo_type,
+                                          const axis2_char_t * word_to_echo);
 
 int
 main (int argc, char **argv)
 {
     axis2_env_t *env = NULL;
-    axis2_char_t *address = NULL;
+    const axis2_char_t *address = NULL;
     axis2_endpoint_ref_t* endpoint_ref = NULL;
     axis2_options_t *options = NULL;
-    axis2_char_t *client_home = NULL;
+    const axis2_char_t *client_home = NULL;
     axis2_svc_client_t* svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
@@ -41,9 +41,9 @@ main (int argc, char **argv)
     axis2_char_t *om_str = NULL;
     axis2_char_t *result = NULL;
     
-    axis2_char_t *echo_operation = NULL;
-    axis2_char_t *word_to_echo = NULL;
-    axis2_char_t *echo_type = NULL;
+    const axis2_char_t *echo_operation = NULL;
+    const axis2_char_t *word_to_echo = NULL;
+    const axis2_char_t *echo_type = NULL;
     axis2_char_t operation[32];
     axis2_char_t echo_response_buff[32];
 
@@ -166,9 +166,10 @@ main (int argc, char **argv)
 }
 
 axiom_node_t *
-build_soap_body_content (const axis2_env_t *env, axis2_char_t * echo_operation,
-                         axis2_char_t * echo_type,
-                         axis2_char_t * word_to_echo)
+build_soap_body_content (const axis2_env_t *env, 
+                         const axis2_char_t * echo_operation,
+                         const axis2_char_t * echo_type,
+                         const axis2_char_t * word_to_echo)
 {
 
     axiom_node_t *operation_om_node = NULL;
