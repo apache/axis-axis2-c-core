@@ -125,7 +125,8 @@ AC_CONFIG_FILES([Makefile \
     samples/Makefile \
     samples/callback/Makefile \
     samples/client/Makefile \
-    samples/client/echo/Makefile
+    samples/client/echo/Makefile \
+    samples/client/echo/data/Makefile
     ])
     
 AC_OUTPUT

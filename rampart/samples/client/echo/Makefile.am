@@ -1,3 +1,4 @@
+SUBDIRS = data
 prgbindir=$(prefix)/bin/samples/rampart
 prgbin_PROGRAMS = echo
 samplesdir=$(prefix)/samples/client/echo
