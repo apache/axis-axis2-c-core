@@ -562,7 +562,7 @@ copy_extra:
 	copy $(AXIS2_SOURCE_DIR)\LICENSE $(AXIS2_INSTALL_DIR)
 	copy $(AXIS2_SOURCE_DIR)\CREDITS $(AXIS2_INSTALL_DIR)
 	copy $(AXIS2_SOURCE_DIR)\README $(AXIS2_INSTALL_DIR)
-	if exist $(AXIS2_SOURCE_DIR) xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\docs $(AXIS2_INSTALL_DIR)\docs
+	if exist $(AXIS2_SOURCE_DIR)\docs xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\docs $(AXIS2_INSTALL_DIR)\docs
 
 copy_samples:
 	if not exist $(AXIS2_INSTALL_DIR)\samples mkdir $(AXIS2_INSTALL_DIR)\samples
