@@ -81,7 +81,7 @@ struct woden_configurable_ops
 union woden_configurable_base
 {
     woden_documentable_t documentable;
-    woden_configurable_element_t configurable_elem;
+    woden_configurable_element_t configurable_element;
     woden_configurable_component_t configurable_component;
 };
 
@@ -96,6 +96,11 @@ woden_configurable_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
+AXIS2_EXTERN woden_configurable_t * AXIS2_CALL
+woden_configurable_to_configurable_element(
+        void *configurable,
+        const axis2_env_t *env);
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_configurable_resolve_methods(
         woden_configurable_t *configurable,
@@ -103,7 +108,6 @@ woden_configurable_resolve_methods(
         woden_configurable_t *configurable_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
-
 
 #define WODEN_CONFIGURABLE_FREE(configurable, env) \
       (((woden_configurable_t *) configurable)->ops->\

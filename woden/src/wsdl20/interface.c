@@ -194,57 +194,6 @@ woden_interface_to_interface_element(
 }
 
 AXIS2_EXTERN woden_interface_t * AXIS2_CALL
-woden_interface_to_configurable_element(
-        void *interface,
-        const axis2_env_t *env)
-{
-    woden_interface_impl_t *interface_impl = NULL;
-   
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if(!interface)
-    {
-        interface_impl = (woden_interface_impl_t *) create(env);
-    }
-    else
-        interface_impl = (woden_interface_impl_t *) interface;
-
-    woden_interface_free_ops(interface, env);
-
-    interface_impl->interface.base.interface_element.base.configurable_element.ops = 
-        AXIS2_MALLOC(env->allocator, 
-                sizeof(woden_configurable_element_ops_t));
-    woden_configurable_element_resolve_methods(&(interface_impl->interface.base.
-            interface_element.base.configurable_element), env, interface_impl->methods);
-    return interface;
-}
-
-AXIS2_EXTERN woden_interface_t * AXIS2_CALL
-woden_interface_to_documentable_element(
-        void *interface,
-        const axis2_env_t *env)
-{
-    woden_interface_impl_t *interface_impl = NULL;
-   
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if(!interface)
-    {
-        interface_impl = (woden_interface_impl_t *) create(env);
-    }
-    else
-        interface_impl = (woden_interface_impl_t *) interface;
-
-    woden_interface_free_ops(interface, env);
-
-    interface_impl->interface.base.interface_element.base.documentable_element.ops = 
-        AXIS2_MALLOC(env->allocator, 
-                sizeof(woden_documentable_element_ops_t));
-    woden_documentable_element_resolve_methods(&(interface_impl->interface.base.
-            interface_element.base.documentable_element), env, 
-            interface_impl->methods);
-    return interface;
-}
-
-AXIS2_EXTERN woden_interface_t * AXIS2_CALL
 woden_interface_to_documentable(
         void *interface,
         const axis2_env_t *env)
@@ -269,7 +218,6 @@ woden_interface_to_documentable(
             interface_impl->methods);
     return interface;
 }
-
 
 AXIS2_EXTERN woden_interface_t * AXIS2_CALL
 woden_interface_to_configurable(
@@ -352,7 +300,6 @@ woden_interface_to_element_extensible(
     return interface;
 }
 
-
 /************************End of Woden C Internal Methods***********************/
 static woden_interface_t *
 create(const axis2_env_t *env)
@@ -374,9 +321,7 @@ create(const axis2_env_t *env)
     interface_impl->f_interface_op_elements = NULL;
     
     interface_impl->interface.base.interface_element.ops = NULL;
-    interface_impl->interface.base.interface_element.base.documentable_element.ops = NULL;
     interface_impl->interface.base.configurable.base.documentable.ops = NULL;
-    interface_impl->interface.base.interface_element.base.configurable_element.ops = NULL;
     interface_impl->interface.base.configurable.ops = NULL;
     interface_impl->interface.base.interface_element.base.documentable_element.
         wsdl_element.base.attr_extensible.ops = NULL;
@@ -507,14 +452,6 @@ woden_interface_free_ops(
         AXIS2_FREE(env->allocator, interface_impl->interface.base.
                 interface_element.ops);
         interface_impl->interface.base.interface_element.ops = NULL;
-    }
-
-    if(interface_impl->interface.base.interface_element.base.configurable_element.ops)
-    {
-        AXIS2_FREE(env->allocator, interface_impl->interface.base.
-                interface_element.base.configurable_element.ops);
-        interface_impl->interface.base.interface_element.base.configurable_element.ops = 
-            NULL;
     }
     
     if(interface_impl->interface.base.interface_element.base.documentable_element.ops)

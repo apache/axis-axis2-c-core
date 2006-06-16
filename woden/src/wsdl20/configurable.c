@@ -28,6 +28,7 @@ struct woden_configurable_impl
 {
     woden_configurable_t configurable;
     woden_documentable_t *documentable;
+    axis2_hash_t *methods;
     axis2_hash_t *super;
     axis2_array_list_t *f_features;
     axis2_array_list_t *f_properties;
@@ -85,6 +86,40 @@ woden_configurable_get_property_elements(
 
 static woden_configurable_t *
 create(
+        const axis2_env_t *env);
+
+static axis2_status_t
+woden_configurable_free_ops(
+        void *configurable,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN woden_configurable_t * AXIS2_CALL
+woden_configurable_to_configurable_element(
+        void *configurable,
+        const axis2_env_t *env)
+{
+    woden_configurable_impl_t *configurable_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!configurable)
+    {
+        configurable_impl = (woden_configurable_impl_t *) create(env);
+    }
+    else
+        configurable_impl = (woden_configurable_impl_t *) configurable;
+
+    woden_configurable_free_ops(configurable, env);
+
+    configurable_impl->configurable.base.configurable_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(woden_configurable_element_ops_t));
+    woden_configurable_element_resolve_methods(&(configurable_impl->configurable.base.
+            configurable_element), env, configurable_impl->methods);
+    return configurable;
+}
+
+static woden_configurable_t *
+create(
         const axis2_env_t *env)
 {
     woden_configurable_impl_t *configurable_impl = NULL;
@@ -97,6 +132,16 @@ create(
     configurable_impl->f_features = NULL;
     configurable_impl->f_properties = NULL;
     
+    configurable_impl->configurable.base.configurable_element.
+        ops = NULL;
+
+    configurable_impl->methods = axis2_hash_make(env);
+    if(!configurable_impl->methods)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
     configurable_impl->configurable.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_configurable_ops_t));
 
@@ -131,6 +176,27 @@ woden_configurable_create(
             AXIS2_HASH_KEY_STRING, configurable_impl->documentable);
          
     return &(configurable_impl->configurable);
+}
+
+static axis2_status_t
+woden_configurable_free_ops(
+        void *configurable,
+        const axis2_env_t *env)
+{
+    woden_configurable_impl_t *configurable_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    configurable_impl = INTF_TO_IMPL(configurable);
+
+    if(configurable_impl->configurable.base.configurable_element.ops)
+    {
+        AXIS2_FREE(env->allocator, configurable_impl->configurable.base.
+                configurable_element.ops);
+        configurable_impl->configurable.base.configurable_element.ops = 
+            NULL;
+    }
+     
+    return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL

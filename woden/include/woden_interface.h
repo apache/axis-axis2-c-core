@@ -128,16 +128,6 @@ woden_interface_to_interface_element(
         const axis2_env_t *env);
 
 AXIS2_EXTERN woden_interface_t * AXIS2_CALL
-woden_interface_to_configurable_element(
-        void *interface,
-        const axis2_env_t *env);
-
-AXIS2_EXTERN woden_interface_t * AXIS2_CALL
-woden_interface_to_documentable_element(
-        void *interface,
-        const axis2_env_t *env);
-
-AXIS2_EXTERN woden_interface_t * AXIS2_CALL
 woden_interface_to_documentable(
         void *interface,
         const axis2_env_t *env);

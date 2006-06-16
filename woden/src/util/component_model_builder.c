@@ -603,11 +603,15 @@ build_interfaces(
         if(AXIS2_TRUE != AXIS2_ARRAY_LIST_CONTAINS(interface_els, env, int_impl))
         {
             axis2_array_list_t *property_els = NULL;
+            void *configurable = NULL;
+
             WODEN_DESC_ADD_TO_ALL_INTERFACES(builder_impl->f_desc, 
                     env, int_impl);
-            int_impl = woden_interface_to_configurable_element(int_impl, env);
-            property_els = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(int_impl, 
+            configurable = WODEN_INTERFACE_GET_BASE_IMPL(int_impl, env);
+            configurable = woden_configurable_to_configurable_element(configurable, 
                     env);
+            property_els = WODEN_CONFIGURABLE_ELEMENT_GET_PROPERTY_ELEMENTS(
+                    configurable, env);
             build_properties(builder, env, property_els, int_impl);
             build_interface_faults(builder, env, int_impl);
             build_interface_ops(builder, env, int_impl);

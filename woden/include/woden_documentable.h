@@ -91,7 +91,7 @@ struct woden_documentable_ops
 union woden_documentable_base
 {
     woden_wsdl_obj_t wsdl_obj;
-    woden_documentable_element_t documentable_elem;
+    woden_documentable_element_t documentable_element;
 };
 
 struct woden_documentable
@@ -105,6 +105,12 @@ woden_documentable_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
+
+AXIS2_EXTERN woden_documentable_t * AXIS2_CALL
+woden_documentable_to_documentable_element(
+        void *documentable,
+        const axis2_env_t *env);
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_documentable_resolve_methods(
         woden_documentable_t *documentable,

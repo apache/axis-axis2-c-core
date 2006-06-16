@@ -28,6 +28,7 @@ struct woden_documentable_impl
 {
     woden_documentable_t documentable;
     woden_wsdl_obj_t *wsdl_obj;
+    axis2_hash_t *methods;
     axis2_hash_t *super;
     axis2_array_list_t *f_doc_elems;
 };
@@ -62,6 +63,42 @@ woden_documentable_get_documentation_elements(
 
 static woden_documentable_t *
 create(
+        const axis2_env_t *env);
+
+static axis2_status_t
+woden_documentable_free_ops(
+        void *documentable,
+        const axis2_env_t *env);
+
+AXIS2_EXTERN woden_documentable_t * AXIS2_CALL
+woden_documentable_to_documentable_element(
+        void *documentable,
+        const axis2_env_t *env)
+{
+    woden_documentable_impl_t *documentable_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if(!documentable)
+    {
+        documentable_impl = (woden_documentable_impl_t *) create(env);
+    }
+    else
+        documentable_impl = (woden_documentable_impl_t *) documentable;
+
+    woden_documentable_free_ops(documentable, env);
+
+    documentable_impl->documentable.base.documentable_element.ops = 
+        AXIS2_MALLOC(env->allocator, 
+                sizeof(woden_documentable_element_ops_t));
+    woden_documentable_element_resolve_methods(&(documentable_impl->
+            documentable.base.documentable_element), env, 
+            documentable_impl->methods);
+    return documentable;
+}
+
+
+static woden_documentable_t *
+create(
         const axis2_env_t *env)
 {
     woden_documentable_impl_t *documentable_impl = NULL;
@@ -73,9 +110,17 @@ create(
     documentable_impl->f_doc_elems = NULL;
     documentable_impl->super = NULL;
     
+    documentable_impl->documentable.base.documentable_element.
+        ops = NULL;
     documentable_impl->documentable.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_documentable_ops_t));
 
+    documentable_impl->methods = axis2_hash_make(env);
+    if(!documentable_impl->methods)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     documentable_impl->documentable.ops->free = woden_documentable_free;
     documentable_impl->documentable.ops->super_objs = woden_documentable_super_objs;
     documentable_impl->documentable.ops->get_base_impl = woden_documentable_get_base_impl;
@@ -113,6 +158,27 @@ woden_documentable_create(
     return &(documentable_impl->documentable);
 }
 
+static axis2_status_t
+woden_documentable_free_ops(
+        void *documentable,
+        const axis2_env_t *env)
+{
+    woden_documentable_impl_t *documentable_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    documentable_impl = INTF_TO_IMPL(documentable);
+
+    if(documentable_impl->documentable.base.documentable_element.ops)
+    {
+        AXIS2_FREE(env->allocator, documentable_impl->documentable.base.
+                documentable_element.ops);
+        documentable_impl->documentable.base.documentable_element.ops = 
+            NULL;
+    }
+     
+    return AXIS2_SUCCESS;
+}
+
 axis2_status_t AXIS2_CALL
 woden_documentable_free(
         void *documentable,
@@ -140,6 +206,8 @@ woden_documentable_free(
         axis2_hash_free(documentable_impl->super, env);
         documentable_impl->super = NULL;
     }
+
+    woden_documentable_free_ops(documentable, env);
     
     if(documentable_impl->documentable.ops)
     {

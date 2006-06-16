@@ -1417,19 +1417,23 @@ parse_interface(
                     q_elem_feature, temp_el_node))
         {
             void *feature = NULL;
+            void *configurable = NULL;
 
             feature = parse_feature(reader, env, temp_el_node, desc, intface);
-            intface = woden_interface_to_configurable_element(intface, env);
-            WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(intface, env, feature);
+            configurable = WODEN_INTERFACE_GET_BASE_IMPL(intface, env);
+            configurable = woden_configurable_to_configurable_element(configurable, env);
+            WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(configurable, env, feature);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_property, temp_el_node))
         {
             void *property = NULL;
+            void *configurable = NULL;
 
             property = parse_property(reader, env, temp_el_node, desc, intface);
-            intface = woden_interface_to_configurable_element(intface, env);
-            WODEN_CONFIGURABLE_ELEMENT_ADD_PROPERTY_ELEMENT(intface, env, property);
+            configurable = WODEN_INTERFACE_GET_BASE_IMPL(intface, env);
+            configurable = woden_configurable_to_configurable_element(configurable, env);
+            WODEN_CONFIGURABLE_ELEMENT_ADD_PROPERTY_ELEMENT(configurable, env, property);
         }
         else
         {
