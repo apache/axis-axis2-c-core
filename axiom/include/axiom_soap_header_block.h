@@ -67,7 +67,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
       set_must_understand_with_bool)(axiom_soap_header_block_t *header_block,
                                       const axis2_env_t *env,
-                                       axis2_bool_t *must_understand);
+                                       axis2_bool_t must_understand);
                              
         axis2_status_t (AXIS2_CALL *
       set_must_understand_with_string)(axiom_soap_header_block_t *header_block,
@@ -160,12 +160,12 @@ axiom_soap_header_block_create_with_parent(const axis2_env_t *env,
 
 #define AXIOM_SOAP_HEADER_BLOCK_SET_MUST_UNDERSTAND_WITH_BOOL(header_block,\
              env, must_understand) \
-        ((header_block)->ops->get_must_understand_with_bool(header_block, \
+        ((header_block)->ops->set_must_understand_with_bool(header_block, \
              env, must_understand)) 
              
 #define AXIOM_SOAP_HEADER_BLOCK_SET_MUST_UNDERSTAND_WITH_STRING(header_block,\
              env, must_understand) \
-        ((header_block)->ops->get_must_understand_with_string(header_block, \
+        ((header_block)->ops->set_must_understand_with_string(header_block, \
              env, must_understand))                    
 
 #define AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env) \

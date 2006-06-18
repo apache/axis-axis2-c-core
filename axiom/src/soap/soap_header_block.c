@@ -53,7 +53,7 @@ axis2_status_t AXIS2_CALL
 axiom_soap_header_block_set_must_understand_with_bool
                         (axiom_soap_header_block_t *header_block,
                          const axis2_env_t *env,
-                         axis2_bool_t *must_understand);
+                         axis2_bool_t must_understand);
                         
 axis2_status_t AXIS2_CALL
 axiom_soap_header_block_set_must_understand_with_string
@@ -283,7 +283,7 @@ axis2_status_t AXIS2_CALL
 axiom_soap_header_block_set_must_understand_with_bool
                         (axiom_soap_header_block_t *header_block,
                          const axis2_env_t *env,
-                         axis2_bool_t *must_understand)
+                         axis2_bool_t must_understand)
 {
     axiom_soap_header_block_impl_t *header_block_impl = NULL;
     const axis2_char_t *attr_nsuri     = NULL;
