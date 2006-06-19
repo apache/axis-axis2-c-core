@@ -62,23 +62,6 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser lib
   GUTHTHILA_DIR=""
 )
 
-AC_MSG_CHECKING(whether to build libxml2 xml parser library)
-AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=yes],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    LIBXML2_DIR=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    LIBXML2_DIR="libxml2"
-
-    ;;
-  esac ],
-  AC_MSG_RESULT(yes)
-  LIBXML2_DIR="libxml2"
-)
-
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
 [ case "${enableval}" in
@@ -97,15 +80,11 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
 )
 
 
-PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
-CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
+CFLAGS="$CFLAGS $GUTHTHILA_CFLAGS"
 
 UTILINC=$axis2_utilinc
 
 AC_SUBST(UTILINC)
-AC_SUBST(LIBXML2_CFLAGS)
-AC_SUBST(LIBXML2_LIBS)
-AC_SUBST(LIBXML2_DIR)
 AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(TESTDIR)
