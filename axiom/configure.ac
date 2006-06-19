@@ -5,7 +5,7 @@ AC_PREREQ(2.59)
 AC_INIT(axis2_axiom-src, 0.92)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
+AM_INIT_AUTOMAKE([tar-ustar])
 AC_PREFIX_DEFAULT(/usr/local/axis2_axiom)
 
 dnl Checks for programs.

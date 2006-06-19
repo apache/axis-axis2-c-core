@@ -5,7 +5,7 @@ AC_PREREQ(2.59)
 AC_INIT(rampartc-src, 0.91_pre)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
+AM_INIT_AUTOMAKE([tar-ustar])
 AC_PREFIX_DEFAULT(/usr/local/rampartc)
 
 dnl Checks for programs.

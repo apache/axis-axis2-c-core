@@ -14,7 +14,7 @@ dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .deps`
 	rm -rf `find $(distdir)/ -type d -name .libs`
 	sh dist.sh
-	tar -cf - axis2c-src-${PACKAGE_VERSION} | gzip -c > axis2c-src-${PACKAGE_VERSION}.tar.gz
+	tar -chf - axis2c-src-${PACKAGE_VERSION} | gzip -c > axis2c-src-${PACKAGE_VERSION}.tar.gz
 
 bindist: $(bin_PROGRAMS)
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
