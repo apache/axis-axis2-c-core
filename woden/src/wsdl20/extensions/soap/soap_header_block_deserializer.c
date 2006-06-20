@@ -21,7 +21,7 @@
 #include <woden_desc_element.h>
 #include <woden_documentation.h>
 #include <woden_documentation_element.h>
-#include "../../../util/woden_om_util.h"
+#include "../../woden_om_util.h"
 #include "../../woden_constants.h"
 #include "woden_soap_constants.h"
 #include <axiom_element.h>
@@ -342,8 +342,13 @@ woden_soap_header_block_deserializer_marshall(
             WODEN_ATTR_ELEMENT); 
     if(NULL != element_decl_qn)
     {
-        axis2_qname_t *qname = woden_om_util_get_qname(env, ext_el_node, 
-                element_decl_qn, desc);
+        axis2_qname_t *qname = NULL;
+        axis2_hash_t *namespcs = NULL;
+        
+        desc = woden_desc_to_desc_element(desc, env);
+        namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+        qname = woden_om_util_get_qname(env, ext_el_node, 
+                element_decl_qn, namespcs);
         
         soap_hdr = woden_soap_header_block_to_soap_header_block_element(soap_hdr, env);
         WODEN_SOAP_HEADER_BLOCK_ELEMENT_SET_ELEMENT_QNAME(soap_hdr, env, qname);

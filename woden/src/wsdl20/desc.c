@@ -41,7 +41,7 @@
 #include <woden_component_exts.h>
 #include <woden_xml_attr.h>
 #include <woden_documentation_element.h>
-#include "../util/woden_component_model_builder.h"
+#include "woden_component_model_builder.h"
 
 typedef struct woden_desc_impl woden_desc_impl_t;
 

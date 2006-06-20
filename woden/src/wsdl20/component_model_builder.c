@@ -434,7 +434,7 @@ build_elements_and_types(
                 }
             }
             /* if builder_impl->f_schemas_done does not contain schema_def */
-            if(new_schema)
+            if(AXIS2_TRUE == new_schema)
             {
                 build_element_decls(builder, env, schema_def, type_system_uri);
                 build_type_defs(builder, env, schema_def, type_system_uri);
@@ -1395,10 +1395,10 @@ create_component_exts(
     woden_ext_registry_t *er = NULL;
     void *comp_ext = NULL;
 
-    AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK(env->error, parent_class, NULL);
-    AXIS2_PARAM_CHECK(env->error, parent_elem, NULL);
-    AXIS2_PARAM_CHECK(env->error, ext_ns, NULL);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, parent_class, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, parent_elem, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ext_ns, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
         
     builder_impl->f_desc = woden_desc_to_desc_element(builder_impl->f_desc, env);

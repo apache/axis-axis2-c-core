@@ -33,7 +33,6 @@
 #include <axis2_qname.h>
 #include <woden.h>
 #include <axiom_node.h>
-#include <woden_desc.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -50,14 +49,14 @@ woden_om_util_get_qname(
         const axis2_env_t *env,
         axiom_node_t *context_el_node,
         axis2_char_t *prefixed_value,
-        void *desc);
+        axis2_hash_t *namespcs);
  
 AXIS2_EXTERN axis2_status_t  AXIS2_CALL
 woden_om_util_register_unique_prefix(
         const axis2_env_t *env,
         axis2_char_t *prefix,
         axis2_char_t *namespc_uri_str,
-        void *desc);
+        axis2_hash_t *namespcs);
  
 
 /** @} */
