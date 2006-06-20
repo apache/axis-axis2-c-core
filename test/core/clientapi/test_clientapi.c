@@ -24,23 +24,23 @@
 
 axiom_node_t *
 build_om_payload_for_echo_svc(const axis2_env_t *env,
-		              axis2_char_t* echo_str);
+		              const axis2_char_t* echo_str);
 
 void axis2_test_svc_client_blocking()
 {
    axis2_env_t* env = NULL;
    axis2_options_t *options = NULL;
-   axis2_char_t *client_home = NULL;
+   const axis2_char_t *client_home = NULL;
    axis2_svc_client_t* svc_client = NULL;
    axiom_node_t *payload = NULL;
    axiom_node_t *ret_node = NULL;
-   axis2_char_t *address = NULL;
+   const axis2_char_t *address = NULL;
    axis2_endpoint_ref_t* endpoint_ref = NULL;
 
    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
    env = axis2_env_create (allocator);
    axiom_element_t *result_ele = NULL;
-   axis2_char_t* echo_text = "echo_text";
+   const axis2_char_t* echo_text = "echo_text";
    axis2_char_t* result = NULL;
     
    address = "http://localhost:9090/axis2/services/echo/echo";
@@ -76,7 +76,7 @@ void axis2_test_svc_client_blocking()
 /* build SOAP request message content using OM */
 axiom_node_t *
 build_om_payload_for_echo_svc(const axis2_env_t *env,
-		              axis2_char_t* echo_text)
+		              const axis2_char_t* echo_text)
 {
     axiom_node_t *echo_om_node = NULL;
     axiom_element_t* echo_om_ele = NULL;

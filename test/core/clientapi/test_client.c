@@ -29,10 +29,11 @@
 #include <stdlib.h>
 
 /* Function prototypes */
-int write_to_socket(char *address, char* port, char* filename, char* endpoint);
+int write_to_socket(const char *address, const char* port, const char* filename, 
+    const char* endpoint);
 /* End of function prototypes */
 
-void error(char *msg)
+void error(const char *msg)
 {
     perror(msg);
     exit(0);
@@ -40,10 +41,10 @@ void error(char *msg)
 
 int main(int argc, char *argv[])
 {
-    axis2_char_t *hostname = "localhost";
-    axis2_char_t *port = "9090";
-    axis2_char_t *filename = "echo.xml";
-    axis2_char_t *endpoint = "/axis2/services/echo/echo";
+    const axis2_char_t *hostname = "localhost";
+    const axis2_char_t *port = "9090";
+    const axis2_char_t *filename = "echo.xml";
+    const axis2_char_t *endpoint = "/axis2/services/echo/echo";
     int c;
     extern char *optarg;
    
@@ -70,7 +71,8 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-int write_to_socket(char *address, char* port, char* filename, char* endpoint)
+int write_to_socket(const char *address, const char* port, const char* filename, 
+    const char* endpoint)
 {
    axis2_char_t buffer_l[4999];
     int sockfd, portno, n, i;
