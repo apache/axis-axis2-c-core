@@ -67,8 +67,12 @@ int main(int argc, char *argv[])
     desc = (void *)WODEN_READER_READ_WSDL(reader, env, om_doc, doc_base_uri);
     intfaces = WODEN_WSDL10_DESC_GET_INTERFACES(desc, env);
     intface = AXIS2_ARRAY_LIST_GET(intfaces, env, 0);
-    intface_qname = WODEN_INTERFACE_GET_QNAME(intface, env);
-    printf("Interface qname is %s\n", AXIS2_QNAME_TO_STRING(intface_qname, env));
+    if (intface)
+    {
+        intface_qname = WODEN_INTERFACE_GET_QNAME(intface, env);
+    }
+    if (intface_qname) 
+        printf("Interface qname is %s\n", AXIS2_QNAME_TO_STRING(intface_qname, env));
     svc_list = WODEN_WSDL10_DESC_ELEMENT_GET_SVC_ELEMENTS(desc, env);
     if (svc_list)
     {

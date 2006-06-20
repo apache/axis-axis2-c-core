@@ -359,6 +359,7 @@ create(const axis2_env_t *env)
     types_impl->methods = NULL;
     types_impl->f_type_system = NULL;
     types_impl->f_schemas = NULL;
+    types_impl->schema_defs = NULL;
     
     types_impl->types.base.types_element.ops = NULL;
     types_impl->types.base.types_element.documentable_element.ops = 
