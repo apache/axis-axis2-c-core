@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     }
     else
     {
-        printf("Give a wsdl2 file name and continue\n");
+        printf("Give a WSDL 1.1 file name and continue\n");
         return 0;        
     }
     
