@@ -36,7 +36,7 @@ extern "C"
   */
 /*********************************** Constansts********************************/
 /* Namespace URIs. */
-#define WODEN_NS_URI_WSDL20 "http://www.w3.org/2006/01/wsdl"
+#define WODEN_NS_URI_WSDL20 "http://schemas.xmlsoap.org/wsdl"
 #define WODEN_NS_URI_XMLNS "http://www.w3.org/2000/xmlns/"
 #define WODEN_NS_URI_XSI "http://www.w3.org/2001/XMLSchema-instance"
 
@@ -66,27 +66,27 @@ extern "C"
 
 /* Top-level WSDL 2.0 qualified element names. */
 #define WODEN_Q_ELEM_DESCRIPTION "definitions|http://schemas.xmlsoap.org/wsdl"
-#define WODEN_Q_ELEM_DOCUMENTATION "documentation|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_IMPORT "import|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_INCLUDE "include|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_TYPES "types|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_MSG_REF "message|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_INTERFACE "interface|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_BINDING "binding|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_SERVICE "service|http://www.w3.org/2006/01/wsdl"
+#define WODEN_Q_ELEM_DOCUMENTATION "documentation|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_IMPORT "import|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_INCLUDE "include|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_TYPES "types|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_MSG_REF "message|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_INTERFACE "interface|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_BINDING "binding|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_SERVICE "service|http://schemas.xmlsoap.org/wsdl"
 
 /* Nested WSDL 2.0 qualified element names. */
-#define WODEN_Q_ELEM_FAULT "fault|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_OPERATION "operation|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_INPUT "input|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_OUTPUT "output|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_INFAULT "infault|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_OUTFAULT "outfault|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_FEATURE "feature|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_PROPERTY "property|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_VALUE "value|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_CONSTRAINT "constraint|http://www.w3.org/2006/01/wsdl"
-#define WODEN_Q_ELEM_ENDPOINT "endpoint|http://www.w3.org/2006/01/wsdl"
+#define WODEN_Q_ELEM_FAULT "fault|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_OPERATION "operation|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_INPUT "input|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_OUTPUT "output|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_INFAULT "infault|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_OUTFAULT "outfault|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_FEATURE "feature|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_PROPERTY "property|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_VALUE "value|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_CONSTRAINT "constraint|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_ENDPOINT "endpoint|http://schemas.xmlsoap.org/wsdl"
 
 /* Attribute names. */
 #define WODEN_ATTR_ID "id"
@@ -135,7 +135,7 @@ extern "C"
 
 
 /* Qualified attribute names.*/
-#define WODEN_Q_ATTR_REQUIRED "required|http://www.w3.org/2006/01/wsdl"
+#define WODEN_Q_ATTR_REQUIRED "required|http://schemas.xmlsoap.org/wsdl"
 
 /* XML Declaration string.*/
 #define WODEN_XML_DECL_DEFAULT "UTF-8"
