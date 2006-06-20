@@ -298,17 +298,11 @@ int axis2_extract_onefile(uf,filename,opt_extract_without_path,opt_overwrite,pas
         return -1;
 }
 
-
-
-
-
-
-   
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_archive_extract()
 {
     struct dirent **namelist;
-    int n;
+    int n, i;
     axis2_char_t *ptr;
 
     n = scandir(".", &namelist, 0, alphasort);
@@ -323,12 +317,13 @@ axis2_archive_extract()
                 return (AXIS2_FALSE);
 
             ptr = AXIS2_RINDEX(namelist[n]->d_name, '.');
-
             if ((ptr != NULL) &&
             (((strcmp(ptr, AXIS2_AAR_SUFFIX) == 0)) || (strcmp(ptr, AXIS2_MAR_SUFFIX) == 0)))
-            {
-                aar_extract(namelist[n]->d_name);
-            }
+                for(i=0;i<n;i++)
+                    if(strncmp(namelist[n]->d_name, namelist[i]->d_name, strlen(namelist[i]->d_name)) == 0)
+                        return (AXIS2_FALSE);
+
+            aar_extract(namelist[n]->d_name);
             free(namelist[n]);
         }
     free(namelist);
