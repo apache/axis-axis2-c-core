@@ -28,7 +28,7 @@ woden_om_util_get_qname(
         axis2_hash_t *namespcs)
 {
     axis2_char_t *index = NULL;
-    axis2_char_t *prefix = "";
+    axis2_char_t *prefix = NULL;
     axis2_char_t *localpart = NULL;
     axis2_char_t *namespc_uri_str = NULL;
     axiom_element_t *context_el = NULL;
