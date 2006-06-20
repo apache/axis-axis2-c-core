@@ -244,7 +244,6 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axis2_param_t *impl_info_param = NULL;
     axis2_arch_file_data_t *arch_file_data = NULL;
     axis2_file_t *svc_folder = NULL;
-    axis2_char_t *temp_path = NULL;
     axis2_char_t *dll_path = NULL;
     axis2_char_t *svc_folder_path = NULL;
     axis2_param_container_t *param_container_l = NULL;
@@ -283,7 +282,7 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     }
 
     /* process service description */
-    /* TODO this code is changed in new version of axis2 java. Until that logic
+    /* TODO this code is changed in new version of axis2. Until that logic
      * is incorporated I comment out this part and add my own logic to set svc
      * name
      */
@@ -356,8 +355,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     timestamp = AXIS2_FILE_GET_TIMESTAMP(svc_folder, env);
     AXIS2_DLL_DESC_SET_TIMESTAMP(dll_desc, env, timestamp);
     svc_folder_path = AXIS2_FILE_GET_PATH(svc_folder, env);
-    temp_path = AXIS2_STRACAT(svc_folder_path, AXIS2_PATH_SEP_STR, env);
-    dll_path = AXIS2_STRACAT(temp_path, svc_dll_name, env);
+    dll_path = axis2_strcat(env, svc_folder_path, AXIS2_PATH_SEP_STR, 
+            svc_dll_name, NULL);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "dll path is : %s", dll_path);
     status = AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
     if(AXIS2_SUCCESS != status)
@@ -365,9 +364,6 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
         AXIS2_DLL_DESC_FREE(dll_desc, env);
         return status;
     }
-    /* free all temp vars */
-    AXIS2_FREE(env->allocator, temp_path);
-    temp_path = NULL;
     AXIS2_FREE(env->allocator, dll_path);
     dll_path = NULL;
     

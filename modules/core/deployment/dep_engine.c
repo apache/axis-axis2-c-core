@@ -1060,11 +1060,9 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
     AXIS2_PARAM_CHECK(env->error, svc_metadata, AXIS2_FAILURE);
     dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-/*  Iterator services = currentArchiveFile.getService().values().iterator(); */
-    
     svcs = AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(dep_engine_impl->curr_file, env);
-    
-    sizei = AXIS2_ARRAY_LIST_SIZE(svcs, env);
+    if(svcs) 
+        sizei = AXIS2_ARRAY_LIST_SIZE(svcs, env);
     
     for(i = 0; i < sizei; i++)
     {
@@ -1085,9 +1083,10 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
         file_name = AXIS2_FILE_GET_NAME(file, env);
         AXIS2_SVC_SET_FILENAME(svc, env, file_name);
 
-        /* module form serviceGroup */
+        /* modules from svc group */
         grp_modules = AXIS2_SVC_GRP_GET_MODULES(svc_metadata, env);
-        sizej = AXIS2_ARRAY_LIST_SIZE(grp_modules, env);
+        if(grp_modules)
+            sizej = AXIS2_ARRAY_LIST_SIZE(grp_modules, env);
         for(j = 0; j < sizej; j++)
         {
             axis2_module_desc_t *module_desc = NULL;
@@ -1150,9 +1149,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
         
             modules = AXIS2_OP_GET_MODULE_REFS(op_desc, env);
             if(modules)
-            {
                 sizek = AXIS2_ARRAY_LIST_SIZE(modules, env);
-            }
             for (k = 0; k < sizek; k++) 
             {
                 axis2_qname_t *module_qname = NULL;
@@ -1487,8 +1484,12 @@ axis2_dep_engine_do_deploy(axis2_dep_engine_t *dep_engine,
                 case AXIS2_SVC:
                     arch_reader = axis2_arch_reader_create(env); 
                     
-                    /* TODO archiveReader.processWSDLs(currentArchiveFile,this); */
-                    /* AxisService service = archiveReader.createService(currentArchiveFile.getAbsolutePath()); */
+                    /* TODO 
+                     * AXIS2_ARCH_READER_PROCESS_WSDLS(arch_reader, env, dep_engine_impl->curr_file);
+                     * absolute_path = AXIS2_ARCH_FILE_DATA_GET_ABSOLUTE_PATH(
+                     *          dep_engine_impl->curr_file, env);
+                     * svc = AXIS2_ARCH_READER_CREATE_SVC(arch_reader, env, absolute_path);
+                     */
                     svc_grp = axis2_svc_grp_create_with_conf(env, 
                         dep_engine_impl->conf);
                     file_name = AXIS2_ARCH_FILE_DATA_GET_NAME(dep_engine_impl->

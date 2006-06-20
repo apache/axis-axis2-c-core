@@ -271,7 +271,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         }
     }
 
-    /* processing Paramters */
+    /* Processing Paramters */
     /* Processing service level paramters */
     
     qparamst = axis2_qname_create(env, AXIS2_PARAMETERST, NULL, NULL);
@@ -286,7 +286,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
     AXIS2_DESC_BUILDER_PROCESS_PARAMS(module_builder->desc_builder, env,
         itr, builder_impl->module_desc->params, parent_container);
 
-    /* process INFLOW */
+    /* Process INFLOW */
     qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL);
     in_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(module_element,
         env, qinflowst, module_node, &in_flow_node);
@@ -373,7 +373,7 @@ axis2_module_builder_populate_module(axis2_module_builder_t *module_builder,
         }
     }
 
-    /* processing Operations */
+    /* Processing Operations */
     qopst = axis2_qname_create(env, AXIS2_OPERATIONST, NULL, NULL);
     op_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(module_element, env,
         qopst, module_node);
@@ -454,13 +454,13 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
         }
         if(NULL == mep_url)
         {
-            /* assuming in-out mep */
+            /* Assuming in-out mep */
             op_desc = axis2_op_create(env); 
         }
         else
         {
-            /* TODO op_descrip = AxisOperationFactory.getOperetionDescription(mepURL); 
-             * we don't have a operation constructor taking mepURL as argument.
+            /* TODO 
+             * We don't have a operation constructor taking mepURL as argument.
              * do we need this? */
             op_desc = axis2_op_create(env);
         }

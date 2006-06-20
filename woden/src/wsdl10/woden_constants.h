@@ -65,7 +65,7 @@ extern "C"
 #define WODEN_ELEM_PART "part"
 
 /* Top-level WSDL 2.0 qualified element names. */
-#define WODEN_Q_ELEM_DESCRIPTION "description|http://www.w3.org/2006/01/wsdl"
+#define WODEN_Q_ELEM_DESCRIPTION "definitions|http://schemas.xmlsoap.org/wsdl"
 #define WODEN_Q_ELEM_DOCUMENTATION "documentation|http://www.w3.org/2006/01/wsdl"
 #define WODEN_Q_ELEM_IMPORT "import|http://www.w3.org/2006/01/wsdl"
 #define WODEN_Q_ELEM_INCLUDE "include|http://www.w3.org/2006/01/wsdl"

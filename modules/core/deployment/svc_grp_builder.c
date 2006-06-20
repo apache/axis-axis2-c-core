@@ -180,7 +180,7 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
     status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(grp_builder_impl->svc_grp_builder.
         desc_builder, env, itr, svc_grp->param_container, parent->param_container);
 
-    /* processing servicewide modules required to engage gloabbly */
+    /* Processing service modules required to be engaged globally */
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
     module_ref_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_grp_element, env,
         qmodulest, grp_builder_impl->svc_grp);

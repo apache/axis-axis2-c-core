@@ -146,158 +146,133 @@ axis2_arch_reader_free (axis2_arch_reader_t *arch_reader,
 }
 
 struct axis2_svc *AXIS2_CALL
-axis2_arch_reader_create_svc(axis2_arch_reader_t *arch_reader,
-                                const axis2_env_t *env,
-                                struct axis2_arch_file_data *file) 
+axis2_arch_reader_create_svc(
+        axis2_arch_reader_t *arch_reader,
+        const axis2_env_t *env,
+        struct axis2_arch_file_data *file) 
 {
-    struct axis2_svc *svc = NULL;
-    
-    /* TODO comment this until WOM implementation is done */
-    /*InputStream in = file.getClassLoader().getResourceAsStream(
-        AXIS2_SVC_WSDL_WITH_FOLDER);
-    if (in != null) 
+    axis2_svc_t *svc = NULL;
+    /* TODO comment this until WODEN implementation is done */
+    /*
+    axis2_char_t *doc_base_uri = NULL;
+    axiom_document_t *doc = NULL;
+    axis2_hash_t *svcs = NULL;
+    axis2_hash_index_t *index = NULL;
+    axis2_bool_t *found_svc = AXIS2_FALSE;
+    if(// Check for wsdl file)
     {
-        WOMBuilder builder = WOMBuilderFactory.getBuilder(WSDLConstants.WSDL_1_1);
-        WSDLVersionWrapper wsdlVersionWrapper = builder.build(in,
-                new AxisDescWSDLComponentFactory());
-        WSDLDescription womDescription = wsdlVersionWrapper.getDescription();
-        Iterator iterator = womDescription.getServices().keySet()
-                .iterator();
-        if (iterator.hasNext()) {
-            foundservice = true;
-            // remove <wsdl:service> and <wsdl:binding> elements from the service
-            // description we read in as we will be replacing them anyway.
-
-            WSDLServiceImpl serviceimpl = (WSDLServiceImpl) womDescription.
-                getServices().get(iterator.next());
-            service = new AxisService(serviceimpl);
+        doc = get_root_element_from_filename(env, filename);
+        doc_base_uri = AXIS2_STRACAT (axis2c_home, "/woden", env);
+        reader = woden_reader_create(env); 
+        desc = (void *)WODEN_READER_READ_WSDL(reader, env, om_doc, doc_base_uri);
+        svcs = WODEN_DESC_GET_SVCS(desc, env);
+        if(svcs)
+        {
+            void *key = NULL;
+            axis2_hash_index_t *index = NULL;
+            
+            axis2_hash_this (index, *key, NULL, NULL);
+            if(!key) 
+            {
+                svc = axis2_svc_create(env, wsdl_svc);
+            }
+            else
+            { 
+                wsdl_svc = axis2_hash_get(svcs, key, AXIS2_HASH_KEY_STRING);
+                // remove <wsdl:service> and <wsdl:binding> elements from the service
+                // description we read in as we will be replacing them anyway.
+                svc = axis2_svc_create(env, wsdl_svc);
+                qname = AXIS2_WSDL_SVC_GET_QNAME(wsdl_svc, env);
+                AXIS2_SVC_SET_QNAME(svc, env, qname);
+                AXIS2_SVC_SET_WSDL_DEF(svc, env, desc);
+                curr_file_item = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
+                AXIS2_ARCH_FILE_DATA_ADD_SVC(curr_file_item, env, svc);
+            }
         }
-        if (!foundservice) {
-            service = new AxisService();
-        }
-        service.setWSDLDefinition(wsdlVersionWrapper.getDefinition());
-        in.close();
-    } else {
+    }
+    else 
+    {
     */
-    svc = axis2_svc_create(env);
-    /*TODO log */
-    /*log.info(Messages.getMessage(DeploymentErrorMsgs.WSDL_FILE_NOT_FOUND,
-            file.getName()));
+        svc = axis2_svc_create(env);
+        /*TODO log */
+        /*WSDL_FILE_NOT_FOUND, filename);
+        */
+    /*
+    }
     */
-
     return svc;
 }
 
 /* TODO comment this until WOM implementation is done */
 /*
-private void processWSDLFile(InputStream in , DeploymentEngine depengine)  
+axis2_status_t *AXIS2_CALL
+axis2_arch_reader_process_wsdl_file(
+        axis2_arch_reader_t *arch_reader,
+        const axis2_env_t *env,
+        axis2_char_t *filename,
+        axis2_dep_engine_t *dep_engine)
 {
-    try {
-        WOMBuilder builder = WOMBuilderFactory.getBuilder(WSDLConstants.WSDL_1_1);
-        WSDLVersionWrapper wsdlVersionWrapper = builder.build(in,
-                new AxisDescWSDLComponentFactory());
-        WSDLDescription womDescription = wsdlVersionWrapper.getDescription();
-
-        //removing binding
-        Map bindings = wsdlVersionWrapper.getDefinition().getBindings();
-        Iterator binfingIterator = bindings.keySet().iterator();
-        while (binfingIterator.hasNext()) {
-            Object o = binfingIterator.next();
-            bindings.remove(o) ;
-
-        }
-
-        Iterator iterator = womDescription.getServices().keySet()
-                .iterator();
-        if (iterator.hasNext()) {
-            // remove <wsdl:service> and <wsdl:binding> elements from the service
-            // description we read in as we will be replacing them anyway.
-            WSDLServiceImpl serviceimpl = (WSDLServiceImpl)
-                    womDescription.getServices().get(iterator.next());
-            AxisService service = new AxisService(serviceimpl);
-            service.setName(serviceimpl.getName());
-            service.setWSDLDefinition(wsdlVersionWrapper.getDefinition());
-            depengine.getCurrentFileItem().addService(service);
-        }
-    } catch (WSDLException e) {
-        throw new DeploymentException(e);
+    axis2_char_t *doc_base_uri = NULL;
+    axiom_document_t *doc = NULL;
+    axis2_hash_t *bindings = NULL;
+    axis2_hash_t *svcs = NULL;
+    axis2_hash_index_t *index = NULL;
+    
+    doc = get_root_element_from_filename(env, filename);
+    doc_base_uri = AXIS2_STRACAT (axis2c_home, "/woden", env);
+    reader = woden_reader_create(env); 
+    desc = (void *)WODEN_READER_READ_WSDL(reader, env, om_doc, doc_base_uri);
+    // Remove binding
+    bindings = WODEN_DESC_GET_BINDINGS(desc, env);
+    for (index = axis2_hash_first (bindings, env); index; index = 
+            axis2_hash_next (env, index))
+    {
+        void *key = NULL;
+        
+        axis2_hash_this (index, *key, NULL, NULL);
+        axis2_hash_set(bindings, key, AXIS2_HASH_KEY_STRING, NULL)
+    }
+    svcs = WODEN_DESC_GET_BINDINGS(desc, env);
+    for (index = axis2_hash_first (svcs, env); index; index = 
+            axis2_hash_next (env, index))
+    {
+        void *key = NULL;
+        void *wsdl_svc = NULL;
+        axiss2_svc_desc_t *svc = NULL;
+        
+        axis2_hash_this (index, *key, NULL, NULL);
+        wsdl_svc = axis2_hash_get(svcs, key, AXIS2_HASH_KEY_STRING);
+        svc = axis2_svc_create(env, wsdl_svc);
+        qname = AXIS2_WSDL_SVC_GET_QNAME(wsdl_svc, env);
+        AXIS2_SVC_SET_QNAME(svc, env, qname);
+        AXIS2_SVC_SET_WSDL_DEF(svc, env, desc);
+        curr_file_item = AXIS2_DEP_ENGINE_GET_CURRENT_FILE_ITEM(dep_engine, env);
+        AXIS2_ARCH_FILE_DATA_ADD_SVC(curr_file_item, env, svc);
     }
 }
 */
-
+                    
 /**
  * To create service objects out form wsdls file inside a service archive file
- * @param file <code>ArchiveFileData</code>
- * @param depengine <code>DeploymentEngine</code>
- * @throws DeploymentException  <code>DeploymentException</code>
+ * @param file <code>arch_file_data</code>
+ * @param dep_engine <code>dep_engine</code>
  */
  /* TODO comment this until WOM implementation is done */
-/*
-public void processWSDLs(ArchiveFileData file , DeploymentEngine depengine) throws DeploymentException {
-    File serviceFile = file.getFile();
-    boolean isDirectory = serviceFile.isDirectory();
-    if(isDirectory){
-        try {
-            File meta_inf = new File(serviceFile,META_INF);
-            if(meta_inf.exists()){
-                File files [] = meta_inf.listFiles();
-                for (int i = 0; i < files.length; i++) {
-                    File file1 = files[i];
-                    String fileName = file1.getName();
-                    if(fileName.endsWith(".wsdl") || fileName.endsWith(".WSDL")){
-                        InputStream in = new FileInputStream(file1);
-                        processWSDLFile(in,depengine);
-                        try {
-                            in.close();
-                        } catch (IOException e) {
-                            log.info(e);
-                        }
-                    }
-                }
-            } else {
-                throw new DeploymentException(Messages.getMessage(
-                        DeploymentErrorMsgs.INVALID_SERVICE));
-            }
-        } catch (FileNotFoundException e) {
-            throw new DeploymentException(e);
-        } catch (IOException e) {
-            throw new DeploymentException(e);
-        }
-    }   else {
+/*axis2_status_t AXIS2_CALL
+axis2_arch_reader_process_wsdls(
+        axis2_arch_reader_t *arch_reader,
+        const axis2_env_t *env,
+        axis2_arch_file_data_t *file,
+        axis2_dep_engine_t *dep_engine)
+{
+    axis2_file_t *svc_file = NULL;
 
-        ZipInputStream zin;
-        try {
-            zin = new ZipInputStream(new FileInputStream(serviceFile));
-            ZipEntry entry;
-            byte[] buf = new byte[1024];
-            int read;
-            ByteArrayOutputStream out ;
-            while ((entry = zin.getNextEntry()) != null) {
-                String entryName = entry.getName();
-                if ((entryName.startsWith(META_INF) ||
-                        entryName.startsWith(META_INF.toLowerCase()))
-                        && (entryName.endsWith(".wsdl")
-                        || entryName.endsWith(".WSDL"))) {
-                    out = new ByteArrayOutputStream();
-                    while ((read = zin.read(buf)) > 0) {
-                        out.write(buf, 0, read);
-                    }
-                    ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-                    processWSDLFile(in,depengine);
-                }
-            }
-            try {
-                zin.close();
-            } catch (IOException e) {
-                log.info(e);
-            }
-        } catch (FileNotFoundException e) {
-            throw new DeploymentException(e);
-        } catch (IOException e) {
-            throw new DeploymentException(e);
-        }
-    }
-
+    // List the wsdl files in a wsdl directory.
+     // Calculate the path for each wsdl and call
+     // process_wsdl method
+     //
+    process_wsdl_file(arch_reader, env, wsdl_file, dep_engine);
+    return AXIS2_SUCCESS; 
 }
 */
 
@@ -311,29 +286,17 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *svcs_xml = NULL;
     axis2_char_t *repos_path = NULL;
-    axis2_char_t *temp_path = NULL;
-    axis2_char_t *temp_path2 = NULL;
-    axis2_char_t *temp_path3 = NULL;
-    axis2_char_t *svc_container_path = NULL;
-    axis2_char_t *svc_folder = NULL;
-    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, file_name, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, dep_engine, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
     
     repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env);
-    temp_path = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
-    temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_SERVICE_FOLDER, env);
-    temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
-    svc_container_path = AXIS2_STRACAT(temp_path3, file_name, env);
-    svc_folder = AXIS2_STRACAT(svc_container_path, AXIS2_PATH_SEP_STR, env);
-    svcs_xml = AXIS2_STRACAT(svc_folder, AXIS2_SVC_XML, env);
-    AXIS2_FREE(env->allocator, temp_path);
-    AXIS2_FREE(env->allocator, temp_path2);
-    AXIS2_FREE(env->allocator, temp_path3);
-    AXIS2_FREE(env->allocator, svc_container_path);
-    AXIS2_FREE(env->allocator, svc_folder);
+
+    svcs_xml = axis2_strcat(env, repos_path, AXIS2_PATH_SEP_STR, 
+            AXIS2_SERVICE_FOLDER, AXIS2_PATH_SEP_STR, file_name,
+            AXIS2_PATH_SEP_STR, AXIS2_SVC_XML, NULL);
+    
     if(!svcs_xml)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -470,11 +433,6 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *module_xml = NULL;
     axis2_char_t *repos_path = NULL;
-    axis2_char_t *temp_path = NULL;
-    axis2_char_t *temp_path2 = NULL;
-    axis2_char_t *temp_path3 = NULL;
-    axis2_char_t *module_container_path = NULL;
-    axis2_char_t *module_folder = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, file_name, AXIS2_FAILURE);
@@ -483,17 +441,9 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
     arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
     
     repos_path = AXIS2_DEP_ENGINE_GET_REPOS_PATH(dep_engine, env);
-    temp_path = AXIS2_STRACAT(repos_path, AXIS2_PATH_SEP_STR, env);
-    temp_path2 = AXIS2_STRACAT(temp_path, AXIS2_MODULE_FOLDER, env);
-    temp_path3 = AXIS2_STRACAT(temp_path2, AXIS2_PATH_SEP_STR, env);
-    module_container_path = AXIS2_STRACAT(temp_path3, file_name, env);
-    module_folder = AXIS2_STRACAT(module_container_path, AXIS2_PATH_SEP_STR, env);
-    module_xml = AXIS2_STRACAT(module_folder, AXIS2_MODULE_XML, env);
-    AXIS2_FREE(env->allocator, temp_path);
-    AXIS2_FREE(env->allocator, temp_path2);
-    AXIS2_FREE(env->allocator, temp_path3);
-    AXIS2_FREE(env->allocator, module_container_path);
-    AXIS2_FREE(env->allocator, module_folder);
+    module_xml = axis2_strcat(env, repos_path, AXIS2_PATH_SEP_STR,
+            AXIS2_MODULE_FOLDER, AXIS2_PATH_SEP_STR, file_name, 
+            AXIS2_PATH_SEP_STR, AXIS2_MODULE_XML, NULL);
     if(!module_xml)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);

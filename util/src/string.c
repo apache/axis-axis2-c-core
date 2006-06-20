@@ -120,6 +120,7 @@ axis2_strcat(
     axis2_char_t *cp, *argp, *str;
     size_t saved_lengths[MAX_SAVED_LENGTHS];
     int nargs = 0;
+    int str_len = 0;
 
     /* Pass one --- find length of required string */
 
@@ -141,9 +142,8 @@ axis2_strcat(
     va_end(adummy);
 
     /* Allocate the required string */
-
-    str = (axis2_char_t *) AXIS2_MALLOC( env->allocator, 
-        sizeof(axis2_char_t) * (len + 1 ));
+    str_len = sizeof(axis2_char_t) * (len + 1);
+    str = (axis2_char_t *) AXIS2_MALLOC( env->allocator, str_len);
     if (!str)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -173,7 +173,6 @@ axis2_strcat(
     /* Return the result string */
 
     *cp = '\0';
-
     return str;
 }
 
