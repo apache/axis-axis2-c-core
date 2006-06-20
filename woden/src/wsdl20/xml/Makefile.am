@@ -12,7 +12,6 @@ libwoden_wsdl20_xml_la_SOURCES = \
 							interface_fault_element.c \
 							interface_fault_ref_element.c \
 							interface_msg_ref_element.c \
-							msg_ref_element.c \
 							interface_op_element.c \
 							binding_element.c \
 							binding_fault_element.c \
