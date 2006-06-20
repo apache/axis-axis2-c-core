@@ -103,7 +103,7 @@
 #include <woden_ext_deserializer.h>
 
 #include "../../wsdl10/woden_constants.h"
-#include "../../wsdl10/woden_om_util.h"
+#include "../../util/woden_om_util.h"
 
 #include <xml_schema.h>
 #include <xml_schema_collection.h>
@@ -1461,8 +1461,12 @@ parse_part(
     if(NULL != element)
     {
         axis2_qname_t *qname = NULL;
+        axis2_hash_t *namespcs = NULL;
 
-        qname = woden_om_util_get_qname(env, part_el_node, element, desc);
+        desc = woden_wsdl10_desc_to_desc_element(desc, env);
+        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+
+        qname = woden_om_util_get_qname(env, part_el_node, element, namespcs);
         part = woden_wsdl10_part_to_part_element(part, env);
         WODEN_WSDL10_PART_ELEMENT_SET_ELEMENT_QNAME(part, 
                 env, qname);
@@ -1721,8 +1725,12 @@ parse_interface_fault(
     if(NULL != element)
     {
         axis2_qname_t *qname = NULL;
+        axis2_hash_t *namespcs = NULL;
 
-        qname = woden_om_util_get_qname(env, fault_el_node, element, desc);
+        desc = woden_wsdl10_desc_to_desc_element(desc, env);
+        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+
+        qname = woden_om_util_get_qname(env, fault_el_node, element, namespcs);
         fault = woden_interface_fault_to_interface_fault_element(fault, env);
         WODEN_INTERFACE_FAULT_ELEMENT_SET_QNAME(fault, env, qname);
     }
@@ -2262,7 +2270,11 @@ parse_binding(
     intface = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(binding_el, env, WODEN_ATTR_INTERFACE);
     if(NULL != intface)
     {
-        intface_qn = woden_om_util_get_qname(env, binding_el_node, intface, desc);
+        axis2_hash_t *namespcs = NULL;
+
+        desc = woden_wsdl10_desc_to_desc_element(desc, env);
+        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+        intface_qn = woden_om_util_get_qname(env, binding_el_node, intface, namespcs);
         binding = woden_binding_to_binding_element(binding, env);
         WODEN_BINDING_ELEMENT_SET_INTERFACE_QNAME(binding, env, intface_qn);
     }
@@ -2426,7 +2438,11 @@ parse_binding_fault(
     
     if(NULL != ref)
     {
-        int_flt_qn = woden_om_util_get_qname(env, fault_el_node, ref, desc);
+        axis2_hash_t *namespcs = NULL;
+
+        desc = woden_wsdl10_desc_to_desc_element(desc, env);
+        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+        int_flt_qn = woden_om_util_get_qname(env, fault_el_node, ref, namespcs);
         fault = woden_binding_fault_to_binding_fault_element(fault, env);
         WODEN_BINDING_FAULT_ELEMENT_SET_REF(fault, env, int_flt_qn);
     }
@@ -2761,7 +2777,11 @@ parse_binding_fault_ref(
     
     if(NULL != ref)
     {
-        ref_qn = woden_om_util_get_qname(env, fault_ref_el_node, ref, desc);
+        axis2_hash_t *namespcs = NULL;
+
+        desc = woden_wsdl10_desc_to_desc_element(desc, env);
+        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+        ref_qn = woden_om_util_get_qname(env, fault_ref_el_node, ref, namespcs);
         fault_ref = woden_binding_fault_ref_to_binding_fault_ref_element(
                 fault_ref, env);
         WODEN_BINDING_FAULT_REF_ELEMENT_SET_REF(fault_ref, env, ref_qn);
@@ -3153,7 +3173,11 @@ parse_svc(
     intface = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(svc_el, env, WODEN_ATTR_INTERFACE);
     if(NULL != intface)
     {
-        intface_qn = woden_om_util_get_qname(env, svc_el_node, intface, desc);
+        axis2_hash_t *namespcs = NULL;
+
+        desc = woden_wsdl10_desc_to_desc_element(desc, env);
+        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+        intface_qn = woden_om_util_get_qname(env, svc_el_node, intface, namespcs);
         svc = woden_svc_to_svc_element(svc, env);
         WODEN_SVC_ELEMENT_SET_INTERFACE_QNAME(svc, env, intface_qn);
     }
@@ -3309,7 +3333,11 @@ parse_endpoint(
     binding = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(endpoint_el, env, WODEN_ATTR_BINDING);
     if(NULL != binding)
     {
-        binding_qn = woden_om_util_get_qname(env, endpoint_el_node, binding, desc);
+        axis2_hash_t *namespcs = NULL;
+
+        desc = woden_wsdl10_desc_to_desc_element(desc, env);
+        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+        binding_qn = woden_om_util_get_qname(env, endpoint_el_node, binding, namespcs);
         endpoint = woden_endpoint_to_endpoint_element(endpoint, env);
         WODEN_ENDPOINT_ELEMENT_SET_BINDING_QNAME(endpoint, env, binding_qn);
     }
@@ -3651,9 +3679,13 @@ parse_property(
                     else
                     {
                         axis2_qname_t *qname = NULL;
+                        axis2_hash_t *namespcs = NULL;
+
+                        desc = woden_wsdl10_desc_to_desc_element(desc, env);
+                        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
 
                         qname = woden_om_util_get_qname(env, temp_el_node, 
-                                text_value, desc);
+                                text_value, namespcs);
                         property = woden_property_to_property_element(property, env);
                         WODEN_PROPERTY_ELEMENT_SET_CONSTRAINT_QNAME(property, env, qname);
                     }
