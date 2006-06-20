@@ -24,7 +24,7 @@
 
 axiom_node_t *
 build_om_payload_for_echo_svc(const axis2_env_t *env,
-		              const axis2_char_t* echo_str);
+                    const axis2_char_t* echo_str);
 
 void axis2_test_svc_client_blocking()
 {
@@ -62,8 +62,8 @@ void axis2_test_svc_client_blocking()
       if (AXIOM_NODE_GET_NODE_TYPE(ret_node, env) == AXIOM_ELEMENT )
       {
         ret_node = AXIOM_NODE_GET_FIRST_CHILD ( ret_node, env);
-	result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
-	result = AXIOM_ELEMENT_GET_TEXT(result_ele, env, ret_node);
+   result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
+   result = AXIOM_ELEMENT_GET_TEXT(result_ele, env, ret_node);
         if (!strcmp( result, echo_text) )
             printf("axis2_test SVC_CLIENT_SEND_RECEIVE SUCCESS\n");
         else
@@ -76,7 +76,7 @@ void axis2_test_svc_client_blocking()
 /* build SOAP request message content using OM */
 axiom_node_t *
 build_om_payload_for_echo_svc(const axis2_env_t *env,
-		              const axis2_char_t* echo_text)
+                    const axis2_char_t* echo_text)
 {
     axiom_node_t *echo_om_node = NULL;
     axiom_element_t* echo_om_ele = NULL;
