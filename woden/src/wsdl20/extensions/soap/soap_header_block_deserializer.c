@@ -21,7 +21,7 @@
 #include <woden_desc_element.h>
 #include <woden_documentation.h>
 #include <woden_documentation_element.h>
-#include "../../woden_om_util.h"
+#include "../../../util/woden_om_util.h"
 #include "../../woden_constants.h"
 #include "woden_soap_constants.h"
 #include <axiom_element.h>

@@ -32,8 +32,7 @@ libwoden_wsdl20_la_SOURCES = \
 							import.c \
 							include.c \
 							desc.c \
-							component_model_builder.c \
-							woden_om_util.c
+							component_model_builder.c
 
 libwoden_wsdl20_la_LIBADD =  \
                     $(top_builddir)/src/xml/libwoden_xml.la \
