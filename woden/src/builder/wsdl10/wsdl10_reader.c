@@ -3517,8 +3517,10 @@ parse_ext_element(
             parent_type, element_type);
    
     if(ext_ds)
+    {
         ext_el = (void *) WODEN_EXT_DESERIALIZER_UNMARSHALL(ext_ds, env, 
                 parent_type, parent, element_type, el_node, desc, ext_reg);
+    }
 
     return ext_el;
 }
