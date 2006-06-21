@@ -61,7 +61,7 @@ woden_soap_module_deserializer_super_objs(
         const axis2_env_t *env);
 
 void *AXIS2_CALL
-woden_soap_module_deserializer_marshall(
+woden_soap_module_deserializer_unmarshall(
         void *mod_deser,
         const axis2_env_t *env,
         axis2_char_t *parent_type,
@@ -141,8 +141,8 @@ create(const axis2_env_t *env)
     mod_deser_impl->mod_deser.ops->type = 
         woden_soap_module_deserializer_type;
     
-    mod_deser_impl->mod_deser.ops->marshall = 
-        woden_soap_module_deserializer_marshall;
+    mod_deser_impl->mod_deser.ops->unmarshall = 
+        woden_soap_module_deserializer_unmarshall;
  
     mod_deser_impl->methods = axis2_hash_make(env);
     if(!mod_deser_impl->methods) 
@@ -157,9 +157,9 @@ create(const axis2_env_t *env)
     axis2_hash_set(mod_deser_impl->methods, "type", 
             AXIS2_HASH_KEY_STRING, woden_soap_module_deserializer_type);
 
-    axis2_hash_set(mod_deser_impl->methods, "marshall", 
+    axis2_hash_set(mod_deser_impl->methods, "unmarshall", 
             AXIS2_HASH_KEY_STRING, 
-            woden_soap_module_deserializer_marshall);
+            woden_soap_module_deserializer_unmarshall);
 
     return &(mod_deser_impl->mod_deser);
 }
@@ -290,17 +290,17 @@ woden_soap_module_deserializer_resolve_methods(
     mod_deser->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
     
-    mod_deser->ops->marshall = axis2_hash_get(methods, 
-            "marshall", AXIS2_HASH_KEY_STRING);
-    if(!mod_deser->ops->marshall && mod_deser_impl_l)
-            mod_deser->ops->marshall = 
-            mod_deser_impl_l->mod_deser.ops->marshall;
+    mod_deser->ops->unmarshall = axis2_hash_get(methods, 
+            "unmarshall", AXIS2_HASH_KEY_STRING);
+    if(!mod_deser->ops->unmarshall && mod_deser_impl_l)
+            mod_deser->ops->unmarshall = 
+            mod_deser_impl_l->mod_deser.ops->unmarshall;
     
     return AXIS2_SUCCESS;
 }
 
 void *AXIS2_CALL
-woden_soap_module_deserializer_marshall(
+woden_soap_module_deserializer_unmarshall(
         void *mod_deser,
         const axis2_env_t *env,
         axis2_char_t *parent_type,

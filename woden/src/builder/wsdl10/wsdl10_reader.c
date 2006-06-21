@@ -269,21 +269,6 @@ parse_interface(
         axiom_node_t *interface_el_node,
         void *desc);
 
-/* Parse the attributes and child elements of interface <fault>. 
- * As per WSDL 2.0 spec, the child elements must be in the following order if present:
- * <documentation>
- * <feature> <property> or extension elements in any order
- * 
- * TODO validate that the elements are in correct order
- */ 
-static void *
-parse_interface_fault(
-        void *reader,
-        const axis2_env_t *env,
-        axiom_node_t *fault_el_node,
-        void *desc,
-        void *parent);
-
 static void *
 parse_interface_op(
         void *reader,
@@ -314,14 +299,6 @@ parse_binding(
         const axis2_env_t *env,
         axiom_node_t *binding_el_node,
         void *desc);
-
-static void *
-parse_binding_fault(
-        void *reader,
-        const axis2_env_t *env,
-        axiom_node_t *fault_el_node,
-        void *desc,
-        void *parent);
 
 static void *
 parse_binding_op(
@@ -1328,7 +1305,7 @@ parse_msg_ref(
     axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    msg = WODEN_WSDL10_DESC_ELEMENT_CREATE_INTERFACE_ELEMENT(desc, env);
+    msg = WODEN_WSDL10_DESC_ELEMENT_CREATE_MSG_ELEMENT(desc, env);
 
     msg_el = AXIOM_NODE_GET_DATA_ELEMENT(msg_el_node, env);
     name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_el, env, WODEN_ATTR_NAME);
@@ -1366,9 +1343,10 @@ parse_msg_ref(
     while (NULL != temp_el && NULL != temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
-        axis2_char_t *elem_part = NULL;
+        axis2_qname_t *q_elem_part = NULL;
 
         q_elem_documentation = axis2_qname_create_from_string(env, WODEN_Q_ELEM_DOCUMENTATION);
+        q_elem_part = axis2_qname_create_from_string(env, WODEN_Q_ELEM_PART);
 
         if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_documentation, temp_el_node))
@@ -1379,7 +1357,8 @@ parse_msg_ref(
             msg = woden_wsdl10_msg_ref_to_documentable(msg, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(msg, env, documentation);
         }
-        if(0 == AXIS2_STRCMP(WODEN_ELEM_PART, elem_part))
+        if(AXIS2_TRUE == axis2_qname_util_matches(env, 
+                    q_elem_part, temp_el_node))
         {
             void *part = NULL;
 
@@ -1590,13 +1569,11 @@ parse_interface(
     while (NULL != temp_el && NULL != temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
-        axis2_qname_t *q_elem_fault = NULL;
         axis2_qname_t *q_elem_op = NULL;
         axis2_qname_t *q_elem_feature = NULL;
         axis2_qname_t *q_elem_property = NULL;
 
         q_elem_documentation = axis2_qname_create_from_string(env, WODEN_Q_ELEM_DOCUMENTATION);
-        q_elem_fault = axis2_qname_create_from_string(env, WODEN_Q_ELEM_FAULT);
         q_elem_op = axis2_qname_create_from_string(env, WODEN_Q_ELEM_OPERATION);
         q_elem_feature = axis2_qname_create_from_string(env, WODEN_Q_ELEM_FEATURE);
         q_elem_property = axis2_qname_create_from_string(env, WODEN_Q_ELEM_PROPERTY);
@@ -1609,16 +1586,6 @@ parse_interface(
             documentation = parse_documentation(reader, env, temp_el_node, desc);
             intface = woden_interface_to_documentable(intface, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(intface, env, documentation);
-        }
-        else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
-                    q_elem_fault, temp_el_node))
-        {
-            void *intface_fault = NULL;
-
-            intface_fault = parse_interface_fault(reader, env, temp_el_node, desc, 
-                    intface);
-            intface = woden_interface_to_interface_element(intface, env);
-            WODEN_INTERFACE_ELEMENT_ADD_INTERFACE_FAULT_ELEMENT(intface, env, intface_fault);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_op, temp_el_node))
@@ -1667,140 +1634,6 @@ parse_interface(
     }
     
     return intface;
-}
-
-/* Parse the attributes and child elements of interface <fault>. 
- * As per WSDL 2.0 spec, the child elements must be in the following order if present:
- * <documentation>
- * <feature> <property> or extension elements in any order
- * 
- * TODO validate that the elements are in correct order
- */ 
-static void *
-parse_interface_fault(
-        void *reader,
-        const axis2_env_t *env,
-        axiom_node_t *fault_el_node,
-        void *desc,
-        void *parent)
-{
-    void *fault = NULL;
-    axis2_char_t *name = NULL;
-    axis2_char_t *element = NULL;
-    axiom_element_t *fault_el = NULL;
-    axiom_element_t *temp_el = NULL;
-    axiom_node_t *temp_el_node = NULL;
-    void *types = NULL;
-    void *nested_configurable = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
-
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    fault = WODEN_WSDL10_DESC_ELEMENT_CREATE_INTERFACE_FAULT_ELEMENT(desc, env);
-    nested_configurable = WODEN_INTERFACE_FAULT_GET_BASE_IMPL(fault, env);
-    nested_configurable = woden_nested_configurable_to_nested_element(nested_configurable, env);
-    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
-    types = WODEN_WSDL10_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
-    WODEN_INTERFACE_FAULT_SET_TYPES(fault, env, types);
-
-    fault_el = AXIOM_NODE_GET_DATA_ELEMENT(fault_el_node, env);
-    name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_el, env, WODEN_ATTR_NAME);
-    
-    if(NULL != name)
-    {
-        axis2_qname_t *qname = NULL;
-        axis2_uri_t *ns = NULL;
-        axis2_char_t *ns_str = NULL;
-
-        ns = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
-        if(!ns)
-            ns_str = WODEN_VALUE_EMPTY_STRING;
-        ns_str = AXIS2_URI_TO_STRING(ns, env, AXIS2_URI_UNP_OMITUSERINFO);
-        qname = axis2_qname_create(env, name, ns_str, NULL);
-        fault = woden_interface_fault_to_interface_fault_element(fault, env);
-        WODEN_INTERFACE_FAULT_ELEMENT_SET_QNAME(fault, env, qname);
-    }
-    
-    element = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_el, env, WODEN_ATTR_ELEMENT);
-    
-    if(NULL != element)
-    {
-        axis2_qname_t *qname = NULL;
-        axis2_hash_t *namespcs = NULL;
-
-        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
-
-        qname = woden_om_util_get_qname(env, fault_el_node, element, namespcs);
-        fault = woden_interface_fault_to_interface_fault_element(fault, env);
-        WODEN_INTERFACE_FAULT_ELEMENT_SET_QNAME(fault, env, qname);
-    }
-    
-    /* TODO extends attribute */
-   
-    fault = woden_interface_fault_to_attr_extensible(fault, env);
-    status = parse_ext_attributes(reader, env, fault_el_node, "interface_fault_element", 
-            fault, desc);
-    if(AXIS2_SUCCESS != status)
-        return NULL;
-    
-    temp_el = axiom_util_get_first_child_element(fault_el, env, fault_el_node, 
-            &temp_el_node);
-
-    while (NULL != temp_el && NULL != temp_el_node)
-    {
-        axis2_qname_t *q_elem_documentation = NULL;
-        axis2_qname_t *q_elem_feature = NULL;
-        axis2_qname_t *q_elem_property = NULL;
-
-        q_elem_documentation = axis2_qname_create_from_string(env, 
-                WODEN_Q_ELEM_DOCUMENTATION);
-        q_elem_feature = axis2_qname_create_from_string(env, 
-                WODEN_Q_ELEM_FEATURE);
-        q_elem_property = axis2_qname_create_from_string(env, 
-                WODEN_Q_ELEM_PROPERTY);
-
-        if(AXIS2_TRUE == axis2_qname_util_matches(env, 
-                    q_elem_documentation, temp_el_node))
-        {
-            void *documentation = NULL;
-
-            documentation = parse_documentation(reader, env, temp_el_node, desc);
-            fault = woden_interface_fault_to_documentable(fault, env);
-            WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(fault, env, documentation);
-        }
-        else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
-                    q_elem_feature, temp_el_node))
-        {
-            void *feature = NULL;
-
-            feature = parse_feature(reader, env, temp_el_node, desc, fault);
-            fault = woden_interface_fault_to_configurable_element(fault, env);
-            WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(fault, env, feature);
-        }
-        else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
-                    q_elem_property, temp_el_node))
-        {
-            void *property = NULL;
-
-            property = parse_property(reader, env, temp_el_node, desc, fault);
-            fault = woden_interface_fault_to_configurable_element(fault, env);
-            WODEN_CONFIGURABLE_ELEMENT_ADD_PROPERTY_ELEMENT(fault, env, property);
-        }
-        else
-        {
-            void *ext_element = NULL;
-
-            ext_element = parse_ext_element(reader, env, "interface_fault_element", 
-                    fault, temp_el_node, desc);
-            fault = woden_interface_fault_to_element_extensible(fault, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(fault, env, ext_element);
-        }
-
-        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
-                temp_el_node, &temp_el_node); 
-    }
-    
-    return fault;
 }
 
 static void *
@@ -2333,13 +2166,11 @@ parse_binding(
     while (NULL != temp_el && NULL != temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
-        axis2_qname_t *q_elem_fault = NULL;
         axis2_qname_t *q_elem_op = NULL;
         axis2_qname_t *q_elem_feature = NULL;
         axis2_qname_t *q_elem_property = NULL;
 
         q_elem_documentation = axis2_qname_create_from_string(env, WODEN_Q_ELEM_DOCUMENTATION);
-        q_elem_fault = axis2_qname_create_from_string(env, WODEN_Q_ELEM_FAULT);
         q_elem_op = axis2_qname_create_from_string(env, WODEN_Q_ELEM_OPERATION);
         q_elem_feature = axis2_qname_create_from_string(env, WODEN_Q_ELEM_FEATURE);
         q_elem_property = axis2_qname_create_from_string(env, WODEN_Q_ELEM_PROPERTY);
@@ -2352,15 +2183,6 @@ parse_binding(
             documentation = parse_documentation(reader, env, temp_el_node, desc);
             binding = woden_binding_to_documentable(binding, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(binding, env, documentation);
-        }
-        else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
-                    q_elem_fault, temp_el_node))
-        {
-            void *binding_fault = NULL;
-            binding_fault = parse_binding_fault(reader, env, temp_el_node, desc, 
-                    binding);
-            binding = woden_binding_to_binding_element(binding, env);
-            WODEN_BINDING_ELEMENT_ADD_BINDING_FAULT_ELEMENT(binding, env, binding_fault);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_op, temp_el_node))
@@ -2405,151 +2227,6 @@ parse_binding(
     }
     
     return binding;
-}
-
-static void *
-parse_binding_fault(
-        void *reader,
-        const axis2_env_t *env,
-        axiom_node_t *fault_el_node,
-        void *desc,
-        void *parent)
-{
-    void *fault = NULL;
-    axis2_char_t *ref = NULL;
-    axiom_element_t *fault_el;
-    axiom_element_t *temp_el;
-    axiom_node_t *temp_el_node;
-    axis2_qname_t *attr_ref = NULL;
-    axis2_qname_t *int_flt_qn = NULL;
-    void *nested_configurable = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
-
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    fault = WODEN_WSDL10_DESC_ELEMENT_CREATE_BINDING_FAULT_ELEMENT(desc, env);
-    nested_configurable = WODEN_BINDING_FAULT_GET_BASE_IMPL(fault, env);
-    nested_configurable = woden_nested_configurable_to_nested_element(
-            nested_configurable, env);
-    WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
-
-    attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_NAME);
-    fault_el = AXIOM_NODE_GET_DATA_ELEMENT(fault_el_node, env);
-    ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_el, env, WODEN_ATTR_REF);
-    
-    if(NULL != ref)
-    {
-        axis2_hash_t *namespcs = NULL;
-
-        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
-        int_flt_qn = woden_om_util_get_qname(env, fault_el_node, ref, namespcs);
-        fault = woden_binding_fault_to_binding_fault_element(fault, env);
-        WODEN_BINDING_FAULT_ELEMENT_SET_REF(fault, env, int_flt_qn);
-    }
-    /* Dereference the interface fault qname */
-    if(NULL != int_flt_qn)
-    {
-        void *intface = NULL;
-
-        /* Here I know that parent is an instance of binding */
-        parent = woden_binding_to_binding_element(parent, env);
-        intface = WODEN_BINDING_ELEMENT_GET_INTERFACE_ELEMENT(parent, env);
-        if(NULL != intface)
-        {
-            axis2_array_list_t *int_faults = NULL;
-            int i = 0, size = 0;
-
-            int_faults = 
-                WODEN_INTERFACE_ELEMENT_GET_INTERFACE_FAULT_ELEMENTS(
-                        intface, env);
-            size = AXIS2_ARRAY_LIST_SIZE(int_faults, env);
-            for(i = 0; i < size; i++)
-            {
-                void *intface_flt = NULL;
-                axis2_qname_t *qname = NULL;
-               
-                intface_flt = AXIS2_ARRAY_LIST_GET(int_faults, env, i);
-                if(intface_flt)
-                {
-                    intface_flt = 
-                        woden_interface_fault_to_interface_fault_element(
-                                intface_flt, env);
-                    qname = WODEN_INTERFACE_FAULT_ELEMENT_GET_QNAME(
-                        intface_flt, env);
-                }
-                if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(int_flt_qn, env, qname))
-                {
-                    WODEN_BINDING_FAULT_SET_INTERFACE_FAULT_ELEMENT(fault, 
-                            env, intface_flt);
-                }
-
-            }
-        }
-    }
-    fault = woden_binding_fault_to_attr_extensible(fault, env);
-    status = parse_ext_attributes(reader, env, fault_el_node, "binding_fault_element", 
-            fault, desc);
-    if(AXIS2_SUCCESS != status)
-        return NULL;
-    
-    temp_el = axiom_util_get_first_child_element(fault_el, env, fault_el_node, 
-            &temp_el_node);
-
-    while (NULL != temp_el && NULL != temp_el_node)
-    {
-        axis2_qname_t *q_elem_documentation = NULL;
-        axis2_qname_t *q_elem_feature = NULL;
-        axis2_qname_t *q_elem_property = NULL;
-
-        q_elem_documentation = axis2_qname_create_from_string(env, 
-                WODEN_Q_ELEM_DOCUMENTATION);
-        q_elem_feature = axis2_qname_create_from_string(env, 
-                WODEN_Q_ELEM_FEATURE);
-        q_elem_property = axis2_qname_create_from_string(env, 
-                WODEN_Q_ELEM_PROPERTY);
-
-        if(AXIS2_TRUE == axis2_qname_util_matches(env, 
-                    q_elem_documentation, temp_el_node))
-        {
-            void *documentation = NULL;
-
-            documentation = parse_documentation(reader, env, temp_el_node, desc);
-            fault = woden_binding_fault_to_documentable(fault, env);
-            WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(fault, env, documentation);
-        }
-        else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
-                    q_elem_feature, temp_el_node))
-        {
-            void *feature = NULL;
-
-            feature = parse_feature(reader, env, temp_el_node, desc, fault);
-            fault = woden_binding_fault_to_configurable_element(fault, env);
-            WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(fault, env, feature);
-        }
-        else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
-                    q_elem_property, temp_el_node))
-        {
-            void *property = NULL;
-
-            property = parse_property(reader, env, temp_el_node, desc, fault);
-            fault = woden_binding_fault_to_configurable_element(fault, env);
-            WODEN_CONFIGURABLE_ELEMENT_ADD_PROPERTY_ELEMENT(fault, env, property);
-        }
-        else
-        {
-            void *ext_element = NULL;
-
-            ext_element = parse_ext_element(reader, env, "binding_fault_element", 
-                    fault, temp_el_node, desc);
-            fault = woden_binding_fault_to_element_extensible(fault, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(fault, env, ext_element);
-        }
-
-        temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
-                temp_el_node, &temp_el_node); 
-    }
-    
-    return fault;
 }
 
 static void *

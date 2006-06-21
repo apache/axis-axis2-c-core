@@ -830,7 +830,7 @@ woden_wsdl10_part_set_qname(
     part_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL10_PART", AXIS2_HASH_KEY_STRING));
 
-    if(!part_impl->f_qname)
+    if(part_impl->f_qname)
     {
         AXIS2_QNAME_FREE(part_impl->f_qname, env);
         part_impl->f_qname = NULL;

@@ -56,10 +56,10 @@ woden_wsdl10_desc_element_resolve_methods(
             "create_types_element", AXIS2_HASH_KEY_STRING);
     desc_element->ops->create_msg_element = axis2_hash_get(methods,
             "create_msg_element", AXIS2_HASH_KEY_STRING);
+    desc_element->ops->create_part_element = axis2_hash_get(methods,
+            "create_part_element", AXIS2_HASH_KEY_STRING);
     desc_element->ops->create_interface_element = axis2_hash_get(methods,
             "create_interface_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_interface_fault_element = axis2_hash_get(methods,
-            "create_interface_fault_element", AXIS2_HASH_KEY_STRING);
     desc_element->ops->create_interface_op_element = axis2_hash_get(methods,
             "create_interface_op_element", AXIS2_HASH_KEY_STRING);
     desc_element->ops->create_interface_fault_ref_element = axis2_hash_get(methods,
@@ -68,8 +68,6 @@ woden_wsdl10_desc_element_resolve_methods(
             "create_interface_msg_ref_element", AXIS2_HASH_KEY_STRING);
     desc_element->ops->create_binding_element = axis2_hash_get(methods,
             "create_binding_element", AXIS2_HASH_KEY_STRING);
-    desc_element->ops->create_binding_fault_element = axis2_hash_get(methods,
-            "create_binding_fault_element", AXIS2_HASH_KEY_STRING);
     desc_element->ops->create_binding_op_element = axis2_hash_get(methods,
             "create_binding_op_element", AXIS2_HASH_KEY_STRING);
     desc_element->ops->create_binding_fault_ref_element = axis2_hash_get(methods,

@@ -26,12 +26,10 @@
 #include <woden_wsdl10_msg_ref.h>
 #include <woden_wsdl10_part.h>
 #include <woden_interface.h>
-#include <woden_interface_fault.h>
 #include <woden_interface_op.h>
 #include <woden_wsdl10_interface_fault_ref.h>
 #include <woden_wsdl10_interface_msg_ref.h>
 #include <woden_binding.h>
-#include <woden_binding_fault.h>
 #include <woden_wsdl10_binding_op.h>
 #include <woden_binding_fault_ref.h>
 #include <woden_wsdl10_binding_msg_ref.h>
@@ -327,11 +325,6 @@ woden_wsdl10_desc_create_interface_element(
         const axis2_env_t *env);
 
 void *AXIS2_CALL
-woden_wsdl10_desc_create_interface_fault_element(
-        void *desc,
-        const axis2_env_t *env);
-
-void *AXIS2_CALL
 woden_wsdl10_desc_create_interface_op_element(
         void *desc,
         const axis2_env_t *env);
@@ -348,11 +341,6 @@ woden_wsdl10_desc_create_interface_msg_ref_element(
 
 void *AXIS2_CALL
 woden_wsdl10_desc_create_binding_element(
-        void *desc,
-        const axis2_env_t *env);
-
-void *AXIS2_CALL
-woden_wsdl10_desc_create_binding_fault_element(
         void *desc,
         const axis2_env_t *env);
 
@@ -853,9 +841,6 @@ create(const axis2_env_t *env)
     axis2_hash_set(desc_impl->methods, "create_interface_element", 
             AXIS2_HASH_KEY_STRING, 
             woden_wsdl10_desc_create_interface_element);
-    axis2_hash_set(desc_impl->methods, "create_interface_fault_element", 
-            AXIS2_HASH_KEY_STRING, 
-            woden_wsdl10_desc_create_interface_fault_element);
     axis2_hash_set(desc_impl->methods, "create_interface_op_element", 
             AXIS2_HASH_KEY_STRING, 
             woden_wsdl10_desc_create_interface_op_element);
@@ -868,9 +853,6 @@ create(const axis2_env_t *env)
     axis2_hash_set(desc_impl->methods, "create_binding_element", 
             AXIS2_HASH_KEY_STRING, 
             woden_wsdl10_desc_create_binding_element);
-    axis2_hash_set(desc_impl->methods, "create_binding_fault_element", 
-            AXIS2_HASH_KEY_STRING, 
-            woden_wsdl10_desc_create_binding_fault_element);
     axis2_hash_set(desc_impl->methods, "create_binding_op_element", 
             AXIS2_HASH_KEY_STRING, 
             woden_wsdl10_desc_create_binding_op_element);
@@ -1878,14 +1860,6 @@ woden_wsdl10_desc_create_interface_element(
 }
 
 void *AXIS2_CALL
-woden_wsdl10_desc_create_interface_fault_element(
-        void *desc,
-        const axis2_env_t *env)
-{
-    return woden_interface_fault_create(env);
-}
-
-void *AXIS2_CALL
 woden_wsdl10_desc_create_interface_op_element(
         void *desc,
         const axis2_env_t *env)
@@ -1915,14 +1889,6 @@ woden_wsdl10_desc_create_binding_element(
         const axis2_env_t *env)
 {
     return woden_binding_create(env);
-}
-
-void *AXIS2_CALL
-woden_wsdl10_desc_create_binding_fault_element(
-        void *desc,
-        const axis2_env_t *env)
-{
-    return woden_binding_fault_create(env);
 }
 
 void *AXIS2_CALL

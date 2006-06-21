@@ -73,7 +73,7 @@ struct woden_soap_module_deserializer_ops
             const axis2_env_t *env);
 
     void *(AXIS2_CALL *
-    marshall) (
+    unmarshall) (
             void *mod_deser,
             const axis2_env_t *env,
             axis2_char_t *parent_type,
@@ -122,10 +122,10 @@ woden_soap_module_deserializer_resolve_methods(
 #define WODEN_SOAP_MODULE_DESERIALIZER_GET_BASE_IMPL(mod_deser, env) \
       (((woden_soap_module_deserializer_t *) mod_deser)->ops->get_base_impl(mod_deser, env))
 
-#define WODEN_SOAP_MODULE_DESERIALIZER_MARSHALL(mod_deser, env, \
+#define WODEN_SOAP_MODULE_DESERIALIZER_UNMARSHALL(mod_deser, env, \
         parent_type, parent, element_type, el_node, desc, ext_reg) \
       (((woden_soap_module_deserializer_t *) mod_deser)->\
-         marshall(mod_deser, env, parent_type, parent, element_type, el_node, \
+         unmarshall(mod_deser, env, parent_type, parent, element_type, el_node, \
              desc, ext_reg))
 
 /** @} */
