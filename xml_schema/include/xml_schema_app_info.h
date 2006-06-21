@@ -34,13 +34,15 @@
   * @{
   */
 
-typedef struct xml_schema_app_info xml_schema_app_info_t;
-typedef struct xml_schema_app_info_ops xml_schema_app_info_ops_t;
+
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+typedef struct xml_schema_app_info xml_schema_app_info_t;
+typedef struct xml_schema_app_info_ops xml_schema_app_info_ops_t;
 
 struct xml_schema_app_info_ops
 {

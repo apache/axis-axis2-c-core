@@ -49,7 +49,10 @@ xml_schema_test(
     if(NULL != schema)
     {
         printf("\n parsing schema is successful \n");
+        
+        printf("%s", XML_SCHEMA_SERIALIZE(schema, env));
     }                
+    
     
     return AXIS2_SUCCESS;
 }

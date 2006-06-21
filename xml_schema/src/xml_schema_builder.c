@@ -495,6 +495,7 @@ handle_xml_schema_element(
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
     
     set_namespace_attributes( builder, env, builder_impl->schema, ele_node);
+    XML_SCHEMA_SET_ROOT_NODE(builder_impl->schema, env, ele_node);
     
     if(NULL != uri)
     {

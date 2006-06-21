@@ -38,16 +38,19 @@
   * @{
   */
 
-typedef struct xml_schema_attribute_group 
-                    xml_schema_attribute_group_t;
-typedef struct xml_schema_attribute_group_ops 
-                xml_schema_attribute_group_ops_t;
+
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+typedef struct xml_schema_attribute_group 
+                    xml_schema_attribute_group_t;
+typedef struct xml_schema_attribute_group_ops 
+                xml_schema_attribute_group_ops_t;
+                
+                
 struct xml_schema_attribute_group_ops
 {
     axis2_status_t (AXIS2_CALL *

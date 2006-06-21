@@ -32,16 +32,18 @@
   * @{
   */
 
-typedef struct xml_schema_content_processing 
-        xml_schema_content_processing_t;
-        
-typedef struct xml_schema_content_processing_ops 
-        xml_schema_content_processing_ops_t;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+
+typedef struct xml_schema_content_processing 
+        xml_schema_content_processing_t;
+        
+typedef struct xml_schema_content_processing_ops 
+        xml_schema_content_processing_ops_t;
 
 struct xml_schema_content_processing_ops
 {

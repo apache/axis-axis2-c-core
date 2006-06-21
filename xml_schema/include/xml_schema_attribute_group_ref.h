@@ -38,15 +38,17 @@
   * @{
   */
 
-typedef struct xml_schema_attribute_group_ref 
-                    xml_schema_attribute_group_ref_t;
-typedef struct xml_schema_attribute_group_ref_ops 
-                xml_schema_attribute_group_ref_ops_t;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+
+typedef struct xml_schema_attribute_group_ref 
+                    xml_schema_attribute_group_ref_t;
+typedef struct xml_schema_attribute_group_ref_ops 
+                xml_schema_attribute_group_ref_ops_t;
 
 struct xml_schema_attribute_group_ref_ops
 {

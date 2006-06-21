@@ -32,13 +32,15 @@
   * @{
   */
 
-typedef struct xml_schema_annotation xml_schema_annotation_t;
-typedef struct xml_schema_annotation_ops xml_schema_annotation_ops_t;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+typedef struct xml_schema_annotation xml_schema_annotation_t;
+typedef struct xml_schema_annotation_ops xml_schema_annotation_ops_t;
+
 
 struct xml_schema_annotation_ops
 {

@@ -38,15 +38,17 @@
   * @{
   */
 
-typedef struct xml_schema_attribute 
-                    xml_schema_attribute_t;
-typedef struct xml_schema_attribute_ops 
-                xml_schema_attribute_ops_t;
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+
+typedef struct xml_schema_attribute 
+                    xml_schema_attribute_t;
+typedef struct xml_schema_attribute_ops 
+                xml_schema_attribute_ops_t;
 
 struct xml_schema_attribute_ops
 {

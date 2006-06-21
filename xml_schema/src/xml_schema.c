@@ -15,6 +15,7 @@
  */
 
 #include <xml_schema_includes.h>
+#include <axiom_node.h>
 
 #define XML_SCHEMA_DEFAULT_TARGET_NS "DEFAULT"
 
@@ -67,6 +68,8 @@ struct xml_schema_impl
     axis2_char_t *schema_ns_prefix;
 
     xml_schema_collection_t *parent;
+    
+    axiom_node_t *schema_root_node;
 };
 
 #define AXIS2_INTF_TO_IMPL(schema) \
@@ -260,6 +263,18 @@ xml_schema_set_schema_ns_prefix(
         const axis2_env_t *env,
         axis2_char_t *ns_prefix);
         
+axis2_char_t* AXIS2_CALL
+xml_schema_serialize(
+        void *schema,
+        const axis2_env_t *env);  
+        
+axis2_status_t AXIS2_CALL
+xml_schema_set_root_node(
+        void *schema,
+        const axis2_env_t *env,
+        axiom_node_t *root);
+                      
+        
 
 AXIS2_EXTERN xml_schema_t * AXIS2_CALL
 xml_schema_create(const axis2_env_t *env,
@@ -297,6 +312,7 @@ xml_schema_create(const axis2_env_t *env,
     schema_impl->schema_types = NULL;
     schema_impl->target_namespace = NULL;
     schema_impl->schema_ns_prefix = NULL;
+    schema_impl->schema_root_node = NULL;
     
     if(NULL != namespc)
         schema_impl->target_namespace = AXIS2_STRDUP(namespc, env);
@@ -379,6 +395,10 @@ xml_schema_create(const axis2_env_t *env,
             xml_schema_add_type;
     schema_impl->schema.ops->set_schema_ns_prefix =
             xml_schema_set_schema_ns_prefix;
+    schema_impl->schema.ops->serialize =
+            xml_schema_serialize;  
+    schema_impl->schema.ops->set_root_node = 
+            xml_schema_set_root_node;                                  
             
             
             
@@ -1243,3 +1263,38 @@ xml_schema_set_schema_ns_prefix(void *schema,
     return AXIS2_FAILURE;
 }
 
+axis2_char_t* AXIS2_CALL
+xml_schema_serialize(
+        void *schema,
+        const axis2_env_t *env)
+{
+    xml_schema_impl_t *sch_impl = NULL;
+    axiom_xml_writer_t *writer = NULL;
+    axiom_output_t *output = NULL;
+        
+    sch_impl = AXIS2_INTF_TO_IMPL(schema);
+    if(sch_impl->schema_root_node)
+    {
+        writer = axiom_xml_writer_create_for_memory(env, NULL, 0, 0 ,
+            AXIS2_XML_PARSER_TYPE_BUFFER);
+        output = axiom_output_create(env, writer);
+        
+        AXIOM_NODE_SERIALIZE(sch_impl->schema_root_node, env, output);
+        return AXIOM_XML_WRITER_GET_XML(writer, env);
+    }
+    return NULL;
+}      
+
+axis2_status_t AXIS2_CALL
+xml_schema_set_root_node(
+        void *schema,
+        const axis2_env_t *env,
+        axiom_node_t *root)
+{
+    xml_schema_impl_t *sch_impl = NULL;
+    if(!root)
+        return AXIS2_FAILURE;
+    sch_impl = AXIS2_INTF_TO_IMPL(schema);
+    sch_impl->schema_root_node = root;
+    return AXIS2_SUCCESS;
+}          

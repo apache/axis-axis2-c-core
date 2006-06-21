@@ -36,6 +36,13 @@
   * @{
   */
 
+
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 typedef struct xml_schema xml_schema_t;
 typedef struct xml_schema_ops xml_schema_ops_t;
 struct xml_schema_form;
@@ -47,11 +54,6 @@ struct xml_schema_obj_collection;
 struct xml_schema_collection;
 
 #define XML_SCHEMA_NS "http://www.w3.org/2001/XMLSchema"
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 struct xml_schema_ops
 {
@@ -237,8 +239,19 @@ struct xml_schema_ops
     set_schema_ns_prefix)(
             void *schema,
             const axis2_env_t *env,
-            axis2_char_t *ns_prefix);                    
-
+            axis2_char_t *ns_prefix);
+            
+    axis2_char_t* (AXIS2_CALL*
+    serialize)(
+            void *schema,
+            const axis2_env_t *env);
+            
+    axis2_status_t (AXIS2_CALL*
+    set_root_node)(
+            void *schema,
+            const axis2_env_t *env,
+            axiom_node_t *node);            
+            
 };
 
 struct xml_schema
@@ -393,8 +406,14 @@ xml_schema_create(const axis2_env_t *env,
         (((xml_schema_t *) schema)->ops->\
             set_schema_ns_prefix(schema, env, ns_prefix))
             
-                                        
-                                              
+#define XML_SCHEMA_SERIALIZE(schema, env) \
+        (((xml_schema_t *) schema)->ops->\
+            serialize(schema, env))                                              
+                      
+#define XML_SCHEMA_SET_ROOT_NODE(schema, env, root_node) \
+        (((xml_schema_t *) schema)->ops->\
+            set_root_node(schema, env, root_node))
+                                  
                       
 /** @} */
 #ifdef __cplusplus

@@ -31,13 +31,17 @@
   * @{
   */
 
-typedef struct xml_schema_derivation_method xml_schema_derivation_method_t;
-typedef struct xml_schema_derivation_method_ops xml_schema_derivation_method_ops_t;
+
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
+
+typedef struct xml_schema_derivation_method 
+                xml_schema_derivation_method_t;
+typedef struct xml_schema_derivation_method_ops
+                xml_schema_derivation_method_ops_t;
 
 struct xml_schema_derivation_method_ops
 {

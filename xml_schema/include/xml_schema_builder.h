@@ -37,6 +37,14 @@
   * @{
   */
 
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
+
 typedef struct xml_schema_builder 
                     xml_schema_builder_t;
 typedef struct xml_schema_builder_ops 
@@ -44,10 +52,6 @@ typedef struct xml_schema_builder_ops
 
 #define XML_SCHEMA_NS "http://www.w3.org/2001/XMLSchema"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 struct xml_schema_builder_ops
 {

@@ -27,6 +27,13 @@
 
 #include <xml_schema_enum.h>
 
+
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 /** @defgroup xml_schema_content_type Xml Schema Form
   * @ingroup xml_schema
   * @{
@@ -36,11 +43,6 @@ typedef struct xml_schema_content_type
                     xml_schema_content_type_t;
 typedef struct xml_schema_content_type_ops 
                     xml_schema_content_type_ops_t;
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 struct xml_schema_content_type_ops
 {

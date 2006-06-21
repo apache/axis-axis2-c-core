@@ -30,6 +30,12 @@
 #include <xml_schema_particle.h>
 #include <xml_schema_content_processing.h>
 
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 /** @defgroup xml_schema_any Xml Schema Any
   * @ingroup xml_schema
   * @{
@@ -39,10 +45,6 @@ typedef struct xml_schema_any xml_schema_any_t;
 typedef struct xml_schema_any_ops xml_schema_any_ops_t;
 struct xml_schema_content_processing_t;
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
 
 struct xml_schema_any_ops
 {
