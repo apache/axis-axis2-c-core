@@ -531,7 +531,7 @@ woden_wsdl10_desc_element_resolve_methods(
 
 #define WODEN_WSDL10_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc_el, env) \
       (((woden_wsdl10_desc_element_t *) desc_el)->ops->\
-        get_svc_elements (desc_el, env))
+        get_binding_elements (desc_el, env))
 
 #define WODEN_WSDL10_DESC_ELEMENT_ADD_SVC_ELEMENT(desc_el, env, svc_el) \
       (((woden_wsdl10_desc_element_t *) desc_el)->ops->\

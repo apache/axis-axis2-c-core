@@ -99,7 +99,7 @@ struct woden_svc_element_ops
     add_endpoint_element) (
             void *svc_el,
             const axis2_env_t *env,
-            void *winterface);
+            void *endpoint);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_endpoint_elements) (
@@ -137,7 +137,7 @@ woden_svc_element_resolve_methods(
       (((woden_svc_element_t *) svc_el)->ops->\
          type (svc_el, env))
 
-#define WODEN_SVC_ELEMENT_SET_QNAME(svc_el, env, name) \
+#define WODEN_SVC_ELEMENT_SET_QNAME(svc_el, env, qname) \
       (((woden_svc_element_t *) svc_el)->ops->\
          set_qname(svc_el, env, qname))
 
@@ -157,7 +157,7 @@ woden_svc_element_resolve_methods(
       (((woden_svc_element_t *) svc_el)->ops->\
          get_interface_element(svc_el, env))
 
-#define WODEN_SVC_ELEMENT_ADD_ENDPOINT_ELEMENT(svc_el, env, uri) \
+#define WODEN_SVC_ELEMENT_ADD_ENDPOINT_ELEMENT(svc_el, env, endpoint) \
       (((woden_svc_element_t *) svc_el)->ops->\
          add_endpoint_element(svc_el, env, endpoint))
 
