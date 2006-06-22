@@ -36,13 +36,33 @@ then
 exit 1
 fi
 
+./configure --prefix=${AXIS2C_HOME} --enable-static=no --with-axis2_util=${AXIS2C_HOME}/include --enable-tests=yes
+if [ "$?" -ne 0 ]
+then
+exit 1
+fi
+
+make
+if [ "$?" -ne 0 ]
+then
+exit 1
+fi
+
+make install
+if [ "$?" -ne 0 ]
+then
+exit 1
+fi
+
+cd ../xml_schema
+
 ./autogen.sh
 if [ "$?" -ne 0 ]
 then
 exit 1
 fi
 
-./configure --prefix=${AXIS2C_HOME} --enable-static=no --with-axis2_util=${AXIS2C_HOME}/include --enable-tests=yes
+./configure --prefix=${AXIS2C_HOME} --enable-static=no --with-axis2_util=${AXIS2C_HOME}/include --with-axiom=${AXIS2C_HOME}/include
 if [ "$?" -ne 0 ]
 then
 exit 1
