@@ -92,7 +92,7 @@ axis2_svc_client_set_override_options(struct axis2_svc_client *svc_client,
     const axis2_env_t *env,
     const axis2_options_t *override_options);
 
-axis2_options_t* AXIS2_CALL 
+const axis2_options_t* AXIS2_CALL 
 axis2_svc_client_get_override_options(const axis2_svc_client_t *svc_client,
     const axis2_env_t *env);
 
@@ -150,12 +150,12 @@ axis2_svc_client_finalize_invoke(struct axis2_svc_client *svc_client,
                         const axis2_env_t *env);
     
 const axis2_endpoint_ref_t* AXIS2_CALL 
-axis2_svc_client_get_own_endpoint_ref(struct axis2_svc_client *svc_client,
+axis2_svc_client_get_own_endpoint_ref(const struct axis2_svc_client *svc_client,
                 const axis2_env_t *env,
                 const axis2_char_t *transport);
 
 const axis2_endpoint_ref_t* AXIS2_CALL 
-axis2_svc_client_get_target_endpoint_ref(struct axis2_svc_client *svc_client,
+axis2_svc_client_get_target_endpoint_ref(const struct axis2_svc_client *svc_client,
                     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
@@ -352,7 +352,7 @@ axis2_svc_client_set_override_options(struct axis2_svc_client *svc_client,
    return AXIS2_SUCCESS;
 }
 
-axis2_options_t* AXIS2_CALL 
+const axis2_options_t* AXIS2_CALL 
 axis2_svc_client_get_override_options(const axis2_svc_client_t *svc_client,
     const axis2_env_t *env)
 {
@@ -832,7 +832,7 @@ axis2_svc_client_finalize_invoke(struct axis2_svc_client *svc_client,
 }
     
 const axis2_endpoint_ref_t* AXIS2_CALL 
-axis2_svc_client_get_own_endpoint_ref(struct axis2_svc_client *svc_client,
+axis2_svc_client_get_own_endpoint_ref(const struct axis2_svc_client *svc_client,
                 const axis2_env_t *env,
                 const axis2_char_t *transport)
 {
@@ -847,7 +847,7 @@ axis2_svc_client_get_own_endpoint_ref(struct axis2_svc_client *svc_client,
 }
 
 const axis2_endpoint_ref_t* AXIS2_CALL 
-axis2_svc_client_get_target_endpoint_ref(struct axis2_svc_client *svc_client,
+axis2_svc_client_get_target_endpoint_ref(const struct axis2_svc_client *svc_client,
                     const axis2_env_t *env)
 {
    axis2_svc_client_impl_t *svc_client_impl = NULL;

@@ -138,9 +138,10 @@ extern "C"
           * Gets the overriding options.
           * @param svc_client pointer to service client struct
           * @param env pointer to environment struct
-          * @return pointer to overriding options struct
+          * @return pointer to overriding options struct if options set, else NULL.
+          * Returns a reference, not a cloned copy.
           */
-        axis2_options_t *(AXIS2_CALL *
+        const axis2_options_t *(AXIS2_CALL *
                 get_override_options)(
                     const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
@@ -317,7 +318,7 @@ extern "C"
           */
         const axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_own_endpoint_ref)(
-                    axis2_svc_client_t *svc_client,
+                    const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env,
                     const axis2_char_t *transport);
 
@@ -330,7 +331,7 @@ extern "C"
           */
         const axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_target_endpoint_ref)(
-                    axis2_svc_client_t *svc_client,
+                    const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
 
         /**
@@ -396,8 +397,10 @@ extern "C"
      * Creates a service client struct for a specified service and configuration
      * context.
      * @param env pointer to environment struct
-     * @param conf_ctx pointer to configuration context
-     * @param svc pointer to service struct representing the service to be consumed
+     * @param conf_ctx pointer to configuration context. Newly created client 
+     * assumes ownership of the conf_ctx
+     * @param svc pointer to service struct representing the service to be consumed.
+     * Newly created client assumes ownership of the service 
      * @param client_home name of the directory that contains the Axis2/C repository
      * @return a pointer to newly created service client struct,
      *         or NULL on error with error code set in environment's error
