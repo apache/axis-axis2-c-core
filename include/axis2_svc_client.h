@@ -367,7 +367,7 @@ extern "C"
           */
 
         axis2_status_t (AXIS2_CALL *
-                free)(
+                free_fn)(
                     axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
     };
@@ -531,7 +531,7 @@ extern "C"
 /** Frees given service client. 
     @sa axis2_svc_client_ops#free */
 #define AXIS2_SVC_CLIENT_FREE(svc_client, env) \
-        ((svc_client)->ops->free(svc_client, env))
+        ((svc_client)->ops->free_fn(svc_client, env))
 
 /** @} */
 #ifdef __cplusplus

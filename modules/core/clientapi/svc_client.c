@@ -977,7 +977,7 @@ static void axis2_svc_client_init_ops(axis2_svc_client_t *svc_client)
    svc_client->ops->get_target_endpoint_ref = axis2_svc_client_get_target_endpoint_ref;
    svc_client->ops->set_target_endpoint_ref = axis2_svc_client_set_target_endpoint_ref;
    svc_client->ops->get_svc_ctx = axis2_svc_client_get_svc_ctx;
-   svc_client->ops->free = axis2_svc_client_free;
+   svc_client->ops->free_fn = axis2_svc_client_free;
 }
 
 /**
