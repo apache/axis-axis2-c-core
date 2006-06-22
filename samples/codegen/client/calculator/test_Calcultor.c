@@ -44,6 +44,12 @@ int main(int argc, char** argv)
 
     /* invoke the web service method*/
     add_res = axis2_add(  stub, env, add_in );
+
+    if (!add_res)
+    {
+        printf("Error: response NULL\n");
+        return -1;
+    }
     
     /* return the output params using databinding */
     add_out = AXIS2_ADDRESPONSE20_GET_ADDRESPONSE( add_res, env );
