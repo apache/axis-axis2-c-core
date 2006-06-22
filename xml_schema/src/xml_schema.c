@@ -1297,4 +1297,6 @@ xml_schema_set_root_node(
     sch_impl = AXIS2_INTF_TO_IMPL(schema);
     sch_impl->schema_root_node = root;
     return AXIS2_SUCCESS;
-}          
+}
+
+
