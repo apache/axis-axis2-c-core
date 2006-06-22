@@ -1034,16 +1034,22 @@ build_binding_exts(
         axis2_uri_t *ext_ns = NULL;
         axis2_bool_t temp1 = AXIS2_FALSE;
         axis2_bool_t temp2 = AXIS2_FALSE;
+        void *configurable = NULL;
+        void *documentable = NULL;
+        void *wsdl_obj = NULL;
+        void *wsdl_el = NULL;
         
         ext_ns = AXIS2_ARRAY_LIST_GET(ext_namespcs, env, i);
-        binding = woden_binding_to_attr_extensible(
-                binding, env);
+        configurable = WODEN_BINDING_GET_BASE_IMPL(binding, env);
+        documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+        wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+        wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+        wsdl_el = woden_wsdl_element_to_attr_extensible(wsdl_el, env);
         temp1 = WODEN_ATTR_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(
-                binding, env, ext_ns);
-        binding = woden_binding_to_element_extensible(
-                binding, env);
+                wsdl_el, env, ext_ns);
+        wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
         temp2 = WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ELEMENTS_FOR_NAMESPACE(
-                binding, env, ext_ns);
+                wsdl_el, env, ext_ns);
         if(AXIS2_TRUE == temp1 || AXIS2_TRUE == temp2)
         {
             void *comp_ext = NULL;

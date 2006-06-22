@@ -23,7 +23,6 @@
 #include <woden_binding_fault_element.h>
 #include <woden_interface.h>
 #include <woden_binding_op_element.h>
-#include <woden_element_extensible.h>
 
 typedef struct woden_binding_impl woden_binding_impl_t;
 
@@ -374,59 +373,6 @@ woden_binding_to_wsdl_component(
     return binding;
 }
 
-AXIS2_EXTERN woden_binding_t * AXIS2_CALL
-woden_binding_to_attr_extensible(
-        void *binding,
-        const axis2_env_t *env)
-{
-    woden_binding_impl_t *binding_impl = NULL;
-   
-    AXIS2_ENV_CHECK(env, NULL);
-    if(!binding)
-    {
-        binding_impl = (woden_binding_impl_t *) create(env);
-    }
-    else
-        binding_impl = (woden_binding_impl_t *) binding;
-    woden_binding_free_ops(binding, env);
-
-    binding_impl->binding.base.binding_element.
-        base.documentable_element.wsdl_element.base.attr_extensible.ops = 
-        AXIS2_MALLOC(env->allocator, 
-                sizeof(woden_attr_extensible_ops_t));
-    woden_attr_extensible_resolve_methods(&(binding_impl->binding.base.
-            binding_element.base.documentable_element.
-            wsdl_element.base.attr_extensible), env, NULL, binding_impl->methods);
-    return binding;
-}
-
-AXIS2_EXTERN woden_binding_t * AXIS2_CALL
-woden_binding_to_element_extensible(
-        void *binding,
-        const axis2_env_t *env)
-{
-    woden_binding_impl_t *binding_impl = NULL;
-   
-    AXIS2_ENV_CHECK(env, NULL);
-    if(!binding)
-    {
-        binding_impl = (woden_binding_impl_t *) create(env);
-    }
-    else
-        binding_impl = (woden_binding_impl_t *) binding;
-    woden_binding_free_ops(binding, env);
-
-    binding_impl->binding.base.binding_element.
-        base.documentable_element.wsdl_element.base.element_extensible.ops = 
-        AXIS2_MALLOC(env->allocator, 
-                sizeof(woden_element_extensible_ops_t));
-    woden_element_extensible_resolve_methods(&(binding_impl->binding.base.
-            binding_element.base.documentable_element.
-            wsdl_element.base.element_extensible), env, NULL, binding_impl->methods);
-    return binding;
-}
-
-
 /************************End of Woden C Internal Methods***********************/
 static woden_binding_t *
 create(const axis2_env_t *env)
@@ -637,28 +583,6 @@ woden_binding_free_ops(
             configurable_component.wsdl_component.ops = NULL;
     }
     
-    if(binding_impl->binding.base.binding_element.
-            base.documentable_element.wsdl_element.base.attr_extensible.ops)
-    {
-        AXIS2_FREE(env->allocator, binding_impl->binding.
-                base.binding_element.base.documentable_element.
-                wsdl_element.base.attr_extensible.ops );
-        binding_impl->binding.
-                base.binding_element.base.documentable_element.
-                wsdl_element.base.attr_extensible.ops = NULL;
-    }
-    
-    if(binding_impl->binding.base.binding_element.
-            base.documentable_element.wsdl_element.base.element_extensible.ops)
-    {
-        AXIS2_FREE(env->allocator, binding_impl->binding.
-                base.binding_element.base.documentable_element.
-                wsdl_element.base.element_extensible.ops );
-        binding_impl->binding.
-                base.binding_element.base.documentable_element.
-                wsdl_element.base.element_extensible.ops = NULL;
-    }
-   
     return AXIS2_SUCCESS;
 }
 

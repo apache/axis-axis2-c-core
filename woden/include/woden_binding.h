@@ -196,17 +196,6 @@ woden_binding_to_wsdl_component(
         void *binding,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_binding_t * AXIS2_CALL
-woden_binding_to_attr_extensible(
-        void *binding,
-        const axis2_env_t *env);
-
-AXIS2_EXTERN woden_binding_t * AXIS2_CALL
-woden_binding_to_element_extensible(
-        void *binding,
-        const axis2_env_t *env);
-
-
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 woden_binding_resolve_methods(
         woden_binding_t *binding,

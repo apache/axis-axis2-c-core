@@ -379,6 +379,12 @@ parse_property(
         void *desc,
         void *parent);
 
+/**
+ * @param om_el_node element node
+ * @param wsdl_class
+ * @param wsdl_obj wsdl_obj_t type object
+ * @param desc desc object
+ */
 axis2_status_t AXIS2_CALL
 parse_ext_attributes(
         void *reader,
@@ -629,6 +635,8 @@ parse_desc(
     axiom_element_t *schema_elem = NULL;
     axiom_node_t *schema_elem_node = NULL;
     axiom_namespace_t *schema_ns = NULL;
+    void *documentable = NULL;
+    void *wsdl_obj = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -706,7 +714,10 @@ parse_desc(
 
     }
     desc = woden_wsdl10_desc_to_attr_extensible(desc, env); 
-    status = parse_ext_attributes(reader, env, desc_el_node, "description_element", desc, desc);
+    documentable = WODEN_WSDL10_DESC_GET_BASE_IMPL(desc, env);
+    wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+    status = parse_ext_attributes(reader, env, desc_el_node, 
+            "description_element", wsdl_obj, desc);
     if(AXIS2_SUCCESS != status)
         return NULL;
     
@@ -824,7 +835,14 @@ parse_desc(
             ext_element = parse_ext_element(reader, env, "desc_element", desc, temp_el_node, desc);
             if(ext_element)
             {
-                desc = woden_wsdl10_desc_to_element_extensible(desc, env);
+                void *documentable = NULL;
+                void *wsdl_obj = NULL;
+                void *wsdl_el = NULL;
+
+                documentable = WODEN_WSDL10_DESC_GET_BASE_IMPL(desc, env);
+                wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+                wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+                wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
                 WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(desc, env, ext_element);
             }
         }
@@ -908,11 +926,13 @@ parse_documentation(
     while (NULL != temp_el)
     {
         void *ext_el = NULL;
+        void *wsdl_el = NULL;
 
         ext_el = parse_ext_element(reader, env, "documentation_element", 
                 documentation, temp_el_node, desc);
-        documentation = woden_documentation_to_element_extensible(
-                documentation, env);
+
+        wsdl_el = WODEN_DOCUMENTATION_GET_BASE_IMPL(documentation, env);
+        wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
         WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(documentation, env, 
                 ext_el);
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -1090,10 +1110,17 @@ parse_types(
         else
         {
             void *ext_element = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "types_element", 
                     types, temp_el_node, desc);
-            types = woden_types_to_element_extensible(types, env);
+
+            documentable = WODEN_TYPES_GET_BASE_IMPL(types, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(types, env, ext_element);
         }
 
@@ -1370,10 +1397,21 @@ parse_msg_ref(
         else
         {
             void *ext_element = NULL;
+            void *nested_confble = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "msg_element", 
                     msg, temp_el_node, desc);
-            msg = woden_wsdl10_msg_ref_to_element_extensible(msg, env);
+
+            nested_confble = WODEN_WSDL10_MSG_REF_GET_BASE_IMPL(msg, env);
+            configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(msg, env, ext_element);
         }
 
@@ -1479,10 +1517,21 @@ parse_part(
         else
         {
             void *ext_element = NULL;
+            void *nested_confble = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "interface_part_element", 
                     part, temp_el_node, desc);
-            part = woden_wsdl10_part_to_element_extensible(part, env);
+
+            nested_confble = WODEN_WSDL10_PART_GET_BASE_IMPL(part, env);
+            configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(part, env, ext_element);
         }
 
@@ -1622,10 +1671,19 @@ parse_interface(
         else
         {
             void *ext_element = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "interface_element", 
                     intface, temp_el_node, desc);
-            intface = woden_interface_to_element_extensible(intface, env);
+
+            configurable = WODEN_INTERFACE_GET_BASE_IMPL(intface, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(intface, env, ext_element);
         }
 
@@ -1813,10 +1871,21 @@ parse_interface_op(
         else
         {
             void *ext_element = NULL;
+            void *nested_confble = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "interface_op_element", 
                     op, temp_el_node, desc);
-            op = woden_interface_op_to_element_extensible(op, env);
+
+            nested_confble = WODEN_INTERFACE_OP_GET_BASE_IMPL(op, env);
+            configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(op, env, ext_element);
         }
 
@@ -1932,10 +2001,21 @@ parse_interface_fault_ref(
         else
         {
             void *ext_element = NULL;
+            void *nested_confble = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "interface_fault_ref_element", 
                     fault_ref, temp_el_node, desc);
-            fault_ref = woden_wsdl10_interface_fault_ref_to_element_extensible(fault_ref, env);
+
+            nested_confble = WODEN_WSDL10_INTERFACE_FAULT_REF_GET_BASE_IMPL(fault_ref, env);
+            configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(fault_ref, env, ext_element);
         }
 
@@ -2050,10 +2130,21 @@ parse_interface_msg_ref(
         else
         {
             void *ext_element = NULL;
+            void *nested_confble = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "interface_msg_ref_element", 
                     msg_ref, temp_el_node, desc);
-            msg_ref = woden_wsdl10_interface_msg_ref_to_element_extensible(msg_ref, env);
+
+            nested_confble = WODEN_WSDL10_INTERFACE_MSG_REF_GET_BASE_IMPL(msg_ref, env);
+            configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(msg_ref, env, ext_element);
         }
 
@@ -2079,6 +2170,9 @@ parse_binding(
     axiom_element_t *temp_el;
     axiom_node_t *temp_el_node;
     axis2_qname_t *intface_qn = NULL;
+    void *configurable = NULL;
+    void *documentable = NULL;
+    void *wsdl_obj = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_wsdl10_desc_to_desc_element(desc, env);
@@ -2147,10 +2241,12 @@ parse_binding(
     }
     
     /* TODO extends attribute */
-  
-    binding = woden_binding_to_attr_extensible(binding, env);
+    
+    configurable = WODEN_BINDING_GET_BASE_IMPL(binding, env);
+    documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+    wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
     status = parse_ext_attributes(reader, env, binding_el_node, "binding_element", 
-            binding, desc);
+            wsdl_obj, desc);
     if(AXIS2_SUCCESS != status)
         return NULL;
     
@@ -2215,11 +2311,20 @@ parse_binding(
         else
         {
             void *ext_element = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "binding_element", 
                     binding, temp_el_node, desc);
-            binding = woden_binding_to_element_extensible(binding, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(binding, env, ext_element);
+
+            configurable = WODEN_BINDING_GET_BASE_IMPL(binding, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -2244,7 +2349,6 @@ parse_binding_op(
     axiom_node_t *temp_el_node;
     axis2_qname_t *ref_qn = NULL;
     void *nested_configurable = NULL;
-    axis2_qname_t *qname = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_wsdl10_desc_to_desc_element(desc, env);
@@ -2264,12 +2368,12 @@ parse_binding_op(
 
         namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
-        qname = axis2_qname_create(env, name, namespc_str, NULL);
+        ref_qn = axis2_qname_create(env, name, namespc_str, NULL);
         op = woden_wsdl10_binding_op_to_binding_op_element(op, env);
-        WODEN_WSDL10_BINDING_OP_ELEMENT_SET_QNAME(op, env, qname);
+        WODEN_WSDL10_BINDING_OP_ELEMENT_SET_QNAME(op, env, ref_qn);
     }
     /* Dereference the 'ref' qname to an interface_op_element */
-    if(NULL != qname)
+    if(NULL != ref_qn)
     {
         void *intface = NULL;
         axis2_array_list_t *int_ops = NULL;
@@ -2404,10 +2508,21 @@ parse_binding_op(
         else
         {
             void *ext_element = NULL;
+            void *nested_confble = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "binding_op_element", 
                     op, temp_el_node, desc);
-            op = woden_wsdl10_binding_op_to_element_extensible(op, env);
+
+            nested_confble = WODEN_WSDL10_BINDING_OP_GET_BASE_IMPL(op, env);
+            configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(op, env, ext_element);
         }
 
@@ -2621,10 +2736,21 @@ parse_binding_fault_ref(
         else
         {
             void *ext_element = NULL;
+            void *nested_confble = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "binding_fault_ref_element", 
                     fault_ref, temp_el_node, desc);
-            fault_ref = woden_binding_fault_ref_to_element_extensible(fault_ref, env);
+
+            nested_confble = WODEN_BINDING_FAULT_REF_GET_BASE_IMPL(fault_ref, env);
+            configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(fault_ref, env, ext_element);
         }
 
@@ -2796,10 +2922,21 @@ parse_binding_msg_ref(
         else
         {
             void *ext_element = NULL;
+            void *nested_confble = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "binding_msg_ref_element", 
                     msg_ref, temp_el_node, desc);
-            msg_ref = woden_wsdl10_binding_msg_ref_to_element_extensible(msg_ref, env);
+
+            nested_confble = WODEN_WSDL10_BINDING_MSG_REF_GET_BASE_IMPL(msg_ref, env);
+            configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(msg_ref, env, ext_element);
         }
 
@@ -2951,10 +3088,19 @@ parse_svc(
         else
         {
             void *ext_element = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "svc_element", 
                     svc, temp_el_node, desc);
-            svc = woden_svc_to_element_extensible(svc, env);
+
+            configurable = WODEN_SVC_GET_BASE_IMPL(svc, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(svc, env, ext_element);
         }
 
@@ -3109,10 +3255,21 @@ parse_endpoint(
         else
         {
             void *ext_element = NULL;
+            void *nested_confble = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "endpoint_element", 
                     endpoint, temp_el_node, desc);
-            endpoint = woden_endpoint_to_element_extensible(endpoint, env);
+
+            nested_confble = WODEN_ENDPOINT_GET_BASE_IMPL(endpoint, env);
+            configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(endpoint, env, ext_element);
         }
 
@@ -3206,10 +3363,17 @@ parse_feature(
         else
         {
             void *ext_element = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "feature_element", 
                     feature, temp_el_node, desc);
-            feature = woden_feature_to_element_extensible(feature, env);
+
+            documentable = WODEN_FEATURE_GET_BASE_IMPL(feature, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(feature, env, ext_element);
         }
 
@@ -3372,10 +3536,17 @@ parse_property(
         else
         {
             void *ext_element = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "property_element", 
                     property, temp_el_node, desc);
-            property = woden_property_to_element_extensible(property, env);
+
+            documentable = WODEN_PROPERTY_GET_BASE_IMPL(property, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(property, env, ext_element);
         }
 
@@ -3448,11 +3619,13 @@ parse_ext_attributes(
                     if(NULL != xml_attr)
                     {
                         axis2_char_t *attr_value = NULL;
+                        void *wsdl_el = NULL;
 
                         attr_value = AXIOM_ATTRIBUTE_GET_VALUE((axiom_attribute_t *) om_attr, env);
                         WODEN_XML_ATTR_INIT(xml_attr, env, om_el, 
                                 om_el_node, attr_type, attr_value);
-                        WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTR(wsdl_obj, env, 
+                        wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+                        WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTR(wsdl_el, env, 
                                 attr_type, xml_attr);
                     }
                 }

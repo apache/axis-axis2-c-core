@@ -693,6 +693,18 @@ create(const axis2_env_t *env)
     desc_impl->desc.ops->get_type_defs = woden_wsdl10_desc_get_type_defs;
     desc_impl->desc.ops->get_type_def = woden_wsdl10_desc_get_type_def;
     desc_impl->desc.ops->to_element = woden_wsdl10_desc_to_element;
+    desc_impl->desc.ops->add_to_all_interfaces = 
+        woden_wsdl10_desc_add_to_all_interfaces;
+    desc_impl->desc.ops->add_to_all_bindings = 
+        woden_wsdl10_desc_add_to_all_bindings;
+    desc_impl->desc.ops->add_to_all_svcs = 
+        woden_wsdl10_desc_add_to_all_svcs;
+    desc_impl->desc.ops->add_to_all_element_decls = 
+        woden_wsdl10_desc_add_to_all_element_decls;
+    desc_impl->desc.ops->add_to_all_type_defs = 
+        woden_wsdl10_desc_add_to_all_type_defs;
+    desc_impl->desc.ops->add_to_all_msgs = 
+        woden_wsdl10_desc_add_to_all_msgs;
 
     desc_impl->f_namespcs = axis2_hash_make(env);
     if(!desc_impl->f_namespcs) 
@@ -705,10 +717,23 @@ create(const axis2_env_t *env)
     desc_impl->f_msg_elements = axis2_array_list_create(env, 0);
     desc_impl->f_interface_elements = axis2_array_list_create(env, 0);
     desc_impl->f_svc_elements = axis2_array_list_create(env, 0);
+    desc_impl->f_all_svcs = axis2_array_list_create(env, 0);
+    desc_impl->f_all_bindings = axis2_array_list_create(env, 0);
+    desc_impl->f_all_msgs = axis2_array_list_create(env, 0);
+    desc_impl->f_all_interfaces = axis2_array_list_create(env, 0);
+    desc_impl->f_all_type_defs = axis2_array_list_create(env, 0);
+    desc_impl->f_all_element_decls = axis2_array_list_create(env, 0);
     if(!desc_impl->f_interface_elements ||
             !desc_impl->f_msg_elements || 
             !desc_impl->f_svc_elements || 
-            !desc_impl->f_binding_elements) 
+            !desc_impl->f_binding_elements ||
+            !desc_impl->f_all_interfaces || 
+            !desc_impl->f_all_bindings || 
+            !desc_impl->f_all_svcs || 
+            !desc_impl->f_all_msgs || 
+            !desc_impl->f_all_element_decls || 
+            !desc_impl->f_all_type_defs
+            ) 
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;

@@ -2207,6 +2207,9 @@ parse_binding(
     axiom_element_t *temp_el;
     axiom_node_t *temp_el_node;
     axis2_qname_t *intface_qn = NULL;
+    void *configurable = NULL;
+    void *documentable = NULL;
+    void *wsdl_obj = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     desc = woden_desc_to_desc_element(desc, env);
@@ -2276,7 +2279,10 @@ parse_binding(
     
     /* TODO extends attribute */
   
-    binding = woden_binding_to_attr_extensible(binding, env);
+    configurable = WODEN_BINDING_GET_BASE_IMPL(binding, env);
+    documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+    wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+
     status = parse_ext_attributes(reader, env, binding_el_node, "binding_element", 
             binding, desc);
     if(AXIS2_SUCCESS != status)
@@ -2354,11 +2360,20 @@ parse_binding(
         else
         {
             void *ext_element = NULL;
+            void *configurable = NULL;
+            void *documentable = NULL;
+            void *wsdl_obj = NULL;
+            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "binding_element", 
                     binding, temp_el_node, desc);
-            binding = woden_binding_to_element_extensible(binding, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(binding, env, ext_element);
+            configurable = WODEN_BINDING_GET_BASE_IMPL(binding, env);
+            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+            
+            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 

@@ -141,6 +141,14 @@ create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    axis2_hash_set(configurable_impl->methods, "add_property_element", 
+            AXIS2_HASH_KEY_STRING, woden_configurable_add_property_element);
+    axis2_hash_set(configurable_impl->methods, "get_property_elements", 
+            AXIS2_HASH_KEY_STRING, woden_configurable_get_property_elements);
+    axis2_hash_set(configurable_impl->methods, "add_feature_element", 
+            AXIS2_HASH_KEY_STRING, woden_configurable_add_feature_element);
+    axis2_hash_set(configurable_impl->methods, "get_feature_elements", 
+            AXIS2_HASH_KEY_STRING, woden_configurable_get_feature_elements);
 
     configurable_impl->configurable.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_configurable_ops_t));

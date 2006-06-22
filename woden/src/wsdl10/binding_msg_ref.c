@@ -890,7 +890,7 @@ woden_wsdl10_binding_msg_ref_set_qname(
     binding_msg_ref_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL10_BINDING_MSG_REF", AXIS2_HASH_KEY_STRING));
 
-    if(!binding_msg_ref_impl->f_qname)
+    if(binding_msg_ref_impl->f_qname)
     {
         AXIS2_QNAME_FREE(binding_msg_ref_impl->f_qname, env);
         binding_msg_ref_impl->f_qname = NULL;

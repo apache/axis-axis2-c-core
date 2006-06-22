@@ -176,7 +176,8 @@ woden_wsdl_element_to_attr_extensible(
             AXIS2_MALLOC(env->allocator, 
             sizeof(woden_attr_extensible_ops_t));
     woden_attr_extensible_resolve_methods(&(wsdl_element_impl->
-            wsdl_element.base.attr_extensible), env, NULL, wsdl_element_impl->methods);
+            wsdl_element.base.attr_extensible), env, wsdl_element_impl->
+            f_attr_ext, wsdl_element_impl->methods);
     return wsdl_element;
 
 }
@@ -235,6 +236,15 @@ create(
     wsdl_element_impl->wsdl_element.ops->super_objs = 
         woden_wsdl_element_super_objs;
     wsdl_element_impl->wsdl_element.ops->type = woden_wsdl_element_type;
+        
+    wsdl_element_impl->super = axis2_hash_make(env);
+    if(!wsdl_element_impl->super) 
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    axis2_hash_set(wsdl_element_impl->super, "WODEN_WSDL_ELEMENT", 
+            AXIS2_HASH_KEY_STRING, &(wsdl_element_impl->wsdl_element));
     
     wsdl_element_impl->methods = axis2_hash_make(env);
     if(!wsdl_element_impl->methods) 
@@ -302,6 +312,10 @@ woden_wsdl_element_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
+    axis2_hash_set(wsdl_element_impl->super, "WODEN_ELEMENT_EXTENSIBLE", 
+            AXIS2_HASH_KEY_STRING, &(wsdl_element_impl->wsdl_element));
+    axis2_hash_set(wsdl_element_impl->super, "WODEN_ATTR_EXTENSIBLE", 
+            AXIS2_HASH_KEY_STRING, &(wsdl_element_impl->wsdl_element));
     axis2_hash_set(wsdl_element_impl->super, "WODEN_WSDL_ELEMENT", 
             AXIS2_HASH_KEY_STRING, &(wsdl_element_impl->wsdl_element));
  
