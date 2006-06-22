@@ -123,7 +123,7 @@ extern "C"
         ((doctype)->ops->free(doctype, env))
 /** returns the value of doctype */
 #define AXIOM_DOCTYPE_GET_VALUE(doctype, env) \
-        ((doctype)->ops->get_value(doctype, value))
+        ((doctype)->ops->get_value(doctype, env))
 /** set the doctype value */
 #define AXIOM_DOCTYPE_SET_VALUE(doctype, env, value) \
         ((doctype)->ops->set_value(doctype, env, value))
