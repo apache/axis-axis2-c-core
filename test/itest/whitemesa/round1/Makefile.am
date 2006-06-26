@@ -14,6 +14,7 @@ round1_LDADD   =    $(LDFLAGS) \
                     $(LIBXML2_LIBS)
 
 INCLUDES = -I$(top_builddir)/include \
+           -I$(top_builddir)/xml_schema/include \
 			@AXIOMINC@ \
 			@UTILINC@ 
 

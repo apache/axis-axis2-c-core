@@ -17,6 +17,7 @@
 #include <axis2_svc.h>
 #include <axis2_addr.h>
 #include <axis2_property.h>
+#include <xml_schema_obj_collection.h>
 
 typedef struct axis2_svc_impl axis2_svc_impl_t;
    
@@ -26,17 +27,56 @@ typedef struct axis2_svc_impl axis2_svc_impl_t;
  */ 
 struct axis2_svc_impl
 {
-   axis2_svc_t svc;
-   axis2_svc_grp_t *parent;
-   axis2_hash_t *wasaction_op_map;  
+    axis2_svc_t svc;
+    axis2_svc_grp_t *parent;
+    axis2_hash_t *wasaction_op_map;  
     axis2_char_t *axis_svc_name; 
     /** to keep the time that last update time of the service */
     long last_update;
     axis2_char_t *filename;
     /* axis2_wsdl_svc_t *service_impl; */
     /** to store module ref at deploy time parsing */
-    axis2_array_list_t *module_list;    
-
+    axis2_array_list_t *module_list;
+    /**
+     * WSDL related stuff
+     */
+    axis2_hash_t *ns_map;
+    /* count of the entires in the ns map */
+     int ns_count;
+    /* to keep the XMLScheama getting either from WSDL or 
+     * C2WSDL(in the future)
+     */
+    axis2_array_list_t *schema_list;    
+    /**
+     * A table that keeps a mapping of unique xsd names (Strings)
+     * against the schema objects. This is populated in the first
+     * instance the schemas are asked for and then used to serve
+     * the subsequent requests
+     */
+    axis2_hash_t *schema_mapping_table;
+    /**
+     * Keeps track whether the schema locations are adjusted
+     */
+    axis2_bool_t schema_loc_adjusted;
+    /**
+     * A custom schema Name prefix. if set this will be used to
+     * modify the schema names
+     */
+    axis2_char_t *custom_schema_name_prefix;
+    /**
+     * A custom schema name suffix. will be attached to the
+     * schema file name when the files are uniquely named.
+     * A good place to add a file extension if needed
+     */
+    axis2_char_t *custom_schema_name_suffix;
+    /* to store the target namespace for the schema */
+    axis2_char_t *schema_target_ns;
+    axis2_char_t *schema_target_ns_prefix;
+    /* to keep the service target name space */
+    axis2_char_t *target_ns;
+    axis2_char_t *target_ns_prefix;
+    /* Used for schema name calculations */
+    int sc_calc_count;
 };
 
 #define AXIS2_INTF_TO_IMPL(svc) ((axis2_svc_impl_t *)svc)
@@ -261,10 +301,150 @@ axis2_svc_add_module_ref(axis2_svc_t *svc,
 axis2_array_list_t *AXIS2_CALL
 axis2_svc_get_modules(axis2_svc_t *svc,
                         const axis2_env_t *env);
+                        
+axis2_bool_t AXIS2_CALL
+axis2_svc_is_schema_location_adjusted(axis2_svc_t *svc,
+                        const axis2_env_t *env);
 
+
+axis2_status_t AXIS2_CALL
+axis2_svc_set_schema_location_adjusted(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_bool_t adjusted);
+
+axis2_hash_t* AXIS2_CALL
+axis2_svc_get_schema_mapping_table(axis2_svc_t *svc,
+                        const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+axis2_svc_set_schema_mapping_table(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_hash_t *table);
+                        
+axis2_char_t* AXIS2_CALL
+axis2_svc_get_schema_custom_schema_prefix(axis2_svc_t *svc,
+                        const axis2_env_t *env);
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_schema_custom_schema_prefix(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *prefix);
+                        
+axis2_char_t* AXIS2_CALL
+axis2_svc_get_schema_custom_schema_suffix(axis2_svc_t *svc,
+                        const axis2_env_t *env);
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_schema_custom_schema_suffix(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *suffix);
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_print_schema(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_stream_t *out_stream);
+
+xml_schema_t* AXIS2_CALL
+axis2_svc_get_schema(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        int index);
+                        
+xml_schema_t* AXIS2_CALL
+axis2_svc_add_namespaces(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        int index);
+                        
+axis2_array_list_t* AXIS2_CALL
+axis2_svc_get_schemas(axis2_svc_t *svc,
+                        const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+axis2_svc_add_schema(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        xml_schema_t *schema);
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_add_schemas(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_array_list_t *schemas);
+
+axis2_char_t* AXIS2_CALL
+axis2_svc_get_schema_target_ns(axis2_svc_t *svc,
+                        const axis2_env_t *env);
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_schema_target_ns(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *ns);
+                        
+axis2_char_t* AXIS2_CALL
+axis2_svc_get_schema_target_ns_prefix(axis2_svc_t *svc,
+                        const axis2_env_t *env);
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_schema_target_ns_prefix(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *prefix);
+
+axis2_char_t* AXIS2_CALL
+axis2_svc_get_target_ns(axis2_svc_t *svc,
+                        const axis2_env_t *env);
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_target_ns(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *ns);                        
+axis2_char_t* AXIS2_CALL
+axis2_svc_get_target_ns_prefix(axis2_svc_t *svc,
+                        const axis2_env_t *env);
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_target_ns_prefix(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *prefix);
+                        
+xml_schema_element_t* AXIS2_CALL
+axis2_svc_get_schema_element(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_qname_t *qname);
+
+axis2_hash_t* AXIS2_CALL
+axis2_svc_get_ns_map(axis2_svc_t *svc,
+                        const axis2_env_t *env);
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_ns_map(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_hash_t *ns_map);
+
+axis2_status_t AXIS2_CALL
+axis2_svc_add_schema_ns(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *ns);
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_populate_schema_mappings(axis2_svc_t *svc,
+                        const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+axis2_svc_calculate_schema_names(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        xml_schema_t *schema,
+                        axis2_hash_t *names);
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_adjust_schema_names(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        xml_schema_t *schema,
+                        axis2_hash_t *names);
+
+axis2_hash_t* AXIS2_CALL
+axis2_svc_swap_mapping_table(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_hash_t *orig_table);
 /************************* End of function headers ***************************/
 
-axis2_svc_t * AXIS2_CALL
+AXIS2_EXTERN axis2_svc_t * AXIS2_CALL
 axis2_svc_create (const axis2_env_t *env)
 {
     axis2_svc_impl_t *svc_impl = NULL;
@@ -293,6 +473,18 @@ axis2_svc_create (const axis2_env_t *env)
     svc_impl->svc.wsdl_svc = NULL;
     svc_impl->wasaction_op_map = NULL;
     svc_impl->module_list = NULL;
+    svc_impl->ns_map = NULL;
+    svc_impl->ns_count = 0;
+    svc_impl->schema_list = NULL;    
+    svc_impl->schema_mapping_table = NULL;
+    svc_impl->schema_loc_adjusted = AXIS2_FALSE;
+    svc_impl->custom_schema_name_prefix = NULL;
+    svc_impl->custom_schema_name_suffix = NULL;
+    svc_impl->schema_target_ns = NULL;
+    svc_impl->schema_target_ns_prefix = NULL;
+    svc_impl->target_ns = NULL;
+    svc_impl->target_ns_prefix = NULL;
+    svc_impl->sc_calc_count = 0;
     
     svc_impl->svc.param_container = axis2_param_container_create(env);      
    if(NULL == svc_impl->svc.param_container)
@@ -397,18 +589,32 @@ axis2_svc_create (const axis2_env_t *env)
         return NULL;
     }
     
-   svc_impl->svc.ops->free = axis2_svc_free;
-   svc_impl->svc.ops->add_op = axis2_svc_add_op;
-   svc_impl->svc.ops->get_op_with_qname = axis2_svc_get_op_with_qname;
-   svc_impl->svc.ops->get_op_with_name = axis2_svc_get_op_with_name;
-   svc_impl->svc.ops->get_ops = axis2_svc_get_ops;
-   svc_impl->svc.ops->set_parent = axis2_svc_set_parent;
-   svc_impl->svc.ops->get_parent = axis2_svc_get_parent;
+    svc_impl->schema_list = axis2_array_list_create(env, 
+                        AXIS2_ARRAY_LIST_DEFAULT_CAPACITY);    
+    if(NULL == svc_impl->schema_list)
+    {
+        axis2_svc_free(&(svc_impl->svc), env);
+        return NULL;
+    }
+    
+    svc_impl->schema_loc_adjusted = AXIS2_FALSE;
+    svc_impl->schema_target_ns_prefix = AXIS2_STRDUP("ns", env);
+    svc_impl->target_ns = AXIS2_STRDUP("http://ws.apache.org/axis2", env);
+    svc_impl->target_ns_prefix = AXIS2_STRDUP("tns", env);
+    svc_impl->sc_calc_count = 0;
+   
+    svc_impl->svc.ops->free = axis2_svc_free;
+    svc_impl->svc.ops->add_op = axis2_svc_add_op;
+    svc_impl->svc.ops->get_op_with_qname = axis2_svc_get_op_with_qname;
+    svc_impl->svc.ops->get_op_with_name = axis2_svc_get_op_with_name;
+    svc_impl->svc.ops->get_ops = axis2_svc_get_ops;
+    svc_impl->svc.ops->set_parent = axis2_svc_set_parent;
+    svc_impl->svc.ops->get_parent = axis2_svc_get_parent;
     svc_impl->svc.ops->set_qname = axis2_svc_set_qname;
-   svc_impl->svc.ops->get_qname = axis2_svc_get_qname;
-   svc_impl->svc.ops->add_param = axis2_svc_add_param;
-   svc_impl->svc.ops->get_param = axis2_svc_get_param;
-   svc_impl->svc.ops->get_params = axis2_svc_get_params;
+    svc_impl->svc.ops->get_qname = axis2_svc_get_qname;
+    svc_impl->svc.ops->add_param = axis2_svc_add_param;
+    svc_impl->svc.ops->get_param = axis2_svc_get_param;
+    svc_impl->svc.ops->get_params = axis2_svc_get_params;
     svc_impl->svc.ops->is_param_locked = axis2_svc_is_param_locked;
     svc_impl->svc.ops->set_svc_interface = axis2_svc_set_svc_interface;
     svc_impl->svc.ops->get_svc_interface = axis2_svc_get_svc_interface;
@@ -448,7 +654,45 @@ axis2_svc_create (const axis2_env_t *env)
     svc_impl->svc.ops->add_module_ref = axis2_svc_add_module_ref;
     svc_impl->svc.ops->get_modules = axis2_svc_get_modules;
     
-   return &(svc_impl->svc);   
+    svc_impl->svc.ops->is_schema_location_adjusted = 
+                        axis2_svc_is_schema_location_adjusted;
+    svc_impl->svc.ops->set_schema_location_adjusted = 
+                        axis2_svc_set_schema_location_adjusted;
+    svc_impl->svc.ops->get_schema_mapping_table = 
+                        axis2_svc_get_schema_mapping_table;
+    svc_impl->svc.ops->set_schema_mapping_table = 
+                        axis2_svc_set_schema_mapping_table;
+    svc_impl->svc.ops->get_schema_custom_schema_prefix = 
+                        axis2_svc_get_schema_custom_schema_prefix;
+    svc_impl->svc.ops->set_schema_custom_schema_prefix = 
+                        axis2_svc_set_schema_custom_schema_prefix;
+    svc_impl->svc.ops->get_schema_custom_schema_suffix = 
+                        axis2_svc_get_schema_custom_schema_suffix;
+    svc_impl->svc.ops->set_schema_custom_schema_suffix = 
+                        axis2_svc_set_schema_custom_schema_suffix;
+    svc_impl->svc.ops->print_schema = axis2_svc_print_schema;
+    svc_impl->svc.ops->get_schema = axis2_svc_get_schema;
+    svc_impl->svc.ops->add_namespaces = axis2_svc_add_namespaces;
+    svc_impl->svc.ops->get_schemas = axis2_svc_get_schemas;
+    svc_impl->svc.ops->add_schema = axis2_svc_add_schema;
+    svc_impl->svc.ops->add_schemas = axis2_svc_add_schemas;
+    svc_impl->svc.ops->get_schema_target_ns = axis2_svc_get_schema_target_ns;
+    svc_impl->svc.ops->set_schema_target_ns = axis2_svc_set_schema_target_ns;
+    svc_impl->svc.ops->get_schema_target_ns_prefix = 
+                        axis2_svc_get_schema_target_ns_prefix;
+    svc_impl->svc.ops->set_schema_target_ns_prefix = 
+                        axis2_svc_set_schema_target_ns_prefix;
+    svc_impl->svc.ops->get_target_ns = axis2_svc_get_target_ns;
+    svc_impl->svc.ops->set_target_ns = axis2_svc_set_target_ns;
+    svc_impl->svc.ops->get_target_ns_prefix = axis2_svc_get_target_ns_prefix;
+    svc_impl->svc.ops->set_target_ns_prefix = axis2_svc_set_target_ns_prefix;
+    svc_impl->svc.ops->get_schema_element = axis2_svc_get_schema_element;
+    svc_impl->svc.ops->get_ns_map = axis2_svc_get_ns_map;
+    svc_impl->svc.ops->set_ns_map = axis2_svc_set_ns_map;
+    svc_impl->svc.ops->populate_schema_mappings = 
+                        axis2_svc_populate_schema_mappings;
+    
+    return &(svc_impl->svc);   
 }
 
 axis2_svc_t * AXIS2_CALL
@@ -476,6 +720,7 @@ axis2_svc_create_with_qname (const axis2_env_t *env,
    
    return &(svc_impl->svc);
 }
+
 
 AXIS2_EXTERN axis2_svc_t * AXIS2_CALL
 axis2_svc_create_with_wsdl_svc (const axis2_env_t *env, 
@@ -1636,4 +1881,648 @@ axis2_svc_get_modules(axis2_svc_t *svc,
     AXIS2_ENV_CHECK(env, NULL);
     
     return AXIS2_INTF_TO_IMPL(svc)->module_list;
+}
+
+axis2_bool_t AXIS2_CALL
+axis2_svc_is_schema_location_adjusted(axis2_svc_t *svc,
+                        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
+    return AXIS2_INTF_TO_IMPL(svc)->schema_loc_adjusted;
+}
+
+
+axis2_status_t AXIS2_CALL
+axis2_svc_set_schema_location_adjusted(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_bool_t adjusted)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(svc)->schema_loc_adjusted = adjusted;
+    return AXIS2_SUCCESS;
+}
+
+axis2_hash_t* AXIS2_CALL
+axis2_svc_get_schema_mapping_table(axis2_svc_t *svc,
+                        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(svc)->schema_mapping_table;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_svc_set_schema_mapping_table(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_hash_t *table)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, table, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    if(NULL != svc_impl->schema_mapping_table)
+    {
+        axis2_hash_free(svc_impl->schema_mapping_table, env);
+        svc_impl->schema_mapping_table = NULL;
+    }
+    svc_impl->schema_mapping_table = table;
+    return AXIS2_SUCCESS;
+}
+                        
+axis2_char_t* AXIS2_CALL
+axis2_svc_get_schema_custom_schema_prefix(axis2_svc_t *svc,
+                        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(svc)->custom_schema_name_prefix;
+}
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_schema_custom_schema_prefix(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *prefix)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    if(NULL != svc_impl->custom_schema_name_prefix)
+    {
+        AXIS2_FREE(env->allocator, svc_impl->custom_schema_name_prefix);
+        svc_impl->custom_schema_name_prefix = NULL;
+    }
+    svc_impl->custom_schema_name_prefix = AXIS2_STRDUP(prefix, env);
+    if(NULL == svc_impl->custom_schema_name_prefix)
+    {
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
+}
+
+                        
+axis2_char_t* AXIS2_CALL
+axis2_svc_get_schema_custom_schema_suffix(axis2_svc_t *svc,
+                        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(svc)->custom_schema_name_suffix;
+}
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_schema_custom_schema_suffix(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *suffix)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    if(NULL != svc_impl->custom_schema_name_suffix)
+    {
+        AXIS2_FREE(env->allocator, svc_impl->custom_schema_name_suffix);
+        svc_impl->custom_schema_name_suffix = NULL;
+    }
+    svc_impl->custom_schema_name_suffix = AXIS2_STRDUP(suffix, env);
+    if(NULL == svc_impl->custom_schema_name_suffix)
+    {
+        return AXIS2_FAILURE;
+    }
+    return AXIS2_SUCCESS;
+}
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_print_schema(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_stream_t *out_stream)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    int size = 0;
+    int i = 0;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    if(NULL == svc_impl->schema_list)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_EMPTY_SCHEMA_LIST, 
+                        AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    
+    size = AXIS2_ARRAY_LIST_SIZE(svc_impl->schema_list, env);
+    for(i = 0; i < size; i++)
+    {
+        xml_schema_t *schema = NULL;
+        axis2_char_t *buffer = NULL;
+        schema = AXIS2_ARRAY_LIST_GET(svc_impl->schema_list, env, i);
+        buffer = XML_SCHEMA_SERIALIZE(schema, env);
+        if(NULL != buffer)
+        {
+            AXIS2_STREAM_WRITE(out_stream, env, buffer, AXIS2_STRLEN(buffer));
+        }
+        AXIS2_FREE(env->allocator, buffer);
+    }
+    return AXIS2_SUCCESS;
+}
+
+xml_schema_t* AXIS2_CALL
+axis2_svc_get_schema(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        int index)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return axis2_svc_add_namespaces(svc, env, index);
+}
+                        
+xml_schema_t* AXIS2_CALL
+axis2_svc_add_namespaces(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        int index)
+{
+    xml_schema_t *schema = NULL;
+    axis2_svc_impl_t *svc_impl = NULL;
+    axis2_hash_t *prefix_map = NULL;
+    axis2_hash_index_t *hi = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    if(NULL == svc_impl->schema_list)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_EMPTY_SCHEMA_LIST, 
+                        AXIS2_FAILURE);
+        return NULL;
+    }
+    schema = (xml_schema_t*)AXIS2_ARRAY_LIST_GET(svc_impl->schema_list, env, index);
+    prefix_map = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(schema, env);
+    if(NULL == prefix_map)
+    {
+        return NULL;
+    }
+    for (hi = axis2_hash_first (svc_impl->ns_map, env); NULL != hi; 
+                        hi = axis2_hash_next (env, hi))
+    {
+        axis2_char_t *value = NULL;
+        axis2_char_t *key = NULL;
+        axis2_hash_this (hi, (const void **)&key, NULL, (void **)&value);
+        if(NULL != value)
+        {
+            axis2_hash_set(prefix_map, key, AXIS2_HASH_KEY_STRING, value);
+        }
+     }
+     return schema;
+}
+
+axis2_array_list_t* AXIS2_CALL
+axis2_svc_get_schemas(axis2_svc_t *svc,
+                        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(svc)->schema_list;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_svc_add_schema(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        xml_schema_t *schema)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, schema, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    if(NULL == svc_impl->schema_list)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_EMPTY_SCHEMA_LIST, 
+                        AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    }
+    AXIS2_ARRAY_LIST_ADD(svc_impl->schema_list, env, schema);
+    return axis2_svc_add_schema_ns(svc, env, XML_SCHEMA_GET_TARGET_NAMESPACE(
+                        schema, env));
+}
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_add_schemas(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_array_list_t *schemas)
+{
+    int i = 0;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, schemas, AXIS2_FAILURE);
+    
+    for(i = 0; i < AXIS2_ARRAY_LIST_SIZE(schemas, env); i++)
+    {
+        xml_schema_t *schema = AXIS2_ARRAY_LIST_GET(schemas, env, i);
+        axis2_svc_add_schema(svc, env, schema);
+    }
+    return AXIS2_SUCCESS;
+}
+
+axis2_char_t* AXIS2_CALL
+axis2_svc_get_schema_target_ns(axis2_svc_t *svc,
+                        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(svc)->schema_target_ns;
+}
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_schema_target_ns(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *ns)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ns, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    if(NULL != svc_impl->schema_target_ns)
+    {
+        AXIS2_FREE(env->allocator, svc_impl->schema_target_ns);
+        svc_impl->schema_target_ns = NULL;
+    }
+    svc_impl->schema_target_ns = AXIS2_STRDUP(ns, env);
+    return AXIS2_SUCCESS;
+}
+                        
+axis2_char_t* AXIS2_CALL
+axis2_svc_get_schema_target_ns_prefix(axis2_svc_t *svc,
+                        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(svc)->schema_target_ns_prefix;
+}
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_schema_target_ns_prefix(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *prefix)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, prefix, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    if(NULL != svc_impl->schema_target_ns_prefix)
+    {
+        AXIS2_FREE(env->allocator, svc_impl->schema_target_ns_prefix);
+        svc_impl->schema_target_ns_prefix = NULL;
+    }
+    svc_impl->schema_target_ns_prefix = AXIS2_STRDUP(prefix, env);
+    return AXIS2_SUCCESS;
+}
+
+axis2_char_t* AXIS2_CALL
+axis2_svc_get_target_ns(axis2_svc_t *svc,
+                        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(svc)->target_ns;
+}
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_target_ns(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *ns)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ns, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    if(NULL != svc_impl->target_ns)
+    {
+        AXIS2_FREE(env->allocator, svc_impl->target_ns);
+        svc_impl->target_ns = NULL;
+    }
+    svc_impl->target_ns = AXIS2_STRDUP(ns, env);
+    return AXIS2_SUCCESS;
+}
+
+axis2_char_t* AXIS2_CALL
+axis2_svc_get_target_ns_prefix(axis2_svc_t *svc,
+                        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(svc)->target_ns_prefix;
+}
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_target_ns_prefix(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *prefix)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, prefix, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    if(NULL != svc_impl->target_ns_prefix)
+    {
+        AXIS2_FREE(env->allocator, svc_impl->target_ns_prefix);
+        svc_impl->target_ns_prefix = NULL;
+    }
+    svc_impl->target_ns_prefix = AXIS2_STRDUP(prefix, env);
+    return AXIS2_SUCCESS;
+}
+                        
+xml_schema_element_t* AXIS2_CALL
+axis2_svc_get_schema_element(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_qname_t *qname)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    int i = 0;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    for(i = 0; i < AXIS2_ARRAY_LIST_SIZE(svc_impl->schema_list, env); i++)
+    {
+        xml_schema_t *schema = NULL;
+        xml_schema_element_t *schema_element = NULL;
+        schema = AXIS2_ARRAY_LIST_GET(svc_impl->schema_list, env, i);
+        if(NULL != schema)
+        {
+            schema_element = XML_SCHEMA_GET_ELEMENT_BY_QNAME(schema, env, 
+                            qname);
+            if(NULL != schema_element)
+            {
+                return schema_element;
+            }
+        }
+    }
+    return NULL;
+}
+
+axis2_hash_t* AXIS2_CALL
+axis2_svc_get_ns_map(axis2_svc_t *svc,
+                        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);
+    return AXIS2_INTF_TO_IMPL(svc)->ns_map;
+}
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_set_ns_map(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_hash_t *ns_map)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    axis2_hash_index_t *hi = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ns_map, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    
+    if(NULL != svc_impl->ns_map)
+    {
+        for (hi = axis2_hash_first (svc_impl->ns_map, env); NULL != hi; 
+                        hi = axis2_hash_next (env, hi))
+        {
+            axis2_char_t *value = NULL;
+            axis2_char_t *key = NULL;
+            axis2_hash_this (hi, (const void **)&key, NULL, 
+                        (void **)&value);
+            if(NULL != key)
+            {
+                AXIS2_FREE(env->allocator, key);
+                key = NULL;
+            }
+            if(NULL != value)
+            {
+                AXIS2_FREE(env->allocator, value);
+                value = NULL;
+            }
+        }
+        axis2_hash_free(svc_impl->ns_map, env);
+    }
+    svc_impl->ns_map = ns_map;
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_svc_add_schema_ns(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_char_t *ns)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    axis2_bool_t found = AXIS2_FALSE;
+    axis2_hash_index_t *hi = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, ns, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    if(NULL != svc_impl->ns_map && axis2_hash_count(svc_impl->ns_map) > 0)
+    {
+        for (hi = axis2_hash_first (svc_impl->ns_map, env); NULL != hi; 
+                        hi = axis2_hash_next (env, hi))
+        {
+            axis2_char_t *value = NULL;
+            axis2_char_t *key = NULL;
+            axis2_hash_this (hi, (const void **)&key, NULL, 
+                        (void **)&value);
+            if(0 == AXIS2_STRCMP(value, ns))
+            {
+                found = AXIS2_TRUE;
+                break;
+            }
+        }
+    }
+    if(NULL == svc_impl->ns_map)
+    {
+        svc_impl->ns_map = axis2_hash_make(env);
+        svc_impl->ns_map = NULL;
+    }
+    if(AXIS2_FALSE == found)
+    {
+        axis2_char_t str_count[32];
+        axis2_char_t *tmp_val = NULL;
+        axis2_char_t *key = NULL;
+
+        tmp_val = AXIS2_STRDUP(ns, env);
+        sprintf(str_count, "%d", svc_impl->ns_count);
+        key = AXIS2_STRACAT("ns", str_count, env);
+        axis2_hash_set(svc_impl->ns_map, key, AXIS2_HASH_KEY_STRING, tmp_val);
+        svc_impl->ns_count++;
+    }
+    return AXIS2_SUCCESS;
+}
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_populate_schema_mappings(axis2_svc_t *svc,
+                        const axis2_env_t *env)
+{
+    axis2_array_list_t *schemas = NULL;
+    axis2_svc_impl_t *svc_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    schemas = axis2_svc_get_schemas(svc, env);
+    if(NULL == schemas)
+    {
+        return AXIS2_FAILURE;
+    }
+    if(AXIS2_FALSE == axis2_svc_is_schema_location_adjusted(svc, env))
+    {
+        int count = 0;
+        int i = 0;
+        axis2_hash_t *name_table = axis2_hash_make(env);
+        axis2_hash_t *schema_table = NULL;
+        
+        count = AXIS2_ARRAY_LIST_SIZE(schemas, env);
+        /* calculate unique names for the schemas */
+        for(i = 0; i < count; i++)
+        {
+            xml_schema_t *schema = AXIS2_ARRAY_LIST_GET(schemas, env, i);
+            axis2_svc_calculate_schema_names(svc, env, schema, name_table);
+        }
+        /* adjust the schema locations as per the calculated names */
+        for(i = 0; i < count; i++)
+        {
+            xml_schema_t *schema = AXIS2_ARRAY_LIST_GET(schemas, env, i);
+            axis2_svc_adjust_schema_names(svc, env, schema, name_table);
+        }
+        /* reverse the nametable so that there is a mapping from the
+         * name to the schema
+         */
+        schema_table = axis2_svc_swap_mapping_table(svc, env, name_table);
+        axis2_svc_set_schema_mapping_table(svc, env, schema_table);
+    }
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_svc_calculate_schema_names(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        xml_schema_t *schema,
+                        axis2_hash_t *name_table)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    xml_schema_obj_collection_t *collection = NULL;
+    xml_schema_obj_t *schema_obj = NULL;
+    int count = 0;
+    int i = 0;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, schema, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, name_table, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    collection = XML_SCHEMA_GET_INCLUDES(schema, env);
+    count = XML_SCHEMA_OBJ_COLLECTION_GET_COUNT(collection, env);
+    
+    for(i = 0; i < count; i++)
+    {
+        schema_obj = XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(collection, env, i);
+        if(XML_SCHEMA_EXTERNAL == XML_SCHEMA_OBJ_GET_TYPE(schema_obj, env))
+        {
+            xml_schema_external_t *schema_external = NULL;
+            xml_schema_t *schema1 = NULL;
+            schema_external = (xml_schema_external_t *)schema_obj;
+            schema1 = XML_SCHEMA_EXTERNAL_GET_SCHEMA(schema_external, env);
+            if(NULL != schema1)
+            {
+                axis2_char_t *name = NULL;
+                axis2_char_t str_count[32];
+                sprintf(str_count, "%d", svc_impl->sc_calc_count++);
+                axis2_svc_calculate_schema_names(svc, env, schema1, name_table);
+                name = axis2_strcat(env, "xsd", str_count, 
+                        svc_impl->custom_schema_name_suffix, NULL);
+                axis2_hash_set(name_table, schema1, AXIS2_HASH_KEY_STRING,
+                        name);
+            }
+        }
+    }
+    return AXIS2_SUCCESS;
+}
+                        
+axis2_status_t AXIS2_CALL
+axis2_svc_adjust_schema_names(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        xml_schema_t *schema,
+                        axis2_hash_t *names)
+{
+    axis2_svc_impl_t *svc_impl = NULL;
+    xml_schema_obj_collection_t *collection = NULL;
+    xml_schema_obj_t *schema_obj = NULL;
+    int count = 0;
+    int i = 0;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, schema, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, names, AXIS2_FAILURE);
+    
+    svc_impl = AXIS2_INTF_TO_IMPL(svc);
+    collection = XML_SCHEMA_GET_INCLUDES(schema, env);
+    count = XML_SCHEMA_OBJ_COLLECTION_GET_COUNT(collection, env);
+    for(i = 0; i < count; i++)
+    {
+        schema_obj = XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(collection, env, i);
+        if(XML_SCHEMA_EXTERNAL == XML_SCHEMA_OBJ_GET_TYPE(schema_obj, env))
+        {
+            xml_schema_external_t *schema_external = NULL;
+            xml_schema_t *schema1 = NULL;
+            schema_external = (xml_schema_external_t *)schema_obj;
+            schema1 = XML_SCHEMA_EXTERNAL_GET_SCHEMA(schema_external, env);
+            if(NULL != schema1)
+            {
+                axis2_char_t *name = NULL;
+                axis2_char_t *value = NULL;
+                
+                axis2_svc_adjust_schema_names(svc, env, schema1, names);
+                value = (axis2_char_t*) axis2_hash_get(names, schema1, 
+                        AXIS2_HASH_KEY_STRING);
+                if(NULL != value)
+                {
+                    if(NULL != svc_impl->custom_schema_name_prefix)
+                    {
+                        name = axis2_strcat(env, 
+                        svc_impl->custom_schema_name_prefix, value, NULL);
+                    }
+                    else
+                    {
+                        name = axis2_strcat(env, "?xsd=", value, NULL);
+                    }
+                    XML_SCHEMA_EXTERNAL_SET_SCHEMA_LOCATION(schema_external, env,
+                        name);
+                }
+            }
+        }
+    }
+    return AXIS2_SUCCESS;
+}
+
+axis2_hash_t* AXIS2_CALL
+axis2_svc_swap_mapping_table(axis2_svc_t *svc,
+                        const axis2_env_t *env,
+                        axis2_hash_t *orig_table)
+{
+    axis2_hash_t *new_table = NULL;
+    axis2_hash_index_t *hi = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, orig_table, AXIS2_FAILURE);
+    
+    new_table = axis2_hash_make(env);
+    
+    for(hi = axis2_hash_first(orig_table, env); NULL != env; 
+                        hi = axis2_hash_next(env, hi))
+    {
+        void *value = NULL;
+        void *key = NULL;
+        
+        axis2_hash_this (hi, (const void **)&key, NULL, 
+                    (void **)&value);
+        axis2_hash_set(new_table, value, AXIS2_HASH_KEY_STRING, key);
+    }
+    return new_table;
 }

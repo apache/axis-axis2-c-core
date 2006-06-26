@@ -11,5 +11,6 @@ libaxis2_context_la_SOURCES = \
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/engine \
+            -I$(top_builddir)/xml_schema/include\
 			@AXIOMINC@ \
 			@UTILINC@ 

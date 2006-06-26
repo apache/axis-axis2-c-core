@@ -154,6 +154,7 @@ axis2_network_handler_close_socket (const axis2_env_t *env,  axis2_socket_t sock
       return AXIS2_FAILURE;
    }
     shutdown(socket, AXIS2_SHUT_WR);
+    axis2_network_handler_set_sock_option(env, socket, SO_RCVTIMEO, 1);
     i = recv(socket, buf, 32, 0);
     AXIS2_CLOSE_SOCKET(socket);
    return AXIS2_SUCCESS;

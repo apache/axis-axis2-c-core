@@ -135,6 +135,11 @@ AXIS2_DECLARE_DATA struct axis2_msg_ops
         axis2_msg_t *msg, 
         const axis2_env_t *env,
         const axis2_char_t *name);
+
+    xml_schema_element_t *(AXIS2_CALL *
+        get_schema_element)
+            (axis2_msg_t *msg,
+            const axis2_env_t *env);
 };
 
 /** 
@@ -201,6 +206,8 @@ axis2_msg_create (const axis2_env_t *env);
 #define AXIS2_MSG_SET_NAME(msg, env, name) \
       ((msg)->ops->set_name(msg, env, name))
 
+#define AXIS2_MSG_GET_SCHEMA_ELEMENT(msg, env) \
+      ((msg)->ops->get_schema_element(msg, env))
 /************************** End of function macros ****************************/
 
 /** @} */

@@ -18,6 +18,7 @@
 #include <axis2_util.h>
 #include <axiom_soap.h>
 #include <axis2_client.h>
+#include <axis2_http_transport.h>
 
 int main(int argc, char** argv)
 {
@@ -29,19 +30,26 @@ int main(int argc, char** argv)
     axis2_svc_client_t* svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
+    axis2_bool_t method_get = AXIS2_FALSE;
    
     /* Set up the environment */
     env = axis2_env_create_all("echo_rest.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
-    address = "http://localhost:9090/axis2/services/echo";
+    address = "http://localhost:9090/axis2/services/echo/echoString";
     if (argc > 1 )
-        address = argv[1];
-    if (AXIS2_STRCMP(address, "-h") == 0)
     {
-        printf("Usage : %s [endpoint_url]\n", argv[0]);
-        printf("use -h for help\n");
-        return 0;
+        if(0 == strncmp(argv[1], "-mGET", 2))
+        {
+            method_get = AXIS2_TRUE;
+        }
+        if(0 == AXIS2_STRCMP(argv[1], "-h"))
+        {
+            printf("Usage : %s [endpoint_url]", argv[0]);
+            printf(" or %s -mGET for HTTP GET\n", argv[0]);
+            printf("use -h for help\n");
+            return 0;
+        }
     }
     printf ("Using endpoint : %s\n", address);
     
@@ -54,6 +62,11 @@ int main(int argc, char** argv)
     /* Enable REST at the client side */
     AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_ENABLE_REST, 
                                 AXIS2_VALUE_TRUE);
+    if(AXIS2_TRUE == method_get)
+    {
+        AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_HTTP_METHOD, 
+                                AXIS2_HTTP_HEADER_GET);
+    }
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
      * using the axis2.xml file.
      * In this sample client_home points to the Axis2/C default deploy folder. The client_home can 

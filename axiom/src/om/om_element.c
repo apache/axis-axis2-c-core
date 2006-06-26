@@ -443,7 +443,7 @@ axiom_element_create_with_qname (const axis2_env_t *env,
     axis2_char_t *localpart = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
-    if (!qname || !(*node))
+    if (!qname || !node)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return NULL;           

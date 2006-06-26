@@ -33,5 +33,6 @@ INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/core/transport \
             -I$(top_builddir)/modules/core/engine \
             -I$(top_builddir)/modules/core/clientapi \
+            -I$(top_builddir)/xml_schema/include \
 			@AXIOMINC@ \
 			@UTILINC@ 

@@ -34,5 +34,6 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/context \
             -I$(top_builddir)/modules/core/util \
             -I$(top_builddir)/modules/core/clientapi \
+            -I$(top_builddir)/xml_schema/include\
 			@AXIOMINC@ \
 			@UTILINC@ 

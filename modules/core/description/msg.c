@@ -16,6 +16,7 @@
  
 #include <axis2_msg.h>
 #include <axis2_property.h>
+#include <xml_schema_obj_collection.h>
 
 /** 
  * @brief Message struct impl
@@ -109,6 +110,10 @@ axis2_status_t AXIS2_CALL
 axis2_msg_set_name(axis2_msg_t *msg, 
     const axis2_env_t *env,
     const axis2_char_t *name);
+    
+xml_schema_element_t *AXIS2_CALL
+axis2_msg_get_schema_element(axis2_msg_t *msg,
+    const axis2_env_t *env);
 
 
 /************************* End of function headers ****************************/   
@@ -183,6 +188,7 @@ axis2_msg_create (const axis2_env_t *env)
    msg_impl->msg.ops->set_element_qname = axis2_msg_set_element_qname;
    msg_impl->msg.ops->get_name = axis2_msg_get_name;
    msg_impl->msg.ops->set_name = axis2_msg_set_name;
+   msg_impl->msg.ops->get_schema_element = axis2_msg_get_schema_element;
     
    return &(msg_impl->msg);
 }
@@ -467,31 +473,60 @@ axis2_msg_set_element_qname(axis2_msg_t *msg,
     return AXIS2_SUCCESS;
 }
 
-/*
-TODO: implement when xml schema is in place
-xml_schema_element *AXIS2_CALL 
+
+xml_schema_element_t *AXIS2_CALL 
 axis2_msg_get_schema_element(axis2_msg_t *msg, 
     const axis2_env_t *env) 
 {
-    AxisService service = (AxisService) getParent().getParent();
-    axis2_array_list_t *schemas = service.getSchema();
-    for (int i = 0; i < schemas.size(); i++) {
-        XmlSchema schema = (XmlSchema) schemas.get(i);
-        if (schema.getItems() != null) {
-            Iterator schemaItems = schema.getItems().getIterator();
-            while (schemaItems.hasNext()) {
-                Object item = schemaItems.next();
-                if (item instanceof xml_schema_element) {
-                    xml_schema_element schema_element = (xml_schema_element) item;
-                    if (schema_element.getQName().equals(getElementQName())) {
-                        return schema_element;
+    axis2_msg_impl_t *msg_impl = NULL;
+    axis2_op_t *operation = NULL;
+    axis2_svc_t *svc = NULL;
+    axis2_array_list_t *schemas = NULL;
+    int i = 0;
+    int schemas_size = 0;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    msg_impl = AXIS2_INTF_TO_IMPL(msg);
+    operation = axis2_msg_get_parent(msg, env);
+    svc = AXIS2_OP_GET_PARENT(operation, env);
+    schemas = AXIS2_SVC_GET_SCHEMAS(svc, env);
+    schemas_size = AXIS2_ARRAY_LIST_SIZE(schemas, env);
+    for (i = 0; i < schemas_size; i++) 
+    {
+        xml_schema_t *schema = NULL;
+        xml_schema_obj_collection_t *schema_collection = NULL;
+        
+        schema = AXIS2_ARRAY_LIST_GET(schemas, env, i);
+        schema_collection = XML_SCHEMA_GET_ITEMS(schema, env);
+        if (NULL != schema_collection) 
+        {
+            int count = 0;
+            int j = 0;
+            
+            count = XML_SCHEMA_OBJ_COLLECTION_GET_COUNT(schema_collection, env);
+            for(j = 0; j < count; j++)
+            {
+                xml_schema_obj_t *schema_obj = NULL;
+                schema_obj = XML_SCHEMA_OBJ_COLLECTION_GET_ITEM(
+                        schema_collection, env, j);
+                if(NULL == schema_obj && XML_SCHEMA_ELEMENT == 
+                        XML_SCHEMA_OBJ_GET_TYPE(schema_obj, env))
+                {
+                    axis2_qname_t *schema_qname = NULL;
+                    schema_qname = XML_SCHEMA_ELEMENT_GET_QNAME(schema_obj, env);
+                    if(NULL != msg_impl->element_qname && AXIS2_TRUE == 
+                        AXIS2_QNAME_EQUALS(msg_impl->element_qname, env,
+                        schema_qname))
+                    {
+                        return (xml_schema_element_t*)schema_obj;
                     }
                 }
             }
         }
     }
-    return null;
-}*/
+    return NULL;
+}
 
 axis2_char_t *AXIS2_CALL 
 axis2_msg_get_name(axis2_msg_t *msg, 

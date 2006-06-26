@@ -36,5 +36,6 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/phaseresolver \
             -I$(top_builddir)/modules/core/deployment \
             -I$(top_builddir)/modules/core/util \
+            -I$(top_builddir)/xml_schema/include\
 			@AXIOMINC@ \
 			@UTILINC@ 

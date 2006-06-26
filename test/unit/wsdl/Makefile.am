@@ -8,6 +8,7 @@ libtest_wsdl_la_SOURCES = wsdl_test.c test_wsdl_component.c
 noinst_HEADERS=$(top_builddir)/test/unit/wsdl/*.h
 
 INCLUDES = -I$(top_builddir)/include \
+            -I$(top_builddir)/xml_schema/include \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/description \

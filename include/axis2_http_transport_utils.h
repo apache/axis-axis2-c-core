@@ -81,12 +81,6 @@ axis2_http_transport_utils_process_http_get_request
                         axis2_conf_ctx_t *conf_ctx, 
                         axis2_hash_t *request_params);
     
-AXIS2_EXTERN axiom_soap_envelope_t* AXIS2_CALL
-axis2_http_transport_utils_create_envelope_from_get_request
-                        (const axis2_env_t *env, 
-                        const axis2_char_t *request_uri,
-                        axis2_hash_t *request_params);
-    
 AXIS2_EXTERN axiom_stax_builder_t* AXIS2_CALL
 axis2_http_transport_utils_select_builder_for_mime
                         (const axis2_env_t *env, axis2_char_t *request_uri,

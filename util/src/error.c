@@ -144,6 +144,8 @@ axis2_error_init()
         "module has alredy been engaged on the service. Group Operation terminated !!!";
     axis2_error_messages[AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE] = 
         "Parameter locked, Cannot override";
+    axis2_error_messages[AXIS2_ERROR_EMPTY_SCHEMA_LIST] = 
+        "schema list is empty or NULL in svc ";
     /* core:engine */
     axis2_error_messages[AXIS2_ERROR_BEFORE_AFTER_HANDLERS_SAME] = 
         "Both before and after handlers cannot be the same";
@@ -241,6 +243,12 @@ axis2_error_init()
     "Either axis2c cannot find certificates or the env variable is not set";
     axis2_error_messages[AXIS2_ERROR_WRITING_RESPONSE] = 
         "Error in writing the response in response writer";
+    axis2_error_messages[AXIS2_ERROR_REQD_PARAM_MISSING] =
+        "Required parameter is missing in url encoded request";
+    axis2_error_messages[AXIS2_ERROR_UNSUPPORTED_SCHEMA_TYPE] =
+        " Unsuppoted schema type in REST";
+    axis2_error_messages[AXIS2_ERROR_SVC_OR_OP_NOT_FOUND] =
+        "Service or operation not found";
     /* mod_addr */
 
     /* platforms */

@@ -174,6 +174,8 @@ extern "C"
         AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC_GRP,
         /** Parameter locked, Cannot override */
         AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE,
+        /* schema list is empty or NULL in svc */
+        AXIS2_ERROR_EMPTY_SCHEMA_LIST,
        /*
         * Group - core:engine
         */ 
@@ -269,8 +271,8 @@ extern "C"
         AXIS2_ERROR_NULL_STREAM_IN_CHUNKED_STREAM,
         /* We got a NULL strem in the response body */
         AXIS2_ERROR_NULL_STREAM_IN_RESPONSE_BODY,
-      /** URL NULL in http client */
-      AXIS2_ERROR_NULL_URL,
+        /** URL NULL in http client */
+        AXIS2_ERROR_NULL_URL,
         /* We need transport_info in msg_ctx*/
         AXIS2_ERROR_OUT_TRNSPORT_INFO_NULL,
         /*Content-Type header missing in HTTP response" */
@@ -285,6 +287,12 @@ extern "C"
         AXIS2_ERROR_SSL_NO_CA_FILE,
         /* Error in writing the response in response writer */
         AXIS2_ERROR_WRITING_RESPONSE,
+        /* Required parameter is missing in url encoded request*/
+        AXIS2_ERROR_REQD_PARAM_MISSING,
+        /* Unsuppoted schema type in REST */
+        AXIS2_ERROR_UNSUPPORTED_SCHEMA_TYPE,
+        /* Service or operation not found */
+        AXIS2_ERROR_SVC_OR_OP_NOT_FOUND,
        /*
         * Group - mod_addr
         */ 

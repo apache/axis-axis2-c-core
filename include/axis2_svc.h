@@ -37,6 +37,10 @@
 #include <axis2_wsdl_soap_op.h>
 #include <axis2_string.h>
 #include <axis2_wsdl_endpoint.h>
+#include <xml_schema.h>
+#include <xml_schema_external.h>
+#include <axis2_stream.h>
+#include <xml_schema_element.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -401,7 +405,126 @@ struct axis2_svc_ops
     
     axis2_array_list_t *(AXIS2_CALL *
     get_modules) (axis2_svc_t *svc,
-                            const axis2_env_t *env);                
+                            const axis2_env_t *env);
+    
+    axis2_bool_t (AXIS2_CALL *
+    is_schema_location_adjusted)(axis2_svc_t *svc,
+                            const axis2_env_t *env);
+    
+    
+    axis2_status_t (AXIS2_CALL *
+    set_schema_location_adjusted)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            axis2_bool_t adjusted);
+    
+    axis2_hash_t* (AXIS2_CALL *
+    get_schema_mapping_table)(axis2_svc_t *svc,
+                            const axis2_env_t *env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_schema_mapping_table)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            axis2_hash_t *table);
+                            
+    axis2_char_t* (AXIS2_CALL *
+    get_schema_custom_schema_prefix)(axis2_svc_t *svc,
+                            const axis2_env_t *env);
+                            
+    axis2_status_t (AXIS2_CALL *
+    set_schema_custom_schema_prefix)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            axis2_char_t *prefix);
+                            
+    axis2_char_t* (AXIS2_CALL *
+    get_schema_custom_schema_suffix)(axis2_svc_t *svc,
+                            const axis2_env_t *env);
+                            
+    axis2_status_t (AXIS2_CALL *
+    set_schema_custom_schema_suffix)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            axis2_char_t *suffix);
+                            
+    axis2_status_t (AXIS2_CALL *
+    print_schema)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            axis2_stream_t *out_stream);
+    
+    xml_schema_t* (AXIS2_CALL *
+    get_schema)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            int index);
+                            
+    xml_schema_t* (AXIS2_CALL *
+    add_namespaces)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            int index);
+                            
+    axis2_array_list_t* (AXIS2_CALL *
+    get_schemas)(axis2_svc_t *svc,
+                            const axis2_env_t *env);
+    
+    axis2_status_t (AXIS2_CALL *
+    add_schema)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            xml_schema_t *schema);
+                            
+    axis2_status_t (AXIS2_CALL *
+    add_schemas)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            axis2_array_list_t *schemas);
+    
+    axis2_char_t* (AXIS2_CALL *
+    get_schema_target_ns)(axis2_svc_t *svc,
+                            const axis2_env_t *env);
+                            
+    axis2_status_t (AXIS2_CALL *
+    set_schema_target_ns)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            axis2_char_t *ns);
+                            
+    axis2_char_t* (AXIS2_CALL *
+    get_schema_target_ns_prefix)(axis2_svc_t *svc,
+                            const axis2_env_t *env);
+                            
+    axis2_status_t (AXIS2_CALL *
+    set_schema_target_ns_prefix)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            axis2_char_t *prefix);
+    
+    axis2_char_t* (AXIS2_CALL *
+    get_target_ns)(axis2_svc_t *svc,
+                            const axis2_env_t *env);
+                            
+    axis2_status_t (AXIS2_CALL *
+    set_target_ns)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            axis2_char_t *ns);                        
+    axis2_char_t* (AXIS2_CALL *
+    get_target_ns_prefix)(axis2_svc_t *svc,
+                            const axis2_env_t *env);
+                            
+    axis2_status_t (AXIS2_CALL *
+    set_target_ns_prefix)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            axis2_char_t *prefix);
+                            
+    xml_schema_element_t* (AXIS2_CALL *
+    get_schema_element)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            axis2_qname_t *qname);
+    
+    axis2_hash_t* (AXIS2_CALL *
+    get_ns_map)(axis2_svc_t *svc,
+                            const axis2_env_t *env);
+                            
+    axis2_status_t (AXIS2_CALL *
+    set_ns_map)(axis2_svc_t *svc,
+                            const axis2_env_t *env,
+                            axis2_hash_t *ns_map);
+    
+    axis2_status_t (AXIS2_CALL *
+    populate_schema_mappings)(axis2_svc_t *svc,
+                            const axis2_env_t *env);
 };
 
 /** 
@@ -579,7 +702,85 @@ axis2_svc_create_with_wsdl_svc (const axis2_env_t *env,
         
 #define AXIS2_SVC_GET_MODULES(svc, env) \
         ((svc)->ops->get_modules(svc, env))
+        
+#define AXIS2_SVC_IS_SCHEMA_LOCATION_ADJUSTED(svc, env) \
+        ((svc)->ops->is_schema_location_adjusted(svc, env))
+        
+#define AXIS2_SVC_SET_SCHEMA_LOCATION_ADJUSTED(svc, env, adjusted) \
+        ((svc)->ops->set_schema_location_adjusted(svc, env, adjusted))
+        
+#define AXIS2_SVC_GET_SCHEMA_MAPPING_TABLE(svc, env) \
+        ((svc)->ops->get_schema_mapping_table(svc, env))
 
+#define AXIS2_SVC_SET_SCHEMA_MAPPING_TABLE(svc, env, table) \
+        ((svc)->ops->set_schema_mapping_table(svc, env, table))
+        
+#define AXIS2_SVC_GET_SCHEMA_CUSTOM_NAME_PREFIX(svc, env) \
+        ((svc)->ops->get_schema_custom_schema_prefix(svc, env))
+
+#define AXIS2_SVC_SET_SCHEMA_CUSTOM_NAME_PREFIX(svc, env, prefix) \
+        ((svc)->ops->set_schema_custom_schema_prefix(svc, env, prefix))
+
+#define AXIS2_SVC_GET_SCHEMA_CUSTOM_NAME_SUFFIX(svc, env) \
+        ((svc)->ops->get_schema_custom_schema_suffix(svc, env))
+
+#define AXIS2_SVC_SET_SCHEMA_CUSTOM_NAME_SUFFIX(svc, env, suffix) \
+        ((svc)->ops->set_schema_custom_schema_suffix(svc, env, suffix))    
+    
+#define AXIS2_SVC_PRINT_SCHEMA(svc, env) \
+        ((svc)->ops->print_schema(svc, env))    
+    
+#define AXIS2_SVC_GET_SCHEMA(svc, env, index) \
+        ((svc)->ops->get_schema(svc, env, index))
+
+#define AXIS2_SVC_ADD_NAMESPACES(svc, env, index) \
+        ((svc)->ops->add_namespaces(svc, env, index))
+
+#define AXIS2_SVC_GET_SCHEMAS(svc, env) \
+        ((svc)->ops->get_schemas(svc, env))
+    
+#define AXIS2_SVC_ADD_SCHEMA(svc, env, schema) \
+        ((svc)->ops->add_schema(svc, env, schema))
+    
+#define AXIS2_SVC_ADD_SCHEMAS(svc, env, schemas) \
+        ((svc)->ops->add_schemas(svc, env, schemas))
+
+#define AXIS2_SVC_GET_SCHEMA_TARGET_NAME_SPACE(svc, env) \
+        ((svc)->ops->get_schema_target_ns(svc, env))
+
+#define AXIS2_SVC_SET_SCHEMA_TARGET_NAME_SPACE(svc, env, ns) \
+        ((svc)->ops->set_schema_target_ns(svc, env, ns))
+        
+#define AXIS2_SVC_GET_SCHEMA_TARGET_NAME_SPACE_PREFIX(svc, env) \
+        ((svc)->ops->get_schema_target_ns_prefix(svc, env))
+
+#define AXIS2_SVC_SET_SCHEMA_TARGET_NAME_SPACE_PREFIX(svc, env, prefix) \
+        ((svc)->ops->set_schema_target_ns_prefix(svc, env, prefix))
+
+#define AXIS2_SVC_GET_TARGET_NAME_SPACE(svc, env) \
+        ((svc)->ops->get_target_ns(svc, env))
+
+#define AXIS2_SVC_SET_TARGET_NAME_SPACE(svc, env, ns) \
+        ((svc)->ops->set_target_ns(svc, env, ns))    
+
+#define AXIS2_SVC_GET_TARGET_NAME_SPACE_PREFIX(svc, env) \
+        ((svc)->ops->get_target_ns_prefix(svc, env))
+
+#define AXIS2_SVC_SET_TARGET_NAME_SPACE_PREFIX(svc, env, prefix) \
+        ((svc)->ops->set_target_ns_prefix(svc, env, prefix)) 
+    
+#define AXIS2_SVC_GET_SCHEMA_ELEMENT(svc, env) \
+        ((svc)->ops->get_schema_element(svc, env))
+    
+#define AXIS2_SVC_GET_NAME_SPACE_MAP(svc, env) \
+        ((svc)->ops->get_ns_map(svc, env))
+
+#define AXIS2_SVC_SET_NAME_SPACE_MAP(svc, env, ns_map) \
+        ((svc)->ops->set_ns_map(svc, env, ns_map)) 
+    
+#define AXIS2_SVC_POPULATE_SCHEMA_MAPPINGS(svc, env) \
+        ((svc)->ops->populate_schema_mappings(svc, env))
+    
 /**************************** End of function macros **************************/
 
 /** @} */

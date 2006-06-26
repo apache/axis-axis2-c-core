@@ -388,6 +388,11 @@ extern "C"
      */
     #define AXIS2_PROXY_HOST_PORT "proxy_port"
     
+    /**
+     * Constant for HTTP method
+     */
+    #define AXIS2_HTTP_METHOD "HTTP_METHOD"
+    
 /** @} */
     
 #ifdef __cplusplus
