@@ -2061,8 +2061,8 @@ axis2_svc_add_namespaces(axis2_svc_t *svc,
     for (hi = axis2_hash_first (svc_impl->ns_map, env); NULL != hi; 
                         hi = axis2_hash_next (env, hi))
     {
-        axis2_char_t *value = NULL;
-        axis2_char_t *key = NULL;
+        void *value = NULL;
+        void *key = NULL;
         axis2_hash_this (hi, (const void **)&key, NULL, (void **)&value);
         if(NULL != value)
         {
@@ -2286,8 +2286,8 @@ axis2_svc_set_ns_map(axis2_svc_t *svc,
         for (hi = axis2_hash_first (svc_impl->ns_map, env); NULL != hi; 
                         hi = axis2_hash_next (env, hi))
         {
-            axis2_char_t *value = NULL;
-            axis2_char_t *key = NULL;
+            void *value = NULL;
+            void *key = NULL;
             axis2_hash_this (hi, (const void **)&key, NULL, 
                         (void **)&value);
             if(NULL != key)
@@ -2325,11 +2325,11 @@ axis2_svc_add_schema_ns(axis2_svc_t *svc,
         for (hi = axis2_hash_first (svc_impl->ns_map, env); NULL != hi; 
                         hi = axis2_hash_next (env, hi))
         {
-            axis2_char_t *value = NULL;
-            axis2_char_t *key = NULL;
+            void *value = NULL;
+            void *key = NULL;
             axis2_hash_this (hi, (const void **)&key, NULL, 
                         (void **)&value);
-            if(0 == AXIS2_STRCMP(value, ns))
+            if(0 == AXIS2_STRCMP((axis2_char_t*)value, ns))
             {
                 found = AXIS2_TRUE;
                 break;

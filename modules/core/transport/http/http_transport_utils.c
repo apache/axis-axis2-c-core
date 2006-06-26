@@ -1179,14 +1179,15 @@ axis2_http_transport_utils_handle_media_type_url_encoded(const axis2_env_t *env,
             for(hi = axis2_hash_first(param_map, env); hi != NULL; 
                         hi = axis2_hash_next(env, hi))
             {
-                axis2_char_t *name = NULL;
-                axis2_char_t *value = NULL;
+                void *name = NULL;
+                void *value = NULL;
                 axiom_node_t *node = NULL;
                 axiom_element_t *element = NULL;
                 
                 axis2_hash_this(hi, (const void **)&name, NULL,(void **)&value);
-                element = axiom_element_create(env, NULL, name, NULL, &node);
-                AXIOM_ELEMENT_SET_TEXT(element, env, value, node);
+                element = axiom_element_create(env, NULL, (axis2_char_t*)name, 
+			NULL, &node);
+                AXIOM_ELEMENT_SET_TEXT(element, env, (axis2_char_t*)value, node);
                 AXIOM_NODE_ADD_CHILD(body_child_node, env, node);
             }
         }
