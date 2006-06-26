@@ -61,10 +61,10 @@
 
         {
           /* Todo fill this with the necessary business logic */
-          axis2_addResponse_t* add_out = NULL;
-         axis2_add_t* add_in = param2;
-          axis2_addRequest_t* add_req = NULL;
-          axis2_addResponse20_t* add_res = NULL;
+          axis2_divResponse_t* div_out = NULL;
+         axis2_div_t* div_in = param2;
+          axis2_divRequest_t* div_req = NULL;
+          axis2_divResponse16_t* div_res = NULL;
 
           int ret_val = 0;
 
@@ -72,21 +72,21 @@
           int val2 = 0;
 
 
-     add_req = AXIS2_ADD_GET_ADD( add_in, env );
+     div_req = AXIS2_DIV_GET_DIV( div_in, env );
          
-     val1 = AXIS2_ADDREQUEST_GET_IN0 ( add_req, env );
-          val2 = AXIS2_ADDREQUEST_GET_IN1 ( add_req, env );
+     val1 = AXIS2_DIVREQUEST_GET_IN0 ( div_req, env );
+          val2 = AXIS2_DIVREQUEST_GET_IN1 ( div_req, env );
 
 
           ret_val = val1 / val2;
 
-          add_out = axis2_addResponse_create ( env );
-     AXIS2_ADDRESPONSE_SET_ADDRETURN ( add_out, env, ret_val );
+          div_out = axis2_divResponse_create ( env );
+     AXIS2_DIVRESPONSE_SET_ADDRETURN ( div_out, env, ret_val );
           
-     add_res = axis2_addResponse20_create ( env );
-     AXIS2_ADDRESPONSE20_SET_ADDRESPONSE ( add_res, env, add_out );
+     div_res = axis2_divResponse16_create ( env );
+     AXIS2_DIVRESPONSE16_SET_DIVRESPONSE ( div_res, env, div_out );
      
-          return add_res;
+          return div_res;
         }
      
 
@@ -101,10 +101,10 @@
 
         {
           /* Todo fill this with the necessary business logic */
-          axis2_addResponse_t* add_out = NULL;
-         axis2_add_t* add_in = param4;
-          axis2_addRequest_t* add_req = NULL;
-          axis2_addResponse20_t* add_res = NULL;
+          axis2_subResponse_t* sub_out = NULL;
+         axis2_sub_t* sub_in = param4;
+          axis2_subRequest_t* sub_req = NULL;
+          axis2_subResponse12_t* sub_res = NULL;
 
           int ret_val = 0;
 
@@ -112,21 +112,21 @@
           int val2 = 0;
 
 
-     add_req = AXIS2_ADD_GET_ADD( add_in, env );
+     sub_req = AXIS2_SUB_GET_SUB( sub_in, env );
          
-     val1 = AXIS2_ADDREQUEST_GET_IN0 ( add_req, env );
-          val2 = AXIS2_ADDREQUEST_GET_IN1 ( add_req, env );
+     val1 = AXIS2_SUBREQUEST_GET_IN0 ( sub_req, env );
+          val2 = AXIS2_SUBREQUEST_GET_IN1 ( sub_req, env );
 
 
           ret_val = val1 - val2;
 
-          add_out = axis2_addResponse_create ( env );
-     AXIS2_ADDRESPONSE_SET_ADDRETURN ( add_out, env, ret_val );
+          sub_out = axis2_subResponse_create ( env );
+     AXIS2_SUBRESPONSE_SET_SUBRETURN ( sub_out, env, ret_val );
           
-     add_res = axis2_addResponse20_create ( env );
-     AXIS2_ADDRESPONSE20_SET_ADDRESPONSE ( add_res, env, add_out );
+     sub_res = axis2_subResponse12_create ( env );
+     AXIS2_SUBRESPONSE12_SET_SUBRESPONSE ( sub_res, env, sub_out );
      
-          return add_res;
+          return sub_res;
         }
      
 
@@ -141,10 +141,10 @@
 
         {
           /* Todo fill this with the necessary business logic */
-          axis2_addResponse_t* add_out = NULL;
-         axis2_add_t* add_in = param6;
-          axis2_addRequest_t* add_req = NULL;
-          axis2_addResponse20_t* add_res = NULL;
+          axis2_mulResponse_t* mul_out = NULL;
+         axis2_mul_t* mul_in = param6;
+          axis2_mulRequest_t* mul_req = NULL;
+          axis2_mulResponse14_t* mul_res = NULL;
 
           int ret_val = 0;
 
@@ -152,20 +152,20 @@
           int val2 = 0;
 
 
-     add_req = AXIS2_ADD_GET_ADD( add_in, env );
+     mul_req = AXIS2_MUL_GET_MUL( mul_in, env );
          
-     val1 = AXIS2_ADDREQUEST_GET_IN0 ( add_req, env );
-          val2 = AXIS2_ADDREQUEST_GET_IN1 ( add_req, env );
+     val1 = AXIS2_MULREQUEST_GET_IN0 ( mul_req, env );
+          val2 = AXIS2_MULREQUEST_GET_IN1 ( mul_req, env );
 
 
           ret_val = val1 * val2;
 
-          add_out = axis2_addResponse_create ( env );
-     AXIS2_ADDRESPONSE_SET_ADDRETURN ( add_out, env, ret_val );
+          mul_out = axis2_mulResponse_create ( env );
+     AXIS2_MULRESPONSE_SET_ADDRETURN ( mul_out, env, ret_val );
           
-     add_res = axis2_addResponse20_create ( env );
-     AXIS2_ADDRESPONSE20_SET_ADDRESPONSE ( add_res, env, add_out );
+     mul_res = axis2_mulResponse14_create ( env );
+     AXIS2_MULRESPONSE14_SET_MULRESPONSE ( mul_res, env, mul_out );
      
-          return add_res;
+          return mul_res;
         }
      
