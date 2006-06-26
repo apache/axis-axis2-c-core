@@ -22,11 +22,18 @@ extern "C"
 {
 #endif
 
+/** 
+  * @defgroup axis2_addr WS-Addressing
+  * @ingroup axis2
+  * @{
+  * @}
+  */
+
 /**
- * @defgroup axis2_addr_consts Addressing related constants
- * @ingroup axis2_addr
- * @{
- */
+  * @defgroup axis2_addr_consts WS-Addressing related constants
+  * @ingroup axis2_addr
+  * @{
+  */
 
     /* ====================== Common Message Addressing Properties ===========*/
     #define AXIS2_WSA_MESSAGE_ID "MessageID"

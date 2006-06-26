@@ -47,7 +47,7 @@ extern "C"
  * supports MEPs which have one input message and/or one output message. That
  * is, it supports the all the MEPs that are in the WSDL 2.0 specification. In
  * order to support another MEP one must extend this struct.
- * @ingroup axis2_core_context
+ * @ingroup axis2_context
  * @{
  */
     

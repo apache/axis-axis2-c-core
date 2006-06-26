@@ -33,7 +33,7 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 wsdl4c_message
+ * @defgroup axis2_wsdl4c_message wsdl4c_message
  * @ingroup axis2_wsdl4c
  * @{
  */

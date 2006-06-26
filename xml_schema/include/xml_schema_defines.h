@@ -34,9 +34,6 @@ extern "C"
   * @ingroup xml_schema_defines
   * @{
   */
-/** @defgroup axis2 Xml Schema/C project
-  *  @{
- */
 
 /** 
     * \brief Axis2 types

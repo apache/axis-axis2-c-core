@@ -31,7 +31,7 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 wsdl4c_port_type
+ * @defgroup axis2_wsdl4c_port_type wsdl4c_port_type
  * @ingroup axis2_wsdl4c
  * @{
  */

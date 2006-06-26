@@ -18,6 +18,14 @@
 #define AXIS2_OP_CLIENT_H
 
 /**
+ * @defgroup axis2_core_clientapi client API
+ * @ingroup axis2
+ * @{
+ * @} 
+ */
+
+
+/**
  * An operation client is the way an advanced user interacts with Axis2. Actual
  * operation clients understand a specific MEP and hence their behavior is
  * defined by their MEP. To interact with an operation client, you first get one

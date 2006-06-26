@@ -27,7 +27,7 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 soap constants
+ * @defgroup axis2_soap SOAP
  * @ingroup axiom_soap 
  * @{
  */

@@ -31,7 +31,7 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2 wsdl4c_constraint
+ * @defgroup axis2_wsdl4c axis2_wsdl4c_constraint
  * @ingroup axis2_wsdl4c
  * @{
  */

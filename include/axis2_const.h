@@ -32,10 +32,23 @@ extern "C"
 
 
 /** @defgroup axis2 Axis2/C project
-  *  @{
- */
-
-
+  * @{
+  * @}
+  */
+    
+/** \mainpage Axis2/C API Documentation
+  *
+  * \section intro_sec Introduction
+  *
+  * This is the API documetation of Axis2/C, a SOAP engine written in C.
+  * This implementation is based on the popular Axis2 architecture. 
+  * <p>We welcome your feedback on this implementation and documentation.
+  * Please send your feedback to <a href="mailto:axis-c-user@ws.apache.org">
+  * axis-c-user@ws.apache.org</a> and please remember to prefix the subject
+  * of the mail with [Axis2].
+  *
+  */    
+    
 /******************************************************************************/
 /********************Axis2 specific constants**********************************/
 /******************************************************************************/
@@ -243,7 +256,7 @@ extern "C"
 
 #define AXIS2_SVC_GRP_ID "ServiceGroupId"    
 
-/** @} */
+
 
 #ifdef __cplusplus
 }

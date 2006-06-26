@@ -378,6 +378,7 @@ extern "C"
      */
     struct axis2_svc_client
     {
+        /** operations of service client */
         axis2_svc_client_ops_t *ops;
     };
 
