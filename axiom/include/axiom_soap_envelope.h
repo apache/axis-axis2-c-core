@@ -42,7 +42,7 @@ extern "C"
     struct axiom_soap_builder;
     
 /**
- * @defgroup axiom_soap_envelope
+ * @defgroup axiom_soap_envelope soap envelope
  * @ingroup axiom_soap
  * @{
  */

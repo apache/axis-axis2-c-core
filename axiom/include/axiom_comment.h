@@ -34,14 +34,14 @@ extern "C"
     struct axiom_comment_ops;
 
 /**
- * @defgroup axiom_comment OM Comment
- * @ingroup axiom 
+ * @defgroup axiom_comment comment
+ * @ingroup axiom_om
  * @{
  */
 
 
   /** 
-    *   @brief OM comment ops struct
+    *   @brief comment ops struct
     *   Encapsulator struct for ops of axiom_comment_t
     */
  AXIS2_DECLARE_DATA  typedef struct axiom_comment_ops
@@ -92,8 +92,8 @@ extern "C"
     } axiom_comment_ops_t;
 
   /** 
-    * \brief OM comment struct
-    * Handles the XML comment in OM
+    * \brief comment struct
+    * Handles the XML comment in AXIOM
     */
     typedef struct axiom_comment
     {

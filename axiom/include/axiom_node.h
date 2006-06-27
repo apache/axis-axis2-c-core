@@ -17,12 +17,18 @@
 #ifndef AXIOM_NODE_H
 #define AXIOM_NODE_H
 
-/** @defgroup axiom AXIOM (Axis Object Model)
-  * @ingroup axis2
+/** 
+  * @defgroup axiom AXIOM project
   * @{
+  * @}
   */
 
-/** @} */
+/** 
+  * @defgroup axiom_om AXIOM
+  * @ingroup axiom
+  * @{
+  * @}
+  */
 
 /**
  * @file axiom_node.h
@@ -43,38 +49,38 @@ extern "C"
     struct axiom_document;
     struct axiom_stax_builder;
 /**
- * @defgroup axiom_node  OM Node
- * @ingroup axiom 
+ * @defgroup axiom_node  node
+ * @ingroup axiom_om 
  * @{
  */
 
   /** 
-    * @brief OM types
+    * @brief AXIOM types
     */
     typedef enum axiom_types_t
     {
         /** Invalid node type */
         AXIOM_INVALID = 0,
-        /** OM document type */
+        /** AXIOM document type */
         AXIOM_DOCUMENT,
-        /** OM element type */
+        /** AXIOM element type */
         AXIOM_ELEMENT,
-        /** OM doctype type */
+        /** AXIOM doctype type */
         AXIOM_DOCTYPE,
-        /** OM comment type */
+        /** AXIOM comment type */
         AXIOM_COMMENT,
-        /** OM attribute type */
+        /** AXIOM attribute type */
         AXIOM_ATTRIBUTE,
-        /** OM namespace type */
+        /** AXIOM namespace type */
         AXIOM_NAMESPACE,
-        /** OM processing instruction type */
+        /** AXIOM processing instruction type */
         AXIOM_PROCESSING_INSTRUCTION,
-        /** OM text type */
+        /** AXIOM text type */
         AXIOM_TEXT
     } axiom_types_t;
 
   /** 
-    * @brief OM Node ops struct
+    * @brief node ops struct
     * Encapsulator struct for ops of axiom_node
     */
 AXIS2_DECLARE_DATA   typedef struct axiom_node_ops
@@ -141,7 +147,7 @@ AXIS2_DECLARE_DATA   typedef struct axiom_node_ops
     * through its children and  serialize them in order.
     * @param om_node node to be serialized.  cannot be NULL.
     * @param env Environment .MUST NOT be NULL.    
-    * @param om_output OM output handler to be used in serializing
+    * @param om_output AXIOM output handler to be used in serializing
     * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
     axis2_status_t (AXIS2_CALL *

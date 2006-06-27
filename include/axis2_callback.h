@@ -20,7 +20,7 @@
 
 /**
   * @file axis2_callback.h
-  * @brief axis2 Message Context interface
+  * @brief axis2 callback interface
   */
 
 #include <axis2_defines.h>
@@ -33,8 +33,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_callback Message Context 
- * @ingroup axis2_core_context
+/** @defgroup axis2_callback callback 
+ * @ingroup axis2_client_api
  * @{
  */
     
@@ -50,7 +50,7 @@ typedef axis2_status_t (AXIS2_CALL *
                           const axis2_env_t *, int);
     
 /** 
- * @brief Message Context ops struct
+ * @brief callback ops struct
  * Encapsulator struct for ops of axis2_callback
  */  
 struct axis2_callback_ops
@@ -161,8 +161,8 @@ struct axis2_callback_ops
 };
 
 /** 
- * @brief Message Context struct
-  *   Axis2 Message Context
+ * @brief callback struct
+  *   Axis2 callback
  */
 struct axis2_callback
 {

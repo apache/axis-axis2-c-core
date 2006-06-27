@@ -32,8 +32,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_diclient Dynamic Invocation Client 
- * @ingroup axis2_core_clientapi
+/** @defgroup axis2_diclient dynamic invocation client 
+ * @ingroup axis2_client_api
  * @{
  */
     

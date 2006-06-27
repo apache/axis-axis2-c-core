@@ -35,7 +35,7 @@ extern "C"
     
 /**
  * @defgroup axis2_dll_desc DLL Description
- * @ingroup axis2_description
+ * @ingroup axis2_util
  * @{
  */
 

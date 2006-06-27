@@ -34,13 +34,13 @@ extern "C"
 #endif
 
 /**
- * @defgroup axiom_output OM Output
- * @ingroup axiom 
+ * @defgroup axiom_output output
+ * @ingroup axiom_om 
  * @{
  */
 
   /** 
-    * \brief OM Output struct
+    * \brief output struct
     * The XML writer interface struct of om
     */
     typedef struct axiom_output axiom_output_t;
@@ -190,7 +190,7 @@ struct axiom_output
     
     
   /**
-    * creates OM output struct 
+    * creates AXIOM output struct 
     * @param env Environment. MUST NOT be NULL, .
     * @param xml_writer XML writer. 
     * @return a pointer to newly created output struct.
@@ -203,10 +203,10 @@ axiom_output_create (const axis2_env_t *env,
 
    /**
     *  Performs xml writing.
-    *  Accepts variable number of args depending on the on OM type to be serialized
+    *  Accepts variable number of args depending on the on AXIOM type to be serialized
     *  @param om_output Output struct to be used 
     *  @param env Environment. MUST NOT be NULL, 
-    *  @param type one of the OM types
+    *  @param type one of the AXIOM types
     *  @param no_of_args number of arguments passed in the variable parameter list
     *  @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
     */

@@ -37,13 +37,13 @@ extern "C"
     struct axiom_stax_builder_ops;
 
 /**
- * @defgroup axiom_stax_builder OM Stax Builder
- * @ingroup axiom 
+ * @defgroup axiom_stax_builder stax builder
+ * @ingroup axiom_om
  * @{
  */
 
   /** 
-    * @brief OM stax builder ops struct
+    * @brief stax builder ops struct
     * Encapsulator struct for ops of axiom_stax_builder
     */
  AXIS2_DECLARE_DATA    typedef struct axiom_stax_builder_ops
@@ -109,8 +109,8 @@ extern "C"
     } axiom_stax_builder_ops_t;
 
   /** 
-    * \brief OM stax builder struct
-    * Bulds OM document using a pull parser interface
+    * \brief stax builder struct
+    * Bulds AXIOM document using a pull parser interface
     */
     typedef struct axiom_stax_builder
     {

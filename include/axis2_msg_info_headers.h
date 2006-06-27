@@ -41,7 +41,7 @@ extern "C"
     struct axis2_msg_info_headers_ops;
     
 /**
- * @defgroup axis2_msg_info_headers Addressing relates to header
+ * @defgroup axis2_msg_info_headers message information headers
  * @ingroup axis2_addr
  * @{
  */

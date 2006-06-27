@@ -36,7 +36,7 @@ extern "C"
     struct axis2_svc_name_ops;
     
 /**
- * @defgroup axis2_svc_name Addressing service name
+ * @defgroup axis2_svc_name service name
  * @ingroup axis2_addr
  * @{
  */

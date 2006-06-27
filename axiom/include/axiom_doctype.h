@@ -34,13 +34,13 @@ extern "C"
     struct axiom_doctype_ops;
 
 /**
- * @defgroup axiom_doctype OM Doctype
- * @ingroup axiom 
+ * @defgroup axiom_doctype doctype
+ * @ingroup axiom_om
  * @{
  */
 
   /**
-    * \brief OM doctype ops struct
+    * \brief doctype ops struct
     * Encapsulator struct for ops of axiom_doctype
     */
  AXIS2_DECLARE_DATA   typedef struct axiom_doctype_ops
@@ -92,8 +92,8 @@ extern "C"
     } axiom_doctype_ops_t;
 
   /**
-    * \brief OM doctype struct
-    * Handles XML document type in OM
+    * \brief doctype struct
+    * Handles XML document type in AXIOM
     */
     typedef struct axiom_doctype
     {

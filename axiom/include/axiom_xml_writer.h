@@ -34,7 +34,7 @@ typedef struct axiom_xml_writer_ops axiom_xml_writer_ops_t;
 typedef struct axiom_xml_writer axiom_xml_writer_t;
 
 /**
- * @defgroup axiom_xml_writer 
+ * @defgroup axiom_xml_writer XML writer
  * @ingroup axiom_parser
  * @{
  */

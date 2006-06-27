@@ -36,19 +36,19 @@ extern "C"
     struct axiom_namespace_ops;
     
 /**
- * @defgroup axiom_namespace OM Namespace
- * @ingroup axiom 
+ * @defgroup axiom_namespace namespace
+ * @ingroup axiom_om
  * @{
  */
 
   /** 
-    * \brief OM Namespace ops struct
+    * \brief namespace ops struct
     * Encapsulator struct for ops of axiom_namespace
     */
  AXIS2_DECLARE_DATA   typedef struct axiom_namespace_ops
     {
       /**
-        * Frees given OM namespcae
+        * Frees given AXIOM namespcae
         * @param om_namespace namespace to be freed.
         * @param env Environment. MUST NOT be NULL.
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
@@ -73,7 +73,7 @@ extern "C"
         * Serializes given namespace 
         * @param om_namespace namespace to be serialized.
         * @param env Environment. MUST NOT be NULL.
-        * @param om_output OM output handler to be used in serializing
+        * @param om_output AXIOM output handler to be used in serializing
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
         axis2_status_t (AXIS2_CALL *
@@ -123,12 +123,12 @@ extern "C"
     } axiom_namespace_ops_t;
 
   /** 
-    * \brief OM namespace struct
-    * Handles the XML namespace in OM
+    * \brief namespace struct
+    * Handles the XML namespace in AXIOM
     */
     typedef struct axiom_namespace
     {
-        /** OM namespace related ops */
+        /** AXIOM namespace related ops */
         axiom_namespace_ops_t *ops;
         
     } axiom_namespace_t;

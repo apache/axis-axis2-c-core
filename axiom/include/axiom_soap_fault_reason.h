@@ -35,7 +35,7 @@ typedef struct axiom_soap_fault_reason axiom_soap_fault_reason_t;
 struct axiom_soap_fault_text;
 struct axiom_soap_builder;
 /**
- * @defgroup axiom_soap_fault_reason
+ * @defgroup axiom_soap_fault_reason soap fault reason
  * @ingroup axiom_soap
  * @{
  */

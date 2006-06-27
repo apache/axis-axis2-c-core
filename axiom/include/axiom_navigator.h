@@ -17,13 +17,6 @@
  #ifndef AXIOM_NAVIGATOR_H
  #define AXIOM_NAVIGATOR_H
  
-/** @defgroup axiom AXIOM (Axis Object Model)
- * @ingroup axis2
- * @{
- */
-
-/** @} */
-      
 /**
  * @file axiom_navigator.h
  * @brief defines axiom_navigator struct and its ops
@@ -39,8 +32,8 @@ extern "C"
 #endif
 
 /**
- * @defgroup axiom_navigator  om_navigator 
- * @ingroup axiom
+ * @defgroup axiom_navigator  navigator 
+ * @ingroup axiom_om
  * @{
  */
  
@@ -49,7 +42,7 @@ extern "C"
  typedef struct axiom_navigator_ops axiom_navigator_ops_t;
  
 /**
- * @brief OM Node ops struct
+ * @brief node ops struct
  * Encapsulator struct for ops of axiom_node
  */
  

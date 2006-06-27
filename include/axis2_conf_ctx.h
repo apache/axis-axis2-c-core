@@ -20,7 +20,7 @@
 
 /**
   * @file axis2_conf_ctx.h
-  * @brief axis2 Message Context interface
+  * @brief axis2 configuration context interface
   */
 
 #include <axis2_defines.h>
@@ -34,7 +34,7 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_conf_ctx Message Context 
+/** @defgroup axis2_conf_ctx configuration context 
  * @ingroup axis2_context
  * @{
  */
@@ -44,7 +44,7 @@ typedef struct axis2_conf_ctx axis2_conf_ctx_t;
 struct axis2_conf;
     
 /** 
- * @brief Message Context ops struct
+ * @brief configuration context ops struct
  * Encapsulator struct for ops of axis2_conf_ctx
  */  
 struct axis2_conf_ctx_ops
@@ -163,8 +163,8 @@ struct axis2_conf_ctx_ops
 };
 
 /** 
- * @brief Message Context struct
-  *   Axis2 Message Context
+ * @brief configuration context struct
+  *   Axis2 configuration context
  */
 struct axis2_conf_ctx
 {

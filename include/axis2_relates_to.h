@@ -35,7 +35,7 @@ extern "C"
     struct axis2_relates_to_ops;
     
 /**
- * @defgroup axis2_relates_to Addressing relates to header
+ * @defgroup axis2_relates_to relates to
  * @ingroup axis2_addr
  * @{
  */

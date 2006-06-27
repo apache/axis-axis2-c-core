@@ -32,7 +32,7 @@ extern "C"
     typedef struct axiom_soap_fault_text_ops axiom_soap_fault_text_ops_t;
     typedef struct axiom_soap_fault_text axiom_soap_fault_text_t;
 /**
- * @defgroup axiom_soap_fault_text
+ * @defgroup axiom_soap_fault_text soap fault text
  * @ingroup axiom_soap
  * @{
  */

@@ -37,7 +37,7 @@ extern "C"
     struct axiom_soap_fault_sub_code;
     struct axiom_soap_builder;
 /**
- * @defgroup axiom_soap_fault_code
+ * @defgroup axiom_soap_fault_code soap fault code
  * @ingroup axiom_soap
  * @{
  */

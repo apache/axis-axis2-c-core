@@ -41,8 +41,8 @@ typedef struct axis2_flow_container_ops axis2_flow_container_ops_t;
 typedef struct axis2_flow_container axis2_flow_container_t;   
    
 
-/** @defgroup axis2_flow_container Flow Container
-  * @ingroup axis2_flow_container
+/** @defgroup axis2_flow_container flow container
+  * @ingroup axis2_desc
   * @{
   */
 

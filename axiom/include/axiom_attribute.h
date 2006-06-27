@@ -35,13 +35,13 @@ extern "C"
     struct axiom_attribute_ops;
 
 /**
- * @defgroup axiom_attribute OM Attribute
- * @ingroup axiom 
+ * @defgroup axiom_attribute attribute
+ * @ingroup axiom_om
  * @{
  */
 
 /**
- *   \brief OM attribute ops struct
+ *   \brief attribute ops struct
  *   ops Encapsulator struct for axiom_attribute
  */
  AXIS2_DECLARE_DATA   typedef struct axiom_attribute_ops
@@ -74,7 +74,7 @@ extern "C"
         * Serialize op
         * @param om_attribute pointer to attribute struct to be serialized
         * @param env Environment. MUST NOT be NULL,
-        * @param om_output OM output handler to be used in serializing
+        * @param om_output AXIOM output handler to be used in serializing
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
 
@@ -160,8 +160,8 @@ extern "C"
     } axiom_attribute_ops_t;
 
   /**
-    * \brief OM attribute struct
-    * Handles the XML attribute in OM
+    * \brief attribute struct
+    * Handles the XML attribute in AXIOM
     */
     typedef struct axiom_attribute
     {

@@ -43,7 +43,7 @@ struct axiom_soap_builder;
 
     
 /**
- * @defgroup axiom_soap_header
+ * @defgroup axiom_soap_header soap header
  * @ingroup axiom_soap
  * @{
  */

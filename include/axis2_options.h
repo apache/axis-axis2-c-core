@@ -42,8 +42,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_options Options 
- * @ingroup axis2_core_clientapi
+/** @defgroup axis2_options options 
+ * @ingroup axis2_client_api
  * @{
  */
     

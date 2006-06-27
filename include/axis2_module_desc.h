@@ -56,8 +56,8 @@ typedef struct axis2_module_desc_ops axis2_module_desc_ops_t;
 typedef struct axis2_module_desc axis2_module_desc_t;   
    
 
-/** @defgroup axis2_module_desc Module Description
-  * @ingroup axis2_module_desc
+/** @defgroup axis2_module_desc module description
+  * @ingroup axis2_desc
   * @{
   */
 

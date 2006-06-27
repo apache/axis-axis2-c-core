@@ -40,7 +40,7 @@ extern "C"
     struct axis2_endpoint_ref_ops;
     
 /**
- * @defgroup axis2_endpoint_ref Addressing relates to header
+ * @defgroup axis2_endpoint_ref  endpoint reference
  * @ingroup axis2_addr
  * @{
  */

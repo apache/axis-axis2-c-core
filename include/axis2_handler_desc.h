@@ -38,8 +38,8 @@ extern "C"
     struct axis2_handler_desc_ops;
     
 /**
- * @defgroup axis2_handler_desc Handler Description
- * @ingroup axis2_description
+ * @defgroup axis2_handler_desc handler description
+ * @ingroup axis2_desc
  * @{
  */
 

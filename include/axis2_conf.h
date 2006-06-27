@@ -38,8 +38,16 @@
 extern "C" 
 {
 #endif
-/** @defgroup axis2_config Axis Configuration
-  * @ingroup axis2_core_engine
+    
+/** 
+  * @defgroup axis2_engine engine
+  * @ingroup axis2
+  * @{
+  * @}
+  */
+    
+/** @defgroup axis2_config configuration
+  * @ingroup axis2_engine
   * @{
   */
 

@@ -37,7 +37,7 @@ extern "C"
     struct axis2_any_content_type_ops;
     
 /**
- * @defgroup axis2_any_content_type WS Addressing any content type
+ * @defgroup axis2_any_content_type any content type
  * @ingroup axis2_addr
  * @{
  */

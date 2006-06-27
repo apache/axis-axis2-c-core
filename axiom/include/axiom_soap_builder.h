@@ -35,8 +35,8 @@ typedef struct axiom_soap_builder axiom_soap_builder_t;
 typedef struct axiom_soap_builder_ops  axiom_soap_builder_ops_t;
     
 /**
- * @defgroup axiom_soap_builder
- * @ingroup axiom_soap_model builder
+ * @defgroup axiom_soap_builder soap builder
+ * @ingroup axiom_soap
  * @{
  */
 

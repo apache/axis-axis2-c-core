@@ -47,8 +47,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_svc Service description
-  * @ingroup axis2_core_description
+/** @defgroup axis2_svc service
+  * @ingroup axis2_desc
   * @{
   */
 

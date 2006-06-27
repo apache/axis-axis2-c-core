@@ -44,7 +44,7 @@ typedef struct axis2_transport_sender axis2_transport_sender_t;
 typedef struct axis2_transport_sender_ops axis2_transport_sender_ops_t;
 
 /** @defgroup axis2_transport_sender Transport Sender
- * @ingroup axis2_description
+ * @ingroup axis2_desc
  * @{
  */
 

@@ -35,7 +35,7 @@ extern "C"
 #endif
 
 /** 
- * @defgroup axis2_op_ctx Operation Context 
+ * @defgroup axis2_op_ctx operation context 
  * An op context represents a running "instance" of an op, which is
  * represented by an axis2_op struct. This concept is needed to allow
  * messages to be grouped into ops as in WSDL 2.0-speak ops are

@@ -35,7 +35,7 @@ extern "C"
     typedef struct axiom_soap_fault_detail axiom_soap_fault_detail_t;
 
 /**
- * @defgroup axiom_soap_fault_detail
+ * @defgroup axiom_soap_fault_detail soap fault detail
  * @ingroup axiom_soap
  * @{
  */

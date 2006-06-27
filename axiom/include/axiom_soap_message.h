@@ -36,7 +36,7 @@ extern "C"
     
     
 /**
- * @defgroup axiom_soap_message
+ * @defgroup axiom_soap_message soap message
  * @ingroup axiom_soap
  * @{
  */

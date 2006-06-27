@@ -35,7 +35,7 @@ extern "C"
     struct axis2_disp_checker_ops;
     
 /**
- * @defgroup axis2_disp_checker Dispatcher
+ * @defgroup axis2_disp_checker dispatcher checker
  * @ingroup axis2_engine
  * @{
  */

@@ -37,7 +37,7 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_msg_ctx Message Context 
+/** @defgroup axis2_msg_ctx message context 
  * @ingroup axis2_context
  * @{
  */

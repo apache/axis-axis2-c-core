@@ -37,7 +37,7 @@ extern "C"
     typedef struct axiom_soap_header_block_ops axiom_soap_header_block_ops_t;
     
 /**
- * @defgroup axiom_soap_header_block
+ * @defgroup axiom_soap_header_block soap header block
  * @ingroup axiom_soap
  * @{
  */

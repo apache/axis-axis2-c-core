@@ -33,7 +33,7 @@ extern "C"
     typedef struct axiom_soap_fault_role_ops axiom_soap_fault_role_ops_t;
     typedef struct axiom_soap_fault_role axiom_soap_fault_role_t;
 /**
- * @defgroup axiom_soap_fault_role
+ * @defgroup axiom_soap_fault_role soap fault role
  * @ingroup axiom_soap
  * @{
  */

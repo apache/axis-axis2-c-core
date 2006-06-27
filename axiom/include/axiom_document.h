@@ -41,13 +41,13 @@ extern "C"
     struct axiom_stax_builder;
 
 /**
- * @defgroup axiom_document OM Document
- * @ingroup axiom 
+ * @defgroup axiom_document document
+ * @ingroup axiom_om
  * @{
  */
 
   /** 
-    * @brief OM document ops struct
+    * @brief document ops struct
     * Encapsulator struct for ops of axiom_document_t
     */
  AXIS2_DECLARE_DATA   typedef struct axiom_document_ops
@@ -125,8 +125,8 @@ extern "C"
     } axiom_document_ops_t;
 
   /**
-    * \brief OM document struct
-    * Handles the XML document in OM
+    * \brief document struct
+    * Handles the XML document in AXIOM
     */
     typedef struct axiom_document
     {

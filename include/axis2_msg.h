@@ -39,8 +39,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_op Message Description
-  * @ingroup axis2_core_description
+/** @defgroup axis2_msg message
+  * @ingroup axis2_desc
   * @{
   */
 

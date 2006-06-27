@@ -42,8 +42,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_op Operation Description
-  * @ingroup axis2_core_description
+/** @defgroup axis2_op operation
+  * @ingroup axis2_desc
   * @{
   */
 

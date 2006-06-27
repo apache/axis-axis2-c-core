@@ -41,7 +41,7 @@ typedef struct axiom_soap_body_ops  axiom_soap_body_ops_t;
 struct axiom_soap_builder;
     
 /**
- * @defgroup axiom_soap_body
+ * @defgroup axiom_soap_body soap body
  * @ingroup axiom_soap
  * @{
  */

@@ -19,7 +19,7 @@
 
 /**
  * @file axiom_text.h
- * @brief Axis2 OM XML text
+ * @brief Axis2 AXIOM XML text
  */
 
 #include <axis2_env.h>
@@ -36,13 +36,13 @@ extern "C"
     struct axiom_text_ops;
 
 /**
- * @defgroup axiom_text OM Text
- * @ingroup axiom 
+ * @defgroup axiom_text text
+ * @ingroup axiom_om
  * @{
  */
 
   /** 
-    * @brief OM text ops struct
+    * @brief text ops struct
     * Encapsulator struct for ops of axiom_text
     */
  AXIS2_DECLARE_DATA   typedef struct axiom_text_ops
@@ -62,7 +62,7 @@ extern "C"
         * Serialize op
         * @param env environment.  MUST NOT be NULL.
         * @param om_text pointer to om text struct to be serialized.
-        * @param om_output OM output handler to be used in serializing.
+        * @param om_output AXIOM output handler to be used in serializing.
         * @return satus of the op. AXIS2_SUCCESS on success,
         *            AXIS2_FAILURE on error
         */
@@ -125,12 +125,12 @@ extern "C"
     } axiom_text_ops_t;
 
   /** 
-    * \brief OM Text struct
+    * \brief text struct
     * Handles the XML text in OM
     */
     typedef struct axiom_text
     {
-        /** OM text related ops */
+        /** text related ops */
         axiom_text_ops_t *ops;
 
     } axiom_text_t;

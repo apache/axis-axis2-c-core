@@ -20,7 +20,7 @@
 
 /**
   * @file axis2_mep_client.h
-  * @brief axis2 Message Context interface
+  * @brief axis2 MEP client interface
   */
 
 #include <axis2_defines.h>
@@ -35,8 +35,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_mep_client Message Context 
- * @ingroup axis2_core_context
+/** @defgroup axis2_mep_client MEP client
+ * @ingroup axis2_client_api
  * @{
  */
     
@@ -45,7 +45,7 @@ typedef struct axis2_mep_client axis2_mep_client_t;
 
     
 /** 
- * @brief Message Context ops struct
+ * @brief MEP client ops struct
  * Encapsulator struct for ops of axis2_mep_client
  */  
 struct axis2_mep_client_ops
@@ -141,8 +141,8 @@ struct axis2_mep_client_ops
 };
 
 /** 
- * @brief Message Context struct
-  *   Axis2 Message Context
+ * @brief MEP client struct
+  *   Axis2 MEP client
  */
 struct axis2_mep_client
 {

@@ -35,8 +35,8 @@ extern "C"
     struct axis2_phase_rule_ops;
     
 /**
- * @defgroup axis2_phase_rule Phase Rules
- * @ingroup axis2_description
+ * @defgroup axis2_phase_rule phase rules
+ * @ingroup axis2_desc
  * @{
  */
 

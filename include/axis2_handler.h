@@ -38,8 +38,8 @@ extern "C"
 
 
 /**
- * @defgroup axis2_handler Handlers
- * @ingroup axis2_core_handlers
+ * @defgroup axis2_handler handler
+ * @ingroup axis2_desc
  * @{
  */
 

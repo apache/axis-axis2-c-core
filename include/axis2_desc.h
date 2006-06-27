@@ -31,8 +31,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_op Message Description
-  * @ingroup axis2_core_description
+/** @defgroup axis2_description description
+  * @ingroup axis2_desc
   * @{
   */
 typedef struct axis2_desc_ops axis2_desc_ops_t;    

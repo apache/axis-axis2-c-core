@@ -18,7 +18,7 @@
 #define AXIS2_OP_CLIENT_H
 
 /**
- * @defgroup axis2_core_clientapi client API
+ * @defgroup axis2_client_api client API
  * @ingroup axis2
  * @{
  * @} 
@@ -52,8 +52,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_op_client Operation Client 
- * @ingroup axis2_core_clientapi
+/** @defgroup axis2_op_client operation client 
+ * @ingroup axis2_client_api
  * @{
  */
     

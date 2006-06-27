@@ -20,7 +20,7 @@
 
 /**
   * @file axis2_svc_grp_ctx.h
-  * @brief axis2 Message Context interface
+  * @brief axis2 service group context interface
   */
 
 #include <axis2_defines.h>
@@ -33,7 +33,7 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_svc_grp_ctx Message Context 
+/** @defgroup axis2_svc_grp_ctx service group context 
  * @ingroup axis2_context
  * @{
  */
@@ -44,7 +44,7 @@ typedef struct axis2_svc_grp_ctx axis2_svc_grp_ctx_t;
 
     
 /** 
- * @brief Message Context ops struct
+ * @brief service group context ops struct
  * Encapsulator struct for ops of axis2_svc_grp_ctx
  */  
 struct axis2_svc_grp_ctx_ops
@@ -111,8 +111,8 @@ struct axis2_svc_grp_ctx_ops
 };
 
 /** 
- * @brief Message Context struct
-  *   Axis2 Message Context
+ * @brief service group context struct
+  *   Axis2 service group context
  */
 struct axis2_svc_grp_ctx
 {

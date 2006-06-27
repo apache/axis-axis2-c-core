@@ -36,14 +36,14 @@ extern "C"
     typedef struct axiom_element_ops axiom_element_ops_t;
 
 /**
- * @defgroup axiom_element OM Element
- * @ingroup axiom 
+ * @defgroup axiom_element element
+ * @ingroup axiom_om
  * @{
  */
 
 
     /** 
-    * @brief OM element ops struct
+    * @brief element ops struct
     * Encapsulator struct for ops of axiom_element
     */
 AXIS2_DECLARE_DATA   struct axiom_element_ops
@@ -54,7 +54,7 @@ AXIS2_DECLARE_DATA   struct axiom_element_ops
         * @param om_element pointer to om_element_struct contained in
         *        node , 
         * @param env Environment. MUST NOT be NULL.
-        * @param node node containing an instance of an OM element,cannot be NULL.
+        * @param node node containing an instance of an AXIOM element,cannot be NULL.
         * @param uri namespace uri..
         * @param prefix namespace prefix. can be NULL.
         * @return pointer to the namespace, if found, else NULL. On error, returns 
@@ -71,7 +71,7 @@ AXIS2_DECLARE_DATA   struct axiom_element_ops
         * It checks to see if it is already declared.
         * @param om_element contained in the om node struct
         * @param env Environment. MUST NOT be NULL.
-        * @param node node containing an instance of an OM element.
+        * @param node node containing an instance of an AXIOM element.
         * @param ns pointer to the namespace struct to be declared
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
         */
@@ -85,7 +85,7 @@ AXIS2_DECLARE_DATA   struct axiom_element_ops
         * Start to find from the given node and go up the hierarchy.
         * @param om_element om_element contained in node
         * @param env Environment. MUST NOT be NULL.
-        * @param node node containing an instance of an OM element, cannot be NULL.                                        
+        * @param node node containing an instance of an AXIOM element, cannot be NULL.                                        
         * @param qname qname of the namespace to be found. cannot be NULL.
         * @return pointer to the namespace, if found, else NULL. On error, returns 
         *           NULL and sets the error code in environment's error struct.
@@ -138,7 +138,7 @@ AXIS2_DECLARE_DATA   struct axiom_element_ops
         
       /**
         * Frees given element 
-        * @param element OM element to be freed.
+        * @param element AXIOM element to be freed.
         * @param env Environment. MUST NOT be NULL.
          * @return satus of the op. AXIS2_SUCCESS on success ,AXIS2_FAILURE on error.
         */
@@ -150,7 +150,7 @@ AXIS2_DECLARE_DATA   struct axiom_element_ops
         * Serializes the start part of the given element
         * @param element element to be serialized.
         * @param env Environment. MUST NOT be NULL.
-        * @param om_output OM output handler to be used in serializing
+        * @param om_output AXIOM output handler to be used in serializing
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *
@@ -164,7 +164,7 @@ AXIS2_DECLARE_DATA   struct axiom_element_ops
         *     have been called before calling this method.
         * @param om_element element to be serialized.
         * @param env Environment must not be null.
-        * @param om_output OM output handler to be used in serializing
+        * @param om_output AXIOM output handler to be used in serializing
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *
@@ -458,8 +458,8 @@ AXIS2_DECLARE_DATA   struct axiom_element_ops
 
     
   /**
-    * \brief OM element struct
-    * Handles the XML element in OM
+    * \brief element struct
+    * Handles the XML element in AXIOM
     */
     struct axiom_element
     {
@@ -469,7 +469,7 @@ AXIS2_DECLARE_DATA   struct axiom_element_ops
     };
 
   /**
-    * Creates an OM element with given local name
+    * Creates an AXIOM element with given local name
     * @param env Environment. MUST NOT be NULL.
     * @param parent parent of the element node to be created. can be NULL.
     * @param localname local name of the elment. cannot be NULL.
@@ -487,7 +487,7 @@ AXIS2_DECLARE_DATA   struct axiom_element_ops
                              axiom_node_t **node);
 
   /**
-    * Creates an OM element with given qname
+    * Creates an AXIOM element with given qname
     * @param env Environment. MUST NOT be NULL.
     * @param parent parent of the element node to be created. can be NULL.
     * @param qname qname of the elment.cannot be NULL.

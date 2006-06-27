@@ -44,8 +44,8 @@ struct axis2_transport_receiver;
 typedef struct axis2_transport_in_desc axis2_transport_in_desc_t;
 typedef struct axis2_transport_in_desc_ops axis2_transport_in_desc_ops_t;
 
-/** @defgroup axis2_transport_in_desc Transport in
- * @ingroup axis2_descriptions
+/** @defgroup axis2_transport_in_desc transport in description
+ * @ingroup axis2_desc
  * @{
  */
 

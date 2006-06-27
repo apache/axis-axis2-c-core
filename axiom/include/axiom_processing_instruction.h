@@ -35,14 +35,14 @@ extern "C"
     
     
 /**
- * @defgroup axiom_processing_instruction OM Processing Instruction
- * @ingroup axiom 
+ * @defgroup axiom_processing_instruction pocessing instruction
+ * @ingroup axiom_om 
  * @{
  */
 
 
   /** 
-    * @brief OM text ops struct
+    * @brief 
     * Encapsulator struct for ops of axiom_processing_instruction
     */
    AXIS2_DECLARE_DATA  typedef struct axiom_processing_instruction_ops
@@ -116,8 +116,8 @@ extern "C"
     } axiom_processing_instruction_ops_t;
 
   /** 
-    * \brief OM processing instruction
-    * Handles the XML processing instructions in OM
+    * \brief processing instruction
+    * Handles the XML processing instructions in AXIOM
     */
     typedef struct axiom_processing_instruction
     {

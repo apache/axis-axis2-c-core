@@ -48,7 +48,7 @@ struct axiom_soap_body;
 struct axiom_soap_builder;
     
 /**
- * @defgroup axiom_soap_fault
+ * @defgroup axiom_soap_fault soap fault
  * @ingroup axiom_soap
  * @{
  */

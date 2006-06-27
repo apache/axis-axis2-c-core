@@ -48,8 +48,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_module Module 
-  * @ingroup axis2_module
+/** @defgroup axis2_module module 
+  * @ingroup axis2_desc
   * @{
   */
 

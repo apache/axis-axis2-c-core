@@ -35,8 +35,8 @@ extern "C"
  * wrappers
  */
 
-/** @defgroup axis2_stub Axis2 Stub
- * @ingroup axis2_core_clientapi
+/** @defgroup axis2_stub stub
+ * @ingroup axis2_client_api
  * @{
  */    
  

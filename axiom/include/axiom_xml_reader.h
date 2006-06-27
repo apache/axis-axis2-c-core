@@ -34,8 +34,15 @@ extern "C"
 typedef struct axiom_xml_reader_ops axiom_xml_reader_ops_t;
 typedef struct axiom_xml_reader axiom_xml_reader_t;
 
+/** 
+  * @defgroup axiom_parser parser
+  * @ingroup axiom
+  * @{
+  * @}
+  */
+
 /**
- * @defgroup axiom_xml_reader 
+ * @defgroup axiom_xml_reader XML reader
  * @ingroup axiom_parser
  * @{
  */

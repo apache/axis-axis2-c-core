@@ -65,7 +65,7 @@ extern "C"
 
     /**
      * @defgroup axis2_svc_client service client
-     * @ingroup axis2_core_clientapi
+     * @ingroup axis2_client_api
      * @{
      */
 

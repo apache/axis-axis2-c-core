@@ -20,7 +20,7 @@
 
 /**
   * @file axis2_async_result.h
-  * @brief axis2 Message Context interface
+  * @brief axis2 async result interface
   */
 
 #include <axis2_defines.h>
@@ -33,8 +33,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_async_result Message Context 
- * @ingroup axis2_core_context
+/** @defgroup axis2_async_result async result
+ * @ingroup axis2_client_api
  * @{
  */
     
@@ -43,7 +43,7 @@ typedef struct axis2_async_result axis2_async_result_t;
 
     
 /** 
- * @brief Message Context ops struct
+ * @brief async result ops struct
  * Encapsulator struct for ops of axis2_async_result
  */  
 struct axis2_async_result_ops
@@ -63,8 +63,8 @@ struct axis2_async_result_ops
 };
 
 /** 
- * @brief Message Context struct
-  *   Axis2 Message Context
+ * @brief async result struct
+  *   Axis2 async result
  */
 struct axis2_async_result
 {
