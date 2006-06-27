@@ -96,9 +96,22 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(axis2_msg_recv_t *msg_r
     
     if (!svc_obj)
     {
+        const axis2_char_t *svc_name = NULL;
+        axis2_svc_t *svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
+
+        if (svc)
+        {
+            svc_name = AXIS2_SVC_GET_NAME(svc, env);
+        }
+        else
+        {
+            svc_name = "unknown";
+        }
+        
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
-            "Impl object for service not set in message receiver"
-            " %d :: %s", env->error->error_number,
+            "Impl object for service '%s' not set in message receiver. %d :: %s", 
+            svc_name, 
+            env->error->error_number,
             AXIS2_ERROR_GET_MESSAGE(env->error));
         status = AXIS2_FAILURE;
     }
