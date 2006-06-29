@@ -16,8 +16,8 @@
 
 #include <stdio.h>
 #include <axis2_util.h>
-#include <omxmlsec/oxs_constants.h>
-#include <omxmlsec/oxs_ctx.h>
+#include <oxs_constants.h>
+#include <oxs_ctx.h>
 
 
 AXIS2_EXTERN enc_ctx_t* AXIS2_CALL

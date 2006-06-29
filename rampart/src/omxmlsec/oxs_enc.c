@@ -18,36 +18,9 @@
 #include <axiom_namespace.h>
 #include <stdio.h>
 #include <axis2_util.h>
-#include <omxmlsec/oxs_constants.h>
-#include <omxmlsec/oxs_ctx.h>
-#include <omxmlsec/oxs_enc.h>
-
-/************** Function Headers ****************************/
-/*
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_enc_xml_encrypt(const axis2_env_t *env,
-                        enc_ctx_t* ctx,
-                        axiom_node_t* tmpl,
-                        axiom_node_t* node
-                    );
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_enc_binary_encrypt(const axis2_env_t *env,
-                        enc_ctx_t* ctx,
-                        axiom_node_t* tmpl,
-                        axis2_char_t* data
-                    );
-
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_enc_populate_ctx(const axis2_env_t *env,
-                    enc_ctx_t* ctx,
-                    axiom_node_t* tmpl
-                    );
-
-*/
-
-/************* End of function headers **********************/
+#include <oxs_constants.h>
+#include <oxs_ctx.h>
+#include <oxs_enc.h>
 
 
 
@@ -118,7 +91,7 @@ oxs_enc_populate_ctx(const axis2_env_t *env,
      
     qname = axis2_qname_create(env, OXS_NodeEncryptionMethod, NULL, NULL);/*EncryptionMethod*/
 
-    enc_method_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(enc_data_ele, env, qname, enc_data_node, enc_method_node);
+    enc_method_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(enc_data_ele, env, qname, enc_data_node, &enc_method_node);
     if(!enc_method_ele){ printf("\nNo EncryptionMethod element"); return AXIS2_FAILURE; }
    
     ctx->encmtd_algorithm = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(enc_method_ele, env, OXS_AttrAlgorithm);
@@ -128,7 +101,7 @@ oxs_enc_populate_ctx(const axis2_env_t *env,
     qname= NULL;
     qname = axis2_qname_create(env, OXS_NodeKeyInfo, NULL, NULL);/*KeyInfo*/
 
-    key_info_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(enc_data_ele, env, qname, enc_data_node, key_info_node);    
+    key_info_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(enc_data_ele, env, qname, enc_data_node, &key_info_node);    
     
     if(key_info_ele)
     {
@@ -138,14 +111,14 @@ oxs_enc_populate_ctx(const axis2_env_t *env,
     AXIS2_QNAME_FREE(qname, env);
     qname= NULL;
     qname = axis2_qname_create(env, OXS_NodeCipherData, NULL, NULL);/*CipherData*/
-    cipher_data_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(enc_data_ele, env, qname,  enc_data_node, cipher_data_node);
+    cipher_data_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(enc_data_ele, env, qname,  enc_data_node, &cipher_data_node);
 
     if(cipher_data_ele)
     {
         AXIS2_QNAME_FREE(qname, env);
         qname= NULL;
         qname = axis2_qname_create(env, OXS_NodeCipherValue, NULL, NULL);/*CipherValue*/
-        cipher_val_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(cipher_data_ele, env, qname, cipher_data_node, cipher_val_node);
+        cipher_val_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(cipher_data_ele, env, qname, cipher_data_node, &cipher_val_node);
         if(cipher_val_ele){
             printf("\nCipherValue Element found");
             ctx->cipher_value_node = cipher_val_node;
