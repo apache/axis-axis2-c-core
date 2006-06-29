@@ -30,7 +30,7 @@ extern "C"
 
 
 /**
- * @defgroup axis2_uuid_gen UUID Generator
+ * @defgroup axis2_uuid_gen UUID generator
  * @ingroup axis2_util 
  * @{
  */

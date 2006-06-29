@@ -32,7 +32,7 @@ extern "C"
 
 
 /**
- * @defgroup axis2_network_handler Network Handler
+ * @defgroup axis2_network_handler network handler
  * @ingroup axis2_util 
  * @{
  */

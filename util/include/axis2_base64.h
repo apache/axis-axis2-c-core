@@ -27,7 +27,7 @@ extern "C" {
 #endif
 
 /*
- * @defgroup AXIS2_Util_Base64 Base64 Encoding
+ * @defgroup AXIS2_Util_Base64 base64 encoding
  * @ingroup AXIS2_Util
  */
 

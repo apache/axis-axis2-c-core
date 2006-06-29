@@ -32,7 +32,7 @@ extern "C" {
 
 
 /**
- * @defgroup axis2_mutex Thread Mutex Routines
+ * @defgroup axis2_mutex thread mutex routines
  * @ingroup axis2_util 
  * @{
  */

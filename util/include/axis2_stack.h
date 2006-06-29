@@ -35,7 +35,7 @@ typedef struct axis2_stack_ops axis2_stack_ops_t;
 typedef struct axis2_stack axis2_stack_t;
 
 /**
- * @defgroup axis2_util_stack represents a data structure stack
+ * @defgroup axis2_util_stack stack
  * @ingroup axis2_util
  * @{
  */

@@ -32,7 +32,7 @@ typedef struct axis2_stream_ops axis2_stream_ops_t;
 
 #define AXIS2_STREAM_DEFAULT_BUF_SIZE 512
 /**
- * @defgroup axis2_stream Stream
+ * @defgroup axis2_stream stream
  * @ingroup axis2_util 
  * @{
  */

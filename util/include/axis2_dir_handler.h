@@ -31,7 +31,7 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_dir_handler Dir Handler
+ * @defgroup axis2_dir_handler dir handler
  * @ingroup axis2_util 
  * @{
  */

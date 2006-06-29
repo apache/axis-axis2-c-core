@@ -28,7 +28,7 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_string String
+ * @defgroup axis2_string string
  * @ingroup axis2_util 
  * @{
  */

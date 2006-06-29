@@ -32,7 +32,7 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_thread_pool Thread Pool
+ * @defgroup axis2_thread_pool thread pool
  * @ingroup axis2_util 
  * @{
  */

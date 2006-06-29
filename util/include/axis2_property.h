@@ -32,7 +32,7 @@ typedef struct axis2_property axis2_property_t;
 typedef struct axis2_property_ops axis2_property_ops_t;
     
 /**
- * @defgroup axis2_property Property
+ * @defgroup axis2_property property
  * @ingroup axis2_util 
  * @{
  */

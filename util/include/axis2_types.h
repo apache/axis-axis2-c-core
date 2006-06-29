@@ -27,7 +27,7 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_types Types
+ * @defgroup axis2_types type convertors
  * @ingroup axis2_util 
  * @{
  */

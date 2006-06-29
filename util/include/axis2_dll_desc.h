@@ -34,7 +34,7 @@ extern "C"
 #endif
     
 /**
- * @defgroup axis2_dll_desc DLL Description
+ * @defgroup axis2_dll_desc DLL description
  * @ingroup axis2_util
  * @{
  */

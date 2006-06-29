@@ -36,7 +36,7 @@ struct axis2_array_list_ops;
 static const int AXIS2_ARRAY_LIST_DEFAULT_CAPACITY = 16;
     
 /**
- * @defgroup axis2_array_list Array List
+ * @defgroup axis2_array_list array list
  * @ingroup axis2_util
  * @{
  */

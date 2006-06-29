@@ -32,7 +32,7 @@ typedef struct axis2_generic_obj axis2_generic_obj_t;
 typedef struct axis2_generic_obj_ops axis2_generic_obj_ops_t;
     
 /**
- * @defgroup axis2_generic_obj Generic Object
+ * @defgroup axis2_generic_obj generic object
  * @ingroup axis2_util 
  * @{
  */

@@ -31,7 +31,7 @@ extern "C"
 #define AXIS2_LOG_SI __FILE__,__LINE__
 
 /**
- * @defgroup axis2_log Log
+ * @defgroup axis2_log log
  * @ingroup axis2_util 
  * @{
  */

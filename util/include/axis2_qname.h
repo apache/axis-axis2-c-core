@@ -39,7 +39,7 @@ static const axis2_char_t XML_NAMESPACE_URI[] =
     "http://www.w3c.org/XML/1998/namespace";
 
 /**
- * @defgroup axis2_qname represents qualified name 
+ * @defgroup axis2_qname qname 
  * @ingroup axis2_util
  * @{
  */

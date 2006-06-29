@@ -31,7 +31,7 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_hash Hash Tables
+ * @defgroup axis2_hash hash
  * @ingroup axis2_util 
  * @{
  */

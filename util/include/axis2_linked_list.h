@@ -34,7 +34,7 @@ typedef struct axis2_linked_list_s axis2_linked_list_t;
 typedef struct axis2_linked_list_ops_s axis2_linked_list_ops_t;
     
 /**
- * @defgroup axis2_linked_list Linked List
+ * @defgroup axis2_linked_list linked list
  * @ingroup axis2_util
  * @{
  */

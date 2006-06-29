@@ -34,7 +34,7 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_class_loader Class Loader 
+/** @defgroup axis2_class_loader class loader 
  * @ingroup axis2_util
  * @{
  */

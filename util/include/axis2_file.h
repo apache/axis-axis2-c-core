@@ -33,7 +33,7 @@ typedef struct axis2_file axis2_file_t;
 typedef struct axis2_file_ops axis2_file_ops_t;
     
 /**
- * @defgroup axis2_file File
+ * @defgroup axis2_file file
  * @ingroup axis2_util 
  * @{
  */

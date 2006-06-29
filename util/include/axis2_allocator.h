@@ -30,7 +30,7 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_allocator Memory Allocator
+ * @defgroup axis2_allocator allocator
  * @ingroup axis2_util 
 
  * @{

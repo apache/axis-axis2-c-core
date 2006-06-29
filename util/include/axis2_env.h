@@ -33,18 +33,18 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_util Axis2 utilities
+/** @defgroup axis2_util utilities
   * @ingroup axis2
   * @{
+  * @}
   */
 
-/** @} */
 
     struct axis2_env;
     struct axis2_env_ops;
 
 /**
- * @defgroup axis2_env Environment Container
+ * @defgroup axis2_env environment
  * @ingroup axis2_util 
  * @{
  */

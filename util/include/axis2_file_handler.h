@@ -26,7 +26,7 @@ extern "C"
 
 
 /**
- * @defgroup axis2_file_handler File Handler
+ * @defgroup axis2_file_handler file handler
  * @ingroup axis2_util 
  * @{
  */

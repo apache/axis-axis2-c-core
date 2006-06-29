@@ -539,7 +539,7 @@ extern "C"
    typedef enum axis2_error_codes axis2_error_codes_t;
 
 /**
- * @defgroup axis2_error Error
+ * @defgroup axis2_error error
  * @ingroup axis2_util 
  * @{
  */
