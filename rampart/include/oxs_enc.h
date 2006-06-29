@@ -24,8 +24,8 @@
   */
 
 #include <axis2_defines.h>
-#include <omxmlsec/oxs_constants.h>
-#include <omxmlsec/oxs_ctx.h>
+#include <oxs_constants.h>
+#include <oxs_ctx.h>
 #include <axis2_env.h>
 #include <axiom_node.h>
 #include <axiom_element.h>
