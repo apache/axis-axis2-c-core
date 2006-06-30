@@ -39,7 +39,7 @@
 #include <axis2_array_list.h>
 
 /** @defgroup woden_soap_binding_exts Soap Binding Extensions
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

@@ -18,6 +18,14 @@
 #define AXIS2_MSG_RECV_H
 
 /**
+ * @defgroup axis2_receivers receivers
+ * @ingroup axis2
+ * @{
+ * @} 
+ */
+
+
+/**
   * @file axis2_msg_recv.h
   * @brief Axis Message Receiver interface. Message Receiver struct. 
   *        This interface is extended by custom message receivers
@@ -28,8 +36,8 @@ extern "C"
 {
 #endif
     
-/** @defgroup axis2_msg_recv Message Receiver
-  * @ingroup axis2_core_receivers
+/** @defgroup axis2_msg_recv message receiver
+  * @ingroup axis2_receivers
   * @{
   */
 

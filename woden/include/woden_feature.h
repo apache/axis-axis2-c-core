@@ -33,7 +33,7 @@
 #include <woden_nested_component.h>
 
 /** @defgroup woden_feature Feature
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

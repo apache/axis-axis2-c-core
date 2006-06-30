@@ -32,7 +32,7 @@
 #include <woden_configurable.h>
 
 /** @defgroup woden_interface Interface
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

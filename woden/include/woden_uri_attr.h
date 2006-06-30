@@ -28,7 +28,7 @@
 #include <woden_xml_attr.h>
 
 /** @defgroup woden_uri_attr URI Attribute
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

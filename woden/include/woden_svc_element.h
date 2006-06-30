@@ -48,7 +48,7 @@ typedef struct woden_svc_element_ops woden_svc_element_ops_t;
 typedef union woden_svc_element_base woden_svc_element_base_t;
 
 /** @defgroup woden_svc_element Service Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

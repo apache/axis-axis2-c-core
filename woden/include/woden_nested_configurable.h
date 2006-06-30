@@ -33,7 +33,7 @@
 #include <woden_configurable.h>
 
 /** @defgroup woden_nested_configurable Nested Configurable
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

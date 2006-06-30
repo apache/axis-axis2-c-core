@@ -52,7 +52,7 @@ typedef struct woden_soap_fault_subcodes_ops woden_soap_fault_subcodes_ops_t;
 struct woden_ext_element;
 
 /** @defgroup woden_soap_fault_subcodes Soap Fault Subcodes
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

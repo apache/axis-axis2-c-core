@@ -30,7 +30,7 @@
 #include <woden_wsdl_ref.h>
 
 /** @defgroup woden_import Import
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

@@ -30,8 +30,8 @@ extern "C"
 #endif
 
 /**
- * @defgroup axis2_phase_meta Axis2 Phase Meta Data
- * @ingroup axis2_core_phaseresolver
+ * @defgroup axis2_phase_meta phase meta data
+ * @ingroup axis2_engine
  * @{
  */
      #define  AXIS2_INFLOW  1

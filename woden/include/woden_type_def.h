@@ -34,7 +34,7 @@
 #include <axis2_uri.h>
 
 /** @defgroup woden_type_def Type Definition
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

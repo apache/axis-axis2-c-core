@@ -66,7 +66,7 @@ typedef struct woden_msg_label_ops woden_msg_label_ops_t;
 struct woden_ext_element;
 
 /** @defgroup woden_msg_label Message Label
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

@@ -29,7 +29,7 @@
 #include <woden_soap_header_block_element.h>
 
 /** @defgroup woden_soap_header_block Soap Header Block
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

@@ -42,7 +42,7 @@
 #include <woden_wsdl_component.h>
 
 /** @defgroup woden_wsdl10_desc Description
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

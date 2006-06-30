@@ -37,7 +37,7 @@
 #include <axis2_array_list.h>
 
 /** @defgroup woden_soap_binding_fault_ref_exts Soap Binding Fault Reference Extensions
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

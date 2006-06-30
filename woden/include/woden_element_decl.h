@@ -55,7 +55,7 @@ typedef struct woden_element_decl_ops woden_element_decl_ops_t;
 struct woden_ext_element;
 
 /** @defgroup woden_element_decl Element Declaration
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

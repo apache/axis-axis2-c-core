@@ -48,7 +48,7 @@ typedef struct woden_import_element_ops woden_import_element_ops_t;
 typedef union woden_import_element_base woden_import_element_base_t;
 
 /** @defgroup woden_import_element Import Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

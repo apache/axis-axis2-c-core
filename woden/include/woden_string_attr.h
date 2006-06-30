@@ -27,7 +27,7 @@
 #include <woden.h>
 
 /** @defgroup woden_string_attr String Attribute
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

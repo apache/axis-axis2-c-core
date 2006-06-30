@@ -52,7 +52,7 @@ struct axis2_xml_ext_element;
 struct axis2_uri;
 
 /** @defgroup woden_ext_element Extension Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

@@ -45,7 +45,7 @@ struct axiom_node;
 struct axiom_element;
 
 /** @defgroup woden_xml_attr Xml Attribute
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

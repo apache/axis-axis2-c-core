@@ -35,8 +35,8 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_raw_xml_in_out_msg_recv Raw Xml In Out Message Receiver
- * @ingroup axis2_deployment
+/** @defgroup axis2_raw_xml_in_out_msg_recv raw XML in-out message receiver
+ * @ingroup axis2_receivers
  * @{
  */
 

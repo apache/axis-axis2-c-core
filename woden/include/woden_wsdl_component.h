@@ -44,7 +44,7 @@ typedef struct woden_wsdl_component_ops woden_wsdl_component_ops_t;
 struct woden_component_exts;
 
 /** @defgroup woden_wsdl_component Wsdl Component
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

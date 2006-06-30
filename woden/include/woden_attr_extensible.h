@@ -45,7 +45,7 @@ typedef struct woden_attr_extensible_ops woden_attr_extensible_ops_t;
 struct woden_xml_attr;
 
 /** @defgroup woden_attr_extensible Attribute Extensible
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

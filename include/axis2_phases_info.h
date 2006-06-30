@@ -40,8 +40,8 @@ extern "C"
 typedef struct axis2_phases_info_ops axis2_phases_info_ops_t;
 typedef struct axis2_phases_info axis2_phases_info_t;
    
-/** @defgroup axis2_phases_info Phases Info
-  * @ingroup axis2_deployment
+/** @defgroup axis2_phases_info phases information
+ * @ingroup axis2_phase_resolver
   * @{
   */
 

@@ -41,8 +41,15 @@
 #include <woden_documentable.h>
 #include <woden_wsdl_component.h>
 
+/**
+ * @defgroup woden Woden/C
+ * @{
+ * @} 
+ */
+
+
 /** @defgroup woden_desc Description
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

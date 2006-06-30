@@ -66,7 +66,7 @@ struct woden_wsdl_element;
 #define WODEN_URI_NS_HTTP "http://www.w3.org/2006/01/wsdl/http"
     
 /** @defgroup woden_component_exts Component Extensions
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

@@ -53,7 +53,7 @@ typedef struct woden_wsdl10_desc_element_ops woden_wsdl10_desc_element_ops_t;
 typedef union woden_wsdl10_desc_element_base woden_wsdl10_desc_element_base_t;
 
 /** @defgroup woden_wsdl10_desc_element Description Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

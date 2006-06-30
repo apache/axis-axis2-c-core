@@ -30,7 +30,7 @@
 #include <woden.h>
 
 /** @defgroup woden_bool_attr Boolean Attribute
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

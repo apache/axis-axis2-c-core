@@ -29,7 +29,7 @@
 #include <axis2_array_list.h>
 
 /** @defgroup woden_qname_list_attr QName List Attribute
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

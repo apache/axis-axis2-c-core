@@ -65,7 +65,7 @@ typedef struct woden_direction_ops woden_direction_ops_t;
 struct woden_ext_element;
 
 /** @defgroup woden_direction Direction
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

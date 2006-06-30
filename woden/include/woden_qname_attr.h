@@ -27,7 +27,7 @@
 #include <woden_xml_attr.h>
 
 /** @defgroup woden_qname_attr Qname Attribute
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

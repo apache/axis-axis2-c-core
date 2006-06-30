@@ -49,7 +49,7 @@ typedef struct woden_endpoint_element_ops woden_endpoint_element_ops_t;
 typedef union woden_endpoint_element_base woden_endpoint_element_base_t;
 
 /** @defgroup woden_endpoint_element Endpoint Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

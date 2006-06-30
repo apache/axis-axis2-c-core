@@ -28,7 +28,7 @@
 #include <woden_schema.h>
 
 /** @defgroup woden_imported_schema Imported Schema
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

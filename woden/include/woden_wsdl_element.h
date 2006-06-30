@@ -51,7 +51,7 @@ struct woden_xml_attr;
 struct woden_ext_element;
 
 /** @defgroup woden_wsdl_element Wsdl Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

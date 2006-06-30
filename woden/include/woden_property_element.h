@@ -58,7 +58,7 @@ typedef union woden_property_element_base woden_property_element_base_t;
 struct xml_schema_type;
 
 /** @defgroup woden_property_element Property Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

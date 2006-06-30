@@ -46,8 +46,8 @@ struct axis2_phase_rule;
 typedef struct axis2_phase_holder axis2_phase_holder_t;
 typedef struct axis2_phase_holder_ops axis2_phase_holder_ops_t;
 
-/** @defgroup axis2_phase_holder Phase Holder
- * @ingroup axis2_phase
+/** @defgroup axis2_phase_holder phase holder
+ * @ingroup axis2_phase_resolver
  * @{
  */
 

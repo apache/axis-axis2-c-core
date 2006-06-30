@@ -29,7 +29,7 @@
 #include <axis2_qname.h>
 
 /** @defgroup woden_interface_msg_ref Interface Message Reference
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

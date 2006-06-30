@@ -31,7 +31,7 @@
 #include <axis2_qname.h>
 
 /** @defgroup woden_interface_fault Interface Fault
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

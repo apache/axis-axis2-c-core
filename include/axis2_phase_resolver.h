@@ -56,8 +56,8 @@ struct axis2_phase_holder;
 typedef struct axis2_phase_resolver axis2_phase_resolver_t;
 typedef struct axis2_phase_resolver_ops axis2_phase_resolver_ops_t;
 
-/** @defgroup axis2_phase_resolver Phase Resolver
- * @ingroup axis2_phase
+/** @defgroup axis2_phase_resolver phase resolver
+ * @ingroup axis2
  * @{
  */
 

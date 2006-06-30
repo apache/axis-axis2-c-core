@@ -29,7 +29,7 @@
 #include <axis2_qname.h>
 
 /** @defgroup woden_interface_op Interface Operation
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

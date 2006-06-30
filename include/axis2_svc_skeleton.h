@@ -32,8 +32,15 @@ extern "C"
  * wrappers
  */
 
-/** @defgroup axis2_svc_skeleton Axis2 Service Skeleton
- * @ingroup axis2_deployment
+/**
+ * @defgroup axis2_svc_api service API
+ * @ingroup axis2
+ * @{
+ * @} 
+ */
+
+/** @defgroup axis2_svc_skeleton service skeleton
+ * @ingroup axis2_svc_api
  * @{
  */    
 

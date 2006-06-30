@@ -29,7 +29,7 @@
 #include <axiom_document.h>
 
 /** @defgroup woden_reader Woden Wsdl Reader
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

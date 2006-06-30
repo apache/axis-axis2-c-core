@@ -45,7 +45,7 @@ typedef struct woden_configurable_component woden_configurable_component_t;
 typedef struct woden_configurable_component_ops woden_configurable_component_ops_t;
 
 /** @defgroup woden_configurable_component Configurable Component
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

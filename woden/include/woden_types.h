@@ -38,7 +38,7 @@
 
 
 /** @defgroup woden_types Types
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

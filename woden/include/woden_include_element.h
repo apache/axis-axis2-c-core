@@ -48,7 +48,7 @@ typedef struct woden_include_element_ops woden_include_element_ops_t;
 typedef union woden_include_element_base woden_include_element_base_t;
 
 /** @defgroup woden_include_element Include Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

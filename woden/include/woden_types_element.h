@@ -56,7 +56,7 @@ typedef struct woden_types_element_ops woden_types_element_ops_t;
 struct xml_schema;
 
 /** @defgroup woden_types_element Types Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

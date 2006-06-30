@@ -35,7 +35,7 @@
 #include <woden_wsdl_component.h>
 
 /** @defgroup woden_wsdl_obj Wsdl Object
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

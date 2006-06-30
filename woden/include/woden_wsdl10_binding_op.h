@@ -31,7 +31,7 @@
 #include <axis2_qname.h>
 
 /** @defgroup woden_wsdl10_binding_op Binding Operation
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

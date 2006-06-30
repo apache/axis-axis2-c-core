@@ -32,7 +32,7 @@
 #include <axis2_qname.h>
 
 /** @defgroup woden_soap_header_block_deserializer Soap Header Block Deserializer
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

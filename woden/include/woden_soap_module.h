@@ -29,7 +29,7 @@
 #include <woden_soap_module_element.h>
 
 /** @defgroup woden_soap_module Soap Module
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

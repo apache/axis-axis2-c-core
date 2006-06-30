@@ -32,7 +32,7 @@
 #include <axis2_qname.h>
 
 /** @defgroup woden_wsdl10_binding_msg_ref Binding Message Reference
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

@@ -44,7 +44,7 @@ typedef struct woden_nc_name_ops woden_nc_name_ops_t;
 struct axis2_xml_nc_name;
 
 /** @defgroup woden_nc_name NC Name
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

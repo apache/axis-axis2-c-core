@@ -30,7 +30,7 @@
 #include <woden_configurable.h>
 
 /** @defgroup woden_binding Binding
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

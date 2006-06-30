@@ -53,7 +53,7 @@ extern "C"
 #endif
 
 /** @defgroup woden_xml_char Xml Char
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

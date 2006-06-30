@@ -48,7 +48,7 @@ typedef struct woden_documentable_element_ops
 struct woden_documentation_element;
 
 /** @defgroup woden_documentable_element Documentable Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

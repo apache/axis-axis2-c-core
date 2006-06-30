@@ -32,7 +32,7 @@
 #include <woden_nc_name.h>
 
 /** @defgroup woden_endpoint Endpoint
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

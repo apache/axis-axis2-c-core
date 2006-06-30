@@ -33,8 +33,8 @@ extern "C" {
 #endif
 
 /**
- * @defgroup Axis2_Util_URI URI
- * @ingroup Axis2_Util
+ * @defgroup axis2_uri URI
+ * @ingroup axis2_util
  * @{
  */
 

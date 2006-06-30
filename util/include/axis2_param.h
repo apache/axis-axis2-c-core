@@ -36,8 +36,8 @@ struct axis2_param;
 struct axis2_param_ops;
 
 /**
- * @defgroup axis2_param Handlers
- * @ingroup axis2_core_description
+ * @defgroup axis2_param parameter
+ * @ingroup axis2_util
  * @{
  */
     

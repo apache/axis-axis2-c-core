@@ -45,7 +45,7 @@ typedef struct woden_element_extensible_ops woden_element_extensible_ops_t;
 struct woden_ext_element;
 
 /** @defgroup woden_element_extensible Element Extensible
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

@@ -30,7 +30,7 @@
 #include <axis2_array_list.h>
 
 /** @defgroup woden_qname_or_token_any_attr QName or Token Any Attribute
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

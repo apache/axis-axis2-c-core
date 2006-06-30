@@ -48,7 +48,7 @@ typedef struct woden_nested_component_ops woden_nested_component_ops_t;
 struct woden_component_exts;
 
 /** @defgroup woden_nested_component Nested Component
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

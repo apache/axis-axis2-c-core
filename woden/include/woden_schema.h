@@ -42,7 +42,7 @@ typedef struct woden_schema_ops woden_schema_ops_t;
 struct xml_schema;
 
 /** @defgroup woden_schema Schema
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

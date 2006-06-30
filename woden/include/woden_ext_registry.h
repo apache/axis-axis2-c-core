@@ -44,7 +44,7 @@ typedef struct woden_ext_registry_ops woden_ext_registry_ops_t;
 struct woden_wsdl_element;
     
 /** @defgroup woden_ext_registry Extension Registry
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

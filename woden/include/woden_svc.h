@@ -33,7 +33,7 @@
 #include <woden_nc_name.h>
 
 /** @defgroup woden_svc Service
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

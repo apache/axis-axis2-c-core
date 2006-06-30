@@ -46,7 +46,7 @@ typedef struct woden_feature_element_ops woden_feature_element_ops_t;
 typedef union woden_feature_element_base woden_feature_element_base_t;
 
 /** @defgroup woden_feature_element Feature Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

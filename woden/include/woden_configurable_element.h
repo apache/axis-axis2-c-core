@@ -56,7 +56,7 @@ struct woden_feature_element;
 struct woden_property_element;
 
 /** @defgroup woden_configurable_element Configurable Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

@@ -47,8 +47,8 @@ extern "C"
     struct axis2_msg_ctx;
 
 /**
- * @defgroup axis2_phase Phases
- * @ingroup axis2_core_phases
+ * @defgroup axis2_phase phases
+ * @ingroup axis2_engine
  * @{
  */
 

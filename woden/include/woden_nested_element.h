@@ -52,7 +52,7 @@ typedef struct woden_nested_element_ops woden_nested_element_ops_t;
 struct woden_wsdl_element;
 
 /** @defgroup woden_nested_element Nested Element
-  * @ingroup axis2_wsdl
+  * @ingroup woden
   * @{
   */
 

@@ -27,8 +27,8 @@ extern "C"
 {
 #endif
     
-/** @defgroup axis2_svr_callback Server Callback
-  * @ingroup axis2_core_receivers
+/** @defgroup axis2_svr_callback server callback
+  * @ingroup axis2_svc_api
   * @{
   */
 

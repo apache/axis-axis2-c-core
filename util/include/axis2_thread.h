@@ -36,7 +36,7 @@ extern "C"
 
 /**
  * @defgroup axis2_thread thread
- * @ingroup axis2_utils
+ * @ingroup axis2_util
  * @{
  */
    
