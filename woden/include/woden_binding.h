@@ -217,11 +217,11 @@ woden_binding_resolve_methods(
       (((woden_binding_t *) binding)->ops->get_base_impl(binding, env))
 
 #define WODEN_BINDING_GET_QNAME(binding, env) \
-      (((woden_binding_t *) binding)->\
+      (((woden_binding_t *) binding)->ops->\
          get_qname(binding, env))
 
 #define WODEN_BINDING_GET_INTERFACE(binding, env) \
-      (((woden_binding_t *) binding)->\
+      (((woden_binding_t *) binding)->ops->\
          get_interface(binding, env))
 
 #define WODEN_BINDING_GET_TYPE(binding, env) \

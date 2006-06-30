@@ -23,6 +23,7 @@
 #include <woden_reader.h>
 #include <woden_wsdl10_desc.h>
 #include <woden_interface.h>
+#include <woden_binding.h>
 #include <woden_svc.h>
 
 #include <axiom.h>
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
     axis2_qname_t *intface_qname = NULL;
     axis2_char_t *filename = NULL;
     axis2_array_list_t *svc_list = NULL;
+    axis2_array_list_t *binding_list = NULL;
     
     if(argc > 1)
     {
@@ -84,6 +86,20 @@ int main(int argc, char *argv[])
             if (svc_qname)
             {
                 printf("First service qname is %s\n", AXIS2_QNAME_TO_STRING(svc_qname, env));
+            }
+        }
+    }
+    binding_list = WODEN_WSDL10_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc, env);
+    if (binding_list)
+    {
+        void *binding = NULL;
+        binding = AXIS2_ARRAY_LIST_GET(binding_list, env, 0);
+        if (binding)
+        {
+            axis2_qname_t *binding_qname = WODEN_BINDING_GET_QNAME(binding, env);
+            if (binding_qname)
+            {
+                printf("First binding qname is %s\n", AXIS2_QNAME_TO_STRING(binding_qname, env));
             }
         }
     }
