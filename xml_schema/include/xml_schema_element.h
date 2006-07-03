@@ -195,7 +195,7 @@ struct xml_schema_element_ops
     set_schema_type)(
             void *element,
             const axis2_env_t *env,
-            struct xml_schema_type *schema_type);
+            void *schema_type);
 
     axis2_qname_t *(AXIS2_CALL * 
     get_schema_type_qname)(

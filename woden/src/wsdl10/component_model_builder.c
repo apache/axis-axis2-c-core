@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <woden_component_model_builder.h>
+#include "woden_component_model_builder.h"
 #include <woden_wsdl10_desc_element.h>
 #include <woden_include_element.h>
 #include <woden_import_element.h>
@@ -813,11 +813,11 @@ build_interface_msg_refs(
     for(i = 0; i < size; i++)
     {
         void *int_msg_ref = NULL;
-        
+        axis2_qname_t *qname = NULL;
         int_msg_ref = AXIS2_ARRAY_LIST_GET(int_msg_refs, env, i);
         int_msg_ref = woden_wsdl10_interface_msg_ref_to_configurable_element(int_msg_ref, env);
 
-        axis2_qname_t *qname = NULL;
+        
         int_msg_ref = woden_wsdl10_interface_msg_ref_to_interface_msg_ref_element(int_msg_ref, env);
         qname = WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_GET_MSG_QNAME(int_msg_ref, env);
         if(qname)

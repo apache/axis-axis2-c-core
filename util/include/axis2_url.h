@@ -100,7 +100,7 @@ AXIS2_DECLARE_DATA struct axis2_url_ops
             const axis2_env_t *env);
 
     axis2_status_t (AXIS2_CALL *
-   free) (axis2_url_t *url, 
+   free_fn) (axis2_url_t *url, 
            const axis2_env_t *env);
 };
 
@@ -165,7 +165,7 @@ axis2_url_to_uri(
       ((url)->ops->clone(url, env))
       
 #define AXIS2_URL_FREE(url, env) \
-      ((url)->ops->free(url, env))
+      ((url)->ops->free_fn(url, env))
 
 /************************** End of function macros ****************************/    
 

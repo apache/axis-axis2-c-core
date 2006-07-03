@@ -102,7 +102,7 @@ struct axis2_msg_ctx_ops
             
     
     axis2_status_t (AXIS2_CALL *
-   free)(axis2_msg_ctx_t *msg_ctx,
+   free_fn)(axis2_msg_ctx_t *msg_ctx,
           const axis2_env_t *env);
     /**
      * The method is used to do the intialization of the EngineContext
@@ -718,7 +718,7 @@ axis2_msg_ctx_create (const axis2_env_t *env,
       ((msg_ctx)->ops->get_parent(msg_ctx, env, parent))
         
 #define AXIS2_MSG_CTX_FREE(msg_ctx, env) \
-      ((msg_ctx)->ops->free(msg_ctx, env))
+      ((msg_ctx)->ops->free_fn(msg_ctx, env))
                   
 #define AXIS2_MSG_CTX_INIT(msg_ctx, env, conf) \
       ((msg_ctx)->ops->init(msg_ctx, env, conf))

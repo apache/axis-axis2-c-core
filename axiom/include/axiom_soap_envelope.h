@@ -98,7 +98,7 @@ extern "C"
          * @return status code AXIS2_SUCCESS on success , AXIS2_FAILURE otherwise
          */         
         axis2_status_t (AXIS2_CALL *
-      free)(axiom_soap_envelope_t *envelope,
+      free_fn)(axiom_soap_envelope_t *envelope,
               const axis2_env_t *env);
            
         /**
@@ -195,7 +195,7 @@ axiom_soap_envelope_create_default_soap_fault_envelope(const axis2_env_t *env,
         ((envelope)->ops->serialize(envelope, env, om_output, cache))
         
 #define AXIOM_SOAP_ENVELOPE_FREE(envelope, env) \
-        ((envelope)->ops->free(envelope, env))
+        ((envelope)->ops->free_fn(envelope, env))
         
 #define AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(envelope, env) \
         ((envelope)->ops->get_base_node(envelope, env))

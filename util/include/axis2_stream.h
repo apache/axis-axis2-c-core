@@ -66,7 +66,7 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
     * @return axis2_status_t AXIS2_SUCCESS on success else AXIS2_FAILURE
     */
       axis2_status_t (AXIS2_CALL *
-   free)(axis2_stream_t *stream, 
+    free_fn)(axis2_stream_t *stream, 
         const axis2_env_t *env);
       
     axis2_status_t (AXIS2_CALL *
@@ -186,7 +186,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_stream_free_void_arg (void *stream,
                             const axis2_env_t *env);
 
-#define AXIS2_STREAM_FREE(stream, env) ((stream->ops)->free(stream, env))
+#define AXIS2_STREAM_FREE(stream, env) ((stream->ops)->free_fn(stream, env))
 
 #define AXIS2_STREAM_FREE_VOID_ARG(stream, env) \
         ((stream->ops)->free_void_arg(stream, env))

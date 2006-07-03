@@ -57,7 +57,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
      *  @return Status code
      */
     axis2_status_t (AXIS2_CALL *
-   free) (struct axis2_qname * qname,
+   free_fn) (struct axis2_qname * qname,
            const axis2_env_t *env);
                                        
      /** 
@@ -146,7 +146,7 @@ axis2_qname_create_from_string(const axis2_env_t *env,
    
 
 #define AXIS2_QNAME_FREE(qname, env) \
-        ((qname)->ops->free(qname,env))
+        ((qname)->ops->free_fn(qname,env))
         
 #define AXIS2_QNAME_EQUALS(qname, env, qname1) \
         ((qname)->ops->equals(qname, env, qname1))

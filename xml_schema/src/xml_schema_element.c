@@ -92,7 +92,7 @@ struct xml_schema_element_impl
      * Returns the type of the element.
      * This can either be a complex type or a simple type.
      */
-    xml_schema_type_t *schema_type;
+    void *schema_type;
 
     /**
      * QName of a built-in data type defined in this schema or another
@@ -270,7 +270,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_element_set_schema_type(
         void *element,
         const axis2_env_t *env,
-        xml_schema_type_t *schema_type);
+        void *schema_type);
 
 axis2_qname_t *AXIS2_CALL 
 xml_schema_element_get_schema_type_qname(
@@ -554,30 +554,44 @@ xml_schema_element_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
 
-    if(element_impl->particle)
+    if(NULL != element_impl->particle)
     {
         XML_SCHEMA_PARTICLE_FREE(element_impl->particle, env);
         element_impl->particle = NULL;
     }
- 
-    if(element_impl->methods)
+    if(NULL != element_impl->methods)
     {
         axis2_hash_free(element_impl->methods, env);
         element_impl->methods = NULL;
     }
     
-    if(element_impl->type_recv)
+    if(NULL != element_impl->type_recv)
     {
         XML_SCHEMA_ANNOTATED_FREE(element_impl->type_recv, env);
         element_impl->type_recv = NULL;
     }
-    
-    if((&(element_impl->element))->ops)
+    if(NULL !=  element_impl->element.ops)
     {
-        AXIS2_FREE(env->allocator, (&(element_impl->element))->ops);
-        (&(element_impl->element))->ops = NULL;
+        AXIS2_FREE(env->allocator, element_impl->element.ops);
+        element_impl->element.ops = NULL;
     }
-
+    if(NULL != element_impl->schema_type)
+    {
+        /*
+        if(XML_SCHEMA_TYPE_GET_TYPE(element_impl->schema_type, env) 
+            == XML_SCHEMA_SIMPLE_TYPE)
+        {
+            XML_SCHEMA_SIMPLE_TYPE_FREE(element_impl->schema_type, env);
+            element_impl->schema_type = NULL;
+        }
+        if(XML_SCHEMA_TYPE_GET_TYPE(element_impl->schema_type, env)
+            == XML_SCHEMA_COMPLEX_TYPE)
+        {
+            XML_SCHEMA_COMPLEX_TYPE_FREE(element_impl->schema_type, env);
+        } 
+        */
+        XML_SCHEMA_TYPE_FREE(element_impl->schema_type, env);            
+    }
     if(element_impl)
     {
         AXIS2_FREE(env->allocator, element_impl);
@@ -896,7 +910,7 @@ axis2_status_t AXIS2_CALL
 xml_schema_element_set_schema_type(
       void *element,
       const axis2_env_t *env,
-      xml_schema_type_t *schema_type) 
+      void *schema_type) 
 {
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

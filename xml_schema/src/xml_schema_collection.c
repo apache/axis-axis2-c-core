@@ -39,7 +39,6 @@ struct xml_schema_collection_impl
     axis2_hash_t *unresolved_types;
     
     axis2_array_list_t *builder_list;
-    
 };
 
 #define AXIS2_INTF_TO_IMPL(collection) \
@@ -301,12 +300,32 @@ xml_schema_collection_free(
     xml_schema_collection_t *collection,
     const axis2_env_t *env)
 {
+    xml_schema_collection_impl_t *collec_impl = NULL;
+    
+    collec_impl = AXIS2_INTF_TO_IMPL(collection);
+    if(NULL != collec_impl->builder_list)
+    {
+        int i = 0, count =0;
+        count = AXIS2_ARRAY_LIST_SIZE(collec_impl->builder_list, env);
+        for(i =0; i< count; i++)
+        {
+            xml_schema_builder_t *builder = NULL;
+            builder = AXIS2_ARRAY_LIST_GET(collec_impl->builder_list, env, i);
+            XML_SCHEMA_BUILDER_FREE(builder, env);
+            builder = NULL;
+        }
+        AXIS2_ARRAY_LIST_FREE(collec_impl->builder_list, env);
+        collec_impl->builder_list = NULL;    
+    }    
+    
+    
     if(NULL != collection->ops)
     {
         AXIS2_FREE(env->allocator, collection->ops);
         collection->ops = NULL;
     }
-    /** TODO */
+
+
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(collection));
     return AXIS2_SUCCESS;
 }

@@ -515,8 +515,6 @@ axiom_element_find_namespace (axiom_element_t *om_element,
     axiom_node_t *parent = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     
-    /** TODO uri should not be null but when null check added 
-        other services fail, fix them and the fix this */
     /*
     if(NULL == uri)
         return NULL;
@@ -1787,7 +1785,8 @@ axiom_element_get_attribute_value_by_name(
             if(NULL != attr_qn_str && AXIS2_STRCMP(attr_qn_str, attr_name) == 0)
             {
                 AXIS2_FREE(env->allocator, attr_qn_str);
-                attr_qn_str = NULL;      
+                attr_qn_str = NULL; 
+                AXIS2_FREE(env->allocator, hi);
                 return this_attr_value;
             }
             

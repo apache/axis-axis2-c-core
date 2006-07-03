@@ -29,6 +29,7 @@ xml_schema_test(
     axiom_document_t *om_doc         = NULL;
     xml_schema_collection_t *schema_collection = NULL;
     xml_schema_t *schema          = NULL;
+    axiom_xml_reader_init();
     
     xml_reader = 
     axiom_xml_reader_create_for_file(env, filename, NULL);
@@ -52,8 +53,13 @@ xml_schema_test(
         
         printf("%s", XML_SCHEMA_SERIALIZE(schema, env));
     }                
-    
-    
+    if(NULL != schema_collection)
+    {
+        XML_SCHEMA_COLLECTION_FREE(schema_collection, env);
+    }
+    AXIOM_STAX_BUILDER_FREE(om_builder, env);
+    axiom_xml_reader_cleanup();
+
     return AXIS2_SUCCESS;
 }
 
@@ -69,7 +75,6 @@ int main(int argc, char *argv[])
     else
     {
         printf("Give an XML schema file as the first argument\n");
-        return 0;        
     }
     env = axis2_env_create_all("test.log", 1);   
     xml_schema_test(env, filename);

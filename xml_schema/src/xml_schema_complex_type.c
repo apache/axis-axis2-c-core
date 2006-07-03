@@ -25,7 +25,7 @@ typedef struct xml_schema_complex_type_impl
                 xml_schema_complex_type_impl_t;
 
 /** 
- * @brief Other Extension Struct Impl
+ * @brief complex type struct impl
  *   Axis2 Other Extension  
  */ 
 struct xml_schema_complex_type_impl

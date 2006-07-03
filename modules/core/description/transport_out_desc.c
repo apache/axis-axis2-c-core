@@ -303,7 +303,7 @@ axis2_transport_out_desc_set_qname(axis2_transport_out_desc_t *transport_out,
     
     if(transport_out_impl->qname)
     {
-        AXIS2_PHASE_FREE(transport_out_impl->qname, env);
+        AXIS2_QNAME_FREE(transport_out_impl->qname, env);
         transport_out_impl->qname = NULL;
     }
     transport_out_impl->qname = AXIS2_QNAME_CLONE(qname, env);

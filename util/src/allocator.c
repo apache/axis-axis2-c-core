@@ -39,9 +39,9 @@ axis2_allocator_init (axis2_allocator_t *allocator)
         allocator = (axis2_allocator_t *) malloc (sizeof (axis2_allocator_t));
         if (allocator)
         {
-            allocator->malloc = axis2_allocator_malloc_impl;
+            allocator->malloc_fn = axis2_allocator_malloc_impl;
             allocator->realloc = axis2_allocator_realloc_impl;
-            allocator->free = axis2_allocator_free_impl;
+            allocator->free_fn = axis2_allocator_free_impl;
             return allocator;
         }
     }
@@ -53,7 +53,7 @@ axis2_allocator_free(axis2_allocator_t *allocator)
 {
     if(allocator)
     {
-        allocator->free(allocator, allocator);
+        allocator->free_fn(allocator, allocator);
     }
     return AXIS2_SUCCESS;
 }

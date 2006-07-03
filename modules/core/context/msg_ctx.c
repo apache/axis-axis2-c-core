@@ -512,7 +512,7 @@ axis2_msg_ctx_create (const axis2_env_t *env,
     msg_ctx_impl->msg_ctx.ops->get_base = axis2_msg_ctx_get_base;
     msg_ctx_impl->msg_ctx.ops->get_parent = axis2_msg_ctx_get_parent;
     msg_ctx_impl->msg_ctx.ops->set_parent = axis2_msg_ctx_set_parent;
-    msg_ctx_impl->msg_ctx.ops->free = axis2_msg_ctx_free;
+    msg_ctx_impl->msg_ctx.ops->free_fn = axis2_msg_ctx_free;
     msg_ctx_impl->msg_ctx.ops->init = axis2_msg_ctx_init;
     msg_ctx_impl->msg_ctx.ops->get_fault_to = axis2_msg_ctx_get_fault_to;
     msg_ctx_impl->msg_ctx.ops->get_from = axis2_msg_ctx_get_from;

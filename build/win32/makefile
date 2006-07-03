@@ -85,6 +85,7 @@ AXIS2_INCLUDE_PATH = 	/I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\modules\core\util \
 		/I$(AXIS2_SOURCE_DIR)\modules\core\transport\http\server\apache2 \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\attachments \
+		/I$(AXIS2_SOURCE_DIR)\xml_schema\include \
 		/I$(LIBXML2_INSTALL_DIR)\include \
 		/I$(ICONV_INSTALL_DIR)\include \
 		/I$(ZLIB_INSTALL_DIR)\include
@@ -626,7 +627,8 @@ mv_dist:
 
 all_services: axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom
 all_clients: axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_notify axis2_client_mtom axis2_client_userguide
-all_core_modules: axis2_util axis2_parser axiom axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr
+basic_modules: axis2_util axis2_parser axiom
+core_modules:axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr
 
 
 ################################ other porjects #########################################
@@ -782,8 +784,8 @@ woden_all: woden woden_sample woden_copy_include
  
 ##############################################################################################
 
-all: clean_make_dir clean deploy all_core_modules all_services all_clients axis2_server   copy_include clean_make_dir 
+all: clean_make_dir clean deploy basic_modules xml_schema_all core_modules all_services all_clients axis2_server   copy_include clean_make_dir 
  
 install: all
 
-dist: all axis2_apache_module mod_rampart_all xml_schema_all woden_all copy_extra copy_samples mv_dist
+dist: all axis2_apache_module mod_rampart_all woden_all copy_extra copy_samples mv_dist

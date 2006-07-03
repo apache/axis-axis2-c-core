@@ -384,7 +384,7 @@ xml_schema_builder_create(
     builder_impl->collection = sch_collection;
     
     builder_impl->builder.ops = AXIS2_MALLOC(env->allocator, 
-            sizeof(xml_schema_builder_t));
+            sizeof(xml_schema_builder_ops_t));
     if(!builder_impl->builder.ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -3246,7 +3246,18 @@ handle_element(
            
         }            
         
-        XML_SCHEMA_ELEMENT_SET_SCHEMA_TYPE(sch_ele, env, type);                                     }
+        XML_SCHEMA_ELEMENT_SET_SCHEMA_TYPE(sch_ele, env, type);                                  
+        if(NULL != args)
+        {
+            AXIS2_ARRAY_LIST_FREE(args, env);
+            args = NULL;
+        }
+        if(NULL != last_list)
+        {
+            AXIS2_ARRAY_LIST_FREE(last_list, env);
+            last_list = NULL;
+        }
+   }
     else if(NULL != (attr_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, "ref")))
     {
         axis2_array_list_t *args = NULL;

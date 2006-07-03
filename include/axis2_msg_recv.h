@@ -66,7 +66,7 @@ struct axis2_msg_recv_ops
      * @return status code
      */
     axis2_status_t (AXIS2_CALL *
-    free) (axis2_msg_recv_t *msg_recv,
+    free_fn) (axis2_msg_recv_t *msg_recv,
             const axis2_env_t *env);
 
     /**
@@ -230,7 +230,7 @@ axis2_msg_recv_create (const axis2_env_t *env);
 
 /************************** Start of function macros **************************/
 
-#define AXIS2_MSG_RECV_FREE(msg_recv, env) ((msg_recv)->ops->free (msg_recv, env))
+#define AXIS2_MSG_RECV_FREE(msg_recv, env) ((msg_recv)->ops->free_fn (msg_recv, env))
 
 #define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx, callback_recv_param) \
       ((msg_recv)->ops->receive (msg_recv, env, msg_ctx, callback_recv_param))

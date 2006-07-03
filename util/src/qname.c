@@ -173,7 +173,7 @@ axis2_qname_create (const axis2_env_t *env,
         return NULL;
     }
 
-    qn->qname.ops->free = axis2_qname_free;
+    qn->qname.ops->free_fn = axis2_qname_free;
     qn->qname.ops->equals = axis2_qname_equals;
     qn->qname.ops->clone = axis2_qname_clone;
     qn->qname.ops->get_localpart = axis2_qname_get_localpart;

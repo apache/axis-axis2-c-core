@@ -131,7 +131,7 @@ axiom_soap_envelope_create_null(const axis2_env_t *env)
         return NULL;        
     }
    
-    envelope_impl->soap_envelope.ops->free = 
+    envelope_impl->soap_envelope.ops->free_fn = 
             axiom_soap_envelope_free;
     
     envelope_impl->soap_envelope.ops->get_base_node = 

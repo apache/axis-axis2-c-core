@@ -84,7 +84,7 @@ axis2_stream_create_apache2(const axis2_env_t *env, request_rec *request)
       return NULL;
    }
        
-   stream_impl->stream.ops->free = apache2_stream_free;
+   stream_impl->stream.ops->free_fn = apache2_stream_free;
     stream_impl->stream.ops->read = apache2_stream_read;
     stream_impl->stream.ops->write = apache2_stream_write;
     stream_impl->stream.ops->skip = apache2_stream_skip;

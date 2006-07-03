@@ -543,6 +543,52 @@ xml_schema_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     schema_impl = AXIS2_INTF_TO_IMPL(schema);
 
+    if(NULL != schema_impl->attr_form_default)
+    {
+        XML_SCHEMA_FORM_FREE(schema_impl->attr_form_default, env);
+        schema_impl->attr_form_default = NULL;
+    }
+    if(NULL != schema_impl->element_form_default)
+    {
+        XML_SCHEMA_FORM_FREE(schema_impl->element_form_default, env);
+        schema_impl->element_form_default = NULL;
+    }
+    if(NULL != schema_impl->block_default)
+    {
+        XML_SCHEMA_DERIVATION_METHOD_FREE(schema_impl->block_default, env);
+        schema_impl->block_default = NULL;
+    }
+    if(NULL != schema_impl->final_default)
+    {
+        XML_SCHEMA_DERIVATION_METHOD_FREE(schema_impl->final_default, env);
+        schema_impl->final_default = NULL;
+    }
+    if(NULL != schema_impl->elements)
+    {
+        axis2_hash_t *ht = NULL;
+        axis2_hash_index_t *hi = NULL;
+        
+        ht = XML_SCHEMA_OBJ_TABLE_GET_HASH_TABLE(schema_impl->elements, env);
+        if(NULL != ht)
+        {
+            for(hi = axis2_hash_first(ht, env); hi; hi = axis2_hash_next(env, hi))
+            {
+                void *val = NULL;
+                axis2_hash_this(hi, NULL, NULL, &val);
+                if(NULL != val)
+                {
+                    if(XML_SCHEMA_OBJ_GET_TYPE(val, env) == XML_SCHEMA_ELEMENT)
+                    {
+                        XML_SCHEMA_ELEMENT_FREE(val, env);
+                        val = NULL;
+                    }
+                }
+            }
+        }   
+        XML_SCHEMA_OBJ_TABLE_FREE(schema_impl->elements, env);
+        schema_impl->elements = NULL;      
+    }
+
     if(schema_impl->methods)
     {
         axis2_hash_free(schema_impl->methods, env);
@@ -1271,16 +1317,27 @@ xml_schema_serialize(
     xml_schema_impl_t *sch_impl = NULL;
     axiom_xml_writer_t *writer = NULL;
     axiom_output_t *output = NULL;
-        
+    axis2_char_t *xml_str = NULL;
+    /** temp method, reimplement after implimenting
+        the schema serializer */            
     sch_impl = AXIS2_INTF_TO_IMPL(schema);
     if(sch_impl->schema_root_node)
     {
         writer = axiom_xml_writer_create_for_memory(env, NULL, 0, 0 ,
             AXIS2_XML_PARSER_TYPE_BUFFER);
+        if(!writer)
+        {
+            return AXIS2_FAILURE;
+        }            
         output = axiom_output_create(env, writer);
+        if(!output)
+        {
+            return AXIS2_FAILURE;
+        }
         
         AXIOM_NODE_SERIALIZE(sch_impl->schema_root_node, env, output);
-        return AXIOM_XML_WRITER_GET_XML(writer, env);
+        xml_str = AXIOM_XML_WRITER_GET_XML(writer, env);
+        AXIOM_OUTPUT_FREE(output, env);
     }
     return NULL;
 }      

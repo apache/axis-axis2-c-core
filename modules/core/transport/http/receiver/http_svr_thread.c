@@ -144,7 +144,7 @@ axis2_http_svr_thread_free (axis2_http_svr_thread_t *svr_thread,
    
     if(NULL != svr_thread_impl->worker)
     {
-        AXIS2_URL_FREE(svr_thread_impl->worker, env);
+        AXIS2_HTTP_WORKER_FREE(svr_thread_impl->worker, env);
         svr_thread_impl->worker = NULL;
     }
     if(-1 != svr_thread_impl->listen_socket)

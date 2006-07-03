@@ -146,7 +146,7 @@ axis2_url_create (
    url_impl->url.ops->set_path = axis2_url_set_path;
    url_impl->url.ops->get_path = axis2_url_get_path;
     url_impl->url.ops->clone = axis2_url_clone;
-    url_impl->url.ops->free = axis2_url_free;
+    url_impl->url.ops->free_fn = axis2_url_free;
                         
    return &(url_impl->url);
 }

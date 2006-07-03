@@ -119,7 +119,7 @@ axis2_msg_recv_create (const axis2_env_t *env)
         return NULL;
    }
     
-   msg_recv_impl->msg_recv.ops->free = axis2_msg_recv_free;
+   msg_recv_impl->msg_recv.ops->free_fn = axis2_msg_recv_free;
     msg_recv_impl->msg_recv.ops->make_new_svc_obj = 
         axis2_msg_recv_make_new_svc_obj;
     msg_recv_impl->msg_recv.ops->get_impl_obj = axis2_msg_recv_get_impl_obj;

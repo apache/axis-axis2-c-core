@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <woden_component_model_builder.h>
+#include "woden_component_model_builder.h"
 #include <woden_desc_element.h>
 #include <woden_include_element.h>
 #include <woden_import_element.h>
