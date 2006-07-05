@@ -21,7 +21,7 @@
 #include <axis2_utils.h>
 #include <platforms/axis2_platform_auto_sense.h>
 #include <woden_reader.h>
-#include <woden_wsdl10_desc.h>
+#include <woden_desc.h>
 #include <woden_interface.h>
 #include <woden_binding.h>
 #include <woden_element_decl.h>
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     reader = woden_reader_create(env);
     
     desc = (void *)WODEN_READER_READ_WSDL(reader, env, om_doc, doc_base_uri);
-    intfaces = WODEN_WSDL10_DESC_GET_INTERFACES(desc, env);
+    intfaces = WODEN_DESC_GET_INTERFACES(desc, env);
     intface = AXIS2_ARRAY_LIST_GET(intfaces, env, 0);
     if (intface)
     {
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     }
     if (intface_qname) 
         printf("Interface qname is %s\n", AXIS2_QNAME_TO_STRING(intface_qname, env));
-    svc_list = WODEN_WSDL10_DESC_ELEMENT_GET_SVC_ELEMENTS(desc, env);
+    svc_list = WODEN_DESC_ELEMENT_GET_SVC_ELEMENTS(desc, env);
     if (svc_list)
     {
         void *svc = NULL;
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
             }
         }
     }
-    binding_list = WODEN_WSDL10_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc, env);
+    binding_list = WODEN_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc, env);
     if (binding_list)
     {
         void *binding = NULL;
@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    ed_list = WODEN_WSDL10_DESC_GET_ELEMENT_DECLS(desc, env);
+    ed_list = WODEN_DESC_GET_ELEMENT_DECLS(desc, env);
     if (ed_list)
     {
         
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
         if (ed)
             ed_qname = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
     }
-    ed = WODEN_WSDL10_DESC_GET_ELEMENT_DECL(desc, env, ed_qname);
+    ed = WODEN_DESC_GET_ELEMENT_DECL(desc, env, ed_qname);
     if (ed)
     {
         axis2_char_t *content_model = NULL;

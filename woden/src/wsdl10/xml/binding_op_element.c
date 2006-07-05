@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <woden_wsdl10_binding_op_element.h>
+#include <woden_binding_op_element.h>
 
 axis2_status_t AXIS2_CALL
-woden_wsdl10_binding_op_element_resolve_methods(
-        woden_wsdl10_binding_op_element_t *binding_op_element,
+woden_binding_op_element_resolve_methods(
+        woden_binding_op_element_t *binding_op_element,
         const axis2_env_t *env,
         axis2_hash_t *methods)
 {
@@ -30,12 +30,12 @@ woden_wsdl10_binding_op_element_resolve_methods(
     binding_op_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
 
-    binding_op_element->ops->set_qname = 
-            axis2_hash_get(methods, "set_qname", 
+    binding_op_element->ops->set_ref = 
+            axis2_hash_get(methods, "set_ref", 
             AXIS2_HASH_KEY_STRING);
 
-    binding_op_element->ops->get_qname = 
-            axis2_hash_get(methods, "get_qname", 
+    binding_op_element->ops->get_ref = 
+            axis2_hash_get(methods, "get_ref", 
             AXIS2_HASH_KEY_STRING);
  
     binding_op_element->ops->get_interface_op_element = 

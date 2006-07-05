@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef WODEN_WSDL10_DESC_H
-#define WODEN_WSDL10_DESC_H
+#ifndef WODEN_DESC_H
+#define WODEN_DESC_H
 
 /**
- * @file woden_wsdl10_desc.h
+ * @file woden_desc.h
  * @brief Axis2 Description Interface
  * This class provides the implementation for a Description component from 
  * the WSDL Component Model, as described in the WSDL 2.0 specification.  
@@ -36,19 +36,19 @@
  */
 
 #include <woden.h>
-#include <woden_wsdl10_desc_element.h>
+#include <woden_desc_element.h>
 #include <woden_wsdl_obj.h>
 #include <woden_documentable.h>
 #include <woden_wsdl_component.h>
 
-/** @defgroup woden_wsdl10_desc Description
+/** @defgroup woden_desc Description
   * @ingroup woden
   * @{
   */
 
-typedef union woden_wsdl10_desc_base woden_wsdl10_desc_base_t;
-typedef struct woden_wsdl10_desc woden_wsdl10_desc_t;
-typedef struct woden_wsdl10_desc_ops woden_wsdl10_desc_ops_t;
+typedef union woden_desc_base woden_desc_base_t;
+typedef struct woden_desc woden_desc_t;
+typedef struct woden_desc_ops woden_desc_ops_t;
 struct woden_documentation_element;
 struct woden_wsdl_component;
 struct woden_documentable;
@@ -58,7 +58,7 @@ extern "C"
 {
 #endif
 
-struct woden_wsdl10_desc_ops
+struct woden_desc_ops
 {
    /** 
      * Deallocate memory
@@ -186,145 +186,145 @@ struct woden_wsdl10_desc_ops
             void *type_def);
 };
 
-union woden_wsdl10_desc_base
+union woden_desc_base
 {
     woden_documentable_t documentable;
-    woden_wsdl10_desc_element_t desc_element;
+    woden_desc_element_t desc_element;
     woden_wsdl_component_t wsdl_component;
 };
 
-struct woden_wsdl10_desc
+struct woden_desc
 {
-    woden_wsdl10_desc_base_t base;
-    woden_wsdl10_desc_ops_t *ops;
+    woden_desc_base_t base;
+    woden_desc_ops_t *ops;
 };
 
-AXIS2_EXTERN woden_wsdl10_desc_t * AXIS2_CALL
-woden_wsdl10_desc_create(
+AXIS2_EXTERN woden_desc_t * AXIS2_CALL
+woden_desc_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_EXTERN woden_wsdl10_desc_t * AXIS2_CALL
-woden_wsdl10_desc_to_desc_element(
+AXIS2_EXTERN woden_desc_t * AXIS2_CALL
+woden_desc_to_desc_element(
         void *desc,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_desc_t * AXIS2_CALL
-woden_wsdl10_desc_to_documentable_element(
+AXIS2_EXTERN woden_desc_t * AXIS2_CALL
+woden_desc_to_documentable_element(
         void *desc,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_desc_t * AXIS2_CALL
-woden_wsdl10_desc_to_documentable(
+AXIS2_EXTERN woden_desc_t * AXIS2_CALL
+woden_desc_to_documentable(
         void *desc,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_desc_t * AXIS2_CALL
-woden_wsdl10_desc_to_wsdl_obj(
+AXIS2_EXTERN woden_desc_t * AXIS2_CALL
+woden_desc_to_wsdl_obj(
         void *desc,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_desc_t * AXIS2_CALL
-woden_wsdl10_desc_to_wsdl_component(
+AXIS2_EXTERN woden_desc_t * AXIS2_CALL
+woden_desc_to_wsdl_component(
         void *desc,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_desc_t * AXIS2_CALL
-woden_wsdl10_desc_to_attr_extensible(
+AXIS2_EXTERN woden_desc_t * AXIS2_CALL
+woden_desc_to_attr_extensible(
         void *desc,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_desc_t * AXIS2_CALL
-woden_wsdl10_desc_to_element_extensible(
+AXIS2_EXTERN woden_desc_t * AXIS2_CALL
+woden_desc_to_element_extensible(
         void *desc,
         const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-woden_wsdl10_desc_resolve_methods(
-        woden_wsdl10_desc_t *desc,
+woden_desc_resolve_methods(
+        woden_desc_t *desc,
         const axis2_env_t *env,
-        woden_wsdl10_desc_t *desc_impl,
+        woden_desc_t *desc_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define WODEN_WSDL10_DESC_FREE(desc, env) \
-      (((woden_wsdl10_desc_t *) desc)->ops->free(desc, env))
+#define WODEN_DESC_FREE(desc, env) \
+      (((woden_desc_t *) desc)->ops->free(desc, env))
 
-#define WODEN_WSDL10_DESC_TO_DESC_FREE(desc, env) \
-      (((woden_wsdl10_desc_t *) desc)->ops->to_desc_free(desc, env))
+#define WODEN_DESC_TO_DESC_FREE(desc, env) \
+      (((woden_desc_t *) desc)->ops->to_desc_free(desc, env))
 
-#define WODEN_WSDL10_DESC_SUPER_OBJS(desc, env) \
-      (((woden_wsdl10_desc_t *) desc)->ops->super_objs(desc, env))
+#define WODEN_DESC_SUPER_OBJS(desc, env) \
+      (((woden_desc_t *) desc)->ops->super_objs(desc, env))
 
-#define WODEN_WSDL10_DESC_TYPE(desc, env) \
-      (((woden_wsdl10_desc_t *) desc)->ops->type(desc, env))
+#define WODEN_DESC_TYPE(desc, env) \
+      (((woden_desc_t *) desc)->ops->type(desc, env))
 
-#define WODEN_WSDL10_DESC_GET_BASE_IMPL(desc, env) \
-      (((woden_wsdl10_desc_t *) desc)->ops->get_base_impl(desc, env))
+#define WODEN_DESC_GET_BASE_IMPL(desc, env) \
+      (((woden_desc_t *) desc)->ops->get_base_impl(desc, env))
 
-#define WODEN_WSDL10_DESC_GET_MSGS(desc, env) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_GET_MSGS(desc, env) \
+      (((woden_desc_t *) desc)->ops->\
         get_msgs (desc, env))
 
-#define WODEN_WSDL10_DESC_GET_INTERFACES(desc, env) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_GET_INTERFACES(desc, env) \
+      (((woden_desc_t *) desc)->ops->\
         get_interfaces (desc, env))
 
-#define WODEN_WSDL10_DESC_GET_BINDINGS(desc, env) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_GET_BINDINGS(desc, env) \
+      (((woden_desc_t *) desc)->ops->\
          get_bindings(desc, env))
 
-#define WODEN_WSDL10_DESC_GET_SVCS(desc, env) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_GET_SVCS(desc, env) \
+      (((woden_desc_t *) desc)->ops->\
          get_svcs(desc, env))
 
-#define WODEN_WSDL10_DESC_GET_ELEMENT_DECLS(desc, env) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_GET_ELEMENT_DECLS(desc, env) \
+      (((woden_desc_t *) desc)->ops->\
          get_element_decls(desc, env))
 
-#define WODEN_WSDL10_DESC_GET_ELEMENT_DECL(desc, env, qname) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_GET_ELEMENT_DECL(desc, env, qname) \
+      (((woden_desc_t *) desc)->ops->\
         get_element_decl (desc, env, qname))
 
-#define WODEN_WSDL10_DESC_GET_TYPE_DEFS(desc, env) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_GET_TYPE_DEFS(desc, env) \
+      (((woden_desc_t *) desc)->ops->\
         get_type_defs (desc, env))
 
-#define WODEN_WSDL10_DESC_GET_TYPE_DEF(desc, env, qname) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_GET_TYPE_DEF(desc, env, qname) \
+      (((woden_desc_t *) desc)->ops->\
         get_type_def (desc, env, qname))
 
-#define WODEN_WSDL10_DESC_TO_ELEMENT(desc, env) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_TO_ELEMENT(desc, env) \
+      (((woden_desc_t *) desc)->ops->\
         to_element (desc, env))
 
-#define WODEN_WSDL10_DESC_ADD_TO_ALL_MSGS(desc, env, msg) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_ADD_TO_ALL_MSGS(desc, env, msg) \
+      (((woden_desc_t *) desc)->ops->\
         add_to_all_msgs (desc, env, msg))
 
-#define WODEN_WSDL10_DESC_ADD_TO_ALL_INTERFACES(desc, env, interface) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_ADD_TO_ALL_INTERFACES(desc, env, interface) \
+      (((woden_desc_t *) desc)->ops->\
         add_to_all_interfaces (desc, env, interface))
 
-#define WODEN_WSDL10_DESC_ADD_TO_ALL_BINDINGS(desc, env, binding) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_ADD_TO_ALL_BINDINGS(desc, env, binding) \
+      (((woden_desc_t *) desc)->ops->\
         add_to_all_bindings (desc, env, binding))
 
-#define WODEN_WSDL10_DESC_ADD_TO_ALL_SVCS(desc, env, svc) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_ADD_TO_ALL_SVCS(desc, env, svc) \
+      (((woden_desc_t *) desc)->ops->\
         add_to_all_svcs (desc, env, svc))
 
-#define WODEN_WSDL10_DESC_ADD_TO_ALL_ELEMENT_DECLS(desc, env, element_decl) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_ADD_TO_ALL_ELEMENT_DECLS(desc, env, element_decl) \
+      (((woden_desc_t *) desc)->ops->\
         add_to_all_element_decls (desc, env, element_decl))
 
-#define WODEN_WSDL10_DESC_ADD_TO_ALL_TYPE_DEFS(desc, env, type_def) \
-      (((woden_wsdl10_desc_t *) desc)->ops->\
+#define WODEN_DESC_ADD_TO_ALL_TYPE_DEFS(desc, env, type_def) \
+      (((woden_desc_t *) desc)->ops->\
         add_to_all_type_defs (desc, env, type_def))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* WODEN_WSDL10_DESC_H */
+#endif /* WODEN_DESC_H */

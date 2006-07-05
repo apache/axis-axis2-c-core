@@ -17,8 +17,8 @@
 #include <woden_soap_module_deserializer.h>
 #include <woden_soap_module.h>
 #include <woden_soap_module_element.h>
-#include <woden_wsdl10_desc.h>
-#include <woden_wsdl10_desc_element.h>
+#include <woden_desc.h>
+#include <woden_desc_element.h>
 #include <woden_documentation.h>
 #include <woden_documentation_element.h>
 #include "../../woden_constants.h"
@@ -394,8 +394,8 @@ parse_documentation(
 {
     void *documentation = NULL;
     
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    documentation = WODEN_WSDL10_DESC_ELEMENT_CREATE_DOCUMENTATION_ELEMENT(desc, 
+    desc = woden_desc_to_desc_element(desc, env);
+    documentation = WODEN_DESC_ELEMENT_CREATE_DOCUMENTATION_ELEMENT(desc, 
             env);
     
     documentation = woden_documentation_to_documentation_element(

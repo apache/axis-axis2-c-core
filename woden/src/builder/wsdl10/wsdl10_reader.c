@@ -20,12 +20,12 @@
 
 #include <woden_binding_fault.h>
 #include <woden_binding_fault_ref.h>
-#include <woden_wsdl10_binding_msg_ref.h>
-#include <woden_wsdl10_binding_op.h>
+#include <woden_binding_msg_ref.h>
+#include <woden_binding_op.h>
 #include <woden_binding.h>
 #include <woden_configurable_component.h>
 #include <woden_configurable.h>
-#include <woden_wsdl10_desc.h>
+#include <woden_desc.h>
 #include <woden_documentable.h>
 #include <woden_documentation.h>
 #include <woden_element_decl.h>
@@ -34,13 +34,13 @@
 #include <woden_import.h>
 #include <woden_include.h>
 #include <woden_interface_fault.h>
-#include <woden_wsdl10_interface_fault_ref.h>
-#include <woden_wsdl10_msg_ref.h>
-#include <woden_wsdl10_msg_ref_element.h>
-#include <woden_wsdl10_part.h>
-#include <woden_wsdl10_part_element.h>
+#include <woden_interface_fault_ref.h>
+#include <woden_msg_ref.h>
+#include <woden_msg_ref_element.h>
+#include <woden_part.h>
+#include <woden_part_element.h>
 #include <woden_interface.h>
-#include <woden_wsdl10_interface_msg_ref.h>
+#include <woden_interface_msg_ref.h>
 #include <woden_interface_op.h>
 #include <woden_nested_component.h>
 #include <woden_nested_configurable.h>
@@ -65,10 +65,10 @@
 #include <woden_binding_element.h>
 #include <woden_binding_fault_element.h>
 #include <woden_binding_fault_ref_element.h>
-#include <woden_wsdl10_binding_msg_ref_element.h>
-#include <woden_wsdl10_binding_op_element.h>
+#include <woden_binding_msg_ref_element.h>
+#include <woden_binding_op_element.h>
 #include <woden_configurable_element.h>
-#include <woden_wsdl10_desc_element.h>
+#include <woden_desc_element.h>
 #include <woden_documentable_element.h>
 #include <woden_documentation_element.h>
 #include <woden_endpoint_element.h>
@@ -78,8 +78,8 @@
 #include <woden_include_element.h>
 #include <woden_interface_element.h>
 #include <woden_interface_fault_element.h>
-#include <woden_wsdl10_interface_fault_ref_element.h>
-#include <woden_wsdl10_interface_msg_ref_element.h>
+#include <woden_interface_fault_ref_element.h>
+#include <woden_interface_msg_ref_element.h>
 #include <woden_interface_op_element.h>
 #include <woden_nested_element.h>
 #include <woden_property_element.h>
@@ -647,10 +647,10 @@ parse_desc(
     qname = axis2_qname_create_from_string(env, WODEN_Q_ELEM_DESCRIPTION);
     check_element_qname(reader, env, desc_el_node, qname);
     
-    desc = woden_wsdl10_desc_create(env);
+    desc = woden_desc_create(env);
     ext_reg = woden_ext_registry_create(env);
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    WODEN_WSDL10_DESC_ELEMENT_SET_EXT_REGISTRY(desc, env, ext_reg);
+    desc = woden_desc_to_desc_element(desc, env);
+    WODEN_DESC_ELEMENT_SET_EXT_REGISTRY(desc, env, ext_reg);
     
     if(NULL == wsdl_modules) 
     {
@@ -662,11 +662,11 @@ parse_desc(
     ext_reg = woden_reader_get_ext_registry(reader, env);
     if(NULL != ext_reg) 
     {
-        WODEN_WSDL10_DESC_ELEMENT_SET_EXT_REGISTRY(desc, env, ext_reg);
+        WODEN_DESC_ELEMENT_SET_EXT_REGISTRY(desc, env, ext_reg);
     }
   
     uri = get_uri(reader, env, document_base_uri);
-    WODEN_WSDL10_DESC_ELEMENT_SET_DOCUMENT_BASE_URI(desc, env, uri);
+    WODEN_DESC_ELEMENT_SET_DOCUMENT_BASE_URI(desc, env, uri);
 
     desc_el = AXIOM_NODE_GET_DATA_ELEMENT(desc_el_node, env);
     target_namespc = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(desc_el, 
@@ -675,7 +675,7 @@ parse_desc(
     if(NULL != target_namespc)
     {
         target_namespc_uri = get_uri(reader, env, target_namespc);
-        WODEN_WSDL10_DESC_ELEMENT_SET_TARGET_NAMESPACE(desc, env, target_namespc_uri);
+        WODEN_DESC_ELEMENT_SET_TARGET_NAMESPACE(desc, env, target_namespc_uri);
     }
     
     /* parse the namespace declarations */
@@ -703,18 +703,18 @@ parse_desc(
         {
             if(0 == AXIS2_STRCMP(WODEN_ATTR_XMLNS, local_part))
             {
-                WODEN_WSDL10_DESC_ELEMENT_ADD_NAMESPACE(desc, env, local_part, uri); 
+                WODEN_DESC_ELEMENT_ADD_NAMESPACE(desc, env, local_part, uri); 
                     /* a prefixed namespace */
             }
             else
             {
-                WODEN_WSDL10_DESC_ELEMENT_ADD_NAMESPACE(desc, env, NULL, uri); 
+                WODEN_DESC_ELEMENT_ADD_NAMESPACE(desc, env, NULL, uri); 
             }
         }
 
     }
-    desc = woden_wsdl10_desc_to_attr_extensible(desc, env); 
-    documentable = WODEN_WSDL10_DESC_GET_BASE_IMPL(desc, env);
+    desc = woden_desc_to_attr_extensible(desc, env); 
+    documentable = WODEN_DESC_GET_BASE_IMPL(desc, env);
     wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
     status = parse_ext_attributes(reader, env, desc_el_node, 
             "description_element", wsdl_obj, desc);
@@ -752,7 +752,7 @@ parse_desc(
 
             documentation = parse_documentation(reader, env, temp_el_node, desc);
             
-            desc = woden_wsdl10_desc_to_documentable(desc, env);
+            desc = woden_desc_to_documentable(desc, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(desc, env, documentation);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
@@ -769,8 +769,8 @@ parse_desc(
             }
             import_element = parse_import(reader, env, temp_el_node, desc, 
                     wsdl_modules);
-            desc = woden_wsdl10_desc_to_desc_element(desc, env);
-            WODEN_WSDL10_DESC_ELEMENT_ADD_IMPORT_ELEMENT(desc, env, import_element);
+            desc = woden_desc_to_desc_element(desc, env);
+            WODEN_DESC_ELEMENT_ADD_IMPORT_ELEMENT(desc, env, import_element);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_include, temp_el_node))
@@ -786,7 +786,7 @@ parse_desc(
             }
             include_element = parse_include(reader, env, temp_el_node, desc, 
                     wsdl_modules);
-            WODEN_WSDL10_DESC_ELEMENT_ADD_INCLUDE_ELEMENT(desc, env, include_element);
+            WODEN_DESC_ELEMENT_ADD_INCLUDE_ELEMENT(desc, env, include_element);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_types, temp_el_node))
@@ -794,7 +794,7 @@ parse_desc(
             void *types = NULL;
 
             types = parse_types(reader, env, temp_el_node, desc);
-            WODEN_WSDL10_DESC_ELEMENT_SET_TYPES_ELEMENT(desc, env, types);
+            WODEN_DESC_ELEMENT_SET_TYPES_ELEMENT(desc, env, types);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_msg_ref, temp_el_node))
@@ -802,7 +802,7 @@ parse_desc(
             void *msg_ref = NULL;
 
             msg_ref = parse_msg_ref(reader, env, temp_el_node, desc);
-            WODEN_WSDL10_DESC_ELEMENT_ADD_MSG_ELEMENT(desc, env, msg_ref);
+            WODEN_DESC_ELEMENT_ADD_MSG_ELEMENT(desc, env, msg_ref);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_interface, temp_el_node))
@@ -810,7 +810,7 @@ parse_desc(
             void *interface = NULL;
 
             interface = parse_interface(reader, env, temp_el_node, desc);
-            WODEN_WSDL10_DESC_ELEMENT_ADD_INTERFACE_ELEMENT(desc, env, interface);
+            WODEN_DESC_ELEMENT_ADD_INTERFACE_ELEMENT(desc, env, interface);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_binding, temp_el_node))
@@ -818,7 +818,7 @@ parse_desc(
             void *binding = NULL;
 
             binding = parse_binding(reader, env, temp_el_node, desc);
-            WODEN_WSDL10_DESC_ELEMENT_ADD_BINDING_ELEMENT(desc, env, binding);
+            WODEN_DESC_ELEMENT_ADD_BINDING_ELEMENT(desc, env, binding);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_svc, temp_el_node))
@@ -826,7 +826,7 @@ parse_desc(
             void *svc = NULL;
 
             svc = parse_svc(reader, env, temp_el_node, desc);
-            WODEN_WSDL10_DESC_ELEMENT_ADD_SVC_ELEMENT(desc, env, svc);
+            WODEN_DESC_ELEMENT_ADD_SVC_ELEMENT(desc, env, svc);
         }
         else
         {
@@ -839,7 +839,7 @@ parse_desc(
                 void *wsdl_obj = NULL;
                 void *wsdl_el = NULL;
 
-                documentable = WODEN_WSDL10_DESC_GET_BASE_IMPL(desc, env);
+                documentable = WODEN_DESC_GET_BASE_IMPL(desc, env);
                 wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
                 wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
                 wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
@@ -861,15 +861,15 @@ parse_desc(
      * model programmatically.
      * This method should be reevaluated at a later point.
      */
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    types = WODEN_WSDL10_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    types = WODEN_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
     if(NULL == types)
     {
        
-        types = WODEN_WSDL10_DESC_ELEMENT_CREATE_TYPES_ELEMENT(desc, env);
+        types = WODEN_DESC_ELEMENT_CREATE_TYPES_ELEMENT(desc, env);
         types = woden_types_to_types_element(types, env);
         WODEN_TYPES_ELEMENT_SET_TYPE_SYSTEM(types, env, WODEN_TYPE_XSD_2001);
-        WODEN_WSDL10_DESC_ELEMENT_SET_TYPES_ELEMENT(desc, env, types);
+        WODEN_DESC_ELEMENT_SET_TYPES_ELEMENT(desc, env, types);
     }
     schema_ns = axiom_namespace_create(env, 
             "http://www.w3.org/2001/XMLSchema", "import");
@@ -905,8 +905,8 @@ parse_documentation(
     axiom_node_t *temp_el_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    documentation = WODEN_WSDL10_DESC_ELEMENT_CREATE_DOCUMENTATION_ELEMENT(desc, 
+    desc = woden_desc_to_desc_element(desc, env);
+    documentation = WODEN_DESC_ELEMENT_CREATE_DOCUMENTATION_ELEMENT(desc, 
             env);
     
     /* TODO store doc_el as below, or just extract any text? */
@@ -959,7 +959,7 @@ parse_import(
     axis2_char_t *location_uri = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    imp = WODEN_WSDL10_DESC_ELEMENT_CREATE_IMPORT_ELEMENT(desc, env);
+    imp = WODEN_DESC_ELEMENT_CREATE_IMPORT_ELEMENT(desc, env);
     import_el = AXIOM_NODE_GET_DATA_ELEMENT(import_el_node, env);
     
     namespc_uri = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env, 
@@ -1012,7 +1012,7 @@ parse_include(
     axis2_char_t *location_uri = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    include = WODEN_WSDL10_DESC_ELEMENT_CREATE_INCLUDE_ELEMENT(desc, env);
+    include = WODEN_DESC_ELEMENT_CREATE_INCLUDE_ELEMENT(desc, env);
     include_el = AXIOM_NODE_GET_DATA_ELEMENT(include_el_node, env);
     
     location_uri = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(include_el, env, 
@@ -1060,8 +1060,8 @@ parse_types(
     axiom_node_t *temp_el_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    types = WODEN_WSDL10_DESC_ELEMENT_CREATE_TYPES_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    types = WODEN_DESC_ELEMENT_CREATE_TYPES_ELEMENT(desc, env);
     types = woden_types_to_types_element(types, env);
     WODEN_TYPES_ELEMENT_SET_TYPE_SYSTEM(types, env, WODEN_TYPE_XSD_2001);
  
@@ -1171,8 +1171,8 @@ parse_schema_inline(
         axis2_uri_t *uri = get_uri(reader, env, tns);
         WODEN_SCHEMA_SET_NAMESPACE(base, env, uri);
     }
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    base_uri = WODEN_WSDL10_DESC_ELEMENT_GET_DOCUMENT_BASE_URI(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    base_uri = WODEN_DESC_ELEMENT_GET_DOCUMENT_BASE_URI(desc, env);
     if(base_uri)
         base_uri_str = AXIS2_URI_TO_STRING(base_uri, env, 
                 AXIS2_URI_UNP_OMITUSERINFO);
@@ -1284,8 +1284,8 @@ parse_schema_import(
     }
     
     /* Now try to retrieve the schema import using schemaLocation */
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    context_uri = WODEN_WSDL10_DESC_ELEMENT_GET_DOCUMENT_BASE_URI(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    context_uri = WODEN_DESC_ELEMENT_GET_DOCUMENT_BASE_URI(desc, env);
     uri = WODEN_IMPORTED_SCHEMA_GET_LOCATION(schema, env);
     schema_loc = AXIS2_URI_TO_STRING(uri, env, AXIS2_URI_UNP_OMITUSERINFO);
     uri = axis2_uri_parse_relative(env, context_uri, schema_loc);
@@ -1365,8 +1365,8 @@ parse_msg_ref(
     axiom_node_t *temp_el_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    msg = WODEN_WSDL10_DESC_ELEMENT_CREATE_MSG_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    msg = WODEN_DESC_ELEMENT_CREATE_MSG_ELEMENT(desc, env);
 
     msg_el = AXIOM_NODE_GET_DATA_ELEMENT(msg_el_node, env);
     name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_el, env, WODEN_ATTR_NAME);
@@ -1377,16 +1377,16 @@ parse_msg_ref(
         axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
 
-        namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+        namespc = WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, name, namespc_str, NULL);
-        msg = woden_wsdl10_msg_ref_to_msg_ref_element(msg, env);
-        WODEN_WSDL10_MSG_REF_ELEMENT_SET_QNAME(msg, env, qname);
+        msg = woden_msg_ref_to_msg_ref_element(msg, env);
+        WODEN_MSG_REF_ELEMENT_SET_QNAME(msg, env, qname);
     }
     
     /* TODO extends attribute */
   
-    msg = woden_wsdl10_msg_ref_to_attr_extensible(msg, env);
+    msg = woden_msg_ref_to_attr_extensible(msg, env);
     status = parse_ext_attributes(reader, env, msg_el_node, "msg_element", 
             msg, desc);
     if(AXIS2_SUCCESS != status)
@@ -1415,7 +1415,7 @@ parse_msg_ref(
             void *documentation = NULL;
 
             documentation = parse_documentation(reader, env, temp_el_node, desc);
-            msg = woden_wsdl10_msg_ref_to_documentable(msg, env);
+            msg = woden_msg_ref_to_documentable(msg, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(msg, env, documentation);
         }
         if(AXIS2_TRUE == axis2_qname_util_matches(env, 
@@ -1425,8 +1425,8 @@ parse_msg_ref(
 
             part = parse_part(reader, env, temp_el_node, desc, 
                     msg);
-            msg = woden_wsdl10_msg_ref_to_msg_ref_element(msg, env);
-            WODEN_WSDL10_MSG_REF_ELEMENT_SET_PART(msg, env, part);
+            msg = woden_msg_ref_to_msg_ref_element(msg, env);
+            WODEN_MSG_REF_ELEMENT_SET_PART(msg, env, part);
         }
         else
         {
@@ -1440,7 +1440,7 @@ parse_msg_ref(
             ext_element = parse_ext_element(reader, env, "msg_element", 
                     msg, temp_el_node, desc);
 
-            nested_confble = WODEN_WSDL10_MSG_REF_GET_BASE_IMPL(msg, env);
+            nested_confble = WODEN_MSG_REF_GET_BASE_IMPL(msg, env);
             configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
             documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
@@ -1475,16 +1475,16 @@ parse_part(
     axis2_char_t *localname = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    part = WODEN_WSDL10_DESC_ELEMENT_CREATE_PART_ELEMENT(desc, 
+    desc = woden_desc_to_desc_element(desc, env);
+    part = WODEN_DESC_ELEMENT_CREATE_PART_ELEMENT(desc, 
             env);
-    nested_configurable = WODEN_WSDL10_PART_GET_BASE_IMPL(part, env);
+    nested_configurable = WODEN_PART_GET_BASE_IMPL(part, env);
     nested_configurable = woden_nested_configurable_to_nested_element(
             nested_configurable, env);
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    types = WODEN_WSDL10_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
-    WODEN_WSDL10_PART_SET_TYPES(part, env, types);
+    desc = woden_desc_to_desc_element(desc, env);
+    types = WODEN_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
+    WODEN_PART_SET_TYPES(part, env, types);
     
     part_el = AXIOM_NODE_GET_DATA_ELEMENT(part_el_node, env);
     localname = AXIOM_ELEMENT_GET_LOCALNAME(part_el, env);
@@ -1501,11 +1501,11 @@ parse_part(
         axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
 
-        namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+        namespc = WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, name, namespc_str, NULL);
-        part = woden_wsdl10_part_to_part_element(part, env);
-        WODEN_WSDL10_PART_ELEMENT_SET_QNAME(part, env, qname);
+        part = woden_part_to_part_element(part, env);
+        WODEN_PART_ELEMENT_SET_QNAME(part, env, qname);
     }
     element = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(part_el, env, WODEN_ATTR_ELEMENT);
     
@@ -1514,16 +1514,16 @@ parse_part(
         axis2_qname_t *qname = NULL;
         axis2_hash_t *namespcs = NULL;
 
-        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+        desc = woden_desc_to_desc_element(desc, env);
+        namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
 
         qname = woden_om_util_get_qname(env, part_el_node, element, namespcs);
-        part = woden_wsdl10_part_to_part_element(part, env);
-        WODEN_WSDL10_PART_ELEMENT_SET_ELEMENT_QNAME(part, 
+        part = woden_part_to_part_element(part, env);
+        WODEN_PART_ELEMENT_SET_ELEMENT_QNAME(part, 
                 env, qname);
     }
 
-    part = woden_wsdl10_part_to_attr_extensible(part, env); 
+    part = woden_part_to_attr_extensible(part, env); 
     status = parse_ext_attributes(reader, env, part_el_node, "interface_part_element", 
             part, desc);
     if(AXIS2_SUCCESS != status)
@@ -1545,7 +1545,7 @@ parse_part(
             void *documentation = NULL;
 
             documentation = parse_documentation(reader, env, temp_el_node, desc);
-            part = woden_wsdl10_part_to_documentable(part, env);
+            part = woden_part_to_documentable(part, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(part, env, documentation);
         }
         else
@@ -1560,7 +1560,7 @@ parse_part(
             ext_element = parse_ext_element(reader, env, "interface_part_element", 
                     part, temp_el_node, desc);
 
-            nested_confble = WODEN_WSDL10_PART_GET_BASE_IMPL(part, env);
+            nested_confble = WODEN_PART_GET_BASE_IMPL(part, env);
             configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
             documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
@@ -1591,8 +1591,8 @@ parse_interface(
     axiom_node_t *temp_el_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    intface = WODEN_WSDL10_DESC_ELEMENT_CREATE_INTERFACE_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    intface = WODEN_DESC_ELEMENT_CREATE_INTERFACE_ELEMENT(desc, env);
 
     interface_el = AXIOM_NODE_GET_DATA_ELEMENT(interface_el_node, env);
     name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(interface_el, env, WODEN_ATTR_NAME);
@@ -1603,7 +1603,7 @@ parse_interface(
         axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
 
-        namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+        namespc = WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, name, namespc_str, NULL);
         intface = woden_interface_to_interface_element(intface, env);
@@ -1746,8 +1746,8 @@ parse_interface_op(
     void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    op = WODEN_WSDL10_DESC_ELEMENT_CREATE_INTERFACE_OP_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    op = WODEN_DESC_ELEMENT_CREATE_INTERFACE_OP_ELEMENT(desc, env);
     nested_configurable = WODEN_INTERFACE_OP_GET_BASE_IMPL(op, env);
     nested_configurable = woden_nested_configurable_to_nested_element(
             nested_configurable, env);
@@ -1762,7 +1762,7 @@ parse_interface_op(
         axis2_uri_t *ns = NULL;
         axis2_char_t *ns_str = NULL;
 
-        ns = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+        ns = WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         ns_str = AXIS2_URI_TO_STRING(ns, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, name, ns_str, NULL);
         op = woden_interface_op_to_interface_op_element(op, env);
@@ -1948,10 +1948,10 @@ parse_interface_fault_ref(
     void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    fault_ref = WODEN_WSDL10_DESC_ELEMENT_CREATE_INTERFACE_FAULT_REF_ELEMENT(desc, 
+    desc = woden_desc_to_desc_element(desc, env);
+    fault_ref = WODEN_DESC_ELEMENT_CREATE_INTERFACE_FAULT_REF_ELEMENT(desc, 
             env);
-    nested_configurable = WODEN_WSDL10_INTERFACE_FAULT_REF_GET_BASE_IMPL(fault_ref, env);
+    nested_configurable = WODEN_INTERFACE_FAULT_REF_GET_BASE_IMPL(fault_ref, env);
     nested_configurable = woden_nested_configurable_to_nested_element(
             nested_configurable, env);
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
@@ -1963,16 +1963,16 @@ parse_interface_fault_ref(
         woden_direction_t *direction_in = NULL;
         
         direction_in = woden_direction_get_direction_in(env);
-        WODEN_WSDL10_INTERFACE_FAULT_REF_ELEMENT_SET_DIRECTION(fault_ref, env, direction_in);
+        WODEN_INTERFACE_FAULT_REF_ELEMENT_SET_DIRECTION(fault_ref, env, direction_in);
     }
     if(0 == AXIS2_STRCMP(WODEN_ELEM_OUTFAULT, localname))
     {
         woden_direction_t *direction_out = NULL;
         
         direction_out = woden_direction_get_direction_out(env);
-        fault_ref = woden_wsdl10_interface_fault_ref_to_interface_fault_ref_element(
+        fault_ref = woden_interface_fault_ref_to_interface_fault_ref_element(
                 fault_ref, env);
-        WODEN_WSDL10_INTERFACE_FAULT_REF_ELEMENT_SET_DIRECTION(fault_ref, env, direction_out);
+        WODEN_INTERFACE_FAULT_REF_ELEMENT_SET_DIRECTION(fault_ref, env, direction_out);
     }
          
     name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, WODEN_ATTR_NAME);
@@ -1982,13 +1982,13 @@ parse_interface_fault_ref(
         axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
 
-        namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+        namespc = WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, name, namespc_str, NULL);
         fault_ref = 
-            woden_wsdl10_interface_fault_ref_to_interface_fault_ref_element(
+            woden_interface_fault_ref_to_interface_fault_ref_element(
                     fault_ref, env);
-        WODEN_WSDL10_INTERFACE_FAULT_REF_ELEMENT_SET_QNAME(fault_ref, env, qname);
+        WODEN_INTERFACE_FAULT_REF_ELEMENT_SET_REF(fault_ref, env, qname);
     }
 
     msg = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(fault_ref_el, env, WODEN_ATTR_MSG);
@@ -1998,16 +1998,16 @@ parse_interface_fault_ref(
         axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
 
-        namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+        namespc = WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, msg, namespc_str, NULL);
         fault_ref = 
-            woden_wsdl10_interface_fault_ref_to_interface_fault_ref_element(
+            woden_interface_fault_ref_to_interface_fault_ref_element(
                     fault_ref, env);
-        WODEN_WSDL10_INTERFACE_FAULT_REF_ELEMENT_SET_MSG_QNAME(fault_ref, env, qname);
+        WODEN_INTERFACE_FAULT_REF_ELEMENT_SET_MSG_QNAME(fault_ref, env, qname);
     }
    
-    fault_ref = woden_wsdl10_interface_fault_ref_to_attr_extensible(fault_ref, env);
+    fault_ref = woden_interface_fault_ref_to_attr_extensible(fault_ref, env);
     status = parse_ext_attributes(reader, env, fault_ref_el_node, "interface_fault_ref_element", 
             fault_ref, desc);
     if(AXIS2_SUCCESS != status)
@@ -2029,7 +2029,7 @@ parse_interface_fault_ref(
             void *documentation = NULL;
 
             documentation = parse_documentation(reader, env, temp_el_node, desc);
-            fault_ref = woden_wsdl10_interface_fault_ref_to_documentable(fault_ref, env);
+            fault_ref = woden_interface_fault_ref_to_documentable(fault_ref, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(fault_ref, env, documentation);
         }
         else
@@ -2044,7 +2044,7 @@ parse_interface_fault_ref(
             ext_element = parse_ext_element(reader, env, "interface_fault_ref_element", 
                     fault_ref, temp_el_node, desc);
 
-            nested_confble = WODEN_WSDL10_INTERFACE_FAULT_REF_GET_BASE_IMPL(fault_ref, env);
+            nested_confble = WODEN_INTERFACE_FAULT_REF_GET_BASE_IMPL(fault_ref, env);
             configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
             documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
@@ -2078,10 +2078,10 @@ parse_interface_msg_ref(
     void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    msg_ref = WODEN_WSDL10_DESC_ELEMENT_CREATE_INTERFACE_MSG_REF_ELEMENT(desc, 
+    desc = woden_desc_to_desc_element(desc, env);
+    msg_ref = WODEN_DESC_ELEMENT_CREATE_INTERFACE_MSG_REF_ELEMENT(desc, 
             env);
-    nested_configurable = WODEN_WSDL10_INTERFACE_MSG_REF_GET_BASE_IMPL(msg_ref, env);
+    nested_configurable = WODEN_INTERFACE_MSG_REF_GET_BASE_IMPL(msg_ref, env);
     nested_configurable = woden_nested_configurable_to_nested_element(
             nested_configurable, env);
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
@@ -2093,18 +2093,18 @@ parse_interface_msg_ref(
         woden_direction_t *direction_in = NULL;
         
         direction_in = woden_direction_get_direction_in(env);
-        msg_ref = woden_wsdl10_interface_msg_ref_to_interface_msg_ref_element(
+        msg_ref = woden_interface_msg_ref_to_interface_msg_ref_element(
                 msg_ref, env);
-        WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_in);
+        WODEN_INTERFACE_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_in);
     }
     if(0 == AXIS2_STRCMP(WODEN_ELEM_OUTPUT, localname))
     {
         woden_direction_t *direction_out = NULL;
         
         direction_out = woden_direction_get_direction_out(env);
-        msg_ref = woden_wsdl10_interface_msg_ref_to_interface_msg_ref_element(
+        msg_ref = woden_interface_msg_ref_to_interface_msg_ref_element(
                 msg_ref, env);
-        WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_out);
+        WODEN_INTERFACE_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_out);
     }
         
     name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, WODEN_ATTR_NAME);
@@ -2114,12 +2114,12 @@ parse_interface_msg_ref(
         axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
 
-        namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+        namespc = WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, name, namespc_str, NULL);
-        msg_ref = woden_wsdl10_interface_msg_ref_to_interface_msg_ref_element(
+        msg_ref = woden_interface_msg_ref_to_interface_msg_ref_element(
                 msg_ref, env);
-        WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_SET_QNAME(msg_ref, env, qname);
+        WODEN_INTERFACE_MSG_REF_ELEMENT_SET_QNAME(msg_ref, env, qname);
     }
 
     msg = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, WODEN_ATTR_MSG);
@@ -2131,13 +2131,13 @@ parse_interface_msg_ref(
         axis2_array_list_t *msgs = NULL;
         int i = 0, size = 0;
 
-        namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+        namespc = WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, msg, namespc_str, NULL);
-        msg_ref = woden_wsdl10_interface_msg_ref_to_interface_msg_ref_element(
+        msg_ref = woden_interface_msg_ref_to_interface_msg_ref_element(
                 msg_ref, env);
-        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-        msgs = WODEN_WSDL10_DESC_ELEMENT_GET_MSG_ELEMENTS(desc, env);
+        desc = woden_desc_to_desc_element(desc, env);
+        msgs = WODEN_DESC_ELEMENT_GET_MSG_ELEMENTS(desc, env);
         if(msgs)
             size = AXIS2_ARRAY_LIST_SIZE(msgs, env);
         for(i = 0; i < size; i++)
@@ -2146,15 +2146,15 @@ parse_interface_msg_ref(
             axis2_qname_t *msg_qname = NULL;
             
             msg = AXIS2_ARRAY_LIST_GET(msgs, env, i);
-            msg_qname = WODEN_WSDL10_MSG_REF_GET_QNAME(msg, env);
+            msg_qname = WODEN_MSG_REF_GET_QNAME(msg, env);
             if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(msg_qname, env, qname))
             {
-                WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_SET_MSG(msg_ref, env, msg);
+                WODEN_INTERFACE_MSG_REF_ELEMENT_SET_MSG(msg_ref, env, msg);
             }
         }
-        WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_SET_MSG_QNAME(msg_ref, env, qname);
+        WODEN_INTERFACE_MSG_REF_ELEMENT_SET_MSG_QNAME(msg_ref, env, qname);
     }
-    msg_ref = woden_wsdl10_interface_msg_ref_to_attr_extensible(msg_ref, env); 
+    msg_ref = woden_interface_msg_ref_to_attr_extensible(msg_ref, env); 
     status = parse_ext_attributes(reader, env, msg_ref_el_node, 
             "interface_msg_ref_element", msg_ref, desc);
     if(AXIS2_SUCCESS != status)
@@ -2176,7 +2176,7 @@ parse_interface_msg_ref(
             void *documentation = NULL;
 
             documentation = parse_documentation(reader, env, temp_el_node, desc);
-            msg_ref = woden_wsdl10_interface_msg_ref_to_documentable(msg_ref, env);
+            msg_ref = woden_interface_msg_ref_to_documentable(msg_ref, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(msg_ref, env, documentation);
         }
         else
@@ -2191,7 +2191,7 @@ parse_interface_msg_ref(
             ext_element = parse_ext_element(reader, env, "interface_msg_ref_element", 
                     msg_ref, temp_el_node, desc);
 
-            nested_confble = WODEN_WSDL10_INTERFACE_MSG_REF_GET_BASE_IMPL(msg_ref, env);
+            nested_confble = WODEN_INTERFACE_MSG_REF_GET_BASE_IMPL(msg_ref, env);
             configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
             documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
@@ -2227,8 +2227,8 @@ parse_binding(
     void *wsdl_obj = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    binding = WODEN_WSDL10_DESC_ELEMENT_CREATE_BINDING_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    binding = WODEN_DESC_ELEMENT_CREATE_BINDING_ELEMENT(desc, env);
 
     binding_el = AXIOM_NODE_GET_DATA_ELEMENT(binding_el_node, env);
     name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(binding_el, env, WODEN_ATTR_NAME);
@@ -2239,7 +2239,7 @@ parse_binding(
         axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
 
-        namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+        namespc = WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, name, namespc_str, NULL);
         binding = woden_binding_to_binding_element(binding, env);
@@ -2251,8 +2251,8 @@ parse_binding(
     {
         axis2_hash_t *namespcs = NULL;
 
-        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+        desc = woden_desc_to_desc_element(desc, env);
+        namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
         intface_qn = woden_om_util_get_qname(env, binding_el_node, intface, namespcs);
         binding = woden_binding_to_binding_element(binding, env);
         WODEN_BINDING_ELEMENT_SET_INTERFACE_QNAME(binding, env, intface_qn);
@@ -2263,8 +2263,8 @@ parse_binding(
         axis2_array_list_t *interfaces = NULL;
         int i = 0, size = 0;
         
-        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-        interfaces = WODEN_WSDL10_DESC_ELEMENT_GET_INTERFACE_ELEMENTS(desc, env);
+        desc = woden_desc_to_desc_element(desc, env);
+        interfaces = WODEN_DESC_ELEMENT_GET_INTERFACE_ELEMENTS(desc, env);
         size = AXIS2_ARRAY_LIST_SIZE(interfaces, env);
         for(i = 0; i < size; i++)
         {
@@ -2403,9 +2403,9 @@ parse_binding_op(
     void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    op = WODEN_WSDL10_DESC_ELEMENT_CREATE_BINDING_OP_ELEMENT(desc, env);
-    nested_configurable = WODEN_WSDL10_BINDING_OP_GET_BASE_IMPL(op, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    op = WODEN_DESC_ELEMENT_CREATE_BINDING_OP_ELEMENT(desc, env);
+    nested_configurable = WODEN_BINDING_OP_GET_BASE_IMPL(op, env);
     nested_configurable = woden_nested_configurable_to_nested_element(
             nested_configurable, env);
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
@@ -2418,11 +2418,11 @@ parse_binding_op(
         axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
 
-        namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+        namespc = WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         ref_qn = axis2_qname_create(env, name, namespc_str, NULL);
-        op = woden_wsdl10_binding_op_to_binding_op_element(op, env);
-        WODEN_WSDL10_BINDING_OP_ELEMENT_SET_QNAME(op, env, ref_qn);
+        op = woden_binding_op_to_binding_op_element(op, env);
+        WODEN_BINDING_OP_ELEMENT_SET_REF(op, env, ref_qn);
     }
     /* Dereference the 'ref' qname to an interface_op_element */
     if(NULL != ref_qn)
@@ -2448,13 +2448,13 @@ parse_binding_op(
                     intface_op, env);
             if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(ref_qn, env, qname))
             {
-                WODEN_WSDL10_BINDING_OP_SET_INTERFACE_OP_ELEMENT(op, 
+                WODEN_BINDING_OP_SET_INTERFACE_OP_ELEMENT(op, 
                         env, intface_op);
             }
         }
     }
 
-    op = woden_wsdl10_binding_op_to_attr_extensible(op, env);
+    op = woden_binding_op_to_attr_extensible(op, env);
     status = parse_ext_attributes(reader, env, op_el_node, "binding_op_element", 
             op, desc);
     if(AXIS2_SUCCESS != status)
@@ -2500,7 +2500,7 @@ parse_binding_op(
             void *documentation = NULL;
 
             documentation = parse_documentation(reader, env, temp_el_node, desc);
-            op = woden_wsdl10_binding_op_to_documentable(op, env);
+            op = woden_binding_op_to_documentable(op, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(op, env, documentation);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
@@ -2509,7 +2509,7 @@ parse_binding_op(
             void *feature = NULL;
 
             feature = parse_feature(reader, env, temp_el_node, desc, op);
-            op = woden_wsdl10_binding_op_to_configurable_element(op, env);
+            op = woden_binding_op_to_configurable_element(op, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(op, env, feature);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
@@ -2518,7 +2518,7 @@ parse_binding_op(
             void *property = NULL;
 
             property = parse_property(reader, env, temp_el_node, desc, op);
-            op = woden_wsdl10_binding_op_to_configurable_element(op, env);
+            op = woden_binding_op_to_configurable_element(op, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_PROPERTY_ELEMENT(op, env, property);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
@@ -2527,8 +2527,8 @@ parse_binding_op(
             void *input = NULL;
 
             input = parse_binding_msg_ref(reader, env, temp_el_node, desc, op);
-            op = woden_wsdl10_binding_op_to_binding_op_element(op, env);
-            WODEN_WSDL10_BINDING_OP_ELEMENT_ADD_BINDING_MSG_REF_ELEMENT(op, env, input);
+            op = woden_binding_op_to_binding_op_element(op, env);
+            WODEN_BINDING_OP_ELEMENT_ADD_BINDING_MSG_REF_ELEMENT(op, env, input);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_output, temp_el_node))
@@ -2536,8 +2536,8 @@ parse_binding_op(
             void *output = NULL;
 
             output = parse_binding_msg_ref(reader, env, temp_el_node, desc, op);
-            op = woden_wsdl10_binding_op_to_binding_op_element(op, env);
-            WODEN_WSDL10_BINDING_OP_ELEMENT_ADD_BINDING_MSG_REF_ELEMENT(op, env, output);
+            op = woden_binding_op_to_binding_op_element(op, env);
+            WODEN_BINDING_OP_ELEMENT_ADD_BINDING_MSG_REF_ELEMENT(op, env, output);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_infault, temp_el_node))
@@ -2545,8 +2545,8 @@ parse_binding_op(
             void *infault = NULL;
 
             infault = parse_binding_fault_ref(reader, env, temp_el_node, desc, op);
-            op = woden_wsdl10_binding_op_to_binding_op_element(op, env);
-            WODEN_WSDL10_BINDING_OP_ELEMENT_ADD_BINDING_FAULT_REF_ELEMENT(op, env, infault);
+            op = woden_binding_op_to_binding_op_element(op, env);
+            WODEN_BINDING_OP_ELEMENT_ADD_BINDING_FAULT_REF_ELEMENT(op, env, infault);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_outfault, temp_el_node))
@@ -2554,8 +2554,8 @@ parse_binding_op(
             void *outfault = NULL;
 
             outfault = parse_binding_fault_ref(reader, env, temp_el_node, desc, op);
-            op = woden_wsdl10_binding_op_to_binding_op_element(op, env);
-            WODEN_WSDL10_BINDING_OP_ELEMENT_ADD_BINDING_FAULT_REF_ELEMENT(op, env, outfault);
+            op = woden_binding_op_to_binding_op_element(op, env);
+            WODEN_BINDING_OP_ELEMENT_ADD_BINDING_FAULT_REF_ELEMENT(op, env, outfault);
         }
         else
         {
@@ -2564,7 +2564,7 @@ parse_binding_op(
             ext_element = parse_ext_element(reader, env, "binding_op_element", 
                     op, temp_el_node, desc);
 
-            op = woden_wsdl10_binding_op_to_element_extensible(op, env);
+            op = woden_binding_op_to_element_extensible(op, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(op, env, ext_element);
         }
 
@@ -2598,8 +2598,8 @@ parse_binding_fault_ref(
     void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    fault_ref = WODEN_WSDL10_DESC_ELEMENT_CREATE_BINDING_FAULT_REF_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    fault_ref = WODEN_DESC_ELEMENT_CREATE_BINDING_FAULT_REF_ELEMENT(desc, env);
     nested_configurable = WODEN_BINDING_FAULT_REF_GET_BASE_IMPL(fault_ref, env);
     nested_configurable = woden_nested_configurable_to_nested_element(
             nested_configurable, env);
@@ -2613,8 +2613,8 @@ parse_binding_fault_ref(
     {
         axis2_hash_t *namespcs = NULL;
 
-        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+        desc = woden_desc_to_desc_element(desc, env);
+        namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
         ref_qn = woden_om_util_get_qname(env, fault_ref_el_node, ref, namespcs);
         fault_ref = woden_binding_fault_ref_to_binding_fault_ref_element(
                 fault_ref, env);
@@ -2681,8 +2681,8 @@ parse_binding_fault_ref(
         void *bind_op = parent;
         void *int_op = NULL;
         
-        bind_op = woden_wsdl10_binding_op_to_binding_op_element(bind_op, env);
-        int_op = WODEN_WSDL10_BINDING_OP_ELEMENT_GET_INTERFACE_OP_ELEMENT(
+        bind_op = woden_binding_op_to_binding_op_element(bind_op, env);
+        int_op = WODEN_BINDING_OP_ELEMENT_GET_INTERFACE_OP_ELEMENT(
                 bind_op, env);
         if(NULL != int_op)
         {
@@ -2701,11 +2701,11 @@ parse_binding_fault_ref(
 
                 int_flt_ref = AXIS2_ARRAY_LIST_GET(int_flt_refs, env, i);
                 int_flt_ref = 
-                    woden_wsdl10_interface_fault_ref_to_interface_fault_ref_element(
+                    woden_interface_fault_ref_to_interface_fault_ref_element(
                             int_flt_ref, env);
-                qname = WODEN_WSDL10_INTERFACE_FAULT_REF_ELEMENT_GET_MSG_QNAME(
+                qname = WODEN_INTERFACE_FAULT_REF_ELEMENT_GET_MSG_QNAME(
                         int_flt_ref, env);
-                /*label = WODEN_WSDL10_INTERFACE_FAULT_REF_ELEMENT_GET_MSG_LABEL(
+                /*label = WODEN_INTERFACE_FAULT_REF_ELEMENT_GET_MSG_LABEL(
                         int_flt_ref, env);
                 if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(qref, env, qname) &&
                         AXIS2_TRUE == WODEN_MSG_LABEL_EQUALS(msg_label, env, label))
@@ -2822,9 +2822,9 @@ parse_binding_msg_ref(
     void *int_op = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    msg_ref = WODEN_WSDL10_DESC_ELEMENT_CREATE_BINDING_MSG_REF_ELEMENT(desc, env);
-    nested_configurable = WODEN_WSDL10_BINDING_MSG_REF_GET_BASE_IMPL(msg_ref, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    msg_ref = WODEN_DESC_ELEMENT_CREATE_BINDING_MSG_REF_ELEMENT(desc, env);
+    nested_configurable = WODEN_BINDING_MSG_REF_GET_BASE_IMPL(msg_ref, env);
     nested_configurable = woden_nested_configurable_to_nested_element(
             nested_configurable, env);
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(nested_configurable, env, parent); 
@@ -2836,16 +2836,16 @@ parse_binding_msg_ref(
         woden_direction_t *direction_in = NULL;
         
         direction_in = woden_direction_get_direction_in(env);
-        msg_ref = woden_wsdl10_binding_msg_ref_to_binding_msg_ref_element(msg_ref, env);
-        WODEN_WSDL10_BINDING_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_in);
+        msg_ref = woden_binding_msg_ref_to_binding_msg_ref_element(msg_ref, env);
+        WODEN_BINDING_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_in);
     }
     if(0 == AXIS2_STRCMP(WODEN_ELEM_OUTPUT, localname))
     {
         woden_direction_t *direction_out = NULL;
         
         direction_out = woden_direction_get_direction_out(env);
-        msg_ref = woden_wsdl10_binding_msg_ref_to_binding_msg_ref_element(msg_ref, env);
-        WODEN_WSDL10_BINDING_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_out);
+        msg_ref = woden_binding_msg_ref_to_binding_msg_ref_element(msg_ref, env);
+        WODEN_BINDING_MSG_REF_ELEMENT_SET_DIRECTION(msg_ref, env, direction_out);
     }
     
     name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(msg_ref_el, env, 
@@ -2857,22 +2857,22 @@ parse_binding_msg_ref(
         axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
 
-        namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+        namespc = WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, name, namespc_str, NULL);
-        msg_ref = woden_wsdl10_binding_msg_ref_to_binding_msg_ref_element(
+        msg_ref = woden_binding_msg_ref_to_binding_msg_ref_element(
                 msg_ref, env);
-        WODEN_WSDL10_BINDING_MSG_REF_ELEMENT_SET_QNAME(msg_ref, env, qname);
+        WODEN_BINDING_MSG_REF_ELEMENT_SET_QNAME(msg_ref, env, qname);
     }
 
     /* Dereference the msgLabel to an interface_msg_ref_element */
-    msg_ref = woden_wsdl10_binding_msg_ref_to_binding_msg_ref_element(msg_ref, 
+    msg_ref = woden_binding_msg_ref_to_binding_msg_ref_element(msg_ref, 
             env);
 
     bind_op = parent;
 
-    bind_op = woden_wsdl10_binding_op_to_binding_op_element(bind_op, env);
-    int_op = WODEN_WSDL10_BINDING_OP_ELEMENT_GET_INTERFACE_OP_ELEMENT(
+    bind_op = woden_binding_op_to_binding_op_element(bind_op, env);
+    int_op = WODEN_BINDING_OP_ELEMENT_GET_INTERFACE_OP_ELEMENT(
             bind_op, env);
     if(NULL != int_op)
     {
@@ -2892,21 +2892,21 @@ parse_binding_msg_ref(
 
             int_msg_ref = AXIS2_ARRAY_LIST_GET(int_msg_refs, env, i);
             int_msg_ref = 
-                woden_wsdl10_interface_msg_ref_to_interface_msg_ref_element(
+                woden_interface_msg_ref_to_interface_msg_ref_element(
                         int_msg_ref, env);
-            intf_msg_qname = WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_GET_QNAME(
+            intf_msg_qname = WODEN_INTERFACE_MSG_REF_ELEMENT_GET_QNAME(
                     int_msg_ref, env);
-            msg_ref = woden_wsdl10_binding_msg_ref_to_binding_msg_ref_element(msg_ref, env);
-            binding_msg_qname = WODEN_WSDL10_BINDING_MSG_REF_ELEMENT_GET_QNAME(msg_ref, env);
+            msg_ref = woden_binding_msg_ref_to_binding_msg_ref_element(msg_ref, env);
+            binding_msg_qname = WODEN_BINDING_MSG_REF_ELEMENT_GET_QNAME(msg_ref, env);
             if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(intf_msg_qname, env, binding_msg_qname))
             {
-                WODEN_WSDL10_BINDING_MSG_REF_SET_INTERFACE_MSG_REF_ELEMENT(
+                WODEN_BINDING_MSG_REF_SET_INTERFACE_MSG_REF_ELEMENT(
                         msg_ref, env, int_msg_ref);
             }
         }
     }
 
-    msg_ref = woden_wsdl10_binding_msg_ref_to_attr_extensible(msg_ref, env);
+    msg_ref = woden_binding_msg_ref_to_attr_extensible(msg_ref, env);
     status = parse_ext_attributes(reader, env, msg_ref_el_node, "binding_msg_ref_element", 
             msg_ref, desc);
     if(AXIS2_SUCCESS != status)
@@ -2940,7 +2940,7 @@ parse_binding_msg_ref(
             void *documentation = NULL;
 
             documentation = parse_documentation(reader, env, temp_el_node, desc);
-            msg_ref = woden_wsdl10_binding_msg_ref_to_documentable(msg_ref, env);
+            msg_ref = woden_binding_msg_ref_to_documentable(msg_ref, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(msg_ref, env, documentation);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
@@ -2949,7 +2949,7 @@ parse_binding_msg_ref(
             void *feature = NULL;
 
             feature = parse_feature(reader, env, temp_el_node, desc, msg_ref);
-            msg_ref = woden_wsdl10_binding_msg_ref_to_configurable_element(msg_ref, env);
+            msg_ref = woden_binding_msg_ref_to_configurable_element(msg_ref, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(msg_ref, env, feature);
         }
         else if(AXIS2_TRUE == axis2_qname_util_matches(env, 
@@ -2958,7 +2958,7 @@ parse_binding_msg_ref(
             void *property = NULL;
 
             property = parse_property(reader, env, temp_el_node, desc, msg_ref);
-            msg_ref = woden_wsdl10_binding_msg_ref_to_configurable_element(msg_ref, env);
+            msg_ref = woden_binding_msg_ref_to_configurable_element(msg_ref, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_PROPERTY_ELEMENT(msg_ref, env, property);
         }
         else
@@ -2973,7 +2973,7 @@ parse_binding_msg_ref(
             ext_element = parse_ext_element(reader, env, "binding_msg_ref_element", 
                     msg_ref, temp_el_node, desc);
 
-            nested_confble = WODEN_WSDL10_BINDING_MSG_REF_GET_BASE_IMPL(msg_ref, env);
+            nested_confble = WODEN_BINDING_MSG_REF_GET_BASE_IMPL(msg_ref, env);
             configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
             documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
@@ -3007,8 +3007,8 @@ parse_svc(
     axis2_status_t status = AXIS2_FAILURE;
     
     svc_el = AXIOM_NODE_GET_DATA_ELEMENT(svc_el_node, env);
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    svc = WODEN_WSDL10_DESC_ELEMENT_CREATE_SVC_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    svc = WODEN_DESC_ELEMENT_CREATE_SVC_ELEMENT(desc, env);
 
     svc_el = AXIOM_NODE_GET_DATA_ELEMENT(svc_el_node, env);
     name = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(svc_el, env, WODEN_ATTR_NAME);
@@ -3019,7 +3019,7 @@ parse_svc(
         axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
 
-        namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+        namespc = WODEN_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, name, namespc_str, NULL);
         svc = woden_svc_to_svc_element(svc, env);
@@ -3031,8 +3031,8 @@ parse_svc(
     {
         axis2_hash_t *namespcs = NULL;
 
-        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+        desc = woden_desc_to_desc_element(desc, env);
+        namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
         intface_qn = woden_om_util_get_qname(env, svc_el_node, intface, namespcs);
         svc = woden_svc_to_svc_element(svc, env);
         WODEN_SVC_ELEMENT_SET_INTERFACE_QNAME(svc, env, intface_qn);
@@ -3043,8 +3043,8 @@ parse_svc(
         axis2_array_list_t *interfaces = NULL;
         int i = 0, size = 0;
         
-        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-        interfaces = WODEN_WSDL10_DESC_ELEMENT_GET_INTERFACE_ELEMENTS(desc, env);
+        desc = woden_desc_to_desc_element(desc, env);
+        interfaces = WODEN_DESC_ELEMENT_GET_INTERFACE_ELEMENTS(desc, env);
         if(interfaces)
             size = AXIS2_ARRAY_LIST_SIZE(interfaces, env);
         for(i = 0; i < size; i++)
@@ -3176,8 +3176,8 @@ parse_endpoint(
     void *nested_configurable = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    endpoint = WODEN_WSDL10_DESC_ELEMENT_CREATE_ENDPOINT_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    endpoint = WODEN_DESC_ELEMENT_CREATE_ENDPOINT_ELEMENT(desc, env);
     nested_configurable = WODEN_ENDPOINT_GET_BASE_IMPL(endpoint, env);
     nested_configurable = woden_nested_configurable_to_nested_element(
             nested_configurable, env);
@@ -3200,8 +3200,8 @@ parse_endpoint(
     {
         axis2_hash_t *namespcs = NULL;
 
-        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+        desc = woden_desc_to_desc_element(desc, env);
+        namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
         binding_qn = woden_om_util_get_qname(env, endpoint_el_node, binding, namespcs);
         endpoint = woden_endpoint_to_endpoint_element(endpoint, env);
         WODEN_ENDPOINT_ELEMENT_SET_BINDING_QNAME(endpoint, env, binding_qn);
@@ -3212,8 +3212,8 @@ parse_endpoint(
         axis2_array_list_t *bindings = NULL;
         int i = 0, size = 0;
         
-        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-        bindings = WODEN_WSDL10_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc, env);
+        desc = woden_desc_to_desc_element(desc, env);
+        bindings = WODEN_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc, env);
         if(bindings)
             size = AXIS2_ARRAY_LIST_SIZE(bindings, env);
         for(i = 0; i < size; i++)
@@ -3342,8 +3342,8 @@ parse_feature(
     axis2_bool_t required = AXIS2_FALSE;
     axis2_status_t status = AXIS2_FAILURE;
     
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    feature = WODEN_WSDL10_DESC_ELEMENT_CREATE_FEATURE_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    feature = WODEN_DESC_ELEMENT_CREATE_FEATURE_ELEMENT(desc, env);
     feature = woden_feature_to_nested_element(feature, env);
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(feature, env, parent); 
 
@@ -3468,11 +3468,11 @@ parse_property(
     axiom_node_t *temp_el_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    property = WODEN_WSDL10_DESC_ELEMENT_CREATE_PROPERTY_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    property = WODEN_DESC_ELEMENT_CREATE_PROPERTY_ELEMENT(desc, env);
     property = woden_property_to_nested_element(property, env);
     WODEN_NESTED_ELEMENT_SET_PARENT_ELEMENT(property, env, parent);
-    types = WODEN_WSDL10_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
+    types = WODEN_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
     WODEN_PROPERTY_SET_TYPES(property, env, types);
 
     attr_ref = axis2_qname_create_from_string(env, WODEN_ATTR_REF);
@@ -3564,8 +3564,8 @@ parse_property(
                         axis2_qname_t *qname = NULL;
                         axis2_hash_t *namespcs = NULL;
 
-                        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-                        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+                        desc = woden_desc_to_desc_element(desc, env);
+                        namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
 
                         qname = woden_om_util_get_qname(env, temp_el_node, 
                                 text_value, namespcs);
@@ -3652,8 +3652,8 @@ parse_ext_attributes(
                 void *xml_attr = NULL;
                 woden_ext_registry_t *ext_reg = NULL;
                 
-                desc = woden_wsdl10_desc_to_desc_element(desc, env);
-                ext_reg = WODEN_WSDL10_DESC_ELEMENT_GET_EXT_REGISTRY(desc, env);
+                desc = woden_desc_to_desc_element(desc, env);
+                ext_reg = WODEN_DESC_ELEMENT_GET_EXT_REGISTRY(desc, env);
                 if(NULL != ext_reg)
                 {
                     xml_attr = WODEN_EXT_REGISTRY_QUERY_EXT_ATTR_TYPE(
@@ -3720,8 +3720,8 @@ parse_ext_element(
         return NULL;
     }
    
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    ext_reg = WODEN_WSDL10_DESC_ELEMENT_GET_EXT_REGISTRY(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    ext_reg = WODEN_DESC_ELEMENT_GET_EXT_REGISTRY(desc, env);
     if(NULL == ext_reg)
     {
         /* TODO Set error message */
@@ -3786,8 +3786,8 @@ get_wsdl_from_location(
     void *referenced_desc = NULL;
     axiom_node_t *doc_el_node = NULL;
 
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    context_uri = WODEN_WSDL10_DESC_ELEMENT_GET_DOCUMENT_BASE_URI(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    context_uri = WODEN_DESC_ELEMENT_GET_DOCUMENT_BASE_URI(desc, env);
     location_uri = axis2_uri_parse_relative(env, context_uri, location_uri_str);
     if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {

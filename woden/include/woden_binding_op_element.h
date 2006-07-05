@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#ifndef WODEN_WSDL10_BINDING_OP_ELEMENT_H
-#define WODEN_WSDL10_BINDING_OP_ELEMENT_H
+#ifndef WODEN_BINDING_OP_ELEMENT_H
+#define WODEN_BINDING_OP_ELEMENT_H
 
 /**
- * @file woden_wsdl10_binding_op_element.h
+ * @file woden_binding_op_element.h
  * @brief Axis2 Binding Msg Reference Element Binding
  * This interface represents the &lt;operation&gt; child element of a
  * WSDL &lt;binding&gt; element. 
@@ -43,16 +43,16 @@ extern "C"
 {
 #endif
 
-typedef struct woden_wsdl10_binding_op_element woden_wsdl10_binding_op_element_t;
-typedef struct woden_wsdl10_binding_op_element_ops woden_wsdl10_binding_op_element_ops_t;
-typedef union woden_wsdl10_binding_op_element_base woden_wsdl10_binding_op_element_base_t;
+typedef struct woden_binding_op_element woden_binding_op_element_t;
+typedef struct woden_binding_op_element_ops woden_binding_op_element_ops_t;
+typedef union woden_binding_op_element_base woden_binding_op_element_base_t;
 
-/** @defgroup woden_wsdl10_binding_op_element Binding Msg Reference Element
+/** @defgroup woden_binding_op_element Binding Msg Reference Element
   * @ingroup axis2_binding
   * @{
   */
 
-struct woden_wsdl10_binding_op_element_ops
+struct woden_binding_op_element_ops
 {
    /** 
      * Deallocate memory
@@ -75,13 +75,13 @@ struct woden_wsdl10_binding_op_element_ops
      * @param qname identifies the associated interface operation.
      */
     axis2_status_t (AXIS2_CALL *
-    set_qname) (
+    set_ref) (
             void *iface_op_ele,
             const axis2_env_t *env,
             axis2_qname_t *qname);
 
     axis2_qname_t *(AXIS2_CALL *
-    get_qname) (
+    get_ref) (
             void *iface_op_ele,
             const axis2_env_t *env);
  
@@ -133,73 +133,73 @@ struct woden_wsdl10_binding_op_element_ops
 
 };
 
-union woden_wsdl10_binding_op_element_base
+union woden_binding_op_element_base
 {
     woden_documentable_element_t documentable_element;
     woden_configurable_element_t configurable_element;
     woden_nested_element_t nested_element;
 };
 
-struct woden_wsdl10_binding_op_element
+struct woden_binding_op_element
 {
-    woden_wsdl10_binding_op_element_base_t base;
-    woden_wsdl10_binding_op_element_ops_t *ops;
+    woden_binding_op_element_base_t base;
+    woden_binding_op_element_ops_t *ops;
 };
 
-AXIS2_EXTERN woden_wsdl10_binding_op_element_t * AXIS2_CALL
-woden_wsdl10_binding_op_element_create(
+AXIS2_EXTERN woden_binding_op_element_t * AXIS2_CALL
+woden_binding_op_element_create(
         const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-woden_wsdl10_binding_op_element_resolve_methods(
-        woden_wsdl10_binding_op_element_t *binding_op_element,
+woden_binding_op_element_resolve_methods(
+        woden_binding_op_element_t *binding_op_element,
         const axis2_env_t *env,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define WODEN_WSDL10_BINDING_OP_ELEMENT_FREE(binding_op_element, env) \
-      (((woden_wsdl10_binding_op_element_t *) binding_op_element)->ops->\
+#define WODEN_BINDING_OP_ELEMENT_FREE(binding_op_element, env) \
+      (((woden_binding_op_element_t *) binding_op_element)->ops->\
          free (binding_op_element, env))
 
-#define WODEN_WSDL10_BINDING_OP_ELEMENT_TYPE(binding_op_element, env) \
-      (((woden_wsdl10_binding_op_element_t *) binding_op_element)->ops->\
+#define WODEN_BINDING_OP_ELEMENT_TYPE(binding_op_element, env) \
+      (((woden_binding_op_element_t *) binding_op_element)->ops->\
          type (binding_op_element, env))
 
-#define WODEN_WSDL10_BINDING_OP_ELEMENT_SET_QNAME(binding_op_element, env, qname) \
-      (((woden_wsdl10_binding_op_element_t *) binding_op_element)->ops->\
-         set_qname (binding_op_element, env, qname))
+#define WODEN_BINDING_OP_ELEMENT_SET_REF(binding_op_element, env, qname) \
+      (((woden_binding_op_element_t *) binding_op_element)->ops->\
+         set_ref (binding_op_element, env, qname))
 
-#define WODEN_WSDL10_BINDING_OP_ELEMENT_GET_QNAME(binding_op_element, env) \
-      (((woden_wsdl10_binding_op_element_t *) binding_op_element)->ops->\
-        get_qname  (binding_op_element, env))
+#define WODEN_BINDING_OP_ELEMENT_GET_REF(binding_op_element, env) \
+      (((woden_binding_op_element_t *) binding_op_element)->ops->\
+        get_ref  (binding_op_element, env))
 
-#define WODEN_WSDL10_BINDING_OP_ELEMENT_GET_INTERFACE_OP_ELEMENT(binding_op_element, env) \
-      (((woden_wsdl10_binding_op_element_t *) binding_op_element)->ops->\
+#define WODEN_BINDING_OP_ELEMENT_GET_INTERFACE_OP_ELEMENT(binding_op_element, env) \
+      (((woden_binding_op_element_t *) binding_op_element)->ops->\
          get_interface_op_element (binding_op_element, env))
 
-#define WODEN_WSDL10_BINDING_OP_ELEMENT_ADD_BINDING_MSG_REF_ELEMENT(binding_op_element, env, msg_ref) \
-      (((woden_wsdl10_binding_op_element_t *) binding_op_element)->ops->\
+#define WODEN_BINDING_OP_ELEMENT_ADD_BINDING_MSG_REF_ELEMENT(binding_op_element, env, msg_ref) \
+      (((woden_binding_op_element_t *) binding_op_element)->ops->\
          add_binding_msg_ref_element (binding_op_element, env, msg_ref))
 
-#define WODEN_WSDL10_BINDING_OP_ELEMENT_REMOVE_MSG_REF_ELEMENT(binding_op_element, env, msg_ref) \
-      (((woden_wsdl10_binding_op_element_t *) binding_op_element)->ops->\
+#define WODEN_BINDING_OP_ELEMENT_REMOVE_MSG_REF_ELEMENT(binding_op_element, env, msg_ref) \
+      (((woden_binding_op_element_t *) binding_op_element)->ops->\
          remove_msg_ref_element (binding_op_element, env, msg_ref))
 
-#define WODEN_WSDL10_BINDING_OP_ELEMENT_GET_BINDING_MSG_REF_ELEMENTS(binding_op_element, env) \
-      (((woden_wsdl10_binding_op_element_t *) binding_op_element)->ops->\
+#define WODEN_BINDING_OP_ELEMENT_GET_BINDING_MSG_REF_ELEMENTS(binding_op_element, env) \
+      (((woden_binding_op_element_t *) binding_op_element)->ops->\
          get_binding_msg_ref_elements (binding_op_element, env))
 
-#define WODEN_WSDL10_BINDING_OP_ELEMENT_ADD_BINDING_FAULT_REF_ELEMENT(binding_op_element, env, fault_ref) \
-      (((woden_wsdl10_binding_op_element_t *) binding_op_element)->ops->\
+#define WODEN_BINDING_OP_ELEMENT_ADD_BINDING_FAULT_REF_ELEMENT(binding_op_element, env, fault_ref) \
+      (((woden_binding_op_element_t *) binding_op_element)->ops->\
          add_binding_fault_ref_element (binding_op_element, env, fault_ref))
 
-#define WODEN_WSDL10_BINDING_OP_ELEMENT_REMOVE_FAULT_REF_ELEMENT(binding_op_element, env, fault_ref) \
-      (((woden_wsdl10_binding_op_element_t *) binding_op_element)->ops->\
+#define WODEN_BINDING_OP_ELEMENT_REMOVE_FAULT_REF_ELEMENT(binding_op_element, env, fault_ref) \
+      (((woden_binding_op_element_t *) binding_op_element)->ops->\
          remove_fault_ref_element (binding_op_element, env, fault_ref))
 
-#define WODEN_WSDL10_BINDING_OP_ELEMENT_GET_BINDING_FAULT_REF_ELEMENTS(binding_op_element, env) \
-      (((woden_wsdl10_binding_op_element_t *) binding_op_element)->ops->\
+#define WODEN_BINDING_OP_ELEMENT_GET_BINDING_FAULT_REF_ELEMENTS(binding_op_element, env) \
+      (((woden_binding_op_element_t *) binding_op_element)->ops->\
          get_binding_fault_ref_elements (binding_op_element, env))
 
 
@@ -210,4 +210,4 @@ woden_wsdl10_binding_op_element_resolve_methods(
 #ifdef __cplusplus
 }
 #endif
-#endif /* WODEN_WSDL10_BINDING_OP_ELEMENT_H */
+#endif /* WODEN_BINDING_OP_ELEMENT_H */

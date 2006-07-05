@@ -17,8 +17,8 @@
 #include <woden_soap_header_block_deserializer.h>
 #include <woden_soap_header_block.h>
 #include <woden_soap_header_block_element.h>
-#include <woden_wsdl10_desc.h>
-#include <woden_wsdl10_desc_element.h>
+#include <woden_desc.h>
+#include <woden_desc_element.h>
 #include <woden_documentation.h>
 #include <woden_documentation_element.h>
 #include "../../../util/woden_om_util.h"
@@ -345,8 +345,8 @@ woden_soap_header_block_deserializer_marshall(
         axis2_qname_t *qname = NULL;
         axis2_hash_t *namespcs = NULL;
         
-        desc = woden_wsdl10_desc_to_desc_element(desc, env);
-        namespcs = WODEN_WSDL10_DESC_ELEMENT_GET_NAMESPACES(desc, env);
+        desc = woden_desc_to_desc_element(desc, env);
+        namespcs = WODEN_DESC_ELEMENT_GET_NAMESPACES(desc, env);
         qname = woden_om_util_get_qname(env, ext_el_node, 
                 element_decl_qn, namespcs);
         
@@ -371,8 +371,8 @@ woden_soap_header_block_deserializer_marshall(
     soap_hdr = woden_soap_header_block_to_ext_element(soap_hdr, env);
     WODEN_EXT_ELEMENT_SET_REQUIRED(soap_hdr, env, required);
     
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    types = WODEN_WSDL10_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
+    desc = woden_desc_to_desc_element(desc, env);
+    types = WODEN_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
     WODEN_SOAP_HEADER_BLOCK_SET_TYPES(soap_hdr, env, types);
 
     ext_el = AXIOM_NODE_GET_DATA_ELEMENT(ext_el_node, env);
@@ -417,8 +417,8 @@ parse_documentation(
 {
     void *documentation = NULL;
     
-    desc = woden_wsdl10_desc_to_desc_element(desc, env);
-    documentation = WODEN_WSDL10_DESC_ELEMENT_CREATE_DOCUMENTATION_ELEMENT(desc, 
+    desc = woden_desc_to_desc_element(desc, env);
+    documentation = WODEN_DESC_ELEMENT_CREATE_DOCUMENTATION_ELEMENT(desc, 
             env);
     
     documentation = woden_documentation_to_documentation_element(

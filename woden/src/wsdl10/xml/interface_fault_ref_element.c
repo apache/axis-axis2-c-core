@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <woden_wsdl10_interface_fault_ref_element.h>
+#include <woden_interface_fault_ref_element.h>
 
 axis2_status_t AXIS2_CALL
-woden_wsdl10_interface_fault_ref_element_resolve_methods(
-        woden_wsdl10_interface_fault_ref_element_t *interface_fault_ref_element,
+woden_interface_fault_ref_element_resolve_methods(
+        woden_interface_fault_ref_element_t *interface_fault_ref_element,
         const axis2_env_t *env,
         axis2_hash_t *methods)
 {
@@ -30,12 +30,20 @@ woden_wsdl10_interface_fault_ref_element_resolve_methods(
     interface_fault_ref_element->ops->type = axis2_hash_get(methods, "type", 
             AXIS2_HASH_KEY_STRING);
 
-    interface_fault_ref_element->ops->set_qname = 
-            axis2_hash_get(methods, "set_qname", 
+    interface_fault_ref_element->ops->set_ref = 
+            axis2_hash_get(methods, "set_ref", 
             AXIS2_HASH_KEY_STRING);
 
-    interface_fault_ref_element->ops->get_qname = 
-            axis2_hash_get(methods, "get_qname", 
+    interface_fault_ref_element->ops->get_ref = 
+            axis2_hash_get(methods, "get_ref", 
+            AXIS2_HASH_KEY_STRING);
+
+    interface_fault_ref_element->ops->set_msg_label = 
+            axis2_hash_get(methods, "set_msg_label", 
+            AXIS2_HASH_KEY_STRING);
+
+    interface_fault_ref_element->ops->get_msg_label = 
+            axis2_hash_get(methods, "get_msg_label", 
             AXIS2_HASH_KEY_STRING);
 
     interface_fault_ref_element->ops->set_msg_qname = 

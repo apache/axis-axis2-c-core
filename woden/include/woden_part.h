@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-#ifndef WODEN_WSDL10_PART_H
-#define WODEN_WSDL10_PART_H
+#ifndef WODEN_PART_H
+#define WODEN_PART_H
 
 /**
- * @file woden_wsdl10_part.h
+ * @file woden_part.h
  * @brief Woden Part Interface Message Reference
  * 
  */
 
 #include <woden.h>
-#include <woden_wsdl10_part_element.h>
+#include <woden_part_element.h>
 #include <woden_nested_configurable.h>
 #include <axis2_qname.h>
 
-/** @defgroup woden_wsdl10_part Interface Message Reference
+/** @defgroup woden_part Interface Message Reference
   * @ingroup woden
   * @{
   */
 
-typedef union woden_wsdl10_part_base woden_wsdl10_part_base_t;
-typedef struct woden_wsdl10_part woden_wsdl10_part_t;
-typedef struct woden_wsdl10_part_ops woden_wsdl10_part_ops_t;
+typedef union woden_part_base woden_part_base_t;
+typedef struct woden_part woden_part_t;
+typedef struct woden_part_ops woden_part_ops_t;
 
 
 #ifdef __cplusplus
@@ -43,7 +43,7 @@ extern "C"
 {
 #endif
 
-struct woden_wsdl10_part_ops
+struct woden_part_ops
 {
    /** 
      * Deallocate memory
@@ -99,116 +99,116 @@ struct woden_wsdl10_part_ops
             void *types);
 };
 
-union woden_wsdl10_part_base
+union woden_part_base
 {
     woden_nested_configurable_t nested_configurable;
-    woden_wsdl10_part_element_t part_element;
+    woden_part_element_t part_element;
 };
 
-struct woden_wsdl10_part
+struct woden_part
 {
-    woden_wsdl10_part_base_t base;
-    woden_wsdl10_part_ops_t *ops;
+    woden_part_base_t base;
+    woden_part_ops_t *ops;
 };
 
-AXIS2_EXTERN woden_wsdl10_part_t * AXIS2_CALL
-woden_wsdl10_part_create(
+AXIS2_EXTERN woden_part_t * AXIS2_CALL
+woden_part_create(
         const axis2_env_t *env);
 
 
 /***************************Woden C Internal Methods***************************/
-AXIS2_EXTERN woden_wsdl10_part_t * AXIS2_CALL
-woden_wsdl10_part_to_part_element(
+AXIS2_EXTERN woden_part_t * AXIS2_CALL
+woden_part_to_part_element(
         void *part,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_part_t * AXIS2_CALL
-woden_wsdl10_part_to_nested_configurable(
+AXIS2_EXTERN woden_part_t * AXIS2_CALL
+woden_part_to_nested_configurable(
         void *part,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_part_t * AXIS2_CALL
-woden_wsdl10_part_to_configurable(
+AXIS2_EXTERN woden_part_t * AXIS2_CALL
+woden_part_to_configurable(
         void *part,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_part_t * AXIS2_CALL
-woden_wsdl10_part_to_nested_element(
+AXIS2_EXTERN woden_part_t * AXIS2_CALL
+woden_part_to_nested_element(
         void *part,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_part_t * AXIS2_CALL
-woden_wsdl10_part_to_configurable_element(
+AXIS2_EXTERN woden_part_t * AXIS2_CALL
+woden_part_to_configurable_element(
         void *part,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_part_t * AXIS2_CALL
-woden_wsdl10_part_to_documentable_element(
+AXIS2_EXTERN woden_part_t * AXIS2_CALL
+woden_part_to_documentable_element(
         void *part,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_part_t * AXIS2_CALL
-woden_wsdl10_part_to_documentable(
+AXIS2_EXTERN woden_part_t * AXIS2_CALL
+woden_part_to_documentable(
         void *part,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_part_t * AXIS2_CALL
-woden_wsdl10_part_to_attr_extensible(
+AXIS2_EXTERN woden_part_t * AXIS2_CALL
+woden_part_to_attr_extensible(
         void *part,
         const axis2_env_t *env);
 
-AXIS2_EXTERN woden_wsdl10_part_t * AXIS2_CALL
-woden_wsdl10_part_to_element_extensible(
+AXIS2_EXTERN woden_part_t * AXIS2_CALL
+woden_part_to_element_extensible(
         void *part,
         const axis2_env_t *env);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-woden_wsdl10_part_resolve_methods(
-        woden_wsdl10_part_t *part,
+woden_part_resolve_methods(
+        woden_part_t *part,
         const axis2_env_t *env,
-        woden_wsdl10_part_t *part_impl,
+        woden_part_t *part_impl,
         axis2_hash_t *methods);
 /************************End of Woden C Internal Methods***********************/
 
-#define WODEN_WSDL10_PART_FREE(part, env) \
-      (((woden_wsdl10_part_t *) part)->ops->\
+#define WODEN_PART_FREE(part, env) \
+      (((woden_part_t *) part)->ops->\
        free(part, env))
 
-#define WODEN_WSDL10_PART_SUPER_OBJS(part, env) \
-      (((woden_wsdl10_part_t *) part)->ops->\
+#define WODEN_PART_SUPER_OBJS(part, env) \
+      (((woden_part_t *) part)->ops->\
        super_objs(part, env))
 
-#define WODEN_WSDL10_PART_TYPE(part, env) \
-      (((woden_wsdl10_part_t *) part)->ops->\
+#define WODEN_PART_TYPE(part, env) \
+      (((woden_part_t *) part)->ops->\
        type(part, env))
 
-#define WODEN_WSDL10_PART_GET_BASE_IMPL(part, env) \
-      (((woden_wsdl10_part_t *) part)->ops->\
+#define WODEN_PART_GET_BASE_IMPL(part, env) \
+      (((woden_part_t *) part)->ops->\
        get_base_impl(part, env))
 
-#define WODEN_WSDL10_PART_GET_QNAME(part, env) \
-      (((woden_wsdl10_part_t *) part)->ops->\
+#define WODEN_PART_GET_QNAME(part, env) \
+      (((woden_part_t *) part)->ops->\
          get_qname(part, env))
 
-#define WODEN_WSDL10_PART_GET_ELEMENT_DECLARATION(part, env) \
-      (((woden_wsdl10_part_t *) part)->ops->\
+#define WODEN_PART_GET_ELEMENT_DECLARATION(part, env) \
+      (((woden_part_t *) part)->ops->\
          get_element_declaration(part, env))
 
-#define WODEN_WSDL10_PART_TO_ELEMENT(part, env) \
-      (((woden_wsdl10_part_t *) part)->ops->\
+#define WODEN_PART_TO_ELEMENT(part, env) \
+      (((woden_part_t *) part)->ops->\
          to_element(part, env))
 
-#define WODEN_WSDL10_PART_SET_ELEMENT_DECLARATION(part, env, element) \
-      (((woden_wsdl10_part_t *) part)->ops->\
+#define WODEN_PART_SET_ELEMENT_DECLARATION(part, env, element) \
+      (((woden_part_t *) part)->ops->\
          set_element_declaration(part, env, element))
 
-#define WODEN_WSDL10_PART_SET_TYPES(part, env, types) \
-      (((woden_wsdl10_part_t *) part)->ops->\
+#define WODEN_PART_SET_TYPES(part, env, types) \
+      (((woden_part_t *) part)->ops->\
          set_types(part, env, types))
 
 /** @} */
 #ifdef __cplusplus
 }
 #endif
-#endif /* WODEN_WSDL10_PART_H */
+#endif /* WODEN_PART_H */

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <woden_wsdl10_binding_msg_ref_element.h>
+#include <woden_binding_msg_ref_element.h>
 
 axis2_status_t AXIS2_CALL
-woden_wsdl10_binding_msg_ref_element_resolve_methods(
-        woden_wsdl10_binding_msg_ref_element_t *binding_msg_ref_element,
+woden_binding_msg_ref_element_resolve_methods(
+        woden_binding_msg_ref_element_t *binding_msg_ref_element,
         const axis2_env_t *env,
         axis2_hash_t *methods)
 {
