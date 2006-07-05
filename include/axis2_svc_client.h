@@ -17,21 +17,27 @@
 #ifndef AXIS2_SVC_CLIENT_H
 #define AXIS2_SVC_CLIENT_H
 
+/**
+ * @defgroup axis2_svc_client service client
+ * @ingroup axis2_client_api
+ * The service client interface serves as the primary client
+ * interface for consuming services. You can set the options to be
+ * used by the service client and then invoke an operation on a given
+ * service. There are several ways of invoking a service operation,
+ * which are based on the concept of a message exchange pattern
+ * (MEP). The two basic MEPs supported by service client are out-only
+ * and out-in. Each MEP can be used in either blocking or
+ * non-blocking mode. The operation invocations using the service
+ * client API are based on the XML-in/XML-out principle: both the
+ * payload to be sent to the service and the result from the service
+ * are in XML, represented in AXIOM.
+ * @{
+ */
+
 
 /**
-  * @file axis2_svc_client.h
-  * The service client interface serves as the primary client
-  * interface for consuming services. You can set the options to be
-  * used by the service client and then invoke an operation on a given
-  * service. There are several ways of invoking a service operation,
-  * which are based on the concept of a message exchange pattern
-  * (MEP). The two basic MEPs supported by service client are out-only
-  * and out-in. Each MEP can be used in either blocking or
-  * non-blocking mode. The operation invocations using the service
-  * client API are based on the XML-in/XML-out principle: both the
-  * payload to be sent to the service and the result from the service
-  * are in XML, represented in AXIOM.
-  */
+ * @file axis2_svc_client.h
+ */
 
 #include <axis2_defines.h>
 #include <axis2_env.h>
@@ -63,12 +69,6 @@ extern "C"
 {
 #endif
 
-    /**
-     * @defgroup axis2_svc_client service client
-     * @ingroup axis2_client_api
-     * @{
-     */
-
     /** Type name for struct axis2_svc_client_ops */
     typedef struct axis2_svc_client_ops axis2_svc_client_ops_t;
     /** Type name for struct axis2_svc_client */
@@ -76,7 +76,7 @@ extern "C"
 
 
     /**
-     * service client ops struct
+     * service client ops struct.
      * Encapsulator struct for operations of axis2_svc_client
      */
     struct axis2_svc_client_ops
@@ -374,7 +374,7 @@ extern "C"
     };
 
     /**
-     * Service client struct
+     * service client struct. 
      */
     struct axis2_svc_client
     {
