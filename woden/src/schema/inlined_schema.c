@@ -30,6 +30,7 @@ struct woden_inlined_schema_impl
     woden_schema_t *schema;
     woden_obj_types_t obj_type;
     axis2_hash_t *methods;
+    axis2_hash_t *super;
     axis2_char_t *f_schema_id;
 };
 
@@ -38,6 +39,11 @@ struct woden_inlined_schema_impl
 
 axis2_status_t AXIS2_CALL 
 woden_inlined_schema_free(
+        void *schema,
+        const axis2_env_t *env);
+
+axis2_hash_t *AXIS2_CALL
+woden_inlined_schema_super_objs(
         void *schema,
         const axis2_env_t *env);
 
@@ -62,45 +68,6 @@ woden_inlined_schema_get_id(
         void *schema,
         const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL 
-woden_inlined_schema_set_namespace(
-        void *schema,
-        const axis2_env_t *env,
-        axis2_uri_t *namespc);
-
-axis2_uri_t *AXIS2_CALL 
-woden_inlined_schema_get_namespace(
-        void *schema,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL 
-woden_inlined_schema_set_schema_def(
-        void *schema,
-        const axis2_env_t *env,
-        xml_schema_t *schema_def);
-
-xml_schema_t *AXIS2_CALL 
-woden_inlined_schema_get_schema_def(
-        void *schema,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL 
-woden_inlined_schema_set_referenceable(
-        void *schema,
-        const axis2_env_t *env,
-        axis2_bool_t referenceable);
-
-axis2_bool_t AXIS2_CALL 
-woden_inlined_schema_is_referenceable(
-        void *schema,
-        const axis2_env_t *env);
-
-axis2_char_t *AXIS2_CALL 
-woden_inlined_schema_get_namespace_as_string(
-        void *schema,
-        const axis2_env_t *env);
-
-
 static woden_inlined_schema_t *
 create(const axis2_env_t *env);
 
@@ -116,6 +83,7 @@ woden_inlined_schema_to_schema(
         const axis2_env_t *env)
 {
     woden_inlined_schema_impl_t *schema_impl = NULL;
+    void *base_schema = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -131,8 +99,9 @@ woden_inlined_schema_to_schema(
     schema_impl->inlined_schema.schema.ops = 
             AXIS2_MALLOC(env->allocator, 
             sizeof(woden_schema_ops_t));
+    base_schema = WODEN_INLINED_SCHEMA_GET_BASE_IMPL(schema, env);
     woden_schema_resolve_methods(&(schema_impl->inlined_schema.schema), 
-            env, schema_impl->schema, schema_impl->methods);
+            env, base_schema, schema_impl->methods);
 
     return schema;
 }
@@ -152,6 +121,7 @@ create(
     schema_impl->schema = NULL;
     schema_impl->obj_type = WODEN_INLINED_SCHEMA;
     schema_impl->methods = NULL;
+    schema_impl->super = NULL;
     schema_impl->f_schema_id = NULL;
 
     schema_impl->inlined_schema.schema.ops = NULL;
@@ -162,6 +132,8 @@ create(
 
     schema_impl->inlined_schema.ops->free = 
         woden_inlined_schema_free;
+    schema_impl->inlined_schema.ops->super_objs = 
+        woden_inlined_schema_super_objs;
     schema_impl->inlined_schema.ops->type = 
         woden_inlined_schema_type;
     schema_impl->inlined_schema.ops->get_base_impl = 
@@ -180,6 +152,8 @@ create(
     }
     axis2_hash_set(schema_impl->methods, "free", 
             AXIS2_HASH_KEY_STRING, woden_inlined_schema_free);
+    axis2_hash_set(schema_impl->methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING, woden_inlined_schema_super_objs);
     axis2_hash_set(schema_impl->methods, "type", 
             AXIS2_HASH_KEY_STRING, woden_inlined_schema_type);
     
@@ -187,20 +161,6 @@ create(
             AXIS2_HASH_KEY_STRING, woden_inlined_schema_set_id);
     axis2_hash_set(schema_impl->methods, "get_id", 
             AXIS2_HASH_KEY_STRING, woden_inlined_schema_get_id);
-    axis2_hash_set(schema_impl->methods, "set_namespace", 
-            AXIS2_HASH_KEY_STRING, woden_inlined_schema_set_namespace);
-    axis2_hash_set(schema_impl->methods, "get_namespace", 
-            AXIS2_HASH_KEY_STRING, woden_inlined_schema_get_namespace);
-    axis2_hash_set(schema_impl->methods, "set_schema_def", 
-            AXIS2_HASH_KEY_STRING, woden_inlined_schema_set_schema_def);
-    axis2_hash_set(schema_impl->methods, "get_schema_def", 
-            AXIS2_HASH_KEY_STRING, woden_inlined_schema_get_schema_def);
-    axis2_hash_set(schema_impl->methods, "set_referenceable", 
-            AXIS2_HASH_KEY_STRING, woden_inlined_schema_set_referenceable);
-    axis2_hash_set(schema_impl->methods, "is_referencealbe", 
-            AXIS2_HASH_KEY_STRING, woden_inlined_schema_is_referenceable);
-    axis2_hash_set(schema_impl->methods, "get_namespace_as_string", 
-            AXIS2_HASH_KEY_STRING, woden_inlined_schema_get_namespace_as_string);
 
     return &(schema_impl->inlined_schema);
 }
@@ -214,6 +174,17 @@ woden_inlined_schema_create(
     schema_impl = (woden_inlined_schema_impl_t *) create(env);
 
     schema_impl->schema = woden_schema_create(env);
+    schema_impl->super = axis2_hash_make(env);
+    if(!schema_impl->super) 
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    axis2_hash_set(schema_impl->super, "WODEN_INLINED_SCHEMA", AXIS2_HASH_KEY_STRING, 
+            &(schema_impl->schema));
+    axis2_hash_set(schema_impl->super, "WODEN_SCHEMA", AXIS2_HASH_KEY_STRING, 
+            schema_impl->schema);
+    
     return &(schema_impl->inlined_schema);
 }
 
@@ -307,6 +278,19 @@ woden_inlined_schema_get_base_impl(
     return schema_impl->schema;
 }
 
+axis2_hash_t *AXIS2_CALL
+woden_inlined_schema_super_objs(
+        void *schema,
+        const axis2_env_t *env)
+{
+    woden_inlined_schema_impl_t *schema_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    schema_impl = INTF_TO_IMPL(schema);
+
+    return schema_impl->super;
+}
+
 axis2_status_t AXIS2_CALL
 woden_inlined_schema_resolve_methods(
         woden_inlined_schema_t *schema,
@@ -322,14 +306,11 @@ woden_inlined_schema_resolve_methods(
     
     schema->ops->free = 
                 axis2_hash_get(methods, "free", AXIS2_HASH_KEY_STRING);
+    schema->ops->super_objs = axis2_hash_get(methods, "super_objs", 
+            AXIS2_HASH_KEY_STRING);
     schema->ops->type = 
                 axis2_hash_get(methods, "type", AXIS2_HASH_KEY_STRING);
 
-    schema->ops->set_id = axis2_hash_get(methods, "set_id", 
-            AXIS2_HASH_KEY_STRING);
-    schema->ops->get_id = axis2_hash_get(methods, "get_id", 
-            AXIS2_HASH_KEY_STRING);;
-    
     schema->ops->set_id = axis2_hash_get(methods, 
             "set_id", AXIS2_HASH_KEY_STRING);
     if(!schema->ops->set_id && schema_impl_l)
@@ -373,105 +354,8 @@ woden_inlined_schema_get_id(
 
     AXIS2_ENV_CHECK(env, NULL);
     schema_impl = INTF_TO_IMPL(schema);
-
+    
     return schema_impl->f_schema_id;
 }
 
-axis2_status_t AXIS2_CALL 
-woden_inlined_schema_set_namespace(
-        void *schema,
-        const axis2_env_t *env,
-        axis2_uri_t *namespc)
-{
-    woden_inlined_schema_impl_t *schema_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, namespc, AXIS2_FAILURE);
-    schema_impl = INTF_TO_IMPL(schema);
-
-    return WODEN_SCHEMA_SET_NAMESPACE(schema_impl->schema, env, namespc);
-}
-
-axis2_uri_t *AXIS2_CALL 
-woden_inlined_schema_get_namespace(
-        void *schema,
-        const axis2_env_t *env)
-{
-    woden_inlined_schema_impl_t *schema_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
-    schema_impl = INTF_TO_IMPL(schema);
-
-    return WODEN_SCHEMA_GET_NAMESPACE(schema_impl->schema, env);
-}
-
-axis2_status_t AXIS2_CALL 
-woden_inlined_schema_set_schema_def(
-        void *schema,
-        const axis2_env_t *env,
-        xml_schema_t *schema_def)
-{
-    woden_inlined_schema_impl_t *schema_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, schema_def, AXIS2_FAILURE);
-    schema_impl = INTF_TO_IMPL(schema);
-    
-    return WODEN_SCHEMA_SET_SCHEMA_DEF(schema_impl->schema, env, 
-            schema_def);
-}
-
-xml_schema_t *AXIS2_CALL 
-woden_inlined_schema_get_schema_def(
-        void *schema,
-        const axis2_env_t *env)
-{
-    woden_inlined_schema_impl_t *schema_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
-    schema_impl = INTF_TO_IMPL(schema);
-
-    return WODEN_SCHEMA_GET_SCHEMA_DEF(schema_impl->schema, env);
-}
-
-axis2_status_t AXIS2_CALL 
-woden_inlined_schema_set_referenceable(
-        void *schema,
-        const axis2_env_t *env,
-        axis2_bool_t referenceable)
-{
-    woden_inlined_schema_impl_t *schema_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    schema_impl = INTF_TO_IMPL(schema);
-
-    return WODEN_SCHEMA_SET_REFERENCEABLE(schema_impl->schema, env, 
-            referenceable); 
-}
-
-axis2_bool_t AXIS2_CALL 
-woden_inlined_schema_is_referenceable(
-        void *schema,
-        const axis2_env_t *env)
-{
-    woden_inlined_schema_impl_t *schema_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    schema_impl = INTF_TO_IMPL(schema);
-
-    return WODEN_SCHEMA_IS_REFERENCEABLE(schema_impl->schema, env);
-}
-
-axis2_char_t *AXIS2_CALL 
-woden_inlined_schema_get_namespace_as_string(
-        void *schema,
-        const axis2_env_t *env)
-{
-    woden_inlined_schema_impl_t *schema_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
-    schema_impl = INTF_TO_IMPL(schema);
-
-    return WODEN_SCHEMA_GET_NAMESPACE_AS_STRING(schema_impl->schema, env);
-}
 

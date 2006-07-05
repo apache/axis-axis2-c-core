@@ -11,7 +11,7 @@ libwoden_wsdl10_la_SOURCES = \
 							configurable_component.c \
 							feature.c \
 							property.c \
-							types.c \
+							woden_types.c \
 							type_def.c \
 							msg_ref.c \
 							part.c \

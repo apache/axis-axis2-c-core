@@ -29,6 +29,7 @@ struct woden_element_decl_impl
     woden_element_decl_t decl;
     woden_obj_types_t obj_type;
     axis2_hash_t *super;
+
     axis2_qname_t *f_qname;
     axis2_uri_t *f_system;
     axis2_char_t *f_content_model;
@@ -128,6 +129,8 @@ woden_element_decl_create(
     
     decl_impl->decl.ops->free = 
         woden_element_decl_free;
+    decl_impl->decl.ops->super_objs = 
+        woden_element_decl_super_objs;
     decl_impl->decl.ops->type = 
         woden_element_decl_type;
     

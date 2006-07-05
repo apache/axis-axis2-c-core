@@ -202,11 +202,11 @@ woden_endpoint_resolve_methods(
       (((woden_endpoint_t *) endpoint)->ops->get_base_impl(endpoint, env))
 
 #define WODEN_ENDPOINT_GET_NAME(endpoint, env) \
-      (((woden_endpoint_t *) endpoint)->\
+      (((woden_endpoint_t *) endpoint)->ops->\
          get_name(endpoint, env))
 
 #define WODEN_ENDPOINT_GET_BINDING(endpoint, env) \
-      (((woden_endpoint_t *) endpoint)->\
+      (((woden_endpoint_t *) endpoint)->ops->\
          get_binding(endpoint, env))
 
 #define WODEN_ENDPOINT_GET_ADDRESS(endpoint, env) \

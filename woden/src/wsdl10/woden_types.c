@@ -76,7 +76,7 @@ axis2_status_t AXIS2_CALL
 woden_types_add_schema(
         void *types,
         const axis2_env_t *env,
-        xml_schema_t *schema);
+        void *schema);
 
 axis2_status_t AXIS2_CALL 
 woden_types_remove_schema(
@@ -760,7 +760,7 @@ axis2_status_t AXIS2_CALL
 woden_types_add_schema(
         void *types,
         const axis2_env_t *env,
-        xml_schema_t *schema)
+        void *schema)
 {
     woden_types_impl_t *types_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1025,8 +1025,7 @@ woden_types_get_referenceable_schema_defs(
     size = AXIS2_ARRAY_LIST_SIZE(types_impl->f_schemas, env);
     for(i = 0; i < size; i++)
     {
-        woden_schema_t *s = (woden_schema_t *) 
-            AXIS2_ARRAY_LIST_GET(types_impl->f_schemas, env, i);
+        void *s = AXIS2_ARRAY_LIST_GET(types_impl->f_schemas, env, i);
         xml_schema_t *schema_def = WODEN_SCHEMA_GET_SCHEMA_DEF(s, 
                 env);
         if(AXIS2_TRUE == WODEN_SCHEMA_IS_REFERENCEABLE(s, env) &&

@@ -38,6 +38,14 @@ woden_wsdl10_interface_msg_ref_element_resolve_methods(
             axis2_hash_get(methods, "get_qname", 
             AXIS2_HASH_KEY_STRING);
 
+    interface_msg_ref_element->ops->set_msg = 
+            axis2_hash_get(methods, "set_msg", 
+            AXIS2_HASH_KEY_STRING);
+
+    interface_msg_ref_element->ops->get_msg = 
+            axis2_hash_get(methods, "get_msg", 
+            AXIS2_HASH_KEY_STRING);
+
     interface_msg_ref_element->ops->set_msg_qname = 
             axis2_hash_get(methods, "set_msg_qname", 
             AXIS2_HASH_KEY_STRING);

@@ -138,6 +138,10 @@ woden_wsdl10_msg_ref_element_resolve_methods(
       (((woden_wsdl10_msg_ref_element_t *) msg_ref_element)->ops->\
         get_part  (msg_ref_element, env))
 
+#define WODEN_WSDL10_MSG_REF_ELEMENT_GET_MSG_CONTENT_MODEL(msg_ref_element, env) \
+      (((woden_wsdl10_msg_ref_element_t *) msg_ref_element)->ops->\
+        get_msg_content_model  (msg_ref_element, env))
+
 #define WODEN_WSDL10_MSG_REF_ELEMENT_SET_QNAME(msg_ref_element, env, element) \
       (((woden_wsdl10_msg_ref_element_t *) msg_ref_element)->ops->\
         set_qname  (msg_ref_element, env, element))

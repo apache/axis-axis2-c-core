@@ -58,7 +58,7 @@ struct woden_reader_ops
             void *reader,
             const axis2_env_t *env,
             axiom_document_t *om_doc,
-            axis2_char_t *uri);
+            const axis2_char_t *uri);
 
     axis2_status_t (AXIS2_CALL *
     set_ext_registry) (

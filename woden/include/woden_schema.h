@@ -62,6 +62,11 @@ struct woden_schema_ops
             void *schema,
             const axis2_env_t *env);
     
+    axis2_hash_t *(AXIS2_CALL *
+    super_objs) (
+            void *schema,
+            const axis2_env_t *env);
+
     axis2_status_t (AXIS2_CALL *
     set_namespace) (
             void *schema,
@@ -139,6 +144,9 @@ woden_schema_resolve_methods(
 
 #define WODEN_SCHEMA_FREE(schema, env) \
       (((woden_schema_t *) schema)->ops->free (schema, env))
+
+#define WODEN_SCHEMA_SUPER_OBJS(schema, env) \
+      (((woden_schema_t *) schema)->ops->super_objs (schema, env))
 
 #define WODEN_SCHEMA_TYPE(schema, env) \
       (((woden_schema_t *) schema)->ops->type (schema, env))

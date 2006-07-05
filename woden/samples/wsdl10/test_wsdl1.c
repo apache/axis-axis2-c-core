@@ -24,6 +24,7 @@
 #include <woden_wsdl10_desc.h>
 #include <woden_interface.h>
 #include <woden_binding.h>
+#include <woden_element_decl.h>
 #include <woden_svc.h>
 
 #include <axiom.h>
@@ -47,6 +48,9 @@ int main(int argc, char *argv[])
     axis2_char_t *filename = NULL;
     axis2_array_list_t *svc_list = NULL;
     axis2_array_list_t *binding_list = NULL;
+    axis2_array_list_t *ed_list = NULL;
+    void *ed = NULL;
+    axis2_qname_t *ed_qname = NULL;
     
     if(argc > 1)
     {
@@ -101,6 +105,40 @@ int main(int argc, char *argv[])
             {
                 printf("First binding qname is %s\n", AXIS2_QNAME_TO_STRING(binding_qname, env));
             }
+        }
+    }
+
+    ed_list = WODEN_WSDL10_DESC_GET_ELEMENT_DECLS(desc, env);
+    if (ed_list)
+    {
+        
+        ed = AXIS2_ARRAY_LIST_GET(ed_list, env, 0);
+        if (ed)
+            ed_qname = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
+    }
+    ed = WODEN_WSDL10_DESC_GET_ELEMENT_DECL(desc, env, ed_qname);
+    if (ed)
+    {
+        axis2_char_t *content_model = NULL;
+        axis2_generic_obj_t *obj = NULL;
+        
+        axis2_qname_t *ed_qname = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
+        if (ed_qname)
+        {
+            printf("Element declaration qname is %s\n", AXIS2_QNAME_TO_STRING(ed_qname, env));
+        }
+        content_model = WODEN_ELEMENT_DECL_GET_CONTENT_MODEL(ed, env);
+        if (content_model)
+        {
+            printf("Content model is %s\n", content_model);
+        }
+        obj = WODEN_ELEMENT_DECL_GET_CONTENT(ed, env);
+        if (obj)
+        {
+            void *value = NULL;
+
+            value = AXIS2_GENERIC_OBJ_GET_VALUE(obj, env);
+            printf("Content is:\n");
         }
     }
     return 0;

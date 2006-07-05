@@ -138,7 +138,7 @@ woden_wsdl10_desc_get_element_decls(
         void *desc,
         const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+void *AXIS2_CALL
 woden_wsdl10_desc_get_element_decl(
         void *desc,
         const axis2_env_t *env,
@@ -722,7 +722,6 @@ create(const axis2_env_t *env)
     desc_impl->f_all_msgs = axis2_array_list_create(env, 0);
     desc_impl->f_all_interfaces = axis2_array_list_create(env, 0);
     desc_impl->f_all_type_defs = axis2_array_list_create(env, 0);
-    desc_impl->f_all_element_decls = axis2_array_list_create(env, 0);
     if(!desc_impl->f_interface_elements ||
             !desc_impl->f_msg_elements || 
             !desc_impl->f_svc_elements || 
@@ -731,7 +730,6 @@ create(const axis2_env_t *env)
             !desc_impl->f_all_bindings || 
             !desc_impl->f_all_svcs || 
             !desc_impl->f_all_msgs || 
-            !desc_impl->f_all_element_decls || 
             !desc_impl->f_all_type_defs
             ) 
     {
@@ -1317,7 +1315,7 @@ woden_wsdl10_desc_get_element_decls(
     return desc_impl->f_all_element_decls;
 }
 
-axis2_array_list_t *AXIS2_CALL
+void *AXIS2_CALL
 woden_wsdl10_desc_get_element_decl(
         void *desc,
         const axis2_env_t *env,
@@ -1336,7 +1334,8 @@ woden_wsdl10_desc_get_element_decl(
    
     if(AXIS2_TRUE != desc_impl->f_component_initialized)
         woden_wsdl10_desc_init_components(desc, env);
-    size = AXIS2_ARRAY_LIST_SIZE(desc_impl->f_all_element_decls, env);
+    if(desc_impl->f_all_element_decls)
+        size = AXIS2_ARRAY_LIST_SIZE(desc_impl->f_all_element_decls, env);
     for(i = 0; i < size; i++)
     {
         axis2_qname_t *qname_l = NULL;
@@ -2128,7 +2127,16 @@ woden_wsdl10_desc_add_to_all_element_decls(
     super = WODEN_WSDL10_DESC_SUPER_OBJS(desc, env);
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL10_DESC", AXIS2_HASH_KEY_STRING));
-    
+   
+    if(!desc_impl->f_all_element_decls)
+    {
+        desc_impl->f_all_element_decls = axis2_array_list_create(env, 0);
+        if(!desc_impl->f_all_element_decls)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+            return AXIS2_FAILURE;
+        }
+    }
     return AXIS2_ARRAY_LIST_ADD(desc_impl->f_all_element_decls, env, element_decl);
 }
 

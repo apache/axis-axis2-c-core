@@ -103,7 +103,7 @@ struct woden_types_element_ops
     axis2_status_t (AXIS2_CALL *
     add_schema) (void *types_el,
             const axis2_env_t *env,
-            struct xml_schema *schema);
+            void *schema);
 
     /**
      * Delete the specified Schema object.

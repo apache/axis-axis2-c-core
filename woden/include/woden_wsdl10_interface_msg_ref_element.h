@@ -78,7 +78,18 @@ struct woden_wsdl10_interface_msg_ref_element_ops
     get_qname) (
             void *iface_fault_ele,
             const axis2_env_t *env);
-    
+     
+    axis2_status_t (AXIS2_CALL *
+    set_msg) (
+            void *iface_fault_ele,
+            const axis2_env_t *env,
+            void *msg);
+
+    void *(AXIS2_CALL *
+    get_msg) (
+            void *iface_fault_ele,
+            const axis2_env_t *env);
+
     axis2_status_t (AXIS2_CALL *
     set_msg_qname) (
             void *iface_fault_ele,
@@ -144,6 +155,14 @@ woden_wsdl10_interface_msg_ref_element_resolve_methods(
 #define WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_GET_QNAME(interface_msg_ref_element, env) \
       (((woden_wsdl10_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
         get_qname  (interface_msg_ref_element, env))
+
+#define WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_SET_MSG(interface_msg_ref_element, env, msg) \
+      (((woden_wsdl10_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+        set_msg  (interface_msg_ref_element, env, msg))
+
+#define WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_GET_MSG(interface_msg_ref_element, env) \
+      (((woden_wsdl10_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\
+        get_msg  (interface_msg_ref_element, env))
 
 #define WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_SET_MSG_QNAME(interface_msg_ref_element, env, element) \
       (((woden_wsdl10_interface_msg_ref_element_t *) interface_msg_ref_element)->ops->\

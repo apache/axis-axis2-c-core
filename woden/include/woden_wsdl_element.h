@@ -75,7 +75,18 @@ struct woden_wsdl_element_ops
     type) (
             void *wsdl_element,
             const axis2_env_t *env);
-    
+ 
+    void *(AXIS2_CALL *
+    get_element_extensible) (
+            void *wsdl_element,
+            const axis2_env_t *env);
+
+    void *(AXIS2_CALL *
+    get_attr_extensible) (
+            void *wsdl_element,
+            const axis2_env_t *env);
+
+   
 };
 
 union woden_wsdl_element_base
@@ -124,6 +135,14 @@ woden_wsdl_element_resolve_methods(
 #define WODEN_WSDL_ELEMENT_TYPE(wsdl_element, env) \
       (((woden_wsdl_element_t *) wsdl_element)->ops->\
          type (wsdl_element, env))
+
+#define WODEN_WSDL_ELEMENT_GET_ELEMENT_EXTENSIBLE(wsdl_element, env) \
+      (((woden_wsdl_element_t *) wsdl_element)->ops->\
+         get_element_extensible (wsdl_element, env))
+
+#define WODEN_WSDL_ELEMENT_GET_ATTR_EXTENSIBLE(wsdl_element, env) \
+      (((woden_wsdl_element_t *) wsdl_element)->ops->\
+         get_attr_extensible (wsdl_element, env))
 
 /** @} */
 #ifdef __cplusplus

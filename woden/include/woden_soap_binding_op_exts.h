@@ -131,7 +131,7 @@ woden_soap_binding_op_exts_resolve_methods(
 #define WODEN_SOAP_BINDING_OP_EXTS_GET_BASE_IMPL(soap_binding_op_exts, env) \
       (((woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->get_base_impl(soap_binding_op_exts, env))
 
-#define WODEN_SOAP_BINDING_OP_EXTS_GET_SOAP_MEMP(soap_binding_op_exts, env) \
+#define WODEN_SOAP_BINDING_OP_EXTS_GET_SOAP_MEP(soap_binding_op_exts, env) \
       (((woden_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->\
         get_soap_mep (soap_binding_op_exts, env))
 

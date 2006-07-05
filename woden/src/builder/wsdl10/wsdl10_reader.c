@@ -154,7 +154,7 @@ woden_reader_read_wsdl(
         void *reader,
         const axis2_env_t *env,
         axiom_document_t *om_doc,
-        axis2_char_t *uri);
+        const axis2_char_t *uri);
 
 axis2_status_t AXIS2_CALL
 woden_reader_set_ext_registry(
@@ -180,7 +180,7 @@ static void *
 parse_desc(
         void *reader,
         const axis2_env_t *env,
-        axis2_char_t *document_base_uri, 
+        const axis2_char_t *document_base_uri, 
         axiom_node_t *desc_el_node,
         axis2_hash_t *wsdl_modules);
 
@@ -443,7 +443,7 @@ static axis2_uri_t *
 get_uri(
         void *reader,
         const axis2_env_t *env,
-        axis2_char_t *uri_str);
+        const axis2_char_t *uri_str);
 
 static woden_reader_t *
 create(
@@ -573,7 +573,7 @@ woden_reader_read_wsdl(
         void *reader,
         const axis2_env_t *env,
         axiom_document_t *om_doc,
-        axis2_char_t *uri) 
+        const axis2_char_t *uri) 
 {
     woden_reader_impl_t *reader_impl = NULL;
     void *desc = NULL;
@@ -612,7 +612,7 @@ static void *
 parse_desc(
         void *reader,
         const axis2_env_t *env,
-        axis2_char_t *document_base_uri, 
+        const axis2_char_t *document_base_uri, 
         axiom_node_t *desc_el_node,
         axis2_hash_t *wsdl_modules)
 {
@@ -883,9 +883,12 @@ parse_desc(
     AXIOM_ELEMENT_ADD_ATTRIBUTE(schema_elem, env, attr_loc, schema_elem_node);
     
     schema = parse_schema_import(reader, env, schema_elem_node, desc);
-    types = woden_types_to_types_element(types, env);
-    WODEN_TYPES_ELEMENT_ADD_SCHEMA(types, env, (xml_schema_t *) schema);
-    
+    if(schema)
+    {
+        types = woden_types_to_types_element(types, env);
+        schema = woden_imported_schema_to_schema(schema, env);
+        WODEN_TYPES_ELEMENT_ADD_SCHEMA(types, env, schema);
+    }
     return desc;
 }
 
@@ -1092,20 +1095,27 @@ parse_types(
         }
         if(AXIS2_TRUE == woden_schema_constants_compare_import(q_temp_el_type, env))
         {
-            woden_schema_t *schema = NULL;
+            void *schema = NULL;
 
             schema = parse_schema_import(reader, env, temp_el_node, desc);
-            types = woden_types_to_types_element(types, env);
-            WODEN_TYPES_ELEMENT_ADD_SCHEMA(types, env, (xml_schema_t *) schema);
+            if(schema)
+            {
+                types = woden_types_to_types_element(types, env);
+                schema = woden_imported_schema_to_schema(schema, env);
+                WODEN_TYPES_ELEMENT_ADD_SCHEMA(types, env, schema);
+            }
         }
         if(AXIS2_TRUE == woden_schema_constants_compare_schema(q_temp_el_type, env))
         {
-            woden_schema_t *schema = NULL;
+            void *schema = NULL;
 
             schema = parse_schema_inline(reader, env, temp_el_node, desc);
-            types = woden_types_to_types_element(types, env);
-            WODEN_TYPES_ELEMENT_ADD_SCHEMA(types, env, 
-                    (xml_schema_t *) schema);
+            if(schema)
+            {
+                types = woden_types_to_types_element(types, env);
+                schema = woden_inlined_schema_to_schema(schema, env);
+                WODEN_TYPES_ELEMENT_ADD_SCHEMA(types, env, schema);
+            }
         }
         else
         {
@@ -1138,7 +1148,7 @@ parse_schema_inline(
         axiom_node_t *schema_el_node,
         void *desc)
 {
-    void *schema = woden_inlined_schema_create(env);
+    void *schema = NULL;
     axis2_char_t *attr_id = NULL;
     axis2_char_t *tns = NULL;
     axis2_uri_t *base_uri = NULL;
@@ -1147,6 +1157,7 @@ parse_schema_inline(
     xml_schema_collection_t *xsc = NULL;
     axiom_element_t *schema_el = NULL;
   
+    schema = woden_inlined_schema_create(env);
     schema_el = AXIOM_NODE_GET_DATA_ELEMENT(schema_el_node, env);
     attr_id = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(schema_el, env, 
             WODEN_ATTR_ID); 
@@ -1172,16 +1183,25 @@ parse_schema_inline(
      */
     schema_def = XML_SCHEMA_COLLECTION_READ_ELEMENT_WITH_URI(xsc, 
             env, schema_el_node, base_uri_str);
-    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         return NULL;
     }
     if(schema_def)
     {
-        WODEN_SCHEMA_SET_SCHEMA_DEF(schema, env, schema_def);
+        void *base_schema = NULL;
+
+        base_schema = WODEN_INLINED_SCHEMA_GET_BASE_IMPL(schema, env);
+        WODEN_SCHEMA_SET_REFERENCEABLE(base_schema, env, AXIS2_TRUE);
+        WODEN_SCHEMA_SET_SCHEMA_DEF(base_schema, env, schema_def);
     }
     else
-        WODEN_SCHEMA_SET_REFERENCEABLE(schema, env, AXIS2_FALSE);
+    {
+        void *base_schema = NULL;
+
+        base_schema = WODEN_INLINED_SCHEMA_GET_BASE_IMPL(schema, env);
+        WODEN_SCHEMA_SET_REFERENCEABLE(base_schema, env, AXIS2_FALSE);
+    }
     
     return schema;
 }
@@ -1216,12 +1236,14 @@ parse_schema_import(
     axis2_uri_t *context_uri = NULL;
     axis2_char_t *schema_loc = NULL;
     axiom_element_t *import_el = NULL;
+    void *base_schema = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, desc, NULL);
     reader_impl = INTF_TO_IMPL(reader);
 
     schema = woden_imported_schema_create(env);
+    base_schema = WODEN_IMPORTED_SCHEMA_GET_BASE_IMPL(schema, env);
     if(!schema)
         return NULL;
     import_el = AXIOM_NODE_GET_DATA_ELEMENT(import_el_node, env);
@@ -1230,21 +1252,21 @@ parse_schema_import(
     if(NULL != ns)
     {
         uri = get_uri(reader, env, ns);
-        schema = woden_imported_schema_to_schema(schema, env);
-        WODEN_SCHEMA_SET_NAMESPACE(schema, env, uri);
+        WODEN_SCHEMA_SET_NAMESPACE(base_schema, env, uri);
     }
     sloc = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env, 
             WODEN_ATTR_SCHEMA_LOCATION);
     if(NULL != sloc)
     {
-    uri = get_uri(reader, env, sloc);
-    WODEN_IMPORTED_SCHEMA_SET_LOCATION(schema, env, uri);
+        uri = get_uri(reader, env, sloc);
+        WODEN_IMPORTED_SCHEMA_SET_LOCATION(schema, env, uri);
     }
         
-    if(NULL == WODEN_SCHEMA_GET_NAMESPACE(schema, env))
+    if(NULL == WODEN_SCHEMA_GET_NAMESPACE(base_schema, env))
     {
+
         /* The namespace attribute is REQUIRED on xs:import, so don't continue. */
-        WODEN_SCHEMA_SET_REFERENCEABLE(schema, env, AXIS2_FALSE);
+        WODEN_SCHEMA_SET_REFERENCEABLE(base_schema, env, AXIS2_FALSE);
         return schema;
     }
     
@@ -1267,10 +1289,13 @@ parse_schema_import(
     uri = WODEN_IMPORTED_SCHEMA_GET_LOCATION(schema, env);
     schema_loc = AXIS2_URI_TO_STRING(uri, env, AXIS2_URI_UNP_OMITUSERINFO);
     uri = axis2_uri_parse_relative(env, context_uri, schema_loc);
-    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
+        void *base_schema = NULL;
+
+        base_schema = WODEN_IMPORTED_SCHEMA_GET_BASE_IMPL(schema, env);
         /* can't continue schema retrieval with a bad URL.*/
-        WODEN_SCHEMA_SET_REFERENCEABLE(schema, env, AXIS2_FALSE);
+        WODEN_SCHEMA_SET_REFERENCEABLE(base_schema, env, AXIS2_FALSE);
         return schema;
     }
 
@@ -1296,9 +1321,12 @@ parse_schema_import(
         imported_schema_doc = axiom_document_create(env, NULL, xml_builder);
         schema_def = XML_SCHEMA_COLLECTION_READ_DOCUMENT(schema_col, 
                 env, imported_schema_doc);
-        if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
-            WODEN_SCHEMA_SET_REFERENCEABLE(schema, env, AXIS2_FALSE);
+            void *base_schema = NULL;
+
+            base_schema = WODEN_IMPORTED_SCHEMA_GET_BASE_IMPL(schema, env);
+            WODEN_SCHEMA_SET_REFERENCEABLE(base_schema, env, AXIS2_FALSE);
             return schema;
         }
         axis2_hash_set(reader_impl->f_imported_schemas, schema_uri, 
@@ -1308,10 +1336,16 @@ parse_schema_import(
     
     if(NULL != schema_def) 
     {
-        WODEN_SCHEMA_SET_SCHEMA_DEF(schema, env, schema_def);
+        void *base_schema = NULL;
+
+        base_schema = WODEN_IMPORTED_SCHEMA_GET_BASE_IMPL(schema, env);
+        WODEN_SCHEMA_SET_SCHEMA_DEF(base_schema, env, schema_def);
     } else 
     {
-        WODEN_SCHEMA_SET_REFERENCEABLE(schema, env, AXIS2_FALSE);
+        void *base_schema = NULL;
+
+        base_schema = WODEN_IMPORTED_SCHEMA_GET_BASE_IMPL(schema, env);
+        WODEN_SCHEMA_SET_REFERENCEABLE(base_schema, env, AXIS2_FALSE);
     }
     
     return schema;
@@ -2094,12 +2128,30 @@ parse_interface_msg_ref(
         axis2_qname_t *qname = NULL;
         axis2_uri_t *namespc = NULL;
         axis2_char_t *namespc_str = NULL;
+        axis2_array_list_t *msgs = NULL;
+        int i = 0, size = 0;
 
         namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, msg, namespc_str, NULL);
         msg_ref = woden_wsdl10_interface_msg_ref_to_interface_msg_ref_element(
                 msg_ref, env);
+        desc = woden_wsdl10_desc_to_desc_element(desc, env);
+        msgs = WODEN_WSDL10_DESC_ELEMENT_GET_MSG_ELEMENTS(desc, env);
+        if(msgs)
+            size = AXIS2_ARRAY_LIST_SIZE(msgs, env);
+        for(i = 0; i < size; i++)
+        {
+            void *msg = NULL;
+            axis2_qname_t *msg_qname = NULL;
+            
+            msg = AXIS2_ARRAY_LIST_GET(msgs, env, i);
+            msg_qname = WODEN_WSDL10_MSG_REF_GET_QNAME(msg, env);
+            if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(msg_qname, env, qname))
+            {
+                WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_SET_MSG(msg_ref, env, msg);
+            }
+        }
         WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_SET_MSG_QNAME(msg_ref, env, qname);
     }
     msg_ref = woden_wsdl10_interface_msg_ref_to_attr_extensible(msg_ref, env); 
@@ -2508,21 +2560,11 @@ parse_binding_op(
         else
         {
             void *ext_element = NULL;
-            void *nested_confble = NULL;
-            void *configurable = NULL;
-            void *documentable = NULL;
-            void *wsdl_obj = NULL;
-            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "binding_op_element", 
                     op, temp_el_node, desc);
 
-            nested_confble = WODEN_WSDL10_BINDING_OP_GET_BASE_IMPL(op, env);
-            configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
-            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
-            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
-            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
-            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
+            op = woden_wsdl10_binding_op_to_element_extensible(op, env);
             WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(op, env, ext_element);
         }
 
@@ -3576,7 +3618,7 @@ parse_ext_attributes(
     {
         /* If no error condition occured then this will return
          */
-        if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
             return AXIS2_FAILURE;
         else
             return AXIS2_SUCCESS;
@@ -3747,7 +3789,7 @@ get_wsdl_from_location(
     desc = woden_wsdl10_desc_to_desc_element(desc, env);
     context_uri = WODEN_WSDL10_DESC_ELEMENT_GET_DOCUMENT_BASE_URI(desc, env);
     location_uri = axis2_uri_parse_relative(env, context_uri, location_uri_str);
-    if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+    if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         /* Can't continue import with a bad URL.*/
         return NULL;
@@ -3771,7 +3813,7 @@ get_wsdl_from_location(
         builder = axiom_stax_builder_create(env, xml_reader);
         doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(builder, env);
         doc_el_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(doc, env); 
-        if(AXIS2_ERROR_NONE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
             /* Cannot contine without the referenced document */
             return NULL;
@@ -3808,7 +3850,7 @@ static axis2_uri_t *
 get_uri(
         void *reader,
         const axis2_env_t *env,
-        axis2_char_t *uri_str)
+        const axis2_char_t *uri_str)
 {
     woden_reader_impl_t *reader_impl = NULL;
 

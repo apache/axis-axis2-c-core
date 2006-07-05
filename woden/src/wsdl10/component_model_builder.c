@@ -492,7 +492,7 @@ build_element_decls(
             qname = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(qnames, env, i);
             if(qname)
                 namespc = AXIS2_QNAME_GET_URI(qname, env);
-            if(0 == AXIS2_STRCMP(namespc, schema_tns))
+            if(namespc && 0 == AXIS2_STRCMP(namespc, schema_tns))
             {
                 void *ed = NULL;
 

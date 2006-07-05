@@ -190,23 +190,23 @@ woden_interface_op_resolve_methods(
       (((woden_interface_op_t *) interface_op)->ops->get_base_impl(interface_op, env))
 
 #define WODEN_INTERFACE_OP_GET_QNAME(interface_op, env) \
-      (((woden_interface_op_t *) interface_op)->\
+      (((woden_interface_op_t *) interface_op)->ops->\
          get_qname(interface_op, env))
 
 #define WODEN_INTERFACE_OP_GET_MSG_EXCHANGE_PATTERN(interface_op, env) \
-      (((woden_interface_op_t *) interface_op)->\
+      (((woden_interface_op_t *) interface_op)->ops->\
          get_msg_exchange_pattern(interface_op, env))
 
 #define WODEN_INTERFACE_OP_GET_INTERFACE_MSG_REFS(interface_op, env) \
-      (((woden_interface_op_t *) interface_op)->\
+      (((woden_interface_op_t *) interface_op)->ops->\
          get_interface_msg_refs(interface_op, env))
 
 #define WODEN_INTERFACE_OP_GET_INTERFACE_FAULT_REFS(interface_op, env) \
-      (((woden_interface_op_t *) interface_op)->\
+      (((woden_interface_op_t *) interface_op)->ops->\
          get_interface_fault_refs(interface_op, env))
 
 #define WODEN_INTERFACE_OP_GET_STYLE(interface_op, env) \
-      (((woden_interface_op_t *) interface_op)->\
+      (((woden_interface_op_t *) interface_op)->ops->\
          get_style(interface_op, env))
 
 #define WODEN_INTERFACE_OP_TO_ELEMENT(interface_op, env) \
