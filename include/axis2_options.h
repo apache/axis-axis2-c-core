@@ -149,7 +149,7 @@ struct axis2_options_ops
    void (AXIS2_CALL *
    set_parent)(struct axis2_options *options,
                const axis2_env_t *env,
-               struct axis2_options *parent);
+               const axis2_options_t *parent);
 
    void (AXIS2_CALL *
    set_action)(struct axis2_options *options,

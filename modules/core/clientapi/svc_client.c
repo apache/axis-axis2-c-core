@@ -602,7 +602,7 @@ axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
             {
                 axis2_msg_ctx_t *msg_ctx = NULL;
                 AXIS2_USLEEP(10000);
-                msg_ctx = AXIS2_OP_CLIENT_GET_MSG_CTX(svc_client_impl->op_client, env, 
+                msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(svc_client_impl->op_client, env, 
                     AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE); 
                 if (msg_ctx)
                 {
@@ -678,7 +678,7 @@ axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
         
       AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
       AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
-      res_msg_ctx = AXIS2_OP_CTX_GET_MSG_CTX(op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
+      res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CTX_GET_MSG_CTX(op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
       
       if (!res_msg_ctx)
         {

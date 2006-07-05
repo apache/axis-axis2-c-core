@@ -68,12 +68,12 @@ static void axis2_op_client_init_ops(axis2_op_client_t *op_client);
 
 /** public function prototypes */
 axis2_status_t AXIS2_CALL
-axis2_op_client_set_options(struct axis2_op_client *op_client,
+axis2_op_client_set_options(axis2_op_client_t *op_client,
         const axis2_env_t *env,
-        axis2_options_t *options);
+        const axis2_options_t *options);
 
-axis2_options_t* AXIS2_CALL
-axis2_op_client_get_options(struct axis2_op_client *op_client,
+const axis2_options_t* AXIS2_CALL
+axis2_op_client_get_options(const axis2_op_client_t *op_client,
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -82,8 +82,8 @@ axis2_op_client_add_msg_ctx(struct axis2_op_client *op_client,
         axis2_msg_ctx_t *mc);
 
 
-axis2_msg_ctx_t* AXIS2_CALL
-axis2_op_client_get_msg_ctx(struct axis2_op_client *op_client,
+const axis2_msg_ctx_t* AXIS2_CALL
+axis2_op_client_get_msg_ctx(const axis2_op_client_t *op_client,
         const axis2_env_t *env,
         const axis2_char_t *message_label);
 
@@ -195,7 +195,7 @@ axis2_op_client_create(const axis2_env_t *env, axis2_op_t *op,
 axis2_status_t AXIS2_CALL
 axis2_op_client_set_options(struct axis2_op_client *op_client,
         const axis2_env_t *env,
-        axis2_options_t *options)
+        const axis2_options_t *options)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
 
@@ -207,13 +207,13 @@ axis2_op_client_set_options(struct axis2_op_client *op_client,
     {
         AXIS2_OPTIONS_FREE(op_client_impl->options, env);
     }
-    op_client_impl->options = options;
+    op_client_impl->options = (axis2_options_t *)options;
 
     return AXIS2_SUCCESS;
 }
 
-axis2_options_t* AXIS2_CALL
-axis2_op_client_get_options(struct axis2_op_client *op_client,
+const axis2_options_t* AXIS2_CALL
+axis2_op_client_get_options(const axis2_op_client_t *op_client,
         const axis2_env_t *env)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
@@ -264,8 +264,8 @@ axis2_op_client_add_msg_ctx(struct axis2_op_client *op_client,
 }
 
 
-axis2_msg_ctx_t* AXIS2_CALL
-axis2_op_client_get_msg_ctx(struct axis2_op_client *op_client,
+const axis2_msg_ctx_t* AXIS2_CALL
+axis2_op_client_get_msg_ctx(const axis2_op_client_t *op_client,
         const axis2_env_t *env,
         const axis2_char_t *message_label)
 {
@@ -331,7 +331,7 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
     }
 
     conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(op_client_impl->svc_ctx, env);
-    msg_ctx = axis2_op_client_get_msg_ctx(op_client, env,
+    msg_ctx = (axis2_msg_ctx_t *)axis2_op_client_get_msg_ctx(op_client, env,
             AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE);
 
     if (!msg_ctx)

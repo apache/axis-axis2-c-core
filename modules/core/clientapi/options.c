@@ -146,7 +146,7 @@ axis2_options_get_parent(struct axis2_options *options,
 void AXIS2_CALL 
 axis2_options_set_parent(struct axis2_options *options,
                           const axis2_env_t *env,
-                          struct axis2_options *parent);
+                          const axis2_options_t *parent);
 
 void AXIS2_CALL 
 axis2_options_set_action(struct axis2_options *options,
@@ -697,14 +697,14 @@ axis2_options_get_parent(struct axis2_options *options,
 void AXIS2_CALL 
 axis2_options_set_parent(struct axis2_options *options,
                           const axis2_env_t *env,
-                          struct axis2_options *parent)
+                          const axis2_options_t *parent)
 {
    axis2_options_impl_t *options_impl = NULL;
     /*AXIS2_ENV_CHECK(env, NULL);*/
 
    options_impl = AXIS2_INTF_TO_IMPL(options);
 
-   options_impl->parent = parent;
+   options_impl->parent = (axis2_options_t *)parent;
 }
 
 void AXIS2_CALL 

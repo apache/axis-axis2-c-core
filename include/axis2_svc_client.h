@@ -533,7 +533,7 @@ extern "C"
         ((svc_client)->ops->get_svc_ctx(svc_client, env))
 
 /** Frees given service client. 
-    @sa axis2_svc_client_ops#free */
+    @sa axis2_svc_client_ops#free_fn */
 #define AXIS2_SVC_CLIENT_FREE(svc_client, env) \
         ((svc_client)->ops->free_fn(svc_client, env))
 
