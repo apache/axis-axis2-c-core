@@ -347,7 +347,7 @@ woden_wsdl10_soap_binding_msg_ref_exts_get_soap_modules(
     parent_element = woden_wsdl_element_to_element_extensible(parent_element, 
             env);
     binding_msg_ref_exts_impl->qname = axis2_qname_create_from_string(env, 
-            WODEN_Q_ELEM_SOAP_MODULE);
+            WODEN_WSDL10_Q_ELEM_SOAP_MODULE);
     soap_mods = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS_OF_TYPE(
             parent_element, env, binding_msg_ref_exts_impl->qname); 
 
@@ -371,7 +371,7 @@ woden_wsdl10_soap_binding_msg_ref_exts_get_soap_headers(
     parent_element = woden_wsdl_element_to_element_extensible(parent_element, 
             env);
     binding_msg_ref_exts_impl->qname = axis2_qname_create_from_string(env, 
-            WODEN_Q_ELEM_SOAP_HEADER);
+            WODEN_WSDL10_Q_ELEM_SOAP_HEADER);
     soap_headers = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS_OF_TYPE(
             parent_element, env, binding_msg_ref_exts_impl->qname); 
 

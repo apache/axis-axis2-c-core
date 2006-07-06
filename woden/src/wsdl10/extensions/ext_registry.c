@@ -383,7 +383,7 @@ woden_wsdl10_ext_registry_query_deserializer(
     {
         
         element_qtype = axis2_qname_create_from_string(env, 
-                WODEN_Q_ELEM_SOAP_MODULE);
+                WODEN_WSDL10_Q_ELEM_SOAP_MODULE);
         elem_name = AXIS2_QNAME_TO_STRING(element_qtype, env);
         ed = axis2_hash_get(inner_deserializer_reg, elem_name, 
                 AXIS2_HASH_KEY_STRING);
@@ -426,7 +426,7 @@ woden_wsdl10_ext_registry_query_ext_element_type(
     if(NULL != inner_ext_element_reg)
     {
         element = axis2_hash_get(inner_ext_element_reg, 
-                WODEN_Q_ELEM_SOAP_MODULE, AXIS2_HASH_KEY_STRING);
+                WODEN_WSDL10_Q_ELEM_SOAP_MODULE, AXIS2_HASH_KEY_STRING);
     }
     return element;
 }
@@ -734,37 +734,37 @@ woden_wsdl10_ext_registry_populate(
         woden_qname_list_or_token_any_attr_create(env, NULL, NULL, NULL, 
                 NULL);
 
-    q_attr_soap_version = axis2_qname_create_from_string(env, WODEN_Q_ATTR_SOAP_VERSION);
+    q_attr_soap_version = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_VERSION);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
         "binding_element", q_attr_soap_version, 
         registry_impl->string_attr);
    
-    q_attr_soap_protocol = axis2_qname_create_from_string(env, WODEN_Q_ATTR_SOAP_PROTOCOL);
+    q_attr_soap_protocol = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_PROTOCOL);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
         "binding_element", q_attr_soap_protocol, 
         registry_impl->uri_attr);
    
-    q_attr_soap_mepdefault = axis2_qname_create_from_string(env, WODEN_Q_ATTR_SOAP_MEPDEFAULT);
+    q_attr_soap_mepdefault = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_MEPDEFAULT);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
         "binding_element", q_attr_soap_mepdefault, 
         registry_impl->uri_attr);
    
-    q_attr_soap_code = axis2_qname_create_from_string(env, WODEN_Q_ATTR_SOAP_CODE);
+    q_attr_soap_code = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_CODE);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env, 
         "binding_fault_element", q_attr_soap_code, 
         registry_impl->qname_or_token_any_attr);
    
-    q_attr_soap_subcodes = axis2_qname_create_from_string(env, WODEN_Q_ATTR_SOAP_SUBCODES);
+    q_attr_soap_subcodes = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_SUBCODES);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env, 
         "binding_fault_element", q_attr_soap_subcodes, 
         registry_impl->qname_list_or_token_any_attr);
    
-    q_attr_soap_mep = axis2_qname_create_from_string(env, WODEN_Q_ATTR_SOAP_MEP);
+    q_attr_soap_mep = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_MEP);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env, 
         "binding_op_element", q_attr_soap_mep, 
         registry_impl->uri_attr);
    
-    q_attr_soap_action = axis2_qname_create_from_string(env, WODEN_Q_ATTR_SOAP_ACTION);
+    q_attr_soap_action = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_ACTION);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env, 
         "binding_op_element", q_attr_soap_action, 
         registry_impl->uri_attr);
@@ -778,7 +778,7 @@ woden_wsdl10_ext_registry_populate(
 
     registry_impl->soap_module = woden_wsdl10_soap_module_create(env);
     
-    q_elem_soap_module = axis2_qname_create_from_string(env, WODEN_Q_ELEM_SOAP_MODULE);
+    q_elem_soap_module = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_SOAP_MODULE);
     
     woden_wsdl10_ext_registry_register_deserializer(registry, env, "binding_element",
             q_elem_soap_module,
@@ -825,7 +825,7 @@ woden_wsdl10_ext_registry_populate(
         woden_wsdl10_soap_header_block_deserializer_create(env);
     registry_impl->soap_header_block = woden_wsdl10_soap_header_block_create(env);
     
-    q_elem_soap_header = axis2_qname_create_from_string(env, WODEN_Q_ELEM_SOAP_HEADER);
+    q_elem_soap_header = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_SOAP_HEADER);
     
     woden_wsdl10_ext_registry_register_deserializer(registry, env, "binding_fault_element",
             q_elem_soap_header,

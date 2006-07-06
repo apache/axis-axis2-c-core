@@ -14,8 +14,8 @@
  * limitations under the License.
  */
  
-#ifndef WODEN_SOAP_CONSTANTS_H
-#define WODEN_SOAP_CONSTANTS_H
+#ifndef WODEN_WSDL10_SOAP_CONSTANTS_H
+#define WODEN_WSDL10_SOAP_CONSTANTS_H
 
 /**
  * @file axiom_soap_constants.h
@@ -37,50 +37,50 @@ extern "C"
 /*********************************** Constansts********************************/
 
 /* Namespace URIs.*/
-#define WODEN_NS_URI_SOAP "http://schemas.xmlsoap.org/wsdl/soap"
+#define WODEN_WSDL10_NS_URI_SOAP "http://schemas.xmlsoap.org/wsdl/soap"
 
 /* Protocol URIs.*/
-#define WODEN_PROTOCOL_URI_HTTP "http://www.w3.org/2003/05/soap/bindings/HTTP/"
+#define WODEN_WSDL10_PROTOCOL_URI_HTTP "http://www.w3.org/2003/05/soap/bindings/HTTP/"
 
 /* Element names. */
-#define WODEN_ELEM_MODULE "module"
-#define WODEN_ELEM_HEADER "header"
+#define WODEN_WSDL10_ELEM_MODULE "module"
+#define WODEN_WSDL10_ELEM_HEADER "header"
 
 /* Attribute names. */
-#define WODEN_ATTR_VERSION "version"
-#define WODEN_ATTR_PROTOCOL "protocol"
-#define WODEN_ATTR_MEPDEFAULT "mepDefault"
-#define WODEN_ATTR_CODE "code"
-#define WODEN_ATTR_SUBCODES "subcodes"
-#define WODEN_ATTR_MEP "mep"
-#define WODEN_ATTR_ACTION "action"
-#define WODEN_ATTR_MUSTUNDERSTAND "mustUnderstand"
+#define WODEN_WSDL10_ATTR_VERSION "version"
+#define WODEN_WSDL10_ATTR_PROTOCOL "protocol"
+#define WODEN_WSDL10_ATTR_MEPDEFAULT "mepDefault"
+#define WODEN_WSDL10_ATTR_CODE "code"
+#define WODEN_WSDL10_ATTR_SUBCODES "subcodes"
+#define WODEN_WSDL10_ATTR_MEP "mep"
+#define WODEN_WSDL10_ATTR_ACTION "action"
+#define WODEN_WSDL10_ATTR_MUSTUNDERSTAND "mustUnderstand"
 
 /* Prefixes */
-#define WODEN_PFX_WSOAP "wsoap"
-#define WODEN_PFX_WHTTP "whttp"   /* TODO move to HTTPConstants? */
+#define WODEN_WSDL10_PFX_WSOAP "wsoap"
+#define WODEN_WSDL10_PFX_WHTTP "whttp"   /* TODO move to HTTPConstants? */
 
 /* Qualified element names.*/
 
-#define WODEN_Q_ELEM_SOAP_MODULE "module|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ELEM_SOAP_MODULE "module|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
 
-#define WODEN_Q_ELEM_SOAP_HEADER "header|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ELEM_SOAP_HEADER "header|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
 
 /* Qualified attribute names.*/
 
-#define WODEN_Q_ATTR_SOAP_VERSION "version|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_VERSION "version|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
 
-#define WODEN_Q_ATTR_SOAP_PROTOCOL "protocol|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_PROTOCOL "protocol|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
 
-#define WODEN_Q_ATTR_SOAP_MEPDEFAULT "mepDefault|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_MEPDEFAULT "mepDefault|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
 
-#define WODEN_Q_ATTR_SOAP_CODE "ATTR_CODE|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_CODE "ATTR_CODE|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
 
-#define WODEN_Q_ATTR_SOAP_SUBCODES "subcodes|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_SUBCODES "subcodes|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
 
-#define WODEN_Q_ATTR_SOAP_MEP "mep|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_MEP "mep|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
 
-#define WODEN_Q_ATTR_SOAP_ACTION "action|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_ACTION "action|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
 
 
 
@@ -91,6 +91,6 @@ extern "C"
 }
 #endif
 
-#endif /* WODEN_SOAP_CONSTANTS_H */
+#endif /* WODEN_WSDL10_SOAP_CONSTANTS_H */
 
 

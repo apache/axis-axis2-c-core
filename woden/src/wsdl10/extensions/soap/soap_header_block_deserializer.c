@@ -339,7 +339,7 @@ woden_wsdl10_soap_header_block_deserializer_marshall(
     WODEN_WSDL10_SOAP_HEADER_BLOCK_ELEMENT_SET_PARENT_ELEMENT(soap_hdr, env, parent);
 
     element_decl_qn = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ext_el, env, 
-            WODEN_ATTR_ELEMENT); 
+            WODEN_WSDL10_ATTR_ELEMENT); 
     if(NULL != element_decl_qn)
     {
         axis2_qname_t *qname = NULL;
@@ -354,8 +354,8 @@ woden_wsdl10_soap_header_block_deserializer_marshall(
         WODEN_WSDL10_SOAP_HEADER_BLOCK_ELEMENT_SET_ELEMENT_QNAME(soap_hdr, env, qname);
     }
     must_understand = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ext_el, env, 
-            WODEN_ATTR_MUSTUNDERSTAND);
-    if(NULL != must_understand && 0 == AXIS2_STRCMP(WODEN_VALUE_TRUE, must_understand))
+            WODEN_WSDL10_ATTR_MUSTUNDERSTAND);
+    if(NULL != must_understand && 0 == AXIS2_STRCMP(WODEN_WSDL10_VALUE_TRUE, must_understand))
             understood = AXIS2_TRUE;
     else
             understood = AXIS2_FALSE;
@@ -363,8 +363,8 @@ woden_wsdl10_soap_header_block_deserializer_marshall(
     WODEN_WSDL10_SOAP_HEADER_BLOCK_ELEMENT_SET_MUST_UNDERSTAND(soap_hdr, env, understood);
 
     req = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ext_el, env, 
-            WODEN_ATTR_REQUIRED);
-    if(NULL != req && 0 == AXIS2_STRCMP(WODEN_VALUE_TRUE, req))
+            WODEN_WSDL10_ATTR_REQUIRED);
+    if(NULL != req && 0 == AXIS2_STRCMP(WODEN_WSDL10_VALUE_TRUE, req))
             required = AXIS2_TRUE;
     else
             required = AXIS2_FALSE;
@@ -384,7 +384,7 @@ woden_wsdl10_soap_header_block_deserializer_marshall(
         axis2_qname_t *q_elem_documentation = NULL;
 
         q_elem_documentation = axis2_qname_create_from_string(env, 
-                WODEN_Q_ELEM_DOCUMENTATION);
+                WODEN_WSDL10_Q_ELEM_DOCUMENTATION);
 
         if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_documentation, temp_el_node))

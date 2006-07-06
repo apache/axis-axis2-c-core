@@ -336,7 +336,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
     el = AXIOM_NODE_GET_DATA_ELEMENT(el_node, env);
 
     ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(el, env, 
-            WODEN_ATTR_REF); 
+            WODEN_WSDL10_ATTR_REF); 
     if(NULL != ref)
     {
         axis2_uri_t *uri = axis2_uri_parse_string(env, ref);
@@ -345,8 +345,8 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
         WODEN_WSDL10_SOAP_MODULE_ELEMENT_SET_REF(soap_mod, env, uri);
     }
     req = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(el, env, 
-            WODEN_ATTR_REQUIRED);
-    if(NULL != req && 0 == AXIS2_STRCMP(WODEN_VALUE_TRUE, req))
+            WODEN_WSDL10_ATTR_REQUIRED);
+    if(NULL != req && 0 == AXIS2_STRCMP(WODEN_WSDL10_VALUE_TRUE, req))
             required = AXIS2_TRUE;
     else
             required = AXIS2_FALSE;
@@ -361,7 +361,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
         axis2_qname_t *q_elem_documentation = NULL;
 
         q_elem_documentation = axis2_qname_create_from_string(env, 
-                WODEN_Q_ELEM_DOCUMENTATION);
+                WODEN_WSDL10_Q_ELEM_DOCUMENTATION);
 
         if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_documentation, temp_el_node))
