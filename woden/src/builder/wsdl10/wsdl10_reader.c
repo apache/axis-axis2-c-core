@@ -151,7 +151,7 @@ void *AXIS2_CALL
 woden_wsdl10_reader_read_wsdl(
         void *reader,
         const axis2_env_t *env,
-        axiom_document_t *om_doc,
+        axiom_node_t *root_node,
         const axis2_char_t *uri);
 
 axis2_status_t AXIS2_CALL
@@ -570,20 +570,19 @@ void *AXIS2_CALL
 woden_wsdl10_reader_read_wsdl(
         void *reader,
         const axis2_env_t *env,
-        axiom_document_t *om_doc,
+        axiom_node_t *root_node,
         const axis2_char_t *uri) 
 {
     woden_wsdl10_reader_impl_t *reader_impl = NULL;
     void *desc = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
-    AXIS2_PARAM_CHECK(env->error, om_doc, NULL);
+    AXIS2_PARAM_CHECK(env->error, root_node, NULL);
     AXIS2_PARAM_CHECK(env->error, uri, NULL);
     reader_impl = INTF_TO_IMPL(reader);
         
     /* TODO add WSDL locator for resolving URIs */
-    reader_impl->om_doc = om_doc;
-    reader_impl->root_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(om_doc, env);            
+    reader_impl->root_node = root_node;            
     if(!reader_impl->root_node)
         return NULL;
     desc = parse_desc(reader, env, uri, reader_impl->root_node, NULL);

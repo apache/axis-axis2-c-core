@@ -20,7 +20,7 @@
 #include <axis2_env.h>
 #include <axis2_utils.h>
 #include <platforms/axis2_platform_auto_sense.h>
-#include <woden_reader.h>
+#include <woden_resolver.h>
 #include <woden_desc.h>
 #include <woden_interface.h>
 #include <woden_svc.h>
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
     axiom_document_t *om_doc = NULL;
     axis2_char_t *doc_base_uri = NULL;
     axis2_char_t *axis2c_home = NULL;
-    woden_reader_t *reader = NULL;
+    woden_resolver_t *resolver = NULL;
     void *desc = NULL;
     void *intface = NULL;
     axis2_array_list_t *intfaces = NULL;
@@ -62,9 +62,9 @@ int main(int argc, char *argv[])
     om_doc = get_root_element_from_filename(env, filename);
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
     doc_base_uri = AXIS2_STRACAT (axis2c_home, "/woden", env);
-    reader = woden_reader_create(env);
+    resolver = woden_resolver_create(env);
     
-    desc = (void *)WODEN_READER_READ_WSDL(reader, env, om_doc, doc_base_uri);
+    desc = WODEN_RESOLVER_READ(resolver, env, om_doc, doc_base_uri);
     intfaces = WODEN_DESC_GET_INTERFACES(desc, env);
     intface = AXIS2_ARRAY_LIST_GET(intfaces, env, 0);
     intface_qname = WODEN_INTERFACE_GET_QNAME(intface, env);

@@ -57,7 +57,7 @@ struct woden_reader_ops
     read_wsdl) (
             void *reader,
             const axis2_env_t *env,
-            axiom_document_t *om_doc,
+            axiom_node_t *root_node,
             const axis2_char_t *uri);
 
     axis2_status_t (AXIS2_CALL *
@@ -86,9 +86,9 @@ woden_reader_create(
 #define WODEN_READER_FREE(reader, env) \
       (((woden_reader_t *) reader)->ops->free(reader, env))
 
-#define WODEN_READER_READ_WSDL(reader, env, om_doc, uri) \
+#define WODEN_READER_READ_WSDL(reader, env, root_node, uri) \
       (((woden_reader_t *) reader)->ops->\
-      read_wsdl (reader, env, om_doc, uri))
+      read_wsdl (reader, env, root_node, uri))
 
 #define WODEN_READER_SET_EXT_REGISTRY(reader, env, ext_reg) \
       (((woden_reader_t *) reader)->ops->\
