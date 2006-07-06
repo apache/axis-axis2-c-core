@@ -100,7 +100,7 @@
 
 #include <woden_wsdl10_ext_deserializer.h>
 
-#include "../../wsdl10/woden_constants.h"
+#include "../../wsdl10/woden_wsdl10_constants.h"
 #include "../../util/woden_om_util.h"
 
 #include <xml_schema.h>
@@ -642,7 +642,7 @@ parse_desc(
     AXIS2_PARAM_CHECK(env->error, desc_el_node, NULL);
     reader_impl = INTF_TO_IMPL(reader);
 
-    qname = axis2_qname_create_from_string(env, WODEN_Q_ELEM_DESCRIPTION);
+    qname = axis2_qname_create_from_string(env, WODEN_Q_ELEM_DEFINITIONS);
     check_element_qname(reader, env, desc_el_node, qname);
     
     desc = woden_wsdl10_desc_create(env);
@@ -3817,7 +3817,7 @@ get_wsdl_from_location(
             return NULL;
         }
         /* The referenced document should contain a WSDL <description> */
-        qname = axis2_qname_create_from_string(env, WODEN_Q_ELEM_DESCRIPTION);
+        qname = axis2_qname_create_from_string(env, WODEN_Q_ELEM_DEFINITIONS);
         if(AXIS2_TRUE != axis2_qname_util_matches(env, qname, doc_el_node))
         {
             /* Cannot continue without a <description> element */

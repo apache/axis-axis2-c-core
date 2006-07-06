@@ -41,7 +41,7 @@ extern "C"
 #define WODEN_NS_URI_XSI "http://www.w3.org/2001/XMLSchema-instance"
 
 /* Top-level WSDL 2.0 element names. */
-#define WODEN_ELEM_DESCRIPTION "description"
+#define WODEN_ELEM_DEFINITIONS "description"
 #define WODEN_ELEM_DOCUMENTATION "documentation"
 #define WODEN_ELEM_IMPORT "import"
 #define WODEN_ELEM_INCLUDE "include"
@@ -65,7 +65,7 @@ extern "C"
 #define WODEN_ELEM_PART "part"
 
 /* Top-level WSDL 2.0 qualified element names. */
-#define WODEN_Q_ELEM_DESCRIPTION "definitions|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_Q_ELEM_DEFINITIONS "definitions|http://schemas.xmlsoap.org/wsdl"
 #define WODEN_Q_ELEM_DOCUMENTATION "documentation|http://schemas.xmlsoap.org/wsdl"
 #define WODEN_Q_ELEM_IMPORT "import|http://schemas.xmlsoap.org/wsdl"
 #define WODEN_Q_ELEM_INCLUDE "include|http://schemas.xmlsoap.org/wsdl"

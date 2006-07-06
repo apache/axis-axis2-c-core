@@ -21,7 +21,7 @@
 #include <woden_wsdl10_desc_element.h>
 #include <woden_documentation.h>
 #include <woden_documentation_element.h>
-#include "../../woden_constants.h"
+#include "../../woden_wsdl10_constants.h"
 #include <axiom_element.h>
 #include <axiom_util.h>
 #include <woden_qname_util.h>

@@ -199,16 +199,16 @@ woden_binding_op_resolve_methods(
 #define WODEN_BINDING_OP_GET_BASE_IMPL(binding_op, env) \
       (((woden_binding_op_t *) binding_op)->ops->get_base_impl(binding_op, env))
 
-#define WODEN_BINDING_OP_GET_GET_INTERFACE_OP(binding_op, env) \
-      (((woden_binding_op_t *) binding_op)->\
+#define WODEN_BINDING_OP_GET_INTERFACE_OP(binding_op, env) \
+      (((woden_binding_op_t *) binding_op)->ops->\
          get_interface_op(binding_op, env))
 
 #define WODEN_BINDING_OP_GET_BINDING_MSG_REFS(binding_op, env) \
-      (((woden_binding_op_t *) binding_op)->\
+      (((woden_binding_op_t *) binding_op)->ops->\
          get_binding_msg_refs(binding_op, env))
 
 #define WODEN_BINDING_OP_GET_BINDING_FAULT_REFS(binding_op, env) \
-      (((woden_binding_op_t *) binding_op)->\
+      (((woden_binding_op_t *) binding_op)->ops->\
          get_binding_fault_refs(binding_op, env))
 
 #define WODEN_BINDING_OP_TO_ELEMENT(binding_op, env) \
