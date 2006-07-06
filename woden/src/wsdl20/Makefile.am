@@ -22,8 +22,12 @@ libwoden_wsdl20_la_LIBADD =  \
                     $(top_builddir)/src/wsdl20/xml/libwoden_wsdl20_xml.la \
                     $(top_builddir)/src/wsdl20/extensions/libwoden_extensions.la \
                     $(top_builddir)/src/wsdl20/extensions/soap/libwoden_extensions_soap.la \
+                    $(top_builddir)/src/builder/wsdl10/libwoden_wsdl10_builder.la \
+                    $(top_builddir)/src/wsdl10/xml/libwoden_wsdl10_xml.la \
+                    $(top_builddir)/src/wsdl10/extensions/libwoden_wsdl10_extensions.la \
+                    $(top_builddir)/src/wsdl10/extensions/soap/libwoden_wsdl10_extensions_soap.la \
+                    $(top_builddir)/src/wsdl10/libwoden_wsdl10.la \
                     $(top_builddir)/src/wsdl/libwoden_wsdl.la
-
 INCLUDES = -I$(top_builddir)/include \
 			@AXIOMINC@ \
 			@UTILINC@ \

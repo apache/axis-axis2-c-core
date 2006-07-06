@@ -33,7 +33,6 @@
 #include <woden_feature.h>
 #include <woden_import.h>
 #include <woden_include.h>
-#include <woden_interface_fault.h>
 #include <woden_wsdl10_interface_fault_ref.h>
 #include <woden_wsdl10_msg_ref.h>
 #include <woden_wsdl10_msg_ref_element.h>
@@ -77,7 +76,6 @@
 #include <woden_import_element.h>
 #include <woden_include_element.h>
 #include <woden_interface_element.h>
-#include <woden_interface_fault_element.h>
 #include <woden_wsdl10_interface_fault_ref_element.h>
 #include <woden_wsdl10_interface_msg_ref_element.h>
 #include <woden_interface_op_element.h>
@@ -385,7 +383,7 @@ parse_property(
  * @param wsdl_obj wsdl_obj_t type object
  * @param desc desc object
  */
-axis2_status_t AXIS2_CALL
+static axis2_status_t
 parse_ext_attributes(
         void *reader,
         const axis2_env_t *env,
@@ -3599,7 +3597,7 @@ parse_property(
     return property;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t
 parse_ext_attributes(
         void *reader,
         const axis2_env_t *env,

@@ -3,13 +3,10 @@ noinst_LTLIBRARIES = libwoden_wsdl10_xml.la
 libwoden_wsdl10_xml_la_SOURCES = \
 							msg_ref_element.c \
 							part_element.c \
-							interface_fault_element.c \
 							interface_fault_ref_element.c \
 							interface_msg_ref_element.c \
-							binding_fault_element.c \
 							binding_msg_ref_element.c \
 							binding_op_element.c \
-							fault_ref_element.c \
 							desc_element.c \
 							endpoint_element.c \
 							svc_element.c

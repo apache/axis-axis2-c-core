@@ -125,12 +125,10 @@ AC_CONFIG_FILES([Makefile \
     src/wsdl/Makefile \
     src/wsdl20/Makefile \
     src/wsdl20/xml/Makefile \
-    src/wsdl20/enumeration/Makefile \
     src/wsdl20/extensions/Makefile \
     src/wsdl20/extensions/soap/Makefile \
     src/wsdl10/Makefile \
     src/wsdl10/xml/Makefile \
-    src/wsdl10/enumeration/Makefile \
     src/wsdl10/extensions/Makefile \
     src/wsdl10/extensions/soap/Makefile \
     src/builder/Makefile \

@@ -383,7 +383,7 @@ parse_property(
         void *desc,
         void *parent);
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t
 parse_ext_attributes(
         void *reader,
         const axis2_env_t *env,
@@ -3776,7 +3776,7 @@ parse_property(
     return property;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t
 parse_ext_attributes(
         void *reader,
         const axis2_env_t *env,
