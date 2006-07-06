@@ -64,7 +64,9 @@ struct axis2_conf_ctx;
 struct axis2_msg;
 typedef struct axis2_op_ops axis2_op_ops_t;    
 typedef struct axis2_op axis2_op_t;    
-    
+
+#define AXIS2_SOAP_ACTION "soapAction"
+
 /** 
  * @brief Operation ops struct
  * Encapsulator struct for ops of axis2_op

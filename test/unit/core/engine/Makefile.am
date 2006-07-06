@@ -25,6 +25,8 @@ engine_test_LDADD   =   libtest_engine.la  \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                    	-laxis2_util \
+					-lwoden \
+					-laxis2_xml_schema \
 					-laxis2_axiom \
 					-laxis2_parser \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \

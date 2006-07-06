@@ -12,6 +12,8 @@ test_clientapi_LDADD   =  \
                     -laxis2_axiom \
                     -laxis2_parser \
                     -lpthread \
+					-lwoden \
+					-laxis2_xml_schema \
                     $(top_builddir)/modules/core/engine/libaxis2_engine.la \
                     $(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
                     $(top_builddir)/modules/core/transport/http/sender/libaxis2_http_sender.la \
@@ -23,6 +25,8 @@ test_client_LDADD   =  \
                     -laxis2_axiom \
                     -laxis2_parser \
                     -lpthread \
+					-lwoden \
+					-laxis2_xml_schema \
                     $(top_builddir)/modules/core/engine/libaxis2_engine.la \
                     $(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
                     $(top_builddir)/modules/core/transport/http/sender/libaxis2_http_sender.la \

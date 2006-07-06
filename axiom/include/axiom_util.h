@@ -179,6 +179,12 @@ AXIS2_EXTERN axiom_child_element_iterator_t* AXIS2_CALL
 axiom_util_get_child_elements(axiom_element_t *om_ele, 
                                  const axis2_env_t *env,
                                  axiom_node_t *om_node);
+
+AXIS2_EXTERN axiom_document_t* AXIS2_CALL
+axiom_util_new_document(
+        const axis2_env_t *env,
+        const axis2_uri_t *uri);
+
 #ifdef __cplusplus
 }
 #endif

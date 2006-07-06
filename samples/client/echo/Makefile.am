@@ -12,6 +12,8 @@ echo_LDADD   = $(LDFLAGS) \
                     -laxis2_engine \
                     -laxis2_parser \
                     -lpthread \
+					-lwoden \
+					-laxis2_xml_schema \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
                     $(GUTHTHILA_LIBS) \

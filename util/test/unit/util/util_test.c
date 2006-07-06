@@ -38,6 +38,7 @@ CuSuite* axis2_utilGetSuite()
     SUITE_ADD_TEST(suite, Testaxis2_uri_parse_string);
     SUITE_ADD_TEST(suite, Testaxis2_uri_parse_relative);
     SUITE_ADD_TEST(suite, Testaxis2_uri_clone);
+    SUITE_ADD_TEST(suite, Testaxis2_uri_get_path);
     /* Samisa - need to remove this as we run make check before make install
     SUITE_ADD_TEST(suite, Testaxis2_dir_handler_list_dir); */
     return suite;

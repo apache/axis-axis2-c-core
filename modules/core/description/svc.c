@@ -1245,6 +1245,7 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
                     }
                     return status;
                 }
+                break;
             }
                 
         }

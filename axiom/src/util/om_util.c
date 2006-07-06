@@ -16,7 +16,9 @@
  
 #include <axiom_node.h>
 #include <axiom_element.h>
+#include <axiom_document.h>
 #include <axis2_array_list.h>
+#include <axis2_uri.h>
 #include <axiom_util.h>
 
 AXIS2_EXTERN axiom_element_t * AXIS2_CALL
@@ -1038,5 +1040,29 @@ axiom_util_get_child_elements(axiom_element_t *om_ele,
         return axiom_child_element_iterator_create(env, first_node);
     }        
     return NULL;
+}
+
+AXIS2_EXTERN axiom_document_t* AXIS2_CALL
+axiom_util_new_document(
+        const axis2_env_t *env,
+        const axis2_uri_t *uri)
+{
+    axis2_char_t *path = NULL;
+    axiom_xml_reader_t *reader = NULL;
+    axiom_stax_builder_t *om_builder = NULL;
+    axiom_document_t *doc   = NULL;
+    
+    AXIS2_PARAM_CHECK(env->error, uri, NULL);
+    /* This is temporary code. Later complete the code to read from uri and build
+     * the document
+     */
+    path = AXIS2_URI_GET_PATH((axis2_uri_t *) uri, env);
+
+    reader = axiom_xml_reader_create_for_file(env, path, NULL);
+    om_builder = axiom_stax_builder_create(env, reader);
+    doc = axiom_document_create(env, NULL, om_builder); 
+    AXIOM_DOCUMENT_BUILD_ALL(doc, env);
+
+    return doc;
 }
 

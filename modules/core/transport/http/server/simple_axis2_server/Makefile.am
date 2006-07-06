@@ -18,6 +18,8 @@ axis2_http_server_LDADD   =  $(LDFLAGS) \
                             -laxis2_http_sender \
                             -laxis2_http_receiver \
                             -lxml2 \
+							-lwoden \
+							-laxis2_xml_schema \
                             $(LIBXML2_LIBS) \
                             $(GUTHTHILA_LIBS)
                     

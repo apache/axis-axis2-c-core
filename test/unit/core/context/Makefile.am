@@ -21,6 +21,8 @@ context_test_LDADD   =   \
                    		-laxis2_util \
 						-laxis2_axiom \
 						-laxis2_parser \
+						-lwoden \
+						-laxis2_xml_schema \
 						$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 						$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
                         $(GUTHTHILA_LIBS) \

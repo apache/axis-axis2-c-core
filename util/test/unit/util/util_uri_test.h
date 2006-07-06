@@ -26,4 +26,6 @@ void Testaxis2_uri_parse_relative(CuTest *tc);
 
 void Testaxis2_uri_clone(CuTest *tc);
 
+void Testaxis2_uri_get_path(CuTest *tc);
+
 #endif /* UTIL_URI_TEST_H*/

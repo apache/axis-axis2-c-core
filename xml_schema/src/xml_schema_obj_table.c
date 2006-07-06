@@ -245,9 +245,12 @@ xml_schema_obj_table_get_names(xml_schema_obj_table_t *obj_table,
     for (hi = axis2_hash_first (obj_table_impl->collection, env); hi;
              hi = axis2_hash_next ( env, hi))
     {
-        void *val = NULL;
-        axis2_hash_this (hi, NULL, NULL, &val);
-        AXIS2_ARRAY_LIST_ADD(obj_table_impl->names, env, val);
+        const void *val = NULL;
+        axis2_qname_t *qname = NULL;
+        /*axis2_hash_this (hi, NULL, NULL, &val);*/
+        axis2_hash_this (hi, &val, NULL, NULL);
+        qname = axis2_qname_create_from_string(env, val);
+        AXIS2_ARRAY_LIST_ADD(obj_table_impl->names, env, qname);
         val = NULL;
     }
     return obj_table_impl->names;

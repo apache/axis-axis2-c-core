@@ -17,6 +17,7 @@
 #include <axis2_svc_client.h>
 #include <axis2_const.h>
 #include <axis2_hash.h>
+#include <axis2_uri.h>
 #include "callback_recv.h"
 #include <axiom_soap_const.h>
 #include <axiom_soap_body.h>
@@ -27,6 +28,7 @@
 #include <axis2_options.h>
 #include <axis2_conf_init.h>
 #include <axis2_mep_client.h>
+#include "../description/axis2_client_utils.h"
 
 typedef struct axis2_svc_client_impl
 {
@@ -186,6 +188,112 @@ axis2_svc_client_create(const axis2_env_t *env,
  
    return &(svc_client_impl->svc_client);
 }
+
+axis2_svc_client_t* AXIS2_CALL
+axis2_svc_client_create_with_conf_ctx_and_wsdl_uri_wsdl_svc_name_and_endpoint(
+        const axis2_env_t *env,
+        axis2_conf_ctx_t *conf_ctx,
+        const axis2_uri_t *wsdl_uri,
+        const axis2_qname_t *wsdl_svc_qname,
+        const axis2_char_t *endpoint_name,
+        const axis2_char_t *client_home)
+{
+    axis2_svc_client_impl_t *svc_client_impl = NULL;
+    axis2_svc_grp_t *svc_grp = NULL;
+    axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
+    axis2_char_t *svc_grp_name = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    svc_client_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_svc_client_impl_t));
+    if (!svc_client_impl)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    
+    svc_client_impl->svc = NULL;
+    svc_client_impl->conf = NULL;
+    svc_client_impl->conf_ctx = NULL;
+    svc_client_impl->svc_ctx = NULL;
+    svc_client_impl->options = NULL;
+    svc_client_impl->override_options = NULL;
+    svc_client_impl->headers = NULL;
+    svc_client_impl->callback_recv = NULL;   
+    svc_client_impl->listener_manager = NULL;
+    svc_client_impl->op_client = NULL;
+    axis2_char_t *repos_path = NULL;
+    axis2_char_t *wsdl_path = NULL;
+
+
+    /** initialize private data to NULL, create options */
+    if (!axis2_svc_client_init_data(env, svc_client_impl))
+   {
+      axis2_svc_client_free(&(svc_client_impl->svc_client), env);
+      return NULL;
+   }
+
+    /* the following method call will create the deafult conf_ctx if it is NULL */
+   if (!axis2_svc_client_init_transports_from_conf_ctx(env, svc_client_impl, 
+               conf_ctx, client_home))
+   {
+      axis2_svc_client_free(&(svc_client_impl->svc_client), env);
+      return NULL;
+   }
+
+   svc_client_impl->conf = AXIS2_CONF_CTX_GET_CONF(svc_client_impl->conf_ctx, env);
+   repos_path = AXIS2_CONF_GET_REPOS(svc_client_impl->conf, env);
+   wsdl_path = axis2_strcat(env, repos_path, AXIS2_PATH_SEP_STR, "woden", NULL);
+ 
+   svc_client_impl->svc = axis2_client_utils_create_axis2_svc(env, wsdl_uri, 
+           wsdl_svc_qname, endpoint_name, wsdl_path, NULL);
+   /** add the service to the config context if it isn't in there already */
+   if (NULL == AXIS2_CONF_GET_SVC(svc_client_impl->conf, env, 
+               AXIS2_SVC_GET_NAME(svc_client_impl->svc, env)))
+   {
+      AXIS2_CONF_ADD_SVC(svc_client_impl->conf, env, svc_client_impl->svc);
+   }
+
+    /** create a service context for myself: create a new service group
+     context and then get the service context for myself as I'll need that
+     later for stuff that I gotta do
+    */
+   svc_grp = AXIS2_SVC_GET_PARENT(svc_client_impl->svc, env);
+    if (!svc_grp)
+        return NULL;
+    
+   svc_grp_ctx = AXIS2_SVC_GRP_GET_SVC_GRP_CTX(svc_grp, env, 
+               svc_client_impl->conf_ctx);
+    if (!svc_grp_ctx)
+        return NULL;
+    
+    svc_grp_name = AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
+    if (!svc_grp_name)
+        return NULL; /* cannot proceed without svc group name */
+        
+   AXIS2_CONF_CTX_REGISTER_SVC_GRP_CTX(svc_client_impl->conf_ctx, env, 
+      svc_grp_name, svc_grp_ctx);
+    
+   svc_client_impl->svc_ctx = AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env,
+              AXIS2_SVC_GET_NAME(svc_client_impl->svc, env));
+    
+    /* create ops */
+    svc_client_impl->svc_client.ops  =
+        AXIS2_MALLOC( env->allocator, sizeof(axis2_svc_client_ops_t));
+
+    if (!svc_client_impl->svc_client.ops)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        axis2_svc_client_free(&(svc_client_impl->svc_client), env);
+        return NULL;
+    }
+
+    /** initialize ops */
+    axis2_svc_client_init_ops(&(svc_client_impl->svc_client));
+
+    return &(svc_client_impl->svc_client);
+}
+
 
 axis2_svc_client_t* AXIS2_CALL
 axis2_svc_client_create_with_conf_ctx_and_svc(const axis2_env_t *env,

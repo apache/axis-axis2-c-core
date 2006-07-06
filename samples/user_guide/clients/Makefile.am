@@ -22,6 +22,8 @@ LINK_FLAGS = $(LDFLAGS) \
              -lpthread \
              -laxis2_http_sender \
              -laxis2_http_receiver \
+				-lwoden \
+				-laxis2_xml_schema \
              $(GUTHTHILA_LIBS) \
              $(LIBXML2_LIBS)
 
