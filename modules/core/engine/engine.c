@@ -116,6 +116,16 @@ axis2_engine_free(struct axis2_engine *engine,
 axis2_status_t axis2_engine_check_must_understand_headers(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
+axis2_status_t AXIS2_CALL 
+axis2_engine_resume_receive(struct axis2_engine *engine,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx);
+
+axis2_status_t AXIS2_CALL 
+axis2_engine_resume_send(struct axis2_engine *engine,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx);
+
 AXIS2_EXTERN axis2_engine_t* AXIS2_CALL
 axis2_engine_create(const axis2_env_t *env, 
                     axis2_conf_ctx_t *conf_ctx)
@@ -183,7 +193,10 @@ axis2_engine_create(const axis2_env_t *env,
         
     engine_impl->engine.ops->free = 
         axis2_engine_free;
-
+    
+    engine_impl->engine.ops->resume_receive = axis2_engine_resume_receive;    
+    engine_impl->engine.ops->resume_send = axis2_engine_resume_send;
+    
     return &(engine_impl->engine);
 }
 
@@ -214,8 +227,8 @@ axis2_engine_free(struct axis2_engine *engine,
  * Here the <code>ExecutionChain</code> is created using the Phases. The Handlers at the each Phases is ordered in
  * deployment time by the deployment module
  *
- * @param msgContext
- * @see MessageContext
+ * @param *msg_ctx
+ * @see axis2_msg_ctx
  * @see Phase
  * @see Handler
  */
@@ -326,7 +339,7 @@ axis2_engine_send(struct axis2_engine *engine,
  * Here the <code>ExecutionChain</code> is created using the Phases. The Handlers at the each Phases is ordered in
  * deployment time by the deployment module
  *
- * @see MessageContext
+ * @see axis2_msg_ctx
  * @see Phase
  * @see Handler
  */
@@ -1052,4 +1065,105 @@ axis2_status_t axis2_engine_check_must_understand_headers(const axis2_env_t *env
     }
 
     return AXIS2_SUCCESS;
+}
+
+/**
+ * If the msgConetext is puased and try to invoke then
+ * first invoke the phase list and after the message receiver
+ *
+ * @param *msg_ctx
+ * @throws AxisFault
+ */
+axis2_status_t AXIS2_CALL 
+axis2_engine_resume_receive(struct axis2_engine *engine,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+    axis2_conf_ctx_t *conf_ctx = NULL;
+    axis2_conf_t *conf = NULL;
+    axis2_array_list_t *phases = NULL;
+    
+    /* find and invoke the phases */
+    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
+    conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
+    phases =
+        AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
+    
+    axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
+    /* invoking the MR */
+    if (AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env) && !AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)) 
+    {
+        /* invoke the Message Receivers */
+        axis2_op_ctx_t *op_ctx = NULL;
+
+        status = axis2_engine_check_must_understand_headers(env, msg_ctx);
+        if (status != AXIS2_SUCCESS)
+            return status;
+            
+        op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
+        if (op_ctx)
+        {
+            axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+            if (op)
+            {
+                axis2_msg_recv_t *receiver = NULL;
+                receiver = AXIS2_OP_GET_MSG_RECEIVER(op, env);
+                if (!receiver)
+                {
+                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Message receiver not set in operation description");
+                    return AXIS2_FAILURE;
+                }
+                status = AXIS2_MSG_RECV_RECEIVE(receiver, env, msg_ctx, receiver->derived);
+            }
+        }
+    }
+
+    return status;
+}
+
+/**
+ * To resume the invocation at the send path , this is neened since it is require to call
+ * TransportSender at the end
+ *
+ * @param *msg_ctx
+ */
+axis2_status_t AXIS2_CALL 
+axis2_engine_resume_send(struct axis2_engine *engine,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx)
+{
+    axis2_op_ctx_t *op_ctx = NULL;
+    axis2_array_list_t *phases = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    /* invoke the phases */
+    op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);    
+    if (op_ctx)
+    {
+        axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
+        if (op)
+        {
+            phases = AXIS2_OP_GET_PHASES_OUTFLOW(op, env);
+        }
+    }
+    axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
+    
+    /* invoking tarnsport sender */
+    if (!AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+    {
+        /* write the message to the wire */
+        axis2_transport_out_desc_t *transport_out = NULL;
+        axis2_transport_sender_t *sender = NULL;
+        transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env);
+        if (transport_out)
+        {
+            sender = AXIS2_TRANSPORT_OUT_DESC_GET_SENDER(transport_out, env);
+            if (sender)
+            {
+                status = AXIS2_TRANSPORT_SENDER_INVOKE(sender, env, msg_ctx);
+            }
+        }
+    }
+    
+    return status;
 }

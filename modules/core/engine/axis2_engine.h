@@ -181,7 +181,17 @@ struct axis2_engine_ops
     axis2_status_t (AXIS2_CALL *
     free)(struct axis2_engine *engine, 
           const axis2_env_t *env);
-          
+
+    axis2_status_t (AXIS2_CALL *
+    resume_receive)(struct axis2_engine *engine,
+            const axis2_env_t *env,
+            axis2_msg_ctx_t *msg_ctx);
+
+    axis2_status_t (AXIS2_CALL *
+    resume_send)(struct axis2_engine *engine,
+            const axis2_env_t *env,
+            axis2_msg_ctx_t *msg_ctx);
+
 };
 
 /** 
@@ -234,6 +244,12 @@ axis2_engine_create(const axis2_env_t *env,
         
 #define AXIS2_ENGINE_FREE(engine, env) \
         ((engine)->ops->free(engine, env))
+
+#define AXIS2_ENGINE_RESUME_SEND(engine, env, msg_ctx)\
+        ((engine)->ops->resume_send(engine, env, msg_ctx))
+
+#define AXIS2_ENGINE_RESUME_RECEIVE(engine, env, msg_ctx) \
+        ((engine)->ops->resume_receive(engine, env, msg_ctx))
 
 /************************** End of function macros ****************************/    
 
