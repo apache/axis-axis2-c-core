@@ -1,7 +1,7 @@
 SUBDIRS = xml extensions
-lib_LTLIBRARIES = libwoden_wsdl20.la
+lib_LTLIBRARIES = libwoden.la
 
-libwoden_wsdl20_la_SOURCES = \
+libwoden_la_SOURCES = \
 							interface_fault.c \
 							interface_fault_ref.c \
 							interface_msg_ref.c \
@@ -13,7 +13,7 @@ libwoden_wsdl20_la_SOURCES = \
 							desc.c \
 							component_model_builder.c
 
-libwoden_wsdl20_la_LIBADD =  \
+libwoden_la_LIBADD =  \
                     $(top_builddir)/src/xml/libwoden_xml.la \
                     $(top_builddir)/src/util/libwoden_util.la \
                     $(top_builddir)/src/types/libwoden_types.la \

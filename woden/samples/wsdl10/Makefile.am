@@ -9,7 +9,7 @@ test_wsdl1_LDADD   =  \
 					-laxis2_axiom \
 					-laxis2_xml_schema \
                     -laxis2_parser \
-					../../src/wsdl20/libwoden_wsdl20.la \
+					../../src/wsdl20/libwoden.la \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
 

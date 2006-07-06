@@ -17,7 +17,7 @@ check_PROGRAMS = woden_test
 woden_test_SOURCES = main.c
 woden_test_LDADD   =  \
 					  libtest_woden.la  \
-					  ../src/wsdl20/libwoden_wsdl20.la \
+					  ../src/wsdl20/libwoden.la \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
                    	-laxis2_util \
