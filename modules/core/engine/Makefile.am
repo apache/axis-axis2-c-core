@@ -1,5 +1,5 @@
 lib_LTLIBRARIES = libaxis2_engine.la
-noinst_HEADERS = axis2_engine.h \
+noinst_HEADERS = \
                     axis2_event.h
 
 libaxis2_engine_la_SOURCES = handler.c \

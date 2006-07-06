@@ -687,6 +687,33 @@ struct axis2_msg_ctx_ops
         axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,
         struct axis2_options *options);
+            
+    axis2_status_t (AXIS2_CALL *
+    set_execution_chain)(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env,
+        axis2_array_list_t *execution_chain);
+    
+    axis2_array_list_t *(AXIS2_CALL *
+    get_execution_chain)(const axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_current_handler_index)(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env,
+        const int index);
+    
+    int (AXIS2_CALL *
+    get_current_handler_index)(const axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
+    
+    axis2_status_t (AXIS2_CALL *
+    set_current_phase_index)(axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env,
+        const int index);
+    
+    int (AXIS2_CALL *
+    get_current_phase_index)(const axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);   
 };
 
 /** 
@@ -956,6 +983,24 @@ axis2_msg_ctx_create (const axis2_env_t *env,
       
 #define AXIS2_MSG_CTX_SET_OPTIONS(msg_ctx, env, options) \
       ((msg_ctx)->ops->set_options(msg_ctx, env, options))
+
+#define AXIS2_MSG_CTX_SET_EXECUTION_CHAIN(msg_ctx, env, chain) \
+      ((msg_ctx)->ops->set_execution_chain(msg_ctx, env, chain))
+
+#define AXIS2_MSG_CTX_GET_EXECUTION_CHAIN(msg_ctx, env) \
+      ((msg_ctx)->ops->get_execution_chain(msg_ctx, env))
+
+#define AXIS2_MSG_CTX_SET_CURRENT_HANDLER_INDEX(msg_ctx, env, index) \
+      ((msg_ctx)->ops->set_current_handler_index(msg_ctx, env, index))
+
+#define AXIS2_MSG_CTX_GET_CURRENT_HANDLER_INDEX(msg_ctx, env) \
+      ((msg_ctx)->ops->get_current_handler_index(msg_ctx, env))
+
+#define AXIS2_MSG_CTX_SET_CURRENT_PHASE_INDEX(msg_ctx, env, index) \
+      ((msg_ctx)->ops->set_current_phase_index(msg_ctx, env, index))
+
+#define AXIS2_MSG_CTX_GET_CURRENT_PHASE_INDEX(msg_ctx, env) \
+      ((msg_ctx)->ops->get_current_phase_index(msg_ctx, env))
 
 /************************** End of function macros ****************************/    
 

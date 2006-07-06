@@ -111,6 +111,12 @@ struct axis2_msg_ctx_impl
     axis2_qname_t *svc_qname;
     /** op qname */
     axis2_qname_t *op_qname;
+    /** The chain of Handlers/Phases for processing this message */
+    axis2_array_list_t *execution_chain;
+    /** Index into the execution chain of the currently executing handler */
+    int current_handler_index;
+    /** Index into the current Phase of the currently executing handler (if any)*/
+    int current_phase_index;
 };
 
 #define AXIS2_INTF_TO_IMPL(msg_ctx) ((axis2_msg_ctx_impl_t *) msg_ctx)
@@ -418,6 +424,34 @@ axis2_msg_ctx_set_options (axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env,
     axis2_options_t *options);
 
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_execution_chain(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    axis2_array_list_t *execution_chain);
+
+axis2_array_list_t *AXIS2_CALL
+axis2_msg_ctx_get_execution_chain(const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_current_handler_index(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    const int index);
+
+int AXIS2_CALL
+axis2_msg_ctx_get_current_handler_index(const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_current_phase_index(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    const int index);
+
+int AXIS2_CALL
+axis2_msg_ctx_get_current_phase_index(const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env);
+
+
 /************************* End of function headers ****************************/   
 
 AXIS2_EXTERN axis2_msg_ctx_t * AXIS2_CALL
@@ -473,6 +507,9 @@ axis2_msg_ctx_create (const axis2_env_t *env,
     msg_ctx_impl->svc_grp_id = NULL;
     msg_ctx_impl->svc_qname = NULL;
     msg_ctx_impl->op_qname = NULL;
+    msg_ctx_impl->execution_chain = NULL;
+    msg_ctx_impl->current_handler_index = 0;
+    msg_ctx_impl->current_phase_index = 0;
     
     msg_ctx_impl->base = axis2_ctx_create(env);
     if (!(msg_ctx_impl->base))
@@ -593,6 +630,18 @@ axis2_msg_ctx_create (const axis2_env_t *env,
     msg_ctx_impl->msg_ctx.ops->find_svc = axis2_msg_ctx_find_svc;
     msg_ctx_impl->msg_ctx.ops->find_op = axis2_msg_ctx_find_op;
     msg_ctx_impl->msg_ctx.ops->set_options = axis2_msg_ctx_set_options;
+    msg_ctx_impl->msg_ctx.ops->get_execution_chain = 
+        axis2_msg_ctx_get_execution_chain;
+    msg_ctx_impl->msg_ctx.ops->set_execution_chain = 
+        axis2_msg_ctx_set_execution_chain;
+    msg_ctx_impl->msg_ctx.ops->get_current_handler_index = 
+        axis2_msg_ctx_get_current_handler_index;
+    msg_ctx_impl->msg_ctx.ops->set_current_handler_index = 
+        axis2_msg_ctx_set_current_handler_index;
+    msg_ctx_impl->msg_ctx.ops->get_current_phase_index = 
+        axis2_msg_ctx_get_current_phase_index;
+    msg_ctx_impl->msg_ctx.ops->set_current_phase_index = 
+        axis2_msg_ctx_set_current_phase_index;
     return &(msg_ctx_impl->msg_ctx);
 }
 
@@ -1985,4 +2034,73 @@ axis2_msg_ctx_set_options (axis2_msg_ctx_t *msg_ctx,
     }
     
     return AXIS2_SUCCESS;
+}
+
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_execution_chain(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    axis2_array_list_t *execution_chain)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);    
+    AXIS2_INTF_TO_IMPL(msg_ctx)->execution_chain = execution_chain;
+    AXIS2_INTF_TO_IMPL(msg_ctx)->current_handler_index = -1;
+    AXIS2_INTF_TO_IMPL(msg_ctx)->current_phase_index = 0;
+    return AXIS2_SUCCESS;
+}
+
+axis2_array_list_t *AXIS2_CALL
+axis2_msg_ctx_get_execution_chain(const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, NULL);    
+    return AXIS2_INTF_TO_IMPL(msg_ctx)->execution_chain;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_current_handler_index(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    const int index)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(msg_ctx)->current_handler_index = index;
+    if (AXIS2_INTF_TO_IMPL(msg_ctx)->execution_chain)
+    {
+        axis2_handler_t *handler = (axis2_handler_t *)
+            AXIS2_ARRAY_LIST_GET(AXIS2_INTF_TO_IMPL(msg_ctx)->execution_chain,
+                env, index);
+        if (handler)
+        {
+            AXIS2_INTF_TO_IMPL(msg_ctx)->paused_handler_name = 
+                AXIS2_HANDLER_GET_NAME(handler, env);
+        }
+    }
+    return AXIS2_SUCCESS;
+}
+
+int AXIS2_CALL
+axis2_msg_ctx_get_current_handler_index(const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(msg_ctx)->current_handler_index;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_current_phase_index(axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env,
+    const int index)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);    
+    AXIS2_INTF_TO_IMPL(msg_ctx)->current_phase_index = index;
+    return AXIS2_SUCCESS;
+
+}
+
+int AXIS2_CALL
+axis2_msg_ctx_get_current_phase_index(const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(msg_ctx)->current_phase_index;
 }
