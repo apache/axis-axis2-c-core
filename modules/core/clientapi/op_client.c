@@ -102,7 +102,7 @@ axis2_op_client_reset(struct axis2_op_client *op_client,
         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_op_client_compelete(struct axis2_op_client *op_client,
+axis2_op_client_complete(struct axis2_op_client *op_client,
         const axis2_env_t *env,
         axis2_msg_ctx_t *mc);
 
@@ -525,7 +525,7 @@ axis2_op_client_reset(struct axis2_op_client *op_client,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_client_compelete(struct axis2_op_client *op_client,
+axis2_op_client_complete(struct axis2_op_client *op_client,
         const axis2_env_t *env,
         axis2_msg_ctx_t *mc)
 {
@@ -606,7 +606,7 @@ static void axis2_op_client_init_ops(axis2_op_client_t *op_client)
     op_client->ops->set_callback = axis2_op_client_set_callback;
     op_client->ops->execute = axis2_op_client_execute;
     op_client->ops->reset = axis2_op_client_reset;
-    op_client->ops->compelete = axis2_op_client_compelete;
+    op_client->ops->complete = axis2_op_client_complete;
     op_client->ops->get_operation_context = axis2_op_client_get_operation_context;
     op_client->ops->set_callback_recv = axis2_op_client_set_callback_recv;
     op_client->ops->free = axis2_op_client_free;

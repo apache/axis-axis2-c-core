@@ -17,8 +17,6 @@
 #ifndef AXIS2_OP_CLIENT_H
 #define AXIS2_OP_CLIENT_H
 
-
-
 /**
  * @defgroup axis2_client_api client API
  * @ingroup axis2
@@ -27,10 +25,26 @@
  */
 
 /**
+* @defgroup axis2_op_client operation client
+* @ingroup axis2_client_api
+* Operation client is meant to be used by advanced users to consume services.
+* Operation client understands a specific MEP and hence the behavior is
+* defined by the MEP. To consume services with an operation client, an
+* operation (of type axis2_op_t) and a service context (of type axis2_svc_ctx_t)
+* has to be provided along with options to be used. The execute() function
+* can be used to send the request and get the response. 
+* The service client implementation uses the operation client and provides an
+* easy to use API for consuming services. Hence the service client 
+* implementation is a very good example of how to use the operation client API.
+* @sa axis2_svc_client
+* @{
+  */
+
+
+/**
  * @file axis2_op_client.h
  * @brief axis2 operation client interface
  */
-
 
 #include <axis2_defines.h>
 #include <axis2_env.h>
@@ -42,21 +56,6 @@
 extern "C"
 {
 #endif
-
-    /** @defgroup axis2_op_client operation client
-     * @ingroup axis2_client_api
-     * Operation client is meant to be used by advanced users to consume services.
-     * Operation client understands a specific MEP and hence the behavior is
-     * defined by the MEP. To consume services with an operation client, an
-     * operation (of type axis2_op_t) and a service context (of type axis2_svc_ctx_t)
-     * has to be provided along with options to be used. The execute() function
-     * can be used to send the request and get the response. 
-     * The service client implementation uses the operation client and provides an
-     * easy to use API for consuming services. Hence the service client 
-     * implementation is a very good example of how to use the operation client API.
-     * @sa axis2_svc_client
-     * @{
-     */
 
     /** Type name for struct axis2_op_client_ops */
     typedef struct axis2_op_client_ops axis2_op_client_ops_t;
@@ -174,7 +173,7 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                compelete)(struct axis2_op_client *op_client,
+                complete)(struct axis2_op_client *op_client,
                         const axis2_env_t *env,
                         axis2_msg_ctx_t *mc);
 
@@ -240,38 +239,56 @@ extern "C"
 #define AXIS2_OP_CLIENT_GET_OPTIONS(op_client, env) \
       ((op_client)->ops->get_options(op_client, env))
 
+/** Adds the message context. 
+    @sa axis2_op_client_ops#add_msg_ctx*/
 #define AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, mc) \
       ((op_client)->ops->add_msg_ctx(op_client, env, mc))
 
+/** Gets the message context. 
+    @sa axis2_op_client_ops#get_msg_ctx*/
 #define AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, message_label) \
       ((op_client)->ops->get_msg_ctx(op_client, env, message_label))
 
+/** Sets operation client callback. 
+    @sa axis2_op_client_ops#set_callback*/
 #define AXIS2_OP_CLIENT_SET_CALLBACK(op_client, env, callback) \
       ((op_client)->ops->set_callback(op_client, env, callback))
 
+/** Executes operation client operation. 
+    @sa axis2_op_client_ops#execute*/
 #define AXIS2_OP_CLIENT_EXECUTE(op_client, env, block) \
       ((op_client)->ops->execute(op_client, env, block))
 
+/** Resets operation client operation. 
+    @sa axis2_op_client_ops#reset*/
 #define AXIS2_OP_CLIENT_RESET(op_client, env) \
       ((op_client)->ops->reset(op_client, env))
 
+/** Completes operation client operation. 
+    @sa axis2_op_client_ops#complete*/
 #define AXIS2_OP_CLIENT_COMPLETE(op_client, env, mc) \
-      ((op_client)->ops->compelete(op_client, env, mc))
+      ((op_client)->ops->complete(op_client, env, mc))
 
+/** Gets the operation context. 
+    @sa axis2_op_client_ops#get_operation_context*/
 #define AXIS2_OP_CLIENT_GET_OPERATION_CONTEXT(op_client, env) \
       ((op_client)->ops->get_operation_context(op_client, env))
 
+/** Frees the operation client. 
+    @sa axis2_op_client_ops#free*/
 #define AXIS2_OP_CLIENT_FREE(op_client, env) \
       ((op_client)->ops->free(op_client, env))
 
+/** Sets the callback receiver. 
+    @sa axis2_op_client_ops#set_callback_recv*/
 #define AXIS2_OP_CLIENT_SET_CALLBACK_RECV(op_client, env, callback_recv) \
       ((op_client)->ops->set_callback_recv(op_client, env, callback_recv))
 
     /************************** End of function macros ****************************/
 
-    /** @} */
+/** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* AXIS2_CALLBACK_H */
+#endif                          /* AXIS2_OP_CLIENT_H */
