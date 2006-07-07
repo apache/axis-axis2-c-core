@@ -1060,7 +1060,7 @@ axiom_util_new_document(
 
     reader = axiom_xml_reader_create_for_file(env, path, NULL);
     om_builder = axiom_stax_builder_create(env, reader);
-    doc = axiom_document_create(env, NULL, om_builder); 
+    doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);  
     AXIOM_DOCUMENT_BUILD_ALL(doc, env);
 
     return doc;

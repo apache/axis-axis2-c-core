@@ -20,6 +20,7 @@
 #include <axis2_array_list.h>
 #include <axis2_string.h>
 #include <axiom.h>
+#include <axis2_uri.h>
 
 #ifdef __cplusplus
 extern "C"
