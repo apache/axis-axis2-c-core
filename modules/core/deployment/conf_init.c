@@ -17,6 +17,10 @@
 #include <axis2_conf_init.h>
 #include <axis2_transport_sender.h>
 #include <axis2_transport_receiver.h>
+#include <axis2_const.h>
+#include <axis2_error.h>
+#include <axis2_allocator.h>
+#include <axis2_dep_engine.h>
 
 axis2_status_t AXIS2_CALL axis2_init_modules(const axis2_env_t *env, 
     axis2_conf_ctx_t *conf_ctx);
