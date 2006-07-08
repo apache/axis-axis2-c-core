@@ -111,6 +111,8 @@ struct axis2_msg_ctx_impl
     axis2_qname_t *svc_qname;
     /** op qname */
     axis2_qname_t *op_qname;
+    /* To keep track of the direction */
+    int flow;
     /** The chain of Handlers/Phases for processing this message */
     axis2_array_list_t *execution_chain;
     /** Index into the execution chain of the currently executing handler */
@@ -425,6 +427,14 @@ axis2_msg_ctx_set_options (axis2_msg_ctx_t *msg_ctx,
     axis2_options_t *options);
 
 axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_flow (axis2_msg_ctx_t *msg_ctx,
+                        const axis2_env_t *env,
+                        int flow);
+
+int AXIS2_CALL
+axis2_msg_ctx_get_flow (axis2_msg_ctx_t *msg_ctx,
+                        const axis2_env_t *env);
+axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_execution_chain(axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env,
     axis2_array_list_t *execution_chain);
@@ -450,8 +460,6 @@ axis2_msg_ctx_set_current_phase_index(axis2_msg_ctx_t *msg_ctx,
 int AXIS2_CALL
 axis2_msg_ctx_get_current_phase_index(const axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env);
-
-
 /************************* End of function headers ****************************/   
 
 AXIS2_EXTERN axis2_msg_ctx_t * AXIS2_CALL
@@ -507,6 +515,7 @@ axis2_msg_ctx_create (const axis2_env_t *env,
     msg_ctx_impl->svc_grp_id = NULL;
     msg_ctx_impl->svc_qname = NULL;
     msg_ctx_impl->op_qname = NULL;
+    msg_ctx_impl->flow = AXIS2_IN_FLOW;
     msg_ctx_impl->execution_chain = NULL;
     msg_ctx_impl->current_handler_index = 0;
     msg_ctx_impl->current_phase_index = 0;
@@ -630,6 +639,8 @@ axis2_msg_ctx_create (const axis2_env_t *env,
     msg_ctx_impl->msg_ctx.ops->find_svc = axis2_msg_ctx_find_svc;
     msg_ctx_impl->msg_ctx.ops->find_op = axis2_msg_ctx_find_op;
     msg_ctx_impl->msg_ctx.ops->set_options = axis2_msg_ctx_set_options;
+    msg_ctx_impl->msg_ctx.ops->set_flow = axis2_msg_ctx_set_flow;
+    msg_ctx_impl->msg_ctx.ops->get_flow = axis2_msg_ctx_get_flow;
     msg_ctx_impl->msg_ctx.ops->get_execution_chain = 
         axis2_msg_ctx_get_execution_chain;
     msg_ctx_impl->msg_ctx.ops->set_execution_chain = 
@@ -2034,6 +2045,24 @@ axis2_msg_ctx_set_options (axis2_msg_ctx_t *msg_ctx,
     }
     
     return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_flow (axis2_msg_ctx_t *msg_ctx,
+                        const axis2_env_t *env,
+                        int flow)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_INTF_TO_IMPL(msg_ctx)->flow = flow;
+    return AXIS2_SUCCESS;
+}
+
+int AXIS2_CALL
+axis2_msg_ctx_get_flow (axis2_msg_ctx_t *msg_ctx,
+                        const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, -1);
+    return AXIS2_INTF_TO_IMPL(msg_ctx)->flow;
 }
 
 

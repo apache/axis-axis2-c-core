@@ -62,6 +62,11 @@ extern "C"
 #define AXIS2_HTTP_CLIENT "AXIS2_HTTP_CLIENT"
 
 #define AXIS2_TRANSPORT_URL "TransportURL"
+/* Message flows */
+#define AXIS2_IN_FLOW 1
+#define AXIS2_IN_FAULT_FLOW 2
+#define AXIS2_OUT_FLOW 3
+#define AXIS2_OUT_FAULT_FLOW 4
     
 typedef struct axis2_msg_ctx_ops axis2_msg_ctx_ops_t;
 typedef struct axis2_msg_ctx axis2_msg_ctx_t; 
@@ -687,6 +692,17 @@ struct axis2_msg_ctx_ops
         axis2_msg_ctx_t *msg_ctx,
         const axis2_env_t *env,
         struct axis2_options *options);
+
+    axis2_status_t (AXIS2_CALL *
+    set_flow )(
+        axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env,
+        int flow);
+
+    int (AXIS2_CALL *
+    get_flow )(
+        axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
             
     axis2_status_t (AXIS2_CALL *
     set_execution_chain)(axis2_msg_ctx_t *msg_ctx,
@@ -983,6 +999,12 @@ axis2_msg_ctx_create (const axis2_env_t *env,
       
 #define AXIS2_MSG_CTX_SET_OPTIONS(msg_ctx, env, options) \
       ((msg_ctx)->ops->set_options(msg_ctx, env, options))
+
+#define AXIS2_MSG_CTX_SET_FLOW(msg_ctx, env, flow) \
+      ((msg_ctx)->ops->set_flow(msg_ctx, env, flow))
+
+#define AXIS2_MSG_CTX_GET_FLOW(msg_ctx, env) \
+      ((msg_ctx)->ops->get_flow(msg_ctx, env))
 
 #define AXIS2_MSG_CTX_SET_EXECUTION_CHAIN(msg_ctx, env, chain) \
       ((msg_ctx)->ops->set_execution_chain(msg_ctx, env, chain))
