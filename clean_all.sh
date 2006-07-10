@@ -1,8 +1,11 @@
 #!/bin/bash
 cd util
 make distclean
-cd ..
-cd axiom
+cd ../axiom
+make distclean
+cd ../xml_schema
+make distclean
+cd ../woden
 make distclean
 cd ..
 sh clean.sh
