@@ -82,25 +82,25 @@ extern "C"
     struct axis2_svc_client_ops
     {
         /**
-          * Returns the axis2_svc_t this is a client for. This is primarily 
-          * useful when the service is created anonymously or from WSDL.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @return a pointer to axis service struct, or NULL if no service 
-          * is associated. Returns a reference, not a cloned copy. 
-          */
+         * Returns the axis2_svc_t this is a client for. This is primarily 
+         * useful when the service is created anonymously or from WSDL.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @return a pointer to axis service struct, or NULL if no service 
+         * is associated. Returns a reference, not a cloned copy. 
+         */
         const axis2_svc_t *(AXIS2_CALL *
                 get_svc)(
                     const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
 
         /**
-          * Sets the options to be used by service client.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @param options pointer to options struct to be set
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * Sets the options to be used by service client.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @param options pointer to options struct to be set
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_options)(
                     axis2_svc_client_t *svc_client,
@@ -108,26 +108,26 @@ extern "C"
                     const axis2_options_t *options);
 
         /**
-          * Gets options used by service client. 
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @return a pointer to the options struct if options set, else NULL.
-          * Returns a reference, not a cloned copy.
-          */
+         * Gets options used by service client. 
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @return a pointer to the options struct if options set, else NULL.
+         * Returns a reference, not a cloned copy.
+         */
         const axis2_options_t *(AXIS2_CALL *
                 get_options)(
                     const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
 
         /**
-          * Sets the overriding options. The overriding client options related 
-          * to this service interaction override any options that the 
-          * underlying operation client may have.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @param options pointer to options struct to be set
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * Sets the overriding options. The overriding client options related 
+         * to this service interaction override any options that the 
+         * underlying operation client may have.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @param options pointer to options struct to be set
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_override_options)(
                     axis2_svc_client_t *svc_client,
@@ -135,28 +135,28 @@ extern "C"
                     const axis2_options_t *override_options);
 
         /**
-          * Gets the overriding options.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @return pointer to overriding options struct if options set, else NULL.
-          * Returns a reference, not a cloned copy.
-          */
+         * Gets the overriding options.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @return pointer to overriding options struct if options set, else NULL.
+         * Returns a reference, not a cloned copy.
+         */
         const axis2_options_t *(AXIS2_CALL *
                 get_override_options)(
                     const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
 
         /**
-          * Engages the named module. The engaged modules extend the message
-          * processing when consuming services. Modules help to apply QoS
-          * norms in messaging. Once a module is engaged to a service client,
-          * the axis2_engine makes sure to invoke the module for all the 
-          * interactions between the client and the service.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @param module_name name of the module to be engaged
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * Engages the named module. The engaged modules extend the message
+         * processing when consuming services. Modules help to apply QoS
+         * norms in messaging. Once a module is engaged to a service client,
+         * the axis2_engine makes sure to invoke the module for all the 
+         * interactions between the client and the service.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @param module_name name of the module to be engaged
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 engage_module)(
                     axis2_svc_client_t *svc_client,
@@ -164,14 +164,14 @@ extern "C"
                     const axis2_char_t *module_name);
 
         /**
-          * Dis-engages the named module. Dis-engaging a module on a service 
-          * client ensures that the axis2_engine would not invoke the named 
-          * module when sending and receiving messages.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @param module_name name of the module to be dis-engaged
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * Dis-engages the named module. Dis-engaging a module on a service 
+         * client ensures that the axis2_engine would not invoke the named 
+         * module when sending and receiving messages.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @param module_name name of the module to be dis-engaged
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 disengage_module)(
                     axis2_svc_client_t *svc_client,
@@ -179,15 +179,15 @@ extern "C"
                     const axis2_char_t *module_name);
 
         /**
-          * Adds an XML element as a header to be sent to the server side.
-          * This allows users to go beyond the usual XML-in/XML-out pattern,
-          * and send custom SOAP headers. Once added, service client owns
-          * the header and will clean up when the service client is freed.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @param header om node representing the SOAP header in XML
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * Adds an XML element as a header to be sent to the server side.
+         * This allows users to go beyond the usual XML-in/XML-out pattern,
+         * and send custom SOAP headers. Once added, service client owns
+         * the header and will clean up when the service client is freed.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @param header om node representing the SOAP header in XML
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 add_header)(
                     axis2_svc_client_t *svc_client,
@@ -195,28 +195,28 @@ extern "C"
                     axiom_node_t *header);
 
         /**
-          * Removes all the headers added to service client.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * Removes all the headers added to service client.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 remove_all_headers)(
                     axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
 
         /**
-          * This method can be used to send an XML message.
-          * This is a simple method to invoke a service operation whose MEP is
-          * Robust Out-Only. If a fault triggers on server side, this method 
-          * would report an error back to the caller.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @param op_qname operation qname. NULL is equivalent to an
-          * operation name of "__OPERATION_ROBUST_OUT_ONLY__"
-          * @param payload pointer to OM node representing the XML payload to be sent
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * This method can be used to send an XML message.
+         * This is a simple method to invoke a service operation whose MEP is
+         * Robust Out-Only. If a fault triggers on server side, this method 
+         * would report an error back to the caller.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @param op_qname operation qname. NULL is equivalent to an
+         * operation name of "__OPERATION_ROBUST_OUT_ONLY__"
+         * @param payload pointer to OM node representing the XML payload to be sent
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 send_robust)(
                     axis2_svc_client_t *svc_client,
@@ -225,16 +225,16 @@ extern "C"
                     const axiom_node_t *payload);
 
         /**
-          * Sends a message and forget about it. This method is used to interact with
-          * a service operation whose MEP is In-Only. That is, there is no
-          * opportunity to get an error from the service via this method; one may still
-          * get client-side errors, such as host unknown etc.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @param op_qname operation qname. NULL is equivalent to an
-          * operation name of "__OPERATION_OUT_ONLY__"
-          * @param payload pointer to OM node representing the XML payload to be sent
-          */
+         * Sends a message and forget about it. This method is used to interact with
+         * a service operation whose MEP is In-Only. That is, there is no
+         * opportunity to get an error from the service via this method; one may still
+         * get client-side errors, such as host unknown etc.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @param op_qname operation qname. NULL is equivalent to an
+         * operation name of "__OPERATION_OUT_ONLY__"
+         * @param payload pointer to OM node representing the XML payload to be sent
+         */
         void (AXIS2_CALL *
                 fire_and_forget)(
                     axis2_svc_client_t *svc_client,
@@ -243,16 +243,16 @@ extern "C"
                     const axiom_node_t *payload);
 
         /**
-          * Sends XML request and receives XML response.
-          * This method is used to interact with a service operation whose MEP is In-Out.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @param op_qname operation qname. NULL is equivalent to an
-          * operation name of "__OPERATION_OUT_IN__"
-          * @param payload pointer to OM node representing the XML payload to be sent
-          * @return pointer to OM node representing the XML response. The 
-          * caller owns the returned node.
-          */
+         * Sends XML request and receives XML response.
+         * This method is used to interact with a service operation whose MEP is In-Out.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @param op_qname operation qname. NULL is equivalent to an
+         * operation name of "__OPERATION_OUT_IN__"
+         * @param payload pointer to OM node representing the XML payload to be sent
+         * @return pointer to OM node representing the XML response. The 
+         * caller owns the returned node.
+         */
         axiom_node_t *(AXIS2_CALL *
                 send_receive)(
                     axis2_svc_client_t *svc_client,
@@ -261,16 +261,16 @@ extern "C"
                     const axiom_node_t *payload);
 
         /**
-          * Sends XML request and receives XML response, but does not block for response.
-          * This method is used to interact in non-blocking mode with a service
-          * operation whose MEP is In-Out.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @param op_qname operation qname. NULL is equivalent to an
-          * operation name of "__OPERATION_OUT_IN__"
-          * @param payload pointer to OM node representing the XML payload to be sent
-          * @callback pointer to callback struct used to capture response
-          */
+         * Sends XML request and receives XML response, but does not block for response.
+         * This method is used to interact in non-blocking mode with a service
+         * operation whose MEP is In-Out.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @param op_qname operation qname. NULL is equivalent to an
+         * operation name of "__OPERATION_OUT_IN__"
+         * @param payload pointer to OM node representing the XML payload to be sent
+         * @callback pointer to callback struct used to capture response
+         */
         void (AXIS2_CALL *
                 send_receive_non_blocking)(
                     axis2_svc_client_t *svc_client,
@@ -280,14 +280,14 @@ extern "C"
                     axis2_callback_t *callback);
 
         /**
-          * Creates an op_client for a specific operation. This is the way to  
-          * create a full functional MEP client which can be used to exchange 
-          * messages for this specific operation.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @param op_qname axis2_qname_t of the operation
-          * @return pointer to newly created op_client configured for the given operation
-          */
+         * Creates an op_client for a specific operation. This is the way to  
+         * create a full functional MEP client which can be used to exchange 
+         * messages for this specific operation.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @param op_qname axis2_qname_t of the operation
+         * @return pointer to newly created op_client configured for the given operation
+         */
         axis2_op_client_t *(AXIS2_CALL *
                 create_op_client)(
                     axis2_svc_client_t *svc_client,
@@ -295,27 +295,27 @@ extern "C"
                     const axis2_qname_t *op_qname);
 
         /**
-          * Cleans up service client invocation. This will close the output 
-          * stream and/or remove entry from waiting queue of the transport 
-          * listener queue.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * Cleans up service client invocation. This will close the output 
+         * stream and/or remove entry from waiting queue of the transport 
+         * listener queue.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 finalize_invoke)(
                     axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
 
         /**
-          * Gets the service client's own endpoint_ref, that is the
-          * endpoint the client will be sending from.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @param transport name of the transport, e.g "http"
-          * @return pointer to the endpoint_ref struct. Returns a reference, 
-          * not a cloned copy.
-          */
+         * Gets the service client's own endpoint_ref, that is the
+         * endpoint the client will be sending from.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @param transport name of the transport, e.g "http"
+         * @return pointer to the endpoint_ref struct. Returns a reference, 
+         * not a cloned copy.
+         */
         const axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_own_endpoint_ref)(
                     const axis2_svc_client_t *svc_client,
@@ -323,25 +323,25 @@ extern "C"
                     const axis2_char_t *transport);
 
         /**
-          * Gets the target endpoint ref.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @return pointer to the endpoint_ref struct. Returns a reference, 
-          * not a cloned copy.
-          */
+         * Gets the target endpoint ref.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @return pointer to the endpoint_ref struct. Returns a reference, 
+         * not a cloned copy.
+         */
         const axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_target_endpoint_ref)(
                     const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
 
         /**
-          * Sets the target endpoint ref.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @param target_epr pointer to the endpoint_ref struct to be set as 
-          * target. service client takes over the ownership of the struct.
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * Sets the target endpoint ref.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @param target_epr pointer to the endpoint_ref struct to be set as 
+         * target. service client takes over the ownership of the struct.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_target_endpoint_ref)(
                     axis2_svc_client_t *svc_client,
@@ -349,23 +349,23 @@ extern "C"
                     axis2_endpoint_ref_t *target_epr);
 
         /**
-          * Gets the service context.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @return pointer to service context struct. service client owns
-          * the returned pointer.
-          */
+         * Gets the service context.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @return pointer to service context struct. service client owns
+         * the returned pointer.
+         */
         const axis2_svc_ctx_t *(AXIS2_CALL *
                 get_svc_ctx)(
                     const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
 
         /**
-          * Frees the service client.
-          * @param svc_client pointer to service client struct
-          * @param env pointer to environment struct
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * Frees the service client.
+         * @param svc_client pointer to service client struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
 
         axis2_status_t (AXIS2_CALL *
                 free_fn)(
