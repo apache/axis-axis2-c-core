@@ -25,20 +25,20 @@
  */
 
 /**
-* @defgroup axis2_op_client operation client
-* @ingroup axis2_client_api
-* Operation client is meant to be used by advanced users to consume services.
-* Operation client understands a specific MEP and hence the behavior is
-* defined by the MEP. To consume services with an operation client, an
-* operation (of type axis2_op_t) and a service context (of type axis2_svc_ctx_t)
-* has to be provided along with options to be used. The execute() function
-* can be used to send the request and get the response. 
-* The service client implementation uses the operation client and provides an
-* easy to use API for consuming services. Hence the service client 
-* implementation is a very good example of how to use the operation client API.
-* @sa axis2_svc_client
-* @{
-  */
+ * @defgroup axis2_op_client operation client
+ * @ingroup axis2_client_api
+ * Operation client is meant to be used by advanced users to consume services.
+ * Operation client understands a specific MEP and hence the behavior is
+ * defined by the MEP. To consume services with an operation client, an
+ * operation (of type axis2_op_t) and a service context (of type axis2_svc_ctx_t)
+ * has to be provided along with options to be used. The execute() function
+ * can be used to send the request and get the response. 
+ * The service client implementation uses the operation client and provides an
+ * easy to use API for consuming services. Hence the service client 
+ * implementation is a very good example of how to use the operation client API.
+ * @sa axis2_svc_client
+ * @{
+ */
 
 
 /**
@@ -72,12 +72,12 @@ extern "C"
     {
 
         /**
-          * Sets the options that should be used for this particular client. 
-          * @param op_client pointer to operation client struct
-          * @param env pointer to environment struct
-          * @param options pointer to options struct to be set
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * Sets the options that should be used for this particular client. 
+         * @param op_client pointer to operation client struct
+         * @param env pointer to environment struct
+         * @param options pointer to options struct to be set
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_options)(axis2_op_client_t *op_client,
                         const axis2_env_t *env,
@@ -141,10 +141,10 @@ extern "C"
          * an Out-In MEP, then if the Out message has been set, then executing the
          * client asks it to send the message and get the In message, possibly using
          * a different thread.
-         *
+	 * @param op_client pointer to operation client
+	 * @param env pointer to environment struct
          * @param block Indicates whether execution should block or return ASAP. What
-         *              block means is of course a function of the specific operation
-         *              client.
+         * block means is of course a function of the specific operation client.
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -156,7 +156,8 @@ extern "C"
          * Reset the operation client to a clean status after the MEP has completed.
          * This is how you can reuse an operation client. NOTE: this does not reset
          * the options; only the internal state so the client can be used again.
-         *
+	 * @param op_clitn pointer to operation client
+	 * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -168,7 +169,8 @@ extern "C"
          * when clinet use two tarnport for sending and receiving , there we need to remove entry from
          * waitings calls in the transport listener queue
          * Note : DO NOT call this method if you are not using two transport send and receive
-         *
+	 * @param op_client pointer to operation client struct
+	 * @param env pointer to environment struct
          * @param mc : axis2_msg_ctx_t# which have all the trnport information
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
@@ -178,16 +180,19 @@ extern "C"
                         axis2_msg_ctx_t *mc);
 
         /**
-          * To get the operation context of the operation cleint
-          * @return Operation Context
-          */
+         * To get the operation context of the operation cleint
+	 * @param op_client pointer to operation client struc
+         * @return Operation Context
+         */
         axis2_op_ctx_t* (AXIS2_CALL *
                 get_operation_context)(struct axis2_op_client *op_client);
 
         /**
-          *
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * @param op_client pointer to operation client struct
+	 * @param env pointer to environment struct
+	 * @param callback_recv pointer to callback receiver struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_callback_recv)(
                     struct axis2_op_client *op_client,
@@ -195,9 +200,10 @@ extern "C"
                     struct axis2_callback_recv *callback_recv);
 
         /**
-          *
-          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-          */
+         * @param op_client pointer to operation client struct
+	 * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 free)(struct axis2_op_client *op_client,
                         const axis2_env_t *env);
@@ -208,6 +214,7 @@ extern "C"
      */
     struct axis2_op_client
     {
+	/** operations of operation client */
         axis2_op_client_ops_t *ops;
     };
 
@@ -220,9 +227,12 @@ extern "C"
      * @param svc_ctx pointer to service context struct representing the service
      * to be consumed. Newly created client assumes ownership of the service 
      * context.
+     * @param env pointer to environment struct
+     * @param op pointer to operation struct
+     * @param svc_ctx pointer to service context
      * @param options pointer to options struct to be used.
      * @return a pointer to newly created operation client struct,
-     *         or NULL on error with error code set in environment's error
+     * or NULL on error with error code set in environment's error
      */
     AXIS2_EXTERN axis2_op_client_t* AXIS2_CALL axis2_op_client_create(const axis2_env_t *env,
             axis2_op_t *op,
