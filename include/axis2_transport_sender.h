@@ -64,7 +64,6 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
      * Initialize
      * @param confContext
      * @param transportOut
-     * @throws org.apache.axis2.AxisFault
      */
     axis2_status_t (AXIS2_CALL * 
     init) (axis2_transport_sender_t *transport_sender,
@@ -74,7 +73,6 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
     /**
      * Clean up
      * @param msgContext
-     * @throws org.apache.axis2.AxisFault
      */
     axis2_status_t (AXIS2_CALL *                          
     cleanup) (axis2_transport_sender_t *transport_sender,
@@ -84,7 +82,6 @@ AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
    /**
      * Invoke
      * @param msgContext
-     * @throws org.apache.axis2.AxisFault
      */
     axis2_status_t (AXIS2_CALL *                          
     invoke) (axis2_transport_sender_t *transport_sender,

@@ -460,12 +460,16 @@ axis2_msg_info_headers_set_action(struct axis2_msg_info_headers *msg_info_header
         AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(msg_info_headers)->action);
         AXIS2_INTF_TO_IMPL(msg_info_headers)->action = NULL;
     }
-    AXIS2_INTF_TO_IMPL(msg_info_headers)->action = AXIS2_STRDUP(action, env);
-    if(NULL == AXIS2_INTF_TO_IMPL(msg_info_headers)->action)
+    if(NULL != action)
+        AXIS2_INTF_TO_IMPL(msg_info_headers)->action = AXIS2_STRDUP(action, env);
+    /* We should be able to reset action by passing NULL
+     * so don't throw failure if action is NULL
+     */
+    /*if(NULL == AXIS2_INTF_TO_IMPL(msg_info_headers)->action)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
-    }
+    }*/
     return AXIS2_SUCCESS;
 }
 
