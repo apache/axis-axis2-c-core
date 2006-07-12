@@ -23,7 +23,9 @@ libaxis2_engine_la_LIBADD = $(top_builddir)/modules/core/description/libaxis2_de
 					$(top_builddir)/modules/core/clientapi/libaxis2_clientapi.la \
 					$(top_builddir)/modules/core/phaseresolver/libaxis2_phaseresolver.la \
 					$(top_builddir)/modules/core/util/libaxis2_core_utils.la \
-					$(top_builddir)/modules/core/transport/http/libaxis2_http.la
+					$(top_builddir)/modules/core/transport/http/libaxis2_http.la \
+                                        -laxis2_axiom \
+                                        -laxis2_util
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl \
