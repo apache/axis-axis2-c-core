@@ -510,7 +510,7 @@ extern "C"
      */
     struct axis2_options
     {
-	/** options of options struct */
+	/** operations of options struct */
         axis2_options_ops_t *ops;
     };
 
