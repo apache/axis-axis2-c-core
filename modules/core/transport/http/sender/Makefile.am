@@ -3,10 +3,16 @@ libaxis2_http_sender_la_SOURCES = http_transport_sender.c\
                                   soap_over_http_sender.c\
                                   rest_sender.c\
                                   http_client.c
+
+libaxis2_http_sender_la_LIBADD = \
+                                  -laxis2_axiom \
+                                  -laxis2_util \
+                                  -laxis2_engine
+
 if AXIS2_SSL_ENABLED
 libaxis2_http_sender_la_SOURCES += ssl/ssl_stream.c\
                                    ssl/ssl_utils.c
-libaxis2_http_sender_la_LIBADD = -lssl\
+libaxis2_http_sender_la_LIBADD += -lssl\
                                  -lcrypto
 endif
 
