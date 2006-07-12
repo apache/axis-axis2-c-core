@@ -7,7 +7,9 @@ libaxis2_mod_addr_la_SOURCES = addr_in_handler.c \
                                 mod_addr.c
 
 libaxis2_mod_addr_la_LIBADD =  \
-					$(top_builddir)/modules/core/engine/libaxis2_engine.la
+					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
+                                        -laxis2_axiom \
+                                        -laxis2_util
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/description \
