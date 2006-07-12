@@ -253,6 +253,8 @@ axis2_http_transport_sender_invoke
         xml_writer = NULL;
         return AXIS2_FAILURE;
     }
+
+    AXIOM_OUTPUT_SET_SOAP11(om_output, env, AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env));
    if(NULL != epr)
    {
         if (AXIS2_STRCMP(AXIS2_WSA_NONE_URL_SUBMISSION, AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env)) == 0 || 
