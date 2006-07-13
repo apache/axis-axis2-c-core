@@ -214,6 +214,16 @@ axis2_strcmp (const axis2_char_t * s1, const axis2_char_t * s2)
 }
 
 
+AXIS2_EXTERN int AXIS2_CALL
+axis2_strncmp (const axis2_char_t * s1, const axis2_char_t * s2, int n)
+{
+    if (s1 && s2)
+        return strncmp (s1, s2, n);
+    else
+        return -1;
+}
+
+
 AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
 axis2_strlen (const axis2_char_t * s)
 {

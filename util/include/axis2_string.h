@@ -76,6 +76,11 @@ extern "C"
     axis2_strcmp (const axis2_char_t * s1, 
                   const axis2_char_t * s2);
 
+    AXIS2_EXTERN int AXIS2_CALL
+    axis2_strncmp (const axis2_char_t * s1, 
+                  const axis2_char_t * s2,
+                  int n);
+
     AXIS2_EXTERN axis2_ssize_t AXIS2_CALL
     axis2_strlen(const axis2_char_t * s);
 
@@ -151,6 +156,9 @@ extern "C"
         
 #define AXIS2_STRCMP(s1, s2) \
         axis2_strcmp(s1, s2)
+        
+#define AXIS2_STRNCMP(s1, s2, n) \
+        axis2_strncmp(s1, s2, n)
         
 #define AXIS2_STRLEN(s) \
         axis2_strlen(s)
