@@ -30,8 +30,7 @@ libaxis2_wsdl_la_SOURCES = wsdl_op.c \
 
 libaxis2_wsdl_la_LIBADD = \
                                   -laxis2_axiom \
-                                  -laxis2_util \
-                                  -laxis2_engine
+                                  -laxis2_util 
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/xml_schema/include\

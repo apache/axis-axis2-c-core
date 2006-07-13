@@ -4,10 +4,9 @@ libaxis2_http_sender_la_SOURCES = http_transport_sender.c\
                                   rest_sender.c\
                                   http_client.c
 
-libaxis2_http_sender_la_LIBADD = \
+libaxis2_http_sender_la_LIBADD = $(top_builddir)/modules/core/engine/libaxis2_engine.la \
                                   -laxis2_axiom \
-                                  -laxis2_util \
-                                  -laxis2_engine
+                                  -laxis2_util 
 
 if AXIS2_SSL_ENABLED
 libaxis2_http_sender_la_SOURCES += ssl/ssl_stream.c\
