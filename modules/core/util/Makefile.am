@@ -1,5 +1,5 @@
 noinst_LTLIBRARIES = libaxis2_core_utils.la
-noinst_HEADERS = axis2_core_utils.h
+#noinst_HEADERS = axis2_core_utils.h
 
 libaxis2_core_utils_la_SOURCES = \
                                	core_utils.c
