@@ -330,6 +330,7 @@ void* AXIS2_CALL axis2_array_list_remove(struct axis2_array_list *array_list, co
         result = array_list_impl->data[index];
         for (i = index; i < array_list_impl->size - 1; i++)
             array_list_impl->data[i] = array_list_impl->data[i + 1];
+        array_list_impl->size--;
     }
     
     return result;
