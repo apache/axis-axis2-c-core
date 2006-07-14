@@ -534,20 +534,24 @@ axis2_http_transport_utils_do_write_mtom(const axis2_env_t *env,
                                         axis2_msg_ctx_t *msg_ctx)
 {
     axis2_property_t *property = NULL;
+    axis2_param_t *param = NULL;
+    axis2_char_t *value = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);    
+
+    param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env, AXIS2_ENABLE_MTOM);
+    /*if(NULL != param)
+        value = AXIS2_PARAM_GET_VALUE(param, env);
+    */
     property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
         AXIS2_ENABLE_MTOM, AXIS2_FALSE);
-    if(property)
+    if(NULL != property)
+        value = (axis2_char_t *)AXIS2_PROPERTY_GET_VALUE(property, env);
+
+    if (NULL != value)
     {
-        axis2_char_t *value = (axis2_char_t *)AXIS2_PROPERTY_GET_VALUE(property, env);
-
-        if (value)
-        {
-            return (AXIS2_STRCMP(value, AXIS2_VALUE_TRUE) == 0);
-        }
+        return (AXIS2_STRCMP(value, AXIS2_VALUE_TRUE) == 0);
     }
-
     return AXIS2_FALSE;
 }
 

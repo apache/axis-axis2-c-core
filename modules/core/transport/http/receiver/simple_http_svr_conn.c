@@ -375,6 +375,8 @@ axis2_simple_http_svr_conn_write_response
    axis2_http_header_t *enc_header = NULL;
    axis2_bool_t chuked_encoding = AXIS2_FALSE;
    axis2_char_t *status_line = NULL;
+   axis2_bool_t binary_content = AXIS2_FALSE;
+   axis2_char_t *content_type = NULL;
    
    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -383,6 +385,14 @@ axis2_simple_http_svr_conn_write_response
    svr_conn_impl = AXIS2_INTF_TO_IMPL(svr_conn);
    response_writer = axis2_http_response_writer_create(env, 
                   svr_conn_impl->stream);
+    content_type = (axis2_char_t*)AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_TYPE(
+                  response, env);
+    if(NULL != content_type)
+    {
+        if(strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)
+                        && strstr(content_type, AXIS2_HTTP_HEADER_XOP_XML))
+            binary_content = AXIS2_TRUE;
+    }
    if(NULL == response_writer)
    {
       return AXIS2_FAILURE;
@@ -433,7 +443,6 @@ axis2_simple_http_svr_conn_write_response
                 axis2_char_t *header_ext_form =  
                         AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
                         (axis2_http_header_t*)header, env);
-
             AXIS2_HTTP_RESPONSE_WRITER_PRINT_STR(response_writer, env, 
                      header_ext_form);
                 AXIS2_FREE(env->allocator, header_ext_form);
@@ -453,8 +462,13 @@ axis2_simple_http_svr_conn_write_response
    if(AXIS2_FALSE == chuked_encoding)
    {
       axis2_status_t write_stat = AXIS2_FAILURE;
-      write_stat = AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer, 
+      if(AXIS2_FALSE == binary_content)
+            write_stat = AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer, 
                   env, response_body);
+      else
+            write_stat = AXIS2_HTTP_RESPONSE_WRITER_WRITE_BUF(response_writer,
+                  env, response_body, 0, body_size);
+
       if(AXIS2_SUCCESS != write_stat)
       {
          AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_RESPONSE, 

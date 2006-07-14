@@ -263,6 +263,11 @@ extern "C"
     #define AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP "application/soap+xml"
     
     /**
+     * HEADER XOP XML
+     */
+    #define AXIS2_HTTP_HEADER_XOP_XML "application/xop+xml"
+    
+    /**
      * HEADER_ACCEPT_MULTIPART_RELATED
      */
     #define AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED "multipart/related"
