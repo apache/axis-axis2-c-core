@@ -466,9 +466,11 @@ axis2_simple_http_svr_conn_write_response
             write_stat = AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer, 
                   env, response_body);
       else
+      {
             write_stat = AXIS2_HTTP_RESPONSE_WRITER_WRITE_BUF(response_writer,
                   env, response_body, 0, body_size);
-
+      }
+      
       if(AXIS2_SUCCESS != write_stat)
       {
          AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_RESPONSE, 

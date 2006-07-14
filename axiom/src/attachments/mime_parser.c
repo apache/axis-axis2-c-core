@@ -17,6 +17,7 @@
 #include <axiom_mime_parser.h>
 #include <axis2_string.h>
 #include <axiom_data_handler.h>
+#include <stdio.h>
 
 typedef struct axiom_mime_parser_impl
 {
@@ -431,6 +432,16 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                         }
                     }
                 }
+            }
+            else
+            {
+                axis2_char_t temp_boundry[1024];
+                sprintf(temp_boundry, "%s", "--");
+                sprintf(temp_boundry, "%s", mime_boundary);
+                sprintf(temp_boundry, "%s", "--");
+                if (AXIS2_STRSTR(body_mime, temp_boundry))
+                    break;
+                
             }
             
             body_mime = temp_body_mime;

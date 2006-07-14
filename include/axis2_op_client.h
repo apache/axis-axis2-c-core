@@ -43,7 +43,6 @@
 
 /**
  * @file axis2_op_client.h
- * @brief axis2 operation client interface
  */
 
 #include <axis2_defines.h>

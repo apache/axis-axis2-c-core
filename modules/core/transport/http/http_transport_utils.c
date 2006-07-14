@@ -540,9 +540,9 @@ axis2_http_transport_utils_do_write_mtom(const axis2_env_t *env,
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);    
 
     param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env, AXIS2_ENABLE_MTOM);
-    /*if(NULL != param)
+    if(NULL != param)
         value = AXIS2_PARAM_GET_VALUE(param, env);
-    */
+    
     property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
         AXIS2_ENABLE_MTOM, AXIS2_FALSE);
     if(NULL != property)
@@ -936,6 +936,8 @@ axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env,
     axis2_char_t *trans_enc = NULL;
     int *content_length = NULL;
     axis2_property_t *property = NULL;
+    axis2_hash_t *binary_data_map = NULL;
+
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
     AXIS2_PARAM_CHECK(env->error, soap_ns_uri, NULL);
@@ -1028,11 +1030,47 @@ axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env,
     if(NULL != content_type)
     {
         AXIS2_MSG_CTX_SET_DOING_MTOM(msg_ctx, env, AXIS2_TRUE);
+        /* get mime boundry */
+        axis2_char_t *mime_boundary = 
+            axis2_http_transport_utils_get_value_from_content_type(env, 
+                content_type, AXIS2_HTTP_HEADER_CONTENT_TYPE_MIME_BOUNDARY);
+
+        if (mime_boundary)
+        {
+            axiom_mime_parser_t *mime_parser = NULL;
+            axis2_stream_t *stream = NULL;
+            int soap_body_len = 0;
+            axis2_char_t* soap_body_str = NULL;
+            
+            mime_parser = axiom_mime_parser_create(env);
+            if (mime_parser)
+            {
+                binary_data_map = AXIOM_MIME_PARSER_PARSE(mime_parser, env, 
+                    axis2_http_transport_utils_on_data_request, 
+                    (void*)callback_ctx, mime_boundary);
+                
+                soap_body_len = AXIOM_MIME_PARSER_GET_SOAP_BODY_LENGTH(
+                    mime_parser, env);
+                soap_body_str = AXIOM_MIME_PARSER_GET_SOAP_BODY_STR(
+                    mime_parser, env);
+            }
+            
+            stream = axis2_stream_create_basic(env);
+            if (stream)
+            {
+                AXIS2_STREAM_WRITE(stream, env, soap_body_str, soap_body_len);
+                callback_ctx->in_stream = stream;
+                callback_ctx->chunked_stream = NULL;
+                callback_ctx->content_length = soap_body_len;
+                callback_ctx->unread_len = soap_body_len;
+            }
+        }
         /**
          * TODO MTOM stuff - create builder and get envelope
          */
     }
-    else if(AXIS2_TRUE != AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env))
+    
+    if(AXIS2_TRUE != AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env))
     {
         axiom_xml_reader_t *xml_reader = NULL;
         axiom_stax_builder_t *om_builder = NULL;
@@ -1064,6 +1102,13 @@ axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env,
             xml_reader = NULL;
             return NULL;
         }
+        
+        if (binary_data_map)
+        {
+            AXIOM_SOAP_BUILDER_SET_MIME_BODY_PARTS(soap_builder, env, 
+                binary_data_map);
+        }
+        
         soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
         return soap_envelope;
     }
@@ -1096,6 +1141,7 @@ axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env,
         om_doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
         root_node = AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
         AXIOM_SOAP_BODY_ADD_CHILD(def_body, env, root_node);
+
         return soap_envelope;
     }
     return NULL;

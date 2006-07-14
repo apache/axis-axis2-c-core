@@ -162,6 +162,11 @@ axis2_http_transport_sender_invoke
     axis2_bool_t do_mtom;
     axis2_property_t *property = NULL;
     axiom_node_t *data_out = NULL;
+    axis2_byte_t *output_stream = NULL;
+    int buffer_size = 0;
+
+    
+
    
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -203,6 +208,7 @@ axis2_http_transport_sender_invoke
    do_mtom = axis2_http_transport_utils_do_write_mtom(env,
                      msg_ctx);
    AXIS2_MSG_CTX_SET_DOING_MTOM(msg_ctx, env, do_mtom);
+   /*do_mtom = AXIS2_MSG_CTX_GET_DOING_MTOM(msg_ctx, env);*/
    /*AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, 
                      env, axis2_http_transport_utils_is_doing_rest(env, 
                      msg_ctx));*/
@@ -368,11 +374,29 @@ axis2_http_transport_sender_invoke
             }
             else
             {
+                AXIOM_OUTPUT_SET_DO_OPTIMIZE(om_output, env,
+                               do_mtom);
                 AXIOM_SOAP_ENVELOPE_SERIALIZE (soap_data_out, env, om_output, 
                             AXIS2_FALSE);
-                buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+                if (do_mtom)
+                {
+                    axis2_char_t *content_type = NULL;
+                    AXIOM_OUTPUT_FLUSH(om_output, env, &output_stream,
+                                    &buffer_size);
+                    content_type = (axis2_char_t *)AXIOM_OUTPUT_GET_CONTENT_TYPE(
+                            om_output,
+                            env);
+                    AXIS2_HTTP_OUT_TRANSPORT_INFO_SET_CONTENT_TYPE(out_info, 
+                        env, content_type);
+                    buffer = output_stream;
+                }
+                else
+                {
+                    buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+                    buffer_size = AXIS2_STRLEN(buffer);
+                }
             }
-         AXIS2_STREAM_WRITE(out_stream, env, buffer, AXIS2_STRLEN(buffer));            
+         AXIS2_STREAM_WRITE(out_stream, env, buffer, buffer_size);            
          AXIS2_FREE(env->allocator, buffer);
    
             op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
