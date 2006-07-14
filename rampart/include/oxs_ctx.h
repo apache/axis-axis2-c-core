@@ -24,9 +24,10 @@
   */
 
 #include <axis2_defines.h>
-#include <oxs_constants.h>
+#include <oxs_strings.h>
 #include <axis2_env.h>
 #include <axiom_node.h>
+#include <oxs_buffer.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -62,10 +63,14 @@ typedef struct enc_ctx{
     enc_ctx_transform_operation_t operation;    
 
     /* attributes from EncryptedData or EncryptedKey */
-    axis2_char_t*           encdata_id;
-    axis2_char_t*           encdata_type;
-    axis2_char_t*           encdata_mime_type;
-    axis2_char_t*           encdata_encoding;
+    axis2_char_t*           id;
+    axis2_char_t*           type;
+    axis2_char_t*           mime_type;
+    axis2_char_t*           encoding;
+    axis2_char_t*           recipient;
+    axis2_char_t*           carriedKeyName;
+
+
 
     /*attributes from EncryptionMethod*/ 
     axis2_char_t*           encmtd_algorithm;
