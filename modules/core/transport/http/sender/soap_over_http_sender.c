@@ -480,6 +480,7 @@ axiom_soap_over_http_sender_get_header_info
    axis2_bool_t response_chunked = AXIS2_FALSE;
    int *content_length = NULL;
     axis2_property_t *property = NULL;
+    axis2_char_t *content_type = NULL;
    
    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
    AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -534,6 +535,23 @@ axiom_soap_over_http_sender_get_header_info
          }
       }
    }
+   content_type = (axis2_char_t*)AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_TYPE(
+                        response, env);
+    if(NULL != content_type)
+    {
+        if(strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)
+                        && strstr(content_type, AXIS2_HTTP_HEADER_XOP_XML))
+        {
+            axis2_ctx_t *axis_ctx = AXIS2_OP_CTX_GET_BASE(
+                        AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env), env);
+            property = axis2_property_create(env);
+            AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
+            AXIS2_PROPERTY_SET_VALUE(property, env, AXIS2_STRDUP(content_type, 
+                        env));
+            AXIS2_CTX_SET_PROPERTY(axis_ctx, env, MTOM_RECIVED_CONTENT_TYPE,
+                  property, AXIS2_FALSE);
+        }
+    }
    if(NULL != charset)
    {
       axis2_ctx_t *axis_ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(
