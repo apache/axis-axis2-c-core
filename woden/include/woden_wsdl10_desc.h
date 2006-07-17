@@ -125,7 +125,7 @@ struct woden_wsdl10_desc_ops
             void *desc,
             const axis2_env_t *env);
 
-    axis2_array_list_t *(AXIS2_CALL *
+    void *(AXIS2_CALL *
     get_type_def) (
             void *desc,
             const axis2_env_t *env,

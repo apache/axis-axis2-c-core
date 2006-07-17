@@ -130,7 +130,7 @@ woden_desc_get_element_decls(
         void *desc,
         const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+void *AXIS2_CALL
 woden_desc_get_element_decl(
         void *desc,
         const axis2_env_t *env,
@@ -141,7 +141,7 @@ woden_desc_get_type_defs(
         void *desc,
         const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL
+void *AXIS2_CALL
 woden_desc_get_type_def(
         void *desc,
         const axis2_env_t *env,
@@ -1242,7 +1242,7 @@ woden_desc_get_element_decls(
     return desc_impl->f_all_element_decls;
 }
 
-axis2_array_list_t *AXIS2_CALL
+void *AXIS2_CALL
 woden_desc_get_element_decl(
         void *desc,
         const axis2_env_t *env,
@@ -1294,7 +1294,7 @@ woden_desc_get_type_defs(
     return desc_impl->f_all_type_defs;
 }
 
-axis2_array_list_t *AXIS2_CALL
+void *AXIS2_CALL
 woden_desc_get_type_def(
         void *desc,
         const axis2_env_t *env,
