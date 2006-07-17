@@ -33,11 +33,14 @@ typedef struct _openssl_evp_block_cipher_ctx openssl_evp_block_cipher_ctx, *open
 struct _openssl_evp_block_cipher_ctx {
     const EVP_CIPHER*   cipher;
     EVP_CIPHER_CTX  cipher_ctx;
-    int         keyInitialized;
-    int         ctxInitialized;
-    unsigned char  key[EVP_MAX_KEY_LENGTH];
+    int         key_initialized;
+    int         ctx_initialized;
+    unsigned char  *key;
+    unsigned char  *iv;
+    unsigned char  *pad;
+    /*unsigned char  key[EVP_MAX_KEY_LENGTH];
     unsigned char  iv[EVP_MAX_IV_LENGTH];
-    unsigned char  pad[EVP_MAX_BLOCK_LENGTH];
+    unsigned char  pad[EVP_MAX_BLOCK_LENGTH];*/
 
 };
 
@@ -58,7 +61,8 @@ AXIS2_EXTERN openssl_evp_block_cipher_ctx_ptr AXIS2_CALL  openssl_evp_block_ciph
 *@return openssl_evp_block_cipher_ctx_ptr initialized block cipher context
 */
 
-AXIS2_EXTERN openssl_evp_block_cipher_ctx_ptr AXIS2_CALL  openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
+AXIS2_EXTERN int AXIS2_CALL  
+openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
                              openssl_evp_block_cipher_ctx_ptr bc_ctx,
                              oxs_buffer_ptr in,
                              oxs_buffer_ptr out,

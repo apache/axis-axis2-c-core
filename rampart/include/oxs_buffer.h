@@ -26,6 +26,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_util.h>
+#include <oxs_axiom.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -66,7 +67,7 @@ typedef struct _oxs_buffer{
     unsigned int size;
     unsigned int max_size;
     oxs_AllocMode alloc_mode;
-} ; 
+}; 
 
 AXIS2_EXTERN oxs_buffer_ptr AXIS2_CALL
 oxs_create_buffer(const axis2_env_t *env, unsigned int size);
@@ -101,6 +102,11 @@ oxs_buffer_set_size(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int siz
 AXIS2_EXTERN int AXIS2_CALL
 oxs_buffer_set_max_size(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int size);
 
+AXIS2_EXTERN int AXIS2_CALL
+oxs_buffer_read_file(const axis2_env_t *env, oxs_buffer_ptr buf, const char* filename);
+
+AXIS2_EXTERN int AXIS2_CALL
+oxs_buffer_base64_node_content_read(const axis2_env_t *env, oxs_buffer_ptr buf, axiom_node_t *node);
 /** @} */
 #ifdef __cplusplus
 }

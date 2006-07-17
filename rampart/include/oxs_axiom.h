@@ -24,7 +24,6 @@
   */
 
 #include <axis2_defines.h>
-#include <oxs_strings.h>
 #include <axis2_env.h>
 #include <axis2_util.h>
 #include <axiom_node.h>
@@ -39,6 +38,9 @@ extern "C"
 
 typedef struct axiom_document_t oxs_axiom_document, *oxs_axiom_document_ptr;
 typedef struct axiom_node_t oxs_axiom_node, *oxs_axiom_node_ptr;
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+oxs_axiom_get_node_content(const axis2_env_t *env, axiom_node_t* node);
 
 /**
 * returns 1 sucess 0 otherwise
