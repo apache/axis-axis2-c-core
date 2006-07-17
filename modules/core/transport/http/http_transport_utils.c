@@ -1103,13 +1103,26 @@ axis2_http_transport_utils_create_soap_msg(const axis2_env_t *env,
             return NULL;
         }
         
+        soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
+        
         if (binary_data_map)
         {
             AXIOM_SOAP_BUILDER_SET_MIME_BODY_PARTS(soap_builder, env, 
                 binary_data_map);
         }
         
-        soap_envelope = AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder, env);
+        if (soap_envelope && content_type)
+        {
+            /* hack to get around MTOM problem */
+            axiom_soap_body_t *soap_body = 
+                AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+
+            if (soap_body)
+            {
+                AXIOM_SOAP_BODY_HAS_FAULT(soap_body, env);
+            }
+        }
+        
         return soap_envelope;
     }
     else
