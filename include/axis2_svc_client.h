@@ -41,6 +41,7 @@
 
 #include <axis2_defines.h>
 #include <axis2_env.h>
+#include <axis2_uri.h>
 #include <axis2_svc.h>
 #include <axis2_options.h>
 #include <axis2_qname.h>
@@ -412,6 +413,15 @@ extern "C"
         const axis2_char_t *client_home,
         axis2_conf_ctx_t *conf_ctx,
         axis2_svc_t *svc);
+
+    axis2_svc_client_t* AXIS2_CALL
+    axis2_svc_client_create_with_conf_ctx_and_wsdl_uri_wsdl_svc_name_and_endpoint(
+            const axis2_env_t *env,
+            axis2_conf_ctx_t *conf_ctx,
+            const axis2_uri_t *wsdl_uri,
+            const axis2_qname_t *wsdl_svc_qname,
+            const axis2_char_t *endpoint_name,
+            const axis2_char_t *client_home);
 
 /** Gets the service consumed by service client. 
     @sa axis2_svc_client_ops#get_svc */
