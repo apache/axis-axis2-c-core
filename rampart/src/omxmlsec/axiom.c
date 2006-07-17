@@ -17,10 +17,25 @@
 #include <stdio.h>
 #include <axis2_util.h>
 #include <oxs_constants.h>
-#include <oxs_axiom_util.h>
 #include <axiom_node.h>
 #include <axiom_namespace.h>
 #include <axiom_attribute.h>
+#include <axiom_element.h>
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+oxs_axiom_get_node_content(const axis2_env_t *env, axiom_node_t* node)
+{
+    axiom_element_t *ele = NULL;
+    axis2_char_t *content = NULL;
+
+    ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+    if(!ele) return NULL;
+    
+    content = AXIOM_ELEMENT_GET_TEXT(ele, env, node);
+    if(!content) return NULL;
+    
+    return content;
+}
 
 
 AXIS2_EXTERN int AXIS2_CALL

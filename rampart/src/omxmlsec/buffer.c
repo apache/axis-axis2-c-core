@@ -18,6 +18,7 @@
 #include <axis2_util.h>
 #include <oxs_constants.h>
 #include <oxs_buffer.h>
+#include <oxs_axiom.h>
 
 
 static unsigned int  g_initial_size = OXS_BUFFER_INITIAL_SIZE;
@@ -114,7 +115,7 @@ oxs_string_to_buffer(const axis2_env_t *env, axis2_char_t* string)
     buf = oxs_create_buffer(env, size);        
     buf->data = data;
     buf->size = size;
-    buf->max_size = size;
+    /*buf->max_size = size;*/
     buf->alloc_mode = oxs_alloc_mode_double;
  
     return buf; 
@@ -231,3 +232,66 @@ oxs_buffer_set_max_size(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int
     return(0);
 
 }
+
+AXIS2_EXTERN int AXIS2_CALL
+oxs_buffer_read_file(const axis2_env_t *env, oxs_buffer_ptr buf, const char* filename)
+{
+    unsigned char buffer[1024];
+    FILE* f;
+    int ret, len;
+
+    f = fopen(filename, "rb");
+    if(f == NULL) {
+        return (-1);
+    }
+
+    while(1)
+    {
+        len = fread(buffer, 1, sizeof(buffer), f);
+        if(len == 0){
+            break; /*Stop reading*/
+        }else if(len < 0){
+            fclose(f);
+            return(-1);
+        }
+        ret = oxs_buffer_append(env, buf, buffer, len);
+        if(ret < 0){
+            fclose(f);
+            return (-1);
+        }
+       
+        /*Alright so far everything is fine. So let's close the output*/
+        fclose(f);
+        return (0); 
+    }/*End of while*/
+}
+
+AXIS2_EXTERN int AXIS2_CALL
+oxs_buffer_base64_node_content_read(const axis2_env_t *env, oxs_buffer_ptr buf, axiom_node_t *node)
+{
+    axis2_char_t *content = NULL;
+    axis2_char_t *decoded_str = NULL;
+    unsigned int size;
+    int ret, length;
+        
+    content = oxs_axiom_get_node_content(env, node);    
+    if(content == NULL) return (-1);
+   
+    ret = oxs_buffer_set_max_size(env, buf, AXIS2_STRLEN(content));
+    if(ret < 0)  return(-1);
+
+    /*OK. Now decode*/
+    /*axis2_base64_decode(plain, encoded)*/
+    length = axis2_base64_decode(decoded_str, content); 
+    if(length < 0 ) return (-1);
+    
+    /*Store data in the buffer*/    
+    buf->data = decoded_str;
+    buf->size = length;
+
+    return (0);  
+}
+
+
+
+

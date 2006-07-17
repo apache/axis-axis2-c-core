@@ -21,7 +21,10 @@
 #include <openssl_crypt.h>
 #include <openssl/rand.h>
 
-
+/**
+* @param do_encrypt should be set to 1 for encryption, 0 for decryption and -1 to
+* leave the value unchanged 
+*/
 AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(axis2_env_t *env, 
     openssl_evp_block_cipher_ctx_ptr bc_ctx, 
     oxs_buffer_ptr in_buf, 
@@ -35,19 +38,18 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(axis2_env_t *env,
     int insize, outsize, block_len;
     int outlen = 0;     
 
-    if(!bc_ctx->ctxInitialized){
+    if(!bc_ctx->ctx_initialized){
         return (-1); /* Ctx should be initialized by now*/
     }
     
     block_len = EVP_CIPHER_block_size(bc_ctx->cipher);
 
-     /* loop until we dont have any data left in the input buffer */
+    /* loop until we dont have any data left in the input buffer */
     for(;;)
     {
         insize = in_buf->size;
 
         if(insize <= 0) break;/*No More Data!!! Quit loop*/
-
 
         outsize = out_buf->size;
         oxs_buffer_set_max_size(env, out_buf, outsize + insize + block_len);
