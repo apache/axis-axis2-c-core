@@ -185,7 +185,11 @@ axiom_data_handler_read_from(axiom_data_handler_t *data_handler, const axis2_env
         
         f = fopen(data_handler_impl->file_name, "rb");
         if (!f)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                " error opening file %s for reading ", data_handler_impl->file_name);
             return AXIS2_FAILURE;
+        }
         
         do {
             struct stat stat_p;
@@ -312,7 +316,11 @@ axiom_data_handler_write_to(axiom_data_handler_t *data_handler, const axis2_env_
         
         f = fopen(data_handler_impl->file_name, "wb");
         if (!f)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                " error opening file %s for writing ", data_handler_impl->file_name);
             return AXIS2_FAILURE;
+        }
             
         count = fwrite(data_handler_impl->buffer, 1, data_handler_impl->buffer_len, f);
         
