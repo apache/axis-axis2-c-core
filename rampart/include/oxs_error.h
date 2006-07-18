@@ -45,6 +45,7 @@ extern "C"
 #define OXS_ERROR_INVALID_DATA          3
 #define OXS_ERROR_INVALID_SIZE          4
 #define OXS_ERROR_INVALID_FORMAT        5
+#define OXS_ERROR_ELEMENT_FAILED        6
 
 
 typedef struct _oxs_error_description oxs_error_description, *oxs_error_description_ptr;

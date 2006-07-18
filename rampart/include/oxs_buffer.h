@@ -62,7 +62,7 @@ typedef enum {
 * @max_size : allocated size of the buffer
 * @alloc_mode : Mode of the allcoation
 */
-typedef struct _oxs_buffer{
+struct _oxs_buffer{
     unsigned char* data;
     unsigned int size;
     unsigned int max_size;
