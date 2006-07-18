@@ -264,6 +264,7 @@ oxs_buffer_read_file(const axis2_env_t *env, oxs_buffer_ptr buf, const char* fil
         fclose(f);
         return (0); 
     }/*End of while*/
+    return(0);
 }
 
 AXIS2_EXTERN int AXIS2_CALL
@@ -271,8 +272,8 @@ oxs_buffer_base64_node_content_read(const axis2_env_t *env, oxs_buffer_ptr buf, 
 {
     axis2_char_t *content = NULL;
     axis2_char_t *decoded_str = NULL;
-    unsigned int size;
-    int ret, length;
+    int ret;
+    unsigned int length;
         
     content = oxs_axiom_get_node_content(env, node);    
     if(content == NULL) return (-1);
@@ -286,7 +287,7 @@ oxs_buffer_base64_node_content_read(const axis2_env_t *env, oxs_buffer_ptr buf, 
     if(length < 0 ) return (-1);
     
     /*Store data in the buffer*/    
-    buf->data = decoded_str;
+    buf->data = (unsigned char*)decoded_str;
     buf->size = length;
 
     return (0);  
