@@ -22,7 +22,9 @@ mod_rampart_shutdown(axis2_module_t *module,
 
 axis2_status_t AXIS2_CALL
 mod_rampart_init(axis2_module_t *module,
-                        const axis2_env_t *env);
+                        const axis2_env_t *env,
+                        axis2_conf_ctx_t *conf_ctx,
+                        axis2_module_desc_t *module_desc);
 
 axis2_status_t AXIS2_CALL
 mod_rampart_fill_handler_create_func_map(axis2_module_t *module,
@@ -49,7 +51,9 @@ mod_rampart_create(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 mod_rampart_init(axis2_module_t *module,
-                       const axis2_env_t *env)
+                       const axis2_env_t *env,
+                        axis2_conf_ctx_t *conf_ctx, 
+                        axis2_module_desc_t *module_desc)
 {
     /* Any initialization stuff of mod_rampart goes here */
     return AXIS2_SUCCESS;
