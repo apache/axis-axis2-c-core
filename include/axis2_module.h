@@ -40,6 +40,7 @@
 #include <axis2_allocator.h>
 #include <axis2_string.h>
 #include <axis2_conf.h>
+#include <axis2_module_desc.h>
 #include <axis2_hash.h>
 
 
@@ -62,7 +63,9 @@ AXIS2_DECLARE_DATA struct axis2_module_ops
     /* initialize the module */
     axis2_status_t (AXIS2_CALL *
     init) (struct axis2_module *module, 
-            const axis2_env_t *env);
+            const axis2_env_t *env,
+            struct axis2_conf_ctx *conf_ctx,
+            struct axis2_module_desc *module_desc);
 
     /* TODO figure out how to get the engage() concept done */
     /* public void engage(ExecutionChain exeChain) throws AxisFault; */
@@ -98,8 +101,8 @@ axis2_module_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 
-#define AXIS2_MODULE_INIT(module, env) \
-      ((module)->ops->init (module, env)) 
+#define AXIS2_MODULE_INIT(module, env, conf_ctx, module_desc) \
+      ((module)->ops->init (module, env, conf_ctx, module_desc)) 
 
 #define AXIS2_MODULE_SHUTDOWN(module, env) \
       ((module)->ops->shutdown (module, env)) 

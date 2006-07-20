@@ -21,8 +21,11 @@ axis2_mod_addr_shutdown(axis2_module_t *module,
                         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_mod_addr_init(axis2_module_t *module,
-                        const axis2_env_t *env);
+axis2_mod_addr_init(
+        axis2_module_t *module,
+        const axis2_env_t *env,
+        axis2_conf_ctx_t *conf_ctx,
+        axis2_module_desc_t *module_desc);
 
 axis2_status_t AXIS2_CALL
 axis2_mod_addr_fill_handler_create_func_map(axis2_module_t *module,
@@ -48,8 +51,11 @@ axis2_mod_addr_create(const axis2_env_t *env)
 }
 
 axis2_status_t AXIS2_CALL
-axis2_mod_addr_init(axis2_module_t *module,
-                        const axis2_env_t *env)
+axis2_mod_addr_init(
+        axis2_module_t *module,
+        const axis2_env_t *env,
+        axis2_conf_ctx_t *conf_ctx,
+        axis2_module_desc_t *module_desc)
 {
     /* Any initialization stuff of mod_addr goes here */
     return AXIS2_SUCCESS;
