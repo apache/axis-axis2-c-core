@@ -27,6 +27,7 @@ extern "C"
 
 #define OXS_xenc "xenc"
 #define OXS_ds "ds"
+#define OXS_WSSE "wsse"
 
 /* Global namespaces *******************/
 
@@ -39,6 +40,7 @@ extern "C"
 #define OXS_XPointerNs            "http://www.w3.org/2001/04/xmldsig-more/xptr"
 #define OXS_Soap11Ns              "http://schemas.xmlsoap.org/soap/envelope/"
 #define OXS_Soap12Ns              "http://www.w3.org/2002/06/soap-envelope"
+#define OXS_WSSENS                "http://schemas.xmlsoap.org/ws/2002/04/secext"
 
 /* DSig Nodes  **************************/
 
@@ -77,6 +79,9 @@ extern "C"
 #define OXS_NodeTransforms            "Transforms" 
 #define OXS_NodeTransform             "Transform" 
 
+/* KeyInfo Nodes*****************************/
+#define OXS_NodeBinarySecurityToken     "BinarySecurityToken"
+
 
 /* Attributes********************************/
 
@@ -89,6 +94,8 @@ extern "C"
 #define OXS_AttrFilter        "Filter"
 #define OXS_AttrRecipient     "Recipient"
 #define OXS_AttrTarget        "Target"
+#define OXS_AttrEncodingType  "EncodingType"
+#define OXS_AttrValueType     "ValueType"
 
 
 /*************************************************************************
