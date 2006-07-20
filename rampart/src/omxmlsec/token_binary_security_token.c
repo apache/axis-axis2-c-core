@@ -1,0 +1,61 @@
+/*
+ *   Copyright 2003-2004 The Apache Software Foundation.
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
+
+#include <stdio.h>
+#include <oxs_constants.h>
+#include <oxs_error.h>
+#include <oxs_token_binary_security_token.h>
+#include <axiom_attribute.h>
+#include <axiom_element.h>
+
+
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+oxs_token_build_binary_security_token_element(const axis2_env_t *env,
+                        axiom_node_t *parent,
+                        axis2_char_t* id,
+                        axis2_char_t* encoding_type,
+                        axis2_char_t* value_type
+                    )
+{
+    axiom_node_t *binary_security_token_node = NULL;
+    axiom_element_t *binary_security_token_ele = NULL;
+    axiom_attribute_t *encoding_type_att = NULL, *value_type_att = NULL, *id_attr = NULL;
+    int ret; 
+    axiom_namespace_t *ns_obj = NULL;
+
+    ns_obj = axiom_namespace_create (env, OXS_WSSENS,
+                                              OXS_WSSE);
+
+    binary_security_token_ele = axiom_element_create(env, parent, OXS_NodeBinarySecurityToken, ns_obj, &binary_security_token_node );
+    if(!binary_security_token_ele)
+    {   
+        oxs_error(ERROR_LOCATION,
+                    OXS_ERROR_ELEMENT_FAILED,"Error creating Binary Security Token element");
+        return NULL;
+    }  
+
+    id_attr = axiom_attribute_create(env, OXS_AttrId, id, NULL);
+    encoding_type_att =  axiom_attribute_create (env, OXS_AttrEncodingType, encoding_type, NULL);
+    value_type_att =  axiom_attribute_create (env, OXS_AttrValueType, value_type, NULL);
+
+    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(binary_security_token_ele, env, id_attr, binary_security_token_node);  
+    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(binary_security_token_ele, env, encoding_type_att, binary_security_token_node);  
+    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(binary_security_token_ele, env, value_type_att, binary_security_token_node);  
+   
+    return binary_security_token_node; 
+     
+}
+
