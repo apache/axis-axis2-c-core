@@ -105,6 +105,15 @@ extern "C"
                 get_persistent_map)(
                     struct axis2_ctx *ctx,
                     const axis2_env_t *env);
+	/**
+	 * @param ctx pointer to context struct
+	 * @param env pointer to environment struct
+	 */
+        axis2_hash_t* (AXIS2_CALL *
+                get_properties)(
+                    struct axis2_ctx *ctx,
+                    const axis2_env_t *env);
+
 
         /**
          * Deallocate memory
@@ -174,6 +183,11 @@ extern "C"
     @sa axis2_ctx_ops#get_non_persistant_map */
 #define AXIS2_CTX_GET_NON_PERSISTANT_MAP(ctx, env) \
     ((ctx)->ops->get_non_persistent_map(ctx, env))
+
+/** Get properties.
+    @sa axis2_ctx_ops#get_properties */
+#define AXIS2_CTX_GET_PROPERTIES(ctx, env) \
+    ((ctx)->ops->get_properties(ctx, env))
 
 /** Get persistant map.
     @sa axis2_ctx_ops#get_persistant_map */

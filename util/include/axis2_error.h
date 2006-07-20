@@ -86,6 +86,8 @@ extern "C"
         AXIS2_ERROR_UNKNOWN_TRANSPORT,
         /* Unsupported SOAP style */
         AXIS2_ERROR_UNSUPPORTED_TYPE,
+        /* Options object is not set */
+        AXIS2_ERROR_OPTIONS_OBJECT_IS_NOT_SET,
         /*
          * Group - core:clientapi:diclient
          */
@@ -565,6 +567,17 @@ extern "C"
         */
     const axis2_char_t *(AXIS2_CALL *
     get_message)(
+    const struct axis2_error *error);
+      
+    /**
+     * This fucntion is supposed to be overridden in an extended error structure.
+     * For example in Sandesha error structure this fucntion is overridden so that
+     * errors of axis2 range call the get_message function of error struct but
+     * errors of sandesha2 range get the messages from an array of that struct.
+     * @return error message for the extended struct.
+     */
+    const axis2_char_t *(AXIS2_CALL *
+    get_extended_message)(
     const struct axis2_error *error);
       
        axis2_status_t  (AXIS2_CALL *set_error_number) (struct axis2_error *error

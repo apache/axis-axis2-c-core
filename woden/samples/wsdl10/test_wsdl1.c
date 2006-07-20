@@ -83,6 +83,7 @@ int main(int argc, char *argv[])
     if (svc_list)
     {
         void *svc = NULL;
+        axis2_array_list_t *endpoints = NULL;
         svc = AXIS2_ARRAY_LIST_GET(svc_list, env, 0);
         if (svc)
         {
@@ -91,6 +92,7 @@ int main(int argc, char *argv[])
             {
                 printf("First service qname is %s\n", AXIS2_QNAME_TO_STRING(svc_qname, env));
             }
+            endpoints = WODEN_SVC_GET_ENDPOINTS(svc, env);
         }
     }
     binding_list = WODEN_WSDL10_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc, env);

@@ -19,7 +19,7 @@
 
 const axis2_char_t * AXIS2_CALL 
 axis2_error_impl_get_message (const axis2_error_t *error);
-      
+
 axis2_status_t AXIS2_CALL
 axis2_error_impl_set_error_number (axis2_error_t *error, axis2_error_codes_t error_number);
 
@@ -65,6 +65,8 @@ axis2_error_init()
         "Unknown Transport";
     axis2_error_messages[AXIS2_ERROR_UNSUPPORTED_TYPE] =
         "type is not supported";
+    axis2_error_messages[AXIS2_ERROR_OPTIONS_OBJECT_IS_NOT_SET] =
+        "Options object is not set";
     /* core:clientapi:diclient */
 
     /* core:context */
@@ -505,6 +507,7 @@ axis2_error_create (axis2_allocator_t * allocator)
     }
 
     error->ops->get_message = axis2_error_impl_get_message;
+    error->ops->get_extended_message = axis2_error_impl_get_message;
     error->ops->set_error_number = axis2_error_impl_set_error_number;
     error->ops->set_status_code = axis2_error_impl_set_status_code;
     error->ops->get_status_code = axis2_error_impl_get_status_code;

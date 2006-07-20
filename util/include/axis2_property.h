@@ -48,6 +48,9 @@ AXIS2_DECLARE_DATA struct axis2_property_ops
     free) (axis2_property_t *property, 
             const axis2_env_t *env);
 
+    /**
+     * Default scope is AXIS2_SCOPE_REQUEST
+     */
     axis2_status_t (AXIS2_CALL *
     set_scope) (axis2_property_t *property,
                 const axis2_env_t *env,
