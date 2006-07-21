@@ -522,6 +522,8 @@ create(const axis2_env_t *env)
     binding_op_impl->binding_op.ops->type = woden_wsdl10_binding_op_type;
     binding_op_impl->binding_op.ops->get_base_impl = woden_wsdl10_binding_op_get_base_impl;
     
+    binding_op_impl->binding_op.ops->get_interface_op = 
+        woden_wsdl10_binding_op_get_interface_op;
     binding_op_impl->binding_op.ops->get_binding_msg_refs = 
         woden_wsdl10_binding_op_get_binding_msg_refs;
     binding_op_impl->binding_op.ops->get_binding_fault_refs = 
