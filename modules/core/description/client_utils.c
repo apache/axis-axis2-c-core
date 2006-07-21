@@ -152,9 +152,12 @@ axis2_client_utils_create_axis2_svc(
             axis2_char_t *address = NULL;
 
             soap_address = WODEN_ENDPOINT_GET_ADDRESS(endpoint, env);
-            address = AXIS2_URI_TO_STRING(soap_address, env, AXIS2_URI_UNP_OMITUSERINFO);
-            endpoint_ref = axis2_endpoint_ref_create(env, address);
-            AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+            if(soap_address)
+            {
+                address = AXIS2_URI_TO_STRING(soap_address, env, AXIS2_URI_UNP_OMITUSERINFO);
+                endpoint_ref = axis2_endpoint_ref_create(env, address);
+                AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+            }
         }
 
         if(endpoint)
@@ -278,9 +281,13 @@ axis2_client_utils_create_axis2_svc(
             axis2_char_t *address = NULL;
 
             soap_address = WODEN_WSDL10_ENDPOINT_GET_ADDRESS(endpoint, env);
-            address = AXIS2_URI_TO_STRING(soap_address, env, AXIS2_URI_UNP_OMITUSERINFO);
-            endpoint_ref = axis2_endpoint_ref_create(env, address);
-            AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+            if(soap_address)
+            {
+                address = AXIS2_URI_TO_STRING(soap_address, env, 
+                        AXIS2_URI_UNP_OMITUSERINFO);
+                endpoint_ref = axis2_endpoint_ref_create(env, address);
+                AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+            }
         }
         if(endpoint)
             binding = WODEN_WSDL10_ENDPOINT_GET_BINDING(endpoint, env);

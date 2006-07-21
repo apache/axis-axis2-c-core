@@ -75,6 +75,12 @@ int main(int argc, char** argv)
     svc_client = 
         axis2_svc_client_create_with_conf_ctx_and_wsdl_uri_wsdl_svc_name_and_endpoint(
                 env, NULL, wsdl_uri, wsdl_svc_qname, "Calculator", client_home);
+    if(!svc_client)
+    {
+		printf("Service client is NULL \n");
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Service client is NULL");
+        return 1;
+    }
     payload = build_om_programatically(env);
     op_qname = axis2_qname_create(env, "add", "http://localhost/axis/Calculator", 
             NULL); 
