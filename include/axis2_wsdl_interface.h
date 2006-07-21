@@ -157,8 +157,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_interface_ops
                                         
     /**
      * The op is added by its ncname. If op is null
-     * it will not be added. If the Operation name is null a
-     * <code>WSDLProcessingException</code> will be thrown.
+     * it will not be added.
      *
      * @param op
      */

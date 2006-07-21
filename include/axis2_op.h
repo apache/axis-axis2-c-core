@@ -173,7 +173,6 @@ AXIS2_DECLARE_DATA struct axis2_op_ops
      * To ebgage a module it is reuired to use this method
      *
      * @param moduleref
-     * @throws org.apache.axis2.AxisFault
      */
     axis2_status_t (AXIS2_CALL *
     engage_module) (axis2_op_t *op,
@@ -376,7 +375,6 @@ AXIS2_DECLARE_DATA struct axis2_op_ops
      * This will not create a new op context if there is no one already.
      * @param msgContext
      * @return
-     * @throws AxisFault
      */
     struct axis2_op_ctx *(AXIS2_CALL *
     find_for_existing_op_ctx) (axis2_op_t *op,

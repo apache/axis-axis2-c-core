@@ -145,7 +145,6 @@ struct axis2_svc_ops
      * To ebgage a module it is reuired to use this method
      *
      * @param moduleref
-     * @throws AxisFault
      */
     axis2_status_t (AXIS2_CALL *
     engage_module) (axis2_svc_t *svc,

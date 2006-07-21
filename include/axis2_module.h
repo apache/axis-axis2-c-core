@@ -68,7 +68,7 @@ AXIS2_DECLARE_DATA struct axis2_module_ops
             struct axis2_module_desc *module_desc);
 
     /* TODO figure out how to get the engage() concept done */
-    /* public void engage(ExecutionChain exeChain) throws AxisFault; */
+    /* public void engage(ExecutionChain exeChain); */
     
     /* shutdown the module */
     axis2_status_t (AXIS2_CALL * 
