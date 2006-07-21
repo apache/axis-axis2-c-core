@@ -496,6 +496,8 @@ create(const axis2_env_t *env)
     endpoint_impl->endpoint.ops->get_binding = woden_wsdl10_endpoint_get_binding;
     endpoint_impl->endpoint.ops->get_address = 
         woden_wsdl10_endpoint_get_address;
+    endpoint_impl->endpoint.ops->set_binding_element = 
+        woden_wsdl10_endpoint_set_binding_element;
  
     endpoint_impl->methods = axis2_hash_make(env);
     if(!endpoint_impl->methods) 

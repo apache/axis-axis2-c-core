@@ -388,7 +388,8 @@ woden_wsdl10_ext_registry_query_deserializer(
         ed = axis2_hash_get(inner_deserializer_reg, elem_name, 
                 AXIS2_HASH_KEY_STRING);
     }
-    ed = woden_wsdl10_soap_module_deserializer_to_ext_deserializer(ed, env);
+    if(ed)
+        ed = woden_wsdl10_soap_module_deserializer_to_ext_deserializer(ed, env);
     return ed;
 }
 

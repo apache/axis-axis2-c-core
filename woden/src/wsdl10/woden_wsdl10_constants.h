@@ -61,7 +61,7 @@ extern "C"
 #define WODEN_WSDL10_ELEM_PROPERTY "property"
 #define WODEN_WSDL10_ELEM_VALUE "value"
 #define WODEN_WSDL10_ELEM_CONSTRAINT "constraint"
-#define WODEN_WSDL10_ELEM_ENDPOINT "endpoint"
+#define WODEN_WSDL10_ELEM_ENDPOINT "port"
 #define WODEN_WSDL10_ELEM_PART "part"
 
 /* Top-level WSDL 2.0 qualified element names. */
@@ -87,7 +87,7 @@ extern "C"
 #define WODEN_WSDL10_Q_ELEM_PROPERTY "property|http://schemas.xmlsoap.org/wsdl"
 #define WODEN_WSDL10_Q_ELEM_VALUE "value|http://schemas.xmlsoap.org/wsdl"
 #define WODEN_WSDL10_Q_ELEM_CONSTRAINT "constraint|http://schemas.xmlsoap.org/wsdl"
-#define WODEN_WSDL10_Q_ELEM_ENDPOINT "endpoint|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_ENDPOINT "port|http://schemas.xmlsoap.org/wsdl"
 
 /* Attribute names. */
 #define WODEN_WSDL10_ATTR_ID "id"

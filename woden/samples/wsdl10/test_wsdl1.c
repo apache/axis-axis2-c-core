@@ -22,6 +22,7 @@
 #include <platforms/axis2_platform_auto_sense.h>
 #include <woden_resolver.h>
 #include <woden_wsdl10_desc.h>
+#include <woden_wsdl10_endpoint.h>
 #include <woden_interface.h>
 #include <woden_binding.h>
 #include <woden_element_decl.h>
@@ -84,6 +85,7 @@ int main(int argc, char *argv[])
     {
         void *svc = NULL;
         axis2_array_list_t *endpoints = NULL;
+        int i = 0, no_of_endpoints = -1;
         svc = AXIS2_ARRAY_LIST_GET(svc_list, env, 0);
         if (svc)
         {
@@ -93,6 +95,30 @@ int main(int argc, char *argv[])
                 printf("First service qname is %s\n", AXIS2_QNAME_TO_STRING(svc_qname, env));
             }
             endpoints = WODEN_SVC_GET_ENDPOINTS(svc, env);
+            if(endpoints)
+            {
+                no_of_endpoints = AXIS2_ARRAY_LIST_SIZE(endpoints, env);
+            }
+            else
+            {
+                printf("Endpoints is NULL\n");
+                return 1;
+            }
+            for(i = 0; i < no_of_endpoints; i++)
+            {
+                woden_nc_name_t *ncname = NULL;
+                axis2_char_t *ep_ncname = NULL;
+                woden_wsdl10_endpoint_t *endpoint = NULL;
+
+                endpoint = AXIS2_ARRAY_LIST_GET(endpoints, env, i);
+                ncname = WODEN_WSDL10_ENDPOINT_GET_NAME(endpoint, env);
+                if(ncname)
+                    ep_ncname = WODEN_NC_NAME_TO_STRING(ncname, env);
+                if(ep_ncname)
+                {
+                    printf("ep_ncname:%s\n", ep_ncname); 
+                }
+            }
         }
     }
     binding_list = WODEN_WSDL10_DESC_ELEMENT_GET_BINDING_ELEMENTS(desc, env);
