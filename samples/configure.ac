@@ -127,6 +127,7 @@ AC_CONFIG_FILES([Makefile \
     client/Makefile \
     client/echo/Makefile \
     client/math/Makefile \
+    client/diclient/Makefile \
     client/mtom/Makefile \
     client/mtom/resources/Makefile \
     client/notify/Makefile \
