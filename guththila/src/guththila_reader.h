@@ -24,8 +24,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "guththila_buffer.h"
-#include "guththila_environment.h"
+/* #include "guththila_environment.h" */
 #include "guththila_defines.h"
+#include <axis2_env.h>
+#include "guththila_error.h"
 
 typedef enum guththila_reader_types
 {
@@ -40,22 +42,22 @@ typedef struct guththila_reader_s
 } guththila_reader_t;
 
 
-GUTHTHILA_DECLARE (guththila_reader_t *)
-guththila_reader_create_for_file (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_reader_t *
+guththila_reader_create_for_file (axis2_env_t * environment,
                                   char* filename);
 
-GUTHTHILA_DECLARE(guththila_reader_t *)
-guththila_reader_create_for_memory(guththila_environment_t *environment,
+AXIS2_EXTERN guththila_reader_t *
+guththila_reader_create_for_memory(axis2_env_t *environment,
                                    int (*input_read_callback)
                                        (char *buffer,int size,void* ctx),void *ctx);
                                    
-GUTHTHILA_DECLARE (int)
-guththila_reader_read (guththila_environment_t * environment,
+AXIS2_EXTERN int
+guththila_reader_read (axis2_env_t * environment,
                        guththila_char_t * buffer, int offset, int length,
                        guththila_reader_t * r);
                        
-GUTHTHILA_DECLARE (void)
-guththila_reader_free (guththila_environment_t * environment,
+AXIS2_EXTERN void
+guththila_reader_free (axis2_env_t * environment,
                        guththila_reader_t * r);
 
 #endif /* GUTHTHILA_READER_H */

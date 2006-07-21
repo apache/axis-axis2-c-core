@@ -18,7 +18,6 @@
 #define GUTHTHILA_ERROR_H
 
 #include <guththila_defines.h>
-#include <guththila_allocator.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -87,30 +86,30 @@ extern "C"
 
 
 
-    typedef struct guththila_error guththila_error_t;
-    struct guththila_error_ops;
+/*     typedef struct guththila_error guththila_error_t; */
+/*     struct guththila_error_ops; */
 
 
-GUTHTHILA_DECLARE_DATA typedef struct guththila_error_ops
-{
-    guththila_char_t *(GUTHTHILA_CALL * get_message) ();
-    int (GUTHTHILA_CALL *free)(guththila_error_t *error);
-} guththila_error_ops_t;
+/*  GUTHTHILA_DECLARE_DATA typedef struct guththila_error_ops */
+/* { */
+/*     guththila_char_t *(GUTHTHILA_CALL * get_message) (); */
+/*     int (GUTHTHILA_CALL *free)(guththila_error_t *error); */
+/* } guththila_error_ops_t; */
 
-struct guththila_error
-{
-    struct guththila_error_ops *ops;
-    int errorno;
-} ;
-
-
-GUTHTHILA_DECLARE (guththila_error_t *)
-guththila_error_create (guththila_allocator_t * allocator);
+/* struct guththila_error */
+/* { */
+/*     struct guththila_error_ops *ops; */
+/*     int errorno; */
+/* } ; */
 
 
-#define GUTHTHILA_ERROR_GET_MESSAGE(error) ((error)->ops->get_message())
+/* GUTHTHILA_DECLARE (guththila_error_t *) */
+/* guththila_error_create (guththila_allocator_t * allocator); */
 
-#define GUTHTHILA_ERROR_FREE(error) ((error)->ops->free(error))
+
+/* #define GUTHTHILA_ERROR_GET_MESSAGE(error) ((error)->ops->get_message()) */
+
+/* #define GUTHTHILA_ERROR_FREE(error) ((error)->ops->free(error)) */
 
 
 #ifdef __cplusplus

@@ -20,30 +20,32 @@
 
 #include "guththila_token.h"
 #include "guththila_unicode.h"
-#include "guththila_string.h"
+/* #include "guththila_string.h" */
+#include <axis2_string.h>
 
-GUTHTHILA_DECLARE (guththila_token_t *)
-guththila_token_create_token_buffer (guththila_environment_t *environment,
+
+AXIS2_EXTERN guththila_token_t *
+guththila_token_create_token_buffer (axis2_env_t *environment,
                                      int size)
 {
     guththila_token_t *tok =
-        (guththila_token_t *) GUTHTHILA_MALLOC (environment->allocator,
+        (guththila_token_t *) AXIS2_MALLOC (environment->allocator,
                                           sizeof (guththila_token_t) * size);
     tok->size = size;
     return tok;
 }
 
 
-GUTHTHILA_DECLARE (void)
-guththila_token_free_token_buffer (guththila_environment_t * environment,
+AXIS2_EXTERN void
+guththila_token_free_token_buffer (axis2_env_t * environment,
                                    guththila_token_t * tok)
 {
     if (tok)
-        GUTHTHILA_FREE (environment->allocator, tok);
+        AXIS2_FREE (environment->allocator, tok);
 }
 
 
-GUTHTHILA_DECLARE (void)
+AXIS2_EXTERN void
 guththila_token_exception ()
 {
     printf ("Throws new token Exception");
@@ -54,8 +56,8 @@ guththila_token_exception ()
 }
 
 
-GUTHTHILA_DECLARE (int)
-guththila_token_length (guththila_environment_t * environment,
+AXIS2_EXTERN int
+guththila_token_length (axis2_env_t * environment,
                         guththila_token_t * tok)
 {
     if (tok->end)
@@ -66,20 +68,20 @@ guththila_token_length (guththila_environment_t * environment,
 }
 
 
-GUTHTHILA_DECLARE (guththila_token_t *)
-guththila_token_grow (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_token_t *
+guththila_token_grow (axis2_env_t * environment,
                       guththila_token_t * tok)
 {
     tok->size <<= 1;
-    tok = (guththila_token_t *) GUTHTHILA_REALLOC (environment->allocator,
+    tok = (guththila_token_t *) AXIS2_REALLOC (environment->allocator,
                                  tok, sizeof (guththila_token_t) * tok->size);
 
     return tok;
 }
 
 
-GUTHTHILA_DECLARE (guththila_token_t *)
-guththila_token_append (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_token_t *
+guththila_token_append (axis2_env_t * environment,
                         guththila_token_t * tok)
 {
     if (++(tok->last) > (tok->size))
@@ -88,8 +90,8 @@ guththila_token_append (guththila_environment_t * environment,
 }
 
 
-GUTHTHILA_DECLARE (guththila_token_t *)
-guththila_token_last (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_token_t *
+guththila_token_last (axis2_env_t * environment,
                       guththila_token_t * tok)
 {
     if (tok->last < 0)
@@ -98,15 +100,15 @@ guththila_token_last (guththila_environment_t * environment,
 }
 
 
-GUTHTHILA_DECLARE (int)
-guththila_token_count (guththila_environment_t * environment,
+AXIS2_EXTERN int
+guththila_token_count (axis2_env_t * environment,
                        guththila_token_t * tok)
 {
     return tok->last;
 }
 
-GUTHTHILA_DECLARE (guththila_char_t *)
-guththila_token_char_ref (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_char_t *
+guththila_token_char_ref (axis2_env_t * environment,
                           guththila_char_t * buffer)
 {
     int len;
@@ -114,8 +116,8 @@ guththila_token_char_ref (guththila_environment_t * environment,
     int ix;
     guththila_char_t *ref_buffer = NULL;
     
-    len = GUTHTHILA_STRLEN ( buffer);
-    ref_buffer =  (guththila_char_t *) GUTHTHILA_MALLOC (
+    len = AXIS2_STRLEN ( buffer);
+    ref_buffer =  (guththila_char_t *) AXIS2_MALLOC (
                             environment->allocator, len + 1);
                             
                             
@@ -168,8 +170,8 @@ guththila_token_char_ref (guththila_environment_t * environment,
 }
 
 
-GUTHTHILA_DECLARE (guththila_char_t *)
-guththila_token_to_string (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_char_t *
+guththila_token_to_string (axis2_env_t * environment,
                            guththila_token_t * tok, int unicode)
 {
     if (tok)
@@ -179,7 +181,7 @@ guththila_token_to_string (guththila_environment_t * environment,
             int length;
             guththila_char_t *buffer = NULL;
             length = guththila_token_length (environment, tok);
-            buffer = (guththila_char_t *) GUTHTHILA_MALLOC (environment->allocator,
+            buffer = (guththila_char_t *) AXIS2_MALLOC (environment->allocator,
                                                       length + 1);
             memcpy (buffer, tok->start, length);
             buffer[length] = 0;
@@ -194,7 +196,7 @@ guththila_token_to_string (guththila_environment_t * environment,
             guththila_char_t *buffer = NULL;
             length = guththila_token_length (environment, tok);
             
-            buffer = (guththila_char_t *) GUTHTHILA_MALLOC (
+            buffer = (guththila_char_t *) AXIS2_MALLOC (
                                 environment->allocator, length + 1);
                                 
             memcpy (buffer, tok->start, length);
@@ -208,8 +210,8 @@ guththila_token_to_string (guththila_environment_t * environment,
 }
 
 
-GUTHTHILA_DECLARE (void)
-guththila_token_relocate (guththila_environment_t * environment,
+AXIS2_EXTERN void
+guththila_token_relocate (axis2_env_t * environment,
                           guththila_token_t * tok, int offset)
 {
     tok->start -= offset;
@@ -217,8 +219,8 @@ guththila_token_relocate (guththila_environment_t * environment,
 }
 
 
-GUTHTHILA_DECLARE (int)
-guththila_token_compare (guththila_environment_t * environment,
+AXIS2_EXTERN int
+guththila_token_compare (axis2_env_t * environment,
                          guththila_token_t * tok, const guththila_char_t * s,
                          int n, int unicode_state)
 {
@@ -233,8 +235,8 @@ guththila_token_compare (guththila_environment_t * environment,
 }
 
 
-GUTHTHILA_DECLARE (int)
-guththila_token_length_utf16 (guththila_environment_t * environment,
+AXIS2_EXTERN int
+guththila_token_length_utf16 (axis2_env_t * environment,
                               unsigned int utf16_ch)
 {
     int length;
@@ -256,15 +258,17 @@ guththila_token_length_utf16 (guththila_environment_t * environment,
 }
 
 
-GUTHTHILA_DECLARE (guththila_char_t *)
-guththila_token_build_utf8 (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_char_t *
+guththila_token_build_utf8 (axis2_env_t * environment,
                             unsigned int utf16_ch, int length)
 {
     guththila_UTF8_char mask = 0;
     int ii = 0;
     guththila_char_t *buffer =
-        (guththila_char_t *) GUTHTHILA_CALLOC (environment->allocator,
-                                               length + 1, 1);
+        (guththila_char_t *) AXIS2_MALLOC (environment->allocator,
+                                               length + 1);
+    memset (buffer, 0, length+1);
+
     if (length == 1)
         buffer[0] = utf16_ch;
     else
@@ -303,8 +307,8 @@ guththila_token_build_utf8 (guththila_environment_t * environment,
 }
 
 
-GUTHTHILA_DECLARE (guththila_char_t *)
-guththila_token_convert_utf16_to_utf8 (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_char_t *
+guththila_token_convert_utf16_to_utf8 (axis2_env_t * environment,
                                        guththila_char_t * buffer, int length)
 {
     unsigned int utf16_char = 0;
@@ -314,7 +318,8 @@ guththila_token_convert_utf16_to_utf8 (guththila_environment_t * environment,
     guththila_char_t *output_char = 0;
     int ii = 0;
     guththila_char_t *output_buffer =
-        (guththila_char_t *) GUTHTHILA_CALLOC (environment->allocator, 1, 1);
+        (guththila_char_t *) AXIS2_MALLOC (environment->allocator, 1);
+    memset (output_buffer, 0, 1);
     for (ii = 0; length > ii;)
     {
         utf16_char = *((guththila_UTF16_char *) & input_buffer[ii]);

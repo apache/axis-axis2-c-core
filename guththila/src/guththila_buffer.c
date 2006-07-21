@@ -17,13 +17,15 @@
  * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)   
  */
 
-#include "guththila_environment.h"
-#include "guththila_buffer.h"
 
-GUTHTHILA_DECLARE (guththila_buffer_t *)
-guththila_buffer_create (guththila_environment_t * environment, int size)
+/* #include "guththila_environment.h" */
+#include "guththila_buffer.h"
+#include <axis2_env.h>
+
+AXIS2_EXTERN guththila_buffer_t *
+guththila_buffer_create (axis2_env_t * environment, int size)
 {
-    guththila_buffer_t *name = GUTHTHILA_MALLOC (environment->allocator,
+    guththila_buffer_t *name = AXIS2_MALLOC (environment->allocator,
                                             sizeof (guththila_buffer_t));
     name->size = size;
     name->offset = 0;
@@ -31,35 +33,35 @@ guththila_buffer_create (guththila_environment_t * environment, int size)
     name->next = 0;
     name->buff = NULL;
     if (size != 0)
-        name->buff = (guththila_char_t *) GUTHTHILA_MALLOC (
+        name->buff = (guththila_char_t *) AXIS2_MALLOC (
                                 environment->allocator, size);
     return name;
 }
 
 
-GUTHTHILA_DECLARE (void)
-guththila_buffer_free (guththila_environment_t * environment,
+AXIS2_EXTERN void
+guththila_buffer_free (axis2_env_t * environment,
                        guththila_buffer_t * name)
 {
     if (name)
     {
         if (name->buff)
         {
-            GUTHTHILA_FREE (environment->allocator, name->buff);
+            AXIS2_FREE (environment->allocator, name->buff);
         }
-        GUTHTHILA_FREE (environment->allocator, name);
+        AXIS2_FREE (environment->allocator, name);
     }
 }
 
 
-GUTHTHILA_DECLARE (guththila_buffer_t *)
-guththila_buffer_grow (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_buffer_t *
+guththila_buffer_grow (axis2_env_t * environment,
                        guththila_buffer_t * name)
 {
 
     guththila_char_t *x = NULL;
     name->size <<= 1;
-    x = (guththila_char_t *) GUTHTHILA_REALLOC (environment->allocator,
+    x = (guththila_char_t *) AXIS2_REALLOC (environment->allocator,
                                                   name->buff,name->size);
     if (x)
         name->buff = x;
@@ -67,4 +69,3 @@ guththila_buffer_grow (guththila_environment_t * environment,
         name->size >>= 1;
     return name;
 }
-

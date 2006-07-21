@@ -34,15 +34,15 @@ typedef struct guththila_reader_impl_t
 
 
 
-GUTHTHILA_DECLARE (guththila_reader_t *)
-guththila_reader_create_for_file (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_reader_t *
+guththila_reader_create_for_file (axis2_env_t * environment,
                                   char *filename)
 {
     guththila_reader_impl_t *file_reader = NULL;
     if(!filename)
         return NULL;
     
-       file_reader = (guththila_reader_impl_t *) GUTHTHILA_MALLOC ( environment->allocator,
+       file_reader = (guththila_reader_impl_t *) AXIS2_MALLOC ( environment->allocator,
                                                  sizeof (guththila_reader_impl_t));
     if(!file_reader)
         return NULL;
@@ -51,7 +51,7 @@ guththila_reader_create_for_file (guththila_environment_t * environment,
     
     if(!(file_reader->fp ))
     {
-        GUTHTHILA_FREE(environment->allocator,file_reader);
+        AXIS2_FREE(environment->allocator,file_reader);
         return NULL;
     }                                                            
     
@@ -61,13 +61,13 @@ guththila_reader_create_for_file (guththila_environment_t * environment,
 }
 
 
-GUTHTHILA_DECLARE(guththila_reader_t *)
+AXIS2_EXTERN guththila_reader_t *
 guththila_reader_create_for_memory(
-                guththila_environment_t *environment,
+                axis2_env_t *environment,
                 int (*input_read_callback)(char *buffer,int size,void* ctx),void* ctx)
 {
     guththila_reader_impl_t *memory_reader = 
-        (guththila_reader_impl_t *) GUTHTHILA_MALLOC (environment->allocator,
+        (guththila_reader_impl_t *) AXIS2_MALLOC (environment->allocator,
                                             sizeof (guththila_reader_impl_t));
     if(!memory_reader)
     {
@@ -82,8 +82,8 @@ guththila_reader_create_for_memory(
 }
 
 
-GUTHTHILA_DECLARE (void)
-guththila_reader_free (guththila_environment_t * environment,
+AXIS2_EXTERN void
+guththila_reader_free (axis2_env_t * environment,
                        guththila_reader_t * r)
 {
 
@@ -95,13 +95,13 @@ guththila_reader_free (guththila_environment_t * environment,
         if(((guththila_reader_impl_t*)r)->fp)
             fclose(((guththila_reader_impl_t*)r)->fp);
     }
-    GUTHTHILA_FREE(environment->allocator, (guththila_reader_impl_t*)r); 
+    AXIS2_FREE(environment->allocator, (guththila_reader_impl_t*)r); 
    return;    
 }
 
         
-GUTHTHILA_DECLARE (int)
-guththila_reader_read (guththila_environment_t * environment,
+AXIS2_EXTERN int
+guththila_reader_read (axis2_env_t * environment,
                        guththila_char_t * buffer,
                        int offset,
                        int length,

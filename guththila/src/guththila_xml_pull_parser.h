@@ -29,10 +29,16 @@
 #include "guththila_token.h"
 #include "guththila_namespace.h"
 #include "guththila_depth.h"
-#include "guththila_stack.h"
+#include "guththila_attribute.h"
+/* #include "guththila_stack.h */
 #include "guththila_unicode.h"
-#include "guththila_environment.h"
+/* #include "guththila_environment.h" */
 #include "guththila_defines.h"
+
+#include <axis2_env.h>
+#include <axis2_allocator.h>
+#include <axis2_stack.h>
+#include <axis2_string.h>
 
 #define p_FILE __FILE__         /* file name */
 #define LINE __LINE__           /* line number */
@@ -74,10 +80,10 @@ typedef struct guththila_xml_pull_parser_s
   guththila_token_t *prefix;
   guththila_token_t *name;
   guththila_token_t *value;
-  guththila_stack_t *stack;
-  guththila_stack_t *attrib;
-  guththila_stack_t *namesp;
-  guththila_stack_t *dep;
+  axis2_stack_t *stack;
+  axis2_stack_t *attrib;
+  axis2_stack_t *namesp;
+  axis2_stack_t *dep;
   int _next;
   int offset;
   int last;
@@ -87,286 +93,286 @@ typedef struct guththila_xml_pull_parser_s
 } guththila_xml_pull_parser_t;
 
 
-GUTHTHILA_DECLARE (int)
-     guththila_xml_pull_parser_read (guththila_environment_t * environment,
+AXIS2_EXTERN int
+     guththila_xml_pull_parser_read (axis2_env_t * environment,
                  guththila_xml_pull_parser_t * p);
                                 
-     int 
-     guththila_xml_pull_parser_next_char (guththila_environment_t *environment,
+     AXIS2_EXTERN int
+     guththila_xml_pull_parser_next_char (axis2_env_t *environment,
                  guththila_xml_pull_parser_t * p,
                  int eof);
 
-int 
-guththila_xml_pull_parser_tokenize (guththila_environment_t *environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_tokenize (axis2_env_t *environment,
                 guththila_xml_pull_parser_t * p);
                                         
                                         
-int 
+AXIS2_EXTERN int
 guththila_xml_pull_parser_exception (guththila_char_t * s, int line, int error_code);
 
-int 
-guththila_xml_pull_parser_skip_spaces (guththila_environment_t *environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_skip_spaces (axis2_env_t *environment,
                    guththila_xml_pull_parser_t *p,
                    int c);
                                            
-int 
-guththila_xml_pull_parser_process_xml_decl(guththila_environment_t *environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_process_xml_decl(axis2_env_t *environment,
                   guththila_xml_pull_parser_t * p);
                                             
-int 
-guththila_xml_pull_parser_process_version_info(guththila_environment_t * environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_process_version_info(axis2_env_t * environment,
                                                guththila_xml_pull_parser_t * p);
                                                
                                                
-int 
-guththila_xml_pull_parser_process_encoding_decl (guththila_environment_t * environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_process_encoding_decl (axis2_env_t * environment,
                                                  guththila_xml_pull_parser_t * p);
                                                  
-int 
-guththila_xml_pull_parser_process_sd_decl (guththila_environment_t *environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_process_sd_decl (axis2_env_t *environment,
                                            guththila_xml_pull_parser_t *p);
                                            
-void 
-guththila_xml_pull_parser_open_token (guththila_environment_t *environment,
+AXIS2_EXTERN void
+guththila_xml_pull_parser_open_token (axis2_env_t *environment,
                                       guththila_xml_pull_parser_t *p);
                                       
-void 
-guththila_xml_pull_parser_close_token (guththila_environment_t *environment,
+AXIS2_EXTERN void
+guththila_xml_pull_parser_close_token (axis2_env_t *environment,
                                        guththila_xml_pull_parser_t *p,
                                        int t,
                                        int refer);
                                        
-guththila_char_t *
-guththila_xml_pull_parser_last_char (guththila_environment_t *environment,
+AXIS2_EXTERN guththila_char_t *
+guththila_xml_pull_parser_last_char (axis2_env_t *environment,
                                      guththila_xml_pull_parser_t *p);
                                      
-int 
-guththila_xml_pull_parser_process_eq (guththila_environment_t *environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_process_eq (axis2_env_t *environment,
                                       guththila_xml_pull_parser_t *p,
                                       int c);
                                       
-void 
-guththila_xml_pull_parser_add_attribute (guththila_environment_t *environment,
+AXIS2_EXTERN void
+guththila_xml_pull_parser_add_attribute (axis2_env_t *environment,
                                          guththila_xml_pull_parser_t *p,
                                          guththila_token_t * name,
                                          guththila_token_t * value);
                                          
-void 
+AXIS2_EXTERN void
 guththila_xml_pull_parser_add_attribute_with_prefix
-(guththila_environment_t *environment,
+(axis2_env_t *environment,
  guththila_xml_pull_parser_t *p,
  guththila_token_t * prefix,
  guththila_token_t * name,
  guththila_token_t * value);
                                          
-int 
-guththila_xml_pull_parser_process_char_data (guththila_environment_t *environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_process_char_data (axis2_env_t *environment,
                                              guththila_xml_pull_parser_t *p);
                                              
-int 
+AXIS2_EXTERN int
 guththila_xml_pull_parser_process_space_tag_or_empty_element
-(guththila_environment_t * environment,
+(axis2_env_t * environment,
  guththila_xml_pull_parser_t *p);
                                              
-int 
-guththila_xml_pull_parser_process_comment (guththila_environment_t *environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_process_comment (axis2_env_t *environment,
                                            guththila_xml_pull_parser_t *p);
                                            
-int 
-guththila_xml_pull_parser_process_pi (guththila_environment_t *environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_process_pi (axis2_env_t *environment,
                                       guththila_xml_pull_parser_t *p);
                                       
-int 
-guththila_xml_pull_parser_process_end_tag (guththila_environment_t *environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_process_end_tag (axis2_env_t *environment,
                                              guththila_xml_pull_parser_t *p);
                                              
-void 
-guththila_xml_pull_parser_reset (guththila_environment_t *environment,
+AXIS2_EXTERN void
+guththila_xml_pull_parser_reset (axis2_env_t *environment,
                                  guththila_xml_pull_parser_t * p);
                                  
-int 
-guththila_xml_pull_parser_process_name (guththila_environment_t *environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_process_name (axis2_env_t *environment,
                                         guththila_xml_pull_parser_t *p);
                                         
-int 
-guththila_xml_pull_parser_process_attribute (guththila_environment_t  *environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_process_attribute (axis2_env_t  *environment,
                                              guththila_xml_pull_parser_t *p,
                                              int c);
                                              
-int 
+AXIS2_EXTERN int
 guththila_xml_pull_parser_process_attribute_value
-(guththila_environment_t * environment,
+(axis2_env_t * environment,
  guththila_xml_pull_parser_t * p,
  int c);
                                               
                                               
-int 
-guththila_xml_pull_parser_is_space (guththila_environment_t *environment, int c);
+AXIS2_EXTERN int
+guththila_xml_pull_parser_is_space (axis2_env_t *environment, int c);
 
 
-void 
-guththila_xml_pull_parser_relocate_tokens (guththila_environment_t *environment,
+AXIS2_EXTERN void
+guththila_xml_pull_parser_relocate_tokens (axis2_env_t *environment,
                                            guththila_xml_pull_parser_t *p,
                                            int offset);
                                            
-void 
-guththila_xml_pull_parser_shift (guththila_environment_t *environment,
+AXIS2_EXTERN void
+guththila_xml_pull_parser_shift (axis2_env_t *environment,
                                  guththila_xml_pull_parser_t * p);
                                  
-void 
-guththila_xml_pull_parser_add_namespace (guththila_environment_t *environment,
+AXIS2_EXTERN void
+guththila_xml_pull_parser_add_namespace (axis2_env_t *environment,
                                          guththila_xml_pull_parser_t *p,
                                          guththila_token_t * name,
                                          guththila_token_t * uri);
                                          
-void 
-guththila_xml_pull_parser_open_element (guththila_environment_t *environment,
+AXIS2_EXTERN void
+guththila_xml_pull_parser_open_element (axis2_env_t *environment,
                                         guththila_xml_pull_parser_t *p);
                                         
-void 
-guththila_xml_pull_parser_close_element (guththila_environment_t *environment,
+AXIS2_EXTERN void
+guththila_xml_pull_parser_close_element (axis2_env_t *environment,
                                          guththila_xml_pull_parser_t *p);
                                          
-int 
-guththila_xml_pull_parser_from_utf16 (guththila_environment_t *environment,
+AXIS2_EXTERN int
+guththila_xml_pull_parser_from_utf16 (axis2_env_t *environment,
                                       guththila_xml_pull_parser_t *p,
                                       int eof);
                                       
-int 
+AXIS2_EXTERN int
 guththila_xml_pull_parser_is_valid_starting_char 
-(guththila_environment_t * environment,
+(axis2_env_t * environment,
  guththila_xml_pull_parser_t * p,
  int c);
                                          
 
-GUTHTHILA_DECLARE (int)
-     guththila_xml_pull_parser_next (guththila_environment_t * environment,
+AXIS2_EXTERN int
+     guththila_xml_pull_parser_next (axis2_env_t * environment,
                  guththila_xml_pull_parser_t * p);
                                 
-GUTHTHILA_DECLARE (guththila_xml_pull_parser_t *)
-     guththila_xml_pull_parser_create (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_xml_pull_parser_t *
+     guththila_xml_pull_parser_create (axis2_env_t * environment,
                    guththila_reader_t * r);
                                   
-GUTHTHILA_DECLARE (void)
-     guththila_xml_pull_parser_free (guththila_environment_t * environment,
+AXIS2_EXTERN void
+     guththila_xml_pull_parser_free (axis2_env_t * environment,
                  guththila_xml_pull_parser_t * parser);
                                
-GUTHTHILA_DECLARE (int)
+AXIS2_EXTERN int
   guththila_xml_pull_parser_get_attribute_count 
-     (guththila_environment_t * environment,
+     (axis2_env_t * environment,
       guththila_xml_pull_parser_t *p);
                                  
                                  
-GUTHTHILA_DECLARE (guththila_char_t *)
+AXIS2_EXTERN guththila_char_t *
      guththila_xml_pull_parser_get_attribute_name 
-(guththila_environment_t *environment,
+(axis2_env_t *environment,
  guththila_xml_pull_parser_t * p,
  guththila_attribute_t * att);
                                  
                                  
-GUTHTHILA_DECLARE (guththila_char_t *)
+AXIS2_EXTERN guththila_char_t *
      guththila_xml_pull_parser_get_attribute_value 
-(guththila_environment_t *environment,
+(axis2_env_t *environment,
  guththila_xml_pull_parser_t *p,
  guththila_attribute_t * att);
                                  
                                  
-GUTHTHILA_DECLARE (guththila_char_t *)
+AXIS2_EXTERN guththila_char_t *
      guththila_xml_pull_parser_get_attribute_prefix 
-(guththila_environment_t *environment,
+(axis2_env_t *environment,
  guththila_xml_pull_parser_t *p,
  guththila_attribute_t * att);
                                  
                                  
-GUTHTHILA_DECLARE (guththila_attribute_t *)
-     guththila_xml_pull_parser_get_attribute (guththila_environment_t *environment,
+AXIS2_EXTERN guththila_attribute_t *
+     guththila_xml_pull_parser_get_attribute (axis2_env_t *environment,
                      guththila_xml_pull_parser_t * p);
                                          
                                          
-     GUTHTHILA_DECLARE (guththila_char_t *)
+     AXIS2_EXTERN guththila_char_t *
      guththila_xml_pull_parser_get_attribute_name_by_number
-     (guththila_environment_t * environment,
+     (axis2_env_t * environment,
       guththila_xml_pull_parser_t * p,
       int i);
                                          
                                          
-GUTHTHILA_DECLARE (guththila_char_t *)
+AXIS2_EXTERN guththila_char_t *
      guththila_xml_pull_parser_get_attribute_value_by_number
-(guththila_environment_t * environment,
+(axis2_env_t * environment,
  guththila_xml_pull_parser_t * p,
  int i);
                                          
                                          
-GUTHTHILA_DECLARE (guththila_char_t *)
+AXIS2_EXTERN guththila_char_t *
      guththila_xml_pull_parser_get_attribute_prefix_by_number
-(guththila_environment_t * environment,
+(axis2_env_t * environment,
  guththila_xml_pull_parser_t * p,
  int i);
                                          
                                          
-GUTHTHILA_DECLARE (guththila_char_t *)
-     guththila_xml_pull_parser_get_name (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_char_t *
+     guththila_xml_pull_parser_get_name (axis2_env_t * environment,
                 guththila_xml_pull_parser_t * p);
                                     
                                     
-GUTHTHILA_DECLARE (guththila_char_t *)
-     guththila_xml_pull_parser_get_prefix (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_char_t *
+     guththila_xml_pull_parser_get_prefix (axis2_env_t * environment,
                   guththila_xml_pull_parser_t * p);
                                       
                                       
-GUTHTHILA_DECLARE (guththila_char_t *)
-     guththila_xml_pull_parser_get_value (guththila_environment_t * environment,
+AXIS2_EXTERN guththila_char_t *
+     guththila_xml_pull_parser_get_value (axis2_env_t * environment,
                  guththila_xml_pull_parser_t * p);
                                      
                                      
-GUTHTHILA_DECLARE (guththila_namespace_t *)
-     guththila_xml_pull_parser_get_namespace (guththila_environment_t *environment,
+AXIS2_EXTERN guththila_namespace_t *
+     guththila_xml_pull_parser_get_namespace (axis2_env_t *environment,
                      guththila_xml_pull_parser_t * p);
                                          
                                          
-GUTHTHILA_DECLARE (int)
+AXIS2_EXTERN int
      guththila_xml_pull_parser_get_namespace_count 
-     (guththila_environment_t *environment,
+     (axis2_env_t *environment,
       guththila_xml_pull_parser_t *p);
                                          
                                          
-GUTHTHILA_DECLARE (guththila_char_t *)
+AXIS2_EXTERN guththila_char_t *
      guththila_xml_pull_parser_get_namespace_uri 
-(guththila_environment_t *environment,
+(axis2_env_t *environment,
  guththila_xml_pull_parser_t * p,
  guththila_namespace_t * ns);
                                              
                                              
-GUTHTHILA_DECLARE (guththila_char_t *)
+AXIS2_EXTERN guththila_char_t *
      guththila_xml_pull_parser_get_namespace_prefix 
-(guththila_environment_t *environment,
+(axis2_env_t *environment,
  guththila_xml_pull_parser_t *p,
  guththila_namespace_t * ns);
                                      
                                      
-GUTHTHILA_DECLARE (guththila_char_t *)
+AXIS2_EXTERN guththila_char_t *
      guththila_xml_pull_parser_get_namespace_prefix_by_number
-(guththila_environment_t * environment,
+(axis2_env_t * environment,
  guththila_xml_pull_parser_t * p,
  int i);
                                      
                                      
-GUTHTHILA_DECLARE (guththila_char_t *)
+AXIS2_EXTERN guththila_char_t *
      guththila_xml_pull_parser_get_namespace_uri_by_number 
-(guththila_environment_t *environment,
+(axis2_env_t *environment,
  guththila_xml_pull_parser_t * p,
  int i);
                                        
                                        
-GUTHTHILA_DECLARE (guththila_char_t *)
+AXIS2_EXTERN guththila_char_t *
      guththila_xml_pull_parser_get_attribute_namespace_by_number
-(guththila_environment_t * environment,
+(axis2_env_t * environment,
  guththila_xml_pull_parser_t * p,
  int i);
 
-GUTHTHILA_DECLARE (guththila_char_t *)
+AXIS2_EXTERN guththila_char_t *
      guththila_xml_pull_parser_get_encoding 
-(guththila_environment_t *environment,
+(axis2_env_t *environment,
  guththila_xml_pull_parser_t *p);
 
 #endif /* GUTHTHILA_XML_PULL_PARSER_H */
