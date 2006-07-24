@@ -38,7 +38,10 @@ AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all (const axis2_char_t *
     log = axis2_log_create(allocator, NULL, log_file);
     thread_pool = axis2_thread_pool_init(allocator);
     env = axis2_env_create_with_error_log_thread_pool(allocator, error, log, thread_pool);
-    env->log->level = log_level;
+    if(NULL != env->log)
+    {
+        env->log->level = log_level;
+    }
     axis2_error_init();
 
     return env;
