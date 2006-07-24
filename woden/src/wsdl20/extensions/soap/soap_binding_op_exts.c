@@ -143,6 +143,10 @@ create(const axis2_env_t *env)
     
     binding_op_exts_impl->binding_op_exts.ops->get_soap_modules = 
         woden_soap_binding_op_exts_get_soap_modules;
+    binding_op_exts_impl->binding_op_exts.ops->get_soap_mep = 
+        woden_soap_binding_op_exts_get_soap_mep;
+    binding_op_exts_impl->binding_op_exts.ops->get_soap_action = 
+        woden_soap_binding_op_exts_get_soap_action;
  
     binding_op_exts_impl->methods = axis2_hash_make(env);
     if(!binding_op_exts_impl->methods) 
@@ -157,9 +161,15 @@ create(const axis2_env_t *env)
     axis2_hash_set(binding_op_exts_impl->methods, "type", 
             AXIS2_HASH_KEY_STRING, woden_soap_binding_op_exts_type);
 
-    axis2_hash_set(binding_op_exts_impl->methods, "get_modules", 
+    axis2_hash_set(binding_op_exts_impl->methods, "get_soap_modules", 
             AXIS2_HASH_KEY_STRING, 
             woden_soap_binding_op_exts_get_soap_modules);
+    axis2_hash_set(binding_op_exts_impl->methods, "get_soap_mep", 
+            AXIS2_HASH_KEY_STRING, 
+            woden_soap_binding_op_exts_get_soap_mep);
+    axis2_hash_set(binding_op_exts_impl->methods, "get_soap_action", 
+            AXIS2_HASH_KEY_STRING, 
+            woden_soap_binding_op_exts_get_soap_action);
 
     return &(binding_op_exts_impl->binding_op_exts);
 }
@@ -366,7 +376,7 @@ woden_soap_binding_op_exts_get_soap_action(
     parent_element = woden_wsdl_element_to_attr_extensible(parent_element, 
             env);
     binding_op_exts_impl->qname = axis2_qname_create_from_string(env, 
-            WODEN_Q_ATTR_SOAP_MEP);
+            WODEN_Q_ATTR_SOAP_ACTION);
     action = WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(
             parent_element, env, binding_op_exts_impl->qname); 
 

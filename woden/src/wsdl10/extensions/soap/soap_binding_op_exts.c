@@ -38,6 +38,7 @@ struct woden_wsdl10_soap_binding_op_exts_impl
     woden_obj_types_t obj_type;
     
     axis2_qname_t *qname;
+    axis2_uri_t *action;
 };
 
 #define INTF_TO_IMPL(binding_op_exts) ((woden_wsdl10_soap_binding_op_exts_impl_t *) binding_op_exts)
@@ -66,6 +67,12 @@ axis2_uri_t *AXIS2_CALL
 woden_wsdl10_soap_binding_op_exts_get_soap_mep(
         void *binding_op_exts,
         const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL 
+woden_wsdl10_soap_binding_op_exts_set_soap_action(
+        void *binding_op_exts,
+        const axis2_env_t *env,
+        axis2_uri_t *action);
 
 axis2_uri_t *AXIS2_CALL 
 woden_wsdl10_soap_binding_op_exts_get_soap_action(
@@ -97,10 +104,12 @@ woden_wsdl10_soap_binding_op_exts_to_component_exts(
     AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op_exts)
     {
-        binding_op_exts_impl = (woden_wsdl10_soap_binding_op_exts_impl_t *) create(env);
+        binding_op_exts_impl = (woden_wsdl10_soap_binding_op_exts_impl_t *) 
+            create(env);
     }
     else
-        binding_op_exts_impl = (woden_wsdl10_soap_binding_op_exts_impl_t *) binding_op_exts;
+        binding_op_exts_impl = (woden_wsdl10_soap_binding_op_exts_impl_t *) 
+            binding_op_exts;
     woden_wsdl10_soap_binding_op_exts_free_ops(binding_op_exts, env);
 
     binding_op_exts_impl->binding_op_exts.component_exts.ops = 
@@ -127,6 +136,7 @@ create(const axis2_env_t *env)
 
     binding_op_exts_impl->component_exts = NULL;
     binding_op_exts_impl->qname = NULL;
+    binding_op_exts_impl->action = NULL;
     
     binding_op_exts_impl->binding_op_exts.component_exts.ops = NULL;
     
@@ -143,6 +153,12 @@ create(const axis2_env_t *env)
     
     binding_op_exts_impl->binding_op_exts.ops->get_soap_modules = 
         woden_wsdl10_soap_binding_op_exts_get_soap_modules;
+    binding_op_exts_impl->binding_op_exts.ops->get_soap_mep = 
+        woden_wsdl10_soap_binding_op_exts_get_soap_mep;
+    binding_op_exts_impl->binding_op_exts.ops->set_soap_action = 
+        woden_wsdl10_soap_binding_op_exts_set_soap_action;
+    binding_op_exts_impl->binding_op_exts.ops->get_soap_action = 
+        woden_wsdl10_soap_binding_op_exts_get_soap_action;
  
     binding_op_exts_impl->methods = axis2_hash_make(env);
     if(!binding_op_exts_impl->methods) 
@@ -157,9 +173,18 @@ create(const axis2_env_t *env)
     axis2_hash_set(binding_op_exts_impl->methods, "type", 
             AXIS2_HASH_KEY_STRING, woden_wsdl10_soap_binding_op_exts_type);
 
-    axis2_hash_set(binding_op_exts_impl->methods, "get_modules", 
+    axis2_hash_set(binding_op_exts_impl->methods, "get_soap_modules", 
             AXIS2_HASH_KEY_STRING, 
             woden_wsdl10_soap_binding_op_exts_get_soap_modules);
+    axis2_hash_set(binding_op_exts_impl->methods, "get_soap_mep", 
+            AXIS2_HASH_KEY_STRING, 
+            woden_wsdl10_soap_binding_op_exts_get_soap_mep);
+    axis2_hash_set(binding_op_exts_impl->methods, "set_soap_action", 
+            AXIS2_HASH_KEY_STRING, 
+            woden_wsdl10_soap_binding_op_exts_set_soap_action);
+    axis2_hash_set(binding_op_exts_impl->methods, "get_soap_action", 
+            AXIS2_HASH_KEY_STRING, 
+            woden_wsdl10_soap_binding_op_exts_get_soap_action);
 
     return &(binding_op_exts_impl->binding_op_exts);
 }
@@ -234,6 +259,12 @@ woden_wsdl10_soap_binding_op_exts_free(void *binding_op_exts,
     {
         WODEN_COMPONENT_EXTS_FREE(binding_op_exts_impl->component_exts, env);
         binding_op_exts_impl->component_exts = NULL;
+    }
+
+    if(binding_op_exts_impl->action)
+    {
+        AXIS2_URI_FREE(binding_op_exts_impl->action, env);
+        binding_op_exts_impl->action = NULL;
     }
 
     if(binding_op_exts_impl->qname)
@@ -349,28 +380,35 @@ woden_wsdl10_soap_binding_op_exts_get_soap_mep(
     return mep != NULL ? WODEN_URI_ATTR_GET_URI(mep, env) : NULL;
 }
 
+axis2_status_t AXIS2_CALL 
+woden_wsdl10_soap_binding_op_exts_set_soap_action(
+        void *binding_op_exts,
+        const axis2_env_t *env,
+        axis2_uri_t *action) 
+{
+    woden_wsdl10_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, action, AXIS2_FAILURE);
+    binding_op_exts_impl = INTF_TO_IMPL(binding_op_exts);
+
+    binding_op_exts_impl->action = AXIS2_URI_CLONE(action, env);
+
+    return AXIS2_SUCCESS;
+}
+
+
 axis2_uri_t *AXIS2_CALL 
 woden_wsdl10_soap_binding_op_exts_get_soap_action(
         void *binding_op_exts,
         const axis2_env_t *env) 
 {
     woden_wsdl10_soap_binding_op_exts_impl_t *binding_op_exts_impl = NULL;
-    woden_uri_attr_t *action = NULL;
-    void *parent_element = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     binding_op_exts_impl = INTF_TO_IMPL(binding_op_exts);
-
-    parent_element = WODEN_COMPONENT_EXTS_GET_PARENT_ELEMENT(
-            binding_op_exts_impl->component_exts, env);
-    parent_element = woden_wsdl_element_to_attr_extensible(parent_element, 
-            env);
-    binding_op_exts_impl->qname = axis2_qname_create_from_string(env, 
-            WODEN_WSDL10_Q_ATTR_SOAP_MEP);
-    action = WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(
-            parent_element, env, binding_op_exts_impl->qname); 
-
-    return action != NULL ? WODEN_URI_ATTR_GET_URI(action, env) : NULL;
+    
+    return binding_op_exts_impl->action;
 }
 
 axis2_array_list_t *AXIS2_CALL 

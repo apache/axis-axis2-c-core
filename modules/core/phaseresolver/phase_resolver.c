@@ -329,10 +329,11 @@ axis2_phase_resolver_build_module_op(axis2_phase_resolver_t *phase_resolver,
 }
 
 static axis2_status_t
-axis2_phase_resolver_build_execution_chains(axis2_phase_resolver_t *phase_resolver,
-                                    const axis2_env_t *env,
-                                    int type,
-                                    axis2_op_t *op)
+axis2_phase_resolver_build_execution_chains(
+        axis2_phase_resolver_t *phase_resolver,
+        const axis2_env_t *env,
+        int type,
+        axis2_op_t *op)
 {
     axis2_phase_resolver_impl_t *resolver_impl = NULL;
     axis2_array_list_t *all_handlers = NULL;
@@ -1257,7 +1258,10 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
             }
             if (NULL != flow) 
             {
-                for (j = 0; j < AXIS2_FLOW_GET_HANDLER_COUNT(flow, env); j++) 
+                int handler_count = 0;
+                
+                handler_count  = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
+                for (j = 0; j < handler_count; j++) 
                 {
                     axis2_handler_desc_t *metadata = NULL;    
                     axis2_char_t *phase_name = NULL;
@@ -1428,10 +1432,10 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
                 {
                     return AXIS2_FAILURE;
                 }
-                /*if ((0 != AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) &&
-                    (0 != AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) &&
-                    (0 != AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) &&
-                    (0 != AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))*/
+                if ((0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) ||
+                    (0 == AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) ||
+                    (0 == AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
+                    (0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
                     status = AXIS2_PHASE_HOLDER_ADD_HANDLER(resolver_impl->
                         phase_holder, env, metadata);

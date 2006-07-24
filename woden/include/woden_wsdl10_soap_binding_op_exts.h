@@ -82,6 +82,12 @@ struct woden_wsdl10_soap_binding_op_exts_ops
             void *binding_op_exts,
             const axis2_env_t *env);
 
+    axis2_status_t (AXIS2_CALL *
+    set_soap_action) (
+            void *binding_op_exts,
+            const axis2_env_t *env,
+            axis2_uri_t *action);
+
     axis2_uri_t *(AXIS2_CALL *
     get_soap_action) (
             void *binding_op_exts,
@@ -134,6 +140,10 @@ woden_wsdl10_soap_binding_op_exts_resolve_methods(
 #define WODEN_WSDL10_SOAP_BINDING_OP_EXTS_GET_SOAP_MEP(soap_binding_op_exts, env) \
       (((woden_wsdl10_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->\
         get_soap_mep (soap_binding_op_exts, env))
+
+#define WODEN_WSDL10_SOAP_BINDING_OP_EXTS_SET_SOAP_ACTION(soap_binding_op_exts, env, action) \
+      (((woden_wsdl10_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->\
+        set_soap_action (soap_binding_op_exts, env, action))
 
 #define WODEN_WSDL10_SOAP_BINDING_OP_EXTS_GET_SOAP_ACTION(soap_binding_op_exts, env) \
       (((woden_wsdl10_soap_binding_op_exts_t *) soap_binding_op_exts)->ops->\

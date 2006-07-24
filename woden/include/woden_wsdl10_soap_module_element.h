@@ -96,6 +96,12 @@ struct woden_wsdl10_soap_module_element_ops
             void *soap_module_element,
             const axis2_env_t *env,
             void *doc_el);
+  
+    axis2_status_t (AXIS2_CALL *
+    add_soap_binding_op_exts) (
+            void *soap_module_element,
+            const axis2_env_t *env,
+            void *soap_binding_op_exts);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_documentation_elements) (
@@ -156,6 +162,10 @@ woden_wsdl10_soap_module_element_resolve_methods(
 #define WODEN_WSDL10_SOAP_MODULE_ELEMENT_ADD_DOCUMENTATION_ELEMENT(soap_module_element, env, doc_el) \
       (((woden_wsdl10_soap_module_element_t *) soap_module_element)->ops->\
         add_documentation_element  (soap_module_element, env, doc_el))
+
+#define WODEN_WSDL10_SOAP_MODULE_ELEMENT_ADD_SOAP_BINDING_OP_EXTS(soap_module_element, env, doc_el) \
+      (((woden_wsdl10_soap_module_element_t *) soap_module_element)->ops->\
+        add_soap_binding_op_exts  (soap_module_element, env, doc_el))
 
 #define WODEN_WSDL10_SOAP_MODULE_ELEMENT_GET_DOCUMENTATION_ELEMENTS(soap_module_element, env) \
       (((woden_wsdl10_soap_module_element_t *) soap_module_element)->ops->\

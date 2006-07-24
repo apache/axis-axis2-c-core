@@ -67,6 +67,7 @@ extern "C"
 /* Top-level WSDL 2.0 qualified element names. */
 #define WODEN_WSDL10_Q_ELEM_DEFINITIONS "definitions|http://schemas.xmlsoap.org/wsdl"
 #define WODEN_WSDL10_Q_ELEM_DOCUMENTATION "documentation|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_ACTION "action|http://schemas.xmlsoap.org/wsdl"
 #define WODEN_WSDL10_Q_ELEM_IMPORT "import|http://schemas.xmlsoap.org/wsdl"
 #define WODEN_WSDL10_Q_ELEM_INCLUDE "include|http://schemas.xmlsoap.org/wsdl"
 #define WODEN_WSDL10_Q_ELEM_TYPES "types|http://schemas.xmlsoap.org/wsdl"

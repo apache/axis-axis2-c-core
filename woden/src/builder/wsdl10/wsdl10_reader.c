@@ -840,7 +840,7 @@ parse_desc(
                 wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
                 wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
                 wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-                WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(desc, env, ext_element);
+                WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
             }
         }
 
@@ -933,7 +933,7 @@ parse_documentation(
 
         wsdl_el = WODEN_DOCUMENTATION_GET_BASE_IMPL(documentation, env);
         wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-        WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(documentation, env, 
+        WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, 
                 ext_el);
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
@@ -1128,7 +1128,7 @@ parse_types(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(types, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -1443,7 +1443,7 @@ parse_msg_ref(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(msg, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -1563,7 +1563,7 @@ parse_part(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(part, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -1715,7 +1715,7 @@ parse_interface(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(intface, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -1917,7 +1917,7 @@ parse_interface_op(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(op, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -2047,7 +2047,7 @@ parse_interface_fault_ref(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(fault_ref, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -2194,7 +2194,7 @@ parse_interface_msg_ref(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(msg_ref, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -2790,7 +2790,7 @@ parse_binding_fault_ref(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(fault_ref, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -2976,7 +2976,7 @@ parse_binding_msg_ref(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(msg_ref, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -3140,7 +3140,7 @@ parse_svc(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(svc, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -3309,7 +3309,7 @@ parse_endpoint(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(endpoint, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -3413,7 +3413,7 @@ parse_feature(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(feature, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
@@ -3586,7 +3586,7 @@ parse_property(
             wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
             wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
             wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(property, env, ext_element);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
