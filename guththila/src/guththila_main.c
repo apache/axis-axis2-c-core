@@ -114,9 +114,8 @@ main (int argc, char *argv[])
                         AXIS2_FREE (allocator, p);
                     }
                 }
-                depth = (guththila_depth_t *) AXIS2_STACK_GET (parser->dep, environment);
+		depth = (guththila_depth_t *) AXIS2_STACK_GET (parser->dep, environment);
                 d = depth->count;
-
                 for (; d > 0; d--)
                 {
                     p = guththila_xml_pull_parser_get_namespace_prefix_by_number (environment, parser, d);
@@ -165,6 +164,12 @@ main (int argc, char *argv[])
             break;
         };
     }
+    guththila_char_t *charq;
+    charq = guththila_xml_pull_parser_get_encoding (environment, parser);
+    printf ("encoding method is %s", charq);
+    guththila_reader_free (environment, red);
     guththila_xml_pull_parser_free (environment, parser);
+    axis2_allocator_free (allocator);
+    axis2_env_free (environment);
     return 0;
 }
