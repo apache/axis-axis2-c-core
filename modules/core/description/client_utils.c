@@ -39,6 +39,8 @@
 #include <woden_wsdl10_binding_op.h>
 #include <woden_wsdl10_interface_msg_ref.h>
 #include <woden_wsdl10_soap_binding_op_exts.h>
+#include <woden_wsdl10_soap_module.h>
+#include <woden_ext_element.h>
 
 /**
  * Utility methods for various clients to use.
@@ -306,14 +308,16 @@ axis2_client_utils_create_axis2_svc(
             void *binding_op = NULL;
             void *interface_op = NULL;
             axis2_op_t *axis2_op = NULL;
-            void *soap_op = NULL;
+            void *ext_element = NULL;
             axis2_uri_t *soap_action_uri = NULL;
             axis2_array_list_t *interface_msg_refs = NULL;
             axis2_array_list_t *ext_elements = NULL;
-            int i = 0;
+            int i = 0, size = 0;
             axis2_bool_t in = AXIS2_FALSE;
             axis2_bool_t out = AXIS2_FALSE;
             axis2_qname_t *op_qname = NULL;
+            axis2_qname_t *ext_type = NULL;
+            axis2_qname_t *ext_type_l = NULL;
             axis2_param_t *param = NULL;
             
             binding_op = AXIS2_ARRAY_LIST_GET(binding_ops, env, i);
@@ -349,14 +353,35 @@ axis2_client_utils_create_axis2_svc(
             AXIS2_OP_SET_QNAME(axis2_op, env, op_qname);
             binding_op = woden_wsdl10_binding_op_to_element_extensible(
                     binding_op, env);
+            ext_type_l = axis2_qname_create(env, "operation", 
+                    "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
             ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(binding_op, 
                     env);
-            soap_op = AXIS2_ARRAY_LIST_GET(ext_elements, env, 0);
-            soap_action_uri = WODEN_WSDL10_SOAP_BINDING_OP_EXTS_GET_SOAP_ACTION(
-                    soap_op, env);
-            param = axis2_param_create(env, AXIS2_SOAP_ACTION, soap_action_uri);
-            AXIS2_OP_ADD_PARAM(axis2_op, env, param);
-            AXIS2_SVC_ADD_OP(axis2_svc, env, axis2_op);
+            if(ext_elements)
+                size = AXIS2_ARRAY_LIST_SIZE(ext_elements, env);
+            for(i = 0; i < size; i++)
+            {
+                ext_element = AXIS2_ARRAY_LIST_GET(ext_elements, env, i);
+                ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
+                if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
+                {
+                    void *soap_binding_op = NULL;
+                    
+                    ext_element = 
+                       woden_wsdl10_soap_module_to_soap_module_element (
+                                ext_element, env);
+                    soap_binding_op = 
+                        WODEN_WSDL10_SOAP_MODULE_ELEMENT_GET_SOAP_BINDING_OP_EXTS(
+                                ext_element, env);
+                    
+                    soap_action_uri = WODEN_WSDL10_SOAP_BINDING_OP_EXTS_GET_SOAP_ACTION(
+                        soap_binding_op, env);
+                    param = axis2_param_create(env, AXIS2_SOAP_ACTION, soap_action_uri);
+                    AXIS2_OP_ADD_PARAM(axis2_op, env, param);
+                    AXIS2_SVC_ADD_OP(axis2_svc, env, axis2_op);
+                    break;
+                }
+            }
         }
     }
     return axis2_svc; 

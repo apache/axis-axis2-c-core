@@ -80,13 +80,6 @@ parse_documentation(
         axiom_node_t *doc_el_node,
         void *desc);
 
-static void *
-parse_soap_binding_op_exts(
-        void *mod_deser,
-        const axis2_env_t *env,
-        axiom_node_t *binding_op_el_node,
-        void *desc);
-
 static woden_wsdl10_soap_module_deserializer_t *
 create(const axis2_env_t *env);
 
@@ -328,6 +321,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
     axis2_bool_t required = AXIS2_FALSE;
+    axis2_qname_t *element_type_l = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_SOAP_MODULE_DESERIALIZER_SUPER_OBJS(mod_deser, env);
@@ -359,21 +353,40 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
             required = AXIS2_TRUE;
     else
             required = AXIS2_FALSE;
+    
     soap_mod = woden_wsdl10_soap_module_to_ext_element(soap_mod, env);
     WODEN_EXT_ELEMENT_SET_REQUIRED(soap_mod, env, required);
+    element_type_l = axis2_qname_create(env, "operation", 
+        "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
+    if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(element_type, env, element_type_l))
+    {
+            axis2_char_t *action_str = NULL;
+            axis2_uri_t *soap_action = NULL;
+            void *binding_op_exts = NULL;
 
+            action_str = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(el, env, 
+                    WODEN_WSDL10_ATTR_ACTION);
+            soap_action = axis2_uri_parse_string(env, action_str);
+            binding_op_exts = woden_wsdl10_soap_binding_op_exts_create(env);
+            WODEN_WSDL10_SOAP_BINDING_OP_EXTS_SET_SOAP_ACTION(binding_op_exts, 
+                    env, soap_action);
+            AXIS2_URI_FREE(soap_action, env);
+
+            soap_mod = woden_wsdl10_soap_module_to_soap_module_element(soap_mod, 
+                    env);
+            WODEN_WSDL10_SOAP_MODULE_ELEMENT_SET_SOAP_BINDING_OP_EXTS(
+                    soap_mod, env, binding_op_exts);
+            
+    }
     temp_el = axiom_util_get_first_child_element(el, env, el_node, 
             &temp_el_node);
 
     while (NULL != temp_el && NULL != temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
-        axis2_qname_t *q_elem_action = NULL;
 
         q_elem_documentation = axis2_qname_create_from_string(env, 
                 WODEN_WSDL10_Q_ELEM_DOCUMENTATION);
-        q_elem_action = axis2_qname_create_from_string(env, 
-                WODEN_WSDL10_Q_ELEM_ACTION);
 
         if(AXIS2_TRUE == axis2_qname_util_matches(env, 
                     q_elem_documentation, temp_el_node))
@@ -384,18 +397,6 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
             soap_mod = woden_wsdl10_soap_module_to_soap_module_element(soap_mod, env);
             WODEN_WSDL10_SOAP_MODULE_ELEMENT_ADD_DOCUMENTATION_ELEMENT(soap_mod, env, 
                     documentation);
-        }
-        if(AXIS2_TRUE == axis2_qname_util_matches(env, 
-                    q_elem_action, temp_el_node))
-        {
-            void *soap_binding_op = NULL;
-
-            soap_binding_op = parse_soap_binding_op_exts(mod_deser, env, 
-                    temp_el_node, desc);
-            soap_mod = woden_wsdl10_soap_module_to_soap_module_element(soap_mod, 
-                    env);
-            WODEN_WSDL10_SOAP_MODULE_ELEMENT_ADD_SOAP_BINDING_OP_EXTS(
-                    soap_mod, env, soap_binding_op);
         }
         else
         {
@@ -428,29 +429,4 @@ parse_documentation(
     
     return documentation;
 }
-
-static void *
-parse_soap_binding_op_exts(
-        void *mod_deser,
-        const axis2_env_t *env,
-        axiom_node_t *binding_op_el_node,
-        void *desc)
-{
-    axis2_char_t *action = NULL;
-    axiom_element_t *binding_op_el = NULL;
-    void *binding_op_exts = NULL;
-    axis2_uri_t *soap_action = NULL;
-   
-    binding_op_el = AXIOM_NODE_GET_DATA_ELEMENT(binding_op_el_node, env);
-    action = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(binding_op_el, env, 
-            WODEN_WSDL10_ATTR_ACTION);
-    soap_action = axis2_uri_parse_string(env, action);
-    binding_op_exts = woden_wsdl10_soap_binding_op_exts_create(env);
-    WODEN_WSDL10_SOAP_BINDING_OP_EXTS_SET_SOAP_ACTION(binding_op_exts, env, 
-            soap_action);
-    AXIS2_URI_FREE(soap_action, env);
-
-    return binding_op_exts;
-}
-
 

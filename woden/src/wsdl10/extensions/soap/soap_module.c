@@ -15,6 +15,7 @@
  */
 
 #include <woden_wsdl10_soap_module.h>
+#include <woden_wsdl10_soap_binding_op_exts.h>
 #include <woden_wsdl_element.h>
 #include <woden_string_attr.h>
 #include <woden_uri_attr.h>
@@ -36,6 +37,7 @@ struct woden_wsdl10_soap_module_impl
     
     void *f_parent;
     axis2_array_list_t *f_documentation_elements;
+    void *f_binding_op_exts;
     axis2_qname_t *f_ext_element_type;
     axis2_bool_t f_required;
     void *f_attr_ext;
@@ -114,7 +116,19 @@ woden_wsdl10_soap_module_add_documentation_element(
 axis2_array_list_t *AXIS2_CALL 
 woden_wsdl10_soap_module_get_documentation_elements(
         void *module,
+       axis2_env_t *env);
+ 
+axis2_status_t AXIS2_CALL 
+woden_wsdl10_soap_module_set_soap_binding_op_exts(
+        void *module,
+        axis2_env_t *env,
+        void *binding_op_exts);
+
+void *AXIS2_CALL 
+woden_wsdl10_soap_module_get_soap_binding_op_exts(
+        void *module,
         axis2_env_t *env);
+
 
 axis2_status_t AXIS2_CALL 
 woden_wsdl10_soap_module_set_extension_type(
@@ -317,6 +331,7 @@ create(const axis2_env_t *env)
 
     module_impl->f_parent = NULL;
     module_impl->f_documentation_elements = NULL;
+    module_impl->f_binding_op_exts = NULL;
     module_impl->f_ext_element_type = NULL;
     module_impl->f_required = AXIS2_FALSE;
     module_impl->f_attr_ext = NULL;
@@ -389,6 +404,14 @@ create(const axis2_env_t *env)
     axis2_hash_set(module_impl->methods, "get_parent_element", 
             AXIS2_HASH_KEY_STRING, 
             woden_wsdl10_soap_module_get_parent_element);
+
+    axis2_hash_set(module_impl->methods, "set_soap_binding_op_exts", 
+            AXIS2_HASH_KEY_STRING, 
+            woden_wsdl10_soap_module_set_soap_binding_op_exts);
+
+    axis2_hash_set(module_impl->methods, "get_soap_binding_op_exts", 
+            AXIS2_HASH_KEY_STRING, 
+            woden_wsdl10_soap_module_get_soap_binding_op_exts);
 
     axis2_hash_set(module_impl->methods, "add_documentation_element", 
             AXIS2_HASH_KEY_STRING, 
@@ -546,6 +569,13 @@ woden_wsdl10_soap_module_free(void *module,
     {
         AXIS2_ARRAY_LIST_FREE(module_impl->f_documentation_elements, env);
         module_impl->f_documentation_elements = NULL;
+    }
+
+    if(module_impl->f_binding_op_exts)
+    {
+        WODEN_WSDL10_SOAP_BINDING_OP_EXTS_FREE(module_impl->f_binding_op_exts, 
+                env);
+        module_impl->f_binding_op_exts = NULL;
     }
 
     if(module_impl->f_ext_element_type)
@@ -845,6 +875,42 @@ woden_wsdl10_soap_module_get_documentation_elements(
 
     return module_impl->f_documentation_elements;
 }
+
+axis2_status_t AXIS2_CALL 
+woden_wsdl10_soap_module_set_soap_binding_op_exts(
+        void *module,
+        axis2_env_t *env,
+        void *binding_op_exts) 
+{
+    woden_wsdl10_soap_module_impl_t *module_impl = NULL;
+    axis2_hash_t *super = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, binding_op_exts, AXIS2_FAILURE);
+    super = WODEN_WSDL10_SOAP_MODULE_SUPER_OBJS(module, env);
+    module_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "WODEN_WSDL10_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
+
+    module_impl->f_binding_op_exts = binding_op_exts;
+    return AXIS2_SUCCESS;
+}
+
+void *AXIS2_CALL 
+woden_wsdl10_soap_module_get_soap_binding_op_exts(
+        void *module,
+        axis2_env_t *env) 
+{
+    woden_wsdl10_soap_module_impl_t *module_impl = NULL;
+    axis2_hash_t *super = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+    super = WODEN_WSDL10_SOAP_MODULE_SUPER_OBJS(module, env);
+    module_impl = INTF_TO_IMPL(axis2_hash_get(super, 
+                "WODEN_WSDL10_SOAP_MODULE", AXIS2_HASH_KEY_STRING));
+
+    return module_impl->f_binding_op_exts;
+}
+
 
 axis2_status_t AXIS2_CALL 
 woden_wsdl10_soap_module_set_extension_type(

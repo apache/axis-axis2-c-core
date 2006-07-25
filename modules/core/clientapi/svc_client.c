@@ -15,6 +15,7 @@
  */
 
 #include <axis2_svc_client.h>
+#include <axis2_phases_info.h>
 #include <axis2_const.h>
 #include <axis2_hash.h>
 #include <axis2_uri.h>
@@ -70,7 +71,9 @@ static axis2_bool_t axis2_svc_client_init_transports_from_conf_ctx(const axis2_e
 static axis2_bool_t axis2_svc_client_init_data(const axis2_env_t *env,
                            axis2_svc_client_impl_t *svc_client_impl);
 static void axis2_svc_client_init_ops(axis2_svc_client_t *svc_client);
-static axis2_svc_t* axis2_svc_client_create_annonymous_svc(const axis2_env_t *env);
+static axis2_svc_t* axis2_svc_client_create_annonymous_svc(
+        axis2_svc_client_t *svc_client,
+        const axis2_env_t *env);
 static axis2_bool_t axis2_svc_client_fill_soap_envelope(const axis2_env_t *env, 
     axis2_svc_client_impl_t *svc_client_impl,
     axis2_msg_ctx_t *msg_ctx, 
@@ -350,7 +353,8 @@ axis2_svc_client_create_with_conf_ctx_and_svc(const axis2_env_t *env,
    }
    else
    {
-      if (NULL == (svc_client_impl->svc = axis2_svc_client_create_annonymous_svc(env)))
+      if (NULL == (svc_client_impl->svc = 
+                  axis2_svc_client_create_annonymous_svc(&(svc_client_impl->svc_client), env)))
       {
          axis2_svc_client_free(&(svc_client_impl->svc_client), env);
          return NULL;
@@ -1097,7 +1101,9 @@ static void axis2_svc_client_init_ops(axis2_svc_client_t *svc_client)
   * @return the minted anonymous service
   */
 
-static axis2_svc_t* axis2_svc_client_create_annonymous_svc(const axis2_env_t *env)
+static axis2_svc_t* axis2_svc_client_create_annonymous_svc(
+        axis2_svc_client_t *svc_client,
+        const axis2_env_t *env)
 {
    /**
    now add anonymous operations to the axis2 service for use with the
@@ -1105,9 +1111,13 @@ static axis2_svc_t* axis2_svc_client_create_annonymous_svc(const axis2_env_t *en
     later in the convenience API; if you use
     this constructor then you can't expect any magic!
    */
+    axis2_svc_client_impl_t *svc_client_impl = NULL;
    axis2_qname_t *tmp_qname;
    axis2_svc_t *svc;
    axis2_op_t *op_out_in, *op_out_only, *op_robust_out_only;
+   axis2_phases_info_t *info = NULL;
+
+   svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
 
    tmp_qname = axis2_qname_create(env, AXIS2_ANON_SERVICE, NULL, NULL);
    
@@ -1180,6 +1190,11 @@ static axis2_svc_t* axis2_svc_client_create_annonymous_svc(const axis2_env_t *en
    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op_out_only, env, AXIS2_MEP_URI_OUT_ONLY);
    AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op_robust_out_only, env, AXIS2_MEP_URI_ROBUST_OUT_ONLY);
    
+    /* Setting operation phase */
+    info = AXIS2_CONF_GET_PHASESINFO(svc_client_impl->conf, env);
+    AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_out_in);
+    AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_out_only);
+    AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_robust_out_only);
    AXIS2_SVC_ADD_OP(svc, env, op_out_in);
    AXIS2_SVC_ADD_OP(svc, env, op_out_only);
    AXIS2_SVC_ADD_OP(svc, env, op_robust_out_only);
