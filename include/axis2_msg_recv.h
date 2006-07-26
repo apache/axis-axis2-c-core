@@ -257,72 +257,72 @@ extern "C"
 
 /************************** Start of function macros **************************/
 
-/** Gets the service consumed by service client.
+/** Frees the message receiver.
     @sa axis2_msg_recv_ops#free */
 #define AXIS2_MSG_RECV_FREE(msg_recv, env) ((msg_recv)->ops->free_fn (msg_recv, env))
 
-/** Gets the service consumed by service client.
+/** Receive.
     @sa axis2_msg_recv_ops#receive */
 #define AXIS2_MSG_RECV_RECEIVE(msg_recv, env, msg_ctx, callback_recv_param) \
       ((msg_recv)->ops->receive (msg_recv, env, msg_ctx, callback_recv_param))
 
-/** Gets the service consumed by service client.
+/** Receive sync.
     @sa axis2_msg_recv_ops#sync */
 #define AXIS2_MSG_RECV_RECEIVE_SYNC(msg_recv, env, msg_ctx, callback_recv_param) \
       ((msg_recv)->ops->receive_sync (msg_recv, env, msg_ctx, callback_recv_param))
 
-/** Gets the service consumed by service client.
+/** Receive async.
     @sa axis2_msg_recv_ops#receive_async */
 #define AXIS2_MSG_RECV_RECEIVE_ASYNC(msg_recv, env, msg_ctx, callback_recv_param) \
       ((msg_recv)->ops->receive_async (msg_recv, env, msg_ctx, callback_recv_param))
 
-/** Gets the service consumed by service client.
+/** Invoke in business logic sync.
     @sa axis2_msg_recv_ops#invoke_in_business_logic_sync */
 #define AXIS2_MSG_RECV_INVOKE_IN_BUSINESS_LOGIC_SYNC(msg_recv, env, in_msg_ctx) \
         ((msg_recv)->ops->invoke_in_business_logic_sync(msg_recv, env, in_msg_ctx))
 
-/** Gets the service consumed by service client.
+/** Invoke in business logic async.
     @sa axis2_msg_recv_ops#invoke_in_business_logic_async */
 #define AXIS2_MSG_RECV_INVOKE_IN_BUSINESS_LOGIC_ASYNC(msg_recv, env, \
             in_msg_ctx, callback) \
         ((msg_recv)->ops->invoke_in_business_logic_async(msg_recv, env, \
             in_msg_ctx, callback))
 
-/** Gets the service consumed by service client.
+/** Invoke in out business logic sync.
     @sa axis2_msg_recv_ops#invoke_in_out_business_logic_sync */
 #define AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC_SYNC(msg_recv, env, \
             in_msg_ctx, out_msg_ctx) \
         ((msg_recv)->ops->invoke_in_out_business_logic_sync (msg_recv, env, \
             in_msg_ctx, out_msg_ctx))
 
-/** Gets the service consumed by service client.
+/** Invoke in out business logic async.
     @sa axis2_msg_recv_ops#invoke_in_out_business_logic_async */
 #define AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC_ASYNC(msg_recv, env, \
             in_msg_ctx, out_msg_ctx, callback) \
         ((msg_recv)->ops->invoke_in_out_business_logic_async(msg_recv, env, \
             in_msg_ctx, out_msg_ctx, callback))
 
-/** Gets the service consumed by service client.
+/** Make new svc obj.
     @sa axis2_msg_recv_ops#make_new_svc_obj */
 #define AXIS2_MSG_RECV_MAKE_NEW_SVC_OBJ(msg_recv, env, msg_ctx) \
         ((msg_recv)->ops->make_new_svc_obj(msg_recv, env, msg_ctx))
 
-/** Gets the service consumed by service client.
+/** Get impl obj.
     @sa axis2_msg_recv_ops#get_impl_obj */
 #define AXIS2_MSG_RECV_GET_IMPL_OBJ(msg_recv, env, msg_ctx) \
       ((msg_recv)->ops->get_impl_obj(msg_recv, env, msg_ctx))
 
-/** Gets the service consumed by service client.
+/** Set scope.
     @sa axis2_msg_recv_ops#set_scope */
 #define AXIS2_MSG_RECV_SET_SCOPE(msg_recv, env, scope) \
       ((msg_recv)->ops->set_scope(msg_recv, env, scope))
 
-/** Gets the service consumed by service client.
+/** Get scope.
     @sa axis2_msg_recv_ops#get_scope */
 #define AXIS2_MSG_RECV_GET_SCOPE(msg_recv, env) \
         ((msg_recv)->ops->get_scope(msg_recv, env))
 
-/** Gets the service consumed by service client.
+/** Delete svc obj.
     @sa axis2_msg_recv_ops#delete_svc_obj */
 #define AXIS2_MSG_RECV_DELETE_SVC_OBJ(msg_recv, env, msg_ctx) \
         ((msg_recv)->ops->delete_svc_obj(msg_recv, env, msg_ctx))
