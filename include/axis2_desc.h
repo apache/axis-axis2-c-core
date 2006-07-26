@@ -51,6 +51,7 @@ extern "C"
 	/** 
 	 * @param desc pointer to desc
 	 * @param env pointer to environment struct
+	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
 	 */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -61,6 +62,7 @@ extern "C"
 	 * @param desc pointer to desc
 	 * @param env pointer to environment struct
 	 * @param param pointer to param
+	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
 	 */
         axis2_status_t (AXIS2_CALL *
                 add_param)(
@@ -114,6 +116,7 @@ extern "C"
 	 * @param desc pointer to desc
 	 * @param env pointer to environment struct
 	 * @param key pointer to key
+	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
 	 */
         axis2_status_t (AXIS2_CALL *
                 add_child)(
@@ -146,6 +149,7 @@ extern "C"
 	 * @param desc pointer to desc
 	 * @param env pointer to environment struct
 	 * @param key pointer to key
+	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
 	 */
         axis2_status_t (AXIS2_CALL *
                 remove_child)(
