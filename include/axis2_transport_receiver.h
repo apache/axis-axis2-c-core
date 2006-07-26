@@ -17,8 +17,15 @@
 #ifndef AXIS2_TRANSPORT_RECEIVER_H
 #define AXIS2_TRANSPORT_RECEIVER_H
 
+/**
+ * @defgroup axis2_transport transport
+ * @ingroup axis2
+ * @{
+ * @}
+ */
+
 /** @defgroup axis2_transport_receiver transport receiver
- * @ingroup axis2_desc
+ * @ingroup axis2_transport
  * Description.
  * @{
  */
