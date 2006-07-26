@@ -328,8 +328,9 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
     mod_deser_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL10_SOAP_MODULE_DESERIALIZER", AXIS2_HASH_KEY_STRING));
    
-    soap_mod = WODEN_EXT_REGISTRY_QUERY_EXT_ELEMENT_TYPE(ext_reg, env, 
-            parent_type, element_type);
+    /*soap_mod = WODEN_EXT_REGISTRY_QUERY_EXT_ELEMENT_TYPE(ext_reg, env, 
+            parent_type, element_type);*/
+    soap_mod = woden_wsdl10_soap_module_create(env);
 
     soap_mod = woden_wsdl10_soap_module_to_ext_element(soap_mod, env);
     WODEN_EXT_ELEMENT_SET_EXT_TYPE(soap_mod, env, element_type);

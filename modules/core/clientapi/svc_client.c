@@ -23,7 +23,7 @@
 #include <axiom_soap_const.h>
 #include <axiom_soap_body.h>
 #include <axiom_soap_header.h>
-#include "listener_manager.h"
+#include <axis2_listener_manager.h>
 #include <axis2_module_desc.h>
 #include <axis2_array_list.h>
 #include <axis2_options.h>
@@ -206,6 +206,7 @@ axis2_svc_client_create_with_conf_ctx_and_wsdl_uri_wsdl_svc_name_and_endpoint(
     axis2_svc_grp_t *svc_grp = NULL;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     axis2_char_t *svc_grp_name = NULL;
+    axis2_hash_t *ops = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -251,6 +252,25 @@ axis2_svc_client_create_with_conf_ctx_and_wsdl_uri_wsdl_svc_name_and_endpoint(
  
    svc_client_impl->svc = axis2_client_utils_create_axis2_svc(env, wsdl_uri, 
            wsdl_svc_qname, endpoint_name, wsdl_path, NULL);
+   if(svc_client_impl->svc)
+   {
+       axis2_hash_index_t *i = NULL;
+       void *v = NULL;
+       axis2_op_t *op = NULL;
+       
+       ops = AXIS2_SVC_GET_OPS(svc_client_impl->svc, env);
+        for (i = axis2_hash_first (ops, env); i; i = axis2_hash_next (env, i))
+        {
+            axis2_hash_this (i, NULL, NULL, &v);
+            op = (axis2_op_t *) v;
+            axis2_phases_info_t *info = NULL;
+
+            /*AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);*/
+            /* Setting operation phase */
+            info = AXIS2_CONF_GET_PHASESINFO(svc_client_impl->conf, env);
+            AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op);
+        }
+   }
    /** add the service to the config context if it isn't in there already */
    if (NULL == AXIS2_CONF_GET_SVC(svc_client_impl->conf, env, 
                AXIS2_SVC_GET_NAME(svc_client_impl->svc, env)))

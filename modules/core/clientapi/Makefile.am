@@ -13,7 +13,6 @@ libaxis2_clientapi_la_SOURCES = \
 								svc_client.c
 
 noinst_HEADERS = callback_recv.h \
-                    listener_manager.h \
                     axis2_msg_sender.h
                     
 

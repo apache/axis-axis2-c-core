@@ -131,13 +131,13 @@ woden_wsdl10_soap_module_get_soap_binding_op_exts(
 
 
 axis2_status_t AXIS2_CALL 
-woden_wsdl10_soap_module_set_extension_type(
+woden_wsdl10_soap_module_set_ext_type(
         void *module,
         axis2_env_t *env,
         axis2_qname_t *qname); 
 
 axis2_qname_t *AXIS2_CALL 
-woden_wsdl10_soap_module_get_extension_type(
+woden_wsdl10_soap_module_get_ext_type(
         void *module,
         axis2_env_t *env);
 
@@ -423,11 +423,11 @@ create(const axis2_env_t *env)
 
     axis2_hash_set(module_impl->methods, "set_ext_type", 
             AXIS2_HASH_KEY_STRING, 
-            woden_wsdl10_soap_module_set_extension_type);
+            woden_wsdl10_soap_module_set_ext_type);
 
     axis2_hash_set(module_impl->methods, "get_ext_type", 
             AXIS2_HASH_KEY_STRING, 
-            woden_wsdl10_soap_module_get_extension_type);
+            woden_wsdl10_soap_module_get_ext_type);
 
     axis2_hash_set(module_impl->methods, "set_required", 
             AXIS2_HASH_KEY_STRING, 
@@ -913,7 +913,7 @@ woden_wsdl10_soap_module_get_soap_binding_op_exts(
 
 
 axis2_status_t AXIS2_CALL 
-woden_wsdl10_soap_module_set_extension_type(
+woden_wsdl10_soap_module_set_ext_type(
         void *module,
         axis2_env_t *env,
         axis2_qname_t *qname) 
@@ -938,7 +938,7 @@ woden_wsdl10_soap_module_set_extension_type(
 }
 
 axis2_qname_t *AXIS2_CALL 
-woden_wsdl10_soap_module_get_extension_type(
+woden_wsdl10_soap_module_get_ext_type(
         void *module,
         axis2_env_t *env) 
 {

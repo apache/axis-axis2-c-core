@@ -78,7 +78,6 @@ axis2_client_utils_create_axis2_svc(
     axis2_bool_t svc_found = AXIS2_FALSE;
     axis2_bool_t endpoint_found = AXIS2_FALSE;
     axis2_qname_t *svc_qname = NULL;
-    int i = 0;
     axis2_array_list_t *wsdl_svcs = NULL;
     axis2_array_list_t *endpoints = NULL;
     axis2_array_list_t *binding_ops = NULL;
@@ -96,9 +95,10 @@ axis2_client_utils_create_axis2_svc(
     {
         int no_of_svcs = 0;
         int no_of_endpoints = 0;
-        int no_of_bindings = 0;
+        int no_of_binding_ops = 0;
         int no_of_interface_msg_refs = 0;
         axis2_svc = axis2_svc_create(env);
+        int i = 0;
         
         wsdl_svcs = WODEN_DESC_GET_SVCS(desc, env);
         if(wsdl_svcs)
@@ -126,6 +126,7 @@ axis2_client_utils_create_axis2_svc(
         {
             axis2_char_t *localname = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
             AXIS2_SVC_SET_NAME(axis2_svc, env, localname);
+            AXIS2_SVC_SET_QNAME(axis2_svc, env, svc_qname);
         }
         endpoints = WODEN_SVC_GET_ENDPOINTS(wsdl_svc, env);
         if(endpoints)
@@ -169,8 +170,8 @@ axis2_client_utils_create_axis2_svc(
         if(binding)
             binding_ops = WODEN_BINDING_GET_BINDING_OPS(binding, env);
         if(binding_ops)
-            no_of_bindings = AXIS2_ARRAY_LIST_SIZE(binding_ops, env);
-        for(i = 0; i < no_of_bindings; i++)
+            no_of_binding_ops = AXIS2_ARRAY_LIST_SIZE(binding_ops, env);
+        for(i = 0; i < no_of_binding_ops; i++)
         {
             void *binding_op = NULL;
             void *interface_op = NULL;
@@ -179,7 +180,7 @@ axis2_client_utils_create_axis2_svc(
             axis2_uri_t *soap_action_uri = NULL;
             axis2_array_list_t *interface_msg_refs = NULL;
             axis2_array_list_t *ext_elements = NULL;
-            int i = 0;
+            int j = 0;
             axis2_bool_t in = AXIS2_FALSE;
             axis2_bool_t out = AXIS2_FALSE;
             axis2_qname_t *op_qname = NULL;
@@ -192,13 +193,13 @@ axis2_client_utils_create_axis2_svc(
             if(interface_msg_refs)
                 no_of_interface_msg_refs = AXIS2_ARRAY_LIST_SIZE(
                         interface_msg_refs, env);
-            for(i = 0; i < no_of_interface_msg_refs; i++)
+            for(j = 0; j < no_of_interface_msg_refs; j++)
             {
                 void *interface_msg_ref = NULL; 
                 void *direction = NULL;
                 axis2_char_t *str_direction = NULL;
                 
-                interface_msg_ref = AXIS2_ARRAY_LIST_GET(interface_msg_refs, env, i);
+                interface_msg_ref = AXIS2_ARRAY_LIST_GET(interface_msg_refs, env, j);
                 direction = WODEN_INTERFACE_MSG_REF_GET_DIRECTION(
                         interface_msg_ref, env);
                 str_direction = WODEN_DIRECTION_TO_STRING(direction, env);
@@ -231,8 +232,9 @@ axis2_client_utils_create_axis2_svc(
         axis2_svc = axis2_svc_create(env);
         int no_of_svcs = 0;
         int no_of_endpoints = 0;
-        int no_of_bindings = 0;
+        int no_of_binding_ops = 0;
         int no_of_interface_msg_refs = 0;
+        int i = 0;
         
         wsdl_svcs = WODEN_WSDL10_DESC_GET_SVCS(desc, env);
         if(wsdl_svcs)
@@ -260,6 +262,7 @@ axis2_client_utils_create_axis2_svc(
         {
             axis2_char_t *localname = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
             AXIS2_SVC_SET_NAME(axis2_svc, env, localname);
+            AXIS2_SVC_SET_QNAME(axis2_svc, env, svc_qname);
         }
         endpoints = WODEN_SVC_GET_ENDPOINTS(wsdl_svc, env);
         if(endpoints)
@@ -302,17 +305,16 @@ axis2_client_utils_create_axis2_svc(
         if(binding)
             binding_ops = WODEN_BINDING_GET_BINDING_OPS(binding, env);
         if(binding_ops)
-            no_of_bindings = AXIS2_ARRAY_LIST_SIZE(binding_ops, env);
-        for(i = 0; i < no_of_bindings; i++)
+            no_of_binding_ops = AXIS2_ARRAY_LIST_SIZE(binding_ops, env);
+        for(i = 0; i < no_of_binding_ops; i++)
         {
             void *binding_op = NULL;
             void *interface_op = NULL;
             axis2_op_t *axis2_op = NULL;
             void *ext_element = NULL;
-            axis2_uri_t *soap_action_uri = NULL;
             axis2_array_list_t *interface_msg_refs = NULL;
             axis2_array_list_t *ext_elements = NULL;
-            int i = 0, size = 0;
+            int j = 0, size = 0;
             axis2_bool_t in = AXIS2_FALSE;
             axis2_bool_t out = AXIS2_FALSE;
             axis2_qname_t *op_qname = NULL;
@@ -328,14 +330,14 @@ axis2_client_utils_create_axis2_svc(
             if(interface_msg_refs)
                 no_of_interface_msg_refs = AXIS2_ARRAY_LIST_SIZE(
                         interface_msg_refs, env);
-            for(i = 0; i < no_of_interface_msg_refs; i++)
+            for(j = 0; j < no_of_interface_msg_refs; j++)
             {
                 void *interface_msg_ref = NULL; 
                 void *direction = NULL;
                 axis2_char_t *str_direction = NULL;
                 
                 interface_msg_ref = AXIS2_ARRAY_LIST_GET(interface_msg_refs, 
-                        env, i);
+                        env, j);
                 direction = WODEN_WSDL10_INTERFACE_MSG_REF_GET_DIRECTION(
                         interface_msg_ref, env);
                 str_direction = WODEN_DIRECTION_TO_STRING(direction, env);
@@ -359,13 +361,14 @@ axis2_client_utils_create_axis2_svc(
                     env);
             if(ext_elements)
                 size = AXIS2_ARRAY_LIST_SIZE(ext_elements, env);
-            for(i = 0; i < size; i++)
+            for(j = 0; j < size; j++)
             {
-                ext_element = AXIS2_ARRAY_LIST_GET(ext_elements, env, i);
+                ext_element = AXIS2_ARRAY_LIST_GET(ext_elements, env, j);
                 ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
                 if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
                 {
                     void *soap_binding_op = NULL;
+                    axis2_uri_t *soap_action_uri = NULL;
                     
                     ext_element = 
                        woden_wsdl10_soap_module_to_soap_module_element (
