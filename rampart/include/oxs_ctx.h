@@ -24,10 +24,10 @@
   */
 
 #include <axis2_defines.h>
-#include <oxs_strings.h>
 #include <axis2_env.h>
 #include <axiom_node.h>
 #include <oxs_buffer.h>
+#include <oxs_key.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -39,15 +39,15 @@ extern "C"
  * @{
  */
 
+typedef struct _enc_ctx enc_ctx, *enc_ctx_ptr;
+
 typedef enum  {
-    enc_ctx_transform_operation_none =0,
-    enc_ctx_transform_operation_encode,
-    enc_ctx_transform_operation_decode,
-    enc_ctx_transform_operation_sign,
-    enc_ctx_transform_operation_verify,
-    enc_ctx_transform_operation_encrypt,
-    enc_ctx_transform_operation_decrypt
-} enc_ctx_transform_operation_t;
+    oxs_operation_none =0,
+    oxs_operation_sign,
+    oxs_operation_verify,
+    oxs_operation_encrypt,
+    oxs_operation_decrypt
+} oxs_operation_t;
 
 typedef enum {
     enc_ctx_mode_encrypted_data = 0,
@@ -55,12 +55,16 @@ typedef enum {
 } enc_ctx_mode_t;
 
 
-typedef struct enc_ctx{
+
+struct _enc_ctx{
     /*Encryption mode*/
     enc_ctx_mode_t mode;
     
     /*transformation type */
-    enc_ctx_transform_operation_t operation;    
+    oxs_operation_t operation;    
+
+    /*key*/
+    oxs_key_ptr key;
 
     /* attributes from EncryptedData or EncryptedKey */
     axis2_char_t*           id;
@@ -69,8 +73,6 @@ typedef struct enc_ctx{
     axis2_char_t*           encoding;
     axis2_char_t*           recipient;
     axis2_char_t*           carriedKeyName;
-
-
 
     /*attributes from EncryptionMethod*/ 
     axis2_char_t*           encmtd_algorithm;
@@ -82,22 +84,22 @@ typedef struct enc_ctx{
     axiom_node_t*           enc_method_node;
     axiom_node_t*           key_info_node;
     axiom_node_t*           cipher_value_node;
+   
+
+}; 
 
 
-} enc_ctx_t; 
 
-
-
-AXIS2_EXTERN enc_ctx_t* AXIS2_CALL
+AXIS2_EXTERN enc_ctx_ptr AXIS2_CALL
 oxs_ctx_create_ctx(const axis2_env_t *env);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_ctx_free_ctx(enc_ctx_t *ctx);
+oxs_ctx_free_ctx(enc_ctx_ptr ctx);
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_ctx_reset_ctx(enc_ctx_t *ctx);
+oxs_ctx_reset_ctx(enc_ctx_ptr ctx);
 /**
   <complexType name='EncryptedType' abstract='true'>
     <sequence>

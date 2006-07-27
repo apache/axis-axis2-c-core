@@ -16,6 +16,7 @@
 
 #include <openssl/evp.h>
 #include <openssl_cipher_ctx.h>
+#include <openssl_constants.h>
 #include <axis2_util.h>
 
 /**
@@ -42,9 +43,9 @@ extern "C" {
 *@param do_encrypt 1 to encrypt 0 to decrypt
 *@return -1 if failed
 */
-AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(axis2_env_t *env,     openssl_evp_block_cipher_ctx_ptr bc_ctx,
-    oxs_buffer_ptr in_buf,
-    oxs_buffer_ptr out_buf,
+AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,     openssl_evp_block_cipher_ctx_ptr bc_ctx,
+    unsigned char *in_main_buf, 
+    unsigned char **out_main_buf,
     int do_encrypt);
 
 

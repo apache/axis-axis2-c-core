@@ -41,14 +41,15 @@ struct _openssl_evp_block_cipher_ctx {
     /*unsigned char  key[EVP_MAX_KEY_LENGTH];
     unsigned char  iv[EVP_MAX_IV_LENGTH];
     unsigned char  pad[EVP_MAX_BLOCK_LENGTH];*/
-
 };
+
 
 /**
 * Create a fresh block cipher context
 *@return openssl_evp_block_cipher_ctx_ptr the created block cipher context
 */
-AXIS2_EXTERN openssl_evp_block_cipher_ctx_ptr AXIS2_CALL  openssl_evp_block_cipher_ctx_create(const axis2_env_t *env);
+AXIS2_EXTERN openssl_evp_block_cipher_ctx_ptr AXIS2_CALL
+openssl_evp_block_cipher_ctx_create(const axis2_env_t *env);
 
 /**
 * Initialize the block cipher context for a given cipher
@@ -64,8 +65,6 @@ AXIS2_EXTERN openssl_evp_block_cipher_ctx_ptr AXIS2_CALL  openssl_evp_block_ciph
 AXIS2_EXTERN int AXIS2_CALL  
 openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
                              openssl_evp_block_cipher_ctx_ptr bc_ctx,
-                             oxs_buffer_ptr in,
-                             oxs_buffer_ptr out,
                              int encrypt,
                              const unsigned char* cipher_name
                              );
