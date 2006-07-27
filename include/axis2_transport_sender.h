@@ -18,7 +18,7 @@
 #define AXIS2_TRANSPORT_SENDER_H
 
 /** @defgroup axis2_transport_sender transport sender
- * @ingroup axis2_desc
+ * @ingroup axis2_transport
  * Description
  * @{
  */
