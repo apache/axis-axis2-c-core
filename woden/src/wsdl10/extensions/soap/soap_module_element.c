@@ -54,6 +54,15 @@ woden_wsdl10_soap_module_element_resolve_methods(
             axis2_hash_get(methods, "get_soap_binding_op_exts", 
             AXIS2_HASH_KEY_STRING);
 
+    soap_module_element->ops->set_soap_address_exts = 
+            axis2_hash_get(methods, "set_soap_address_exts", 
+            AXIS2_HASH_KEY_STRING);
+
+    soap_module_element->ops->get_soap_address_exts = 
+            axis2_hash_get(methods, "get_soap_address_exts", 
+            AXIS2_HASH_KEY_STRING);
+
+
     soap_module_element->ops->add_documentation_element = 
             axis2_hash_get(methods, "add_documentation_element", 
             AXIS2_HASH_KEY_STRING);

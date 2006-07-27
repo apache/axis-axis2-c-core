@@ -820,6 +820,15 @@ woden_wsdl10_ext_registry_populate(
     woden_wsdl10_ext_registry_register_ext_element_type(registry, env, "binding_fault_ref_element",
             q_elem_soap_module,
             registry_impl->soap_module);
+    
+    woden_wsdl10_ext_registry_register_deserializer(registry, env, "endpoint_element",
+            q_elem_soap_module,
+            registry_impl->soap_module_deser);
+    
+    woden_wsdl10_ext_registry_register_ext_element_type(registry, env, "endpoint_element",
+            q_elem_soap_module,
+            registry_impl->soap_module);
+    
 
     /**************** SOAPHeaderBlock extension elements **********************/
     registry_impl->soap_header_block_deser = 

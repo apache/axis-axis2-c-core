@@ -39,6 +39,7 @@
 #include <woden_wsdl10_binding_op.h>
 #include <woden_wsdl10_interface_msg_ref.h>
 #include <woden_wsdl10_soap_binding_op_exts.h>
+#include <woden_wsdl10_soap_address_exts.h>
 #include <woden_wsdl10_soap_module.h>
 #include <woden_ext_element.h>
 
@@ -71,7 +72,6 @@ axis2_client_utils_create_axis2_svc(
         axis2_options_t *options)
 {
     axis2_svc_t *axis2_svc = NULL;
-    void *wsdl_svc = NULL;
     axiom_document_t *doc = NULL;
     woden_resolver_t *resolver = NULL;
     void *desc = NULL;
@@ -82,8 +82,6 @@ axis2_client_utils_create_axis2_svc(
     axis2_array_list_t *endpoints = NULL;
     axis2_array_list_t *binding_ops = NULL;
     woden_nc_name_t *ep_ncname = NULL;
-    void *endpoint = NULL;
-    void *binding = NULL;
     int spec = 0;
 
     doc = axiom_util_new_document(env, wsdl_uri);
@@ -93,6 +91,9 @@ axis2_client_utils_create_axis2_svc(
     spec = WODEN_RESOLVER_GET_SPEC(resolver, env);
     if(WODEN_WSDL20 == spec)
     {
+        void *endpoint = NULL;
+        void *binding = NULL;
+        void *wsdl_svc = NULL;
         int no_of_svcs = 0;
         int no_of_endpoints = 0;
         int no_of_binding_ops = 0;
@@ -161,7 +162,8 @@ axis2_client_utils_create_axis2_svc(
                 address = AXIS2_URI_TO_STRING(soap_address, env, 
                         AXIS2_URI_UNP_OMITUSERINFO);
                 endpoint_ref = axis2_endpoint_ref_create(env, address);
-                AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+                if(options)
+                    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
             }
         }
 
@@ -229,6 +231,9 @@ axis2_client_utils_create_axis2_svc(
     if(WODEN_WSDL10 == spec)
     {
 
+        void *endpoint = NULL;
+        void *binding = NULL;
+        void *wsdl_svc = NULL;
         axis2_svc = axis2_svc_create(env);
         int no_of_svcs = 0;
         int no_of_endpoints = 0;
@@ -242,7 +247,7 @@ axis2_client_utils_create_axis2_svc(
         for(i = 0; i < no_of_svcs; i++)
         {
             wsdl_svc = AXIS2_ARRAY_LIST_GET(wsdl_svcs, env, i);
-            svc_qname = WODEN_SVC_GET_QNAME(wsdl_svc, env);
+            svc_qname = WODEN_WSDL10_SVC_GET_QNAME(wsdl_svc, env);
             /* if wsdl_svc_qname is NULL we take the first service as the
              * requested service
              */
@@ -264,7 +269,7 @@ axis2_client_utils_create_axis2_svc(
             AXIS2_SVC_SET_NAME(axis2_svc, env, localname);
             AXIS2_SVC_SET_QNAME(axis2_svc, env, svc_qname);
         }
-        endpoints = WODEN_SVC_GET_ENDPOINTS(wsdl_svc, env);
+        endpoints = WODEN_WSDL10_SVC_GET_ENDPOINTS(wsdl_svc, env);
         if(endpoints)
             no_of_endpoints = AXIS2_ARRAY_LIST_SIZE(endpoints, env);
         for(i = 0; i < no_of_endpoints; i++)
@@ -287,17 +292,52 @@ axis2_client_utils_create_axis2_svc(
         }
         if(AXIS2_TRUE == endpoint_found)
         {
-            axis2_uri_t *soap_address = NULL;
             axis2_endpoint_ref_t *endpoint_ref = NULL;
             axis2_char_t *address = NULL;
+            axis2_qname_t *ext_type_l = NULL;
+            axis2_qname_t *ext_type = NULL;
+            int j = 0, size = 0;
+            axis2_array_list_t *ext_elements = NULL;
+            axis2_uri_t *soap_address_uri = NULL;
 
-            soap_address = WODEN_WSDL10_ENDPOINT_GET_ADDRESS(endpoint, env);
-            if(soap_address)
+            endpoint = woden_wsdl10_endpoint_to_element_extensible(
+                    endpoint, env);
+            ext_type_l = axis2_qname_create(env, "address", 
+                    "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
+            ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(endpoint, 
+                    env);
+            if(ext_elements)
+                size = AXIS2_ARRAY_LIST_SIZE(ext_elements, env);
+            for(j = 0; j < size; j++)
             {
-                address = AXIS2_URI_TO_STRING(soap_address, env, 
+                void *ext_element = NULL;
+
+                ext_element = AXIS2_ARRAY_LIST_GET(ext_elements, env, j);
+                ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
+                if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
+                {
+                    void *soap_address = NULL;
+                    
+                    ext_element = 
+                       woden_wsdl10_soap_module_to_soap_module_element (
+                                ext_element, env);
+                    soap_address = 
+                        WODEN_WSDL10_SOAP_MODULE_ELEMENT_GET_SOAP_ADDRESS_EXTS(
+                                ext_element, env);
+                    
+                    soap_address_uri = WODEN_WSDL10_SOAP_ADDRESS_EXTS_GET_SOAP_ADDRESS(
+                        soap_address, env);
+                    break;
+                }
+            }
+            
+            if(soap_address_uri)
+            {
+                address = AXIS2_URI_TO_STRING(soap_address_uri, env, 
                         AXIS2_URI_UNP_OMITUSERINFO);
                 endpoint_ref = axis2_endpoint_ref_create(env, address);
-                AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+                if(options)
+                    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
             }
         }
         if(endpoint)

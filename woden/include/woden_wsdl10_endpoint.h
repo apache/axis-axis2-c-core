@@ -105,7 +105,7 @@ union woden_wsdl10_endpoint_base
     woden_nested_configurable_t nested_configurable;
     woden_wsdl10_endpoint_element_t endpoint_element;
     woden_configurable_component_t configurable_component;
-    woden_configurable_component_t nested_component;
+    woden_nested_component_t nested_component;
 };
 
 struct woden_wsdl10_endpoint

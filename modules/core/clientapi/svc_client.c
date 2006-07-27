@@ -249,9 +249,10 @@ axis2_svc_client_create_with_conf_ctx_and_wsdl_uri_wsdl_svc_name_and_endpoint(
    svc_client_impl->conf = AXIS2_CONF_CTX_GET_CONF(svc_client_impl->conf_ctx, env);
    repos_path = AXIS2_CONF_GET_REPOS(svc_client_impl->conf, env);
    wsdl_path = axis2_strcat(env, repos_path, AXIS2_PATH_SEP_STR, "woden", NULL);
- 
+
+   svc_client_impl->options = axis2_options_create(env);
    svc_client_impl->svc = axis2_client_utils_create_axis2_svc(env, wsdl_uri, 
-           wsdl_svc_qname, endpoint_name, wsdl_path, NULL);
+           wsdl_svc_qname, endpoint_name, wsdl_path, svc_client_impl->options);
    if(svc_client_impl->svc)
    {
        axis2_hash_index_t *i = NULL;
@@ -265,7 +266,7 @@ axis2_svc_client_create_with_conf_ctx_and_wsdl_uri_wsdl_svc_name_and_endpoint(
             op = (axis2_op_t *) v;
             axis2_phases_info_t *info = NULL;
 
-            /*AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);*/
+            AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
             /* Setting operation phase */
             info = AXIS2_CONF_GET_PHASESINFO(svc_client_impl->conf, env);
             AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op);

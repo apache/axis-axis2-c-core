@@ -3294,22 +3294,12 @@ parse_endpoint(
         else
         {
             void *ext_element = NULL;
-            void *nested_confble = NULL;
-            void *configurable = NULL;
-            void *documentable = NULL;
-            void *wsdl_obj = NULL;
-            void *wsdl_el = NULL;
 
             ext_element = parse_ext_element(reader, env, "endpoint_element", 
                     endpoint, temp_el_node, desc);
 
-            nested_confble = WODEN_WSDL10_ENDPOINT_GET_BASE_IMPL(endpoint, env);
-            configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(nested_confble, env);
-            documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
-            wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
-            wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
-            wsdl_el = woden_wsdl_element_to_element_extensible(wsdl_el, env);
-            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(wsdl_el, env, ext_element);
+            endpoint = woden_wsdl10_endpoint_to_element_extensible(endpoint, env);
+            WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(endpoint, env, ext_element);
         }
 
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 

@@ -20,6 +20,7 @@
 #include <woden_wsdl10_desc.h>
 #include <woden_wsdl10_desc_element.h>
 #include <woden_wsdl10_soap_binding_op_exts.h>
+#include <woden_wsdl10_soap_address_exts.h>
 #include <woden_documentation.h>
 #include <woden_documentation_element.h>
 #include "woden_wsdl10_soap_constants.h"
@@ -379,6 +380,29 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
                     soap_mod, env, binding_op_exts);
             
     }
+    element_type_l = axis2_qname_create(env, "address", 
+        "http://schemas.xmlsoap.org/wsdl/soap/", NULL);
+    if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(element_type, env, element_type_l))
+    {
+            axis2_char_t *address_str = NULL;
+            axis2_uri_t *soap_address = NULL;
+            void *address_exts = NULL;
+
+            address_str = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(el, env, 
+                    WODEN_WSDL10_ATTR_LOCATION);
+            soap_address = axis2_uri_parse_string(env, address_str);
+            address_exts = woden_wsdl10_soap_address_exts_create(env);
+            WODEN_WSDL10_SOAP_ADDRESS_EXTS_SET_SOAP_ADDRESS(address_exts, 
+                    env, soap_address);
+            AXIS2_URI_FREE(soap_address, env);
+
+            soap_mod = woden_wsdl10_soap_module_to_soap_module_element(soap_mod, 
+                    env);
+            WODEN_WSDL10_SOAP_MODULE_ELEMENT_SET_SOAP_ADDRESS_EXTS(
+                    soap_mod, env, address_exts);
+            
+    }
+
     temp_el = axiom_util_get_first_child_element(el, env, el_node, 
             &temp_el_node);
 

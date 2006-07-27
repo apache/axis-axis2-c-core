@@ -54,6 +54,7 @@ extern "C"
 #define WODEN_WSDL10_ATTR_SUBCODES "subcodes"
 #define WODEN_WSDL10_ATTR_MEP "mep"
 #define WODEN_WSDL10_ATTR_ACTION "soapAction"
+#define WODEN_WSDL10_ATTR_LOCATION "location"
 #define WODEN_WSDL10_ATTR_MUSTUNDERSTAND "mustUnderstand"
 
 /* Prefixes */
