@@ -21,70 +21,99 @@
 #include <openssl_crypt.h>
 #include <openssl/rand.h>
 
+#define BUFSIZE 64
+
 /**
 * @param do_encrypt should be set to 1 for encryption, 0 for decryption and -1 to
 * leave the value unchanged 
 */
-AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(axis2_env_t *env, 
+AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env, 
     openssl_evp_block_cipher_ctx_ptr bc_ctx, 
-    oxs_buffer_ptr in_buf, 
-    oxs_buffer_ptr out_buf, 
+    unsigned char *in_main_buf, 
+    unsigned char **out_main_buf, 
     int do_encrypt)
 {
-    EVP_CIPHER_CTX evp_ctx ;
-    evp_ctx = bc_ctx->cipher_ctx;
+    EVP_CIPHER_CTX ctx ;
+    ctx = bc_ctx->cipher_ctx;
 
-    unsigned char *tempbuf;
-    int insize, outsize, block_len;
-    int outlen = 0;     
+        unsigned char inbuf[BUFSIZE + 1 ], outbuf[BUFSIZE + EVP_MAX_BLOCK_LENGTH]; /*EVP_MAX_BLOCK_LENGTH = 32 in evp.h*/
+        unsigned char *tempbuf, *tempbuf2 ;
+        int inlen, outlen, i, in_main_len, out_buf_index;
+        int ret;
 
-    if(!bc_ctx->ctx_initialized){
-        return (-1); /* Ctx should be initialized by now*/
-    }
-    
-    block_len = EVP_CIPHER_block_size(bc_ctx->cipher);
+        i = 0;
+        out_buf_index = 0;
 
-    /* loop until we dont have any data left in the input buffer */
-    for(;;)
-    {
-        insize = in_buf->size;
 
-        if(insize <= 0) break;/*No More Data!!! Quit loop*/
-
-        outsize = out_buf->size;
-        oxs_buffer_set_max_size(env, out_buf, outsize + insize + block_len);
-    
-        tempbuf = out_buf->data + outsize;
- 
-        if(!EVP_CipherUpdate(&(bc_ctx->cipher_ctx), tempbuf, &outlen, in_buf->data, insize))
+        for(;;)
         {
-            /* Error!!! Do the cleanup */
-            EVP_CIPHER_CTX_cleanup(&(bc_ctx->cipher_ctx));
-            return -1;
+                memset(inbuf,0 ,BUFSIZE);/*Reset memory for the inbuf*/
+                memcpy(inbuf, in_main_buf + (i * BUFSIZE) , BUFSIZE );/*Copy the first block to the inbuf*/
+                inbuf[BUFSIZE] = '\0';
+
+                in_main_len = strlen((const char*)in_main_buf);
+                /*inlen = strlen(inbuf);*/
+
+                if(in_main_len <= i*BUFSIZE) break; /*Finish!!! */
+
+                /*If we are in the last block, set inlen according to the in_main_len */
+                if(in_main_len <= (i+1)*BUFSIZE)
+                {
+                    inlen = in_main_len - (i*BUFSIZE);
+                }else{
+                    inlen = BUFSIZE;
+                }
+
+                
+                if(do_encrypt == 1){
+                    printf("\nEncrypting block[%d] %s", inlen, inbuf);
+                }
+
+                memset(outbuf,0 ,BUFSIZE + EVP_MAX_BLOCK_LENGTH);/*Reset memory for the outbuf*/
+                if(!EVP_CipherUpdate(&ctx, outbuf, &outlen, inbuf, inlen))
+                {
+                        /* Error */
+                        EVP_CIPHER_CTX_cleanup(&ctx);
+                        printf("\nERROR: EVP_CIPHER_CTX_cleanup");
+                        return (-1);
+                }
+                /*TODO: Write the encrypted block to the tempbuf*/
+                tempbuf2 = malloc(out_buf_index + outlen);
+                if(i>0){/*Skip for the i=0 step*/
+                    memcpy(tempbuf2, tempbuf, out_buf_index);
+                    /*free tempbuf*/
+                    free(tempbuf);
+                }
+                memcpy(tempbuf2 + out_buf_index, outbuf, outlen);
+                tempbuf = tempbuf2; /*Assign new tempbuf2 to the old one*/
+                out_buf_index = out_buf_index + outlen;/*Update the writing position of the tempbuf*/
+
+                i++;
+        }/*End of for loop*/
+
+        ret = EVP_CipherFinal_ex(&ctx, outbuf, &outlen);
+        if(!ret)
+        {
+                /* Error */
+                EVP_CIPHER_CTX_cleanup(&ctx);
+                printf("\nERROR:EVP_CipherFinal_ex--- EVP_CIPHER_CTX_cleanup");
+                return (-1);
         }
-    
-        /*set the correct size of the output buffer*/
-        oxs_buffer_set_size(env, out_buf, outsize + outlen );
-        printf("\noxs_buffer_set_size= %d", outsize + outlen );
+        /*Alright now we need to write the last drop*/
+        tempbuf2 = malloc(out_buf_index + outlen);
+        memcpy(tempbuf2, tempbuf, out_buf_index);
+        /*free tempbuf*/
+        free(tempbuf);
+        memcpy(tempbuf2 + out_buf_index, outbuf, outlen);
+        tempbuf = tempbuf2; /*Assign new tempbuf2 to the old one*/
+        out_buf_index = out_buf_index + outlen;/*Update the writing position of the tempbuf*/
 
-        /*remove the processed data from the input*/
-        oxs_buffer_remove_head(env, in_buf, insize);
+        EVP_CIPHER_CTX_cleanup(&ctx);
 
-     }/*End of For loop*/
-
-     if(!EVP_CipherFinal_ex(&(bc_ctx->cipher_ctx), tempbuf, &outsize))
-     {
-        /* Error */
-        EVP_CIPHER_CTX_cleanup(&(bc_ctx->cipher_ctx));
-        return -1;
-     }
-     /*Now set out_buf data*/
-     out_buf->data = tempbuf;
-     oxs_buffer_set_size(env, out_buf, outsize + outlen );
-
-     EVP_CIPHER_CTX_cleanup(&(bc_ctx->cipher_ctx));
-     
-     return 1;
+        /*Assign the temp buf to the out_main_buf*/
+        *out_main_buf = tempbuf;
+        free(tempbuf2);
+        return out_buf_index;    
 
 }
 

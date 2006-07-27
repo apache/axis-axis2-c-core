@@ -17,6 +17,8 @@
 #include <stdio.h>
 #include <axis2_util.h>
 #include <openssl_cipher_ctx.h>
+#include <openssl_constants.h>
+#include <oxs_error.h>
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 
@@ -33,24 +35,38 @@ openssl_evp_block_cipher_ctx_create(const axis2_env_t *env)
 AXIS2_EXTERN int  AXIS2_CALL  
 openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
                              openssl_evp_block_cipher_ctx_ptr bc_ctx,
-                             oxs_buffer_ptr in,
-                             oxs_buffer_ptr out,
                              int encrypt,
                              const unsigned char* cipher_name)
 {
+    
     int iv_len;
     int ret;
 
+    
     /*If bc_ctx is NULL create a new one*/
     if(!bc_ctx){
         bc_ctx = openssl_evp_block_cipher_ctx_create(env);
         if(!bc_ctx) return (-1); 
     }    
-
+    printf("\nCreating cipher ctx for %s", cipher_name);
     /*Set the cipher. TODO Support more ciphers later*/
-    bc_ctx->cipher = EVP_des_ede3_cbc(); 
+    if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_des_ede3_cbc ))
+    {
+        bc_ctx->cipher = EVP_des_ede3_cbc();         
+    }else if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc ))
+    {
+        bc_ctx->cipher = EVP_aes_128_cbc(); 
+    }else if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc ))
+    {
+        bc_ctx->cipher = EVP_aes_192_cbc();
+    }else if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc ))
+    {
+        bc_ctx->cipher = EVP_aes_256_cbc();
+    }else{
+        return (-1);
+    }
 
-    /*Sets the IV if not set. Well..How we convay this IV to decrypt*/
+    /*Sets the IV if not set. Well..How we convey this IV to decrypt*/
     if(!(bc_ctx->iv)){
         iv_len = EVP_CIPHER_iv_length(bc_ctx->cipher);
         ret = RAND_bytes(bc_ctx->iv, iv_len);
@@ -63,7 +79,18 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
 
     /*Key supposed to be set before this */
     if(!bc_ctx->key) return (-1);
-        
+       
+    /*Check if key and IV sizes are not applicable for the cipher*/
+    if(EVP_CIPHER_key_length(bc_ctx->cipher) != strlen(bc_ctx->cipher) ){
+        printf("Key size is not applicable for the cipher\n");
+        return (-1);
+    }  
+
+    if(EVP_CIPHER_iv_length(bc_ctx->cipher) != strlen(bc_ctx->iv) ){
+        printf("IV size is not applicable for the cipher\n");
+        return (-1);
+    }  
+
     /*Init ctx*/    
     EVP_CIPHER_CTX_init(&(bc_ctx->cipher_ctx));
     
