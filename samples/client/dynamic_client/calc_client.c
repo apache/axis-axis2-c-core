@@ -142,7 +142,7 @@ build_om_programatically(axis2_env_t *env)
     AXIOM_ELEMENT_ADD_ATTRIBUTE(arg1_om_ele, env, attr_name_arg1, arg1_om_node);
     AXIOM_ELEMENT_ADD_ATTRIBUTE(arg1_om_ele, env, attr, arg1_om_node);
     
-    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, 
+    /*xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, 
             AXIS2_FALSE, AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axiom_output_create( env, xml_writer);
     
@@ -150,7 +150,7 @@ build_om_programatically(axis2_env_t *env)
     buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);         
     printf("\nOM node in XML : %s \n",  buffer); 
     AXIS2_FREE(env->allocator, buffer);
-    AXIOM_OUTPUT_FREE(om_output, env);
+    AXIOM_OUTPUT_FREE(om_output, env);*/
 
     return add_om_node;
 }
