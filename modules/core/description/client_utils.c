@@ -125,9 +125,21 @@ axis2_client_utils_create_axis2_svc(
         }
         if(AXIS2_TRUE == svc_found)
         {
-            axis2_char_t *localname = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
+            axis2_char_t *temp1 = NULL;
+            axis2_char_t *ns = NULL;
+            axis2_char_t *prefix = NULL;
+            axis2_char_t *localname = NULL;
+            axis2_qname_t *temp_svc_qname = NULL;
+
+            temp1 = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
+            localname = axis2_strcat(env, "dii_", temp1, NULL);
+            ns = AXIS2_QNAME_GET_URI(svc_qname, env);
+            prefix = AXIS2_QNAME_GET_PREFIX(svc_qname, env); 
+            temp_svc_qname = axis2_qname_create(env, localname, ns, prefix);
             AXIS2_SVC_SET_NAME(axis2_svc, env, localname);
-            AXIS2_SVC_SET_QNAME(axis2_svc, env, svc_qname);
+            AXIS2_SVC_SET_QNAME(axis2_svc, env, temp_svc_qname);
+            AXIS2_FREE(env->allocator, localname);
+            AXIS2_QNAME_FREE(temp_svc_qname, env);
         }
         endpoints = WODEN_SVC_GET_ENDPOINTS(wsdl_svc, env);
         if(endpoints)
@@ -265,9 +277,21 @@ axis2_client_utils_create_axis2_svc(
         }
         if(AXIS2_TRUE == svc_found)
         {
-            axis2_char_t *localname = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
+            axis2_char_t *temp1 = NULL;
+            axis2_char_t *ns = NULL;
+            axis2_char_t *prefix = NULL;
+            axis2_char_t *localname = NULL;
+            axis2_qname_t *temp_svc_qname = NULL;
+            
+            temp1 = AXIS2_QNAME_GET_LOCALPART(svc_qname, env);
+            localname = axis2_strcat(env, "dii_", temp1, NULL);
+            ns = AXIS2_QNAME_GET_URI(svc_qname, env);
+            prefix = AXIS2_QNAME_GET_PREFIX(svc_qname, env); 
+            temp_svc_qname = axis2_qname_create(env, localname, ns, prefix);
             AXIS2_SVC_SET_NAME(axis2_svc, env, localname);
-            AXIS2_SVC_SET_QNAME(axis2_svc, env, svc_qname);
+            AXIS2_SVC_SET_QNAME(axis2_svc, env, temp_svc_qname);
+            AXIS2_FREE(env->allocator, localname);
+            AXIS2_QNAME_FREE(temp_svc_qname, env);
         }
         endpoints = WODEN_WSDL10_SVC_GET_ENDPOINTS(wsdl_svc, env);
         if(endpoints)

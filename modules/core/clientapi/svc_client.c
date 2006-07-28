@@ -687,11 +687,19 @@ axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_body_t *soap_body = NULL;
     axiom_node_t *soap_node = NULL;
+    axis2_op_t *op = NULL;
+    axis2_param_t *param = NULL;
+    axis2_uri_t *action_uri = NULL;
+    axis2_char_t *action_str = NULL;
 
    AXIS2_ENV_CHECK(env, NULL);
-
    svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
 
+    op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client_impl->svc, env, op_qname);
+    param = AXIS2_OP_GET_PARAM(op, env, AXIS2_SOAP_ACTION);
+    action_uri = (axis2_uri_t *) AXIS2_PARAM_GET_VALUE(param, env);
+    action_str = AXIS2_URI_TO_STRING(action_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
+    AXIS2_OPTIONS_SET_ACTION(svc_client_impl->options, env, action_str);
    if (!op_qname)
    {
        op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);

@@ -30,6 +30,7 @@ struct axis2_svc_impl
     axis2_svc_t svc;
     axis2_svc_grp_t *parent;
     axis2_hash_t *wasaction_op_map;  
+    axis2_hash_t *op_alias_map;  
     axis2_char_t *axis_svc_name; 
     /** to keep the time that last update time of the service */
     long last_update;

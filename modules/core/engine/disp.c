@@ -212,25 +212,20 @@ axis2_disp_invoke(struct axis2_handler *handler,
         if (axis_service) 
         {
             AXIS2_MSG_CTX_SET_SVC(msg_ctx, env, axis_service);
-            /*TODO Chinthaka : set the Service Group Context to the message Context*/
+            /*TODO Set the Service Group Context to the message Context*/
+        }
+    }
+    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    if (!op)
+    {
+        op = AXIS2_MSG_CTX_FIND_OP(msg_ctx, env, axis_service);
+        
+        if (op)
+        {
+            AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op);
         }
     }
 
-    axis_service = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
-    if (axis_service)
-    {
-        op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
-        if (!op)
-        {
-            op = AXIS2_MSG_CTX_FIND_OP(msg_ctx, env, axis_service);
-            
-            if (op)
-            {
-                AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op);
-            }
-        }
-    }
-    
     return AXIS2_SUCCESS;
 }
 
