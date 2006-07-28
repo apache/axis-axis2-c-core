@@ -38,7 +38,7 @@ oxs_axiom_get_node_content(const axis2_env_t *env, axiom_node_t* node)
 }
 
 
-AXIS2_EXTERN int AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_axiom_check_node_name(const axis2_env_t *env, axiom_node_t* node, axis2_char_t* name, axis2_char_t* ns)
 {
     int ret_name, ret_ns;
@@ -58,11 +58,11 @@ oxs_axiom_check_node_name(const axis2_env_t *env, axiom_node_t* node, axis2_char
     if(ns != NULL){
         ns_str = AXIS2_QNAME_GET_URI(qname, env);    
         ret_ns =  AXIS2_STRCMP(ns_str, ns) ;
-        if(ret_ns<0) return 0;
-        else   return 1;   
+        if(ret_ns<0) return AXIS2_FAILURE;
+        else   return AXIS2_SUCCESS;   
         
     }else{
-        return 1;
+        return AXIS2_SUCCESS;
     }
     
 
