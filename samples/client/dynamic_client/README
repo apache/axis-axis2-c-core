@@ -1,43 +1,12 @@
 This sample demonstrate the Dynamic Invocation capabilities of Axis2 C.
-It should be noted that to run this sample you should have configured
-Axis2 C with the configure option --enable-wsdl-pull=yes.
-To do this you should have installed WsdlPull and Axis2c_wsdl4c which
-is a C wrapper for WsdlPull.
+To build
+cd samples/server/Calculator
+make
+make install
 
-I'm using WsdlPull 1.10
+cd samples/client/dynamic_client
+make
 
-Notes for WsdlPull 1.9
-======================
-Note1:
-In WsdlPull version 1.9 I noticed that,  WsdlParser::getService() 
-method is there in the Header file but not implemented.
-Therefore add the following code to WsdlParser.cpp
+To Run
 
-const Service *
-WsdlParser::getService()
-{
-    if (element_ != SERVICE)
-    {
-         error ("Attempted to extract a Service when ,no service was parsed",1);
-         return 0;
-    }
-    else
-    {
-        return services_.back();
-    }
-}
-Note2:
-Also there is another fix for WsdlPull
-In WsdlParser.cpp's parseService method
-
-Add the following two lines
-    if ("name" == xParser_->getAttributeName(i) &&
-                (xParser_->getAttributePrefix(i)).empty())
-        portName = xParser_->getAttributeValue(i);
-
-after following code
-
-for (i = 0; i < num_att; i++) {
-    if ("binding" == xParser_->getAttributeName(i) &&
-                (xParser_->getAttributePrefix(i)).empty())
-        bnName = xParser_->getAttributeValue(i);
+./dynamic_client <path to wsdl>/CalculatorDoc.wsdl
