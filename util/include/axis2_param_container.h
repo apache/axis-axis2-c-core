@@ -17,6 +17,11 @@
 #ifndef AXIS2_PARAM_CONTAINER_H
 #define AXIS2_PARAM_CONTAINER_H
 
+/** @defgroup axis2_param_container Parameter Container
+ * @ingroup axis2_descript
+ * @{
+ */
+
 /**
  * @file axis2_param_container.h
  * @brief Axis2 Param container interface
@@ -49,11 +54,6 @@ struct axis2_param_container_ops;
  * should also be assigned to param free function
  */
 typedef axis2_status_t (AXIS2_CALL *AXIS2_PARAM_VALUE_FREE)(void *param, const axis2_env_t *env);    
-
-/** @defgroup axis2_param_container Parameter Container
- * @ingroup axis2_description
- * @{
- */
 
 /** 
  * @brief Param Container ops struct

@@ -34,6 +34,11 @@ extern "C"
  * @{
  */
 
+/**
+ * @file axis2_utils.h
+ */
+
+
 /** This macro is called to check whether structure on which function is called
  *  is NULL and to check whether the environment structure passed is valid.
  * @param object structure on which function is called
