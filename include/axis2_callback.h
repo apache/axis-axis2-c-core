@@ -63,9 +63,10 @@ extern "C"
          * @param result pointer to result
          */
         axis2_status_t (AXIS2_CALL *
-                invoke_on_complete)(struct axis2_callback *callback,
-                        const axis2_env_t *env,
-                        axis2_async_result_t *result);
+                invoke_on_complete)(
+                    struct axis2_callback *callback,
+                    const axis2_env_t *env,
+                    axis2_async_result_t *result);
         /**
          * This Method is called by invoke_on_complete.
          * Users could provide this method so that they can define what to be done
@@ -75,8 +76,9 @@ extern "C"
 	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                on_complete)(struct axis2_callback *callback,
-                        const axis2_env_t *env);
+                on_complete)(
+                    struct axis2_callback *callback,
+                    const axis2_env_t *env);
         /**
          * This Method is called by Axis2 once the Async Operation fails and the result returns
          * @param callback pointer to callback struct
@@ -84,9 +86,10 @@ extern "C"
          * @param execption
          */
         axis2_status_t (AXIS2_CALL *
-                report_error)(struct axis2_callback *callback,
-                        const axis2_env_t *env,
-                        int exception);
+                report_error)(
+                    struct axis2_callback *callback,
+                    const axis2_env_t *env,
+                    int exception);
         /**
          * This Method is called by report_error.
          * Users could provide this method so that they can define what to be done
@@ -96,9 +99,10 @@ extern "C"
 	 * @param execption
          */
         axis2_status_t (AXIS2_CALL *
-                on_error)(struct axis2_callback *callback,
-                        const axis2_env_t *env,
-                        int exception);
+                on_error)(
+                    struct axis2_callback *callback,
+                    const axis2_env_t *env,
+                    int exception);
         /**
          * This says has the Async Operation is completed or not. this could be useful for poleing 
          * with a special callback written for poleing (checking repeatedly time to time).
@@ -116,8 +120,9 @@ extern "C"
          * @return
          */
         axis2_bool_t (AXIS2_CALL *
-                get_complete)(struct axis2_callback *callback,
-                        const axis2_env_t *env);
+                get_complete)(
+                    struct axis2_callback *callback,
+                    const axis2_env_t *env);
         /**
          * Method setComplete
          * @param callback pointer to callback struct
@@ -125,17 +130,19 @@ extern "C"
 	 * @param complete
          */
         axis2_status_t (AXIS2_CALL *
-                set_complete)(struct axis2_callback *callback,
-                        const axis2_env_t *env,
-                        axis2_bool_t complete);
+                set_complete)(
+                    struct axis2_callback *callback,
+                    const axis2_env_t *env,
+                    axis2_bool_t complete);
 
         /**
 	 * @param callback pointer to callback struct
 	 * @param env pointer to environment struct
 	 */
         axiom_soap_envelope_t* (AXIS2_CALL *
-                get_envelope)(struct axis2_callback *callback,
-                        const axis2_env_t *env);
+                get_envelope)(
+                    struct axis2_callback *callback,
+                    const axis2_env_t *env);
 
 	/**
 	 * @param callback pointer to callback struct
@@ -143,17 +150,19 @@ extern "C"
 	 * @param envelope pointer to envelope
 	 */
         axis2_status_t (AXIS2_CALL *
-                set_envelope)(struct axis2_callback *callback,
-                        const axis2_env_t *env,
-                        axiom_soap_envelope_t *envelope);
+                set_envelope)(
+                    struct axis2_callback *callback,
+                    const axis2_env_t *env,
+                    axiom_soap_envelope_t *envelope);
 
         /**
 	 * @param callback pointer to callback struct
 	 * @param env pointer to environment struct
 	 */
         int (AXIS2_CALL *
-                get_error)(struct axis2_callback *callback,
-                        const axis2_env_t *env);
+                get_error)(
+                    struct axis2_callback *callback,
+                    const axis2_env_t *env);
 
         /**
 	 * @param callback pointer to callback struct
@@ -161,47 +170,53 @@ extern "C"
 	 * @param error
 	 */
         axis2_status_t (AXIS2_CALL *
-                set_error)(struct axis2_callback *callback,
-                        const axis2_env_t *env,
-                        int error);
+                set_error)(
+                    struct axis2_callback *callback,
+                    const axis2_env_t *env,
+                    int error);
 
 	/**
 	 * @param callback pointer to callback struct
 	 * @param data pointer to data
 	 */
         axis2_status_t (AXIS2_CALL *
-                set_data)(struct axis2_callback *callback,
-                        void *data);
+                set_data)(
+                    struct axis2_callback *callback,
+                    void *data);
 
 	/**
 	 * @param callback pointer to callback struct
 	 */
         void * (AXIS2_CALL *
-                get_data)(struct axis2_callback *callback);
+                get_data)(
+                    struct axis2_callback *callback);
 
 	/**
 	 * @param callback pointer to clalback struct
 	 * @param f
 	 */
         void (AXIS2_CALL *
-                set_on_complete)(struct axis2_callback *callback,
-                        on_complete_func_ptr f);
+                set_on_complete)(
+                    struct axis2_callback *callback,
+                    on_complete_func_ptr f);
 
 	/**
 	 * @param callback pointer to callback struct
 	 * @param f
 	 */
         void (AXIS2_CALL *
-                set_on_error)(struct axis2_callback *callback,
-                        on_error_func_ptr f);
+                set_on_error)(
+                    struct axis2_callback *callback,
+                    on_error_func_ptr f);
 
 	/**
 	 * @param callback pointer to callback struct
 	 * @param env pointer to environment struct
 	 */
         axis2_status_t (AXIS2_CALL *
-                free)(struct axis2_callback *callback,
-                        const axis2_env_t *env);
+                free)(
+                    struct axis2_callback *callback,
+                    const axis2_env_t *env);
     };
 
     /**

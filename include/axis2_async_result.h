@@ -55,8 +55,9 @@ extern "C"
 	 * @param env pointer to environment struct
 	 */
         axiom_soap_envelope_t* (AXIS2_CALL *
-                get_envelope)(struct axis2_async_result *async_result,
-                        const axis2_env_t *env);
+                get_envelope)(
+		    struct axis2_async_result *async_result,
+                    const axis2_env_t *env);
 
 
 	/**
@@ -64,16 +65,18 @@ extern "C"
 	 * @param env pointer to environment struct
 	 */
         axis2_msg_ctx_t* (AXIS2_CALL *
-                get_result)(struct axis2_async_result *async_result,
-                        const axis2_env_t *env);
+                get_result)(
+	            struct axis2_async_result *async_result,
+                    const axis2_env_t *env);
 
 	/**
 	 * @param async_result pointer to async result struct
 	 * @param env pointer to environment struct
 	 */
         axis2_status_t (AXIS2_CALL *
-                free)(struct axis2_async_result *async_result,
-                        const axis2_env_t *env);
+                free)(
+		    struct axis2_async_result *async_result,
+                    const axis2_env_t *env);
     };
 
     /**
