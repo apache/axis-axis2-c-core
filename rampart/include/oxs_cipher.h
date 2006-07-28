@@ -14,43 +14,50 @@
  * limitations under the License.
  */
 
-#ifndef OXS_AXIOM_H
-#define OXS_AXIOM_H
+#ifndef OXS_CIPHER_H
+#define OXS_CIPHER_H
 
 
 /**
-  * @file oxs_axiom.h
+  * @file oxs_utils.h
   * @brief 
   */
 
 #include <axis2_defines.h>
+#include <oxs_constants.h>
 #include <axis2_env.h>
-#include <axis2_util.h>
-#include <axiom_node.h>
-#include <axiom_document.h>
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-/*** Forward Declarations ****/
+/*
+typedef struct _oxs_cipher oxs_cipher, *oxs_cipher_ptr;
 
-typedef struct axiom_document_t oxs_axiom_document, *oxs_axiom_document_ptr;
-typedef struct axiom_node_t oxs_axiom_node, *oxs_axiom_node_ptr;
-
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-oxs_axiom_get_node_content(const axis2_env_t *env, axiom_node_t* node);
-
-/**
-* returns 1 sucess 0 otherwise
+struct _oxs_cipher
+{
+    axis2_char_t *name;
+    int key_size;
+    int iv_size;
+};
 */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_axiom_check_node_name(const axis2_env_t *env, axiom_node_t* node, axis2_char_t* name, axis2_char_t* ns);
+  
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+oxs_get_cipher(const axis2_env_t *env,
+                     axis2_char_t *url);
 
+
+AXIS2_EXTERN int AXIS2_CALL
+oxs_get_cipher_key_size(const axis2_env_t *env,
+                     axis2_char_t *url);
+
+
+AXIS2_EXTERN int AXIS2_CALL
+oxs_get_cipher_iv_size(const axis2_env_t *env,
+                     axis2_char_t *url);
 /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* OXS_AXIOM_H */
+#endif                          /* OXS_CIPHER_H */
