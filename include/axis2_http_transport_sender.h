@@ -17,12 +17,17 @@
 #ifndef AXIS2_HTTP_TRANSPORT_SENDER_H
 #define AXIS2_HTTP_TRANSPORT_SENDER_H
 
+/**
+ * @defgroup axis2_http_transport_sender http transport sender
+ * @ingroup axis2_core_trans_http
+ * @{
+ */
 
 /**
-  * @file axis2_http_transport_sender.h
-  * @brief axis2 HTTP Transport Sender (Handler) implementation
-  */
-  
+ * @file axis2_http_transport_sender.h
+ * @brief axis2 HTTP Transport Sender (Handler) implementation
+ */
+
 #include <axis2_const.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>
@@ -36,14 +41,12 @@ extern "C"
 {
 #endif
 
-/**
- * @ingroup axis2_core_transport_http
- * @{
- */
-
-
-AXIS2_EXTERN axis2_transport_sender_t * AXIS2_CALL 
-axis2_http_transport_sender_create (const axis2_env_t *env);
+    /** 
+     * @param env pointer to environment struct 
+     */
+    AXIS2_EXTERN axis2_transport_sender_t * AXIS2_CALL
+    axis2_http_transport_sender_create (
+        const axis2_env_t *env);
 
 
 /** @} */
