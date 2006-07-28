@@ -27,10 +27,11 @@
 /**
  * @defgroup axis2_op_client operation client
  * @ingroup axis2_client_api
- * Operation client is meant to be used by advanced users to consume services.
- * Operation client understands a specific MEP and hence the behavior is
- * defined by the MEP. To consume services with an operation client, an
- * operation (of type axis2_op_t) and a service context (of type axis2_svc_ctx_t)
+ * The operation client is meant to be used by advanced users to consume services.
+ * Operation client understands a specific Message Exchange Pattern (MEP) and 
+ * hence the behavior is defined by the MEP. 
+ * To consume services with an operation client, an operation (of type axis2_op_t) 
+ * and a service context (of type axis2_svc_ctx_t)
  * has to be provided along with options to be used. The execute() function
  * can be used to send the request and get the response. 
  * The service client implementation uses the operation client and provides an
@@ -71,7 +72,7 @@ extern "C"
     {
 
         /**
-         * Sets the options that should be used for this particular client. 
+         * Sets the options that is to be used by this operation client. 
          * @param op_client pointer to operation client struct
          * @param env pointer to environment struct
          * @param options pointer to options struct to be set
@@ -100,13 +101,13 @@ extern "C"
          * Processing occurs only when execute() is called.
          * @param op_client pointer to operation client struct
          * @param env pointer to environment struct
-         * @param mc message context to be added
+         * @param msg_ctx message context to be added
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_msg_ctx)(axis2_op_client_t *op_client,
                         const axis2_env_t *env,
-                        axis2_msg_ctx_t *mc);
+                        axis2_msg_ctx_t *msg_ctx);
 
         /**
          * Gets a message corresponding to the given label.
@@ -140,23 +141,22 @@ extern "C"
          * an Out-In MEP, then if the Out message has been set, then executing the
          * client asks it to send the message and get the In message, possibly using
          * a different thread.
-	 * @param op_client pointer to operation client
-	 * @param env pointer to environment struct
-         * @param block Indicates whether execution should block or return ASAP. What
-         * block means is of course a function of the specific operation client.
+         * @param op_client pointer to operation client
+         * @param env pointer to environment struct
+         * @param block indicates whether execution should block or return ASAP
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 execute)(struct axis2_op_client *op_client,
                         const axis2_env_t *env,
-                        axis2_bool_t block);
+                        const axis2_bool_t block);
 
         /**
          * Reset the operation client to a clean status after the MEP has completed.
-         * This is how you can reuse an operation client. NOTE: this does not reset
+         * This is how you can reuse an operation client. Note that this does not reset
          * the options; only the internal state so the client can be used again.
-	 * @param op_clitn pointer to operation client
-	 * @param env pointer to environment struct
+         * @param op_client pointer to operation client
+         * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -164,32 +164,33 @@ extern "C"
                         const axis2_env_t *env);
 
         /**
-         * To close the tranport if necessary , can call this method. The most usage of thie method
-         * when clinet use two tarnport for sending and receiving , there we need to remove entry from
-         * waitings calls in the transport listener queue
-         * Note : DO NOT call this method if you are not using two transport send and receive
-	 * @param op_client pointer to operation client struct
-	 * @param env pointer to environment struct
-         * @param mc : axis2_msg_ctx_t# which have all the trnport information
+         * To close the transport if necessary , can call this method. 
+         * This method is useful when client uses two transports for sending and 
+         * receiving.
+         * @param op_client pointer to operation client struct
+         * @param env pointer to environment struct
+         * @param msg_ctx message context which have all the transport information
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 complete)(struct axis2_op_client *op_client,
                         const axis2_env_t *env,
-                        axis2_msg_ctx_t *mc);
+                        axis2_msg_ctx_t *msg_ctx);
 
         /**
-         * To get the operation context of the operation cleint
-	 * @param op_client pointer to operation client struc
-         * @return Operation Context
+         * Gets the operation context of the operation client.
+         * @param op_client pointer to operation client struct
+         * @return operation context related to operation client
          */
         axis2_op_ctx_t* (AXIS2_CALL *
                 get_operation_context)(struct axis2_op_client *op_client);
 
         /**
+         * Sets callback receiver.
          * @param op_client pointer to operation client struct
-	 * @param env pointer to environment struct
-	 * @param callback_recv pointer to callback receiver struct
+         * @param env pointer to environment struct
+         * @param callback_recv pointer to callback receiver struct.
+         * Operation client assumes ownership of the callback struct.
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -199,8 +200,9 @@ extern "C"
                     struct axis2_callback_recv *callback_recv);
 
         /**
+         * Frees the operation client
          * @param op_client pointer to operation client struct
-	 * @param env pointer to environment struct
+         * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -213,7 +215,7 @@ extern "C"
      */
     struct axis2_op_client
     {
-	/** operations of operation client */
+        /** operations of operation client */
         axis2_op_client_ops_t *ops;
     };
 
@@ -221,15 +223,11 @@ extern "C"
      * Creates a operation client struct for a specified operation, service 
      * context and options.
      * @param env pointer to environment struct
-     * @param op pointer to operation struct corrsponding to the operation to 
+     * @param op pointer to operation struct corresponding to the operation to 
      * to be executed. Newly created client assumes ownership of the operation.
      * @param svc_ctx pointer to service context struct representing the service
      * to be consumed. Newly created client assumes ownership of the service 
      * context.
-     * @param env pointer to environment struct
-     * @param op pointer to operation struct
-     * @param svc_ctx pointer to service context
-     * @param options pointer to options struct to be used.
      * @return a pointer to newly created operation client struct,
      * or NULL on error with error code set in environment's error
      */
@@ -248,12 +246,12 @@ extern "C"
 #define AXIS2_OP_CLIENT_GET_OPTIONS(op_client, env) \
       ((op_client)->ops->get_options(op_client, env))
 
-/** Adds the message context. 
+/** Adds a message context. 
     @sa axis2_op_client_ops#add_msg_ctx*/
-#define AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, mc) \
-      ((op_client)->ops->add_msg_ctx(op_client, env, mc))
+#define AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx) \
+      ((op_client)->ops->add_msg_ctx(op_client, env, msg_ctx))
 
-/** Gets the message context. 
+/** Gets the message context corresponding to given label. 
     @sa axis2_op_client_ops#get_msg_ctx*/
 #define AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, message_label) \
       ((op_client)->ops->get_msg_ctx(op_client, env, message_label))
@@ -263,20 +261,20 @@ extern "C"
 #define AXIS2_OP_CLIENT_SET_CALLBACK(op_client, env, callback) \
       ((op_client)->ops->set_callback(op_client, env, callback))
 
-/** Executes operation client operation. 
+/** Executes operation client. 
     @sa axis2_op_client_ops#execute*/
 #define AXIS2_OP_CLIENT_EXECUTE(op_client, env, block) \
       ((op_client)->ops->execute(op_client, env, block))
 
-/** Resets operation client operation. 
+/** Resets operation client. 
     @sa axis2_op_client_ops#reset*/
 #define AXIS2_OP_CLIENT_RESET(op_client, env) \
       ((op_client)->ops->reset(op_client, env))
 
-/** Completes operation client operation. 
+/** Completes operation client, closing open transports. 
     @sa axis2_op_client_ops#complete*/
-#define AXIS2_OP_CLIENT_COMPLETE(op_client, env, mc) \
-      ((op_client)->ops->complete(op_client, env, mc))
+#define AXIS2_OP_CLIENT_COMPLETE(op_client, env, msg_ctx) \
+      ((op_client)->ops->complete(op_client, env, msg_ctx))
 
 /** Gets the operation context. 
     @sa axis2_op_client_ops#get_operation_context*/
@@ -292,8 +290,6 @@ extern "C"
     @sa axis2_op_client_ops#set_callback_recv*/
 #define AXIS2_OP_CLIENT_SET_CALLBACK_RECV(op_client, env, callback_recv) \
       ((op_client)->ops->set_callback_recv(op_client, env, callback_recv))
-
-    /************************** End of function macros ****************************/
 
 /** @} */
 #ifdef __cplusplus

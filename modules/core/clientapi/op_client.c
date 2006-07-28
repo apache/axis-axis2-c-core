@@ -95,7 +95,7 @@ axis2_op_client_set_callback(struct axis2_op_client *op_client,
 axis2_status_t AXIS2_CALL
 axis2_op_client_execute(struct axis2_op_client *op_client,
         const axis2_env_t *env,
-        axis2_bool_t block);
+        const axis2_bool_t block);
 
 axis2_status_t AXIS2_CALL
 axis2_op_client_reset(struct axis2_op_client *op_client,
@@ -307,7 +307,7 @@ axis2_op_client_set_callback(struct axis2_op_client *op_client,
 axis2_status_t AXIS2_CALL
 axis2_op_client_execute(struct axis2_op_client *op_client,
         const axis2_env_t *env,
-        axis2_bool_t block)
+        const axis2_bool_t block)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
