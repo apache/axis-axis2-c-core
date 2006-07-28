@@ -266,7 +266,6 @@ axis2_svc_client_create_with_conf_ctx_and_wsdl_uri_wsdl_svc_name_and_endpoint(
             op = (axis2_op_t *) v;
             axis2_phases_info_t *info = NULL;
 
-            AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
             /* Setting operation phase */
             info = AXIS2_CONF_GET_PHASESINFO(svc_client_impl->conf, env);
             AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op);

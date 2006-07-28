@@ -199,6 +199,8 @@ axis2_client_utils_create_axis2_svc(
             axis2_bool_t out = AXIS2_FALSE;
             axis2_qname_t *op_qname = NULL;
             axis2_param_t *param = NULL;
+            axis2_uri_t *mep_uri = NULL;
+            axis2_char_t *mep_str = NULL;
             
             binding_op = AXIS2_ARRAY_LIST_GET(binding_ops, env, i);
             interface_op = WODEN_BINDING_OP_GET_INTERFACE_OP(binding_op, env);
@@ -229,6 +231,14 @@ axis2_client_utils_create_axis2_svc(
             axis2_op = axis2_op_create(env);
             op_qname = WODEN_INTERFACE_OP_GET_QNAME(interface_op, env);
             AXIS2_OP_SET_QNAME(axis2_op, env, op_qname);
+            mep_uri = WODEN_INTERFACE_OP_GET_MSG_EXCHANGE_PATTERN(interface_op, 
+                    env);
+            if(mep_uri)
+            {
+                mep_str = AXIS2_URI_TO_STRING(mep_uri, env, 
+                    AXIS2_URI_UNP_OMITUSERINFO);
+                AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(axis2_op, env, mep_str);
+            }
             binding_op = woden_binding_op_to_element_extensible(binding_op, env);
             ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(binding_op, 
                     env);
@@ -385,6 +395,8 @@ axis2_client_utils_create_axis2_svc(
             axis2_qname_t *ext_type = NULL;
             axis2_qname_t *ext_type_l = NULL;
             axis2_param_t *param = NULL;
+            axis2_uri_t *mep_uri = NULL;
+            axis2_char_t *mep_str = NULL;
             
             binding_op = AXIS2_ARRAY_LIST_GET(binding_ops, env, i);
             interface_op = WODEN_WSDL10_BINDING_OP_GET_INTERFACE_OP(binding_op, 
@@ -417,6 +429,14 @@ axis2_client_utils_create_axis2_svc(
             axis2_op = axis2_op_create(env);
             op_qname = WODEN_INTERFACE_OP_GET_QNAME(interface_op, env);
             AXIS2_OP_SET_QNAME(axis2_op, env, op_qname);
+            mep_uri = WODEN_INTERFACE_OP_GET_MSG_EXCHANGE_PATTERN(interface_op, 
+                    env);
+            if(mep_uri)
+            {
+                mep_str = AXIS2_URI_TO_STRING(mep_uri, env, 
+                    AXIS2_URI_UNP_OMITUSERINFO);
+                AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(axis2_op, env, mep_str);
+            }
             binding_op = woden_wsdl10_binding_op_to_element_extensible(
                     binding_op, env);
             ext_type_l = axis2_qname_create(env, "operation", 
