@@ -451,13 +451,13 @@ axiom_soap_header_block_set_attribute
     if(!header_block_impl->om_ele_node)
         return AXIS2_FAILURE;
         
-    AXIS2_QNAME_FREE(qn, env);
     
     om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
                                     header_block_impl->om_ele_node, env);
     
     om_attr = AXIOM_ELEMENT_GET_ATTRIBUTE(om_ele, env, qn);
     
+    AXIS2_QNAME_FREE(qn, env);
     if(om_attr)
     {
         return  AXIOM_ATTRIBUTE_SET_VALUE(om_attr, env, attr_value);
