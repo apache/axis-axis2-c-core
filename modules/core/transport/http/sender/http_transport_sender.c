@@ -371,6 +371,7 @@ axis2_http_transport_sender_invoke
                 }
                 AXIOM_NODE_SERIALIZE(data_out, env, om_output);
                 buffer = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+                buffer_size = AXIS2_STRLEN(buffer);
             }
             else
             {
