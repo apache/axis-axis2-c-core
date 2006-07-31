@@ -23,6 +23,8 @@ extern "C"
 {
 #endif
 
+/*Default values*/
+
 /* rampart element names*/
 #define RAMPART_SECURITY "Security"
 #define RAMPART_SECURITY_USERNAMETOKEN "UsernameToken"
@@ -55,6 +57,8 @@ extern "C"
 #define RAMPART_PASSWORD_DIGEST "passwordDigest"
 #define RAMPART_ACTION_ITEMS_USERNAMETOKEN "UsernameToken"
 #define RAMPART_ACTION_ITEMS_TIMESTAMP "Timestamp"
+#define RAMPART_ACTION_ITEMS_ENCRYPT "Encrypt"
+#define RAMPART_ACTION_ITEMS_SIGNATURE "Signature"
 #define RAMPART_ACTION_PW_CALLBACK_CLASS "passwordCallbackClass"
 
 /*Dynamically set values*/

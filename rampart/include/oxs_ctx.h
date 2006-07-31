@@ -84,7 +84,8 @@ struct _enc_ctx{
     axiom_node_t*           enc_method_node;
     axiom_node_t*           key_info_node;
     axiom_node_t*           cipher_value_node;
-   
+    /*Used  in decryption process to keep the data to be decrypted*/
+    axis2_char_t*           inputdata;   
 
 }; 
 

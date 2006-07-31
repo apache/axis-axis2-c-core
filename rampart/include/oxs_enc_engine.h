@@ -39,19 +39,55 @@ extern "C"
 #endif
 
 
-
+/*Does encryption or decryption depending on the enc_ctx*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_enc_encrypt(const axis2_env_t *env,
+oxs_enc_crypt(const axis2_env_t *env,
                 enc_ctx_ptr enc_ctx,
                 oxs_buffer_ptr input,
                 axis2_char_t* key,
                 oxs_buffer_ptr result);
 
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_enc_populate_cipher_value(const axis2_env_t *env,
+                             axiom_node_t* template_node,
+                             oxs_buffer_ptr databuf);
+
+/*We expect user to provide a template as below*/
+/** 
+<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#">
+    <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <KeyName/>
+    </KeyInfo>
+    <CipherData>
+        <CipherValue>YoUR-ENCrypteD-Dat@-HeRe</CipherValue>
+    </CipherData>
+</EncryptedData>
+*/
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_enc_decrypt_template(const axis2_env_t *env,
+                        axiom_node_t* template_node,
+                        axis2_char_t** decrypted_data,
+                        enc_ctx_ptr enc_ctx
+                        );
+
 /*We expect user to provide a template as below 
-TODO: Write the template*/
+The CipherValue will be populated once encrypted*/
+/**
+<EncryptedData xmlns="http://www.w3.org/2001/04/xmlenc#">
+    <EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#tripledes-cbc"/>
+    <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <KeyName/>
+    </KeyInfo>
+    <CipherData>
+        <CipherValue></CipherValue>
+    </CipherData>
+</EncryptedData>
+*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_enc_encrypt_template(const axis2_env_t *env,
-                        axiom_node_t* template,
+                        axiom_node_t* template_node,
                         axis2_char_t* data,
                         enc_ctx_ptr enc_ctx
                         );

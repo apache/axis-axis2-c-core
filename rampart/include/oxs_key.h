@@ -43,6 +43,7 @@ extern "C"
 typedef struct _oxs_key oxs_key, *oxs_key_ptr;
 
 struct _oxs_key{
+    axis2_char_t *name;
     unsigned char *data;
     int            size;
     int            usage;
@@ -50,6 +51,7 @@ struct _oxs_key{
 
 AXIS2_EXTERN oxs_key_ptr AXIS2_CALL
 oxs_key_create_key(const axis2_env_t *env,
+                    axis2_char_t *name,
                     unsigned char *data,
                     int size,
                     int usage
