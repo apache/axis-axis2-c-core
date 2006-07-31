@@ -43,9 +43,11 @@ oxs_token_build_cipher_value_element(const axis2_env_t *env,
                     OXS_ERROR_ELEMENT_FAILED,"Error creating cipher value element");
         return NULL;
     }  
+    
+    if(cipher_val){
+        ret  = AXIOM_ELEMENT_SET_TEXT(cipher_value_ele, env, cipher_val, cipher_value_node);
+    }
 
-    ret  = AXIOM_ELEMENT_SET_TEXT(cipher_value_ele, env, cipher_val, cipher_value_node);
-   
     return cipher_value_node; 
      
 }

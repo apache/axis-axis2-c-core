@@ -21,6 +21,7 @@
 #include <axiom_attribute.h>
 #include <axiom_element.h>
 
+/*TODO These names should be changed to oxs_token_build_XXX_node*/
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_encrypted_type_element(const axis2_env_t *env,
@@ -46,13 +47,17 @@ oxs_token_build_encrypted_type_element(const axis2_env_t *env,
                     OXS_ERROR_ELEMENT_FAILED,"Error creating encrypted type element");
         return NULL;
     }  
-
-    type_attr =  axiom_attribute_create (env, OXS_AttrType, type_attribute, NULL);
-    id_attr = axiom_attribute_create(env, OXS_AttrId, id, NULL);
-
-    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encrypted_type_ele, env, type_attr, encrypted_type_node);  
-    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encrypted_type_ele, env, id_attr, encrypted_type_node);  
-   
+    
+    if(type_attribute){
+        type_attr =  axiom_attribute_create (env, OXS_AttrType, type_attribute, NULL);
+        ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encrypted_type_ele, env, type_attr, encrypted_type_node);  
+    }
+    
+    if(id){
+        id_attr = axiom_attribute_create(env, OXS_AttrId, id, NULL);
+        ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encrypted_type_ele, env, id_attr, encrypted_type_node);  
+    }
+    
     return encrypted_type_node; 
      
 }

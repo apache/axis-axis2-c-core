@@ -152,6 +152,14 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                             return AXIS2_FAILURE;
                         }
                     
+                }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, AXIS2_STRTRIM(env, item, NULL)) ){
+                        /*Do useful to verify encrypt*/       
+                        printf("InHandler : Encrypt\n"); 
+
+                }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, AXIS2_STRTRIM(env, item, NULL)) ){
+                        /*Do useful to verify sign*/       
+                        printf("InHandler : Signature\n"); 
+
                 }else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, AXIS2_STRTRIM(env, item, NULL))){
                          axis2_qname_t *qname = NULL;
                          axis2_status_t valid_ts = AXIS2_FAILURE;

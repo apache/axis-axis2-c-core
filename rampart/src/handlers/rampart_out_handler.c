@@ -25,6 +25,7 @@
 #include <rampart_constants.h>
 #include <username_token.h>
 #include <rampart_handler_util.h>
+/*#include <rampart_crypto_engine.h>*/
 #include <timestamp_token.h>
 
 /*********************** Function headers *********************************/
@@ -99,9 +100,10 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
     axis2_param_t *param_out_flow_security = NULL;
     axiom_node_t *sec_node =  NULL;    
     axiom_element_t *sec_ele = NULL;
-   axis2_array_list_t *action_list = NULL;
+    axis2_array_list_t *action_list = NULL;
     axis2_param_t *param_action = NULL;
     axis2_char_t *items = NULL;
+    axis2_status_t enc_status =  AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
@@ -189,25 +191,43 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
             AXIOM_ELEMENT_DECLARE_NAMESPACE (sec_ele, env,
                                            sec_node, sec_ns_obj);
             */
+            
+            /*Get action items seperated by spaces*/
             item = strtok (items," ");
 
+            /*Iterate thru items. Eg. Usernmaetoken, Timestamp, Encrypt, Signature*/
             while (item != NULL)
             {
+                /*Username token*/
                 if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN , 
                         AXIS2_STRTRIM(env, item, NULL)))
                 {
                     sec_node = rampart_build_username_token(env, 
                         ctx, param_action,  sec_node, sec_ns_obj);
-                    if(!sec_node)
+                    if(!sec_node){
                           return AXIS2_FAILURE;
-    
+                    }
+                /*Timestamp token*/
                 }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, 
                     AXIS2_STRTRIM(env, item, NULL)))
                 {
                     sec_node = rampart_build_timestamp_token(env, 
                         ctx, sec_node, sec_ns_obj, 300);
-                    if(!sec_node)
+                    if(!sec_node){
                           return AXIS2_FAILURE;
+                    }
+                /*Encrypt*/                
+                }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, 
+                    AXIS2_STRTRIM(env, item, NULL))){
+                   /* printf("OUtHandler : Item is Encrypt\n"); */
+                   /* enc_status = rampart_crypto_encrypt_message(env, soap_envelope);*/
+                    
+                /*Signature*/    
+                }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, 
+                    AXIS2_STRTRIM(env, item, NULL))){
+                    /*printf("OutHandler : Item is SignatureSignature. Sorry we dont support\n"); */
+
+                /*Any other type of action*/ 
                 }else
                 {
                     rampart_print_info(env,

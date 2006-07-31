@@ -22,6 +22,7 @@
 
 AXIS2_EXTERN oxs_key_ptr AXIS2_CALL
 oxs_key_create_key(const axis2_env_t *env,
+                    axis2_char_t *name,
                     unsigned char *data,
                     int size,
                     int usage
@@ -30,6 +31,7 @@ oxs_key_create_key(const axis2_env_t *env,
     oxs_key_ptr key = NULL;
     key = (oxs_buffer_ptr)AXIS2_MALLOC(env->allocator,sizeof(oxs_key)); 
     
+    key->name = name;
     key->data = data;
     key->size = size;
     key->usage = usage;
@@ -51,7 +53,7 @@ oxs_key_read_from_file(const axis2_env_t *env,
     buf = oxs_create_buffer(env, OXS_KEY_DEFAULT_SIZE);
     ret = oxs_buffer_read_file(env, buf, file_name);
     
-    key = oxs_key_create_key(env, buf->data, buf->size, OXS_KEY_USAGE_NONE);
+    key = oxs_key_create_key(env, file_name, buf->data, buf->size, OXS_KEY_USAGE_NONE);
     return key; 
     
 }

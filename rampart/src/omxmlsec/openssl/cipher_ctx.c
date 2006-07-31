@@ -83,15 +83,17 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
     if(!bc_ctx->key) return (-1);
        
     /*Check if key and IV sizes are not applicable for the cipher*/
-    if(EVP_CIPHER_key_length(bc_ctx->cipher) != strlen(bc_ctx->cipher) ){
-        printf("Key size is not applicable for the cipher\n");
+#if 0
+    if(EVP_CIPHER_key_length(bc_ctx->cipher) != strlen(bc_ctx->key) ){
+        printf("Key size is not applicable for the cipher %d = %d\n", EVP_CIPHER_key_length(bc_ctx->cipher),  strlen(bc_ctx->key)  );
         return (-1);
     }  
 
     if(EVP_CIPHER_iv_length(bc_ctx->cipher) != strlen(bc_ctx->iv) ){
-        printf("IV size is not applicable for the cipher\n");
+        printf("IV size is not applicable for the cipher %d = %d\n", EVP_CIPHER_iv_length(bc_ctx->cipher) , strlen(bc_ctx->iv) );
         return (-1);
     }  
+#endif
 
     /*Init ctx*/    
     EVP_CIPHER_CTX_init(&(bc_ctx->cipher_ctx));
