@@ -494,15 +494,14 @@ axis2_module_builder_process_ops(axis2_module_builder_t *module_builder,
             
             msg_recv = AXIS2_DESC_BUILDER_LOAD_MSG_RECV(module_builder->
                 desc_builder, env, recv_element);
-            AXIS2_OP_SET_MSG_RECEIVER(op_desc, env, msg_recv);
+            AXIS2_OP_SET_MSG_RECV(op_desc, env, msg_recv);
         }
         else
         {
             axis2_msg_recv_t *msg_recv = NULL;
             /* setting default message reciver */
-            msg_recv = AXIS2_DESC_BUILDER_LOAD_DEFAULT_MSG_RECV(module_builder->
-                desc_builder, env);
-            AXIS2_OP_SET_MSG_RECEIVER(op_desc, env,msg_recv);
+            msg_recv = axis2_desc_builder_load_default_msg_recv(env);
+            AXIS2_OP_SET_MSG_RECV(op_desc, env,msg_recv);
             
         }
         /* Process Module Refs */

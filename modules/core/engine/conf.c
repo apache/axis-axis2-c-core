@@ -1221,9 +1221,10 @@ axis2_conf_get_params (axis2_conf_t *conf,
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_conf_is_param_locked (axis2_conf_t *conf, 
-                            const axis2_env_t *env,
-                          axis2_char_t *param_name)
+axis2_conf_is_param_locked (
+        axis2_conf_t *conf, 
+        const axis2_env_t *env,
+        axis2_char_t *param_name)
 {
     axis2_param_t *param = NULL;
         
@@ -1231,7 +1232,7 @@ axis2_conf_is_param_locked (axis2_conf_t *conf,
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
     
     param = axis2_conf_get_param(conf, env, param_name);
-    return (NULL != param  && AXIS2_PARAM_IS_LOCKED(param, env));
+    return (NULL != param  && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env));
 }
 
 axis2_transport_in_desc_t * AXIS2_CALL

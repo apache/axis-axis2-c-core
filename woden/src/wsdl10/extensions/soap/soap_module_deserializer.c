@@ -73,7 +73,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
         axis2_qname_t *element_type,
         axiom_node_t *el_node,
         void *desc,
-        woden_ext_registry_t *ext_reg);
+        woden_wsdl10_ext_registry_t *ext_reg);
 
 static void *
 parse_documentation(
@@ -113,7 +113,7 @@ woden_wsdl10_soap_module_deserializer_to_ext_deserializer(
 
     mod_deser_impl->mod_deser.ext_deserializer.ops = 
         AXIS2_MALLOC(env->allocator, 
-                sizeof(woden_ext_deserializer_ops_t));
+                sizeof(woden_wsdl10_ext_deserializer_ops_t));
     woden_wsdl10_ext_deserializer_resolve_methods(&(mod_deser_impl->mod_deser.
             ext_deserializer), env, mod_deser_impl->methods);
     return mod_deser;
@@ -312,7 +312,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
         axis2_qname_t *element_type,
         axiom_node_t *el_node,
         void *desc,
-        woden_ext_registry_t *ext_reg)
+        woden_wsdl10_ext_registry_t *ext_reg)
 {
     woden_wsdl10_soap_module_deserializer_impl_t *mod_deser_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -330,7 +330,7 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
     mod_deser_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL10_SOAP_MODULE_DESERIALIZER", AXIS2_HASH_KEY_STRING));
    
-    /*soap_mod = WODEN_EXT_REGISTRY_QUERY_EXT_ELEMENT_TYPE(ext_reg, env, 
+    /*soap_mod = WODEN_WSDL10_EXT_REGISTRY_QUERY_EXT_ELEMENT_TYPE(ext_reg, env, 
             parent_type, element_type);*/
     soap_mod = woden_wsdl10_soap_module_create(env);
 

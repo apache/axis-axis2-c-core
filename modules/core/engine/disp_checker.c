@@ -211,7 +211,7 @@ axis2_status_t AXIS2_CALL axis2_disp_checker_invoke(axis2_handler_t* handler, co
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     if (!(AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env))) /*if is client side, no point in proceeding*/
-        return AXIS2_FAILURE;
+        return AXIS2_SUCCESS;
 
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
     

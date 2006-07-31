@@ -26,8 +26,8 @@
  */
 
 #include <woden.h>
-#include <woden_ext_deserializer.h>
-#include <woden_ext_registry.h>
+#include <woden_wsdl10_ext_deserializer.h>
+#include <woden_wsdl10_ext_registry.h>
 #include <axiom_node.h>
 #include <axis2_qname.h>
 
@@ -67,7 +67,7 @@ struct woden_wsdl10_soap_module_deserializer_ops
     /**
      * @return the base implementation class
      */
-    struct woden_ext_deserializer *(AXIS2_CALL *
+    struct woden_wsdl10_ext_deserializer *(AXIS2_CALL *
     get_base_impl) (
             void *mod_deser,
             const axis2_env_t *env);
@@ -81,13 +81,13 @@ struct woden_wsdl10_soap_module_deserializer_ops
             axis2_qname_t *element_type,
             axiom_node_t *el_node,
             void *desc,
-            woden_ext_registry_t *ext_reg);
+            woden_wsdl10_ext_registry_t *ext_reg);
 
 };
 
 struct woden_wsdl10_soap_module_deserializer
 {
-    woden_ext_deserializer_t ext_deserializer;
+    woden_wsdl10_ext_deserializer_t ext_deserializer;
     woden_wsdl10_soap_module_deserializer_ops_t *ops;
 };
 

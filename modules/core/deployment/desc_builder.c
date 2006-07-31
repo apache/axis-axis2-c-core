@@ -84,10 +84,6 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
                                     const axis2_env_t *env,
                                     axiom_element_t *recv_element);
 
-struct axis2_msg_recv *AXIS2_CALL
-axis2_desc_builder_load_default_msg_recv(axis2_desc_builder_t *desc_builder,
-                                            const axis2_env_t *env);
-
 
 axis2_char_t *AXIS2_CALL
 axis2_desc_builder_get_short_file_name(axis2_desc_builder_t *desc_builder,
@@ -156,8 +152,6 @@ axis2_desc_builder_create (const axis2_env_t *env)
             axis2_desc_builder_process_op_module_refs;
     desc_builder_impl->desc_builder.ops->load_msg_recv = 
             axis2_desc_builder_load_msg_recv;
-    desc_builder_impl->desc_builder.ops->load_default_msg_recv = 
-            axis2_desc_builder_load_default_msg_recv;
     desc_builder_impl->desc_builder.ops->get_short_file_name = 
             axis2_desc_builder_get_short_file_name;
     desc_builder_impl->desc_builder.ops->get_file_name_without_prefix =
@@ -969,8 +963,8 @@ axis2_desc_builder_load_msg_recv(axis2_desc_builder_t *desc_builder,
 }
 
 struct axis2_msg_recv *AXIS2_CALL
-axis2_desc_builder_load_default_msg_recv(axis2_desc_builder_t *desc_builder,
-                                            const axis2_env_t *env)
+axis2_desc_builder_load_default_msg_recv(
+    const axis2_env_t *env)
 {
     axis2_msg_recv_t *msg_recv = NULL;
   

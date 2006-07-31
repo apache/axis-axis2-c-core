@@ -17,6 +17,7 @@
 #include <axis2_handler_desc.h>
 #include <axis2_qname.h>
 #include <axis2_svc.h>
+#include <axis2_conf_ctx.h>
 
 /**
  * By the time the control comes to this handler, the dispatching must have happened
@@ -114,8 +115,8 @@ axis2_ctx_handler_invoke(struct axis2_handler *handler,
     }
     
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
-    
-    op_ctx = AXIS2_OP_FIND_FOR_EXISTING_OP_CTX(op, env, msg_ctx);
+    if(op) 
+        op_ctx = AXIS2_OP_FIND_FOR_EXISTING_OP_CTX(op, env, msg_ctx);
     
     if (op_ctx)
     {
@@ -132,7 +133,7 @@ axis2_ctx_handler_invoke(struct axis2_handler *handler,
         }
         return AXIS2_SUCCESS;
     }
-    else /*  2. if no op_ctx, create new op_ctx */
+    else if(op) /*  2. if no op_ctx, create new op_ctx */
     {
         axis2_conf_ctx_t *conf_ctx = NULL;
         op_ctx = axis2_op_ctx_create(env, op, NULL);
@@ -155,5 +156,5 @@ axis2_ctx_handler_invoke(struct axis2_handler *handler,
         
     }
     
-    return AXIS2_FAILURE;    
+    return AXIS2_SUCCESS;    
 }

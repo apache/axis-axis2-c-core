@@ -15,6 +15,7 @@
  */
  
 #include <axis2_svc_grp.h>
+#include <axis2_conf_ctx.h>
 
 /** 
  * @brief Service group struct impl
@@ -456,43 +457,50 @@ axis2_svc_grp_add_param (axis2_svc_grp_t *svc_grp,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FAILURE);
     
-    if(NULL == svc_grp->param_container)
+    if(AXIS2_TRUE == axis2_svc_grp_is_param_locked(svc_grp, env, 
+                AXIS2_PARAM_GET_NAME(param, env)))
     {
-        svc_grp->param_container = axis2_param_container_create(env);
-        if(!svc_grp->param_container)
-        {
-            return AXIS2_FAILURE;
-        }
+        AXIS2_ERROR_SET(env->error, 
+            AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, AXIS2_FAILURE);
+        return AXIS2_FAILURE;
+    } 
+    else
+    {
+        return AXIS2_PARAM_CONTAINER_ADD_PARAM(svc_grp->param_container, env, param);
     }
-    
-    return AXIS2_PARAM_CONTAINER_ADD_PARAM(svc_grp->param_container, env, param);
+
+    return AXIS2_FAILURE;
 }
 
 axis2_param_t * AXIS2_CALL 
-axis2_svc_grp_get_param (axis2_svc_grp_t *svc_grp, 
-                            const axis2_env_t *env,
-                          const axis2_char_t *name)
+axis2_svc_grp_get_param (
+        axis2_svc_grp_t *svc_grp, 
+        const axis2_env_t *env,
+        const axis2_char_t *name)
 {
+    axis2_param_t *param = NULL;
+    axis2_svc_grp_impl_t *svc_grp_impl = NULL;
+
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
-   if(NULL == svc_grp->param_container)
-    {
-       AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_STATE_PARAM_CONTAINER,
-            AXIS2_FAILURE);
-        return NULL;
-    }
+    svc_grp_impl = AXIS2_INTF_TO_IMPL(svc_grp);
    
-    return AXIS2_PARAM_CONTAINER_GET_PARAM(svc_grp->param_container, env, name);
+    param = AXIS2_PARAM_CONTAINER_GET_PARAM(svc_grp->param_container, env, name);
+    if(param == NULL && svc_grp_impl->parent)
+    {
+        param = AXIS2_CONF_GET_PARAM(svc_grp_impl->parent, env, name);
+    }
+    return param;
 }
 
 axis2_array_list_t * AXIS2_CALL 
-axis2_svc_grp_get_params (axis2_svc_grp_t *svc_grp, 
-                            const axis2_env_t *env)
+axis2_svc_grp_get_params (
+        axis2_svc_grp_t *svc_grp, 
+        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
    
    return AXIS2_PARAM_CONTAINER_GET_PARAMS(svc_grp->param_container, env);
-   
 }
 
 axis2_bool_t AXIS2_CALL
@@ -510,23 +518,22 @@ axis2_svc_grp_is_param_locked(axis2_svc_grp_t *svc_grp,
 
     parent = axis2_svc_grp_get_parent(svc_grp, env);
     /* checking the locked value of parent */
-    if (NULL != parent) 
+    if (parent) 
     {
         locked =  AXIS2_CONF_IS_PARAM_LOCKED(parent, env, param_name);
     }
-    if(locked)
+    if(AXIS2_TRUE == locked)
     {
         ret = AXIS2_TRUE;
-    } else 
+    }  
+    param = axis2_svc_grp_get_param(svc_grp, env, param_name);
+    if(NULL != param && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env))
     {
-        param = axis2_svc_grp_get_param(svc_grp, env, param_name);
-        if(NULL != param && AXIS2_PARAM_IS_LOCKED(param, env))
-        {
-            ret = AXIS2_TRUE;
-        } else 
-        {
-            ret = AXIS2_FALSE;
-        }
+        ret = AXIS2_TRUE;
+    } 
+    else 
+    {
+        ret = AXIS2_FALSE;
     }
     return ret;
 }

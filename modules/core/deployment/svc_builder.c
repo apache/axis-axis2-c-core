@@ -246,11 +246,9 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     axis2_file_t *svc_folder = NULL;
     axis2_char_t *dll_path = NULL;
     axis2_char_t *svc_folder_path = NULL;
-    axis2_param_container_t *param_container_l = NULL;
     int i = 0;
     int size = 0;
     AXIS2_TIME_T timestamp = 0;
-    axis2_property_t *property = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_node, AXIS2_FAILURE);
@@ -270,12 +268,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
     qparamst = NULL;
     parent = AXIS2_SVC_GET_PARENT(builder_impl->svc, env);
     
-    property = (axis2_property_t *) AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-        builder_impl->svc->wsdl_svc->wsdl_component, env, AXIS2_PARAMETER_KEY);
-    param_container_l = (axis2_param_container_t *) AXIS2_PROPERTY_GET_VALUE(
-        property, env);
     status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(svc_builder->desc_builder, env, 
-        itr, param_container_l, parent->param_container);
+        itr, builder_impl->svc->param_container, parent->param_container);
     if(AXIS2_SUCCESS != status)
     {
         return status;
@@ -338,7 +332,8 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
      * container taken from svc 
      */
     dll_desc = axis2_dll_desc_create(env);
-    impl_info_param = AXIS2_PARAM_CONTAINER_GET_PARAM(param_container_l, env, 
+    impl_info_param = AXIS2_PARAM_CONTAINER_GET_PARAM(
+            builder_impl->svc->param_container, env, 
         AXIS2_SERVICE_CLASS);
     if(!impl_info_param)
     {
@@ -639,16 +634,15 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
             axis2_msg_recv_t *msg_recv = NULL;
             msg_recv = AXIS2_DESC_BUILDER_LOAD_MSG_RECV(svc_builder->desc_builder,
                 env, recv_element);
-            AXIS2_OP_SET_MSG_RECEIVER(op_desc, env, msg_recv);
+            AXIS2_OP_SET_MSG_RECV(op_desc, env, msg_recv);
             
         }
         else
         {
             axis2_msg_recv_t *msg_recv = NULL;
             /* setting the default messgae receiver */
-            msg_recv = AXIS2_DESC_BUILDER_LOAD_DEFAULT_MSG_RECV(svc_builder->
-                desc_builder, env);
-            AXIS2_OP_SET_MSG_RECEIVER(op_desc, env, msg_recv);
+            msg_recv = axis2_desc_builder_load_default_msg_recv(env);
+            AXIS2_OP_SET_MSG_RECV(op_desc, env, msg_recv);
         }
         /* process module refs */
         qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);

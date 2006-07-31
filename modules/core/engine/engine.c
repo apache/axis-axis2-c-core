@@ -438,7 +438,7 @@ axis2_engine_receive(struct axis2_engine *engine,
         /* invoke the Message Receivers */
         if (!op)
             return AXIS2_FAILURE;
-        receiver = AXIS2_OP_GET_MSG_RECEIVER(op, env);
+        receiver = AXIS2_OP_GET_MSG_RECV(op, env);
         if (!receiver)
         {
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Message receiver not set in operation description");
@@ -1108,7 +1108,7 @@ axis2_engine_resume_receive(struct axis2_engine *engine,
             if (op)
             {
                 axis2_msg_recv_t *receiver = NULL;
-                receiver = AXIS2_OP_GET_MSG_RECEIVER(op, env);
+                receiver = AXIS2_OP_GET_MSG_RECV(op, env);
                 if (!receiver)
                 {
                     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Message receiver not set in operation description");

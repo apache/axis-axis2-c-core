@@ -29,8 +29,8 @@
 #include <axis2_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_array_list.h>
-#include <axis2_ws_info_list.h>
-#include <axis2_dep_engine.h>
+#include "axis2_ws_info_list.h"
+#include "axis2_dep_engine.h"
 
 #ifdef __cplusplus
 extern "C"

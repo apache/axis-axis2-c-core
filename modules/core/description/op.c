@@ -18,6 +18,7 @@
 #include <axis2_property.h>
 #include <axis2_msg.h>
 #include <axis2_desc.h>
+#include <axis2_conf_ctx.h>
 
 /** 
  * @brief Operaton struct impl
@@ -763,9 +764,8 @@ axis2_op_add_param (axis2_op_t *op,
                               axis2_param_t *param)
 {
     axis2_op_impl_t *op_impl = NULL;
-    axis2_param_container_t *param_container_l = NULL;
     axis2_char_t *param_name = NULL;
-    axis2_property_t *property = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param, AXIS2_FALSE);
@@ -780,85 +780,70 @@ axis2_op_add_param (axis2_op_t *op,
     }
     else
     {
-        property = (axis2_property_t *)
-            AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-                op_impl->wsdl_op->extensible_component->wsdl_component, env, 
-                (axis2_char_t *) AXIS2_PARAMETER_KEY);
-        param_container_l = (axis2_param_container_t *) 
-            AXIS2_PROPERTY_GET_VALUE(property, env);
-        return AXIS2_PARAM_CONTAINER_ADD_PARAM(param_container_l, env, param);
+        status = AXIS2_PARAM_CONTAINER_ADD_PARAM(op->param_container, env, 
+                param);
     }
     
-    return AXIS2_SUCCESS;
+    return status;
 }
 
 axis2_param_t * AXIS2_CALL
-axis2_op_get_param (axis2_op_t *op, 
-                                const axis2_env_t *env,
-                              const axis2_char_t *param_name)
+axis2_op_get_param (
+        axis2_op_t *op, 
+        const axis2_env_t *env,
+        const axis2_char_t *param_name)
 {
     axis2_op_impl_t *op_impl = NULL;
-    axis2_param_container_t *param_container_l = NULL;
-    axis2_property_t *property = NULL;
+    axis2_param_t *param = NULL;
  
-   AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-   AXIS2_PARAM_CHECK(env->error, param_name, NULL);
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
+    AXIS2_PARAM_CHECK(env->error, param_name, NULL);
     op_impl = AXIS2_INTF_TO_IMPL(op);
 
-    property = (axis2_property_t *) 
-        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op_impl->wsdl_op->
-            extensible_component->wsdl_component, env, (axis2_char_t *) 
-                AXIS2_PARAMETER_KEY);
-
-    if (!property)
-        return NULL;
-
-    param_container_l = (axis2_param_container_t *) 
-        AXIS2_PROPERTY_GET_VALUE(property, env);
-   return AXIS2_PARAM_CONTAINER_GET_PARAM(param_container_l, env, param_name);
+    param = AXIS2_PARAM_CONTAINER_GET_PARAM(op->param_container, env, param_name);
+    if(param == NULL && op_impl->parent)
+        param = AXIS2_SVC_GET_PARAM(op_impl->parent, env, param_name);
+    return param;
 }
 
 axis2_array_list_t * AXIS2_CALL
-axis2_op_get_params(axis2_op_t *op, 
-                                const axis2_env_t *env)
+axis2_op_get_params(
+        axis2_op_t *op, 
+        const axis2_env_t *env)
 {
     axis2_op_impl_t *op_impl = NULL;
-    /*axis2_param_container_t *param_container_l = NULL; */
     
-   AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-    AXIS2_PARAM_CHECK(env->error, op->param_container, AXIS2_FALSE);
+    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
    
     return AXIS2_PARAM_CONTAINER_GET_PARAMS(op->param_container, env);
 }
 
 axis2_bool_t AXIS2_CALL 
-axis2_op_is_param_locked(axis2_op_t *op, 
-                                    const axis2_env_t *env,
-                                  axis2_char_t *param_name)
+axis2_op_is_param_locked(
+        axis2_op_t *op, 
+        const axis2_env_t *env,
+        axis2_char_t *param_name)
 {
-    axis2_svc_t *parent_l = NULL;
-    axis2_param_t *param_l = NULL;
+    axis2_svc_t *parent = NULL;
+    axis2_param_t *param = NULL;
     axis2_bool_t locked = AXIS2_FALSE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
     
     /* checking the locked value of parent*/
-    parent_l = axis2_op_get_parent(op, env);
-    if(NULL != parent_l)
+    parent = axis2_op_get_parent(op, env);
+    if(NULL != parent)
     {
-        locked = AXIS2_SVC_IS_PARAM_LOCKED(parent_l, env, param_name);
+        locked = AXIS2_SVC_IS_PARAM_LOCKED(parent, env, param_name);
     }
     if(AXIS2_TRUE == locked)
     {
         return AXIS2_TRUE;
     }        
-    else
-    {
-        param_l = axis2_op_get_param(op, env, param_name);   
-    }
-   return (param_l !=NULL && AXIS2_PARAM_IS_LOCKED(param_l, env));
+    param = axis2_op_get_param(op, env, param_name);   
+    return (param !=NULL && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env));
 }
 
 axis2_status_t AXIS2_CALL 
@@ -928,14 +913,15 @@ axis2_op_set_qname (axis2_op_t *op,
     axis2_op_impl_t *op_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   op_impl = AXIS2_INTF_TO_IMPL(op);
+    op_impl = AXIS2_INTF_TO_IMPL(op);
     
     return AXIS2_WSDL_OP_SET_QNAME(op_impl->wsdl_op, env, qname);
 }
     
 axis2_qname_t * AXIS2_CALL
-axis2_op_get_qname (void *op, 
-                    const axis2_env_t *env)
+axis2_op_get_qname (
+        void *op, 
+        const axis2_env_t *env)
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -999,17 +985,16 @@ axis2_op_set_style (axis2_op_t *op,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_engage_module(axis2_op_t *op,
-                                const axis2_env_t *env,
-                                axis2_module_desc_t *moduleref) 
+axis2_op_engage_module(
+        axis2_op_t *op,
+        const axis2_env_t *env,
+        axis2_module_desc_t *moduleref) 
 {
     axis2_op_impl_t *op_impl = NULL;
     int index = 0;
     int size = 0;
-    axis2_status_t status = AXIS2_FAILURE;
     axis2_array_list_t *collection_module = NULL;
     axis2_module_desc_t *module_desc = NULL;
-    axis2_phase_resolver_t *pr = NULL;
     axis2_property_t *property = NULL;
         
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1044,7 +1029,7 @@ axis2_op_engage_module(axis2_op_t *op,
         }
 
     }
-    pr = axis2_phase_resolver_create(env);
+    /*pr = axis2_phase_resolver_create_with_config(env);
     if(pr)
     {
         status = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_OP(pr, env, 
@@ -1061,7 +1046,7 @@ axis2_op_engage_module(axis2_op_t *op,
         return AXIS2_FAILURE;
     }
     AXIS2_PHASE_RESOLVER_FREE(pr, env);
-    pr = NULL;
+    */
     return AXIS2_ARRAY_LIST_ADD(collection_module, env, moduleref);
 }
 

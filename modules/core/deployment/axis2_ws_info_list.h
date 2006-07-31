@@ -29,12 +29,12 @@
 #include <axis2_allocator.h>
 #include <axis2_qname.h>
 #include <axis2_conf.h>
-#include <axis2_deployment.h>
+#include "axis2_deployment.h"
 #include <axis2_file_handler.h>
 #include <axis2_dir_handler.h>
-#include <axis2_ws_info.h>
-#include <axis2_arch_file_data.h>
-#include <axis2_dep_engine.h>
+#include "axis2_ws_info.h"
+#include "axis2_arch_file_data.h"
+#include "axis2_dep_engine.h"
 
 #ifdef __cplusplus
 extern "C"

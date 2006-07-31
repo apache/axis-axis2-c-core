@@ -721,7 +721,7 @@ axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
         property = axis2_property_create(env);
         AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
         epr_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(call_impl->to, env);
-      address = AXIS2_STRDUP(epr_address, env);
+        address = AXIS2_STRDUP(epr_address, env);
         AXIS2_PROPERTY_SET_VALUE(property, env, address);
         AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,
                                     AXIS2_TRANSPORT_URL, property, AXIS2_FALSE);
@@ -903,7 +903,7 @@ axis2_svc_client_send_receive_non_blocking(struct axis2_svc_client *svc_client,
 
         op = AXIS2_SVC_GET_OP_WITH_QNAME(svc_client_impl->svc, env, 
             op_qname);
-        AXIS2_OP_SET_MSG_RECEIVER(op, env, 
+        AXIS2_OP_SET_MSG_RECV(op, env, 
             AXIS2_CALLBACK_RECV_GET_BASE(svc_client_impl->callback_recv, env));
         AXIS2_OP_CLIENT_SET_CALLBACK_RECV(op_client, env, 
             svc_client_impl->callback_recv);

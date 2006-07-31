@@ -24,6 +24,7 @@
 #include <axiom_soap_header_block.h>
 #include <axis2_op.h>
 #include <axis2_msg_ctx.h>
+#include <axis2_conf_ctx.h>
 #include <axis2_msg_info_headers.h>
 #include <axis2_property.h>
 

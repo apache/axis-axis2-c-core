@@ -35,6 +35,7 @@
 #include <axiom_node.h>
 #include <woden.h>
 #include <woden_wsdl10_ext_registry.h>
+#include <woden_wsdl10_ext_deserializer.h>
 
 #ifdef __cplusplus
 extern "C"

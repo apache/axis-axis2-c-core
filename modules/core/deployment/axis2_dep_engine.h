@@ -27,10 +27,10 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_allocator.h>
-#include <axis2_arch_file_data.h>
-#include <axis2_ws_info.h>
-#include <axis2_conf_builder.h>
-#include <axis2_repos_listener.h>
+#include "axis2_arch_file_data.h"
+#include "axis2_ws_info.h"
+#include "axis2_conf_builder.h"
+#include "axis2_repos_listener.h"
 
 
 #ifdef __cplusplus

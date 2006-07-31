@@ -21,6 +21,7 @@
 #include <axiom_output.h>
 #include <axis2_op_ctx.h>
 #include <axis2_ctx.h>
+#include <axis2_conf_ctx.h>
 #include <axis2_http_client.h>
 #include <axiom_xml_writer.h>
 #include <axis2_property.h>

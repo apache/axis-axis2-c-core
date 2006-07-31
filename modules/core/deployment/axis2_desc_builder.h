@@ -28,8 +28,8 @@
 #include <axis2_env.h>
 #include <axis2_allocator.h>
 
-#include <axis2_deployment.h>
-#include <axis2_dep_engine.h>
+#include "axis2_deployment.h"
+#include "axis2_dep_engine.h"
 #include <axis2_flow.h>
 #include <axiom_stax_builder.h>
 #include <axiom_document.h>
@@ -135,10 +135,6 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
                                         const axis2_env_t *env,
                                         axiom_element_t *recv_element);
     
-    axis2_msg_recv_t *(AXIS2_CALL *
-    load_default_msg_recv) (axis2_desc_builder_t *desc_builder,
-                                                const axis2_env_t *env);
-    
     /**
      * This method is used to retrive service name form the arechive file name
      * if the archive file name is service1.aar , then axis service name would be service1
@@ -147,14 +143,16 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
      * @return axis2_char_t *
      */
     axis2_char_t *(AXIS2_CALL *
-    get_short_file_name) (axis2_desc_builder_t *desc_builder,
-                                            const axis2_env_t *env,
-                                            axis2_char_t *file_name);
+    get_short_file_name) (
+        axis2_desc_builder_t *desc_builder,
+        const axis2_env_t *env,
+        axis2_char_t *file_name);
     
     axis2_char_t *(AXIS2_CALL *
-    get_file_name_without_prefix) (axis2_desc_builder_t *desc_builder,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *short_file_name);    
+    get_file_name_without_prefix) (
+        axis2_desc_builder_t *desc_builder,
+        const axis2_env_t *env,
+        axis2_char_t *short_file_name);    
  
  /**
      * this method is to get the value of attribue
@@ -163,14 +161,16 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
      * @return String
      */
     axis2_char_t *(AXIS2_CALL *
-    get_value) (axis2_desc_builder_t *desc_builder,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *in);
-                                    
-                                        
-
-
+    get_value) (
+        axis2_desc_builder_t *desc_builder,
+        const axis2_env_t *env,
+        axis2_char_t *in);
+                                
 };
+
+struct axis2_msg_recv *AXIS2_CALL
+axis2_desc_builder_load_default_msg_recv(
+    const axis2_env_t *env);
 
 /** 
  * @brief Description Builder struct 
@@ -235,9 +235,6 @@ axis2_desc_builder_create_with_file_and_dep_engine (
 
 #define AXIS2_DESC_BUILDER_LOAD_MSG_RECV(desc_builder, env, recv_element) \
       ((desc_builder)->ops->load_msg_recv (desc_builder, env, recv_element))  
-
-#define AXIS2_DESC_BUILDER_LOAD_DEFAULT_MSG_RECV(desc_builder, env) \
-      ((desc_builder)->ops->load_default_msg_recv (desc_builder, env))  
 
 #define AXIS2_DESC_BUILDER_GET_SHORT_FILE_NAME(desc_builder, env, file_name) \
       ((desc_builder)->ops->get_short_file_name (desc_builder, env, file_name))  

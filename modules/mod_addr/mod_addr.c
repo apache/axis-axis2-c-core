@@ -15,6 +15,7 @@
  */
 #include <axis2_module.h>
 #include <axis2_addr_mod.h>
+#include <axis2_conf_ctx.h>
 
 axis2_status_t AXIS2_CALL
 axis2_mod_addr_shutdown(axis2_module_t *module,
