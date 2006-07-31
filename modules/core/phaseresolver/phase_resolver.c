@@ -401,7 +401,7 @@ axis2_phase_resolver_build_execution_chains(
                 return status;
             }
             status = AXIS2_OP_ADD_TO_ENGAGE_MODULE_LIST(op, env, module_desc);
-            if(AXIS2_FAILURE == status) 
+            if(AXIS2_SUCCESS != status) 
             {
                 return status;
             }
@@ -419,9 +419,9 @@ axis2_phase_resolver_build_execution_chains(
             int j = 0;
             int count = 0;
             count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
-            if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+            if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
             {
-                return AXIS2_FAILURE;
+                return AXIS2_ERROR_GET_STATUS_CODE(env->error);
             }
            
             
@@ -530,14 +530,14 @@ axis2_phase_resolver_build_execution_chains(
         int count = 0;
         count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
         
-        if(AXIS2_FAILURE == AXIS2_ERROR_GET_STATUS_CODE(env->error))
+        if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
         {
             if(all_handlers)
             {  
                 AXIS2_ARRAY_LIST_FREE(all_handlers, env);
                 all_handlers = NULL;                        
             }                        
-            return AXIS2_FAILURE;              
+            return AXIS2_ERROR_GET_STATUS_CODE(env->error);              
         }
         for (j = 0; j < count; j++) 
         {
@@ -670,7 +670,7 @@ axis2_phase_resolver_build_execution_chains(
     size = AXIS2_ARRAY_LIST_SIZE(all_handlers, env);
     if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
-        return AXIS2_FAILURE;
+        return AXIS2_ERROR_GET_STATUS_CODE(env->error);
     }
     
     for (i = 0; i < size; i++) 
@@ -932,9 +932,9 @@ axis2_phase_resolver_build_out_transport_chains(axis2_phase_resolver_t *phase_re
             int hndlr_count = 0;
             int j = 0;
             hndlr_count = AXIS2_FLOW_GET_HANDLER_COUNT(flow, env);
-            if(AXIS2_TRUE != AXIS2_ERROR_GET_STATUS_CODE(env->error))
+            if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
             {
-                return AXIS2_FAILURE;
+                return AXIS2_ERROR_GET_STATUS_CODE(env->error);
             }
             handlers = axis2_array_list_create(env, 0);
             

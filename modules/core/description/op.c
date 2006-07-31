@@ -1009,22 +1009,27 @@ axis2_op_engage_module(
     size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
     if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
-        return AXIS2_FAILURE;
+        return AXIS2_ERROR_GET_STATUS_CODE(env->error);
     }
     
     for(index = 0; index < size; index++)
     {
+        axis2_qname_t *qname1 = NULL;
+        axis2_qname_t *qname2 = NULL;
+        
         module_desc = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(
             collection_module, env, index);
         if(!module_desc)
         {
             return AXIS2_FAILURE;
         }
-        if(AXIS2_QNAME_EQUALS(AXIS2_MODULE_DESC_GET_NAME(module_desc, env), env,
-                AXIS2_MODULE_DESC_GET_NAME(moduleref, env)))
+        qname1 = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
+        qname2 = AXIS2_MODULE_DESC_GET_NAME(moduleref, env);
+        if(AXIS2_QNAME_EQUALS(qname1, env, qname2))
         {
-            AXIS2_ERROR_SET(env->error, 
-                AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP, AXIS2_FAILURE);
+            /*AXIS2_ERROR_SET(env->error, 
+                AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP, AXIS2_FAILURE);*/
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Module already engaged to operation");
             return AXIS2_SUCCESS;
         }
 
