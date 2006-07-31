@@ -27,6 +27,7 @@
 #include <axiom_element.h>
 #include <axiom_util.h>
 #include <woden_qname_util.h>
+#include <woden_wsdl10_ext_deserializer.h>
 
 
 typedef struct woden_wsdl10_soap_header_block_deserializer_impl 

@@ -23,6 +23,7 @@
 #include <woden_documentation_element.h>
 #include <xml_schema_element.h>
 #include <woden_interface_fault.h>
+#include <woden_binding_fault_element.h>
 
 typedef struct woden_binding_fault_impl woden_binding_fault_impl_t;
 
