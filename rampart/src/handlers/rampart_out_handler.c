@@ -103,7 +103,7 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
     axis2_array_list_t *action_list = NULL;
     axis2_param_t *param_action = NULL;
     axis2_char_t *items = NULL;
-    axis2_status_t enc_status =  AXIS2_FAILURE;
+    axis2_status_t enc_status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);

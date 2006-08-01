@@ -27,6 +27,7 @@
 #include <rampart_callback.h>
 #include <axis2_dll_desc.h>
 #include <axis2_class_loader.h>
+#include <axis2_conf_ctx.h>
 
 AXIS2_EXTERN axis2_param_t* AXIS2_CALL
 rampart_get_security_param( const axis2_env_t *env,

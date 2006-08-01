@@ -1047,9 +1047,10 @@ axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engin
 }
 
 static axis2_status_t
-axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
-                                const axis2_env_t *env,
-                                axis2_svc_grp_t *svc_metadata)
+axis2_dep_engine_add_new_svc(
+        axis2_dep_engine_t *dep_engine,
+            const axis2_env_t *env,
+            axis2_svc_grp_t *svc_metadata)
 {
     axis2_dep_engine_impl_t *dep_engine_impl = NULL;
     axis2_array_list_t *svcs = NULL;
@@ -1060,7 +1061,8 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
     AXIS2_PARAM_CHECK(env->error, svc_metadata, AXIS2_FAILURE);
     dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    svcs = AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(dep_engine_impl->curr_file, env);
+    svcs = AXIS2_ARCH_FILE_DATA_GET_DEPLOYABLE_SVCS(dep_engine_impl->curr_file, 
+            env);
     if(svcs) 
         sizei = AXIS2_ARRAY_LIST_SIZE(svcs, env);
     
@@ -1103,6 +1105,8 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             } 
             else 
             {
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                        "Invalid module reference taken from conf");
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODUELE_REF,
                     AXIS2_FAILURE);
                 return AXIS2_FAILURE;
@@ -1117,7 +1121,7 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             axis2_module_desc_t *module_desc = NULL;
             axis2_qname_t *qmodulename = NULL;
             
-            qmodulename = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(grp_modules, 
+            qmodulename = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(list, 
                 env, j);
             module_desc = AXIS2_CONF_GET_MODULE(dep_engine_impl->conf, env,
                 qmodulename);
@@ -1128,6 +1132,8 @@ axis2_dep_engine_add_new_svc(axis2_dep_engine_t *dep_engine,
             } 
             else 
             {
+                AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                        "Invalid module reference taken from conf");
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MODUELE_REF,
                     AXIS2_FAILURE);
                 return AXIS2_FAILURE;

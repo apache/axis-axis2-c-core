@@ -1090,10 +1090,11 @@ axis2_svc_get_svc_interface(axis2_svc_t *svc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_svc_engage_module(axis2_svc_t *svc,
-                            const axis2_env_t *env,
-                            axis2_module_desc_t * moduleref,
-                            axis2_conf_t * conf)
+axis2_svc_engage_module(
+        axis2_svc_t *svc,
+        const axis2_env_t *env,
+        axis2_module_desc_t * moduleref,
+        axis2_conf_t * conf)
 {
     axis2_module_desc_t * modu = NULL;
     axis2_array_list_t *collection_module = NULL;
@@ -1305,8 +1306,7 @@ axis2_svc_add_to_engaged_module_list(axis2_svc_t *svc,
             
         if(AXIS2_QNAME_EQUALS(module_d_name, env, module_d_name_l))
         {
-            /*AXIS2_ERROR_SET(env->error, 
-                AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_SVC, AXIS2_FAILURE);*/
+            /* Module is already engaged. So we return */
             return AXIS2_SUCCESS;
         }
     }
