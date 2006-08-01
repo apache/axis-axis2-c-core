@@ -17,6 +17,12 @@
 #ifndef AXIS2_FLOW_H
 #define AXIS2_FLOW_H
 
+/** @defgroup axis2_flow flow
+ * @ingroup axis2_desc
+ * @{
+ */
+
+
 /**
  * @file axis2_flow.h
  * @brief axis2 flow interface
@@ -36,92 +42,114 @@
 extern "C"
 {
 #endif
-   
-typedef struct axis2_flow_ops axis2_flow_ops_t;
-typedef struct axis2_flow axis2_flow_t;   
-   
 
-/** @defgroup axis2_flow flow
-  * @ingroup axis2_desc
-  * @{
-  */
+    /** Type name for struct axis2_flow_ops */
+    typedef struct axis2_flow_ops axis2_flow_ops_t;
+    /** Type name for struct axis2_flow */
+    typedef struct axis2_flow axis2_flow_t;
 
-/** 
- * @brief Flow ops struct
- * Encapsulator struct for ops of axis2_flow
- */
-struct axis2_flow_ops
-{
-   /** Deallocate memory
-     * @return status code
-     */
-    axis2_status_t (AXIS2_CALL *
-   free) (axis2_flow_t *flow,
-           const axis2_env_t *env);
 
     /**
-     * Add handler description
-     * @param handler handler description
+     * Flow ops struct
+     * Encapsulator struct for ops of axis2_flow
      */
-    axis2_status_t (AXIS2_CALL *
-   add_handler) (axis2_flow_t *flow,
-                  const axis2_env_t *env,
-                  axis2_handler_desc_t *handler);
-    
+    struct axis2_flow_ops
+    {
+        /** Deallocate memory
+	 * @param flow pointer to flow
+	 * @param env pointer to environment struct
+         * @return status code
+         */
+        axis2_status_t (AXIS2_CALL *
+                free)(
+                    axis2_flow_t *flow,
+                    const axis2_env_t *env);
+
+        /**
+         * Add handler description
+	 * @param flow pointer to flow
+	 * @param env pointer to environment struct
+         * @param handler handler description
+         */
+        axis2_status_t (AXIS2_CALL *
+                add_handler)(
+                    axis2_flow_t *flow,
+                    const axis2_env_t *env,
+                    axis2_handler_desc_t *handler);
+
+        /**
+         * Get handler
+	 * @param flow pointer to flow
+	 * @param env pointer to environment struct
+         * @param index index of the handler
+         * @return handler description
+         */
+        axis2_handler_desc_t * (AXIS2_CALL *
+                get_handler)(
+                    const axis2_flow_t *flow,
+                    const axis2_env_t *env,
+                    int index);
+
+        /**
+         * Get handler count
+	 * @param flow pointer to flow
+	 * @param env pointer to environment struct
+         * @return handler count
+         */
+        int (AXIS2_CALL *
+                get_handler_count)(
+                    const axis2_flow_t *flow,
+                    const axis2_env_t *env);
+    };
+
     /**
-     * Get handler
-     * @param index index of the handler
-     * @return handler description
+     * Flow struct
      */
-    axis2_handler_desc_t * (AXIS2_CALL *
-   get_handler) (axis2_flow_t *flow,
-                  const axis2_env_t *env,
-                  int index);
-    
+    struct axis2_flow
+    {
+        /** Operations of flow */
+        axis2_flow_ops_t *ops;
+    };
+
     /**
-     * Get handler count
-     * @return handler count
+     * Creates flow struct
+     * @param env pointer to environment struct
+     * @return pointer to newly created flow
      */
-    int (AXIS2_CALL *
-   get_handler_count) (axis2_flow_t *flow,
-                        const axis2_env_t *env);  
-};
+    AXIS2_EXTERN axis2_flow_t * AXIS2_CALL
+    axis2_flow_create (
+        const axis2_env_t *env);
 
-/** 
- * @brief Flow struct
- *   Flow  
- */ 
-struct axis2_flow
-{
-   axis2_flow_ops_t *ops;
-};
-
-/**
- * Creates flow struct
- * @return pointer to newly created flow
- */
-AXIS2_EXTERN axis2_flow_t * AXIS2_CALL 
-axis2_flow_create (const axis2_env_t *env);
-
-/**
- * Free flow passed as void pointer. This will be
- * cast into appropriate type and then pass the cast object
- * into the flow structure's free method
- */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axis2_flow_free_void_arg (void *flow,
-                            const axis2_env_t *env);
+    /**
+     * Free flow passed as void pointer. This will be
+     * cast into appropriate type and then pass the cast object
+     * into the flow structure's free method
+     * @param flow pointer to flow
+     * @param env pointer to environment struct
+     */
+    AXIS2_EXTERN axis2_status_t AXIS2_CALL
+    axis2_flow_free_void_arg (
+        void *flow,
+        const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 
+/** Frees the flow.
+    @sa axis2_flow_ops#free */
 #define AXIS2_FLOW_FREE(flow, env) ((flow)->ops->free (flow, env))
 
+/** Adds the handler.
+    @sa axis2_flow_ops#add_handler */
 #define AXIS2_FLOW_ADD_HANDLER(flow, env, handler) \
       ((flow)->ops->add_handler (flow, env, handler))
 
+/** Gets the handler.
+    @sa axis2_flow_ops#get_handler */
 #define AXIS2_FLOW_GET_HANDLER(flow, env, index) \
       ((flow)->ops->get_handler (flow, env, index))
 
+/** Gets the handler count.
+    @sa axis2_flow_ops#get_handler_count */
 #define AXIS2_FLOW_GET_HANDLER_COUNT(flow, env) \
       ((flow)->ops->get_handler_count (flow, env))
 

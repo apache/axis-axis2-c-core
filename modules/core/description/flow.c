@@ -43,12 +43,12 @@ axis2_flow_add_handler (axis2_flow_t *flow,
                         axis2_handler_desc_t *handler);
 
 axis2_handler_desc_t * AXIS2_CALL
-axis2_flow_get_handler (axis2_flow_t *flow,
+axis2_flow_get_handler (const axis2_flow_t *flow,
                         const axis2_env_t *env,
                         int index);
 
 int AXIS2_CALL
-axis2_flow_get_handler_count(axis2_flow_t *flow,
+axis2_flow_get_handler_count(const axis2_flow_t *flow,
                                 const axis2_env_t *env);
 
 /************************** End of Function headers ************************/
@@ -177,7 +177,7 @@ axis2_flow_add_handler (axis2_flow_t *flow,
 }
 
 axis2_handler_desc_t * AXIS2_CALL
-axis2_flow_get_handler (axis2_flow_t *flow,
+axis2_flow_get_handler (const axis2_flow_t *flow,
                         const axis2_env_t *env,
                         int index)
 {
@@ -187,7 +187,7 @@ axis2_flow_get_handler (axis2_flow_t *flow,
 }
 
 int AXIS2_CALL
-axis2_flow_get_handler_count(axis2_flow_t *flow,
+axis2_flow_get_handler_count(const axis2_flow_t *flow,
                                 const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
