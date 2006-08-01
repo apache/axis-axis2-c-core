@@ -31,13 +31,12 @@
 #include <openssl_constants.h>
 
 
-
+/*Encrypt or decrypt an input depending on what is set in the enc_ctx*/
 /*TODO Default IV*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_enc_crypt(const axis2_env_t *env, 
                 enc_ctx_ptr enc_ctx,
                 oxs_buffer_ptr input,
-                axis2_char_t* key,
                 oxs_buffer_ptr result)
 {
     unsigned char *out_main_buf = NULL;
@@ -63,13 +62,13 @@ oxs_enc_crypt(const axis2_env_t *env,
     }
     
     /*Set the key*/
-    bc_ctx->key = AXIS2_STRDUP(key, env);
+    bc_ctx->key = AXIS2_STRDUP(enc_ctx->key->data, env);
     bc_ctx->key_initialized = 1;
     /*Set the IV*/
     bc_ctx->iv =  AXIS2_STRDUP(iv, env);
 
     /*TODO: Get the cipher by giving the algoritm attribute */
-    cipher_name = oxs_get_cipher(env, (unsigned char*)enc_ctx->encmtd_algorithm);
+    cipher_name = oxs_get_cipher(env, enc_ctx->encmtd_algorithm);
     if(!cipher_name){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "oxs_get_cipher failed");
@@ -77,14 +76,27 @@ oxs_enc_crypt(const axis2_env_t *env,
         return AXIS2_FAILURE;
     } 
 
-    ret =  openssl_evp_block_cipher_ctx_init(env, bc_ctx,
-                            OPENSSL_ENCRYPT, cipher_name);
-   
+    /*Initialize block cipher ctx*/
+    if(enc_ctx->operation == oxs_operation_encrypt){
+        ret =  openssl_evp_block_cipher_ctx_init(env, bc_ctx,
+                            OPENSSL_ENCRYPT, (const unsigned char*)cipher_name);
+    }else if(enc_ctx->operation == oxs_operation_decrypt){
+        ret =  openssl_evp_block_cipher_ctx_init(env, bc_ctx,
+                            OPENSSL_DECRYPT, (const unsigned char*)cipher_name);
+    }else{
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "Invalid operation type %d", enc_ctx->operation);
+        return AXIS2_FAILURE;
+    }
+
     if(ret < 0){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "openssl_evp_block_cipher_ctx_init failed");
         return AXIS2_FAILURE;
     }
+
+    /****************Encryption or decryption happens here ************/
+
     /*If this is to encrypt we simply pass the data to crypto function*/
     if(enc_ctx->operation == oxs_operation_encrypt){
         enclen = openssl_block_cipher_crypt(env, bc_ctx,
@@ -119,8 +131,10 @@ oxs_enc_crypt(const axis2_env_t *env,
     /*If the operation is to encrypt we will encode the encrypted data*/
     if(enc_ctx->operation == oxs_operation_encrypt){
         encodedlen = axis2_base64_encode_len(enclen);
-        encoded_str = AXIS2_MALLOC(env->allocator, encodedlen);
-        ret = axis2_base64_encode(encoded_str, out_main_buf, enclen);
+        encoded_str = AXIS2_MALLOC(env->allocator, encodedlen );
+      
+        /*out_main_buf[enclen] ="\0";*/ /*Null terminate ??? Prob???*/
+        ret = axis2_base64_encode(encoded_str, (const char *)out_main_buf, enclen);
         if(ret < 0){
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "axis2_base64_encode");
@@ -185,7 +199,7 @@ oxs_enc_populate_cipher_value(const axis2_env_t *env,
     }
     
 
-    ret =  AXIOM_ELEMENT_SET_TEXT(cv_ele, env, databuf->data , cv_node); 
+    ret =  AXIOM_ELEMENT_SET_TEXT(cv_ele, env, (axis2_char_t *)databuf->data , cv_node); 
     if(ret != AXIS2_SUCCESS){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "Cannot set data to the CipherValue element");
@@ -205,7 +219,6 @@ oxs_enc_decrypt_template(const axis2_env_t *env,
     axis2_status_t  ret =  AXIS2_FAILURE;
     oxs_buffer_ptr input = NULL;
     oxs_buffer_ptr result = NULL;
-    axis2_char_t *key = NULL;
 
     /*Populate enc_ctx*/
     enc_ctx->operation = oxs_operation_decrypt;
@@ -219,19 +232,24 @@ oxs_enc_decrypt_template(const axis2_env_t *env,
     }
 
     /*Now look for data to be decrypted*/
-    input = enc_ctx->inputdata;
-    result = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
-     
-    key = enc_ctx->key->data;
+    input = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
+    input->data = (unsigned char *)enc_ctx->inputdata;
+    input->size = AXIS2_STRLEN(enc_ctx->inputdata);
 
-    ret = oxs_enc_crypt(env, enc_ctx, input, key, result ); 
+    /*Initialize the result buffer*/
+    result = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
+
+    ret = oxs_enc_crypt(env, enc_ctx, input,  result ); 
     if(ret != AXIS2_SUCCESS){
            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "oxs_enc_encrypt failed");
         return ret;
     }
 
-    *decrypted_data =  result->data;
+    *decrypted_data =   AXIS2_MALLOC(env->allocator,result->size); 
+    *decrypted_data =  (axis2_char_t*)result->data;
+    
+    return ret;
 }
 
 /*We expect user to provide a template as below*/
@@ -246,7 +264,6 @@ oxs_enc_encrypt_template(const axis2_env_t *env,
     axis2_status_t  ret =  AXIS2_FAILURE;
     oxs_buffer_ptr input = NULL;
     oxs_buffer_ptr result = NULL;
-    axis2_char_t *key = NULL;
    
        
     /*Populate enc_ctx*/
@@ -266,18 +283,21 @@ oxs_enc_encrypt_template(const axis2_env_t *env,
     input = oxs_string_to_buffer(env, data);
     result = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
      
-    key = enc_ctx->key->data;
-
-    ret = oxs_enc_crypt(env, enc_ctx, input, key, result ); 
+    ret = oxs_enc_crypt(env, enc_ctx, input, result ); 
     if(ret != AXIS2_SUCCESS){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "oxs_enc_encrypt failed");    
         return ret;
     }
      
-    oxs_enc_populate_cipher_value (env, template_node, result);
+    ret = oxs_enc_populate_cipher_value (env, template_node, result);
    
-     
+    if(ret != AXIS2_SUCCESS){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "oxs_enc_populate_cipher_value failed");
+        return ret;
+    } 
+    
     return AXIS2_SUCCESS;
     
 }
@@ -289,7 +309,6 @@ oxs_enc_cipher_data_node_read(const axis2_env_t *env,
     axiom_node_t* cur = NULL;
     axiom_element_t *ele = NULL;
     axis2_char_t *data = NULL;
-    int ret;
     /*We've a cipher data node here.
      The child element is either a CipherReference or a CipherValue element*/
 

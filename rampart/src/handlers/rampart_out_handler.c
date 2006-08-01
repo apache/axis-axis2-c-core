@@ -25,7 +25,7 @@
 #include <rampart_constants.h>
 #include <username_token.h>
 #include <rampart_handler_util.h>
-/*#include <rampart_crypto_engine.h>*/
+#include <rampart_crypto_engine.h>
 #include <timestamp_token.h>
 
 /*********************** Function headers *********************************/
@@ -219,13 +219,13 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
                 /*Encrypt*/                
                 }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, 
                     AXIS2_STRTRIM(env, item, NULL))){
-                   /* printf("OUtHandler : Item is Encrypt\n"); */
-                   /* enc_status = rampart_crypto_encrypt_message(env, soap_envelope);*/
+                    printf("OUtHandler : Item is Encrypt\n"); 
+                    enc_status = rampart_crypto_encrypt_message(env, soap_envelope);
                     
                 /*Signature*/    
                 }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, 
                     AXIS2_STRTRIM(env, item, NULL))){
-                    /*printf("OutHandler : Item is SignatureSignature. Sorry we dont support\n"); */
+                    printf("OutHandler : Item is SignatureSignature. Sorry we dont support\n"); 
 
                 /*Any other type of action*/ 
                 }else

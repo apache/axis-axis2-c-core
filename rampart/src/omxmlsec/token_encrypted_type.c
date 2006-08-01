@@ -56,6 +56,9 @@ oxs_token_build_encrypted_type_element(const axis2_env_t *env,
     if(id){
         id_attr = axiom_attribute_create(env, OXS_AttrId, id, NULL);
         ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encrypted_type_ele, env, id_attr, encrypted_type_node);  
+    }else{
+        id_attr = axiom_attribute_create(env, OXS_AttrId, "EncDataId-54321", NULL);
+        ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encrypted_type_ele, env, id_attr, encrypted_type_node);  
     }
     
     return encrypted_type_node; 

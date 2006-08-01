@@ -29,6 +29,7 @@
 #include <rampart_handler_util.h>
 #include <timestamp_token.h>
 #include <rampart_util.h>
+#include <rampart_crypto_engine.h>
 
 /*************************** Function headers *********************************/
 
@@ -72,7 +73,8 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
     axis2_char_t *items = NULL;
     axiom_node_t *sec_node, *ts_node = NULL;
     axiom_element_t *sec_ele, *ts_ele = NULL;
-    
+    axis2_status_t enc_status = AXIS2_FAILURE;
+ 
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     
@@ -154,7 +156,8 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                     
                 }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, AXIS2_STRTRIM(env, item, NULL)) ){
                         /*Do useful to verify encrypt*/       
-                        printf("InHandler : Encrypt\n"); 
+                        printf("InHandler : Decrypt\n"); 
+                        enc_status = rampart_crypto_decrypt_message(env, soap_envelope);
 
                 }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, AXIS2_STRTRIM(env, item, NULL)) ){
                         /*Do useful to verify sign*/       
