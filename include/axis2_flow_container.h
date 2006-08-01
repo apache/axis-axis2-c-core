@@ -17,6 +17,12 @@
 #ifndef AXIS2_FLOW_CONTAINER_H
 #define AXIS2_FLOW_CONTAINER_H
 
+/** @defgroup axis2_flow_container flow container
+ * @ingroup axis2_desc
+ * Description.
+ * @{
+ */
+
 /**
  * @file axis2_flow_container.h
  * @brief axis2 flow container interface
@@ -36,141 +42,189 @@
 extern "C"
 {
 #endif
-   
-typedef struct axis2_flow_container_ops axis2_flow_container_ops_t;
-typedef struct axis2_flow_container axis2_flow_container_t;   
-   
 
-/** @defgroup axis2_flow_container flow container
-  * @ingroup axis2_desc
-  * @{
-  */
+    /** Type name for struct axis2_flow_container_ops */
+    typedef struct axis2_flow_container_ops axis2_flow_container_ops_t;
+    /** Type name for struct axis2_flow_container */
+    typedef struct axis2_flow_container axis2_flow_container_t;
 
-/** 
- * @brief Flow Container ops struct
- * Encapsulator struct for ops of axis2_flow_container
- */
-struct axis2_flow_container_ops
-{
-   /** Deallocate memory
-     * @return status code
-     */
-    axis2_status_t (AXIS2_CALL *
-   free) (axis2_flow_container_t *flow_container,
-           const axis2_env_t *env);
 
     /**
-     * Get fault out flow
-     * @return in flow
+     * Flow Container ops struct
+     * Encapsulator struct for ops of axis2_flow_container
      */
-    axis2_flow_t *(AXIS2_CALL *
-   get_inflow)(axis2_flow_container_t *flow_container,
-                const axis2_env_t *env);
-    
-    /**
-     * Set in flow
-     * @param inflow in flow
-     */
-    axis2_status_t (AXIS2_CALL *
-   set_inflow)(axis2_flow_container_t *flow_container,
-                const axis2_env_t *env,
-                axis2_flow_t *inflow);
-    
-    /**
-     * Get out flow
-     * @return out flow
-     */
-    axis2_flow_t *(AXIS2_CALL *
-   get_outflow)(axis2_flow_container_t *flow_container,
-                 const axis2_env_t *env);
-    
-    /**
-     * Set out flow
-     * @param outflow out flow
-     */
-    axis2_status_t (AXIS2_CALL *
-   set_outflow)(axis2_flow_container_t *flow_container,
-                 const axis2_env_t *env,
-                 axis2_flow_t *outflow);
-    
-    /**
-     * Get fault in flow
-     * @return fault in flow
-     */
-    axis2_flow_t * (AXIS2_CALL *
-   get_fault_inflow)(axis2_flow_container_t *flow_container,
-                      const axis2_env_t *env);
-    
-    /**
-     * set fault in flow
-     * @param falut_inflow falut in flow
-     */
-    axis2_status_t (AXIS2_CALL *
-   set_fault_inflow)(axis2_flow_container_t *flow_container,
-                      const axis2_env_t *env,
-                      axis2_flow_t *falut_inflow);
-    /**
-     * Get fault out flow
-     * @return fault out flow
-     */
-    axis2_flow_t *(AXIS2_CALL *
-   get_fault_outflow)(axis2_flow_container_t *flow_container,
-                       const axis2_env_t *env);
-    
-    /**
-     * Set fault out flow
-     * @param fault_outflow fault out flow
-     */
-    axis2_status_t (AXIS2_CALL *
-   set_fault_outflow)(axis2_flow_container_t *flow_container,
-                       const axis2_env_t *env,
-                       axis2_flow_t *fault_outflow);  
-};
+    struct axis2_flow_container_ops
+    {
+        /** Deallocate memory
+	 * @param flow_container pointer to flow container
+	 * @param env pointer to environment struct
+	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                free)(
+                    axis2_flow_container_t *flow_container,
+                    const axis2_env_t *env);
 
-/** 
- * @brief Flow container struct
- *   Container for flows  
- */ 
-struct axis2_flow_container
-{
-   axis2_flow_container_ops_t *ops;
-};
+        /**
+         * Get fault out flow
+	 * @param flow_container pointer to flow container
+	 * @param env pointer to environment struct
+         * @return in flow
+         */
+        axis2_flow_t *(AXIS2_CALL *
+                get_inflow)(
+                    const axis2_flow_container_t *flow_container,
+                    const axis2_env_t *env);
 
-/**
- * Creates flow container struct
- * @return pointer to newly created flow container
- */
-AXIS2_EXTERN axis2_flow_container_t * AXIS2_CALL 
-axis2_flow_container_create (const axis2_env_t *env);
+        /**
+         * Set in flow
+	 * @param flow_container pointer to flow container
+	 * @param env pointer to environment struct
+         * @param inflow pointer to in flow
+	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_inflow)(
+                    axis2_flow_container_t *flow_container,
+                    const axis2_env_t *env,
+                    axis2_flow_t *inflow);
+
+        /**
+         * Get out flow
+	 * @param flow_container pointer to flow container
+	 * @param env pointer to environment struct
+         * @return out flow
+         */
+        axis2_flow_t *(AXIS2_CALL *
+                get_outflow)(
+                    const axis2_flow_container_t *flow_container,
+                    const axis2_env_t *env);
+
+        /**
+         * Set out flow
+	 * @param flow_container pointer to flow container
+	 * @param env pointer to environment struct
+         * @param outflow pointer to out flow
+	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_outflow)(
+                    axis2_flow_container_t *flow_container,
+                    const axis2_env_t *env,
+                    axis2_flow_t *outflow);
+
+        /**
+         * Get fault in flow
+	 * @param flow_container pointer to flow container
+	 * @param env pointer to environment struct
+         * @return fault in flow
+         */
+        axis2_flow_t * (AXIS2_CALL *
+                get_fault_inflow)(
+                    const axis2_flow_container_t *flow_container,
+                    const axis2_env_t *env);
+
+        /**
+         * set fault in flow
+	 * @param flow_container pointer to flow container
+	 * @param env pointer to environment struct
+         * @param falut_inflow pointer to falut in flow
+	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_fault_inflow)(
+                    axis2_flow_container_t *flow_container,
+                    const axis2_env_t *env,
+                    axis2_flow_t *falut_inflow);
+        /**
+         * Get fault out flow
+	 * @param flow_container pointer to flow container
+	 * @param env pointer to environment struct
+         * @return fault out flow
+         */
+        axis2_flow_t *(AXIS2_CALL *
+                get_fault_outflow)(
+                    const axis2_flow_container_t *flow_container,
+                    const axis2_env_t *env);
+
+        /**
+         * Set fault out flow
+	 * @param flow_container pointer to flow container
+	 * @param env pointer to environment struct
+         * @param fault_outflow pointer t ofault out flow
+	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_fault_outflow)(
+                    axis2_flow_container_t *flow_container,
+                    const axis2_env_t *env,
+                    axis2_flow_t *fault_outflow);
+    };
+
+    /**
+     * Flow container struct
+     */
+    struct axis2_flow_container
+    {
+        /** Operatoins of flow container struct */
+        axis2_flow_container_ops_t *ops;
+    };
+
+    /**
+     * Creates flow container struct
+     * @param env pointer to environment struct
+     * @return pointer to newly created flow container
+     */
+    AXIS2_EXTERN axis2_flow_container_t * AXIS2_CALL
+    axis2_flow_container_create (
+        const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 
+/** Frees the flow container.
+    @sa axis2_flow_container_ops#free */
 #define AXIS2_FLOW_CONTAINER_FREE(flow_container, env) \
         ((flow_container)->ops->free (flow_container, env))
 
+/** Gets the in flow.
+    @sa axis2_flow_container_ops#get_inflow */
 #define AXIS2_FLOW_CONTAINER_GET_INFLOW(flow_container, env) \
         ((flow_container)->ops->get_inflow (flow_container, env))
 
+/** Sets the in flow.
+    @sa axis2_flow_container_ops#set_inflow */
 #define AXIS2_FLOW_CONTAINER_SET_INFLOW(flow_container, env, inflow) \
         ((flow_container)->ops->set_inflow (flow_container, env, inflow))
 
+/** Gets the out flow.
+    @sa axis2_flow_container_ops#get_outflow */
 #define AXIS2_FLOW_CONTAINER_GET_OUTFLOW(flow_container, env) \
         ((flow_container)->ops->get_outflow (flow_container, env))
-        
+
+/** Sets the out flow.
+    @sa axis2_flow_container_ops#set_outflow */
 #define AXIS2_FLOW_CONTAINER_SET_OUTFLOW(flow_container, env, outflow) \
         ((flow_container)->ops->set_outflow (flow_container, env, outflow))
 
+/** Gets the fault in flow.
+    @sa axis2_flow_container_ops#get_fault_inflow */
 #define AXIS2_FLOW_CONTAINER_GET_FAULT_INFLOW(flow_container, env) \
         ((flow_container)->ops->get_fault_inflow (flow_container, env))
-        
+
+/** Sets the fault in flow.
+    @sa axis2_flow_container_ops#set_fault_inflow */
 #define AXIS2_FLOW_CONTAINER_SET_FAULT_INFLOW(flow_container, env, fault_inflow) \
         ((flow_container)->ops->set_fault_inflow (flow_container, env, fault_inflow))
 
+/** Gets the fault out flow.
+    @sa axis2_flow_container_ops#get_fault_outflow */
 #define AXIS2_FLOW_CONTAINER_GET_FAULT_OUTFLOW(flow_container, env) \
         ((flow_container)->ops->get_fault_outflow (flow_container, env))
-        
+
+/** Sets the fault out flow.
+    @sa axis2_flow_container_ops#set_fault_outflow */
 #define AXIS2_FLOW_CONTAINER_SET_FAULT_OUTFLOW(flow_container, env, fault_outflow) \
-        ((flow_container)->ops->set_fault_outflow (flow_container, env, fault_outflow))        
+        ((flow_container)->ops->set_fault_outflow (flow_container, env, fault_outflow))
 
 /*************************** End of function macros ***************************/
 

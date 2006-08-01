@@ -50,7 +50,7 @@ axis2_flow_container_free(axis2_flow_container_t *flow_container,
                             const axis2_env_t *env);
 
 axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_inflow(axis2_flow_container_t *flow_container,
+axis2_flow_container_get_inflow(const axis2_flow_container_t *flow_container,
                                     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -59,7 +59,7 @@ axis2_flow_container_set_inflow(axis2_flow_container_t *flow_container,
                                     axis2_flow_t *inflow);
 
 axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_outflow(axis2_flow_container_t *flow_container,
+axis2_flow_container_get_outflow(const axis2_flow_container_t *flow_container,
                                     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -68,7 +68,7 @@ axis2_flow_container_set_outflow(axis2_flow_container_t *flow_container,
                                     axis2_flow_t *outflow);
 
 axis2_flow_t * AXIS2_CALL
-axis2_flow_container_get_fault_inflow(axis2_flow_container_t *flow_container,
+axis2_flow_container_get_fault_inflow(const axis2_flow_container_t *flow_container,
                                         const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -77,7 +77,7 @@ axis2_flow_container_set_fault_inflow(axis2_flow_container_t *flow_container,
                                         axis2_flow_t *falut_inflow);
 
 axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_fault_outflow(axis2_flow_container_t *flow_container,
+axis2_flow_container_get_fault_outflow(const axis2_flow_container_t *flow_container,
                                             const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -191,7 +191,7 @@ axis2_flow_container_free(axis2_flow_container_t *flow_container,
  * @return in flow
  */
 axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_inflow(axis2_flow_container_t *flow_container,
+axis2_flow_container_get_inflow(const axis2_flow_container_t *flow_container,
                                     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -226,7 +226,7 @@ axis2_flow_container_set_inflow(axis2_flow_container_t *flow_container,
  * @return out flow
  */
 axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_outflow(axis2_flow_container_t *flow_container,
+axis2_flow_container_get_outflow(const axis2_flow_container_t *flow_container,
                                     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -261,7 +261,7 @@ axis2_flow_container_set_outflow(axis2_flow_container_t *flow_container,
  * @return fault in flow
  */
 axis2_flow_t * AXIS2_CALL
-axis2_flow_container_get_fault_inflow(axis2_flow_container_t *flow_container,
+axis2_flow_container_get_fault_inflow(const axis2_flow_container_t *flow_container,
                                         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -295,7 +295,7 @@ axis2_flow_container_set_fault_inflow(axis2_flow_container_t *flow_container,
  * @return fault out flow
  */
 axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_fault_outflow(axis2_flow_container_t *flow_container,
+axis2_flow_container_get_fault_outflow(const axis2_flow_container_t *flow_container,
                                             const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);

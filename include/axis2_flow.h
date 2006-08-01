@@ -19,9 +19,9 @@
 
 /** @defgroup axis2_flow flow
  * @ingroup axis2_desc
+ * Description.
  * @{
  */
-
 
 /**
  * @file axis2_flow.h
@@ -58,7 +58,7 @@ extern "C"
         /** Deallocate memory
 	 * @param flow pointer to flow
 	 * @param env pointer to environment struct
-         * @return status code
+	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -70,6 +70,7 @@ extern "C"
 	 * @param flow pointer to flow
 	 * @param env pointer to environment struct
          * @param handler handler description
+	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_handler)(
