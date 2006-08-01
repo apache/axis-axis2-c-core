@@ -94,24 +94,24 @@ axis2_diclient_set_address_and_action_for_op(axis2_diclient_t *diclient,
 
 
 axis2_hash_t *AXIS2_CALL
-axis2_diclient_get_endpoints(axis2_diclient_t *diclient,
+axis2_diclient_get_endpoints(const axis2_diclient_t *diclient,
                                 const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
-axis2_diclient_get_services(axis2_diclient_t *diclient,
+axis2_diclient_get_services(const axis2_diclient_t *diclient,
                                 const axis2_env_t *env);
 
 axis2_hash_t *AXIS2_CALL
-axis2_diclient_get_operations(axis2_diclient_t *diclient,
+axis2_diclient_get_operations(const axis2_diclient_t *diclient,
                                 const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
-axis2_diclient_get_param_localname(axis2_diclient_t *diclient,
+axis2_diclient_get_param_localname(const axis2_diclient_t *diclient,
                             const axis2_env_t *env,
                             axis2_qname_t *op_qname);
 
 axis2_char_t *AXIS2_CALL
-axis2_diclient_get_param_namespace(axis2_diclient_t *diclient,
+axis2_diclient_get_param_namespace(const axis2_diclient_t *diclient,
                             const axis2_env_t *env,
                             axis2_qname_t *op_qname);
 
@@ -121,7 +121,7 @@ axis2_diclient_process_param(axis2_diclient_t *diclient,
                                 axis2_qname_t *op_qname);
 
 axis2_hash_t *AXIS2_CALL
-axis2_diclient_get_params(axis2_diclient_t *diclient,
+axis2_diclient_get_params(const axis2_diclient_t *diclient,
                             const axis2_env_t *env,
                             axis2_qname_t *op_qname);
 
@@ -577,7 +577,7 @@ axis2_diclient_set_address_and_action_for_op(axis2_diclient_t *diclient,
 }
 
 axis2_hash_t *AXIS2_CALL
-axis2_diclient_get_endpoints(axis2_diclient_t *diclient,
+axis2_diclient_get_endpoints(const axis2_diclient_t *diclient,
                                 const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -585,7 +585,7 @@ axis2_diclient_get_endpoints(axis2_diclient_t *diclient,
 }
 
 axis2_hash_t *AXIS2_CALL
-axis2_diclient_get_services(axis2_diclient_t *diclient,
+axis2_diclient_get_services(const axis2_diclient_t *diclient,
                                 const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -593,7 +593,7 @@ axis2_diclient_get_services(axis2_diclient_t *diclient,
 }
 
 axis2_hash_t *AXIS2_CALL
-axis2_diclient_get_operations(axis2_diclient_t *diclient,
+axis2_diclient_get_operations(const axis2_diclient_t *diclient,
                                 const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -601,7 +601,7 @@ axis2_diclient_get_operations(axis2_diclient_t *diclient,
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_diclient_get_param_localname(axis2_diclient_t *diclient,
+axis2_diclient_get_param_localname(const axis2_diclient_t *diclient,
                             const axis2_env_t *env,
                             axis2_qname_t *op_qname)
 {
@@ -617,7 +617,7 @@ axis2_diclient_get_param_localname(axis2_diclient_t *diclient,
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_diclient_get_param_namespace(axis2_diclient_t *diclient,
+axis2_diclient_get_param_namespace(const axis2_diclient_t *diclient,
                             const axis2_env_t *env,
                             axis2_qname_t *op_qname)
 {
@@ -659,7 +659,7 @@ axis2_diclient_process_param(axis2_diclient_t *diclient,
 }
                                 
 axis2_hash_t *AXIS2_CALL
-axis2_diclient_get_params(axis2_diclient_t *diclient,
+axis2_diclient_get_params(const axis2_diclient_t *diclient,
                             const axis2_env_t *env,
                             axis2_qname_t *op_qname)
 {

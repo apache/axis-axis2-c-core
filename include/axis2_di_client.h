@@ -105,7 +105,7 @@ extern "C"
          * @return table of endpoints associated with the wsdl
          */
         axis2_hash_t *(AXIS2_CALL *
-                get_endpoints) (axis2_diclient_t *diclient,
+                get_endpoints) (const axis2_diclient_t *diclient,
                         const axis2_env_t *env);
 
         /**
@@ -115,7 +115,7 @@ extern "C"
          * @return table of services associated with the wsdl
          */
         axis2_hash_t *(AXIS2_CALL *
-                get_services) (axis2_diclient_t *diclient,
+                get_services) (const axis2_diclient_t *diclient,
                         const axis2_env_t *env);
 
         /**
@@ -125,7 +125,7 @@ extern "C"
          * @return table of operations associated with the wsdl
          */
         axis2_hash_t *(AXIS2_CALL *
-                get_operations) (axis2_diclient_t *diclient,
+                get_operations) (const axis2_diclient_t *diclient,
                         const axis2_env_t *env);
 
         /**
@@ -138,7 +138,7 @@ extern "C"
          * @return parameter's localname
          */
         axis2_char_t *(AXIS2_CALL *
-                get_param_localname) (axis2_diclient_t *diclient,
+                get_param_localname) (const axis2_diclient_t *diclient,
                         const axis2_env_t *env,
                         axis2_qname_t *op_qname);
 
@@ -152,7 +152,7 @@ extern "C"
          * @return parameter's namespace
          */
         axis2_char_t *(AXIS2_CALL *
-                get_param_namespace) (axis2_diclient_t *diclient,
+                get_param_namespace) (const axis2_diclient_t *diclient,
                         const axis2_env_t *env,
                         axis2_qname_t *op_qname);
 
@@ -166,7 +166,7 @@ extern "C"
          * @return set of parameters assoicated with the operation
          */
         axis2_hash_t *(AXIS2_CALL *
-                get_params) (axis2_diclient_t *diclient,
+                get_params) (const axis2_diclient_t *diclient,
                         const axis2_env_t *env,
                         axis2_qname_t *op_qname);
     };

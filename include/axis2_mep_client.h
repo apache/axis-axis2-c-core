@@ -56,8 +56,9 @@ extern "C"
 	 * @param env pointer to environment struct
 	 */
         axis2_char_t* (AXIS2_CALL *
-                get_soap_action)(struct axis2_mep_client *mep_client,
-                        const axis2_env_t *env);
+                get_soap_action)(
+                    struct axis2_mep_client *mep_client,
+                    const axis2_env_t *env);
         /**
          * prepare the message context for invocation, here the properties kept in the
          * MEPClient copied to the axis2_msg_ctx_t *
@@ -68,10 +69,11 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                prepare_invocation)(struct axis2_mep_client *mep_client,
-                        const axis2_env_t *env,
-                        axis2_op_t *op,
-                        axis2_msg_ctx_t *msg_ctx);
+                prepare_invocation)(
+                    struct axis2_mep_client *mep_client,
+                    const axis2_env_t *env,
+                    axis2_op_t *op,
+                    axis2_msg_ctx_t *msg_ctx);
         /**
          * This class prepare the SOAP Envelope using the payload
          * @param mep_client pointer to mep client struct
@@ -80,9 +82,10 @@ extern "C"
          * @return a pointer to message context struct
          */
         axis2_msg_ctx_t* (AXIS2_CALL *
-                prepare_soap_envelope)(struct axis2_mep_client *mep_client,
-                        const axis2_env_t *env,
-                        axiom_node_t *to_send);
+                prepare_soap_envelope)(
+                    struct axis2_mep_client *mep_client,
+                    const axis2_env_t *env,
+                    axiom_node_t *to_send);
         /**
          * try to infer the transport looking at the URL, the URL can be http://
          * tcp:// mail:// local://. The method will look for the trnasport name as the
@@ -93,9 +96,10 @@ extern "C"
          * @return 
          */
         axis2_transport_out_desc_t* (AXIS2_CALL *
-                infer_transport)(struct axis2_mep_client *mep_client,
-                        const axis2_env_t *env,
-                        axis2_endpoint_ref_t *epr);
+                infer_transport)(
+                    struct axis2_mep_client *mep_client,
+                    const axis2_env_t *env,
+                    axis2_endpoint_ref_t *epr);
         /**
          * create write SOAPEvelope(in terms of version) based on the values set.
          *
@@ -103,8 +107,9 @@ extern "C"
          * @
          */
         axiom_soap_envelope_t* (AXIS2_CALL *
-                create_default_soap_envelope)(struct axis2_mep_client *mep_client,
-                        const axis2_env_t *env);
+                create_default_soap_envelope)(
+                    struct axis2_mep_client *mep_client,
+                    const axis2_env_t *env);
         /**
          * Engage a given Module to the current invocation. But to call this method the
          * Module *MUST* be enable (picked up by the deployment and known to Axis2) .
@@ -114,52 +119,58 @@ extern "C"
          * @
          */
         axis2_status_t (AXIS2_CALL *
-                engage_module)(struct axis2_mep_client *mep_client,
-                        const axis2_env_t *env,
-                        axis2_qname_t *qname);
+                engage_module)(
+                    struct axis2_mep_client *mep_client,
+                    const axis2_env_t *env,
+                    axis2_qname_t *qname);
         /**
 	 * @param mep_client pointer to mep client struct
 	 * @param env pointer to environment struct
          * @param qname pointer to qname struct
          */
         axis2_status_t (AXIS2_CALL *
-                set_soap_version_uri)(struct axis2_mep_client *mep_client,
-                        const axis2_env_t *env,
-                        axis2_char_t *soap_version_uri);
+                set_soap_version_uri)(
+                    struct axis2_mep_client *mep_client,
+                    const axis2_env_t *env,
+                    axis2_char_t *soap_version_uri);
         /**
 	 * @param mep_client pointer to mep client struct
 	 * @param env pointer to environment struct
          * @param soap_action pointer to soap action struct
          */
         axis2_status_t (AXIS2_CALL *
-                set_soap_action)(struct axis2_mep_client *mep_client,
-                        const axis2_env_t *env,
-                        axis2_char_t *soap_action);
+                set_soap_action)(
+                    struct axis2_mep_client *mep_client,
+                    const axis2_env_t *env,
+                    axis2_char_t *soap_action);
         /**
          * @param mep_client pointer to mep client struct
 	 * @param env pointer to environment struct
 	 * @param wsa_action pointer to was action struct
          */
         axis2_status_t (AXIS2_CALL *
-                set_wsa_action)(struct axis2_mep_client *mep_client,
-                        const axis2_env_t *env,
-                        axis2_char_t *wsa_action);
+                set_wsa_action)(
+                    struct axis2_mep_client *mep_client,
+                    const axis2_env_t *env,
+                    axis2_char_t *wsa_action);
 
         /**
 	 * @param mep_client pointer to mep client struct
 	 * @param env pointer to environment struct
 	 */
         axis2_svc_ctx_t* (AXIS2_CALL *
-                get_svc_ctx)(struct axis2_mep_client *mep_client,
-                        const axis2_env_t *env);
+                get_svc_ctx)(
+                    struct axis2_mep_client *mep_client,
+                    const axis2_env_t *env);
 
         /**
 	 * @param mep_client pointer to mep client struct
 	 * @param env pointer to environment struct
 	 */
         axis2_status_t (AXIS2_CALL *
-                free)(struct axis2_mep_client *mep_client,
-                        const axis2_env_t *env);
+                free)(
+                    struct axis2_mep_client *mep_client,
+                    const axis2_env_t *env);
     };
 
     /**
