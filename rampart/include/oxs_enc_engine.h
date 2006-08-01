@@ -44,7 +44,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_enc_crypt(const axis2_env_t *env,
                 enc_ctx_ptr enc_ctx,
                 oxs_buffer_ptr input,
-                axis2_char_t* key,
                 oxs_buffer_ptr result);
 
 

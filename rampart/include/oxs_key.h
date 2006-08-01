@@ -43,8 +43,8 @@ extern "C"
 typedef struct _oxs_key oxs_key, *oxs_key_ptr;
 
 struct _oxs_key{
-    axis2_char_t *name;
     unsigned char *data;
+    axis2_char_t *name;
     int            size;
     int            usage;
 };
