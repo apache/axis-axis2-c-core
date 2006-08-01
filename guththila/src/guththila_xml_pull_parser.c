@@ -33,7 +33,6 @@ guththila_xml_pull_parser_create (axis2_env_t * environment,
   guththila_xml_pull_parser_t *parser =
     (guththila_xml_pull_parser_t *) AXIS2_MALLOC (
 						  environment->allocator, sizeof (guththila_xml_pull_parser_t));
-                
   parser->buffer = guththila_buffer_create (environment, 1024);
   parser->stack = axis2_stack_create (environment);
   parser->attrib = axis2_stack_create (environment);
@@ -48,6 +47,7 @@ guththila_xml_pull_parser_create (axis2_env_t * environment,
   parser->last = -1;
   parser->status = S_1;
   parser->unicode_state = None;
+  parser->xsw = NULL;
 
   return parser;
 }
@@ -67,6 +67,7 @@ guththila_xml_pull_parser_free (axis2_env_t * environment,
     AXIS2_STACK_FREE (parser->namesp, environment);
   if (parser->dep)
     AXIS2_STACK_FREE (parser->dep, environment);
+  
   AXIS2_FREE (environment->allocator, (void *) parser);
 }
 

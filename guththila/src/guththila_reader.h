@@ -30,10 +30,10 @@
 #include "guththila_error.h"
 
 typedef enum guththila_reader_types
-{
+  {
     GUTHTHILA_FILE_READER = 1,
     GUTHTHILA_IN_MEMORY_READER
-} guththila_reader_types_t;
+  } guththila_reader_types_t;
 
 typedef struct guththila_reader_s
 {

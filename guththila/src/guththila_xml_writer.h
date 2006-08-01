@@ -13,21 +13,32 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  *
- *   
- * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)   
+ *	
+ * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)	
  */
 
-#ifndef GUTHTHILA_ATTRIBUTE_H
-#define GUTHTHILA_ATTRIBUTE_H
+#ifndef XML_STREAMWRITER_H
+#define XML_STREAMWRITER_H
+#include "guththila_writer.h"
+#include "guththila_buffer.h"
+#include <axis2_env.h>
+#include <axis2_stack.h>
 
-#include "guththila_token.h"
-
-typedef struct guththila_attribute_s
+typedef struct guththila_xml_writer_s
 {
-    guththila_token_t *prefix;
-    guththila_token_t *name;
-    guththila_token_t *value;
-  guththila_token_t *namespace_uri;
-} guththila_attribute_t;
+  axis2_stack_t *element;
+  axis2_stack_t *attribute;
+  axis2_stack_t *namespace;
+  axis2_stack_t *depth;
+  guththila_writer_t *writer;
+  guththila_buffer_t *writer_buffer;
+  int next;
+  int last;
+  int offset;
+  int start_element_open;
+  int empty_element_open;
+}guththila_xml_writer_t;
 
-#endif /* GUTHTHILA_ATTRIBUTE_H */
+
+
+#endif /* XML_STREAMWRITER_H */
