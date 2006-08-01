@@ -54,7 +54,7 @@ axis2_desc_get_param (const axis2_desc_t *desc,
     const axis2_char_t *param_name);
 
 axis2_array_list_t * AXIS2_CALL
-axis2_desc_get_all_params(axis2_desc_t *desc, 
+axis2_desc_get_all_params(const axis2_desc_t *desc, 
     const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL 
@@ -218,7 +218,7 @@ axis2_desc_get_param (const axis2_desc_t *desc,
 }
 
 axis2_array_list_t * AXIS2_CALL
-axis2_desc_get_all_params(axis2_desc_t *desc, 
+axis2_desc_get_all_params(const axis2_desc_t *desc, 
     const axis2_env_t *env)
 {
     axis2_desc_impl_t *desc_impl = NULL;

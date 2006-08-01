@@ -51,8 +51,9 @@ extern "C"
     struct axis2_diclient_ops
     {
         axis2_status_t (AXIS2_CALL *
-                free)(struct axis2_diclient *diclient,
-                        const axis2_env_t *env);
+                free)(
+                    struct axis2_diclient *diclient,
+                    const axis2_env_t *env);
 
         /**
          * Invoke the operation by passing om node and axis2 operation as 
@@ -64,10 +65,11 @@ extern "C"
 	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                invoke) (axis2_diclient_t *diclient,
-                        const axis2_env_t *env,
-                        axiom_node_t *node,
-                        struct axis2_op *op);
+                invoke)(
+                    axis2_diclient_t *diclient,
+                    const axis2_env_t *env,
+                    axiom_node_t *node,
+                    struct axis2_op *op);
 
         /**
          * Do the initialization work. Here wsdl parser is created and
@@ -80,9 +82,10 @@ extern "C"
 	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                init) (axis2_diclient_t *diclient,
-                        const axis2_env_t *env,
-                        axis2_char_t *wsdl_file_name);
+                init)(
+                    axis2_diclient_t *diclient,
+                    const axis2_env_t *env,
+                    axis2_char_t *wsdl_file_name);
 
         /**
          * By passing the operation qualified name and the endpoint qualified
@@ -93,9 +96,10 @@ extern "C"
 	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t *(AXIS2_CALL *
-                set_address_and_action_for_op) (axis2_diclient_t *diclient,
-                        const axis2_env_t *env,
-                        axis2_qname_t *op_qname);
+                set_address_and_action_for_op)(
+                    axis2_diclient_t *diclient,
+                    const axis2_env_t *env,
+                    axis2_qname_t *op_qname);
 
 
         /**
@@ -105,8 +109,9 @@ extern "C"
          * @return table of endpoints associated with the wsdl
          */
         axis2_hash_t *(AXIS2_CALL *
-                get_endpoints) (const axis2_diclient_t *diclient,
-                        const axis2_env_t *env);
+                get_endpoints)(
+                    const axis2_diclient_t *diclient,
+                    const axis2_env_t *env);
 
         /**
          * Return all the services associated with the wsdl
@@ -115,8 +120,9 @@ extern "C"
          * @return table of services associated with the wsdl
          */
         axis2_hash_t *(AXIS2_CALL *
-                get_services) (const axis2_diclient_t *diclient,
-                        const axis2_env_t *env);
+                get_services)(
+                    const axis2_diclient_t *diclient,
+                    const axis2_env_t *env);
 
         /**
          * Return the all operations associated with the wsdl
@@ -125,8 +131,9 @@ extern "C"
          * @return table of operations associated with the wsdl
          */
         axis2_hash_t *(AXIS2_CALL *
-                get_operations) (const axis2_diclient_t *diclient,
-                        const axis2_env_t *env);
+                get_operations)(
+                    const axis2_diclient_t *diclient,
+                    const axis2_env_t *env);
 
         /**
          * Return the operation parameter's localname. This method
@@ -138,9 +145,10 @@ extern "C"
          * @return parameter's localname
          */
         axis2_char_t *(AXIS2_CALL *
-                get_param_localname) (const axis2_diclient_t *diclient,
-                        const axis2_env_t *env,
-                        axis2_qname_t *op_qname);
+                get_param_localname)(
+                    const axis2_diclient_t *diclient,
+                    const axis2_env_t *env,
+                    axis2_qname_t *op_qname);
 
         /**
          * Return the operation parameter's namespace. This method
@@ -152,9 +160,10 @@ extern "C"
          * @return parameter's namespace
          */
         axis2_char_t *(AXIS2_CALL *
-                get_param_namespace) (const axis2_diclient_t *diclient,
-                        const axis2_env_t *env,
-                        axis2_qname_t *op_qname);
+                get_param_namespace)(
+                    const axis2_diclient_t *diclient,
+                    const axis2_env_t *env,
+                    axis2_qname_t *op_qname);
 
         /**
          * Return the set of parameters associated with the operation.
@@ -166,9 +175,10 @@ extern "C"
          * @return set of parameters assoicated with the operation
          */
         axis2_hash_t *(AXIS2_CALL *
-                get_params) (const axis2_diclient_t *diclient,
-                        const axis2_env_t *env,
-                        axis2_qname_t *op_qname);
+                get_params)(
+                    const axis2_diclient_t *diclient,
+                    const axis2_env_t *env,
+                    axis2_qname_t *op_qname);
     };
 
     /**

@@ -87,7 +87,7 @@ extern "C"
 	 */
         axis2_array_list_t *(AXIS2_CALL *
                 get_all_params)(
-                    axis2_desc_t *desc,
+                    const axis2_desc_t *desc,
                     const axis2_env_t *env);
 
 	/**
