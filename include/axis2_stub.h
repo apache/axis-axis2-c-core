@@ -63,8 +63,9 @@ extern "C"
 	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
 	 */
         axis2_status_t (AXIS2_CALL *
-                free)(axis2_stub_t *stub,
-                        const axis2_env_t *env);
+                free)(
+                    axis2_stub_t *stub,
+                    const axis2_env_t *env);
 
         /**
 	 * @param stub pointer to stub struct
@@ -73,9 +74,10 @@ extern "C"
 	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
 	 */
         axis2_status_t (AXIS2_CALL *
-                set_endpoint_ref) (axis2_stub_t *stub,
-                        const axis2_env_t *env,
-                        axis2_endpoint_ref_t *endpoint_ref);
+                set_endpoint_ref)(
+                    axis2_stub_t *stub,
+                    const axis2_env_t *env,
+                    axis2_endpoint_ref_t *endpoint_ref);
 
         /**
 	 * @param stub pointer to stub struct
@@ -84,9 +86,10 @@ extern "C"
 	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
 	 */
         axis2_status_t (AXIS2_CALL *
-                set_endpoint_uri) (axis2_stub_t *stub,
-                        const axis2_env_t *env,
-                        axis2_char_t *endpoint_uri);
+                set_endpoint_uri)(
+                    axis2_stub_t *stub,
+                    const axis2_env_t *env,
+                    axis2_char_t *endpoint_uri);
 
 
         /**
@@ -96,9 +99,10 @@ extern "C"
 	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_use_seperate_listener)(axis2_stub_t *stub,
-                        const axis2_env_t *env,
-                        axis2_bool_t use_separate_listener);
+                set_use_seperate_listener)(
+                    axis2_stub_t *stub,
+                    const axis2_env_t *env,
+                    axis2_bool_t use_separate_listener);
 
         /**
          * @param stub pointer to stub struct
@@ -107,9 +111,10 @@ extern "C"
 	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_soap_version)(axis2_stub_t *stub,
-                        const axis2_env_t *env,
-                        int soap_version);
+                set_soap_version)(
+                    axis2_stub_t *stub,
+                    const axis2_env_t *env,
+                    int soap_version);
 
 
         /**
@@ -117,8 +122,9 @@ extern "C"
 	 * @param env pointer to environment struct
 	 */
         axis2_char_t *(AXIS2_CALL *
-                get_svc_ctx_id)(axis2_stub_t *stub,
-                        const axis2_env_t *env);
+                get_svc_ctx_id)(
+                    const axis2_stub_t *stub,
+                    const axis2_env_t *env);
 
 
         /**
@@ -128,25 +134,28 @@ extern "C"
 	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
 	 */
         axis2_status_t (AXIS2_CALL *
-                engage_module)(axis2_stub_t *stub,
-                        const axis2_env_t *env,
-                        axis2_char_t *module_name);
+                engage_module)(
+                    axis2_stub_t *stub,
+                    const axis2_env_t *env,
+                    axis2_char_t *module_name);
 
         /**
 	 * @param stub pointer to stub struct
 	 * @param env pointer to environment struct
 	 */
         axis2_svc_client_t *(AXIS2_CALL *
-                get_svc_client)(axis2_stub_t *stub,
-                        const axis2_env_t *env);
+                get_svc_client)(
+                    const axis2_stub_t *stub,
+                    const axis2_env_t *env);
 
         /**
 	 * @param stub pointer to stub struct
 	 * @param env pointer to environment struct
 	 */
         axis2_options_t *(AXIS2_CALL *
-                get_options)(axis2_stub_t *stub,
-                        const axis2_env_t *env);
+                get_options)(
+                    const axis2_stub_t *stub,
+                    const axis2_env_t *env);
 
     } ;
 

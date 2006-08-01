@@ -72,15 +72,15 @@ axis2_stub_set_soap_version(axis2_stub_t *stub,
 
 
 axis2_char_t *AXIS2_CALL
-axis2_stub_get_svc_ctx_id(axis2_stub_t *stub,
+axis2_stub_get_svc_ctx_id(const axis2_stub_t *stub,
                             const axis2_env_t *env);
 
 axis2_svc_client_t *AXIS2_CALL
-axis2_stub_get_svc_client(axis2_stub_t *stub,
+axis2_stub_get_svc_client(const axis2_stub_t *stub,
                         const axis2_env_t *env);
 
 axis2_options_t *AXIS2_CALL
-axis2_stub_get_options(axis2_stub_t *stub,
+axis2_stub_get_options(const axis2_stub_t *stub,
                         const axis2_env_t *env);
 
 /************************** End of function prototypes ************************/
@@ -326,7 +326,7 @@ axis2_stub_set_soap_version(axis2_stub_t *stub,
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_stub_get_svc_ctx_id(axis2_stub_t *stub,
+axis2_stub_get_svc_ctx_id(const axis2_stub_t *stub,
                             const axis2_env_t *env)
 {
     axis2_stub_impl_t *stub_impl = NULL;
@@ -343,7 +343,7 @@ axis2_stub_get_svc_ctx_id(axis2_stub_t *stub,
 }
 
 axis2_svc_client_t *AXIS2_CALL
-axis2_stub_get_svc_client(axis2_stub_t *stub,
+axis2_stub_get_svc_client(const axis2_stub_t *stub,
                         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -351,7 +351,7 @@ axis2_stub_get_svc_client(axis2_stub_t *stub,
 }
 
 axis2_options_t *AXIS2_CALL
-axis2_stub_get_options(axis2_stub_t *stub,
+axis2_stub_get_options(const axis2_stub_t *stub,
                  const axis2_env_t *env)
 {
       AXIS2_ENV_CHECK(env, NULL);

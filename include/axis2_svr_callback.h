@@ -54,8 +54,9 @@ extern "C"
 	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                free) (axis2_svr_callback_t *svr_callback,
-                        const axis2_env_t *env);
+                free)(
+                    axis2_svr_callback_t *svr_callback,
+                    const axis2_env_t *env);
 
         /**
          * Handle result
@@ -65,9 +66,10 @@ extern "C"
 	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                handle_result) (axis2_svr_callback_t *svr_callback,
-                        const axis2_env_t *env,
-                        axis2_msg_ctx_t *msg_ctx);
+                handle_result)(
+                    axis2_svr_callback_t *svr_callback,
+                    const axis2_env_t *env,
+                    axis2_msg_ctx_t *msg_ctx);
 
         /**
          * Handle fault

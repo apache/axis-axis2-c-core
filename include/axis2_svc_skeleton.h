@@ -64,24 +64,27 @@ extern "C"
 	 * @param env pointer to environment struct
 	 */
         int (AXIS2_CALL *
-                init) (axis2_svc_skeleton_t *svc_skeleton,
-                        const axis2_env_t *env);
+                init)(
+                    axis2_svc_skeleton_t *svc_skeleton,
+                    const axis2_env_t *env);
 
         /*
 	 * @param svc_skeli pointer to svc_skeli struct
 	 * @param env pointer to environment struct
 	 */
         int (AXIS2_CALL *
-                free)(axis2_svc_skeleton_t *svc_skeli,
-                        const axis2_env_t *env);
+                free)(
+                    axis2_svc_skeleton_t *svc_skeli,
+                    const axis2_env_t *env);
 
         /*
 	 * @param svc_skeli pointer to svc_skeli struct
 	 * @param env pointer to environment struct
 	 */
         int (AXIS2_CALL *
-                free_void_arg)(void *svc_skeli,
-                        const axis2_env_t *env);
+                free_void_arg)(
+                    void *svc_skeli,
+                    const axis2_env_t *env);
 
         /*
 	 * @param svc_skeli pointer to svc_skeli struct
@@ -90,10 +93,11 @@ extern "C"
 	 * @param msg_ctx pointer to message context struct
 	 */
         axiom_node_t *(AXIS2_CALL*
-                invoke)(axis2_svc_skeleton_t *svc_skeli,
-                        const axis2_env_t *env,
-                        axiom_node_t *node,
-                        axis2_msg_ctx_t *msg_ctx);
+                invoke)(
+                    axis2_svc_skeleton_t *svc_skeli,
+                    const axis2_env_t *env,
+                    axiom_node_t *node,
+                    axis2_msg_ctx_t *msg_ctx);
 
         /*
 	 * @param svc_skeli pointer to svc_skeli struct
@@ -101,9 +105,10 @@ extern "C"
 	 * @param node pointer to node struct
 	 */
         axiom_node_t *(AXIS2_CALL*
-                on_fault)(axis2_svc_skeleton_t *svc_skeli,
-                        const axis2_env_t *env,
-                        axiom_node_t *node);
+                on_fault)(
+                    axis2_svc_skeleton_t *svc_skeli,
+                    const axis2_env_t *env,
+                    axiom_node_t *node);
 
 
     } ;
