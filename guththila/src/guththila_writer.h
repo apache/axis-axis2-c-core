@@ -43,8 +43,24 @@ typedef struct guththila_writer_impl_t
   FILE *outputstream;
 }guththila_writer_impl_t; 
 
-AXIS2_EXTERN guththila_writer_t *guththila_writer_create_for_file (axis2_env_t *env, char *fp);
-AXIS2_EXTERN int guththila_writer_write (axis2_env_t *env, char *buffer, int offset, int length, guththila_writer_t *wt);
-AXIS2_EXTERN void guththila_writer_free (axis2_env_t *env, guththila_writer_t *wt);
+AXIS2_EXTERN guththila_writer_t *
+guththila_writer_create_for_file 
+(axis2_env_t *env, 
+char *fp);
+
+
+AXIS2_EXTERN int 
+guththila_writer_write 
+(axis2_env_t *env, 
+char *buffer, 
+int offset, 
+int length, 
+guththila_writer_t *wt);
+
+
+AXIS2_EXTERN void 
+guththila_writer_free 
+(axis2_env_t *env, 
+guththila_writer_t *wt);
 
 #endif	/* GUTHTHILA_WRITE_H */
