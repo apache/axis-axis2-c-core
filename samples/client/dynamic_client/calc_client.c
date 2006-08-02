@@ -73,7 +73,7 @@ int main(int argc, char** argv)
             "http://localhost/axis/Calculator", NULL);
     wsdl_uri = axis2_uri_parse_string(env, wsdl_uri_str);
     svc_client = 
-        axis2_svc_client_create_with_conf_ctx_and_wsdl_uri_wsdl_svc_name_and_endpoint(
+        axis2_svc_client_create_for_dynamic_invocation(
                 env, NULL, wsdl_uri, wsdl_svc_qname, "Calculator", client_home);
     if(!svc_client)
     {
