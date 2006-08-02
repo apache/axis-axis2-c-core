@@ -414,8 +414,23 @@ extern "C"
         axis2_conf_ctx_t *conf_ctx,
         axis2_svc_t *svc);
 
+    /**
+     * Creates a service client struct. This constructor is used in dynamic
+     * invocation.
+     * @param env pointer to environment struct
+     * @param conf_ctx pointer to configuration context. Newly created client 
+     * assumes ownership of the conf_ctx
+     * @param wsdl_uri pointer to uri of the wsdl file.
+     * @param wsdl_svc_qname pointer to qname of the wsdl service. If this is NULL
+     * first service is assumed
+     * @param endpoint_name pointer to endpoint name. If this is NULL first endpoint
+     * is assumed.
+     * @param client_home name of the directory that contains the Axis2/C repository
+     * @return a pointer to newly created service client struct,
+     *         or NULL on error with error code set in environment's error
+     */
     axis2_svc_client_t* AXIS2_CALL
-    axis2_svc_client_create_with_conf_ctx_and_wsdl_uri_wsdl_svc_name_and_endpoint(
+    axis2_svc_client_create_for_dynamic_invocation(
         const axis2_env_t *env,
         axis2_conf_ctx_t *conf_ctx,
         const axis2_uri_t *wsdl_uri,

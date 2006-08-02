@@ -194,7 +194,7 @@ axis2_svc_client_create(const axis2_env_t *env,
 }
 
 axis2_svc_client_t* AXIS2_CALL
-axis2_svc_client_create_with_conf_ctx_and_wsdl_uri_wsdl_svc_name_and_endpoint(
+axis2_svc_client_create_for_dynamic_invocation(
         const axis2_env_t *env,
         axis2_conf_ctx_t *conf_ctx,
         const axis2_uri_t *wsdl_uri,
