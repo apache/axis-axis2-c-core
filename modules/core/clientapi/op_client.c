@@ -107,7 +107,8 @@ axis2_op_client_complete(struct axis2_op_client *op_client,
         axis2_msg_ctx_t *mc);
 
 axis2_op_ctx_t* AXIS2_CALL
-axis2_op_client_get_operation_context(struct axis2_op_client *op_client);
+axis2_op_client_get_operation_context(struct axis2_op_client *op_client,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_op_client_set_callback_recv(struct axis2_op_client *op_client,
@@ -402,7 +403,7 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
         msg_id = NULL;
     }
 
-    if (AXIS2_OPTIONS_IS_USE_SEPERATE_LISTENER(op_client_impl->options, env))
+    if (AXIS2_OPTIONS_GET_USE_SEPERATE_LISTENER(op_client_impl->options, env))
     {
         axis2_engine_t *engine = NULL;
 
@@ -553,7 +554,8 @@ axis2_op_client_complete(struct axis2_op_client *op_client,
 }
 
 axis2_op_ctx_t* AXIS2_CALL
-axis2_op_client_get_operation_context(struct axis2_op_client *op_client)
+axis2_op_client_get_operation_context(struct axis2_op_client *op_client,
+    const axis2_env_t *env)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
 

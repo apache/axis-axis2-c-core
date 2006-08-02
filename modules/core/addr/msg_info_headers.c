@@ -138,7 +138,7 @@ axis2_msg_info_headers_get_message_id(struct axis2_msg_info_headers *msg_info_he
 axis2_status_t AXIS2_CALL 
 axis2_msg_info_headers_set_message_id(struct axis2_msg_info_headers *msg_info_headers, 
                                       const axis2_env_t *env, 
-                                      axis2_char_t *message_id);
+                                      const axis2_char_t *message_id);
                                       
 axis2_relates_to_t* AXIS2_CALL 
 axis2_msg_info_headers_get_relates_to(struct axis2_msg_info_headers *msg_info_headers, 
@@ -494,7 +494,7 @@ axis2_msg_info_headers_get_message_id(struct axis2_msg_info_headers *msg_info_he
 axis2_status_t AXIS2_CALL 
 axis2_msg_info_headers_set_message_id(struct axis2_msg_info_headers *msg_info_headers, 
                                       const axis2_env_t *env, 
-                                      axis2_char_t *message_id) 
+                                      const axis2_char_t *message_id) 
 {
     axis2_msg_info_headers_impl_t *msg_info_headers_impl = NULL;
     
@@ -709,4 +709,3 @@ axis2_msg_info_headers_get_fault_to_anonymous(struct axis2_msg_info_headers *msg
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(msg_info_headers)->fault_to_anonymous;
 }
-

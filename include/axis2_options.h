@@ -19,12 +19,15 @@
 
 /** @defgroup axis2_options options
   * @ingroup axis2_client_api
+  * The options struct holds user options to be used by client when invocation 
+  * services. In addition to the end point referance information, options 
+  * struct also hold addressing, transport and timeout related information. 
+  * User specific properties could also set on top of options.
   * @{
   */
 
 /**
   * @file axis2_options.h
-  * @brief axis2 MEP client gets the parameters from this
   */
 
 #include <axis2_defines.h>
@@ -34,13 +37,13 @@
 #include <axis2_hash.h>
 #include <axis2_relates_to.h>
 #include <axis2_transport_out_desc.h>
-#include <axis2_transport_receiver.h> /*still in modules/core/transports*/
+#include <axis2_transport_receiver.h> 
 #include <axiom_element.h>
 #include <axis2_msg_info_headers.h>
 
-/** define default timeout */
+/** Default timeout */
 #define AXIS2_DEFAULT_TIMEOUT_MILLISECONDS 30000
-/** copy properties */
+/** Copy properties */
 #define AXIS2_COPY_PROPERTIES   "copy_properties"
 
 #ifdef __cplusplus
@@ -54,495 +57,598 @@ extern "C"
     typedef struct axis2_options axis2_options_t;
 
     /**
-     * @brief Options ops struct
-     * Encapsulator struct for ops of axis2_options
+     * options ops struct.
+     * Encapsulator struct for ops of axis2_options.
      */
     struct axis2_options_ops
     {
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
-        axis2_char_t* (AXIS2_CALL *
-                get_action)(struct axis2_options *options,
-                        const axis2_env_t *env);
-
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
-        axis2_endpoint_ref_t* (AXIS2_CALL *
-                get_fault_to)(struct axis2_options *options,
-                        const axis2_env_t *env);
-
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
-        axis2_endpoint_ref_t* (AXIS2_CALL *
-                get_from)(struct axis2_options *options,
-                        const axis2_env_t *env);
-
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
-        axis2_transport_receiver_t* (AXIS2_CALL *
-                get_transport_receiver)(struct axis2_options *options,
-                        const axis2_env_t *env);
-
-
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
-        axis2_transport_in_desc_t* (AXIS2_CALL *
-                get_transport_in)(struct axis2_options *options,
-                        const axis2_env_t *env);
-
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
+        /**
+         * Gets Web Services Addressing (WSA) action.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return WSA action string if set, else NULL
+         */
         const axis2_char_t* (AXIS2_CALL *
-                get_transport_in_protocol)(struct axis2_options *options,
-                        const axis2_env_t *env);
-
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
-        axis2_char_t* (AXIS2_CALL *
-                get_message_id)(struct axis2_options *options,
-                        const axis2_env_t *env);
-
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
-        axis2_hash_t* (AXIS2_CALL *
-                get_properties)(struct axis2_options *options,
+                get_action)(const axis2_options_t *options,
                         const axis2_env_t *env);
 
         /**
+         * Gets WSA fault to address.
          * @param options pointer to options struct
-	 * @param env pointer to environment struct
-         * @return key return the value realeted to this key. Null, if not found.
+         * @param env pointer to environment struct
+         * @return pointer to endpoint referance struct representing fault to 
+         * address if set, else NULL
+         */
+        axis2_endpoint_ref_t* (AXIS2_CALL *
+                get_fault_to)(const axis2_options_t *options,
+                        const axis2_env_t *env);
+
+        /**
+         * Gets WSA from address.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to endpoint referance struct representing from 
+         * address if set, else NULL
+         */
+        axis2_endpoint_ref_t* (AXIS2_CALL *
+                get_from)(const axis2_options_t *options,
+                        const axis2_env_t *env);
+
+        /**
+         * Gets transport receiver.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to transport receiver struct if set, else NULL
+         */
+        axis2_transport_receiver_t* (AXIS2_CALL *
+                get_transport_receiver)(const axis2_options_t *options,
+                        const axis2_env_t *env);
+
+
+        /**
+         * Gets transport in.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to transport in struct if set, else NULL
+         */
+        axis2_transport_in_desc_t* (AXIS2_CALL *
+                get_transport_in)(const axis2_options_t *options,
+                        const axis2_env_t *env);
+
+        /**
+         * Gets transport in protocol.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to transport in protocol string if set, else NULL
+         */
+        const axis2_char_t* (AXIS2_CALL *
+                get_transport_in_protocol)(const axis2_options_t *options,
+                        const axis2_env_t *env);
+
+        /**
+         * Gets message ID.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to message ID string if set, else NULL
+         */
+        const axis2_char_t* (AXIS2_CALL *
+                get_message_id)(const axis2_options_t *options_t,
+                        const axis2_env_t *env);
+
+        /**
+         * Gets the properties hash map.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to properties hash map if set, else NULL
+         */
+        axis2_hash_t* (AXIS2_CALL *
+                get_properties)(const axis2_options_t *options,
+                        const axis2_env_t *env);
+
+        /**
+         * Gets a property corresponding to the given key.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param key key of the property to be returned
+         * @return value corresponding to the given key
          */
         void* (AXIS2_CALL *
-                get_property)(struct axis2_options *options,
+                get_property)(const axis2_options_t *options,
                         const axis2_env_t *env,
-                        axis2_char_t *key);
+                        const axis2_char_t *key);
 
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
+        /**
+         * Gets relates to information.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to relates to struct if set, else NULL
+         */
         axis2_relates_to_t* (AXIS2_CALL *
-                get_relates_to)(struct axis2_options *options,
+                get_relates_to)(const axis2_options_t *options,
                         const axis2_env_t *env);
 
-
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
+        /**
+         * Gets WSA reply to address.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to endpoint referance struct representing reply to
+         * address if set, else NULL
+         */
         axis2_endpoint_ref_t* (AXIS2_CALL *
-                get_reply_to)(struct axis2_options *options,
+                get_reply_to)(const axis2_options_t *options,
                         const axis2_env_t *env);
 
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
+        /**
+         * Gets transport out.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to transport out struct if set, else NULL
+         */
         axis2_transport_out_desc_t* (AXIS2_CALL *
-                get_transport_out)(struct axis2_options *options,
+                get_transport_out)(const axis2_options_t *options,
                         const axis2_env_t *env);
 
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
-        axis2_char_t* (AXIS2_CALL *
-                get_sender_transport_protocol)(struct axis2_options *options,
-                        const axis2_env_t *env);
-
-	/**
-	 *@param options pointer to options struct
-	 *@param env pointer to environment struct
-	 */
+        /**
+         * Gets transport out protocol.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to transport out protocol string if set, else NULL
+         */
         const axis2_char_t* (AXIS2_CALL *
-                get_soap_version_uri)(struct axis2_options *options,
+                get_sender_transport_protocol)(const axis2_options_t *options,
+                        const axis2_env_t *env);
+
+        /**
+         * Gets SOAP version URI.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return string representing SOAP version URI
+         */
+        const axis2_char_t* (AXIS2_CALL *
+                get_soap_version_uri)(const axis2_options_t *options,
                         const axis2_env_t *env);
 
 
         /**
          * Gets the wait time after which a client times out in a blocking scenario.
-         * The default is AXIS2_DEFAULT_TIMEOUT_MILLISECONDS
+         * The default is AXIS2_DEFAULT_TIMEOUT_MILLISECONDS.
          * @param options pointer to options struct
-	 * @param env pointer to environment struct
-         * @return timeOutInMilliSeconds
+         * @param env pointer to environment struct
+         * @return timeout in milliseconds
          */
         long (AXIS2_CALL *
-                get_timeout_in_milli_seconds)(struct axis2_options *options,
-                        const axis2_env_t *env);
-
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 */
-        axis2_endpoint_ref_t* (AXIS2_CALL *
-                get_to)(struct axis2_options *options,
+                get_timeout_in_milli_seconds)(const axis2_options_t *options,
                         const axis2_env_t *env);
 
         /**
-	 * not added - is_exception_to_be_thrown_on_soap_fault
-	 * @param options pointer to options struct 
-	 * @param env pointer to environment struct
-	 */
-        axis2_bool_t (AXIS2_CALL *
-                is_use_seperate_listener)(struct axis2_options *options,
+         * Gets WSA to address.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to endpoint referance struct representing to
+         * address if set, else NULL
+         */
+        axis2_endpoint_ref_t* (AXIS2_CALL *
+                get_to)(const axis2_options_t *options,
                         const axis2_env_t *env);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 */
-        struct axis2_options * (AXIS2_CALL *
-                            get_parent)(struct axis2_options *options,
+        /**
+         * Gets use seperate listner status.
+         * @param options pointer to options struct 
+         * @param env pointer to environment struct
+         * @return AXIS2_TRUE if using seperate listner, else AXIS2_FALSE
+         */
+        axis2_bool_t (AXIS2_CALL *
+                get_use_seperate_listener)(const axis2_options_t *options,
+                        const axis2_env_t *env);
+
+        /**
+         * Gets the parent options.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to the parent options struct if set, else NULL
+         */
+        axis2_options_t *(AXIS2_CALL *
+                            get_parent)(const axis2_options_t *options,
                                     const axis2_env_t *env);
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param parent pointer to parent struct
-	 */
-        void (AXIS2_CALL *
-                set_parent)(struct axis2_options *options,
+        /**
+         * Sets the parent options.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param parent pointer to parent options struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_parent)(axis2_options_t *options,
                         const axis2_env_t *env,
                         const axis2_options_t *parent);
         /**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param action pointer to action struct
-	 */
-        void (AXIS2_CALL *
-                set_action)(struct axis2_options *options,
+         * Sets WSA action
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param action pointer to action string
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_action)(axis2_options_t *options,
                         const axis2_env_t *env,
                         const axis2_char_t *action);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param fault_to pointer to fault_to struct
-	 */
-        void (AXIS2_CALL *
-                set_fault_to)(struct axis2_options *options,
+        /**
+         * Sets fault to address.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param fault_to pointer to endpoint referance struct representing
+         * fault to address. options takes over the ownership of the struct.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_fault_to)(axis2_options_t *options,
                         const axis2_env_t *env,
                         axis2_endpoint_ref_t *fault_to);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param from pointer to from struct
-	 */
-        void (AXIS2_CALL *
-                set_from)(struct axis2_options *options,
+        /**
+         * Sets from address.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param from pointer to endpoint referance struct representing
+         * from to address. options takes over the ownership of the struct.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_from)(axis2_options_t *options,
                         const axis2_env_t *env,
                         axis2_endpoint_ref_t *from);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param to pointer to to struct
-	 */
-        void (AXIS2_CALL *
-                set_to)(struct axis2_options *options,
+        /**
+         * sets from address.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param to pointer to endpoint referance struct representing
+         * to address. Options takes over the ownership of the struct.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_to)(axis2_options_t *options,
                         const axis2_env_t *env,
                         axis2_endpoint_ref_t *to);
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param receiver pointer to receiver struct
-	 */
-        void (AXIS2_CALL *
-                set_transport_receiver)(struct axis2_options *options,
+        /**
+         * Sets transport receiver.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param receiver pointer to transport receiver struct. options takes 
+         * over the ownership of the struct.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_transport_receiver)(axis2_options_t *options,
                         const axis2_env_t *env,
                         axis2_transport_receiver_t *receiver);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param transport_in pointer to transport_in struct
-	 */
-        void (AXIS2_CALL *
-                set_transport_in)(struct axis2_options *options,
+        /**
+         * Sets transport in description.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param transport_in pointer to transport_in struct. options takes 
+         * over the ownership of the struct.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_transport_in)(axis2_options_t *options,
                         const axis2_env_t *env,
                         axis2_transport_in_desc_t *transport_in);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param in_protocol pointer to in_protocol struct
-	 */
-        void (AXIS2_CALL *
-                set_transport_in_protocol)(struct axis2_options *options,
+        /**
+         * Sets transport in protocol.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param in_protocol pointer to in_protocol struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_transport_in_protocol)(axis2_options_t *options,
                         const axis2_env_t *env,
-                        axis2_char_t *transport_in_protocol);
+                        const axis2_char_t *transport_in_protocol);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param message_id pointer to message_id struct
-	 */
-        void (AXIS2_CALL *
-                set_message_id)(struct axis2_options *options,
+        /**
+         * Sets message ID.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param message_id pointer to message_id struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_message_id)(axis2_options_t *options,
                         const axis2_env_t *env,
-                        axis2_char_t *message_id);
+                        const axis2_char_t *message_id);
 
 
         /**
-         * This will set the properties to the context. But in setting that one may
-         * need to "copy" all the properties from the source properties to the
-         * target properties. To enable this we introduced a property
-         * AXIS2_COPY_PROPERTIES so that if set to
-         * Boolean(true), this code will copy the whole thing, without just
-         * referencing to the source.
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-         * @param properties pointer to properties struct
+         * Sets the properties hash map. 
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param properties pointer to properties hash map. options takes 
+         * over the ownership of the hash struct.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_properties)(struct axis2_options *options,
+                set_properties)(axis2_options_t *options,
                         const axis2_env_t *env,
                         axis2_hash_t *properties);
 
         /**
-         * Properties you need to pass in to the message context must be set via
-         * this. If there is a method to the set this property, within this class,
-         * its encouraged to use that method, without duplicating stuff or making
-         * room for bugs.
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-         * @param property_key pointer to property_key struct
-         * @param property pointer to property struct
+         * Sets a property with the given key valye.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param property_key property key string
+         * @param property pointer to property to be set
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
-        void (AXIS2_CALL *
-                set_property)(struct axis2_options *options,
+        axis2_status_t (AXIS2_CALL *
+                set_property)(axis2_options_t *options,
                         const axis2_env_t *env,
                         const axis2_char_t *property_key,
                         const void *property);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param relates_to pointer to relates_to struct
-	 */
-        void (AXIS2_CALL *
-                set_relates_to)(struct axis2_options *options,
+        /**
+         * Sets relates to.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param relates_to pointer to relates_to struct. options takes 
+         * over the ownership of the struct.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_relates_to)(axis2_options_t *options,
                         const axis2_env_t *env,
                         axis2_relates_to_t *relates_to);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param reply_to pointer to reply_to struct
-	 */
-        void (AXIS2_CALL *
-                set_reply_to)(struct axis2_options *options,
+        /**
+         * Sets reply to address.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param reply_to pointer to endpoint referance struct representing 
+         * reply to address. options takes over the ownership of the struct.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_reply_to)(axis2_options_t *options,
                         const axis2_env_t *env,
                         axis2_endpoint_ref_t *reply_to);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param transport_out pointer to transport_out struct
-	 */
-        void (AXIS2_CALL *
-                set_transport_out)(struct axis2_options *options,
+        /**
+         * Sets the transport out description.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param transport_out pointer to transport out description struct. 
+         * options takes over the ownership of the struct.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_transport_out)(axis2_options_t *options,
                         const axis2_env_t *env,
                         axis2_transport_out_desc_t *transport_out);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * param @sender_transport pointer to sender_transport struct
-	 * @param conf pointer to conf struct
-	 */
+        /**
+         * Sets the sender transport.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param sender_transport name of the sender transport to be set
+         * @param conf pointer to conf struct, it is from the conf that the 
+         * trasport is picked with the given name
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
-                set_sender_transport)(struct axis2_options *options,
+                set_sender_transport)(axis2_options_t *options,
                         const axis2_env_t *env,
-                        axis2_char_t *sender_transport,
+                        const axis2_char_t *sender_transport,
                         axis2_conf_t *conf);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param soap_version_uri pointer to soap_version_uri struct
-	 */
-        void (AXIS2_CALL *
-                set_soap_version_uri)(struct axis2_options *options,
+        /**
+         * Sets the SOAP version URI.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param soap_version_uri URI of the SOAP version to be set, can be 
+         * either AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI or 
+         * AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_soap_version_uri)(axis2_options_t *options,
                         const axis2_env_t *env,
                         const axis2_char_t *soap_version_uri);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @timeout_in_milli_seconds pointer to timeout
-	 */
-        void (AXIS2_CALL *
-                set_timeout_in_milli_seconds)(struct axis2_options *options,
-                        const axis2_env_t *env,
-                        long timeout_in_milli_seconds);
-
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param sender_transport pointer to sender_transport struct
-	 * @param receiver_transport pointer to receiver_transport struct
-	 * @param use_seperate_listener pointer to use_seperate_listener struct
-	 */
+        /**
+         * Sets timeout in milli seconds.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param timeout_in_milli_seconds timeout in milli seconds
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
-                set_transport_info)(struct axis2_options *options,
+                set_timeout_in_milli_seconds)(axis2_options_t *options,
                         const axis2_env_t *env,
-                        axis2_char_t *sender_transport,
-                        axis2_char_t *receiver_transport,
-                        axis2_bool_t use_seperate_listener);
+                        const long timeout_in_milli_seconds);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param use_seperate_listener pointer to use_seperate_listener
-	 */
-        void (AXIS2_CALL *
-                set_use_seperate_listener)(struct axis2_options *options,
+        /**
+         * Sets transport information. Transport information includes the name 
+         * of the sender transport, name of the receiver transport and if a 
+         * seperate listner to be used to receive response. 
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param sender_transport name of sender transport to be used
+         * @param receiver_transport name of receiver transport to be used
+         * @param use_seperate_listener bool value indicating whether to use
+         * a seperate listener or not.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_transport_info)(axis2_options_t *options,
                         const axis2_env_t *env,
-                        axis2_bool_t use_seperate_listener);
+                        const axis2_char_t *sender_transport,
+                        const axis2_char_t *receiver_transport,
+                        const axis2_bool_t use_seperate_listener);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param reference_parameter pointer to reference parameter
-	 */
-        void (AXIS2_CALL *
-                add_reference_parameter)(struct axis2_options *options,
+        /**
+         * Sets the bool value indicating whether to use a seperate listener or not.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param use_seperate_listener bool value indicating whether to use
+         * a seperate listener or not.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_use_seperate_listener)(axis2_options_t *options,
+                        const axis2_env_t *env,
+                        const axis2_bool_t use_seperate_listener);
+
+        /**
+         * Adds a WSA referance parameter.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param reference_parameter pointer to reference parameter in the form 
+         * of an AXIOM tree. options takes over the ownership of the struct.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                add_reference_parameter)(axis2_options_t *options,
                         const axis2_env_t *env,
                         axiom_node_t *reference_parameter);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * Gets manage session bool value.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return AXIS2_TRUE if session is managed, else AXIS2_FALSE
+         */
         axis2_bool_t (AXIS2_CALL *
-                is_manage_session)(struct axis2_options *options,
+                get_manage_session)(const axis2_options_t *options,
                         const axis2_env_t *env);
-
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param manage_session pointer to manage_session pointer
-	 */
-        void (AXIS2_CALL *
-                set_manage_session)(struct axis2_options *options,
-                        const axis2_env_t *env,
-                        axis2_bool_t manage_session);
 
         /**
-         * this method is used to set the msg info headers to msg ctx. not 
-         * intended to be used from outside
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
+         * Sets manage session bool value.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param manage_session manage session bool value
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_manage_session)(axis2_options_t *options,
+                        const axis2_env_t *env,
+                        const axis2_bool_t manage_session);
+
+        /**
+         * Gets WSA message information headers.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return pointer to message information headers struct if set, 
+         * else NULL
          */
         axis2_msg_info_headers_t* (AXIS2_CALL *
-                get_msg_info_headers)(struct axis2_options *options,
+                get_msg_info_headers)(const axis2_options_t *options,
                         const axis2_env_t *env);
 
-	/** 
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 */
+        /** 
+         * Gets SOAP version.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return AXIOM_SOAP_11 if SOAP version 1.1 is in use, else AXIOM_SOAP_12
+         */
         int (AXIS2_CALL *
                 get_soap_version)(
-                    struct axis2_options *options,
+                    const axis2_options_t *options,
                     const axis2_env_t *env);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param soap_version soap version
-	 */
+        /**
+         * Sets SOAP version.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param soap_version soap version, either AXIOM_SOAP_11 or AXIOM_SOAP_12
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_soap_version)(
-                    struct axis2_options *options,
+                    axis2_options_t *options,
                     const axis2_env_t *env,
-                    int soap_version);
+                    const int soap_version);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 * @param enable_mtom enable mtom
-	 */
+        /**
+         * Enable/disable MTOM handling.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @param enable_mtom AXIS2_TRUE if MTOM is to be enabled, AXIS2_FALSE
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_enable_mtom)(
-                    struct axis2_options *options,
+                    axis2_options_t *options,
                     const axis2_env_t *env,
                     axis2_bool_t enable_mtom);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * Gets Enable/disable MTOM status.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return AXIS2_TRUE if MTOM enabled, else AXIS2_FALSE
+         */
         axis2_bool_t (AXIS2_CALL *
                 get_enable_mtom)(
-                    struct axis2_options *options,
+                    const axis2_options_t *options,
                     const axis2_env_t *env);
 
-	/**
-	 * @param options pointer to options struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * Frees options struct.
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
-                free)(struct axis2_options *options,
+                free)(axis2_options_t *options,
                         const axis2_env_t *env);
     };
 
     /**
-     * options struct
+     * options struct.
      */
     struct axis2_options
     {
-	/** operations of options struct */
+        /** operations of options struct */
         axis2_options_ops_t *ops;
     };
 
     /**
-     * Creates the options struct
+     * Creates the options struct.
      * @param env pointer to environment struct
-     * return a pointer to newly created options struct
-     * or NULL on error with error code set in environment's error.
+     * @return a pointer to newly created options struct, or NULL on error 
+     * with error code set in environment's error.
      */
-    AXIS2_EXTERN axis2_options_t* AXIS2_CALL axis2_options_create(const axis2_env_t *env);
+    AXIS2_EXTERN axis2_options_t* AXIS2_CALL 
+    axis2_options_create(
+        const axis2_env_t *env);
+    
     /**
+     * Creates the options struct with gien parent.
      * @param env pointer to environment struct
      * @param parent pointer to parent struct
-     * @return a pointer to newly created options struct
+     * @return a pointer to newly created options struct. Newly created options 
+     * assumes ownership of the parent 
      * or NULL on error with error code set in environment's error.
      */
-    AXIS2_EXTERN axis2_options_t* AXIS2_CALL axis2_options_create_with_parent(const axis2_env_t *env,
-            axis2_options_t *parent);
+    AXIS2_EXTERN axis2_options_t* AXIS2_CALL 
+    axis2_options_create_with_parent(
+        const axis2_env_t *env,
+        axis2_options_t *parent);
 
-    /************************** Start of function macros **************************/
-
-/** Gets action.
+/** Gets WSA action.
     @sa axis2_options_ops#get_action */
 #define AXIS2_OPTIONS_GET_ACTION(options, env) \
       ((options)->ops->get_action(options, env))
 
-/** Get fault to.
+/** Get WSA fault to address.
     @sa axis2_options_ops#get_fault_to */
 #define AXIS2_OPTIONS_GET_FAULT_TO(options, env) \
       ((options)->ops->get_fault_to(options, env))
 
-/** Gets from.
+/** Gets WSA from address.
     @sa axis2_options_ops#get_from */
 #define AXIS2_OPTIONS_GET_FROM(options, env) \
       ((options)->ops->get_from(options, env))
@@ -572,17 +678,17 @@ extern "C"
 #define AXIS2_OPTIONS_GET_PROPERTIES(options, env) \
       ((options)->ops->get_properties(options, env))
 
-/** Get the property.
+/** Gets a property corresponding to given key.
     @sa axis2_options_ops#get_property */
 #define AXIS2_OPTIONS_GET_PROPERTY(options, env, key) \
       ((options)->ops->get_property(options, env, key))
 
-/** Get relates to.
+/** Get WSA relates to information.
     @sa axis2_options_ops#get_relates_to */
 #define AXIS2_OPTIONS_GET_RELATES_TO(options, env) \
       ((options)->ops->get_relates_to(options, env))
 
-/** Get reply to.
+/** Get WSA reply to address.
     @sa axis2_options_ops#get_reply_to */
 #define AXIS2_OPTIONS_GET_REPLY_TO(options, env) \
       ((options)->ops->get_reply_to(options, env))
@@ -607,15 +713,15 @@ extern "C"
 #define AXIS2_OPTIONS_GET_TIMEOUT_IN_MILLI_SECONDS(options, env) \
       ((options)->ops->get_timeout_in_milli_seconds(options, env))
 
-/** Get to.
+/** Get WSA to address.
     @sa axis2_options_ops#get_to */
 #define AXIS2_OPTIONS_GET_TO(options, env) \
       ((options)->ops->get_to(options, env))
 
 /** Whether to use a seperate listener.
-    @sa axis2_options_ops#is_use_seperate_listener */
-#define AXIS2_OPTIONS_IS_USE_SEPERATE_LISTENER(options, env) \
-      ((options)->ops->is_use_seperate_listener(options, env))
+    @sa axis2_options_ops#get_use_seperate_listener */
+#define AXIS2_OPTIONS_GET_USE_SEPERATE_LISTENER(options, env) \
+      ((options)->ops->get_use_seperate_listener(options, env))
 
 /** Gets the parent.
     @sa axis2_options_ops#get_parent */
@@ -627,22 +733,22 @@ extern "C"
 #define AXIS2_OPTIONS_SET_PARENT(options, env, parent) \
       ((options)->ops->set_parent(options, env, parent))
 
-/** Sets the action.
+/** Sets the WSA action.
     @sa axis2_options_ops#set_action */
 #define AXIS2_OPTIONS_SET_ACTION(options, env, action) \
       ((options)->ops->set_action(options, env, action))
 
-/** Set fault to.
+/** Set WSA fault to address.
     @sa axis2_options_ops#set_fault_to */
 #define AXIS2_OPTIONS_SET_FAULT_TO(options, env, fault_to) \
       ((options)->ops->set_fault_to(options, env, fault_to))
 
-/** Set from.
+/** Set WSA from address.
     @sa axis2_options_ops#set_from */
 #define AXIS2_OPTIONS_SET_FROM(options, env, from) \
       ((options)->ops->set_from(options, env, from))
 
-/** Set to.
+/** Set WSA to address.
     @sa axis2_options_ops#set_to */
 #define AXIS2_OPTIONS_SET_TO(options, env, to) \
       ((options)->ops->set_to(options, env, to))
@@ -672,97 +778,97 @@ extern "C"
 #define AXIS2_OPTIONS_SET_PROPERTIES(options, env, properties) \
       ((options)->ops->set_properties(options, env, properties))
 
-/** Sets the property.
+/** Sets a property with a given key.
     @sa axis2_options_ops#set_property */
 #define AXIS2_OPTIONS_SET_PROPERTY(options, env, key, property) \
       ((options)->ops->set_property(options, env, key, property))
 
-/** Set relates to.
+/** Set WSA relates to information.
     @sa axis2_options_ops#set_relates_to */
 #define AXIS2_OPTIONS_SET_RELATES_TO(options, env, relates_to) \
       ((options)->ops->set_relates_to(options, env, relates_to))
 
-/** Set reply to.
+/** Set WSA reply to address.
     @sa axis2_options_ops#set_reply_to */
 #define AXIS2_OPTIONS_SET_REPLY_TO(options, env, reply_to) \
       ((options)->ops->set_reply_to(options, env, reply_to))
 
-/** Sets the transport out.
+/** Sets transport out.
     @sa axis2_options_ops#set_transport_out */
 #define AXIS2_OPTIONS_SET_TRANSPORT_OUT(options, env, transport_out) \
       ((options)->ops->set_transport_out(options, env, transport_out))
 
-/** Sets the sender transport.
+/** Sets sender transport.
     @sa axis2_options_ops#set_sender_transport */
 #define AXIS2_OPTIONS_SET_SENDER_TRANSPORT(options, env, sender_transport, conf) \
       ((options)->ops->set_sender_transport(options, env, sender_transport, conf))
 
-/** Sets the soap version uri.
+/** Sets SOAP version uri.
     @sa axis2_options_ops#set_soap_version */
 #define AXIS2_OPTIONS_SET_SOAP_VERSION_URI(options, env, soap_version_uri) \
       ((options)->ops->set_soap_version_uri(options, env, soap_version_uri))
 
-/** Sets the timeout in milli seconds.
+/** Sets timeout in milli seconds.
     @sa axis2_options_ops#set_timeout_in_milli_seconds */
 #define AXIS2_OPTIONS_SET_TIMEOUT_IN_MILLI_SECONDS(options, env, timeout_in_milli_seconds) \
       ((options)->ops->set_timeout_in_milli_seconds(options, env, timeout_in_milli_seconds))
 
-/** Sets the transport info.
+/** Sets transport information.
     @sa axis2_options_ops#set_trasnport_info */
-#define AXIS2_OPTIONS_SET_TRANSPORT_INFO(options, env, sender_transport, receiver_transport, user_seperate_listener) \
-      ((options)->ops->set_tranport_info(options, env, sender_transport, receiver_transport, user_seperate_listener))
+#define AXIS2_OPTIONS_SET_TRANSPORT_INFO(options, env, sender_transport, \
+    receiver_transport, user_seperate_listener) \
+    ((options)->ops->set_tranport_info(options, env, sender_transport, \
+    receiver_transport, user_seperate_listener))
 
-/** Sets the use seperate listener.
+/** Sets use seperate listener.
     @sa axis2_options_ops#set_use_seperate_listener */
 #define AXIS2_OPTIONS_SET_USE_SEPERATE_LISTENER(options, env, use_seperate_listener) \
       ((options)->ops->set_use_seperate_listener(options, env, use_seperate_listener))
 
-/** Adds the reference parameter.
+/** Adds a reference parameter.
     @sa axis2_options_ops#add_reference_parameter */
 #define AXIS2_OPTIONS_ADD_REFERENCE_PARAMETER(options, env, reference_parameter) \
       ((options)->ops->add_reference_parameter(options, env, reference_parameter))
 
 /** Whether to manage session.
-    @sa axis2_options_ops#is_manage_session */
-#define AXIS2_OPTIONS_IS_MANAGE_SESSION(options, env) \
-      ((options)->ops->is_manage_session(options, env))
+    @sa axis2_options_ops#get_manage_session */
+#define AXIS2_OPTIONS_GET_MANAGE_SESSION(options, env) \
+      ((options)->ops->get_manage_session(options, env))
 
 /** Sets manage session.
     @sa axis2_options_ops#set_manage_session*/
 #define AXIS2_OPTIONS_SET_MANAGE_SESSION(options, env, manage_session) \
       ((options)->ops->set_manage_session(options, env, manage_session))
 
-/** Gets the message info headers.
+/** Gets message information headers.
     @sa axis2_options_ops#get_msg_info_headers */
 #define AXIS2_OPTIONS_GET_MSG_INFO_HEADERS(options, env) \
       ((options)->ops->get_msg_info_headers(options, env))
 
-/** Sets the soap version.
+/** Sets SOAP version.
     @sa axis2_options_ops#set_soap_version */
 #define AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, soap_version) \
       ((options)->ops->set_soap_version(options, env, soap_version))
 
-/** Gets the soap version.
+/** Gets SOAP version.
     @sa axis2_options_ops#get_soap_version */
 #define AXIS2_OPTIONS_GET_SOAP_VERSION(options, env) \
       ((options)->ops->get_soap_version(options, env))
 
-/** set enable mtom.
+/** Sets enable mtom.
     @sa axis2_options_ops#set_enable_mtom */
 #define AXIS2_OPTIONS_SET_ENABLE_MTOM(options, env, enable_mtom) \
       ((options)->ops->set_enable_mtom(options, env, enable_mtom))
 
-/** get enable mtom.
+/** Gets enable mtom.
     @sa axis2_options_ops#get_enable_mtom */
 #define AXIS2_OPTIONS_GET_ENABLE_MTOM(options, env) \
       ((options)->ops->get_enable_mtom(options, env))
 
-/** Free.
+/** Frees the options struct.
     @sa axis2_options_ops#free*/
 #define AXIS2_OPTIONS_FREE(options, env) \
       ((options)->ops->free(options, env))
-
-/************************** End of function macros ****************************/
 
 /** @} */
 #ifdef __cplusplus

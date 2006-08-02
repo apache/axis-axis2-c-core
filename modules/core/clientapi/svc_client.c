@@ -710,7 +710,7 @@ axis2_svc_client_send_receive(struct axis2_svc_client *svc_client,
        op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
    }
     
-   if (AXIS2_OPTIONS_IS_USE_SEPERATE_LISTENER(svc_client_impl->options, env))
+   if (AXIS2_OPTIONS_GET_USE_SEPERATE_LISTENER(svc_client_impl->options, env))
    {
         axis2_callback_t *callback = NULL;
         long index = 0;
@@ -890,7 +890,7 @@ axis2_svc_client_send_receive_non_blocking(struct axis2_svc_client *svc_client,
     AXIS2_OP_CLIENT_SET_CALLBACK(op_client, env, callback);
     AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
     
-    if (AXIS2_OPTIONS_IS_USE_SEPERATE_LISTENER(svc_client_impl->options, env))
+    if (AXIS2_OPTIONS_GET_USE_SEPERATE_LISTENER(svc_client_impl->options, env))
     {
         axis2_op_t *op = NULL;
 

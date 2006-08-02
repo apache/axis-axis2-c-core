@@ -187,7 +187,7 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
       set_message_id)(struct axis2_msg_info_headers *msg_info_headers, 
                         const axis2_env_t *env, 
-                      axis2_char_t *message_id);
+                      const axis2_char_t *message_id);
         /**
          * Method get_relates_to
          *

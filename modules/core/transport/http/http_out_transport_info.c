@@ -53,6 +53,10 @@ axis2_http_out_transport_info_free
             (axis2_http_out_transport_info_t *out_transport_info, 
             const axis2_env_t *env);
 
+const axis2_char_t *AXIS2_CALL 
+axis2_http_out_transport_info_get_content_type 
+            (axis2_http_out_transport_info_t *info, 
+                const axis2_env_t *env);
 /***************************** End of function headers ************************/
 
 axis2_http_out_transport_info_t * AXIS2_CALL 
@@ -90,6 +94,8 @@ axis2_http_out_transport_info_create(const axis2_env_t *env,
                   axis2_http_out_transport_info_set_char_encoding;
     info_impl->out_transport_info.ops->free = 
                   axis2_http_out_transport_info_free;
+    info_impl->out_transport_info.ops->get_content_type = 
+                  axis2_http_out_transport_info_get_content_type;
                         
    return &(info_impl->out_transport_info);
 }
@@ -181,3 +187,24 @@ axis2_http_out_transport_info_set_char_encoding
    
    return AXIS2_SUCCESS;
 }
+
+const axis2_char_t *AXIS2_CALL 
+axis2_http_out_transport_info_get_content_type 
+            (axis2_http_out_transport_info_t *info, 
+                const axis2_env_t *env)
+{
+    axis2_http_out_transport_info_impl_t *info_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+   
+    info_impl = AXIS2_INTF_TO_IMPL(info);
+    
+    if (info_impl->response)
+    {
+        return AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_TYPE(info_impl->response, 
+            env);
+    }
+
+    return NULL;
+}
+
+

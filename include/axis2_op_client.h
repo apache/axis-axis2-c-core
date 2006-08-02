@@ -96,9 +96,6 @@ extern "C"
 
         /**
          * Adds a message context to the client for processing. 
-         * This method must not process the message, it only records
-         * the message in the operation client.
-         * Processing occurs only when execute() is called.
          * @param op_client pointer to operation client struct
          * @param env pointer to environment struct
          * @param msg_ctx message context to be added
@@ -180,10 +177,13 @@ extern "C"
         /**
          * Gets the operation context of the operation client.
          * @param op_client pointer to operation client struct
+         * @param env pointer to environment struct                
          * @return operation context related to operation client
          */
         axis2_op_ctx_t* (AXIS2_CALL *
-                get_operation_context)(struct axis2_op_client *op_client);
+                get_operation_context)(
+                    struct axis2_op_client *op_client,
+                    const axis2_env_t *env);
 
         /**
          * Sets callback receiver.
