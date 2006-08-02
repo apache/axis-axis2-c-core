@@ -797,7 +797,7 @@ extern "C"
                 set_soap_action)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_char_t *soap_action);
+                    const axis2_char_t *soap_action);
 
 	/**
 	 * @param msg_ctx message context

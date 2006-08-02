@@ -349,7 +349,7 @@ axis2_msg_ctx_get_soap_action(struct axis2_msg_ctx *msg_ctx,
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_soap_action(struct axis2_msg_ctx *msg_ctx, 
                                 const axis2_env_t *env,
-                                axis2_char_t *soap_action);
+                                const axis2_char_t *soap_action);
 axis2_bool_t AXIS2_CALL
 axis2_msg_ctx_get_doing_mtom(struct axis2_msg_ctx *msg_ctx, 
                                 const axis2_env_t *env);
@@ -1781,7 +1781,7 @@ axis2_char_t* AXIS2_CALL axis2_msg_ctx_get_soap_action(struct axis2_msg_ctx *msg
 
 axis2_status_t AXIS2_CALL axis2_msg_ctx_set_soap_action(struct axis2_msg_ctx *msg_ctx, 
                                             const axis2_env_t *env,
-                                            axis2_char_t *soap_action) 
+                                            const axis2_char_t *soap_action) 
 {
     axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
     
