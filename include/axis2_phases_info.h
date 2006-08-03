@@ -55,141 +55,141 @@ extern "C"
     struct axis2_phases_info_ops
     {
         /** Deallocate memory
-	 * @param pahses_info pointer to phases info
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @param pahses_info pointer to phases info
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
-	/**
-	 * @param phases_info pointer to phases info
-	 * @param env pointer to environment struct
-	 * @param in_phases inter to in phases
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+        /**
+         * @param phases_info pointer to phases info
+         * @param env pointer to environment struct
+         * @param in_phases inter to in phases
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_in_phases)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env,
                     axis2_array_list_t *in_phases);
 
-	/**
-	 * @param phases_info pointer to phases info
-	 * @param env pointer to environment struct
-	 * @param out_phases pointer to out phases
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+        /**
+         * @param phases_info pointer to phases info
+         * @param env pointer to environment struct
+         * @param out_phases pointer to out phases
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_out_phases)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env,
                     axis2_array_list_t *out_phases);
 
-	/**
-	 * @param phases_info pointer to phases info
-	 * @param env pointer to environment struct
-	 * @param in_faultphases pionter to in fault phases
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+        /**
+         * @param phases_info pointer to phases info
+         * @param env pointer to environment struct
+         * @param in_faultphases pionter to in fault phases
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_in_faultphases)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env,
                     axis2_array_list_t *in_faultphases);
 
-	/**
-	 * @param phases_info pointer to phases info
-	 * @param env pointer to env
-	 * @param out_faultphases pointer to out fault phases
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+        /**
+         * @param phases_info pointer to phases info
+         * @param env pointer to env
+         * @param out_faultphases pointer to out fault phases
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_out_faultphases)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env,
                     axis2_array_list_t * out_faultphases);
 
-	/**
-	 * @param phases_info pointer to phases info
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param phases_info pointer to phases info
+         * @param env pointer to environment struct
+         */
         axis2_array_list_t *(AXIS2_CALL *
                 get_in_phases)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
-	/**
-	 * @param phases_info pointer to phases info
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param phases_info pointer to phases info
+         * @param env pointer to environment struct
+         */
         axis2_array_list_t *(AXIS2_CALL *
                 get_out_phases)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
-	/**
-	 * @param phases_info pointer to phases info
-	 * @parma env pointer to environment struct
-	 */
+        /**
+         * @param phases_info pointer to phases info
+         * @parma env pointer to environment struct
+         */
         axis2_array_list_t *(AXIS2_CALL *
                 get_in_faultphases)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
-	/**
-	 * @param phases_info pointer to phases info
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param phases_info pointer to phases info
+         * @param env pointer to environment struct
+         */
         axis2_array_list_t *(AXIS2_CALL *
                 get_out_faultphases)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
-	/**
-	 * @param phases_info pointer to phases info
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param phases_info pointer to phases info
+         * @param env pointer to environment struct
+         */
         axis2_array_list_t *(AXIS2_CALL *
                 get_op_in_phases)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
-	/**
-	 * @param phases_info pointer to phases info
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param phases_info pointer to phases info
+         * @param env pointer to environment struct
+         */
         axis2_array_list_t *(AXIS2_CALL *
                 get_op_out_phases)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
-	/**
-	 * @param phases_info pointer to phases info 
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param phases_info pointer to phases info 
+         * @param env pointer to environment struct
+         */
         axis2_array_list_t *(AXIS2_CALL *
                 get_op_in_faultphases)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
-	/**
-	 * @param phases_info pointer to phases info
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param phases_info pointer to phases info
+         * @param env pointer to environment struct
+         */
         axis2_array_list_t *(AXIS2_CALL *
                 get_op_out_faultphases)(
                     axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
-	/**
-	 * @param phases_info pointer to phases info
-	 * @param env pointer to environment struct
-	 * @param axis2_opt pointer to axis2 opt
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+        /**
+         * @param phases_info pointer to phases info
+         * @param env pointer to environment struct
+         * @param axis2_opt pointer to axis2 opt
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_op_phases)(
                     axis2_phases_info_t *phases_info,
