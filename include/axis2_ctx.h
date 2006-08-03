@@ -53,19 +53,19 @@ extern "C"
 
 
     /**
-     * @brief context ops struct
+     * context ops struct
      * Encapsulator struct for ops of axis2_ctx
      */
     struct axis2_ctx_ops
     {
         /**
          * Stores a key value pair depending on the persistent flag.
-	 * @param ctx pointer to context struct
-	 * @param env pointer to environment struct
+         * @param ctx pointer to context struct
+         * @param env pointer to environment struct
          * @param key pointer to key
          * @param value pointer to value
          * @param persistent persistent
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_property)(
@@ -76,8 +76,8 @@ extern "C"
                     const axis2_bool_t persistent);
 
         /**
-	 * @param ctx pointer to context struct
-	 * @param env pointer to environment struct
+         * @param ctx pointer to context struct
+         * @param env pointer to environment struct
          * @param key pointer to key
          * @param persistent persistent
          */
@@ -88,27 +88,27 @@ extern "C"
                     const axis2_char_t *key,
                     const axis2_bool_t persistent);
 
-	/**
-	 * @param ctx pointer to context struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param ctx pointer to context struct
+         * @param env pointer to environment struct
+         */
         axis2_hash_t* (AXIS2_CALL *
                 get_non_persistent_map)(
                     struct axis2_ctx *ctx,
                     const axis2_env_t *env);
 
-	/**
-	 * @param ctx pointer to context struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param ctx pointer to context struct
+         * @param env pointer to environment struct
+         */
         axis2_hash_t* (AXIS2_CALL *
                 get_persistent_map)(
                     struct axis2_ctx *ctx,
                     const axis2_env_t *env);
-	/**
-	 * @param ctx pointer to context struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param ctx pointer to context struct
+         * @param env pointer to environment struct
+         */
         axis2_hash_t* (AXIS2_CALL *
                 get_properties)(
                     struct axis2_ctx *ctx,
@@ -117,32 +117,32 @@ extern "C"
 
         /**
          * Deallocate memory
-	 * @param ctx pointer to context struct
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @param ctx pointer to context struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_ctx_t *ctx,
                     const axis2_env_t *env);
 
-	/**
-	 * @param ctx pointer to context struct
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */ 
+        /**
+         * @param ctx pointer to context struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */ 
         axis2_status_t (AXIS2_CALL *
                 set_non_persistent_map)(
                     struct axis2_ctx *ctx,
                     const axis2_env_t *env,
                     axis2_hash_t* map);
 
-	/**
-	 * @param ctx pointer to context struct
-	 * @param env pointer to enviromnet struct
-	 * @param map pointer to map
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+        /**
+         * @param ctx pointer to context struct
+         * @param env pointer to enviromnet struct
+         * @param map pointer to map
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_persistent_map)(
                     struct axis2_ctx *ctx,
@@ -164,8 +164,8 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL 
-	    axis2_ctx_create(
-                const axis2_env_t *env);
+    axis2_ctx_create(
+        const axis2_env_t *env);
 
 /************************** Start of function macros **************************/
 
