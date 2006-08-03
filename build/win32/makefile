@@ -69,6 +69,8 @@ AXIS2_MOD_ADDR = axis2_mod_addr
 APACHE_INCLUE_PATH = /I$(APACHE_INSTALL_DIR)\include
 AXIS2_INCLUDE_PATH = 	/I$(AXIS2_SOURCE_DIR)\util\include \
 		/I$(AXIS2_SOURCE_DIR)\util\src\  \
+		/I$(AXIS2_SOURCE_DIR)\woden\include \
+		/I$(AXIS2_SOURCE_DIR)\woden\src\util \
 		/I$(AXIS2_SOURCE_DIR)\util\src\minizip\  \
 		/I$(AXIS2_SOURCE_DIR)\axiom\include  \
 		/I$(AXIS2_SOURCE_DIR)\axiom\src\om  \
@@ -236,7 +238,7 @@ axis2_wsdl:
 axis2_engine: 
 	$(CC) $(CFLAGS) $(AXIS2_ENGINE_SRC) /c
 	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib $(AXIS2_WSDL).lib $(LIBS)  \
+	$(AXIS2_PARSER).lib $(AXIS2_WSDL).lib woden.lib $(LIBS)  \
 	/DLL /OUT:$(AXIS2_ENGINE).dll /IMPLIB:$(AXIS2_ENGINE).lib
 	del *.obj
 	del *.exp
@@ -628,7 +630,7 @@ mv_dist:
 all_services: axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom
 all_clients: axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_notify axis2_client_mtom axis2_client_userguide
 basic_modules: axis2_util axis2_parser axiom
-core_modules:axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr
+
 
 
 ################################ other porjects #########################################
@@ -735,6 +737,8 @@ xml_schema_sample:
 
 xml_schema_all: xml_schema xml_schema_sample xml_schema_copy_include
 
+################################################
+
 ########################################
 ############## woden ###################
 
@@ -746,17 +750,22 @@ WODEN_INCLUDE_PATH = /I$(AXIS2_SOURCE_DIR)\woden\include \
 
 
 WODEN_SRC_DIR = $(AXIS2_SOURCE_DIR)\woden\src\builder\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\builder\wsdl10\*.c \
 		$(AXIS2_SOURCE_DIR)\woden\src\schema\*.c \
 		$(AXIS2_SOURCE_DIR)\woden\src\types\*.c \
 		$(AXIS2_SOURCE_DIR)\woden\src\util\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\xml\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\extensions\*.c \
+		$(AXIS2_SOURCE_DIR)\woden\src\wsdl10\extensions\soap\*.c \
 		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\*.c \
-		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\enumeration\*.c \
 		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\extensions\*.c \
 		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\extensions\soap\*.c \
 		$(AXIS2_SOURCE_DIR)\woden\src\wsdl20\xml\*.c \
 		$(AXIS2_SOURCE_DIR)\woden\src\xml\*.c 
 woden : 
-	$(CC) $(CFLAGS) $(WODEN_INCLUDE_PATH) $(WODEN_SRC_DIR) /c
+	$(CC) $(CFLAGS) /Fo $(WODEN_INCLUDE_PATH) $(WODEN_SRC_DIR) /c
 	$(LD) $(LDFLAGS) *.obj xml_schema.lib $(AXIS2_UTIL).lib $(AXIS2_PARSER).lib \
 	$(AXIOM).lib /DLL /OUT:woden.dll /IMPLIB:woden.lib 
 	
@@ -784,8 +793,9 @@ woden_all: woden woden_sample woden_copy_include
  
 ##############################################################################################
 
-all: clean_make_dir clean deploy basic_modules xml_schema_all core_modules all_services all_clients axis2_server   copy_include clean_make_dir 
+
+all: clean_make_dir clean deploy basic_modules xml_schema_all woden_all axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver all_services all_clients axis2_server   copy_include clean_make_dir 
  
 install: all
 
-dist: all axis2_apache_module mod_rampart_all woden_all copy_extra copy_samples mv_dist
+dist: all copy_extra copy_samples mv_dist
