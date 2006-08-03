@@ -69,136 +69,136 @@ extern "C"
     struct axis2_dep_engine;
 
     /**
-     * @brief Engine Configuration ops struct
+     * Engine Configuration ops struct
      * Encapsulator struct for ops of axis2_config
      */
     struct axis2_conf_ops
     {
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param svc_grp pointer to service group
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param svc_grp pointer to service group
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 add_svc_grp)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     struct axis2_svc_grp *svc_grp);
 
-	/** 
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param svc_grp_name pointer to service group name
-	 */
+        /** 
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param svc_grp_name pointer to service group name
+         */
         struct axis2_svc_grp *(AXIS2_CALL *
                 get_svc_grp)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     axis2_char_t *svc_grp_name);
 
-	/** 
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 */
+        /** 
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         */
         axis2_hash_t * (AXIS2_CALL *
                 get_svc_grps)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param svc pointer to service
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param svc pointer to service
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 add_svc)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     struct axis2_svc* svc);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param svc_name pointer to service name
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param svc_name pointer to service name
+         */
         struct axis2_svc *(AXIS2_CALL *
                 get_svc)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     axis2_char_t* svc_name);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param name pointer to name
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param name pointer to name
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 remove_svc)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     const axis2_char_t *name);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param param pointer to param
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param param pointer to param
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 add_param)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     axis2_param_t *param);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param name pointer to name
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param name pointer to name
+         */
         axis2_param_t *(AXIS2_CALL *
                 get_param)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     const axis2_char_t *name);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment
+         */
         axis2_array_list_t *(AXIS2_CALL *
                 get_params)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param param_name pointer to param name
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param param_name pointer to param name
+         */
         axis2_bool_t (AXIS2_CALL *
                 is_param_locked)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     axis2_char_t *param_name);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param qname pointer to qname
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param qname pointer to qname
+         */
         struct axis2_transport_in_desc * (AXIS2_CALL *
                 get_transport_in)(
                     axis2_conf_t *conf,
@@ -207,9 +207,9 @@ extern "C"
 
         /**
          * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
+         * @param env pointer to environment struct
          * @param transport  pointer to transport
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_transport_in)(
@@ -217,11 +217,11 @@ extern "C"
                     const axis2_env_t *env,
                     struct axis2_transport_in_desc *transport);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment strcut
-	 * @param qname pointer to qname
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment strcut
+         * @param qname pointer to qname
+         */
         struct axis2_transport_out_desc * (AXIS2_CALL *
                 get_transport_out)(
                     axis2_conf_t *conf,
@@ -229,40 +229,40 @@ extern "C"
                     axis2_qname_t *qname);
 
         /**
-         * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-         * @param transport pointer to transport
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
+        * @param conf pointer to conf struct
+        * @param env pointer to environment struct
+        * @param transport pointer to transport
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
                 add_transport_out)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     struct axis2_transport_out_desc *transport);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         */
         axis2_hash_t * (AXIS2_CALL *
                 get_transports_in)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         */
         axis2_hash_t * (AXIS2_CALL *
                 get_transports_out)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
         /**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-         * @param qname pointer to qname
-         * @return module description
-         */
+        * @param conf pointer to conf struct
+        * @param env pointer to environment struct
+        * @param qname pointer to qname
+        * @return module description
+        */
         struct axis2_module_desc *(AXIS2_CALL *
                 get_module)(
                     axis2_conf_t *conf,
@@ -270,29 +270,29 @@ extern "C"
                     axis2_qname_t *qname);
 
         /**
-         * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param qname pointer to qname
-         * @return  collection
-         */
+        * @param conf pointer to conf struct
+        * @param env pointer to environment struct
+        * @param qname pointer to qname
+        * @return  collection
+        */
         axis2_array_list_t * (AXIS2_CALL *
                 get_engaged_modules)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         */
         axis2_array_list_t * (AXIS2_CALL *
                 get_in_phases_upto_and_including_post_dispatch)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         */
         axis2_array_list_t * (AXIS2_CALL *
                 get_outflow)(
                     axis2_conf_t *conf,
@@ -300,90 +300,90 @@ extern "C"
 
 
         /**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-         * @return array list
-         */
+        * @param conf pointer to conf struct
+        * @param env pointer to environment struct
+        * @return array list
+        */
         axis2_array_list_t * (AXIS2_CALL *
                 get_in_faultflow)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
         /**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-         * @return array list
-         */
+        * @param conf pointer to conf struct
+        * @param env pointer to environment struct
+        * @return array list
+        */
         axis2_array_list_t * (AXIS2_CALL *
                 get_out_faultflow)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         */
         axis2_hash_t *(AXIS2_CALL *
                 get_faulty_svcs)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         */
         axis2_hash_t *(AXIS2_CALL *
                 get_faulty_modules)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
         /*
-	 * Gets all the services in the system 
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 */
+         * Gets all the services in the system 
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         */
         axis2_hash_t *(AXIS2_CALL *
                 get_svcs)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param module_name pointer to module name struct
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param module_name pointer to module name struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 is_engaged)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     axis2_qname_t *module_name);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         */
         struct axis2_phases_info *(AXIS2_CALL *
                 get_phases_info)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param phases_info pointer to phases_info struct
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param phases_info pointer to phases_info struct
+         */
         axis2_status_t (AXIS2_CALL *
                 set_phases_info)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     struct axis2_phases_info *phases_info);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param key pointer to key
-	 * @param msg_recv pointer to message receiver 
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param key pointer to key
+         * @param msg_recv pointer to message receiver 
+         */
         axis2_status_t (AXIS2_CALL *
                 add_msg_recv)(
                     axis2_conf_t *conf,
@@ -391,41 +391,41 @@ extern "C"
                     axis2_char_t *key,
                     struct axis2_msg_recv *msg_recv);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param key pointer to key
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param key pointer to key
+         */
         struct axis2_msg_recv *(AXIS2_CALL *
                 get_msg_recv)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     axis2_char_t *key);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param out_phases ponter to out phases
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param out_phases ponter to out phases
+         */
         axis2_status_t (AXIS2_CALL *
                 set_out_phases)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     axis2_array_list_t *out_phases);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         */
         axis2_array_list_t* (AXIS2_CALL *
                 get_out_phases)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
         /**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param list pointer to list 
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param list pointer to list 
          */
         axis2_status_t (AXIS2_CALL *
                 set_in_faultphases)(
@@ -434,9 +434,9 @@ extern "C"
                     axis2_array_list_t *list);
 
         /**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param list pointer to list
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param list pointer to list
          */
         axis2_status_t (AXIS2_CALL *
                 set_out_faultphases)(
@@ -445,8 +445,8 @@ extern "C"
                     axis2_array_list_t *list);
 
         /**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
          */
         axis2_hash_t *(AXIS2_CALL *
                 get_modules)(
@@ -454,9 +454,9 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param module pointer to module
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param module pointer to module
          */
         axis2_status_t (AXIS2_CALL *
                 add_module)(
@@ -466,8 +466,8 @@ extern "C"
 
         /**
          * Sets the default dispatching order
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
          */
         axis2_status_t (AXIS2_CALL *
                 set_default_dispatchers)(
@@ -476,9 +476,9 @@ extern "C"
 
         /**
          * Sets the custom dispatching order
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param dispatch pointer to dispatch
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param dispatch pointer to dispatch
          */
         axis2_status_t (AXIS2_CALL *
                 set_dispatch_phase)(
@@ -486,76 +486,76 @@ extern "C"
                     const axis2_env_t *env,
                     axis2_phase_t *dispatch);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         */
         axis2_char_t *(AXIS2_CALL *
                 get_repos)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param axis2_repos pointer to axis2_repos struct
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param axis2_repos pointer to axis2_repos struct
+         */
         axis2_status_t (AXIS2_CALL *
                 set_repos)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     axis2_char_t *axis2_repos);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param module_ref pointer to module reference
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param module_ref pointer to module reference
+         */
         axis2_status_t (AXIS2_CALL *
                 engage_module)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     axis2_qname_t *module_ref);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param dep_engine pointer to dep_engine 
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param dep_engine pointer to dep_engine 
+         */
         axis2_status_t (AXIS2_CALL *
                 set_dep_engine)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     struct axis2_dep_engine *dep_engine);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param module_name pointer to module name 
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param module_name pointer to module name 
+         */
         axis2_char_t * (AXIS2_CALL *
                 get_default_module_version)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
                     const axis2_char_t* module_name);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param module_name pointer to module name 
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param module_name pointer to module name 
+         */
         struct axis2_module_desc * (AXIS2_CALL *
                 get_default_module)(
                     axis2_conf_t *conf, 
                     const axis2_env_t *env,
                     const axis2_char_t *module_name);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param module_name pointer to module name 
-	 * @param module_version pointer to module version
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param module_name pointer to module name 
+         * @param module_version pointer to module version
+         */
         axis2_status_t (AXIS2_CALL *
                 add_default_module_version)(
                     axis2_conf_t *conf, 
@@ -563,12 +563,12 @@ extern "C"
                     axis2_char_t *module_name,
                     axis2_char_t *module_version);
 
-	/**
-	 * @param conf pointer to conf struct
-	 * @param env pointer to environment struct
-	 * @param module_name pointer to module name
-	 * @param version_id pointer to version
-	 */
+        /**
+         * @param conf pointer to conf struct
+         * @param env pointer to environment struct
+         * @param module_name pointer to module name
+         * @param version_id pointer to version
+         */
         axis2_status_t (AXIS2_CALL *
                 engage_module_with_version)(
                     axis2_conf_t *conf, 
