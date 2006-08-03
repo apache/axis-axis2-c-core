@@ -101,7 +101,7 @@ extern "C"
          * @param op_client pointer to operation client struct
          * @param env pointer to environment struct
          * @param msg_ctx message context to be added. operation client takes 
-         * over the ownership of the mssage context struct.
+         * over the ownership of the message context struct.
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -129,7 +129,7 @@ extern "C"
          * @param op_client pointer to operation client struct
          * @param env pointer to environment struct
          * @param callback the callback to be used. operation client takes 
-         * over the ownership of the mssage context struct.
+         * over the ownership of the message context struct.
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
