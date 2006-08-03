@@ -37,7 +37,7 @@ typedef struct axis2_options_impl
 
     long timeout_in_milli_seconds;
 
-    axis2_bool_t use_seperate_listener;
+    axis2_bool_t use_separate_listener;
 
     /** addressing specific properties */
     axis2_msg_info_headers_t *msg_info_headers;
@@ -137,7 +137,7 @@ axis2_options_get_to(const axis2_options_t *options,
 
 
 axis2_bool_t AXIS2_CALL
-axis2_options_get_use_seperate_listener(const axis2_options_t *options,
+axis2_options_get_use_separate_listener(const axis2_options_t *options,
         const axis2_env_t *env);
 
 struct axis2_options * AXIS2_CALL
@@ -240,12 +240,12 @@ axis2_options_set_transport_info(struct axis2_options *options,
         const axis2_env_t *env,
         const axis2_char_t *sender_transport,
         const axis2_char_t *receiver_transport,
-        const axis2_bool_t use_seperate_listener);
+        const axis2_bool_t use_separate_listener);
 
 axis2_status_t AXIS2_CALL
-axis2_options_set_use_seperate_listener(struct axis2_options *options,
+axis2_options_set_use_separate_listener(struct axis2_options *options,
         const axis2_env_t *env,
-        axis2_bool_t use_seperate_listener);
+        axis2_bool_t use_separate_listener);
 axis2_status_t AXIS2_CALL
 axis2_options_add_reference_parameter(struct axis2_options *options,
         const axis2_env_t *env,
@@ -662,7 +662,7 @@ axis2_options_get_to(const axis2_options_t *options,
 
 
 axis2_bool_t AXIS2_CALL
-axis2_options_get_use_seperate_listener(const axis2_options_t *options,
+axis2_options_get_use_separate_listener(const axis2_options_t *options,
         const axis2_env_t *env)
 {
     axis2_options_impl_t *options_impl = NULL;
@@ -670,17 +670,17 @@ axis2_options_get_use_seperate_listener(const axis2_options_t *options,
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    if (options_impl->use_seperate_listener == -1 && options_impl->parent)
+    if (options_impl->use_separate_listener == -1 && options_impl->parent)
     {
-        return axis2_options_get_use_seperate_listener(options_impl->parent, env);
+        return axis2_options_get_use_separate_listener(options_impl->parent, env);
     }
 
-    if (options_impl->use_seperate_listener == -1)
+    if (options_impl->use_separate_listener == -1)
     {
         return AXIS2_FALSE;
     }
 
-    return options_impl->use_seperate_listener;
+    return options_impl->use_separate_listener;
 }
 
 struct axis2_options * AXIS2_CALL
@@ -965,7 +965,7 @@ axis2_options_set_transport_info(struct axis2_options *options,
         const axis2_env_t *env,
         const axis2_char_t *sender_transport,
         const axis2_char_t *receiver_transport,
-        const axis2_bool_t use_seperate_listener)
+        const axis2_bool_t use_separate_listener)
 {
     axis2_options_impl_t *options_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -974,7 +974,7 @@ axis2_options_set_transport_info(struct axis2_options *options,
     /**
       here we check for the legal combination
       */
-    if (!use_seperate_listener)
+    if (!use_separate_listener)
     {
         if (0 != strcmp(sender_transport, receiver_transport))
         {
@@ -985,8 +985,8 @@ axis2_options_set_transport_info(struct axis2_options *options,
     }
     else
     {
-        axis2_options_set_use_seperate_listener(&(options_impl->options),
-                env, use_seperate_listener);
+        axis2_options_set_use_separate_listener(&(options_impl->options),
+                env, use_separate_listener);
     }
     axis2_options_set_transport_in_protocol(&(options_impl->options), env, receiver_transport);
     options_impl->sender_transport_protocol = (axis2_char_t *)sender_transport;
@@ -995,15 +995,15 @@ axis2_options_set_transport_info(struct axis2_options *options,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_options_set_use_seperate_listener(struct axis2_options *options,
+axis2_options_set_use_separate_listener(struct axis2_options *options,
         const axis2_env_t *env,
-        axis2_bool_t use_seperate_listener)
+        axis2_bool_t use_separate_listener)
 {
     axis2_options_impl_t *options_impl = NULL;
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
 
-    options_impl->use_seperate_listener = use_seperate_listener;
+    options_impl->use_separate_listener = use_separate_listener;
     return AXIS2_SUCCESS;
 }
 
@@ -1125,7 +1125,7 @@ static void axis2_options_init_data(axis2_options_impl_t *options_impl)
     /*AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;*/
     options_impl->timeout_in_milli_seconds = -1;
     /*AXIS2_DEFAULT_TIMEOUT_MILLISECONDS;*/
-    options_impl->use_seperate_listener = -1;
+    options_impl->use_separate_listener = -1;
     /*AXIS2_FALSE;*/
 
     options_impl->receiver = NULL;
@@ -1157,7 +1157,7 @@ static void axis2_options_init_ops(struct axis2_options *options)
     options->ops->get_soap_version_uri = axis2_options_get_soap_version_uri;
     options->ops->get_timeout_in_milli_seconds = axis2_options_get_timeout_in_milli_seconds;
     options->ops->get_to = axis2_options_get_to;
-    options->ops->get_use_seperate_listener = axis2_options_get_use_seperate_listener;
+    options->ops->get_use_separate_listener = axis2_options_get_use_separate_listener;
     options->ops->get_parent = axis2_options_get_parent;
     options->ops->set_parent = axis2_options_set_parent;
     options->ops->set_action = axis2_options_set_action;
@@ -1177,7 +1177,7 @@ static void axis2_options_init_ops(struct axis2_options *options)
     options->ops->set_soap_version_uri = axis2_options_set_soap_version_uri;
     options->ops->set_timeout_in_milli_seconds = axis2_options_set_timeout_in_milli_seconds;
     options->ops->set_transport_info = axis2_options_set_transport_info;
-    options->ops->set_use_seperate_listener = axis2_options_set_use_seperate_listener;
+    options->ops->set_use_separate_listener = axis2_options_set_use_separate_listener;
     options->ops->add_reference_parameter = axis2_options_add_reference_parameter;
     options->ops->set_manage_session = axis2_options_set_manage_session;
     options->ops->get_manage_session = axis2_options_get_manage_session;

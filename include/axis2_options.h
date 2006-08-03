@@ -20,7 +20,7 @@
 /** @defgroup axis2_options options
   * @ingroup axis2_client_api
   * The options struct holds user options to be used by client when invocation 
-  * services. In addition to the end point referance information, options 
+  * services. In addition to the end point reference information, options 
   * struct also hold addressing, transport and timeout related information. 
   * User specific properties could also set on top of options.
   * @{
@@ -77,7 +77,7 @@ extern "C"
          * Gets WSA fault to address.
          * @param options pointer to options struct
          * @param env pointer to environment struct
-         * @return pointer to endpoint referance struct representing fault to 
+         * @return pointer to endpoint reference struct representing fault to 
          * address if set, else NULL
          */
         axis2_endpoint_ref_t* (AXIS2_CALL *
@@ -89,7 +89,7 @@ extern "C"
          * Gets WSA from address.
          * @param options pointer to options struct
          * @param env pointer to environment struct
-         * @return pointer to endpoint referance struct representing from 
+         * @return pointer to endpoint reference struct representing from 
          * address if set, else NULL
          */
         axis2_endpoint_ref_t* (AXIS2_CALL *
@@ -181,7 +181,7 @@ extern "C"
          * Gets WSA reply to address.
          * @param options pointer to options struct
          * @param env pointer to environment struct
-         * @return pointer to endpoint referance struct representing reply to
+         * @return pointer to endpoint reference struct representing reply to
          * address if set, else NULL
          */
         axis2_endpoint_ref_t* (AXIS2_CALL *
@@ -239,7 +239,7 @@ extern "C"
          * Gets WSA to address.
          * @param options pointer to options struct
          * @param env pointer to environment struct
-         * @return pointer to endpoint referance struct representing to
+         * @return pointer to endpoint reference struct representing to
          * address if set, else NULL
          */
         axis2_endpoint_ref_t* (AXIS2_CALL *
@@ -248,13 +248,13 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Gets use seperate listner status.
+         * Gets use separate listener status.
          * @param options pointer to options struct 
          * @param env pointer to environment struct
-         * @return AXIS2_TRUE if using seperate listner, else AXIS2_FALSE
+         * @return AXIS2_TRUE if using separate listener, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
-                get_use_seperate_listener)(
+                get_use_separate_listener)(
                     const axis2_options_t *options,
                     const axis2_env_t *env);
 
@@ -297,7 +297,7 @@ extern "C"
          * Sets fault to address.
          * @param options pointer to options struct
          * @param env pointer to environment struct
-         * @param fault_to pointer to endpoint referance struct representing
+         * @param fault_to pointer to endpoint reference struct representing
          * fault to address. options takes over the ownership of the struct.
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
@@ -311,7 +311,7 @@ extern "C"
          * Sets from address.
          * @param options pointer to options struct
          * @param env pointer to environment struct
-         * @param from pointer to endpoint referance struct representing
+         * @param from pointer to endpoint reference struct representing
          * from to address. options takes over the ownership of the struct.
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
@@ -325,7 +325,7 @@ extern "C"
          * sets from address.
          * @param options pointer to options struct
          * @param env pointer to environment struct
-         * @param to pointer to endpoint referance struct representing
+         * @param to pointer to endpoint reference struct representing
          * to address. Options takes over the ownership of the struct.
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
@@ -404,7 +404,7 @@ extern "C"
                     axis2_hash_t *properties);
 
         /**
-         * Sets a property with the given key valye.
+         * Sets a property with the given key value.
          * @param options pointer to options struct
          * @param env pointer to environment struct
          * @param property_key property key string
@@ -436,7 +436,7 @@ extern "C"
          * Sets reply to address.
          * @param options pointer to options struct
          * @param env pointer to environment struct
-         * @param reply_to pointer to endpoint referance struct representing 
+         * @param reply_to pointer to endpoint reference struct representing 
          * reply to address. options takes over the ownership of the struct.
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
@@ -466,7 +466,7 @@ extern "C"
          * @param env pointer to environment struct
          * @param sender_transport name of the sender transport to be set
          * @param conf pointer to conf struct, it is from the conf that the 
-         * trasport is picked with the given name
+         * transport is picked with the given name
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -492,7 +492,7 @@ extern "C"
                     const axis2_char_t *soap_version_uri);
 
         /**
-         * Sets timeout in milli seconds.
+         * Sets timeout in Milli seconds.
          * @param options pointer to options struct
          * @param env pointer to environment struct
          * @param timeout_in_milli_seconds timeout in milli seconds
@@ -507,13 +507,13 @@ extern "C"
         /**
          * Sets transport information. Transport information includes the name 
          * of the sender transport, name of the receiver transport and if a 
-         * seperate listner to be used to receive response. 
+         * separate listener to be used to receive response. 
          * @param options pointer to options struct
          * @param env pointer to environment struct
          * @param sender_transport name of sender transport to be used
          * @param receiver_transport name of receiver transport to be used
-         * @param use_seperate_listener bool value indicating whether to use
-         * a seperate listener or not.
+         * @param use_separate_listener bool value indicating whether to use
+         * a separate listener or not.
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -522,24 +522,24 @@ extern "C"
                     const axis2_env_t *env,
                     const axis2_char_t *sender_transport,
                     const axis2_char_t *receiver_transport,
-                    const axis2_bool_t use_seperate_listener);
+                    const axis2_bool_t use_separate_listener);
 
         /**
-         * Sets the bool value indicating whether to use a seperate listener or not.
+         * Sets the bool value indicating whether to use a separate listener or not.
          * @param options pointer to options struct
          * @param env pointer to environment struct
-         * @param use_seperate_listener bool value indicating whether to use
-         * a seperate listener or not.
+         * @param use_separate_listener bool value indicating whether to use
+         * a separate listener or not.
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_use_seperate_listener)(
+                set_use_separate_listener)(
                     axis2_options_t *options,
                     const axis2_env_t *env,
-                    const axis2_bool_t use_seperate_listener);
+                    const axis2_bool_t use_separate_listener);
 
         /**
-         * Adds a WSA referance parameter.
+         * Adds a WSA reference parameter.
          * @param options pointer to options struct
          * @param env pointer to environment struct
          * @param reference_parameter pointer to reference parameter in the form 
@@ -668,7 +668,7 @@ extern "C"
         const axis2_env_t *env);
     
     /**
-     * Creates the options struct with gien parent.
+     * Creates the options struct with given parent.
      * @param env pointer to environment struct
      * @param parent pointer to parent struct
      * @return a pointer to newly created options struct. Newly created options 
@@ -701,7 +701,7 @@ extern "C"
       ((options)->ops->get_transport_receiver(options, env))
 
 /** Gets transport in.
-    @sa axis2_options_ops#get_tranport_in */
+    @sa axis2_options_ops#get_transport_in */
 #define AXIS2_OPTIONS_GET_TRANSPORT_IN(options, env) \
       ((options)->ops->get_transport_in(options, env))
 
@@ -760,10 +760,10 @@ extern "C"
 #define AXIS2_OPTIONS_GET_TO(options, env) \
       ((options)->ops->get_to(options, env))
 
-/** Whether to use a seperate listener.
-    @sa axis2_options_ops#get_use_seperate_listener */
+/** Whether to use a separate listener.
+    @sa axis2_options_ops#get_use_separate_listener */
 #define AXIS2_OPTIONS_GET_USE_SEPERATE_LISTENER(options, env) \
-      ((options)->ops->get_use_seperate_listener(options, env))
+      ((options)->ops->get_use_separate_listener(options, env))
 
 /** Gets the parent.
     @sa axis2_options_ops#get_parent */
@@ -856,16 +856,16 @@ extern "C"
       ((options)->ops->set_timeout_in_milli_seconds(options, env, timeout_in_milli_seconds))
 
 /** Sets transport information.
-    @sa axis2_options_ops#set_trasnport_info */
+    @sa axis2_options_ops#set_transport_info */
 #define AXIS2_OPTIONS_SET_TRANSPORT_INFO(options, env, sender_transport, \
-    receiver_transport, user_seperate_listener) \
+    receiver_transport, user_separate_listener) \
     ((options)->ops->set_tranport_info(options, env, sender_transport, \
-    receiver_transport, user_seperate_listener))
+    receiver_transport, user_separate_listener))
 
-/** Sets use seperate listener.
-    @sa axis2_options_ops#set_use_seperate_listener */
-#define AXIS2_OPTIONS_SET_USE_SEPERATE_LISTENER(options, env, use_seperate_listener) \
-      ((options)->ops->set_use_seperate_listener(options, env, use_seperate_listener))
+/** Sets use separate listener.
+    @sa axis2_options_ops#set_use_separate_listener */
+#define AXIS2_OPTIONS_SET_USE_SEPARATE_LISTENER(options, env, use_separate_listener) \
+      ((options)->ops->set_use_separate_listener(options, env, use_separate_listener))
 
 /** Adds a reference parameter.
     @sa axis2_options_ops#add_reference_parameter */

@@ -107,7 +107,7 @@ axis2_op_client_complete(struct axis2_op_client *op_client,
         axis2_msg_ctx_t *mc);
 
 axis2_op_ctx_t* AXIS2_CALL
-axis2_op_client_get_operation_context(struct axis2_op_client *op_client,
+axis2_op_client_get_operation_context(const axis2_op_client_t *op_client,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -549,12 +549,12 @@ axis2_op_client_complete(struct axis2_op_client *op_client,
     */
     if (!listener_manager)
         return AXIS2_FAILURE;
-    /*TODO:set transport*/
+
     return AXIS2_LISTENER_MANAGER_STOP(listener_manager, env, transport);
 }
 
 axis2_op_ctx_t* AXIS2_CALL
-axis2_op_client_get_operation_context(struct axis2_op_client *op_client,
+axis2_op_client_get_operation_context(const axis2_op_client_t *op_client,
     const axis2_env_t *env)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;

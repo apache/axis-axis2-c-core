@@ -284,7 +284,7 @@ axis2_stub_set_use_seperate_listener(axis2_stub_t *stub,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     stub_impl = AXIS2_INTF_TO_IMPL(stub);
     
-    AXIS2_OPTIONS_SET_USE_SEPERATE_LISTENER ( stub_impl-> options, env,
+    AXIS2_OPTIONS_SET_USE_SEPARATE_LISTENER ( stub_impl-> options, env,
                                     use_separate_listener );
     return AXIS2_SUCCESS;
 }
