@@ -50,7 +50,7 @@ int main(int argc, char** argv)
     env = axis2_env_create_all("echo_non_blocking_dual.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
-    address = "http://localhost:5555/axis2/services/echo";
+    address = "http://localhost:9090/axis2/services/echo";
     if (argc > 1 )
         address = argv[1];
     if (AXIS2_STRCMP(address, "-h") == 0)
