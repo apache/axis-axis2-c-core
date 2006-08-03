@@ -82,7 +82,8 @@ int main(int argc, char *argv[])
         intface_qname = WODEN_INTERFACE_GET_QNAME(intface, env);
     }
     if (intface_qname) 
-        printf("Interface qname is %s\n", AXIS2_QNAME_TO_STRING(intface_qname, env));
+        printf("Interface qname is %s\n", AXIS2_QNAME_TO_STRING(intface_qname, 
+                    env));
     svc_list = WODEN_WSDL10_DESC_ELEMENT_GET_SVC_ELEMENTS(desc, env);
     if (svc_list)
     {
@@ -95,7 +96,8 @@ int main(int argc, char *argv[])
             axis2_qname_t *svc_qname = WODEN_SVC_GET_QNAME(svc, env);
             if (svc_qname)
             {
-                printf("First service qname is %s\n", AXIS2_QNAME_TO_STRING(svc_qname, env));
+                printf("First service qname is %s\n", AXIS2_QNAME_TO_STRING(
+                            svc_qname, env));
             }
             endpoints = WODEN_SVC_GET_ENDPOINTS(svc, env);
             if(endpoints)
@@ -134,7 +136,8 @@ int main(int argc, char *argv[])
             axis2_qname_t *binding_qname = WODEN_BINDING_GET_QNAME(binding, env);
             if (binding_qname)
             {
-                printf("First binding qname is %s\n", AXIS2_QNAME_TO_STRING(binding_qname, env));
+                printf("First binding qname is %s\n", AXIS2_QNAME_TO_STRING(
+                            binding_qname, env));
             }
         }
     }
