@@ -65,152 +65,167 @@ extern "C"
         /**
          * Adds given handler to the specified position in the phase array list.
          * @param phase pointer to phase struct
-	 * @param env pointer to environment struct
-	 * @param index index
+         * @param env pointer to environment struct
+         * @param index index
          * @param handler pointer to hanlder
          */
         axis2_status_t (AXIS2_CALL *
-                add_handler_at)(struct axis2_phase *phase,
-                        const axis2_env_t *env,
-                        int index,
-                        axis2_handler_t *handler);
+                add_handler_at)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env,
+                    int index,
+                    axis2_handler_t *handler);
         /**
-        * add to next empty phase
-        * @param phase pointer to phase
-        * @param env pointer to environment struct
-	* @param handler pointer to handler 
-        */
+         * add to next empty phase
+         * @param phase pointer to phase
+         * @param env pointer to environment struct
+         * @param handler pointer to handler 
+         */
         axis2_status_t (AXIS2_CALL *
-                add_handler)(struct axis2_phase *phase,
-                        const axis2_env_t *env,
-                        axis2_handler_t *handler);
-        /**
-           * If need to see how this works look at the stack!
-           * @param phase pointer to phase
-	   * @param env pointer to environment struct
-           * @param msg_ctx pointer to message context
-           */
+                add_handler)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env,
+                    axis2_handler_t *handler);
+         /**
+          * If need to see how this works look at the stack!
+          * @param phase pointer to phase
+          * @param env pointer to environment struct
+          * @param msg_ctx pointer to message context
+          */
         axis2_status_t (AXIS2_CALL *
-                invoke)(struct axis2_phase *phase,
-                        const axis2_env_t *env,
-                        struct axis2_msg_ctx *msg_ctx);
+                invoke)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env,
+                    struct axis2_msg_ctx *msg_ctx);
         /**
          * phase name accessor
-	 * @param phase pointer to phase
-	 * @param env pointer to environment struct
+         * @param phase pointer to phase
+         * @param env pointer to environment struct
          * @return returns the phase name.
          */
         axis2_char_t* (AXIS2_CALL *
-                get_name)(struct axis2_phase *phase,
-                        const axis2_env_t *env);
+                get_name)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env);
 
-	/**
-	 * @param phase pointer to phase
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param phase pointer to phase
+         * @param env pointer to environment struct
+         */
         int (AXIS2_CALL *
-                get_handler_count)(struct axis2_phase *phase,
-                        const axis2_env_t *env);
+                get_handler_count)( 
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env);
 
         /**
          * @param phase pointer to phase
-	 * @param env pointer to environment struct
-	 * @param handler pointer to handler
+         * @param env pointer to environment struct
+         * @param handler pointer to handler
          */
         axis2_status_t (AXIS2_CALL *
-                set_first_handler)(struct axis2_phase *phase,
-                        const axis2_env_t *env,
-                        axis2_handler_t * handler);
+                set_first_handler)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env,
+                    axis2_handler_t * handler);
         /**
          * @param phase pointer to phase
-	 * @param env pointer to environment struct
-	 * @param handler pointer to handler
+         * @param env pointer to environment struct
+         * @param handler pointer to handler
          */
         axis2_status_t (AXIS2_CALL *
-                set_last_handler)(struct axis2_phase *phase,
-                        const axis2_env_t *env,
-                        axis2_handler_t * handler);
+                set_last_handler)(  
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env,
+                    axis2_handler_t * handler);
         /**
          * @param phase pointer to phase
-	 * @param env pointer to environment struct
-	 * @param handler_desc pointer to handler description
+         * @param env pointer to environment struct
+         * @param handler_desc pointer to handler description
          */
         axis2_status_t (AXIS2_CALL *
-                add_handler_desc)(struct axis2_phase *phase,
-                        const axis2_env_t *env,
-                        axis2_handler_desc_t * handler_desc);
+                add_handler_desc)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env,
+                    axis2_handler_desc_t * handler_desc);
         /**
          * @param phase pointer to phaes
-	 * @param env pointer to environment struct
-	 * @param handler pointer to handler
+         * @param env pointer to environment struct
+         * @param handler pointer to handler
          */
         axis2_status_t (AXIS2_CALL *
-                insert_before)(struct axis2_phase *phase,
-                        const axis2_env_t *env,
-                        axis2_handler_t *handler);
+                insert_before)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env,
+                    axis2_handler_t *handler);
 
         /**
          * @param phase pointer to phase
-	 * @param env pointer to environment struct
-	 * @param handler pointer to handler
+         * @param env pointer to environment struct
+         * @param handler pointer to handler
          */
         axis2_status_t (AXIS2_CALL *
-                insert_after)(struct axis2_phase *phase,
-                        const axis2_env_t *env,
-                        axis2_handler_t *handler);
+                insert_after)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env,
+                    axis2_handler_t *handler);
 
         /**
          * This method assume that both the before and after can't be a same 
          * handler . That condition is not checked by this function. 
          * It should be checked befor calling this function
-	 * @param phase pointer to phase
-	 * @param env pointer to environment struct
-	 * @param handler pointer to handler
+         * @param phase pointer to phase
+         * @param env pointer to environment struct
+         * @param handler pointer to handler
          */
         axis2_status_t (AXIS2_CALL *
-                insert_before_and_after)(struct axis2_phase *phase,
-                        const axis2_env_t *env,
-                        axis2_handler_t *handler);
+                insert_before_and_after)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env,
+                    axis2_handler_t *handler);
 
-	/**
-	 * @param phase pointer to phase
-	 * @param env pointer to environment struct
-	 * @param handler_desc pointer to handler description
-	 */
+        /**
+         * @param phase pointer to phase
+         * @param env pointer to environment struct
+         * @param handler_desc pointer to handler description
+         */
         axis2_status_t (AXIS2_CALL *
-                insert_handler_desc)(struct axis2_phase *phase,
-                        const axis2_env_t *env,
-                        axis2_handler_desc_t * handler_desc);
+                insert_handler_desc)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env,
+                    axis2_handler_desc_t * handler_desc);
 
         /**
          * To get the all the handlers in the phase
          * @param phase pointer to phase
-	 * @param env pointer to environment struct
+         * @param env pointer to environment struct
          */
         axis2_array_list_t* (AXIS2_CALL *
-                get_handlers)(struct axis2_phase *phase,
-                        const axis2_env_t *env);
+                get_handlers)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env);
 
-	/**
-	 * @param phase pointer to phase
-	 * @param env pointer to environment struct
-	 * @param qname pointer to qname
-	 * @param msg_ctx pointer to message context
-	 */
+        /**
+         * @param phase pointer to phase
+         * @param env pointer to environment struct
+         * @param qname pointer to qname
+         * @param msg_ctx pointer to message context
+         */
         axis2_status_t (AXIS2_CALL *
-                invoke_start_from_handler)(struct axis2_phase *phase,
-                        const axis2_env_t *env,
-                        axis2_qname_t *qname,
-                        struct axis2_msg_ctx *msg_ctx);
+                invoke_start_from_handler)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env,
+                    axis2_qname_t *qname,
+                    struct axis2_msg_ctx *msg_ctx);
 
 
-	/**
-	 * @param phase pointer to phase
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param phase pointer to phase
+         * @param env pointer to environment struct
+         */
         axis2_status_t (AXIS2_CALL *
-                free)(struct axis2_phase *phase,
-                        const axis2_env_t *env);
+                free)(
+                    struct axis2_phase *phase,
+                    const axis2_env_t *env);
 
     }
     axis2_phase_ops_t;

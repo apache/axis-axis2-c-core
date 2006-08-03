@@ -20,6 +20,7 @@
 /**
  * @defgroup axis2_disp dispatcher
  * @ingroup axis2_engine
+ * Description.
  * @{
  */
 
@@ -49,60 +50,61 @@ extern "C"
      */
     AXIS2_DECLARE_DATA typedef struct axis2_disp_ops
     {
-	/**
-	 * @param disp pointer to dispatcher
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param disp pointer to dispatcher
+         * @param env pointer to environment struct
+         */
         axis2_handler_t* (AXIS2_CALL 
                 *get_base)(
-		    struct axis2_disp *disp,
+		            struct axis2_disp *disp,
                     const axis2_env_t *env);
 
-	/**
-	 * @param disp pointer to dispatcher
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param disp pointer to dispatcher
+         * @param env pointer to environment struct
+         */
         axis2_qname_t* (AXIS2_CALL 
                 *get_qname)(
-		    struct axis2_disp *disp,
+                    struct axis2_disp *disp,
                     const axis2_env_t *env);
 
-	/**
-	 * @param disp pointer to dispatcher
-	 * @param env pointer to environment struct
-	 * @param qname pointer to qname
-	 */
+        /**
+         * @param disp pointer to dispatcher
+         * @param env pointer to environment struct
+         * @param qname pointer to qname
+         */
         axis2_status_t (AXIS2_CALL 
                 *set_qname)(
-		    struct axis2_disp *disp,
+                    struct axis2_disp *disp,
                     const axis2_env_t *env, 
-		    axis2_qname_t *qname);
+		            axis2_qname_t *qname);
 
-	/**
-	 * @param disp pointer to dispatcher
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param disp pointer to dispatcher
+         * @param env pointer to environment struct
+         */
         axis2_status_t (AXIS2_CALL 
                 *free)(
-		    struct axis2_disp *disp,
+                    struct axis2_disp *disp,
                     const axis2_env_t *env);
         /**
-        * Finds the service
-        * @param msg_ctx pointer to message context 
-	* @param env pointer to environment struct
-        */
+         * Finds the service
+         * @param msg_ctx pointer to message context 
+         * @param env pointer to environment struct
+         */
         struct axis2_svc* (AXIS2_CALL 
                 *find_svc)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
         /**
-        * Finds the op
-        * @param msg_ctx pointer to message context
-        * @param env pointer to environment struct
-	* @param svc pointer to service
-        */
+         * Finds the op
+         * @param msg_ctx pointer to message context
+         * @param env pointer to environment struct
+         * @param svc pointer to service
+         */
         struct axis2_op *(AXIS2_CALL 
-                *find_op)(axis2_msg_ctx_t *msg_ctx,
+                *find_op)(
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_svc *svc);
 

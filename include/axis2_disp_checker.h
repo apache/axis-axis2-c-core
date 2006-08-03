@@ -20,6 +20,7 @@
 /**
  * @defgroup axis2_disp_checker dispatcher checker
  * @ingroup axis2_engine
+ * Description.
  * @{
  */
 
@@ -48,43 +49,44 @@ extern "C"
      */
     AXIS2_DECLARE_DATA typedef struct axis2_disp_checker_ops
     {
-	/**
-	 * @param disp_checker pointer to dispatcher checker
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param disp_checker pointer to dispatcher checker
+         * @param env pointer to environment struct
+         */
         axis2_handler_t* (AXIS2_CALL *
                 get_base)(
                     struct axis2_disp_checker *disp_checker,
                     const axis2_env_t *env);
 
 
-	/**
-	 * @param disp_checker pointer to dispatcher checker
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param disp_checker pointer to dispatcher checker
+         * @param env pointer to environment struct
+         */
         axis2_qname_t* (AXIS2_CALL *
                 get_qname)(
-	            struct axis2_disp_checker *disp_checker,
+	                struct axis2_disp_checker *disp_checker,
                     const axis2_env_t *env);
 
-	/**
-	 * @param disp_checker pointer to dispatcher checker
-	 * @param env pointer to environment struct
-	 * @param qname pointer to qname
-	 */
+        /**
+         * @param disp_checker pointer to dispatcher checker
+         * @param env pointer to environment struct
+         * @param qname pointer to qname
+         */
         axis2_status_t (AXIS2_CALL *
                 set_qname)(
                     struct axis2_disp_checker *disp_checker,
                     const axis2_env_t *env,
                     axis2_qname_t *qname);
 
-	/**
-	 * @param disp_checker pointer to dispatcher checker
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param disp_checker pointer to dispatcher checker
+         * @param env pointer to environment struct
+         */
         axis2_status_t (AXIS2_CALL *
-                free) (struct axis2_disp_checker *disp_checker,
-                        const axis2_env_t *env);
+                free)(
+                    struct axis2_disp_checker *disp_checker,
+                    const axis2_env_t *env);
 
     }
     axis2_disp_checker_ops_t;
@@ -106,8 +108,9 @@ extern "C"
      * @param qname pointer to qname, it can be NULL
      */
     AXIS2_EXTERN axis2_disp_checker_t* AXIS2_CALL
-    axis2_disp_checker_create(const axis2_env_t *env,
-            axis2_qname_t *qname);
+    axis2_disp_checker_create(
+        const axis2_env_t *env,
+        axis2_qname_t *qname);
 
 /** Gets the base.
     @sa axis2_disp_checker_ops#get_base */
