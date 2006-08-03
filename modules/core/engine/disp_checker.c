@@ -41,9 +41,9 @@ typedef struct axis2_disp_checker_impl
 axis2_status_t AXIS2_CALL axis2_disp_checker_invoke (struct axis2_handler * handler, 
                                                 const axis2_env_t *env,
                                                 struct axis2_msg_ctx *msg_ctx);
-axis2_handler_t* AXIS2_CALL axis2_disp_checker_get_base(struct axis2_disp_checker *disp_checker, 
+axis2_handler_t* AXIS2_CALL axis2_disp_checker_get_base(const axis2_disp_checker_t *disp_checker, 
                                                const axis2_env_t *env);
-axis2_qname_t* AXIS2_CALL axis2_disp_checker_get_qname(struct axis2_disp_checker *disp_checker, 
+axis2_qname_t* AXIS2_CALL axis2_disp_checker_get_qname(const axis2_disp_checker_t *disp_checker, 
                                        const axis2_env_t *env);
 axis2_status_t AXIS2_CALL axis2_disp_checker_set_qname(struct axis2_disp_checker *disp_checker, 
                                        const axis2_env_t *env, axis2_qname_t *qname);
@@ -116,14 +116,14 @@ axis2_disp_checker_t* AXIS2_CALL axis2_disp_checker_create(const axis2_env_t *en
     return &(disp_checker_impl->disp_checker);
 }
 
-axis2_handler_t* AXIS2_CALL axis2_disp_checker_get_base(struct axis2_disp_checker *disp_checker, 
+axis2_handler_t* AXIS2_CALL axis2_disp_checker_get_base(const axis2_disp_checker_t *disp_checker, 
                                                const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(disp_checker)->base;
 }
 
-axis2_qname_t* AXIS2_CALL axis2_disp_checker_get_qname(struct axis2_disp_checker *disp_checker, 
+axis2_qname_t* AXIS2_CALL axis2_disp_checker_get_qname(const axis2_disp_checker_t *disp_checker, 
                                        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);

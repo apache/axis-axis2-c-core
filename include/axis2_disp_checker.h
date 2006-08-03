@@ -39,15 +39,15 @@ extern "C"
 #endif
 
     /** Type name for struct axis2_disp_checker_ops  */
-    struct axis2_disp_checker_ops;
+    typedef struct axis2_disp_checker_ops axis2_disp_checker_ops_t;
     /** Type name for struct axis2_disp_checker  */
-    struct axis2_disp_checker;
+    typedef struct axis2_disp_checker axis2_disp_checker_t;
 
     /**
      * dispatcher checker ops struct
      * Encapsulator struct for operations of axis2_disp_checker
      */
-    AXIS2_DECLARE_DATA typedef struct axis2_disp_checker_ops
+    AXIS2_DECLARE_DATA struct axis2_disp_checker_ops
     {
         /**
          * @param disp_checker pointer to dispatcher checker
@@ -55,7 +55,7 @@ extern "C"
          */
         axis2_handler_t* (AXIS2_CALL *
                 get_base)(
-                    struct axis2_disp_checker *disp_checker,
+                    const axis2_disp_checker_t *disp_checker,
                     const axis2_env_t *env);
 
 
@@ -65,7 +65,7 @@ extern "C"
          */
         axis2_qname_t* (AXIS2_CALL *
                 get_qname)(
-	                struct axis2_disp_checker *disp_checker,
+	                const axis2_disp_checker_t *disp_checker,
                     const axis2_env_t *env);
 
         /**
@@ -88,18 +88,16 @@ extern "C"
                     struct axis2_disp_checker *disp_checker,
                     const axis2_env_t *env);
 
-    }
-    axis2_disp_checker_ops_t;
+    };
 
     /**
      * dispatcher checker struct
      */
-    typedef struct axis2_disp_checker
+    struct axis2_disp_checker
     {
         /** operations of dispatcher checker */
         axis2_disp_checker_ops_t *ops;
-    }
-    axis2_disp_checker_t;
+    };
 
 
     /**
