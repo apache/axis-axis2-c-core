@@ -33,6 +33,7 @@
 #include <woden_interface_msg_ref.h>
 #include <woden_direction.h>
 #include <woden_soap_binding_op_exts.h>
+#include <woden_soap_module.h>
 #include <woden_wsdl10_desc.h>
 #include <woden_wsdl10_svc.h>
 #include <woden_wsdl10_endpoint.h>
@@ -190,21 +191,20 @@ axis2_client_utils_create_axis2_svc(
             void *binding_op = NULL;
             void *interface_op = NULL;
             axis2_op_t *axis2_op = NULL;
-            void *soap_op = NULL;
-            axis2_uri_t *soap_action_uri = NULL;
             axis2_array_list_t *interface_msg_refs = NULL;
             axis2_array_list_t *ext_elements = NULL;
-            int j = 0;
+            int j = 0, size = 0;
             axis2_bool_t in = AXIS2_FALSE;
             axis2_bool_t out = AXIS2_FALSE;
             axis2_qname_t *op_qname = NULL;
-            axis2_param_t *param = NULL;
             axis2_uri_t *mep_uri = NULL;
             axis2_char_t *mep_str = NULL;
             
             binding_op = AXIS2_ARRAY_LIST_GET(binding_ops, env, i);
-            interface_op = WODEN_BINDING_OP_GET_INTERFACE_OP(binding_op, env);
-            interface_msg_refs = WODEN_INTERFACE_OP_GET_INTERFACE_MSG_REFS(
+            if(binding_op)
+                interface_op = WODEN_BINDING_OP_GET_INTERFACE_OP(binding_op, env);
+            if(interface_op)
+                interface_msg_refs = WODEN_INTERFACE_OP_GET_INTERFACE_MSG_REFS(
                     interface_op, env);
             if(interface_msg_refs)
                 no_of_interface_msg_refs = AXIS2_ARRAY_LIST_SIZE(
@@ -215,7 +215,8 @@ axis2_client_utils_create_axis2_svc(
                 void *direction = NULL;
                 axis2_char_t *str_direction = NULL;
                 
-                interface_msg_ref = AXIS2_ARRAY_LIST_GET(interface_msg_refs, env, j);
+                interface_msg_ref = AXIS2_ARRAY_LIST_GET(interface_msg_refs, 
+                        env, j);
                 direction = WODEN_INTERFACE_MSG_REF_GET_DIRECTION(
                         interface_msg_ref, env);
                 str_direction = WODEN_DIRECTION_TO_STRING(direction, env);
@@ -242,11 +243,12 @@ axis2_client_utils_create_axis2_svc(
             binding_op = woden_binding_op_to_element_extensible(binding_op, env);
             ext_elements = WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(binding_op, 
                     env);
-            soap_op = AXIS2_ARRAY_LIST_GET(ext_elements, env, 0);
-            soap_action_uri = WODEN_SOAP_BINDING_OP_EXTS_GET_SOAP_ACTION(
-                    soap_op, env);
-            param = axis2_param_create(env, AXIS2_SOAP_ACTION, soap_action_uri);
-            AXIS2_OP_ADD_PARAM(axis2_op, env, param);
+            if(ext_elements)
+                size = AXIS2_ARRAY_LIST_SIZE(ext_elements, env);
+            for(j = 0; j < size; j++)
+            {
+                /* process ext elements */
+            }
             AXIS2_SVC_ADD_OP(axis2_svc, env, axis2_op);
         }
     }
@@ -385,7 +387,6 @@ axis2_client_utils_create_axis2_svc(
             void *binding_op = NULL;
             void *interface_op = NULL;
             axis2_op_t *axis2_op = NULL;
-            void *ext_element = NULL;
             axis2_array_list_t *interface_msg_refs = NULL;
             axis2_array_list_t *ext_elements = NULL;
             int j = 0, size = 0;
@@ -447,6 +448,8 @@ axis2_client_utils_create_axis2_svc(
                 size = AXIS2_ARRAY_LIST_SIZE(ext_elements, env);
             for(j = 0; j < size; j++)
             {
+                void *ext_element = NULL;
+
                 ext_element = AXIS2_ARRAY_LIST_GET(ext_elements, env, j);
                 ext_type = WODEN_EXT_ELEMENT_GET_EXT_TYPE(ext_element, env);
                 if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(ext_type, env, ext_type_l))
@@ -465,10 +468,10 @@ axis2_client_utils_create_axis2_svc(
                         soap_binding_op, env);
                     param = axis2_param_create(env, AXIS2_SOAP_ACTION, soap_action_uri);
                     AXIS2_OP_ADD_PARAM(axis2_op, env, param);
-                    AXIS2_SVC_ADD_OP(axis2_svc, env, axis2_op);
                     break;
                 }
             }
+            AXIS2_SVC_ADD_OP(axis2_svc, env, axis2_op);
         }
     }
     return axis2_svc; 
