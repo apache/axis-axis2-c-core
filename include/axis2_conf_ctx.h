@@ -47,14 +47,14 @@ extern "C"
     struct axis2_conf;
 
     /**
-     * @brief configuration context ops struct
+     * configuration context ops struct
      * Encapsulator struct for ops of axis2_conf_ctx
      */
     struct axis2_conf_ctx_ops
     {
         /**
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
          * @param conf pointer to configuration 
          */
         axis2_status_t (AXIS2_CALL * 
@@ -63,8 +63,8 @@ extern "C"
                     const axis2_env_t *env,
                     struct axis2_conf *conf);
         /**
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
          */
         axis2_ctx_t* (AXIS2_CALL *
                 get_base)(
@@ -72,36 +72,36 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
          */
         struct axis2_conf* (AXIS2_CALL *
                 get_conf)(
                     struct axis2_conf_ctx *conf_ctx,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
+         */
         axis2_hash_t* (AXIS2_CALL *
                 get_op_ctx_map)(
                     struct axis2_conf_ctx *conf_ctx,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
+         */
         axis2_hash_t* (AXIS2_CALL *
                 get_svc_ctx_map)(
                     struct axis2_conf_ctx *conf_ctx,
                     const axis2_env_t *env);
 
-	/**
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
+         */
         axis2_hash_t* (AXIS2_CALL *
                 get_svc_grp_ctx_map)(
                     struct axis2_conf_ctx *conf_ctx,
@@ -109,8 +109,8 @@ extern "C"
 
         /**
          * Register a struct axis2_op_ctx against a given Message ID.
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
          * @param message_id pointer to message id
          * @param op_ctx pointer to operation context
          */
@@ -123,8 +123,8 @@ extern "C"
 
         /**
          * get axis2_op_ctx struct given a Message ID
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
          * @param message_id pointer to environment struct
          * @return struct axis2_op_ctx * <code>struct axis2_op_ctx *<code>
          */
@@ -136,10 +136,10 @@ extern "C"
 
         /**
          * Register a struct axis2_svc_ctx against a given Message ID.
-	 * @param conf_ctx pointer t oconfiguration context
-	 * @param env pointer to environment struct
+         * @param conf_ctx pointer t oconfiguration context
+         * @param env pointer to environment struct
          * @param svc_id pointer to service id
-	 * @param svc_ctx pointer to service context
+         * @param svc_ctx pointer to service context
          */
         axis2_status_t (AXIS2_CALL *
                 register_svc_ctx)(
@@ -150,8 +150,8 @@ extern "C"
 
         /**
          * get axis2_svc_ctx struct given a Message ID
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
          * @param svc_id pointer to service id
          * @return struct axis2_svc_ctx * <code>struct axis2_svc_ctx *<code>
          */
@@ -164,7 +164,7 @@ extern "C"
         /**
          * Register a struct axis2_svc_grp_ctx against a given Message ID.
          * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
+         * @param env pointer to environment struct
          * @param svc_grp_id pointer to service group id
          * @param svc_grp_ctx pointer to service group context
          */
@@ -177,8 +177,8 @@ extern "C"
 
         /**
          * get axis2_svc_grp_ctx struct given a service group ID
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
          * @param svc_grp_id pointer to service group id
          * @return struct axis2_svc_grp_ctx * <code>struct axis2_svc_grp_ctx *<code>
          */
@@ -192,7 +192,7 @@ extern "C"
          * This method allows users to reolve the paths relative to the
          * root diretory
          * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
+         * @param env pointer to environment struct
          */
         axis2_char_t* (AXIS2_CALL *
                 get_root_dir)(
@@ -200,9 +200,9 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
-	 * @param path pointer to path
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
+         * @param path pointer to path
          */
         axis2_status_t (AXIS2_CALL *
                 set_root_dir)(
@@ -210,21 +210,21 @@ extern "C"
                     const axis2_env_t *env,
                     axis2_char_t *path);
 
-	/**
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
-	 * @param conf pointer to conf
-	 */
+        /**
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
+         * @param conf pointer to conf
+         */
         axis2_status_t (AXIS2_CALL *
                 init)(
                     struct axis2_conf_ctx *conf_ctx,
                     const axis2_env_t *env,
                     struct axis2_conf *conf);
 	
-	/**
-	 * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param conf_ctx pointer to configuration context
+         * @param env pointer to environment struct
+         */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     struct axis2_conf_ctx *conf_ctx,
@@ -240,8 +240,8 @@ extern "C"
          * create new service group context with the given key or if key is null with a new key
          * create a new service context for the service
          * @param conf_ctx pointer to configuration context
-	 * @param env pointer to environment struct
-	 * @param msg_ctx pointer to message context
+         * @param env pointer to environment struct
+         * @param msg_ctx pointer to message context
          * @param messageContext
          */
         struct axis2_svc_grp_ctx* (AXIS2_CALL *
@@ -267,8 +267,8 @@ extern "C"
      */
     AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL
     axis2_conf_ctx_create(
-            const axis2_env_t *env, 
-	    struct axis2_conf *conf);
+        const axis2_env_t *env, 
+        struct axis2_conf *conf);
 
 /************************** Start of function macros **************************/
 
