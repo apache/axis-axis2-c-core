@@ -439,7 +439,6 @@ get_wsdl_from_location(
  */
 static axis2_uri_t *
 get_uri(
-        void *reader,
         const axis2_env_t *env,
         const axis2_char_t *uri_str);
 
@@ -618,7 +617,6 @@ parse_desc(
     void *ext_reg = NULL;
     axis2_uri_t *uri = NULL;
     axis2_char_t *target_namespc = NULL;
-    axis2_uri_t *target_namespc_uri = NULL;
     axiom_element_t *desc_el = NULL;
     axis2_hash_t *attrs = NULL;
     axis2_hash_index_t *index = NULL;
@@ -660,8 +658,10 @@ parse_desc(
         WODEN_DESC_ELEMENT_SET_EXT_REGISTRY(desc, env, ext_reg);
     }
   
-    uri = get_uri(reader, env, document_base_uri);
+    uri = get_uri(env, document_base_uri);
     WODEN_DESC_ELEMENT_SET_DOCUMENT_BASE_URI(desc, env, uri);
+    AXIS2_URI_FREE(uri, env);
+    uri = NULL;
 
     desc_el = AXIOM_NODE_GET_DATA_ELEMENT(desc_el_node, env);
     target_namespc = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(desc_el, 
@@ -669,8 +669,11 @@ parse_desc(
     
     if(NULL != target_namespc)
     {
-        target_namespc_uri = get_uri(reader, env, target_namespc);
+        axis2_uri_t *target_namespc_uri = NULL;
+
+        target_namespc_uri = get_uri(env, target_namespc);
         WODEN_DESC_ELEMENT_SET_TARGET_NAMESPACE(desc, env, target_namespc_uri);
+        AXIS2_URI_FREE(target_namespc_uri, env);
     }
     
     /* parse the namespace declarations */
@@ -693,7 +696,7 @@ parse_desc(
         namespc_uri = AXIOM_NAMESPACE_GET_URI(namespc, env);
         local_part = AXIOM_ATTRIBUTE_GET_LOCALNAME(attr, env);
         value = AXIOM_ATTRIBUTE_GET_VALUE(attr, env);
-        uri = get_uri(reader, env, value);
+        uri = get_uri(env, value);
         if(0 == AXIS2_STRCMP(WODEN_NS_URI_XMLNS, namespc_uri))
         {
             if(0 == AXIS2_STRCMP(WODEN_ATTR_XMLNS, local_part))
@@ -706,6 +709,8 @@ parse_desc(
                 WODEN_DESC_ELEMENT_ADD_NAMESPACE(desc, env, NULL, uri); 
             }
         }
+        AXIS2_URI_FREE(uri, env);
+        uri = NULL;
 
     }
     desc = woden_desc_to_attr_extensible(desc, env); 
@@ -947,8 +952,9 @@ parse_import(
         axis2_uri_t *uri = NULL;
 
         /* TODO handle missing namespace attribute (REQUIRED attr) */
-        uri = get_uri(reader, env, namespc_uri);
+        uri = get_uri(env, namespc_uri);
         WODEN_IMPORT_SET_NAMESPACE(imp, env, uri);
+        AXIS2_URI_FREE(uri, env);
     }
     
     if(NULL != location_uri)
@@ -958,8 +964,9 @@ parse_import(
         
         /* TODO handle missing locationURI (OPTIONAL attr) */
         imp = woden_import_to_import_element(imp, env);
-        uri = get_uri(reader, env, location_uri);
+        uri = get_uri(env, location_uri);
         WODEN_IMPORT_ELEMENT_SET_LOCATION(imp, env, uri);
+        AXIS2_URI_FREE(uri, env);
         
         imported_desc = get_wsdl_from_location(reader, env, location_uri, desc, 
                 wsdl_modules);
@@ -999,9 +1006,10 @@ parse_include(
         axis2_uri_t *uri = NULL;
         void *included_desc = NULL;
        
-        uri = get_uri(reader, env, location_uri);
+        uri = get_uri(env, location_uri);
         include = woden_include_to_include_element(include, env);
         WODEN_INCLUDE_ELEMENT_SET_LOCATION(include, env, uri);
+        AXIS2_URI_FREE(uri, env);
         
         included_desc = get_wsdl_from_location(reader, env, location_uri, desc, 
                 wsdl_modules);
@@ -1130,8 +1138,9 @@ parse_schema_inline(
     if(NULL != tns)
     {
         void *base = WODEN_INLINED_SCHEMA_GET_BASE_IMPL(schema, env);
-        axis2_uri_t *uri = get_uri(reader, env, tns);
+        axis2_uri_t *uri = get_uri(env, tns);
         WODEN_SCHEMA_SET_NAMESPACE(base, env, uri);
+        AXIS2_URI_FREE(uri, env);
     }
     desc = woden_desc_to_desc_element(desc, env);
     base_uri = WODEN_DESC_ELEMENT_GET_DOCUMENT_BASE_URI(desc, env);
@@ -1211,16 +1220,20 @@ parse_schema_import(
             WODEN_ATTR_NAMESPACE);
     if(NULL != ns)
     {
-        uri = get_uri(reader, env, ns);
+        uri = get_uri(env, ns);
         schema = woden_imported_schema_to_schema(schema, env);
         WODEN_SCHEMA_SET_NAMESPACE(schema, env, uri);
+        AXIS2_URI_FREE(uri, env);
+        uri = NULL;
     }
     sloc = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(import_el, env, 
             WODEN_ATTR_SCHEMA_LOCATION);
     if(NULL != sloc)
     {
-    uri = get_uri(reader, env, sloc);
+    uri = get_uri(env, sloc);
     WODEN_IMPORTED_SCHEMA_SET_LOCATION(schema, env, uri);
+    AXIS2_URI_FREE(uri, env);
+    uri = NULL;
     }
         
     if(NULL == WODEN_SCHEMA_GET_NAMESPACE(schema, env))
@@ -1366,8 +1379,9 @@ parse_interface(
             axis2_uri_t *uri = NULL;
             uri_str = AXIS2_ARRAY_LIST_GET(string_list, env, i);
             intface = woden_interface_to_interface_element(intface, env);
-            uri = get_uri(reader, env, uri_str);
+            uri = get_uri(env, uri_str);
             WODEN_INTERFACE_ELEMENT_ADD_STYLE_DEFAULT_URI(intface, env, uri);
+            AXIS2_URI_FREE(uri, env);
         }
     }
     
@@ -1659,9 +1673,10 @@ parse_interface_op(
         for(i = 0; i < size; i++)
         {
             uri_str = AXIS2_ARRAY_LIST_GET(str_list, env, i);
-            uri = get_uri(reader, env, uri_str);
+            uri = get_uri(env, uri_str);
             op = woden_interface_op_to_interface_op_element(op, env);
             WODEN_INTERFACE_OP_ELEMENT_ADD_STYLE_URI(op, env, uri);
+            AXIS2_URI_FREE(uri, env);
         }
     }
      
@@ -1671,9 +1686,10 @@ parse_interface_op(
     {
         axis2_uri_t *uri = NULL;
         
-        uri = get_uri(reader, env, pat);
+        uri = get_uri(env, pat);
         op = woden_interface_op_to_interface_op_element(op, env);
         WODEN_INTERFACE_OP_ELEMENT_SET_PATTERN(op, env, uri);
+        AXIS2_URI_FREE(uri, env);
     }
     op = woden_interface_op_to_attr_extensible(op, env);
     status = parse_ext_attributes(reader, env, op_el_node, "interface_op_element", 
@@ -2290,9 +2306,10 @@ parse_binding(
     {
         axis2_uri_t *uri = NULL;
 
-        uri = get_uri(reader, env, type);
+        uri = get_uri(env, type);
         binding = woden_binding_to_binding_element(binding, env);
         WODEN_BINDING_ELEMENT_SET_TYPE(binding, env, uri);
+        AXIS2_URI_FREE(uri, env);
     }
     
     /* TODO extends attribute */
@@ -3370,7 +3387,6 @@ parse_endpoint(
     axis2_qname_t *binding_qn = NULL;
     axis2_qname_t *attr_binding = NULL;
     axis2_qname_t *attr_address = NULL;
-    axis2_uri_t *address_uri = NULL;
     axiom_element_t *endpoint_el = NULL;
     axiom_element_t *temp_el = NULL;
     axiom_node_t *temp_el_node = NULL;
@@ -3438,9 +3454,12 @@ parse_endpoint(
    
     if(NULL != address)
     {
-        address_uri = get_uri(reader, env, address);
+        axis2_uri_t *address_uri = NULL;
+
+        address_uri = get_uri(env, address);
         endpoint = woden_endpoint_to_endpoint_element(endpoint, env);
         WODEN_ENDPOINT_ELEMENT_SET_ADDRESS(endpoint, env, address_uri);
+        AXIS2_URI_FREE(address_uri, env);
     }
     
     endpoint = woden_endpoint_to_attr_extensible(endpoint, env); 
@@ -3544,9 +3563,10 @@ parse_feature(
    
     if(NULL != ref)
     {
-        axis2_uri_t *ref_uri = get_uri(reader, env, ref);
+        axis2_uri_t *ref_uri = get_uri(env, ref);
         feature = woden_feature_to_feature_element(feature, env);
         WODEN_FEATURE_ELEMENT_SET_REF(feature, env, ref_uri);
+        AXIS2_URI_FREE(ref_uri, env);
     }
  
     attr_req = axis2_qname_create_from_string(env, WODEN_ATTR_REQUIRED);
@@ -3664,9 +3684,10 @@ parse_property(
    
     if(NULL != ref)
     {
-        axis2_uri_t *ref_uri = get_uri(reader, env, ref);
+        axis2_uri_t *ref_uri = get_uri(env, ref);
         property = woden_property_to_property_element(property, env);
         WODEN_PROPERTY_ELEMENT_SET_REF(property, env, ref_uri);
+        AXIS2_URI_FREE(ref_uri, env);
     }
  
     property = woden_property_to_attr_extensible(property, env); 
@@ -4019,23 +4040,12 @@ get_wsdl_from_location(
  */
 static axis2_uri_t *
 get_uri(
-        void *reader,
         const axis2_env_t *env,
         const axis2_char_t *uri_str)
 {
-    woden_reader_impl_t *reader_impl = NULL;
-
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, uri_str, NULL);
-    reader_impl = INTF_TO_IMPL(reader);
 
-    if(reader_impl->f_temp_uri)
-    {
-        AXIS2_URI_FREE(reader_impl->f_temp_uri, env);
-        reader_impl->f_temp_uri = NULL;
-    }
-
-    reader_impl->f_temp_uri = axis2_uri_parse_string(env, uri_str);
-    return reader_impl->f_temp_uri;
+    return axis2_uri_parse_string(env, uri_str);
 }
 

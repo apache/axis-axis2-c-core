@@ -333,7 +333,11 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
     /*soap_mod = WODEN_WSDL10_EXT_REGISTRY_QUERY_EXT_ELEMENT_TYPE(ext_reg, env, 
             parent_type, element_type);*/
     soap_mod = woden_wsdl10_soap_module_create(env);
-
+    if(!soap_mod)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     soap_mod = woden_wsdl10_soap_module_to_ext_element(soap_mod, env);
     WODEN_EXT_ELEMENT_SET_EXT_TYPE(soap_mod, env, element_type);
     soap_mod = woden_wsdl10_soap_module_to_soap_module_element(soap_mod, env);

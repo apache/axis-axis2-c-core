@@ -180,6 +180,10 @@ woden_wsdl10_soap_module_element_resolve_methods(
       (((woden_wsdl10_soap_module_element_t *) soap_module_element)->ops->\
         add_documentation_element  (soap_module_element, env, doc_el))
 
+#define WODEN_WSDL10_SOAP_MODULE_ELEMENT_GET_DOCUMENTATION_ELEMENTS(soap_module_element, env) \
+      (((woden_wsdl10_soap_module_element_t *) soap_module_element)->ops->\
+        get_documentation_elements  (soap_module_element, env))
+
 #define WODEN_WSDL10_SOAP_MODULE_ELEMENT_SET_SOAP_ADDRESS_EXTS(soap_module_element, env, doc_el) \
       (((woden_wsdl10_soap_module_element_t *) soap_module_element)->ops->\
         set_soap_address_exts  (soap_module_element, env, doc_el))
@@ -196,10 +200,6 @@ woden_wsdl10_soap_module_element_resolve_methods(
 #define WODEN_WSDL10_SOAP_MODULE_ELEMENT_GET_SOAP_BINDING_OP_EXTS(soap_module_element, env) \
       (((woden_wsdl10_soap_module_element_t *) soap_module_element)->ops->\
         get_soap_binding_op_exts  (soap_module_element, env))
-
-#define WODEN_WSDL10_SOAP_MODULE_ELEMENT_GET_DOCUMENTATION_ELEMENTS(soap_module_element, env) \
-      (((woden_wsdl10_soap_module_element_t *) soap_module_element)->ops->\
-        get_documentation_elements  (soap_module_element, env))
 
 /** @} */
 #ifdef __cplusplus

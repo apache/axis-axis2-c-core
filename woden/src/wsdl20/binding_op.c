@@ -407,6 +407,11 @@ woden_binding_op_to_attr_extensible(
         const axis2_env_t *env)
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
+    void *configurable = NULL;
+    void *documentable = NULL;
+    void *wsdl_obj = NULL;
+    void *wsdl_el = NULL;
+    void *attr_extensible = NULL;
    
     AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
@@ -421,9 +426,16 @@ woden_binding_op_to_attr_extensible(
         base.documentable_element.wsdl_element.base.attr_extensible.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(woden_attr_extensible_ops_t));
+    configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(binding_op_impl->
+            nested_configurable, env);
+    documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+    wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+    wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+    attr_extensible = WODEN_WSDL_ELEMENT_GET_ATTR_EXTENSIBLE(wsdl_el, env);
     woden_attr_extensible_resolve_methods(&(binding_op_impl->binding_op.base.
             binding_op_element.base.documentable_element.
-            wsdl_element.base.attr_extensible), env, NULL, binding_op_impl->methods);
+            wsdl_element.base.attr_extensible), env, attr_extensible, 
+            binding_op_impl->methods);
     return binding_op;
 }
 
@@ -433,6 +445,11 @@ woden_binding_op_to_element_extensible(
         const axis2_env_t *env)
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
+    void *configurable = NULL;
+    void *documentable = NULL;
+    void *wsdl_obj = NULL;
+    void *wsdl_el = NULL;
+    void *element_extensible = NULL;
    
     AXIS2_ENV_CHECK(env, NULL);
     if(!binding_op)
@@ -447,9 +464,17 @@ woden_binding_op_to_element_extensible(
         base.documentable_element.wsdl_element.base.element_extensible.ops = 
         AXIS2_MALLOC(env->allocator, 
                 sizeof(woden_element_extensible_ops_t));
+
+    configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(binding_op_impl->
+            nested_configurable, env);
+    documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+    wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+    wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+    element_extensible = WODEN_WSDL_ELEMENT_GET_ELEMENT_EXTENSIBLE(wsdl_el, env);
     woden_element_extensible_resolve_methods(&(binding_op_impl->binding_op.base.
             binding_op_element.base.documentable_element.
-            wsdl_element.base.element_extensible), env, NULL, binding_op_impl->methods);
+            wsdl_element.base.element_extensible), env, element_extensible, 
+            binding_op_impl->methods);
     return binding_op;
 }
 
@@ -505,6 +530,8 @@ create(const axis2_env_t *env)
         woden_binding_op_to_element;
     binding_op_impl->binding_op.ops->set_interface_op_element = 
         woden_binding_op_set_interface_op_element;
+    binding_op_impl->binding_op.ops->get_interface_op = 
+        woden_binding_op_get_interface_op;
  
     binding_op_impl->methods = axis2_hash_make(env);
     if(!binding_op_impl->methods) 
@@ -570,6 +597,11 @@ woden_binding_op_create(const axis2_env_t *env)
 {
     woden_binding_op_impl_t *binding_op_impl = NULL;
     void *configurable = NULL;
+    void *documentable = NULL;
+    void *wsdl_obj = NULL;
+    void *wsdl_el = NULL;
+    void *element_extensible = NULL;
+    void *attr_extensible = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     binding_op_impl = (woden_binding_op_impl_t *) create(env);
@@ -592,7 +624,23 @@ woden_binding_op_create(const axis2_env_t *env)
             binding_op_impl->nested_configurable, env);
     axis2_hash_set(binding_op_impl->super, "WODEN_CONFIGURABLE", 
             AXIS2_HASH_KEY_STRING, configurable);
+    documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+    wsdl_obj = WODEN_DOCUMENTABLE_GET_BASE_IMPL(documentable, env);
+    wsdl_el = WODEN_WSDL_OBJ_GET_BASE_IMPL(wsdl_obj, env);
+    element_extensible = WODEN_WSDL_ELEMENT_GET_ELEMENT_EXTENSIBLE(wsdl_el, env);
+    attr_extensible = WODEN_WSDL_ELEMENT_GET_ATTR_EXTENSIBLE(wsdl_el, env);
+    axis2_hash_set(binding_op_impl->super, "WODEN_DOCUMENTABLE", 
+            AXIS2_HASH_KEY_STRING, documentable);
+    axis2_hash_set(binding_op_impl->super, "WODEN_WSDL_OBJ", 
+            AXIS2_HASH_KEY_STRING, wsdl_obj);
+    axis2_hash_set(binding_op_impl->super, "WODEN_WSDL_ELEMENT", 
+            AXIS2_HASH_KEY_STRING, wsdl_el);
+    axis2_hash_set(binding_op_impl->super, "WODEN_ELEMENT_EXTENSIBLE", 
+            AXIS2_HASH_KEY_STRING, element_extensible);
+    axis2_hash_set(binding_op_impl->super, "WODEN_ATTR_EXTENSIBLE", 
+            AXIS2_HASH_KEY_STRING, attr_extensible);
  
+
     return &(binding_op_impl->binding_op);
 }
 

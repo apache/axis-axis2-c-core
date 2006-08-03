@@ -325,14 +325,20 @@ woden_soap_module_deserializer_unmarshall(
     mod_deser_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_SOAP_MODULE_DESERIALIZER", AXIS2_HASH_KEY_STRING));
    
-    soap_mod = WODEN_EXT_REGISTRY_QUERY_EXT_ELEMENT_TYPE(ext_reg, env, 
-            parent_type, element_type);
-
+    /*soap_mod = WODEN_EXT_REGISTRY_QUERY_EXT_ELEMENT_TYPE(ext_reg, env, 
+            parent_type, element_type);*/
+    soap_mod = woden_soap_module_create(env);
+    if(!soap_mod)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
     soap_mod = woden_soap_module_to_ext_element(soap_mod, env);
     WODEN_EXT_ELEMENT_SET_EXT_TYPE(soap_mod, env, element_type);
     soap_mod = woden_soap_module_to_soap_module_element(soap_mod, env);
     WODEN_SOAP_MODULE_ELEMENT_SET_PARENT_ELEMENT(soap_mod, env, parent);
 
+    el = AXIOM_NODE_GET_DATA_ELEMENT(el_node, env);
     ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(el, env, 
             WODEN_ATTR_REF); 
     if(NULL != ref)
@@ -351,10 +357,8 @@ woden_soap_module_deserializer_unmarshall(
     soap_mod = woden_soap_module_to_ext_element(soap_mod, env);
     WODEN_EXT_ELEMENT_SET_REQUIRED(soap_mod, env, required);
 
-    el = AXIOM_NODE_GET_DATA_ELEMENT(el_node, env);
     temp_el = axiom_util_get_first_child_element(el, env, el_node, 
             &temp_el_node);
-
     while (NULL != temp_el && NULL != temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
@@ -380,7 +384,7 @@ woden_soap_module_deserializer_unmarshall(
         temp_el = axiom_util_get_next_sibling_element(temp_el, env, 
                 temp_el_node, &temp_el_node); 
     }
-    
+    soap_mod = woden_soap_module_to_ext_element(soap_mod, env);
     return soap_mod;
 }
 
