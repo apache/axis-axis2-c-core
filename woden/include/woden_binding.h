@@ -135,7 +135,7 @@ struct woden_binding_ops
     set_interface_element) (
             void *binding,
             const axis2_env_t *env,
-            void *interface);
+            void *intface);
 };
 
 union woden_binding_base

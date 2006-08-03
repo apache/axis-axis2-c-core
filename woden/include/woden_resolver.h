@@ -95,4 +95,6 @@ woden_resolver_create(
 #ifdef __cplusplus
 }
 #endif
+
+
 #endif /* WODEN_RESOLVER_H */
