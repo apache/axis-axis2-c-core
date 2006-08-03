@@ -69,8 +69,9 @@ extern "C"
          * @return WSA action string if set, else NULL
          */
         const axis2_char_t* (AXIS2_CALL *
-                get_action)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_action)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets WSA fault to address.
@@ -80,8 +81,9 @@ extern "C"
          * address if set, else NULL
          */
         axis2_endpoint_ref_t* (AXIS2_CALL *
-                get_fault_to)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_fault_to)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets WSA from address.
@@ -91,8 +93,9 @@ extern "C"
          * address if set, else NULL
          */
         axis2_endpoint_ref_t* (AXIS2_CALL *
-                get_from)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_from)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets transport receiver.
@@ -101,8 +104,9 @@ extern "C"
          * @return pointer to transport receiver struct if set, else NULL
          */
         axis2_transport_receiver_t* (AXIS2_CALL *
-                get_transport_receiver)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_transport_receiver)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
 
         /**
@@ -112,8 +116,9 @@ extern "C"
          * @return pointer to transport in struct if set, else NULL
          */
         axis2_transport_in_desc_t* (AXIS2_CALL *
-                get_transport_in)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_transport_in)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets transport in protocol.
@@ -122,8 +127,9 @@ extern "C"
          * @return pointer to transport in protocol string if set, else NULL
          */
         const axis2_char_t* (AXIS2_CALL *
-                get_transport_in_protocol)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_transport_in_protocol)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets message ID.
@@ -132,8 +138,9 @@ extern "C"
          * @return pointer to message ID string if set, else NULL
          */
         const axis2_char_t* (AXIS2_CALL *
-                get_message_id)(const axis2_options_t *options_t,
-                        const axis2_env_t *env);
+                get_message_id)(
+                    const axis2_options_t *options_t,
+                    const axis2_env_t *env);
 
         /**
          * Gets the properties hash map.
@@ -142,8 +149,9 @@ extern "C"
          * @return pointer to properties hash map if set, else NULL
          */
         axis2_hash_t* (AXIS2_CALL *
-                get_properties)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_properties)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets a property corresponding to the given key.
@@ -153,9 +161,10 @@ extern "C"
          * @return value corresponding to the given key
          */
         void* (AXIS2_CALL *
-                get_property)(const axis2_options_t *options,
-                        const axis2_env_t *env,
-                        const axis2_char_t *key);
+                get_property)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const axis2_char_t *key);
 
         /**
          * Gets relates to information.
@@ -164,8 +173,9 @@ extern "C"
          * @return pointer to relates to struct if set, else NULL
          */
         axis2_relates_to_t* (AXIS2_CALL *
-                get_relates_to)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_relates_to)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets WSA reply to address.
@@ -175,8 +185,9 @@ extern "C"
          * address if set, else NULL
          */
         axis2_endpoint_ref_t* (AXIS2_CALL *
-                get_reply_to)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_reply_to)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets transport out.
@@ -185,8 +196,9 @@ extern "C"
          * @return pointer to transport out struct if set, else NULL
          */
         axis2_transport_out_desc_t* (AXIS2_CALL *
-                get_transport_out)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_transport_out)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets transport out protocol.
@@ -195,8 +207,9 @@ extern "C"
          * @return pointer to transport out protocol string if set, else NULL
          */
         const axis2_char_t* (AXIS2_CALL *
-                get_sender_transport_protocol)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_sender_transport_protocol)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets SOAP version URI.
@@ -205,8 +218,9 @@ extern "C"
          * @return string representing SOAP version URI
          */
         const axis2_char_t* (AXIS2_CALL *
-                get_soap_version_uri)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_soap_version_uri)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
 
         /**
@@ -217,8 +231,9 @@ extern "C"
          * @return timeout in milliseconds
          */
         long (AXIS2_CALL *
-                get_timeout_in_milli_seconds)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_timeout_in_milli_seconds)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets WSA to address.
@@ -228,8 +243,9 @@ extern "C"
          * address if set, else NULL
          */
         axis2_endpoint_ref_t* (AXIS2_CALL *
-                get_to)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_to)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets use seperate listner status.
@@ -238,8 +254,9 @@ extern "C"
          * @return AXIS2_TRUE if using seperate listner, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
-                get_use_seperate_listener)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_use_seperate_listener)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Gets the parent options.
@@ -248,8 +265,9 @@ extern "C"
          * @return pointer to the parent options struct if set, else NULL
          */
         axis2_options_t *(AXIS2_CALL *
-                            get_parent)(const axis2_options_t *options,
-                                    const axis2_env_t *env);
+                get_parent)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
         /**
          * Sets the parent options.
          * @param options pointer to options struct
@@ -258,9 +276,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_parent)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        const axis2_options_t *parent);
+                set_parent)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const axis2_options_t *parent);
         /**
          * Sets WSA action
          * @param options pointer to options struct
@@ -269,9 +288,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_action)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        const axis2_char_t *action);
+                set_action)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const axis2_char_t *action);
 
         /**
          * Sets fault to address.
@@ -282,9 +302,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_fault_to)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        axis2_endpoint_ref_t *fault_to);
+                set_fault_to)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    axis2_endpoint_ref_t *fault_to);
 
         /**
          * Sets from address.
@@ -295,9 +316,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_from)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        axis2_endpoint_ref_t *from);
+                set_from)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    axis2_endpoint_ref_t *from);
 
         /**
          * sets from address.
@@ -308,9 +330,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_to)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        axis2_endpoint_ref_t *to);
+                set_to)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    axis2_endpoint_ref_t *to);
         /**
          * Sets transport receiver.
          * @param options pointer to options struct
@@ -320,9 +343,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_transport_receiver)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        axis2_transport_receiver_t *receiver);
+                set_transport_receiver)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    axis2_transport_receiver_t *receiver);
 
         /**
          * Sets transport in description.
@@ -333,9 +357,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_transport_in)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        axis2_transport_in_desc_t *transport_in);
+                set_transport_in)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    axis2_transport_in_desc_t *transport_in);
 
         /**
          * Sets transport in protocol.
@@ -345,9 +370,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_transport_in_protocol)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        const axis2_char_t *transport_in_protocol);
+                set_transport_in_protocol)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const axis2_char_t *transport_in_protocol);
 
         /**
          * Sets message ID.
@@ -357,9 +383,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_message_id)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        const axis2_char_t *message_id);
+                set_message_id)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const axis2_char_t *message_id);
 
 
         /**
@@ -371,9 +398,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_properties)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        axis2_hash_t *properties);
+                set_properties)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    axis2_hash_t *properties);
 
         /**
          * Sets a property with the given key valye.
@@ -384,10 +412,11 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_property)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        const axis2_char_t *property_key,
-                        const void *property);
+                set_property)(  
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const axis2_char_t *property_key,
+                    const void *property);
 
         /**
          * Sets relates to.
@@ -398,9 +427,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_relates_to)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        axis2_relates_to_t *relates_to);
+                set_relates_to)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    axis2_relates_to_t *relates_to);
 
         /**
          * Sets reply to address.
@@ -411,9 +441,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_reply_to)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        axis2_endpoint_ref_t *reply_to);
+                set_reply_to)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    axis2_endpoint_ref_t *reply_to);
 
         /**
          * Sets the transport out description.
@@ -424,9 +455,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
-                set_transport_out)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        axis2_transport_out_desc_t *transport_out);
+                set_transport_out)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    axis2_transport_out_desc_t *transport_out);
 
         /**
          * Sets the sender transport.
@@ -438,10 +470,11 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_sender_transport)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        const axis2_char_t *sender_transport,
-                        axis2_conf_t *conf);
+                set_sender_transport)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const axis2_char_t *sender_transport,
+                    axis2_conf_t *conf);
 
         /**
          * Sets the SOAP version URI.
@@ -453,9 +486,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_soap_version_uri)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        const axis2_char_t *soap_version_uri);
+                set_soap_version_uri)(  
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const axis2_char_t *soap_version_uri);
 
         /**
          * Sets timeout in milli seconds.
@@ -465,9 +499,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_timeout_in_milli_seconds)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        const long timeout_in_milli_seconds);
+                set_timeout_in_milli_seconds)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const long timeout_in_milli_seconds);
 
         /**
          * Sets transport information. Transport information includes the name 
@@ -482,11 +517,12 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_transport_info)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        const axis2_char_t *sender_transport,
-                        const axis2_char_t *receiver_transport,
-                        const axis2_bool_t use_seperate_listener);
+                set_transport_info)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const axis2_char_t *sender_transport,
+                    const axis2_char_t *receiver_transport,
+                    const axis2_bool_t use_seperate_listener);
 
         /**
          * Sets the bool value indicating whether to use a seperate listener or not.
@@ -497,9 +533,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_use_seperate_listener)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        const axis2_bool_t use_seperate_listener);
+                set_use_seperate_listener)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const axis2_bool_t use_seperate_listener);
 
         /**
          * Adds a WSA referance parameter.
@@ -510,9 +547,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                add_reference_parameter)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        axiom_node_t *reference_parameter);
+                add_reference_parameter)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    axiom_node_t *reference_parameter);
 
         /**
          * Gets manage session bool value.
@@ -521,8 +559,9 @@ extern "C"
          * @return AXIS2_TRUE if session is managed, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
-                get_manage_session)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_manage_session)(    
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /**
          * Sets manage session bool value.
@@ -532,9 +571,10 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_manage_session)(axis2_options_t *options,
-                        const axis2_env_t *env,
-                        const axis2_bool_t manage_session);
+                set_manage_session)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env,
+                    const axis2_bool_t manage_session);
 
         /**
          * Gets WSA message information headers.
@@ -544,8 +584,9 @@ extern "C"
          * else NULL
          */
         axis2_msg_info_headers_t* (AXIS2_CALL *
-                get_msg_info_headers)(const axis2_options_t *options,
-                        const axis2_env_t *env);
+                get_msg_info_headers)(
+                    const axis2_options_t *options,
+                    const axis2_env_t *env);
 
         /** 
          * Gets SOAP version.
@@ -602,8 +643,9 @@ extern "C"
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                free)(axis2_options_t *options,
-                        const axis2_env_t *env);
+                free)(
+                    axis2_options_t *options,
+                    const axis2_env_t *env);
     };
 
     /**
