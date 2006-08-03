@@ -88,7 +88,14 @@ int main(int argc, char** argv)
             op_qname, payload);
         
 	if(response)
+    {
+        axis2_char_t *om_str = NULL;
+        
+        om_str = AXIOM_NODE_TO_STRING(response, env);
+        if (om_str)
+            printf("\nReceived OM : %s\n", om_str);
 		printf("status:%s\n", "Success");
+    }
 	else
 		printf("status:%s\n", "Failure");
     if(svc_client)
