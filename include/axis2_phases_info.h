@@ -118,7 +118,7 @@ extern "C"
          */
         axis2_array_list_t *(AXIS2_CALL *
                 get_in_phases)(
-                    axis2_phases_info_t *phases_info,
+                    const axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
         /**
@@ -127,7 +127,7 @@ extern "C"
          */
         axis2_array_list_t *(AXIS2_CALL *
                 get_out_phases)(
-                    axis2_phases_info_t *phases_info,
+                    const axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
         /**
@@ -136,7 +136,7 @@ extern "C"
          */
         axis2_array_list_t *(AXIS2_CALL *
                 get_in_faultphases)(
-                    axis2_phases_info_t *phases_info,
+                    const axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
         /**
@@ -145,7 +145,7 @@ extern "C"
          */
         axis2_array_list_t *(AXIS2_CALL *
                 get_out_faultphases)(
-                    axis2_phases_info_t *phases_info,
+                    const axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
         /**
@@ -154,7 +154,7 @@ extern "C"
          */
         axis2_array_list_t *(AXIS2_CALL *
                 get_op_in_phases)(
-                    axis2_phases_info_t *phases_info,
+                    const axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
         /**
@@ -163,7 +163,7 @@ extern "C"
          */
         axis2_array_list_t *(AXIS2_CALL *
                 get_op_out_phases)(
-                    axis2_phases_info_t *phases_info,
+                    const axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
         /**
@@ -172,7 +172,7 @@ extern "C"
          */
         axis2_array_list_t *(AXIS2_CALL *
                 get_op_in_faultphases)(
-                    axis2_phases_info_t *phases_info,
+                    const axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
         /**
@@ -181,7 +181,7 @@ extern "C"
          */
         axis2_array_list_t *(AXIS2_CALL *
                 get_op_out_faultphases)(
-                    axis2_phases_info_t *phases_info,
+                    const axis2_phases_info_t *phases_info,
                     const axis2_env_t *env);
 
         /**
@@ -212,8 +212,8 @@ extern "C"
      * @return pointer to newly created phases info
      */
     AXIS2_EXTERN axis2_phases_info_t * AXIS2_CALL
-            axis2_phases_info_create (
-                const axis2_env_t *env);
+    axis2_phases_info_create (
+        const axis2_env_t *env);
 
 /**************************** Start of function macros ************************/
 
