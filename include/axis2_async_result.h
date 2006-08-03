@@ -17,15 +17,17 @@
 #ifndef AXIS2_ASYNC_RESULT_H
 #define AXIS2_ASYNC_RESULT_H
 
-/** @defgroup axis2_async_result async result
+/** 
+ * @defgroup axis2_async_result async result
  * @ingroup axis2_client_api
- * Description.
+ * async_result is used to capture the result of an asynchronous invocation.
+ * async_result stores the result in the form of a message context instance,
+ * the user can extract the resulting SOAP envelope from this message context.
  * @{
  */
 
 /**
  * @file axis2_async_result.h
- * @brief axis2 async result interface
  */
 
 #include <axis2_defines.h>
@@ -46,42 +48,48 @@ extern "C"
 
 
     /**
-     * async result ops struct
-     * Encapsulator struct for ops of axis2_async_result
+     * async_result ops struct.
+     * Encapsulator struct for ops of axis2_async_result.
      */
     struct axis2_async_result_ops
     {
         /**
+         * Gets the SOAP envelope stored inside the resulting message context.        
          * @param async_result pointer to async result struct
          * @param env pointer to environment struct
+         * @return pointer to the result SOAP envelope in the message context.
          */
         axiom_soap_envelope_t* (AXIS2_CALL *
                 get_envelope)(
-                    struct axis2_async_result *async_result,
+                    axis2_async_result_t *async_result,
                     const axis2_env_t *env);
 
 
         /**
+         * Gets the result in the form of message context.
          * @param async_result pointer to async result struct
          * @param env pointer to environment struct
+         * @return pointer to result message context
          */
         axis2_msg_ctx_t* (AXIS2_CALL *
                 get_result)(
-                    struct axis2_async_result *async_result,
+                    axis2_async_result_t *async_result,
                     const axis2_env_t *env);
 
         /**
+         * Frees the async result.
          * @param async_result pointer to async result struct
          * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
-                    struct axis2_async_result *async_result,
+                    axis2_async_result_t *async_result,
                     const axis2_env_t *env);
     };
 
     /**
-     *  async result struct
+     *  async result struct.
      */
     struct axis2_async_result
     {
@@ -89,16 +97,17 @@ extern "C"
         axis2_async_result_ops_t *ops;
     };
 
-    /** Creates a async result struct
+    /** Creates an async result struct to help deal with results of asynchronous
+     * invocations.
      * @param env pointer to environment struct
-     * @param result pointer to result
+     * @param result pointer to result message context into which the resulting
+     * SOAP message is to be captured
+     * @return newly created async_result struct
      */
     AXIS2_EXTERN axis2_async_result_t* AXIS2_CALL
     axis2_async_result_create(
         const axis2_env_t *env,
         axis2_msg_ctx_t *result);
-
-    /************************** Start of function macros **************************/
 
 /** Gets the envelope.
     @sa axis2_async_result_ops#get_envelope*/
@@ -114,8 +123,6 @@ extern "C"
     @sa axis2_async_result_ops#free*/
 #define AXIS2_ASYNC_RESULT_FREE(async_result, env) \
       ((async_result)->ops->free (async_result, env))
-
-/************************** End of function macros ****************************/
 
 /** @} */
 #ifdef __cplusplus

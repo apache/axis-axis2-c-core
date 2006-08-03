@@ -5,6 +5,7 @@ libaxis2_clientapi_la_SOURCES = \
                                 callback.c \
                                 listener_manager.c \
                                 callback_recv.c \
+								mep_client.c \
                                 stub.c \
 								options.c \
 								op_client.c \
