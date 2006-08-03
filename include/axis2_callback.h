@@ -59,7 +59,7 @@ extern "C"
         /**
          * This Method is called by Axis2 once the Async Operation is sucessfully completed and the result returns
          * @param callback pointer to callback struct
-	 * @param env pointer to environment struct
+         * @param env pointer to environment struct
          * @param result pointer to result
          */
         axis2_status_t (AXIS2_CALL *
@@ -71,9 +71,9 @@ extern "C"
          * This Method is called by invoke_on_complete.
          * Users could provide this method so that they can define what to be done
          * when the callback returns on completion 
-	 * @param callback pointer to callback struct
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @param callback pointer to callback struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 on_complete)(
@@ -82,7 +82,7 @@ extern "C"
         /**
          * This Method is called by Axis2 once the Async Operation fails and the result returns
          * @param callback pointer to callback struct
-	 * @param env pointer to environment struct
+         * @param env pointer to environment struct
          * @param execption
          */
         axis2_status_t (AXIS2_CALL *
@@ -94,9 +94,9 @@ extern "C"
          * This Method is called by report_error.
          * Users could provide this method so that they can define what to be done
          * when the callback returns an error
-	 * @param callback pointer to callback struct
-	 * @param env pointer to environment struct
-	 * @param execption
+         * @param callback pointer to callback struct
+         * @param env pointer to environment struct
+         * @param execption
          */
         axis2_status_t (AXIS2_CALL *
                 on_error)(
@@ -116,7 +116,7 @@ extern "C"
          *      </pre>
          * </code>
          * @param callback pointer to callback struct
-	 * @param env pointer to environment struct
+         * @param env pointer to environment struct
          * @return
          */
         axis2_bool_t (AXIS2_CALL *
@@ -126,8 +126,8 @@ extern "C"
         /**
          * Method setComplete
          * @param callback pointer to callback struct
-	 * @param env pointer to environment struct
-	 * @param complete
+         * @param env pointer to environment struct
+         * @param complete
          */
         axis2_status_t (AXIS2_CALL *
                 set_complete)(
@@ -136,19 +136,19 @@ extern "C"
                     axis2_bool_t complete);
 
         /**
-	 * @param callback pointer to callback struct
-	 * @param env pointer to environment struct
-	 */
+         * @param callback pointer to callback struct
+         * @param env pointer to environment struct
+         */
         axiom_soap_envelope_t* (AXIS2_CALL *
                 get_envelope)(
                     struct axis2_callback *callback,
                     const axis2_env_t *env);
 
-	/**
-	 * @param callback pointer to callback struct
-	 * @param env pointer to environment struct
-	 * @param envelope pointer to envelope
-	 */
+        /**
+         * @param callback pointer to callback struct
+         * @param env pointer to environment struct
+         * @param envelope pointer to envelope
+         */
         axis2_status_t (AXIS2_CALL *
                 set_envelope)(
                     struct axis2_callback *callback,
@@ -156,63 +156,63 @@ extern "C"
                     axiom_soap_envelope_t *envelope);
 
         /**
-	 * @param callback pointer to callback struct
-	 * @param env pointer to environment struct
-	 */
+         * @param callback pointer to callback struct
+         * @param env pointer to environment struct
+         */
         int (AXIS2_CALL *
                 get_error)(
                     struct axis2_callback *callback,
                     const axis2_env_t *env);
 
         /**
-	 * @param callback pointer to callback struct
-	 * @param env pointer to environment struct
-	 * @param error
-	 */
+         * @param callback pointer to callback struct
+         * @param env pointer to environment struct
+         * @param error
+         */
         axis2_status_t (AXIS2_CALL *
                 set_error)(
                     struct axis2_callback *callback,
                     const axis2_env_t *env,
                     int error);
 
-	/**
-	 * @param callback pointer to callback struct
-	 * @param data pointer to data
-	 */
+        /**
+         * @param callback pointer to callback struct
+         * @param data pointer to data
+         */
         axis2_status_t (AXIS2_CALL *
                 set_data)(
                     struct axis2_callback *callback,
                     void *data);
 
-	/**
-	 * @param callback pointer to callback struct
-	 */
+        /**
+         * @param callback pointer to callback struct
+         */
         void * (AXIS2_CALL *
                 get_data)(
                     struct axis2_callback *callback);
 
-	/**
-	 * @param callback pointer to clalback struct
-	 * @param f
-	 */
+        /**
+         * @param callback pointer to clalback struct
+         * @param f
+         */
         void (AXIS2_CALL *
                 set_on_complete)(
                     struct axis2_callback *callback,
                     on_complete_func_ptr f);
 
-	/**
-	 * @param callback pointer to callback struct
-	 * @param f
-	 */
+        /**
+         * @param callback pointer to callback struct
+         * @param f
+         */
         void (AXIS2_CALL *
                 set_on_error)(
                     struct axis2_callback *callback,
                     on_error_func_ptr f);
 
-	/**
-	 * @param callback pointer to callback struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param callback pointer to callback struct
+         * @param env pointer to environment struct
+         */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     struct axis2_callback *callback,
@@ -232,7 +232,8 @@ extern "C"
      * Creates a callback struct
      * @param env pointer to environment struct
      */
-    AXIS2_EXTERN axis2_callback_t *AXIS2_CALL axis2_callback_create(const axis2_env_t *env);
+    AXIS2_EXTERN axis2_callback_t *AXIS2_CALL axis2_callback_create(
+        const axis2_env_t *env);
 
 /************************** Start of function macros **************************/
 

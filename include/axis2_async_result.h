@@ -19,6 +19,7 @@
 
 /** @defgroup axis2_async_result async result
  * @ingroup axis2_client_api
+ * Description.
  * @{
  */
 
@@ -45,37 +46,37 @@ extern "C"
 
 
     /**
-     * @brief async result ops struct
+     * async result ops struct
      * Encapsulator struct for ops of axis2_async_result
      */
     struct axis2_async_result_ops
     {
-	/**
-	 * @param async_result pointer to async result struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param async_result pointer to async result struct
+         * @param env pointer to environment struct
+         */
         axiom_soap_envelope_t* (AXIS2_CALL *
                 get_envelope)(
-		    struct axis2_async_result *async_result,
+                    struct axis2_async_result *async_result,
                     const axis2_env_t *env);
 
 
-	/**
-	 * @param async_result pointer to async result struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param async_result pointer to async result struct
+         * @param env pointer to environment struct
+         */
         axis2_msg_ctx_t* (AXIS2_CALL *
                 get_result)(
-	            struct axis2_async_result *async_result,
+                    struct axis2_async_result *async_result,
                     const axis2_env_t *env);
 
-	/**
-	 * @param async_result pointer to async result struct
-	 * @param env pointer to environment struct
-	 */
+        /**
+         * @param async_result pointer to async result struct
+         * @param env pointer to environment struct
+         */
         axis2_status_t (AXIS2_CALL *
                 free)(
-		    struct axis2_async_result *async_result,
+                    struct axis2_async_result *async_result,
                     const axis2_env_t *env);
     };
 
@@ -84,19 +85,20 @@ extern "C"
      */
     struct axis2_async_result
     {
-	/** operations of async result */
+        /** operations of async result */
         axis2_async_result_ops_t *ops;
     };
 
-    /** Creates a async result struct 
+    /** Creates a async result struct
      * @param env pointer to environment struct
      * @param result pointer to result
      */
     AXIS2_EXTERN axis2_async_result_t* AXIS2_CALL
-    axis2_async_result_create(const axis2_env_t *env,
-            axis2_msg_ctx_t *result);
+    axis2_async_result_create(
+        const axis2_env_t *env,
+        axis2_msg_ctx_t *result);
 
-/************************** Start of function macros **************************/
+    /************************** Start of function macros **************************/
 
 /** Gets the envelope.
     @sa axis2_async_result_ops#get_envelope*/

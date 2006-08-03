@@ -19,6 +19,7 @@
 
 /** @defgroup axis2_diclient dynamic invocation client
  * @ingroup axis2_client_api
+ * Description.
  * @{
  */
 
@@ -58,11 +59,11 @@ extern "C"
         /**
          * Invoke the operation by passing om node and axis2 operation as 
          * parameters
-	 * @param diclient pointer to diclient struct
-	 * @param env pointer to environment struct
+    	 * @param diclient pointer to diclient struct
+	     * @param env pointer to environment struct
          * @param node pointer to node
          * @param op pointer to axis2 operation
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+	     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 invoke)(
@@ -76,10 +77,10 @@ extern "C"
          * Pumping of wsdl object model from Wsdl Pull Parser into the
          * Axis2 Wsdl Object modle is initiated. Also operation map and
          * endpoint map is populated
-	 * @param diclient pointer to diclient struct
-	 * @param env pointer to environment struct
+	     * @param diclient pointer to diclient struct
+	     * @param env pointer to environment struct
          * @param wsdl_file_name pointer to wsdl file name
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+	     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 init)(
@@ -90,10 +91,10 @@ extern "C"
         /**
          * By passing the operation qualified name and the endpoint qualified
          * name operations action and address is set
-	 * @param diclient pointer to dicient struct
-	 * @param env pointer to environment struct
-	 * @param op_qname pointer to oepration qulified name
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+	     * @param diclient pointer to dicient struct
+	     * @param env pointer to environment struct
+	     * @param op_qname pointer to oepration qulified name
+	     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t *(AXIS2_CALL *
                 set_address_and_action_for_op)(
@@ -104,8 +105,8 @@ extern "C"
 
         /**
          * Return all the endpoints associated with the wsdl
-	 * @param diclient pointer to diclient struct
-	 * @param env pointer to environment struct
+	     * @param diclient pointer to diclient struct
+	     * @param env pointer to environment struct
          * @return table of endpoints associated with the wsdl
          */
         axis2_hash_t *(AXIS2_CALL *
@@ -115,8 +116,8 @@ extern "C"
 
         /**
          * Return all the services associated with the wsdl
-	 * @param diclient pointer to diclient struct
-	 * @param env pointer to environment struct
+	     * @param diclient pointer to diclient struct
+	     * @param env pointer to environment struct
          * @return table of services associated with the wsdl
          */
         axis2_hash_t *(AXIS2_CALL *
@@ -126,8 +127,8 @@ extern "C"
 
         /**
          * Return the all operations associated with the wsdl
-	 * @param diclient pointer to diclient struct
-	 * @param env pointer to environment struct
+	     * @param diclient pointer to diclient struct
+	     * @param env pointer to environment struct
          * @return table of operations associated with the wsdl
          */
         axis2_hash_t *(AXIS2_CALL *
@@ -139,8 +140,8 @@ extern "C"
          * Return the operation parameter's localname. This method
          * can be used in document style operations where operation has
          * only one parameter
-	 * @param diclient pointer to diclient struct
-	 * @param env pointer to environment struct
+	     * @param diclient pointer to diclient struct
+	     * @param env pointer to environment struct
          * @param op_qname pointer to operation qualified name
          * @return parameter's localname
          */
@@ -154,8 +155,8 @@ extern "C"
          * Return the operation parameter's namespace. This method
          * can be used in document style operations where operation has
          * only one parameter
-	 * @param diclient pointer to diclient struct
-	 * @param env pointer to environment struct
+	     * @param diclient pointer to diclient struct
+	     * @param env pointer to environment struct
          * @param op_qname pointer to operation qualified name
          * @return parameter's namespace
          */
@@ -169,8 +170,8 @@ extern "C"
          * Return the set of parameters associated with the operation.
          * This can be used in rpc style operations where operation has
          * multiple parameters.
-	 * @param diclient pointer to diclient struct
-	 * @param env pointer to environment struct
+	     * @param diclient pointer to diclient struct
+	     * @param env pointer to environment struct
          * @param op_qname pointer to operation qualified name
          * @return set of parameters assoicated with the operation
          */
@@ -195,7 +196,8 @@ extern "C"
      * @param env pointer to environment struct
      */
     AXIS2_EXTERN axis2_diclient_t* AXIS2_CALL
-    axis2_diclient_create(const axis2_env_t *env);
+    axis2_diclient_create(
+        const axis2_env_t *env);
 
 /************************** Start of function macros **************************/
 
