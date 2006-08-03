@@ -68,10 +68,10 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Sets the endpont reference.
+         * Sets the endpoint reference.
          * @param stub pointer to stub struct
          * @param env pointer to environment struct
-         * @param enpoint_ref pointer to enpoint reference. stub assumes the 
+         * @param endpoint_ref pointer to endpoint reference. stub assumes the 
          * ownership of the endpoint reference struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
@@ -85,7 +85,7 @@ extern "C"
          * Sets the endpoint reference, represented by a string.
          * @param stub pointer to stub struct
          * @param env pointer to environment struct
-         * @param enpoint_uri pointer to endpoint uri string
+         * @param endpoint_uri pointer to endpoint uri string
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -97,7 +97,7 @@ extern "C"
 
         /**
          * Sets the bool value specifying whether to use a separate listener 
-         * for recieve channel.
+         * for receive channel.
          * @param stub pointer to stub struct
          * @param env pointer to environment struct
          * @param use_separate whether to use a separate listener
@@ -183,7 +183,7 @@ extern "C"
     /**
      * Creates a stub instance.
      * @param env pointer to environment struct
-     * @param endpoint_ref pointer to endpoint reference stuct representing the 
+     * @param endpoint_ref pointer to endpoint reference struct representing the 
      * stub endpoint. Newly created stub assumes ownership of the endpoint
      * @param client_home name of the directory that contains the Axis2/C repository
      * @return pointer to newly created axis2_stub struct
