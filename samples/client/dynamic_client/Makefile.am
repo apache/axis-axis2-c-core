@@ -2,7 +2,7 @@ prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = dynamic_client
 samplesdir=$(prefix)/samples/client/dynamic_client
 samples_DATA=calc_client.c README Makefile.am Makefile.in
-dynamic_client_SOURCES = calc_client.c
+dynamic_client_SOURCES = dynamic_client.c
 
 dynamic_client_LDADD   = $(LDFLAGS) \
                     -L$(AXIS2C_HOME)/lib \
