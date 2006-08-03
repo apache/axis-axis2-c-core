@@ -45,13 +45,13 @@ axis2_stub_set_endpoint_ref (axis2_stub_t *stub,
 axis2_status_t AXIS2_CALL
 axis2_stub_set_endpoint_uri (axis2_stub_t *stub,
                                 const axis2_env_t *env,
-                                axis2_char_t *endpoint_uri);
+                                const axis2_char_t *endpoint_uri);
                         
 /**
  * @param use_separate_transport
  */
 axis2_status_t AXIS2_CALL 
-axis2_stub_set_use_seperate_listener(axis2_stub_t *stub,
+axis2_stub_set_use_separate_listener(axis2_stub_t *stub,
                                 const axis2_env_t *env,
                                 axis2_bool_t use_separate_listener);
 
@@ -59,7 +59,7 @@ axis2_stub_set_use_seperate_listener(axis2_stub_t *stub,
 axis2_status_t AXIS2_CALL
 axis2_stub_engage_module(axis2_stub_t *stub,
                             const axis2_env_t *env,
-                            axis2_char_t *module_name);
+                            const axis2_char_t *module_name);
 
 /**
  * Set the soap version
@@ -71,7 +71,7 @@ axis2_stub_set_soap_version(axis2_stub_t *stub,
                             int soap_version);
 
 
-axis2_char_t *AXIS2_CALL
+const axis2_char_t *AXIS2_CALL
 axis2_stub_get_svc_ctx_id(const axis2_stub_t *stub,
                             const axis2_env_t *env);
 
@@ -117,7 +117,7 @@ axis2_stub_create (const axis2_env_t *env)
     stub_impl->stub.ops->free = axis2_stub_free;
     stub_impl->stub.ops->set_endpoint_ref = axis2_stub_set_endpoint_ref;
     stub_impl->stub.ops->set_endpoint_uri = axis2_stub_set_endpoint_uri;
-    stub_impl->stub.ops->set_use_seperate_listener = axis2_stub_set_use_seperate_listener;
+    stub_impl->stub.ops->set_use_separate_listener = axis2_stub_set_use_separate_listener;
     stub_impl->stub.ops->engage_module = axis2_stub_engage_module;
     stub_impl->stub.ops->set_soap_version = axis2_stub_set_soap_version;
     stub_impl->stub.ops->get_svc_ctx_id = axis2_stub_get_svc_ctx_id;
@@ -252,7 +252,7 @@ axis2_stub_set_endpoint_ref (axis2_stub_t *stub,
 axis2_status_t AXIS2_CALL
 axis2_stub_set_endpoint_uri (axis2_stub_t *stub,
                                 const axis2_env_t *env,
-                                axis2_char_t *endpoint_uri)
+                                const axis2_char_t *endpoint_uri)
 {
     axis2_stub_impl_t *stub_impl = NULL;
     axis2_endpoint_ref_t *endpoint_ref = NULL;
@@ -275,7 +275,7 @@ axis2_stub_set_endpoint_uri (axis2_stub_t *stub,
  * @param use_separate_transport
  */
 axis2_status_t AXIS2_CALL
-axis2_stub_set_use_seperate_listener(axis2_stub_t *stub,
+axis2_stub_set_use_separate_listener(axis2_stub_t *stub,
                                 const axis2_env_t *env,
                                 axis2_bool_t use_separate_listener)
 {
@@ -292,7 +292,7 @@ axis2_stub_set_use_seperate_listener(axis2_stub_t *stub,
 axis2_status_t AXIS2_CALL
 axis2_stub_engage_module(axis2_stub_t *stub,
                             const axis2_env_t *env,
-                            axis2_char_t *module_name)
+                            const axis2_char_t *module_name)
 {
     axis2_stub_impl_t *stub_impl = NULL;
     
@@ -325,7 +325,7 @@ axis2_stub_set_soap_version(axis2_stub_t *stub,
                                  env, soap_version );
 }
 
-axis2_char_t *AXIS2_CALL
+const axis2_char_t *AXIS2_CALL
 axis2_stub_get_svc_ctx_id(const axis2_stub_t *stub,
                             const axis2_env_t *env)
 {
