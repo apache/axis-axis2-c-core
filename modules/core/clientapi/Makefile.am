@@ -3,18 +3,14 @@ noinst_LTLIBRARIES = libaxis2_clientapi.la
 libaxis2_clientapi_la_SOURCES = \
                                 async_result.c \
                                 callback.c \
-                                mep_client.c \
                                 listener_manager.c \
                                 callback_recv.c \
-                                msg_sender.c \
                                 stub.c \
 								options.c \
 								op_client.c \
 								svc_client.c
 
-noinst_HEADERS = callback_recv.h \
-                    axis2_msg_sender.h
-                    
+noinst_HEADERS = callback_recv.h
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl \
