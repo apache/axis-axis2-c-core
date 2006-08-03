@@ -21,7 +21,7 @@
 #include <axis2_options.h>
 #include <axiom_util.h>
 #include <axis2_param.h>
-#include <axis2_client_utils.h>
+#include "axis2_client_utils.h"
 #include <woden_resolver.h>
 #include <woden_nc_name.h>
 #include <woden_desc.h>
@@ -99,9 +99,9 @@ axis2_client_utils_create_axis2_svc(
         int no_of_endpoints = 0;
         int no_of_binding_ops = 0;
         int no_of_interface_msg_refs = 0;
-        axis2_svc = axis2_svc_create(env);
         int i = 0;
         
+        axis2_svc = axis2_svc_create(env);
         wsdl_svcs = WODEN_DESC_GET_SVCS(desc, env);
         if(wsdl_svcs)
             no_of_svcs = AXIS2_ARRAY_LIST_SIZE(wsdl_svcs, env);
@@ -258,12 +258,13 @@ axis2_client_utils_create_axis2_svc(
         void *endpoint = NULL;
         void *binding = NULL;
         void *wsdl_svc = NULL;
-        axis2_svc = axis2_svc_create(env);
         int no_of_svcs = 0;
         int no_of_endpoints = 0;
         int no_of_binding_ops = 0;
         int no_of_interface_msg_refs = 0;
         int i = 0;
+
+        axis2_svc = axis2_svc_create(env);
         
         wsdl_svcs = WODEN_WSDL10_DESC_GET_SVCS(desc, env);
         if(wsdl_svcs)

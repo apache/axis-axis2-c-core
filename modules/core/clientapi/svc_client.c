@@ -207,7 +207,9 @@ axis2_svc_client_create_for_dynamic_invocation(
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     axis2_char_t *svc_grp_name = NULL;
     axis2_hash_t *ops = NULL;
-
+    axis2_char_t *repos_path = NULL;
+    axis2_char_t *wsdl_path = NULL;
+    
     AXIS2_ENV_CHECK(env, NULL);
 
     svc_client_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_svc_client_impl_t));
@@ -227,8 +229,7 @@ axis2_svc_client_create_for_dynamic_invocation(
     svc_client_impl->callback_recv = NULL;   
     svc_client_impl->listener_manager = NULL;
     svc_client_impl->op_client = NULL;
-    axis2_char_t *repos_path = NULL;
-    axis2_char_t *wsdl_path = NULL;
+  
 
 
     /** initialize private data to NULL, create options */
@@ -255,17 +256,17 @@ axis2_svc_client_create_for_dynamic_invocation(
            wsdl_svc_qname, endpoint_name, wsdl_path, svc_client_impl->options);
    if(svc_client_impl->svc)
    {
-       axis2_hash_index_t *i = NULL;
-       void *v = NULL;
-       axis2_op_t *op = NULL;
+        axis2_hash_index_t *i = NULL;
+        void *v = NULL;
+        axis2_op_t *op = NULL;
        
-       ops = AXIS2_SVC_GET_OPS(svc_client_impl->svc, env);
+        ops = AXIS2_SVC_GET_OPS(svc_client_impl->svc, env);
         for (i = axis2_hash_first (ops, env); i; i = axis2_hash_next (env, i))
         {
+            axis2_phases_info_t *info = NULL;
             axis2_hash_this (i, NULL, NULL, &v);
             op = (axis2_op_t *) v;
-            axis2_phases_info_t *info = NULL;
-
+        
             /* Setting operation phase */
             info = AXIS2_CONF_GET_PHASESINFO(svc_client_impl->conf, env);
             AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op);
@@ -342,11 +343,11 @@ axis2_svc_client_create_with_conf_ctx_and_svc(const axis2_env_t *env,
     svc_client_impl->svc = NULL;
     svc_client_impl->conf = NULL;
     svc_client_impl->conf_ctx = NULL;
-   svc_client_impl->svc_ctx = NULL;
+    svc_client_impl->svc_ctx = NULL;
     svc_client_impl->options = NULL;
     svc_client_impl->override_options = NULL;
     svc_client_impl->headers = NULL;
-   svc_client_impl->callback_recv = NULL;   
+    svc_client_impl->callback_recv = NULL;   
     svc_client_impl->listener_manager = NULL;
     svc_client_impl->op_client = NULL;
 
