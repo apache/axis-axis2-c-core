@@ -40,15 +40,18 @@ extern "C"
 #endif
     struct axis2_op;
     struct axis2_svc;
-    struct axis2_disp;
-    struct axis2_disp_ops;
+
+    /** Type name for struct axis2_disp */
+    typedef struct axis2_disp axis2_disp_t;
+    /** Type name for struct axis2_disp_ops */
+    typedef struct axis2_disp_ops axis2_disp_ops_t;
 
     /**
      * Dispatcher ops struct
      * Encapsulator struct for operations of axis2_dispatcher
      *
      */
-    AXIS2_DECLARE_DATA typedef struct axis2_disp_ops
+    AXIS2_DECLARE_DATA struct axis2_disp_ops
     {
         /**
          * @param disp pointer to dispatcher
@@ -56,7 +59,7 @@ extern "C"
          */
         axis2_handler_t* (AXIS2_CALL 
                 *get_base)(
-		            struct axis2_disp *disp,
+		            const axis2_disp_t *disp,
                     const axis2_env_t *env);
 
         /**
@@ -65,7 +68,7 @@ extern "C"
          */
         axis2_qname_t* (AXIS2_CALL 
                 *get_qname)(
-                    struct axis2_disp *disp,
+                    const axis2_disp_t *disp,
                     const axis2_env_t *env);
 
         /**
@@ -108,18 +111,16 @@ extern "C"
                     const axis2_env_t *env,
                     struct axis2_svc *svc);
 
-    }
-    axis2_disp_ops_t;
+    };
 
     /**
      * dispatcher struct
      */
-    typedef struct axis2_disp
+    struct axis2_disp
     {
         /** operations of dispatcher struct */
         axis2_disp_ops_t *ops;
-    }
-    axis2_disp_t;
+    };
 
 
     /**

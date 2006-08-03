@@ -39,11 +39,11 @@ typedef struct axis2_disp_impl
 #define AXIS2_INTF_TO_IMPL(disp) ((axis2_disp_impl_t *)disp)
 
 axis2_handler_t* AXIS2_CALL 
-axis2_disp_get_base(struct axis2_disp *disp, 
+axis2_disp_get_base(const axis2_disp_t *disp, 
                     const axis2_env_t *env);
                     
 axis2_qname_t* AXIS2_CALL 
-axis2_disp_get_qname(struct axis2_disp *disp, 
+axis2_disp_get_qname(const axis2_disp_t *disp, 
                      const axis2_env_t *env);
                      
 axis2_status_t AXIS2_CALL 
@@ -151,7 +151,7 @@ axis2_disp_create(const axis2_env_t *env,
 }
 
 axis2_handler_t* AXIS2_CALL 
-axis2_disp_get_base(struct axis2_disp *disp, 
+axis2_disp_get_base(const axis2_disp_t *disp, 
                     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -159,7 +159,7 @@ axis2_disp_get_base(struct axis2_disp *disp,
 }
 
 axis2_qname_t* AXIS2_CALL 
-axis2_disp_get_qname(struct axis2_disp *disp, 
+axis2_disp_get_qname(const axis2_disp_t *disp, 
                      const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
