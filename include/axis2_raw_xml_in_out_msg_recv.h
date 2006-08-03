@@ -35,19 +35,20 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_raw_xml_in_out_msg_recv raw XML in-out message receiver
- * @ingroup axis2_receivers
- * @{
- */
+    /** @defgroup axis2_raw_xml_in_out_msg_recv raw XML in-out message receiver
+     * @ingroup axis2_receivers
+     * @{
+     */
 
-/**
- * Creates raw xml in out message receiver struct
- * @return pointer to newly created raw xml in out message receiver
- */
-AXIS2_EXTERN axis2_msg_recv_t * AXIS2_CALL 
-axis2_raw_xml_in_out_msg_recv_create(const axis2_env_t *env);
+    /**
+     * Creates raw xml in out message receiver struct
+     * @return pointer to newly created raw xml in out message receiver
+     */
+    AXIS2_EXTERN axis2_msg_recv_t * AXIS2_CALL
+    axis2_raw_xml_in_out_msg_recv_create(
+        const axis2_env_t *env);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }
