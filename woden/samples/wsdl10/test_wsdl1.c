@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
+    axiom_stax_builder_t *om_builder = NULL;
     axis2_char_t *doc_base_uri = NULL;
     axis2_char_t *axis2c_home = NULL;
     woden_resolver_t *resolver = NULL;
@@ -72,6 +73,8 @@ int main(int argc, char *argv[])
     resolver = woden_resolver_create(env);
     
     desc = WODEN_RESOLVER_READ(resolver, env, om_doc, doc_base_uri);
+    AXIS2_FREE(env->allocator, doc_base_uri);
+    WODEN_RESOLVER_FREE(resolver, env);
     intfaces = WODEN_WSDL10_DESC_GET_INTERFACES(desc, env);
     intface = AXIS2_ARRAY_LIST_GET(intfaces, env, 0);
     if (intface)
@@ -169,6 +172,10 @@ int main(int argc, char *argv[])
             printf("Content is:\n");
         }
     }
+    om_builder = AXIOM_DOCUMENT_GET_BUILDER(om_doc, env);
+    AXIOM_STAX_BUILDER_FREE(om_builder, env);
+    WODEN_WSDL10_DESC_FREE(desc, env);
+    axis2_env_free(env);
     return 0;
 }
 
@@ -183,7 +190,7 @@ get_root_element_from_filename(
 
     reader = axiom_xml_reader_create_for_file(env, filename, NULL);
     om_builder = axiom_stax_builder_create(env, reader);
-    doc = axiom_document_create(env, NULL, om_builder); 
+    doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
     AXIOM_DOCUMENT_BUILD_ALL(doc, env);
 
     return doc;    

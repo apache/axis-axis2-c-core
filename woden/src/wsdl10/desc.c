@@ -1045,8 +1045,40 @@ woden_wsdl10_desc_free(
         AXIS2_URI_FREE(desc_impl->f_doc_base_uri, env);
         desc_impl->f_doc_base_uri = NULL;
     }
+    if(desc_impl->f_import_elements)
+    {
+        int i = 0, size = 0;
+
+        size = AXIS2_ARRAY_LIST_SIZE(desc_impl->f_import_elements, env);
+        for(i = 0; i < size; i++)
+        {
+            woden_import_t *import = NULL;
+            
+            import = (woden_import_t *) AXIS2_ARRAY_LIST_GET(desc_impl->
+                    f_import_elements, env, i);
+            WODEN_IMPORT_FREE(import, env);
+        }
+        AXIS2_ARRAY_LIST_FREE(desc_impl->f_import_elements, env);
+        desc_impl->f_import_elements = NULL;
+    }
     /* TODO free f_namespcs */
-    
+    if(desc_impl->f_namespcs)
+    {
+        axis2_hash_index_t *i = NULL;
+        axis2_uri_t *namespc = NULL;
+        void *v = NULL;
+
+        for (i = axis2_hash_first (desc_impl->f_namespcs, env); i; i = 
+                axis2_hash_next (env, i))
+        {
+            axis2_hash_this (i, NULL, NULL, &v);
+            namespc = (axis2_uri_t *) v;
+            AXIS2_URI_FREE(namespc, env);
+        }
+        axis2_hash_free(desc_impl->f_namespcs, env);
+        desc_impl->f_namespcs = NULL;
+    }
+   
     if(desc_impl->super)
     {
         axis2_hash_free(desc_impl->super, env);

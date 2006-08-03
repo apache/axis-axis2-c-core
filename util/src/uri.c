@@ -671,27 +671,27 @@ axis2_uri_resolve_relative(
     /* The trivial bits are everything-but-path */
     if ( uri_impl->scheme == NULL ) 
     {
-        uri_impl->scheme = base_impl->scheme ;
+        uri_impl->scheme = AXIS2_STRDUP(base_impl->scheme, env) ;
     }
     if ( uri_impl->hostinfo == NULL ) 
     {
-        uri_impl->hostinfo = base_impl->hostinfo ;
+        uri_impl->hostinfo = AXIS2_STRDUP(base_impl->hostinfo, env) ;
     }
     if ( uri_impl->user == NULL ) 
     {
-        uri_impl->user = base_impl->user ;
+        uri_impl->user = AXIS2_STRDUP(base_impl->user, env) ;
     }
     if ( uri_impl->password == NULL ) 
     {
-        uri_impl->password = base_impl->password ;
+        uri_impl->password = AXIS2_STRDUP(base_impl->password, env) ;
     }
     if ( uri_impl->hostname == NULL ) 
     {
-        uri_impl->hostname = base_impl->hostname ;
+        uri_impl->hostname = AXIS2_STRDUP(base_impl->hostname, env) ;
     } 
     if ( uri_impl->port_str == NULL ) 
     {
-        uri_impl->port_str = base_impl->port_str ;
+        uri_impl->port_str = AXIS2_STRDUP(base_impl->port_str, env) ;
     }
     if ( uri_impl->hostent == NULL ) 
     {

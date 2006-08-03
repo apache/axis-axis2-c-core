@@ -228,6 +228,7 @@ yomu(
         reader = woden_reader_create(env);
         desc = WODEN_READER_READ_WSDL(reader, env, resolver_impl->root_node, 
                 doc_base_uri); 
+        WODEN_READER_FREE(reader, env);
 
     }
     AXIS2_QNAME_FREE(qname, env);
@@ -241,6 +242,7 @@ yomu(
         reader = woden_wsdl10_reader_create(env);
         desc = WODEN_WSDL10_READER_READ_WSDL(reader, env, resolver_impl->root_node, 
                 doc_base_uri); 
+        WODEN_WSDL10_READER_FREE(reader, env);
     }
     return desc;
 }
