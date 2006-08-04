@@ -256,7 +256,6 @@ AC_CONFIG_FILES([Makefile \
     modules/core/transport/http/server/apache2/Makefile \
     modules/core/deployment/Makefile \
     modules/core/clientapi/Makefile \
-    modules/core/clientapi/diclient/Makefile \
     modules/core/receivers/Makefile \
     modules/core/util/Makefile \
     modules/wsdl/Makefile \
