@@ -41,7 +41,6 @@ rampart_get_actions( const axis2_env_t *env,
                                             
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_get_action_params( const axis2_env_t *env,
-                   axis2_ctx_t *ctx,
                    axis2_param_t *param_action,
                    const axis2_char_t *key);
                         
@@ -112,7 +111,6 @@ rampart_get_actions( const axis2_env_t *env,
 
 axis2_char_t* AXIS2_CALL
 rampart_get_action_params( const axis2_env_t *env,
-                   axis2_ctx_t *ctx,
                    axis2_param_t *param_action,
                    const axis2_char_t *key)
 {

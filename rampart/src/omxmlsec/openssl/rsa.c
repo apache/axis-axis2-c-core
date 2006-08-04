@@ -34,7 +34,7 @@ struct _evp_pkey{
 }
 */
 
-AXIS2_EXTERN int AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 generate_random_key(const axis2_env_t *env, oxs_buffer_ptr buf, int size)
 {
     int ret;
@@ -42,15 +42,15 @@ generate_random_key(const axis2_env_t *env, oxs_buffer_ptr buf, int size)
     if(ret < 0){
         oxs_error(ERROR_LOCATION,
                 OXS_ERROR_DEFAULT, "oxs_buffer_set_size failed %d",size );
-        return (-1);
+        return AXIS2_FAILURE;
     }
     ret = RAND_bytes(buf->data, size);
     if(ret < 0){
         oxs_error(ERROR_LOCATION,
                 OXS_ERROR_DEFAULT, "RAND_bytes failed %d",size );
-        return (-1);
+        return AXIS2_FAILURE;
     }
-    return (0);
+    return AXIS2_SUCCESS;
 }
 
 

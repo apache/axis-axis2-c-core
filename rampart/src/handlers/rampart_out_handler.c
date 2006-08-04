@@ -167,7 +167,7 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
             return AXIS2_FAILURE;
         }
       
-        items= rampart_get_action_params(env, ctx,param_action,RAMPART_ACTION_ITEMS);
+        items= rampart_get_action_params(env,param_action,RAMPART_ACTION_ITEMS);
 
         if(!items)
         {
@@ -220,7 +220,7 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
                 }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, 
                     AXIS2_STRTRIM(env, item, NULL))){
                     printf("OUtHandler : Item is Encrypt\n"); 
-                    enc_status = rampart_crypto_encrypt_message(env, soap_envelope);
+                    enc_status = rampart_crypto_encrypt_message(env,msg_ctx, param_action, soap_envelope);
                     
                 /*Signature*/    
                 }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, 

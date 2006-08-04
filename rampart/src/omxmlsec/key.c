@@ -58,3 +58,26 @@ oxs_key_read_from_file(const axis2_env_t *env,
     
 }
 
+AXIS2_EXTERN oxs_key_ptr AXIS2_CALL
+oxs_key_generate_for_algo(const axis2_env_t *env,
+                            axis2_char_t *key_algo)
+{
+    oxs_key_ptr key = NULL;
+    oxs_buffer_ptr key_buf = NULL;
+    axis2_status_t ret = AXIS2_FAILURE;
+    int size;
+
+    key = oxs_key_create_key(env);
+    
+    /*TODO check algo and then set the key data size))*/
+    key->size = 24;
+        
+    ret = generate_random_key(env, key_buf, key->size);    
+    if(ret == AXIS2_FAILURE){
+         return NULL;
+    }
+
+    key->data = key_buf->data;
+
+    return key;
+}

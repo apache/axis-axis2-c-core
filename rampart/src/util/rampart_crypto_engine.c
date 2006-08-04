@@ -29,10 +29,13 @@
 #include <oxs_token_cipher_value.h>
 #include <oxs_token_key_info.h>
 #include <oxs_token_key_name.h>
+#include <oxs_key.h>
+#include <rampart_action.h>
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_crypto_decrypt_message(const axis2_env_t *env,
-                    /*  struct axis2_msg_ctx *msg_ctx,*/
+                       axis2_msg_ctx_t *msg_ctx,
+                        axis2_param_t *param_action,
                       axiom_soap_envelope_t *soap_envelope )
 {
     axis2_char_t *key = NULL, *key_name = NULL;
@@ -88,7 +91,8 @@ rampart_crypto_decrypt_message(const axis2_env_t *env,
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_crypto_encrypt_message(const axis2_env_t *env,
-                    /*  struct axis2_msg_ctx *msg_ctx,*/
+                      axis2_msg_ctx_t *msg_ctx,
+                      axis2_param_t *param_action,
                       axiom_soap_envelope_t *soap_envelope )
 {
     axis2_char_t *key = NULL, *key_name = NULL;
@@ -100,10 +104,24 @@ rampart_crypto_encrypt_message(const axis2_env_t *env,
     axiom_soap_header_t *header = NULL;
     axis2_char_t *str_to_enc = NULL;
     enc_ctx_ptr enc_ctx = NULL;
-       
+    actions_ptr *actions= NULL;
+    oxs_key_ptr sessionkey = NULL;
 
-    ret = AXIS2_SUCCESS;/*TODO Remove*/
-   
+    /*Populate actions*/ 
+    actions = oxs_ctx_create_actions_ptr(env);
+    ret = oxs_ctx_populate_actions_ptr(env, actions, param_action);   
+    if(ret == AXIS2_FAILURE){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
+            "Actions failure");
+        return AXIS2_FAILURE;
+    }
+
+    /*Generate the session key*/
+    sessionkey = oxs_key_generate_for_algo(env, "actions->encryption_sym_algorithm");
+    sessionkey->name = "sessionkey";
+
+    /*Create the key info*/
+
     /*TODO get the key using callbacks*/ 
     key = "0123456701234567";
     key_name = "KauKey";

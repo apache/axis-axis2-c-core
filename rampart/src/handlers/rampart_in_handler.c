@@ -128,7 +128,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 return AXIS2_FAILURE;
             }
       
-            items= rampart_get_action_params(env, ctx,param_action,RAMPART_ACTION_ITEMS);
+            items= rampart_get_action_params(env, param_action,RAMPART_ACTION_ITEMS);
     
             if(!items)
             {
@@ -157,7 +157,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, AXIS2_STRTRIM(env, item, NULL)) ){
                         /*Do useful to verify encrypt*/       
                         printf("InHandler : Decrypt\n"); 
-                        enc_status = rampart_crypto_decrypt_message(env, soap_envelope);
+                        enc_status = rampart_crypto_decrypt_message(env, msg_ctx, param_action, soap_envelope);
 
                 }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, AXIS2_STRTRIM(env, item, NULL)) ){
                         /*Do useful to verify sign*/       

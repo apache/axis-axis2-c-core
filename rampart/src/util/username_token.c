@@ -70,10 +70,10 @@ rampart_get_password( const axis2_env_t *env,
     }
     
     /*If not check weather there is a callback class specified*/
-    pw_callback_module = rampart_get_action_params(env, ctx, param_action, RAMPART_ACTION_PW_CALLBACK_CLASS);
+    pw_callback_module = rampart_get_action_params(env,  param_action, RAMPART_ACTION_PW_CALLBACK_CLASS);
     if(pw_callback_module)
     {
-        username = rampart_get_action_params(env, ctx, param_action, RAMPART_USER);
+        username = rampart_get_action_params(env,  param_action, RAMPART_USER);
         password = rampart_callback_pw(env, pw_callback_module, username);    
     }
     return password;
@@ -125,8 +125,8 @@ rampart_build_username_token(const axis2_env_t *env,
     axiom_attribute_t *om_attr = NULL;
 
     /*Get values from outflow security*/
-    username = rampart_get_action_params(env, ctx, param_action, RAMPART_USER);
-    password_type= rampart_get_action_params(env, ctx, param_action, RAMPART_PASSWORD_TYPE);
+    username = rampart_get_action_params(env,  param_action, RAMPART_USER);
+    password_type= rampart_get_action_params(env,  param_action, RAMPART_PASSWORD_TYPE);
 
     password = rampart_get_password(env, ctx, param_action);
     
@@ -346,7 +346,7 @@ rampart_validate_username_token(const axis2_env_t *env,
     }
 
     ctx = AXIS2_MSG_CTX_GET_BASE (msg_ctx, env); 
-    pw_callback_module = rampart_get_action_params(env,ctx,param_action,RAMPART_ACTION_PW_CALLBACK_CLASS );
+    pw_callback_module = rampart_get_action_params(env, param_action,RAMPART_ACTION_PW_CALLBACK_CLASS );
 
     password_from_svr = rampart_callback_pw(env,pw_callback_module, username);
    
