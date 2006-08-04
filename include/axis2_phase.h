@@ -52,15 +52,15 @@ extern "C"
 {
 #endif
 
-    struct axis2_phase_ops;
-    struct axis2_phase;
+    typedef struct axis2_phase_ops axis2_phase_ops_t;
+    typedef struct axis2_phase axis2_phase_t;
     struct axis2_msg_ctx;
 
     /**
      * phase ops struct
      * Encapsulator struct for operations of axis2_phase
      */
-    AXIS2_DECLARE_DATA typedef struct axis2_phase_ops
+    struct axis2_phase_ops
     {
         /**
          * Adds given handler to the specified position in the phase array list.
@@ -105,7 +105,7 @@ extern "C"
          */
         axis2_char_t* (AXIS2_CALL *
                 get_name)(
-                    struct axis2_phase *phase,
+                    const axis2_phase_t *phase,
                     const axis2_env_t *env);
 
         /**
@@ -114,7 +114,7 @@ extern "C"
          */
         int (AXIS2_CALL *
                 get_handler_count)( 
-                    struct axis2_phase *phase,
+                    const axis2_phase_t *phase,
                     const axis2_env_t *env);
 
         /**
@@ -201,7 +201,7 @@ extern "C"
          */
         axis2_array_list_t* (AXIS2_CALL *
                 get_handlers)(
-                    struct axis2_phase *phase,
+                    const axis2_phase_t *phase,
                     const axis2_env_t *env);
 
         /**
@@ -227,18 +227,16 @@ extern "C"
                     struct axis2_phase *phase,
                     const axis2_env_t *env);
 
-    }
-    axis2_phase_ops_t;
+    };
 
     /**
      * phase struct
      */
-    typedef struct axis2_phase
+    struct axis2_phase
     {
         /** operations of phase */
         axis2_phase_ops_t *ops;
-    }
-    axis2_phase_t;
+    };
 
 
     /**
