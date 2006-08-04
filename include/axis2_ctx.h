@@ -83,7 +83,7 @@ extern "C"
          */
         axis2_property_t *(AXIS2_CALL *
                 get_property)(
-                    struct axis2_ctx *ctx,
+                    const axis2_ctx_t *ctx,
                     const axis2_env_t *env,
                     const axis2_char_t *key,
                     const axis2_bool_t persistent);
@@ -92,26 +92,26 @@ extern "C"
          * @param ctx pointer to context struct
          * @param env pointer to environment struct
          */
-        axis2_hash_t* (AXIS2_CALL *
+        axis2_hash_t *(AXIS2_CALL *
                 get_non_persistent_map)(
-                    struct axis2_ctx *ctx,
+                    const axis2_ctx_t *ctx,
                     const axis2_env_t *env);
 
         /**
          * @param ctx pointer to context struct
          * @param env pointer to environment struct
          */
-        axis2_hash_t* (AXIS2_CALL *
+        axis2_hash_t *(AXIS2_CALL *
                 get_persistent_map)(
-                    struct axis2_ctx *ctx,
+                    const axis2_ctx_t *ctx,
                     const axis2_env_t *env);
         /**
          * @param ctx pointer to context struct
          * @param env pointer to environment struct
          */
-        axis2_hash_t* (AXIS2_CALL *
+        axis2_hash_t *(AXIS2_CALL *
                 get_properties)(
-                    struct axis2_ctx *ctx,
+                    const axis2_ctx_t *ctx,
                     const axis2_env_t *env);
 
 
@@ -135,7 +135,7 @@ extern "C"
                 set_non_persistent_map)(
                     struct axis2_ctx *ctx,
                     const axis2_env_t *env,
-                    axis2_hash_t* map);
+                    axis2_hash_t *map);
 
         /**
          * @param ctx pointer to context struct
@@ -147,7 +147,7 @@ extern "C"
                 set_persistent_map)(
                     struct axis2_ctx *ctx,
                     const axis2_env_t *env,
-                    axis2_hash_t* map);
+                    axis2_hash_t *map);
     };
 
     /**

@@ -28,56 +28,64 @@ typedef struct axis2_ctx_impl
     axis2_hash_t *persistent_map;
     /*axis2_ctx_t *parent; This will not be required as the responsibility of 
     knwong the parent is  deligated to impl structs */
-} axis2_ctx_impl_t;
+}
+axis2_ctx_impl_t;
 
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(ctx) ((axis2_ctx_impl_t *)ctx)
 
-axis2_property_t* AXIS2_CALL 
-axis2_ctx_get_property(struct axis2_ctx *ctx, 
-                        const axis2_env_t *env, 
-                        const axis2_char_t *key, 
-                        const axis2_bool_t persistent);
+axis2_property_t *AXIS2_CALL 
+axis2_ctx_get_property(
+    const axis2_ctx_t *ctx, 
+    const axis2_env_t *env, 
+    const axis2_char_t *key, 
+    const axis2_bool_t persistent);
 
-axis2_hash_t* AXIS2_CALL 
-axis2_ctx_get_properties(struct axis2_ctx *ctx, 
-                        const axis2_env_t *env);
+axis2_hash_t *AXIS2_CALL 
+axis2_ctx_get_properties(
+    const axis2_ctx_t *ctx, 
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
-axis2_ctx_set_property(struct axis2_ctx *ctx, 
-                       const axis2_env_t *env, 
-                       const axis2_char_t *key, 
-                       axis2_property_t *value, 
-                       const axis2_bool_t persistent);
+axis2_ctx_set_property(
+    struct axis2_ctx *ctx, 
+    const axis2_env_t *env, 
+    const axis2_char_t *key, 
+    axis2_property_t *value, 
+    const axis2_bool_t persistent);
 
-axis2_hash_t* AXIS2_CALL 
-axis2_ctx_get_non_persistent_map(struct axis2_ctx *ctx, 
-                                const axis2_env_t *env);
+axis2_hash_t *AXIS2_CALL 
+axis2_ctx_get_non_persistent_map(
+    const axis2_ctx_t *ctx, 
+    const axis2_env_t *env);
 
                                 
-axis2_hash_t* AXIS2_CALL 
-axis2_ctx_get_persistent_map(struct axis2_ctx *ctx, 
-                            const axis2_env_t *env);
+axis2_hash_t *AXIS2_CALL 
+axis2_ctx_get_persistent_map(
+    const axis2_ctx_t *ctx, 
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_ctx_set_non_persistent_map(
     struct axis2_ctx *ctx, 
     const axis2_env_t *env,
-    axis2_hash_t* map);
+    axis2_hash_t *map);
     
 axis2_status_t AXIS2_CALL
 axis2_ctx_set_persistent_map(
     struct axis2_ctx *ctx, 
     const axis2_env_t *env,
-    axis2_hash_t* map);
+    axis2_hash_t *map);
     
 axis2_status_t AXIS2_CALL 
-axis2_ctx_free (struct axis2_ctx *ctx, 
-                const axis2_env_t *env);
+axis2_ctx_free(
+    struct axis2_ctx *ctx, 
+    const axis2_env_t *env);
                 
 
-AXIS2_EXTERN axis2_ctx_t* AXIS2_CALL
-axis2_ctx_create(const axis2_env_t *env) 
+AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL
+axis2_ctx_create(
+    const axis2_env_t *env) 
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     
@@ -130,11 +138,12 @@ axis2_ctx_create(const axis2_env_t *env)
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_ctx_set_property(struct axis2_ctx *ctx, 
-                       const axis2_env_t *env, 
-                       const axis2_char_t *key, 
-                       axis2_property_t *value, 
-                       const axis2_bool_t persistent) 
+axis2_ctx_set_property(
+    struct axis2_ctx *ctx, 
+    const axis2_env_t *env, 
+    const axis2_char_t *key, 
+    axis2_property_t *value, 
+    const axis2_bool_t persistent) 
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     
@@ -157,11 +166,12 @@ axis2_ctx_set_property(struct axis2_ctx *ctx,
     return AXIS2_SUCCESS;
 }
 
-axis2_property_t* AXIS2_CALL 
-axis2_ctx_get_property(struct axis2_ctx *ctx, 
-                        const axis2_env_t *env, 
-                        const axis2_char_t *key, 
-                        const axis2_bool_t persistent) 
+axis2_property_t *AXIS2_CALL 
+axis2_ctx_get_property(
+    const axis2_ctx_t *ctx, 
+    const axis2_env_t *env, 
+    const axis2_char_t *key, 
+    const axis2_bool_t persistent) 
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     axis2_property_t *ret = NULL;
@@ -189,9 +199,10 @@ axis2_ctx_get_property(struct axis2_ctx *ctx,
     return ret;
 }
 
-axis2_hash_t* AXIS2_CALL 
-axis2_ctx_get_properties(struct axis2_ctx *ctx, 
-                        const axis2_env_t *env) 
+axis2_hash_t *AXIS2_CALL 
+axis2_ctx_get_properties(
+    const axis2_ctx_t *ctx, 
+    const axis2_env_t *env) 
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     
@@ -203,25 +214,28 @@ axis2_ctx_get_properties(struct axis2_ctx *ctx,
 }
 
 
-axis2_hash_t* AXIS2_CALL 
-axis2_ctx_get_non_persistent_map(struct axis2_ctx *ctx, 
-                                 const axis2_env_t *env) 
+axis2_hash_t *AXIS2_CALL 
+axis2_ctx_get_non_persistent_map(
+    const axis2_ctx_t *ctx, 
+    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(ctx)->non_persistent_map;
 }
 
-axis2_hash_t* AXIS2_CALL 
-axis2_ctx_get_persistent_map(struct axis2_ctx *ctx, 
-                             const axis2_env_t *env) 
+axis2_hash_t *AXIS2_CALL 
+axis2_ctx_get_persistent_map(
+    const axis2_ctx_t *ctx, 
+    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(ctx)->persistent_map;
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_ctx_free (struct axis2_ctx *ctx, 
-                const axis2_env_t *env)
+axis2_ctx_free(
+    struct axis2_ctx *ctx, 
+    const axis2_env_t *env)
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     
@@ -297,7 +311,7 @@ axis2_status_t AXIS2_CALL
 axis2_ctx_set_non_persistent_map(
     struct axis2_ctx *ctx, 
     const axis2_env_t *env,
-    axis2_hash_t* map)
+    axis2_hash_t *map)
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     
@@ -340,7 +354,7 @@ axis2_status_t AXIS2_CALL
 axis2_ctx_set_persistent_map(
     struct axis2_ctx *ctx, 
     const axis2_env_t *env,
-    axis2_hash_t* map)
+    axis2_hash_t *map)
 {
     axis2_ctx_impl_t *ctx_impl = NULL;
     

@@ -57,17 +57,17 @@ extern "C"
          * @param disp pointer to dispatcher
          * @param env pointer to environment struct
          */
-        axis2_handler_t* (AXIS2_CALL 
-                *get_base)(
-                  const axis2_disp_t *disp,
+        axis2_handler_t *(AXIS2_CALL *
+                get_base)(
+                    const axis2_disp_t *disp,
                     const axis2_env_t *env);
 
         /**
          * @param disp pointer to dispatcher
          * @param env pointer to environment struct
          */
-        axis2_qname_t* (AXIS2_CALL 
-                *get_qname)(
+        axis2_qname_t *(AXIS2_CALL *
+                get_qname)(
                     const axis2_disp_t *disp,
                     const axis2_env_t *env);
 
@@ -76,18 +76,18 @@ extern "C"
          * @param env pointer to environment struct
          * @param qname pointer to qname
          */
-        axis2_status_t (AXIS2_CALL 
-                *set_qname)(
+        axis2_status_t (AXIS2_CALL *
+                set_qname)(
                     struct axis2_disp *disp,
                     const axis2_env_t *env, 
-                  axis2_qname_t *qname);
+                    axis2_qname_t *qname);
 
         /**
          * @param disp pointer to dispatcher
          * @param env pointer to environment struct
          */
-        axis2_status_t (AXIS2_CALL 
-                *free)(
+        axis2_status_t (AXIS2_CALL *
+                free)(
                     struct axis2_disp *disp,
                     const axis2_env_t *env);
         /**
@@ -95,8 +95,8 @@ extern "C"
          * @param msg_ctx pointer to message context 
          * @param env pointer to environment struct
          */
-        struct axis2_svc* (AXIS2_CALL 
-                *find_svc)(
+        struct axis2_svc *(AXIS2_CALL *
+                find_svc)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
         /**
@@ -105,8 +105,8 @@ extern "C"
          * @param env pointer to environment struct
          * @param svc pointer to service
          */
-        struct axis2_op *(AXIS2_CALL 
-                *find_op)(
+        struct axis2_op *(AXIS2_CALL *
+                find_op)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_svc *svc);
@@ -149,7 +149,7 @@ extern "C"
      * Creates the addressing dispatcher.
      * @param env pointer to environment struct
      */
-    axis2_disp_t* AXIS2_CALL 
+    axis2_disp_t *AXIS2_CALL 
     axis2_addr_disp_create(
         const axis2_env_t *env);
 
@@ -157,7 +157,7 @@ extern "C"
      * Creates the request uri dispatcher.
      * @param env pointer to environment struct
      */
-    axis2_disp_t* AXIS2_CALL 
+    axis2_disp_t *AXIS2_CALL 
     axis2_req_uri_disp_create(
         const axis2_env_t *env);
 
@@ -165,7 +165,7 @@ extern "C"
      * Creates the soap body dispatcher.
      * @param env pointer to environment struct
      */
-    axis2_disp_t* AXIS2_CALL 
+    axis2_disp_t *AXIS2_CALL 
     axiom_soap_body_disp_create(
         const axis2_env_t *env);
 
@@ -173,7 +173,7 @@ extern "C"
      * Creates the soap action dispatcher.
      * @param env pointer to environment struct
      */
-    axis2_disp_t* AXIS2_CALL 
+    axis2_disp_t *AXIS2_CALL 
     axiom_soap_action_disp_create(
         const axis2_env_t *env);
 

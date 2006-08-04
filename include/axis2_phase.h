@@ -103,7 +103,7 @@ extern "C"
          * @param env pointer to environment struct
          * @return returns the phase name.
          */
-        axis2_char_t* (AXIS2_CALL *
+        axis2_char_t *(AXIS2_CALL *
                 get_name)(
                     const axis2_phase_t *phase,
                     const axis2_env_t *env);
@@ -126,7 +126,7 @@ extern "C"
                 set_first_handler)(
                     struct axis2_phase *phase,
                     const axis2_env_t *env,
-                    axis2_handler_t * handler);
+                    axis2_handler_t *handler);
         /**
          * @param phase pointer to phase
          * @param env pointer to environment struct
@@ -136,7 +136,7 @@ extern "C"
                 set_last_handler)(  
                     struct axis2_phase *phase,
                     const axis2_env_t *env,
-                    axis2_handler_t * handler);
+                    axis2_handler_t *handler);
         /**
          * @param phase pointer to phase
          * @param env pointer to environment struct
@@ -146,7 +146,7 @@ extern "C"
                 add_handler_desc)(
                     struct axis2_phase *phase,
                     const axis2_env_t *env,
-                    axis2_handler_desc_t * handler_desc);
+                    axis2_handler_desc_t *handler_desc);
         /**
          * @param phase pointer to phaes
          * @param env pointer to environment struct
@@ -192,14 +192,14 @@ extern "C"
                 insert_handler_desc)(
                     struct axis2_phase *phase,
                     const axis2_env_t *env,
-                    axis2_handler_desc_t * handler_desc);
+                    axis2_handler_desc_t *handler_desc);
 
         /**
          * To get the all the handlers in the phase
          * @param phase pointer to phase
          * @param env pointer to environment struct
          */
-        axis2_array_list_t* (AXIS2_CALL *
+        axis2_array_list_t *(AXIS2_CALL *
                 get_handlers)(
                     const axis2_phase_t *phase,
                     const axis2_env_t *env);
@@ -244,7 +244,7 @@ extern "C"
      * @param env pointer to environment struct
      * @param phase_name pointer to phase name
      */
-    AXIS2_EXTERN axis2_phase_t* AXIS2_CALL
+    AXIS2_EXTERN axis2_phase_t *AXIS2_CALL
     axis2_phase_create(
             const axis2_env_t *env,
             const axis2_char_t *phase_name);

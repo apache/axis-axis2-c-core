@@ -77,13 +77,13 @@ axis2_conf_add_svc_grp(
     const axis2_env_t *env,
     axis2_svc_grp_t *svc_grp);
 
-axis2_svc_grp_t * AXIS2_CALL 
+axis2_svc_grp_t *AXIS2_CALL 
 axis2_conf_get_svc_grp(
     const axis2_conf_t *conf, 
     const axis2_env_t *env,
     axis2_char_t *svc_grp_name);
 
-axis2_hash_t * AXIS2_CALL
+axis2_hash_t *AXIS2_CALL
 axis2_conf_get_svc_grps(
     const axis2_conf_t *conf, 
     const axis2_env_t *env);
@@ -94,11 +94,11 @@ axis2_conf_add_svc(
     const axis2_env_t *env,
     axis2_svc_t *svc);
 
-axis2_svc_t * AXIS2_CALL 
+axis2_svc_t *AXIS2_CALL 
 axis2_conf_get_svc(
     const axis2_conf_t *conf, 
     const axis2_env_t *env,
-    axis2_char_t* svc_name);
+    axis2_char_t *svc_name);
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_remove_svc(
@@ -112,13 +112,13 @@ axis2_conf_add_param(
     const axis2_env_t *env, 
     axis2_param_t *param);
 
-axis2_param_t * AXIS2_CALL
+axis2_param_t *AXIS2_CALL
 axis2_conf_get_param(
     const axis2_conf_t *conf, 
     const axis2_env_t *env,
     const axis2_char_t *name);
 
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_params(
     const axis2_conf_t *conf, 
     const axis2_env_t *env);
@@ -144,7 +144,7 @@ split_svc_name(
     axis2_char_t *svc_name, 
     axis2_char_t **svc_name_st);
       
-axis2_transport_in_desc_t * AXIS2_CALL
+axis2_transport_in_desc_t *AXIS2_CALL
 axis2_conf_get_transport_in(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -156,7 +156,7 @@ axis2_conf_add_transport_in(
     const axis2_env_t *env,
     axis2_transport_in_desc_t *transport);
 
-axis2_transport_out_desc_t * AXIS2_CALL
+axis2_transport_out_desc_t *AXIS2_CALL
 axis2_conf_get_transport_out(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -168,12 +168,12 @@ axis2_conf_add_transport_out(
     const axis2_env_t *env,
     axis2_transport_out_desc_t *transport);
 
-axis2_hash_t * AXIS2_CALL
+axis2_hash_t *AXIS2_CALL
 axis2_conf_get_transports_in(
     const axis2_conf_t *conf,
     const axis2_env_t *env);
 
-axis2_hash_t * AXIS2_CALL
+axis2_hash_t *AXIS2_CALL
 axis2_conf_get_transports_out(
     const axis2_conf_t *conf,
     const axis2_env_t *env);   
@@ -184,27 +184,27 @@ axis2_conf_get_module(
     const axis2_env_t *env,
     axis2_qname_t *qname);
                                         
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_engaged_modules(
     const axis2_conf_t *conf,
     const axis2_env_t *env);
 
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_in_phases_upto_and_including_post_dispatch(
     const axis2_conf_t *conf,
     const axis2_env_t *env);
 
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_outflow(
     const axis2_conf_t *conf,
     const axis2_env_t *env);
 
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_in_faultflow(
     const axis2_conf_t *conf,
     const axis2_env_t *env);
 
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_out_faultflow(
     const axis2_conf_t *conf,
     const axis2_env_t *env);                                        
@@ -261,7 +261,7 @@ axis2_conf_set_out_phases(
     const axis2_env_t *env,
     axis2_array_list_t *out_phases);
 
-axis2_array_list_t* AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_out_phases(
     const axis2_conf_t *conf,
     const axis2_env_t *env);
@@ -324,13 +324,13 @@ axis2_conf_set_repos(
     const axis2_env_t *env,
     axis2_char_t *repos_path);
                         
-axis2_char_t * AXIS2_CALL
+axis2_char_t *AXIS2_CALL
 axis2_conf_get_default_module_version(
     const axis2_conf_t *conf, 
     const axis2_env_t *env, 
-    const axis2_char_t* module_name);
+    const axis2_char_t *module_name);
                                     
-axis2_module_desc_t* AXIS2_CALL
+axis2_module_desc_t *AXIS2_CALL
 axis2_conf_get_default_module(
     const axis2_conf_t *conf,
     const axis2_env_t *env, 
@@ -352,7 +352,7 @@ axis2_conf_engage_module_with_version(
 
 /************************** End of function prototypes ************************/
 
-axis2_conf_t * AXIS2_CALL 
+axis2_conf_t *AXIS2_CALL 
 axis2_conf_create (
     const axis2_env_t *env)
 {
@@ -1099,7 +1099,7 @@ axis2_conf_add_svc_grp(
    return AXIS2_SUCCESS;
 }
 
-axis2_svc_grp_t * AXIS2_CALL 
+axis2_svc_grp_t *AXIS2_CALL 
 axis2_conf_get_svc_grp(
     const axis2_conf_t *conf, 
     const axis2_env_t *env,
@@ -1120,7 +1120,7 @@ axis2_conf_get_svc_grp(
             svc_grp_name, AXIS2_HASH_KEY_STRING));
 }
 
-axis2_hash_t * AXIS2_CALL
+axis2_hash_t *AXIS2_CALL
 axis2_conf_get_svc_grps(
     const axis2_conf_t *conf, 
     const axis2_env_t *env) 
@@ -1184,7 +1184,7 @@ axis2_conf_add_svc(
    return status;
 }
 
-axis2_svc_t * AXIS2_CALL 
+axis2_svc_t *AXIS2_CALL 
 axis2_conf_get_svc (
     const axis2_conf_t *conf, 
     const axis2_env_t *env,
@@ -1239,7 +1239,7 @@ axis2_conf_add_param (
     return status;
 }
 
-axis2_param_t * AXIS2_CALL
+axis2_param_t *AXIS2_CALL
 axis2_conf_get_param (
     const axis2_conf_t *conf, 
     const axis2_env_t *env,
@@ -1260,7 +1260,7 @@ axis2_conf_get_param (
    
 }
 
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_params (
     const axis2_conf_t *conf, 
     const axis2_env_t *env)
@@ -1285,7 +1285,7 @@ axis2_conf_is_param_locked (
     return (NULL != param  && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env));
 }
 
-axis2_transport_in_desc_t * AXIS2_CALL
+axis2_transport_in_desc_t *AXIS2_CALL
 axis2_conf_get_transport_in(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -1337,7 +1337,7 @@ axis2_conf_add_transport_in(
     
 }
 
-axis2_transport_out_desc_t * AXIS2_CALL
+axis2_transport_out_desc_t *AXIS2_CALL
 axis2_conf_get_transport_out(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
@@ -1388,7 +1388,7 @@ axis2_conf_add_transport_out(
     
 }
 
-axis2_hash_t * AXIS2_CALL
+axis2_hash_t *AXIS2_CALL
 axis2_conf_get_transports_in(
     const axis2_conf_t *conf,
     const axis2_env_t *env) 
@@ -1450,7 +1450,7 @@ axis2_conf_get_module(
  * Function get_engadged_modules
  * @return  axis2_array_list_t*
  */
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_engaged_modules(
     const axis2_conf_t *conf,
     const axis2_env_t *env) 
@@ -1459,7 +1459,7 @@ axis2_conf_get_engaged_modules(
     return AXIS2_INTF_TO_IMPL(conf)->engaged_modules;
 }
 
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_in_phases_upto_and_including_post_dispatch(
     const axis2_conf_t *conf,
     const axis2_env_t *env) 
@@ -1469,7 +1469,7 @@ axis2_conf_get_in_phases_upto_and_including_post_dispatch(
         in_phases_upto_and_including_post_dispatch;
 }
 
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_outflow(
     const axis2_conf_t *conf,
     const axis2_env_t *env) 
@@ -1483,7 +1483,7 @@ axis2_conf_get_outflow(
  * Function get_in_fault_flow
  * @return axis2_array_list_t*
  */
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_in_faultflow(
     const axis2_conf_t *conf,
     const axis2_env_t *env) 
@@ -1495,7 +1495,7 @@ axis2_conf_get_in_faultflow(
 /**
  * @return ArrayList
  */
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_out_faultflow(
     const axis2_conf_t *conf,
     const axis2_env_t *env) 
@@ -1504,7 +1504,7 @@ axis2_conf_get_out_faultflow(
     return AXIS2_INTF_TO_IMPL(conf)->out_faultphases;
 }
 
-axis2_hash_t * AXIS2_CALL
+axis2_hash_t *AXIS2_CALL
 axis2_conf_get_transports_out(
     const axis2_conf_t *conf,
     const axis2_env_t *env) 
@@ -1732,7 +1732,7 @@ axis2_conf_set_out_phases(
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t* AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_out_phases(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
@@ -2175,11 +2175,11 @@ axis2_conf_set_dep_engine(
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t * AXIS2_CALL
+axis2_char_t *AXIS2_CALL
 axis2_conf_get_default_module_version(
     const axis2_conf_t *conf, 
     const axis2_env_t *env, 
-    const axis2_char_t* module_name)
+    const axis2_char_t *module_name)
 {
     axis2_hash_t *def_ver_map = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -2193,7 +2193,7 @@ axis2_conf_get_default_module_version(
     return axis2_hash_get(def_ver_map, module_name, AXIS2_HASH_KEY_STRING);
 }
 
-axis2_module_desc_t* AXIS2_CALL
+axis2_module_desc_t *AXIS2_CALL
 axis2_conf_get_default_module(
     const axis2_conf_t *conf,
     const axis2_env_t *env, 

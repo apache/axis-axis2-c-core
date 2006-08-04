@@ -53,7 +53,7 @@ extern "C"
          * @param disp_checker pointer to dispatcher checker
          * @param env pointer to environment struct
          */
-        axis2_handler_t* (AXIS2_CALL *
+        axis2_handler_t *(AXIS2_CALL *
                 get_base)(
                     const axis2_disp_checker_t *disp_checker,
                     const axis2_env_t *env);
@@ -63,7 +63,7 @@ extern "C"
          * @param disp_checker pointer to dispatcher checker
          * @param env pointer to environment struct
          */
-        axis2_qname_t* (AXIS2_CALL *
+        axis2_qname_t *(AXIS2_CALL *
                 get_qname)(
                    const axis2_disp_checker_t *disp_checker,
                     const axis2_env_t *env);
@@ -105,7 +105,7 @@ extern "C"
      * @param env pointer to environment struct
      * @param qname pointer to qname, it can be NULL
      */
-    AXIS2_EXTERN axis2_disp_checker_t* AXIS2_CALL
+    AXIS2_EXTERN axis2_disp_checker_t *AXIS2_CALL
     axis2_disp_checker_create(
         const axis2_env_t *env,
         axis2_qname_t *qname);

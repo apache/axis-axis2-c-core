@@ -67,7 +67,7 @@ axis2_status_t AXIS2_CALL
 axis2_phases_info_set_out_faultphases(
     axis2_phases_info_t *phases_info,
     const axis2_env_t *env,
-    axis2_array_list_t * out_faultphases);
+    axis2_array_list_t *out_faultphases);
 
 axis2_array_list_t *AXIS2_CALL 
 axis2_phases_info_get_in_phases(
@@ -117,7 +117,7 @@ axis2_phases_info_set_op_phases(
                                     
 /***************************** End of function headers ************************/
 
-axis2_phases_info_t * AXIS2_CALL 
+axis2_phases_info_t *AXIS2_CALL 
 axis2_phases_info_create (
     const axis2_env_t *env)
 {
@@ -311,7 +311,7 @@ axis2_status_t AXIS2_CALL
 axis2_phases_info_set_out_faultphases(
     axis2_phases_info_t *phases_info,
     const axis2_env_t *env,
-    axis2_array_list_t * out_faultphases) 
+    axis2_array_list_t *out_faultphases) 
 {
     axis2_phases_info_impl_t *phases_info_impl = NULL;
     
@@ -378,7 +378,7 @@ axis2_phases_info_get_op_in_phases(
     int i = 0; 
     int size = 0;
     axis2_char_t *phase_name = NULL;
-    axis2_array_list_t * op_in_phases = NULL; 
+    axis2_array_list_t *op_in_phases = NULL; 
     axis2_status_t status = AXIS2_FAILURE;    
     
     AXIS2_ENV_CHECK(env, NULL);
@@ -455,7 +455,7 @@ axis2_phases_info_get_op_out_phases(
     int i = 0; 
     int size = 0;
     axis2_char_t *phase_name = NULL;
-    axis2_array_list_t * op_out_phases = NULL;
+    axis2_array_list_t *op_out_phases = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, NULL);
@@ -559,7 +559,7 @@ axis2_phases_info_get_op_in_faultphases(
     int size = 0;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *phase_name = NULL;
-    axis2_array_list_t * op_in_faultphases = NULL;
+    axis2_array_list_t *op_in_faultphases = NULL;
     struct axis2_phase *phase = NULL;
     
     AXIS2_ENV_CHECK(env, NULL); 
@@ -620,7 +620,7 @@ axis2_phases_info_get_op_out_faultphases(
     int size = 0;
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *phase_name = NULL;
-    axis2_array_list_t * op_out_faultphases = NULL;
+    axis2_array_list_t *op_out_faultphases = NULL;
     struct axis2_phase *phase = NULL;
         
     AXIS2_ENV_CHECK(env, NULL);

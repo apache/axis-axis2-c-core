@@ -39,12 +39,12 @@ axis2_disp_impl_t;
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(disp) ((axis2_disp_impl_t *)disp)
 
-axis2_handler_t* AXIS2_CALL 
+axis2_handler_t *AXIS2_CALL 
 axis2_disp_get_base(
     const axis2_disp_t *disp, 
     const axis2_env_t *env);
                     
-axis2_qname_t* AXIS2_CALL 
+axis2_qname_t *AXIS2_CALL 
 axis2_disp_get_qname(
     const axis2_disp_t *disp, 
     const axis2_env_t *env);
@@ -58,23 +58,23 @@ axis2_disp_set_qname(
                      
 axis2_status_t AXIS2_CALL 
 axis2_disp_free (
-    struct axis2_disp * disp, 
+    struct axis2_disp *disp, 
     const axis2_env_t *env);
                  
-axis2_svc_t* AXIS2_CALL 
+axis2_svc_t *AXIS2_CALL 
 axis2_disp_find_svc(
-    axis2_msg_ctx_t * msg_ctx,
+    axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env);
                     
-struct axis2_op* AXIS2_CALL 
+struct axis2_op *AXIS2_CALL 
 axis2_disp_find_op(
-    axis2_msg_ctx_t * msg_ctx,
+    axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env,
     struct axis2_svc *svc);
                    
 
 
-axis2_disp_t* AXIS2_CALL 
+axis2_disp_t *AXIS2_CALL 
     axis2_disp_create(
     const axis2_env_t *env, 
 axis2_qname_t *qname) 
@@ -158,7 +158,7 @@ axis2_qname_t *qname)
     return &(disp_impl->disp);
 }
 
-axis2_handler_t* AXIS2_CALL 
+axis2_handler_t *AXIS2_CALL 
 axis2_disp_get_base(
     const axis2_disp_t *disp, 
     const axis2_env_t *env)
@@ -167,7 +167,7 @@ axis2_disp_get_base(
     return AXIS2_INTF_TO_IMPL(disp)->base;
 }
 
-axis2_qname_t* AXIS2_CALL 
+axis2_qname_t *AXIS2_CALL 
 axis2_disp_get_qname(
     const axis2_disp_t *disp, 
     const axis2_env_t *env)
@@ -243,7 +243,7 @@ axis2_disp_invoke(
 
 axis2_status_t AXIS2_CALL 
 axis2_disp_free (
-    struct axis2_disp * disp, 
+    struct axis2_disp *disp, 
     const axis2_env_t *env)
 {
     axis2_disp_impl_t *disp_impl = NULL;
@@ -289,9 +289,9 @@ axis2_disp_free (
  * @param messageContext
  * @return
  */
-axis2_svc_t* AXIS2_CALL 
+axis2_svc_t *AXIS2_CALL 
 axis2_disp_find_svc(
-    axis2_msg_ctx_t * msg_ctx,
+    axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env) 
 {
     return NULL;
@@ -304,9 +304,9 @@ axis2_disp_find_svc(
  * @param msg_ctx
  * @return
  */
-struct axis2_op* AXIS2_CALL 
+struct axis2_op *AXIS2_CALL 
 axis2_disp_find_op(
-    axis2_msg_ctx_t * msg_ctx,
+    axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env,
     struct axis2_svc *svc)
 {
