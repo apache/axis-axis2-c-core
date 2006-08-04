@@ -30,21 +30,25 @@ typedef struct axis2_async_result_impl
 #define AXIS2_INTF_TO_IMPL(async_result) ((axis2_async_result_impl_t *)async_result)
 
 
-axiom_soap_envelope_t* AXIS2_CALL 
-axis2_async_result_get_envelope(struct axis2_async_result *async_result, 
-                                const axis2_env_t *env);
+axiom_soap_envelope_t *AXIS2_CALL 
+axis2_async_result_get_envelope(
+    axis2_async_result_t *async_result, 
+    const axis2_env_t *env);
                                 
-axis2_msg_ctx_t* AXIS2_CALL 
-axis2_async_result_get_result(struct axis2_async_result *async_result, 
-                              const axis2_env_t *env);
+axis2_msg_ctx_t *AXIS2_CALL 
+axis2_async_result_get_result(
+    axis2_async_result_t *async_result, 
+    const axis2_env_t *env);
                               
 axis2_status_t AXIS2_CALL 
-axis2_async_result_free (struct axis2_async_result *async_result, 
-                         const axis2_env_t *env);
+axis2_async_result_free (
+    axis2_async_result_t *async_result, 
+    const axis2_env_t *env);
 
-axis2_async_result_t* AXIS2_CALL 
-axis2_async_result_create(const axis2_env_t *env, 
-                          axis2_msg_ctx_t *result) 
+axis2_async_result_t *AXIS2_CALL 
+axis2_async_result_create(
+    const axis2_env_t *env, 
+    axis2_msg_ctx_t *result) 
 {
     axis2_async_result_impl_t *async_result_impl = NULL;
     
@@ -88,9 +92,10 @@ axis2_async_result_create(const axis2_env_t *env,
     return &(async_result_impl->async_result);
 }
 
-axiom_soap_envelope_t* AXIS2_CALL 
-axis2_async_result_get_envelope(struct axis2_async_result *async_result, 
-                                const axis2_env_t *env)
+axiom_soap_envelope_t *AXIS2_CALL 
+axis2_async_result_get_envelope(
+    axis2_async_result_t *async_result, 
+    const axis2_env_t *env)
 {
     axis2_async_result_impl_t *async_result_impl = NULL;
         
@@ -106,17 +111,19 @@ axis2_async_result_get_envelope(struct axis2_async_result *async_result,
     return NULL;
 }
 
-axis2_msg_ctx_t* AXIS2_CALL 
-axis2_async_result_get_result(struct axis2_async_result *async_result, 
-                              const axis2_env_t *env)
+axis2_msg_ctx_t *AXIS2_CALL 
+axis2_async_result_get_result(
+    axis2_async_result_t *async_result, 
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(async_result)->result;
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_async_result_free (struct axis2_async_result *async_result, 
-                         const axis2_env_t *env)
+axis2_async_result_free (
+    axis2_async_result_t *async_result, 
+    const axis2_env_t *env)
 {
     axis2_async_result_impl_t *async_result_impl = NULL;
     
@@ -130,7 +137,8 @@ axis2_async_result_free (struct axis2_async_result *async_result,
         async_result_impl->async_result.ops = NULL;
     }
     
-    /*if (async_result_impl->result)
+    /* We have a shallow copy here, so it is not appropriate to free it here.
+    if (async_result_impl->result)
     {
         AXIS2_MSG_CTX_FREE(async_result_impl->result, env);
         async_result_impl->result = NULL;
