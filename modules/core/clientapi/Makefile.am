@@ -1,4 +1,3 @@
-SUBDIRS = $(DICLIENT_DIR) 
 noinst_LTLIBRARIES = libaxis2_clientapi.la
 libaxis2_clientapi_la_SOURCES = \
                                 async_result.c \
@@ -20,5 +19,3 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/xml_schema/include\
 			@AXIOMINC@ \
 			@UTILINC@ 
-
-EXTRA_DIST=diclient
