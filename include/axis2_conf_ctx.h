@@ -68,7 +68,7 @@ extern "C"
          */
         axis2_ctx_t* (AXIS2_CALL *
                 get_base)(
-                    struct axis2_conf_ctx *conf_ctx,
+                    const axis2_conf_ctx_t *conf_ctx,
                     const axis2_env_t *env);
 
         /**
@@ -77,7 +77,7 @@ extern "C"
          */
         struct axis2_conf* (AXIS2_CALL *
                 get_conf)(
-                    struct axis2_conf_ctx *conf_ctx,
+                    const axis2_conf_ctx_t *conf_ctx,
                     const axis2_env_t *env);
 
         /**
@@ -86,7 +86,7 @@ extern "C"
          */
         axis2_hash_t* (AXIS2_CALL *
                 get_op_ctx_map)(
-                    struct axis2_conf_ctx *conf_ctx,
+                    const axis2_conf_ctx_t *conf_ctx,
                     const axis2_env_t *env);
 
         /**
@@ -95,7 +95,7 @@ extern "C"
          */
         axis2_hash_t* (AXIS2_CALL *
                 get_svc_ctx_map)(
-                    struct axis2_conf_ctx *conf_ctx,
+                    const axis2_conf_ctx_t *conf_ctx,
                     const axis2_env_t *env);
 
         /**
@@ -104,7 +104,7 @@ extern "C"
          */
         axis2_hash_t* (AXIS2_CALL *
                 get_svc_grp_ctx_map)(
-                    struct axis2_conf_ctx *conf_ctx,
+                    const axis2_conf_ctx_t *conf_ctx,
                     const axis2_env_t *env);
 
         /**
@@ -130,7 +130,7 @@ extern "C"
          */
         struct axis2_op_ctx* (AXIS2_CALL *
                 get_op_ctx)(
-                    struct axis2_conf_ctx *conf_ctx,
+                    const axis2_conf_ctx_t *conf_ctx,
                     const axis2_env_t *env,
                     axis2_char_t *message_id);
 
@@ -157,7 +157,7 @@ extern "C"
          */
         struct axis2_svc_ctx* (AXIS2_CALL *
                 get_svc_ctx)(
-                    struct axis2_conf_ctx *conf_ctx,
+                    const axis2_conf_ctx_t *conf_ctx,
                     const axis2_env_t *env,
                     axis2_char_t *svc_id);
 
@@ -184,7 +184,7 @@ extern "C"
          */
         struct axis2_svc_grp_ctx* (AXIS2_CALL *
                 get_svc_grp_ctx)(
-                    struct axis2_conf_ctx *conf_ctx,
+                    const axis2_conf_ctx_t *conf_ctx,
                     const axis2_env_t *env,
                     axis2_char_t *svc_grp_id);
 
@@ -196,7 +196,7 @@ extern "C"
          */
         axis2_char_t* (AXIS2_CALL *
                 get_root_dir)(
-                    struct axis2_conf_ctx *conf_ctx,
+                    const axis2_conf_ctx_t *conf_ctx,
                     const axis2_env_t *env);
 
         /**
