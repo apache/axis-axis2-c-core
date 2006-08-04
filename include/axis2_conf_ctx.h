@@ -220,7 +220,7 @@ extern "C"
                     struct axis2_conf_ctx *conf_ctx,
                     const axis2_env_t *env,
                     struct axis2_conf *conf);
-	
+   
         /**
          * @param conf_ctx pointer to configuration context
          * @param env pointer to environment struct

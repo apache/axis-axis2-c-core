@@ -155,7 +155,7 @@ extern "C"
      */
     struct axis2_ctx
     {
-	/** operations of context struct */
+   /** operations of context struct */
         axis2_ctx_ops_t *ops;
     };
 

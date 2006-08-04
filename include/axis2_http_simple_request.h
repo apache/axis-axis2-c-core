@@ -55,145 +55,145 @@ extern "C"
     AXIS2_DECLARE_DATA struct axis2_http_simple_request_ops
     {
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    */
         axis2_http_request_line_t* (AXIS2_CALL *
-	        get_request_line)(
-		    axis2_http_simple_request_t *simple_request,
+           get_request_line)(
+          axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 * @param request_line pointer to request line
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    * @param request_line pointer to request line
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
-	        set_request_line)(
-		    axis2_http_simple_request_t *simple_request,
+           set_request_line)(
+          axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env,
                     axis2_http_request_line_t *request_line);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 * @param name pointer to name
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    * @param name pointer to name
+    */
         axis2_bool_t (AXIS2_CALL *
-	        contains_header)(
+           contains_header)(
                     axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env,
                     const axis2_char_t *name);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    */
         axis2_array_list_t* (AXIS2_CALL *
                 get_headers)(
                     axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 * @param str pointer to str
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    * @param str pointer to str
+    */
         axis2_http_header_t* (AXIS2_CALL *
                 get_first_header)(
                     axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env, 
-		    const axis2_char_t *str);
+          const axis2_char_t *str);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 * @param str pointer to str
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    * @param str pointer to str
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 remove_headers)(
                     axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env, 
-		    const axis2_char_t *str);
+          const axis2_char_t *str);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 * @param header pointer to header
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    * @param header pointer to header
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 add_header)(
                     axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env, 
-		    axis2_http_header_t *header);
+          axis2_http_header_t *header);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    */
         const axis2_char_t* (AXIS2_CALL *
-	        get_content_type)(
+           get_content_type)(
                     axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    */
         const axis2_char_t* (AXIS2_CALL *
                 get_charset)(
                     axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    */
         axis2_ssize_t (AXIS2_CALL *
                 get_content_length)(
                     axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    */
         axis2_stream_t* (AXIS2_CALL *
                 get_body)(
                     axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 * @param buf double pointer to buf
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    * @param buf double pointer to buf
+    */
         axis2_ssize_t (AXIS2_CALL *
                 get_body_bytes)(
                     axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env, 
-		    char **buf);
+          char **buf);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 * @param str pointer to str
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    * @param str pointer to str
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 set_body_string)(
                     axis2_http_simple_request_t *simple_request,
                     const axis2_env_t *env, 
-		    axis2_char_t *str);
+          axis2_char_t *str);
 
         /**
-	 * @param simple_request pointer to simple request
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param simple_request pointer to simple request
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_http_simple_request_t *simple_request,

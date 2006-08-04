@@ -59,19 +59,19 @@ extern "C"
     AXIS2_DECLARE_DATA struct axis2_transport_out_desc_ops
     {
         /** 
-	 * De-allocate memory
-	 * @param transport_out_dec pointer to transport out description
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * De-allocate memory
+    * @param transport_out_dec pointer to transport out description
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *
-	        free)(
+           free)(
                     axis2_transport_out_desc_t *transport_out_desc,
                     const axis2_env_t *env);
 
         /**
-	 * @param transport_out pointer to transport_out
-	 * @param env pointer to environment struct
+    * @param transport_out pointer to transport_out
+    * @param env pointer to environment struct
          */
         axis2_qname_t *(AXIS2_CALL *
                 get_qname)(
@@ -79,9 +79,9 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-	 * @param transport_out pointer to transport_out
-	 * @param env pointer to environment struct
-	 * @param qname pointer to qname
+    * @param transport_out pointer to transport_out
+    * @param env pointer to environment struct
+    * @param qname pointer to qname
          */
         axis2_status_t (AXIS2_CALL *
                 set_qname)(
@@ -89,42 +89,42 @@ extern "C"
                     const axis2_env_t *env,
                     axis2_qname_t *qname);
 
-	/**
-	 * @param transport_out pointer to transport_out
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param transport_out pointer to transport_out
+    * @param env pointer to environment struct
+    */
         struct axis2_flow *(AXIS2_CALL *
                 get_outflow)(
                     struct axis2_transport_out_desc *transport_out,
                     const axis2_env_t *env);
 
-	/**
-	 * @param transport_out pointer to transport_out
-	 * @param env pointer to environment struct
-	 * @param outflow pointer to out flow
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+   /**
+    * @param transport_out pointer to transport_out
+    * @param env pointer to environment struct
+    * @param outflow pointer to out flow
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 set_outflow)(
                     struct axis2_transport_out_desc *transport_out,
                     const axis2_env_t *env,
                     struct axis2_flow *outflow);
 
-	/**
-	 * @param transport_out pointer to transport_out
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param transport_out pointer to transport_out
+    * @param env pointer to environment struct
+    */
         struct axis2_flow *(AXIS2_CALL *
                 get_faultflow)(
                     struct axis2_transport_out_desc *transport_out,
                     const axis2_env_t *env);
 
-	/**
-	 * @param transport_out pointer to transport_out
-	 * @param env pointer to environment struct
-	 * @param faultflow pointer to faultflow
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+   /**
+    * @param transport_out pointer to transport_out
+    * @param env pointer to environment struct
+    * @param faultflow pointer to faultflow
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 set_faultflow)(
                     struct axis2_transport_out_desc *transport_out,
@@ -132,8 +132,8 @@ extern "C"
                     struct axis2_flow *faultflow);
 
         /**
-	 * @param transport_out pointer to transport_out
-	 * @param env pointer to environment struct
+    * @param transport_out pointer to transport_out
+    * @param env pointer to environment struct
          */
         axis2_transport_sender_t *(AXIS2_CALL *
                 get_sender)(
@@ -141,10 +141,10 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-	 * @param transport_out pointer to transport_out
-	 * @param env pointer to environment struct
-	 * @param sender pointer to sender
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * @param transport_out pointer to transport_out
+    * @param env pointer to environment struct
+    * @param sender pointer to sender
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_sender)(
@@ -153,75 +153,75 @@ extern "C"
                     axis2_transport_sender_t *sender);
 
         /**
-	 * @param transport_out pointer to transport_out
-	 * @param env pointer to environment struct
-	 */
+    * @param transport_out pointer to transport_out
+    * @param env pointer to environment struct
+    */
         struct axis2_phase * (AXIS2_CALL *
                 get_out_phase)(
                     struct axis2_transport_out_desc *transport_out,
                     const axis2_env_t *env);
 
-	/**
-	 * @param transport_out pointer to transport_out 
-	 * @param env pointer to environment struct
-	 * @param out_phase pointer to out phase
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+   /**
+    * @param transport_out pointer to transport_out 
+    * @param env pointer to environment struct
+    * @param out_phase pointer to out phase
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 set_out_phase)(
                     struct axis2_transport_out_desc *transport_out,
                     const axis2_env_t *env,
                     struct axis2_phase *out_phase);
 
-	/**
-	 * @param transport_out  pointer to transport_out
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param transport_out  pointer to transport_out
+    * @param env pointer to environment struct
+    */
         struct axis2_phase *(AXIS2_CALL *
                 get_faultphase)(
                     struct axis2_transport_out_desc *transport_out,
                     const axis2_env_t *env);
 
-	/**
-	 * @param transport_out pointer to transport_out
-	 * @param env pointer to environment struct
-	 * @param faultphase pointer to fault phase
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+   /**
+    * @param transport_out pointer to transport_out
+    * @param env pointer to environment struct
+    * @param faultphase pointer to fault phase
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 set_faultphase)(
                     struct axis2_transport_out_desc *transport_out,
                     const axis2_env_t *env,
                     struct axis2_phase *faultphase);
 
-	/**
-	 * @param transport_out_desc pointer to tarnsport out description
-	 * @param env pointer to environment struct
-	 * @param param pointer to param
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+   /**
+    * @param transport_out_desc pointer to tarnsport out description
+    * @param env pointer to environment struct
+    * @param param pointer to param
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 add_param)(
                     axis2_transport_out_desc_t *transport_out_desc,
                     const axis2_env_t *env,
                     axis2_param_t *param);
 
-	/**
-	 * @param transport_out_desc pointer to transport out description
-	 * @param env pointer to environment struct
-	 * @param param_name pointer to parameter name
-	 */
+   /**
+    * @param transport_out_desc pointer to transport out description
+    * @param env pointer to environment struct
+    * @param param_name pointer to parameter name
+    */
         axis2_param_t *(AXIS2_CALL *
                 get_param)(
                     axis2_transport_out_desc_t *transport_out_desc,
                     const axis2_env_t *env,
                     axis2_char_t *param_name);
 
-	/**
-	 * @param transport_out_desc pointer to transport out description
-	 * @param env pointer to environment struct
-	 * @param param_name pointer to parameter name
-	 */
+   /**
+    * @param transport_out_desc pointer to transport out description
+    * @param env pointer to environment struct
+    * @param param_name pointer to parameter name
+    */
         axis2_bool_t (AXIS2_CALL *
                 is_param_locked)(
                     axis2_transport_out_desc_t *transport_out_desc,
@@ -249,7 +249,7 @@ extern "C"
     AXIS2_EXTERN axis2_transport_out_desc_t * AXIS2_CALL
     axis2_transport_out_desc_create_with_qname (
             const axis2_env_t *env, 
-	    axis2_qname_t *qname);
+       axis2_qname_t *qname);
 
 /*************************** Function macros **********************************/
 

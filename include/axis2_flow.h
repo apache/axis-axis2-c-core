@@ -56,9 +56,9 @@ extern "C"
     struct axis2_flow_ops
     {
         /** Deallocate memory
-	 * @param flow pointer to flow
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * @param flow pointer to flow
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -67,10 +67,10 @@ extern "C"
 
         /**
          * Add handler description
-	 * @param flow pointer to flow
-	 * @param env pointer to environment struct
+    * @param flow pointer to flow
+    * @param env pointer to environment struct
          * @param handler handler description
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_handler)(
@@ -80,8 +80,8 @@ extern "C"
 
         /**
          * Get handler
-	 * @param flow pointer to flow
-	 * @param env pointer to environment struct
+    * @param flow pointer to flow
+    * @param env pointer to environment struct
          * @param index index of the handler
          * @return handler description
          */
@@ -93,8 +93,8 @@ extern "C"
 
         /**
          * Get handler count
-	 * @param flow pointer to flow
-	 * @param env pointer to environment struct
+    * @param flow pointer to flow
+    * @param env pointer to environment struct
          * @return handler count
          */
         int (AXIS2_CALL *

@@ -59,7 +59,7 @@ extern "C"
          */
         axis2_handler_t* (AXIS2_CALL 
                 *get_base)(
-		            const axis2_disp_t *disp,
+                  const axis2_disp_t *disp,
                     const axis2_env_t *env);
 
         /**
@@ -80,7 +80,7 @@ extern "C"
                 *set_qname)(
                     struct axis2_disp *disp,
                     const axis2_env_t *env, 
-		            axis2_qname_t *qname);
+                  axis2_qname_t *qname);
 
         /**
          * @param disp pointer to dispatcher

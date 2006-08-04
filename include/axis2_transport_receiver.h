@@ -65,50 +65,50 @@ extern "C"
     AXIS2_DECLARE_DATA struct axis2_transport_receiver_ops
     {
         /**
-	 * De-allocate memory
-	 * @param transport_receiver pointer to transport receiver
-	 * @param env pointer to environment struct
+    * De-allocate memory
+    * @param transport_receiver pointer to transport receiver
+    * @param env pointer to environment struct
         */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_transport_receiver_t *transport_receiver,
                     const axis2_env_t *env);
 
-	/**
-	 * @param transport_receiver
-	 * @param env pointer to environmnet struct
-	 */
+   /**
+    * @param transport_receiver
+    * @param env pointer to environmnet struct
+    */
         axis2_status_t (AXIS2_CALL *
                 start)(
                     axis2_transport_receiver_t *transport_receiver,
                     const axis2_env_t *env);
 
-	/**
-	 * @param transport_receiver pointer to transport receiver
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param transport_receiver pointer to transport receiver
+    * @param env pointer to environment struct
+    */
         axis2_status_t (AXIS2_CALL *
                 stop)(
                     axis2_transport_receiver_t *transport_receiver,
                     const axis2_env_t *env);
 
-	/**
-	 * @param tranport_receiver pointer to transport receiver
-	 * @param env pointer to environmnet struct
-	 * @param svc_name pointer to service name
-	 */
+   /**
+    * @param tranport_receiver pointer to transport receiver
+    * @param env pointer to environmnet struct
+    * @param svc_name pointer to service name
+    */
         axis2_endpoint_ref_t* (AXIS2_CALL *
                 get_reply_to_epr)(
                     axis2_transport_receiver_t *transport_receiver,
                     const axis2_env_t *env,
                     axis2_char_t *svc_name);
 
-	/**
-	 * @param transport_receiver pointer to transport receiver
-	 * @param env pointer to environment struct
-	 * @param conf_ctx pointer to configuratoin context
-	 * @param intrasport_in pointer to transport_in
-	 */
+   /**
+    * @param transport_receiver pointer to transport receiver
+    * @param env pointer to environment struct
+    * @param conf_ctx pointer to configuratoin context
+    * @param intrasport_in pointer to transport_in
+    */
         axis2_status_t (AXIS2_CALL *
                 init) (
                     axis2_transport_receiver_t *transport_receiver,
@@ -117,20 +117,20 @@ extern "C"
                     struct axis2_transport_in_desc *transport_in);
 
 
-	/**
-	 * @param server pointer to server
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param server pointer to server
+    * @param env pointer to environment struct
+    */
         struct axis2_conf_ctx* (AXIS2_CALL *
                 get_conf_ctx)(
                     axis2_transport_receiver_t *server,
                     const axis2_env_t *env);
 
 
-	/**
-	 * @param server pointer to server
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param server pointer to server
+    * @param env pointer to environment struct
+    */
         axis2_bool_t (AXIS2_CALL *
                 is_running)(
                     axis2_transport_receiver_t *server,

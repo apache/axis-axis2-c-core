@@ -28,7 +28,7 @@ build_om_programatically(axis2_env_t *env);
 
 int main(int argc, char** argv)
 {
-	axis2_env_t *env = NULL;
+   axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
     axis2_allocator_t *allocator = NULL;
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 
 
     build_om_programatically(env);
-	return 0;
+   return 0;
 }
 
 /* build SOAP request message content using OM */

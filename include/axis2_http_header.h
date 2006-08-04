@@ -52,37 +52,37 @@ extern "C"
     AXIS2_DECLARE_DATA struct axis2_http_header_ops
     {
         /**
-	 * @param header pointer to header
-	 * @param env pointer to environment struct
-	 */
+    * @param header pointer to header
+    * @param env pointer to environment struct
+    */
         axis2_char_t* (AXIS2_CALL *
                 to_external_form)(
                     axis2_http_header_t *header,
                     const axis2_env_t *env);
 
         /**
-	 * @param header pointer to header
-	 * @param env pointer to environment struct
-	 */
+    * @param header pointer to header
+    * @param env pointer to environment struct
+    */
         axis2_char_t* (AXIS2_CALL *
                 get_name)(
                     axis2_http_header_t *header,
                     const axis2_env_t *env);
 
         /**
-	 * @param header pointer to header
-	 * @param env pointer to environment struct
-	 */
+    * @param header pointer to header
+    * @param env pointer to environment struct
+    */
         axis2_char_t* (AXIS2_CALL *
                 get_value)(
                     axis2_http_header_t *header,
                     const axis2_env_t *env);
 
         /**
-	 * @param header pointer to header
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param header pointer to header
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_http_header_t *header,
@@ -117,7 +117,7 @@ extern "C"
     AXIS2_EXTERN axis2_http_header_t * AXIS2_CALL AXIS2_CALL
     axis2_http_header_create_by_str (
         const axis2_env_t *env, 
-	const axis2_char_t *str);
+   const axis2_char_t *str);
 
 /************************** Start of function macros **************************/
 

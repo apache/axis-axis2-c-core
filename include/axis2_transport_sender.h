@@ -58,9 +58,9 @@ extern "C"
     AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
     {
         /** De-allocate memory
-	 * @param transport_sender pointer to transport sender
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * @param transport_sender pointer to transport sender
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -70,10 +70,10 @@ extern "C"
         /**
          * Initialize
          * @param transport_sender pointer to transport sender
-	 * @param env pointer to environment
-	 * @param conf_ctx pointer to configuration context
-	 * @param transport_out pointer to transport_out
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * @param env pointer to environment
+    * @param conf_ctx pointer to configuration context
+    * @param transport_out pointer to transport_out
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 init)(
@@ -85,9 +85,9 @@ extern "C"
         /**
          * Clean up
          * @param transport_sender pointer to transport sender
-	 * @param env pointer to environmnet struct
-	 * @param msg_ctx pointer to message context
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * @param env pointer to environmnet struct
+    * @param msg_ctx pointer to message context
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 cleanup)(
@@ -98,9 +98,9 @@ extern "C"
         /**
          * Invoke
          * @param transport_sender pointer to transport sender
-	 * @param env pointer to environment struct
-	 * @param msg_ctx pointer to message context
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * @param env pointer to environment struct
+    * @param msg_ctx pointer to message context
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 invoke)(
@@ -117,7 +117,7 @@ extern "C"
      */
     AXIS2_DECLARE_DATA struct axis2_transport_sender
     {
-	/** operations of axis transport sender */
+   /** operations of axis transport sender */
         axis2_transport_sender_ops_t *ops;
     };
 

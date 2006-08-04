@@ -50,7 +50,7 @@ extern "C"
     typedef struct axis2_svc_skeleton_ops axis2_svc_skeleton_ops_t;
     /** Type name for struct axis2_svc_skeleton */
     typedef struct axis2_svc_skeleton axis2_svc_skeleton_t;
-	
+   
     /**
      *service skeleton ops struct
      * struct for 
@@ -60,38 +60,38 @@ extern "C"
     {
 
         /*
-	 * @param svc_skeleton pointer to svc_skeleton struct
-	 * @param env pointer to environment struct
-	 */
+    * @param svc_skeleton pointer to svc_skeleton struct
+    * @param env pointer to environment struct
+    */
         int (AXIS2_CALL *
                 init)(
                     axis2_svc_skeleton_t *svc_skeleton,
                     const axis2_env_t *env);
 
         /*
-	 * @param svc_skeli pointer to svc_skeli struct
-	 * @param env pointer to environment struct
-	 */
+    * @param svc_skeli pointer to svc_skeli struct
+    * @param env pointer to environment struct
+    */
         int (AXIS2_CALL *
                 free)(
                     axis2_svc_skeleton_t *svc_skeli,
                     const axis2_env_t *env);
 
         /*
-	 * @param svc_skeli pointer to svc_skeli struct
-	 * @param env pointer to environment struct
-	 */
+    * @param svc_skeli pointer to svc_skeli struct
+    * @param env pointer to environment struct
+    */
         int (AXIS2_CALL *
                 free_void_arg)(
                     void *svc_skeli,
                     const axis2_env_t *env);
 
         /*
-	 * @param svc_skeli pointer to svc_skeli struct
-	 * @param env pointer to environment struct
-	 * @param node pointer to node struct
-	 * @param msg_ctx pointer to message context struct
-	 */
+    * @param svc_skeli pointer to svc_skeli struct
+    * @param env pointer to environment struct
+    * @param node pointer to node struct
+    * @param msg_ctx pointer to message context struct
+    */
         axiom_node_t *(AXIS2_CALL*
                 invoke)(
                     axis2_svc_skeleton_t *svc_skeli,
@@ -100,10 +100,10 @@ extern "C"
                     axis2_msg_ctx_t *msg_ctx);
 
         /*
-	 * @param svc_skeli pointer to svc_skeli struct
-	 * @param env pointer to environment struct
-	 * @param node pointer to node struct
-	 */
+    * @param svc_skeli pointer to svc_skeli struct
+    * @param env pointer to environment struct
+    * @param node pointer to node struct
+    */
         axiom_node_t *(AXIS2_CALL*
                 on_fault)(
                     axis2_svc_skeleton_t *svc_skeli,

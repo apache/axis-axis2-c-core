@@ -53,7 +53,7 @@ oxs_errors_get_msg_by_code(int code)
 AXIS2_EXTERN int AXIS2_CALL
 oxs_errors_get_code(unsigned int pos) {
     if(pos < sizeof(oxs_errors_table) / sizeof(oxs_errors_table[0])) {
-	    return(oxs_errors_table[pos].code);
+       return(oxs_errors_table[pos].code);
     }
     return(0);
 }
@@ -61,20 +61,20 @@ oxs_errors_get_code(unsigned int pos) {
 AXIS2_EXTERN const char* AXIS2_CALL
 oxs_errors_get_msg(unsigned int pos) {
     if(pos < sizeof(oxs_errors_table) / sizeof(oxs_errors_table[0])) {
-	    return(oxs_errors_table[pos].message);
+       return(oxs_errors_table[pos].message);
     }
     return(NULL);
 }
 
-AXIS2_EXTERN void	AXIS2_CALL
+AXIS2_EXTERN void   AXIS2_CALL
 oxs_error(const char* file, int line, const char* func, 
-  	    int code, const char* msg, ...) 
+         int code, const char* msg, ...) 
 {
     const char* error_msg = NULL;
     char value[AXIS2_LEN_VALUE+1];
     va_list ap;
     
-    error_msg = oxs_errors_get_msg_by_code(code);	    
+    error_msg = oxs_errors_get_msg_by_code(code);       
     /*TODO Log instead of printf*/
 
     va_start(ap, msg);

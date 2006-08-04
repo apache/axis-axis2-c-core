@@ -44,7 +44,7 @@ process_for_wsdl2(
 
 int main(int argc, char** argv)
 {
-	axis2_env_t *env = NULL;
+   axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
     axis2_allocator_t *allocator = NULL;
@@ -58,7 +58,7 @@ int main(int argc, char** argv)
     env->log->level = AXIS2_LOG_LEVEL_TRACE;
     axis2_error_init();
 
-	if (argc <= 1)
+   if (argc <= 1)
     {
       printf("Usage: print <wsdl_File_Name>\n");
       return 1;
@@ -83,7 +83,7 @@ process_for_wsdl1(
         axis2_char_t *wsdl_uri_str)
 {
     axiom_node_t *payload = NULL;
-	axiom_node_t *response = NULL;
+   axiom_node_t *response = NULL;
     axis2_uri_t *wsdl_uri = NULL;
     axis2_qname_t *op_qname = NULL;
     axis2_svc_client_t *svc_client = NULL;
@@ -111,7 +111,7 @@ process_for_wsdl1(
                 env, NULL, wsdl_uri, wsdl_svc_qname, "Calculator", client_home);
     if(!svc_client)
     {
-		printf("Service client is NULL \n");
+      printf("Service client is NULL \n");
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Service client is NULL");
         return 1;
     }
@@ -121,23 +121,23 @@ process_for_wsdl1(
     response = AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, 
             op_qname, payload);
         
-	if(response)
+   if(response)
     {
         axis2_char_t *om_str = NULL;
         
         om_str = AXIOM_NODE_TO_STRING(response, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
-		printf("status:%s\n", "Success");
+      printf("status:%s\n", "Success");
     }
-	else
-		printf("status:%s\n", "Failure");
+   else
+      printf("status:%s\n", "Failure");
     if(svc_client)
     {
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
-	return 0;
+   return 0;
 }
 
 static int
@@ -146,7 +146,7 @@ process_for_wsdl2(
         axis2_char_t *wsdl_uri_str)
 {
     axiom_node_t *payload = NULL;
-	axiom_node_t *response = NULL;
+   axiom_node_t *response = NULL;
     axis2_uri_t *wsdl_uri = NULL;
     axis2_qname_t *op_qname = NULL;
     axis2_svc_client_t *svc_client = NULL;
@@ -173,7 +173,7 @@ process_for_wsdl2(
                 env, NULL, wsdl_uri, wsdl_svc_qname, "Calculator", client_home);
     if(!svc_client)
     {
-		printf("Service client is NULL \n");
+      printf("Service client is NULL \n");
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Service client is NULL");
         return 1;
     }
@@ -183,23 +183,23 @@ process_for_wsdl2(
     response = AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, 
             op_qname, payload);
         
-	if(response)
+   if(response)
     {
         axis2_char_t *om_str = NULL;
         
         om_str = AXIOM_NODE_TO_STRING(response, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
-		printf("status:%s\n", "Success");
+      printf("status:%s\n", "Success");
     }
-	else
-		printf("status:%s\n", "Failure");
+   else
+      printf("status:%s\n", "Failure");
     if(svc_client)
     {
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
-	return 0;
+   return 0;
 }
 
 

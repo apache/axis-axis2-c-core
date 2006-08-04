@@ -13,8 +13,8 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  *
- *	
- * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)	
+ *   
+ * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)   
  */
 
 #include "guththila_xml_pull_parser.h"
@@ -34,7 +34,7 @@ guththila_xml_pull_parser_createXmlStreamWriter (axis2_env_t *env, guththila_xml
       p->xsw->depth = axis2_stack_create (env);
       p->xsw->next = 0;
       p->xsw->offset = 0;
-      p->xsw->last = 1024;	/* size of the buffer */
+      p->xsw->last = 1024;   /* size of the buffer */
     }
   else
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_EMPTY_ARGUMENTS);
@@ -88,14 +88,14 @@ guththila_xml_pull_parser_writeEndElement (axis2_env_t *env, guththila_xml_pull_
     {
       guththila_xml_pull_parser_closeStartElement (env, p);
       if (element)
-	{
-	  guththila_xml_pull_parser_writeToBuffer (env, p, "</");
-	  guththila_xml_pull_parser_writeToBuffer (env, p, element);
-	  guththila_xml_pull_parser_writeToBuffer (env, p, ">");
-	  guththila_xml_pull_parser_close_depth_element (env, p);
-	}
+   {
+     guththila_xml_pull_parser_writeToBuffer (env, p, "</");
+     guththila_xml_pull_parser_writeToBuffer (env, p, element);
+     guththila_xml_pull_parser_writeToBuffer (env, p, ">");
+     guththila_xml_pull_parser_close_depth_element (env, p);
+   }
       else
-	guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_EMPTY_ARGUMENTS);
+   guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_EMPTY_ARGUMENTS);
     }
 }
 
@@ -127,16 +127,16 @@ guththila_xml_pull_parser_writeStartElement (axis2_env_t *env, guththila_xml_pul
       guththila_xml_pull_parser_closeStartElement (env, p);
       size = AXIS2_STACK_SIZE (p->xsw->element, env);
       if (size)
-	{
-	  element = AXIS2_STACK_GET_AT (p->xsw->element, env, 0);
-	  if (!strcmp ((char *)element, start_element))
-	    guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
-	}
+   {
+     element = AXIS2_STACK_GET_AT (p->xsw->element, env, 0);
+     if (!strcmp ((char *)element, start_element))
+       guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
+   }
       guththila_xml_pull_parser_checkNameValidity (env, p,start_element);
       p->xsw->start_element_open = 1;
 
       if (!p->xsw->empty_element_open)
-	AXIS2_STACK_PUSH (p->xsw->element, env, start_element);
+   AXIS2_STACK_PUSH (p->xsw->element, env, start_element);
       guththila_xml_pull_parser_writeToBuffer (env, p,"<");
       guththila_xml_pull_parser_writeToBuffer  (env, p,start_element);
     }
@@ -150,19 +150,19 @@ guththila_xml_pull_parser_writeToBuffer (axis2_env_t *env, guththila_xml_pull_pa
     {
       guththila_xml_pull_parser_checkXmlStreamWriter (env, p);
       if (p->xsw->next >= p->xsw->last)
-	{
-	  guththila_xml_pull_parser_flush (env, p);
-	  p->xsw->next = 0;
-	  p->xsw->offset = 0;
-	}
+   {
+     guththila_xml_pull_parser_flush (env, p);
+     p->xsw->next = 0;
+     p->xsw->offset = 0;
+   }
       else
-	{
-	  int length;
-	  length = strlen (buff);
-	  strcat ((p->xsw->writer_buffer->buff) + (p->xsw->next), buff);
-	  p->xsw->offset = p->xsw->next;
-	  p->xsw->next += length;
-	}
+   {
+     int length;
+     length = strlen (buff);
+     strcat ((p->xsw->writer_buffer->buff) + (p->xsw->next), buff);
+     p->xsw->offset = p->xsw->next;
+     p->xsw->next += length;
+   }
     }
 }
 
@@ -226,10 +226,10 @@ guththila_xml_pull_parser_checkNameValidity (axis2_env_t *env, guththila_xml_pul
   for (ii = 1; ii < length; ii++)
     {
       if ((name[ii] == '$' || name[ii] == '^' || name[ii] == '%'
-	   || name[ii] == ';' || name[ii] == '\'' || name[ii] == '"'
-	   || name[ii] == '&' || name[ii] == '<' || name[ii] == '>'
-	   || isspace(name[ii])))
-	guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_INVALID_CHAR_IN_NAME);
+      || name[ii] == ';' || name[ii] == '\'' || name[ii] == '"'
+      || name[ii] == '&' || name[ii] == '<' || name[ii] == '>'
+      || isspace(name[ii])))
+   guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_INVALID_CHAR_IN_NAME);
     }
 }
 
@@ -242,7 +242,7 @@ guththila_xml_pull_parser_isIdeographic (char *id)
   for (ii = 0x4e00 ; ii < 0x9fa5; ii ++)
     {
       if (ii == xy[0])
-	return 1;
+   return 1;
     }
 
   if (0x3007 == xy[0])
@@ -251,7 +251,7 @@ guththila_xml_pull_parser_isIdeographic (char *id)
   for (ii = 0x3021 ; ii <  0x3029; ii ++)
     {
       if (ii == xy[0])
-	return 1;
+   return 1;
     }
   return 0;
 }
@@ -279,33 +279,33 @@ guththila_xml_pull_parser_writeEscapeCharacter (axis2_env_t *env, guththila_xml_
   if (buff)
     {
       switch (buff[0])
-	{
-	case '>':
-	  {
-	    guththila_xml_pull_parser_writeToBuffer (env, p,"&gt;");
-	  }
-	  break;
-	case '<':
-	  {
-	    guththila_xml_pull_parser_writeToBuffer (env, p,"&lt;");
-	  }
-	  break;
-	case '\'':
-	  {
-	    guththila_xml_pull_parser_writeToBuffer (env, p,"&apos;");
-	  }
-	  break;
-	case '"':
-	  {
-	    guththila_xml_pull_parser_writeToBuffer (env, p,"&quot;");
-	  }
-	  break;
-	case '&':
-	  {
-	    guththila_xml_pull_parser_writeToBuffer (env, p,"&amp;");
-	  }
-	  break;
-	};
+   {
+   case '>':
+     {
+       guththila_xml_pull_parser_writeToBuffer (env, p,"&gt;");
+     }
+     break;
+   case '<':
+     {
+       guththila_xml_pull_parser_writeToBuffer (env, p,"&lt;");
+     }
+     break;
+   case '\'':
+     {
+       guththila_xml_pull_parser_writeToBuffer (env, p,"&apos;");
+     }
+     break;
+   case '"':
+     {
+       guththila_xml_pull_parser_writeToBuffer (env, p,"&quot;");
+     }
+     break;
+   case '&':
+     {
+       guththila_xml_pull_parser_writeToBuffer (env, p,"&amp;");
+     }
+     break;
+   };
     }
   else
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_INVALID_BUFFER);
@@ -327,21 +327,21 @@ guththila_xml_pull_parser_writeAttribute (axis2_env_t *env, guththila_xml_pull_p
     {
       int ii;
       for (ii = 0; ii <= size; ii++)
-	{
-	  element = AXIS2_STACK_GET_AT (p->xsw->attribute, env, size - ii);
-	  if (element)
-	    {
-	      attr = (guththila_attribute_t *)element;
-	      if (!strcmp((char *)attr->name, local_name))
-		guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
-	      else
-		{
-		  guththila_xml_pull_parser_doWriteAttribute (env, p,local_name, value);
-		  break;
-		}
-	    }
-	}
-	    
+   {
+     element = AXIS2_STACK_GET_AT (p->xsw->attribute, env, size - ii);
+     if (element)
+       {
+         attr = (guththila_attribute_t *)element;
+         if (!strcmp((char *)attr->name, local_name))
+      guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
+         else
+      {
+        guththila_xml_pull_parser_doWriteAttribute (env, p,local_name, value);
+        break;
+      }
+       }
+   }
+       
     }
   else
     {
@@ -399,9 +399,9 @@ guththila_xml_pull_parser_writeDefaultNamespace (axis2_env_t *env, guththila_xml
     {
      
       if (guththila_xml_pull_parser_checkDefaultNamespace (env, p,namespace_uri))
-	{
-	  guththila_xml_pull_parser_doWriteDefaultNamespace (env, p,namespace_uri);
-	}
+   {
+     guththila_xml_pull_parser_doWriteDefaultNamespace (env, p,namespace_uri);
+   }
     }
 }
 
@@ -417,18 +417,18 @@ guththila_xml_pull_parser_checkDefaultNamespace (axis2_env_t *env, guththila_xml
   if (size)
     {
       for (ii = 0; ii <= size; ii++)
-	{
-	  element = AXIS2_STACK_GET_AT (p->xsw->namespace, env, size - ii);
-	  if (element)
-	    {
-	      ns = (guththila_namespace_t *)element;
-	      if (ns)
-		{
-		  if (!ns->length || !strcmp (ns->uri, ns_uri))
-		    guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
-		}
-	    }
-	}
+   {
+     element = AXIS2_STACK_GET_AT (p->xsw->namespace, env, size - ii);
+     if (element)
+       {
+         ns = (guththila_namespace_t *)element;
+         if (ns)
+      {
+        if (!ns->length || !strcmp (ns->uri, ns_uri))
+          guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
+      }
+       }
+   }
       return 1;
 
     }
@@ -466,7 +466,7 @@ guththila_xml_pull_parser_writeNamespace (axis2_env_t *env, guththila_xml_pull_p
   else
     {
       if (guththila_xml_pull_parser_checkPrefixValidity (env, p,prefix, uri))
-	guththila_xml_pull_parser_doWriteNamespace (env, p,prefix, uri);
+   guththila_xml_pull_parser_doWriteNamespace (env, p,prefix, uri);
     }
 
 }
@@ -483,26 +483,26 @@ guththila_xml_pull_parser_checkPrefixValidity (axis2_env_t *env, guththila_xml_p
   if (size)
     {
       for (ii = 0; ii <= size; ii++)
-	{
-	  element = AXIS2_STACK_GET_AT (p->xsw->namespace, env, size - ii);
-	  if (element)
-	    {
-	      ns = (guththila_namespace_t *)element;
-	      if (ns->name)
-		{
-		  if (!strcmp (ns->name, prefix))
-		    guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
-		}
-	      if (uri)
-		{
-		  if (ns->uri)
-		    {
-		      if (!strcmp (ns->uri, uri))
-			guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
-		    }
-		}
-	    }
-	}
+   {
+     element = AXIS2_STACK_GET_AT (p->xsw->namespace, env, size - ii);
+     if (element)
+       {
+         ns = (guththila_namespace_t *)element;
+         if (ns->name)
+      {
+        if (!strcmp (ns->name, prefix))
+          guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
+      }
+         if (uri)
+      {
+        if (ns->uri)
+          {
+            if (!strcmp (ns->uri, uri))
+         guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
+          }
+      }
+       }
+   }
       return 1;
     }
   else
@@ -531,8 +531,8 @@ guththila_xml_pull_parser_doWriteNamespace (axis2_env_t *env, guththila_xml_pull
 
 AXIS2_EXTERN void
 guththila_xml_pull_parser_writeAttribute_with_prefix_and_namespace (axis2_env_t *env, guththila_xml_pull_parser_t *p,
-							 const char *prefix, const char *namespace,
-							 const char *local_name, const char *value)
+                      const char *prefix, const char *namespace,
+                      const char *local_name, const char *value)
 {
   int size = 0;
   void *element;
@@ -549,31 +549,31 @@ guththila_xml_pull_parser_writeAttribute_with_prefix_and_namespace (axis2_env_t 
     {
       int ii;
       for (ii = 0; ii <= size; ii++)
-	{
-	  element = AXIS2_STACK_GET_AT (p->xsw->attribute, env, size - ii);
-	  if (element)
-	    {
-	      attr = (guththila_attribute_t *)element;
-	      /* We want to make sure that out checking attribute has
-		 the prefix otherwise we don't wan't to worry */
-	      if (attr->name && attr->prefix) 
-		{
-		  if (!strcmp((char *)attr->name, local_name) && !strcmp((char *)attr->prefix, prefix))
-		    guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
-		  else
-		    {
-		      guththila_xml_pull_parser_doWriteAttribute_with_prefix_and_namespace (env, p,prefix, namespace, local_name, value);
-		      break;
-		    }
-		}
-	      else
-		{
-		  /* since att->prefix is null im going to write it here */
-		  guththila_xml_pull_parser_doWriteAttribute_with_prefix_and_namespace (env, p,prefix, namespace, local_name, value);
-		  break;
-		}
-	    }
-	}
+   {
+     element = AXIS2_STACK_GET_AT (p->xsw->attribute, env, size - ii);
+     if (element)
+       {
+         attr = (guththila_attribute_t *)element;
+         /* We want to make sure that out checking attribute has
+       the prefix otherwise we don't wan't to worry */
+         if (attr->name && attr->prefix) 
+      {
+        if (!strcmp((char *)attr->name, local_name) && !strcmp((char *)attr->prefix, prefix))
+          guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
+        else
+          {
+            guththila_xml_pull_parser_doWriteAttribute_with_prefix_and_namespace (env, p,prefix, namespace, local_name, value);
+            break;
+          }
+      }
+         else
+      {
+        /* since att->prefix is null im going to write it here */
+        guththila_xml_pull_parser_doWriteAttribute_with_prefix_and_namespace (env, p,prefix, namespace, local_name, value);
+        break;
+      }
+       }
+   }
       
     }
   else
@@ -586,8 +586,8 @@ guththila_xml_pull_parser_writeAttribute_with_prefix_and_namespace (axis2_env_t 
 
 AXIS2_EXTERN void
 guththila_xml_pull_parser_doWriteAttribute_with_prefix_and_namespace (axis2_env_t *env, guththila_xml_pull_parser_t *p, 
-							   const char *prefix, const char *namespace_uri,
-							   const char *local_name, const char *value)
+                        const char *prefix, const char *namespace_uri,
+                        const char *local_name, const char *value)
 {
   guththila_attribute_t *attr = (guththila_attribute_t *) AXIS2_MALLOC (env->allocator, sizeof (guththila_attribute_t));
   
@@ -629,7 +629,7 @@ guththila_xml_pull_parser_doWriteAttribute_with_prefix_and_namespace (axis2_env_
 
 AXIS2_EXTERN void
 guththila_xml_pull_parser_writeAttribute_with_prefix (axis2_env_t *env, guththila_xml_pull_parser_t *p, const char *prefix,
-					   const char *local_name, const char *value)
+                  const char *local_name, const char *value)
 {
   int size = 0;
   void *element;
@@ -643,40 +643,40 @@ guththila_xml_pull_parser_writeAttribute_with_prefix (axis2_env_t *env, guththil
     {
       size = AXIS2_STACK_SIZE (p->xsw->attribute, env);
       if (size)
-	{
-	  int ii;
-	  for (ii = 0; ii <= size; ii++)
-	    {
-	      element = AXIS2_STACK_GET_AT (p->xsw->attribute, env,  ii);
-	      if (element)
-		{
-		  attr = (guththila_attribute_t *)element;
-		  /* We want to make sure that out checking attribute has
-		     the prefix otherwise we don't wan't to worry */
-		  if (attr->name && attr->prefix) 
-		    {
-		      if (!strcmp((char *)attr->name, local_name) && !strcmp((char *)attr->prefix, prefix))
-			guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
-		      else
-			{
-			  guththila_xml_pull_parser_doWriteAttribute_with_prefix (env, p,prefix, local_name, value);
-			  break;
-			}
-		    }
-		  else
-		    {
-		      /* since att->prefix is null im going to write it here */
-		      guththila_xml_pull_parser_doWriteAttribute_with_prefix (env, p,prefix, local_name, value);
-		      break;
-		    }
-		}
-	    }
+   {
+     int ii;
+     for (ii = 0; ii <= size; ii++)
+       {
+         element = AXIS2_STACK_GET_AT (p->xsw->attribute, env,  ii);
+         if (element)
+      {
+        attr = (guththila_attribute_t *)element;
+        /* We want to make sure that out checking attribute has
+           the prefix otherwise we don't wan't to worry */
+        if (attr->name && attr->prefix) 
+          {
+            if (!strcmp((char *)attr->name, local_name) && !strcmp((char *)attr->prefix, prefix))
+         guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
+            else
+         {
+           guththila_xml_pull_parser_doWriteAttribute_with_prefix (env, p,prefix, local_name, value);
+           break;
+         }
+          }
+        else
+          {
+            /* since att->prefix is null im going to write it here */
+            guththila_xml_pull_parser_doWriteAttribute_with_prefix (env, p,prefix, local_name, value);
+            break;
+          }
+      }
+       }
       
-	}
+   }
       else
-	{
-	  guththila_xml_pull_parser_doWriteAttribute_with_prefix (env, p,prefix, local_name, value);
-	}
+   {
+     guththila_xml_pull_parser_doWriteAttribute_with_prefix (env, p,prefix, local_name, value);
+   }
     }
   else
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_EXSISTING_PREFIX);
@@ -686,7 +686,7 @@ guththila_xml_pull_parser_writeAttribute_with_prefix (axis2_env_t *env, guththil
 
 AXIS2_EXTERN void
 guththila_xml_pull_parser_doWriteAttribute_with_prefix(axis2_env_t *env, guththila_xml_pull_parser_t *p, const char *prefix,
-					    const char *local_name, const char *value)
+                   const char *local_name, const char *value)
 {
   guththila_xml_pull_parser_doWriteAttribute_with_prefix_and_namespace (env, p,prefix, NULL, local_name, value);
 }
@@ -703,18 +703,18 @@ guththila_xml_pull_parser_isExsistingPrefix (axis2_env_t *env, guththila_xml_pul
   if (size)
     {
       for (ii = 0; ii <= size; ii++)
-	{
-	  element = AXIS2_STACK_GET_AT (p->xsw->namespace, env, ii);
-	  if (element)
-	    {
-	      ns = (guththila_namespace_t *)element;
-	      if (ns->name)
-		{
-		  if (!strcmp (ns->name, prefix))
-		    return 1;
-		}
-	    }
-	}
+   {
+     element = AXIS2_STACK_GET_AT (p->xsw->namespace, env, ii);
+     if (element)
+       {
+         ns = (guththila_namespace_t *)element;
+         if (ns->name)
+      {
+        if (!strcmp (ns->name, prefix))
+          return 1;
+      }
+       }
+   }
       return 0;
     }
   else
@@ -733,18 +733,18 @@ guththila_xml_pull_parser_isExsistingNamespaceUri (axis2_env_t *env, guththila_x
   if (size)
     {
       for (ii = 0; ii <= size; ii++)
-	{
-	  element = AXIS2_STACK_GET_AT (p->xsw->namespace, env , size - ii);
-	  if (element)
-	    {
-	      ns = (guththila_namespace_t *)element;
-	      if (ns->uri)
-		{
-		  if (!strcmp (ns->uri, uri))
-		    return 1;
-		}
-	    }
-	}
+   {
+     element = AXIS2_STACK_GET_AT (p->xsw->namespace, env , size - ii);
+     if (element)
+       {
+         ns = (guththila_namespace_t *)element;
+         if (ns->uri)
+      {
+        if (!strcmp (ns->uri, uri))
+          return 1;
+      }
+       }
+   }
       return 0;
     }
   else
@@ -754,7 +754,7 @@ guththila_xml_pull_parser_isExsistingNamespaceUri (axis2_env_t *env, guththila_x
 
 AXIS2_EXTERN void
 guththila_xml_pull_parser_writeAttribute_with_namespace (axis2_env_t *env, guththila_xml_pull_parser_t *p, const char *namespace,
-					      const char *local_name, const char *value)
+                     const char *local_name, const char *value)
 {
   int size = 0;
   void *element;
@@ -769,40 +769,40 @@ guththila_xml_pull_parser_writeAttribute_with_namespace (axis2_env_t *env, gutht
       prefix = guththila_xml_pull_parser_getPrefixForNamespace (env, p, namespace);
       size = AXIS2_STACK_SIZE (p->xsw->attribute, env);
       if (size)
-	{
-	  int ii;
-	  for (ii = 0; ii <= size; ii++)
-	    {
-	      element = AXIS2_STACK_GET_AT (p->xsw->attribute, env, size - ii);
-	      if (element)
-		{
-		  attr = (guththila_attribute_t *)element;
-		  /* We want to make sure that out checking attribute has
-		     the namespace otherwise we don't wan't to worry */
-		  if (attr->name && attr->prefix) 
-		    {
-		      if (!strcmp((char *)attr->name, local_name) && !strcmp((char *)attr->prefix, prefix))
-			guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
-		      else
-			{
-			  guththila_xml_pull_parser_doWriteAttribute_with_prefix (env, p,prefix, local_name, value);
-			  break;
-			}
-		    }
-		  else
-		    {
-		      /* since att->prefix is null im going to write it here */
-		      guththila_xml_pull_parser_doWriteAttribute_with_prefix (env, p,prefix, local_name, value);
-		      break;
-		    }
-		}
-	    }
+   {
+     int ii;
+     for (ii = 0; ii <= size; ii++)
+       {
+         element = AXIS2_STACK_GET_AT (p->xsw->attribute, env, size - ii);
+         if (element)
+      {
+        attr = (guththila_attribute_t *)element;
+        /* We want to make sure that out checking attribute has
+           the namespace otherwise we don't wan't to worry */
+        if (attr->name && attr->prefix) 
+          {
+            if (!strcmp((char *)attr->name, local_name) && !strcmp((char *)attr->prefix, prefix))
+         guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
+            else
+         {
+           guththila_xml_pull_parser_doWriteAttribute_with_prefix (env, p,prefix, local_name, value);
+           break;
+         }
+          }
+        else
+          {
+            /* since att->prefix is null im going to write it here */
+            guththila_xml_pull_parser_doWriteAttribute_with_prefix (env, p,prefix, local_name, value);
+            break;
+          }
+      }
+       }
       
-	}
+   }
       else
-	{
-	  guththila_xml_pull_parser_doWriteAttribute_with_prefix (env, p,prefix, local_name, value);
-	}
+   {
+     guththila_xml_pull_parser_doWriteAttribute_with_prefix (env, p,prefix, local_name, value);
+   }
     }
   else
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_EXSISTING_URI);
@@ -820,18 +820,18 @@ guththila_xml_pull_parser_getPrefixForNamespace (axis2_env_t *env, guththila_xml
   if (size)
     {
       for (ii = 0; ii <= size; ii++)
-	{
-	  element = AXIS2_STACK_GET_AT (p->xsw->namespace, env, size - ii);
-	  if (element)
-	    {
-	      ns = (guththila_namespace_t *)element;
-	      if (ns->uri)
-		{
-		  if (!strcmp (ns->uri, namespace))
-		    return (char *)ns->name;
-		}
-	    }
-	}
+   {
+     element = AXIS2_STACK_GET_AT (p->xsw->namespace, env, size - ii);
+     if (element)
+       {
+         ns = (guththila_namespace_t *)element;
+         if (ns->uri)
+      {
+        if (!strcmp (ns->uri, namespace))
+          return (char *)ns->name;
+      }
+       }
+   }
       return 0;
     }
   else
@@ -841,7 +841,7 @@ guththila_xml_pull_parser_getPrefixForNamespace (axis2_env_t *env, guththila_xml
 
 AXIS2_EXTERN void
 guththila_xml_pull_parser_writeStartElement_with_prefix_and_namespace (axis2_env_t *env, guththila_xml_pull_parser_t *p, const char *prefix,
-							    const char *namespace_uri, const char *local_name)
+                         const char *namespace_uri, const char *local_name)
 {
   int size;
   void *element;
@@ -854,24 +854,24 @@ guththila_xml_pull_parser_writeStartElement_with_prefix_and_namespace (axis2_env
       guththila_xml_pull_parser_closeStartElement (env, p);
      
       if (prefix)
-	{
-	  strcat (start_element, prefix);
-	  strcat (start_element, ":");
-	  strcat (start_element, local_name);
-	} 
+   {
+     strcat (start_element, prefix);
+     strcat (start_element, ":");
+     strcat (start_element, local_name);
+   } 
       size = AXIS2_STACK_SIZE (p->xsw->element, env);
       if (size)
-	{
-	  element = AXIS2_STACK_GET_AT (p->xsw->element, env, size);
-	  if (!strcmp ((char *)element, start_element))
-	    guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
-	}
+   {
+     element = AXIS2_STACK_GET_AT (p->xsw->element, env, size);
+     if (!strcmp ((char *)element, start_element))
+       guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
+   }
 
       guththila_xml_pull_parser_checkNameValidity (env, p,start_element);
       p->xsw->start_element_open = 1;
       
       if (!p->xsw->empty_element_open)
-	AXIS2_STACK_PUSH (p->xsw->element, env, start_element);
+   AXIS2_STACK_PUSH (p->xsw->element, env, start_element);
       guththila_xml_pull_parser_writeToBuffer (env, p,"<");
       guththila_xml_pull_parser_writeToBuffer  (env, p,start_element);
       guththila_xml_pull_parser_writeNamespace (env, p,(char *)prefix, (char *)namespace_uri);
@@ -888,41 +888,41 @@ guththila_xml_pull_parser_writeStartElement_with_namespace (axis2_env_t *env, gu
   if (guththila_xml_pull_parser_isExsistingNamespaceUri (env, p,namespace_uri))
     {
       if (!p || !local_name)
-	guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_EMPTY_ARGUMENTS);
+   guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_EMPTY_ARGUMENTS);
       else
-	{
-	  guththila_xml_pull_parser_checkXmlStreamWriter (env, p);
-	  guththila_xml_pull_parser_closeStartElement (env, p);
-	  char *prefix = guththila_xml_pull_parser_getPrefixForNamespace (env, p,namespace_uri);
-	  if (prefix)
-	    start_element = (char *) calloc ((strlen (prefix) + strlen (local_name) +2), 1);
-	  else
-	    start_element = (char *) calloc ((strlen (local_name) +2), 1);
+   {
+     guththila_xml_pull_parser_checkXmlStreamWriter (env, p);
+     guththila_xml_pull_parser_closeStartElement (env, p);
+     char *prefix = guththila_xml_pull_parser_getPrefixForNamespace (env, p,namespace_uri);
+     if (prefix)
+       start_element = (char *) calloc ((strlen (prefix) + strlen (local_name) +2), 1);
+     else
+       start_element = (char *) calloc ((strlen (local_name) +2), 1);
      
-	  if (prefix)
-	    {
-	      strcat (start_element, prefix);
-	      strcat (start_element, ":");
-	      strcat (start_element, local_name);
-	    } 
-	  else
-	    strcat (start_element, local_name);
-	  size = AXIS2_STACK_SIZE (p->xsw->element, env);
-	  if (size)
-	    {
-	      element = AXIS2_STACK_GET_AT (p->xsw->element, env, size);
-	      if (!strcmp ((char *)element, start_element))
-		guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
-	    }
+     if (prefix)
+       {
+         strcat (start_element, prefix);
+         strcat (start_element, ":");
+         strcat (start_element, local_name);
+       } 
+     else
+       strcat (start_element, local_name);
+     size = AXIS2_STACK_SIZE (p->xsw->element, env);
+     if (size)
+       {
+         element = AXIS2_STACK_GET_AT (p->xsw->element, env, size);
+         if (!strcmp ((char *)element, start_element))
+      guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
+       }
 
-	  guththila_xml_pull_parser_checkNameValidity (env, p,start_element);
-	  p->xsw->start_element_open = 1;
+     guththila_xml_pull_parser_checkNameValidity (env, p,start_element);
+     p->xsw->start_element_open = 1;
       
-	  if (!p->xsw->empty_element_open)
-	    AXIS2_STACK_PUSH (p->xsw->element, env, start_element);
-	  guththila_xml_pull_parser_writeToBuffer (env, p,"<");
-	  guththila_xml_pull_parser_writeToBuffer  (env, p,start_element);
-	}
+     if (!p->xsw->empty_element_open)
+       AXIS2_STACK_PUSH (p->xsw->element, env, start_element);
+     guththila_xml_pull_parser_writeToBuffer (env, p,"<");
+     guththila_xml_pull_parser_writeToBuffer  (env, p,start_element);
+   }
     }
   else
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_EXSISTING_URI);
@@ -938,37 +938,37 @@ guththila_xml_pull_parser_writeStartElement_with_prefix (axis2_env_t *env, gutht
   if (guththila_xml_pull_parser_isExsistingPrefix (env, p,prefix))
     {
       if (!p || !local_name)
-	guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_EMPTY_ARGUMENTS);
+   guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_EMPTY_ARGUMENTS);
       else
-	{
-	  guththila_xml_pull_parser_checkXmlStreamWriter (env, p);
-	  guththila_xml_pull_parser_closeStartElement (env, p);
-	  
-	  if (prefix)
-	    start_element = (char *) calloc ((strlen (prefix) + strlen (local_name) +2), 1);
-	       
-	  if (prefix)
-	    {
-	      strcat (start_element, prefix);
-	      strcat (start_element, ":");
-	      strcat (start_element, local_name);
-	    } 
-	  size = AXIS2_STACK_SIZE (p->xsw->element, env);
-	  if (size)
-	    {
-	      element = AXIS2_STACK_GET_AT (p->xsw->element, env, size);
-	      if (!strcmp ((char *)element, start_element))
-		guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
-	    }
+   {
+     guththila_xml_pull_parser_checkXmlStreamWriter (env, p);
+     guththila_xml_pull_parser_closeStartElement (env, p);
+     
+     if (prefix)
+       start_element = (char *) calloc ((strlen (prefix) + strlen (local_name) +2), 1);
+          
+     if (prefix)
+       {
+         strcat (start_element, prefix);
+         strcat (start_element, ":");
+         strcat (start_element, local_name);
+       } 
+     size = AXIS2_STACK_SIZE (p->xsw->element, env);
+     if (size)
+       {
+         element = AXIS2_STACK_GET_AT (p->xsw->element, env, size);
+         if (!strcmp ((char *)element, start_element))
+      guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_MATCHING_ELEMENTS);
+       }
 
-	  guththila_xml_pull_parser_checkNameValidity (env, p, start_element);
-	  p->xsw->start_element_open = 1;
+     guththila_xml_pull_parser_checkNameValidity (env, p, start_element);
+     p->xsw->start_element_open = 1;
       
-	  if (!p->xsw->empty_element_open)
-	    AXIS2_STACK_PUSH (p->xsw->element, env, start_element);
-	  guththila_xml_pull_parser_writeToBuffer (env, p,"<");
-	  guththila_xml_pull_parser_writeToBuffer  (env, p,start_element);
-	}
+     if (!p->xsw->empty_element_open)
+       AXIS2_STACK_PUSH (p->xsw->element, env, start_element);
+     guththila_xml_pull_parser_writeToBuffer (env, p,"<");
+     guththila_xml_pull_parser_writeToBuffer  (env, p,start_element);
+   }
     }
   else
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_WRITER_ERROR_NON_EXSISTING_PREFIX);
@@ -977,7 +977,7 @@ guththila_xml_pull_parser_writeStartElement_with_prefix (axis2_env_t *env, gutht
 
 AXIS2_EXTERN void
 guththila_xml_pull_parser_writeEmptyElement_with_prefix_and_namespace (axis2_env_t *env, guththila_xml_pull_parser_t *p,const char *prefix,
-							    const char *namespace_uri, const char *empty_element)
+                         const char *namespace_uri, const char *empty_element)
 {
   guththila_xml_pull_parser_checkXmlStreamWriter (env, p);
   guththila_xml_pull_parser_closeStartElement (env, p);
@@ -1041,12 +1041,12 @@ guththila_xml_pull_parser_close_depth_element (axis2_env_t *env, guththila_xml_p
   if (d->count)
     {
       for (; d->count > 0; d->count --)
-	{
-	  elem = AXIS2_STACK_POP (p->xsw->namespace, env);
-	  ns = elem;
-	  if (ns)
-	    free (ns);
-	}
+   {
+     elem = AXIS2_STACK_POP (p->xsw->namespace, env);
+     ns = elem;
+     if (ns)
+       free (ns);
+   }
     }
 }
 

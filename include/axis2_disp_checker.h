@@ -65,7 +65,7 @@ extern "C"
          */
         axis2_qname_t* (AXIS2_CALL *
                 get_qname)(
-	                const axis2_disp_checker_t *disp_checker,
+                   const axis2_disp_checker_t *disp_checker,
                     const axis2_env_t *env);
 
         /**

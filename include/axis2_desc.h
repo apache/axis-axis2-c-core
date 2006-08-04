@@ -48,53 +48,53 @@ extern "C"
      */
     AXIS2_DECLARE_DATA struct axis2_desc_ops
     {
-	/** 
-	 * @param desc pointer to desc
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+   /** 
+    * @param desc pointer to desc
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_desc_t *desc,
                     const axis2_env_t *env);
 
-	/**
-	 * @param desc pointer to desc
-	 * @param env pointer to environment struct
-	 * @param param pointer to param
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+   /**
+    * @param desc pointer to desc
+    * @param env pointer to environment struct
+    * @param param pointer to param
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 add_param)(
                     axis2_desc_t *desc,
                     const axis2_env_t *env,
                     axis2_param_t *param);
 
-	/**
-	 * @param desc pointer to desc
-	 * @param env pointer to environment struct
-	 * @param param_name pointer to param name
-	 */
+   /**
+    * @param desc pointer to desc
+    * @param env pointer to environment struct
+    * @param param_name pointer to param name
+    */
         axis2_param_t *(AXIS2_CALL *
                 get_param) (
                     const axis2_desc_t *desc,
                     const axis2_env_t *env,
                     const axis2_char_t *param_name);
 
-	/**
-	 * @param desc pointer to desc
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param desc pointer to desc
+    * @param env pointer to environment struct
+    */
         axis2_array_list_t *(AXIS2_CALL *
                 get_all_params)(
                     const axis2_desc_t *desc,
                     const axis2_env_t *env);
 
-	/**
-	 * @param desc pointer to desc
-	 * @param env pointer to environment struct
-	 * @param param_name pointer to param name
-	 */
+   /**
+    * @param desc pointer to desc
+    * @param env pointer to environment struct
+    * @param param_name pointer to param name
+    */
         axis2_bool_t (AXIS2_CALL *
                 is_param_locked)(
                     const axis2_desc_t *desc,
@@ -112,12 +112,12 @@ extern "C"
             const axis2_desc_t *desc, 
             const axis2_env_t *env);*/
 
-	/**
-	 * @param desc pointer to desc
-	 * @param env pointer to environment struct
-	 * @param key pointer to key
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+   /**
+    * @param desc pointer to desc
+    * @param env pointer to environment struct
+    * @param key pointer to key
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 add_child)(
                     const axis2_desc_t *desc,
@@ -125,32 +125,32 @@ extern "C"
                     const axis2_char_t *key,
                     const void* child);
 
-	/**
-	 * @param desc pointer to desc
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param desc pointer to desc
+    * @param env pointer to environment struct
+    */
         axis2_hash_t *(AXIS2_CALL *
                 get_all_children)(
                     const axis2_desc_t *desc,
                     const axis2_env_t *env);
 
-	/**
-	 * @param desc pointer to desc
-	 * @param env pointer to environment struct
-	 * @param key pointer to key
-	 */
+   /**
+    * @param desc pointer to desc
+    * @param env pointer to environment struct
+    * @param key pointer to key
+    */
         void *(AXIS2_CALL *
                 get_child)(
                     const axis2_desc_t *desc,
                     const axis2_env_t *env,
                     const axis2_char_t *key);
 
-	/**
-	 * @param desc pointer to desc
-	 * @param env pointer to environment struct
-	 * @param key pointer to key
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+   /**
+    * @param desc pointer to desc
+    * @param env pointer to environment struct
+    * @param key pointer to key
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 remove_child)(
                     const axis2_desc_t *desc,

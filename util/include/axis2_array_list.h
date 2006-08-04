@@ -52,9 +52,9 @@ extern "C"
          * hold min_capacity elements. This implementation will grow the list to
          * max(current * 2, min_capacity)
          * @param array_list pointer to array_list
-	 * @param env pointer to environment struct
+    * @param env pointer to environment struct
          * @param min_capacity the minimum guaranteed capacity
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 ensure_capacity)(
@@ -65,7 +65,7 @@ extern "C"
         /**
          * Returns the number of elements in this list.
          * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param env pointer to environment struct
          * @return the list size
          */
         int (AXIS2_CALL *
@@ -76,7 +76,7 @@ extern "C"
         /**
          * Checks if the list is empty.
          * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param env pointer to environment struct
          * @return true if there are no elements, else false
          */
         axis2_bool_t (AXIS2_CALL *
@@ -87,7 +87,7 @@ extern "C"
         /**
          * Returns true iff element is in this array_list.
          * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param env pointer to environment struct
          * @param e the element whose inclusion in the List is being tested
          * @return true if the list contains e
          */
@@ -101,8 +101,8 @@ extern "C"
          * Returns the lowest index at which element appears in this List, or
          * -1 if it does not appear. This looks for the pointer value equality only, 
          * does not look into pointer content
-	 * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param array_list pointer to array list
+    * @param env pointer to environment struct
          * @param e the element whose inclusion in the List is being tested
          * @return the index where e was found
          */
@@ -116,8 +116,8 @@ extern "C"
          * Returns the highest index at which element appears in this List, or
          * -1 if it does not appear. This looks for the pointer value equality only, 
          * does not look into pointer content
-	 * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param array_list pointer to array list
+    * @param env pointer to environment struct
          * @param e the element whose inclusion in the List is being tested
          * @return the index where e was found
          */
@@ -130,8 +130,8 @@ extern "C"
         /**
          * Returns a void* array containing all of the elements in this array_list.
          * The array is not independent of this list.
-	 * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param array_list pointer to array list
+    * @param env pointer to environment struct
          * @return array of elements in this list
          */
         void** (AXIS2_CALL *
@@ -141,8 +141,8 @@ extern "C"
 
         /**
          * Retrieves the element at the user-supplied index.
-	 * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param array_list pointer to array list
+    * @param env pointer to environment struct
          * @param index the index of the element we are fetching
          * @return element at the given index
          */
@@ -154,8 +154,8 @@ extern "C"
         /**
          * Sets the element at the specified index.  The new element, e,
          * can be an object of any type or null.
-	 * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param array_list pointer to array list
+    * @param env pointer to environment struct
          * @param index the index at which the element is being set
          * @param e the element to be set
          * @return the element previously at the specified index
@@ -170,8 +170,8 @@ extern "C"
         /**
          * Appends the supplied element to the end of this list.
          * The element, e, can be a pointer of any type or NULL.
-	 * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param array_list pointer to array list
+    * @param env pointer to environment struct
          * @param e the element to be appended to this list
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
@@ -185,8 +185,8 @@ extern "C"
          * Adds the supplied element at the specified index, shifting all
          * elements currently at that index or higher one to the right.
          * The element, e, can be a pointer of any type or NULL.
-	 * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param array_list pointer to array list
+    * @param env pointer to environment struct
          * @param index the index at which the element is being added
          * @param e the item being added
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
@@ -200,8 +200,8 @@ extern "C"
 
         /**
          * Removes the element at the user-supplied index.
-	 * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param array_list pointer to array list
+    * @param env pointer to environment struct
          * @param index the index of the element to be removed
          * @return the removed void* pointer
          */
@@ -212,8 +212,8 @@ extern "C"
 
         /**
          * Checks that the index is in the range of possible elements (inclusive).
-	 * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param array_list pointer to array list
+    * @param env pointer to environment struct
          * @param index the index to check
          * @return AXIS2_FALSE if index &gt; size or index &lt; 0, else AXIS2_TRUE
          */
@@ -225,8 +225,8 @@ extern "C"
 
         /**
          * Checks that the index is in the range of existing elements (exclusive).
-	 * @param array_list pointer to array list
-	 * @param env pointer to environment struct
+    * @param array_list pointer to array list
+    * @param env pointer to environment struct
          * @param index the index to check
          * @return AXIS2_FALSE if index &gt;= size or index &lt; 0, else AXIS2_TRUE
          */
@@ -237,10 +237,10 @@ extern "C"
                     int index);
 
         /**
-	 * @param array_list pointer to array list
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param array_list pointer to array list
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     struct axis2_array_list *array_list,
@@ -268,7 +268,7 @@ extern "C"
      */
     AXIS2_EXTERN axis2_array_list_t* AXIS2_CALL axis2_array_list_create(
         const axis2_env_t *env, 
-	int capacity);
+   int capacity);
 
     /**
      * Free array passed as void pointer.

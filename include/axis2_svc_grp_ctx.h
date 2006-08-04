@@ -50,30 +50,30 @@ extern "C"
      */
     struct axis2_svc_grp_ctx_ops
     {
-	/**
-	 * @param svc_grp_ctx pointer to service group context
-	 * @param env pointer to environment
-	 */
+   /**
+    * @param svc_grp_ctx pointer to service group context
+    * @param env pointer to environment
+    */
         axis2_ctx_t* (AXIS2_CALL *
                 get_base)(
-	            struct axis2_svc_grp_ctx *svc_grp_ctx,
+               struct axis2_svc_grp_ctx *svc_grp_ctx,
                     const axis2_env_t *env);
 
 
-	/**
-	 * @param svc_grp_ctx pointer to service group context
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param svc_grp_ctx pointer to service group context
+    * @param env pointer to environment struct
+    */
         struct axis2_conf_ctx* (AXIS2_CALL *
                 get_parent)(
                     struct axis2_svc_grp_ctx *svc_grp_ctx,
                     const axis2_env_t *env);
 
 
-	/**
-	 * @param svc_grp_ctx pointer to service group context
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param svc_grp_ctx pointer to service group context
+    * @param env pointer to environment struct
+    */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     struct axis2_svc_grp_ctx *svc_grp_ctx,
@@ -81,9 +81,9 @@ extern "C"
 
         /**
          * The method is used to do the intialization of the EngineContext
-	 * @param svc_grp_ctx pointer to service group context
-	 * @param env pointer to environment struct
-	 * @param conf pointer to conf
+    * @param svc_grp_ctx pointer to service group context
+    * @param env pointer to environment struct
+    * @param conf pointer to conf
          */
         axis2_status_t (AXIS2_CALL *
                 init)(
@@ -92,37 +92,37 @@ extern "C"
                     struct axis2_conf *conf);
 
 
-	/**
-	 * @param svc_grp_ctx pointer to service group context
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param svc_grp_ctx pointer to service group context
+    * @param env pointer to environment struct
+    */
         axis2_char_t* (AXIS2_CALL *
                 get_id)(
                     struct axis2_svc_grp_ctx *svc_grp_ctx,
                     const axis2_env_t *env);
 
 
-	/**
-	 * @param svc_grp_ctx pointer to service group context
-	 * @param env pointer to environment struct
-	 * @param id pointer to id
-	 */
+   /**
+    * @param svc_grp_ctx pointer to service group context
+    * @param env pointer to environment struct
+    * @param id pointer to id
+    */
         axis2_status_t (AXIS2_CALL *
                 set_id)(
-	            struct axis2_svc_grp_ctx *svc_grp_ctx,
+               struct axis2_svc_grp_ctx *svc_grp_ctx,
                     const axis2_env_t *env,
                     axis2_char_t *id);
 
 
         /** 
-	 * if the servic name is foo:bar , you should pass only bar 
-	 * @param svc_grp_ctx pointer to service group context
-	 * @param env pointer to environment struct
-	 * @param svc_name pointer to service name
-	 */
+    * if the servic name is foo:bar , you should pass only bar 
+    * @param svc_grp_ctx pointer to service group context
+    * @param env pointer to environment struct
+    * @param svc_name pointer to service name
+    */
         struct axis2_svc_ctx* (AXIS2_CALL *
                 get_svc_ctx)(
-	            struct axis2_svc_grp_ctx *svc_grp_ctx,
+               struct axis2_svc_grp_ctx *svc_grp_ctx,
                     const axis2_env_t *env,
                     axis2_char_t *svc_name);
 
@@ -130,32 +130,32 @@ extern "C"
          * This will create one service context per each service in descrpition
          * if service group has 2 service init , then two service contexts will be
          * created
-	 * @param svc_grp_ctx pointer to service group context
-	 * @param env pointer to environment struct
+    * @param svc_grp_ctx pointer to service group context
+    * @param env pointer to environment struct
          */
         axis2_status_t (AXIS2_CALL *
                 fill_svc_ctx_map)(
-	            struct axis2_svc_grp_ctx *svc_grp_ctx,
+               struct axis2_svc_grp_ctx *svc_grp_ctx,
                     const axis2_env_t *env);
 
 
-	/**
-	 * @param svc_grp_ctx pointer to service group context
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param svc_grp_ctx pointer to service group context
+    * @param env pointer to environment struct
+    */
         struct axis2_svc_grp* (AXIS2_CALL *
                 get_svc_grp)(
-		    struct axis2_svc_grp_ctx *svc_grp_ctx,
+          struct axis2_svc_grp_ctx *svc_grp_ctx,
                     const axis2_env_t *env);
 
 
-	/**
-	 * @param svc_grp_ctx pointer to service group context
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param svc_grp_ctx pointer to service group context
+    * @param env pointer to environment struct
+    */
         axis2_hash_t* (AXIS2_CALL *
                 get_svc_ctx_map)(
-	            struct axis2_svc_grp_ctx *svc_grp_ctx,
+               struct axis2_svc_grp_ctx *svc_grp_ctx,
                     const axis2_env_t *env);
     };
 
@@ -164,7 +164,7 @@ extern "C"
      */
     struct axis2_svc_grp_ctx
     {
-	/** operations of service group context */
+   /** operations of service group context */
         axis2_svc_grp_ctx_ops_t *ops;
     };
 

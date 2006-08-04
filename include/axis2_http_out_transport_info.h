@@ -53,10 +53,10 @@ extern "C"
     AXIS2_DECLARE_DATA struct axis2_http_out_transport_info_ops
     {
         /**
-	 * @param info pointer to info
-	 * @param env pointer to environment struct
-	 * @param content_type pointer to content type
-	 */
+    * @param info pointer to info
+    * @param env pointer to environment struct
+    * @param content_type pointer to content type
+    */
         int (AXIS2_CALL *
                 set_content_type)(
                     axis2_http_out_transport_info_t *info,
@@ -64,11 +64,11 @@ extern "C"
                     const axis2_char_t *content_type);
 
         /**
-	 * @param info pointer to info
-	 * @param env pointer to environment struct
-	 * @param encoding pointer to encoding
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param info pointer to info
+    * @param env pointer to environment struct
+    * @param encoding pointer to encoding
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 set_char_encoding)(
                     axis2_http_out_transport_info_t *info, 
@@ -76,10 +76,10 @@ extern "C"
                     const axis2_char_t *encoding);
 
         /**
-	 * @param out_transport_info pointer to out transport info
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param out_transport_info pointer to out transport info
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_http_out_transport_info_t *out_transport_info,

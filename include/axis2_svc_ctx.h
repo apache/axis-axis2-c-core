@@ -49,74 +49,74 @@ extern "C"
      */
     struct axis2_svc_ctx_ops
     {
-	/**
-	 * @param svc_ctx pointer to service context
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param svc_ctx pointer to service context
+    * @param env pointer to environment struct
+    */
         axis2_ctx_t* (AXIS2_CALL *
                 get_base)(
                     struct axis2_svc_ctx *svc_ctx,
                     const axis2_env_t *env);
 
 
-	/**
-	 * @param svc_ctx pointer to service context
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param svc_ctx pointer to service context
+    * @param env pointer to environment struct
+    */
         struct axis2_svc_grp_ctx* (AXIS2_CALL *
                 get_parent)(
-	            struct axis2_svc_ctx *svc_ctx,
+               struct axis2_svc_ctx *svc_ctx,
                     const axis2_env_t *env);
 
 
-	/**
-	 * @param svc_ctx pointer to service context
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param svc_ctx pointer to service context
+    * @param env pointer to environment struct
+    */
         axis2_status_t (AXIS2_CALL *
                 free)(
-	            struct axis2_svc_ctx *svc_ctx,
+               struct axis2_svc_ctx *svc_ctx,
                     const axis2_env_t *env);
 
 
         /**
          * The method is used to do the intialization of the EngineContext
-	 * @param svc_ctx pointer to service context
-	 * @param env pointer to environment struct
-	 * @param conf pointer to conf
+    * @param svc_ctx pointer to service context
+    * @param env pointer to environment struct
+    * @param conf pointer to conf
          */
         axis2_status_t (AXIS2_CALL *
                 init)(
-	            struct axis2_svc_ctx *svc_ctx,
+               struct axis2_svc_ctx *svc_ctx,
                     const axis2_env_t *env,
                     struct axis2_conf *conf);
 
 
         /**
-	 * @param svc_ctx pointer to service context
-	 * @param env pointer to environment struct
+    * @param svc_ctx pointer to service context
+    * @param env pointer to environment struct
          * @return Returns the svc_id.
          */
         axis2_char_t* (AXIS2_CALL *
                 get_svc_id)(
-	            const struct axis2_svc_ctx *svc_ctx,
+               const struct axis2_svc_ctx *svc_ctx,
                     const axis2_env_t *env);
 
 
-	/**
-	 * @param svc_ctx pointer to service context
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param svc_ctx pointer to service context
+    * @param env pointer to environment struct
+    */
         struct axis2_svc* (AXIS2_CALL *
                 get_svc)(
-	            struct axis2_svc_ctx *svc_ctx,
+               struct axis2_svc_ctx *svc_ctx,
                     const axis2_env_t *env);
 
-	/**
-	 * @param svc_ctx pointer to service context
-	 * @param env pointer to environment struct
-	 * @param svc pointer to service
-	 */
+   /**
+    * @param svc_ctx pointer to service context
+    * @param env pointer to environment struct
+    * @param svc pointer to service
+    */
         axis2_status_t (AXIS2_CALL *
                 set_svc)(
                     axis2_svc_ctx_t *svc_ctx,
@@ -124,24 +124,24 @@ extern "C"
                     struct axis2_svc *svc);
 
 
-	/**
-	 * @param svc_ctx pointer to service context
-	 * @param env pointer to environment struct
-	 */
+   /**
+    * @param svc_ctx pointer to service context
+    * @param env pointer to environment struct
+    */
         struct axis2_conf_ctx* (AXIS2_CALL *
                 get_conf_ctx)(
-	            struct axis2_svc_ctx *svc_ctx,
+               struct axis2_svc_ctx *svc_ctx,
                     const axis2_env_t *env);
 
 
-	/**
-	 * @param svc_ctx pointer to service context
-	 * @param env pointer to environment struct
-	 * @param qname pointer to qname
-	 */
+   /**
+    * @param svc_ctx pointer to service context
+    * @param env pointer to environment struct
+    * @param qname pointer to qname
+    */
         struct axis2_op_ctx* (AXIS2_CALL *
                 create_op_ctx)(
-	            struct axis2_svc_ctx *svc_ctx,
+               struct axis2_svc_ctx *svc_ctx,
                     const axis2_env_t *env,
                     axis2_qname_t *qname);
     };
@@ -151,7 +151,7 @@ extern "C"
      */
     struct axis2_svc_ctx
     {
-	/** operations of service context */
+   /** operations of service context */
         axis2_svc_ctx_ops_t *ops;
     };
 

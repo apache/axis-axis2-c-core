@@ -53,54 +53,54 @@ extern "C"
     AXIS2_DECLARE_DATA struct axis2_http_chunked_stream_ops
     {
         /**
-	 * @param chunked_stream pointer to chunked stream
-	 * @param env pointer to environment struct
-	 * @param buffer 
-	 * @param count
-	 */
+    * @param chunked_stream pointer to chunked stream
+    * @param env pointer to environment struct
+    * @param buffer 
+    * @param count
+    */
         int (AXIS2_CALL *
                 read)(
                     axis2_http_chunked_stream_t *chunked_stream,
                     const axis2_env_t *env, 
-		    void *buffer, 
-		    size_t count);
+          void *buffer, 
+          size_t count);
 
         /**
-	 * @param env pointer to environment struct
-	 * @param buffer
-	 * @param count
-	 */
+    * @param env pointer to environment struct
+    * @param buffer
+    * @param count
+    */
         int (AXIS2_CALL *
                 write)(
                     axis2_http_chunked_stream_t *chunked_stream,
                     const axis2_env_t *env, 
-		    const void *buffer,
+          const void *buffer,
                     size_t count);
-		    
+          
         /**
-	 * @param chunked_stream pointer to chunked stream
-	 * @param env pointer to environment struct
-	 */
+    * @param chunked_stream pointer to chunked stream
+    * @param env pointer to environment struct
+    */
         int (AXIS2_CALL *
                 get_current_chunk_size)(
                     axis2_http_chunked_stream_t *chunked_stream,
                     const axis2_env_t *env);
 
         /**
-	 * @param chunked_stream pointer to chunked stream
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param chunked_stream pointer to chunked stream
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 write_last_chunk)(
                     axis2_http_chunked_stream_t *chunked_stream,
                     const axis2_env_t *env);
 
         /**
-	 * @param chunked_stream pointer to chunked stream
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param chunked_stream pointer to chunked stream
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_http_chunked_stream_t *chunked_stream,
@@ -124,7 +124,7 @@ extern "C"
     AXIS2_EXTERN axis2_http_chunked_stream_t * AXIS2_CALL
             axis2_http_chunked_stream_create(
                 const axis2_env_t *env, 
-		axis2_stream_t* stream);
+      axis2_stream_t* stream);
 
 /********************* Start of function macros   ***************************/
 

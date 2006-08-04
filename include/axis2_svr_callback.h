@@ -49,9 +49,9 @@ extern "C"
     {
         /**
          * Deallocate memory
-	 * @param svr_callback pointer to server callback struct
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * @param svr_callback pointer to server callback struct
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -60,10 +60,10 @@ extern "C"
 
         /**
          * Handle result
-	 * @param svr_callback pointer to server callback struct
-	 * @param env pointer to environment struct
+    * @param svr_callback pointer to server callback struct
+    * @param env pointer to environment struct
          * @param msg_ctx pointer to message context
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 handle_result)(
@@ -73,10 +73,10 @@ extern "C"
 
         /**
          * Handle fault
-	 * @param svr_callback pointer to server callback struct
-	 * @param env pointer to environment struct
+    * @param svr_callback pointer to server callback struct
+    * @param env pointer to environment struct
          * @param msg_ctx pointer to message context
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 handle_fault) (axis2_svr_callback_t *svr_callback,
@@ -89,7 +89,7 @@ extern "C"
      */
     struct axis2_svr_callback
     {
-	/** operations of server callback */
+   /** operations of server callback */
         axis2_svr_callback_ops_t *ops;
     };
 

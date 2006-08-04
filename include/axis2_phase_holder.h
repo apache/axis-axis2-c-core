@@ -62,7 +62,7 @@ extern "C"
     {
         /** De-allocate memory
           * @param phase_holder pointer to phase holder
-	  * @param env pointer to environment struct
+     * @param env pointer to environment struct
           */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -72,8 +72,8 @@ extern "C"
         /**
          * Method isPhaseExist
          * @param phase_holder pointer to phase holder
-	 * @param env pointer to environment struct
-	 * @param phase_name pointer to phase name
+    * @param env pointer to environment struct
+    * @param phase_name pointer to phase name
          * @return
          */
         axis2_bool_t (AXIS2_CALL *
@@ -84,8 +84,8 @@ extern "C"
 
         /**
          * @param phase_holder pointer to phase holder
-	 * @param env pointer to environment struct
-	 * @para handler pointer to handler
+    * @param env pointer to environment struct
+    * @para handler pointer to handler
          */
         axis2_status_t (AXIS2_CALL *
                 add_handler)(
@@ -96,9 +96,9 @@ extern "C"
         /**
          * this method is used to get the actual phase object given in the phase
          * array list
-	 * @param phase_holder pointer to phase holder
-	 * @param env pointer to environment struct
-	 * @param phase_name pointer to phase name
+    * @param phase_holder pointer to phase holder
+    * @param env pointer to environment struct
+    * @param phase_name pointer to phase name
          */
         struct axis2_phase * (AXIS2_CALL *
                 get_phase)(
@@ -110,10 +110,10 @@ extern "C"
          * This method is to build the transport phase , here load the corresponding 
          * handlers and added them
          * in to correct phase
-	 * @param phase_holder pointer to phase holder
-	 * @param env pointer to environment struct
-	 * @param phase pointer to phase
-	 * @param handlers pointer to handlers
+    * @param phase_holder pointer to phase holder
+    * @param env pointer to environment struct
+    * @param phase pointer to phase
+    * @param handlers pointer to handlers
          */
         axis2_status_t (AXIS2_CALL *
                 build_transport_handler_chain)(

@@ -51,55 +51,55 @@ extern "C"
     AXIS2_DECLARE_DATA struct axis2_http_status_line_ops
     {
         /**
-	 * @param status_line pointer to status line
-	 * @param env pointer to environment struct
-	 */
+    * @param status_line pointer to status line
+    * @param env pointer to environment struct
+    */
         int (AXIS2_CALL *
                 get_status_code)(
                     axis2_http_status_line_t *status_line,
                     const axis2_env_t *env);
 
         /**
-	 * @param status_line pointer to status line
-	 * @param env pointer to environment struct
-	 */
+    * @param status_line pointer to status line
+    * @param env pointer to environment struct
+    */
         axis2_char_t* (AXIS2_CALL *
                 get_http_version)(
                     axis2_http_status_line_t *status_line,
                     const axis2_env_t *env);
 
         /**
-	 * @param status_line pointer to status line
-	 * @param env pointer to environment struct
-	 */
+    * @param status_line pointer to status line
+    * @param env pointer to environment struct
+    */
         axis2_char_t* (AXIS2_CALL *
                 get_reason_phrase)(
                     axis2_http_status_line_t *status_line,
                     const axis2_env_t *env);
 
         /**
-	 * @param status_line pointer to status line
-	 * @param env pointer to environment struct
-	 */
+    * @param status_line pointer to status line
+    * @param env pointer to environment struct
+    */
         axis2_bool_t (AXIS2_CALL *
                 starts_with_http)(
                     axis2_http_status_line_t *status_line,
                     const axis2_env_t *env);
 
         /**
-	 * @param status_line pointer to status line
-	 * @param env pointer to environment struct
-	 */
+    * @param status_line pointer to status line
+    * @param env pointer to environment struct
+    */
         axis2_char_t* (AXIS2_CALL *
                 to_string)(
                     axis2_http_status_line_t *status_line,
                     const axis2_env_t *env);
 
         /**
-	 * @param status_line pointer to status line
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param status_line pointer to status line
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_http_status_line_t *status_line,

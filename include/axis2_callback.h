@@ -224,7 +224,7 @@ extern "C"
      */
     struct axis2_callback
     {
-	    /** operations of callback */
+       /** operations of callback */
         axis2_callback_ops_t *ops;
     };
 

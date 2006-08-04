@@ -97,16 +97,16 @@ typedef struct guththila_xml_pull_parser_s
 
 AXIS2_EXTERN int
 guththila_xml_pull_parser_read (axis2_env_t * environment,
-				guththila_xml_pull_parser_t * p);
+            guththila_xml_pull_parser_t * p);
                                 
 AXIS2_EXTERN int
 guththila_xml_pull_parser_next_char (axis2_env_t *environment,
-				     guththila_xml_pull_parser_t * p,
-				     int eof);
+                 guththila_xml_pull_parser_t * p,
+                 int eof);
 
 AXIS2_EXTERN int
 guththila_xml_pull_parser_tokenize (axis2_env_t *environment,
-				    guththila_xml_pull_parser_t * p);
+                guththila_xml_pull_parser_t * p);
                                         
                                         
 AXIS2_EXTERN int
@@ -114,12 +114,12 @@ guththila_xml_pull_parser_exception (guththila_char_t * s, int line, int error_c
 
 AXIS2_EXTERN int
 guththila_xml_pull_parser_skip_spaces (axis2_env_t *environment,
-				       guththila_xml_pull_parser_t *p,
-				       int c);
+                   guththila_xml_pull_parser_t *p,
+                   int c);
                                            
 AXIS2_EXTERN int
 guththila_xml_pull_parser_process_xml_decl(axis2_env_t *environment,
-					   guththila_xml_pull_parser_t * p);
+                  guththila_xml_pull_parser_t * p);
                                             
 AXIS2_EXTERN int
 guththila_xml_pull_parser_process_version_info(axis2_env_t * environment,
@@ -186,7 +186,7 @@ guththila_xml_pull_parser_process_pi (axis2_env_t *environment,
                                       
 AXIS2_EXTERN int
 guththila_xml_pull_parser_process_end_tag (axis2_env_t *environment,
-					   guththila_xml_pull_parser_t *p);
+                  guththila_xml_pull_parser_t *p);
                                              
 AXIS2_EXTERN void
 guththila_xml_pull_parser_reset (axis2_env_t *environment,
@@ -249,15 +249,15 @@ guththila_xml_pull_parser_is_valid_starting_char
 
 AXIS2_EXTERN int
 guththila_xml_pull_parser_next (axis2_env_t * environment,
-				guththila_xml_pull_parser_t * p);
+            guththila_xml_pull_parser_t * p);
                                 
 AXIS2_EXTERN guththila_xml_pull_parser_t *
 guththila_xml_pull_parser_create (axis2_env_t * environment,
-				  guththila_reader_t * r);
+              guththila_reader_t * r);
                                   
 AXIS2_EXTERN void
 guththila_xml_pull_parser_free (axis2_env_t * environment,
-				guththila_xml_pull_parser_t * parser);
+            guththila_xml_pull_parser_t * parser);
                                
 AXIS2_EXTERN int
 guththila_xml_pull_parser_get_attribute_count 
@@ -288,7 +288,7 @@ guththila_xml_pull_parser_get_attribute_prefix
                                  
 AXIS2_EXTERN guththila_attribute_t *
 guththila_xml_pull_parser_get_attribute (axis2_env_t *environment,
-					 guththila_xml_pull_parser_t * p);
+                guththila_xml_pull_parser_t * p);
                                          
                                          
 AXIS2_EXTERN guththila_char_t *
@@ -314,22 +314,22 @@ guththila_xml_pull_parser_get_attribute_prefix_by_number
                                          
 AXIS2_EXTERN guththila_char_t *
 guththila_xml_pull_parser_get_name (axis2_env_t * environment,
-				    guththila_xml_pull_parser_t * p);
+                guththila_xml_pull_parser_t * p);
                                     
                                     
 AXIS2_EXTERN guththila_char_t *
 guththila_xml_pull_parser_get_prefix (axis2_env_t * environment,
-				      guththila_xml_pull_parser_t * p);
+                  guththila_xml_pull_parser_t * p);
                                       
                                       
 AXIS2_EXTERN guththila_char_t *
 guththila_xml_pull_parser_get_value (axis2_env_t * environment,
-				     guththila_xml_pull_parser_t * p);
+                 guththila_xml_pull_parser_t * p);
                                      
                                      
 AXIS2_EXTERN guththila_namespace_t *
 guththila_xml_pull_parser_get_namespace (axis2_env_t *environment,
-					 guththila_xml_pull_parser_t * p);
+                guththila_xml_pull_parser_t * p);
                                          
                                          
 AXIS2_EXTERN int

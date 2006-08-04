@@ -51,46 +51,46 @@ extern "C"
     AXIS2_DECLARE_DATA struct axis2_http_request_line_ops
     {
         /**
-	 * @param request_line pointer to request line
-	 * @param env pointer to environment struct
-	 */
+    * @param request_line pointer to request line
+    * @param env pointer to environment struct
+    */
         axis2_char_t* (AXIS2_CALL *
-	        get_method)(
+           get_method)(
                     axis2_http_request_line_t *request_line,
                     const axis2_env_t *env);
 
         /**
-	 * @param request_line pointer to request line
-	 * @param env pointer to environment struct
-	 */
+    * @param request_line pointer to request line
+    * @param env pointer to environment struct
+    */
         axis2_char_t* (AXIS2_CALL *
                 get_http_version)(
                     axis2_http_request_line_t *request_line,
                     const axis2_env_t *env);
 
         /**
-	 * @param request_line pointer to request line
-	 * @param env pointer to environment struct
-	 */
+    * @param request_line pointer to request line
+    * @param env pointer to environment struct
+    */
         axis2_char_t* (AXIS2_CALL *
                 get_uri)(
                     axis2_http_request_line_t *request_line,
                     const axis2_env_t *env);
 
         /**
-	 * @param request_line pointer to request line
-	 * @param env pointer to environment struct
-	 */
+    * @param request_line pointer to request line
+    * @param env pointer to environment struct
+    */
         axis2_char_t* (AXIS2_CALL *
                 to_string)(
                     axis2_http_request_line_t *request_line,
                     const axis2_env_t *env);
 
         /**
-	 * @param request_line pointer to request line
-	 * @param env pointer to environment struct
-	 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-	 */
+    * @param request_line pointer to request line
+    * @param env pointer to environment struct
+    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+    */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_http_request_line_t *request_line,
@@ -126,7 +126,7 @@ extern "C"
     AXIS2_EXTERN axis2_http_request_line_t* AXIS2_CALL
     axis2_http_request_line_parse_line(
             const axis2_env_t *env, 
-	    const axis2_char_t *str);
+       const axis2_char_t *str);
 
 /********************* Start of function macros   ***************************/
 

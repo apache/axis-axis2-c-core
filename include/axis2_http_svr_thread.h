@@ -52,56 +52,56 @@ extern "C"
     AXIS2_DECLARE_DATA struct axis2_http_svr_thread_ops
     {
         /**
-	 * @param svr_thread pointer to server thread
-	 * @param env pointer to environment struct
-	 */
+    * @param svr_thread pointer to server thread
+    * @param env pointer to environment struct
+    */
         axis2_status_t (AXIS2_CALL *
                 run)(
                     axis2_http_svr_thread_t *svr_thread,
                     const axis2_env_t *env);
 
         /**
-	 * @param svr_thread pointer to server thread
-	 * @param env pointer to environment struct
-	 */
+    * @param svr_thread pointer to server thread
+    * @param env pointer to environment struct
+    */
         axis2_status_t (AXIS2_CALL *
                 destroy)(
                     axis2_http_svr_thread_t *svr_thread,
                     const axis2_env_t *env);
 
         /**
-	 * @param svr_thread pointer to server thread
-	 * @param env pointer to environment struct
-	 */
+    * @param svr_thread pointer to server thread
+    * @param env pointer to environment struct
+    */
         int (AXIS2_CALL * 
                 get_local_port)(
                     axis2_http_svr_thread_t *svr_thread,
                     const axis2_env_t *env);
 
         /**
-	 * @param svr_thread pointer to server thread
-	 * @param env pointer to environment struct
-	 */
+    * @param svr_thread pointer to server thread
+    * @param env pointer to environment struct
+    */
         axis2_bool_t (AXIS2_CALL * 
                 is_running)(
                     axis2_http_svr_thread_t *svr_thread,
                     const axis2_env_t *env);
 
         /**
-	 * @param svr_thread pointer to server thread
-	 * @param env pointer to environment struct
-	 * @param worker pointer to worker
-	 */
+    * @param svr_thread pointer to server thread
+    * @param env pointer to environment struct
+    * @param worker pointer to worker
+    */
         axis2_status_t (AXIS2_CALL *
                 set_worker)(
                     axis2_http_svr_thread_t *svr_thread,
                     const axis2_env_t *env, 
-		    axis2_http_worker_t *worker);
+          axis2_http_worker_t *worker);
 
         /**
-	 * @param svr_thread pointer to server thread
-	 * @param env pointer to environment struct
-	 */
+    * @param svr_thread pointer to server thread
+    * @param env pointer to environment struct
+    */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_http_svr_thread_t *svr_thread,
@@ -124,7 +124,7 @@ extern "C"
     AXIS2_EXTERN axis2_http_svr_thread_t * AXIS2_CALL
     axis2_http_svr_thread_create (
         const axis2_env_t *env, 
-	int port);
+   int port);
 
 /************************** Start of function macros **************************/
 
