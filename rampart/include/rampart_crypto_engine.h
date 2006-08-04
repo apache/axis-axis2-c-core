@@ -18,6 +18,9 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axiom_soap.h>
+#include <axis2_msg_ctx.h>
+#include <rampart_action.h>
+
 /**
   * @file rampart_crypto_engine.h
   * @brief 
@@ -32,7 +35,15 @@ extern "C" {
 /*Get the message and encrypt*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_crypto_encrypt_message(const axis2_env_t *env,
-                     /* struct axis2_msg_ctx *msg_ctx,*/
+                      axis2_msg_ctx_t *msg_ctx,
+                      axis2_param_t* param_action,
+                      axiom_soap_envelope_t *soap_envelope );
+
+/*Get the message and decrypt*/
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_crypto_decrypt_message(const axis2_env_t *env,
+                       axis2_msg_ctx_t *msg_ctx,
+                       axis2_param_t* param_action,
                       axiom_soap_envelope_t *soap_envelope );
 /* @} */
 #ifdef __cplusplus

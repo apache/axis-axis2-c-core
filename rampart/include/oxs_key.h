@@ -63,6 +63,11 @@ oxs_key_read_from_file(const axis2_env_t *env,
 
 
 
+AXIS2_EXTERN oxs_key_ptr AXIS2_CALL
+oxs_key_generate_for_algo(const axis2_env_t *env, 
+                            axis2_char_t *key_algo);
+
+
 
 /** @} */
 #ifdef __cplusplus

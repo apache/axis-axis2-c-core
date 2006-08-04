@@ -53,7 +53,7 @@ struct _evp_pkey{
     int type;
 };
 
-AXIS2_EXTERN int AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 generate_random_key(const axis2_env_t *env, oxs_buffer_ptr buf, int size);
 
 AXIS2_EXTERN evp_pkey_ptr AXIS2_CALL

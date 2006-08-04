@@ -72,7 +72,6 @@ rampart_get_actions( const axis2_env_t *env,
  * Here the key name means the name of the subelement of the 
  * action element.
  * @param env pointer to environment struct
- * @param ctx context
  * @param param_action action parameter
  * @param key element name as a string
  * @return the value of the element
@@ -80,7 +79,6 @@ rampart_get_actions( const axis2_env_t *env,
  
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_get_action_params( const axis2_env_t *env,
-                   axis2_ctx_t *ctx,
                    axis2_param_t *param_action,
                    const axis2_char_t *key);
 
