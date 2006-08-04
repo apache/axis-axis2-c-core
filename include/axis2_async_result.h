@@ -59,7 +59,7 @@ extern "C"
          * @param env pointer to environment struct
          * @return pointer to the result SOAP envelope in the message context.
          */
-        axiom_soap_envelope_t* (AXIS2_CALL *
+        axiom_soap_envelope_t *(AXIS2_CALL *
                 get_envelope)(
                     axis2_async_result_t *async_result,
                     const axis2_env_t *env);
@@ -71,7 +71,7 @@ extern "C"
          * @param env pointer to environment struct
          * @return pointer to result message context
          */
-        axis2_msg_ctx_t* (AXIS2_CALL *
+        axis2_msg_ctx_t *(AXIS2_CALL *
                 get_result)(
                     axis2_async_result_t *async_result,
                     const axis2_env_t *env);
@@ -104,7 +104,7 @@ extern "C"
      * SOAP message is to be captured
      * @return newly created async_result struct
      */
-    AXIS2_EXTERN axis2_async_result_t* AXIS2_CALL
+    AXIS2_EXTERN axis2_async_result_t *AXIS2_CALL
     axis2_async_result_create(
         const axis2_env_t *env,
         axis2_msg_ctx_t *result);
