@@ -18,12 +18,6 @@
 #include <axis2_const.h>
 #include <axis2_hash.h>
 
-/**
- * This is a MessageReceiver that is used at the client side to accept the 
- * Messages (response) that comes in the Client. This one correlated the incomming Message to
- * the related Messages and Call the correct callback. 
- */
-
 typedef struct axis2_callback_recv_impl
 {
     /** context base struct */
@@ -38,28 +32,33 @@ typedef struct axis2_callback_recv_impl
 #define AXIS2_INTF_TO_IMPL(callback_recv) ((axis2_callback_recv_impl_t *)callback_recv)
 
 
-axis2_msg_recv_t* AXIS2_CALL 
-axis2_callback_recv_get_base(struct axis2_callback_recv *callback_recv, 
-                             const axis2_env_t *env);
+axis2_msg_recv_t *AXIS2_CALL 
+axis2_callback_recv_get_base(
+    const axis2_callback_recv_t *callback_recv, 
+    const axis2_env_t *env);
                              
 axis2_status_t AXIS2_CALL 
-axis2_callback_recv_free (struct axis2_callback_recv *callback_recv, 
-                          const axis2_env_t *env);
+axis2_callback_recv_free(
+    axis2_callback_recv_t *callback_recv, 
+    const axis2_env_t *env);
                           
 axis2_status_t AXIS2_CALL 
-axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv, 
-                                const axis2_env_t *env,
-                                axis2_char_t *msg_id, 
-                                axis2_callback_t *callback);
+axis2_callback_recv_add_callback(
+    axis2_callback_recv_t *callback_recv, 
+    const axis2_env_t *env,
+    axis2_char_t *msg_id, 
+    axis2_callback_t *callback);
                                 
 axis2_status_t AXIS2_CALL 
-axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv, 
-                            const axis2_env_t *env,
-                            axis2_msg_ctx_t *msg_ctx,
-                            void *callback_recv_param);
+axis2_callback_recv_receive(
+    axis2_msg_recv_t *msg_recv, 
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    void *callback_recv_param);
 
-axis2_callback_recv_t* AXIS2_CALL 
-axis2_callback_recv_create(const axis2_env_t *env) 
+axis2_callback_recv_t *AXIS2_CALL 
+axis2_callback_recv_create(
+    const axis2_env_t *env) 
 {
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
     
@@ -94,8 +93,7 @@ axis2_callback_recv_create(const axis2_env_t *env)
         return NULL;
     }
     
-    /* initialize ops */
-    
+    /* initialize ops */    
     callback_recv_impl->callback_recv.ops  = 
         AXIS2_MALLOC( env->allocator, sizeof(axis2_callback_recv_ops_t) );
         
@@ -107,28 +105,28 @@ axis2_callback_recv_create(const axis2_env_t *env)
     }
 
     callback_recv_impl->callback_recv.ops->get_base = 
-        axis2_callback_recv_get_base;
-        
+        axis2_callback_recv_get_base;        
     callback_recv_impl->callback_recv.ops->free = 
-        axis2_callback_recv_free;
-        
+        axis2_callback_recv_free;        
     callback_recv_impl->callback_recv.ops->add_callback = 
         axis2_callback_recv_add_callback;
     
     return &(callback_recv_impl->callback_recv);
 }
 
-axis2_msg_recv_t* AXIS2_CALL 
-axis2_callback_recv_get_base(struct axis2_callback_recv *callback_recv, 
-                             const axis2_env_t *env)
+axis2_msg_recv_t *AXIS2_CALL 
+axis2_callback_recv_get_base(
+    const axis2_callback_recv_t *callback_recv, 
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(callback_recv)->base;
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_callback_recv_free (struct axis2_callback_recv *callback_recv, 
-                          const axis2_env_t *env)
+axis2_callback_recv_free (
+    axis2_callback_recv_t *callback_recv, 
+    const axis2_env_t *env)
 {
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
     
@@ -141,12 +139,6 @@ axis2_callback_recv_free (struct axis2_callback_recv *callback_recv,
         AXIS2_FREE(env->allocator, callback_recv_impl->callback_recv.ops);
         callback_recv_impl->callback_recv.ops = NULL;
     }
-    
-    if (callback_recv_impl->base)
-    {
-        /*AXIS2_MSG_RECV_FREE(callback_recv_impl->base, env);
-        callback_recv_impl->base = NULL;*/
-    }    
     
     if (callback_recv_impl->callback_map)
     {
@@ -172,10 +164,11 @@ axis2_callback_recv_free (struct axis2_callback_recv *callback_recv,
 
 
 axis2_status_t AXIS2_CALL 
-axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv, 
-                                const axis2_env_t *env,
-                                axis2_char_t *msg_id, 
-                                axis2_callback_t *callback) 
+axis2_callback_recv_add_callback(
+    axis2_callback_recv_t *callback_recv, 
+    const axis2_env_t *env,
+    axis2_char_t *msg_id, 
+    axis2_callback_t *callback) 
 {
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
     
@@ -193,10 +186,11 @@ axis2_callback_recv_add_callback(struct axis2_callback_recv *callback_recv,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_callback_recv_receive(axis2_msg_recv_t *msg_recv, 
-                            const axis2_env_t *env,
-                            axis2_msg_ctx_t *msg_ctx,
-                            void *callback_recv_param)
+axis2_callback_recv_receive(
+    axis2_msg_recv_t *msg_recv, 
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    void *callback_recv_param)
 {
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
     axis2_relates_to_t *relates_to = NULL;
