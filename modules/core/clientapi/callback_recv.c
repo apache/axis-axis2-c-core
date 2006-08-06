@@ -46,7 +46,7 @@ axis2_status_t AXIS2_CALL
 axis2_callback_recv_add_callback(
     axis2_callback_recv_t *callback_recv, 
     const axis2_env_t *env,
-    axis2_char_t *msg_id, 
+    const axis2_char_t *msg_id, 
     axis2_callback_t *callback);
                                 
 axis2_status_t AXIS2_CALL 
@@ -167,7 +167,7 @@ axis2_status_t AXIS2_CALL
 axis2_callback_recv_add_callback(
     axis2_callback_recv_t *callback_recv, 
     const axis2_env_t *env,
-    axis2_char_t *msg_id, 
+    const axis2_char_t *msg_id, 
     axis2_callback_t *callback) 
 {
     axis2_callback_recv_impl_t *callback_recv_impl = NULL;
