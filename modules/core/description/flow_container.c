@@ -46,49 +46,59 @@ typedef struct axis2_flow_container_impl
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-axis2_flow_container_free(axis2_flow_container_t *flow_container,
-                            const axis2_env_t *env);
+axis2_flow_container_free(
+    axis2_flow_container_t *flow_container,
+    const axis2_env_t *env);
 
 axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_inflow(const axis2_flow_container_t *flow_container,
-                                    const axis2_env_t *env);
+axis2_flow_container_get_inflow(
+    const axis2_flow_container_t *flow_container,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_flow_container_set_inflow(axis2_flow_container_t *flow_container,
-                                    const axis2_env_t *env,
-                                    axis2_flow_t *inflow);
+axis2_flow_container_set_inflow(
+    axis2_flow_container_t *flow_container,
+    const axis2_env_t *env,
+    axis2_flow_t *inflow);
 
 axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_outflow(const axis2_flow_container_t *flow_container,
-                                    const axis2_env_t *env);
+axis2_flow_container_get_outflow(
+    const axis2_flow_container_t *flow_container,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_flow_container_set_outflow(axis2_flow_container_t *flow_container,
-                                    const axis2_env_t *env,
-                                    axis2_flow_t *outflow);
-
-axis2_flow_t * AXIS2_CALL
-axis2_flow_container_get_fault_inflow(const axis2_flow_container_t *flow_container,
-                                        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_flow_container_set_fault_inflow(axis2_flow_container_t *flow_container,
-                                        const axis2_env_t *env,
-                                        axis2_flow_t *falut_inflow);
+axis2_flow_container_set_outflow(
+    axis2_flow_container_t *flow_container,
+    const axis2_env_t *env,
+    axis2_flow_t *outflow);
 
 axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_fault_outflow(const axis2_flow_container_t *flow_container,
-                                            const axis2_env_t *env);
+axis2_flow_container_get_fault_inflow(
+    const axis2_flow_container_t *flow_container,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_flow_container_set_fault_outflow(axis2_flow_container_t *flow_container,
-                                            const axis2_env_t *env,
-                                            axis2_flow_t *fault_outflow);
+axis2_flow_container_set_fault_inflow(
+    axis2_flow_container_t *flow_container,
+    const axis2_env_t *env,
+    axis2_flow_t *falut_inflow);
+
+axis2_flow_t *AXIS2_CALL
+axis2_flow_container_get_fault_outflow(
+    const axis2_flow_container_t *flow_container,
+    const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+axis2_flow_container_set_fault_outflow(
+    axis2_flow_container_t *flow_container,
+    const axis2_env_t *env,
+    axis2_flow_t *fault_outflow);
 
 /************************** End of function prototypes ************************/
 
-AXIS2_EXTERN axis2_flow_container_t * AXIS2_CALL
-axis2_flow_container_create (const axis2_env_t *env)
+AXIS2_EXTERN axis2_flow_container_t *AXIS2_CALL
+axis2_flow_container_create (
+    const axis2_env_t *env)
 {
     axis2_flow_container_impl_t *flow_container_impl = NULL;
     
@@ -143,8 +153,9 @@ axis2_flow_container_create (const axis2_env_t *env)
 /*************************** Start of op impls *************************/
 
 axis2_status_t AXIS2_CALL
-axis2_flow_container_free(axis2_flow_container_t *flow_container,
-                            const axis2_env_t *env)
+axis2_flow_container_free(
+    axis2_flow_container_t *flow_container,
+    const axis2_env_t *env)
 {
     axis2_flow_container_impl_t *container_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -191,8 +202,9 @@ axis2_flow_container_free(axis2_flow_container_t *flow_container,
  * @return in flow
  */
 axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_inflow(const axis2_flow_container_t *flow_container,
-                                    const axis2_env_t *env)
+axis2_flow_container_get_inflow(
+    const axis2_flow_container_t *flow_container,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(flow_container)->in;
@@ -203,9 +215,10 @@ axis2_flow_container_get_inflow(const axis2_flow_container_t *flow_container,
  * @param inflow in flow
  */
 axis2_status_t AXIS2_CALL
-axis2_flow_container_set_inflow(axis2_flow_container_t *flow_container,
-                                    const axis2_env_t *env,
-                                    axis2_flow_t *inflow)
+axis2_flow_container_set_inflow(
+    axis2_flow_container_t *flow_container,
+    const axis2_env_t *env,
+    axis2_flow_t *inflow)
 {
     axis2_flow_container_impl_t *container_impl = NULL;
     
@@ -226,8 +239,9 @@ axis2_flow_container_set_inflow(axis2_flow_container_t *flow_container,
  * @return out flow
  */
 axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_outflow(const axis2_flow_container_t *flow_container,
-                                    const axis2_env_t *env)
+axis2_flow_container_get_outflow(
+    const axis2_flow_container_t *flow_container,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(flow_container)->out;
@@ -238,9 +252,10 @@ axis2_flow_container_get_outflow(const axis2_flow_container_t *flow_container,
  * @param outflow out flow
  */
 axis2_status_t AXIS2_CALL
-axis2_flow_container_set_outflow(axis2_flow_container_t *flow_container,
-                                    const axis2_env_t *env,
-                                    axis2_flow_t *outflow)
+axis2_flow_container_set_outflow(
+    axis2_flow_container_t *flow_container,
+    const axis2_env_t *env,
+    axis2_flow_t *outflow)
 {
     axis2_flow_container_impl_t *container_impl = NULL;
     
@@ -260,9 +275,10 @@ axis2_flow_container_set_outflow(axis2_flow_container_t *flow_container,
  * Get fault in flow
  * @return fault in flow
  */
-axis2_flow_t * AXIS2_CALL
-axis2_flow_container_get_fault_inflow(const axis2_flow_container_t *flow_container,
-                                        const axis2_env_t *env)
+axis2_flow_t *AXIS2_CALL
+axis2_flow_container_get_fault_inflow(
+    const axis2_flow_container_t *flow_container,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(flow_container)->in_fault;
@@ -273,9 +289,10 @@ axis2_flow_container_get_fault_inflow(const axis2_flow_container_t *flow_contain
  * @param falut_inflow falut in flow
  */
 axis2_status_t AXIS2_CALL
-axis2_flow_container_set_fault_inflow(axis2_flow_container_t *flow_container,
-                                        const axis2_env_t *env,
-                                        axis2_flow_t *falut_inflow)
+axis2_flow_container_set_fault_inflow(
+    axis2_flow_container_t *flow_container,
+    const axis2_env_t *env,
+    axis2_flow_t *falut_inflow)
 {
     axis2_flow_container_impl_t *container_impl = NULL;
     
@@ -295,8 +312,9 @@ axis2_flow_container_set_fault_inflow(axis2_flow_container_t *flow_container,
  * @return fault out flow
  */
 axis2_flow_t *AXIS2_CALL
-axis2_flow_container_get_fault_outflow(const axis2_flow_container_t *flow_container,
-                                            const axis2_env_t *env)
+axis2_flow_container_get_fault_outflow(
+    const axis2_flow_container_t *flow_container,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(flow_container)->out_fault;
@@ -307,9 +325,10 @@ axis2_flow_container_get_fault_outflow(const axis2_flow_container_t *flow_contai
  * @param fault_outflow fault out flow
  */
 axis2_status_t AXIS2_CALL
-axis2_flow_container_set_fault_outflow(axis2_flow_container_t *flow_container,
-                                            const axis2_env_t *env,
-                                            axis2_flow_t *fault_outflow)
+axis2_flow_container_set_fault_outflow(
+    axis2_flow_container_t *flow_container,
+    const axis2_env_t *env,
+    axis2_flow_t *fault_outflow)
 {
     axis2_flow_container_impl_t *container_impl = NULL;
     

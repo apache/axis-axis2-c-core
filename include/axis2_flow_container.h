@@ -56,9 +56,9 @@ extern "C"
     struct axis2_flow_container_ops
     {
         /** Deallocate memory
-    * @param flow_container pointer to flow container
-    * @param env pointer to environment struct
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @param flow_container pointer to flow container
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -67,8 +67,8 @@ extern "C"
 
         /**
          * Get fault out flow
-    * @param flow_container pointer to flow container
-    * @param env pointer to environment struct
+         * @param flow_container pointer to flow container
+         * @param env pointer to environment struct
          * @return in flow
          */
         axis2_flow_t *(AXIS2_CALL *
@@ -78,10 +78,10 @@ extern "C"
 
         /**
          * Set in flow
-    * @param flow_container pointer to flow container
-    * @param env pointer to environment struct
+         * @param flow_container pointer to flow container
+         * @param env pointer to environment struct
          * @param inflow pointer to in flow
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_inflow)(
@@ -91,8 +91,8 @@ extern "C"
 
         /**
          * Get out flow
-    * @param flow_container pointer to flow container
-    * @param env pointer to environment struct
+         * @param flow_container pointer to flow container
+         * @param env pointer to environment struct
          * @return out flow
          */
         axis2_flow_t *(AXIS2_CALL *
@@ -102,10 +102,10 @@ extern "C"
 
         /**
          * Set out flow
-    * @param flow_container pointer to flow container
-    * @param env pointer to environment struct
+         * @param flow_container pointer to flow container
+         * @param env pointer to environment struct
          * @param outflow pointer to out flow
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_outflow)(
@@ -115,21 +115,21 @@ extern "C"
 
         /**
          * Get fault in flow
-    * @param flow_container pointer to flow container
-    * @param env pointer to environment struct
+         * @param flow_container pointer to flow container
+         * @param env pointer to environment struct
          * @return fault in flow
          */
-        axis2_flow_t * (AXIS2_CALL *
+        axis2_flow_t *(AXIS2_CALL *
                 get_fault_inflow)(
                     const axis2_flow_container_t *flow_container,
                     const axis2_env_t *env);
 
         /**
          * set fault in flow
-    * @param flow_container pointer to flow container
-    * @param env pointer to environment struct
+         * @param flow_container pointer to flow container
+         * @param env pointer to environment struct
          * @param falut_inflow pointer to falut in flow
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_fault_inflow)(
@@ -138,8 +138,8 @@ extern "C"
                     axis2_flow_t *falut_inflow);
         /**
          * Get fault out flow
-    * @param flow_container pointer to flow container
-    * @param env pointer to environment struct
+         * @param flow_container pointer to flow container
+         * @param env pointer to environment struct
          * @return fault out flow
          */
         axis2_flow_t *(AXIS2_CALL *
@@ -149,10 +149,10 @@ extern "C"
 
         /**
          * Set fault out flow
-    * @param flow_container pointer to flow container
-    * @param env pointer to environment struct
+         * @param flow_container pointer to flow container
+         * @param env pointer to environment struct
          * @param fault_outflow pointer t ofault out flow
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_fault_outflow)(
@@ -175,7 +175,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to newly created flow container
      */
-    AXIS2_EXTERN axis2_flow_container_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_flow_container_t *AXIS2_CALL
     axis2_flow_container_create (
         const axis2_env_t *env);
 
