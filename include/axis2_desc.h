@@ -123,7 +123,7 @@ extern "C"
                     const axis2_desc_t *desc,
                     const axis2_env_t *env,
                     const axis2_char_t *key,
-                    const void* child);
+                    const void *child);
 
         /**
          * @param desc pointer to desc

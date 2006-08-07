@@ -52,13 +52,13 @@ axis2_desc_add_param(
     const axis2_env_t *env,       
     axis2_param_t *param);
 
-axis2_param_t * AXIS2_CALL
+axis2_param_t *AXIS2_CALL
 axis2_desc_get_param(
     const axis2_desc_t *desc, 
     const axis2_env_t *env,
     const axis2_char_t *param_name);
 
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_desc_get_all_params(
     const axis2_desc_t *desc, 
     const axis2_env_t *env);
@@ -75,7 +75,7 @@ axis2_desc_set_policy_container(
     const axis2_env_t *env,
     axis2_policy_container_t *policy_container);
 
-axis2_policy_container_t * AXIS2_CALL 
+axis2_policy_container_t *AXIS2_CALL 
 axis2_desc_get_policy_container(
     const axis2_desc_t *desc, 
     const axis2_env_t *env);
@@ -88,12 +88,12 @@ axis2_desc_add_child(
     const axis2_char_t *key, 
     const void* child); 
 
-axis2_hash_t * AXIS2_CALL 
+axis2_hash_t *AXIS2_CALL 
 axis2_desc_get_all_children(
     const axis2_desc_t *desc, 
     const axis2_env_t *env);
 
-void * AXIS2_CALL 
+void *AXIS2_CALL 
 axis2_desc_get_child(
     const axis2_desc_t *desc, 
     const axis2_env_t *env,
@@ -107,7 +107,7 @@ axis2_desc_remove_child(
 
 /************************* End of function headers ****************************/   
 
-AXIS2_EXTERN axis2_desc_t * AXIS2_CALL
+AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
 axis2_desc_create(
     const axis2_env_t *env)
 {
@@ -222,7 +222,7 @@ axis2_desc_add_param (
     return AXIS2_PARAM_CONTAINER_ADD_PARAM(desc_impl->param_container, env, param);
 }
 
-axis2_param_t * AXIS2_CALL
+axis2_param_t *AXIS2_CALL
 axis2_desc_get_param (
     const axis2_desc_t *desc, 
     const axis2_env_t *env,
@@ -235,7 +235,7 @@ axis2_desc_get_param (
    return AXIS2_PARAM_CONTAINER_GET_PARAM(desc_impl->param_container, env, param_name);
 }
 
-axis2_array_list_t * AXIS2_CALL
+axis2_array_list_t *AXIS2_CALL
 axis2_desc_get_all_params(
     const axis2_desc_t *desc, 
     const axis2_env_t *env)
@@ -279,7 +279,7 @@ axis2_desc_set_policy_container(
     return AXIS2_SUCCESS;
 }
 
-axis2_policy_container_t * AXIS2_CALL 
+axis2_policy_container_t *AXIS2_CALL 
 axis2_desc_get_policy_container(
     const axis2_desc_t *desc, 
     const axis2_env_t *env) 
@@ -302,7 +302,7 @@ axis2_desc_add_child(
     const axis2_desc_t *desc, 
     const axis2_env_t *env,
     const axis2_char_t *key, 
-    const void* child) 
+    const void *child) 
 {
     axis2_desc_impl_t *desc_impl = NULL;
     
@@ -318,7 +318,7 @@ axis2_desc_add_child(
     return AXIS2_FAILURE;
 }
 
-axis2_hash_t * AXIS2_CALL 
+axis2_hash_t *AXIS2_CALL 
 axis2_desc_get_all_children(
     const axis2_desc_t *desc, 
     const axis2_env_t *env) 
@@ -327,7 +327,7 @@ axis2_desc_get_all_children(
     return AXIS2_INTF_TO_IMPL(desc)->children;
 }
 
-void * AXIS2_CALL 
+void *AXIS2_CALL 
 axis2_desc_get_child(
     const axis2_desc_t *desc, 
     const axis2_env_t *env,
