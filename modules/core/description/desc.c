@@ -34,68 +34,82 @@ typedef struct axis2_desc_impl
 
     /** children of this description */
     axis2_hash_t *children;
-} axis2_desc_impl_t;
+}
+axis2_desc_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(desc) ((axis2_desc_impl_t *)desc)
    
 /*************************** Function headers *********************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_desc_free (axis2_desc_t *desc, const axis2_env_t *env);
+axis2_desc_free(
+    axis2_desc_t *desc, 
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
-axis2_desc_add_param (axis2_desc_t *desc, 
+axis2_desc_add_param(
+    axis2_desc_t *desc, 
     const axis2_env_t *env,       
     axis2_param_t *param);
 
 axis2_param_t * AXIS2_CALL
-axis2_desc_get_param (const axis2_desc_t *desc, 
+axis2_desc_get_param(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env,
     const axis2_char_t *param_name);
 
 axis2_array_list_t * AXIS2_CALL
-axis2_desc_get_all_params(const axis2_desc_t *desc, 
+axis2_desc_get_all_params(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL 
-axis2_desc_is_param_locked(const axis2_desc_t *desc, 
+axis2_desc_is_param_locked(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env,
     const axis2_char_t *param_name);
 
 /*axis2_status_t AXIS2_CALL 
-axis2_desc_set_policy_container(axis2_desc_t *desc, 
+axis2_desc_set_policy_container(
+    axis2_desc_t *desc, 
     const axis2_env_t *env,
     axis2_policy_container_t *policy_container);
 
 axis2_policy_container_t * AXIS2_CALL 
-axis2_desc_get_policy_container(const axis2_desc_t *desc, 
+axis2_desc_get_policy_container(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env);
 */
 
 axis2_status_t AXIS2_CALL 
-axis2_desc_add_child(const axis2_desc_t *desc, 
+axis2_desc_add_child(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env,
     const axis2_char_t *key, 
     const void* child); 
 
 axis2_hash_t * AXIS2_CALL 
-axis2_desc_get_all_children(const axis2_desc_t *desc, 
+axis2_desc_get_all_children(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env);
 
 void * AXIS2_CALL 
-axis2_desc_get_child(const axis2_desc_t *desc, 
+axis2_desc_get_child(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env,
     const axis2_char_t *key);
 
 axis2_status_t AXIS2_CALL 
-axis2_desc_remove_child(const axis2_desc_t *desc, 
+axis2_desc_remove_child(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env,
     const axis2_char_t *key);
 
 /************************* End of function headers ****************************/   
 
 AXIS2_EXTERN axis2_desc_t * AXIS2_CALL
-axis2_desc_create (const axis2_env_t *env)
+axis2_desc_create(
+    const axis2_env_t *env)
 {
     axis2_desc_impl_t *desc_impl = NULL;
  
@@ -157,7 +171,9 @@ axis2_desc_create (const axis2_env_t *env)
 /*************************** Start of desc impls *************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_desc_free (axis2_desc_t *desc, const axis2_env_t *env)
+axis2_desc_free (
+    axis2_desc_t *desc, 
+    const axis2_env_t *env)
 { 
     axis2_desc_impl_t *desc_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -192,7 +208,8 @@ axis2_desc_free (axis2_desc_t *desc, const axis2_env_t *env)
 }   
 
 axis2_status_t AXIS2_CALL 
-axis2_desc_add_param (axis2_desc_t *desc, 
+axis2_desc_add_param (
+    axis2_desc_t *desc, 
     const axis2_env_t *env,       
     axis2_param_t *param)
 {
@@ -206,7 +223,8 @@ axis2_desc_add_param (axis2_desc_t *desc,
 }
 
 axis2_param_t * AXIS2_CALL
-axis2_desc_get_param (const axis2_desc_t *desc, 
+axis2_desc_get_param (
+    const axis2_desc_t *desc, 
     const axis2_env_t *env,
     const axis2_char_t *param_name)
 {
@@ -218,7 +236,8 @@ axis2_desc_get_param (const axis2_desc_t *desc,
 }
 
 axis2_array_list_t * AXIS2_CALL
-axis2_desc_get_all_params(const axis2_desc_t *desc, 
+axis2_desc_get_all_params(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env)
 {
     axis2_desc_impl_t *desc_impl = NULL;
@@ -231,7 +250,8 @@ axis2_desc_get_all_params(const axis2_desc_t *desc,
 }
 
 axis2_bool_t AXIS2_CALL 
-axis2_desc_is_param_locked(const axis2_desc_t *desc, 
+axis2_desc_is_param_locked(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env,
     const axis2_char_t *param_name)
 {
@@ -246,7 +266,8 @@ axis2_desc_is_param_locked(const axis2_desc_t *desc,
 }
 
 /*axis2_status_t AXIS2_CALL 
-axis2_desc_set_policy_container(axis2_desc_t *desc, 
+axis2_desc_set_policy_container(
+    axis2_desc_t *desc, 
     const axis2_env_t *env,
     axis2_policy_container_t *policy_container) 
 {
@@ -259,7 +280,8 @@ axis2_desc_set_policy_container(axis2_desc_t *desc,
 }
 
 axis2_policy_container_t * AXIS2_CALL 
-axis2_desc_get_policy_container(const axis2_desc_t *desc, 
+axis2_desc_get_policy_container(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env) 
 {
     axis2_desc_impl_t *desc_impl = NULL;
@@ -276,7 +298,8 @@ axis2_desc_get_policy_container(const axis2_desc_t *desc,
 */
 
 axis2_status_t AXIS2_CALL 
-axis2_desc_add_child(const axis2_desc_t *desc, 
+axis2_desc_add_child(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env,
     const axis2_char_t *key, 
     const void* child) 
@@ -296,7 +319,8 @@ axis2_desc_add_child(const axis2_desc_t *desc,
 }
 
 axis2_hash_t * AXIS2_CALL 
-axis2_desc_get_all_children(const axis2_desc_t *desc, 
+axis2_desc_get_all_children(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);    
@@ -304,7 +328,8 @@ axis2_desc_get_all_children(const axis2_desc_t *desc,
 }
 
 void * AXIS2_CALL 
-axis2_desc_get_child(const axis2_desc_t *desc, 
+axis2_desc_get_child(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env,
     const axis2_char_t *key) 
 {
@@ -317,7 +342,8 @@ axis2_desc_get_child(const axis2_desc_t *desc,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_desc_remove_child(const axis2_desc_t *desc, 
+axis2_desc_remove_child(
+    const axis2_desc_t *desc, 
     const axis2_env_t *env,
     const axis2_char_t *key) 
 {
