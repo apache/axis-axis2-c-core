@@ -56,73 +56,88 @@ typedef struct axis2_op_client_worker_func_args
     axis2_callback_t *callback;
     axis2_op_t *op;
     axis2_msg_ctx_t *msg_ctx;
-}
-axis2_op_client_worker_func_args_t;
+} axis2_op_client_worker_func_args_t;
 
-void * AXIS2_THREAD_FUNC
-axis2_op_client_worker_func(axis2_thread_t *thd, void *data);
+void *AXIS2_THREAD_FUNC
+axis2_op_client_worker_func(
+    axis2_thread_t *thd, 
+    void *data);
 
 
 /** private function prototypes */
-static void axis2_op_client_init_ops(axis2_op_client_t *op_client);
+static void 
+axis2_op_client_init_ops(
+    axis2_op_client_t *op_client);
 
 /** public function prototypes */
 axis2_status_t AXIS2_CALL
-axis2_op_client_set_options(axis2_op_client_t *op_client,
-        const axis2_env_t *env,
-        const axis2_options_t *options);
+axis2_op_client_set_options(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    const axis2_options_t *options);
 
-const axis2_options_t* AXIS2_CALL
-axis2_op_client_get_options(const axis2_op_client_t *op_client,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_op_client_add_msg_ctx(struct axis2_op_client *op_client,
-        const axis2_env_t *env,
-        axis2_msg_ctx_t *mc);
-
-
-const axis2_msg_ctx_t* AXIS2_CALL
-axis2_op_client_get_msg_ctx(const axis2_op_client_t *op_client,
-        const axis2_env_t *env,
-        const axis2_char_t *message_label);
-
-axis2_status_t AXIS2_CALL
-axis2_op_client_set_callback(struct axis2_op_client *op_client,
-        const axis2_env_t *env,
-        axis2_callback_t *callback);
-
-axis2_status_t AXIS2_CALL
-axis2_op_client_execute(struct axis2_op_client *op_client,
-        const axis2_env_t *env,
-        const axis2_bool_t block);
-
-axis2_status_t AXIS2_CALL
-axis2_op_client_reset(struct axis2_op_client *op_client,
-        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_op_client_complete(struct axis2_op_client *op_client,
-        const axis2_env_t *env,
-        axis2_msg_ctx_t *mc);
-
-axis2_op_ctx_t* AXIS2_CALL
-axis2_op_client_get_operation_context(const axis2_op_client_t *op_client,
+const axis2_options_t *AXIS2_CALL
+axis2_op_client_get_options(
+    const axis2_op_client_t *op_client,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_op_client_set_callback_recv(struct axis2_op_client *op_client,
-        const axis2_env_t *env,
-        axis2_callback_recv_t *callback_recv);
+axis2_op_client_add_msg_ctx(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *mc);
+
+
+const axis2_msg_ctx_t *AXIS2_CALL
+axis2_op_client_get_msg_ctx(
+    const axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    const axis2_char_t *message_label);
 
 axis2_status_t AXIS2_CALL
-axis2_op_client_free(struct axis2_op_client *op_client,
-        const axis2_env_t *env);
+axis2_op_client_set_callback(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    axis2_callback_t *callback);
 
-axis2_op_client_t* AXIS2_CALL
-axis2_op_client_create(const axis2_env_t *env, axis2_op_t *op,
-        axis2_svc_ctx_t *svc_ctx,
-        axis2_options_t *options)
+axis2_status_t AXIS2_CALL
+axis2_op_client_execute(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    const axis2_bool_t block);
+
+axis2_status_t AXIS2_CALL
+axis2_op_client_reset(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+axis2_op_client_complete(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *mc);
+
+axis2_op_ctx_t *AXIS2_CALL
+axis2_op_client_get_operation_context(
+    const axis2_op_client_t *op_client,
+    const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+axis2_op_client_set_callback_recv(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    axis2_callback_recv_t *callback_recv);
+
+axis2_status_t AXIS2_CALL
+axis2_op_client_free(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env);
+
+axis2_op_client_t *AXIS2_CALL
+axis2_op_client_create(
+    const axis2_env_t *env, axis2_op_t *op,
+    axis2_svc_ctx_t *svc_ctx,
+    axis2_options_t *options)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
     axis2_char_t *mep_uri = NULL;
@@ -187,16 +202,17 @@ axis2_op_client_create(const axis2_env_t *env, axis2_op_t *op,
     }
 
     axis2_op_client_init_ops(&(op_client_impl->op_client));
-    /** initialize parser for thread safty */
+    /** initialize parser for thread safety */
     axiom_xml_reader_init();
     return &(op_client_impl->op_client);
 }
 
 
 axis2_status_t AXIS2_CALL
-axis2_op_client_set_options(struct axis2_op_client *op_client,
-        const axis2_env_t *env,
-        const axis2_options_t *options)
+axis2_op_client_set_options(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    const axis2_options_t *options)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
 
@@ -213,9 +229,10 @@ axis2_op_client_set_options(struct axis2_op_client *op_client,
     return AXIS2_SUCCESS;
 }
 
-const axis2_options_t* AXIS2_CALL
-axis2_op_client_get_options(const axis2_op_client_t *op_client,
-        const axis2_env_t *env)
+const axis2_options_t *AXIS2_CALL
+axis2_op_client_get_options(
+    const axis2_op_client_t *op_client,
+    const axis2_env_t *env)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
 
@@ -227,9 +244,10 @@ axis2_op_client_get_options(const axis2_op_client_t *op_client,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_client_add_msg_ctx(struct axis2_op_client *op_client,
-        const axis2_env_t *env,
-        axis2_msg_ctx_t *mc)
+axis2_op_client_add_msg_ctx(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *mc)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
     axis2_msg_ctx_t *out_msg_ctx = NULL, *in_msg_ctx = NULL;
@@ -265,10 +283,11 @@ axis2_op_client_add_msg_ctx(struct axis2_op_client *op_client,
 }
 
 
-const axis2_msg_ctx_t* AXIS2_CALL
-axis2_op_client_get_msg_ctx(const axis2_op_client_t *op_client,
-        const axis2_env_t *env,
-        const axis2_char_t *message_label)
+const axis2_msg_ctx_t *AXIS2_CALL
+axis2_op_client_get_msg_ctx(
+    const axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    const axis2_char_t *message_label)
 {
 
     axis2_op_client_impl_t *op_client_impl = NULL;
@@ -279,16 +298,16 @@ axis2_op_client_get_msg_ctx(const axis2_op_client_t *op_client,
 
     if (!message_label)
     {
-        /*AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);*/
         return NULL;
     }
     return AXIS2_OP_CTX_GET_MSG_CTX(op_client_impl->op_ctx, env, message_label);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_client_set_callback(struct axis2_op_client *op_client,
-        const axis2_env_t *env,
-        axis2_callback_t *callback)
+axis2_op_client_set_callback(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    axis2_callback_t *callback)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
 
@@ -306,9 +325,10 @@ axis2_op_client_set_callback(struct axis2_op_client *op_client,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_client_execute(struct axis2_op_client *op_client,
-        const axis2_env_t *env,
-        const axis2_bool_t block)
+axis2_op_client_execute(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    const axis2_bool_t block)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -344,7 +364,7 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
     AXIS2_MSG_CTX_SET_OPTIONS(msg_ctx, env, op_client_impl->options);
 
     /**
-    if the transport to use for sending is not specified, try to find it
+     if the transport to use for sending is not specified, try to find it
      from the URL
     */
     transport_out = AXIS2_OPTIONS_GET_TRANSPORT_OUT(op_client_impl->options,
@@ -430,7 +450,7 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
             axis2_char_t *epr_address = NULL;
             axis2_property_t *property = NULL;
 
-            /* Usual Request-Response Sync implemetation */
+            /* Usual Request-Response Sync implementation */
             property = axis2_property_create(env);
             AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
             epr_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(
@@ -502,8 +522,9 @@ axis2_op_client_execute(struct axis2_op_client *op_client,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_client_reset(struct axis2_op_client *op_client,
-        const axis2_env_t *env)
+axis2_op_client_reset(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
 
@@ -526,9 +547,10 @@ axis2_op_client_reset(struct axis2_op_client *op_client,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_client_complete(struct axis2_op_client *op_client,
-        const axis2_env_t *env,
-        axis2_msg_ctx_t *mc)
+axis2_op_client_complete(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *mc)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -553,8 +575,9 @@ axis2_op_client_complete(struct axis2_op_client *op_client,
     return AXIS2_LISTENER_MANAGER_STOP(listener_manager, env, transport);
 }
 
-axis2_op_ctx_t* AXIS2_CALL
-axis2_op_client_get_operation_context(const axis2_op_client_t *op_client,
+axis2_op_ctx_t *AXIS2_CALL
+axis2_op_client_get_operation_context(
+    const axis2_op_client_t *op_client,
     const axis2_env_t *env)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
@@ -565,8 +588,9 @@ axis2_op_client_get_operation_context(const axis2_op_client_t *op_client,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_client_free(struct axis2_op_client *op_client,
-        const axis2_env_t *env)
+axis2_op_client_free(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
 
@@ -597,9 +621,11 @@ axis2_op_client_free(struct axis2_op_client *op_client,
     axiom_xml_reader_cleanup();
     return AXIS2_SUCCESS;
 }
-/** private functions - implementation */
 
-static void axis2_op_client_init_ops(axis2_op_client_t *op_client)
+
+static void 
+axis2_op_client_init_ops(
+    axis2_op_client_t *op_client)
 {
     op_client->ops->set_options = axis2_op_client_set_options;
     op_client->ops->get_options = axis2_op_client_get_options;
@@ -614,8 +640,10 @@ static void axis2_op_client_init_ops(axis2_op_client_t *op_client)
     op_client->ops->free = axis2_op_client_free;
 }
 
-void * AXIS2_THREAD_FUNC
-axis2_op_client_worker_func(axis2_thread_t *thd, void *data)
+void *AXIS2_THREAD_FUNC
+axis2_op_client_worker_func(
+    axis2_thread_t *thd, 
+    void *data)
 {
     axis2_op_client_worker_func_args_t *args_list = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
@@ -635,7 +663,7 @@ axis2_op_client_worker_func(axis2_thread_t *thd, void *data)
     AXIS2_MSG_CTX_SET_OP_CTX(args_list->msg_ctx, th_env, op_ctx);
     AXIS2_MSG_CTX_SET_SVC_CTX(args_list->msg_ctx, th_env, args_list->op_client_impl->svc_ctx);
 
-    /* send the request and wait for reponse */
+    /* send the request and wait for response */
     response = axis2_mep_client_two_way_send(th_env, args_list->msg_ctx);
     args_list->op_client_impl->async_result = axis2_async_result_create(th_env, response);
     AXIS2_CALLBACK_INVOKE_ON_COMPLETE(args_list->callback, th_env, args_list->op_client_impl->async_result);
@@ -645,9 +673,10 @@ axis2_op_client_worker_func(axis2_thread_t *thd, void *data)
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_client_set_callback_recv(struct axis2_op_client *op_client,
-        const axis2_env_t *env,
-        axis2_callback_recv_t *callback_recv)
+axis2_op_client_set_callback_recv(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    axis2_callback_recv_t *callback_recv)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(op_client)->callback_recv = callback_recv;
