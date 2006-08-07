@@ -16,6 +16,7 @@
 
 #include <stdio.h>
 #include <axis2_op.h>
+#include <axis2_conf.h>
 #include <axis2_module_desc.h>
 #include <axis2_phases_info.h>
 #include <axis2_env.h>
@@ -26,6 +27,7 @@ struct axis2_module_desc *create_module_desc(const axis2_env_t *env);
 int axis2_test_op_engage_module()
 {
     struct axis2_module_desc *moduleref= NULL;
+    axis2_conf_t *conf = NULL;
 
    axis2_status_t status = AXIS2_FAILURE;
 
@@ -38,8 +40,9 @@ int axis2_test_op_engage_module()
    axis2_op_t *op = axis2_op_create(env);
 
     moduleref = axis2_module_desc_create(env);
+    conf = axis2_conf_create(env);
 
-    status = AXIS2_OP_ENGAGE_MODULE(op, env, moduleref);
+    status = AXIS2_OP_ENGAGE_MODULE(op, env, moduleref, conf);
     moduleref = NULL;
    if(status != AXIS2_SUCCESS )
    {

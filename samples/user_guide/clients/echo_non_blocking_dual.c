@@ -94,6 +94,7 @@ int main(int argc, char** argv)
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
                   " %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
+        return -1;
     }
 
     /* Set service client options */

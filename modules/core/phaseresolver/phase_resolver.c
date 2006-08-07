@@ -466,11 +466,10 @@ axis2_phase_resolver_build_execution_chains(
                     }
                 } else 
                 {
-                    /**
-                     *This handler is trying to added to system pre defined phases , but those handlers
-                     * are already added to global chain which run irrespective of the service
-                     *
-                     */
+                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "This handler is\
+                        trying to added to system pre defined phases , but those\
+                        handlers are already added to global chain which run\
+                        irrespective of the service");
                 }
             }
         }
@@ -1655,16 +1654,17 @@ axis2_phase_resolver_engage_module_to_op(
                     {
                         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
                             "Handler inclusion failed for %s phase", phase_name);
-                        return status;
+                        /*return status;*/
                     }
            
                 } 
                 else 
                 {
-                    AXIS2_ERROR_SET(env->error, 
-                        AXIS2_ERROR_SERVICE_MODULE_CAN_NOT_REFER_GLOBAL_PHASE, 
-                            AXIS2_FAILURE);
-                    return AXIS2_FAILURE;
+                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "This handler is\
+                        trying to added to system pre defined phases , but those\
+                        handlers are already added to global chain which run\
+                        irrespective of the service");
+                    /*return AXIS2_FAILURE;*/
                     
                 }
             }

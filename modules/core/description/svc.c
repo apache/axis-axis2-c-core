@@ -872,12 +872,11 @@ axis2_svc_add_op (axis2_svc_t *svc,
             /* Notify module for service engagement */
             /*AXIS2_MODULE_ENGAGE_NOTIFY(module_impl, env, op); */
         }
-        status = AXIS2_OP_ENGAGE_MODULE(op, env, module_desc);
-        if(AXIS2_TRUE != status)
+        status = AXIS2_OP_ENGAGE_MODULE(op, env, module_desc, conf);
+        if(AXIS2_SUCCESS != status)
         {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP, 
-                    AXIS2_FAILURE);
-            return status;
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
+                    "Module already enaged to operation");
         }
     }
     msg_recv = AXIS2_OP_GET_MSG_RECV(op, env);

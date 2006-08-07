@@ -60,6 +60,7 @@ struct axis2_op_ctx;
 struct axis2_svc_ctx;    
 struct axis2_msg_ctx; 
 struct axis2_msg;
+struct axis2_conf;
 typedef struct axis2_op_ops axis2_op_ops_t;    
 typedef struct axis2_op axis2_op_t;    
 
@@ -175,9 +176,11 @@ AXIS2_DECLARE_DATA struct axis2_op_ops
      * @param moduleref
      */
     axis2_status_t (AXIS2_CALL *
-    engage_module) (axis2_op_t *op,
-                        const axis2_env_t *env,
-                        struct axis2_module_desc *moduleref);
+    engage_module) (
+        axis2_op_t *op,
+        const axis2_env_t *env,
+        struct axis2_module_desc *moduleref,
+        struct axis2_conf *conf);
 
     axis2_status_t (AXIS2_CALL *
     add_to_engage_module_list) (axis2_op_t *op,
@@ -491,8 +494,8 @@ axis2_op_free_void_arg(void *op,
 #define AXIS2_OP_SET_STYLE(op, env, style) \
       ((op)->ops->set_style (op, env, style))   
 
-#define AXIS2_OP_ENGAGE_MODULE(op, env, moduleref) \
-      ((op)->ops->engage_module (op, env, moduleref))
+#define AXIS2_OP_ENGAGE_MODULE(op, env, moduleref, conf) \
+      ((op)->ops->engage_module (op, env, moduleref, conf))
         
 #define AXIS2_OP_ADD_TO_ENGAGE_MODULE_LIST(op, env, module_name) \
       ((op)->ops->add_to_engage_module_list (op, env, module_name))

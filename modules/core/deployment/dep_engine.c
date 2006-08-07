@@ -816,9 +816,11 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
         return NULL;
     }
     
-    status = AXIS2_CONF_SET_PHASESINFO(dep_engine_impl->conf, env, dep_engine_impl->phases_info);
+    status = AXIS2_CONF_SET_PHASESINFO(dep_engine_impl->conf, env, 
+            dep_engine_impl->phases_info);
     AXIS2_CONF_SET_OUT_FAULTPHASES(dep_engine_impl->conf, env,
-        AXIS2_PHASES_INFO_GET_OP_OUT_FAULTPHASES(dep_engine_impl->phases_info, env));
+        AXIS2_PHASES_INFO_GET_OP_OUT_FAULTPHASES(dep_engine_impl->phases_info, 
+            env));
     if(AXIS2_SUCCESS != status) 
     {
         AXIS2_REPOS_LISTENER_FREE(dep_engine_impl->repos_listener, env);
@@ -883,7 +885,8 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
     {
         return NULL;
     }
-    dep_engine_impl->conf_builder = axis2_conf_builder_create_with_file_and_dep_engine_and_conf(env,
+    dep_engine_impl->conf_builder = 
+        axis2_conf_builder_create_with_file_and_dep_engine_and_conf(env,
         dep_engine_impl->conf_name, dep_engine, dep_engine_impl->conf);
     if(!(dep_engine_impl->conf_builder))
     {
@@ -915,7 +918,8 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
     axis2_core_utils_calculate_default_module_version(env, 
                             AXIS2_CONF_GET_MODULES(dep_engine_impl->conf, env), 
                             dep_engine_impl->conf);
-    AXIS2_CONF_SET_PHASESINFO(dep_engine_impl->conf, env, dep_engine_impl->phases_info);
+    AXIS2_CONF_SET_PHASESINFO(dep_engine_impl->conf, env, dep_engine_impl->
+        phases_info);
     status = axis2_dep_engine_engage_modules(dep_engine, env);
     if(AXIS2_FAILURE == status)
     {
@@ -1038,11 +1042,6 @@ axis2_dep_engine_validate_system_predefined_phases(axis2_dep_engine_t *dep_engin
         return AXIS2_SUCCESS;
     }
     
-    /*  ArrayList outPhaes = tempdata.getOutphases(); */
-    /* TODO do the validation code here */
-    /* ArrayList systemDefaultPhases =((AxisConfigurationImpl)axisConfig).
-        getInPhasesUptoAndIncludingPostDispatch();
-     */
     return AXIS2_SUCCESS;
 }
 
@@ -1168,7 +1167,8 @@ axis2_dep_engine_add_new_svc(
                 
                 if (NULL != module) 
                 {
-                    AXIS2_OP_ENGAGE_MODULE(op_desc, env, module);
+                    AXIS2_OP_ENGAGE_MODULE(op_desc, env, module, 
+                            dep_engine_impl->conf);
                 } 
                 else 
                 {
@@ -1632,9 +1632,10 @@ axis2_dep_engine_get_axis_svc_name(axis2_dep_engine_t *dep_engine,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_dep_engine_set_phases_info(axis2_dep_engine_t *dep_engine,
-                                    const axis2_env_t *env,
-                                    axis2_phases_info_t *phases_info) 
+axis2_dep_engine_set_phases_info(
+        axis2_dep_engine_t *dep_engine,
+        const axis2_env_t *env,
+        axis2_phases_info_t *phases_info) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, phases_info, AXIS2_FAILURE);

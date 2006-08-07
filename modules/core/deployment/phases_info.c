@@ -408,9 +408,10 @@ axis2_phases_info_get_op_in_phases(
     size = AXIS2_ARRAY_LIST_SIZE(phases_info_impl->in_phases, env);
     for (i = 0; i < size; i++) 
     {
-        phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(phases_info_impl->in_phases, env, i);
+        phase_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(
+            phases_info_impl->in_phases, env, i);
         if (0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name) ||
-                /*0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name) ||*/
+                0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name) ||
                 0 == AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name) ||
                 0 == AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) 
         {
@@ -706,13 +707,15 @@ axis2_phases_info_set_op_phases(
     }
     
     op_in_faultphases = axis2_phases_info_get_op_in_faultphases(phases_info, env);    
-    op_out_faultphases = axis2_phases_info_get_op_out_faultphases(phases_info, env);
+    op_out_faultphases = axis2_phases_info_get_op_out_faultphases(phases_info, 
+        env);
     
     status = AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op_desc, env, op_in_phases);
     status = AXIS2_OP_SET_PHASES_OUTFLOW(op_desc, env, op_out_phases);
     if(op_in_faultphases)
     {
-        status = AXIS2_OP_SET_PHASES_IN_FAULT_FLOW(op_desc, env, op_in_faultphases);
+        status = AXIS2_OP_SET_PHASES_IN_FAULT_FLOW(op_desc, env, 
+            op_in_faultphases);
     }
     else
     {
@@ -725,7 +728,8 @@ axis2_phases_info_set_op_phases(
 
     if(op_out_faultphases)
     {
-        status = AXIS2_OP_SET_PHASES_OUT_FAULT_FLOW(op_desc, env, op_out_faultphases);
+        status = AXIS2_OP_SET_PHASES_OUT_FAULT_FLOW(op_desc, env, 
+            op_out_faultphases);
     }
     else    
     {

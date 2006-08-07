@@ -217,7 +217,7 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     AXIS2_QNAME_FREE(qparamst, env);
     AXIS2_DESC_BUILDER_PROCESS_PARAMS(conf_builder->desc_builder, env, itr,
         builder_impl->conf->param_container, builder_impl->conf->param_container);
-    /* process MessageReciver */
+    /* process Message Reciver */
     qmsgrecv = axis2_qname_create(env, AXIS2_MESSAGERECEIVER, NULL, NULL);
     msg_recvs = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element, env,
         qmsgrecv, conf_node);
@@ -256,7 +256,8 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
     if(NULL != disp_order_element)
     {
         axis2_conf_builder_process_disp_order(conf_builder, env, disp_order_node);
-        /*log.info("found the custom disptaching order and continue with that order");*/
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "found the custom disptaching \
+            order and continue with that order");
     } else 
     {
         status = AXIS2_CONF_SET_DEFAULT_DISPATCHERS(builder_impl->conf, env);
@@ -264,10 +265,8 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
         {
             return AXIS2_FAILURE;
         }
-        /*
-         * log.info("no custom dispatching order found continue with default
-         * dispatcing order");
-         */
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "no custom dispatching order \
+            found continue with default dispatcing order");
     }
 
     /* Process Module refs */
@@ -293,10 +292,6 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
         qtransportrecv, conf_node);
     AXIS2_QNAME_FREE(qtransportrecv, env);
     axis2_conf_builder_process_transport_recvs(conf_builder, env, trs_recvs);
-
-    /* Process Observers */
-    /*Iterator obs_ittr=config_element.getChildrenWithName(new QName(AXIS2_LISTENERST)) ;
-    processObservers(obs_ittr); */
 
     /* processing Phase orders */
     qphaseorder = axis2_qname_create(env, AXIS2_PHASE_ORDER, NULL, NULL);
@@ -487,10 +482,6 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
 }
 
 /**
- * TODO axis2_conf_builder_process_axis_storage
- */
-
-/**
  * To process all the phase orders which are defined in axis2.xml
  * @param phase_orders
  */
@@ -572,9 +563,10 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
 
 
 static axis2_array_list_t *
-axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
-                                    const axis2_env_t *env,
-                                    axiom_node_t *phase_orders_node)
+axis2_conf_builder_get_phase_list(
+        axis2_conf_builder_t *conf_builder,
+        const axis2_env_t *env,
+        axiom_node_t *phase_orders_node)
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_array_list_t *phase_list = NULL;
@@ -642,9 +634,10 @@ axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
 }
 
 static axis2_status_t
-axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
-                                const axis2_env_t *env,
-                                axiom_children_qname_iterator_t *trs_senders)
+axis2_conf_builder_process_transport_senders(
+        axis2_conf_builder_t *conf_builder,
+        const axis2_env_t *env,
+        axiom_children_qname_iterator_t *trs_senders)
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -872,9 +865,10 @@ axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
 
 
 static axis2_status_t
-axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
-                                    const axis2_env_t *env,
-                                    axiom_children_qname_iterator_t *trs_recvs)
+axis2_conf_builder_process_transport_recvs(
+        axis2_conf_builder_t *conf_builder,
+        const axis2_env_t *env,
+        axiom_children_qname_iterator_t *trs_recvs)
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -1098,9 +1092,9 @@ axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
 
 axis2_status_t AXIS2_CALL
 axis2_conf_builder_process_default_module_versions(
-                            axis2_conf_builder_t *conf_builder,
-                            const axis2_env_t *env, 
-                            axiom_children_qname_iterator_t *module_versions)
+       axis2_conf_builder_t *conf_builder,
+       const axis2_env_t *env, 
+       axiom_children_qname_iterator_t *module_versions)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_versions, AXIS2_FAILURE);
@@ -1152,69 +1146,3 @@ axis2_conf_builder_process_default_module_versions(
     return AXIS2_SUCCESS;
 }
     
-/**
- * To process AxisObservers
- * @param oservers
- */
-/*
-static axis2_status_t
-axis2_conf_builder_process_observers(Iterator oservers) throws DeploymentException {
-    while (oservers.hasNext()) {
-        OMElement observerelement = (OMElement) oservers.next();
-        AxisObserver observer;
-        OMAttribute trsClas = observerelement.getAttribute(
-                new QName(CLASSNAME));
-        String clasName;
-        if (trsClas !=null) {
-            clasName = trsClas.getAttributeValue();
-        } else {
-            throw new DeploymentException(Messages.getMessage(
-                    DeploymentErrorMsgs.OBSERVER_ERROR));
-        }
-        try {
-            Class observerclass = Class.forName(clasName, true, Thread.currentThread().
-                    getContextClassLoader());
-            observer = (AxisObserver) observerclass.newInstance();
-            //processing Paramters
-            //Processing service level paramters
-            Iterator itr = observerelement.getChildrenWithName(
-                    new QName(PARAMETERST));
-            processParameters(itr,observer,axisConfiguration);
-
-            // initilization
-            observer.init();
-            ((AxisConfigurationImpl)axisConfiguration).addObservers(observer);
-
-        } catch (ClassNotFoundException e) {
-            throw new DeploymentException(e);
-        } catch (IllegalAccessException e) {
-            throw new DeploymentException(e);
-        } catch (InstantiationException e) {
-            throw new DeploymentException(e);
-        }
-    }
-
-}
-*/
-
-/*
-protected void processModuleConfig(Iterator moduleConfigs ,
-                                   ParameterInclude parent, AxisConfiguration config)
-        throws DeploymentException {
-    while (moduleConfigs.hasNext()) {
-        OMElement moduleConfig = (OMElement) moduleConfigs.next();
-        OMAttribute moduleName_att = moduleConfig.getAttribute(
-                new QName(ATTNAME));
-        if(moduleName_att == null){
-            throw new DeploymentException(Messages.getMessage(DeploymentErrorMsgs.INVALID_MODULE_CONFIG));
-        } else {
-            String module = moduleName_att.getAttributeValue();
-            ModuleConfiguration moduleConfiguration =
-                    new ModuleConfiguration(new QName(module),parent);
-            Iterator paramters=  moduleConfig.getChildrenWithName(new QName(PARAMETERST));
-            processParameters(paramters,moduleConfiguration,parent);
-            ((AxisConfigurationImpl)config).addModuleConfig(moduleConfiguration);
-        }
-    }
-}
-*/

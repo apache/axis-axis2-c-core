@@ -408,7 +408,7 @@ axis2_engine_receive(struct axis2_engine *engine,
             return AXIS2_SUCCESS;
         }
 
-        axis2_engine_verify_ctx_built(engine, env, msg_ctx);   /* TODO : Chinthaka remove me. I'm redundant */
+        axis2_engine_verify_ctx_built(engine, env, msg_ctx);   /* TODO : Remove me. I'm redundant */
         op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
         if (op_ctx)
         {
