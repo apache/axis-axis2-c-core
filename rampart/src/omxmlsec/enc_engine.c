@@ -29,6 +29,52 @@
 #include <openssl_cipher_ctx.h>
 #include <openssl_crypt.h>
 #include <openssl_constants.h>
+#include <openssl_rsa.h>
+
+
+/*TODO better to have pk_ctx instead of individual parameters like filename, algorithm*/
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_pubkey_encrypt_data(const axis2_env_t *env, oxs_buffer_ptr input, oxs_buffer_ptr result, axis2_char_t *filename )
+{
+    evp_pkey_ptr pubk = NULL; 
+    axis2_char_t *encoded_str = NULL;
+    unsigned char *encrypted  =  NULL;
+    int ret, enclen, encodedlen ;
+
+    /*Load the public key. Note: evp_pkey_load first try to load the private key. So need to provide the correct key*/
+    pubk = evp_pkey_load(env, filename, "");   
+    if(!pubk){
+         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "cannot load the public key from the file %s", filename);
+         return AXIS2_FAILURE;
+        
+    }
+    /*Now we support only rsa*/
+    ret = openssl_rsa_pub_encrypt(env, pubk, input->data, &encrypted);
+    if(ret < 0 ){
+         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "openssl_rsa_pub_encrypt");
+         return AXIS2_FAILURE;
+
+    }
+    enclen = ret; /*return value is the length of the encrypted data*/
+    /*base64 encode*/
+    encodedlen = axis2_base64_encode_len(enclen);
+    encoded_str = AXIS2_MALLOC(env->allocator, encodedlen );
+
+    ret = axis2_base64_encode(encoded_str, (const char *)encrypted, enclen);
+    if(ret < 0){
+            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "axis2_base64_encode");
+            return AXIS2_FAILURE;
+    }
+
+    /*Attach the result to the result buf*/
+    result->size = encodedlen;
+    result->data = (unsigned char*)AXIS2_STRDUP(encoded_str, env);
+
+    return AXIS2_SUCCESS;
+}
 
 
 /*Encrypt or decrypt an input depending on what is set in the enc_ctx*/

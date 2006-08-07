@@ -18,6 +18,7 @@
 #include <axis2_util.h>
 #include <openssl_cipher_ctx.h>
 #include <openssl_constants.h>
+#include <openssl_cipher_property.h>
 #include <oxs_error.h>
 #include <openssl/evp.h>
 #include <openssl/rand.h>
@@ -52,7 +53,7 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
     }    
     printf("\nCreating cipher ctx for %s", cipher_name);
     /*Set the cipher. TODO Support more ciphers later*/
-    if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_des_ede3_cbc ))
+    /*if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_des_ede3_cbc ))
     {
         bc_ctx->cipher = EVP_des_ede3_cbc();         
     }else if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc ))
@@ -67,6 +68,9 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
     }else{
         return (-1);
     }
+    */
+
+    bc_ctx->cipher = (EVP_CIPHER*)openssl_get_evp_cipher_by_name(env, (axis2_char_t*)cipher_name);
 
     /*Sets the IV if not set. Well..How we convey this IV to decrypt*/
     if(!(bc_ctx->iv)){

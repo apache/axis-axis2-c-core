@@ -34,9 +34,10 @@
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_crypto_decrypt_message(const axis2_env_t *env,
-                       axis2_msg_ctx_t *msg_ctx,
-                        axis2_param_t *param_action,
-                      axiom_soap_envelope_t *soap_envelope )
+                      axis2_msg_ctx_t *msg_ctx,
+                      axis2_param_t *param_action,
+                      axiom_soap_envelope_t *soap_envelope ,
+                      axiom_node_t *sec_node)
 {
     axis2_char_t *key = NULL, *key_name = NULL;
     axis2_status_t ret = AXIS2_FAILURE;
@@ -93,19 +94,26 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_crypto_encrypt_message(const axis2_env_t *env,
                       axis2_msg_ctx_t *msg_ctx,
                       axis2_param_t *param_action,
-                      axiom_soap_envelope_t *soap_envelope )
+                      axiom_soap_envelope_t *soap_envelope ,
+                      axiom_node_t *sec_node)
 {
-    axis2_char_t *key = NULL, *key_name = NULL;
+    /*axis2_char_t *key = NULL, *key_name = NULL;*/
     axis2_status_t ret = AXIS2_FAILURE;
     axiom_node_t *node_to_enc = NULL, *body_node = NULL, *header_node = NULL;
-    axiom_node_t *enc_type_node = NULL, *enc_mtd_node = NULL, *key_info_node = NULL, *key_name_node = NULL;
+    /*EncryptedData*/
+    axiom_node_t *enc_data_node = NULL, *enc_mtd_node = NULL, *key_info_node = NULL, *key_name_node = NULL;
     axiom_node_t *cv_node = NULL, *cd_node = NULL, *temp = NULL;
+    /*EncryptedKey*/
+    axiom_node_t *enc_key_node = NULL, *enc_key_enc_mtd_node = NULL, *enc_key_key_info_node = NULL, *enc_key_key_name_node = NULL;
+    axiom_node_t *enc_key_cv_node = NULL, *enc_key_cd_node = NULL;
     axiom_soap_body_t *body = NULL;
     axiom_soap_header_t *header = NULL;
     axis2_char_t *str_to_enc = NULL;
     enc_ctx_ptr enc_ctx = NULL;
-    actions_ptr *actions= NULL;
+    actions_ptr actions= NULL;
     oxs_key_ptr sessionkey = NULL;
+    oxs_buffer_ptr session_key_buf_plain = NULL, session_key_buf_encrypted = NULL;    
+
 
     /*Populate actions*/ 
     actions = oxs_ctx_create_actions_ptr(env);
@@ -117,21 +125,26 @@ rampart_crypto_encrypt_message(const axis2_env_t *env,
     }
 
     /*Generate the session key*/
-    sessionkey = oxs_key_generate_for_algo(env, "actions->encryption_sym_algorithm");
+    sessionkey = oxs_key_generate_for_algo(env, actions->encryption_sym_algorithm);
+    if(!sessionkey){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
+            "Session key generate failed");
+        return AXIS2_FAILURE;
+    }
     sessionkey->name = "sessionkey";
 
-    /*Create the key info*/
 
     /*TODO get the key using callbacks*/ 
-    key = "0123456701234567";
+/*    key = "0123456701234567";
     key_name = "KauKey";
-
+*/
     body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
     header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
        
     body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
     header_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(header, env);
 
+   
     /*TODO Get the node to be encrypted*/   
     /*If non is specified we encrypt the first element of the Body element*/
     if(!node_to_enc){
@@ -141,43 +154,66 @@ rampart_crypto_encrypt_message(const axis2_env_t *env,
     str_to_enc = AXIOM_NODE_TO_STRING(node_to_enc, env);
     
     /*Build the template*/
-    /*TODO Support enc key later*/
     /*NOTE : Here I pass body_node as the parent. Might be a prob :(*/
-    enc_type_node =  oxs_token_build_encrypted_type_element(env, 
+    enc_data_node =  oxs_token_build_encrypted_type_element(env, 
                         AXIOM_NODE_GET_PARENT(node_to_enc, env),
                         OXS_NodeEncryptedData, 
                         OXS_TypeEncElement,
                         "EncDataId-12345" );
-    enc_mtd_node = oxs_token_build_encryption_method_element(env, enc_type_node, OXS_HrefDes3Cbc);
-    key_info_node = oxs_token_build_key_info_element(env, enc_type_node);
-    key_name_node = oxs_token_build_key_name_element(env, key_info_node, key_name );
-    cd_node = oxs_token_build_cipher_data_element(env, enc_type_node);
+    enc_mtd_node = oxs_token_build_encryption_method_element(env, enc_data_node, OXS_HrefDes3Cbc);
+    key_info_node = oxs_token_build_key_info_element(env, enc_data_node);
+    key_name_node = oxs_token_build_key_name_element(env, key_info_node, sessionkey->name );
+    cd_node = oxs_token_build_cipher_data_element(env, enc_data_node);
     cv_node = oxs_token_build_cipher_value_element(env,  cd_node, NULL); /*We pass NULL here OMXMLSEC will populate this*/
 
     /*Build the encryption ctx*/
     enc_ctx = oxs_ctx_create_ctx(env); 
     
     /*Set the key*/
-    enc_ctx->key = oxs_key_create_key(env, key_name, (unsigned char*)key, AXIS2_STRLEN(key), OXS_KEY_USAGE_ENCRYPT);
+    enc_ctx->key = oxs_key_create_key(env, sessionkey->name, (unsigned char*)sessionkey->data, sessionkey->size, OXS_KEY_USAGE_ENCRYPT);
 
     /*Hand the template over to OMXMLSEC*/
-    ret = oxs_enc_encrypt_template(env, enc_type_node, str_to_enc, enc_ctx);
+    ret = oxs_enc_encrypt_template(env, enc_data_node, str_to_enc, enc_ctx);
     if(ret == AXIS2_FAILURE){
         oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
                      "oxs_enc_encrypt_template failed");
         return ret;
     }else{
-        printf("Encryption template is \n %s", AXIOM_NODE_TO_STRING(enc_type_node, env));
+        printf("Encryption template is \n %s", AXIOM_NODE_TO_STRING(enc_data_node, env));
     }
 
+    /*Encrypt the session key using the public key TODO*/
+    /*Here u have the key file name or the key store name. Right now we support only the key file name*/
+    session_key_buf_plain = oxs_string_to_buffer(env, sessionkey->data);
+    session_key_buf_encrypted = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
+
+    ret = oxs_pubkey_encrypt_data(env, session_key_buf_plain, session_key_buf_encrypted, "keys/rsapub.pem");
+    if(ret == AXIS2_FAILURE){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
+                     "oxs_pubkey_encrypt_data failed");
+        return ret;
+    
+    }
+
+
+    /*Create the key info*/
+    /*axiom_node_t *enc_key_node = NULL, *enc_key_enc_mtd_node = NULL, *enc_key_key_info_node = NULL, *enc_key_key_name_node = NULL;
+    axiom_node_t *enc_key_cv_node = NULL, *enc_key_cd_node = NULL;*/
+    enc_key_node = oxs_token_build_encrypted_type_element(env,sec_node, OXS_NodeEncryptedKey, NULL, NULL );
+    enc_key_enc_mtd_node = oxs_token_build_encryption_method_element(env, enc_key_node, actions->encryption_key_transport_algorithm);
+    enc_key_key_info_node = oxs_token_build_key_info_element(env, enc_key_node );
+    enc_key_key_name_node = oxs_token_build_key_name_element(env, enc_key_key_info_node,"hard-coded-key-name" );
+    enc_key_cd_node = oxs_token_build_cipher_data_element(env, enc_key_node);
+    enc_key_cv_node = oxs_token_build_cipher_value_element(env, enc_key_cd_node, session_key_buf_encrypted->data);
+
     /*Remove the encrypted node*/
-    temp = AXIOM_NODE_DETACH(node_to_enc, env);
+    /*temp = AXIOM_NODE_DETACH(node_to_enc, env);
     if(!temp){
         oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
             "Detaching encrypyted node failed");
         return AXIS2_FAILURE;
     }
-
+*/
     /*Now arrange this encrypted nodes in a suitable manner to the envelope*/ 
     
     return ret;

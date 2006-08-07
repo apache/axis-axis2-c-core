@@ -222,7 +222,7 @@ oxs_buffer_set_size(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int siz
 
     if(buf == NULL){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");
+                     "buffer is NULL");
          return (-1);
     }
     ret = oxs_buffer_set_max_size(env, buf, size);
