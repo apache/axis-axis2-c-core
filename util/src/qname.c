@@ -28,9 +28,9 @@ axis2_qname_free ( axis2_qname_t * qname,
 
 
 axis2_bool_t AXIS2_CALL 
-axis2_qname_equals (axis2_qname_t * qname,
+axis2_qname_equals (const axis2_qname_t * qname,
                     const axis2_env_t *env,
-                    axis2_qname_t * qname1);
+                    const axis2_qname_t * qname1);
 
 axis2_qname_t* AXIS2_CALL
 axis2_qname_clone(axis2_qname_t *qname,
@@ -224,9 +224,9 @@ axis2_qname_free ( axis2_qname_t * qname,
 
 
 axis2_bool_t AXIS2_CALL
-axis2_qname_equals (axis2_qname_t *qname,
+axis2_qname_equals (const axis2_qname_t *qname,
                     const axis2_env_t *env, 
-                    axis2_qname_t * qname1)
+                    const axis2_qname_t * qname1)
 {
     axis2_qname_impl_t *qn1 = NULL;
     axis2_qname_impl_t *qn2 = NULL;
@@ -421,4 +421,3 @@ axis2_qname_create_from_string(const axis2_env_t *env,
     }
     return qn;
 }
-

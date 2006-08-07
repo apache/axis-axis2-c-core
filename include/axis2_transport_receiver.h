@@ -101,7 +101,7 @@ extern "C"
                 get_reply_to_epr)(
                     axis2_transport_receiver_t *transport_receiver,
                     const axis2_env_t *env,
-                    axis2_char_t *svc_name);
+                    const axis2_char_t *svc_name);
 
    /**
     * @param transport_receiver pointer to transport receiver

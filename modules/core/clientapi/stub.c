@@ -25,7 +25,8 @@ typedef struct axis2_stub_impl
     axis2_svc_client_t *svc_client;
     axis2_options_t *options;
 
-} axis2_stub_impl_t;
+}
+axis2_stub_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(stub) \
     ((axis2_stub_impl_t *) stub)
@@ -33,59 +34,67 @@ typedef struct axis2_stub_impl
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-axis2_stub_free (axis2_stub_t *stub,
-        const axis2_env_t *env);
+axis2_stub_free(
+    axis2_stub_t *stub,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_stub_set_endpoint_ref (axis2_stub_t *stub,
-        const axis2_env_t *env,
-        axis2_endpoint_ref_t *endpoint_ref);
+axis2_stub_set_endpoint_ref(
+    axis2_stub_t *stub,
+    const axis2_env_t *env,
+    axis2_endpoint_ref_t *endpoint_ref);
 
 axis2_status_t AXIS2_CALL
-axis2_stub_set_endpoint_uri (axis2_stub_t *stub,
-        const axis2_env_t *env,
-        const axis2_char_t *endpoint_uri);
+axis2_stub_set_endpoint_uri(
+    axis2_stub_t *stub,
+    const axis2_env_t *env,
+    const axis2_char_t *endpoint_uri);
 
 /**
  * @param use_separate_transport
  */
 axis2_status_t AXIS2_CALL
-axis2_stub_set_use_separate_listener(axis2_stub_t *stub,
-        const axis2_env_t *env,
-        axis2_bool_t use_separate_listener);
+axis2_stub_set_use_separate_listener(
+    axis2_stub_t *stub,
+    const axis2_env_t *env,
+    axis2_bool_t use_separate_listener);
 
 
 axis2_status_t AXIS2_CALL
-axis2_stub_engage_module(axis2_stub_t *stub,
-        const axis2_env_t *env,
-        const axis2_char_t *module_name);
+axis2_stub_engage_module(
+    axis2_stub_t *stub,
+    const axis2_env_t *env,
+    const axis2_char_t *module_name);
 
 /**
  * Set the soap version
  * @param soap_version
  */
 axis2_status_t AXIS2_CALL
-axis2_stub_set_soap_version(axis2_stub_t *stub,
-        const axis2_env_t *env,
-        int soap_version);
+axis2_stub_set_soap_version(
+    axis2_stub_t *stub,
+    const axis2_env_t *env,
+    const int soap_version);
 
 
 const axis2_char_t *AXIS2_CALL
-axis2_stub_get_svc_ctx_id(const axis2_stub_t *stub,
-        const axis2_env_t *env);
+axis2_stub_get_svc_ctx_id(
+    const axis2_stub_t *stub,
+    const axis2_env_t *env);
 
 axis2_svc_client_t *AXIS2_CALL
-axis2_stub_get_svc_client(const axis2_stub_t *stub,
-        const axis2_env_t *env);
+axis2_stub_get_svc_client(
+    const axis2_stub_t *stub,
+    const axis2_env_t *env);
 
 axis2_options_t *AXIS2_CALL
-axis2_stub_get_options(const axis2_stub_t *stub,
-        const axis2_env_t *env);
+axis2_stub_get_options(
+    const axis2_stub_t *stub,
+    const axis2_env_t *env);
 
-/************************** End of function prototypes ************************/
-
-AXIS2_EXTERN axis2_stub_t * AXIS2_CALL
-axis2_stub_create (const axis2_env_t *env)
+AXIS2_EXTERN axis2_stub_t *AXIS2_CALL
+axis2_stub_create (
+    const axis2_env_t *env)
 {
     axis2_stub_impl_t *stub_impl = NULL;
 
@@ -126,10 +135,11 @@ axis2_stub_create (const axis2_env_t *env)
     return &(stub_impl->stub);
 }
 
-AXIS2_EXTERN axis2_stub_t * AXIS2_CALL
-axis2_stub_create_with_endpoint_ref_and_client_home (const axis2_env_t *env,
-        axis2_endpoint_ref_t *endpoint_ref,
-        const axis2_char_t *client_home)
+AXIS2_EXTERN axis2_stub_t *AXIS2_CALL
+axis2_stub_create_with_endpoint_ref_and_client_home (
+    const axis2_env_t *env,
+    axis2_endpoint_ref_t *endpoint_ref,
+    const axis2_char_t *client_home)
 {
     axis2_stub_impl_t *stub_impl = NULL;
 
@@ -170,10 +180,11 @@ axis2_stub_create_with_endpoint_ref_and_client_home (const axis2_env_t *env,
     return &(stub_impl->stub);
 }
 
-AXIS2_EXTERN axis2_stub_t * AXIS2_CALL
-axis2_stub_create_with_endpoint_uri_and_client_home (const axis2_env_t *env,
-        const axis2_char_t *endpoint_uri,
-        const axis2_char_t *client_home)
+AXIS2_EXTERN axis2_stub_t *AXIS2_CALL
+axis2_stub_create_with_endpoint_uri_and_client_home (
+    const axis2_env_t *env,
+    const axis2_char_t *endpoint_uri,
+    const axis2_char_t *client_home)
 {
     axis2_stub_impl_t *stub_impl = NULL;
     axis2_endpoint_ref_t *endpoint_ref = NULL;
@@ -200,11 +211,10 @@ axis2_stub_create_with_endpoint_uri_and_client_home (const axis2_env_t *env,
     return &(stub_impl->stub);
 }
 
-/***************************Function implementation****************************/
-
 axis2_status_t AXIS2_CALL
-axis2_stub_free (axis2_stub_t *stub,
-        const axis2_env_t *env)
+axis2_stub_free (
+    axis2_stub_t *stub,
+    const axis2_env_t *env)
 {
     axis2_stub_impl_t *stub_impl = NULL;
 
@@ -234,9 +244,10 @@ axis2_stub_free (axis2_stub_t *stub,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_stub_set_endpoint_ref (axis2_stub_t *stub,
-        const axis2_env_t *env,
-        axis2_endpoint_ref_t *endpoint_ref)
+axis2_stub_set_endpoint_ref (
+    axis2_stub_t *stub,
+    const axis2_env_t *env,
+    axis2_endpoint_ref_t *endpoint_ref)
 {
     axis2_stub_impl_t *stub_impl = NULL;
 
@@ -249,9 +260,10 @@ axis2_stub_set_endpoint_ref (axis2_stub_t *stub,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_stub_set_endpoint_uri (axis2_stub_t *stub,
-        const axis2_env_t *env,
-        const axis2_char_t *endpoint_uri)
+axis2_stub_set_endpoint_uri(
+    axis2_stub_t *stub,
+    const axis2_env_t *env,
+    const axis2_char_t *endpoint_uri)
 {
     axis2_stub_impl_t *stub_impl = NULL;
     axis2_endpoint_ref_t *endpoint_ref = NULL;
@@ -270,13 +282,11 @@ axis2_stub_set_endpoint_uri (axis2_stub_t *stub,
     return AXIS2_SUCCESS;
 }
 
-/**
- * @param use_separate_transport
- */
 axis2_status_t AXIS2_CALL
-axis2_stub_set_use_separate_listener(axis2_stub_t *stub,
-        const axis2_env_t *env,
-        axis2_bool_t use_separate_listener)
+axis2_stub_set_use_separate_listener(
+    axis2_stub_t *stub,
+    const axis2_env_t *env,
+    const axis2_bool_t use_separate_listener)
 {
     axis2_stub_impl_t *stub_impl = NULL;
 
@@ -289,9 +299,10 @@ axis2_stub_set_use_separate_listener(axis2_stub_t *stub,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_stub_engage_module(axis2_stub_t *stub,
-        const axis2_env_t *env,
-        const axis2_char_t *module_name)
+axis2_stub_engage_module(
+    axis2_stub_t *stub,
+    const axis2_env_t *env,
+    const axis2_char_t *module_name)
 {
     axis2_stub_impl_t *stub_impl = NULL;
 
@@ -302,14 +313,11 @@ axis2_stub_engage_module(axis2_stub_t *stub,
     return AXIS2_SVC_CLIENT_ENGAGE_MODULE(stub_impl->svc_client, env, module_name);
 }
 
-/**
- * Set the soap version
- * @param soap_version
- */
 axis2_status_t AXIS2_CALL
-axis2_stub_set_soap_version(axis2_stub_t *stub,
-        const axis2_env_t *env,
-        int soap_version)
+axis2_stub_set_soap_version(
+    axis2_stub_t *stub,
+    const axis2_env_t *env,
+    int soap_version)
 {
     axis2_stub_impl_t *stub_impl = NULL;
 
@@ -325,8 +333,9 @@ axis2_stub_set_soap_version(axis2_stub_t *stub,
 }
 
 const axis2_char_t *AXIS2_CALL
-axis2_stub_get_svc_ctx_id(const axis2_stub_t *stub,
-        const axis2_env_t *env)
+axis2_stub_get_svc_ctx_id(
+    const axis2_stub_t *stub,
+    const axis2_env_t *env)
 {
     axis2_stub_impl_t *stub_impl = NULL;
     const axis2_svc_ctx_t *svc_ctx = NULL;
@@ -342,16 +351,18 @@ axis2_stub_get_svc_ctx_id(const axis2_stub_t *stub,
 }
 
 axis2_svc_client_t *AXIS2_CALL
-axis2_stub_get_svc_client(const axis2_stub_t *stub,
-        const axis2_env_t *env)
+axis2_stub_get_svc_client(
+    const axis2_stub_t *stub,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(stub)->svc_client;
 }
 
 axis2_options_t *AXIS2_CALL
-axis2_stub_get_options(const axis2_stub_t *stub,
-        const axis2_env_t *env)
+axis2_stub_get_options(
+    const axis2_stub_t *stub,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(stub)->options;

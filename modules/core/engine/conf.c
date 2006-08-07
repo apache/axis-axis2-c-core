@@ -182,7 +182,7 @@ axis2_module_desc_t *AXIS2_CALL
 axis2_conf_get_module(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
-    axis2_qname_t *qname);
+    const axis2_qname_t *qname);
                                         
 axis2_array_list_t *AXIS2_CALL
 axis2_conf_get_engaged_modules(
@@ -229,7 +229,7 @@ axis2_bool_t AXIS2_CALL
 axis2_conf_is_engaged(
     axis2_conf_t *conf,
     const axis2_env_t *env,
-    axis2_qname_t *module_name);
+    const axis2_qname_t *module_name);
 
 axis2_phases_info_t *AXIS2_CALL
 axis2_conf_get_phases_info(
@@ -311,7 +311,7 @@ axis2_status_t AXIS2_CALL
 axis2_conf_engage_module(
     axis2_conf_t *conf,
     const axis2_env_t *env,
-    axis2_qname_t *module_ref);
+    const axis2_qname_t *module_ref);
 
 axis2_char_t *AXIS2_CALL
 axis2_conf_get_repos(
@@ -1406,7 +1406,7 @@ axis2_module_desc_t *AXIS2_CALL
 axis2_conf_get_module(
     const axis2_conf_t *conf,
     const axis2_env_t *env,
-    axis2_qname_t *qname) 
+    const axis2_qname_t *qname) 
 {
     axis2_conf_impl_t *conf_impl = NULL;
     axis2_char_t *name = NULL;
@@ -1606,7 +1606,7 @@ axis2_bool_t AXIS2_CALL
 axis2_conf_is_engaged(
     axis2_conf_t *conf,
     const axis2_env_t *env,
-    axis2_qname_t *module_name) 
+    const axis2_qname_t *module_name) 
 {
     axis2_conf_impl_t *config_impl = NULL;
     axis2_qname_t *def_mod_qname = NULL;
@@ -2020,7 +2020,7 @@ axis2_status_t AXIS2_CALL
 axis2_conf_engage_module(
     axis2_conf_t *conf,
     const axis2_env_t *env,
-    axis2_qname_t *module_ref) 
+    const axis2_qname_t *module_ref) 
 {
     axis2_conf_impl_t *config_impl = NULL;
     axis2_module_desc_t *module_desc = NULL;

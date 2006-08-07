@@ -57,8 +57,10 @@ axis2_http_server_get_conf_ctx (axis2_transport_receiver_t *server,
                   const axis2_env_t *env);
 
 axis2_endpoint_ref_t* AXIS2_CALL 
-axis2_http_server_get_reply_to_epr(axis2_transport_receiver_t *server, 
-                  const axis2_env_t *env, axis2_char_t *svc_name);
+axis2_http_server_get_reply_to_epr(
+    axis2_transport_receiver_t *server, 
+    const axis2_env_t *env, 
+    const axis2_char_t *svc_name);
 
 axis2_bool_t AXIS2_CALL 
 axis2_http_server_is_running (axis2_transport_receiver_t *server, 
@@ -240,8 +242,10 @@ axis2_http_server_get_conf_ctx (axis2_transport_receiver_t *server,
 }
 
 axis2_endpoint_ref_t* AXIS2_CALL 
-axis2_http_server_get_reply_to_epr(axis2_transport_receiver_t *server, 
-                  const axis2_env_t *env, axis2_char_t *svc_name)
+axis2_http_server_get_reply_to_epr(
+    axis2_transport_receiver_t *server, 
+    const axis2_env_t *env, 
+    const axis2_char_t *svc_name)
 {
    axis2_endpoint_ref_t *epr = NULL;
    const axis2_char_t *host_address = NULL;

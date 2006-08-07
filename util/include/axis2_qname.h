@@ -68,9 +68,9 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
       */
 
     axis2_bool_t (AXIS2_CALL *
-   equals) (struct axis2_qname * qname,
+   equals) (const struct axis2_qname * qname,
              const axis2_env_t *env,
-             struct axis2_qname * qname1);
+             const struct axis2_qname * qname1);
       /** 
       * clones a given qname
       * @param qname , qname struct instance to be cloned

@@ -42,25 +42,77 @@ typedef struct axis2_mep_client_impl
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(mep_client) ((axis2_mep_client_impl_t *)mep_client)
 
-axis2_char_t* AXIS2_CALL axis2_mep_client_get_soap_action(struct axis2_mep_client *mep_client, const axis2_env_t *env);
-axis2_status_t AXIS2_CALL axis2_mep_client_prepare_invocation(struct axis2_mep_client *mep_client, const axis2_env_t *env, axis2_op_t *op, axis2_msg_ctx_t *msg_ctx);
-axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_mep_client *mep_client, 
+const axis2_char_t *AXIS2_CALL 
+axis2_mep_client_get_soap_action(
+    const axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env);
+    
+axis2_status_t AXIS2_CALL 
+axis2_mep_client_prepare_invocation(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env, 
+    axis2_op_t *op, 
+    axis2_msg_ctx_t *msg_ctx);
+
+axis2_msg_ctx_t *AXIS2_CALL 
+axis2_mep_client_prepare_soap_envelope(
+    axis2_mep_client_t *mep_client, 
     const axis2_env_t *env, 
     axiom_node_t *to_send);
-axis2_transport_out_desc_t* AXIS2_CALL axis2_mep_client_infer_transport(struct axis2_mep_client *mep_client, const axis2_env_t *env, 
-            axis2_endpoint_ref_t *epr);
-axiom_soap_envelope_t* AXIS2_CALL axis2_mep_client_create_default_soap_envelope(struct axis2_mep_client *mep_client, 
-    const axis2_env_t *env);
-axis2_status_t AXIS2_CALL axis2_mep_client_engage_module(struct axis2_mep_client *mep_client, const axis2_env_t *env, axis2_qname_t *qname);
-axis2_status_t AXIS2_CALL axis2_mep_client_set_soap_version_uri(struct axis2_mep_client *mep_client, const axis2_env_t *env, axis2_char_t *soap_version_uri);
-axis2_status_t AXIS2_CALL axis2_mep_client_set_soap_action(struct axis2_mep_client *mep_client, const axis2_env_t *env, axis2_char_t *soap_action);
-axis2_status_t AXIS2_CALL axis2_mep_client_set_wsa_action(struct axis2_mep_client *mep_client, const axis2_env_t *env, axis2_char_t *wsa_action);
-axis2_char_t* AXIS2_CALL axis2_get_transport_from_url(axis2_char_t *url, const axis2_env_t *env);
-axis2_svc_ctx_t* AXIS2_CALL axis2_mep_client_get_svc_ctx(struct axis2_mep_client *mep_client, const axis2_env_t *env);
-axis2_status_t AXIS2_CALL axis2_mep_client_free (struct axis2_mep_client *mep_client, 
-                                   const axis2_env_t *env);
 
-axis2_mep_client_t* AXIS2_CALL axis2_mep_client_create(const axis2_env_t *env, 
+axis2_transport_out_desc_t *AXIS2_CALL 
+axis2_mep_client_infer_transport(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env, 
+    axis2_endpoint_ref_t *epr);
+
+axiom_soap_envelope_t *AXIS2_CALL 
+axis2_mep_client_create_default_soap_envelope(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL 
+axis2_mep_client_engage_module(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env, 
+    const axis2_qname_t *qname);
+
+axis2_status_t AXIS2_CALL 
+axis2_mep_client_set_soap_version_uri(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env, 
+    const axis2_char_t *soap_version_uri);
+
+axis2_status_t AXIS2_CALL 
+axis2_mep_client_set_soap_action(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env, 
+    const axis2_char_t *soap_action);
+
+axis2_status_t AXIS2_CALL 
+axis2_mep_client_set_wsa_action(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env, 
+    const axis2_char_t *wsa_action);
+
+axis2_char_t *AXIS2_CALL 
+axis2_get_transport_from_url(
+    axis2_char_t *url, 
+    const axis2_env_t *env);
+
+axis2_svc_ctx_t *AXIS2_CALL 
+axis2_mep_client_get_svc_ctx(
+    const axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL 
+axis2_mep_client_free(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env);
+
+axis2_mep_client_t *AXIS2_CALL 
+axis2_mep_client_create(
+    const axis2_env_t *env, 
     axis2_svc_ctx_t *svc_ctx, 
     const axis2_char_t *mep)
 {
@@ -130,13 +182,21 @@ axis2_mep_client_t* AXIS2_CALL axis2_mep_client_create(const axis2_env_t *env,
     return &(mep_client_impl->mep_client);
 }
 
-axis2_char_t* AXIS2_CALL axis2_mep_client_get_soap_action(struct axis2_mep_client *mep_client, const axis2_env_t *env) 
+const axis2_char_t *AXIS2_CALL 
+axis2_mep_client_get_soap_action(
+    const axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(mep_client)->soap_action;
 }
 
-axis2_status_t AXIS2_CALL axis2_mep_client_prepare_invocation(struct axis2_mep_client *mep_client, const axis2_env_t *env, axis2_op_t *op, axis2_msg_ctx_t *msg_ctx)
+axis2_status_t AXIS2_CALL 
+axis2_mep_client_prepare_invocation(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env, 
+    axis2_op_t *op, 
+    axis2_msg_ctx_t *msg_ctx)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     axis2_svc_t *svc = NULL;
@@ -195,7 +255,9 @@ axis2_status_t AXIS2_CALL axis2_mep_client_prepare_invocation(struct axis2_mep_c
     return AXIS2_SUCCESS;
 }
 
-axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_mep_client *mep_client, 
+axis2_msg_ctx_t *AXIS2_CALL 
+axis2_mep_client_prepare_soap_envelope(
+    axis2_mep_client_t *mep_client, 
     const axis2_env_t *env, 
     axiom_node_t *to_send)  
 {
@@ -255,8 +317,11 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_prepare_soap_envelope(struct axis2_
     return msg_ctx;
 }
 
-axis2_transport_out_desc_t* AXIS2_CALL axis2_mep_client_infer_transport(struct axis2_mep_client *mep_client, const axis2_env_t *env, 
-            axis2_endpoint_ref_t *epr)  
+axis2_transport_out_desc_t *AXIS2_CALL 
+axis2_mep_client_infer_transport(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env, 
+    axis2_endpoint_ref_t *epr)  
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     axis2_char_t *transport = NULL;
@@ -305,7 +370,9 @@ axis2_transport_out_desc_t* AXIS2_CALL axis2_mep_client_infer_transport(struct a
     return NULL;
 }
 
-axiom_soap_envelope_t* AXIS2_CALL axis2_mep_client_create_default_soap_envelope(struct axis2_mep_client *mep_client, 
+axiom_soap_envelope_t *AXIS2_CALL 
+axis2_mep_client_create_default_soap_envelope(
+    axis2_mep_client_t *mep_client, 
     const axis2_env_t *env)  
 {
     axiom_soap_envelope_t *envelope = NULL;
@@ -326,7 +393,11 @@ axiom_soap_envelope_t* AXIS2_CALL axis2_mep_client_create_default_soap_envelope(
     return envelope;
 }
 
-axis2_status_t AXIS2_CALL axis2_mep_client_engage_module(struct axis2_mep_client *mep_client, const axis2_env_t *env, axis2_qname_t *qname)  
+axis2_status_t AXIS2_CALL 
+axis2_mep_client_engage_module(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env, 
+    const axis2_qname_t *qname)  
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -344,7 +415,7 @@ axis2_status_t AXIS2_CALL axis2_mep_client_engage_module(struct axis2_mep_client
             conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
             if (conf)
             {
-                /*if it is already engeged do not engege it again*/
+                /*if it is already engaged do not engage it again*/
                 if (!(AXIS2_CONF_IS_ENGAGED(conf, env, qname))) 
                 {
                     return AXIS2_CONF_ENGAGE_MODULE(conf, env, qname);
@@ -356,7 +427,11 @@ axis2_status_t AXIS2_CALL axis2_mep_client_engage_module(struct axis2_mep_client
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL axis2_mep_client_set_soap_version_uri(struct axis2_mep_client *mep_client, const axis2_env_t *env, axis2_char_t *soap_version_uri) 
+axis2_status_t AXIS2_CALL 
+axis2_mep_client_set_soap_version_uri(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env, 
+    const axis2_char_t *soap_version_uri) 
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     
@@ -383,7 +458,11 @@ axis2_status_t AXIS2_CALL axis2_mep_client_set_soap_version_uri(struct axis2_mep
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL axis2_mep_client_set_soap_action(struct axis2_mep_client *mep_client, const axis2_env_t *env, axis2_char_t *soap_action) 
+axis2_status_t AXIS2_CALL 
+axis2_mep_client_set_soap_action(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env, 
+    const axis2_char_t *soap_action) 
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     
@@ -410,7 +489,11 @@ axis2_status_t AXIS2_CALL axis2_mep_client_set_soap_action(struct axis2_mep_clie
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL axis2_mep_client_set_wsa_action(struct axis2_mep_client *mep_client, const axis2_env_t *env, axis2_char_t *wsa_action) 
+axis2_status_t AXIS2_CALL 
+axis2_mep_client_set_wsa_action(
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env, 
+    const axis2_char_t *wsa_action) 
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     
@@ -437,7 +520,10 @@ axis2_status_t AXIS2_CALL axis2_mep_client_set_wsa_action(struct axis2_mep_clien
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t* AXIS2_CALL axis2_get_transport_from_url(axis2_char_t *url, const axis2_env_t *env)
+axis2_char_t *AXIS2_CALL 
+axis2_get_transport_from_url(
+    axis2_char_t *url, 
+    const axis2_env_t *env)
 {
     axis2_char_t *transport = NULL;
     axis2_char_t *start = NULL;
@@ -466,14 +552,19 @@ axis2_char_t* AXIS2_CALL axis2_get_transport_from_url(axis2_char_t *url, const a
     return transport;    
 }
 
-axis2_svc_ctx_t* AXIS2_CALL axis2_mep_client_get_svc_ctx(struct axis2_mep_client *mep_client, const axis2_env_t *env)
+axis2_svc_ctx_t *AXIS2_CALL 
+axis2_mep_client_get_svc_ctx(
+    const axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(mep_client)->svc_ctx;
 }
 
-axis2_status_t AXIS2_CALL axis2_mep_client_free (struct axis2_mep_client *mep_client, 
-                                   const axis2_env_t *env)
+axis2_status_t AXIS2_CALL 
+axis2_mep_client_free (
+    axis2_mep_client_t *mep_client, 
+    const axis2_env_t *env)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     
@@ -517,7 +608,10 @@ axis2_status_t AXIS2_CALL axis2_mep_client_free (struct axis2_mep_client *mep_cl
     return AXIS2_SUCCESS;
 }
 
-axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_two_way_send(const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx)
+axis2_msg_ctx_t *AXIS2_CALL 
+axis2_mep_client_two_way_send(
+    const axis2_env_t *env, 
+    axis2_msg_ctx_t *msg_ctx)
 {
     axis2_engine_t *engine = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
@@ -613,7 +707,10 @@ axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_two_way_send(const axis2_env_t *env
     return response;
 }
 
-axis2_msg_ctx_t* AXIS2_CALL axis2_mep_client_receive(const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx)
+axis2_msg_ctx_t *AXIS2_CALL 
+axis2_mep_client_receive(
+    const axis2_env_t *env, 
+    axis2_msg_ctx_t *msg_ctx)
 {
     axis2_engine_t *engine = NULL;
     axis2_status_t status = AXIS2_SUCCESS;

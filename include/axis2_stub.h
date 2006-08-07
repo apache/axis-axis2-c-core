@@ -19,8 +19,8 @@
 
 /** @defgroup axis2_stub stub
  * @ingroup axis2_client_api
- * stub is a wrapper API for service client that helps users to use client API 
- * easily. 
+ * stub is a wrapper API for service client that helps users to use client API
+ * easily.
  * @sa axis2_svc_client
  * @{
  */
@@ -71,7 +71,7 @@ extern "C"
          * Sets the endpoint reference.
          * @param stub pointer to stub struct
          * @param env pointer to environment struct
-         * @param endpoint_ref pointer to endpoint reference. stub assumes the 
+         * @param endpoint_ref pointer to endpoint reference. stub assumes the
          * ownership of the endpoint reference struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
@@ -96,7 +96,7 @@ extern "C"
 
 
         /**
-         * Sets the bool value specifying whether to use a separate listener 
+         * Sets the bool value specifying whether to use a separate listener
          * for receive channel.
          * @param stub pointer to stub struct
          * @param env pointer to environment struct
@@ -113,7 +113,7 @@ extern "C"
          * Sets the SOAP version.
          * @param stub pointer to stub struct
          * @param env pointer to environment struct
-         * @param soap_version int value representing the SOAP version 
+         * @param soap_version int value representing the SOAP version
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -172,7 +172,7 @@ extern "C"
     } ;
 
     /**
-     * stub struct. 
+     * stub struct.
      */
     AXIS2_DECLARE_DATA struct axis2_stub
     {
@@ -183,7 +183,7 @@ extern "C"
     /**
      * Creates a stub instance.
      * @param env pointer to environment struct
-     * @param endpoint_ref pointer to endpoint reference struct representing the 
+     * @param endpoint_ref pointer to endpoint reference struct representing the
      * stub endpoint. Newly created stub assumes ownership of the endpoint
      * @param client_home name of the directory that contains the Axis2/C repository
      * @return pointer to newly created axis2_stub struct
@@ -197,7 +197,7 @@ extern "C"
     /**
      * Creates a stub instance.
      * @param env pointer to environment struct
-     * @param endpoint_uri string representing the endpoint reference 
+     * @param endpoint_uri string representing the endpoint reference
      * @param client_home name of the directory that contains the Axis2/C repository
      * @return pointer to newly created axis2_stub struct
      */
@@ -254,7 +254,7 @@ extern "C"
       ((stub)->ops->get_options(stub, env))
 
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }

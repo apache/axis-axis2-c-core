@@ -267,7 +267,7 @@ extern "C"
                 get_module)(
                     const axis2_conf_t *conf,
                     const axis2_env_t *env,
-                    axis2_qname_t *qname);
+                    const axis2_qname_t *qname);
 
         /**
         * @param conf pointer to conf struct
@@ -356,7 +356,7 @@ extern "C"
                 is_engaged)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
-                    axis2_qname_t *module_name);
+                    const axis2_qname_t *module_name);
 
         /**
          * @param conf pointer to conf struct
@@ -515,7 +515,7 @@ extern "C"
                 engage_module)(
                     axis2_conf_t *conf,
                     const axis2_env_t *env,
-                    axis2_qname_t *module_ref);
+                    const axis2_qname_t *module_ref);
 
         /**
          * @param conf pointer to conf struct
