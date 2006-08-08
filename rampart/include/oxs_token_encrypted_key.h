@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef OXS_TOKEN_CIPHER_VALUE_H
-#define OXS_TOKEN_CIPHER_VALUE_H
+#ifndef OXS_TOKEN_ENCRYPTED_KEY
+#define OXS_TOKEN_ENCRYPTED_KEY
 
 
 /**
-  * @file oxs_token_cipher_value.h
+  * @file oxs_token_cipher_data.h
   * @brief 
   */
 
@@ -33,20 +33,13 @@ extern "C"
 {
 #endif
 
-/**
-* Cipher Value element
-*/
-
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-oxs_token_get_cipher_value(const axis2_env_t *env,
-                            axiom_node_t *cv_node);
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+oxs_token_build_encrypted_key_element(const axis2_env_t *env,
+                        axiom_node_t *parent );
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-oxs_token_build_cipher_value_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t* cipher_val
-                    );
-
+oxs_token_get_encrypted_key(const axis2_env_t *env,
+                            axiom_node_t *parent);
 
 
 /*TODO write free method*/
@@ -55,4 +48,4 @@ oxs_token_build_cipher_value_element(const axis2_env_t *env,
 }
 #endif
 
-#endif                          /* OXS_TOKEN_CIPHER_VALUE_H */
+#endif                          /* OXS_TOKEN_ENCRYPTED_KEY */

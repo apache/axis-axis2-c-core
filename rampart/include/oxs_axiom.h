@@ -39,6 +39,14 @@ extern "C"
 typedef struct axiom_document_t oxs_axiom_document, *oxs_axiom_document_ptr;
 typedef struct axiom_node_t oxs_axiom_node, *oxs_axiom_node_ptr;
 
+
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+oxs_axiom_get_first_child_node_by_name(const axis2_env_t *env,
+                                         axiom_node_t* parent,
+                                         axis2_char_t* local_name,
+                                         axis2_char_t* ns_uri,
+                                         axis2_char_t* prefix);
+
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_axiom_get_node_content(const axis2_env_t *env, axiom_node_t* node);
 

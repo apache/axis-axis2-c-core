@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef OXS_DATA_REFERENCE_H
-#define OXS_DATA_REFERENCE_H
+#ifndef OXS_TOKEN_DATA_REFERENCE_H
+#define OXS_TOKEN_DATA_REFERENCE_H
 
 
 /**
@@ -36,13 +36,14 @@ extern "C"
 /**
 * Data Reference element
 */
-
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_data_reference_element(const axis2_env_t *env,
                         axiom_node_t *parent,
-                        axis2_char_t* uri
+                        axis2_char_t* data_ref
                     );
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+oxs_token_get_data_reference(const axis2_env_t *env, axiom_node_t *data_ref_node);
 
 /*TODO write free method*/
 /** @} */
@@ -50,4 +51,4 @@ oxs_token_build_data_reference_element(const axis2_env_t *env,
 }
 #endif
 
-#endif                          /* OXS_DATA_REFERENCE_H */
+#endif                          /* OXS_TOKEN_DATA_REFERENCE_H */
