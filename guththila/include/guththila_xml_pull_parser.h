@@ -108,7 +108,7 @@ guththila_xml_pull_parser_tokenize (axis2_env_t *environment,
 				    guththila_xml_pull_parser_t * p);
                                         
                                         
-int AXIS2_CALL
+AXIS2_EXTERN int AXIS2_CALL
 guththila_xml_pull_parser_exception (guththila_char_t * s, int line, int error_code);
 
 int AXIS2_CALL
@@ -366,53 +366,53 @@ guththila_xml_pull_parser_create_xml_stream_writer (axis2_env_t *environment,
 						    char *fp);
 
 
-void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 guththila_xml_pull_parser_write_to_buffer (axis2_env_t *env, 
 					   guththila_xml_pull_parser_t *p,
 					   const char *buff);
 
 
-void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 guththila_xml_pull_parser_close_start_element (axis2_env_t *environment,
 					       guththila_xml_pull_parser_t *p);
 
 
-void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 guththila_xml_pull_parser_close_depth_element (axis2_env_t *environment,
 					       guththila_xml_pull_parser_t *p);
 
 
-void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 guththila_xml_pull_parser_check_name_validity (axis2_env_t *environment,
 					       guththila_xml_pull_parser_t *p,
 					       char *start_element);
 
 
-void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 guththila_xml_pull_parser_open_depth_element (axis2_env_t *environment,
 					      guththila_xml_pull_parser_t *p);
 
 
-void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 guththila_xml_pull_parser_do_write_attribute (axis2_env_t *environment, 
 					      guththila_xml_pull_parser_t *p, 
 					      const char *local_name, 
 					      const char *value);
 
 
-int AXIS2_CALL
+AXIS2_EXTERN int AXIS2_CALL
 guththila_xml_pull_parser_check_default_namespace (axis2_env_t *env, 
 						   guththila_xml_pull_parser_t *p, 
 						   char *ns_uri);
 
 
-void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 guththila_xml_pull_parser_do_write_default_namespace (axis2_env_t *env, 
 						      guththila_xml_pull_parser_t *p, 
 						      char *ns_uri);
 
 
-int  AXIS2_CALL
+AXIS2_EXTERN int  AXIS2_CALL
 guththila_xml_pull_parser_check_prefix_validity (axis2_env_t *env, 
 						 guththila_xml_pull_parser_t *p, 
 						 char *prefix, 
@@ -445,7 +445,7 @@ guththila_xml_pull_parser_do_write_attribute_with_prefix_and_namespace (axis2_en
 									const char *value);
 
 
-int AXIS2_CALL
+AXIS2_EXTERN int AXIS2_CALL
 guththila_xml_pull_parser_is_exsisting_prefix (axis2_env_t *env, 
 					       guththila_xml_pull_parser_t *p, 
 					       const char *prefix);
@@ -487,7 +487,7 @@ guththila_xml_pull_parser_flush (axis2_env_t *environment,
 				 guththila_xml_pull_parser_t *p);
 
 
-void  AXIS2_CALL
+AXIS2_EXTERN void  AXIS2_CALL
 guththila_xml_pull_parser_close (axis2_env_t *environment, 
 				 guththila_xml_pull_parser_t *p);
 
@@ -610,7 +610,7 @@ guththila_xml_pull_parser_write_line (axis2_env_t *environment,
 				      char *element_name, 
 				      char *characters);
 
-void
+AXIS2_EXTERN void AXIS2_CALL
 guththila_xml_pull_parser_xml_writer_free (axis2_env_t *environment,
 					   guththila_xml_pull_parser_t *t);
 

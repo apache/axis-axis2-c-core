@@ -481,31 +481,32 @@ void AXIS2_CALL
 guththila_xml_pull_parser_reset (axis2_env_t * environment,
                                  guththila_xml_pull_parser_t * parser)
 {
-  parser->offset = parser->_next;
-  parser->name = NULL;
-  parser->prefix = NULL;
-  parser->value = NULL;
-  int ii;
-  ii = AXIS2_STACK_SIZE (parser->attrib, environment);
-  for (; ii > 0; ii--)
+    int ii; 
+    parser->offset = parser->_next;
+    parser->name = NULL;
+    parser->prefix = NULL;
+    parser->value = NULL;
+      
+    ii = AXIS2_STACK_SIZE (parser->attrib, environment);
+    for (; ii > 0; ii--)
     {
-      void *d;
-      d = AXIS2_STACK_POP (parser->attrib, environment);
-      AXIS2_FREE (environment->allocator, d);
+        void *d;
+        d = AXIS2_STACK_POP (parser->attrib, environment);
+        AXIS2_FREE (environment->allocator, d);
     }
 
-  ii = AXIS2_STACK_SIZE (parser->stack, environment);
-  for (; ii > 0; ii--)
+    ii = AXIS2_STACK_SIZE (parser->stack, environment);
+    for (; ii > 0; ii--)
     {
-      void *d;
-      d = AXIS2_STACK_POP (parser->stack, environment);
-      AXIS2_FREE (environment->allocator, d);
+        void *d;
+        d = AXIS2_STACK_POP (parser->stack, environment);
+        AXIS2_FREE (environment->allocator, d);
     }
   /*   guththila_stack_clear (environment, parser->attrib); */
   /*   guththila_stack_clear (environment, parser->stack); */
-  if (parser->guththila_event == GUTHTHILA_END_ELEMENT
+  if(parser->guththila_event == GUTHTHILA_END_ELEMENT
       || parser->guththila_event == GUTHTHILA_EMPTY_ELEMENT)
-    guththila_xml_pull_parser_close_element (environment, parser);
+        guththila_xml_pull_parser_close_element (environment, parser);
 }
 
 

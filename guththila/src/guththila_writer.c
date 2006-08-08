@@ -19,24 +19,18 @@
 #include "guththila_writer.h"
 
 
-AXIS2_EXTERN guththila_writer_t *
+AXIS2_EXTERN guththila_writer_t * AXIS2_CALL
 guththila_writer_create_for_file (axis2_env_t *env, char *fp)
 {
-
-  if (!fp)
-    return NULL;
-
-  guththila_writer_impl_t *wt = NULL;
-
-  wt = (guththila_writer_impl_t *) AXIS2_MALLOC (env->allocator, sizeof (guththila_writer_impl_t));
- 
-  wt->outputstream = fopen (fp, "w");
- 
-  if (!wt->outputstream)
-    return NULL;
-
- wt->writer.guththila_writer_type = GUTHTHILA_WRITER_CREATE_FOR_FILE;
- return &(wt->writer);
+      guththila_writer_impl_t *wt = NULL;
+      if(!fp)
+        return NULL;
+      wt = (guththila_writer_impl_t *) AXIS2_MALLOC (env->allocator, sizeof (guththila_writer_impl_t));
+      wt->outputstream = fopen (fp, "w");
+      if (!wt->outputstream)
+        return NULL;
+     wt->writer.guththila_writer_type = GUTHTHILA_WRITER_CREATE_FOR_FILE;
+    return &(wt->writer);
 }
 
 AXIS2_EXTERN void
@@ -55,16 +49,17 @@ guththila_writer_free (axis2_env_t *env, guththila_writer_t *wt)
     }
 }
 
-AXIS2_EXTERN int 
-guththila_writer_write (axis2_env_t *env, char *buffer, int offset, int length, guththila_writer_t *wt)
+AXIS2_EXTERN int AXIS2_CALL
+guththila_writer_write (axis2_env_t *env, 
+    char *buffer, int offset, 
+    int length, guththila_writer_t *wt)
 {
- 
-  if (wt->guththila_writer_type == GUTHTHILA_WRITER_CREATE_FOR_FILE)
+    if (wt->guththila_writer_type == GUTHTHILA_WRITER_CREATE_FOR_FILE)
     {
-      int c;
-      c = fwrite (buffer+offset, 1, length, ((guththila_writer_impl_t *)wt)->outputstream);
-      return c;
+        int c;
+        c = fwrite (buffer+offset, 1, length, ((guththila_writer_impl_t *)wt)->outputstream);
+        return c;
     }
-  else 
-    return 0;
+    else 
+        return 0;
 }
