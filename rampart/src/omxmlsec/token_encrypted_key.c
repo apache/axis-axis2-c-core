@@ -17,49 +17,45 @@
 #include <stdio.h>
 #include <oxs_constants.h>
 #include <oxs_error.h>
-#include <oxs_token_cipher_value.h>
+#include <oxs_token_encrypted_key.h>
+#include <axiom_attribute.h>
 #include <axiom_element.h>
 
-
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-oxs_token_get_cipher_value(const axis2_env_t *env,
-                            axiom_node_t *cv_node)
-{
-    /*TODO Verification*/
-    axis2_char_t *cv = NULL;
-    cv = oxs_axiom_get_node_content(env, cv_node);
-    return cv;
-
-}
+/*TODO These names should be changed to oxs_token_build_XXX_node*/
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-oxs_token_build_cipher_value_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t* cipher_val
-                    )
+oxs_token_build_encrypted_key_element(const axis2_env_t *env,
+                        axiom_node_t *parent )
 {
-    axiom_node_t *cipher_value_node = NULL;
-    axiom_element_t *cipher_value_ele = NULL;
-    axis2_status_t ret; 
+    axiom_node_t *encrypted_key_node = NULL;
+    axiom_element_t *encrypted_key_ele = NULL;
+    int ret; 
     axiom_namespace_t *ns_obj = NULL;
 
     ns_obj = axiom_namespace_create (env, OXS_EncNs,
                                               OXS_xenc);
 
-
-    cipher_value_ele = axiom_element_create(env, parent, OXS_NodeCipherValue, ns_obj, &cipher_value_node );
-    if(!cipher_value_ele)
+    encrypted_key_ele = axiom_element_create(env, parent, OXS_NodeEncryptedKey, ns_obj, &encrypted_key_node );
+    if(!encrypted_key_ele)
     {   
         oxs_error(ERROR_LOCATION,
-                    OXS_ERROR_ELEMENT_FAILED,"Error creating cipher value element");
+                    OXS_ERROR_ELEMENT_FAILED,"Error creating encrypted key element");
         return NULL;
     }  
     
-    if(cipher_val){
-        ret  = AXIOM_ELEMENT_SET_TEXT(cipher_value_ele, env, cipher_val, cipher_value_node);
-    }
-
-    return cipher_value_node; 
+    
+    
+    return encrypted_key_node; 
      
 }
 
+
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+oxs_token_get_encrypted_key(const axis2_env_t *env,
+                            axiom_node_t *parent)
+{
+    axiom_node_t *enc_key_node = NULL;
+
+    /*TODO*/
+    return enc_key_node;
+}

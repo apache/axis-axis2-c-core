@@ -53,3 +53,24 @@ oxs_token_build_encryption_method_element(const axis2_env_t *env,
      
 }
 
+
+
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+oxs_token_get_encryption_method(const axis2_env_t *env, axiom_node_t *enc_mtd_node)
+{
+    axis2_char_t *enc_mtd = NULL;
+    axiom_element_t *enc_mtd_ele = NULL;
+
+    enc_mtd_ele = AXIOM_NODE_GET_DATA_ELEMENT(enc_mtd_node, env);
+    if(!enc_mtd_ele)
+    {
+        oxs_error(ERROR_LOCATION,
+                    OXS_ERROR_ELEMENT_FAILED,"Error retrieving encryption method element");
+        return NULL;
+    }
+
+    enc_mtd = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(enc_mtd_ele, env, OXS_AttrAlgorithm);
+    return enc_mtd;
+
+}
+

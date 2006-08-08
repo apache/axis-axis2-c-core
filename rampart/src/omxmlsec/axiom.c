@@ -17,10 +17,46 @@
 #include <stdio.h>
 #include <axis2_util.h>
 #include <oxs_constants.h>
+#include <oxs_error.h>
 #include <axiom_node.h>
 #include <axiom_namespace.h>
 #include <axiom_attribute.h>
 #include <axiom_element.h>
+
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+oxs_axiom_get_first_child_node_by_name(const axis2_env_t *env, 
+                                         axiom_node_t* parent, 
+                                         axis2_char_t* local_name, 
+                                         axis2_char_t* ns_uri,
+                                         axis2_char_t* prefix)
+{
+    axis2_qname_t *qname = NULL;
+    axiom_node_t *node = NULL;
+    axiom_element_t *parent_ele = NULL, *ele = NULL;
+    axis2_char_t *parent_name = NULL;
+    
+    qname = axis2_qname_create(env, local_name, ns_uri, prefix);
+    parent_ele = AXIOM_NODE_GET_DATA_ELEMENT(parent,env);
+    /*Get the child*/
+    if(!parent_ele){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
+            "Cannot find %s element", local_name);
+        return NULL;
+    }
+    ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(parent_ele, env, qname, parent, &node  );
+    
+    AXIS2_QNAME_FREE(qname, env);
+    qname = NULL;
+
+    parent_name = AXIOM_NODE_TO_STRING(parent, env);
+    if(!node){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
+            "Cannot find child %s of %s", local_name, parent_name);
+        return NULL;
+    }
+    return node;
+}
+
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_axiom_get_node_content(const axis2_env_t *env, axiom_node_t* node)
