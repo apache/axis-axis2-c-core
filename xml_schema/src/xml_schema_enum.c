@@ -218,13 +218,15 @@ xml_schema_enum_resolve_methods(
         xml_schema_enum_t *schema_enum,
         const axis2_env_t *env,
         xml_schema_enum_t *schema_enum_impl,
-        axis2_hash_t *methods)
+        XML_SCHEMA_SUPER_OBJS_FN super_objs,
+        XML_SCHEMA_GET_TYPE_FN get_type,
+        XML_SCHEMA_FREE_FN free_fn)
+                                
 {    
     xml_schema_enum_impl_t *this_sch_enum_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, schema_enum_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     this_sch_enum_impl = (xml_schema_enum_impl_t*) schema_enum_impl;
     
@@ -237,13 +239,10 @@ xml_schema_enum_resolve_methods(
         return AXIS2_FAILURE;
     }
     
-    schema_enum->ops->free = axis2_hash_get(methods, "free", 
-            AXIS2_HASH_KEY_STRING);
+    schema_enum->ops->free = free_fn;
     
-    schema_enum->ops->super_objs = axis2_hash_get(methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING);
-    schema_enum->ops->get_type = axis2_hash_get(methods, "get_type", 
-            AXIS2_HASH_KEY_STRING);
+    schema_enum->ops->super_objs = super_objs;
+    schema_enum->ops->get_type = get_type;
     
     schema_enum->ops->get_value = 
         this_sch_enum_impl->schema_enum.ops->get_value;
@@ -254,13 +253,9 @@ xml_schema_enum_resolve_methods(
     schema_enum->ops->equals = 
         this_sch_enum_impl->schema_enum.ops->equals;
     
-    schema_enum->ops->get_values = axis2_hash_get(methods, 
-            "get_values", AXIS2_HASH_KEY_STRING);
-    if(!schema_enum->ops->get_values)
     schema_enum->ops->get_values = 
             this_sch_enum_impl->schema_enum.ops->get_values;
     return AXIS2_SUCCESS;    
-
 }
 
 

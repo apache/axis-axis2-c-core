@@ -34,8 +34,6 @@ struct xml_schema_simple_type_impl
     /** parent type */
     xml_schema_type_t *schema_type;
 
-    axis2_hash_t *methods;
-    
     axis2_hash_t *ht_super;
     
     xml_schema_types_t obj_type;
@@ -98,7 +96,6 @@ xml_schema_simple_type_create(const axis2_env_t *env,
         return NULL;
     }
 
-    simple_type->methods = NULL;
     simple_type->content = NULL;
     simple_type->schema_type = NULL;
     simple_type->simple_type.ops = NULL;
@@ -142,43 +139,39 @@ xml_schema_simple_type_create(const axis2_env_t *env,
     simple_type->simple_type.ops->super_objs = 
             xml_schema_simple_type_super_objs;            
    
-    simple_type->methods = axis2_hash_make(env);
     simple_type->ht_super = axis2_hash_make(env);
-    if(!simple_type->methods || !simple_type->ht_super)
+    if(!simple_type->ht_super)
     {
         xml_schema_simple_type_free(&(simple_type->simple_type), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    axis2_hash_set(simple_type->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_simple_type_free);
-    axis2_hash_set(simple_type->methods, "get_content", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_type_get_content);
-    axis2_hash_set(simple_type->methods, "set_content", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_type_set_content);
-    axis2_hash_set(simple_type->methods, "get_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_type_get_type);
-    axis2_hash_set(simple_type->methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_type_super_objs);
-                    
-    axis2_hash_set(simple_type->ht_super, "XML_SCHEMA_SIMPLE_TYPE",
+    axis2_hash_set(simple_type->ht_super, 
+            AXIS2_STRDUP("XML_SCHEMA_SIMPLE_TYPE", env),
             AXIS2_HASH_KEY_STRING, &(simple_type->simple_type));
-    axis2_hash_set(simple_type->ht_super, "XML_SCHEMA_TYPE", 
+            
+    axis2_hash_set(simple_type->ht_super, 
+            AXIS2_STRDUP("XML_SCHEMA_TYPE", env), 
             AXIS2_HASH_KEY_STRING, simple_type->schema_type);            
     
     annotated = XML_SCHEMA_TYPE_GET_BASE_IMPL(simple_type->schema_type, env);
     if(NULL != annotated)
     {
-        axis2_hash_set(simple_type->ht_super, "XML_SCHEMA_ANNOTATED", 
+        axis2_hash_set(simple_type->ht_super, 
+            AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env), 
             AXIS2_HASH_KEY_STRING, annotated); 
-        axis2_hash_set(simple_type->ht_super, "XML_SCHEMA_OBJ", 
+        axis2_hash_set(simple_type->ht_super, 
+            AXIS2_STRDUP("XML_SCHEMA_OBJ", env), 
             AXIS2_HASH_KEY_STRING, 
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env)); 
     }            
 
     status = xml_schema_type_resolve_methods(&(simple_type->simple_type.base),
-            env, simple_type->schema_type, simple_type->methods);
+            env, simple_type->schema_type, 
+            xml_schema_simple_type_super_objs,
+            xml_schema_simple_type_get_type,
+            xml_schema_simple_type_free);
     
     return &(simple_type->simple_type);
 }
@@ -192,11 +185,6 @@ xml_schema_simple_type_free(void *simple_type,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     simple_type_impl = AXIS2_INTF_TO_IMPL(simple_type);
 
-    if(NULL != simple_type_impl->methods)
-    {
-        axis2_hash_free(simple_type_impl->methods, env);
-        simple_type_impl->methods = NULL;
-    }
     if(NULL != simple_type_impl->ht_super)
     {
         axis2_hash_free(simple_type_impl->ht_super, env);
@@ -268,7 +256,10 @@ xml_schema_simple_type_resolve_methods(
             type_impl_l->simple_type.ops->set_content;
     
     return xml_schema_type_resolve_methods(&(simple_type->base), 
-            env, type_impl_l->schema_type , methods);
+            env, type_impl_l->schema_type , 
+            xml_schema_simple_type_super_objs,
+            xml_schema_simple_type_get_type,
+            xml_schema_simple_type_free);
 }
 
 xml_schema_simple_type_content_t* AXIS2_CALL

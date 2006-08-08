@@ -32,8 +32,6 @@ typedef struct xml_schema_import_impl
     
     xml_schema_types_t obj_type;
         
-    axis2_hash_t *methods;
-
 }xml_schema_import_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(import) \
@@ -83,7 +81,6 @@ xml_schema_import_create(const axis2_env_t *env)
     }
     import_impl->ns = NULL;
     import_impl->external = NULL;
-    import_impl->methods = NULL;
     import_impl->import.ops = NULL;
     import_impl->import.base.ops = NULL;
     import_impl->ht_super = NULL;
@@ -112,25 +109,14 @@ xml_schema_import_create(const axis2_env_t *env)
     import_impl->import.ops->set_namespace = 
             xml_schema_import_set_namespace;
 
-    import_impl->methods = axis2_hash_make(env);
     import_impl->ht_super = axis2_hash_make(env);
-    if(!import_impl->methods || !import_impl->ht_super)
+    if(!import_impl->ht_super)
     {
         xml_schema_import_free(&(import_impl->import), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    axis2_hash_set(import_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_import_free);
-    axis2_hash_set(import_impl->methods, "get_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_import_get_type);
-    axis2_hash_set(import_impl->methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_import_super_objs);
-    axis2_hash_set(import_impl->methods, "get_namespace", 
-            AXIS2_HASH_KEY_STRING, xml_schema_import_get_namespace);
-    axis2_hash_set(import_impl->methods, "set_namespace", 
-            AXIS2_HASH_KEY_STRING, xml_schema_import_set_namespace);
 
     import_impl->external = xml_schema_external_create(env);
      if(!import_impl->external)
@@ -139,25 +125,27 @@ xml_schema_import_create(const axis2_env_t *env)
         return NULL;
     }
     
-    axis2_hash_set(import_impl->ht_super, "XML_SCHEMA_IMPORT", 
+    axis2_hash_set(import_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_IMPORT", env), 
             AXIS2_HASH_KEY_STRING, &(import_impl->import));
-    axis2_hash_set(import_impl->ht_super, "XML_SCHEMA_EXTERNAL", 
+    axis2_hash_set(import_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_EXTERNAL", env), 
             AXIS2_HASH_KEY_STRING, import_impl->external);
 
     annotated = XML_SCHEMA_EXTERNAL_GET_BASE_IMPL(import_impl->external, env);
     if(NULL != annotated)
     { 
         
-        axis2_hash_set(import_impl->ht_super, "XML_SCHEMA_ANNOTATED", 
+        axis2_hash_set(import_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env), 
             AXIS2_HASH_KEY_STRING, annotated);
-        axis2_hash_set(import_impl->ht_super, "XML_SCHEMA_OBJ", 
+        axis2_hash_set(import_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env), 
             AXIS2_HASH_KEY_STRING, 
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }
     
     status = xml_schema_external_resolve_methods(
             &(import_impl->import.base), env, import_impl->external, 
-            import_impl->methods);
+            xml_schema_import_super_objs,
+            xml_schema_import_get_type,
+            xml_schema_import_free);
     return &(import_impl->import);
 }
 
@@ -170,11 +158,6 @@ xml_schema_import_free(void *import,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     import_impl = AXIS2_INTF_TO_IMPL(import);
 
-    if(NULL != import_impl->methods)
-    {
-        axis2_hash_free(import_impl->methods, env);
-        import_impl->methods = NULL;
-    }
     if(NULL != import_impl->ht_super)
     {
         axis2_hash_free(import_impl->ht_super, env);

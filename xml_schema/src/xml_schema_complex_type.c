@@ -57,8 +57,6 @@ struct xml_schema_complex_type_impl
     
     axis2_hash_t *ht_super;
     
-    axis2_hash_t *methods;
-    
 };
 
 #define AXIS2_INTF_TO_IMPL(complex_type) \
@@ -231,7 +229,6 @@ xml_schema_complex_type_create(
     complex_type_impl->is_abstract = AXIS2_FALSE;
     complex_type_impl->ht_super = NULL;
     complex_type_impl->obj_type = XML_SCHEMA_COMPLEX_TYPE;
-    complex_type_impl->methods = NULL;
     
     complex_type_impl->complex_type.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(xml_schema_complex_type_ops_t));
@@ -315,61 +312,14 @@ xml_schema_complex_type_create(
     complex_type_impl->complex_type.ops->to_string =
         xml_schema_complex_type_to_string;          
     
-    complex_type_impl->methods = axis2_hash_make(env);
     complex_type_impl->ht_super = axis2_hash_make(env);
     
-    if(!complex_type_impl->methods || !complex_type_impl->ht_super)
+    if(!complex_type_impl->ht_super)
     {
         xml_schema_complex_type_free(&(complex_type_impl->complex_type), env);    
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(complex_type_impl->methods, "free", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_free);
-  axis2_hash_set(complex_type_impl->methods, "get_type", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_get_type);
-    axis2_hash_set(complex_type_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_super_objs);            
-    axis2_hash_set(complex_type_impl->methods, "get_any_attribute", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_get_any_attribute);
-    axis2_hash_set(complex_type_impl->methods, "set_any_attribute", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_set_any_attribute);
-    axis2_hash_set(complex_type_impl->methods, "get_attributes", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_get_attributes);
-    axis2_hash_set(complex_type_impl->methods, "get_attribute_use", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_get_attribute_use);
-    axis2_hash_set(complex_type_impl->methods, "get_attribute_wildcare", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_get_attribute_wildcard);
-    axis2_hash_set(complex_type_impl->methods, "get_block", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_get_block);
-    axis2_hash_set(complex_type_impl->methods, "set_block", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_set_block);
-    axis2_hash_set(complex_type_impl->methods, "get_block_resolved", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_get_block_resolved);
-    axis2_hash_set(complex_type_impl->methods, "get_content_model", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_get_content_model);
-    axis2_hash_set(complex_type_impl->methods, "set_content_model", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_set_content_model);
-    axis2_hash_set(complex_type_impl->methods, "get_content_type", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_get_content_type);
-    axis2_hash_set(complex_type_impl->methods, "set_content_type", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_set_content_type);                          
-    axis2_hash_set(complex_type_impl->methods, "get_content_type_particle",
-        AXIS2_HASH_KEY_STRING, xml_schema_complex_type_get_content_type_particle);
-    axis2_hash_set(complex_type_impl->methods, "is_abstract", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_is_abstract);
-    axis2_hash_set(complex_type_impl->methods, "set_abstract", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_set_abstract);
-    axis2_hash_set(complex_type_impl->methods, "is_mixed", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_is_mixed);         
-    axis2_hash_set(complex_type_impl->methods, "set_mixed", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_set_mixed);
-    axis2_hash_set(complex_type_impl->methods, "get_particle", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_get_particle);
-    axis2_hash_set(complex_type_impl->methods, "set_particle", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_set_particle);
-    axis2_hash_set(complex_type_impl->methods, "to_string", AXIS2_HASH_KEY_STRING,
-        xml_schema_complex_type_to_string);
                 
     axis2_hash_set(complex_type_impl->ht_super, "XML_SCHEMA_COMPLEX_TYPE",
         AXIS2_HASH_KEY_STRING, &(complex_type_impl->complex_type));
@@ -391,7 +341,10 @@ xml_schema_complex_type_create(
         AXIS2_HASH_KEY_STRING, &(complex_type_impl->complex_type));
                 
     xml_schema_type_resolve_methods(&(complex_type_impl->complex_type.base), env,
-        complex_type_impl->schema_type, complex_type_impl->methods);
+        complex_type_impl->schema_type, 
+        xml_schema_complex_type_super_objs,
+        xml_schema_complex_type_get_type,
+        xml_schema_complex_type_free);
             
     return &(complex_type_impl->complex_type);
 }

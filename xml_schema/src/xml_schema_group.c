@@ -30,7 +30,6 @@ struct xml_schema_group_impl
     xml_schema_annotated_t *annotated;
     xml_schema_types_t obj_type;
     axis2_hash_t *ht_super;
-    axis2_hash_t *methods;
     axis2_char_t *name;
     xml_schema_group_base_t *particle;
 };
@@ -91,7 +90,6 @@ xml_schema_group_create(const axis2_env_t *env)
     group_impl->annotated = NULL;
     group_impl->obj_type = XML_SCHEMA_GROUP;
     group_impl->ht_super = NULL;
-    group_impl->methods = NULL;
     group_impl->name = NULL;
     group_impl->particle = NULL;
     group_impl->group.base.ops = NULL;
@@ -124,28 +122,6 @@ xml_schema_group_create(const axis2_env_t *env)
     group_impl->group.ops->set_particle = 
             xml_schema_group_set_particle;
    
-    group_impl->methods = axis2_hash_make(env);
-    if(!group_impl->methods)
-    {
-        xml_schema_group_free(&(group_impl->group), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    axis2_hash_set(group_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_group_free);
-    axis2_hash_set(group_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            xml_schema_group_super_objs);
-    axis2_hash_set(group_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
-            xml_schema_group_get_type);
-    axis2_hash_set(group_impl->methods, "get_name", 
-            AXIS2_HASH_KEY_STRING, xml_schema_group_get_name);
-    axis2_hash_set(group_impl->methods, "set_name", 
-            AXIS2_HASH_KEY_STRING, xml_schema_group_set_name);
-    axis2_hash_set(group_impl->methods, "get_particle", 
-            AXIS2_HASH_KEY_STRING, xml_schema_group_get_particle);
-    axis2_hash_set(group_impl->methods, "set_particle", 
-            AXIS2_HASH_KEY_STRING, xml_schema_group_set_particle);
-    
     group_impl->annotated = xml_schema_annotated_create(env);
     if(!group_impl->annotated)
     {
@@ -159,17 +135,19 @@ xml_schema_group_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(group_impl->ht_super, "XML_SCHEMA_GROUP", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(group_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_GROUP", env), AXIS2_HASH_KEY_STRING, 
             &(group_impl->group));
-    axis2_hash_set(group_impl->ht_super, "XML_SCHEMA_ANNOTATED", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(group_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env), AXIS2_HASH_KEY_STRING, 
             group_impl->annotated);
-    axis2_hash_set(group_impl->ht_super, "XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(group_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env), AXIS2_HASH_KEY_STRING, 
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(group_impl->annotated, env));
                 
 
     status = xml_schema_annotated_resolve_methods(
             &(group_impl->group.base), env, group_impl->annotated, 
-            group_impl->methods);
+            xml_schema_group_super_objs,
+            xml_schema_group_get_type,
+            xml_schema_group_free);
     return &(group_impl->group);
 }
 
@@ -200,12 +178,7 @@ xml_schema_group_free(void *group,
         group_impl->ht_super = NULL;
     }
     
-    if(NULL != group_impl->methods)
-    {
-        axis2_hash_free(group_impl->methods, env);
-        group_impl->methods = NULL;
-    }
-
+   
     if(NULL != group_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(group_impl->annotated, env);

@@ -279,7 +279,7 @@ xml_schema_collection_create(const axis2_env_t *env)
     collection_impl->systemid2_schemas   = axis2_hash_make(env);
     collection_impl->schemas             = axis2_array_list_create(env, 10);
     collection_impl->unresolved_types    = axis2_hash_make(env);
-    collection_impl->builder_list        = axis2_array_list_create(env, 2);
+    collection_impl->builder_list        = axis2_array_list_create(env, 10);
     
     if(!collection_impl->namespaces || !collection_impl->in_scope_namespaces ||
             !collection_impl->systemid2_schemas || !collection_impl->schemas ||
@@ -311,8 +311,11 @@ xml_schema_collection_free(
         {
             xml_schema_builder_t *builder = NULL;
             builder = AXIS2_ARRAY_LIST_GET(collec_impl->builder_list, env, i);
-            XML_SCHEMA_BUILDER_FREE(builder, env);
-            builder = NULL;
+            if(NULL != builder)
+            {
+                XML_SCHEMA_BUILDER_FREE(builder, env);
+                builder = NULL;
+            }                
         }
         AXIS2_ARRAY_LIST_FREE(collec_impl->builder_list, env);
         collec_impl->builder_list = NULL;    
@@ -481,8 +484,11 @@ xml_schema_collection_read_document(
         axiom_document_t* document)
 {
     xml_schema_builder_t *sch_builder = NULL;
+    xml_schema_collection_impl_t *collec_impl = NULL;
     AXIS2_PARAM_CHECK(env->error , document, NULL);
+    collec_impl = AXIS2_INTF_TO_IMPL(collection);
     sch_builder = xml_schema_builder_create(env, collection);
+    AXIS2_ARRAY_LIST_ADD(collec_impl->builder_list, env, sch_builder);
     return XML_SCHEMA_BUILDER_BUILD(sch_builder, env, document, NULL);    
 }
 
@@ -493,13 +499,15 @@ xml_schema_collection_read_element(
         axiom_node_t *node)
 {
     xml_schema_builder_t *sch_builder = NULL;
-    
+    xml_schema_collection_impl_t *collec_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, node, NULL);
     
     sch_builder = xml_schema_builder_create(env, collection);
     
     if(!sch_builder)
         return NULL;
+    collec_impl = AXIS2_INTF_TO_IMPL(collection);
+    AXIS2_ARRAY_LIST_ADD(collec_impl->builder_list, env, sch_builder);        
     return XML_SCHEMA_BUILDER_BUILD_WITH_ROOT_NODE(sch_builder, env, node, NULL);
 }
 
@@ -511,9 +519,12 @@ xml_schema_collection_read_document_with_uri(
         axis2_char_t *uri)
 {
     xml_schema_builder_t *sch_builder = NULL;
+    xml_schema_collection_impl_t *sch_collec_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error , document, NULL);
+    sch_collec_impl = AXIS2_INTF_TO_IMPL(collection);
     sch_builder = xml_schema_builder_create(env, collection);
+    AXIS2_ARRAY_LIST_ADD(sch_collec_impl->builder_list, env, sch_builder);
     return XML_SCHEMA_BUILDER_BUILD(sch_builder, env, document, uri); 
 }
 

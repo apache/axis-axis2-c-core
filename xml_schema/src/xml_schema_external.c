@@ -28,8 +28,6 @@ typedef struct xml_schema_external_impl
     
     xml_schema_t *schema;
     
-    axis2_hash_t *methods;
-    
     xml_schema_types_t obj_type;
     
     axis2_hash_t *ht_super;
@@ -96,7 +94,6 @@ xml_schema_external_create(const axis2_env_t *env)
     }
     external_impl->schema = NULL;
     external_impl->annotated = NULL;
-    external_impl->methods = NULL;
     external_impl->external.ops = NULL;
     external_impl->external.base.ops = NULL;
     external_impl->ht_super = NULL;
@@ -130,43 +127,14 @@ xml_schema_external_create(const axis2_env_t *env)
     external_impl->external.ops->set_schema_location =
         xml_schema_external_set_schema_location;
 
-    external_impl->methods = axis2_hash_make(env);
     external_impl->ht_super = axis2_hash_make(env);
 
-    if(!external_impl->methods || !external_impl->ht_super)
+    if(!external_impl->ht_super)
     {
         xml_schema_external_free(&(external_impl->external), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-
-    axis2_hash_set(external_impl->methods, "free", 
-            AXIS2_HASH_KEY_STRING, 
-            xml_schema_external_free);
-    
-    axis2_hash_set(external_impl->methods, "get_type",
-            AXIS2_HASH_KEY_STRING, 
-            xml_schema_external_get_type);
-    
-    axis2_hash_set(external_impl->methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING, 
-            xml_schema_external_super_objs);
-            
-    axis2_hash_set(external_impl->methods, "get_schema_location",
-            AXIS2_HASH_KEY_STRING, 
-            xml_schema_external_get_schema_location);
-            
-    axis2_hash_set(external_impl->methods, "set_schema_location", 
-            AXIS2_HASH_KEY_STRING, 
-            xml_schema_external_set_schema_location);
-            
-    axis2_hash_set(external_impl->methods, "get_schema", 
-            AXIS2_HASH_KEY_STRING, 
-            xml_schema_external_get_schema);
-            
-    axis2_hash_set(external_impl->methods, "set_schema", 
-            AXIS2_HASH_KEY_STRING, 
-            xml_schema_external_set_schema);
 
     external_impl->annotated = xml_schema_annotated_create(env);
 
@@ -176,17 +144,19 @@ xml_schema_external_create(const axis2_env_t *env)
         return NULL;
     }
     
-    axis2_hash_set(external_impl->ht_super, "XML_SCHEMA_EXTERNAL", 
+    axis2_hash_set(external_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_EXTERNAL", env), 
             AXIS2_HASH_KEY_STRING, &(external_impl->external));
-    axis2_hash_set(external_impl->ht_super, "XML_SCHEMA_ANNOTATED", 
+    axis2_hash_set(external_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env), 
             AXIS2_HASH_KEY_STRING, external_impl->annotated);
-    axis2_hash_set(external_impl->ht_super, "XML_SCHEMA_OBJ", 
+    axis2_hash_set(external_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env), 
             AXIS2_HASH_KEY_STRING, 
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(external_impl->annotated, env));
 
     status = xml_schema_annotated_resolve_methods(
             &(external_impl->external.base), env, external_impl->annotated, 
-            external_impl->methods);
+            xml_schema_external_super_objs,
+            xml_schema_external_get_type,
+            xml_schema_external_free);
 
     return &(external_impl->external);
 }
@@ -208,12 +178,6 @@ xml_schema_external_free(void *external,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     external_impl = AXIS2_INTF_TO_IMPL(external);
-
-    if(NULL != external_impl->methods)
-    {
-        axis2_hash_free(external_impl->methods, env);
-        external_impl->methods = NULL;
-    }
 
     if(NULL != external_impl->ht_super)
     {
@@ -258,25 +222,23 @@ xml_schema_external_resolve_methods(
                                 xml_schema_external_t *external,
                                 const axis2_env_t *env,
                                 xml_schema_external_t *external_impl,
-                                axis2_hash_t *methods)
+                                XML_SCHEMA_SUPER_OBJS_FN super_objs,
+                                XML_SCHEMA_GET_TYPE_FN get_type,
+                                XML_SCHEMA_FREE_FN free_fn)
 {
     xml_schema_external_impl_t *sch_ext_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, external_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     sch_ext_impl = (xml_schema_external_impl_t *) external_impl;
     
     external->ops = AXIS2_MALLOC(env->allocator, 
             sizeof(xml_schema_external_ops_t));
             
-    external->ops->free = axis2_hash_get(methods, "free", 
-            AXIS2_HASH_KEY_STRING);
-    external->ops->super_objs = axis2_hash_get(methods, "super_objs",
-            AXIS2_HASH_KEY_STRING);
-    external->ops->get_type = axis2_hash_get(methods, "type",
-            AXIS2_HASH_KEY_STRING);
+    external->ops->free = free_fn;
+    external->ops->super_objs = super_objs;
+    external->ops->get_type = get_type;
                                    
     external->ops->set_schema = 
         sch_ext_impl->external.ops->set_schema;
@@ -287,7 +249,7 @@ xml_schema_external_resolve_methods(
     external->ops->get_schema_location =
         sch_ext_impl->external.ops->get_schema_location;        
     return xml_schema_annotated_resolve_methods(&(external->base), 
-            env, sch_ext_impl->annotated, methods);
+            env, sch_ext_impl->annotated, super_objs, get_type, free_fn);
 }
 
 xml_schema_t * AXIS2_CALL

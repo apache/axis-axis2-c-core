@@ -38,8 +38,6 @@ struct xml_schema_complex_content_extension_impl
     
     xml_schema_particle_t *particle;
     
-    axis2_hash_t *methods;
-    
     axis2_hash_t *ht_super;
     
     xml_schema_types_t obj_type;
@@ -137,7 +135,6 @@ xml_schema_complex_content_extension_create(const axis2_env_t *env)
     cmp_cnt_ext_impl->any_attribute = NULL;
     cmp_cnt_ext_impl->particle = NULL;
     cmp_cnt_ext_impl->ht_super = NULL;
-    cmp_cnt_ext_impl->methods = NULL;
     cmp_cnt_ext_impl->obj_type = XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION;
     
     cmp_cnt_ext_impl->cmp_cnt_ext.ops = AXIS2_MALLOC(env->allocator, 
@@ -177,40 +174,14 @@ xml_schema_complex_content_extension_create(const axis2_env_t *env)
     cmp_cnt_ext_impl->cmp_cnt_ext.ops->to_string =
             xml_schema_complex_content_extension_to_string;            
 
-    cmp_cnt_ext_impl->methods = axis2_hash_make(env);
     cmp_cnt_ext_impl->ht_super = axis2_hash_make(env);
-    if(!cmp_cnt_ext_impl->ht_super || !cmp_cnt_ext_impl->methods)
+    if(!cmp_cnt_ext_impl->ht_super)
     {
         xml_schema_complex_content_extension_free(
                 &(cmp_cnt_ext_impl->cmp_cnt_ext), env);
         return NULL;
     }
 
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"free", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_extension_free);
-
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"get_type", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_extension_get_type);            
-    
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"super_objs", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_extension_super_objs);            
-    
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"get_any_attribute", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_extension_get_any_attribute);
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"set_any_attribute", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_extension_set_any_attribute);
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"get_attributes", AXIS2_HASH_KEY_STRING,                
-            xml_schema_complex_content_extension_get_attributes);
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"get_base_type_name", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_extension_get_base_type_name);
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"set_base_type_name", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_extension_set_base_type_name); 
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"get_particle", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_extension_get_particle);
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"set_particle", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_extension_set_particle);
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"free", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_extension_to_string);            
                 
     cmp_cnt_ext_impl->annotated = xml_schema_annotated_create(env);
                     
@@ -226,16 +197,19 @@ xml_schema_complex_content_extension_create(const axis2_env_t *env)
         xml_schema_complex_content_extension_free(&(cmp_cnt_ext_impl->cmp_cnt_ext), env);
         return NULL;
     }
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"XML_SCHEMA_COMPLEX_CONTENT_EXTENSION",
+    axis2_hash_set(cmp_cnt_ext_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_COMPLEX_CONTENT_EXTENSION", env),
         AXIS2_HASH_KEY_STRING, &(cmp_cnt_ext_impl->cmp_cnt_ext));   
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"XML_SCHEMA_ANNOTATED",
+    axis2_hash_set(cmp_cnt_ext_impl->ht_super,AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
         AXIS2_HASH_KEY_STRING, cmp_cnt_ext_impl->annotated);   
-    axis2_hash_set(cmp_cnt_ext_impl->methods,"XML_SCHEMA_OBJ",
+    axis2_hash_set(cmp_cnt_ext_impl->ht_super,AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
         AXIS2_HASH_KEY_STRING, 
         XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(cmp_cnt_ext_impl->annotated, env));   
             
     xml_schema_annotated_resolve_methods(&(cmp_cnt_ext_impl->cmp_cnt_ext.base), env, 
-        cmp_cnt_ext_impl->annotated, cmp_cnt_ext_impl->methods);
+        cmp_cnt_ext_impl->annotated, 
+        xml_schema_complex_content_extension_super_objs,
+        xml_schema_complex_content_extension_get_type,
+        xml_schema_complex_content_extension_free);
     return &(cmp_cnt_ext_impl->cmp_cnt_ext);
 }
 

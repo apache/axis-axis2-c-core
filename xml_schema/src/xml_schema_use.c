@@ -31,8 +31,7 @@ struct xml_schema_use_impl
     xml_schema_types_t obj_type; 
     
     axis2_hash_t *ht_super;
-    
-    axis2_hash_t *methods;
+   
     
     axis2_array_list_t *members;
 };
@@ -87,7 +86,6 @@ xml_schema_use_create(const axis2_env_t *env,
     use_impl->schema_enum = NULL;
     use_impl->obj_type = XML_SCHEMA_USE;
     use_impl->ht_super = NULL;
-    use_impl->methods = NULL;
     use_impl->members = NULL;
     use_impl->use.base.ops = NULL;
     use_impl->use.ops = AXIS2_MALLOC(env->allocator, 
@@ -118,24 +116,6 @@ xml_schema_use_create(const axis2_env_t *env,
     AXIS2_ARRAY_LIST_ADD(use_impl->members, env, 
         AXIS2_STRDUP(XML_SCHEMA_CONST_REQUIRED, env));
 
-    use_impl->methods = axis2_hash_make(env);
-    if(!use_impl->methods)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    axis2_hash_set(use_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_use_free);
-
-    axis2_hash_set(use_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            xml_schema_use_super_objs);
-
-    axis2_hash_set(use_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
-            xml_schema_use_get_type);
-
-    axis2_hash_set(use_impl->methods, "get_values", AXIS2_HASH_KEY_STRING, 
-            xml_schema_use_get_values);
-
     use_impl->schema_enum = xml_schema_enum_create(env, value);
 
     use_impl->ht_super = axis2_hash_make(env);
@@ -144,14 +124,21 @@ xml_schema_use_create(const axis2_env_t *env,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(use_impl->ht_super, "XML_SCHEMA_USE", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(use_impl->ht_super, 
+            AXIS2_STRDUP("XML_SCHEMA_USE", env),
+            AXIS2_HASH_KEY_STRING, 
             &(use_impl->use));
-    axis2_hash_set(use_impl->ht_super, "XML_SCHEMA_ENUM", AXIS2_HASH_KEY_STRING, 
+            
+    axis2_hash_set(use_impl->ht_super, 
+            AXIS2_STRDUP("XML_SCHEMA_ENUM", env), 
+            AXIS2_HASH_KEY_STRING, 
             use_impl->schema_enum);
 
     status = xml_schema_enum_resolve_methods(
             &(use_impl->use.base), env, use_impl->schema_enum, 
-            use_impl->methods); 
+            xml_schema_use_super_objs,
+            xml_schema_use_get_type,
+            xml_schema_use_free); 
 
     return &(use_impl->use);
 }
@@ -196,11 +183,7 @@ xml_schema_use_free(void *use,
         use_impl->ht_super = NULL;
     }
     
-    if(NULL != use_impl->methods)
-    {
-        axis2_hash_free(use_impl->methods, env);
-        use_impl->methods = NULL;
-    }
+   
     if(NULL != use_impl->use.base.ops)
     {
         AXIS2_FREE(env->allocator, use_impl->use.base.ops);

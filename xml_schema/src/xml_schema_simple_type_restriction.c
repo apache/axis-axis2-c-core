@@ -31,8 +31,6 @@ struct xml_schema_simple_type_restriction_impl
     
     xml_schema_simple_type_content_t *sim_type_content;
     
-    axis2_hash_t *methods;
-    
     axis2_hash_t *ht_super;
     
     xml_schema_types_t obj_type;
@@ -42,7 +40,6 @@ struct xml_schema_simple_type_restriction_impl
     axis2_qname_t *base_type_name;
     
     xml_schema_obj_collection_t *facets;
-    
 };
 
 #define AXIS2_INTF_TO_IMPL(simple_type_restriction) \
@@ -109,7 +106,6 @@ xml_schema_simple_type_restriction_create(const axis2_env_t *env)
     simple_type_restriction_impl->sim_type_content = NULL;
     simple_type_restriction_impl->simple_type_restriction.ops = NULL;
     simple_type_restriction_impl->simple_type_restriction.base.ops = NULL;
-    simple_type_restriction_impl->methods = NULL;
     simple_type_restriction_impl->base_type = NULL;
     simple_type_restriction_impl->base_type_name = NULL;
     simple_type_restriction_impl->facets = NULL;
@@ -149,28 +145,14 @@ xml_schema_simple_type_restriction_create(const axis2_env_t *env)
             xml_schema_simple_type_restriction_get_facets;            
             
    
-    simple_type_restriction_impl->methods = axis2_hash_make(env);
     simple_type_restriction_impl->ht_super = axis2_hash_make(env);
-    if(!simple_type_restriction_impl->methods || !simple_type_restriction_impl->ht_super)
+    if(!simple_type_restriction_impl->ht_super)
     {
         xml_schema_simple_type_restriction_free(&(simple_type_restriction_impl->simple_type_restriction), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(simple_type_restriction_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_simple_type_restriction_free);
-    axis2_hash_set(simple_type_restriction_impl->methods, "get_base_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_type_restriction_get_base_type);
-    axis2_hash_set(simple_type_restriction_impl->methods, "get_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_type_restriction_get_type);
-    axis2_hash_set(simple_type_restriction_impl->methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_type_restriction_super_objs);            axis2_hash_set(simple_type_restriction_impl->methods, "set_base_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_type_restriction_set_base_type);
-    axis2_hash_set(simple_type_restriction_impl->methods, "get_base_type_name", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_type_restriction_get_base_type_name);
-    axis2_hash_set(simple_type_restriction_impl->methods, "set_base_type_name", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_type_restriction_set_base_type_name);
-    
+   
     simple_type_restriction_impl->sim_type_content = 
         xml_schema_simple_type_content_create(env);
         
@@ -184,28 +166,35 @@ xml_schema_simple_type_restriction_create(const axis2_env_t *env)
         return NULL;        
     }
     
-    axis2_hash_set(simple_type_restriction_impl->methods,
-            "XML_SCHEMA_SIMPLE_TYPE_RESTRICTION", 
+    axis2_hash_set(simple_type_restriction_impl->ht_super,
+            AXIS2_STRDUP("XML_SCHEMA_SIMPLE_TYPE_RESTRICTION", env), 
             AXIS2_HASH_KEY_STRING, &(simple_type_restriction_impl->simple_type_restriction));                
-    axis2_hash_set(simple_type_restriction_impl->methods,
-            "XML_SCHEMA_SIMPLE_TYPE_CONTENT", 
-            AXIS2_HASH_KEY_STRING, simple_type_restriction_impl->sim_type_content);               
+            
+            
+    axis2_hash_set(simple_type_restriction_impl->ht_super,
+            AXIS2_STRDUP("XML_SCHEMA_SIMPLE_TYPE_CONTENT", env), 
+            AXIS2_HASH_KEY_STRING, simple_type_restriction_impl->sim_type_content); 
+                          
     annotated = XML_SCHEMA_SIMPLE_TYPE_CONTENT_GET_BASE_IMPL(
             simple_type_restriction_impl->sim_type_content, env);
             
     if(NULL != annotated)
     {
-        axis2_hash_set(simple_type_restriction_impl->methods,
-            "XML_SCHEMA_ANNOTATED", 
-            AXIS2_HASH_KEY_STRING, annotated);               
-        axis2_hash_set(simple_type_restriction_impl->methods,
-            "XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING,              
+        axis2_hash_set(simple_type_restriction_impl->ht_super,
+            AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env), 
+            AXIS2_HASH_KEY_STRING, annotated);       
+                    
+        axis2_hash_set(simple_type_restriction_impl->ht_super,
+            AXIS2_STRDUP("XML_SCHEMA_OBJ", env), 
+            AXIS2_HASH_KEY_STRING,              
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));
     }            
   
     status = xml_schema_simple_type_content_resolve_methods(
             &(simple_type_restriction_impl->simple_type_restriction.base), env,                                  simple_type_restriction_impl->sim_type_content, 
-            simple_type_restriction_impl->methods);
+            xml_schema_simple_type_restriction_super_objs,
+            xml_schema_simple_type_restriction_get_type,
+            xml_schema_simple_type_restriction_free);
     
     return &(simple_type_restriction_impl->simple_type_restriction);
 }
@@ -219,11 +208,7 @@ xml_schema_simple_type_restriction_free(void *simple_type_restriction,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     simple_type_restriction_impl = AXIS2_INTF_TO_IMPL(simple_type_restriction);
 
-    if(NULL != simple_type_restriction_impl->methods)
-    {
-        axis2_hash_free(simple_type_restriction_impl->methods, env);
-        simple_type_restriction_impl->methods = NULL;
-    }
+  
     if(NULL != simple_type_restriction_impl->ht_super)
     {
         axis2_hash_free(simple_type_restriction_impl->ht_super, env);

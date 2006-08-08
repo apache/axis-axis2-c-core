@@ -36,7 +36,6 @@ struct xml_schema_identity_constraint_impl
     /** keyref field */
     axis2_qname_t *refer;
     
-    axis2_hash_t *methods;
     axis2_hash_t *ht_super;
     xml_schema_types_t obj_type;
 };
@@ -107,7 +106,6 @@ xml_schema_identity_constraint_create(const axis2_env_t *env)
     }                    
 
     id_cns_impl->annotated = NULL;
-    id_cns_impl->methods = NULL;
     id_cns_impl->fields = NULL;
     id_cns_impl->name = NULL;
     id_cns_impl->selector = NULL;
@@ -149,35 +147,14 @@ xml_schema_identity_constraint_create(const axis2_env_t *env)
     id_cns_impl->id_constr.ops->set_selector = 
             xml_schema_identity_constraint_set_selector;
    
-    id_cns_impl->methods = axis2_hash_make(env);
     id_cns_impl->ht_super = axis2_hash_make(env);
     
-    if(!id_cns_impl->methods || !id_cns_impl->ht_super)
+    if(!id_cns_impl->ht_super)
     {
         xml_schema_identity_constraint_free(&(id_cns_impl->id_constr), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(id_cns_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_identity_constraint_free);
-    axis2_hash_set(id_cns_impl->methods, "get_fields", 
-            AXIS2_HASH_KEY_STRING, xml_schema_identity_constraint_get_fields);
-    axis2_hash_set(id_cns_impl->methods, "get_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_identity_constraint_get_type);
-    axis2_hash_set(id_cns_impl->methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_identity_constraint_super_objs);
-    axis2_hash_set(id_cns_impl->methods, "get_refer", 
-            AXIS2_HASH_KEY_STRING, xml_schema_identity_constraint_get_refer);
-    axis2_hash_set(id_cns_impl->methods, "set_refer", 
-            AXIS2_HASH_KEY_STRING, xml_schema_identity_constraint_set_refer);
-    axis2_hash_set(id_cns_impl->methods, "get_name", 
-            AXIS2_HASH_KEY_STRING, xml_schema_identity_constraint_get_name);
-    axis2_hash_set(id_cns_impl->methods, "set_name", 
-            AXIS2_HASH_KEY_STRING, xml_schema_identity_constraint_set_name);
-    axis2_hash_set(id_cns_impl->methods, "get_selector", 
-            AXIS2_HASH_KEY_STRING, xml_schema_identity_constraint_get_selector);
-    axis2_hash_set(id_cns_impl->methods, "set_selector", 
-            AXIS2_HASH_KEY_STRING, xml_schema_identity_constraint_set_selector);
     
     id_cns_impl->annotated = xml_schema_annotated_create(env);
     if(!id_cns_impl->annotated)
@@ -186,17 +163,19 @@ xml_schema_identity_constraint_create(const axis2_env_t *env)
         return NULL;
     }
     
-    axis2_hash_set(id_cns_impl->ht_super, "XML_SCHEMA_IDENTITY_CONSTRAINT", 
+    axis2_hash_set(id_cns_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_IDENTITY_CONSTRAINT", env), 
             AXIS2_HASH_KEY_STRING, &(id_cns_impl->id_constr));
-    axis2_hash_set(id_cns_impl->ht_super, "XML_SCHEMA_ANNOTATED", 
+    axis2_hash_set(id_cns_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env), 
             AXIS2_HASH_KEY_STRING, id_cns_impl->annotated);
-    axis2_hash_set(id_cns_impl->ht_super, "XML_SCHEMA_OBJ", 
+    axis2_hash_set(id_cns_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env), 
             AXIS2_HASH_KEY_STRING, 
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(id_cns_impl->annotated, env));                 
     status = xml_schema_annotated_resolve_methods(
             &(id_cns_impl->id_constr.base), 
             env, id_cns_impl->annotated, 
-            id_cns_impl->methods);
+            xml_schema_identity_constraint_super_objs,
+            xml_schema_identity_constraint_get_type,
+            xml_schema_identity_constraint_free);
     return &(id_cns_impl->id_constr);
 }
 
@@ -258,11 +237,6 @@ xml_schema_identity_constraint_free(void *id_constr,
         id_cns_impl->selector = NULL;
     }
     
-    if(NULL != id_cns_impl->methods)
-    {
-        axis2_hash_free(id_cns_impl->methods, env);
-        id_cns_impl->methods = NULL;
-    }
     if(NULL != id_cns_impl->ht_super)
     {
         axis2_hash_free(id_cns_impl->ht_super, env);

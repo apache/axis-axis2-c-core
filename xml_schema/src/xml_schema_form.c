@@ -33,8 +33,7 @@ struct xml_schema_form_impl
     
     axis2_hash_t *ht_super;
     
-    axis2_hash_t *methods;
-    
+
     axis2_array_list_t *members;
 };
 
@@ -91,7 +90,7 @@ xml_schema_form_create(const axis2_env_t *env,
     form_impl->schema_enum = NULL;
     form_impl->obj_type = XML_SCHEMA_FORM;
     form_impl->ht_super = NULL;
-    form_impl->methods = NULL;
+  
     form_impl->members = NULL;
     form_impl->form.ops = AXIS2_MALLOC(env->allocator, 
                     sizeof(xml_schema_form_ops_t));
@@ -135,27 +134,6 @@ xml_schema_form_create(const axis2_env_t *env,
     AXIS2_ARRAY_LIST_ADD(form_impl->members, env, 
         AXIS2_STRDUP(XML_SCHEMA_FORM_NONE, env));
 
-    form_impl->methods = axis2_hash_make(env);
-    if(!form_impl->methods)
-    {
-        xml_schema_form_free(&(form_impl->form), env);
-        AXIS2_ERROR_SET(env->error, 
-            AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    axis2_hash_set(form_impl->methods, "free", 
-        AXIS2_HASH_KEY_STRING, xml_schema_form_free);
-        
-    axis2_hash_set(form_impl->methods, "super_objs", 
-        AXIS2_HASH_KEY_STRING, xml_schema_form_super_objs);
-        
-    axis2_hash_set(form_impl->methods, "get_type", 
-        AXIS2_HASH_KEY_STRING, xml_schema_form_get_type);
-        
-    axis2_hash_set(form_impl->methods, "get_values", 
-        AXIS2_HASH_KEY_STRING, xml_schema_form_get_values);
-
     form_impl->schema_enum = xml_schema_enum_create(env, value);
     if(!form_impl->schema_enum)
     {
@@ -175,15 +153,17 @@ xml_schema_form_create(const axis2_env_t *env,
         return NULL;
     }
 
-    axis2_hash_set(form_impl->ht_super, "XML_SCHEMA_FORM",
+    axis2_hash_set(form_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_FORM", env),
         AXIS2_HASH_KEY_STRING, &(form_impl->form));
         
-    axis2_hash_set(form_impl->ht_super, "XML_SCHEMA_ENUM",
+    axis2_hash_set(form_impl->ht_super,AXIS2_STRDUP("XML_SCHEMA_ENUM", env),
         AXIS2_HASH_KEY_STRING, form_impl->schema_enum);
         
     status = xml_schema_enum_resolve_methods(
             &(form_impl->form.base), env, form_impl->schema_enum, 
-            form_impl->methods); 
+            xml_schema_form_super_objs,
+            xml_schema_form_get_type,
+            xml_schema_form_free); 
 
     return &(form_impl->form);
 }
@@ -221,12 +201,7 @@ xml_schema_form_free(void *form,
         axis2_hash_free(form_impl->ht_super, env);
         form_impl->ht_super = NULL;
     }
-   
-    if(form_impl->methods)
-    {
-        axis2_hash_free(form_impl->methods, env);
-        form_impl->methods = NULL;
-    }
+ 
 
     if(form_impl->schema_enum)
     {

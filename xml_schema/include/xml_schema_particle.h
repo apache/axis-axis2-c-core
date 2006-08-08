@@ -111,7 +111,9 @@ xml_schema_particle_resolve_methods(
                                 xml_schema_particle_t *particle,
                                 const axis2_env_t *env,
                                 xml_schema_particle_t *particle_impl,
-                                axis2_hash_t *methods);
+                                XML_SCHEMA_SUPER_OBJS_FN super_objs,
+                                XML_SCHEMA_GET_TYPE_FN get_type,
+                                XML_SCHEMA_FREE_FN free_fn);
 
 #define XML_SCHEMA_PARTICLE_FREE(particle, env) \
       (((xml_schema_particle_t *) particle)->ops->\

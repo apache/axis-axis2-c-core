@@ -32,8 +32,6 @@ struct xml_schema_content_type_impl
     
     xml_schema_enum_t *schema_enum;
 
-    axis2_hash_t *methods;
-    
     xml_schema_types_t obj_type;
 
     axis2_array_list_t *members;
@@ -83,7 +81,6 @@ xml_schema_content_type_create(const axis2_env_t *env,
     }                    
 
     content_type_impl->schema_enum = NULL;
-    content_type_impl->methods = NULL;
     content_type_impl->members = NULL;
     content_type_impl->obj_type = XML_SCHEMA_CONTENT_TYPE;
     content_type_impl->ht_super = NULL;
@@ -127,23 +124,6 @@ xml_schema_content_type_create(const axis2_env_t *env,
     AXIS2_ARRAY_LIST_ADD(content_type_impl->members, env,
         AXIS2_STRDUP(XML_SCHEMA_CONST_TEXT_ONLY, env));        
 
-    content_type_impl->methods = axis2_hash_make(env);
-    if(!content_type_impl->methods)
-    {
-        xml_schema_content_type_free(&(content_type_impl->content_type), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    axis2_hash_set(content_type_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_content_type_free);
-    axis2_hash_set(content_type_impl->methods, "get_values", AXIS2_HASH_KEY_STRING, 
-            xml_schema_content_type_get_values);
-    axis2_hash_set(content_type_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
-            xml_schema_content_type_get_type);
-    axis2_hash_set(content_type_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            xml_schema_content_type_super_objs);                        
-            
     content_type_impl->schema_enum = xml_schema_enum_create(env, value);
     if(!content_type_impl->schema_enum)
     {
@@ -159,14 +139,16 @@ xml_schema_content_type_create(const axis2_env_t *env,
         return NULL;
     }
     
-    axis2_hash_set(content_type_impl->ht_super, "XML_SCHEMA_CONTENT_TYPE",
+    axis2_hash_set(content_type_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_CONTENT_TYPE", env),
          AXIS2_HASH_KEY_STRING, &(content_type_impl->content_type));
-    axis2_hash_set(content_type_impl->ht_super, "XML_SCHEMA_ENUM", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(content_type_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ENUM", env), AXIS2_HASH_KEY_STRING, 
             content_type_impl->schema_enum);
     
     status = xml_schema_enum_resolve_methods(
             &(content_type_impl->content_type.base), env, content_type_impl->schema_enum, 
-            content_type_impl->methods); 
+            xml_schema_content_type_super_objs,
+            xml_schema_content_type_get_type,
+            xml_schema_content_type_free); 
 
     return &(content_type_impl->content_type);
 }

@@ -187,7 +187,9 @@ xml_schema_complex_content_create(const axis2_env_t *env)
     status = xml_schema_annotated_resolve_methods(
             &(complex_content_impl->complex_content.base), 
             env, complex_content_impl->annotated, 
-            complex_content_impl->methods);
+            xml_schema_complex_content_super_objs,
+            xml_schema_complex_content_get_type,
+            xml_schema_complex_content_free);
     
     return &(complex_content_impl->complex_content);
 }

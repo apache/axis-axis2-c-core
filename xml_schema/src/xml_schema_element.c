@@ -20,6 +20,8 @@
 #include <xml_schema_derivation_method.h>
 #include <xml_schema_obj_collection.h>
 #include <xml_schema_type.h>
+#include <xml_schema_simple_type.h>
+#include <xml_schema_complex_type.h>
 #include <xml_schema_form.h>
 #include <axis2_utils.h>
 
@@ -39,7 +41,6 @@ struct xml_schema_element_impl
     
     xml_schema_particle_t *particle;
     
-    axis2_hash_t *methods;
     /**
      * Attribute used to block a type derivation.
      */
@@ -324,7 +325,6 @@ xml_schema_element_create(const axis2_env_t *env)
     }
 
     element_impl->type_recv = NULL;
-    element_impl->methods = NULL;
     element_impl->block = NULL;
     element_impl->block_resolved = NULL;
     element_impl->constraints = NULL;
@@ -336,7 +336,6 @@ xml_schema_element_create(const axis2_env_t *env)
     element_impl->form = NULL;
     element_impl->is_abstract = AXIS2_FALSE;
     element_impl->is_nillable = AXIS2_FALSE;
-    element_impl->methods = NULL;
     element_impl->schema_type = NULL;
     element_impl->schema_type_qname = NULL;
     element_impl->element.ops = NULL;
@@ -433,84 +432,7 @@ xml_schema_element_create(const axis2_env_t *env)
     element_impl->element.ops->set_type = 
             xml_schema_element_set_type;
    
-    element_impl->methods = axis2_hash_make(env);
-    if(!element_impl->methods)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    axis2_hash_set(element_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_free);
-    axis2_hash_set(element_impl->methods, "get_constraints", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_constraints);
-    axis2_hash_set(element_impl->methods, "get_type", AXIS2_HASH_KEY_STRING,
-            xml_schema_element_get_type);
-    axis2_hash_set(element_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
-            xml_schema_element_super_objs);            
-    axis2_hash_set(element_impl->methods, "get_default_value", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_default_value);
-    axis2_hash_set(element_impl->methods, "set_default_value", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_default_value);
-    axis2_hash_set(element_impl->methods, "get_block", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_block);
-    axis2_hash_set(element_impl->methods, "set_block", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_block);
-    axis2_hash_set(element_impl->methods, "get_final", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_final);
-    axis2_hash_set(element_impl->methods, "set_final", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_final);
-    axis2_hash_set(element_impl->methods, "get_block_resolved", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_block_resolved);
-    axis2_hash_set(element_impl->methods, "get_fixed_value", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_fixed_value);
-    axis2_hash_set(element_impl->methods, "set_fixed_value", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_fixed_value);
-    axis2_hash_set(element_impl->methods, "get_element_type", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_element_type);
-    axis2_hash_set(element_impl->methods, "get_form", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_form);
-    axis2_hash_set(element_impl->methods, "set_form", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_form);
-    axis2_hash_set(element_impl->methods, "is_abstract", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_is_abstract);
-    axis2_hash_set(element_impl->methods, "set_abstract", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_abstract);
-    axis2_hash_set(element_impl->methods, "is_nillable", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_is_nillable);
-    axis2_hash_set(element_impl->methods, "set_nillable", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_nillable);
-    axis2_hash_set(element_impl->methods, "get_name", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_name);
-    axis2_hash_set(element_impl->methods, "set_name", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_name);
-    axis2_hash_set(element_impl->methods, "get_ref_qname", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_ref_qname);
-    axis2_hash_set(element_impl->methods, "set_ref_qname", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_ref_qname);
-    axis2_hash_set(element_impl->methods, "get_qname", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_qname);
-    axis2_hash_set(element_impl->methods, "get_qname", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_qname);
-    axis2_hash_set(element_impl->methods, "set_qname", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_qname);
-    axis2_hash_set(element_impl->methods, "get_schema_type", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_schema_type);
-    axis2_hash_set(element_impl->methods, "set_schema_type", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_schema_type);
-    axis2_hash_set(element_impl->methods, "get_schema_type_qname", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_schema_type_qname);
-    axis2_hash_set(element_impl->methods, "set_schema-type_qname", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_schema_type_qname);
-    axis2_hash_set(element_impl->methods, "get_substitution_group", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_get_substitution_group);
-    axis2_hash_set(element_impl->methods, "set_substitution_group", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_substitution_group);
-    axis2_hash_set(element_impl->methods, "to_string", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_to_string);
-    axis2_hash_set(element_impl->methods, "set_type", AXIS2_HASH_KEY_STRING, 
-            xml_schema_element_set_type);
-
-    /*element_impl->type_recv = xml_schema_type_receiver_create(env); */
+   /*element_impl->type_recv = xml_schema_type_receiver_create(env); */
     element_impl->particle = xml_schema_particle_create(env);
     if(!element_impl->particle)
     {
@@ -524,22 +446,25 @@ xml_schema_element_create(const axis2_env_t *env)
         return NULL;
     }
     
-    axis2_hash_set(element_impl->ht_super, "XML_SCHEMA_ELEMENT",
+    axis2_hash_set(element_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ELEMENT", env),
         AXIS2_HASH_KEY_STRING, &(element_impl->element));
-    axis2_hash_set(element_impl->ht_super, "XML_SCHEMA_PARTICLE",
+        
+    axis2_hash_set(element_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_PARTICLE", env),
         AXIS2_HASH_KEY_STRING, element_impl->particle);
     
     annotated = XML_SCHEMA_PARTICLE_GET_BASE_IMPL(element_impl->particle, env);
     if(NULL != annotated)
     {
-        axis2_hash_set(element_impl->ht_super, "XML_SCHEMA_ANNOTATED", 
+        axis2_hash_set(element_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env), 
             AXIS2_HASH_KEY_STRING, &(element_impl->element));
-        axis2_hash_set(element_impl->ht_super, "XML_SCHEMA_OBJ",
+        axis2_hash_set(element_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
             AXIS2_HASH_KEY_STRING, XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));            
     }
     xml_schema_particle_resolve_methods(
             &(element_impl->element.base), env, element_impl->particle, 
-            element_impl->methods);
+            xml_schema_element_super_objs,
+            xml_schema_element_get_type,
+            xml_schema_element_free);
 
     return &(element_impl->element);
 }
@@ -559,39 +484,44 @@ xml_schema_element_free(
         XML_SCHEMA_PARTICLE_FREE(element_impl->particle, env);
         element_impl->particle = NULL;
     }
-    if(NULL != element_impl->methods)
-    {
-        axis2_hash_free(element_impl->methods, env);
-        element_impl->methods = NULL;
-    }
     
     if(NULL != element_impl->type_recv)
     {
         XML_SCHEMA_ANNOTATED_FREE(element_impl->type_recv, env);
         element_impl->type_recv = NULL;
     }
+    
+
+
+    if(NULL != element_impl->schema_type)
+    {
+        if(XML_SCHEMA_TYPE_GET_TYPE(element_impl->schema_type, env) 
+            == XML_SCHEMA_SIMPLE_TYPE)
+        {
+          /*
+            XML_SCHEMA_SIMPLE_TYPE_FREE(element_impl->schema_type, env);
+            element_impl->schema_type = NULL;
+          */            
+        }else if(XML_SCHEMA_TYPE_GET_TYPE(element_impl->schema_type, env)
+            == XML_SCHEMA_COMPLEX_TYPE)
+        {
+            /*
+            XML_SCHEMA_COMPLEX_TYPE_FREE(element_impl->schema_type, env);
+            */
+        } 
+    }
+    if(NULL != element_impl->element.base.ops)
+    {
+        AXIS2_FREE(env->allocator, element_impl->element.base.ops);
+        element_impl->element.base.ops = NULL;
+    
+    }
     if(NULL !=  element_impl->element.ops)
     {
         AXIS2_FREE(env->allocator, element_impl->element.ops);
         element_impl->element.ops = NULL;
     }
-    if(NULL != element_impl->schema_type)
-    {
-        /*
-        if(XML_SCHEMA_TYPE_GET_TYPE(element_impl->schema_type, env) 
-            == XML_SCHEMA_SIMPLE_TYPE)
-        {
-            XML_SCHEMA_SIMPLE_TYPE_FREE(element_impl->schema_type, env);
-            element_impl->schema_type = NULL;
-        }
-        if(XML_SCHEMA_TYPE_GET_TYPE(element_impl->schema_type, env)
-            == XML_SCHEMA_COMPLEX_TYPE)
-        {
-            XML_SCHEMA_COMPLEX_TYPE_FREE(element_impl->schema_type, env);
-        } 
-        */
-        XML_SCHEMA_TYPE_FREE(element_impl->schema_type, env);            
-    }
+
     if(element_impl)
     {
         AXIS2_FREE(env->allocator, element_impl);

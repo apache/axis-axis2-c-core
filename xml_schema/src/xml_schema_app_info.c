@@ -17,12 +17,13 @@
 #include <xml_schema_app_info.h>
 #include <xml_schema_use.h>
 #include <axis2_utils.h>
+#include <xml_schema_constants.h>
 
 typedef struct xml_schema_app_info_impl 
                 xml_schema_app_info_impl_t;
 
 /** 
- * @brief Other Extension Struct Impl
+ * @brief xml_schema_app_info impl struct
  *   Axis2 Other Extension  
  */ 
 struct xml_schema_app_info_impl
@@ -35,8 +36,6 @@ struct xml_schema_app_info_impl
     
     axis2_hash_t *ht_super;
     
-    axis2_hash_t *methods;
-
     axis2_char_t *source;
     
     void *markup; /* TODO Replace (void *) with node list */
@@ -104,7 +103,6 @@ xml_schema_app_info_create(const axis2_env_t *env)
     app_info_impl->app_info.ops = NULL;
     app_info_impl->obj_type = XML_SCHEMA_APP_INFO;
     app_info_impl->ht_super = NULL;
-    app_info_impl->methods = NULL;
     app_info_impl->source = NULL;
     app_info_impl->markup = NULL;
     
@@ -141,34 +139,6 @@ xml_schema_app_info_create(const axis2_env_t *env)
     app_info_impl->app_info.ops->set_markup = 
         xml_schema_app_info_set_markup;
    
-    app_info_impl->methods = axis2_hash_make(env);
-    if(!app_info_impl->methods) 
-    {
-        xml_schema_app_info_free(&(app_info_impl->app_info), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    axis2_hash_set(app_info_impl->methods, "free", 
-            AXIS2_HASH_KEY_STRING, xml_schema_app_info_free);
-    
-    axis2_hash_set(app_info_impl->methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_app_info_super_objs);
-    
-    axis2_hash_set(app_info_impl->methods, "get_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_app_info_get_type);
-    
-    axis2_hash_set(app_info_impl->methods, "get_source", 
-            AXIS2_HASH_KEY_STRING, xml_schema_app_info_get_source);
-    
-    axis2_hash_set(app_info_impl->methods, "set_source", 
-            AXIS2_HASH_KEY_STRING, xml_schema_app_info_set_source);
-    
-    axis2_hash_set(app_info_impl->methods, "get_markup", 
-            AXIS2_HASH_KEY_STRING, xml_schema_app_info_get_markup);
-    
-    axis2_hash_set(app_info_impl->methods, "set_markup", 
-            AXIS2_HASH_KEY_STRING, xml_schema_app_info_set_markup);
-
     app_info_impl->schema_obj = xml_schema_obj_create(env);
     if(!app_info_impl->schema_obj) 
     {
@@ -184,14 +154,20 @@ xml_schema_app_info_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(app_info_impl->ht_super, "XML_SCHEMA_APP_INFO", 
-            AXIS2_HASH_KEY_STRING, &(app_info_impl->app_info));
+    axis2_hash_set(app_info_impl->ht_super, 
+        AXIS2_STRDUP("XML_SCHEMA_APP_INFO", env), 
+        AXIS2_HASH_KEY_STRING, &(app_info_impl->app_info));
             
-    axis2_hash_set(app_info_impl->ht_super, "XML_SCHEMA_OBJ", 
-            AXIS2_HASH_KEY_STRING, app_info_impl->schema_obj);
+    axis2_hash_set(app_info_impl->ht_super, 
+        AXIS2_STRDUP("XML_SCHEMA_OBJ", env), 
+        AXIS2_HASH_KEY_STRING, app_info_impl->schema_obj);
 
     status = xml_schema_obj_resolve_methods(&(app_info_impl->app_info.base), 
-            env, app_info_impl->schema_obj, app_info_impl->methods);
+            env, app_info_impl->schema_obj,
+            xml_schema_app_info_super_objs,
+            xml_schema_app_info_get_type,
+            xml_schema_app_info_free);
+            
     return &(app_info_impl->app_info);
 }
 
@@ -218,12 +194,6 @@ xml_schema_app_info_free(void *app_info,
         app_info_impl->ht_super = NULL;
     }
     
-    if(NULL != app_info_impl->methods)
-    {
-        axis2_hash_free(app_info_impl->methods, env);
-        app_info_impl->methods = NULL;
-    }
-
     if(NULL != app_info_impl->schema_obj)
     {
         XML_SCHEMA_OBJ_FREE(app_info_impl->schema_obj, env);

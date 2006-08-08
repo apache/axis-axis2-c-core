@@ -448,11 +448,12 @@ xml_schema_builder_free(
     xml_schema_builder_impl_t *builder_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
-    if(NULL != builder_impl->collection)
+    if(NULL != builder_impl->schema)
     {
-        XML_SCHEMA_COLLECTION_FREE(builder_impl->collection, env);
+        XML_SCHEMA_FREE(builder_impl->schema, env);
+        builder_impl->schema = NULL;
     }
-    
+
     if(NULL != builder_impl->builder.ops)
     {
         AXIS2_FREE(env->allocator, builder_impl->builder.ops);

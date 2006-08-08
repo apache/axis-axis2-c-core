@@ -29,8 +29,6 @@ struct xml_schema_tokenized_type_impl
     
     xml_schema_enum_t *schema_enum;
     
-    axis2_hash_t *methods;
-    
     axis2_array_list_t *members;
     
     axis2_hash_t *ht_super;
@@ -81,7 +79,6 @@ xml_schema_tokenized_type_create(const axis2_env_t *env,
     }
     
     tokenized_type_impl->schema_enum = NULL;
-    tokenized_type_impl->methods = NULL;
     tokenized_type_impl->members = NULL;
     tokenized_type_impl->obj_type = XML_SCHEMA_TOKENIZED_TYPE;
     tokenized_type_impl->tokenized_type.ops = NULL;
@@ -141,26 +138,6 @@ xml_schema_tokenized_type_create(const axis2_env_t *env,
     AXIS2_ARRAY_LIST_ADD(tokenized_type_impl->members, env, 
         AXIS2_STRDUP("None", env));
 
-    tokenized_type_impl->methods = axis2_hash_make(env);
-    
-    if(!tokenized_type_impl->methods)
-    {
-        xml_schema_tokenized_type_free(&(tokenized_type_impl->tokenized_type), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    
-    axis2_hash_set(tokenized_type_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_tokenized_type_free);
-    axis2_hash_set(tokenized_type_impl->methods, "get_values", AXIS2_HASH_KEY_STRING, 
-            xml_schema_tokenized_type_get_values);
-
-    axis2_hash_set(tokenized_type_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            xml_schema_tokenized_type_super_objs);
-
-    axis2_hash_set(tokenized_type_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
-            xml_schema_tokenized_type_get_type);
-
     tokenized_type_impl->schema_enum = xml_schema_enum_create(env, value);
 
     tokenized_type_impl->ht_super = axis2_hash_make(env);
@@ -179,7 +156,9 @@ xml_schema_tokenized_type_create(const axis2_env_t *env,
     
     status = xml_schema_enum_resolve_methods(
             &(tokenized_type_impl->tokenized_type.base), env, tokenized_type_impl->schema_enum, 
-            tokenized_type_impl->methods); 
+            xml_schema_tokenized_type_super_objs,
+            xml_schema_tokenized_type_get_type,
+            xml_schema_tokenized_type_free); 
 
     return &(tokenized_type_impl->tokenized_type);
 }

@@ -21,7 +21,7 @@ typedef struct xml_schema_group_base_impl
                 xml_schema_group_base_impl_t;
 
 /** 
- * @brief Other Extension Struct Impl
+ * @brief group base Struct Impl
  *   Axis2 Other Extension  
  */ 
 struct xml_schema_group_base_impl
@@ -33,8 +33,6 @@ struct xml_schema_group_base_impl
     xml_schema_types_t obj_type;
     
     axis2_hash_t *ht_super;
-    
-    axis2_hash_t *methods;
     
     xml_schema_obj_collection_t *items;
 };
@@ -92,7 +90,6 @@ xml_schema_group_base_create(const axis2_env_t *env)
     group_base_impl->particle = NULL;
     group_base_impl->obj_type = XML_SCHEMA_GROUP_BASE;
     group_base_impl->ht_super = NULL;
-    group_base_impl->methods = NULL;
     group_base_impl->items = NULL;
     group_base_impl->group_base.ops = NULL;
     group_base_impl->group_base.base.ops = NULL;
@@ -124,33 +121,6 @@ xml_schema_group_base_create(const axis2_env_t *env)
     group_base_impl->group_base.ops->to_string =
         xml_schema_group_base_to_string;        
         
-    group_base_impl->methods = axis2_hash_make(env);
-    if(!group_base_impl->methods)
-    {
-        xml_schema_group_base_free(&(group_base_impl->group_base), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    axis2_hash_set(group_base_impl->methods, "free", 
-            AXIS2_HASH_KEY_STRING, 
-            xml_schema_group_base_free);
-            
-    axis2_hash_set(group_base_impl->methods, "get_type", 
-            AXIS2_HASH_KEY_STRING, 
-            xml_schema_group_base_get_type);
-            
-    axis2_hash_set(group_base_impl->methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING, 
-            xml_schema_group_base_super_objs);
-            
-    axis2_hash_set(group_base_impl->methods, "get_items", 
-            AXIS2_HASH_KEY_STRING, 
-            xml_schema_group_base_get_items);
-            
-    axis2_hash_set(group_base_impl->methods, "to_string", 
-            AXIS2_HASH_KEY_STRING,
-            xml_schema_group_base_to_string);            
-    
     group_base_impl->particle = xml_schema_particle_create(env);
     if(!group_base_impl->particle)
     {
@@ -166,18 +136,18 @@ xml_schema_group_base_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(group_base_impl->ht_super, "XML_SCHEMA_GROUP_BASE", 
+    axis2_hash_set(group_base_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_GROUP_BASE", env), 
             AXIS2_HASH_KEY_STRING, &(group_base_impl->group_base) );
     
-    axis2_hash_set(group_base_impl->ht_super, "XML_SCHEMA_PARTICLE", 
+    axis2_hash_set(group_base_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_PARTICLE", env), 
             AXIS2_HASH_KEY_STRING, group_base_impl->particle );
             
     annotated = XML_SCHEMA_PARTICLE_GET_BASE_IMPL(group_base_impl->particle, env);
     if(NULL != annotated)
     {
-        axis2_hash_set(group_base_impl->ht_super, "XML_SCHEMA_ANNOTATED",
+        axis2_hash_set(group_base_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
             AXIS2_HASH_KEY_STRING, annotated);
-        axis2_hash_set(group_base_impl->ht_super, "XML_SCHEMA_OBJ",
+        axis2_hash_set(group_base_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
             AXIS2_HASH_KEY_STRING, XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));    
     }        
     
@@ -185,7 +155,9 @@ xml_schema_group_base_create(const axis2_env_t *env)
  
     status = xml_schema_particle_resolve_methods(
             &(group_base_impl->group_base.base), env, group_base_impl->particle, 
-            group_base_impl->methods); 
+            xml_schema_group_base_super_objs,
+            xml_schema_group_base_get_type,
+            xml_schema_group_base_free); 
     return &(group_base_impl->group_base);
 }
 
@@ -239,12 +211,6 @@ xml_schema_group_base_free(void *group_base,
         group_base_impl->ht_super = NULL;
     }
  
-    if(NULL != group_base_impl->methods)
-    {
-        axis2_hash_free(group_base_impl->methods, env);
-        group_base_impl->methods = NULL;
-    }
-   
     if(NULL != group_base_impl->particle)
     {
         XML_SCHEMA_PARTICLE_FREE(group_base_impl->particle, env);

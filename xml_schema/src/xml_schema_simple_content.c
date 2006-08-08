@@ -29,8 +29,7 @@ struct xml_schema_simple_content_impl
     xml_schema_simple_content_t sim_content;
     
     xml_schema_annotated_t *annotated;
-    
-    axis2_hash_t *methods;
+   
     
     void *content;
     
@@ -89,7 +88,6 @@ xml_schema_simple_content_create(const axis2_env_t *env)
     }
     
     sim_cnt_impl->annotated = NULL;
-    sim_cnt_impl->methods = NULL;
     sim_cnt_impl->content = NULL;
     sim_cnt_impl->sim_content.base.ops = NULL;
     sim_cnt_impl->sim_content.ops = NULL;
@@ -121,27 +119,6 @@ xml_schema_simple_content_create(const axis2_env_t *env)
     sim_cnt_impl->sim_content.ops->to_string = 
             xml_schema_simple_content_to_string;
    
-    sim_cnt_impl->methods = axis2_hash_make(env);
-   
-    if(!sim_cnt_impl->methods)
-    {
-        xml_schema_simple_content_free(&(sim_cnt_impl->sim_content), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    axis2_hash_set(sim_cnt_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_simple_content_free);
-    axis2_hash_set(sim_cnt_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
-            xml_schema_simple_content_get_type);            
-    axis2_hash_set(sim_cnt_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            xml_schema_simple_content_super_objs);            
-    axis2_hash_set(sim_cnt_impl->methods, "get_content", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_content_get_content);
-    axis2_hash_set(sim_cnt_impl->methods, "set_content", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_content_set_content);
-    axis2_hash_set(sim_cnt_impl->methods, "to_string", 
-            AXIS2_HASH_KEY_STRING, xml_schema_simple_content_to_string);
-    
     sim_cnt_impl->ht_super = axis2_hash_make(env);
     if(!sim_cnt_impl->ht_super)
     {
@@ -154,19 +131,21 @@ xml_schema_simple_content_create(const axis2_env_t *env)
         xml_schema_simple_content_free(&(sim_cnt_impl->sim_content), env);
         return NULL;
     }
-    axis2_hash_set(sim_cnt_impl->ht_super, "XML_SCHEMA_SIMPLE_CONTENT",
+    axis2_hash_set(sim_cnt_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_SIMPLE_CONTENT", env),
         AXIS2_HASH_KEY_STRING, &(sim_cnt_impl->sim_content));
         
-    axis2_hash_set(sim_cnt_impl->ht_super, "XML_SCHEMA_ANNOTATED",
+    axis2_hash_set(sim_cnt_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
         AXIS2_HASH_KEY_STRING, sim_cnt_impl->annotated);
     
-    axis2_hash_set(sim_cnt_impl->ht_super, "XML_SCHEMA_OBJ",
+    axis2_hash_set(sim_cnt_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
         AXIS2_HASH_KEY_STRING, 
         XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(sim_cnt_impl->annotated, env));
     
     status = xml_schema_annotated_resolve_methods(
             &(sim_cnt_impl->sim_content.base), env, sim_cnt_impl->annotated, 
-            sim_cnt_impl->methods);
+            xml_schema_simple_content_super_objs,
+            xml_schema_simple_content_get_type,
+            xml_schema_simple_content_free);
     
     return &(sim_cnt_impl->sim_content);
 }
@@ -185,11 +164,7 @@ xml_schema_simple_content_free(void *sim_content,
         /** TODO */
     }
 
-    if(NULL != sim_cnt_impl->methods)
-    {
-        axis2_hash_free(sim_cnt_impl->methods, env);
-        sim_cnt_impl->methods = NULL;
-    }
+  
     if(NULL != sim_cnt_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(sim_cnt_impl->annotated, env);

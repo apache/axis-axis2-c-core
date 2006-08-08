@@ -35,8 +35,6 @@ struct xml_schema_content_processing_impl
     
     axis2_hash_t *ht_super;
     
-    axis2_hash_t *methods;
-    
     axis2_array_list_t *members;
 };
 
@@ -86,7 +84,6 @@ xml_schema_content_processing_create(const axis2_env_t *env,
     content_processing_impl->content_processing.base.ops = NULL;
     content_processing_impl->obj_type = XML_SCHEMA_CONTENT_PROCESSING;
     content_processing_impl->ht_super = NULL;
-    content_processing_impl->methods = NULL;
     content_processing_impl->members = NULL;
     content_processing_impl->content_processing.ops = NULL;
     
@@ -130,25 +127,6 @@ xml_schema_content_processing_create(const axis2_env_t *env,
     AXIS2_ARRAY_LIST_ADD(content_processing_impl->members, env,
         AXIS2_STRDUP(XML_SCHEMA_CONST_STRICT, env));
     
-    content_processing_impl->methods = axis2_hash_make(env);
-    if(!content_processing_impl->methods)
-    {
-         xml_schema_content_processing_free(
-            &(content_processing_impl->content_processing), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    axis2_hash_set(content_processing_impl->methods, "free", 
-            AXIS2_HASH_KEY_STRING, xml_schema_content_processing_free);
-    axis2_hash_set(content_processing_impl->methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_content_processing_super_objs);
-    axis2_hash_set(content_processing_impl->methods, "get_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_content_processing_get_type);
-            
-    axis2_hash_set(content_processing_impl->methods, "get_values", 
-            AXIS2_HASH_KEY_STRING, xml_schema_content_processing_get_values);
-    
     content_processing_impl->schema_enum = xml_schema_enum_create(env, value);
     
     content_processing_impl->ht_super = axis2_hash_make(env);
@@ -160,16 +138,18 @@ xml_schema_content_processing_create(const axis2_env_t *env,
         return NULL;
     }
 
-    axis2_hash_set(content_processing_impl->ht_super, "XML_SCHEMA_CONTENT_PROCESSING", 
+    axis2_hash_set(content_processing_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_CONTENT_PROCESSING", env), 
             AXIS2_HASH_KEY_STRING, &(content_processing_impl->content_processing));
     
-    axis2_hash_set(content_processing_impl->ht_super, "XML_SCHEMA_ENUM", 
+    axis2_hash_set(content_processing_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ENUM", env), 
             AXIS2_HASH_KEY_STRING, content_processing_impl->schema_enum);
 
     status = xml_schema_enum_resolve_methods(
             &(content_processing_impl->content_processing.base), env, 
             content_processing_impl->schema_enum, 
-            content_processing_impl->methods);
+            xml_schema_content_processing_super_objs,
+            xml_schema_content_processing_get_type,
+            xml_schema_content_processing_free);
     
     return &(content_processing_impl->content_processing);
 }
@@ -208,12 +188,7 @@ xml_schema_content_processing_free(void *content_processing,
         axis2_hash_free(content_processing_impl->ht_super, env);
         content_processing_impl->ht_super = NULL;
     }
-    
-    if(NULL != content_processing_impl->methods)
-    {
-        axis2_hash_free(content_processing_impl->methods, env);
-        content_processing_impl->methods = NULL;
-    }
+  
 
     if(NULL != content_processing_impl->schema_enum)
     {

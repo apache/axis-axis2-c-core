@@ -30,7 +30,6 @@ xml_schema_test(
     xml_schema_collection_t *schema_collection = NULL;
     xml_schema_t *schema          = NULL;
     axiom_xml_reader_init();
-    
     xml_reader = 
     axiom_xml_reader_create_for_file(env, filename, NULL);
     if(!xml_reader)
@@ -38,10 +37,9 @@ xml_schema_test(
     
     om_builder = axiom_stax_builder_create(env, xml_reader);
     
-    om_doc = axiom_document_create(env, NULL, om_builder);
+    om_doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
     
     AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
-    
     schema_collection = xml_schema_collection_create(env);
     
     schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
@@ -49,9 +47,12 @@ xml_schema_test(
         
     if(NULL != schema)
     {
+        axis2_char_t *buffer = NULL;
         printf("\n parsing schema is successful \n");
-        
-        printf("%s", XML_SCHEMA_SERIALIZE(schema, env));
+        buffer = XML_SCHEMA_SERIALIZE(schema, env);
+        printf("%s", buffer );
+        if(NULL != buffer)
+            AXIS2_FREE(env->allocator, buffer);
     }                
     if(NULL != schema_collection)
     {

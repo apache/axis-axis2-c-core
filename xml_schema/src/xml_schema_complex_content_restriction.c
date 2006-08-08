@@ -38,8 +38,6 @@ struct xml_schema_complex_content_restriction_impl
     
     xml_schema_particle_t *particle;
     
-    axis2_hash_t *methods;
-    
     axis2_hash_t *ht_super;
     
     xml_schema_types_t obj_type;
@@ -137,7 +135,6 @@ xml_schema_complex_content_restriction_create(const axis2_env_t *env)
     cmp_content_res_impl->base_type_name = NULL;
     cmp_content_res_impl->any_attribute = NULL;
     cmp_content_res_impl->particle = NULL;
-    cmp_content_res_impl->methods = NULL;
     cmp_content_res_impl->ht_super = NULL;
     cmp_content_res_impl->obj_type = XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION;
     
@@ -190,49 +187,14 @@ xml_schema_complex_content_restriction_create(const axis2_env_t *env)
     cmp_content_res_impl->cmp_content_res.ops->to_string =
             xml_schema_complex_content_restriction_to_string;
             
-            
-    cmp_content_res_impl->methods = axis2_hash_make(env);
     cmp_content_res_impl->ht_super = axis2_hash_make(env);
-    if(!cmp_content_res_impl->methods || !cmp_content_res_impl->ht_super)
+    if(!cmp_content_res_impl->ht_super)
     {
         xml_schema_complex_content_restriction_free(
                 &(cmp_content_res_impl->cmp_content_res), env);
         return NULL;
     }
     
-    axis2_hash_set(cmp_content_res_impl->methods,"free", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_restriction_free);
-            
-    axis2_hash_set(cmp_content_res_impl->methods,"get_type", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_restriction_get_type);
-            
-    axis2_hash_set(cmp_content_res_impl->methods,"super_objs", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_restriction_super_objs);                        
-            
-    axis2_hash_set(cmp_content_res_impl->methods,"get_any_attribute", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_restriction_get_any_attribute);
-            
-    axis2_hash_set(cmp_content_res_impl->methods,"set_any_attribute", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_restriction_set_any_attribute);
-            
-    axis2_hash_set(cmp_content_res_impl->methods,"get_attributes", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_restriction_get_attributes);
-            
-    axis2_hash_set(cmp_content_res_impl->methods,"get_base_type_name", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_restriction_get_base_type_name);
-            
-    axis2_hash_set(cmp_content_res_impl->methods,"set_base_type_name", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_restriction_set_base_type_name); 
-            
-    axis2_hash_set(cmp_content_res_impl->methods,"get_particle", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_restriction_get_particle);             
-            
-    axis2_hash_set(cmp_content_res_impl->methods,"set_particle", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_restriction_set_particle);
-            
-    axis2_hash_set(cmp_content_res_impl->methods,"to_string", AXIS2_HASH_KEY_STRING,
-            xml_schema_complex_content_restriction_to_string);                                        
-            
     cmp_content_res_impl->annotated = xml_schema_annotated_create(env);
     if(!cmp_content_res_impl->annotated)
     {
@@ -248,15 +210,19 @@ xml_schema_complex_content_restriction_create(const axis2_env_t *env)
         return NULL;            
     }
      
-    axis2_hash_set(cmp_content_res_impl->methods,"XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION",
+    axis2_hash_set(cmp_content_res_impl->ht_super, 
+        AXIS2_STRDUP("XML_SCHEMA_COMPLEX_CONTENT_RESTRICTION", env),
         AXIS2_HASH_KEY_STRING, &(cmp_content_res_impl->cmp_content_res));                                  
-    axis2_hash_set(cmp_content_res_impl->methods,"XML_SCHEMA_ANNOTATED",
+    axis2_hash_set(cmp_content_res_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
         AXIS2_HASH_KEY_STRING, cmp_content_res_impl->annotated);                              
-    axis2_hash_set(cmp_content_res_impl->methods,"XML_SCHEMA_OBJ",
+    axis2_hash_set(cmp_content_res_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
         AXIS2_HASH_KEY_STRING, 
         XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(cmp_content_res_impl->annotated, env));                              
     xml_schema_annotated_resolve_methods(&(cmp_content_res_impl->cmp_content_res.base),
-        env, cmp_content_res_impl->annotated, cmp_content_res_impl->methods);
+        env, cmp_content_res_impl->annotated, 
+        xml_schema_complex_content_restriction_super_objs,
+        xml_schema_complex_content_restriction_get_type,
+        xml_schema_complex_content_restriction_free);
                 
     return &(cmp_content_res_impl->cmp_content_res);
 }

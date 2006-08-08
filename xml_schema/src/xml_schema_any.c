@@ -27,13 +27,12 @@ typedef struct xml_schema_any_impl
 struct xml_schema_any_impl
 {
     xml_schema_any_t any;
+    
     xml_schema_particle_t *particle;
     
     xml_schema_types_t obj_type;
     
     axis2_hash_t *ht_super;
-    
-    axis2_hash_t *methods;
     
     xml_schema_content_processing_t *process_content;
     /**
@@ -144,27 +143,6 @@ xml_schema_any_create(const axis2_env_t *env)
     any_impl->any.ops->set_process_content = 
         xml_schema_any_set_process_content;
 
-    any_impl->methods = axis2_hash_make(env);
-    if(!any_impl->methods)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    axis2_hash_set(any_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_any_free);
-    axis2_hash_set(any_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            xml_schema_any_super_objs);
-    axis2_hash_set(any_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
-            xml_schema_any_get_type);
-    axis2_hash_set(any_impl->methods, "get_namespace", AXIS2_HASH_KEY_STRING, 
-            xml_schema_any_get_namespace);
-    axis2_hash_set(any_impl->methods, "set_namespace", AXIS2_HASH_KEY_STRING, 
-            xml_schema_any_set_namespace);
-    axis2_hash_set(any_impl->methods, "get_process_content", 
-            AXIS2_HASH_KEY_STRING, xml_schema_any_get_process_content);
-    axis2_hash_set(any_impl->methods, "set_process_content", 
-            AXIS2_HASH_KEY_STRING, xml_schema_any_set_process_content);
-    
     any_impl->particle = xml_schema_particle_create(env);
     if(!any_impl->particle)
     {
@@ -178,24 +156,31 @@ xml_schema_any_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(any_impl->ht_super, "AXIS_XML_SCHEMA_ANY", AXIS2_HASH_KEY_STRING, 
-            &(any_impl->any));
-    axis2_hash_set(any_impl->ht_super, "AXIS_XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING, 
-            any_impl->particle);
+    axis2_hash_set(any_impl->ht_super, 
+        AXIS2_STRDUP("AXIS_XML_SCHEMA_ANY", env), 
+        AXIS2_HASH_KEY_STRING, &(any_impl->any));
+        
+    axis2_hash_set(any_impl->ht_super, 
+        AXIS2_STRDUP("AXIS_XML_SCHEMA_PARTICLE", env), 
+        AXIS2_HASH_KEY_STRING, any_impl->particle);
     
     annotated = XML_SCHEMA_PARTICLE_GET_BASE_IMPL(any_impl->particle, env);
     if(NULL != annotated)
     {
-        axis2_hash_set(any_impl->ht_super, "AXIS_XML_SCHEMA_ANNOTATED", AXIS2_HASH_KEY_STRING, 
-            annotated);
+        axis2_hash_set(any_impl->ht_super, 
+            AXIS2_STRDUP("AXIS_XML_SCHEMA_ANNOTATED", env),
+            AXIS2_HASH_KEY_STRING, annotated);
             
-        axis2_hash_set(any_impl->ht_super, "AXIS_XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING, 
-            XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));            
+        axis2_hash_set(any_impl->ht_super, 
+            AXIS2_STRDUP("AXIS_XML_SCHEMA_OBJ", env), 
+            AXIS2_HASH_KEY_STRING, XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(annotated, env));            
     }
 
     status = xml_schema_particle_resolve_methods(
             &(any_impl->any.base), env, any_impl->particle, 
-            any_impl->methods); 
+            xml_schema_any_super_objs,
+            xml_schema_any_get_type,
+            xml_schema_any_free); 
     return &(any_impl->any);
 }
 
@@ -226,12 +211,6 @@ xml_schema_any_free(void *any,
         any_impl->ht_super = NULL;
     }
  
-    if(NULL != any_impl->methods)
-    {
-        axis2_hash_free(any_impl->methods, env);
-        any_impl->methods = NULL;
-    }
-   
     if(NULL != any_impl->particle)
     {
         XML_SCHEMA_PARTICLE_FREE(any_impl->particle, env);
@@ -290,13 +269,14 @@ xml_schema_any_resolve_methods(
         xml_schema_any_t *any,
         const axis2_env_t *env,
         xml_schema_any_t *any_impl,
-        axis2_hash_t *methods)
+        XML_SCHEMA_SUPER_OBJS_FN super_objs,
+        XML_SCHEMA_GET_TYPE_FN get_type,
+        XML_SCHEMA_FREE_FN free_fn)
 {
     xml_schema_any_impl_t *sch_any_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, any_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     sch_any_impl = (xml_schema_any_impl_t *) any_impl;
     
@@ -307,44 +287,25 @@ xml_schema_any_resolve_methods(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }            
-    any->ops->free = axis2_hash_get(methods, "free", 
-            AXIS2_HASH_KEY_STRING);
+    any->ops->free = free_fn;
             
-    any->ops->super_objs = axis2_hash_get(methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING);
-            
-    any->ops->get_type = axis2_hash_get(methods, "get_type", 
-            AXIS2_HASH_KEY_STRING);
-    if(!any->ops->get_type)
-        any->ops->get_type =
-            sch_any_impl->any.ops->get_type;            
+    any->ops->super_objs = super_objs;
+    any->ops->get_type = get_type;
     
-    any->ops->get_namespace = axis2_hash_get(methods, 
-            "get_namespace", AXIS2_HASH_KEY_STRING);
-    if(!any->ops->get_namespace)
             any->ops->get_namespace = 
             sch_any_impl->any.ops->get_namespace;
     
-    any->ops->set_namespace = axis2_hash_get(methods, 
-            "set_namespace", AXIS2_HASH_KEY_STRING);
-    if(!any->ops->set_namespace)
     any->ops->set_namespace = 
             sch_any_impl->any.ops->set_namespace;
     
-    any->ops->get_process_content = axis2_hash_get(methods, 
-            "get_process_content", AXIS2_HASH_KEY_STRING);
-    if(!any->ops->get_process_content)
     any->ops->get_process_content = 
             sch_any_impl->any.ops->get_process_content;
     
-    any->ops->set_process_content = axis2_hash_get(methods, 
-            "set_process_content", AXIS2_HASH_KEY_STRING);
-    if(!any->ops->set_process_content)
     any->ops->set_process_content = 
             sch_any_impl->any.ops->set_process_content;
     
     return xml_schema_particle_resolve_methods(&(any->base), 
-            env, sch_any_impl->particle, methods);
+            env, sch_any_impl->particle, super_objs, get_type, free_fn);
 }
 
 axis2_char_t *AXIS2_CALL

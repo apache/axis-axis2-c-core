@@ -30,6 +30,7 @@
 #include <axis2_array_list.h>
 #include <axis2_hash.h>
 #include <xml_schema_defines.h>
+#include <xml_schema_constants.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -108,9 +109,14 @@ xml_schema_obj_create(const axis2_env_t *env);
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 xml_schema_obj_resolve_methods(xml_schema_obj_t *schema_obj,
-                                        const axis2_env_t *env,
-                                        xml_schema_obj_t *schema_obj_impl,
-                                        axis2_hash_t *methods);
+                               const axis2_env_t *env,
+                               xml_schema_obj_t *schema_obj_impl,
+                               XML_SCHEMA_SUPER_OBJS_FN super_objs,
+                               XML_SCHEMA_GET_TYPE_FN get_type,
+                               XML_SCHEMA_FREE_FN free_fn);
+                                        
+
+/******************************************************************************/
 
 #define XML_SCHEMA_OBJ_FREE(obj, env) \
       (((xml_schema_obj_t *) obj)->ops->free (obj, env))

@@ -21,8 +21,7 @@ typedef struct xml_schema_obj_table_impl
                 xml_schema_obj_table_impl_t;
 
 /** 
- * @brief Xml Schema Obj Struct Impl
- *   Axis2 Xml Schema Obj  
+ * @brief xml_schema_obj_table_impl
  */ 
 struct xml_schema_obj_table_impl
 {
@@ -140,6 +139,8 @@ xml_schema_obj_table_create(const axis2_env_t *env)
             xml_schema_obj_table_contains;
     obj_table_impl->obj_table.ops->add = 
             xml_schema_obj_table_add;
+    obj_table_impl->obj_table.ops->get_hash_table =
+            xml_schema_obj_table_get_hash_table;            
 
     return &(obj_table_impl->obj_table);
 }

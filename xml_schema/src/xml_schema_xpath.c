@@ -25,8 +25,9 @@ typedef struct xml_schema_xpath_impl xml_schema_xpath_impl_t;
 struct xml_schema_xpath_impl
 {
     xml_schema_xpath_t xpath;
+    
     xml_schema_annotated_t *annotated;
-    axis2_hash_t *methods;
+
     axis2_char_t *x_path;
     
     axis2_hash_t *ht_super;
@@ -71,7 +72,6 @@ xml_schema_xpath_create(const axis2_env_t *env)
                     sizeof(xml_schema_xpath_impl_t));
 
     xpath_impl->annotated = NULL;
-    xpath_impl->methods = NULL;
     xpath_impl->x_path = NULL;
     xpath_impl->ht_super = NULL;
     xpath_impl->obj_type = XML_SCHEMA_XPATH;
@@ -90,19 +90,6 @@ xml_schema_xpath_create(const axis2_env_t *env)
     xpath_impl->xpath.ops->super_objs =
             xml_schema_xpath_super_objs;                       
    
-    xpath_impl->methods = axis2_hash_make(env);
-    if(!xpath_impl->methods)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    axis2_hash_set(xpath_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_xpath_free);
-    axis2_hash_set(xpath_impl->methods, "get_xpath", 
-            AXIS2_HASH_KEY_STRING, xml_schema_xpath_get_xpath);
-    axis2_hash_set(xpath_impl->methods, "set_xpath", 
-            AXIS2_HASH_KEY_STRING, xml_schema_xpath_set_xpath);
-    
     xpath_impl->annotated = xml_schema_annotated_create(env);
     
     xpath_impl->ht_super = axis2_hash_make(env);
@@ -112,16 +99,25 @@ xml_schema_xpath_create(const axis2_env_t *env)
         return NULL;
     }
 
-    axis2_hash_set(xpath_impl->ht_super, "XML_SCHEMA_XPATH", AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(xpath_impl->ht_super, 
+        AXIS2_STRDUP("XML_SCHEMA_XPATH", env),
+        AXIS2_HASH_KEY_STRING,
         &(xpath_impl->xpath));
-    axis2_hash_set(xpath_impl->ht_super, "XML_SCHEMA_ANNOTATED", AXIS2_HASH_KEY_STRING,
+        
+    axis2_hash_set(xpath_impl->ht_super, 
+        AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
+        AXIS2_HASH_KEY_STRING,
         xpath_impl->annotated);        
-    axis2_hash_set(xpath_impl->ht_super, "XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(xpath_impl->ht_super, 
+        AXIS2_STRDUP("XML_SCHEMA_OBJ", env),
+        AXIS2_HASH_KEY_STRING,
         XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(xpath_impl->annotated, env));
 
     status = xml_schema_annotated_resolve_methods(
             &(xpath_impl->xpath.base), env, xpath_impl->annotated, 
-            xpath_impl->methods);
+            xml_schema_xpath_super_objs,
+            xml_schema_xpath_get_type,
+            xml_schema_xpath_free);
     
     return &(xpath_impl->xpath);
 }
@@ -144,12 +140,6 @@ xml_schema_xpath_free(void *xpath,
     {
         axis2_hash_free(xpath_impl->ht_super, env);
         xpath_impl->ht_super = NULL;
-    }
-
-    if(xpath_impl->methods)
-    {
-        axis2_hash_free(xpath_impl->methods, env);
-        xpath_impl->methods = NULL;
     }
 
     if(xpath_impl->annotated)

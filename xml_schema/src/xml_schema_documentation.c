@@ -35,8 +35,6 @@ struct xml_schema_documentation_impl
     
     axis2_hash_t *ht_super;
     
-    axis2_hash_t *methods;
-
     axis2_char_t *source;
     
     axiom_child_element_iterator_t *markup; 
@@ -115,7 +113,6 @@ xml_schema_documentation_create(const axis2_env_t *env)
     documentation_impl->documentation.ops = NULL;
     documentation_impl->obj_type = XML_SCHEMA_APP_INFO;
     documentation_impl->ht_super = NULL;
-    documentation_impl->methods = NULL;
     documentation_impl->source = NULL;
     documentation_impl->markup = NULL;
     documentation_impl->language  = NULL;
@@ -160,34 +157,6 @@ xml_schema_documentation_create(const axis2_env_t *env)
         xml_schema_documentation_get_language;
                    
    
-    documentation_impl->methods = axis2_hash_make(env);
-    if(!documentation_impl->methods) 
-    {
-        xml_schema_documentation_free(&(documentation_impl->documentation), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    axis2_hash_set(documentation_impl->methods, "free", 
-            AXIS2_HASH_KEY_STRING, xml_schema_documentation_free);
-    
-    axis2_hash_set(documentation_impl->methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_documentation_super_objs);
-    
-    axis2_hash_set(documentation_impl->methods, "get_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_documentation_get_type);
-    
-    axis2_hash_set(documentation_impl->methods, "get_source", 
-            AXIS2_HASH_KEY_STRING, xml_schema_documentation_get_source);
-    
-    axis2_hash_set(documentation_impl->methods, "set_source", 
-            AXIS2_HASH_KEY_STRING, xml_schema_documentation_set_source);
-    
-    axis2_hash_set(documentation_impl->methods, "get_markup", 
-            AXIS2_HASH_KEY_STRING, xml_schema_documentation_get_markup);
-    
-    axis2_hash_set(documentation_impl->methods, "set_markup", 
-            AXIS2_HASH_KEY_STRING, xml_schema_documentation_set_markup);
-
     documentation_impl->schema_obj = xml_schema_obj_create(env);
     if(!documentation_impl->schema_obj) 
     {
@@ -203,14 +172,19 @@ xml_schema_documentation_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(documentation_impl->ht_super, "XML_SCHEMA_DOCUMENTATION", 
+    axis2_hash_set(documentation_impl->ht_super, 
+            AXIS2_STRDUP("XML_SCHEMA_DOCUMENTATION", env), 
             AXIS2_HASH_KEY_STRING, &(documentation_impl->documentation));
             
-    axis2_hash_set(documentation_impl->ht_super, "XML_SCHEMA_OBJ", 
+    axis2_hash_set(documentation_impl->ht_super, 
+            AXIS2_STRDUP("XML_SCHEMA_OBJ", env), 
             AXIS2_HASH_KEY_STRING, documentation_impl->schema_obj);
 
     status = xml_schema_obj_resolve_methods(&(documentation_impl->documentation.base), 
-            env, documentation_impl->schema_obj, documentation_impl->methods);
+            env, documentation_impl->schema_obj, 
+            xml_schema_documentation_super_objs,
+            xml_schema_documentation_get_type,
+            xml_schema_documentation_free);
     return &(documentation_impl->documentation);
 }
 
@@ -237,12 +211,6 @@ xml_schema_documentation_free(void *documentation,
         documentation_impl->ht_super = NULL;
     }
     
-    if(NULL != documentation_impl->methods)
-    {
-        axis2_hash_free(documentation_impl->methods, env);
-        documentation_impl->methods = NULL;
-    }
-
     if(NULL != documentation_impl->schema_obj)
     {
         XML_SCHEMA_OBJ_FREE(documentation_impl->schema_obj, env);

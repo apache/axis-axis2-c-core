@@ -225,13 +225,14 @@ xml_schema_obj_resolve_methods(
         xml_schema_obj_t *obj,
         const axis2_env_t *env,
         xml_schema_obj_t *obj_impl,
-        axis2_hash_t *methods)
+        XML_SCHEMA_SUPER_OBJS_FN super_objs,
+        XML_SCHEMA_GET_TYPE_FN get_type,
+        XML_SCHEMA_FREE_FN free_fn)
 {    
     xml_schema_obj_impl_t *obj_impl_l = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, obj_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     obj_impl_l = (xml_schema_obj_impl_t *) obj_impl;
     
@@ -243,14 +244,11 @@ xml_schema_obj_resolve_methods(
         return AXIS2_FAILURE;
     }            
             
-    obj->ops->free = axis2_hash_get(methods, "free", 
-            AXIS2_HASH_KEY_STRING);
+    obj->ops->free = free_fn;
             
-    obj->ops->super_objs = axis2_hash_get(methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING);
+    obj->ops->super_objs = super_objs;
             
-    obj->ops->get_type = axis2_hash_get(methods, "get_type", 
-            AXIS2_HASH_KEY_STRING);
+    obj->ops->get_type = get_type;
 
     obj->ops->get_line_num = 
             obj_impl_l->obj.ops->get_line_num;

@@ -23,6 +23,8 @@
  */
  
 #include <axis2_utils.h>
+#include <axis2_hash.h>
+#include <xml_schema_defines.h>
 
 #ifdef __cplusplus
 extern "C" 
@@ -97,6 +99,14 @@ extern "C"
 #define XML_SCHEMA_XSD_LANGUAGE           "language"
 #define XML_SCHEMA_XSD_ID                 "ID"
 #define XML_SCHEMA_XSD_SCHEMA             "schema"
+
+
+typedef axis2_hash_t* (AXIS2_CALL *XML_SCHEMA_SUPER_OBJS_FN)(void *obj,
+                                    const axis2_env_t *env);
+                                    
+typedef xml_schema_types_t (AXIS2_CALL *XML_SCHEMA_GET_TYPE_FN)(void *obj, const axis2_env_t *env);
+
+typedef int (AXIS2_CALL *XML_SCHEMA_FREE_FN)(void *obj, const axis2_env_t *env);                                   
 
 #ifdef __cplusplus
 }

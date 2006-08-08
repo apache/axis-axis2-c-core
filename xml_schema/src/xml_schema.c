@@ -31,8 +31,6 @@ struct xml_schema_impl
     
     axis2_hash_t *ht_super;
     
-    axis2_hash_t *methods;
-    
     xml_schema_form_t *attr_form_default;
     
     xml_schema_form_t *element_form_default;
@@ -295,7 +293,6 @@ xml_schema_create(const axis2_env_t *env,
     schema_impl->annotated = NULL;
     schema_impl->ht_super = NULL;
     schema_impl->obj_type = XML_SCHEMA;
-    schema_impl->methods = NULL;
     schema_impl->parent = parent;
     schema_impl->attr_form_default = NULL;
     schema_impl->element_form_default = NULL;
@@ -437,77 +434,6 @@ xml_schema_create(const axis2_env_t *env,
     
     schema_impl->schema_types = xml_schema_obj_table_create(env);
     
-    schema_impl->methods = axis2_hash_make(env);
-    if(!schema_impl->methods)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    axis2_hash_set(schema_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_free);
-    axis2_hash_set(schema_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            xml_schema_super_objs);
-    axis2_hash_set(schema_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
-            xml_schema_get_type);
-    axis2_hash_set(schema_impl->methods, "get_namespace", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_namespace);
-    axis2_hash_set(schema_impl->methods, "get_attr_form_default", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_attr_form_default);
-    axis2_hash_set(schema_impl->methods, "set_attr_form_default", 
-            AXIS2_HASH_KEY_STRING, xml_schema_set_attr_form_default);
-    axis2_hash_set(schema_impl->methods, "get_attr_groups", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_attr_groups);
-    axis2_hash_set(schema_impl->methods, "get_attrs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_attrs);
-    axis2_hash_set(schema_impl->methods, "get_block_default", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_block_default);
-    axis2_hash_set(schema_impl->methods, "set_block_default", 
-            AXIS2_HASH_KEY_STRING, xml_schema_set_block_default);
-    axis2_hash_set(schema_impl->methods, "get_element_form_default", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_element_form_default);
-    axis2_hash_set(schema_impl->methods, "set_element_form_default", 
-            AXIS2_HASH_KEY_STRING, xml_schema_set_element_form_default);
-    axis2_hash_set(schema_impl->methods, "get_elements", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_elements);
-    axis2_hash_set(schema_impl->methods, "get_element_by_qname", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_element_by_qname);
-    axis2_hash_set(schema_impl->methods, "get_type_by_qname", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_type_by_qname);
-    axis2_hash_set(schema_impl->methods, "get_final_default", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_final_default);
-    axis2_hash_set(schema_impl->methods, "set_final_default", 
-            AXIS2_HASH_KEY_STRING, xml_schema_set_final_default);
-    axis2_hash_set(schema_impl->methods, "get_groups", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_groups);
-    axis2_hash_set(schema_impl->methods, "get_includes", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_includes);
-    axis2_hash_set(schema_impl->methods, "is_compiled", 
-            AXIS2_HASH_KEY_STRING, xml_schema_is_compiled);
-    axis2_hash_set(schema_impl->methods, "get_items", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_items);
-    axis2_hash_set(schema_impl->methods, "get_notations", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_notations);
-    axis2_hash_set(schema_impl->methods, "get_schema_types", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_schema_types);
-    axis2_hash_set(schema_impl->methods, "get_target_namespace", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_target_namespace);
-    axis2_hash_set(schema_impl->methods, "set_target_namespace", 
-            AXIS2_HASH_KEY_STRING, xml_schema_set_target_namespace);
-    axis2_hash_set(schema_impl->methods, "get_version", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_version);
-    axis2_hash_set(schema_impl->methods, "compile", 
-            AXIS2_HASH_KEY_STRING, xml_schema_compile);
-    axis2_hash_set(schema_impl->methods, "write_a_out", 
-            AXIS2_HASH_KEY_STRING, xml_schema_write_with_out);
-    axis2_hash_set(schema_impl->methods, "write_a_writer", 
-            AXIS2_HASH_KEY_STRING, xml_schema_write_with_writer);
-    axis2_hash_set(schema_impl->methods, "get_prefix_to_namespace_map", 
-            AXIS2_HASH_KEY_STRING, xml_schema_get_prefix_to_namespace_map);
-    axis2_hash_set(schema_impl->methods, "set_prefix_to_namespace_map", 
-            AXIS2_HASH_KEY_STRING, xml_schema_set_prefix_to_namespace_map);
-    axis2_hash_set(schema_impl->methods, "add_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_add_type);
-    
     schema_impl->annotated = xml_schema_annotated_create(env);
 
     schema_impl->ht_super = axis2_hash_make(env);
@@ -528,7 +454,7 @@ xml_schema_create(const axis2_env_t *env,
         
     status = xml_schema_annotated_resolve_methods(
             &(schema_impl->schema.base), env, schema_impl->annotated, 
-            schema_impl->methods);
+            xml_schema_super_objs, xml_schema_get_type, xml_schema_free);
     
     return &(schema_impl->schema);
 }
@@ -587,12 +513,6 @@ xml_schema_free(
         }   
         XML_SCHEMA_OBJ_TABLE_FREE(schema_impl->elements, env);
         schema_impl->elements = NULL;      
-    }
-
-    if(schema_impl->methods)
-    {
-        axis2_hash_free(schema_impl->methods, env);
-        schema_impl->methods = NULL;
     }
 
     if(schema_impl->ht_super)
@@ -1327,19 +1247,20 @@ xml_schema_serialize(
             AXIS2_XML_PARSER_TYPE_BUFFER);
         if(!writer)
         {
-            return AXIS2_FAILURE;
+            return NULL;
         }            
         output = axiom_output_create(env, writer);
         if(!output)
         {
-            return AXIS2_FAILURE;
+            return NULL;
         }
         
         AXIOM_NODE_SERIALIZE(sch_impl->schema_root_node, env, output);
         xml_str = AXIOM_XML_WRITER_GET_XML(writer, env);
         AXIOM_OUTPUT_FREE(output, env);
+        
     }
-    return NULL;
+    return xml_str;
 }      
 
 axis2_status_t AXIS2_CALL

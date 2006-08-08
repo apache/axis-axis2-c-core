@@ -37,8 +37,6 @@ struct xml_schema_type_impl
     
     xml_schema_annotated_t *annotated;
     
-    axis2_hash_t *methods;
-    
     xml_schema_data_type_t *data_type;
     
     xml_schema_derivation_method_t *derive_by;
@@ -154,7 +152,6 @@ xml_schema_type_create(const axis2_env_t *env,
     type_impl->final_resolved = NULL;
     type_impl->schema = NULL;
     type_impl->data_type = NULL;
-    type_impl->methods = NULL;
     type_impl->annotated = NULL;
     type_impl->base_schema_type = NULL;
     type_impl->qname = NULL;
@@ -205,13 +202,7 @@ xml_schema_type_create(const axis2_env_t *env,
     type_impl->type.ops->get_qname = 
             xml_schema_type_get_qname;
    
-    type_impl->methods = axis2_hash_make(env);
-    if(!type_impl->methods)
-    {
-        xml_schema_type_free(&(type_impl->type), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
+   
 
     type_impl->final_derivation = xml_schema_derivation_method_create(env, 
             "none");
@@ -221,34 +212,6 @@ xml_schema_type_create(const axis2_env_t *env,
         return NULL;
     }            
     
-    axis2_hash_set(type_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_type_free);
-    axis2_hash_set(type_impl->methods, "get_base_schema_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_get_base_schema_type);
-    axis2_hash_set(type_impl->methods, "get_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_get_type);
-    axis2_hash_set(type_impl->methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_super_objs);            
-    axis2_hash_set(type_impl->methods, "get_data_type", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_get_data_type);
-    axis2_hash_set(type_impl->methods, "get_derive_by", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_get_derive_by);
-    axis2_hash_set(type_impl->methods, "get_final", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_get_final);
-    axis2_hash_set(type_impl->methods, "set_final", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_set_final);
-    axis2_hash_set(type_impl->methods, "get_final_resolved", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_get_final_resolved);
-    axis2_hash_set(type_impl->methods, "is_mixed", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_is_mixed);
-    axis2_hash_set(type_impl->methods, "set_mixed", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_set_mixed);
-    axis2_hash_set(type_impl->methods, "get_name", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_get_name);
-    axis2_hash_set(type_impl->methods, "set_name", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_set_name);
-    axis2_hash_set(type_impl->methods, "get_qname", 
-            AXIS2_HASH_KEY_STRING, xml_schema_type_get_qname);
     
     type_impl->annotated = xml_schema_annotated_create(env);
     if(!type_impl->annotated)
@@ -262,20 +225,25 @@ xml_schema_type_create(const axis2_env_t *env,
         xml_schema_type_free(&(type_impl->annotated), env);
         return NULL;
     }
-    axis2_hash_set(type_impl->ht_super, "XML_SCHEMA_TYPE", 
+    axis2_hash_set(type_impl->ht_super,
+        AXIS2_STRDUP("XML_SCHEMA_TYPE", env), 
         AXIS2_HASH_KEY_STRING, &(type_impl->type));
         
-    axis2_hash_set(type_impl->ht_super, "XML_SCHEMA_ANNOTATED", 
+    axis2_hash_set(type_impl->ht_super,
+        AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env), 
         AXIS2_HASH_KEY_STRING, type_impl->annotated);
             
-    axis2_hash_set(type_impl->ht_super, "XML_SCHEMA_OBJ", 
+    axis2_hash_set(type_impl->ht_super, 
+        AXIS2_STRDUP("XML_SCHEMA_OBJ", env), 
         AXIS2_HASH_KEY_STRING, 
         XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(type_impl->annotated, env));
             
     
     status = xml_schema_annotated_resolve_methods(
             &(type_impl->type.base), env, type_impl->annotated, 
-            type_impl->methods);
+            xml_schema_type_super_objs,
+            xml_schema_type_get_type,
+            xml_schema_type_free);
     
     return &(type_impl->type);
 }
@@ -288,13 +256,12 @@ xml_schema_type_free(void *type,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     type_impl = AXIS2_INTF_TO_IMPL(type);
-
-    if(NULL != type_impl->methods)
+    if(NULL != type_impl->qname)
     {
-        axis2_hash_free(type_impl->methods, env);
-        type_impl->methods = NULL;
+        AXIS2_QNAME_FREE(type_impl->qname, env);
+        type_impl->qname = NULL;
+    
     }
-
     if(NULL != type_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(type_impl->annotated, env);
@@ -331,13 +298,14 @@ xml_schema_type_resolve_methods(
                                 xml_schema_type_t *type,
                                 const axis2_env_t *env,
                                 xml_schema_type_t *type_impl,
-                                axis2_hash_t *methods)
+                                XML_SCHEMA_SUPER_OBJS_FN super_objs,
+                                XML_SCHEMA_GET_TYPE_FN get_type,
+                                XML_SCHEMA_FREE_FN free_fn)
 {
     xml_schema_type_impl_t *sch_type_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, type_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     sch_type_impl = (xml_schema_type_impl_t *) type_impl;
     
@@ -349,82 +317,44 @@ xml_schema_type_resolve_methods(
         return AXIS2_FAILURE;     
     }       
             
-    type->ops->free = axis2_hash_get(methods, "free", 
-            AXIS2_HASH_KEY_STRING);
-    type->ops->get_type = axis2_hash_get(methods, "get_type",
-            AXIS2_HASH_KEY_STRING);
-    type->ops->super_objs = axis2_hash_get(methods, "super_objs",
-            AXIS2_HASH_KEY_STRING);                        
+    type->ops->free = free_fn;
+    type->ops->get_type = get_type;
+    type->ops->super_objs = super_objs;
             
+    type->ops->get_base_schema_type = 
+        sch_type_impl->type.ops->get_base_schema_type;
 
-    type->ops->get_base_schema_type = axis2_hash_get(methods, "get_base_schema_type",
-         AXIS2_HASH_KEY_STRING);            
-    if(!type->ops->get_base_schema_type)           
-        type->ops->get_base_schema_type = 
-            sch_type_impl->type.ops->get_base_schema_type;
+    type->ops->get_data_type = 
+        sch_type_impl->type.ops->get_data_type;
 
-    type->ops->get_data_type = axis2_hash_get(methods, "get_data_type",
-         AXIS2_HASH_KEY_STRING);            
-    if(!type->ops->get_data_type)           
-        type->ops->get_data_type = 
-            sch_type_impl->type.ops->get_data_type;
-
-    type->ops->get_derive_by = axis2_hash_get(methods, "get_derive_by",
-         AXIS2_HASH_KEY_STRING);            
-    if(!type->ops->get_derive_by)           
-        type->ops->get_derive_by = 
-            sch_type_impl->type.ops->get_derive_by;
-            
-    type->ops->get_final = axis2_hash_get(methods, "get_final",
-         AXIS2_HASH_KEY_STRING);            
-    if(!type->ops->get_final)         
+    type->ops->get_derive_by = 
+        sch_type_impl->type.ops->get_derive_by;
+        
     type->ops->get_final = 
-            sch_type_impl->type.ops->get_final;
-            
-    type->ops->set_final = axis2_hash_get(methods, "set_final",
-        AXIS2_HASH_KEY_STRING);            
-    if(!type->ops->set_final)          
-        type->ops->set_final = 
-            sch_type_impl->type.ops->set_final;
-
-    type->ops->get_final_resolved = axis2_hash_get(methods, "get_final_resolved",
-        AXIS2_HASH_KEY_STRING);            
-    if(!type->ops->get_final_resolved)            
+        sch_type_impl->type.ops->get_final;
+        
+    type->ops->set_final = 
+        sch_type_impl->type.ops->set_final;
     type->ops->get_final_resolved = 
-            sch_type_impl->type.ops->get_final_resolved;
+        sch_type_impl->type.ops->get_final_resolved;
             
-    type->ops->is_mixed = axis2_hash_get(methods, "is_mixed",
-        AXIS2_HASH_KEY_STRING);            
-    if(!type->ops->is_mixed)  
     type->ops->is_mixed = 
-            sch_type_impl->type.ops->is_mixed;
+        sch_type_impl->type.ops->is_mixed;
      
-    type->ops->set_mixed = axis2_hash_get(methods, "set_mixed",
-        AXIS2_HASH_KEY_STRING);            
-    if(!type->ops->set_mixed)              
     type->ops->set_mixed = 
-            sch_type_impl->type.ops->set_mixed;
+        sch_type_impl->type.ops->set_mixed;
             
-    type->ops->get_name = axis2_hash_get(methods, "get_name",
-        AXIS2_HASH_KEY_STRING);            
-    if(!type->ops->get_name)             
-        type->ops->get_name = 
-            sch_type_impl->type.ops->get_name;
+    type->ops->get_name = 
+        sch_type_impl->type.ops->get_name;
             
-    type->ops->set_name = axis2_hash_get(methods, "set_name",
-        AXIS2_HASH_KEY_STRING);            
-    if(!type->ops->set_name)             
     type->ops->set_name = 
             sch_type_impl->type.ops->set_name;
             
-    type->ops->get_qname = axis2_hash_get(methods, "get_qname",
-        AXIS2_HASH_KEY_STRING);            
-    if(!type->ops->get_qname)            
     type->ops->get_qname = 
             sch_type_impl->type.ops->get_qname;
     
     return xml_schema_annotated_resolve_methods(&(type->base), 
-            env, sch_type_impl->annotated, methods);
+            env, sch_type_impl->annotated, super_objs, get_type, free_fn);
 }
 
 void *AXIS2_CALL

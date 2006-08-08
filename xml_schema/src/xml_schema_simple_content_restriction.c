@@ -41,8 +41,7 @@ struct xml_schema_simple_content_restriction_impl
     xml_schema_simple_type_t *base_type;
     
     xml_schema_types_t obj_type;
-    
-    axis2_hash_t *methods;
+
     
     axis2_hash_t *ht_super;
 };
@@ -155,7 +154,6 @@ xml_schema_simple_content_restriction_create(const axis2_env_t *env)
     sim_content_res_impl->base_type = NULL;
     sim_content_res_impl->ht_super = NULL;
     sim_content_res_impl->obj_type = XML_SCHEMA_SIMPLE_CONTENT_RESTRICTION;
-    sim_content_res_impl->methods = NULL;
     sim_content_res_impl->sim_content_res.base.ops = NULL;
     
     sim_content_res_impl->sim_content_res.ops = AXIS2_MALLOC(env->allocator, 
@@ -206,50 +204,6 @@ xml_schema_simple_content_restriction_create(const axis2_env_t *env)
     sim_content_res_impl->sim_content_res.ops->get_facets =
             xml_schema_simple_content_restriction_get_facets;
             
-    sim_content_res_impl->methods = axis2_hash_make(env);
-    if(!sim_content_res_impl->methods)
-    {
-        xml_schema_simple_content_restriction_free(
-                &(sim_content_res_impl->sim_content_res), env);
-        return NULL;
-    } 
-    
-    axis2_hash_set(sim_content_res_impl->methods, "free", AXIS2_HASH_KEY_STRING,
-            xml_schema_simple_content_restriction_free);;
-            
-    axis2_hash_set(sim_content_res_impl->methods, "get_type", 
-            AXIS2_HASH_KEY_STRING,                                                                  xml_schema_simple_content_restriction_get_type);
-    
-    axis2_hash_set(sim_content_res_impl->methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING,
-            xml_schema_simple_content_restriction_super_objs);
-                                
-    axis2_hash_set(sim_content_res_impl->methods, "get_any_attribute",                              AXIS2_HASH_KEY_STRING,
-            xml_schema_simple_content_restriction_get_any_attribute);
-            
-    axis2_hash_set(sim_content_res_impl->methods, "set_any_attribute",
-            AXIS2_HASH_KEY_STRING,
-            xml_schema_simple_content_restriction_set_any_attribute);
-            
-    axis2_hash_set(sim_content_res_impl->methods, "get_attribute", 
-            AXIS2_HASH_KEY_STRING,
-            xml_schema_simple_content_restriction_get_attributes);
-            
-    axis2_hash_set(sim_content_res_impl->methods, "get_base_type_name", AXIS2_HASH_KEY_STRING,
-            xml_schema_simple_content_restriction_get_base_type_name);
-            
-    axis2_hash_set(sim_content_res_impl->methods, "set_base_type_name", AXIS2_HASH_KEY_STRING,
-            xml_schema_simple_content_restriction_set_base_type_name);  
-            
-    axis2_hash_set(sim_content_res_impl->methods, "set_base_type", AXIS2_HASH_KEY_STRING,
-            xml_schema_simple_content_restriction_set_base_type);
-            
-    axis2_hash_set(sim_content_res_impl->methods, "get_base_type", AXIS2_HASH_KEY_STRING,
-            xml_schema_simple_content_restriction_get_base_type);  
-            
-    axis2_hash_set(sim_content_res_impl->methods, "get_facets", AXIS2_HASH_KEY_STRING,
-            xml_schema_simple_content_restriction_get_facets);                                     
-                          
     sim_content_res_impl->annotated = xml_schema_annotated_create(env);
     if(!sim_content_res_impl->annotated)
     {
@@ -280,7 +234,10 @@ xml_schema_simple_content_restriction_create(const axis2_env_t *env)
         XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(sim_content_res_impl->annotated, env));
         
     xml_schema_annotated_resolve_methods(&(sim_content_res_impl->sim_content_res.base),
-        env, sim_content_res_impl->annotated, sim_content_res_impl->methods);        
+        env, sim_content_res_impl->annotated, 
+        xml_schema_simple_content_restriction_super_objs,
+        xml_schema_simple_content_restriction_get_type,
+        xml_schema_simple_content_restriction_free);        
     
     return &(sim_content_res_impl->sim_content_res);
 }

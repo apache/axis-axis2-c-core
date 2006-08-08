@@ -30,8 +30,6 @@ struct xml_schema_severity_type_impl
     
     xml_schema_enum_t *schema_enum;
     
-    axis2_hash_t *methods;
-    
     axis2_array_list_t *members;
     
     axis2_hash_t *ht_super;
@@ -78,7 +76,6 @@ xml_schema_severity_type_create(const axis2_env_t *env,
     }                    
 
     severity_type_impl->schema_enum = NULL;
-    severity_type_impl->methods = NULL;
     severity_type_impl->members = NULL;
     severity_type_impl->ht_super = NULL;
     severity_type_impl->type = XML_SCHEMA_SEVERITY_TYPE;
@@ -115,24 +112,6 @@ xml_schema_severity_type_create(const axis2_env_t *env,
     AXIS2_ARRAY_LIST_ADD(severity_type_impl->members, env, 
         AXIS2_STRDUP(XML_SCHEMA_CONST_WARNING, env));
 
-    severity_type_impl->methods = axis2_hash_make(env);
-    if(!severity_type_impl->methods)
-    {
-        xml_schema_severity_type_free(&(severity_type_impl->severity_type), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-
-    axis2_hash_set(severity_type_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_severity_type_free);
-    axis2_hash_set(severity_type_impl->methods, "get_values", AXIS2_HASH_KEY_STRING, 
-            xml_schema_severity_type_get_values);
-    axis2_hash_set(severity_type_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
-            xml_schema_severity_type_super_objs);
-    axis2_hash_set(severity_type_impl->methods, "get_type",
-            AXIS2_HASH_KEY_STRING,
-            xml_schema_severity_type_get_type);
-            
     severity_type_impl->schema_enum = xml_schema_enum_create(env, value);
     if(!severity_type_impl->schema_enum)
     {
@@ -149,15 +128,19 @@ xml_schema_severity_type_create(const axis2_env_t *env,
         return NULL;
     }
     
-    axis2_hash_set(severity_type_impl->ht_super, "XML_SCHEMA_SEVERITY_TYPE",
-       AXIS2_HASH_KEY_STRING,  &(severity_type_impl->severity_type));
+    axis2_hash_set(severity_type_impl->ht_super, 
+        AXIS2_STRDUP("XML_SCHEMA_SEVERITY_TYPE", env),
+        AXIS2_HASH_KEY_STRING,  &(severity_type_impl->severity_type));
     
-    axis2_hash_set(severity_type_impl->ht_super, "XML_SCHEMA_ENUM",
+    axis2_hash_set(severity_type_impl->ht_super, 
+        AXIS2_STRDUP("XML_SCHEMA_ENUM", env),
         AXIS2_HASH_KEY_STRING, severity_type_impl->schema_enum);        
 
     status = xml_schema_enum_resolve_methods(
             &(severity_type_impl->severity_type.base), env, severity_type_impl->schema_enum, 
-            severity_type_impl->methods); 
+            xml_schema_severity_type_super_objs,
+            xml_schema_severity_type_get_type,
+            xml_schema_severity_type_free); 
 
     return &(severity_type_impl->severity_type);
 }

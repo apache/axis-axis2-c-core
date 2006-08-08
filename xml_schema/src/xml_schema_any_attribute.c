@@ -30,8 +30,6 @@ struct xml_schema_any_attribute_impl
     
     xml_schema_annotated_t *annotated;
     
-    axis2_hash_t *methods;
-    
     xml_schema_content_processing_t *process_content;
     /**
      * Namespaces containing the elements that can be used.
@@ -100,7 +98,6 @@ xml_schema_any_attribute_create(const axis2_env_t *env)
     any_attr_impl->ns = NULL;
     any_attr_impl->annotated = NULL;
     any_attr_impl->process_content = NULL;
-    any_attr_impl->methods = NULL;
     any_attr_impl->ht_super = NULL;
     any_attr_impl->obj_type = XML_SCHEMA_ANY_ATTRIBUTE;
     any_attr_impl->any_attr.ops = AXIS2_MALLOC(env->allocator, 
@@ -144,55 +141,39 @@ xml_schema_any_attribute_create(const axis2_env_t *env)
     any_attr_impl->any_attr.ops->set_process_content = 
         xml_schema_any_attribute_set_process_content;
 
-    any_attr_impl->methods = axis2_hash_make(env);
-    if(!any_attr_impl->methods)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    axis2_hash_set(any_attr_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_any_attribute_free);
-    axis2_hash_set(any_attr_impl->methods, "get_type", AXIS2_HASH_KEY_STRING,
-            xml_schema_any_attribute_get_type);
-    axis2_hash_set(any_attr_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING,
-            xml_schema_any_attribute_super_objs);            
-    axis2_hash_set(any_attr_impl->methods, "get_namespace", AXIS2_HASH_KEY_STRING, 
-            xml_schema_any_attribute_get_namespace);
-    axis2_hash_set(any_attr_impl->methods, "set_namespace", AXIS2_HASH_KEY_STRING, 
-            xml_schema_any_attribute_set_namespace);
-    axis2_hash_set(any_attr_impl->methods, "get_process_content", 
-            AXIS2_HASH_KEY_STRING, xml_schema_any_attribute_get_process_content);
-    axis2_hash_set(any_attr_impl->methods, "set_process_content", 
-            AXIS2_HASH_KEY_STRING, xml_schema_any_attribute_set_process_content);
-    
     any_attr_impl->annotated = xml_schema_annotated_create(env);
-    if(!any_attr_impl->methods)
+    if(!any_attr_impl->annotated)
     {
-        xml_schema_any_attribute_free(&(any_attr_impl->any_attr), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
+        xml_schema_any_attribute_free(&(any_attr_impl->any_attr),
+            env);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);            
     }
     
     any_attr_impl->ht_super = axis2_hash_make(env);
-    if(!any_attr_impl->methods)
+    if(!any_attr_impl->ht_super)
     {
         xml_schema_any_attribute_free(&(any_attr_impl->any_attr), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(any_attr_impl->ht_super, "XML_SCHEMA_ANY_ATTRIBUTE", 
-            AXIS2_HASH_KEY_STRING, &(any_attr_impl->any_attr));
+    axis2_hash_set(any_attr_impl->ht_super, 
+        AXIS2_STRDUP("XML_SCHEMA_ANY_ATTRIBUTE", env), 
+        AXIS2_HASH_KEY_STRING, &(any_attr_impl->any_attr));
             
-    axis2_hash_set(any_attr_impl->ht_super, "XML_SCHEMA_ANNOTATED", 
-            AXIS2_HASH_KEY_STRING, any_attr_impl->annotated);
+    axis2_hash_set(any_attr_impl->ht_super, 
+        AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env), 
+        AXIS2_HASH_KEY_STRING, any_attr_impl->annotated);
 
-    axis2_hash_set(any_attr_impl->ht_super, "XML_SCHEMA_OBJ", 
-            AXIS2_HASH_KEY_STRING, 
-            XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(any_attr_impl->annotated, env));
+    axis2_hash_set(any_attr_impl->ht_super, 
+        AXIS2_STRDUP("XML_SCHEMA_OBJ", env), 
+        AXIS2_HASH_KEY_STRING, 
+        XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(any_attr_impl->annotated, env));
                             
     xml_schema_annotated_resolve_methods(
             &(any_attr_impl->any_attr.base), env, any_attr_impl->annotated, 
-            any_attr_impl->methods); 
+            xml_schema_any_attribute_super_objs,
+            xml_schema_any_attribute_get_type,
+            xml_schema_any_attribute_free); 
     return &(any_attr_impl->any_attr);
 }
 
@@ -221,12 +202,6 @@ xml_schema_any_attribute_free(void *any_attr,
         any_attr_impl->process_content = NULL;
     }
  
-    if(NULL != any_attr_impl->methods)
-    {
-        axis2_hash_free(any_attr_impl->methods, env);
-        any_attr_impl->methods = NULL;
-    }
-   
     if(NULL != any_attr_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(any_attr_impl->annotated, env);

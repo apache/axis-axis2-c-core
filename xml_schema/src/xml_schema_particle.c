@@ -34,8 +34,6 @@ struct xml_schema_particle_impl
     
     axis2_hash_t *ht_super;
     
-    axis2_hash_t *methods;
-    
     long max_occurs;
     
     axis2_char_t *max_occurs_string;
@@ -110,7 +108,6 @@ xml_schema_particle_create(const axis2_env_t *env)
     particle_impl->ht_super = NULL;
     particle_impl->particle.ops = NULL;
     particle_impl->particle.base.ops = NULL;
-    particle_impl->methods = NULL;
     particle_impl->max_occurs_string = NULL;
     particle_impl->min_occurs_string = NULL;
     
@@ -149,28 +146,6 @@ xml_schema_particle_create(const axis2_env_t *env)
     particle_impl->particle.ops->set_min_occurs = 
             xml_schema_particle_set_min_occurs;
    
-    particle_impl->methods = axis2_hash_make(env);
-    if(!particle_impl->methods)
-    {
-        xml_schema_particle_free(&(particle_impl->particle), env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-    }
-    axis2_hash_set(particle_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
-            xml_schema_particle_free);
-    axis2_hash_set(particle_impl->methods, "super_objs", AXIS2_HASH_KEY_STRING, 
-            xml_schema_particle_super_objs);
-    axis2_hash_set(particle_impl->methods, "get_type", AXIS2_HASH_KEY_STRING, 
-            xml_schema_particle_get_type);
-    axis2_hash_set(particle_impl->methods, "get_max_occurs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_particle_get_max_occurs);
-    axis2_hash_set(particle_impl->methods, "set_max_occurs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_particle_set_max_occurs);
-    axis2_hash_set(particle_impl->methods, "get_min_occurs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_particle_get_min_occurs);
-    axis2_hash_set(particle_impl->methods, "set_min_occurs", 
-            AXIS2_HASH_KEY_STRING, xml_schema_particle_set_min_occurs);
-    
     particle_impl->annotated = xml_schema_annotated_create(env);
     if(!particle_impl->annotated)
     {
@@ -185,17 +160,19 @@ xml_schema_particle_create(const axis2_env_t *env)
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(particle_impl->ht_super, "XML_SCHEMA_PARTICLE", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(particle_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_PARTICLE", env), AXIS2_HASH_KEY_STRING, 
             &(particle_impl->particle));
-    axis2_hash_set(particle_impl->ht_super, "XML_SCHEMA_ANNOTATED", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(particle_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env), AXIS2_HASH_KEY_STRING, 
             particle_impl->annotated);
             
-    axis2_hash_set(particle_impl->ht_super, "XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING,
+    axis2_hash_set(particle_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_OBJ", env), AXIS2_HASH_KEY_STRING,
             XML_SCHEMA_ANNOTATED_GET_BASE_IMPL(particle_impl->annotated, env));           
             
     status = xml_schema_annotated_resolve_methods(
             &(particle_impl->particle.base), env, particle_impl->annotated, 
-            particle_impl->methods);
+            xml_schema_particle_super_objs,
+            xml_schema_particle_get_type,
+            xml_schema_particle_free);
     
     return &(particle_impl->particle);
 }
@@ -215,11 +192,7 @@ xml_schema_particle_free(void *particle,
         particle_impl->ht_super = NULL;
     }
     
-    if(NULL != particle_impl->methods)
-    {
-        axis2_hash_free(particle_impl->methods, env);
-        particle_impl->methods = NULL;
-    }
+   
 
     if(NULL != particle_impl->annotated)
     {
@@ -281,13 +254,14 @@ xml_schema_particle_resolve_methods(
                                 xml_schema_particle_t *particle,
                                 const axis2_env_t *env,
                                 xml_schema_particle_t *particle_impl,
-                                axis2_hash_t *methods)
+                                XML_SCHEMA_SUPER_OBJS_FN super_objs,
+                                XML_SCHEMA_GET_TYPE_FN get_type,
+                                XML_SCHEMA_FREE_FN free_fn)
 {
     xml_schema_particle_impl_t *sch_particle_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, particle_impl, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     
     sch_particle_impl = (xml_schema_particle_impl_t *) particle_impl;
     
@@ -299,39 +273,25 @@ xml_schema_particle_resolve_methods(
         return AXIS2_FAILURE;
     }            
     
-    particle->ops->free = axis2_hash_get(methods, "free", 
-            AXIS2_HASH_KEY_STRING);
-    particle->ops->super_objs = axis2_hash_get(methods, "super_objs", 
-            AXIS2_HASH_KEY_STRING);
-    particle->ops->get_type = axis2_hash_get(methods, "get_type", 
-            AXIS2_HASH_KEY_STRING);
+    particle->ops->free = free_fn;
+    particle->ops->super_objs = super_objs;
+    
+    particle->ops->get_type = get_type;
 
-    particle->ops->get_max_occurs = axis2_hash_get(methods, "get_max_occurs", 
-            AXIS2_HASH_KEY_STRING);
-    if(!particle->ops->get_max_occurs)
-            particle->ops->get_max_occurs = 
-            sch_particle_impl->particle.ops->get_max_occurs;
+    particle->ops->get_max_occurs = 
+        sch_particle_impl->particle.ops->get_max_occurs;
     
-    particle->ops->set_max_occurs = axis2_hash_get(methods, "set_max_occurs", 
-            AXIS2_HASH_KEY_STRING);
-    if(!particle->ops->set_max_occurs)
-            particle->ops->set_max_occurs = 
-            sch_particle_impl->particle.ops->set_max_occurs;
+    particle->ops->set_max_occurs = 
+        sch_particle_impl->particle.ops->set_max_occurs;
     
-    particle->ops->get_min_occurs = axis2_hash_get(methods, "get_min_occurs", 
-            AXIS2_HASH_KEY_STRING);
-    if(!particle->ops->get_min_occurs)
-            particle->ops->get_min_occurs = 
-            sch_particle_impl->particle.ops->get_min_occurs;
+    particle->ops->get_min_occurs = 
+        sch_particle_impl->particle.ops->get_min_occurs;
     
-    particle->ops->set_min_occurs = axis2_hash_get(methods, "set_min_occurs", 
-            AXIS2_HASH_KEY_STRING);
-    if(!particle->ops->set_min_occurs)
-            particle->ops->set_min_occurs = 
-            sch_particle_impl->particle.ops->set_min_occurs;
+    particle->ops->set_min_occurs = 
+        sch_particle_impl->particle.ops->set_min_occurs;
     
     return xml_schema_annotated_resolve_methods(&(particle->base), 
-            env, sch_particle_impl->annotated, methods);
+            env, sch_particle_impl->annotated, super_objs, get_type, free_fn);
 }
 
 long AXIS2_CALL
