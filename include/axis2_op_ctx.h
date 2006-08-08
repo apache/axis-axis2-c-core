@@ -56,34 +56,34 @@ extern "C"
     struct axis2_svc_ctx;
 
     /**
-     * @brief Message Context ops struct
+     * Message Context ops struct
      * Encapsulator struct for ops of axis2_op_ctx
      */
     struct axis2_op_ctx_ops
     {
-   /**
-    * @param op_ctx pointer to operation context
-    * @param env pointer to environment struct
-    */
-        axis2_ctx_t* (AXIS2_CALL *
+       /**
+        * @param op_ctx pointer to operation context
+        * @param env pointer to environment struct
+        */
+        axis2_ctx_t *(AXIS2_CALL *
                 get_base)(
-          struct axis2_op_ctx *op_ctx,
+                    const axis2_op_ctx_t *op_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param op_ctx pointer to operation context
-    * @param env pointer to environment struct
-    */
+       /**
+        * @param op_ctx pointer to operation context
+        * @param env pointer to environment struct
+        */
         axis2_status_t (AXIS2_CALL *
                 free)(
-          struct axis2_op_ctx *op_ctx,
+                    struct axis2_op_ctx *op_ctx,
                     const axis2_env_t *env);
 
         /**
          * The method is used to do the intialization of the axis2_op_ctx
-    * @param op_ctx pointer to operation context
-    * @param env pointer to enviornment struct
-    * @param conf pointer to conf 
+         * @param op_ctx pointer to operation context
+         * @param env pointer to enviornment struct
+         * @param conf pointer to conf 
          */
         axis2_status_t (AXIS2_CALL *
                 init)(
@@ -92,49 +92,48 @@ extern "C"
                     struct axis2_conf *conf);
 
         /**
-    * @param op_ctx pointer to operation context
-    * @param env pointer to environment struct
+         * @param op_ctx pointer to operation context
+         * @param env pointer to environment struct
          * @return Returns the op.
          */
-        struct axis2_op* (AXIS2_CALL *
+        struct axis2_op *(AXIS2_CALL *
                 get_op)(
-                    struct axis2_op_ctx *op_ctx,
+                    const axis2_op_ctx_t *op_ctx,
                     const axis2_env_t *env);
 
         /**
-    * @param op_ctx pointer to operation context
-    * @param env pointer to environment struct
+         * @param op_ctx pointer to operation context
+         * @param env pointer to environment struct
          * @return Return the struct axis2_svc_ctx * in which this op_ctx lives.
          */
-        struct axis2_svc_ctx* (AXIS2_CALL *
+        struct axis2_svc_ctx *(AXIS2_CALL *
                 get_parent)(
-           struct axis2_op_ctx *op_ctx,
-                     const axis2_env_t *env);
+                    const axis2_op_ctx_t *op_ctx,
+                    const axis2_env_t *env);
 
         /**
          * When a new message is added to the <code>MEPContext</code> the logic
          * should be included remove the MEPContext from the table in the
          * <code>axis2_conf_ctx</code>. Example: IN_IN_OUT At the second IN
          * message the MEPContext should be removed from the AxisOperation
-    * @param op_ctx pointer to operation context
-    * @param env pointer to environment struct
-    * @param msg_ctx pointer to message context
-         *
+         * @param op_ctx pointer to operation context
+         * @param env pointer to environment struct
+         * @param msg_ctx pointer to message context
          */
         axis2_status_t (AXIS2_CALL *
                 add_msg_ctx)(
-               struct axis2_op_ctx *op_ctx,
+                    struct axis2_op_ctx *op_ctx,
                     const axis2_env_t *env,
                     axis2_msg_ctx_t *msg_ctx);
 
         /**
-    * @param op_ctx pointer to operation context
-    * @param env pointer to environment struct
-    * @param message_id ponter to message id
+         * @param op_ctx pointer to operation context
+         * @param env pointer to environment struct
+         * @param message_id ponter to message id
          */
-        axis2_msg_ctx_t* (AXIS2_CALL *
+        axis2_msg_ctx_t *(AXIS2_CALL *
                 get_msg_ctx)(
-          struct axis2_op_ctx *op_ctx,
+                    const axis2_op_ctx_t *op_ctx,
                     const axis2_env_t *env,
                     const axis2_char_t *message_id);
 
@@ -142,21 +141,21 @@ extern "C"
          * Checks to see if the MEP is complete. i.e. whether all the messages that
          * are associated with the MEP has arrived and MEP is complete.
          * @param op_ctx pointer to operation context
-    * @param env pointer to environment struct
+         * @param env pointer to environment struct
          */
         axis2_bool_t (AXIS2_CALL *
                 get_is_complete)(
-                    struct axis2_op_ctx *op_ctx,
+                    const axis2_op_ctx_t *op_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param op_ctx pointer to operatoin context
-    * @param env pointer to environment struct
-    * @param is_complete is_complete
-    */
+        /**
+         * @param op_ctx pointer to operatoin context
+         * @param env pointer to environment struct
+         * @param is_complete is_complete
+         */
         axis2_status_t (AXIS2_CALL *
                 set_complete)(
-          struct axis2_op_ctx *op_ctx,
+                    struct axis2_op_ctx *op_ctx,
                     const axis2_env_t *env,
                     axis2_bool_t is_complete);
 
@@ -169,32 +168,32 @@ extern "C"
          * he should call is_complete() first. However, in cases like IN_OPTIONAL_OUT
          * and OUT_OPTIONAL_IN, it is possibe this will get called without the MEP
          * being complete due to the optional nature of the MEP.
-    * @param op_ctx pointer to operation context
-    * @param env pointer to environment struct
+         * @param op_ctx pointer to operation context
+         * @param env pointer to environment struct
          */
         axis2_status_t (AXIS2_CALL *
                 cleanup)(
-          struct axis2_op_ctx *op_ctx,
+                    struct axis2_op_ctx *op_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param op_ctx pointer to operation context
-    * @param env pointer to environment struct
-    * @param svc_ctx pointer to service context
-    */
+        /**
+         * @param op_ctx pointer to operation context
+         * @param env pointer to environment struct
+         * @param svc_ctx pointer to service context
+         */
         axis2_status_t (AXIS2_CALL *
                 set_parent)(
-          struct axis2_op_ctx *op_ctx,
+                    struct axis2_op_ctx *op_ctx,
                     const axis2_env_t *env,
                     struct axis2_svc_ctx *svc_ctx);
 
-   /**
-    * @param op_ctx pointer to operation context
-    * @param env pointer to environment struct
-    */
-        axis2_hash_t* (AXIS2_CALL *
+        /**
+         * @param op_ctx pointer to operation context
+         * @param env pointer to environment struct
+         */
+        axis2_hash_t *(AXIS2_CALL *
                 get_msg_ctx_map)(
-          struct axis2_op_ctx *op_ctx,
+                    const axis2_op_ctx_t *op_ctx,
                     const axis2_env_t *env);
 
     };
@@ -204,7 +203,7 @@ extern "C"
      */
     struct axis2_op_ctx
     {
-   /** operatoins of operation context struct */
+        /** operatoins of operation context struct */
         axis2_op_ctx_ops_t *ops;
     };
 
@@ -214,11 +213,11 @@ extern "C"
      * @param op pointer to operation
      * @param svc_ctx pointer to service context
      */
-    AXIS2_EXTERN axis2_op_ctx_t* AXIS2_CALL
+    AXIS2_EXTERN axis2_op_ctx_t *AXIS2_CALL
     axis2_op_ctx_create(
        const axis2_env_t *env,
-            struct axis2_op *op,
-            struct axis2_svc_ctx * svc_ctx);
+       struct axis2_op *op,
+       struct axis2_svc_ctx *svc_ctx);
 
 /************************** Start of function macros **************************/
 
