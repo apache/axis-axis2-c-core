@@ -13,8 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  *
- *   
- * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)   
+ *	
  */
 
 #include "guththila_writer.h"
@@ -46,11 +45,11 @@ guththila_writer_free (axis2_env_t *env, guththila_writer_t *wt)
   if (wt)
     {
       if (wt->guththila_writer_type == GUTHTHILA_WRITER_CREATE_FOR_FILE)
-   {
-     if (((guththila_writer_impl_t *)wt)->outputstream)
-       fclose (((guththila_writer_impl_t *)wt)->outputstream);
-     ((guththila_writer_impl_t *)wt)->outputstream = NULL;
-   }
+	{
+	  if (((guththila_writer_impl_t *)wt)->outputstream)
+	    fclose (((guththila_writer_impl_t *)wt)->outputstream);
+	  ((guththila_writer_impl_t *)wt)->outputstream = NULL;
+	}
       AXIS2_FREE (env->allocator, (guththila_writer_t *)wt);
       wt = NULL;
     }

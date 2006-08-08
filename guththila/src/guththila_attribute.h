@@ -14,7 +14,6 @@
  *   limitations under the License.
  *
  *   
- * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)   
  */
 
 #ifndef GUTHTHILA_ATTRIBUTE_H

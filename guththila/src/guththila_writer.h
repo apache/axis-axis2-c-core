@@ -13,8 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  *
- *   
- * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)   
+ *	
  */
 
 #ifndef GUTHTHILA_WRITER_H
@@ -61,6 +60,6 @@ guththila_writer_t *wt);
 AXIS2_EXTERN void 
 guththila_writer_free 
 (axis2_env_t *env, 
-guththila_writer_t *wt);
+ guththila_writer_t *wt);
 
-#endif   /* GUTHTHILA_WRITE_H */
+#endif	/* GUTHTHILA_WRITE_H */

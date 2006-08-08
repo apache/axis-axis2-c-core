@@ -14,25 +14,24 @@
  *   limitations under the License.
  *
  *   
- * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)   
  */
 
 #include <guththila_xml_pull_parser.h>
 
-static int
+static int AXIS2_CALL
 guththila_is_space (int c)
 {
   return (0x20 == c || 0x9 == c || 0xD == c || 0xA == c);
 }
 
 
-AXIS2_EXTERN guththila_xml_pull_parser_t *
+AXIS2_EXTERN guththila_xml_pull_parser_t * AXIS2_CALL
 guththila_xml_pull_parser_create (axis2_env_t * environment,
                                   guththila_reader_t * r)
 {
   guththila_xml_pull_parser_t *parser =
     (guththila_xml_pull_parser_t *) AXIS2_MALLOC (
-                    environment->allocator, sizeof (guththila_xml_pull_parser_t));
+						  environment->allocator, sizeof (guththila_xml_pull_parser_t));
   parser->buffer = guththila_buffer_create (environment, 1024);
   parser->stack = axis2_stack_create (environment);
   parser->attrib = axis2_stack_create (environment);
@@ -53,7 +52,7 @@ guththila_xml_pull_parser_create (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN void
+AXIS2_EXTERN  void AXIS2_CALL
 guththila_xml_pull_parser_free (axis2_env_t * environment,
                                 guththila_xml_pull_parser_t * parser)
 {
@@ -72,11 +71,11 @@ guththila_xml_pull_parser_free (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN int
+AXIS2_EXTERN  int AXIS2_CALL
 guththila_xml_pull_parser_exception (guththila_char_t * file, int line, int error_code)
 {
   printf ("Throws guththila_xml_pull_parser_exception \t %s \t %d \n", file,
-     line);
+	  line);
   /* Samisa: we should define a set of error codes and a corresponding error message set
      rather than printing the above line to the console, we should be appending the
      above string to the error message corresponding to the current error code
@@ -90,16 +89,15 @@ guththila_xml_pull_parser_exception (guththila_char_t * file, int line, int erro
 }
 
 
-AXIS2_EXTERN void
-guththila_xml_pull_parser_relocate_tokens 
-(axis2_env_t *environment,
- guththila_xml_pull_parser_t *parser,
- int offset)
+void AXIS2_CALL
+guththila_xml_pull_parser_relocate_tokens (axis2_env_t *environment,
+					   guththila_xml_pull_parser_t *parser,
+					   int offset)
 {
   guththila_token_t *el = NULL;
   int isize = 0;
   isize = AXIS2_STACK_SIZE (parser->stack, environment);
-/*   el = (guththila_token_t *) AXIS2_STACK_GET_AT (parser->stack, environment, isize-1); */
+  /*   el = (guththila_token_t *) AXIS2_STACK_GET_AT (parser->stack, environment, isize-1); */
   for (; isize > 0; isize--)
     {
       el = (guththila_token_t *) AXIS2_STACK_GET_AT (parser->stack, environment, isize-1);
@@ -108,19 +106,19 @@ guththila_xml_pull_parser_relocate_tokens
 }
 
 
-AXIS2_EXTERN void
+void AXIS2_CALL
 guththila_xml_pull_parser_shift (axis2_env_t * environment,
                                  guththila_xml_pull_parser_t * parser)
 {
   memmove (parser->buffer->buff, parser->buffer->buff + (parser->offset),
-      (parser->_next) - (parser->offset));
+	   (parser->_next) - (parser->offset));
   parser->_next -= parser->offset;
   parser->last -= parser->offset;
   parser->offset = 0;
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_read (axis2_env_t * environment,
                                 guththila_xml_pull_parser_t * parser)
 {
@@ -129,29 +127,29 @@ guththila_xml_pull_parser_read (axis2_env_t * environment,
     {
       if (parser->offset > 0)
         {
-     guththila_xml_pull_parser_relocate_tokens (environment, parser,
-                       parser->offset);
-     guththila_xml_pull_parser_shift (environment, parser);
+	  guththila_xml_pull_parser_relocate_tokens (environment, parser,
+						     parser->offset);
+	  guththila_xml_pull_parser_shift (environment, parser);
         }
       else
         {
-     int b = parser->buffer->size;
-     parser->buffer =
-       guththila_buffer_grow (environment, parser->buffer);
-     guththila_xml_pull_parser_relocate_tokens (
-            environment, parser, (parser->buffer->size - b));
+	  int b = parser->buffer->size;
+	  parser->buffer =
+	    guththila_buffer_grow (environment, parser->buffer);
+	  guththila_xml_pull_parser_relocate_tokens (
+						     environment, parser, (parser->buffer->size - b));
         }
     }
   c = guththila_reader_read (environment, (parser->buffer->buff),
-              (parser->_next),
-              (parser->buffer->size) - (parser->_next),
-              parser->reader);
+			     (parser->_next),
+			     (parser->buffer->size) - (parser->_next),
+			     parser->reader);
   parser->last += c;
   return !c;
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_from_utf16 (axis2_env_t * environment,
                                       guththila_xml_pull_parser_t * parser,
                                       int eof)
@@ -161,9 +159,9 @@ guththila_xml_pull_parser_from_utf16 (axis2_env_t * environment,
       && guththila_xml_pull_parser_read (environment, parser))
     {
       if (eof)
-   return -1;
+	return -1;
       else
-   guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_UNEXPECTED_UTF16_EOF);
+	guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_UNEXPECTED_UTF16_EOF);
     }
   while (!c)
     c = parser->buffer->buff[parser->_next++];
@@ -171,7 +169,7 @@ guththila_xml_pull_parser_from_utf16 (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_next_char (axis2_env_t * environment,
                                      guththila_xml_pull_parser_t * parser,
                                      int eof)
@@ -180,39 +178,39 @@ guththila_xml_pull_parser_next_char (axis2_env_t * environment,
       && guththila_xml_pull_parser_read (environment, parser))
     {
       if (eof)
-   return -1;
+	return -1;
       else
-   guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_UNEXPECTED_EOF);
+	guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_UNEXPECTED_EOF);
     }
   if (parser->_next == 0)
     {
       guththila_UTF8_char iu =
-   (guththila_UTF8_char) parser->buffer->buff[parser->_next++];
+	(guththila_UTF8_char) parser->buffer->buff[parser->_next++];
 
       if (0xff == iu
-     && 0xfe ==
-     (guththila_UTF8_char) parser->buffer->buff[parser->_next++])
+	  && 0xfe ==
+	  (guththila_UTF8_char) parser->buffer->buff[parser->_next++])
         {
-     parser->unicode_state = LE;
+	  parser->unicode_state = LE;
         }
       else if (0xfe == iu
-          && 0xff ==
-          (guththila_UTF8_char) parser->buffer->buff[parser->_next++])
+	       && 0xff ==
+	       (guththila_UTF8_char) parser->buffer->buff[parser->_next++])
         {
-     parser->unicode_state = BE;
+	  parser->unicode_state = BE;
         }
       else if (0xef == iu
-          && 0xbb ==
-          (guththila_UTF8_char) parser->buffer->buff[parser->_next++]
-          && 0xbf ==
-          (guththila_UTF8_char) parser->buffer->buff[parser->_next++])
+	       && 0xbb ==
+	       (guththila_UTF8_char) parser->buffer->buff[parser->_next++]
+	       && 0xbf ==
+	       (guththila_UTF8_char) parser->buffer->buff[parser->_next++])
         {
-     parser->unicode_state = None;
+	  parser->unicode_state = None;
         }
       else
         {
-     parser->unicode_state = None;
-     parser->_next = 0;
+	  parser->unicode_state = None;
+	  parser->_next = 0;
         }
     }
 
@@ -220,11 +218,11 @@ guththila_xml_pull_parser_next_char (axis2_env_t * environment,
     return parser->buffer->buff[parser->_next++];
   else
     return guththila_xml_pull_parser_from_utf16 (environment, parser,
-                   eof);
+						 eof);
 }
 
 
-AXIS2_EXTERN guththila_char_t *
+guththila_char_t * AXIS2_CALL
 guththila_xml_pull_parser_last_char (axis2_env_t * environment,
                                      guththila_xml_pull_parser_t * parser)
 {
@@ -232,20 +230,20 @@ guththila_xml_pull_parser_last_char (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN void
+void AXIS2_CALL
 guththila_xml_pull_parser_open_token (axis2_env_t * environment,
                                       guththila_xml_pull_parser_t * parser)
 {
   guththila_token_t *t =
     (guththila_token_t *) AXIS2_MALLOC (environment->allocator,
-               sizeof (guththila_token_t));
+					sizeof (guththila_token_t));
   t->type = Unknown;
   t->start = guththila_xml_pull_parser_last_char (environment, parser);
   AXIS2_STACK_PUSH (parser->stack, environment, t);
 }
 
 
-AXIS2_EXTERN void
+void AXIS2_CALL
 guththila_xml_pull_parser_close_token (axis2_env_t * environment,
                                        guththila_xml_pull_parser_t * parser,
                                        int t, int refer)
@@ -259,7 +257,7 @@ guththila_xml_pull_parser_close_token (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_skip_spaces (axis2_env_t * environment,
                                        guththila_xml_pull_parser_t * parser,
                                        int c)
@@ -270,7 +268,7 @@ guththila_xml_pull_parser_skip_spaces (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_process_eq (axis2_env_t * environment,
                                       guththila_xml_pull_parser_t * parser,
                                       int c)
@@ -281,7 +279,7 @@ guththila_xml_pull_parser_process_eq (axis2_env_t * environment,
     {
       ic = guththila_xml_pull_parser_next_char (environment, parser, 0);
       return guththila_xml_pull_parser_skip_spaces (environment, parser,
-                      ic);
+						    ic);
     }
   else
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_PROCESS_EQUAL);
@@ -289,7 +287,7 @@ guththila_xml_pull_parser_process_eq (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_process_version_info (axis2_env_t *
                                                 environment,
                                                 guththila_xml_pull_parser_t *
@@ -304,38 +302,38 @@ guththila_xml_pull_parser_process_version_info (axis2_env_t *
     {
       guththila_xml_pull_parser_open_token (environment, parser);
       if ('e' ==
-     guththila_xml_pull_parser_next_char (environment, parser, 0)
-     && 'r' == guththila_xml_pull_parser_next_char (environment,
-                      parser, 0)
-     && 's' == guththila_xml_pull_parser_next_char (environment,
-                      parser, 0)
-     && 'i' == guththila_xml_pull_parser_next_char (environment,
-                      parser, 0)
-     && 'o' == guththila_xml_pull_parser_next_char (environment,
-                      parser, 0)
-     && 'n' == guththila_xml_pull_parser_next_char (environment,
-                      parser, 0))
+	  guththila_xml_pull_parser_next_char (environment, parser, 0)
+	  && 'r' == guththila_xml_pull_parser_next_char (environment,
+							 parser, 0)
+	  && 's' == guththila_xml_pull_parser_next_char (environment,
+							 parser, 0)
+	  && 'i' == guththila_xml_pull_parser_next_char (environment,
+							 parser, 0)
+	  && 'o' == guththila_xml_pull_parser_next_char (environment,
+							 parser, 0)
+	  && 'n' == guththila_xml_pull_parser_next_char (environment,
+							 parser, 0))
         {
-     ic = guththila_xml_pull_parser_next_char (environment, parser, 0);
-     guththila_xml_pull_parser_close_token (environment, parser,
-                   _attribute, 0);
-     quote =
-       guththila_xml_pull_parser_process_eq (environment, parser,
-                    ic);
-     nc = guththila_xml_pull_parser_next_char (environment, parser, 0);
-     /* 0, since we don't expect EOF line here */
-     guththila_xml_pull_parser_open_token (environment, parser);
-     while (quote != nc)
-       nc = guththila_xml_pull_parser_next_char (environment, parser,
-                        0);
-     guththila_xml_pull_parser_close_token (environment, parser,
-                   _attribute_value, 0);
-     nc = guththila_xml_pull_parser_next_char (environment, parser, 0);
-     return guththila_xml_pull_parser_skip_spaces (environment, parser,
-                     nc);
+	  ic = guththila_xml_pull_parser_next_char (environment, parser, 0);
+	  guththila_xml_pull_parser_close_token (environment, parser,
+						 _attribute, 0);
+	  quote =
+	    guththila_xml_pull_parser_process_eq (environment, parser,
+						  ic);
+	  nc = guththila_xml_pull_parser_next_char (environment, parser, 0);
+	  /* 0, since we don't expect EOF line here */
+	  guththila_xml_pull_parser_open_token (environment, parser);
+	  while (quote != nc)
+	    nc = guththila_xml_pull_parser_next_char (environment, parser,
+						      0);
+	  guththila_xml_pull_parser_close_token (environment, parser,
+						 _attribute_value, 0);
+	  nc = guththila_xml_pull_parser_next_char (environment, parser, 0);
+	  return guththila_xml_pull_parser_skip_spaces (environment, parser,
+							nc);
         }
       else
-   guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_INCORRECT_VERSION_INFO);
+	guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_INCORRECT_VERSION_INFO);
     }
   else
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_VERSION_INFO_NOT_FOUND);
@@ -343,7 +341,7 @@ guththila_xml_pull_parser_process_version_info (axis2_env_t *
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_process_encoding_decl (axis2_env_t *
                                                  environment,
                                                  guththila_xml_pull_parser_t *
@@ -360,22 +358,22 @@ guththila_xml_pull_parser_process_encoding_decl (axis2_env_t *
       && 'i' == guththila_xml_pull_parser_next_char (environment, parser, 0)
       && 'n' == guththila_xml_pull_parser_next_char (environment, parser, 0)
       && 'g' == guththila_xml_pull_parser_next_char (environment, parser,
-                       0))
+						     0))
     {
       ic = guththila_xml_pull_parser_next_char (environment, parser, 0);
       guththila_xml_pull_parser_close_token (environment, parser,
-                    _attribute, 0);
+					     _attribute, 0);
       quote =
-   guththila_xml_pull_parser_process_eq (environment, parser, ic);
+	guththila_xml_pull_parser_process_eq (environment, parser, ic);
       nc = guththila_xml_pull_parser_next_char (environment, parser, 0);
       guththila_xml_pull_parser_open_token (environment, parser);
       while (quote != nc)
-   nc = guththila_xml_pull_parser_next_char (environment, parser, 0);
+	nc = guththila_xml_pull_parser_next_char (environment, parser, 0);
       guththila_xml_pull_parser_close_token (environment, parser,
-                    _attribute_value, 0);
+					     _attribute_value, 0);
       nc = guththila_xml_pull_parser_next_char (environment, parser, 0);
       return guththila_xml_pull_parser_skip_spaces (environment, parser,
-                      nc);
+						    nc);
     }
   else
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_ENCODING_DECLARATION_ERROR);
@@ -383,7 +381,7 @@ guththila_xml_pull_parser_process_encoding_decl (axis2_env_t *
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_process_sd_decl (axis2_env_t *
                                            environment,
                                            guththila_xml_pull_parser_t *
@@ -402,10 +400,10 @@ guththila_xml_pull_parser_process_sd_decl (axis2_env_t *
       && 'o' == guththila_xml_pull_parser_next_char (environment, parser, 0)
       && 'n' == guththila_xml_pull_parser_next_char (environment, parser, 0)
       && 'e' == guththila_xml_pull_parser_next_char (environment, parser,
-                       0))
+						     0))
     ic = guththila_xml_pull_parser_next_char (environment, parser, 0);
   guththila_xml_pull_parser_close_token (environment, parser, _attribute,
-                0);
+					 0);
   quote = guththila_xml_pull_parser_process_eq (environment, parser, ic);
   nc = guththila_xml_pull_parser_next_char (environment, parser, 0);
   guththila_xml_pull_parser_open_token (environment, parser);
@@ -413,35 +411,35 @@ guththila_xml_pull_parser_process_sd_decl (axis2_env_t *
     {
       if ('y' == nc)
         {
-     if ('e' !=
-         guththila_xml_pull_parser_next_char (environment, parser, 0)
-         || 's' != guththila_xml_pull_parser_next_char (environment,
-                          parser, 0))
-       guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_STANDALONE_ERROR_IN_YES);
-     else
-       nc = guththila_xml_pull_parser_next_char (environment, parser,
-                        0);
+	  if ('e' !=
+	      guththila_xml_pull_parser_next_char (environment, parser, 0)
+	      || 's' != guththila_xml_pull_parser_next_char (environment,
+							     parser, 0))
+	    guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_STANDALONE_ERROR_IN_YES);
+	  else
+	    nc = guththila_xml_pull_parser_next_char (environment, parser,
+						      0);
         }
       else if ('n' == nc)
         {
-     if ('o' !=
-         guththila_xml_pull_parser_next_char (environment, parser, 0))
-       guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_STANDALONE_ERROR_IN_NO);
-     else
-       nc = guththila_xml_pull_parser_next_char (environment, parser,
-                        0);
+	  if ('o' !=
+	      guththila_xml_pull_parser_next_char (environment, parser, 0))
+	    guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_STANDALONE_ERROR_IN_NO);
+	  else
+	    nc = guththila_xml_pull_parser_next_char (environment, parser,
+						      0);
         }
       else
-   guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_STANDALONE_ERROR_YES_OR_NO_NOT_AVAILABLE);
+	guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_STANDALONE_ERROR_YES_OR_NO_NOT_AVAILABLE);
     }
   guththila_xml_pull_parser_close_token (environment, parser,
-                _attribute_value, 0);
+					 _attribute_value, 0);
   nc = guththila_xml_pull_parser_next_char (environment, parser, 0);
   return guththila_xml_pull_parser_skip_spaces (environment, parser, nc);
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_process_xml_decl (axis2_env_t *
                                             environment,
                                             guththila_xml_pull_parser_t *
@@ -451,26 +449,26 @@ guththila_xml_pull_parser_process_xml_decl (axis2_env_t *
   if ('x' == guththila_xml_pull_parser_next_char (environment, parser, 0)
       && 'm' == guththila_xml_pull_parser_next_char (environment, parser, 0)
       && 'l' == guththila_xml_pull_parser_next_char (environment, parser,
-                       0))
+						     0))
     {
       ix = guththila_xml_pull_parser_process_version_info (environment,
-                        parser);
+							   parser);
 
       if ('e' == ix)
-   ix = guththila_xml_pull_parser_process_encoding_decl (environment,
-                           parser);
+	ix = guththila_xml_pull_parser_process_encoding_decl (environment,
+							      parser);
 
       if ('s' == ix)
-   ix = guththila_xml_pull_parser_process_sd_decl (environment,
-                     parser);
+	ix = guththila_xml_pull_parser_process_sd_decl (environment,
+							parser);
 
       if ('?' == ix)
         {
-     if ('>' !=
-         guththila_xml_pull_parser_next_char (environment, parser, 0))
-       guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_MISSING_GREATER_SIGN_IN_XML_DECLARATION);
-     else
-       parser->guththila_event = GUTHTHILA_START_DOCUMENT;
+	  if ('>' !=
+	      guththila_xml_pull_parser_next_char (environment, parser, 0))
+	    guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_MISSING_GREATER_SIGN_IN_XML_DECLARATION);
+	  else
+	    parser->guththila_event = GUTHTHILA_START_DOCUMENT;
         }
     }
   else
@@ -479,7 +477,7 @@ guththila_xml_pull_parser_process_xml_decl (axis2_env_t *
 }
 
 
-AXIS2_EXTERN void
+void AXIS2_CALL
 guththila_xml_pull_parser_reset (axis2_env_t * environment,
                                  guththila_xml_pull_parser_t * parser)
 {
@@ -511,7 +509,7 @@ guththila_xml_pull_parser_reset (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_is_space (axis2_env_t * environment,
                                     int c)
 {
@@ -522,7 +520,7 @@ guththila_xml_pull_parser_is_space (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_is_valid_starting_char (axis2_env_t *
                                                   environment,
                                                   guththila_xml_pull_parser_t
@@ -535,7 +533,7 @@ guththila_xml_pull_parser_is_valid_starting_char (axis2_env_t *
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_process_name (axis2_env_t * environment,
                                         guththila_xml_pull_parser_t * parser)
 {
@@ -549,18 +547,18 @@ guththila_xml_pull_parser_process_name (axis2_env_t * environment,
   guththila_xml_pull_parser_open_token (environment, parser);
   c = guththila_xml_pull_parser_next_char (environment, parser, 0);
   while (!
-    (guththila_xml_pull_parser_is_space (environment, c) || '/' == c
-     || '=' == c || '?' == c || '>' == c))
+	 (guththila_xml_pull_parser_is_space (environment, c) || '/' == c
+	  || '=' == c || '?' == c || '>' == c))
     {
       if (':' == c)
         {
-     guththila_xml_pull_parser_close_token (environment, parser,
-                   _prefix, 0);
-     c = guththila_xml_pull_parser_next_char (environment, parser, 0);
-     guththila_xml_pull_parser_open_token (environment, parser);
+	  guththila_xml_pull_parser_close_token (environment, parser,
+						 _prefix, 0);
+	  c = guththila_xml_pull_parser_next_char (environment, parser, 0);
+	  guththila_xml_pull_parser_open_token (environment, parser);
         }
       else
-   c = guththila_xml_pull_parser_next_char (environment, parser, 0);
+	c = guththila_xml_pull_parser_next_char (environment, parser, 0);
     }
   guththila_xml_pull_parser_close_token (environment, parser, _name, 0);
 
@@ -568,7 +566,7 @@ guththila_xml_pull_parser_process_name (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_process_attribute_value (axis2_env_t *
                                                    environment,
                                                    guththila_xml_pull_parser_t
@@ -581,13 +579,13 @@ guththila_xml_pull_parser_process_attribute_value (axis2_env_t *
       guththila_xml_pull_parser_open_token (environment, parser);
       do
         {
-     c = guththila_xml_pull_parser_next_char (environment, parser, 0);
-     if (quote == c)
+	  c = guththila_xml_pull_parser_next_char (environment, parser, 0);
+	  if (quote == c)
             {
-         guththila_xml_pull_parser_close_token (environment, parser,
-                       _attribute_value, 0);
-         return guththila_xml_pull_parser_next_char (environment,
-                       parser, 0);
+	      guththila_xml_pull_parser_close_token (environment, parser,
+						     _attribute_value, 0);
+	      return guththila_xml_pull_parser_next_char (environment,
+							  parser, 0);
             }
         }
       while ('<' != c || '&' != c);
@@ -598,7 +596,7 @@ guththila_xml_pull_parser_process_attribute_value (axis2_env_t *
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_process_attribute (axis2_env_t *
                                              environment,
                                              guththila_xml_pull_parser_t *
@@ -609,12 +607,12 @@ guththila_xml_pull_parser_process_attribute (axis2_env_t *
   q = guththila_xml_pull_parser_process_name (environment, parser);
   q = guththila_xml_pull_parser_process_eq (environment, parser, q);
   q = guththila_xml_pull_parser_process_attribute_value (environment,
-                      parser, q);
+							 parser, q);
   return q;
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_processSTagOrEmptyElem (axis2_env_t *
                                                   environment,
                                                   guththila_xml_pull_parser_t
@@ -628,27 +626,27 @@ guththila_xml_pull_parser_processSTagOrEmptyElem (axis2_env_t *
     {
       if ('/' == c)
         {
-     parser->guththila_event = GUTHTHILA_EMPTY_ELEMENT;
-     if ('>' ==
-         guththila_xml_pull_parser_next_char (environment, parser, 0))
-       return c;
-     else
-       guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_EMPTY_ELEMENT_NOT_CLOSED);
+	  parser->guththila_event = GUTHTHILA_EMPTY_ELEMENT;
+	  if ('>' ==
+	      guththila_xml_pull_parser_next_char (environment, parser, 0))
+	    return c;
+	  else
+	    guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_EMPTY_ELEMENT_NOT_CLOSED);
         }
       else if ('>' == c)
-   return c;
+	return c;
       else
         {
-     c = guththila_xml_pull_parser_process_attribute (environment,
-                        parser, c);
-     c = guththila_xml_pull_parser_skip_spaces (environment, parser,
-                       c);
+	  c = guththila_xml_pull_parser_process_attribute (environment,
+							   parser, c);
+	  c = guththila_xml_pull_parser_skip_spaces (environment, parser,
+						     c);
         }
     }
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_process_char_data (axis2_env_t *
                                              environment,
                                              guththila_xml_pull_parser_t *
@@ -668,31 +666,31 @@ guththila_xml_pull_parser_process_char_data (axis2_env_t *
       /*             all_spaces = (all_spaces && guththila_is_space (c)); */
 
       if (c == '&')
-   ref = 1;
+	ref = 1;
 
       if (c == -1)
         {
-     guththila_xml_pull_parser_close_token (environment, parser,
-                   _char_data, ref);
-     return 0;
+	  guththila_xml_pull_parser_close_token (environment, parser,
+						 _char_data, ref);
+	  return 0;
         }
     }
   while (c != '<');
 
   
-    /*  if (all_spaces) */
-    /*         parser->guththila_event = GUTHTHILA_SPACE; */
-    guththila_xml_pull_parser_close_token (environment, parser, _char_data,
-                                           ref);
-    return c;
+  /*  if (all_spaces) */
+  /*         parser->guththila_event = GUTHTHILA_SPACE; */
+  guththila_xml_pull_parser_close_token (environment, parser, _char_data,
+					 ref);
+  return c;
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_process_end_tag (axis2_env_t *
-                  environment,
-                  guththila_xml_pull_parser_t *
-                  parser)
+					   environment,
+					   guththila_xml_pull_parser_t *
+					   parser)
 {
   int c;
   c = guththila_xml_pull_parser_next_char (environment, parser, 0);
@@ -706,7 +704,7 @@ guththila_xml_pull_parser_process_end_tag (axis2_env_t *
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_process_pi (axis2_env_t * environment,
                                       guththila_xml_pull_parser_t * parser)
 {
@@ -719,7 +717,7 @@ guththila_xml_pull_parser_process_pi (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_process_comment (axis2_env_t *
                                            environment,
                                            guththila_xml_pull_parser_t *
@@ -728,34 +726,34 @@ guththila_xml_pull_parser_process_comment (axis2_env_t *
   int c;
   if ('-' == guththila_xml_pull_parser_next_char (environment, parser, 0)
       && '-' == guththila_xml_pull_parser_next_char (environment, parser,
-                       0))
+						     0))
     {
       c = guththila_xml_pull_parser_next_char (environment, parser, 0);
       while (1)
         {
-     c = guththila_xml_pull_parser_next_char (environment, parser, 0);
-     if ('-' == c)
+	  c = guththila_xml_pull_parser_next_char (environment, parser, 0);
+	  if ('-' == c)
             {
-         c = guththila_xml_pull_parser_next_char (environment, parser,
-                         0);
-         if ('-' == c)
+	      c = guththila_xml_pull_parser_next_char (environment, parser,
+						       0);
+	      if ('-' == c)
                 {
-        if ('>' ==
-            guththila_xml_pull_parser_next_char (environment,
-                        parser, 0))
+		  if ('>' ==
+		      guththila_xml_pull_parser_next_char (environment,
+							   parser, 0))
                     {
-            parser->guththila_event = GUTHTHILA_COMMENT;
-            while ('<' != c)
+		      parser->guththila_event = GUTHTHILA_COMMENT;
+		      while ('<' != c)
                         {
-           c = guththila_xml_pull_parser_next_char
-             (environment, parser, -1);
-           if (c == -1)
-             return c;
+			  c = guththila_xml_pull_parser_next_char
+			    (environment, parser, -1);
+			  if (c == -1)
+			    return c;
                         }
-            return c;
+		      return c;
                     }
-        else
-          guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_MORE_HYPENS_OCCURED_IN_COMMENT);
+		  else
+		    guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_MORE_HYPENS_OCCURED_IN_COMMENT);
                 }
             }
         }
@@ -764,13 +762,13 @@ guththila_xml_pull_parser_process_comment (axis2_env_t *
     {
       c = guththila_xml_pull_parser_next_char (environment, parser, 0);
       while ('<' != c)
-   c = guththila_xml_pull_parser_next_char (environment, parser, -1);
+	c = guththila_xml_pull_parser_next_char (environment, parser, -1);
     }
   return 0;
 }
 
 
-AXIS2_EXTERN int
+int AXIS2_CALL
 guththila_xml_pull_parser_tokenize (axis2_env_t * environment,
                                     guththila_xml_pull_parser_t * parser)
 {
@@ -779,84 +777,84 @@ guththila_xml_pull_parser_tokenize (axis2_env_t * environment,
       int c;
       c = guththila_xml_pull_parser_next_char (environment, parser, -1);
       if (c == -1)
-   return -1;
+	return -1;
 
       switch (parser->status)
         {
         case S_1:
-     while (isspace(c))
+	  while (isspace(c))
             {
-         c = guththila_xml_pull_parser_next_char (environment, parser, -1);
-      if (c == -1)
-        return -1;
-        }
+ c = guththila_xml_pull_parser_next_char (environment, parser, -1);
+   if (c == -1)
+		 return -1;
+		 }
 
-            if ('<' == c)
-         parser->status = S_2;
-            else
-         parser->status = S_0;
-            break;
+			      if ('<' == c)
+				parser->status = S_2;
+			      else
+				parser->status = S_0;
+			      break;
         case S_2:
-     {
-       if ('?' == c)
-         {
-      guththila_xml_pull_parser_process_xml_decl (environment,
-                         parser);
-      parser->status = S_3;
-         }
-       else if ('!' == c)
-         {
-      guththila_xml_pull_parser_process_comment (environment,
-                        parser);
-      parser->status = S_4;
-         }
-       else
-         {
-      guththila_xml_pull_parser_processSTagOrEmptyElem
-        (environment, parser);
-      parser->status = S_3;
-         }
-     }
-     break;
+	  {
+	    if ('?' == c)
+	      {
+		guththila_xml_pull_parser_process_xml_decl (environment,
+							    parser);
+		parser->status = S_3;
+	      }
+	    else if ('!' == c)
+	      {
+		guththila_xml_pull_parser_process_comment (environment,
+							   parser);
+		parser->status = S_4;
+	      }
+	    else
+	      {
+		guththila_xml_pull_parser_processSTagOrEmptyElem
+		  (environment, parser);
+		parser->status = S_3;
+	      }
+	  }
+	  break;
         case S_3:
-     if ('<' == c)
-       parser->status = S_4;
-     else
+	  if ('<' == c)
+	    parser->status = S_4;
+	  else
             {
-         c = guththila_xml_pull_parser_process_char_data (environment,
-                            parser);
-         if ('<' == c)
+	      c = guththila_xml_pull_parser_process_char_data (environment,
+							       parser);
+	      if ('<' == c)
                 {
-        parser->status = S_4;
-        return parser->guththila_event;
+		  parser->status = S_4;
+		  return parser->guththila_event;
                 }
-         else if ('\0' == c)
-      parser->status = S_3;
-         else
-      parser->status = S_0;
+	      else if ('\0' == c)
+		parser->status = S_3;
+	      else
+		parser->status = S_0;
             }
-     break;
+	  break;
         case S_4:
-     if ('/' == c)
+	  if ('/' == c)
             {
-         guththila_xml_pull_parser_process_end_tag (environment,
-                      parser);
-         parser->status = S_3;
+	      guththila_xml_pull_parser_process_end_tag (environment,
+							 parser);
+	      parser->status = S_3;
             }
-     else if ('?' == c)
-       guththila_xml_pull_parser_process_pi (environment, parser);
-     else if ('!' == c)
-       guththila_xml_pull_parser_process_comment (environment,
-                         parser);
-     else
+	  else if ('?' == c)
+	    guththila_xml_pull_parser_process_pi (environment, parser);
+	  else if ('!' == c)
+	    guththila_xml_pull_parser_process_comment (environment,
+						       parser);
+	  else
             {
-         guththila_xml_pull_parser_processSTagOrEmptyElem (environment,
-                        parser);
-         parser->status = S_3;
+	      guththila_xml_pull_parser_processSTagOrEmptyElem (environment,
+								parser);
+	      parser->status = S_3;
             }
-     break;
+	  break;
         case S_0:
-     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_TOKENIZE_ERROR);
+	  guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_TOKENIZE_ERROR);
         }
     }
   while (parser->status != S_3);
@@ -864,7 +862,7 @@ guththila_xml_pull_parser_tokenize (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN int
+AXIS2_EXTERN  int AXIS2_CALL
 guththila_xml_pull_parser_next (axis2_env_t * environment,
                                 guththila_xml_pull_parser_t * parser)
 {
@@ -878,120 +876,120 @@ guththila_xml_pull_parser_next (axis2_env_t * environment,
 
     case GUTHTHILA_START_DOCUMENT:
       {
-   int ix;
-   guththila_token_t *token;
-   guththila_token_t *att_name;
-   guththila_token_t *att_value;
-   ix = AXIS2_STACK_SIZE (parser->stack, environment);
-   for (; ix > 0; ix--)
-     {
-       token = (guththila_token_t *)AXIS2_STACK_POP (parser->stack, environment);
-       if (token->type == _attribute_value)
-         {
-      att_value = token;
-      token = (guththila_token_t *)AXIS2_STACK_POP (parser->stack, environment);
-      ix--;
-      att_name = token;
-      guththila_xml_pull_parser_add_attribute (environment,
-                      parser, att_name,
-                      att_value);
-         }
-     }
+	int ix;
+	guththila_token_t *token;
+	guththila_token_t *att_name;
+	guththila_token_t *att_value;
+	ix = AXIS2_STACK_SIZE (parser->stack, environment);
+	for (; ix > 0; ix--)
+	  {
+	    token = (guththila_token_t *)AXIS2_STACK_POP (parser->stack, environment);
+	    if (token->type == _attribute_value)
+	      {
+		att_value = token;
+		token = (guththila_token_t *)AXIS2_STACK_POP (parser->stack, environment);
+		ix--;
+		att_name = token;
+		guththila_xml_pull_parser_add_attribute (environment,
+							 parser, att_name,
+							 att_value);
+	      }
+	  }
       }
       break;
     case GUTHTHILA_START_ELEMENT:
     case GUTHTHILA_EMPTY_ELEMENT:
       {
-   int is = 0;
-   guththila_token_t *token;
-   guththila_token_t *name = NULL;
-   guththila_token_t *value = NULL;
-   is = AXIS2_STACK_SIZE (parser->stack, environment);
-   for (;
-        is > 0 &&    AXIS2_STACK_SIZE (parser->stack, environment);
-        is--)
-     {
-       token = (guththila_token_t *) AXIS2_STACK_POP (parser->stack, environment);
-       /* be careful about memory leaks, when we pull it we get
-          seperate _element need to free it properly */
-       if (token->type == _attribute_value)
-         {
-      value = token;
-      token = (guththila_token_t *) AXIS2_STACK_POP (parser->stack, environment);
-      is--;
-      name = token;
-      if (!guththila_token_compare
-          (environment, token, "xmlns", 5,
-           parser->unicode_state))
-        guththila_xml_pull_parser_add_namespace (environment,
-                        parser, name,
-                        value);
-      else
-        guththila_xml_pull_parser_add_attribute (environment,
-                        parser, name,
-                        value);
-         }
-       else if (token->type == _name)
-         {
-      name = token;
-      parser->name = name;
-      parser->prefix = NULL;
+	int is = 0;
+	guththila_token_t *token;
+	guththila_token_t *name = NULL;
+	guththila_token_t *value = NULL;
+	is = AXIS2_STACK_SIZE (parser->stack, environment);
+	for (;
+	     is > 0 && 	AXIS2_STACK_SIZE (parser->stack, environment);
+	     is--)
+	  {
+	    token = (guththila_token_t *) AXIS2_STACK_POP (parser->stack, environment);
+	    /* be careful about memory leaks, when we pull it we get
+	       seperate _element need to free it properly */
+	    if (token->type == _attribute_value)
+	      {
+		value = token;
+		token = (guththila_token_t *) AXIS2_STACK_POP (parser->stack, environment);
+		is--;
+		name = token;
+		if (!guththila_token_compare
+		    (environment, token, "xmlns", 5,
+		     parser->unicode_state))
+		  guththila_xml_pull_parser_add_namespace (environment,
+							   parser, name,
+							   value);
+		else
+		  guththila_xml_pull_parser_add_attribute (environment,
+							   parser, name,
+							   value);
+	      }
+	    else if (token->type == _name)
+	      {
+		name = token;
+		parser->name = name;
+		parser->prefix = NULL;
 
-         }
-       else if (token->type == _prefix)
-         {
-      guththila_attribute_t *attribute;
-      if (!guththila_token_compare
-          (environment, token, "xmlns", 5,
-           parser->unicode_state))
-        {
-          attribute = (guththila_attribute_t *) AXIS2_STACK_POP ( parser->attrib, environment);
-          guththila_xml_pull_parser_add_namespace (environment,
-                          parser,
-                          attribute->
-                          name,
-                          attribute->
-                          value);
-        }
-      else
-        {
-          if (parser->name)
-            parser->prefix = token;
-          else
-            {
-         attribute = (guththila_attribute_t *) AXIS2_STACK_POP ( parser->attrib, environment);
-         guththila_xml_pull_parser_add_attribute_with_prefix
-           (environment, parser, token,
-            attribute->name, attribute->value);
-            }
-        }
-         }
-       else
-         guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_INVALID_TOKEN_TYPE);
-     }
-   guththila_xml_pull_parser_open_element (environment, parser);
+	      }
+	    else if (token->type == _prefix)
+	      {
+		guththila_attribute_t *attribute;
+		if (!guththila_token_compare
+		    (environment, token, "xmlns", 5,
+		     parser->unicode_state))
+		  {
+		    attribute = (guththila_attribute_t *) AXIS2_STACK_POP ( parser->attrib, environment);
+		    guththila_xml_pull_parser_add_namespace (environment,
+							     parser,
+							     attribute->
+							     name,
+							     attribute->
+							     value);
+		  }
+		else
+		  {
+		    if (parser->name)
+		      parser->prefix = token;
+		    else
+		      {
+			attribute = (guththila_attribute_t *) AXIS2_STACK_POP ( parser->attrib, environment);
+			guththila_xml_pull_parser_add_attribute_with_prefix
+			  (environment, parser, token,
+			   attribute->name, attribute->value);
+		      }
+		  }
+	      }
+	    else
+	      guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_INVALID_TOKEN_TYPE);
+	  }
+	guththila_xml_pull_parser_open_element (environment, parser);
       }
       break;
     case GUTHTHILA_END_ELEMENT:
       {
-   guththila_token_t *token;
-   token = (guththila_token_t *) AXIS2_STACK_POP (parser->stack, environment);
-   if (token->type == _name)
-     parser->name = token;
+	guththila_token_t *token;
+	token = (guththila_token_t *) AXIS2_STACK_POP (parser->stack, environment);
+	if (token->type == _name)
+	  parser->name = token;
 
-   if (AXIS2_STACK_SIZE (parser->stack, environment))
-     {
-       token = (guththila_token_t *) AXIS2_STACK_POP (parser->stack, environment);
-       if (token->type == _prefix)
-         parser->prefix = token;
-     }
+	if (AXIS2_STACK_SIZE (parser->stack, environment))
+	  {
+	    token = (guththila_token_t *) AXIS2_STACK_POP (parser->stack, environment);
+	    if (token->type == _prefix)
+	      parser->prefix = token;
+	  }
       }
       break;
     case GUTHTHILA_CHARACTER:
       {
-   guththila_token_t *token;
-   token = (guththila_token_t *) AXIS2_STACK_POP (parser->stack, environment);
-   parser->value = token;
+	guththila_token_t *token;
+	token = (guththila_token_t *) AXIS2_STACK_POP (parser->stack, environment);
+	parser->value = token;
       }
       break;
     case GUTHTHILA_ENTITY_REFERANCE:
@@ -1004,14 +1002,14 @@ guththila_xml_pull_parser_next (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN void
+void AXIS2_CALL
 guththila_xml_pull_parser_open_element (axis2_env_t * environment,
                                         guththila_xml_pull_parser_t * parser)
 {
   int ii;
   guththila_depth_t *m =
     (guththila_depth_t *) AXIS2_MALLOC (environment->allocator,
-               sizeof (guththila_depth_t));
+					sizeof (guththila_depth_t));
   guththila_depth_t *l = NULL;
   guththila_depth_t *depth;
   ii = AXIS2_STACK_SIZE (parser->dep, environment);
@@ -1035,7 +1033,7 @@ guththila_xml_pull_parser_open_element (axis2_env_t * environment,
 }
 
 
-AXIS2_EXTERN void
+void AXIS2_CALL
 guththila_xml_pull_parser_close_element (axis2_env_t *
                                          environment,
                                          guththila_xml_pull_parser_t * parser)
@@ -1050,13 +1048,13 @@ guththila_xml_pull_parser_close_element (axis2_env_t *
       namespace = (guththila_namespace_t *) AXIS2_STACK_POP (parser->namesp, environment);
       if (namespace->name)
         {
-     AXIS2_FREE (environment->allocator, namespace->name);
-     namespace->name = NULL;
+	  AXIS2_FREE (environment->allocator, namespace->name);
+	  namespace->name = NULL;
         }
       if (namespace->uri)
         {
-     AXIS2_FREE (environment->allocator, namespace->uri);
-     namespace->uri = NULL;
+	  AXIS2_FREE (environment->allocator, namespace->uri);
+	  namespace->uri = NULL;
         }
       
     }
@@ -1064,7 +1062,7 @@ guththila_xml_pull_parser_close_element (axis2_env_t *
 }
 
 
-AXIS2_EXTERN void
+void AXIS2_CALL
 guththila_xml_pull_parser_add_attribute (axis2_env_t *
                                          environment,
                                          guththila_xml_pull_parser_t * parser,
@@ -1074,8 +1072,8 @@ guththila_xml_pull_parser_add_attribute (axis2_env_t *
   guththila_attribute_t *att;
   att =
     (guththila_attribute_t *) AXIS2_MALLOC (environment->allocator,
-                   sizeof
-                   (guththila_attribute_t));
+					    sizeof
+					    (guththila_attribute_t));
   att->name = name;
   att->value = value;
   att->prefix = NULL;
@@ -1084,7 +1082,7 @@ guththila_xml_pull_parser_add_attribute (axis2_env_t *
 }
 
 
-AXIS2_EXTERN void
+void AXIS2_CALL
 guththila_xml_pull_parser_add_attribute_with_prefix (axis2_env_t *
                                                      environment,
                                                      guththila_xml_pull_parser_t
@@ -1098,8 +1096,8 @@ guththila_xml_pull_parser_add_attribute_with_prefix (axis2_env_t *
   guththila_attribute_t *att;
   att =
     (guththila_attribute_t *) AXIS2_MALLOC (environment->allocator,
-                   sizeof
-                   (guththila_attribute_t));
+					    sizeof
+					    (guththila_attribute_t));
   att->name = name;
   att->value = value;
   att->prefix = prefix;
@@ -1109,7 +1107,7 @@ guththila_xml_pull_parser_add_attribute_with_prefix (axis2_env_t *
 }
 
 
-AXIS2_EXTERN void
+void AXIS2_CALL
 guththila_xml_pull_parser_add_namespace (axis2_env_t *
                                          environment,
                                          guththila_xml_pull_parser_t * parser,
@@ -1118,8 +1116,8 @@ guththila_xml_pull_parser_add_namespace (axis2_env_t *
 {
   guththila_namespace_t *ns;
   ns = (guththila_namespace_t *) AXIS2_MALLOC (environment->allocator,
-                      sizeof
-                      (guththila_namespace_t));
+					       sizeof
+					       (guththila_namespace_t));
   ns->name =
     guththila_token_to_string (environment, name, parser->unicode_state);
   ns->length = AXIS2_STRLEN ( ns->name);
@@ -1131,7 +1129,7 @@ guththila_xml_pull_parser_add_namespace (axis2_env_t *
 }
 
 
-AXIS2_EXTERN int
+AXIS2_EXTERN  int AXIS2_CALL
 guththila_xml_pull_parser_get_attribute_count (axis2_env_t *
                                                environment,
                                                guththila_xml_pull_parser_t *
@@ -1141,7 +1139,7 @@ guththila_xml_pull_parser_get_attribute_count (axis2_env_t *
 }
 
 
-AXIS2_EXTERN guththila_attribute_t *
+AXIS2_EXTERN  guththila_attribute_t * AXIS2_CALL
 guththila_xml_pull_parser_get_attribute (axis2_env_t *
                                          environment,
                                          guththila_xml_pull_parser_t * parser)
@@ -1155,7 +1153,7 @@ guththila_xml_pull_parser_get_attribute (axis2_env_t *
 }
 
 
-AXIS2_EXTERN guththila_char_t *
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
 guththila_xml_pull_parser_get_attribute_name (axis2_env_t *
                                               environment,
                                               guththila_xml_pull_parser_t *
@@ -1166,12 +1164,12 @@ guththila_xml_pull_parser_get_attribute_name (axis2_env_t *
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_NULL_ATTRIBUTE_NAME);
   if (att->name->end)
     return guththila_token_to_string (environment, att->name,
-                  parser->unicode_state);
+				      parser->unicode_state);
   return NULL;
 }
 
 
-AXIS2_EXTERN guththila_char_t *
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
 guththila_xml_pull_parser_get_attribute_value (axis2_env_t *
                                                environment,
                                                guththila_xml_pull_parser_t *
@@ -1182,12 +1180,12 @@ guththila_xml_pull_parser_get_attribute_value (axis2_env_t *
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_NULL_ATTRIBUTE_VALUE);
   if (att->value->end)
     return guththila_token_to_string (environment, att->value,
-                  parser->unicode_state);
+				      parser->unicode_state);
   return NULL;
 }
 
 
-AXIS2_EXTERN guththila_char_t *
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
 guththila_xml_pull_parser_get_attribute_prefix (axis2_env_t *
                                                 environment,
                                                 guththila_xml_pull_parser_t *
@@ -1198,14 +1196,13 @@ guththila_xml_pull_parser_get_attribute_prefix (axis2_env_t *
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_NULL_ATTRIBUTE_PREFIX);
   if (att->prefix->end)
     return guththila_token_to_string (environment, att->prefix,
-                  parser->unicode_state);
+				      parser->unicode_state);
   return NULL;
 }
 
 
-AXIS2_EXTERN guththila_char_t *
-guththila_xml_pull_parser_get_attribute_prefix_by_number
-(axis2_env_t * environment, guththila_xml_pull_parser_t * parser, int i)
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
+guththila_xml_pull_parser_get_attribute_prefix_by_number (axis2_env_t * environment, guththila_xml_pull_parser_t * parser, int i)
 {
   /*   int ix = parser->attrib->pointer; */
   int ix = AXIS2_STACK_SIZE (parser->attrib, environment);
@@ -1218,13 +1215,12 @@ guththila_xml_pull_parser_get_attribute_prefix_by_number
       attribute = (guththila_attribute_t *) AXIS2_STACK_GET_AT (parser->attrib, environment, ix-i);
     }
   return guththila_token_to_string (environment, attribute->prefix,
-                parser->unicode_state);
+				    parser->unicode_state);
 }
 
 
-AXIS2_EXTERN guththila_char_t *
-guththila_xml_pull_parser_get_attribute_name_by_number
-(axis2_env_t * environment, guththila_xml_pull_parser_t * parser, int i)
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
+guththila_xml_pull_parser_get_attribute_name_by_number (axis2_env_t * environment, guththila_xml_pull_parser_t * parser, int i)
 {
   /* int ix = parser->attrib->pointer; */
   int ix = AXIS2_STACK_SIZE (parser->attrib, environment);
@@ -1237,13 +1233,13 @@ guththila_xml_pull_parser_get_attribute_name_by_number
       attribute = (guththila_attribute_t *) AXIS2_STACK_GET_AT (parser->attrib, environment, ix-i);
     }
   return guththila_token_to_string (environment, attribute->name,
-                parser->unicode_state);
+				    parser->unicode_state);
 }
 
 
-AXIS2_EXTERN guththila_char_t *
-guththila_xml_pull_parser_get_attribute_value_by_number
-(axis2_env_t * environment, guththila_xml_pull_parser_t * parser, int i)
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
+guththila_xml_pull_parser_get_attribute_value_by_number (axis2_env_t * environment, 
+							 guththila_xml_pull_parser_t * parser, int i)
 {
   /*   int ix = parser->attrib->pointer; */
   int ix = AXIS2_STACK_SIZE (parser->attrib, environment);
@@ -1256,45 +1252,45 @@ guththila_xml_pull_parser_get_attribute_value_by_number
       attribute = (guththila_attribute_t *) AXIS2_STACK_GET_AT (parser->attrib, environment, ix-i);
     }
   return guththila_token_to_string (environment, attribute->value,
-                parser->unicode_state);
+				    parser->unicode_state);
 }
 
 
-AXIS2_EXTERN guththila_char_t *
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
 guththila_xml_pull_parser_get_name (axis2_env_t * environment,
                                     guththila_xml_pull_parser_t * parser)
 {
   if (parser->name->end)
     return guththila_token_to_string (environment, parser->name,
-                  parser->unicode_state);
+				      parser->unicode_state);
   return NULL;
 }
 
 
-AXIS2_EXTERN guththila_char_t *
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
 guththila_xml_pull_parser_get_value (axis2_env_t * environment,
                                      guththila_xml_pull_parser_t * parser)
 {
   if (parser->value->end)
     return guththila_token_to_string (environment, parser->value,
-                  parser->unicode_state);
+				      parser->unicode_state);
   else
     return NULL;
 }
 
 
-AXIS2_EXTERN guththila_char_t *
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
 guththila_xml_pull_parser_get_prefix (axis2_env_t * environment,
                                       guththila_xml_pull_parser_t * parser)
 {
   if (parser->prefix)
     return guththila_token_to_string (environment, parser->prefix,
-                  parser->unicode_state);
+				      parser->unicode_state);
   return NULL;
 }
 
 
-AXIS2_EXTERN int
+AXIS2_EXTERN  int AXIS2_CALL
 guththila_xml_pull_parser_get_namespace_count (axis2_env_t *
                                                environment,
                                                guththila_xml_pull_parser_t *
@@ -1307,7 +1303,7 @@ guththila_xml_pull_parser_get_namespace_count (axis2_env_t *
 }
 
 
-AXIS2_EXTERN guththila_namespace_t *
+AXIS2_EXTERN  guththila_namespace_t * AXIS2_CALL
 guththila_xml_pull_parser_get_namespace (axis2_env_t *
                                          environment,
                                          guththila_xml_pull_parser_t * parser)
@@ -1322,7 +1318,7 @@ guththila_xml_pull_parser_get_namespace (axis2_env_t *
 }
 
 
-AXIS2_EXTERN guththila_char_t *
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
 guththila_xml_pull_parser_get_namespace_prefix (axis2_env_t *
                                                 environment,
                                                 guththila_xml_pull_parser_t *
@@ -1336,7 +1332,7 @@ guththila_xml_pull_parser_get_namespace_prefix (axis2_env_t *
 }
 
 
-AXIS2_EXTERN guththila_char_t *
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
 guththila_xml_pull_parser_get_namespace_uri (axis2_env_t *
                                              environment,
                                              guththila_xml_pull_parser_t *
@@ -1350,9 +1346,10 @@ guththila_xml_pull_parser_get_namespace_uri (axis2_env_t *
 }
 
 
-AXIS2_EXTERN guththila_char_t *
-guththila_xml_pull_parser_get_namespace_prefix_by_number
-(axis2_env_t * environment, guththila_xml_pull_parser_t * parser, int i)
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
+guththila_xml_pull_parser_get_namespace_prefix_by_number (axis2_env_t * environment, 
+							  guththila_xml_pull_parser_t * parser, 
+							  int i)
 {
   /*   int ix = parser->namesp->pointer; */
   int ix = AXIS2_STACK_SIZE (parser->namesp, environment);
@@ -1368,7 +1365,7 @@ guththila_xml_pull_parser_get_namespace_prefix_by_number
 }
 
 
-AXIS2_EXTERN guththila_char_t *
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
 guththila_xml_pull_parser_get_namespace_uri_by_number (axis2_env_t
                                                        * environment,
                                                        guththila_xml_pull_parser_t
@@ -1388,9 +1385,10 @@ guththila_xml_pull_parser_get_namespace_uri_by_number (axis2_env_t
 }
 
 
-AXIS2_EXTERN guththila_char_t *
-guththila_xml_pull_parser_get_attribute_namespace_by_number
-(axis2_env_t * environment, guththila_xml_pull_parser_t * parser, int i)
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
+guththila_xml_pull_parser_get_attribute_namespace_by_number (axis2_env_t * environment, 
+							     guththila_xml_pull_parser_t * parser, 
+							     int i)
 {
   guththila_char_t *att_prefix;
   int ii;
@@ -1399,7 +1397,7 @@ guththila_xml_pull_parser_get_attribute_namespace_by_number
   guththila_namespace_t *ns = NULL;
   att_prefix =
     guththila_xml_pull_parser_get_attribute_prefix_by_number (environment,
-                           parser, i);
+							      parser, i);
 
   for (ii = 0; ii <= ix; ii++)
     {
@@ -1407,21 +1405,21 @@ guththila_xml_pull_parser_get_attribute_namespace_by_number
       ns = (guththila_namespace_t *) AXIS2_STACK_GET_AT (parser->namesp, environment, ix-ii);
       if (ns)
         {
-     if (ns && att_prefix)
+	  if (ns && att_prefix)
             {
-         if (!
-        (AXIS2_STRCMP
-         ( ns->name, att_prefix)))
-      return AXIS2_STRDUP (ns->uri, environment);
+	      if (!
+		  (AXIS2_STRCMP
+		   ( ns->name, att_prefix)))
+		return AXIS2_STRDUP (ns->uri, environment);
             }
         }
     }
   return 0;
 }
 
-AXIS2_EXTERN guththila_char_t *
+AXIS2_EXTERN  guththila_char_t * AXIS2_CALL
 guththila_xml_pull_parser_get_encoding(axis2_env_t *environment,
-                   guththila_xml_pull_parser_t *parser)
+				       guththila_xml_pull_parser_t *parser)
 {
   /* parser will find character encoding base on Byte Order Mark
      (BOM). */

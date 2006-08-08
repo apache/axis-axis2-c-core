@@ -14,7 +14,6 @@
  *   limitations under the License.
  *
  *   
- * @author Dinesh Premalal (xydinesh@gmail.com, premalwd@cse.mrt.ac.lk)   
  */
 
 
@@ -48,8 +47,10 @@ guththila_buffer_free (axis2_env_t * environment,
         if (name->buff)
         {
             AXIS2_FREE (environment->allocator, name->buff);
+	    name->buff = NULL;
         }
         AXIS2_FREE (environment->allocator, name);
+	name = NULL;
     }
 }
 
