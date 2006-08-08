@@ -1,5 +1,4 @@
 lib_LTLIBRARIES = libaxis2_guththila.la
-noinst_HEADERS=$(top_builddir)/src/*.h
 
 libaxis2_guththila_la_SOURCES = guththila_buffer.c \
 							guththila_token.c \
