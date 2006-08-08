@@ -102,565 +102,564 @@ extern "C"
     struct axis2_options;
 
     /**
-     * @brief Message Context ops struct
+     * Message Context ops struct
      * Encapsulator struct for ops of axis2_msg_ctx
      */
     struct axis2_msg_ctx_ops
     {
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axis2_ctx* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axis2_ctx *(AXIS2_CALL *
                 get_base)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axis2_op_ctx* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axis2_op_ctx *(AXIS2_CALL *
                 get_parent)(
-               struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param parent pointer to parent
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param parent pointer to parent
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_parent)(
-               struct axis2_msg_ctx *msg_ctx,
+                    struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_op_ctx *parent);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 free_fn)(
-          axis2_msg_ctx_t *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
-   /**
+        /**
          * The method is used to do the intialization of the engine context
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param conf pointer to conf
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param conf pointer to conf
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 init)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_conf *conf);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_fault_to)(
-               struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_from)(
-               struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 get_in_fault_flow)(
-               struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axiom_soap_envelope* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axiom_soap_envelope *(AXIS2_CALL *
                 get_soap_envelope)(
-               struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axiom_soap_envelope* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axiom_soap_envelope *(AXIS2_CALL *
                 get_fault_soap_envelope)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        axis2_char_t* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
                 get_msg_id)(
-               struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 get_process_fault)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        axis2_relates_to_t* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        axis2_relates_to_t *(AXIS2_CALL *
                 get_relates_to)(
-               struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_reply_to)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 get_response_written)(
-               struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 get_server_side)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        axis2_endpoint_ref_t* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_to)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param reference pointer to reference
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param reference pointer to reference
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_fault_to)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_endpoint_ref_t *reference);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param reference pointer to reference
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param reference pointer to reference
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_from)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_endpoint_ref_t *reference);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param in_fault_flow pointer to in_fault_flow
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param in_fault_flow pointer to in_fault_flow
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_in_fault_flow)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_bool_t in_fault_flow);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param soap_envelope pointer to soap_envelope
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param soap_envelope pointer to soap_envelope
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_soap_envelope)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     struct axiom_soap_envelope *soap_envelope);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param soap_envelope pointer to soap_envelope
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param soap_envelope pointer to soap_envelope
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_fault_soap_envelope)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     struct axiom_soap_envelope *soap_envelope);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param message_id pointer to message id
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param message_id pointer to message id
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_message_id)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_char_t *message_id);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param process_fault process fault
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param process_fault process fault
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_process_fault)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_bool_t process_fault);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param reference pointer to reference
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param reference pointer to reference
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_relates_to)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_relates_to_t *reference);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param reference pointer to reference
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param reference pointer to reference
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_reply_to)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_endpoint_ref_t *referance);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param response_written respoinse written
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param response_written respoinse written
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_response_written)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_bool_t response_written);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param server_side server side 
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param server_side server side 
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_server_side)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_bool_t server_side);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param reference poinnter to reference
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param reference poinnter to reference
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_to)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_endpoint_ref_t *referance);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 get_new_thread_required)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param new_thread_required new thread required
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param new_thread_required new thread required
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_new_thread_required)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_bool_t new_thread_required);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param action_uri pointer to action uri
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param action_uri pointer to action uri
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_wsa_action)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     const axis2_char_t *action_uri);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        axis2_char_t* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
                 get_wsa_action)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param message_id pointer to message id
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param message_id pointer to message id
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_wsa_message_id)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_char_t *message_id);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        axis2_char_t* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
                 get_wsa_message_id)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        axis2_msg_info_headers_t* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        axis2_msg_info_headers_t *(AXIS2_CALL *
                 get_msg_info_headers)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 get_paused)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param paused paused
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param paused paused
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_paused)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_bool_t paused);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axis2_transport_in_desc* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axis2_transport_in_desc *(AXIS2_CALL *
                 get_transport_in_desc)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axis2_transport_out_desc* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axis2_transport_out_desc *(AXIS2_CALL *
                 get_transport_out_desc)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param transport_in_desc pointer to transport in description
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param transport_in_desc pointer to transport in description
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_transport_in_desc)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_transport_in_desc *transport_in_desc);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param transport_out_desc pointer to transport out description
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param transport_out_desc pointer to transport out description
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_transport_out_desc)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_transport_out_desc *transport_out_desc);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axis2_op_ctx* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axis2_op_ctx *(AXIS2_CALL *
                 get_op_ctx)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param op_ctx pointer to operation context
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param op_ctx pointer to operation context
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_op_ctx)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
-                    struct axis2_op_ctx * op_ctx);
+                    struct axis2_op_ctx *op_ctx);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 get_output_written)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param output_written
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param output_written
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_output_written)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_bool_t output_written);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
          * @return Returns the svc_ctx_id.
-    */
-        axis2_char_t* (AXIS2_CALL *
+         */
+        axis2_char_t *(AXIS2_CALL *
                 get_svc_ctx_id)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
          * @param svc_ctx_id The svc_ctx_id to AXIS2_CALL set.
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_svc_ctx_id)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_char_t *svc_ctx_id);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axis2_conf_ctx* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axis2_conf_ctx *(AXIS2_CALL *
                 get_conf_ctx)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axis2_svc_ctx* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axis2_svc_ctx *(AXIS2_CALL *
                 get_svc_ctx)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param conf_ctx pointer to configuration context
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param conf_ctx pointer to configuration context
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_conf_ctx)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_conf_ctx *conf_ctx);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param svc_ctx pointer to service context
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param svc_ctx pointer to service context
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_svc_ctx)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_svc_ctx *svc_ctx);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param msg_info_headers pointer to message info headers
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param msg_info_headers pointer to message info headers
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_msg_info_headers)(
                     struct axis2_msg_ctx *msg_ctx,
@@ -669,19 +668,19 @@ extern "C"
 
         /**
          * To retrive configuration descriptor parameters , it is posible to 
-    * AXIS2_CALL get paramater specify at * any levle via this method , 
-    * and the preferance is as follows,
+         * AXIS2_CALL get paramater specify at * any levle via this method , 
+         * and the preferance is as follows,
          * 1. Search in op description if its there
          * 2. if the paramter not found or op_ctx is null will search in * _svc
          * 3. If the svc is null or , the paramter does not found will serach in
          * AxisConfiguration
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
          * @return Paramter <code>Paramter</code>
-    */
-        axis2_param_t* (AXIS2_CALL *
+         */
+        axis2_param_t *(AXIS2_CALL *
                 get_parameter)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     const axis2_char_t *key);
 
@@ -700,16 +699,16 @@ extern "C"
          * <moduleConfig name="addressing">
          * <parameter name="addressingPara" locked="false">N/A</parameter>
          * </moduleConfig>
-    * @param msg_ctx pointer to message context
-    * @param env pointer to environment struct
+         * @param msg_ctx pointer to message context
+         * @param env pointer to environment struct
          * @param key   Paramter name
          * @param module_name  Name of the module
          * @param handler_desc    <code>HandlerDescription</code>
          * @return axis2_param_t *<code>Parameter</code>
          */
-        axis2_param_t* (AXIS2_CALL *
+        axis2_param_t *(AXIS2_CALL *
                 get_module_parameter)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     axis2_char_t *key,
                     axis2_char_t *module_name,
@@ -717,30 +716,30 @@ extern "C"
 
         /**
          * To acess any property AXIS2_CALL set at the run time , a handler 
-    * can add property to wherever he wants * to MesageContext , to 
-    * struct axis2_op_ctx * , to struct axis2_svc_ctx *and to ConfigurationContext.
+         * can add property to wherever he wants * to MesageContext , to 
+         * struct axis2_op_ctx * , to struct axis2_svc_ctx *and to ConfigurationContext.
          * This method is to retrive those properties NOT paramters
-    * @param msg_ctx pointer to message context
-    * @param env pointer to environment struct
+         * @param msg_ctx pointer to message context
+         * @param env pointer to environment struct
          * @param key property Name
          * @param persistent need to be persistent even when server re-start
          * @return Object
-    */
+         */
         axis2_property_t *(AXIS2_CALL *
                 get_property)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     const axis2_char_t *key,
                     const axis2_bool_t persistent);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param key pointer to key
-    * @param value pointer to value
-    * @param persistent persistent
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param key pointer to key
+         * @param value pointer to value
+         * @param persistent persistent
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_property)(
                     struct axis2_msg_ctx *msg_ctx,
@@ -748,105 +747,105 @@ extern "C"
                     const axis2_char_t *key,
                     axis2_property_t *value,
                     axis2_bool_t persistent);
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        axis2_qname_t* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        axis2_qname_t *(AXIS2_CALL *
                 get_paused_handler_name)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        axis2_char_t* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
                 get_paused_phase_name)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param paused_phase_name pointer to paused phase name
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param paused_phase_name pointer to paused phase name
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_paused_phase_name)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_char_t *paused_phase_name);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        axis2_char_t* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
                 get_soap_action)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param soap_action pointer to soap action
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param soap_action pointer to soap action
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_soap_action)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     const axis2_char_t *soap_action);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 get_doing_mtom)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param doing_mtom pointer to doing_mtom
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param doing_mtom pointer to doing_mtom
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_doing_mtom)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_bool_t doing_mtom);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 get_doing_rest)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param doing_rest pointer to doing_rest
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param doing_rest pointer to doing_rest
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_doing_rest)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_bool_t doing_rest);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param do_rest_through_post do rest through post
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param do_rest_through_post do rest through post
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_do_rest_through_post)(
                     struct axis2_msg_ctx *msg_ctx,
@@ -854,51 +853,51 @@ extern "C"
                     axis2_bool_t do_rest_through_post);
 
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 get_do_rest_through_post)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 get_is_soap_11)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param is_soap11 is soap11
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param is_soap11 is soap11
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_is_soap_11)(
                     struct axis2_msg_ctx *msg_ctx,
                     const axis2_env_t *env,
                     axis2_bool_t is_soap11);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axis2_svc_grp_ctx* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axis2_svc_grp_ctx *(AXIS2_CALL *
                 get_svc_grp_ctx)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param svc_grp_ctx pointer to service group context
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param svc_grp_ctx pointer to service group context
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_svc_grp_ctx)(
                     struct axis2_msg_ctx *msg_ctx,
@@ -906,22 +905,22 @@ extern "C"
                     struct axis2_svc_grp_ctx *svc_grp_ctx);
 
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axis2_op* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axis2_op *(AXIS2_CALL *
                 get_op)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param op pointer to op
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param op pointer to op
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_op)(
                     struct axis2_msg_ctx *msg_ctx,
@@ -929,22 +928,22 @@ extern "C"
                     struct axis2_op *op);
 
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axis2_svc* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axis2_svc *(AXIS2_CALL *
                 get_svc)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param svc pointer to service
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param svc pointer to service
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_svc)(
                     struct axis2_msg_ctx *msg_ctx,
@@ -952,21 +951,21 @@ extern "C"
                     struct axis2_svc *svc);
 
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axis2_svc_grp* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axis2_svc_grp *(AXIS2_CALL *
                  get_svc_grp)(
-                     struct axis2_msg_ctx *msg_ctx,
+                     const axis2_msg_ctx_t *msg_ctx,
                      const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param svc_grp pointer to service group
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param svc_grp pointer to service group
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_svc_grp)(
                     struct axis2_msg_ctx *msg_ctx,
@@ -974,21 +973,21 @@ extern "C"
                     struct axis2_svc_grp *svc_grp);
 
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        axis2_char_t* (AXIS2_CALL *
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
                 get_svc_grp_ctx_id)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param svc_grp_ctx_id pointer to service group context id
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param svc_grp_ctx_id pointer to service group context id
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_svc_grp_ctx_id)(
                     struct axis2_msg_ctx *msg_ctx,
@@ -997,125 +996,125 @@ extern "C"
 
         /**
          * finds the service
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
-        struct axis2_svc* (AXIS2_CALL *
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
+        struct axis2_svc *(AXIS2_CALL *
                 find_svc)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
         /**
          * finds the op
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param svc pointer to service 
-    */
-        struct axis2_op* (AXIS2_CALL *
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param svc pointer to service 
+         */
+        struct axis2_op *(AXIS2_CALL *
                 find_op)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_svc *svc);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 is_paused)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param options pointer to options
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param options pointer to options
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_options )(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_options *options);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param flow flow
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param flow flow
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_flow )(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     int flow);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         int (AXIS2_CALL *
                 get_flow )(
-                    axis2_msg_ctx_t *msg_ctx,
+                    const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param excution_chain pointer to execution chain
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param excution_chain pointer to execution chain
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_execution_chain)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     axis2_array_list_t *execution_chain);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         axis2_array_list_t *(AXIS2_CALL *
                 get_execution_chain)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param index index
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param index index
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_current_handler_index)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     const int index);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         int (AXIS2_CALL *
                 get_current_handler_index)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    * @param index index 
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param index index 
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_current_phase_index)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     const int index);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         */
         int (AXIS2_CALL *
                 get_current_phase_index)(
                     const axis2_msg_ctx_t *msg_ctx,
@@ -1127,7 +1126,7 @@ extern "C"
      */
     struct axis2_msg_ctx
     {
-   /** operations of message context */
+        /** operations of message context */
         axis2_msg_ctx_ops_t *ops;
     };
 
@@ -1139,12 +1138,12 @@ extern "C"
      * @param transport_in_desc pointer to tarnsport in description
      * @param transport_out_desc pointer to transport out description
      */
-    AXIS2_EXTERN axis2_msg_ctx_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
     axis2_msg_ctx_create (
-            const axis2_env_t *env,
-            struct axis2_conf_ctx *conf_ctx,
-            struct axis2_transport_in_desc *transport_in_desc,
-            struct axis2_transport_out_desc *transport_out_des);
+        const axis2_env_t *env,
+        struct axis2_conf_ctx *conf_ctx,
+        struct axis2_transport_in_desc *transport_in_desc,
+        struct axis2_transport_out_desc *transport_out_des);
 
 /************************** Start of function macros **************************/
 
