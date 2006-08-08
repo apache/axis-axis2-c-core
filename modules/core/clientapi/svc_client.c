@@ -242,7 +242,7 @@ axis2_svc_client_create_for_dynamic_invocation(
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     axis2_char_t *svc_grp_name = NULL;
     axis2_hash_t *ops = NULL;
-    axis2_char_t *repos_path = NULL;
+    const axis2_char_t *repos_path = NULL;
     axis2_char_t *wsdl_path = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
@@ -281,7 +281,7 @@ axis2_svc_client_create_for_dynamic_invocation(
     }
 
     svc_client_impl->conf = AXIS2_CONF_CTX_GET_CONF(svc_client_impl->conf_ctx, env);
-    repos_path = AXIS2_CONF_GET_REPOS(svc_client_impl->conf, env);
+    repos_path = AXIS2_CONF_GET_REPO(svc_client_impl->conf, env);
     wsdl_path = axis2_strcat(env, repos_path, AXIS2_PATH_SEP_STR, "woden", NULL);
 
     svc_client_impl->options = axis2_options_create(env);
@@ -301,7 +301,7 @@ axis2_svc_client_create_for_dynamic_invocation(
             op = (axis2_op_t *) v;
 
             /* Setting operation phase */
-            info = AXIS2_CONF_GET_PHASESINFO(svc_client_impl->conf, env);
+            info = AXIS2_CONF_GET_PHASES_INFO(svc_client_impl->conf, env);
             AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op);
         }
     }
@@ -1257,7 +1257,7 @@ axis2_svc_client_create_annonymous_svc(
     AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op_robust_out_only, env, AXIS2_MEP_URI_ROBUST_OUT_ONLY);
 
     /* Setting operation phase */
-    info = AXIS2_CONF_GET_PHASESINFO(svc_client_impl->conf, env);
+    info = AXIS2_CONF_GET_PHASES_INFO(svc_client_impl->conf, env);
     AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_out_in);
     AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_out_only);
     AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op_robust_out_only);

@@ -61,7 +61,7 @@ int axis2_test_dep_engine_load()
         return -1;
     }
     
-    svc_map = AXIS2_CONF_GET_SVCS(conf, env);
+    svc_map = AXIS2_CONF_GET_ALL_SVCS(conf, env);
     if (svc_map)
         printf("svc_map count = %d\n", axis2_hash_count(svc_map));
     else
@@ -243,7 +243,7 @@ int axis2_test_default_module_version()
     module5 = axis2_module_desc_create_with_qname(env, mod_qname5);
     AXIS2_CONF_ADD_MODULE(axis_conf, env, module5);
 
-    axis2_core_utils_calculate_default_module_version(env, AXIS2_CONF_GET_MODULES(
+    axis2_core_utils_calculate_default_module_version(env, AXIS2_CONF_GET_ALL_MODULES(
                         axis_conf, env), axis_conf);
     def_mod = AXIS2_CONF_GET_DEFAULT_MODULE(axis_conf, env, "module1");
     if(def_mod != module1)
@@ -275,7 +275,7 @@ int axis2_test_default_module_version()
     
     AXIS2_CONF_ENGAGE_MODULE_WITH_VERSION(axis_conf, env, "test_module", "1.92");
 
-    engaged_modules = AXIS2_CONF_GET_ENGAGED_MODULES(axis_conf, env);
+    engaged_modules = AXIS2_CONF_GET_ALL_ENGAGED_MODULES(axis_conf, env);
     
     if(NULL != engaged_modules)
     {

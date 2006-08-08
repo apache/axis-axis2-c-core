@@ -699,9 +699,9 @@ axis2_http_transport_utils_get_services_html(const axis2_env_t *env,
    AXIS2_ENV_CHECK(env, NULL);
    AXIS2_PARAM_CHECK(env->error, conf_ctx, NULL);
    
-   services_map = AXIS2_CONF_GET_SVCS(AXIS2_CONF_CTX_GET_CONF(conf_ctx,env),
+   services_map = AXIS2_CONF_GET_ALL_SVCS(AXIS2_CONF_CTX_GET_CONF(conf_ctx,env),
                      env);
-   errorneous_svc_map = AXIS2_CONF_GET_FAULTY_SVCS(AXIS2_CONF_CTX_GET_CONF(
+   errorneous_svc_map = AXIS2_CONF_GET_ALL_FAULTY_SVCS(AXIS2_CONF_CTX_GET_CONF(
                      conf_ctx,env), env);
    if(NULL != services_map && 0 != axis2_hash_count(services_map))
    {

@@ -802,9 +802,9 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
         AXIS2_CONF_FREE(dep_engine_impl->conf, env);
         return NULL;
     }
-    AXIS2_CONF_SET_REPOS(dep_engine_impl->conf, env, dep_engine_impl->axis2_repos);
+    AXIS2_CONF_SET_REPO(dep_engine_impl->conf, env, dep_engine_impl->axis2_repos);
     axis2_core_utils_calculate_default_module_version(env, 
-                            AXIS2_CONF_GET_MODULES(dep_engine_impl->conf, env), 
+                            AXIS2_CONF_GET_ALL_MODULES(dep_engine_impl->conf, env), 
                             dep_engine_impl->conf);
     status = axis2_dep_engine_validate_system_predefined_phases(dep_engine, env);
     if(AXIS2_SUCCESS != status)
@@ -816,9 +816,9 @@ axis2_dep_engine_load(axis2_dep_engine_t *dep_engine,
         return NULL;
     }
     
-    status = AXIS2_CONF_SET_PHASESINFO(dep_engine_impl->conf, env, 
+    status = AXIS2_CONF_SET_PHASES_INFO(dep_engine_impl->conf, env, 
             dep_engine_impl->phases_info);
-    AXIS2_CONF_SET_OUT_FAULTPHASES(dep_engine_impl->conf, env,
+    AXIS2_CONF_SET_OUT_FAULT_PHASES(dep_engine_impl->conf, env,
         AXIS2_PHASES_INFO_GET_OP_OUT_FAULTPHASES(dep_engine_impl->phases_info, 
             env));
     if(AXIS2_SUCCESS != status) 
@@ -914,11 +914,11 @@ axis2_dep_engine_load_client(axis2_dep_engine_t *dep_engine,
                 dep_engine_impl->folder_name, dep_engine);
     }
     
-    AXIS2_CONF_SET_REPOS(dep_engine_impl->conf, env, dep_engine_impl->axis2_repos);
+    AXIS2_CONF_SET_REPO(dep_engine_impl->conf, env, dep_engine_impl->axis2_repos);
     axis2_core_utils_calculate_default_module_version(env, 
-                            AXIS2_CONF_GET_MODULES(dep_engine_impl->conf, env), 
+                            AXIS2_CONF_GET_ALL_MODULES(dep_engine_impl->conf, env), 
                             dep_engine_impl->conf);
-    AXIS2_CONF_SET_PHASESINFO(dep_engine_impl->conf, env, dep_engine_impl->
+    AXIS2_CONF_SET_PHASES_INFO(dep_engine_impl->conf, env, dep_engine_impl->
         phases_info);
     status = axis2_dep_engine_engage_modules(dep_engine, env);
     if(AXIS2_FAILURE == status)
@@ -1589,7 +1589,7 @@ axis2_dep_engine_undeploy(axis2_dep_engine_t *dep_engine,
                 
                 AXIS2_CONF_REMOVE_SVC(dep_engine_impl->conf, env, svc_name);
             }
-            faulty_svcs = AXIS2_CONF_GET_FAULTY_SVCS(dep_engine_impl->conf, env);
+            faulty_svcs = AXIS2_CONF_GET_ALL_FAULTY_SVCS(dep_engine_impl->conf, env);
             axis2_hash_set(faulty_svcs, svc_name, AXIS2_HASH_KEY_STRING, NULL);
         }
 
@@ -1712,7 +1712,7 @@ axis2_dep_engine_build_module(axis2_dep_engine_t *dep_engine,
     AXIS2_PARAM_CHECK(env->error, conf, NULL);
     dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    phases_info = AXIS2_CONF_GET_PHASESINFO(conf, env);
+    phases_info = AXIS2_CONF_GET_PHASES_INFO(conf, env);
     axis2_dep_engine_set_phases_info(dep_engine, env, phases_info);
     dep_engine_impl->curr_file = axis2_arch_file_data_create_with_type_and_file(
         env, AXIS2_MODULE, module_archive);

@@ -523,7 +523,7 @@ axis2_http_worker_set_transport_out_config(axis2_http_worker_t *http_worker,
     AXIS2_PARAM_CHECK(env->error, simple_response, AXIS2_FAILURE);
    
     config = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
-    tranport_outs = AXIS2_CONF_GET_TRANSPORTS_OUT(config, env);
+    tranport_outs = AXIS2_CONF_GET_ALL_OUT_TRANSPORTS(config, env);
    
 
     /*

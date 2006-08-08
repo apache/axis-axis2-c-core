@@ -350,7 +350,7 @@ axis2_phase_resolver_build_execution_chains(
     /********************* Handlers from   axis2.xml from modules *************/
     /**************************************************************************/
     
-    moduleqnames = AXIS2_CONF_GET_ENGAGED_MODULES(
+    moduleqnames = AXIS2_CONF_GET_ALL_ENGAGED_MODULES(
         resolver_impl->axis2_config, env);
     
     size = AXIS2_ARRAY_LIST_SIZE(moduleqnames, env);
@@ -708,7 +708,7 @@ axis2_phase_resolver_build_transport_chains(axis2_phase_resolver_t *phase_resolv
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
     
-    transports_in = AXIS2_CONF_GET_TRANSPORTS_IN(resolver_impl->axis2_config, 
+    transports_in = AXIS2_CONF_GET_ALL_IN_TRANSPORTS(resolver_impl->axis2_config, 
         env);
     if(!transports_in)
     {
@@ -717,7 +717,7 @@ axis2_phase_resolver_build_transport_chains(axis2_phase_resolver_t *phase_resolv
         return AXIS2_SUCCESS;
     }
     
-    transports_out = AXIS2_CONF_GET_TRANSPORTS_OUT(resolver_impl->axis2_config, 
+    transports_out = AXIS2_CONF_GET_ALL_OUT_TRANSPORTS(resolver_impl->axis2_config, 
         env);
     if(!transports_out)
     {
@@ -1046,7 +1046,7 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
     {
         return status;
     }
-    svc_grps = AXIS2_CONF_GET_SVC_GRPS(resolver_impl->axis2_config, env);
+    svc_grps = AXIS2_CONF_GET_ALL_SVC_GRPS(resolver_impl->axis2_config, env);
     if(!svc_grps)
     {
         return AXIS2_FAILURE;
@@ -1341,7 +1341,7 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
             {
                 axis2_array_list_t *phase_list = NULL;
 
-                phase_list = AXIS2_CONF_GET_OUTFLOW(resolver_impl->axis2_config,
+                phase_list = AXIS2_CONF_GET_OUT_FLOW(resolver_impl->axis2_config,
                         env);
                 if(resolver_impl->phase_holder)
                 {

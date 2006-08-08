@@ -126,7 +126,7 @@ axis2_status_t AXIS2_CALL axis2_init_modules(const axis2_env_t *env,
     conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
     if (conf)
     {
-        axis2_hash_t *module_map = AXIS2_CONF_GET_MODULES(conf, env);
+        axis2_hash_t *module_map = AXIS2_CONF_GET_ALL_MODULES(conf, env);
         if (module_map)
         {
             axis2_hash_index_t *hi = NULL;
@@ -167,7 +167,7 @@ axis2_status_t AXIS2_CALL axis2_init_transports(const axis2_env_t *env,
     {
         axis2_hash_t *transport_map = NULL;
        
-        transport_map = AXIS2_CONF_GET_TRANSPORTS_IN(conf, env);
+        transport_map = AXIS2_CONF_GET_ALL_IN_TRANSPORTS(conf, env);
         if (transport_map)
         {
             axis2_hash_index_t *hi = NULL;
@@ -189,7 +189,7 @@ axis2_status_t AXIS2_CALL axis2_init_transports(const axis2_env_t *env,
             }
         }
         
-        transport_map = AXIS2_CONF_GET_TRANSPORTS_OUT(conf, env);
+        transport_map = AXIS2_CONF_GET_ALL_OUT_TRANSPORTS(conf, env);
         if (transport_map)
         {
             axis2_hash_index_t *hi = NULL;

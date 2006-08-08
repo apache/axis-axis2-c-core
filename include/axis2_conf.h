@@ -304,7 +304,7 @@ extern "C"
         * @param qname pointer to qname
         * @return module description corresponding to the given qname
         */
-        axis2_module_desc_t *(AXIS2_CALL *
+        struct axis2_module_desc *(AXIS2_CALL *
                 get_module)(
                     const axis2_conf_t *conf,
                     const axis2_env_t *env,
