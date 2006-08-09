@@ -19,14 +19,13 @@
 #include <axis2_class_loader.h>
 
 /** 
- * @brief
  * ArchiveFileData = Hot Deployment File Item.
  * To store infromation of the 
  * module or service item to be deployed
  */
 typedef struct axis2_arch_file_data_impl
 {
-   axis2_arch_file_data_t arch_file_data;
+    axis2_arch_file_data_t arch_file_data;
     axis2_file_t *file;
     int type;
     axis2_char_t *msg_recv;
@@ -41,7 +40,8 @@ typedef struct axis2_arch_file_data_impl
     axis2_hash_t *svc_map;
     axis2_array_list_t *deployable_svcs;
        
-} axis2_arch_file_data_impl_t;
+}
+axis2_arch_file_data_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(arch_file_data) \
     ((axis2_arch_file_data_impl_t *) arch_file_data)
@@ -49,80 +49,97 @@ typedef struct axis2_arch_file_data_impl
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data, 
-                            const axis2_env_t *env);
+axis2_arch_file_data_free(
+    axis2_arch_file_data_t *arch_file_data, 
+    const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
-axis2_arch_file_data_get_msg_recv(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env);
+axis2_arch_file_data_get_msg_recv(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_arch_file_data_set_msg_recv(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *msg_recv);
+axis2_arch_file_data_set_msg_recv(
+    axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env,
+    axis2_char_t *msg_recv);
 
 axis2_char_t *AXIS2_CALL
-axis2_arch_file_data_get_name(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env);
+axis2_arch_file_data_get_name(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
-axis2_arch_file_data_get_svc_name(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env);
+axis2_arch_file_data_get_svc_name(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env);
 
 int AXIS2_CALL
-axis2_arch_file_data_get_type(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env);
+axis2_arch_file_data_get_type(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env);
 
 axis2_file_t *AXIS2_CALL
-axis2_arch_file_data_get_file(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env);
+axis2_arch_file_data_get_file(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
-axis2_arch_file_data_get_module_name(axis2_arch_file_data_t *file_data,
-                                            const axis2_env_t *env);
+axis2_arch_file_data_get_module_name(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_arch_file_data_set_module_name(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *module_name);
+axis2_arch_file_data_set_module_name(
+    axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env,
+    axis2_char_t *module_name);
                                     
 axis2_char_t *AXIS2_CALL
-axis2_arch_file_data_get_module_dll_name(axis2_arch_file_data_t *file_data,
-                                            const axis2_env_t *env);
+axis2_arch_file_data_get_module_dll_name(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_arch_file_data_set_module_dll_name(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *module_dll_name);
+axis2_arch_file_data_set_module_dll_name(
+    axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env,
+    axis2_char_t *module_dll_name);
                                     
 axis2_status_t AXIS2_CALL
-axis2_arch_file_data_add_svc(axis2_arch_file_data_t *file_data,
-                                const axis2_env_t *env,
-                                axis2_svc_t *svc_desc);
+axis2_arch_file_data_add_svc(
+    axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env,
+    axis2_svc_t *svc_desc);
 
 struct axis2_svc *AXIS2_CALL
-axis2_arch_file_data_get_svc(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *svc_name);
+axis2_arch_file_data_get_svc(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env,
+    axis2_char_t *svc_name);
 
 axis2_hash_t *AXIS2_CALL
-axis2_arch_file_data_get_svc_map(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env);
+axis2_arch_file_data_get_svc_map(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_arch_file_data_get_deployable_svcs(axis2_arch_file_data_t *file_data,
-                                            const axis2_env_t *env);
+axis2_arch_file_data_get_deployable_svcs(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_arch_file_data_set_deployable_svcs(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env,
-                                    axis2_array_list_t *deployable_svcs);
+axis2_arch_file_data_set_deployable_svcs(
+    axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env,
+    axis2_array_list_t *deployable_svcs);
 
                                
 /************************** End of function prototypes ************************/
 
-AXIS2_EXTERN axis2_arch_file_data_t * AXIS2_CALL
-axis2_arch_file_data_create(const axis2_env_t *env)
+AXIS2_EXTERN axis2_arch_file_data_t *AXIS2_CALL
+axis2_arch_file_data_create(
+    const axis2_env_t *env)
 {
     axis2_arch_file_data_impl_t *arch_file_data_impl = NULL;
     
@@ -200,10 +217,11 @@ axis2_arch_file_data_create(const axis2_env_t *env)
    return &(arch_file_data_impl->arch_file_data);
 }
 
-AXIS2_EXTERN axis2_arch_file_data_t * AXIS2_CALL 
-axis2_arch_file_data_create_with_type_and_file(const axis2_env_t *env,
-                                                    int type,
-                                                    axis2_file_t *file)
+AXIS2_EXTERN axis2_arch_file_data_t *AXIS2_CALL 
+axis2_arch_file_data_create_with_type_and_file(
+    const axis2_env_t *env,
+    int type,
+    axis2_file_t *file)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     file_data_impl = (axis2_arch_file_data_impl_t *) 
@@ -217,10 +235,11 @@ axis2_arch_file_data_create_with_type_and_file(const axis2_env_t *env,
     return &(file_data_impl->arch_file_data);    
 }
 
-AXIS2_EXTERN axis2_arch_file_data_t * AXIS2_CALL
-axis2_arch_file_data_create_with_type_and_name(const axis2_env_t *env,
-                                                    int type,
-                                                    const axis2_char_t *name)
+AXIS2_EXTERN axis2_arch_file_data_t *AXIS2_CALL
+axis2_arch_file_data_create_with_type_and_name(
+    const axis2_env_t *env,
+    int type,
+    const axis2_char_t *name)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     file_data_impl = (axis2_arch_file_data_impl_t *)
@@ -237,8 +256,9 @@ axis2_arch_file_data_create_with_type_and_name(const axis2_env_t *env,
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data, 
-                            const axis2_env_t *env)
+axis2_arch_file_data_free(
+    axis2_arch_file_data_t *arch_file_data, 
+    const axis2_env_t *env)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     
@@ -315,17 +335,19 @@ axis2_arch_file_data_free (axis2_arch_file_data_t *arch_file_data,
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_arch_file_data_get_msg_recv(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env)
+axis2_arch_file_data_get_msg_recv(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(file_data)->msg_recv;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_arch_file_data_set_msg_recv(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *msg_recv)
+axis2_arch_file_data_set_msg_recv(
+    axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env,
+    axis2_char_t *msg_recv)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -342,8 +364,9 @@ axis2_arch_file_data_set_msg_recv(axis2_arch_file_data_t *file_data,
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_arch_file_data_get_name(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env) 
+axis2_arch_file_data_get_name(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env) 
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     
@@ -354,8 +377,9 @@ axis2_arch_file_data_get_name(axis2_arch_file_data_t *file_data,
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_arch_file_data_get_svc_name(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env)
+axis2_arch_file_data_get_svc_name(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     axis2_char_t *svc_name = NULL;
@@ -376,24 +400,27 @@ axis2_arch_file_data_get_svc_name(axis2_arch_file_data_t *file_data,
 }
 
 int AXIS2_CALL
-axis2_arch_file_data_get_type(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env) 
+axis2_arch_file_data_get_type(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(file_data)->type;
 }
 
 axis2_file_t *AXIS2_CALL
-axis2_arch_file_data_get_file(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env) 
+axis2_arch_file_data_get_file(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(file_data)->file;
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_arch_file_data_get_module_name(axis2_arch_file_data_t *file_data,
-                                            const axis2_env_t *env)
+axis2_arch_file_data_get_module_name(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     axis2_char_t *module_name = NULL;
@@ -413,9 +440,10 @@ axis2_arch_file_data_get_module_name(axis2_arch_file_data_t *file_data,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_arch_file_data_set_module_name(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *module_name) 
+axis2_arch_file_data_set_module_name(
+    axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env,
+    axis2_char_t *module_name) 
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -432,8 +460,9 @@ axis2_arch_file_data_set_module_name(axis2_arch_file_data_t *file_data,
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_arch_file_data_get_module_dll_name(axis2_arch_file_data_t *file_data,
-                                            const axis2_env_t *env)
+axis2_arch_file_data_get_module_dll_name(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     
@@ -444,9 +473,10 @@ axis2_arch_file_data_get_module_dll_name(axis2_arch_file_data_t *file_data,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_arch_file_data_set_module_dll_name(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *module_dll_name) 
+axis2_arch_file_data_set_module_dll_name(
+    axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env,
+    axis2_char_t *module_dll_name) 
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -463,9 +493,10 @@ axis2_arch_file_data_set_module_dll_name(axis2_arch_file_data_t *file_data,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_arch_file_data_add_svc(axis2_arch_file_data_t *file_data,
-                                const axis2_env_t *env,
-                                axis2_svc_t *svc_desc)
+axis2_arch_file_data_add_svc(
+    axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env,
+    axis2_svc_t *svc_desc)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     axis2_qname_t *svc_qname = NULL;
@@ -492,9 +523,10 @@ axis2_arch_file_data_add_svc(axis2_arch_file_data_t *file_data,
 }
 
 struct axis2_svc *AXIS2_CALL
-axis2_arch_file_data_get_svc(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *svc_name)
+axis2_arch_file_data_get_svc(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env,
+    axis2_char_t *svc_name)
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     axis2_svc_t *svc = NULL;
@@ -516,25 +548,28 @@ axis2_arch_file_data_get_svc(axis2_arch_file_data_t *file_data,
 }
 
 axis2_hash_t *AXIS2_CALL
-axis2_arch_file_data_get_svc_map(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env)
+axis2_arch_file_data_get_svc_map(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(file_data)->svc_map;
 }
 
 axis2_array_list_t *AXIS2_CALL
-axis2_arch_file_data_get_deployable_svcs(axis2_arch_file_data_t *file_data,
-                                            const axis2_env_t *env)
+axis2_arch_file_data_get_deployable_svcs(
+    const axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(file_data)->deployable_svcs;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_arch_file_data_set_deployable_svcs(axis2_arch_file_data_t *file_data,
-                                    const axis2_env_t *env,
-                                    axis2_array_list_t *deployable_svcs) 
+axis2_arch_file_data_set_deployable_svcs(
+    axis2_arch_file_data_t *file_data,
+    const axis2_env_t *env,
+    axis2_array_list_t *deployable_svcs) 
 {
     axis2_arch_file_data_impl_t *file_data_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
