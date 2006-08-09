@@ -22,15 +22,13 @@
 #include <axis2_utils.h>
 #include <axis2_transport_receiver.h>
 
-/** 
- * @brief
- */
 typedef struct axis2_conf_builder_impl
 {
-   axis2_conf_builder_t conf_builder;
+    axis2_conf_builder_t conf_builder;
     axis2_conf_t *conf;
        
-} axis2_conf_builder_impl_t;
+}
+axis2_conf_builder_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(conf_builder) \
     ((axis2_conf_builder_impl_t *) conf_builder)
@@ -38,49 +36,62 @@ typedef struct axis2_conf_builder_impl
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_conf_builder_free (axis2_conf_builder_t *conf_builder, 
-                            const axis2_env_t *env);
+axis2_conf_builder_free(
+    axis2_conf_builder_t *conf_builder, 
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
-                                    const axis2_env_t *env);
+axis2_conf_builder_populate_conf(
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
-                                const axis2_env_t *env,
-                                axiom_children_qname_iterator_t *module_refs);
+axis2_conf_builder_process_module_refs(
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *module_refs);
 
 static axis2_status_t
-axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
-                                                const axis2_env_t *env,
-                                                axiom_node_t *disp_order);
+axis2_conf_builder_process_disp_order(
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env,
+    axiom_node_t *disp_order);
 
 static axis2_status_t
-axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
-                            const axis2_env_t *env,
-                            axiom_children_qname_iterator_t *phase_orders);
+axis2_conf_builder_process_phase_orders(
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *phase_orders);
+
 static axis2_array_list_t *
-axis2_conf_builder_get_phase_list(axis2_conf_builder_t *conf_builder,
-                                    const axis2_env_t *env,
-                                    axiom_node_t *phase_orders);
+axis2_conf_builder_get_phase_list(
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env,
+    axiom_node_t *phase_orders);
+
 static axis2_status_t
-axis2_conf_builder_process_transport_senders(axis2_conf_builder_t *conf_builder,
-                            const axis2_env_t *env,
-                            axiom_children_qname_iterator_t *trs_senders);
+axis2_conf_builder_process_transport_senders(
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *trs_senders);
+
 static axis2_status_t
-axis2_conf_builder_process_transport_recvs(axis2_conf_builder_t *conf_builder,
-                                    const axis2_env_t *env,
-                                    axiom_children_qname_iterator_t *trs_recvs);
+axis2_conf_builder_process_transport_recvs(
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *trs_recvs);
                                     
 axis2_status_t AXIS2_CALL
 axis2_conf_builder_process_default_module_versions(
-                            axis2_conf_builder_t *conf_builder,
-                            const axis2_env_t *env, 
-                            axiom_children_qname_iterator_t *module_versions);
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env, 
+    axiom_children_qname_iterator_t *module_versions);
+
 /************************** End of function prototypes ************************/
 
-AXIS2_EXTERN axis2_conf_builder_t * AXIS2_CALL 
-axis2_conf_builder_create (const axis2_env_t *env)
+AXIS2_EXTERN axis2_conf_builder_t *AXIS2_CALL 
+axis2_conf_builder_create(
+    const axis2_env_t *env)
 {
     axis2_conf_builder_impl_t *conf_builder_impl = NULL;
     
@@ -117,11 +128,12 @@ axis2_conf_builder_create (const axis2_env_t *env)
    return &(conf_builder_impl->conf_builder);
 }
 
-AXIS2_EXTERN axis2_conf_builder_t * AXIS2_CALL
-axis2_conf_builder_create_with_file_and_dep_engine_and_conf (const axis2_env_t *env,
-                                                axis2_char_t *file,
-                                                axis2_dep_engine_t *engine,
-                                                axis2_conf_t *conf)
+AXIS2_EXTERN axis2_conf_builder_t *AXIS2_CALL
+axis2_conf_builder_create_with_file_and_dep_engine_and_conf(
+    const axis2_env_t *env,
+    axis2_char_t *file,
+    axis2_dep_engine_t *engine,
+    axis2_conf_t *conf)
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     
@@ -144,8 +156,9 @@ axis2_conf_builder_create_with_file_and_dep_engine_and_conf (const axis2_env_t *
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_conf_builder_free (axis2_conf_builder_t *conf_builder, 
-                            const axis2_env_t *env)
+axis2_conf_builder_free(
+    axis2_conf_builder_t *conf_builder, 
+    const axis2_env_t *env)
 {
     axis2_conf_builder_impl_t *conf_builder_impl = NULL;
     
@@ -175,8 +188,9 @@ axis2_conf_builder_free (axis2_conf_builder_t *conf_builder,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
-                                    const axis2_env_t *env)
+axis2_conf_builder_populate_conf(
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env)
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_qname_t *qparamst = NULL;
@@ -320,9 +334,10 @@ axis2_conf_builder_populate_conf(axis2_conf_builder_t *conf_builder,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
-                                const axis2_env_t *env,
-                                axiom_children_qname_iterator_t *module_refs) 
+axis2_conf_builder_process_module_refs(
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *module_refs) 
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
@@ -369,9 +384,10 @@ axis2_conf_builder_process_module_refs(axis2_conf_builder_t *conf_builder,
 }
 
 static axis2_status_t
-axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
-                                        const axis2_env_t *env,
-                                        axiom_node_t *disp_order_node)
+axis2_conf_builder_process_disp_order(
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env,
+    axiom_node_t *disp_order_node)
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     axiom_element_t *disp_order_element = NULL;
@@ -486,9 +502,10 @@ axis2_conf_builder_process_disp_order(axis2_conf_builder_t *conf_builder,
  * @param phase_orders
  */
 static axis2_status_t
-axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
-                            const axis2_env_t *env,
-                            axiom_children_qname_iterator_t *phase_orders)
+axis2_conf_builder_process_phase_orders(
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *phase_orders)
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_phases_info_t *info = NULL;
@@ -564,9 +581,9 @@ axis2_conf_builder_process_phase_orders(axis2_conf_builder_t *conf_builder,
 
 static axis2_array_list_t *
 axis2_conf_builder_get_phase_list(
-        axis2_conf_builder_t *conf_builder,
-        const axis2_env_t *env,
-        axiom_node_t *phase_orders_node)
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env,
+    axiom_node_t *phase_orders_node)
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_array_list_t *phase_list = NULL;
@@ -635,9 +652,9 @@ axis2_conf_builder_get_phase_list(
 
 static axis2_status_t
 axis2_conf_builder_process_transport_senders(
-        axis2_conf_builder_t *conf_builder,
-        const axis2_env_t *env,
-        axiom_children_qname_iterator_t *trs_senders)
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *trs_senders)
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -866,9 +883,9 @@ axis2_conf_builder_process_transport_senders(
 
 static axis2_status_t
 axis2_conf_builder_process_transport_recvs(
-        axis2_conf_builder_t *conf_builder,
-        const axis2_env_t *env,
-        axiom_children_qname_iterator_t *trs_recvs)
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *trs_recvs)
 {
     axis2_conf_builder_impl_t *builder_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -1092,9 +1109,9 @@ axis2_conf_builder_process_transport_recvs(
 
 axis2_status_t AXIS2_CALL
 axis2_conf_builder_process_default_module_versions(
-       axis2_conf_builder_t *conf_builder,
-       const axis2_env_t *env, 
-       axiom_children_qname_iterator_t *module_versions)
+    axis2_conf_builder_t *conf_builder,
+    const axis2_env_t *env, 
+    axiom_children_qname_iterator_t *module_versions)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_versions, AXIS2_FAILURE);
@@ -1145,4 +1162,4 @@ axis2_conf_builder_process_default_module_versions(
     }
     return AXIS2_SUCCESS;
 }
-    
+   
