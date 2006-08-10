@@ -228,7 +228,7 @@ oxs_buffer_set_size(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int siz
     ret = oxs_buffer_set_max_size(env, buf, size);
     if(ret < 0) {
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");
+                     "oxs_buffer_set_max_size failed");
         return(-1);
     }
     buf->size = size;
@@ -248,8 +248,6 @@ oxs_buffer_set_max_size(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int
     }
 
     if(size <= buf->max_size) {
-       oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");
        return(0);
     }
 

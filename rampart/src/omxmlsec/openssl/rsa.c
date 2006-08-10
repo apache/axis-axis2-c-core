@@ -50,6 +50,12 @@ generate_random_key(const axis2_env_t *env, oxs_buffer_ptr buf, int size)
                 OXS_ERROR_DEFAULT, "RAND_bytes failed %d",size );
         return AXIS2_FAILURE;
     }
+/**************REMOVE TODO***/
+#if 0
+    buf->data = "012345670123456701234567";
+    buf->size = 24;
+#endif
+/***************************/
     return AXIS2_SUCCESS;
 }
 
@@ -94,6 +100,9 @@ evp_pkey_load(const axis2_env_t *env, axis2_char_t *filename, axis2_char_t *pass
         pk = PEM_read_bio_PUBKEY(bio, NULL, 0 , password);
         if(!pk){
             /*If there is no key by now its an error*/
+            oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
+                     "Cannot load key from %s", filename);
+
             return NULL;
         }
         type = OPENSSL_EVP_KEY_TYPE_PUBLIC_KEY;

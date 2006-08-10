@@ -19,7 +19,8 @@
 #include <oxs_error.h>
 #include <oxs_token_reference_list.h>
 #include <axiom_element.h>
-
+#include <oxs_token_data_reference.h>
+#include <axis2_array_list.h>
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_reference_list_element(const axis2_env_t *env,
@@ -44,5 +45,42 @@ oxs_token_build_reference_list_element(const axis2_env_t *env,
     }  
  
     return reference_list_node; 
+}
+
+AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+oxs_token_get_reference_list_data(const axis2_env_t *env, axiom_node_t *ref_list_node)
+{
+    axis2_array_list_t *list = NULL;
+    axiom_children_qname_iterator_t *iter = NULL;
+    axiom_element_t *ref_list_ele = NULL;
+    axis2_qname_t *qname = NULL;
+
+    if(!ref_list_node){
+       oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+            "reference list node is NULL");
+        return NULL;
+    }
+    ref_list_ele = AXIOM_NODE_GET_DATA_ELEMENT(ref_list_node, env);
+
+    /*Get children*/
+    qname = axis2_qname_create(env, OXS_NodeDataReference, NULL, NULL);
+    iter = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(ref_list_ele, env, qname, ref_list_node);
+    AXIS2_QNAME_FREE(qname, env);
+    qname= NULL;
+
+    list = axis2_array_list_create(env, 0);
+    
+    while(AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(iter, env))
+    {
+        axiom_node_t *dref_node = NULL;
+        axis2_char_t *dref_val = NULL;
+        
+        dref_node = AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(iter, env);
+        dref_val = oxs_token_get_data_reference(env, dref_node);
+        
+        AXIS2_ARRAY_LIST_ADD(list, env, dref_val);
+    }
+
+    return list;
 }
 

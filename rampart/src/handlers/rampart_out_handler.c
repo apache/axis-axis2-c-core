@@ -221,11 +221,16 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
                     AXIS2_STRTRIM(env, item, NULL))){
                     printf("OUtHandler : Item is Encrypt\n"); 
                     enc_status = rampart_crypto_encrypt_message(env,msg_ctx, param_action, soap_envelope, sec_node);
-                    
+                    if(enc_status == AXIS2_SUCCESS){
+                       rampart_print_info(env, "Encryption success");
+                    }else{
+                       rampart_print_info(env, "Encryption failed");
+                       return AXIS2_FAILURE;
+                    }        
                 /*Signature*/    
                 }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, 
                     AXIS2_STRTRIM(env, item, NULL))){
-                    printf("OutHandler : Item is SignatureSignature. Sorry we dont support\n"); 
+                    printf("OutHandler : Item is Signature. Sorry we dont support\n"); 
 
                 /*Any other type of action*/ 
                 }else

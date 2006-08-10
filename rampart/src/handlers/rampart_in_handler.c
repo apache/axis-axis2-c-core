@@ -140,6 +140,10 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
             item = strtok (items," ");
             while (item != NULL)
             {
+                sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
+                sec_ele = AXIOM_NODE_GET_DATA_ELEMENT(sec_node, env);
+                printf("\n::Items %s -> %s\n", items, item);
+
                 if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL)) )
                 {
                         axis2_status_t valid_user = AXIS2_FAILURE;
@@ -156,9 +160,15 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                     
                 }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, AXIS2_STRTRIM(env, item, NULL)) ){
                         /*Do useful to verify encrypt*/       
-                        printf("InHandler : Decrypt\n"); 
+                        printf("InHandler : Decrypt..............................\n"); 
                         enc_status = rampart_crypto_decrypt_message(env, msg_ctx, param_action, soap_envelope, sec_node);
-
+                        if(enc_status == AXIS2_SUCCESS){
+                            rampart_print_info(env, "Decryption success");
+                            status = AXIS2_SUCCESS;
+                        }else{
+                            rampart_print_info(env, "Decryption failed");
+                            return AXIS2_FAILURE;
+                        }
                 }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, AXIS2_STRTRIM(env, item, NULL)) ){
                         /*Do useful to verify sign*/       
                         printf("InHandler : Signature\n"); 
@@ -167,8 +177,6 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                          axis2_qname_t *qname = NULL;
                          axis2_status_t valid_ts = AXIS2_FAILURE;
                          rampart_print_info(env,"Validate timestamp ");
-                         sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
-                         sec_ele = AXIOM_NODE_GET_DATA_ELEMENT(sec_node, env);
                     
                         
                          qname = axis2_qname_create(env,

@@ -89,7 +89,6 @@ oxs_axiom_check_node_name(const axis2_env_t *env, axiom_node_t* node, axis2_char
     namestr = AXIS2_QNAME_GET_LOCALPART(qname, env);    
     ret_name =  AXIS2_STRCMP(namestr, name) ;
 
-    printf("oxs_axiom_check_node_name\n Node: %s\n Name: %s\n",namestr, name);
     
     if(ret_name < 0) return 0;   
 

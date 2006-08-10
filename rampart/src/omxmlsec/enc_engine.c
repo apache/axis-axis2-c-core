@@ -21,6 +21,9 @@
 #include <stdio.h>
 #include <axis2_util.h>
 #include <oxs_constants.h>
+#include <oxs_token_encrypted_data.h>
+#include <oxs_token_encrypted_key.h>
+#include <oxs_token_encryption_method.h>
 #include <oxs_ctx.h>
 #include <oxs_error.h>
 #include <oxs_buffer.h>
@@ -30,6 +33,111 @@
 #include <openssl_crypt.h>
 #include <openssl_constants.h>
 #include <openssl_rsa.h>
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_get_encrypted_key(const axis2_env_t *env,
+                            axiom_node_t *enc_key_node,
+                            oxs_key_ptr session_key)
+{
+    axis2_char_t *key_enc_algo = NULL, *encrypted_key_value = NULL, *decoded_encrypted_key = NULL;
+    axiom_node_t *enc_method_node = NULL, *cd_node = NULL, *cv_node = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    oxs_buffer_ptr encrypted_key_buf = NULL, decrypted_key_buf = NULL;
+    /*Verify*/
+    if(!enc_key_node){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
+            "Passed encrypted key is NULL");
+        return AXIS2_FAILURE;
+    }
+
+    enc_method_node = oxs_axiom_get_first_child_node_by_name(env, enc_key_node, OXS_NodeEncryptionMethod, NULL, NULL);
+    if(!enc_method_node){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
+            "Cannot find EncryptionMethodElement");
+        return AXIS2_FAILURE;
+    }
+
+    key_enc_algo =  oxs_token_get_encryption_method(env, enc_method_node);
+    if(!key_enc_algo){
+        /*If not found use default*/
+        key_enc_algo = OXS_DEFAULT_KT_ALGO_HREF;
+    }
+
+    cd_node = oxs_axiom_get_first_child_node_by_name(env, enc_key_node, OXS_NodeCipherData, NULL, NULL);
+    if(!cd_node){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
+            "Cannot find CipherData element");
+        return AXIS2_FAILURE;
+    }
+
+    cv_node = oxs_axiom_get_first_child_node_by_name(env, cd_node, OXS_NodeCipherValue, NULL, NULL);
+    if(!cv_node){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
+            "Cannot find CipherValue element");
+        return AXIS2_FAILURE;
+    }
+    /*Encrypted key*/
+    encrypted_key_value = oxs_token_get_cipher_value(env, cv_node);
+
+    /*Create buffers for decryption*/
+    encrypted_key_buf = oxs_create_buffer(env, AXIS2_STRLEN(encrypted_key_value));
+    encrypted_key_buf->data = (unsigned char *)encrypted_key_value;
+    decrypted_key_buf = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
+
+    /*Decrypt the encrypted key*/
+    status  = oxs_prvkey_decrypt_data(env, encrypted_key_buf, decrypted_key_buf, session_key->name);  
+    if(status == AXIS2_FAILURE){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "oxs_prvkey_decrypt_data failed");
+        return AXIS2_FAILURE;
+    }
+    /*Create the session key*/
+    /*Trim data to the key size*/
+    session_key->data = AXIS2_STRMEMDUP(decrypted_key_buf->data, decrypted_key_buf->size, env);    
+    session_key->size = decrypted_key_buf->size;
+    session_key->usage = OXS_KEY_USAGE_DECRYPT;
+     
+    /*printf("\n>>>>>>>>decrypted session_key %s\n", session_key->data);*/
+    return session_key;
+}
+
+/*Decrypt data using the private key*/
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_prvkey_decrypt_data(const axis2_env_t *env, oxs_buffer_ptr input, oxs_buffer_ptr result, axis2_char_t *filename)
+{
+    evp_pkey_ptr prvk = NULL;
+    axis2_char_t *encoded_encrypted_str = NULL, *decoded_encrypted_str = NULL;    
+    unsigned char *decrypted  =  NULL;
+    int ret, declen;
+
+    /*First do base64 decode*/
+    decoded_encrypted_str = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len( (char*)(input->data)));
+    ret = axis2_base64_decode(decoded_encrypted_str, (char*)(input->data));
+    
+
+    /*Load the private _key*/
+    prvk = evp_pkey_load(env, filename, "");
+    if(!prvk){
+         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "cannot load the private key from the file %s", filename);
+         return AXIS2_FAILURE;
+
+    }
+    
+    /*Now we support only rsa*/
+    declen = openssl_rsa_prv_decrypt(env, prvk, (unsigned char *)decoded_encrypted_str, &decrypted);
+    if(declen < 0 ){
+         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "decryption failed");
+         return AXIS2_FAILURE;
+
+    }
+
+    result->data = decrypted;
+    result->size = declen;
+    
+    return AXIS2_SUCCESS;
+}
 
 
 /*TODO better to have pk_ctx instead of individual parameters like filename, algorithm*/
@@ -192,7 +300,8 @@ oxs_enc_crypt(const axis2_env_t *env,
         result->data = (unsigned char*)AXIS2_STRDUP(encoded_str, env);
     }else if(enc_ctx->operation == oxs_operation_decrypt){
         result->size = enclen;
-        result->data = (unsigned char*)AXIS2_STRDUP(out_main_buf, env);
+        result->data = AXIS2_STRMEMDUP(out_main_buf, enclen, env);
+    
     }else{
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "Invalid operation type %d", enc_ctx->operation);
@@ -273,7 +382,7 @@ oxs_enc_decrypt_template(const axis2_env_t *env,
     ret = oxs_enc_encryption_data_node_read(env, enc_ctx, template_node);
     if(ret != AXIS2_SUCCESS){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "openssl_block_cipher_crypt failed");
+                     "reading encrypted data failed");
         return ret;
     }
 
@@ -287,8 +396,8 @@ oxs_enc_decrypt_template(const axis2_env_t *env,
 
     ret = oxs_enc_crypt(env, enc_ctx, input,  result ); 
     if(ret != AXIS2_SUCCESS){
-           oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "oxs_enc_encrypt failed");
+           oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
+                     "oxs_enc_decrypt failed");
         return ret;
     }
 
