@@ -202,7 +202,7 @@ echo_callback_on_error(struct axis2_callback *callback,
                             int exception)
 {
    /** take necessary action on error */
-   printf("\necho client invike FAILED. Error code:%d ::%s", exception, 
+   printf("\nEcho client invoke FAILED. Error code:%d ::%s", exception, 
          AXIS2_ERROR_GET_MESSAGE(env->error));
    isComplete = 1;
    return AXIS2_SUCCESS;

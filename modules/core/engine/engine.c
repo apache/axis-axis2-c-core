@@ -920,28 +920,35 @@ axis2_engine_resume_invocation_phases(struct axis2_engine *engine,
     AXIS2_MSG_CTX_SET_PAUSED(msg_ctx, env, AXIS2_FALSE);
     
     count = AXIS2_ARRAY_LIST_SIZE(phases, env);
-    
+
     for (i = 0; i < count && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)); i++) 
     {
-        axis2_phase_t *phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phases, env, i);
+        axis2_phase_t *phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phases, 
+            env, i);
         axis2_char_t* phase_name = AXIS2_PHASE_GET_NAME(phase, env);
-        axis2_char_t* paused_phase_name = AXIS2_MSG_CTX_GET_PAUSED_PHASE_NAME(msg_ctx, env);
-        if (phase_name && paused_phase_name)
+        axis2_char_t* paused_phase_name = AXIS2_MSG_CTX_GET_PAUSED_PHASE_NAME(
+            msg_ctx, env);
+        /* Skip invoking hanlders until we find the paused phase */
+        if (phase_name && paused_phase_name && 0 == AXIS2_STRCMP(phase_name, 
+            paused_phase_name))
         {
-            if (AXIS2_STRCMP(phase_name, paused_phase_name) == 0)
-            {
-                found_match = AXIS2_TRUE;
-                AXIS2_PHASE_INVOKE_START_FROM_HANDLER(phase, env, 
-                    AXIS2_MSG_CTX_GET_PAUSED_HANDLER_NAME(msg_ctx, env), msg_ctx);
-            }
+            int paused_handler_i = -1;
+            found_match = AXIS2_TRUE;
+
+            paused_handler_i = AXIS2_MSG_CTX_GET_CURRENT_HANDLER_INDEX(msg_ctx, 
+                env);
+            /* Invoke the paused handler and rest of the handlers of the puased 
+             * phase */
+            AXIS2_PHASE_INVOKE_START_FROM_HANDLER(phase, env, paused_handler_i, 
+                msg_ctx);
         }
-        else 
+        else /* Now we have found the paused phase and invoked the rest of the
+              * handlers of that phase.Invoke all the phases after that */ 
         {
             if (found_match) 
             {
                 AXIS2_PHASE_INVOKE(phase, env, msg_ctx);
             }
-
        }
     }
     

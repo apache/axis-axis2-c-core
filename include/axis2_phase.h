@@ -214,7 +214,7 @@ extern "C"
                 invoke_start_from_handler)(
                     struct axis2_phase *phase,
                     const axis2_env_t *env,
-                    axis2_qname_t *qname,
+                    int paused_handler_index,
                     struct axis2_msg_ctx *msg_ctx);
 
 
@@ -316,8 +316,10 @@ extern "C"
 
 /** Invoke start from handler.
     @sa axis2_phase_ops#invoke_start_from_handler */
-#define AXIS2_PHASE_INVOKE_START_FROM_HANDLER(phase, env, qname, msg_ctx) \
-      ((phase)->ops->invoke_start_from_handler(phase, env, qname, msg_ctx))
+#define AXIS2_PHASE_INVOKE_START_FROM_HANDLER(phase, env, paused_handler_index, \
+        msg_ctx) \
+      ((phase)->ops->invoke_start_from_handler(phase, env, paused_handler_index, \
+        msg_ctx))
 
 /** Frees the phase.
     @sa axis2_phase_ops#free */

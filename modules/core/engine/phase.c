@@ -146,7 +146,7 @@ axis2_status_t AXIS2_CALL
 axis2_phase_invoke_start_from_handler(
     axis2_phase_t *phase, 
     const axis2_env_t *env, 
-    axis2_qname_t *qname, 
+    int paused_handler_index, 
     axis2_msg_ctx_t *msg_ctx) ;
                                       
 axis2_status_t AXIS2_CALL 
@@ -311,8 +311,6 @@ axis2_phase_invoke(
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
     
     AXIS2_MSG_CTX_SET_PAUSED_PHASE_NAME(msg_ctx, env, phase_impl->name);
-    /* If phase first handler is there then it should run first */
-    
     if (phase_impl->first_handler)
     {
         if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
@@ -351,13 +349,13 @@ axis2_phase_invoke(
                         "Invoke the handler %s within the phase %s",
                          AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_NAME(handler, env), env), 
                          phase_impl->name);
-                         
                 status = AXIS2_HANDLER_INVOKE(handler, env, msg_ctx);
                 if (status != AXIS2_SUCCESS)
-                    return status;                
-                /* index increment should be after the invoke as if the invocation 
-                   failed this handler is taken care of and no need to revoke agien */
+                    return status;
+                /* index increment should be done after the invoke function. If the invocation 
+                   failed this handler is taken care of and no need to revoke again */
                 index++;
+                AXIS2_MSG_CTX_SET_CURRENT_HANDLER_INDEX(msg_ctx, env, index);
             }
         }
     }
@@ -1118,12 +1116,12 @@ axis2_status_t AXIS2_CALL
 axis2_phase_invoke_start_from_handler(
     axis2_phase_t *phase, 
     const axis2_env_t *env, 
-    axis2_qname_t *qname, 
+    int paused_handler_index,
     axis2_msg_ctx_t *msg_ctx) 
 {
     axis2_phase_impl_t *phase_impl = NULL;
-    int size = 0, i = 0;
-    axis2_bool_t found = AXIS2_FALSE;
+    int i = 0, size = 0;
+    axis2_status_t status = AXIS2_SUCCESS;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -1132,12 +1130,14 @@ axis2_phase_invoke_start_from_handler(
     AXIS2_MSG_CTX_SET_PAUSED_PHASE_NAME(msg_ctx, env, phase_impl->name);    
     
     size = AXIS2_ARRAY_LIST_SIZE(phase_impl->handlers, env);
-    
-    for (i = 0; i < size; i++) 
-    {
-        axis2_handler_t *handler = (axis2_handler_t *) AXIS2_ARRAY_LIST_GET(phase_impl->handlers, env, i);
+    for(i = paused_handler_index; i < size; i++)
+    { 
+        axis2_handler_t *handler = (axis2_handler_t *) AXIS2_ARRAY_LIST_GET(
+            phase_impl->handlers, env, i);
         if (handler)
         {
+            int index = -1;
+            
             axis2_handler_desc_t *handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(handler, env);
             if (!handler_desc)
             {
@@ -1145,16 +1145,12 @@ axis2_phase_invoke_start_from_handler(
                 return AXIS2_FAILURE;
             }
             
-            found = AXIS2_QNAME_EQUALS(AXIS2_HANDLER_DESC_GET_QNAME(handler_desc, env), env, qname);
-            
-            if (found)
-            {
-                return AXIS2_HANDLER_INVOKE(handler, env, msg_ctx);
-            }
+            AXIS2_HANDLER_INVOKE(handler, env, msg_ctx);
+            index = AXIS2_MSG_CTX_GET_CURRENT_HANDLER_INDEX(msg_ctx, env);
+            AXIS2_MSG_CTX_SET_CURRENT_HANDLER_INDEX(msg_ctx, env, (index+1));
         }
     }
-    
-    return AXIS2_FAILURE;
+    return status;
 }
 
 axis2_status_t AXIS2_CALL 

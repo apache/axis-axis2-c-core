@@ -117,6 +117,10 @@ struct axis2_msg_ctx_impl
     axis2_array_list_t *execution_chain;
     /** Index into the execution chain of the currently executing handler */
     int current_handler_index;
+    /** Index of the paused  handler */
+    int paused_handler_index;
+    /** Index of the paused  phase */
+    int paused_phase_index;
     /** Index into the current Phase of the currently executing handler (if any)*/
     int current_phase_index;
 };
@@ -626,6 +630,11 @@ axis2_msg_ctx_get_current_handler_index(
     const axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env);
 
+int AXIS2_CALL
+axis2_msg_ctx_get_paused_handler_index(
+        const axis2_msg_ctx_t *msg_ctx,
+        const axis2_env_t *env);
+
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_current_phase_index(
     axis2_msg_ctx_t *msg_ctx,
@@ -634,6 +643,11 @@ axis2_msg_ctx_set_current_phase_index(
 
 int AXIS2_CALL
 axis2_msg_ctx_get_current_phase_index(
+    const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env);
+
+int AXIS2_CALL
+axis2_msg_ctx_get_paused_phase_index(
     const axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env);
 
@@ -695,8 +709,10 @@ axis2_msg_ctx_create (
     msg_ctx_impl->op_qname = NULL;
     msg_ctx_impl->flow = AXIS2_IN_FLOW;
     msg_ctx_impl->execution_chain = NULL;
-    msg_ctx_impl->current_handler_index = 0;
+    msg_ctx_impl->current_handler_index = -1;
+    msg_ctx_impl->paused_handler_index = -1;
     msg_ctx_impl->current_phase_index = 0;
+    msg_ctx_impl->paused_phase_index = 0;
     
     msg_ctx_impl->base = axis2_ctx_create(env);
     if (!(msg_ctx_impl->base))
@@ -827,10 +843,14 @@ axis2_msg_ctx_create (
         axis2_msg_ctx_get_current_handler_index;
     msg_ctx_impl->msg_ctx.ops->set_current_handler_index = 
         axis2_msg_ctx_set_current_handler_index;
+    msg_ctx_impl->msg_ctx.ops->get_paused_handler_index = 
+        axis2_msg_ctx_get_paused_handler_index;
     msg_ctx_impl->msg_ctx.ops->get_current_phase_index = 
         axis2_msg_ctx_get_current_phase_index;
     msg_ctx_impl->msg_ctx.ops->set_current_phase_index = 
         axis2_msg_ctx_set_current_phase_index;
+    msg_ctx_impl->msg_ctx.ops->get_paused_phase_index = 
+        axis2_msg_ctx_get_paused_phase_index;
     return &(msg_ctx_impl->msg_ctx);
 }
 
@@ -1524,8 +1544,12 @@ axis2_msg_ctx_set_paused(
     const axis2_env_t *env, 
     axis2_bool_t paused) 
 {
+    axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(msg_ctx)->paused = paused;
+    msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
+    msg_ctx_impl->paused = paused;
+    msg_ctx_impl->paused_phase_index = msg_ctx_impl->current_phase_index;
     return AXIS2_SUCCESS;
 }
 
@@ -2444,6 +2468,7 @@ axis2_msg_ctx_set_execution_chain(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);    
     AXIS2_INTF_TO_IMPL(msg_ctx)->execution_chain = execution_chain;
     AXIS2_INTF_TO_IMPL(msg_ctx)->current_handler_index = -1;
+    AXIS2_INTF_TO_IMPL(msg_ctx)->paused_handler_index = -1;
     AXIS2_INTF_TO_IMPL(msg_ctx)->current_phase_index = 0;
     return AXIS2_SUCCESS;
 }
@@ -2484,9 +2509,21 @@ axis2_msg_ctx_get_current_handler_index(
     const axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env)
 {
+    axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    return AXIS2_INTF_TO_IMPL(msg_ctx)->current_handler_index;
+    msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
+    return msg_ctx_impl->current_handler_index;
 }
+
+int AXIS2_CALL
+axis2_msg_ctx_get_paused_handler_index(const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(msg_ctx)->paused_handler_index;
+}
+
 
 axis2_status_t AXIS2_CALL
 axis2_msg_ctx_set_current_phase_index(
@@ -2507,4 +2544,13 @@ axis2_msg_ctx_get_current_phase_index(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(msg_ctx)->current_phase_index;
+}
+
+int AXIS2_CALL
+axis2_msg_ctx_get_paused_phase_index(
+    const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(msg_ctx)->paused_phase_index;
 }

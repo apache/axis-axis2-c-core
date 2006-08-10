@@ -1099,6 +1099,16 @@ extern "C"
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
+       /**
+        * @param msg_ctx message context
+        * @param env pointer to environment struct
+        */
+            int (AXIS2_CALL *
+                    get_paused_handler_index)(
+                        const axis2_msg_ctx_t *msg_ctx,
+                        const axis2_env_t *env);
+
+
         /**
          * @param msg_ctx message context
          * @param env pointer to environment struct
@@ -1117,6 +1127,15 @@ extern "C"
          */
         int (AXIS2_CALL *
                 get_current_phase_index)(
+                    const axis2_msg_ctx_t *msg_ctx,
+                    const axis2_env_t *env);
+
+   /**
+    * @param msg_ctx message context
+    * @param env pointer to environment struct
+    */
+        int (AXIS2_CALL *
+                get_paused_phase_index)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
     };
@@ -1592,6 +1611,11 @@ extern "C"
 #define AXIS2_MSG_CTX_GET_CURRENT_HANDLER_INDEX(msg_ctx, env) \
       ((msg_ctx)->ops->get_current_handler_index(msg_ctx, env))
 
+/** Gets the paused handler index.
+    @sa axis2_msg_ctx_ops#get_paused_handler_index */
+#define AXIS2_MSG_CTX_GET_PAUSED_HANDLER_INDEX(msg_ctx, env) \
+      ((msg_ctx)->ops->get_paused_handler_index(msg_ctx, env))
+
 /** Sets the current phase index.
     @sa axis2_msg_ctx_ops#set_current_phase_index */
 #define AXIS2_MSG_CTX_SET_CURRENT_PHASE_INDEX(msg_ctx, env, index) \
@@ -1601,6 +1625,11 @@ extern "C"
     @sa axis2_msg_ctx_ops#get_current_phase_index */
 #define AXIS2_MSG_CTX_GET_CURRENT_PHASE_INDEX(msg_ctx, env) \
       ((msg_ctx)->ops->get_current_phase_index(msg_ctx, env))
+
+/** Gets the paused phase index.
+    @sa axis2_msg_ctx_ops#get_paused_phase_index */
+#define AXIS2_MSG_CTX_GET_PAUSED_PHASE_INDEX(msg_ctx, env) \
+      ((msg_ctx)->ops->get_paused_phase_index(msg_ctx, env))
 
 /************************** End of function macros ****************************/
 
