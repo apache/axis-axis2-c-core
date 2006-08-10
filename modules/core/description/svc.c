@@ -1208,12 +1208,14 @@ axis2_svc_add_module_ops(axis2_svc_t *svc,
         }
         for(j = 0; j < size; j++)
         {
+            axis2_char_t *key = NULL;
+
             param = (axis2_param_t *) AXIS2_ARRAY_LIST_GET(params, env, j);
             if(0 == AXIS2_STRCMP( AXIS2_PARAM_GET_NAME(param, env), 
-                    AXIS2_WSA_ACTION))
+                    AXIS2_WSA_MAPPING))
             {
-                status = axis2_svc_add_mapping(svc, env,
-                    (axis2_char_t *) AXIS2_PARAM_GET_VALUE(param, env), op_desc);
+                key = (axis2_char_t *) AXIS2_PARAM_GET_VALUE(param, env);
+                status = axis2_svc_add_mapping(svc, env, key, op_desc);
                 if(AXIS2_SUCCESS != status)
                 {
                     if(pr)

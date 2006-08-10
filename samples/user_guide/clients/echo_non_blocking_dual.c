@@ -136,7 +136,7 @@ int main(int argc, char** argv)
     
     if (!(count < 30))
     {
-        printf("\necho client invike FAILED. Counter timed out.\n");
+        printf("\necho client invoke FAILED. Counter timed out.\n");
     }
     
     if (svc_client)

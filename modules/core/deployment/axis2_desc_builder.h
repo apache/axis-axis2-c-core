@@ -158,7 +158,7 @@ AXIS2_DECLARE_DATA struct axis2_desc_builder_ops
      * this method is to get the value of attribue
      * eg xsd:anyVal --> anyVal
      *
-     * @return String
+     * @return axis2_char_t *
      */
     axis2_char_t *(AXIS2_CALL *
     get_value) (

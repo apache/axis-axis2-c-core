@@ -390,13 +390,14 @@ axis2_module_builder_populate_module(
     size = AXIS2_ARRAY_LIST_SIZE(ops, env);
     for(i = 0; i < size; i++)
     {
-        axis2_op_t *op = NULL;
+        axis2_op_t *op_desc = NULL;
         
-        op = (axis2_op_t *) AXIS2_ARRAY_LIST_GET(ops, env, i);
-        AXIS2_MODULE_DESC_ADD_OP(builder_impl->module_desc, env, op);
+        op_desc = (axis2_op_t *) AXIS2_ARRAY_LIST_GET(ops, env, i);
+        AXIS2_MODULE_DESC_ADD_OP(builder_impl->module_desc, env, op_desc);
     }
     AXIS2_ARRAY_LIST_FREE(ops, env);
-    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_module_builder_populate_module end");
+    AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, 
+        "axis2_module_builder_populate_module end");
     return AXIS2_SUCCESS;
 }
 
