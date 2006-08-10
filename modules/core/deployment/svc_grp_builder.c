@@ -16,15 +16,13 @@
  
 #include <axis2_svc_grp_builder.h>
 
-/** 
- * @brief
- */
 typedef struct axis2_svc_grp_builder_impl
 {
-   axis2_svc_grp_builder_t svc_grp_builder;
+    axis2_svc_grp_builder_t svc_grp_builder;
     axiom_node_t *svc_grp;
        
-} axis2_svc_grp_builder_impl_t;
+}
+axis2_svc_grp_builder_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(svc_grp_builder) \
     ((axis2_svc_grp_builder_impl_t *) svc_grp_builder)
@@ -32,29 +30,32 @@ typedef struct axis2_svc_grp_builder_impl
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_svc_grp_builder_free (axis2_svc_grp_builder_t *svc_grp_builder, 
-                            const axis2_env_t *env);
-
+axis2_svc_grp_builder_free(
+    axis2_svc_grp_builder_t *svc_grp_builder, 
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
-                                        const axis2_env_t *env,
-                                        axis2_svc_grp_t *svc_grp);
+axis2_svc_grp_builder_populate_svc_grp(
+    axis2_svc_grp_builder_t *grp_builder,
+    const axis2_env_t *env,
+    axis2_svc_grp_t *svc_grp);
 
 /**
  * To get the list og modules that is requird to be engage globally
  * @param module_refs  <code>axiom_children_qname_iterator_t</code>
  */
 axis2_status_t AXIS2_CALL
-axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *grp_builder,
-                                            const axis2_env_t *env,
-                                   axiom_children_qname_iterator_t *module_refs ,
-                                            axis2_svc_grp_t *svc_grp);
+axis2_svc_grp_builder_process_module_refs(
+    axis2_svc_grp_builder_t *grp_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *module_refs ,
+    axis2_svc_grp_t *svc_grp);
                                             
 /************************** End of function prototypes ************************/
 
-axis2_svc_grp_builder_t * AXIS2_CALL 
-axis2_svc_grp_builder_create (const axis2_env_t *env)
+axis2_svc_grp_builder_t *AXIS2_CALL 
+axis2_svc_grp_builder_create(
+    const axis2_env_t *env)
 {
     axis2_svc_grp_builder_impl_t *svc_grp_builder_impl = NULL;
     
@@ -92,10 +93,11 @@ axis2_svc_grp_builder_create (const axis2_env_t *env)
    return &(svc_grp_builder_impl->svc_grp_builder);
 }
 
-axis2_svc_grp_builder_t * AXIS2_CALL 
-axis2_svc_grp_builder_create_with_svc_and_dep_engine (const axis2_env_t *env,
-                                                axiom_node_t *svc_grp,
-                                                axis2_dep_engine_t *dep_engine)
+axis2_svc_grp_builder_t *AXIS2_CALL 
+axis2_svc_grp_builder_create_with_svc_and_dep_engine(
+    const axis2_env_t *env,
+    axiom_node_t *svc_grp,
+    axis2_dep_engine_t *dep_engine)
 {
     axis2_svc_grp_builder_impl_t *grp_builder_impl = NULL;
     
@@ -121,8 +123,9 @@ axis2_svc_grp_builder_create_with_svc_and_dep_engine (const axis2_env_t *env,
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_svc_grp_builder_free (axis2_svc_grp_builder_t *svc_grp_builder, 
-                            const axis2_env_t *env)
+axis2_svc_grp_builder_free(
+    axis2_svc_grp_builder_t *svc_grp_builder, 
+    const axis2_env_t *env)
 {
     axis2_svc_grp_builder_impl_t *grp_builder_impl = NULL;
     
@@ -152,9 +155,10 @@ axis2_svc_grp_builder_free (axis2_svc_grp_builder_t *svc_grp_builder,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
-                                        const axis2_env_t *env,
-                                        axis2_svc_grp_t *svc_grp)
+axis2_svc_grp_builder_populate_svc_grp(
+    axis2_svc_grp_builder_t *grp_builder,
+    const axis2_env_t *env,
+    axis2_svc_grp_t *svc_grp)
 {
     axis2_svc_grp_builder_impl_t *grp_builder_impl = NULL;
     axiom_children_qname_iterator_t *itr = NULL;
@@ -246,10 +250,11 @@ axis2_svc_grp_builder_populate_svc_grp(axis2_svc_grp_builder_t *grp_builder,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_svc_grp_builder_process_module_refs(axis2_svc_grp_builder_t *grp_builder,
-                                            const axis2_env_t *env,
-                                   axiom_children_qname_iterator_t *module_refs ,
-                                            axis2_svc_grp_t *svc_grp)
+axis2_svc_grp_builder_process_module_refs(
+    axis2_svc_grp_builder_t *grp_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *module_refs ,
+    axis2_svc_grp_t *svc_grp)
 {
     axis2_svc_grp_builder_impl_t *grp_builder_impl = NULL;
     
