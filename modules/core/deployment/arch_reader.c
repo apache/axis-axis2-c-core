@@ -22,15 +22,15 @@
 #include <axis2_svc.h>
 
 /** 
- * @brief
  * To do the common tasks for all Builder
  */ 
 typedef struct axis2_arch_reader_impl
 {
-   axis2_arch_reader_t arch_reader;
+    axis2_arch_reader_t arch_reader;
     axis2_desc_builder_t *desc_builder;
        
-} axis2_arch_reader_impl_t;
+}
+axis2_arch_reader_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(arch_reader) \
     ((axis2_arch_reader_impl_t *) arch_reader)
@@ -38,43 +38,51 @@ typedef struct axis2_arch_reader_impl
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_arch_reader_free (axis2_arch_reader_t *arch_reader, 
-                            const axis2_env_t *env);
+axis2_arch_reader_free(
+    axis2_arch_reader_t *arch_reader, 
+    const axis2_env_t *env);
 
 struct axis2_svc *AXIS2_CALL
-axis2_arch_reader_create_svc(axis2_arch_reader_t *arch_reader,
-                                const axis2_env_t *env,
-                                struct axis2_arch_file_data *file);
+axis2_arch_reader_create_svc(
+    axis2_arch_reader_t *arch_reader,
+    const axis2_env_t *env,
+    struct axis2_arch_file_data *file);
 
 axis2_status_t AXIS2_CALL
-axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *file_path,
-                                    struct axis2_dep_engine *dep_engine,
-                                    axis2_svc_grp_t *svc_grp);
+axis2_arch_reader_process_svc_grp(
+    axis2_arch_reader_t *arch_reader,
+    const axis2_env_t *env,
+    axis2_char_t *file_path,
+    struct axis2_dep_engine *dep_engine,
+    axis2_svc_grp_t *svc_grp);
 
 axis2_status_t AXIS2_CALL
-axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
-                                const axis2_env_t *env,
-                                axis2_char_t *file_path,
-                                struct axis2_dep_engine *dep_engine,
-                                struct axis2_svc_grp *svc_grp);
+axis2_arch_reader_build_svc_grp(
+    axis2_arch_reader_t *arch_reader,
+    const axis2_env_t *env,
+    axis2_char_t *file_path,
+    struct axis2_dep_engine *dep_engine,
+    struct axis2_svc_grp *svc_grp);
 
 axis2_status_t AXIS2_CALL
-axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *file_path,
-                                    struct axis2_dep_engine *dep_engine,
-                                    axis2_module_desc_t *module);
+axis2_arch_reader_read_module_arch(
+    axis2_arch_reader_t *arch_reader,
+    const axis2_env_t *env,
+    axis2_char_t *file_path,
+    struct axis2_dep_engine *dep_engine,
+    axis2_module_desc_t *module);
+
 axis2_file_t *AXIS2_CALL
-axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
-                                        const axis2_env_t *env,
-                                        axis2_char_t *module_name);
+axis2_arch_reader_create_module_arch(
+    axis2_arch_reader_t *arch_reader,
+    const axis2_env_t *env,
+    axis2_char_t *module_name);
                               
 /************************** End of function prototypes ************************/
 
-AXIS2_EXTERN axis2_arch_reader_t * AXIS2_CALL
-axis2_arch_reader_create (const axis2_env_t *env)
+AXIS2_EXTERN axis2_arch_reader_t *AXIS2_CALL
+axis2_arch_reader_create(
+    const axis2_env_t *env)
 {
     axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     
@@ -119,8 +127,9 @@ axis2_arch_reader_create (const axis2_env_t *env)
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_arch_reader_free (axis2_arch_reader_t *arch_reader, 
-                            const axis2_env_t *env)
+axis2_arch_reader_free(
+    axis2_arch_reader_t *arch_reader, 
+    const axis2_env_t *env)
 {
     axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     
@@ -147,9 +156,9 @@ axis2_arch_reader_free (axis2_arch_reader_t *arch_reader,
 
 struct axis2_svc *AXIS2_CALL
 axis2_arch_reader_create_svc(
-        axis2_arch_reader_t *arch_reader,
-        const axis2_env_t *env,
-        struct axis2_arch_file_data *file) 
+    axis2_arch_reader_t *arch_reader,
+    const axis2_env_t *env,
+    struct axis2_arch_file_data *file) 
 {
     axis2_svc_t *svc = NULL;
     /* TODO comment this until WODEN implementation is done */
@@ -207,10 +216,10 @@ axis2_arch_reader_create_svc(
 /*
 axis2_status_t *AXIS2_CALL
 axis2_arch_reader_process_wsdl_file(
-        axis2_arch_reader_t *arch_reader,
-        const axis2_env_t *env,
-        axis2_char_t *filename,
-        axis2_dep_engine_t *dep_engine)
+    axis2_arch_reader_t *arch_reader,
+    const axis2_env_t *env,
+    axis2_char_t *filename,
+    axis2_dep_engine_t *dep_engine)
 {
     axis2_char_t *doc_base_uri = NULL;
     axiom_document_t *doc = NULL;
@@ -260,10 +269,10 @@ axis2_arch_reader_process_wsdl_file(
  /* TODO comment this until WOM implementation is done */
 /*axis2_status_t AXIS2_CALL
 axis2_arch_reader_process_wsdls(
-        axis2_arch_reader_t *arch_reader,
-        const axis2_env_t *env,
-        axis2_arch_file_data_t *file,
-        axis2_dep_engine_t *dep_engine)
+    axis2_arch_reader_t *arch_reader,
+    const axis2_env_t *env,
+    axis2_arch_file_data_t *file,
+    axis2_dep_engine_t *dep_engine)
 {
     axis2_file_t *svc_file = NULL;
 
@@ -277,11 +286,12 @@ axis2_arch_reader_process_wsdls(
 */
 
 axis2_status_t AXIS2_CALL
-axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *file_name,
-                                    struct axis2_dep_engine *dep_engine,
-                                    axis2_svc_grp_t *svc_grp)
+axis2_arch_reader_process_svc_grp(
+    axis2_arch_reader_t *arch_reader,
+    const axis2_env_t *env,
+    axis2_char_t *file_name,
+    struct axis2_dep_engine *dep_engine,
+    axis2_svc_grp_t *svc_grp)
 {
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *svcs_xml = NULL;
@@ -328,11 +338,12 @@ axis2_arch_reader_process_svc_grp(axis2_arch_reader_t *arch_reader,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
-                                const axis2_env_t *env,
-                                axis2_char_t *svc_xml,
-                                axis2_dep_engine_t *dep_engine,
-                                axis2_svc_grp_t *svc_grp)
+axis2_arch_reader_build_svc_grp(
+    axis2_arch_reader_t *arch_reader,
+    const axis2_env_t *env,
+    axis2_char_t *svc_xml,
+    axis2_dep_engine_t *dep_engine,
+    axis2_svc_grp_t *svc_grp)
 {                       
     axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     axis2_char_t *root_element_name = NULL;
@@ -423,11 +434,12 @@ axis2_arch_reader_build_svc_grp(axis2_arch_reader_t *arch_reader,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *file_name,
-                                    axis2_dep_engine_t *dep_engine,
-                                    axis2_module_desc_t *module_desc)
+axis2_arch_reader_read_module_arch(
+    axis2_arch_reader_t *arch_reader,
+    const axis2_env_t *env,
+    axis2_char_t *file_name,
+    axis2_dep_engine_t *dep_engine,
+    axis2_module_desc_t *module_desc)
 {
     axis2_arch_reader_impl_t *arch_reader_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -471,9 +483,10 @@ axis2_arch_reader_read_module_arch(axis2_arch_reader_t *arch_reader,
 }
 
 axis2_file_t *AXIS2_CALL
-axis2_arch_reader_create_module_arch(axis2_arch_reader_t *arch_reader,
-                                        const axis2_env_t *env,
-                                        axis2_char_t *module_name)
+axis2_arch_reader_create_module_arch(
+    axis2_arch_reader_t *arch_reader,
+    const axis2_env_t *env,
+    axis2_char_t *module_name)
 {
     axis2_file_t *file = NULL;
     

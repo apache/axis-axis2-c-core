@@ -56,6 +56,7 @@ extern "C"
          * De-allocate memory
          * @param svc_grp_builder pointer to service group builder
          * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -65,6 +66,7 @@ extern "C"
         /** 
          * @param grp_builder pointer to group builder
          * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 populate_svc_grp)(
@@ -78,6 +80,7 @@ extern "C"
          * @param env pointer to environment struct
          * @param module_refs  <code>axiom_children_qname_iterator_t</code>
          * @param svc_group pointer to service group
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 process_module_refs)(
