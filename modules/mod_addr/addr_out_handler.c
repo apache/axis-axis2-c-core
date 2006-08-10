@@ -319,6 +319,8 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
 
             if (anonymous_uri)
                 epr = axis2_endpoint_ref_create (env, anonymous_uri);
+            if(epr)
+                AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(msg_info_headers, env, epr);
         }
 
 
@@ -334,11 +336,14 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
                                                    AXIS2_WSA_REPLY_TO,
                                                    soap_header, addr_ns);
 
-        if(NULL != epr)
+        /* It is wrong freeing the epr here. Instead I set the locally
+         * created epr to msg_info_headers just after creating it
+         */
+        /*if(NULL != epr)
         {
             AXIS2_ENDPOINT_REF_FREE(epr, env);
             epr = NULL;
-        }
+        }*/
 
         epr = AXIS2_MSG_INFO_HEADERS_GET_FROM (msg_info_headers, env);
 
