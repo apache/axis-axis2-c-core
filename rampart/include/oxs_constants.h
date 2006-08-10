@@ -23,6 +23,9 @@ extern "C"
 {
 #endif
 
+/*Default values*/
+/*Key transfer algo*/
+#define OXS_DEFAULT_KT_ALGO_HREF OXS_HrefRsaPkcs1
 
 
 /*Global prefixes**********************/

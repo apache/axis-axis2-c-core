@@ -42,6 +42,8 @@ oxs_token_build_reference_list_element(const axis2_env_t *env,
                         axiom_node_t *parent
                     );
 
+AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
+oxs_token_get_reference_list_data(const axis2_env_t *env, axiom_node_t *ref_list_node);
 
 
 /*TODO write free method*/

@@ -24,7 +24,6 @@ extern "C"
 #endif
 
 /*Default values*/
-#define RAMPART_DEFAULT_KT_ALGO_HREF OXS_HrefRsaPkcs1
 
 /* rampart element names*/
 #define RAMPART_SECURITY "Security"
