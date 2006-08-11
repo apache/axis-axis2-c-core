@@ -25,29 +25,33 @@ typedef struct axis2_event_impl
     axis2_svc_t *svc;
     /** event type */
     int event_type;
-} axis2_event_impl_t;
+}
+axis2_event_impl_t;
 
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(event) ((axis2_event_impl_t *)event)
 
-axis2_svc_t* AXIS2_CALL 
-axis2_event_get_svc(struct axis2_event *event, 
-                    const axis2_env_t *env);
+axis2_svc_t *AXIS2_CALL 
+axis2_event_get_svc(
+    const axis2_event_t *event, 
+    const axis2_env_t *env);
 
                     
 int AXIS2_CALL 
-axis2_event_get_event_type(struct axis2_event *event, 
-                           const axis2_env_t *env);
+axis2_event_get_event_type(
+    const axis2_event_t *event, 
+    const axis2_env_t *env);
                            
 axis2_status_t AXIS2_CALL 
-axis2_event_free(struct axis2_event *event, 
-                 const axis2_env_t *env);
+axis2_event_free(
+    struct axis2_event *event, 
+    const axis2_env_t *env);
                  
-
-axis2_event_t* AXIS2_CALL 
-axis2_event_create(const axis2_env_t *env, 
-                   axis2_svc_t *svc, 
-                   int event_type)
+axis2_event_t *AXIS2_CALL 
+axis2_event_create(
+    const axis2_env_t *env, 
+    axis2_svc_t *svc, 
+    int event_type)
 {
     axis2_event_impl_t *event_impl = NULL;
     
@@ -85,25 +89,28 @@ axis2_event_create(const axis2_env_t *env,
     return &(event_impl->event);
 }
 
-axis2_svc_t* AXIS2_CALL 
-axis2_event_get_svc(struct axis2_event *event, 
-                    const axis2_env_t *env) 
+axis2_svc_t *AXIS2_CALL 
+axis2_event_get_svc(
+    const axis2_event_t *event, 
+    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(event)->svc;
 }
 
 int AXIS2_CALL 
-axis2_event_get_event_type(struct axis2_event *event, 
-                           const axis2_env_t *env) 
+axis2_event_get_event_type(
+    const axis2_event_t *event, 
+    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(event)->event_type;
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_event_free (struct axis2_event *event, 
-                  const axis2_env_t *env)
+axis2_event_free(
+    struct axis2_event *event, 
+    const axis2_env_t *env)
 {
     axis2_event_impl_t *event_impl = NULL;
     
