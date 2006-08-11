@@ -1058,14 +1058,13 @@ axis2_svc_is_param_locked (
         locked =  AXIS2_SVC_GRP_IS_PARAM_LOCKED(parent, env, param_name);
     if(parent && AXIS2_TRUE == locked)
     {
-        ret = AXIS2_TRUE;
+        return AXIS2_TRUE;
     } 
     param = axis2_svc_get_param(svc, env, param_name);
-    if(NULL == param)
+    if(param)
     {
-        ret = AXIS2_FALSE;
+        ret = AXIS2_PARAM_IS_LOCKED(param, env);
     }
-    ret = AXIS2_PARAM_IS_LOCKED(param, env);
     return ret;
 }
 
