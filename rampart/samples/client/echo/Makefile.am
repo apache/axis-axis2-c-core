@@ -10,6 +10,8 @@ echo_LDADD   = $(LDFLAGS) \
 					-laxis2_util \
                     -laxis2_axiom \
                     -laxis2_wsdl \
+                    -lwoden \
+                    -laxis2_xml_schema \
                     -laxis2_engine \
                     -laxis2_parser \
                     -lpthread \
