@@ -25,11 +25,12 @@
  */
 typedef struct axis2_svc_builder_impl
 {
-   axis2_svc_builder_t svc_builder;
+    axis2_svc_builder_t svc_builder;
     
     axis2_svc_t *svc;
        
-} axis2_svc_builder_impl_t;
+}
+axis2_svc_builder_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(svc_builder) \
     ((axis2_svc_builder_impl_t *) svc_builder)
@@ -37,43 +38,47 @@ typedef struct axis2_svc_builder_impl
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_svc_builder_free (axis2_svc_builder_t *svc_builder, 
-                            const axis2_env_t *env);
+axis2_svc_builder_free(
+    axis2_svc_builder_t *svc_builder, 
+    const axis2_env_t *env);
 
 /**
  * top most method that is used to populate service from corresponding OM
  */
 axis2_status_t AXIS2_CALL
-axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
-                                const axis2_env_t *env,
-                                axiom_node_t *svc_node);
+axis2_svc_builder_populate_svc(
+    axis2_svc_builder_t *svc_builder,
+    const axis2_env_t *env,
+    axiom_node_t *svc_node);
 
 static axis2_array_list_t *
-axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
-                    const axis2_env_t *env,
-                    axiom_children_qname_iterator_t *op_itr);
-
+axis2_svc_builder_process_ops(
+    axis2_svc_builder_t *svc_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *op_itr);
 
 axis2_status_t AXIS2_CALL
-axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
-                                const axis2_env_t *env,
-                                axiom_children_qname_iterator_t *module_confs,
-                                axis2_param_container_t *parent, 
-                                axis2_svc_t *svc);
-
+axis2_svc_builder_process_svc_module_conf(
+    axis2_svc_builder_t *svc_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *module_confs,
+    axis2_param_container_t *parent, 
+    axis2_svc_t *svc);
 
 /**
  * To get the list og modules that is requird to be engage globally
  */
 axis2_status_t AXIS2_CALL
-axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
-                                    const axis2_env_t *env,
-                                    axiom_children_qname_iterator_t *module_refs);
+axis2_svc_builder_process_module_refs(
+    axis2_svc_builder_t *svc_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *module_refs);
 
 /************************** End of function prototypes ************************/
 
-axis2_svc_builder_t * AXIS2_CALL 
-axis2_svc_builder_create (const axis2_env_t *env)
+axis2_svc_builder_t *AXIS2_CALL 
+axis2_svc_builder_create(
+    const axis2_env_t *env)
 {
     axis2_svc_builder_impl_t *svc_builder_impl = NULL;
     
@@ -111,11 +116,12 @@ axis2_svc_builder_create (const axis2_env_t *env)
    return &(svc_builder_impl->svc_builder);
 }
 
-axis2_svc_builder_t * AXIS2_CALL 
-axis2_svc_builder_create_with_file_and_dep_engine_and_svc (const axis2_env_t *env,
-                                                axis2_char_t *file_name,
-                                                struct axis2_dep_engine *dep_engine,
-                                                axis2_svc_t *svc)
+axis2_svc_builder_t *AXIS2_CALL 
+axis2_svc_builder_create_with_file_and_dep_engine_and_svc (
+    const axis2_env_t *env,
+    axis2_char_t *file_name,
+    struct axis2_dep_engine *dep_engine,
+    axis2_svc_t *svc)
 {
     axis2_svc_builder_impl_t *builder_impl = NULL;
     
@@ -140,10 +146,11 @@ axis2_svc_builder_create_with_file_and_dep_engine_and_svc (const axis2_env_t *en
     return &(builder_impl->svc_builder);   
 }
 
-axis2_svc_builder_t * AXIS2_CALL 
-axis2_svc_builder_create_with_dep_engine_and_svc (const axis2_env_t *env,
-                                                axis2_dep_engine_t *dep_engine,
-                                                axis2_svc_t *svc)
+axis2_svc_builder_t *AXIS2_CALL 
+axis2_svc_builder_create_with_dep_engine_and_svc(
+    const axis2_env_t *env,
+    axis2_dep_engine_t *dep_engine,
+    axis2_svc_t *svc)
 {
     axis2_svc_builder_impl_t *builder_impl = NULL;
     
@@ -169,8 +176,9 @@ axis2_svc_builder_create_with_dep_engine_and_svc (const axis2_env_t *env,
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_svc_builder_free (axis2_svc_builder_t *svc_builder, 
-                            const axis2_env_t *env)
+axis2_svc_builder_free(
+    axis2_svc_builder_t *svc_builder, 
+    const axis2_env_t *env)
 {
     axis2_svc_builder_impl_t *svc_builder_impl = NULL;
     
@@ -202,9 +210,10 @@ axis2_svc_builder_free (axis2_svc_builder_t *svc_builder,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
-                                const axis2_env_t *env,
-                                axiom_node_t *svc_node)
+axis2_svc_builder_populate_svc(
+    axis2_svc_builder_t *svc_builder,
+    const axis2_env_t *env,
+    axiom_node_t *svc_node)
 {
     axis2_svc_builder_impl_t *builder_impl = NULL;
     axiom_element_t *svc_element = NULL;
@@ -516,9 +525,10 @@ axis2_svc_builder_populate_svc(axis2_svc_builder_t *svc_builder,
 }
 
 static axis2_array_list_t *
-axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
-                    const axis2_env_t *env,
-                    axiom_children_qname_iterator_t *op_itr)
+axis2_svc_builder_process_ops(
+    axis2_svc_builder_t *svc_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *op_itr)
 {
     axis2_svc_builder_impl_t *builder_impl = NULL;
     axis2_array_list_t *ops = NULL;
@@ -672,11 +682,12 @@ axis2_svc_builder_process_ops(axis2_svc_builder_t *svc_builder,
 
 
 axis2_status_t AXIS2_CALL
-axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
-                                const axis2_env_t *env,
-                                axiom_children_qname_iterator_t *module_confs,
-                                axis2_param_container_t *parent, 
-                                axis2_svc_t *svc)
+axis2_svc_builder_process_svc_module_conf(
+    axis2_svc_builder_t *svc_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *module_confs,
+    axis2_param_container_t *parent, 
+    axis2_svc_t *svc)
 {
     while(AXIS2_TRUE == AXIOM_CHILDREN_ITERATOR_HAS_NEXT(module_confs, env))
     {
@@ -705,10 +716,11 @@ axis2_svc_builder_process_svc_module_conf(axis2_svc_builder_t *svc_builder,
 
 
 axis2_status_t AXIS2_CALL
-axis2_svc_builder_process_module_refs(axis2_svc_builder_t *svc_builder,
-                                        const axis2_env_t *env,
-                                        axiom_children_qname_iterator_t *
-                                            module_refs)
+axis2_svc_builder_process_module_refs(
+    axis2_svc_builder_t *svc_builder,
+    const axis2_env_t *env,
+    axiom_children_qname_iterator_t *
+    module_refs)
 {
     axis2_svc_builder_impl_t *builder_impl = NULL;
     
