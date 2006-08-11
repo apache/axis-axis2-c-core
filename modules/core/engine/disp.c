@@ -66,18 +66,18 @@ axis2_disp_find_svc(
     axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env);
                     
-struct axis2_op *AXIS2_CALL 
+axis2_op_t *AXIS2_CALL 
 axis2_disp_find_op(
     axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env,
-    struct axis2_svc *svc);
+    const axis2_svc_t *svc);
                    
 
 
 axis2_disp_t *AXIS2_CALL 
     axis2_disp_create(
     const axis2_env_t *env, 
-axis2_qname_t *qname) 
+    const axis2_qname_t *qname) 
 {
     axis2_disp_impl_t *disp_impl = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
@@ -256,12 +256,6 @@ axis2_disp_free (
         disp_impl->qname = NULL;
     }
     
-    /*if (disp_impl->base)
-    {
-        axis2_handler_desc_t *handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(disp_impl->base, env);
-        AXIS2_HANDLER_DESC_FREE(handler_desc, env); // freeing handler desc frees handler
-        disp_impl->base = NULL;
-    }*/
     disp_impl->base = NULL;
     
     if (disp_impl->disp.ops)
@@ -276,19 +270,6 @@ axis2_disp_free (
     return AXIS2_SUCCESS;    
 }
     
-/** The struct that inherits from this struct
-    should implement the find_service and find_op methods and assing the 
-    respective function pointers in the base struct.
-    Here we have only the dummy implementation to gauard against erros due to 
-    the failure to provide an impl version by mistake.
- */
-    
-/**
- * finds the service
- *
- * @param messageContext
- * @return
- */
 axis2_svc_t *AXIS2_CALL 
 axis2_disp_find_svc(
     axis2_msg_ctx_t *msg_ctx,
@@ -297,18 +278,11 @@ axis2_disp_find_svc(
     return NULL;
 }
 
-/**
- * finds the op
- *
- * @param service
- * @param msg_ctx
- * @return
- */
-struct axis2_op *AXIS2_CALL 
+axis2_op_t *AXIS2_CALL 
 axis2_disp_find_op(
     axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env,
-    struct axis2_svc *svc)
+    const axis2_svc_t *svc)
 {
     return NULL;
 }

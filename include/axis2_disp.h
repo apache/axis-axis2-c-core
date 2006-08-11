@@ -20,13 +20,18 @@
 /**
  * @defgroup axis2_disp dispatcher
  * @ingroup axis2_engine
- * Description.
+ * dispatcher is responsible for finding the service and operation for a given
+ * invocation. A Web service request would contain information that help 
+ * locate the service and the operation serving the request. This information
+ * could be in various formats, and hence the mechanism to find the requested
+ * service and operation based on the available information could too vary.
+ * Hence there can be various types on dispatches involved in a dispatching 
+ * phase of the engine, that implements the API given in this header.
  * @{
  */
 
 /**
  * @file axis2_disp.h
- * @brief Axis2 Dispatcher interface
  */
 
 #include <axis2_defines.h>
@@ -38,8 +43,6 @@
 extern "C"
 {
 #endif
-    struct axis2_op;
-    struct axis2_svc;
 
     /** Type name for struct axis2_disp */
     typedef struct axis2_disp axis2_disp_t;
@@ -47,15 +50,17 @@ extern "C"
     typedef struct axis2_disp_ops axis2_disp_ops_t;
 
     /**
-     * Dispatcher ops struct
-     * Encapsulator struct for operations of axis2_dispatcher
-     *
+     * dispatcher ops struct.
+     * Encapsulator struct for operations of axis2_dispatcher.
      */
     AXIS2_DECLARE_DATA struct axis2_disp_ops
     {
         /**
+         * Gets the base struct which is of type handler.
          * @param disp pointer to dispatcher
          * @param env pointer to environment struct
+         * @return pointer to base handler struct. Returns a reference, not a 
+         * cloned copy
          */
         axis2_handler_t *(AXIS2_CALL *
                 get_base)(
@@ -63,8 +68,11 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets the qname of the dispatcher.
          * @param disp pointer to dispatcher
          * @param env pointer to environment struct
+         * @return pointer to qname. Returns a reference, not a 
+         * cloned copy
          */
         axis2_qname_t *(AXIS2_CALL *
                 get_qname)(
@@ -72,49 +80,64 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets the qname of the dispatcher.
          * @param disp pointer to dispatcher
          * @param env pointer to environment struct
-         * @param qname pointer to qname
+         * @param qname pointer to qname, dispatcher assumes ownership of the 
+         * qname struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_qname)(
-                    struct axis2_disp *disp,
+                    axis2_disp_t *disp,
                     const axis2_env_t *env, 
                     axis2_qname_t *qname);
 
         /**
+         * Frees dispatcher struct.
          * @param disp pointer to dispatcher
          * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE                    
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
-                    struct axis2_disp *disp,
+                    axis2_disp_t *disp,
                     const axis2_env_t *env);
         /**
-         * Finds the service
+         * Finds the service that corresponds to the given message context. 
+         * The various dispatcher implementations that inherit from dispatcher 
+         * struct should implement this find_svc method and assign the 
+         * respective function pointers to point to this method. 
          * @param msg_ctx pointer to message context 
          * @param env pointer to environment struct
+         * @return pointer to service that should be servicing the request
          */
-        struct axis2_svc *(AXIS2_CALL *
+        axis2_svc_t *(AXIS2_CALL *
                 find_svc)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
         /**
+         * Finds the operation that corresponds to the given message context
+         * and service. The various dispatcher implementations that inherit from 
+         * dispatcher struct should implement this find_op method and assign the 
+         * respective function pointers to point to this method. 
          * Finds the op
          * @param msg_ctx pointer to message context
          * @param env pointer to environment struct
-         * @param svc pointer to service
+         * @param svc pointer to service, usually this is found through find_svc
+         * method
+         * @return pointer to operation that the request is targeted to
          */
-        struct axis2_op *(AXIS2_CALL *
+        axis2_op_t *(AXIS2_CALL *
                 find_op)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    struct axis2_svc *svc);
+                    const axis2_svc_t *svc);
 
     };
 
     /**
-     * dispatcher struct
+     * dispatcher struct.
      */
     struct axis2_disp
     {
@@ -124,86 +147,97 @@ extern "C"
 
 
     /**
-     * Creates disp struct.
+     * Creates a dispatcher struct instance.
      * @param env pointer to environment struct
-     * @param qname pointer to qname, it can be NULL
+     * @param qname pointer to QName. QName is cloned by create method.
+     * @return pointer to newly created dispatcher
      */
     AXIS2_EXTERN axis2_disp_t *AXIS2_CALL 
     axis2_disp_create(
         const axis2_env_t *env, 
-        axis2_qname_t *qname);
+        const axis2_qname_t *qname);
 
     /**
      * Invokes the dispatcher.
-     * @param handler pointer to handler
+     * @param handler pointer to handler that is the base of the dispatcher 
+     * to be invoked
      * @param env pointer to environment struct
      * @param msg_ctx pointer to message context
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     axis2_status_t AXIS2_CALL 
     axis2_disp_invoke(
-        struct axis2_handler *handler,
+        axis2_handler_t *handler,
         const axis2_env_t *env,
-        struct axis2_msg_ctx *msg_ctx);
+        axis2_msg_ctx_t *msg_ctx);
 
     /**
-     * Creates the addressing dispatcher.
+     * Creates a WS-Addressing based dispatcher.
      * @param env pointer to environment struct
+     * @return pointer to the newly created dispatcher with find_svc and find_op
+     * methods implemented based on WS-Addressing
      */
     axis2_disp_t *AXIS2_CALL 
     axis2_addr_disp_create(
         const axis2_env_t *env);
 
     /**
-     * Creates the request uri dispatcher.
+     * Creates a request URI based dispatcher.
      * @param env pointer to environment struct
+     * @return pointer to the newly created dispatcher with find_svc and find_op
+     * methods implemented based on request URI processing.
      */
     axis2_disp_t *AXIS2_CALL 
     axis2_req_uri_disp_create(
         const axis2_env_t *env);
 
     /**
-     * Creates the soap body dispatcher.
+     * Creates a SOAP body based dispatcher.
      * @param env pointer to environment struct
+     * @return pointer to the newly created dispatcher with find_svc and find_op
+     * methods implemented based on SOAP body processing.
      */
     axis2_disp_t *AXIS2_CALL 
     axiom_soap_body_disp_create(
         const axis2_env_t *env);
 
     /**
-     * Creates the soap action dispatcher.
+     * Creates a SOAP action based dispatcher.
      * @param env pointer to environment struct
+     * @return pointer to the newly created dispatcher with find_svc and find_op
+     * methods implemented based on SOAP action processing
      */
     axis2_disp_t *AXIS2_CALL 
     axiom_soap_action_disp_create(
         const axis2_env_t *env);
 
 
-/** Gets the  base. 
+/** Gets the base handler. 
     @sa axis2_disp_ops#get_base */
 #define AXIS2_DISP_GET_BASE(disp, env) \
         ((disp)->ops->get_base(disp, env))
 
-/** Gets the qname.
+/** Gets QName.
     @sa axis2_disp_ops#get_qname */
 #define AXIS2_DISP_GET_QNAME(disp, env) \
         ((disp)->ops->get_qname(disp, env))
 
-/** Sets the qname.
+/** Sets QName.
     @sa axis2_disp_ops#set_qname */
 #define AXIS2_DISP_SET_QNAME(disp, env, name) \
         ((disp)->ops->set_qname(disp, env, name))
 
-/** Frees the dispatcher.
+/** Frees dispatcher.
     @sa axis2_disp_ops#free */
 #define AXIS2_DISP_FREE(disp, env) \
         ((disp)->ops->free(disp, env))
 
-/** Finds the service.
+/** Finds service that should service the request.
     @sa axis2_disp_ops#find_svc */
 #define AXIS2_DISP_FIND_SVC(msg_ctx, env) \
         ((msg_ctx)->ops->find_svc(msg_ctx, env))
 
-/** Finds the operation.
+/** Finds the operation in the give service that the request is targeted to.
     @sa axis2_disp_ops#find_op */
 #define AXIS2_DISP_FIND_OP(msg_ctx, env, svc) \
         ((msg_ctx)->ops->find_op(msg_ctx, env, svc))

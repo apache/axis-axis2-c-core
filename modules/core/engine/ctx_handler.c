@@ -18,22 +18,25 @@
 #include <axis2_qname.h>
 #include <axis2_svc.h>
 #include <axis2_conf_ctx.h>
+    
 
 /**
- * By the time the control comes to this handler, the dispatching must have happened
- * so that the message context contains the AxisServiceGroup, AxisService and
- * AxisOperation.
- * This will then try to find the Contexts of ServiceGroup, Service and the Operation.
+ * By the time the control comes to this handler, the dispatching must have 
+ * happened so that the message context contains the service group, service and 
+ * operation. This will then try to find the contexts for service group, service 
+ * and the operation.
  */
 
 axis2_status_t AXIS2_CALL 
-axis2_ctx_handler_invoke(struct axis2_handler *handler, 
-                         const axis2_env_t *env,
-                         struct axis2_msg_ctx *msg_ctx);
+axis2_ctx_handler_invoke(
+    axis2_handler_t *handler, 
+    const axis2_env_t *env,
+    struct axis2_msg_ctx *msg_ctx);
 
-axis2_handler_t* AXIS2_CALL 
-axis2_ctx_handler_create(const axis2_env_t *env, 
-                         axis2_qname_t *qname) 
+axis2_handler_t *AXIS2_CALL 
+axis2_ctx_handler_create(
+    const axis2_env_t *env, 
+    axis2_qname_t *qname) 
 {
     axis2_handler_t *handler = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
@@ -88,9 +91,10 @@ axis2_ctx_handler_create(const axis2_env_t *env,
 
 
 axis2_status_t AXIS2_CALL 
-axis2_ctx_handler_invoke(struct axis2_handler *handler, 
-                         const axis2_env_t *env,
-                         struct axis2_msg_ctx *msg_ctx)
+axis2_ctx_handler_invoke(
+    axis2_handler_t *handler, 
+    const axis2_env_t *env,
+    struct axis2_msg_ctx *msg_ctx)
 {
     axis2_op_t *op = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;

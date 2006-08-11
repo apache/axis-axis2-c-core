@@ -79,7 +79,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
       */                                       
        
     struct axis2_qname* (AXIS2_CALL *
-   clone)(struct axis2_qname *qname,
+   clone)(const struct axis2_qname *qname,
            const axis2_env_t *env);
                                        
     axis2_char_t* (AXIS2_CALL *
