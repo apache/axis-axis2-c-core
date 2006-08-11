@@ -31,7 +31,7 @@ extern "C" {
 #define OPENSSL_DECRYPT             0
 #define OPENSSL_LEAVE_UNCHANGED     -1
 
-/**Ciphers *************/
+/**Supported Ciphers *************/
 
 #define OPENSSL_EVP_des_ede3_cbc     "EVP_des_ede3_cbc"
 #define OPENSSL_EVP_aes_128_cbc      "EVP_aes_128_cbc"

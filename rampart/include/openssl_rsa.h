@@ -48,7 +48,7 @@ typedef struct _evp_pkey evp_pkey, *evp_pkey_ptr;
 
 struct _evp_pkey{
     EVP_PKEY *key;
-    unsigned char *name;
+    axis2_char_t *name;
     int size;
     int type;
 };

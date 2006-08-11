@@ -47,14 +47,6 @@ oxs_get_cipher(const axis2_env_t *env,
                      axis2_char_t *url);
 
 
-AXIS2_EXTERN int AXIS2_CALL
-oxs_get_cipher_key_size(const axis2_env_t *env,
-                     axis2_char_t *url);
-
-
-AXIS2_EXTERN int AXIS2_CALL
-oxs_get_cipher_iv_size(const axis2_env_t *env,
-                     axis2_char_t *url);
 /** @} */
 #ifdef __cplusplus
 }

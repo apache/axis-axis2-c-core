@@ -47,6 +47,9 @@ AXIS2_EXTERN cipher_prop_ptr AXIS2_CALL
 openssl_cipher_property_create(const axis2_env_t *env);
 
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+openssl_cipher_property_reset(const axis2_env_t *env, cipher_prop_ptr cprop);
+
 /*TODO write the free function*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL  
 openssl_cipher_property_free(const axis2_env_t *env );

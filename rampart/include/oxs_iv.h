@@ -14,41 +14,38 @@
  * limitations under the License.
  */
 
-#ifndef OXS_TOKEN_DATA_REFERENCE_H
-#define OXS_TOKEN_DATA_REFERENCE_H
+#ifndef OXS_IV_H
+#define OXS_IV_H
 
 
 /**
-  * @file oxs_token_data_reference.h
+  * @file oxs_key.h
   * @brief 
   */
 
 #include <axis2_defines.h>
+#include <oxs_constants.h>
+#include <openssl_constants.h>
 #include <axis2_env.h>
-#include <axiom_node.h>
-#include <axiom_element.h>
-#include <axis2_qname.h>
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-/**
-* Data Reference element
-*/
-AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-oxs_token_build_data_reference_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t *data_ref
-                    );
+
+#define OXS_IV_DEFAULT    OPENSSL_DEFAULT_IV16
+
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-oxs_token_get_data_reference(const axis2_env_t *env, axiom_node_t *data_ref_node);
+oxs_iv_generate_for_algo(const axis2_env_t *env, 
+                            axis2_char_t *key_algo);
 
-/*TODO write free method*/
+
+
 /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* OXS_TOKEN_DATA_REFERENCE_H */
+#endif                          /* OXS_IV_H */

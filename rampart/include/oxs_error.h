@@ -50,6 +50,7 @@ extern "C"
 #define OXS_ERROR_CREATION_FAILED       8
 #define OXS_ERROR_INITIALIZATION_FAILED 9
 #define OXS_ERROR_DATA_CONV_FAILED     10
+#define OXS_ERROR_OPENSSL_FUNC_FAILED  11
 
 
 typedef struct _oxs_error_description oxs_error_description, *oxs_error_description_ptr;
