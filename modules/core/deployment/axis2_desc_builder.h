@@ -226,7 +226,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to newly created description builder
      */
-    AXIS2_EXTERN axis2_desc_builder_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
     axis2_desc_builder_create(
         const axis2_env_t *env);
 
@@ -236,7 +236,7 @@ extern "C"
      * @param engine pointer to engine
      * @return pointer to newly created description builder
      */
-    AXIS2_EXTERN axis2_desc_builder_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
     axis2_desc_builder_create_with_dep_engine(
         const axis2_env_t *env,
         struct axis2_dep_engine *engine);
@@ -247,7 +247,7 @@ extern "C"
      * @param engine pointer to engine
      * @return pointer to newly created description builder
      */
-    AXIS2_EXTERN axis2_desc_builder_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_desc_builder_t *AXIS2_CALL
     axis2_desc_builder_create_with_file_and_dep_engine(
         const axis2_env_t *env,
         axis2_char_t *file_name,
@@ -255,56 +255,56 @@ extern "C"
 
 /*************************** Function macros **********************************/
 
-/** Gets the service consumed by service client.
+/** Frees the description builder.
     @sa axis2_desc_builder_ops#free */
 #define AXIS2_DESC_BUILDER_FREE(desc_builder, env) \
       ((desc_builder)->ops->free (desc_builder, env))
 
-/** Gets the service consumed by service client.
+/** Build om.
     @sa axis2_desc_builder_ops#build_om */
 #define AXIS2_DESC_BUILDER_BUILD_OM(desc_builder, env) \
       ((desc_builder)->ops->build_OM (desc_builder, env))
 
-/** Gets the service consumed by service client.
+/** Process flow.
     @sa axis2_desc_builder_ops#process_flow */
 #define AXIS2_DESC_BUILDER_PROCESS_FLOW(desc_builder, env, flow_element, \
         parent, node) ((desc_builder)->ops->process_flow (desc_builder, env, \
             flow_element, parent, node))
 
-/** Gets the service consumed by service client.
+/** Process handler.
     @sa axis2_desc_builder_ops#get_svc */
 #define AXIS2_DESC_BUILDER_PROCESS_HANDLER(desc_builder, env, handler_element, \
         parent) ((desc_builder)->ops->process_handler (desc_builder, \
             env, handler_element, parent))
 
-/** Gets the service consumed by service client.
+/** Process params.
     @sa axis2_desc_builder_ops#get_svc */
 #define AXIS2_DESC_BUILDER_PROCESS_PARAMS(desc_builder, env, params, \
         param_container, parent) ((desc_builder)->ops->process_params \
             (desc_builder, env, params, param_container, parent))
 
-/** Gets the service consumed by service client.
+/** Process op module refs.
     @sa axis2_desc_builder_ops#get_svc */
 #define AXIS2_DESC_BUILDER_PROCESS_OP_MODULE_REFS(desc_builder, env, \
         module_refs, op) ((desc_builder)->ops->process_op_module_refs \
             (desc_builder, env, module_refs, op))
 
-/** Gets the service consumed by service client.
+/** Loads the message receiver.
     @sa axis2_desc_builder_ops#get_svc */
 #define AXIS2_DESC_BUILDER_LOAD_MSG_RECV(desc_builder, env, recv_element) \
       ((desc_builder)->ops->load_msg_recv (desc_builder, env, recv_element))
 
-/** Gets the service consumed by service client.
+/** Gets the short file name.
     @sa axis2_desc_builder_ops#get_svc */
 #define AXIS2_DESC_BUILDER_GET_SHORT_FILE_NAME(desc_builder, env, file_name) \
       ((desc_builder)->ops->get_short_file_name (desc_builder, env, file_name))
 
-/** Gets the service consumed by service client.
+/** Gets the file name without prefix.
     @sa axis2_desc_builder_ops#get_svc */
 #define AXIS2_DESC_BUILDER_GET_FILE_NAME_WITHOUT_PREFIX(desc_builder, env, file_name) \
       ((desc_builder)->ops->get_file_name_without_prefix (desc_builder, env, file_name))
 
-/** Gets the service consumed by service client.
+/** Gets the value.
     @sa axis2_desc_builder_ops#get_svc */
 #define AXIS2_DESC_BUILDER_GET_VALUE(desc_builder, env, in) \
       ((desc_builder)->ops->get_value (desc_builder, env, in))
