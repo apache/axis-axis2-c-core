@@ -19,7 +19,7 @@
 
 /**
  * @defgroup axis2_handler handler
- * @ingroup axis2_desc
+ * @ingroup axis2_handler
  * Description.
  * @{
  */

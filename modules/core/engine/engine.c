@@ -46,83 +46,83 @@ typedef struct axis2_engine_impl
 #define AXIS2_INTF_TO_IMPL(engine) ((axis2_engine_impl_t *)engine)
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_send(struct axis2_engine *engine, 
+axis2_engine_send(axis2_engine_t *engine, 
                   const axis2_env_t *env, 
                   axis2_msg_ctx_t *msg_ctx);
 
                   
 axis2_status_t AXIS2_CALL 
-axis2_engine_receive(struct axis2_engine *engine, 
+axis2_engine_receive(axis2_engine_t *engine, 
                      const axis2_env_t *env, 
                      axis2_msg_ctx_t *msg_ctx);
 
                      
 axis2_status_t AXIS2_CALL 
-axis2_engine_send_fault(struct axis2_engine *engine, 
+axis2_engine_send_fault(axis2_engine_t *engine, 
                         const axis2_env_t *env, 
                         axis2_msg_ctx_t *msg_ctx);
                         
 axis2_status_t AXIS2_CALL 
-axis2_engine_receive_fault(struct axis2_engine *engine, 
+axis2_engine_receive_fault(axis2_engine_t *engine, 
                            const axis2_env_t *env, 
                            axis2_msg_ctx_t *msg_ctx);
 
                            
 axis2_msg_ctx_t* AXIS2_CALL 
-axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine, 
+axis2_engine_create_fault_msg_ctx(axis2_engine_t *engine, 
                                   const axis2_env_t *env,
                                    axis2_msg_ctx_t *processing_context);
                                    
 axis2_status_t AXIS2_CALL 
-axis2_engine_extract_fault_info_from_msg_ctx(struct axis2_engine *engine, 
+axis2_engine_extract_fault_info_from_msg_ctx(axis2_engine_t *engine, 
                                              const axis2_env_t *env,
                                              axis2_msg_ctx_t *msg_ctx,
                                              struct axiom_soap_fault *fault);
                                              
 axis2_status_t AXIS2_CALL 
-axis2_engine_verify_ctx_built(struct axis2_engine *engine, 
+axis2_engine_verify_ctx_built(axis2_engine_t *engine, 
                               const axis2_env_t *env, 
                               axis2_msg_ctx_t *msg_ctx);
                               
 axis2_status_t AXIS2_CALL 
-axis2_engine_invoke_phases(struct axis2_engine *engine, 
+axis2_engine_invoke_phases(axis2_engine_t *engine, 
                            const axis2_env_t *env, 
                            axis2_array_list_t *phases, 
                            axis2_msg_ctx_t *msg_ctx);
 
                            
 axis2_status_t AXIS2_CALL 
-axis2_engine_resume_invocation_phases(struct axis2_engine *engine, 
+axis2_engine_resume_invocation_phases(axis2_engine_t *engine, 
                                       const axis2_env_t *env, 
                                       axis2_array_list_t *phases, 
                                       axis2_msg_ctx_t *msg_ctx);
                                       
 axis2_char_t* AXIS2_CALL 
-axis2_engine_get_sender_fault_code(struct axis2_engine *engine, 
+axis2_engine_get_sender_fault_code(axis2_engine_t *engine, 
                                    const axis2_env_t *env, 
                                    axis2_char_t *soap_namespace);
 
                                    
 const axis2_char_t* AXIS2_CALL 
-axis2_engine_get_receiver_fault_code(struct axis2_engine *engine, 
+axis2_engine_get_receiver_fault_code(axis2_engine_t *engine, 
                                      const axis2_env_t *env, 
                                      axis2_char_t *soap_namespace);
 
                                      
 axis2_status_t AXIS2_CALL 
-axis2_engine_free(struct axis2_engine *engine, 
+axis2_engine_free(axis2_engine_t *engine, 
                   const axis2_env_t *env);
     
 axis2_status_t axis2_engine_check_must_understand_headers(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_resume_receive(struct axis2_engine *engine,
+axis2_engine_resume_receive(axis2_engine_t *engine,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_resume_send(struct axis2_engine *engine,
+axis2_engine_resume_send(axis2_engine_t *engine,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
@@ -201,7 +201,7 @@ axis2_engine_create(const axis2_env_t *env,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_free(struct axis2_engine *engine, 
+axis2_engine_free(axis2_engine_t *engine, 
                   const axis2_env_t *env)
 {
     axis2_engine_impl_t *engine_impl = NULL;
@@ -233,7 +233,7 @@ axis2_engine_free(struct axis2_engine *engine,
  * @see Handler
  */
 axis2_status_t AXIS2_CALL 
-axis2_engine_send(struct axis2_engine *engine, 
+axis2_engine_send(axis2_engine_t *engine, 
                   const axis2_env_t *env, 
                   axis2_msg_ctx_t *msg_ctx)
 {
@@ -344,7 +344,7 @@ axis2_engine_send(struct axis2_engine *engine,
  * @see Handler
  */
 axis2_status_t AXIS2_CALL 
-axis2_engine_receive(struct axis2_engine *engine, 
+axis2_engine_receive(axis2_engine_t *engine, 
                      const axis2_env_t *env, 
                      axis2_msg_ctx_t *msg_ctx)
 {
@@ -461,7 +461,7 @@ axis2_engine_receive(struct axis2_engine *engine,
  * @param msg_ctx
  */
 axis2_status_t AXIS2_CALL 
-axis2_engine_send_fault(struct axis2_engine *engine, 
+axis2_engine_send_fault(axis2_engine_t *engine, 
                         const axis2_env_t *env, 
                         axis2_msg_ctx_t *msg_ctx)
 {
@@ -527,7 +527,7 @@ axis2_engine_send_fault(struct axis2_engine *engine,
  * @param msg_ctx
  */
 axis2_status_t AXIS2_CALL 
-axis2_engine_receive_fault(struct axis2_engine *engine, 
+axis2_engine_receive_fault(axis2_engine_t *engine, 
                            const axis2_env_t *env, 
                            axis2_msg_ctx_t *msg_ctx)
 {
@@ -592,7 +592,7 @@ axis2_engine_receive_fault(struct axis2_engine *engine,
  * @param e
  */
 axis2_msg_ctx_t* AXIS2_CALL 
-axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine, 
+axis2_engine_create_fault_msg_ctx(axis2_engine_t *engine, 
                                   const axis2_env_t *env,
                                   axis2_msg_ctx_t *processing_context)
 {
@@ -773,7 +773,7 @@ axis2_engine_create_fault_msg_ctx(struct axis2_engine *engine,
  * @param e
  */
 axis2_status_t AXIS2_CALL 
-axis2_engine_extract_fault_info_from_msg_ctx(struct axis2_engine *engine, 
+axis2_engine_extract_fault_info_from_msg_ctx(axis2_engine_t *engine, 
                                              const axis2_env_t *env,
                                              axis2_msg_ctx_t *msg_ctx,
                                              struct axiom_soap_fault *fault)
@@ -848,7 +848,7 @@ axis2_engine_extract_fault_info_from_msg_ctx(struct axis2_engine *engine,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_verify_ctx_built(struct axis2_engine *engine, 
+axis2_engine_verify_ctx_built(axis2_engine_t *engine, 
                               const axis2_env_t *env, 
                               axis2_msg_ctx_t *msg_ctx)
 {
@@ -872,7 +872,7 @@ axis2_engine_verify_ctx_built(struct axis2_engine *engine,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_invoke_phases(struct axis2_engine *engine, 
+axis2_engine_invoke_phases(axis2_engine_t *engine, 
                            const axis2_env_t *env, 
                            axis2_array_list_t *phases, 
                            axis2_msg_ctx_t *msg_ctx)
@@ -904,7 +904,7 @@ axis2_engine_invoke_phases(struct axis2_engine *engine,
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_engine_resume_invocation_phases(struct axis2_engine *engine, 
+axis2_engine_resume_invocation_phases(axis2_engine_t *engine, 
                                       const axis2_env_t *env, 
                                       axis2_array_list_t *phases, 
                                       axis2_msg_ctx_t *msg_ctx)
@@ -956,7 +956,7 @@ axis2_engine_resume_invocation_phases(struct axis2_engine *engine,
 }
 
 axis2_char_t* AXIS2_CALL 
-axis2_engine_get_sender_fault_code(struct axis2_engine *engine, 
+axis2_engine_get_sender_fault_code(axis2_engine_t *engine, 
                                    const axis2_env_t *env, 
                                    axis2_char_t *soap_namespace) 
 {
@@ -972,7 +972,7 @@ axis2_engine_get_sender_fault_code(struct axis2_engine *engine,
 }
 
 const axis2_char_t* AXIS2_CALL 
-axis2_engine_get_receiver_fault_code(struct axis2_engine *engine, 
+axis2_engine_get_receiver_fault_code(axis2_engine_t *engine, 
                                      const axis2_env_t *env, 
                                      axis2_char_t *soap_namespace) 
 {
@@ -1082,7 +1082,7 @@ axis2_status_t axis2_engine_check_must_understand_headers(const axis2_env_t *env
  * @throws AxisFault
  */
 axis2_status_t AXIS2_CALL 
-axis2_engine_resume_receive(struct axis2_engine *engine,
+axis2_engine_resume_receive(axis2_engine_t *engine,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
@@ -1136,7 +1136,7 @@ axis2_engine_resume_receive(struct axis2_engine *engine,
  * @param *msg_ctx
  */
 axis2_status_t AXIS2_CALL 
-axis2_engine_resume_send(struct axis2_engine *engine,
+axis2_engine_resume_send(axis2_engine_t *engine,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
