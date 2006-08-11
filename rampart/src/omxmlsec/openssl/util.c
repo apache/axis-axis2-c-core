@@ -28,13 +28,12 @@
 AXIS2_EXTERN cipher_prop_ptr  AXIS2_CALL
 openssl_get_cipher_property(const axis2_env_t *env, axis2_char_t *cipher_name)
 {
-    int ret, key_length;
     EVP_CIPHER* cipher;
     EVP_CIPHER_CTX ctx;
     cipher_prop_ptr cprop = NULL;
     
    
-    cipher = openssl_get_evp_cipher_by_name(env, cipher_name); 
+    cipher = (EVP_CIPHER*)openssl_get_evp_cipher_by_name(env, cipher_name); 
     if(!cipher){
          oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
             "openssl_get_evp_cipher_by_name failed");
@@ -47,32 +46,42 @@ openssl_get_cipher_property(const axis2_env_t *env, axis2_char_t *cipher_name)
     
     /*Create a cipher property and populate it*/
     cprop = openssl_cipher_property_create(env);
+    
+
     cprop->cipher = cipher;
-    cprop->name = AXIS2_STRDUP(cipher_name, env);
+    cprop->name = cipher_name;
     cprop->key_size = EVP_CIPHER_CTX_key_length(&ctx);
     cprop->block_size = EVP_CIPHER_CTX_block_size(&ctx);
     cprop->iv_size = EVP_CIPHER_CTX_iv_length(&ctx);
+
+    printf("\n openssl get Cipher prop\n------\n name=%s, bs=%d, ks=%d, ivs=%d\n", cipher_name , cprop->key_size, cprop->block_size, cprop->iv_size);
+
+    /*EVP_CIPHER_CTX_cleanup(&ctx);*/
     return cprop;
 }
 
 AXIS2_EXTERN EVP_CIPHER*  AXIS2_CALL
 openssl_get_evp_cipher_by_name(const axis2_env_t *env, axis2_char_t *cipher_name)
 {
-    if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_des_ede3_cbc ))
-    {
-        return EVP_des_ede3_cbc();
-    }else if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc ))
-    {
-        return EVP_aes_128_cbc();
-    }else if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc ))
-    {
-        return EVP_aes_192_cbc();
-    }else if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc ))
-    {
-        return EVP_aes_256_cbc();
+    EVP_CIPHER* cipher = NULL;
+
+    if(0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_des_ede3_cbc )){
+        cipher = (EVP_CIPHER*) EVP_des_ede3_cbc();
+
+    }else if(0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc )){
+        cipher =  (EVP_CIPHER*)EVP_aes_128_cbc();
+
+    }else if(0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_192_cbc )){
+        cipher =  (EVP_CIPHER*)EVP_aes_192_cbc();
+
+    }else if(0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_256_cbc )){
+        cipher =  (EVP_CIPHER*)EVP_aes_256_cbc();
+
     }else{
         return NULL;
     }
+
+    return cipher;
 }
 
 

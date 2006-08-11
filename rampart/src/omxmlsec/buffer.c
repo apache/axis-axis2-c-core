@@ -365,6 +365,8 @@ oxs_buffer_base64_node_content_read(const axis2_env_t *env, oxs_buffer_ptr buf, 
     return (0);  
 }
 
+  
+
 
 
 

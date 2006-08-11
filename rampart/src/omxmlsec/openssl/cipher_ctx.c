@@ -29,10 +29,23 @@
 AXIS2_EXTERN openssl_evp_block_cipher_ctx_ptr AXIS2_CALL
 openssl_evp_block_cipher_ctx_create(const axis2_env_t *env)
 {
-    openssl_evp_block_cipher_ctx_ptr bc_ctx = NULL;
+    openssl_evp_block_cipher_ctx_ptr   bc_ctx = NULL;
     bc_ctx = (openssl_evp_block_cipher_ctx_ptr)AXIS2_MALLOC(env->allocator,sizeof(openssl_evp_block_cipher_ctx));
-    
+    openssl_evp_block_cipher_ctx_reset(env, bc_ctx); 
     return bc_ctx;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+openssl_evp_block_cipher_ctx_reset(const axis2_env_t *env, openssl_evp_block_cipher_ctx_ptr bc_ctx)
+{
+    bc_ctx->cipher = NULL;
+    bc_ctx->key_initialized = -1;
+    bc_ctx->ctx_initialized = -1;
+    bc_ctx->key = NULL;
+    bc_ctx->iv = NULL;
+    bc_ctx->pad = NULL;
+
+    return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN int  AXIS2_CALL  
@@ -70,7 +83,7 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
     }
     */
 
-    bc_ctx->cipher = (EVP_CIPHER*)openssl_get_evp_cipher_by_name(env, (axis2_char_t*)cipher_name);
+    bc_ctx->cipher =  (EVP_CIPHER*)openssl_get_evp_cipher_by_name(env, (axis2_char_t*)cipher_name);
 
     /*Sets the IV if not set. Well..How we convey this IV to decrypt*/
     if(!(bc_ctx->iv)){
@@ -80,7 +93,7 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
                 return(-1);
         }
     }else{
-        iv_len =  AXIS2_STRLEN(bc_ctx->iv);
+        iv_len =  AXIS2_STRLEN((axis2_char_t*)bc_ctx->iv);
     }
 
     /*Key supposed to be set before this */
@@ -103,7 +116,7 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
     EVP_CIPHER_CTX_init(&(bc_ctx->cipher_ctx));
     
     EVP_CipherInit_ex(&(bc_ctx->cipher_ctx), bc_ctx->cipher, NULL, NULL, NULL, encrypt);
-    EVP_CIPHER_CTX_set_key_length(&(bc_ctx->cipher_ctx), strlen(bc_ctx->key));
+    EVP_CIPHER_CTX_set_key_length(&(bc_ctx->cipher_ctx), strlen((axis2_char_t*)bc_ctx->key));
     /* We finished modifying parameters so now we can set key and IV */
     ret  = EVP_CipherInit_ex(&(bc_ctx->cipher_ctx), NULL, NULL, bc_ctx->key, bc_ctx->iv, encrypt);
     

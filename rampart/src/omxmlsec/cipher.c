@@ -24,47 +24,30 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_get_cipher(const axis2_env_t *env,
                      axis2_char_t *url)
 {
-    if(AXIS2_STRCMP(url, (axis2_char_t*)OXS_HrefDes3Cbc)){
-        return OPENSSL_EVP_des_ede3_cbc;
-    }else if(AXIS2_STRCMP(url, (axis2_char_t*)OXS_HrefAes128Cbc)){
-        return OPENSSL_EVP_aes_128_cbc;
-    }else if(AXIS2_STRCMP(url, (axis2_char_t*)OXS_HrefAes192Cbc)){
-        return OPENSSL_EVP_aes_192_cbc;
-    }else if(AXIS2_STRCMP(url, (axis2_char_t*)OXS_HrefAes256Cbc)){
-        return OPENSSL_EVP_aes_256_cbc;
+
+    axis2_char_t *cipher_name = NULL;
+
+    if(0 == AXIS2_STRCMP(url, (axis2_char_t*)OXS_HrefDes3Cbc)){
+         cipher_name = OPENSSL_EVP_des_ede3_cbc;
+
+    }else if(0 == AXIS2_STRCMP(url, (axis2_char_t*)OXS_HrefAes128Cbc)){
+        cipher_name = OPENSSL_EVP_aes_128_cbc;
+
+    }else if(0 == AXIS2_STRCMP(url, (axis2_char_t*)OXS_HrefAes192Cbc)){
+        cipher_name = OPENSSL_EVP_aes_192_cbc;
+
+    }else if(0 == AXIS2_STRCMP(url, (axis2_char_t*)OXS_HrefAes256Cbc)){
+        cipher_name = OPENSSL_EVP_aes_256_cbc;
+
     }else{
         oxs_error(ERROR_LOCATION,
                     OXS_ERROR_UNSUPPORTED_ALGO, "Algorithm not supported");
         return NULL;
     }
 
-    return NULL; 
-}
-
-AXIS2_EXTERN int AXIS2_CALL
-oxs_get_cipher_key_size(const axis2_env_t *env,
-                     axis2_char_t *url)
-{
-    int size = 16;
-    axis2_char_t* cipher_name = NULL;
-
-    cipher_name = oxs_get_cipher(env, url);
-    /*TODO*/
-    return size;    
-}
-
-
-AXIS2_EXTERN int AXIS2_CALL
-oxs_get_cipher_iv_size(const axis2_env_t *env,
-                     axis2_char_t *url)
-{
-    int size = 8;
-    axis2_char_t* cipher_name = NULL;
-
-    cipher_name = oxs_get_cipher(env, url);
-    /*TODO*/
-    
-    return size;
+    printf("\n oxs_get_cipher for url = %s,  cipher %s\n", url, cipher_name);
+    return cipher_name;
 
 }
+
 

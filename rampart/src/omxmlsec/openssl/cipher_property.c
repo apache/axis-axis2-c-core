@@ -30,8 +30,21 @@ AXIS2_EXTERN cipher_prop_ptr AXIS2_CALL
 openssl_cipher_property_create(const axis2_env_t *env)
 {
     cipher_prop_ptr cprop = NULL;
-    cprop = (cipher_prop_ptr) AXIS2_MALLOC(env->allocator,sizeof(cipher_prop_ptr));
+    cprop = (cipher_prop_ptr) AXIS2_MALLOC(env->allocator,sizeof(cipher_prop));
+    openssl_cipher_property_reset(env, cprop);
     return cprop;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+openssl_cipher_property_reset(const axis2_env_t *env, cipher_prop_ptr cprop)
+{
+    cprop->cipher = NULL;
+    cprop->name = NULL;
+    cprop->key_size = -1;
+    cprop->block_size = -1;
+    cprop->iv_size = -1;
+
+    return AXIS2_SUCCESS;
 }
 
 /*TODO write the free function*/

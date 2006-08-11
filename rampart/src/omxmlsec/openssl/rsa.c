@@ -51,8 +51,8 @@ generate_random_key(const axis2_env_t *env, oxs_buffer_ptr buf, int size)
         return AXIS2_FAILURE;
     }
 /**************REMOVE TODO***/
-#if 0
-    buf->data = "012345670123456701234567";
+#if 1
+    buf->data = (unsigned char *)"012345670123456701234567";
     buf->size = 24;
 #endif
 /***************************/

@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <axis2_util.h>
 #include <oxs_buffer.h>
+#include <oxs_error.h>
 #include <openssl_cipher_ctx.h>
 #include <openssl_crypt.h>
 #include <openssl/rand.h>
@@ -63,7 +64,6 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
                 }else{
                     inlen = BUFSIZE;
                 }
-
                 
                 if(do_encrypt == 1){
                     printf("\nEncrypting block[%d] %s", inlen, inbuf);
@@ -73,8 +73,10 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
                 if(!EVP_CipherUpdate(&ctx, outbuf, &outlen, inbuf, inlen))
                 {
                         /* Error */
+                        oxs_error(ERROR_LOCATION,OXS_ERROR_OPENSSL_FUNC_FAILED,
+                        "Cannot get the ReferenceList node");
+
                         EVP_CIPHER_CTX_cleanup(&ctx);
-                        printf("\nERROR: EVP_CIPHER_CTX_cleanup");
                         return (-1);
                 }
                 /*TODO: Write the encrypted block to the tempbuf*/

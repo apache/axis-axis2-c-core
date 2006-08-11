@@ -39,7 +39,7 @@ oxs_get_encrypted_key(const axis2_env_t *env,
                             axiom_node_t *enc_key_node,
                             oxs_key_ptr session_key)
 {
-    axis2_char_t *key_enc_algo = NULL, *encrypted_key_value = NULL, *decoded_encrypted_key = NULL;
+    axis2_char_t *key_enc_algo = NULL, *encrypted_key_value = NULL;
     axiom_node_t *enc_method_node = NULL, *cd_node = NULL, *cv_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     oxs_buffer_ptr encrypted_key_buf = NULL, decrypted_key_buf = NULL;
@@ -77,7 +77,7 @@ oxs_get_encrypted_key(const axis2_env_t *env,
         return AXIS2_FAILURE;
     }
     /*Encrypted key*/
-    encrypted_key_value = oxs_token_get_cipher_value(env, cv_node);
+    encrypted_key_value = (axis2_char_t*)oxs_token_get_cipher_value(env, cv_node);
 
     /*Create buffers for decryption*/
     encrypted_key_buf = oxs_create_buffer(env, AXIS2_STRLEN(encrypted_key_value));
@@ -98,7 +98,7 @@ oxs_get_encrypted_key(const axis2_env_t *env,
     session_key->usage = OXS_KEY_USAGE_DECRYPT;
      
     /*printf("\n>>>>>>>>decrypted session_key %s\n", session_key->data);*/
-    return session_key;
+    return AXIS2_SUCCESS;
 }
 
 /*Decrypt data using the private key*/
@@ -106,7 +106,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_prvkey_decrypt_data(const axis2_env_t *env, oxs_buffer_ptr input, oxs_buffer_ptr result, axis2_char_t *filename)
 {
     evp_pkey_ptr prvk = NULL;
-    axis2_char_t *encoded_encrypted_str = NULL, *decoded_encrypted_str = NULL;    
+    axis2_char_t  *decoded_encrypted_str = NULL;    
     unsigned char *decrypted  =  NULL;
     int ret, declen;
 
@@ -195,7 +195,7 @@ oxs_enc_crypt(const axis2_env_t *env,
 {
     unsigned char *out_main_buf = NULL;
     openssl_evp_block_cipher_ctx_ptr bc_ctx = NULL;
-    axis2_char_t *iv =  OPENSSL_DEFAULT_IV8;   
+    axis2_char_t *iv = NULL;   
     axis2_char_t *cipher_name =  NULL;   
     axis2_char_t *encoded_str=NULL;
     axis2_char_t *in_data = NULL;
@@ -214,7 +214,10 @@ oxs_enc_crypt(const axis2_env_t *env,
                      "openssl_evp_block_cipher_ctx_create failed");
          return AXIS2_FAILURE;
     }
-    
+    /*Set the IV*/   
+    /*iv = OPENSSL_DEFAULT_IV16;*/ /*oxs_iv_generate_for_algo(env,  enc_ctx->encmtd_algorithm); */
+    iv =(axis2_char_t*)oxs_iv_generate_for_algo(env,  enc_ctx->encmtd_algorithm); 
+
     /*Set the key*/
     bc_ctx->key = AXIS2_STRDUP(enc_ctx->key->data, env);
     bc_ctx->key_initialized = 1;

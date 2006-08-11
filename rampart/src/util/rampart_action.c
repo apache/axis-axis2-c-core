@@ -23,38 +23,27 @@
 #include <rampart_action.h>
 #include <rampart_constants.h>
 
-/*
-typedef struct _actions actions, *actions_ptr;
-struct _actions{
-        axis2_char_t *items  ;
-        axis2_char_t *user  ;
-        axis2_char_t *passwordC_callback_lass  ;
-        axis2_char_t *encryption_prop_file;
-        axis2_char_t *signature_prop_file ;
-        axis2_char_t *signature_key_identifier  ;
-        axis2_char_t *encryption_key_identifier  ;
-        axis2_char_t *encryption_user  ;
-        axis2_char_t *signature_parts  ;
-        axis2_char_t *encryption_parts  ;
-        axis2_char_t *optimize_parts  ;
-        axis2_char_t *encryption_sym_algorithm  ;
-        axis2_char_t *embedded_key_callback_class  ;
-        axis2_char_t *encryption_key_transport_algorithm  ;
-        axis2_char_t *embedded_key_name  ;
-        axis2_char_t *time_to_live  ;
-
-};
-*/
 
 AXIS2_EXTERN actions_ptr AXIS2_CALL
 oxs_ctx_create_actions_ptr(const axis2_env_t *env)
 {
     actions_ptr actions= NULL;
-    actions = (actions_ptr) AXIS2_MALLOC(env->allocator,sizeof(actions_ptr));
-
+    actions = (actions_ptr) AXIS2_MALLOC(env->allocator,sizeof(actionss));
+    oxs_ctx_reset_actions_ptr(env, actions);
     return actions;
 }
 
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_ctx_reset_actions_ptr(const axis2_env_t *env, actions_ptr actions)
+{
+    actions->encryption_user = NULL;
+    actions->encryption_sym_algorithm = NULL; 
+    actions->encryption_key_transport_algorithm = NULL;
+    
+    return AXIS2_SUCCESS;
+
+}
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_ctx_free_actions_ptr(const axis2_env_t *env, actions_ptr actions)

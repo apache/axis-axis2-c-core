@@ -55,7 +55,7 @@ rampart_crypto_decrypt_message(const axis2_env_t *env,
     axiom_node_t *enc_key_node = NULL; 
     oxs_key_ptr session_key = NULL;
     axis2_array_list_t *uuid_list = NULL;
-    axis2_array_list_t *enc_data_node_list = NULL;
+    /*axis2_array_list_t *enc_data_node_list = NULL;*/
 
     ret = AXIS2_SUCCESS;/*TODO Remove*/
     /*TODO get the key using callbacks*/
@@ -103,7 +103,7 @@ rampart_crypto_decrypt_message(const axis2_env_t *env,
 
     ret = oxs_enc_decrypt_template(env, enc_data_node, &decrypted_data, enc_ctx);
     if(ret == AXIS2_FAILURE){
-        oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
+        oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
                      "oxs_enc_decrypt_template failed");
         return ret;
     }else{
@@ -150,7 +150,7 @@ rampart_crypto_encrypt_message(const axis2_env_t *env,
     }
 
     /*Generate the session key*/
-    sessionkey = oxs_key_generate_for_algo(env, actions->encryption_sym_algorithm);
+    sessionkey = oxs_key_generate_for_algo(env,actions->encryption_sym_algorithm);
     if(!sessionkey){
         oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
             "Session key generate failed");
@@ -176,6 +176,7 @@ rampart_crypto_encrypt_message(const axis2_env_t *env,
         node_to_enc = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
     }
 
+
     str_to_enc = AXIOM_NODE_TO_STRING(node_to_enc, env);
     
     /*Build the template*/
@@ -184,7 +185,7 @@ rampart_crypto_encrypt_message(const axis2_env_t *env,
                         AXIOM_NODE_GET_PARENT(node_to_enc, env),
                         OXS_TypeEncElement,
                         uuid );
-    enc_mtd_node = oxs_token_build_encryption_method_element(env, enc_data_node, OXS_HrefDes3Cbc);
+    enc_mtd_node = oxs_token_build_encryption_method_element(env, enc_data_node, actions->encryption_sym_algorithm);
     key_info_node = oxs_token_build_key_info_element(env, enc_data_node);
     key_name_node = oxs_token_build_key_name_element(env, key_info_node, sessionkey->name );
     cd_node = oxs_token_build_cipher_data_element(env, enc_data_node);
@@ -206,9 +207,6 @@ rampart_crypto_encrypt_message(const axis2_env_t *env,
         /*printf("Encryption template is \n %s", AXIOM_NODE_TO_STRING(enc_data_node, env));*/
     }
 
-    
-
-    /*Encrypt the session key using the public key TODO*/
     /*Here u have the key file name or the key store name. Right now we support only the key file name*/
     session_key_buf_plain = oxs_string_to_buffer(env, (axis2_char_t*)sessionkey->data);
     session_key_buf_encrypted = oxs_create_buffer(env, (int)OXS_BUFFER_INITIAL_SIZE);
@@ -218,7 +216,6 @@ rampart_crypto_encrypt_message(const axis2_env_t *env,
         oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
                      "oxs_pubkey_encrypt_data failed");
         return ret;
-    
     }
 
     /*Create the key info*/
@@ -230,7 +227,7 @@ rampart_crypto_encrypt_message(const axis2_env_t *env,
     enc_key_cv_node = oxs_token_build_cipher_value_element(env, enc_key_cd_node, (axis2_char_t*)session_key_buf_encrypted->data);
     enc_key_ref_list_node = oxs_token_build_reference_list_element(env, enc_key_node);
     /*TODO If there are multiple elements encrypted by the same session key, enqueue those here*/
-    enc_key_data_ref_node = oxs_token_build_data_reference_element(env, enc_key_ref_list_node, uuid);
+    enc_key_data_ref_node = (axiom_node_t*)oxs_token_build_data_reference_element(env, enc_key_ref_list_node, uuid);
     
     /*Remove the encrypted node*/
     /*temp = AXIOM_NODE_DETACH(node_to_enc, env);
@@ -243,7 +240,7 @@ rampart_crypto_encrypt_message(const axis2_env_t *env,
     /*Now arrange this encrypted nodes in a suitable manner to the envelope*/ 
    
     /*FREE*/
-    oxs_ctx_free_ctx(enc_ctx); 
+    /*oxs_ctx_free_ctx(enc_ctx); */
     return ret;
 }
 
