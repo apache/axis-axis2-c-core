@@ -17,6 +17,11 @@
 #ifndef AXIS2_CLIENT_UTILS_H
 #define AXIS2_CLIENT_UTILS_H
 
+/** @defgroup axis2_client_utils Client Utils
+ * @ingroup axis2_description
+ * @{
+ */
+
 /**
  * @file axis2_client_utils.h
  * @brief Axis2 Client Utils interface
@@ -33,29 +38,25 @@
 extern "C"
 {
 #endif
- 
-/** @defgroup axis2_client_utils Client Utils
- * @ingroup axis2_description
- * @{
- */
 
-/**
- * To create a Axis Service for a given WSDL and the created client is most 
- * suitable for client side invocation not for server side invocation, since 
- * all the soap acction and wsa action is added to operations
- *
- * @param wsdl_url          location of the WSDL
- * @param wsdl_svc_qname    name of the service to be invoke , if it is null 
- *                          then the first one will
- *                          be selected if there are more than one
- * @param ep_name           name of the endpoint , if there are more than one , 
- *                          if it is null then the
- *                          first one in the  iterator will be selected
- * @param options           Service client options, to set the target EPR
- * @return axis2_svc ,      the created servie will be return
- */
-AXIS2_EXTERN axis2_svc_t * AXIS2_CALL
-axis2_client_utils_create_axis2_svc(
+    /**
+     * To create a Axis Service for a given WSDL and the created client is most 
+     * suitable for client side invocation not for server side invocation, since 
+     * all the soap acction and wsa action is added to operations
+     * @param env pointer to environment struct
+     * @param wsdl_url location of the WSDL
+     * @param wsdl_svc_qname name of the service to be invoke , if it is null 
+     *     then the first one will
+     *     be selected if there are more than one
+     * @param ep_name name of the endpoint , if there are more than one , 
+     *     if it is null then the
+     *     first one in the  iterator will be selected
+     * @param doc_base_uri doc base uri
+     * @param options Service client options, to set the target EPR
+     * @return axis2_svc ,      the created servie will be return
+     */
+    AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
+    axis2_client_utils_create_axis2_svc(
         const axis2_env_t *env,
         const axis2_uri_t *wsdl_uri,
         const axis2_qname_t *wsdl_svc_qname,
@@ -63,7 +64,7 @@ axis2_client_utils_create_axis2_svc(
         const axis2_char_t *doc_base_uri,
         axis2_options_t *options);
 
-/** @} */
+    /** @} */
 
 #ifdef __cplusplus
 }

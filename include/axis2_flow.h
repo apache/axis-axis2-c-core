@@ -55,7 +55,8 @@ extern "C"
      */
     struct axis2_flow_ops
     {
-        /** Deallocate memory
+        /** 
+         * Deallocate memory
          * @param flow pointer to flow
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE

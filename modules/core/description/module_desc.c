@@ -22,7 +22,7 @@
  */ 
 typedef struct axis2_module_desc_impl
 {
-   axis2_module_desc_t module_desc;    
+    axis2_module_desc_t module_desc;    
     axis2_module_t *module;
     axis2_qname_t *qname;
     axis2_conf_t *parent;
@@ -32,111 +32,134 @@ typedef struct axis2_module_desc_impl
      */
     axis2_hash_t *ops;
 
-} axis2_module_desc_impl_t;
+}
+axis2_module_desc_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(module_desc) ((axis2_module_desc_impl_t *)module_desc)
 
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_free(axis2_module_desc_t *module_desc,
-                            const axis2_env_t *env);
+axis2_module_desc_free(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env);
 
 axis2_flow_t *AXIS2_CALL
-axis2_module_desc_get_inflow(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env);
+axis2_module_desc_get_inflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_set_inflow(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env,
-                                    axis2_flow_t *inflow);
+axis2_module_desc_set_inflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_flow_t *inflow);
 
 axis2_flow_t *AXIS2_CALL
-axis2_module_desc_get_outflow(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env);
+axis2_module_desc_get_outflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_set_outflow(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env,
-                                    axis2_flow_t *outflow);
-
-axis2_flow_t * AXIS2_CALL
-axis2_module_desc_get_fault_inflow(axis2_module_desc_t *module_desc,
-                                        const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_module_desc_set_fault_inflow(axis2_module_desc_t *module_desc,
-                                        const axis2_env_t *env,
-                                        axis2_flow_t *falut_inflow);
+axis2_module_desc_set_outflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_flow_t *outflow);
 
 axis2_flow_t *AXIS2_CALL
-axis2_module_desc_get_fault_outflow(axis2_module_desc_t *module_desc,
-                                            const axis2_env_t *env);
+axis2_module_desc_get_fault_inflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_set_fault_outflow(axis2_module_desc_t *module_desc,
-                                            const axis2_env_t *env,
-                                            axis2_flow_t *fault_outflow);
+axis2_module_desc_set_fault_inflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_flow_t *falut_inflow);
 
-axis2_qname_t * AXIS2_CALL
-axis2_module_desc_get_name (axis2_module_desc_t *module_desc,
-                                const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_module_desc_set_name (axis2_module_desc_t *module_desc,
-                                const axis2_env_t *env,
-                                axis2_qname_t *qname);
+axis2_flow_t *AXIS2_CALL
+axis2_module_desc_get_fault_outflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_add_op (axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env,
-                                    axis2_op_t *op);
+axis2_module_desc_set_fault_outflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_flow_t *fault_outflow);
 
-axis2_hash_t * AXIS2_CALL
-axis2_module_desc_get_ops (axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env);
-
-axis2_conf_t * AXIS2_CALL
-axis2_module_desc_get_parent (axis2_module_desc_t *module_desc,
-                                const axis2_env_t *env);
+axis2_qname_t *AXIS2_CALL
+axis2_module_desc_get_name(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_set_parent (axis2_module_desc_t *module_desc,
-                                const axis2_env_t *env,
-                                axis2_conf_t *parent);
+axis2_module_desc_set_name(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_qname_t *qname);
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_add_param(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env,
-                                    axis2_param_t *param);
+axis2_module_desc_add_op(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_op_t *op);
 
-axis2_param_t * AXIS2_CALL
-axis2_module_desc_get_param(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *name);
+axis2_hash_t *AXIS2_CALL
+axis2_module_desc_get_ops(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env);
 
-axis2_array_list_t * AXIS2_CALL
-axis2_module_desc_get_params (axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env);
+axis2_conf_t *AXIS2_CALL
+axis2_module_desc_get_parent(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+axis2_module_desc_set_parent(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_conf_t *parent);
+
+axis2_status_t AXIS2_CALL
+axis2_module_desc_add_param(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_param_t *param);
+
+axis2_param_t *AXIS2_CALL
+axis2_module_desc_get_param(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_char_t *name);
+
+axis2_array_list_t *AXIS2_CALL
+axis2_module_desc_get_params(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
-axis2_module_desc_is_param_locked (axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *param_name);
+axis2_module_desc_is_param_locked(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_char_t *param_name);
                                     
 axis2_module_t *AXIS2_CALL
-axis2_module_desc_get_module(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env);
+axis2_module_desc_get_module(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_set_module(axis2_module_desc_t *module_desc,
-                                const axis2_env_t *env,
-                                axis2_module_t *module);                                     
+axis2_module_desc_set_module(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_module_t *module);                                     
 
 /************************** End of function prototypes ************************/
 
-axis2_module_desc_t * AXIS2_CALL 
-axis2_module_desc_create (const axis2_env_t *env)
+axis2_module_desc_t *AXIS2_CALL 
+axis2_module_desc_create(
+    const axis2_env_t *env)
 {
     axis2_module_desc_impl_t *module_desc_impl = NULL;
     
@@ -232,8 +255,10 @@ axis2_module_desc_create (const axis2_env_t *env)
    return &(module_desc_impl->module_desc);
 }
 
-AXIS2_EXTERN axis2_module_desc_t * AXIS2_CALL 
-axis2_module_desc_create_with_qname (const axis2_env_t *env, axis2_qname_t *qname)
+AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL 
+axis2_module_desc_create_with_qname(
+    const axis2_env_t *env, 
+    axis2_qname_t *qname)
 {
    axis2_module_desc_impl_t *module_desc_impl = NULL;
    AXIS2_ENV_CHECK(env, NULL);
@@ -255,10 +280,11 @@ axis2_module_desc_create_with_qname (const axis2_env_t *env, axis2_qname_t *qnam
 /*************************** Start of op impls *************************/
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_free(axis2_module_desc_t *module_desc,
-                            const axis2_env_t *env)
+axis2_module_desc_free(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env)
 {
-    axis2_module_desc_impl_t * module_desc_impl = NULL;
+    axis2_module_desc_impl_t *module_desc_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -327,8 +353,9 @@ axis2_module_desc_free(axis2_module_desc_t *module_desc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_free_void_arg (void *module_desc,
-                                        const axis2_env_t *env)
+axis2_module_desc_free_void_arg(
+    void *module_desc,
+    const axis2_env_t *env)
 {
     axis2_module_desc_t *module_desc_l = NULL;
     
@@ -338,8 +365,9 @@ axis2_module_desc_free_void_arg (void *module_desc,
 }
 
 axis2_flow_t *AXIS2_CALL
-axis2_module_desc_get_inflow(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env)
+axis2_module_desc_get_inflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     
@@ -347,9 +375,10 @@ axis2_module_desc_get_inflow(axis2_module_desc_t *module_desc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_set_inflow(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env,
-                                    axis2_flow_t *inflow)
+axis2_module_desc_set_inflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_flow_t *inflow)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, inflow, AXIS2_FAILURE);
@@ -359,8 +388,9 @@ axis2_module_desc_set_inflow(axis2_module_desc_t *module_desc,
 }
 
 axis2_flow_t *AXIS2_CALL
-axis2_module_desc_get_outflow(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env)
+axis2_module_desc_get_outflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     
@@ -368,9 +398,10 @@ axis2_module_desc_get_outflow(axis2_module_desc_t *module_desc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_set_outflow(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env,
-                                    axis2_flow_t *outflow)
+axis2_module_desc_set_outflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_flow_t *outflow)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, outflow, AXIS2_FAILURE);
@@ -379,9 +410,10 @@ axis2_module_desc_set_outflow(axis2_module_desc_t *module_desc,
         outflow);
 }
 
-axis2_flow_t * AXIS2_CALL
-axis2_module_desc_get_fault_inflow(axis2_module_desc_t *module_desc,
-                                        const axis2_env_t *env)
+axis2_flow_t *AXIS2_CALL
+axis2_module_desc_get_fault_inflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     
@@ -389,9 +421,10 @@ axis2_module_desc_get_fault_inflow(axis2_module_desc_t *module_desc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_set_fault_inflow(axis2_module_desc_t *module_desc,
-                                        const axis2_env_t *env,
-                                        axis2_flow_t *falut_inflow)
+axis2_module_desc_set_fault_inflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_flow_t *falut_inflow)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, falut_inflow, AXIS2_FAILURE);
@@ -401,17 +434,19 @@ axis2_module_desc_set_fault_inflow(axis2_module_desc_t *module_desc,
 }
 
 axis2_flow_t *AXIS2_CALL
-axis2_module_desc_get_fault_outflow(axis2_module_desc_t *module_desc,
-                                            const axis2_env_t *env)
+axis2_module_desc_get_fault_outflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_FLOW_CONTAINER_GET_FAULT_OUTFLOW(module_desc->flow_container, env);
 }
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_set_fault_outflow(axis2_module_desc_t *module_desc,
-                                            const axis2_env_t *env,
-                                            axis2_flow_t *fault_outflow)
+axis2_module_desc_set_fault_outflow(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_flow_t *fault_outflow)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, fault_outflow, AXIS2_FAILURE);
@@ -420,9 +455,10 @@ axis2_module_desc_set_fault_outflow(axis2_module_desc_t *module_desc,
         env, fault_outflow);
 }
 
-axis2_qname_t * AXIS2_CALL
-axis2_module_desc_get_name (axis2_module_desc_t *module_desc,
-                                const axis2_env_t *env)
+axis2_qname_t *AXIS2_CALL
+axis2_module_desc_get_name(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     
@@ -430,9 +466,10 @@ axis2_module_desc_get_name (axis2_module_desc_t *module_desc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_set_name (axis2_module_desc_t *module_desc,
-                                const axis2_env_t *env,
-                                axis2_qname_t *qname)
+axis2_module_desc_set_name(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_qname_t *qname)
 {
     axis2_module_desc_impl_t *module_desc_impl = NULL;
     
@@ -452,9 +489,10 @@ axis2_module_desc_set_name (axis2_module_desc_t *module_desc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_add_op (axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env,
-                                    axis2_op_t *op)
+axis2_module_desc_add_op(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_op_t *op)
 {
     axis2_module_desc_impl_t *module_desc_impl = NULL;
     axis2_qname_t *op_qname = NULL;
@@ -483,26 +521,29 @@ axis2_module_desc_add_op (axis2_module_desc_t *module_desc,
     return AXIS2_SUCCESS;
 }
 
-axis2_hash_t * AXIS2_CALL
-axis2_module_desc_get_ops (axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env)
+axis2_hash_t *AXIS2_CALL
+axis2_module_desc_get_ops(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(module_desc)->ops;
 }
 
-axis2_conf_t * AXIS2_CALL
-axis2_module_desc_get_parent (axis2_module_desc_t *module_desc,
-                                const axis2_env_t *env)
+axis2_conf_t *AXIS2_CALL
+axis2_module_desc_get_parent(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(module_desc)->parent;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_set_parent (axis2_module_desc_t *module_desc,
-                                const axis2_env_t *env,
-                                axis2_conf_t *parent)
+axis2_module_desc_set_parent(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_conf_t *parent)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, parent, AXIS2_FAILURE);
@@ -512,9 +553,10 @@ axis2_module_desc_set_parent (axis2_module_desc_t *module_desc,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_add_param(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env,
-                                    axis2_param_t *param)
+axis2_module_desc_add_param(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_param_t *param)
 {
     axis2_char_t *param_name_l = NULL;
     axis2_status_t ret_status = AXIS2_FAILURE;
@@ -541,10 +583,11 @@ axis2_module_desc_add_param(axis2_module_desc_t *module_desc,
     return ret_status;    
 }
 
-axis2_param_t * AXIS2_CALL
-axis2_module_desc_get_param(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *name)
+axis2_param_t *AXIS2_CALL
+axis2_module_desc_get_param(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_char_t *name)
 {
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
@@ -552,9 +595,10 @@ axis2_module_desc_get_param(axis2_module_desc_t *module_desc,
     return AXIS2_PARAM_CONTAINER_GET_PARAM(module_desc->params, env, name);
 }
 
-axis2_array_list_t * AXIS2_CALL
-axis2_module_desc_get_params (axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env)
+axis2_array_list_t *AXIS2_CALL
+axis2_module_desc_get_params(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     
@@ -562,9 +606,10 @@ axis2_module_desc_get_params (axis2_module_desc_t *module_desc,
 }
 
 axis2_bool_t AXIS2_CALL
-axis2_module_desc_is_param_locked (axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env,
-                                    axis2_char_t *param_name)
+axis2_module_desc_is_param_locked(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_char_t *param_name)
 {
     axis2_module_desc_impl_t *module_desc_impl = NULL;
     axis2_bool_t locked = AXIS2_FALSE;
@@ -601,17 +646,19 @@ axis2_module_desc_is_param_locked (axis2_module_desc_t *module_desc,
 }
 
 axis2_module_t *AXIS2_CALL
-axis2_module_desc_get_module(axis2_module_desc_t *module_desc,
-                                    const axis2_env_t *env) 
+axis2_module_desc_get_module(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(module_desc)->module;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_module_desc_set_module(axis2_module_desc_t *module_desc,
-                                const axis2_env_t *env,
-                                axis2_module_t *module) 
+axis2_module_desc_set_module(
+    axis2_module_desc_t *module_desc,
+    const axis2_env_t *env,
+    axis2_module_t *module) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module, AXIS2_FAILURE);
