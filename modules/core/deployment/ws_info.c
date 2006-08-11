@@ -17,12 +17,9 @@
 #include <axis2_ws_info.h>
 #include <string.h>
 
-/** 
- * @brief
- */
 typedef struct axis2_ws_info_impl
 {
-   axis2_ws_info_t ws_info;
+    axis2_ws_info_t ws_info;
     
     axis2_char_t *file_name;
     long last_modified_date;
@@ -32,7 +29,8 @@ typedef struct axis2_ws_info_impl
     int type;
     
        
-} axis2_ws_info_impl_t;
+}
+axis2_ws_info_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(ws_info) \
     ((axis2_ws_info_impl_t *) ws_info)
@@ -40,39 +38,44 @@ typedef struct axis2_ws_info_impl
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_ws_info_free (axis2_ws_info_t *ws_info, 
-                            const axis2_env_t *env);
+axis2_ws_info_free(
+    axis2_ws_info_t *ws_info, 
+    const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
-axis2_ws_info_get_file_name(axis2_ws_info_t *ws_info,
-                                const axis2_env_t *env);
+axis2_ws_info_get_file_name(
+    const axis2_ws_info_t *ws_info,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_ws_info_set_file_name(axis2_ws_info_t *ws_info,
-                                const axis2_env_t *env,
-                                axis2_char_t *file_name);
+axis2_ws_info_set_file_name(
+    axis2_ws_info_t *ws_info,
+    const axis2_env_t *env,
+    axis2_char_t *file_name);
 
 long AXIS2_CALL
-axis2_ws_info_get_last_modified_date(axis2_ws_info_t *ws_info,
-                                        const axis2_env_t *env);
+axis2_ws_info_get_last_modified_date(
+    const axis2_ws_info_t *ws_info,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_ws_info_set_last_modified_date(axis2_ws_info_t *ws_info,
-                                        const axis2_env_t *env,
-                                        long last_modified_date);
+axis2_ws_info_set_last_modified_date(
+    axis2_ws_info_t *ws_info,
+    const axis2_env_t *env,
+    long last_modified_date);
 
 int AXIS2_CALL
-axis2_ws_info_get_type(axis2_ws_info_t *ws_info,
-                        const axis2_env_t *env);
+axis2_ws_info_get_type(
+    const axis2_ws_info_t *ws_info,
+    const axis2_env_t *env);
 
-
-                                
 /************************** End of function prototypes ************************/
 
-axis2_ws_info_t * AXIS2_CALL 
-axis2_ws_info_create_with_file_name_and_last_modified_date (const axis2_env_t *env,
-                                        axis2_char_t *file_name,
-                                        long last_modified_date)
+axis2_ws_info_t *AXIS2_CALL 
+axis2_ws_info_create_with_file_name_and_last_modified_date(
+    const axis2_env_t *env,
+    axis2_char_t *file_name,
+    long last_modified_date)
 {
     axis2_ws_info_impl_t *ws_info_impl = NULL;
     
@@ -125,12 +128,12 @@ axis2_ws_info_create_with_file_name_and_last_modified_date (const axis2_env_t *e
    return &(ws_info_impl->ws_info);
 }
 
-axis2_ws_info_t * AXIS2_CALL 
-axis2_ws_info_create_with_file_name_and_last_modified_date_and_type (
-                                        const axis2_env_t *env,
-                                        axis2_char_t *file_name,
-                                        long last_modified_date,
-                                        int type)
+axis2_ws_info_t *AXIS2_CALL 
+axis2_ws_info_create_with_file_name_and_last_modified_date_and_type(
+    const axis2_env_t *env,
+    axis2_char_t *file_name,
+    long last_modified_date,
+    int type)
 {
     axis2_ws_info_impl_t *ws_info_impl = NULL;
    
@@ -153,8 +156,9 @@ axis2_ws_info_create_with_file_name_and_last_modified_date_and_type (
 /***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL 
-axis2_ws_info_free (axis2_ws_info_t *ws_info, 
-                            const axis2_env_t *env)
+axis2_ws_info_free(
+    axis2_ws_info_t *ws_info, 
+    const axis2_env_t *env)
 {
     axis2_ws_info_impl_t *ws_info_impl = NULL;
     
@@ -184,17 +188,19 @@ axis2_ws_info_free (axis2_ws_info_t *ws_info,
 }
 
 axis2_char_t *AXIS2_CALL
-axis2_ws_info_get_file_name(axis2_ws_info_t *ws_info,
-                                const axis2_env_t *env) 
+axis2_ws_info_get_file_name(
+    const axis2_ws_info_t *ws_info,
+    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(ws_info)->file_name;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_ws_info_set_file_name(axis2_ws_info_t *ws_info,
-                                const axis2_env_t *env,
-                                axis2_char_t *file_name) 
+axis2_ws_info_set_file_name(
+    axis2_ws_info_t *ws_info,
+    const axis2_env_t *env,
+    axis2_char_t *file_name) 
 {
     axis2_ws_info_impl_t *ws_info_impl = NULL;
     
@@ -212,8 +218,9 @@ axis2_ws_info_set_file_name(axis2_ws_info_t *ws_info,
 }
 
 long AXIS2_CALL
-axis2_ws_info_get_last_modified_date(axis2_ws_info_t *ws_info,
-                                        const axis2_env_t *env) 
+axis2_ws_info_get_last_modified_date(
+    const axis2_ws_info_t *ws_info,
+    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -221,9 +228,10 @@ axis2_ws_info_get_last_modified_date(axis2_ws_info_t *ws_info,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_ws_info_set_last_modified_date(axis2_ws_info_t *ws_info,
-                                        const axis2_env_t *env,
-                                        long last_modified_date) 
+axis2_ws_info_set_last_modified_date(
+    axis2_ws_info_t *ws_info,
+    const axis2_env_t *env,
+    long last_modified_date) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(ws_info)->last_modified_date = last_modified_date;
@@ -231,8 +239,9 @@ axis2_ws_info_set_last_modified_date(axis2_ws_info_t *ws_info,
 }
 
 int AXIS2_CALL
-axis2_ws_info_get_type(axis2_ws_info_t *ws_info,
-                        const axis2_env_t *env) 
+axis2_ws_info_get_type(
+    const axis2_ws_info_t *ws_info,
+    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(ws_info)->type;

@@ -17,6 +17,11 @@
 #ifndef AXIS2_CONF_INIT_H
 #define AXIS2_CONF_INIT_H
 
+/** @defgroup axis2_conf_init configuration initilizing functions
+ * @ingroup axis2_deployment
+ * @{
+ */
+
 /**
  * @file axis2_conf_init.h
  * @brief Axis2 configuration initilizing functions
@@ -31,27 +36,26 @@ extern "C"
 {
 #endif
 
-/** @defgroup axis2_conf_init configuration initilizing functions
- * @ingroup axis2_deployment
- * @{
- */
-
-/**
- * Builds the configuration for the Server
- * @param env Environment. MUST NOT be NULL
- * @param repo_name repository name
- * @return pointer to an instance of configuration context properly initialized
- */
-AXIS2_EXTERN axis2_conf_ctx_t* AXIS2_CALL build_conf_ctx (const axis2_env_t *env,
-    const axis2_char_t *repo_name);
-/**
- * Builds the Configuration for the Client
- * @param env Environment. MUST NOT be NULL
- * @param axis2_home. axis2 home for client. 
- * @return pointer to an instance of configuration context properly initialized
- */
-AXIS2_EXTERN axis2_conf_ctx_t* AXIS2_CALL build_client_conf_ctx(const axis2_env_t *env,
-        const axis2_char_t *axis2_home);
+    /**
+     * Builds the configuration for the Server
+     * @param env Pointer to environment struct. MUST NOT be NULL
+     * @param repo_name repository name
+     * @return pointer to an instance of configuration context properly initialized
+     */
+    AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL 
+        build_conf_ctx(
+            const axis2_env_t *env,
+            const axis2_char_t *repo_name);
+    /**
+     * Builds the Configuration for the Client
+     * @param env Pointer to environment struct. MUST NOT be NULL
+     * @param axis2_home axis2 home for client. 
+     * @return pointer to an instance of configuration context properly initialized
+     */
+    AXIS2_EXTERN axis2_conf_ctx_t *AXIS2_CALL 
+        build_client_conf_ctx(
+            const axis2_env_t *env,
+            const axis2_char_t *axis2_home);
 
 
 /** @} */
