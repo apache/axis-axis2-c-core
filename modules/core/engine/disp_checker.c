@@ -56,19 +56,18 @@ axis2_disp_checker_get_qname(
 
 axis2_status_t AXIS2_CALL
 axis2_disp_checker_set_qname(
-    struct axis2_disp_checker *disp_checker, 
+    axis2_disp_checker_t *disp_checker, 
     const axis2_env_t *env, 
-    axis2_qname_t *qname);
+    const axis2_qname_t *qname);
     
 axis2_status_t AXIS2_CALL
 axis2_disp_checker_free(
-    struct axis2_disp_checker *disp_checker, 
+    axis2_disp_checker_t *disp_checker, 
     const axis2_env_t *env);
 
 axis2_disp_checker_t *AXIS2_CALL 
 axis2_disp_checker_create(
-    const axis2_env_t *env, 
-    axis2_qname_t *qname) 
+    const axis2_env_t *env) 
 {
     axis2_disp_checker_impl_t *disp_checker_impl = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
@@ -154,9 +153,9 @@ axis2_disp_checker_get_qname(
 
 axis2_status_t AXIS2_CALL
 axis2_disp_checker_set_qname(
-    struct axis2_disp_checker *disp_checker, 
+    axis2_disp_checker_t *disp_checker, 
     const axis2_env_t *env, 
-    axis2_qname_t *qname)
+    const axis2_qname_t *qname)
 {
     axis2_disp_checker_impl_t *disp_checker_impl = NULL;
     
@@ -182,7 +181,7 @@ axis2_disp_checker_set_qname(
 
 axis2_status_t AXIS2_CALL 
 axis2_disp_checker_free(
-    struct axis2_disp_checker *disp_checker, 
+    axis2_disp_checker_t *disp_checker, 
     const axis2_env_t *env)
 {
     axis2_disp_checker_impl_t *disp_checker_impl = NULL;
@@ -194,16 +193,7 @@ axis2_disp_checker_free(
         AXIS2_QNAME_FREE(disp_checker_impl->qname, env);
         disp_checker_impl->qname = NULL;
     }
-    /* Hi Samisa !. Do I think we should not free handler_desc here. So I
-     * commented this
-     */  
-    /*if (disp_checker_impl->base)
-    {
-        axis2_handler_desc_t *handler_desc = AXIS2_HANDLER_GET_HANDLER_DESC(disp_checker_impl->base, env);
-        AXIS2_HANDLER_DESC_FREE(handler_desc, env); // freeing handler desc frees handler
-        disp_checker_impl->base = NULL;
-    }*/
-    
+
     if (disp_checker_impl->disp_checker.ops)
     {
         AXIS2_FREE(env->allocator, disp_checker_impl->disp_checker.ops);
@@ -216,13 +206,6 @@ axis2_disp_checker_free(
     return AXIS2_SUCCESS;    
 }
     
-
-/**
- * Method invoke.
- *
- * @param msgctx
- * @throws AxisFault
- */
 axis2_status_t AXIS2_CALL
 axis2_disp_checker_invoke(
     axis2_handler_t *handler, 
@@ -288,4 +271,3 @@ axis2_disp_checker_invoke(
     }    
     return AXIS2_SUCCESS;
 }
-

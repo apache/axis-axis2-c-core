@@ -15,6 +15,7 @@
  */
  
 #include <axis2_conf_builder.h>
+#include <axis2_disp.h>
 #include <axis2_conf.h>
 #include <axis2_class_loader.h>
 #include <axis2_transport_in_desc.h>

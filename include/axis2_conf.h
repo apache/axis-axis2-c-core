@@ -47,7 +47,6 @@
 #include <axis2_hash.h>
 #include <axis2_phases_info.h>
 #include <axis2_msg_recv.h>
-#include <axis2_disp.h>
 #include <axis2_disp_checker.h>
 
 #ifdef __cplusplus
@@ -66,6 +65,7 @@ extern "C"
     struct axis2_svc;
     struct axis2_op;
     struct axis2_dep_engine;
+    struct axis2_desp;
 
     /**
      * configuration ops struct.

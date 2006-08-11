@@ -15,6 +15,7 @@
 */
 
 #include <string.h>
+#include <axis2_disp.h>
 #include <axis2_conf.h>
 #include <axis2_dir_handler.h>
 #include <axis2_dep_engine.h>
@@ -1786,7 +1787,7 @@ axis2_conf_set_default_dispatchers(
         return AXIS2_FAILURE;
     }
 
-    disp_checker = axis2_disp_checker_create(env, NULL);
+    disp_checker = axis2_disp_checker_create(env);
     handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
     AXIS2_DISP_CHECKER_FREE(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
@@ -1838,7 +1839,7 @@ axis2_conf_set_dispatch_phase(
         return AXIS2_FAILURE;
     }
 
-    disp_checker = axis2_disp_checker_create(env, NULL);
+    disp_checker = axis2_disp_checker_create(env);
 
     handler = AXIS2_DISP_CHECKER_GET_BASE(disp_checker, env);
     AXIS2_PHASE_ADD_HANDLER_AT(post_dispatch, env, 0, handler);
