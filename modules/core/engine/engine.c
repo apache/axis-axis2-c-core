@@ -268,7 +268,7 @@ axis2_engine_send(
 
     if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
     {
-        /* message has paused, so rerun it from the position it stoped. 
+        /* message has paused, so rerun it from the position it stopped. 
            The handler which paused the message will be the first one to resume 
            invocation
         */
@@ -360,7 +360,7 @@ axis2_engine_receive(
     
     if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
     {
-        /* the message has paused, so re-run them from the position they stoped. */
+        /* the message has paused, so re-run them from the position they stopped. */
         axis2_engine_resume_invocation_phases(engine, env, pre_calculated_phases, msg_ctx);
         if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
         {
@@ -791,7 +791,7 @@ axis2_engine_resume_invocation_phases(
         axis2_char_t *phase_name = AXIS2_PHASE_GET_NAME(phase, env);
         axis2_char_t *paused_phase_name = AXIS2_MSG_CTX_GET_PAUSED_PHASE_NAME(
             msg_ctx, env);
-        /* skip invoking hanlders until we find the paused phase */
+        /* skip invoking handlers until we find the paused phase */
         if (phase_name && paused_phase_name && 0 == AXIS2_STRCMP(phase_name, 
             paused_phase_name))
         {
@@ -800,7 +800,7 @@ axis2_engine_resume_invocation_phases(
 
             paused_handler_i = AXIS2_MSG_CTX_GET_CURRENT_HANDLER_INDEX(msg_ctx, 
                 env);
-            /* invoke the paused handler and rest of the handlers of the puased 
+            /* invoke the paused handler and rest of the handlers of the paused 
              * phase */
             AXIS2_PHASE_INVOKE_START_FROM_HANDLER(phase, env, paused_handler_i, 
                 msg_ctx);
@@ -889,10 +889,10 @@ axis2_engine_check_must_understand_headers(
                 continue;
             }
             
-            /* if this header block is not targetted to me then its not my
+            /* if this header block is not targeted to me then its not my
                problem. Currently this code only supports the "next" role; we
                need to fix this to allow the engine/service to be in one or more
-               additional roles and then to check that any headers targetted for
+               additional roles and then to check that any headers targeted for
                that role too have been dealt with. */
             role = AXIOM_SOAP_HEADER_BLOCK_GET_ROLE(header_block, env);
             
@@ -1007,7 +1007,7 @@ axis2_engine_resume_send(
     }
     axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
     
-    /* invoking tarnsport sender */
+    /* invoking transport sender */
     if (!AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
     {
         /* write the message to the wire */

@@ -20,12 +20,12 @@
 /**
  * @defgroup axis2_engine engine 
  * @ingroup axis2_engine
- * engine has the send and receieve functions that is the heart when providing 
+ * engine has the send and receive functions that is the heart when providing 
  * and consuming services. In Axis2 SOAP engine architecture, all the others 
  * parts are build around the concept of the engine. There is only one engine 
  * for both the server side and the client side, and the engine is not aware of
  * if it is invoked as an client or a service. engine supports both synchronous 
- * and asynchronous messageing modes based on send and receive functions.
+ * and asynchronous messaging modes based on send and receive functions.
  * @{
  */
 
@@ -84,7 +84,7 @@ extern "C"
          * @param engine pointer to engine
          * @param env pointer to environment struct
          * @param msg_ctx pointer to message context representing current state
-         * that is used in receieving message
+         * that is used in receiving message
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
@@ -112,7 +112,7 @@ extern "C"
          * @param engine pointer to engine
          * @param env pointer to environment struct
          * @param msg_ctx pointer to message context representing that contains
-         * the details of receieve state
+         * the details of receive state
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
@@ -137,7 +137,7 @@ extern "C"
                     axis2_msg_ctx_t *processing_context);
          
         /**
-         * Extraxts fault information form message context.          
+         * Extracts fault information form message context.          
          * @param engine pointer to engine
          * @param env pointer to environment struct
          * @param msg_ctx pointer to message context containing fault state
@@ -171,7 +171,7 @@ extern "C"
          * phases could be representing one of the flows. The two possible 
          * flows are in flow and out flow. Both of those flows can also have 
          * fault related representations, in fault flow and out fault flow.
-         * Invoking a phase triggers the invokation of handlers the phase 
+         * Invoking a phase triggers the invocation of handlers the phase 
          * contain. 
          * @param engine pointer to engine
          * @param env pointer to environment struct
@@ -192,7 +192,7 @@ extern "C"
          * Often pausing happens to wait till some state is reached or some
          * task is complete. Once paused, the invocation has to be resumed 
          * using this function, which will resume the invocation from the paused 
-         * handler in the paused phase and will continute till it is paused 
+         * handler in the paused phase and will continue till it is paused 
          * again or it completes invoking all the remaining handlers in the
          * remaining phases.
          * @param engine pointer to engine
@@ -247,9 +247,9 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Resumes receieve operation. It could be the case that receive was 
+         * Resumes receive operation. It could be the case that receive was 
          * paused by one of the in flow handlers. In such a situation, this 
-         * method could be used to resume the receieve operation.
+         * method could be used to resume the receive operation.
          * @param engine pointer to engine
          * @param env pointer to environment struct
          * @param msg_ctx pointer to message context
@@ -324,7 +324,7 @@ extern "C"
 #define AXIS2_ENGINE_CREATE_FAULT_MSG_CTX(engine, env, msg_ctx) \
         ((engine)->ops->create_fault_msg_ctx(engine, env, msg_ctx))
 
-/** Extraxts the fault info from messag econtext,
+/** Extracts the fault info from message context,
     @sa axis2_engine_ops#extract_fault_info_from_msg_ctx */
 #define AXIS2_ENGINE_EXTRACT_FAULT_INFO_FROM_MSG_CTX(engine, env, msg_ctx, fault) \
         ((engine)->ops->extract_fault_info_from_msg_ctx(engine, env, msg_ctx, fault))
