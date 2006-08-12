@@ -68,7 +68,7 @@ axis2_param_t *AXIS2_CALL
 axis2_handler_desc_get_param(
     const axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
-    axis2_char_t *name);
+    const axis2_char_t *name);
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_add_param(
@@ -265,7 +265,7 @@ axis2_param_t *AXIS2_CALL
 axis2_handler_desc_get_param(
     const axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
-    axis2_char_t *name)
+    const axis2_char_t *name)
 {
     axis2_handler_desc_impl_t *handler_desc_impl = NULL;
     

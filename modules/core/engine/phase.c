@@ -270,7 +270,7 @@ axis2_phase_add_handler_at(
     
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
             "axis2_handler_t *%s added to the index %d of the phase %s",
-            AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_NAME(handler, env), env),
+            AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_QNAME(handler, env), env),
             index,
             phase_impl->name);
     
@@ -290,7 +290,7 @@ axis2_phase_add_handler(
     phase_impl = AXIS2_INTF_TO_IMPL(phase);
     
     AXIS2_LOG_INFO(env->log, "Handler %s added to phase %s",
-                     AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_NAME(handler, env), env), 
+                     AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_QNAME(handler, env), env), 
                      phase_impl->name);
     
     return AXIS2_ARRAY_LIST_ADD(phase_impl->handlers, env, handler);
@@ -322,7 +322,7 @@ axis2_phase_invoke(
             AXIS2_LOG_INFO(env->log, 
                      "Invoke the first handler %s within the phase %s",
                      AXIS2_QNAME_GET_LOCALPART(
-                            AXIS2_HANDLER_GET_NAME(phase_impl->first_handler, env), env), 
+                            AXIS2_HANDLER_GET_QNAME(phase_impl->first_handler, env), env), 
                      phase_impl->name);
             
             status = AXIS2_HANDLER_INVOKE(phase_impl->first_handler, env, msg_ctx);
@@ -347,7 +347,7 @@ axis2_phase_invoke(
             {
                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
                         "Invoke the handler %s within the phase %s",
-                         AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_NAME(handler, env), env), 
+                         AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_QNAME(handler, env), env), 
                          phase_impl->name);
                 status = AXIS2_HANDLER_INVOKE(handler, env, msg_ctx);
                 if (status != AXIS2_SUCCESS)
@@ -370,7 +370,7 @@ axis2_phase_invoke(
         else 
         {
             AXIS2_LOG_INFO(env->log, "Invoke the last handler %s within the phase %s",
-                     AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_NAME(phase_impl->last_handler, env), env), 
+                     AXIS2_QNAME_GET_LOCALPART(AXIS2_HANDLER_GET_QNAME(phase_impl->last_handler, env), env), 
                      phase_impl->name);
             status = AXIS2_HANDLER_INVOKE(phase_impl->last_handler, env, msg_ctx);
             if (status != AXIS2_SUCCESS)

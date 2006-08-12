@@ -102,7 +102,7 @@ extern "C"
                 get_param)(
                     const axis2_handler_desc_t *handler_desc,
                     const axis2_env_t *env,
-                    axis2_char_t *name);
+                    const axis2_char_t *name);
 
         /**
          * @param axis2_handler_desc_t pointer to handler description

@@ -54,7 +54,7 @@ void Testaxis2_conf_set_default_dispatchers(CuTest *tc)
         for(j = 0; j < sizej; j++)
         {
             handler = AXIS2_ARRAY_LIST_GET(handlers, env, j);
-            qname = AXIS2_HANDLER_GET_NAME(handler, env);
+            qname = AXIS2_HANDLER_GET_QNAME(handler, env);
             handler_name = AXIS2_QNAME_GET_LOCALPART(qname, env);
             if(0 == AXIS2_STRCMP(handler_name, "addressing_based_dispatcher"))
             {

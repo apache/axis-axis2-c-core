@@ -36,7 +36,7 @@ axis2_ctx_handler_invoke(
 axis2_handler_t *AXIS2_CALL 
 axis2_ctx_handler_create(
     const axis2_env_t *env, 
-    axis2_qname_t *qname) 
+    const axis2_qname_t *qname) 
 {
     axis2_handler_t *handler = NULL;
     axis2_handler_desc_t *handler_desc = NULL;

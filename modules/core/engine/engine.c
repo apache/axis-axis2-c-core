@@ -28,11 +28,6 @@
 #include <axis2_addr.h>
 #include <axis2_uuid_gen.h>
 
-/**
- * There is only one engine for the Server and the Client. the send() and receive()
- * Methods are the basic ops the Sync, Async messageing are build on top.
- */
-
 
 typedef struct axis2_engine_impl
 {
@@ -103,17 +98,17 @@ axis2_engine_resume_invocation_phases(
     axis2_array_list_t *phases, 
     axis2_msg_ctx_t *msg_ctx);
 
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_engine_get_sender_fault_code(
-    axis2_engine_t *engine, 
+    const axis2_engine_t *engine, 
     const axis2_env_t *env, 
-    axis2_char_t *soap_namespace);
+    const axis2_char_t *soap_namespace);
 
 const axis2_char_t *AXIS2_CALL 
 axis2_engine_get_receiver_fault_code(
-    axis2_engine_t *engine, 
+    const axis2_engine_t *engine, 
     const axis2_env_t *env, 
-    axis2_char_t *soap_namespace);
+    const axis2_char_t *soap_namespace);
 
 axis2_status_t AXIS2_CALL 
 axis2_engine_free(
@@ -235,16 +230,6 @@ axis2_engine_free(
     return AXIS2_SUCCESS;
 }
 
-/**
- * This methods represents the outflow of the Axis, this could be either at the server side or the client side.
- * Here the <code>ExecutionChain</code> is created using the Phases. The Handlers at the each Phases is ordered in
- * deployment time by the deployment module
- *
- * @param *msg_ctx
- * @see axis2_msg_ctx
- * @see Phase
- * @see Handler
- */
 axis2_status_t AXIS2_CALL 
 axis2_engine_send(
     axis2_engine_t *engine, 
@@ -281,13 +266,11 @@ axis2_engine_send(
     }
     
 
-    /*axis2_array_list_t *global_out_phase = NULL;*/
-
     if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
     {
-        /* the message has paused, so rerun them from the position they stoped. The Handler
-        //who paused the Message will be the first one to run
-        //resume fixed, global precalulated phases
+        /* message has paused, so rerun it from the position it stoped. 
+           The handler which paused the message will be the first one to resume 
+           invocation
         */
         status = axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
         if (status != AXIS2_SUCCESS)
@@ -324,7 +307,7 @@ axis2_engine_send(
     
     if (!(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)))
     {
-        /* write the message to the wire */
+        /* write the message to wire */
         axis2_transport_sender_t *transport_sender = NULL;
         axis2_transport_out_desc_t *transport_out = AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env);
         
@@ -348,11 +331,6 @@ axis2_engine_send(
     return AXIS2_SUCCESS;
 }
 
-/**
- * This methods represents the inflow of the Axis, this could be either at the server side or the client side.
- * Here the <code>ExecutionChain</code> is created using the Phases. The Handlers at the each Phases is ordered in
- * deployment time by the deployment module
- */
 axis2_status_t AXIS2_CALL 
 axis2_engine_receive(
     axis2_engine_t *engine, 
@@ -382,9 +360,7 @@ axis2_engine_receive(
     
     if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
     {
-        /* the message has paused, so re-run them from the position they stoped. The Handler
-           who paused the Message will be the first one to run
-           resume fixed, global precalulated phases */
+        /* the message has paused, so re-run them from the position they stoped. */
         axis2_engine_resume_invocation_phases(engine, env, pre_calculated_phases, msg_ctx);
         if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
         {
@@ -446,7 +422,7 @@ axis2_engine_receive(
         if (status != AXIS2_SUCCESS)
             return status;
         
-        /* invoke the Message Receivers */
+        /* invoke the message receivers */
         if (!op)
             return AXIS2_FAILURE;
         receiver = AXIS2_OP_GET_MSG_RECV(op, env);
@@ -466,11 +442,6 @@ axis2_engine_receive(
     return status;
 }
 
-/**
- * Sends the SOAP Fault to another SOAP node.
- *
- * @param msg_ctx
- */
 axis2_status_t AXIS2_CALL 
 axis2_engine_send_fault(
     axis2_engine_t *engine, 
@@ -484,24 +455,6 @@ axis2_engine_send_fault(
 
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     
-    /* find and execute the Fault Out Flow Handlers */
-    /*if (op_ctx) 
-    {
-        axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);        
-        axis2_array_list_t *phases = AXIS2_OP_GET_PHASES_OUTFLOW(op, env);
-        
-        if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
-        {
-            axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
-        } 
-        else 
-        {
-            axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
-        }
-    }*/
-    /* it is possible that op context is NULL as the error occered before the
-    dispatcher. We do not run Handlers in that case */
-
     if (!(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))) 
     {
         /* send the SOAP Fault*/
@@ -532,10 +485,6 @@ axis2_engine_send_fault(
     return AXIS2_SUCCESS;
 }
 
-/**
- * This is invoked when a SOAP Fault is received from a Other SOAP Node
- * Receives a SOAP fault from another SOAP node.
- */
 axis2_status_t AXIS2_CALL 
 axis2_engine_receive_fault(
     axis2_engine_t *engine, 
@@ -594,11 +543,6 @@ axis2_engine_receive_fault(
     return AXIS2_SUCCESS;
 }
 
-/**
- * This method is called to handle any error that occurs at inflow or outflow. But if the
- * method is called twice, it implies that sending the error handling has failed, in which case
- * the method logs the error and exists.
- */
 axis2_msg_ctx_t *AXIS2_CALL 
 axis2_engine_create_fault_msg_ctx(
     axis2_engine_t *engine, 
@@ -749,34 +693,6 @@ axis2_engine_create_fault_msg_ctx(
     return fault_ctx;
 }
 
-/**
- * Information to create the SOAPFault can be extracted from different places.
- * 1. Those information may have been put in to the message context by some handler. When someone
- * is putting like that, he must make sure the SOAPElements he is putting must be from the
- * correct SOAP Version.
- * 2. SOAPProcessingException is flexible enough to carry information about the fault. For example
- * it has an attribute to store the fault code. The fault reason can be extracted from the
- * message of the exception. I opted to put the stacktrace under the detail element.
- * eg : <Detail>
- * <Exception> stack trace goes here </Exception>
- * <Detail>
- * <p/>
- * If those information can not be extracted from any of the above places, I default the soap
- * fault values to following.
- * <Fault>
- * <Code>
- * <Value>env:Receiver</Value>
- * </Code>
- * <Reason>
- * <Text>unknown</Text>
- * </Reason>
- * <Role/>
- * <Node/>
- * <Detail/>
- * </Fault>
- * <p/>
- * -- EC
- */
 axis2_status_t AXIS2_CALL 
 axis2_engine_extract_fault_info_from_msg_ctx(
     axis2_engine_t *engine, 
@@ -784,72 +700,10 @@ axis2_engine_extract_fault_info_from_msg_ctx(
     axis2_msg_ctx_t *msg_ctx,
     struct axiom_soap_fault *fault)
 {
-    /*axis2_char_t *soap_namespace_uri = NULL;*/
-    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, fault, AXIS2_FAILURE);
-    
-    /* get the current SOAP version */
-    /*if (AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
-    {
-        soap_namespace_uri = AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI;
-    }
-    else
-    {
-        soap_namespace_uri = AXI2_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
-    }
 
-    void *fault_code = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIOM_SOAP12_SOAP_FAULT_CODE_LOCAL_NAME);
-    axis2_char_t *soap_fault_code = "";
-    if (fault_code) 
-    {
-        AXIOM_SOAP_FAULT_SET_CODE(fault, env, fault_code);
-    }*/
-
-    /* defaulting to fault code Sender, if no message is available */
-    /*soap_fault_code = get_sender_fault_code(soap_namespace_uri);
-     fault.getCode().getValue().setText(soap_fault_code); 
-
-    void *fault_Reason = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIOM_SOAP12_SOAP_FAULT_REASON_LOCAL_NAME);
-    axis2_char_t * message = "";
-    if (fault_Reason) 
-    {
-        AXIOM_SOAP_FAULT_SET_REASON(fault, env, fault_Reason);
-    } 
-*/
-    /* defaulting to reason, unknown, if no reason is available */
-  /*  message = "unknown";
-     fault.getReason().getSOAPText().setText(message); 
-
-    void *fault_role = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIOM_SOAP12_SOAP_FAULT_ROLE_LOCAL_NAME);
-    if (fault_role) 
-    {
-        fault.getRole().setText((axis2_char_t *) fault_role); 
-    } 
-    else 
-    {
-         get the role of this server and assign it here
-        fault.getRole().setText("http://myAxisServer/role/default"); 
-    }
-
-    void *fault_node = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIOM_SOAP12_SOAP_FAULT_NODE_LOCAL_NAME);
-    if (fault_node) 
-    {
-        fault.getNode().setText((axis2_char_t *) fault_node);
-    }
-    else 
-    {
-         get the node of this server and assign it here
-        fault.getNode().setText("http://myAxisServer/role/default"); 
-    }
-
-    void *fault_detail = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIOM_SOAP12_SOAP_FAULT_DETAIL_LOCAL_NAME);
-    if (fault_detail)
-    {
-        AXIOM_SOAP_FAULT_SET_DETAIL(fault, env, fault_detail);
-    } 
-    */
     return AXIS2_SUCCESS;
 }
 
@@ -937,7 +791,7 @@ axis2_engine_resume_invocation_phases(
         axis2_char_t *phase_name = AXIS2_PHASE_GET_NAME(phase, env);
         axis2_char_t *paused_phase_name = AXIS2_MSG_CTX_GET_PAUSED_PHASE_NAME(
             msg_ctx, env);
-        /* Skip invoking hanlders until we find the paused phase */
+        /* skip invoking hanlders until we find the paused phase */
         if (phase_name && paused_phase_name && 0 == AXIS2_STRCMP(phase_name, 
             paused_phase_name))
         {
@@ -946,13 +800,13 @@ axis2_engine_resume_invocation_phases(
 
             paused_handler_i = AXIS2_MSG_CTX_GET_CURRENT_HANDLER_INDEX(msg_ctx, 
                 env);
-            /* Invoke the paused handler and rest of the handlers of the puased 
+            /* invoke the paused handler and rest of the handlers of the puased 
              * phase */
             AXIS2_PHASE_INVOKE_START_FROM_HANDLER(phase, env, paused_handler_i, 
                 msg_ctx);
         }
-        else /* Now we have found the paused phase and invoked the rest of the
-              * handlers of that phase.Invoke all the phases after that */ 
+        else /* now we have found the paused phase and invoked the rest of the
+              * handlers of that phase, invoke all the phases after that */ 
         {
             if (found_match) 
             {
@@ -964,28 +818,23 @@ axis2_engine_resume_invocation_phases(
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_engine_get_sender_fault_code(
-    axis2_engine_t *engine, 
+    const axis2_engine_t *engine, 
     const axis2_env_t *env, 
-    axis2_char_t *soap_namespace) 
+    const axis2_char_t *soap_namespace) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, soap_namespace, AXIS2_FAILURE);
     
-    /*if (AXIS2_STRCMP(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, soap_namespace))
-        return AXIOM_SOAP12_FAULT_CODE_SENDER;
-    else
-        return AXIOM_SOAP11_FAULT_CODE_SENDER;
-        */
     return NULL;
 }
 
 const axis2_char_t *AXIS2_CALL 
 axis2_engine_get_receiver_fault_code(
-    axis2_engine_t *engine, 
+    const axis2_engine_t *engine, 
     const axis2_env_t *env, 
-    axis2_char_t *soap_namespace) 
+    const axis2_char_t *soap_namespace) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, soap_namespace, AXIS2_FAILURE);
@@ -1087,10 +936,6 @@ axis2_engine_check_must_understand_headers(
     return AXIS2_SUCCESS;
 }
 
-/**
- * If the msgConetext is puased and try to invoke then
- * first invoke the phase list and after the message receiver
- */
 axis2_status_t AXIS2_CALL 
 axis2_engine_resume_receive(
     axis2_engine_t *engine,
@@ -1109,10 +954,10 @@ axis2_engine_resume_receive(
         AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(conf, env);
     
     axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);
-    /* invoking the MR */
+    /* invoking the message receiver */
     if (AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env) && !AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)) 
     {
-        /* invoke the Message Receivers */
+        /* invoke the message receivers */
         axis2_op_ctx_t *op_ctx = NULL;
 
         status = axis2_engine_check_must_understand_headers(env, msg_ctx);
@@ -1140,10 +985,6 @@ axis2_engine_resume_receive(
     return status;
 }
 
-/**
- * To resume the invocation at the send path , this is neened since it is require to call
- * TransportSender at the end
- */
 axis2_status_t AXIS2_CALL 
 axis2_engine_resume_send(
     axis2_engine_t *engine,
@@ -1153,6 +994,7 @@ axis2_engine_resume_send(
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_array_list_t *phases = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+
     /* invoke the phases */
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);    
     if (op_ctx)

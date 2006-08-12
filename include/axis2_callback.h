@@ -264,6 +264,7 @@ extern "C"
     /**
      * Creates a callback struct.
      * @param env pointer to environment struct
+     * @return pointer to newly created callback struct
      */
     AXIS2_EXTERN axis2_callback_t *AXIS2_CALL 
     axis2_callback_create(
