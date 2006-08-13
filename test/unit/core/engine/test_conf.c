@@ -49,7 +49,7 @@ void Testaxis2_conf_set_default_dispatchers(CuTest *tc)
         int sizej = 0;
         
         phase = AXIS2_ARRAY_LIST_GET(in_phases, env, i);
-        handlers = AXIS2_PHASE_GET_HANDLERS (phase, env);
+        handlers = AXIS2_PHASE_GET_ALL_HANDLERS (phase, env);
         sizej = AXIS2_ARRAY_LIST_SIZE(handlers, env);
         for(j = 0; j < sizej; j++)
         {

@@ -38,7 +38,7 @@ typedef struct axis2_phase_impl
     /** last handler of phase set? */
     axis2_bool_t last_handler_set;    
     /** 
-     * hanlder_first and handler_last are the same hanlder
+     * handler_first and handler_last are the same handler
      * that is for this phase there is only one handler
      */
     axis2_bool_t is_one_handler;
@@ -68,7 +68,7 @@ axis2_phase_invoke(
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_phase_get_name(
     const axis2_phase_t *phase, 
     const axis2_env_t *env);
@@ -138,7 +138,7 @@ axis2_phase_insert_handler_desc(
     axis2_handler_desc_t *handler_desc);
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_phase_get_handlers(
+axis2_phase_get_all_handlers(
     const axis2_phase_t *phase, 
     const axis2_env_t *env);
 
@@ -243,8 +243,8 @@ axis2_phase_create(
     phase_impl->phase.ops->insert_handler_desc = 
         axis2_phase_insert_handler_desc;
         
-    phase_impl->phase.ops->get_handlers = 
-        axis2_phase_get_handlers;
+    phase_impl->phase.ops->get_all_handlers = 
+        axis2_phase_get_all_handlers;
         
     phase_impl->phase.ops->invoke_start_from_handler = 
         axis2_phase_invoke_start_from_handler;
@@ -330,7 +330,7 @@ axis2_phase_invoke(
                 return status;
         }
     }
-    /*Invoking the rest of handlers except first_handler and last_handler */
+    /* Invoking the rest of handlers except first_handler and last_handler */
     size = AXIS2_ARRAY_LIST_SIZE(phase_impl->handlers, env);
     
     while (index < size ) 
@@ -360,7 +360,7 @@ axis2_phase_invoke(
         }
     }
     
-    /*If phase last handler is there invoke it here*/
+    /* If phase last handler is there invoke it here*/
     if (phase_impl->last_handler) 
     {
         if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
@@ -382,7 +382,7 @@ axis2_phase_invoke(
 }
 
 
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_phase_get_name(
     const axis2_phase_t *phase, 
     const axis2_env_t *env) 
@@ -400,8 +400,6 @@ axis2_phase_get_handler_count(
     return AXIS2_ARRAY_LIST_SIZE(AXIS2_INTF_TO_IMPL(phase)->handlers, env );
 }
 
-
-/******************** FROM PhaseMetaData *****************************/
 
 int AXIS2_CALL 
 _axis2_phase_get_before_after(
@@ -780,12 +778,6 @@ axis2_phase_insert_before(
             
             if (AXIS2_STRCMP(before, handler_name) == 0 )
             {
-                /* The following logic is used in Java code, but for me it looks like there is something wrong
-                if (i == 0)
-                    return AXIS2_ARRAY_LIST_ADD_AT(phase_impl->handlers, env, i, handler);
-                else
-                    return AXIS2_ARRAY_LIST_ADD_AT(phase_impl->handlers, env, i - 1, handler);
-                */
                 return AXIS2_ARRAY_LIST_ADD_AT(phase_impl->handlers, env, i, handler);
             }
         }     
@@ -1023,7 +1015,7 @@ axis2_phase_insert_before_and_after(
 
         if ((after >= 0) && (before >= 0))
         {
-            /*both the before and after indexes has been found */
+            /*both the before and after indexes have been found */
             if (after > before) 
             {
                 AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
@@ -1104,7 +1096,7 @@ axis2_phase_insert_handler_desc(
 }
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_phase_get_handlers(
+axis2_phase_get_all_handlers(
     const axis2_phase_t *phase, 
     const axis2_env_t *env) 
 {

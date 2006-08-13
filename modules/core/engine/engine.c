@@ -788,7 +788,7 @@ axis2_engine_resume_invocation_phases(
     {
         axis2_phase_t *phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phases, 
             env, i);
-        axis2_char_t *phase_name = AXIS2_PHASE_GET_NAME(phase, env);
+        const axis2_char_t *phase_name = AXIS2_PHASE_GET_NAME(phase, env);
         axis2_char_t *paused_phase_name = AXIS2_MSG_CTX_GET_PAUSED_PHASE_NAME(
             msg_ctx, env);
         /* skip invoking handlers until we find the paused phase */

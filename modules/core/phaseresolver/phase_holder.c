@@ -176,7 +176,7 @@ axis2_phase_holder_is_phase_exist(axis2_phase_holder_t *phase_holder,
     
     for (i = 0; i < size; i++) 
     {
-        axis2_char_t *phase_name_l = NULL;
+        const axis2_char_t *phase_name_l = NULL;
         
         phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phase_holder_impl->
             phase_list, env, i);
@@ -253,7 +253,7 @@ axis2_phase_holder_get_phase(axis2_phase_holder_t *phase_holder,
     
     for (i = 0; i < size; i++) 
     {
-        axis2_char_t *phase_name_l = NULL;
+        const axis2_char_t *phase_name_l = NULL;
         phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phase_holder_impl->
             phase_list, env, i);
         phase_name_l = AXIS2_PHASE_GET_NAME(phase, env);
