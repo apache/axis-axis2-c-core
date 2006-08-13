@@ -17,14 +17,15 @@
 #ifndef AXIS2_EVENT_H
 #define AXIS2_EVENT_H
 
-/** @defgroup axis2_event Event
+/** @defgroup axis2_event event
  * @ingroup axis2_core_engine
  * @{
+ * An Axis event is sent to registered listeners whenever anything significant 
+ * happens to Axis configuration.
  */
 
 /**
  * @file axis2_event.h
- * @brief axis2 Message Context interface
  */
 
 #include <axis2_defines.h>
@@ -44,17 +45,14 @@ extern "C"
     /** Type name for struct axis2_event */
     typedef struct axis2_event axis2_event_t;
 
-
-    /**
-     * An Axis event is sent to registered listeners whenever anything significant 
-     * happens to <code>AxisConfiguration</code>.
-     */
     struct axis2_event_ops
     {
 
-        /** 
+        /**
+         * Gets service associated with the event.        
          * @param even pointer to event
          * @param env pointer to environment struct 
+         * @return pointer to service
          */
         axis2_svc_t *(AXIS2_CALL *
                 get_svc)(
@@ -62,8 +60,10 @@ extern "C"
                     const axis2_env_t *env);
 
         /** 
+         * Gets event type.
          * @param even pointer to event
          * @param env pointer to environment struct 
+         * @return event type as an integer
          */
         int (AXIS2_CALL *
                 get_event_type)(
@@ -71,53 +71,53 @@ extern "C"
                     const axis2_env_t *env);
 
         /** 
+         * Frees the event struct.
          * @param even pointer to event
          * @param env pointer to environment struct 
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
-                    struct axis2_event *event,
+                    axis2_event_t *event,
                     const axis2_env_t *env);
     };
 
     /**
-     * Message Context struct
-     * Axis2 Message Context
+     * event struct.
      */
     struct axis2_event
     {
+        /** operations of event */
         axis2_event_ops_t *ops;
     };
 
     /**
+     * Created an event struct instance.
      * @param env pointer to environment struct
-     * @param svc pointer to service
+     * @param svc pointer to service, event does not assume the ownership of service
      * @param event type event type
+     * @return pointer to newly created event struct
      */
     AXIS2_EXTERN axis2_event_t *AXIS2_CALL
     axis2_event_create(
         const axis2_env_t *env,
         axis2_svc_t *svc,
-        int event_type);
+        const int event_type);
 
-/************************** Start of function macros **************************/
-    
-/** Get svc.
+/** Gets service associated with the event.
     @sa axis2_event_ops#get_svc */
 #define AXIS2_EVENT_GET_SVC(event, env) \
         ((event)->ops->get_svc(event, env))
 
-/** Gets the event type.
+/** Gets event type as an integer.
     @sa axis2_event_ops#get_event_type */
 #define AXIS2_EVENT_GET_EVENT_TYPE(event, env) \
         ((event)->ops->get_event_type(event, env))
 
-/** Frees the event.
+/** Frees event struct.
     @sa axis2_event_ops#free */
 #define AXIS2_EVENT_FREE(event, env) \
         ((event)->ops->free (event, env))
-
-/************************** End of function macros ****************************/
 
 /** @} */
 #ifdef __cplusplus
