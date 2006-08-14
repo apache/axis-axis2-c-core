@@ -25,23 +25,27 @@
 #include <axiom_soap_body.h>
 
 axis2_status_t AXIS2_CALL 
-axiom_soap_body_disp_invoke (struct axis2_handler * handler, 
-                             const axis2_env_t *env,
-                             struct axis2_msg_ctx *msg_ctx);
+axiom_soap_body_disp_invoke (
+    axis2_handler_t *handler, 
+    const axis2_env_t *env,
+    struct axis2_msg_ctx *msg_ctx);
                              
-axis2_svc_t* AXIS2_CALL 
-axiom_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
-                              const axis2_env_t *env);
+axis2_svc_t *AXIS2_CALL 
+axiom_soap_body_disp_find_svc(
+    axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env);
 
                               
-axis2_op_t* AXIS2_CALL 
-axiom_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
-                             const axis2_env_t *env,
-                             axis2_svc_t *svc);
+axis2_op_t *AXIS2_CALL 
+axiom_soap_body_disp_find_op(
+    axis2_msg_ctx_t *msg_ctx, 
+    const axis2_env_t *env,
+    axis2_svc_t *svc);
 
 
-axis2_disp_t* AXIS2_CALL 
-axiom_soap_body_disp_create(const axis2_env_t *env) 
+axis2_disp_t *AXIS2_CALL 
+axiom_soap_body_disp_create(
+    const axis2_env_t *env) 
 {
     axis2_disp_t *disp = NULL;
     axis2_handler_t *handler = NULL;
@@ -76,23 +80,10 @@ axiom_soap_body_disp_create(const axis2_env_t *env)
     return disp;
 }
 
-    
-/** The struct that inherits from this struct
-    should implement the find_service and find_op methods and assing the 
-    respective function pointers in the base struct.
-    Here we have only the dummy implementation to gauard against erros due to 
-    the failure to provide an impl version by mistake.
- */
-    
-/**
- * finds the service
- *
- * @param messageContext
- * @return
- */
-axis2_svc_t* AXIS2_CALL 
-axiom_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx, 
-                              const axis2_env_t *env) 
+axis2_svc_t *AXIS2_CALL 
+axiom_soap_body_disp_find_svc(
+    axis2_msg_ctx_t *msg_ctx, 
+    const axis2_env_t *env) 
 {    
     axiom_soap_envelope_t *soap_envelope = NULL;
     axis2_svc_t *svc = NULL;
@@ -167,17 +158,11 @@ axiom_soap_body_disp_find_svc(axis2_msg_ctx_t *msg_ctx,
     return svc;
 }
 
-/**
- * finds the op
- *
- * @param service
- * @param msg_ctx
- * @return
- */
-axis2_op_t* AXIS2_CALL 
-axiom_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx, 
-                             const axis2_env_t *env,
-                             axis2_svc_t *svc)
+axis2_op_t *AXIS2_CALL 
+axiom_soap_body_disp_find_op(
+    axis2_msg_ctx_t *msg_ctx, 
+    const axis2_env_t *env,
+    axis2_svc_t *svc)
 {
     axiom_soap_envelope_t *soap_envelope = NULL;
     axis2_op_t *op = NULL;
@@ -231,9 +216,10 @@ axiom_soap_body_disp_find_op(axis2_msg_ctx_t *msg_ctx,
 }
             
 axis2_status_t AXIS2_CALL 
-axiom_soap_body_disp_invoke(struct axis2_handler * handler, 
-                            const axis2_env_t *env,
-                            struct axis2_msg_ctx *msg_ctx)
+axiom_soap_body_disp_invoke(
+    axis2_handler_t * handler, 
+    const axis2_env_t *env,
+    struct axis2_msg_ctx *msg_ctx)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);    
     
