@@ -27,7 +27,7 @@ oxs_token_get_cipher_value(const axis2_env_t *env,
 {
     /*TODO Verification*/
     axis2_char_t *cv = NULL;
-    cv = oxs_axiom_get_node_content(env, cv_node);
+    cv = (axis2_char_t*)oxs_axiom_get_node_content(env, cv_node);
     return cv;
 
 }

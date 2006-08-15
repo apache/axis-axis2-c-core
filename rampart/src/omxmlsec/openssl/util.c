@@ -25,12 +25,12 @@
 #include <openssl/rand.h>
 
 
-AXIS2_EXTERN cipher_prop_ptr  AXIS2_CALL
+AXIS2_EXTERN openssl_cipher_property_t *AXIS2_CALL
 openssl_get_cipher_property(const axis2_env_t *env, axis2_char_t *cipher_name)
 {
     EVP_CIPHER* cipher;
     EVP_CIPHER_CTX ctx;
-    cipher_prop_ptr cprop = NULL;
+    openssl_cipher_property_t * cprop = NULL;
     
    
     cipher = (EVP_CIPHER*)openssl_get_evp_cipher_by_name(env, cipher_name); 
@@ -47,16 +47,15 @@ openssl_get_cipher_property(const axis2_env_t *env, axis2_char_t *cipher_name)
     /*Create a cipher property and populate it*/
     cprop = openssl_cipher_property_create(env);
     
+    OPENSSL_CIPHER_PROPERTY_SET_CIPHER(cprop, env, cipher);
+    OPENSSL_CIPHER_PROPERTY_SET_NAME(cprop, env, cipher_name);
+    OPENSSL_CIPHER_PROPERTY_SET_KEY_SIZE(cprop, env, EVP_CIPHER_CTX_key_length(&ctx));
+    OPENSSL_CIPHER_PROPERTY_SET_BLOCK_SIZE(cprop, env, EVP_CIPHER_CTX_block_size(&ctx));
+    OPENSSL_CIPHER_PROPERTY_SET_IV_SIZE(cprop, env, EVP_CIPHER_CTX_iv_length(&ctx));
 
-    cprop->cipher = cipher;
-    cprop->name = cipher_name;
-    cprop->key_size = EVP_CIPHER_CTX_key_length(&ctx);
-    cprop->block_size = EVP_CIPHER_CTX_block_size(&ctx);
-    cprop->iv_size = EVP_CIPHER_CTX_iv_length(&ctx);
+    /*free ctx*/
+    EVP_CIPHER_CTX_cleanup(&ctx);
 
-    printf("\n openssl get Cipher prop\n------\n name=%s, bs=%d, ks=%d, ivs=%d\n", cipher_name , cprop->key_size, cprop->block_size, cprop->iv_size);
-
-    /*EVP_CIPHER_CTX_cleanup(&ctx);*/
     return cprop;
 }
 

@@ -38,6 +38,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                          const axis2_env_t *env,
                          struct axis2_msg_ctx *msg_ctx);
 
+
 /**********************end of header functions ****************************/
 
 AXIS2_EXTERN axis2_handler_t *AXIS2_CALL
@@ -96,6 +97,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
 
             if(!param_in_flow_security)
             {
+                /*This check ensures that user doesnt need to have securoty checking in his message flow*/
                 rampart_print_info(env,"No Inflow Security. So nothing to do");
                 return AXIS2_SUCCESS;
             }else
@@ -141,8 +143,19 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
             while (item != NULL)
             {
                 sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
+                /*If no sec_node return fault*/
+                if(!sec_node){
+                    axis2_array_list_t *sub_codes = NULL;
+                    sub_codes = axis2_array_list_create(env, 1);
+                    if (sub_codes)
+                    {
+                        AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE);
+                    }
+
+                    rampart_create_fault_envelope(env, "wsse:Security", "Security header element is unavailable",sub_codes, msg_ctx);
+                    return AXIS2_FAILURE;
+                }
                 sec_ele = AXIOM_NODE_GET_DATA_ELEMENT(sec_node, env);
-                printf("\n::Items %s -> %s\n", items, item);
 
                 if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL)) )
                 {
@@ -154,7 +167,14 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                             rampart_print_info(env,"I know this user ");
                             status = AXIS2_SUCCESS;
                         }else{
-                            rampart_print_info(env,"I don't know this user ");
+                            axis2_array_list_t *sub_codes = NULL;
+                            sub_codes = axis2_array_list_create(env, 1);
+                            if (sub_codes)
+                            {
+                                AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
+                            }
+
+                            rampart_create_fault_envelope(env, "wsse:UsernameToken", "Username is not valid",sub_codes, msg_ctx);
                             return AXIS2_FAILURE;
                         }
                     
@@ -166,6 +186,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                             rampart_print_info(env, "Decryption success");
                             status = AXIS2_SUCCESS;
                         }else{
+                            /*TODO return a fault*/
                             rampart_print_info(env, "Decryption failed");
                             return AXIS2_FAILURE;
                         }
@@ -198,6 +219,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                             rampart_print_info(env,"Timestamp is valid ");
                             status = AXIS2_SUCCESS;
                         }else{
+                            /*TODO return a fault*/
                             rampart_print_info(env,"Timestamp is not valid");
                             return AXIS2_FAILURE;
                         }   

@@ -54,6 +54,13 @@ rampart_callback_pw( const axis2_env_t *env,
                      axis2_char_t *callback_module_name,
                      const axis2_char_t *username);
 
+AXIS2_EXTERN void AXIS2_CALL
+rampart_create_fault_envelope(const axis2_env_t *env,
+        const axis2_char_t *header_name,
+        const axis2_char_t *description,
+        axis2_array_list_t *sub_codes,
+        axis2_msg_ctx_t *msg_ctx);
+
 /**********************end of header functions ****************************/
 
 
@@ -237,3 +244,33 @@ rampart_callback_pw( const axis2_env_t *env,
 
     return password;
 }
+
+
+AXIS2_EXTERN void AXIS2_CALL
+rampart_create_fault_envelope(const axis2_env_t *env,
+        const axis2_char_t *header_name,
+        const axis2_char_t *description,
+        axis2_array_list_t *sub_codes,
+        axis2_msg_ctx_t *msg_ctx)
+{
+    axiom_soap_envelope_t *envelope = NULL;
+    int soap_version = AXIOM_SOAP12;
+    axiom_node_t* text_om_node = NULL;
+    axiom_element_t * text_om_ele = NULL;
+    axiom_namespace_t *ns1 = NULL;
+
+    ns1 = axiom_namespace_create (env, RAMPART_WSSE_XMLNS, RAMPART_WSSE);
+    text_om_ele = axiom_element_create(env, NULL, "ProblemSecurityHeader", ns1, &text_om_node);
+    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, header_name, text_om_node);
+
+    envelope = axiom_soap_envelope_create_default_soap_fault_envelope(env,
+            "soapenv:Sender",
+            description,
+            soap_version, sub_codes, text_om_node);
+    
+    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, envelope);
+    return;
+}
+
+
+

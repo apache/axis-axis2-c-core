@@ -84,9 +84,6 @@ rampart_out_handler_create(const axis2_env_t *env, axis2_qname_t *qname)
     return handler;
 }
 
-
-
-
 axis2_status_t AXIS2_CALL
 rampart_out_handler_invoke (struct axis2_handler * handler,
                                const axis2_env_t * env, axis2_msg_ctx_t * msg_ctx)

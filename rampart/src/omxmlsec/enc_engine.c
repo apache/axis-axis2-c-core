@@ -37,7 +37,7 @@
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_get_encrypted_key(const axis2_env_t *env,
                             axiom_node_t *enc_key_node,
-                            oxs_key_ptr session_key)
+                            oxs_key_t *session_key)
 {
     axis2_char_t *key_enc_algo = NULL, *encrypted_key_value = NULL;
     axiom_node_t *enc_method_node = NULL, *cd_node = NULL, *cv_node = NULL;
@@ -85,7 +85,7 @@ oxs_get_encrypted_key(const axis2_env_t *env,
     decrypted_key_buf = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
 
     /*Decrypt the encrypted key*/
-    status  = oxs_prvkey_decrypt_data(env, encrypted_key_buf, decrypted_key_buf, session_key->name);  
+    status  = oxs_prvkey_decrypt_data(env, encrypted_key_buf, decrypted_key_buf, OXS_KEY_GET_NAME(session_key, env));  
     if(status == AXIS2_FAILURE){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "oxs_prvkey_decrypt_data failed");
@@ -93,10 +93,14 @@ oxs_get_encrypted_key(const axis2_env_t *env,
     }
     /*Create the session key*/
     /*Trim data to the key size*/
+    OXS_KEY_SET_DATA(session_key, env,(axis2_char_t*) decrypted_key_buf->data);
+    OXS_KEY_SET_SIZE(session_key, env, decrypted_key_buf->size);
+    OXS_KEY_SET_USAGE(session_key, env, OXS_KEY_USAGE_DECRYPT);
+    /*
     session_key->data = AXIS2_STRMEMDUP(decrypted_key_buf->data, decrypted_key_buf->size, env);    
     session_key->size = decrypted_key_buf->size;
     session_key->usage = OXS_KEY_USAGE_DECRYPT;
-     
+    */
     /*printf("\n>>>>>>>>decrypted session_key %s\n", session_key->data);*/
     return AXIS2_SUCCESS;
 }
@@ -199,9 +203,10 @@ oxs_enc_crypt(const axis2_env_t *env,
     axis2_char_t *cipher_name =  NULL;   
     axis2_char_t *encoded_str=NULL;
     axis2_char_t *in_data = NULL;
-    int ret, enclen, encodedlen;
+    int ret, enclen, encodedlen, decoded_len;
+    /*axis2_char_t *temp = NULL;*/
 
-    /*Safety initializations*/
+    /*Initializations*/
     ret = AXIS2_FAILURE;
     enclen = -1;
     encodedlen = -1;   
@@ -214,13 +219,19 @@ oxs_enc_crypt(const axis2_env_t *env,
                      "openssl_evp_block_cipher_ctx_create failed");
          return AXIS2_FAILURE;
     }
+
+    /*TODO Get cipher property*/    
+    
+
     /*Set the IV*/   
     /*iv = OPENSSL_DEFAULT_IV16;*/ /*oxs_iv_generate_for_algo(env,  enc_ctx->encmtd_algorithm); */
     iv =(axis2_char_t*)oxs_iv_generate_for_algo(env,  enc_ctx->encmtd_algorithm); 
 
     /*Set the key*/
-    bc_ctx->key = AXIS2_STRDUP(enc_ctx->key->data, env);
+    /* temp =  AXIS2_STRNDUP(OXS_KEY_GET_DATA(enc_ctx->key, env),  24, env);*/
+    bc_ctx->key = AXIS2_STRDUP(OXS_KEY_GET_DATA(enc_ctx->key, env),  env);
     bc_ctx->key_initialized = 1;
+
     /*Set the IV*/
     bc_ctx->iv =  AXIS2_STRDUP(iv, env);
 
@@ -237,9 +248,17 @@ oxs_enc_crypt(const axis2_env_t *env,
     if(enc_ctx->operation == oxs_operation_encrypt){
         ret =  openssl_evp_block_cipher_ctx_init(env, bc_ctx,
                             OPENSSL_ENCRYPT, (const unsigned char*)cipher_name);
+        if(ret == AXIS2_FAILURE ){
+            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "openssl_evp_block_cipher_ctx_init failed");
+        }
     }else if(enc_ctx->operation == oxs_operation_decrypt){
         ret =  openssl_evp_block_cipher_ctx_init(env, bc_ctx,
                             OPENSSL_DECRYPT, (const unsigned char*)cipher_name);
+        if(ret == AXIS2_FAILURE ){
+            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "openssl_evp_block_cipher_ctx_init failed");
+        }
     }else{
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "Invalid operation type %d", enc_ctx->operation);
@@ -262,7 +281,12 @@ oxs_enc_crypt(const axis2_env_t *env,
     /*If this is to decrypt, then we need to base64decode first*/
     }else if(enc_ctx->operation == oxs_operation_decrypt){
         in_data = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len( (char*)(enc_ctx->inputdata)));
-        axis2_base64_decode(in_data, (char*)(enc_ctx->inputdata)); 
+        /*axis2_base64_decode(in_data, (char*)(enc_ctx->inputdata)); */
+        decoded_len = axis2_base64_decode_binary((unsigned char*)in_data, (char*)(enc_ctx->inputdata));
+        if(decoded_len < 0){
+            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "base64 decoding failed");
+        }
         enclen = openssl_block_cipher_crypt(env, bc_ctx,
                                          (unsigned char*)in_data,  &out_main_buf, OPENSSL_DECRYPT);
     }else{

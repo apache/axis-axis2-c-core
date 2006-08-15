@@ -29,7 +29,6 @@ oxs_token_build_encrypted_key_element(const axis2_env_t *env,
 {
     axiom_node_t *encrypted_key_node = NULL;
     axiom_element_t *encrypted_key_ele = NULL;
-    int ret; 
     axiom_namespace_t *ns_obj = NULL;
 
     ns_obj = axiom_namespace_create (env, OXS_EncNs,

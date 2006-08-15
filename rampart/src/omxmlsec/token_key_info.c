@@ -28,7 +28,6 @@ oxs_token_build_key_info_element(const axis2_env_t *env,
 {
     axiom_node_t *key_info_node = NULL;
     axiom_element_t *key_info_ele = NULL;
-    axis2_status_t ret; 
     axiom_namespace_t *ns_obj = NULL;
 
     ns_obj = axiom_namespace_create (env, OXS_DSigNs,

@@ -48,21 +48,24 @@ openssl_evp_block_cipher_ctx_reset(const axis2_env_t *env, openssl_evp_block_cip
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN int  AXIS2_CALL  
+AXIS2_EXTERN axis2_status_t  AXIS2_CALL  
 openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
                              openssl_evp_block_cipher_ctx_ptr bc_ctx,
                              int encrypt,
                              const unsigned char* cipher_name)
 {
     
-    int iv_len;
-    int ret;
+    /*int iv_len;*/
+    axis2_status_t ret =  AXIS2_FAILURE;
 
     
     /*If bc_ctx is NULL create a new one*/
     if(!bc_ctx){
+        printf("Given bc_ctx is NULL. Creating a new one\n");
         bc_ctx = openssl_evp_block_cipher_ctx_create(env);
-        if(!bc_ctx) return (-1); 
+        if(!bc_ctx){
+             return AXIS2_FAILURE;
+        } 
     }    
     printf("\nCreating cipher ctx for %s", cipher_name);
     /*Set the cipher. TODO Support more ciphers later*/
@@ -86,7 +89,7 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
     bc_ctx->cipher =  (EVP_CIPHER*)openssl_get_evp_cipher_by_name(env, (axis2_char_t*)cipher_name);
 
     /*Sets the IV if not set. Well..How we convey this IV to decrypt*/
-    if(!(bc_ctx->iv)){
+    /*if(!(bc_ctx->iv)){
         iv_len = EVP_CIPHER_iv_length(bc_ctx->cipher);
         ret = RAND_bytes(bc_ctx->iv, iv_len);
         if(ret != 1) {
@@ -94,21 +97,23 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
         }
     }else{
         iv_len =  AXIS2_STRLEN((axis2_char_t*)bc_ctx->iv);
-    }
+    }*/
 
     /*Key supposed to be set before this */
-    if(!bc_ctx->key) return (-1);
+    if(!bc_ctx->key){
+         return AXIS2_FAILURE;
+    };
        
     /*Check if key and IV sizes are not applicable for the cipher*/
-#if 0
-    if(EVP_CIPHER_key_length(bc_ctx->cipher) != strlen(bc_ctx->key) ){
-        printf("Key size is not applicable for the cipher %d = %d\n", EVP_CIPHER_key_length(bc_ctx->cipher),  strlen(bc_ctx->key)  );
-        return (-1);
+#if 1
+    if(EVP_CIPHER_key_length(bc_ctx->cipher) != strlen((char*)bc_ctx->key) ){
+        printf("WARNING : Key size is not applicable for the cipher %d = %d\n", EVP_CIPHER_key_length(bc_ctx->cipher),  strlen((char*)bc_ctx->key)  );
+        
     }  
 
-    if(EVP_CIPHER_iv_length(bc_ctx->cipher) != strlen(bc_ctx->iv) ){
-        printf("IV size is not applicable for the cipher %d = %d\n", EVP_CIPHER_iv_length(bc_ctx->cipher) , strlen(bc_ctx->iv) );
-        return (-1);
+    if(EVP_CIPHER_iv_length(bc_ctx->cipher) != strlen((char*)bc_ctx->iv) ){
+        printf("WARNING : IV size is not applicable for the cipher %d = %d\n", EVP_CIPHER_iv_length(bc_ctx->cipher) , strlen((char*)bc_ctx->iv) );
+        
     }  
 #endif
 
@@ -120,10 +125,18 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
     /* We finished modifying parameters so now we can set key and IV */
     ret  = EVP_CipherInit_ex(&(bc_ctx->cipher_ctx), NULL, NULL, bc_ctx->key, bc_ctx->iv, encrypt);
     
-    if(ret < 0 ) return (-1);
+    if(ret < 0 ){
+         return AXIS2_FAILURE;
+    }
     
     bc_ctx->ctx_initialized = 1;
       
-    return 0;
+    return AXIS2_SUCCESS;
 }
+/*
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+openssl_evp_block_cipher_ctx_free(const axis2_env_t *env, openssl_evp_block_cipher_ctx_ptr bc_ctx)
+{
+    
 
+}*/

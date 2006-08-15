@@ -76,6 +76,8 @@ rampart_format_date_zulu_to_mili(const axis2_env_t *env, axis2_char_t *str)
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 rampart_print_info(const axis2_env_t *env, axis2_char_t* info)
 {
+    #ifdef PRINTINFO
     printf("[rampart]: %s\n", info);
+    #endif
     return AXIS2_SUCCESS;
 }
