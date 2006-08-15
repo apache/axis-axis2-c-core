@@ -24,15 +24,18 @@
  * @}
  */
 
-/** @defgroup axis2_ctx context
+/** 
+ * @defgroup axis2_ctx context
  * @ingroup axis2_context
- * Description.
+ * context is the base struct of all the context related structs. This struct 
+ * encapsulates the common operations and data for all context types. All the 
+ * context types, configuration, service group, service and operation has the
+ * base of type context. 
  * @{
  */
 
 /**
  * @file axis2_ctx.h
- * @brief axis2 context interface
  */
 
 #include <axis2_defines.h>
@@ -53,18 +56,21 @@ extern "C"
 
 
     /**
-     * context ops struct
+     * context ops struct.
      * Encapsulator struct for ops of axis2_ctx
      */
     struct axis2_ctx_ops
     {
         /**
-         * Stores a key value pair depending on the persistent flag.
+         * Sets a property with the given key.
          * @param ctx pointer to context struct
          * @param env pointer to environment struct
-         * @param key pointer to key
-         * @param value pointer to value
-         * @param persistent persistent
+         * @param key key string to store the property with
+         * @param value pointer to property to be stored, context assumes the 
+         * ownership of the property
+         * @param persistent persist ency status, AXIS2_TRUE if the value is to 
+         * be stored in the resistant store, AXIS2_FALSE if it is to be stored 
+         * in the non-persistent store
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -76,10 +82,14 @@ extern "C"
                     const axis2_bool_t persistent);
 
         /**
+         * Gets the property with the given key.
          * @param ctx pointer to context struct
          * @param env pointer to environment struct
-         * @param key pointer to key
-         * @param persistent persistent
+         * @param key key string
+         * @param persistent persistence status, AXIS2_TRUE if the value is to 
+         * be retrieved from the persistent store, AXIS2_FALSE if it is to be 
+         * retrieved from the non-persistent store
+         * @return pointer to property struct corresponding to the given key
          */
         axis2_property_t *(AXIS2_CALL *
                 get_property)(
@@ -89,8 +99,11 @@ extern "C"
                     const axis2_bool_t persistent);
 
         /**
+         * Gets the non-persistent map of properties.
          * @param ctx pointer to context struct
          * @param env pointer to environment struct
+         * @return pointer to the hash map which stores the non-persistent
+         * properties
          */
         axis2_hash_t *(AXIS2_CALL *
                 get_non_persistent_map)(
@@ -98,25 +111,31 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets the persistent map of properties.
          * @param ctx pointer to context struct
          * @param env pointer to environment struct
+         * @return pointer to the hash map which stores the persistent
+         * properties
          */
         axis2_hash_t *(AXIS2_CALL *
                 get_persistent_map)(
                     const axis2_ctx_t *ctx,
                     const axis2_env_t *env);
+                    
         /**
+         * Gets all properties stored within context. 
          * @param ctx pointer to context struct
          * @param env pointer to environment struct
+         * @return pointer to hash table containing all properties
          */
         axis2_hash_t *(AXIS2_CALL *
-                get_properties)(
+                get_all_properties)(
                     const axis2_ctx_t *ctx,
                     const axis2_env_t *env);
 
 
         /**
-         * Deallocate memory
+         * Frees context struct.
          * @param ctx pointer to context struct
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
@@ -127,8 +146,10 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets non-persistent map of properties.
          * @param ctx pointer to context struct
          * @param env pointer to environment struct
+         * @param map pointer to hash map, context assumes ownership of the map
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */ 
         axis2_status_t (AXIS2_CALL *
@@ -138,9 +159,10 @@ extern "C"
                     axis2_hash_t *map);
 
         /**
+         * Sets persistent map of properties.
          * @param ctx pointer to context struct
-         * @param env pointer to enviromnet struct
-         * @param map pointer to map
+         * @param env pointer to environment struct
+         * @param map pointer to hash map, context assumes ownership of the map
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -151,56 +173,55 @@ extern "C"
     };
 
     /**
-     * context struct
+     * context struct.
      */
     struct axis2_ctx
     {
-   /** operations of context struct */
+        /** operations of context struct */
         axis2_ctx_ops_t *ops;
     };
 
     /**
-     * Creates a context struct
+     * Creates a context struct.
      * @param env pointer to environment struct
+     * @return pointer to newly created context
      */
     AXIS2_EXTERN axis2_ctx_t *AXIS2_CALL 
     axis2_ctx_create(
         const axis2_env_t *env);
 
-/************************** Start of function macros **************************/
-
-/** Set property.
+/** Sets property with given key.
     @sa axis2_ctx_ops#set_property */
 #define AXIS2_CTX_SET_PROPERTY(ctx, env, key, value, persistent) \
     ((ctx)->ops->set_property(ctx, env, key, value, persistent))
 
-/** Get property.
+/** Gets property with given key.
     @sa axis2_ctx_ops#get_property */
 #define AXIS2_CTX_GET_PROPERTY(ctx, env, key, persistent) \
     ((ctx)->ops->get_property(ctx, env, key, persistent))
 
-/** Get non persistant.
-    @sa axis2_ctx_ops#get_non_persistant_map */
+/** Gets non persistent map of properties.
+    @sa axis2_ctx_ops#get_non_persistent_map */
 #define AXIS2_CTX_GET_NON_PERSISTANT_MAP(ctx, env) \
     ((ctx)->ops->get_non_persistent_map(ctx, env))
 
-/** Get properties.
-    @sa axis2_ctx_ops#get_properties */
-#define AXIS2_CTX_GET_PROPERTIES(ctx, env) \
-    ((ctx)->ops->get_properties(ctx, env))
+/** Gets all properties.
+    @sa axis2_ctx_ops#get_all_properties */
+#define AXIS2_CTX_GET_ALL_PROPERTIES(ctx, env) \
+    ((ctx)->ops->get_all_properties(ctx, env))
 
-/** Get persistant map.
-    @sa axis2_ctx_ops#get_persistant_map */
+/** Gets persistent map of properties.
+    @sa axis2_ctx_ops#get_persistent_map */
 #define AXIS2_CTX_GET_PERSISTANT_MAP(ctx, env) \
     ((ctx)->ops->get_persistent_map(ctx, env))
 
-/** Set non persistant map.
-    @sa axis2_ctx_ops#set_non_persistant_map */
+/** Sets non persistent map of properties.
+    @sa axis2_ctx_ops#set_non_persistent_map */
 #define AXIS2_CTX_SET_NON_PERSISTANT_MAP(ctx, env, map) \
     ((ctx)->ops->set_non_persistent_map(ctx, env, map))
 
-/** set persistant map.
-    @sa axis2_ctx_ops#set_persistant_map */
+/** Sets persistent map of properties.
+    @sa axis2_ctx_ops#set_persistent_map */
 #define AXIS2_CTX_SET_PERSISTANT_MAP(ctx, env, map) \
     ((ctx)->ops->set_persistent_map(ctx, env, map))
 
@@ -208,8 +229,6 @@ extern "C"
     @sa axis2_ctx_ops#free */
 #define AXIS2_CTX_FREE(ctx, env) \
     ((ctx)->ops->free (ctx, env))
-
-/************************** End of function macros ****************************/
 
 /** @} */
 #ifdef __cplusplus

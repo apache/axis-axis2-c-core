@@ -27,12 +27,12 @@ typedef struct axis2_conf_ctx_impl
     axis2_ctx_t *base;
     /** engine configuration */
     axis2_conf_t *conf;
-    /** root dir */
+    /** root directory */
     /* should be handled as a URL string ? */
     axis2_char_t *root_dir;
     /**
-     * axis2_hash_t *containing <code>MessageID</code> to
-     * <code>OperationContext</code> mapping.
+     * axis2_hash_t *containing message ID to
+     * operation context mapping.
      */
     axis2_hash_t *op_ctx_map;
 
@@ -40,7 +40,7 @@ typedef struct axis2_conf_ctx_impl
 
     axis2_hash_t *svc_grp_ctx_map;
 
-   /* Mutex to syncronize the read/write operations */
+   /* Mutex to synchronize the read/write operations */
    axis2_thread_mutex_t *mutex;
 }
 axis2_conf_ctx_impl_t;
@@ -51,7 +51,7 @@ axis2_conf_ctx_impl_t;
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_set_conf(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env, 
     axis2_conf_t *conf);
 
@@ -82,68 +82,68 @@ axis2_conf_ctx_get_svc_grp_ctx_map(
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_register_op_ctx(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *message_id,
+    const axis2_char_t *message_id,
     axis2_op_ctx_t *op_ctx);
 
 axis2_op_ctx_t *AXIS2_CALL 
 axis2_conf_ctx_get_op_ctx(
     const axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *message_id);
+    const axis2_char_t *message_id);
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_register_svc_ctx(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *svc_id,
+    const axis2_char_t *svc_id,
     axis2_svc_ctx_t *svc_ctx);
 
 axis2_svc_ctx_t *AXIS2_CALL 
 axis2_conf_ctx_get_svc_ctx(
     const axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *svc_id);
+    const axis2_char_t *svc_id);
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_register_svc_grp_ctx(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *svc_grp_id,
+    const axis2_char_t *svc_grp_id,
     axis2_svc_grp_ctx_t *svc_grp_ctx);
 
 axis2_svc_grp_ctx_t *AXIS2_CALL 
 axis2_conf_ctx_get_svc_grp_ctx(
     const axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *svc_grp_id);
+    const axis2_char_t *svc_grp_id);
 
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_conf_ctx_get_root_dir(
     const axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_set_root_dir(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *path);
+    const axis2_char_t *path);
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_init(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
     axis2_conf_t *conf);
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_free(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env);
 
 axis2_svc_grp_ctx_t *AXIS2_CALL 
 axis2_conf_ctx_fill_ctxs(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
@@ -279,12 +279,12 @@ axis2_conf_ctx_create(
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_set_conf(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env, 
     axis2_conf_t *conf) 
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(conf_ctx)->conf = conf; /* we just maitain a shalow copy here */
+    AXIS2_INTF_TO_IMPL(conf_ctx)->conf = conf; /* we just maintain a shallow copy here */
     return AXIS2_SUCCESS;
 }
 
@@ -335,9 +335,9 @@ axis2_conf_ctx_get_svc_grp_ctx_map(
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_register_op_ctx(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *message_id,
+    const axis2_char_t *message_id,
     axis2_op_ctx_t *op_ctx) 
 {
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
@@ -359,7 +359,7 @@ axis2_op_ctx_t *AXIS2_CALL
 axis2_conf_ctx_get_op_ctx(
     const axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *message_id) 
+    const axis2_char_t *message_id) 
 {
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
     axis2_op_ctx_t *rv = NULL;
@@ -382,9 +382,9 @@ axis2_conf_ctx_get_op_ctx(
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_register_svc_ctx(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *svc_id,
+    const axis2_char_t *svc_id,
     axis2_svc_ctx_t *svc_ctx) 
 {
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
@@ -406,7 +406,7 @@ axis2_svc_ctx_t *AXIS2_CALL
 axis2_conf_ctx_get_svc_ctx(
     const axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *svc_id) 
+    const axis2_char_t *svc_id) 
 {
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
     axis2_svc_ctx_t *rv = NULL;   
@@ -427,9 +427,9 @@ axis2_conf_ctx_get_svc_ctx(
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_register_svc_grp_ctx(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *svc_grp_id,
+    const axis2_char_t *svc_grp_id,
     axis2_svc_grp_ctx_t *svc_grp_ctx) 
 {
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
@@ -451,7 +451,7 @@ axis2_svc_grp_ctx_t *AXIS2_CALL
 axis2_conf_ctx_get_svc_grp_ctx(
     const axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *svc_grp_id) 
+    const axis2_char_t *svc_grp_id) 
 {
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
     axis2_svc_grp_ctx_t *rv = NULL;
@@ -470,7 +470,7 @@ axis2_conf_ctx_get_svc_grp_ctx(
    return rv;
 }
 
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_conf_ctx_get_root_dir(
     const axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env) 
@@ -487,9 +487,9 @@ axis2_conf_ctx_get_root_dir(
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_set_root_dir(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *path) 
+    const axis2_char_t *path) 
 {
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
     
@@ -519,7 +519,7 @@ axis2_conf_ctx_set_root_dir(
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_init(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
     axis2_conf_t *conf)
 {
@@ -571,7 +571,7 @@ axis2_conf_ctx_init(
 
 axis2_status_t AXIS2_CALL 
 axis2_conf_ctx_free(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env)
 {
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
@@ -673,7 +673,7 @@ axis2_conf_ctx_free(
 
 axis2_svc_grp_ctx_t *AXIS2_CALL 
 axis2_conf_ctx_fill_ctxs(
-    struct axis2_conf_ctx *conf_ctx, 
+    axis2_conf_ctx_t *conf_ctx, 
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
@@ -730,7 +730,7 @@ axis2_conf_ctx_fill_ctxs(
     }
     
     /* by this time service group context id must have a value, 
-    either from transport or from addressing */
+       either from transport or from addressing */
     if (svc_grp_ctx_id)
     {
         svc_grp_ctx = (axis2_svc_grp_ctx_t*) 
@@ -769,7 +769,8 @@ axis2_conf_ctx_fill_ctxs(
         axis2_conf_ctx_register_svc_grp_ctx(conf_ctx, env, svc_grp_ctx_id, svc_grp_ctx);        
     }
     
-    /* when you come here op context MUST already been assigned to the message context */
+    /* when you come here operation context MUST already been assigned 
+       to the message context */
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     if (!op_ctx)
     {

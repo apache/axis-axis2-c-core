@@ -27,7 +27,7 @@ typedef struct axis2_ctx_impl
     /** persistent map */
     axis2_hash_t *persistent_map;
     /*axis2_ctx_t *parent; This will not be required as the responsibility of 
-    knwong the parent is  deligated to impl structs */
+    knowing the parent is  delegated to impl structs */
 }
 axis2_ctx_impl_t;
 
@@ -42,7 +42,7 @@ axis2_ctx_get_property(
     const axis2_bool_t persistent);
 
 axis2_hash_t *AXIS2_CALL 
-axis2_ctx_get_properties(
+axis2_ctx_get_all_properties(
     const axis2_ctx_t *ctx, 
     const axis2_env_t *env);
 
@@ -126,7 +126,7 @@ axis2_ctx_create(
     }
 
     ctx_impl->ctx.ops->get_property = axis2_ctx_get_property;        
-    ctx_impl->ctx.ops->get_properties = axis2_ctx_get_properties;        
+    ctx_impl->ctx.ops->get_all_properties = axis2_ctx_get_all_properties;        
     ctx_impl->ctx.ops->set_property = axis2_ctx_set_property;
     ctx_impl->ctx.ops->get_non_persistent_map = axis2_ctx_get_non_persistent_map;
     ctx_impl->ctx.ops->get_persistent_map = axis2_ctx_get_persistent_map;
@@ -191,16 +191,16 @@ axis2_ctx_get_property(
         if (ctx_impl->non_persistent_map)
             ret = axis2_hash_get(ctx_impl->non_persistent_map, key, AXIS2_HASH_KEY_STRING);
     }
-    /** it is the responsibility of the caller to lookup parent if key is not found here 
+    /** it is the responsibility of the caller to look-up parent if key is not found here 
         Note that in C implementation it is the responsibility of the deriving struct to 
-        handle the parent as we do not have the inheritance facility. Im case of 
+        handle the parent as we do not have the inheritance facility. In case of 
         context it is not worth trying to mimic inheritance. */
     
     return ret;
 }
 
 axis2_hash_t *AXIS2_CALL 
-axis2_ctx_get_properties(
+axis2_ctx_get_all_properties(
     const axis2_ctx_t *ctx, 
     const axis2_env_t *env) 
 {
