@@ -60,7 +60,7 @@ axis2_flow_get_handler_count(
 /************************** End of Function headers ************************/
 
 AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
-axis2_flow_create (
+axis2_flow_create(
     const axis2_env_t *env)
 {
     axis2_flow_impl_t *flow_impl = NULL;
