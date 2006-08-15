@@ -51,7 +51,7 @@ oxs_pubkey_encrypt_data(const axis2_env_t *env, oxs_buffer_ptr input, oxs_buffer
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_get_encrypted_key(const axis2_env_t *env,
                             axiom_node_t *enc_key_node,  
-                            oxs_key_ptr session_key);
+                            oxs_key_t *session_key);
 
 /*Does encryption or decryption depending on the enc_ctx*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

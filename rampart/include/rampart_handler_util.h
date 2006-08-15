@@ -104,7 +104,14 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 rampart_callback_pw( const axis2_env_t *env,
                      axis2_char_t *callback_module_name,
                      const axis2_char_t *username);
-    
+ 
+AXIS2_EXTERN void AXIS2_CALL
+rampart_create_fault_envelope(const axis2_env_t *env,
+        const axis2_char_t *header_name,
+        const axis2_char_t *description,
+        axis2_array_list_t *sub_codes,
+        axis2_msg_ctx_t *msg_ctx);
+   
 /** @} */
 #ifdef __cplusplus
 }

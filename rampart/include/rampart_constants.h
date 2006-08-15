@@ -106,6 +106,15 @@ extern "C"
 #define RAMPART_ACTION_TIME_TO_LIVE                 "timeToLive"
 
 
+/************fault codes***************/
+#define RAMPART_FAULT_UNSUPPORTED_SECURITY_TOKEN    "wsse:UnsupportedSecurityToken"
+#define RAMPART_FAULT_UNSUPPORTED_ALGORITHM         "wsse:UnsupportedAlgorithm"
+#define RAMPART_FAULT_INVALID_SECURITY              "wsse:InvalidSecurity"
+#define RAMPART_FAULT_INVALID_SECURITY_TOKEN        "wsse:InvalidSecurityToken"
+#define RAMPART_FAULT_FAILED_AUTHENTICATION         "wsse:FailedAuthentication"
+#define RAMPART_FAULT_FAILED_CHECK                  "wsse:FailedCheck"
+#define RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE    "wsse:SecurityTokenUnavailable"
+
 
 
 /*Dynamically set values*/

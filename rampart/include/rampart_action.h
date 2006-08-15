@@ -71,38 +71,291 @@ extern "C"
     </xs:element>
 </xs:schema>
 */
-typedef struct _actions actionss, *actions_ptr;
 
-struct _actions{
-        /*axis2_char_t *items  ;
-        axis2_char_t *user  ;
-        axis2_char_t *passwordC_callback_lass  ;
-        axis2_char_t *encryption_prop_file;
-        axis2_char_t *signature_prop_file ;
-        axis2_char_t *signature_key_identifier  ;
-        axis2_char_t *encryption_key_identifier  ;*/
-        axis2_char_t *encryption_user  ;
-       /*axis2_char_t *signature_parts  ;
-        axis2_char_t *encryption_parts  ;
-        axis2_char_t *optimize_parts  ;*/
-        axis2_char_t *encryption_sym_algorithm  ;
-        /*axis2_char_t *embedded_key_callback_class  ;*/
-        axis2_char_t *encryption_key_transport_algorithm  ;
-        /*axis2_char_t *embedded_key_name  ;
-        axis2_char_t *time_to_live  ;*/
-}; 
+    /** Type name for struct rampart_actions_ops */
+    typedef struct rampart_actions_ops rampart_actions_ops_t;
+    /** Type name for struct rampart_actions */
+    typedef struct rampart_actions rampart_actions_t;
 
-AXIS2_EXTERN actions_ptr AXIS2_CALL
-oxs_ctx_create_actions_ptr(const axis2_env_t *env);
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_ctx_reset_actions_ptr(const axis2_env_t *env, actions_ptr actions);
+    struct rampart_actions_ops
+    {
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_ctx_free_actions_ptr(const axis2_env_t *env, actions_ptr actions);
+        axis2_char_t *(AXIS2_CALL *
+        get_encryption_user )(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+        
+        axis2_char_t *(AXIS2_CALL *
+        get_encryption_sym_algorithm )(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_ctx_populate_actions_ptr(const axis2_env_t *env, actions_ptr actions, axis2_param_t *param_action  );
+        axis2_char_t *(AXIS2_CALL *
+        get_encryption_key_transport_algorithm )(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+
+
+        axis2_char_t *(AXIS2_CALL *
+        get_items )(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+
+        axis2_char_t *(AXIS2_CALL *
+        get_user )(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+
+        axis2_char_t *(AXIS2_CALL *
+        get_password_callback_class )(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+
+        axis2_char_t *(AXIS2_CALL *
+        get_encryption_prop_file )(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+
+        axis2_char_t *(AXIS2_CALL *
+        get_signature_prop_file)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+          
+        axis2_char_t *(AXIS2_CALL *
+        get_signature_key_identifier)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+          
+        axis2_char_t *(AXIS2_CALL *
+        get_encryption_key_identifier)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+          
+        axis2_char_t *(AXIS2_CALL *
+        get_signature_parts)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+          
+        axis2_char_t *(AXIS2_CALL *
+        get_encryption_parts)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+          
+
+
+        axis2_status_t (AXIS2_CALL *
+        set_encryption_user)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *encryption_user
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_encryption_sym_algorithm)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *encryption_sym_algorithm
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_encryption_key_transport_algorithm)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *encryption_key_transport_algorithm
+                    );
+        
+        axis2_status_t (AXIS2_CALL *
+        set_items)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *items
+                    );
+        
+        axis2_status_t (AXIS2_CALL *
+        set_user)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *user
+                    );
+        
+        axis2_status_t (AXIS2_CALL *
+        set_password_callback_class)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *password_callback_class
+                    );
+        
+        axis2_status_t (AXIS2_CALL *
+        set_encryption_prop_file)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *encryption_prop_file
+                    );
+        
+        axis2_status_t (AXIS2_CALL *
+        set_signature_prop_file)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *signature_prop_file
+                    );
+        
+        axis2_status_t (AXIS2_CALL *
+        set_signature_key_identifier)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *signature_key_identifier
+                    );
+        
+        axis2_status_t (AXIS2_CALL *
+        set_encryption_key_identifier)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *encryption_key_identifier
+                    );
+        
+        axis2_status_t (AXIS2_CALL *
+        set_signature_parts)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *signature_parts
+                    );
+        
+        axis2_status_t (AXIS2_CALL *
+        set_encryption_parts)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *encryption_parts
+                    );
+        
+
+
+        axis2_status_t (AXIS2_CALL *
+        reset)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        free)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        populate)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env, 
+                    axis2_param_t *param_action
+                    );
+
+    };
+
+    struct rampart_actions
+    {
+        /** operations of rampart_actions */
+        rampart_actions_ops_t *ops;
+    };
+
+    /*Create function*/    
+    AXIS2_EXTERN rampart_actions_t *AXIS2_CALL
+    rampart_actions_create(const axis2_env_t *env);
+
+
+/**********************Macros******************************************/
+#define RAMPART_ACTIONS_GET_ENC_USER(actions, env) \
+        ((actions)->ops->get_encryption_user(actions, env) )
+
+#define RAMPART_ACTIONS_SET_ENC_USER(actions, env, encryption_user) \
+        ((actions)->ops->set_encryption_user(actions, env, encryption_user) )
+
+#define RAMPART_ACTIONS_GET_ENC_SYM_ALGO(actions, env) \
+        ((actions)->ops->get_encryption_sym_algorithm(actions, env) )
+
+#define RAMPART_ACTIONS_SET_ENC_SYM_ALGO(actions, env, encryption_sym_algorithm) \
+        ((actions)->ops->set_encryption_sym_algorithm(actions, env, encryption_sym_algorithm) )
+
+#define RAMPART_ACTIONS_GET_ENC_KT_ALGO(actions, env) \
+        ((actions)->ops->get_encryption_key_transport_algorithm(actions, env) )
+
+#define RAMPART_ACTIONS_SET_ENC_KT_ALGO(actions, env, encryption_key_transport_algorithm)\
+        ((actions)->ops->set_encryption_key_transport_algorithm(actions, env, encryption_key_transport_algorithm))
+
+#define RAMPART_ACTIONS_GET_ITEMS(actions, env) \
+        ((actions)->ops->get_items(actions, env) )
+
+#define RAMPART_ACTIONS_SET_ITEMS(actions, env, items)\
+        ((actions)->ops->set_items(actions, env, items))
+
+#define RAMPART_ACTIONS_GET_USER(actions, env) \
+        ((actions)->ops->get_user(actions, env) )
+
+#define RAMPART_ACTIONS_SET_USER(actions, env, user)\
+        ((actions)->ops->set_user(actions, env, user))
+
+#define RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env) \
+        ((actions)->ops->get_password_callback_class(actions, env) )
+
+#define RAMPART_ACTIONS_SET_PW_CB_CLASS(actions, env, password_callback_class)\
+        ((actions)->ops->set_password_callback_class(actions, env,password_callback_class ))
+
+#define RAMPART_ACTIONS_GET_ENC_PROP_FILE(actions, env) \
+        ((actions)->ops->get_encryption_prop_file(actions, env) )
+
+#define RAMPART_ACTIONS_SET_ENC_PROP_FILE(actions, env, encryption_prop_file)\
+        ((actions)->ops->set_encryption_prop_file(actions, env, encryption_prop_file))
+
+#define RAMPART_ACTIONS_GET_SIG_PROP_FILE(actions, env) \
+        ((actions)->ops->get_signature_prop_file(actions, env) )
+
+#define RAMPART_ACTIONS_SET_SIG_PROP_FILE(actions, env, signature_prop_file)\
+        ((actions)->ops->set_signature_prop_file(actions, env, signature_prop_file))
+
+#define RAMPART_ACTIONS_GET_SIG_KEY_IDENTIFIER(actions, env) \
+        ((actions)->ops->get_signature_key_identifier(actions, env) )
+
+#define RAMPART_ACTIONS_SET_SIG_KEY_IDENTIFIER(actions, env, signature_key_identifier)\
+        ((actions)->ops->set_signature_key_identifier(actions, env, signature_key_identifier))
+
+#define RAMPART_ACTIONS_GET_ENC_KEY_IDENTIFIER(actions, env) \
+        ((actions)->ops->get_encryption_key_identifier(actions, env) )
+
+#define RAMPART_ACTIONS_SET_ENC_KEY_IDENTIFIER(actions, env, encryption_key_identifier)\
+        ((actions)->ops->set_encryption_key_identifier(actions, env, encryption_key_identifier))
+
+#define RAMPART_ACTIONS_GET_SIGNATURE_PARTS(actions, env) \
+        ((actions)->ops->get_signature_parts(actions, env) )
+
+#define RAMPART_ACTIONS_SET_SIGNATURE_PARTS(actions, env, signature_parts)\
+        ((actions)->ops->set_signature_parts(actions, env, signature_parts))
+
+#define RAMPART_ACTIONS_GET_ENCRYPTION_PARTS(actions, env) \
+        ((actions)->ops->get_encryption_parts(actions, env) )
+
+#define RAMPART_ACTIONS_SET_ENCRYPTION_PARTS(actions, env, encryption_parts)\
+        ((actions)->ops->set_encryption_parts(actions, env, encryption_parts))
+
+#define RAMPART_ACTIONS_RESET(actions, env) \
+        ((actions)->ops->reset(actions, env))
+
+#define RAMPART_ACTIONS_FREE(actions, env) \
+        ((actions)->ops->free(actions, env))
+
+#define RAMPART_ACTIONS_POPULATE(actions, env, param_action)\
+        ((actions)->ops->populate(actions, env, param_action))
+
 
 
 /** @} */

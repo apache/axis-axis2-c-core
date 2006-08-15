@@ -64,7 +64,7 @@ struct _enc_ctx{
     oxs_operation_t operation;    
 
     /*key*/
-    oxs_key_ptr key;
+    oxs_key_t* key;
 
     /* attributes from EncryptedData or EncryptedKey */
     axis2_char_t*           id;

@@ -68,9 +68,13 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
                              int encrypt,
                              const unsigned char* cipher_name
                              );
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 openssl_evp_block_cipher_ctx_reset(const axis2_env_t *env, openssl_evp_block_cipher_ctx_ptr bc_ctx);
-
+/*
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+openssl_evp_block_cipher_ctx_free(const axis2_env_t *env, openssl_evp_block_cipher_ctx_ptr bc_ctx);
+*/
 
 /*TODO write the free function*/
 

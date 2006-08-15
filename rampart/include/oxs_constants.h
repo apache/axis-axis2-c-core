@@ -34,6 +34,9 @@ extern "C"
 #define OXS_ds "ds"
 #define OXS_WSSE "wsse"
 
+
+
+
 /* Global namespaces *******************/
 
 #define OXS_Ns                    "http://www.aleksey.com/xmlsec/2002"
