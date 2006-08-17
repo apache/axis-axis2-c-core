@@ -81,6 +81,16 @@ typedef struct axiom_children_iterator axiom_children_iterator_t;
         axiom_node_t* (AXIS2_CALL *
       next)(axiom_children_iterator_t *iterator,
               const axis2_env_t *env);
+
+        /**
+         * Resets the Iterator. This moves the cursor back to the initial.
+         * iterator chidren_iterator to be reset.
+         * @param env Environment. MUST NOT be NULL.
+         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE.
+         */
+        axis2_status_t (AXIS2_CALL *
+        reset)(axiom_children_iterator_t *iterator,
+                          const axis2_env_t *env);
     };
     
     
@@ -113,6 +123,8 @@ axiom_children_iterator_create(const axis2_env_t *env,
 #define AXIOM_CHILDREN_ITERATOR_NEXT(iterator, env) \
         ((iterator)->ops->next(iterator, env))        
               
+#define AXIOM_CHILDREN_ITERATOR_RESET(iterator, env) \
+        ((iterator)->ops->reset(iterator, env))        
  /** @} */
 
 #ifdef __cplusplus

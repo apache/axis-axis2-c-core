@@ -34,11 +34,16 @@ axiom_node_t* AXIS2_CALL
 axiom_children_iterator_next(axiom_children_iterator_t *iterator,
                                 const axis2_env_t *env);  
                                 
+axis2_status_t AXIS2_CALL
+axiom_chidren_iterator_reset(axiom_children_iterator_t *iterator,
+                                        const axis2_env_t *env);
+
 /*************** end function prototypes **********************************/                                
 
 typedef struct axiom_children_iterator_impl_t
 {
     axiom_children_iterator_t iterator;
+    axiom_node_t *first_child;
     axiom_node_t *current_child;
     axiom_node_t *last_child;
     axis2_bool_t next_called;
@@ -73,6 +78,7 @@ axiom_children_iterator_create(const axis2_env_t *env,
     
     iterator_impl->current_child = NULL;
     iterator_impl->last_child    = NULL;
+    iterator_impl->first_child    = NULL;
     
     iterator_impl->next_called = AXIS2_FALSE;
     iterator_impl->remove_called = AXIS2_FALSE;
@@ -89,11 +95,13 @@ axiom_children_iterator_create(const axis2_env_t *env,
         return NULL;
     }
 
+    iterator_impl->first_child = current_child;
     iterator_impl->current_child = current_child;
     iterator_impl->iterator.ops->free_fn = axiom_children_iterator_free;
     iterator_impl->iterator.ops->remove = axiom_children_iterator_remove;
     iterator_impl->iterator.ops->has_next = axiom_children_iterator_has_next;
     iterator_impl->iterator.ops->next = axiom_children_iterator_next;
+    iterator_impl->iterator.ops->reset = axiom_chidren_iterator_reset;
     return &(iterator_impl->iterator);
 }  
 
@@ -172,4 +180,16 @@ axiom_children_iterator_next(axiom_children_iterator_t *iterator,
         return iterator_impl->last_child;                                            
     }
     return NULL;
+}
+
+axis2_status_t AXIS2_CALL
+axiom_chidren_iterator_reset(axiom_children_iterator_t *iterator,
+                                        const axis2_env_t *env)
+{
+    axiom_children_iterator_impl_t *iterator_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    iterator_impl = AXIS2_INTF_TO_IMPL(iterator);
+
+    iterator_impl->current_child = iterator_impl->first_child;
+    return AXIS2_SUCCESS;
 }
