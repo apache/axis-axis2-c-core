@@ -291,8 +291,13 @@ axis2_engine_send(
     } 
     else 
     {
-        axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
-        
+        axis2_status_t status = AXIS2_FAILURE;
+        status = axis2_engine_invoke_phases(engine, env, phases, msg_ctx);
+        if (status != AXIS2_SUCCESS)
+        {
+            return status;
+        }
+
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         if (conf_ctx)
         {
