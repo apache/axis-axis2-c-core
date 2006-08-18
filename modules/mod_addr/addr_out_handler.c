@@ -220,7 +220,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
     {
         axis2_char_t *action = NULL;
         axis2_char_t *address = NULL;
-        axis2_char_t *svc_group_context_id = NULL;
+        const axis2_char_t *svc_group_context_id = NULL;
         axis2_char_t *message_id =  NULL;
         axis2_relates_to_t *relates_to = NULL;
         axiom_node_t *relates_to_header_node = NULL;

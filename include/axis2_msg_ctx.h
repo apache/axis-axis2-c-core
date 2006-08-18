@@ -17,15 +17,26 @@
 #ifndef AXIS2_MSG_CTX_H
 #define AXIS2_MSG_CTX_H
 
-/** @defgroup axis2_msg_ctx message context
+/** 
+ * @defgroup axis2_msg_ctx message context
  * @ingroup axis2_context
- * Descripton.
+ * message context captures all state information related to a message 
+ * invocation. It holds information on the service and operation to be invoked
+ * as well as context hierarchy information related to the service and operation. 
+ * It also has information on transports, that are to be used in invocation. The 
+ * phase information is kept, along with the phase at which message invocation was 
+ * paused as well as the handler in the phase from which the invocation is to be 
+ * resumed. message context would hold the request SOAP message along the out 
+ * path and would capture response along the in path.
+ * message context also has information on various engine specific information, 
+ * such as if it should be doing MTOM, REST. 
+ * As message context is inherited form context, it has the capability of 
+ * storing user defined properties.
  * @{
  */
 
 /**
  * @file axis2_msg_ctx.h
- * @brief axis2 Message Context interface
  */
 
 #include <axis2_defines.h>
@@ -42,34 +53,34 @@ extern "C"
 {
 #endif
 
-/** axis2 transport headers */
+/** transport headers */
 #define AXIS2_TRANSPORT_HEADERS "AXIS2_TRANSPORT_HEADERS" 
 
-/** axis2 transport in */
+/** transport in */
 #define AXIS2_TRANSPORT_OUT "AXIS2_TRANSPORT_OUT" 
 
-/** axis2 transport out */
+/** transport out */
 #define AXIS2_TRANSPORT_IN "AXIS2_TRANSPORT_IN" 
 
-/** axis2 character set encoding */
+/** character set encoding */
 #define AXIS2_CHARACTER_SET_ENCODING "AXIS2_CHARACTER_SET_ENCODING" 
 
-/** axis2 UTF_8; This is the 'utf-8' value for AXIS2_CHARACTER_SET_ENCODING property  */
+/** UTF_8; This is the 'utf-8' value for AXIS2_CHARACTER_SET_ENCODING property  */
 #define AXIS2_UTF_8 "UTF-8" 
 
-/** axis2 UTF_16; This is the 'utf-16' value for AXIS2_CHARACTER_SET_ENCODING property  */
+/** UTF_16; This is the 'utf-16' value for AXIS2_CHARACTER_SET_ENCODING property  */
 #define AXIS2_UTF_16 "utf-16" 
 
-/** axis2 default char set encoding; This is the default value for AXIS2_CHARACTER_SET_ENCODING property */
+/** default char set encoding; This is the default value for AXIS2_CHARACTER_SET_ENCODING property */
 #define AXIS2_DEFAULT_CHAR_SET_ENCODING "UTF-8" 
 
-/** axis2 transport succeeded */
+/** transport succeeded */
 #define AXIS2_TRANSPORT_SUCCEED "AXIS2_TRANSPORT_SUCCEED" 
 
 /** HTTP Client */
 #define AXIS2_HTTP_CLIENT "AXIS2_HTTP_CLIENT"
 
-/** Transport url */
+/** Transport URL */
 #define AXIS2_TRANSPORT_URL "TransportURL" 
 
 /* Message flows */
@@ -102,24 +113,27 @@ extern "C"
     struct axis2_options;
 
     /**
-     * Message Context ops struct
-     * Encapsulator struct for ops of axis2_msg_ctx
+     * message context ops struct.
+     * Encapsulator struct for ops of axis2_msg_ctx.
      */
     struct axis2_msg_ctx_ops
     {
         /**
+         * Gets the base, which is of type context.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to base context struct
          */
-        struct axis2_ctx *(AXIS2_CALL *
+        axis2_ctx_t *(AXIS2_CALL *
                 get_base)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-
         /**
+         * Gets parent. Parent of a message context is of type operation.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to operation which is the parent
          */
         struct axis2_op_ctx *(AXIS2_CALL *
                 get_parent)(
@@ -127,42 +141,52 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets parent. Parent of a message context is of type operation.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param parent pointer to parent
+         * @param parent pointer to parent operation
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_parent)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_op_ctx *parent);
 
         /**
+         * Frees message context.
          * @param msg_ctx message context
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                free_fn)(
+                free)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
+
         /**
-         * The method is used to do the intialization of the engine context
+         * Initializes the message context. Based on the transport, service and
+         * operation qnames set on top of message context, correct instances of 
+         * those struct instances would be extracted from configuration and 
+         * set within message context.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param conf pointer to conf
+         * @param conf pointer to configuration
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 init)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_conf *conf);
 
         /**
+         * Gets WS-Addressing fault to address. Fault to address tells where to 
+         * send the fault in case there is an error.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to endpoint reference struct representing the fault 
+         * to address, returns a reference not a cloned copy
          */
         axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_fault_to)(
@@ -170,18 +194,23 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets WS-Addressing from endpoint. From address tells where the 
+         * request came from.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to endpoint reference struct representing the from 
+         * address, returns a reference not a cloned copy
          */
         axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_from)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-
         /**
+         * Checks if there is a SOAP fault on in flow.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if there is an in flow fault, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 get_in_fault_flow)(
@@ -189,8 +218,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets the SOAP envelope. This SOAP envelope could be either request
+         * SOAP envelope or the response SOAP envelope, based on the state
+         * the message context is in.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to SOAP envelope stored within message context
          */
         struct axiom_soap_envelope *(AXIS2_CALL *
                 get_soap_envelope)(
@@ -198,8 +231,10 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets fault SOAP envelope.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to fault SOAP envelope stored within message context
          */
         struct axiom_soap_envelope *(AXIS2_CALL *
                 get_fault_soap_envelope)(
@@ -207,17 +242,22 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets message ID.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return message ID string corresponding to the message the message 
+         * context is related to
          */
-        axis2_char_t *(AXIS2_CALL *
+        const axis2_char_t *(AXIS2_CALL *
                 get_msg_id)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
         /**
+         * Gets process fault status.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if process fault is on, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 get_process_fault)(
@@ -225,8 +265,10 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets relates to information for the message context.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to relates to struct 
          */
         axis2_relates_to_t *(AXIS2_CALL *
                 get_relates_to)(
@@ -234,8 +276,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets WS-Addressing reply to endpoint. Reply to address tells where 
+         * the the response should be sent to.         
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to endpoint reference struct representing the reply 
+         * to address, returns a reference not a cloned copy
          */
         axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_reply_to)(
@@ -243,8 +289,10 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Checks the response status, whether it is written or not.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if response is already written, else AXIS2_FALSE         
          */
         axis2_bool_t (AXIS2_CALL *
                 get_response_written)(
@@ -252,8 +300,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Checks if it is on the server side that the message is being dealt 
+         * with, or on the client side.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if it is server side, AXIS2_FALSE if it is client
+         * side
          */
         axis2_bool_t (AXIS2_CALL *
                 get_server_side)(
@@ -261,8 +313,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets WS-Addressing to endpoint. To address tells where message should 
+         * be sent to.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to endpoint reference struct representing the 
+         * to address, returns a reference not a cloned copy
          */
         axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_to)(
@@ -270,152 +326,185 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets WS-Addressing fault to endpoint. Fault to address tells where 
+         * the fault message should be sent when there is an error.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param reference pointer to reference
+         * @param reference pointer to endpoint reference representing fault to 
+         * address. message context assumes the ownership of endpoint struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_fault_to)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     axis2_endpoint_ref_t *reference);
 
         /**
+         * Sets WS-Addressing from endpoint. From address tells where 
+         * the message came from.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param reference pointer to reference
+         * @param reference pointer to endpoint reference representing from 
+         * address. message context assumes the ownership of endpoint struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_from)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     axis2_endpoint_ref_t *reference);
 
         /**
+         * Sets in fault flow status. 
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param in_fault_flow pointer to in_fault_flow
+         * @param in_fault_flow AXIS2_TRUE if there is a fault on in path, 
+         * else AXIS2_FALSE
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_in_fault_flow)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_bool_t in_fault_flow);
+                    const axis2_bool_t in_fault_flow);
 
         /**
+         * Sets SOAP envelope. The fact that if it is the request SOAP envelope
+         * or that of response depends on the current status represented by 
+         * message context.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param soap_envelope pointer to soap_envelope
+         * @param soap_envelope pointer to SOAP envelope, message context
+         * assumes ownership of SOAP envelope
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_soap_envelope)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axiom_soap_envelope *soap_envelope);
 
         /**
+         * Sets fault SOAP envelope.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param soap_envelope pointer to soap_envelope
+         * @param soap_envelope pointer to SOAP envelope, message context
+         * assumes ownership of SOAP envelope
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_fault_soap_envelope)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axiom_soap_envelope *soap_envelope);
 
         /**
+         * Sets message ID.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param message_id pointer to message id
+         * @param message_id message ID string
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_message_id)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_char_t *message_id);
+                    const axis2_char_t *message_id);
 
         /**
+         * Sets process fault bool value.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param process_fault process fault
+         * @param process_fault AXIS2_TRUE if SOAP faults are to be processed,
+         * else AXIS2_FALSE
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_process_fault)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_bool_t process_fault);
+                    const axis2_bool_t process_fault);
 
         /**
+         * Sets relates to struct.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param reference pointer to reference
+         * @param reference pointer to relates to struct, message context 
+         * assumes ownership of the struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_relates_to)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     axis2_relates_to_t *reference);
 
         /**
+         * Sets WS-Addressing reply to address indicating the location to which
+         * the reply would be sent.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param reference pointer to reference
+         * @param reference pointer to endpoint reference representing reply to 
+         * address         
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_reply_to)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     axis2_endpoint_ref_t *referance);
 
         /**
+         * Sets the bool value indicating the status of response.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param response_written respoinse written
+         * @param response_written AXIS2_TRUE if response is written, else 
+         * AXIS2_FALSE
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_response_written)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_bool_t response_written);
+                    const axis2_bool_t response_written);
 
         /**
+         * Sets the bool value indicating if it is the server side or the
+         * client side.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param server_side server side 
+         * @param server_side AXIS2_TRUE if it is server side, AXIS2_FALSE if it
+         * is client side
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_server_side)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_bool_t server_side);
+                    const axis2_bool_t server_side);
 
         /**
+         * Sets WS-Addressing to address.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param reference poinnter to reference
+         * @param reference pointer to endpoint reference struct representing
+         * the address where the request should be sent to. message context
+         * assumes ownership of endpoint struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_to)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     axis2_endpoint_ref_t *referance);
 
         /**
+         * Gets the bool value indicating if it is required to have a new thread
+         * for the invocation, or if the same thread of execution could be used.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if new thread is required, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 get_new_thread_required)(
@@ -423,62 +512,74 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets the bool value indicating if it is required to have a new thread
+         * for the invocation, or if the same thread of execution could be used.         
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param new_thread_required new thread required
+         * @param new_thread_required AXIS2_TRUE if a new thread is required, 
+         * else AXIS2_FALSE
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_new_thread_required)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_bool_t new_thread_required);
+                    const axis2_bool_t new_thread_required);
 
         /**
+         * Sets WS-Addressing action. 
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param action_uri pointer to action uri
+         * @param action_uri WSA action URI string
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_wsa_action)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     const axis2_char_t *action_uri);
 
         /**
+         * Gets WS-Addressing action.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to WSA action URI string
          */
-        axis2_char_t *(AXIS2_CALL *
+        const axis2_char_t *(AXIS2_CALL *
                 get_wsa_action)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
         /**
+         * Sets WS-Addressing message ID.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param message_id pointer to message id
+         * @param message_id pointer to message ID string
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_wsa_message_id)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_char_t *message_id);
+                    const axis2_char_t *message_id);
 
         /**
+         * Gets WS-Addressing message ID. 
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return WSA message ID string
          */
-        axis2_char_t *(AXIS2_CALL *
+        const axis2_char_t *(AXIS2_CALL *
                 get_wsa_message_id)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
         /**
+         * Gets WS-Addressing message information headers.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to message information headers struct with 
+         * WS-Addressing information. Returns a reference, not a cloned copy
          */
         axis2_msg_info_headers_t *(AXIS2_CALL *
                 get_msg_info_headers)(
@@ -486,8 +587,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets the bool value indicating the paused status. It is possible 
+         * to pause the engine invocation by any handler. By calling this method
+         * one can find out if some handler has paused the invocation.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if message context is paused, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 get_paused)(
@@ -495,6 +600,7 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets the bool value indicating the paused status of invocation.
          * @param msg_ctx message context
          * @param env pointer to environment struct
          * @param paused paused
@@ -502,13 +608,16 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
                 set_paused)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_bool_t paused);
+                    const axis2_bool_t paused);
 
         /**
+         * Gets transport in description.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to transport in description struct, returns a 
+         * reference not a cloned copy
          */
         struct axis2_transport_in_desc *(AXIS2_CALL *
                 get_transport_in_desc)(
@@ -516,8 +625,11 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets transport out description.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to transport out description struct, returns a 
+         * reference not a cloned copy
          */
         struct axis2_transport_out_desc *(AXIS2_CALL *
                 get_transport_out_desc)(
@@ -525,32 +637,39 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets transport in description.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param transport_in_desc pointer to transport in description
+         * @param transport_in_desc pointer to transport in description struct,
+         * message context does not assume the ownership of the struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_transport_in_desc)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_transport_in_desc *transport_in_desc);
 
         /**
+         * Sets transport out description.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param transport_out_desc pointer to transport out description
+         * @param transport_out_desc pointer to transport out description,
+         * message context does not assume the ownership of the struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_transport_out_desc)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_transport_out_desc *transport_out_desc);
 
         /**
+         * Gets operation context related to the operation that this message
+         * context is related to.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to operation context struct
          */
         struct axis2_op_ctx *(AXIS2_CALL *
                 get_op_ctx)(
@@ -558,20 +677,25 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets operation context related to the operation that this message
+         * context is related to.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param op_ctx pointer to operation context
+         * @param op_ctx pointer to operation context, message context does not 
+         * assume the ownership of operation context
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_op_ctx)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_op_ctx *op_ctx);
 
         /**
+         * Gets the bool value indicating the output written status. 
          * @param msg_ctx message context
-         * @param env pointer to environment struct
+         * @param env pointer to environment struct 
+         * @return AXIS2_TRUE if output is written, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 get_output_written)(
@@ -579,42 +703,49 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets the bool value indicating the output written status. 
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param output_written
+         * @param output_written AXIS2_TRUE if output is written, else AXIS2_FALSE
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_output_written)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_bool_t output_written);
+                    const axis2_bool_t output_written);
 
         /**
+         * Gets the ID of service context that relates to the service that is 
+         * related to the message context.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @return Returns the svc_ctx_id.
+         * @return service context ID string
          */
-        axis2_char_t *(AXIS2_CALL *
+        const axis2_char_t *(AXIS2_CALL *
                 get_svc_ctx_id)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
         /**
+         * Sets the ID of service context that relates to the service that is 
+         * related to the message context.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param svc_ctx_id The svc_ctx_id to AXIS2_CALL set.
+         * @param svc_ctx_id The service context ID string
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_svc_ctx_id)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_char_t *svc_ctx_id);
+                    const axis2_char_t *svc_ctx_id);
 
         /**
+         * Gets configuration context.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to configuration context
          */
         struct axis2_conf_ctx *(AXIS2_CALL *
                 get_conf_ctx)(
@@ -622,8 +753,11 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets service context that relates to the service that the message 
+         * context is related to.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to message context struct
          */
         struct axis2_svc_ctx *(AXIS2_CALL *
                 get_svc_ctx)(
@@ -631,52 +765,61 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets configuration context.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param conf_ctx pointer to configuration context
+         * @param conf_ctx pointer to configuration context struct, message 
+         * context does not assume the ownership of struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_conf_ctx)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_conf_ctx *conf_ctx);
 
         /**
+         * Sets service context.                     
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param svc_ctx pointer to service context
+         * @param svc_ctx pointer to service context struct,  message 
+         * context does not assume the ownership of struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_svc_ctx)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_svc_ctx *svc_ctx);
 
         /**
+         * Sets message information headers.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param msg_info_headers pointer to message info headers
+         * @param msg_info_headers pointer to message information headers,
+         * message context assumes the ownership of the struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_msg_info_headers)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     axis2_msg_info_headers_t *msg_info_headers);
 
         /**
-         * To retrive configuration descriptor parameters , it is posible to 
-         * AXIS2_CALL get paramater specify at * any levle via this method , 
-         * and the preferance is as follows,
-         * 1. Search in op description if its there
-         * 2. if the paramter not found or op_ctx is null will search in * _svc
-         * 3. If the svc is null or , the paramter does not found will serach in
-         * AxisConfiguration
+         * Gets configuration descriptor parameter with given key. This method 
+         * recursively search the related description hierarchy for the parameter 
+         * with given key until it is found or the parent of the description 
+         * hierarchy is reached. The order of search is as follows:
+         * 1. search in operation description, if its there return
+         * 2. if the parameter is not found in operation or operation is NULL, 
+         * search in service
+         * 3. if the parameter is not found in service or service is NULL search 
+         * in configuration
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @return Paramter <code>Paramter</code>
+         * @param key parameter key  
+         * @return pointer to parameter struct corresponding to the given key
          */
         axis2_param_t *(AXIS2_CALL *
                 get_parameter)(
@@ -685,45 +828,42 @@ extern "C"
                     const axis2_char_t *key);
 
         /**
-         * This method is to retrive both module configuration parameters and othere paramerts
-         * The searching procedure is as follows;
-         * 1. Search in module configurations inside corresponding op descripton if its three
-         * 2. Search in corresponding op if its there
-         * 3. Search in module configurations inside corresponding service description if its there
-         * 4. Next search in Corresponding Service description if its there
-         * 5. Next sercah in module configurations inside conf
-         * 6. Search in axis2_conf_t *for paramters
-         * 7. Next AXIS2_CALL get the corresponding module and search for the paramters
-         * 8. Search in axis2_handler_desc_t *for the paramter
-         * and the way of specifing mdoule configuration is as follows
-         * <moduleConfig name="addressing">
-         * <parameter name="addressingPara" locked="false">N/A</parameter>
-         * </moduleConfig>
+         * Gets parameters related to a named module and a given handler 
+         * description. The order of searching for parameter is as follows:
+         * 1. search in module configuration stored inside corresponding operation 
+         * description if its there
+         * 2. search in corresponding operation if its there
+         * 3. search in module configurations stored inside corresponding 
+         * service description if its there
+         * 4. search in corresponding service description if its there
+         * 5. search in module configurations stored inside configuration
+         * 6. search in configuration for parameters
+         * 7. get the corresponding module and search for the parameters
+         * 8. search in handler description for the parameter
          * @param msg_ctx pointer to message context
          * @param env pointer to environment struct
-         * @param key   Paramter name
-         * @param module_name  Name of the module
-         * @param handler_desc    <code>HandlerDescription</code>
-         * @return axis2_param_t *<code>Parameter</code>
+         * @param key parameter key
+         * @param module_name name of the module
+         * @param handler_desc pointer to handler description
+         * @return pointer to parameter 
          */
         axis2_param_t *(AXIS2_CALL *
                 get_module_parameter)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_char_t *key,
-                    axis2_char_t *module_name,
+                    const axis2_char_t *key,
+                    const axis2_char_t *module_name,
                     axis2_handler_desc_t *handler_desc);
 
         /**
-         * To acess any property AXIS2_CALL set at the run time , a handler 
-         * can add property to wherever he wants * to MesageContext , to 
-         * struct axis2_op_ctx * , to struct axis2_svc_ctx *and to ConfigurationContext.
-         * This method is to retrive those properties NOT paramters
+         * Gets property corresponding to the given key.
          * @param msg_ctx pointer to message context
          * @param env pointer to environment struct
-         * @param key property Name
-         * @param persistent need to be persistent even when server re-start
-         * @return Object
+         * @param key key string with which the property is stored
+         * @param persistent AXIS2_TRUE if the property is to be retrieved from
+         * persistent map, AXIS2_FALSE if the property is to be retrieved from
+         * non-persistent map
+         * @return pointer to property struct
          */
         axis2_property_t *(AXIS2_CALL *
                 get_property)(
@@ -733,74 +873,87 @@ extern "C"
                     const axis2_bool_t persistent);
 
         /**
+         * Sets property with given key.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param key pointer to key
-         * @param value pointer to value
-         * @param persistent persistent
+         * @param key key string
+         * @param value property to be stored
+         * @param persistent AXIS2_TRUE if the property is to be stored in
+         * persistent map, AXIS2_FALSE if the property is to be stored in 
+         * non-persistent map
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_property)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     const axis2_char_t *key,
                     axis2_property_t *value,
-                    axis2_bool_t persistent);
+                    const axis2_bool_t persistent);
         /**
+         * Gets the QName of the handler at which invocation was paused.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to QName of the paused handler
          */
-        axis2_qname_t *(AXIS2_CALL *
+        const axis2_qname_t *(AXIS2_CALL *
                 get_paused_handler_name)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
         /**
+         * Gets the name of the phase at which the invocation was paused.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return name string of the paused phase.
          */
-        axis2_char_t *(AXIS2_CALL *
+        const axis2_char_t *(AXIS2_CALL *
                 get_paused_phase_name)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
         /**
+         * Sets the name of the phase at which the invocation was paused.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param paused_phase_name pointer to paused phase name
+         * @param paused_phase_name paused phase name string
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_paused_phase_name)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_char_t *paused_phase_name);
+                    const axis2_char_t *paused_phase_name);
 
         /**
+         * Gets SOAP action.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return SOAP action string
          */
-        axis2_char_t *(AXIS2_CALL *
+        const axis2_char_t *(AXIS2_CALL *
                 get_soap_action)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
         /**
+         * Sets SOAP action.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param soap_action pointer to soap action
+         * @param soap_action SOAP action string
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_soap_action)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     const axis2_char_t *soap_action);
 
         /**
+         * Gets the boolean value indicating if MTOM is enabled or not.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if MTOM is enabled, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 get_doing_mtom)(
@@ -808,20 +961,23 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets the boolean value indicating if MTOM is enabled or not.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param doing_mtom pointer to doing_mtom
+         * @param doing_mtom AXIS2_TRUE if MTOM is enabled, else AXIS2_FALSE
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_doing_mtom)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_bool_t doing_mtom);
+                    const axis2_bool_t doing_mtom);
 
         /**
+         * Gets the boolean value indicating if REST is enabled or not.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if REST is enabled, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 get_doing_rest)(
@@ -829,33 +985,41 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets the boolean value indicating if REST is enabled or not.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param doing_rest pointer to doing_rest
+         * @param doing_rest AXIS2_TRUE if REST is enabled, else AXIS2_FALSE
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_doing_rest)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_bool_t doing_rest);
+                    const axis2_bool_t doing_rest);
 
         /**
+         * Sets the boolean value indicating if REST should be done through 
+         * HTTP POST or HTTP GET.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param do_rest_through_post do rest through post
+         * @param do_rest_through_post AXIS2_TRUE if REST is to be done with 
+         * HTTP POST, else AXIS2_FALSE if REST is to be done with HTTP GET
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_do_rest_through_post)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_bool_t do_rest_through_post);
+                    const axis2_bool_t do_rest_through_post);
 
 
         /**
+         * Sets the boolean value indicating if REST should be done through 
+         * HTTP POST or HTTP GET.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if REST is to be done with HTTP POST, else 
+         * AXIS2_FALSE if REST is to be done with HTTP GET
          */
         axis2_bool_t (AXIS2_CALL *
                 get_do_rest_through_post)(
@@ -863,8 +1027,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets the bool value indicating the SOAP version being used either
+         * SOAP 1.1 or SOAP 1.2
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if SOAP 1.1 is being used, else AXIS2_FALSE if 
+         * SOAP 1.2 is being used
          */
         axis2_bool_t (AXIS2_CALL *
                 get_is_soap_11)(
@@ -872,20 +1040,27 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets the bool value indicating the SOAP version being used either
+         * SOAP 1.1 or SOAP 1.2
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param is_soap11 is soap11
+         * @param is_soap11 AXIS2_TRUE if SOAP 1.1 is being used, else 
+         * AXIS2_FALSE if SOAP 1.2 is being used
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_is_soap_11)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_bool_t is_soap11);
+                    const axis2_bool_t is_soap11);
 
         /**
+         * Gets service group context. The returned service group context 
+         * relates to the service group to which the service, related to the 
+         * message context, belongs.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to service group struct
          */
         struct axis2_svc_grp_ctx *(AXIS2_CALL *
                 get_svc_grp_ctx)(
@@ -893,6 +1068,9 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Gets service group context. The returned service group context 
+         * relates to the service group to which the service, related to the 
+         * message context, belongs.
          * @param msg_ctx message context
          * @param env pointer to environment struct
          * @param svc_grp_ctx pointer to service group context
@@ -900,14 +1078,16 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
                 set_svc_grp_ctx)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_svc_grp_ctx *svc_grp_ctx);
 
 
         /**
+         * Gets the operation that is to be invoked.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to operation, returns a reference not a cloned copy
          */
         struct axis2_op *(AXIS2_CALL *
                 get_op)(
@@ -916,21 +1096,25 @@ extern "C"
 
 
         /**
+         * Sets the operation that is to be invoked.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param op pointer to op
+         * @param op pointer to operation, message context does not assume the 
+         * ownership of operation
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_op)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_op *op);
 
 
         /**
+         * Gets the service to which the operation to be invoked belongs.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to service struct, returns a reference not a cloned copy
          */
         struct axis2_svc *(AXIS2_CALL *
                 get_svc)(
@@ -939,21 +1123,25 @@ extern "C"
 
 
         /**
+         * Sets the service to which the operation to be invoked belongs.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param svc pointer to service
+         * @param svc pointer to service struct, message context does not assume
+         * the ownership of struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_svc)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_svc *svc);
 
-
         /**
+         * Gets the service group to which the service to be invoked belongs.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to service group struct, returns a reference not 
+         * a cloned copy
          */
         struct axis2_svc_grp *(AXIS2_CALL *
                  get_svc_grp)(
@@ -961,53 +1149,62 @@ extern "C"
                      const axis2_env_t *env);
 
         /**
+         * Sets the service group to which the service to be invoked belongs.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param svc_grp pointer to service group
+         * @param svc_grp pointer to service group struct, message context does 
+         * not assume the ownership of the struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_svc_grp)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
                     struct axis2_svc_grp *svc_grp);
 
 
         /**
+         * Gets the service group context ID.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return service group context ID string
          */
-        axis2_char_t *(AXIS2_CALL *
+        const axis2_char_t *(AXIS2_CALL *
                 get_svc_grp_ctx_id)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
         /**
+         * Sets the service group context ID.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param svc_grp_ctx_id pointer to service group context id
+         * @param svc_grp_ctx_id service group context ID string 
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_svc_grp_ctx_id)(
-                    struct axis2_msg_ctx *msg_ctx,
+                    axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env,
-                    axis2_char_t *svc_grp_ctx_id);
+                    const axis2_char_t *svc_grp_ctx_id);
 
         /**
-         * finds the service
+         * Finds the service to be invoked. This function is used by dispatchers 
+         * to locate the service to be invoked.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer to service to be invoked
          */
         struct axis2_svc *(AXIS2_CALL *
                 find_svc)(
                     axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
         /**
-         * finds the op
+         * Finds the operation to be invoked in the given service. This function 
+         * is used by dispatchers to locate the operation to be invoked.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param svc pointer to service 
+         * @param svc pointer to service to whom the operation belongs 
+         * @return pointer to the operation to be invoked
          */
         struct axis2_op *(AXIS2_CALL *
                 find_op)(
@@ -1016,8 +1213,10 @@ extern "C"
                     struct axis2_svc *svc);
 
         /**
+         * Gets the bool value indicating the paused status.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if invocation is paused, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 is_paused)(
@@ -1025,9 +1224,11 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets the options to be used in invocation.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param options pointer to options
+         * @param options pointer to options struct , message context does not 
+         * assume the ownership of the struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -1037,9 +1238,10 @@ extern "C"
                     struct axis2_options *options);
 
         /**
+         * Sets the flow to be invoked.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param flow flow
+         * @param flow int value indicating the flow
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -1049,8 +1251,10 @@ extern "C"
                     int flow);
 
         /**
+         * Gets the flow to be invoked.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return int value indicating the flow
          */
         int (AXIS2_CALL *
                 get_flow )(
@@ -1058,9 +1262,13 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets the execution chain to be invoked. The execution chain is a 
+         * list of phases containing the handlers to be invoked.
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param excution_chain pointer to execution chain
+         * @param execution_chain pointer array list containing the list of 
+         * handlers that constitute the execution chain. message context does
+         * not assume the ownership of the array list
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -1070,8 +1278,13 @@ extern "C"
                     axis2_array_list_t *execution_chain);
 
         /**
+         * Gets the execution chain to be invoked. The execution chain is a 
+         * list of phases containing the handlers to be invoked.
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return pointer array list containing the list of handlers that 
+         * constitute the execution chain. message context does not assume 
+         * the ownership of the array list
          */
         axis2_array_list_t *(AXIS2_CALL *
                 get_execution_chain)(
@@ -1079,9 +1292,11 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
+         * Sets current handler index, indicating which handler is currently 
+         * being invoked in the execution chain
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param index index
+         * @param index index of currently executed handler
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -1091,8 +1306,11 @@ extern "C"
                     const int index);
 
         /**
+         * Gets current handler index, indicating which handler is currently 
+         * being invoked in the execution chain         
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return index of currently executed handler
          */
         int (AXIS2_CALL *
                 get_current_handler_index)(
@@ -1100,19 +1318,23 @@ extern "C"
                     const axis2_env_t *env);
 
        /**
+        * Gets paused handler index, indicating at which handler the execution 
+        * chain was paused.
         * @param msg_ctx message context
         * @param env pointer to environment struct
+        * @return index of handler at which invocation was paused
         */
-            int (AXIS2_CALL *
-                    get_paused_handler_index)(
-                        const axis2_msg_ctx_t *msg_ctx,
-                        const axis2_env_t *env);
+        int (AXIS2_CALL *
+                get_paused_handler_index)(
+                    const axis2_msg_ctx_t *msg_ctx,
+                    const axis2_env_t *env);
 
 
         /**
+         * Sets index of the current phase being invoked.        
          * @param msg_ctx message context
          * @param env pointer to environment struct
-         * @param index index 
+         * @param index index of current phase
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -1122,18 +1344,22 @@ extern "C"
                     const int index);
 
         /**
+         * Gets index of the current phase being invoked.        
          * @param msg_ctx message context
          * @param env pointer to environment struct
+         * @return index of current phase
          */
         int (AXIS2_CALL *
                 get_current_phase_index)(
                     const axis2_msg_ctx_t *msg_ctx,
                     const axis2_env_t *env);
 
-   /**
-    * @param msg_ctx message context
-    * @param env pointer to environment struct
-    */
+        /**
+         * Gets the phase at which the invocation was paused.
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @return index of paused phase
+         */
         int (AXIS2_CALL *
                 get_paused_phase_index)(
                     const axis2_msg_ctx_t *msg_ctx,
@@ -1141,7 +1367,7 @@ extern "C"
     };
 
     /**
-     * message context struct
+     * message context struct.
      */
     struct axis2_msg_ctx
     {
@@ -1151,11 +1377,15 @@ extern "C"
 
 
     /**
-     * Creates a message context struct
+     * Creates a message context struct instance.
      * @param env pointer to environment struct
-     * @param conf_ctx pointer to configuration context
-     * @param transport_in_desc pointer to tarnsport in description
-     * @param transport_out_desc pointer to transport out description
+     * @param conf_ctx pointer to configuration context struct, message context
+     * does not assume the ownership of the struct
+     * @param transport_in_desc pointer to transport in description struct, 
+     * message context does not assume the ownership of the struct
+     * @param transport_out_desc pointer to transport out description struct,
+     * message context does not assume the ownership of the struct
+     * @return pointer to newly created message context instance
      */
     AXIS2_EXTERN axis2_msg_ctx_t *AXIS2_CALL
     axis2_msg_ctx_create (
@@ -1164,474 +1394,474 @@ extern "C"
         struct axis2_transport_in_desc *transport_in_desc,
         struct axis2_transport_out_desc *transport_out_des);
 
-/************************** Start of function macros **************************/
 
-/** Get base.
+/** Gets base context struct.
     @sa axis2_msg_ctx_ops#get_base */
 #define AXIS2_MSG_CTX_GET_BASE(msg_ctx, env) \
       ((msg_ctx)->ops->get_base(msg_ctx, env))
 
-/** Get parent.
+/** Gets parent operation context.
     @sa axis2_msg_ctx_ops#get_parent */
 #define AXIS2_MSG_CTX_GET_PARENT(msg_ctx, env) \
       ((msg_ctx)->ops->get_parent(msg_ctx, env))
 
-/** Set parent.
+/** Sets parent operation context.
     @sa axis2_msg_ctx_ops#set_parent */
 #define AXIS2_MSG_CTX_SET_PARENT(msg_ctx, env, parent) \
       ((msg_ctx)->ops->get_parent(msg_ctx, env, parent))
 
-/** Frees the message context.
+/** Frees message context.
     @sa axis2_msg_ctx_ops#free */
 #define AXIS2_MSG_CTX_FREE(msg_ctx, env) \
-      ((msg_ctx)->ops->free_fn(msg_ctx, env))
+      ((msg_ctx)->ops->free(msg_ctx, env))
 
-/** Initialize the message context.
+/** Initializes message context.
     @sa axis2_msg_ctx_ops#init */
 #define AXIS2_MSG_CTX_INIT(msg_ctx, env, conf) \
       ((msg_ctx)->ops->init(msg_ctx, env, conf))
 
-/** Get fault to.
+/** Gets WS-Addressing fault to address.
     @sa axis2_msg_ctx_ops#get_fault_to */
 #define AXIS2_MSG_CTX_GET_FAULT_TO(msg_ctx, env) \
       ((msg_ctx)->ops->get_fault_to(msg_ctx, env))
 
-/** Get from.
+/** Gets WS-Addressing from address.
     @sa axis2_msg_ctx_ops#get_from */
 #define AXIS2_MSG_CTX_GET_FROM(msg_ctx, env) \
       ((msg_ctx)->ops->get_from(msg_ctx, env))
 
-/** Get in fault flow.
+/** Gets in fault flow.
     @sa axis2_msg_ctx_ops#get_in_fault_flow */
 #define AXIS2_MSG_CTX_GET_IN_FAULT_FLOW(msg_ctx, env) \
       ((msg_ctx)->ops->get_in_fault_flow(msg_ctx, env))
 
-/** Gets the soap envelope.
+/** Gets SOAP envelope.
     @sa axis2_msg_ctx_ops#get_soap_envelope */
 #define AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env) \
       ((msg_ctx)->ops->get_soap_envelope(msg_ctx, env))
 
-/** Get fault soap envelope.
+/** Gets fault SOAP envelope.
     @sa axis2_msg_ctx_ops#get_fault_soap_envelope */
 #define AXIS2_MSG_CTX_GET_FAULT_SOAP_ENVELOPE(msg_ctx, env) \
       ((msg_ctx)->ops->get_fault_soap_envelope(msg_ctx, env))
 
-/** Gets the message id.
+/** Gets message ID.
     @sa axis2_msg_ctx_ops#get_msg_id */
 #define AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env) \
       ((msg_ctx)->ops->get_msg_id(msg_ctx, env))
 
-/** Get process fault.
+/** Gets bool value indicating if to process SOAP fault or not.
     @sa axis2_msg_ctx_ops#get_process_fault */
 #define AXIS2_MSG_CTX_GET_PROCESS_FAULT(msg_ctx, env) \
       ((msg_ctx)->ops->get_process_fault(msg_ctx, env))
 
-/** Get relates to.
+/** Gets WS-Addressing relates to information.
     @sa axis2_msg_ctx_ops#get_relates_to */
 #define AXIS2_MSG_CTX_GET_RELATES_TO(msg_ctx, env) \
       ((msg_ctx)->ops->get_relates_to(msg_ctx, env))
 
-/** Get reply to.
+/** Gets WS-Addressing reply to address.
     @sa axis2_msg_ctx_ops#get_reply_to */
 #define AXIS2_MSG_CTX_GET_REPLY_TO(msg_ctx, env) \
       ((msg_ctx)->ops->get_reply_to(msg_ctx, env))
 
-/** Get response written.
+/** Gets bool value indicating response written status.
     @sa axis2_msg_ctx_ops#get_response_written */
 #define AXIS2_MSG_CTX_GET_RESPONSE_WRITTEN(msg_ctx, env) \
       ((msg_ctx)->ops->get_response_written(msg_ctx, env))
 
-/** Get server side.
+/** Gets bool value indicating whether the invocation is happening on server 
+    side or client side.
     @sa axis2_msg_ctx_ops#get_server_side */
 #define AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env) \
       ((msg_ctx)->ops->get_server_side(msg_ctx, env))
 
-/** Get to.
+/** Gets WS-Addressing to address.
     @sa axis2_msg_ctx_ops#get_to */
 #define AXIS2_MSG_CTX_GET_TO(msg_ctx, env) \
       ((msg_ctx)->ops->get_to(msg_ctx, env))
 
-/** Set fault to.
+/** Sets WS-Addressing fault to address.
     @sa axis2_msg_ctx_ops#set_fault_to */
 #define AXIS2_MSG_CTX_SET_FAULT_TO(msg_ctx, env, reference) \
       ((msg_ctx)->ops->set_fault_to(msg_ctx, env, reference))
 
-/** Set from.
+/** Sets WS-Addressing from address.
     @sa axis2_msg_ctx_ops#set_from */
 #define AXIS2_MSG_CTX_SET_FROM(msg_ctx, env, reference) \
       ((msg_ctx)->ops->set_from(msg_ctx, env, reference))
 
-/** Set in fault flow.
+/** Sets in fault flow.
     @sa axis2_msg_ctx_ops#set_in_fault_flow */
 #define AXIS2_MSG_CTX_SET_IN_FAULT_FLOW(msg_ctx, env, in_fault_flow) \
       ((msg_ctx)->ops->get_in_fault_flow(msg_ctx, env, in_fault_flow))
 
-/** Set soap envelope.
+/** Sets SOAP envelope.
     @sa axis2_msg_ctx_ops#set_soap_envelope */
 #define AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, soap_envelope) \
       ((msg_ctx)->ops->set_soap_envelope(msg_ctx, env, soap_envelope))
 
-/** Set fault soap envelope.
+/** Sets fault SOAP envelope.
     @sa axis2_msg_ctx_ops#set_fault_soap_envelope */
 #define AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, soap_envelope) \
       ((msg_ctx)->ops->set_fault_soap_envelope(msg_ctx, env, soap_envelope))
 
-/** Sets the message id.
+/** Sets the message ID.
     @sa axis2_msg_ctx_ops#set_message_id */
 #define AXIS2_MSG_CTX_SET_MESSAGE_ID(msg_ctx, env, message_id) \
       ((msg_ctx)->ops->set_message_id(msg_ctx, env, message_id))
 
-/** Set process fault.
+/** Sets bool value indicating whether to process SOAP fault.
     @sa axis2_msg_ctx_ops#set_process_fault */
 #define AXIS2_MSG_CTX_SET_PROCESS_FAULT(msg_ctx, env, process_fault) \
       ((msg_ctx)->ops->set_process_fault(msg_ctx, env, process_fault))
 
-/** Set reply to.
+/** Sets WS-Addressing relates to information.
     @sa axis2_msg_ctx_ops#set_relates_to */
 #define AXIS2_MSG_CTX_SET_RELATES_TO(msg_ctx, env, reference) \
       ((msg_ctx)->ops->set_relates_to(msg_ctx, env, reference))
 
-/** Set reply to.
+/** Sets WS-Addressing reply to address.
     @sa axis2_msg_ctx_ops#set_reply_to */
 #define AXIS2_MSG_CTX_SET_REPLY_TO(msg_ctx, env, reference) \
       ((msg_ctx)->ops->set_reply_to(msg_ctx, env, reference))
 
-/** Set response written.
+/** Sets bool value indicating response written status.
     @sa axis2_msg_ctx_ops#set_response_written */
 #define AXIS2_MSG_CTX_SET_RESPONSE_WRITTEN(msg_ctx, env, response_written) \
       ((msg_ctx)->ops->set_response_written(msg_ctx, env, response_written))
 
-/** Set server side.
+/** Sets bool value indicating whether the invocation is happening on server 
+    side or client side.
     @sa axis2_msg_ctx_ops#set_server_side */
 #define AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, server_side) \
       ((msg_ctx)->ops->set_server_side(msg_ctx, env, server_side))
 
-/** Set to.
+/** Sets WS-Addressing to address.
     @sa axis2_msg_ctx_ops#set_to */
 #define AXIS2_MSG_CTX_SET_TO(msg_ctx, env, reference) \
       ((msg_ctx)->ops->set_to(msg_ctx, env, reference))
 
-/** Get new thread required.
+/** Gets bool value indicating if a new thread required in invocation.
     @sa axis2_msg_ctx_ops#get_new_thread_required */
 #define AXIS2_MSG_CTX_GET_NEW_THREAD_REQUIRED(msg_ctx, env) \
       ((msg_ctx)->ops->set_response_written(msg_ctx, env))
 
-/** Set new thread required.
+/** Sets bool value indicating if a new thread required in invocation.
     @sa axis2_msg_ctx_ops#set_new_thread_required */
 #define AXIS2_MSG_CTX_SET_NEW_THREAD_REQUIRED(msg_ctx, env, new_thread_required) \
       ((msg_ctx)->ops->set_response_written(msg_ctx, env, new_thread_required))
 
-/** Sets the wsa action.
+/** Sets WS-Addressing action.
     @sa axis2_msg_ctx_ops#set_wsa_action */
 #define AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, action_uri) \
       ((msg_ctx)->ops->set_wsa_action(msg_ctx, env, action_uri))
 
-/** Gets the wsa action.
+/** Gets WS-Addressing action.
     @sa axis2_msg_ctx_ops#get_wsa_action */
 #define AXIS2_MSG_CTX_GET_WSA_ACTION(msg_ctx, env) \
       ((msg_ctx)->ops->get_wsa_action(msg_ctx, env))
 
-/** Sets the wsa message id.
+/** Sets WS-Addressing message ID.
     @sa axis2_msg_ctx_ops#set_wsa_message_id */
 #define AXIS2_MSG_CTX_SET_WSA_MESSAGE_ID(msg_ctx, env, message_id) \
       ((msg_ctx)->ops->set_wsa_message_id(msg_ctx, env, message_id))
 
-/** Gets the wsa message id.
+/** Gets WS-Addressing message ID.
     @sa axis2_msg_ctx_ops#get_wsa_message_id */
 #define AXIS2_MSG_CTX_GET_WSA_MESSAGE_ID(msg_ctx, env) \
       ((msg_ctx)->ops->get_wsa_message_id(msg_ctx, env))
 
-/** Gets the message info headers.
+/** Gets WS-Addressing message information headers.
     @sa axis2_msg_ctx_ops#get_msg_info_headers */
 #define AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env) \
       ((msg_ctx)->ops->get_msg_info_headers(msg_ctx, env))
 
-/** Get paused.
+/** Gets bool value indicating the paused status of invocation.
     @sa axis2_msg_ctx_ops#get_paused */
 #define AXIS2_MSG_CTX_GET_PAUSED(msg_ctx, env) \
       ((msg_ctx)->ops->get_paused(msg_ctx, env))
 
-/** Set paused.
+/** Sets bool value indicating the paused status of invocation.
     @sa axis2_msg_ctx_ops#set_paused */
 #define AXIS2_MSG_CTX_SET_PAUSED(msg_ctx, env, paused) \
       ((msg_ctx)->ops->set_paused(msg_ctx, env, paused))
 
-/** Gets the transport in description.
+/** Gets transport in description.
     @sa axis2_msg_ctx_ops#get_transport_in_desc */
 #define AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(msg_ctx, env) \
       ((msg_ctx)->ops->get_transport_in_desc(msg_ctx, env))
 
-/** Get the transport out description.
+/** Gets transport out description.
     @sa axis2_msg_ctx_ops#get_transport_out_desc */
 #define AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env) \
       ((msg_ctx)->ops->get_transport_out_desc(msg_ctx, env))
 
-/** Sets the transport in description.
+/** Sets transport in description.
     @sa axis2_msg_ctx_ops#set_transport_in_desc */
 #define AXIS2_MSG_CTX_SET_TRANSPORT_IN_DESC(msg_ctx, env, transport_in_desc) \
       ((msg_ctx)->ops->set_transport_in_desc(msg_ctx, env, transport_in_desc))
 
-/** Sets the transport out description.
+/** Sets transport out description.
     @sa axis2_msg_ctx_ops#set_transport_out_desc */
 #define AXIS2_MSG_CTX_SET_TRANSPORT_OUT_DESC(msg_ctx, env, transport_out_desc) \
       ((msg_ctx)->ops->set_transport_out_desc(msg_ctx, env, transport_out_desc))
 
-/** Gets the operation context.
+/** Gets operation context.
     @sa axis2_msg_ctx_ops#get_op_ctx */
 #define AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env) \
       ((msg_ctx)->ops->get_op_ctx(msg_ctx, env))
 
-/** Sets the operation context.
+/** Sets operation context.
     @sa axis2_msg_ctx_ops#set_op_ctx */
 #define AXIS2_MSG_CTX_SET_OP_CTX(msg_ctx, env, op_ctx) \
       ((msg_ctx)->ops->set_op_ctx(msg_ctx, env, op_ctx))
 
-/** Get output written.
+/** Gets bool value indicating output written status.
     @sa axis2_msg_ctx_ops#get_output_written */
 #define AXIS2_MSG_CTX_GET_OUTPUT_WRITTEN(msg_ctx, env) \
       ((msg_ctx)->ops->get_output_written(msg_ctx, env))
 
-/** Set output written.
+/** Sets bool value indicating output written status.
     @sa axis2_msg_ctx_ops#set_output_written */
 #define AXIS2_MSG_CTX_SET_OUTPUT_WRITTEN(msg_ctx, env, output_written) \
       ((msg_ctx)->ops->set_output_written(msg_ctx, env, output_written))
 
-/** Gets the service context id.
+/** Gets service context ID.
     @sa axis2_msg_ctx_ops#get_svc_ctx_id */
 #define AXIS2_MSG_CTX_GET_SVC_CTX_ID(msg_ctx, env) \
       ((msg_ctx)->ops->get_svc_ctx_id(msg_ctx, env))
 
-/** Sets the service context id.
+/** Sets service context ID.
     @sa axis2_msg_ctx_ops#set_svc_ctx_id */
 #define AXIS2_MSG_CTX_SET_SVC_CTX_ID(msg_ctx, env, svc_ctx_id) \
       ((msg_ctx)->ops->set_svc_ctx_id(msg_ctx, env, svc_ctx_id))
 
-/** Gets the configuration context.
+/** Gets configuration context.
     @sa axis2_msg_ctx_ops#get_conf_ctx */
 #define AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env) \
       ((msg_ctx)->ops->get_conf_ctx(msg_ctx, env))
 
-/** Sets the configuration context.
+/** Sets configuration context.
     @sa axis2_msg_ctx_ops#set_conf_ctx */
 #define AXIS2_MSG_CTX_SET_CONF_CTX(msg_ctx, env, conf_ctx) \
       ((msg_ctx)->ops->set_conf_ctx(msg_ctx, env, conf_ctx))
 
-/** Gets the service context.
+/** Gets service context.
     @sa axis2_msg_ctx_ops#get_svc_ctx */
 #define AXIS2_MSG_CTX_GET_SVC_CTX(msg_ctx, env) \
       ((msg_ctx)->ops->get_svc_ctx(msg_ctx, env))
 
-/** Sets the service context.
+/** Sets service context.
     @sa axis2_msg_ctx_ops#set_svc_ctx */
 #define AXIS2_MSG_CTX_SET_SVC_CTX(msg_ctx, env, svc_ctx) \
       ((msg_ctx)->ops->set_svc_ctx(msg_ctx, env, svc_ctx))
 
-/** Sets the message info headers.
+/** Sets WS-Addressing message information headers.
     @sa axis2_msg_ctx_ops#set_msg_info_headers */
 #define AXIS2_MSG_CTX_SET_MSG_INFO_HEADERS(msg_ctx, env, msg_info_headers) \
       ((msg_ctx)->ops->set_msg_info_headers(msg_ctx, env, msg_info_headers))
 
-/** Gets the parameter.
+/** Gets parameter with the given key.
     @sa axis2_msg_ctx_ops#get_parameter */
 #define AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env, key) \
       ((msg_ctx)->ops->get_parameter(msg_ctx, env, key))
 
-/** Gets the module parameter.
+/** Gets module parameter corresponding to given key, module name and handler 
+    description.
     @sa axis2_msg_ctx_ops#get_module_parameter */
 #define AXIS2_MSG_CTX_GET_MODULE_PARAMETER(msg_ctx, env, key, module_name, handler_desc) \
       ((msg_ctx)->ops->get_module_parameter(msg_ctx, env, key, module_name, handler_desc))
 
-/** Get property..
+/** Gets property with given key.
     @sa axis2_msg_ctx_ops#get_property */
 #define AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, key, persistent) \
       ((msg_ctx)->ops->get_property(msg_ctx, env, key, persistent))
 
-/** Set property.
+/** Sets property with given key.
     @sa axis2_msg_ctx_ops#set_property */
 #define AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, key, value, persistent) \
       ((msg_ctx)->ops->set_property(msg_ctx, env, key, value, persistent))
 
-/** Gets the paused handler name.
+/** Gets name of the handler at which invocation was paused.
     @sa axis2_msg_ctx_ops#get_paused_handler_name */
 #define AXIS2_MSG_CTX_GET_PAUSED_HANDLER_NAME(msg_ctx, env) \
       ((msg_ctx)->ops->get_paused_handler_name(msg_ctx, env))
 
-/** Gets the paused phase name.
+/** Gets name of the phase at which invocation was paused.
     @sa axis2_msg_ctx_ops#get_paused_phase_name */
 #define AXIS2_MSG_CTX_GET_PAUSED_PHASE_NAME(msg_ctx, env) \
       ((msg_ctx)->ops->get_paused_phase_name(msg_ctx, env))
 
-/** Sets the paused phase name.
+/** Sets name of the phase at which invocation was paused.
     @sa axis2_msg_ctx_ops#set_paused_phase_name */
 #define AXIS2_MSG_CTX_SET_PAUSED_PHASE_NAME(msg_ctx, env, paused_phase_name) \
       ((msg_ctx)->ops->set_paused_phase_name(msg_ctx, env, paused_phase_name))
 
-/** Gets the soap action.
+/** Gets SOAP action.
     @sa axis2_msg_ctx_ops#get_soap_action */
 #define AXIS2_MSG_CTX_GET_SOAP_ACTION(msg_ctx, env) \
       ((msg_ctx)->ops->get_soap_action(msg_ctx, env))
 
-/** Sets the soap action.
+/** Sets SOAP action.
     @sa axis2_msg_ctx_ops#set_soap_action */
 #define AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env, soap_action) \
       ((msg_ctx)->ops->set_soap_action(msg_ctx, env, soap_action))
 
-/** Get doing mtom.
+/** Gets bool value indicating whether MTOM is enabled.
     @sa axis2_msg_ctx_ops#get_doing_mtom */
 #define AXIS2_MSG_CTX_GET_DOING_MTOM(msg_ctx, env) \
       ((msg_ctx)->ops->get_doing_mtom(msg_ctx, env))
 
-/** Set doing mtom.
+/** Sets bool value indicating whether MTOM is enabled.
     @sa axis2_msg_ctx_ops#set_doing_mtom */
 #define AXIS2_MSG_CTX_SET_DOING_MTOM(msg_ctx, env, doing_mtom) \
       ((msg_ctx)->ops->set_doing_mtom(msg_ctx, env, doing_mtom))
 
-/** Get doing rest.
+/** Gets bool value indicating whether REST is enabled.
     @sa axis2_msg_ctx_ops#get_doing_rest */
 #define AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env) \
       ((msg_ctx)->ops->get_doing_rest(msg_ctx, env))
 
-/** Set doing rest.
+/** Sets bool value indicating whether REST is enabled.
     @sa axis2_msg_ctx_ops#set_doing_rest */
 #define AXIS2_MSG_CTX_SET_DOING_REST(msg_ctx, env, doing_rest) \
       ((msg_ctx)->ops->set_doing_rest(msg_ctx, env, doing_rest))
 
-/** Set do rest through post.
+/** Sets bool value indicating whether REST should be done with HTTP POST.
     @sa axis2_msg_ctx_ops#set_do_rest_through_post */
 #define AXIS2_MSG_CTX_SET_DO_REST_THROUGH_POST(msg_ctx, env, do_rest_through_post) \
       ((msg_ctx)->ops->set_do_rest_through_post(msg_ctx, env, do_rest_through_post))
 
-/** Get is soap11.
+/** Gets bool value indicating the SOAP version in use.
     @sa axis2_msg_ctx_ops#set_is_soap_11 */
 #define AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) \
       ((msg_ctx)->ops->get_is_soap_11(msg_ctx, env))
 
-/** Set is soap11.
+/** Sets bool value indicating the SOAP version in use.
     @sa axis2_msg_ctx_ops#set_is_soap_11 */
 #define AXIS2_MSG_CTX_SET_IS_SOAP_11(msg_ctx, env, is_soap11) \
       ((msg_ctx)->ops->set_is_soap_11(msg_ctx, env, is_soap11))
 
-/** Gets the service group context.
+/** Gets service group context.
     @sa axis2_msg_ctx_ops#get_svc_grp_ctx */
 #define AXIS2_MSG_CTX_GET_SVC_GRP_CTX(msg_ctx, env) \
       ((msg_ctx)->ops->get_svc_grp_ctx(msg_ctx, env))
 
-/** Sets the service group context.
+/** Sets service group context.
     @sa axis2_msg_ctx_ops#set_svc_grp_ctx */
 #define AXIS2_MSG_CTX_SET_SVC_GRP_CTX(msg_ctx, env, svc_grp_ctx) \
       ((msg_ctx)->ops->set_svc_grp_ctx(msg_ctx, env, svc_grp_ctx))
 
-/** Gets the operation.
+/** Gets operation to be invoked.
     @sa axis2_msg_ctx_ops#get_op */
 #define AXIS2_MSG_CTX_GET_OP(msg_ctx, env) \
       ((msg_ctx)->ops->get_op(msg_ctx, env))
 
-/** Sets the operation.
+/** Sets operation to be invoked.
     @sa axis2_msg_ctx_ops#set_op */
 #define AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op) \
       ((msg_ctx)->ops->set_op(msg_ctx, env, op))
 
-/** Gets the service.
+/** Gets service to be invoked.
     @sa axis2_msg_ctx_ops#get_svc */
 #define AXIS2_MSG_CTX_GET_SVC(msg_ctx, env) \
       ((msg_ctx)->ops->get_svc(msg_ctx, env))
 
-/** Sets the service.
+/** Sets service to be invoked.
     @sa axis2_msg_ctx_ops#set_svc */
 #define AXIS2_MSG_CTX_SET_SVC(msg_ctx, env, svc) \
       ((msg_ctx)->ops->set_svc(msg_ctx, env, svc))
 
-/** Gets the service group.
+/** Gets service group.
     @sa axis2_msg_ctx_ops#get_svc_grp */
 #define AXIS2_MSG_CTX_GET_SVC_GRP(msg_ctx, env) \
       ((msg_ctx)->ops->get_svc_grp(msg_ctx, env))
 
-/** Sets the service group.
+/** Sets service group.
     @sa axis2_msg_ctx_ops#set_svc_grp */
 #define AXIS2_MSG_CTX_SET_SVC_GRP(msg_ctx, env, svc_grp) \
       ((msg_ctx)->ops->set_svc_grp(msg_ctx, env, svc_grp))
 
-/** Gets the service group context id.
+/** Gets service group context ID.
     @sa axis2_msg_ctx_ops#get_svc_grp_ctx_id */
 #define AXIS2_MSG_CTX_GET_SVC_GRP_CTX_ID(msg_ctx, env) \
       ((msg_ctx)->ops->get_svc_grp_ctx_id(msg_ctx, env))
 
-/** Sets the service group context id.
+/** Sets the service group context ID.
     @sa axis2_msg_ctx_ops#set_svc_grp_ctx_id */
 #define AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_ctx_id) \
       ((msg_ctx)->ops->set_svc_grp_ctx_id(msg_ctx, env, svc_grp_ctx_id))
 
-/** Is paused.
+/** Gets bool value indicating whether invocation is paused.
     @sa axis2_msg_ctx_ops#is_paused */
 #define AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env) \
       ((msg_ctx)->ops->is_paused(msg_ctx, env))
 
-/** Find svc.
+/** Finds service.
     @sa axis2_msg_ctx_ops#find_svc */
 #define AXIS2_MSG_CTX_FIND_SVC(msg_ctx, env) \
       ((msg_ctx)->ops->find_svc(msg_ctx, env))
 
-/** Find op.
+/** Finds operation.
     @sa axis2_msg_ctx_ops#find_op */
 #define AXIS2_MSG_CTX_FIND_OP(msg_ctx, env, svc) \
       ((msg_ctx)->ops->find_op(msg_ctx, env, svc))
 
-/** Set options.
+/** Sets options.
     @sa axis2_msg_ctx_ops#set_options */
 #define AXIS2_MSG_CTX_SET_OPTIONS(msg_ctx, env, options) \
       ((msg_ctx)->ops->set_options(msg_ctx, env, options))
 
-/** Set flow.
+/** Sets flow.
     @sa axis2_msg_ctx_ops#set_flow */
 #define AXIS2_MSG_CTX_SET_FLOW(msg_ctx, env, flow) \
       ((msg_ctx)->ops->set_flow(msg_ctx, env, flow))
 
-/** Get flow.
+/** Gets flow.
     @sa axis2_msg_ctx_ops#get_flow */
 #define AXIS2_MSG_CTX_GET_FLOW(msg_ctx, env) \
       ((msg_ctx)->ops->get_flow(msg_ctx, env))
 
-/** Sets the execution chain.
+/** Sets execution chain.
     @sa axis2_msg_ctx_ops#set_execution_chain */
 #define AXIS2_MSG_CTX_SET_EXECUTION_CHAIN(msg_ctx, env, chain) \
       ((msg_ctx)->ops->set_execution_chain(msg_ctx, env, chain))
 
-/** Gets the execution chain.
+/** Gets execution chain.
     @sa axis2_msg_ctx_ops#get_execution_chain */
 #define AXIS2_MSG_CTX_GET_EXECUTION_CHAIN(msg_ctx, env) \
       ((msg_ctx)->ops->get_execution_chain(msg_ctx, env))
 
-/** Sets the current handler index.
+/** Sets current handler index.
     @sa axis2_msg_ctx_ops#set_current_handler_index */
 #define AXIS2_MSG_CTX_SET_CURRENT_HANDLER_INDEX(msg_ctx, env, index) \
       ((msg_ctx)->ops->set_current_handler_index(msg_ctx, env, index))
 
-/** Gets the current handler index.
+/** Gets current handler index.
     @sa axis2_msg_ctx_ops#get_current_handler_index */
 #define AXIS2_MSG_CTX_GET_CURRENT_HANDLER_INDEX(msg_ctx, env) \
       ((msg_ctx)->ops->get_current_handler_index(msg_ctx, env))
 
-/** Gets the paused handler index.
+/** Gets paused handler index.
     @sa axis2_msg_ctx_ops#get_paused_handler_index */
 #define AXIS2_MSG_CTX_GET_PAUSED_HANDLER_INDEX(msg_ctx, env) \
       ((msg_ctx)->ops->get_paused_handler_index(msg_ctx, env))
 
-/** Sets the current phase index.
+/** Sets current phase index.
     @sa axis2_msg_ctx_ops#set_current_phase_index */
 #define AXIS2_MSG_CTX_SET_CURRENT_PHASE_INDEX(msg_ctx, env, index) \
       ((msg_ctx)->ops->set_current_phase_index(msg_ctx, env, index))
 
-/** Gets the current phase index.
+/** Gets current phase index.
     @sa axis2_msg_ctx_ops#get_current_phase_index */
 #define AXIS2_MSG_CTX_GET_CURRENT_PHASE_INDEX(msg_ctx, env) \
       ((msg_ctx)->ops->get_current_phase_index(msg_ctx, env))
 
-/** Gets the paused phase index.
+/** Gets paused phase index.
     @sa axis2_msg_ctx_ops#get_paused_phase_index */
 #define AXIS2_MSG_CTX_GET_PAUSED_PHASE_INDEX(msg_ctx, env) \
       ((msg_ctx)->ops->get_paused_phase_index(msg_ctx, env))
-
-/************************** End of function macros ****************************/
 
 /** @} */
 #ifdef __cplusplus

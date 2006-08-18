@@ -111,7 +111,7 @@ extern "C"
                 set_id)(
                     struct axis2_svc_grp_ctx *svc_grp_ctx,
                     const axis2_env_t *env,
-                    axis2_char_t *id);
+                    const axis2_char_t *id);
 
 
         /** 

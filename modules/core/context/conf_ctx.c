@@ -678,7 +678,7 @@ axis2_conf_ctx_fill_ctxs(
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_conf_ctx_impl_t *conf_ctx_impl = NULL;
-    axis2_char_t *svc_grp_ctx_id = NULL;
+    const axis2_char_t *svc_grp_ctx_id = NULL;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_svc_t *svc = NULL;

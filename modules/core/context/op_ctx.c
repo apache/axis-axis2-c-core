@@ -391,7 +391,7 @@ axis2_op_ctx_add_msg_ctx(
     axis2_thread_mutex_lock(op_ctx_impl->mutex);
     if (op_ctx_impl->msg_ctx_map)
     {
-        axis2_char_t *message_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
+        const axis2_char_t *message_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
         if (message_id)
         {
             axis2_hash_set(op_ctx_impl->msg_ctx_map, 
@@ -489,7 +489,7 @@ axis2_op_ctx_cleanup(
         if (ctx)
         {
             axis2_msg_ctx_t *msg_ctx = (axis2_msg_ctx_t*)ctx;
-            axis2_char_t *message_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
+            const axis2_char_t *message_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
             if (message_id)
             {
                 axis2_hash_set(op_ctx_impl->msg_ctx_map, 

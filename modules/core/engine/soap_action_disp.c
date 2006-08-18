@@ -93,7 +93,7 @@ axiom_soap_action_disp_find_op(
     const axis2_env_t *env,
     axis2_svc_t *svc)
 {
-    axis2_char_t *action = NULL;
+    const axis2_char_t *action = NULL;
     axis2_op_t *op = NULL;        
     
     AXIS2_ENV_CHECK(env, NULL);  
@@ -109,7 +109,7 @@ axiom_soap_action_disp_find_op(
         op = AXIS2_SVC_GET_OP_BY_SOAP_ACTION(svc, env, action);
         if (!op)
         {
-            axis2_char_t * op_name = NULL;
+            const axis2_char_t * op_name = NULL;
             op_name = AXIS2_RINDEX(action, '/');
 
             if (op_name)

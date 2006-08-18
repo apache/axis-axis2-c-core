@@ -77,7 +77,7 @@ axis2_status_t AXIS2_CALL
 axis2_svc_grp_ctx_set_id(
     struct axis2_svc_grp_ctx *svc_grp_ctx, 
     const axis2_env_t *env, 
-    axis2_char_t *id);
+    const axis2_char_t *id);
                          
 axis2_svc_ctx_t *AXIS2_CALL 
 axis2_svc_grp_ctx_get_svc_ctx(
@@ -311,7 +311,7 @@ axis2_status_t AXIS2_CALL
 axis2_svc_grp_ctx_set_id(
     struct axis2_svc_grp_ctx *svc_grp_ctx, 
     const axis2_env_t *env, 
-    axis2_char_t *id) 
+    const axis2_char_t *id) 
 {
     axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
     

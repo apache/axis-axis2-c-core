@@ -1862,7 +1862,7 @@ axis2_op_register_op_ctx(
     axis2_op_ctx_t *op_ctx)
 {
     axis2_conf_ctx_t *conf_ctx = NULL;
-    axis2_char_t *msg_id = NULL;
+    const axis2_char_t *msg_id = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

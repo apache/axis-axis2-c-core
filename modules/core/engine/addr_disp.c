@@ -151,7 +151,7 @@ axis2_addr_disp_find_op(
     const axis2_env_t *env,
     axis2_svc_t *svc)
 {
-    axis2_char_t *action = NULL;
+    const axis2_char_t *action = NULL;
     axis2_qname_t *qname = NULL;
     axis2_op_t *op = NULL;
 
@@ -202,7 +202,7 @@ axis2_addr_disp_invoke(
             if (conf_ctx)
             {
                 axis2_op_ctx_t *op_ctx = NULL;
-                axis2_char_t *msg_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
+                const axis2_char_t *msg_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
                 op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, msg_id);
                 if (op_ctx)
                 {
