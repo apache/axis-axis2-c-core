@@ -17,7 +17,8 @@
 #ifndef AXIS2_TRANSPORT_IN_DESC_H
 #define AXIS2_TRANSPORT_IN_DESC_H
 
-/** @defgroup axis2_transport_in_desc transport in description
+/** 
+ * @defgroup axis2_transport_in_desc transport in description
  * @ingroup axis2_desc
  * Description.
  * @{
@@ -56,12 +57,12 @@ extern "C"
      * Description Transport In ops struct
      * Encapsulator struct for ops of axis2_transport_in_desc
      */
-    AXIS2_DECLARE_DATA struct axis2_transport_in_desc_ops
+    struct axis2_transport_in_desc_ops
     {
         /** 
-    * De-allocate memory
-    * @param transport_in_desc pointer to transport in description
-    * @param env pointer to environment struct
+         * De-allocate memory
+         * @param transport_in_desc pointer to transport in description
+         * @param env pointer to environment struct
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -69,18 +70,18 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-    * @param transport_in pointer to transport in
-    * @param env pointer to environment struct
+         * @param transport_in pointer to transport in
+         * @param env pointer to environment struct
          */
         axis2_qname_t *(AXIS2_CALL *
                 get_qname)(
-                    struct axis2_transport_in_desc *transport_in,
+                    const axis2_transport_in_desc_t *transport_in,
                     const axis2_env_t *env);
 
         /**
-    * @param transport_in pointer to transport in
-    * @param env pointer to environment struct
-    * @param qname pointer to qname struct
+         * @param transport_in pointer to transport in
+         * @param env pointer to environment struct
+         * @param qname pointer to qname struct
          */
         axis2_status_t (AXIS2_CALL *
                 set_qname)(
@@ -88,40 +89,40 @@ extern "C"
                     const axis2_env_t *env,
                     axis2_qname_t *qname);
 
-   /**
-    * @param transport_in pointer to transport in
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param transport_in pointer to transport in
+         * @param env pointer to environment struct
+         */
         struct axis2_flow *(AXIS2_CALL *
                 get_inflow)(
-                    struct axis2_transport_in_desc *transport_in,
+                    const axis2_transport_in_desc_t *transport_in,
                     const axis2_env_t *env);
 
-   /**
-    * @param transport_in pointer to transport in 
-    * @param env pointer to environment struct
-    * @param inflow pointer to in flow
-    */
+        /**
+         * @param transport_in pointer to transport in 
+         * @param env pointer to environment struct
+         * @param inflow pointer to in flow
+         */
         axis2_status_t (AXIS2_CALL *
                 set_inflow)(
                     struct axis2_transport_in_desc *transport_in,
                     const axis2_env_t *env,
                     struct axis2_flow *inflow);
 
-   /**
-    * @param transport_in pointer to transport in
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param transport_in pointer to transport in
+         * @param env pointer to environment struct
+         */
         struct axis2_flow *(AXIS2_CALL *
                 get_faultflow)(
-                    struct axis2_transport_in_desc *transport_in,
+                    const axis2_transport_in_desc_t *transport_in,
                     const axis2_env_t *env);
 
         /**
-    * @param transport_in pointer to transport in
-    * @param env pointer to environment struct
-    * @param faultflow pointer to fault flow
-    */
+         * @param transport_in pointer to transport in
+         * @param env pointer to environment struct
+         * @param faultflow pointer to fault flow
+         */
         axis2_status_t (AXIS2_CALL *
                 set_faultflow)(
                     struct axis2_transport_in_desc *transport_in,
@@ -129,18 +130,18 @@ extern "C"
                     struct axis2_flow *faultflow);
 
         /**
-    * @param transport_in pointer to transport in
-    * @param env pointer to environment struct
+         * @param transport_in pointer to transport in
+         * @param env pointer to environment struct
          */
-        struct axis2_transport_receiver * (AXIS2_CALL *
+        struct axis2_transport_receiver *(AXIS2_CALL *
                 get_recv)(
-                    struct axis2_transport_in_desc *transport_in,
+                    const axis2_transport_in_desc_t *transport_in,
                     const axis2_env_t *env);
 
         /**
-    * @param transport_in pointer to transport in
-    * @param env pointer to environment struct
-    * @param recv pointer to transport receiver
+         * @param transport_in pointer to transport in
+         * @param env pointer to environment struct
+         * @param recv pointer to transport receiver
          */
         axis2_status_t (AXIS2_CALL *
                 set_recv)(
@@ -148,73 +149,73 @@ extern "C"
                     const axis2_env_t *env,
                     struct axis2_transport_receiver *recv);
 
-   /**
-    * @param transport_in pointer to transport in
-    * @param env pointer to environment struct
-    */
-        struct axis2_phase * (AXIS2_CALL *
+        /**
+         * @param transport_in pointer to transport in
+         * @param env pointer to environment struct
+         */
+        struct axis2_phase *(AXIS2_CALL *
                 get_in_phase)(
-                    struct axis2_transport_in_desc *transport_in,
+                    const axis2_transport_in_desc_t *transport_in,
                     const axis2_env_t *env);
 
-   /**
-    * @param transport_in pointer to transport in
-    * @param env pointer to environment struct
-    * @param in_phase pointer to in phase
-    */
+        /**
+         * @param transport_in pointer to transport in
+         * @param env pointer to environment struct
+         * @param in_phase pointer to in phase
+         */
         axis2_status_t (AXIS2_CALL *
                 set_in_phase)(
                     struct axis2_transport_in_desc *transport_in,
                     const axis2_env_t *env,
                     struct axis2_phase *in_phase);
 
-   /**
-    * @param transport_in pointer to transport in
-    * @param env pointer to environment struct
-    */
+        /**
+         * @param transport_in pointer to transport in
+         * @param env pointer to environment struct
+         */
         struct axis2_phase *(AXIS2_CALL *
                 get_faultphase)(
-                    struct axis2_transport_in_desc *transport_in,
+                    const axis2_transport_in_desc_t *transport_in,
                     const axis2_env_t *env);
 
-   /**
-    * @param transport_in pointer to transport in
-    * @param env pointer to environment struct
-    * @param faultphase pointer to fault phase
-    */
+        /**
+         * @param transport_in pointer to transport in
+         * @param env pointer to environment struct
+         * @param faultphase pointer to fault phase
+         */
         axis2_status_t (AXIS2_CALL *
                 set_faultphase)(
                     struct axis2_transport_in_desc *transport_in,
                     const axis2_env_t *env,
                     struct axis2_phase *faultphase);
 
-   /**
-    * @param transport_in_desc pointer to transport in description
-    * @param env pointer to environment struct
-    * @param param pointer to param
-    */
+        /**
+         * @param transport_in_desc pointer to transport in description
+         * @param env pointer to environment struct
+         * @param param pointer to param
+         */
         axis2_status_t (AXIS2_CALL *
                 add_param)(
                     axis2_transport_in_desc_t *transport_in_desc,
                     const axis2_env_t *env,
                     axis2_param_t *param);
 
-   /**
-    * @param transport_in_desc pointer to transport in description
-    * @param env pointer to environment struct
-    * @param param_name pointer to parameter name
-    */
+        /**
+         * @param transport_in_desc pointer to transport in description
+         * @param env pointer to environment struct
+         * @param param_name pointer to parameter name
+         */
         axis2_param_t *(AXIS2_CALL *
                 get_param)(
-                    axis2_transport_in_desc_t *transport_in_desc,
+                    const axis2_transport_in_desc_t *transport_in_desc,
                     const axis2_env_t *env,
                     axis2_char_t *param_name);
 
-   /**
-    * @param transport_in_desc pointer to transport in description
-    * @param env pointer to environment struct
-    * @param param_name pointer to parameter name
-    */
+        /**
+         * @param transport_in_desc pointer to transport in description
+         * @param env pointer to environment struct
+         * @param param_name pointer to parameter name
+         */
         axis2_bool_t (AXIS2_CALL *
                 is_param_locked)(
                     axis2_transport_in_desc_t *transport_in_desc,
@@ -225,7 +226,7 @@ extern "C"
     /**
      * transport in description struct
      */
-    AXIS2_DECLARE_DATA struct axis2_transport_in_desc
+    struct axis2_transport_in_desc
     {
         /** transport in description struct ops */
         axis2_transport_in_desc_ops_t *ops;
@@ -238,7 +239,7 @@ extern "C"
      * @param qname pointer to qname
      * @return pointer to newly created phase holder
      */
-    AXIS2_EXTERN axis2_transport_in_desc_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_transport_in_desc_t *AXIS2_CALL
     axis2_transport_in_desc_create_with_qname (
             const axis2_env_t *env,
             axis2_qname_t *qname);

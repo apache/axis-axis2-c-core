@@ -17,7 +17,8 @@
 #ifndef AXIS2_FLOW_H
 #define AXIS2_FLOW_H
 
-/** @defgroup axis2_flow flow
+/** 
+ * @defgroup axis2_flow flow
  * @ingroup axis2_desc
  * Description.
  * @{
