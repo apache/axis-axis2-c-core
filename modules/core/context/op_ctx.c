@@ -26,30 +26,30 @@ typedef struct axis2_op_ctx_impl
     axis2_op_ctx_t op_ctx;
     /** base context struct */
     axis2_ctx_t *base;
-    /** parent of op context is a service context instance */
+    /** parent of operation context is a service context instance */
     struct axis2_svc_ctx *parent;
     /** message context map */
     axis2_hash_t *msg_ctx_map;
-    /** the op of which this is a running instance. The MEP of this
-     * op must be one of the 8 predefined ones in WSDL 2.0.
+    /** 
+     * the operation of which this is a running instance. The MEP of this
+     * operation must be one of the 8 predefined ones in WSDL 2.0.
      */
     axis2_op_t *op;
-    /** op Message Exchange Pattern */
+    /** operation Message Exchange Pattern (MEP) */
     int op_mep;
     /** is complete? */
     axis2_bool_t is_complete;
     /** the global message_id -> op_ctx map which is stored in
-     * the axis2_conf_ctx. We're caching it here for faster acccess.
+     * the axis2_conf_ctx. We are caching it here for faster access.
      */
     axis2_hash_t *op_ctx_map;
     /** op qname */
     axis2_qname_t *op_qname;
     /** service qname */
     axis2_qname_t *svc_qname;
-   /* Mutex to syncronize the read/write operations */
+   /* mutex to synchronize the read/write operations */
    axis2_thread_mutex_t *mutex;
-}
-axis2_op_ctx_impl_t;
+} axis2_op_ctx_impl_t;
 
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(op_ctx) ((axis2_op_ctx_impl_t *)op_ctx)
@@ -69,27 +69,24 @@ axis2_status_t AXIS2_CALL
 axis2_op_ctx_init(
     struct axis2_op_ctx *op_ctx, 
     const axis2_env_t *env, 
-                 struct axis2_conf *conf);
+    struct axis2_conf *conf);
                  
 axis2_op_t *AXIS2_CALL 
 axis2_op_ctx_getAxisOperation(
     struct axis2_op_ctx *op_ctx, 
     const axis2_env_t *env);
 
-                             
 struct axis2_svc_ctx *AXIS2_CALL 
 axis2_op_ctx_get_parent(
     const axis2_op_ctx_t *op_ctx, 
     const axis2_env_t *env);
 
-                        
 axis2_status_t AXIS2_CALL 
 axis2_op_ctx_add_msg_ctx(
     struct axis2_op_ctx *op_ctx, 
     const axis2_env_t *env, 
     axis2_msg_ctx_t *msg_ctx);
 
-                        
 axis2_msg_ctx_t *AXIS2_CALL 
 axis2_op_ctx_get_msg_ctx(
     const axis2_op_ctx_t *op_ctx, 
@@ -176,7 +173,6 @@ axis2_op_ctx_create(
         op_ctx_impl->op = op;
     }
     
-    
     op_ctx_impl->msg_ctx_map = axis2_hash_make(env);
     if (!(op_ctx_impl->msg_ctx_map))
     {
@@ -203,41 +199,29 @@ axis2_op_ctx_create(
 
     op_ctx_impl->op_ctx.ops->get_base = 
         axis2_op_ctx_get_base;
-        
     op_ctx_impl->op_ctx.ops->free = 
         axis2_op_ctx_free;
-        
     op_ctx_impl->op_ctx.ops->init = 
         axis2_op_ctx_init;
-        
     op_ctx_impl->op_ctx.ops->get_op = 
         axis2_op_ctx_get_op;
-        
     op_ctx_impl->op_ctx.ops->get_parent = 
         axis2_op_ctx_get_parent;
-        
     op_ctx_impl->op_ctx.ops->add_msg_ctx = 
         axis2_op_ctx_add_msg_ctx;
-        
     op_ctx_impl->op_ctx.ops->get_msg_ctx = 
         axis2_op_ctx_get_msg_ctx;
-        
     op_ctx_impl->op_ctx.ops->get_is_complete = 
         axis2_op_ctx_get_is_complete;
-        
     op_ctx_impl->op_ctx.ops->set_complete = 
         axis2_op_ctx_set_complete;
-        
     op_ctx_impl->op_ctx.ops->cleanup = 
         axis2_op_ctx_cleanup;
-        
     op_ctx_impl->op_ctx.ops->set_parent = 
         axis2_op_ctx_set_parent;
-        
     op_ctx_impl->op_ctx.ops->get_msg_ctx_map = 
         axis2_op_ctx_get_msg_ctx_map;
         
-
     return &(op_ctx_impl->op_ctx);
 }
 
@@ -291,9 +275,6 @@ axis2_op_ctx_free(
     return AXIS2_SUCCESS;
 }
 
-/**
- * The method is used to do the intialization of the axis2_op_ctx
- */
 axis2_status_t AXIS2_CALL 
 axis2_op_ctx_init(
     struct axis2_op_ctx *op_ctx, 
@@ -344,9 +325,6 @@ axis2_op_ctx_init(
     return AXIS2_SUCCESS;
 }
 
-/**
- * @return Returns the op.
- */
 axis2_op_t *AXIS2_CALL 
 axis2_op_ctx_get_op(
     const axis2_op_ctx_t *op_ctx, 
@@ -356,10 +334,6 @@ axis2_op_ctx_get_op(
     return AXIS2_INTF_TO_IMPL(op_ctx)->op;
 }
 
-/**
- * Return the struct axis2_svc_ctx * in which this op_ctx lives.
- * @return parent struct axis2_svc_ctx *
- */
 struct axis2_svc_ctx *AXIS2_CALL 
 axis2_op_ctx_get_parent(
     const axis2_op_ctx_t *op_ctx, 
@@ -369,13 +343,6 @@ axis2_op_ctx_get_parent(
     return AXIS2_INTF_TO_IMPL(op_ctx)->parent;
 }
 
-/**
- * When a new message is added to the <code>MEPContext</code> the logic
- * should be included remove the MEPContext from the table in the
- * <code>axis2_conf_ctx</code>. Example: IN_IN_OUT At the second IN
- * message the MEPContext should be removed from the AxisOperation
- * @param msgContext
- */
 axis2_status_t AXIS2_CALL 
 axis2_op_ctx_add_msg_ctx(
     struct axis2_op_ctx *op_ctx, 
@@ -402,11 +369,6 @@ axis2_op_ctx_add_msg_ctx(
     return AXIS2_SUCCESS;
 }
 
-/**
- * @param messageLabel
- * @return
- */
-
 axis2_msg_ctx_t *AXIS2_CALL 
 axis2_op_ctx_get_msg_ctx(
     const axis2_op_ctx_t *op_ctx, 
@@ -419,7 +381,7 @@ axis2_op_ctx_get_msg_ctx(
     
     op_ctx_impl = AXIS2_INTF_TO_IMPL(op_ctx);
     
-   axis2_thread_mutex_lock(op_ctx_impl->mutex);
+    axis2_thread_mutex_lock(op_ctx_impl->mutex);
     if (op_ctx_impl->msg_ctx_map)
     {
       axis2_msg_ctx_t *rv = NULL;
@@ -432,10 +394,6 @@ axis2_op_ctx_get_msg_ctx(
     return NULL;
 }
 
-/**
- * Checks to see if the MEP is complete. i.e. whether all the messages that
- * are associated with the MEP has arrived and MEP is complete.
- */
 axis2_bool_t AXIS2_CALL 
 axis2_op_ctx_get_is_complete(
     const axis2_op_ctx_t *op_ctx, 
@@ -456,16 +414,6 @@ axis2_op_ctx_set_complete(
     return AXIS2_SUCCESS;
 }
 
-/**
- * Removes the pointers to this <code>op_ctx</code> in the
- * <code>axis2_conf_ctx</code>'s op_ctxaxis2_hash_t *so that this
- * <code>op_ctx</code> will eventually get garbage collected
- * along with the <code>axis2_msg_ctx_t *</code>'s it contains. Note that if
- * the caller wants to make sure its safe to clean up this op_ctx
- * he should call is_complete() first. However, in cases like IN_OPTIONAL_OUT
- * and OUT_OPTIONAL_IN, it is possibe this will get called without the MEP
- * being complete due to the optional nature of the MEP.
- */
 axis2_status_t AXIS2_CALL 
 axis2_op_ctx_cleanup(
     struct axis2_op_ctx *op_ctx, 
