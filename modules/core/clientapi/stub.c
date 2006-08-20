@@ -339,7 +339,7 @@ axis2_stub_get_svc_ctx_id(
 {
     axis2_stub_impl_t *stub_impl = NULL;
     const axis2_svc_ctx_t *svc_ctx = NULL;
-    axis2_char_t *svc_ctx_id = NULL;
+    const axis2_char_t *svc_ctx_id = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     stub_impl = AXIS2_INTF_TO_IMPL(stub);

@@ -59,7 +59,7 @@ axis2_svc_ctx_init(
     const axis2_env_t *env,
     axis2_conf_t *conf);
                    
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_svc_ctx_get_svc_id(
     const axis2_svc_ctx_t *svc_ctx, 
     const axis2_env_t *env);
@@ -85,7 +85,7 @@ axis2_op_ctx_t *AXIS2_CALL
 axis2_svc_ctx_create_op_ctx(
     struct axis2_svc_ctx *svc_ctx, 
     const axis2_env_t *env, 
-    axis2_qname_t *qname);
+    const axis2_qname_t *qname);
 
 AXIS2_EXTERN axis2_svc_ctx_t *AXIS2_CALL
 axis2_svc_ctx_create(
@@ -204,10 +204,6 @@ axis2_svc_ctx_free(
     return AXIS2_SUCCESS;
 }
 
-
-/**
- * The method is used to do the intialization of the EngineContext
- */
 axis2_status_t AXIS2_CALL 
 axis2_svc_ctx_init(
     struct axis2_svc_ctx *svc_ctx, 
@@ -229,10 +225,7 @@ axis2_svc_ctx_init(
     return AXIS2_SUCCESS;
 }
 
-/**
- * @return Returns the svc_id.
- */
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_svc_ctx_get_svc_id(
     const axis2_svc_ctx_t *svc_ctx, 
     const axis2_env_t *env) 
@@ -286,7 +279,7 @@ axis2_op_ctx_t *AXIS2_CALL
 axis2_svc_ctx_create_op_ctx(
     struct axis2_svc_ctx *svc_ctx, 
     const axis2_env_t *env, 
-    axis2_qname_t *qname) 
+    const axis2_qname_t *qname) 
 {
     axis2_svc_ctx_impl_t *svc_ctx_impl = NULL;
     axis2_op_t *op = NULL;
