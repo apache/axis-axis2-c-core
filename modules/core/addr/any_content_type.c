@@ -22,35 +22,39 @@ typedef struct axis2_any_content_type_impl
     axis2_any_content_type_t any_content_type;    
     /** map of values in the any contetnt type  */
     axis2_hash_t *value_map;
-} axis2_any_content_type_impl_t;
+}
+axis2_any_content_type_impl_t;
 
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(any_content_type) \
         ((axis2_any_content_type_impl_t *)any_content_type)
 
 axis2_status_t AXIS2_CALL 
-axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
-                                 const axis2_env_t *env, 
-                                 axis2_qname_t *qname, 
-                                 axis2_char_t *value); 
+axis2_any_content_type_add_value(
+    axis2_any_content_type_t *any_content_type,
+    const axis2_env_t *env, 
+    axis2_qname_t *qname, 
+    axis2_char_t *value); 
                                  
+axis2_char_t *AXIS2_CALL 
+axis2_any_content_type_get_value(
+    const axis2_any_content_type_t *any_content_type,
+    const axis2_env_t *env, 
+    axis2_qname_t *qname);
                                  
-axis2_char_t* AXIS2_CALL 
-axis2_any_content_type_get_value(axis2_any_content_type_t *any_content_type,
-                                 const axis2_env_t *env, 
-                                 axis2_qname_t *qname);
-                                 
-axis2_hash_t* AXIS2_CALL 
-axis2_any_content_type_get_value_map(axis2_any_content_type_t *any_content_type,
-                                     const axis2_env_t *env);
+axis2_hash_t *AXIS2_CALL 
+axis2_any_content_type_get_value_map(
+    const axis2_any_content_type_t *any_content_type,
+    const axis2_env_t *env);
                                      
 axis2_status_t AXIS2_CALL 
-axis2_any_content_type_free (axis2_any_content_type_t *any_content_type, 
-                             const axis2_env_t *env);
+axis2_any_content_type_free(
+    axis2_any_content_type_t *any_content_type, 
+    const axis2_env_t *env);
 
-
-AXIS2_EXTERN axis2_any_content_type_t* AXIS2_CALL
-axis2_any_content_type_create(const axis2_env_t *env) 
+AXIS2_EXTERN axis2_any_content_type_t *AXIS2_CALL
+axis2_any_content_type_create(
+    const axis2_env_t *env) 
 {
     axis2_any_content_type_impl_t *any_content_type_impl = NULL;
     
@@ -99,10 +103,11 @@ axis2_any_content_type_create(const axis2_env_t *env)
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type, 
-                                 const axis2_env_t *env, 
-                                 axis2_qname_t *qname, 
-                                 axis2_char_t *value) 
+axis2_any_content_type_add_value(
+    axis2_any_content_type_t *any_content_type, 
+    const axis2_env_t *env, 
+    axis2_qname_t *qname, 
+    axis2_char_t *value) 
 {
     axis2_any_content_type_impl_t *any_content_type_impl = NULL;
     
@@ -121,10 +126,11 @@ axis2_any_content_type_add_value(axis2_any_content_type_t *any_content_type,
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t* AXIS2_CALL 
-axis2_any_content_type_get_value(axis2_any_content_type_t *any_content_type, 
-                                 const axis2_env_t *env, 
-                                 axis2_qname_t *qname) 
+axis2_char_t *AXIS2_CALL 
+axis2_any_content_type_get_value(
+    const axis2_any_content_type_t *any_content_type, 
+    const axis2_env_t *env, 
+    axis2_qname_t *qname) 
 {
     axis2_any_content_type_impl_t *any_content_type_impl = NULL;
     
@@ -143,17 +149,19 @@ axis2_any_content_type_get_value(axis2_any_content_type_t *any_content_type,
     return NULL;
 }
 
-axis2_hash_t* AXIS2_CALL 
-axis2_any_content_type_get_value_map(axis2_any_content_type_t *any_content_type, 
-                                     const axis2_env_t *env) 
+axis2_hash_t *AXIS2_CALL 
+axis2_any_content_type_get_value_map(
+    const axis2_any_content_type_t *any_content_type, 
+    const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(any_content_type)->value_map;
 }
 
 axis2_status_t AXIS2_CALL 
-axis2_any_content_type_free (axis2_any_content_type_t *any_content_type, 
-                             const axis2_env_t *env)
+axis2_any_content_type_free(
+    axis2_any_content_type_t *any_content_type, 
+    const axis2_env_t *env)
 {
     axis2_any_content_type_impl_t *any_content_type_impl = NULL;
     

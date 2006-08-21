@@ -41,20 +41,20 @@ extern "C"
 #endif
 
     /** Type name for axis2_any_content_type */
-    struct axis2_any_content_type;
+    typedef struct axis2_any_content_type axis2_any_content_type_t;
     /** Type name for axis2_any_content_type_ops */
-    struct axis2_any_content_type_ops;
+    typedef struct axis2_any_content_type_ops axis2_any_content_type_ops_t;
 
     /**
      * any_content_type ops struct
      */
-    AXIS2_DECLARE_DATA typedef struct axis2_any_content_type_ops
+    struct axis2_any_content_type_ops
     {
         /**
          * Adds given value to the content value map.
          * @param any_content_type any_content_type struct. cannot be NULL.
          * @param env pointer to environment struct. MUST NOT be NULL.
-    * @param qname pointer to qname
+         * @param qname pointer to qname
          * @param value value to be added.
          * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
          */
@@ -73,9 +73,9 @@ extern "C"
          * @return Pointer to the value if present, else returns NULL. 
          * Environment status would be set to AXIS2_FAILURE on error.
          */
-        axis2_char_t* (AXIS2_CALL *
+        axis2_char_t *(AXIS2_CALL *
                 get_value)(
-                    struct axis2_any_content_type *any_content_type,
+                    const axis2_any_content_type_t *any_content_type,
                     const axis2_env_t *env,
                     axis2_qname_t *qname);
         /**
@@ -85,9 +85,9 @@ extern "C"
          * @return Pointer to the value map. Would return NULL and set 
          * Environment status to AXIS2_FAILURE on error.
          */
-        axis2_hash_t* (AXIS2_CALL *
+        axis2_hash_t *(AXIS2_CALL *
                 get_value_map)(
-                    struct axis2_any_content_type *any_content_type,
+                    const axis2_any_content_type_t *any_content_type,
                     const axis2_env_t *env);
 
         /**
@@ -101,18 +101,16 @@ extern "C"
                     struct axis2_any_content_type *any_content_type,
                     const axis2_env_t *env);
 
-    }
-    axis2_any_content_type_ops_t;
+    };
 
     /**
      * axis2 any content type struct
      */
-    typedef struct axis2_any_content_type
+    struct axis2_any_content_type
     {
         /** operatoins of axis2 any content type struct */
         axis2_any_content_type_ops_t *ops;
-    }
-    axis2_any_content_type_t;
+    };
 
 
     /**
@@ -120,7 +118,7 @@ extern "C"
      * @param env pointer to environment struct. MUST NOT be NULL.
      * @return Pointer to the newly created any_content_type instance. Returns NULL on error.
      */
-    AXIS2_EXTERN axis2_any_content_type_t* AXIS2_CALL
+    AXIS2_EXTERN axis2_any_content_type_t *AXIS2_CALL
     axis2_any_content_type_create(
         const axis2_env_t *env);
 
