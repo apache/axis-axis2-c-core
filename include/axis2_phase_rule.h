@@ -180,68 +180,70 @@ extern "C"
 
     /**
      * creates phase_rule struct
+     * @param env pointer to environment struct
+     * @param phase_name pointer to phase name
      */
     AXIS2_EXTERN axis2_phase_rule_t *AXIS2_CALL
     axis2_phase_rule_create(
         const axis2_env_t *env,
         const axis2_char_t *phase_name);
 
-/** Gets the service consumed by service client.
+/** Get before.
     @sa axis2_phase_rule_ops#get_before */
 #define AXIS2_PHASE_RULE_GET_BEFORE(phase_rule, env) \
       ((phase_rule)->ops->get_before(phase_rule, env))
 
-/** Gets the service consumed by service client.
+/** Set before.
     @sa axis2_phase_rule_ops#set_before */
 #define AXIS2_PHASE_RULE_SET_BEFORE(phase_rule, env, before) \
       ((phase_rule)->ops->set_before(phase_rule, env, before))
 
-/** Gets the service consumed by service client.
+/** Get after.
     @sa axis2_phase_rule_ops#get_after */
 #define AXIS2_PHASE_RULE_GET_AFTER(phase_rule, env) \
       ((phase_rule)->ops->get_after(phase_rule, env))
 
-/** Gets the service consumed by service client.
+/** Set after.
     @sa axis2_phase_rule_ops#set_after */
 #define AXIS2_PHASE_RULE_SET_AFTER(phase_rule, env, after) \
       ((phase_rule)->ops->set_after(phase_rule, env, after))
 
-/** Gets the service consumed by service client.
+/** Get name.
     @sa axis2_phase_rule_ops#get_name */
 #define AXIS2_PHASE_RULE_GET_NAME(phase_rule, env) \
       ((phase_rule)->ops->get_name(phase_rule, env))
 
-/** Gets the service consumed by service client.
+/** Set name.
     @sa axis2_phase_rule_ops#set_name */
 #define AXIS2_PHASE_RULE_SET_NAME(phase_rule, env, name)\
       ((phase_rule)->ops->set_name(phase_rule, env, name))
 
-/** Gets the service consumed by service client.
+/** Is phase first.
     @sa axis2_phase_rule_ops#is_phase_first */
 #define AXIS2_PHASE_RULE_IS_PHASE_FIRST(phase_rule, env) \
       ((phase_rule)->ops->is_phase_first(phase_rule, env))
 
-/** Gets the service consumed by service client.
+/** Set phase first.
     @sa axis2_phase_rule_ops#set_phase_first */
 #define AXIS2_PHASE_RULE_SET_PHASE_FIRST(phase_rule, env, phase_first) \
       ((phase_rule)->ops->set_phase_first(phase_rule, env, phase_first))
 
-/** Gets the service consumed by service client.
+/** Is phase last.
     @sa axis2_phase_rule_ops#is_phase_last */
 #define AXIS2_PHASE_RULE_IS_PHASE_LAST(phase_rule, env) \
       ((phase_rule)->ops->is_phase_last(phase_rule, env))
 
-/** Gets the service consumed by service client.
+/** Set phase last.
     @sa axis2_phase_rule_ops#set_phase_last */
 #define AXIS2_PHASE_RULE_SET_PHASE_LAST(phase_rule, env, phase_last) \
       ((phase_rule)->ops->set_phase_last(phase_rule, env, phase_last))
 
-/** Gets the service consumed by service client.
+/** Frees the phase rule.
     @sa axis2_phase_rule_ops#free */
 #define AXIS2_PHASE_RULE_FREE(phase_rule, env) \
       ((phase_rule)->ops->free(phase_rule, env))
 
-/** Gets the service consumed by service client.
+/** Clone.
     @sa axis2_phase_rule_ops#clone */
 #define AXIS2_PHASE_RULE_CLONE(phase_rule, env) \
       ((phase_rule)->ops->clone(phase_rule, env))
