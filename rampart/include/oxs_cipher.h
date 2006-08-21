@@ -19,33 +19,32 @@
 
 
 /**
-  * @file oxs_utils.h
+  * @file oxs_cipher.h
   * @brief 
   */
 
 #include <axis2_defines.h>
 #include <oxs_constants.h>
+#include <openssl_cipher_property.h>
 #include <axis2_env.h>
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-/*
-typedef struct _oxs_cipher oxs_cipher, *oxs_cipher_ptr;
-
-struct _oxs_cipher
-{
-    axis2_char_t *name;
-    int key_size;
-    int iv_size;
-};
-*/
-  
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-oxs_get_cipher(const axis2_env_t *env,
+AXIS2_EXTERN openssl_cipher_property_t *AXIS2_CALL
+oxs_get_cipher_property_for_url(const axis2_env_t *env,
                      axis2_char_t *url);
 
+/*Get the cipher name for the given url*/ 
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+oxs_get_cipher_name_for_url(const axis2_env_t *env,
+                     axis2_char_t *url);
+
+/*Get the cipher url for the given name*/
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+oxs_get_cipher_url_for_name(const axis2_env_t *env,
+                     axis2_char_t *name);
 
 /** @} */
 #ifdef __cplusplus

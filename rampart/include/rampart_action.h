@@ -80,19 +80,37 @@ extern "C"
 
     struct rampart_actions_ops
     {
-
+        
+        /**
+        * Gets encryption_user of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return encryption_user
+        */
         axis2_char_t *(AXIS2_CALL *
         get_encryption_user )(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
         
+        /**
+        * Gets encryption_sym_algorithm of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return encryption_sym_algorithm
+        */
         axis2_char_t *(AXIS2_CALL *
         get_encryption_sym_algorithm )(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
+        /**
+        * Gets encryption_key_transport_algorithm of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return encryption_key_transport_algorithm
+        */
         axis2_char_t *(AXIS2_CALL *
         get_encryption_key_transport_algorithm )(
                     rampart_actions_t *actions,
@@ -100,62 +118,120 @@ extern "C"
                     );
 
 
+        /**
+        * Gets items of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return items
+        */
         axis2_char_t *(AXIS2_CALL *
         get_items )(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
+        /**
+        * Gets user of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return user
+        */
         axis2_char_t *(AXIS2_CALL *
         get_user )(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
+        /**
+        * Gets password_callback_class of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return password_callback_class
+        */
         axis2_char_t *(AXIS2_CALL *
         get_password_callback_class )(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
+        /**
+        * Gets encryption_prop_file of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return encryption_prop_file
+        */
         axis2_char_t *(AXIS2_CALL *
         get_encryption_prop_file )(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
+        /**
+        * Gets signature_prop_file  of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return signature_prop_file
+        */
         axis2_char_t *(AXIS2_CALL *
         get_signature_prop_file)(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
           
+        /**
+        * Gets signature_key_identifier of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return signature_key_identifier
+        */
         axis2_char_t *(AXIS2_CALL *
         get_signature_key_identifier)(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
           
+        /**
+        * Gets encryption_key of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return encryption_key
+        */
         axis2_char_t *(AXIS2_CALL *
         get_encryption_key_identifier)(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
           
+        /**
+        * Gets signature_parts  of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return signature_parts
+        */
         axis2_char_t *(AXIS2_CALL *
         get_signature_parts)(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
           
+        /**
+        * Gets encryption parts of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return encryption_parts 
+        */
         axis2_char_t *(AXIS2_CALL *
         get_encryption_parts)(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
-          
-
-
+        /**
+        * Sets encryption_user of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param encryption_user
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         set_encryption_user)(
                     rampart_actions_t *actions,
@@ -163,6 +239,13 @@ extern "C"
                     axis2_char_t *encryption_user
                     );
 
+        /**
+        * Sets encryption_sym_algorithm of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param encryption_sym_algorithm
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         set_encryption_sym_algorithm)(
                     rampart_actions_t *actions,
@@ -170,6 +253,13 @@ extern "C"
                     axis2_char_t *encryption_sym_algorithm
                     );
 
+        /**
+        * Sets encryption_key_transport_algorithm of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param encryption_key_transport_algorithm
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         set_encryption_key_transport_algorithm)(
                     rampart_actions_t *actions,
@@ -177,6 +267,13 @@ extern "C"
                     axis2_char_t *encryption_key_transport_algorithm
                     );
         
+        /**
+        * Sets items  of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param items
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         set_items)(
                     rampart_actions_t *actions,
@@ -184,6 +281,13 @@ extern "C"
                     axis2_char_t *items
                     );
         
+        /**
+        * Sets user of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param user
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         set_user)(
                     rampart_actions_t *actions,
@@ -191,6 +295,13 @@ extern "C"
                     axis2_char_t *user
                     );
         
+        /**
+        * Sets password_callback_class of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param password_callback_class
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         set_password_callback_class)(
                     rampart_actions_t *actions,
@@ -198,6 +309,13 @@ extern "C"
                     axis2_char_t *password_callback_class
                     );
         
+        /**
+        * Sets encryption_prop_file of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param encryption_prop_file
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         set_encryption_prop_file)(
                     rampart_actions_t *actions,
@@ -205,6 +323,13 @@ extern "C"
                     axis2_char_t *encryption_prop_file
                     );
         
+        /**
+        * Sets signature_prop_file of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param signature_prop_file
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         set_signature_prop_file)(
                     rampart_actions_t *actions,
@@ -212,6 +337,13 @@ extern "C"
                     axis2_char_t *signature_prop_file
                     );
         
+        /**
+        * Sets signature_key_identifier of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param signature_key_identifier
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         set_signature_key_identifier)(
                     rampart_actions_t *actions,
@@ -219,6 +351,13 @@ extern "C"
                     axis2_char_t *signature_key_identifier
                     );
         
+        /**
+        * Sets encryption_key_identifier of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param encryption_key_identifier
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         set_encryption_key_identifier)(
                     rampart_actions_t *actions,
@@ -226,6 +365,13 @@ extern "C"
                     axis2_char_t *encryption_key_identifier
                     );
         
+        /**
+        * Sets signature_parts of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param signature_parts
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         set_signature_parts)(
                     rampart_actions_t *actions,
@@ -233,6 +379,13 @@ extern "C"
                     axis2_char_t *signature_parts
                     );
         
+        /**
+        * Sets encryption_parts of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param encryption_parts
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         set_encryption_parts)(
                     rampart_actions_t *actions,
@@ -242,18 +395,36 @@ extern "C"
         
 
 
+        /**
+        * Reset rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         reset)(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
+        /**
+        * Free the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         free)(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
+        /**
+        * Populate rampart action reading the param_action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
         axis2_status_t (AXIS2_CALL *
         populate)(
                     rampart_actions_t *actions,

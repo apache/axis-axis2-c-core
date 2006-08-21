@@ -32,14 +32,18 @@ extern "C"
 {
 #endif
 
+/*Key is for signing*/
+#define OXS_KEY_USAGE_SIGN          0
+/*Key is for verifying signature*/
+#define OXS_KEY_USAGE_VERIFY        1
+/*Key is for encrypting */
+#define OXS_KEY_USAGE_ENCRYPT       2
+/*Key is for decrypting*/
+#define OXS_KEY_USAGE_DECRYPT       3
+/*Key usage is not specified yet*/
+#define OXS_KEY_USAGE_NONE          4
 
-#define OXS_KEY_USAGE_SIGN      0
-#define OXS_KEY_USAGE_VERIFY    1
-#define OXS_KEY_USAGE_ENCRYPT   2
-#define OXS_KEY_USAGE_DECRYPT   3
-#define OXS_KEY_USAGE_NONE      4
-
-#define OXS_KEY_DEFAULT_SIZE    64
+#define OXS_KEY_DEFAULT_SIZE        64
 
     /** Type name for struct  oxs_key_ops */
     typedef struct oxs_key_ops oxs_key_ops_t;
@@ -49,53 +53,122 @@ extern "C"
 
     struct oxs_key_ops
     {
+         /**
+         * Gets data of the key.
+         * @param key oxs_key ptr to key
+         * @param env pointer to environment struct
+         * @return data 
+         */
+
         axis2_char_t *(AXIS2_CALL *
                 get_data)(
                     const oxs_key_t *key,
                     const axis2_env_t *env);
+         /**
+         * Gets data of the key.
+         * @param key oxs_key ptr to key
+         * @param env pointer to environment struct
+         * @return name of the key
+         */
         axis2_char_t *(AXIS2_CALL *
                 get_name)(
                     const oxs_key_t *key,
                     const axis2_env_t *env);
+         /**
+         * Gets data of the key.
+         * @param key oxs_key ptr to key
+         * @param env pointer to environment struct
+         * @return size of the key
+         */
         int (AXIS2_CALL *
                 get_size)(
                     const oxs_key_t *key,
                     const axis2_env_t *env);
+         /**
+         * Gets data of the key.
+         * @param key oxs_key ptr to key
+         * @param env pointer to environment struct
+         * @return usage of the key
+         */
         int (AXIS2_CALL *
                 get_usage)(
                     const oxs_key_t *key,
                     const axis2_env_t *env);
         
+         /**
+         * Sets data of the key.
+         * @param key oxs_key ptr to key
+         * @param env pointer to environment struct
+         * @param data data of the key
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_data)(
                     oxs_key_t *key,
                     const axis2_env_t *env,
                     axis2_char_t *data);
 
+         /**
+         * Sets the name of the key.
+         * @param key oxs_key ptr to key
+         * @param env pointer to environment struct
+         * @param name name of the key
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_name)(
                     oxs_key_t *key,
                     const axis2_env_t *env,
                     axis2_char_t *name);
 
+         /**
+         * Sets the size of the key.
+         * @param key oxs_key ptr to key
+         * @param env pointer to environment struct
+         * @param size size of the key
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_size)(
                     oxs_key_t *key,
                     const axis2_env_t *env,
                     int size);
 
+         /**
+         * Set the usage of the key.
+         * @param key oxs_key ptr to key
+         * @param env pointer to environment struct
+         * @param usage usage of the key
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_usage)(
                     oxs_key_t *key,
                     const axis2_env_t *env,
                     int usage);
 
+         /**
+         * Free function for key.
+         * @param key oxs_key ptr to key
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     oxs_key_t *key,
                     const axis2_env_t *env
                 );
 
+         /**
+         * Populate a key.
+         * @param key oxs_key ptr to key
+         * @param env pointer to environment struct
+         * @param data data of the key
+         * @param name name of the key
+         * @param size size of the key
+         * @param usage usage of the key
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 populate)(
                     oxs_key_t *key,
@@ -106,6 +179,12 @@ extern "C"
                     int usage
                 );
         
+         /**
+         * Read a key from a file.
+         * @param key oxs_key ptr to key
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 read_from_file)(
                     oxs_key_t *key,
@@ -113,6 +192,12 @@ extern "C"
                     axis2_char_t *file_name
                 );
         
+         /**
+         * Fill the key for the given algo.
+         * @param key oxs_key ptr to key
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 for_algo)(
                     oxs_key_t *key,

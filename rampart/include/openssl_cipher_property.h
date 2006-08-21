@@ -18,8 +18,8 @@
 #include<oxs_buffer.h>
 
 /**
-  * @file 
-  * @brief 
+  * @file openssl_cipher_property.h 
+  * @brief Bean class for cipher properties
   */
 #ifndef OPENSSL_CIPHER_PROPERTY_H
 #define OPENSSL_CIPHER_PROPERTY_H
@@ -44,6 +44,11 @@ extern "C" {
 
         axis2_char_t *(AXIS2_CALL *
                 get_name)(
+                    const openssl_cipher_property_t *cprop,
+                    const axis2_env_t *env);
+
+        axis2_char_t *(AXIS2_CALL *
+                get_url)(
                     const openssl_cipher_property_t *cprop,
                     const axis2_env_t *env);
 
@@ -73,6 +78,12 @@ extern "C" {
                     const openssl_cipher_property_t *cprop,
                     const axis2_env_t *env,
                     axis2_char_t *name);
+
+        axis2_status_t (AXIS2_CALL *
+                set_url)(
+                    const openssl_cipher_property_t *cprop,
+                    const axis2_env_t *env,
+                    axis2_char_t *url);
 
         axis2_status_t (AXIS2_CALL *
                 set_key_size)(
@@ -119,6 +130,9 @@ openssl_cipher_property_create(const axis2_env_t *env);
 #define OPENSSL_CIPHER_PROPERTY_GET_NAME(cprop, env)\
     ((cprop)->ops->get_name(cprop, env))
 
+#define OPENSSL_CIPHER_PROPERTY_GET_URL(cprop, env)\
+    ((cprop)->ops->get_url(cprop, env))
+
 #define OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env)\
     ((cprop)->ops->get_key_size(cprop, env))
 
@@ -133,6 +147,9 @@ openssl_cipher_property_create(const axis2_env_t *env);
 
 #define OPENSSL_CIPHER_PROPERTY_SET_NAME(cprop, env, name)\
     ((cprop)->ops->set_name(cprop, env, name))
+
+#define OPENSSL_CIPHER_PROPERTY_SET_URL(cprop, env, url)\
+    ((cprop)->ops->set_url(cprop, env, url))
 
 #define OPENSSL_CIPHER_PROPERTY_SET_KEY_SIZE(cprop, env, key_size)\
     ((cprop)->ops->set_key_size(cprop, env, key_size))

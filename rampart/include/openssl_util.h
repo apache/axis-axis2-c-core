@@ -30,8 +30,8 @@ extern "C" {
 #endif
 /*Get the cipher property for a given cipher name
   @see openssl_cipher_property.h*/
-AXIS2_EXTERN openssl_cipher_property_t *AXIS2_CALL
-openssl_get_cipher_property(const axis2_env_t *env, axis2_char_t *cipher_name);
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+openssl_populate_cipher_property(const axis2_env_t *env, openssl_cipher_property_t *cprop);
 
 /*Get a cipher for a given name*/
 AXIS2_EXTERN EVP_CIPHER*  AXIS2_CALL
