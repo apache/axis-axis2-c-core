@@ -1051,8 +1051,8 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
     {
         return AXIS2_FAILURE;
     }
-    index_i = axis2_hash_first (svc_grps, env);
-    while(NULL != index_i)
+    for(index_i = axis2_hash_first (svc_grps, env); index_i; index_i = 
+        axis2_hash_next (env, index_i))
     {
         axis2_hash_t *svcs = NULL;
         axis2_svc_grp_t *svc_grp = NULL;
@@ -1064,8 +1064,8 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
         svc_grp = (axis2_svc_grp_t *) v;
         svcs = AXIS2_SVC_GRP_GET_SVCS(svc_grp, env);    
         
-        index_j = axis2_hash_first (svcs, env);
-        while(NULL != index_j)
+        for(index_j = axis2_hash_first (svcs, env); index_j; index_j = 
+            axis2_hash_next (env, index_j))
         {
             axis2_svc_t *svc = NULL;
             void *w = NULL;
@@ -1092,9 +1092,7 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
             {
                 return status;
             }
-            index_j = axis2_hash_next (env, index_j);
-            
-        }         
+        }
         mod_name = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
         status = AXIS2_SVC_GRP_ADD_MODULE(svc_grp, env, 
             mod_name);
@@ -1103,8 +1101,6 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
         {
             return status;
         }
-        index_i = axis2_hash_next (env, index_i);
-           
     }
     return status;
 }

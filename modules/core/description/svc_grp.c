@@ -356,7 +356,7 @@ axis2_svc_grp_add_svc (axis2_svc_grp_t *svc_grp,
     }
     svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
     svc_name = AXIS2_QNAME_TO_STRING(svc_qname, env);
-   axis2_hash_set (svc_grp_impl->svcs, svc_name, AXIS2_HASH_KEY_STRING, svc);
+    axis2_hash_set (svc_grp_impl->svcs, svc_name, AXIS2_HASH_KEY_STRING, svc);
     
     handler_resolver = axis2_phase_resolver_create_with_config_and_svc(env,
         svc_grp_impl->parent, svc);

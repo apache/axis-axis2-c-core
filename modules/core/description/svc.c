@@ -975,8 +975,10 @@ axis2_svc_add_op(
         AXIS2_OP_SET_MSG_RECV(op, env, msg_recv);
     }
     qname = AXIS2_OP_GET_QNAME(op, env);
-    key = AXIS2_QNAME_GET_LOCALPART(qname, env);
-    axis2_hash_set(svc_impl->op_alias_map, key, AXIS2_HASH_KEY_STRING, op);
+    if(qname)
+        key = AXIS2_QNAME_GET_LOCALPART(qname, env);
+    if(key)
+        axis2_hash_set(svc_impl->op_alias_map, key, AXIS2_HASH_KEY_STRING, op);
     return AXIS2_SUCCESS;
 }
 
@@ -1363,9 +1365,9 @@ axis2_svc_add_module_ops(
 
 axis2_status_t AXIS2_CALL
 axis2_svc_add_to_engaged_module_list(
-    axis2_svc_t *svc,
-    const axis2_env_t *env,
-    axis2_module_desc_t *module_name) 
+        axis2_svc_t *svc,
+        const axis2_env_t *env,
+        axis2_module_desc_t *module_name) 
 {
     axis2_array_list_t *collection_module = NULL;
     axis2_module_desc_t *module_desc = NULL;

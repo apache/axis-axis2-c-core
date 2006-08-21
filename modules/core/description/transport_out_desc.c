@@ -184,6 +184,8 @@ axis2_transport_out_desc_create_with_qname (const axis2_env_t *env, axis2_qname_
     }
     
     transport_out_impl->transport_out.ops->free = axis2_transport_out_desc_free;
+    transport_out_impl->transport_out.ops->free_void_arg = 
+        axis2_transport_out_desc_free_void_arg;
     
    transport_out_impl->transport_out.ops->get_qname =  
         axis2_transport_out_desc_get_qname;
@@ -282,6 +284,19 @@ axis2_transport_out_desc_free (axis2_transport_out_desc_t *transport_out,
     AXIS2_FREE(env->allocator, transport_out_impl);
     
    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_transport_out_desc_free_void_arg(
+        void *transport_out,
+        const axis2_env_t *env)
+{
+    axis2_transport_out_desc_t *transport_out_l = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    transport_out_l = (axis2_transport_out_desc_t *) transport_out;
+    return axis2_transport_out_desc_free(transport_out_l, env);
 }
 
 axis2_qname_t *AXIS2_CALL

@@ -19,6 +19,8 @@
 #include <axiom_soap.h>
 #include <axis2_client.h>
 
+#define MAX_COUNT  3000000
+
 /* my on_complete callback function */
 axis2_status_t AXIS2_CALL
 echo_callback_on_complete(struct axis2_callback *callback,
@@ -123,7 +125,7 @@ int main(int argc, char** argv)
         
     /** Wait till callback is complete. Simply keep the parent thread running
        until our on_complete or on_error is invoked */
-   while(count < 30 )
+   while(count < MAX_COUNT )
    {
       if (isComplete)
       {
@@ -134,7 +136,7 @@ int main(int argc, char** argv)
         count++;
    }
     
-    if (!(count < 30))
+    if (!(count < MAX_COUNT))
     {
         printf("\necho client invoke FAILED. Counter timed out.\n");
     }

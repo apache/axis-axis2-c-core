@@ -69,6 +69,16 @@ extern "C"
                     axis2_transport_in_desc_t *transport_in_desc,
                     const axis2_env_t *env);
 
+    /**
+     * De-allocate memory
+     * @param void transport_in to be freed
+     * @return status code
+     */
+        axis2_status_t (AXIS2_CALL *
+            free_void_arg) (
+                    void *transport_in,
+                    const axis2_env_t *env);
+
         /**
          * @param transport_in pointer to transport in
          * @param env pointer to environment struct
@@ -243,6 +253,11 @@ extern "C"
     axis2_transport_in_desc_create_with_qname (
             const axis2_env_t *env,
             axis2_qname_t *qname);
+
+    axis2_status_t AXIS2_CALL
+    axis2_transport_in_desc_free_void_arg(
+            void *transport_in,
+            const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 
