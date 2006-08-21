@@ -17,7 +17,8 @@
 #ifndef AXIS2_SVC_CTX_H
 #define AXIS2_SVC_CTX_H
 
-/** @defgroup axis2_svc_ctx service context
+/** 
+ * @defgroup axis2_svc_ctx service context
  * @ingroup axis2_context
  * service context represents a running "instance" of a service.
  * service context allows instance of operations belonging to a service to be 

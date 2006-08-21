@@ -17,14 +17,17 @@
 #ifndef AXIS2_SVC_GRP_CTX_H
 #define AXIS2_SVC_GRP_CTX_H
 
-/** @defgroup axis2_svc_grp_ctx service group context
+/** 
+ * @defgroup axis2_svc_grp_ctx service group context
  * @ingroup axis2_context
+ * service group context represents a running "instance" of a service group.
+ * service group context allows instance of services belonging to a service
+ * group to be grouped.  
  * @{
  */
 
 /**
  * @file axis2_svc_grp_ctx.h
- * @brief axis2 service group context interface
  */
 
 #include <axis2_defines.h>
@@ -45,14 +48,17 @@ extern "C"
 
 
     /**
-     * service group context ops struct
-     * Encapsulator struct for ops of axis2_svc_grp_ctx
+     * service group context ops struct.
+     * Encapsulator struct for ops of axis2_svc_grp_ctx.
      */
     struct axis2_svc_grp_ctx_ops
     {
         /**
+         * Gets base which is of type context.
          * @param svc_grp_ctx pointer to service group context
          * @param env pointer to environment
+         * @return pointer to base context struct, returns a reference not a 
+         * cloned copy
          */
         axis2_ctx_t *(AXIS2_CALL *
                 get_base)(
@@ -61,8 +67,11 @@ extern "C"
 
 
         /**
+         * Gets parent. configuration context is the parent of any service group 
+         * context instance.
          * @param svc_grp_ctx pointer to service group context
          * @param env pointer to environment struct
+         * @return pointer to configuration context, parent of service group 
          */
         struct axis2_conf_ctx *(AXIS2_CALL *
                 get_parent)(
@@ -71,8 +80,10 @@ extern "C"
 
 
         /**
+         * Frees service group context.
          * @param svc_grp_ctx pointer to service group context
          * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -80,10 +91,13 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * The method is used to do the intialization of the EngineContext
+         * Initializes service group context. In this method, it pics the 
+         * related service group from configuration and keeps a reference
+         * for future use. 
          * @param svc_grp_ctx pointer to service group context
          * @param env pointer to environment struct
-         * @param conf pointer to conf
+         * @param conf pointer to configuration
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
                 init)(
@@ -91,21 +105,23 @@ extern "C"
                     const axis2_env_t *env,
                     struct axis2_conf *conf);
 
-
         /**
+         * Gets service group context ID.
          * @param svc_grp_ctx pointer to service group context
          * @param env pointer to environment struct
+         * @return service group context ID string
          */
-        axis2_char_t *(AXIS2_CALL *
+        const axis2_char_t *(AXIS2_CALL *
                 get_id)(
                     const axis2_svc_grp_ctx_t *svc_grp_ctx,
                     const axis2_env_t *env);
 
-
         /**
+         * Sets service group context ID.
          * @param svc_grp_ctx pointer to service group context
          * @param env pointer to environment struct
-         * @param id pointer to id
+         * @return id service group context ID
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
                 set_id)(
@@ -113,45 +129,48 @@ extern "C"
                     const axis2_env_t *env,
                     const axis2_char_t *id);
 
-
         /** 
-         * if the servic name is foo:bar , you should pass only bar 
+         * Gets named service context.
          * @param svc_grp_ctx pointer to service group context
          * @param env pointer to environment struct
-         * @param svc_name pointer to service name
+         * @param svc_name name of service context to be retrieved
+         * @return pointer to named service context
          */
         struct axis2_svc_ctx *(AXIS2_CALL *
                 get_svc_ctx)(
                     const axis2_svc_grp_ctx_t *svc_grp_ctx,
                     const axis2_env_t *env,
-                    axis2_char_t *svc_name);
+                    const axis2_char_t *svc_name);
 
         /**
-         * This will create one service context per each service in descrpition
-         * if service group has 2 service init , then two service contexts will be
-         * created
+         * Fills service context map. This will create one service context per 
+         * each service in the service group related to this service context.
          * @param svc_grp_ctx pointer to service group context
          * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
                 fill_svc_ctx_map)(
                     struct axis2_svc_grp_ctx *svc_grp_ctx,
                     const axis2_env_t *env);
 
-
         /**
+         * Gets service group related to this service context. 
          * @param svc_grp_ctx pointer to service group context
          * @param env pointer to environment struct
+         * @return pointer to service group that this service group context 
+         * represents
          */
         struct axis2_svc_grp *(AXIS2_CALL *
                 get_svc_grp)(
                     const axis2_svc_grp_ctx_t *svc_grp_ctx,
                     const axis2_env_t *env);
 
-
         /**
+         * Gets service context map containing all service contexts.
          * @param svc_grp_ctx pointer to service group context
          * @param env pointer to environment struct
+         * @return pointer to hash table containing the service context map
          */
         axis2_hash_t *(AXIS2_CALL *
                 get_svc_ctx_map)(
@@ -160,7 +179,7 @@ extern "C"
     };
 
     /**
-     * service group context struct
+     * service group context struct.
      */
     struct axis2_svc_grp_ctx
     {
@@ -170,10 +189,14 @@ extern "C"
 
 
     /**
-     * Creates a service group context struct
+     * Creates a service group context struct.
      * @param env pointer to environment struct
-     * @param svc_grp pointer to service group
-     * @param conf_ctx pointer to configuration context
+     * @param svc_grp pointer to service group that this service context 
+     * represents, service group context does not assume the ownership of the struct
+     * @param conf_ctx pointer to configuration context, the parent context 
+     * of the newly created service group context, service group context does not 
+     * assume the ownership of the struct
+     * @return pointer to newly created service group context
      */
     AXIS2_EXTERN axis2_svc_grp_ctx_t *AXIS2_CALL
     axis2_svc_grp_ctx_create(
@@ -181,59 +204,56 @@ extern "C"
         struct axis2_svc_grp *svc_grp,
         struct axis2_conf_ctx *conf_ctx);
 
-/****************** Start of function macros **************************/
 
-/** Gets the base.
+/** Gets base context.
     @sa axis2_grp_ctx_ops#get_base */
 #define AXIS2_SVC_GRP_CTX_GET_BASE(svc_grp_ctx, env) \
       ((svc_grp_ctx)->ops->get_base(svc_grp_ctx, env))
 
-/** Gets the parent.
+/** Gets parent configuration context.
     @sa axis2_grp_ctx_ops#get_parent */
 #define AXIS2_SVC_GRP_CTX_GET_PARENT(svc_grp_ctx, env) \
       ((svc_grp_ctx)->ops->get_parent(svc_grp_ctx, env))
 
-/** Frees the service group context.
+/** Frees service group context.
     @sa axis2_grp_ctx_ops#free */
 #define AXIS2_SVC_GRP_CTX_FREE(svc_grp_ctx, env)\
       ((svc_grp_ctx)->ops->free(svc_grp_ctx, env))
 
-/** Initialize the service group context.
+/** Initializes service group context.
     @sa axis2_grp_ctx_ops#init */
 #define AXIS2_SVC_GRP_CTX_INIT(svc_grp_ctx, env, conf)\
       ((svc_grp_ctx)->ops->init(svc_grp_ctx, env, conf))
 
-/** Gets the id.
+/** Gets ID.
     @sa axis2_grp_ctx_ops#get_id */
 #define AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env) \
       ((svc_grp_ctx)->ops->get_id(svc_grp_ctx, env))
 
-/** Set id.
+/** Sets ID.
     @sa axis2_grp_ctx_ops#set id */
 #define AXIS2_SVC_GRP_CTX_SET_ID(svc_grp_ctx, env, id) \
       ((svc_grp_ctx)->ops->set_id(svc_grp_ctx, env, id))
 
-/** Gets the service context.
+/** Gets named service context.
     @sa axis2_grp_ctx_ops#get_svc_ctx */
 #define AXIS2_SVC_GRP_CTX_GET_SVC_CTX(svc_grp_ctx, env, svc_name) \
       ((svc_grp_ctx)->ops->get_svc_ctx(svc_grp_ctx, env, svc_name))
 
-/** Gets the service context map.
+/** Gets service context map.
     @sa axis2_grp_ctx_ops#fill_svc_ctx_map */
 #define AXIS2_SVC_GRP_CTX_FILL_SVC_CTX_MAP(svc_grp_ctx, env) \
       ((svc_grp_ctx)->ops->fill_svc_ctx_map(svc_grp_ctx, env))
 
-/** Gets the service group.
+/** Gets service group related to service group context.
     @sa axis2_grp_ctx_ops#get_svc_grp */
 #define AXIS2_SVC_GRP_GET_SVC_GRP(svc_grp_ctx, env) \
       ((svc_grp_ctx)->ops->get_svc_grp(svc_grp_ctx, env))
 
-/** Gets the service context map.
+/** Gets service context map.
     @sa axis2_grp_ctx_ops#get_svc_ctx_map */
 #define AXIS2_SVC_GRP_GET_SVC_CTX_MAP(svc_grp_ctx, env) \
       ((svc_grp_ctx)->ops->get_svc_ctx_map(svc_grp_ctx, env))
-
-/************************** End of function macros ****************************/
 
 /** @} */
 #ifdef __cplusplus

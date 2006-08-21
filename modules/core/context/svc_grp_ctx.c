@@ -29,7 +29,7 @@ typedef struct axis2_svc_grp_ctx_impl
     struct axis2_conf_ctx *parent;
     /** service group context ID */
     axis2_char_t *id;
-    /** map of service contexts belonging to this service contecxt group */
+    /** map of service contexts belonging to this service context group */
     axis2_hash_t *svc_ctx_map;
     /** service group associated with this service group context */
     axis2_svc_grp_t *svc_grp;
@@ -47,32 +47,27 @@ axis2_svc_grp_ctx_get_base(
     const axis2_svc_grp_ctx_t *svc_grp_ctx, 
     const axis2_env_t *env);
 
-                           
 struct axis2_conf_ctx *AXIS2_CALL 
 axis2_svc_grp_ctx_get_parent(
     const axis2_svc_grp_ctx_t *svc_grp_ctx, 
     const axis2_env_t *env);
 
-                             
 axis2_status_t AXIS2_CALL 
 axis2_svc_grp_ctx_free(
     struct axis2_svc_grp_ctx *svc_grp_ctx, 
     const axis2_env_t *env);
 
-                        
 axis2_status_t AXIS2_CALL 
 axis2_svc_grp_ctx_init(
     struct axis2_svc_grp_ctx *svc_grp_ctx, 
     const axis2_env_t *env,
     axis2_conf_t *conf);
 
-                       
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_svc_grp_ctx_get_id(
     const axis2_svc_grp_ctx_t *svc_grp_ctx, 
     const axis2_env_t *env);
 
-                         
 axis2_status_t AXIS2_CALL 
 axis2_svc_grp_ctx_set_id(
     struct axis2_svc_grp_ctx *svc_grp_ctx, 
@@ -83,9 +78,8 @@ axis2_svc_ctx_t *AXIS2_CALL
 axis2_svc_grp_ctx_get_svc_ctx(
     const axis2_svc_grp_ctx_t *svc_grp_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *svc_name);
+    const axis2_char_t *svc_name);
 
-                              
 axis2_status_t AXIS2_CALL 
 axis2_svc_grp_ctx_fill_svc_ctx_map(
     struct axis2_svc_grp_ctx *svc_grp_ctx, 
@@ -166,31 +160,22 @@ axis2_svc_grp_ctx_create(
 
     svc_grp_ctx_impl->svc_grp_ctx.ops->get_base = 
         axis2_svc_grp_ctx_get_base;
-        
     svc_grp_ctx_impl->svc_grp_ctx.ops->get_parent = 
         axis2_svc_grp_ctx_get_parent;
-        
     svc_grp_ctx_impl->svc_grp_ctx.ops->free = 
         axis2_svc_grp_ctx_free;
-        
     svc_grp_ctx_impl->svc_grp_ctx.ops->init = 
         axis2_svc_grp_ctx_init;
-        
     svc_grp_ctx_impl->svc_grp_ctx.ops->get_id = 
         axis2_svc_grp_ctx_get_id;
-
     svc_grp_ctx_impl->svc_grp_ctx.ops->set_id = 
         axis2_svc_grp_ctx_set_id;
-    
     svc_grp_ctx_impl->svc_grp_ctx.ops->get_svc_ctx = 
         axis2_svc_grp_ctx_get_svc_ctx;
-        
     svc_grp_ctx_impl->svc_grp_ctx.ops->fill_svc_ctx_map = 
         axis2_svc_grp_ctx_fill_svc_ctx_map;
-        
     svc_grp_ctx_impl->svc_grp_ctx.ops->get_svc_grp = 
         axis2_svc_grp_ctx_get_svc_grp;
-        
     svc_grp_ctx_impl->svc_grp_ctx.ops->get_svc_ctx_map = 
         axis2_svc_grp_ctx_get_svc_ctx_map;
     
@@ -206,7 +191,6 @@ axis2_svc_grp_ctx_get_base(
     return AXIS2_INTF_TO_IMPL(svc_grp_ctx)->base;
 }
 
-
 struct axis2_conf_ctx *AXIS2_CALL 
 axis2_svc_grp_ctx_get_parent(
     const axis2_svc_grp_ctx_t *svc_grp_ctx, 
@@ -215,8 +199,6 @@ axis2_svc_grp_ctx_get_parent(
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(svc_grp_ctx)->parent;
 }
-
-
 
 axis2_status_t AXIS2_CALL 
 axis2_svc_grp_ctx_free(
@@ -273,9 +255,6 @@ axis2_svc_grp_ctx_free(
     return AXIS2_SUCCESS;
 }
 
-/**
- * The method is used to do the intialization of the EngineContext
- */
 axis2_status_t AXIS2_CALL 
 axis2_svc_grp_ctx_init(
     struct axis2_svc_grp_ctx *svc_grp_ctx, 
@@ -297,8 +276,7 @@ axis2_svc_grp_ctx_init(
     return AXIS2_SUCCESS;
 }
 
-
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_svc_grp_ctx_get_id(
     const axis2_svc_grp_ctx_t *svc_grp_ctx, 
     const axis2_env_t *env) 
@@ -333,12 +311,11 @@ axis2_svc_grp_ctx_set_id(
     return AXIS2_SUCCESS;
 }
 
-/** if the servic name is foo:bar , you should pass only bar */
 axis2_svc_ctx_t *AXIS2_CALL 
 axis2_svc_grp_ctx_get_svc_ctx(
     const axis2_svc_grp_ctx_t *svc_grp_ctx, 
     const axis2_env_t *env,
-    axis2_char_t *svc_name) 
+    const axis2_char_t *svc_name) 
 {
     axis2_svc_grp_ctx_impl_t *svc_grp_ctx_impl = NULL;
     
@@ -349,11 +326,6 @@ axis2_svc_grp_ctx_get_svc_ctx(
     return (axis2_svc_ctx_t *) axis2_hash_get(svc_grp_ctx_impl->svc_ctx_map, svc_name, AXIS2_HASH_KEY_STRING);
 }
 
-/**
- * This will create one service context per each service in descrpition
- * if service group has 2 service init , then two service contexts will be
- * created
- */
 axis2_status_t AXIS2_CALL 
 axis2_svc_grp_ctx_fill_svc_ctx_map(
     struct axis2_svc_grp_ctx *svc_grp_ctx, 
