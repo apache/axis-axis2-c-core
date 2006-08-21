@@ -16,24 +16,14 @@
  
 #include <axis2_flow.h>
 
-/** 
- * @brief Flow struct impl
- *   Axis2 Flow impl  
- */
 typedef struct axis2_flow_impl
 {
     axis2_flow_t flow;
-    /**
-     * Field list
-     */
+
     axis2_array_list_t *list;
-    
-}
-axis2_flow_impl_t;
+} axis2_flow_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(flow) ((axis2_flow_impl_t *)(flow))
-
-/***************************** Function headers *******************************/
 
 axis2_status_t AXIS2_CALL
 axis2_flow_free(
@@ -50,14 +40,12 @@ axis2_handler_desc_t *AXIS2_CALL
 axis2_flow_get_handler(
     const axis2_flow_t *flow,
     const axis2_env_t *env,
-    int index);
+    const int index);
 
 int AXIS2_CALL
 axis2_flow_get_handler_count(
     const axis2_flow_t *flow,
     const axis2_env_t *env);
-
-/************************** End of Function headers ************************/
 
 AXIS2_EXTERN axis2_flow_t *AXIS2_CALL
 axis2_flow_create(
@@ -78,8 +66,7 @@ axis2_flow_create(
     flow_impl->list = NULL;
     flow_impl->flow.ops = NULL;
     
-    /*Create the list with the default size of 16 */
-   flow_impl->list = axis2_array_list_create (env, 20);
+    flow_impl->list = axis2_array_list_create (env, 20);
     if(NULL == flow_impl->list)
     {
         axis2_flow_free(&(flow_impl->flow), env);
@@ -96,15 +83,13 @@ axis2_flow_create(
         return NULL;
     }
     
-   flow_impl->flow.ops->free =  axis2_flow_free;
+    flow_impl->flow.ops->free =  axis2_flow_free;
     flow_impl->flow.ops->add_handler =  axis2_flow_add_handler;
     flow_impl->flow.ops->get_handler =  axis2_flow_get_handler;
     flow_impl->flow.ops->get_handler_count =  axis2_flow_get_handler_count;
        
    return &(flow_impl->flow);
 }
-
-/*************************** Start of op impls *************************/
 
 axis2_status_t AXIS2_CALL
 axis2_flow_free(
@@ -191,7 +176,7 @@ axis2_handler_desc_t *AXIS2_CALL
 axis2_flow_get_handler(
     const axis2_flow_t *flow,
     const axis2_env_t *env,
-    int index)
+    const int index)
 {
     AXIS2_ENV_CHECK(env, NULL);
     
