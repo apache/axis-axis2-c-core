@@ -371,7 +371,7 @@ axis2_module_desc_get_inflow(
 {
     AXIS2_ENV_CHECK(env, NULL);
     
-    return AXIS2_FLOW_CONTAINER_GET_INFLOW(module_desc->flow_container, env);
+    return AXIS2_FLOW_CONTAINER_GET_IN_FLOW(module_desc->flow_container, env);
 }
 
 axis2_status_t AXIS2_CALL
@@ -383,7 +383,7 @@ axis2_module_desc_set_inflow(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, inflow, AXIS2_FAILURE);
     
-    return AXIS2_FLOW_CONTAINER_SET_INFLOW(module_desc->flow_container, env, 
+    return AXIS2_FLOW_CONTAINER_SET_IN_FLOW(module_desc->flow_container, env, 
         inflow);    
 }
 
@@ -394,7 +394,7 @@ axis2_module_desc_get_outflow(
 {
     AXIS2_ENV_CHECK(env, NULL);
     
-    return AXIS2_FLOW_CONTAINER_GET_OUTFLOW(module_desc->flow_container, env);
+    return AXIS2_FLOW_CONTAINER_GET_OUT_FLOW(module_desc->flow_container, env);
 }
 
 axis2_status_t AXIS2_CALL
@@ -406,7 +406,7 @@ axis2_module_desc_set_outflow(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, outflow, AXIS2_FAILURE);
     
-    return AXIS2_FLOW_CONTAINER_SET_OUTFLOW(module_desc->flow_container, env, 
+    return AXIS2_FLOW_CONTAINER_SET_OUT_FLOW(module_desc->flow_container, env, 
         outflow);
 }
 
@@ -417,7 +417,7 @@ axis2_module_desc_get_fault_inflow(
 {
     AXIS2_ENV_CHECK(env, NULL);
     
-    return AXIS2_FLOW_CONTAINER_GET_FAULT_INFLOW(module_desc->flow_container, env);
+    return AXIS2_FLOW_CONTAINER_GET_FAULT_IN_FLOW(module_desc->flow_container, env);
 }
 
 axis2_status_t AXIS2_CALL
@@ -429,7 +429,7 @@ axis2_module_desc_set_fault_inflow(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, falut_inflow, AXIS2_FAILURE);
     
-    return AXIS2_FLOW_CONTAINER_SET_FAULT_INFLOW(module_desc->flow_container,
+    return AXIS2_FLOW_CONTAINER_SET_FAULT_IN_FLOW(module_desc->flow_container,
         env, falut_inflow);
 }
 
@@ -439,7 +439,7 @@ axis2_module_desc_get_fault_outflow(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_FLOW_CONTAINER_GET_FAULT_OUTFLOW(module_desc->flow_container, env);
+    return AXIS2_FLOW_CONTAINER_GET_FAULT_OUT_FLOW(module_desc->flow_container, env);
 }
 
 axis2_status_t AXIS2_CALL
@@ -451,7 +451,7 @@ axis2_module_desc_set_fault_outflow(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, fault_outflow, AXIS2_FAILURE);
     
-    return AXIS2_FLOW_CONTAINER_SET_FAULT_OUTFLOW(module_desc->flow_container, 
+    return AXIS2_FLOW_CONTAINER_SET_FAULT_OUT_FLOW(module_desc->flow_container, 
         env, fault_outflow);
 }
 
