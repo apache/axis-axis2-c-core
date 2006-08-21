@@ -17,15 +17,16 @@
 #ifndef AXIS2_DESC_H
 #define AXIS2_DESC_H
 
-/** @defgroup axis2_description description
+/** 
+ * @defgroup axis2_description description
  * @ingroup axis2_desc
- * Description.
+ * Base struct of description hierarchy. Encapsulates common data and functions
+ * of the description hierarchy.
  * @{
  */
 
 /**
   * @file axis2_desc.h
-  * @brief axis2 desc interface
   */
 
 #include <axis2_param_container.h>
@@ -43,13 +44,14 @@ extern "C"
     typedef struct axis2_desc axis2_desc_t;
 
     /**
-     * message ops struct
-     * Encapsulator struct for ops of axis2_desc
+     * description ops struct.
+     * Encapsulator struct for ops of axis2_desc.
      */
     AXIS2_DECLARE_DATA struct axis2_desc_ops
     {
         /** 
-         * @param desc pointer to desc
+         * Frees description struct.
+         * @param desc pointer to description
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
@@ -59,9 +61,10 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param desc pointer to desc
+         * Adds given parameter to the list of parameters.
+         * @param desc pointer to description
          * @param env pointer to environment struct
-         * @param param pointer to param
+         * @param param pointer to parameter
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -71,9 +74,11 @@ extern "C"
                     axis2_param_t *param);
 
         /**
-         * @param desc pointer to desc
+         * Gets named parameter.
+         * @param desc pointer to description
          * @param env pointer to environment struct
-         * @param param_name pointer to param name
+         * @param param_name parameter name string
+         * @return pointer to named parameter, NULL if it does not exist
          */
         axis2_param_t *(AXIS2_CALL *
                 get_param) (
@@ -82,8 +87,10 @@ extern "C"
                     const axis2_char_t *param_name);
 
         /**
-         * @param desc pointer to desc
+         * Gets all parameters stored in description.
+         * @param desc pointer to description
          * @param env pointer to environment struct
+         * @return pointer to array list containing the list of parameters
          */
         axis2_array_list_t *(AXIS2_CALL *
                 get_all_params)(
@@ -91,9 +98,11 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param desc pointer to desc
+         * Checks if a named parameter is lockd.
+         * @param desc pointer to description
          * @param env pointer to environment struct
-         * @param param_name pointer to param name
+         * @param param_name parameter name string
+         * @return AXIS2_TRUE if parameter is locked, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 is_param_locked)(
@@ -101,21 +110,15 @@ extern "C"
                     const axis2_env_t *env,
                     const axis2_char_t *param_name);
 
-        /*axis2_status_t (AXIS2_CALL *
-        set_policy_container)(
-            axis2_desc_t *desc, 
-            const axis2_env_t *env,
-            axis2_policy_container_t *policy_container);
-
-        axis2_policy_container_t *(AXIS2_CALL *
-        get_policy_container)(
-            const axis2_desc_t *desc, 
-            const axis2_env_t *env);*/
-
         /**
-         * @param desc pointer to desc
+         * Adds child to the description. The type of children is based on the
+         * level of the description hierarcy. As an example, service has 
+         * children of type operation, service group has children of type 
+         * service
+         * @param desc pointer to description
          * @param env pointer to environment struct
-         * @param key pointer to key
+         * @param key key with chich the child is to be added
+         * @param child child to be added
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -126,8 +129,10 @@ extern "C"
                     const void *child);
 
         /**
-         * @param desc pointer to desc
+         * Gets all children. 
+         * @param desc pointer to description
          * @param env pointer to environment struct
+         * @return pointer to hash map containing children
          */
         axis2_hash_t *(AXIS2_CALL *
                 get_all_children)(
@@ -135,9 +140,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param desc pointer to desc
+         * Gets child with given key.
+         * @param desc pointer to description
          * @param env pointer to environment struct
-         * @param key pointer to key
+         * @param key key with which the child is stored
+         * @return pointer to child, returned as a void* value, need to cast to 
+         * correct type
          */
         void *(AXIS2_CALL *
                 get_child)(
@@ -146,9 +154,10 @@ extern "C"
                     const axis2_char_t *key);
 
         /**
-         * @param desc pointer to desc
+         * Removes the name child.
+         * @param desc pointer to description
          * @param env pointer to environment struct
-         * @param key pointer to key
+         * @param key key that represents the child to be removed
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -159,7 +168,7 @@ extern "C"
     };
 
     /**
-     * message struct
+     * description struct.
      */
     AXIS2_DECLARE_DATA struct axis2_desc
     {
@@ -169,67 +178,55 @@ extern "C"
     };
 
     /**
-     * Creates desc struct
+     * Creates a description struct instance.    
      * @param env pointer to environment struct
-     * @return pointer to newly created desc
+     * @return pointer to newly created description
      */
     AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
     axis2_desc_create (
         const axis2_env_t *env);
-
-/************************** Start of function macros **************************/
 
 /** Frees the desc.
     @sa axis2_desc_ops#free */
 #define AXIS2_DESC_FREE(desc, env) \
         ((desc)->ops->free (desc, env))
 
-/** Adds the param.
+/** Adds given parameter.
     @sa axis2_desc_ops#add_param*/
 #define AXIS2_DESC_ADD_PARAM(desc, env, param) \
       ((desc)->ops->add_param (desc, env, param))
 
-/** Gets the param.
+/** Gets named parameter.
     @sa axis2_desc_ops#get_param */
 #define AXIS2_DESC_GET_PARAM(desc, env, key) \
       ((desc)->ops->get_param (desc, env, key))
 
-/** Gets the all params.
+/** Gets the map of all parameters.
     @sa axis2_desc_ops#get_all_params */
 #define AXIS2_DESC_GET_ALL_PARAMS(desc, env) \
       ((desc)->ops->get_all_params (desc, env))
 
-/** Is param locked.
+/** Checks if named parameter is locked.
     @sa axis2_desc_ops#is_param_locked */
 #define AXIS2_DESC_IS_PARAM_LOCKED(desc, env, param_name) \
         ((desc)->ops->is_param_locked(desc, env, param_name))
 
-/** Set policy include.
-    @sa axis2_desc_ops#set_policy_include */
-#define AXIS2_DESC_SET_POLICY_INCLUDE(desc, env, policy_container) \
-    ((desc)->ops->set_policy_include(desc, env, policy_container))
-
-/** Get policy include.
-    @sa axis2_desc_ops#get_policy_include */
-#define AXIS2_DESC_GET_POLICY_INCLUDE(desc, env) \
-    ((desc)->ops->get_policy_container(desc, env))
-
-/** Adds the child.
+/** Adds child with given key.
     @sa axis2_desc_ops#add_child */
 #define AXIS2_DESC_ADD_CHILD(desc, env, key, child) \
     ((desc)->ops->add_child(desc, env, key, child))
 
-/** Gets the all children.
+/** Gets the map of all children.
     @sa axis2_desc_ops#get_all_children */
 #define AXIS2_DESC_GET_ALL_CHILDREN(desc, env) \
     ((desc)->ops->get_all_children(desc, env))
 
-/** Gets the child.
+/** Gets child with given key.
     @sa axis2_desc_ops#get_child */
 #define AXIS2_DESC_GET_CHILD(desc, env, key) \
     ((desc)->ops->get_child(desc, env, key))
 
-/** Removes the child.
+/** Removes child with given key.
     @sa axis2_desc_ops#remove_child */
 #define AXIS2_DESC_REMOVE_CHILD(desc, env, key) \
     ((desc)->ops->remove_child(desc, env, key))

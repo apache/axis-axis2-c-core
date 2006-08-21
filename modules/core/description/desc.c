@@ -28,10 +28,6 @@ typedef struct axis2_desc_impl
     /** parameter container */
     axis2_param_container_t *param_container;
     
-    /** policy container */
-    /* TODO: uncomment when policy is implemented 
-    axis2_policy_container_t *policy_container;*/
-
     /** children of this description */
     axis2_hash_t *children;
 }
@@ -39,8 +35,6 @@ axis2_desc_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(desc) ((axis2_desc_impl_t *)desc)
    
-/*************************** Function headers *********************************/
-
 axis2_status_t AXIS2_CALL 
 axis2_desc_free(
     axis2_desc_t *desc, 
@@ -69,18 +63,6 @@ axis2_desc_is_param_locked(
     const axis2_env_t *env,
     const axis2_char_t *param_name);
 
-/*axis2_status_t AXIS2_CALL 
-axis2_desc_set_policy_container(
-    axis2_desc_t *desc, 
-    const axis2_env_t *env,
-    axis2_policy_container_t *policy_container);
-
-axis2_policy_container_t *AXIS2_CALL 
-axis2_desc_get_policy_container(
-    const axis2_desc_t *desc, 
-    const axis2_env_t *env);
-*/
-
 axis2_status_t AXIS2_CALL 
 axis2_desc_add_child(
     const axis2_desc_t *desc, 
@@ -105,8 +87,6 @@ axis2_desc_remove_child(
     const axis2_env_t *env,
     const axis2_char_t *key);
 
-/************************* End of function headers ****************************/   
-
 AXIS2_EXTERN axis2_desc_t *AXIS2_CALL
 axis2_desc_create(
     const axis2_env_t *env)
@@ -125,7 +105,6 @@ axis2_desc_create(
    }
     
     desc_impl->param_container = NULL;
-    /*desc_impl->policy_container = NULL;*/
     desc_impl->children = NULL;
     desc_impl->desc.ops = NULL;
 
@@ -157,8 +136,6 @@ axis2_desc_create(
     desc_impl->desc.ops->get_param = axis2_desc_get_param;
     desc_impl->desc.ops->get_all_params = axis2_desc_get_all_params;
     desc_impl->desc.ops->is_param_locked = axis2_desc_is_param_locked;
-    /*desc_impl->desc.ops->set_policy_container = axis2_desc_set_policy_container;
-    desc_impl->desc.ops->get_policy_container = axis2_desc_get_policy_container;*/
     desc_impl->desc.ops->add_child = axis2_desc_add_child;
     desc_impl->desc.ops->get_all_children = axis2_desc_get_all_children;
     desc_impl->desc.ops->get_child = axis2_desc_get_child;
@@ -167,8 +144,6 @@ axis2_desc_create(
     
    return &(desc_impl->desc);
 }
-
-/*************************** Start of desc impls *************************/
 
 axis2_status_t AXIS2_CALL 
 axis2_desc_free (
@@ -181,7 +156,6 @@ axis2_desc_free (
 
     if(NULL != desc_impl->children)
     {
-        /* contents of the children map should be cleaned by the owner */
         axis2_hash_free(desc_impl->children, env);
         desc_impl->children = NULL;
     }
@@ -264,38 +238,6 @@ axis2_desc_is_param_locked(
 
     return (param_l != NULL && AXIS2_PARAM_IS_LOCKED(param_l, env));
 }
-
-/*axis2_status_t AXIS2_CALL 
-axis2_desc_set_policy_container(
-    axis2_desc_t *desc, 
-    const axis2_env_t *env,
-    axis2_policy_container_t *policy_container) 
-{
-    axis2_desc_impl_t *desc_impl = NULL;
-    
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);    
-    AXIS2_INTF_TO_IMPL(desc)->policy_container = policy_container;
-    
-    return AXIS2_SUCCESS;
-}
-
-axis2_policy_container_t *AXIS2_CALL 
-axis2_desc_get_policy_container(
-    const axis2_desc_t *desc, 
-    const axis2_env_t *env) 
-{
-    axis2_desc_impl_t *desc_impl = NULL;
-    
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);    
-    desc_impl = AXIS2_INTF_TO_IMPL(desc);
-
-    if(!(desc_impl->policy_container)) 
-    {
-        desc_impl->policy_container = axis2_policy_container_create(env);
-    }
-    return desc_impl->policy_container;
-}
-*/
 
 axis2_status_t AXIS2_CALL 
 axis2_desc_add_child(

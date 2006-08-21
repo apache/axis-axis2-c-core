@@ -40,20 +40,17 @@ extern "C"
 #endif
 
     /**
-     * To create a Axis Service for a given WSDL and the created client is most 
-     * suitable for client side invocation not for server side invocation, since 
-     * all the soap acction and wsa action is added to operations
+     * Creates service for a given WSDL. 
      * @param env pointer to environment struct
      * @param wsdl_url location of the WSDL
-     * @param wsdl_svc_qname name of the service to be invoke , if it is null 
-     *     then the first one will
-     *     be selected if there are more than one
-     * @param ep_name name of the endpoint , if there are more than one , 
-     *     if it is null then the
-     *     first one in the  iterator will be selected
-     * @param doc_base_uri doc base uri
-     * @param options Service client options, to set the target EPR
-     * @return axis2_svc ,      the created servie will be return
+     * @param wsdl_svc_qname QName of the service to be invoked, if it is NULL 
+     * then the first service in the WSDL will be selected by default if there
+     * are any services in the WSDL
+     * @param ep_name name of the endpoint, if it is NULL then the first one, 
+     * if any, in the WSDL would be selected
+     * @param doc_base_uri document base URI
+     * @param options service client options
+     * @return axis2_svc pointer to newly created service
      */
     AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
     axis2_client_utils_create_axis2_svc(
