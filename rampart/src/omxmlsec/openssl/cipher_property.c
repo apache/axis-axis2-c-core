@@ -28,6 +28,7 @@ typedef struct openssl_cipher_property_impl {
 
     EVP_CIPHER                  *cipher;
     axis2_char_t                *name;
+    axis2_char_t                *url;
     int                         key_size;
     int                         block_size;
     int                         iv_size;
@@ -50,6 +51,11 @@ openssl_cipher_property_get_cipher(
 
 axis2_char_t * AXIS2_CALL
 openssl_cipher_property_get_name(
+    const openssl_cipher_property_t *cprop,
+    const axis2_env_t *env);
+
+axis2_char_t * AXIS2_CALL
+openssl_cipher_property_get_url(
     const openssl_cipher_property_t *cprop,
     const axis2_env_t *env);
 
@@ -76,6 +82,12 @@ openssl_cipher_property_set_cipher(
 
 axis2_status_t AXIS2_CALL
 openssl_cipher_property_set_name(
+    const openssl_cipher_property_t *cprop,
+    const axis2_env_t *env,
+    axis2_char_t *name);
+
+axis2_status_t AXIS2_CALL
+openssl_cipher_property_set_url(
     const openssl_cipher_property_t *cprop,
     const axis2_env_t *env,
     axis2_char_t *name);
@@ -126,6 +138,19 @@ openssl_cipher_property_get_name(
 
     return cprop_impl->name;
 }
+
+axis2_char_t * AXIS2_CALL
+openssl_cipher_property_get_url(
+    const openssl_cipher_property_t *cprop,
+    const axis2_env_t *env)
+{
+    openssl_cipher_property_impl_t *cprop_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    cprop_impl = AXIS2_INTF_TO_IMPL(cprop);
+
+    return cprop_impl->url;
+}
+
 
 int AXIS2_CALL
 openssl_cipher_property_get_key_size(
@@ -199,6 +224,23 @@ openssl_cipher_property_set_name(
     return AXIS2_SUCCESS;
 }
 
+axis2_status_t AXIS2_CALL
+openssl_cipher_property_set_url(
+    const openssl_cipher_property_t *cprop,
+    const axis2_env_t *env,
+    axis2_char_t *url)
+{
+    openssl_cipher_property_impl_t *cprop_impl = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    cprop_impl = AXIS2_INTF_TO_IMPL(cprop);
+
+    if (cprop_impl->url){
+        AXIS2_FREE(env->allocator, cprop_impl->url);
+        cprop_impl->url = NULL;
+    }
+    cprop_impl->url = url;
+    return AXIS2_SUCCESS;
+}
 
 axis2_status_t AXIS2_CALL
 openssl_cipher_property_set_key_size(
@@ -252,11 +294,13 @@ openssl_cipher_property_init_ops(
 {
     cprop->ops->get_cipher =openssl_cipher_property_get_cipher ;
     cprop->ops->get_name = openssl_cipher_property_get_name;
+    cprop->ops->get_url = openssl_cipher_property_get_url;
     cprop->ops->get_key_size = openssl_cipher_property_get_key_size;
     cprop->ops->get_block_size = openssl_cipher_property_get_block_size;
     cprop->ops->get_iv_size = openssl_cipher_property_get_iv_size;
     cprop->ops->set_cipher = openssl_cipher_property_set_cipher;
     cprop->ops->set_name = openssl_cipher_property_set_name;
+    cprop->ops->set_url = openssl_cipher_property_set_url;
     cprop->ops->set_key_size = openssl_cipher_property_set_key_size;
     cprop->ops->set_block_size = openssl_cipher_property_set_block_size;
     cprop->ops->set_iv_size = openssl_cipher_property_set_iv_size;
@@ -281,6 +325,7 @@ openssl_cipher_property_create(const axis2_env_t *env)
 
     cprop_impl->cipher = NULL;
     cprop_impl->name = NULL;
+    cprop_impl->url = NULL;
     cprop_impl->key_size = -1;
     cprop_impl->block_size = -1;
     cprop_impl->iv_size = -1;
@@ -317,6 +362,11 @@ openssl_cipher_property_free(openssl_cipher_property_t * cprop, const axis2_env_
     if(cprop_impl->name){
         AXIS2_FREE(env->allocator, cprop_impl->name); 
         cprop_impl->name = NULL;
+    }
+   
+    if(cprop_impl->url){
+        AXIS2_FREE(env->allocator, cprop_impl->url); 
+        cprop_impl->url = NULL;
     }
 
     AXIS2_FREE(env->allocator,  cprop_impl);

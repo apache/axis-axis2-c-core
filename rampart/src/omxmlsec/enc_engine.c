@@ -204,7 +204,8 @@ oxs_enc_crypt(const axis2_env_t *env,
     axis2_char_t *encoded_str=NULL;
     axis2_char_t *in_data = NULL;
     int ret, enclen, encodedlen, decoded_len;
-    /*axis2_char_t *temp = NULL;*/
+    axis2_char_t *temp = NULL;
+    openssl_cipher_property_t *cprop = NULL;
 
     /*Initializations*/
     ret = AXIS2_FAILURE;
@@ -220,23 +221,23 @@ oxs_enc_crypt(const axis2_env_t *env,
          return AXIS2_FAILURE;
     }
 
-    /*TODO Get cipher property*/    
-    
+    /*Get cipher property*/    
+    cprop =  oxs_get_cipher_property_for_url(env, enc_ctx->encmtd_algorithm);    
 
     /*Set the IV*/   
     /*iv = OPENSSL_DEFAULT_IV16;*/ /*oxs_iv_generate_for_algo(env,  enc_ctx->encmtd_algorithm); */
     iv =(axis2_char_t*)oxs_iv_generate_for_algo(env,  enc_ctx->encmtd_algorithm); 
 
     /*Set the key*/
-    /* temp =  AXIS2_STRNDUP(OXS_KEY_GET_DATA(enc_ctx->key, env),  24, env);*/
-    bc_ctx->key = AXIS2_STRDUP(OXS_KEY_GET_DATA(enc_ctx->key, env),  env);
+    temp =  AXIS2_STRNDUP(OXS_KEY_GET_DATA(enc_ctx->key, env),  OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env), env);
+    bc_ctx->key = AXIS2_STRNDUP(OXS_KEY_GET_DATA(enc_ctx->key, env),OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env),  env);
     bc_ctx->key_initialized = 1;
 
     /*Set the IV*/
-    bc_ctx->iv =  AXIS2_STRDUP(iv, env);
+    bc_ctx->iv = AXIS2_STRNDUP(iv, OPENSSL_CIPHER_PROPERTY_GET_IV_SIZE(cprop, env), env);
 
-    /*TODO: Get the cipher by giving the algoritm attribute */
-    cipher_name = oxs_get_cipher(env, enc_ctx->encmtd_algorithm);
+    /*TODO: Get the cipher name */
+    cipher_name = (axis2_char_t*)OPENSSL_CIPHER_PROPERTY_GET_NAME(cprop, env);
     if(!cipher_name){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "oxs_get_cipher failed");
@@ -262,12 +263,6 @@ oxs_enc_crypt(const axis2_env_t *env,
     }else{
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "Invalid operation type %d", enc_ctx->operation);
-        return AXIS2_FAILURE;
-    }
-
-    if(ret < 0){
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "openssl_evp_block_cipher_ctx_init failed");
         return AXIS2_FAILURE;
     }
 
@@ -335,6 +330,7 @@ oxs_enc_crypt(const axis2_env_t *env,
         return AXIS2_FAILURE;
 
     }
+
     return AXIS2_SUCCESS;
 }
 

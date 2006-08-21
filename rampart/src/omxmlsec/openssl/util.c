@@ -25,30 +25,42 @@
 #include <openssl/rand.h>
 
 
-AXIS2_EXTERN openssl_cipher_property_t *AXIS2_CALL
-openssl_get_cipher_property(const axis2_env_t *env, axis2_char_t *cipher_name)
+AXIS2_EXTERN axis2_status_t  AXIS2_CALL
+openssl_populate_cipher_property(const axis2_env_t *env, openssl_cipher_property_t *cprop)
 {
     EVP_CIPHER* cipher;
     EVP_CIPHER_CTX ctx;
-    openssl_cipher_property_t * cprop = NULL;
+    axis2_char_t* cipher_name = NULL;   
+
+    if(!cprop){
+         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+            "openssl_cipher_property is NULL");
+
+        return AXIS2_FAILURE;
     
-   
+    } 
+    
+    cipher_name = OPENSSL_CIPHER_PROPERTY_GET_NAME(cprop, env);
+    if(!cipher_name){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+            "openssl_cipher_property name is NULL");
+
+        return AXIS2_FAILURE;
+
+    }
+
     cipher = (EVP_CIPHER*)openssl_get_evp_cipher_by_name(env, cipher_name); 
     if(!cipher){
-         oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
+         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
             "openssl_get_evp_cipher_by_name failed");
 
-        return NULL;
+        return AXIS2_FAILURE;
     }
     /*Initialize a cipher ctx*/
     EVP_CIPHER_CTX_init(&ctx);
     EVP_CipherInit_ex(&ctx, cipher, NULL, NULL, NULL, -1);
     
-    /*Create a cipher property and populate it*/
-    cprop = openssl_cipher_property_create(env);
-    
     OPENSSL_CIPHER_PROPERTY_SET_CIPHER(cprop, env, cipher);
-    OPENSSL_CIPHER_PROPERTY_SET_NAME(cprop, env, cipher_name);
     OPENSSL_CIPHER_PROPERTY_SET_KEY_SIZE(cprop, env, EVP_CIPHER_CTX_key_length(&ctx));
     OPENSSL_CIPHER_PROPERTY_SET_BLOCK_SIZE(cprop, env, EVP_CIPHER_CTX_block_size(&ctx));
     OPENSSL_CIPHER_PROPERTY_SET_IV_SIZE(cprop, env, EVP_CIPHER_CTX_iv_length(&ctx));
@@ -56,7 +68,7 @@ openssl_get_cipher_property(const axis2_env_t *env, axis2_char_t *cipher_name)
     /*free ctx*/
     EVP_CIPHER_CTX_cleanup(&ctx);
 
-    return cprop;
+    return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN EVP_CIPHER*  AXIS2_CALL

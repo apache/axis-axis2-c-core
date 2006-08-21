@@ -62,7 +62,8 @@ rampart_get_password( const axis2_env_t *env,
 {
     axis2_char_t *password, *username, *pw_callback_module = NULL;
 
-    /*Check if password is in the context*/
+    /*Check if password is in the context.
+     i.e.In any context in the cotext hierarchy starting from msg, op, svc, etc.*/
     password = rampart_get_value(env, ctx,  RAMPART_DYN_PASSWORD);
     if(password)
     {
@@ -89,7 +90,7 @@ rampart_get_value( const axis2_env_t *env,
    axis2_char_t* str_property = NULL;
    
     /*Get value from the dynamic settings... if not get it from the outflow security parameter*/
-    
+     
     property = AXIS2_CTX_GET_PROPERTY (ctx, env, key, AXIS2_FALSE);
     if(property)
     {

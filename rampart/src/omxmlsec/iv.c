@@ -30,16 +30,7 @@ oxs_iv_generate_for_algo(const axis2_env_t *env,
     axis2_char_t* iv = NULL;
     openssl_cipher_property_t *cprop = NULL;
     int size;
-    axis2_char_t *algo_name = NULL; /*This is not the url name*/
-
-    /*Check algo and then set the key data size))*/
-    algo_name = oxs_get_cipher(env, key_algo);
-    if(!algo_name){
-        oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
-            "oxs_get_cipher failed");
-        return NULL;
-    }
-    cprop = (openssl_cipher_property_t *)openssl_get_cipher_property(env, algo_name);
+    cprop =  oxs_get_cipher_property_for_url(env, key_algo);
     if(!cprop){
         oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
             "openssl_get_cipher_property failed");

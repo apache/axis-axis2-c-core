@@ -68,36 +68,8 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
         } 
     }    
     printf("\nCreating cipher ctx for %s", cipher_name);
-    /*Set the cipher. TODO Support more ciphers later*/
-    /*if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_des_ede3_cbc ))
-    {
-        bc_ctx->cipher = EVP_des_ede3_cbc();         
-    }else if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc ))
-    {
-        bc_ctx->cipher = EVP_aes_128_cbc(); 
-    }else if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc ))
-    {
-        bc_ctx->cipher = EVP_aes_192_cbc();
-    }else if(AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc ))
-    {
-        bc_ctx->cipher = EVP_aes_256_cbc();
-    }else{
-        return (-1);
-    }
-    */
 
     bc_ctx->cipher =  (EVP_CIPHER*)openssl_get_evp_cipher_by_name(env, (axis2_char_t*)cipher_name);
-
-    /*Sets the IV if not set. Well..How we convey this IV to decrypt*/
-    /*if(!(bc_ctx->iv)){
-        iv_len = EVP_CIPHER_iv_length(bc_ctx->cipher);
-        ret = RAND_bytes(bc_ctx->iv, iv_len);
-        if(ret != 1) {
-                return(-1);
-        }
-    }else{
-        iv_len =  AXIS2_STRLEN((axis2_char_t*)bc_ctx->iv);
-    }*/
 
     /*Key supposed to be set before this */
     if(!bc_ctx->key){
