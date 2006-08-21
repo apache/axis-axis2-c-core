@@ -98,7 +98,7 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Checks if a named parameter is lockd.
+         * Checks if a named parameter is locked.
          * @param desc pointer to description
          * @param env pointer to environment struct
          * @param param_name parameter name string
@@ -112,12 +112,12 @@ extern "C"
 
         /**
          * Adds child to the description. The type of children is based on the
-         * level of the description hierarcy. As an example, service has 
+         * level of the description hierarchy. As an example, service has 
          * children of type operation, service group has children of type 
          * service
          * @param desc pointer to description
          * @param env pointer to environment struct
-         * @param key key with chich the child is to be added
+         * @param key key with which the child is to be added
          * @param child child to be added
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
