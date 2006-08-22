@@ -221,7 +221,16 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                         }else{
                             /*TODO return a fault*/
                             rampart_print_info(env,"Timestamp is not valid");
+                            axis2_array_list_t *sub_codes = NULL;
+                            sub_codes = axis2_array_list_create(env, 1);
+                            if (sub_codes)
+                            {
+                                AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
+                            }
+
+                            rampart_create_fault_envelope(env, "wsse:Timestamptoken", "Timestamp is not valid",sub_codes, msg_ctx);
                             return AXIS2_FAILURE;
+
                         }   
                 }else{
                     rampart_print_info(env," Rampart validates UsernameTokensOnly");

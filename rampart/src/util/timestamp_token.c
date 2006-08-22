@@ -96,7 +96,7 @@ rampart_validate_timestamp(const axis2_env_t *env,
     axis2_qname_t *created_qname = NULL, *expires_qname = NULL;
     axiom_element_t *created_ele = NULL, *expires_ele = NULL, *ts_ele= NULL;
     axiom_node_t *created_node = NULL, *expires_node = NULL;
-    axis2_char_t *created_val = NULL, *expires_val = NULL;    
+    axis2_char_t *created_val = NULL, *expires_val = NULL, *current_val = NULL;    
     
     ts_ele = AXIOM_NODE_GET_DATA_ELEMENT(ts_node, env);
     
@@ -137,9 +137,18 @@ rampart_validate_timestamp(const axis2_env_t *env,
     created_val = AXIOM_ELEMENT_GET_TEXT(created_ele, env, created_node);
     expires_val = AXIOM_ELEMENT_GET_TEXT(expires_ele, env, expires_node);
     
-    /*TODO check weather time has expired or not*/
+    /*Check weather created is less than current time or not*/
+    current_val = rampart_generate_time(env, 0);  
+    validity = rampart_compare_date_time(env, created_val, current_val); 
+    if(validity == AXIS2_FAILURE){
+        return AXIS2_FAILURE;
+    } 
+    /*Check weather time has expired or not*/
+    validity = rampart_compare_date_time(env, current_val, expires_val); 
+    if(validity == AXIS2_FAILURE){
+        return AXIS2_FAILURE;
+    } 
     
-    validity = AXIS2_SUCCESS;
     /*free memory for qnames*/
     return validity;
 }

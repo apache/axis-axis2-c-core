@@ -53,7 +53,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_time(const axis2_env_t *e
    char buffer[SIZE];
    time_t curtime;
    struct tm *loctime;
-   axis2_char_t* created_str=NULL;
+   axis2_char_t *created_str = NULL;
  
    curtime = time (NULL) + ttl;
    loctime = localtime (&curtime);
@@ -63,14 +63,88 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_time(const axis2_env_t *e
    return created_str;
 }
 
-AXIS2_EXTERN int AXIS2_CALL 
-rampart_format_date_zulu_to_mili(const axis2_env_t *env, axis2_char_t *str)
+/**
+    We expect dt1_str < dt2_str/ Otherwise FAILURE
+*/
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_char_t *dt2_str)
 {
-    /*TODO Get the time in mili sec from the string*/
+    axis2_status_t status = AXIS2_FAILURE;
+    axis2_date_time_t *dt1 = NULL;
+    axis2_date_time_t *dt2 = NULL;
+    int yyyy1, mm1, dd1, hh1, mi1, ss1;
+    int yyyy2, mm2, dd2, hh2, mi2, ss2;
 
-   
- 
-    return 1000000;/*TODO*/
+    
+    dt1 = axis2_date_time_create(env);
+    dt2 = axis2_date_time_create(env);
+    
+    status = AXIS2_DATE_TIME_DESERIALIZE_DATE_TIME(dt1, env, dt1_str);
+    if(status == AXIS2_FAILURE){
+        return AXIS2_FAILURE;
+    }
+
+    /*printf("\n DT1 = %s",AXIS2_DATE_TIME_SERIALIZE_DATE_TIME(dt1, env)); */
+    yyyy1=AXIS2_DATE_TIME_GET_YEAR( dt1, env);
+    mm1 = AXIS2_DATE_TIME_GET_MONTH( dt1, env);
+    dd1 = AXIS2_DATE_TIME_GET_DATE( dt1, env);
+    hh1 = AXIS2_DATE_TIME_GET_HOUR( dt1, env);
+    mi1 = AXIS2_DATE_TIME_GET_MINUTE( dt1, env);
+    ss1 = AXIS2_DATE_TIME_GET_SECOND( dt1, env);
+
+    status = AXIS2_DATE_TIME_DESERIALIZE_DATE_TIME(dt2, env, dt2_str);
+    if(status == AXIS2_FAILURE){
+        return AXIS2_FAILURE;
+    }
+  
+    /*printf("\n DT2 = %s",AXIS2_DATE_TIME_SERIALIZE_DATE_TIME(dt2, env)); */
+    
+    yyyy2=AXIS2_DATE_TIME_GET_YEAR( dt2, env);
+    mm2 = AXIS2_DATE_TIME_GET_MONTH( dt2, env);
+    dd2 = AXIS2_DATE_TIME_GET_DATE( dt2, env);
+    hh2 = AXIS2_DATE_TIME_GET_HOUR( dt2, env);
+    mi2 = AXIS2_DATE_TIME_GET_MINUTE( dt2, env);
+    ss2 = AXIS2_DATE_TIME_GET_SECOND( dt2, env);
+    
+    if(yyyy1 > yyyy2){
+        return AXIS2_FAILURE;
+    }
+    if(mm1 > mm2){
+        return AXIS2_FAILURE;
+    }
+    if(dd1 > dd2){
+        return AXIS2_FAILURE;
+    }
+    if(hh1 > hh2){
+        return AXIS2_FAILURE;
+    }
+    if(mi1 > mi2){
+        return AXIS2_FAILURE;
+    }
+    if(ss1 > ss2){
+        return AXIS2_FAILURE;
+    }
+   /* 
+    if(AXIS2_DATE_TIME_GET_YEAR( dt1, env) > AXIS2_DATE_TIME_GET_YEAR( dt2, env)){
+        return AXIS2_FAILURE;
+    }
+    if(AXIS2_DATE_TIME_GET_MONTH( dt1, env) > AXIS2_DATE_TIME_GET_MONTH( dt2, env)){
+        return AXIS2_FAILURE;
+    }
+    if(AXIS2_DATE_TIME_GET_DATE( dt1, env) > AXIS2_DATE_TIME_GET_DATE( dt2, env)){
+        return AXIS2_FAILURE;
+    }
+    if(AXIS2_DATE_TIME_GET_HOUR( dt1, env) > AXIS2_DATE_TIME_GET_HOUR( dt2, env)){
+        return AXIS2_FAILURE;
+    }
+    if(AXIS2_DATE_TIME_GET_MINUTE( dt1, env) > AXIS2_DATE_TIME_GET_MINUTE( dt2, env)){
+        return AXIS2_FAILURE;
+    }
+    if(AXIS2_DATE_TIME_GET_SECOND( dt1, env) > AXIS2_DATE_TIME_GET_SECOND( dt2, env)){
+        return AXIS2_FAILURE;
+    }
+    */
+    return AXIS2_SUCCESS; 
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
