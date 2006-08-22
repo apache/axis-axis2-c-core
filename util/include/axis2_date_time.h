@@ -135,6 +135,67 @@ AXIS2_DECLARE_DATA struct axis2_date_time_ops
     char* (AXIS2_CALL *
     serialize_date_time) (axis2_date_time_t *date_time,
                         const axis2_env_t *env );
+   
+   /**
+    * retrieve the year of the date time
+    * @param date_time represet the type object
+    * @param env pointer to environment struct. MUST NOT be NULL
+    * @return year as an integer 
+    */
+    int (AXIS2_CALL *
+    get_year)(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+    
+   /**
+    * retrieve the month of the date time
+    * @param date_time represet the type object
+    * @param env pointer to environment struct. MUST NOT be NULL
+    * @return month as an integer 
+    */
+    int (AXIS2_CALL *
+    get_month)(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+    
+   /**
+    * retrieve the date of the date time
+    * @param date_time represet the type object
+    * @param env pointer to environment struct. MUST NOT be NULL
+    * @return date as an integer 
+    */
+    int (AXIS2_CALL *
+    get_date)(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+    
+   /**
+    * retrieve the hour of the date time
+    * @param date_time represet the type object
+    * @param env pointer to environment struct. MUST NOT be NULL
+    * @return hour as an integer 
+    */
+    int (AXIS2_CALL *
+    get_hour)(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+    
+   /**
+    * retrieve the minute of the date time
+    * @param date_time represet the type object
+    * @param env pointer to environment struct. MUST NOT be NULL
+    * @return minute as an integer 
+    */
+    int (AXIS2_CALL *
+    get_minute)(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+    
+   /**
+    * retrieve the second of the date time
+    * @param date_time represet the type object
+    * @param env pointer to environment struct. MUST NOT be NULL
+    * @return second as an integer 
+    */
+    int (AXIS2_CALL *
+    get_second)(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+    
     
 } ;
 
@@ -178,6 +239,25 @@ axis2_date_time_create(const axis2_env_t *env );
 
 #define AXIS2_DATE_TIME_SERIALIZE_DATE_TIME(date_time, env) \
         ((date_time)->ops->serialize_date_time (date_time, env ) )
+
+#define AXIS2_DATE_TIME_GET_YEAR(date_time, env) \
+        ((date_time)->ops->get_year(date_time, env ) )
+
+#define AXIS2_DATE_TIME_GET_MONTH(date_time, env) \
+        ((date_time)->ops->get_month(date_time, env ) )
+
+#define AXIS2_DATE_TIME_GET_DATE(date_time, env) \
+        ((date_time)->ops->get_date(date_time, env ) )
+
+#define AXIS2_DATE_TIME_GET_HOUR(date_time, env) \
+        ((date_time)->ops->get_hour(date_time, env ) )
+
+#define AXIS2_DATE_TIME_GET_MINUTE(date_time, env) \
+        ((date_time)->ops->get_minute(date_time, env ) )
+
+#define AXIS2_DATE_TIME_GET_SECOND(date_time, env) \
+        ((date_time)->ops->get_second(date_time, env ) )
+
 
 /** @} */
 

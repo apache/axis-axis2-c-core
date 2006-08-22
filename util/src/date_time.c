@@ -73,7 +73,31 @@ axis2_date_time_serialize_date (axis2_date_time_t *date_time,
 char* AXIS2_CALL
 axis2_date_time_serialize_date_time (axis2_date_time_t *date_time,
                         const axis2_env_t *env );
-    
+
+int AXIS2_CALL
+axis2_date_time_get_year(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+
+int AXIS2_CALL
+axis2_date_time_get_month(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+
+int AXIS2_CALL
+axis2_date_time_get_date(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+
+int AXIS2_CALL
+axis2_date_time_get_hour(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+
+int AXIS2_CALL
+axis2_date_time_get_minute(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+
+int AXIS2_CALL
+axis2_date_time_get_second(axis2_date_time_t *date_time,
+                        const axis2_env_t *env );
+
 /************************** End of function prototypes ************************/
 
 AXIS2_EXTERN axis2_date_time_t * AXIS2_CALL 
@@ -113,6 +137,12 @@ axis2_date_time_create (const axis2_env_t *env)
     date_time_impl->date_time.ops->serialize_time = axis2_date_time_serialize_time;
     date_time_impl->date_time.ops->serialize_date = axis2_date_time_serialize_date;
     date_time_impl->date_time.ops->serialize_date_time = axis2_date_time_serialize_date_time;
+    date_time_impl->date_time.ops->get_year = axis2_date_time_get_year;
+    date_time_impl->date_time.ops->get_month = axis2_date_time_get_month;
+    date_time_impl->date_time.ops->get_date = axis2_date_time_get_date;
+    date_time_impl->date_time.ops->get_hour = axis2_date_time_get_hour;
+    date_time_impl->date_time.ops->get_minute = axis2_date_time_get_minute;
+    date_time_impl->date_time.ops->get_second = axis2_date_time_get_second;
 
     return &(date_time_impl->date_time);
 }
@@ -288,5 +318,89 @@ axis2_date_time_serialize_date_time (axis2_date_time_t *date_time,
             time -> tm_mon, time-> tm_mday, time-> tm_hour, time-> tm_min,
             time-> tm_sec );
     return date_time_str;
+}
+
+int AXIS2_CALL 
+axis2_date_time_get_year(axis2_date_time_t *date_time,
+                        const axis2_env_t *env )
+{
+    axis2_date_time_impl_t *date_time_impl = NULL;
+    struct tm* time = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
+    time = date_time_impl->utcTime;
+
+    return (time-> tm_year+1900);
+}
+
+int AXIS2_CALL 
+axis2_date_time_get_month(axis2_date_time_t *date_time,
+                        const axis2_env_t *env )
+{
+    axis2_date_time_impl_t *date_time_impl = NULL;
+    struct tm* time = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
+    time = date_time_impl->utcTime;
+
+    return (time-> tm_mon);
+}
+
+int AXIS2_CALL 
+axis2_date_time_get_date(axis2_date_time_t *date_time,
+                        const axis2_env_t *env )
+{
+    axis2_date_time_impl_t *date_time_impl = NULL;
+    struct tm* time = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
+    time = date_time_impl->utcTime;
+
+    return (time-> tm_mday);
+}
+
+int AXIS2_CALL 
+axis2_date_time_get_hour(axis2_date_time_t *date_time,
+                        const axis2_env_t *env )
+{
+    axis2_date_time_impl_t *date_time_impl = NULL;
+    struct tm* time = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
+    time = date_time_impl->utcTime;
+
+    return (time-> tm_hour);
+}
+
+int AXIS2_CALL 
+axis2_date_time_get_minute(axis2_date_time_t *date_time,
+                        const axis2_env_t *env )
+{
+    axis2_date_time_impl_t *date_time_impl = NULL;
+    struct tm* time = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
+    time = date_time_impl->utcTime;
+
+    return (time-> tm_min);
+}
+
+int AXIS2_CALL 
+axis2_date_time_get_second(axis2_date_time_t *date_time,
+                        const axis2_env_t *env )
+{
+    axis2_date_time_impl_t *date_time_impl = NULL;
+    struct tm* time = NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
+    time = date_time_impl->utcTime;
+
+    return (time-> tm_sec);
 }
 
