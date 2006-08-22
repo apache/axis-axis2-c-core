@@ -22,6 +22,12 @@
  * @brief Axis2 core addressing interface
  */
 
+/**
+ * @defgroup axis2_relates_to relates to
+ * @ingroup axis2_addr
+ * @{
+ */
+
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_const.h>
@@ -31,106 +37,114 @@ extern "C"
 {
 #endif
 
-    struct axis2_relates_to;
-    struct axis2_relates_to_ops;
-    
-/**
- * @defgroup axis2_relates_to relates to
- * @ingroup axis2_addr
- * @{
- */
+    typedef struct axis2_relates_to axis2_relates_to_t;
+    typedef struct axis2_relates_to_ops axis2_relates_to_ops_t;
 
-/**
- *   \brief Dispatcher ops struct
- */
- AXIS2_DECLARE_DATA typedef struct axis2_relates_to_ops
-    { 
+
+    /**
+     * Dispatcher ops struct
+     */
+    struct axis2_relates_to_ops
+    {
         /**
-         * Method get_value
-         *
-         * @return
+         * @param relates_to relates to
+         * @param env pointer to environment struct
          */
-        axis2_char_t* (AXIS2_CALL *
-      get_value)(struct axis2_relates_to *relates_to, 
-               const axis2_env_t *env);
+        axis2_char_t *(AXIS2_CALL *
+                get_value)(
+                    const axis2_relates_to_t *relates_to,
+                    const axis2_env_t *env);
 
         /**
-         * Method set_value
-         *
-         * @param value
+         * @param relates_to relates to
+         * @param env pointer to environment struct
+         * @param value pointer to value
          */
         axis2_status_t (AXIS2_CALL *
-      set_value)(struct axis2_relates_to *relates_to, 
-                const axis2_env_t *env, 
-                   axis2_char_t * value);
+                set_value)(
+                    struct axis2_relates_to *relates_to,
+                    const axis2_env_t *env,
+                    axis2_char_t *value);
 
         /**
-         * Method get_relationship_type
-         *
-         * @return
+         * @param relates_to relates to
+         * @param env pointer to environment struct
          */
-        axis2_char_t* (AXIS2_CALL *
-      get_relationship_type)(struct axis2_relates_to *relates_to, 
-                            const axis2_env_t *env);
+        axis2_char_t *(AXIS2_CALL *
+                get_relationship_type)(
+                    const axis2_relates_to_t *relates_to,
+                    const axis2_env_t *env);
 
         /**
-         * Method set_relationship_type
-         *
-         * @param relationship_type
+         * @param relates_to relates to
+         * @param env pointer to environment struct
+         * @param relationship_type pointer to relationship type
          */
         axis2_status_t (AXIS2_CALL *
-      set_relationship_type)(struct axis2_relates_to *relates_to, 
-                            const axis2_env_t *env, 
-                               axis2_char_t *relationship_type);
-        
-       /**
-        * frees relates_to struct
-        */
-        
+                set_relationship_type)(
+                    struct axis2_relates_to *relates_to,
+                    const axis2_env_t *env,
+                    axis2_char_t *relationship_type);
+
+        /**
+         * @param relates_to relates to
+         * @param env pointer to environment struct
+         */
         axis2_status_t (AXIS2_CALL *
-      free) (struct axis2_relates_to *relates_to, 
-               const axis2_env_t *env);
-        
-    } axis2_relates_to_ops_t;
-   
-   /** 
-    * \brief Dispatcher struct
-    */
-    typedef struct axis2_relates_to
+                free)(
+                    struct axis2_relates_to *relates_to,
+                    const axis2_env_t *env);
+    };
+
+    /**
+     * Dispatcher struct
+     */
+    struct axis2_relates_to
     {
         /** Dispatcher related ops */
         axis2_relates_to_ops_t *ops;
-    } axis2_relates_to_t;
+    };
 
 
-/**
- * creates relates_to struct
- *
- * @param value
- * @param relationship_type
- */
-AXIS2_EXTERN axis2_relates_to_t* AXIS2_CALL
-axis2_relates_to_create(const axis2_env_t *env, 
-                  const axis2_char_t *value, 
-                  const axis2_char_t *relationship_type);
-    
+    /**
+     * creates relates_to struct
+     * @param env pointer to environment struct
+     * @param value pointer to value
+     * @param relationship_type pointer to relationship type
+     */
+    AXIS2_EXTERN axis2_relates_to_t *AXIS2_CALL
+    axis2_relates_to_create(
+        const axis2_env_t *env,
+        const axis2_char_t *value,
+        const axis2_char_t *relationship_type);
+
+/** Get value.
+    @sa axis2_relates_to_ops#get_value */
 #define AXIS2_RELATES_TO_GET_VALUE(relates_to, env) \
       ((relates_to)->ops->get_value(relates_to, env))
-   
+
+/** Set value.
+    @sa axis2_relates_to_ops#set_value */
 #define AXIS2_RELATES_TO_SET_VALUE(relates_to, env, vlaue) \
       ((relates_to)->ops->set_value(relates_to, env, vlaue))
-   
+
+/** Gets the relationship type.
+    @sa axis2_relates_to_ops#get_relationship */
 #define AXIS2_RELATES_TO_GET_RELATIONSHIP_TYPE(relates_to, env) \
       ((relates_to)->ops->get_relationship_type(relates_to, env))
-      
+
+/** Sets the relationship type.
+    @sa axis2_relates_to_ops#set_relationship */
 #define AXIS2_RELATES_TO_SET_RELATIONSHIP_TYPE(relates_to, env, relationship_type) \
       ((relates_to)->ops->set_relationship_type(relates_to, env, relationship_type))
-      
+
+/** Free.
+    @sa axis2_relates_to_ops#free */
 #define AXIS2_RELATES_TO_FREE(relates_to, env) \
       ((relates_to)->ops->free(relates_to, env))
-    
+
 /** @} */
-    
+
 #ifdef __cplusplus
 }
 #endif
