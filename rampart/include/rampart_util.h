@@ -17,6 +17,7 @@
 
 #include <axis2_utils_defines.h>
 #include <axis2_defines.h>
+#include <axis2_date_time.h>
 #include <axis2_env.h>
 
 /**
@@ -52,9 +53,9 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL 
 rampart_generate_time(const axis2_env_t *env, int ttl);
 
-AXIS2_EXTERN int AXIS2_CALL 
-rampart_format_date_zulu_to_mili(const axis2_env_t *env, axis2_char_t *str);
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1, axis2_char_t *dt2);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
 rampart_print_info(const axis2_env_t *env, axis2_char_t* info);
