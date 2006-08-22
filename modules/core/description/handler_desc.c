@@ -21,18 +21,18 @@
 
 typedef struct axis2_handler_desc_impl
 {
-   /** handler description */
-   axis2_handler_desc_t handler_desc;
+    /** handler description */
+    axis2_handler_desc_t handler_desc;
     
     /** name */
     axis2_qname_t *qname;
     /** phase rules */
     axis2_phase_rule_t *rules;
-    /** handler repsesented by meta information*/
+    /** handler represented by meta information*/
     axis2_handler_t *handler;
     /** class qname */
     axis2_char_t *class_name;
-   /** parent param container */
+    /** parent param container */
     axis2_param_container_t *parent;
     
 }
@@ -42,16 +42,16 @@ axis2_handler_desc_impl_t;
 #define AXIS2_INTF_TO_IMPL(handler_desc) \
         ((axis2_handler_desc_impl_t *)handler_desc)
 
-axis2_qname_t *AXIS2_CALL 
+const axis2_qname_t *AXIS2_CALL 
 axis2_handler_desc_get_qname(
     const axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_set_qname(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
-    axis2_qname_t *qname);
+    const axis2_qname_t *qname);
 
 axis2_phase_rule_t *AXIS2_CALL 
 axis2_handler_desc_get_rules(
@@ -60,7 +60,7 @@ axis2_handler_desc_get_rules(
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_set_rules(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
     axis2_phase_rule_t *phase_rule);
 
@@ -72,20 +72,20 @@ axis2_handler_desc_get_param(
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_add_param(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
     axis2_param_t *param);
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_handler_desc_get_params(
+axis2_handler_desc_get_all_params(
     const axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL 
 axis2_handler_desc_is_param_locked(
-    struct axis2_handler_desc *handler_desc, 
+    const axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
-    axis2_char_t *param_name);
+    const axis2_char_t *param_name);
 
 axis2_handler_t *AXIS2_CALL 
 axis2_handler_desc_get_handler(
@@ -94,20 +94,20 @@ axis2_handler_desc_get_handler(
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_set_handler(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
     axis2_handler_t *handler);
 
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_handler_desc_get_class_name(
     const axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_set_class_name(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
-    axis2_char_t *class_name);
+    const axis2_char_t *class_name);
 
 axis2_param_container_t *AXIS2_CALL 
 axis2_handler_desc_get_parent(
@@ -116,19 +116,19 @@ axis2_handler_desc_get_parent(
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_set_parent(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env,
     axis2_param_container_t *parent);
                                             
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_free(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_handler_desc_t *AXIS2_CALL
 axis2_handler_desc_create_with_qname(
     const axis2_env_t *env, 
-    axis2_qname_t *qname)
+    const axis2_qname_t *qname)
 {
     axis2_handler_desc_impl_t *handler_desc_impl = NULL;
     
@@ -189,7 +189,7 @@ axis2_handler_desc_create_with_qname(
     handler_desc_impl->handler_desc.ops->set_rules = axis2_handler_desc_set_rules;
     handler_desc_impl->handler_desc.ops->get_param = axis2_handler_desc_get_param;
     handler_desc_impl->handler_desc.ops->add_param = axis2_handler_desc_add_param;
-    handler_desc_impl->handler_desc.ops->get_params = axis2_handler_desc_get_params;
+    handler_desc_impl->handler_desc.ops->get_all_params = axis2_handler_desc_get_all_params;
     handler_desc_impl->handler_desc.ops->is_param_locked = axis2_handler_desc_is_param_locked;
     handler_desc_impl->handler_desc.ops->get_handler = axis2_handler_desc_get_handler;
     handler_desc_impl->handler_desc.ops->set_handler = axis2_handler_desc_set_handler;
@@ -202,7 +202,7 @@ axis2_handler_desc_create_with_qname(
     return &(handler_desc_impl->handler_desc);
 }
 
-axis2_qname_t *AXIS2_CALL 
+const axis2_qname_t *AXIS2_CALL 
 axis2_handler_desc_get_qname(
     const axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env)
@@ -213,11 +213,10 @@ axis2_handler_desc_get_qname(
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_set_qname(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
-    axis2_qname_t *qname)
+    const axis2_qname_t *qname)
 {
-    /**TODO: need to have the qname copy constructor here */
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(handler_desc)->qname = AXIS2_QNAME_CLONE(qname, env);
     return AXIS2_SUCCESS;
@@ -235,7 +234,7 @@ axis2_handler_desc_get_rules(
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_set_rules(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
     axis2_phase_rule_t *phase_rule)
 {
@@ -278,7 +277,7 @@ axis2_handler_desc_get_param(
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_add_param(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
     axis2_param_t *param)
 {
@@ -288,9 +287,11 @@ axis2_handler_desc_add_param(
     
     handler_desc_impl = AXIS2_INTF_TO_IMPL(handler_desc);
     
-    if (AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc_impl->parent, env, AXIS2_PARAM_GET_NAME(param, env)) )
+    if (AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc_impl->parent, env, 
+        AXIS2_PARAM_GET_NAME(param, env)) )
     {
-        AXIS2_ERROR_SET(env->error,AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE , AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error,AXIS2_ERROR_PARAMETER_LOCKED_CANNOT_OVERRIDE, 
+            AXIS2_FAILURE);
         return AXIS2_FAILURE;        
     }
     
@@ -298,7 +299,7 @@ axis2_handler_desc_add_param(
 }
 
 axis2_array_list_t *AXIS2_CALL 
-axis2_handler_desc_get_params(
+axis2_handler_desc_get_all_params(
     const axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env)
 {
@@ -313,9 +314,9 @@ axis2_handler_desc_get_params(
 
 axis2_bool_t AXIS2_CALL 
 axis2_handler_desc_is_param_locked(
-    struct axis2_handler_desc *handler_desc, 
+    const axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
-    axis2_char_t *param_name)
+    const axis2_char_t *param_name)
 {
     axis2_handler_desc_impl_t *handler_desc_impl = NULL;
     
@@ -324,10 +325,12 @@ axis2_handler_desc_is_param_locked(
     handler_desc_impl = AXIS2_INTF_TO_IMPL(handler_desc);
     
     /* see if it is locked in parent */
-    if( AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc_impl->parent, env, param_name) )
+    if( AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc_impl->parent, env, 
+        param_name))
         return AXIS2_TRUE;
     
-    return AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc->param_container, env, param_name);    
+    return AXIS2_PARAM_CONTAINER_IS_PARAM_LOCKED(handler_desc->param_container, 
+        env, param_name);    
 }
 
 axis2_handler_t *AXIS2_CALL 
@@ -341,12 +344,12 @@ axis2_handler_desc_get_handler(
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_set_handler(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
     axis2_handler_t *handler)
 {
-    /* handler dec is the place wehre the handler really lives. Hence this is a deep copy and 
-    should be freed by the free mechanism. There is a coupling here in trems of freeing */
+    /* handler description is the place where the handler really lives. 
+       Hence this is a deep copy and should be freed by the free method. */
     axis2_handler_desc_impl_t *handler_desc_impl = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -360,12 +363,13 @@ axis2_handler_desc_set_handler(
     }
     
     if (handler)
-        handler_desc_impl->handler = handler; /* Shallow copy, but free method should free this */
+        handler_desc_impl->handler = handler; /* Shallow copy, but free method 
+                                                 should free this */
     
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_handler_desc_get_class_name(
     const axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env)
@@ -376,9 +380,9 @@ axis2_handler_desc_get_class_name(
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_set_class_name(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env, 
-    axis2_char_t *class_name)
+    const axis2_char_t *class_name)
 {
     axis2_handler_desc_impl_t *handler_desc_impl = NULL;
     
@@ -415,18 +419,20 @@ axis2_handler_desc_get_parent(
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_set_parent(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env,
     axis2_param_container_t *parent)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_INTF_TO_IMPL(handler_desc)->parent = parent; /* shallow copy, because the parent lives somewhere else*/
+    AXIS2_INTF_TO_IMPL(handler_desc)->parent = parent; /* shallow copy, because 
+                                                          the parent lives 
+                                                          somewhere else*/
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL 
 axis2_handler_desc_free(
-    struct axis2_handler_desc *handler_desc, 
+    axis2_handler_desc_t *handler_desc, 
     const axis2_env_t *env)
 {
     axis2_handler_desc_impl_t *handler_desc_impl = NULL;
@@ -448,7 +454,7 @@ axis2_handler_desc_free(
         handler_desc_impl->handler_desc.param_container = NULL;
     }    
     
-   if (handler_desc_impl->qname)
+    if (handler_desc_impl->qname)
     {
         AXIS2_QNAME_FREE(handler_desc_impl->qname, env);
         handler_desc_impl->qname = NULL;
