@@ -24,7 +24,7 @@ typedef struct axis2_module_desc_impl
     axis2_qname_t *qname;
     axis2_conf_t *parent;
     /**
-     * To store module opeartions , which are supposed to be added to a service
+     * To store module operations , which are supposed to be added to a service
      * the module is engaged to a service
      */
     axis2_hash_t *ops;

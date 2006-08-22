@@ -21,8 +21,8 @@
  * @ingroup axis2_desc
  * module holds information about a module. This information includes module 
  * parameters and handler information. 
- * Modules are avalibe to all services if axis2.xml has a module reference 
- * entry. Alternatively, a module could be made avalible to selected services
+ * Modules are available to all services if axis2.xml has a module reference 
+ * entry. Alternatively, a module could be made available to selected services
  * by including a module reference entry in services.xml.
  * @{
  */
@@ -253,7 +253,7 @@ extern "C"
          * Add parameter
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @param param param
+         * @param param pointer to parameter struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -287,7 +287,7 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Checks if a given paramter is locked.
+         * Checks if a given parameter is locked.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
          * @param param_name parameter name string 
