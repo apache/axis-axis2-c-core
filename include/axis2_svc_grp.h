@@ -181,7 +181,7 @@ extern "C"
                 add_module)(
                     axis2_svc_grp_t *svc_grp,
                     const axis2_env_t *env,
-                    axis2_qname_t *module_qname);
+                    const axis2_qname_t *module_qname);
 
         /**
          * @param svc_grp pointer to service group

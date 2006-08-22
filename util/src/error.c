@@ -87,7 +87,7 @@ axis2_error_init()
         "axis2.xml cannot be not found";
     axis2_error_messages[AXIS2_ERROR_DATA_ELEMENT_IS_NULL] =
         "Data element of the OM Node is null";
-    axis2_error_messages[AXIS2_ERROR_INFLOW_NOT_ALLOWED_IN_TRS_OUT] = 
+    axis2_error_messages[AXIS2_ERROR_IN_FLOW_NOT_ALLOWED_IN_TRS_OUT] = 
         "In transport sender, Inflow is not allowed";
     axis2_error_messages[AXIS2_ERROR_INVALID_HANDLER_STATE] = 
         "Invalid handler state";
@@ -109,7 +109,7 @@ axis2_error_init()
         "No dispatcher found";
     axis2_error_messages[AXIS2_ERROR_OP_NAME_MISSING] = 
         "Operation name is missing";
-    axis2_error_messages[AXIS2_ERROR_OUTFLOW_NOT_ALLOWED_IN_TRS_IN] = 
+    axis2_error_messages[AXIS2_ERROR_OUT_FLOW_NOT_ALLOWED_IN_TRS_IN] = 
         "In transport Receiver, Outflow is not allowed";
     axis2_error_messages[AXIS2_ERROR_REPO_CAN_NOT_BE_NULL] = 
         "Repository name cannot be NULL";

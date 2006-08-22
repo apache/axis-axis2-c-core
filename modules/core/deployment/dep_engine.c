@@ -27,6 +27,7 @@
 #include <axis2_string.h>
 #include <axis2_utils.h>
 #include <axis2_core_utils.h>
+#include <axis2_module.h>
 
 /** 
  * @brief DLL Description struct impl
@@ -1210,25 +1211,25 @@ axis2_dep_engine_load_svc_props(
     AXIS2_PARAM_CHECK(env->error, svc, AXIS2_FAILURE);
     dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
     
-    in_flow = AXIS2_SVC_GET_INFLOW(svc, env);
+    in_flow = AXIS2_SVC_GET_IN_FLOW(svc, env);
     if(NULL != in_flow)
     {
         axis2_dep_engine_add_flow_handlers(dep_engine, env, in_flow);
     }
     
-    out_flow = AXIS2_SVC_GET_OUTFLOW(svc, env);
+    out_flow = AXIS2_SVC_GET_OUT_FLOW(svc, env);
     if(NULL != out_flow)
     {
         axis2_dep_engine_add_flow_handlers(dep_engine, env, out_flow);
     }
     
-    in_fault_flow = AXIS2_SVC_GET_FAULT_INFLOW(svc, env);
+    in_fault_flow = AXIS2_SVC_GET_FAULT_IN_FLOW(svc, env);
     if(NULL != in_fault_flow)
     {
         axis2_dep_engine_add_flow_handlers(dep_engine, env, in_fault_flow);
     }
     
-    out_fault_flow = AXIS2_SVC_GET_FAULT_OUTFLOW(svc, env);
+    out_fault_flow = AXIS2_SVC_GET_FAULT_OUT_FLOW(svc, env);
     if(NULL != out_fault_flow)
     {
         axis2_dep_engine_add_flow_handlers(dep_engine, env, out_fault_flow);
@@ -1441,28 +1442,28 @@ axis2_dep_engine_add_new_module(
         return status;
     }
 
-    in_flow = AXIS2_MODULE_DESC_GET_INFLOW(module_metadata, env);
+    in_flow = AXIS2_MODULE_DESC_GET_IN_FLOW(module_metadata, env);
     if(NULL != in_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, in_flow, 
             module->handler_create_func_map);
     }
     
-    out_flow = AXIS2_MODULE_DESC_GET_OUTFLOW(module_metadata, env);
+    out_flow = AXIS2_MODULE_DESC_GET_OUT_FLOW(module_metadata, env);
     if(NULL != out_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, out_flow, 
             module->handler_create_func_map);
     }
     
-    in_fault_flow = AXIS2_MODULE_DESC_GET_FAULT_INFLOW(module_metadata, env);
+    in_fault_flow = AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_metadata, env);
     if(NULL != in_fault_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, in_fault_flow, 
             module->handler_create_func_map);
     }
     
-    out_fault_flow = AXIS2_MODULE_DESC_GET_FAULT_OUTFLOW(module_metadata, env);
+    out_fault_flow = AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_metadata, env);
     if(NULL != out_fault_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, out_fault_flow, 
@@ -1751,28 +1752,28 @@ axis2_dep_engine_build_module(
     module = AXIS2_MODULE_DESC_GET_MODULE(module_desc, env);
     AXIS2_MODULE_FILL_HANDLER_CREATE_FUNC_MAP(module, env);
 
-    in_flow = AXIS2_MODULE_DESC_GET_INFLOW(module_desc, env);
+    in_flow = AXIS2_MODULE_DESC_GET_IN_FLOW(module_desc, env);
     if(NULL != in_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, in_flow, 
             module->handler_create_func_map);
     }
     
-    out_flow = AXIS2_MODULE_DESC_GET_OUTFLOW(module_desc, env);
+    out_flow = AXIS2_MODULE_DESC_GET_OUT_FLOW(module_desc, env);
     if(NULL != out_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, out_flow, 
             module->handler_create_func_map);
     }
     
-    in_fault_flow = AXIS2_MODULE_DESC_GET_FAULT_INFLOW(module_desc, env);
+    in_fault_flow = AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_desc, env);
     if(NULL != in_fault_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, in_fault_flow,
             module->handler_create_func_map);
     }
     
-    out_fault_flow = AXIS2_MODULE_DESC_GET_FAULT_OUTFLOW(module_desc, env);
+    out_fault_flow = AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_desc, env);
     if(NULL != out_fault_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, out_fault_flow,

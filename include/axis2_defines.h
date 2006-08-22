@@ -30,6 +30,15 @@ extern "C"
 {
 #endif
 
+/** Axis2 in flow */
+#define  AXIS2_IN_FLOW  1
+/** Axis2 out flow */
+#define  AXIS2_OUT_FLOW 2
+/** Axis2 fault in flow */
+#define  AXIS2_FAULT_IN_FLOW 3
+/** Axis2 fault out flow */
+#define  AXIS2_FAULT_OUT_FLOW 4
+
 #ifdef __cplusplus
 }
 #endif

@@ -19,6 +19,7 @@
 #include <axis2_msg.h>
 #include <axis2_desc.h>
 #include <axis2_conf_ctx.h>
+#include <axis2_module.h>
 
 /** 
  * @brief Operaton struct impl
@@ -1089,8 +1090,8 @@ axis2_op_engage_module(
     
     for(index = 0; index < size; index++)
     {
-        axis2_qname_t *qname1 = NULL;
-        axis2_qname_t *qname2 = NULL;
+        const axis2_qname_t *qname1 = NULL;
+        const axis2_qname_t *qname2 = NULL;
         
         module_desc = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(
             collection_module, env, index);
@@ -1098,8 +1099,8 @@ axis2_op_engage_module(
         {
             return AXIS2_FAILURE;
         }
-        qname1 = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
-        qname2 = AXIS2_MODULE_DESC_GET_NAME(moduleref, env);
+        qname1 = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
+        qname2 = AXIS2_MODULE_DESC_GET_QNAME(moduleref, env);
         if(AXIS2_QNAME_EQUALS(qname1, env, qname2))
         {
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Module already engaged to operation");
@@ -1151,7 +1152,7 @@ axis2_op_add_to_engage_module_list(
     int size = 0;
     int index = 0;
     axis2_property_t *property = NULL;
-    axis2_qname_t *module_qname = NULL;
+    const axis2_qname_t *module_qname = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
@@ -1169,14 +1170,14 @@ axis2_op_add_to_engage_module_list(
     {
         return AXIS2_ERROR_GET_STATUS_CODE(env->error);
     }
-    module_qname = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
+    module_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
     for(index = 0; index < size; index++)
     {
-        axis2_qname_t *module_qname_l = NULL;
+        const axis2_qname_t *module_qname_l = NULL;
 
         module_desc_l = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(
             collection_module, env, index);
-        module_qname_l = AXIS2_MODULE_DESC_GET_NAME(module_desc_l, env);        
+        module_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l, env);        
         if(AXIS2_QNAME_EQUALS(module_qname, env, module_qname_l))
         {
             /*AXIS2_ERROR_SET(env->error, 

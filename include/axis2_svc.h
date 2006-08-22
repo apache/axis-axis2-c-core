@@ -987,42 +987,42 @@ extern "C"
 
 /** Get inflow.
     @sa axis2_svc_ops#get_inflow */
-#define AXIS2_SVC_GET_INFLOW(svc, env) \
+#define AXIS2_SVC_GET_IN_FLOW(svc, env) \
         ((svc)->ops->get_inflow(svc, env))
 
 /** Set inflow.
     @sa axis2_svc_ops#set_inflow */
-#define AXIS2_SVC_SET_INFLOW(svc, env, inflow) \
+#define AXIS2_SVC_SET_IN_FLOW(svc, env, inflow) \
         ((svc)->ops->set_inflow(svc, env, inflow))
 
 /** Get outfow.
     @sa axis2_svc_ops#get_outflow */
-#define AXIS2_SVC_GET_OUTFLOW(svc, env) \
+#define AXIS2_SVC_GET_OUT_FLOW(svc, env) \
         ((svc)->ops->get_outflow(svc, env))
 
 /** Set outflow.
     @sa axis2_svc_ops#set_outflow */
-#define AXIS2_SVC_SET_OUTFLOW(svc, env, outflow) \
+#define AXIS2_SVC_SET_OUT_FLOW(svc, env, outflow) \
         ((svc)->ops->set_outflow(svc, env, outflow))
 
 /** Get fault inflow.
     @sa axis2_svc_ops#get_fault_inflow */
-#define AXIS2_SVC_GET_FAULT_INFLOW(svc, env) \
+#define AXIS2_SVC_GET_FAULT_IN_FLOW(svc, env) \
         ((svc)->ops->get_fault_inflow(svc, env))
 
 /** Set fault inflow.
     @sa axis2_svc_ops#set_fault_inflow */
-#define AXIS2_SVC_SET_FAULT_INFLOW(svc, env, fault_inflow) \
+#define AXIS2_SVC_SET_FAULT_IN_FLOW(svc, env, fault_inflow) \
         ((svc)->ops->set_fault_inflow(svc, env, fault_inflow))
 
 /** Gets fault outflow.
     @sa axis2_svc_ops#get_fault_outflow */
-#define AXIS2_SVC_GET_FAULT_OUTFLOW(svc, env) \
+#define AXIS2_SVC_GET_FAULT_OUT_FLOW(svc, env) \
         ((svc)->ops->get_fault_outflow(svc, env))
 
 /** Set fault outflow.
     @sa axis2_svc_ops#set_fault_outflow */
-#define AXIS2_SVC_SET_FAULT_OUTFLOW(svc, env, fault_outflow) \
+#define AXIS2_SVC_SET_FAULT_OUT_FLOW(svc, env, fault_outflow) \
         ((svc)->ops->set_fault_outflow(svc, env, fault_outflow))
 
 /** Get op by soap action.

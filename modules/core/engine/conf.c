@@ -1478,7 +1478,7 @@ axis2_conf_is_engaged(
     const axis2_qname_t *module_name)
 {
     axis2_conf_impl_t *config_impl = NULL;
-    axis2_qname_t *def_mod_qname = NULL;
+    const axis2_qname_t *def_mod_qname = NULL;
     axis2_module_desc_t *def_mod = NULL;
     int i = 0;
     int size = 0;
@@ -1490,7 +1490,7 @@ axis2_conf_is_engaged(
             AXIS2_QNAME_GET_LOCALPART(module_name, env));
     if (NULL != def_mod)
     {
-        def_mod_qname = AXIS2_MODULE_DESC_GET_NAME(def_mod, env);
+        def_mod_qname = AXIS2_MODULE_DESC_GET_QNAME(def_mod, env);
     }
     size = AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules, env);
     for (i = 0; i < size; i++)
@@ -1668,7 +1668,7 @@ axis2_conf_add_module(
     axis2_module_desc_t *module)
 {
     axis2_conf_impl_t *config_impl = NULL;
-    axis2_qname_t *module_qname = NULL;
+    const axis2_qname_t *module_qname = NULL;
 
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1686,7 +1686,7 @@ axis2_conf_add_module(
     {
         return AXIS2_FAILURE;
     }
-    module_qname = AXIS2_MODULE_DESC_GET_NAME(module, env);
+    module_qname = AXIS2_MODULE_DESC_GET_QNAME(module, env);
     if (module_qname)
     {
         axis2_char_t *module_name = NULL;
@@ -1915,10 +1915,10 @@ axis2_conf_engage_module(
     {
         int size = 0;
         int i = 0;
-        axis2_qname_t *module_qname = NULL;
+        const axis2_qname_t *module_qname = NULL;
 
         size = AXIS2_ARRAY_LIST_SIZE(config_impl->engaged_modules, env);
-        module_qname = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
+        module_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
         for (i = 0; i < size; i++)
         {
             axis2_qname_t *qname = NULL;
@@ -1940,7 +1940,7 @@ axis2_conf_engage_module(
     {
         axis2_phase_resolver_t *phase_resolver = NULL;
         axis2_qname_t *module_qref_l = NULL;
-        axis2_qname_t *module_qname = NULL;
+        const axis2_qname_t *module_qname = NULL;
 
         phase_resolver = axis2_phase_resolver_create_with_config(env, conf);
         if (!phase_resolver)
@@ -1955,7 +1955,7 @@ axis2_conf_engage_module(
         {
             return AXIS2_FAILURE;
         }
-        module_qname = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
+        module_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
         module_qref_l = AXIS2_QNAME_CLONE(module_qname, env);
         status = AXIS2_ARRAY_LIST_ADD(config_impl->engaged_modules, env,
                 module_qref_l);

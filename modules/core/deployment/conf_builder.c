@@ -559,7 +559,7 @@ axis2_conf_builder_process_phase_orders(
             }
             return AXIS2_SUCCESS;
         }
-        if(flow_type && 0 == AXIS2_STRCMP(AXIS2_INFLOWST, flow_type))
+        if(flow_type && 0 == AXIS2_STRCMP(AXIS2_IN_FLOW_START, flow_type))
         {            
             AXIS2_PHASES_INFO_SET_IN_PHASES(info, env, phase_list);
         }  
@@ -567,7 +567,7 @@ axis2_conf_builder_process_phase_orders(
         {
             AXIS2_PHASES_INFO_SET_IN_FAULTPHASES(info, env, phase_list);
         } 
-        else if(flow_type && 0 == AXIS2_STRCMP(AXIS2_OUTFLOWST, flow_type))        
+        else if(flow_type && 0 == AXIS2_STRCMP(AXIS2_OUT_FLOW_START, flow_type))        
         {
             AXIS2_PHASES_INFO_SET_OUT_PHASES(info, env, phase_list);
         } 
@@ -801,8 +801,8 @@ axis2_conf_builder_process_transport_senders(
                 AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
                 return status;
             }
-            /* process INFLOW */
-            qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL); 
+            /* process IN_FLOW */
+            qinflowst = axis2_qname_create(env, AXIS2_IN_FLOW_START, NULL, NULL); 
             in_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                 transport_element, env, qinflowst, transport_node, &in_flow_node);
             AXIS2_QNAME_FREE(qinflowst, env);
@@ -810,10 +810,10 @@ axis2_conf_builder_process_transport_senders(
             {
                 AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
                 AXIS2_ERROR_SET(env->error, 
-                    AXIS2_ERROR_INFLOW_NOT_ALLOWED_IN_TRS_OUT, AXIS2_FAILURE);
+                    AXIS2_ERROR_IN_FLOW_NOT_ALLOWED_IN_TRS_OUT, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }
-            qoutflowst = axis2_qname_create(env, AXIS2_OUTFLOWST, NULL, NULL);
+            qoutflowst = axis2_qname_create(env, AXIS2_OUT_FLOW_START, NULL, NULL);
             out_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                 transport_element, env, qoutflowst, transport_node, &out_flow_node);
             AXIS2_QNAME_FREE(qoutflowst, env);
@@ -824,7 +824,7 @@ axis2_conf_builder_process_transport_senders(
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->desc_builder,
                     env, out_flow_element, builder_impl->conf->param_container,
                         out_flow_node);
-                status = AXIS2_TRANSPORT_OUT_DESC_SET_OUTFLOW(transport_out, env, flow);
+                status = AXIS2_TRANSPORT_OUT_DESC_SET_OUT_FLOW(transport_out, env, flow);
                 if(AXIS2_SUCCESS != status)
                 {
                     AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
@@ -843,7 +843,7 @@ axis2_conf_builder_process_transport_senders(
             {
                 AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
                 AXIS2_ERROR_SET(env->error, 
-                    AXIS2_ERROR_INFLOW_NOT_ALLOWED_IN_TRS_OUT, AXIS2_FAILURE);
+                    AXIS2_ERROR_IN_FLOW_NOT_ALLOWED_IN_TRS_OUT, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }
 
@@ -1025,8 +1025,8 @@ axis2_conf_builder_process_transport_recvs(
                 AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
                 return status;
             }
-            /* process OUTFLOW */
-            qoutflowst = axis2_qname_create(env, AXIS2_OUTFLOWST, NULL, NULL);
+            /* process OUT_FLOW */
+            qoutflowst = axis2_qname_create(env, AXIS2_OUT_FLOW_START, NULL, NULL);
             out_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                 transport_element, env, qoutflowst, transport_node, &out_flow_node);
             AXIS2_QNAME_FREE(qoutflowst, env);
@@ -1034,11 +1034,11 @@ axis2_conf_builder_process_transport_recvs(
             {
                 AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
                 AXIS2_ERROR_SET(env->error, 
-                    AXIS2_ERROR_OUTFLOW_NOT_ALLOWED_IN_TRS_IN, AXIS2_FAILURE);
+                    AXIS2_ERROR_OUT_FLOW_NOT_ALLOWED_IN_TRS_IN, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }
 
-            qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL);
+            qinflowst = axis2_qname_create(env, AXIS2_IN_FLOW_START, NULL, NULL);
             in_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                 transport_element, env, qinflowst, transport_node, &in_flow_node);
             AXIS2_QNAME_FREE(qinflowst, env);
@@ -1049,7 +1049,7 @@ axis2_conf_builder_process_transport_recvs(
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->
                     desc_builder, env, in_flow_element, builder_impl->conf->
                         param_container, in_flow_node);
-                status = AXIS2_TRANSPORT_IN_DESC_SET_INFLOW(transport_in, env, 
+                status = AXIS2_TRANSPORT_IN_DESC_SET_IN_FLOW(transport_in, env, 
                     flow);
                 if(AXIS2_SUCCESS != status)
                 {
@@ -1088,7 +1088,7 @@ axis2_conf_builder_process_transport_recvs(
             if(NULL != out_fault_flow_element)
             {
                 AXIS2_ERROR_SET(env->error, 
-                    AXIS2_ERROR_OUTFLOW_NOT_ALLOWED_IN_TRS_IN, AXIS2_FAILURE);
+                    AXIS2_ERROR_OUT_FLOW_NOT_ALLOWED_IN_TRS_IN, AXIS2_FAILURE);
                 return AXIS2_FAILURE;
             }
 

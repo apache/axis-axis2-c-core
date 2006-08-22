@@ -257,8 +257,8 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
         mod_desc = (axis2_module_desc_t *) val;
         if (NULL != mod_desc)
         {
-            axis2_qname_t *module_qname = NULL;
-            module_qname = AXIS2_MODULE_DESC_GET_NAME(mod_desc, env);
+            const axis2_qname_t *module_qname = NULL;
+            module_qname = AXIS2_MODULE_DESC_GET_QNAME(mod_desc, env);
             if(NULL != module_qname)
             {
                 axis2_char_t *mod_name_with_ver = NULL;

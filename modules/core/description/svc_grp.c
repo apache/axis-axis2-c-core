@@ -106,7 +106,7 @@ axis2_status_t AXIS2_CALL
 axis2_svc_grp_add_module(
     axis2_svc_grp_t *svc_grp, 
     const axis2_env_t *env,
-    axis2_qname_t *module_qname);                                
+    const axis2_qname_t *module_qname);                                
 
 axis2_conf_t *AXIS2_CALL
 axis2_svc_grp_get_parent(
@@ -574,7 +574,7 @@ axis2_status_t AXIS2_CALL
 axis2_svc_grp_add_module(
     axis2_svc_grp_t *svc_grp, 
     const axis2_env_t *env,
-    axis2_qname_t *module_qname)
+    const axis2_qname_t *module_qname)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     

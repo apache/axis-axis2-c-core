@@ -95,14 +95,14 @@ extern "C"
 #define AXIS2_PARAMETER_KEY  "PARAMETER_KEY"
 
 /**
- * Field INFLOW_KEY
+ * Field IN_FLOW_KEY
  */
-#define AXIS2_INFLOW_KEY  "INFLOW_KEY"
+#define AXIS2_IN_FLOW_KEY  "IN_FLOW_KEY"
 
 /**
- * Field OUTFLOW_KEY
+ * Field OUT_FLOW_KEY
  */
-#define AXIS2_OUTFLOW_KEY  "OUTFLOW_KEY"
+#define AXIS2_OUT_FLOW_KEY  "OUT_FLOW_KEY"
 
 /**
  * Field IN_FAULTFLOW_KEY

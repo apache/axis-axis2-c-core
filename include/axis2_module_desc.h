@@ -1,41 +1,30 @@
 /*
- * Copyright 2004,2005 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+* Copyright 2004,2005 The Apache Software Foundation.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*      http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
 #ifndef AXIS2_MODULE_DESC_H
 #define AXIS2_MODULE_DESC_H
 
-/** @defgroup axis2_module_desc module description
+/** 
+ * @defgroup axis2_module_desc module description
  * @ingroup axis2_desc
+ * module holds information about a module. This information includes module 
+ * parameters and handler information. 
+ * Modules are avalibe to all services if axis2.xml has a module reference 
+ * entry. Alternatively, a module could be made avalible to selected services
+ * by including a module reference entry in services.xml.
  * @{
- */
-
-
-/**
- * @file axis2_module_desc.h
- * @brief axis2 module_desc interface
- * 
- *
- *
- * <p>This holds the information about a Module. </p>
- * <ol>
- * <li>parameters<li>
- * <li>handlers<li>
- * <ol>
- * <p>Handler are registered once they are avlible but they avalibe to all 
- * services if axis2.xml has a module ref="." or avalible to a single service 
- * if services.xml have module ref=".."</p>
  */
 
 #include <axis2_const.h>
@@ -44,38 +33,38 @@
 #include <axis2_env.h>
 #include <axis2_allocator.h>
 #include <axis2_string.h>
-
 #include <axis2_array_list.h>
 #include <axis2_param_container.h>
 #include <axis2_flow_container.h>
 #include <axis2_param.h>
 #include <axis2_op.h>
 #include <axis2_conf.h>
-#include <axis2_module.h>
-
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-    struct axis2_op;
-    struct axis2_conf;
     /** Type name for struct axis2_module_desc_ops */
     typedef struct axis2_module_desc_ops axis2_module_desc_ops_t;
     /** Type name for struct axis2_module_desc */
     typedef struct axis2_module_desc axis2_module_desc_t;
 
+    struct axis2_op;
+    struct axis2_conf;
+
 
     /**
-     * Module Description ops struct
-     * Encapsulator struct for ops of axis2_module_desc
+     * module description ops struct.
+     * Encapsulator struct for ops of axis2_module_desc.
      */
     struct axis2_module_desc_ops
     {
         /**
+         * Frees module description.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -83,122 +72,139 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Get fault out flow
+         * Gets flow representing in flow.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @return in flow
+         * @return pointer to flow that represents in flow, returns a reference
+         * not a cloned copy
          */
         axis2_flow_t *(AXIS2_CALL *
-                get_inflow)(    
-                    axis2_module_desc_t *module_desc,
+                get_in_flow)(
+                    const axis2_module_desc_t *module_desc,
                     const axis2_env_t *env);
 
         /**
-         * Set in flow
+         * Sets flow representing in flow.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @param inflow pointer to in flow
+         * @param in_flow pointer to flow representing in flow, module assumes 
+         * ownership of flow
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_inflow)(
+                set_in_flow)(
                     axis2_module_desc_t *module_desc,
                     const axis2_env_t *env,
-                    axis2_flow_t *inflow);
+                    axis2_flow_t *in_flow);
 
         /**
-         * Get out flow
+         * Gets flow representing out flow.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @return out flow
+         * @return pointer to flow that represents out flow, returns a reference
+         * not a cloned copy         
          */
         axis2_flow_t *(AXIS2_CALL *
-                get_outflow)(
-                    axis2_module_desc_t *module_desc,
+                get_out_flow)(
+                    const axis2_module_desc_t *module_desc,
                     const axis2_env_t *env);
 
         /**
-         * Set out flow
+         * Sets flow representing out flow.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @param outflow out flow
+         * @param out_flow pointer to flow representing out flow, module assumes 
+         * ownership of flow
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_outflow)(
+                set_out_flow)(
                     axis2_module_desc_t *module_desc,
                     const axis2_env_t *env,
-                    axis2_flow_t *outflow);
+                    axis2_flow_t *out_flow);
 
         /**
-         * Get fault in flow
+         * Gets flow representing fault in flow.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @return fault in flow
+         * @return pointer to flow that represents fault in flow, returns a reference
+         * not a cloned copy         
          */
         axis2_flow_t *(AXIS2_CALL *
-                get_fault_inflow)(
-                    axis2_module_desc_t *module_desc,
+                get_fault_in_flow)(
+                    const axis2_module_desc_t *module_desc,
                     const axis2_env_t *env);
 
         /**
-         * set fault in flow
+         * Sets flow representing fault in flow.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @param falut_inflow pointer to falut in flow
+         * @param falut_in_flow pointer to flow representing fault in flow, 
+         * module assumes ownership of flow
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_fault_inflow)(
+                set_fault_in_flow)(
                     axis2_module_desc_t *module_desc,
                     const axis2_env_t *env,
-                    axis2_flow_t *falut_inflow);
+                    axis2_flow_t *falut_in_flow);
 
         /**
-         * Get fault out flow
+         * Gets flow representing fault out flow.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @return fault out flow
+         * @return pointer to flow that represents fault out flow, returns a 
+         * reference not a cloned copy         
          */
         axis2_flow_t *(AXIS2_CALL *
-                get_fault_outflow)(
-                    axis2_module_desc_t *module_desc,
+                get_fault_out_flow)(
+                    const axis2_module_desc_t *module_desc,
                     const axis2_env_t *env);
 
         /**
-         * Set fault out flow
+         * Sets flow representing fault out flow.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @param fault_outflow pointer to fault out flow
+         * @param fault_out_flow pointer to flow representing fault out flow, 
+         * module assumes ownership of flow
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_fault_outflow)(
+                set_fault_out_flow)(
                     axis2_module_desc_t *module_desc,
                     const axis2_env_t *env,
-                    axis2_flow_t *fault_outflow);
+                    axis2_flow_t *fault_out_flow);
 
         /**
-         * @return
+         * Gets module QName.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
+         * @return pointer to QName
          */
-        axis2_qname_t *(AXIS2_CALL *
-                get_name)(
-                    axis2_module_desc_t *module_desc,
+        const axis2_qname_t *(AXIS2_CALL *
+                get_qname)(
+                    const axis2_module_desc_t *module_desc,
                     const axis2_env_t *env);
 
         /**
+         * Sets module QName.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
          * @param qname pointer to qname
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_name)(
+                set_qname)(
                     axis2_module_desc_t *module_desc,
                     const axis2_env_t *env,
-                    axis2_qname_t *qname);
+                    const axis2_qname_t *qname);
 
         /**
+         * Adds given operation to module.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @param op pointer to op
+         * @param op pointer to operation, module assumes ownership of operation
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_op)(
@@ -207,27 +213,35 @@ extern "C"
                     struct axis2_op *op);
 
         /**
+         * Gets all operations associated with module.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
+         * @return pointer to hash map containing the operations
          */
         axis2_hash_t *(AXIS2_CALL *
-                get_ops)(  
-                    axis2_module_desc_t *module_desc,
+                get_all_ops)(
+                    const axis2_module_desc_t *module_desc,
                     const axis2_env_t *env);
 
         /**
+         * Gets parent which is of type configuration.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
+         * @return pointer to configuration, returns a reference not a 
+         * cloned copy
          */
         struct axis2_conf *(AXIS2_CALL *
                 get_parent)(
-                    axis2_module_desc_t *module_desc,
+                    const axis2_module_desc_t *module_desc,
                     const axis2_env_t *env);
 
         /**
+         * Sets parent which is of type configuration.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @param parent pointer to parent
+         * @param parent pointer to parent configuration, module does not assume
+         * the ownership of configuration
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_parent)(
@@ -240,6 +254,7 @@ extern "C"
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
          * @param param param
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_param)(
@@ -248,53 +263,59 @@ extern "C"
                     axis2_param_t *param);
 
         /**
+         * Gets parameter with given name.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @param env pointer to environment struct
-         * @return parameter
+         * @param name parameter name string
+         * @return pointer to parameter corresponding to given name
          */
         axis2_param_t *(AXIS2_CALL *
-                get_param)( 
-                    axis2_module_desc_t *module_desc,
+                get_param)(
+                    const axis2_module_desc_t *module_desc,
                     const axis2_env_t *env,
-                    axis2_char_t *name);
+                    const axis2_char_t *name);
 
         /**
+         * Gets all parameters associated with module.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
+         * @param pointer to array list containing all parameters
          */
         axis2_array_list_t *(AXIS2_CALL *
-                get_params)(
-                    axis2_module_desc_t *module_desc,
+                get_all_params)(
+                    const axis2_module_desc_t *module_desc,
                     const axis2_env_t *env);
 
         /**
-         * To check whether a given paramter is locked
+         * Checks if a given paramter is locked.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @param param_name pointer to param name
-         * @return whether parameter is locked
+         * @param param_name parameter name string 
+         * @return AXIS2_TRUE if named parameter is locked, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 is_param_locked)(
-                    axis2_module_desc_t *module_desc,
+                    const axis2_module_desc_t *module_desc,
                     const axis2_env_t *env,
-                    axis2_char_t *param_name);
+                    const axis2_char_t *param_name);
 
         /**
+         * Gets module associated with module description.
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @return
+         * @return pointer to module
          */
         struct axis2_module *(AXIS2_CALL *
                 get_module)(
-                    axis2_module_desc_t *module_desc,
+                    const axis2_module_desc_t *module_desc,
                     const axis2_env_t *env);
 
         /**
          * @param module_desc pointer to module description
          * @param env pointer to environment struct
-         * @param module pointer to module
+         * @param module pointer to module, module description assumes ownership
+         * of module
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_module)(
@@ -305,29 +326,26 @@ extern "C"
     };
 
     /**
-     * @brief Module Description struct
-     * Axis2 Module Description
-     * <p>This holds the information about a Module. </p>
-     * <ol>
-     * <li>parameters<li>
-     * <li>handlers<li>
-     * <ol>
-     * <p>Handler are registered once they are avlible but they avalibe to all 
-     * services if axis2.xml has a module ref="." or avalible to a single service if
-     *     services.xml have module ref=".."</p>
+     * module description struct.
      */
     struct axis2_module_desc
     {
+        /** operations of module description */
         axis2_module_desc_ops_t *ops;
-
+        /** 
+         * flow container that encapsulates the flows associated with the 
+         * module 
+         */
         axis2_flow_container_t *flow_container;
-
+        /** 
+         * parameter container that stores all the parameters associated with 
+         * the module 
+         */
         axis2_param_container_t *params;
-
     };
 
-    /** 
-     * create Module Description struct
+    /**
+     * Creates module description struct instance.
      * @param env pointer to environment struct
      * @return pointer to newly created module description
      */
@@ -335,23 +353,24 @@ extern "C"
     axis2_module_desc_create (
         const axis2_env_t *env);
 
-    /** 
-     * create Module Description struct
+    /**
+     * Creates module description struct instance with given QName.
      * @param env pointer to environment struct
-     * @param qname pointer to qname
+     * @param qname pointer to QName
      * @return pointer to newly created module description
      */
     AXIS2_EXTERN axis2_module_desc_t *AXIS2_CALL
     axis2_module_desc_create_with_qname(
         const axis2_env_t *env,
-        axis2_qname_t *qname);
+        const axis2_qname_t *qname);
 
     /**
-     * Free module_desc passed as void pointer. This will be
-     * cast into appropriate type and then pass the cast object
-     * into the module_desc structure's free method
-     * @param module_desc
+     * Frees module description passed as void pointer. This method will cast 
+     * the void pointer parameter into appropriate type and then call module 
+     * description free method on top of that pointer.
+     * @param module_desc pointer to module description as a void pointer
      * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
      */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL
     axis2_module_desc_free_void_arg(
@@ -359,114 +378,111 @@ extern "C"
         const axis2_env_t *env);
 
 
-/************************* Start of function macros   ***************************/
-
-/** Frees the module description.
+/** Frees module description.
     @sa axis2_module_desc_ops#free */
 #define AXIS2_MODULE_DESC_FREE(module_desc, env) \
       ((module_desc)->ops->free(module_desc, env))
 
-/** Gets the in flow.
-    @sa axis2_module_desc_ops#get_inflow */
-#define AXIS2_MODULE_DESC_GET_INFLOW(module_desc, env) \
-        ((module_desc)->ops->get_inflow (module_desc, env))
+/** Gets in flow.
+    @sa axis2_module_desc_ops#get_in_flow */
+#define AXIS2_MODULE_DESC_GET_IN_FLOW(module_desc, env) \
+        ((module_desc)->ops->get_in_flow (module_desc, env))
 
-/** Sets the in flow.
-    @sa axis2_module_desc_ops#set_inflow */
-#define AXIS2_MODULE_DESC_SET_INFLOW(module_desc, env, inflow) \
-        ((module_desc)->ops->set_inflow (module_desc, env, inflow))
+/** Sets in flow.
+    @sa axis2_module_desc_ops#set_in_flow */
+#define AXIS2_MODULE_DESC_SET_IN_FLOW(module_desc, env, in_flow) \
+        ((module_desc)->ops->set_in_flow (module_desc, env, in_flow))
 
-/** Gets the out flow.
-    @sa axis2_module_desc_ops#get_outflow */
-#define AXIS2_MODULE_DESC_GET_OUTFLOW(module_desc, env) \
-      ((module_desc)->ops->get_outflow (module_desc, env))
+/** Gets out flow.
+    @sa axis2_module_desc_ops#get_out_flow */
+#define AXIS2_MODULE_DESC_GET_OUT_FLOW(module_desc, env) \
+      ((module_desc)->ops->get_out_flow (module_desc, env))
 
-/** Sets the out flow.
-    @sa axis2_module_desc_ops#set_outflow */
-#define AXIS2_MODULE_DESC_SET_OUTFLOW(module_desc, env, outflow) \
-      ((module_desc)->ops->set_outflow (module_desc, env, outflow))
+/** Sets out flow.
+    @sa axis2_module_desc_ops#set_out_flow */
+#define AXIS2_MODULE_DESC_SET_OUT_FLOW(module_desc, env, out_flow) \
+      ((module_desc)->ops->set_out_flow (module_desc, env, out_flow))
 
-/** Gets the fault in flow.
-    @sa axis2_module_desc_ops#get_fault_inflow */
-#define AXIS2_MODULE_DESC_GET_FAULT_INFLOW(module_desc, env) \
-      ((module_desc)->ops->get_fault_inflow (module_desc, env))
+/** Gets fault in flow.
+    @sa axis2_module_desc_ops#get_fault_in_flow */
+#define AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_desc, env) \
+      ((module_desc)->ops->get_fault_in_flow (module_desc, env))
 
-/** Sets the fault in flow.
-    @sa axis2_module_desc_ops#set_fault_inflow */
-#define AXIS2_MODULE_DESC_SET_FAULT_INFLOW(module_desc, env, falut_inflow) \
-        ((module_desc)->ops->set_fault_inflow(module_desc , env, falut_inflow))
+/** Sets fault in flow.
+    @sa axis2_module_desc_ops#set_fault_in_flow */
+#define AXIS2_MODULE_DESC_SET_FAULT_IN_FLOW(module_desc, env, falut_in_flow) \
+        ((module_desc)->ops->set_fault_in_flow(module_desc , env, falut_in_flow))
 
-/** Gets the fault out flow.
-    @sa axis2_module_desc_ops#get_fault_outflow */
-#define AXIS2_MODULE_DESC_GET_FAULT_OUTFLOW(module_desc, env) \
-        ((module_desc)->ops->get_fault_outflow(module_desc , env))
+/** Gets fault out flow.
+    @sa axis2_module_desc_ops#get_fault_out_flow */
+#define AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_desc, env) \
+        ((module_desc)->ops->get_fault_out_flow(module_desc , env))
 
-/** Sets the fault out flow.
-    @sa axis2_module_desc_ops#set_fault_outflow */
-#define AXIS2_MODULE_DESC_SET_FAULT_OUTFLOW(module_desc, env, falut_outflow) \
-        ((module_desc)->ops->set_fault_outflow(module_desc , env, falut_outflow))
+/** Sets fault out flow.
+    @sa axis2_module_desc_ops#set_fault_out_flow */
+#define AXIS2_MODULE_DESC_SET_FAULT_OUT_FLOW(module_desc, env, falut_out_flow) \
+        ((module_desc)->ops->set_fault_out_flow(module_desc , env, falut_out_flow))
 
-/** Gets the name.
-    @sa axis2_module_desc_ops#get_name */
-#define AXIS2_MODULE_DESC_GET_NAME(module_desc, env) \
-        ((module_desc)->ops->get_name(module_desc, env))
+/** Gets QName.
+    @sa axis2_module_desc_ops#get_qname */
+#define AXIS2_MODULE_DESC_GET_QNAME(module_desc, env) \
+        ((module_desc)->ops->get_qname(module_desc, env))
 
-/** Sets the name.
-    @sa axis2_module_desc_ops#set_name */
-#define AXIS2_MODULE_DESC_SET_NAME(module_desc, env, qname) \
-        ((module_desc)->ops->set_name(module_desc, env, qname))
+/** Sets QName.
+    @sa axis2_module_desc_ops#set_qname */
+#define AXIS2_MODULE_DESC_SET_QNAME(module_desc, env, qname) \
+        ((module_desc)->ops->set_qname(module_desc, env, qname))
 
-/** Adds the operation.
+/** Adds given operation to list of operations.
     @sa axis2_module_desc_ops#add_op */
 #define AXIS2_MODULE_DESC_ADD_OP(module_desc, env, op) \
         ((module_desc)->ops->add_op(module_desc, env, op))
 
-/** Gets the operation.
-    @sa axis2_module_desc_ops#get_ops */
-#define AXIS2_MODULE_DESC_GET_OPS(module_desc, env) \
-        ((module_desc)->ops->get_ops(module_desc, env))
+/** Gets list of all operations.
+    @sa axis2_module_desc_ops#get_all_ops */
+#define AXIS2_MODULE_DESC_GET_ALL_OPS(module_desc, env) \
+        ((module_desc)->ops->get_all_ops(module_desc, env))
 
-/** Gets the parent.
+/** Gets parent.
     @sa axis2_module_desc_ops#get_parent */
 #define AXIS2_MODULE_DESC_GET_PARENT(module_desc, env) \
         ((module_desc)->ops->get_parent(module_desc, env))
 
-/** Set parent.
+/** Sets parent.
     @sa axis2_module_desc_ops#set_parent */
 #define AXIS2_MODULE_DESC_SET_PARENT(module_desc, env, parent) \
         ((module_desc)->ops->set_parent(module_desc, env, parent))
 
-/** Add param.
+/** Adds parameter.
     @sa axis2_module_desc_ops#add_param */
 #define AXIS2_MODULE_DESC_ADD_PARAM(module_desc, env, param) \
         ((module_desc)->ops->add_param(module_desc, env, param))
 
-/** Get param.
+/** Gets named parameter.
     @sa axis2_module_desc_ops#get_param */
 #define AXIS2_MODULE_DESC_GET_PARAM(module_desc, env, name) \
         ((module_desc)->ops->get_param(module_desc, env, name))
 
-/** Get params.
-    @sa axis2_module_desc_ops#get_params */
-#define AXIS2_MODULE_DESC_GET_PARAMS(module_desc, env) \
-        ((module_desc)->ops->get_params(module_desc, env))
+/** Get all parameters.
+    @sa axis2_module_desc_ops#get_all_params */
+#define AXIS2_MODULE_DESC_GET_ALL_PARAMS(module_desc, env) \
+        ((module_desc)->ops->get_all_params(module_desc, env))
 
-/** Is param locked.
+/** Checks if named parameter is locked.
     @sa axis2_module_desc_ops#is_param_locked */
 #define AXIS2_MODULE_DESC_IS_PARAM_LOCKED(module_desc, env, param_name) \
         ((module_desc)->ops->is_param_locked(module_desc, env, param_name))
 
-/** Get module.
+/** Gets module associated with module description.
     @sa axis2_module_desc_ops#get_module */
 #define AXIS2_MODULE_DESC_GET_MODULE(module_desc, env) \
         ((module_desc)->ops->get_module(module_desc, env))
 
-/** Set module.
+/** Sets module associated with module description.
     @sa axis2_module_desc_ops#set_module */
 #define AXIS2_MODULE_DESC_SET_MODULE(module_desc, env, module) \
         ((module_desc)->ops->set_module(module_desc, env, module))
 
-/************************* End of function macros *****************************/
 /** @} */
 
 #ifdef __cplusplus

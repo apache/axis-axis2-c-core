@@ -801,12 +801,12 @@ extern "C"
 
 /** Gets the phases outflow.
     @sa axis2_op_ops#get_phases_outflow */
-#define AXIS2_OP_GET_PHASES_OUTFLOW(op, env) \
+#define AXIS2_OP_GET_PHASES_OUT_FLOW(op, env) \
       ((op)->ops->get_phases_outflow (op, env))
 
 /** Gets the remaining phases in flow.
     @sa axis2_op_ops#get_ramaining_phases_inflow */
-#define AXIS2_OP_GET_REMAINING_PHASES_INFLOW(op, env) \
+#define AXIS2_OP_GET_REMAINING_PHASES_IN_FLOW(op, env) \
       ((op)->ops->get_remaining_phases_inflow (op, env))
 
 /** Sets the phases in fault flow.
@@ -821,12 +821,12 @@ extern "C"
 
 /** Sets the phases out flow.
     @sa axis2_op_ops#set_phases_outflow */
-#define AXIS2_OP_SET_PHASES_OUTFLOW(op, env, list) \
+#define AXIS2_OP_SET_PHASES_OUT_FLOW(op, env, list) \
       ((op)->ops->set_phases_outflow (op, env, list))
 
 /** Sets the remaining phases in flow.
     @sa axis2_op_ops#set_remaining_phases_inflow */
-#define AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, env, list) \
+#define AXIS2_OP_SET_REMAINING_PHASES_IN_FLOW(op, env, list) \
       ((op)->ops->set_remaining_phases_inflow (op, env, list))
 
 /** Adds the module.

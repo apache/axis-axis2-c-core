@@ -58,7 +58,7 @@ void Testaxis2_svc_add_module_ops(CuTest *tc)
     add_handlers_to_flow(inflow, env);
     svc_qname = axis2_qname_create(env, "service name", NULL, NULL);
     svc = axis2_svc_create_with_qname(env, svc_qname);
-    AXIS2_SVC_SET_INFLOW(svc, env, inflow);
+    AXIS2_SVC_SET_IN_FLOW(svc, env, inflow);
     actual = AXIS2_SVC_ADD_MODULE_OPS(svc, env, module_desc, conf);
     
     CuAssertIntEquals(tc, expected, actual);
@@ -107,13 +107,13 @@ struct axis2_module_desc *create_module_desc(const axis2_env_t *env)
     op_qname = axis2_qname_create(env, "op_name1", NULL, NULL);
     op = axis2_op_create_with_qname(env, op_qname);
     op_in_phases = get_svc_op_in_phases(env);  
-    AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, env, op_in_phases);
+    AXIS2_OP_SET_REMAINING_PHASES_IN_FLOW(op, env, op_in_phases);
     AXIS2_MODULE_DESC_ADD_OP(module_desc, env, op);
     
     op_qname = axis2_qname_create(env, "op_name2", NULL, NULL);
     op = axis2_op_create_with_qname(env, op_qname);
     op_in_phases = get_svc_op_in_phases(env);  
-    AXIS2_OP_SET_REMAINING_PHASES_INFLOW(op, env, op_in_phases);
+    AXIS2_OP_SET_REMAINING_PHASES_IN_FLOW(op, env, op_in_phases);
     AXIS2_MODULE_DESC_ADD_OP(module_desc, env, op);
     
     return module_desc;

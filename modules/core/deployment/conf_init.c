@@ -21,6 +21,7 @@
 #include <axis2_error.h>
 #include <axis2_allocator.h>
 #include <axis2_dep_engine.h>
+#include <axis2_module.h>
 
 axis2_status_t AXIS2_CALL 
 axis2_init_modules(

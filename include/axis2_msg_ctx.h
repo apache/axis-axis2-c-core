@@ -85,16 +85,16 @@ extern "C"
 
 /* Message flows */
 /** In flow */
-#define AXIS2_IN_FLOW 1
+/*#define AXIS2_IN_FLOW 1*/
 
 /** In fault flow */
-#define AXIS2_IN_FAULT_FLOW 2
+/*#define AXIS2_IN_FAULT_FLOW 2*/
 
 /** Out flow */
-#define AXIS2_OUT_FLOW 3
+/*#define AXIS2_OUT_FLOW 3*/
 
 /** Out fault flow */
-#define AXIS2_OUT_FAULT_FLOW 4
+/*#define AXIS2_OUT_FAULT_FLOW 4*/
 
     /** Type name for struct axis2_msg_ctx_ops */
     typedef struct axis2_msg_ctx_ops axis2_msg_ctx_ops_t;

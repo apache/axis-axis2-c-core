@@ -261,7 +261,7 @@ axis2_engine_send(
         axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
         if (op)
         {
-            phases = AXIS2_OP_GET_PHASES_OUTFLOW(op, env);
+            phases = AXIS2_OP_GET_PHASES_OUT_FLOW(op, env);
         }
     }
     
@@ -378,7 +378,7 @@ axis2_engine_receive(
         if (op_ctx)
         {
             op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
-            op_specific_phases = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(op, env);
+            op_specific_phases = AXIS2_OP_GET_REMAINING_PHASES_IN_FLOW(op, env);
             axis2_engine_resume_invocation_phases(engine, env, op_specific_phases, msg_ctx);
             if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
             {
@@ -405,7 +405,7 @@ axis2_engine_receive(
         if (op_ctx)
         {
             op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
-            op_specific_phases = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(op, env);
+            op_specific_phases = AXIS2_OP_GET_REMAINING_PHASES_IN_FLOW(op, env);
             status = axis2_engine_invoke_phases(engine, env, op_specific_phases, msg_ctx);
             if (status != AXIS2_SUCCESS)
             {
@@ -1007,7 +1007,7 @@ axis2_engine_resume_send(
         axis2_op_t *op = AXIS2_OP_CTX_GET_OP(op_ctx, env);
         if (op)
         {
-            phases = AXIS2_OP_GET_PHASES_OUTFLOW(op, env);
+            phases = AXIS2_OP_GET_PHASES_OUT_FLOW(op, env);
         }
     }
     axis2_engine_resume_invocation_phases(engine, env, phases, msg_ctx);

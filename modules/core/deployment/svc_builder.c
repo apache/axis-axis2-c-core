@@ -392,8 +392,8 @@ axis2_svc_builder_populate_svc(
         return status;
     }
 
-    /* process INFLOW */
-    qinflowst = axis2_qname_create(env, AXIS2_INFLOWST, NULL, NULL);
+    /* process IN_FLOW */
+    qinflowst = axis2_qname_create(env, AXIS2_IN_FLOW_START, NULL, NULL);
     in_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, 
         env, qinflowst, svc_node, &in_flow_node);
     AXIS2_QNAME_FREE(qinflowst, env) ;
@@ -404,7 +404,7 @@ axis2_svc_builder_populate_svc(
 
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(svc_builder->desc_builder, env,
             in_flow_element, builder_impl->svc->param_container, in_flow_node);
-        status = AXIS2_SVC_SET_INFLOW(builder_impl->svc, env, flow);
+        status = AXIS2_SVC_SET_IN_FLOW(builder_impl->svc, env, flow);
         if(AXIS2_SUCCESS != status)
         {
             AXIS2_FLOW_FREE(flow, env);
@@ -412,7 +412,7 @@ axis2_svc_builder_populate_svc(
         }
     }
 
-    qoutflowst = axis2_qname_create(env, AXIS2_OUTFLOWST, NULL, NULL);
+    qoutflowst = axis2_qname_create(env, AXIS2_OUT_FLOW_START, NULL, NULL);
     out_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element,
         env, qoutflowst, svc_node, &out_flow_node);
     AXIS2_QNAME_FREE(qoutflowst, env) ;
@@ -423,7 +423,7 @@ axis2_svc_builder_populate_svc(
 
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(svc_builder->desc_builder, env,
             out_flow_element, builder_impl->svc->param_container, out_flow_node);
-        status = AXIS2_SVC_SET_OUTFLOW(builder_impl->svc, env, flow);
+        status = AXIS2_SVC_SET_OUT_FLOW(builder_impl->svc, env, flow);
         if(AXIS2_SUCCESS != status)
         {
             AXIS2_FLOW_FREE(flow, env);
@@ -444,7 +444,7 @@ axis2_svc_builder_populate_svc(
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(svc_builder->desc_builder, env,
             in_faultflow_element, builder_impl->svc->param_container, 
                 in_faultflow_node);
-        status = AXIS2_SVC_SET_FAULT_INFLOW(builder_impl->svc, env, flow);
+        status = AXIS2_SVC_SET_FAULT_IN_FLOW(builder_impl->svc, env, flow);
         if(AXIS2_SUCCESS != status)
         {
             AXIS2_FLOW_FREE(flow, env);
@@ -464,7 +464,7 @@ axis2_svc_builder_populate_svc(
         flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(svc_builder->desc_builder, env,
             out_faultflow_element, builder_impl->svc->param_container, 
                 out_faultflow_node);
-        status = AXIS2_SVC_SET_FAULT_OUTFLOW(builder_impl->svc, env, flow);
+        status = AXIS2_SVC_SET_FAULT_OUT_FLOW(builder_impl->svc, env, flow);
         if(AXIS2_SUCCESS != status)
         {
             AXIS2_FLOW_FREE(flow, env);

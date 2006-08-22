@@ -278,12 +278,12 @@ extern "C"
 
 /** Gets the in flow.
     @sa axis2_transport_in_desc_ops#get_inflow */
-#define AXIS2_TRANSPORT_IN_DESC_GET_INFLOW(transport_in_desc, env) \
+#define AXIS2_TRANSPORT_IN_DESC_GET_IN_FLOW(transport_in_desc, env) \
       ((transport_in_desc)->ops->get_inflow (transport_in_desc, env))
 
 /** Sets the in flow.
     @sa axis2_transport_in_desc_ops#set_inflow */
-#define AXIS2_TRANSPORT_IN_DESC_SET_INFLOW(transport_in_desc, env, inflow) \
+#define AXIS2_TRANSPORT_IN_DESC_SET_IN_FLOW(transport_in_desc, env, inflow) \
       ((transport_in_desc)->ops->set_inflow (transport_in_desc, env, inflow))
 
 /** Gets the fault flow.

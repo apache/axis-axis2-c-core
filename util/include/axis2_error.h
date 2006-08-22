@@ -116,7 +116,7 @@ extern "C"
         /* Data element of the OM Node is null */
         AXIS2_ERROR_DATA_ELEMENT_IS_NULL,
         /* In transport sender, Inflow is not allowed */
-        AXIS2_ERROR_INFLOW_NOT_ALLOWED_IN_TRS_OUT,
+        AXIS2_ERROR_IN_FLOW_NOT_ALLOWED_IN_TRS_OUT,
         /** Invalid handler state */
         AXIS2_ERROR_INVALID_HANDLER_STATE,
         /* Invalid Module Ref encountered */
@@ -138,7 +138,7 @@ extern "C"
         /* Operation name is missing */
         AXIS2_ERROR_OP_NAME_MISSING,
         /* In transport Receiver, Outflow is not allowed*/
-        AXIS2_ERROR_OUTFLOW_NOT_ALLOWED_IN_TRS_IN,
+        AXIS2_ERROR_OUT_FLOW_NOT_ALLOWED_IN_TRS_IN,
         /* Repository name cannot be NULL */
         AXIS2_ERROR_REPO_CAN_NOT_BE_NULL,
         /* Repository in path does not exist */

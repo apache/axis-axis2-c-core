@@ -373,24 +373,24 @@ axis2_phase_resolver_build_execution_chains(
         {
             switch (type) 
             {
-                case AXIS2_INFLOW:
+                case AXIS2_IN_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_INFLOW(module_desc, env);
+                    flow = AXIS2_MODULE_DESC_GET_IN_FLOW(module_desc, env);
                     break;
                 }
-                case AXIS2_OUTFLOW:
+                case AXIS2_OUT_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_OUTFLOW(module_desc, env);
+                    flow = AXIS2_MODULE_DESC_GET_OUT_FLOW(module_desc, env);
                     break;
                 }
-                case AXIS2_FAULT_INFLOW:
+                case AXIS2_FAULT_IN_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_FAULT_INFLOW(module_desc, env);
+                    flow = AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_desc, env);
                     break;
                 }
-                case AXIS2_FAULT_OUTFLOW:
+                case AXIS2_FAULT_OUT_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_FAULT_OUTFLOW(module_desc, env);
+                    flow = AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_desc, env);
                     break;
                 }
             }
@@ -484,26 +484,26 @@ axis2_phase_resolver_build_execution_chains(
     switch (type) 
     {
             
-        case AXIS2_INFLOW:
+        case AXIS2_IN_FLOW:
         {
             
             property = (axis2_property_t *) 
                 AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
-                svc->wsdl_svc->wsdl_component, env, AXIS2_INFLOW_KEY);
+                svc->wsdl_svc->wsdl_component, env, AXIS2_IN_FLOW_KEY);
             if(property)
                 flow = (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
             break;
         }
-        case AXIS2_OUTFLOW:
+        case AXIS2_OUT_FLOW:
         {
             property = (axis2_property_t *) 
                 AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
-                svc->wsdl_svc->wsdl_component, env, AXIS2_OUTFLOW_KEY);
+                svc->wsdl_svc->wsdl_component, env, AXIS2_OUT_FLOW_KEY);
             if(property)
                 flow = (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
             break;
         }
-        case AXIS2_FAULT_INFLOW:
+        case AXIS2_FAULT_IN_FLOW:
         {
             property = (axis2_property_t *) 
                 AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
@@ -512,7 +512,7 @@ axis2_phase_resolver_build_execution_chains(
                 flow = (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
             break;
         }
-        case AXIS2_FAULT_OUTFLOW:
+        case AXIS2_FAULT_OUT_FLOW:
         {
             property = (axis2_property_t *) 
                 AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(resolver_impl->
@@ -621,25 +621,25 @@ axis2_phase_resolver_build_execution_chains(
     
     switch (type) 
     {
-        case AXIS2_INFLOW:
+        case AXIS2_IN_FLOW:
         {
             axis2_array_list_t *phase_list = NULL;
 
-            phase_list = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(op, env);
+            phase_list = AXIS2_OP_GET_REMAINING_PHASES_IN_FLOW(op, env);
             resolver_impl->phase_holder = 
                 axis2_phase_holder_create_with_phases(env, phase_list);
             break;
         }
-        case AXIS2_OUTFLOW:
+        case AXIS2_OUT_FLOW:
         {
             axis2_array_list_t *phase_list = NULL;
             
-            phase_list = AXIS2_OP_GET_PHASES_OUTFLOW(op, env);
+            phase_list = AXIS2_OP_GET_PHASES_OUT_FLOW(op, env);
             resolver_impl->phase_holder = 
                 axis2_phase_holder_create_with_phases(env, phase_list);
             break;
         }
-        case AXIS2_FAULT_INFLOW:
+        case AXIS2_FAULT_IN_FLOW:
         {
             axis2_array_list_t *phase_list = NULL;
             
@@ -648,7 +648,7 @@ axis2_phase_resolver_build_execution_chains(
                 axis2_phase_holder_create_with_phases(env, phase_list);
             break;
         }
-        case AXIS2_FAULT_OUTFLOW:
+        case AXIS2_FAULT_OUT_FLOW:
         {
             axis2_array_list_t *phase_list = NULL;
             
@@ -784,13 +784,13 @@ axis2_phase_resolver_build_in_transport_chains(axis2_phase_resolver_t *
 
         switch (type) 
         {
-            case AXIS2_INFLOW:
+            case AXIS2_IN_FLOW:
             {
-                flow = AXIS2_TRANSPORT_IN_DESC_GET_INFLOW(transport, env);
+                flow = AXIS2_TRANSPORT_IN_DESC_GET_IN_FLOW(transport, env);
                 phase = AXIS2_TRANSPORT_IN_DESC_GET_IN_PHASE(transport, env);
                 break;
             }
-            case AXIS2_FAULT_INFLOW:
+            case AXIS2_FAULT_IN_FLOW:
             {
                 flow = AXIS2_TRANSPORT_IN_DESC_GET_FAULTFLOW(transport, env);
                 phase = AXIS2_TRANSPORT_IN_DESC_GET_FAULTPHASE(transport, env);
@@ -911,13 +911,13 @@ axis2_phase_resolver_build_out_transport_chains(axis2_phase_resolver_t *phase_re
         axis2_phase_t *phase = NULL;
         
         switch (type) {
-            case AXIS2_OUTFLOW:
+            case AXIS2_OUT_FLOW:
             {
-                flow = AXIS2_TRANSPORT_OUT_DESC_GET_OUTFLOW(transport, env);
+                flow = AXIS2_TRANSPORT_OUT_DESC_GET_OUT_FLOW(transport, env);
                 phase = AXIS2_TRANSPORT_OUT_DESC_GET_OUT_PHASE(transport, env);
                 break;
             }
-            case AXIS2_FAULT_OUTFLOW:
+            case AXIS2_FAULT_OUT_FLOW:
             {
                 flow = AXIS2_TRANSPORT_OUT_DESC_GET_FAULTFLOW(transport, env);
                 phase = AXIS2_TRANSPORT_OUT_DESC_GET_FAULTPHASE(transport, env);
@@ -1058,7 +1058,7 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
         axis2_svc_grp_t *svc_grp = NULL;
         void *v = NULL;
         axis2_hash_index_t *index_j = NULL;
-        axis2_qname_t *mod_name = NULL; 
+        const axis2_qname_t *mod_name = NULL; 
 
         axis2_hash_this (index_i, NULL, NULL, &v);
         svc_grp = (axis2_svc_grp_t *) v;
@@ -1093,7 +1093,7 @@ axis2_phase_resolver_engage_module_globally(axis2_phase_resolver_t *phase_resolv
                 return status;
             }
         }
-        mod_name = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
+        mod_name = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
         status = AXIS2_SVC_GRP_ADD_MODULE(svc_grp, env, 
             mod_name);
         
@@ -1137,23 +1137,23 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
         int j = 0;
         axis2_array_list_t *modules = NULL;
         axis2_flow_t *flow = NULL;
-        axis2_qname_t *module_desc_qname = NULL;
+        const axis2_qname_t *module_desc_qname = NULL;
         int size = 0;
 
         axis2_hash_this (index_i, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
         modules = AXIS2_OP_GET_MODULES(op_desc, env);
-        module_desc_qname = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
+        module_desc_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
         size = AXIS2_ARRAY_LIST_SIZE(modules, env);
         for(j = 0; j < size; j++)
         {
             axis2_module_desc_t *module_desc_l = NULL;
-            axis2_qname_t *module_desc_qname_l = NULL;
+            const axis2_qname_t *module_desc_qname_l = NULL;
 
             module_desc_l = (axis2_module_desc_t *) 
                 AXIS2_ARRAY_LIST_GET(modules, env, j);
            
-            module_desc_qname_l = AXIS2_MODULE_DESC_GET_NAME(module_desc_l , 
+            module_desc_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l , 
                 env);
             if(AXIS2_QNAME_EQUALS(module_desc_qname_l, env, module_desc_qname))
             {
@@ -1168,11 +1168,11 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
         for(type = 1; type < 5; type++)
         {
             switch (type) {
-                case AXIS2_INFLOW:
+                case AXIS2_IN_FLOW:
                 {
                     axis2_array_list_t *phase_list = NULL; 
 
-                    phase_list = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(op_desc, env);
+                    phase_list = AXIS2_OP_GET_REMAINING_PHASES_IN_FLOW(op_desc, env);
                     if(resolver_impl->phase_holder)
                     {
                         AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
@@ -1182,11 +1182,11 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
                         axis2_phase_holder_create_with_phases(env, phase_list);
                     break;
                 }
-                case AXIS2_OUTFLOW:
+                case AXIS2_OUT_FLOW:
                 {
                     axis2_array_list_t *phase_list = NULL;
 
-                    phase_list = AXIS2_OP_GET_PHASES_OUTFLOW(op_desc, env);
+                    phase_list = AXIS2_OP_GET_PHASES_OUT_FLOW(op_desc, env);
                     if(resolver_impl->phase_holder)
                     {
                         AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
@@ -1196,7 +1196,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
                         axis2_phase_holder_create_with_phases(env, phase_list);
                     break;
                 }
-                case AXIS2_FAULT_INFLOW:
+                case AXIS2_FAULT_IN_FLOW:
                 {
                     axis2_array_list_t *phase_list = NULL;
 
@@ -1210,7 +1210,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
                         axis2_phase_holder_create_with_phases(env, phase_list);
                     break;
                 }
-                case AXIS2_FAULT_OUTFLOW:
+                case AXIS2_FAULT_OUT_FLOW:
                 {
                     axis2_array_list_t *phase_list = NULL; 
 
@@ -1230,24 +1230,24 @@ axis2_phase_resolver_engage_module_to_svc_from_global(axis2_phase_resolver_t *ph
             /******************************************************************/
             switch (type) 
             {
-                case AXIS2_INFLOW:
+                case AXIS2_IN_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_INFLOW(module_desc, env);
+                    flow = AXIS2_MODULE_DESC_GET_IN_FLOW(module_desc, env);
                     break;
                 }
-                case AXIS2_OUTFLOW:
+                case AXIS2_OUT_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_OUTFLOW(module_desc, env);
+                    flow = AXIS2_MODULE_DESC_GET_OUT_FLOW(module_desc, env);
                     break;
                 }
-                case AXIS2_FAULT_INFLOW:
+                case AXIS2_FAULT_IN_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_FAULT_INFLOW(module_desc, env);
+                    flow = AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_desc, env);
                     break;
                 }
-                case AXIS2_FAULT_OUTFLOW:
+                case AXIS2_FAULT_OUT_FLOW:
                 {
-                    flow = AXIS2_MODULE_DESC_GET_FAULT_OUTFLOW(module_desc, env);
+                    flow = AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_desc, env);
                     break;
                 }
             }
@@ -1316,7 +1316,7 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
 
         switch (type) 
         {
-            case AXIS2_INFLOW:
+            case AXIS2_IN_FLOW:
             {
                 axis2_array_list_t *phase_list = NULL;
 
@@ -1333,7 +1333,7 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
                 if(!resolver_impl->phase_holder) continue;
                 break;
             }
-            case AXIS2_OUTFLOW:
+            case AXIS2_OUT_FLOW:
             {
                 axis2_array_list_t *phase_list = NULL;
 
@@ -1349,7 +1349,7 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
                 if(!resolver_impl->phase_holder) continue;
                 break;
             }
-            case AXIS2_FAULT_INFLOW:
+            case AXIS2_FAULT_IN_FLOW:
             {
                 axis2_array_list_t *phase_list = NULL;
 
@@ -1365,7 +1365,7 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
                 if(!resolver_impl->phase_holder) continue;
                 break;
             }
-            case AXIS2_FAULT_OUTFLOW:
+            case AXIS2_FAULT_OUT_FLOW:
             {
                 axis2_array_list_t *phase_list = NULL;
 
@@ -1387,24 +1387,24 @@ axis2_phase_resolver_engage_to_global_chain(axis2_phase_resolver_t *phase_resolv
         /**********************************************************************/
         switch (type) 
         {
-            case AXIS2_INFLOW:
+            case AXIS2_IN_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_INFLOW(module_desc, env);
+                flow = AXIS2_MODULE_DESC_GET_IN_FLOW(module_desc, env);
                 break;
             }
-            case AXIS2_OUTFLOW:
+            case AXIS2_OUT_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_OUTFLOW(module_desc, env);
+                flow = AXIS2_MODULE_DESC_GET_OUT_FLOW(module_desc, env);
                 break;
             }
-            case AXIS2_FAULT_INFLOW:
+            case AXIS2_FAULT_IN_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_FAULT_INFLOW(module_desc, env);
+                flow = AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_desc, env);
                 break;
             }
-            case AXIS2_FAULT_OUTFLOW:
+            case AXIS2_FAULT_OUT_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_FAULT_OUTFLOW(module_desc, env);
+                flow = AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_desc, env);
                 break;
             }
         }
@@ -1466,7 +1466,7 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
     axis2_hash_t *ops = NULL;
     axis2_hash_index_t *index_i = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_qname_t *module_d_qname = NULL;
+    const axis2_qname_t *module_d_qname = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
@@ -1483,7 +1483,7 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
     {
         return status;
     }
-    module_d_qname = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
+    module_d_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
     for (index_i = axis2_hash_first (ops, env); index_i; index_i = 
             axis2_hash_next (env, index_i))
     {
@@ -1501,10 +1501,10 @@ axis2_phase_resolver_engage_module_to_svc(axis2_phase_resolver_t *phase_resolver
         for(j = 0; j < size; j++)
         {
             axis2_module_desc_t *module_desc_l = NULL;
-            axis2_qname_t *module_d_qname_l = NULL;
+            const axis2_qname_t *module_d_qname_l = NULL;
 
             module_desc_l = AXIS2_ARRAY_LIST_GET(modules, env, j);
-            module_d_qname_l = AXIS2_MODULE_DESC_GET_NAME(module_desc_l, env);
+            module_d_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l, env);
             if(0 == AXIS2_QNAME_EQUALS(module_d_qname, env, module_d_qname_l))
             {
                 engaged = AXIS2_TRUE;
@@ -1570,22 +1570,22 @@ axis2_phase_resolver_engage_module_to_op(
         
         switch (type) 
         {
-            case AXIS2_INFLOW:
+            case AXIS2_IN_FLOW:
             {
-                phases = AXIS2_OP_GET_REMAINING_PHASES_INFLOW(axis_op, env);
+                phases = AXIS2_OP_GET_REMAINING_PHASES_IN_FLOW(axis_op, env);
                 break;
             }
-            case AXIS2_OUTFLOW:
+            case AXIS2_OUT_FLOW:
             {
-                phases = AXIS2_OP_GET_PHASES_OUTFLOW(axis_op, env);
+                phases = AXIS2_OP_GET_PHASES_OUT_FLOW(axis_op, env);
                 break;
             }
-            case AXIS2_FAULT_INFLOW:
+            case AXIS2_FAULT_IN_FLOW:
             {
                 phases = AXIS2_OP_GET_PHASES_IN_FAULT_FLOW(axis_op, env);
                 break;
             }
-            case AXIS2_FAULT_OUTFLOW:
+            case AXIS2_FAULT_OUT_FLOW:
             {
                 phases = AXIS2_OP_GET_PHASES_OUT_FAULT_FLOW(axis_op, env);
                 break;
@@ -1601,24 +1601,24 @@ axis2_phase_resolver_engage_module_to_op(
         
         switch (type) 
         {
-            case AXIS2_INFLOW:
+            case AXIS2_IN_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_INFLOW(module_desc, env);
+                flow = AXIS2_MODULE_DESC_GET_IN_FLOW(module_desc, env);
                 break;
             }
-            case AXIS2_OUTFLOW:
+            case AXIS2_OUT_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_OUTFLOW(module_desc, env);
+                flow = AXIS2_MODULE_DESC_GET_OUT_FLOW(module_desc, env);
                 break;
             }
-            case AXIS2_FAULT_INFLOW:
+            case AXIS2_FAULT_IN_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_FAULT_INFLOW(module_desc, env);
+                flow = AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_desc, env);
                 break;
             }
-            case AXIS2_FAULT_OUTFLOW:
+            case AXIS2_FAULT_OUT_FLOW:
             {
-                flow = AXIS2_MODULE_DESC_GET_FAULT_OUTFLOW(module_desc, env);
+                flow = AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_desc, env);
                 break;
             }
         }

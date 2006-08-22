@@ -18,6 +18,7 @@
 #include <axis2_addr.h>
 #include <axis2_property.h>
 #include <xml_schema_obj_collection.h>
+#include <axis2_module.h>
 #include "../deployment/axis2_desc_builder.h"
 
 typedef struct axis2_svc_impl axis2_svc_impl_t;
@@ -1225,8 +1226,8 @@ axis2_svc_engage_module(
     {
         modu = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(collection_module,
             env, i);
-        if(AXIS2_QNAME_EQUALS(AXIS2_MODULE_DESC_GET_NAME(modu, env), env,  
-            AXIS2_MODULE_DESC_GET_NAME(moduleref, env)))
+        if(AXIS2_QNAME_EQUALS(AXIS2_MODULE_DESC_GET_QNAME(modu, env), env,  
+            AXIS2_MODULE_DESC_GET_QNAME(moduleref, env)))
         {
             /* module has already been engaged on the service. Operation 
              *terminated !!! 
@@ -1277,7 +1278,7 @@ axis2_svc_add_module_ops(
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
     
-    map = AXIS2_MODULE_DESC_GET_OPS(module_desc, env);
+    map = AXIS2_MODULE_DESC_GET_ALL_OPS(module_desc, env);
     pr = axis2_phase_resolver_create_with_config_and_svc(env, conf, svc);
     
     if(!pr)
@@ -1398,13 +1399,13 @@ axis2_svc_add_to_engaged_module_list(
     
     for(i = 0; i < size; i++)
     {
-        axis2_qname_t *module_d_name = NULL;
-        axis2_qname_t *module_d_name_l = NULL;
+        const axis2_qname_t *module_d_name = NULL;
+        const axis2_qname_t *module_d_name_l = NULL;
         
         module_desc = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(
             collection_module, env, i);
-        module_d_name = AXIS2_MODULE_DESC_GET_NAME(module_desc, env);
-        module_d_name_l = AXIS2_MODULE_DESC_GET_NAME(module_name, env);
+        module_d_name = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
+        module_d_name_l = AXIS2_MODULE_DESC_GET_QNAME(module_name, env);
             
         if(AXIS2_QNAME_EQUALS(module_d_name, env, module_d_name_l))
         {
@@ -1552,7 +1553,7 @@ axis2_svc_get_inflow(
 
     property = (axis2_property_t *)
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-            svc->wsdl_svc->wsdl_component, env, AXIS2_INFLOW_KEY);
+            svc->wsdl_svc->wsdl_component, env, AXIS2_IN_FLOW_KEY);
     if(property)
         return (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
     return NULL;
@@ -1573,7 +1574,7 @@ axis2_svc_set_inflow(
     AXIS2_PROPERTY_SET_VALUE(property, env, inflow);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_flow_free_void_arg);
     return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
-        wsdl_component, env, AXIS2_INFLOW_KEY, property);
+        wsdl_component, env, AXIS2_IN_FLOW_KEY, property);
 }
 
 axis2_flow_t *AXIS2_CALL
@@ -1587,7 +1588,7 @@ axis2_svc_get_outflow(
 
     property = (axis2_property_t *)
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(
-        svc->wsdl_svc->wsdl_component, env, AXIS2_OUTFLOW_KEY);
+        svc->wsdl_svc->wsdl_component, env, AXIS2_OUT_FLOW_KEY);
     if(property)
         return (axis2_flow_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
     return NULL;
@@ -1608,7 +1609,7 @@ axis2_svc_set_outflow(
     AXIS2_PROPERTY_SET_VALUE(property, env, outflow);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_flow_free_void_arg);
     return AXIS2_WSDL_COMPONENT_SET_COMPONENT_PROPERTY(svc->wsdl_svc->
-        wsdl_component, env, AXIS2_OUTFLOW_KEY, property);
+        wsdl_component, env, AXIS2_OUT_FLOW_KEY, property);
 }
 
 axis2_flow_t *AXIS2_CALL

@@ -287,12 +287,12 @@ extern "C"
 
 /** Gets the out flow.
     @sa axis2_transport_out_desc_ops#get_outflow */
-#define AXIS2_TRANSPORT_OUT_DESC_GET_OUTFLOW(transport_out_desc, env) \
+#define AXIS2_TRANSPORT_OUT_DESC_GET_OUT_FLOW(transport_out_desc, env) \
       ((transport_out_desc)->ops->get_outflow (transport_out_desc, env))
 
 /** Sets the out flow.
     @sa axis2_transport_out_desc_ops#set_outflow */
-#define AXIS2_TRANSPORT_OUT_DESC_SET_OUTFLOW(transport_out_desc, env, outflow) \
+#define AXIS2_TRANSPORT_OUT_DESC_SET_OUT_FLOW(transport_out_desc, env, outflow) \
       ((transport_out_desc)->ops->set_outflow (transport_out_desc, env, outflow))
 
 /** Get faultflow.

@@ -59,8 +59,8 @@ extern "C"
 #define AXIS2_TYPEMAPPINGST "typeMapping" /* typeMapping start tag */
 #define AXIS2_BEANMAPPINGST "beanMapping" /* beanMapping start tag */
 #define AXIS2_OPERATIONST "operation" /* operation start tag */
-#define AXIS2_INFLOWST "inflow" /* inflow start tag */
-#define AXIS2_OUTFLOWST "outflow" /* outflowr start tag */
+#define AXIS2_IN_FLOW_START "inflow" /* inflow start tag */
+#define AXIS2_OUT_FLOW_START "outflow" /* outflowr start tag */
 #define AXIS2_IN_FAILTFLOW "INfaultflow" /* faultflow start tag */
 #define AXIS2_OUT_FAILTFLOW "Outfaultflow" /* faultflow start tag */
 
