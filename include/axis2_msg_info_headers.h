@@ -67,6 +67,7 @@ extern "C"
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
          * @param to to
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_to)(
@@ -87,6 +88,7 @@ extern "C"
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
          * @param from pointer to from
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_from)(
@@ -107,6 +109,7 @@ extern "C"
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
          * @param reply_to 
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_reply_to)(
@@ -118,6 +121,7 @@ extern "C"
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
          * @param none none
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_reply_to_none)(
@@ -138,6 +142,7 @@ extern "C"
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
          * @param anonymous anonymous
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_reply_to_anonymous)(
@@ -167,6 +172,7 @@ extern "C"
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
          * @param fault fault_to
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_fault_to)(
@@ -178,6 +184,7 @@ extern "C"
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
          * @param none none
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_fault_to_none)(
@@ -198,6 +205,7 @@ extern "C"
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
          * @param anonymous anonymous 
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_fault_to_anonymous)(
@@ -227,6 +235,7 @@ extern "C"
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
          * @param action pointer to action
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_action)(
@@ -247,6 +256,7 @@ extern "C"
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
          * @param message_id pointer to message id
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_message_id)(
@@ -267,6 +277,7 @@ extern "C"
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
          * @param relates_to relates_to
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_relates_to)(
@@ -287,6 +298,7 @@ extern "C"
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
          * @param ref_param pointer to reference param
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
 
         axis2_status_t (AXIS2_CALL *
@@ -298,6 +310,7 @@ extern "C"
         /**
          * @param msg_info_headers pointer to message info headers
          * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(

@@ -67,6 +67,7 @@ extern "C"
          * @param endpoint_ref pointer to endpoint ref
          * @param env pointer to environment struct
          * @param address pointer to address
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_address)(
@@ -87,6 +88,7 @@ extern "C"
          * @param endpoint_ref pointer to endpoint ref
          * @param env pointer to environment struct
          * @param interface_name pointer to interface name
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_interface_qname)(
@@ -107,6 +109,7 @@ extern "C"
          * @param endpoint_ref pointer to endpoint ref
          * @param env pointer to environment struct
          * @param ref_properties ref properties
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_ref_properties)(
@@ -163,6 +166,7 @@ extern "C"
          * @param endpoint_ref pointer to endpoint ref
          * @param env pointer to environment struct
          * @param ref_param_node ref param node
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_ref_param)(
@@ -174,6 +178,7 @@ extern "C"
          * @param endpoint_ref pointer to endpoint ref
          * @param env pointer to environment struct
          * @param meta_deta_node meta data node
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_meta_data)(
@@ -185,6 +190,7 @@ extern "C"
          * @param endpoint_ref pointer to endpoint ref
          * @param env pointer to environment struct
          * @param attr attribute
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_ref_attribute)(
@@ -196,6 +202,7 @@ extern "C"
          * @param endpoint_ref pointer to endpoint ref
          * @param env pointer to environment struct
          * @param attr attribute
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_meta_attribute)(
@@ -207,6 +214,7 @@ extern "C"
          * @param endpoint_ref pointer to endpoint ref
          * @param env pointer to environment struct
          * @param extension_node pointer to extension node
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_extension)(
@@ -241,6 +249,7 @@ extern "C"
          * @param endpoint_ref pointer to endpoint ref
          * @param env pointer to environment struct
          * @param svc_name pointer to service name
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_svc_name)(
@@ -278,6 +287,7 @@ extern "C"
         /**
          * @param endpoint_ref pointer to endpoint ref
          * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(

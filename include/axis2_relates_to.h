@@ -37,7 +37,9 @@ extern "C"
 {
 #endif
 
+    /** Type name for struct axis2_relates_to */
     typedef struct axis2_relates_to axis2_relates_to_t;
+    /** Type name for struct axis2_relates_to_ops */
     typedef struct axis2_relates_to_ops axis2_relates_to_ops_t;
 
 
@@ -59,6 +61,7 @@ extern "C"
          * @param relates_to relates to
          * @param env pointer to environment struct
          * @param value pointer to value
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_value)(
@@ -79,6 +82,7 @@ extern "C"
          * @param relates_to relates to
          * @param env pointer to environment struct
          * @param relationship_type pointer to relationship type
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_relationship_type)(
@@ -89,6 +93,7 @@ extern "C"
         /**
          * @param relates_to relates to
          * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
