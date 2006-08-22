@@ -2507,7 +2507,7 @@ axis2_msg_ctx_set_current_handler_index(
         if (handler)
         {
             AXIS2_INTF_TO_IMPL(msg_ctx)->paused_handler_name = 
-                AXIS2_HANDLER_GET_QNAME(handler, env);
+                (axis2_qname_t *)AXIS2_HANDLER_GET_QNAME(handler, env);
         }
     }
     return AXIS2_SUCCESS;
