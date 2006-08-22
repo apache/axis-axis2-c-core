@@ -108,7 +108,7 @@ extern "C"
          * @param env pointer to environment struct
          * @return pointer to QName of the handler
          */
-        axis2_qname_t *(AXIS2_CALL *
+        const axis2_qname_t *(AXIS2_CALL *
                 get_qname)(
                     const axis2_handler_t *handler,
                     const axis2_env_t *env);

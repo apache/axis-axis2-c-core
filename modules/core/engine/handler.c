@@ -35,7 +35,7 @@ axis2_handler_free(
     axis2_handler_t *handler, 
     const axis2_env_t *env);
                     
-axis2_qname_t *AXIS2_CALL 
+const axis2_qname_t *AXIS2_CALL 
 axis2_handler_get_qname(
     const axis2_handler_t *handler, 
     const axis2_env_t *env) ;
@@ -133,7 +133,7 @@ axis2_handler_free(
     return AXIS2_SUCCESS;    
 }
 
-axis2_qname_t *AXIS2_CALL 
+const axis2_qname_t *AXIS2_CALL 
 axis2_handler_get_qname(
     const axis2_handler_t *handler, 
     const axis2_env_t *env) 

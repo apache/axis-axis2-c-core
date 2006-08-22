@@ -165,7 +165,7 @@ AXIS2_DECLARE_DATA struct axis2_dll_desc_ops
     axis2_char_t *(AXIS2_CALL *
     create_platform_specific_dll_name)(axis2_dll_desc_t *dll_desc,
                                         const axis2_env_t *env,
-                                        axis2_char_t *class_name);
+                                        const axis2_char_t *class_name);
 
         
 };

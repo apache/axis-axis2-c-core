@@ -41,7 +41,7 @@ void Testaxis2_conf_set_default_dispatchers(CuTest *tc)
     size = AXIS2_ARRAY_LIST_SIZE(in_phases, env);
     for(i = 0; i < size; i++)
     {
-        axis2_qname_t *qname = NULL;
+        const axis2_qname_t *qname = NULL;
         axis2_char_t *handler_name = NULL;
         axis2_array_list_t *handlers = NULL;
         axis2_handler_t *handler = NULL;

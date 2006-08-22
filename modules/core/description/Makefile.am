@@ -4,7 +4,6 @@ libaxis2_description_la_SOURCES = \
                                 desc.c \
                                 op.c \
                                 svc.c \
-                                module.c \
                                 module_desc.c \
                                 svc_grp.c \
                                 phase_rule.c \

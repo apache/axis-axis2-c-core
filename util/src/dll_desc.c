@@ -123,7 +123,7 @@ axis2_dll_desc_get_timestamp (axis2_dll_desc_t *dll_desc,
 axis2_char_t * AXIS2_CALL
 axis2_dll_desc_create_platform_specific_dll_name(axis2_dll_desc_t *dll_desc,
                                                     const axis2_env_t *env,
-                                                    axis2_char_t *class_name);
+                                                    const axis2_char_t *class_name);
                        
 /************************* End of function headers ****************************/   
 
@@ -453,7 +453,7 @@ axis2_dll_desc_get_error_code (
 axis2_char_t* AXIS2_CALL
 axis2_dll_desc_create_platform_specific_dll_name(axis2_dll_desc_t *dll_desc,
                                                     const axis2_env_t *env,
-                                                    axis2_char_t *class_name)
+                                                    const axis2_char_t *class_name)
 {
     axis2_dll_desc_impl_t *dll_desc_impl = NULL;
     axis2_char_t *temp_name = NULL;

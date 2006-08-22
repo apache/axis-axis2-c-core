@@ -16,10 +16,6 @@
  
 #include <axis2_module_desc.h>
 
-/** 
- * @brief Module Descripton struct impl
- *   Module Descripton 
- */ 
 typedef struct axis2_module_desc_impl
 {
     axis2_module_desc_t module_desc;    
@@ -27,8 +23,8 @@ typedef struct axis2_module_desc_impl
     axis2_qname_t *qname;
     axis2_conf_t *parent;
     /** 
-     * To store module opeartions , which are suppose to be added to a service 
-     * if it is engaged to a service
+     * To store module opeartions , which are supposed to be added to a service 
+     * the module is engaged to a service
      */
     axis2_hash_t *ops;
 
@@ -36,8 +32,6 @@ typedef struct axis2_module_desc_impl
 axis2_module_desc_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(module_desc) ((axis2_module_desc_impl_t *)module_desc)
-
-/************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
 axis2_module_desc_free(
@@ -155,8 +149,6 @@ axis2_module_desc_set_module(
     const axis2_env_t *env,
     axis2_module_t *module);                                     
 
-/************************** End of function prototypes ************************/
-
 axis2_module_desc_t *AXIS2_CALL 
 axis2_module_desc_create(
     const axis2_env_t *env)
@@ -205,50 +197,41 @@ axis2_module_desc_create(
         return NULL;        
     }
     
-   module_desc_impl->module_desc.ops = 
-      AXIS2_MALLOC (env->allocator, sizeof(axis2_module_desc_ops_t));
-   if(NULL == module_desc_impl->module_desc.ops)
+    module_desc_impl->module_desc.ops = 
+        AXIS2_MALLOC (env->allocator, sizeof(axis2_module_desc_ops_t));
+    if(NULL == module_desc_impl->module_desc.ops)
     {
         axis2_module_desc_free(&(module_desc_impl->module_desc), env);
-      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     
-   module_desc_impl->module_desc.ops->free = axis2_module_desc_free;
+    module_desc_impl->module_desc.ops->free = axis2_module_desc_free;
     module_desc_impl->module_desc.ops->get_inflow = axis2_module_desc_get_inflow;
     module_desc_impl->module_desc.ops->set_inflow = axis2_module_desc_set_inflow;
     module_desc_impl->module_desc.ops->get_outflow = axis2_module_desc_get_outflow;
     module_desc_impl->module_desc.ops->set_outflow = axis2_module_desc_set_outflow;
     module_desc_impl->module_desc.ops->get_module = axis2_module_desc_get_module;
     module_desc_impl->module_desc.ops->set_module = axis2_module_desc_set_module;
-    
     module_desc_impl->module_desc.ops->get_fault_inflow = 
             axis2_module_desc_get_fault_inflow;
-    
     module_desc_impl->module_desc.ops->set_fault_inflow = 
             axis2_module_desc_set_fault_inflow;
-    
     module_desc_impl->module_desc.ops->get_fault_outflow = 
         axis2_module_desc_get_fault_outflow;
-    
     module_desc_impl->module_desc.ops->set_fault_outflow = 
             axis2_module_desc_set_fault_outflow;
-    
     module_desc_impl->module_desc.ops->get_name = axis2_module_desc_get_name;
     module_desc_impl->module_desc.ops->set_name = axis2_module_desc_set_name;
-    
     module_desc_impl->module_desc.ops->add_op = 
             axis2_module_desc_add_op;
-    
     module_desc_impl->module_desc.ops->get_ops = 
             axis2_module_desc_get_ops;
-    
     module_desc_impl->module_desc.ops->get_parent = axis2_module_desc_get_parent;
     module_desc_impl->module_desc.ops->set_parent = axis2_module_desc_set_parent;
     module_desc_impl->module_desc.ops->add_param = axis2_module_desc_add_param;
     module_desc_impl->module_desc.ops->get_param = axis2_module_desc_get_param;
     module_desc_impl->module_desc.ops->get_params = axis2_module_desc_get_params;
-    
     module_desc_impl->module_desc.ops->is_param_locked = 
             axis2_module_desc_is_param_locked;
     
@@ -275,9 +258,6 @@ axis2_module_desc_create_with_qname(
       
    return &(module_desc_impl->module_desc);
 }
-
-
-/*************************** Start of op impls *************************/
 
 axis2_status_t AXIS2_CALL
 axis2_module_desc_free(

@@ -1321,7 +1321,7 @@ axis2_dep_engine_add_module_flow_handlers(
     {
         axis2_handler_desc_t *handlermd = NULL;
         axis2_handler_t *handler = NULL;
-        axis2_qname_t *handler_qname = NULL;
+        const axis2_qname_t *handler_qname = NULL;
         axis2_char_t *handler_name = NULL;
         AXIS2_HANDLER_CREATE_FUNC handler_create_func = NULL;
         
@@ -1356,7 +1356,7 @@ axis2_dep_engine_add_flow_handlers(
         axis2_handler_desc_t *handlermd = NULL;
         axis2_handler_t *handler = NULL;
         axis2_char_t *handler_dll_name = NULL;
-        axis2_char_t *handler_class_name = NULL;
+        const axis2_char_t *handler_class_name = NULL;
         axis2_dll_desc_t *dll_desc = NULL;
         axis2_param_t *impl_info_param = NULL;
         
