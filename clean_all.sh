@@ -9,4 +9,5 @@ cd ../woden
 make distclean
 cd ..
 sh clean.sh
+rm -rf deploy
 
