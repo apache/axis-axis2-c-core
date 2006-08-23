@@ -71,7 +71,7 @@ axis2_bool_t AXIS2_CALL
 axis2_op_is_param_locked(
     axis2_op_t *op, 
     const axis2_env_t *env,
-    axis2_char_t *param_name);
+    const axis2_char_t *param_name);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_parent(
@@ -885,7 +885,7 @@ axis2_bool_t AXIS2_CALL
 axis2_op_is_param_locked(
     axis2_op_t *op, 
     const axis2_env_t *env,
-    axis2_char_t *param_name)
+    const axis2_char_t *param_name)
 {
     axis2_svc_t *parent = NULL;
     axis2_param_t *param = NULL;

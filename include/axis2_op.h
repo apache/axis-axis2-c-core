@@ -138,7 +138,7 @@ extern "C"
                 is_param_locked)(
                     axis2_op_t *op,
                     const axis2_env_t *env,
-                    axis2_char_t *param_name);
+                    const axis2_char_t *param_name);
 
         /**
          * @param op pointer to operation

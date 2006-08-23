@@ -100,7 +100,7 @@ axis2_bool_t AXIS2_CALL
 axis2_svc_grp_is_param_locked(
     axis2_svc_grp_t *svc_grp, 
     const axis2_env_t *env,
-    axis2_char_t *param_name);
+    const axis2_char_t *param_name);
                                 
 axis2_status_t AXIS2_CALL
 axis2_svc_grp_add_module(
@@ -538,7 +538,7 @@ axis2_bool_t AXIS2_CALL
 axis2_svc_grp_is_param_locked(
     axis2_svc_grp_t *svc_grp,
     const axis2_env_t *env,
-    axis2_char_t *param_name) 
+    const axis2_char_t *param_name) 
 {
     axis2_bool_t locked = AXIS2_FALSE;
     axis2_conf_t *parent = NULL;
