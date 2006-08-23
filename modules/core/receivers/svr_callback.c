@@ -15,86 +15,92 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #include <axis2_svr_callback.h>
 #include <axis2_engine.h>
 
-/** 
+/**
  * @brief Message Receiver struct impl
  * Axis2 Message Receiver impl  
- */ 
+ */
 typedef struct axis2_svr_callback_impl
 {
-   axis2_svr_callback_t svr_callback;
+    axis2_svr_callback_t svr_callback;
     axis2_char_t *scope;
-} axis2_svr_callback_impl_t;
+}
+axis2_svr_callback_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(svr_callback) ((axis2_svr_callback_impl_t *) svr_callback)
-   
+
 /*************************** Function headers *********************************/
 
 axis2_status_t AXIS2_CALL
-axis2_svr_callback_free (axis2_svr_callback_t *svr_callback,
-                            const axis2_env_t *env);
+axis2_svr_callback_free(
+    axis2_svr_callback_t *svr_callback,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_svr_callback_handle_result(axis2_svr_callback_t *svr_callback,
-                                    const axis2_env_t *env,
-                                    axis2_msg_ctx_t *msg_ctx);
+axis2_svr_callback_handle_result(
+    axis2_svr_callback_t *svr_callback,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL
-axis2_svr_callback_handle_fault(axis2_svr_callback_t *svr_callback,
-                                const axis2_env_t *env,
-                                axis2_msg_ctx_t *msg_ctx);
-                                  
-/************************* End of function headers ****************************/   
+axis2_svr_callback_handle_fault(
+    axis2_svr_callback_t *svr_callback,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx);
 
-axis2_svr_callback_t * AXIS2_CALL
-axis2_svr_callback_create (const axis2_env_t *env)
+/************************* End of function headers ****************************/
+
+axis2_svr_callback_t *AXIS2_CALL
+axis2_svr_callback_create(
+    const axis2_env_t *env)
 {
     axis2_svr_callback_impl_t *svr_callback_impl = NULL;
-    
+
     AXIS2_ENV_CHECK(env, NULL);
-    
-   svr_callback_impl = (axis2_svr_callback_impl_t *) 
-        AXIS2_MALLOC (env->allocator, sizeof (axis2_svr_callback_impl_t));
-    
-   if(NULL == svr_callback_impl)
+
+    svr_callback_impl = (axis2_svr_callback_impl_t *)
+            AXIS2_MALLOC (env->allocator, sizeof (axis2_svr_callback_impl_t));
+
+    if(NULL == svr_callback_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    
+
     svr_callback_impl->svr_callback.ops = NULL;
-    
-    svr_callback_impl->svr_callback.ops = (axis2_svr_callback_ops_t *) 
-        AXIS2_MALLOC( env->allocator, sizeof(axis2_svr_callback_ops_t));
-    
-   if(NULL == svr_callback_impl->svr_callback.ops)
-   {
+
+    svr_callback_impl->svr_callback.ops = (axis2_svr_callback_ops_t *)
+            AXIS2_MALLOC( env->allocator, sizeof(axis2_svr_callback_ops_t));
+
+    if(NULL == svr_callback_impl->svr_callback.ops)
+    {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_svr_callback_free(&(svr_callback_impl->svr_callback), env);
-        
+
         return NULL;
-   }
-    
-   svr_callback_impl->svr_callback.ops->free = axis2_svr_callback_free;
-    svr_callback_impl->svr_callback.ops->handle_result = 
-            axis2_svr_callback_handle_result;
-    svr_callback_impl->svr_callback.ops->handle_fault = 
-            axis2_svr_callback_handle_fault;
-                  
-   return &(svr_callback_impl->svr_callback);
+    }
+
+    svr_callback_impl->svr_callback.ops->free = axis2_svr_callback_free;
+    svr_callback_impl->svr_callback.ops->handle_result =
+        axis2_svr_callback_handle_result;
+    svr_callback_impl->svr_callback.ops->handle_fault =
+        axis2_svr_callback_handle_fault;
+
+    return &(svr_callback_impl->svr_callback);
 }
 
 /******************************************************************************/
 
 axis2_status_t AXIS2_CALL
-axis2_svr_callback_free (axis2_svr_callback_t *svr_callback,
-                        const axis2_env_t *env)
+axis2_svr_callback_free(
+    axis2_svr_callback_t *svr_callback,
+    const axis2_env_t *env)
 {
     axis2_svr_callback_impl_t *svr_callback_impl = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     svr_callback_impl = AXIS2_INTF_TO_IMPL(svr_callback);
 
@@ -110,22 +116,23 @@ axis2_svr_callback_free (axis2_svr_callback_t *svr_callback,
         svr_callback_impl = NULL;
     }
 
-   return AXIS2_SUCCESS;
+    return AXIS2_SUCCESS;
 }
-    
+
 axis2_status_t AXIS2_CALL
-axis2_svr_callback_handle_result(axis2_svr_callback_t *svr_callback,
-                                    const axis2_env_t *env,
-                                    axis2_msg_ctx_t *msg_ctx)
+axis2_svr_callback_handle_result(
+    axis2_svr_callback_t *svr_callback,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx)
 {
     axis2_engine_t *engine = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-    
+
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
     conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env);
@@ -138,19 +145,20 @@ axis2_svr_callback_handle_result(axis2_svr_callback_t *svr_callback,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_svr_callback_handle_fault(axis2_svr_callback_t *svr_callback,
-                                const axis2_env_t *env,
-                                axis2_msg_ctx_t *msg_ctx)
+axis2_svr_callback_handle_fault(
+    axis2_svr_callback_t *svr_callback,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx)
 {
     axis2_engine_t *engine = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_msg_ctx_t *fault_ctx = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-    
+
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
     svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
     conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env);
@@ -159,7 +167,7 @@ axis2_svr_callback_handle_fault(axis2_svr_callback_t *svr_callback,
     {
         return AXIS2_FAILURE;
     }
-    
+
     fault_ctx = AXIS2_ENGINE_CREATE_FAULT_MSG_CTX(engine, env, msg_ctx);
     return AXIS2_ENGINE_SEND_FAULT(engine, env, fault_ctx);
 }

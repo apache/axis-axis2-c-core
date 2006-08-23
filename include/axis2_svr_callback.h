@@ -49,9 +49,9 @@ extern "C"
     {
         /**
          * Deallocate memory
-    * @param svr_callback pointer to server callback struct
-    * @param env pointer to environment struct
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @param svr_callback pointer to server callback struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -60,10 +60,10 @@ extern "C"
 
         /**
          * Handle result
-    * @param svr_callback pointer to server callback struct
-    * @param env pointer to environment struct
+         * @param svr_callback pointer to server callback struct
+         * @param env pointer to environment struct
          * @param msg_ctx pointer to message context
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 handle_result)(
@@ -73,15 +73,16 @@ extern "C"
 
         /**
          * Handle fault
-    * @param svr_callback pointer to server callback struct
-    * @param env pointer to environment struct
+         * @param svr_callback pointer to server callback struct
+         * @param env pointer to environment struct
          * @param msg_ctx pointer to message context
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                handle_fault) (axis2_svr_callback_t *svr_callback,
-                        const axis2_env_t *env,
-                        axis2_msg_ctx_t *msg_ctx);
+                handle_fault)(
+                    axis2_svr_callback_t *svr_callback,
+                    const axis2_env_t *env,
+                    axis2_msg_ctx_t *msg_ctx);
     };
 
     /**
@@ -89,7 +90,7 @@ extern "C"
      */
     struct axis2_svr_callback
     {
-   /** operations of server callback */
+        /** operations of server callback */
         axis2_svr_callback_ops_t *ops;
     };
 
@@ -98,11 +99,12 @@ extern "C"
      * @param env pointer to environment struct
      * @return newly created server callback object
      */
-    AXIS2_EXTERN axis2_svr_callback_t * AXIS2_CALL
-    axis2_svr_callback_create (const axis2_env_t *env);
+    AXIS2_EXTERN axis2_svr_callback_t *AXIS2_CALL
+    axis2_svr_callback_create(
+        const axis2_env_t *env);
 
 /************************** Start of function macros **************************/
-   
+
 /** Frees server callback.
     @sa axis2_svr_callback_ops#free */
 #define AXIS2_SVR_CALLBACK_FREE(svr_callback, env) \
