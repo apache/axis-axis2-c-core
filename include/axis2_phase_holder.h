@@ -17,7 +17,8 @@
 #ifndef AXIS2_PHASE_HOLDER_H
 #define AXIS2_PHASE_HOLDER_H
 
-/** @defgroup axis2_phase_holder phase holder
+/** 
+ * @defgroup axis2_phase_holder phase holder
  * @ingroup axis2_phase_resolver
  * Description
  * @{
@@ -58,12 +59,13 @@ extern "C"
      * Wsdl Phase Holder ops struct
      * Encapsulator struct for ops of axis2_phase_holder
      */
-    AXIS2_DECLARE_DATA struct axis2_phase_holder_ops
+    struct axis2_phase_holder_ops
     {
-        /** De-allocate memory
-          * @param phase_holder pointer to phase holder
-     * @param env pointer to environment struct
-          */
+        /** 
+         * De-allocate memory
+         * @param phase_holder pointer to phase holder
+         * @param env pointer to environment struct
+         */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_phase_holder_t *phase_holder,
@@ -72,9 +74,8 @@ extern "C"
         /**
          * Method isPhaseExist
          * @param phase_holder pointer to phase holder
-    * @param env pointer to environment struct
-    * @param phase_name pointer to phase name
-         * @return
+         * @param env pointer to environment struct
+         * @param phase_name pointer to phase name
          */
         axis2_bool_t (AXIS2_CALL *
                 is_phase_exist)(
@@ -84,8 +85,8 @@ extern "C"
 
         /**
          * @param phase_holder pointer to phase holder
-    * @param env pointer to environment struct
-    * @para handler pointer to handler
+         * @param env pointer to environment struct
+         * @para handler pointer to handler
          */
         axis2_status_t (AXIS2_CALL *
                 add_handler)(
@@ -96,13 +97,13 @@ extern "C"
         /**
          * this method is used to get the actual phase object given in the phase
          * array list
-    * @param phase_holder pointer to phase holder
-    * @param env pointer to environment struct
-    * @param phase_name pointer to phase name
+         * @param phase_holder pointer to phase holder
+         * @param env pointer to environment struct
+         * @param phase_name pointer to phase name
          */
-        struct axis2_phase * (AXIS2_CALL *
+        struct axis2_phase *(AXIS2_CALL *
                 get_phase)(
-                    axis2_phase_holder_t *phase_holder,
+                    const axis2_phase_holder_t *phase_holder,
                     const axis2_env_t *env,
                     axis2_char_t *phase_name);
 
@@ -110,10 +111,10 @@ extern "C"
          * This method is to build the transport phase , here load the corresponding 
          * handlers and added them
          * in to correct phase
-    * @param phase_holder pointer to phase holder
-    * @param env pointer to environment struct
-    * @param phase pointer to phase
-    * @param handlers pointer to handlers
+         * @param phase_holder pointer to phase holder
+         * @param env pointer to environment struct
+         * @param phase pointer to phase
+         * @param handlers pointer to handlers
          */
         axis2_status_t (AXIS2_CALL *
                 build_transport_handler_chain)(
@@ -121,15 +122,12 @@ extern "C"
                     const axis2_env_t *env,
                     struct axis2_phase *phase,
                     axis2_array_list_t *handlers);
-
-
-
     };
 
     /**
      * phase holder struct  
      */
-    AXIS2_DECLARE_DATA struct axis2_phase_holder
+    struct axis2_phase_holder
     {
         /** operations of phase holder struct */
         axis2_phase_holder_ops_t *ops;
@@ -140,9 +138,9 @@ extern "C"
      * @param env pointer to environment struct
      * @return pointer to newly created phase holder
      */
-    AXIS2_EXTERN axis2_phase_holder_t * AXIS2_CALL
-            axis2_phase_holder_create (
-                const axis2_env_t *env);
+    AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
+    axis2_phase_holder_create (
+        const axis2_env_t *env);
 
     /**
      * Creates phase holder struct
@@ -150,10 +148,10 @@ extern "C"
      * @param phases pointer to phases
      * @return pointer to newly created phase holder
      */
-    AXIS2_EXTERN axis2_phase_holder_t * AXIS2_CALL
-            axis2_phase_holder_create_with_phases (
-                const axis2_env_t *env,
-                axis2_array_list_t *phases);
+    AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
+    axis2_phase_holder_create_with_phases (
+        const axis2_env_t *env,
+        axis2_array_list_t *phases);
 
 /*************************** Function macros **********************************/
 
