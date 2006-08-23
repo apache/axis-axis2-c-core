@@ -191,7 +191,7 @@ extern "C"
          * @param msg_ctx pointer to message context
          * @return service skeleton object
          */
-        axis2_svc_skeleton_t * (AXIS2_CALL *
+        axis2_svc_skeleton_t *(AXIS2_CALL *
                 make_new_svc_obj)(
                     axis2_msg_recv_t *msg_recv,
                     const axis2_env_t *env,
@@ -204,7 +204,7 @@ extern "C"
          * @param msg_ctx pointer to message context
          * @return service skeleton object
          */
-        axis2_svc_skeleton_t * (AXIS2_CALL *
+        axis2_svc_skeleton_t *(AXIS2_CALL *
                 get_impl_obj)(
                     axis2_msg_recv_t *msg_recv,
                     const axis2_env_t *env,
@@ -230,7 +230,7 @@ extern "C"
          * @env pointer to enviornment struct
          * @return scope
          */
-        axis2_char_t * (AXIS2_CALL *
+        axis2_char_t *(AXIS2_CALL *
                 get_scope)(
                     axis2_msg_recv_t *msg_recv,
                     const axis2_env_t *env);
@@ -266,7 +266,7 @@ extern "C"
      * @param env pointer to environment struct
      * @return newly created message receiver object
      **/
-    AXIS2_EXTERN axis2_msg_recv_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_msg_recv_t *AXIS2_CALL
     axis2_msg_recv_create (
         const axis2_env_t *env);
 
