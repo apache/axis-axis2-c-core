@@ -65,6 +65,7 @@ extern "C"
          * De-allocate memory
          * @param phase_holder pointer to phase holder
          * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
@@ -87,6 +88,7 @@ extern "C"
          * @param phase_holder pointer to phase holder
          * @param env pointer to environment struct
          * @para handler pointer to handler
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_handler)(
@@ -115,6 +117,7 @@ extern "C"
          * @param env pointer to environment struct
          * @param phase pointer to phase
          * @param handlers pointer to handlers
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 build_transport_handler_chain)(
