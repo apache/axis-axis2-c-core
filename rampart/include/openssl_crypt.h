@@ -44,7 +44,8 @@ extern "C" {
 *@return -1 if failed
 */
 AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,     openssl_evp_block_cipher_ctx_ptr bc_ctx,
-    unsigned char *in_main_buf, 
+    unsigned char *in_main_buf,
+    int in_main_len, 
     unsigned char **out_main_buf,
     int do_encrypt);
 

@@ -29,9 +29,9 @@
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <axis2_qname.h>
-#include <openssl_cipher_ctx.h>
+/*#include <openssl_cipher_ctx.h>
 #include <openssl_crypt.h>
-#include <openssl_constants.h>
+#include <openssl_constants.h>*/
 
 #ifdef __cplusplus
 extern "C"

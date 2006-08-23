@@ -28,6 +28,7 @@
 #include <axis2_util.h>
 #include <axiom_node.h>
 #include <axiom_document.h>
+#include <axiom.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -50,6 +51,9 @@ oxs_axiom_get_first_child_node_by_name(const axis2_env_t *env,
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_axiom_get_node_content(const axis2_env_t *env, axiom_node_t* node);
 
+
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+oxs_axiom_deserialize_node(const axis2_env_t *env,  axis2_char_t* buffer);
 /**
 * returns 1 sucess 0 otherwise
 */
