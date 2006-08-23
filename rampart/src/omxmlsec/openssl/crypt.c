@@ -30,7 +30,8 @@
 */
 AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env, 
     openssl_evp_block_cipher_ctx_ptr bc_ctx, 
-    unsigned char *in_main_buf, 
+    unsigned char *in_main_buf,
+    int in_main_len, 
     unsigned char **out_main_buf, 
     int do_encrypt)
 {
@@ -39,7 +40,7 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
 
         unsigned char inbuf[BUFSIZE + 1 ], outbuf[BUFSIZE + EVP_MAX_BLOCK_LENGTH]; /*EVP_MAX_BLOCK_LENGTH = 32 in evp.h*/
         unsigned char *tempbuf, *tempbuf2 ;
-        int inlen, outlen, i, in_main_len, out_buf_index;
+        int inlen, outlen, i,  out_buf_index;
         int ret;
 
         i = 0;
@@ -50,10 +51,7 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
         {
                 memset(inbuf,0 ,BUFSIZE);/*Reset memory for the inbuf*/
                 memcpy(inbuf, in_main_buf + (i * BUFSIZE) , BUFSIZE );/*Copy the first block to the inbuf*/
-                inbuf[BUFSIZE] = '\0';
 
-                in_main_len = strlen((const char*)in_main_buf);
-                /*inlen = strlen(inbuf);*/
 
                 if(in_main_len <= i*BUFSIZE) break; /*Finish!!! */
 
@@ -74,7 +72,7 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
                 {
                         /* Error */
                         oxs_error(ERROR_LOCATION,OXS_ERROR_OPENSSL_FUNC_FAILED,
-                        "Cannot get the ReferenceList node");
+                        "Encryption failed");
 
                         EVP_CIPHER_CTX_cleanup(&ctx);
                         return (-1);

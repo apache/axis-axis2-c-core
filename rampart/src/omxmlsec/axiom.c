@@ -22,6 +22,8 @@
 #include <axiom_namespace.h>
 #include <axiom_attribute.h>
 #include <axiom_element.h>
+#include <axiom_document.h>
+#include <axiom_stax_builder.h>
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_axiom_get_first_child_node_by_name(const axis2_env_t *env, 
@@ -73,6 +75,51 @@ oxs_axiom_get_node_content(const axis2_env_t *env, axiom_node_t* node)
     return content;
 }
 
+AXIS2_EXTERN axiom_node_t *AXIS2_CALL
+oxs_axiom_deserialize_node(const axis2_env_t *env,  axis2_char_t* buffer)
+{
+
+    axiom_document_t *doc = NULL;
+    axiom_stax_builder_t *builder = NULL;
+    axiom_xml_reader_t *reader = NULL;
+    axiom_node_t *node = NULL;
+
+    if(!buffer){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "buffer is NULL");
+        return AXIS2_FAILURE;
+    }
+    reader = axiom_xml_reader_create_for_memory(env,
+                (void*)buffer, AXIS2_STRLEN(buffer), "utf-8", AXIS2_XML_PARSER_TYPE_BUFFER);
+
+    if(!reader){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "axiom_xml_reader is NULL");
+        return AXIS2_FAILURE;
+    }
+
+    builder = axiom_stax_builder_create(env, reader);
+    if(!builder){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "axiom_stax_builder is NULL");
+        return AXIS2_FAILURE;
+    }
+    
+    doc = axiom_document_create(env, NULL, builder);
+    if(!doc){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "axiom_document is NULL");
+        return AXIS2_FAILURE;
+    }
+    node = AXIOM_DOCUMENT_BUILD_ALL(doc, env);
+    if(!node){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "Building node failed");
+        return AXIS2_FAILURE;
+    }
+
+    return node;
+}
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_axiom_check_node_name(const axis2_env_t *env, axiom_node_t* node, axis2_char_t* name, axis2_char_t* ns)
@@ -104,3 +151,5 @@ oxs_axiom_check_node_name(const axis2_env_t *env, axiom_node_t* node, axis2_char
     
 
 }
+
+

@@ -78,22 +78,26 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
        
     /*Check if key and IV sizes are not applicable for the cipher*/
 #if 1
+    /*TODO remove this check if the key is a binary*/
     if(EVP_CIPHER_key_length(bc_ctx->cipher) != strlen((char*)bc_ctx->key) ){
         printf("WARNING : Key size is not applicable for the cipher %d = %d\n", EVP_CIPHER_key_length(bc_ctx->cipher),  strlen((char*)bc_ctx->key)  );
         
-    }  
+    } 
+
 
     if(EVP_CIPHER_iv_length(bc_ctx->cipher) != strlen((char*)bc_ctx->iv) ){
         printf("WARNING : IV size is not applicable for the cipher %d = %d\n", EVP_CIPHER_iv_length(bc_ctx->cipher) , strlen((char*)bc_ctx->iv) );
         
     }  
+    
+    printf("\n KEY = %s, IV= %s", bc_ctx->key, bc_ctx->iv); 
+    
 #endif
 
     /*Init ctx*/    
     EVP_CIPHER_CTX_init(&(bc_ctx->cipher_ctx));
     
     EVP_CipherInit_ex(&(bc_ctx->cipher_ctx), bc_ctx->cipher, NULL, NULL, NULL, encrypt);
-    EVP_CIPHER_CTX_set_key_length(&(bc_ctx->cipher_ctx), strlen((axis2_char_t*)bc_ctx->key));
     /* We finished modifying parameters so now we can set key and IV */
     ret  = EVP_CipherInit_ex(&(bc_ctx->cipher_ctx), NULL, NULL, bc_ctx->key, bc_ctx->iv, encrypt);
     

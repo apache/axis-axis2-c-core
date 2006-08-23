@@ -45,8 +45,8 @@ rampart_crypto_decrypt_message(const axis2_env_t *env,
                       axiom_node_t *sec_node)
 {
     axis2_status_t ret = AXIS2_FAILURE;
-    axiom_node_t *enc_data_node = NULL;
-    axiom_node_t *body_node = NULL, *header_node = NULL;
+    axiom_node_t *enc_data_node = NULL, *parent_of_enc_node = NULL;
+    axiom_node_t *body_node = NULL, *header_node = NULL, *decrypted_node = NULL;
     axiom_node_t *ref_list_node = NULL;
     axiom_soap_body_t *body = NULL;
     axiom_soap_header_t *header = NULL;
@@ -55,7 +55,6 @@ rampart_crypto_decrypt_message(const axis2_env_t *env,
     axiom_node_t *enc_key_node = NULL; 
     oxs_key_t *session_key = NULL;
     axis2_array_list_t *uuid_list = NULL;
-    /*axis2_array_list_t *enc_data_node_list = NULL;*/
 
     ret = AXIS2_SUCCESS;/*TODO Remove*/
     /*TODO get the key using callbacks*/
@@ -111,9 +110,30 @@ rampart_crypto_decrypt_message(const axis2_env_t *env,
     }else{
         printf("\nDecrypted data is \n %s\n\n", decrypted_data);
     }
+    
+    /*Now build the node using decrypted data*/
+    if(!decrypted_data){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                 "No decrypted data");
+        return AXIS2_FAILURE;
+    }
+    parent_of_enc_node = AXIOM_NODE_GET_PARENT(enc_data_node, env);
+    
+    #if 1
+    decrypted_node = oxs_axiom_deserialize_node(env, decrypted_data);
+   
+    /*Remove enc_node*/  
+    AXIOM_NODE_DETACH(enc_data_node, env);     
 
-    /*Create a stream reader and then build the node using decrypted text*/
+    /*Replace with decrypted node*/
+    ret = AXIOM_NODE_ADD_CHILD(parent_of_enc_node, env, decrypted_node);
+    if(ret != AXIS2_SUCCESS){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                 "Attaching decrypted node failed");
 
+        return AXIS2_FAILURE;
+    }
+    #endif
     return ret;
 }
 

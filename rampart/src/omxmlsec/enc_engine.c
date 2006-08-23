@@ -96,12 +96,7 @@ oxs_get_encrypted_key(const axis2_env_t *env,
     OXS_KEY_SET_DATA(session_key, env,(axis2_char_t*) decrypted_key_buf->data);
     OXS_KEY_SET_SIZE(session_key, env, decrypted_key_buf->size);
     OXS_KEY_SET_USAGE(session_key, env, OXS_KEY_USAGE_DECRYPT);
-    /*
-    session_key->data = AXIS2_STRMEMDUP(decrypted_key_buf->data, decrypted_key_buf->size, env);    
-    session_key->size = decrypted_key_buf->size;
-    session_key->usage = OXS_KEY_USAGE_DECRYPT;
-    */
-    /*printf("\n>>>>>>>>decrypted session_key %s\n", session_key->data);*/
+    
     return AXIS2_SUCCESS;
 }
 
@@ -271,7 +266,7 @@ oxs_enc_crypt(const axis2_env_t *env,
     /*If this is to encrypt we simply pass the data to crypto function*/
     if(enc_ctx->operation == oxs_operation_encrypt){
         enclen = openssl_block_cipher_crypt(env, bc_ctx,
-                                         input->data,  &out_main_buf, OPENSSL_ENCRYPT);
+                                         input->data, strlen((char*)input->data),  &out_main_buf, OPENSSL_ENCRYPT);
     
     /*If this is to decrypt, then we need to base64decode first*/
     }else if(enc_ctx->operation == oxs_operation_decrypt){
@@ -283,7 +278,7 @@ oxs_enc_crypt(const axis2_env_t *env,
                      "base64 decoding failed");
         }
         enclen = openssl_block_cipher_crypt(env, bc_ctx,
-                                         (unsigned char*)in_data,  &out_main_buf, OPENSSL_DECRYPT);
+                                         (unsigned char*)in_data, decoded_len,  &out_main_buf, OPENSSL_DECRYPT);
     }else{
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "Invalid operation type %d", enc_ctx->operation);
@@ -297,7 +292,7 @@ oxs_enc_crypt(const axis2_env_t *env,
          return AXIS2_FAILURE;
     }
    
-#if 0 
+#if 1 
     FILE *outf;
     outf = fopen("outbuf", "wb");
     fwrite(out_main_buf, 1, enclen, outf);
@@ -309,7 +304,6 @@ oxs_enc_crypt(const axis2_env_t *env,
         encodedlen = axis2_base64_encode_len(enclen);
         encoded_str = AXIS2_MALLOC(env->allocator, encodedlen );
       
-        /*out_main_buf[enclen] ="\0";*/ /*Null terminate ??? Prob???*/
         ret = axis2_base64_encode(encoded_str, (const char *)out_main_buf, enclen);
         if(ret < 0){
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
@@ -426,7 +420,8 @@ oxs_enc_decrypt_template(const axis2_env_t *env,
 
     *decrypted_data =   AXIS2_MALLOC(env->allocator,result->size); 
     *decrypted_data =  (axis2_char_t*)result->data;
-    
+
+       
     return ret;
 }
 
