@@ -32,21 +32,83 @@
 extern "C" {
 #endif
 
-/*Get the message and encrypt*/
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rampart_crypto_encrypt_message(const axis2_env_t *env,
-                      axis2_msg_ctx_t *msg_ctx,
-                      axis2_param_t* param_action,
-                      axiom_soap_envelope_t *soap_envelope,
-                        axiom_node_t *sec_node );
+    /** Type name for struct rampart_crypto_engine_ops */
+    typedef struct rampart_crypto_engine_ops rampart_crypto_engine_ops_t;
 
-/*Get the message and decrypt*/
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rampart_crypto_decrypt_message(const axis2_env_t *env,
-                       axis2_msg_ctx_t *msg_ctx,
-                       axis2_param_t* param_action,
-                      axiom_soap_envelope_t *soap_envelope ,
-                         axiom_node_t *sec_node );
+    /** Type name for struct rampart_crypto_engine */
+    typedef struct rampart_crypto_engine rampart_crypto_engine_t;
+
+    /**
+     * rampart_crypto_engine ops struct
+     * Encapsulator struct for ops of rampart_crypto_engine
+     */
+    struct rampart_crypto_engine_ops
+    {
+        /**
+         * Deallocate memory
+         * @param engine pointer to engine
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                free)(
+                    rampart_crypto_engine_t *engine,
+                    const axis2_env_t *env);
+
+        axis2_status_t (AXIS2_CALL *
+        encrypt_message) (
+                rampart_crypto_engine_t *engine,
+                const axis2_env_t *env,
+                axis2_msg_ctx_t *msg_ctx,
+                axis2_param_t* param_action,
+                axiom_soap_envelope_t *soap_envelope,
+                axiom_node_t *sec_node 
+                );
+        
+        axis2_status_t (AXIS2_CALL *
+        decrypt_message) (
+                rampart_crypto_engine_t *engine,
+                const axis2_env_t *env,
+                axis2_msg_ctx_t *msg_ctx,
+                axis2_param_t* param_action,
+                axiom_soap_envelope_t *soap_envelope,
+                axiom_node_t *sec_node 
+                );
+
+    };
+
+
+    /**
+     * Engine struct
+     */
+    struct rampart_crypto_engine
+    {
+        /** Operations of rampart_crypto_engine */
+        rampart_crypto_engine_ops_t *ops;
+    };
+
+    /**
+     * Creates rampart_crypto_engine struct
+     * @param env pointer to environment struct
+     * @return pointer to newly created rampart_crypto_engine
+     */
+    AXIS2_EXTERN rampart_crypto_engine_t *AXIS2_CALL
+    rampart_crypto_engine_create (
+        const axis2_env_t *env);
+
+
+/*************************** Function macros **********************************/
+
+#define RAMPART_CRYPTO_ENGINE_FREE(engine, env) \
+      ((engine)->ops->free (engine, env))
+
+#define RAMPART_CRYPTO_ENGINE_ENCRYPT_MESSAGE(engine, env, msg_ctx, param_action, soap_envelope, sec_node ) \
+      ((engine)->ops->encrypt_message(engine, env, msg_ctx, param_action, soap_envelope, sec_node))
+
+#define RAMPART_CRYPTO_ENGINE_DECRYPT_MESSAGE(engine, env, msg_ctx, param_action, soap_envelope, sec_node ) \
+      ((engine)->ops->decrypt_message(engine, env, msg_ctx, param_action, soap_envelope, sec_node))
+
+
 /* @} */
 #ifdef __cplusplus
 }
