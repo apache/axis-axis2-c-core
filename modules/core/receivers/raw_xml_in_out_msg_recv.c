@@ -72,7 +72,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
     axis2_svc_skeleton_t *svc_obj = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_op_t *op_desc = NULL;
-    axis2_char_t *style = NULL;
+    const axis2_char_t *style = NULL;
     axiom_node_t *om_node = NULL;
     axiom_element_t *om_element = NULL;
     axis2_char_t *local_name = NULL;

@@ -181,7 +181,7 @@ int axis2_test_svc_get_op()
                     axis2_hash_this(hi2, NULL, NULL, &op2);
                     if (op2)
                     {
-                        axis2_qname_t *qname = NULL;
+                        const axis2_qname_t *qname = NULL;
                         qname = AXIS2_OP_GET_QNAME((axis2_op_t *)op2, env);
                    oname = AXIS2_QNAME_GET_LOCALPART(qname, env);
                         printf("op name = %s\n", oname);

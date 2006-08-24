@@ -457,7 +457,7 @@ axis2_wsdl_interface_set_op(axis2_wsdl_interface_t *wsdl_interface,
                                     void *op) 
 {
     axis2_wsdl_interface_impl_t *interface_impl = NULL;
-    axis2_qname_t *wsdl_op_qname = NULL;
+    const axis2_qname_t *wsdl_op_qname = NULL;
     axis2_char_t *op_qname_str = NULL;
         
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

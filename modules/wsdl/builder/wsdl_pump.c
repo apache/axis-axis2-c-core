@@ -188,7 +188,7 @@ axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
 static axis2_qname_t *
 axis2_wsdl_pump_generate_reference_qname(axis2_wsdl_pump_t *wsdl_pump,
                                  const axis2_env_t *env,
-                                 axis2_qname_t *outer_qname,
+                                 const axis2_qname_t *outer_qname,
                                  void *wsdl4c_msg,
                                  axis2_bool_t is_wrappable);
 
@@ -967,7 +967,7 @@ axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
    void *wsdl4c_fault_msg = NULL;
    axis2_wsdl_msg_ref_t *wsdl_input_msg = NULL;
    axis2_array_list_t *faults = NULL;
-   axis2_qname_t *wrapped_input_qname = NULL;
+   const axis2_qname_t *wrapped_input_qname = NULL;
    axis2_qname_t *wrapped_output_qname = NULL;
    axis2_char_t *qname_localpart = NULL;
    axis2_char_t *qname_uri = NULL;
@@ -1124,7 +1124,7 @@ axis2_wsdl_pump_populate_operations(axis2_wsdl_pump_t *wsdl_pump,
 static axis2_qname_t *
 axis2_wsdl_pump_generate_reference_qname(axis2_wsdl_pump_t *wsdl_pump,
                                  const axis2_env_t *env,
-                                 axis2_qname_t *outer_qname,
+                                 const axis2_qname_t *outer_qname,
                                  void *wsdl4c_msg,
                                  axis2_bool_t is_wrappable)
 {

@@ -182,7 +182,7 @@ axis2_op_ctx_create(
     
     if (op_ctx_impl->op)
     {
-        op_ctx_impl->op_qname = AXIS2_OP_GET_QNAME(op_ctx_impl->op, env);
+        op_ctx_impl->op_qname = (axis2_qname_t *)AXIS2_OP_GET_QNAME(op_ctx_impl->op, env);
         op_ctx_impl->op_mep = AXIS2_OP_GET_AXIS_SPECIFIC_MEP_CONST(op_ctx_impl->op, env);
     }
     

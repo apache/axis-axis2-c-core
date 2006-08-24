@@ -710,11 +710,11 @@ axis2_phases_info_set_op_phases(
     op_out_faultphases = axis2_phases_info_get_op_out_faultphases(phases_info, 
         env);
     
-    status = AXIS2_OP_SET_REMAINING_PHASES_IN_FLOW(op_desc, env, op_in_phases);
-    status = AXIS2_OP_SET_PHASES_OUT_FLOW(op_desc, env, op_out_phases);
+    status = AXIS2_OP_SET_IN_FLOW(op_desc, env, op_in_phases);
+    status = AXIS2_OP_SET_OUT_FLOW(op_desc, env, op_out_phases);
     if(op_in_faultphases)
     {
-        status = AXIS2_OP_SET_PHASES_IN_FAULT_FLOW(op_desc, env, 
+        status = AXIS2_OP_SET_FAULT_IN_FLOW(op_desc, env, 
             op_in_faultphases);
     }
     else
@@ -728,7 +728,7 @@ axis2_phases_info_set_op_phases(
 
     if(op_out_faultphases)
     {
-        status = AXIS2_OP_SET_PHASES_OUT_FAULT_FLOW(op_desc, env, 
+        status = AXIS2_OP_SET_FAULT_OUT_FLOW(op_desc, env, 
             op_out_faultphases);
     }
     else    

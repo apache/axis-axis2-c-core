@@ -86,7 +86,7 @@ void Testaxis2_phase_resolver_engage_module_to_op(CuTest *tc)
 
     axis2_op_t *optr = axis2_op_create(env);
     op_in_phases = get_op_in_phases(env);  
-    AXIS2_OP_SET_REMAINING_PHASES_IN_FLOW(optr, env, op_in_phases);
+    AXIS2_OP_SET_IN_FLOW(optr, env, op_in_phases);
     flow = axis2_flow_create(env); 
     add_handlers_to_flow(flow, env);
     module_desc = axis2_module_desc_create(env);

@@ -895,7 +895,7 @@ axis2_desc_builder_process_op_module_refs(
             }
             else
             {
-                status = AXIS2_OP_ADD_MODULE(op, env, ref_qname);
+                status = AXIS2_OP_ADD_MODULE_QNAME(op, env, ref_qname);
                 AXIS2_QNAME_FREE(ref_qname, env);
                 if(AXIS2_SUCCESS != status)
                 {

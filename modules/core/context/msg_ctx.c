@@ -2283,7 +2283,7 @@ axis2_msg_ctx_set_op(
     if (op)
     {
         AXIS2_INTF_TO_IMPL(msg_ctx)->op = op;
-        AXIS2_INTF_TO_IMPL(msg_ctx)->op_qname = AXIS2_OP_GET_QNAME(op, env);
+        AXIS2_INTF_TO_IMPL(msg_ctx)->op_qname = (axis2_qname_t *)AXIS2_OP_GET_QNAME(op, env);
     }
     
     return AXIS2_SUCCESS;

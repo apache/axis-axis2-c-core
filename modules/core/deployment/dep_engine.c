@@ -1164,7 +1164,7 @@ axis2_dep_engine_add_new_svc(
             axis2_hash_this (index_i, NULL, NULL, &v);
             op_desc = (axis2_op_t *)v;
         
-            modules = AXIS2_OP_GET_MODULE_REFS(op_desc, env);
+            modules = AXIS2_OP_GET_ALL_MODULE_QNAMES(op_desc, env);
             if(modules)
                 sizek = AXIS2_ARRAY_LIST_SIZE(modules, env);
             for (k = 0; k < sizek; k++) 

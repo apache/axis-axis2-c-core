@@ -476,7 +476,7 @@ axis2_module_desc_add_op(
     axis2_op_t *op)
 {
     axis2_module_desc_impl_t *module_desc_impl = NULL;
-    axis2_qname_t *op_qname = NULL;
+    const axis2_qname_t *op_qname = NULL;
     axis2_char_t *op_name = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

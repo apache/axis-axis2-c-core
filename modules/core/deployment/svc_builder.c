@@ -492,7 +492,7 @@ axis2_svc_builder_populate_svc(
         int sizej = 0;
         
         op_desc = (axis2_op_t *) AXIS2_ARRAY_LIST_GET(ops, env, i);
-        params = AXIS2_OP_GET_PARAMS(op_desc, env);
+        params = AXIS2_OP_GET_ALL_PARAMS(op_desc, env);
         /* Adding wsa-mapping into service */
         sizej = AXIS2_ARRAY_LIST_SIZE(params, env);
         for(j = 0; j < sizej; j++)

@@ -101,7 +101,7 @@ int axis2_test_dep_engine_load()
                     axis2_hash_this(hi2, NULL, NULL, &op);
                     if (op)
                     {
-                        axis2_qname_t *qname = NULL;
+                        const axis2_qname_t *qname = NULL;
                         qname = AXIS2_OP_GET_QNAME((axis2_op_t *)op, env);
                    oname = AXIS2_QNAME_GET_LOCALPART(qname, env);
                         printf("op name = %s\n", oname);

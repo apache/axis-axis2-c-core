@@ -96,13 +96,13 @@ struct axis2_wsdl_op_ops
     axis2_status_t (AXIS2_CALL *
     set_qname) (axis2_wsdl_op_t *wsdl_op, 
                 const axis2_env_t *env,
-                axis2_qname_t *name);
+                const axis2_qname_t *name);
                                         
     /**
      * Get the name of wsdl op
      * @return axis2_qname_t wsdl op name
      */
-    axis2_qname_t *(AXIS2_CALL *
+    const axis2_qname_t *(AXIS2_CALL *
     get_qname) (void *wsdl_op,
                 const axis2_env_t *env);
     
@@ -115,7 +115,7 @@ struct axis2_wsdl_op_ops
     axis2_status_t (AXIS2_CALL *
     set_style) (axis2_wsdl_op_t *wsdl_op,
                 const axis2_env_t *env,
-                axis2_char_t *style);
+                const axis2_char_t *style);
     
     /**
      * Get style

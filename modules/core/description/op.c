@@ -36,10 +36,9 @@ typedef struct axis2_op_impl
         
     int mep;
     /*To store deploytime module refs */
-    axis2_array_list_t *modulerefs;
+    axis2_array_list_t *module_qnames;
     
-}
-axis2_op_impl_t;
+} axis2_op_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(op) ((axis2_op_impl_t *)op)
    
@@ -58,13 +57,13 @@ axis2_op_add_param(
 
 axis2_param_t *AXIS2_CALL
 axis2_op_get_param(
-    axis2_op_t *op, 
+    const axis2_op_t *op, 
     const axis2_env_t *env,
     const axis2_char_t *name);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_params(
-    axis2_op_t *op, 
+axis2_op_get_all_params(
+    const axis2_op_t *op, 
     const axis2_env_t *env);
 
 axis2_bool_t AXIS2_CALL
@@ -81,7 +80,7 @@ axis2_op_set_parent(
 
 axis2_svc_t *AXIS2_CALL
 axis2_op_get_parent(
-    axis2_op_t *op, 
+    const axis2_op_t *op, 
     const axis2_env_t *env);
       
 axis2_status_t AXIS2_CALL
@@ -92,16 +91,16 @@ axis2_op_set_msg_recv(
 
 struct axis2_msg_recv *AXIS2_CALL
 axis2_op_get_msg_recv(
-    axis2_op_t *op, 
+    const axis2_op_t *op, 
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_op_set_qname(
     axis2_op_t *op, 
     const axis2_env_t *env,
-    axis2_qname_t *qname);
+    const axis2_qname_t *qname);
                             
-axis2_qname_t *AXIS2_CALL
+const axis2_qname_t *AXIS2_CALL
 axis2_op_get_qname(
     void *op, 
     const axis2_env_t *env);
@@ -112,21 +111,21 @@ axis2_op_set_msg_exchange_pattern(
     const axis2_env_t *env,
     const axis2_char_t *pattern);
       
-axis2_char_t *AXIS2_CALL
+const axis2_char_t *AXIS2_CALL
 axis2_op_get_msg_exchange_pattern(
-    axis2_op_t *op, 
+    const axis2_op_t *op, 
     const axis2_env_t *env);
 
-axis2_char_t *AXIS2_CALL
+const axis2_char_t *AXIS2_CALL
 axis2_op_get_style(
-    axis2_op_t *op,
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_status_t  AXIS2_CALL
 axis2_op_set_style(
     axis2_op_t *op,
     const axis2_env_t *env,
-    axis2_char_t *style);
+    const axis2_char_t *style);
 
 axis2_status_t AXIS2_CALL
 axis2_op_engage_module(
@@ -136,79 +135,79 @@ axis2_op_engage_module(
     axis2_conf_t *conf);
 
 axis2_status_t AXIS2_CALL
-axis2_op_add_to_engage_module_list(
+axis2_op_add_to_engaged_module_list(
     axis2_op_t *op,
     const axis2_env_t *env,
     axis2_module_desc_t *module_name);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_modules(
-    axis2_op_t *op,
+axis2_op_get_all_modules(
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 int AXIS2_CALL
 axis2_op_get_axis_specific_mep_const(
-    axis2_op_t *op,
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_phases_in_fault_flow(
-    axis2_op_t *op,
+axis2_op_get_fault_in_flow(
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_phases_out_fault_flow(
-    axis2_op_t *op,
+axis2_op_get_fault_out_flow(
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_phases_outflow(
-    axis2_op_t *op,
+axis2_op_get_out_flow(
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_remaining_phases_inflow(
-    axis2_op_t *op,
+axis2_op_get_in_flow(
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_op_set_phases_in_fault_flow(
+axis2_op_set_fault_in_flow(
     axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *list);
 
 axis2_status_t AXIS2_CALL
-axis2_op_set_phases_out_fault_flow(
+axis2_op_set_fault_out_flow(
     axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *list);
 
 axis2_status_t AXIS2_CALL
-axis2_op_set_phases_outflow(
+axis2_op_set_out_flow(
     axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *list);
 
 axis2_status_t AXIS2_CALL
-axis2_op_set_remaining_phases_inflow(
+axis2_op_set_in_flow(
     axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *list);
 
 axis2_status_t AXIS2_CALL
-axis2_op_add_module(
+axis2_op_add_module_qname(
     axis2_op_t *op,
     const axis2_env_t *env,
-    axis2_qname_t *module_name);
+    const axis2_qname_t *module_qname);
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_module_refs(
-    axis2_op_t *op,
+axis2_op_get_all_module_qnames(
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_op_get_in_faults(
-    axis2_op_t *op,
+axis2_op_get_all_in_faults(
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -219,7 +218,7 @@ axis2_op_set_in_faults(
 
 struct axis2_wsdl_msg_ref *AXIS2_CALL
 axis2_op_get_input_msg(
-    axis2_op_t *op,
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -230,8 +229,8 @@ axis2_op_set_input_msg(
 
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_op_get_out_faults(
-    axis2_op_t *op,
+axis2_op_get_all_out_faults(
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -242,7 +241,7 @@ axis2_op_set_out_faults(
 
 struct axis2_wsdl_msg_ref *AXIS2_CALL
 axis2_op_get_output_msg(
-    axis2_op_t *op,
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -251,20 +250,9 @@ axis2_op_set_output_msg(
     const axis2_env_t *env,
     struct axis2_wsdl_msg_ref *output_msg); 
 
-axis2_bool_t AXIS2_CALL
-axis2_op_is_safe(
-    axis2_op_t *op,
-    const axis2_env_t *env);
-
-axis2_status_t AXIS2_CALL
-axis2_op_set_safety(
-    axis2_op_t *op,
-    const axis2_env_t *env,
-    axis2_bool_t safe);
-
-axis2_char_t *AXIS2_CALL
+const axis2_char_t *AXIS2_CALL
 axis2_op_get_target_namespace(
-    axis2_op_t *op,
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
@@ -286,8 +274,8 @@ axis2_op_add_feature(
     axis2_wsdl_feature_t *feature);
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_op_get_features(
-    axis2_op_t *op,
+axis2_op_get_all_features(
+    const axis2_op_t *op,
     const axis2_env_t *env); 
 
 axis2_status_t AXIS2_CALL
@@ -297,8 +285,8 @@ axis2_op_add_property(
     axis2_wsdl_property_t *wsdl_property);
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_op_get_Properties(
-    axis2_op_t *op,
+axis2_op_get_all_properties(
+    const axis2_op_t *op,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL 
@@ -341,7 +329,7 @@ axis2_op_find_op_ctx(
  * @return
  */
 axis2_op_ctx_t *AXIS2_CALL
-axis2_op_find_for_existing_op_ctx(
+axis2_op_find_existing_op_ctx(
     axis2_op_t *op,
     const axis2_env_t *env,
     struct axis2_msg_ctx *msg_ctx);
@@ -389,7 +377,7 @@ axis2_op_get_msg(
     
 axis2_status_t AXIS2_CALL
 axis2_op_add_msg(
-   const axis2_op_t *op, 
+   axis2_op_t *op, 
    const axis2_env_t *env, 
    const axis2_char_t *label, 
    const axis2_msg_t *msg);
@@ -427,7 +415,7 @@ axis2_op_create(
     op_impl->mep = AXIS2_MEP_CONSTANT_INVALID;
     op_impl->op.param_container = NULL;
     op_impl->wsdl_op = NULL;
-    op_impl->modulerefs = NULL;
+    op_impl->module_qnames = NULL;
     op_impl->op.ops = NULL;
     
     op_impl->op.param_container = (axis2_param_container_t *)
@@ -610,7 +598,7 @@ axis2_op_create(
     op_impl->op.ops->free_void_arg = axis2_op_free_void_arg;
     op_impl->op.ops->add_param = axis2_op_add_param;
     op_impl->op.ops->get_param = axis2_op_get_param;
-    op_impl->op.ops->get_params = axis2_op_get_params;
+    op_impl->op.ops->get_all_params = axis2_op_get_all_params;
     op_impl->op.ops->set_parent = axis2_op_set_parent;
     op_impl->op.ops->get_parent = axis2_op_get_parent;
     op_impl->op.ops->set_msg_recv = axis2_op_set_msg_recv;
@@ -624,39 +612,37 @@ axis2_op_create(
     op_impl->op.ops->set_style = axis2_op_set_style;
     op_impl->op.ops->get_style = axis2_op_get_style; 
     op_impl->op.ops->engage_module = axis2_op_engage_module;
-    op_impl->op.ops->add_to_engage_module_list = axis2_op_add_to_engage_module_list;
-    op_impl->op.ops->get_modules = axis2_op_get_modules;
+    op_impl->op.ops->add_to_engaged_module_list = axis2_op_add_to_engaged_module_list;
+    op_impl->op.ops->get_all_module_qnames = axis2_op_get_all_module_qnames;
     op_impl->op.ops->get_axis_specific_mep_const = axis2_op_get_axis_specific_mep_const;
-    op_impl->op.ops->get_phases_in_fault_flow = axis2_op_get_phases_in_fault_flow;
-    op_impl->op.ops->get_phases_out_fault_flow = axis2_op_get_phases_out_fault_flow;
-    op_impl->op.ops->get_phases_outflow = axis2_op_get_phases_outflow;
-    op_impl->op.ops->get_remaining_phases_inflow = axis2_op_get_remaining_phases_inflow;
-    op_impl->op.ops->set_phases_in_fault_flow = axis2_op_set_phases_in_fault_flow;
-    op_impl->op.ops->set_phases_out_fault_flow = axis2_op_set_phases_out_fault_flow;
-    op_impl->op.ops->set_phases_outflow = axis2_op_set_phases_outflow;
-    op_impl->op.ops->set_remaining_phases_inflow = axis2_op_set_remaining_phases_inflow;
-    op_impl->op.ops->add_module = axis2_op_add_module;
-    op_impl->op.ops->get_module_refs = axis2_op_get_module_refs;
-    op_impl->op.ops->get_in_faults = axis2_op_get_in_faults;
+    op_impl->op.ops->get_fault_in_flow = axis2_op_get_fault_in_flow;
+    op_impl->op.ops->get_fault_out_flow = axis2_op_get_fault_out_flow;
+    op_impl->op.ops->get_out_flow = axis2_op_get_out_flow;
+    op_impl->op.ops->get_in_flow = axis2_op_get_in_flow;
+    op_impl->op.ops->set_fault_in_flow = axis2_op_set_fault_in_flow;
+    op_impl->op.ops->set_fault_out_flow = axis2_op_set_fault_out_flow;
+    op_impl->op.ops->set_out_flow = axis2_op_set_out_flow;
+    op_impl->op.ops->set_in_flow = axis2_op_set_in_flow;
+    op_impl->op.ops->add_module_qname = axis2_op_add_module_qname;
+    op_impl->op.ops->get_all_modules = axis2_op_get_all_modules;
+    op_impl->op.ops->get_all_in_faults = axis2_op_get_all_in_faults;
     op_impl->op.ops->set_in_faults = axis2_op_set_in_faults;
     op_impl->op.ops->get_input_msg = axis2_op_get_input_msg;
     op_impl->op.ops->set_input_msg = axis2_op_set_input_msg;
-    op_impl->op.ops->get_out_faults = axis2_op_get_out_faults;
+    op_impl->op.ops->get_all_out_faults = axis2_op_get_all_out_faults;
     op_impl->op.ops->set_out_faults = axis2_op_set_out_faults;
     op_impl->op.ops->get_output_msg = axis2_op_get_output_msg;
     op_impl->op.ops->set_output_msg = axis2_op_set_output_msg;
-    op_impl->op.ops->is_safe = axis2_op_is_safe;
-    op_impl->op.ops->set_safety = axis2_op_set_safety;
     op_impl->op.ops->get_target_namespace = axis2_op_get_target_namespace;
     op_impl->op.ops->add_in_fault = axis2_op_add_in_fault;
     op_impl->op.ops->add_out_fault = axis2_op_add_out_fault;
     op_impl->op.ops->add_feature = axis2_op_add_feature;
-    op_impl->op.ops->get_features = axis2_op_get_features;
+    op_impl->op.ops->get_all_features = axis2_op_get_all_features;
     op_impl->op.ops->add_property = axis2_op_add_property;
-    op_impl->op.ops->get_Properties = axis2_op_get_Properties;
+    op_impl->op.ops->get_all_properties = axis2_op_get_all_properties;
     op_impl->op.ops->set_wsdl_op = axis2_op_set_wsdl_op;
     op_impl->op.ops->find_op_ctx = axis2_op_find_op_ctx;   
-    op_impl->op.ops->find_for_existing_op_ctx = axis2_op_find_for_existing_op_ctx;
+    op_impl->op.ops->find_existing_op_ctx = axis2_op_find_existing_op_ctx;
     op_impl->op.ops->register_op_ctx = axis2_op_register_op_ctx;
     op_impl->op.ops->get_msg = axis2_op_get_msg;
     op_impl->op.ops->add_msg = axis2_op_add_msg;
@@ -667,7 +653,7 @@ axis2_op_create(
 axis2_op_t *AXIS2_CALL
 axis2_op_create_with_qname(
     const axis2_env_t *env, 
-    axis2_qname_t *qname)
+    const axis2_qname_t *qname)
 {
     axis2_op_impl_t *op_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -761,13 +747,13 @@ axis2_op_free(
         op_impl->msg_recv = NULL;
     } 
     
-    if(NULL != op_impl->modulerefs)
+    if(NULL != op_impl->module_qnames)
     {
         int i = 0;
-        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->modulerefs, env); i++)
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->module_qnames, env); i++)
         {
             axis2_qname_t *module_ref = NULL;
-            module_ref = AXIS2_ARRAY_LIST_GET(op_impl->modulerefs, env, i);
+            module_ref = AXIS2_ARRAY_LIST_GET(op_impl->module_qnames, env, i);
             
             if (module_ref)
             {
@@ -775,13 +761,13 @@ axis2_op_free(
                 module_ref = NULL;
             }       
         }
-        AXIS2_ARRAY_LIST_FREE(op_impl->modulerefs, env);
-        op_impl->modulerefs = NULL;
+        AXIS2_ARRAY_LIST_FREE(op_impl->module_qnames, env);
+        op_impl->module_qnames = NULL;
     }
     
     if(NULL != op_impl->wsdl_op)
     {
-       AXIS2_WSDL_OP_FREE(op_impl->wsdl_op, env);
+        AXIS2_WSDL_OP_FREE(op_impl->wsdl_op, env);
         op_impl->wsdl_op = NULL;
     }
     
@@ -851,7 +837,7 @@ axis2_op_add_param(
 
 axis2_param_t *AXIS2_CALL
 axis2_op_get_param(
-    axis2_op_t *op, 
+    const axis2_op_t *op, 
     const axis2_env_t *env,
     const axis2_char_t *param_name)
 {
@@ -869,8 +855,8 @@ axis2_op_get_param(
 }
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_params(
-    axis2_op_t *op, 
+axis2_op_get_all_params(
+    const axis2_op_t *op, 
     const axis2_env_t *env)
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -931,7 +917,7 @@ axis2_op_set_parent(
 
 axis2_svc_t *AXIS2_CALL
 axis2_op_get_parent(
-    axis2_op_t *op, 
+    const axis2_op_t *op, 
     const axis2_env_t *env)
 {           
    AXIS2_ENV_CHECK(env, NULL);
@@ -964,7 +950,7 @@ axis2_op_set_msg_recv(
 
 struct axis2_msg_recv *AXIS2_CALL
 axis2_op_get_msg_recv(
-    axis2_op_t *op, 
+    const axis2_op_t *op, 
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -975,7 +961,7 @@ axis2_status_t AXIS2_CALL
 axis2_op_set_qname(
     axis2_op_t *op, 
     const axis2_env_t *env,
-    axis2_qname_t *qname)
+    const axis2_qname_t *qname)
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -985,7 +971,7 @@ axis2_op_set_qname(
     return AXIS2_WSDL_OP_SET_QNAME(op_impl->wsdl_op, env, qname);
 }
     
-axis2_qname_t *AXIS2_CALL
+const axis2_qname_t *AXIS2_CALL
 axis2_op_get_qname(
     void *op, 
     const axis2_env_t *env)
@@ -1015,9 +1001,9 @@ axis2_op_set_msg_exchange_pattern(
         pattern);
 }
 
-axis2_char_t *AXIS2_CALL
+const axis2_char_t *AXIS2_CALL
 axis2_op_get_msg_exchange_pattern(
-    axis2_op_t *op, 
+    const axis2_op_t *op, 
     const axis2_env_t *env)
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1028,9 +1014,9 @@ axis2_op_get_msg_exchange_pattern(
     return AXIS2_WSDL_OP_GET_MSG_EXCHANGE_PATTERN(op_impl->wsdl_op, env);
 }
 
-axis2_char_t *AXIS2_CALL
+const axis2_char_t *AXIS2_CALL
 axis2_op_get_style(
-    axis2_op_t *op,
+    const axis2_op_t *op,
     const axis2_env_t *env)
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1044,7 +1030,7 @@ axis2_status_t  AXIS2_CALL
 axis2_op_set_style(
     axis2_op_t *op,
     const axis2_env_t *env,
-    axis2_char_t *style)
+    const axis2_char_t *style)
 {
     axis2_op_impl_t *op_impl = NULL;
     
@@ -1141,7 +1127,7 @@ axis2_op_engage_module(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_add_to_engage_module_list(
+axis2_op_add_to_engaged_module_list(
         axis2_op_t *op,
         const axis2_env_t *env,
         axis2_module_desc_t *module_desc) 
@@ -1190,8 +1176,8 @@ axis2_op_add_to_engage_module_list(
 }
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_modules(
-    axis2_op_t *op,
+axis2_op_get_all_modules(
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1210,7 +1196,7 @@ axis2_op_get_modules(
 
 int AXIS2_CALL
 axis2_op_get_axis_specific_mep_const(
-    axis2_op_t *op,
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1280,8 +1266,8 @@ axis2_op_get_axis_specific_mep_const(
 }
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_phases_in_fault_flow(
-    axis2_op_t *op,
+axis2_op_get_fault_in_flow(
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1301,8 +1287,8 @@ axis2_op_get_phases_in_fault_flow(
 
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_phases_out_fault_flow(
-    axis2_op_t *op,
+axis2_op_get_fault_out_flow(
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1322,8 +1308,8 @@ axis2_op_get_phases_out_fault_flow(
 
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_phases_outflow(
-    axis2_op_t *op,
+axis2_op_get_out_flow(
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1343,8 +1329,8 @@ axis2_op_get_phases_outflow(
 
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_remaining_phases_inflow(
-    axis2_op_t *op,
+axis2_op_get_in_flow(
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1363,7 +1349,7 @@ axis2_op_get_remaining_phases_inflow(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_set_phases_in_fault_flow(
+axis2_op_set_fault_in_flow(
     axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *list) 
@@ -1388,7 +1374,7 @@ axis2_op_set_phases_in_fault_flow(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_set_phases_out_fault_flow(
+axis2_op_set_fault_out_flow(
     axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *list) 
@@ -1412,7 +1398,7 @@ axis2_op_set_phases_out_fault_flow(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_set_phases_outflow(
+axis2_op_set_out_flow(
     axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *list) 
@@ -1437,7 +1423,7 @@ axis2_op_set_phases_outflow(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_set_remaining_phases_inflow(
+axis2_op_set_in_flow(
     axis2_op_t *op,
     const axis2_env_t *env,
     axis2_array_list_t *list) 
@@ -1461,10 +1447,10 @@ axis2_op_set_remaining_phases_inflow(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_op_add_module(
+axis2_op_add_module_qname(
     axis2_op_t *op,
     const axis2_env_t *env,
-    axis2_qname_t *module_qname) 
+    const axis2_qname_t *module_qname) 
 {
     axis2_op_impl_t *op_impl = NULL;
     axis2_qname_t *module_qname_l = NULL;
@@ -1475,21 +1461,21 @@ axis2_op_add_module(
     
     module_qname_l = AXIS2_QNAME_CLONE(module_qname, env);
     
-    return AXIS2_ARRAY_LIST_ADD(op_impl->modulerefs, env, module_qname_l);
+    return AXIS2_ARRAY_LIST_ADD(op_impl->module_qnames, env, module_qname_l);
 }
 
 axis2_array_list_t *AXIS2_CALL
-axis2_op_get_module_refs(
-    axis2_op_t *op,
+axis2_op_get_all_module_qnames(
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(op)->modulerefs;
+    return AXIS2_INTF_TO_IMPL(op)->module_qnames;
 }
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_op_get_in_faults(
-    axis2_op_t *op,
+axis2_op_get_all_in_faults(
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1517,7 +1503,7 @@ axis2_op_set_in_faults(
 
 struct axis2_wsdl_msg_ref *AXIS2_CALL
 axis2_op_get_input_msg(
-    axis2_op_t *op,
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1544,8 +1530,8 @@ axis2_op_set_input_msg(
 }
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_op_get_out_faults(
-    axis2_op_t *op,
+axis2_op_get_all_out_faults(
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1573,7 +1559,7 @@ axis2_op_set_out_faults(
 
 struct axis2_wsdl_msg_ref *AXIS2_CALL
 axis2_op_get_output_msg(
-    axis2_op_t *op,
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1599,36 +1585,9 @@ axis2_op_set_output_msg(
     return AXIS2_WSDL_OP_SET_OUTPUT_MSG(op_impl->wsdl_op, env, output_msg);
 }
 
-axis2_bool_t AXIS2_CALL
-axis2_op_is_safe(
-    axis2_op_t *op,
-    const axis2_env_t *env) 
-{
-    axis2_op_impl_t *op_impl = NULL;
-    
-    AXIS2_ENV_CHECK(env, AXIS2_FALSE);
-    op_impl = AXIS2_INTF_TO_IMPL(op);
-    
-    return AXIS2_WSDL_OP_IS_SAFE(op_impl->wsdl_op, env);
-}
-
-axis2_status_t AXIS2_CALL
-axis2_op_set_safety(
-    axis2_op_t *op,
-    const axis2_env_t *env,
-    axis2_bool_t safe) 
-{
-    axis2_op_impl_t *op_impl = NULL;
-    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    op_impl = AXIS2_INTF_TO_IMPL(op);
-    
-    return AXIS2_WSDL_OP_SET_SAFETY(op_impl->wsdl_op, env, safe);
-}
-
-axis2_char_t *AXIS2_CALL
+const axis2_char_t *AXIS2_CALL
 axis2_op_get_target_namespace(
-    axis2_op_t *op,
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1687,8 +1646,8 @@ axis2_op_add_feature(
 }
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_op_get_features(
-    axis2_op_t *op,
+axis2_op_get_all_features(
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1717,8 +1676,8 @@ axis2_op_add_property(
 }
 
 axis2_linked_list_t *AXIS2_CALL
-axis2_op_get_Properties(
-    axis2_op_t *op,
+axis2_op_get_all_properties(
+    const axis2_op_t *op,
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
@@ -1812,7 +1771,7 @@ axis2_op_find_op_ctx(
 }
 
 axis2_op_ctx_t *AXIS2_CALL
-axis2_op_find_for_existing_op_ctx(
+axis2_op_find_existing_op_ctx(
     axis2_op_t *op,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
@@ -2057,7 +2016,7 @@ axis2_op_get_msg(
     
 axis2_status_t AXIS2_CALL
 axis2_op_add_msg(
-    const axis2_op_t *op, 
+    axis2_op_t *op, 
     const axis2_env_t *env, 
     const axis2_char_t *label, 
     const axis2_msg_t *msg)

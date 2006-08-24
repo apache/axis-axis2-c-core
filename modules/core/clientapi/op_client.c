@@ -140,7 +140,7 @@ axis2_op_client_create(
     axis2_options_t *options)
 {
     axis2_op_client_impl_t *op_client_impl = NULL;
-    axis2_char_t *mep_uri = NULL;
+    const axis2_char_t *mep_uri = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, op, NULL);
@@ -468,7 +468,7 @@ axis2_op_client_execute(
             response_mc = axis2_mep_client_two_way_send(env, msg_ctx);
             if (!response_mc)
             {
-                axis2_char_t *mep = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
+                const axis2_char_t *mep = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
                 if (AXIS2_STRCMP(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
                         AXIS2_STRCMP(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
                 {

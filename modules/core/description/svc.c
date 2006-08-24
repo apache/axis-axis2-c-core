@@ -927,7 +927,7 @@ axis2_svc_add_op(
     axis2_array_list_t *modules = NULL;
     int i = 0, size = 0;
     axis2_msg_recv_t *msg_recv = NULL;
-    axis2_qname_t *qname = NULL;
+    const axis2_qname_t *qname = NULL;
     axis2_char_t *key = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1294,7 +1294,7 @@ axis2_svc_add_module_ops(
         void *v = NULL;
         axis2_hash_this (index, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
-        params = AXIS2_OP_GET_PARAMS(op_desc, env);
+        params = AXIS2_OP_GET_ALL_PARAMS(op_desc, env);
         /* Adding wsa-maping into service */
         size = AXIS2_ARRAY_LIST_SIZE(params, env);
         

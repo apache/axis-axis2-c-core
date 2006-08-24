@@ -107,13 +107,13 @@ struct axis2_module_desc *create_module_desc(const axis2_env_t *env)
     op_qname = axis2_qname_create(env, "op_name1", NULL, NULL);
     op = axis2_op_create_with_qname(env, op_qname);
     op_in_phases = get_svc_op_in_phases(env);  
-    AXIS2_OP_SET_REMAINING_PHASES_IN_FLOW(op, env, op_in_phases);
+    AXIS2_OP_SET_IN_FLOW(op, env, op_in_phases);
     AXIS2_MODULE_DESC_ADD_OP(module_desc, env, op);
     
     op_qname = axis2_qname_create(env, "op_name2", NULL, NULL);
     op = axis2_op_create_with_qname(env, op_qname);
     op_in_phases = get_svc_op_in_phases(env);  
-    AXIS2_OP_SET_REMAINING_PHASES_IN_FLOW(op, env, op_in_phases);
+    AXIS2_OP_SET_IN_FLOW(op, env, op_in_phases);
     AXIS2_MODULE_DESC_ADD_OP(module_desc, env, op);
     
     return module_desc;
