@@ -21,10 +21,6 @@
 #include <axis2_conf_ctx.h>
 #include <axis2_module.h>
 
-/** 
- * @brief Operaton struct impl
- * Axis2 Operations  
- */ 
 typedef struct axis2_op_impl
 {
     axis2_op_t op;
@@ -35,15 +31,13 @@ typedef struct axis2_op_impl
     axis2_wsdl_op_t *wsdl_op;
         
     int mep;
-    /*To store deploytime module refs */
+    /*To store deploy time module QNames */
     axis2_array_list_t *module_qnames;
     
 } axis2_op_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(op) ((axis2_op_impl_t *)op)
    
-/*************************** Function headers *********************************/
-
 axis2_status_t AXIS2_CALL
 axis2_op_free(
     axis2_op_t *op, 
@@ -295,27 +289,6 @@ axis2_op_set_wsdl_op(
     const axis2_env_t *env,
     axis2_wsdl_op_t *wsdl_op);
 
-/**
- * This method is responsible for finding a MEPContext for an incomming
- * messages. An incomming message can be of two states.
- * <p/>
- * 1)This is a new incomming message of a given MEP. 2)This message is a
- * part of an MEP which has already begun.
- * <p/>
- * The method is special cased for the two MEPs
- * <p/>
- * #IN_ONLY #IN_OUT
- * <p/>
- * for two reasons. First reason is the wide usage and the second being that
- * the need for the MEPContext to be saved for further incomming messages.
- * <p/>
- * In the event that MEP of this op is different from the two MEPs
- * deafulted above the decession of creating a new or this message relates
- * to a MEP which already in business is decided by looking at the WSA
- * Relates TO of the incomming message.
- *
- * @param msgContext
- */
 struct axis2_op_ctx *AXIS2_CALL
 axis2_op_find_op_ctx(
     axis2_op_t *op,
@@ -323,11 +296,6 @@ axis2_op_find_op_ctx(
     struct axis2_msg_ctx *msg_ctx, 
     struct axis2_svc_ctx *svc_ctx);
 
-/**
- * This will not create a new op context if there is no one already.
- * @param msgContext
- * @return
- */
 axis2_op_ctx_t *AXIS2_CALL
 axis2_op_find_existing_op_ctx(
     axis2_op_t *op,
@@ -383,8 +351,6 @@ axis2_op_add_msg(
    const axis2_msg_t *msg);
 
                                 
-/************************* End of function headers ****************************/   
-
 AXIS2_EXTERN axis2_op_t *AXIS2_CALL
 axis2_op_create(
     const axis2_env_t *env)
@@ -435,7 +401,7 @@ axis2_op_create(
         return NULL;        
     }
    
-   /* create and set up child messages */
+    /* create and set up children messages */
     msg = axis2_msg_create(env);
     if (!msg)
     {
@@ -716,8 +682,6 @@ axis2_op_create_with_wsdl_op(
     return &(op_impl->op);   
 }
 
-/*************************** Start of op impls *************************/
-
 axis2_status_t AXIS2_CALL 
 axis2_op_free(
     axis2_op_t *op, 
@@ -880,7 +844,7 @@ axis2_op_is_param_locked(
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
     
-    /* checking the locked value of parent*/
+    /* checking the locked value of parent */
     parent = axis2_op_get_parent(op, env);
     if(NULL != parent)
     {
@@ -1104,13 +1068,13 @@ axis2_op_engage_module(
             op, moduleref);
         if(AXIS2_SUCCESS != status)
         {
-            /* Ignore the status */
+            /* ignore the status */
             AXIS2_ERROR_SET_STATUS_CODE(env->error, AXIS2_SUCCESS);
         }
         module = AXIS2_MODULE_DESC_GET_MODULE(moduleref, env);
         if(module)
         {
-            /* Notify module for service engagement */
+            /* notify module for service engagement */
             /*AXIS2_MODULE_ENGAGE_NOTIFY(module, env, op); */
         }
         if(AXIS2_TRUE == need_to_add)
@@ -1166,8 +1130,6 @@ axis2_op_add_to_engaged_module_list(
         module_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l, env);        
         if(AXIS2_QNAME_EQUALS(module_qname, env, module_qname_l))
         {
-            /*AXIS2_ERROR_SET(env->error, 
-                AXIS2_ERROR_MODULE_ALREADY_ENGAGED_TO_OP, AXIS2_FAILURE);*/
             return AXIS2_SUCCESS;
         }
 
@@ -1733,8 +1695,6 @@ axis2_op_find_op_ctx(
     relates_to = AXIS2_MSG_CTX_GET_RELATES_TO(msg_ctx, env);
     if(NULL == relates_to)
     {
-        /* Its a new incomming message so get_ the factory to create a new
-            one */
         op_ctx = axis2_op_ctx_create(env, op, svc_ctx);
         if(!op_ctx)
         {
@@ -1747,8 +1707,6 @@ axis2_op_find_op_ctx(
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_char_t *value = NULL;
             
-        /* So this message is part of an ongoing MEP
-                 opContext = */
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         value = AXIS2_RELATES_TO_GET_VALUE(relates_to, env);
         op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, value);
@@ -1797,8 +1755,6 @@ axis2_op_find_existing_op_ctx(
     {
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_char_t *value = NULL;
-        /* So this message is part of an ongoing MEP
-                 opContext = */
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         op_ctx = AXIS2_CONF_CTX_GET_OP_CTX(conf_ctx, env, value);
 

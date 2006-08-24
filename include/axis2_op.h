@@ -129,7 +129,7 @@ extern "C"
          * Gets named parameter.
          * @param op pointer to operation
          * @param env pointer to environment struct
-         * @param name name of parameter to be retrived as a string 
+         * @param name name of parameter to be retrieved as a string 
          * @return pointer to named parameter if exists, else NULL. Returns a
          * reference, not a cloned copy
          */
@@ -152,7 +152,7 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Checks if the named paramter is locked.
+         * Checks if the named parameter is locked.
          * @param op pointer to operation
          * @param env pointer to environment struct
          * @param param_name name of the parameter to be checked
@@ -193,7 +193,7 @@ extern "C"
         /**
          * Sets operation QName.
          * @param op pointer to operation as a void pointer, as this would be 
-         * assigined to get_qname() method of base WSDL operation
+         * assigned to get_qname() method of base WSDL operation
          * @param env pointer to environment struct
          * @param qname pointer to QName, this method creates a clone of the 
          * QName
@@ -730,7 +730,7 @@ extern "C"
                     struct axis2_msg_ctx *msg_ctx);
 
         /**
-         * Registes given operation context against this operation. Regisration
+         * Registers given operation context against this operation. Registration
          * happens within the given message context, as it is the message context
          * that captures the state information of a given invocation.
          * @param op pointer to operation
@@ -778,7 +778,7 @@ extern "C"
     };
 
     /**
-     * operaton struct.
+     * operation struct.
      */
     AXIS2_DECLARE_DATA struct axis2_op
     {
@@ -1071,7 +1071,7 @@ extern "C"
 #define AXIS2_OP_FIND_FOR_EXISTING_OP_CTX(op, env, wsdl_op) \
       ((op)->ops->find_existing_op_ctx (op, env, wsdl_op))
 
-/** Registers given operation conetxt against this operation.
+/** Registers given operation context against this operation.
     @sa axis2_op_ops#_register_op_ctx */
 #define AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, wsdl_op) \
       ((op)->ops->register_op_ctx (op, env, msg_ctx, wsdl_op))
