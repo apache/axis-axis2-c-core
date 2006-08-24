@@ -51,14 +51,14 @@ extern "C"
      * HTTP Worker ops struct
      * Encapsulator struct for ops of axis2_http_worker
      */
-    AXIS2_DECLARE_DATA struct axis2_http_worker_ops
+    struct axis2_http_worker_ops
     {
         /**
-    * @param http_worker pointer to http worker
-    * @param env pointer to environment struct
-    * @param svr_conn pointer to svr conn
-    * @param simple_request pointer to simple request
-    */
+         * @param http_worker pointer to http worker
+         * @param env pointer to environment struct
+         * @param svr_conn pointer to svr conn
+         * @param simple_request pointer to simple request
+         */
         axis2_bool_t (AXIS2_CALL *
                 process_request)(
                     axis2_http_worker_t *http_worker,
@@ -67,11 +67,11 @@ extern "C"
                     axis2_http_simple_request_t *simple_request);
 
         /**
-    * @param http_worker pointer to http worker
-    * @param env pointer to environment struct
-    * @param port
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+         * @param http_worker pointer to http worker
+         * @param env pointer to environment struct
+         * @param port
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_svr_port)(
                     axis2_http_worker_t *http_worker,
@@ -79,10 +79,10 @@ extern "C"
                     int port);
 
         /**
-    * @param http_worker pointer to http worker
-    * @param env pointer to environment strut
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+         * @param http_worker pointer to http worker
+         * @param env pointer to environment strut
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_http_worker_t *http_worker,
@@ -92,7 +92,7 @@ extern "C"
     /**
      * axis2 http worker
      */
-    AXIS2_DECLARE_DATA struct axis2_http_worker
+    struct axis2_http_worker
     {
         /** operations of axis2 http worker */
         axis2_http_worker_ops_t *ops;
@@ -105,8 +105,8 @@ extern "C"
      */
     AXIS2_EXTERN axis2_http_worker_t * AXIS2_CALL
     axis2_http_worker_create (
-            const axis2_env_t *env, 
-       axis2_conf_ctx_t *conf_ctx);
+        const axis2_env_t *env,
+        axis2_conf_ctx_t *conf_ctx);
 
 /************************** Start of function macros **************************/
 
