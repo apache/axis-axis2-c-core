@@ -48,58 +48,58 @@ extern "C"
      * HTTP Status Line ops struct
      * Encapsulator struct for ops of axis2_http_status_line
      */
-    AXIS2_DECLARE_DATA struct axis2_http_status_line_ops
+    struct axis2_http_status_line_ops
     {
         /**
-    * @param status_line pointer to status line
-    * @param env pointer to environment struct
-    */
+         * @param status_line pointer to status line
+         * @param env pointer to environment struct
+         */
         int (AXIS2_CALL *
                 get_status_code)(
-                    axis2_http_status_line_t *status_line,
+                    const axis2_http_status_line_t *status_line,
                     const axis2_env_t *env);
 
         /**
-    * @param status_line pointer to status line
-    * @param env pointer to environment struct
-    */
-        axis2_char_t* (AXIS2_CALL *
+         * @param status_line pointer to status line
+         * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
                 get_http_version)(
-                    axis2_http_status_line_t *status_line,
+                    const axis2_http_status_line_t *status_line,
                     const axis2_env_t *env);
 
         /**
-    * @param status_line pointer to status line
-    * @param env pointer to environment struct
-    */
-        axis2_char_t* (AXIS2_CALL *
+         * @param status_line pointer to status line
+         * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
                 get_reason_phrase)(
-                    axis2_http_status_line_t *status_line,
+                    const axis2_http_status_line_t *status_line,
                     const axis2_env_t *env);
 
         /**
-    * @param status_line pointer to status line
-    * @param env pointer to environment struct
-    */
+         * @param status_line pointer to status line
+         * @param env pointer to environment struct
+         */
         axis2_bool_t (AXIS2_CALL *
                 starts_with_http)(
                     axis2_http_status_line_t *status_line,
                     const axis2_env_t *env);
 
         /**
-    * @param status_line pointer to status line
-    * @param env pointer to environment struct
-    */
-        axis2_char_t* (AXIS2_CALL *
+         * @param status_line pointer to status line
+         * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
                 to_string)(
                     axis2_http_status_line_t *status_line,
                     const axis2_env_t *env);
 
         /**
-    * @param status_line pointer to status line
-    * @param env pointer to environment struct
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+         * @param status_line pointer to status line
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_http_status_line_t *status_line,
@@ -109,7 +109,7 @@ extern "C"
     /**
      * axis2 http status line
      */
-    AXIS2_DECLARE_DATA struct axis2_http_status_line
+    struct axis2_http_status_line
     {
         /** operatoins of axis2 http status line */
         axis2_http_status_line_ops_t *ops;
@@ -120,10 +120,10 @@ extern "C"
      * @param env pointer to environment struct
      * @param str pointer to str
      */
-    AXIS2_EXTERN axis2_http_status_line_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_http_status_line_t *AXIS2_CALL
     axis2_http_status_line_create(
-            const axis2_env_t *env,
-            const axis2_char_t *str);
+        const axis2_env_t *env,
+        const axis2_char_t *str);
 
 /************************* Start of function macros    ***************************/
 
