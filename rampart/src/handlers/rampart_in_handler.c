@@ -179,17 +179,23 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                         }
                     
                 }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, AXIS2_STRTRIM(env, item, NULL)) ){
-                        /*Do useful to verify encrypt*/       
+                        /*Do useful to verify encrypt*/    
+                        
+                        rampart_crypto_engine_t *engine = NULL;
                         printf("InHandler : Decrypt..............................\n"); 
-                        enc_status = rampart_crypto_decrypt_message(env, msg_ctx, param_action, soap_envelope, sec_node);
-                        if(enc_status == AXIS2_SUCCESS){
-                            rampart_print_info(env, "Decryption success");
-                            status = AXIS2_SUCCESS;
-                        }else{
-                            /*TODO return a fault*/
+                        engine = rampart_crypto_engine_create(env);
+                        enc_status = RAMPART_CRYPTO_ENGINE_DECRYPT_MESSAGE(engine, env, msg_ctx, param_action, soap_envelope, sec_node);
+
+                        RAMPART_CRYPTO_ENGINE_FREE(engine, env);   
+                        if(enc_status != AXIS2_SUCCESS){
                             rampart_print_info(env, "Decryption failed");
                             return AXIS2_FAILURE;
                         }
+                        
+                        enc_status = AXIS2_SUCCESS; /*TODO remove*/
+                        status = AXIS2_SUCCESS;
+                        rampart_print_info(env, "Decryption success");
+                        
                 }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, AXIS2_STRTRIM(env, item, NULL)) ){
                         /*Do useful to verify sign*/       
                         printf("InHandler : Signature\n"); 

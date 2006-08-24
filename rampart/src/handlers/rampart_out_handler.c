@@ -25,8 +25,8 @@
 #include <rampart_constants.h>
 #include <username_token.h>
 #include <rampart_handler_util.h>
-#include <rampart_crypto_engine.h>
 #include <timestamp_token.h>
+#include <rampart_crypto_engine.h>
 
 /*********************** Function headers *********************************/
 
@@ -216,14 +216,23 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
                 /*Encrypt*/                
                 }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, 
                     AXIS2_STRTRIM(env, item, NULL))){
+                    
+                    rampart_crypto_engine_t *engine = NULL;
                     printf("OUtHandler : Item is Encrypt\n"); 
-                    enc_status = rampart_crypto_encrypt_message(env,msg_ctx, param_action, soap_envelope, sec_node);
-                    if(enc_status == AXIS2_SUCCESS){
-                       rampart_print_info(env, "Encryption success");
-                    }else{
+                    engine = rampart_crypto_engine_create(env);
+                    
+                    enc_status = RAMPART_CRYPTO_ENGINE_ENCRYPT_MESSAGE(engine, env, msg_ctx, param_action, soap_envelope, sec_node);
+                    
+                    RAMPART_CRYPTO_ENGINE_FREE(engine, env);
+                    
+                    if(enc_status != AXIS2_SUCCESS){
                        rampart_print_info(env, "Encryption failed");
                        return AXIS2_FAILURE;
-                    }        
+                    }
+                        
+                    enc_status = AXIS2_SUCCESS;/*TODO Remove*/
+                    rampart_print_info(env, "Encryption success");
+                            
                 /*Signature*/    
                 }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, 
                     AXIS2_STRTRIM(env, item, NULL))){

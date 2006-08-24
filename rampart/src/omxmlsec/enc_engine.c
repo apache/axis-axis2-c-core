@@ -34,15 +34,181 @@
 #include <openssl_constants.h>
 #include <openssl_rsa.h>
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_get_encrypted_key(const axis2_env_t *env,
-                            axiom_node_t *enc_key_node,
-                            oxs_key_t *session_key)
+typedef struct oxs_enc_engine_impl
+{
+    oxs_enc_engine_t enc_engine;
+}
+oxs_enc_engine_impl_t;
+
+/** Interface to implementation conversion macro */
+#define AXIS2_INTF_TO_IMPL(enc_engine) ((oxs_enc_engine_impl_t *)enc_engine)
+
+/** private functions */
+static void
+oxs_enc_engine_init_ops(
+    oxs_enc_engine_t *enc_engine);
+
+static axis2_status_t
+oxs_enc_engine_cipher_data_node_read(
+    const axis2_env_t *env,
+    enc_ctx_ptr enc_ctx,
+    axiom_node_t* node);
+
+static axis2_status_t 
+oxs_enc_engine_encrypted_data_node_read(
+    const axis2_env_t *env,
+    enc_ctx_ptr enc_ctx,
+    axiom_node_t* node);
+
+/** public function */
+axis2_status_t AXIS2_CALL 
+oxs_enc_engine_free(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL 
+oxs_enc_engine_prvkey_decrypt_data(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env,
+    oxs_buffer_ptr input,
+    oxs_buffer_ptr result,
+    axis2_char_t *filename);
+
+axis2_status_t AXIS2_CALL 
+oxs_enc_engine_pubkey_encrypt_data(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env,
+    oxs_buffer_ptr input,
+    oxs_buffer_ptr result,
+    axis2_char_t *filename);
+
+axis2_status_t AXIS2_CALL 
+oxs_enc_engine_get_encrypted_key(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env,
+    axiom_node_t *enc_key_node,
+    oxs_key_t *session_key);
+
+axis2_status_t AXIS2_CALL 
+oxs_enc_engine_crypt(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env,
+    enc_ctx_ptr enc_ctx,
+    oxs_buffer_ptr input,
+    oxs_buffer_ptr result);
+
+axis2_status_t AXIS2_CALL 
+oxs_enc_engine_populate_cipher_value(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env,
+    axiom_node_t* template_node,
+    oxs_buffer_ptr databuf);
+
+axis2_status_t AXIS2_CALL 
+oxs_enc_engine_decrypt_template(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env,
+    axiom_node_t* template_node,
+    axis2_char_t** decrypted_data,
+    enc_ctx_ptr enc_ctx);
+
+axis2_status_t AXIS2_CALL 
+oxs_enc_engine_encrypt_template(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env,
+    axiom_node_t* template_node,
+    axis2_char_t* data,
+    enc_ctx_ptr enc_ctx);
+
+/******* end of function headers ****************/
+
+axis2_status_t AXIS2_CALL
+oxs_enc_engine_free(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env)
+{
+    oxs_enc_engine_impl_t *enc_engine_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    enc_engine_impl = AXIS2_INTF_TO_IMPL(enc_engine);
+
+    if(enc_engine->ops)
+    {
+        AXIS2_FREE(env->allocator, enc_engine->ops);
+        enc_engine->ops = NULL;
+    }
+    if(enc_engine_impl)
+    {
+        AXIS2_FREE(env->allocator, enc_engine_impl);
+        enc_engine_impl = NULL;
+    }
+    return AXIS2_SUCCESS;
+}
+
+oxs_enc_engine_t *AXIS2_CALL
+oxs_enc_engine_create(
+    const axis2_env_t *env)
+{
+    oxs_enc_engine_impl_t *enc_engine_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    enc_engine_impl =  (oxs_enc_engine_impl_t *) AXIS2_MALLOC (env->allocator,
+    sizeof (oxs_enc_engine_impl_t));
+
+    if(NULL == enc_engine_impl)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    enc_engine_impl->enc_engine.ops = AXIS2_MALLOC (env->allocator,
+                                        sizeof(oxs_enc_engine_ops_t));
+    if(NULL == enc_engine_impl->enc_engine.ops)
+    {
+        oxs_enc_engine_free(&(enc_engine_impl->enc_engine), env);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    oxs_enc_engine_init_ops(&(enc_engine_impl->enc_engine));
+
+    return &(enc_engine_impl->enc_engine);
+
+}
+
+static void
+oxs_enc_engine_init_ops(
+    oxs_enc_engine_t *enc_engine)
+{
+    enc_engine->ops->free = oxs_enc_engine_free;
+    enc_engine->ops->prvkey_decrypt_data = oxs_enc_engine_prvkey_decrypt_data;
+    enc_engine->ops->pubkey_encrypt_data = oxs_enc_engine_pubkey_encrypt_data;
+    enc_engine->ops->get_encrypted_key = oxs_enc_engine_get_encrypted_key;
+    enc_engine->ops->crypt = oxs_enc_engine_crypt;
+    enc_engine->ops->populate_cipher_value = oxs_enc_engine_populate_cipher_value;
+    enc_engine->ops->decrypt_template = oxs_enc_engine_decrypt_template;
+    enc_engine->ops->encrypt_template = oxs_enc_engine_encrypt_template;
+
+}
+
+axis2_status_t AXIS2_CALL
+oxs_enc_engine_get_encrypted_key(
+        oxs_enc_engine_t *enc_engine,
+        const axis2_env_t *env,
+        axiom_node_t *enc_key_node,
+        oxs_key_t *session_key)
 {
     axis2_char_t *key_enc_algo = NULL, *encrypted_key_value = NULL;
     axiom_node_t *enc_method_node = NULL, *cd_node = NULL, *cv_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     oxs_buffer_ptr encrypted_key_buf = NULL, decrypted_key_buf = NULL;
+    oxs_enc_engine_impl_t *enc_engine_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    enc_engine_impl = AXIS2_INTF_TO_IMPL(enc_engine);
+
+    
     /*Verify*/
     if(!enc_key_node){
         oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
@@ -101,13 +267,22 @@ oxs_get_encrypted_key(const axis2_env_t *env,
 }
 
 /*Decrypt data using the private key*/
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_prvkey_decrypt_data(const axis2_env_t *env, oxs_buffer_ptr input, oxs_buffer_ptr result, axis2_char_t *filename)
+axis2_status_t AXIS2_CALL
+oxs_enc_engine_prvkey_decrypt_data(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env, 
+    oxs_buffer_ptr input, 
+    oxs_buffer_ptr result, 
+    axis2_char_t *filename)
 {
     evp_pkey_ptr prvk = NULL;
     axis2_char_t  *decoded_encrypted_str = NULL;    
     unsigned char *decrypted  =  NULL;
     int ret, declen;
+    oxs_enc_engine_impl_t *enc_engine_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    enc_engine_impl = AXIS2_INTF_TO_IMPL(enc_engine);
 
     /*First do base64 decode*/
     decoded_encrypted_str = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len( (char*)(input->data)));
@@ -140,13 +315,22 @@ oxs_prvkey_decrypt_data(const axis2_env_t *env, oxs_buffer_ptr input, oxs_buffer
 
 
 /*TODO better to have pk_ctx instead of individual parameters like filename, algorithm*/
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_pubkey_encrypt_data(const axis2_env_t *env, oxs_buffer_ptr input, oxs_buffer_ptr result, axis2_char_t *filename )
+axis2_status_t AXIS2_CALL
+oxs_enc_engine_pubkey_encrypt_data(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env, 
+    oxs_buffer_ptr input, 
+    oxs_buffer_ptr result, 
+    axis2_char_t *filename )
 {
     evp_pkey_ptr pubk = NULL; 
     axis2_char_t *encoded_str = NULL;
     unsigned char *encrypted  =  NULL;
     int ret, enclen, encodedlen ;
+    oxs_enc_engine_impl_t *enc_engine_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    enc_engine_impl = AXIS2_INTF_TO_IMPL(enc_engine);
 
     /*Load the public key. Note: evp_pkey_load first try to load the private key. So need to provide the correct key*/
     pubk = evp_pkey_load(env, filename, "");   
@@ -186,11 +370,13 @@ oxs_pubkey_encrypt_data(const axis2_env_t *env, oxs_buffer_ptr input, oxs_buffer
 
 /*Encrypt or decrypt an input depending on what is set in the enc_ctx*/
 /*TODO Default IV*/
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_enc_crypt(const axis2_env_t *env, 
-                enc_ctx_ptr enc_ctx,
-                oxs_buffer_ptr input,
-                oxs_buffer_ptr result)
+axis2_status_t AXIS2_CALL
+oxs_enc_engine_crypt(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env, 
+    enc_ctx_ptr enc_ctx,
+    oxs_buffer_ptr input,
+    oxs_buffer_ptr result)
 {
     unsigned char *out_main_buf = NULL;
     openssl_evp_block_cipher_ctx_ptr bc_ctx = NULL;
@@ -201,6 +387,10 @@ oxs_enc_crypt(const axis2_env_t *env,
     int ret, enclen, encodedlen, decoded_len;
     axis2_char_t *temp = NULL;
     openssl_cipher_property_t *cprop = NULL;
+    oxs_enc_engine_impl_t *enc_engine_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    enc_engine_impl = AXIS2_INTF_TO_IMPL(enc_engine);
 
     /*Initializations*/
     ret = AXIS2_FAILURE;
@@ -292,7 +482,7 @@ oxs_enc_crypt(const axis2_env_t *env,
          return AXIS2_FAILURE;
     }
    
-#if 1 
+#if 0 
     FILE *outf;
     outf = fopen("outbuf", "wb");
     fwrite(out_main_buf, 1, enclen, outf);
@@ -328,15 +518,21 @@ oxs_enc_crypt(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_enc_populate_cipher_value(const axis2_env_t *env,
-                             axiom_node_t* template_node,
-                             oxs_buffer_ptr databuf)
+axis2_status_t AXIS2_CALL
+oxs_enc_engine_populate_cipher_value(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env,
+    axiom_node_t* template_node,
+    oxs_buffer_ptr databuf)
 {
     axis2_status_t ret = AXIS2_FAILURE;
     axiom_element_t *template_ele = NULL, *cv_ele = NULL, *cd_ele = NULL;
     axiom_node_t *cv_node = NULL, *cd_node = NULL;
     axis2_qname_t *qname = NULL;
+    oxs_enc_engine_impl_t *enc_engine_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    enc_engine_impl = AXIS2_INTF_TO_IMPL(enc_engine);
 
     template_ele = AXIOM_NODE_GET_DATA_ELEMENT(template_node, env);
     
@@ -381,22 +577,28 @@ oxs_enc_populate_cipher_value(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 /*We expect user to provide a template as below*/
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_enc_decrypt_template(const axis2_env_t *env,
-                        axiom_node_t* template_node,
-                        axis2_char_t** decrypted_data,
-                        enc_ctx_ptr enc_ctx
-                        )
+axis2_status_t AXIS2_CALL
+oxs_enc_engine_decrypt_template(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env,
+    axiom_node_t* template_node,
+    axis2_char_t** decrypted_data,
+    enc_ctx_ptr enc_ctx
+    )
 {
     axis2_status_t  ret =  AXIS2_FAILURE;
     oxs_buffer_ptr input = NULL;
     oxs_buffer_ptr result = NULL;
+    oxs_enc_engine_impl_t *enc_engine_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    enc_engine_impl = AXIS2_INTF_TO_IMPL(enc_engine);
 
     /*Populate enc_ctx*/
     enc_ctx->operation = oxs_operation_decrypt;
     enc_ctx->mode = enc_ctx_mode_encrypted_data;
 
-    ret = oxs_enc_encryption_data_node_read(env, enc_ctx, template_node);
+    ret = oxs_enc_engine_encrypted_data_node_read(env, enc_ctx, template_node);
     if(ret != AXIS2_SUCCESS){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "reading encrypted data failed");
@@ -427,23 +629,29 @@ oxs_enc_decrypt_template(const axis2_env_t *env,
 
 /*We expect user to provide a template as below*/
 /**/
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_enc_encrypt_template(const axis2_env_t *env,
-                        axiom_node_t* template_node, 
-                        axis2_char_t* data,
-                        enc_ctx_ptr enc_ctx
-                        )
+axis2_status_t AXIS2_CALL
+oxs_enc_engine_encrypt_template(
+    oxs_enc_engine_t *enc_engine,
+    const axis2_env_t *env,
+    axiom_node_t* template_node, 
+    axis2_char_t* data,
+    enc_ctx_ptr enc_ctx
+    )
 {
     axis2_status_t  ret =  AXIS2_FAILURE;
     oxs_buffer_ptr input = NULL;
     oxs_buffer_ptr result = NULL;
+    oxs_enc_engine_impl_t *enc_engine_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    enc_engine_impl = AXIS2_INTF_TO_IMPL(enc_engine);
    
        
     /*Populate enc_ctx*/
     enc_ctx->operation = oxs_operation_encrypt;
     enc_ctx->mode = enc_ctx_mode_encrypted_data;
      
-    ret = oxs_enc_encryption_data_node_read(env, enc_ctx, template_node);
+    ret = oxs_enc_engine_encrypted_data_node_read(env, enc_ctx, template_node);
     if(ret != AXIS2_SUCCESS){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "openssl_block_cipher_crypt failed");    
@@ -475,8 +683,8 @@ oxs_enc_encrypt_template(const axis2_env_t *env,
     
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_enc_cipher_data_node_read(const axis2_env_t *env, 
+static axis2_status_t AXIS2_CALL
+oxs_enc_engine_cipher_data_node_read(const axis2_env_t *env, 
                                 enc_ctx_ptr enc_ctx, axiom_node_t* node_cipher_data)
 {
     axiom_node_t* cur = NULL;
@@ -514,8 +722,8 @@ oxs_enc_cipher_data_node_read(const axis2_env_t *env,
 * We have EncryptedData of EncryptedKey node by now. 
 * So process it and populate the ctx.
 */
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_enc_encryption_data_node_read(const axis2_env_t *env,
+static axis2_status_t AXIS2_CALL
+oxs_enc_engine_encrypted_data_node_read(const axis2_env_t *env,
             enc_ctx_ptr enc_ctx, axiom_node_t* node)
 {
     axiom_node_t* cur = NULL;
@@ -587,7 +795,7 @@ oxs_enc_encryption_data_node_read(const axis2_env_t *env,
         return AXIS2_FAILURE;
     }
 
-    ret = oxs_enc_cipher_data_node_read(env, enc_ctx, cur);
+    ret = oxs_enc_engine_cipher_data_node_read(env, enc_ctx, cur);
     if(ret < 0) {
         return AXIS2_FAILURE;
     }
