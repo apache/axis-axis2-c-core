@@ -41,7 +41,7 @@ axis2_bool_t AXIS2_CALL
 axis2_phase_holder_is_phase_exist(
     axis2_phase_holder_t *phase_holder,
     const axis2_env_t *env,
-    axis2_char_t *phase_name);
+    const axis2_char_t *phase_name);
 
 axis2_status_t AXIS2_CALL
 axis2_phase_holder_add_handler(
@@ -53,7 +53,7 @@ axis2_phase_t *AXIS2_CALL
 axis2_phase_holder_get_phase(
     const axis2_phase_holder_t *phase_holder,
     const axis2_env_t *env,
-    axis2_char_t *phase_name);
+    const axis2_char_t *phase_name);
 
 axis2_status_t AXIS2_CALL
 axis2_phase_holder_build_transport_handler_chain(
@@ -170,7 +170,7 @@ axis2_bool_t AXIS2_CALL
 axis2_phase_holder_is_phase_exist(
     axis2_phase_holder_t *phase_holder,
     const axis2_env_t *env,
-    axis2_char_t *phase_name)
+    const axis2_char_t *phase_name)
 {
     int size = 0;
     int i = 0;
@@ -209,7 +209,7 @@ axis2_phase_holder_add_handler(
     const axis2_env_t *env,
     axis2_handler_desc_t *handler)
 {
-    axis2_char_t *phase_name = NULL;
+    const axis2_char_t *phase_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "axis2_phase_holder_add_handler start");
@@ -248,7 +248,7 @@ axis2_phase_t *AXIS2_CALL
 axis2_phase_holder_get_phase(
     const axis2_phase_holder_t *phase_holder,
     const axis2_env_t *env,
-    axis2_char_t *phase_name)
+    const axis2_char_t *phase_name)
 {
     int size = 0;
     int i = 0;

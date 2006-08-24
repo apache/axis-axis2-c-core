@@ -413,7 +413,7 @@ _axis2_phase_get_before_after(
     axis2_handler_t *handler, 
     const axis2_env_t *env)
 {
-    axis2_char_t *before = NULL, *after = NULL;
+    const axis2_char_t *before = NULL, *after = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
     axis2_phase_rule_t *rules = NULL;
     
@@ -551,8 +551,8 @@ axis2_phase_add_handler_desc(
             return AXIS2_FAILURE;
         }
         
-        first = AXIS2_PHASE_RULE_IS_PHASE_FIRST(rules, env);
-        last = AXIS2_PHASE_RULE_IS_PHASE_LAST(rules, env);
+        first = AXIS2_PHASE_RULE_IS_FIRST(rules, env);
+        last = AXIS2_PHASE_RULE_IS_LAST(rules, env);
         
         if (first && last)
         {
@@ -618,7 +618,7 @@ _axis2_phase_is_valid_before(
     axis2_phase_impl_t *phase_impl = NULL;
     axis2_phase_rule_t *rules = NULL;
     axis2_handler_desc_t *handler_desc = NULL;    
-    axis2_char_t *first_handler_name = NULL, *before = NULL;
+    const axis2_char_t *first_handler_name = NULL, *before = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -665,7 +665,7 @@ _axis2_phase_is_valid_after(
     axis2_phase_impl_t *phase_impl = NULL;
     axis2_phase_rule_t *rules = NULL;
     axis2_handler_desc_t *handler_desc = NULL;    
-    axis2_char_t *last_handler_name = NULL, *after = NULL;
+    const axis2_char_t *last_handler_name = NULL, *after = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     
@@ -712,7 +712,7 @@ axis2_phase_insert_before(
     axis2_phase_impl_t *phase_impl = NULL;
     axis2_phase_rule_t *rules = NULL;
     axis2_handler_desc_t *handler_desc = NULL;    
-    axis2_char_t *handler_name = NULL, *before = NULL;
+    const axis2_char_t *handler_name = NULL, *before = NULL;
     int i = 0;
     int size = 0;
     
@@ -805,7 +805,8 @@ axis2_phase_insert_after(
     axis2_phase_impl_t *phase_impl = NULL;
     axis2_phase_rule_t *rules = NULL;
     axis2_handler_desc_t *handler_desc = NULL;    
-    axis2_char_t *handler_name = NULL, *after = NULL;
+    const axis2_char_t *handler_name = NULL;
+    const axis2_char_t *after = NULL;
     int i = 0;
     int size = 0;
     
@@ -910,7 +911,7 @@ axis2_phase_insert_before_and_after(
     axis2_phase_impl_t *phase_impl = NULL;
     axis2_phase_rule_t *rules = NULL;
     axis2_handler_desc_t *handler_desc = NULL;    
-    axis2_char_t *before_handler_name = NULL, *after_handler_name = NULL, 
+    const axis2_char_t *before_handler_name = NULL, *after_handler_name = NULL, 
                  *after_name = NULL, *before_name = NULL, *handler_name = NULL;
     int i = 0;
     int size = 0;

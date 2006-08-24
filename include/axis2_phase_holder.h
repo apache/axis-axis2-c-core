@@ -82,7 +82,7 @@ extern "C"
                 is_phase_exist)(
                     axis2_phase_holder_t *phase_holder,
                     const axis2_env_t *env,
-                    axis2_char_t *phase_name);
+                    const axis2_char_t *phase_name);
 
         /**
          * @param phase_holder pointer to phase holder
@@ -107,7 +107,7 @@ extern "C"
                 get_phase)(
                     const axis2_phase_holder_t *phase_holder,
                     const axis2_env_t *env,
-                    axis2_char_t *phase_name);
+                    const axis2_char_t *phase_name);
 
         /**
          * This method is to build the transport phase , here load the corresponding 

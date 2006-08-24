@@ -442,7 +442,7 @@ axis2_phase_resolver_build_execution_chains(
             for (j = 0; j < count; j++)
             {
                 axis2_handler_desc_t *metadata = NULL;
-                axis2_char_t *phase_name = NULL;
+                const axis2_char_t *phase_name = NULL;
                 axis2_phase_rule_t *phase_rule = NULL;
 
                 metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
@@ -551,7 +551,7 @@ axis2_phase_resolver_build_execution_chains(
         for (j = 0; j < count; j++)
         {
             axis2_handler_desc_t *metadata = NULL;
-            axis2_char_t *phase_name = NULL;
+            const axis2_char_t *phase_name = NULL;
             axis2_phase_rule_t *phase_rule = NULL;
 
             metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
@@ -1277,7 +1277,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
                 for (j = 0; j < handler_count; j++)
                 {
                     axis2_handler_desc_t *metadata = NULL;
-                    axis2_char_t *phase_name = NULL;
+                    const axis2_char_t *phase_name = NULL;
                     axis2_phase_rule_t *phase_rule = NULL;
 
                     metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
@@ -1433,7 +1433,7 @@ axis2_phase_resolver_engage_to_global_chain(
             for (j = 0; j < AXIS2_FLOW_GET_HANDLER_COUNT(flow, env); j++)
             {
                 axis2_handler_desc_t *metadata = NULL;
-                axis2_char_t *phase_name = NULL;
+                const axis2_char_t *phase_name = NULL;
                 axis2_phase_rule_t *phase_rule = NULL;
 
                 metadata = AXIS2_FLOW_GET_HANDLER(flow, env, j);
@@ -1652,7 +1652,7 @@ axis2_phase_resolver_engage_module_to_op(
             for (j = 0; j < handler_count; j++)
             {
                 axis2_handler_desc_t *metadata = NULL;
-                axis2_char_t *phase_name = NULL;
+                const axis2_char_t *phase_name = NULL;
                 axis2_phase_rule_t *phase_rule = NULL;
                 axis2_status_t status = AXIS2_FAILURE;
 

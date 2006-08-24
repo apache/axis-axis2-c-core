@@ -551,7 +551,7 @@ axis2_desc_builder_process_handler(
                 {
                     struct axis2_phase_rule *phase_rule = NULL;
                     phase_rule = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
-                    status = AXIS2_PHASE_RULE_SET_PHASE_FIRST(phase_rule, env,
+                    status = AXIS2_PHASE_RULE_SET_FIRST(phase_rule, env,
                         AXIS2_TRUE);
                     if(AXIS2_SUCCESS != status)
                     {
@@ -564,7 +564,7 @@ axis2_desc_builder_process_handler(
                 {
                     struct axis2_phase_rule *phase_rule = NULL;
                     phase_rule = AXIS2_HANDLER_DESC_GET_RULES(handler_desc, env);
-                    status = AXIS2_PHASE_RULE_SET_PHASE_FIRST(phase_rule, env,
+                    status = AXIS2_PHASE_RULE_SET_FIRST(phase_rule, env,
                         AXIS2_FALSE);
                     if(AXIS2_SUCCESS != status)
                     {
