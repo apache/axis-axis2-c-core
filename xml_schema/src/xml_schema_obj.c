@@ -18,14 +18,10 @@
 #include <axis2_hash.h>
 #include <axis2_utils.h>
 
-typedef struct xml_schema_obj_impl 
-                    xml_schema_obj_impl_t;
-
 /** 
- * @brief Xml Schema Obj Struct Impl
- *   Axis2 Xml Schema Obj  
+ * @brief xml_schema_obj struct impl
  */ 
-struct xml_schema_obj_impl
+typedef struct xml_schema_obj_impl
 {
     xml_schema_obj_t obj;
     
@@ -36,9 +32,12 @@ struct xml_schema_obj_impl
     int line_num;
     
     int line_pos;
+   
+    axis2_hash_t *meta_info_map;
     
     axis2_char_t *source_uri;
-};
+
+}xml_schema_obj_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(obj) \
         ((xml_schema_obj_impl_t *) obj)
@@ -52,55 +51,65 @@ xml_schema_obj_free(
 
 axis2_hash_t *AXIS2_CALL 
 xml_schema_obj_super_objs(
-        void *obj,
-        const axis2_env_t *env);
+   void *obj,
+   const axis2_env_t *env);
 
 xml_schema_types_t AXIS2_CALL 
 xml_schema_obj_get_type(
-        void *obj,
-        const axis2_env_t *env);
+   void *obj,
+   const axis2_env_t *env);
 
 axis2_char_t * AXIS2_CALL
 xml_schema_obj_get_source_uri(
-        void *obj,
-        const axis2_env_t *env);
+   void *obj,
+   const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_obj_set_source_uri(
-        void *obj,
-        const axis2_env_t *env,
-        axis2_char_t *source_uri);
+   void *obj,
+   const axis2_env_t *env,
+   axis2_char_t *source_uri);
 
 axis2_bool_t AXIS2_CALL
 xml_schema_obj_equals(
-        void *obj,
-        const axis2_env_t *env,
-        void *obj_comp);
+   void *obj,
+   const axis2_env_t *env,
+   void *obj_comp);
 
 int AXIS2_CALL
 xml_schema_obj_get_line_num(
-        void *obj,
-        const axis2_env_t *env);
+   void *obj,
+   const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_obj_set_line_num(
-        void *obj,
-        const axis2_env_t *env,
-        int line_num);
+   void *obj,
+   const axis2_env_t *env,
+   int line_num);
 
 int AXIS2_CALL
 xml_schema_obj_get_line_pos(
-        void *obj,
-        const axis2_env_t *env);
+    void *obj,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 xml_schema_obj_set_line_pos(
-        void *obj,
-        const axis2_env_t *env,
-        int line_pos);
+    void *obj,
+    const axis2_env_t *env,
+    int line_pos);
 
-/******************* end function pointers ************************************/
+axis2_status_t AXIS2_CALL
+xml_schema_obj_add_meta_info(
+    void *obj,
+    const axis2_env_t *env,
+    axis2_char_t *key,
+    void *value);
 
+axis2_hash_t* AXIS2_CALL 
+xml_schema_obj_get_meta_info(
+    void *obj,
+    const axis2_env_t *env);
+    
 AXIS2_EXTERN xml_schema_obj_t * AXIS2_CALL
 xml_schema_obj_create(const axis2_env_t *env)
 {
@@ -121,6 +130,7 @@ xml_schema_obj_create(const axis2_env_t *env)
     obj_impl->line_num = -1;
     obj_impl->line_pos = -1;
     obj_impl->source_uri = NULL;
+    obj_impl->meta_info_map = NULL;
     obj_impl->obj.ops   = NULL;
     
     obj_impl->obj.ops = AXIS2_MALLOC(env->allocator, 
@@ -153,8 +163,13 @@ xml_schema_obj_create(const axis2_env_t *env)
         xml_schema_obj_set_source_uri;
     obj_impl->obj.ops->equals = 
         xml_schema_obj_equals;
-
+    obj_impl->obj.ops->get_meta_info =
+        xml_schema_obj_get_meta_info;
+    obj_impl->obj.ops->add_meta_info =
+        xml_schema_obj_add_meta_info;
+        
     obj_impl->ht_super = axis2_hash_make(env);
+    
     if(!obj_impl->ht_super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -400,3 +415,48 @@ xml_schema_obj_equals(void *obj,
     return AXIS2_TRUE;
 }
 
+axis2_status_t AXIS2_CALL
+xml_schema_obj_add_meta_info(void *obj,
+                        const axis2_env_t *env,
+                        axis2_char_t *key,
+                        void *value)
+{
+    xml_schema_obj_impl_t *obj_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
+
+    ht_super = XML_SCHEMA_OBJ_SUPER_OBJS(obj, env);
+    if(NULL != ht_super)
+    {
+        obj_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_OBJ",
+                AXIS2_HASH_KEY_STRING));
+        if(!obj_impl->meta_info_map)
+        {
+            obj_impl->meta_info_map = axis2_hash_make(env);
+            if(!obj_impl->meta_info_map)
+            {
+                AXIS2_ERROR_SET((env)->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+                return AXIS2_FAILURE;
+            }
+            axis2_hash_set(obj_impl->meta_info_map, key, AXIS2_HASH_KEY_STRING,
+                value);
+        }
+        return AXIS2_SUCCESS;
+    }
+    return AXIS2_FAILURE;
+}
+
+axis2_hash_t* AXIS2_CALL
+xml_schema_obj_get_meta_info(void *obj,
+                        const axis2_env_t *env)
+{
+    xml_schema_obj_impl_t *obj_impl = NULL;
+    axis2_hash_t *ht_super = NULL;
+    ht_super = XML_SCHEMA_OBJ_SUPER_OBJS(obj, env);
+    if(NULL != ht_super)
+    {
+        obj_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_OBJ",
+            AXIS2_HASH_KEY_STRING));
+        return obj_impl->meta_info_map;
+    }        
+    return NULL;
+}                        
