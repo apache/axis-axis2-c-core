@@ -42,7 +42,7 @@ extern "C"
     int axis2_http_socket_read_timeout = 0;
 
 
-    AXIS2_EXTERN axis2_transport_receiver_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_transport_receiver_t *AXIS2_CALL
     axis2_http_server_create (
         const axis2_env_t *env,
         const axis2_char_t *repo,
