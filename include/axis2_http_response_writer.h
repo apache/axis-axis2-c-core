@@ -48,71 +48,71 @@ extern "C"
      * HTTP Response Writer ops struct
      * Encapsulator struct for ops of axis2_http_response_writer
      */
-    AXIS2_DECLARE_DATA struct axis2_http_response_writer_ops
+    struct axis2_http_response_writer_ops
     {
         /**
-    * @param response_writer pointer to response writer
-    * @param env pointer to environment struct
-    */
-        axis2_char_t* (AXIS2_CALL *
+         * @param response_writer pointer to response writer
+         * @param env pointer to environment struct
+         */
+        axis2_char_t *(AXIS2_CALL *
                 get_encoding)(
-                    axis2_http_response_writer_t *response_writer,
+                    const axis2_http_response_writer_t *response_writer,
                     const axis2_env_t *env);
 
         /**
-    * @param response_writer pointer to response writer
-    * @param env pointer to environment struct
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+         * @param response_writer pointer to response writer
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 close)(
                     axis2_http_response_writer_t *response_writer,
                     const axis2_env_t *env);
 
         /**
-    * @param response_writer pointer to response writer
-    * @param env pointer to environment struct
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
-        axis2_status_t (AXIS2_CALL * 
+         * @param response_writer pointer to response writer
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
                 flush)(
                     axis2_http_response_writer_t *response_writer,
                     const axis2_env_t *env);
 
         /**
-    * @param response_writer pointer to response writer
-    * @param env pointer to environment struct
-    * @param c
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
-        axis2_status_t (AXIS2_CALL * 
+         * @param response_writer pointer to response writer
+         * @param env pointer to environment struct
+         * @param c
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
                 write_char)(
                     axis2_http_response_writer_t *response_writer,
-                    const axis2_env_t *env, 
-          char c);
+                    const axis2_env_t *env,
+                    char c);
 
         /**
-    * @param response_writer pointer to response writer
-    * @param env pointer to environment struct
-    * @param buf pointer to buf
-    * @param offset
-    * @param len
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+         * @param response_writer pointer to response writer
+         * @param env pointer to environment struct
+         * @param buf pointer to buf
+         * @param offset
+         * @param len
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 write_buf)(
                     axis2_http_response_writer_t *response_writer,
-                    const axis2_env_t *env, 
-          char *buf, 
-          int offset,
+                    const axis2_env_t *env,
+                    char *buf,
+                    int offset,
                     axis2_ssize_t len);
 
         /**
-    * @param response_writer pointer to response writer
-    * @param env pointer to environment struct
-    * @param str pointer to str
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+         * @param response_writer pointer to response writer
+         * @param env pointer to environment struct
+         * @param str pointer to str
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 print_str)(
                     axis2_http_response_writer_t *response_writer,
@@ -120,23 +120,23 @@ extern "C"
                     const char *str);
 
         /**
-    * @param response_writer pointer to response writer
-    * @param env pointer to environment struct
-    * @param i
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+         * @param response_writer pointer to response writer
+         * @param env pointer to environment struct
+         * @param i
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 print_int)(
                     axis2_http_response_writer_t *response_writer,
-                    const axis2_env_t *env, 
-          int i);
+                    const axis2_env_t *env,
+                    int i);
 
         /**
-    * @param response_writer pointer to response writer
-    * @param env pointer to environment struct
-    * @param str pointer to str
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+         * @param response_writer pointer to response writer
+         * @param env pointer to environment struct
+         * @param str pointer to str
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 println_str)(
                     axis2_http_response_writer_t *response_writer,
@@ -144,20 +144,20 @@ extern "C"
                     const char *str);
 
         /**
-    * @param response_writer pointer to response writer
-    * @param env pointer to environment struct
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+         * @param response_writer pointer to response writer
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 println)(
                     axis2_http_response_writer_t *response_writer,
                     const axis2_env_t *env);
 
         /**
-    * @param response_writer pointer to response writer
-    * @param env pointer to environment struct
-    * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-    */
+         * @param response_writer pointer to response writer
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_http_response_writer_t *response_writer,
@@ -167,7 +167,7 @@ extern "C"
     /**
      * axis2 http response writer
      */
-    AXIS2_DECLARE_DATA struct axis2_http_response_writer
+    struct axis2_http_response_writer
     {
         /** operations of axis2 http response writer */
         axis2_http_response_writer_ops_t *ops;
@@ -178,21 +178,21 @@ extern "C"
      * @param env pointer to environment struct
      * @param stream pointer to stream
      */
-    AXIS2_EXTERN axis2_http_response_writer_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
     axis2_http_response_writer_create (
-        const axis2_env_t *env, 
-   axis2_stream_t *stream);
+        const axis2_env_t *env,
+        axis2_stream_t *stream);
 
     /**
      * @param env pointer to environment struct
      * @param stream pointer to stream
      * @param encoding pointer to encoding
      */
-    AXIS2_EXTERN axis2_http_response_writer_t * AXIS2_CALL
+    AXIS2_EXTERN axis2_http_response_writer_t *AXIS2_CALL
     axis2_http_response_writer_create_with_encoding(
         const axis2_env_t *env,
-        axis2_stream_t *stream, 
-   const axis2_char_t *encoding);
+        axis2_stream_t *stream,
+        const axis2_char_t *encoding);
 
 /************************** Start of function macros **************************/
 
