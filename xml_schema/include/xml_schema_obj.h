@@ -18,8 +18,9 @@
 #define XML_SCHEMA_OBJ_H
 
 /**
- * @defgroup xml_schema_obj xml_schema_obj
+ * @defgroup xml_schema_obj 
  * @ingroup xml_schema
+ *
  * xml_schema_obj defines a set of functions that are common to
  * other interfaces in xml_schema
  * @{

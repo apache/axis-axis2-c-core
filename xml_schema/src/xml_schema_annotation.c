@@ -17,14 +17,11 @@
 #include <xml_schema_annotation.h>
 #include <axis2_utils.h>
 
-typedef struct xml_schema_annotation_impl 
-                xml_schema_annotation_impl_t;
-
 /** 
- * @brief Other Extension Struct Impl
- *   Axis2 Other Extension  
+ * @brief xml_schema_annotation struct 
+ *  
  */ 
-struct xml_schema_annotation_impl
+typedef struct xml_schema_annotation_impl
 {
     xml_schema_annotation_t annotation;
     
@@ -35,13 +32,13 @@ struct xml_schema_annotation_impl
     xml_schema_obj_t *schema_obj;
     
     xml_schema_obj_collection_t *items;
-};
+	
+}xml_schema_annotation_impl_t;
 
 
 #define AXIS2_INTF_TO_IMPL(annotation) \
         ((xml_schema_annotation_impl_t *) annotation)
 
-/*************** function prototypes *****************************************/
 
 axis2_status_t AXIS2_CALL 
 xml_schema_annotation_free(
@@ -66,7 +63,6 @@ xml_schema_obj_collection_t * AXIS2_CALL
 xml_schema_annotation_get_items(void *annotation,
                         const axis2_env_t *env);
 
-/********************** end **************************************************/
 
 AXIS2_EXTERN xml_schema_annotation_t * AXIS2_CALL
 xml_schema_annotation_create(const axis2_env_t *env)
@@ -212,19 +208,6 @@ xml_schema_obj_collection_t *AXIS2_CALL
 xml_schema_annotation_get_items(void *annotation,
                                         const axis2_env_t *env)
 {
-    /*
-    xml_schema_annotation_impl_t *annotation_impl = NULL;
-    axis2_hash_t *ht_super = NULL;
-    
-    ht_super = XML_SCHEMA_ANNOTATION_SUPER_OBJS(annotation, env);
-    if(NULL != ht_super)
-    {
-        annotation_impl = (xml_schema_annotation_impl_t*)
-            axis2_hash_get(ht_super , "XML_SCHEMA_ANNOTATION", 
-                AXIS2_HASH_KEY_STRING);
-        return annotation_impl->items;
-    }
-    */
     return AXIS2_INTF_TO_IMPL(annotation)->items;
 }
 
