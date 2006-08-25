@@ -28,6 +28,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+generate_random_data(const axis2_env_t *env, oxs_buffer_ptr buf, int size);
+
 /*Get the cipher property for a given cipher name
   @see openssl_cipher_property.h*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

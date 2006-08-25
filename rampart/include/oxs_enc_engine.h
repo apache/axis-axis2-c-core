@@ -134,7 +134,6 @@ extern "C"
         const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
-
 #define OXS_ENC_ENGINE_FREE(enc_engine, env) \
         ((enc_engine)->ops->free(enc_engine, env))
 

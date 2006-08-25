@@ -20,6 +20,7 @@
 #include <openssl/bio.h>
 #include <openssl/rand.h>
 #include <openssl_constants.h>
+#include <openssl_pkey.h>
 #include <axis2_util.h>
 #include <oxs_buffer.h>
 
@@ -39,37 +40,56 @@ extern "C" {
  * @{
  */
 
-#define OPENSSL_EVP_KEY_TYPE_UNKNOWN        0
-#define OPENSSL_EVP_KEY_TYPE_PUBLIC_KEY     1
-#define OPENSSL_EVP_KEY_TYPE_PRIVATE_KEY    2
+    /** Type name for struct openssl_rsa_ops */
+    typedef struct openssl_rsa_ops      openssl_rsa_ops_t;
+    /** Type name for struct openssl_rsa */
+    typedef struct openssl_rsa          openssl_rsa_t;
 
 
-typedef struct _evp_pkey evp_pkey, *evp_pkey_ptr;
+    struct openssl_rsa_ops
+    {
+        axis2_status_t (AXIS2_CALL *
+        free)(
+            openssl_rsa_t *rsa,
+            const axis2_env_t *env);
 
-struct _evp_pkey{
-    EVP_PKEY *key;
-    axis2_char_t *name;
-    int size;
-    int type;
-};
+        int (AXIS2_CALL *
+        prv_decrypt)(
+            openssl_rsa_t *rsa,
+            const axis2_env_t *env,
+            const openssl_pkey_t *pkey,
+            unsigned char *in,
+            unsigned char **out );
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-generate_random_key(const axis2_env_t *env, oxs_buffer_ptr buf, int size);
+        int (AXIS2_CALL*
+        pub_encrypt)(
+            openssl_rsa_t *rsa,
+            const axis2_env_t *env,
+            const openssl_pkey_t *pkey,
+            unsigned char *in,
+            unsigned char **out );
+    };
 
-AXIS2_EXTERN evp_pkey_ptr AXIS2_CALL
-evp_pkey_create(const axis2_env_t *env);
+    struct openssl_rsa
+    {
+        /** operations of openssl_rsa */
+        openssl_rsa_ops_t *ops;
+    };
 
-AXIS2_EXTERN evp_pkey_ptr AXIS2_CALL
-evp_pkey_init(const axis2_env_t *env, evp_pkey_ptr pkey, EVP_PKEY *key, axis2_char_t *name, int type);
+    /*Create function*/
+    AXIS2_EXTERN openssl_rsa_t *AXIS2_CALL
+    openssl_rsa_create(const axis2_env_t *env);
 
-AXIS2_EXTERN evp_pkey_ptr AXIS2_CALL
-evp_pkey_load(const axis2_env_t *env, axis2_char_t *filename,  axis2_char_t *password);
+/**********************Macros******************************************/
+#define OPENSSL_RSA_FREE(rsa, env) \
+        ((rsa)->ops->free(rsa, env) )
 
-AXIS2_EXTERN int  AXIS2_CALL
-openssl_rsa_pub_encrypt(const axis2_env_t *env, evp_pkey_ptr pubkey, unsigned char *in, unsigned char **out );
+#define OPENSSL_RSA_PRV_DECRYPT(rsa, env, pkey, in, out) \
+        ((rsa)->ops->prv_decrypt(rsa, env, pkey, in, out) )
 
-AXIS2_EXTERN int  AXIS2_CALL
-openssl_rsa_prv_decrypt(const axis2_env_t *env, evp_pkey_ptr prvkey, unsigned char *in, unsigned char **out );
+#define OPENSSL_RSA_PUB_ENCRYPT(rsa, env, pkey, in, out) \
+        ((rsa)->ops->pub_encrypt(rsa, env, pkey, in, out) )
+
 
 /** @} */
 #ifdef __cplusplus
