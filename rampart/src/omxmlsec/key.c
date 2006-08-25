@@ -372,10 +372,10 @@ oxs_key_for_algo(oxs_key_t *key,
     size = OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env);
 
     key_buf = oxs_create_buffer(env, size);    
-    ret = generate_random_key(env, key_buf, size);    
+    ret = generate_random_data(env, key_buf, size);    
     if(ret == AXIS2_FAILURE){
          oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
-            "generate_random_key failed");
+            "generate_random_data failed");
          return AXIS2_FAILURE;
     }
     

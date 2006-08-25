@@ -293,7 +293,7 @@ rampart_crypto_engine_decrypt_message(
 {
     axis2_status_t ret = AXIS2_FAILURE;
     axiom_node_t *enc_data_node = NULL, *parent_of_enc_node = NULL;
-    axiom_node_t *body_node = NULL, *header_node = NULL, *decrypted_node = NULL;
+    axiom_node_t *body_node = NULL, *header_node = NULL/*, *decrypted_node = NULL*/;
     axiom_node_t *ref_list_node = NULL;
     axiom_soap_body_t *body = NULL;
     axiom_soap_header_t *header = NULL;
@@ -371,7 +371,7 @@ rampart_crypto_engine_decrypt_message(
     }
     parent_of_enc_node = AXIOM_NODE_GET_PARENT(enc_data_node, env);
     
-    #if 1
+    #if 0
     decrypted_node = oxs_axiom_deserialize_node(env, decrypted_data);
    
     /*Remove enc_node*/  

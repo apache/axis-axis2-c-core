@@ -34,112 +34,159 @@ struct _evp_pkey{
 }
 */
 
+typedef struct openssl_rsa_impl
+{
+    openssl_rsa_t rsa;
+}
+openssl_rsa_impl_t;
+
+#define AXIS2_INTF_TO_IMPL(rsa) ((openssl_rsa_impl_t *)rsa)
+
+/*******************Function Headers ****************************/
+static void
+openssl_rsa_init_ops(
+    openssl_rsa_t *rsa);
+
+/*Public function*/
+axis2_status_t AXIS2_CALL
+openssl_rsa_free(
+    openssl_rsa_t *rsa,
+    const axis2_env_t *env);
+
+int AXIS2_CALL
+openssl_rsa_prv_decrypt(
+    openssl_rsa_t *rsa,
+    const axis2_env_t *env,
+    const openssl_pkey_t *pkey,
+    unsigned char *in, 
+    unsigned char **out );
+
+int AXIS2_CALL
+openssl_rsa_pub_encrypt(
+    openssl_rsa_t *rsa,
+    const axis2_env_t *env,
+    const openssl_pkey_t *pkey,
+    unsigned char *in, 
+    unsigned char **out );
+
+/*****************End of function headers ****************************/
+static void
+openssl_rsa_init_ops(
+    openssl_rsa_t *rsa)
+{
+    rsa->ops->free = openssl_rsa_free;
+    rsa->ops->prv_decrypt = openssl_rsa_prv_decrypt;
+    rsa->ops->pub_encrypt = openssl_rsa_pub_encrypt;
+}
+
+openssl_rsa_t *AXIS2_CALL
+openssl_rsa_create(
+        const axis2_env_t *env)
+{
+    openssl_rsa_impl_t *rsa_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    rsa_impl =  (openssl_rsa_impl_t *) AXIS2_MALLOC (env->allocator,
+                        sizeof (openssl_rsa_impl_t));
+
+    if(NULL == rsa_impl)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    rsa_impl->rsa.ops = AXIS2_MALLOC (env->allocator,
+        sizeof(openssl_rsa_ops_t));
+
+    if(NULL == rsa_impl->rsa.ops)
+    {
+        openssl_rsa_free(&(rsa_impl->rsa), env);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    /** initialize ops */
+    openssl_rsa_init_ops(&(rsa_impl->rsa));
+
+    return &(rsa_impl->rsa);
+
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-generate_random_key(const axis2_env_t *env, oxs_buffer_ptr buf, int size)
+openssl_rsa_free( openssl_rsa_t * rsa, 
+    const axis2_env_t *env)
 {
-    int ret;
-    ret = oxs_buffer_set_size(env, buf, size);
-    if(ret < 0){
-        oxs_error(ERROR_LOCATION,
-                OXS_ERROR_DEFAULT, "oxs_buffer_set_size failed %d",size );
-        return AXIS2_FAILURE;
-    }
-    ret = RAND_bytes(buf->data, size);
-    if(ret < 0){
-        oxs_error(ERROR_LOCATION,
-                OXS_ERROR_DEFAULT, "RAND_bytes failed %d",size );
-        return AXIS2_FAILURE;
-    }
-/**************REMOVE TODO***/
-#if 1
-    buf->data = (unsigned char *)"012345670123456701234567";
-    buf->size = 24;
-#endif
-/***************************/
+    openssl_rsa_impl_t * rsa_impl= NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
+    AXIS2_FREE(env->allocator, rsa_impl);
+    rsa_impl = NULL;
+
     return AXIS2_SUCCESS;
+
 }
 
 
-AXIS2_EXTERN evp_pkey_ptr AXIS2_CALL
-evp_pkey_create(const axis2_env_t *env)
-{
-    evp_pkey_ptr pkey = NULL;
-    pkey = (evp_pkey_ptr) AXIS2_MALLOC(env->allocator, sizeof(evp_pkey));
-    return pkey;    
-}
-
-AXIS2_EXTERN evp_pkey_ptr AXIS2_CALL
-evp_pkey_init(const axis2_env_t *env, evp_pkey_ptr pkey, EVP_PKEY *key, axis2_char_t *name, int type)
-{
-    if(!pkey){
-        pkey = evp_pkey_create(env);   
-    }
- 
-    pkey->key = key;
-    pkey->name = name;
-    pkey->size = sizeof(key);
-    pkey->type = type;
-
-    return pkey;
-}
-
-AXIS2_EXTERN evp_pkey_ptr AXIS2_CALL
-evp_pkey_load(const axis2_env_t *env, axis2_char_t *filename, axis2_char_t *password)
-{
-    EVP_PKEY *pk = NULL;
-    BIO *bio;
-    evp_pkey_ptr pkey = NULL; 
-    int type = OPENSSL_EVP_KEY_TYPE_UNKNOWN;
-
-    bio = BIO_new_file(filename, "rb");
-    /*Try to read the prv key first*/
-    pk = PEM_read_bio_PrivateKey(bio, NULL, 0 , password);
-    if(!pk){
-        /*If prv key is not found then read the public key*/     
-        BIO_reset(bio);
-        pk = PEM_read_bio_PUBKEY(bio, NULL, 0 , password);
-        if(!pk){
-            /*If there is no key by now its an error*/
-            oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
-                     "Cannot load key from %s", filename);
-
-            return NULL;
-        }
-        type = OPENSSL_EVP_KEY_TYPE_PUBLIC_KEY;
-    }else{
-        type = OPENSSL_EVP_KEY_TYPE_PRIVATE_KEY;
-    }
-     
-    pkey = evp_pkey_create(env);
-    pkey = evp_pkey_init(env, pkey, pk, filename, type) ;
-   
-    return pkey;  
-    
-}
-
-AXIS2_EXTERN int  AXIS2_CALL
-openssl_rsa_pub_encrypt(const axis2_env_t *env, evp_pkey_ptr pubkey, unsigned char *in, unsigned char **out )
+int AXIS2_CALL
+openssl_rsa_pub_encrypt(
+    openssl_rsa_t *rsa,
+    const axis2_env_t *env,
+    const openssl_pkey_t *pkey,
+    unsigned char *in,
+    unsigned char **out )
 {
     unsigned char *encrypted = NULL;
+    openssl_rsa_impl_t *rsa_impl = NULL;
     int ret;
-    encrypted = malloc(RSA_size(pubkey->key->pkey.rsa));
-    ret = RSA_public_encrypt(strlen((char*)in), in, encrypted, pubkey->key->pkey.rsa, RSA_PKCS1_PADDING);
+    EVP_PKEY *key = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
+     
+    /*encrypted = malloc(RSA_size(pubkey->key->pkey.rsa));*/
+    key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
+    encrypted = malloc(RSA_size(key->pkey.rsa));
+    ret = RSA_public_encrypt(strlen((char*)in), 
+                            in, 
+                            encrypted, 
+                            key->pkey.rsa , 
+                            RSA_PKCS1_PADDING);
     if(ret < 0) {
         printf("Encryption failed \n");
+        return (-1);
     }
     *out = encrypted;
     return ret;
 }
 
-AXIS2_EXTERN int  AXIS2_CALL
-openssl_rsa_prv_decrypt(const axis2_env_t *env, evp_pkey_ptr prvkey, unsigned char *in, unsigned char **out )
+int AXIS2_CALL
+openssl_rsa_prv_decrypt(
+    openssl_rsa_t *rsa,
+    const axis2_env_t *env,
+    const openssl_pkey_t *pkey,
+    unsigned char *in,
+    unsigned char **out )
 {
     unsigned char *decrypted = NULL;
+    openssl_rsa_impl_t *rsa_impl = NULL;
     int ret;
-    decrypted = malloc(RSA_size(prvkey->key->pkey.rsa));
-    ret = RSA_private_decrypt(RSA_size(prvkey->key->pkey.rsa), in, decrypted, prvkey->key->pkey.rsa, RSA_PKCS1_PADDING);
+    EVP_PKEY *key = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
+
+    key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
+    decrypted = malloc(RSA_size(key->pkey.rsa));
+    ret = RSA_private_decrypt(RSA_size(key->pkey.rsa), 
+                                in, 
+                                decrypted, 
+                                key->pkey.rsa, 
+                                RSA_PKCS1_PADDING);
     if(ret < 0) {
-        printf("Encryption failed \n");
+        printf("Decryption failed \n");
+        return (-1);
     }
     *out = decrypted;
     return ret;

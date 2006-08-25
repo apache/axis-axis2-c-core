@@ -275,11 +275,13 @@ oxs_enc_engine_prvkey_decrypt_data(
     oxs_buffer_ptr result, 
     axis2_char_t *filename)
 {
-    evp_pkey_ptr prvk = NULL;
+    openssl_pkey_t *pkey = NULL;
     axis2_char_t  *decoded_encrypted_str = NULL;    
     unsigned char *decrypted  =  NULL;
     int ret, declen;
     oxs_enc_engine_impl_t *enc_engine_impl = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    openssl_rsa_t *rsa = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     enc_engine_impl = AXIS2_INTF_TO_IMPL(enc_engine);
@@ -287,11 +289,13 @@ oxs_enc_engine_prvkey_decrypt_data(
     /*First do base64 decode*/
     decoded_encrypted_str = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len( (char*)(input->data)));
     ret = axis2_base64_decode(decoded_encrypted_str, (char*)(input->data));
-    
-
+   
+    printf("oxs_enc_engine_prvkey_decrypt_data\n"); 
+    /*Create a private key*/
+    pkey =  openssl_pkey_create(env);
     /*Load the private _key*/
-    prvk = evp_pkey_load(env, filename, "");
-    if(!prvk){
+    status = OPENSSL_PKEY_LOAD(pkey, env, filename, "");/*TODO password*/
+    if(status == AXIS2_FAILURE){
          oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "cannot load the private key from the file %s", filename);
          return AXIS2_FAILURE;
@@ -299,12 +303,12 @@ oxs_enc_engine_prvkey_decrypt_data(
     }
     
     /*Now we support only rsa*/
-    declen = openssl_rsa_prv_decrypt(env, prvk, (unsigned char *)decoded_encrypted_str, &decrypted);
+    rsa = openssl_rsa_create(env);
+    declen = OPENSSL_RSA_PRV_DECRYPT(rsa, env, pkey, (unsigned char *)decoded_encrypted_str, &decrypted);
     if(declen < 0 ){
          oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "decryption failed");
          return AXIS2_FAILURE;
-
     }
 
     result->data = decrypted;
@@ -323,25 +327,31 @@ oxs_enc_engine_pubkey_encrypt_data(
     oxs_buffer_ptr result, 
     axis2_char_t *filename )
 {
-    evp_pkey_ptr pubk = NULL; 
+    openssl_pkey_t *pkey = NULL;
     axis2_char_t *encoded_str = NULL;
     unsigned char *encrypted  =  NULL;
     int ret, enclen, encodedlen ;
     oxs_enc_engine_impl_t *enc_engine_impl = NULL;
+    openssl_rsa_t *rsa = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     enc_engine_impl = AXIS2_INTF_TO_IMPL(enc_engine);
+    
+    /*Create a key*/
+    pkey =  openssl_pkey_create(env);
 
     /*Load the public key. Note: evp_pkey_load first try to load the private key. So need to provide the correct key*/
-    pubk = evp_pkey_load(env, filename, "");   
-    if(!pubk){
+    status = OPENSSL_PKEY_LOAD(pkey, env, filename, "");/*TODO password*/
+    if(status == AXIS2_FAILURE){
          oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "cannot load the public key from the file %s", filename);
          return AXIS2_FAILURE;
         
     }
     /*Now we support only rsa*/
-    ret = openssl_rsa_pub_encrypt(env, pubk, input->data, &encrypted);
+    rsa = openssl_rsa_create(env);
+    ret = OPENSSL_RSA_PUB_ENCRYPT(rsa, env, pkey, input->data, &encrypted);
     if(ret < 0 ){
          oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "openssl_rsa_pub_encrypt");
@@ -613,7 +623,7 @@ oxs_enc_engine_decrypt_template(
     /*Initialize the result buffer*/
     result = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
 
-    ret = oxs_enc_crypt(env, enc_ctx, input,  result ); 
+    ret = oxs_enc_engine_crypt(enc_engine, env, enc_ctx, input,  result ); 
     if(ret != AXIS2_SUCCESS){
            oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
                      "oxs_enc_decrypt failed");
@@ -664,18 +674,18 @@ oxs_enc_engine_encrypt_template(
     input = oxs_string_to_buffer(env, data);
     result = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
      
-    ret = oxs_enc_crypt(env, enc_ctx, input, result ); 
+    ret = oxs_enc_engine_crypt(enc_engine, env, enc_ctx, input, result ); 
     if(ret != AXIS2_SUCCESS){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "oxs_enc_encrypt failed");    
         return ret;
     }
      
-    ret = oxs_enc_populate_cipher_value (env, template_node, result);
+    ret = oxs_enc_engine_populate_cipher_value (enc_engine, env, template_node, result);
    
     if(ret != AXIS2_SUCCESS){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "oxs_enc_populate_cipher_value failed");
+                     "oxs_enc_engine_populate_cipher_value failed");
         return ret;
     } 
     
@@ -731,7 +741,11 @@ oxs_enc_engine_encrypted_data_node_read(const axis2_env_t *env,
     int ret;
     
     /* Operation is either encrypt or decrypt */
-    if(!((enc_ctx->operation == oxs_operation_encrypt) || (enc_ctx->operation == oxs_operation_decrypt))) return (-1);
+    if(!((enc_ctx->operation == oxs_operation_encrypt) || (enc_ctx->operation == oxs_operation_decrypt))){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "Operation is NOT either encrypt or decrypt");
+        return AXIS2_FAILURE;
+    }
     
     /*Check which mode we are in.
       1. Encrypted Data

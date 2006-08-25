@@ -31,6 +31,7 @@
 #define SIZE_HASH 32
 #define SIZE_NONCE 24
 
+#define PRINTINFO 1 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_nonce(const axis2_env_t *env)
 {
    int num;
@@ -143,7 +144,12 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
     if(AXIS2_DATE_TIME_GET_SECOND( dt1, env) > AXIS2_DATE_TIME_GET_SECOND( dt2, env)){
         return AXIS2_FAILURE;
     }
+
     */
+
+    /*AXIS2_DATE_TIME_FREE(dt1, env);
+    AXIS2_DATE_TIME_FREE(dt2, env);*/
+
     return AXIS2_SUCCESS; 
 }
 
