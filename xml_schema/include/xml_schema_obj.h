@@ -88,7 +88,7 @@ extern "C"
          * @param obj xml_schema_obj
          * @param env pointer to environment struct
          * @returns xml_schema_types_t 
-         */ 
+         */
         xml_schema_types_t (AXIS2_CALL *
                 get_type) (
                     void *obj,
@@ -102,7 +102,8 @@ extern "C"
          * @returns the line number
          */
         int (AXIS2_CALL *
-                get_line_num) (void *obj,
+                get_line_num) (
+                        void *obj,
                         const axis2_env_t *env);
         /**
          * set the line number in xml document corresponding to
@@ -112,7 +113,8 @@ extern "C"
          * @returns AXIS2_SUCCESS
          */
         axis2_status_t (AXIS2_CALL *
-                set_line_num) (void *obj,
+                set_line_num) (
+                        void *obj,
                         const axis2_env_t *env,
                         int line_num);
 
@@ -124,7 +126,8 @@ extern "C"
          * @returns the line position
          */
         int (AXIS2_CALL *
-                get_line_pos) (void *obj,
+                get_line_pos) (
+                        void *obj,
                         const axis2_env_t *env);
 
         /**
@@ -136,7 +139,8 @@ extern "C"
          * @returns AXIS2_SUCCESS
          */
         axis2_status_t (AXIS2_CALL *
-                set_line_pos) (void *obj,
+                set_line_pos) (
+                        void *obj,
                         const axis2_env_t *env,
                         int line_pos);
         /**
@@ -147,9 +151,10 @@ extern "C"
          */
 
         axis2_char_t * (AXIS2_CALL *
-                get_source_uri) (void *obj,
+                get_source_uri) (
+                        void *obj,
                         const axis2_env_t *env);
-        
+
         /**
          * get the source uri of xml schema obj
          * @param obj xml_schema_obj struct instance
@@ -158,10 +163,11 @@ extern "C"
          * @returns env pointer to environment struct
          */
         axis2_status_t (AXIS2_CALL *
-                set_source_uri) (void *obj,
+                set_source_uri) (
+                        void *obj,
                         const axis2_env_t *env,
                         axis2_char_t *source_uri);
-        
+
         /**
          * compares two xml_schema_obj instances
          * @param obj xml_schema_obj instance
@@ -170,7 +176,8 @@ extern "C"
          * @param AXIS2_TRUE if equals , AXIS2_FALSE otherwise
          */
         axis2_bool_t (AXIS2_CALL *
-                equals) (void *obj,
+                equals) (
+                        void *obj,
                         const axis2_env_t *env,
                         void *obj_comp);
 
@@ -185,11 +192,12 @@ extern "C"
          * @returns AXIS2_SUCCESS on success, AXIS2_FAILURE otherwise
          */
         axis2_status_t (AXIS2_CALL *
-                add_meta_info)(void *obj,
+                add_meta_info)(
+                        void *obj,
                         const axis2_env_t *env,
                         axis2_char_t *key,
                         void *value);
-        
+
         /**
          * get meta info hashtable , will be null if it does not 
          * contain any meta infomation.
@@ -198,7 +206,8 @@ extern "C"
          * @returns pointer to axis2_hash_t , NULL of not intialized
          */
         axis2_hash_t* (AXIS2_CALL *
-                get_meta_info)(void *obj,
+                get_meta_info)(
+                        void *obj,
                         const axis2_env_t *env);
 
     };
@@ -235,63 +244,63 @@ extern "C"
             XML_SCHEMA_FREE_FN free_fn);
 
 
-/**  Free xml_schema_obj struct instance.
-     @sa xml_schema_obj_ops#free  */
+    /**  Free xml_schema_obj struct instance.
+         @sa xml_schema_obj_ops#free  */
 #define XML_SCHEMA_OBJ_FREE(obj, env) \
       (((xml_schema_obj_t *) obj)->ops->free (obj, env))
 
-/** Get hashtable containing pointers to base struct instances.
-    @sa xml_schema_obj_ops#super_objs */
+    /** Get hashtable containing pointers to base struct instances.
+        @sa xml_schema_obj_ops#super_objs */
 #define XML_SCHEMA_OBJ_SUPER_OBJS(obj, env) \
       (((xml_schema_obj_t *) obj)->ops->super_objs (obj, env))
-      
-/** Get the type of struct type one of xml_schema_types enu.
-    @sa xml_schema_obj_ops#get_type */
+
+    /** Get the type of struct type one of xml_schema_types enu.
+        @sa xml_schema_obj_ops#get_type */
 #define XML_SCHEMA_OBJ_GET_TYPE(obj, env) \
       (((xml_schema_obj_t *) obj)->ops->get_type (obj, env))
 
-/** Get the line number in xml document .
-     @sa xml_schema_obj_ops#get_line_num */
+    /** Get the line number in xml document .
+         @sa xml_schema_obj_ops#get_line_num */
 #define XML_SCHEMA_OBJ_GET_LINE_NUM(obj, env) \
       (((xml_schema_obj_t *) obj)->ops->get_line_num (obj, env))
 
-/** Set line number.
-    @sa xml_schema_obj_ops#set_line_num */
+    /** Set line number.
+        @sa xml_schema_obj_ops#set_line_num */
 #define XML_SCHEMA_OBJ_SET_LINE_NUM(obj, env, line_num) \
       (((xml_schema_obj_t *) obj)->ops->set_line_num (obj, env, line_num))
 
-/** Get line position.
-    @sa xml_schema_obj_ops#get_line_ops */
+    /** Get line position.
+        @sa xml_schema_obj_ops#get_line_ops */
 #define XML_SCHEMA_OBJ_GET_LINE_POS(obj, env) \
       (((xml_schema_obj_t *) obj)->ops->get_line_pos (obj, env))
 
-/** Set Line position.
-    @sa xml_schema_obj_ops#set_line_pos */
+    /** Set Line position.
+        @sa xml_schema_obj_ops#set_line_pos */
 #define XML_SCHEMA_OBJ_SET_LINE_POS(obj, env, line_pos) \
       (((xml_schema_obj_t *) obj)->ops->set_line_pos (obj, env, line_pos))
 
-/** Get source uri.
-    @sa xml_schema_obj_ops#get_source_uri */
+    /** Get source uri.
+        @sa xml_schema_obj_ops#get_source_uri */
 #define XML_SCHEMA_OBJ_GET_SOURCE_URI(obj, env) \
       (((xml_schema_obj_t *) obj)->ops->get_source_uri (obj, env))
 
-/** Set source uri.
-    @sa xml_schema_obj_ops#set_source_uri */
+    /** Set source uri.
+        @sa xml_schema_obj_ops#set_source_uri */
 #define XML_SCHEMA_OBJ_SET_SOURCE_URI(obj, env, source_uri) \
       (((xml_schema_obj_t *) obj)->ops->set_source_uri (obj, env, source_uri))
 
-/** Equals 
-    @sa xml_schema_obj_ops#equals */
+    /** Equals
+        @sa xml_schema_obj_ops#equals */
 #define XML_SCHEMA_OBJ_EQUALS(obj, env) \
       (((xml_schema_obj_t *) obj)->ops->equals (obj, env))
 
-/** Get meta infomation
-    @sa xml_schema_obj_ops#get_meta_info */
+    /** Get meta infomation
+        @sa xml_schema_obj_ops#get_meta_info */
 #define XML_SCHEMA_OBJ_GET_META_INFO(obj , env) \
     (((xml_schema_obj_t*) obj)->ops->get_meta_info(obj, env))
 
-/** Add meta info
-    @sa xml_schema_obj#add_meta_info */
+    /** Add meta info
+        @sa xml_schema_obj#add_meta_info */
 #define XML_SCHEMA_OBJ_ADD_META_INFO(obj, env) \
     (((xml_schema_obj_t*) obj)->ops->add_meta_info(obj, env))
     /** @} */
