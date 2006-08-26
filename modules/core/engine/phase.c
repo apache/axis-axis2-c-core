@@ -27,7 +27,7 @@ typedef struct axis2_phase_impl
    axis2_phase_t phase;
     /** phase name */
     axis2_char_t *name;    
-    /** array list of phases */
+    /** array list of handlers */
     axis2_array_list_t* handlers;    
     /** first handler of phase */
     axis2_handler_t *first_handler;    

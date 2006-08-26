@@ -1055,6 +1055,7 @@ axis2_op_engage_module(
         {
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Module already engaged to operation");
             need_to_add = AXIS2_FALSE;
+            return AXIS2_FAILURE;
         }
 
     }

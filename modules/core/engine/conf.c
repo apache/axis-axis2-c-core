@@ -1359,8 +1359,11 @@ axis2_conf_get_all_engaged_modules(
     const axis2_conf_t *conf,
     const axis2_env_t *env)
 {
+    axis2_conf_impl_t *conf_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-    return AXIS2_INTF_TO_IMPL(conf)->engaged_modules;
+    conf_impl = AXIS2_INTF_TO_IMPL(conf);
+    
+    return conf_impl->engaged_modules;
 }
 
 axis2_array_list_t *AXIS2_CALL
@@ -1856,6 +1859,13 @@ axis2_conf_set_dispatch_phase(
     return AXIS2_SUCCESS;
 }
 
+/**
+ * For each module reference qname stored in dep_engine this function is called.
+ * All module_desc instances are stored in axis2_conf. So each module_desc
+ * is retrieved from their by giving module_qname and engaged globally by
+ * calling phase_resolvers engage_module_globally function. Modules is added
+ * to axis2_conf's engaged module list.
+ */
 axis2_status_t AXIS2_CALL
 axis2_conf_engage_module(
     axis2_conf_t *conf,

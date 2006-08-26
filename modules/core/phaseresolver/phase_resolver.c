@@ -56,15 +56,19 @@ axis2_phase_resolver_impl_t;
 /************************* Function prototypes ********************************/
 
 axis2_status_t AXIS2_CALL
-axis2_phase_resolver_free(
-    axis2_phase_resolver_t *phase_resolver,
-    const axis2_env_t *env);
+   axis2_phase_resolver_free (
+        axis2_phase_resolver_t *phase_resolver,
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_phase_resolver_build_chains(
-    axis2_phase_resolver_t *phase_resolver,
-    const axis2_env_t *env);
+    axis2_phase_resolver_build_chains(
+       axis2_phase_resolver_t *phase_resolver,
+       const axis2_env_t *env);
 
+/**
+ * Opeations defined in modules are engaged in this function. This function
+ * is called from axis2_svc's add_module_ops method.
+ */
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_build_module_op(
     axis2_phase_resolver_t *phase_resolver,
@@ -72,13 +76,18 @@ axis2_phase_resolver_build_module_op(
     axis2_op_t *op);
 
 /**
- * this opeartion is used to build all the three cahins ,
- * so type varible is used to difrenciate them
+ * All the engaged modules defined in axis2.xml and services.xml which are 
+ * engaged to operation passed as parameter. The operation passed is a new
+ * operation for which no modules are yet engaged. First all engaged modules
+ * in axis2_conf are retrieved and all handlers in their flows are added to
+ * operation flows. These modules are added to services and operations engaged
+ * module list. Then all handlers from services flows are retreived and
+ * added to operation flows.
+ * Type varible is used to differenciate chains
  * type = 1 inflow
  * type = 2 out flow
- * type = 3 fault flow
- *
- * @param type
+ * type = 3 fault in flow
+ * type = 4 fault out flow
  */
 static axis2_status_t
 axis2_phase_resolver_build_execution_chains(
@@ -98,18 +107,36 @@ axis2_phase_resolver_build_in_transport_chains(
     const axis2_env_t *env,
     axis2_transport_in_desc_t *transport);
 
+/**
+ *
+ * @param transport
+ */
 static axis2_status_t
 axis2_phase_resolver_build_out_transport_chains(
     axis2_phase_resolver_t *phase_resolver,
     const axis2_env_t *env,
     axis2_transport_out_desc_t *transport);
 
+/**
+ * First module is engaged to global chain(phase list in the axis2 configuration).
+ * Then for each service in each service group of configuration the module 
+ * operations are added. Also for each service in service group the module is 
+ * engaged. Module is added to each services engaged module list. 
+ * module qname is added to for each service group.
+ */
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_engage_module_globally(
     axis2_phase_resolver_t *phase_resolver,
     const axis2_env_t *env,
     axis2_module_desc_t *module);
 
+/**
+ * For each operation in the service module is engaged. First for each
+ * operation, retrieve it's already engaged modules and check whether
+ * this module is already engaged. Handlers from module_desc's flows are 
+ * added to operation flows. Module_desc is added to each operations
+ * engaged module list.
+ */
 axis2_status_t AXIS2_CALL
 axis2_phase_resolver_engage_module_to_svc_from_global(
     axis2_phase_resolver_t *phase_resolver,
@@ -143,61 +170,60 @@ AXIS2_EXTERN axis2_phase_resolver_t *AXIS2_CALL
 axis2_phase_resolver_create(
     const axis2_env_t *env)
 {
-    axis2_phase_resolver_impl_t *phase_resolver_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, NULL);
-
-    phase_resolver_impl = (axis2_phase_resolver_impl_t *) AXIS2_MALLOC(env->allocator,
-            sizeof(axis2_phase_resolver_impl_t));
-
-    if(NULL == phase_resolver_impl)
+    axis2_phase_resolver_impl_t *resolver_impl = NULL;
+    
+   AXIS2_ENV_CHECK(env, NULL);
+   
+   resolver_impl = (axis2_phase_resolver_impl_t *) AXIS2_MALLOC(env->allocator,
+         sizeof(axis2_phase_resolver_impl_t));
+    
+    if(NULL == resolver_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    phase_resolver_impl->phase_resolver.ops = NULL;
-    phase_resolver_impl->axis2_config = NULL;
-    phase_resolver_impl->svc = NULL;
-    phase_resolver_impl->phase_holder = NULL;
-
-
-
-    phase_resolver_impl->phase_resolver.ops =
+    resolver_impl->phase_resolver.ops = NULL;
+    resolver_impl->axis2_config = NULL;
+    resolver_impl->svc = NULL;
+    resolver_impl->phase_holder = NULL;
+    
+   
+    
+    resolver_impl->phase_resolver.ops = 
         AXIS2_MALLOC (env->allocator, sizeof(axis2_phase_resolver_ops_t));
-    if(NULL == phase_resolver_impl->phase_resolver.ops)
+    if(NULL == resolver_impl->phase_resolver.ops)
     {
-        axis2_phase_resolver_free(&(phase_resolver_impl->phase_resolver), env);
+        axis2_phase_resolver_free(&(resolver_impl->phase_resolver), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-
-    phase_resolver_impl->phase_resolver.ops->free =
-        axis2_phase_resolver_free;
-
-    phase_resolver_impl->phase_resolver.ops->build_chains =
+    
+    resolver_impl->phase_resolver.ops->free =  axis2_phase_resolver_free;
+   
+    resolver_impl->phase_resolver.ops->build_chains = 
         axis2_phase_resolver_build_chains;
-
-    phase_resolver_impl->phase_resolver.ops->build_module_op =
+    
+    resolver_impl->phase_resolver.ops->build_module_op = 
         axis2_phase_resolver_build_module_op;
-
-    phase_resolver_impl->phase_resolver.ops->build_transport_chains =
+    
+    resolver_impl->phase_resolver.ops->build_transport_chains =     
         axis2_phase_resolver_build_transport_chains;
-
-    phase_resolver_impl->phase_resolver.ops->engage_module_globally =
+    
+    resolver_impl->phase_resolver.ops->engage_module_globally = 
         axis2_phase_resolver_engage_module_globally;
-
-    phase_resolver_impl->phase_resolver.ops->engage_module_to_svc_from_global =
+        
+    resolver_impl->phase_resolver.ops->engage_module_to_svc_from_global = 
         axis2_phase_resolver_engage_module_to_svc_from_global;
-
-    phase_resolver_impl->phase_resolver.ops->engage_module_to_svc =
+        
+    resolver_impl->phase_resolver.ops->engage_module_to_svc = 
         axis2_phase_resolver_engage_module_to_svc;
-
-    phase_resolver_impl->phase_resolver.ops->engage_module_to_op =
+        
+    resolver_impl->phase_resolver.ops->engage_module_to_op = 
         axis2_phase_resolver_engage_module_to_op;
-
-
-    return &(phase_resolver_impl->phase_resolver);
+    
+  
+   return &(resolver_impl->phase_resolver);
 }
 
 AXIS2_EXTERN axis2_phase_resolver_t *AXIS2_CALL
@@ -205,17 +231,17 @@ axis2_phase_resolver_create_with_config(
     const axis2_env_t *env,
     axis2_conf_t *axis2_config)
 {
-    axis2_phase_resolver_impl_t *phase_resolver_impl = NULL;
+    axis2_phase_resolver_impl_t *resolver_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, axis2_config, NULL);
 
-    phase_resolver_impl = (axis2_phase_resolver_impl_t *)
+    resolver_impl = (axis2_phase_resolver_impl_t *)
             axis2_phase_resolver_create(env);
 
-    phase_resolver_impl->axis2_config = axis2_config;
+    resolver_impl->axis2_config = axis2_config;
 
-    return &(phase_resolver_impl->phase_resolver);
+    return &(resolver_impl->phase_resolver);
 }
 
 AXIS2_EXTERN axis2_phase_resolver_t *AXIS2_CALL
@@ -224,23 +250,25 @@ axis2_phase_resolver_create_with_config_and_svc(
     axis2_conf_t *axis2_config,
     axis2_svc_t *svc)
 {
-    axis2_phase_resolver_impl_t *phase_resolver_impl = NULL;
+    axis2_phase_resolver_impl_t *resolver_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, axis2_config, NULL);
 
-    phase_resolver_impl = (axis2_phase_resolver_impl_t *)
+    resolver_impl = (axis2_phase_resolver_impl_t *)
             axis2_phase_resolver_create(env);
 
-    if(!phase_resolver_impl)
+    if(!resolver_impl)
     {
         return NULL;
     }
-    phase_resolver_impl->axis2_config = axis2_config;
+    resolver_impl->axis2_config = axis2_config;
 
-    phase_resolver_impl->svc = svc;
+    resolver_impl->svc = svc;
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "svc name is:%s", 
+        AXIS2_SVC_GET_NAME(resolver_impl->svc, env));
 
-    return &(phase_resolver_impl->phase_resolver);
+    return &(resolver_impl->phase_resolver);
 }
 
 /***************************Function implementation****************************/
@@ -250,20 +278,20 @@ axis2_phase_resolver_free(
     axis2_phase_resolver_t *phase_resolver,
     const axis2_env_t *env)
 {
-    axis2_phase_resolver_impl_t *phase_resolver_impl = NULL;
+    axis2_phase_resolver_impl_t *resolver_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    phase_resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
+    resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
 
-    phase_resolver_impl->axis2_config = NULL;
+    resolver_impl->axis2_config = NULL;
 
-    phase_resolver_impl->svc = NULL;
+    resolver_impl->svc = NULL;
 
-    if(phase_resolver_impl->phase_holder)
+    if(resolver_impl->phase_holder)
     {
-        AXIS2_PHASE_HOLDER_FREE(phase_resolver_impl->phase_holder, env);
-        phase_resolver_impl->phase_holder = NULL;
+        AXIS2_PHASE_HOLDER_FREE(resolver_impl->phase_holder, env);
+        resolver_impl->phase_holder = NULL;
     }
 
     if(phase_resolver->ops)
@@ -272,10 +300,10 @@ axis2_phase_resolver_free(
         phase_resolver->ops = NULL;
     }
 
-    if(phase_resolver_impl)
+    if(resolver_impl)
     {
-        AXIS2_FREE(env->allocator, phase_resolver_impl);
-        phase_resolver_impl = NULL;
+        AXIS2_FREE(env->allocator, resolver_impl);
+        resolver_impl = NULL;
     }
 
     return AXIS2_SUCCESS;
@@ -322,16 +350,22 @@ axis2_phase_resolver_build_module_op(
     const axis2_env_t *env,
     axis2_op_t *op)
 {
+    axis2_phase_resolver_impl_t *resolver_impl = NULL;
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
+    
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
-
-
-    for (i = 1; i < 5; i++)
+    resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
+    
+   
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "op name is:%s", 
+        AXIS2_QNAME_GET_LOCALPART(AXIS2_OP_GET_QNAME(op, env), 
+            env));
+    for (i = 1; i < 5; i++) 
     {
-        status = axis2_phase_resolver_build_execution_chains(phase_resolver, env,
-                i, op);
+        status = axis2_phase_resolver_build_execution_chains(phase_resolver, 
+                env, i, op);
     }
     return status;
 }
@@ -372,12 +406,14 @@ axis2_phase_resolver_build_execution_chains(
     {
         axis2_qname_t *modulename = NULL;
         axis2_module_desc_t *module_desc = NULL;
-
-        modulename = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(moduleqnames, env,
-                i);
-        module_desc = AXIS2_CONF_GET_MODULE(resolver_impl->axis2_config, env,
-                modulename);
-        if (NULL != module_desc)
+            
+        modulename = (axis2_qname_t *) AXIS2_ARRAY_LIST_GET(moduleqnames, env, 
+            i);
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "module name is:%s", 
+                AXIS2_QNAME_GET_LOCALPART(modulename, env));
+        module_desc = AXIS2_CONF_GET_MODULE(resolver_impl->axis2_config, env, 
+            modulename);
+        if (NULL != module_desc) 
         {
             switch (type)
             {
@@ -776,8 +812,7 @@ axis2_phase_resolver_build_transport_chains(
 
 static axis2_status_t
 axis2_phase_resolver_build_in_transport_chains(
-    axis2_phase_resolver_t *
-    phase_resolver,
+    axis2_phase_resolver_t *phase_resolver,
     const axis2_env_t *env,
     axis2_transport_in_desc_t *transport)
 {
@@ -1088,9 +1123,11 @@ axis2_phase_resolver_engage_module_globally(
 
             axis2_hash_this (index_j, NULL, NULL, &w);
             svc = (axis2_svc_t *) w;
-
-            status = AXIS2_SVC_ADD_MODULE_OPS(svc, env, module_desc,
-                    resolver_impl->axis2_config);
+            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "svc name is:%s", 
+                AXIS2_SVC_GET_NAME(svc, env));
+                
+            status = AXIS2_SVC_ADD_MODULE_OPS(svc, env, module_desc, 
+                resolver_impl->axis2_config);
             if(AXIS2_SUCCESS != status)
             {
                 return status;
@@ -1159,6 +1196,8 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
 
         axis2_hash_this (index_i, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
+        AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "op name is:%s", 
+            AXIS2_QNAME_GET_LOCALPART(AXIS2_OP_GET_QNAME(op_desc, env), env));
         modules = AXIS2_OP_GET_ALL_MODULES(op_desc, env);
         module_desc_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
         size = AXIS2_ARRAY_LIST_SIZE(modules, env);
@@ -1688,3 +1727,4 @@ axis2_phase_resolver_engage_module_to_op(
     }
     return AXIS2_SUCCESS;
 }
+

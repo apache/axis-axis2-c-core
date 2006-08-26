@@ -55,7 +55,14 @@ struct axis2_svc_impl
      * the subsequent requests
      */
     axis2_hash_t *schema_mapping_table;
+    /**
+     * This is where operations are kept
+     */
     axis2_hash_t *op_alias_map;
+    /**
+     * This is where action mappings are kept
+     */
+    axis2_hash_t *op_action_map;
     /**
      * Keeps track whether the schema locations are adjusted
      */
@@ -559,6 +566,7 @@ axis2_svc_create(
     svc_impl->svc.flow_container = NULL;
     svc_impl->svc.wsdl_svc = NULL;
     svc_impl->op_alias_map = NULL;
+    svc_impl->op_action_map = NULL;
     svc_impl->module_list = NULL;
     svc_impl->ns_map = NULL;
     svc_impl->ns_count = 0;
@@ -599,6 +607,14 @@ axis2_svc_create(
 
     svc_impl->op_alias_map = axis2_hash_make (env);            
     if(NULL == svc_impl->op_alias_map)
+    {
+        axis2_svc_free(&(svc_impl->svc), env);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);      
+        return NULL;
+    }
+
+    svc_impl->op_action_map = axis2_hash_make (env);            
+    if(NULL == svc_impl->op_action_map)
     {
         axis2_svc_free(&(svc_impl->svc), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);      
@@ -965,8 +981,7 @@ axis2_svc_add_op(
         status = AXIS2_OP_ENGAGE_MODULE(op, env, module_desc, conf);
         if(AXIS2_SUCCESS != status)
         {
-            AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
-                    "Module already enaged to operation");
+            /* Module already enaged to operation */
         }
     }
     msg_recv = AXIS2_OP_GET_MSG_RECV(op, env);
@@ -999,6 +1014,8 @@ axis2_svc_get_op_with_qname(
    
     key = AXIS2_QNAME_GET_LOCALPART(op_qname, env);
     op = axis2_hash_get(svc_impl->op_alias_map, key, AXIS2_HASH_KEY_STRING);
+    if(NULL == op)
+        op = axis2_hash_get(svc_impl->op_action_map, key, AXIS2_HASH_KEY_STRING);
 
     return op;   
 }   
@@ -1962,7 +1979,7 @@ axis2_svc_add_mapping(
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
     svc_impl = AXIS2_INTF_TO_IMPL(svc);
     
-    axis2_hash_set(svc_impl->op_alias_map, mapping_key, 
+    axis2_hash_set(svc_impl->op_action_map, mapping_key, 
         AXIS2_HASH_KEY_STRING, op_desc);
     return AXIS2_SUCCESS;
 }
