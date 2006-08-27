@@ -138,7 +138,7 @@ struct xml_schema_ops
     get_element_by_qname)(
             void *schema,
             const axis2_env_t *env,
-            axis2_qname_t *qname); 
+            const axis2_qname_t *qname); 
 
     struct xml_schema_type *(AXIS2_CALL *
     get_type_by_qname)(

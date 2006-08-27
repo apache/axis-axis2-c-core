@@ -761,7 +761,7 @@ axis2_wsdl_desc_add_svc(axis2_wsdl_desc_t *wsdl_desc,
                                 axis2_wsdl_svc_t *svc) 
 {
     axis2_wsdl_desc_impl_t *wsdl_desc_impl = NULL;
-    axis2_qname_t *svc_qname = NULL;
+    const axis2_qname_t *svc_qname = NULL;
     axis2_char_t *svc_name = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

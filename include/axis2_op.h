@@ -21,8 +21,8 @@
  * @defgroup axis2_op operation
  * @ingroup axis2_desc
  * operation represents the static structure of an operation in a service. 
- * In Axis2 description hierarchy, operation lives inside configuration, 
- * but is logically associated with the service to which it belongs. 
+ * In Axis2 description hierarchy, an operation lives inside the service to 
+ * which it belongs. 
  * operations are configured in services.xml files located in the respective 
  * service group folders of the services folder in the repository. 
  * In services.xml file, operations are declared in association with a given 
@@ -786,7 +786,7 @@ extern "C"
         axis2_wsdl_op_t base;
         /** operations of operation struct */
         axis2_op_ops_t *ops;
-        /** parameter container */
+        /** parameter container to hold operation related parameters  */
         struct axis2_param_container *param_container;
     };
 
@@ -876,215 +876,215 @@ extern "C"
 /** Gets message receiver.
     @sa axis2_op_ops#get_msg_recv */
 #define AXIS2_OP_GET_MSG_RECV(op, env) \
-      ((op)->ops->get_msg_recv (op, env))
+        ((op)->ops->get_msg_recv (op, env))
 
 /** Sets QName.
     @sa axis2_op_ops#set_qname */
 #define AXIS2_OP_SET_QNAME(op, env, qname) \
-      ((op)->ops->set_qname (op, env, qname))
+        ((op)->ops->set_qname (op, env, qname))
 
 /** Gets QName.
     @sa axis2_op_ops#get_qname */
 #define AXIS2_OP_GET_QNAME(op, env) \
-      (((axis2_op_t *) op)->ops->get_qname (op, env))
+        (((axis2_op_t *) op)->ops->get_qname (op, env))
 
 /** Sets message exchange pattern.
     @sa axis2_op_ops#set_msg_exchange_pattern */
 #define AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op , env, \
         msg_exchange_pattern) \
-      ((op)->ops->set_msg_exchange_pattern (op, env, \
+        ((op)->ops->set_msg_exchange_pattern (op, env, \
         msg_exchange_pattern))
 
 /** Gets message exchange pattern.
     @sa axis2_op_ops#get_msg_exchange_pattern */
 #define AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env) \
-      ((op)->ops->get_msg_exchange_pattern (op, env))
+        ((op)->ops->get_msg_exchange_pattern (op, env))
 
 /** Gets style of operation.
     @sa axis2_op_ops#get_style */
 #define AXIS2_OP_GET_STYLE(op, env) \
-      ((op)->ops->get_style (op, env))
+        ((op)->ops->get_style (op, env))
 
 /** Sets style of operation.
     @sa axis2_op_ops#set_style */
 #define AXIS2_OP_SET_STYLE(op, env, style) \
-      ((op)->ops->set_style (op, env, style))
+        ((op)->ops->set_style (op, env, style))
 
 /** Engages the given module.
     @sa axis2_op_ops#engage_module */
 #define AXIS2_OP_ENGAGE_MODULE(op, env, moduleref, conf) \
-      ((op)->ops->engage_module (op, env, moduleref, conf))
+        ((op)->ops->engage_module (op, env, moduleref, conf))
 
 /** Adds the named module to engaged module list.
     @sa axis2_op_ops#add_to_engaged_module_list */
 #define AXIS2_OP_ADD_TO_ENGAGED_MODULE_LIST(op, env, module_name) \
-      ((op)->ops->add_to_engaged_module_list (op, env, module_name))
+        ((op)->ops->add_to_engaged_module_list (op, env, module_name))
 
 /** Gets all modules.
     @sa axis2_op_ops#get_all_modules */
 #define AXIS2_OP_GET_ALL_MODULES(op, env) \
-      ((op)->ops->get_all_modules (op, env))
+        ((op)->ops->get_all_modules (op, env))
 
 /** Gets Axis specific MEP constant.
     @sa axis2_op_ops#get_axis_specific_mep_const */
 #define AXIS2_OP_GET_AXIS_SPECIFIC_MEP_CONST(op, env) \
-      ((op)->ops->get_axis_specific_mep_const (op, env))
+        ((op)->ops->get_axis_specific_mep_const (op, env))
 
 /** Gets fault in flow.
     @sa axis2_op_ops#get_fault_in_flow */
 #define AXIS2_OP_GET_FAULT_IN_FLOW(op, env) \
-      ((op)->ops->get_fault_in_flow (op, env))
+        ((op)->ops->get_fault_in_flow (op, env))
 
 /** Gets fault out flow.
     @sa axis2_op_ops#get_fault_out_flow */
 #define AXIS2_OP_GET_FAULT_OUT_FLOW(op, env) \
-      ((op)->ops->get_fault_out_flow (op, env))
+        ((op)->ops->get_fault_out_flow (op, env))
 
 /** Gets out flow.
     @sa axis2_op_ops#get_out_flow */
 #define AXIS2_OP_GET_OUT_FLOW(op, env) \
-      ((op)->ops->get_out_flow (op, env))
+        ((op)->ops->get_out_flow (op, env))
 
 /** Gets in flow.
     @sa axis2_op_ops#get_in_flow */
 #define AXIS2_OP_GET_IN_FLOW(op, env) \
-      ((op)->ops->get_in_flow (op, env))
+        ((op)->ops->get_in_flow (op, env))
 
 /** Sets fault in flow.
     @sa axis2_op_ops#set_fault_in_flow */
 #define AXIS2_OP_SET_FAULT_IN_FLOW(op, env, list) \
-      ((op)->ops->set_fault_in_flow (op, env, list))
+        ((op)->ops->set_fault_in_flow (op, env, list))
 
 /** Sets fault out flow.
     @sa axis2_op_ops#set_fault_out_flow */
 #define AXIS2_OP_SET_FAULT_OUT_FLOW(op, env, list) \
-      ((op)->ops->set_fault_out_flow (op, env, list))
+        ((op)->ops->set_fault_out_flow (op, env, list))
 
 /** Sets out flow.
     @sa axis2_op_ops#set_out_flow */
 #define AXIS2_OP_SET_OUT_FLOW(op, env, list) \
-      ((op)->ops->set_out_flow (op, env, list))
+        ((op)->ops->set_out_flow (op, env, list))
 
 /** Sets in flow.
     @sa axis2_op_ops#set_in_flow */
 #define AXIS2_OP_SET_IN_FLOW(op, env, list) \
-      ((op)->ops->set_in_flow (op, env, list))
+        ((op)->ops->set_in_flow (op, env, list))
 
 /** Adds given module QName to module qname list.
     @sa axis2_op_ops#add_module_qname */
 #define AXIS2_OP_ADD_MODULE_QNAME(op, env, module_name) \
-      ((op)->ops->add_module_qname (op, env, module_name))
+        ((op)->ops->add_module_qname (op, env, module_name))
 
 /** Gets all module descriptions.
     @sa axis2_op_ops#get_all_module_qnames */
 #define AXIS2_OP_GET_ALL_MODULE_QNAMES(op, env) \
-      ((op)->ops->get_all_module_qnames (op, env))
+        ((op)->ops->get_all_module_qnames (op, env))
 
 /** Gets in faults.
     @sa axis2_op_ops#get_all_in_faults */
 #define AXIS2_OP_GET_ALL_IN_FAULTS(op, env) \
-      ((op)->ops->get_all_in_faults (op, env))
+        ((op)->ops->get_all_in_faults (op, env))
 
 /** Sets in faults.
     @sa axis2_op_ops#set_in_faults */
 #define AXIS2_OP_SET_IN_FAULTS(op, env) \
-      ((op)->ops->set_in_faults (op, env, in_faults))
+        ((op)->ops->set_in_faults (op, env, in_faults))
 
 /** Gets input message.
     @sa axis2_op_ops#get_input_msg */
 #define AXIS2_OP_GET_INPUT_MSG(op, env) \
-      ((op)->ops->get_input_msg (op, env))
+        ((op)->ops->get_input_msg (op, env))
 
 /** Sets input message.
     @sa axis2_op_ops#set_input_msg */
 #define AXIS2_OP_SET_INPUT_MSG(op, env) \
-      ((op)->ops->set_input_msg (op, env, input_msg))
+        ((op)->ops->set_input_msg (op, env, input_msg))
 
 /** Gets out faults.
     @sa axis2_op_ops#get_all_out_faults */
 #define AXIS2_OP_GET_ALL_OUT_FAULTS(op, env) \
-      ((op)->ops->get_all_out_faults (op, env))
+        ((op)->ops->get_all_out_faults (op, env))
 
 /** Sets out faults.
     @sa axis2_op_ops#set_out_faults */
 #define AXIS2_OP_SET_OUT_FAULTS(op, env) \
-      ((op)->ops->set_out_faults (op, env, out_faults))
+        ((op)->ops->set_out_faults (op, env, out_faults))
 
 /** Gets output message.
     @sa axis2_op_ops#get_output_msg */
 #define AXIS2_OP_GET_OUTPUT_MSG(op, env) \
-      ((op)->ops->get_output_msg (op, env))
+        ((op)->ops->get_output_msg (op, env))
 
 /** Sets output message.
     @sa axis2_op_ops#set_output_msg */
 #define AXIS2_OP_SET_OUTPUT_MSG(op, env) \
-      ((op)->ops->set_output_msg (op, env, output_msg))
+        ((op)->ops->set_output_msg (op, env, output_msg))
 
 /** Gets target namespace.
     @sa axis2_op_ops#get_target_namespace */
 #define AXIS2_OP_GET_TARGET_NAMESPACE(op, env) \
-      ((op)->ops->get_target_namespace (op, env))
+        ((op)->ops->get_target_namespace (op, env))
 
 /** Adds in fault.
     @sa axis2_op_ops#add_in_fault */
 #define AXIS2_OP_ADD_IN_FAULT(op, env, in_fault) \
-      ((op)->ops->add_in_fault (op, env, in_fault))
+        ((op)->ops->add_in_fault (op, env, in_fault))
 
 /** Adds out fault.
     @sa axis2_op_ops#add_out_fault */
 #define AXIS2_OP_ADD_OUT_FAULT(op, env, out_fault) \
-      ((op)->ops->add_out_fault (op, env, out_fault))
+        ((op)->ops->add_out_fault (op, env, out_fault))
 
 /** Adds feature.
     @sa axis2_op_ops#add_feature */
 #define AXIS2_OP_ADD_FEATURE(op, env, feature) \
-      ((op)->ops->add_feature (op, env, feature))
+        ((op)->ops->add_feature (op, env, feature))
 
 /** Gets all features.
     @sa axis2_op_ops#get_all_features */
 #define AXIS2_OP_GET_ALL_FEATURES(op, env) \
-      ((op)->ops->get_all_features(op, env))
+        ((op)->ops->get_all_features(op, env))
 
 /** Adds property.
     @sa axis2_op_ops#add_property */
 #define AXIS2_OP_ADD_PROPERTY(op, env, wsdl_property) \
-      ((op)->ops->add_property (op, env, wsdl_property))
+        ((op)->ops->add_property (op, env, wsdl_property))
 
 /** Gets all properties.
     @sa axis2_op_ops#get_all_properties */
 #define AXIS2_OP_GET_ALL_PROPERTIES(op, env) \
-      ((op)->ops->get_all_properties (op, env))
+        ((op)->ops->get_all_properties (op, env))
 
 /** Sets wsdl operation.
     @sa axis2_op_ops#set_wsdl_op */
 #define AXIS2_OP_SET_WSDL_OP(op, env, wsdl_op) \
-      ((op)->ops->set_wsdl_op (op, env, wsdl_op))
+        ((op)->ops->set_wsdl_op (op, env, wsdl_op))
 
 
 /** Finds operation context related to this operation.
     @sa axis2_op_ops#find_op_ctx */
 #define AXIS2_OP_FIND_OP_CTX(op, env, msg_ctx, svc_ctx) \
-      ((op)->ops->find_op_ctx (op, env, msg_ctx, svc_ctx))
+        ((op)->ops->find_op_ctx (op, env, msg_ctx, svc_ctx))
 
 /** Finds existing operation context related to this operation.
     @sa axis2_op_ops#find_existing_op_ctx */
 #define AXIS2_OP_FIND_FOR_EXISTING_OP_CTX(op, env, wsdl_op) \
-      ((op)->ops->find_existing_op_ctx (op, env, wsdl_op))
+        ((op)->ops->find_existing_op_ctx (op, env, wsdl_op))
 
 /** Registers given operation context against this operation.
     @sa axis2_op_ops#_register_op_ctx */
 #define AXIS2_OP_REGISTER_OP_CTX(op, env, msg_ctx, wsdl_op) \
-      ((op)->ops->register_op_ctx (op, env, msg_ctx, wsdl_op))
+        ((op)->ops->register_op_ctx (op, env, msg_ctx, wsdl_op))
 
 /** Gets message corresponding to given label.
     @sa axis2_op_ops#get_msg */
 #define AXIS2_OP_GET_MSG(op, env, label) \
-      ((op)->ops->get_msg(op, env, label))
+        ((op)->ops->get_msg(op, env, label))
 
 /** Adds message with given label.
     @sa axis2_op_ops#add_msg */
 #define AXIS2_OP_ADD_MSG(op, env, label, msg) \
-      ((op)->ops->add_msg(op, env, label, msg))
+        ((op)->ops->add_msg(op, env, label, msg))
 
 /** @} */
 #ifdef __cplusplus

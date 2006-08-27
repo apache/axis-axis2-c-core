@@ -975,7 +975,7 @@ axis2_conf_add_svc_grp(
         void *value = NULL;
         axis2_svc_t *desc = NULL;
         axis2_char_t *svc_name2 = NULL;
-        axis2_qname_t *svc_qname = NULL;
+        const axis2_qname_t *svc_qname = NULL;
 
         axis2_hash_this (index_i, NULL, NULL, &value);
         desc = (axis2_svc_t *) value;
@@ -1059,7 +1059,7 @@ axis2_conf_add_svc(
     axis2_svc_t *svc)
 {
     axis2_svc_grp_t *svc_grp = NULL;
-    axis2_qname_t *svc_grp_qname = NULL;
+    const axis2_qname_t *svc_grp_qname = NULL;
     axis2_char_t *svc_grp_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

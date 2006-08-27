@@ -70,7 +70,7 @@ struct axis2_wsdl_svc_ops
      * Get wsdl service name
      * @return wsdl service name
      */
-    axis2_qname_t * (AXIS2_CALL *
+    const axis2_qname_t * (AXIS2_CALL *
    get_qname)(axis2_wsdl_svc_t *wsdl_svc,
                const axis2_env_t *env);
 
@@ -81,7 +81,7 @@ struct axis2_wsdl_svc_ops
     axis2_status_t (AXIS2_CALL *
    set_qname) (axis2_wsdl_svc_t *wsdl_svc,
                 const axis2_env_t *env,
-                axis2_qname_t *qname);
+                const axis2_qname_t *qname);
     
     /**
      * Method getEndpoints
@@ -121,7 +121,7 @@ struct axis2_wsdl_svc_ops
     struct axis2_wsdl_endpoint * (AXIS2_CALL *
     get_endpoint) (axis2_wsdl_svc_t *wsdl_svc,
                                     const axis2_env_t *env,
-                                    axis2_qname_t *qname);
+                                    const axis2_qname_t *qname);
 
     /**
      * If the Name of the <code>WSDLService</code> is not set a

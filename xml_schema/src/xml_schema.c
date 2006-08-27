@@ -151,7 +151,7 @@ xml_schema_element_t *AXIS2_CALL
 xml_schema_get_element_by_qname(
         void *schema,
         const axis2_env_t *env,
-        axis2_qname_t *qname); 
+        const axis2_qname_t *qname); 
 
 xml_schema_type_t *AXIS2_CALL
 xml_schema_get_type_by_qname(
@@ -815,7 +815,7 @@ xml_schema_element_t *AXIS2_CALL
 xml_schema_get_element_by_qname(
         void *schema,
         const axis2_env_t *env,
-        axis2_qname_t *qname) 
+        const axis2_qname_t *qname) 
 {
     xml_schema_impl_t *schema_impl = NULL;
     axis2_hash_t *ht_super = NULL;

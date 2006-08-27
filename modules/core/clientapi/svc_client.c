@@ -293,7 +293,7 @@ axis2_svc_client_create_for_dynamic_invocation(
         void *v = NULL;
         axis2_op_t *op = NULL;
 
-        ops = AXIS2_SVC_GET_OPS(svc_client_impl->svc, env);
+        ops = AXIS2_SVC_GET_ALL_OPS(svc_client_impl->svc, env);
         for (i = axis2_hash_first (ops, env); i; i = axis2_hash_next (env, i))
         {
             axis2_phases_info_t * info = NULL;

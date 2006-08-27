@@ -683,7 +683,7 @@ axis2_conf_ctx_fill_ctxs(
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_svc_t *svc = NULL;
     axis2_svc_grp_t *svc_grp = NULL;
-    axis2_qname_t *qname = NULL;
+    const axis2_qname_t *qname = NULL;
     axis2_char_t *svc_id = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
 

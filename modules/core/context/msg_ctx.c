@@ -2310,7 +2310,7 @@ axis2_msg_ctx_set_svc(
     {
         axis2_svc_grp_t *svc_grp = NULL;
         AXIS2_INTF_TO_IMPL(msg_ctx)->svc = svc;
-        AXIS2_INTF_TO_IMPL(msg_ctx)->svc_qname = AXIS2_SVC_GET_QNAME(svc, env);
+        AXIS2_INTF_TO_IMPL(msg_ctx)->svc_qname = (axis2_qname_t *)AXIS2_SVC_GET_QNAME(svc, env);
 
         svc_grp = AXIS2_SVC_GET_PARENT(svc, env);
         if (svc_grp)

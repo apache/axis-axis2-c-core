@@ -48,14 +48,14 @@ axis2_status_t AXIS2_CALL
 axis2_wsdl_svc_free(axis2_wsdl_svc_t *wsdl_svc,
                     const axis2_env_t *env);
 
-axis2_qname_t * AXIS2_CALL 
+const axis2_qname_t * AXIS2_CALL 
 axis2_wsdl_svc_get_qname(axis2_wsdl_svc_t *wsdl_svc, 
                     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_wsdl_svc_set_qname(axis2_wsdl_svc_t *wsdl_svc, 
                     const axis2_env_t *env, 
-                    axis2_qname_t *qname);
+                    const axis2_qname_t *qname);
 
 axis2_hash_t *AXIS2_CALL
 axis2_wsdl_svc_get_endpoints(axis2_wsdl_svc_t *wsdl_svc,
@@ -74,7 +74,7 @@ axis2_wsdl_svc_set_endpoint(axis2_wsdl_svc_t *wsdl_svc,
 axis2_wsdl_endpoint_t * AXIS2_CALL
 axis2_wsdl_svc_get_endpoint(axis2_wsdl_svc_t *wsdl_svc,
                                 const axis2_env_t *env,
-                                axis2_qname_t *qname);
+                                const axis2_qname_t *qname);
 
 axis2_char_t *AXIS2_CALL
 axis2_wsdl_svc_get_namespace(axis2_wsdl_svc_t *wsdl_svc,
@@ -215,7 +215,7 @@ axis2_wsdl_svc_free (axis2_wsdl_svc_t *wsdl_svc,
    return AXIS2_SUCCESS;
 }
 
-axis2_qname_t * AXIS2_CALL 
+const axis2_qname_t * AXIS2_CALL 
 axis2_wsdl_svc_get_qname(axis2_wsdl_svc_t *wsdl_svc, 
                     const axis2_env_t *env)
 {
@@ -226,7 +226,7 @@ axis2_wsdl_svc_get_qname(axis2_wsdl_svc_t *wsdl_svc,
 axis2_status_t AXIS2_CALL
 axis2_wsdl_svc_set_qname(axis2_wsdl_svc_t *wsdl_svc, 
                          const axis2_env_t *env, 
-                         axis2_qname_t *qname) 
+                         const axis2_qname_t *qname) 
 {
     axis2_wsdl_svc_impl_t *wsdl_svc_impl = NULL; 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -289,7 +289,7 @@ axis2_wsdl_svc_set_endpoint(axis2_wsdl_svc_t *wsdl_svc,
 axis2_wsdl_endpoint_t * AXIS2_CALL
 axis2_wsdl_svc_get_endpoint(axis2_wsdl_svc_t *wsdl_svc,
                                 const axis2_env_t *env,
-                                axis2_qname_t *qname) 
+                                const axis2_qname_t *qname) 
 {
     axis2_wsdl_svc_impl_t *wsdl_svc_impl = NULL;
     axis2_char_t *name = NULL;

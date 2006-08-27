@@ -85,7 +85,7 @@ int axis2_test_dep_engine_load()
              {
                 printf("imple_info_param is null\n");
              }
-             ops = AXIS2_SVC_GET_OPS(svc, env);
+             ops = AXIS2_SVC_GET_ALL_OPS(svc, env);
              if(ops)
              {
                 printf("ops count = %d\n", axis2_hash_count(ops));

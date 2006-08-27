@@ -513,7 +513,7 @@ axis2_msg_get_schema_element(
     msg_impl = AXIS2_INTF_TO_IMPL(msg);
     operation = axis2_msg_get_parent(msg, env);
     svc = AXIS2_OP_GET_PARENT(operation, env);
-    schemas = AXIS2_SVC_GET_SCHEMAS(svc, env);
+    schemas = AXIS2_SVC_GET_ALL_SCHEMAS(svc, env);
     schemas_size = AXIS2_ARRAY_LIST_SIZE(schemas, env);
     for (i = 0; i < schemas_size; i++)
     {

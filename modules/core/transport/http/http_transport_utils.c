@@ -751,7 +751,7 @@ axis2_http_transport_utils_get_services_html(
             ret  = AXIS2_STRACAT(tmp2, "</h3>", env);
             AXIS2_FREE(env->allocator, tmp2);
             tmp2 = ret;
-            ops = AXIS2_SVC_GET_OPS(((axis2_svc_t *)service), env);
+            ops = AXIS2_SVC_GET_ALL_OPS(((axis2_svc_t *)service), env);
             if(NULL != ops && 0 != axis2_hash_count(ops))
             {
                 axis2_hash_index_t *hi2 = NULL;

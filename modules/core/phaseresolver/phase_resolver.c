@@ -325,7 +325,7 @@ axis2_phase_resolver_build_chains(
     if (!(resolver_impl->svc))
         return AXIS2_FAILURE;
 
-    ops = AXIS2_SVC_GET_OPS(resolver_impl->svc, env);
+    ops = AXIS2_SVC_GET_ALL_OPS(resolver_impl->svc, env);
 
     for (index_i = axis2_hash_first (ops, env); index_i; index_i =
                 axis2_hash_next (env, index_i))
@@ -1177,7 +1177,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
 
-    ops = AXIS2_SVC_GET_OPS(svc, env);
+    ops = AXIS2_SVC_GET_ALL_OPS(svc, env);
     if (!ops)
     {
         return AXIS2_FAILURE;
@@ -1530,7 +1530,7 @@ axis2_phase_resolver_engage_module_to_svc(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
 
-    ops = AXIS2_SVC_GET_OPS(svc, env);
+    ops = AXIS2_SVC_GET_ALL_OPS(svc, env);
     if(!ops)
     {
         return AXIS2_FAILURE;

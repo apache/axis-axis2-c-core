@@ -1094,7 +1094,7 @@ axis2_dep_engine_add_new_svc(
         axis2_dep_engine_load_svc_props(dep_engine, env, svc);
         file = AXIS2_ARCH_FILE_DATA_GET_FILE(dep_engine_impl->curr_file, env);
         file_name = AXIS2_FILE_GET_NAME(file, env);
-        AXIS2_SVC_SET_FILENAME(svc, env, file_name);
+        AXIS2_SVC_SET_FILE_NAME(svc, env, file_name);
 
         /* modules from svc group */
         grp_modules = AXIS2_SVC_GRP_GET_MODULES(svc_metadata, env);
@@ -1125,7 +1125,7 @@ axis2_dep_engine_add_new_svc(
         }
 
         /* modules from <service> */
-        list = AXIS2_SVC_GET_MODULES(svc, env);
+        list = AXIS2_SVC_GET_ALL_MODULE_QNAMES(svc, env);
         sizej = AXIS2_ARRAY_LIST_SIZE(list, env);
         for (j = 0; j < sizej; j++) 
         {
@@ -1151,7 +1151,7 @@ axis2_dep_engine_add_new_svc(
             }
         }
 
-        ops = AXIS2_SVC_GET_OPS(svc, env);
+        ops = AXIS2_SVC_GET_ALL_OPS(svc, env);
         for (index_i = axis2_hash_first (ops, env); index_i; index_i = 
             axis2_hash_next (env, index_i))
         {

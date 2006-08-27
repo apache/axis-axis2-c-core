@@ -50,7 +50,7 @@ xml_schema_obj_table_get_count(xml_schema_obj_table_t *obj_table,
 void *AXIS2_CALL
 xml_schema_obj_table_get_item(xml_schema_obj_table_t *obj_table,
                                     const axis2_env_t *env,
-                                    axis2_qname_t *qname);
+                                    const axis2_qname_t *qname);
 
 axis2_array_list_t *AXIS2_CALL
 xml_schema_obj_table_get_names(xml_schema_obj_table_t *obj_table,
@@ -201,7 +201,7 @@ xml_schema_obj_table_get_count(xml_schema_obj_table_t *obj_table,
 void *AXIS2_CALL
 xml_schema_obj_table_get_item(xml_schema_obj_table_t *obj_table,
                                     const axis2_env_t *env,
-                                    axis2_qname_t *qname)
+                                    const axis2_qname_t *qname)
 {
     xml_schema_obj_table_impl_t *obj_table_impl = NULL;
     axis2_char_t *name = NULL;

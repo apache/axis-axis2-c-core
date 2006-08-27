@@ -237,7 +237,7 @@ axis2_msg_recv_get_impl_obj(
     struct axis2_op_ctx *op_ctx = NULL;
     struct axis2_svc_ctx *svc_ctx = NULL;
     struct axis2_param *scope_param = NULL;
-    axis2_qname_t *svc_qname = NULL;
+    const axis2_qname_t *svc_qname = NULL;
     axis2_char_t *param_value = NULL;
     axis2_property_t *property = NULL;
 

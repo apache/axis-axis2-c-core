@@ -367,7 +367,7 @@ axis2_svc_grp_add_svc (
     axis2_svc_grp_impl_t *svc_grp_impl = NULL;
     axis2_phase_resolver_t *handler_resolver = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_qname_t *svc_qname = NULL;
+    const axis2_qname_t *svc_qname = NULL;
     axis2_char_t *svc_name = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

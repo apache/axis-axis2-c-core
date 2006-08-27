@@ -153,7 +153,7 @@ int axis2_test_svc_get_op()
    op = axis2_op_create_with_qname(env, qname);   
    status = AXIS2_SVC_ADD_OP(svc, env, op);
    
-    ops = AXIS2_SVC_GET_OPS(svc, env);
+    ops = AXIS2_SVC_GET_ALL_OPS(svc, env);
 
    if (ops)
       printf("SUCCESS AXIS2_SVC_GET_OPS\n");
@@ -175,7 +175,7 @@ int axis2_test_svc_get_op()
                 for(hi2 = axis2_hash_first(ops, env); hi2; hi2 = axis2_hash_next(env, hi2))
                 {
                     printf ("count = %d \n", count++);
-                    AXIS2_SVC_GET_OPS(svc, env);
+                    AXIS2_SVC_GET_ALL_OPS(svc, env);
                     if (!(hi2))
                         break;
                     axis2_hash_this(hi2, NULL, NULL, &op2);

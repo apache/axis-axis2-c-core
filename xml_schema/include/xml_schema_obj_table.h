@@ -72,7 +72,7 @@ struct xml_schema_obj_table_ops
     get_item)(
             xml_schema_obj_table_t *obj_table,
             const axis2_env_t *env,
-            axis2_qname_t *qname);
+            const axis2_qname_t *qname);
 
     axis2_array_list_t *(AXIS2_CALL *
     get_names)(

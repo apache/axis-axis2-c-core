@@ -758,7 +758,7 @@ axis2_svc_builder_process_module_refs(
             }
             else
             {
-                AXIS2_SVC_ADD_MODULE_REF(builder_impl->svc, env, qrefname);
+                AXIS2_SVC_ADD_MODULE_QNAME(builder_impl->svc, env, qrefname);
             }
             AXIS2_QNAME_FREE(qrefname, env);
         }

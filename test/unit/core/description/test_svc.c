@@ -190,7 +190,7 @@ axis2_array_list_t *get_svc_op_in_phases(const axis2_env_t *env)
 void Testaxis2_svc_create_with_qname(CuTest *tc)
 {
     axis2_qname_t *qname = NULL;
-    axis2_qname_t *qactual = NULL;
+    const axis2_qname_t *qactual = NULL;
     axis2_svc_t *svc = NULL;
     axis2_char_t *expected = NULL;
     axis2_char_t *actual = NULL;

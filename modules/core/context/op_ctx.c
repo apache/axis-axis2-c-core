@@ -477,7 +477,7 @@ axis2_op_ctx_set_parent(
                 AXIS2_CONF_CTX_GET_OP_CTX_MAP(conf_ctx, env);
         }
         op_ctx_impl->svc_qname = 
-            AXIS2_SVC_GET_QNAME(AXIS2_SVC_CTX_GET_SVC(op_ctx_impl->parent, env), env);
+            (axis2_qname_t *)AXIS2_SVC_GET_QNAME(AXIS2_SVC_CTX_GET_SVC(op_ctx_impl->parent, env), env);
     }
     
     return AXIS2_SUCCESS;
