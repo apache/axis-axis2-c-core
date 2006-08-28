@@ -254,7 +254,7 @@ oxs_enc_engine_get_encrypted_key(
     decrypted_key_buf = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
 
     /*Decrypt the encrypted key*/
-    status  = oxs_enc_engie_prvkey_decrypt_data(enc_engine, env, encrypted_key_buf, decrypted_key_buf, OXS_KEY_GET_NAME(session_key, env));  
+    status  = oxs_enc_engine_prvkey_decrypt_data(enc_engine, env, encrypted_key_buf, decrypted_key_buf, OXS_KEY_GET_NAME(session_key, env));  
     if(status == AXIS2_FAILURE){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "oxs_prvkey_decrypt_data failed");
