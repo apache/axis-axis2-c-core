@@ -725,9 +725,11 @@ axis2_msg_ctx_create (
         msg_ctx_impl->conf_ctx = conf_ctx;
 
     if (msg_ctx_impl->transport_in_desc)
-        msg_ctx_impl->transport_in_desc_qname = AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport_in_desc, env);
+        msg_ctx_impl->transport_in_desc_qname = 
+            (axis2_qname_t *)AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport_in_desc, env);
     if (msg_ctx_impl->transport_out_desc)
-        msg_ctx_impl->transport_out_desc_qname = AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport_out_desc, env);
+        msg_ctx_impl->transport_out_desc_qname = 
+            (axis2_qname_t *)AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport_out_desc, env);
     
     msg_ctx_impl->msg_info_headers = axis2_msg_info_headers_create(env, NULL, NULL);
     if (!(msg_ctx_impl->msg_info_headers))
@@ -1587,7 +1589,7 @@ axis2_msg_ctx_set_transport_in_desc(
     {
         AXIS2_INTF_TO_IMPL(msg_ctx)->transport_in_desc = transport_in_desc;
         AXIS2_INTF_TO_IMPL(msg_ctx)->transport_in_desc_qname = 
-            AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport_in_desc, env);
+            (axis2_qname_t *)AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport_in_desc, env);
     }
     
     return AXIS2_SUCCESS;
@@ -1605,7 +1607,7 @@ axis2_msg_ctx_set_transport_out_desc(
     {
         AXIS2_INTF_TO_IMPL(msg_ctx)->transport_out_desc = transport_out_desc;
         AXIS2_INTF_TO_IMPL(msg_ctx)->transport_out_desc_qname = 
-            AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport_out_desc, env);
+            (axis2_qname_t *)AXIS2_TRANSPORT_OUT_DESC_GET_QNAME(transport_out_desc, env);
     }
     
     return AXIS2_SUCCESS;

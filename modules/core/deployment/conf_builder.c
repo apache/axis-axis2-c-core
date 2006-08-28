@@ -1071,7 +1071,7 @@ axis2_conf_builder_process_transport_recvs(
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->desc_builder,
                     env, in_fault_flow_element, builder_impl->conf->
                         param_container, in_fault_flow_node);
-                status = AXIS2_TRANSPORT_IN_DESC_SET_FAULTFLOW(transport_in, 
+                status = AXIS2_TRANSPORT_IN_DESC_SET_FAULT_IN_FLOW(transport_in, 
                     env, flow);
                 if(AXIS2_SUCCESS != status)
                 {

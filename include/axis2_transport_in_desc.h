@@ -20,7 +20,13 @@
 /** 
  * @defgroup axis2_transport_in_desc transport in description
  * @ingroup axis2_desc
- * Description.
+ * transport in description represents a transport receiver configured in 
+ * Axis2 configuration. There can be multiple transport receivers configured 
+ * in axis2.xml file and each of them will be represented with a transport 
+ * in description instance. deployment engine takes care of creating and 
+ * instantiating transport in descriptions.
+ * transport in description encapsulates flows related to the transport in 
+ * and also holds a reference to related transport receiver.
  * @{
  */
 
@@ -46,102 +52,129 @@ extern "C"
 {
 #endif
 
-    struct axis2_phase;
-    struct axis2_transport_receiver;
     /** Type name for struct axis2_transport_in_desc */
     typedef struct axis2_transport_in_desc axis2_transport_in_desc_t;
     /** Type name for struct axis2_transport_in_desc_ops  */
     typedef struct axis2_transport_in_desc_ops axis2_transport_in_desc_ops_t;
 
+    struct axis2_phase;
+    struct axis2_transport_receiver;
+
     /**
-     * Description Transport In ops struct
-     * Encapsulator struct for ops of axis2_transport_in_desc
+     * transport in description ops struct.
+     * Encapsulator struct for ops of axis2_transport_in_desc.
      */
     struct axis2_transport_in_desc_ops
     {
         /** 
-         * De-allocate memory
-         * @param transport_in_desc pointer to transport in description
+         * Frees transport in description. 
+         * @param transport_in_desc pointer to transport in description struct
          * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
                     axis2_transport_in_desc_t *transport_in_desc,
                     const axis2_env_t *env);
 
-    /**
-     * De-allocate memory
-     * @param void transport_in to be freed
-     * @return status code
-     */
+        /**
+         * Frees transport in description given as a void parameter.
+         * @param transport_in pointer to transport in description as a void 
+         * pointer
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+         */
         axis2_status_t (AXIS2_CALL *
             free_void_arg) (
                     void *transport_in,
                     const axis2_env_t *env);
 
         /**
-         * @param transport_in pointer to transport in
+         * Gets QName.
+         * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
+         * @return pointer to QName
          */
-        axis2_qname_t *(AXIS2_CALL *
+        const axis2_qname_t *(AXIS2_CALL *
                 get_qname)(
                     const axis2_transport_in_desc_t *transport_in,
                     const axis2_env_t *env);
 
         /**
-         * @param transport_in pointer to transport in
+         * Sets QName.
+         * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
-         * @param qname pointer to qname struct
+         * @param qname pointer to QName, this method creates a clone of QName
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
                 set_qname)(
                     struct axis2_transport_in_desc *transport_in,
                     const axis2_env_t *env,
-                    axis2_qname_t *qname);
+                    const axis2_qname_t *qname);
 
         /**
-         * @param transport_in pointer to transport in
+         * Gets in flow. In flow represents the list of phases invoked 
+         * along the receive path.
+         * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
+         * @return pointer to flow representing in flow, returns a reference,
+         * not a cloned copy
          */
         struct axis2_flow *(AXIS2_CALL *
-                get_inflow)(
+                get_in_flow)(
                     const axis2_transport_in_desc_t *transport_in,
                     const axis2_env_t *env);
 
         /**
-         * @param transport_in pointer to transport in 
+         * Sets in flow. In flow represents the list of phases invoked 
+         * along the receive path.
+         * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
-         * @param inflow pointer to in flow
+         * @param in_flow pointer to in flow representing in flow, transport in 
+         * description assumes ownership of the flow
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
-                set_inflow)(
+                set_in_flow)(
                     struct axis2_transport_in_desc *transport_in,
                     const axis2_env_t *env,
-                    struct axis2_flow *inflow);
+                    struct axis2_flow *in_flow);
 
         /**
-         * @param transport_in pointer to transport in
+         * Gets fault in flow. Fault in flow represents the list of phases 
+         * invoked along the receive path if a fault happens.
+         * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
+         * @return pointer to flow representing fault in flow, returns a 
+         * reference, not a cloned copy 
          */
         struct axis2_flow *(AXIS2_CALL *
-                get_faultflow)(
+                get_fault_in_flow)(
                     const axis2_transport_in_desc_t *transport_in,
                     const axis2_env_t *env);
 
         /**
-         * @param transport_in pointer to transport in
+         * Sets fault in flow. Fault in flow represents the list of phases 
+         * invoked along the receive path if a fault happens.
+         * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
-         * @param faultflow pointer to fault flow
+         * @param fault_in_flow pointer to flow representing fault in flow, 
+         * transport in description assumes the ownership of the flow
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
-                set_faultflow)(
+                set_fault_in_flow)(
                     struct axis2_transport_in_desc *transport_in,
                     const axis2_env_t *env,
-                    struct axis2_flow *faultflow);
+                    struct axis2_flow *fault_in_flow);
 
         /**
-         * @param transport_in pointer to transport in
+         * Gets transport receiver associated with the transport in description.
+         * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
+         * @return pointer to transport receiver, returns a reference, not 
+         * a cloned copy
          */
         struct axis2_transport_receiver *(AXIS2_CALL *
                 get_recv)(
@@ -149,9 +182,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param transport_in pointer to transport in
+         * Sets transport receiver associated with the transport in description.
+         * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
-         * @param recv pointer to transport receiver
+         * @param recv pointer to transport receiver, transport in 
+         * description assumes ownership of the receiver
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
                 set_recv)(
@@ -160,8 +196,10 @@ extern "C"
                     struct axis2_transport_receiver *recv);
 
         /**
-         * @param transport_in pointer to transport in
+         * Gets the transport in phase associated with transport in description.
+         * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
+         * @return transport in phase, returns a reference, not a cloned copy
          */
         struct axis2_phase *(AXIS2_CALL *
                 get_in_phase)(
@@ -169,9 +207,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param transport_in pointer to transport in
+         * Sets the transport in phase associated with transport in description.
+         * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
-         * @param in_phase pointer to in phase
+         * @param in_phase pointer to phase representing transport in phase, 
+         * transport in description assumes ownership of phase
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
                 set_in_phase)(
@@ -180,29 +221,36 @@ extern "C"
                     struct axis2_phase *in_phase);
 
         /**
-         * @param transport_in pointer to transport in
+         * Gets the transport fault phase associated with transport in description.
+         * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
+         * @return pointer to phase representing fault phase
          */
         struct axis2_phase *(AXIS2_CALL *
-                get_faultphase)(
+                get_fault_phase)(
                     const axis2_transport_in_desc_t *transport_in,
                     const axis2_env_t *env);
 
         /**
-         * @param transport_in pointer to transport in
+         * Sets the transport fault phase associated with transport in description.
+         * @param transport_in pointer to transport in description struct
          * @param env pointer to environment struct
-         * @param faultphase pointer to fault phase
+         * @param fault_phase pointer to fault phase
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
-                set_faultphase)(
+                set_fault_phase)(
                     struct axis2_transport_in_desc *transport_in,
                     const axis2_env_t *env,
-                    struct axis2_phase *faultphase);
+                    struct axis2_phase *fault_phase);
 
         /**
-         * @param transport_in_desc pointer to transport in description
+         * Adds given parameter.
+         * @param transport_in_desc pointer to transport in description struct
          * @param env pointer to environment struct
-         * @param param pointer to param
+         * @param param pointer to parameter, transport in description assumes
+         * ownership of parameter
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
          */
         axis2_status_t (AXIS2_CALL *
                 add_param)(
@@ -211,137 +259,146 @@ extern "C"
                     axis2_param_t *param);
 
         /**
-         * @param transport_in_desc pointer to transport in description
+         * Gets named parameter.
+         * @param transport_in_desc pointer to transport in description struct
          * @param env pointer to environment struct
-         * @param param_name pointer to parameter name
+         * @param param_name parameter name string
+         * @return pointer to named parameter if it exists, else NULL. Returns
+         * a reference, not a cloned copy
          */
         axis2_param_t *(AXIS2_CALL *
                 get_param)(
                     const axis2_transport_in_desc_t *transport_in_desc,
                     const axis2_env_t *env,
-                    axis2_char_t *param_name);
+                    const axis2_char_t *param_name);
 
         /**
-         * @param transport_in_desc pointer to transport in description
+         * Checks if the named parameter is locked.
+         * @param transport_in_desc pointer to transport in description struct
          * @param env pointer to environment struct
-         * @param param_name pointer to parameter name
+         * @param param_name parameter name string
+         * @return AXIS2_TRUE if named parameter is locked, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 is_param_locked)(
                     axis2_transport_in_desc_t *transport_in_desc,
                     const axis2_env_t *env,
-                    axis2_char_t *param_name);
+                    const axis2_char_t *param_name);
     };
 
     /**
-     * transport in description struct
+     * transport in description struct.
      */
     struct axis2_transport_in_desc
     {
         /** transport in description struct ops */
         axis2_transport_in_desc_ops_t *ops;
+        /** parameter container to hold transport in related parameters */
         axis2_param_container_t *param_container;
     };
 
     /**
-     * Creates phase holder struct
+     * Creates transport in description with given QName.
      * @param env pointer to environment struct
-     * @param qname pointer to qname
+     * @param qname pointer to QName
      * @return pointer to newly created phase holder
      */
     AXIS2_EXTERN axis2_transport_in_desc_t *AXIS2_CALL
     axis2_transport_in_desc_create_with_qname (
             const axis2_env_t *env,
-            axis2_qname_t *qname);
+            const axis2_qname_t *qname);
 
-    axis2_status_t AXIS2_CALL
-    axis2_transport_in_desc_free_void_arg(
+    /**
+     * Frees transport in description given as a void parameter.
+     * @param transport_in pointer to transport in description as a void 
+     * pointer
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+     */
+     axis2_status_t AXIS2_CALL
+     axis2_transport_in_desc_free_void_arg(
             void *transport_in,
             const axis2_env_t *env);
 
-/*************************** Function macros **********************************/
-
-/** Frees the transport in description.
+/** Frees transport in description.
     @sa axis2_transport_in_desc_ops#free */
 #define AXIS2_TRANSPORT_IN_DESC_FREE(transport_in_desc, env) \
       ((transport_in_desc)->ops->free (transport_in_desc, env))
 
-/** Gets the qualified name.
+/** Gets QName.
     @sa axis2_transport_in_desc_ops#get_qname */
 #define AXIS2_TRANSPORT_IN_DESC_GET_QNAME(transport_in_desc, env) \
       ((transport_in_desc)->ops->get_qname (transport_in_desc, env))
 
-/** Sets the qualified name.
+/** Sets QName.
     @sa axis2_transport_in_desc_ops#set_qname */
 #define AXIS2_TRANSPORT_IN_DESC_SET_QNAME(transport_in_desc, env, qname) \
       ((transport_in_desc)->ops->set_qname (transport_in_desc, env, qname))
 
-/** Gets the in flow.
-    @sa axis2_transport_in_desc_ops#get_inflow */
+/** Gets in flow.
+    @sa axis2_transport_in_desc_ops#get_in_flow */
 #define AXIS2_TRANSPORT_IN_DESC_GET_IN_FLOW(transport_in_desc, env) \
-      ((transport_in_desc)->ops->get_inflow (transport_in_desc, env))
+      ((transport_in_desc)->ops->get_in_flow (transport_in_desc, env))
 
-/** Sets the in flow.
-    @sa axis2_transport_in_desc_ops#set_inflow */
-#define AXIS2_TRANSPORT_IN_DESC_SET_IN_FLOW(transport_in_desc, env, inflow) \
-      ((transport_in_desc)->ops->set_inflow (transport_in_desc, env, inflow))
+/** Sets in flow.
+    @sa axis2_transport_in_desc_ops#set_in_flow */
+#define AXIS2_TRANSPORT_IN_DESC_SET_IN_FLOW(transport_in_desc, env, in_flow) \
+      ((transport_in_desc)->ops->set_in_flow (transport_in_desc, env, in_flow))
 
-/** Gets the fault flow.
-    @sa axis2_transport_in_desc_ops#get_faultflow */
-#define AXIS2_TRANSPORT_IN_DESC_GET_FAULTFLOW(transport_in_desc, env) \
-      ((transport_in_desc)->ops->get_faultflow (transport_in_desc, env))
+/** Gets fault flow.
+    @sa axis2_transport_in_desc_ops#get_fault_in_flow */
+#define AXIS2_TRANSPORT_IN_DESC_GET_FAULT_IN_FLOW(transport_in_desc, env) \
+      ((transport_in_desc)->ops->get_fault_in_flow (transport_in_desc, env))
 
-/** Sets the fault flow.
-    @sa axis2_transport_in_desc_ops#set_faultflow */
-#define AXIS2_TRANSPORT_IN_DESC_SET_FAULTFLOW(transport_in_desc, env, faultflow) \
-      ((transport_in_desc)->ops->set_faultflow (transport_in_desc, env, faultflow))
+/** Sets fault flow.
+    @sa axis2_transport_in_desc_ops#set_fault_in_flow */
+#define AXIS2_TRANSPORT_IN_DESC_SET_FAULT_IN_FLOW(transport_in_desc, env, fault_in_flow) \
+      ((transport_in_desc)->ops->set_fault_in_flow (transport_in_desc, env, fault_in_flow))
 
-/** Gets the receiver.
+/** Gets transport receiver.
     @sa axis2_transport_in_desc_ops#get_recv */
 #define AXIS2_TRANSPORT_IN_DESC_GET_RECV(transport_in_desc, env) \
       ((transport_in_desc)->ops->get_recv (transport_in_desc, env))
 
-/** Sets the receiver.
+/** Sets transport receiver.
     @sa axis2_transport_in_desc_ops#set_recv */
 #define AXIS2_TRANSPORT_IN_DESC_SET_RECV(transport_in_desc, env, recv) \
       ((transport_in_desc)->ops->set_recv (transport_in_desc, env, recv))
 
-/** Gets the in phase.
+/** Gets in phase.
     @sa axis2_transport_in_desc_ops#get_in_phase */
 #define AXIS2_TRANSPORT_IN_DESC_GET_IN_PHASE(transport_in_desc, env) \
       ((transport_in_desc)->ops->get_in_phase (transport_in_desc, env))
 
-/** Sets the in phase.
+/** Sets in phase.
     @sa axis2_transport_in_desc_ops#set_in_phase */
 #define AXIS2_TRANSPORT_IN_DESC_SET_IN_PHASE(transport_in_desc, env, in_phase) \
       ((transport_in_desc)->ops->set_in_phase (transport_in_desc, env, in_phase))
 
-/** Gets the fault phase.
-    @sa axis2_transport_in_desc_ops#get_faultphase */
-#define AXIS2_TRANSPORT_IN_DESC_GET_FAULTPHASE(transport_in_desc, env) \
-      ((transport_in_desc)->ops->get_faultphase (transport_in_desc, env))
+/** Gets fault phase.
+    @sa axis2_transport_in_desc_ops#get_fault_phase */
+#define AXIS2_TRANSPORT_IN_DESC_GET_FAULT_PHASE(transport_in_desc, env) \
+      ((transport_in_desc)->ops->get_fault_phase (transport_in_desc, env))
 
-/** Sets the fault phase.
-    @sa axis2_transport_in_desc_ops#set_faultphase */
-#define AXIS2_TRANSPORT_IN_DESC_SET_FAULTPHASE(transport_in_desc, env, faultphase) \
-      ((transport_in_desc)->ops->set_faultphase (transport_in_desc, env, faultphase))
+/** Sets fault phase.
+    @sa axis2_transport_in_desc_ops#set_fault_phase */
+#define AXIS2_TRANSPORT_IN_DESC_SET_FAULT_PHASE(transport_in_desc, env, fault_phase) \
+      ((transport_in_desc)->ops->set_fault_phase (transport_in_desc, env, fault_phase))
 
-/** Adds the parameter.
+/** Adds parameter.
     @sa axis2_transport_in_desc_ops#add_param */
 #define AXIS2_TRANSPORT_IN_DESC_ADD_PARAM(transport_in_desc, env, param) \
       ((transport_in_desc)->ops->add_param (transport_in_desc, env, param))
 
-/** Gets the parameter.
+/** Gets named parameter.
     @sa axis2_transport_in_desc_ops#get_param */
 #define AXIS2_TRANSPORT_IN_DESC_GET_PARAM(transport_in_desc, env, param_name) \
       ((transport_in_desc)->ops->get_param (transport_in_desc, env, param_name))
 
-/** Is param locked.
+/** Checks if the named parameter is locked.
     @sa axis2_transport_in_desc_ops#is_param_locked */
 #define AXIS2_TRANSPORT_IN_DESC_IS_PARAM_LOCKED(transport_in_desc, env, param_name) \
       ((transport_in_desc)->ops->is_param_locked (transport_in_desc, env, param_name))
-
-/*************************** End of function macros ***************************/
 
 /** @} */
 
