@@ -16,6 +16,8 @@ int main()
 {
    axis2_char_t* hash=NULL;
    axis2_env_t *env = NULL;
+   axis2_char_t* nonce=NULL;
+   axis2_char_t* created=NULL;
    
    env = test_init();
 
@@ -38,12 +40,10 @@ int main()
    printf("Hash = %s \n",encodedStr);
 #endif
    printf("\n----Testing nonce------------------------------------------\n");
-   axis2_char_t* nonce=NULL;
    nonce=rampart_generate_nonce(env);
    printf("NONCE: %s",nonce);
 
    printf("\n----Testing created----------------------------------------\n");
-   axis2_char_t* created=NULL;
    created=rampart_generate_time(env, 300);
    printf("CREATED: %s",created);
    printf("\n----End of testings----------------------------------------\n");
