@@ -21,7 +21,7 @@
 #include <oxs_cipher.h>
 #include <oxs_error.h>
 #include <openssl_cipher_property.h>
-
+#include <openssl_util.h>
 
 typedef struct oxs_key_impl{
     oxs_key_t key;
@@ -122,7 +122,7 @@ oxs_key_get_data(
     const axis2_env_t *env)
 {
     oxs_key_impl_t *key_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     key_impl = AXIS2_INTF_TO_IMPL(key);
 
     return key_impl->data;
@@ -135,7 +135,7 @@ oxs_key_get_name(
     const axis2_env_t *env)
 {
     oxs_key_impl_t *key_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     key_impl = AXIS2_INTF_TO_IMPL(key);
 
     return key_impl->name;
@@ -295,7 +295,8 @@ oxs_key_create_key(const axis2_env_t *env)
 
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+
+axis2_status_t AXIS2_CALL
 oxs_key_free(oxs_key_t *key,
     const axis2_env_t *env )
 {
@@ -314,7 +315,7 @@ oxs_key_free(oxs_key_t *key,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 oxs_key_populate(oxs_key_t *key,
         const axis2_env_t *env,
         axis2_char_t *data,
@@ -333,7 +334,7 @@ oxs_key_populate(oxs_key_t *key,
 }
 
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 oxs_key_read_from_file(oxs_key_t *key,
         const axis2_env_t *env,
         axis2_char_t *file_name)
@@ -351,7 +352,7 @@ oxs_key_read_from_file(oxs_key_t *key,
     
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 oxs_key_for_algo(oxs_key_t *key,
         const axis2_env_t *env,
         axis2_char_t *key_algo)

@@ -33,6 +33,9 @@
 #include <openssl_crypt.h>
 #include <openssl_constants.h>
 #include <openssl_rsa.h>
+#include <oxs_token_cipher_value.h>
+#include <oxs_iv.h>
+
 
 typedef struct oxs_enc_engine_impl
 {
@@ -693,7 +696,7 @@ oxs_enc_engine_encrypt_template(
     
 }
 
-static axis2_status_t AXIS2_CALL
+static axis2_status_t 
 oxs_enc_engine_cipher_data_node_read(const axis2_env_t *env, 
                                 oxs_ctx_t * enc_ctx, axiom_node_t* node_cipher_data)
 {
@@ -732,7 +735,7 @@ oxs_enc_engine_cipher_data_node_read(const axis2_env_t *env,
 * We have EncryptedData of EncryptedKey node by now. 
 * So process it and populate the ctx.
 */
-static axis2_status_t AXIS2_CALL
+static axis2_status_t 
 oxs_enc_engine_encrypted_data_node_read(const axis2_env_t *env,
             oxs_ctx_t * enc_ctx, axiom_node_t* node)
 {

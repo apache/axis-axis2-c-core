@@ -19,6 +19,7 @@
 #include <oxs_error.h>
 #include <oxs_token_cipher_value.h>
 #include <axiom_element.h>
+#include <oxs_axiom.h>
 
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL

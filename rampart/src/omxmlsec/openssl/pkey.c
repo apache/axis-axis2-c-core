@@ -121,9 +121,8 @@ openssl_pkey_free (
 AXIS2_EXTERN openssl_pkey_t *AXIS2_CALL
 openssl_pkey_create(const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     openssl_pkey_impl_t * pkey_impl= NULL;
+    AXIS2_ENV_CHECK(env, NULL);
     pkey_impl = AXIS2_MALLOC(env->allocator,sizeof(openssl_pkey_impl_t));
     if (!pkey_impl)
     {
@@ -173,7 +172,7 @@ openssl_pkey_get_key (
                     )
 {
     openssl_pkey_impl_t * pkey_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
 
     return pkey_impl->key ;
@@ -186,7 +185,7 @@ openssl_pkey_get_name (
                     )
 {
     openssl_pkey_impl_t * pkey_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
 
     return pkey_impl->name ;

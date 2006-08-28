@@ -121,7 +121,7 @@ openssl_cipher_property_get_cipher(
     const axis2_env_t *env)
 {
     openssl_cipher_property_impl_t *cprop_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     cprop_impl = AXIS2_INTF_TO_IMPL(cprop);
 
     return cprop_impl->cipher;
@@ -133,7 +133,7 @@ openssl_cipher_property_get_name(
     const axis2_env_t *env)
 {
     openssl_cipher_property_impl_t *cprop_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     cprop_impl = AXIS2_INTF_TO_IMPL(cprop);
 
     return cprop_impl->name;
@@ -145,7 +145,7 @@ openssl_cipher_property_get_url(
     const axis2_env_t *env)
 {
     openssl_cipher_property_impl_t *cprop_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     cprop_impl = AXIS2_INTF_TO_IMPL(cprop);
 
     return cprop_impl->url;
@@ -345,7 +345,7 @@ openssl_cipher_property_create(const axis2_env_t *env)
 }
 
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 openssl_cipher_property_free(openssl_cipher_property_t * cprop, const axis2_env_t *env)
 {
     openssl_cipher_property_impl_t *cprop_impl= NULL;

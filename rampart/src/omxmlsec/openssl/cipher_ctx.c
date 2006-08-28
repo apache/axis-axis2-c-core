@@ -22,6 +22,7 @@
 #include <oxs_error.h>
 #include <openssl/evp.h>
 #include <openssl/rand.h>
+#include <openssl_util.h>
 
 
 

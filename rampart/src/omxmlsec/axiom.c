@@ -87,7 +87,7 @@ oxs_axiom_deserialize_node(const axis2_env_t *env,  axis2_char_t* buffer)
     if(!buffer){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "buffer is NULL");
-        return AXIS2_FAILURE;
+        return NULL;
     }
     reader = axiom_xml_reader_create_for_memory(env,
                 (void*)buffer, AXIS2_STRLEN(buffer), "utf-8", AXIS2_XML_PARSER_TYPE_BUFFER);
@@ -95,27 +95,27 @@ oxs_axiom_deserialize_node(const axis2_env_t *env,  axis2_char_t* buffer)
     if(!reader){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "axiom_xml_reader is NULL");
-        return AXIS2_FAILURE;
+        return NULL;
     }
 
     builder = axiom_stax_builder_create(env, reader);
     if(!builder){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "axiom_stax_builder is NULL");
-        return AXIS2_FAILURE;
+        return NULL;
     }
     
     doc = axiom_document_create(env, NULL, builder);
     if(!doc){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "axiom_document is NULL");
-        return AXIS2_FAILURE;
+        return NULL;
     }
     node = AXIOM_DOCUMENT_BUILD_ALL(doc, env);
     if(!node){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "Building node failed");
-        return AXIS2_FAILURE;
+        return NULL;
     }
 
     return node;

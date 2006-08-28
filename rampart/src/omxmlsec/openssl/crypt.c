@@ -36,7 +36,7 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
     int do_encrypt)
 {
     EVP_CIPHER_CTX ctx ;
-    ctx = bc_ctx->cipher_ctx;
+ 
 
         unsigned char inbuf[BUFSIZE + 1 ], outbuf[BUFSIZE + EVP_MAX_BLOCK_LENGTH]; /*EVP_MAX_BLOCK_LENGTH = 32 in evp.h*/
         unsigned char *tempbuf = NULL;
@@ -47,7 +47,7 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
 
         i = 0;
         out_buf_index = 0;
-
+        ctx = bc_ctx->cipher_ctx;
 
         for(;;)
         {

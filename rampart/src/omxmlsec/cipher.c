@@ -19,6 +19,7 @@
 #include <oxs_error.h>
 #include <oxs_cipher.h>
 #include <openssl_constants.h>
+#include <openssl_util.h>
 
 
 AXIS2_EXTERN openssl_cipher_property_t *AXIS2_CALL

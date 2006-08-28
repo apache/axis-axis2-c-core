@@ -270,9 +270,9 @@ oxs_ctx_set_cipher_value_node(
 AXIS2_EXTERN oxs_ctx_t *AXIS2_CALL
 oxs_ctx_create(const axis2_env_t *env)
 {
+    oxs_ctx_impl_t *ctx_impl= NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    oxs_ctx_impl_t * ctx_impl= NULL;
     ctx_impl = AXIS2_MALLOC(env->allocator,sizeof(oxs_ctx_impl_t));
     if (!ctx_impl)
     {
@@ -441,7 +441,7 @@ oxs_ctx_get_key(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->key ;
@@ -455,7 +455,7 @@ oxs_ctx_get_id(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->id ;
@@ -469,7 +469,7 @@ oxs_ctx_get_type(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->type ;
@@ -483,7 +483,7 @@ oxs_ctx_get_mime_type(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->mime_type ;
@@ -497,7 +497,7 @@ oxs_ctx_get_encoding(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->encoding ;
@@ -511,7 +511,7 @@ oxs_ctx_get_recipient(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->recipient ;
@@ -525,7 +525,7 @@ oxs_ctx_get_carried_key_name(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->carried_key_name ;
@@ -539,7 +539,7 @@ oxs_ctx_get_enc_mtd_algorithm(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->enc_mtd_algorithm ;
@@ -553,7 +553,7 @@ oxs_ctx_get_input_data(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->input_data ;
@@ -567,7 +567,7 @@ oxs_ctx_get_enc_data_node(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->enc_data_node ;
@@ -581,7 +581,7 @@ oxs_ctx_get_enc_method_node(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->enc_method_node ;
@@ -595,7 +595,7 @@ oxs_ctx_get_key_info_node(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->key_info_node ;
@@ -609,7 +609,7 @@ oxs_ctx_get_cipher_value_node(
                     )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->cipher_value_node ;

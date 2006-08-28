@@ -113,7 +113,7 @@ openssl_rsa_create(
 
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 openssl_rsa_free( openssl_rsa_t * rsa, 
     const axis2_env_t *env)
 {
