@@ -33,5 +33,5 @@ INCLUDES = -I$(top_builddir)/include \
 			@UTILINC@ \
 			@XMLSCHEMAINC@
 
-EXTRA_DIST = woden_constants.h
+EXTRA_DIST = woden_constants.h woden_component_model_builder.h
 
