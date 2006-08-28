@@ -84,13 +84,19 @@
 		<developer>
 			<name>Sahan Gamage</name>
 			<id>sahan</id>
-			<email>sahan AT wso2.com</email>
-			<organization>WSO2</organization>
+			<email>sahans AT gmail.com</email>
+			<organization>Purdue University</organization>
 		</developer>
 		<developer>
 			<name>Nandika Jayawardana</name>
 			<id>nandika</id>
 			<email>nandika AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Kaushalye Kapuruge</name>
+			<id>kaushalye</id>
+			<email>kaushalye AT wso2.com</email>
 			<organization>WSO2</organization>
 		</developer>
 		<developer>
@@ -126,8 +132,8 @@
 		<developer>
 			<name>Nabeel Yoosuf</name>
 			<id>nabeel</id>
-			<email>nabeel AT wso2.com</email>
-			<organization>WSO2</organization>
+			<email>nabeel.yoosuf AT gmail.com</email>
+			<organization>Purdue University</organization>
 		</developer>
 	</developers>
 	<contributors>
@@ -143,7 +149,7 @@
 			<email>dimuthuc AT gmail.com</email>
 			<organization>Univerisity of Moratuwa</organization>
             <roles>
-                <role>Handle Axis2/C Firefox Extension</role>
+                <role>Implemeted WSDL2C tool</role>
             </roles>
 		</contributor>
 	</contributors>
