@@ -41,15 +41,15 @@ extern "C"
 {
 #endif
 
-    /** 
+    /**
      * @param env pointer to environment struct 
      */
-    AXIS2_EXTERN axis2_transport_sender_t * AXIS2_CALL
-    axis2_http_transport_sender_create (
+    AXIS2_EXTERN axis2_transport_sender_t *AXIS2_CALL
+    axis2_http_transport_sender_create(
         const axis2_env_t *env);
 
 
-/** @} */
+    /** @} */
 #ifdef __cplusplus
 }
 #endif
