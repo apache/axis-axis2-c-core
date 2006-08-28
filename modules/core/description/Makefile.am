@@ -22,3 +22,5 @@ INCLUDES = -I$(top_builddir)/include \
 			@AXIOMINC@ \
 			@UTILINC@ \
             -I$(top_builddir)/xml_schema/include
+
+EXTRA_DIST=axis2_client_utils.h
