@@ -80,16 +80,17 @@ extern "C"
 */
 #define RAMPART_INFLOW_SECURITY                     "InflowSecurity"
 #define RAMPART_OUTFLOW_SECURITY                    "OutflowSecurity"
-#define RAMPART_ACTION                              "action"
-#define RAMPART_ACTION_ITEMS                        "items"
-#define RAMPART_USER                                "user"
-#define RAMPART_PASSWORD_TYPE                       "passwordType"
 #define RAMPART_PASSWORD_TEXT                       "passwordText"
 #define RAMPART_PASSWORD_DIGEST                     "passwordDigest"
+#define RAMPART_ACTION                              "action"
+/*These are the parameters of actions in the axis2.xml file*/
+#define RAMPART_ACTION_ITEMS                        "items"
 #define RAMPART_ACTION_ITEMS_USERNAMETOKEN          "UsernameToken"
 #define RAMPART_ACTION_ITEMS_TIMESTAMP              "Timestamp"
 #define RAMPART_ACTION_ITEMS_ENCRYPT                "Encrypt"
 #define RAMPART_ACTION_ITEMS_SIGNATURE              "Signature"
+#define RAMPART_ACTION_PASSWORD_TYPE                "passwordType"
+#define RAMPART_ACTION_USER                         "user"
 #define RAMPART_ACTION_PW_CALLBACK_CLASS            "passwordCallbackClass"
 #define RAMPART_ACTION_SIGNATURE_PROP_FILE          "signaturePropFile"
 #define RAMPART_ACTION_ENCRYPTION_PROP_FILE         "signaturePropFile"
@@ -118,7 +119,7 @@ extern "C"
 
 
 /*Dynamically set values*/
-#define RAMPART_DYN_PASSWORD "password"
+#define RAMPART_ACTION_PASSWORD "password"
 
 #ifdef __cplusplus
 }

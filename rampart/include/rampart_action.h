@@ -28,6 +28,7 @@
 #include <axiom_node.h>
 #include <oxs_buffer.h>
 #include <oxs_key.h>
+#include <axis2_conf_ctx.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -129,6 +130,17 @@ extern "C"
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
+        /**
+        * Gets password_type of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return password_type
+        */
+        axis2_char_t *(AXIS2_CALL *
+        get_password_type )(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
 
         /**
         * Gets user of the rampart action.
@@ -225,6 +237,19 @@ extern "C"
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
+
+        /**
+        * Gets time_to_live of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @return time_to_live
+        */
+        axis2_char_t *(AXIS2_CALL *
+        get_time_to_live)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+
         /**
         * Sets encryption_user of the rampart action.
         * @param actions rampart_action ptr to action
@@ -281,6 +306,20 @@ extern "C"
                     axis2_char_t *items
                     );
         
+        /**
+        * Sets password_type  of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param password_type
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
+        axis2_status_t (AXIS2_CALL *
+        set_password_type)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *password_type
+                    );
+
         /**
         * Sets user of the rampart action.
         * @param actions rampart_action ptr to action
@@ -392,7 +431,19 @@ extern "C"
                     const axis2_env_t *env,
                     axis2_char_t *encryption_parts
                     );
-        
+        /**
+        * Sets time_to_live of the rampart action.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param time_to_live
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
+        axis2_status_t (AXIS2_CALL *
+        set_time_to_live)(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *time_to_live
+                    ); 
 
 
         /**
@@ -426,10 +477,24 @@ extern "C"
         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *
-        populate)(
+        populate_from_params)(
                     rampart_actions_t *actions,
                     const axis2_env_t *env, 
                     axis2_param_t *param_action
+                    );
+        /**
+        * Populate rampart action reading the axis2 context.
+        * @param actions rampart_action ptr to action
+        * @param env pointer to environment struct
+        * @param ctx axis2 context
+        * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+        */
+
+        axis2_status_t (AXIS2_CALL *
+        populate_from_ctx) (
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_ctx_t *ctx  
                     );
 
     };
@@ -469,6 +534,12 @@ extern "C"
 
 #define RAMPART_ACTIONS_SET_ITEMS(actions, env, items)\
         ((actions)->ops->set_items(actions, env, items))
+
+#define RAMPART_ACTIONS_GET_PASSWORD_TYPE(actions, env) \
+        ((actions)->ops->get_password_type(actions, env) )
+
+#define RAMPART_ACTIONS_SET_PASSWORD_TYPE(actions, env, password_type)\
+        ((actions)->ops->set_password_type(actions, env, password_type))
 
 #define RAMPART_ACTIONS_GET_USER(actions, env) \
         ((actions)->ops->get_user(actions, env) )
@@ -518,14 +589,23 @@ extern "C"
 #define RAMPART_ACTIONS_SET_ENCRYPTION_PARTS(actions, env, encryption_parts)\
         ((actions)->ops->set_encryption_parts(actions, env, encryption_parts))
 
+#define RAMPART_ACTIONS_GET_TIME_TO_LIVE(actions, env) \
+        ((actions)->ops->get_time_to_live(actions, env) )
+
+#define RAMPART_ACTIONS_SET_TIME_TO_LIVE(actions, env, time_to_live)\
+        ((actions)->ops->set_time_to_live(actions, env, time_to_live))
+
 #define RAMPART_ACTIONS_RESET(actions, env) \
         ((actions)->ops->reset(actions, env))
 
 #define RAMPART_ACTIONS_FREE(actions, env) \
         ((actions)->ops->free(actions, env))
 
-#define RAMPART_ACTIONS_POPULATE(actions, env, param_action)\
-        ((actions)->ops->populate(actions, env, param_action))
+#define RAMPART_ACTIONS_POPULATE_FROM_PARAMS(actions, env, param_action)\
+        ((actions)->ops->populate_from_params(actions, env, param_action))
+
+#define RAMPART_ACTIONS_POPULATE_FROM_CTX(actions, env, ctx)\
+        ((actions)->ops->populate_from_ctx(actions, env, ctx))
 
 
 

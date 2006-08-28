@@ -26,7 +26,7 @@
 #include <axis2_msg_info_headers.h>
 #include <axis2_property.h>
 #include <rampart_constants.h>
-
+#include <axis2_conf_ctx.h>
 
 
 #ifndef RAMPART_HANDLER_UTIL_H
@@ -37,8 +37,19 @@
 extern "C"
 {
 #endif
-    
-      
+ /**
+ * Get properties from the axis2 context
+ * @param env pointer to environment struct
+ * @param ctx axis2 context
+ * @param key the property name
+ * @return parameter
+ */
+ 
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+rampart_get_property_from_ctx( const axis2_env_t *env,
+    axis2_ctx_t *ctx,
+    const axis2_char_t *key);
+
  /**
  * Get parameter for the given parameter name
  * @param env pointer to environment struct    
@@ -95,15 +106,6 @@ rampart_get_security_token(const axis2_env_t *env,
                            axis2_msg_ctx_t *msg_ctx,
                                 axiom_soap_header_t *soap_header);
 
- /**
- * Get password using callback
- * @param env pointer to environment struct
- * @return password
- */
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-rampart_callback_pw( const axis2_env_t *env,
-                     axis2_char_t *callback_module_name,
-                     const axis2_char_t *username);
  
 AXIS2_EXTERN void AXIS2_CALL
 rampart_create_fault_envelope(const axis2_env_t *env,

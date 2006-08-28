@@ -43,12 +43,13 @@ extern "C"
     
     /**
      * Only operation get_password is to get the password
-     * User should prvide a function pointer to this
+     * User should provide a function pointer to this
      */
     AXIS2_DECLARE_DATA struct rampart_callback_ops
     {            
+            /*User has to override this method*/
             axis2_char_t *(AXIS2_CALL*
-            get_password)(rampart_callback_t *rcb,
+            callback_password)(rampart_callback_t *callback,
             const axis2_env_t *env, const axis2_char_t *username);
             
             axis2_status_t (AXIS2_CALL*
@@ -61,6 +62,14 @@ extern "C"
     {
         rampart_callback_ops_t *ops;
     };
+
+/*************************** Function macros **********************************/
+/*TODO write the implementation*/
+#define RAMPART_CALLBACK_FREE(callback, env) \
+      ((callback)->ops->free (callback, env))
+
+#define RAMPART_CALLBACK_CALLBACK_PASSWORD(callback, env, username) \
+      ((callback)->ops->callback_password(callback, env, username))
 
     /** @} */
 #ifdef __cplusplus

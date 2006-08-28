@@ -86,7 +86,7 @@ extern "C"
         crypt)(
                 oxs_enc_engine_t *enc_engine,
                 const axis2_env_t *env,
-                enc_ctx_ptr enc_ctx,
+                oxs_ctx_t * enc_ctx,
                 oxs_buffer_ptr input,
                 oxs_buffer_ptr result);
 
@@ -103,7 +103,7 @@ extern "C"
                 const axis2_env_t *env,
                 axiom_node_t* template_node,
                 axis2_char_t** decrypted_data,
-                enc_ctx_ptr enc_ctx);
+                oxs_ctx_t * enc_ctx);
     
         axis2_status_t (AXIS2_CALL *
         encrypt_template)(
@@ -111,7 +111,7 @@ extern "C"
                 const axis2_env_t *env,
                 axiom_node_t* template_node,
                 axis2_char_t* data,
-                enc_ctx_ptr enc_ctx);
+                oxs_ctx_t * enc_ctx);
 
     };
 

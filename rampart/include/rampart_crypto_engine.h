@@ -60,7 +60,7 @@ extern "C" {
                 rampart_crypto_engine_t *engine,
                 const axis2_env_t *env,
                 axis2_msg_ctx_t *msg_ctx,
-                axis2_param_t* param_action,
+                rampart_actions_t *actions,
                 axiom_soap_envelope_t *soap_envelope,
                 axiom_node_t *sec_node 
                 );
@@ -70,7 +70,7 @@ extern "C" {
                 rampart_crypto_engine_t *engine,
                 const axis2_env_t *env,
                 axis2_msg_ctx_t *msg_ctx,
-                axis2_param_t* param_action,
+                rampart_actions_t *actions,
                 axiom_soap_envelope_t *soap_envelope,
                 axiom_node_t *sec_node 
                 );
@@ -102,11 +102,11 @@ extern "C" {
 #define RAMPART_CRYPTO_ENGINE_FREE(engine, env) \
       ((engine)->ops->free (engine, env))
 
-#define RAMPART_CRYPTO_ENGINE_ENCRYPT_MESSAGE(engine, env, msg_ctx, param_action, soap_envelope, sec_node ) \
-      ((engine)->ops->encrypt_message(engine, env, msg_ctx, param_action, soap_envelope, sec_node))
+#define RAMPART_CRYPTO_ENGINE_ENCRYPT_MESSAGE(engine, env, msg_ctx, actions, soap_envelope, sec_node ) \
+      ((engine)->ops->encrypt_message(engine, env, msg_ctx, actions, soap_envelope, sec_node))
 
-#define RAMPART_CRYPTO_ENGINE_DECRYPT_MESSAGE(engine, env, msg_ctx, param_action, soap_envelope, sec_node ) \
-      ((engine)->ops->decrypt_message(engine, env, msg_ctx, param_action, soap_envelope, sec_node))
+#define RAMPART_CRYPTO_ENGINE_DECRYPT_MESSAGE(engine, env, msg_ctx, actions, soap_envelope, sec_node ) \
+      ((engine)->ops->decrypt_message(engine, env, msg_ctx, actions, soap_envelope, sec_node))
 
 
 /* @} */

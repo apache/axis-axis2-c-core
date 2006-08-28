@@ -39,68 +39,336 @@ extern "C"
  * @{
  */
 
-typedef struct _enc_ctx enc_ctx, *enc_ctx_ptr;
 
-typedef enum  {
-    oxs_operation_none =0,
-    oxs_operation_sign,
-    oxs_operation_verify,
-    oxs_operation_encrypt,
-    oxs_operation_decrypt
-} oxs_operation_t;
+    typedef enum  {
+        OXS_CTX_OPERATION_NONE = 0,
+        OXS_CTX_OPERATION_SIGN,
+        OXS_CTX_OPERATION_VERIFY,
+        OXS_CTX_OPERATION_ENCRYPT,
+        OXS_CTX_OPERATION_DECRYPT
+    } oxs_ctx_operation_t;
 
-typedef enum {
-    enc_ctx_mode_encrypted_data = 0,
-    enc_ctx_mode_encrypted_key
-} enc_ctx_mode_t;
+    typedef enum {
+        OXS_CTX_MODE_ENCRYPTED_DATA = 0,
+        OXS_CTX_MODE_ENCRYPTED_KEY
+    } oxs_ctx_mode_t;
+
+    /** Type name for struct oxs_ctx_ops */
+    typedef struct oxs_ctx_ops oxs_ctx_ops_t;
+    /** Type name for struct oxs_ctx */
+    typedef struct oxs_ctx oxs_ctx_t;
 
 
+    struct oxs_ctx_ops
+    {
 
-struct _enc_ctx{
-    /*Encryption mode*/
-    enc_ctx_mode_t mode;
+        axis2_status_t (AXIS2_CALL *
+        free)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        oxs_ctx_mode_t (AXIS2_CALL *
+        get_mode)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        oxs_ctx_operation_t (AXIS2_CALL *
+        get_operation)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        oxs_key_t *(AXIS2_CALL *
+        get_key)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        axis2_char_t *(AXIS2_CALL *
+        get_id)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        axis2_char_t *(AXIS2_CALL *
+        get_type)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+        axis2_char_t *(AXIS2_CALL *
+        get_mime_type)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        axis2_char_t *(AXIS2_CALL *
+        get_encoding)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        axis2_char_t *(AXIS2_CALL *
+        get_recipient)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        axis2_char_t *(AXIS2_CALL *
+        get_carried_key_name)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        axis2_char_t *(AXIS2_CALL *
+        get_enc_mtd_algorithm)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        axis2_char_t *(AXIS2_CALL *
+        get_input_data)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        axiom_node_t *(AXIS2_CALL *
+        get_enc_data_node)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        axiom_node_t *(AXIS2_CALL *
+        get_enc_method_node)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        axiom_node_t *(AXIS2_CALL *
+        get_key_info_node)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        axiom_node_t *(AXIS2_CALL *
+        get_cipher_value_node)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_mode)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    oxs_ctx_mode_t mode
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_operation)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    oxs_ctx_operation_t operation
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_key)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    oxs_key_t *key
+                    );
+        axis2_status_t (AXIS2_CALL *
+        set_id)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *id
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_type)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *type
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_mime_type)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *mime_type
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_encoding)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *encoding
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_recipient)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *recipient
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_carried_key_name)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *carried_key_name
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_enc_mtd_algorithm)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *enc_mtd_algorithm
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_input_data)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *input_data
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_enc_data_node)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axiom_node_t *enc_data_node
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_enc_method_node)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axiom_node_t *enc_method_node
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_key_info_node)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axiom_node_t *key_info_node
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_cipher_value_node)(
+                    oxs_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axiom_node_t *cipher_value_node
+                    );
+
+    };
     
-    /*transformation type */
-    oxs_operation_t operation;    
+    struct oxs_ctx
+    {
+        /** operations of oxs_ctx */
+        oxs_ctx_ops_t *ops;
+    };
 
-    /*key*/
-    oxs_key_t* key;
+    /*Create function*/
+    AXIS2_EXTERN oxs_ctx_t *AXIS2_CALL
+    oxs_ctx_create(const axis2_env_t *env);
 
-    /* attributes from EncryptedData or EncryptedKey */
-    axis2_char_t*           id;
-    axis2_char_t*           type;
-    axis2_char_t*           mime_type;
-    axis2_char_t*           encoding;
-    axis2_char_t*           recipient;
-    axis2_char_t*           carriedKeyName;
 
-    /*attributes from EncryptionMethod*/ 
-    axis2_char_t*           encmtd_algorithm;
+/**********************Macros******************************************/
+#define OXS_CTX_FREE(ctx, env) \
+        ((ctx)->ops->free(ctx, env) )
     
-    /*Key name*/
-    axis2_char_t*           keyname_val;
+#define OXS_CTX_GET_MODE(ctx, env) \
+        ((ctx)->ops->get_mode(ctx, env) )
+    
+#define OXS_CTX_GET_OPERATION(ctx, env) \
+        ((ctx)->ops->get_operation(ctx, env) )
+    
+#define OXS_CTX_GET_KEY(ctx, env) \
+        ((ctx)->ops->get_key(ctx, env) )
+    
+#define OXS_CTX_GET_ID(ctx, env) \
+        ((ctx)->ops->get_id(ctx, env) )
+    
+#define OXS_CTX_GET_TYPE(ctx, env) \
+        ((ctx)->ops->get_type(ctx, env) )
+    
+#define OXS_CTX_GET_MIME_TYPE(ctx, env) \
+        ((ctx)->ops->get_mime_type(ctx, env) )
+    
+#define OXS_CTX_GET_ENCODING(ctx, env) \
+        ((ctx)->ops->get_encoding(ctx, env) )
+    
+#define OXS_CTX_GET_RECIPIENT(ctx, env) \
+        ((ctx)->ops->get_recipient(ctx, env) )
+    
+#define OXS_CTX_GET_CARRIED_KEY_NAME(ctx, env) \
+        ((ctx)->ops->get_carried_key_name(ctx, env) )
+    
+#define OXS_CTX_GET_ENC_MTD_ALGORITHM(ctx, env) \
+        ((ctx)->ops->get_enc_mtd_algorithm(ctx, env) )
+    
+#define OXS_CTX_GET_INPUT_DATA(ctx, env) \
+        ((ctx)->ops->get_input_data(ctx, env) )
+    
+#define OXS_CTX_GET_ENC_DATA_NODE(ctx, env) \
+        ((ctx)->ops->get_enc_data_node(ctx, env) )
+    
+#define OXS_CTX_GET_ENC_METHOD_NODE(ctx, env) \
+        ((ctx)->ops->get_enc_method_node(ctx, env) )
+    
+#define OXS_CTX_GET_KEY_INFO_NODE(ctx, env) \
+        ((ctx)->ops->get_key_info_node(ctx, env) )
+    
+#define OXS_CTX_GET_CIPHER_VALUE_NODE(ctx, env) \
+        ((ctx)->ops->get_cipher_value_node(ctx, env) )
+    
+#define OXS_CTX_SET_MODE(ctx, env, mode) \
+        ((ctx)->ops->set_mode(ctx, env, mode) )
+    
+#define OXS_CTX_SET_OPERATION(ctx, env, operation) \
+        ((ctx)->ops->set_operation(ctx, env, operation) )
+    
+#define OXS_CTX_SET_KEY(ctx, env, key) \
+        ((ctx)->ops->set_key(ctx, env, key) )
+    
+#define OXS_CTX_SET_ID(ctx, env, id) \
+        ((ctx)->ops->set_id(ctx, env, id) )
+    
+#define OXS_CTX_SET_TYPE(ctx, env, type) \
+        ((ctx)->ops->set_type(ctx, env, type) )
+    
+#define OXS_CTX_SET_MIME_TYPE(ctx, env, mime_type) \
+        ((ctx)->ops->set_mime_type(ctx, env, mime_type) )
+    
+#define OXS_CTX_SET_ENCODING(ctx, env, encoding) \
+        ((ctx)->ops->set_encoding(ctx, env, encoding) )
+    
+#define OXS_CTX_SET_RECIPIENT(ctx, env, recipient) \
+        ((ctx)->ops->set_recipient(ctx, env, recipient) )
+    
+#define OXS_CTX_SET_CARRIED_KEY_NAME(ctx, env, key_name) \
+        ((ctx)->ops->set_carried_key_name(ctx, env, key_name) )
+    
+#define OXS_CTX_SET_ENC_MTD_ALGORITHM(ctx, env, enc_mtd_algorithm) \
+        ((ctx)->ops->set_enc_mtd_algorithm(ctx, env, enc_mtd_algorithm) )
+    
+#define OXS_CTX_SET_INPUT_DATA(ctx, env, input_data) \
+        ((ctx)->ops->set_input_data(ctx, env, input_data) )
+    
+#define OXS_CTX_SET_ENC_DATA_NODE(ctx, env, enc_data_node) \
+        ((ctx)->ops->set_enc_data_node(ctx, env, enc_data_node) )
+    
+#define OXS_CTX_SET_ENC_METHOD_NODE(ctx, env, enc_method_node) \
+        ((ctx)->ops->set_enc_method_node(ctx, env, enc_method_node) )
+    
+#define OXS_CTX_SET_KEY_INFO_NODE(ctx, env, key_info_node) \
+        ((ctx)->ops->set_key_info_node(ctx, env, key_info_node) )
+    
+#define OXS_CTX_SET_CIPHER_VALUE_NODE(ctx, env, cipher_value_node) \
+        ((ctx)->ops->set_cipher_value_node(ctx, env, cipher_value_node) )
+    
 
-    axiom_node_t*           enc_data_node;
-    axiom_node_t*           enc_method_node;
-    axiom_node_t*           key_info_node;
-    axiom_node_t*           cipher_value_node;
-    /*Used  in decryption process to keep the data to be decrypted*/
-    axis2_char_t*           inputdata;   
-
-}; 
-
-
-
-AXIS2_EXTERN enc_ctx_ptr AXIS2_CALL
-oxs_ctx_create_ctx(const axis2_env_t *env);
-
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_ctx_free_ctx(enc_ctx_ptr ctx);
-
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_ctx_reset_ctx(enc_ctx_ptr ctx);
 /**
   <complexType name='EncryptedType' abstract='true'>
     <sequence>

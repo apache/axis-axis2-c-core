@@ -38,9 +38,6 @@ struct _openssl_evp_block_cipher_ctx {
     unsigned char  *key;
     unsigned char  *iv;
     unsigned char  *pad;
-    /*unsigned char  key[EVP_MAX_KEY_LENGTH];
-    unsigned char  iv[EVP_MAX_IV_LENGTH];
-    unsigned char  pad[EVP_MAX_BLOCK_LENGTH];*/
 };
 
 
