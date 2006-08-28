@@ -3,14 +3,14 @@
        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <title>Axis2/C Developer Guide</title>
-  <meta name="generator" content="amaya 9.4, see http://www.w3.org/Amaya/" />
+  <meta name="generator" content="amaya 8.5, see http://www.w3.org/Amaya/" />
 </head>
 
 <body xml:lang="en">
 <h1>Axis2/C Developer Guide</h1>
-
 
 <p>Please send your feedback to developer mailing list: <a
 href="mailto:axis-c-dev@ws.apache.org">axis-c-dev@ws.apache.org</a> (Please
@@ -25,7 +25,7 @@ familiar with the Axis2/C project and its development norms in quick time.</p>
   <li><a href="#Programming_Model">Programming model</a></li>
   <li><a href="#Memory_Management">Memory management</a></li>
   <li><a href="#Coding_Conventions">Coding conventions</a></li>
-  <li><a href="#Unit_and_System_Tests">Unit and System tests</a></li>
+  <li><a href="#Unit_Tests">Unit tests</a></li>
 </ul>
 <a id="Programming_Model"></a>
 
@@ -38,18 +38,19 @@ programming. Hence, each struct has its own header file, that exposes the API
 for that struct and a source file, that contains the functional
 implementation.</p>
 
-<p>Operations associated with a struct are bundled into an operations struct,
-and the operations struct is exposed in the header file. The real
-implementation struct with the data fields is hidden from the user, and lives
-in the source file. To ease the user from using the complex syntax required
-by the use of the operations struct, macros are provided to access the
-functions associated with a given struct. Since the data is hidden, it is the
-usual practice to provide getter and setter methods for the data fields of
-the struct, in addition to the other processing functionality. Actual
-function implementations are mapped to the functions in the operations struct
-in the source file by means of function pointer assignments.</p>
+<p>Operations associated with a struct are bundled into an operations struct
+('ops' struct), and this ops struct is exposed in the header file. The real
+implementation struct ('impl' struct) with the data fields is hidden from the
+user, and lives in the source file. To ease the user from the complex syntax
+required to access the functions in a given ops struct, macros are provided
+to access them. Since the data is hidden, it is the usual practice to provide
+getter and setter methods for the data fields of the struct, in addition to
+the other processing functionality. The actual function implementations in
+the source file are mapped to the ops struct functions declared in the header
+file, by means of function pointer assignments.</p>
 
-<p>Here is a sample header file associated with the "foo" struct.</p>
+<p>Here is a sample header file associated with the "foo" struct. (Imagine a
+class called "foo" in the proper object oriented programming model.)</p>
 <strong>/* axis2_ foo.h */</strong>
 <pre class="code"> 
 typedef struct axis2_foo_ops axis2_foo_ops_t;
@@ -69,12 +70,14 @@ struct axis2_foo
 
 axis2_foo_t * axis2_foo_create(const axis2_env_t *env);
 
-/* Macros are provided to access functions defined in the ops (operations structure)*/
+/* Macros are provided to access functions defined in the ops structure */
 
-#define AXIS2_FOO_BAR(foo, data)\ 
-            ((foo)-&gt;ops-&gt;bar(data))
+#define AXIS2_FOO_BAR(foo, env, data)\ 
+            ((foo)-&gt;ops-&gt;bar(foo, env, data))
 #define AXIS2_FOO_FREE(foo, env)\
-            ((for)-&gt;ops-&gt;free(env, foo))</pre>
+            ((foo)-&gt;ops-&gt;free(foo, env))</pre>
+
+<p></p>
 
 <p>The implementation file for "foo" struct is shown below.</p>
 <pre class="code"><strong>/* foo.c */</strong>
@@ -88,31 +91,33 @@ struct axis2_foo_impl
     my_type my_data; /*private data*/
 };
 
+
 /* Function Headers */
 
-void AXIS2_CALL axis2_foo_bar(void *data);
-axis2_status_t AXIS2_CALL axis2_foo_free(const axis2_env_t *env, axis2_foo_t *foo);
+void AXIS2_CALL axis2_foo_bar(axis2_foo_t *foo, const axis2_env_t *env, void *data);
+axis2_status_t AXIS2_CALL axis2_foo_free(axis2_foo_t *foo, const axis2_env_t *env);
 
-/* Function Implementation */
+/* Function Implementations */
 axis2_foo_t * AXIS2_CALL axis2_foo_create(const axis2_env_t *env)
 {
     axis2_foo_impl_t * foo_impl = NULL;
-    /* create axis2_foo_t and initialize private data */
+    /* create axis2_foo_impl_t structure and initialize private data */
 
     /* create ops structure of foo */
 
     /* bind ops to functions */
     foo_impl-&gt;foo.ops-&gt;bar = axis2_foo_bar;
     foo_impl-&gt;foo.ops-&gt;free = axis2_foo_free;
+
     return &amp;(foo_impl-&gt;foo);
 }
 
-void AXIS2_CALL axis2_foo_bar(void *data)
+void AXIS2_CALL axis2_foo_bar(axis2_foo_t *foo, const axis2_env_t *env, void *data)
 {
     /* do something */
 }
 
-axis2_status_t AXIS2_CALL axis2_foo_free(const axis2_env_t *env, axis2_foo_t *foo)
+axis2_status_t AXIS2_CALL axis2_foo_free(axis2_foo_t *foo, const axis2_env_t *env)
 {
     /* do the dirty work of cleaning the allocated memory */
 }</pre>
@@ -120,22 +125,24 @@ axis2_status_t AXIS2_CALL axis2_foo_free(const axis2_env_t *env, axis2_foo_t *fo
 
 <p>If you had a closer look into the given sample above, you will see that
 almost all functions take a double pointer to the axis2_env struct. To learn
-more on environment used in Axis2/C, please have a look into the <a
+more about the Axis2/C environment, please have a look at the <a
 href="architecture_notes.html">architecture notes</a>.</p>
 
 <h2>Memory Management</h2>
 
-<p>When writing services, as well as client programs, you have to ensure that
-you do proper memory management. You need to be aware of the parts of the
-memory you have allocated to deallocate in order to avoid memory leaks (and
-to avoid those nasty segmentation faults ;-) ).</p>
+<p>When writing services as well as client programs, you have to ensure that
+you do proper memory management. You need to be careful to deallocate the
+memory you have allocated in order to avoid memory leaks (and to avoid those
+nasty segmentation faults ;-) ). Remebering where you allocate memory is a
+good practice, which will help you to properly free such allocated memory.</p>
 
 <h3>Memory Management Guidelines for Developing Services</h3>
 
-<p>To understand, how the allocated memory is reclaimed, it is worth looking
+<p>To understand how the allocated memory is reclaimed, it is worth looking
 at the service skeleton interface which is defined in
 <strong>axis2_svc_skeleton.h</strong></p>
-<pre class="code">AXIS2_DECLARE_DATA struct axis2_svc_skeleton_ops
+<pre class="code">
+AXIS2_DECLARE_DATA struct axis2_svc_skeleton_ops
 {
     int (AXIS2_CALL * free)(axis2_svc_skeleton_t *svc_skeli, const axis2_env_t *env);
     ...
@@ -147,20 +154,28 @@ AXIS2_DECLARE_DATA struct axis2_svc_skeleton
     axis2_array_list_t *func_array;
 };</pre>
 
-<p>The service skeleton implementation should implement the free function and
-attach that to the operations struct of axis2_svc_skeleton_t struct. This
-free function is called each time after web services request is served.</p>
+<p></p>
+
+<p>The service skeleton implementation should implement the <code>free</code>
+function and attach that to the ops struct of
+<code>axis2_svc_skeleton_t</code> struct. This <code>free</code> function is
+called each time after a web services request is served.</p>
 
 <p>Let's try to understand this through an example.</p>
 
+<p></p>
+
 <p>Example: <b>Service skeleton implementation for math service.</b></p>
 
-<p>The following code shows the implementation of math_free function which is
-to be attached to the ops of axis2_svc_skeleton_t struct. Usually the memory
-allocated for operations struct, function array and service skeleton struct
-are cleaned in this. You may clean additional memory here if you have
-allocated any specific memory blocks in math_create function or elsewhere
-depending on your implementation specifics.</p>
+<p>The following code shows the implementation of <code>math_free</code>
+function which is to be attached to the ops of
+<code>axis2_svc_skeleton_t</code> struct. Usually the memory allocated for
+the operations struct, the function array and the service skeleton struct are
+cleaned inside this. You may clean additional memory here if you have
+allocated any specific memory blocks in <code>math_create</code> function or
+elsewhere, depending on your implementation specifics.</p>
+
+<p></p>
 <pre class="code">int AXIS2_CALL math_free(axis2_svc_skeleton_t *svc_skeleton, const axis2_env_t *env)
 {
     if(svc_skeleton-&gt;ops)
@@ -181,10 +196,14 @@ depending on your implementation specifics.</p>
     return AXIS2_SUCCESS;
 }</pre>
 
-<p>In the axis2_math_create function you assign the function pointer of
-math_free function to the free function of the operations struct. As you can
-see, now the SOAP engine has a function reference to perform garbage
-collection after each service request.</p>
+<p></p>
+
+<p>In the <code>axis2_math_create</code> function, you assign the function
+pointer of <code>math_free</code> function to the <code>free</code> function
+of the operations struct. As you can see, now the SOAP engine has a function
+reference to perform garbage collection after each service request.</p>
+
+<p></p>
 <pre class="code">AXIS2_EXTERN axis2_svc_skeleton_t * AXIS2_CALL axis2_math_create(const axis2_env_t *env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;
@@ -192,22 +211,27 @@ collection after each service request.</p>
 
     svc_skeleton-&gt;ops = AXIS2_MALLOC(env-&gt;allocator, sizeof(axis2_svc_skeleton_ops_t));
 
-
     svc_skeleton-&gt;ops-&gt;free = math_free;
     ...
     return svc_skeleton;
-}</pre>
+}
+</pre>
 
-<p>SOAP engine frees the memory allocated for the axiom_node_t struct that
-is used to from the response SOAP message. However, it is the responsibility
-of the service developer to clean any additional memory allocated.</p>
+<p>SOAP engine frees the memory allocated for the <code>axiom_node_t</code>
+struct that is used to form the response SOAP message. However, it is the
+responsibility of the service developer to clean any additional memory
+allocated.</p>
+
+<p></p>
 
 <h3>Memory management guidelines for developing clients</h3>
 Most of the memory allocated in the client side (including SOAP request and
 reply messges), should be cleaned in the client side itself. Memory allocated
 for properties are taken care of by the SOAP engine. SOAP engine reclaims the
 memory allocated for properties based on the scope (Request, Session or
-Application) that you set for each property. <a id="Coding_Conventions"></a>
+Application) that you set for each property.
+
+<p> <a id="Coding_Conventions"></a></p>
 
 <h2>Coding Conventions</h2>
 
@@ -215,9 +239,7 @@ Application) that you set for each property. <a id="Coding_Conventions"></a>
 href="../coding_conventions.html">this</a> document.</p>
 <a id="Unit_and_System_Tests"></a>
 
-<h2>Unit and System Tests</h2>
-
-<h3>Unit Tests</h3>
+<h2>Unit Tests</h2>
 
 <p><a href="http://cutest.sourceforge.net/">CuTest</a> library is used to
 write unit tests in Axis2/C.</p>
@@ -227,23 +249,28 @@ write unit tests in Axis2/C.</p>
 
 <p>2. Add the module's test suite to the main unit test suite.</p>
 
+<p></p>
+
 <h4>Step1: Adding a unit test to a module's unit test suite</h4>
 
 <p>This section illustrates how to add a unit test case to the util module.
-Let's take for example the unit tests for axis2 stream. There are two files
+Let's take, for example, the unit tests for axis2 stream. There are two files
 named util_stream_test.c/.h placed into modules/util/test folder. Here's a
-sample code written to test the operation axis2_stream_ops_read.</p>
-<pre class="code">#include "util_stream_test.h"
+sample code written to test the operation
+<code>axis2_stream_ops_read</code>.</p>
+<pre class="code">
+#include "util_stream_test.h"
 
 void Testaxis2_stream_ops_read(CuTest *tc)
 {
     char actual[10];
     axis2_allocator_t *allocator = axis2_allocator_init(NULL);
-    axis2_env_t *env = axis2_environment_create(allocator,NULL, NULL, NULL, NULL);
+    axis2_env_t *env = axis2_environment_create(allocator, NULL, NULL, NULL, NULL);
     axis2_stream_read(env-&gt;stream, actual, 10);
     char *expected = strdup("aaaaaaaaa");
     CuAssertStrEquals(tc, expected, actual);
-}</pre>
+}
+</pre>
 
 <p>The prototype of the function should be added to the header file. The test
 suite is defined in util_test.c. You need to add the above defined test case
@@ -256,15 +283,17 @@ CuSuite* axis2_utilGetSuite()
 {
     CuSuite* suite = CuSuiteNew();
 
-    SUITE_ADD_TEST(suite, Testaxis2_stream_ops_write);
+    SUITE_ADD_TEST(suite, Testaxis2_stream_ops_read);
     SUITE_ADD_TEST(suite, Testaxis2_log_ops_write);
     SUITE_ADD_TEST(suite, Testaxis2_hash_ops_get);
+
     return suite;
-}</pre>
+}
+</pre>
 
 <h4>Step2: Adding the Module test suite to the Main Unit Test Suite</h4>
 
-<p>Now you need to add the Util module test suite to the main test suite.</p>
+<p>Now you need to add the util module test suite to the main test suite.</p>
 <pre class="code">#include &lt;CuTest.h&gt;
 #include "../../util/test/util_test.h"
 #include "../../common/test/common_test.h"
@@ -286,44 +315,10 @@ int main(void)
 {   
     RunAllTests();
     return 0;
-}</pre>
+}
+</pre>
 
 <p>You can either run only the unit tests written for the util module or run
 all the tests.</p>
-
-<h3>System Tests</h3>
-
-<p>For each module, system tests should be provided in
-modules/test/&lt;module folder&gt;. For each system test you need to add a
-new function and call it from the main method.</p>
-
-<p>Example:</p>
-
-<p>To test the AXIOM module, you need to create a file named test_om.c under the
-directory modules/test/xml/om. A sample test_om.c might look like as
-follows.</p>
-<pre class="code">#include &lt;axiom_stax_builder.h&gt;
-#include &lt;axiom_document.h&gt;
-#include &lt;axiom_node.h&gt;
-#include &lt;axiom_element.h&gt;
-#include &lt;axiom_text.h&gt;
-#include &lt;axis2_xml_reader.h&gt;
-
-int test_om_build()
-{
-    axis2_xml_reader_t *reader = NULL;  
-    axiom_node_t *node1 = NULL ,*node2 = NULL ,*node3 = NULL;
-    axiom_element_t *ele1=NULL,*ele2=NULL,*ele3 = NULL;
-    axis2_stax_om_builder_t *builder = NULL;
-    axiom_document_t *document = NULL;
-    
-    ...
-}
-
-int main(void)
-{
-    test_om_build();
-    test_om_serialize();
-}</pre>
 </body>
 </html>
