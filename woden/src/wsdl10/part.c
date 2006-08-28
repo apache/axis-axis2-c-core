@@ -145,7 +145,7 @@ woden_wsdl10_part_to_part_element(
 {
     woden_wsdl10_part_impl_t *part_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!part)
     {
         part_impl = (woden_wsdl10_part_impl_t *) create(env);
@@ -170,7 +170,7 @@ woden_wsdl10_part_to_nested_configurable(
 {
     woden_wsdl10_part_impl_t *part_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!part)
     {
         part_impl = (woden_wsdl10_part_impl_t *) create(env);
@@ -197,7 +197,7 @@ woden_wsdl10_part_to_configurable(
     woden_wsdl10_part_impl_t *part_impl = NULL;
     void *configurable = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!part)
     {
         part_impl = (woden_wsdl10_part_impl_t *) create(env);
@@ -224,7 +224,7 @@ woden_wsdl10_part_to_nested_element(
 {
     woden_wsdl10_part_impl_t *part_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!part)
     {
         part_impl = (woden_wsdl10_part_impl_t *) create(env);
@@ -250,7 +250,7 @@ woden_wsdl10_part_to_configurable_element(
 {
     woden_wsdl10_part_impl_t *part_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!part)
     {
         part_impl = (woden_wsdl10_part_impl_t *) create(env);
@@ -275,7 +275,7 @@ woden_wsdl10_part_to_documentable_element(
 {
     woden_wsdl10_part_impl_t *part_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!part)
     {
         part_impl = (woden_wsdl10_part_impl_t *) create(env);
@@ -301,7 +301,7 @@ woden_wsdl10_part_to_documentable(
 {
     woden_wsdl10_part_impl_t *part_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!part)
     {
         part_impl = (woden_wsdl10_part_impl_t *) create(env);
@@ -327,7 +327,7 @@ woden_wsdl10_part_to_attr_extensible(
 {
     woden_wsdl10_part_impl_t *part_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!part)
     {
         part_impl = (woden_wsdl10_part_impl_t *) create(env);
@@ -355,7 +355,7 @@ woden_wsdl10_part_to_element_extensible(
 {
     woden_wsdl10_part_impl_t *part_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!part)
     {
         part_impl = (woden_wsdl10_part_impl_t *) create(env);
@@ -382,7 +382,7 @@ create(const axis2_env_t *env)
 {
     woden_wsdl10_part_impl_t *part_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     part_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_wsdl10_part_impl_t));
 
@@ -481,7 +481,7 @@ woden_wsdl10_part_create(const axis2_env_t *env)
     woden_wsdl10_part_impl_t *part_impl = NULL;
     void *configurable = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     part_impl = (woden_wsdl10_part_impl_t *) create(env);
 
     part_impl->nested_configurable = woden_nested_configurable_create(env);
@@ -674,7 +674,7 @@ woden_wsdl10_part_super_objs(
 {
     woden_wsdl10_part_impl_t *part_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     part_impl = INTF_TO_IMPL(part);
 
     return part_impl->super;
@@ -771,7 +771,7 @@ woden_wsdl10_part_get_qname(
     woden_wsdl10_part_impl_t *part_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_PART_SUPER_OBJS(part, env);
     part_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL10_PART", AXIS2_HASH_KEY_STRING));
@@ -803,7 +803,7 @@ woden_wsdl10_part_to_element(
     woden_wsdl10_part_impl_t *part_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_PART_SUPER_OBJS(part, env);
     part_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL10_PART", AXIS2_HASH_KEY_STRING));
@@ -872,7 +872,7 @@ woden_wsdl10_part_get_element_qname(
     woden_wsdl10_part_impl_t *part_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_PART_SUPER_OBJS(part, env);
     part_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL10_PART", AXIS2_HASH_KEY_STRING));
@@ -889,7 +889,7 @@ woden_wsdl10_part_get_element(
     axis2_hash_t *super = NULL;
     xml_schema_element_t *xse = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_PART_SUPER_OBJS(part, env);
     part_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL10_PART", AXIS2_HASH_KEY_STRING));

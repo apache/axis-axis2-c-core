@@ -116,7 +116,7 @@ woden_wsdl10_msg_ref_to_msg_ref_element(
 {
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!msg_ref)
     {
         msg_ref_impl = (woden_wsdl10_msg_ref_impl_t *) create(env);
@@ -141,7 +141,7 @@ woden_wsdl10_msg_ref_to_nested_configurable(
 {
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!msg_ref)
     {
         msg_ref_impl = (woden_wsdl10_msg_ref_impl_t *) create(env);
@@ -167,7 +167,7 @@ woden_wsdl10_msg_ref_to_nested_component(
 {
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!msg_ref)
     {
         msg_ref_impl = (woden_wsdl10_msg_ref_impl_t *) create(env);
@@ -193,7 +193,7 @@ woden_wsdl10_msg_ref_to_configurable(
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
     void *configurable = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!msg_ref)
     {
         msg_ref_impl = (woden_wsdl10_msg_ref_impl_t *) create(env);
@@ -220,7 +220,7 @@ woden_wsdl10_msg_ref_to_nested_element(
 {
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!msg_ref)
     {
         msg_ref_impl = (woden_wsdl10_msg_ref_impl_t *) create(env);
@@ -246,7 +246,7 @@ woden_wsdl10_msg_ref_to_configurable_element(
 {
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!msg_ref)
     {
         msg_ref_impl = (woden_wsdl10_msg_ref_impl_t *) create(env);
@@ -271,7 +271,7 @@ woden_wsdl10_msg_ref_to_documentable_element(
 {
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!msg_ref)
     {
         msg_ref_impl = (woden_wsdl10_msg_ref_impl_t *) create(env);
@@ -297,7 +297,7 @@ woden_wsdl10_msg_ref_to_documentable(
 {
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!msg_ref)
     {
         msg_ref_impl = (woden_wsdl10_msg_ref_impl_t *) create(env);
@@ -323,7 +323,7 @@ woden_wsdl10_msg_ref_to_attr_extensible(
 {
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!msg_ref)
     {
         msg_ref_impl = (woden_wsdl10_msg_ref_impl_t *) create(env);
@@ -351,7 +351,7 @@ woden_wsdl10_msg_ref_to_element_extensible(
 {
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     if(!msg_ref)
     {
         msg_ref_impl = (woden_wsdl10_msg_ref_impl_t *) create(env);
@@ -378,7 +378,7 @@ create(const axis2_env_t *env)
 {
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     msg_ref_impl = AXIS2_MALLOC(env->allocator, 
                     sizeof(woden_wsdl10_msg_ref_impl_t));
 
@@ -458,7 +458,7 @@ woden_wsdl10_msg_ref_create(const axis2_env_t *env)
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
     void *configurable = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     msg_ref_impl = (woden_wsdl10_msg_ref_impl_t *) create(env);
 
     msg_ref_impl->nested_configurable = woden_nested_configurable_create(env);
@@ -651,7 +651,7 @@ woden_wsdl10_msg_ref_super_objs(
 {
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     msg_ref_impl = INTF_TO_IMPL(msg_ref);
 
     return msg_ref_impl->super;
@@ -730,7 +730,7 @@ woden_wsdl10_msg_ref_get_qname(
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_MSG_REF_SUPER_OBJS(msg_ref, env);
     msg_ref_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL10_MSG_REF", AXIS2_HASH_KEY_STRING));
@@ -746,7 +746,7 @@ woden_wsdl10_msg_ref_to_element(
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_MSG_REF_SUPER_OBJS(msg_ref, env);
     msg_ref_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL10_MSG_REF", AXIS2_HASH_KEY_STRING));
@@ -816,7 +816,7 @@ woden_wsdl10_msg_ref_get_part(
     woden_wsdl10_msg_ref_impl_t *msg_ref_impl = NULL;
     axis2_hash_t *super = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_MSG_REF_SUPER_OBJS(msg_ref, env);
     msg_ref_impl = INTF_TO_IMPL(axis2_hash_get(super, 
                 "WODEN_WSDL10_MSG_REF", AXIS2_HASH_KEY_STRING));

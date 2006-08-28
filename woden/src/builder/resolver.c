@@ -177,15 +177,15 @@ woden_resolver_read(
 {
     woden_resolver_impl_t *resolver_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, om_doc, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, om_doc, NULL);
     resolver_impl = INTF_TO_IMPL(resolver);
         
     /* TODO add WSDL locator for resolving URIs */
     resolver_impl->om_doc = om_doc;
     resolver_impl->root_node = AXIOM_DOCUMENT_GET_ROOT_ELEMENT(om_doc, env);            
     if(!resolver_impl->root_node)
-        return AXIS2_FAILURE;
+        return NULL;
     return yomu(resolver, env, resolver_impl->root_node, doc_base_uri);
 }
 
@@ -214,8 +214,8 @@ yomu(
     axis2_bool_t check = AXIS2_FALSE;
     void *desc = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, desc_el_node, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_PARAM_CHECK(env->error, desc_el_node, NULL);
     resolver_impl = INTF_TO_IMPL(resolver);
 
     qname = axis2_qname_create_from_string(env, WODEN_Q_ELEM_DESCRIPTION);
