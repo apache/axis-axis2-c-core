@@ -549,6 +549,7 @@ axis2_libxml2_reader_wrapper_free(axiom_xml_reader_t *parser,
     if(AXIS2_INTF_TO_IMPL(parser)->reader)
     {
         xmlTextReaderClose(AXIS2_INTF_TO_IMPL(parser)->reader);
+        xmlFreeTextReader(AXIS2_INTF_TO_IMPL(parser)->reader);
     }
     if(parser->ops)
     {
