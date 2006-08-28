@@ -1,6 +1,6 @@
 We are happy to announce the first release of Rampart/C which is the security module for Apache Axis2/C
 
-You can get the lates version from https://svn.apache.org/repos/asf/webservices/axis2/trunk/c/rampart
+You can get the latest svn checkout from https://svn.apache.org/repos/asf/webservices/axis2/trunk/c/rampart
 
 Key features
 -------------

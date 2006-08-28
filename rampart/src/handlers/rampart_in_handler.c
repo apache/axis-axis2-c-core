@@ -25,9 +25,9 @@
 #include <axis2_msg_info_headers.h>
 #include <axis2_property.h>
 #include <rampart_constants.h>
-#include <username_token.h>
+#include <rampart_username_token.h>
 #include <rampart_handler_util.h>
-#include <timestamp_token.h>
+#include <rampart_timestamp_token.h>
 #include <rampart_util.h>
 #include <rampart_crypto_engine.h>
 
@@ -75,21 +75,23 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
     axiom_node_t *sec_node, *ts_node = NULL;
     axiom_element_t *sec_ele, *ts_ele = NULL;
     axis2_status_t enc_status = AXIS2_FAILURE;
+    rampart_actions_t *actions = NULL;
  
     AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-    
+     
     rampart_print_info(env," Starting rampart in handler ");    
-    
+    /*Get SOAP envelope*/ 
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
     
     if (soap_envelope)
     {
+        /*Get SOAP header*/
         soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
         if (soap_header)
         { 
             axis2_char_t* item = NULL;
-            rampart_print_info(env,"soap header found");
+            AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "SOAP header found");
             /*Check InFlowSecurity parameters*/
 
             ctx = AXIS2_MSG_CTX_GET_BASE (msg_ctx, env);
@@ -129,8 +131,14 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 rampart_print_info(env,"Cannot find first action element");
                 return AXIS2_FAILURE;
             }
-      
-            items= rampart_get_action_params(env, param_action,RAMPART_ACTION_ITEMS);
+            /*Create and populate rampart actions*/
+            actions = rampart_actions_create(env);
+            status = RAMPART_ACTIONS_POPULATE_FROM_PARAMS(actions, env, param_action);
+            /*Then re-populate using the axis2_ctx*/
+            status = RAMPART_ACTIONS_POPULATE_FROM_CTX(actions, env, ctx);
+
+            /*items = RAMPART_ACTIONS_GET_ITEMS(actions, env);*/
+            items = AXIS2_STRDUP(RAMPART_ACTIONS_GET_ITEMS(actions, env), env);
     
             if(!items)
             {
@@ -158,13 +166,16 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 sec_ele = AXIOM_NODE_GET_DATA_ELEMENT(sec_node, env);
 
                 if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL)) )
-                {
+                {       rampart_username_token_t *username_token = NULL;
                         axis2_status_t valid_user = AXIS2_FAILURE;
+                        
+                        username_token = rampart_username_token_create(env);
                         rampart_print_info(env,"Validate usernametoken ");
-                        valid_user = rampart_validate_username_token(env, msg_ctx,soap_header, param_action);
+                        valid_user = RAMPART_USERNAME_TOKEN_VALIDATE(username_token, env, 
+                                                        msg_ctx,soap_header, actions);
                         if(valid_user)
                         {
-                            rampart_print_info(env,"I know this user ");
+                            rampart_print_info(env,"User validation success ");
                             status = AXIS2_SUCCESS;
                         }else{
                             axis2_array_list_t *sub_codes = NULL;
@@ -184,7 +195,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                         rampart_crypto_engine_t *engine = NULL;
                         printf("InHandler : Decrypt..............................\n"); 
                         engine = rampart_crypto_engine_create(env);
-                        enc_status = RAMPART_CRYPTO_ENGINE_DECRYPT_MESSAGE(engine, env, msg_ctx, param_action, soap_envelope, sec_node);
+                        enc_status = RAMPART_CRYPTO_ENGINE_DECRYPT_MESSAGE(engine, env, msg_ctx, actions, soap_envelope, sec_node);
 
                         RAMPART_CRYPTO_ENGINE_FREE(engine, env);   
                         if(enc_status != AXIS2_SUCCESS){
@@ -203,6 +214,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 }else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, AXIS2_STRTRIM(env, item, NULL))){
                          axis2_qname_t *qname = NULL;
                          axis2_status_t valid_ts = AXIS2_FAILURE;
+                         rampart_timestamp_token_t *timestamp_token = NULL;
                          rampart_print_info(env,"Validate timestamp ");
                     
                         
@@ -219,13 +231,17 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                                  return AXIS2_FAILURE;
                              }
                          }
-                         valid_ts = rampart_validate_timestamp(env, ts_node);               
+                         timestamp_token = rampart_timestamp_token_create(env);
+                         valid_ts = RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, ts_node);               
+                         /*TODO free*/
                          if(valid_ts)
                         {
+                            AXIS2_LOG_INFO(env->log,"Timestamp is valid ");
                             rampart_print_info(env,"Timestamp is valid ");
                             status = AXIS2_SUCCESS;
                         }else{
                             /*TODO return a fault*/
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart] Timestamp is not valid");
                             rampart_print_info(env,"Timestamp is not valid");
                             axis2_array_list_t *sub_codes = NULL;
                             sub_codes = axis2_array_list_create(env, 1);
@@ -239,7 +255,6 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
 
                         }   
                 }else{
-                    rampart_print_info(env," Rampart validates UsernameTokensOnly");
                     return AXIS2_SUCCESS;
                 }
                 

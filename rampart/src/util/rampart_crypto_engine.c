@@ -57,7 +57,7 @@ rampart_crypto_engine_encrypt_message(
                       rampart_crypto_engine_t *engine,
                       const axis2_env_t *env,
                       axis2_msg_ctx_t *msg_ctx,
-                      axis2_param_t *param_action,
+                      rampart_actions_t *actions,
                       axiom_soap_envelope_t *soap_envelope ,
                       axiom_node_t *sec_node);
 
@@ -66,7 +66,7 @@ rampart_crypto_engine_decrypt_message(
                       rampart_crypto_engine_t *engine,
                       const axis2_env_t *env,
                       axis2_msg_ctx_t *msg_ctx,
-                      axis2_param_t *param_action,
+                      rampart_actions_t *actions,
                       axiom_soap_envelope_t *soap_envelope ,
                       axiom_node_t *sec_node);
 
@@ -145,7 +145,7 @@ rampart_crypto_engine_encrypt_message(
                       rampart_crypto_engine_t *engine,
                       const axis2_env_t *env,
                       axis2_msg_ctx_t *msg_ctx,
-                      axis2_param_t *param_action,
+                      rampart_actions_t *actions,
                       axiom_soap_envelope_t *soap_envelope ,
                       axiom_node_t *sec_node)
 {
@@ -161,8 +161,7 @@ rampart_crypto_engine_encrypt_message(
     axiom_soap_body_t *body = NULL;
     axiom_soap_header_t *header = NULL;
     axis2_char_t *str_to_enc = NULL;
-    enc_ctx_ptr enc_ctx = NULL;
-    rampart_actions_t *actions= NULL;
+    oxs_ctx_t * enc_ctx = NULL;
     oxs_key_t *sessionkey = NULL;
     oxs_buffer_ptr session_key_buf_plain = NULL, session_key_buf_encrypted = NULL;    
     axis2_char_t* uuid = NULL;
@@ -174,14 +173,6 @@ rampart_crypto_engine_encrypt_message(
     engine_impl = AXIS2_INTF_TO_IMPL(engine);
 
 
-    /*Populate actions*/ 
-    actions = rampart_actions_create(env);
-    ret = RAMPART_ACTIONS_POPULATE( actions,env,  param_action);   
-    if(ret == AXIS2_FAILURE){
-        oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
-            "Reading rampart actions failed");
-        return AXIS2_FAILURE;
-    }
 
     /*Generate the session key*/
     sessionkey = oxs_key_create_key(env);
@@ -230,10 +221,10 @@ rampart_crypto_engine_encrypt_message(
     cv_node = oxs_token_build_cipher_value_element(env,  cd_node, NULL); /*We pass NULL here OMXMLSEC will populate this*/
 
     /*Build the encryption ctx*/
-    enc_ctx = oxs_ctx_create_ctx(env); 
+    enc_ctx = oxs_ctx_create(env); 
     
     /*Set the key*/
-    enc_ctx->key = sessionkey; 
+    OXS_CTX_SET_KEY(enc_ctx, env, sessionkey);
 
     /*Hand the template over to OMXMLSEC*/
     enc_engine = oxs_enc_engine_create(env);
@@ -287,7 +278,7 @@ rampart_crypto_engine_decrypt_message(
                       rampart_crypto_engine_t *engine,
                       const axis2_env_t *env,
                       axis2_msg_ctx_t *msg_ctx,
-                      axis2_param_t *param_action,
+                      rampart_actions_t *actions,
                       axiom_soap_envelope_t *soap_envelope ,
                       axiom_node_t *sec_node)
 {
@@ -298,7 +289,7 @@ rampart_crypto_engine_decrypt_message(
     axiom_soap_body_t *body = NULL;
     axiom_soap_header_t *header = NULL;
     axis2_char_t *decrypted_data = NULL;
-    enc_ctx_ptr enc_ctx = NULL;
+    oxs_ctx_t * enc_ctx = NULL;
     axiom_node_t *enc_key_node = NULL; 
     oxs_key_t *session_key = NULL;
     axis2_array_list_t *uuid_list = NULL;
@@ -349,10 +340,10 @@ rampart_crypto_engine_decrypt_message(
     /*TODO We assume that the very first element of bpody is encrypted data.
     This might be different if a sub element is encrypted*/
     /*Build the encryption ctx*/
-    enc_ctx = oxs_ctx_create_ctx(env);
+    enc_ctx = oxs_ctx_create(env);
 
     /*Set the key*/
-    enc_ctx->key = session_key ; /*oxs_key_create_key(env, "noname", "012345670123456701234567", 24, OXS_KEY_USAGE_DECRYPT);*/
+    OXS_CTX_SET_KEY(enc_ctx, env, session_key);
 
     ret = OXS_ENC_ENGINE_DECRYPT_TEMPLATE(enc_engine, env, enc_data_node, &decrypted_data, enc_ctx);
     if(ret == AXIS2_FAILURE){

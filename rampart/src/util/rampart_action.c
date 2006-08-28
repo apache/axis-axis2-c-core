@@ -31,9 +31,9 @@ typedef struct rampart_actions_impl{
         axis2_char_t *encryption_user  ;
         axis2_char_t *encryption_sym_algorithm  ;
         axis2_char_t *encryption_key_transport_algorithm  ;
-
         axis2_char_t *items  ;
         axis2_char_t *user  ;
+        axis2_char_t *password_type  ;
         axis2_char_t *password_callback_class  ;
         axis2_char_t *encryption_prop_file;
         axis2_char_t *signature_prop_file ;
@@ -41,6 +41,7 @@ typedef struct rampart_actions_impl{
         axis2_char_t *encryption_key_identifier  ;
         axis2_char_t *signature_parts  ;
         axis2_char_t *encryption_parts  ;
+        axis2_char_t *time_to_live  ;
     
 }
 rampart_actions_impl_t;
@@ -75,6 +76,12 @@ rampart_actions_get_encryption_key_transport_algorithm (
 
 axis2_char_t *AXIS2_CALL 
 rampart_actions_get_items (
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+
+axis2_char_t *AXIS2_CALL
+rampart_actions_get_password_type (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
@@ -127,6 +134,12 @@ rampart_actions_get_encryption_parts (
                     const axis2_env_t *env
                     );
 
+axis2_char_t *AXIS2_CALL 
+rampart_actions_get_time_to_live (
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+
 axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_user(
                     rampart_actions_t *actions,
@@ -154,6 +167,13 @@ rampart_actions_set_items(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *items
+                    );
+
+axis2_status_t AXIS2_CALL
+rampart_actions_set_password_type(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *password_type
                     );
 
 axis2_status_t AXIS2_CALL
@@ -213,6 +233,13 @@ rampart_actions_set_encryption_parts(
                     );
 
 axis2_status_t AXIS2_CALL
+rampart_actions_set_time_to_live(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *time_to_live
+                    );
+
+axis2_status_t AXIS2_CALL
 rampart_actions_reset(
                     rampart_actions_t *actions, 
                     const axis2_env_t *env
@@ -225,12 +252,17 @@ rampart_actions_free(
                     );
 
 axis2_status_t AXIS2_CALL
-rampartactions_populate(
+rampart_actions_populate_from_params(
                     rampart_actions_t *actions,
                     const axis2_env_t *env, 
                     axis2_param_t *param_action  
                     );
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_actions_populate_from_ctx (
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env, 
+                    axis2_ctx_t *ctx  );
 /******************* end of function headers ******************************/
 
 
@@ -252,6 +284,7 @@ rampart_actions_create(const axis2_env_t *env)
     actions_impl->encryption_sym_algorithm = NULL ;
     actions_impl->encryption_key_transport_algorithm = NULL ;
     actions_impl->items = NULL; 
+    actions_impl->password_type = NULL; 
     actions_impl->user = NULL; 
     actions_impl->password_callback_class = NULL; 
     actions_impl->encryption_prop_file = NULL; 
@@ -260,6 +293,7 @@ rampart_actions_create(const axis2_env_t *env)
     actions_impl->encryption_key_identifier = NULL; 
     actions_impl->signature_parts = NULL; 
     actions_impl->encryption_parts = NULL; 
+    actions_impl->time_to_live = NULL; 
 
     actions_impl->actions.ops =  AXIS2_MALLOC(env->allocator,sizeof(rampart_actions_ops_t));
     if (!actions_impl->actions.ops)
@@ -325,6 +359,19 @@ rampart_actions_get_items (
     actions_impl = AXIS2_INTF_TO_IMPL(actions);
 
     return actions_impl->items ;
+}
+
+axis2_char_t *AXIS2_CALL
+rampart_actions_get_password_type (
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    )
+{
+    rampart_actions_impl_t * actions_impl= NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    actions_impl = AXIS2_INTF_TO_IMPL(actions);
+
+    return actions_impl->password_type ;
 }
 
 axis2_char_t *AXIS2_CALL
@@ -431,6 +478,19 @@ rampart_actions_get_encryption_parts(
     return actions_impl->encryption_parts ;
 }
 
+axis2_char_t *AXIS2_CALL
+rampart_actions_get_time_to_live(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    )
+{
+    rampart_actions_impl_t * actions_impl= NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    actions_impl = AXIS2_INTF_TO_IMPL(actions);
+
+    return actions_impl->time_to_live ;
+}
+
 
 axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_user(
@@ -512,6 +572,27 @@ rampart_actions_set_items(
 
     return AXIS2_SUCCESS;
 }
+
+axis2_status_t AXIS2_CALL
+rampart_actions_set_password_type(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *password_type
+                    )
+{
+    rampart_actions_impl_t * actions_impl= NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    actions_impl = AXIS2_INTF_TO_IMPL(actions);
+    if (actions_impl->password_type){
+        AXIS2_FREE(env->allocator, actions_impl->password_type);
+        actions_impl->password_type = NULL;
+    }
+    actions_impl->password_type = password_type ;
+
+    return AXIS2_SUCCESS;
+}
+
 axis2_status_t AXIS2_CALL
 rampart_actions_set_user(
                     rampart_actions_t *actions,
@@ -665,6 +746,26 @@ rampart_actions_set_encryption_parts(
     return AXIS2_SUCCESS;
 }
 
+axis2_status_t AXIS2_CALL
+rampart_actions_set_time_to_live(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *time_to_live
+                    )
+{
+    rampart_actions_impl_t * actions_impl= NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    actions_impl = AXIS2_INTF_TO_IMPL(actions);
+    if (actions_impl->time_to_live){
+        AXIS2_FREE(env->allocator, actions_impl->time_to_live);
+        actions_impl->time_to_live = NULL;
+    }
+    actions_impl->time_to_live = time_to_live ;
+
+    return AXIS2_SUCCESS;
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_actions_reset( rampart_actions_t * actions, const axis2_env_t *env)
 {
@@ -676,6 +777,7 @@ rampart_actions_reset( rampart_actions_t * actions, const axis2_env_t *env)
     actions_impl->encryption_sym_algorithm = NULL; 
     actions_impl->encryption_key_transport_algorithm = NULL;
     actions_impl->items = NULL;
+    actions_impl->password_type = NULL;
     actions_impl->user = NULL;
     actions_impl->password_callback_class = NULL;
     actions_impl->encryption_prop_file = NULL;
@@ -714,6 +816,11 @@ rampart_actions_free( rampart_actions_t * actions, const axis2_env_t *env)
     if (actions_impl->items){
         AXIS2_FREE(env->allocator, actions_impl->items);
         actions_impl->items= NULL;
+    }
+
+    if (actions_impl->password_type){
+        AXIS2_FREE(env->allocator, actions_impl->password_type);
+        actions_impl->password_type = NULL;
     }
 
     if (actions_impl->user){
@@ -755,35 +862,228 @@ rampart_actions_free( rampart_actions_t * actions, const axis2_env_t *env)
         AXIS2_FREE(env->allocator, actions_impl->encryption_parts);
         actions_impl->encryption_parts = NULL;
     }
-        
+       
+    if (actions_impl->time_to_live){
+        AXIS2_FREE(env->allocator, actions_impl->time_to_live);
+        actions_impl->time_to_live = NULL;
+    }
+ 
     AXIS2_FREE(env->allocator, actions_impl);
     actions_impl = NULL;
 
     return AXIS2_SUCCESS;
 }
 
-/*TODO populate all if found*/
+/*Populate actions by extracting values from parameters set*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rampart_actions_populate (rampart_actions_t *actions, 
+rampart_actions_populate_from_params (rampart_actions_t *actions, 
 						const axis2_env_t *env, axis2_param_t *param_action  )
 {
     axis2_status_t ret = AXIS2_FAILURE;
 
     AXIS2_PARAM_CHECK(env->error, param_action, AXIS2_FAILURE); 
-
-    ret = RAMPART_ACTIONS_SET_ENC_USER(actions, env, 
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_ENCRYPTION_USER)){
+        ret = RAMPART_ACTIONS_SET_ENC_USER(actions, env, 
             (axis2_char_t *)rampart_get_action_params(
                             env, param_action, RAMPART_ACTION_ENCRYPTION_USER));
-    
-    ret = RAMPART_ACTIONS_SET_ENC_SYM_ALGO(actions, env, 
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_ENCRYPTION_SYM_ALGORITHM)){
+        ret = RAMPART_ACTIONS_SET_ENC_SYM_ALGO(actions, env, 
             (axis2_char_t *)rampart_get_action_params(
                             env, param_action, RAMPART_ACTION_ENCRYPTION_SYM_ALGORITHM));
     
-    ret = RAMPART_ACTIONS_SET_ENC_KT_ALGO(actions, env,
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_ENCRYPTION_KEY_TRANSFORM_ALGORITHM)){
+        ret = RAMPART_ACTIONS_SET_ENC_KT_ALGO(actions, env,
             (axis2_char_t *)rampart_get_action_params(
                             env, param_action, RAMPART_ACTION_ENCRYPTION_KEY_TRANSFORM_ALGORITHM));    
 
-    return ret;
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_ITEMS)){
+        ret = RAMPART_ACTIONS_SET_ITEMS(actions, env,
+            (axis2_char_t *)rampart_get_action_params(
+                            env, param_action, RAMPART_ACTION_ITEMS));    
+
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_PASSWORD_TYPE)){
+        ret = RAMPART_ACTIONS_SET_PASSWORD_TYPE(actions, env,
+            (axis2_char_t *)rampart_get_action_params(
+                            env, param_action, RAMPART_ACTION_PASSWORD_TYPE));
+
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_USER)){
+        ret = RAMPART_ACTIONS_SET_USER(actions, env,
+            (axis2_char_t *)rampart_get_action_params(
+                            env, param_action, RAMPART_ACTION_USER));    
+
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_PW_CALLBACK_CLASS)){
+        ret = RAMPART_ACTIONS_SET_PW_CB_CLASS(actions, env,
+            (axis2_char_t *)rampart_get_action_params(
+                            env, param_action, RAMPART_ACTION_PW_CALLBACK_CLASS));    
+
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_ENCRYPTION_PROP_FILE)){
+        ret = RAMPART_ACTIONS_SET_ENC_PROP_FILE(actions, env,
+            (axis2_char_t *)rampart_get_action_params(
+                            env, param_action, RAMPART_ACTION_ENCRYPTION_PROP_FILE));    
+
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_SIGNATURE_PROP_FILE)){
+        ret = RAMPART_ACTIONS_SET_SIG_PROP_FILE(actions, env,
+            (axis2_char_t *)rampart_get_action_params(
+                            env, param_action, RAMPART_ACTION_SIGNATURE_PROP_FILE));    
+
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_SIGNATURE_KEY_IDENTIFIER)){
+        ret = RAMPART_ACTIONS_SET_SIG_KEY_IDENTIFIER(actions, env,
+            (axis2_char_t *)rampart_get_action_params(
+                            env, param_action, RAMPART_ACTION_SIGNATURE_KEY_IDENTIFIER));    
+
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_ENCRYPTION_KEY_IDENTIFIER)){
+        ret = RAMPART_ACTIONS_SET_ENC_KEY_IDENTIFIER(actions, env,
+            (axis2_char_t *)rampart_get_action_params(
+                            env, param_action, RAMPART_ACTION_ENCRYPTION_KEY_IDENTIFIER));    
+
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_SIGNATURE_PARTS)){
+        ret = RAMPART_ACTIONS_SET_SIGNATURE_PARTS(actions, env,
+            (axis2_char_t *)rampart_get_action_params(
+                            env, param_action, RAMPART_ACTION_SIGNATURE_PARTS));    
+
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_ENCRYPTION_PARTS)){
+        ret = RAMPART_ACTIONS_SET_ENCRYPTION_PARTS(actions, env,
+            (axis2_char_t *)rampart_get_action_params(
+                            env, param_action, RAMPART_ACTION_ENCRYPTION_PARTS));    
+
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_TIME_TO_LIVE)){
+        ret = RAMPART_ACTIONS_SET_TIME_TO_LIVE(actions, env,
+            (axis2_char_t *)rampart_get_action_params(
+                            env, param_action, RAMPART_ACTION_TIME_TO_LIVE));    
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+/*Populate actions by extracting values from axis2 ctx*/
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_actions_populate_from_ctx (rampart_actions_t *actions, 
+						const axis2_env_t *env, axis2_ctx_t *ctx  )
+{
+    axis2_status_t ret = AXIS2_FAILURE;
+
+    AXIS2_PARAM_CHECK(env->error, ctx, AXIS2_FAILURE); 
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_ENCRYPTION_USER)){
+        ret = RAMPART_ACTIONS_SET_ENC_USER(actions, env, 
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_ENCRYPTION_USER));
+    }
+   
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_ENCRYPTION_SYM_ALGORITHM)){ 
+        ret = RAMPART_ACTIONS_SET_ENC_SYM_ALGO(actions, env, 
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_ENCRYPTION_SYM_ALGORITHM));
+    }
+    
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_ENCRYPTION_KEY_TRANSFORM_ALGORITHM)){
+        ret = RAMPART_ACTIONS_SET_ENC_KT_ALGO(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_ENCRYPTION_KEY_TRANSFORM_ALGORITHM));    
+    }
+    
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_ITEMS)){
+        ret = RAMPART_ACTIONS_SET_ITEMS(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_ITEMS));    
+    
+    }
+    
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_PASSWORD_TYPE)){
+        ret = RAMPART_ACTIONS_SET_PASSWORD_TYPE(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_PASSWORD_TYPE));
+
+    }
+    
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_USER)){
+        ret = RAMPART_ACTIONS_SET_USER(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_USER));    
+
+    }
+    
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_PW_CALLBACK_CLASS)){
+        ret = RAMPART_ACTIONS_SET_PW_CB_CLASS(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_PW_CALLBACK_CLASS));    
+
+    }
+    
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_ENCRYPTION_PROP_FILE)){
+        ret = RAMPART_ACTIONS_SET_ENC_PROP_FILE(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_ENCRYPTION_PROP_FILE));    
+
+    }
+    
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_SIGNATURE_PROP_FILE)){
+        ret = RAMPART_ACTIONS_SET_SIG_PROP_FILE(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_SIGNATURE_PROP_FILE));    
+
+    }
+    
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_SIGNATURE_KEY_IDENTIFIER)){
+        ret = RAMPART_ACTIONS_SET_SIG_KEY_IDENTIFIER(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_SIGNATURE_KEY_IDENTIFIER));    
+
+    }
+    
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_ENCRYPTION_KEY_IDENTIFIER)){
+        ret = RAMPART_ACTIONS_SET_ENC_KEY_IDENTIFIER(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_ENCRYPTION_KEY_IDENTIFIER));    
+
+    }
+    
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_SIGNATURE_PARTS)){
+        ret = RAMPART_ACTIONS_SET_SIGNATURE_PARTS(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_SIGNATURE_PARTS));    
+
+    }
+    
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_ENCRYPTION_PARTS)){
+        ret = RAMPART_ACTIONS_SET_ENCRYPTION_PARTS(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_ENCRYPTION_PARTS));    
+
+    }
+    
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_TIME_TO_LIVE)){
+        ret = RAMPART_ACTIONS_SET_TIME_TO_LIVE(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_TIME_TO_LIVE));    
+    }
+
+    return AXIS2_SUCCESS;
 }
 
 static void
@@ -799,6 +1099,8 @@ rampart_actions_init_ops(
 
     actions->ops->get_items = rampart_actions_get_items;
     actions->ops->set_items = rampart_actions_set_items;
+    actions->ops->get_password_type = rampart_actions_get_password_type;
+    actions->ops->set_password_type = rampart_actions_set_password_type;
     actions->ops->get_user = rampart_actions_get_user;
     actions->ops->set_user = rampart_actions_set_user;
     actions->ops->get_password_callback_class = rampart_actions_get_password_callback_class;
@@ -815,8 +1117,11 @@ rampart_actions_init_ops(
     actions->ops->set_signature_parts = rampart_actions_set_signature_parts;
     actions->ops->get_encryption_parts = rampart_actions_get_encryption_parts;
     actions->ops->set_encryption_parts = rampart_actions_set_encryption_parts;
+    actions->ops->get_time_to_live = rampart_actions_get_time_to_live;
+    actions->ops->set_time_to_live = rampart_actions_set_time_to_live;
     
     actions->ops->reset = rampart_actions_reset;
     actions->ops->free = rampart_actions_free;
-    actions->ops->populate = rampart_actions_populate;
+    actions->ops->populate_from_params = rampart_actions_populate_from_params;
+    actions->ops->populate_from_ctx = rampart_actions_populate_from_ctx;
 }

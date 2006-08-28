@@ -23,10 +23,11 @@
 #include <axis2_endpoint_ref.h>
 #include <axis2_property.h>
 #include <rampart_constants.h>
-#include <username_token.h>
+#include <rampart_username_token.h>
 #include <rampart_handler_util.h>
-#include <timestamp_token.h>
+#include <rampart_timestamp_token.h>
 #include <rampart_crypto_engine.h>
+#include <rampart_action.h>
 
 /*********************** Function headers *********************************/
 
@@ -101,6 +102,8 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
     axis2_param_t *param_action = NULL;
     axis2_char_t *items = NULL;
     axis2_status_t enc_status = AXIS2_FAILURE;
+    rampart_actions_t *actions = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK (env->error, msg_ctx, AXIS2_FAILURE);
@@ -163,8 +166,16 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
             rampart_print_info(env,"Cannot find first action element");
             return AXIS2_FAILURE;
         }
-      
-        items= rampart_get_action_params(env,param_action,RAMPART_ACTION_ITEMS);
+        
+        /*Create and populate rampart actions*/
+        actions = rampart_actions_create(env);     
+        status = RAMPART_ACTIONS_POPULATE_FROM_PARAMS(actions, env, param_action);
+
+        /*Then re-populate using the axis2_ctx*/
+        status = RAMPART_ACTIONS_POPULATE_FROM_CTX(actions, env, ctx);
+    
+        /*items = RAMPART_ACTIONS_GET_ITEMS(actions, env);*/
+        items = AXIS2_STRDUP(RAMPART_ACTIONS_GET_ITEMS(actions, env), env);
 
         if(!items)
         {
@@ -199,17 +210,35 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
                 if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN , 
                         AXIS2_STRTRIM(env, item, NULL)))
                 {
-                    sec_node = rampart_build_username_token(env, 
-                        ctx, param_action,  sec_node, sec_ns_obj);
+                    rampart_username_token_t *username_token = NULL;
+                    username_token = rampart_username_token_create(env);
+    
+                    sec_node = RAMPART_USERNAME_TOKEN_BUILD(username_token,
+                                        env, 
+                                        ctx, 
+                                        actions,  
+                                        sec_node, 
+                                        sec_ns_obj);
                     if(!sec_node){
                           return AXIS2_FAILURE;
                     }
+                    /*TODO free*/
                 /*Timestamp token*/
                 }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, 
                     AXIS2_STRTRIM(env, item, NULL)))
                 {
-                    sec_node = rampart_build_timestamp_token(env, 
-                        ctx, sec_node, sec_ns_obj, 300);
+                    rampart_timestamp_token_t *timestamp_token = NULL;
+                    axis2_char_t *ttl_str = NULL;
+                    int ttl = -1;
+                    
+                    ttl_str = RAMPART_ACTIONS_GET_TIME_TO_LIVE(actions, env);
+                    ttl = atoi(RAMPART_ACTIONS_GET_TIME_TO_LIVE(actions, env));
+                    if(ttl <= 0){
+                        ttl = RAMPART_TIMESTAMP_TOKEN_DEFAULT_TIME_TO_LIVE;
+                    } 
+                    timestamp_token = rampart_timestamp_token_create(env);
+                    sec_node = RAMPART_TIMESTAMP_TOKEN_BUILD(timestamp_token, env, 
+                        ctx, sec_node, sec_ns_obj, ttl);
                     if(!sec_node){
                           return AXIS2_FAILURE;
                     }
@@ -221,7 +250,7 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
                     printf("OUtHandler : Item is Encrypt\n"); 
                     engine = rampart_crypto_engine_create(env);
                     
-                    enc_status = RAMPART_CRYPTO_ENGINE_ENCRYPT_MESSAGE(engine, env, msg_ctx, param_action, soap_envelope, sec_node);
+                    enc_status = RAMPART_CRYPTO_ENGINE_ENCRYPT_MESSAGE(engine, env, msg_ctx, actions, soap_envelope, sec_node);
                     
                     RAMPART_CRYPTO_ENGINE_FREE(engine, env);
                     
@@ -245,11 +274,14 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
                         " Rampart happy to see usernametokens and timestamps at the moment");
                 }
                 item = strtok (NULL, " ");
-           }     
+           }/*End if while*/
+           /*Reset items*/
+           items = NULL;
+                
         }else{
             rampart_print_info(env,"security header block is NULL");
         }
-
+         
     }
     return AXIS2_SUCCESS;
 }

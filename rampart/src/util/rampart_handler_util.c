@@ -24,10 +24,14 @@
 #include <axis2_endpoint_ref.h>
 #include <axis2_property.h>
 #include <rampart_constants.h>
-#include <rampart_callback.h>
 #include <axis2_dll_desc.h>
 #include <axis2_class_loader.h>
 #include <axis2_conf_ctx.h>
+
+axis2_char_t* AXIS2_CALL
+rampart_get_property_from_ctx( const axis2_env_t *env,
+    axis2_ctx_t *ctx,
+    const axis2_char_t *key);
 
 AXIS2_EXTERN axis2_param_t* AXIS2_CALL
 rampart_get_security_param( const axis2_env_t *env,
@@ -49,10 +53,6 @@ rampart_get_security_token(const axis2_env_t *env,
                                 axis2_msg_ctx_t *msg_ctx,
                                 axiom_soap_header_t *soap_header);
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-rampart_callback_pw( const axis2_env_t *env,
-                     axis2_char_t *callback_module_name,
-                     const axis2_char_t *username);
 
 AXIS2_EXTERN void AXIS2_CALL
 rampart_create_fault_envelope(const axis2_env_t *env,
@@ -62,6 +62,33 @@ rampart_create_fault_envelope(const axis2_env_t *env,
         axis2_msg_ctx_t *msg_ctx);
 
 /**********************end of header functions ****************************/
+
+axis2_char_t* AXIS2_CALL
+rampart_get_property_from_ctx( const axis2_env_t *env,
+    axis2_ctx_t *ctx,
+    const axis2_char_t *key)
+{
+   axis2_property_t* property = NULL;
+   axis2_char_t* str_property = NULL;
+
+    /*Get value from the dynamic settings*/
+
+    property = AXIS2_CTX_GET_PROPERTY (ctx, env, key, AXIS2_FALSE);
+    if(property)
+    {
+        str_property = AXIS2_PROPERTY_GET_VALUE(property,env);
+        property = NULL;
+    }
+
+    if(str_property)
+    {
+       return str_property;
+    }else{
+       /* printf(" Cannot find dynamic settings for %s ", key);*/
+    }
+
+    return str_property;
+}
 
 
 axis2_param_t* AXIS2_CALL
@@ -134,7 +161,6 @@ rampart_get_action_params( const axis2_env_t *env,
     
     param_type = AXIS2_PARAM_GET_PARAM_TYPE(param_action, env);
     param_name = AXIS2_PARAM_GET_NAME(param_action, env);
-    printf(" parameter Type =%d Name = %s", param_type, param_name);
     
     param_list = AXIS2_PARAM_GET_VALUE_LIST(param_action, env);
     if(!param_list)
@@ -209,41 +235,6 @@ rampart_get_security_token(const axis2_env_t *env,
 
 }
 
-axis2_char_t* AXIS2_CALL
-rampart_callback_pw( const axis2_env_t *env,
-                     axis2_char_t *callback_module_name,
-                     const axis2_char_t *username)
-{
-    rampart_callback_t* rcb = NULL;
-    axis2_char_t *password = NULL;
-    axis2_dll_desc_t *dll_desc = NULL;
-    void *ptr = NULL;
-    axis2_param_t *impl_info_param = NULL;
-
-    dll_desc = axis2_dll_desc_create(env);
-    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, callback_module_name);
-    impl_info_param = axis2_param_create(env, NULL, NULL);
-    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
-    axis2_class_loader_init(env);
-    ptr = axis2_class_loader_create_dll(env, impl_info_param);
-
-    /*callback()*/
-    if(!ptr)
-    {
-        printf("\nCallback ptr is null");
-        return NULL;
-    }
-        
-    rcb = (rampart_callback_t*)ptr;
-    if(!rcb)
-    {
-        printf("\nrampart_callback_t is null");
-        return NULL;
-    }
-    password = rcb->ops->get_password(rcb, env, username);
-
-    return password;
-}
 
 
 AXIS2_EXTERN void AXIS2_CALL

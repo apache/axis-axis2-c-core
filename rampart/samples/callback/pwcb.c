@@ -42,7 +42,7 @@ axis2_get_instance(rampart_callback_t **inst,
 
     /*assign function pointers*/
    
-    rcb->ops->get_password = get_sample_password;
+    rcb->ops->callback_password = get_sample_password;
 
     *inst = rcb;
 

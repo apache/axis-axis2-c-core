@@ -19,6 +19,9 @@
 #include <axis2_util.h>
 #include <axiom_soap.h>
 #include <axis2_client.h>
+#include <rampart_constants.h>
+
+#define DYN_SETTINGS 1
 
 axiom_node_t *
 build_om_payload_for_echo_svc(const axis2_env_t *env);
@@ -34,7 +37,14 @@ int main(int argc, char** argv)
     axis2_svc_client_t* svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
-
+#ifdef DYN_SETTINGS
+    axis2_property_t *un_property = NULL;
+    axis2_property_t *pw_property = NULL;
+    axis2_property_t *pw_type_property = NULL;
+    axis2_property_t *items_property = NULL;
+    axis2_property_t *pw_cb_property = NULL;
+    axis2_property_t *time_to_live_property = NULL;
+#endif
     /* Set up the environment */
     env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
 
@@ -72,16 +82,33 @@ int main(int argc, char** argv)
     * following code section.
     */
 
-    /*
+#ifdef DYN_SETTINGS    
    un_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(un_property, env, "Raigama");
-   AXIS2_OPTIONS_SET_PROPERTY(options, env, "user", un_property);
+   AXIS2_PROPERTY_SET_VALUE(un_property, env, "Raigama");
+   AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_USER, un_property);
 
    pw_property = axis2_property_create(env);
    AXIS2_PROPERTY_SET_VALUE(pw_property, env, "RaigamaPW");
-   AXIS2_OPTIONS_SET_PROPERTY(options, env, "password", pw_property);
-    
-    */
+   AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_PASSWORD,  pw_property);
+
+   pw_type_property = axis2_property_create(env);
+   AXIS2_PROPERTY_SET_VALUE(pw_type_property, env, RAMPART_PASSWORD_DIGEST);
+   AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_PASSWORD_TYPE, pw_type_property);
+
+   /*Make sure these action itmes are validated by the server side. Otherwise error*/
+   items_property = axis2_property_create(env);
+   AXIS2_PROPERTY_SET_VALUE(items_property, env, "UsernameToken Timestamp" );
+   AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_ITEMS, items_property);
+
+   /*Make sure this is the correct path for the callback module*/
+   pw_cb_property = axis2_property_create(env);
+   AXIS2_PROPERTY_SET_VALUE(pw_cb_property, env, "/home/kau/axis2/c/deploy/rampart/samples/callback/libpwcb.so");
+   AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_PW_CALLBACK_CLASS , pw_cb_property);
+
+   time_to_live_property = axis2_property_create(env);
+   AXIS2_PROPERTY_SET_VALUE(time_to_live_property, env, "420");
+   AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_TIME_TO_LIVE, time_to_live_property);
+#endif    
                
     if(!client_home)
     {

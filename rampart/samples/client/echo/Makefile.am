@@ -21,6 +21,7 @@ echo_LDADD   = $(LDFLAGS) \
                     $(LIBXML2_LIBS)
 
 INCLUDES = -I$(AXIS2C_HOME)/include \
+            -I$(top_builddir)/include \
 			@UTILINC@ \
 			@AXIOMINC@
 

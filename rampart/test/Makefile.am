@@ -1,3 +1,2 @@
-TESTS =
-SUBDIRS = util
+SUBDIRS = openssl util
 

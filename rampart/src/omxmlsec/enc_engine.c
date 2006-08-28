@@ -51,13 +51,13 @@ oxs_enc_engine_init_ops(
 static axis2_status_t
 oxs_enc_engine_cipher_data_node_read(
     const axis2_env_t *env,
-    enc_ctx_ptr enc_ctx,
+    oxs_ctx_t * enc_ctx,
     axiom_node_t* node);
 
 static axis2_status_t 
 oxs_enc_engine_encrypted_data_node_read(
     const axis2_env_t *env,
-    enc_ctx_ptr enc_ctx,
+    oxs_ctx_t * enc_ctx,
     axiom_node_t* node);
 
 /** public function */
@@ -93,7 +93,7 @@ axis2_status_t AXIS2_CALL
 oxs_enc_engine_crypt(
     oxs_enc_engine_t *enc_engine,
     const axis2_env_t *env,
-    enc_ctx_ptr enc_ctx,
+    oxs_ctx_t * enc_ctx,
     oxs_buffer_ptr input,
     oxs_buffer_ptr result);
 
@@ -110,7 +110,7 @@ oxs_enc_engine_decrypt_template(
     const axis2_env_t *env,
     axiom_node_t* template_node,
     axis2_char_t** decrypted_data,
-    enc_ctx_ptr enc_ctx);
+    oxs_ctx_t * enc_ctx);
 
 axis2_status_t AXIS2_CALL 
 oxs_enc_engine_encrypt_template(
@@ -118,7 +118,7 @@ oxs_enc_engine_encrypt_template(
     const axis2_env_t *env,
     axiom_node_t* template_node,
     axis2_char_t* data,
-    enc_ctx_ptr enc_ctx);
+    oxs_ctx_t * enc_ctx);
 
 /******* end of function headers ****************/
 
@@ -384,7 +384,7 @@ axis2_status_t AXIS2_CALL
 oxs_enc_engine_crypt(
     oxs_enc_engine_t *enc_engine,
     const axis2_env_t *env, 
-    enc_ctx_ptr enc_ctx,
+    oxs_ctx_t * enc_ctx,
     oxs_buffer_ptr input,
     oxs_buffer_ptr result)
 {
@@ -417,15 +417,15 @@ oxs_enc_engine_crypt(
     }
 
     /*Get cipher property*/    
-    cprop =  oxs_get_cipher_property_for_url(env, enc_ctx->encmtd_algorithm);    
+    cprop =  oxs_get_cipher_property_for_url(env, OXS_CTX_GET_ENC_MTD_ALGORITHM(enc_ctx, env));    
 
     /*Set the IV*/   
     /*iv = OPENSSL_DEFAULT_IV16;*/ /*oxs_iv_generate_for_algo(env,  enc_ctx->encmtd_algorithm); */
-    iv =(axis2_char_t*)oxs_iv_generate_for_algo(env,  enc_ctx->encmtd_algorithm); 
+    iv =(axis2_char_t*)oxs_iv_generate_for_algo(env,  OXS_CTX_GET_ENC_MTD_ALGORITHM(enc_ctx, env)); 
 
     /*Set the key*/
-    temp =  AXIS2_STRNDUP(OXS_KEY_GET_DATA(enc_ctx->key, env),  OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env), env);
-    bc_ctx->key = AXIS2_STRNDUP(OXS_KEY_GET_DATA(enc_ctx->key, env),OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env),  env);
+    temp =  AXIS2_STRNDUP(OXS_KEY_GET_DATA(OXS_CTX_GET_KEY(enc_ctx, env), env),  OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env), env);
+    bc_ctx->key = AXIS2_STRNDUP(OXS_KEY_GET_DATA(OXS_CTX_GET_KEY(enc_ctx, env), env),OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env),  env);
     bc_ctx->key_initialized = 1;
 
     /*Set the IV*/
@@ -441,14 +441,14 @@ oxs_enc_engine_crypt(
     } 
 
     /*Initialize block cipher ctx*/
-    if(enc_ctx->operation == oxs_operation_encrypt){
+    if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_ENCRYPT){
         ret =  openssl_evp_block_cipher_ctx_init(env, bc_ctx,
                             OPENSSL_ENCRYPT, (const unsigned char*)cipher_name);
         if(ret == AXIS2_FAILURE ){
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "openssl_evp_block_cipher_ctx_init failed");
         }
-    }else if(enc_ctx->operation == oxs_operation_decrypt){
+    }else if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT){
         ret =  openssl_evp_block_cipher_ctx_init(env, bc_ctx,
                             OPENSSL_DECRYPT, (const unsigned char*)cipher_name);
         if(ret == AXIS2_FAILURE ){
@@ -457,22 +457,22 @@ oxs_enc_engine_crypt(
         }
     }else{
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "Invalid operation type %d", enc_ctx->operation);
+                     "Invalid operation type %d", OXS_CTX_GET_OPERATION(enc_ctx, env));
         return AXIS2_FAILURE;
     }
 
     /****************Encryption or decryption happens here ************/
 
     /*If this is to encrypt we simply pass the data to crypto function*/
-    if(enc_ctx->operation == oxs_operation_encrypt){
+    if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_ENCRYPT){
         enclen = openssl_block_cipher_crypt(env, bc_ctx,
                                          input->data, strlen((char*)input->data),  &out_main_buf, OPENSSL_ENCRYPT);
     
     /*If this is to decrypt, then we need to base64decode first*/
-    }else if(enc_ctx->operation == oxs_operation_decrypt){
-        in_data = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len( (char*)(enc_ctx->inputdata)));
+    }else if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT){
+        in_data = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len( (char*)(OXS_CTX_GET_INPUT_DATA(enc_ctx, env))));
         /*axis2_base64_decode(in_data, (char*)(enc_ctx->inputdata)); */
-        decoded_len = axis2_base64_decode_binary((unsigned char*)in_data, (char*)(enc_ctx->inputdata));
+        decoded_len = axis2_base64_decode_binary((unsigned char*)in_data, (char*)(OXS_CTX_GET_INPUT_DATA(enc_ctx, env)));
         if(decoded_len < 0){
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "base64 decoding failed");
@@ -481,7 +481,7 @@ oxs_enc_engine_crypt(
                                          (unsigned char*)in_data, decoded_len,  &out_main_buf, OPENSSL_DECRYPT);
     }else{
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "Invalid operation type %d", enc_ctx->operation);
+                     "Invalid operation type %d", OXS_CTX_GET_OPERATION(enc_ctx, env));
         return AXIS2_FAILURE;
 
     }
@@ -500,7 +500,7 @@ oxs_enc_engine_crypt(
     
     
     /*If the operation is to encrypt we will encode the encrypted data*/
-    if(enc_ctx->operation == oxs_operation_encrypt){
+    if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_ENCRYPT){
         encodedlen = axis2_base64_encode_len(enclen);
         encoded_str = AXIS2_MALLOC(env->allocator, encodedlen );
       
@@ -514,13 +514,13 @@ oxs_enc_engine_crypt(
         /*Attach the result to the result buf*/    
         result->size = encodedlen;
         result->data = (unsigned char*)AXIS2_STRDUP(encoded_str, env);
-    }else if(enc_ctx->operation == oxs_operation_decrypt){
+    }else if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT){
         result->size = enclen;
         result->data = AXIS2_STRMEMDUP(out_main_buf, enclen, env);
     
     }else{
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "Invalid operation type %d", enc_ctx->operation);
+                     "Invalid operation type %d", OXS_CTX_GET_OPERATION(enc_ctx, env));
         return AXIS2_FAILURE;
 
     }
@@ -593,7 +593,7 @@ oxs_enc_engine_decrypt_template(
     const axis2_env_t *env,
     axiom_node_t* template_node,
     axis2_char_t** decrypted_data,
-    enc_ctx_ptr enc_ctx
+    oxs_ctx_t * enc_ctx
     )
 {
     axis2_status_t  ret =  AXIS2_FAILURE;
@@ -605,8 +605,8 @@ oxs_enc_engine_decrypt_template(
     enc_engine_impl = AXIS2_INTF_TO_IMPL(enc_engine);
 
     /*Populate enc_ctx*/
-    enc_ctx->operation = oxs_operation_decrypt;
-    enc_ctx->mode = enc_ctx_mode_encrypted_data;
+    OXS_CTX_SET_OPERATION(enc_ctx, env, OXS_CTX_OPERATION_DECRYPT);
+    OXS_CTX_SET_MODE(enc_ctx, env, OXS_CTX_MODE_ENCRYPTED_DATA);
 
     ret = oxs_enc_engine_encrypted_data_node_read(env, enc_ctx, template_node);
     if(ret != AXIS2_SUCCESS){
@@ -617,8 +617,8 @@ oxs_enc_engine_decrypt_template(
 
     /*Now look for data to be decrypted*/
     input = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
-    input->data = (unsigned char *)enc_ctx->inputdata;
-    input->size = AXIS2_STRLEN(enc_ctx->inputdata);
+    input->data = (unsigned char *)OXS_CTX_GET_INPUT_DATA(enc_ctx, env);
+    input->size = AXIS2_STRLEN(OXS_CTX_GET_INPUT_DATA(enc_ctx, env));
 
     /*Initialize the result buffer*/
     result = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
@@ -645,7 +645,7 @@ oxs_enc_engine_encrypt_template(
     const axis2_env_t *env,
     axiom_node_t* template_node, 
     axis2_char_t* data,
-    enc_ctx_ptr enc_ctx
+    oxs_ctx_t * enc_ctx
     )
 {
     axis2_status_t  ret =  AXIS2_FAILURE;
@@ -658,8 +658,8 @@ oxs_enc_engine_encrypt_template(
    
        
     /*Populate enc_ctx*/
-    enc_ctx->operation = oxs_operation_encrypt;
-    enc_ctx->mode = enc_ctx_mode_encrypted_data;
+    OXS_CTX_SET_OPERATION(enc_ctx, env, OXS_CTX_OPERATION_ENCRYPT);
+    OXS_CTX_SET_MODE(enc_ctx, env, OXS_CTX_MODE_ENCRYPTED_DATA);
      
     ret = oxs_enc_engine_encrypted_data_node_read(env, enc_ctx, template_node);
     if(ret != AXIS2_SUCCESS){
@@ -695,7 +695,7 @@ oxs_enc_engine_encrypt_template(
 
 static axis2_status_t AXIS2_CALL
 oxs_enc_engine_cipher_data_node_read(const axis2_env_t *env, 
-                                enc_ctx_ptr enc_ctx, axiom_node_t* node_cipher_data)
+                                oxs_ctx_t * enc_ctx, axiom_node_t* node_cipher_data)
 {
     axiom_node_t* cur = NULL;
     axiom_element_t *ele = NULL;
@@ -712,18 +712,18 @@ oxs_enc_engine_cipher_data_node_read(const axis2_env_t *env,
 
     if( oxs_axiom_check_node_name(env, cur, OXS_NodeCipherValue, OXS_EncNs )){
         /*Got a cipher value*/
-        if(enc_ctx->operation == oxs_operation_decrypt)
-        {  
-            enc_ctx->cipher_value_node = cur;
+        if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT)
+        { 
+            OXS_CTX_SET_CIPHER_VALUE_NODE(enc_ctx, env, cur); 
             ele = AXIOM_NODE_GET_DATA_ELEMENT(cur, env);
             /*Read data from the CipherValue node and set it to the context*/
             data = AXIOM_ELEMENT_GET_TEXT(ele, env, cur);
-            enc_ctx->inputdata = AXIS2_STRDUP(data, env);
+            OXS_CTX_SET_INPUT_DATA(enc_ctx, env, AXIS2_STRDUP(data, env));
         } 
     }else if(oxs_axiom_check_node_name(env, cur, OXS_NodeCipherReference, OXS_EncNs )){
         /*Got a cipher reference*/
         /*TODO : Support Cipher references*/
-        /*Check cipher reference and set it to enc_ctx->cipher_value_node*/
+        /*Check cipher reference and set it to ctx->cipher_value_node*/
     }
 
     return AXIS2_SUCCESS;    
@@ -734,14 +734,14 @@ oxs_enc_engine_cipher_data_node_read(const axis2_env_t *env,
 */
 static axis2_status_t AXIS2_CALL
 oxs_enc_engine_encrypted_data_node_read(const axis2_env_t *env,
-            enc_ctx_ptr enc_ctx, axiom_node_t* node)
+            oxs_ctx_t * enc_ctx, axiom_node_t* node)
 {
     axiom_node_t* cur = NULL;
     axiom_element_t *ele = NULL;
     int ret;
     
     /* Operation is either encrypt or decrypt */
-    if(!((enc_ctx->operation == oxs_operation_encrypt) || (enc_ctx->operation == oxs_operation_decrypt))){
+    if(!((OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_ENCRYPT) || (OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT))){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "Operation is NOT either encrypt or decrypt");
         return AXIS2_FAILURE;
@@ -752,8 +752,8 @@ oxs_enc_engine_encrypted_data_node_read(const axis2_env_t *env,
       2. Encrypted Key
     */
     
-    switch(enc_ctx->mode) {
-    case enc_ctx_mode_encrypted_data:
+    switch(OXS_CTX_GET_MODE(enc_ctx, env)) {
+    case OXS_CTX_MODE_ENCRYPTED_DATA:
         if(!(oxs_axiom_check_node_name(env, node, OXS_NodeEncryptedData, OXS_EncNs )))
         {
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
@@ -761,7 +761,7 @@ oxs_enc_engine_encrypted_data_node_read(const axis2_env_t *env,
             return AXIS2_FAILURE;
         }
         break;
-    case enc_ctx_mode_encrypted_key:
+    case OXS_CTX_MODE_ENCRYPTED_KEY:
         if(!(oxs_axiom_check_node_name(env, node, OXS_NodeEncryptedKey, OXS_EncNs)))
         {
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
@@ -771,7 +771,7 @@ oxs_enc_engine_encrypted_data_node_read(const axis2_env_t *env,
         break;
     }
     
-    enc_ctx->enc_data_node = node;
+    OXS_CTX_SET_ENC_DATA_NODE(enc_ctx, env,  node);
     
     /*Element is either Encrypted Data or Encrypted Key*/ 
     ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
@@ -782,25 +782,26 @@ oxs_enc_engine_encrypted_data_node_read(const axis2_env_t *env,
     }
     
     /*Populate ctx with id, type, mime and encoding types if found*/
-    enc_ctx->id = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrId);
-    enc_ctx->type = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrType);
-    enc_ctx->mime_type = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrMimeType);
-    enc_ctx->encoding = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrEncoding);
-    if(enc_ctx->mode == enc_ctx_mode_encrypted_key) {
-        enc_ctx->recipient = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrRecipient);
+    OXS_CTX_SET_ID(enc_ctx, env, AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrId));
+    OXS_CTX_SET_TYPE(enc_ctx, env, AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrType));
+    OXS_CTX_SET_MIME_TYPE(enc_ctx, env, AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrMimeType));
+    OXS_CTX_SET_ENCODING(enc_ctx, env, AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrEncoding));
+
+    if(OXS_CTX_GET_MODE(enc_ctx, env) == OXS_CTX_MODE_ENCRYPTED_KEY) {
+        OXS_CTX_SET_RECIPIENT(enc_ctx, env, AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrRecipient));
     }
     
     cur = AXIOM_NODE_GET_FIRST_CHILD(node, env);
 
     /* first node is optional EncryptionMethod, we'll read it later */
     if((cur != NULL) && (oxs_axiom_check_node_name(env, cur, OXS_NodeEncryptionMethod, OXS_EncNs))) {
-        enc_ctx->enc_method_node = cur;
+        OXS_CTX_SET_ENC_METHOD_NODE(enc_ctx, env, cur);
         cur = AXIOM_NODE_GET_NEXT_SIBLING(cur, env);
     }
 
     /* next node is optional KeyInfo, we'll process it later */
     if((cur != NULL) && (  oxs_axiom_check_node_name(env, cur, OXS_NodeKeyInfo, OXS_DSigNs))) {
-        enc_ctx->key_info_node = cur;
+        OXS_CTX_SET_KEY_INFO_NODE(enc_ctx, env, cur);
         cur = AXIOM_NODE_GET_NEXT_SIBLING(cur, env);
     }
 
@@ -816,9 +817,9 @@ oxs_enc_engine_encrypted_data_node_read(const axis2_env_t *env,
     
        
     /* now read the encryption method node */
-    if(enc_ctx->enc_method_node != NULL) {
-        ele = AXIOM_NODE_GET_DATA_ELEMENT(enc_ctx->enc_method_node, env);
-        enc_ctx->encmtd_algorithm = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrAlgorithm);
+    if(OXS_CTX_GET_ENC_METHOD_NODE(enc_ctx, env) != NULL) {
+        ele = AXIOM_NODE_GET_DATA_ELEMENT(OXS_CTX_GET_ENC_METHOD_NODE(enc_ctx, env), env);
+        OXS_CTX_SET_ENC_MTD_ALGORITHM(enc_ctx, env, AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrAlgorithm));
     }
       
     /*If you need to populate the context more this is the place*/   

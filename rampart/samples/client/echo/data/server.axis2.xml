@@ -26,6 +26,7 @@
         <passwordType>passwordText</passwordType>
         <!--Following shoud change with your DLL or SO path-->
         <passwordCallbackClass>/home/kau/axis2/c/deploy/rampart/samples/callback/libpwcb.so</passwordCallbackClass>
+        <timeToLive>360</timeToLive>
       </action>
     </parameter>
 

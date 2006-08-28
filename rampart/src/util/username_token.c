@@ -20,102 +20,209 @@
 #include <axiom_soap_header_block.h>
 #include <axis2_endpoint_ref.h>
 #include <axis2_property.h>
-#include <username_token.h>
+#include <rampart_username_token.h>
 #include <rampart_constants.h>
 #include <rampart_crypto_util.h>
 #include <rampart_util.h>
+#include <rampart_callback.h>
 #include <rampart_handler_util.h>
 
+typedef struct rampart_username_token_impl
+{
+    rampart_username_token_t username_token;
+}
+rampart_username_token_impl_t;
+
+/** Interface to implementation conversion macro */
+#define AXIS2_INTF_TO_IMPL(username_token) ((rampart_username_token_impl_t *)username_token)
+
 /*************************** Function headers *********************************/
-                                
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+/** private functions */
+static void
+rampart_username_token_init_ops(
+    rampart_username_token_t *username_token);
+/**
+ * Get the password for given outflow security configuration
+ * @param env pointer to environment struct
+ * @param ctx axis2 context
+ * @param Outflow security parameter
+ * @return password
+ */                  
+static axis2_char_t* 
 rampart_get_password( const axis2_env_t *env,
                       axis2_ctx_t *ctx,
-                      axis2_param_t *param_out_flow_security);          
-           
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-rampart_get_value( const axis2_env_t *env,
-                   axis2_ctx_t *ctx,
-                 const axis2_char_t *key);
-                   
-                   
-AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-rampart_build_username_token(const axis2_env_t *env,
-                                axis2_ctx_t *ctx,
-                                axis2_param_t *param_action,
-                                axiom_node_t *sec_node,
-                                axiom_namespace_t *sec_ns_obj
-                                );
+                      rampart_actions_t *actions);          
+/**
+ *
+ * @param env pointer to environment struct
+ * @param ctx axis2 context
+ * @return property value
+ */
+static axis2_char_t* 
+rampart_username_token_callback_pw( const axis2_env_t *env,
+                     axis2_char_t *callback_module_name,
+                     const axis2_char_t *username);
+
+/** public functions*/                  
+axis2_status_t AXIS2_CALL
+rampart_username_token_free(rampart_username_token_t *username_token,
+    const axis2_env_t *env);
+ 
+axiom_node_t* AXIS2_CALL
+rampart_username_token_build(rampart_username_token_t *username_token,
+    const axis2_env_t *env,
+    axis2_ctx_t *ctx,
+    rampart_actions_t *actions,
+    axiom_node_t *sec_node,
+    axiom_namespace_t *sec_ns_obj);
 
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rampart_validate_username_token(const axis2_env_t *env,
-                                axis2_msg_ctx_t *msg_ctx,
-                                axiom_soap_header_t *soap_header,
-                                axis2_param_t *param_action);
+axis2_status_t AXIS2_CALL
+rampart_username_token_validate(rampart_username_token_t *username_token,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    axiom_soap_header_t *soap_header,
+    rampart_actions_t *actions);
 
 /************************* End of function headers ****************************/
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+static void
+rampart_username_token_init_ops(
+    rampart_username_token_t *username_token)
+{
+    username_token->ops->free = rampart_username_token_free;
+    username_token->ops->build = rampart_username_token_build;
+    username_token->ops->validate = rampart_username_token_validate;
+}
+
+
+static axis2_char_t *
 rampart_get_password( const axis2_env_t *env,
         axis2_ctx_t *ctx,
-         axis2_param_t *param_action)
+        rampart_actions_t *actions)
 {
-    axis2_char_t *password, *username, *pw_callback_module = NULL;
+    axis2_char_t *password = NULL;
+    axis2_char_t *username = NULL;
+    axis2_char_t *pw_callback_module = NULL;
 
     /*Check if password is in the context.
      i.e.In any context in the cotext hierarchy starting from msg, op, svc, etc.*/
-    password = rampart_get_value(env, ctx,  RAMPART_DYN_PASSWORD);
+    password = rampart_get_property_from_ctx(env, ctx,  RAMPART_ACTION_PASSWORD);
     if(password)
     {
         return password;
     }
     
     /*If not check weather there is a callback class specified*/
-    pw_callback_module = rampart_get_action_params(env,  param_action, RAMPART_ACTION_PW_CALLBACK_CLASS);
+    pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
     if(pw_callback_module)
     {
-        username = rampart_get_action_params(env,  param_action, RAMPART_USER);
-        password = rampart_callback_pw(env, pw_callback_module, username);    
+        username = RAMPART_ACTIONS_GET_USER(actions, env);
+        password = rampart_username_token_callback_pw(env, pw_callback_module, username);    
     }
     return password;
 }
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-rampart_get_value( const axis2_env_t *env,
-        axis2_ctx_t *ctx,
-       const axis2_char_t *key)
 
+static axis2_char_t* 
+rampart_username_token_callback_pw( const axis2_env_t *env,
+                     axis2_char_t *callback_module_name,
+                     const axis2_char_t *username)
 {
-   axis2_property_t* property = NULL;
-   axis2_char_t* str_property = NULL;
-   
-    /*Get value from the dynamic settings... if not get it from the outflow security parameter*/
-     
-    property = AXIS2_CTX_GET_PROPERTY (ctx, env, key, AXIS2_FALSE);
-    if(property)
+    rampart_callback_t* rcb = NULL;
+    axis2_char_t *password = NULL;
+    axis2_dll_desc_t *dll_desc = NULL;
+    void *ptr = NULL;
+    axis2_param_t *impl_info_param = NULL;
+
+    dll_desc = axis2_dll_desc_create(env);
+    AXIS2_DLL_DESC_SET_NAME(dll_desc, env, callback_module_name);
+    impl_info_param = axis2_param_create(env, NULL, NULL);
+    AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
+    axis2_class_loader_init(env);
+    ptr = axis2_class_loader_create_dll(env, impl_info_param);
+
+    /*callback()*/
+    if(!ptr)
     {
-        str_property = AXIS2_PROPERTY_GET_VALUE(property,env);
-        property = NULL;
+        printf("\nCallback ptr is null");
+        return NULL;
     }
 
-    if(str_property)
+    rcb = (rampart_callback_t*)ptr;
+    if(!rcb)
     {
-       return str_property;
-    }else{
-       /* printf(" Cannot find dynamic settings for %s ", key);*/
+        printf("\nrampart_callback_t is null");
+        return NULL;
     }
-     
-    return str_property;
+    /*Get the password thru the callback*/
+    password = RAMPART_CALLBACK_CALLBACK_PASSWORD(rcb, env, username);
+
+    return password;
 }
 
+rampart_username_token_t *AXIS2_CALL
+rampart_username_token_create(
+    const axis2_env_t *env)
+{
+    rampart_username_token_impl_t *username_token_impl = NULL;
 
-AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-rampart_build_username_token(const axis2_env_t *env,
-                                axis2_ctx_t *ctx,
-                                axis2_param_t * param_action,
-                                axiom_node_t *sec_node,
-                                axiom_namespace_t *sec_ns_obj
-                                )
+    AXIS2_ENV_CHECK(env, NULL);
+
+    username_token_impl =  (rampart_username_token_impl_t *) AXIS2_MALLOC (env->allocator,
+    sizeof (rampart_username_token_impl_t));
+
+    if(NULL == username_token_impl)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    username_token_impl->username_token.ops = AXIS2_MALLOC (env->allocator,
+                                        sizeof(rampart_username_token_ops_t));
+    if(NULL == username_token_impl->username_token.ops)
+    {
+        rampart_username_token_free(&(username_token_impl->username_token), env);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    rampart_username_token_init_ops(&(username_token_impl->username_token));
+
+    return &(username_token_impl->username_token);
+
+}
+
+axis2_status_t AXIS2_CALL
+rampart_username_token_free(rampart_username_token_t *username_token,
+    const axis2_env_t *env)
+{
+    rampart_username_token_impl_t *username_token_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    username_token_impl = AXIS2_INTF_TO_IMPL(username_token);
+
+    if(username_token->ops)
+    {
+        AXIS2_FREE(env->allocator, username_token->ops);
+        username_token->ops = NULL;
+    }
+    if(username_token_impl)
+    {
+        AXIS2_FREE(env->allocator, username_token_impl);
+        username_token_impl = NULL;
+    }
+    return AXIS2_SUCCESS;
+
+}
+
+axiom_node_t* AXIS2_CALL
+rampart_username_token_build(rampart_username_token_t *username_token,
+    const axis2_env_t *env,
+    axis2_ctx_t *ctx,
+    rampart_actions_t *actions,
+    axiom_node_t *sec_node,
+    axiom_namespace_t *sec_ns_obj
+    )
 {
 
     axiom_node_t  *ut_node, *un_node, *pw_node, *nonce_node, *created_node = NULL;    
@@ -124,23 +231,28 @@ rampart_build_username_token(const axis2_env_t *env,
     axis2_char_t *nonce_val, *created_val, *digest_val = NULL;
     axiom_namespace_t *wsu_ns_obj = NULL;
     axiom_attribute_t *om_attr = NULL;
+    rampart_username_token_impl_t *username_token_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    username_token_impl = AXIS2_INTF_TO_IMPL(username_token);
 
     /*Get values from outflow security*/
-    username = rampart_get_action_params(env,  param_action, RAMPART_USER);
-    password_type= rampart_get_action_params(env,  param_action, RAMPART_PASSWORD_TYPE);
+    
+    username = RAMPART_ACTIONS_GET_USER(actions, env);
+    password_type = RAMPART_ACTIONS_GET_PASSWORD_TYPE(actions, env);
 
-    password = rampart_get_password(env, ctx, param_action);
+    password = rampart_get_password(env, ctx, actions);
     
     if(!password)
     {
         return NULL;
     }   
+    /*TODO this is a hack pls modify the rampart_actions to priorties dynamic values*/ 
+    if(rampart_get_property_from_ctx(env, ctx,RAMPART_ACTION_USER))    
+        username = rampart_get_property_from_ctx(env, ctx,RAMPART_ACTION_USER);
     
-    if(rampart_get_value(env, ctx,RAMPART_USER))    
-        username = rampart_get_value(env, ctx,RAMPART_USER);
-    
-    if(rampart_get_value(env, ctx, RAMPART_PASSWORD_TYPE))
-        password_type = rampart_get_value(env, ctx, RAMPART_PASSWORD_TYPE);
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_PASSWORD_TYPE))
+        password_type = rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_PASSWORD_TYPE);
 
  
     ut_ele = axiom_element_create (env, sec_node, 
@@ -247,10 +359,11 @@ rampart_build_username_token(const axis2_env_t *env,
 }
 
 axis2_status_t AXIS2_CALL
-rampart_validate_username_token(const axis2_env_t *env,
-                                axis2_msg_ctx_t *msg_ctx,
-                                axiom_soap_header_t *soap_header,
-                                axis2_param_t *param_action)
+rampart_username_token_validate(rampart_username_token_t *username_token,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    axiom_soap_header_t *soap_header,
+    rampart_actions_t *actions)
 {
     axiom_element_t *sec_ele, *ut_ele = NULL;
     axiom_node_t *sec_node, *ut_node = NULL;
@@ -260,6 +373,11 @@ rampart_validate_username_token(const axis2_env_t *env,
     axis2_char_t *pw_callback_module = NULL, *password_from_svr = NULL, *password_to_compare = NULL;
     axis2_ctx_t *ctx = NULL;
     axis2_qname_t *qname = NULL;
+    rampart_username_token_impl_t *username_token_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    username_token_impl = AXIS2_INTF_TO_IMPL(username_token);
+
     sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
     if(!sec_node)
     {
@@ -347,9 +465,9 @@ rampart_validate_username_token(const axis2_env_t *env,
     }
 
     ctx = AXIS2_MSG_CTX_GET_BASE (msg_ctx, env); 
-    pw_callback_module = rampart_get_action_params(env, param_action,RAMPART_ACTION_PW_CALLBACK_CLASS );
+    pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
 
-    password_from_svr = rampart_callback_pw(env,pw_callback_module, username);
+    password_from_svr = rampart_username_token_callback_pw(env,pw_callback_module, username);
    
     if(!password_from_svr)
     {

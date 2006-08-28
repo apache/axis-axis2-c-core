@@ -7,7 +7,7 @@
 axis2_env_t *test_init()
 {
    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-   axis2_error_t *error = axis2_error_create (allocator);
+   axis2_error_t *error = (axis2_error_t*)axis2_error_create (allocator);
    axis2_env_t *env = axis2_env_create_with_error(allocator, error);
    return env;
 }
