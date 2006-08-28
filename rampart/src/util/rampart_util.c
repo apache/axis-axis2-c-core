@@ -31,7 +31,7 @@
 #define SIZE_HASH 32
 #define SIZE_NONCE 24
 
-#define PRINTINFO 1 
+/*#define PRINTINFO 1 */
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_nonce(const axis2_env_t *env)
 {
    int num;
