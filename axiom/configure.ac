@@ -137,7 +137,6 @@ AC_CONFIG_FILES([Makefile \
     src/Makefile \
     src/parser/Makefile \
     src/parser/libxml2/Makefile \
-    src/parser/guththila/Makefile \
     src/soap/Makefile \
     src/om/Makefile \
     src/util/Makefile \
