@@ -240,7 +240,7 @@ axis2_svc_client_create_for_dynamic_invocation(
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_svc_grp_t *svc_grp = NULL;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
-    axis2_char_t *svc_grp_name = NULL;
+    const axis2_char_t *svc_grp_name = NULL;
     axis2_hash_t *ops = NULL;
     const axis2_char_t *repos_path = NULL;
     axis2_char_t *wsdl_path = NULL;
@@ -362,7 +362,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_svc_grp_t *svc_grp = NULL;
     axis2_svc_grp_ctx_t *svc_grp_ctx = NULL;
-    axis2_char_t *svc_grp_name = NULL;
+    const axis2_char_t *svc_grp_name = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 

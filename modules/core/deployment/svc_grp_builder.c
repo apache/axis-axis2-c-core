@@ -295,7 +295,7 @@ axis2_svc_grp_builder_process_module_refs(
             }   
             else
             {
-                AXIS2_SVC_GRP_ADD_MODULEREF(svc_grp, env, qrefname);
+                AXIS2_SVC_GRP_ADD_MODULE_REF(svc_grp, env, qrefname);
             }
             AXIS2_QNAME_FREE(qrefname, env);            
         }

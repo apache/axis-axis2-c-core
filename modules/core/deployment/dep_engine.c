@@ -1097,7 +1097,7 @@ axis2_dep_engine_add_new_svc(
         AXIS2_SVC_SET_FILE_NAME(svc, env, file_name);
 
         /* modules from svc group */
-        grp_modules = AXIS2_SVC_GRP_GET_MODULES(svc_metadata, env);
+        grp_modules = AXIS2_SVC_GRP_GET_ALL_MODULE_QNAMES(svc_metadata, env);
         if(grp_modules)
             sizej = AXIS2_ARRAY_LIST_SIZE(grp_modules, env);
         for(j = 0; j < sizej; j++)

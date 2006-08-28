@@ -954,14 +954,14 @@ axis2_conf_add_svc_grp(
     axis2_hash_t *svcs = NULL;
     axis2_hash_index_t *index_i = NULL;
     axis2_char_t *svc_name = NULL;
-    axis2_char_t *svc_grp_name = NULL;
+    const axis2_char_t *svc_grp_name = NULL;
     int k = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svc_grp, AXIS2_FAILURE);
 
     config_impl = AXIS2_INTF_TO_IMPL(conf);
-    svcs = AXIS2_SVC_GRP_GET_SVCS(svc_grp, env);
+    svcs = AXIS2_SVC_GRP_GET_ALL_SVCS(svc_grp, env);
     if (!config_impl->all_svcs)
     {
         config_impl->all_svcs = axis2_hash_make(env);
@@ -994,7 +994,7 @@ axis2_conf_add_svc_grp(
         index_i = axis2_hash_next(env, index_i);
     }
 
-    svcs = AXIS2_SVC_GRP_GET_SVCS(svc_grp, env);
+    svcs = AXIS2_SVC_GRP_GET_ALL_SVCS(svc_grp, env);
     index_i = axis2_hash_first (svcs, env);
     while (NULL != index_i)
     {
@@ -1456,7 +1456,7 @@ axis2_conf_get_all_svcs(
     {
         axis2_hash_this(index_i, NULL, NULL, &value);
         axis_svc_grp = (axis2_svc_grp_t *) value;
-        svcs = AXIS2_SVC_GRP_GET_SVCS(axis_svc_grp, env);
+        svcs = AXIS2_SVC_GRP_GET_ALL_SVCS(axis_svc_grp, env);
         index_j = axis2_hash_first(svcs, env);
         while (NULL != index_j)
         {

@@ -2317,7 +2317,7 @@ axis2_msg_ctx_set_svc(
         {
             AXIS2_INTF_TO_IMPL(msg_ctx)->svc_grp = svc_grp;
             AXIS2_INTF_TO_IMPL(msg_ctx)->svc_grp_id = 
-                AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
+                (axis2_char_t *)AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
         }
     }
     
@@ -2345,7 +2345,7 @@ axis2_msg_ctx_set_svc_grp(
     {
         AXIS2_INTF_TO_IMPL(msg_ctx)->svc_grp = svc_grp;
         AXIS2_INTF_TO_IMPL(msg_ctx)->svc_grp_id = 
-            AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
+            (axis2_char_t *)AXIS2_SVC_GRP_GET_NAME(svc_grp, env);
     }
     
     return AXIS2_SUCCESS;

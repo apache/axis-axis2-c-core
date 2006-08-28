@@ -131,7 +131,7 @@ axis2_svc_grp_ctx_create(
     if (svc_grp)
     {
         svc_grp_ctx_impl->svc_grp = svc_grp;
-        svc_grp_ctx_impl->svc_grp_name = AXIS2_SVC_GRP_GET_NAME(svc_grp_ctx_impl->svc_grp, env);
+        svc_grp_ctx_impl->svc_grp_name = (axis2_char_t *)AXIS2_SVC_GRP_GET_NAME(svc_grp_ctx_impl->svc_grp, env);
     }
     
     if (conf_ctx)
@@ -341,7 +341,7 @@ axis2_svc_grp_ctx_fill_svc_ctx_map(
 
     if (svc_grp_ctx_impl->svc_grp)
     {
-        axis2_hash_t *service_map = AXIS2_SVC_GRP_GET_SVCS(svc_grp_ctx_impl->svc_grp, env);
+        axis2_hash_t *service_map = AXIS2_SVC_GRP_GET_ALL_SVCS(svc_grp_ctx_impl->svc_grp, env);
         if (service_map)
         {
             for (hi = axis2_hash_first (service_map, env);
