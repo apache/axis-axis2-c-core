@@ -19,4 +19,5 @@ INCLUDES = -I$(top_builddir)/include \
 			@UTILINC@ \
 			@XMLSCHEMAINC@
 
+EXTRA_DIST = woden_wsdl10_soap_constants.h
 

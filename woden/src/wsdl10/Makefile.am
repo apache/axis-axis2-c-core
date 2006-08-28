@@ -18,4 +18,5 @@ INCLUDES = -I$(top_builddir)/include \
 			@UTILINC@ \
 			@XMLSCHEMAINC@
 
+EXTRA_DIST = woden_wsdl10_component_model_builder.h  woden_wsdl10_constants.h
 
