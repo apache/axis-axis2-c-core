@@ -35,7 +35,8 @@
                 in a file echo.c</a></li>
               <li><a href="#Step3">Step3 :Write the services.xml file</a></li>
               <li><a href="#Step4">Step4 :Create the WebService Folder in
-                services folder.</a></li>
+              <li><a href="#Step5">Archive based deployment model
+                .</a></li>
             </ul>
           </li>
         </ul>
@@ -525,6 +526,17 @@ service) and the services.xml file which describe the web service. So in this
 example case we will have a folder named echo which contain the services,xml
 file and echo dll.</p>
 
+<p><a id="Step5"></a></p>
+
+<h4>Step5 : Archive Based Deployment Model.</h4>
+
+<p>Axis2 uses ".aar" (Axis Archive) file as the deployment package for the Web 
+Services. Therefore, for echo service we will use "echo.aar". (Name of the 
+service will be the name of the archive file)
+To create "echo.aar" user can create a zip file containing echo.so and 
+services.xml and rename the zip extension to aar. Then Axis2 understands it as a 
+service archive.</p>
+
 <p><a id="Writing_Web_Services_Using_Code_Generator"></a></p>
 <h3>Writing Web Services Skeleton Using Code Generator</h3>
 
@@ -694,7 +706,7 @@ more about services.xml
 <p><a id="deploy"></a></p>
 <h3>Deploy the Web Service</h3>
 
-<p>We simply put our service folder to the services
+<p>We simply put our service folder or the ".aar" file to the services
 directory. You need restart the server for the engine to pick this service.
 </p>
 <a id="Web_Service_Clients_Using_Axis2"></a>
