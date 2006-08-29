@@ -704,7 +704,7 @@ mod_rampart_samples:
 	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client
 	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
 	
-	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) \
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) $(MOD_RAMPART_INCLUDE_PATH) \
 	$(AXIS2_SOURCE_DIR)\rampart\samples\client\echo\echo.c /c
 	$(LD) $(LDFLAGS) echo.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
 	$(AXIS2_PARSER).lib $(AXIS2_ENGINE).lib /OUT:echo.exe
@@ -721,7 +721,7 @@ mod_rampart_copy_include:
 	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\include $(AXIS2_INSTALL_DIR)\rampart\include
 	copy $(AXIS2_SOURCE_DIR)\rampart\README $(AXIS2_INSTALL_DIR)\rampart
 
-mod_rampart_all: mod_rampart mod_rampart_pwcb mod_rampart_samples mod_rampart_copy_include
+mod_rampart_all: omxmlsec mod_rampart mod_rampart_pwcb mod_rampart_samples mod_rampart_copy_include
 
 
 
