@@ -84,6 +84,15 @@
       </li>
     </ul>
   </li>
+  <li><p><a href="#Providing_security_using_Rampart">Providing security using Rampart/C</a></p>
+    <ul>
+      <li><a href="#Engaging_rampart_module">Engaging rampart module</a>
+      <li><a href="#Semantics_of_parameters_specified_in_axis2_xml">Semantics of parameters specified in axis2.xml</a>
+      <li><a href="#Writing_own_password_callback_module">Writing own password callback module</a>
+      <li><a href="#Adding_security_parameters_dynamically">Adding security parameters dynamically</a>
+    </ul>
+  </li>
+
 </ul>
 
 <h2><a id="Introduction">Introduction</a></h2>
@@ -1176,6 +1185,122 @@ void invoke_service_using_databinding ( axis2_stub_t* stub,
 	
 }
 </pre>
+
+<!--Start rampart-->
+<a id="Providing_security_using_Rampart"></a>
+<h2>Providing security using Rampart/C</h2>
+<p>Rampart/C is the security module for Axis2/C, which supports UsernameToken based authentication and Timestamps as per WS-Security specification. In this user guide we will explain how to use Rampart inside Axis2/C.</p>
+
+<a id="Engaging_rampart_module" ></a>
+<h3>Engaging rampart module</h3>
+<ul>
+  <li><p style="margin-bottom: 0in"><b>STEP 1:</b> Copy rampart directory created in AXIS2C_HOME/deploy/rampart to      AXIS2C_HOME/deploy/modules</p>
+    <pre class="code">cp   $AXIS2C_HOME/deploy/rampart/rampart $AXIS2C_HOME/deploy/modules</pre>
+  </li>
+  <li><b>STEP 2:</b>Add following line to the axis2.xml under axisconfig. This will engage the rampart module.
+    <pre class="code">&lt;module ref="rampart"/&gt;</pre>
+  </li>
+  <li><b>STEP 3:</b>Then add followings to the axis2.xml file to specify In/Out flow  parameters. You may find a sample axis2.xml file in rampart/samples/client/echo/data/
+    <pre class="code">
+    &lt;parameter name="OutflowSecurity"&gt;
+            &lt;action&gt;
+                &lt;items&gt;UsernameToken Timestamp&lt;/items&gt;
+            &lt;user&gt;Gajaba&lt;/user&gt;
+            &lt;passwordType&gt;passwordDigest&lt;/passwordType&gt;
+            &lt;passwordCallbackClass&gt;/home/gajaba/axis2/c/deploy/rampart/samples/callback/libpwcb.so&lt;/passwordCallbackClass&gt;
+            &lt;timeToLive&gt;360&lt;/timeToLive&gt;
+            &lt;/action&gt;
+        &lt;/parameter&gt;
+    </pre>
+    <pre class="code">
+    &lt;parameter name="InflowSecurity"&gt;
+            &lt;action&gt;
+                &lt;items&gt;UsernameToken Timestamp&lt;/items&gt;
+                &lt;passwordCallbackClass&gt;/home/gajaba/axis2/c/deploy/rampart/samples/callback/libpwcb.so&lt;/passwordCallbackClass&gt;
+            &lt;/action&gt;
+        &lt;/parameter&gt;
+    </pre>
+    
+  </li>
+</ul>
+<p>Note: You must replace the value of  passwordCallbackClass parameter to suit your settings.</p>
+<p>Now everything is setup to try out the sample. Start axis2 server and run the sample under rampart/samples/client/echo.  If everything works fine a security header should be added to the outgoing SOAP message. </p>
+
+<pre class="code">
+&lt;wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"&gt;
+    &lt;wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"&gt;
+        &lt;wsse:Username&gt;Gajaba&lt;/wsse:Username&gt;
+        &lt;wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest"&gt;WNPznBN3PeLypKYXlwV7w9zJZ9o=&lt;/wsse:Password&gt;
+        &lt;wsse:Nonce&gt;ICAgICAgIDEwNDY0NDk1Mg==&lt;/wsse:Nonce&gt;
+        &lt;wsu:Created&gt;2006-08-28T11:52:27Z&lt;/wsu:Created&gt;
+    &lt;/wsse:UsernameToken&gt;
+    &lt;wsu:Timestamp xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"&gt;
+         &lt;wsu:Created&gt;2006-08-28T11:52:27Z&lt;/wsu:Created&gt;
+         &lt;wsu:Expires&gt;2006-08-28T11:58:27Z&lt;/wsu:Expires&gt;
+    &lt;/wsu:Timestamp&gt;
+&lt;/wsse:Security&gt;
+</pre>
+<p>Note that for the above sample we have used the same axis2.xml file for both server and the client. But in the real world this is not possible. For such a situation you can specify a client home as an argument. </p>
+<pre class="code">./echo [endpoint_url] [path to your client_home]</pre>
+
+<a id="Semantics_of_parameters_specified_in_axis2_xml" ></a>
+<h3>Semantics of parameters specified in axis2.xml</h3>
+<table width="100%" border="1" cellpadding="0" cellspacing="0">
+  <tbody>
+    <tr>
+      <td><strong>Parameter</strong></td>
+      <td><strong>Semantic</strong></td>
+    </tr>
+    <tr>
+      <td>items</td>
+      <td>Specify which tokens to be used for the credential exchange. In the above example we used     both UsernameTokens and Timestamps</td>
+    </tr>
+    <tr>
+      <td>user</td>
+      <td>The username of the UsernameToken</td>
+    </tr>
+    <tr>
+      <td>passwordType</td>
+      <td>The way passowrd is delivered. This can be either passwordText or the Password Digest. The former delivers password in plainText whilst the latter delivers the hashed value of the password. Default is passwordText</td>
+    </tr>
+    <tr>
+      <td>passwordCallbackClass</td>
+      <td>The module that provides password for a particular user</td>
+    </tr>
+    <tr>
+      <td>timeToLive</td>
+      <td>The validity period of the TimestampToken after issuing. The time is in seconds. In the   above example, it's 6 minutes. If not specified, the default is 5 minutes</td>
+    </tr>
+  </tbody>
+</table>
+
+<a id="Writing_own_password_callback_module" > </a>
+<h3>Writing own password callback module</h3>
+
+<p>The rampart  module is independent of the way that passwords are stored. For example you may have passwords in a flat file or in a secured database. What ever the way Rampart expects a password callback module to retrieve passwords for a given username. The sample coming under rampart/samples/callback is a very simple one which has few hard-coded passwords. It assigns a function to the function pointer </p>
+<pre class="code">rcb-&gt;ops-&gt;callback_password = get_sample_password;</pre>
+<p>callback_password is a function pointer to any function which has the following signature.</p>
+
+<pre class="code">your_function(rampart_callback_t *rcb,
+            const axis2_env_t *env,  const axis2_char_t *username)</pre>
+
+<p> your_function should return the password as axis2_char_t* for the username specified, if any.
+Inside your function, you may write your code to supply stored passwords.<p>
+
+<p>Then the path to the callback module needs to be specified in axis2.xml under passwordCallbackClass. [The word ¿Class¿ instead of ¿Module¿ is only for the compatibility with java implementation]
+</p>
+<a id="Adding_security_parameters_dynamically" > </a>
+<h3>Adding security parameters dynamically</h3>
+<p>Outflow parameters specified in the axis2.xml can be added dynamically in the client level. This can be done as in the following sample code. </p>
+<pre class="code">
+   un_property = axis2_property_create(env);
+   AXIS2_PROPERTY_SET_VALUE(un_property, env, "Gajaba");
+   AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_USER, un_property);
+</pre>
+<p>Above will set the username parameter dynamically. 
+All the values specified in the axis2.xml will be overridden by the dynamic settings. </p>
+
+<!-- End rampart-->
 
 </body>
 </html>
