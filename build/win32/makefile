@@ -637,6 +637,9 @@ basic_modules: axis2_util axis2_parser axiom
 
 #rampart module
 
+OMXMLSEC_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\*.c \
+	   $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\openssl\*.c 
+
 MOD_RAMPART_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\core\*.c \
 		$(AXIS2_SOURCE_DIR)\rampart\src\handlers\*.c \
 		$(AXIS2_SOURCE_DIR)\rampart\src\util\*.c
@@ -649,11 +652,30 @@ LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_INSTALL_DIR)\lib\vc
 LIBS = $(LIBS) libeay32MT.lib ssleay32MT.lib
 !endif
 
+omxmlsec:
+	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(OMXMLSEC_SRC) /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:omxmlsec.dll  /IMPLIB:omxmlsec.lib
+	del *.obj
+	
+	if not exist $(AXIS2_INSTALL_DIR)\rampart mkdir $(AXIS2_INSTALL_DIR)\rampart
+
+	if not exist $(AXIS2_INSTALL_DIR)\rampart\rampart mkdir $(AXIS2_INSTALL_DIR)\rampart\rampart
+
+	copy omxmlsec.dll $(AXIS2_INSTALL_DIR)\rampart\rampart
+	
+	copy omxmlsec.lib $(AXIS2_INSTALL_DIR)\rampart\rampart
+		
+	del *.dll
+	del *.lib
+	del *.exp
+	copy $(AXIS2_SOURCE_DIR)\rampart\src\data\module.xml $(AXIS2_INSTALL_DIR)\rampart\rampart
 
 mod_rampart:
 	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(MOD_RAMPART_SRC) /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
-	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:mod_rampart.dll  /IMPLIB:mod_rampart.lib
+	$(LD) $(LDFLAGS) /LIBPATH:$(AXIS2_INSTALL_DIR)\rampart\rampart *.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
+	$(AXIS2_PARSER).lib omxmlsec.lib $(LIBS) \
+	$(AXIS2_ENGINE).lib /DLL /OUT:mod_rampart.dll  /IMPLIB:mod_rampart.lib
 	del *.obj
 	
 	if not exist $(AXIS2_INSTALL_DIR)\rampart mkdir $(AXIS2_INSTALL_DIR)\rampart
