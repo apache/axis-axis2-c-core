@@ -23,6 +23,7 @@
 #include <oxs_token_encrypted_data.h>
 #include <oxs_token_encrypted_key.h>
 #include <oxs_token_encryption_method.h>
+#include <oxs_token_data_reference.h>
 #include <oxs_token_cipher_data.h>
 #include <oxs_token_cipher_value.h>
 #include <oxs_token_key_info.h>
@@ -282,7 +283,6 @@ rampart_crypto_engine_decrypt_message(
                       axiom_soap_envelope_t *soap_envelope ,
                       axiom_node_t *sec_node)
 {
-    axis2_status_t ret = AXIS2_FAILURE;
     axiom_node_t *enc_data_node = NULL, *parent_of_enc_node = NULL;
     axiom_node_t *body_node = NULL, *header_node = NULL/*, *decrypted_node = NULL*/;
     axiom_node_t *ref_list_node = NULL;
@@ -294,8 +294,8 @@ rampart_crypto_engine_decrypt_message(
     oxs_key_t *session_key = NULL;
     axis2_array_list_t *uuid_list = NULL;
     oxs_enc_engine_t *enc_engine = NULL;
-    ret = AXIS2_FAILURE;
     rampart_crypto_engine_impl_t *engine_impl = NULL;
+    axis2_status_t ret = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     engine_impl = AXIS2_INTF_TO_IMPL(engine);

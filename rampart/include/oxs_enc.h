@@ -24,7 +24,6 @@
   */
 
 #include <axis2_defines.h>
-#include <oxs_strings.h>
 #include <oxs_ctx.h>
 #include <axis2_env.h>
 #include <axiom_node.h>
@@ -39,11 +38,11 @@ extern "C"
 *@node node to be encrypted
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_enc_xml_encrypt(const axis2_env_t *env,
-                        enc_ctx_t* ctx,
-                        axiom_node_t* tmpl,
-                        axiom_node_t* node                        
-                    );
+oxs_enc_xml_encrypt(
+    const axis2_env_t *env,
+    enc_ctx_t* ctx,
+    axiom_node_t* tmpl,
+    axiom_node_t* node);
 
 /**
 *@data data to be encrypted

@@ -26,8 +26,8 @@
   * @file 
   * @brief 
   */
-#ifndef OPENSSL_PKEY
-#define OPENSSL_PKEY
+#ifndef OPENSSL_PKEY_H
+#define OPENSSL_PKEY_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -165,4 +165,4 @@ extern "C" {
 }
 #endif
 
-#endif    /* OPENSSL_PKEY */
+#endif    /* OPENSSL_PKEY_H */

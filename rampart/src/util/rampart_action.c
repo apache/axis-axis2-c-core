@@ -22,6 +22,7 @@
 #include <axis2_util.h>
 #include <rampart_action.h>
 #include <rampart_constants.h>
+#include <rampart_handler_util.h>
 
 
 
@@ -269,9 +270,8 @@ rampart_actions_populate_from_ctx (
 AXIS2_EXTERN rampart_actions_t *AXIS2_CALL
 rampart_actions_create(const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, NULL);
-
     rampart_actions_impl_t * actions_impl= NULL;
+    AXIS2_ENV_CHECK(env, NULL);
     actions_impl = AXIS2_MALLOC(env->allocator,sizeof(rampart_actions_impl_t));
     if (!actions_impl)
     {
@@ -766,7 +766,7 @@ rampart_actions_set_time_to_live(
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 rampart_actions_reset( rampart_actions_t * actions, const axis2_env_t *env)
 {
     rampart_actions_impl_t * actions_impl= NULL;
@@ -790,7 +790,7 @@ rampart_actions_reset( rampart_actions_t * actions, const axis2_env_t *env)
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 rampart_actions_free( rampart_actions_t * actions, const axis2_env_t *env)
 {
     rampart_actions_impl_t * actions_impl= NULL;
@@ -875,7 +875,7 @@ rampart_actions_free( rampart_actions_t * actions, const axis2_env_t *env)
 }
 
 /*Populate actions by extracting values from parameters set*/
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+axis2_status_t AXIS2_CALL
 rampart_actions_populate_from_params (rampart_actions_t *actions, 
 						const axis2_env_t *env, axis2_param_t *param_action  )
 {

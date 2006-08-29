@@ -73,5 +73,5 @@ axis2_allocator_realloc_impl(axis2_allocator_t *allocator, void *ptr, size_t siz
 void AXIS2_CALL
 axis2_allocator_free_impl(axis2_allocator_t *allocator, void *ptr)
 {
-    return free(ptr);
+   free(ptr);
 }

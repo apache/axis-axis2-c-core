@@ -240,8 +240,9 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                             status = AXIS2_SUCCESS;
                         }else{
                             /*TODO return a fault*/
-                            AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Timestamp is not valid ");
                             axis2_array_list_t *sub_codes = NULL;
+
+                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart] Timestamp is not valid");
                             sub_codes = axis2_array_list_create(env, 1);
                             if (sub_codes)
                             {

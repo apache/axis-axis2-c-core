@@ -269,7 +269,7 @@ axis2_date_time_serialize_time (axis2_date_time_t *date_time,
     struct tm* time = NULL;
     char* time_str = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     
     date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
     time = date_time_impl->utcTime;
@@ -287,7 +287,7 @@ axis2_date_time_serialize_date (axis2_date_time_t *date_time,
     struct tm* time= NULL;
     char* date_str = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     
     date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
     time = date_time_impl->utcTime;
@@ -307,7 +307,7 @@ axis2_date_time_serialize_date_time (axis2_date_time_t *date_time,
     struct tm* time = NULL;
     char* date_time_str = NULL;
     
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     
     date_time_impl = AXIS2_INTF_TO_IMPL(date_time);
     time = date_time_impl->utcTime;

@@ -17,14 +17,19 @@
 #ifndef XML_SCHEMA_OBJ_TABLE_H
 #define XML_SCHEMA_OBJ_TABLE_H
 
+/** @defgroup xml_schema_obj_table Xml Schema Obj Table
+  * @ingroup xml_schema
+  * @{
+  */
+  
 /**
  * @file xml_schema_obj_table.h
- * @brief Axis2 Xml Schema Obj Table  interface
- *          A table class that provides read-only helpers for Xml Schema 
- *          Object objects. This class is used to provide the tables for 
- *          contained elements that are within the schema as tables that 
- *          are accessed from the Xml Schema class (for example, Attributes, 
- *          Attribute Groups, Elements, and so on).
+ * @brief xml_schema_obj_table collection 
+ * xml_schema_collection is a collection interface that
+ * provides read-only helpers for xml_schema_obj structs.
+ * This is used to provide the tables for contained elements that 
+ * are within the schema as tables that are accessed from the xml_schema functons
+ * (for example, Attributes, Attribute Groups, Elements, and so on).
  */
 
 #include <axis2_allocator.h>
@@ -42,48 +47,84 @@ extern "C"
 {
 #endif
 
-typedef struct xml_schema_obj_table 
-                    xml_schema_obj_table_t;
-typedef struct xml_schema_obj_table_ops 
-                    xml_schema_obj_table_ops_t;
+/* Type name for struct xml_schema_obj_table */
+typedef struct xml_schema_obj_table xml_schema_obj_table_t;
 
-/** @defgroup xml_schema_obj_table Xml Schema Obj Table
-  * @ingroup xml_schema
-  * @{
-  */
+/* Type name for struct xml_schema_obj_table_ops */
+typedef struct xml_schema_obj_table_ops xml_schema_obj_table_ops_t;
 
+
+/**
+ * struct xml_schema_obj_table_ops */
+ 
 struct xml_schema_obj_table_ops
 {
    /** 
-     * Deallocate memory
-     * @return status code
+     * Free xml_schema_obj_table struct
+     * When freing struct instances, whose references kept 
+     * in the table are not freed.
+     * @param obj_table pointer to xml_schema_obj_table
+     * @param env environment struct
+     * @return AXIS2_SUCCESS on success, AXIS2_FAILURE on failure.
      */
     axis2_status_t (AXIS2_CALL *
     free)(
             xml_schema_obj_table_t *obj_table,
             const axis2_env_t *env);
-
+            
+    /**
+     * Get number of elements in the table 
+     * @param obj_table pointer to obj_table struct instance
+     * @param env environment 
+     * @return Number of elements , 0 if no elements are present
+     */
     int (AXIS2_CALL *
     get_count)(
             xml_schema_obj_table_t *obj_table,
             const axis2_env_t *env);
-
+    /**
+     * Get an item in the table by giving matching qname 
+     * @param obj_table pointer to obj_table struct instance 
+     * @param env environment struct
+     * @param qname pointer to qname struct
+     */
     void *(AXIS2_CALL *
     get_item)(
             xml_schema_obj_table_t *obj_table,
             const axis2_env_t *env,
             const axis2_qname_t *qname);
 
+    /**
+     * Get an array_list containing the qnames which
+     * are used as keys in the table
+     * @param obj_table pointer to xml_schema_obj_table struct instance
+     * @param env environment struct
+     * @returns axis2_array_list struct instance containing keys 
+     */
     axis2_array_list_t *(AXIS2_CALL *
     get_names)(
             xml_schema_obj_table_t *obj_table,
             const axis2_env_t *env);
 
+    /**
+     * Get an array list of values stored in the table 
+     * @param obj_table pointer struct xml_schema_obj_table
+     * @param env environment
+     * @returns array_list containing all values in the xml_schema_obj_table
+     * The returned values are read only and must not be modified
+     */
     axis2_array_list_t *(AXIS2_CALL *
     get_values)(
             xml_schema_obj_table_t *obj_table,
             const axis2_env_t *env);
 
+    /** 
+     * Checks whether there is a value stored with a qiven qname 
+     * @param obj_table pointer to xml_schema_obj_table
+     * @param env environment
+     * @param qname pointer to axis2_qname_t 
+     * @returns AXIS2_TRUE if value exists, AXIS2_FALSE otherwise
+     */
     axis2_bool_t (AXIS2_CALL *
     contains)(
             xml_schema_obj_table_t *obj_table,
