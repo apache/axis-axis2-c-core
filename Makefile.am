@@ -4,7 +4,7 @@ docsdir=$(prefix)/docs
 SUBDIRS = modules $(TESTDIR) include ides
 include_HEADERS=$(top_builddir)/include/*.h
 data_DATA= samples/server/axis2.xml README \
-	COPYING config.guess missing install-sh depcomp config.sub ltmain.sh
+	INSTALL CREDITS COPYING config.guess missing install-sh depcomp config.sub ltmain.sh
 
 logs_DATA=
 docs_DATA=docs/*
