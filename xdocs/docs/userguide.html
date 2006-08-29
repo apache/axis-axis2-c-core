@@ -1186,7 +1186,6 @@ void invoke_service_using_databinding ( axis2_stub_t* stub,
 }
 </pre>
 
-<!--Start rampart-->
 <a id="Providing_security_using_Rampart"></a>
 <h2>Providing security using Rampart/C</h2>
 <p>Rampart/C is the security module for Axis2/C, which supports UsernameToken based authentication and Timestamps as per WS-Security specification. In this user guide we will explain how to use Rampart inside Axis2/C.</p>
@@ -1287,7 +1286,7 @@ void invoke_service_using_databinding ( axis2_stub_t* stub,
 <p> your_function should return the password as axis2_char_t* for the username specified, if any.
 Inside your function, you may write your code to supply stored passwords.<p>
 
-<p>Then the path to the callback module needs to be specified in axis2.xml under passwordCallbackClass. [The word ¿Class¿ instead of ¿Module¿ is only for the compatibility with java implementation]
+<p>Then the path to the callback module needs to be specified in axis2.xml under passwordCallbackClass. [The word, Class instead of Module is only for the compatibility with java implementation]
 </p>
 <a id="Adding_security_parameters_dynamically" > </a>
 <h3>Adding security parameters dynamically</h3>
@@ -1300,7 +1299,6 @@ Inside your function, you may write your code to supply stored passwords.<p>
 <p>Above will set the username parameter dynamically. 
 All the values specified in the axis2.xml will be overridden by the dynamic settings. </p>
 
-<!-- End rampart-->
 
 </body>
 </html>
