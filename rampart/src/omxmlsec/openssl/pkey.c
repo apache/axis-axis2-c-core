@@ -287,6 +287,7 @@ openssl_pkey_load (
     EVP_PKEY *pk = NULL;
     BIO *bio;
     int type = OPENSSL_PKEY_TYPE_UNKNOWN;
+    int ret ;
     openssl_pkey_impl_t * pkey_impl= NULL;
     axis2_status_t status = AXIS2_FAILURE;
  
@@ -298,7 +299,7 @@ openssl_pkey_load (
     pk = PEM_read_bio_PrivateKey(bio, NULL, 0 , password);
     if(!pk){
         /*If prv key is not found then read the public key*/
-        BIO_reset(bio);
+        ret  = BIO_reset(bio);
         pk = PEM_read_bio_PUBKEY(bio, NULL, 0 , password);
         if(!pk){
             /*If there is no key by now its an error*/
