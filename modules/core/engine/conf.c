@@ -1278,7 +1278,7 @@ axis2_conf_add_transport_out(
     axis2_transport_out_desc_t *transport)
 {
     axis2_conf_impl_t *config_impl = NULL;
-    axis2_qname_t *qname = NULL;
+    const axis2_qname_t *qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, transport, AXIS2_FAILURE);

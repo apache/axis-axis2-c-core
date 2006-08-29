@@ -969,8 +969,8 @@ axis2_phase_resolver_build_out_transport_chains(
         }
         case AXIS2_FAULT_OUT_FLOW:
         {
-            flow = AXIS2_TRANSPORT_OUT_DESC_GET_FAULTFLOW(transport, env);
-            phase = AXIS2_TRANSPORT_OUT_DESC_GET_FAULTPHASE(transport, env);
+            flow = AXIS2_TRANSPORT_OUT_DESC_GET_FAULT_OUT_FLOW(transport, env);
+            phase = AXIS2_TRANSPORT_OUT_DESC_GET_FAULT_PHASE(transport, env);
             break;
         }
         }

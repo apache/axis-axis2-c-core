@@ -860,7 +860,7 @@ axis2_conf_builder_process_transport_senders(
                 flow = AXIS2_DESC_BUILDER_PROCESS_FLOW(conf_builder->desc_builder,
                     env, out_fault_flow_element, builder_impl->conf->param_container,
                         out_fault_flow_node);
-                status = AXIS2_TRANSPORT_OUT_DESC_SET_FAULTFLOW(transport_out, env, flow);
+                status = AXIS2_TRANSPORT_OUT_DESC_SET_FAULT_OUT_FLOW(transport_out, env, flow);
                 if(AXIS2_SUCCESS != status)
                 {
                     AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
