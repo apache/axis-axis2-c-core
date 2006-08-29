@@ -292,6 +292,7 @@ rampart_crypto_engine_decrypt_message(
     oxs_ctx_t * enc_ctx = NULL;
     axiom_node_t *enc_key_node = NULL; 
     oxs_key_t *session_key = NULL;
+    oxs_key_t *prv_key = NULL;
     axis2_array_list_t *uuid_list = NULL;
     oxs_enc_engine_t *enc_engine = NULL;
     rampart_crypto_engine_impl_t *engine_impl = NULL;
@@ -310,12 +311,14 @@ rampart_crypto_engine_decrypt_message(
     /*TODO Get the Encrypted key*/
     enc_key_node =  oxs_axiom_get_first_child_node_by_name(env, sec_node, OXS_NodeEncryptedKey, NULL, NULL);
 
+    /*Create a private key and use to to extract the sesison key*/
+    prv_key = oxs_key_create_key(env);
+    ret = OXS_KEY_POPULATE(prv_key, env, NULL, "keys/rsakey.pem", 0, OXS_KEY_USAGE_DECRYPT);
+    
     /*We support only one Encrypted Key element at the moment*/   
     session_key = oxs_key_create_key(env);
-    ret = OXS_KEY_POPULATE(session_key, env, NULL, "keys/rsakey.pem", 0, OXS_KEY_USAGE_DECRYPT);
-    
     enc_engine = oxs_enc_engine_create(env);
-    ret = OXS_ENC_ENGINE_GET_ENCRYPTED_KEY(enc_engine, env, enc_key_node, session_key); 
+    ret = OXS_ENC_ENGINE_GET_ENCRYPTED_KEY(enc_engine, env, enc_key_node, prv_key , session_key); 
     if(ret == AXIS2_FAILURE){
         oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
                      "Cannot get the encrypted key");

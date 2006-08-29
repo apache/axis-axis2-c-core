@@ -90,6 +90,7 @@ oxs_enc_engine_get_encrypted_key(
     oxs_enc_engine_t *enc_engine,
     const axis2_env_t *env,
     axiom_node_t *enc_key_node,
+    oxs_key_t *prv_key,
     oxs_key_t *session_key);
 
 axis2_status_t AXIS2_CALL 
@@ -200,6 +201,7 @@ oxs_enc_engine_get_encrypted_key(
         oxs_enc_engine_t *enc_engine,
         const axis2_env_t *env,
         axiom_node_t *enc_key_node,
+        oxs_key_t *prv_key,
         oxs_key_t *session_key)
 {
     axis2_char_t *key_enc_algo = NULL, *encrypted_key_value = NULL;
@@ -254,13 +256,12 @@ oxs_enc_engine_get_encrypted_key(
     decrypted_key_buf = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
 
     /*Decrypt the encrypted key*/
-    status  = oxs_enc_engine_prvkey_decrypt_data(enc_engine, env, encrypted_key_buf, decrypted_key_buf, OXS_KEY_GET_NAME(session_key, env));  
+    status  = oxs_enc_engine_prvkey_decrypt_data(enc_engine, env, encrypted_key_buf, decrypted_key_buf, OXS_KEY_GET_NAME(prv_key, env));  
     if(status == AXIS2_FAILURE){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "oxs_prvkey_decrypt_data failed");
         return AXIS2_FAILURE;
     }
-    /*Create the session key*/
     /*Trim data to the key size*/
     OXS_KEY_SET_DATA(session_key, env,(axis2_char_t*) decrypted_key_buf->data);
     OXS_KEY_SET_SIZE(session_key, env, decrypted_key_buf->size);

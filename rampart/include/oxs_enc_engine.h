@@ -55,7 +55,12 @@ extern "C"
         free)(
                 oxs_enc_engine_t *enc_engine,
                 const axis2_env_t *env);
-
+        /**
+         * 
+         * @param enc_engine pointer to enc_engine
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         prvkey_decrypt_data) (
                 oxs_enc_engine_t *enc_engine,
@@ -65,6 +70,12 @@ extern "C"
                 axis2_char_t *filename
                 );
 
+        /**
+         * 
+         * @param enc_engine pointer to enc_engine
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         pubkey_encrypt_data)(
                 oxs_enc_engine_t *enc_engine,
@@ -74,14 +85,33 @@ extern "C"
                 axis2_char_t *filename
                 );
 
+        /**
+         * Extracts data from the encryption key node and decrypt to get the  session key. 
+         * @param enc_engine pointer to enc_engine
+         * @param env pointer to environment struct
+         * @param enc_key_node EncryptionKey node
+         * @param prv_key Private key to be used to decrypt the sesison key
+         * @param session_key Decrypted session key
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         get_encrypted_key)(
                 oxs_enc_engine_t *enc_engine,
                 const axis2_env_t *env,
                 axiom_node_t *enc_key_node,
+                oxs_key_t *prv_key,
                 oxs_key_t *session_key);
 
-        /*Does encryption or decryption depending on the enc_ctx*/
+        /**
+         * Common method to either en/decrypt data in the input buffer.
+         * The operation is determined by the parameter set in the context.
+         * @param enc_engine pointer to enc_engine
+         * @param env pointer to environment struct
+         * @param enc_ctx the encryption context
+         * @param input The input buffer containing data to be en/decrypted
+         * @param result The resulting buffer to carry data after en/decrypting
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         crypt)(
                 oxs_enc_engine_t *enc_engine,
@@ -90,6 +120,14 @@ extern "C"
                 oxs_buffer_ptr input,
                 oxs_buffer_ptr result);
 
+        /**
+         * Populate the cipher value node. 
+         * @param enc_engine pointer to enc_engine
+         * @param env pointer to environment struct
+         * @param template_node the root node of the template
+         * @param databuf data buffer containing the cipher value
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         populate_cipher_value)(
                 oxs_enc_engine_t *enc_engine,
@@ -97,6 +135,15 @@ extern "C"
                 axiom_node_t* template_node,
                 oxs_buffer_ptr databuf);
     
+        /**
+         * Decrypt an xml document template. Expects a template similar to the above. 
+         * @param enc_engine pointer to enc_engine
+         * @param env pointer to environment struct
+         * @param template_node the root node of the template to be decrypted
+         * @param data The address reference of the decrypted data
+         * @param enc_ctx the encryption context
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         decrypt_template)(
                 oxs_enc_engine_t *enc_engine,
@@ -105,6 +152,15 @@ extern "C"
                 axis2_char_t** decrypted_data,
                 oxs_ctx_t * enc_ctx);
     
+        /**
+         * Encrypt an xml document template. Expects a template similar to the above. 
+         * @param enc_engine pointer to enc_engine
+         * @param env pointer to environment struct
+         * @param template_node the root node of the template to be encrypted
+         * @param data The address reference of the encrypted data
+         * @param enc_ctx the encryption context
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
         encrypt_template)(
                 oxs_enc_engine_t *enc_engine,
@@ -143,8 +199,8 @@ extern "C"
 #define OXS_ENC_ENGINE_PUB_KEY_ENCRYPT_DATA(enc_engine, env, input, result, filename) \
         ((enc_engine)->ops->pubkey_encrypt_data(enc_engine, env, input, result, filename))
 
-#define OXS_ENC_ENGINE_GET_ENCRYPTED_KEY(enc_engine, env, enc_key_node, session_key) \
-        ((enc_engine)->ops->get_encrypted_key(enc_engine, env, enc_key_node, session_key))
+#define OXS_ENC_ENGINE_GET_ENCRYPTED_KEY(enc_engine, env, enc_key_node, prv_key, session_key) \
+        ((enc_engine)->ops->get_encrypted_key(enc_engine, env, enc_key_node, prv_key, session_key))
 
 #define OXS_ENC_ENGINE_CRYPT(enc_engine, env, enc_ctx, input, result) \
         ((enc_engine)->ops->crypt(enc_engine, env, enc_ctx, input, result))
