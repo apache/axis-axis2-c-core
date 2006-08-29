@@ -102,16 +102,15 @@ AC_CONFIG_FILES([Makefile \
     src/handlers/Makefile \
     src/core/Makefile\
     src/util/Makefile\
+#    test/Makefile \
+#    test/util/Makefile \
+#    test/openssl/Makefile  \
+#    test/openssl/rsa/Makefile \
     samples/Makefile \
     samples/callback/Makefile \
     samples/client/Makefile \
     samples/client/echo/Makefile \
-    samples/client/echo/data/Makefile \
-    test/Makefile \
-    test/omxmlsec/Makefile \
-    test/util/Makefile \
-    test/openssl/Makefile  \
-    test/openssl/rsa/Makefile 
+    samples/client/echo/data/Makefile 
     ])
     
 AC_OUTPUT

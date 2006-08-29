@@ -489,7 +489,6 @@ extern "C"
         * @param ctx axis2 context
         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
         */
-
         axis2_status_t (AXIS2_CALL *
         populate_from_ctx) (
                     rampart_actions_t *actions,

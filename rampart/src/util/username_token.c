@@ -68,7 +68,7 @@ axis2_status_t AXIS2_CALL
 rampart_username_token_free(rampart_username_token_t *username_token,
     const axis2_env_t *env);
  
-axiom_node_t* AXIS2_CALL
+axis2_status_t AXIS2_CALL
 rampart_username_token_build(rampart_username_token_t *username_token,
     const axis2_env_t *env,
     axis2_ctx_t *ctx,
@@ -215,7 +215,7 @@ rampart_username_token_free(rampart_username_token_t *username_token,
 
 }
 
-axiom_node_t* AXIS2_CALL
+axis2_status_t AXIS2_CALL
 rampart_username_token_build(rampart_username_token_t *username_token,
     const axis2_env_t *env,
     axis2_ctx_t *ctx,
@@ -245,15 +245,8 @@ rampart_username_token_build(rampart_username_token_t *username_token,
     
     if(!password)
     {
-        return NULL;
+        return AXIS2_FAILURE;
     }   
-    /*TODO this is a hack pls modify the rampart_actions to priorties dynamic values*/ 
-    if(rampart_get_property_from_ctx(env, ctx,RAMPART_ACTION_USER))    
-        username = rampart_get_property_from_ctx(env, ctx,RAMPART_ACTION_USER);
-    
-    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_PASSWORD_TYPE))
-        password_type = rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_PASSWORD_TYPE);
-
  
     ut_ele = axiom_element_create (env, sec_node, 
                                         RAMPART_SECURITY_USERNAMETOKEN, 
@@ -355,7 +348,7 @@ rampart_username_token_build(rampart_username_token_t *username_token,
              }                 
          } /*End if passwordType == passwordText*/
     }
-    return sec_node;
+    return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL

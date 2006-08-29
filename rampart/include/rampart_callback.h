@@ -47,11 +47,25 @@ extern "C"
      */
     AXIS2_DECLARE_DATA struct rampart_callback_ops
     {            
-            /*User has to override this method*/
+           /**
+            * Retuens a password for the given username. 
+            * By providing a function to this function pointer 
+            * user can write custom password callback midule
+            * @param callback rampart callback pointer
+            * @param env environment must not be null
+            * @param username The username of the password expected.
+            * @return returns password if any. Otherwise NULL returns  
+            */
             axis2_char_t *(AXIS2_CALL*
             callback_password)(rampart_callback_t *callback,
             const axis2_env_t *env, const axis2_char_t *username);
-            
+           
+           /**
+            * Free function of the rampart callback
+            * @param callback rampart callback pointer
+            * @param env environment must not be null
+            * @return AXIS2_SUCCESS on success AXIS2_FAILURE otherwise
+            */ 
             axis2_status_t (AXIS2_CALL*
             free)(rampart_callback_t *rcb,
                   const axis2_env_t* env);

@@ -99,27 +99,26 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
 
             if(!param_in_flow_security)
             {
-                /*This check ensures that user doesnt need to have securoty checking in his message flow*/
-                rampart_print_info(env,"No Inflow Security. So nothing to do");
+                /*This check ensures that user doesnt need to have security checking in his message flow*/
+                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No Inflow Security. So nothing to do");
                 return AXIS2_SUCCESS;
             }else
             {
-                rampart_print_info(env,"Inflow Security found");
+                AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler]Inflow Security found");
             }
 
             /*Get actions*/
             action_list = rampart_get_actions(env, ctx, param_in_flow_security);
 
-            rampart_print_info(env,"checking action list...");
             if(!action_list)
             {
-                rampart_print_info(env,"action_list is empty");
+                AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler]action_list is empty");
                 return AXIS2_SUCCESS;
             }
 
             if(AXIS2_ARRAY_LIST_IS_EMPTY(action_list, env))
             {
-                rampart_print_info(env,"No actions defined");
+                AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] No actions defined");
                 return AXIS2_SUCCESS;
             }
 
@@ -128,7 +127,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
 
             if(!param_action)
             {
-                rampart_print_info(env,"Cannot find first action element");
+                AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Cannot find first action element");
                 return AXIS2_FAILURE;
             }
             /*Create and populate rampart actions*/
@@ -137,12 +136,11 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
             /*Then re-populate using the axis2_ctx*/
             status = RAMPART_ACTIONS_POPULATE_FROM_CTX(actions, env, ctx);
 
-            /*items = RAMPART_ACTIONS_GET_ITEMS(actions, env);*/
             items = AXIS2_STRDUP(RAMPART_ACTIONS_GET_ITEMS(actions, env), env);
     
             if(!items)
             {
-                rampart_print_info(env,"No items ... ");
+                AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] No items defined");
                 return AXIS2_FAILURE;
             }
                  
@@ -164,18 +162,19 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                     return AXIS2_FAILURE;
                 }
                 sec_ele = AXIOM_NODE_GET_DATA_ELEMENT(sec_node, env);
-
-                if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL)) )
-                {       rampart_username_token_t *username_token = NULL;
+                
+                /*UsernameToken*/
+                if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL)) ){       
+                        rampart_username_token_t *username_token = NULL;
                         axis2_status_t valid_user = AXIS2_FAILURE;
                         
                         username_token = rampart_username_token_create(env);
-                        rampart_print_info(env,"Validate usernametoken ");
+                        AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Validating UsernameToken");
                         valid_user = RAMPART_USERNAME_TOKEN_VALIDATE(username_token, env, 
                                                         msg_ctx,soap_header, actions);
                         if(valid_user)
                         {
-                            rampart_print_info(env,"User validation success ");
+                            AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Validating UsernameToken SUCCESS");
                             status = AXIS2_SUCCESS;
                         }else{
                             axis2_array_list_t *sub_codes = NULL;
@@ -185,64 +184,63 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                                 AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
                             }
 
+                            AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Validating UsernameToken FAILED");
                             rampart_create_fault_envelope(env, "wsse:UsernameToken", "Username is not valid",sub_codes, msg_ctx);
                             return AXIS2_FAILURE;
                         }
-                    
+                /*Encrypt*/    
                 }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, AXIS2_STRTRIM(env, item, NULL)) ){
                         /*Do useful to verify encrypt*/    
                         
                         rampart_crypto_engine_t *engine = NULL;
-                        printf("InHandler : Decrypt..............................\n"); 
+                        AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Decrypting message");
+                        
                         engine = rampart_crypto_engine_create(env);
                         enc_status = RAMPART_CRYPTO_ENGINE_DECRYPT_MESSAGE(engine, env, msg_ctx, actions, soap_envelope, sec_node);
 
                         RAMPART_CRYPTO_ENGINE_FREE(engine, env);   
                         if(enc_status != AXIS2_SUCCESS){
-                            rampart_print_info(env, "Decryption failed");
+                            AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Decryption FAILED");
                             return AXIS2_FAILURE;
                         }
                         
                         enc_status = AXIS2_SUCCESS; /*TODO remove*/
                         status = AXIS2_SUCCESS;
-                        rampart_print_info(env, "Decryption success");
-                        
+                        AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Decryption SUCCESS");
+                /*Signature*/        
                 }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, AXIS2_STRTRIM(env, item, NULL)) ){
-                        /*Do useful to verify sign*/       
-                        printf("InHandler : Signature\n"); 
-
+                        AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Verfying signature... NOT IMPLEMENTED YET.. SORRY");
+                /*Timestamp Token*/
                 }else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, AXIS2_STRTRIM(env, item, NULL))){
-                         axis2_qname_t *qname = NULL;
-                         axis2_status_t valid_ts = AXIS2_FAILURE;
-                         rampart_timestamp_token_t *timestamp_token = NULL;
-                         rampart_print_info(env,"Validate timestamp ");
-                    
+                        axis2_qname_t *qname = NULL;
+                        axis2_status_t valid_ts = AXIS2_FAILURE;
+                        rampart_timestamp_token_t *timestamp_token = NULL;
                         
-                         qname = axis2_qname_create(env,
+                        AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Validating Timestamp");
+                        
+                        qname = axis2_qname_create(env,
                                      RAMPART_SECURITY_TIMESTAMP,
                                      RAMPART_WSU_XMLNS,
                                      RAMPART_WSU);
-                         if(qname)
-                         {
-                             ts_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(sec_ele, env, qname, sec_node, &ts_node);
-                             if(!ts_ele)
-                             {
-                                 AXIS2_LOG_INFO(env->log,"Cannot find Timestamp in Security element...");
-                                 return AXIS2_FAILURE;
-                             }
-                         }
-                         timestamp_token = rampart_timestamp_token_create(env);
-                         valid_ts = RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, ts_node);               
-                         /*TODO free*/
-                         if(valid_ts)
+                        if(qname)
                         {
-                            AXIS2_LOG_INFO(env->log,"Timestamp is valid ");
-                            rampart_print_info(env,"Timestamp is valid ");
+                            ts_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(sec_ele, env, qname, sec_node, &ts_node);
+                            if(!ts_ele)
+                            {
+                                AXIS2_LOG_INFO(env->log,"Cannot find Timestamp in Security element...");
+                                return AXIS2_FAILURE;
+                            }
+                        }
+                        timestamp_token = rampart_timestamp_token_create(env);
+                        valid_ts = RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, ts_node);               
+                        /*TODO free*/
+                        if(valid_ts)
+                        {
+                            AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Validating Timestamp is SUCCESS ");
                             status = AXIS2_SUCCESS;
                         }else{
                             /*TODO return a fault*/
-                            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart] Timestamp is not valid");
-                            rampart_print_info(env,"Timestamp is not valid");
+                            AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Timestamp is not valid ");
                             axis2_array_list_t *sub_codes = NULL;
                             sub_codes = axis2_array_list_create(env, 1);
                             if (sub_codes)

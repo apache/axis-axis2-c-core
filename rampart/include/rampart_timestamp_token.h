@@ -41,17 +41,17 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
         free)(rampart_timestamp_token_t *timestamp_token,
             const axis2_env_t *env);
-        /*
+        /**
          * Builds timestamp token.
          * @param env pointer to environment struct
          * @param ctx axis2 context
          * @param sec_node security node
          * @param sec_ns_obj Security namespace object
          * @param ttl Time to live. The time difference btwn Created and Expired
-         * @return timestamp token.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
        
-        axiom_node_t* (AXIS2_CALL *
+        axis2_status_t (AXIS2_CALL *
         build)(rampart_timestamp_token_t *timestamp_token,
             const axis2_env_t *env,
             const axis2_ctx_t *ctx,

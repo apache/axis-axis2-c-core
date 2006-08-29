@@ -113,6 +113,7 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
     if (!soap_envelope)
     {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] No SOAP envelope found. ERROR");
         return AXIS2_FAILURE;
     }
     
@@ -121,6 +122,7 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
   
     if (!soap_header)
     {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] No SOAP header found. ERROR");
         /*No SOAP header, so no point of proceeding*/
         return AXIS2_SUCCESS; 
     }
@@ -139,7 +141,7 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
 
         if(!param_out_flow_security)
         {
-            rampart_print_info(env,"No Outflow Security");
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] No Outflow Security. So nothing to do");
             return AXIS2_SUCCESS;
         }
 
@@ -148,13 +150,13 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
         
         if(!action_list)
         {
-            rampart_print_info(env,"action_list is empty");
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] No actions defined in outflow security");
             return AXIS2_SUCCESS;
         }
         
         if(AXIS2_ARRAY_LIST_IS_EMPTY(action_list, env))
         {
-            rampart_print_info(env,"No actions defined");
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] No actions defined in outflow security");
             return AXIS2_SUCCESS; 
         }
 
@@ -163,7 +165,7 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
         
         if(!param_action)
         {
-            rampart_print_info(env,"Cannot find first action element");
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Cannot find first action element ERROR");
             return AXIS2_FAILURE;
         }
         
@@ -174,14 +176,13 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
         /*Then re-populate using the axis2_ctx*/
         status = RAMPART_ACTIONS_POPULATE_FROM_CTX(actions, env, ctx);
     
-        /*items = RAMPART_ACTIONS_GET_ITEMS(actions, env);*/
         items = AXIS2_STRDUP(RAMPART_ACTIONS_GET_ITEMS(actions, env), env);
 
         if(!items)
         {
-            rampart_print_info(env,"No items ... ");
-           return AXIS2_FAILURE;
-       }
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] No action items defined. ERROR");
+            return AXIS2_FAILURE;
+        }
   
         sec_ns_obj =  axiom_namespace_create (env, RAMPART_WSSE_XMLNS,
                                       RAMPART_WSSE);   
@@ -195,10 +196,6 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
             sec_node = AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE (sec_header_block, env);    
             sec_ele = (axiom_element_t *) 
                  AXIOM_NODE_GET_DATA_ELEMENT (sec_node, env);
-            /*
-            AXIOM_ELEMENT_DECLARE_NAMESPACE (sec_ele, env,
-                                           sec_node, sec_ns_obj);
-            */
             
             /*Get action items seperated by spaces*/
             item = strtok (items," ");
@@ -212,14 +209,16 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
                 {
                     rampart_username_token_t *username_token = NULL;
                     username_token = rampart_username_token_create(env);
-    
-                    sec_node = RAMPART_USERNAME_TOKEN_BUILD(username_token,
+                    
+                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler]  building UsernmaeToken");
+                    status = RAMPART_USERNAME_TOKEN_BUILD(username_token,
                                         env, 
                                         ctx, 
                                         actions,  
                                         sec_node, 
                                         sec_ns_obj);
-                    if(!sec_node){
+                    if(status == AXIS2_FAILURE){
+                          AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] UsernmaeToken build failed. ERROR");
                           return AXIS2_FAILURE;
                     }
                     /*TODO free*/
@@ -231,23 +230,27 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
                     axis2_char_t *ttl_str = NULL;
                     int ttl = -1;
                     
+                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler]  building Timestamp Token");
                     ttl_str = RAMPART_ACTIONS_GET_TIME_TO_LIVE(actions, env);
                     ttl = atoi(RAMPART_ACTIONS_GET_TIME_TO_LIVE(actions, env));
                     if(ttl <= 0){
+                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler]  Using default timeToLive value %s",
+                                       RAMPART_TIMESTAMP_TOKEN_DEFAULT_TIME_TO_LIVE);
                         ttl = RAMPART_TIMESTAMP_TOKEN_DEFAULT_TIME_TO_LIVE;
                     } 
                     timestamp_token = rampart_timestamp_token_create(env);
-                    sec_node = RAMPART_TIMESTAMP_TOKEN_BUILD(timestamp_token, env, 
+                    status = RAMPART_TIMESTAMP_TOKEN_BUILD(timestamp_token, env, 
                         ctx, sec_node, sec_ns_obj, ttl);
-                    if(!sec_node){
+                    if(status == AXIS2_FAILURE){
+                          AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Timestamp Token build failed. ERROR");
                           return AXIS2_FAILURE;
                     }
                 /*Encrypt*/                
                 }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, 
                     AXIS2_STRTRIM(env, item, NULL))){
-                    
                     rampart_crypto_engine_t *engine = NULL;
-                    printf("OUtHandler : Item is Encrypt\n"); 
+ 
+                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Encrypting message");
                     engine = rampart_crypto_engine_create(env);
                     
                     enc_status = RAMPART_CRYPTO_ENGINE_ENCRYPT_MESSAGE(engine, env, msg_ctx, actions, soap_envelope, sec_node);
@@ -255,23 +258,22 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
                     RAMPART_CRYPTO_ENGINE_FREE(engine, env);
                     
                     if(enc_status != AXIS2_SUCCESS){
-                       rampart_print_info(env, "Encryption failed");
+                       AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Encryption failed. ERROR");
                        return AXIS2_FAILURE;
                     }
                         
                     enc_status = AXIS2_SUCCESS;/*TODO Remove*/
-                    rampart_print_info(env, "Encryption success");
+                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Encryption success");
                             
                 /*Signature*/    
                 }else if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, 
                     AXIS2_STRTRIM(env, item, NULL))){
-                    printf("OutHandler : Item is Signature. Sorry we dont support\n"); 
+                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Signing message. We do not support yet");
 
                 /*Any other type of action*/ 
                 }else
                 {
-                    rampart_print_info(env,
-                        " Rampart happy to see usernametokens and timestamps at the moment");
+                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] We do not support %s item yet" , item);
                 }
                 item = strtok (NULL, " ");
            }/*End if while*/
@@ -279,7 +281,7 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
            items = NULL;
                 
         }else{
-            rampart_print_info(env,"security header block is NULL");
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Security header block is NULL");
         }
          
     }

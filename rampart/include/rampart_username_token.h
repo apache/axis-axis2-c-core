@@ -50,9 +50,9 @@ extern "C"
          * @param actions collection of actions
          * @param sec_node security node
          * @param sec_ns_obj security namespace object
-         * @return UsernameToken as a node
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */ 
-        axiom_node_t* (AXIS2_CALL *
+        axis2_status_t (AXIS2_CALL *
         build)(rampart_username_token_t *username_token,
             const axis2_env_t *env,
             axis2_ctx_t *ctx,

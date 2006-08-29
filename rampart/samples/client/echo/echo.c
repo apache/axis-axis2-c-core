@@ -21,7 +21,8 @@
 #include <axis2_client.h>
 #include <rampart_constants.h>
 
-#define DYN_SETTINGS 1
+/*Enable following line to setup dynamic values*/
+/*#define DYN_SETTINGS 1*/
 
 axiom_node_t *
 build_om_payload_for_echo_svc(const axis2_env_t *env);
