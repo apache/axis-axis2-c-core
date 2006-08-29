@@ -31,7 +31,7 @@ then
 exit 1
 fi
 
-tar xf axis2c-src-0.92.tar.gz 
+tar xf axis2c-src-0.93.tar.gz 
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -39,7 +39,7 @@ fi
 
 rm -rf util
 
-mv axis2c-src-0.92 util
+mv axis2c-src-0.93 util
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -63,7 +63,7 @@ then
 exit 1
 fi
 
-tar xf axis2c-src-0.92.tar.gz 
+tar xf axis2c-src-0.93.tar.gz 
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -71,7 +71,7 @@ fi
 
 rm -rf axiom
 
-mv axis2c-src-0.92 axiom
+mv axis2c-src-0.93 axiom
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -95,7 +95,7 @@ then
 exit 1
 fi
 
-tar xf axis2c-src-0.92.tar.gz 
+tar xf axis2c-src-0.93.tar.gz 
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -103,7 +103,7 @@ fi
 
 rm -rf xml_schema
 
-mv axis2c-src-0.92 xml_schema
+mv axis2c-src-0.93 xml_schema
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -127,7 +127,7 @@ then
 exit 1
 fi
 
-tar xf axis2c-src-0.92.tar.gz 
+tar xf axis2c-src-0.93.tar.gz 
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -135,7 +135,7 @@ fi
 
 rm -rf woden
 
-mv axis2c-src-0.92 woden
+mv axis2c-src-0.93 woden
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -183,7 +183,7 @@ then
 exit 1
 fi
 
-tar xf axis2c-src-0.92.tar.gz 
+tar xf axis2c-src-0.93.tar.gz 
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -191,7 +191,7 @@ fi
 
 rm -rf rampart
 
-mv axis2c-src-0.92 rampart
+mv axis2c-src-0.93 rampart
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -203,37 +203,37 @@ then
 exit 1
 fi
 
-mv ../axis2c-src-0.92 .
+mv ../axis2c-src-0.93 .
 if [ "$?" -ne 0 ]
 then
 exit 1
 fi
 
-mv ../axiom/axiom axis2c-src-0.92
+mv ../axiom/axiom axis2c-src-0.93
 if [ "$?" -ne 0 ]
 then
 exit 1
 fi
 
-mv ../xml_schema/xml_schema axis2c-src-0.92
+mv ../xml_schema/xml_schema axis2c-src-0.93
 if [ "$?" -ne 0 ]
 then
 exit 1
 fi
 
-mv ../woden/woden axis2c-src-0.92
+mv ../woden/woden axis2c-src-0.93
 if [ "$?" -ne 0 ]
 then
 exit 1
 fi
 
-mv ../rampart/rampart axis2c-src-0.92
+mv ../rampart/rampart axis2c-src-0.93
 if [ "$?" -ne 0 ]
 then
 exit 1
 fi
 
-mv ../util/util axis2c-src-0.92
+mv ../util/util axis2c-src-0.93
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -245,13 +245,13 @@ then
 exit 1
 fi
 
-rm -rf axis2c-src-0.92
+rm -rf axis2c-src-0.93
 if [ "$?" -ne 0 ]
 then
 exit 1
 fi
 
-mv release/axis2c-src-0.92 .
+mv release/axis2c-src-0.93 .
 if [ "$?" -ne 0 ]
 then
 exit 1
@@ -263,7 +263,7 @@ cd xdocs/api
 doxygen doxygenconf
 cd ../..
 cp -r xdocs/api/html target/docs/api/
-cp -r target/docs axis2c-src-0.92
+cp -r target/docs axis2c-src-0.93
 
 for i in `find . -name "*.la"`
 do
