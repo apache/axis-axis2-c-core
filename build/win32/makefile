@@ -629,7 +629,7 @@ copy_samples:
 	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\dynamic_client.c $(AXIS2_INSTALL_DIR)\samples\client\dynamic_client
 	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\README $(AXIS2_INSTALL_DIR)\samples\client\dynamic_client
 
-	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\CalculatorDoc.wsdl $(AXIS2_INSTALL_DIR)\samples\client\dynamic_client
+	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\*.wsdl $(AXIS2_INSTALL_DIR)\samples\client\dynamic_client
 
 
 	if not exist $(AXIS2_INSTALL_DIR)\samples\client\notify mkdir $(AXIS2_INSTALL_DIR)\samples\client\notify
