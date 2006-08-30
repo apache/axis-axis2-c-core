@@ -8,7 +8,7 @@ data_DATA= samples/server/axis2.xml README \
 
 logs_DATA=
 docs_DATA=docs/*
-EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE samples/server/axis2.log samples build axis2_build.sh
+EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE samples/server/axis2.log samples build axis2c_build.sh
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
 	rm -rf `find $(distdir)/ -type d -name .deps`
