@@ -19,7 +19,6 @@ AC_PROG_MAKE_SET
 
 dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
-AC_CHECK_LIB(cutest, CuTestInit)
 AC_CHECK_LIB(z, inflate)
 
 #CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
