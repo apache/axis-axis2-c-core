@@ -8,7 +8,7 @@
         <item name="Releases" href="download.cgi"/>
         <item name="View Source Code Online"
           href="http://svn.apache.org/viewcvs.cgi/webservices/axis2/trunk/c/"/>
-        <item name="Checkout the Source Code" href="svn.html"/>
+        <item name="Checkout Source Code" href="svn.html"/>
       </item>
       <item name="Documentation" href="docs/index.html">
       </item>
