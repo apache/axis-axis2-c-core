@@ -173,8 +173,6 @@ rampart_crypto_engine_encrypt_message(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     engine_impl = AXIS2_INTF_TO_IMPL(engine);
 
-
-
     /*Generate the session key*/
     sessionkey = oxs_key_create_key(env);
     if(!sessionkey){
@@ -184,10 +182,9 @@ rampart_crypto_engine_encrypt_message(
     }
     /*Generate a random key for the encryption session*/
     ret = OXS_KEY_FOR_ALGO(sessionkey, env,  RAMPART_ACTIONS_GET_ENC_SYM_ALGO(actions, env));
-    ret = OXS_KEY_SET_NAME(sessionkey, env, "session_key");
+    ret = OXS_KEY_SET_NAME(sessionkey, env, "sessionkey");
     ret = OXS_KEY_SET_USAGE(sessionkey, env, OXS_KEY_USAGE_ENCRYPT);
 
-    /*printf("\nsession_key for encryption = %s\n", sessionkey->data);*/
 
     body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
     header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
@@ -226,6 +223,10 @@ rampart_crypto_engine_encrypt_message(
     
     /*Set the key*/
     OXS_CTX_SET_KEY(enc_ctx, env, sessionkey);
+
+
+    printf("\nSession_key for encryption = %s\n", OXS_KEY_GET_DATA(sessionkey, env));
+    printf("\nString for encryption = %s\n", str_to_enc);
 
     /*Hand the template over to OMXMLSEC*/
     enc_engine = oxs_enc_engine_create(env);
@@ -284,10 +285,9 @@ rampart_crypto_engine_decrypt_message(
                       axiom_node_t *sec_node)
 {
     axiom_node_t *enc_data_node = NULL, *parent_of_enc_node = NULL;
-    axiom_node_t *body_node = NULL, *header_node = NULL/*, *decrypted_node = NULL*/;
+    axiom_node_t *body_node = NULL /*, *decrypted_node = NULL*/;
     axiom_node_t *ref_list_node = NULL;
     axiom_soap_body_t *body = NULL;
-    axiom_soap_header_t *header = NULL;
     axis2_char_t *decrypted_data = NULL;
     oxs_ctx_t * enc_ctx = NULL;
     axiom_node_t *enc_key_node = NULL; 
@@ -303,10 +303,8 @@ rampart_crypto_engine_decrypt_message(
 
 
     body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-    header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
 
     body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
-    header_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(header, env);
     
     /*TODO Get the Encrypted key*/
     enc_key_node =  oxs_axiom_get_first_child_node_by_name(env, sec_node, OXS_NodeEncryptedKey, NULL, NULL);

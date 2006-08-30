@@ -56,9 +56,12 @@ extern "C"
                 oxs_enc_engine_t *enc_engine,
                 const axis2_env_t *env);
         /**
-         * 
+         * Decrypt the input buf with the private key taken from the file given by filename
          * @param enc_engine pointer to enc_engine
          * @param env pointer to environment struct
+         * @param input The input buffer containing data to be encrypted
+         * @param result The resulting buffer to carry data after encrypting
+         * @param filename  name of the private key file
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -69,11 +72,13 @@ extern "C"
                 oxs_buffer_ptr result,
                 axis2_char_t *filename
                 );
-
         /**
-         * 
+         * Encrypt the input buf with the public key taken from the file given by filename
          * @param enc_engine pointer to enc_engine
          * @param env pointer to environment struct
+         * @param input The input buffer containing data to be encrypted
+         * @param result The resulting buffer to carry data after encrypting
+         * @param filename  name of the public key file
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -98,7 +103,7 @@ extern "C"
         get_encrypted_key)(
                 oxs_enc_engine_t *enc_engine,
                 const axis2_env_t *env,
-                axiom_node_t *enc_key_node,
+                    axiom_node_t *enc_key_node,
                 oxs_key_t *prv_key,
                 oxs_key_t *session_key);
 

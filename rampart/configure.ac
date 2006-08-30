@@ -105,6 +105,9 @@ AC_CONFIG_FILES([Makefile \
     samples/Makefile \
     samples/callback/Makefile \
     samples/client/Makefile \
+    samples/client/enc_echo/Makefile \
+    samples/client/enc_echo/data/Makefile \
+    samples/client/enc_echo/keys/Makefile \
     samples/client/echo/Makefile \
     samples/client/echo/data/Makefile 
     ])

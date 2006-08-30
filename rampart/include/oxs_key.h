@@ -65,7 +65,7 @@ extern "C"
                     const oxs_key_t *key,
                     const axis2_env_t *env);
          /**
-         * Gets data of the key.
+         * Gets the name of the key.
          * @param key oxs_key ptr to key
          * @param env pointer to environment struct
          * @return name of the key
@@ -75,7 +75,7 @@ extern "C"
                     const oxs_key_t *key,
                     const axis2_env_t *env);
          /**
-         * Gets data of the key.
+         * Gets the size of the key.
          * @param key oxs_key ptr to key
          * @param env pointer to environment struct
          * @return size of the key
@@ -85,7 +85,7 @@ extern "C"
                     const oxs_key_t *key,
                     const axis2_env_t *env);
          /**
-         * Gets data of the key.
+         * Gets the usage of the key.
          * @param key oxs_key ptr to key
          * @param env pointer to environment struct
          * @return usage of the key
