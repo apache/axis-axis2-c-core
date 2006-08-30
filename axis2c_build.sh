@@ -6,6 +6,7 @@ else
     AXIS2C_DEPLOY=$1
 fi
 
+export LD_LIBRARY_PATH=${AXIS2C_DEPLOY}/lib
 cd util
 
 ./configure --prefix=${AXIS2C_DEPLOY}
