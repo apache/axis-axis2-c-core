@@ -29,11 +29,7 @@ cd samples
 
 ./configure --prefix=${AXIS2C_HOME} --with-axis2_util=${AXIS2C_HOME}/include --with-axiom=${AXIS2C_HOME}/include
 make
-make dist
-tar xf axis2c-sample-src-0.93.tar.gz
-mv axis2c-sample-src-0.93 samples
-rm -rf ${AXIS2C_HOME}/samples
-mv samples ${AXIS2C_HOME}
+make install
 
 cd ../rampart
 sh build.sh

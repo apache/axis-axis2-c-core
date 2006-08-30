@@ -2,7 +2,7 @@ prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = dynamic_client
 samplesdir=$(prefix)/samples/client/dynamic_client
 resourcesdir=$(prefix)/bin/samples/resources
-resources_DATA = cal_1.1.wsdl primer-hotelReservationService.wsdl
+resources_DATA = res_2.0.wsdl cal_1.1.wsdl
 samples_DATA=dynamic_client.c README Makefile.am Makefile.in
 dynamic_client_SOURCES = dynamic_client.c
 
@@ -24,3 +24,5 @@ dynamic_client_LDADD   = $(LDFLAGS) \
 INCLUDES = -I$(AXIS2C_HOME)/include \
 			@UTILINC@ \
 			@AXIOMINC@
+
+EXTRA_DIST=res_2.0.wsdl cal_1.1.wsdl
