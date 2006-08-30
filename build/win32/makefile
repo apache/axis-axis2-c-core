@@ -152,7 +152,14 @@ LIBS =  Rpcrt4.lib Ws2_32.lib
 LDFLAGS = $(LDFLAGS) /LIBPATH:$(OPENSSL_INSTALL_DIR)\lib\vc 
 LIBS = $(LIBS) libeay32MT.lib ssleay32MT.lib
 !endif
+
+!if "$(APACHE_VERSION_IS_2_0_59)" == "1"
 APACHE_LIBS = apr.lib xml.lib libhttpd.lib aprutil.lib libapr.lib
+!else
+APACHE_LIBS = apr-1.lib xml.lib libhttpd.lib aprutil-1.lib libapr-1.lib
+!endif
+
+	
 
 #debug symbols
 !if "$(DEBUG)" == "1"
