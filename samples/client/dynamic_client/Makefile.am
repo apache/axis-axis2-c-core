@@ -1,6 +1,8 @@
 prgbindir=$(prefix)/bin/samples
 prgbin_PROGRAMS = dynamic_client
 samplesdir=$(prefix)/samples/client/dynamic_client
+resourcesdir=$(prefix)/bin/samples/resources
+resources_DATA = cal_1.1.wsdl primer-hotelReservationService.wsdl
 samples_DATA=dynamic_client.c README Makefile.am Makefile.in
 dynamic_client_SOURCES = dynamic_client.c
 
