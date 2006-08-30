@@ -365,6 +365,25 @@ axis2_services_mtom:
 	
 	copy $(AXIS2_SOURCE_DIR)\samples\server\mtom\services.xml $(AXIS2_SERVICES)\mtom
 
+axis2_services_calculator:
+	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\Calculator \
+	$(AXIS2_SOURCE_DIR)\samples\server\Calculator\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib $(AXIS2_TRANSPORT_RECEIVER).lib \
+	$(AXIS2_TRANSPORT_SENDER).lib /DLL /OUT:Calculator.dll  
+	del *.obj
+	
+	if not exist $(AXIS2_SERVICES)\Calculator mkdir $(AXIS2_SERVICES)\Calculator
+
+	copy Calculator.dll $(AXIS2_SERVICES)\Calculator
+
+	del *.dll
+	del *.exp
+	del *.lib
+	
+	copy $(AXIS2_SOURCE_DIR)\samples\server\Calculator\services.xml $(AXIS2_SERVICES)\Calculator
+	
+
 axis2_services_sg_math:
 	$(CC) $(CFLAGS) /I$(AXIS2_SOURCE_DIR)\samples\server\sg_math  \
 	$(AXIS2_SOURCE_DIR)\samples\server\sg_math\add.c \
@@ -462,8 +481,21 @@ axis2_client_echo:
 	copy echo.exe $(AXIS2_BINS)\samples
 	del echo.exe
 	del echo.exp
-	
 
+
+axis2_client_dynamic_client:
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) \
+	$(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\dynamic_client.c /c
+	$(LD) $(LDFLAGS) dynamic_client.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib  /OUT:dynamic_client.exe 
+	del *.obj
+	
+	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
+
+	copy dynamic_client.exe $(AXIS2_BINS)\samples
+	del dynamic_client.exe
+	del dynamic_client.exp
+	
 axis2_client_google_spell:
 	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) \
 	$(AXIS2_SOURCE_DIR)\samples\client\google\*.c /c
@@ -571,6 +603,7 @@ copy_samples:
 	if not exist $(AXIS2_INSTALL_DIR)\samples mkdir $(AXIS2_INSTALL_DIR)\samples
 
 	if not exist $(AXIS2_INSTALL_DIR)\samples\client mkdir $(AXIS2_INSTALL_DIR)\samples\client
+	if not exist $(AXIS2_INSTALL_DIR)\samples\user_guide mkdir $(AXIS2_INSTALL_DIR)\samples\user_guide
 
 	if not exist $(AXIS2_INSTALL_DIR)\samples\client\echo mkdir $(AXIS2_INSTALL_DIR)\samples\client\echo
 	copy $(AXIS2_SOURCE_DIR)\samples\client\echo\echo.c $(AXIS2_INSTALL_DIR)\samples\client\echo
@@ -585,6 +618,13 @@ copy_samples:
 	copy $(AXIS2_SOURCE_DIR)\samples\client\google\*.c $(AXIS2_INSTALL_DIR)\samples\client\google
 	copy $(AXIS2_SOURCE_DIR)\samples\client\google\README.txt $(AXIS2_INSTALL_DIR)\samples\client\google
 
+	if not exist $(AXIS2_INSTALL_DIR)\samples\client\dynamic_client mkdir $(AXIS2_INSTALL_DIR)\samples\client\dynamic_client
+	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\dynamic_client.c $(AXIS2_INSTALL_DIR)\samples\client\dynamic_client
+	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\README $(AXIS2_INSTALL_DIR)\samples\client\dynamic_client
+
+	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\CalculatorDoc.wsdl $(AXIS2_INSTALL_DIR)\samples\client\dynamic_client
+
+
 	if not exist $(AXIS2_INSTALL_DIR)\samples\client\notify mkdir $(AXIS2_INSTALL_DIR)\samples\client\notify
 	copy $(AXIS2_SOURCE_DIR)\samples\client\notify\*.c $(AXIS2_INSTALL_DIR)\samples\client\notify
 
@@ -592,7 +632,7 @@ copy_samples:
 	copy $(AXIS2_SOURCE_DIR)\samples\client\mtom\*.c $(AXIS2_INSTALL_DIR)\samples\client\mtom
 	copy $(AXIS2_SOURCE_DIR)\samples\client\mtom\resources\*.jpg $(AXIS2_INSTALL_DIR)\samples\client\mtom\resources
 
-	xcopy /E /I $(AXIS2_SOURCE_DIR)\samples\user_guide $(AXIS2_INSTALL_DIR)\samples
+	xcopy /E /I $(AXIS2_SOURCE_DIR)\samples\user_guide $(AXIS2_INSTALL_DIR)\samples\user_guide
 
 	if not exist $(AXIS2_INSTALL_DIR)\samples\server mkdir $(AXIS2_INSTALL_DIR)\samples\server
 
@@ -627,8 +667,10 @@ mv_dist:
 	rmdir /S /Q $(AXIS2_INSTALL_DIR)
 
 
-all_services: axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom
-all_clients: axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_notify axis2_client_mtom axis2_client_userguide
+all_services: axis2_services_echo axis2_services_math axis2_services_notify axis2_services_sg_math axis2_services_mtom axis2_services_calculator 
+
+all_clients: axis2_client_echo axis2_client_math  axis2_client_google_spell axis2_client_notify axis2_client_mtom axis2_client_userguide axis2_client_dynamic_client 
+
 basic_modules: axis2_util axis2_parser axiom
 
 
