@@ -1,6 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+  <meta content="text/html; charset=iso-8859-1">
+  <meta content="text/html; charset=iso-8859-1">
+  <meta content="text/html; charset=iso-8859-1">
+  <meta content="text/html; charset=iso-8859-1">
+  <meta content="text/html; charset=iso-8859-1">
   <meta content="text/html; charset=iso-8859-1" http-equiv="content-type">
   <title>Architecture_notes.html</title>
 </head>
@@ -30,7 +35,7 @@ see <a href="../mail-lists.html">here</a></p>
 <p>One of the main design goals of Axis2/C is the re-useability of the
 library and the ability to plug into different platforms. There are many
 features that allow Axis2/C to be pluggable in to different platforms as well
-as to enable the extension of the functionality of the Axis2/C.</p>
+as to enable the extension of the functionality of Axis2/C.</p>
 <a name="Axis2_Environment"></a>
 
 <h2>Axis2 Environment</h2>
@@ -85,16 +90,21 @@ reporting, logging and thread pooling mechanisms to Axis2 core functions.</p>
 selecting a set of modules. The modules can either be compiled at the source
 tree of Axis2 or separately. These modules should be compiled as Dynamic
 Shared Objects (DSOs) that exist separately. Services are also loaded
-dynamically by reading the contents of the services folder . This dynamic
+dynamically by reading the contents of the services folder. This dynamic
 loading is mandatory in order to provide hot deployment / update as well as
 to facilitate the runtime selection of transports.</p>
 
 <p>The DSO support for loading individual Axis2 components is based on the
-component named <code>class_loader</code> which must be statically compiled
-with Axis2 core components (in the <code>util</code> package). But the
-disadvantage of this approach is that the <code>class_loader</code>
-completely depends on the DSO functionality of the underlying operating
-system, which limits the portability.</p>
+component named <code>class_loader</code>, which must be statically compiled
+with Axis2 core components (in the <code>util</code> package). To abstract
+the <code>class_loader</code> from the DSO loading functionality of the
+underlying operating system, a set of platform independent macros such as
+<code>AXIS2_PLATFORM_LOADLIB</code> and <code>AXIS2_PLATFORM_UNLOADLIB</code>
+are used. These macros will be mapped to platform specific system calls in a
+platform specific header file (e.g. <code>axis2_unix.h</code>). The file
+<code>axis2_platform_auto_sense.h</code> will include the correct platform
+specific header file, based on the compiler directives available at compile
+time. </p>
 <a name="Transport_Abstraction"></a>
 
 <h2>Transport Abstraction</h2>
@@ -109,8 +119,8 @@ their own transports and the interface is defined in
 Simple HTTP server provided by Axis2 or the Axis2 Apache2 module. The
 transport sender uses sockets to connect and send the SOAP Message.</p>
 
-<p>Inside the HTTP transport,  the receivers and clients are abstracted so
-that the user can easily plug in their own senders and receivers (eg: A
+<p>Inside the HTTP transport,&nbsp; the receivers and clients are abstracted
+so that the user can easily plug in their own senders and receivers (eg: A
 <code>libcurl</code> based client can be implemented instead of the simple
 http client available in the axis2 distribution)</p>
 <a name="Stream_Abstraction"></a>
@@ -136,7 +146,7 @@ engine to the stream.</p>
 <h2>Threading Model</h2>
 
 <p>Axis2 core functions, such as hot deployment / update, asynchronous
-invocation, concurrent request processing in simple axis2 server, etc 
+invocation, concurrent request processing in simple axis2 server, etc&nbsp;
 heavily depends on threads. At the same time these threads should be platform
 independent inside the Axis2 core components. Another important requirement
 in threading model is the ability to pool the threads. This thread pooling
@@ -158,7 +168,7 @@ independent thread pool <code>axis2_thread_pool.</code></p>
 <h2>Parser Abstraction</h2>
 
 <p>Axis2 architecture depends on the XML pull model. But in C there is no
-such API (such as StAX API). Therefore XML pull API, which is specific to
+such API (such as StAX API). Therefore, an XML pull API, which is specific to
 Axis2 is defined in as <code>axis2_xml_reader</code> and
 <code>axis2_xml_writer.</code> Any implementation of this API can be plugged
 into the Axis2 core as long as they follow the API strictly. If an external
