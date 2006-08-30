@@ -6,8 +6,9 @@
       <item name="Home" href="index.html"/>
       <item name="Download Axis2/C" href="download.cgi">
         <item name="Releases" href="download.cgi"/>
-        <item name="Source Code"
+        <item name="View Source Code Online"
           href="http://svn.apache.org/viewcvs.cgi/webservices/axis2/trunk/c/"/>
+        <item name="Checkout the Source Code" href="svn.html"/>
       </item>
       <item name="Documentation" href="docs/index.html">
       </item>
