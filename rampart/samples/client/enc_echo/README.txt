@@ -1,4 +1,4 @@
-This is a sample to help test rampart.
+This is a sample to help test encryption.
 This sample works with echo service.
 
 How to run
@@ -12,7 +12,7 @@ How to run
     NOTE: You may use the AXIS2_HOME as the common repository for server and
     client. If so skip steps 3-5.
  
-3. Copy rampart/samples/client/data/axis2.xml to CLIENT_REPO
+3. Copy rampart/samples/client/enc_echo/data/axis2.xml to CLIENT_REPO
 
 4. Copy AXIS2_HOME/lib to CLIENT_HOME
 
@@ -20,7 +20,7 @@ How to run
   
    
 6. Enable rampart in axis2.xml in the AXIS2_HOME and add In/Outflow parameters as
-    in rampart/samples/client/data/server.axis2.xml. (Or copy the
+    in rampart/samples/client/enc_eco/data/server.axis2.xml. (Or copy the
     server.axis2.xml file to AXIS2_HOME/ directory and rename it as axis2.xml)
 
 

@@ -106,46 +106,47 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
     hh2 = AXIS2_DATE_TIME_GET_HOUR( dt2, env);
     mi2 = AXIS2_DATE_TIME_GET_MINUTE( dt2, env);
     ss2 = AXIS2_DATE_TIME_GET_SECOND( dt2, env);
-    
-    if(yyyy1 > yyyy2){
-        return AXIS2_FAILURE;
-    }
-    if(mm1 > mm2){
-        return AXIS2_FAILURE;
-    }
-    if(dd1 > dd2){
-        return AXIS2_FAILURE;
-    }
-    if(hh1 > hh2){
-        return AXIS2_FAILURE;
-    }
-    if(mi1 > mi2){
-        return AXIS2_FAILURE;
-    }
-    if(ss1 > ss2){
-        return AXIS2_FAILURE;
-    }
-   /* 
-    if(AXIS2_DATE_TIME_GET_YEAR( dt1, env) > AXIS2_DATE_TIME_GET_YEAR( dt2, env)){
-        return AXIS2_FAILURE;
-    }
-    if(AXIS2_DATE_TIME_GET_MONTH( dt1, env) > AXIS2_DATE_TIME_GET_MONTH( dt2, env)){
-        return AXIS2_FAILURE;
-    }
-    if(AXIS2_DATE_TIME_GET_DATE( dt1, env) > AXIS2_DATE_TIME_GET_DATE( dt2, env)){
-        return AXIS2_FAILURE;
-    }
-    if(AXIS2_DATE_TIME_GET_HOUR( dt1, env) > AXIS2_DATE_TIME_GET_HOUR( dt2, env)){
-        return AXIS2_FAILURE;
-    }
-    if(AXIS2_DATE_TIME_GET_MINUTE( dt1, env) > AXIS2_DATE_TIME_GET_MINUTE( dt2, env)){
-        return AXIS2_FAILURE;
-    }
-    if(AXIS2_DATE_TIME_GET_SECOND( dt1, env) > AXIS2_DATE_TIME_GET_SECOND( dt2, env)){
+   
+    /**
+    Comparison. 
+    We expect dt1_str < dt2_str/ Otherwise FAILURE
+    */ 
+    if(yyyy1 < yyyy2){
+        return AXIS2_SUCCESS;
+    }else if(yyyy1 > yyyy2){
         return AXIS2_FAILURE;
     }
 
-    */
+    if(mm1 < mm2){
+        return AXIS2_SUCCESS;
+    }else if(mm1 > mm2){
+        return AXIS2_FAILURE;
+    }
+
+    if(dd1 < dd2){
+        return AXIS2_SUCCESS;
+    }else if(dd1 > dd2){
+        return AXIS2_FAILURE;
+    }
+
+    if(hh1 < hh2){
+        return AXIS2_SUCCESS;
+    }else if(hh1 > hh2){
+        return AXIS2_FAILURE;
+    }
+
+    if(mi1 < mi2){
+        return AXIS2_SUCCESS;
+    }else if(mi1 > mi2){
+        return AXIS2_FAILURE;
+    }
+
+    if(ss1 < ss2){
+        return AXIS2_SUCCESS;
+    }else if(ss1 > ss2){
+        return AXIS2_FAILURE;
+    }
+
 
     /*AXIS2_DATE_TIME_FREE(dt1, env);
     AXIS2_DATE_TIME_FREE(dt2, env);*/
