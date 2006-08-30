@@ -4,4 +4,4 @@ SUBDIRS = server client user_guide
 install-data-hook:
 	chmod 755 $(samplesdir)/configure $(samplesdir)/autogen.sh
 
-EXTRA_DIST=codegen
+EXTRA_DIST=codegen autogen.sh
