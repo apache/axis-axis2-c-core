@@ -672,9 +672,9 @@ omxmlsec:
 	copy $(AXIS2_SOURCE_DIR)\rampart\src\data\module.xml $(AXIS2_INSTALL_DIR)\rampart\rampart
 
 mod_rampart:
-	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(MOD_RAMPART_SRC) /c
+	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(MOD_RAMPART_SRC) $(OMXMLSEC_SRC) /c
 	$(LD) $(LDFLAGS) /LIBPATH:$(AXIS2_INSTALL_DIR)\rampart\rampart *.obj $(AXIS2_UTIL).lib $(AXIOM).lib \
-	$(AXIS2_PARSER).lib omxmlsec.lib $(LIBS) \
+	$(AXIS2_PARSER).lib  $(LIBS) \
 	$(AXIS2_ENGINE).lib /DLL /OUT:mod_rampart.dll  /IMPLIB:mod_rampart.lib
 	del *.obj
 	
@@ -721,7 +721,7 @@ mod_rampart_copy_include:
 	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\include $(AXIS2_INSTALL_DIR)\rampart\include
 	copy $(AXIS2_SOURCE_DIR)\rampart\README $(AXIS2_INSTALL_DIR)\rampart
 
-mod_rampart_all: omxmlsec mod_rampart mod_rampart_pwcb mod_rampart_samples mod_rampart_copy_include
+mod_rampart_all: mod_rampart mod_rampart_pwcb mod_rampart_samples mod_rampart_copy_include
 
 
 
@@ -820,4 +820,4 @@ all: clean_make_dir clean deploy basic_modules xml_schema_all woden_all axis2_ws
  
 install: all
 
-dist: all copy_extra copy_samples mv_dist
+dist: all mod_rampart_all axis2_apache_module copy_extra copy_samples mv_dist

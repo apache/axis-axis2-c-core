@@ -228,7 +228,7 @@ axis2_svc_client_create(
     return &(svc_client_impl->svc_client);
 }
 
-axis2_svc_client_t *AXIS2_CALL
+AXIS2_EXTERN axis2_svc_client_t *AXIS2_CALL
 axis2_svc_client_create_for_dynamic_invocation(
     const axis2_env_t *env,
     axis2_conf_ctx_t *conf_ctx,
