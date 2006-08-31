@@ -90,7 +90,7 @@ extern "C"
          * @return a pointer to axis service struct, or NULL if no service 
          * is associated. Returns a reference, not a cloned copy. 
          */
-        const axis2_svc_t *(AXIS2_CALL *
+        axis2_svc_t *(AXIS2_CALL *
                 get_svc)(
                     const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
@@ -356,7 +356,7 @@ extern "C"
          * @return pointer to service context struct. service client owns
          * the returned pointer.
          */
-        const axis2_svc_ctx_t *(AXIS2_CALL *
+        axis2_svc_ctx_t *(AXIS2_CALL *
                 get_svc_ctx)(
                     const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);

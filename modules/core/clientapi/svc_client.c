@@ -94,7 +94,7 @@ axis2_svc_client_fill_soap_envelope(
     const axiom_node_t *payload);
 
 /** public functions */
-const axis2_svc_t *AXIS2_CALL
+axis2_svc_t *AXIS2_CALL
 axis2_svc_client_get_svc(
     const axis2_svc_client_t *svc_client,
     const axis2_env_t *env);
@@ -201,7 +201,7 @@ axis2_svc_client_set_target_endpoint_ref(
     const axis2_env_t *env,
     axis2_endpoint_ref_t *target_endpoint_ref);
 
-const axis2_svc_ctx_t *AXIS2_CALL
+axis2_svc_ctx_t *AXIS2_CALL
 axis2_svc_client_get_svc_ctx(
     const axis2_svc_client_t *svc_client,
     const axis2_env_t *env);
@@ -462,7 +462,7 @@ axis2_svc_client_create_with_conf_ctx_and_svc(
     return &(svc_client_impl->svc_client);
 }
 
-const axis2_svc_t *AXIS2_CALL
+axis2_svc_t *AXIS2_CALL
 axis2_svc_client_get_svc(
     const axis2_svc_client_t *svc_client, 
     const axis2_env_t *env)
@@ -1057,7 +1057,7 @@ axis2_svc_client_set_target_endpoint_ref(
     return AXIS2_FAILURE;
 }
 
-const axis2_svc_ctx_t* AXIS2_CALL
+axis2_svc_ctx_t* AXIS2_CALL
 axis2_svc_client_get_svc_ctx(
     const axis2_svc_client_t *svc_client,
     const axis2_env_t *env)
