@@ -2,7 +2,7 @@ dnl run autogen.sh to generate the configure script.
 
 AC_PREREQ(2.59)
 
-AC_INIT(rampartc-src, 0.91_pre)
+AC_INIT(rampartc-src, 0.93)
 AC_CANONICAL_SYSTEM
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE([tar-ustar])
@@ -22,7 +22,7 @@ AC_CHECK_LIB(dl, dlopen)
 
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
-    CFLAGS="$CFLAGS -ansi -Werror -Wall -Wno-implicit-function-declaration"
+    CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration"
     #CFLAGS="$CFLAGS -ansi -Wall -Wno-implicit-function-declaration"
 fi
 LDFLAGS="-lpthread"
