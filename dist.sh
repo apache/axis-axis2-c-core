@@ -165,6 +165,32 @@ then
 exit 1
 fi
 
+sh build.sh
+if [ "$?" -ne 0 ]
+then
+exit 1
+fi
+
+make dist
+if [ "$?" -ne 0 ]
+then
+exit 1
+fi
+
+tar xf axis2c-src-0.93.tar.gz 
+if [ "$?" -ne 0 ]
+then
+exit 1
+fi
+
+rm -rf samples
+
+mv axis2c-src-0.93 samples
+if [ "$?" -ne 0 ]
+then
+exit 1
+fi
+
 cd ../rampart
 if [ "$?" -ne 0 ]
 then
@@ -234,6 +260,13 @@ exit 1
 fi
 
 mv ../util/util axis2c-src-0.93
+if [ "$?" -ne 0 ]
+then
+exit 1
+fi
+
+rm -rf axis2c-src-0.93/samples
+mv ../samples/samples axis2c-src-0.93
 if [ "$?" -ne 0 ]
 then
 exit 1

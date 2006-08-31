@@ -4,4 +4,9 @@ SUBDIRS = server client user_guide
 install-data-hook:
 	chmod 755 $(samplesdir)/configure $(samplesdir)/autogen.sh
 
+dist-hook:
+	rm -rf `find $(distdir)/ -type d -name .svn`
+	rm -rf `find $(distdir)/ -type d -name .deps`
+	rm -rf `find $(distdir)/ -type d -name .libs`
+
 EXTRA_DIST=codegen autogen.sh
