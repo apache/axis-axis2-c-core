@@ -61,30 +61,42 @@ NOTE: If you run into shared lib problems, set the LD_LIBRARY_PATH
     Include path and library path to parser should be set. For libxml2 this is automatically
     resolved by configure script.
 5. Build the source
-This can be done by running the the following command sequence in the 
+This can be done by running the the 'configure; make; make install' command sequence in the 
 sub folders 
     1. util
-    2. axiom; and then in 
-    3. root folder of source extract
-in that order. Please see the build.sh files in the sub folders for more
-information:
-        ./configure
-        make
-        make install
-use './configure --help' for options.
+    2. axiom
+    3. xml_schema
+    4. woden; and then in 
+    5. root folder of source extract
+in that order. Note that each sub folder mentioned in the above sequence represents 
+a seperate independat sub project in Axis2/C. The latter sub projects in the above sequence 
+need theer predecessors to build. e.g. AXIOM needs utils and XML schema needs both AXIOM
+and utils etc. Hence you have to use extra prefixes such as --with-axis2_util or 
+--with-axiom to indicate where the dependencies are located.
+Please run './configure --help' in respective sub folder for more information on
+these configure options. 
+You may also need to set LD_LIBRARY_PATH to include the install locations.
 
 NOTE: If you don't provide a --prefix configure option, it will by default install into
 /usr/local/axis2c folder.
 
 If you need to get the samples working, you also need to build the samples.
+Please run './configure --help' in samples folder for more information on
+configure options.
 To build samples:
     cd samples
     ./configure --prefix=${AXIS2C_HOME}
     make
     make install
 
-You can also build the rampart, xml_schema and woden sub systems if you wish 
-to test them.
+There is a shell script that is ment to help you build all of the source in one step,
+named axis2c_build.sh. This script can be given the location you wish to install
+as a command line argument; if not given, the default install location is 
+/usr/local/axis2c. In the source root run:
+./axis2c_build.sh [path_your_wish_to_install_axis2c_binaries]
+
+
+You can also build the rampart module if you wish to test WS-Security implementation.
 
 6. go to where you installed axis2c.
 
