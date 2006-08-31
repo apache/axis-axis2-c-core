@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z "$1" ] ; then
-    AXIS2C_DEPLOY="/usr/local/axis2"
+    AXIS2C_DEPLOY="/usr/local/axis2c"
 else
     AXIS2C_DEPLOY=$1
 fi
