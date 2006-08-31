@@ -343,6 +343,8 @@ Table of Contents
         Axis2LogLevel LOG_LEVEL
     </Location>
 
+    NOTE: Axis2 log file path should have write access to all users because by default Apache Web Server runs as nobody.
+
     LOG_LEVEL can be one of following
         AXIS2_LOG_LEVEL_CRITICAL - Log critical errors only
         AXIS2_LOG_LEVEL_ERROR - Log errors critical errors
