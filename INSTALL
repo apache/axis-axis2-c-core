@@ -69,8 +69,8 @@ sub folders
     4. woden; and then in 
     5. root folder of source extract
 in that order. Note that each sub folder mentioned in the above sequence represents 
-a seperate independat sub project in Axis2/C. The latter sub projects in the above sequence 
-need theer predecessors to build. e.g. AXIOM needs utils and XML schema needs both AXIOM
+a separate independent sub project in Axis2/C. The latter sub projects in the above sequence 
+need the predecessors to build. e.g. AXIOM needs utils and XML schema needs both AXIOM
 and utils etc. Hence you have to use extra prefixes such as --with-axis2_util or 
 --with-axiom to indicate where the dependencies are located.
 Please run './configure --help' in respective sub folder for more information on
@@ -89,7 +89,7 @@ To build samples:
     make
     make install
 
-There is a shell script that is ment to help you build all of the source in one step,
+There is a shell script that is meant to help you build all of the source in one step,
 named axis2c_build.sh. This script can be given the location you wish to install
 as a command line argument; if not given, the default install location is 
 /usr/local/axis2c. In the source root run:
@@ -103,7 +103,7 @@ You can also build the rampart module if you wish to test WS-Security implementa
 7. Start simple axis server
         cd axis2c/bin
         ./axis2_http_server
-This will start the simple axis server on port 9090. To see the posible command line options run:
+This will start the simple axis server on port 9090. To see the possible command line options run:
         ./axis2_http_server -h
 8. Run the sample clients in a new shell
         cd bin/samples
@@ -121,7 +121,7 @@ To see the possible command line options for sample clients run them with '-h' o
 ----------------
 
 * the binaries shipped with this version is compiled with Microsoft visual studio compiler (cl) 
-(Note: you can download microsoft VSExpress2005 editon from microsoft website and intall it to run these binaries)
+(Note: you can download Microsoft VS Express2005 edition from Microsoft website and install it to run these binaries)
 
 * You also need the following dlls
 	- libxml2.dll [http://www.xmlsoft.org - download the version >=  libxml2-2.6.20.win32]
@@ -152,7 +152,7 @@ Copy libxml2.dll, iconv.dll and zlib1.dll downloaded to C:\axis2c-M0.4\lib
 
 You need to set couple of environment variables before you can run the server and samples.
 
-Set the varibale AXIS2C_HOME to the deploy folder (C:\axis2c-M0.4)
+Set the variable AXIS2C_HOME to the deploy folder (C:\axis2c-M0.4)
 Add the path to lib directory to PATH variable (%AXIS2C_HOME%\lib)
 
 Now everything is set to run the server!
@@ -163,7 +163,7 @@ You should see the message
 Started Simple Axis2 HTTP Server...
 
 The log is by default created under %AXIS2C_HOME%\logs folder with the name axis2.log.
-(Note: you may provide command line options to change the default behaviour. Type "axis2_http_server.exe -h" to learn about  the usage)
+(Note: you may provide command line options to change the default behavior. Type "axis2_http_server.exe -h" to learn about  the usage)
 
 Now you can run any sample client deployed under %AXIS2C_HOME%\bin\samples\
 Example:
@@ -178,7 +178,7 @@ C:\axis2c-M0.4\bin\samples>echo.exe
 ----------------
 
 * the makefile shipped with this version needs Microsoft visual studio compiler (cl) and nmake build tool 
-(Note: you can download microsoft VSExpress2005 editon and Platform SDK from microsoft website. You will need to add the path  to Platform SDK Include and Lib folders to makefile)
+(Note: you can download Microsoft VS Express2005 edition and Platform SDK from Microsoft website. You will need to add the path  to Platform SDK Include and Lib folders to makefile)
 
 * You also need 
 	- libxml2 [http://www.xmlsoft.org - download the version >=  libxml2-2.6.20.win32]
@@ -188,7 +188,7 @@ C:\axis2c-M0.4\bin\samples>echo.exe
 4.2 Editing configure.in file
 -----------------------------
 
-The default places for libxml2 and iconv are speceficed in configure.in. 
+The default places for libxml2 and iconv are specified in configure.in. 
 
 Example:
 Default location for libxml2 is C:\libxml2
@@ -212,7 +212,7 @@ C:\axis2c\build\win32>vcvars32.bat to access .Net tools (Note: You may need to s
 C:\axis2c\build\win32>nmake install
 
 
-Thats it! This will build the system and create a directory named deploy under build directory.
+That's it! This will build the system and create a directory named deploy under build directory.
 The deploy folder structure is as follows.
 
      deploy
@@ -231,7 +231,7 @@ The deploy folder structure is as follows.
 
 You need to set couple of environment variables before you can run the server and samples.
 
-Set the varibale AXIS2C_HOME to the deploy folder (C:\axis2c\build\deploy)
+Set the variable AXIS2C_HOME to the deploy folder (C:\axis2c\build\deploy)
 Add the path to lib directory to PATH variable (%AXIS2C_HOME%\lib)
 
 Copy libxml2.dll, iconv.dll and zlib1.dll to axis2c lib folder (%AXIS2C_HOME%\lib)
@@ -244,7 +244,7 @@ You should see the message
 Started Simple Axis2 HTTP Server...
 
 The log is by default created under %AXIS2C_HOME%\logs folder with the name axis2.log.
-(Note: you may provide command line options to change the default behaviour. Type "axis2_http_server.exe -h" to learn about  the usage)
+(Note: you may provide command line options to change the default behavior. Type "axis2_http_server.exe -h" to learn about  the usage)
 
 Now you can run any sample client deployed under %AXIS2C_HOME%\bin\samples\
 Example:
@@ -256,9 +256,9 @@ C:\axis2c\build\deploy\bin\samples>echo.exe
 5.1 Building mod_axis2 from source tree 
 5.1.1 On Linux Platform
 
-* Provide the apache2 include files location as configure option
+* Provide the Apache2 include files location as configure option
   ./configure --with-apache2="<apache2 include files location>" [other configure options]
-  - Some apache2 distributions install APR (Apache Portable Runtime) include files in a seperate location which is requred to build mod_axis2. In that case use
+  - Some apache2 distributions install APR (Apache Portable Run-time) include files in a separate location which is required to build mod_axis2. In that case use
   ./configure --with-apache2="<apache2 include files location>" --with-apr="<apr include files location>" [other configure options]
 * Then build the source tree
     make
@@ -295,7 +295,7 @@ Note: To do the following tasks you might need super user privileges in your mac
     AXIS2_LOG_LEVEL_INFO - Log info and above
     AXIS2_LOG_LEVEL_DEBUG - Log debug and above (default)
     AXIS2_LOG_LEVEL_TRACE - Log trace messages
-* Use forward slashes "/" for path seperators in <apache2 modules directory>, <axis2 repository path> and <axis2 log file path>
+* Use forward slashes "/" for path separators in <apache2 modules directory>, <axis2 repository path> and <axis2 log file path>
 
 * Make sure that the apache2 user has correct permissions to above paths
     - Read permission to the repository
