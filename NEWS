@@ -14,15 +14,15 @@ Key Features
    8. Module architecture, mechanism to extend the SOAP processing model
    9. Module version support
   10. Transports supports: HTTP
-        o Both simple axis server and Apache2 httpd module for server side o Client transport with ability to 
-          enable SSL support
+        o Both simple axis server and Apache2 httpd module for server side 
+        o Client transport with ability to enable SSL support
   11. Service client and operation client APIs
   12. REST support (HTTP POST case)
   13. WS-Addressing, both the submission (2004/08) and final (2005/08) versions
   14. MTOM/XOP support
   15. Code generation tool for stub and skeleton generation for a given WSDL (based on Java tool)
         o Axis Data Binding (ADB) support
-  16. Security module with usernameToken support
+  16. Security module with UsernameToken support
   17. REST support (HTTP GET case) - New
   18. Dynamic invocation support (based on XML schema and WSDL implementations) - New
 
