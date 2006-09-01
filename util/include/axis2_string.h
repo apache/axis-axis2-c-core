@@ -141,6 +141,62 @@ extern "C"
            const axis2_env_t *env,
            const axis2_char_t *_s,
            const axis2_char_t *_trim);
+   
+   /**
+    * replace given axis2_character with a new one.
+    * @param str       string operation apply
+    * @param old_char  the old axis2_character which would be replaced
+    * @param new_char  new axis2_char_tacter
+    * @return      replaced string
+    */
+   AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+   axis2_string_replace(
+           axis2_char_t *str,
+           axis2_char_t old_char,
+           axis2_char_t new_char);
+
+   /**
+    * gives a sub string starting with given index.
+    * @param str       string operation apply
+    * @param c     starting index
+    * @return      substring
+    */
+   AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+   axis2_string_substring_starting_at(
+           axis2_char_t *str,
+           int s );
+   
+   /**
+    * gives a sub string ending with given index.
+    * @param str       string operation apply
+    * @param c     ending index
+    * @return      substring
+    */
+   AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+   axis2_string_substring_ending_at(
+           axis2_char_t *str,
+           int e );
+   
+   /**
+    * set a string to lowercase.
+    * @param str   string
+    * @return string with lowercase
+    */
+   AXIS2_EXTERN axis2_char_t*
+   axis2_string_tolower(
+           axis2_char_t *str );
+    
+   /**
+    * set a string to uppercase.
+    * @param str   string
+    * @return string with uppercase
+    */
+   AXIS2_EXTERN axis2_char_t*
+   axis2_string_toupper(
+           axis2_char_t *str );
+   
+     
+   
 
 #define AXIS2_STRDUP(pts, env) \
         axis2_strdup(pts, env)

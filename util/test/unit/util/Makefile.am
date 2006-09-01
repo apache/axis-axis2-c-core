@@ -15,7 +15,9 @@ libtest_util_la_SOURCES = \
                             util_class_loader_test.c \
                             util_string_test.c \
                             util_url_test.c \
-                            util_uri_test.c
+                            util_uri_test.c \
+                            util_properties_test.c \
+                            util_date_time_test.c
 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \

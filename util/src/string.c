@@ -369,3 +369,75 @@ axis2_strtrim(
     return _q;
 }
 
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_string_replace( axis2_char_t* str, axis2_char_t old, axis2_char_t new )
+{
+    axis2_char_t* str_returns = str;
+    for (  ; *str != '\0' ; str ++ )
+    {
+        if ( *str == old )
+        {
+            *str = new;
+        }
+    }
+    return str_returns;
+}
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_string_substring_starting_at( axis2_char_t* str, int s )
+{
+    int len;
+    int pos_to_shift;
+
+    len = strlen ( str );
+    pos_to_shift = len - s +1;
+
+    if ( len <= s )
+    {
+        return NULL;
+    }
+    memmove (str , str + s, pos_to_shift );
+    return str;
+}
+
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_string_substring_ending_at( axis2_char_t* str, int e )
+{
+    axis2_char_t* ptr = NULL;
+    int length = 0;
+
+    length = strlen( str );
+    ptr = str;
+    if( length <=  e )
+    {
+        return NULL;
+    }
+    ptr += e;
+    *ptr = '\0';
+    return str;
+}
+
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_string_tolower( axis2_char_t* str )
+{
+    axis2_char_t* temp_str = NULL;
+    for ( temp_str = str; *temp_str != '\0' ; temp_str ++ )
+    {
+       *temp_str= tolower(*temp_str );
+    }
+    return str;
+}
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_string_toupper( axis2_char_t* str )
+{
+    axis2_char_t* temp_str = NULL;
+    for ( temp_str = str; *temp_str != '\0' ; temp_str ++ )
+    {
+       *temp_str= toupper(*temp_str );
+    }
+    return str;
+}
+

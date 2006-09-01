@@ -29,6 +29,8 @@
 #include "util_url_test.h"
 #include "util_string_test.h"
 #include "util_uri_test.h"
+#include "util_properties_test.h"
+#include "util_date_time_test.h"
 
 CuSuite* axis2_utilGetSuite();
 

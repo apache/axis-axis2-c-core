@@ -218,7 +218,7 @@ axis2_date_time_create(const axis2_env_t *env );
         ((date_time)->ops->free (date_time, env))
 
 #define AXIS2_DATE_TIME_DESERIALIZE_TIME(date_time, env, time ) \
-        ((date_time)->ops->deserialize_time (date_time, env, time_str))
+        ((date_time)->ops->deserialize_time (date_time, env, time))
 
 #define AXIS2_DATE_TIME_DESERIALIZE_DATE(date_time, env, date) \
         ((date_time)->ops->deserialize_date (date_time, env, date_str))
