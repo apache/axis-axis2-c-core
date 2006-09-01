@@ -1,0 +1,20 @@
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: #axisVersion# #today# -->
+<service name="InteropTestPortTypeDocService">
+  <parameter name="ServiceClass" locked="false">InteropTestPortTypeDocService</parameter>
+  <operation name="echoString"/>
+  <operation name="echoStringArray"/>
+  <operation name="echoInteger"/>
+  <operation name="echoIntegerArray"/>
+  <operation name="echoFloat"/>
+  <operation name="echoFloatArray"/>
+  <operation name="echoStruct"/>
+  <operation name="echoStructArray"/>
+  <operation name="echoVoid"/>
+  <operation name="echoBase64"/>
+  <operation name="echoDate"/>
+  <operation name="echoHexBinary"/>
+  <operation name="echoDecimal"/>
+  <operation name="echoBoolean"/>
+</service>
+

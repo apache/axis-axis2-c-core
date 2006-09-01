@@ -1,0 +1,11 @@
+Getting Axis2/C Codegen source working on Linux
+=============================================
+Build the source
+This can be done using the following command sequence:
+        ./configure --with-axis2_util=<axis2/util include path>  --with-axis2_woden=<woden include path>
+        make
+        make install
+        use './configure --help' for options
+
+NOTE: If you don't provide a --prefix configure option, it will by default
+install into /usr/local/codegen directory.

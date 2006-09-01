@@ -1,0 +1,8 @@
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: #axisVersion# #today# -->
+<service name="myservice">
+  <parameter name="ServiceClass" locked="false">myservice</parameter>
+  <operation name="myfirstmethod"/>
+  <operation name="mysecondmethod"/>
+  <operation name="lastmethod-if more add prior to this"/>
+</service>

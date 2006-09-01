@@ -1,0 +1,11 @@
+This is a sample generated from Axis2/C Codegen tool.
+
+sample source        axis2_skel_calculator.c
+wsdl                 $AXIS2C_HOME/test/resources/wsdl/CalculatorDoc.wsdl
+
+Command to execute the code generation: 
+( server side(ss) and service description(sd) with converting names(cn) and indenting code(id) )
+
+w2c -uri $AXIS2C_HOME/test/resources/wsdl/CalculatorDoc.wsdl -ss -cn -id
+
+NOTE:here the services.xml should be edited to rename the service name to calculator from Calculator. (because there is another service name Calculator)

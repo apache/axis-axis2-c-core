@@ -1,0 +1,6 @@
+TODOs for the Axis2/C Code generator
+====================================
+
+* complete the schema code generator.
+* support addressing in generated code. 
+* add test code generation.
