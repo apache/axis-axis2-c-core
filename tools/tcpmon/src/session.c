@@ -1,0 +1,490 @@
+/*
+ * Copyright 2004,2005 The Apache Software Foundation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
+#include <stdio.h>
+#include <axis2_string.h>
+#include <axis2_utils.h>
+#include <axis2_error.h>
+#include <tcpmon_util.h>
+#include <axis2_thread.h>
+#include <axis2_network_handler.h>
+#include <axis2_array_list.h>
+
+#include <tcpmon_session_local.h>
+#include <tcpmon_entry_local.h>
+
+/** 
+ * @brief
+ */
+typedef struct tcpmon_session_impl
+{
+    tcpmon_session_t session;
+    int listen_port;   
+    int target_port;   
+    axis2_char_t *target_host;
+    TCPMON_SESSION_NEW_ENTRY_FUNCT on_new_entry_funct;
+    TCPMON_SESSION_TRANS_ERROR_FUNCT on_trans_fault_funct;
+    axis2_array_list_t* entries;
+
+    axis2_bool_t is_running;
+} tcpmon_session_impl_t;
+
+typedef struct tcpmon_session_server_thread_data
+{
+    tcpmon_session_impl_t* session_impl;
+    const axis2_env_t* env;
+} tcpmon_session_server_thread_data_t;
+
+#define AXIS2_INTF_TO_IMPL(session) \
+    ((tcpmon_session_impl_t *) session)
+
+/************************* Function prototypes ********************************/
+
+axis2_status_t AXIS2_CALL 
+tcpmon_session_free (tcpmon_session_t *session, 
+                            const axis2_env_t *env);
+   
+axis2_status_t AXIS2_CALL
+tcpmon_session_set_listen_port (tcpmon_session_t *session,
+                        const axis2_env_t *env,
+                        int listen_port);
+
+int AXIS2_CALL
+tcpmon_session_get_listen_port (tcpmon_session_t *session,
+                        const axis2_env_t *env);
+  
+axis2_status_t AXIS2_CALL
+tcpmon_session_set_target_port (tcpmon_session_t *session,
+                        const axis2_env_t *env,
+                        int target_port);
+
+int AXIS2_CALL
+tcpmon_session_get_target_port (tcpmon_session_t *session,
+                        const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+tcpmon_session_set_target_host (tcpmon_session_t *session,
+                        const axis2_env_t *env,
+                        axis2_char_t* target_host);
+
+axis2_char_t* AXIS2_CALL
+tcpmon_session_get_target_host (tcpmon_session_t *session,
+                        const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+tcpmon_session_start (tcpmon_session_t *session,
+                        const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+tcpmon_session_stop (tcpmon_session_t *session,
+                        const axis2_env_t *env);
+ 
+axis2_status_t AXIS2_CALL
+tcpmon_session_on_new_entry (tcpmon_session_t *session,
+                        const axis2_env_t *env,
+                        TCPMON_SESSION_NEW_ENTRY_FUNCT on_new_entry_funct);
+
+axis2_status_t AXIS2_CALL
+tcpmon_session_on_trans_fault (tcpmon_session_t *session,
+                        const axis2_env_t *env,
+                        TCPMON_SESSION_TRANS_ERROR_FUNCT on_trans_fault_funct);
+
+/** internal implementations */
+
+void * AXIS2_THREAD_FUNC
+server_funct(axis2_thread_t *thd, void *data);
+
+/************************** End of function prototypes ************************/
+
+AXIS2_EXTERN tcpmon_session_t * AXIS2_CALL 
+tcpmon_session_create (const axis2_env_t *env)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+   
+    AXIS2_ENV_CHECK(env, NULL);
+
+    session_impl = (tcpmon_session_impl_t *) AXIS2_MALLOC(env->
+        allocator, sizeof(tcpmon_session_impl_t));
+
+    if(NULL == session_impl)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        return NULL;
+    }
+    
+    session_impl -> listen_port = -1;
+    session_impl -> target_port = -1;
+    session_impl -> target_host = NULL;
+
+    session_impl -> on_new_entry_funct = NULL;
+    session_impl -> on_trans_fault_funct = NULL;
+    session_impl -> entries = axis2_array_list_create( env, 10);
+
+    session_impl->session.ops = 
+        AXIS2_MALLOC (env->allocator, sizeof(tcpmon_session_ops_t));
+    if(NULL == session_impl->session.ops)
+    {
+        tcpmon_session_free(&(session_impl->session), env);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    session_impl-> is_running = AXIS2_FALSE;
+    session_impl->session.ops->free = tcpmon_session_free;
+    session_impl->session.ops->set_listen_port = tcpmon_session_set_listen_port;
+    session_impl->session.ops->get_listen_port = tcpmon_session_get_listen_port;
+    session_impl->session.ops->set_target_port = tcpmon_session_set_target_port;
+    session_impl->session.ops->get_target_port = tcpmon_session_get_target_port;
+    session_impl->session.ops->set_target_host = tcpmon_session_set_target_host;
+    session_impl->session.ops->get_target_host = tcpmon_session_get_target_host;
+    session_impl->session.ops->start = tcpmon_session_start;
+    session_impl->session.ops->stop = tcpmon_session_stop;
+    session_impl->session.ops->on_new_entry = tcpmon_session_on_new_entry;
+    session_impl->session.ops->on_trans_fault = tcpmon_session_on_trans_fault;
+
+    return &(session_impl->session);
+}
+
+
+/***************************Function implementation****************************/
+
+axis2_status_t AXIS2_CALL 
+tcpmon_session_free (tcpmon_session_t *session, 
+                            const axis2_env_t *env)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    int entries_size = 0;
+    tcpmon_entry_t* entry = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    for ( entries_size = AXIS2_ARRAY_LIST_SIZE(session_impl-> entries, env ) -1;
+          entries_size >= 0; entries_size --)
+    {
+        TCPMON_ENTRY_FREE ( entry, env);
+    } 
+    AXIS2_ARRAY_LIST_FREE ( session_impl-> entries, env);
+    
+    if(session->ops)
+    {
+        AXIS2_FREE(env->allocator, session->ops);
+        session->ops = NULL;
+    }
+
+    if(session_impl->target_host)
+    {
+        AXIS2_FREE (env-> allocator, session_impl->target_host);
+        session_impl-> target_host = NULL;
+    }
+    
+    if(session_impl)
+    {
+        AXIS2_FREE(env->allocator, session_impl);
+        session_impl = NULL;
+    }
+    
+    return AXIS2_SUCCESS;
+}
+   
+axis2_status_t AXIS2_CALL
+tcpmon_session_set_listen_port (tcpmon_session_t *session,
+                        const axis2_env_t *env,
+                        int listen_port)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    session_impl-> listen_port = listen_port;
+    return AXIS2_SUCCESS;
+}    
+
+int AXIS2_CALL
+tcpmon_session_get_listen_port (tcpmon_session_t *session,
+                        const axis2_env_t *env)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, -1);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    return session_impl-> listen_port;
+}    
+ 
+axis2_status_t AXIS2_CALL
+tcpmon_session_set_target_port (tcpmon_session_t *session,
+                        const axis2_env_t *env,
+                        int target_port)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    session_impl-> target_port = target_port;
+    return AXIS2_SUCCESS;
+}    
+
+int AXIS2_CALL
+tcpmon_session_get_target_port (tcpmon_session_t *session,
+                        const axis2_env_t *env)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, -1);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    return session_impl-> target_port;
+}
+
+axis2_status_t AXIS2_CALL
+tcpmon_session_set_target_host (tcpmon_session_t *session,
+                        const axis2_env_t *env,
+                        axis2_char_t* target_host)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    session_impl-> target_host = (axis2_char_t*)AXIS2_STRDUP (target_host, env);
+    return AXIS2_SUCCESS;
+}    
+
+axis2_char_t* AXIS2_CALL
+tcpmon_session_get_target_host (tcpmon_session_t *session,
+                        const axis2_env_t *env)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, NULL);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    return session_impl-> target_host;
+}
+
+axis2_status_t AXIS2_CALL
+tcpmon_session_start (tcpmon_session_t *session,
+                        const axis2_env_t *env)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    axis2_thread_t* server_thread = NULL;
+    tcpmon_session_server_thread_data_t* thread_data = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    thread_data = (tcpmon_session_server_thread_data_t*) AXIS2_MALLOC (
+               env-> allocator, sizeof(tcpmon_session_server_thread_data_t) );
+    thread_data-> session_impl = session_impl;
+    thread_data-> env = env;
+
+    session_impl-> is_running = AXIS2_TRUE;
+    server_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
+                        server_funct, (void*)thread_data);
+    if(NULL == server_thread)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
+                  "server thread");
+        if ( session_impl->on_trans_fault_funct )
+        {
+           (session_impl->on_trans_fault_funct)(env,
+                  "error in creating the server thread");
+        }
+    }
+
+    AXIS2_THREAD_POOL_THREAD_DETACH(env->thread_pool, server_thread);
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+tcpmon_session_stop (tcpmon_session_t *session,
+                        const axis2_env_t *env)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+    session_impl-> is_running = AXIS2_FALSE;
+
+    return AXIS2_SUCCESS;
+}
+ 
+axis2_status_t AXIS2_CALL
+tcpmon_session_on_new_entry (tcpmon_session_t *session,
+                        const axis2_env_t *env,
+                        TCPMON_SESSION_NEW_ENTRY_FUNCT on_new_entry_funct)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    session_impl-> on_new_entry_funct = on_new_entry_funct;
+    
+    return AXIS2_SUCCESS;
+}    
+
+axis2_status_t AXIS2_CALL
+tcpmon_session_on_trans_fault (tcpmon_session_t *session,
+                        const axis2_env_t *env,
+                        TCPMON_SESSION_TRANS_ERROR_FUNCT on_trans_fault_funct)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    session_impl-> on_trans_fault_funct = on_trans_fault_funct;
+    return AXIS2_SUCCESS;
+}    
+   
+
+/** internal implementations */
+void * AXIS2_THREAD_FUNC
+server_funct(axis2_thread_t *thd, void *data)
+{
+    tcpmon_session_server_thread_data_t* thread_data = data;
+    tcpmon_session_impl_t *session_impl = NULL;
+    const axis2_env_t* env = NULL;
+    int listen_socket = -1;
+    int socket = -1;
+    axis2_thread_t* request_thread = NULL;
+    tcpmon_entry_request_data_t* request_thread_data = NULL;
+
+    session_impl = thread_data -> session_impl;
+    env = thread_data -> env;
+    
+    listen_socket = axis2_network_handler_create_server_socket
+                         (env, session_impl->listen_port);
+    if ( -1 == listen_socket )
+    {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                  "error in creating the server socket, "
+                  "port may be already occupied",
+                  "create socket");
+            if ( session_impl->on_trans_fault_funct )
+            {
+                (session_impl->on_trans_fault_funct)(env,
+                  "error in creating the server socket, "
+                  "port may be already occupied");
+            }
+            return NULL;
+    }
+    while ( session_impl-> is_running )
+    { 
+        socket = axis2_network_handler_svr_socket_accept(env,
+                                          listen_socket);
+        if ( socket == -1 )
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "error in creating the socket"
+                  "create socket");
+            if ( session_impl->on_trans_fault_funct )
+            {
+                (session_impl->on_trans_fault_funct)(env,
+                                "error in creating the socket");
+            }
+            break;
+        }
+     
+        request_thread_data = (tcpmon_entry_request_data_t*) AXIS2_MALLOC (
+                   env-> allocator, sizeof(tcpmon_entry_request_data_t) );
+        request_thread_data-> env = env;
+        request_thread_data-> socket = socket;
+        request_thread_data-> session = (tcpmon_session_t*)session_impl;
+    
+        request_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
+                            tcpmon_entry_new_entry_funct,
+                            (void*)request_thread_data);
+        if(NULL == request_thread)
+        {
+            AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
+                      "request thread");
+            if ( session_impl->on_trans_fault_funct )
+            {
+                (session_impl->on_trans_fault_funct)(env,
+                      "fail in creating the thread");
+            }
+            break;
+        }
+    
+        AXIS2_THREAD_POOL_THREAD_DETACH(env->thread_pool, request_thread);
+    }
+    axis2_network_handler_close_socket (env, listen_socket);
+    
+    return NULL;
+}
+
+
+/* implementations for protected functions */
+
+axis2_status_t
+tcpmon_session_add_new_entry( tcpmon_session_t* session,
+                              const axis2_env_t* env,
+                              tcpmon_entry_t* entry)
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    AXIS2_ARRAY_LIST_ADD ( session_impl-> entries,
+                           env,
+                           entry );
+    return AXIS2_SUCCESS;
+  
+}
+
+TCPMON_SESSION_TRANS_ERROR_FUNCT
+tcpmon_session_get_on_trans_fault (tcpmon_session_t *session,
+                        const axis2_env_t *env )
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    return session_impl-> on_trans_fault_funct;
+}
+
+TCPMON_SESSION_NEW_ENTRY_FUNCT
+tcpmon_session_get_on_new_entry (tcpmon_session_t *session,
+                        const axis2_env_t *env )
+{
+    tcpmon_session_impl_t *session_impl = NULL;
+    
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    session_impl = AXIS2_INTF_TO_IMPL(session);
+
+    return session_impl-> on_new_entry_funct;
+}
+
