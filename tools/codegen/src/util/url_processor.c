@@ -16,6 +16,7 @@
  
 #include <w2c_url_processor.h>
 #include <w2c_string.h>
+#include <axis2_string.h>
 #include <axis2_url.h>
 
 

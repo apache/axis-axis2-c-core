@@ -3,7 +3,6 @@
 #include <axis2_string.h>
 #include <w2c_cmdline_option.h>
 #include <w2c_cmdline_option_parser.h>
-#include <w2c_property.h>
 #include <w2c_config_property_loader.h>
 #include <stdlib.h>
 #include <stdio.h>
