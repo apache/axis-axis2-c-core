@@ -211,6 +211,12 @@ axis2_svc_client_free(
     axis2_svc_client_t *svc_client,
     const axis2_env_t *env);
 
+axis2_op_client_t *AXIS2_CALL
+axis2_svc_client_get_op_client(
+    const axis2_svc_client_t *svc_client,
+    const axis2_env_t *env);
+
+
 axis2_svc_client_t *AXIS2_CALL
 axis2_svc_client_create(
     const axis2_env_t *env,
@@ -675,7 +681,15 @@ axis2_svc_client_send_robust(
     {
         return AXIS2_FAILURE;
     }
-
+    if(NULL != svc_client_impl->op_client)
+    {
+        /** free op_client of previous message 
+            AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client);
+        */            
+    }
+    
+    svc_client_impl->op_client = op_client;
+    
     AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
     return AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
 }
@@ -715,6 +729,14 @@ axis2_svc_client_fire_and_forget(
     {
         return;
     }
+    
+    if(NULL != svc_client_impl->op_client)
+    {
+        /** free previous op_client 
+            AXIS2_OP_CLIENT_FREE(op_client, env);
+        */
+    }
+    svc_client_impl->op_client = op_client;
 
     AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
     AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_FALSE);
@@ -849,10 +871,17 @@ axis2_svc_client_send_receive(
         {
             return NULL;
         }
-
+        if(NULL != svc_client_impl->op_client)
+        {
+            /** free op_client of previous request 
+            AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client);
+            */
+        }
+        svc_client_impl->op_client = op_client;
+        
         AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
         AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
-        res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CTX_GET_MSG_CTX(op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
+        res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
 
         if (!res_msg_ctx)
         {
@@ -913,6 +942,13 @@ axis2_svc_client_send_receive_non_blocking(
     {
         return;
     }
+    if(NULL != svc_client_impl->op_client)
+    {
+        /** free op_client of previous request 
+        AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client, env);
+        */
+    }
+    svc_client_impl->op_client = op_client;
 
     AXIS2_OP_CLIENT_SET_CALLBACK(op_client, env, callback);
     AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
@@ -1164,6 +1200,7 @@ axis2_svc_client_init_ops(
     svc_client->ops->set_target_endpoint_ref = axis2_svc_client_set_target_endpoint_ref;
     svc_client->ops->get_svc_ctx = axis2_svc_client_get_svc_ctx;
     svc_client->ops->free_fn = axis2_svc_client_free;
+    svc_client->ops->get_op_client = axis2_svc_client_get_op_client;
 }
 
 static axis2_svc_t * 
@@ -1398,3 +1435,12 @@ axis2_svc_client_fill_soap_envelope(
 
     return AXIS2_TRUE;
 }
+
+
+axis2_op_client_t *AXIS2_CALL
+axis2_svc_client_get_op_client(
+    const axis2_svc_client_t *svc_client,
+    const axis2_env_t *env)
+{
+    return AXIS2_INTF_TO_IMPL(svc_client)->op_client;    
+}        

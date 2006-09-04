@@ -372,6 +372,18 @@ extern "C"
                 free_fn)(
                     axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
+
+        /**
+         * Gets the operation client
+         * @param svc_client pointer to service_client struct
+         * @param env env pointer to environemt struct
+         * @return pointer to service context struct. service client owns 
+         * the returned pointer
+         */
+        axis2_op_client_t *(AXIS2_CALL *
+                get_op_client)(
+                    const axis2_svc_client_t *svc_client,
+                    const axis2_env_t *env);
     };
 
     /**
@@ -561,6 +573,12 @@ extern "C"
     @sa axis2_svc_client_ops#free_fn */
 #define AXIS2_SVC_CLIENT_FREE(svc_client, env) \
         ((svc_client)->ops->free_fn(svc_client, env))
+        
+/** Gets the op_client .
+    @sa axis2_svc_client_ops#get_op_client */
+    #define AXIS2_SVC_CLIENT_GET_OP_CLIENT(svc_client, env) \
+            ((svc_client)->ops->get_op_client(svc_client, env))
+
 
 /** @} */
 #ifdef __cplusplus
