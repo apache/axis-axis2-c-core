@@ -20,13 +20,15 @@
 /**
  * @defgroup axis2_any_content_type any content type
  * @ingroup axis2_addr
+ * any content type acts as a container for any type reference parameters that 
+ * could be associated with an endpoint reference. The values in the map are 
+ * stored in string format, with QNames as key values. 
  * @{
  */
 
 
 /**
  * @file axis2_any_content_type.h
- * @brief Axis2 core addressing interface
  */
 
 #include <axis2_defines.h>
@@ -46,44 +48,45 @@ extern "C"
     typedef struct axis2_any_content_type_ops axis2_any_content_type_ops_t;
 
     /**
-     * any_content_type ops struct
+     * any_content_type ops struct. 
      */
     struct axis2_any_content_type_ops
     {
         /**
-         * Adds given value to the content value map.
-         * @param any_content_type any_content_type struct. cannot be NULL.
-         * @param env pointer to environment struct. MUST NOT be NULL.
-         * @param qname pointer to qname
-         * @param value value to be added.
+         * Adds given value to content value map with given QName.
+         * @param any_content_type pointer to any content type struct
+         * @param env pointer to environment struct
+         * @param qname pointer to QName to be used as key
+         * @param value value string to be added
          * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 add_value)(
                     struct axis2_any_content_type *any_content_type,
                     const axis2_env_t *env,
-                    axis2_qname_t *qname,
-                    axis2_char_t *value);
+                    const axis2_qname_t *qname,
+                    const axis2_char_t *value);
 
         /**
-         * Gets the value from the content value map.
-         * @param any_content_type any_content_type struct. cannot be NULL.
-         * @param env pointer to environment struct. MUST NOT be NULL.
-         * @param qname qname of the corresponging value to be retrived
-         * @return Pointer to the value if present, else returns NULL. 
-         * Environment status would be set to AXIS2_FAILURE on error.
+         * Gets the value corresponding to the given QName from the content 
+         * value map.
+         * @param any_content_type pointer to any content type struct
+         * @param env pointer to environment struct
+         * @param qname pointer to QName of the corresponding value to be 
+         * retrieved
+         * @return value string if present, else returns NULL
          */
-        axis2_char_t *(AXIS2_CALL *
+        const axis2_char_t *(AXIS2_CALL *
                 get_value)(
                     const axis2_any_content_type_t *any_content_type,
                     const axis2_env_t *env,
-                    axis2_qname_t *qname);
+                    const axis2_qname_t *qname);
         /**
-         * Gets the map of values
-         * @param any_content_type any_content_type struct. cannot be NULL.
-         * @param env pointer to environment struct. MUST NOT be NULL.
-         * @return Pointer to the value map. Would return NULL and set 
-         * Environment status to AXIS2_FAILURE on error.
+         * Gets the map of all values.
+         * @param any_content_type pointer to any content type struct
+         * @param env pointer to environment struct
+         * @return pointer to hash table containing all values, returns a 
+         * reference, not a cloned copy 
          */
         axis2_hash_t *(AXIS2_CALL *
                 get_value_map)(
@@ -91,9 +94,9 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Frees the given any_content_type struct
-         * @param any_content_type any_content_type struct. cannot be NULL.
-         * @param env pointer to environment struct. MUST NOT be NULL.
+         * Frees any content type struct.
+         * @param any_content_type pointer to any content type struct
+         * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -104,33 +107,31 @@ extern "C"
     };
 
     /**
-     * axis2 any content type struct
+     * axis2 any content type struct.
      */
     struct axis2_any_content_type
     {
-        /** operatoins of axis2 any content type struct */
+        /** operations of axis2 any content type struct */
         axis2_any_content_type_ops_t *ops;
     };
 
 
     /**
-     * creates an instance of any_content_type struct
-     * @param env pointer to environment struct. MUST NOT be NULL.
-     * @return Pointer to the newly created any_content_type instance. Returns NULL on error.
+     * creates an instance of any content type struct.
+     * @param env pointer to environment struct
+     * @return pointer to the newly created any content type instance
      */
     AXIS2_EXTERN axis2_any_content_type_t *AXIS2_CALL
     axis2_any_content_type_create(
         const axis2_env_t *env);
 
 
-/**************************** Start of function macros ************************/
-
-/** Adds the value.
+/** Adds given value with given QName to the value map.
     @sa axis2_any_content_type_ops#add_value */
 #define AXIS2_ANY_CONTENT_TYPE_ADD_VALUE(any_content_type, env, qname, value) \
     ((any_content_type)->ops->add_value(any_content_type, env, qname, value))
 
-/** Gets the value.
+/** Gets value corresponding to given QName.
     @sa axis2_any_content_type_ops#get_value */
 #define AXIS2_ANY_CONTENT_TYPE_GET_VALUE(any_content_type, env, qname) \
     ((any_content_type)->ops->get_value(any_content_type, env, qname))
@@ -140,7 +141,7 @@ extern "C"
 #define AXIS2_ANY_CONTENT_TYPE_GET_VALUE_MAP(any_content_type, env) \
     ((any_content_type)->ops->get_value_map(any_content_type, env))
 
-/** Frees the any content type.
+/** Frees any content type struct.
     @sa axis2_any_content_type_ops#free */
 #define AXIS2_ANY_CONTENT_TYPE_FREE(any_content_type, env) \
     ((any_content_type)->ops->free(any_content_type, env))
