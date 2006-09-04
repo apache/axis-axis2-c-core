@@ -96,8 +96,6 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
     axiom_node_t *soap_header_node = NULL;
     axiom_element_t *soap_header_ele = NULL;
     axis2_param_t *param_out_flow_security = NULL;
-    axiom_node_t *sec_node =  NULL;    
-    axiom_element_t *sec_ele = NULL;
     axis2_array_list_t *action_list = NULL;
     axis2_param_t *param_action = NULL;
     axis2_char_t *items = NULL;
@@ -193,6 +191,9 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
         if(sec_header_block)
         {           
             axis2_char_t* item = NULL;
+            axiom_node_t *sec_node =  NULL;    
+            axiom_element_t *sec_ele = NULL;
+
             sec_node = AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE (sec_header_block, env);    
             sec_ele = (axiom_element_t *) 
                  AXIOM_NODE_GET_DATA_ELEMENT (sec_node, env);

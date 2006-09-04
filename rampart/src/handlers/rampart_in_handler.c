@@ -199,14 +199,22 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                         enc_status = RAMPART_CRYPTO_ENGINE_DECRYPT_MESSAGE(engine, env, msg_ctx, actions, soap_envelope, sec_node);
 
                         RAMPART_CRYPTO_ENGINE_FREE(engine, env);   
-                        if(enc_status != AXIS2_SUCCESS){
+                        if(enc_status == AXIS2_SUCCESS){
+                            status = AXIS2_SUCCESS;
+                        }else{
+                            axis2_array_list_t *sub_codes = NULL;
+                            sub_codes = axis2_array_list_create(env, 1);
+                            if (sub_codes)
+                            {
+                                AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
+                            }
                             AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Decryption FAILED");
+                       
+                            rampart_create_fault_envelope(env, "wsse:FailedCheck",
+                                      "Decryption failed. Hej kau complete this",sub_codes, msg_ctx);
                             return AXIS2_FAILURE;
                         }
-                        
-                        enc_status = AXIS2_SUCCESS; /*TODO remove*/
-                        status = AXIS2_SUCCESS;
-                        AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Decryption SUCCESS");
+                                                 
                 /*Signature*/        
                 }else if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, AXIS2_STRTRIM(env, item, NULL)) ){
                         AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Verfying signature... NOT IMPLEMENTED YET.. SORRY");

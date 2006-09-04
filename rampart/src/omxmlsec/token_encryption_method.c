@@ -44,6 +44,10 @@ oxs_token_build_encryption_method_element(const axis2_env_t *env,
                     OXS_ERROR_ELEMENT_FAILED,"Error creating encryption method element");
         return NULL;
     }  
+    /*Fixed bug. If kt algorithm is NULL then use the default*/ 
+    if(!algorithm){
+        algorithm = (axis2_char_t*)OXS_DEFAULT_KT_ALGO_HREF;
+    }
 
     algo_attr =  axiom_attribute_create (env, OXS_AttrAlgorithm, algorithm, NULL);
 

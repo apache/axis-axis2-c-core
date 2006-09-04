@@ -68,7 +68,6 @@ oxs_get_cipher_name_for_url(const axis2_env_t *env,
         return NULL;
     }
 
-    printf("\n oxs_get_cipher for url = %s,  cipher %s\n", url, cipher_name);
     return cipher_name;
 }
 

@@ -43,6 +43,10 @@ oxs_token_build_data_reference_element(const axis2_env_t *env,
                     OXS_ERROR_ELEMENT_FAILED,"Error creating data reference element");
         return NULL;
     }
+    /*attach empty string*/
+    if(!data_ref){
+        data_ref = "";
+    }
 
     data_ref_attr =  axiom_attribute_create (env, OXS_AttrURI , data_ref, NULL);
 

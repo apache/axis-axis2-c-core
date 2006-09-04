@@ -24,6 +24,7 @@ extern "C"
 #endif
 
 /*Default values*/
+#define RAMPART_DEFAULT_KT_ALGO OXS_DEFAULT_KT_ALGO_HREF
 
 /* rampart element names*/
 #define RAMPART_SECURITY "Security"
@@ -61,7 +62,7 @@ extern "C"
                 <xs:element name="passwordCallbackClass" type="xs:string" minOccurs="0"/>
                 <xs:element name="signaturePropFile" type="xs:string" minOccurs="0"/>
                 <xs:element name="encryptionPropFile" type="xs:string" minOccurs="0"/>
-                <xs:element name="encryptionPropFile" type="xs:string" minOccurs="0"/>
+                <xs:element name="decryptionPropFile" type="xs:string" minOccurs="0"/>
                 <xs:element name="signatureKeyIdentifier" type="xs:string" minOccurs="0"/>
                 <xs:element name="encryptionKeyIdentifier" type="xs:string" minOccurs="0"/>
                 <xs:element name="encryptionUser" type="xs:string" minOccurs="0"/>
@@ -93,7 +94,8 @@ extern "C"
 #define RAMPART_ACTION_USER                         "user"
 #define RAMPART_ACTION_PW_CALLBACK_CLASS            "passwordCallbackClass"
 #define RAMPART_ACTION_SIGNATURE_PROP_FILE          "signaturePropFile"
-#define RAMPART_ACTION_ENCRYPTION_PROP_FILE         "signaturePropFile"
+#define RAMPART_ACTION_ENCRYPTION_PROP_FILE         "encryptionPropFile"
+#define RAMPART_ACTION_DECRYPTION_PROP_FILE         "decryptionPropFile"
 #define RAMPART_ACTION_SIGNATURE_KEY_IDENTIFIER     "signatureKeyIdentifier"
 #define RAMPART_ACTION_ENCRYPTION_KEY_IDENTIFIER    "encryptionKeyIdentifier"
 #define RAMPART_ACTION_ENCRYPTION_USER              "encryptionUser"

@@ -25,8 +25,6 @@
 #include <openssl_util.h>
 
 
-
-
 AXIS2_EXTERN openssl_evp_block_cipher_ctx_ptr AXIS2_CALL
 openssl_evp_block_cipher_ctx_create(const axis2_env_t *env)
 {
@@ -79,12 +77,6 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
        
     /*Check if key and IV sizes are not applicable for the cipher*/
 #if 1
-    /*TODO remove this check if the key is a binary*/
-    if(EVP_CIPHER_key_length(bc_ctx->cipher) != strlen((char*)bc_ctx->key) ){
-        printf("WARNING : Key size is not applicable for the cipher %d = %d\n", EVP_CIPHER_key_length(bc_ctx->cipher),  strlen((char*)bc_ctx->key)  );
-        
-    } 
-
 
     if(EVP_CIPHER_iv_length(bc_ctx->cipher) != strlen((char*)bc_ctx->iv) ){
         printf("WARNING : IV size is not applicable for the cipher %d = %d\n", EVP_CIPHER_iv_length(bc_ctx->cipher) , strlen((char*)bc_ctx->iv) );
@@ -110,10 +102,3 @@ openssl_evp_block_cipher_ctx_init(const axis2_env_t *env,
       
     return AXIS2_SUCCESS;
 }
-/*
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-openssl_evp_block_cipher_ctx_free(const axis2_env_t *env, openssl_evp_block_cipher_ctx_ptr bc_ctx)
-{
-    
-
-}*/

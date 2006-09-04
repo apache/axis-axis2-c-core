@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
    axis2_char_t *filename = "a.xml";
    axis2_char_t *doc_file = "b.xml";
    axis2_char_t *data = "OM the universal sound";
-   enc_ctx_ptr ctx = NULL;
+   enc_ctx_t *ctx = NULL;
    axis2_status_t temp_status= AXIS2_FAILURE; 
    axiom_node_t *tmpl = NULL, *enc_doc = NULL;
    axis2_char_t *encrypted_result = NULL, *decrypted_result = NULL;
@@ -101,6 +101,7 @@ int main(int argc, char *argv[])
 
     /*Encrypt***************************************************/     
     ctx = oxs_ctx_create_ctx(env);    
+    
     ctx->key = oxs_key_read_from_file(env, "deskey.bin");
     
     /*TODO Set the key name inside KeyName node*/

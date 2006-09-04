@@ -37,6 +37,7 @@ typedef struct rampart_actions_impl{
         axis2_char_t *password_type  ;
         axis2_char_t *password_callback_class  ;
         axis2_char_t *encryption_prop_file;
+        axis2_char_t *decryption_prop_file;
         axis2_char_t *signature_prop_file ;
         axis2_char_t *signature_key_identifier  ;
         axis2_char_t *encryption_key_identifier  ;
@@ -101,6 +102,12 @@ rampart_actions_get_password_callback_class (
 
 axis2_char_t *AXIS2_CALL 
 rampart_actions_get_encryption_prop_file (
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    );
+
+axis2_char_t *AXIS2_CALL 
+rampart_actions_get_decryption_prop_file (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
@@ -199,6 +206,13 @@ rampart_actions_set_encryption_prop_file(
                     );
 
 axis2_status_t AXIS2_CALL
+rampart_actions_set_decryption_prop_file(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *decryption_prop_file
+                    );
+
+axis2_status_t AXIS2_CALL
 rampart_actions_set_signature_prop_file(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -288,6 +302,7 @@ rampart_actions_create(const axis2_env_t *env)
     actions_impl->user = NULL; 
     actions_impl->password_callback_class = NULL; 
     actions_impl->encryption_prop_file = NULL; 
+    actions_impl->decryption_prop_file = NULL; 
     actions_impl->signature_prop_file = NULL; 
     actions_impl->signature_key_identifier = NULL; 
     actions_impl->encryption_key_identifier = NULL; 
@@ -411,6 +426,19 @@ rampart_actions_get_encryption_prop_file(
     actions_impl = AXIS2_INTF_TO_IMPL(actions);
 
     return actions_impl->encryption_prop_file ;
+}
+
+axis2_char_t *AXIS2_CALL
+rampart_actions_get_decryption_prop_file(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env
+                    )
+{
+    rampart_actions_impl_t * actions_impl= NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    actions_impl = AXIS2_INTF_TO_IMPL(actions);
+
+    return actions_impl->decryption_prop_file ;
 }
 
 axis2_char_t *AXIS2_CALL
@@ -650,6 +678,27 @@ rampart_actions_set_encryption_prop_file(
 
     return AXIS2_SUCCESS;
 }
+
+axis2_status_t AXIS2_CALL
+rampart_actions_set_decryption_prop_file(
+                    rampart_actions_t *actions,
+                    const axis2_env_t *env,
+                    axis2_char_t *decryption_prop_file
+                    )
+{
+    rampart_actions_impl_t * actions_impl= NULL;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    actions_impl = AXIS2_INTF_TO_IMPL(actions);
+    if (actions_impl->decryption_prop_file){
+        AXIS2_FREE(env->allocator, actions_impl->decryption_prop_file);
+        actions_impl->decryption_prop_file = NULL;
+    }
+    actions_impl->decryption_prop_file =decryption_prop_file ;
+
+    return AXIS2_SUCCESS;
+}
+
 axis2_status_t AXIS2_CALL
 rampart_actions_set_signature_prop_file(
                     rampart_actions_t *actions,
@@ -781,6 +830,7 @@ rampart_actions_reset( rampart_actions_t * actions, const axis2_env_t *env)
     actions_impl->user = NULL;
     actions_impl->password_callback_class = NULL;
     actions_impl->encryption_prop_file = NULL;
+    actions_impl->decryption_prop_file = NULL;
     actions_impl->signature_prop_file = NULL;
     actions_impl->signature_key_identifier = NULL;
     actions_impl->encryption_key_identifier = NULL;
@@ -836,6 +886,11 @@ rampart_actions_free( rampart_actions_t * actions, const axis2_env_t *env)
     if (actions_impl->encryption_prop_file){
         AXIS2_FREE(env->allocator, actions_impl->encryption_prop_file);
         actions_impl->encryption_prop_file = NULL;
+    }
+
+    if (actions_impl->decryption_prop_file){
+        AXIS2_FREE(env->allocator, actions_impl->decryption_prop_file);
+        actions_impl->decryption_prop_file = NULL;
     }
 
     if (actions_impl->signature_prop_file){
@@ -934,6 +989,13 @@ rampart_actions_populate_from_params (rampart_actions_t *actions,
         ret = RAMPART_ACTIONS_SET_ENC_PROP_FILE(actions, env,
             (axis2_char_t *)rampart_get_action_params(
                             env, param_action, RAMPART_ACTION_ENCRYPTION_PROP_FILE));    
+
+    }
+
+    if(rampart_get_action_params(env, param_action, RAMPART_ACTION_DECRYPTION_PROP_FILE)){
+        ret = RAMPART_ACTIONS_SET_DEC_PROP_FILE(actions, env,
+            (axis2_char_t *)rampart_get_action_params(
+                            env, param_action, RAMPART_ACTION_DECRYPTION_PROP_FILE));
 
     }
 
@@ -1041,7 +1103,14 @@ rampart_actions_populate_from_ctx (rampart_actions_t *actions,
                             env, ctx, RAMPART_ACTION_ENCRYPTION_PROP_FILE));    
 
     }
-    
+   
+    if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_DECRYPTION_PROP_FILE)){
+        ret = RAMPART_ACTIONS_SET_DEC_PROP_FILE(actions, env,
+            (axis2_char_t *)rampart_get_property_from_ctx(
+                            env, ctx, RAMPART_ACTION_DECRYPTION_PROP_FILE));
+
+    }
+ 
     if(rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_SIGNATURE_PROP_FILE)){
         ret = RAMPART_ACTIONS_SET_SIG_PROP_FILE(actions, env,
             (axis2_char_t *)rampart_get_property_from_ctx(
@@ -1107,6 +1176,8 @@ rampart_actions_init_ops(
     actions->ops->set_password_callback_class = rampart_actions_set_password_callback_class;
     actions->ops->get_encryption_prop_file = rampart_actions_get_encryption_prop_file;
     actions->ops->set_encryption_prop_file = rampart_actions_set_encryption_prop_file;
+    actions->ops->get_decryption_prop_file = rampart_actions_get_decryption_prop_file;
+    actions->ops->set_decryption_prop_file = rampart_actions_set_decryption_prop_file;
     actions->ops->get_signature_prop_file = rampart_actions_get_signature_prop_file;
     actions->ops->set_signature_prop_file = rampart_actions_set_signature_prop_file;
     actions->ops->get_signature_key_identifier = rampart_actions_get_signature_key_identifier;
