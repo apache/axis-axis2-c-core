@@ -681,8 +681,25 @@ axis2_svc_create(
     }
 
     svc_impl->schema_loc_adjusted = AXIS2_FALSE;
+    if(NULL != svc_impl->schema_target_ns_prefix )
+    {
+        AXIS2_FREE(env->allocator, svc_impl->schema_target_ns_prefix);
+        svc_impl->schema_target_ns_prefix = NULL;
+    }
     svc_impl->schema_target_ns_prefix = AXIS2_STRDUP("ns", env);
+    
+    if(NULL != svc_impl->target_ns )
+    {
+        AXIS2_FREE(env->allocator, svc_impl->target_ns);
+        svc_impl->target_ns = NULL;
+    }
     svc_impl->target_ns = AXIS2_STRDUP("http://ws.apache.org/axis2", env);
+
+    if(NULL != svc_impl->target_ns_prefix )
+    {
+        AXIS2_FREE(env->allocator, svc_impl->target_ns_prefix);
+        svc_impl->target_ns_prefix = NULL;
+    }
     svc_impl->target_ns_prefix = AXIS2_STRDUP("tns", env);
     svc_impl->sc_calc_count = 0;
 
@@ -886,11 +903,48 @@ axis2_svc_free(
         svc_impl->module_list = NULL;
     }
 
+    if(NULL != svc_impl->schema_list)
+    {
+        AXIS2_ARRAY_LIST_FREE(svc_impl->schema_list, env);
+        svc_impl->schema_list = NULL;
+    }
+
     if (NULL != svc_impl->axis_svc_name)
     {
         AXIS2_FREE(env->allocator, svc_impl->axis_svc_name);
         svc_impl->axis_svc_name = NULL;
     }
+
+    if(NULL != svc_impl->op_alias_map)
+    {
+        axis2_hash_free(svc_impl->op_alias_map, env);
+        svc_impl->op_alias_map = NULL;
+    }
+
+    if(NULL != svc_impl->op_action_map)
+    {
+        axis2_hash_free(svc_impl->op_action_map, env);
+        svc_impl->op_action_map = NULL;
+    }
+
+    if(NULL != svc_impl->schema_target_ns_prefix )
+    {
+        AXIS2_FREE(env->allocator, svc_impl->schema_target_ns_prefix);
+        svc_impl->schema_target_ns_prefix = NULL;
+    }
+
+    if(NULL != svc_impl->target_ns )
+    {
+        AXIS2_FREE(env->allocator, svc_impl->target_ns);
+        svc_impl->target_ns = NULL;
+    }
+
+    if(NULL != svc_impl->target_ns_prefix )
+    {
+        AXIS2_FREE(env->allocator,  svc_impl->target_ns_prefix);
+        svc_impl->target_ns_prefix = NULL;
+    }
+
 
     if (NULL != svc_impl->svc.ops)
     {

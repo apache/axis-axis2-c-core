@@ -677,6 +677,7 @@ axis2_svc_builder_process_ops(
         /* adding operation */
         status = AXIS2_ARRAY_LIST_ADD(ops, env, op_desc); 
     }
+
     return ops;
 }
 

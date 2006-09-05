@@ -1540,7 +1540,11 @@ axis2_dep_engine_do_deploy(
                     dep_engine_impl->curr_file = NULL;
                     break;
                 case AXIS2_MODULE:
-                    arch_reader = axis2_arch_reader_create(env); 
+                    arch_reader = axis2_arch_reader_create(env);
+                    if(NULL != dep_engine_impl->arch_reader)
+                    {
+                        AXIS2_ARCH_READER_FREE(dep_engine_impl->arch_reader, env); 
+                    }
                     dep_engine_impl->arch_reader = axis2_arch_reader_create(env);
                     meta_data = axis2_module_desc_create(env);
                     file_name = AXIS2_ARCH_FILE_DATA_GET_NAME(dep_engine_impl->
