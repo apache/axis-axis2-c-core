@@ -217,7 +217,7 @@ axis2_disp_checker_invoke(
     axis2_svc_t *svc = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_endpoint_ref_t *endpoint_ref = NULL;
-    axis2_char_t *address = NULL;
+    const axis2_char_t *address = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     

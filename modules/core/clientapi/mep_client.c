@@ -97,7 +97,7 @@ axis2_mep_client_set_wsa_action(
 
 axis2_char_t *AXIS2_CALL 
 axis2_get_transport_from_url(
-    axis2_char_t *url, 
+    const axis2_char_t *url, 
     const axis2_env_t *env);
 
 axis2_svc_ctx_t *AXIS2_CALL 
@@ -332,7 +332,7 @@ axis2_mep_client_infer_transport(
     
     if (epr)
     {
-        axis2_char_t *to_url = AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env);
+        const axis2_char_t *to_url = AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env);
         
         transport = axis2_get_transport_from_url(to_url, env);        
     }
@@ -522,12 +522,12 @@ axis2_mep_client_set_wsa_action(
 
 axis2_char_t *AXIS2_CALL 
 axis2_get_transport_from_url(
-    axis2_char_t *url, 
+    const axis2_char_t *url, 
     const axis2_env_t *env)
 {
     axis2_char_t *transport = NULL;
-    axis2_char_t *start = NULL;
-    axis2_char_t *end = NULL;
+    const axis2_char_t *start = NULL;
+    const axis2_char_t *end = NULL;
     AXIS2_PARAM_CHECK(env->error, url, AXIS2_FAILURE);
     start = url;
     end = url;
@@ -536,7 +536,7 @@ axis2_get_transport_from_url(
     
     if ((*end) == ':')
     {    
-        axis2_char_t *c = NULL;
+        const axis2_char_t *c = NULL;
         transport = AXIS2_MALLOC( env->allocator, (end - start + 1 ) * sizeof(char) );
         if (!transport)
         { 

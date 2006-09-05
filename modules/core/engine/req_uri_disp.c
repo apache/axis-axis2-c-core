@@ -92,7 +92,7 @@ axis2_req_uri_disp_find_svc(
     
     if (endpoint_ref)
     {
-        axis2_char_t *address = NULL;        
+        const axis2_char_t *address = NULL;        
 
         address = AXIS2_ENDPOINT_REF_GET_ADDRESS(endpoint_ref, env);
         if (address)
@@ -148,7 +148,7 @@ axis2_req_uri_disp_find_op(
     
     if (endpoint_ref)
     {
-        axis2_char_t *address = NULL;        
+        const axis2_char_t *address = NULL;        
 
         address = AXIS2_ENDPOINT_REF_GET_ADDRESS(endpoint_ref, env);
         if (address)

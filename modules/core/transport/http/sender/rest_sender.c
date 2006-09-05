@@ -70,7 +70,8 @@ axis2_rest_sender_get_timeout_values(axis2_rest_sender_t *sender,
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_send(axis2_rest_sender_t *sender,
         const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
-        axiom_node_t *out, axis2_char_t *str_url);
+        axiom_node_t *out, 
+    const axis2_char_t *str_url);
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_set_chunked(axis2_rest_sender_t *sender,
@@ -166,7 +167,8 @@ axis2_rest_sender_free (axis2_rest_sender_t *sender,
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_send(axis2_rest_sender_t *sender,
         const axis2_env_t *env, axis2_msg_ctx_t *msg_ctx,
-        axiom_node_t *out, axis2_char_t *str_url)
+        axiom_node_t *out, 
+    const axis2_char_t *str_url)
 {
     axis2_http_simple_request_t *request = NULL;
     axis2_http_request_line_t *request_line = NULL;

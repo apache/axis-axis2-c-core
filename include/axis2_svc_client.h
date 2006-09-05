@@ -78,7 +78,7 @@ extern "C"
 
     /**
      * service client ops struct.
-     * Encapsulator struct for operations of axis2_svc_client
+     * Encapsulator struct for operations of axis2_svc_client.
      */
     struct axis2_svc_client_ops
     {

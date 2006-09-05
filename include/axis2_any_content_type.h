@@ -62,7 +62,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
                 add_value)(
-                    struct axis2_any_content_type *any_content_type,
+                    axis2_any_content_type_t *any_content_type,
                     const axis2_env_t *env,
                     const axis2_qname_t *qname,
                     const axis2_char_t *value);
@@ -101,7 +101,7 @@ extern "C"
          */
         axis2_status_t (AXIS2_CALL *
                 free)(
-                    struct axis2_any_content_type *any_content_type,
+                    axis2_any_content_type_t *any_content_type,
                     const axis2_env_t *env);
 
     };

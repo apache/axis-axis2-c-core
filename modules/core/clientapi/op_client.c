@@ -447,7 +447,7 @@ axis2_op_client_execute(
         {
             axis2_msg_ctx_t *response_mc = NULL;
             axis2_char_t *address = NULL;
-            axis2_char_t *epr_address = NULL;
+            const axis2_char_t *epr_address = NULL;
             axis2_property_t *property = NULL;
 
             /* Usual Request-Response Sync implementation */

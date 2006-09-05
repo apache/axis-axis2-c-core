@@ -570,7 +570,7 @@ axis2_http_transport_sender_write_message(
     axiom_output_t *om_output)
 {
     const axis2_char_t *soap_action = NULL;
-    axis2_char_t *url = NULL;
+    const axis2_char_t *url = NULL;
     axiom_soap_over_http_sender_t *sender = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
