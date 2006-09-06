@@ -64,18 +64,18 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser lib
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
 [ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    TESTDIR=""
-    ;;
-  *)
+  yes)
     AC_MSG_RESULT(yes)
     TESTDIR="test"
+    ;;
+  *)
+    AC_MSG_RESULT(no)
+    TESTDIR=""
 
     ;;
   esac ],
-  AC_MSG_RESULT(yes)
-  TESTDIR="test"
+  AC_MSG_RESULT(no)
+  TESTDIR=""
 )
 
 
