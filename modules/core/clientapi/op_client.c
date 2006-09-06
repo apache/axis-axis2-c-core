@@ -266,8 +266,14 @@ axis2_op_client_add_msg_ctx(
 
     if (out_msg_ctx && in_msg_ctx)
     {
-        /*TODO:error - completed*/
-        return AXIS2_FAILURE;
+        /* may be this is the second invocation using the same service clinet,
+           so reset */
+        /* TODO: Fix the memory leaks here */
+        axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING, NULL);
+        axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING, NULL);
+        AXIS2_OP_CTX_SET_IS_COMPLETE(op_client_impl->op_ctx, env, AXIS2_FALSE);
+        out_msg_ctx = NULL;
+        in_msg_ctx = NULL;
     }
 
     if (!out_msg_ctx)

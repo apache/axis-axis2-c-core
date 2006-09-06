@@ -341,8 +341,11 @@ axis2_ctx_set_non_persistent_map(
             val = NULL;
             key = NULL;
         }
-        axis2_hash_free(ctx_impl->non_persistent_map, env);
-        ctx_impl->non_persistent_map = NULL;
+        if (ctx_impl->non_persistent_map != map) /* handle repeated invocation case */
+        {
+            axis2_hash_free(ctx_impl->non_persistent_map, env);
+            ctx_impl->non_persistent_map = NULL;
+        }
     }    
     
     ctx_impl->non_persistent_map = map;
