@@ -579,6 +579,14 @@ axis2_msg_info_headers_free(
         AXIS2_ENDPOINT_REF_FREE(msg_info_headers_impl->relates_to, env);
         msg_info_headers_impl->relates_to = NULL;
     }
+
+    if (msg_info_headers_impl->fault_to)
+    {
+        AXIS2_ENDPOINT_REF_FREE(msg_info_headers_impl->fault_to, env);
+        msg_info_headers_impl->fault_to= NULL;
+    }
+
+
     if (msg_info_headers_impl->msg_info_headers.ops)
     {
         AXIS2_FREE(env->allocator, msg_info_headers_impl->msg_info_headers.ops);

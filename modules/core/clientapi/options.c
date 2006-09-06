@@ -1167,6 +1167,12 @@ axis2_options_free (
         options_impl->sender_transport_protocol = NULL;
     }
 
+    if (options_impl->msg_info_headers)
+    {
+    	AXIS2_MSG_INFO_HEADERS_FREE(options_impl->msg_info_headers, env);
+	options_impl->msg_info_headers = NULL;
+    }
+
     AXIS2_FREE(env->allocator, options_impl);
     options_impl = NULL;
 
