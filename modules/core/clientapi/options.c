@@ -404,7 +404,7 @@ axis2_options_get_action(
     const axis2_env_t *env)
 {
     axis2_options_impl_t *options_impl = NULL;
-    axis2_char_t *action = NULL;
+    const axis2_char_t *action = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     options_impl = AXIS2_INTF_TO_IMPL(options);
@@ -521,7 +521,7 @@ axis2_options_get_message_id(const axis2_options_t *options,
         const axis2_env_t *env)
 {
     axis2_options_impl_t *options_impl = NULL;
-    axis2_char_t *message_id = NULL;
+    const axis2_char_t *message_id = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     options_impl = AXIS2_INTF_TO_IMPL(options);

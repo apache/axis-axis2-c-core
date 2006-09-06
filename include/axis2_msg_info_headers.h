@@ -20,12 +20,22 @@
 /**
  * @defgroup axis2_msg_info_headers message information headers
  * @ingroup axis2_addr
+ * message information headers encapsulates properties that enable the 
+ * identification and location of the endpoints involved in an interaction. 
+ * The basic interaction pattern from which all others are composed is 
+ * "one way". In this pattern a source sends a message to a destination 
+ * without any further definition of the interaction. "Request Reply" is a 
+ * common interaction pattern that consists of an initial message sent by 
+ * a source endpoint (the request) and a subsequent message sent from the 
+ * destination of the request back to the source (the reply). 
+ * A reply can be either an application message, a fault, or any other message.
+ * message information headers capture addressing information related to these
+ * interaction patterns such as from, to, reply to and fault to addresses. 
  * @{
  */
 
 /**
  * @file axis2_msg_info_headers.h
- * @brief Axis2 core addressing interface
  */
 
 #include <axis2_defines.h>
@@ -50,13 +60,17 @@ extern "C"
 
 
     /**
-     * Dispatcher ops struct
+     * message information headers ops struct.
      */
     struct axis2_msg_info_headers_ops
     {
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Gets to endpoint. to endpoint represents the address of the 
+         * intended receiver of this message.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
+         * @return pointer to endpoint reference representing to address, 
+         * returns a reference, not a cloned copy
          */
         axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_to)(
@@ -64,9 +78,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Sets to endpoint. to endpoint represents the address of the 
+         * intended receiver of this message.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
-         * @param to to
+         * @param to pointer to endpoint reference representing to address, 
+         * message information headers assumes ownership of the endpoint
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -76,8 +93,12 @@ extern "C"
                     axis2_endpoint_ref_t *to);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Gets from endpoint. from endpoint represents the address of the 
+         * endpoint where the message originated from.         
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
+         * @return pointer to endpoint reference representing from address, 
+         * returns a reference, not a cloned copy
          */
         axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_from)(
@@ -85,9 +106,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Sets from endpoint. from endpoint represents the address of the 
+         * endpoint where the message originated from.         
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
-         * @param from pointer to from
+         * @param from pointer to endpoint reference representing from address, 
+         * message information headers assumes ownership of the endpoint
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -97,8 +121,12 @@ extern "C"
                     axis2_endpoint_ref_t *from);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Gets reply to endpoint. reply to endpoint identifies the intended 
+         * receiver for replies to a message.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
+         * @return pointer to endpoint reference representing reply to address, 
+         * returns a reference, not a cloned copy
          */
         axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_reply_to)(
@@ -106,9 +134,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Sets reply to endpoint. reply to endpoint identifies the intended 
+         * receiver for replies to a message.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
-         * @param reply_to 
+         * @param reply_to pointer to endpoint reference representing reply to 
+         * address, message information headers assumes ownership of the endpoint
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -118,20 +149,32 @@ extern "C"
                     axis2_endpoint_ref_t *reply_to);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Sets the bool value indicating whether the reply to endpoint should 
+         * be none. reply to endpoint identifies the intended receiver for 
+         * replies to a message. The URI "http://www.w3.org/2005/08/addressing/none"
+         * in the reply to address indicates that no reply should be sent.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
-         * @param none none
+         * @param none AXIS2_TRUE if http://www.w3.org/2005/08/addressing/none
+         * is to be used as reply to URI, else AXIS2_FALSE
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_reply_to_none)(
                     struct axis2_msg_info_headers *msg_info_headers,
                     const axis2_env_t *env, 
-                    axis2_bool_t none);
+                    const axis2_bool_t none);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Gets the bool value indicating whether the reply to endpoint should 
+         * be none. reply to endpoint identifies the intended receiver for 
+         * replies related to a message. The URI 
+         * "http://www.w3.org/2005/08/addressing/none"
+         * in the reply to address indicates that no reply should be sent.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if http://www.w3.org/2005/08/addressing/none
+         * is to be used as reply to URI, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 get_reply_to_none)(
@@ -139,20 +182,36 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Sets the bool value indicating whether the reply to endpoint should 
+         * be anonymous. reply to endpoint identifies the intended receiver for 
+         * replies related to a message. The URI 
+         * "http://www.w3.org/2005/08/addressing/anonymous"
+         * in the reply to address indicates that reply should be sent to 
+         * from address.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
-         * @param anonymous anonymous
+         * @param anonymous AXIS2_TRUE if 
+         * http://www.w3.org/2005/08/addressing/anonymous
+         * is to be used as reply to URI, else AXIS2_FALSE
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_reply_to_anonymous)(
                     struct axis2_msg_info_headers *msg_info_headers,
                     const axis2_env_t *env, 
-                    axis2_bool_t anonymous);
+                    const axis2_bool_t anonymous);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Gets the bool value indicating whether the reply to endpoint should 
+         * be anonymous. reply to endpoint identifies the intended receiver for 
+         * replies related to a message. The URI 
+         * "http://www.w3.org/2005/08/addressing/anonymous"
+         * in the reply to address indicates that reply should be sent to 
+         * from address.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if http://www.w3.org/2005/08/addressing/anonymous
+         * is to be used as reply to URI, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 get_reply_to_anonymous)(
@@ -160,8 +219,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Gets fault to endpoint. fault to endpoint identifies the intended 
+         * receiver for faults related to a message.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
+         * @return pointer to endpoint reference representing fault to address, 
+         * returns a reference, not a cloned copy         
          */
         axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_fault_to)(
@@ -169,9 +232,12 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Sets fault to endpoint. fault to endpoint identifies the intended 
+         * receiver for faults related to a message.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
-         * @param fault fault_to
+         * @param fault pointer to endpoint reference representing fault to 
+         * address, message information headers assumes ownership of the endpoint
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -181,20 +247,33 @@ extern "C"
                     axis2_endpoint_ref_t *fault_to);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Sets the bool value indicating whether the fault to endpoint should 
+         * be none. fault to endpoint identifies the intended receiver for 
+         * faults related to a message. The URI 
+         * "http://www.w3.org/2005/08/addressing/none"
+         * in the fault to address indicates that no fault should be sent back.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
-         * @param none none
+         * @param none AXIS2_TRUE if http://www.w3.org/2005/08/addressing/none
+         * is to be used as fault to URI, else AXIS2_FALSE
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_fault_to_none)(
                     struct axis2_msg_info_headers *msg_info_headers,
                     const axis2_env_t *env, 
-                    axis2_bool_t none);
+                    const axis2_bool_t none);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Gets the bool value indicating whether the fault to endpoint should 
+         * be none. fault to endpoint identifies the intended receiver for 
+         * faults related to a message. The URI 
+         * "http://www.w3.org/2005/08/addressing/none"
+         * in the fault to address indicates that no fault should be sent back.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if http://www.w3.org/2005/08/addressing/none
+         * is to be used as fault to URI, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 get_fault_to_none)(
@@ -202,20 +281,36 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Sets the bool value indicating whether the fault to endpoint should 
+         * be anonymous. fault to endpoint identifies the intended receiver for 
+         * faults related to a message. The URI 
+         * "http://www.w3.org/2005/08/addressing/anonymous"
+         * in the fault to address indicates that fault should be sent to 
+         * from address.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
-         * @param anonymous anonymous 
+         * @param anonymous AXIS2_TRUE if 
+         * http://www.w3.org/2005/08/addressing/anonymous
+         * is to be used as fault to URI, else AXIS2_FALSE
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
                 set_fault_to_anonymous)(
                     struct axis2_msg_info_headers *msg_info_headers,
                     const axis2_env_t *env, 
-                    axis2_bool_t anonymous);
+                    const axis2_bool_t anonymous);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Gets the bool value indicating whether the fault to endpoint should 
+         * be anonymous. fault to endpoint identifies the intended receiver for 
+         * faults related to a message. The URI 
+         * "http://www.w3.org/2005/08/addressing/anonymous"
+         * in the fault to address indicates that fault should be sent to 
+         * from address.         
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
+         * @return AXIS2_TRUE if http://www.w3.org/2005/08/addressing/anonymous
+         * is to be used as fault to URI, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 get_fault_to_anonymous)(
@@ -223,18 +318,25 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Gets WS-Addressing action. action is an absolute IRI 
+         * (Internationalized Resource Identifier) that uniquely identifies 
+         * the semantics implied by this message.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
+         * @return WS-Addressing action string
          */
-        axis2_char_t *(AXIS2_CALL *
+        const axis2_char_t *(AXIS2_CALL *
                 get_action)(
                     const axis2_msg_info_headers_t *msg_info_headers,
                     const axis2_env_t *env);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Sets WS-Addressing action. action is an absolute IRI 
+         * (Internationalized Resource Identifier) that uniquely identifies 
+         * the semantics implied by this message.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
-         * @param action pointer to action
+         * @param action WS-Addressing action string
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -244,18 +346,23 @@ extern "C"
                     const axis2_char_t *action);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Gets message ID. message ID is an absolute IRI that uniquely 
+         * identifies the message.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
+         * @return message ID string. 
          */
-        axis2_char_t *(AXIS2_CALL *
+        const axis2_char_t *(AXIS2_CALL *
                 get_message_id)(
                     const axis2_msg_info_headers_t *msg_info_headers,
                     const axis2_env_t *env);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Sets message ID. message ID is an absolute IRI that uniquely 
+         * identifies the message.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
-         * @param message_id pointer to message id
+         * @param message_id message ID string
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -265,8 +372,12 @@ extern "C"
                     const axis2_char_t *message_id);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Gets relates to information. 
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
+         * @return pointer to relates to struct, returns a reference, not a 
+         * cloned copy
+         * @sa axis2_relates_to
          */
         axis2_relates_to_t *(AXIS2_CALL *
                 get_relates_to)(
@@ -274,9 +385,11 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Sets relates to information. 
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
-         * @param relates_to relates_to
+         * @param relates_to pointer to relates to struct, message information
+         * headers assumes ownership of struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -286,18 +399,24 @@ extern "C"
                     axis2_relates_to_t *relates_to);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Gets all reference parameters associated with message information 
+         * headers.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
+         * @return pointer to array list containing all reference parameters
          */
         axis2_array_list_t *(AXIS2_CALL *
-                get_ref_params)(
+                get_all_ref_params)(
                     const axis2_msg_info_headers_t *msg_info_headers,
                     const axis2_env_t *env);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Adds a reference parameter in the form of an AXIOM node.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
-         * @param ref_param pointer to reference param
+         * @param ref_param pointer to AXIOM node representing reference 
+         * parameter, message information header does not assume ownership of
+         * node
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
 
@@ -308,7 +427,8 @@ extern "C"
                     axiom_node_t *ref_param);
 
         /**
-         * @param msg_info_headers pointer to message info headers
+         * Frees message information header struct.
+         * @param msg_info_headers pointer to message information headers struct
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
@@ -320,20 +440,21 @@ extern "C"
     };
 
     /**
-     * Dispatcher struct
+     * message information headers struct.
      */
     struct axis2_msg_info_headers
     {
-        /** Dispatcher related ops */
+        /** message information headers  related ops */
         axis2_msg_info_headers_ops_t *ops;
     };
 
 
     /**
-     * creates msg_info_headers struct
+     * Creates message information headers struct.
      * @param env pointer to environment struct
-     * @param to to 
-     * @param action pointer to action
+     * @param to pointer to endpoint reference representing to endpoint
+     * @param action WS-Addressing action string
+     * @return pointer to newly created message information headers struct
      */
     AXIS2_EXTERN axis2_msg_info_headers_t *AXIS2_CALL
     axis2_msg_info_headers_create(
@@ -342,127 +463,127 @@ extern "C"
         const axis2_char_t *action);
 
 
-/** Get to.
+/** Gets to endpoint.
     @sa axis2_msg_info_headers_ops#get_to */
 #define AXIS2_MSG_INFO_HEADERS_GET_TO(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_to(msg_info_headers, env))
 
-/** Set to.
+/** Sets to endpoint.
     @sa axis2_msg_info_headers_ops#set_to */
 #define AXIS2_MSG_INFO_HEADERS_SET_TO(msg_info_headers, env, to) \
         ((msg_info_headers)->ops->set_to(msg_info_headers, env, to))
 
-/** Get from.
+/** Gets from endpoint.
     @sa axis2_msg_info_headers_ops#get_from */
 #define AXIS2_MSG_INFO_HEADERS_GET_FROM(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_from(msg_info_headers, env))
 
-/** Set from.
+/** Sets from endpoint.
     @sa axis2_msg_info_headers_ops#set_from */
 #define AXIS2_MSG_INFO_HEADERS_SET_FROM(msg_info_headers, env, from) \
         ((msg_info_headers)->ops->set_from(msg_info_headers, env, from))
 
-/** Get reply to.
+/** Gets reply to endpoint.
     @sa axis2_msg_info_headers_ops#get_reply_to */
 #define AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_reply_to(msg_info_headers, env))
 
-/** Set reply to.
+/** Sets reply to endpoint.
     @sa axis2_msg_info_headers_ops#set_reply_to */
 #define AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO(msg_info_headers, env, reply_to) \
         ((msg_info_headers)->ops->set_reply_to(msg_info_headers, env, reply_to))
 
-/** Set reply to none.
+/** Sets bool value indicating if reply to is none.
     @sa axis2_msg_info_headers_ops#set_reply_to_none */
 #define AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO_NONE(msg_info_headers, env, none) \
         ((msg_info_headers)->ops->set_reply_to_none(msg_info_headers, env, none))
 
-/** Get reply to none.
+/** Gets bool value indicating if reply to is none.
     @sa axis2_msg_info_headers_ops#get_reply_to_none */
 #define AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO_NONE(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_reply_to_none(msg_info_headers, env))
 
-/** Set reply to anonymous.
+/** Sets bool value indicating if reply to is anonymous.
     @sa axis2_msg_info_headers_ops#set_reply_to_anonymous */
 #define AXIS2_MSG_INFO_HEADERS_SET_REPLY_TO_ANONYMOUS(msg_info_headers, env, anonymous) \
         ((msg_info_headers)->ops->set_reply_to_anonymous(msg_info_headers, env, anonymous))
 
-/** Get reply to anonymous.
+/** Gets bool value indicating if reply to is anonymous.
     @sa axis2_msg_info_headers_ops#get_reply_to_anonymous */
 #define AXIS2_MSG_INFO_HEADERS_GET_REPLY_TO_ANONYMOUS(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_reply_to_anonymous(msg_info_headers, env))
 
-/** Get fault to.
+/** Gets fault to endpoint.
     @sa axis2_msg_info_headers_ops#get_fault_to */
 #define AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_fault_to(msg_info_headers, env))
 
-/** Set fault to.
+/** Sets fault to endpoint.
     @sa axis2_msg_info_headers_ops#set_fault_to */
 #define AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO(msg_info_headers, env, fault_to) \
         ((msg_info_headers)->ops->set_fault_to(msg_info_headers, env, fault_to))
 
-/** Set fault to none.
+/** Sets bool value indicating if fault to is none.
     @sa axis2_msg_info_headers_ops#set_fault_to_none */
 #define AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO_NONE(msg_info_headers, env, none) \
         ((msg_info_headers)->ops->set_fault_to_none(msg_info_headers, env, none))
 
-/** Get fault to none.
+/** Gets bool value indicating if fault to is none.
     @sa axis2_msg_info_headers_ops#get_fault_to_none */
 #define AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO_NONE(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_fault_to_none(msg_info_headers, env))
 
-/** Set fault to anonymous.
+/** Sets bool value indicating if fault to is anonymous.
     @sa axis2_msg_info_headers_ops#set_fault_to_anonymous */
 #define AXIS2_MSG_INFO_HEADERS_SET_FAULT_TO_ANONYMOUS(msg_info_headers, env, anonymous) \
         ((msg_info_headers)->ops->set_fault_to_anonymous(msg_info_headers, env, anonymous))
 
-/** Get fault to anonymous.
+/** Gets bool value indicating if fault to is anonymous.
     @sa axis2_msg_info_headers_ops#get_fault_to_anonymous */
 #define AXIS2_MSG_INFO_HEADERS_GET_FAULT_TO_ANONYMOUS(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_fault_to_anonymous(msg_info_headers, env))
 
-/** Get action.
+/** Gets WS-Addressing action.
     @sa axis2_msg_info_headers_ops#get_action */
 #define AXIS2_MSG_INFO_HEADERS_GET_ACTION(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_action(msg_info_headers, env))
 
-/** Set action.
+/** Sets WS-Addressing action.
     @sa axis2_msg_info_headers_ops#set_action */
 #define AXIS2_MSG_INFO_HEADERS_SET_ACTION(msg_info_headers, env, action) \
         ((msg_info_headers)->ops->set_action(msg_info_headers, env, action))
 
-/** Get message id.
+/** Gets message ID.
     @sa axis2_msg_info_headers_ops#get_message_id */
 #define AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_message_id(msg_info_headers, env))
 
-/** Set message id.
+/** Sets message ID.
     @sa axis2_msg_info_headers_ops#set_message_id */
 #define AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, message_id) \
         ((msg_info_headers)->ops->set_message_id(msg_info_headers, env, message_id))
 
-/** Get relates to.
+/** Gets relates to information for the message.
     @sa axis2_msg_info_headers_ops#get_relates_to */
 #define AXIS2_MSG_INFO_HEADERS_GET_RELATES_TO(msg_info_headers, env) \
         ((msg_info_headers)->ops->get_relates_to(msg_info_headers, env))
 
-/** Set relates to.
+/** Sets relates to information for the message.
     @sa axis2_msg_info_headers_ops#set_relates_to */
 #define AXIS2_MSG_INFO_HEADERS_SET_RELATES_TO(msg_info_headers, env, relates_to) \
         ((msg_info_headers)->ops->set_relates_to(msg_info_headers, env, relates_to))
 
-/** Get ref params.
-    @sa axis2_msg_info_headers_ops#get_ref_params */
-#define AXIS2_MSG_INFO_HEADERS_GET_REF_PARAMS(msg_info_headers, env) \
-        ((msg_info_headers)->ops->get_ref_params(msg_info_headers, env))
+/** Gets all reference parameters.
+    @sa axis2_msg_info_headers_ops#get_all_ref_params */
+#define AXIS2_MSG_INFO_HEADERS_GET_ALL_REF_PARAMS(msg_info_headers, env) \
+        ((msg_info_headers)->ops->get_all_ref_params(msg_info_headers, env))
 
-/** Add ref param.
+/** Adds reference parameter.
     @sa axis2_msg_info_headers_ops#add_ref_param */
 #define AXIS2_MSG_INFO_HEADERS_ADD_REF_PARAM(msg_info_headers, env, ref_param) \
         ((msg_info_headers)->ops->add_ref_param(msg_info_headers, env, ref_param))
 
-/** Frees the message info headers.
+/** Frees message information headers struct.
     @sa axis2_msg_info_headers_ops#free */
 #define AXIS2_MSG_INFO_HEADERS_FREE(msg_info_headers, env) \
         ((msg_info_headers)->ops->free(msg_info_headers, env))

@@ -37,9 +37,9 @@ axis2_core_utils_create_out_msg_ctx(const axis2_env_t *env,
     axis2_endpoint_ref_t *reply_to = NULL;
     axis2_endpoint_ref_t *fault_to = NULL;
     axis2_endpoint_ref_t *to = NULL;
-    axis2_char_t *msg_id = NULL;
+    const axis2_char_t *msg_id = NULL;
     axis2_relates_to_t *relates_to = NULL;
-    axis2_char_t *action = NULL;
+    const axis2_char_t *action = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_svc_ctx_t *svc_ctx = NULL;
     axis2_bool_t doing_rest = AXIS2_FALSE;
