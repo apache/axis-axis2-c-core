@@ -193,17 +193,23 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
             axis2_char_t* item = NULL;
             axiom_node_t *sec_node =  NULL;    
             axiom_element_t *sec_ele = NULL;
+            axis2_array_list_t *string_list = NULL;
+            int i = 0, size = 0;
 
             sec_node = AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE (sec_header_block, env);    
             sec_ele = (axiom_element_t *) 
                  AXIOM_NODE_GET_DATA_ELEMENT (sec_node, env);
             
             /*Get action items seperated by spaces*/
-            item = strtok (items," ");
-
+            string_list = axis2_tokenize(env, items, ' ');
+            if(string_list){
+                size = AXIS2_ARRAY_LIST_SIZE(string_list, env);
+            }
+    
             /*Iterate thru items. Eg. Usernmaetoken, Timestamp, Encrypt, Signature*/
-            while (item != NULL)
+            for(i = 0; i < size; i++)
             {
+                item = AXIS2_ARRAY_LIST_GET(string_list, env, i);
                 /*Username token*/
                 if(0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN , 
                         AXIS2_STRTRIM(env, item, NULL)))
@@ -276,10 +282,7 @@ rampart_out_handler_invoke (struct axis2_handler * handler,
                 {
                     AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] We do not support %s item yet" , item);
                 }
-                item = strtok (NULL, " ");
-           }/*End if while*/
-           /*Reset items*/
-           items = NULL;
+           }/*End of for*/
                 
         }else{
             AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Security header block is NULL");

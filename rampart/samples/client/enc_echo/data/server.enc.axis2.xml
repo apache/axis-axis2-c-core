@@ -23,6 +23,7 @@
       <action>
         <items>Encrypt</items>
         <encryptionSymAlgorithm>http://www.w3.org/2001/04/xmlenc#tripledes-cbc</encryptionSymAlgorithm>  
+        <encryptionPropFile>/home/kau/keys/rsapub.pem</encryptionPropFile>
       </action>
     </parameter>
 
@@ -30,7 +31,8 @@
     <parameter name="InflowSecurity">
       <action>
         <items>Encrypt</items>
-        <encryptionSymAlgorithm>http://www.w3.org/2001/04/xmlenc#tripledes-cbc</encryptionSymAlgorithm>  
+        <encryptionSymAlgorithm>http://www.w3.org/200i1/04/xmlenc#tripledes-cbc</encryptionSymAlgorithm>  
+        <decryptionPropFile>/home/kau/keys/rsakey.pem</decryptionPropFile>
       </action>
     </parameter>
     <!--Rampart configurations END -->

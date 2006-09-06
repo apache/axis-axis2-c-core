@@ -91,6 +91,9 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
         if (soap_header)
         { 
             axis2_char_t* item = NULL;
+            axis2_array_list_t *items_list = NULL;
+            int i = 0, size = 0;
+
             AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "SOAP header found");
             /*Check InFlowSecurity parameters*/
 
@@ -144,10 +147,15 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 return AXIS2_FAILURE;
             }
                  
-            
-            item = strtok (items," ");
-            while (item != NULL)
+            /*Get action items seperated by spaces*/
+            items_list = axis2_tokenize(env, items, ' ');
+            if(items_list){
+                size = AXIS2_ARRAY_LIST_SIZE(items_list, env);
+            }
+
+            for(i = 0; i < size; i++)
             {
+                item = AXIS2_ARRAY_LIST_GET(items_list, env, i);
                 sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
                 /*If no sec_node return fault*/
                 if(!sec_node){
@@ -265,9 +273,8 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                     return AXIS2_SUCCESS;
                 }
                 
-                item = strtok (NULL, " ");
 
-            } /* End of While */
+            } /* End of for */
         } /* End of sec_header */
         
     }/* End of soap_envelope */
