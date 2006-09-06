@@ -32,22 +32,49 @@ typedef struct axis2_config_rec
     char * axis2_log_file;
     char * axis2_repo_path;
     axis2_log_levels_t log_level;
-}axis2_config_rec_t;
+}
+axis2_config_rec_t;
 
 axis2_apache2_worker_t *axis2_worker = NULL;
 const axis2_env_t *axis2_env = NULL;
 
 /******************************Function Headers********************************/
-static void * axis2_create_svr(apr_pool_t *p, server_rec *s);
-static const char *axis2_set_repo_path(cmd_parms *cmd, void *dummy, 
-                        const char *arg);
-static const char *axis2_set_log_file(cmd_parms *cmd, void *dummy, 
-                        const char *arg);
-static const char *axis2_set_log_level(cmd_parms *cmd, void *dummy, 
-                        const char *arg);
-static int axis2_handler(request_rec *req);
-static void axis2_module_init(apr_pool_t* p, server_rec* svr_rec);
-static void axis2_register_hooks(apr_pool_t *p);
+static void * 
+axis2_create_svr(
+    apr_pool_t *p, 
+    server_rec *s);
+
+static const char *
+axis2_set_repo_path(
+    cmd_parms *cmd, 
+    void *dummy, 
+    const char *arg);
+
+static const char *
+axis2_set_log_file(
+    cmd_parms *cmd, 
+    void *dummy, 
+    const char *arg);
+
+static const char *
+axis2_set_log_level(
+    cmd_parms *cmd, 
+    void *dummy, 
+    const char *arg);
+
+static int 
+axis2_handler(
+    request_rec *req);
+
+static void 
+axis2_module_init(
+    apr_pool_t* p, 
+    server_rec* svr_rec);
+
+static void 
+axis2_register_hooks(
+    apr_pool_t *p);
+
 /***************************End of Function Headers****************************/
 
 static const command_rec axis2_cmds[] = 
@@ -72,7 +99,10 @@ module AP_MODULE_DECLARE_DATA axis2_module = {
     axis2_register_hooks   /* register hooks                      */
 };
 
-static void * axis2_create_svr(apr_pool_t *p, server_rec *s)
+static void * 
+axis2_create_svr(
+    apr_pool_t *p, 
+    server_rec *s)
 {
     axis2_config_rec_t *conf = apr_palloc(p, sizeof(*conf));
     conf->axis2_log_file = NULL;
@@ -84,8 +114,11 @@ static void * axis2_create_svr(apr_pool_t *p, server_rec *s)
     return conf;
 }
 
-static const char *axis2_set_repo_path(cmd_parms *cmd, void *dummy, 
-                        const char *arg)
+static const char *
+axis2_set_repo_path(
+    cmd_parms *cmd, 
+    void *dummy, 
+    const char *arg)
 {
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
                         cmd->server->module_config, &axis2_module);
@@ -93,8 +126,11 @@ static const char *axis2_set_repo_path(cmd_parms *cmd, void *dummy,
     return NULL;
 }
 
-static const char *axis2_set_log_file(cmd_parms *cmd, void *dummy, 
-                                     const char *arg)
+static const char *
+axis2_set_log_file(
+    cmd_parms *cmd, 
+    void *dummy, 
+    const char *arg)
 {
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
             cmd->server->module_config, &axis2_module);
@@ -102,8 +138,11 @@ static const char *axis2_set_log_file(cmd_parms *cmd, void *dummy,
     return NULL;
 }
 
-static const char *axis2_set_log_level(cmd_parms *cmd, void *dummy, 
-                        const char *arg)
+static const char *
+axis2_set_log_level(
+    cmd_parms *cmd, 
+    void *dummy, 
+    const char *arg)
 {
     axis2_log_levels_t level = AXIS2_LOG_LEVEL_DEBUG;
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
@@ -141,7 +180,9 @@ static const char *axis2_set_log_level(cmd_parms *cmd, void *dummy,
 }
 
 /* The sample content handler */
-static int axis2_handler(request_rec *req)
+static int 
+axis2_handler(
+    request_rec *req)
 {
     int rv = 0;
     if (strcmp(req->handler, "axis2_module")) {
@@ -162,7 +203,10 @@ static int axis2_handler(request_rec *req)
     return rv;
 }
 
-static void axis2_module_init(apr_pool_t* p, server_rec* svr_rec)
+static void 
+axis2_module_init(
+    apr_pool_t* p, 
+    server_rec* svr_rec)
 {
     axis2_allocator_t *allocator = NULL;
     axis2_error_t *error = NULL;
@@ -232,7 +276,9 @@ static void axis2_module_init(apr_pool_t* p, server_rec* svr_rec)
     }
 }
 
-static void axis2_register_hooks(apr_pool_t *p)
+static void 
+axis2_register_hooks(
+    apr_pool_t *p)
 {
     ap_hook_handler(axis2_handler, NULL, NULL, APR_HOOK_MIDDLE);
     ap_hook_child_init(axis2_module_init, NULL, NULL, APR_HOOK_REALLY_FIRST);

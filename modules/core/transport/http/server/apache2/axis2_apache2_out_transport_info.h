@@ -17,6 +17,11 @@
 #ifndef AXIS2_APACHE2_OUT_TRANSPORT_INFO_H
 #define AXIS2_APACHE2_OUT_TRANSPORT_INFO_H
 
+/** 
+ * @ingroup axis2_core_transport_http
+ * @{
+ */
+
 /**
  * @file axis2_apache2_out_transport_info.h
  * @brief axis2 Apache2 Out Transport Info
@@ -29,14 +34,11 @@
 extern "C" 
 {
 #endif
-/** 
-  * @ingroup axis2_core_transport_http
-  * @{
-  */
 
-AXIS2_EXTERN axis2_http_out_transport_info_t * AXIS2_CALL 
-axis2_apache2_out_transport_info_create(const axis2_env_t *env,
-               request_rec *r);
+AXIS2_EXTERN axis2_http_out_transport_info_t *AXIS2_CALL 
+axis2_apache2_out_transport_info_create(
+    const axis2_env_t *env,
+    request_rec *r);
 
 /**
  * Free http_out_transport_info passed as void pointer. This will be
@@ -44,8 +46,9 @@ axis2_apache2_out_transport_info_create(const axis2_env_t *env,
  * into the http_out_transport_info structure's free method
  */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-axis2_apache2_out_transport_info_free_void_arg (void *transport_info,
-                                             const axis2_env_t *env);
+axis2_apache2_out_transport_info_free_void_arg(
+    void *transport_info,
+    const axis2_env_t *env);
 
 /** @} */
 #ifdef __cplusplus

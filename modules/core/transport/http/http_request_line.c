@@ -30,7 +30,8 @@ typedef struct axis2_http_request_line_impl
     axis2_char_t *http_version;
     axis2_char_t *method;
     axis2_char_t *uri;
-}axis2_http_request_line_impl_t;
+}
+axis2_http_request_line_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(request_line) \
                  ((axis2_http_request_line_impl_t *)(request_line))
@@ -41,36 +42,44 @@ typedef struct axis2_http_request_line_impl
  *  This is just a function
  *  Not assciated with an ops struct
  */
-axis2_http_request_line_t* AXIS2_CALL
-axis2_http_request_line_parse_line(const axis2_env_t *env, const axis2_char_t *str);
+axis2_http_request_line_t *AXIS2_CALL
+axis2_http_request_line_parse_line(
+    const axis2_env_t *env, 
+    const axis2_char_t *str);
 
-axis2_char_t* AXIS2_CALL
-axis2_http_request_line_get_method(const axis2_http_request_line_t *request_line,
-        const axis2_env_t *env);
+axis2_char_t *AXIS2_CALL
+axis2_http_request_line_get_method(
+    const axis2_http_request_line_t *request_line,
+    const axis2_env_t *env);
 
-axis2_char_t* AXIS2_CALL
-axis2_http_request_line_get_http_version
-(const axis2_http_request_line_t *request_line,
-        const axis2_env_t *env);
+axis2_char_t *AXIS2_CALL
+axis2_http_request_line_get_http_version(
+    const axis2_http_request_line_t *request_line,
+    const axis2_env_t *env);
 
-axis2_char_t* AXIS2_CALL
-axis2_http_request_line_get_uri(const axis2_http_request_line_t *request_line,
-        const axis2_env_t *env);
+axis2_char_t *AXIS2_CALL
+axis2_http_request_line_get_uri(
+    const axis2_http_request_line_t *request_line,
+    const axis2_env_t *env);
 
-axis2_char_t* AXIS2_CALL
-axis2_http_request_line_to_string(axis2_http_request_line_t *request_line,
-        const axis2_env_t *env);
+axis2_char_t *AXIS2_CALL
+axis2_http_request_line_to_string(
+    axis2_http_request_line_t *request_line,
+    const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
-axis2_http_request_line_free(axis2_http_request_line_t *request_line,
-        const axis2_env_t *env);
+axis2_http_request_line_free(
+    axis2_http_request_line_t *request_line,
+    const axis2_env_t *env);
+
 /***************************** End of function headers ************************/
 
-AXIS2_EXTERN axis2_http_request_line_t * AXIS2_CALL
-axis2_http_request_line_create(const axis2_env_t *env,
-        const axis2_char_t *method,
-        const axis2_char_t *uri,
-        const axis2_char_t *http_version)
+AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
+axis2_http_request_line_create(
+    const axis2_env_t *env,
+    const axis2_char_t *method,
+    const axis2_char_t *uri,
+    const axis2_char_t *http_version)
 {
     axis2_http_request_line_impl_t *request_line_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
@@ -96,7 +105,7 @@ axis2_http_request_line_create(const axis2_env_t *env,
             sizeof(axis2_http_request_line_ops_t));
     if(NULL == request_line_impl->request_line.ops)
     {
-        axis2_http_request_line_free((axis2_http_request_line_t*)
+        axis2_http_request_line_free((axis2_http_request_line_t *)
                 request_line_impl, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -116,8 +125,9 @@ axis2_http_request_line_create(const axis2_env_t *env,
 }
 
 axis2_status_t AXIS2_CALL
-axis2_http_request_line_free(axis2_http_request_line_t *request_line,
-        const axis2_env_t *env)
+axis2_http_request_line_free(
+    axis2_http_request_line_t *request_line,
+    const axis2_env_t *env)
 {
     axis2_http_request_line_impl_t *request_line_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -145,8 +155,10 @@ axis2_http_request_line_free(axis2_http_request_line_t *request_line,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN axis2_http_request_line_t* AXIS2_CALL
-axis2_http_request_line_parse_line(const axis2_env_t *env, const axis2_char_t *str)
+AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
+axis2_http_request_line_parse_line(
+    const axis2_env_t *env, 
+    const axis2_char_t *str)
 {
     axis2_char_t *req_line = NULL;
     axis2_char_t *method = NULL;
@@ -209,37 +221,40 @@ axis2_http_request_line_parse_line(const axis2_env_t *env, const axis2_char_t *s
 }
 
 
-axis2_char_t* AXIS2_CALL
-axis2_http_request_line_get_method(const axis2_http_request_line_t *request_line,
-        const axis2_env_t *env)
+axis2_char_t *AXIS2_CALL
+axis2_http_request_line_get_method(
+    const axis2_http_request_line_t *request_line,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(request_line)->method;
 }
 
 
-axis2_char_t* AXIS2_CALL
-axis2_http_request_line_get_http_version
-(const axis2_http_request_line_t *request_line,
-        const axis2_env_t *env)
+axis2_char_t *AXIS2_CALL
+axis2_http_request_line_get_http_version(
+    const axis2_http_request_line_t *request_line,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(request_line)->http_version;
 }
 
 
-axis2_char_t* AXIS2_CALL
-axis2_http_request_line_get_uri(const axis2_http_request_line_t *request_line,
-        const axis2_env_t *env)
+axis2_char_t *AXIS2_CALL
+axis2_http_request_line_get_uri(
+    const axis2_http_request_line_t *request_line,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(request_line)->uri;
 }
 
 
-axis2_char_t* AXIS2_CALL
-axis2_http_request_line_to_string(axis2_http_request_line_t *request_line,
-        const axis2_env_t *env)
+axis2_char_t *AXIS2_CALL
+axis2_http_request_line_to_string(
+    axis2_http_request_line_t *request_line,
+    const axis2_env_t *env)
 {
     axis2_http_request_line_impl_t *req_line_impl = NULL;
     int alloc_len = 0;

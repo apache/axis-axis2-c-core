@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #include "axis2_apache2_out_transport_info.h"
 #include <axis2_string.h>
 #include <axis2_http_transport.h>
@@ -21,90 +21,93 @@
 #include <apr_strings.h>
 
 
-/** 
+/**
  * @brief Apache2 Out transport info impl structure
  *   Axis2 apache2_out_transport_info_impl
  */
-typedef struct axis2_apache2_out_transport_info_impl 
-            axis2_apache2_out_transport_info_impl_t;  
-  
-struct axis2_apache2_out_transport_info_impl
+
+typedef struct axis2_apache2_out_transport_info_impl
 {
-   axis2_http_out_transport_info_t out_transport_info;
-   request_rec *request;
+    axis2_http_out_transport_info_t out_transport_info;
+    request_rec *request;
     axis2_char_t *encoding;
-};
+}
+axis2_apache2_out_transport_info_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(out_transport_info) \
                 ((axis2_apache2_out_transport_info_impl_t *)(out_transport_info))
 
 /***************************** Function headers *******************************/
-axis2_status_t AXIS2_CALL 
-axis2_http_out_transport_info_set_content_type 
-            (axis2_http_out_transport_info_t *info, const axis2_env_t *env, 
-            const axis2_char_t *content_type);
-    
-axis2_status_t AXIS2_CALL 
-axis2_http_out_transport_info_set_char_encoding 
-            (axis2_http_out_transport_info_t *info, const axis2_env_t *env,
-            const axis2_char_t *encoding);
-    
-axis2_status_t AXIS2_CALL 
-axis2_http_out_transport_info_free 
-            (axis2_http_out_transport_info_t *out_transport_info, 
-            const axis2_env_t *env);
+axis2_status_t AXIS2_CALL
+axis2_http_out_transport_info_set_content_type(
+    axis2_http_out_transport_info_t *info, 
+    const axis2_env_t *env,
+    const axis2_char_t *content_type);
+
+axis2_status_t AXIS2_CALL
+axis2_http_out_transport_info_set_char_encoding(
+    axis2_http_out_transport_info_t *info, 
+    const axis2_env_t *env,
+    const axis2_char_t *encoding);
+
+axis2_status_t AXIS2_CALL
+axis2_http_out_transport_info_free(
+    axis2_http_out_transport_info_t *out_transport_info,
+    const axis2_env_t *env);
 
 /***************************** End of function headers ************************/
 
-axis2_http_out_transport_info_t * AXIS2_CALL 
-axis2_apache2_out_transport_info_create(const axis2_env_t *env,
-                        request_rec *request)
+axis2_http_out_transport_info_t *AXIS2_CALL
+axis2_apache2_out_transport_info_create(
+    const axis2_env_t *env,
+    request_rec *request)
 {
     axis2_apache2_out_transport_info_impl_t *info_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
-        
-    info_impl = (axis2_apache2_out_transport_info_impl_t *)AXIS2_MALLOC 
-                        (env->allocator, sizeof(
-                        axis2_apache2_out_transport_info_impl_t));
-   
-    if(NULL == info_impl)
-   {
-      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;
-   }
-    info_impl->request = request;
-     info_impl->encoding = NULL;  
-     
-    info_impl->out_transport_info.ops = AXIS2_MALLOC(env->allocator,
-                    sizeof(axis2_http_out_transport_info_ops_t));
-    if(NULL == info_impl->out_transport_info.ops)
-   {
-      axis2_http_out_transport_info_free((axis2_http_out_transport_info_t*)
-                         info_impl, env);
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-      return NULL;
-   }
 
-    info_impl->out_transport_info.ops->set_content_type = 
-                  axis2_http_out_transport_info_set_content_type;
-    info_impl->out_transport_info.ops->set_char_encoding = 
-                  axis2_http_out_transport_info_set_char_encoding;
-    info_impl->out_transport_info.ops->free = 
-                  axis2_http_out_transport_info_free;
-                        
-   return &(info_impl->out_transport_info);
+    info_impl = (axis2_apache2_out_transport_info_impl_t *)AXIS2_MALLOC
+            (env->allocator, sizeof(
+                        axis2_apache2_out_transport_info_impl_t));
+
+    if(NULL == info_impl)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+    info_impl->request = request;
+    info_impl->encoding = NULL;
+
+    info_impl->out_transport_info.ops = AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_http_out_transport_info_ops_t));
+    if(NULL == info_impl->out_transport_info.ops)
+    {
+        axis2_http_out_transport_info_free((axis2_http_out_transport_info_t *)
+                info_impl, env);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    info_impl->out_transport_info.ops->set_content_type =
+        axis2_http_out_transport_info_set_content_type;
+    info_impl->out_transport_info.ops->set_char_encoding =
+        axis2_http_out_transport_info_set_char_encoding;
+    info_impl->out_transport_info.ops->free =
+        axis2_http_out_transport_info_free;
+
+    return &(info_impl->out_transport_info);
 }
 
 
-axis2_status_t AXIS2_CALL 
-axis2_http_out_transport_info_free (axis2_http_out_transport_info_t *info, 
-                  const axis2_env_t *env)
+axis2_status_t AXIS2_CALL
+axis2_http_out_transport_info_free(
+    axis2_http_out_transport_info_t *info,
+    const axis2_env_t *env)
 {
     axis2_apache2_out_transport_info_impl_t *info_impl = NULL;
-   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     info_impl = AXIS2_INTF_TO_IMPL(info);
-   
-   info_impl->request = NULL; /* request doesn't belong to info */
+
+    info_impl->request = NULL; /* request doesn't belong to info */
     if(NULL != info_impl->encoding)
     {
         AXIS2_FREE(env->allocator, info_impl->encoding);
@@ -112,71 +115,74 @@ axis2_http_out_transport_info_free (axis2_http_out_transport_info_t *info,
     }
     if(NULL != info->ops)
         AXIS2_FREE(env->allocator, info->ops);
-    
-   AXIS2_FREE(env->allocator, info_impl);
-   return AXIS2_SUCCESS;
+
+    AXIS2_FREE(env->allocator, info_impl);
+    return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
-axis2_apache2_out_transport_info_free_void_arg (void *transport_info,
-                                             const axis2_env_t *env)
+axis2_apache2_out_transport_info_free_void_arg(
+    void *transport_info,
+    const axis2_env_t *env)
 {
     axis2_http_out_transport_info_t *transport_info_l = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     transport_info_l = (axis2_http_out_transport_info_t *) transport_info;
     return axis2_http_out_transport_info_free(transport_info_l, env);
 }
 
-axis2_status_t AXIS2_CALL 
-axis2_http_out_transport_info_set_content_type 
-            (axis2_http_out_transport_info_t *info, const axis2_env_t *env, 
-            const axis2_char_t *content_type)
+axis2_status_t AXIS2_CALL
+axis2_http_out_transport_info_set_content_type(
+    axis2_http_out_transport_info_t *info, 
+    const axis2_env_t *env,
+    const axis2_char_t *content_type)
 {
     axis2_char_t *tmp1 = NULL;
-   axis2_char_t *tmp2 = NULL;
-   axis2_apache2_out_transport_info_impl_t *info_impl = NULL;
-   
-   AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    axis2_char_t *tmp2 = NULL;
+    axis2_apache2_out_transport_info_impl_t *info_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, content_type, AXIS2_FAILURE);
-   
-   info_impl = AXIS2_INTF_TO_IMPL(info);
-   
-   if(NULL != info_impl->encoding)
-   {
-      
-      tmp1 = AXIS2_STRACAT(content_type, ";charset=", env);
-      tmp2 = AXIS2_STRACAT(tmp1, info_impl->encoding, env);
+
+    info_impl = AXIS2_INTF_TO_IMPL(info);
+
+    if(NULL != info_impl->encoding)
+    {
+
+        tmp1 = AXIS2_STRACAT(content_type, ";charset=", env);
+        tmp2 = AXIS2_STRACAT(tmp1, info_impl->encoding, env);
         info_impl->request->content_type = apr_pstrdup(info_impl->request->pool,
-                        tmp2);
-      AXIS2_FREE(env->allocator, tmp1);
-      AXIS2_FREE(env->allocator, tmp2);      
-   }
-   else
-   {
-      info_impl->request->content_type = apr_pstrdup(info_impl->request->pool, 
-                        content_type);
-   }
-   return AXIS2_SUCCESS;
+                tmp2);
+        AXIS2_FREE(env->allocator, tmp1);
+        AXIS2_FREE(env->allocator, tmp2);
+    }
+    else
+    {
+        info_impl->request->content_type = apr_pstrdup(info_impl->request->pool,
+                content_type);
+    }
+    return AXIS2_SUCCESS;
 }
 
 
-axis2_status_t AXIS2_CALL 
-axis2_http_out_transport_info_set_char_encoding 
-            (axis2_http_out_transport_info_t *info, const axis2_env_t *env,
-            const axis2_char_t *encoding)
+axis2_status_t AXIS2_CALL
+axis2_http_out_transport_info_set_char_encoding(
+    axis2_http_out_transport_info_t *info, 
+    const axis2_env_t *env,
+    const axis2_char_t *encoding)
 {
     axis2_apache2_out_transport_info_impl_t *info_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-   AXIS2_PARAM_CHECK(env->error, encoding, AXIS2_FAILURE);
-   
+    AXIS2_PARAM_CHECK(env->error, encoding, AXIS2_FAILURE);
+
     info_impl = AXIS2_INTF_TO_IMPL(info);
-   
-   if(NULL != info_impl->encoding)
-   {
-      AXIS2_FREE(env->allocator, info_impl->encoding);
-   }
-   info_impl->encoding = AXIS2_STRDUP(encoding, env);
-   
-   return AXIS2_SUCCESS;
+
+    if(NULL != info_impl->encoding)
+    {
+        AXIS2_FREE(env->allocator, info_impl->encoding);
+    }
+    info_impl->encoding = AXIS2_STRDUP(encoding, env);
+
+    return AXIS2_SUCCESS;
 }
