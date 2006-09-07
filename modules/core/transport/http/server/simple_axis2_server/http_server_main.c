@@ -199,7 +199,8 @@ void usage(
     fprintf(stdout, "\t-l LOG_LEVEL\t set log level to LOG_LEVEL. Available "
             "log levels range from 0(critical only) to 4(debug)."
             "\n\t\t\t Default log level is 4(debug).\n");
-    fprintf(stdout, "\t-f LOG_FILE\t set log file to LOG_FILE. Default is /dev/stderr\n");
+    fprintf(stdout, "\t-f LOG_FILE\t set log file to LOG_FILE. Default is $AXIS2C_HOME/logs/axis2.log"
+            "\n\t\t\t or current folder if AXIS2C_HOME not set\n");
     fprintf(stdout, " Help :\n\t-h \t display this help screen.\n\n");
 }
 
