@@ -58,97 +58,97 @@ rampart_actions_init_ops(
     rampart_actions_t *actions);
 
 /*public functions*/
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_encryption_user(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_encryption_sym_algorithm (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_encryption_key_transport_algorithm (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_items (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_password_type (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_user (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_password_callback_class (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_encryption_prop_file (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_decryption_prop_file (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_signature_prop_file(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_signature_key_identifier (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_encryption_key_identifier (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
   
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_signature_parts (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
   
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_encryption_parts (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_time_to_live (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_user(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -156,124 +156,124 @@ rampart_actions_set_encryption_user(
                     );
 
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_sym_algorithm(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *encryption_sym_algorithm
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_key_transport_algorithm(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *encryption_key_transport_algorithm
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_items(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *items
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_password_type(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *password_type
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_user(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *user
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_password_callback_class(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *password_callback_class
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_prop_file(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *encryption_prop_file
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_decryption_prop_file(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *decryption_prop_file
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_signature_prop_file(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *signature_prop_file
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_signature_key_identifier(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *signature_key_identifier
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_key_identifier(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *encryption_key_identifier
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_signature_parts(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *signature_parts
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_parts(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *encryption_parts
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_time_to_live(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
                     axis2_char_t *time_to_live
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_reset(
                     rampart_actions_t *actions, 
                     const axis2_env_t *env
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_free(   
                     rampart_actions_t *actions, 
                     const axis2_env_t *env
                     );
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_populate_from_params(
                     rampart_actions_t *actions,
                     const axis2_env_t *env, 
                     axis2_param_t *param_action  
                     );
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_populate_from_ctx (
                     rampart_actions_t *actions,
                     const axis2_env_t *env, 
@@ -324,7 +324,7 @@ rampart_actions_create(const axis2_env_t *env)
 
 }
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_encryption_user(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -337,7 +337,7 @@ rampart_actions_get_encryption_user(
     return actions_impl->encryption_user;
 }
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_encryption_sym_algorithm (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -350,7 +350,7 @@ rampart_actions_get_encryption_sym_algorithm (
     return actions_impl->encryption_sym_algorithm ;
 }
 
-axis2_char_t *AXIS2_CALL 
+static axis2_char_t *AXIS2_CALL 
 rampart_actions_get_encryption_key_transport_algorithm (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -363,7 +363,7 @@ rampart_actions_get_encryption_key_transport_algorithm (
     return actions_impl->encryption_key_transport_algorithm ;
 }
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_items (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -376,7 +376,7 @@ rampart_actions_get_items (
     return actions_impl->items ;
 }
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_password_type (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -389,7 +389,7 @@ rampart_actions_get_password_type (
     return actions_impl->password_type ;
 }
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_user (
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -402,7 +402,7 @@ rampart_actions_get_user (
     return actions_impl->user ;
 }
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_password_callback_class(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -415,7 +415,7 @@ rampart_actions_get_password_callback_class(
     return actions_impl->password_callback_class ;
 }
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_encryption_prop_file(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -428,7 +428,7 @@ rampart_actions_get_encryption_prop_file(
     return actions_impl->encryption_prop_file ;
 }
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_decryption_prop_file(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -441,7 +441,7 @@ rampart_actions_get_decryption_prop_file(
     return actions_impl->decryption_prop_file ;
 }
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_signature_prop_file(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -454,7 +454,7 @@ rampart_actions_get_signature_prop_file(
     return actions_impl->signature_prop_file ;
 }
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_signature_key_identifier(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -467,7 +467,7 @@ rampart_actions_get_signature_key_identifier(
     return actions_impl->signature_key_identifier ;
 }
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_encryption_key_identifier(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -480,7 +480,7 @@ rampart_actions_get_encryption_key_identifier(
     return actions_impl->encryption_key_identifier ;
 }
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_signature_parts(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -493,7 +493,7 @@ rampart_actions_get_signature_parts(
     return actions_impl->signature_parts ;
 }
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_encryption_parts(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -506,7 +506,7 @@ rampart_actions_get_encryption_parts(
     return actions_impl->encryption_parts ;
 }
 
-axis2_char_t *AXIS2_CALL
+static axis2_char_t *AXIS2_CALL
 rampart_actions_get_time_to_live(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
@@ -520,7 +520,7 @@ rampart_actions_get_time_to_live(
 }
 
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_user(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -541,7 +541,7 @@ rampart_actions_set_encryption_user(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_sym_algorithm(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -561,7 +561,7 @@ rampart_actions_set_encryption_sym_algorithm(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_key_transport_algorithm(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -581,7 +581,7 @@ rampart_actions_set_encryption_key_transport_algorithm(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_items(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -601,7 +601,7 @@ rampart_actions_set_items(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_password_type(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -621,7 +621,7 @@ rampart_actions_set_password_type(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_user(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -640,7 +640,7 @@ rampart_actions_set_user(
 
     return AXIS2_SUCCESS;
 }
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_password_callback_class(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -659,7 +659,7 @@ rampart_actions_set_password_callback_class(
 
     return AXIS2_SUCCESS;
 }
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_prop_file(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -679,7 +679,7 @@ rampart_actions_set_encryption_prop_file(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_decryption_prop_file(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -699,7 +699,7 @@ rampart_actions_set_decryption_prop_file(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_signature_prop_file(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -718,7 +718,7 @@ rampart_actions_set_signature_prop_file(
 
     return AXIS2_SUCCESS;
 }
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_signature_key_identifier(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -737,7 +737,7 @@ rampart_actions_set_signature_key_identifier(
 
     return AXIS2_SUCCESS;
 }
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_key_identifier(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -756,7 +756,7 @@ rampart_actions_set_encryption_key_identifier(
 
     return AXIS2_SUCCESS;
 }
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_signature_parts(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -775,7 +775,7 @@ rampart_actions_set_signature_parts(
 
     return AXIS2_SUCCESS;
 }
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_encryption_parts(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -795,7 +795,7 @@ rampart_actions_set_encryption_parts(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_set_time_to_live(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
@@ -815,7 +815,7 @@ rampart_actions_set_time_to_live(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_reset( rampart_actions_t * actions, const axis2_env_t *env)
 {
     rampart_actions_impl_t * actions_impl= NULL;
@@ -840,7 +840,7 @@ rampart_actions_reset( rampart_actions_t * actions, const axis2_env_t *env)
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_free( rampart_actions_t * actions, const axis2_env_t *env)
 {
     rampart_actions_impl_t * actions_impl= NULL;
@@ -930,7 +930,7 @@ rampart_actions_free( rampart_actions_t * actions, const axis2_env_t *env)
 }
 
 /*Populate actions by extracting values from parameters set*/
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_populate_from_params (rampart_actions_t *actions, 
 						const axis2_env_t *env, axis2_param_t *param_action  )
 {
@@ -1044,7 +1044,7 @@ rampart_actions_populate_from_params (rampart_actions_t *actions,
 }
 
 /*Populate actions by extracting values from axis2 ctx*/
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 rampart_actions_populate_from_ctx (rampart_actions_t *actions, 
 						const axis2_env_t *env, axis2_ctx_t *ctx  )
 {

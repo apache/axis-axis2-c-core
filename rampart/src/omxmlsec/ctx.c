@@ -352,10 +352,9 @@ oxs_ctx_init_ops(
 
 /*public functions*/
 axis2_status_t AXIS2_CALL
-oxs_ctx_free(
-                    oxs_ctx_t *ctx,
-                    const axis2_env_t *env
-                    )
+oxs_ctx_free(oxs_ctx_t *ctx,
+             const axis2_env_t *env
+             )
 {
     oxs_ctx_impl_t * ctx_impl= NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -404,6 +403,10 @@ oxs_ctx_free(
     }
 
     /*TODO free nodes and key*/
+
+    AXIS2_FREE(env->allocator,  ctx_impl);
+    ctx_impl = NULL;
+
     return AXIS2_SUCCESS;
 }
 

@@ -394,13 +394,13 @@ oxs_enc_engine_crypt(
     oxs_buffer_ptr result)
 {
     unsigned char *out_main_buf = NULL;
-    openssl_evp_block_cipher_ctx_ptr bc_ctx = NULL;
+    openssl_cipher_ctx_t *oc_ctx = NULL;
     axis2_char_t *iv = NULL;   
+    axis2_char_t *key = NULL;   
     axis2_char_t *cipher_name =  NULL;   
     axis2_char_t *encoded_str=NULL;
     axis2_char_t *in_data = NULL;
     int ret, enclen, encodedlen, decoded_len;
-    axis2_char_t *temp = NULL;
     openssl_cipher_property_t *cprop = NULL;
     oxs_enc_engine_impl_t *enc_engine_impl = NULL;
 
@@ -414,29 +414,33 @@ oxs_enc_engine_crypt(
 
  
     /*Create the context*/
-    bc_ctx = openssl_evp_block_cipher_ctx_create(env);
-    if(!bc_ctx){
+    oc_ctx = openssl_cipher_ctx_create(env);
+    if(!oc_ctx){
          oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "openssl_evp_block_cipher_ctx_create failed");
+                     "openssl_cipher_ctx_create failed");
          return AXIS2_FAILURE;
     }
 
     /*Get cipher property*/    
     cprop =  oxs_get_cipher_property_for_url(env, OXS_CTX_GET_ENC_MTD_ALGORITHM(enc_ctx, env));    
 
-    /*Set the IV*/   
-    /*iv = OPENSSL_DEFAULT_IV16;*/ /*oxs_iv_generate_for_algo(env,  enc_ctx->encmtd_algorithm); */
-    iv =(axis2_char_t*)oxs_iv_generate_for_algo(env,  OXS_CTX_GET_ENC_MTD_ALGORITHM(enc_ctx, env)); 
-
-    /*Set the key*/
-    temp =  AXIS2_STRNDUP(OXS_KEY_GET_DATA(OXS_CTX_GET_KEY(enc_ctx, env), env),  OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env), env);
-    bc_ctx->key = AXIS2_STRNDUP(OXS_KEY_GET_DATA(OXS_CTX_GET_KEY(enc_ctx, env), env),OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env),  env);
-    bc_ctx->key_initialized = 1;
 
     /*Set the IV*/
-    bc_ctx->iv = AXIS2_STRNDUP(iv, OPENSSL_CIPHER_PROPERTY_GET_IV_SIZE(cprop, env), env);
+    iv = AXIS2_STRNDUP((axis2_char_t*)oxs_iv_generate_for_algo(env,  OXS_CTX_GET_ENC_MTD_ALGORITHM(enc_ctx, env)),
+                        OPENSSL_CIPHER_PROPERTY_GET_IV_SIZE(cprop, env), 
+                        env); 
+    ret = OPENSSL_CIPHER_CTX_SET_IV(oc_ctx, env,iv);
 
-    /*TODO: Get the cipher name */
+    /*Set the key*/
+    key =  AXIS2_STRNDUP((axis2_char_t*)OXS_KEY_GET_DATA(OXS_CTX_GET_KEY(enc_ctx, 
+                                                                            env), 
+                                                        env),  
+                         OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env), 
+                         env);
+   
+    ret = OPENSSL_CIPHER_CTX_SET_KEY(oc_ctx, env, key);
+
+    /*Set the cipher*/
     cipher_name = (axis2_char_t*)OPENSSL_CIPHER_PROPERTY_GET_NAME(cprop, env);
     if(!cipher_name){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
@@ -445,32 +449,16 @@ oxs_enc_engine_crypt(
         return AXIS2_FAILURE;
     } 
 
-    /*Initialize block cipher ctx*/
-    if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_ENCRYPT){
-        ret =  openssl_evp_block_cipher_ctx_init(env, bc_ctx,
-                            OPENSSL_ENCRYPT, (const unsigned char*)cipher_name);
-        if(ret == AXIS2_FAILURE ){
-            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "openssl_evp_block_cipher_ctx_init failed");
-        }
-    }else if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT){
-        ret =  openssl_evp_block_cipher_ctx_init(env, bc_ctx,
-                            OPENSSL_DECRYPT, (const unsigned char*)cipher_name);
-        if(ret == AXIS2_FAILURE ){
-            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "openssl_evp_block_cipher_ctx_init failed");
-        }
-    }else{
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "Invalid operation type %d", OXS_CTX_GET_OPERATION(enc_ctx, env));
-        return AXIS2_FAILURE;
-    }
+    ret = OPENSSL_CIPHER_CTX_SET_CIPHER(oc_ctx, 
+                    env, 
+                    (EVP_CIPHER*)openssl_get_evp_cipher_by_name(env, (axis2_char_t*)cipher_name));
+
 
     /****************Encryption or decryption happens here ************/
 
     /*If this is to encrypt we simply pass the data to crypto function*/
     if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_ENCRYPT){
-        enclen = openssl_block_cipher_crypt(env, bc_ctx,
+        enclen = openssl_block_cipher_crypt(env, oc_ctx,
                                          input->data, strlen((char*)input->data),  &out_main_buf, OPENSSL_ENCRYPT);
     
     /*If this is to decrypt, then we need to base64decode first*/
@@ -482,7 +470,7 @@ oxs_enc_engine_crypt(
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "base64 decoding failed");
         }
-        enclen = openssl_block_cipher_crypt(env, bc_ctx,
+        enclen = openssl_block_cipher_crypt(env, oc_ctx,
                                          (unsigned char*)in_data, decoded_len,  &out_main_buf, OPENSSL_DECRYPT);
     }else{
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
