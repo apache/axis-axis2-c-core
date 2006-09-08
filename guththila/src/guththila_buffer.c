@@ -18,25 +18,52 @@
 
 
 /* #include "guththila_environment.h" */
+#include <string.h>
 #include "guththila_buffer.h"
 #include <axis2_env.h>
 
 AXIS2_EXTERN guththila_buffer_t *
 guththila_buffer_create (axis2_env_t * environment, int size)
 {
-    guththila_buffer_t *name = AXIS2_MALLOC (environment->allocator,
+    guththila_buffer_t *name;
+    name = NULL;
+    name  = AXIS2_MALLOC (environment->allocator,
                                             sizeof (guththila_buffer_t));
-    name->size = size;
-    name->offset = 0;
-    name->last = 0;
-    name->next = 0;
-    name->buff = NULL;
-    if (size != 0)
-        name->buff = (guththila_char_t *) AXIS2_MALLOC (
-                                environment->allocator, size);
-    return name;
+    if (name)
+      {
+	name->size = size;
+	name->offset = 0;
+	name->last = 0;
+	name->next = 0;
+	name->is_memory = 0;
+	name->buff = NULL;
+	if (size != 0)
+	  name->buff = (guththila_char_t *) AXIS2_MALLOC (
+							  environment->allocator, size);
+      }
+	return name;
 }
 
+AXIS2_EXTERN guththila_buffer_t *
+guththila_buffer_create_for_buffer (axis2_env_t * environment, char *buffer, int size)
+{
+    guththila_buffer_t *name;
+    name = NULL;
+    name  = AXIS2_MALLOC (environment->allocator,
+                                            sizeof (guththila_buffer_t));
+    if (name)
+      {
+	name->size = size;
+	name->offset = 0;
+	name->is_memory = 1;
+	name->last = size;
+	name->next = 0;
+	name->buff = NULL;
+	if (buffer)
+	  name->buff = buffer;
+      }
+    return name;
+}
 
 AXIS2_EXTERN void
 guththila_buffer_free (axis2_env_t * environment,
@@ -44,7 +71,7 @@ guththila_buffer_free (axis2_env_t * environment,
 {
     if (name)
     {
-        if (name->buff)
+        if (name->buff && !name->is_memory)
         {
             AXIS2_FREE (environment->allocator, name->buff);
 	    name->buff = NULL;

@@ -89,6 +89,7 @@ typedef struct guththila_xml_pull_parser_s
   int offset;
   int last;
   int unicode_state;
+  int reader_type;
   enum guththila_status status;
   enum guththila_event_types guththila_event;
 } guththila_xml_pull_parser_t;
@@ -204,8 +205,8 @@ guththila_xml_pull_parser_process_attribute_value (axis2_env_t * environment,
 						   int c);
                                               
                                               
-int AXIS2_CALL
-guththila_xml_pull_parser_is_space (axis2_env_t *environment, int c);
+/* int AXIS2_CALL */
+/* guththila_xml_pull_parser_is_space (axis2_env_t *environment, int c); */
 
 
 void AXIS2_CALL
@@ -365,6 +366,9 @@ guththila_xml_pull_parser_create_xml_stream_writer (axis2_env_t *environment,
 						    guththila_xml_pull_parser_t *p, 
 						    char *fp);
 
+AXIS2_EXTERN void  AXIS2_CALL
+guththila_xml_pull_parser_create_xml_stream_writer_for_memory (axis2_env_t *environment, 
+						    guththila_xml_pull_parser_t *p);
 
 AXIS2_EXTERN void AXIS2_CALL
 guththila_xml_pull_parser_write_to_buffer (axis2_env_t *env, 
@@ -609,6 +613,10 @@ guththila_xml_pull_parser_write_line (axis2_env_t *environment,
 				      guththila_xml_pull_parser_t *p, 
 				      char *element_name, 
 				      char *characters);
+
+AXIS2_EXTERN char * AXIS2_CALL
+guththila_xml_pull_parser_get_memory_buffer (axis2_env_t *environemnt, 
+					     guththila_xml_pull_parser_t *p);
 
 AXIS2_EXTERN void AXIS2_CALL
 guththila_xml_pull_parser_xml_writer_free (axis2_env_t *environment,

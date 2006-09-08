@@ -18,11 +18,11 @@
 
 #include <guththila_xml_pull_parser.h>
 
-static int AXIS2_CALL
-guththila_is_space (int c)
-{
-  return (0x20 == c || 0x9 == c || 0xD == c || 0xA == c);
-}
+/* static int AXIS2_CALL */
+/* guththila_is_space (int c) */
+/* { */
+/*   return (0x20 == c || 0x9 == c || 0xD == c || 0xA == c); */
+/* } */
 
 
 AXIS2_EXTERN guththila_xml_pull_parser_t * AXIS2_CALL
@@ -32,7 +32,22 @@ guththila_xml_pull_parser_create (axis2_env_t * environment,
   guththila_xml_pull_parser_t *parser =
     (guththila_xml_pull_parser_t *) AXIS2_MALLOC (
 						  environment->allocator, sizeof (guththila_xml_pull_parser_t));
-  parser->buffer = guththila_buffer_create (environment, 1024);
+  guththila_reader_impl_t *reader_impl = NULL;
+  if (r)
+    {
+      reader_impl = (guththila_reader_impl_t *)r;
+      parser->reader_type = reader_impl->reader.guththila_reader_type;
+    }
+
+  if (reader_impl && reader_impl->reader.guththila_reader_type == GUTHTHILA_MEMORY_READER)
+    {
+      guththila_buffer_t *reader_buffer = NULL;
+      reader_buffer = guththila_buffer_create_for_buffer (environment, reader_impl->buffer, reader_impl->buffer_size);
+      parser->buffer = reader_buffer;
+    }
+  else
+    parser->buffer = guththila_buffer_create (environment, 1024);
+
   parser->stack = axis2_stack_create (environment);
   parser->attrib = axis2_stack_create (environment);
   parser->namesp = axis2_stack_create (environment);
@@ -56,8 +71,15 @@ AXIS2_EXTERN  void AXIS2_CALL
 guththila_xml_pull_parser_free (axis2_env_t * environment,
                                 guththila_xml_pull_parser_t * parser)
 {
-  if (parser->buffer)
+  /*   if (parser->reader_type != GUTHTHILA_MEMORY_READER) */
+  /*     { */
+  /*        if (parser->buffer) */
+  /* 	guththila_buffer_free (environment, (void *) parser->buffer); */
+  /*     } */
+
+  if (parser->buffer) 
     guththila_buffer_free (environment, (void *) parser->buffer);
+
   if (parser->stack)
     AXIS2_STACK_FREE (parser->stack, environment);
   if (parser->attrib)
@@ -174,14 +196,21 @@ guththila_xml_pull_parser_next_char (axis2_env_t * environment,
                                      guththila_xml_pull_parser_t * parser,
                                      int eof)
 {
-  if (((parser->_next) > (parser->last))
-      && guththila_xml_pull_parser_read (environment, parser))
+
+  if (parser->reader_type == GUTHTHILA_MEMORY_READER)
+    {
+      if (parser->_next > parser->last)
+	return -1;
+    }
+  else  if (((parser->_next) > (parser->last))
+	    && guththila_xml_pull_parser_read (environment, parser))
     {
       if (eof)
 	return -1;
       else
 	guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_UNEXPECTED_EOF);
     }
+
   if (parser->_next == 0)
     {
       guththila_UTF8_char iu =
@@ -468,7 +497,11 @@ guththila_xml_pull_parser_process_xml_decl (axis2_env_t *
 	      guththila_xml_pull_parser_next_char (environment, parser, 0))
 	    guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_MISSING_GREATER_SIGN_IN_XML_DECLARATION);
 	  else
-	    parser->guththila_event = GUTHTHILA_START_DOCUMENT;
+	    {
+	      while (guththila_xml_pull_parser_is_space (environment, guththila_xml_pull_parser_next_char (environment, parser, 0))); 
+	      parser->_next--;
+	      parser->guththila_event = GUTHTHILA_START_DOCUMENT;
+	    }
         }
     }
   else
@@ -481,32 +514,32 @@ void AXIS2_CALL
 guththila_xml_pull_parser_reset (axis2_env_t * environment,
                                  guththila_xml_pull_parser_t * parser)
 {
-    int ii; 
-    parser->offset = parser->_next;
-    parser->name = NULL;
-    parser->prefix = NULL;
-    parser->value = NULL;
+  int ii; 
+  parser->offset = parser->_next;
+  parser->name = NULL;
+  parser->prefix = NULL;
+  parser->value = NULL;
       
-    ii = AXIS2_STACK_SIZE (parser->attrib, environment);
-    for (; ii > 0; ii--)
+  ii = AXIS2_STACK_SIZE (parser->attrib, environment);
+  for (; ii > 0; ii--)
     {
-        void *d;
-        d = AXIS2_STACK_POP (parser->attrib, environment);
-        AXIS2_FREE (environment->allocator, d);
+      void *d;
+      d = AXIS2_STACK_POP (parser->attrib, environment);
+      AXIS2_FREE (environment->allocator, d);
     }
 
-    ii = AXIS2_STACK_SIZE (parser->stack, environment);
-    for (; ii > 0; ii--)
+  ii = AXIS2_STACK_SIZE (parser->stack, environment);
+  for (; ii > 0; ii--)
     {
-        void *d;
-        d = AXIS2_STACK_POP (parser->stack, environment);
-        AXIS2_FREE (environment->allocator, d);
+      void *d;
+      d = AXIS2_STACK_POP (parser->stack, environment);
+      AXIS2_FREE (environment->allocator, d);
     }
   /*   guththila_stack_clear (environment, parser->attrib); */
   /*   guththila_stack_clear (environment, parser->stack); */
   if(parser->guththila_event == GUTHTHILA_END_ELEMENT
-      || parser->guththila_event == GUTHTHILA_EMPTY_ELEMENT)
-        guththila_xml_pull_parser_close_element (environment, parser);
+     || parser->guththila_event == GUTHTHILA_EMPTY_ELEMENT)
+    guththila_xml_pull_parser_close_element (environment, parser);
 }
 
 
@@ -1207,7 +1240,7 @@ guththila_xml_pull_parser_get_attribute_prefix_by_number (axis2_env_t * environm
 {
   /*   int ix = parser->attrib->pointer; */
   int ix = AXIS2_STACK_SIZE (parser->attrib, environment);
-  guththila_attribute_t *attribute;
+  guththila_attribute_t *attribute = NULL;
   if (i > ix)
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_REQUESTED_NUMBER_GREATER_THAN_STACK_SIZE);
   else
@@ -1225,7 +1258,7 @@ guththila_xml_pull_parser_get_attribute_name_by_number (axis2_env_t * environmen
 {
   /* int ix = parser->attrib->pointer; */
   int ix = AXIS2_STACK_SIZE (parser->attrib, environment);
-  guththila_attribute_t *attribute;
+  guththila_attribute_t *attribute = NULL;
   if (i > ix)
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_REQUESTED_NUMBER_GREATER_THAN_STACK_SIZE);
   else
@@ -1244,7 +1277,7 @@ guththila_xml_pull_parser_get_attribute_value_by_number (axis2_env_t * environme
 {
   /*   int ix = parser->attrib->pointer; */
   int ix = AXIS2_STACK_SIZE (parser->attrib, environment);
-  guththila_attribute_t *attribute;
+  guththila_attribute_t *attribute = NULL;
   if (i > ix)
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_REQUESTED_NUMBER_GREATER_THAN_STACK_SIZE);
   else
@@ -1354,7 +1387,7 @@ guththila_xml_pull_parser_get_namespace_prefix_by_number (axis2_env_t * environm
 {
   /*   int ix = parser->namesp->pointer; */
   int ix = AXIS2_STACK_SIZE (parser->namesp, environment);
-  guththila_namespace_t *ns;
+  guththila_namespace_t *ns = NULL;
   if (i > ix)
     guththila_xml_pull_parser_exception (p_FILE, LINE, GUTHTHILA_ERROR_REQUESTED_NUMBER_GREATER_THAN_STACK_SIZE);
   else

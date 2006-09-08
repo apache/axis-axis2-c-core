@@ -21,15 +21,6 @@
 #include "guththila_defines.h"
 
 
-typedef struct guththila_reader_impl_t
-{
-    guththila_reader_t reader;
-    FILE *fp;
-    int (*input_read_callback)(char *buffer,int size, void *ctx);
-    void* context;
-}guththila_reader_impl_t;
-
-
 
 
 
@@ -61,9 +52,31 @@ guththila_reader_create_for_file (axis2_env_t * environment,
 
 
 AXIS2_EXTERN guththila_reader_t *
-guththila_reader_create_for_memory(
+guththila_reader_create_for_io(
                 axis2_env_t *environment,
                 int (*input_read_callback)(char *buffer,int size,void* ctx),void* ctx)
+{
+    guththila_reader_impl_t *io_reader = 
+        (guththila_reader_impl_t *) AXIS2_MALLOC (environment->allocator,
+                                            sizeof (guththila_reader_impl_t));
+    if(!io_reader)
+    {
+        return NULL;
+    }
+    
+    io_reader->input_read_callback  = input_read_callback;
+    io_reader->context = ctx;
+    io_reader->reader.guththila_reader_type = GUTHTHILA_IO_READER;
+    
+    return &(io_reader->reader);
+}
+
+AXIS2_EXTERN guththila_reader_t *
+guththila_reader_create_for_memory(
+                axis2_env_t *environment,
+		void *buffer,
+                int size,
+		void* ctx)
 {
     guththila_reader_impl_t *memory_reader = 
         (guththila_reader_impl_t *) AXIS2_MALLOC (environment->allocator,
@@ -73,13 +86,16 @@ guththila_reader_create_for_memory(
         return NULL;
     }
     
-    memory_reader->input_read_callback  = input_read_callback;
+    if (buffer)
+      {
+	memory_reader->buffer  = (char *)buffer;
+	memory_reader->buffer_size = strlen ((const char *) buffer);
+      }
     memory_reader->context = ctx;
-    memory_reader->reader.guththila_reader_type = GUTHTHILA_IN_MEMORY_READER;
+    memory_reader->reader.guththila_reader_type = GUTHTHILA_MEMORY_READER;
     
     return &(memory_reader->reader);
 }
-
 
 AXIS2_EXTERN void
 guththila_reader_free (axis2_env_t * environment,
@@ -111,9 +127,13 @@ guththila_reader_read (axis2_env_t * environment,
     {
        return (int)fread (buffer + offset, 1, length,((guththila_reader_impl_t*)r)->fp);
     }
-    else if(r->guththila_reader_type == GUTHTHILA_IN_MEMORY_READER)
+    else if(r->guththila_reader_type == GUTHTHILA_IO_READER)
         return ((guththila_reader_impl_t*)r)->input_read_callback((buffer + offset), length,
         ((guththila_reader_impl_t*)r)->context);
+    else if (r->guththila_reader_type == GUTHTHILA_MEMORY_READER)
+      {
+	return ((guththila_reader_impl_t *)r)->buffer_size;
+      }
  
     return GUTHTHILA_FAILURE;       
 }

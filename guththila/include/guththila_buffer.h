@@ -27,16 +27,20 @@
 
 typedef struct guththila_buffer_s
 {
-    int size;
-    int next;
-    int last;
-    int offset;
-    guththila_char_t *buff;
+  int size;
+  int next;
+  int last;
+  int offset;
+  int is_memory;
+  guththila_char_t *buff;
 } guththila_buffer_t;
 
 
 AXIS2_EXTERN guththila_buffer_t *
 guththila_buffer_create (axis2_env_t * environment, int size);
+
+AXIS2_EXTERN guththila_buffer_t *
+guththila_buffer_create_for_buffer (axis2_env_t * environment, char *buffer, int size);
 
 AXIS2_EXTERN void
 guththila_buffer_free (axis2_env_t * environment,

@@ -19,7 +19,7 @@
 
 #include "guththila_xml_pull_parser.h"
 #include "guththila_defines.h"
-/* #include "guththila_environment.h" */
+#include "buffer.h"
 
 int
 main (int argc, char *argv[])
@@ -32,7 +32,19 @@ main (int argc, char *argv[])
     allocator = axis2_allocator_init (NULL);
     environment =
         axis2_env_create (allocator);
-    red = guththila_reader_create_for_file (environment, argv[1]);
+
+    if (argc > 1)
+      red = guththila_reader_create_for_file (environment, argv[1]);
+    else
+      {
+	if (xml_buffer)
+	  {
+	    int size = 0;
+	    size = strlen (xml_buffer);
+	    red = guththila_reader_create_for_memory (environment, (void *)xml_buffer, size, NULL);
+	  }
+      }
+    
     parser = guththila_xml_pull_parser_create (environment, red);
     guththila_xml_pull_parser_read (environment, parser);
 
@@ -62,7 +74,7 @@ main (int argc, char *argv[])
                     printf ("%s\" ", p);
                     AXIS2_FREE (allocator, p);
                 }
-                printf ("?>");
+                printf ("?>\n");
             }
             break;
         case GUTHTHILA_START_ELEMENT:
@@ -74,7 +86,6 @@ main (int argc, char *argv[])
 		guththila_depth_t *depth;
 
                 printf ("<");
-      /* printf ("\n %s \n", guththila_xml_pull_parser_get_encoding (environment, parser)); */
                 p = guththila_xml_pull_parser_get_prefix (environment,
                                                           parser);
                 if (p)
@@ -138,7 +149,6 @@ main (int argc, char *argv[])
             {
                 char *p;
                 printf ("</");
-      /* printf ("\n %s \n", guththila_xml_pull_parser_get_encoding (environment, parser)); */
                 p = guththila_xml_pull_parser_get_prefix (environment,
                                                           parser);
                 if (p)
@@ -164,9 +174,6 @@ main (int argc, char *argv[])
             break;
         };
     }
-    guththila_char_t *charq;
-    charq = guththila_xml_pull_parser_get_encoding (environment, parser);
-    printf ("encoding method is %s", charq);
     guththila_reader_free (environment, red);
     guththila_xml_pull_parser_free (environment, parser);
     axis2_allocator_free (allocator);
