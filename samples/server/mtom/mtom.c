@@ -82,7 +82,7 @@ axis2_mtom_mtom (const axis2_env_t *env, axiom_node_t *node)
                         axiom_data_handler_t *data_handler = NULL;
                         axiom_text_t *bin_text = (axiom_text_t *)
                             AXIOM_NODE_GET_DATA_ELEMENT(binary_node, env);
-                        data_handler = AXIOM_TEXT_SET_GET_DATA_HANDLER(bin_text, env);
+                        data_handler = AXIOM_TEXT_GET_DATA_HANDLER(bin_text, env);
                         if (data_handler)
                         {
                             AXIOM_DATA_HANDLER_SET_FILE_NAME(data_handler, env, text_str);

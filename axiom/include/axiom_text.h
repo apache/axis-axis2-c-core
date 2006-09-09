@@ -192,10 +192,10 @@ extern "C"
 #define AXIOM_TEXT_SET_IS_BINARY(om_text, env, is_binary) \
         ((om_text)->ops->set_is_binary(om_text, env, is_binary))    
 
-#define AXIOM_TEXT_SET_GET_DATA_HANDLER(om_text, env) \
+#define AXIOM_TEXT_GET_DATA_HANDLER(om_text, env) \
         ((om_text)->ops->get_data_handler(om_text, env))
         
-#define AXIOM_TEXT_SET_GET_CONTENT_ID(om_text, env) \
+#define AXIOM_TEXT_GET_CONTENT_ID(om_text, env) \
         ((om_text)->ops->get_content_id(om_text, env))
         
 /** @} */

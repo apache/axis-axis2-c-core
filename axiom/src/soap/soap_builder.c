@@ -523,6 +523,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *builder,
                                         axiom_node_t *data_om_node = NULL;
                                         data_text = axiom_text_create_with_data_handler(
                                             env, om_element_node, data_handler, &data_om_node);
+                                        AXIOM_TEXT_SET_OPTIMIZE(data_text, env, AXIS2_FALSE);                                            
                                     }
                                 }
                             }
