@@ -879,7 +879,7 @@ axis2_svc_client_send_receive(
         }
         svc_client_impl->op_client = op_client;
         
-        AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(op_client, env, msg_ctx);
+        AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
         AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
         res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
 

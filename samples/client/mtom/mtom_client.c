@@ -107,13 +107,10 @@ int main(int argc, char** argv)
     
     /* Engage addressing module */
     AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);
-    AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, "sandesha2");
     
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_programatically(env, image_name, to_save_name);
     
-    AXIS2_OPTIONS_SET_PROPERTY(options, env, "Sandesha2LastMessage", 
-            property);
     /* Send request */
     ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
     

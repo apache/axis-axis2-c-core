@@ -1,5 +1,4 @@
 <service name="mtom">
-    <module ref="sandesha2"/>
     <parameter name="ServiceClass" locked="xsd:false">mtom</parameter>
 
    <description>

@@ -125,8 +125,6 @@ AC_CONFIG_FILES([Makefile \
     server/notify/Makefile \
     server/sg_math/Makefile \
     server/mtom/Makefile \
-    server/rm_ping/Makefile \
-    server/rm_echo/Makefile \
     client/Makefile \
     client/echo/Makefile \
     client/math/Makefile \
@@ -135,9 +133,6 @@ AC_CONFIG_FILES([Makefile \
     client/mtom/resources/Makefile \
     client/notify/Makefile \
     client/google/Makefile \
-    client/rm_ping/Makefile \
-    client/rm_echo/Makefile \
-    client/rm_echo_blocking/Makefile \
     user_guide/Makefile \
     user_guide/clients/Makefile \
     ])
