@@ -446,10 +446,12 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
     }
     if (AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(out_msg_ctx, env))
     {
-        axiom_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE (out_msg_ctx, env);
+        axiom_soap_envelope_t *soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE (
+                out_msg_ctx, env);
         if (soap_envelope)
         {
-            axiom_soap_body_t *body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+            axiom_soap_body_t *body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, 
+                    env);
             if (body)
             {
                 /* in case of a SOAP fault, we got to return failure so that
@@ -457,7 +459,8 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
                 if (AXIOM_SOAP_BODY_HAS_FAULT(body, env))
                 {
                     status = AXIS2_FAILURE;
-                    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
+                    AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, 
+                            soap_envelope);
                     AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(out_msg_ctx, env, NULL);
                 }
                 else
@@ -470,8 +473,10 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
         }
     }
     AXIS2_ENGINE_FREE(engine, env);
-    axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
-    AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+    /* test code: uncomment this when test is over */
+    /*axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
+    AXIS2_MSG_CTX_FREE(out_msg_ctx, env);*/
+    /* end test code */
     return status;
 }
 

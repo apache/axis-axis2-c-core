@@ -1965,7 +1965,7 @@ axis2_svc_add_mapping(
     AXIS2_PARAM_CHECK(env->error, op_desc, AXIS2_FAILURE);
     svc_impl = AXIS2_INTF_TO_IMPL(svc);
 
-    axis2_hash_set(svc_impl->op_alias_map, mapping_key,
+    axis2_hash_set(svc_impl->op_action_map, mapping_key,
         AXIS2_HASH_KEY_STRING, op_desc);
     return AXIS2_SUCCESS;
 }

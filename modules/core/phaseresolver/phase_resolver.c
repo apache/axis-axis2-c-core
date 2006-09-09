@@ -1200,7 +1200,8 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
             AXIS2_QNAME_GET_LOCALPART(AXIS2_OP_GET_QNAME(op_desc, env), env));
         modules = AXIS2_OP_GET_ALL_MODULES(op_desc, env);
         module_desc_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
-        size = AXIS2_ARRAY_LIST_SIZE(modules, env);
+        if(modules)
+            size = AXIS2_ARRAY_LIST_SIZE(modules, env);
         for(j = 0; j < size; j++)
         {
             axis2_module_desc_t *module_desc_l = NULL;
@@ -1525,7 +1526,7 @@ axis2_phase_resolver_engage_module_to_svc(
     axis2_hash_t *ops = NULL;
     axis2_hash_index_t *index_i = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    const axis2_qname_t *module_d_qname = NULL;
+    axis2_qname_t *module_d_qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
@@ -1556,15 +1557,17 @@ axis2_phase_resolver_engage_module_to_svc(
         axis2_hash_this (index_i, NULL, NULL, &v);
         op_desc = (axis2_op_t *) v;
         modules = AXIS2_OP_GET_ALL_MODULES(op_desc, env);
-        size = AXIS2_ARRAY_LIST_SIZE(modules, env);
+        if(modules)
+            size = AXIS2_ARRAY_LIST_SIZE(modules, env);
         for(j = 0; j < size; j++)
         {
             axis2_module_desc_t *module_desc_l = NULL;
-            const axis2_qname_t *module_d_qname_l = NULL;
+            axis2_qname_t *module_d_qname_l = NULL;
 
             module_desc_l = AXIS2_ARRAY_LIST_GET(modules, env, j);
             module_d_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l, env);
-            if(0 == AXIS2_QNAME_EQUALS(module_d_qname, env, module_d_qname_l))
+            if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_d_qname, env, 
+                        module_d_qname_l))
             {
                 engaged = AXIS2_TRUE;
                 break;
@@ -1713,14 +1716,38 @@ axis2_phase_resolver_engage_module_to_op(
                     }
 
                 }
-                else
+                if ((0 == AXIS2_STRCMP(AXIS2_PHASE_TRANSPORTIN, phase_name)) ||
+                        (0 == AXIS2_STRCMP(AXIS2_PHASE_DISPATCH, phase_name)) ||
+                        (0 == AXIS2_STRCMP(AXIS2_PHASE_POST_DISPATCH, phase_name)) ||
+                        (0 == AXIS2_STRCMP(AXIS2_PHASE_PRE_DISPATCH, phase_name)))
                 {
-                    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "This handler is\
+                    axis2_array_list_t *phase_list = NULL;
+                    axis2_phase_holder_t *phase_holder = NULL;
+
+                    /*AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "This handler is\
                             trying to added to system pre defined phases , but those\
                             handlers are already added to global chain which run\
-                            irrespective of the service");
-                    /*return AXIS2_FAILURE;*/
+                            irrespective of the service");*/
+                    /* return AXIS2_FAILURE;*/
 
+                    phase_list =
+                        AXIS2_CONF_GET_IN_PHASES_UPTO_AND_INCLUDING_POST_DISPATCH(
+                            resolver_impl->axis2_config, env);
+                    if(phase_holder)
+                    {
+                        AXIS2_PHASE_HOLDER_FREE(phase_holder, env);
+                        phase_holder = NULL;
+                    }
+                    phase_holder =
+                        axis2_phase_holder_create_with_phases(env, phase_list);
+                        
+                    status = AXIS2_PHASE_HOLDER_ADD_HANDLER(phase_holder, env, metadata);
+                    AXIS2_PHASE_HOLDER_FREE(phase_holder, env);
+                    phase_holder = NULL;
+                    if(AXIS2_SUCCESS != status)
+                    {
+                        return status;
+                    }
                 }
             }
         }

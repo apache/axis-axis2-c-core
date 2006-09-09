@@ -1,4 +1,5 @@
 <service name="rm_ping">
+    <module ref="sandesha2"/>
     <parameter name="ServiceClass" locked="xsd:false">rm_ping</parameter>
 
    <description>

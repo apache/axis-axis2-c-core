@@ -1093,7 +1093,8 @@ axis2_msg_ctx_get_msg_id(
     
     if (msg_ctx_impl->msg_info_headers)
     {
-        return AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID(msg_ctx_impl->msg_info_headers, env);
+        return AXIS2_MSG_INFO_HEADERS_GET_MESSAGE_ID(
+                msg_ctx_impl->msg_info_headers, env);
     }
     
     return NULL;

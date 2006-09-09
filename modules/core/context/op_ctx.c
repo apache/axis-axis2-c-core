@@ -358,11 +358,38 @@ axis2_op_ctx_add_msg_ctx(
     axis2_thread_mutex_lock(op_ctx_impl->mutex);
     if (op_ctx_impl->msg_ctx_map)
     {
-        const axis2_char_t *message_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
+        axis2_msg_ctx_t *out_msg_ctx = NULL;
+        axis2_msg_ctx_t *in_msg_ctx = NULL;
+
+        /*const axis2_char_t *message_id = AXIS2_MSG_CTX_GET_MSG_ID(msg_ctx, env);
         if (message_id)
         {
             axis2_hash_set(op_ctx_impl->msg_ctx_map, 
                 message_id, AXIS2_HASH_KEY_STRING, msg_ctx); 
+        }*/
+
+        out_msg_ctx = axis2_hash_get(op_ctx_impl->msg_ctx_map, 
+                AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING);
+        in_msg_ctx = axis2_hash_get(op_ctx_impl->msg_ctx_map, 
+                AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING);
+
+        if (out_msg_ctx && in_msg_ctx)
+        {
+            /*TODO:error - completed*/
+            return AXIS2_FAILURE;
+        }
+
+        if (!out_msg_ctx)
+        {
+            axis2_hash_set(op_ctx_impl->msg_ctx_map, 
+                    AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING, 
+                    msg_ctx);
+        }
+        else
+        {
+            axis2_hash_set(op_ctx_impl->msg_ctx_map, 
+                    AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING, 
+                    msg_ctx);
         }
     }
     axis2_thread_mutex_unlock(op_ctx_impl->mutex);

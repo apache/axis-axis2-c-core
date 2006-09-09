@@ -367,7 +367,7 @@ worker_func(
                 secs);
 #endif
     }
-    axis2_env_free_masked(thread_env, 0x2);
+    /*axis2_env_free_masked(thread_env, 0x2);*/
     /*axiom_xml_reader_cleanup();*/
 #ifdef AXIS2_SVR_MULTI_THREADED
     AXIS2_THREAD_POOL_EXIT_THREAD(env->thread_pool, thd);

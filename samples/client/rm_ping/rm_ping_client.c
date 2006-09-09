@@ -33,6 +33,7 @@ int main(int argc, char** argv)
     axis2_svc_client_t* svc_client = NULL;
     axiom_node_t *payload = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    axis2_property_t *property = NULL;
    
     /* Set up the environment */
     env = axis2_env_create_all("rm_notify.log", AXIS2_LOG_LEVEL_TRACE);
@@ -55,6 +56,7 @@ int main(int argc, char** argv)
     /* Setup options */
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+    /*AXIS2_OPTIONS_SET_USE_SEPARATE_LISTENER(options, env, AXIS2_TRUE);*/
     AXIS2_OPTIONS_SET_ACTION(options, env,
         "http://example.org/action/notify");
 
@@ -87,10 +89,16 @@ int main(int argc, char** argv)
     
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_programatically(env);
+    AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, "sandesha2");
+
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
+    AXIS2_PROPERTY_SET_VALUE(property, env, AXIS2_VALUE_TRUE);
+    AXIS2_OPTIONS_SET_PROPERTY(options, env, "Sandesha2LastMessage", 
+            property);
     
     /* Send request */
     status = AXIS2_SVC_CLIENT_SEND_ROBUST(svc_client, env, payload);
-    
     if(status == AXIS2_SUCCESS)
     {
         printf("\nnotify client invoke SUCCESSFUL!\n");
@@ -102,6 +110,7 @@ int main(int argc, char** argv)
                         AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("notify client invoke FAILED!\n");
     }
+    AXIS2_SLEEP(1000);
     
     if (svc_client)
     {

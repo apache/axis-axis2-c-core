@@ -246,7 +246,7 @@ axiom_soap_over_http_sender_send(
                         axis2_http_client_free_void_arg);
     AXIS2_PROPERTY_SET_VALUE(property, env, sender_impl->client);
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_HTTP_CLIENT,
-                    property, AXIS2_TRUE);
+                    property, AXIS2_FALSE);
 
     doing_mtom = AXIS2_MSG_CTX_GET_DOING_MTOM(msg_ctx, env);
 

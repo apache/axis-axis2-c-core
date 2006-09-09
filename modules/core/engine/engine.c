@@ -395,7 +395,7 @@ axis2_engine_receive(
                 return status;
         }
 
-        if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+        if (AXIS2_TRUE == AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
         {
             return AXIS2_SUCCESS;
         }
@@ -412,7 +412,7 @@ axis2_engine_receive(
                 return status;
             }
                                         
-            if (AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
+            if (AXIS2_TRUE == AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))
             {
                 return AXIS2_SUCCESS;
             }
@@ -752,7 +752,8 @@ axis2_engine_invoke_phases(
     AXIS2_PARAM_CHECK(env->error, phases, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);    
     
-    count = AXIS2_ARRAY_LIST_SIZE(phases, env);
+    if(phases)
+        count = AXIS2_ARRAY_LIST_SIZE(phases, env);
     for (i = 0; (i < count && !(AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env))); i++) 
     {
         axis2_phase_t *phase = (axis2_phase_t *) 

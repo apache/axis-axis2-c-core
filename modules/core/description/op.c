@@ -33,6 +33,7 @@ typedef struct axis2_op_impl
     int mep;
     /*To store deploy time module QNames */
     axis2_array_list_t *module_qnames;
+    axis2_array_list_t *engaged_module_list;
     
 } axis2_op_impl_t;
 
@@ -382,6 +383,7 @@ axis2_op_create(
     op_impl->op.param_container = NULL;
     op_impl->wsdl_op = NULL;
     op_impl->module_qnames = NULL;
+    op_impl->engaged_module_list = NULL;
     op_impl->op.ops = NULL;
     
     op_impl->op.param_container = (axis2_param_container_t *)
@@ -728,7 +730,14 @@ axis2_op_free(
         AXIS2_ARRAY_LIST_FREE(op_impl->module_qnames, env);
         op_impl->module_qnames = NULL;
     }
+     
+    if(NULL != op_impl->engaged_module_list)
+    {
+        AXIS2_ARRAY_LIST_FREE(op_impl->engaged_module_list, env);
+        op_impl->engaged_module_list = NULL;
+    }
     
+
     if(NULL != op_impl->wsdl_op)
     {
         AXIS2_WSDL_OP_FREE(op_impl->wsdl_op, env);
@@ -1026,13 +1035,15 @@ axis2_op_engage_module(
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
-    property = (axis2_property_t *)
+    /*property = (axis2_property_t *)
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op_impl->wsdl_op->
-        extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY);
+        extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY);*/
     /* collection_module is the already engaged modules */
-    collection_module = (axis2_array_list_t *) 
-        AXIS2_PROPERTY_GET_VALUE(property, env);
-    size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
+    /*collection_module = (axis2_array_list_t *) 
+        AXIS2_PROPERTY_GET_VALUE(property, env);*/
+    collection_module = op_impl->engaged_module_list;
+    if(collection_module)
+        size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
     if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
         return AXIS2_ERROR_GET_STATUS_CODE(env->error);
@@ -1109,13 +1120,18 @@ axis2_op_add_to_engaged_module_list(
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
-    property = (axis2_property_t *) 
+    /*property = (axis2_property_t *) 
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op_impl->wsdl_op->
             extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY);
     
     collection_module = (axis2_array_list_t *) AXIS2_PROPERTY_GET_VALUE(
         property, env);
-    size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
+    */
+    if(!op_impl->engaged_module_list)
+    {
+        op_impl->engaged_module_list = axis2_array_list_create(env, 0);
+    }
+    size = AXIS2_ARRAY_LIST_SIZE(op_impl->engaged_module_list, env);
     
     if(AXIS2_SUCCESS != AXIS2_ERROR_GET_STATUS_CODE(env->error))
     {
@@ -1127,7 +1143,7 @@ axis2_op_add_to_engaged_module_list(
         const axis2_qname_t *module_qname_l = NULL;
 
         module_desc_l = (axis2_module_desc_t *) AXIS2_ARRAY_LIST_GET(
-            collection_module, env, index);
+            op_impl->engaged_module_list, env, index);
         module_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l, env);        
         if(AXIS2_QNAME_EQUALS(module_qname, env, module_qname_l))
         {
@@ -1135,7 +1151,7 @@ axis2_op_add_to_engaged_module_list(
         }
 
     }
-    return AXIS2_ARRAY_LIST_ADD(collection_module, env, module_desc);
+    return AXIS2_ARRAY_LIST_ADD(op_impl->engaged_module_list, env, module_desc);
 }
 
 axis2_array_list_t *AXIS2_CALL
@@ -1150,11 +1166,12 @@ axis2_op_get_all_modules(
     AXIS2_ENV_CHECK(env, NULL);
     op_impl = AXIS2_INTF_TO_IMPL(op);
     
-    property =  (axis2_property_t *) 
+    /*property =  (axis2_property_t *) 
         AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op_impl->wsdl_op->
             extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY);
     modules = (axis2_array_list_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
-    return modules;
+    return modules;*/
+    return op_impl->engaged_module_list;
 }
 
 int AXIS2_CALL

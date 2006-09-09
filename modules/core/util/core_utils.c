@@ -25,8 +25,9 @@
 #include <axis2_conf_ctx.h>
 
 AXIS2_EXTERN axis2_msg_ctx_t * AXIS2_CALL
-axis2_core_utils_create_out_msg_ctx(const axis2_env_t *env,
-                                axis2_msg_ctx_t *in_msg_ctx)
+axis2_core_utils_create_out_msg_ctx(
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *in_msg_ctx)
 {
     axis2_msg_ctx_t *new_msg_ctx = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -143,11 +144,11 @@ axis2_core_utils_create_out_msg_ctx(const axis2_env_t *env,
             AXIS2_CHARACTER_SET_ENCODING, AXIS2_FALSE);         
     if(property)
     {
-        AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING, 
-            property, AXIS2_FALSE);
+        AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env, 
+                AXIS2_CHARACTER_SET_ENCODING, property, AXIS2_FALSE);
         property = NULL;
     }
-            
+     
     doing_rest = AXIS2_MSG_CTX_GET_DOING_REST(in_msg_ctx, env);
     AXIS2_MSG_CTX_SET_DOING_REST(new_msg_ctx, env, doing_rest);
     
