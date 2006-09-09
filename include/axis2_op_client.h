@@ -111,6 +111,21 @@ extern "C"
                     axis2_msg_ctx_t *msg_ctx);
 
         /**
+         * Adds out message context to the client for processing. 
+         * @param op_client pointer to operation client struct
+         * @param env pointer to environment struct
+         * @param msg_ctx message context to be added. operation client takes 
+         * over the ownership of the message context struct.
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                add_out_msg_ctx)(
+                    axis2_op_client_t *op_client,
+                    const axis2_env_t *env,
+                    axis2_msg_ctx_t *msg_ctx);
+
+
+        /**
          * Gets a message corresponding to the given label.
          * @param op_client pointer to operation client struct
          * @param env pointer to environment struct
@@ -265,6 +280,11 @@ extern "C"
     @sa axis2_op_client_ops#add_msg_ctx*/
 #define AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx) \
       ((op_client)->ops->add_msg_ctx(op_client, env, msg_ctx))
+
+/** Adds out message context. 
+    @sa axis2_op_client_ops#add_out_msg_ctx*/
+#define AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(op_client, env, msg_ctx) \
+      ((op_client)->ops->add_out_msg_ctx(op_client, env, msg_ctx))
 
 /** Gets the message context corresponding to given label. 
     @sa axis2_op_client_ops#get_msg_ctx*/

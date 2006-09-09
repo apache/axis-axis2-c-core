@@ -87,6 +87,11 @@ axis2_op_client_add_msg_ctx(
     const axis2_env_t *env,
     axis2_msg_ctx_t *mc);
 
+axis2_status_t AXIS2_CALL
+axis2_op_client_add_out_msg_ctx(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *mc);
 
 const axis2_msg_ctx_t *AXIS2_CALL
 axis2_op_client_get_msg_ctx(
@@ -287,6 +292,27 @@ axis2_op_client_add_msg_ctx(
     }
     return AXIS2_SUCCESS;
 }
+
+axis2_status_t AXIS2_CALL
+axis2_op_client_add_out_msg_ctx(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env,
+    axis2_msg_ctx_t *mc)
+{
+    axis2_op_client_impl_t *op_client_impl = NULL;
+    axis2_hash_t *msg_ctx_map = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    op_client_impl = AXIS2_INTF_TO_IMPL(op_client);
+
+    msg_ctx_map = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_client_impl->op_ctx, env);
+
+    axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING, mc);
+
+    return AXIS2_SUCCESS;
+}
+
 
 
 const axis2_msg_ctx_t *AXIS2_CALL
@@ -636,6 +662,7 @@ axis2_op_client_init_ops(
     op_client->ops->set_options = axis2_op_client_set_options;
     op_client->ops->get_options = axis2_op_client_get_options;
     op_client->ops->add_msg_ctx = axis2_op_client_add_msg_ctx;
+    op_client->ops->add_out_msg_ctx = axis2_op_client_add_out_msg_ctx;
     op_client->ops->get_msg_ctx = axis2_op_client_get_msg_ctx;
     op_client->ops->set_callback = axis2_op_client_set_callback;
     op_client->ops->execute = axis2_op_client_execute;

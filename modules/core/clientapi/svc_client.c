@@ -690,7 +690,7 @@ axis2_svc_client_send_robust(
     
     svc_client_impl->op_client = op_client;
     
-    AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
+    AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(op_client, env, msg_ctx);
     return AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
 }
 
@@ -738,7 +738,7 @@ axis2_svc_client_fire_and_forget(
     }
     svc_client_impl->op_client = op_client;
 
-    AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
+    AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(op_client, env, msg_ctx);
     AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_FALSE);
     return;
 }
@@ -879,7 +879,7 @@ axis2_svc_client_send_receive(
         }
         svc_client_impl->op_client = op_client;
         
-        AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
+        AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(op_client, env, msg_ctx);
         AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
         res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
 
@@ -951,7 +951,7 @@ axis2_svc_client_send_receive_non_blocking(
     svc_client_impl->op_client = op_client;
 
     AXIS2_OP_CLIENT_SET_CALLBACK(op_client, env, callback);
-    AXIS2_OP_CLIENT_ADD_MSG_CTX(op_client, env, msg_ctx);
+    AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(op_client, env, msg_ctx);
 
     if (AXIS2_OPTIONS_GET_USE_SEPERATE_LISTENER(svc_client_impl->options, env))
     {
