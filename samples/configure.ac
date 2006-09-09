@@ -137,6 +137,7 @@ AC_CONFIG_FILES([Makefile \
     client/google/Makefile \
     client/rm_ping/Makefile \
     client/rm_echo/Makefile \
+    client/rm_echo_blocking/Makefile \
     user_guide/Makefile \
     user_guide/clients/Makefile \
     ])
