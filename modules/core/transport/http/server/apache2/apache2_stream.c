@@ -140,7 +140,7 @@ apache2_stream_read(
     size_t count)
 {
     apache2_stream_impl_t *stream_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
     return ap_get_client_block(stream_impl->request, buffer, count);
@@ -156,7 +156,7 @@ apache2_stream_write(
    apache2_stream_impl_t *stream_impl = NULL;
     char *write_buf = NULL;
     axis2_char_t *buffer = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, buf, AXIS2_FAILURE);
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
     buffer = (axis2_char_t*)buf;
@@ -200,7 +200,7 @@ apache2_stream_skip(
     apache2_stream_impl_t *stream_impl = NULL;
     axis2_char_t *tmp_buffer = NULL;
     int len = -1;
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
     
     tmp_buffer = AXIS2_MALLOC(env->allocator, count * sizeof(axis2_char_t));
@@ -222,7 +222,7 @@ apache2_stream_get_char(
     const axis2_env_t *env)
 {
     int ret = -1;
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     
     /* TODO implement this */
     return ret;
@@ -233,7 +233,7 @@ apache2_stream_get_type(
     axis2_stream_t *stream, 
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(stream)->stream_type;
 }
 

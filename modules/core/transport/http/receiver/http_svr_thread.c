@@ -242,7 +242,7 @@ axis2_http_svr_thread_destroy(
 {
     axis2_http_svr_thread_impl_t *svr_thread_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     svr_thread_impl = AXIS2_INTF_TO_IMPL(svr_thread);
     if(AXIS2_TRUE == svr_thread_impl->stopped)
@@ -266,7 +266,7 @@ axis2_http_svr_thread_get_local_port(
     const axis2_http_svr_thread_t *svr_thread,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(svr_thread)->port;
 }
 

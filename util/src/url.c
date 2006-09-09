@@ -411,7 +411,7 @@ axis2_url_set_port(axis2_url_t *url, const axis2_env_t *env,
 int AXIS2_CALL 
 axis2_url_get_port (axis2_url_t *url, const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(url)->port;
 }
 

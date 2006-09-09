@@ -161,8 +161,8 @@ axis2_apache2_worker_process_request(
     axis2_qname_t *transport_qname = NULL;
     axis2_char_t *ctx_uuid = NULL;
    
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, request, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, request, AXIS2_CRITICAL_FAILURE);
    
     apache2_worker_impl = AXIS2_INTF_TO_IMPL(apache2_worker);
     conf_ctx = apache2_worker_impl->conf_ctx;
@@ -173,7 +173,7 @@ axis2_apache2_worker_process_request(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
                           AXIS2_FAILURE);
-        return AXIS2_CRTICAL_FAILURE;
+        return AXIS2_CRITICAL_FAILURE;
     }
     content_length = request->remaining;
     http_version = request->protocol;
@@ -191,7 +191,7 @@ axis2_apache2_worker_process_request(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_HTTP_VERSION, 
                   AXIS2_FAILURE);
-        return AXIS2_CRTICAL_FAILURE;
+        return AXIS2_CRITICAL_FAILURE;
     }
     out_stream = axis2_stream_create_basic(env);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Client HTTP version %s", 
@@ -243,7 +243,7 @@ axis2_apache2_worker_process_request(
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
                 " creating input stream.");
-        return AXIS2_CRTICAL_FAILURE;
+        return AXIS2_CRITICAL_FAILURE;
     }
     if(M_GET == request->method_number)
     {

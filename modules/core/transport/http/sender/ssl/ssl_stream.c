@@ -136,7 +136,7 @@ axis2_ssl_stream_read(axis2_stream_t *stream, const axis2_env_t *env,
     int read = -1;
     int len = -1;
     
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
 
@@ -168,7 +168,7 @@ axis2_ssl_stream_write(axis2_stream_t *stream, const axis2_env_t *env,
    ssl_stream_impl_t *stream_impl = NULL;
     int write = -1;
 
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, buf, AXIS2_FAILURE);
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
     write = SSL_write(stream_impl->ssl, buf, count);
@@ -192,7 +192,7 @@ axis2_ssl_stream_skip(axis2_stream_t *stream, const axis2_env_t *env, int count)
    ssl_stream_impl_t *stream_impl = NULL;
     axis2_char_t *tmp_buffer = NULL;
     int len = -1;
-   AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
    stream_impl = AXIS2_INTF_TO_IMPL(stream);
     
     tmp_buffer = AXIS2_MALLOC(env->allocator, count * sizeof(axis2_char_t));
@@ -212,7 +212,7 @@ int AXIS2_CALL
 axis2_ssl_stream_get_char(axis2_stream_t *stream, const axis2_env_t *env)
 {
    int ret = -1;
-   AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     
     /* TODO implement this */
     return ret;
@@ -221,7 +221,7 @@ axis2_ssl_stream_get_char(axis2_stream_t *stream, const axis2_env_t *env)
 axis2_stream_type_t AXIS2_CALL
 axis2_ssl_stream_get_type (axis2_stream_t *stream, const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(stream)->stream_type;
 }
 

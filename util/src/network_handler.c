@@ -42,8 +42,8 @@ if (is_init_socket == 0)
 }
 #endif
 
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, server, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, server, AXIS2_CRITICAL_FAILURE);
 
    if((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
       /*nnn AF_INET is not defined in sys/socket.h but PF_INET*/
@@ -98,7 +98,7 @@ axis2_network_handler_create_server_socket(const axis2_env_t *env, int port)
    axis2_socket_t i = 0;
    struct sockaddr_in sock_addr;
       
-   AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 #if defined(WIN32)
     if (is_init_socket == 0)
     {
@@ -146,7 +146,7 @@ axis2_network_handler_close_socket (const axis2_env_t *env,  axis2_socket_t sock
 {
     int i = 0;
     char buf[32];
-   AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
    if(socket < 0)
    {
       AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_SOCKET,
@@ -187,7 +187,7 @@ axis2_network_handler_svr_socket_accept(const axis2_env_t *env,
    axis2_socket_len_t cli_len = 0;
    axis2_socket_t cli_socket = AXIS2_INVALID_SOCKET;
 
-   AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+   AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
    
    cli_len = sizeof(cli_addr);
    cli_socket = accept(svr_socket, (struct sockaddr *)&cli_addr, &cli_len);

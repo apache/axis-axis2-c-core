@@ -473,7 +473,7 @@ axis2_http_client_recieve_header(
     axis2_bool_t end_of_line = AXIS2_FALSE;
     axis2_bool_t end_of_headers = AXIS2_FALSE;
 
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     client_impl = AXIS2_INTF_TO_IMPL(client);
     if(-1 == client_impl->sockfd || NULL == client_impl->data_stream ||
@@ -640,7 +640,7 @@ axis2_http_client_get_timeout(
     const axis2_http_client_t *client, 
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(client)->timeout;
 }
 

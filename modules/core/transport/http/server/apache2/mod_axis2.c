@@ -196,7 +196,7 @@ axis2_handler(
     }
     ap_should_client_block(req);
     rv = AXIS2_APACHE2_WORKER_PROCESS_REQUEST(axis2_worker, axis2_env, req);
-    if(AXIS2_CRTICAL_FAILURE == rv)
+    if(AXIS2_CRITICAL_FAILURE == rv)
     {
         return HTTP_INTERNAL_SERVER_ERROR;
     }

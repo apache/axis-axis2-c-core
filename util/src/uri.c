@@ -896,7 +896,7 @@ axis2_uri_get_port (
         axis2_uri_t *uri, 
         const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     return AXIS2_INTF_TO_IMPL(uri)->port;
 }
 

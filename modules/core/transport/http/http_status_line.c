@@ -236,14 +236,14 @@ axis2_http_status_line_get_status_code(
     const axis2_http_status_line_t *status_line,
     const axis2_env_t *env)
 {
-    AXIS2_ENV_CHECK(env, AXIS2_CRTICAL_FAILURE);
+    AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     if(NULL != AXIS2_INTF_TO_IMPL(status_line)->status_code)
     {
         return AXIS2_ATOI(AXIS2_INTF_TO_IMPL(status_line)->status_code);
     }
     else
     {
-        return AXIS2_CRTICAL_FAILURE;
+        return AXIS2_CRITICAL_FAILURE;
     }
 
 }
