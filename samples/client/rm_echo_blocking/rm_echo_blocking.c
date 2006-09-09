@@ -101,10 +101,9 @@ int main(int argc, char** argv)
     AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, "sandesha2");
     
     /* Build the SOAP request message payload using OM API.*/
-    payload = build_om_payload_for_echo_svc(env, "echo1");
-    /* Send request */
+    /*payload = build_om_payload_for_echo_svc(env, "echo1");
     AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
-    AXIS2_SLEEP(2);
+    AXIS2_SLEEP(2);*/
 
     /* Build the SOAP request message payload using OM API.*/
     payload2 = build_om_payload_for_echo_svc(env, "echo2");

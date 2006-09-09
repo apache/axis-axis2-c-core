@@ -21,7 +21,9 @@
 #include <axis2_client.h>
 
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env);
+build_om_programatically(
+    const axis2_env_t *env,
+    axis2_char_t *text);
 
 int main(int argc, char** argv)
 {
@@ -88,16 +90,10 @@ int main(int argc, char** argv)
     AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);
     
     /* Build the SOAP request message payload using OM API.*/
-    payload = build_om_programatically(env);
     AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, "sandesha2");
-
-    property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
-    AXIS2_PROPERTY_SET_VALUE(property, env, AXIS2_VALUE_TRUE);
-    AXIS2_OPTIONS_SET_PROPERTY(options, env, "Sandesha2LastMessage", 
-            property);
     
     /* Send request */
+    /*payload = build_om_programatically(env, "ping1");
     status = AXIS2_SVC_CLIENT_SEND_ROBUST(svc_client, env, payload);
     if(status == AXIS2_SUCCESS)
     {
@@ -110,7 +106,26 @@ int main(int argc, char** argv)
                         AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("ping client invoke FAILED!\n");
     }
-    AXIS2_SLEEP(1000);
+    AXIS2_SLEEP(2);*/
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
+    AXIS2_PROPERTY_SET_VALUE(property, env, AXIS2_VALUE_TRUE);
+    AXIS2_OPTIONS_SET_PROPERTY(options, env, "Sandesha2LastMessage", 
+            property);
+    payload = build_om_programatically(env, "ping2");
+    status = AXIS2_SVC_CLIENT_SEND_ROBUST(svc_client, env, payload);
+    if(status == AXIS2_SUCCESS)
+    {
+        printf("\nping client invoke SUCCESSFUL!\n");
+    }
+    else
+    {
+      AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+                  " %d :: %s", env->error->error_number,
+                        AXIS2_ERROR_GET_MESSAGE(env->error));
+        printf("ping client invoke FAILED!\n");
+    }
+    AXIS2_SLEEP(10);
     
     if (svc_client)
     {
@@ -127,7 +142,9 @@ int main(int argc, char** argv)
 
 /* build SOAP request message content using OM */
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env)
+build_om_programatically(
+    const axis2_env_t *env,
+    axis2_char_t *text)
 {
     axiom_node_t *ping_om_node = NULL;
     axiom_element_t* ping_om_ele = NULL;
@@ -136,7 +153,7 @@ build_om_programatically(const axis2_env_t *env)
     
     ns1 = axiom_namespace_create (env, "http://example.org/rm_ping", "m");
     ping_om_ele = axiom_element_create(env, NULL, "ping", ns1, &ping_om_node);
-    AXIOM_ELEMENT_SET_TEXT(ping_om_ele, env, "ping5", ping_om_node);
+    AXIOM_ELEMENT_SET_TEXT(ping_om_ele, env, text, ping_om_node);
     
     buffer = AXIOM_NODE_TO_STRING(ping_om_node, env);
     printf("\nSending OM node in XML : %s \n",  buffer); 

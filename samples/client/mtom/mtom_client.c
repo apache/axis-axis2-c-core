@@ -37,6 +37,8 @@ int main(int argc, char** argv)
     axiom_node_t *ret_node = NULL;
     const axis2_char_t *image_name = "resources/axis2.jpg";
     const axis2_char_t *to_save_name = "test.jpg";
+    axis2_property_t *property = NULL;
+    axis2_endpoint_ref_t* reply_to = NULL;
 
    
     /* Set up the environment */
@@ -61,10 +63,21 @@ int main(int argc, char** argv)
 
     /* Create EPR with given address */
     endpoint_ref = axis2_endpoint_ref_create(env, address);
+    property = axis2_property_create(env);
+    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
+    AXIS2_PROPERTY_SET_VALUE(property, env, AXIS2_VALUE_TRUE);
 
     /* Setup options */
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+    AXIS2_OPTIONS_SET_USE_SEPARATE_LISTENER(options, env, AXIS2_TRUE);
+    /* Seperate listner needs addressing, hence addressing stuff in options */
+    AXIS2_OPTIONS_SET_ACTION(options, env,
+        "http://ws.apache.org/axis2/c/samples/mtomSample");
+    reply_to = axis2_endpoint_ref_create(env, 
+            "http://localhost:6060/axis2/services/__ANONYMOUS_SERVICE__/__OPERATION_OUT_IN__");
+
+    AXIS2_OPTIONS_SET_REPLY_TO(options, env, reply_to);
     AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
     AXIS2_OPTIONS_SET_ENABLE_MTOM(options, env, AXIS2_TRUE);
 
@@ -94,10 +107,13 @@ int main(int argc, char** argv)
     
     /* Engage addressing module */
     AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);
+    AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, "sandesha2");
     
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_programatically(env, image_name, to_save_name);
     
+    AXIS2_OPTIONS_SET_PROPERTY(options, env, "Sandesha2LastMessage", 
+            property);
     /* Send request */
     ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
     
