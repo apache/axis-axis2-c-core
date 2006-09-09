@@ -36,10 +36,10 @@ int main(int argc, char** argv)
     axis2_property_t *property = NULL;
    
     /* Set up the environment */
-    env = axis2_env_create_all("rm_notify.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axis2_env_create_all("rm_ping.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
-    address = "http://localhost:9090/axis2/services/rm_notify";
+    address = "http://localhost:9090/axis2/services/rm_ping";
     if (argc > 1 )
         address = argv[1];
     if (AXIS2_STRCMP(address, "-h") == 0)
@@ -58,7 +58,7 @@ int main(int argc, char** argv)
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
     /*AXIS2_OPTIONS_SET_USE_SEPARATE_LISTENER(options, env, AXIS2_TRUE);*/
     AXIS2_OPTIONS_SET_ACTION(options, env,
-        "http://example.org/action/notify");
+        "http://example.org/action/ping");
 
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
      * using the axis2.xml file.
@@ -101,14 +101,14 @@ int main(int argc, char** argv)
     status = AXIS2_SVC_CLIENT_SEND_ROBUST(svc_client, env, payload);
     if(status == AXIS2_SUCCESS)
     {
-        printf("\nnotify client invoke SUCCESSFUL!\n");
+        printf("\nping client invoke SUCCESSFUL!\n");
     }
     else
     {
       AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
                   " %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
-        printf("notify client invoke FAILED!\n");
+        printf("ping client invoke FAILED!\n");
     }
     AXIS2_SLEEP(1000);
     
@@ -129,17 +129,17 @@ int main(int argc, char** argv)
 axiom_node_t *
 build_om_programatically(const axis2_env_t *env)
 {
-    axiom_node_t *notify_om_node = NULL;
-    axiom_element_t* notify_om_ele = NULL;
+    axiom_node_t *ping_om_node = NULL;
+    axiom_element_t* ping_om_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
     axis2_char_t *buffer = NULL;
     
-    ns1 = axiom_namespace_create (env, "http://example.org/rm_notify", "m");
-    notify_om_ele = axiom_element_create(env, NULL, "notify", ns1, &notify_om_node);
-    AXIOM_ELEMENT_SET_TEXT(notify_om_ele, env, "notify5", notify_om_node);
+    ns1 = axiom_namespace_create (env, "http://example.org/rm_ping", "m");
+    ping_om_ele = axiom_element_create(env, NULL, "ping", ns1, &ping_om_node);
+    AXIOM_ELEMENT_SET_TEXT(ping_om_ele, env, "ping5", ping_om_node);
     
-    buffer = AXIOM_NODE_TO_STRING(notify_om_node, env);
+    buffer = AXIOM_NODE_TO_STRING(ping_om_node, env);
     printf("\nSending OM node in XML : %s \n",  buffer); 
 
-    return notify_om_node;
+    return ping_om_node;
 }

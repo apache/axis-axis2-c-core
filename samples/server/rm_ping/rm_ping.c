@@ -17,7 +17,7 @@
 #include <stdio.h>
 
 void
-axis2_rm_ping_notify (const axis2_env_t *env, axiom_node_t *node)
+axis2_rm_ping_ping (const axis2_env_t *env, axiom_node_t *node)
 {
     axiom_node_t *text_node = NULL;
 
@@ -25,9 +25,9 @@ axis2_rm_ping_notify (const axis2_env_t *env, axiom_node_t *node)
         return;
    
     /* Expected request format is :-
-       <m:notify xmlns:m="http://example.org/notify">Message 3</m:notify>
+       <m:ping xmlns:m="http://example.org/ping">Message 3</m:ping>
      */
-    if (!node) /* 'notify' node */
+    if (!node) /* 'ping' node */
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INPUT_OM_NODE_NULL, AXIS2_FAILURE);
         printf("Echo client ERROR: input parameter NULL\n");
@@ -35,7 +35,7 @@ axis2_rm_ping_notify (const axis2_env_t *env, axiom_node_t *node)
     }
 
     text_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);
-    if (!node) /* actual text to notify */
+    if (!node) /* actual text to ping */
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("Echo client ERROR: invalid XML in request\n");
