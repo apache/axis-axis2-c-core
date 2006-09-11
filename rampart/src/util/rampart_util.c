@@ -54,26 +54,12 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_nonce(const axis2_env_t *
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_time(const axis2_env_t *env, int ttl)
 {
-#if 0
-   char buffer[SIZE];
-   time_t curtime;
-   struct tm *loctime;
-   axis2_char_t *created_str = NULL;
- 
-   curtime = time (NULL) + ttl;
-   loctime = localtime (&curtime);
-   strftime (buffer, SIZE, "%Y-%m-%dT%H:%M:%SZ\n", loctime);
-    created_str = AXIS2_STRDUP(buffer, env);
-    
-   return created_str;
-#else
     axis2_date_time_t *dt = NULL;
     axis2_char_t *dt_str = NULL;
 
     dt = axis2_date_time_create_with_offset(env, ttl);
     dt_str = AXIS2_DATE_TIME_SERIALIZE_DATE_TIME(dt, env);
     return dt_str;
-#endif
 }
 
 /**

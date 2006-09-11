@@ -154,9 +154,7 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
              created_val = rampart_generate_time(env, 0);   /*Current time*/
              AXIOM_ELEMENT_SET_TEXT (created_ele, env, created_val, created_node);                     
         }    
-        
-        
-         expires_ele = axiom_element_create (env, ts_node, RAMPART_SECURITY_TIMESTAMP_EXPIRES, wsu_ns_obj,
+        expires_ele = axiom_element_create (env, ts_node, RAMPART_SECURITY_TIMESTAMP_EXPIRES, wsu_ns_obj,
                                              &expires_node);
         
         if(NULL != expires_ele)
@@ -164,7 +162,7 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
               expires_val = rampart_generate_time(env, ttl);
               AXIOM_ELEMENT_SET_TEXT (expires_ele, env, expires_val, expires_node);           
             
-        }       
+        }   
     }
     
     return AXIS2_SUCCESS;
@@ -180,19 +178,21 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
     axiom_element_t *created_ele = NULL, *expires_ele = NULL, *ts_ele= NULL;
     axiom_node_t *created_node = NULL, *expires_node = NULL;
     axis2_char_t *created_val = NULL, *expires_val = NULL, *current_val = NULL;    
-    
+
     ts_ele = AXIOM_NODE_GET_DATA_ELEMENT(ts_node, env);
     
     if(!ts_ele)
     {
-        AXIS2_LOG_INFO(env->log," Cannot find timestamp ... :(");
+        AXIS2_LOG_INFO(env->log," Cannot find timestamp ... ");
         return AXIS2_FAILURE;
     }
     
+
     created_qname = axis2_qname_create(env,
                                  RAMPART_SECURITY_TIMESTAMP_CREATED,
                                  RAMPART_WSU_XMLNS,
                                  RAMPART_WSU);
+    
     if(created_qname)
     {
         created_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(ts_ele, env, created_qname, ts_node, &created_node);
@@ -203,7 +203,15 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
         }
     }
 
-     expires_qname = axis2_qname_create(env,
+    created_val = AXIOM_ELEMENT_GET_TEXT(created_ele, env, created_node);
+    /*Check weather created is less than current time or not*/
+    current_val = rampart_generate_time(env, 0);  
+    validity = rampart_compare_date_time(env, created_val, current_val); 
+    if(validity == AXIS2_FAILURE){
+        return AXIS2_FAILURE;
+    } 
+   
+    expires_qname = axis2_qname_create(env,
                                  RAMPART_SECURITY_TIMESTAMP_EXPIRES,
                                  RAMPART_WSU_XMLNS,
                                  RAMPART_WSU);
@@ -213,19 +221,15 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
         if(!expires_ele)
         {
             AXIS2_LOG_INFO(env->log,"Cannot find expires  in timestamp element...");
-            return AXIS2_FAILURE;
+            /*If the expire element is not present, it means that the message will not be expired.*/
+            return AXIS2_SUCCESS;
         }
     }
-    
-    created_val = AXIOM_ELEMENT_GET_TEXT(created_ele, env, created_node);
+   
+    /*Now the expired element is present. So check weather this has a valid timestamp.
+      If not it's a failure*/ 
     expires_val = AXIOM_ELEMENT_GET_TEXT(expires_ele, env, expires_node);
     
-    /*Check weather created is less than current time or not*/
-    current_val = rampart_generate_time(env, 0);  
-    validity = rampart_compare_date_time(env, created_val, current_val); 
-    if(validity == AXIS2_FAILURE){
-        return AXIS2_FAILURE;
-    } 
     /*Check weather time has expired or not*/
     validity = rampart_compare_date_time(env, current_val, expires_val); 
     if(validity == AXIS2_FAILURE){
