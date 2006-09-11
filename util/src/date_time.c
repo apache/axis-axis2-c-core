@@ -105,13 +105,13 @@ axis2_date_time_get_second(axis2_date_time_t *date_time,
 
 /************************** End of function prototypes ************************/
 
-AXIS2_EXTERN axis2_date_time_t * AXIS2_CALL 
-axis2_date_time_create (const axis2_env_t *env)
+AXIS2_EXTERN axis2_date_time_t * AXIS2_CALL
+axis2_date_time_create_with_offset (const axis2_env_t *env, int offset)
 {
     axis2_date_time_impl_t *date_time_impl = NULL;
-    time_t now;
+    time_t t;
     struct tm* utc_time = NULL;
-   
+
     AXIS2_ENV_CHECK(env, NULL);
 
     date_time_impl = (axis2_date_time_impl_t *) AXIS2_MALLOC(env->
@@ -119,12 +119,12 @@ axis2_date_time_create (const axis2_env_t *env)
 
     if(NULL == date_time_impl)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    
-    now = time (NULL );
-    utc_time = gmtime ( &now);
+
+    t = time (NULL ) + offset;
+    utc_time = gmtime( &t);
     date_time_impl-> year= utc_time-> tm_year;
     date_time_impl-> mon= utc_time-> tm_mon;
     date_time_impl-> day= utc_time-> tm_mday;
@@ -132,7 +132,7 @@ axis2_date_time_create (const axis2_env_t *env)
     date_time_impl-> min= utc_time-> tm_min;
     date_time_impl-> sec= utc_time-> tm_sec;
 
-    date_time_impl->date_time.ops = 
+    date_time_impl->date_time.ops =
         AXIS2_MALLOC (env->allocator, sizeof(axis2_date_time_ops_t));
     if(NULL == date_time_impl->date_time.ops)
     {
@@ -140,7 +140,7 @@ axis2_date_time_create (const axis2_env_t *env)
     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    
+
     date_time_impl->date_time.ops->free = axis2_date_time_free;
     date_time_impl->date_time.ops->deserialize_time = axis2_date_time_deserialize_time;
     date_time_impl->date_time.ops->deserialize_date = axis2_date_time_deserialize_date;
@@ -157,6 +157,13 @@ axis2_date_time_create (const axis2_env_t *env)
     date_time_impl->date_time.ops->get_second = axis2_date_time_get_second;
 
     return &(date_time_impl->date_time);
+}
+
+
+AXIS2_EXTERN axis2_date_time_t * AXIS2_CALL 
+axis2_date_time_create (const axis2_env_t *env)
+{
+    return axis2_date_time_create_with_offset(env, 0);
 }
 
 

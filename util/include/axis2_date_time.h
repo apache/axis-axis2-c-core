@@ -212,6 +212,18 @@ AXIS2_DECLARE_DATA struct axis2_date_time
 AXIS2_EXTERN axis2_date_time_t * AXIS2_CALL
 axis2_date_time_create(const axis2_env_t *env );
 
+/*
+ * Creates axis2_date_time struct with an additional offset value
+ * If the offset is a positive value then the time will be in the future 
+ *        offset is 0, then the time will be the current time
+ *        offset is a negative value then the time is in the past.
+ * @param env double pointer to environment struct. MUST NOT be NULL
+ * @param offset the offset from the current time in seconds
+ * @return pointer to newly created axis2_date_time struct
+ **/
+AXIS2_EXTERN axis2_date_time_t * AXIS2_CALL
+axis2_date_time_create_with_offset (const axis2_env_t *env, int offset);
+
 /*************************** Function macros **********************************/
 
 #define AXIS2_DATE_TIME_FREE(date_time, env) \
