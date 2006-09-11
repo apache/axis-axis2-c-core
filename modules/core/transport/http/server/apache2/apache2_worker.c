@@ -318,7 +318,7 @@ axis2_apache2_worker_process_request(
     }
     if(NULL != body_string)
     {
-        ap_rputs(body_string, request);
+        ap_rwrite(body_string, AXIS2_STRLEN(body_string), request);
         AXIS2_FREE(env->allocator, body_string);
         body_string = NULL;
     }

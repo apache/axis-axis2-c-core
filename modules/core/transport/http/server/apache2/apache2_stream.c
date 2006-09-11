@@ -177,14 +177,14 @@ apache2_stream_write(
         }
         memcpy(write_buf, buffer, count);
         write_buf[count] = '\0';
-        len = ap_rputs(write_buf, stream_impl->request);
+        len = ap_rwrite(write_buf, count, stream_impl->request);
         AXIS2_FREE(env->allocator, write_buf);
         return len;
     }
     else
     {
         write_buf = buffer;
-        return ap_rputs(write_buf, stream_impl->request);
+        return ap_rwrite(write_buf, count - 1, stream_impl->request);
     }
     /* we shoudn't come here unless a serious problem*/
     return -1;
