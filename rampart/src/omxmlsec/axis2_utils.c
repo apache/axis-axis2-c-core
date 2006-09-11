@@ -17,27 +17,27 @@
 #include <stdio.h>
 #include <axis2_util.h>
 #include <oxs_axis2_utils.h>
-
-AXIS2_EXTERN oxs_buffer_ptr AXIS2_CALL  oxs_base64_decode(axis2_env_t *env,
-    oxs_buffer_ptr coded_buf    )
+#if 0
+AXIS2_EXTERN oxs_buffer_t * AXIS2_CALL  oxs_base64_decode(axis2_env_t *env,
+    oxs_buffer_t *coded_buf    )
 {
-    axis2_char_t* plain_str=NULL;/* Here plain can be binary sometimes */
-    oxs_buffer_ptr out_buf = NULL;
+    axis2_char_t *plain_str=NULL;/* Here plain can be binary sometimes */
+    oxs_buffer_t *out_buf = NULL;
     int  ret, length;
 
-    length =  axis2_base64_decode_len((char*)(coded_buf->data));
-    plain_str = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len((char*)(coded_buf->data)));
-    ret =  axis2_base64_decode(plain_str, (char*)(coded_buf->data)); 
+    length =  axis2_base64_decode_len((char*)(OXS_BUFFER_GET_DATA(coded_buf, env)));
+    plain_str = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len((char*)(OXS_BUFFER_GET_DATA(coded_buf, env))));
+    ret =  axis2_base64_decode(plain_str, (char*)(OXS_BUFFER_GET_DATA(coded_buf, env))); 
     if(ret < 0) return NULL;
     out_buf = oxs_string_to_buffer(env, plain_str);
     return out_buf;
 }
 
-AXIS2_EXTERN oxs_buffer_ptr AXIS2_CALL  oxs_base64_encode(axis2_env_t *env,
-    oxs_buffer_ptr plain_buf    )
+AXIS2_EXTERN oxs_buffer_t * AXIS2_CALL  oxs_base64_encode(axis2_env_t *env,
+    oxs_buffer_t *plain_buf    )
 {
-    axis2_char_t* encoded_str=NULL;
-    oxs_buffer_ptr out_buf = NULL;
+    axis2_char_t *encoded_str=NULL;
+    oxs_buffer_t *out_buf = NULL;
 
     int ret;
 
@@ -53,4 +53,5 @@ AXIS2_EXTERN oxs_buffer_ptr AXIS2_CALL  oxs_base64_encode(axis2_env_t *env,
     out_buf = oxs_string_to_buffer(env, encoded_str);    
     return out_buf;
 }
+#endif
 

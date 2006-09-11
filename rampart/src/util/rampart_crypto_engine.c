@@ -163,7 +163,8 @@ rampart_crypto_engine_encrypt_message(
     axis2_char_t *str_to_enc = NULL;
     oxs_ctx_t * enc_ctx = NULL;
     oxs_key_t *sessionkey = NULL;
-    oxs_buffer_ptr session_key_buf_plain = NULL, session_key_buf_encrypted = NULL;    
+    oxs_buffer_t *session_key_buf_plain = NULL;
+    oxs_buffer_t *session_key_buf_encrypted = NULL;    
     axis2_char_t* uuid = NULL;
     oxs_enc_engine_t *enc_engine = NULL;
     rampart_crypto_engine_impl_t *engine_impl = NULL;
@@ -185,6 +186,7 @@ rampart_crypto_engine_encrypt_message(
     ret = OXS_KEY_SET_NAME(sessionkey, env, "sessionkey");
     ret = OXS_KEY_SET_USAGE(sessionkey, env, OXS_KEY_USAGE_ENCRYPT);
 
+    /*printf("\nSession Key is %s", OXS_KEY_GET_DATA(sessionkey,env));    */
 
     body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
     body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
@@ -222,7 +224,7 @@ rampart_crypto_engine_encrypt_message(
     OXS_CTX_SET_KEY(enc_ctx, env, sessionkey);
 
 
-    printf("\nSession_key for encryption = %s\n", OXS_KEY_GET_DATA(sessionkey, env));
+    /*printf("\nSession_key for encryption = %s\n", OXS_KEY_GET_DATA(sessionkey, env));*/
     printf("\nString for encryption = %s\n", str_to_enc);
 
     /*Hand the template over to OMXMLSEC*/
@@ -238,8 +240,12 @@ rampart_crypto_engine_encrypt_message(
 
     /*Here u have the public key file name or the key store name. Right now we support only the key file name. 
      The meaning is totally wrong but for the moment we have to live with this*/
-    session_key_buf_plain = oxs_string_to_buffer(env, OXS_KEY_GET_DATA(sessionkey, env));
-    session_key_buf_encrypted = oxs_create_buffer(env, (int)OXS_BUFFER_INITIAL_SIZE);
+    session_key_buf_plain = oxs_buffer_create(env);
+    ret = OXS_BUFFER_POPULATE(session_key_buf_plain, env,
+                                OXS_KEY_GET_DATA(sessionkey, env),
+                                 OXS_KEY_GET_SIZE(sessionkey, env));
+
+    session_key_buf_encrypted = oxs_buffer_create(env);
     ret = OXS_ENC_ENGINE_PUB_KEY_ENCRYPT_DATA(enc_engine, env, session_key_buf_plain,
                          session_key_buf_encrypted, 
                             RAMPART_ACTIONS_GET_ENC_PROP_FILE(actions, env));
@@ -261,7 +267,8 @@ rampart_crypto_engine_encrypt_message(
     enc_key_key_info_node = oxs_token_build_key_info_element(env, enc_key_node );
     enc_key_key_name_node = oxs_token_build_key_name_element(env, enc_key_key_info_node,"hard-coded-key-name" );
     enc_key_cd_node = oxs_token_build_cipher_data_element(env, enc_key_node);
-    enc_key_cv_node = oxs_token_build_cipher_value_element(env, enc_key_cd_node, (axis2_char_t*)session_key_buf_encrypted->data);
+    enc_key_cv_node = oxs_token_build_cipher_value_element(env, enc_key_cd_node, 
+                        (axis2_char_t*)OXS_BUFFER_GET_DATA(session_key_buf_encrypted, env));
     enc_key_ref_list_node = oxs_token_build_reference_list_element(env, enc_key_node);
     /*TODO If there are multiple elements encrypted by the same session key, enqueue those here*/
     enc_key_data_ref_node = (axiom_node_t*)oxs_token_build_data_reference_element(env, enc_key_ref_list_node, uuid);
@@ -313,7 +320,7 @@ rampart_crypto_engine_decrypt_message(
     body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
     
     /*TODO Get the Encrypted key*/
-    enc_key_node =  oxs_axiom_get_first_child_node_by_name(env, sec_node, OXS_NodeEncryptedKey, NULL, NULL);
+    enc_key_node =  (axiom_node_t*)oxs_axiom_get_first_child_node_by_name(env, sec_node, OXS_NodeEncryptedKey, NULL, NULL);
 
     /*Create a private key and use to extract the session key*/
     temp_str = RAMPART_ACTIONS_GET_DEC_PROP_FILE(actions, env) ;
@@ -333,7 +340,7 @@ rampart_crypto_engine_decrypt_message(
 
     }
     /*Ohh yeah... now we got the seesion key, which is used encrypt data referred by the reference list*/    
-    ref_list_node = oxs_axiom_get_first_child_node_by_name(env, enc_key_node, OXS_NodeReferenceList, NULL, NULL);
+    ref_list_node = (axiom_node_t*)oxs_axiom_get_first_child_node_by_name(env, enc_key_node, OXS_NodeReferenceList, NULL, NULL);
     if(!ref_list_node){
         oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
                      "Cannot get the ReferenceList node");
@@ -344,7 +351,7 @@ rampart_crypto_engine_decrypt_message(
     
     /*TODO Get the encrypted node(s). Right now we support only one. To support more than one EncryptedData element use the uuid_list*/
     
-    enc_data_node = oxs_axiom_get_first_child_node_by_name(env, body_node, OXS_NodeEncryptedData, NULL, NULL);
+    enc_data_node = (axiom_node_t*)oxs_axiom_get_first_child_node_by_name(env, body_node, OXS_NodeEncryptedData, NULL, NULL);
     
 
     /*TODO We assume that the very first element of bpody is encrypted data.
@@ -373,7 +380,7 @@ rampart_crypto_engine_decrypt_message(
     parent_of_enc_node = AXIOM_NODE_GET_PARENT(enc_data_node, env);
     
     #if 1
-    decrypted_node = oxs_axiom_deserialize_node(env, decrypted_data);
+    decrypted_node = (axiom_node_t*)oxs_axiom_deserialize_node(env, decrypted_data);
    
     /*Remove enc_node*/  
     AXIOM_NODE_DETACH(enc_data_node, env);     

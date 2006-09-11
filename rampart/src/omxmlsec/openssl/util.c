@@ -26,27 +26,21 @@
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-generate_random_data(const axis2_env_t *env, oxs_buffer_ptr buf, int size)
+generate_random_data(const axis2_env_t *env, oxs_buffer_t *buffer, int size)
 {
+    axis2_status_t status =  AXIS2_FAILURE;
     int ret;
-    ret = oxs_buffer_set_size(env, buf, size);
-    if(ret < 0){
-        oxs_error(ERROR_LOCATION,
-                OXS_ERROR_DEFAULT, "oxs_buffer_set_size failed %d",size );
-        return AXIS2_FAILURE;
-    }
-    ret = RAND_bytes(buf->data, size);
+    unsigned char temp_buffer[1024];
+    
+    ret = RAND_bytes(temp_buffer, size);
     if(ret < 0){
         oxs_error(ERROR_LOCATION,
                 OXS_ERROR_DEFAULT, "RAND_bytes failed %d",size );
         return AXIS2_FAILURE;
     }
-/**************REMOVE TODO***/
-#if 1
-    buf->data = (unsigned char *)"012345670123456701234567";
-    buf->size = 24;
-#endif
-/***************************/
+
+    status = OXS_BUFFER_POPULATE(buffer, env, temp_buffer, size);
+
     return AXIS2_SUCCESS;
 }
 

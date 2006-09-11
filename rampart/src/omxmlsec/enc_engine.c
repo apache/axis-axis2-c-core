@@ -73,16 +73,16 @@ axis2_status_t AXIS2_CALL
 oxs_enc_engine_prvkey_decrypt_data(
     oxs_enc_engine_t *enc_engine,
     const axis2_env_t *env,
-    oxs_buffer_ptr input,
-    oxs_buffer_ptr result,
+    oxs_buffer_t * input,
+    oxs_buffer_t * result,
     axis2_char_t *filename);
 
 axis2_status_t AXIS2_CALL 
 oxs_enc_engine_pubkey_encrypt_data(
     oxs_enc_engine_t *enc_engine,
     const axis2_env_t *env,
-    oxs_buffer_ptr input,
-    oxs_buffer_ptr result,
+    oxs_buffer_t * input,
+    oxs_buffer_t * result,
     axis2_char_t *filename);
 
 axis2_status_t AXIS2_CALL 
@@ -98,15 +98,15 @@ oxs_enc_engine_crypt(
     oxs_enc_engine_t *enc_engine,
     const axis2_env_t *env,
     oxs_ctx_t * enc_ctx,
-    oxs_buffer_ptr input,
-    oxs_buffer_ptr result);
+    oxs_buffer_t * input,
+    oxs_buffer_t * result);
 
 axis2_status_t AXIS2_CALL 
 oxs_enc_engine_populate_cipher_value(
     oxs_enc_engine_t *enc_engine,
     const axis2_env_t *env,
     axiom_node_t* template_node,
-    oxs_buffer_ptr databuf);
+    oxs_buffer_t * databuf);
 
 axis2_status_t AXIS2_CALL 
 oxs_enc_engine_decrypt_template(
@@ -204,10 +204,14 @@ oxs_enc_engine_get_encrypted_key(
         oxs_key_t *prv_key,
         oxs_key_t *session_key)
 {
-    axis2_char_t *key_enc_algo = NULL, *encrypted_key_value = NULL;
-    axiom_node_t *enc_method_node = NULL, *cd_node = NULL, *cv_node = NULL;
+    axis2_char_t *key_enc_algo = NULL;
+    axis2_char_t *encrypted_key_value = NULL;
+    axiom_node_t *enc_method_node = NULL;
+    axiom_node_t *cd_node = NULL;
+    axiom_node_t *cv_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    oxs_buffer_ptr encrypted_key_buf = NULL, decrypted_key_buf = NULL;
+    oxs_buffer_t *encrypted_key_buf = NULL;
+    oxs_buffer_t *decrypted_key_buf = NULL;
     oxs_enc_engine_impl_t *enc_engine_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -221,7 +225,7 @@ oxs_enc_engine_get_encrypted_key(
         return AXIS2_FAILURE;
     }
 
-    enc_method_node = oxs_axiom_get_first_child_node_by_name(env, enc_key_node, OXS_NodeEncryptionMethod, NULL, NULL);
+    enc_method_node = (axiom_node_t*)oxs_axiom_get_first_child_node_by_name(env, enc_key_node, OXS_NodeEncryptionMethod, NULL, NULL);
     if(!enc_method_node){
         oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
             "Cannot find EncryptionMethodElement");
@@ -234,14 +238,14 @@ oxs_enc_engine_get_encrypted_key(
         key_enc_algo = OXS_DEFAULT_KT_ALGO_HREF;
     }
 
-    cd_node = oxs_axiom_get_first_child_node_by_name(env, enc_key_node, OXS_NodeCipherData, NULL, NULL);
+    cd_node = (axiom_node_t*)oxs_axiom_get_first_child_node_by_name(env, enc_key_node, OXS_NodeCipherData, NULL, NULL);
     if(!cd_node){
         oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
             "Cannot find CipherData element");
         return AXIS2_FAILURE;
     }
 
-    cv_node = oxs_axiom_get_first_child_node_by_name(env, cd_node, OXS_NodeCipherValue, NULL, NULL);
+    cv_node = (axiom_node_t*)oxs_axiom_get_first_child_node_by_name(env, cd_node, OXS_NodeCipherValue, NULL, NULL);
     if(!cv_node){
         oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
             "Cannot find CipherValue element");
@@ -251,9 +255,11 @@ oxs_enc_engine_get_encrypted_key(
     encrypted_key_value = (axis2_char_t*)oxs_token_get_cipher_value(env, cv_node);
 
     /*Create buffers for decryption*/
-    encrypted_key_buf = oxs_create_buffer(env, AXIS2_STRLEN(encrypted_key_value));
-    encrypted_key_buf->data = (unsigned char *)encrypted_key_value;
-    decrypted_key_buf = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
+    encrypted_key_buf = oxs_buffer_create(env);
+    status = OXS_BUFFER_POPULATE(encrypted_key_buf, env, 
+                                    (unsigned char *)encrypted_key_value,
+                                    AXIS2_STRLEN(encrypted_key_value));
+    decrypted_key_buf = oxs_buffer_create(env);
 
     /*Decrypt the encrypted key*/
     status  = oxs_enc_engine_prvkey_decrypt_data(enc_engine, env, encrypted_key_buf, decrypted_key_buf, OXS_KEY_GET_NAME(prv_key, env));  
@@ -263,8 +269,8 @@ oxs_enc_engine_get_encrypted_key(
         return AXIS2_FAILURE;
     }
     /*Trim data to the key size*/
-    OXS_KEY_SET_DATA(session_key, env,(axis2_char_t*) decrypted_key_buf->data);
-    OXS_KEY_SET_SIZE(session_key, env, decrypted_key_buf->size);
+    OXS_KEY_SET_DATA(session_key, env, OXS_BUFFER_GET_DATA(decrypted_key_buf, env));
+    OXS_KEY_SET_SIZE(session_key, env, OXS_BUFFER_GET_SIZE(decrypted_key_buf, env));
     OXS_KEY_SET_USAGE(session_key, env, OXS_KEY_USAGE_DECRYPT);
     
     return AXIS2_SUCCESS;
@@ -276,8 +282,8 @@ axis2_status_t AXIS2_CALL
 oxs_enc_engine_prvkey_decrypt_data(
     oxs_enc_engine_t *enc_engine,
     const axis2_env_t *env, 
-    oxs_buffer_ptr input, 
-    oxs_buffer_ptr result, 
+    oxs_buffer_t *input, 
+    oxs_buffer_t *result, 
     axis2_char_t *filename)
 {
     openssl_pkey_t *pkey = NULL;
@@ -292,8 +298,8 @@ oxs_enc_engine_prvkey_decrypt_data(
     enc_engine_impl = AXIS2_INTF_TO_IMPL(enc_engine);
 
     /*First do base64 decode*/
-    decoded_encrypted_str = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len( (char*)(input->data)));
-    ret = axis2_base64_decode(decoded_encrypted_str, (char*)(input->data));
+    decoded_encrypted_str = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len( (char*)OXS_BUFFER_GET_DATA(input, env)));
+    ret = axis2_base64_decode(decoded_encrypted_str, (char*)OXS_BUFFER_GET_DATA(input, env));
    
     printf("oxs_enc_engine_prvkey_decrypt_data\n"); 
     /*Create a private key*/
@@ -316,8 +322,7 @@ oxs_enc_engine_prvkey_decrypt_data(
          return AXIS2_FAILURE;
     }
 
-    result->data = decrypted;
-    result->size = declen;
+    status = OXS_BUFFER_POPULATE(result, env, (unsigned char*)decrypted, declen);
     
     return AXIS2_SUCCESS;
 }
@@ -328,8 +333,8 @@ axis2_status_t AXIS2_CALL
 oxs_enc_engine_pubkey_encrypt_data(
     oxs_enc_engine_t *enc_engine,
     const axis2_env_t *env, 
-    oxs_buffer_ptr input, 
-    oxs_buffer_ptr result, 
+    oxs_buffer_t *input, 
+    oxs_buffer_t *result, 
     axis2_char_t *filename )
 {
     openssl_pkey_t *pkey = NULL;
@@ -356,7 +361,7 @@ oxs_enc_engine_pubkey_encrypt_data(
     }
     /*Now we support only rsa*/
     rsa = openssl_rsa_create(env);
-    ret = OPENSSL_RSA_PUB_ENCRYPT(rsa, env, pkey, input->data, &encrypted);
+    ret = OPENSSL_RSA_PUB_ENCRYPT(rsa, env, pkey, OXS_BUFFER_GET_DATA(input, env), &encrypted);
     if(ret < 0 ){
          oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "openssl_rsa_pub_encrypt");
@@ -376,8 +381,7 @@ oxs_enc_engine_pubkey_encrypt_data(
     }
 
     /*Attach the result to the result buf*/
-    result->size = encodedlen;
-    result->data = (unsigned char*)AXIS2_STRDUP(encoded_str, env);
+    status = OXS_BUFFER_POPULATE(result, env, (unsigned char*)AXIS2_STRDUP(encoded_str, env), encodedlen);
 
     return AXIS2_SUCCESS;
 }
@@ -390,8 +394,8 @@ oxs_enc_engine_crypt(
     oxs_enc_engine_t *enc_engine,
     const axis2_env_t *env, 
     oxs_ctx_t * enc_ctx,
-    oxs_buffer_ptr input,
-    oxs_buffer_ptr result)
+    oxs_buffer_t *input,
+    oxs_buffer_t *result)
 {
     unsigned char *out_main_buf = NULL;
     openssl_cipher_ctx_t *oc_ctx = NULL;
@@ -459,7 +463,9 @@ oxs_enc_engine_crypt(
     /*If this is to encrypt we simply pass the data to crypto function*/
     if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_ENCRYPT){
         enclen = openssl_block_cipher_crypt(env, oc_ctx,
-                                         input->data, strlen((char*)input->data),  &out_main_buf, OPENSSL_ENCRYPT);
+                                         OXS_BUFFER_GET_DATA(input, env), 
+                                         OXS_BUFFER_GET_SIZE(input, env),  
+                                         &out_main_buf, OPENSSL_ENCRYPT);
     
     /*If this is to decrypt, then we need to base64decode first*/
     }else if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT){
@@ -505,11 +511,10 @@ oxs_enc_engine_crypt(
         }
     
         /*Attach the result to the result buf*/    
-        result->size = encodedlen;
-        result->data = (unsigned char*)AXIS2_STRDUP(encoded_str, env);
+        ret = OXS_BUFFER_POPULATE(result, env, (unsigned char*)AXIS2_STRDUP(encoded_str, env), encodedlen);
+
     }else if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT){
-        result->size = enclen;
-        result->data = AXIS2_STRMEMDUP(out_main_buf, enclen, env);
+        ret = OXS_BUFFER_POPULATE(result, env, AXIS2_STRMEMDUP(out_main_buf, enclen, env), enclen);        
     
     }else{
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
@@ -526,7 +531,7 @@ oxs_enc_engine_populate_cipher_value(
     oxs_enc_engine_t *enc_engine,
     const axis2_env_t *env,
     axiom_node_t* template_node,
-    oxs_buffer_ptr databuf)
+    oxs_buffer_t *databuf)
 {
     axis2_status_t ret = AXIS2_FAILURE;
     axiom_element_t *template_ele = NULL, *cv_ele = NULL, *cd_ele = NULL;
@@ -570,7 +575,7 @@ oxs_enc_engine_populate_cipher_value(
     }
     
 
-    ret =  AXIOM_ELEMENT_SET_TEXT(cv_ele, env, (axis2_char_t *)databuf->data , cv_node); 
+    ret =  AXIOM_ELEMENT_SET_TEXT(cv_ele, env, (axis2_char_t *)OXS_BUFFER_GET_DATA(databuf, env) , cv_node); 
     if(ret != AXIS2_SUCCESS){
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "Cannot set data to the CipherValue element");
@@ -590,8 +595,8 @@ oxs_enc_engine_decrypt_template(
     )
 {
     axis2_status_t  ret =  AXIS2_FAILURE;
-    oxs_buffer_ptr input = NULL;
-    oxs_buffer_ptr result = NULL;
+    oxs_buffer_t *input = NULL;
+    oxs_buffer_t *result = NULL;
     oxs_enc_engine_impl_t *enc_engine_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -609,12 +614,12 @@ oxs_enc_engine_decrypt_template(
     }
 
     /*Now look for data to be decrypted*/
-    input = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
-    input->data = (unsigned char *)OXS_CTX_GET_INPUT_DATA(enc_ctx, env);
-    input->size = AXIS2_STRLEN(OXS_CTX_GET_INPUT_DATA(enc_ctx, env));
+    input = oxs_buffer_create(env);
+    ret  = OXS_BUFFER_POPULATE(input, env, (unsigned char *)OXS_CTX_GET_INPUT_DATA(enc_ctx, env), 
+                                     AXIS2_STRLEN(OXS_CTX_GET_INPUT_DATA(enc_ctx, env))); 
 
     /*Initialize the result buffer*/
-    result = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
+    result = oxs_buffer_create(env);
 
     ret = oxs_enc_engine_crypt(enc_engine, env, enc_ctx, input,  result ); 
     if(ret != AXIS2_SUCCESS){
@@ -623,9 +628,8 @@ oxs_enc_engine_decrypt_template(
         return ret;
     }
 
-    *decrypted_data =   AXIS2_MALLOC(env->allocator,result->size); 
-    *decrypted_data =  (axis2_char_t*)result->data;
-
+    *decrypted_data =   AXIS2_MALLOC(env->allocator,OXS_BUFFER_GET_SIZE(result, env)); 
+    *decrypted_data =  (axis2_char_t*)OXS_BUFFER_GET_DATA(result, env);
        
     return ret;
 }
@@ -642,8 +646,8 @@ oxs_enc_engine_encrypt_template(
     )
 {
     axis2_status_t  ret =  AXIS2_FAILURE;
-    oxs_buffer_ptr input = NULL;
-    oxs_buffer_ptr result = NULL;
+    oxs_buffer_t *input = NULL;
+    oxs_buffer_t *result = NULL;
     oxs_enc_engine_impl_t *enc_engine_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -664,8 +668,10 @@ oxs_enc_engine_encrypt_template(
     /*We've populated the context*/
     
     /*Create the input buffer*/
-    input = oxs_string_to_buffer(env, data);
-    result = oxs_create_buffer(env, OXS_BUFFER_INITIAL_SIZE);
+    input = oxs_buffer_create(env);
+    ret =  OXS_BUFFER_POPULATE(input, env, (unsigned char *)data, AXIS2_STRLEN(data));
+    
+    result = oxs_buffer_create(env);
      
     ret = oxs_enc_engine_crypt(enc_engine, env, enc_ctx, input, result ); 
     if(ret != AXIS2_SUCCESS){

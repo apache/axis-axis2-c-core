@@ -22,236 +22,445 @@
 #include <oxs_error.h>
 
 
-static unsigned int  g_initial_size = OXS_BUFFER_INITIAL_SIZE;
 
-AXIS2_EXTERN oxs_buffer_ptr AXIS2_CALL
-oxs_create_buffer(const axis2_env_t *env, unsigned int size)
+typedef struct oxs_buffer_impl{
+    oxs_buffer_t buffer;
+
+    unsigned char* data;
+    unsigned int size;
+    unsigned int max_size;
+    oxs_AllocMode alloc_mode;
+}
+oxs_buffer_impl_t;
+
+/** Interface to implementation conversion macro */
+#define AXIS2_INTF_TO_IMPL(oxs_buffer) ((oxs_buffer_impl_t *)oxs_buffer)
+
+/******** function headers ***************/
+
+/*private functions*/
+static void
+oxs_buffer_init_ops(
+    oxs_buffer_t *buffer);
+
+/*public functions*/
+
+axis2_status_t AXIS2_CALL 
+oxs_buffer_free(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env
+                );
+
+axis2_status_t AXIS2_CALL 
+oxs_buffer_remove_head(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    int size
+                );
+
+axis2_status_t AXIS2_CALL 
+oxs_buffer_remove_tail(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    int size
+                );
+
+axis2_status_t AXIS2_CALL 
+oxs_buffer_populate(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    unsigned char *data,
+                    int size
+                );
+
+axis2_status_t AXIS2_CALL 
+oxs_buffer_append(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    unsigned char *data,
+                    int size
+                );
+
+axis2_status_t AXIS2_CALL 
+oxs_buffer_prepend(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    unsigned char *data,
+                    int size
+                );
+
+axis2_status_t AXIS2_CALL 
+oxs_buffer_read_file(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    const axis2_char_t *filename
+                );
+
+axis2_status_t AXIS2_CALL 
+oxs_buffer_set_size(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    int size
+                );
+
+axis2_status_t AXIS2_CALL 
+oxs_buffer_set_max_size(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    int size
+                );
+
+unsigned char* AXIS2_CALL 
+oxs_buffer_get_data(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env
+                );
+
+int AXIS2_CALL 
+oxs_buffer_get_size(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env
+                );
+
+int AXIS2_CALL 
+oxs_buffer_get_max_size(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env
+                );
+
+
+/******************** end of function headers *****************/
+static void
+oxs_buffer_init_ops(
+    oxs_buffer_t *buffer)
 {
-    oxs_buffer_ptr buf = NULL;
-    buf = (oxs_buffer_ptr)AXIS2_MALLOC(env->allocator,sizeof(oxs_buffer));
-   
-    buf = oxs_buffer_initialize(env, buf, size); 
-    
-    return buf;
+    buffer->ops->free  = oxs_buffer_free ;
+    buffer->ops->remove_head  = oxs_buffer_remove_head ;
+    buffer->ops->remove_tail  = oxs_buffer_remove_tail ;
+    buffer->ops->populate  = oxs_buffer_populate ;
+    buffer->ops->append  = oxs_buffer_append ;
+    buffer->ops->prepend  = oxs_buffer_prepend ;
+    buffer->ops->read_file = oxs_buffer_read_file ;
+    buffer->ops->set_size  = oxs_buffer_set_size ;
+    buffer->ops->set_max_size  = oxs_buffer_set_max_size ;
+    buffer->ops->get_data  = oxs_buffer_get_data ;
+    buffer->ops->get_size  = oxs_buffer_get_size ;
+    buffer->ops->get_max_size  = oxs_buffer_get_max_size ;
 }
 
-AXIS2_EXTERN oxs_buffer_ptr AXIS2_CALL
-oxs_buffer_initialize(const axis2_env_t *env ,oxs_buffer_ptr buf,  unsigned int size)
+AXIS2_EXTERN oxs_buffer_t *AXIS2_CALL
+oxs_buffer_create(const axis2_env_t *env)
 {
-    int ret;
-    buf->data = NULL;
-    buf->size = 0;
-    buf->max_size = 0;
-    buf->alloc_mode = oxs_alloc_mode_double;
-    
-    ret = oxs_buffer_set_max_size(env, buf, size);
-    if(ret<0){
+    oxs_buffer_impl_t *buffer_impl = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    buffer_impl = AXIS2_MALLOC( env->allocator, sizeof(oxs_buffer_impl_t));
+    if (!buffer_impl)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
+
+    buffer_impl->data = NULL;
+    buffer_impl->size = 0;
+    buffer_impl->max_size = 0;
+    buffer_impl->alloc_mode = oxs_alloc_mode_double;
+
+    status = oxs_buffer_set_max_size(&(buffer_impl->buffer), env, OXS_BUFFER_INITIAL_SIZE);
+    if(status == AXIS2_FAILURE){
         oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT,
                      "oxs_buffer_set_max_size");
         return NULL;
     }
-    return buf;
-    
-}
 
-AXIS2_EXTERN int AXIS2_CALL
-oxs_free_buffer(const axis2_env_t *env, oxs_buffer_ptr buf)
-{
-    if(!buf){
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "oxs_free_buffer failed");
-        return (-1);
-    }   
- 
-    AXIS2_FREE(env->allocator, buf->data);
-    buf->data = NULL;
-    buf->size = 0;
-    buf->max_size = 0;
-    
-    AXIS2_FREE(env->allocator, buf);
-    buf = NULL;
-    return (0);
-}
 
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_remove_head(const axis2_env_t *env,
-        oxs_buffer_ptr buf, unsigned int size)
-{
-    if(size < buf->size) {
-        if(buf->data != NULL){
-            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "oxs_buffer_remove_head failed"); 
-            return  (-1);
-        }
-        buf->size -= size;
-        memmove(buf->data, buf->data + size, buf->size);
-    } else {
-        buf->size = 0;
-    }
-
-    if(buf->size < buf->max_size) {
-        if(buf->data != NULL){
-             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "oxs_buffer_remove_head failed");
-             return  (-1);
-        }
-        memset(buf->data + buf->size, 0, buf->max_size - buf->size);
-    }
-    return(0);
-
-}
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_buffer_remove_tail(const axis2_env_t *env, 
-        oxs_buffer_ptr buf,unsigned int size)
-{
-
-    if(size < buf->size) {
-        buf->size -= size;
-    } else {
-        buf->size = 0;
-    }
-    if(buf->size < buf->max_size) {
-        if(buf->data != NULL){
-            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     ""); 
-            return  (-1);
-        }
-        memset(buf->data + buf->size, 0, buf->max_size - buf->size);
-    }
-    return(0);
-}
-
-AXIS2_EXTERN oxs_buffer_ptr AXIS2_CALL
-oxs_string_to_buffer(const axis2_env_t *env, axis2_char_t* string)
-{
-    oxs_buffer_ptr buf = NULL;
-    unsigned int size ;
-    unsigned char* data = NULL;
- 
-    if(!string){
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");     
+    buffer_impl->buffer.ops =  AXIS2_MALLOC(env->allocator,sizeof(oxs_buffer_ops_t));
+    if (!buffer_impl->buffer.ops)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        oxs_buffer_free(&(buffer_impl->buffer), env);
         return NULL;
     }
-    size =(unsigned int) AXIS2_STRLEN(string);
-    data = (unsigned char*)AXIS2_STRDUP(string, env);
-    
-    buf = oxs_create_buffer(env, size);        
-    buf->data = data;
-    buf->size = size;
-    /*buf->max_size = size;*/
-    buf->alloc_mode = oxs_alloc_mode_double;
- 
-    return buf; 
-}
 
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-oxs_buffer_to_string(const axis2_env_t *env, oxs_buffer_ptr buf)
-{
-    axis2_char_t* string;
-    
-    if(!buf){
-         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");        
-         return NULL;
-    }
-    
-    string = (axis2_char_t*)buf->data;
-    return string;
+    oxs_buffer_init_ops(&(buffer_impl->buffer));
+
+    return &(buffer_impl->buffer);
 
 }
 
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_append(const axis2_env_t *env,
-        oxs_buffer_ptr buf, unsigned char* data, unsigned int size)
+axis2_status_t AXIS2_CALL
+oxs_buffer_free(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env
+                )
 {
+    oxs_buffer_impl_t *buffer_impl= NULL;
 
-    if(!buf){
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");
-        return(-1);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
+
+    if(buffer_impl->data ){
+        AXIS2_FREE(env->allocator,  buffer_impl->data);
+        buffer_impl->data = NULL;
     }
 
-    if(size > 0) {
-        oxs_buffer_set_max_size(env, buf, buf->size + size);
-        if(!data){
+    AXIS2_FREE(env->allocator,  buffer_impl);
+    buffer_impl = NULL;
+
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+oxs_buffer_remove_head(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    int size
+                )
+{
+    oxs_buffer_impl_t *buffer_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
+   
+    /*If the size to be removed is less than the buffer size*/ 
+    if(size < buffer_impl->size) {
+        if(buffer_impl->data != NULL){
+            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "oxs_buffer_remove_head failed");
+            return  AXIS2_FAILURE;
+        }
+        buffer_impl->size -= size;
+        memmove(buffer_impl->data, buffer_impl->data + size, buffer_impl->size);
+    } else {
+        buffer_impl->size = 0;
+    }
+
+    /*If the buffer size is less than the max_size.*/
+    if(buffer_impl->size < buffer_impl->max_size) {
+        if(buffer_impl->data != NULL){
+             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "oxs_buffer_remove_head failed");
+             return  AXIS2_FAILURE;
+        }
+        memset(buffer_impl->data + buffer_impl->size, 0, buffer_impl->max_size - buffer_impl->size);
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+oxs_buffer_remove_tail(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    int size
+                )
+{
+    oxs_buffer_impl_t *buffer_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
+
+    if(size < buffer_impl->size) {
+        buffer_impl->size -= size;
+    } else {
+        buffer_impl->size = 0;
+    }
+    if(buffer_impl->size < buffer_impl->max_size) {
+        if(buffer_impl->data != NULL){
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "");
-            return (-1);
+            return  AXIS2_FAILURE;
         }
-
-        memcpy(buf->data + buf->size, data, size);
-        buf->size += size;
+        memset(buffer_impl->data + buffer_impl->size, 0, buffer_impl->max_size - buffer_impl->size);
     }
 
-    return(0);
+
+    return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_prepend(const axis2_env_t *env,
-        oxs_buffer_ptr buf, unsigned char* data, unsigned int size)
+axis2_status_t AXIS2_CALL
+oxs_buffer_populate(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    unsigned char *data,
+                    int size
+                )
 {
+    oxs_buffer_impl_t *buffer_impl = NULL;
 
-    if(!buf){
-         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");        
-         return (-1);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
+
+    if(size > 0) {
+        oxs_buffer_set_max_size( &(buffer_impl->buffer), env, size);
+        if(!data){
+            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "data is NULL");
+            return AXIS2_FAILURE;
+        }
+
+        memcpy(buffer_impl->data, data, size);
+        buffer_impl->size = size;
     }
+
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+oxs_buffer_append(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    unsigned char *data,
+                    int size
+                )
+{
+    oxs_buffer_impl_t *buffer_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
+
+    if(size > 0) {
+        oxs_buffer_set_max_size( &(buffer_impl->buffer), env,  buffer_impl->size + size);
+        if(!data){
+            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "data is NULL");
+            return AXIS2_FAILURE;
+        }
+
+        memcpy(buffer_impl->data + buffer_impl->size, data, size);
+        buffer_impl->size += size;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+oxs_buffer_prepend(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    unsigned char *data,
+                    int size
+                )
+{
+    oxs_buffer_impl_t *buffer_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
 
     if(size > 0) {
         if(!data) {
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");
-            return (-1);
+                     "Passed data is NULL");
+            return AXIS2_FAILURE;
         }
 
-        buf->max_size = buf->size + size;
+        buffer_impl->max_size = buffer_impl->size + size;
 
-        memmove(buf->data + size, buf->data, buf->size);
-        memcpy(buf->data, data, size);
-        buf->size += size;
+        memmove(buffer_impl->data + size, buffer_impl->data, buffer_impl->size);
+        memcpy(buffer_impl->data, data, size);
+        buffer_impl->size += size;
     }
 
-    return(0);
+    return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_set_size(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int size)
+axis2_status_t AXIS2_CALL
+oxs_buffer_read_file(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    const axis2_char_t *filename
+                )
 {
-    int ret;
+    oxs_buffer_impl_t *buffer_impl = NULL;
+    unsigned char fbuffer[1024];
+    FILE* f;
+    int  len;
+    axis2_status_t status = AXIS2_FAILURE;
 
-    if(buf == NULL){
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
+
+
+    f = fopen(filename, "rb");
+    if(f == NULL) {
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "buffer is NULL");
-         return (-1);
+                     "");
+        return AXIS2_FAILURE;
     }
-    ret = oxs_buffer_set_max_size(env, buf, size);
-    if(ret < 0) {
+
+    while(1)
+    {
+        len = fread(fbuffer, 1, sizeof(fbuffer), f);
+        if(len == 0){
+            break; /*Stop reading*/
+        }else if(len < 0){
+            fclose(f);
+            return AXIS2_FAILURE;
+        }
+        status = oxs_buffer_append( &(buffer_impl->buffer), env, fbuffer, len);
+        if(status == AXIS2_FAILURE){
+            fclose(f);
+            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                     "");
+            return AXIS2_FAILURE;
+        }
+
+        /*Alright so far everything is fine. So let's close the output*/
+        fclose(f);
+        return AXIS2_SUCCESS;
+    }/*End of while*/
+
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+oxs_buffer_set_size(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    int size
+                )
+{
+    oxs_buffer_impl_t *buffer_impl = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
+
+    /*First we need to make sure that the max size has a value greater or equal value*/
+    status = oxs_buffer_set_max_size( buffer, env,  size);
+    if(status == AXIS2_FAILURE) {
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "oxs_buffer_set_max_size failed");
-        return(-1);
+        return AXIS2_FAILURE;
     }
-    buf->size = size;
-    return(0);
+    /*Now set the size*/
+    buffer_impl->size = size;
+
+    return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_set_max_size(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int size)
+axis2_status_t AXIS2_CALL
+oxs_buffer_set_max_size(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    int size
+                )
 {
+    oxs_buffer_impl_t *buffer_impl = NULL;
     unsigned char* new_data;
     unsigned int new_size = 0;
 
-    if(buf == NULL) {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");
-        return (-1);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
+
+    if(size <= buffer_impl->max_size) {
+       return AXIS2_SUCCESS;
     }
 
-    if(size <= buf->max_size) {
-       return(0);
-    }
-
-    switch(buf->alloc_mode) {
+    switch(buffer_impl->alloc_mode) {
     case oxs_alloc_mode_exact:
         new_size = size + 8;
         break;
@@ -260,13 +469,13 @@ oxs_buffer_set_max_size(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int
         break;
     }
 
-    if(new_size < g_initial_size) {
-       new_size = g_initial_size;
+    if(new_size < OXS_BUFFER_INITIAL_SIZE) {
+       new_size = OXS_BUFFER_INITIAL_SIZE;
     }
 
-
-    if(buf->data != NULL) {
-        new_data = (unsigned char*)AXIS2_REALLOC(env->allocator, buf->data, new_size);
+    /*If there are data already then use realloc instead of malloc*/
+    if(buffer_impl->data != NULL) {
+        new_data = (unsigned char*)AXIS2_REALLOC(env->allocator, buffer_impl->data, new_size);
     } else {
         new_data = (unsigned char*)AXIS2_MALLOC(env->allocator, new_size);
     }
@@ -274,99 +483,63 @@ oxs_buffer_set_max_size(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int
     if(new_data == NULL) {
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "");
-        return(-1);
+        return AXIS2_FAILURE;
     }
 
-    buf->data = new_data;
-    buf->max_size = new_size;
+    buffer_impl->data = new_data;
+    buffer_impl->max_size = new_size;
 
-    if(buf->size < buf->max_size) {
-        if(buf->data == NULL){
+    if(buffer_impl->size < buffer_impl->max_size) {
+        if(buffer_impl->data == NULL){
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                      "");
-             return (-1);
+             return AXIS2_FAILURE;
         }
-        memset(buf->data + buf->size, 0, buf->max_size - buf->size);
+        memset(buffer_impl->data + buffer_impl->size, 0, buffer_impl->max_size - buffer_impl->size);
     }
 
-    return(0);
-
+    return AXIS2_SUCCESS;
 }
 
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_read_file(const axis2_env_t *env, oxs_buffer_ptr buf, const char* filename)
+unsigned char* AXIS2_CALL
+oxs_buffer_get_data(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env
+                )
 {
-    unsigned char buffer[1024];
-    FILE* f;
-    int ret, len;
+    oxs_buffer_impl_t *buffer_impl = NULL;
 
-    f = fopen(filename, "rb");
-    if(f == NULL) {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");
-        return (-1);
-    }
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
 
-    while(1)
-    {
-        len = fread(buffer, 1, sizeof(buffer), f);
-        if(len == 0){
-            break; /*Stop reading*/
-        }else if(len < 0){
-            fclose(f);
-            return(-1);
-        }
-        ret = oxs_buffer_append(env, buf, buffer, len);
-        if(ret < 0){
-            fclose(f);
-            oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");
-            return (-1);
-        }
-       
-        /*Alright so far everything is fine. So let's close the output*/
-        fclose(f);
-        return (0); 
-    }/*End of while*/
-    return(0);
+    return buffer_impl->data;
 }
 
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_base64_node_content_read(const axis2_env_t *env, oxs_buffer_ptr buf, axiom_node_t *node)
+int AXIS2_CALL
+oxs_buffer_get_size(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env
+                )
 {
-    axis2_char_t *content = NULL;
-    axis2_char_t *decoded_str = NULL;
-    int ret;
-    unsigned int length;
-        
-    content = oxs_axiom_get_node_content(env, node);    
-    if(content == NULL) {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");
-        return (-1);
-    }
-   
-    ret = oxs_buffer_set_max_size(env, buf, AXIS2_STRLEN(content));
-    if(ret < 0)  {
-        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-                     "");
-        return(-1);
-    }
+    oxs_buffer_impl_t *buffer_impl = NULL;
 
-    /*OK. Now decode*/
-    /*axis2_base64_decode(plain, encoded)*/
-    length = axis2_base64_decode(decoded_str, content); 
-    if(length < 0 ) return (-1);
-    
-    /*Store data in the buffer*/    
-    buf->data = (unsigned char*)decoded_str;
-    buf->size = length;
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
 
-    return (0);  
+    return buffer_impl->size;
 }
 
-  
+int AXIS2_CALL
+oxs_buffer_get_max_size(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env
+                )
+{
+    oxs_buffer_impl_t *buffer_impl = NULL;
 
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
 
-
+    return buffer_impl->max_size;
+}
 

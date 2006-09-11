@@ -68,8 +68,8 @@ extern "C"
         prvkey_decrypt_data) (
                 oxs_enc_engine_t *enc_engine,
                 const axis2_env_t *env,
-                oxs_buffer_ptr input,
-                oxs_buffer_ptr result,
+                oxs_buffer_t *input,
+                oxs_buffer_t *result,
                 axis2_char_t *filename
                 );
         /**
@@ -85,8 +85,8 @@ extern "C"
         pubkey_encrypt_data)(
                 oxs_enc_engine_t *enc_engine,
                 const axis2_env_t *env,
-                oxs_buffer_ptr input,
-                oxs_buffer_ptr result,
+                oxs_buffer_t * input,
+                oxs_buffer_t * result,
                 axis2_char_t *filename
                 );
 
@@ -122,8 +122,8 @@ extern "C"
                 oxs_enc_engine_t *enc_engine,
                 const axis2_env_t *env,
                 oxs_ctx_t * enc_ctx,
-                oxs_buffer_ptr input,
-                oxs_buffer_ptr result);
+                oxs_buffer_t * input,
+                oxs_buffer_t * result);
 
         /**
          * Populate the cipher value node. 
@@ -138,7 +138,7 @@ extern "C"
                 oxs_enc_engine_t *enc_engine,
                 const axis2_env_t *env,
                 axiom_node_t* template_node,
-                oxs_buffer_ptr databuf);
+                oxs_buffer_t * databuf);
     
         /**
          * Decrypt an xml document template. Expects a template similar to the above. 

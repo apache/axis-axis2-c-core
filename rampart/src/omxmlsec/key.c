@@ -26,7 +26,7 @@
 typedef struct oxs_key_impl{
     oxs_key_t key;
 
-    axis2_char_t *data;
+    unsigned char *data;
     axis2_char_t *name;
     int            size;
     int            usage;
@@ -44,7 +44,7 @@ oxs_key_init_ops(
     oxs_key_t *key);
 
 /*Public functions*/
-axis2_char_t *AXIS2_CALL
+unsigned char *AXIS2_CALL
 oxs_key_get_data(
     const oxs_key_t *key,
     const axis2_env_t *env);
@@ -68,7 +68,7 @@ axis2_status_t AXIS2_CALL
 oxs_key_set_data(
     oxs_key_t *key,
     const axis2_env_t *env,
-    axis2_char_t *data);
+    unsigned char *data);
 
 axis2_status_t AXIS2_CALL
 oxs_key_set_name(
@@ -98,7 +98,7 @@ axis2_status_t AXIS2_CALL
 oxs_key_populate(
         oxs_key_t *key,
         const axis2_env_t *env,
-        axis2_char_t *data,
+        unsigned char *data,
         axis2_char_t *name,
         int size,
         int usage);
@@ -116,7 +116,7 @@ oxs_key_for_algo(oxs_key_t *key,
 
 /******************** end of function headers *****************/
 
-axis2_char_t *AXIS2_CALL
+unsigned char *AXIS2_CALL
 oxs_key_get_data(
     const oxs_key_t *key,
     const axis2_env_t *env)
@@ -173,7 +173,7 @@ axis2_status_t AXIS2_CALL
 oxs_key_set_data(
     oxs_key_t *key,
     const axis2_env_t *env,
-    axis2_char_t *data)
+    unsigned char *data)
 {
     oxs_key_impl_t *oxs_key_impl = NULL;
 
@@ -184,7 +184,7 @@ oxs_key_set_data(
         AXIS2_FREE(env->allocator, oxs_key_impl->data);
         oxs_key_impl->data = NULL;
     }
-    oxs_key_impl->data = (axis2_char_t *)data;
+    oxs_key_impl->data = data;
     return AXIS2_SUCCESS;
 
 }
@@ -318,7 +318,7 @@ oxs_key_free(oxs_key_t *key,
 axis2_status_t AXIS2_CALL
 oxs_key_populate(oxs_key_t *key,
         const axis2_env_t *env,
-        axis2_char_t *data,
+        unsigned char *data,
         axis2_char_t *name,
         int size,
         int usage)
@@ -339,16 +339,17 @@ oxs_key_read_from_file(oxs_key_t *key,
         const axis2_env_t *env,
         axis2_char_t *file_name)
 {
-    oxs_buffer_ptr buf = NULL;
-    axis2_status_t ret;
-    int reti;
+    oxs_buffer_t *buf = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
  
-    buf = oxs_create_buffer(env, OXS_KEY_DEFAULT_SIZE);
-    reti = oxs_buffer_read_file(env, buf, file_name);
+    buf = oxs_buffer_create(env);
+    status = oxs_buffer_read_file(env, buf, file_name);
    
-    ret = OXS_KEY_POPULATE(key, env, (axis2_char_t*)buf->data, file_name,  buf->size, OXS_KEY_USAGE_NONE);
+    status = OXS_KEY_POPULATE(key, env,
+                            OXS_BUFFER_GET_DATA(buf, env), file_name,  
+                            OXS_BUFFER_GET_SIZE(buf, env), OXS_KEY_USAGE_NONE);
      
-    return ret; 
+    return status; 
     
 }
 
@@ -357,12 +358,13 @@ oxs_key_for_algo(oxs_key_t *key,
         const axis2_env_t *env,
         axis2_char_t *key_algo)
 {
-    oxs_buffer_ptr key_buf = NULL;
+    oxs_buffer_t *key_buf = NULL;
     openssl_cipher_property_t * cprop = NULL;
     axis2_status_t ret = AXIS2_FAILURE;
     int size;
-    
-    
+    unsigned char *temp_str = NULL;
+    int temp_int = 0;   
+ 
     cprop = (openssl_cipher_property_t *)oxs_get_cipher_property_for_url(env, key_algo);
     if(!cprop){
         oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
@@ -372,15 +374,21 @@ oxs_key_for_algo(oxs_key_t *key,
 
     size = OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env);
 
-    key_buf = oxs_create_buffer(env, size);    
+    key_buf = oxs_buffer_create(env);    
     ret = generate_random_data(env, key_buf, size);    
     if(ret == AXIS2_FAILURE){
          oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
             "generate_random_data failed");
          return AXIS2_FAILURE;
     }
-    
-    ret = OXS_KEY_POPULATE(key, env,(axis2_char_t*) key_buf->data, NULL, key_buf->size, OXS_KEY_USAGE_NONE);
+   
+    temp_int = OXS_BUFFER_GET_SIZE(key_buf, env);
+    temp_str = OXS_BUFFER_GET_DATA(key_buf, env);
+     
+    ret = OXS_KEY_POPULATE(key, env, 
+                            OXS_BUFFER_GET_DATA(key_buf, env), NULL, 
+                            OXS_BUFFER_GET_SIZE(key_buf, env), OXS_KEY_USAGE_NONE);
 
+    /*free buffer*/
     return ret;
 }

@@ -26,7 +26,6 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axis2_util.h>
-#include <oxs_axiom.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -40,73 +39,155 @@ extern "C"
 
 #define OXS_BUFFER_INITIAL_SIZE 1024
 
+    /**
+    * Allocate mode for the buffer
+    * oxs_alloc_mode_exact : Minimizes the allocated memory size
+    * oxs_alloc_mode_double : Minimizes number of Malloc calls
+    */
+    typedef enum {
+        oxs_alloc_mode_exact = 0,
+        oxs_alloc_mode_double
+    } oxs_AllocMode;
 
-typedef struct _oxs_buffer                    oxs_buffer,
-                                *oxs_buffer_ptr;
+    /** Type name for struct  oxs_buffer_ops */
+    typedef struct oxs_buffer_ops oxs_buffer_ops_t;
+
+    /** Type name for struct  oxs_buffer */
+    typedef struct oxs_buffer oxs_buffer_t;
+
+    struct oxs_buffer_ops
+    {
+        axis2_status_t (AXIS2_CALL *
+                free)(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env
+                );
+
+        axis2_status_t (AXIS2_CALL *
+                remove_head)(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    int size
+                );
+
+        axis2_status_t (AXIS2_CALL *
+                remove_tail)(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    int size
+                );
+        
+        axis2_status_t (AXIS2_CALL *
+                populate)(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    unsigned char *data,
+                    int size
+                );
+
+        axis2_status_t (AXIS2_CALL *
+                append)(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    unsigned char *data,
+                    int size
+                );
+
+        axis2_status_t (AXIS2_CALL *
+                prepend)(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    unsigned char *data,
+                    int size
+                );
+
+        axis2_status_t (AXIS2_CALL *
+                read_file)(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    const axis2_char_t *filename
+                );
+
+        axis2_status_t (AXIS2_CALL *
+                set_size)(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    int size
+                );
+
+        axis2_status_t (AXIS2_CALL *
+                set_max_size)(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env,
+                    int size
+                );
+        
+        unsigned char* (AXIS2_CALL *
+                get_data)(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env
+                );
+
+        int (AXIS2_CALL *
+                get_size)(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env
+                );
+
+        int (AXIS2_CALL *
+                get_max_size)(
+                    oxs_buffer_t *buffer,
+                    const axis2_env_t *env
+                );
+    };
+
+    struct oxs_buffer
+    {
+        oxs_buffer_ops_t *ops;
+    };
+
+AXIS2_EXTERN oxs_buffer_t *AXIS2_CALL
+oxs_buffer_create(const axis2_env_t *env);
+
+/*Macros*/
+
+#define OXS_BUFFER_FREE(buffer,env)\
+    ((buffer)->ops->free(buffer,env))
+
+#define OXS_BUFFER_REMOVE_HEAD(buffer,env, size)\
+    ((buffer)->ops->remove_head(buffer,env, size))
+
+#define OXS_BUFFER_REMOVE_TAIL(buffer,env, size)\
+    ((buffer)->ops->remove_tail(buffer,env, size))
+
+#define OXS_BUFFER_POPULATE(buffer,env, data, size)\
+    ((buffer)->ops->populate(buffer,env, data, size))
+
+#define OXS_BUFFER_APPEND(buffer,env, data, size)\
+    ((buffer)->ops->append(buffer,env, data, size))
+
+#define OXS_BUFFER_PREPEND(buffer,env, data, size)\
+    ((buffer)->ops->prepend(buffer,env, data, size))
+
+#define OXS_BUFFER_READ_FILE(buffer,env, file_name)\
+    ((buffer)->ops->read_file(buffer,env, file_name))
+
+#define OXS_BUFFER_SET_SIZE(buffer,env, size)\
+    ((buffer)->ops->set_size(buffer,env, size))
+
+#define OXS_BUFFER_SET_MAX_SIZE(buffer, env, size)\
+    ((buffer)->ops->set_max_size(buffer, env, size))
+
+#define OXS_BUFFER_GET_DATA(buffer,env)\
+    ((buffer)->ops->get_data(buffer,env))
+
+#define OXS_BUFFER_GET_SIZE(buffer,env)\
+    ((buffer)->ops->get_size(buffer,env))
+
+#define OXS_BUFFER_GET_MAX_SIZE(buffer,env)\
+    ((buffer)->ops->get_max_size(buffer,env))
 
 
-/**
-* Allocate mode for the buffer
-* oxs_alloc_mode_exact : Minimizes the allocated memory size
-* oxs_alloc_mode_double : Minimizes number of Malloc calls
-*/
-typedef enum {
-    oxs_alloc_mode_exact = 0,
-    oxs_alloc_mode_double
-} oxs_AllocMode;
-
-/**
-* Buffer to hold data
-* @data : pointer to buffer data
-* @size : size of the buffer data
-* @max_size : allocated size of the buffer
-* @alloc_mode : Mode of the allcoation
-*/
-struct _oxs_buffer{
-    unsigned char* data;
-    unsigned int size;
-    unsigned int max_size;
-    oxs_AllocMode alloc_mode;
-}; 
-
-AXIS2_EXTERN oxs_buffer_ptr AXIS2_CALL
-oxs_create_buffer(const axis2_env_t *env, unsigned int size);
-
-AXIS2_EXTERN oxs_buffer_ptr AXIS2_CALL
-oxs_buffer_initialize(const axis2_env_t *env ,oxs_buffer_ptr buf,  unsigned int size);
-
-AXIS2_EXTERN int AXIS2_CALL
-oxs_free_buffer(const axis2_env_t *env, oxs_buffer_ptr buf);
-
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_remove_head(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int size);
-
-AXIS2_EXTERN axis2_status_t AXIS2_CALL
-oxs_buffer_remove_tail(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int size);
-
-AXIS2_EXTERN oxs_buffer_ptr AXIS2_CALL
-oxs_string_to_buffer(const axis2_env_t *env, axis2_char_t* string);
-
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-oxs_buffer_to_string(const axis2_env_t *env, oxs_buffer_ptr buf);
-
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_append(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned char* data, unsigned int size);
-
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_prepend(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned char* data, unsigned int size);
-
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_set_size(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int size);
-
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_set_max_size(const axis2_env_t *env, oxs_buffer_ptr buf, unsigned int size);
-
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_read_file(const axis2_env_t *env, oxs_buffer_ptr buf, const char* filename);
-
-AXIS2_EXTERN int AXIS2_CALL
-oxs_buffer_base64_node_content_read(const axis2_env_t *env, oxs_buffer_ptr buf, axiom_node_t *node);
 /** @} */
 #ifdef __cplusplus
 }

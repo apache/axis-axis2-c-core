@@ -60,7 +60,7 @@ extern "C"
          * @return data 
          */
 
-        axis2_char_t *(AXIS2_CALL *
+        unsigned char *(AXIS2_CALL *
                 get_data)(
                     const oxs_key_t *key,
                     const axis2_env_t *env);
@@ -106,7 +106,7 @@ extern "C"
                 set_data)(
                     oxs_key_t *key,
                     const axis2_env_t *env,
-                    axis2_char_t *data);
+                    unsigned char *data);
 
          /**
          * Sets the name of the key.
@@ -173,7 +173,7 @@ extern "C"
                 populate)(
                     oxs_key_t *key,
                     const axis2_env_t *env,
-                    axis2_char_t *data,
+                    unsigned char *data,
                     axis2_char_t *name,
                     int size,
                     int usage
