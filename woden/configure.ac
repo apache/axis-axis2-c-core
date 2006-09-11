@@ -55,6 +55,8 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
   TESTDIR=""
 )
 
+AC_CHECK_LIB(cutest, CuTestInit, [], [TESTDIR=""])
+
 AC_MSG_CHECKING(To Use Axis2 C AXIOM. This is a compulsory module to build Axis2 C)
 AC_ARG_WITH(axiom,
 [  --with-axiom[=PATH]      use axiom.],

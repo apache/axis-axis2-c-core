@@ -110,6 +110,8 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
   TESTDIR=""
 )
 
+AC_CHECK_LIB(cutest, CuTestInit, [], [TESTDIR=""])
+
 AC_MSG_CHECKING(whether to enable trace)
 AC_ARG_ENABLE(trace, [  --enable-trace    enable trace. default=no],
 [ case "${enableval}" in
