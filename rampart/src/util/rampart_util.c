@@ -22,7 +22,8 @@
 #include <axis2_util.h>
 #include <axis2_base64.h>
 #include <time.h>
-
+#include <oxs_buffer.h>
+#include <openssl_util.h>
 /*Calculate the hash of concatenated string of 
  * nonce, created and the password.
  * 
@@ -31,21 +32,23 @@
 #define SIZE_HASH 32
 #define SIZE_NONCE 24
 
+
 /*#define PRINTINFO 1 */
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_nonce(const axis2_env_t *env)
 {
-   int num;
-   char* rand_str = NULL;
-   axis2_char_t* encoded_str=NULL;
-   num=rand();
-   rand_str= AXIS2_MALLOC(env->allocator,sizeof(char)*16);
-   sprintf(rand_str, "%16d", num);
+    oxs_buffer_t *buffer = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    char *rand_str = NULL;
+    axis2_char_t* encoded_str=NULL;
 
-
+    buffer = oxs_buffer_create(env);
+    status = generate_random_data(env, buffer, 16);
+    rand_str = (char*)OXS_BUFFER_GET_DATA(buffer, env);
     encoded_str = AXIS2_MALLOC(env->allocator, sizeof(char)*SIZE_NONCE);
-    axis2_base64_encode(encoded_str,rand_str,AXIS2_STRLEN(rand_str));
-    /* AXIS2_FREE(env->allocator, rand_str); */
-   return encoded_str;
+    axis2_base64_encode(encoded_str,rand_str,OXS_BUFFER_GET_SIZE(buffer, env));        
+    OXS_BUFFER_FREE(buffer, env);
+
+    return encoded_str;
 }
 
 
@@ -58,7 +61,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_time(const axis2_env_t *e
  
    curtime = time (NULL) + ttl;
    loctime = localtime (&curtime);
-     strftime (buffer, SIZE, "%Y-%m-%dT%H:%M:%SZ\n", loctime);
+   strftime (buffer, SIZE, "%Y-%m-%dT%H:%M:%SZ\n", loctime);
     created_str = AXIS2_STRDUP(buffer, env);
     
    return created_str;
