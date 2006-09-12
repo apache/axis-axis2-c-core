@@ -25,6 +25,40 @@
 #include <axiom_document.h>
 #include <axiom_stax_builder.h>
 
+AXIS2_EXTERN int AXIS2_CALL
+oxs_axiom_get_number_of_children_with_qname(const axis2_env_t *env,
+                                         axiom_node_t* parent, 
+                                         axis2_char_t* local_name, 
+                                         axis2_char_t* ns_uri,
+                                         axis2_char_t* prefix)
+{
+
+    axis2_qname_t *qname = NULL;
+    axiom_element_t *parent_ele = NULL;
+    axiom_children_qname_iterator_t *qname_iter = NULL;
+    axiom_node_t *temp_node = NULL;
+    int counter = 0;
+
+    qname = axis2_qname_create(env, local_name, ns_uri, prefix);
+    parent_ele = AXIOM_NODE_GET_DATA_ELEMENT(parent,env);
+    if(!parent_ele){
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+            "Cannot find %s element", local_name);
+        return -1;
+    }
+
+    qname_iter = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(parent_ele, env, qname, parent);
+    while(AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(qname_iter ,env))
+    {
+        
+        counter++;
+        temp_node = AXIOM_CHILDREN_QNAME_ITERATOR_NEXT(qname_iter, env);
+    }
+
+    return counter;
+}
+
+
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_axiom_get_first_child_node_by_name(const axis2_env_t *env, 
                                          axiom_node_t* parent, 
@@ -39,12 +73,12 @@ oxs_axiom_get_first_child_node_by_name(const axis2_env_t *env,
     
     qname = axis2_qname_create(env, local_name, ns_uri, prefix);
     parent_ele = AXIOM_NODE_GET_DATA_ELEMENT(parent,env);
-    /*Get the child*/
     if(!parent_ele){
-        oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
             "Cannot find %s element", local_name);
         return NULL;
     }
+    /*Get the child*/
     ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(parent_ele, env, qname, parent, &node  );
     
     AXIS2_QNAME_FREE(qname, env);
@@ -52,7 +86,7 @@ oxs_axiom_get_first_child_node_by_name(const axis2_env_t *env,
 
     parent_name = AXIOM_NODE_TO_STRING(parent, env);
     if(!node){
-        oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
             "Cannot find child %s of %s", local_name, parent_name);
         return NULL;
     }
@@ -151,5 +185,4 @@ oxs_axiom_check_node_name(const axis2_env_t *env, axiom_node_t* node, axis2_char
     
 
 }
-
 

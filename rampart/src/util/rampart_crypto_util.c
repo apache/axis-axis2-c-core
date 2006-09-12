@@ -38,10 +38,20 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_crypto_sha1(const axis2_env_t *env
    axis2_char_t *result = NULL;
    char* input = NULL;
    axis2_char_t* encoded_str=NULL;
-
-   input= AXIS2_MALLOC(env->allocator, AXIS2_STRLEN(nonce) + 
-          AXIS2_STRLEN(created) + AXIS2_STRLEN(password) + 1);
-   sprintf(input, "%s%s%s", nonce, created, password);
+    
+   if((!nonce) && (!created)){/*If both nonce and created are omitted*/
+        input= AXIS2_MALLOC(env->allocator,  AXIS2_STRLEN(password) + 1);
+        sprintf(input, "%s",  password);   
+   }else if(!nonce){/*If nonce is omitted*/
+        input= AXIS2_MALLOC(env->allocator, AXIS2_STRLEN(created) + AXIS2_STRLEN(password) + 1);
+        sprintf(input, "%s%s",  created, password);
+   }else  if(!created){/*If created is omitted*/
+        input= AXIS2_MALLOC(env->allocator, AXIS2_STRLEN(nonce) + AXIS2_STRLEN(password) + 1);
+        sprintf(input, "%s%s",  nonce, password);
+   }else{/*If all nonce, created and password are present*/
+        input= AXIS2_MALLOC(env->allocator, AXIS2_STRLEN(nonce) + AXIS2_STRLEN(created) + AXIS2_STRLEN(password) + 1);
+        sprintf(input, "%s%s%s", nonce, created, password);
+   }
    result = AXIS2_MALLOC(env->allocator, SHA_DIGEST_LENGTH + 1);
     
    SHA1((unsigned char*)input,SHA_DIGEST_LENGTH,(unsigned char*)result);

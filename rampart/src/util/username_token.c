@@ -279,9 +279,13 @@ rampart_username_token_build(rampart_username_token_t *username_token,
         if(0 == AXIS2_STRCMP(password_type, RAMPART_PASSWORD_DIGEST) )
         {   
             axiom_namespace_t *dec_ns = NULL;
-          
+            #if 1 
             nonce_val = rampart_generate_nonce(env) ;
             created_val = rampart_generate_time(env,0);
+            #else
+                nonce_val = NULL;
+                created_val = NULL;
+            #endif
             digest_val = rampart_crypto_sha1(env, nonce_val, created_val, password);
 
             pw_ele = axiom_element_create (env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_PASSWORD, sec_ns_obj,
@@ -304,7 +308,7 @@ rampart_username_token_build(rampart_username_token_t *username_token,
                                 om_attr, pw_node);
 
              }                 
-            
+            #if 1  
             nonce_ele = axiom_element_create (env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_NONCE, sec_ns_obj,
                                              &nonce_node);
             if(NULL != nonce_ele)
@@ -314,8 +318,12 @@ rampart_username_token_build(rampart_username_token_t *username_token,
                 dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(nonce_ele, env, 
                                                              RAMPART_WSSE_XMLNS,
                                                             RAMPART_WSSE);
-            }       
-
+            }     
+            #else   
+                nonce_ele = NULL;
+                nonce_node = NULL;
+            #endif  
+            #if 1
             created_ele = axiom_element_create (env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_CREATED, sec_ns_obj,
                                              &created_node);
             if(NULL != created_ele)
@@ -328,7 +336,12 @@ rampart_username_token_build(rampart_username_token_t *username_token,
 
                 AXIOM_ELEMENT_SET_NAMESPACE(created_ele, env, wsu_ns_obj, created_node);
 
-            }       
+            } 
+            #else
+                created_ele = NULL;
+                created_node = NULL;
+            #endif
+                  
             /*
             AXIS2_FREE(env->allocator, nonce_val);
             AXIS2_FREE(env->allocator, created_val);
@@ -345,6 +358,14 @@ rampart_username_token_build(rampart_username_token_t *username_token,
                 dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(pw_ele, env, 
                                                              RAMPART_WSSE_XMLNS,
                                                             RAMPART_WSSE);
+           
+                om_attr = axiom_attribute_create (env,
+                                    RAMPART_SECURITY_USERNAMETOKEN_PASSWORD_ATTR_TYPE,
+                                    RAMPART_PASSWORD_TEXT_URI,                                    
+                                    NULL);
+
+                AXIOM_ELEMENT_ADD_ATTRIBUTE (pw_ele, env,
+                                om_attr, pw_node);
              }                 
          } /*End if passwordType == passwordText*/
     }
@@ -367,6 +388,15 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     axis2_ctx_t *ctx = NULL;
     axis2_qname_t *qname = NULL;
     rampart_username_token_impl_t *username_token_impl = NULL;
+
+    /*TODO*/
+    /*
+    R4222 Any USERNAME_TOKEN MUST NOT have more than one PASSWORD.
+    R4201 Any PASSWORD MUST specify a Type attribute.
+    R4212 [summary] If no noce or created specified those should be avoided from the concatenation
+    R4223 Any USERNAME_TOKEN MUST NOT have more than one CREATED.
+    R4225 Any USERNAME_TOKEN MUST NOT have more than one NONCE
+    */
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     username_token_impl = AXIS2_INTF_TO_IMPL(username_token);
@@ -428,9 +458,10 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
                                             
                     if(!password_type)
                     {
-                        password_type = RAMPART_PASSWORD_TEXT_URI;
+                       /*R4201 Any PASSWORD MUST specify a Type attribute */
+                       AXIS2_LOG_INFO(env->log,"Password Type is not specified in the password element");
+                       return AXIS2_FAILURE;
                     } 
-                       
 
                     password = AXIOM_ELEMENT_GET_TEXT(element, env, node);        
 
