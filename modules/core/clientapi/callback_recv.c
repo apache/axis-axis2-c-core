@@ -156,8 +156,16 @@ axis2_callback_recv_free (
         callback_recv_impl->callback_map = NULL;
     }
     
-    AXIS2_FREE(env->allocator, callback_recv_impl);
-    callback_recv_impl = NULL;
+    if (callback_recv_impl->base)
+    {
+        AXIS2_MSG_RECV_FREE(callback_recv_impl->base, env);
+    }
+
+    if (callback_recv_impl)
+    {
+        AXIS2_FREE(env->allocator, callback_recv_impl);
+        callback_recv_impl = NULL;
+    }
     
     return AXIS2_SUCCESS;
 }

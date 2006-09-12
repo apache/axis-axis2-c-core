@@ -450,6 +450,8 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
         }/*if (mime_parser_impl->mime_parts_map)*/
     }/* end while (!end_of_mime) */
     
+    AXIS2_FREE(env->allocator, buffer);
+
     return mime_parser_impl->mime_parts_map;
 }
 

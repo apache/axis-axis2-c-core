@@ -917,6 +917,21 @@ axis2_svc_free(
 
     if(NULL != svc_impl->op_alias_map)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        
+        for (hi = axis2_hash_first(svc_impl->op_alias_map, env); hi;
+            hi = axis2_hash_next(env, hi))
+        {
+            axis2_hash_this(hi, NULL, NULL, &val);
+
+            if (val)
+            {
+                axis2_op_free(val, env);
+                val = NULL;
+            }
+        }
+
         axis2_hash_free(svc_impl->op_alias_map, env);
         svc_impl->op_alias_map = NULL;
     }
