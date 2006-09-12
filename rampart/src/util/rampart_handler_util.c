@@ -27,6 +27,7 @@
 #include <axis2_dll_desc.h>
 #include <axis2_class_loader.h>
 #include <axis2_conf_ctx.h>
+#include <oxs_axiom.h>
 
 axis2_char_t* AXIS2_CALL
 rampart_get_property_from_ctx( const axis2_env_t *env,
@@ -60,6 +61,11 @@ rampart_create_fault_envelope(const axis2_env_t *env,
         const axis2_char_t *description,
         axis2_array_list_t *sub_codes,
         axis2_msg_ctx_t *msg_ctx);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_validate_security_token(const axis2_env_t *env,
+                                axis2_msg_ctx_t *msg_ctx,
+                                axiom_node_t *sec_node);
 
 /**********************end of header functions ****************************/
 
@@ -260,8 +266,22 @@ rampart_create_fault_envelope(const axis2_env_t *env,
             soap_version, sub_codes, text_om_node);
     
     AXIS2_MSG_CTX_SET_FAULT_SOAP_ENVELOPE(msg_ctx, env, envelope);
+    /*free sub codes*/
     return;
 }
 
-
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_validate_security_token(const axis2_env_t *env,
+                                axis2_msg_ctx_t *msg_ctx,
+                                axiom_node_t *sec_node)
+{
+    int num = 0;
+    /*Check if there are multiple timestamp tokens*/
+    num = oxs_axiom_get_number_of_children_with_qname( env, sec_node, RAMPART_SECURITY_TIMESTAMP, NULL, NULL);
+    if(num > 1){
+        return AXIS2_FAILURE;
+    }
+    
+    return AXIS2_SUCCESS;
+}
 

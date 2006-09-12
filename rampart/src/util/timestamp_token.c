@@ -181,12 +181,21 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
 
     /*TODO*/
     /* 
-    R3227   A SECURITY_HEADER MUST NOT contain more than one TIMESTAMP
-    R3203   A TIMESTAMP MUST contain exactly one CREATED
-    R3224   Any TIMESTAMP MUST NOT contain more than one EXPIRES.    
     R3221   Any TIMESTAMP containing an EXPIRES MUST contain a CREATED that preceeds its sibling EXPIRES.
     R3222   Any TIMESTAMP MUST NOT contain anything other than CREATED or EXPIRES elements
     */
+    /*Check: TIMESTAMP MUST contain exactly one CREATED*/
+    if(1 !=  oxs_axiom_get_number_of_children_with_qname( env, ts_node, RAMPART_SECURITY_TIMESTAMP_CREATED, NULL, NULL))
+    {
+        return AXIS2_FAILURE;
+    }
+
+    /*Check: TIMESTAMP MUST NOT contain more than one EXPIRES*/
+    if(1 < oxs_axiom_get_number_of_children_with_qname( env, ts_node, RAMPART_SECURITY_TIMESTAMP_CREATED, NULL, NULL))
+    {
+        return AXIS2_FAILURE;
+    }
+
 
     ts_ele = AXIOM_NODE_GET_DATA_ELEMENT(ts_node, env);
     

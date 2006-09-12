@@ -169,6 +169,19 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                     rampart_create_fault_envelope(env, "wsse:Security", "Security header element is unavailable",sub_codes, msg_ctx);
                     return AXIS2_FAILURE;
                 }
+                
+                status = rampart_validate_security_token(env, msg_ctx, sec_node);
+                if(AXIS2_FAILURE == status){
+                    axis2_array_list_t *sub_codes = NULL;
+                    sub_codes = axis2_array_list_create(env, 1);
+                    if (sub_codes)
+                    {
+                        AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_INVALID_SECURITY_TOKEN);
+                    }
+                    rampart_create_fault_envelope(env, "wsse:Security", "Security header element is not valid",sub_codes, msg_ctx);
+                    return AXIS2_FAILURE;
+                }
+                
                 sec_ele = AXIOM_NODE_GET_DATA_ELEMENT(sec_node, env);
                 
                 /*UsernameToken*/

@@ -113,7 +113,11 @@ rampart_create_fault_envelope(const axis2_env_t *env,
         const axis2_char_t *description,
         axis2_array_list_t *sub_codes,
         axis2_msg_ctx_t *msg_ctx);
-   
+ 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_validate_security_token(const axis2_env_t *env,
+                                axis2_msg_ctx_t *msg_ctx,
+                                axiom_node_t *sec_node);  
 /** @} */
 #ifdef __cplusplus
 }
