@@ -145,8 +145,8 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
                                         &ts_node);
     if(NULL != ts_ele)
     {
-         
-         created_ele = axiom_element_create (env, ts_node, RAMPART_SECURITY_TIMESTAMP_CREATED, wsu_ns_obj,
+        /*First we build Created element*/        
+        created_ele = axiom_element_create (env, ts_node, RAMPART_SECURITY_TIMESTAMP_CREATED, wsu_ns_obj,
                                              &created_node);
         
         if(NULL != created_ele)
@@ -154,6 +154,7 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
              created_val = rampart_generate_time(env, 0);   /*Current time*/
              AXIOM_ELEMENT_SET_TEXT (created_ele, env, created_val, created_node);                     
         }    
+        /*Then we build Expires element*/
         expires_ele = axiom_element_create (env, ts_node, RAMPART_SECURITY_TIMESTAMP_EXPIRES, wsu_ns_obj,
                                              &expires_node);
         
@@ -174,16 +175,10 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
     axiom_node_t *ts_node)
 {
     axis2_status_t validity = AXIS2_FAILURE;
-    axis2_qname_t *created_qname = NULL, *expires_qname = NULL;
     axiom_element_t *created_ele = NULL, *expires_ele = NULL, *ts_ele= NULL;
     axiom_node_t *created_node = NULL, *expires_node = NULL;
     axis2_char_t *created_val = NULL, *expires_val = NULL, *current_val = NULL;    
 
-    /*TODO*/
-    /* 
-    R3221   Any TIMESTAMP containing an EXPIRES MUST contain a CREATED that preceeds its sibling EXPIRES.
-    R3222   Any TIMESTAMP MUST NOT contain anything other than CREATED or EXPIRES elements
-    */
     /*Check: TIMESTAMP MUST contain exactly one CREATED*/
     if(1 !=  oxs_axiom_get_number_of_children_with_qname( env, ts_node, RAMPART_SECURITY_TIMESTAMP_CREATED, NULL, NULL))
     {
@@ -205,20 +200,14 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
         return AXIS2_FAILURE;
     }
     
-
-    created_qname = axis2_qname_create(env,
-                                 RAMPART_SECURITY_TIMESTAMP_CREATED,
-                                 RAMPART_WSU_XMLNS,
-                                 RAMPART_WSU);
-    
-    if(created_qname)
+    /*First child MUST be the Created element*/
+    created_node = AXIOM_NODE_GET_FIRST_CHILD(ts_node, env);
+    created_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(created_node, env);
+    if(AXIS2_STRCMP(RAMPART_SECURITY_TIMESTAMP_CREATED ,
+                    AXIOM_ELEMENT_GET_LOCALNAME(created_ele, env)) != 0)
     {
-        created_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(ts_ele, env, created_qname, ts_node, &created_node);
-        if(!created_ele)
-        {
-            AXIS2_LOG_INFO(env->log,"Cannot find created  in timestamp element...");
-            return AXIS2_FAILURE;
-        }
+        AXIS2_LOG_INFO(env->log,"Cannot find created  in timestamp element. The first element MUST be CREATED");
+        return AXIS2_FAILURE;
     }
 
     created_val = AXIOM_ELEMENT_GET_TEXT(created_ele, env, created_node);
@@ -229,22 +218,22 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
         return AXIS2_FAILURE;
     } 
    
-    expires_qname = axis2_qname_create(env,
-                                 RAMPART_SECURITY_TIMESTAMP_EXPIRES,
-                                 RAMPART_WSU_XMLNS,
-                                 RAMPART_WSU);
-    if(expires_qname)
-    {
-        expires_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(ts_ele, env, expires_qname, ts_node, &expires_node);
-        if(!expires_ele)
-        {
-            AXIS2_LOG_INFO(env->log,"Cannot find expires  in timestamp element...");
-            /*If the expire element is not present, it means that the message will not be expired.*/
-            return AXIS2_SUCCESS;
-        }
+    /*Any TIMESTAMP containing an EXPIRES MUST contain a CREATED that preceeds its sibling EXPIRES.*/ 
+    expires_node =  AXIOM_NODE_GET_NEXT_SIBLING(created_node, env);
+    if(!expires_node){
+       AXIS2_LOG_INFO(env->log,"Cannot find expires  in timestamp element...");
+       /*If the expire element is not present, it means that the message will not be expired.*/
+       return AXIS2_SUCCESS;
     }
-   
-    /*Now the expired element is present. So check weather this has a valid timestamp.
+    expires_ele  =  (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(expires_node, env);
+    if(AXIS2_STRCMP(RAMPART_SECURITY_TIMESTAMP_EXPIRES ,
+                    AXIOM_ELEMENT_GET_LOCALNAME(expires_ele, env)) != 0)
+    {
+        AXIS2_LOG_INFO(env->log," The second element of timestamp token (if any) MUST be EXPIRES");
+        return AXIS2_FAILURE;
+    }
+    
+    /*Now the expires element is present. So check weather this has a valid timestamp.
       If not it's a failure*/ 
     expires_val = AXIOM_ELEMENT_GET_TEXT(expires_ele, env, expires_node);
     
