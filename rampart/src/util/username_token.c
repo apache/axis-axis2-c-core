@@ -389,15 +389,6 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     axis2_qname_t *qname = NULL;
     rampart_username_token_impl_t *username_token_impl = NULL;
 
-    /*TODO*/
-    /*
-    R4222 Any USERNAME_TOKEN MUST NOT have more than one PASSWORD.
-    R4201 Any PASSWORD MUST specify a Type attribute.
-    R4212 [summary] If no noce or created specified those should be avoided from the concatenation
-    R4223 Any USERNAME_TOKEN MUST NOT have more than one CREATED.
-    R4225 Any USERNAME_TOKEN MUST NOT have more than one NONCE
-    */
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     username_token_impl = AXIS2_INTF_TO_IMPL(username_token);
 
@@ -407,15 +398,14 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
         AXIS2_LOG_INFO(env->log," Cannot find sec_node.. :(");
         return AXIS2_FAILURE;
     }
-    
+   
+
     sec_ele = AXIOM_NODE_GET_DATA_ELEMENT(sec_node, env);
     if(!sec_ele)
     {
         AXIS2_LOG_INFO(env->log," Cannot find sec_ele... :(");
         return AXIS2_FAILURE;
     }
-
-    /*TODO Get sec_ele with QNAME*/
 
     qname = axis2_qname_create(env,
                                  RAMPART_SECURITY_USERNAMETOKEN,
@@ -431,6 +421,23 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
         }
     }
 
+    /*Check: Any USERNAME_TOKEN MUST NOT have more than one PASSWORD*/
+    if(1 >  oxs_axiom_get_number_of_children_with_qname( env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_PASSWORD, NULL, NULL))
+    {
+        return AXIS2_FAILURE;
+    }
+    
+    /*Check: Any USERNAME_TOKEN MUST NOT have more than one CREATED*/
+    if(1 >  oxs_axiom_get_number_of_children_with_qname( env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_CREATED, NULL, NULL))
+    {
+        return AXIS2_FAILURE;
+    }
+ 
+    /*Check: Any USERNAME_TOKEN MUST NOT have more than one NONCE*/
+    if(1 >  oxs_axiom_get_number_of_children_with_qname( env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_NONCE, NULL, NULL))
+    {
+        return AXIS2_FAILURE;
+    }
 
     /*Get children of UsernameToken element*/
     children = AXIOM_ELEMENT_GET_CHILD_ELEMENTS(ut_ele, env, ut_node);
