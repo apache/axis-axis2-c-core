@@ -30,9 +30,7 @@
 #include "guththila_namespace.h"
 #include "guththila_depth.h"
 #include "guththila_attribute.h"
-/* #include "guththila_stack.h */
 #include "guththila_unicode.h"
-/* #include "guththila_environment.h" */
 #include "guththila_defines.h"
 
 #include <axis2_env.h>
@@ -90,6 +88,8 @@ typedef struct guththila_s
   int last;
   int unicode_state;
   int reader_type;
+  int is_whitespace;
+  int is_char;
   enum guththila_status status;
   enum guththila_event_types guththila_event;
 } guththila_t;
