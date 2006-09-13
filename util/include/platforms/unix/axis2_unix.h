@@ -246,6 +246,8 @@ extern "C"
 
 #define AXIS2_SNPRINTF snprintf
 
+#define axis2_gmtime_r gmtime_r
+
 /** @} */
 #ifdef __cplusplus
 }

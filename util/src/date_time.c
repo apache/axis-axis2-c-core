@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <axis2_error.h>
 #include <axis2_utils.h>
+#include <platforms/axis2_platform_auto_sense.h>
 
 /** 
  * @brief
@@ -125,7 +126,7 @@ axis2_date_time_create_with_offset (const axis2_env_t *env, int offset)
     }
 
     t = time (NULL ) + offset;
-    utc_time_ret = gmtime_r(&t, utc_time);
+    utc_time_ret = axis2_gmtime_r(&t, utc_time);
     date_time_impl-> year= utc_time-> tm_year;
     date_time_impl-> mon= utc_time-> tm_mon;
     date_time_impl-> day= utc_time-> tm_mday;

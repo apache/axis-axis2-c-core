@@ -147,6 +147,10 @@ extern "C"
 AXIS2_EXTERN HMODULE AXIS2_CALL
 callLoadLib(LPCTSTR lib);
 
+AXIS2_EXTERN HMODULE AXIS2_CALL 
+struct tm * 
+axis2_win_gmtime(const time_t *timep, struct tm *result);
+
 /**
  * Platform specific path separator char
  */
@@ -223,6 +227,7 @@ callLoadLib(LPCTSTR lib);
 
 #define AXIS2_SNPRINTF _snprintf
 
+#define axis2_gmtime_r axis2_win_gmtime
 
 /** @} */
 #ifdef __cplusplus
