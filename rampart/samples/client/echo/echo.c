@@ -22,7 +22,7 @@
 #include <rampart_constants.h>
 
 /*Enable following line to setup dynamic values*/
-#define DYN_SETTINGS 1
+/*#define DYN_SETTINGS 1*/
 
 axiom_node_t *
 build_om_payload_for_echo_svc(const axis2_env_t *env);
@@ -172,11 +172,6 @@ int main(int argc, char** argv)
     {
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
-    }
-    if (endpoint_ref)
-    {
-        AXIS2_ENDPOINT_REF_FREE(endpoint_ref, env);
-        endpoint_ref = NULL;
     }
     return 0;
 }

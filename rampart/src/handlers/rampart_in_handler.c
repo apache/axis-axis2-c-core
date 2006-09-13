@@ -187,19 +187,19 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 /*UsernameToken*/
                 if( 0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL)) ){       
                         rampart_username_token_t *username_token = NULL;
+                        axis2_array_list_t *sub_codes = NULL;
                         axis2_status_t valid_user = AXIS2_FAILURE;
                         
+                        sub_codes = axis2_array_list_create(env, 0);
                         username_token = rampart_username_token_create(env);
                         AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Validating UsernameToken");
                         valid_user = RAMPART_USERNAME_TOKEN_VALIDATE(username_token, env, 
-                                                        msg_ctx,soap_header, actions);
+                                                        msg_ctx,soap_header, actions, sub_codes);
                         if(valid_user)
                         {
                             AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Validating UsernameToken SUCCESS");
                             status = AXIS2_SUCCESS;
                         }else{
-                            axis2_array_list_t *sub_codes = NULL;
-                            sub_codes = axis2_array_list_create(env, 1);
                             if (sub_codes)
                             {
                                 AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
@@ -242,10 +242,12 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 /*Timestamp Token*/
                 }else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, AXIS2_STRTRIM(env, item, NULL))){
                         axis2_qname_t *qname = NULL;
+                        axis2_array_list_t *sub_codes = NULL;
                         axis2_status_t valid_ts = AXIS2_FAILURE;
                         rampart_timestamp_token_t *timestamp_token = NULL;
                         
                         AXIS2_LOG_INFO(env->log,"[rampart][rampart_in_handler] Validating Timestamp");
+                        sub_codes = axis2_array_list_create(env, 0);
                         
                         qname = axis2_qname_create(env,
                                      RAMPART_SECURITY_TIMESTAMP,
@@ -261,7 +263,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                             }
                         }
                         timestamp_token = rampart_timestamp_token_create(env);
-                        valid_ts = RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, ts_node);               
+                        valid_ts = RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, ts_node, sub_codes);               
                         /*TODO free*/
                         if(valid_ts)
                         {
@@ -269,10 +271,8 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                             status = AXIS2_SUCCESS;
                         }else{
                             /*TODO return a fault*/
-                            axis2_array_list_t *sub_codes = NULL;
 
                             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart] Timestamp is not valid");
-                            sub_codes = axis2_array_list_create(env, 1);
                             if (sub_codes)
                             {
                                 AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);

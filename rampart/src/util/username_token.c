@@ -82,7 +82,8 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axiom_soap_header_t *soap_header,
-    rampart_actions_t *actions);
+    rampart_actions_t *actions,
+    axis2_array_list_t *sub_codes);
 
 /************************* End of function headers ****************************/
 static void
@@ -377,7 +378,8 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axiom_soap_header_t *soap_header,
-    rampart_actions_t *actions)
+    rampart_actions_t *actions,
+    axis2_array_list_t *sub_codes)
 {
     axiom_element_t *sec_ele, *ut_ele = NULL;
     axiom_node_t *sec_node, *ut_node = NULL;
@@ -417,25 +419,29 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
         if(!ut_ele)
         {
             AXIS2_LOG_INFO(env->log,"Cannot find UsernameToken in Security element...");
+            AXIS2_ARRAY_LIST_ADD(sub_codes, env, "No username token in the security header");
             return AXIS2_FAILURE;
         }
     }
 
     /*Check: Any USERNAME_TOKEN MUST NOT have more than one PASSWORD*/
-    if(1 >  oxs_axiom_get_number_of_children_with_qname( env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_PASSWORD, NULL, NULL))
+    if(1 <  oxs_axiom_get_number_of_children_with_qname( env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_PASSWORD, NULL, NULL))
     {
+        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Username token must not have more than one password");
         return AXIS2_FAILURE;
     }
     
     /*Check: Any USERNAME_TOKEN MUST NOT have more than one CREATED*/
-    if(1 >  oxs_axiom_get_number_of_children_with_qname( env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_CREATED, NULL, NULL))
+    if(1 <  oxs_axiom_get_number_of_children_with_qname( env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_CREATED, NULL, NULL))
     {
+        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Username token must not have more than one creted element");
         return AXIS2_FAILURE;
     }
  
     /*Check: Any USERNAME_TOKEN MUST NOT have more than one NONCE*/
-    if(1 >  oxs_axiom_get_number_of_children_with_qname( env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_NONCE, NULL, NULL))
+    if(1 <  oxs_axiom_get_number_of_children_with_qname( env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_NONCE, NULL, NULL))
     {
+        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Username token must not have more than one nonce element");
         return AXIS2_FAILURE;
     }
 
@@ -467,6 +473,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
                     {
                        /*R4201 Any PASSWORD MUST specify a Type attribute */
                        AXIS2_LOG_INFO(env->log,"Password Type is not specified in the password element");
+                       AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Password Type is not specified in the password element");
                        return AXIS2_FAILURE;
                     } 
 
@@ -515,9 +522,9 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     /*The BIG moment. Compare passwords*/
     if(0 == AXIS2_STRCMP(password_to_compare , password))
     {
+        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Password is not valid");
         return AXIS2_SUCCESS;
     }else{
         return AXIS2_FAILURE;
     }
-       return AXIS2_SUCCESS;
 }
