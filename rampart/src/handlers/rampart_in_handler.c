@@ -259,6 +259,9 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                             if(!ts_ele)
                             {
                                 AXIS2_LOG_INFO(env->log,"Cannot find Timestamp in Security element...");
+                                AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Time stamp token expected");
+                                AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
+                                rampart_create_fault_envelope(env, "wsse:Timestamptoken", "Timestamp is not available",sub_codes, msg_ctx);
                                 return AXIS2_FAILURE;
                             }
                         }
