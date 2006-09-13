@@ -154,7 +154,6 @@ apache2_stream_write(
     size_t count)
 {
    apache2_stream_impl_t *stream_impl = NULL;
-    char *write_buf = NULL;
     axis2_char_t *buffer = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
     AXIS2_PARAM_CHECK(env->error, buf, AXIS2_FAILURE);
@@ -164,30 +163,8 @@ apache2_stream_write(
     {
         return count;
     }
-    /* we need to NULL terminate the buffer if it is not already done so */
-    if(buffer[count-1] != '\0')
-    {
-        int len = -1;
-        write_buf = AXIS2_MALLOC(env->allocator, count + 1);
-        if(NULL == write_buf)
-        {
-            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, 
-                        AXIS2_FAILURE);
-            return -1;
-        }
-        memcpy(write_buf, buffer, count);
-        write_buf[count] = '\0';
-        len = ap_rwrite(write_buf, count, stream_impl->request);
-        AXIS2_FREE(env->allocator, write_buf);
-        return len;
-    }
-    else
-    {
-        write_buf = buffer;
-        return ap_rwrite(write_buf, count - 1, stream_impl->request);
-    }
-    /* we shoudn't come here unless a serious problem*/
-    return -1;
+    /* assume that buffer is not null terminated */
+    return ap_rwrite(buffer, count, stream_impl->request);
 }
 
 
