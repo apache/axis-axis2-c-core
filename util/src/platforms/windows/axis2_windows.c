@@ -48,8 +48,7 @@ callLoadLib(LPCTSTR lib)
         return LoadLibrary(lib);
 }
 
-AXIS2_EXTERN HMODULE AXIS2_CALL
-struct tm *
+AXIS2_EXTERN struct tm *AXIS2_CALL
 axis2_win_gmtime(const time_t *timep, struct tm *result)
 {
     return gmtime(timep);
