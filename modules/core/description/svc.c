@@ -927,7 +927,7 @@ axis2_svc_free(
 
             if (val)
             {
-                axis2_op_free(val, env);
+                AXIS2_OP_FREE((axis2_op_t *)val, env);
                 val = NULL;
             }
         }
