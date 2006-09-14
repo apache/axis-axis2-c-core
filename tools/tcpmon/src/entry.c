@@ -389,6 +389,27 @@ void* tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
     
     buffer = read_current_stream ( client_stream, env, &buffer_size,
                           &headers, &content );
+       
+    now = time (NULL );
+    localTime = localtime ( &now);
+
+    sprintf (entry_impl-> sent_time, "%d:%d:%d" , localTime-> tm_hour, localTime-> tm_min,
+            localTime-> tm_sec );
+    sent_secs = localTime-> tm_hour * 60 * 60 +
+                localTime-> tm_min       * 60 +
+                localTime-> tm_sec;
+ 
+    /*free ( localTime); */
+
+    entry_impl-> sent_headers =  headers;
+    entry_impl-> sent_data =  content;
+
+    if ( on_new_entry)
+    {
+       (on_new_entry)(env, entry, 0);
+    }
+
+
 
     host_socket = axis2_network_handler_open_socket(env, target_host, target_port);
     if ( -1 == host_socket )
@@ -424,28 +445,7 @@ void* tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
         }
         return NULL;
      }
-           
-    now = time (NULL );
-    localTime = localtime ( &now);
-
-    sprintf (entry_impl-> sent_time, "%d:%d:%d" , localTime-> tm_hour, localTime-> tm_min,
-            localTime-> tm_sec );
-    sent_secs = localTime-> tm_hour * 60 * 60 +
-                localTime-> tm_min       * 60 +
-                localTime-> tm_sec;
- 
-    /*free ( localTime); */
-
-    entry_impl-> sent_headers =  headers;
-    entry_impl-> sent_data =  content;
-
-    if ( on_new_entry)
-    {
-       (on_new_entry)(env, entry, 0);
-    }
-
-
-    
+        
     AXIS2_STREAM_WRITE ( host_stream, env, buffer , buffer_size);
     AXIS2_FREE ( env-> allocator, buffer);
 
@@ -520,6 +520,7 @@ read_current_stream ( axis2_stream_t *stream,
     int line_just_ended = 1;
     axis2_char_t *length_char= 0;
     int length = -1;
+    int chunked_encoded = 0;
 
     
     buffer = AXIS2_MALLOC ( env-> allocator, sizeof(axis2_char_t) );
@@ -528,7 +529,7 @@ read_current_stream ( axis2_stream_t *stream,
         buffer = AXIS2_REALLOC ( env-> allocator, buffer,
                                     sizeof (axis2_char_t)* (read_size + 1) );
         read = AXIS2_STREAM_READ ( stream, env , buffer + read_size,  1 );
-     
+    
         if ( header_just_finished )
         {
             header_just_finished = 0;
@@ -562,11 +563,21 @@ read_current_stream ( axis2_stream_t *stream,
         {
             length--;
         }
+        if ( header_found &&
+                read_size >= 4 &&
+                chunked_encoded == 1 &&
+                *(buffer+read_size) == '\n' &&
+                *(buffer+read_size-1) == '\r' &&
+                *(buffer+read_size-2) == '\n' &&
+                *(buffer+read_size-3) == '\r' &&
+                *(buffer+read_size-4) == '0')
+        {
+            length = 0; /** this occurs in chunked transfer encoding */
+        } 
              
         /** identify the end of the header */ 
         if ( !header_found &&
              read_size >= 3 &&
-             *(buffer + read_size) == '\n' &&
              *(buffer + read_size) == '\n' &&
              *(buffer + read_size -1 )  == '\r' &&
              *(buffer + read_size -2 ) == '\n' &&
@@ -579,10 +590,17 @@ read_current_stream ( axis2_stream_t *stream,
             *(buffer + read_size-3) = '\r';
         }
         read_size ++;
-        if ( length < -1 )
+        if ( !chunked_encoded && length < -1 )
         {
             header_width = 0;
-            break;
+            /* break;*/
+            /** this is considered as transfer-encoding = chunked */
+            chunked_encoded = 1;
+            header_found = 1;
+            *(buffer + read_size-3) = '\0';
+            header_ptr = (axis2_char_t*)AXIS2_STRDUP (buffer, env );
+            header_just_finished = 1;
+            *(buffer + read_size-3) = '\r';
         }
     }
     while ( length != 0 );

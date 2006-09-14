@@ -27,6 +27,7 @@ tcpmon_util_format_as_xml (const axis2_env_t* env, axis2_char_t* data)
     axis2_char_t tmp;
     int tabs = 0;
     int xml_part_found = 0;
+    int indent_on_next_it = 0;
    
     allocator = (tcpmon_util_allocator_t*) AXIS2_MALLOC(env->
         allocator, sizeof(tcpmon_util_allocator_t));
@@ -50,6 +51,33 @@ tcpmon_util_format_as_xml (const axis2_env_t* env, axis2_char_t* data)
             }
         }
         xml_part_found = 1; /* we come here after we found xml */
+        /** ignore cases nothing to process */
+        for(; *p ==' ' || *p  == '\n' || *p == '\r' || *p =='\t' || 
+                (*p > 'a' && *p < 'z') || /* simple letters */
+                (*p > 'A' && *p < 'Z') || /* capital letters */
+                (*p > '0' && *p < '9'); p ++)
+        {
+            /** new lines handle specially to keept the indentation */
+            if ( *p =='\n' )
+            {
+                /* surly there will be an iteration in next line, so dont do explicitly */
+                if ( indent_on_next_it)
+                {
+                    flag = p+1;
+                }
+                else
+                {
+                   tmp = *(p+1);
+                   *(p+1) = '\0';
+                   add_string ( env, allocator, flag );
+                   *(p+1) = tmp;
+                   flag = p+1;
+                   add_axis2_char_t (env, allocator, '\n', 1);
+                   add_axis2_char_t ( env, allocator, '\t', tabs );
+                }
+            }
+        } 
+        indent_on_next_it = 0;
         /** found a comment */
         if ( *p == '<'  && *(p+1) =='!'  /**just continue since string conts */
                         && *(p+2) =='-'
@@ -119,11 +147,14 @@ tcpmon_util_format_as_xml (const axis2_env_t* env, axis2_char_t* data)
                 break;
             }
 
+            /** places like <this/> */
+            if( p != data && *(p-1) == '/')
+            {
+                tabs --;
+            }
+
             /** these are special case - new line would be set on next iterate */
             if ( *(p+1) =='<' && *(p+2) =='/' )
-            {
-            }
-            else if ( p !=data && *(p-1) =='?' ) /* ignore this case */
             {
             }
             else
@@ -136,6 +167,7 @@ tcpmon_util_format_as_xml (const axis2_env_t* env, axis2_char_t* data)
     
                 add_axis2_char_t (env, allocator, '\n', 1);
                 add_axis2_char_t (env, allocator, '\t', tabs);
+                indent_on_next_it = 1;
             }
         }
     }
