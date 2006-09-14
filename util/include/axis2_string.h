@@ -182,7 +182,7 @@ extern "C"
     * @param str   string
     * @return string with lowercase
     */
-   AXIS2_EXTERN axis2_char_t*
+   AXIS2_EXTERN axis2_char_t* AXIS2_CALL
    axis2_string_tolower(
            axis2_char_t *str );
     
@@ -191,7 +191,7 @@ extern "C"
     * @param str   string
     * @return string with uppercase
     */
-   AXIS2_EXTERN axis2_char_t*
+   AXIS2_EXTERN axis2_char_t* AXIS2_CALL
    axis2_string_toupper(
            axis2_char_t *str );
    

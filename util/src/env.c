@@ -120,10 +120,16 @@ axis2_env_create_with_error_log (axis2_allocator_t *allocator
 
 
     if (NULL == log)
+    {
         environment->log_enabled = AXIS2_FALSE;
-   environment->log_enabled = AXIS2_TRUE;
-    environment->log = log;
-   environment->thread_pool = NULL;
+    }
+    else        
+    {
+        environment->log_enabled = AXIS2_TRUE;
+        environment->log = log;
+    }   
+    
+    environment->thread_pool = NULL;
     return environment;
 }
 

@@ -329,6 +329,7 @@ axiom_data_handler_write_to(axiom_data_handler_t *data_handler, const axis2_env_
             /*TODO : need to set the correct error code */
             return AXIS2_FAILURE;
         }
+        fflush(f);
         fclose(f);
     }
 

@@ -237,6 +237,8 @@ axis2_properties_load(axis2_properties_t *properties,
     const int LINE_MIDWAY= 0;
     const int EQUAL_FOUND = 1;
     const int LINE_HALFWAY= 2;
+    int status = LINE_STARTED;
+
     axis2_char_t *key = NULL;
     axis2_hash_t *prop_hash = NULL;
     axis2_char_t *buffer = NULL;
@@ -260,7 +262,6 @@ axis2_properties_load(axis2_properties_t *properties,
     }
 
 
-    int status = LINE_STARTED;
     
     for (cur =axis2_properties_read_next(buffer); *cur ;
                        cur = axis2_properties_read_next( ++cur) )
