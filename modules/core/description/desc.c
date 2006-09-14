@@ -16,7 +16,7 @@
 
 #include <axis2_desc.h>
 #include <axis2_property.h>
-
+#include <axis2_msg.h>
 /** 
  * @brief Message struct impl
  *   Axis2 Messages  
@@ -156,6 +156,21 @@ axis2_desc_free (
 
     if(NULL != desc_impl->children)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        
+        for (hi = axis2_hash_first(desc_impl->children, env); hi;
+            hi = axis2_hash_next(env, hi))
+        {
+            axis2_hash_this(hi, NULL, NULL, &val);
+
+	    if (val)
+	    {
+	        AXIS2_MSG_FREE((axis2_msg_t *)val, env);
+		val = NULL;
+	    }
+        }
+
         axis2_hash_free(desc_impl->children, env);
         desc_impl->children = NULL;
     }
