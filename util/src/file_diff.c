@@ -76,7 +76,10 @@ axis2_status_t AXIS2_CALL axis2_file_diff(const axis2_env_t *env
             flag1 = 0;
             flag2 = 0;
         }
-            
+        
+        /*
+        unget_char is removed from stream, find alternatived to implement this logic.
+        (best is to use peek)
         if(flag1 == 1 && flag2 == 0)
         {
             AXIS2_STREAM_UNGET_CHAR(actual_file_stream, env, ch2);
@@ -89,6 +92,7 @@ axis2_status_t AXIS2_CALL axis2_file_diff(const axis2_env_t *env
             k++;
             buffer2[k] = ch2;
         }
+        */
         if(flag1 == 0 && flag2 == 0)
         {
             if(ch1 != ch2)

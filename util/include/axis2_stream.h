@@ -107,26 +107,6 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
          int count);
                   
    /**
-    * Reads  the next character from stream and returns it as an unsigned char 
-    * cast to an int, or EOF on end of file or error.
-    * @return next character in the stream
-    */
-   int (AXIS2_CALL *
-   get_char) (axis2_stream_t *stream, 
-              const axis2_env_t *env);
-   
-   /**
-    * Pushes a character back to stream, cast to unsigned char, where it is 
-    * available for subsequent read operations
-    * @param charachter to be pushed
-    * @return the pushed character or EOF if an error
-    */
-   int (AXIS2_CALL *
-   unget_char) (axis2_stream_t *stream, 
-             const axis2_env_t *env, 
-             int ch);
-
-   /**
     * Returns the length of the stream (applicable only to basic stream)
     * @return Length of the buffer if its type is basic, else -1
     * (we can't define a length of a stream unless it is just a buffer)
@@ -134,15 +114,6 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
    int (AXIS2_CALL *
    get_len) (axis2_stream_t *stream, 
              const axis2_env_t *env);
-   
-   /**
-    * Returns the type of the stream as axis2_stream_type_t
-    * @return Type of the stream
-    */
-   axis2_stream_type_t (AXIS2_CALL *
-   get_type) (axis2_stream_t *stream, 
-            const axis2_env_t *env); 
-   
 };
 
 /** 
@@ -200,17 +171,9 @@ axis2_stream_free_void_arg (void *stream,
 #define AXIS2_STREAM_SKIP(stream, env, count) \
       ((stream)->ops->write(stream, env, count))
       
-#define AXIS2_STREAM_GET_CHAR(stream, env) \
-      ((stream)->ops->get_char(stream, env))
-      
-#define AXIS2_STREAM_UNGET_CHAR(stream, env, ch) \
-      ((stream)->ops->unget_char(stream, env, ch))
-
 #define AXIS2_STREAM_BASIC_GET_LEN(stream, env) \
       ((stream)->ops->get_len(stream, env))
       
-#define AXIS2_STREAM_GET_TYPE(stream, env)\
-        ((stream)->ops->get_type(stream, env))
 /** @} */
     
 #ifdef __cplusplus
