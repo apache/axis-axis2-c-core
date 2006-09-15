@@ -15,7 +15,6 @@ libaxis2_util_la_SOURCES = \
                         utils.c \
                         dir_handler.c \
                         file_handler.c \
-                        file_diff.c\
                         class_loader.c\
                         network_handler.c \
                         file.c\

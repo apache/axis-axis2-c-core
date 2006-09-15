@@ -107,8 +107,6 @@ axis2_stream_create_apache2(
     stream_impl->stream.ops->read = apache2_stream_read;
     stream_impl->stream.ops->write = apache2_stream_write;
     stream_impl->stream.ops->skip = apache2_stream_skip;
-    stream_impl->stream.ops->get_char = apache2_stream_get_char;
-    stream_impl->stream.ops->get_type = apache2_stream_get_type;
     
     return &(stream_impl->stream);
 }
