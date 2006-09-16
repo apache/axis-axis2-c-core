@@ -6,7 +6,12 @@ else
     AXIS2C_DEPLOY=$1
 fi
 
-export LD_LIBRARY_PATH=${AXIS2C_DEPLOY}/lib
+if [ `uname -s` = Darwin ]
+then
+    export DYLD_LIBRARY_PATH=${AXIS2C_DEPLOY}/lib
+else
+    export LD_LIBRARY_PATH=${AXIS2C_DEPLOY}/lib
+fi
 cd util
 
 ./configure --prefix=${AXIS2C_DEPLOY}

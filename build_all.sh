@@ -2,7 +2,12 @@ set -e
 AXIS2C_HOME=`pwd`/deploy
 AXIS2C=`pwd`
 export AXIS2C_HOME AXIS2C
-export LD_LIBRARY_PATH=${AXIS2C_HOME}/lib
+if [ `uname -s` = Darwin ]
+then
+  export DYLD_LIBRARY_PATH=${AXIS2C_HOME}/lib
+else
+  export LD_LIBRARY_PATH=${AXIS2C_HOME}/lib
+fi
 
 cd util
 sh build.sh

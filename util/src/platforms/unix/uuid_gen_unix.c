@@ -28,13 +28,19 @@
 #include <sys/time.h>
 
 #ifdef HAVE_LINUX_IF_H
-#include <linux/if.h>
-#else 
-#if 1  /* this should be HAVE_NET_IF_H && SMELLS_LIKE_SOLARIS */
-#include <sys/sockio.h>
-#include <net/if.h>
-#include <net/if_arp.h>
-#endif
+# include <linux/if.h>
+#else
+# ifdef HAVE_NET_IF_H
+#  include <sys/sockio.h>
+#  include <net/if.h>
+#  include <net/if_arp.h>
+# endif
+# ifdef HAVE_NET_IF_TYPES_H
+#  include <net/if_types.h>
+# endif
+# ifdef HAVE_NET_IF_DL_H
+#  include <net/if_dl.h>
+# endif
 #endif
 
 #include <platforms/unix/axis2_uuid_gen_unix.h>
@@ -196,7 +202,8 @@ axis2_platform_uuid_gen(char *s)
    return uuid_str;   
 }
 
-#ifdef HAVE_LINUX_IF_H
+#ifdef HAVE_LINUX_IF_H   // Linux
+
 char * AXIS2_CALL
 axis2_uuid_get_mac_addr()
 {
@@ -225,6 +232,8 @@ axis2_uuid_get_mac_addr()
 }
 
 #else 
+# ifdef HAVE_STRUCT_LIFREQ  // Solaris-ish 
+  
 /* code modified from that posted on:
  * http://forum.sun.com/jive/thread.jspa?threadID=84804&tstart=30
  */
@@ -290,4 +299,61 @@ axis2_uuid_get_mac_addr()
    return NULL;
 }
 
+# else    // Darwin
+
+#ifndef max
+# define        max(a,b)        ((a) > (b) ? (a) : (b))
+#endif /* !max */
+
+char * AXIS2_CALL
+axis2_uuid_get_mac_addr()
+{
+    struct ifconf ifc;
+    struct ifreq *ifr;
+    int sockfd;
+    char buffer[512], *cp, *cplim;
+
+    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sockfd < 0) {
+        perror("socket failed");
+        return NULL;
+    }
+
+    ifc.ifc_len = 512;
+    ifc.ifc_buf = buffer;
+
+    if (ioctl(sockfd, SIOCGIFCONF, (char *)&ifc) < 0)
+    {
+        perror("ioctl error");
+        close(sockfd);
+        return NULL;
+    }
+
+    ifr = ifc.ifc_req;
+
+    cplim = buffer + ifc.ifc_len;
+
+    char * macaddr = NULL;
+
+    for (cp=buffer; cp < cplim && macaddr == NULL; )
+    {
+        ifr = (struct ifreq *)cp;
+        if (ifr->ifr_addr.sa_family == AF_LINK)
+        {
+            struct sockaddr_dl *sdl = (struct sockaddr_dl *)&ifr->ifr_addr;
+
+            /* just take the ethernet adapters */
+            if (sdl->sdl_type == IFT_ETHER)
+            {
+                macaddr = (char *)ether_ntoa(LLADDR(sdl));
+            }
+        }
+        cp += sizeof(ifr->ifr_name) + max(sizeof(ifr->ifr_addr), ifr->ifr_addr.sa_len);
+
+    }
+
+    close(sockfd);
+    return macaddr;
+}
+# endif
 #endif

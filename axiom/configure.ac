@@ -31,10 +31,19 @@ LDFLAGS="-lpthread"
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([stdio.h stdlib.h string.h])
+AC_CHECK_HEADERS([sys/socket.h])
 AC_CHECK_HEADERS([linux/if.h],[],[],
 [
-#include <sys/socket.h>
+#if HAVE_SYS_SOCKET_H
+# include <sys/socket.h>
+#endif
 ])
+
+dnl This is a check to see if we are running MacOS X
+dnl It may be better to do a Darwin check
+AC_CHECK_HEADER([sys/appleapiopts.h],
+               [AC_DEFINE([IS_MACOSX],[1],[Define to 1 if compiling on MacOS X])],
+               [])
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST

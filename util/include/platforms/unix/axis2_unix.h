@@ -18,6 +18,10 @@
 #ifndef AXIS2_UNIX_H
 #define AXIS2_UNIX_H
 
+#ifdef IS_MACOSX
+    #include <config.h>
+#endif
+
 /**
   * @file axis2_unix.h
   * @brief axis2 unix platform specific interface
