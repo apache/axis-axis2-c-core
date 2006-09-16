@@ -14,26 +14,23 @@
  * limitations under the License.
  */
  
- /** <wsa:RelatesTo RelationshipType="..."?>xs:anyURI</wsa:RelatesTo> */
-
 #include <axis2_relates_to.h>
 #include <axis2_string.h>
 
 typedef struct axis2_relates_to_impl
 {
     axis2_relates_to_t relates_to;    
-    /** value */
+    /** value string  */
     axis2_char_t *value;
-    /** relationship type */
+    /** relationship type string */
     axis2_char_t *relationship_type;
-}
-axis2_relates_to_impl_t;
+} axis2_relates_to_impl_t;
 
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(relates_to) ((axis2_relates_to_impl_t *)relates_to)
 
 
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_relates_to_get_value(
     const axis2_relates_to_t *relates_to, 
     const axis2_env_t *env);
@@ -42,9 +39,9 @@ axis2_status_t AXIS2_CALL
 axis2_relates_to_set_value(
     struct axis2_relates_to *relates_to, 
     const axis2_env_t *env, 
-    axis2_char_t *value);
+    const axis2_char_t *value);
                            
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_relates_to_get_relationship_type(
     const axis2_relates_to_t *relates_to, 
     const axis2_env_t *env);
@@ -53,7 +50,7 @@ axis2_status_t AXIS2_CALL
 axis2_relates_to_set_relationship_type(
     struct axis2_relates_to *relates_to, 
     const axis2_env_t *env, 
-    axis2_char_t *relationship_type);
+    const axis2_char_t *relationship_type);
                                        
 axis2_status_t AXIS2_CALL 
 axis2_relates_to_free(
@@ -130,7 +127,7 @@ axis2_relates_to_create(
     return &(relates_to_impl->relates_to);
 }
 
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_relates_to_get_value(
     const axis2_relates_to_t *relates_to, 
     const axis2_env_t *env) 
@@ -143,7 +140,7 @@ axis2_status_t AXIS2_CALL
 axis2_relates_to_set_value(
     struct axis2_relates_to *relates_to, 
     const axis2_env_t *env, 
-    axis2_char_t *value) 
+    const axis2_char_t *value) 
 {
     axis2_relates_to_impl_t *relates_to_impl = NULL;
     
@@ -170,7 +167,7 @@ axis2_relates_to_set_value(
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_relates_to_get_relationship_type(
     const axis2_relates_to_t *relates_to, 
     const axis2_env_t *env) 
@@ -183,7 +180,7 @@ axis2_status_t AXIS2_CALL
 axis2_relates_to_set_relationship_type(
     struct axis2_relates_to *relates_to, 
     const axis2_env_t *env, 
-    axis2_char_t *relationship_type) 
+    const axis2_char_t *relationship_type) 
 {
     axis2_relates_to_impl_t *relates_to_impl = NULL;
     
