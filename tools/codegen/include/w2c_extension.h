@@ -39,7 +39,7 @@ extern "C"
 typedef struct w2c_extension w2c_extension_t;
 typedef struct w2c_extension_ops w2c_extension_ops_t;
 
-AXIS2_DECLARE_DATA  struct w2c_extension_ops
+  struct w2c_extension_ops
 {
    /**
     * free w2c_extension.
@@ -68,7 +68,7 @@ AXIS2_DECLARE_DATA  struct w2c_extension_ops
 
 };
 
-AXIS2_DECLARE_DATA  struct w2c_extension
+  struct w2c_extension
 {
      struct w2c_extension_ops *ops;
 };

@@ -45,7 +45,7 @@ typedef struct axiom_soap_builder_ops  axiom_soap_builder_ops_t;
  *   ops Encapsulator struct of axiom_soap_operations 
  */
 
-AXIS2_DECLARE_DATA   struct axiom_soap_builder_ops
+   struct axiom_soap_builder_ops
 {
         axis2_status_t (AXIS2_CALL *free)(axiom_soap_builder_t *builder,
                                           const axis2_env_t *env);

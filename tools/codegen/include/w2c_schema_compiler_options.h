@@ -39,7 +39,7 @@ extern "C"
 typedef struct w2c_schema_compiler_options w2c_schema_compiler_options_t;
 typedef struct w2c_schema_compiler_options_ops w2c_schema_compiler_options_ops_t;
 
-AXIS2_DECLARE_DATA  struct w2c_schema_compiler_options_ops
+  struct w2c_schema_compiler_options_ops
 {
    /**
     * free w2c_schema_compiler_options.
@@ -118,7 +118,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_compiler_options_ops
 
 };
 
-AXIS2_DECLARE_DATA  struct w2c_schema_compiler_options
+  struct w2c_schema_compiler_options
 {
      struct w2c_schema_compiler_options_ops *ops;
 };

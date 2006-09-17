@@ -48,7 +48,7 @@ typedef struct axis2_wsdl_ext_soap_op_ops axis2_wsdl_ext_soap_op_ops_t;
  * @brief Wsdl Ext Soap Operation ops struct
  * Encapsulator struct for ops of axis2_wsdl_ext_soap_op
  */
-AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_op_ops
+ struct axis2_wsdl_ext_soap_op_ops
 {
    /** De-allocate memory
       * @return status code
@@ -81,7 +81,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_op_ops
  * @brief Wsdl container struct
  *   Property for params  
  */  
-AXIS2_DECLARE_DATA struct axis2_wsdl_ext_soap_op
+ struct axis2_wsdl_ext_soap_op
 {
     axis2_wsdl_ext_t base;
    axis2_wsdl_ext_soap_op_ops_t *ops;

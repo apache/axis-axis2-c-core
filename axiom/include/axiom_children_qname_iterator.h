@@ -46,7 +46,7 @@ typedef struct axiom_children_qname_iterator axiom_children_qname_iterator_t;
     * Encapsulator struct for operations of axiom_iterator
     */
 
-    AXIS2_DECLARE_DATA struct axiom_children_qname_iterator_ops
+     struct axiom_children_qname_iterator_ops
     {
       /**
        * free om_children_qname_iterator struct 

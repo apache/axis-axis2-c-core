@@ -43,7 +43,7 @@ extern "C"
   *
   * Encapsulator for memory allocating routines
   */
-   AXIS2_DECLARE_DATA typedef struct axis2_allocator
+    typedef struct axis2_allocator
     {
     
 

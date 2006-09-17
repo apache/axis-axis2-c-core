@@ -47,7 +47,7 @@ extern "C"
      * description ops struct.
      * Encapsulator struct for ops of axis2_desc.
      */
-    AXIS2_DECLARE_DATA struct axis2_desc_ops
+     struct axis2_desc_ops
     {
         /** 
          * Frees description struct.
@@ -170,7 +170,7 @@ extern "C"
     /**
      * description struct.
      */
-    AXIS2_DECLARE_DATA struct axis2_desc
+     struct axis2_desc
     {
         /** operations of message */
         axis2_desc_ops_t *ops;

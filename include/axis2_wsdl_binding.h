@@ -54,7 +54,7 @@ typedef struct axis2_wsdl_binding_ops axis2_wsdl_binding_ops_t;
  * @brief Wsdl Binding ops struct
  * Encapsulator struct for ops of axis2_wsdl_binding
  */
-AXIS2_DECLARE_DATA struct axis2_wsdl_binding_ops
+ struct axis2_wsdl_binding_ops
 {
    /** De-allocate memory
       * @return status code
@@ -196,7 +196,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_binding_ops
 /** 
  * @brief Wsdl binding struct  
  */  
-AXIS2_DECLARE_DATA struct axis2_wsdl_binding
+ struct axis2_wsdl_binding
 {
    axis2_wsdl_binding_ops_t *ops;
     struct axis2_wsdl_extensible_component *extensible_component;

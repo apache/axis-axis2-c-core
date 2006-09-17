@@ -46,7 +46,7 @@ extern "C"
  *   \brief soap_header_block operations struct
  *   ops Encapsulator struct of axiom_soap header_block
  */
- AXIS2_DECLARE_DATA   struct axiom_soap_header_block_ops
+    struct axiom_soap_header_block_ops
     {
       /**
         * Free an axiom_soap_header_block

@@ -46,7 +46,7 @@ struct axis2_env;
   *
   * Encapsulator for thread pooling routines
   */
-AXIS2_DECLARE_DATA struct axis2_thread_pool_ops
+ struct axis2_thread_pool_ops
 {
   /**
    * Retrives a thread from the thread pool
@@ -94,7 +94,7 @@ AXIS2_DECLARE_DATA struct axis2_thread_pool_ops
  * @brief Thread Pool struct
  * Axis2 Thread Pool
  */
-AXIS2_DECLARE_DATA struct axis2_thread_pool
+ struct axis2_thread_pool
 {
    axis2_thread_pool_ops_t *ops;
 };

@@ -45,7 +45,7 @@ extern "C"
  *   \brief soap_message operations struct
  *   ops Encapsulator struct of axiom_soap body
  */
- AXIS2_DECLARE_DATA   struct axiom_soap_message_ops
+    struct axiom_soap_message_ops
     {
       /**
         * Free an axiom_soap_message

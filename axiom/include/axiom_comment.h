@@ -44,7 +44,7 @@ extern "C"
     *   @brief comment ops struct
     *   Encapsulator struct for ops of axiom_comment_t
     */
- AXIS2_DECLARE_DATA  typedef struct axiom_comment_ops
+   typedef struct axiom_comment_ops
     {
       /**
         * Free a axis2_comment_t struct

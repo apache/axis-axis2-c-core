@@ -45,7 +45,7 @@ extern "C"
      * Only operation get_password is to get the password
      * User should provide a function pointer to this
      */
-    AXIS2_DECLARE_DATA struct rampart_callback_ops
+     struct rampart_callback_ops
     {            
            /**
             * Retuens a password for the given username. 

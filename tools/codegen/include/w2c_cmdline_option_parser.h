@@ -40,7 +40,7 @@ extern "C"
 typedef struct w2c_cmdline_option_parser w2c_cmdline_option_parser_t;
 typedef struct w2c_cmdline_option_parser_ops w2c_cmdline_option_parser_ops_t;
 
-AXIS2_DECLARE_DATA  struct w2c_cmdline_option_parser_ops
+  struct w2c_cmdline_option_parser_ops
 {
    /**
     * free w2c_cmdline_option_parser.
@@ -75,7 +75,7 @@ AXIS2_DECLARE_DATA  struct w2c_cmdline_option_parser_ops
 
 };
 
-AXIS2_DECLARE_DATA  struct w2c_cmdline_option_parser
+  struct w2c_cmdline_option_parser
 {
     struct w2c_cmdline_option_parser_ops *ops;
 };

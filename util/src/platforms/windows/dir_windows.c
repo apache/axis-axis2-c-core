@@ -158,7 +158,7 @@ int AXIS2_CALL rewinddir(DIR *dirp)
    return 0;
 }
 
-AXIS2_DECLARE_DATA int alphasort(const struct dirent **__d1, const struct dirent **__d2)
+ int alphasort(const struct dirent **__d1, const struct dirent **__d2)
 {
    return strcoll((*__d1)->d_name,(*__d2)->d_name);
 }

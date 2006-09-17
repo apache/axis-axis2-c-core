@@ -83,7 +83,7 @@ extern "C"
     * @brief node ops struct
     * Encapsulator struct for ops of axiom_node
     */
-AXIS2_DECLARE_DATA   typedef struct axiom_node_ops
+   typedef struct axiom_node_ops
 {
     /**
     * Frees an om node and all of its children

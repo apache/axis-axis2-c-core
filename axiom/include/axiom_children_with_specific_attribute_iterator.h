@@ -48,7 +48,7 @@ typedef struct axiom_children_with_specific_attribute_iterator
     * \brief axiom_children_with_specific_attribute_iterator ops
     * Encapsulator struct for ops of axiom_iterator
     */
-    AXIS2_DECLARE_DATA struct axiom_children_with_specific_attribute_iterator_ops
+     struct axiom_children_with_specific_attribute_iterator_ops
     {
       /**
       * Free function free the om_children_with_specific_attribute_iterator struct

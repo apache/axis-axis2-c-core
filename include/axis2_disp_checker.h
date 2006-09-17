@@ -46,7 +46,7 @@ extern "C"
      * dispatcher checker ops struct.
      * Encapsulator struct for operations of axis2_disp_checker.
      */
-    AXIS2_DECLARE_DATA struct axis2_disp_checker_ops
+     struct axis2_disp_checker_ops
     {
         /**
          * Gets the base handler.

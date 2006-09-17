@@ -42,7 +42,7 @@ typedef struct axiom_soap_fault_value axiom_soap_fault_value_t;
  *   \brief soap_fault_value operations struct
  *   ops Encapsulator struct of axiom_soap_fault_value
  */
- AXIS2_DECLARE_DATA   struct axiom_soap_fault_value_ops
+    struct axiom_soap_fault_value_ops
     {
       /**
         * Free an axiom_soap_fault_value

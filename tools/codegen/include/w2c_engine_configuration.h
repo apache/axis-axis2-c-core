@@ -45,7 +45,7 @@ typedef axis2_char_t* (*W2C_ENGINE_CONFIGURATION_NAMEMAKER)
 typedef struct w2c_engine_configuration w2c_engine_configuration_t;
 typedef struct w2c_engine_configuration_ops w2c_engine_configuration_ops_t;
 
-AXIS2_DECLARE_DATA  struct w2c_engine_configuration_ops
+  struct w2c_engine_configuration_ops
 {
    /**
     * free w2c_engine_configuration.
@@ -767,7 +767,7 @@ AXIS2_DECLARE_DATA  struct w2c_engine_configuration_ops
 
 };
 
-AXIS2_DECLARE_DATA  struct w2c_engine_configuration
+  struct w2c_engine_configuration
 {
      struct w2c_engine_configuration_ops* ops;
 };

@@ -50,7 +50,7 @@ static const axis2_char_t XML_NAMESPACE_URI[] =
  * Encapsulator struct for ops of axis2_qname
  */
                       
-AXIS2_DECLARE_DATA typedef struct axis2_qname_ops
+ typedef struct axis2_qname_ops
 {
     /**
      *  Free a qname struct

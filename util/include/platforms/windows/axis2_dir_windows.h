@@ -26,7 +26,7 @@
 #include <axis2_utils_defines.h>
 
 /* struct dirent - same as Unix dirent.h */
-AXIS2_DECLARE_DATA struct dirent 
+ struct dirent 
 {
    long            d_ino;                  /* inode number (always 1 in WIN32) */
    off_t            d_off;               /* offset to this dirent */
@@ -37,7 +37,7 @@ AXIS2_DECLARE_DATA struct dirent
 
 
 /* def struct DIR - different from Unix DIR */
-AXIS2_DECLARE_DATA typedef struct
+ typedef struct
 {
    long            handle;                  /* _findfirst/_findnext handle */
    short            offset;                  /* offset into directory */

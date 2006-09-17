@@ -48,7 +48,7 @@ typedef struct axis2_wsdl_fault_ref_ops axis2_wsdl_fault_ref_ops_t;
  * @brief Wsdl Binding Message Reference ops struct
  * Encapsulator struct for ops of axis2_wsdl_fault_ref
  */
-AXIS2_DECLARE_DATA struct axis2_wsdl_fault_ref_ops
+ struct axis2_wsdl_fault_ref_ops
 {
    /** De-allocate memory
       * @return status code
@@ -118,7 +118,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_fault_ref_ops
 /** 
  * @brief Wsdl  message reference struct  
  */  
-AXIS2_DECLARE_DATA struct axis2_wsdl_fault_ref
+ struct axis2_wsdl_fault_ref
 {
    axis2_wsdl_fault_ref_ops_t *ops;
     struct axis2_wsdl_component *wsdl_component;

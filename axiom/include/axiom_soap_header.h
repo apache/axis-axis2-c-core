@@ -52,7 +52,7 @@ struct axiom_soap_builder;
  *   \brief soap_header operations struct
  *   ops Encapsulator struct of axiom_soap header
  */
- AXIS2_DECLARE_DATA   struct axiom_soap_header_ops
+    struct axiom_soap_header_ops
     {
       /**
         * Free an axiom_soap_header

@@ -52,7 +52,7 @@ extern "C"
      * HTTP Simple Response ops struct
      * Encapsulator struct for ops of axis2_http_simple_response
      */
-    AXIS2_DECLARE_DATA struct axis2_http_simple_response_ops
+     struct axis2_http_simple_response_ops
     {
         /**
     * @param simple_response pointer to simple response struct
@@ -261,7 +261,7 @@ extern "C"
     /**
       * axis2 http simple response
       */
-    AXIS2_DECLARE_DATA struct axis2_http_simple_response
+     struct axis2_http_simple_response
     {
         /** operations of axis2 http simple response */
         axis2_http_simple_response_ops_t *ops;

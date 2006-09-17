@@ -41,7 +41,7 @@ typedef struct axis2_generic_obj_ops axis2_generic_obj_ops_t;
  * @brief Generic Obj ops struct
  * Encapsulator struct for ops of woden_generic_obj
  */
-AXIS2_DECLARE_DATA struct axis2_generic_obj_ops
+ struct axis2_generic_obj_ops
 {
 
     axis2_status_t (AXIS2_CALL *
@@ -78,7 +78,7 @@ AXIS2_DECLARE_DATA struct axis2_generic_obj_ops
 /** 
      * @brief
      */ 
-AXIS2_DECLARE_DATA struct axis2_generic_obj
+ struct axis2_generic_obj
 {
    axis2_generic_obj_ops_t *ops;
 };

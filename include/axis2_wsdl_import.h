@@ -47,7 +47,7 @@ typedef struct axis2_wsdl_import_ops axis2_wsdl_import_ops_t;
  * @brief Wsdl Import ops struct
  * Encapsulator struct for ops of axis2_wsdl_import
  */
-AXIS2_DECLARE_DATA struct axis2_wsdl_import_ops
+ struct axis2_wsdl_import_ops
 {
    /** De-allocate memory
       * @return status code
@@ -102,7 +102,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_import_ops
  * @brief Wsdl container struct
  *   Property for params  
  */  
-AXIS2_DECLARE_DATA struct axis2_wsdl_import
+ struct axis2_wsdl_import
 {
    axis2_wsdl_import_ops_t *ops;
     struct axis2_wsdl_component *wsdl_component;

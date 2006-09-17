@@ -53,7 +53,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
                      axis2_char_t* error_message);
 
 
-AXIS2_DECLARE_DATA struct tcpmon_session_ops
+ struct tcpmon_session_ops
 {
    /**
     * free the tcpmon_session.
@@ -171,7 +171,7 @@ AXIS2_DECLARE_DATA struct tcpmon_session_ops
 
 };
 
-AXIS2_DECLARE_DATA struct tcpmon_session 
+ struct tcpmon_session 
 {
     tcpmon_session_ops_t *ops;
 };

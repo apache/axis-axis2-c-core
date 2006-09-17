@@ -43,7 +43,7 @@ extern "C"
 typedef struct w2c_writer w2c_writer_t;
 typedef struct w2c_writer_ops w2c_writer_ops_t;
 
-AXIS2_DECLARE_DATA  struct w2c_writer_ops
+  struct w2c_writer_ops
 {
    /**
     * free w2c_writer.
@@ -100,7 +100,7 @@ AXIS2_DECLARE_DATA  struct w2c_writer_ops
 
 };
 
-AXIS2_DECLARE_DATA  struct w2c_writer
+  struct w2c_writer
 {
      struct w2c_writer_ops *ops;
 };

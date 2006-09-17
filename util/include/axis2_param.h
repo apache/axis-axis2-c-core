@@ -54,7 +54,7 @@ struct axis2_param_ops;
 /**
  *   \brief param ops struct
  */
-AXIS2_DECLARE_DATA typedef struct axis2_param_ops
+ typedef struct axis2_param_ops
     {
     
     /**

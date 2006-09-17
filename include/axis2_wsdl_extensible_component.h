@@ -52,7 +52,7 @@ typedef struct axis2_wsdl_extensible_component_ops axis2_wsdl_extensible_compone
  * @brief Wsdl Extensible Component ops struct
  * Encapsulator struct for ops of axis2_wsdl_extensible_component
  */
-AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops
+ struct axis2_wsdl_extensible_component_ops
 {
    /** De-allocate memory
       * @return status code
@@ -108,7 +108,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component_ops
  * @brief Wsdl container struct
  *   Property for params  
  */  
-AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_component
+ struct axis2_wsdl_extensible_component
 {
    axis2_wsdl_extensible_component_ops_t *ops;
     struct axis2_wsdl_component *wsdl_component;

@@ -44,7 +44,7 @@ typedef struct axiom_child_element_iterator axiom_child_element_iterator_t;
     * \brief axiom_child_element_iterator ops
     * Encapsulator struct for ops of axiom_iterator
     */
-    AXIS2_DECLARE_DATA struct axiom_child_element_iterator_ops
+     struct axiom_child_element_iterator_ops
     {
         axis2_status_t (AXIS2_CALL *free_fn)
                             (void *iterator,

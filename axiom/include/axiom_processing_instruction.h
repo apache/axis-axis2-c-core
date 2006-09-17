@@ -45,7 +45,7 @@ extern "C"
     * @brief 
     * Encapsulator struct for ops of axiom_processing_instruction
     */
-   AXIS2_DECLARE_DATA  typedef struct axiom_processing_instruction_ops
+     typedef struct axiom_processing_instruction_ops
     {
         /**
          * Frees an instance of axiom_processing_instruction

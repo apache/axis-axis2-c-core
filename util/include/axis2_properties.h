@@ -41,7 +41,7 @@ typedef struct axis2_properties_ops axis2_properties_ops_t;
  * @brief properties ops struct
  * Encapsulator struct for ops of axis2_properties_ops
  */
-AXIS2_DECLARE_DATA struct axis2_properties_ops
+ struct axis2_properties_ops
 {
    /**
     * free w2c_properties.
@@ -120,7 +120,7 @@ AXIS2_DECLARE_DATA struct axis2_properties_ops
 /** 
  * @brief
  */ 
-AXIS2_DECLARE_DATA struct axis2_properties
+ struct axis2_properties
 {
    axis2_properties_ops_t *ops;
 };

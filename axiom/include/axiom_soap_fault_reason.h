@@ -44,7 +44,7 @@ struct axiom_soap_builder;
  *   \brief soap_fault_reason operations struct
  *   ops Encapsulator struct of axiom_soap_fault_reason
  */
- AXIS2_DECLARE_DATA   struct axiom_soap_fault_reason_ops
+    struct axiom_soap_fault_reason_ops
     {
       /**
         * Free an axiom_soap_fault_reason

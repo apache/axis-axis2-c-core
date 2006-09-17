@@ -45,7 +45,7 @@ typedef struct axis2_stack axis2_stack_t;
  * Encapsulator struct for ops of axis2_qname
  */
 
-AXIS2_DECLARE_DATA struct axis2_stack_ops
+ struct axis2_stack_ops
 {
     /**
      * Free function of the stack

@@ -42,7 +42,7 @@ extern "C"
 typedef struct w2c_typemapper w2c_typemapper_t;
 typedef struct w2c_typemapper_ops w2c_typemapper_ops_t;
 
-AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
+  struct w2c_typemapper_ops
 {
    /**
     * free w2c_typemapper.
@@ -116,7 +116,7 @@ AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
 
 };
 
-AXIS2_DECLARE_DATA  struct w2c_typemapper
+  struct w2c_typemapper
 {
      struct w2c_typemapper_ops *ops;
 };

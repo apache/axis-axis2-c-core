@@ -87,7 +87,7 @@ typedef struct axis2_uri axis2_uri_t;
  * @brief URI ops struct
  * Encapsulator struct for ops of axis2_uri
  */  
-AXIS2_DECLARE_DATA struct axis2_uri_ops
+ struct axis2_uri_ops
 {
 
     axis2_status_t (AXIS2_CALL *
@@ -147,7 +147,7 @@ AXIS2_DECLARE_DATA struct axis2_uri_ops
  * @brief URI struct
  *    Axis2 URI
  */
-AXIS2_DECLARE_DATA struct axis2_uri
+ struct axis2_uri
 {
     axis2_uri_ops_t *ops;    
 };

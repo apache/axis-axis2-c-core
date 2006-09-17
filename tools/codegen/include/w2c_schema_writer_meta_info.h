@@ -39,7 +39,7 @@ extern "C"
 typedef struct w2c_schema_writer_meta_info w2c_schema_writer_meta_info_t;
 typedef struct w2c_schema_writer_meta_info_ops w2c_schema_writer_meta_info_ops_t;
 
-AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
+  struct w2c_schema_writer_meta_info_ops
 {
    /**
     * free w2c_schema_writer_meta_info.
@@ -769,7 +769,7 @@ AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
                              int mask);
 };
 
-AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info
+  struct w2c_schema_writer_meta_info
 {
      struct w2c_schema_writer_meta_info_ops *ops;
 };

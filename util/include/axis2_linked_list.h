@@ -42,7 +42,7 @@ typedef struct axis2_linked_list_ops_s axis2_linked_list_ops_t;
 /**
  * Struct to represent an entry in the list. Holds a single element.
  */
-AXIS2_DECLARE_DATA typedef struct entry_s
+ typedef struct entry_s
 {
     /** The element in the list. */
     void *data;
@@ -58,7 +58,7 @@ AXIS2_DECLARE_DATA typedef struct entry_s
 /**
 *   \brief Linked List ops struct
 */
-AXIS2_DECLARE_DATA struct axis2_linked_list_ops_s
+ struct axis2_linked_list_ops_s
 {
     
     axis2_status_t (AXIS2_CALL *

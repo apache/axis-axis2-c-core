@@ -50,7 +50,7 @@ typedef struct axis2_wsdl_endpoint_ops axis2_wsdl_endpoint_ops_t;
  * @brief Wsdl End point ops struct
  * Encapsulator struct for ops of axis2_wsdl_endpoint
  */
-AXIS2_DECLARE_DATA struct axis2_wsdl_endpoint_ops
+ struct axis2_wsdl_endpoint_ops
 {
    /** De-allocate memory
       * @return status code
@@ -103,7 +103,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_endpoint_ops
 /** 
  * @brief Wsdl endpoint struct
  */  
-AXIS2_DECLARE_DATA struct axis2_wsdl_endpoint
+ struct axis2_wsdl_endpoint
 {
    axis2_wsdl_endpoint_ops_t *ops;
     struct axis2_wsdl_component *wsdl_component;

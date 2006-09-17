@@ -43,7 +43,7 @@ extern "C"
     * \brief doctype ops struct
     * Encapsulator struct for ops of axiom_doctype
     */
- AXIS2_DECLARE_DATA   typedef struct axiom_doctype_ops
+    typedef struct axiom_doctype_ops
     {
       /**
         * free doctype struct

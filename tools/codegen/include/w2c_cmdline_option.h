@@ -39,7 +39,7 @@ extern "C"
 typedef struct w2c_cmdline_option w2c_cmdline_option_t;
 typedef struct w2c_cmdline_option_ops w2c_cmdline_option_ops_t;
 
-AXIS2_DECLARE_DATA  struct w2c_cmdline_option_ops
+  struct w2c_cmdline_option_ops
 {
    /**
     * free w2c_cmdline_option.
@@ -67,7 +67,7 @@ AXIS2_DECLARE_DATA  struct w2c_cmdline_option_ops
     
 };
 
-AXIS2_DECLARE_DATA  struct w2c_cmdline_option
+  struct w2c_cmdline_option
 {
      struct w2c_cmdline_option_ops *ops;
 };

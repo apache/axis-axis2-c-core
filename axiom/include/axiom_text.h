@@ -45,7 +45,7 @@ extern "C"
     * @brief text ops struct
     * Encapsulator struct for ops of axiom_text
     */
- AXIS2_DECLARE_DATA   typedef struct axiom_text_ops
+    typedef struct axiom_text_ops
     {
       /**
         * Free an axiom_text struct

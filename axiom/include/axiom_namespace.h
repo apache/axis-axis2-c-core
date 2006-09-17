@@ -45,7 +45,7 @@ extern "C"
     * \brief namespace ops struct
     * Encapsulator struct for ops of axiom_namespace
     */
- AXIS2_DECLARE_DATA   typedef struct axiom_namespace_ops
+    typedef struct axiom_namespace_ops
     {
       /**
         * Frees given AXIOM namespcae

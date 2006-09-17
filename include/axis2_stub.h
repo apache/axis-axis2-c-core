@@ -54,7 +54,7 @@ extern "C"
      * stub ops struct.
      * Encapsulator struct for operations of axis2_svc_client
      */
-    AXIS2_DECLARE_DATA struct axis2_stub_ops
+     struct axis2_stub_ops
     {
         /**
          * Frees stub struct.
@@ -174,7 +174,7 @@ extern "C"
     /**
      * stub struct.
      */
-    AXIS2_DECLARE_DATA struct axis2_stub
+     struct axis2_stub
     {
         /** operations of stub */
         axis2_stub_ops_t *ops;

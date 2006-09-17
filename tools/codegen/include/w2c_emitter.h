@@ -40,7 +40,7 @@ extern "C"
 typedef struct w2c_emitter w2c_emitter_t;
 typedef struct w2c_emitter_ops w2c_emitter_ops_t;
 
-AXIS2_DECLARE_DATA  struct w2c_emitter_ops
+  struct w2c_emitter_ops
 {
    /**
     * free w2c_emitter.
@@ -88,7 +88,7 @@ AXIS2_DECLARE_DATA  struct w2c_emitter_ops
 
 };
 
-AXIS2_DECLARE_DATA  struct w2c_emitter
+  struct w2c_emitter
 {
      struct w2c_emitter_ops *ops;
 };

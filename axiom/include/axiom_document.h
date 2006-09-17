@@ -50,7 +50,7 @@ extern "C"
     * @brief document ops struct
     * Encapsulator struct for ops of axiom_document_t
     */
- AXIS2_DECLARE_DATA   typedef struct axiom_document_ops
+    typedef struct axiom_document_ops
     {
 
       /** 

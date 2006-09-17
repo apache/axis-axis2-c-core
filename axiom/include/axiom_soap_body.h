@@ -60,7 +60,7 @@ struct axiom_soap_builder;
  *   \brief soap_body operations struct
  *   ops Encapsulator struct of axiom_soap body
  */
- AXIS2_DECLARE_DATA   struct axiom_soap_body_ops
+    struct axiom_soap_body_ops
     {
         /**
          * Deallocate all the resources associated to soap_body

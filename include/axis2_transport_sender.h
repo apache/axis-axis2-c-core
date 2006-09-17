@@ -55,7 +55,7 @@ extern "C"
      * @brief Description Transport Sender ops struct
      * Encapsulator struct for ops of axis2_transport_sender
      */
-    AXIS2_DECLARE_DATA struct axis2_transport_sender_ops
+     struct axis2_transport_sender_ops
     {
         /** De-allocate memory
     * @param transport_sender pointer to transport sender
@@ -115,7 +115,7 @@ extern "C"
      * This send the SOAP Message to other SOAP nodes and this alone write the SOAP 
      * Message to the wire. Out flow must be end with one of this kind
      */
-    AXIS2_DECLARE_DATA struct axis2_transport_sender
+     struct axis2_transport_sender
     {
    /** operations of axis transport sender */
         axis2_transport_sender_ops_t *ops;

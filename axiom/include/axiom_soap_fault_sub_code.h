@@ -44,7 +44,7 @@ extern "C"
  *   \brief soap_fault_sub_code operations struct
  *   ops Encapsulator struct of axiom_soap_fault_sub_code
  */
- AXIS2_DECLARE_DATA   struct axiom_soap_fault_sub_code_ops
+    struct axiom_soap_fault_sub_code_ops
     {
       /**
         * Free an axiom_soap_fault_sub_code

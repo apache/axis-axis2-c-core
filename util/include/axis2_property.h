@@ -41,7 +41,7 @@ typedef struct axis2_property_ops axis2_property_ops_t;
  * @brief Description Builder ops struct
  * Encapsulator struct for ops of axis2_desc_builder
  */
-AXIS2_DECLARE_DATA struct axis2_property_ops
+ struct axis2_property_ops
 {
 
     axis2_status_t (AXIS2_CALL *
@@ -75,7 +75,7 @@ AXIS2_DECLARE_DATA struct axis2_property_ops
 /** 
      * @brief
      */ 
-AXIS2_DECLARE_DATA struct axis2_property
+ struct axis2_property
 {
    axis2_property_ops_t *ops;
 };

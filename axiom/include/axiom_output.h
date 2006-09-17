@@ -47,7 +47,7 @@ extern "C"
     typedef struct axiom_output_ops axiom_output_ops_t;
     struct axiom_text;
     
-AXIS2_DECLARE_DATA struct axiom_output_ops
+ struct axiom_output_ops
 {
    /**
     * free om_output 

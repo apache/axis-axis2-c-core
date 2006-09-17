@@ -46,7 +46,7 @@ typedef struct axis2_url axis2_url_t;
  * @brief URL ops struct
  * Encapsulator struct for ops of axis2_url
  */  
-AXIS2_DECLARE_DATA struct axis2_url_ops
+ struct axis2_url_ops
 {
     axis2_char_t* (AXIS2_CALL *
    to_external_form) (axis2_url_t *url, 
@@ -108,7 +108,7 @@ AXIS2_DECLARE_DATA struct axis2_url_ops
  * @brief URL struct
  *    Axis2 URL
  */
-AXIS2_DECLARE_DATA struct axis2_url
+ struct axis2_url
 {
     axis2_url_ops_t *ops;    
 };

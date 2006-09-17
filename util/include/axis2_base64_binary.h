@@ -42,7 +42,7 @@ extern "C"
     /** Type name for struct axis2_base64_binary */
     typedef struct axis2_base64_binary axis2_base64_binary_t;
 
-    AXIS2_DECLARE_DATA struct axis2_base64_binary_ops
+     struct axis2_base64_binary_ops
     {
         /**
          * free the axis2_base64_binary.
@@ -133,7 +133,7 @@ extern "C"
 
     };
 
-    AXIS2_DECLARE_DATA struct axis2_base64_binary
+     struct axis2_base64_binary
     {
         axis2_base64_binary_ops_t *ops;
     };

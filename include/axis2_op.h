@@ -86,7 +86,7 @@ extern "C"
      * operation ops struct.
      * Encapsulator struct for ops of axis2_op.
      */
-    AXIS2_DECLARE_DATA struct axis2_op_ops
+     struct axis2_op_ops
     {
         /**
          * Frees operation.
@@ -780,7 +780,7 @@ extern "C"
     /**
      * operation struct.
      */
-    AXIS2_DECLARE_DATA struct axis2_op
+     struct axis2_op
     {
         /** base WSDL operation */
         axis2_wsdl_op_t base;

@@ -40,7 +40,7 @@ extern "C"
 typedef struct axis2_date_time_ops axis2_date_time_ops_t;   
 typedef struct axis2_date_time axis2_date_time_t;
 
-AXIS2_DECLARE_DATA struct axis2_date_time_ops
+ struct axis2_date_time_ops
 {
    /**
     * free the axis2_date_time.
@@ -199,7 +199,7 @@ AXIS2_DECLARE_DATA struct axis2_date_time_ops
     
 } ;
 
-AXIS2_DECLARE_DATA struct axis2_date_time 
+ struct axis2_date_time 
 {
     axis2_date_time_ops_t *ops;
 };

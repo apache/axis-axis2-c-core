@@ -42,7 +42,7 @@ typedef struct axis2_file_ops axis2_file_ops_t;
  * @brief Description Builder ops struct
  * Encapsulator struct for ops of axis2_desc_builder
  */
-AXIS2_DECLARE_DATA struct axis2_file_ops
+ struct axis2_file_ops
 {
 
     axis2_status_t (AXIS2_CALL *
@@ -89,7 +89,7 @@ AXIS2_DECLARE_DATA struct axis2_file_ops
      * @brief
      * To store filename and timestamp of each module or service archive file
      */ 
-AXIS2_DECLARE_DATA struct axis2_file
+ struct axis2_file
 {
    axis2_file_ops_t *ops;
 };

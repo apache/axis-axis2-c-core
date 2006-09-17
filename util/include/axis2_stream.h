@@ -58,7 +58,7 @@ typedef enum axis2_stream_type axis2_stream_type_t;
 *
 * Encapsulator struct for ops of axis2_stream
 */
-AXIS2_DECLARE_DATA struct axis2_stream_ops
+ struct axis2_stream_ops
 {
 
      /**
@@ -121,7 +121,7 @@ AXIS2_DECLARE_DATA struct axis2_stream_ops
 *
 * Stream is the encapsulating struct for all stream related ops
 */
-AXIS2_DECLARE_DATA struct axis2_stream
+ struct axis2_stream
 {
    /** Stream related ops */
    axis2_stream_ops_t *ops;

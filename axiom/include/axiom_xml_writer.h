@@ -46,7 +46,7 @@ typedef struct axiom_xml_writer axiom_xml_writer_t;
     * Encapsulator struct for ops of axiom_xml_writer
     */
 
-    AXIS2_DECLARE_DATA struct axiom_xml_writer_ops 
+     struct axiom_xml_writer_ops 
     {
        /**
         * Free xml writer

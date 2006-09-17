@@ -47,7 +47,7 @@ typedef struct axis2_wsdl_ext_ops axis2_wsdl_ext_ops_t;
  * @brief Wsdl Ext Soap Address ops struct
  * Encapsulator struct for ops of axis2_wsdl_ext
  */
-AXIS2_DECLARE_DATA struct axis2_wsdl_ext_ops
+ struct axis2_wsdl_ext_ops
 {
    /** De-allocate memory
       * @return status code
@@ -64,7 +64,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_ext_ops
  * This Extensibility Element is extended to handle particularly the
  * SOAP Adress or the Endpoint URL.
  */  
-AXIS2_DECLARE_DATA struct axis2_wsdl_ext
+ struct axis2_wsdl_ext
 {
    axis2_wsdl_ext_ops_t *ops;
     axis2_char_t *namespc;

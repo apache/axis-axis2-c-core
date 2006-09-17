@@ -53,7 +53,7 @@ extern "C"
      * dispatcher ops struct.
      * Encapsulator struct for operations of axis2_dispatcher.
      */
-    AXIS2_DECLARE_DATA struct axis2_disp_ops
+     struct axis2_disp_ops
     {
         /**
          * Gets the base struct which is of type handler.

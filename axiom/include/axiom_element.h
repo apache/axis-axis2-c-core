@@ -46,7 +46,7 @@ extern "C"
     * @brief element ops struct
     * Encapsulator struct for ops of axiom_element
     */
-AXIS2_DECLARE_DATA   struct axiom_element_ops
+   struct axiom_element_ops
     {
        /*
         * Find a namespace in the scope of the document.

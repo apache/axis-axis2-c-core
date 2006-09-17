@@ -68,7 +68,7 @@ typedef enum axis2_dll_type
 /**
  *   \brief DLL Description ops struct
  */
-AXIS2_DECLARE_DATA struct axis2_dll_desc_ops
+ struct axis2_dll_desc_ops
 { 
     axis2_status_t (AXIS2_CALL *
     free) (axis2_dll_desc_t *dll_desc, 
@@ -173,7 +173,7 @@ AXIS2_DECLARE_DATA struct axis2_dll_desc_ops
 /** 
 * \brief DLL Description struct
 */
-AXIS2_DECLARE_DATA struct axis2_dll_desc
+ struct axis2_dll_desc
 {
     /** DLL Description related ops */
     axis2_dll_desc_ops_t *ops;

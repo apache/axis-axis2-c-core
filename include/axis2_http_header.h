@@ -93,7 +93,7 @@ extern "C"
      * HTTP Header struct
      * Axis2 HTTP Header
      */
-    AXIS2_DECLARE_DATA struct axis2_http_header
+     struct axis2_http_header
     {
         /** Operations of http sender */
         axis2_http_header_ops_t *ops;

@@ -42,7 +42,7 @@ typedef struct axiom_soap12_builder_helper_ops  axiom_soap12_builder_helper_ops_
  *   \brief axiom_soap12_builder_helper operations ops struct 
  */
  
- AXIS2_DECLARE_DATA   struct axiom_soap12_builder_helper_ops
+    struct axiom_soap12_builder_helper_ops
     {
         axis2_status_t (AXIS2_CALL *free_fn)
                             (axiom_soap12_builder_helper_t *builder_helper,

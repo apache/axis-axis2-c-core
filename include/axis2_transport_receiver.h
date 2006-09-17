@@ -62,7 +62,7 @@ extern "C"
      * @brief Description Transport Receiver ops struct
      * Encapsulator struct for ops of axis2_transport_receiver
      */
-    AXIS2_DECLARE_DATA struct axis2_transport_receiver_ops
+     struct axis2_transport_receiver_ops
     {
         /**
     * De-allocate memory
@@ -141,7 +141,7 @@ extern "C"
     /**
      * @brief Transport Reciever  struct  
      */
-    AXIS2_DECLARE_DATA struct axis2_transport_receiver
+     struct axis2_transport_receiver
     {
         axis2_transport_receiver_ops_t *ops;
     };

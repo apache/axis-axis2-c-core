@@ -551,7 +551,7 @@ extern "C"
     *
     * Encapsulator struct for ops of axis2_error
     */
-   AXIS2_DECLARE_DATA typedef struct axis2_error_ops
+    typedef struct axis2_error_ops
     {
 
       /**

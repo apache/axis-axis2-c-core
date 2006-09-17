@@ -39,7 +39,7 @@ extern "C"
 typedef struct tcpmon_entry_ops tcpmon_entry_ops_t;   
 typedef struct tcpmon_entry tcpmon_entry_t;
 
-AXIS2_DECLARE_DATA struct tcpmon_entry_ops
+ struct tcpmon_entry_ops
 {
    /**
     * free the tcpmon_entry.
@@ -125,7 +125,7 @@ AXIS2_DECLARE_DATA struct tcpmon_entry_ops
     
 };
 
-AXIS2_DECLARE_DATA struct tcpmon_entry 
+ struct tcpmon_entry 
 {
     tcpmon_entry_ops_t *ops;
 };

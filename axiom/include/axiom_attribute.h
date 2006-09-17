@@ -44,7 +44,7 @@ extern "C"
  *   \brief attribute ops struct
  *   ops Encapsulator struct for axiom_attribute
  */
- AXIS2_DECLARE_DATA   typedef struct axiom_attribute_ops
+    typedef struct axiom_attribute_ops
     {
       /**
         * Free an axiom_attribute struct

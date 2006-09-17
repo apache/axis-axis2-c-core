@@ -59,7 +59,7 @@ typedef axis2_status_t (AXIS2_CALL *AXIS2_PARAM_VALUE_FREE)(void *param, const a
  * @brief Param Container ops struct
  * Encapsulator struct for ops of axis2_param_container
  */
-AXIS2_DECLARE_DATA typedef struct axis2_param_container_ops
+ typedef struct axis2_param_container_ops
 {
    /** De-allocate memory
       * @return status code
@@ -109,7 +109,7 @@ AXIS2_DECLARE_DATA typedef struct axis2_param_container_ops
  * @brief Param container struct
  *   Container for params  
  */  
-AXIS2_DECLARE_DATA typedef struct axis2_param_container
+ typedef struct axis2_param_container
 {
    axis2_param_container_ops_t *ops;
 }axis2_param_container_t;

@@ -46,7 +46,7 @@ typedef struct axis2_wsdl_extensible_element_ops axis2_wsdl_extensible_element_o
  * @brief Wsdl Extensible Element ops struct
  * Encapsulator struct for ops of axis2_wsdl_extensible_element
  */
-AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_element_ops
+ struct axis2_wsdl_extensible_element_ops
 {
    /** De-allocate memory
       * @return status code
@@ -78,7 +78,7 @@ AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_element_ops
  * @brief Wsdl container struct
  *   Property for params  
  */  
-AXIS2_DECLARE_DATA struct axis2_wsdl_extensible_element
+ struct axis2_wsdl_extensible_element
 {
    axis2_wsdl_extensible_element_ops_t *ops;
 };

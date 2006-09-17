@@ -39,7 +39,7 @@ extern "C"
 typedef struct w2c_qname2name_maker w2c_qname2name_maker_t;
 typedef struct w2c_qname2name_maker_ops w2c_qname2name_maker_ops_t;
 
-AXIS2_DECLARE_DATA  struct w2c_qname2name_maker_ops
+  struct w2c_qname2name_maker_ops
 {
    /**
     * free w2c_qname2name_maker.
@@ -67,7 +67,7 @@ AXIS2_DECLARE_DATA  struct w2c_qname2name_maker_ops
 
 };
 
-AXIS2_DECLARE_DATA  struct w2c_qname2name_maker
+  struct w2c_qname2name_maker
 {
      struct w2c_qname2name_maker_ops *ops;
 };

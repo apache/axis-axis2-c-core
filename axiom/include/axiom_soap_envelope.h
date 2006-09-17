@@ -51,7 +51,7 @@ extern "C"
  *   \brief soap_envelope operations struct
  *   ops Encapsulator struct of axiom_soap body
  */
- AXIS2_DECLARE_DATA   struct axiom_soap_envelope_ops
+    struct axiom_soap_envelope_ops
     {
         /**
          * gets the soap header of this soap envelope

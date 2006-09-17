@@ -45,7 +45,7 @@ extern "C"
     /**
      *  Array List ops struct
      */
-    AXIS2_DECLARE_DATA typedef struct axis2_array_list_ops
+     typedef struct axis2_array_list_ops
     {
         /**
          * Guarantees that this list will have at least enough capacity to

@@ -57,7 +57,7 @@ struct axiom_soap_builder;
  *   \brief soap_fault operations struct
  *   ops Encapsulator struct of axiom_soap fault
  */
- AXIS2_DECLARE_DATA   struct axiom_soap_fault_ops
+    struct axiom_soap_fault_ops
     {
       /**
         * Free an axiom_soap_fault

@@ -46,7 +46,7 @@ extern "C"
     * @brief stax builder ops struct
     * Encapsulator struct for ops of axiom_stax_builder
     */
- AXIS2_DECLARE_DATA    typedef struct axiom_stax_builder_ops
+     typedef struct axiom_stax_builder_ops
     {
       /**
         * Builds the next node from stream. Moves pull parser forward and reacts 

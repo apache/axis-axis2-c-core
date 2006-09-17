@@ -56,7 +56,7 @@ extern "C"
      * struct for 
      * Encapsulator struct for operations of axis2_svc_skeleton
      */
-    AXIS2_DECLARE_DATA struct axis2_svc_skeleton_ops
+     struct axis2_svc_skeleton_ops
     {
 
         /*
@@ -119,7 +119,7 @@ extern "C"
      * @param ops pointer to ops struct
      * @param func_array pointer to func_array struct
      */
-    AXIS2_DECLARE_DATA struct axis2_svc_skeleton
+     struct axis2_svc_skeleton
     {
         axis2_svc_skeleton_ops_t *ops;
         axis2_array_list_t *func_array;

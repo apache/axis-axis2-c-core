@@ -67,7 +67,7 @@ typedef enum axiom_xml_reader_event_types
     * Encapsulator struct for ops of axiom_xml_reader
     */
 
-AXIS2_DECLARE_DATA struct axiom_xml_reader_ops
+ struct axiom_xml_reader_ops
     {
         /**
          * causes the reader to read the next parse event. 
