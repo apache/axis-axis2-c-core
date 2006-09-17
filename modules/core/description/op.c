@@ -1026,7 +1026,6 @@ axis2_op_engage_module(
     int size = 0;
     axis2_array_list_t *collection_module = NULL;
     axis2_module_desc_t *module_desc = NULL;
-    axis2_property_t *property = NULL;
     axis2_phase_resolver_t *pr = NULL;
     axis2_bool_t need_to_add = AXIS2_FALSE;
         
@@ -1109,11 +1108,9 @@ axis2_op_add_to_engaged_module_list(
         axis2_module_desc_t *module_desc) 
 {
     axis2_op_impl_t *op_impl = NULL;
-    axis2_array_list_t *collection_module = NULL;
     axis2_module_desc_t *module_desc_l = NULL;
     int size = 0;
     int index = 0;
-    axis2_property_t *property = NULL;
     const axis2_qname_t *module_qname = NULL;
     
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -1160,8 +1157,6 @@ axis2_op_get_all_modules(
     const axis2_env_t *env) 
 {
     axis2_op_impl_t *op_impl = NULL;
-    axis2_property_t *property = NULL;
-    axis2_array_list_t *modules = NULL;
     
     AXIS2_ENV_CHECK(env, NULL);
     op_impl = AXIS2_INTF_TO_IMPL(op);
@@ -1723,7 +1718,7 @@ axis2_op_find_op_ctx(
     else
     {
         axis2_conf_ctx_t *conf_ctx = NULL;
-        axis2_char_t *value = NULL;
+        const axis2_char_t *value = NULL;
             
         conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
         value = AXIS2_RELATES_TO_GET_VALUE(relates_to, env);

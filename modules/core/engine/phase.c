@@ -1209,14 +1209,14 @@ add_unique(
 {
     int i = 0, size = 0;
     axis2_bool_t add_handler = AXIS2_TRUE;
-    axis2_qname_t *handler_qname = NULL;
+    const axis2_qname_t *handler_qname = NULL;
 
     handler_qname = AXIS2_HANDLER_GET_QNAME(handler, env);
     size = AXIS2_ARRAY_LIST_SIZE(list, env);
     for(i = 0; i < size; i++)
     {
         axis2_handler_t *obj = NULL;
-        axis2_qname_t *obj_qname = NULL;
+        const axis2_qname_t *obj_qname = NULL;
 
         obj = (axis2_handler_t *) AXIS2_ARRAY_LIST_GET(list, env, i);
         obj_qname = AXIS2_HANDLER_GET_QNAME(obj, env);

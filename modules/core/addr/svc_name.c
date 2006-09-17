@@ -14,7 +14,6 @@
  * limitations under the License.
  */
  
- /** <wsa:RelatesTo RelationshipType="..."?>xs:anyURI</wsa:RelatesTo> */
 
 #include <axis2_svc_name.h>
 #include <axis2_string.h>
@@ -22,7 +21,7 @@
 typedef struct axis2_svc_name_impl
 {
     axis2_svc_name_t svc_name;    
-    /** service qname */
+    /** service QName */
     axis2_qname_t *qname;    
     /** service endpoint name */
     axis2_char_t *endpoint_name;
@@ -33,7 +32,7 @@ axis2_svc_name_impl_t;
 #define AXIS2_INTF_TO_IMPL(svc_name) ((axis2_svc_name_impl_t *)svc_name)
 
 
-axis2_qname_t *AXIS2_CALL 
+const axis2_qname_t *AXIS2_CALL 
 axis2_svc_name_get_qname(
     const axis2_svc_name_t *svc_name, 
     const axis2_env_t *env);
@@ -42,9 +41,9 @@ axis2_status_t AXIS2_CALL
 axis2_svc_name_set_qname(
     struct axis2_svc_name *svc_name, 
     const axis2_env_t *env, 
-    axis2_qname_t *qname);
+    const axis2_qname_t *qname);
                          
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_svc_name_get_endpoint_name(
     const axis2_svc_name_t *svc_name, 
     const axis2_env_t *env);
@@ -53,7 +52,7 @@ axis2_status_t AXIS2_CALL
 axis2_svc_name_set_endpoint_name(
     struct axis2_svc_name *svc_name, 
     const axis2_env_t *env, 
-    axis2_char_t *endpoint_name);
+    const axis2_char_t *endpoint_name);
                                  
 axis2_status_t AXIS2_CALL 
 axis2_svc_name_free(
@@ -63,8 +62,8 @@ axis2_svc_name_free(
 axis2_svc_name_t *AXIS2_CALL 
 axis2_svc_name_create(
     const axis2_env_t *env, 
-    axis2_qname_t *qname, 
-    axis2_char_t *endpoint_name) 
+    const axis2_qname_t *qname, 
+    const axis2_char_t *endpoint_name) 
 {
     axis2_svc_name_impl_t *svc_name_impl = NULL;
     
@@ -123,12 +122,7 @@ axis2_svc_name_create(
     return &(svc_name_impl->svc_name);
 }
 
-/**
- * Method getName
- *
- * @return
- */
-axis2_qname_t *AXIS2_CALL 
+const axis2_qname_t *AXIS2_CALL 
 axis2_svc_name_get_qname(
     const axis2_svc_name_t *svc_name, 
     const axis2_env_t *env) 
@@ -137,16 +131,11 @@ axis2_svc_name_get_qname(
     return AXIS2_INTF_TO_IMPL(svc_name)->qname;
 }
 
-/**
- * Method setName
- *
- * @param qname
- */
 axis2_status_t AXIS2_CALL 
 axis2_svc_name_set_qname(
     struct axis2_svc_name *svc_name, 
     const axis2_env_t *env, 
-    axis2_qname_t *qname) 
+    const axis2_qname_t *qname) 
 {
     axis2_svc_name_impl_t *svc_name_impl = NULL;
     
@@ -170,12 +159,7 @@ axis2_svc_name_set_qname(
     return AXIS2_SUCCESS;
 }
 
-/**
- * Method getEndpointName
- *
- * @return
- */
-axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL 
 axis2_svc_name_get_endpoint_name(
     const axis2_svc_name_t *svc_name, 
     const axis2_env_t *env) 
@@ -184,16 +168,11 @@ axis2_svc_name_get_endpoint_name(
     return AXIS2_INTF_TO_IMPL(svc_name)->endpoint_name;
 }
 
-/**
- * Method setEndpointName
- *
- * @param endpoint_name
- */
 axis2_status_t AXIS2_CALL 
 axis2_svc_name_set_endpoint_name(
     struct axis2_svc_name *svc_name, 
     const axis2_env_t *env, 
-    axis2_char_t *endpoint_name) 
+    const axis2_char_t *endpoint_name) 
 {
     axis2_svc_name_impl_t *svc_name_impl = NULL;
     

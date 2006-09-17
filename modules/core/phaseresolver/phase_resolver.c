@@ -1525,7 +1525,7 @@ axis2_phase_resolver_engage_module_to_svc(
     axis2_hash_t *ops = NULL;
     axis2_hash_index_t *index_i = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_qname_t *module_d_qname = NULL;
+    const axis2_qname_t *module_d_qname = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     resolver_impl = AXIS2_INTF_TO_IMPL(phase_resolver);
@@ -1561,7 +1561,7 @@ axis2_phase_resolver_engage_module_to_svc(
         for(j = 0; j < size; j++)
         {
             axis2_module_desc_t *module_desc_l = NULL;
-            axis2_qname_t *module_d_qname_l = NULL;
+            const axis2_qname_t *module_d_qname_l = NULL;
 
             module_desc_l = AXIS2_ARRAY_LIST_GET(modules, env, j);
             module_d_qname_l = AXIS2_MODULE_DESC_GET_QNAME(module_desc_l, env);

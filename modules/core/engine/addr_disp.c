@@ -192,7 +192,7 @@ axis2_addr_disp_invoke(
     /** first check if we can dispatch using the relates_to */
     if (relates_to)
     {
-        axis2_char_t *relates_to_value = NULL;
+        const axis2_char_t *relates_to_value = NULL;
         relates_to_value = AXIS2_RELATES_TO_GET_VALUE(relates_to, env);
         if (relates_to_value && AXIS2_STRCMP(relates_to_value, "") != 0 )
         {

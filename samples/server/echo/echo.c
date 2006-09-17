@@ -50,9 +50,9 @@ axis2_echo_echo (const axis2_env_t *env, axiom_node_t *node)
             AXIS2_XML_PARSER_TYPE_BUFFER);
       om_output = axiom_output_create (env, writer);
 
-      AXIOM_NODE_SERIALIZE (node, env, om_output);
+      /*AXIOM_NODE_SERIALIZE (node, env, om_output);
       buffer = AXIOM_XML_WRITER_GET_XML(writer, env);
-      printf("buffer = %s \n", buffer);
+      printf("buffer = %s \n", buffer);*/
    }
 
     text_parent_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);
@@ -77,7 +77,7 @@ axis2_echo_echo (const axis2_env_t *env, axiom_node_t *node)
         if( text && AXIOM_TEXT_GET_VALUE(text , env))
         {
             axis2_char_t *text_str = AXIOM_TEXT_GET_VALUE(text, env);
-            printf("Echoing text value  %s \n", text_str);
+            /*printf("Echoing text value  %s \n", text_str);*/
             ret_node = build_om_programatically(env, text_str);
         }
     }

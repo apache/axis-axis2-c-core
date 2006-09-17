@@ -87,6 +87,9 @@ int main(int argc, char** argv)
     AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);
     
     /* Build the SOAP request message payload using OM API.*/
+    int i = 0;
+    for ( i = 0; i < 1000; i++)
+    {
     payload = build_om_payload_for_echo_svc(env);
     
     /* Send request */
@@ -96,9 +99,9 @@ int main(int argc, char** argv)
     {
         axis2_char_t *om_str = NULL;
         om_str = AXIOM_NODE_TO_STRING(ret_node, env);
-        if (om_str)
+        /*if (om_str)
             printf("\nReceived OM : %s\n", om_str);
-        printf("\necho client invoke SUCCESSFUL!\n");
+        printf("\necho client invoke SUCCESSFUL!\n");*/
     }
     else
     {
@@ -106,6 +109,8 @@ int main(int argc, char** argv)
                   " %d :: %s", env->error->error_number,
                         AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("echo client invoke FAILED!\n");
+    }
+
     }
     
     if (svc_client)
@@ -133,9 +138,10 @@ build_om_payload_for_echo_svc(const axis2_env_t *env)
     text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
     AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, "echo5", text_om_node);
     
-    om_str = AXIOM_NODE_TO_STRING(echo_om_node, env);
+    /*om_str = AXIOM_NODE_TO_STRING(echo_om_node, env);
     if (om_str)
         printf("\nSending OM : %s\n", om_str);
+    */
 
     return echo_om_node;
 }

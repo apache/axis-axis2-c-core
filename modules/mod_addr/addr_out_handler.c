@@ -401,7 +401,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
         relates_to = AXIS2_MSG_INFO_HEADERS_GET_RELATES_TO (msg_info_headers, env);
         if (relates_to)
         {
-            axis2_char_t *value = NULL;
+            const axis2_char_t *value = NULL;
             value = AXIS2_RELATES_TO_GET_VALUE (relates_to, env);
             relates_to_header_node =
                 axis2_addr_out_handler_process_string_info (env, value,
@@ -412,7 +412,7 @@ axis2_addr_out_handler_invoke (struct axis2_handler * handler,
 
         if (relates_to_header_node)
         {
-            axis2_char_t *relationship_type = NULL;
+            const axis2_char_t *relationship_type = NULL;
             relationship_type = AXIS2_RELATES_TO_GET_RELATIONSHIP_TYPE (relates_to, env);
             if (AXIS2_STRCMP (relationship_type, "") != 0)
             {

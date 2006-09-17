@@ -202,7 +202,7 @@ axis2_platform_uuid_gen(char *s)
    return uuid_str;   
 }
 
-#ifdef HAVE_LINUX_IF_H   // Linux
+#ifdef HAVE_LINUX_IF_H   /* Linux */
 
 char * AXIS2_CALL
 axis2_uuid_get_mac_addr()

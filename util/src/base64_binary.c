@@ -312,7 +312,6 @@ axis2_base64_binary_get_encoded_binary_len(axis2_base64_binary_t *base64_binary,
                               const axis2_env_t *env )
 {
     axis2_base64_binary_impl_t *base64_binary_impl = NULL;
-    char* encoded_binary = NULL;
     int encoded_binary_len = 0;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
