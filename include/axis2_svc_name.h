@@ -54,7 +54,7 @@ extern "C"
     struct axis2_svc_name_ops
     {
         /**
-         * Gets QName. QName identifys the WSDL service element that contains 
+         * Gets QName. QName identifies the WSDL service element that contains 
          * the definition of the endpoint being conveyed.
          * @param svc_name pointer to service name struct
          * @param env pointer to environment struct
@@ -67,7 +67,7 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Sets QName. QName identifys the WSDL service element that contains 
+         * Sets QName. QName identifies the WSDL service element that contains 
          * the definition of the endpoint being conveyed.
          * @param svc_name pointer to service name struct
          * @param env pointer to environment struct
@@ -132,7 +132,7 @@ extern "C"
 
 
     /**
-     * Creates a service name struct with qiven QName and endpoint name. 
+     * Creates a service name struct with given QName and endpoint name. 
      * @param env pointer to environment struct
      * @param qname pointer to QName, this method creates a clone of QName
      * @param endpoint_name endpoint name string
