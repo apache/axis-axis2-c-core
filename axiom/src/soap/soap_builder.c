@@ -278,11 +278,12 @@ axiom_soap_builder_free(axiom_soap_builder_t *builder,
             builder_impl->builder_helper = NULL;
         }
     }
-    if (NULL != builder_impl->om_builder)
+    
+    /*if (NULL != builder_impl->om_builder)
     {
         AXIOM_STAX_BUILDER_FREE(builder_impl->om_builder, env);
         builder_impl->om_builder = NULL;
-    }
+    }*/
     if (NULL != builder->ops)
     {
         AXIS2_FREE(env->allocator, builder->ops);
