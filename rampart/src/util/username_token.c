@@ -280,13 +280,8 @@ rampart_username_token_build(rampart_username_token_t *username_token,
         if(0 == AXIS2_STRCMP(password_type, RAMPART_PASSWORD_DIGEST) )
         {   
             axiom_namespace_t *dec_ns = NULL;
-            #if 1 
             nonce_val = rampart_generate_nonce(env) ;
             created_val = rampart_generate_time(env,0);
-            #else
-                nonce_val = NULL;
-                created_val = NULL;
-            #endif
             digest_val = rampart_crypto_sha1(env, nonce_val, created_val, password);
 
             pw_ele = axiom_element_create (env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_PASSWORD, sec_ns_obj,
@@ -309,7 +304,6 @@ rampart_username_token_build(rampart_username_token_t *username_token,
                                 om_attr, pw_node);
 
              }                 
-            #if 1  
             nonce_ele = axiom_element_create (env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_NONCE, sec_ns_obj,
                                              &nonce_node);
             if(NULL != nonce_ele)
@@ -320,11 +314,6 @@ rampart_username_token_build(rampart_username_token_t *username_token,
                                                              RAMPART_WSSE_XMLNS,
                                                             RAMPART_WSSE);
             }     
-            #else   
-                nonce_ele = NULL;
-                nonce_node = NULL;
-            #endif  
-            #if 1
             created_ele = axiom_element_create (env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_CREATED, sec_ns_obj,
                                              &created_node);
             if(NULL != created_ele)
@@ -338,16 +327,7 @@ rampart_username_token_build(rampart_username_token_t *username_token,
                 AXIOM_ELEMENT_SET_NAMESPACE(created_ele, env, wsu_ns_obj, created_node);
 
             } 
-            #else
-                created_ele = NULL;
-                created_node = NULL;
-            #endif
                   
-            /*
-            AXIS2_FREE(env->allocator, nonce_val);
-            AXIS2_FREE(env->allocator, created_val);
-            AXIS2_FREE(env->allocator, digest_val);
-            */
         }else /*default is passwordText*/ 
         {
             pw_ele = axiom_element_create (env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_PASSWORD, sec_ns_obj,

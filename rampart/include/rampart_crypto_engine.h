@@ -55,6 +55,18 @@ extern "C" {
                     rampart_crypto_engine_t *engine,
                     const axis2_env_t *env);
 
+        /**
+         * Encrypts a message depending on the information in the SOAP header. 
+         * Encryption algorithm, How to retrieve the key all these will be determined 
+         * by inspecting hte header elements. 
+         * @param engine pointer to engine
+         * @param env pointer to environment struct 
+         * @param msg_ctx message context 
+         * @param actions actions defined in the descriptor file 
+         * @param soap_envelope the SOAP envelope 
+         * @param sec_node The security element
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+         */   
         axis2_status_t (AXIS2_CALL *
         encrypt_message) (
                 rampart_crypto_engine_t *engine,
@@ -65,6 +77,18 @@ extern "C" {
                 axiom_node_t *sec_node 
                 );
         
+        /**
+         * Decrypts a message depending on the information in the SOAP header. 
+         * Dncryption algorithm, How to retrieve the key all these will be determined 
+         * by inspecting the header elements. 
+         * @param engine pointer to engine
+         * @param env pointer to environment struct 
+         * @param msg_ctx message context 
+         * @param actions actions defined in the descriptor file 
+         * @param soap_envelope the SOAP envelope 
+         * @param sec_node The security element
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+         */
         axis2_status_t (AXIS2_CALL *
         decrypt_message) (
                 rampart_crypto_engine_t *engine,

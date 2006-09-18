@@ -136,11 +136,12 @@ int main(int argc, char** argv)
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
-    if (endpoint_ref)
+/*    if (endpoint_ref)
     {
         AXIS2_ENDPOINT_REF_FREE(endpoint_ref, env);
         endpoint_ref = NULL;
     }
+*/
     return 0;
 }
 
