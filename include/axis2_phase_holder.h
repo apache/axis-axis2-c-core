@@ -20,13 +20,14 @@
 /** 
  * @defgroup axis2_phase_holder phase holder
  * @ingroup axis2_phase_resolver
- * Description
+ * phase holder is used by phase resolver to hold information related to
+ * phases and handlers within a phase. This struct hold the list of phases 
+ * found in the services.xml and axis2.xml.
  * @{
  */
 
 /**
  * @file axis2_phase_holder.h
- * @brief Axis2 Wsdl soap op interface
  */
 
 #include <axis2_const.h>
@@ -46,23 +47,24 @@ extern "C"
 {
 #endif
 
-    struct axis2_phase;
-    struct axis2_handler_desc;
-    struct axis2_handler;
-    struct axis2_phase_rule;
     /** Type name for struct axis2_phase_holder */
     typedef struct axis2_phase_holder axis2_phase_holder_t;
     /** Type name for struct axis2_phase_holder_ops  */
     typedef struct axis2_phase_holder_ops axis2_phase_holder_ops_t;
 
+    struct axis2_phase;
+    struct axis2_handler_desc;
+    struct axis2_handler;
+    struct axis2_phase_rule;
+
     /**
-     * Wsdl Phase Holder ops struct
-     * Encapsulator struct for ops of axis2_phase_holder
+     * phase holder ops struct.
+     * Encapsulator struct for ops of axis2_phase_holder.
      */
     struct axis2_phase_holder_ops
     {
         /** 
-         * De-allocate memory
+         * Frees phase holder.
          * @param phase_holder pointer to phase holder
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
@@ -73,10 +75,11 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Method isPhaseExist
+         * Checks if the named phase exist.
          * @param phase_holder pointer to phase holder
          * @param env pointer to environment struct
-         * @param phase_name pointer to phase name
+         * @param phase_name phase name string
+         * @return AXIS2_TRUE if the named phase exist, else AXIS2_FALSE
          */
         axis2_bool_t (AXIS2_CALL *
                 is_phase_exist)(
@@ -85,6 +88,7 @@ extern "C"
                     const axis2_char_t *phase_name);
 
         /**
+         * Adds given handler to phase holder.
          * @param phase_holder pointer to phase holder
          * @param env pointer to environment struct
          * @para handler pointer to handler
@@ -97,11 +101,12 @@ extern "C"
                     struct axis2_handler_desc *handler);
 
         /**
-         * this method is used to get the actual phase object given in the phase
-         * array list
+         * Gets the named phase from phase array list.
          * @param phase_holder pointer to phase holder
          * @param env pointer to environment struct
          * @param phase_name pointer to phase name
+         * @return pointer to named phase if it exists, else NULL. Returns a 
+         * reference, not a cloned copy 
          */
         struct axis2_phase *(AXIS2_CALL *
                 get_phase)(
@@ -110,13 +115,14 @@ extern "C"
                     const axis2_char_t *phase_name);
 
         /**
-         * This method is to build the transport phase , here load the corresponding 
-         * handlers and added them
-         * in to correct phase
+         * Builds the transport phase. This method loads the corresponding 
+         * handlers and added them into correct phase. 
          * @param phase_holder pointer to phase holder
          * @param env pointer to environment struct
-         * @param phase pointer to phase
-         * @param handlers pointer to handlers
+         * @param phase pointer to phase, phase holder does not assume the 
+         * ownership the phase
+         * @param handlers pointer to array list of handlers, phase holder does 
+         * not assume the ownership of the list
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
@@ -128,7 +134,7 @@ extern "C"
     };
 
     /**
-     * phase holder struct  
+     * phase holder struct.
      */
     struct axis2_phase_holder
     {
@@ -137,7 +143,7 @@ extern "C"
     };
 
     /**
-     * Creates phase holder struct
+     * Creates phase holder struct.
      * @param env pointer to environment struct
      * @return pointer to newly created phase holder
      */
@@ -146,9 +152,9 @@ extern "C"
         const axis2_env_t *env);
 
     /**
-     * Creates phase holder struct
+     * Creates phase holder struct with given list of phases.
      * @param env pointer to environment struct
-     * @param phases pointer to phases
+     * @param phases pointer to array list of phases
      * @return pointer to newly created phase holder
      */
     AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
@@ -156,34 +162,30 @@ extern "C"
         const axis2_env_t *env,
         axis2_array_list_t *phases);
 
-/*************************** Function macros **********************************/
-
-/** Frees the phase holder.
+/** Frees phase holder.
     @sa axis2_phase_holder_ops#free */
 #define AXIS2_PHASE_HOLDER_FREE(phase_holder, env) \
       ((phase_holder)->ops->free (phase_holder, env))
 
-/** Is phase exist.
+/** Checks of a named phase exist.
     @sa axis2_phase_holder_ops#is_phase_exist */
 #define AXIS2_PHASE_HOLDER_IS_PHASE_EXIST(phase_holder, env, phase_name) \
       ((phase_holder)->ops->is_phase_exist (phase_holder, env, phase_name))
 
-/** Add handler.
+/** Adds handler.
     @sa axis2_phase_holder_ops#add_handler */
 #define AXIS2_PHASE_HOLDER_ADD_HANDLER(phase_holder, env, handler) \
       ((phase_holder)->ops->add_handler (phase_holder, env, handler))
 
-/** Gets the phase.
+/** Gets named phase.
     @sa axis2_phase_holder_ops#get_phase */
 #define AXIS2_PHASE_HOLDER_GET_PHASE(phase_holder, env, phase_name) \
       ((phase_holder)->ops->get_phase (phase_holder, env, phase_name))
 
-/** Build transport handler chain.
+/** Builds transport handler chain.
     @sa axis2_phase_holder_ops#build_transport_handler_chain */
 #define AXIS2_PHASE_HOLDER_BUILD_TRANSPORT_HANDLER_CHAIN(phase_holder, env, phase, handlers) \
       ((phase_holder)->ops->build_transport_handler_chain (phase_holder, env, phase, handlers))
-
-/*************************** End of function macros ***************************/
 
 /** @} */
 

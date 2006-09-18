@@ -16,11 +16,6 @@
 
 #include <axis2_phase_holder.h>
 
-/**
- * @brief Wsdl phase holder struct impl
- * Phase Holder
- * This class hold all the phases found in the services.xml and server.xml
- */
 typedef struct axis2_phase_holder_impl
 {
     axis2_phase_holder_t phase_holder;
@@ -30,10 +25,8 @@ axis2_phase_holder_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(phase_holder) ((axis2_phase_holder_impl_t *)phase_holder)
 
-/************************* Function prototypes ********************************/
-
 axis2_status_t AXIS2_CALL
-axis2_phase_holder_free (
+axis2_phase_holder_free(
     axis2_phase_holder_t *phase_holder,
     const axis2_env_t *env);
 
@@ -62,8 +55,6 @@ axis2_phase_holder_build_transport_handler_chain(
     axis2_phase_t *phase,
     axis2_array_list_t *handlers);
 
-/************************** End of function prototypes ************************/
-
 AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
 axis2_phase_holder_create(
     const axis2_env_t *env)
@@ -75,7 +66,7 @@ axis2_phase_holder_create(
     phase_holder_impl = (axis2_phase_holder_impl_t *) AXIS2_MALLOC(env->
             allocator, sizeof(axis2_phase_holder_impl_t));
 
-    if(NULL == phase_holder_impl)
+    if (NULL == phase_holder_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -85,8 +76,8 @@ axis2_phase_holder_create(
     phase_holder_impl->phase_holder.ops = NULL;
 
     phase_holder_impl->phase_holder.ops =
-        AXIS2_MALLOC (env->allocator, sizeof(axis2_phase_holder_ops_t));
-    if(NULL == phase_holder_impl->phase_holder.ops)
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_phase_holder_ops_t));
+    if (NULL == phase_holder_impl->phase_holder.ops)
     {
         axis2_phase_holder_free(&(phase_holder_impl->phase_holder), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -108,7 +99,7 @@ axis2_phase_holder_create(
 
 AXIS2_EXTERN axis2_phase_holder_t *AXIS2_CALL
 axis2_phase_holder_create_with_phases(
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_array_list_t *phases)
 {
     axis2_phase_holder_impl_t *phase_holder_impl = NULL;
@@ -117,16 +108,12 @@ axis2_phase_holder_create_with_phases(
 
     if (!phases)
         return NULL;
-    /*AXIS2_PARAM_CHECK(env->error, phases, NULL);*/
 
     phase_holder_impl = (axis2_phase_holder_impl_t *)axis2_phase_holder_create(env);
-
     phase_holder_impl->phase_list = phases;
 
     return &(phase_holder_impl->phase_holder);
 }
-
-/***************************Function implementation****************************/
 
 axis2_status_t AXIS2_CALL
 axis2_phase_holder_free(
@@ -139,19 +126,13 @@ axis2_phase_holder_free(
 
     phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
 
-    /*if(NULL != phase_holder_impl->phase_list)
-    {
-        AXIS2_ARRAY_LIST_FREE(phase_holder_impl->phase_list, env);
-        phase_holder_impl->phase_list = NULL;
-    }*/
-
-    if(NULL != phase_holder->ops)
+    if (NULL != phase_holder->ops)
     {
         AXIS2_FREE(env->allocator, phase_holder->ops);
         phase_holder->ops = NULL;
     }
 
-    if(phase_holder_impl)
+    if (phase_holder_impl)
     {
         AXIS2_FREE(env->allocator, phase_holder_impl);
         phase_holder_impl = NULL;
@@ -160,12 +141,6 @@ axis2_phase_holder_free(
     return AXIS2_SUCCESS;
 }
 
-/**
- * Method isPhaseExist
- *
- * @param phaseName
- * @return
- */
 axis2_bool_t AXIS2_CALL
 axis2_phase_holder_is_phase_exist(
     axis2_phase_holder_t *phase_holder,
@@ -198,11 +173,6 @@ axis2_phase_holder_is_phase_exist(
     return AXIS2_FALSE;
 }
 
-/**
- * Method addHandler
- *
- * @param handler
- */
 axis2_status_t AXIS2_CALL
 axis2_phase_holder_add_handler(
     axis2_phase_holder_t *phase_holder,
@@ -238,12 +208,6 @@ axis2_phase_holder_add_handler(
     return status;
 }
 
-/**
- * this method is used to get the actual phase object given in the phase array list
- *
- * @param phaseName
- * @return
- */
 axis2_phase_t *AXIS2_CALL
 axis2_phase_holder_get_phase(
     const axis2_phase_holder_t *phase_holder,
@@ -268,7 +232,7 @@ axis2_phase_holder_get_phase(
         phase = (axis2_phase_t *) AXIS2_ARRAY_LIST_GET(phase_holder_impl->
                 phase_list, env, i);
         phase_name_l = AXIS2_PHASE_GET_NAME(phase, env);
-        if(0 == AXIS2_STRCMP(phase_name_l, phase_name))
+        if (0 == AXIS2_STRCMP(phase_name_l, phase_name))
         {
             return phase;
         }
@@ -277,13 +241,6 @@ axis2_phase_holder_get_phase(
     return NULL;
 }
 
-/**
- * This method is to build the transport phase , here load the corresponding handlers and added them
- * in to correct phase
- *
- * @param phase
- * @param handlers
- */
 axis2_status_t AXIS2_CALL
 axis2_phase_holder_build_transport_handler_chain(
     axis2_phase_holder_t *phase_holder,
@@ -308,11 +265,11 @@ axis2_phase_holder_build_transport_handler_chain(
         handler_desc = (axis2_handler_desc_t *) AXIS2_ARRAY_LIST_GET(
                     handlers, env, i);
         status = AXIS2_HANDLER_INIT(handler, env, handler_desc);
-        if(AXIS2_FAILURE == status)
+        if (AXIS2_FAILURE == status)
             return status;
 
         status = AXIS2_HANDLER_DESC_SET_HANDLER(handler_desc, env, handler);
-        if(AXIS2_FAILURE == status)
+        if (AXIS2_FAILURE == status)
             return status;
 
         status = AXIS2_PHASE_ADD_HANDLER(phase, env, handler);
