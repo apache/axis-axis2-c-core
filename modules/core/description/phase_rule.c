@@ -115,7 +115,7 @@ axis2_phase_rule_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    phase_rule_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_phase_rule_impl_t) );
+    phase_rule_impl = AXIS2_MALLOC(env->allocator, sizeof(axis2_phase_rule_impl_t));
     if (!phase_rule_impl)
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
@@ -136,7 +136,7 @@ axis2_phase_rule_create(
 
     /* initialize ops */
     phase_rule_impl->phase_rule.ops = NULL;
-    phase_rule_impl->phase_rule.ops = AXIS2_MALLOC( env->allocator, sizeof(axis2_phase_rule_ops_t) );
+    phase_rule_impl->phase_rule.ops = AXIS2_MALLOC(env->allocator, sizeof(axis2_phase_rule_ops_t));
     if (!phase_rule_impl->phase_rule.ops)
     {
         AXIS2_ERROR_SET_ERROR_NUMBER(env->error, AXIS2_ERROR_NO_MEMORY);
@@ -410,10 +410,10 @@ axis2_phase_rule_clone(
             AXIS2_PHASE_RULE_GET_NAME(phase_rule, env));
 
     AXIS2_PHASE_RULE_SET_FIRST(phase_rule_new, env,
-            AXIS2_PHASE_RULE_IS_FIRST(phase_rule, env) );
+            AXIS2_PHASE_RULE_IS_FIRST(phase_rule, env));
 
     AXIS2_PHASE_RULE_SET_LAST(phase_rule_new, env,
-            AXIS2_PHASE_RULE_IS_LAST(phase_rule, env) );
+            AXIS2_PHASE_RULE_IS_LAST(phase_rule, env));
 
     return phase_rule_new;
 }

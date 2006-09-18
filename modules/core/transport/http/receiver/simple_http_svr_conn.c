@@ -23,7 +23,7 @@
 
 /**
  * Simple HTTP Server Connection struct impl
- * Axis2 Simple HTTP Server Connection impl  
+ * Axis2 Simple HTTP Server Connection impl
  */
 
 typedef struct axis2_simple_http_svr_conn_impl
@@ -53,7 +53,7 @@ axis2_simple_http_svr_conn_is_open(
 axis2_status_t AXIS2_CALL
 axis2_simple_http_svr_conn_set_keep_alive(
     axis2_simple_http_svr_conn_t *svr_conn,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_bool_t keep_alive);
 
 axis2_bool_t AXIS2_CALL
@@ -85,20 +85,20 @@ axis2_simple_http_svr_conn_write_response(
 axis2_status_t AXIS2_CALL
 axis2_simple_http_svr_conn_set_rcv_timeout(
     axis2_simple_http_svr_conn_t *svr_conn,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     int timeout);
 
 axis2_status_t AXIS2_CALL
 axis2_simple_http_svr_conn_set_snd_timeout(
     axis2_simple_http_svr_conn_t *svr_conn,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     int timeout);
 
 int AXIS2_CALL
 axis2_simple_http_svr_conn_read_request_body(
     axis2_simple_http_svr_conn_t *svr_conn,
-    const axis2_env_t *env, 
-    axis2_char_t *buffer, 
+    const axis2_env_t *env,
+    axis2_char_t *buffer,
     int size);
 
 axis2_char_t *AXIS2_CALL
@@ -115,16 +115,16 @@ axis2_simple_http_svr_conn_free(
 
 axis2_simple_http_svr_conn_t *AXIS2_CALL
 axis2_simple_http_svr_conn_create(
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     int sockfd)
 {
     axis2_simple_http_svr_conn_impl_t *svr_conn_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     svr_conn_impl = (axis2_simple_http_svr_conn_impl_t *)
-            AXIS2_MALLOC (env->allocator,
+            AXIS2_MALLOC(env->allocator,
                     sizeof(axis2_simple_http_svr_conn_impl_t));
 
-    if(NULL == svr_conn_impl)
+    if (NULL == svr_conn_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -133,11 +133,11 @@ axis2_simple_http_svr_conn_create(
     svr_conn_impl->stream = NULL;
     svr_conn_impl->keep_alive = AXIS2_FALSE;
 
-    if(-1 != svr_conn_impl->socket)
+    if (-1 != svr_conn_impl->socket)
     {
         svr_conn_impl->stream = axis2_stream_create_socket(env,
                 svr_conn_impl->socket);
-        if(NULL == svr_conn_impl->stream)
+        if (NULL == svr_conn_impl->stream)
         {
             axis2_simple_http_svr_conn_free((axis2_simple_http_svr_conn_t *)
                     svr_conn_impl, env);
@@ -146,7 +146,7 @@ axis2_simple_http_svr_conn_create(
     }
     svr_conn_impl->svr_conn.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_simple_http_svr_conn_ops_t));
-    if(NULL == svr_conn_impl->svr_conn.ops)
+    if (NULL == svr_conn_impl->svr_conn.ops)
     {
         axis2_simple_http_svr_conn_free((axis2_simple_http_svr_conn_t *)
                 svr_conn_impl, env);
@@ -186,7 +186,7 @@ axis2_simple_http_svr_conn_free(
         AXIS2_INTF_TO_IMPL(svr_conn);
 
     axis2_simple_http_svr_conn_close(svr_conn, env);
-    if(NULL != svr_conn->ops)
+    if (NULL != svr_conn->ops)
     {
         AXIS2_FREE(env->allocator, svr_conn->ops);
         svr_conn->ops = NULL;
@@ -209,7 +209,7 @@ axis2_simple_http_svr_conn_close(
     svr_conn_impl = AXIS2_INTF_TO_IMPL(svr_conn);
 
     AXIS2_STREAM_FREE(svr_conn_impl->stream, env);
-    if(-1 != svr_conn_impl->socket)
+    if (-1 != svr_conn_impl->socket)
     {
         axis2_network_handler_close_socket(env, svr_conn_impl->socket);
         svr_conn_impl->socket = -1;
@@ -226,7 +226,7 @@ axis2_simple_http_svr_conn_is_open(
     axis2_simple_http_svr_conn_impl_t *svr_conn_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     svr_conn_impl = AXIS2_INTF_TO_IMPL(svr_conn);
-    if(-1 != svr_conn_impl->socket)
+    if (-1 != svr_conn_impl->socket)
     {
         return AXIS2_TRUE;
     }
@@ -241,7 +241,7 @@ axis2_simple_http_svr_conn_is_open(
 axis2_status_t AXIS2_CALL
 axis2_simple_http_svr_conn_set_keep_alive(
     axis2_simple_http_svr_conn_t *svr_conn,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_bool_t keep_alive)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -301,23 +301,23 @@ axis2_simple_http_svr_conn_read_request(
 
     svr_conn_impl = AXIS2_INTF_TO_IMPL(svr_conn);
     memset(str_line, 0, 1024);
-    while((read = AXIS2_STREAM_READ(svr_conn_impl->stream, env, tmp_buf,
+    while ((read = AXIS2_STREAM_READ(svr_conn_impl->stream, env, tmp_buf,
             1)) > 0)
     {
         tmp_buf[read] = '\0';
         strcat(str_line, tmp_buf);
-        if(0 != strstr(str_line, AXIS2_HTTP_CRLF))
+        if (0 != strstr(str_line, AXIS2_HTTP_CRLF))
         {
             end_of_line = AXIS2_TRUE;
         }
-        if(AXIS2_TRUE == end_of_line)
+        if (AXIS2_TRUE == end_of_line)
         {
             break;
         }
     }
-    if(NULL != str_line)
+    if (NULL != str_line)
     {
-        if(0 != AXIS2_STRNCASECMP(str_line, "GET", 3) && 0 !=
+        if (0 != AXIS2_STRNCASECMP(str_line, "GET", 3) && 0 !=
                 AXIS2_STRNCASECMP(str_line, "POST", 4))
         {
             char write_buf[512];
@@ -331,7 +331,7 @@ axis2_simple_http_svr_conn_read_request(
         }
     }
     request_line = axis2_http_request_line_parse_line(env, str_line);
-    if(NULL == request_line)
+    if (NULL == request_line)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
@@ -343,22 +343,22 @@ axis2_simple_http_svr_conn_read_request(
     /* now read the headers */
     memset(str_line, 0, 1024);
     end_of_line = AXIS2_FALSE;
-    while(AXIS2_FALSE == end_of_headers)
+    while (AXIS2_FALSE == end_of_headers)
     {
-        while((read = AXIS2_STREAM_READ(svr_conn_impl->stream, env, tmp_buf,
+        while ((read = AXIS2_STREAM_READ(svr_conn_impl->stream, env, tmp_buf,
                 1)) > 0)
         {
             tmp_buf[read] = '\0';
             strcat(str_line, tmp_buf);
-            if(0 != strstr(str_line, AXIS2_HTTP_CRLF))
+            if (0 != strstr(str_line, AXIS2_HTTP_CRLF))
             {
                 end_of_line = AXIS2_TRUE;
                 break;
             }
         }
-        if(AXIS2_TRUE == end_of_line)
+        if (AXIS2_TRUE == end_of_line)
         {
-            if(0 == AXIS2_STRCMP(str_line, AXIS2_HTTP_CRLF))
+            if (0 == AXIS2_STRCMP(str_line, AXIS2_HTTP_CRLF))
             {
                 end_of_headers = AXIS2_TRUE;
             }
@@ -367,7 +367,7 @@ axis2_simple_http_svr_conn_read_request(
                 axis2_http_header_t *tmp_header =
                     axis2_http_header_create_by_str(env, str_line);
                 memset(str_line, 0, 1024);
-                if(NULL != tmp_header)
+                if (NULL != tmp_header)
                 {
                     AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env,
                             tmp_header);
@@ -408,29 +408,29 @@ axis2_simple_http_svr_conn_write_response(
             svr_conn_impl->stream);
     content_type = (axis2_char_t *)AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_TYPE(
                 response, env);
-    if(NULL != content_type)
+    if (NULL != content_type)
     {
-        if(strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)
+        if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)
                 && strstr(content_type, AXIS2_HTTP_HEADER_XOP_XML))
             binary_content = AXIS2_TRUE;
     }
-    if(NULL == response_writer)
+    if (NULL == response_writer)
     {
         return AXIS2_FAILURE;
     }
     enc_header = AXIS2_HTTP_SIMPLE_RESPONSE_GET_FIRST_HEADER(response, env,
             AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
-    if(NULL != enc_header)
+    if (NULL != enc_header)
     {
         axis2_char_t *enc_value = AXIS2_HTTP_HEADER_GET_VALUE(enc_header, env);
-        if(NULL != enc_value)
+        if (NULL != enc_value)
         {
-            if(0 == AXIS2_STRCMP(enc_value,
+            if (0 == AXIS2_STRCMP(enc_value,
                     AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
                 chuked_encoding = AXIS2_TRUE;
                 /* remove the content length header */
-                if(AXIS2_TRUE == AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER(
+                if (AXIS2_TRUE == AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER(
                             response, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH))
                 {
                     AXIS2_HTTP_SIMPLE_RESPONSE_REMOVE_HEADERS(response, env,
@@ -440,7 +440,7 @@ axis2_simple_http_svr_conn_write_response(
         }
     }
     status_line = AXIS2_HTTP_SIMPLE_RESPONSE_GET_STATUS_LINE(response, env);
-    if(NULL == status_line)
+    if (NULL == status_line)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
@@ -452,14 +452,14 @@ axis2_simple_http_svr_conn_write_response(
     AXIS2_HTTP_RESPONSE_WRITER_PRINT_STR(response_writer, env, status_line);
     headers = AXIS2_HTTP_SIMPLE_RESPONSE_GET_HEADERS(response, env);
 
-    if(NULL != headers)
+    if (NULL != headers)
     {
-        for(i = 0; i < AXIS2_ARRAY_LIST_SIZE(headers, env); i++)
+        for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(headers, env); i++)
         {
             axis2_http_header_t *header = NULL;
             header = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(headers, env,
                     i);
-            if(NULL != header)
+            if (NULL != header)
             {
                 axis2_char_t *header_ext_form =
                     AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(
@@ -475,15 +475,15 @@ axis2_simple_http_svr_conn_write_response(
     response_stream = AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY(response, env);
     body_size = AXIS2_HTTP_SIMPLE_RESPONSE_GET_BODY_BYTES(response, env,
             &response_body);
-    if(body_size <= 0)
+    if (body_size <= 0)
     {
         AXIS2_HTTP_RESPONSE_WRITER_FREE(response_writer, env);
         return AXIS2_SUCCESS;
     }
-    if(AXIS2_FALSE == chuked_encoding)
+    if (AXIS2_FALSE == chuked_encoding)
     {
         axis2_status_t write_stat = AXIS2_FAILURE;
-        if(AXIS2_FALSE == binary_content)
+        if (AXIS2_FALSE == binary_content)
             write_stat = AXIS2_HTTP_RESPONSE_WRITER_PRINTLN_STR(response_writer,
                     env, response_body);
         else
@@ -492,7 +492,7 @@ axis2_simple_http_svr_conn_write_response(
                     env, response_body, 0, body_size);
         }
 
-        if(AXIS2_SUCCESS != write_stat)
+        if (AXIS2_SUCCESS != write_stat)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_WRITING_RESPONSE,
                     AXIS2_FAILURE);
@@ -506,7 +506,7 @@ axis2_simple_http_svr_conn_write_response(
         int left = body_size;
         chunked_stream = axis2_http_chunked_stream_create(env,
                 svr_conn_impl->stream);
-        while(left > 0)
+        while (left > 0)
         {
             left -= AXIS2_HTTP_CHUNKED_STREAM_WRITE(chunked_stream, env,
                     response_body, body_size);
@@ -522,7 +522,7 @@ axis2_simple_http_svr_conn_write_response(
 axis2_status_t AXIS2_CALL
 axis2_simple_http_svr_conn_set_rcv_timeout(
     axis2_simple_http_svr_conn_t *svr_conn,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     int timeout)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -536,7 +536,7 @@ axis2_simple_http_svr_conn_set_rcv_timeout(
 axis2_status_t AXIS2_CALL
 axis2_simple_http_svr_conn_set_snd_timeout(
     axis2_simple_http_svr_conn_t *svr_conn,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     int timeout)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

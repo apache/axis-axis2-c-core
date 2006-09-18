@@ -29,25 +29,25 @@
 #include "woden_test.h"
 
 
-static axiom_document_t* 
+static axiom_document_t*
 get_root_element_from_filename(
-        const axis2_env_t *env, 
-        axis2_char_t *filename);
+    const axis2_env_t *env,
+    axis2_char_t *filename);
 
 void test_read_wsdl(
-        CuTest *tc);
+    CuTest *tc);
 
 CuSuite* woden_GetSuite()
 {
     CuSuite* suite = CuSuiteNew();
-    
+
     SUITE_ADD_TEST(suite, test_read_wsdl);
 
     return suite;
 }
 
 void test_read_wsdl(
-        CuTest *tc)
+    CuTest *tc)
 {
     axis2_env_t *env = NULL;
     axiom_document_t *om_doc = NULL;
@@ -58,17 +58,17 @@ void test_read_wsdl(
     void *intface = NULL;
     axis2_array_list_t *intfaces = NULL;
     axis2_qname_t *intface_qname = NULL;
-    
-    
-    axis2_char_t *filename = "./resources/Calculator.wsdl"; 
-    
+
+
+    axis2_char_t *filename = "./resources/Calculator.wsdl";
+
     env = axis2_env_create_all("test.log", 1);
-    
+
     om_doc = get_root_element_from_filename(env, filename);
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    doc_base_uri = AXIS2_STRACAT (axis2c_home, "/woden", env);
+    doc_base_uri = AXIS2_STRACAT(axis2c_home, "/woden", env);
     resolver = woden_resolver_create(env);
-    
+
     desc = WODEN_RESOLVER_READ(resolver, env, om_doc, doc_base_uri);
     CuAssertPtrNotNull(tc, desc);
     intfaces = WODEN_DESC_GET_INTERFACES(desc, env);
@@ -79,10 +79,10 @@ void test_read_wsdl(
     CuAssertPtrNotNull(tc, intface_qname);
 }
 
-static axiom_document_t* 
+static axiom_document_t*
 get_root_element_from_filename(
-        const axis2_env_t *env, 
-        axis2_char_t *filename)
+    const axis2_env_t *env,
+    axis2_char_t *filename)
 {
     axiom_xml_reader_t *reader = NULL;
     axiom_stax_builder_t *om_builder = NULL;
@@ -90,9 +90,9 @@ get_root_element_from_filename(
 
     reader = axiom_xml_reader_create_for_file(env, filename, NULL);
     om_builder = axiom_stax_builder_create(env, reader);
-    doc = axiom_document_create(env, NULL, om_builder); 
+    doc = axiom_document_create(env, NULL, om_builder);
     AXIOM_DOCUMENT_BUILD_ALL(doc, env);
 
-    return doc;    
+    return doc;
 }
 

@@ -21,7 +21,7 @@
 
 /**
  * @brief Message Receiver struct impl
- * Axis2 Message Receiver impl  
+ * Axis2 Message Receiver impl
  */
 typedef struct axis2_svr_callback_impl
 {
@@ -62,9 +62,9 @@ axis2_svr_callback_create(
     AXIS2_ENV_CHECK(env, NULL);
 
     svr_callback_impl = (axis2_svr_callback_impl_t *)
-            AXIS2_MALLOC (env->allocator, sizeof (axis2_svr_callback_impl_t));
+            AXIS2_MALLOC(env->allocator, sizeof(axis2_svr_callback_impl_t));
 
-    if(NULL == svr_callback_impl)
+    if (NULL == svr_callback_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -73,9 +73,9 @@ axis2_svr_callback_create(
     svr_callback_impl->svr_callback.ops = NULL;
 
     svr_callback_impl->svr_callback.ops = (axis2_svr_callback_ops_t *)
-            AXIS2_MALLOC( env->allocator, sizeof(axis2_svr_callback_ops_t));
+            AXIS2_MALLOC(env->allocator, sizeof(axis2_svr_callback_ops_t));
 
-    if(NULL == svr_callback_impl->svr_callback.ops)
+    if (NULL == svr_callback_impl->svr_callback.ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_svr_callback_free(&(svr_callback_impl->svr_callback), env);
@@ -104,13 +104,13 @@ axis2_svr_callback_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     svr_callback_impl = AXIS2_INTF_TO_IMPL(svr_callback);
 
-    if(NULL != svr_callback->ops)
+    if (NULL != svr_callback->ops)
     {
         AXIS2_FREE(env->allocator, svr_callback->ops);
         svr_callback->ops = NULL;
     }
 
-    if(svr_callback_impl)
+    if (svr_callback_impl)
     {
         AXIS2_FREE(env->allocator, svr_callback_impl);
         svr_callback_impl = NULL;
@@ -137,7 +137,7 @@ axis2_svr_callback_handle_result(
     svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
     conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);
-    if(!engine)
+    if (!engine)
     {
         return AXIS2_FAILURE;
     }
@@ -163,7 +163,7 @@ axis2_svr_callback_handle_fault(
     svc_ctx = AXIS2_OP_CTX_GET_PARENT(op_ctx, env);
     conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(svc_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);
-    if(!engine)
+    if (!engine)
     {
         return AXIS2_FAILURE;
     }

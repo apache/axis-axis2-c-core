@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #include <woden_wsdl10_ext_registry.h>
 #include <woden_component_exts.h>
 
@@ -40,10 +40,10 @@
 
 typedef struct woden_wsdl10_ext_registry_impl woden_wsdl10_ext_registry_impl_t;
 
-/** 
+/**
  * @brief Extension Registry Struct Impl
- *   Axis2 Extension Registry  
- */ 
+ *   Axis2 Extension Registry
+ */
 struct woden_wsdl10_ext_registry_impl
 {
     woden_wsdl10_ext_registry_t registry;
@@ -75,10 +75,10 @@ struct woden_wsdl10_ext_registry_impl
     woden_string_attr_t *string_attr;
     woden_uri_attr_t *uri_attr;
     woden_qname_or_token_any_attr_t *qname_or_token_any_attr;
-    woden_qname_list_or_token_any_attr_t *qname_list_or_token_any_attr; 
-    woden_wsdl10_soap_module_deserializer_t *soap_module_deser; 
+    woden_qname_list_or_token_any_attr_t *qname_list_or_token_any_attr;
+    woden_wsdl10_soap_module_deserializer_t *soap_module_deser;
     woden_wsdl10_soap_module_t *soap_module;
-    woden_wsdl10_soap_header_block_deserializer_t *soap_header_block_deser; 
+    woden_wsdl10_soap_header_block_deserializer_t *soap_header_block_deser;
     woden_wsdl10_soap_header_block_t *soap_header_block;
     woden_wsdl10_soap_binding_exts_t *soap_binding_ext;
     woden_wsdl10_soap_binding_fault_exts_t *soap_binding_fault_ext;
@@ -89,97 +89,97 @@ struct woden_wsdl10_ext_registry_impl
 
 #define INTF_TO_IMPL(registry) ((woden_wsdl10_ext_registry_impl_t *) registry)
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_free(
-        void *registry,
-        const axis2_env_t *envv);
+    void *registry,
+    const axis2_env_t *envv);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_deserializer(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_type,
-        axis2_qname_t *element_qtype,
-        void *ed);
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_type,
+    axis2_qname_t *element_qtype,
+    void *ed);
 
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_deserializer(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_type,
-        axis2_qname_t *element_type);
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_type,
+    axis2_qname_t *element_type);
 
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_ext_element_type(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_class,
-        axis2_qname_t *elem_qn);
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_class,
+    axis2_qname_t *elem_qn);
 
 axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_get_allowable_exts(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_type);
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_type);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_ext_element_type(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_type,
-        axis2_qname_t *element_qtype,
-        void *element);
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_type,
+    axis2_qname_t *element_qtype,
+    void *element);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_ext_attr_type(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *owner_class,
-        axis2_qname_t *attr_qname,
-        void *attr);
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *owner_class,
+    axis2_qname_t *attr_qname,
+    void *attr);
 
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_ext_attr_type(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_class,
-        axis2_qname_t *attr_qn);
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_class,
+    axis2_qname_t *attr_qn);
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_component_ext(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_class,
-        axis2_uri_t *ext_namespc,
-        void *comp_ext);
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_class,
+    axis2_uri_t *ext_namespc,
+    void *comp_ext);
 
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_component_ext(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_class,
-        axis2_uri_t *ext_namespc);
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_class,
+    axis2_uri_t *ext_namespc);
 
 axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_query_component_ext_namespaces(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_class);
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_class);
 
 static axis2_status_t
 woden_wsdl10_ext_registry_populate(
-        void *registry,
-        const axis2_env_t *env);
+    void *registry,
+    const axis2_env_t *env);
 
 AXIS2_EXTERN woden_wsdl10_ext_registry_t * AXIS2_CALL
 woden_wsdl10_ext_registry_create(
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
-    
+
     AXIS2_ENV_CHECK(env, NULL);
-    registry_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(woden_wsdl10_ext_registry_impl_t));
+    registry_impl = AXIS2_MALLOC(env->allocator,
+            sizeof(woden_wsdl10_ext_registry_impl_t));
 
     registry_impl->deserializer_reg = NULL;
     registry_impl->ext_element_reg = NULL;
@@ -190,10 +190,10 @@ woden_wsdl10_ext_registry_create(
     registry_impl->string_attr = NULL;
     registry_impl->uri_attr = NULL;
     registry_impl->qname_or_token_any_attr = NULL;
-    registry_impl->qname_list_or_token_any_attr = NULL; 
-    registry_impl->soap_module_deser = NULL; 
+    registry_impl->qname_list_or_token_any_attr = NULL;
+    registry_impl->soap_module_deser = NULL;
     registry_impl->soap_module = NULL;
-    registry_impl->soap_header_block_deser = NULL; 
+    registry_impl->soap_header_block_deser = NULL;
     registry_impl->soap_header_block = NULL;
     registry_impl->soap_binding_ext = NULL;
     registry_impl->soap_binding_fault_ext = NULL;
@@ -201,98 +201,98 @@ woden_wsdl10_ext_registry_create(
     registry_impl->soap_binding_msg_ref_ext = NULL;
     registry_impl->soap_binding_fault_ref_ext = NULL;
 
-    registry_impl->registry.ops = AXIS2_MALLOC(env->allocator, 
-                    sizeof(woden_wsdl10_ext_registry_ops_t)); 
-    
-    registry_impl->registry.ops->free = 
-            woden_wsdl10_ext_registry_free;
-    registry_impl->registry.ops->register_deserializer = 
-            woden_wsdl10_ext_registry_register_deserializer;
-    registry_impl->registry.ops->query_deserializer = 
-            woden_wsdl10_ext_registry_query_deserializer;
-    registry_impl->registry.ops->query_ext_element_type = 
-            woden_wsdl10_ext_registry_query_ext_element_type;
-    registry_impl->registry.ops->get_allowable_exts = 
-            woden_wsdl10_ext_registry_get_allowable_exts;
-    registry_impl->registry.ops->register_ext_element_type = 
-            woden_wsdl10_ext_registry_register_ext_element_type;
-    registry_impl->registry.ops->register_ext_attr_type = 
-            woden_wsdl10_ext_registry_register_ext_attr_type;
-    registry_impl->registry.ops->query_ext_attr_type = 
-            woden_wsdl10_ext_registry_query_ext_attr_type;
-    registry_impl->registry.ops->register_component_ext = 
-            woden_wsdl10_ext_registry_register_component_ext;
-    registry_impl->registry.ops->query_component_ext = 
-            woden_wsdl10_ext_registry_query_component_ext;
-    registry_impl->registry.ops->query_component_ext_namespaces = 
-            woden_wsdl10_ext_registry_query_component_ext_namespaces;
-    
+    registry_impl->registry.ops = AXIS2_MALLOC(env->allocator,
+            sizeof(woden_wsdl10_ext_registry_ops_t));
+
+    registry_impl->registry.ops->free =
+        woden_wsdl10_ext_registry_free;
+    registry_impl->registry.ops->register_deserializer =
+        woden_wsdl10_ext_registry_register_deserializer;
+    registry_impl->registry.ops->query_deserializer =
+        woden_wsdl10_ext_registry_query_deserializer;
+    registry_impl->registry.ops->query_ext_element_type =
+        woden_wsdl10_ext_registry_query_ext_element_type;
+    registry_impl->registry.ops->get_allowable_exts =
+        woden_wsdl10_ext_registry_get_allowable_exts;
+    registry_impl->registry.ops->register_ext_element_type =
+        woden_wsdl10_ext_registry_register_ext_element_type;
+    registry_impl->registry.ops->register_ext_attr_type =
+        woden_wsdl10_ext_registry_register_ext_attr_type;
+    registry_impl->registry.ops->query_ext_attr_type =
+        woden_wsdl10_ext_registry_query_ext_attr_type;
+    registry_impl->registry.ops->register_component_ext =
+        woden_wsdl10_ext_registry_register_component_ext;
+    registry_impl->registry.ops->query_component_ext =
+        woden_wsdl10_ext_registry_query_component_ext;
+    registry_impl->registry.ops->query_component_ext_namespaces =
+        woden_wsdl10_ext_registry_query_component_ext_namespaces;
+
     registry_impl->ext_attr_reg = axis2_hash_make(env);
-    if(!registry_impl->ext_attr_reg)
+    if (!registry_impl->ext_attr_reg)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     registry_impl->deserializer_reg = axis2_hash_make(env);
-    if(!registry_impl->deserializer_reg)
+    if (!registry_impl->deserializer_reg)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     registry_impl->ext_element_reg = axis2_hash_make(env);
-    if(!registry_impl->ext_element_reg)
+    if (!registry_impl->ext_element_reg)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     registry_impl->comp_ext_reg = axis2_hash_make(env);
-    if(!registry_impl->comp_ext_reg)
+    if (!registry_impl->comp_ext_reg)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     woden_wsdl10_ext_registry_populate(&(registry_impl->registry), env);
-    
+
     return &(registry_impl->registry);
 }
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_free(
-        void *registry,
-        const axis2_env_t *env)
+    void *registry,
+    const axis2_env_t *env)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     registry_impl = INTF_TO_IMPL(registry);
 
-    if(registry_impl->deserializer_reg)
+    if (registry_impl->deserializer_reg)
     {
         /* TODO */
     }
-    
-    if(registry_impl->ext_element_reg)
+
+    if (registry_impl->ext_element_reg)
     {
         /* TODO */
     }
-    
-    if(registry_impl->ext_attr_reg)
+
+    if (registry_impl->ext_attr_reg)
     {
         /* TODO */
     }
-    
-    if(registry_impl->comp_ext_reg)
+
+    if (registry_impl->comp_ext_reg)
     {
         /* TODO */
     }
-    
-    if((&(registry_impl->registry))->ops)
+
+    if ((&(registry_impl->registry))->ops)
     {
         AXIS2_FREE(env->allocator, (&(registry_impl->registry))->ops);
         (&(registry_impl->registry))->ops = NULL;
     }
 
-    if(registry_impl)
+    if (registry_impl)
     {
         AXIS2_FREE(env->allocator, registry_impl);
         registry_impl = NULL;
@@ -317,11 +317,11 @@ woden_wsdl10_ext_registry_free(
 */
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_deserializer(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_type,
-        axis2_qname_t *element_qtype,
-        void *ed)
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_type,
+    axis2_qname_t *element_qtype,
+    void *ed)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_deserializer_reg = NULL;
@@ -330,16 +330,16 @@ woden_wsdl10_ext_registry_register_deserializer(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg, 
+    inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg,
             parent_type, AXIS2_HASH_KEY_STRING);
-    if(NULL == inner_deserializer_reg)
+    if (NULL == inner_deserializer_reg)
     {
         inner_deserializer_reg = axis2_hash_make(env);
-        axis2_hash_set(registry_impl->deserializer_reg, parent_type, 
+        axis2_hash_set(registry_impl->deserializer_reg, parent_type,
                 AXIS2_HASH_KEY_STRING, inner_deserializer_reg);
     }
     element_type = AXIS2_QNAME_TO_STRING(element_qtype, env);
-    axis2_hash_set(inner_deserializer_reg, element_type, AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(inner_deserializer_reg, element_type, AXIS2_HASH_KEY_STRING,
             ed);
     return AXIS2_SUCCESS;
 }
@@ -362,10 +362,10 @@ woden_wsdl10_ext_registry_register_deserializer(
 */
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_deserializer(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_type,
-        axis2_qname_t *element_type)
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_type,
+    axis2_qname_t *element_type)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_deserializer_reg = NULL;
@@ -376,19 +376,19 @@ woden_wsdl10_ext_registry_query_deserializer(
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg, 
+    inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg,
             parent_type, AXIS2_HASH_KEY_STRING);
     /*elem_name = AXIS2_QNAME_TO_STRING(element_type, env); */
-    if(NULL != inner_deserializer_reg)
+    if (NULL != inner_deserializer_reg)
     {
-        
-        element_qtype = axis2_qname_create_from_string(env, 
+
+        element_qtype = axis2_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_SOAP_MODULE);
         elem_name = AXIS2_QNAME_TO_STRING(element_qtype, env);
-        ed = axis2_hash_get(inner_deserializer_reg, elem_name, 
+        ed = axis2_hash_get(inner_deserializer_reg, elem_name,
                 AXIS2_HASH_KEY_STRING);
     }
-    if(ed)
+    if (ed)
         ed = woden_wsdl10_soap_module_deserializer_to_ext_deserializer(ed, env);
     return ed;
 }
@@ -408,10 +408,10 @@ woden_wsdl10_ext_registry_query_deserializer(
 */
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_ext_element_type(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_class,
-        axis2_qname_t *elem_qn)
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_class,
+    axis2_qname_t *elem_qn)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_ext_element_reg = NULL;
@@ -421,12 +421,12 @@ woden_wsdl10_ext_registry_query_ext_element_type(
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_ext_element_reg = axis2_hash_get(registry_impl->ext_element_reg, 
+    inner_ext_element_reg = axis2_hash_get(registry_impl->ext_element_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
     /*elem_name = AXIS2_QNAME_TO_STRING(elem_qn, env);*/
-    if(NULL != inner_ext_element_reg)
+    if (NULL != inner_ext_element_reg)
     {
-        element = axis2_hash_get(inner_ext_element_reg, 
+        element = axis2_hash_get(inner_ext_element_reg,
                 WODEN_WSDL10_Q_ELEM_SOAP_MODULE, AXIS2_HASH_KEY_STRING);
     }
     return element;
@@ -442,29 +442,29 @@ woden_wsdl10_ext_registry_query_ext_element_type(
 */
 axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_get_allowable_exts(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_type)
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_type)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_deserializer_reg = NULL;
-    
+
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg, 
-            parent_type, AXIS2_HASH_KEY_STRING); 
-    if(NULL != inner_deserializer_reg)
+    inner_deserializer_reg = axis2_hash_get(registry_impl->deserializer_reg,
+            parent_type, AXIS2_HASH_KEY_STRING);
+    if (NULL != inner_deserializer_reg)
     {
         axis2_hash_index_t *i = NULL;
 
         registry_impl->key_set = axis2_array_list_create(env, 0);
-        for (i = axis2_hash_first (inner_deserializer_reg, env); i; i = 
-                axis2_hash_next (env, i))
+        for (i = axis2_hash_first(inner_deserializer_reg, env); i; i =
+                    axis2_hash_next(env, i))
         {
             void *v = NULL;
 
-            axis2_hash_this (i, NULL, NULL, &v);
+            axis2_hash_this(i, NULL, NULL, &v);
             AXIS2_ARRAY_LIST_ADD(registry_impl->key_set, env, v);
         }
     }
@@ -489,11 +489,11 @@ woden_wsdl10_ext_registry_get_allowable_exts(
 */
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_ext_element_type(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_type,
-        axis2_qname_t *element_qtype,
-        void *element)
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_type,
+    axis2_qname_t *element_qtype,
+    void *element)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_ext_type_reg = NULL;
@@ -502,16 +502,16 @@ woden_wsdl10_ext_registry_register_ext_element_type(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_ext_type_reg = axis2_hash_get(registry_impl->ext_element_reg, 
+    inner_ext_type_reg = axis2_hash_get(registry_impl->ext_element_reg,
             parent_type, AXIS2_HASH_KEY_STRING);
-    if(NULL == inner_ext_type_reg)
+    if (NULL == inner_ext_type_reg)
     {
         inner_ext_type_reg = axis2_hash_make(env);
-        axis2_hash_set(registry_impl->ext_element_reg, parent_type, 
+        axis2_hash_set(registry_impl->ext_element_reg, parent_type,
                 AXIS2_HASH_KEY_STRING, inner_ext_type_reg);
     }
     element_type = AXIS2_QNAME_TO_STRING(element_qtype, env);
-    axis2_hash_set(inner_ext_type_reg, element_type, AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(inner_ext_type_reg, element_type, AXIS2_HASH_KEY_STRING,
             element);
     return AXIS2_SUCCESS;
 }
@@ -532,11 +532,11 @@ woden_wsdl10_ext_registry_register_ext_element_type(
 */
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_ext_attr_type(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *owner_class,
-        axis2_qname_t *attr_qname,
-        void *attr)
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *owner_class,
+    axis2_qname_t *attr_qname,
+    void *attr)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_ext_attr_reg = NULL;
@@ -545,12 +545,12 @@ woden_wsdl10_ext_registry_register_ext_attr_type(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_ext_attr_reg = axis2_hash_get(registry_impl->ext_attr_reg, 
+    inner_ext_attr_reg = axis2_hash_get(registry_impl->ext_attr_reg,
             owner_class, AXIS2_HASH_KEY_STRING);
-    if(NULL == inner_ext_attr_reg)
+    if (NULL == inner_ext_attr_reg)
     {
         inner_ext_attr_reg = axis2_hash_make(env);
-        axis2_hash_set(registry_impl->ext_attr_reg, owner_class, 
+        axis2_hash_set(registry_impl->ext_attr_reg, owner_class,
                 AXIS2_HASH_KEY_STRING, inner_ext_attr_reg);
     }
     attr_name = AXIS2_QNAME_TO_STRING(attr_qname, env);
@@ -572,10 +572,10 @@ woden_wsdl10_ext_registry_register_ext_attr_type(
 */
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_ext_attr_type(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_class,
-        axis2_qname_t *attr_qn)
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_class,
+    axis2_qname_t *attr_qn)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_ext_attr_reg = NULL;
@@ -585,32 +585,32 @@ woden_wsdl10_ext_registry_query_ext_attr_type(
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_ext_attr_reg = axis2_hash_get(registry_impl->ext_attr_reg, 
+    inner_ext_attr_reg = axis2_hash_get(registry_impl->ext_attr_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
     attr_name = AXIS2_QNAME_TO_STRING(attr_qn, env);
-    if(NULL != inner_ext_attr_reg)
+    if (NULL != inner_ext_attr_reg)
     {
-        attr = axis2_hash_get(inner_ext_attr_reg, attr_name, 
+        attr = axis2_hash_get(inner_ext_attr_reg, attr_name,
                 AXIS2_HASH_KEY_STRING);
     }
     return attr;
 }
 
 /**
-* Register the object that will represent extensions from a specified 
+* Register the object that will represent extensions from a specified
 * namespace that will extend the specified WSDL component class.
-* 
+*
 * @param parent_class the WSDL component class
 * @param ext_namespace the extension namespace
 * @param comp_ext_class the obj representing these extensions
 */
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_registry_register_component_ext(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_class,
-        axis2_uri_t *ext_namespc,
-        void *comp_ext)
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_class,
+    axis2_uri_t *ext_namespc,
+    void *comp_ext)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_comp_ext_reg = NULL;
@@ -619,12 +619,12 @@ woden_wsdl10_ext_registry_register_component_ext(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg, 
+    inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
-    if(NULL == inner_comp_ext_reg)
+    if (NULL == inner_comp_ext_reg)
     {
         inner_comp_ext_reg = axis2_hash_make(env);
-        axis2_hash_set(registry_impl->comp_ext_reg, parent_class, 
+        axis2_hash_set(registry_impl->comp_ext_reg, parent_class,
                 AXIS2_HASH_KEY_STRING, inner_comp_ext_reg);
     }
     namespc = AXIS2_URI_TO_STRING(ext_namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
@@ -635,17 +635,17 @@ woden_wsdl10_ext_registry_register_component_ext(
 /**
 * Return the object that represents the extensions from the specified
 * namespace that extend the specified WSDL component class.
-* 
+*
 * @param parent_class the WSDL component
 * @param ext_namespace the extension namespace
 * @return the object of the component extensions
 */
 void *AXIS2_CALL
 woden_wsdl10_ext_registry_query_component_ext(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_class,
-        axis2_uri_t *ext_namespc)
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_class,
+    axis2_uri_t *ext_namespc)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_comp_ext_reg = NULL;
@@ -655,12 +655,12 @@ woden_wsdl10_ext_registry_query_component_ext(
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg, 
+    inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
     namespc = AXIS2_URI_TO_STRING(ext_namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
-    if(NULL != inner_comp_ext_reg)
+    if (NULL != inner_comp_ext_reg)
     {
-        comp_ext = axis2_hash_get(inner_comp_ext_reg, namespc, 
+        comp_ext = axis2_hash_get(inner_comp_ext_reg, namespc,
                 AXIS2_HASH_KEY_STRING);
     }
     return comp_ext;
@@ -668,15 +668,15 @@ woden_wsdl10_ext_registry_query_component_ext(
 
 /**
 * Return the extension namespaces registered for the specified WSDL Component class.
-* 
+*
 * @param parentClass the class of WSDL component extended by these namespaces
 * @return an array of namespace URIs
 */
 axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_ext_registry_query_component_ext_namespaces(
-        void *registry,
-        const axis2_env_t *env,
-        axis2_char_t *parent_class)
+    void *registry,
+    const axis2_env_t *env,
+    axis2_char_t *parent_class)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axis2_hash_t *inner_comp_ext_reg = NULL;
@@ -684,19 +684,19 @@ woden_wsdl10_ext_registry_query_component_ext_namespaces(
     AXIS2_ENV_CHECK(env, NULL);
     registry_impl = INTF_TO_IMPL(registry);
 
-    inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg, 
+    inner_comp_ext_reg = axis2_hash_get(registry_impl->comp_ext_reg,
             parent_class, AXIS2_HASH_KEY_STRING);
     registry_impl->key_set = axis2_array_list_create(env, 0);
-    if(NULL != inner_comp_ext_reg)
+    if (NULL != inner_comp_ext_reg)
     {
         axis2_hash_index_t *i = NULL;
 
-        for (i = axis2_hash_first (inner_comp_ext_reg, env); i; i = 
-                axis2_hash_next (env, i))
+        for (i = axis2_hash_first(inner_comp_ext_reg, env); i; i =
+                    axis2_hash_next(env, i))
         {
             const void *key = NULL;
 
-            axis2_hash_this (i, &key, NULL, NULL);
+            axis2_hash_this(i, &key, NULL, NULL);
             AXIS2_ARRAY_LIST_ADD(registry_impl->key_set, env, key);
         }
     }
@@ -705,8 +705,8 @@ woden_wsdl10_ext_registry_query_component_ext_namespaces(
 
 static axis2_status_t
 woden_wsdl10_ext_registry_populate(
-        void *registry,
-        const axis2_env_t *env)
+    void *registry,
+    const axis2_env_t *env)
 {
     woden_wsdl10_ext_registry_impl_t *registry_impl = NULL;
     axis2_qname_t *q_attr_soap_version = NULL;
@@ -724,144 +724,144 @@ woden_wsdl10_ext_registry_populate(
     registry_impl = INTF_TO_IMPL(registry);
 
     /*********************** SOAP extension attributes ************************/
-   
-    registry_impl->string_attr = woden_string_attr_create(env, NULL, NULL, 
+
+    registry_impl->string_attr = woden_string_attr_create(env, NULL, NULL,
             NULL, NULL);
-    registry_impl->uri_attr = woden_uri_attr_create(env, NULL, NULL, NULL, 
+    registry_impl->uri_attr = woden_uri_attr_create(env, NULL, NULL, NULL,
             NULL);
-    registry_impl->qname_or_token_any_attr = 
+    registry_impl->qname_or_token_any_attr =
         woden_qname_or_token_any_attr_create(env, NULL, NULL, NULL, NULL);
-    registry_impl->qname_list_or_token_any_attr = 
-        woden_qname_list_or_token_any_attr_create(env, NULL, NULL, NULL, 
+    registry_impl->qname_list_or_token_any_attr =
+        woden_qname_list_or_token_any_attr_create(env, NULL, NULL, NULL,
                 NULL);
 
     q_attr_soap_version = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_VERSION);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
-        "binding_element", q_attr_soap_version, 
-        registry_impl->string_attr);
-   
+            "binding_element", q_attr_soap_version,
+            registry_impl->string_attr);
+
     q_attr_soap_protocol = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_PROTOCOL);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
-        "binding_element", q_attr_soap_protocol, 
-        registry_impl->uri_attr);
-   
+            "binding_element", q_attr_soap_protocol,
+            registry_impl->uri_attr);
+
     q_attr_soap_mepdefault = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_MEPDEFAULT);
     woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
-        "binding_element", q_attr_soap_mepdefault, 
-        registry_impl->uri_attr);
-   
+            "binding_element", q_attr_soap_mepdefault,
+            registry_impl->uri_attr);
+
     q_attr_soap_code = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_CODE);
-    woden_wsdl10_ext_registry_register_ext_attr_type(registry, env, 
-        "binding_fault_element", q_attr_soap_code, 
-        registry_impl->qname_or_token_any_attr);
-   
+    woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
+            "binding_fault_element", q_attr_soap_code,
+            registry_impl->qname_or_token_any_attr);
+
     q_attr_soap_subcodes = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_SUBCODES);
-    woden_wsdl10_ext_registry_register_ext_attr_type(registry, env, 
-        "binding_fault_element", q_attr_soap_subcodes, 
-        registry_impl->qname_list_or_token_any_attr);
-   
+    woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
+            "binding_fault_element", q_attr_soap_subcodes,
+            registry_impl->qname_list_or_token_any_attr);
+
     q_attr_soap_mep = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_MEP);
-    woden_wsdl10_ext_registry_register_ext_attr_type(registry, env, 
-        "binding_op_element", q_attr_soap_mep, 
-        registry_impl->uri_attr);
-   
+    woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
+            "binding_op_element", q_attr_soap_mep,
+            registry_impl->uri_attr);
+
     q_attr_soap_action = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_ACTION);
-    woden_wsdl10_ext_registry_register_ext_attr_type(registry, env, 
-        "binding_op_element", q_attr_soap_action, 
-        registry_impl->uri_attr);
-    
+    woden_wsdl10_ext_registry_register_ext_attr_type(registry, env,
+            "binding_op_element", q_attr_soap_action,
+            registry_impl->uri_attr);
+
     /************** SOAPModule extension elements *****************************/
 
-    registry_impl->soap_module_deser = 
+    registry_impl->soap_module_deser =
         woden_wsdl10_soap_module_deserializer_create(env);
-    registry_impl->soap_module = 
+    registry_impl->soap_module =
         woden_wsdl10_soap_module_create(env);
 
     registry_impl->soap_module = woden_wsdl10_soap_module_create(env);
-    
+
     q_elem_soap_module = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_SOAP_MODULE);
-    
+
     woden_wsdl10_ext_registry_register_deserializer(registry, env, "binding_element",
             q_elem_soap_module,
             registry_impl->soap_module_deser);
-    
+
     woden_wsdl10_ext_registry_register_ext_element_type(registry, env, "binding_element",
             q_elem_soap_module,
             registry_impl->soap_module);
-    
+
     woden_wsdl10_ext_registry_register_deserializer(registry, env, "binding_fault_element",
             q_elem_soap_module,
             registry_impl->soap_module_deser);
-    
+
     woden_wsdl10_ext_registry_register_ext_element_type(registry, env, "binding_fault_element",
             q_elem_soap_module,
             registry_impl->soap_module);
-    
+
     woden_wsdl10_ext_registry_register_deserializer(registry, env, "binding_op_element",
             q_elem_soap_module,
             registry_impl->soap_module_deser);
-    
+
     woden_wsdl10_ext_registry_register_ext_element_type(registry, env, "binding_op_element",
             q_elem_soap_module,
             registry_impl->soap_module);
-    
+
     woden_wsdl10_ext_registry_register_deserializer(registry, env, "binding_msg_ref_element",
             q_elem_soap_module,
             registry_impl->soap_module_deser);
-    
+
     woden_wsdl10_ext_registry_register_ext_element_type(registry, env, "binding_msg_ref_element",
             q_elem_soap_module,
             registry_impl->soap_module);
-    
+
     woden_wsdl10_ext_registry_register_deserializer(registry, env, "binding_fault_ref_element",
             q_elem_soap_module,
             registry_impl->soap_module_deser);
-    
+
     woden_wsdl10_ext_registry_register_ext_element_type(registry, env, "binding_fault_ref_element",
             q_elem_soap_module,
             registry_impl->soap_module);
-    
+
     woden_wsdl10_ext_registry_register_deserializer(registry, env, "endpoint_element",
             q_elem_soap_module,
             registry_impl->soap_module_deser);
-    
+
     woden_wsdl10_ext_registry_register_ext_element_type(registry, env, "endpoint_element",
             q_elem_soap_module,
             registry_impl->soap_module);
-    
+
 
     /**************** SOAPHeaderBlock extension elements **********************/
-    registry_impl->soap_header_block_deser = 
+    registry_impl->soap_header_block_deser =
         woden_wsdl10_soap_header_block_deserializer_create(env);
     registry_impl->soap_header_block = woden_wsdl10_soap_header_block_create(env);
-    
+
     q_elem_soap_header = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_SOAP_HEADER);
-    
+
     woden_wsdl10_ext_registry_register_deserializer(registry, env, "binding_fault_element",
             q_elem_soap_header,
             registry_impl->soap_header_block_deser);
-    
+
     woden_wsdl10_ext_registry_register_ext_element_type(registry, env, "binding_fault_element",
             q_elem_soap_header,
             registry_impl->soap_header_block);
-    
+
     woden_wsdl10_ext_registry_register_deserializer(registry, env, "binding_msg_ref_element",
             q_elem_soap_header,
             registry_impl->soap_header_block_deser);
-    
+
     woden_wsdl10_ext_registry_register_ext_element_type(registry, env, "binding_msg_ref_element",
             q_elem_soap_header,
             registry_impl->soap_header_block);
-    
-    /*************** WSDL Component Extensions *******************************/ 
+
+    /*************** WSDL Component Extensions *******************************/
     registry_impl->soap_binding_ext = woden_wsdl10_soap_binding_exts_create(env);
-    registry_impl->soap_binding_fault_ext = 
+    registry_impl->soap_binding_fault_ext =
         woden_wsdl10_soap_binding_fault_exts_create(env);
-    registry_impl->soap_binding_op_ext = 
+    registry_impl->soap_binding_op_ext =
         woden_wsdl10_soap_binding_op_exts_create(env);
-    registry_impl->soap_binding_msg_ref_ext = 
+    registry_impl->soap_binding_msg_ref_ext =
         woden_wsdl10_soap_binding_msg_ref_exts_create(env);
-    registry_impl->soap_binding_fault_ref_ext = 
+    registry_impl->soap_binding_fault_ref_ext =
         woden_wsdl10_soap_binding_fault_ref_exts_create(env);
 
     uri_ns_soap = axis2_uri_parse_string(env, WODEN_URI_NS_SOAP);
@@ -869,22 +869,22 @@ woden_wsdl10_ext_registry_populate(
     woden_wsdl10_ext_registry_register_component_ext(registry, env, "binding",
             uri_ns_soap,
             registry_impl->soap_binding_ext);
-    
+
     woden_wsdl10_ext_registry_register_component_ext(registry, env, "binding_fault",
             uri_ns_soap,
             registry_impl->soap_binding_fault_ext);
-    
+
     woden_wsdl10_ext_registry_register_component_ext(registry, env, "binding_op",
             uri_ns_soap,
             registry_impl->soap_binding_op_ext);
-    
+
     woden_wsdl10_ext_registry_register_component_ext(registry, env, "binding_msg_ref",
             uri_ns_soap,
             registry_impl->soap_binding_msg_ref_ext);
-    
+
     woden_wsdl10_ext_registry_register_component_ext(registry, env, "binding_fault_ref",
             uri_ns_soap,
             registry_impl->soap_binding_fault_ref_ext);
-    
+
     return AXIS2_SUCCESS;
 }

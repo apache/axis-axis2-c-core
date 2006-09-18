@@ -21,8 +21,8 @@
 
 axis2_status_t
 xml_schema_test(
-        axis2_env_t *env,
-        axis2_char_t *filename)
+    axis2_env_t *env,
+    axis2_char_t *filename)
 {
     axiom_xml_reader_t *xml_reader      = NULL;
     axiom_stax_builder_t *om_builder = NULL;
@@ -30,31 +30,31 @@ xml_schema_test(
     xml_schema_collection_t *schema_collection = NULL;
     xml_schema_t *schema          = NULL;
     axiom_xml_reader_init();
-    xml_reader = 
-    axiom_xml_reader_create_for_file(env, filename, NULL);
-    if(!xml_reader)
-        return AXIS2_FAILURE;   
-    
+    xml_reader =
+        axiom_xml_reader_create_for_file(env, filename, NULL);
+    if (!xml_reader)
+        return AXIS2_FAILURE;
+
     om_builder = axiom_stax_builder_create(env, xml_reader);
-    
+
     om_doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
-    
+
     AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
     schema_collection = xml_schema_collection_create(env);
-    
+
     schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
-        schema_collection, env, om_doc);
-        
-    if(NULL != schema)
+                schema_collection, env, om_doc);
+
+    if (NULL != schema)
     {
         axis2_char_t *buffer = NULL;
         printf("\n parsing schema is successful \n");
         buffer = XML_SCHEMA_SERIALIZE(schema, env);
-        printf("%s", buffer );
-        if(NULL != buffer)
+        printf("%s", buffer);
+        if (NULL != buffer)
             AXIS2_FREE(env->allocator, buffer);
-    }                
-    if(NULL != schema_collection)
+    }
+    if (NULL != schema_collection)
     {
         XML_SCHEMA_COLLECTION_FREE(schema_collection, env);
     }
@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 {
     axis2_env_t *env = NULL;
     axis2_char_t *filename = NULL;
-    if(argc > 1)
+    if (argc > 1)
     {
         filename = argv[1];
         printf("filename:%s\n", filename);
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
     {
         printf("Give an XML schema file as the first argument\n");
     }
-    env = axis2_env_create_all("test.log", 1);   
+    env = axis2_env_create_all("test.log", 1);
     xml_schema_test(env, filename);
     return 0;
 }

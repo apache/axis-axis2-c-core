@@ -1,8 +1,8 @@
 
 /**
- * axis2_Calculator.c 
+ * axis2_Calculator.c
  *
- * This file was auto-generated from WSDL 
+ * This file was auto-generated from WSDL
  * by the Apache Axis2/Java version: #axisVersion# #today#
  * axis2_Calculator Axis2/C skeleton for the axisService
  */
@@ -14,14 +14,14 @@
 
 /**
  * Auto generated function definition
-         
+
  * @param param0
-         
+
 */
 axiom_node_t *
-axis2_Calculator_add (const axis2_env_t * env, axiom_node_t* param0)
+axis2_Calculator_add(const axis2_env_t * env, axiom_node_t* param0)
 {
-  /* Todo fill this with the necessary business logic */
+    /* Todo fill this with the necessary business logic */
     axiom_node_t* req = param0;
     axiom_node_t* node = NULL;
     axiom_element_t* ele = NULL;
@@ -39,33 +39,33 @@ axis2_Calculator_add (const axis2_env_t * env, axiom_node_t* param0)
     int result = 0;
 
     int value1, value2;
-    if (NULL== req)
+    if (NULL == req)
     {
-        printf ("response null\n" );
+        printf("response null\n");
         return NULL;
     }
     else
     {
-        node = AXIOM_NODE_GET_FIRST_CHILD ( req, env );
-        ele = AXIOM_NODE_GET_DATA_ELEMENT (node, env );
-        text = AXIOM_ELEMENT_GET_TEXT ( ele,env, node );
-        value1 = atoi ( text );
+        node = AXIOM_NODE_GET_FIRST_CHILD(req, env);
+        ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+        text = AXIOM_ELEMENT_GET_TEXT(ele, env, node);
+        value1 = atoi(text);
 
-        node = AXIOM_NODE_GET_NEXT_SIBLING( node, env );
-        ele = AXIOM_NODE_GET_DATA_ELEMENT (node, env );
-        text = AXIOM_ELEMENT_GET_TEXT ( ele,env, node );
-        value2 = atoi ( text );
+        node = AXIOM_NODE_GET_NEXT_SIBLING(node, env);
+        ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+        text = AXIOM_ELEMENT_GET_TEXT(ele, env, node);
+        value2 = atoi(text);
 
     }
 
     result = value1 + value2;
 
 
-    ns1 = axiom_namespace_create (env, "http://localhost/axis/Calculator", "ns1");
+    ns1 = axiom_namespace_create(env, "http://localhost/axis/Calculator", "ns1");
     op_ele = axiom_element_create(env, NULL, "addResponse", ns1, &op_node);
 
     value_ele = axiom_element_create(env, op_node, "in1", NULL, &value_node);
-    sprintf ( value_str, "%d", result);
+    sprintf(value_str, "%d", result);
     AXIOM_ELEMENT_SET_TEXT(value_ele, env, value_str , value_node);
 
     return op_node;
@@ -76,43 +76,43 @@ axis2_Calculator_add (const axis2_env_t * env, axiom_node_t* param0)
 
 /**
  * Auto generated function definition
-         
+
  * @param param2
-         
+
 */
 axiom_node_t *
-axis2_Calculator_div (const axis2_env_t * env, axiom_node_t* param2)
+axis2_Calculator_div(const axis2_env_t * env, axiom_node_t* param2)
 {
-  /* Todo fill this with the necessary business logic */
-  return NULL;
+    /* Todo fill this with the necessary business logic */
+    return NULL;
 }
 
 
 
 /**
  * Auto generated function definition
-         
+
  * @param param4
- 
+
 */
 axiom_node_t *
-axis2_Calculator_sub (const axis2_env_t * env, axiom_node_t* param4)
+axis2_Calculator_sub(const axis2_env_t * env, axiom_node_t* param4)
 {
-  /* Todo fill this with the necessary business logic */
-  return NULL;
+    /* Todo fill this with the necessary business logic */
+    return NULL;
 }
 
 
 
 /**
  * Auto generated function definition
-         
+
  * @param param6
-         
+
 */
 axiom_node_t *
-axis2_Calculator_mul (const axis2_env_t * env, axiom_node_t* param6)
+axis2_Calculator_mul(const axis2_env_t * env, axiom_node_t* param6)
 {
-  /* Todo fill this with the necessary business logic */
-  return NULL;
+    /* Todo fill this with the necessary business logic */
+    return NULL;
 }

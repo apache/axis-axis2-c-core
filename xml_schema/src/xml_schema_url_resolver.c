@@ -20,7 +20,7 @@
 #include <platforms/axis2_platform_auto_sense.h>
 
 /*
-static axis2_bool_t 
+static axis2_bool_t
 is_absolute_url(const axis2_char_t *url);
 */
 
@@ -30,12 +30,12 @@ get_file_url(const axis2_env_t *env,
 
 AXIS2_EXTERN xml_schema_input_source_t* AXIS2_CALL
 xml_schema_url_resolver_resolve_entity(
-        const axis2_env_t *env,
-        axis2_char_t *ns,
-        axis2_char_t *schema_location,
-        axis2_char_t *base_uri)
+    const axis2_env_t *env,
+    axis2_char_t *ns,
+    axis2_char_t *schema_location,
+    axis2_char_t *base_uri)
 {
-    if(NULL != base_uri && NULL != schema_location)
+    if (NULL != base_uri && NULL != schema_location)
     {
         axis2_uri_t *uri1 = NULL;
         axis2_uri_t *uri2 = NULL;
@@ -48,27 +48,27 @@ xml_schema_url_resolver_resolve_entity(
             uri1 = axis2_uri_parse_string(env, get_file_url(env, bas));
 
         }
-        */        
+        */
         abs_path = get_file_url(env, base_uri);
-        
+
         uri1 = axis2_uri_parse_string(env, abs_path);
-                                
-        if(NULL != uri1)
+
+        if (NULL != uri1)
         {
             uri2 = axis2_uri_parse_relative(env, uri1, schema_location);
-            if(NULL != uri2)
+            if (NULL != uri2)
             {
                 ref = AXIS2_URI_TO_STRING(uri2, env, 1);
                 /* AXIS2_URI_FREE(uri2, env);  */
                 return xml_schema_input_source_create_with_system_id(env, ref);
             }
         }
-        return NULL;                    
-    }        
+        return NULL;
+    }
     return xml_schema_input_source_create_with_system_id(env, schema_location);
-}        
+}
 /*
-static axis2_bool_t 
+static axis2_bool_t
 is_absolute_url(const axis2_char_t *url)
 {
     if(NULL != url)
@@ -85,11 +85,11 @@ get_file_url(const axis2_env_t *env,
 {
     axis2_char_t *modified_path = NULL;
     axis2_char_t *final_path = NULL;
-    if(!path)
+    if (!path)
         return NULL;
     modified_path = AXIS2_STRDUP(path, env);
     AXIS2_REPLACE(env, modified_path, '\\', '/');
-    if(strncmp(modified_path, "/", 1) == 0)
+    if (strncmp(modified_path, "/", 1) == 0)
     {
         final_path = AXIS2_STRACAT("file://", modified_path, env);
     }
@@ -97,9 +97,9 @@ get_file_url(const axis2_env_t *env,
     {
         final_path = AXIS2_STRACAT("file:///", modified_path, env);
     }
-    if(NULL != modified_path)
+    if (NULL != modified_path)
     {
         AXIS2_FREE(env->allocator, modified_path);
-    }                
-    return final_path;        
+    }
+    return final_path;
 }

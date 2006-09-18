@@ -25,33 +25,33 @@
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_encrypted_key_element(const axis2_env_t *env,
-                        axiom_node_t *parent )
+        axiom_node_t *parent)
 {
     axiom_node_t *encrypted_key_node = NULL;
     axiom_element_t *encrypted_key_ele = NULL;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create (env, OXS_EncNs,
-                                              OXS_xenc);
+    ns_obj = axiom_namespace_create(env, OXS_EncNs,
+            OXS_xenc);
 
-    encrypted_key_ele = axiom_element_create(env, parent, OXS_NodeEncryptedKey, ns_obj, &encrypted_key_node );
-    if(!encrypted_key_ele)
-    {   
+    encrypted_key_ele = axiom_element_create(env, parent, OXS_NodeEncryptedKey, ns_obj, &encrypted_key_node);
+    if (!encrypted_key_ele)
+    {
         oxs_error(ERROR_LOCATION,
-                    OXS_ERROR_ELEMENT_FAILED,"Error creating encrypted key element");
+                OXS_ERROR_ELEMENT_FAILED, "Error creating encrypted key element");
         return NULL;
-    }  
-    
-    
-    
-    return encrypted_key_node; 
-     
+    }
+
+
+
+    return encrypted_key_node;
+
 }
 
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_get_encrypted_key_node(const axis2_env_t *env,
-                            axiom_node_t *parent)
+        axiom_node_t *parent)
 {
     axiom_node_t *enc_key_node = NULL;
 

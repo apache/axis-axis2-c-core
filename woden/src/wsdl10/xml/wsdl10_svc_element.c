@@ -18,16 +18,16 @@
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_svc_element_resolve_methods(
-        woden_wsdl10_svc_element_t *svc_element,
-        const axis2_env_t *env,
-        axis2_hash_t *methods)
+    woden_wsdl10_svc_element_t *svc_element,
+    const axis2_env_t *env,
+    axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
-    
-    svc_element->ops->free = axis2_hash_get(methods, "free", 
+
+    svc_element->ops->free = axis2_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    svc_element->ops->type = axis2_hash_get(methods, "type", 
+    svc_element->ops->type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
     svc_element->ops->set_qname = axis2_hash_get(methods,
             "set_qname", AXIS2_HASH_KEY_STRING);
@@ -44,6 +44,6 @@ woden_wsdl10_svc_element_resolve_methods(
     svc_element->ops->get_endpoint_elements = axis2_hash_get(methods,
             "get_endpoint_elements", AXIS2_HASH_KEY_STRING);
 
-    return AXIS2_SUCCESS;    
+    return AXIS2_SUCCESS;
 }
 

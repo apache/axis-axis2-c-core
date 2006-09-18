@@ -24,17 +24,17 @@
 
 typedef struct woden_wsdl10_soap_header_block_impl woden_wsdl10_soap_header_block_impl_t;
 
-/** 
+/**
  * @brief Soap Header Blocks Struct Impl
- *   Axis2 Soap Header Blocks  
- */ 
+ *   Axis2 Soap Header Blocks
+ */
 struct woden_wsdl10_soap_header_block_impl
 {
     woden_wsdl10_soap_header_block_t header_block;
     axis2_hash_t *methods;
     axis2_hash_t *super;
     woden_obj_types_t obj_type;
-    
+
     void *f_parent;
     axis2_array_list_t *f_documentation_elements;
     axis2_qname_t *f_ext_element_type;
@@ -49,20 +49,20 @@ struct woden_wsdl10_soap_header_block_impl
 
 #define INTF_TO_IMPL(header_block) ((woden_wsdl10_soap_header_block_impl_t *) header_block)
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_free(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
-axis2_hash_t *AXIS2_CALL 
+axis2_hash_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_super_objs(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
-woden_obj_types_t AXIS2_CALL 
+woden_obj_types_t AXIS2_CALL
 woden_wsdl10_soap_header_block_type(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
 /* ***********************************************************************
  *  Component model methods (SOAPHeaderBlock interface), some shared with Element model
@@ -70,191 +70,191 @@ woden_wsdl10_soap_header_block_type(
 
 void *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_element_decl(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
-axis2_bool_t AXIS2_CALL 
+axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_header_block_must_understand(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
-axis2_bool_t AXIS2_CALL 
+axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_header_block_is_required(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
 void *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_parent(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
 void *AXIS2_CALL
 woden_wsdl10_soap_header_block_to_element(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
 /* ***********************************************************************
  *  Element model-only methods (SOAPHeaderBlockElement interface)
  * ***********************************************************************/
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_element_qname(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_qname_t *qname); 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_qname_t *qname);
 
-axis2_qname_t *AXIS2_CALL 
+axis2_qname_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_element_qname(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
 void *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_element(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_must_understand(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_bool_t understood);
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_bool_t understood);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_parent_element(
-        void *header_block,
-        const axis2_env_t *env,
-        void *wsdl_el);
+    void *header_block,
+    const axis2_env_t *env,
+    void *wsdl_el);
 
 void *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_parent_element(
-        void *header_block,
-        const axis2_env_t *env); 
+    void *header_block,
+    const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_add_documentation_element(
-        void *header_block,
-        const axis2_env_t *env,
-        void *doc_el);
+    void *header_block,
+    const axis2_env_t *env,
+    void *doc_el);
 
-axis2_array_list_t *AXIS2_CALL 
+axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_documentation_elements(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_extension_type(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_qname_t *qname); 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_qname_t *qname);
 
-axis2_qname_t *AXIS2_CALL 
+axis2_qname_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_extension_type(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_required(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_bool_t required);
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_bool_t required);
 
 /* ***********************************************************************
  *  Extensibility methods
  * ***********************************************************************/
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_ext_attr(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_qname_t *attr_type, 
-        void *attr);
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_qname_t *attr_type,
+    void *attr);
 
 void *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_attr(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_qname_t *attr_type);
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_qname_t *attr_type);
 
-axis2_array_list_t *AXIS2_CALL 
+axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_attrs_for_namespace(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_uri_t *namespc);
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_uri_t *namespc);
 
-axis2_array_list_t *AXIS2_CALL 
+axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_attrs(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
-axis2_bool_t AXIS2_CALL 
+axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_header_block_has_ext_attrs_for_namespace(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_uri_t *namespc);
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_uri_t *namespc);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_add_ext_element(
-        void *header_block,
-        const axis2_env_t *env,
-        void *ext_el);
+    void *header_block,
+    const axis2_env_t *env,
+    void *ext_el);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_remove_ext_element(
-        void *header_block,
-        const axis2_env_t *env,
-        void *ext_el);
+    void *header_block,
+    const axis2_env_t *env,
+    void *ext_el);
 
-axis2_array_list_t *AXIS2_CALL 
+axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_elements(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
-axis2_array_list_t *AXIS2_CALL 
+axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_elements_of_type(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_qname_t *ext_type); 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_qname_t *ext_type);
 
-axis2_bool_t AXIS2_CALL 
+axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_header_block_has_ext_elements_for_namespace(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_uri_t *namespc); 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_uri_t *namespc);
 
 /* ************************************************************
  *  Non-API implementation methods
  * ************************************************************/
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_element_decl(
-        void *header_block,
-        const axis2_env_t *env,
-        void *element_decl);
+    void *header_block,
+    const axis2_env_t *env,
+    void *element_decl);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_types(
-        void *header_block,
-        const axis2_env_t *env,
-        void *types);
+    void *header_block,
+    const axis2_env_t *env,
+    void *types);
 
 static woden_wsdl10_soap_header_block_t *
 create(const axis2_env_t *env);
 
 static axis2_status_t
 woden_wsdl10_soap_header_block_free_ops(
-        void *header_block,
-        const axis2_env_t *env);
+    void *header_block,
+    const axis2_env_t *env);
 
 /************************Woden C Internal Methods******************************/
 AXIS2_EXTERN woden_wsdl10_soap_header_block_t * AXIS2_CALL
 woden_wsdl10_soap_header_block_to_soap_header_block_element(
-        void *header_block,
-        const axis2_env_t *env)
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
-   
+
     AXIS2_ENV_CHECK(env, NULL);
-    if(!header_block)
+    if (!header_block)
     {
         header_block_impl = (woden_wsdl10_soap_header_block_impl_t *) create(env);
     }
@@ -262,8 +262,8 @@ woden_wsdl10_soap_header_block_to_soap_header_block_element(
         header_block_impl = (woden_wsdl10_soap_header_block_impl_t *) header_block;
     woden_wsdl10_soap_header_block_free_ops(header_block, env);
 
-    header_block_impl->header_block.header_block_element.ops = 
-        AXIS2_MALLOC(env->allocator, 
+    header_block_impl->header_block.header_block_element.ops =
+        AXIS2_MALLOC(env->allocator,
                 sizeof(woden_wsdl10_soap_header_block_element_ops_t));
     woden_wsdl10_soap_header_block_element_resolve_methods(&(header_block_impl->header_block.
             header_block_element), env, header_block_impl->methods);
@@ -272,13 +272,13 @@ woden_wsdl10_soap_header_block_to_soap_header_block_element(
 
 AXIS2_EXTERN woden_wsdl10_soap_header_block_t * AXIS2_CALL
 woden_wsdl10_soap_header_block_to_ext_element(
-        void *header_block,
-        const axis2_env_t *env)
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
-   
+
     AXIS2_ENV_CHECK(env, NULL);
-    if(!header_block)
+    if (!header_block)
     {
         header_block_impl = (woden_wsdl10_soap_header_block_impl_t *) create(env);
     }
@@ -286,8 +286,8 @@ woden_wsdl10_soap_header_block_to_ext_element(
         header_block_impl = (woden_wsdl10_soap_header_block_impl_t *) header_block;
     woden_wsdl10_soap_header_block_free_ops(header_block, env);
 
-    header_block_impl->header_block.header_block_element.base.ext_element.ops = 
-        AXIS2_MALLOC(env->allocator, 
+    header_block_impl->header_block.header_block_element.base.ext_element.ops =
+        AXIS2_MALLOC(env->allocator,
                 sizeof(woden_ext_element_ops_t));
     woden_ext_element_resolve_methods(&(header_block_impl->header_block.
             header_block_element.base.ext_element), env, header_block_impl->methods);
@@ -296,13 +296,13 @@ woden_wsdl10_soap_header_block_to_ext_element(
 
 AXIS2_EXTERN woden_wsdl10_soap_header_block_t * AXIS2_CALL
 woden_wsdl10_soap_header_block_to_attr_extensible(
-        void *header_block,
-        const axis2_env_t *env)
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
-   
+
     AXIS2_ENV_CHECK(env, NULL);
-    if(!header_block)
+    if (!header_block)
     {
         header_block_impl = (woden_wsdl10_soap_header_block_impl_t *) create(env);
     }
@@ -310,8 +310,8 @@ woden_wsdl10_soap_header_block_to_attr_extensible(
         header_block_impl = (woden_wsdl10_soap_header_block_impl_t *) header_block;
     woden_wsdl10_soap_header_block_free_ops(header_block, env);
 
-    header_block_impl->header_block.header_block_element.base.attr_extensible.ops = 
-        AXIS2_MALLOC(env->allocator, 
+    header_block_impl->header_block.header_block_element.base.attr_extensible.ops =
+        AXIS2_MALLOC(env->allocator,
                 sizeof(woden_attr_extensible_ops_t));
     woden_attr_extensible_resolve_methods(&(header_block_impl->header_block.
             header_block_element.base.attr_extensible), env, NULL, header_block_impl->methods);
@@ -320,13 +320,13 @@ woden_wsdl10_soap_header_block_to_attr_extensible(
 
 AXIS2_EXTERN woden_wsdl10_soap_header_block_t * AXIS2_CALL
 woden_wsdl10_soap_header_block_to_element_extensible(
-        void *header_block,
-        const axis2_env_t *env)
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
-   
+
     AXIS2_ENV_CHECK(env, NULL);
-    if(!header_block)
+    if (!header_block)
     {
         header_block_impl = (woden_wsdl10_soap_header_block_impl_t *) create(env);
     }
@@ -334,8 +334,8 @@ woden_wsdl10_soap_header_block_to_element_extensible(
         header_block_impl = (woden_wsdl10_soap_header_block_impl_t *) header_block;
     woden_wsdl10_soap_header_block_free_ops(header_block, env);
 
-    header_block_impl->header_block.header_block_element.base.element_extensible.ops = 
-        AXIS2_MALLOC(env->allocator, 
+    header_block_impl->header_block.header_block_element.base.element_extensible.ops =
+        AXIS2_MALLOC(env->allocator,
                 sizeof(woden_element_extensible_ops_t));
     woden_element_extensible_resolve_methods(&(header_block_impl->header_block.
             header_block_element.base.element_extensible), env, NULL, header_block_impl->methods);
@@ -347,12 +347,12 @@ static woden_wsdl10_soap_header_block_t *
 create(const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
-   
-    AXIS2_ENV_CHECK(env, NULL);
-    header_block_impl = AXIS2_MALLOC(env->allocator, 
-                    sizeof(woden_wsdl10_soap_header_block_impl_t));
 
-    header_block_impl->obj_type= WODEN_WSDL10_SOAP_HEADER_BLOCK;
+    AXIS2_ENV_CHECK(env, NULL);
+    header_block_impl = AXIS2_MALLOC(env->allocator,
+            sizeof(woden_wsdl10_soap_header_block_impl_t));
+
+    header_block_impl->obj_type = WODEN_WSDL10_SOAP_HEADER_BLOCK;
     header_block_impl->super = NULL;
     header_block_impl->methods = NULL;
 
@@ -366,165 +366,165 @@ create(const axis2_env_t *env)
     header_block_impl->f_element_decl = NULL;
     header_block_impl->f_must_understand = AXIS2_FALSE;
     header_block_impl->f_types = NULL;
-    
+
     header_block_impl->header_block.header_block_element.ops = NULL;
     header_block_impl->header_block.header_block_element.base.ext_element.ops = NULL;
     header_block_impl->header_block.header_block_element.base.attr_extensible.ops = NULL;
     header_block_impl->header_block.header_block_element.base.element_extensible.ops = NULL;
-    
-    header_block_impl->header_block.ops = AXIS2_MALLOC(env->allocator, 
+
+    header_block_impl->header_block.ops = AXIS2_MALLOC(env->allocator,
             sizeof(woden_wsdl10_soap_header_block_ops_t));
 
     header_block_impl->header_block.ops->free = woden_wsdl10_soap_header_block_free;
-    header_block_impl->header_block.ops->super_objs = 
+    header_block_impl->header_block.ops->super_objs =
         woden_wsdl10_soap_header_block_super_objs;
-    header_block_impl->header_block.ops->type = 
+    header_block_impl->header_block.ops->type =
         woden_wsdl10_soap_header_block_type;
-    
-    header_block_impl->header_block.ops->get_element_decl = 
+
+    header_block_impl->header_block.ops->get_element_decl =
         woden_wsdl10_soap_header_block_get_element_decl;
-    
-    header_block_impl->header_block.ops->must_understand = 
+
+    header_block_impl->header_block.ops->must_understand =
         woden_wsdl10_soap_header_block_must_understand;
-    
-    header_block_impl->header_block.ops->is_required = 
+
+    header_block_impl->header_block.ops->is_required =
         woden_wsdl10_soap_header_block_is_required;
-    
-    header_block_impl->header_block.ops->get_parent = 
+
+    header_block_impl->header_block.ops->get_parent =
         woden_wsdl10_soap_header_block_get_parent;
-    
-    header_block_impl->header_block.ops->to_element = 
+
+    header_block_impl->header_block.ops->to_element =
         woden_wsdl10_soap_header_block_to_element;
-    
-    header_block_impl->header_block.ops->set_element_decl = 
+
+    header_block_impl->header_block.ops->set_element_decl =
         woden_wsdl10_soap_header_block_set_element_decl;
-    
-    header_block_impl->header_block.ops->set_types = 
+
+    header_block_impl->header_block.ops->set_types =
         woden_wsdl10_soap_header_block_set_types;
-    
+
     header_block_impl->methods = axis2_hash_make(env);
-    if(!header_block_impl->methods) 
+    if (!header_block_impl->methods)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(header_block_impl->methods, "free", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "free", AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_free);
-    axis2_hash_set(header_block_impl->methods, "super_objs", 
+    axis2_hash_set(header_block_impl->methods, "super_objs",
             AXIS2_HASH_KEY_STRING, woden_wsdl10_soap_header_block_super_objs);
-    axis2_hash_set(header_block_impl->methods, "type", 
+    axis2_hash_set(header_block_impl->methods, "type",
             AXIS2_HASH_KEY_STRING, woden_wsdl10_soap_header_block_type);
 
-    axis2_hash_set(header_block_impl->methods, "get_element_decl", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "get_element_decl",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_get_element_decl);
 
-    axis2_hash_set(header_block_impl->methods, "must_understand", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "must_understand",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_must_understand);
 
-    axis2_hash_set(header_block_impl->methods, "is_required", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "is_required",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_is_required);
 
-    axis2_hash_set(header_block_impl->methods, "get_parent", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "get_parent",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_get_parent);
 
-    axis2_hash_set(header_block_impl->methods, "to_element", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "to_element",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_to_element);
 
-    axis2_hash_set(header_block_impl->methods, "set_element_qname", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "set_element_qname",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_set_element_qname);
 
-    axis2_hash_set(header_block_impl->methods, "get_element_qname", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "get_element_qname",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_get_element_qname);
 
-    axis2_hash_set(header_block_impl->methods, "get_element", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "get_element",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_get_element);
 
-    axis2_hash_set(header_block_impl->methods, "set_must_understand", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "set_must_understand",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_set_must_understand);
 
-    axis2_hash_set(header_block_impl->methods, "set_parent_element", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "set_parent_element",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_set_parent_element);
 
-    axis2_hash_set(header_block_impl->methods, "get_parent_element", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "get_parent_element",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_get_parent_element);
 
-    axis2_hash_set(header_block_impl->methods, "add_documentation_element", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "add_documentation_element",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_add_documentation_element);
 
-    axis2_hash_set(header_block_impl->methods, "get_documentation_elements", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "get_documentation_elements",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_get_documentation_elements);
 
-    axis2_hash_set(header_block_impl->methods, "set_extension_type", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "set_extension_type",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_set_extension_type);
 
-    axis2_hash_set(header_block_impl->methods, "get_extension_type", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "get_extension_type",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_get_extension_type);
 
-    axis2_hash_set(header_block_impl->methods, "set_required", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "set_required",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_set_required);
 
-    axis2_hash_set(header_block_impl->methods, "set_ext_attr", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "set_ext_attr",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_set_ext_attr);
 
-    axis2_hash_set(header_block_impl->methods, "get_ext_attr", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "get_ext_attr",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_get_ext_attr);
 
-    axis2_hash_set(header_block_impl->methods, "get_ext_attrs_for_namespace", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "get_ext_attrs_for_namespace",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_get_ext_attrs_for_namespace);
 
-    axis2_hash_set(header_block_impl->methods, "get_ext_attrs", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "get_ext_attrs",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_get_ext_attrs);
 
-    axis2_hash_set(header_block_impl->methods, "has_ext_attrs_for_namespace", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "has_ext_attrs_for_namespace",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_has_ext_attrs_for_namespace);
 
-    axis2_hash_set(header_block_impl->methods, "add_ext_element", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "add_ext_element",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_add_ext_element);
 
-    axis2_hash_set(header_block_impl->methods, "remove_ext_element", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "remove_ext_element",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_remove_ext_element);
 
-    axis2_hash_set(header_block_impl->methods, "get_ext_elements", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "get_ext_elements",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_get_ext_elements);
 
-    axis2_hash_set(header_block_impl->methods, "get_ext_elements_of_type", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "get_ext_elements_of_type",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_get_ext_elements_of_type);
 
-    axis2_hash_set(header_block_impl->methods, "has_ext_elements_for_namespace", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "has_ext_elements_for_namespace",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_has_ext_elements_for_namespace);
 
-    axis2_hash_set(header_block_impl->methods, "set_element_decl", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "set_element_decl",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_set_element_decl);
 
-    axis2_hash_set(header_block_impl->methods, "set_types", 
-            AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->methods, "set_types",
+            AXIS2_HASH_KEY_STRING,
             woden_wsdl10_soap_header_block_set_types);
 
     return &(header_block_impl->header_block);
@@ -534,54 +534,54 @@ AXIS2_EXTERN woden_wsdl10_soap_header_block_t * AXIS2_CALL
 woden_wsdl10_soap_header_block_create(const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
-   
+
     AXIS2_ENV_CHECK(env, NULL);
     header_block_impl = (woden_wsdl10_soap_header_block_impl_t *) create(env);
 
     header_block_impl->super = axis2_hash_make(env);
-    if(!header_block_impl->super) 
+    if (!header_block_impl->super)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    axis2_hash_set(header_block_impl->super, "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING, 
+    axis2_hash_set(header_block_impl->super, "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING,
             &(header_block_impl->header_block));
- 
+
     return &(header_block_impl->header_block);
 }
 
 static axis2_status_t
 woden_wsdl10_soap_header_block_free_ops(
-        void *header_block,
-        const axis2_env_t *env)
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     header_block_impl = INTF_TO_IMPL(header_block);
 
-    if(header_block_impl->header_block.header_block_element.ops)
+    if (header_block_impl->header_block.header_block_element.ops)
     {
         AXIS2_FREE(env->allocator, header_block_impl->header_block.
                 header_block_element.ops);
         header_block_impl->header_block.header_block_element.ops = NULL;
     }
 
-    if(header_block_impl->header_block.header_block_element.base.ext_element.ops)
+    if (header_block_impl->header_block.header_block_element.base.ext_element.ops)
     {
         AXIS2_FREE(env->allocator, header_block_impl->header_block.
                 header_block_element.base.ext_element.ops);
         header_block_impl->header_block.header_block_element.base.ext_element.ops = NULL;
     }
 
-    if(header_block_impl->header_block.header_block_element.base.attr_extensible.ops)
+    if (header_block_impl->header_block.header_block_element.base.attr_extensible.ops)
     {
         AXIS2_FREE(env->allocator, header_block_impl->header_block.
                 header_block_element.base.attr_extensible.ops);
         header_block_impl->header_block.header_block_element.base.attr_extensible.ops = NULL;
     }
 
-    if(header_block_impl->header_block.header_block_element.base.element_extensible.ops)
+    if (header_block_impl->header_block.header_block_element.base.element_extensible.ops)
     {
         AXIS2_FREE(env->allocator, header_block_impl->header_block.
                 header_block_element.base.element_extensible.ops);
@@ -594,68 +594,68 @@ woden_wsdl10_soap_header_block_free_ops(
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_free(void *header_block,
-                        const axis2_env_t *env)
+        const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     header_block_impl = INTF_TO_IMPL(header_block);
 
-    if(header_block_impl->super)
+    if (header_block_impl->super)
     {
         axis2_hash_free(header_block_impl->super, env);
         header_block_impl->super = NULL;
     }
-    
-    if(header_block_impl->methods)
+
+    if (header_block_impl->methods)
     {
         axis2_hash_free(header_block_impl->methods, env);
         header_block_impl->methods = NULL;
     }
 
-    if(header_block_impl->f_parent)
+    if (header_block_impl->f_parent)
     {
         WODEN_WSDL_ELEMENT_FREE(header_block_impl->f_parent, env);
         header_block_impl->f_parent = NULL;
     }
 
-    if(header_block_impl->f_documentation_elements)
+    if (header_block_impl->f_documentation_elements)
     {
         AXIS2_ARRAY_LIST_FREE(header_block_impl->f_documentation_elements, env);
         header_block_impl->f_documentation_elements = NULL;
     }
 
-    if(header_block_impl->f_ext_element_type)
+    if (header_block_impl->f_ext_element_type)
     {
         AXIS2_QNAME_FREE(header_block_impl->f_ext_element_type, env);
         header_block_impl->f_ext_element_type = NULL;
     }
 
-    if(header_block_impl->f_attr_ext)
+    if (header_block_impl->f_attr_ext)
     {
         WODEN_ATTR_EXTENSIBLE_FREE(header_block_impl->f_attr_ext, env);
         header_block_impl->f_attr_ext = NULL;
     }
 
-    if(header_block_impl->f_elem_ext)
+    if (header_block_impl->f_elem_ext)
     {
         WODEN_ELEMENT_EXTENSIBLE_FREE(header_block_impl->f_elem_ext, env);
         header_block_impl->f_elem_ext = NULL;
     }
 
-    if(header_block_impl->f_element_decl_qn)
+    if (header_block_impl->f_element_decl_qn)
     {
         AXIS2_QNAME_FREE(header_block_impl->f_element_decl_qn, env);
         header_block_impl->f_element_decl_qn = NULL;
     }
 
-    if(header_block_impl->f_element_decl)
+    if (header_block_impl->f_element_decl)
     {
         WODEN_ELEMENT_DECL_FREE(header_block_impl->f_element_decl, env);
         header_block_impl->f_element_decl = NULL;
     }
 
-    if(header_block_impl->f_types)
+    if (header_block_impl->f_types)
     {
         WODEN_TYPES_FREE(header_block_impl->f_types, env);
         header_block_impl->f_types = NULL;
@@ -663,13 +663,13 @@ woden_wsdl10_soap_header_block_free(void *header_block,
 
     woden_wsdl10_soap_header_block_free_ops(header_block, env);
 
-    if((&(header_block_impl->header_block))->ops)
+    if ((&(header_block_impl->header_block))->ops)
     {
         AXIS2_FREE(env->allocator, (&(header_block_impl->header_block))->ops);
         (&(header_block_impl->header_block))->ops = NULL;
     }
-    
-    if(header_block_impl)
+
+    if (header_block_impl)
     {
         AXIS2_FREE(env->allocator, header_block_impl);
         header_block_impl = NULL;
@@ -679,8 +679,8 @@ woden_wsdl10_soap_header_block_free(void *header_block,
 
 axis2_hash_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_super_objs(
-        void *header_block,
-        const axis2_env_t *env)
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
 
@@ -692,8 +692,8 @@ woden_wsdl10_soap_header_block_super_objs(
 
 woden_obj_types_t AXIS2_CALL
 woden_wsdl10_soap_header_block_type(
-        void *header_block,
-        const axis2_env_t *env)
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
 
@@ -705,66 +705,66 @@ woden_wsdl10_soap_header_block_type(
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_resolve_methods(
-        woden_wsdl10_soap_header_block_t *header_block,
-        const axis2_env_t *env,
-        woden_wsdl10_soap_header_block_t *header_block_impl,
-        axis2_hash_t *methods)
+    woden_wsdl10_soap_header_block_t *header_block,
+    const axis2_env_t *env,
+    woden_wsdl10_soap_header_block_t *header_block_impl,
+    axis2_hash_t *methods)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl_l = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
     header_block_impl_l = INTF_TO_IMPL(header_block_impl);
-    
-    header_block->ops->free = axis2_hash_get(methods, "free", 
+
+    header_block->ops->free = axis2_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    header_block->ops->super_objs = axis2_hash_get(methods, "super_objs", 
+    header_block->ops->super_objs = axis2_hash_get(methods, "super_objs",
             AXIS2_HASH_KEY_STRING);
-    header_block->ops->type = axis2_hash_get(methods, "type", 
+    header_block->ops->type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
-    
-    header_block->ops->get_element_decl = axis2_hash_get(methods, 
+
+    header_block->ops->get_element_decl = axis2_hash_get(methods,
             "get_element_decl", AXIS2_HASH_KEY_STRING);
-    if(!header_block->ops->get_element_decl && header_block_impl_l)
-            header_block->ops->get_element_decl = 
+    if (!header_block->ops->get_element_decl && header_block_impl_l)
+        header_block->ops->get_element_decl =
             header_block_impl_l->header_block.ops->get_element_decl;
-    
-    header_block->ops->must_understand = axis2_hash_get(methods, 
+
+    header_block->ops->must_understand = axis2_hash_get(methods,
             "must_understand", AXIS2_HASH_KEY_STRING);
-    if(!header_block->ops->must_understand && header_block_impl_l)
-            header_block->ops->must_understand = 
+    if (!header_block->ops->must_understand && header_block_impl_l)
+        header_block->ops->must_understand =
             header_block_impl_l->header_block.ops->must_understand;
-    
-    header_block->ops->is_required = axis2_hash_get(methods, 
+
+    header_block->ops->is_required = axis2_hash_get(methods,
             "is_required", AXIS2_HASH_KEY_STRING);
-    if(!header_block->ops->is_required && header_block_impl_l)
-            header_block->ops->is_required = 
+    if (!header_block->ops->is_required && header_block_impl_l)
+        header_block->ops->is_required =
             header_block_impl_l->header_block.ops->is_required;
-    
-    header_block->ops->get_parent = axis2_hash_get(methods, 
+
+    header_block->ops->get_parent = axis2_hash_get(methods,
             "get_parent", AXIS2_HASH_KEY_STRING);
-    if(!header_block->ops->get_parent && header_block_impl_l)
-            header_block->ops->get_parent = 
+    if (!header_block->ops->get_parent && header_block_impl_l)
+        header_block->ops->get_parent =
             header_block_impl_l->header_block.ops->get_parent;
-    
-    header_block->ops->to_element = axis2_hash_get(methods, 
+
+    header_block->ops->to_element = axis2_hash_get(methods,
             "to_element", AXIS2_HASH_KEY_STRING);
-    if(!header_block->ops->to_element && header_block_impl_l)
-            header_block->ops->to_element = 
+    if (!header_block->ops->to_element && header_block_impl_l)
+        header_block->ops->to_element =
             header_block_impl_l->header_block.ops->to_element;
-    
-    header_block->ops->set_element_decl = axis2_hash_get(methods, 
+
+    header_block->ops->set_element_decl = axis2_hash_get(methods,
             "set_element_decl", AXIS2_HASH_KEY_STRING);
-    if(!header_block->ops->set_element_decl && header_block_impl_l)
-            header_block->ops->set_element_decl = 
+    if (!header_block->ops->set_element_decl && header_block_impl_l)
+        header_block->ops->set_element_decl =
             header_block_impl_l->header_block.ops->set_element_decl;
-    
-    header_block->ops->set_types = axis2_hash_get(methods, 
+
+    header_block->ops->set_types = axis2_hash_get(methods,
             "set_types", AXIS2_HASH_KEY_STRING);
-    if(!header_block->ops->set_types && header_block_impl_l)
-            header_block->ops->set_types = 
+    if (!header_block->ops->set_types && header_block_impl_l)
+        header_block->ops->set_types =
             header_block_impl_l->header_block.ops->set_types;
-    
+
     return AXIS2_SUCCESS;
 }
 
@@ -776,80 +776,80 @@ woden_wsdl10_soap_header_block_resolve_methods(
 
 void *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_element_decl(
-        void *header_block,
-        const axis2_env_t *env) 
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return header_block_impl->f_element_decl;
 }
 
-axis2_bool_t AXIS2_CALL 
+axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_header_block_must_understand(
-        void *header_block,
-        const axis2_env_t *env) 
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return header_block_impl->f_must_understand;
 }
 
-axis2_bool_t AXIS2_CALL 
+axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_header_block_is_required(
-        void *header_block,
-        const axis2_env_t *env) 
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return header_block_impl->f_required;
 }
 
 void *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_parent(
-        void *header_block,
-        const axis2_env_t *env) 
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return header_block_impl->f_parent;
 }
 
 void *AXIS2_CALL
 woden_wsdl10_soap_header_block_to_element(
-        void *header_block,
-        const axis2_env_t *env) 
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return &(header_block_impl->header_block);
 }
@@ -859,21 +859,21 @@ woden_wsdl10_soap_header_block_to_element(
  *  Element model-only methods (SOAPHeaderBlockElement interface)
  * ***********************************************************************/
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_element_qname(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_qname_t *qname) 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_qname_t *qname)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
-    if(header_block_impl->f_element_decl_qn)
+    if (header_block_impl->f_element_decl_qn)
     {
         AXIS2_QNAME_FREE(header_block_impl->f_element_decl_qn, env);
         header_block_impl->f_element_decl_qn = NULL;
@@ -885,26 +885,26 @@ woden_wsdl10_soap_header_block_set_element_qname(
 
 }
 
-axis2_qname_t *AXIS2_CALL 
+axis2_qname_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_element_qname(
-        void *header_block,
-        const axis2_env_t *env) 
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return header_block_impl->f_element_decl_qn;
 }
 
 void *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_element(
-        void *header_block,
-        const axis2_env_t *env) 
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -912,31 +912,31 @@ woden_wsdl10_soap_header_block_get_element(
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
-    if(header_block_impl->f_types != NULL) 
+    if (header_block_impl->f_types != NULL)
     {
         xse = WODEN_TYPES_GET_ELEMENT_DECLARATION(
-                header_block_impl->f_types, env, header_block_impl->
-                f_element_decl_qn);
+                    header_block_impl->f_types, env, header_block_impl->
+                    f_element_decl_qn);
     }
     return xse;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_must_understand(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_bool_t understood) 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_bool_t understood)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     header_block_impl->f_must_understand = understood;
 
@@ -944,21 +944,21 @@ woden_wsdl10_soap_header_block_set_must_understand(
 
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_parent_element(
-        void *header_block,
-        const axis2_env_t *env,
-        void *wsdl_el) 
+    void *header_block,
+    const axis2_env_t *env,
+    void *wsdl_el)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
-    if(header_block_impl->f_parent)
+    if (header_block_impl->f_parent)
     {
         /* TODO */
         header_block_impl->f_parent = NULL;
@@ -970,25 +970,25 @@ woden_wsdl10_soap_header_block_set_parent_element(
 
 void *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_parent_element(
-        void *header_block,
-        const axis2_env_t *env) 
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return header_block_impl->f_parent;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_add_documentation_element(
-        void *header_block,
-        const axis2_env_t *env,
-        void *doc_el) 
+    void *header_block,
+    const axis2_env_t *env,
+    void *doc_el)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -996,14 +996,14 @@ woden_wsdl10_soap_header_block_add_documentation_element(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, doc_el, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
-    if(!header_block_impl->f_documentation_elements)
+    if (!header_block_impl->f_documentation_elements)
     {
-        header_block_impl->f_documentation_elements = 
+        header_block_impl->f_documentation_elements =
             axis2_array_list_create(env, 0);
-        if(!header_block_impl->f_documentation_elements)
+        if (!header_block_impl->f_documentation_elements)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
@@ -1013,37 +1013,37 @@ woden_wsdl10_soap_header_block_add_documentation_element(
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL 
+axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_documentation_elements(
-        void *header_block,
-        const axis2_env_t *env) 
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return header_block_impl->f_documentation_elements;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_extension_type(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_qname_t *qname) 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_qname_t *qname)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
-    if(header_block_impl->f_ext_element_type)
+    if (header_block_impl->f_ext_element_type)
     {
         AXIS2_QNAME_FREE(header_block_impl->f_ext_element_type, env);
         header_block_impl->f_ext_element_type = NULL;
@@ -1054,35 +1054,35 @@ woden_wsdl10_soap_header_block_set_extension_type(
     return AXIS2_SUCCESS;
 }
 
-axis2_qname_t *AXIS2_CALL 
+axis2_qname_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_extension_type(
-        void *header_block,
-        const axis2_env_t *env) 
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return header_block_impl->f_ext_element_type;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_required(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_bool_t required) 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_bool_t required)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     header_block_impl->f_required = required;
 
@@ -1093,12 +1093,12 @@ woden_wsdl10_soap_header_block_set_required(
  *  Extensibility methods
  * ***********************************************************************/
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_ext_attr(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_qname_t *attr_type, 
-        void *attr) 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_qname_t *attr_type,
+    void *attr)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1107,18 +1107,18 @@ woden_wsdl10_soap_header_block_set_ext_attr(
     AXIS2_PARAM_CHECK(env->error, attr_type, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, attr, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ATTR_EXTENSIBLE_SET_EXT_ATTR(
-            header_block_impl->f_attr_ext, env, attr_type, attr);
+                header_block_impl->f_attr_ext, env, attr_type, attr);
 }
 
 void *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_attr(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_qname_t *attr_type) 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_qname_t *attr_type)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1126,18 +1126,18 @@ woden_wsdl10_soap_header_block_get_ext_attr(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, attr_type, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(
-            header_block_impl->f_attr_ext, env, attr_type);
+                header_block_impl->f_attr_ext, env, attr_type);
 }
 
-axis2_array_list_t *AXIS2_CALL 
+axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_attrs_for_namespace(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_uri_t *namespc) 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_uri_t *namespc)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1145,35 +1145,35 @@ woden_wsdl10_soap_header_block_get_ext_attrs_for_namespace(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, namespc, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTRS_FOR_NAMESPACE(
-            header_block_impl->f_attr_ext, env, namespc);
+                header_block_impl->f_attr_ext, env, namespc);
 }
 
-axis2_array_list_t *AXIS2_CALL 
+axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_attrs(
-        void *header_block,
-        const axis2_env_t *env)
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTRS(
-            header_block_impl->f_attr_ext, env);
+                header_block_impl->f_attr_ext, env);
 }
 
-axis2_bool_t AXIS2_CALL 
+axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_header_block_has_ext_attrs_for_namespace(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_uri_t *namespc) 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_uri_t *namespc)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1181,18 +1181,18 @@ woden_wsdl10_soap_header_block_has_ext_attrs_for_namespace(
     AXIS2_ENV_CHECK(env, AXIS2_FALSE);
     AXIS2_PARAM_CHECK(env->error, namespc, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ATTR_EXTENSIBLE_HAS_EXT_ATTRS_FOR_NAMESPACE(
-            header_block_impl->f_attr_ext, env, namespc);
+                header_block_impl->f_attr_ext, env, namespc);
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_add_ext_element(
-        void *header_block,
-        const axis2_env_t *env,
-        void *ext_el) 
+    void *header_block,
+    const axis2_env_t *env,
+    void *ext_el)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1200,18 +1200,18 @@ woden_wsdl10_soap_header_block_add_ext_element(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ext_el, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ELEMENT_EXTENSIBLE_ADD_EXT_ELEMENT(
-            header_block_impl->f_elem_ext, env, ext_el);
+                header_block_impl->f_elem_ext, env, ext_el);
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_remove_ext_element(
-        void *header_block,
-        const axis2_env_t *env,
-        void *ext_el) 
+    void *header_block,
+    const axis2_env_t *env,
+    void *ext_el)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1219,37 +1219,37 @@ woden_wsdl10_soap_header_block_remove_ext_element(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, ext_el, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ELEMENT_EXTENSIBLE_REMOVE_EXT_ELEMENT(
-            header_block_impl->f_elem_ext, env, ext_el);
+                header_block_impl->f_elem_ext, env, ext_el);
 
     return AXIS2_SUCCESS;
 }
 
-axis2_array_list_t *AXIS2_CALL 
+axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_elements(
-        void *header_block,
-        const axis2_env_t *env)
+    void *header_block,
+    const axis2_env_t *env)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS(
-            header_block_impl->f_elem_ext, env);
+                header_block_impl->f_elem_ext, env);
 }
 
-axis2_array_list_t *AXIS2_CALL 
+axis2_array_list_t *AXIS2_CALL
 woden_wsdl10_soap_header_block_get_ext_elements_of_type(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_qname_t *ext_type) 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_qname_t *ext_type)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1257,18 +1257,18 @@ woden_wsdl10_soap_header_block_get_ext_elements_of_type(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, ext_type, NULL);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ELEMENT_EXTENSIBLE_GET_EXT_ELEMENTS_OF_TYPE(
-            header_block_impl->f_elem_ext, env, ext_type);
+                header_block_impl->f_elem_ext, env, ext_type);
 }
 
-axis2_bool_t AXIS2_CALL 
+axis2_bool_t AXIS2_CALL
 woden_wsdl10_soap_header_block_has_ext_elements_for_namespace(
-        void *header_block,
-        const axis2_env_t *env,
-        axis2_uri_t *namespc) 
+    void *header_block,
+    const axis2_env_t *env,
+    axis2_uri_t *namespc)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1276,22 +1276,22 @@ woden_wsdl10_soap_header_block_has_ext_elements_for_namespace(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, namespc, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
     return WODEN_ELEMENT_EXTENSIBLE_HAS_EXT_ELEMENTS_FOR_NAMESPACE(
-            header_block_impl->f_elem_ext, env, namespc);
+                header_block_impl->f_elem_ext, env, namespc);
 }
 
 /* ************************************************************
  *  Non-API implementation methods
  * ************************************************************/
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_element_decl(
-        void *header_block,
-        const axis2_env_t *env,
-        void *element_decl)
+    void *header_block,
+    const axis2_env_t *env,
+    void *element_decl)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1299,10 +1299,10 @@ woden_wsdl10_soap_header_block_set_element_decl(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, element_decl, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
-    if(header_block_impl->f_element_decl)
+    if (header_block_impl->f_element_decl)
     {
         /* TODO */
         header_block_impl->f_element_decl = NULL;
@@ -1313,11 +1313,11 @@ woden_wsdl10_soap_header_block_set_element_decl(
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 woden_wsdl10_soap_header_block_set_types(
-        void *header_block,
-        const axis2_env_t *env,
-        void *types) 
+    void *header_block,
+    const axis2_env_t *env,
+    void *types)
 {
     woden_wsdl10_soap_header_block_impl_t *header_block_impl = NULL;
     axis2_hash_t *super = NULL;
@@ -1325,10 +1325,10 @@ woden_wsdl10_soap_header_block_set_types(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, types, AXIS2_FAILURE);
     super = WODEN_WSDL10_SOAP_HEADER_BLOCK_SUPER_OBJS(header_block, env);
-    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super, 
-                "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
+    header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
+            "WODEN_WSDL10_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
-    if(header_block_impl->f_types)
+    if (header_block_impl->f_types)
     {
         /* TODO */
         header_block_impl->f_types = NULL;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <woden_qname_util.h>
@@ -21,31 +21,31 @@
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
 axis2_qname_util_matches(
-        const axis2_env_t *env,
-        axis2_qname_t *qname,
-        axiom_node_t *node)
+    const axis2_env_t *env,
+    axis2_qname_t *qname,
+    axiom_node_t *node)
 {
     axis2_qname_t *qname_l = NULL;
     axis2_bool_t ret = AXIS2_FALSE;
 
     qname_l = axis2_qname_util_new_qname(env, node);
-    if(NULL != node && AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l))
+    if (NULL != node && AXIS2_TRUE == AXIS2_QNAME_EQUALS(qname, env, qname_l))
         ret = AXIS2_TRUE;
     AXIS2_QNAME_FREE(qname_l, env);
 
     return ret;
-}        
-        
+}
+
 AXIS2_EXTERN axis2_qname_t * AXIS2_CALL
 axis2_qname_util_new_qname(
-        const axis2_env_t *env,
-        axiom_node_t *node)
+    const axis2_env_t *env,
+    axiom_node_t *node)
 {
     axiom_element_t *element = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    if(NULL != node)
+    if (NULL != node)
     {
         axiom_namespace_t *namespc = NULL;
         axis2_char_t *uri_str = NULL;
@@ -57,7 +57,7 @@ axis2_qname_util_new_qname(
         localname = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
         return axis2_qname_create(env, localname, uri_str, NULL);
     }
-        
-    return NULL;    
-}                                     
+
+    return NULL;
+}
 

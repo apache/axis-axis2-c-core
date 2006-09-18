@@ -21,10 +21,10 @@
 #include <axis2_stream.h>
 #include <stdio.h>
 
-void Testaxis2_log_write(CuTest *tc) 
+void Testaxis2_log_write(CuTest *tc)
 {
 
-    printf("testing axis2_log_write\n"); 
+    printf("testing axis2_log_write\n");
     char actual[10];
 
     printf("************************\n");
@@ -33,7 +33,7 @@ void Testaxis2_log_write(CuTest *tc)
 
     axis2_allocator_t *allocator = axis2_allocator_init(NULL);
     axis2_error_t *error = axis2_error_create(allocator);
-    axis2_log_t *log  = axis2_log_create (allocator, NULL, NULL);
+    axis2_log_t *log  = axis2_log_create(allocator, NULL, NULL);
     const axis2_env_t *env = axis2_env_create_with_error_log(allocator, error, log);
     axis2_stream_t *stream = axis2_stream_create_basic(env);
 

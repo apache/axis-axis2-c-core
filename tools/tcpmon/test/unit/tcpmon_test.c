@@ -18,53 +18,53 @@ void test_format_xml(CuTest *tc)
     env = axis2_env_create(allocator);
 
     input = (char*)AXIS2_STRDUP(
-             "<input>check for one step</input>",
-                                              env);
-    actual = 
-      (char*)tcpmon_util_format_as_xml(env, input);
+                "<input>check for one step</input>",
+                env);
+    actual =
+        (char*)tcpmon_util_format_as_xml(env, input);
     expected = "<input>\n"
-               "\tcheck for one step\n" 
-               "</input>\n";
+            "\tcheck for one step\n"
+            "</input>\n";
     CuAssertStrEquals(tc, expected, actual);
-    free (actual);
-    free (input);
+    free(actual);
+    free(input);
 
 
     input = (char*)AXIS2_STRDUP(
-             "<input><tag2><another_tag with='attriutes'>check for one step</another_tag></tag2></input>",
-                                              env);
-    actual = 
-      (char*)tcpmon_util_format_as_xml(env, input);
-    expected = 
-               "<input>\n"
-               "\t<tag2>\n"
-               "\t\t<another_tag with='attriutes'>\n"
-               "\t\t\tcheck for one step\n"
-               "\t\t</another_tag>\n"
-               "\t</tag2>\n"
-               "</input>\n";
+                "<input><tag2><another_tag with='attriutes'>check for one step</another_tag></tag2></input>",
+                env);
+    actual =
+        (char*)tcpmon_util_format_as_xml(env, input);
+    expected =
+        "<input>\n"
+        "\t<tag2>\n"
+        "\t\t<another_tag with='attriutes'>\n"
+        "\t\t\tcheck for one step\n"
+        "\t\t</another_tag>\n"
+        "\t</tag2>\n"
+        "</input>\n";
 
     CuAssertStrEquals(tc, expected, actual);
-    free (actual);
-    free (input);
+    free(actual);
+    free(input);
 
     input = (char*)AXIS2_STRDUP(
-             "<?processing inc?><input><tag2><another_tag with='attriutes'>check for one step</another_tag></tag2></input>",
-                                              env);
-    actual = 
-      (char*)tcpmon_util_format_as_xml(env, input);
+                "<?processing inc?><input><tag2><another_tag with='attriutes'>check for one step</another_tag></tag2></input>",
+                env);
+    actual =
+        (char*)tcpmon_util_format_as_xml(env, input);
     expected = "<?processing inc?>\n"
-               "<input>\n"
-               "\t<tag2>\n"
-               "\t\t<another_tag with='attriutes'>\n"
-               "\t\t\tcheck for one step\n"
-               "\t\t</another_tag>\n"
-               "\t</tag2>\n"
-               "</input>\n";
+            "<input>\n"
+            "\t<tag2>\n"
+            "\t\t<another_tag with='attriutes'>\n"
+            "\t\t\tcheck for one step\n"
+            "\t\t</another_tag>\n"
+            "\t</tag2>\n"
+            "</input>\n";
 
     CuAssertStrEquals(tc, expected, actual);
-    free (actual);
-    free (input);
+    free(actual);
+    free(input);
 
 }
 

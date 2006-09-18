@@ -26,45 +26,45 @@
 
 static axiom_node_t *
 build_om_programatically_for_wsdl1(
-        const axis2_env_t *env);
+    const axis2_env_t *env);
 
 static axiom_node_t *
 build_om_programatically_for_wsdl2(
-        const axis2_env_t *env);
+    const axis2_env_t *env);
 
 static int
 process_for_wsdl1(
-        const axis2_env_t *env,
-        axis2_char_t *wsdl_uri_str);
+    const axis2_env_t *env,
+    axis2_char_t *wsdl_uri_str);
 
 static int
 process_for_wsdl2(
-        const axis2_env_t *env,
-        axis2_char_t *wsdl_uri_str);
+    const axis2_env_t *env,
+    axis2_char_t *wsdl_uri_str);
 
 int main(int argc, char** argv)
 {
-   axis2_env_t *env = NULL;
+    axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
     axis2_allocator_t *allocator = NULL;
     axis2_char_t *wsdl_uri_str = NULL;
 
     /* set up the envioronment with allocator and log*/
-    allocator = axis2_allocator_init (NULL);
+    allocator = axis2_allocator_init(NULL);
     error = axis2_error_create(allocator);
     log = axis2_log_create(allocator, NULL, "addr_echo.log");
     env = axis2_env_create_with_error_log(allocator, error, log);
     env->log->level = AXIS2_LOG_LEVEL_TRACE;
     axis2_error_init();
 
-   if (argc <= 1)
+    if (argc <= 1)
     {
-      printf("Usage: print <wsdl_File_Name>\n");
-      return 1;
+        printf("Usage: print <wsdl_File_Name>\n");
+        return 1;
     }
     wsdl_uri_str = argv[1];
-    if(strstr(wsdl_uri_str, "Calculator"))
+    if (strstr(wsdl_uri_str, "Calculator"))
     {
         printf("Calculator\n");
         process_for_wsdl1(env, wsdl_uri_str);
@@ -79,11 +79,11 @@ int main(int argc, char** argv)
 
 static int
 process_for_wsdl1(
-        const axis2_env_t *env,
-        axis2_char_t *wsdl_uri_str)
+    const axis2_env_t *env,
+    axis2_char_t *wsdl_uri_str)
 {
     axiom_node_t *payload = NULL;
-   axiom_node_t *response = NULL;
+    axiom_node_t *response = NULL;
     axis2_uri_t *wsdl_uri = NULL;
     axis2_qname_t *op_qname = NULL;
     axis2_svc_client_t *svc_client = NULL;
@@ -91,7 +91,7 @@ process_for_wsdl1(
     axis2_qname_t *wsdl_svc_qname = NULL;
 
 
-    /* Set up deploy folder. It is from the deploy folder, the configuration 
+    /* Set up deploy folder. It is from the deploy folder, the configuration
      * is picked up using the axis2.xml file.
      * In this sample client_home points to the Axis2/C default deploy folder. 
      * The client_home can be different from this folder on your system. For 
@@ -103,57 +103,57 @@ process_for_wsdl1(
     if (!client_home)
         client_home = "../../deploy";
 
-    wsdl_svc_qname = axis2_qname_create(env, "Calculator", 
+    wsdl_svc_qname = axis2_qname_create(env, "Calculator",
             "http://localhost/axis/Calculator", NULL);
     wsdl_uri = axis2_uri_parse_string(env, wsdl_uri_str);
-    svc_client = 
+    svc_client =
         axis2_svc_client_create_for_dynamic_invocation(
-                env, NULL, wsdl_uri, wsdl_svc_qname, "Calculator", client_home);
-    if(!svc_client)
+            env, NULL, wsdl_uri, wsdl_svc_qname, "Calculator", client_home);
+    if (!svc_client)
     {
-      printf("Service client is NULL \n");
+        printf("Service client is NULL \n");
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Service client is NULL");
         return 1;
     }
     payload = build_om_programatically_for_wsdl1(env);
-    op_qname = axis2_qname_create(env, "add", "http://localhost/axis/Calculator", 
-            NULL); 
-    response = AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, 
+    op_qname = axis2_qname_create(env, "add", "http://localhost/axis/Calculator",
+            NULL);
+    response = AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env,
             op_qname, payload);
-        
-   if(response)
+
+    if (response)
     {
         axis2_char_t *om_str = NULL;
-        
+
         om_str = AXIOM_NODE_TO_STRING(response, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
-      printf("status:%s\n", "Success");
+        printf("status:%s\n", "Success");
     }
-   else
-      printf("status:%s\n", "Failure");
-    if(svc_client)
+    else
+        printf("status:%s\n", "Failure");
+    if (svc_client)
     {
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
-   return 0;
+    return 0;
 }
 
 static int
 process_for_wsdl2(
-        const axis2_env_t *env,
-        axis2_char_t *wsdl_uri_str)
+    const axis2_env_t *env,
+    axis2_char_t *wsdl_uri_str)
 {
     axiom_node_t *payload = NULL;
-   axiom_node_t *response = NULL;
+    axiom_node_t *response = NULL;
     axis2_uri_t *wsdl_uri = NULL;
     axis2_qname_t *op_qname = NULL;
     axis2_svc_client_t *svc_client = NULL;
     const axis2_char_t *client_home = NULL;
     axis2_qname_t *wsdl_svc_qname = NULL;
 
-    /* Set up deploy folder. It is from the deploy folder, the configuration 
+    /* Set up deploy folder. It is from the deploy folder, the configuration
      * is picked up using the axis2.xml file.
      * In this sample client_home points to the Axis2/C default deploy folder. 
      * The client_home can be different from this folder on your system. For 
@@ -165,48 +165,48 @@ process_for_wsdl2(
     if (!client_home)
         client_home = "../../deploy";
 
-    wsdl_svc_qname = axis2_qname_create(env, "Calculator", 
+    wsdl_svc_qname = axis2_qname_create(env, "Calculator",
             "http://localhost/axis/Calculator", NULL);
     wsdl_uri = axis2_uri_parse_string(env, wsdl_uri_str);
-    svc_client = 
+    svc_client =
         axis2_svc_client_create_for_dynamic_invocation(
-                env, NULL, wsdl_uri, wsdl_svc_qname, "Calculator", client_home);
-    if(!svc_client)
+            env, NULL, wsdl_uri, wsdl_svc_qname, "Calculator", client_home);
+    if (!svc_client)
     {
-      printf("Service client is NULL \n");
+        printf("Service client is NULL \n");
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Service client is NULL");
         return 1;
     }
     payload = build_om_programatically_for_wsdl2(env);
-    op_qname = axis2_qname_create(env, "add", "http://localhost/axis/Calculator", 
-            NULL); 
-    response = AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, 
+    op_qname = axis2_qname_create(env, "add", "http://localhost/axis/Calculator",
+            NULL);
+    response = AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env,
             op_qname, payload);
-        
-   if(response)
+
+    if (response)
     {
         axis2_char_t *om_str = NULL;
-        
+
         om_str = AXIOM_NODE_TO_STRING(response, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
-      printf("status:%s\n", "Success");
+        printf("status:%s\n", "Success");
     }
-   else
-      printf("status:%s\n", "Failure");
-    if(svc_client)
+    else
+        printf("status:%s\n", "Failure");
+    if (svc_client)
     {
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
-   return 0;
+    return 0;
 }
 
 
 /* build SOAP request message content using OM */
 static axiom_node_t *
 build_om_programatically_for_wsdl1(
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     axiom_node_t *add_om_node = NULL;
     axiom_element_t* add_om_ele = NULL;
@@ -222,7 +222,7 @@ build_om_programatically_for_wsdl1(
     axiom_attribute_t *attr = NULL;
     axiom_attribute_t *attr_name_arg0 = NULL;
     axiom_attribute_t *attr_name_arg1 = NULL;
-    
+
 
     axiom_xml_writer_t *xml_writer = NULL;
     axiom_output_t *om_output = NULL;
@@ -230,8 +230,8 @@ build_om_programatically_for_wsdl1(
     axis2_char_t *ns = NULL;
 
     ns = AXIS2_STRDUP("http://localhost/axis/Calculator", env);
-    ns1 = axiom_namespace_create (env, ns, "tns0");
-    
+    ns1 = axiom_namespace_create(env, ns, "tns0");
+
     add_om_ele = axiom_element_create(env, NULL, "add", ns1, &add_om_node);
     cmplx_type_om_ele = axiom_element_create(env, add_om_node, "complexType", ns1, &cmplx_type_om_node);
     seq_om_ele = axiom_element_create(env, cmplx_type_om_node, "sequence", ns1, &seq_om_node);
@@ -246,14 +246,14 @@ build_om_programatically_for_wsdl1(
     AXIOM_ELEMENT_SET_TEXT(arg1_om_ele, env, "10", arg1_om_node);
     AXIOM_ELEMENT_ADD_ATTRIBUTE(arg1_om_ele, env, attr_name_arg1, arg1_om_node);
     AXIOM_ELEMENT_ADD_ATTRIBUTE(arg1_om_ele, env, attr, arg1_om_node);
-    
-    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, 
+
+    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE,
             AXIS2_FALSE, AXIS2_XML_PARSER_TYPE_BUFFER);
-    om_output = axiom_output_create( env, xml_writer);
-    
+    om_output = axiom_output_create(env, xml_writer);
+
     AXIOM_NODE_SERIALIZE(add_om_node, env, om_output);
-    buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);         
-    printf("\nOM node in XML : %s \n",  buffer); 
+    buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+    printf("\nOM node in XML : %s \n",  buffer);
     AXIS2_FREE(env->allocator, buffer);
     AXIOM_OUTPUT_FREE(om_output, env);
 
@@ -263,7 +263,7 @@ build_om_programatically_for_wsdl1(
 /* build SOAP request message content using OM */
 static axiom_node_t *
 build_om_programatically_for_wsdl2(
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     axiom_node_t *add_om_node = NULL;
     axiom_element_t* add_om_ele = NULL;
@@ -279,7 +279,7 @@ build_om_programatically_for_wsdl2(
     axiom_attribute_t *attr = NULL;
     axiom_attribute_t *attr_name_arg0 = NULL;
     axiom_attribute_t *attr_name_arg1 = NULL;
-    
+
 
     axiom_xml_writer_t *xml_writer = NULL;
     axiom_output_t *om_output = NULL;
@@ -287,8 +287,8 @@ build_om_programatically_for_wsdl2(
     axis2_char_t *ns = NULL;
 
     ns = AXIS2_STRDUP("http://localhost/axis/Calculator", env);
-    ns1 = axiom_namespace_create (env, ns, "tns0");
-    
+    ns1 = axiom_namespace_create(env, ns, "tns0");
+
     add_om_ele = axiom_element_create(env, NULL, "add", ns1, &add_om_node);
     cmplx_type_om_ele = axiom_element_create(env, add_om_node, "complexType", ns1, &cmplx_type_om_node);
     seq_om_ele = axiom_element_create(env, cmplx_type_om_node, "sequence", ns1, &seq_om_node);
@@ -303,14 +303,14 @@ build_om_programatically_for_wsdl2(
     AXIOM_ELEMENT_SET_TEXT(arg1_om_ele, env, "10", arg1_om_node);
     AXIOM_ELEMENT_ADD_ATTRIBUTE(arg1_om_ele, env, attr_name_arg1, arg1_om_node);
     AXIOM_ELEMENT_ADD_ATTRIBUTE(arg1_om_ele, env, attr, arg1_om_node);
-    
-    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, 
+
+    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE,
             AXIS2_FALSE, AXIS2_XML_PARSER_TYPE_BUFFER);
-    om_output = axiom_output_create( env, xml_writer);
-    
+    om_output = axiom_output_create(env, xml_writer);
+
     AXIOM_NODE_SERIALIZE(add_om_node, env, om_output);
-    buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);         
-    printf("\nOM node in XML : %s \n",  buffer); 
+    buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+    printf("\nOM node in XML : %s \n",  buffer);
     AXIS2_FREE(env->allocator, buffer);
     AXIOM_OUTPUT_FREE(om_output, env);
 

@@ -18,18 +18,18 @@
 
 axis2_status_t AXIS2_CALL
 woden_wsdl_component_resolve_methods(
-        woden_wsdl_component_t *wsdl_component,
-        const axis2_env_t *env,
-        axis2_hash_t *methods)
+    woden_wsdl_component_t *wsdl_component,
+    const axis2_env_t *env,
+    axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
-    
-    wsdl_component->ops->free = axis2_hash_get(methods, "free", 
+
+    wsdl_component->ops->free = axis2_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    wsdl_component->ops->to_wsdl_component_free = axis2_hash_get(methods, 
+    wsdl_component->ops->to_wsdl_component_free = axis2_hash_get(methods,
             "to_wsdl_component_free", AXIS2_HASH_KEY_STRING);
-    wsdl_component->ops->type = axis2_hash_get(methods, "type", 
+    wsdl_component->ops->type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
     wsdl_component->ops->get_component_exts_for_namespace = axis2_hash_get(methods,
             "get_component_exts_for_namespace", AXIS2_HASH_KEY_STRING);

@@ -22,7 +22,7 @@
 
 /**
  * @brief HTTP Status Line struct impl
- * Axis2 HTTP Status Line impl  
+ * Axis2 HTTP Status Line impl
  */
 
 typedef struct axis2_http_status_line_impl
@@ -73,7 +73,7 @@ axis2_http_status_line_free(
 
 AXIS2_EXTERN axis2_http_status_line_t *AXIS2_CALL
 axis2_http_status_line_create(
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     const axis2_char_t *str)
 {
     axis2_char_t *tmp_status_line = NULL;
@@ -90,7 +90,7 @@ axis2_http_status_line_create(
             (env->allocator, sizeof(
                         axis2_http_status_line_impl_t));
 
-    if(NULL == status_line_impl)
+    if (NULL == status_line_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -102,7 +102,7 @@ axis2_http_status_line_create(
     status_line_impl->status_code = NULL;
 
     tmp = strstr(str, AXIS2_HTTP_CRLF);
-    if(NULL == tmp)
+    if (NULL == tmp)
     {
         axis2_http_status_line_free((axis2_http_status_line_t *)
                 status_line_impl, env);
@@ -113,8 +113,8 @@ axis2_http_status_line_create(
     }
     i = tmp - str;
     tmp_status_line = AXIS2_MALLOC(env->allocator,
-            i *sizeof(axis2_char_t) + 1);
-    if(NULL == tmp_status_line)
+            i * sizeof(axis2_char_t) + 1);
+    if (NULL == tmp_status_line)
     {
         axis2_http_status_line_free((axis2_http_status_line_t *)
                 status_line_impl, env);
@@ -127,7 +127,7 @@ axis2_http_status_line_create(
 
     http_version = tmp;
     tmp = strchr(tmp, ' ');
-    if(NULL == tmp)
+    if (NULL == tmp)
     {
         AXIS2_FREE(env->allocator, tmp_status_line);
         axis2_http_status_line_free((axis2_http_status_line_t *)
@@ -140,7 +140,7 @@ axis2_http_status_line_create(
     *tmp++ = '\0';
     status_code = tmp;
     tmp = strchr(tmp, ' ');
-    if(NULL == tmp)
+    if (NULL == tmp)
     {
         AXIS2_FREE(env->allocator, tmp_status_line);
         axis2_http_status_line_free((axis2_http_status_line_t *)
@@ -159,7 +159,7 @@ axis2_http_status_line_create(
     status_line_impl->reason_phrase = (axis2_char_t *)
             AXIS2_STRDUP(reason_phrase, env);
 
-    if(NULL == status_line_impl->http_version ||
+    if (NULL == status_line_impl->http_version ||
             NULL == status_line_impl->reason_phrase)
     {
         AXIS2_FREE(env->allocator, tmp_status_line);
@@ -172,7 +172,7 @@ axis2_http_status_line_create(
 
     status_line_impl->status_line.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_status_line_ops_t));
-    if(NULL == status_line_impl->status_line.ops)
+    if (NULL == status_line_impl->status_line.ops)
     {
         axis2_http_status_line_free((axis2_http_status_line_t *)
                 status_line_impl, env);
@@ -204,27 +204,27 @@ axis2_http_status_line_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     status_line_impl = AXIS2_INTF_TO_IMPL(status_line);
 
-    if(NULL != status_line_impl->line)
+    if (NULL != status_line_impl->line)
     {
         AXIS2_FREE(env->allocator, status_line_impl->line);
         status_line_impl->line = NULL;
     }
-    if(NULL != status_line_impl->http_version)
+    if (NULL != status_line_impl->http_version)
     {
         AXIS2_FREE(env->allocator, status_line_impl->http_version);
         status_line_impl->http_version = NULL;
     }
-    if(NULL != status_line_impl->status_code)
+    if (NULL != status_line_impl->status_code)
     {
         AXIS2_FREE(env->allocator, status_line_impl->status_code);
         status_line_impl->status_code = NULL;
     }
-    if(NULL != status_line_impl->reason_phrase)
+    if (NULL != status_line_impl->reason_phrase)
     {
         AXIS2_FREE(env->allocator, status_line_impl->reason_phrase);
         status_line_impl->reason_phrase = NULL;
     }
-    if(NULL != status_line->ops)
+    if (NULL != status_line->ops)
         AXIS2_FREE(env->allocator, status_line->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(status_line));
@@ -237,7 +237,7 @@ axis2_http_status_line_get_status_code(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
-    if(NULL != AXIS2_INTF_TO_IMPL(status_line)->status_code)
+    if (NULL != AXIS2_INTF_TO_IMPL(status_line)->status_code)
     {
         return AXIS2_ATOI(AXIS2_INTF_TO_IMPL(status_line)->status_code);
     }
@@ -273,7 +273,7 @@ axis2_http_status_line_starts_with_http(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if(0 == AXIS2_STRNCASECMP(AXIS2_INTF_TO_IMPL(status_line)->line, "HTTP", 4))
+    if (0 == AXIS2_STRNCASECMP(AXIS2_INTF_TO_IMPL(status_line)->line, "HTTP", 4))
     {
         return AXIS2_TRUE;
     }

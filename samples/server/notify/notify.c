@@ -17,13 +17,13 @@
 #include <stdio.h>
 
 void
-axis2_notify_notify (const axis2_env_t *env, axiom_node_t *node)
+axis2_notify_notify(const axis2_env_t *env, axiom_node_t *node)
 {
     axiom_node_t *text_node = NULL;
 
     if (!env || !env)
         return;
-   
+
     /* Expected request format is :-
        <m:notify xmlns:m="http://example.org/notify">Message 3</m:notify>
      */
@@ -41,11 +41,11 @@ axis2_notify_notify (const axis2_env_t *env, axiom_node_t *node)
         printf("Echo client ERROR: invalid XML in request\n");
         return;
     }
-    
+
     if (AXIOM_NODE_GET_NODE_TYPE(text_node, env) == AXIOM_TEXT)
     {
         axiom_text_t *text = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(text_node, env);
-        if( text && AXIOM_TEXT_GET_VALUE(text , env))
+        if (text && AXIOM_TEXT_GET_VALUE(text , env))
         {
             axis2_char_t *text_str = AXIOM_TEXT_GET_VALUE(text, env);
             printf("Notification received :  %s \n", text_str);
@@ -57,7 +57,7 @@ axis2_notify_notify (const axis2_env_t *env, axiom_node_t *node)
         printf("Echo client ERROR: invalid XML in request\n");
         return;
     }
-   
+
     return;
 }
 

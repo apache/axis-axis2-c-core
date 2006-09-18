@@ -20,31 +20,31 @@
 
 int AXIS2_CALL
 calc_free(axis2_svc_skeleton_t *svc_skeleton,
-          const axis2_env_t *env);
+        const axis2_env_t *env);
 
 /*
- * This method invokes the right service method 
+ * This method invokes the right service method
  */
-axiom_node_t* AXIS2_CALL 
+axiom_node_t* AXIS2_CALL
 calc_invoke(axis2_svc_skeleton_t *svc_skeleton,
-            const axis2_env_t *env,
-            axiom_node_t *node,
-            axis2_msg_ctx_t *msg_ctx);
+        const axis2_env_t *env,
+        axiom_node_t *node,
+        axis2_msg_ctx_t *msg_ctx);
 
 int AXIS2_CALL calc_init(axis2_svc_skeleton_t *svc_skeleton,
-                        const axis2_env_t *env);
+        const axis2_env_t *env);
 
 
 AXIS2_EXTERN axis2_svc_skeleton_t * AXIS2_CALL
 axis2_calc_create(const axis2_env_t *env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;
-    svc_skeleton = AXIS2_MALLOC(env->allocator, 
-        sizeof(axis2_svc_skeleton_t));
+    svc_skeleton = AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_svc_skeleton_t));
 
-    
+
     svc_skeleton->ops = AXIS2_MALLOC(
-        env->allocator, sizeof(axis2_svc_skeleton_ops_t));
+                env->allocator, sizeof(axis2_svc_skeleton_ops_t));
 
     svc_skeleton->func_array = NULL;
 
@@ -58,7 +58,7 @@ axis2_calc_create(const axis2_env_t *env)
 
 int AXIS2_CALL
 calc_init(axis2_svc_skeleton_t *svc_skeleton,
-                        const axis2_env_t *env)
+        const axis2_env_t *env)
 {
     svc_skeleton->func_array = axis2_array_list_create(env, 0);
     AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "add");
@@ -72,36 +72,36 @@ calc_init(axis2_svc_skeleton_t *svc_skeleton,
 
 int AXIS2_CALL
 calc_free(axis2_svc_skeleton_t *svc_skeleton,
-            const axis2_env_t *env)
+        const axis2_env_t *env)
 {
     /*if(svc_skeleton->func_array)
     {
         AXIS2_ARRAY_LIST_FREE(svc_skeleton->func_array, env);
         svc_skeleton->func_array = NULL;
     }*/
-    
-    if(svc_skeleton->ops)
+
+    if (svc_skeleton->ops)
     {
         AXIS2_FREE(env->allocator, svc_skeleton->ops);
         svc_skeleton->ops = NULL;
     }
-    
-    if(svc_skeleton)
+
+    if (svc_skeleton)
     {
         AXIS2_FREE(env->allocator, svc_skeleton);
         svc_skeleton = NULL;
     }
-    return AXIS2_SUCCESS; 
+    return AXIS2_SUCCESS;
 }
 
 /*
- * This method invokes the right service method 
+ * This method invokes the right service method
  */
 axiom_node_t* AXIS2_CALL
 calc_invoke(axis2_svc_skeleton_t *svc_skeleton,
-            const axis2_env_t *env,
-            axiom_node_t *node,
-            axis2_msg_ctx_t *msg_ctx)
+        const axis2_env_t *env,
+        axiom_node_t *node,
+        axis2_msg_ctx_t *msg_ctx)
 {
     /* Depending on the function name invoke the
      *  corresponding calc method
@@ -117,21 +117,21 @@ calc_invoke(axis2_svc_skeleton_t *svc_skeleton,
                 axis2_char_t *op_name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
                 if (op_name)
                 {
-                    if ( AXIS2_STRCMP(op_name, "add") == 0 )
+                    if (AXIS2_STRCMP(op_name, "add") == 0)
                         return axis2_calc_add(env, node);
-                    if ( AXIS2_STRCMP(op_name, "sub") == 0 )
+                    if (AXIS2_STRCMP(op_name, "sub") == 0)
                         return axis2_calc_sub(env, node);
-                    if ( AXIS2_STRCMP(op_name, "mul") == 0 )
+                    if (AXIS2_STRCMP(op_name, "mul") == 0)
                         return axis2_calc_mul(env, node);
-                    if ( AXIS2_STRCMP(op_name, "div") == 0 )
+                    if (AXIS2_STRCMP(op_name, "div") == 0)
                         return axis2_calc_div(env, node);
                 }
             }
         }
     }
-    
+
     printf("Calculator service ERROR: invalid OM parameters in request\n");
-    
+
     /** TODO: return a SOAP fault here */
     return node;
 }
@@ -141,14 +141,14 @@ calc_invoke(axis2_svc_skeleton_t *svc_skeleton,
  */
 
 AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
-                        const axis2_env_t *env)
+        const axis2_env_t *env)
 {
-   *inst = axis2_calc_create(env);
+    *inst = axis2_calc_create(env);
     /*if(NULL != *inst)
     {
         status = *inst->init();
     }*/
-    if(!(*inst))
+    if (!(*inst))
     {
         return AXIS2_FAILURE;
     }
@@ -157,11 +157,11 @@ AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
 }
 
 AXIS2_EXPORT int axis2_remove_instance(axis2_svc_skeleton_t *inst,
-                            const axis2_env_t *env)
+        const axis2_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
-   if (inst)
-   {
+    if (inst)
+    {
         status = AXIS2_SVC_SKELETON_FREE(inst, env);
     }
     return status;

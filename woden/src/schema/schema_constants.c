@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #include <axis2_allocator.h>
 #include <axis2_env.h>
 #include <axis2_error.h>
@@ -27,8 +27,8 @@
 
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_schema(
-        axis2_qname_t *schema, 
-        const axis2_env_t *env)
+    axis2_qname_t *schema,
+    const axis2_env_t *env)
 {
     axis2_qname_t *q1999 = NULL;
     axis2_qname_t *q2000 = NULL;
@@ -39,26 +39,26 @@ woden_schema_constants_compare_schema(
     q2000 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_XSD_2000);
     q2001 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_XSD_2001);
 
-    if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(schema, env, q1999) ||
+    if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(schema, env, q1999) ||
             AXIS2_TRUE == AXIS2_QNAME_EQUALS(schema, env, q2000) ||
             AXIS2_TRUE == AXIS2_QNAME_EQUALS(schema, env, q2001))
     {
         ret = AXIS2_TRUE;
     }
-    if(q1999)
+    if (q1999)
         AXIS2_QNAME_FREE(q1999, env);
-    if(q2000)
+    if (q2000)
         AXIS2_QNAME_FREE(q2000, env);
-    if(q2001)
+    if (q2001)
         AXIS2_QNAME_FREE(q2001, env);
-    
+
     return ret;
 }
 
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_include(
-        axis2_qname_t *include, 
-        const axis2_env_t *env)
+    axis2_qname_t *include,
+    const axis2_env_t *env)
 {
     axis2_qname_t *q1999 = NULL;
     axis2_qname_t *q2000 = NULL;
@@ -69,26 +69,26 @@ woden_schema_constants_compare_include(
     q2000 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_INCLUDE_XSD_2000);
     q2001 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_INCLUDE_XSD_2001);
 
-    if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(include, env, q1999) ||
+    if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(include, env, q1999) ||
             AXIS2_TRUE == AXIS2_QNAME_EQUALS(include, env, q2000) ||
             AXIS2_TRUE == AXIS2_QNAME_EQUALS(include, env, q2001))
     {
         ret = AXIS2_TRUE;
     }
-    if(q1999)
+    if (q1999)
         AXIS2_QNAME_FREE(q1999, env);
-    if(q2000)
+    if (q2000)
         AXIS2_QNAME_FREE(q2000, env);
-    if(q2001)
+    if (q2001)
         AXIS2_QNAME_FREE(q2001, env);
-    
+
     return ret;
 }
 
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_import(
-        axis2_qname_t *import, 
-        const axis2_env_t *env)
+    axis2_qname_t *import,
+    const axis2_env_t *env)
 {
     axis2_qname_t *q1999 = NULL;
     axis2_qname_t *q2000 = NULL;
@@ -99,26 +99,26 @@ woden_schema_constants_compare_import(
     q2000 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_IMPORT_XSD_2000);
     q2001 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_IMPORT_XSD_2001);
 
-    if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(import, env, q1999) ||
+    if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(import, env, q1999) ||
             AXIS2_TRUE == AXIS2_QNAME_EQUALS(import, env, q2000) ||
             AXIS2_TRUE == AXIS2_QNAME_EQUALS(import, env, q2001))
     {
         ret = AXIS2_TRUE;
     }
-    if(q1999)
+    if (q1999)
         AXIS2_QNAME_FREE(q1999, env);
-    if(q2000)
+    if (q2000)
         AXIS2_QNAME_FREE(q2000, env);
-    if(q2001)
+    if (q2001)
         AXIS2_QNAME_FREE(q2001, env);
-    
+
     return ret;
 }
 
 axis2_bool_t AXIS2_CALL
 woden_schema_constants_compare_redefine(
-        axis2_qname_t *redefine, 
-        const axis2_env_t *env)
+    axis2_qname_t *redefine,
+    const axis2_env_t *env)
 {
     axis2_qname_t *q1999 = NULL;
     axis2_qname_t *q2000 = NULL;
@@ -129,19 +129,19 @@ woden_schema_constants_compare_redefine(
     q2000 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_REDEFINE_XSD_2000);
     q2001 = axis2_qname_create_from_string(env, WODEN_Q_ELEM_REDEFINE_XSD_2001);
 
-    if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(redefine, env, q1999) ||
+    if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(redefine, env, q1999) ||
             AXIS2_TRUE == AXIS2_QNAME_EQUALS(redefine, env, q2000) ||
             AXIS2_TRUE == AXIS2_QNAME_EQUALS(redefine, env, q2001))
     {
         ret = AXIS2_TRUE;
     }
-    if(q1999)
+    if (q1999)
         AXIS2_QNAME_FREE(q1999, env);
-    if(q2000)
+    if (q2000)
         AXIS2_QNAME_FREE(q2000, env);
-    if(q2001)
+    if (q2001)
         AXIS2_QNAME_FREE(q2001, env);
-    
+
     return ret;
 }
 

@@ -25,32 +25,40 @@
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_iv_generate_for_algo(const axis2_env_t *env,
-                            axis2_char_t *key_algo)
+        axis2_char_t *key_algo)
 {
     axis2_char_t* iv = NULL;
     openssl_cipher_property_t *cprop = NULL;
     int size;
     cprop =  oxs_get_cipher_property_for_url(env, key_algo);
-    if(!cprop){
+    if (!cprop)
+    {
         oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
-            "openssl_get_cipher_property failed");
+                "openssl_get_cipher_property failed");
         return NULL;
     }
     size = OPENSSL_CIPHER_PROPERTY_GET_IV_SIZE(cprop, env);
-    
+
     /*Here we have predefined IVs in the openssl_constants.
-      Get the correct one using the size*/ 
-    
-    if(size == 8){
+      Get the correct one using the size*/
+
+    if (size == 8)
+    {
         iv = OPENSSL_DEFAULT_IV8;
-    }else if(size == 16){
+    }
+    else if (size == 16)
+    {
         iv = OPENSSL_DEFAULT_IV16;
-    }else if(size == 24){
+    }
+    else if (size == 24)
+    {
         iv = OPENSSL_DEFAULT_IV24;
-    }else{
+    }
+    else
+    {
         iv = OXS_IV_DEFAULT;/* i.e. OPENSSL_DEFAULT_IV16. Many ciphers have 16... mmm.. need a better way.. a TODO*/
     }
     printf("IVIVIVIV size=%d value = %s", size, iv);
-    
+
     return iv;
 }

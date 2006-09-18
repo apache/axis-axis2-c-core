@@ -26,7 +26,7 @@ std::string* getPlatformErrorMessage(long errorNumber)
     LPVOID lpMsgBuf;
 
    FormatMessage(
-   FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+   FORMAT_MESSAGE_ALLOCATE_BUFFER |
    FORMAT_MESSAGE_FROM_SYSTEM,
    NULL,
    errorNumber,
@@ -36,7 +36,7 @@ std::string* getPlatformErrorMessage(long errorNumber)
 
    returningString->append((LPTSTR)lpMsgBuf);
     LocalFree(lpMsgBuf);
-          
+
     return returningString;
 }
 */
@@ -44,12 +44,12 @@ AXIS2_EXTERN HMODULE AXIS2_CALL
 callLoadLib(LPCTSTR lib)
 {
 
-        SetErrorMode(SEM_FAILCRITICALERRORS); //Disable display of the critical-error-handler message box
-        return LoadLibrary(lib);
+    SetErrorMode(SEM_FAILCRITICALERRORS); //Disable display of the critical-error-handler message box
+    return LoadLibrary(lib);
 }
 
 AXIS2_EXTERN struct tm *AXIS2_CALL
-axis2_win_gmtime(const time_t *timep, struct tm *result)
+            axis2_win_gmtime(const time_t *timep, struct tm *result)
 {
     return gmtime(timep);
 }

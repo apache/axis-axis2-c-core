@@ -56,16 +56,17 @@ typedef struct axis2_op_client_worker_func_args
     axis2_callback_t *callback;
     axis2_op_t *op;
     axis2_msg_ctx_t *msg_ctx;
-} axis2_op_client_worker_func_args_t;
+}
+axis2_op_client_worker_func_args_t;
 
 void *AXIS2_THREAD_FUNC
 axis2_op_client_worker_func(
-    axis2_thread_t *thd, 
+    axis2_thread_t *thd,
     void *data);
 
 
 /** private function prototypes */
-static void 
+static void
 axis2_op_client_init_ops(
     axis2_op_client_t *op_client);
 
@@ -152,7 +153,7 @@ axis2_op_client_create(
     AXIS2_PARAM_CHECK(env->error, svc_ctx, NULL);
     AXIS2_PARAM_CHECK(env->error, options, NULL);
 
-    op_client_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_op_client_impl_t) );
+    op_client_impl = AXIS2_MALLOC(env->allocator, sizeof(axis2_op_client_impl_t));
     if (!op_client_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -197,7 +198,7 @@ axis2_op_client_create(
 
     /* initialize ops */
     op_client_impl->op_client.ops =
-        AXIS2_MALLOC( env->allocator, sizeof(axis2_op_client_ops_t) );
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_op_client_ops_t));
 
     if (!op_client_impl->op_client.ops)
     {
@@ -655,7 +656,7 @@ axis2_op_client_free(
 }
 
 
-static void 
+static void
 axis2_op_client_init_ops(
     axis2_op_client_t *op_client)
 {
@@ -675,7 +676,7 @@ axis2_op_client_init_ops(
 
 void *AXIS2_THREAD_FUNC
 axis2_op_client_worker_func(
-    axis2_thread_t *thd, 
+    axis2_thread_t *thd,
     void *data)
 {
     axis2_op_client_worker_func_args_t *args_list = NULL;

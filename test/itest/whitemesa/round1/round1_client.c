@@ -21,13 +21,13 @@
 #include <axis2_client.h>
 #include <string.h>
 
-axiom_node_t *build_soap_body_content (const axis2_env_t *env,
-                                          const axis2_char_t * echo_operation,
-                                          const axis2_char_t * echo_type,
-                                          const axis2_char_t * word_to_echo);
+axiom_node_t *build_soap_body_content(const axis2_env_t *env,
+        const axis2_char_t * echo_operation,
+        const axis2_char_t * echo_type,
+        const axis2_char_t * word_to_echo);
 
 int
-main (int argc, char **argv)
+main(int argc, char **argv)
 {
     axis2_env_t *env = NULL;
     const axis2_char_t *address = NULL;
@@ -40,7 +40,7 @@ main (int argc, char **argv)
     axiom_element_t *ret_ele = NULL;
     axis2_char_t *om_str = NULL;
     axis2_char_t *result = NULL;
-    
+
     const axis2_char_t *echo_operation = NULL;
     const axis2_char_t *word_to_echo = NULL;
     const axis2_char_t *echo_type = NULL;
@@ -50,12 +50,12 @@ main (int argc, char **argv)
     echo_operation = "String";
     word_to_echo = "helloworld";
     echo_type = "string";
- 
-    if ((argc > 1) && (AXIS2_STRCMP ("-h", argv[1]) == 0))
+
+    if ((argc > 1) && (AXIS2_STRCMP("-h", argv[1]) == 0))
     {
-        printf ("\nUsage : %s [echo_operation] [echo_value] [XSD_type]\n",
+        printf("\nUsage : %s [echo_operation] [echo_value] [XSD_type]\n",
                 argv[0]);
-      printf("use -h for help\n");
+        printf("use -h for help\n");
         return 0;
     }
 
@@ -65,27 +65,27 @@ main (int argc, char **argv)
         word_to_echo = argv[2];
     if (argc > 3)
         echo_type = argv[3];
-    
+
     /* address = "http://localhost:7070/cgi-bin/interopserver"; */
     address = "http://easysoap.sourceforge.net/cgi-bin/interopserver";
-   
-    sprintf (operation, "echo%s", echo_operation);
 
-    printf ("Using endpoint : %s\n", address);
-    printf ("Invoking %s with param %s\n", operation, word_to_echo);
+    sprintf(operation, "echo%s", echo_operation);
+
+    printf("Using endpoint : %s\n", address);
+    printf("Invoking %s with param %s\n", operation, word_to_echo);
 
 
     /* Set up the environment */
     env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Create EPR with given address */
-   
+
     endpoint_ref = axis2_endpoint_ref_create(env, address);
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
-  
-    /* this itest requried soap 1.1 message */ 
-    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11); 
+
+    /* this itest requried soap 1.1 message */
+    AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     if (!client_home)
         client_home = "../../deploy";
@@ -95,70 +95,70 @@ main (int argc, char **argv)
     if (!svc_client)
     {
         printf("Error creating service client\n");
-        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,"Stub invoke FAILED: Error code:"
-                  " %d :: %s", env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+                " %d :: %s", env->error->error_number,
+                AXIS2_ERROR_GET_MESSAGE(env->error));
     }
-    
+
     /* Set service client options */
     AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
 
-    payload = build_soap_body_content (env, echo_operation,
-                                      echo_type, word_to_echo);
+    payload = build_soap_body_content(env, echo_operation,
+            echo_type, word_to_echo);
     /* Send request */
-    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload );
-    
+    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
+
 
 
     if (ret_node)
     {
         om_str = AXIOM_NODE_TO_STRING(ret_node, env);
         if (om_str)
-          printf("\nRecieving OM : %s\n", om_str);
-        if (AXIOM_NODE_GET_NODE_TYPE (ret_node, env) == AXIOM_ELEMENT)
+            printf("\nRecieving OM : %s\n", om_str);
+        if (AXIOM_NODE_GET_NODE_TYPE(ret_node, env) == AXIOM_ELEMENT)
         {
-            
-            sprintf (echo_response_buff, "echo%sResponse", echo_operation);
+
+            sprintf(echo_response_buff, "echo%sResponse", echo_operation);
             ret_ele =
                 (axiom_element_t *)
-                AXIOM_NODE_GET_DATA_ELEMENT (ret_node, env);
+                AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
             if (AXIS2_STRCMP
-                (AXIOM_ELEMENT_GET_LOCALNAME (ret_ele, env),
-                 echo_response_buff) != 0)
+                    (AXIOM_ELEMENT_GET_LOCALNAME(ret_ele, env),
+                            echo_response_buff) != 0)
             {
-           printf ( "%s != %s\n", AXIOM_ELEMENT_GET_LOCALNAME (ret_ele, env), echo_response_buff);
-                printf ("\nFAIL\n\n");
+                printf("%s != %s\n", AXIOM_ELEMENT_GET_LOCALNAME(ret_ele, env), echo_response_buff);
+                printf("\nFAIL\n\n");
                 return AXIS2_FAILURE;
             }
 
-            ret_node = AXIOM_NODE_GET_FIRST_CHILD (ret_node, env);
+            ret_node = AXIOM_NODE_GET_FIRST_CHILD(ret_node, env);
             ret_ele =
                 (axiom_element_t *)
-                AXIOM_NODE_GET_DATA_ELEMENT (ret_node, env);
-            result = AXIOM_ELEMENT_GET_TEXT (ret_ele, env, ret_node);
-            if (!strcmp (word_to_echo, result))
+                AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
+            result = AXIOM_ELEMENT_GET_TEXT(ret_ele, env, ret_node);
+            if (!strcmp(word_to_echo, result))
             {
-                printf ("\nSUCCESS\n\n");
+                printf("\nSUCCESS\n\n");
             }
             else
             {
-                printf ("\nFAIL\n\n");
+                printf("\nFAIL\n\n");
             }
 
         }
         else
         {
-            printf ("\nFAIL\n\n");
+            printf("\nFAIL\n\n");
             return AXIS2_FAILURE;
         }
     }
     else
     {
-        AXIS2_LOG_ERROR (env->log, AXIS2_LOG_SI,
-                         "Stub invoke FAILED: Error code:" " %d :: %s",
-                         env->error->error_number,
-                         AXIS2_ERROR_GET_MESSAGE (env->error));
-        printf ("round1 stub invoke FAILED!\n");
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
+                "Stub invoke FAILED: Error code:" " %d :: %s",
+                env->error->error_number,
+                AXIS2_ERROR_GET_MESSAGE(env->error));
+        printf("round1 stub invoke FAILED!\n");
         return AXIS2_FAILURE;
     }
 
@@ -166,10 +166,10 @@ main (int argc, char **argv)
 }
 
 axiom_node_t *
-build_soap_body_content (const axis2_env_t *env, 
-                         const axis2_char_t * echo_operation,
-                         const axis2_char_t * echo_type,
-                         const axis2_char_t * word_to_echo)
+build_soap_body_content(const axis2_env_t *env,
+        const axis2_char_t * echo_operation,
+        const axis2_char_t * echo_type,
+        const axis2_char_t * word_to_echo)
 {
 
     axiom_node_t *operation_om_node = NULL;
@@ -180,70 +180,70 @@ build_soap_body_content (const axis2_env_t *env,
 
     axiom_attribute_t *attri1 = NULL;
     axiom_namespace_t *ns0 = NULL, *ns1 = NULL, *ns2 = NULL, *ns3 = NULL,
-        *ns4 = NULL, *ns5 = NULL;
+            *ns4 = NULL, *ns5 = NULL;
     axis2_char_t *om_str = NULL;
-    
+
 
     axis2_char_t echo_operation_buff[32];
     axis2_char_t input_type_buff[32];
     axis2_char_t xsd_type_buff[32];
 
     /*generating the requried parameters */
-    sprintf (echo_operation_buff, "echo%s", echo_operation);
-    sprintf (input_type_buff, "input%s", echo_operation);
-    sprintf (xsd_type_buff, "xsd:%s", echo_type);
+    sprintf(echo_operation_buff, "echo%s", echo_operation);
+    sprintf(input_type_buff, "input%s", echo_operation);
+    sprintf(xsd_type_buff, "xsd:%s", echo_type);
 
     ns0 =
-        axiom_namespace_create (env,
-                                   "http://schemas.xmlsoap.org/soap/envelope/",
-                                   "soapenv");
+        axiom_namespace_create(env,
+                "http://schemas.xmlsoap.org/soap/envelope/",
+                "soapenv");
     ns1 =
-        axiom_namespace_create (env,
-                                   "http://www.w3.org/2001/XMLSchema-instance",
-                                   "xsi");
+        axiom_namespace_create(env,
+                "http://www.w3.org/2001/XMLSchema-instance",
+                "xsi");
     ns2 =
-        axiom_namespace_create (env, "http://www.w3.org/2001/XMLSchema",
-                                   "xsd");
+        axiom_namespace_create(env, "http://www.w3.org/2001/XMLSchema",
+                "xsd");
     ns3 =
-        axiom_namespace_create (env,
-                                   "http://schemas.xmlsoap.org/soap/encoding/",
-                                   "soapenc");
-    ns4 = axiom_namespace_create (env, "http://soapinterop.org/", "tns");
+        axiom_namespace_create(env,
+                "http://schemas.xmlsoap.org/soap/encoding/",
+                "soapenc");
+    ns4 = axiom_namespace_create(env, "http://soapinterop.org/", "tns");
     ns5 =
-        axiom_namespace_create (env, "http://soapinterop.org/encodedTypes",
-                                   "types");
+        axiom_namespace_create(env, "http://soapinterop.org/encodedTypes",
+                "types");
 
     operation_om_ele = axiom_element_create(env, NULL, echo_operation_buff,
-                                     ns4, &operation_om_node);
-   
-    AXIOM_ELEMENT_DECLARE_NAMESPACE (operation_om_ele, env,
-                                          operation_om_node, ns0);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE (operation_om_ele, env,
-                                          operation_om_node, ns1);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE (operation_om_ele, env,
-                                          operation_om_node, ns2);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE (operation_om_ele, env,
-                                          operation_om_node, ns3);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE (operation_om_ele, env,
-                                          operation_om_node, ns4);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE (operation_om_ele, env,
-                                          operation_om_node, ns5);
+            ns4, &operation_om_node);
+
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(operation_om_ele, env,
+            operation_om_node, ns0);
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(operation_om_ele, env,
+            operation_om_node, ns1);
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(operation_om_ele, env,
+            operation_om_node, ns2);
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(operation_om_ele, env,
+            operation_om_node, ns3);
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(operation_om_ele, env,
+            operation_om_node, ns4);
+    AXIOM_ELEMENT_DECLARE_NAMESPACE(operation_om_ele, env,
+            operation_om_node, ns5);
 
     attri1 =
-        axiom_attribute_create (env, "encodingStyle",
-                                   "http://schemas.xmlsoap.org/soap/encoding/",
-                                   ns0);
+        axiom_attribute_create(env, "encodingStyle",
+                "http://schemas.xmlsoap.org/soap/encoding/",
+                ns0);
 
-    operation_om_ele = AXIOM_NODE_GET_DATA_ELEMENT (operation_om_node, env);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE (operation_om_ele, env, attri1, operation_om_node);
+    operation_om_ele = AXIOM_NODE_GET_DATA_ELEMENT(operation_om_node, env);
+    AXIOM_ELEMENT_ADD_ATTRIBUTE(operation_om_ele, env, attri1, operation_om_node);
 
 
     text_om_ele =
-        axiom_element_create (env, operation_om_node, input_type_buff, NULL,
-                                 &text_om_node);
-    attri1 = axiom_attribute_create (env, "type", xsd_type_buff, ns1);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE (text_om_ele, env, attri1, text_om_node);
-    AXIOM_ELEMENT_SET_TEXT (text_om_ele, env, word_to_echo, text_om_node);
+        axiom_element_create(env, operation_om_node, input_type_buff, NULL,
+                &text_om_node);
+    attri1 = axiom_attribute_create(env, "type", xsd_type_buff, ns1);
+    AXIOM_ELEMENT_ADD_ATTRIBUTE(text_om_ele, env, attri1, text_om_node);
+    AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, word_to_echo, text_om_node);
 
     om_str = AXIOM_NODE_TO_STRING(operation_om_node, env);
     if (om_str)

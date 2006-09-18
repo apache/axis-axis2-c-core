@@ -21,7 +21,7 @@
 #include <stdio.h>
 /**
  * @brief HTTP Request Line struct impl
- *   Axis2 HTTP Request Line impl  
+ *   Axis2 HTTP Request Line impl
  */
 
 typedef struct axis2_http_request_line_impl
@@ -44,7 +44,7 @@ axis2_http_request_line_impl_t;
  */
 axis2_http_request_line_t *AXIS2_CALL
 axis2_http_request_line_parse_line(
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     const axis2_char_t *str);
 
 axis2_char_t *AXIS2_CALL
@@ -91,7 +91,7 @@ axis2_http_request_line_create(
             (env->allocator, sizeof(
                         axis2_http_request_line_impl_t));
 
-    if(NULL == request_line_impl)
+    if (NULL == request_line_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -103,7 +103,7 @@ axis2_http_request_line_create(
 
     request_line_impl->request_line.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_request_line_ops_t));
-    if(NULL == request_line_impl->request_line.ops)
+    if (NULL == request_line_impl->request_line.ops)
     {
         axis2_http_request_line_free((axis2_http_request_line_t *)
                 request_line_impl, env);
@@ -133,22 +133,22 @@ axis2_http_request_line_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     request_line_impl = AXIS2_INTF_TO_IMPL(request_line);
 
-    if(NULL != request_line_impl->method)
+    if (NULL != request_line_impl->method)
     {
         AXIS2_FREE(env->allocator, request_line_impl->method);
         request_line_impl->method = NULL;
     }
-    if(NULL != request_line_impl->uri)
+    if (NULL != request_line_impl->uri)
     {
         AXIS2_FREE(env->allocator, request_line_impl->uri);
         request_line_impl->uri = NULL;
     }
-    if(NULL != request_line_impl->http_version)
+    if (NULL != request_line_impl->http_version)
     {
         AXIS2_FREE(env->allocator, request_line_impl->http_version);
         request_line_impl->http_version = NULL;
     }
-    if(NULL != request_line->ops)
+    if (NULL != request_line->ops)
         AXIS2_FREE(env->allocator, request_line->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(request_line));
@@ -157,7 +157,7 @@ axis2_http_request_line_free(
 
 AXIS2_EXTERN axis2_http_request_line_t *AXIS2_CALL
 axis2_http_request_line_parse_line(
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     const axis2_char_t *str)
 {
     axis2_char_t *req_line = NULL;
@@ -173,7 +173,7 @@ axis2_http_request_line_parse_line(
     tmp = AXIS2_STRSTR(str, AXIS2_HTTP_CRLF);
 
 
-    if(NULL == tmp)
+    if (NULL == tmp)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_INVALID_HTTP_HEADER_START_LINE,
@@ -182,7 +182,7 @@ axis2_http_request_line_parse_line(
     }
     i = tmp - str;
     req_line = AXIS2_MALLOC(env->allocator, i * sizeof(axis2_char_t) + 1);
-    if(NULL == req_line)
+    if (NULL == req_line)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -193,7 +193,7 @@ axis2_http_request_line_parse_line(
 
     method = tmp;
     tmp = strchr(tmp, ' ');
-    if(NULL == tmp)
+    if (NULL == tmp)
     {
         AXIS2_FREE(env->allocator, req_line);
         AXIS2_ERROR_SET(env->error,
@@ -204,7 +204,7 @@ axis2_http_request_line_parse_line(
     *tmp++ = '\0';
     uri = tmp;
     tmp = strchr(tmp, ' ');
-    if(NULL == tmp)
+    if (NULL == tmp)
     {
         AXIS2_FREE(env->allocator, req_line);
         AXIS2_ERROR_SET(env->error,
@@ -271,12 +271,12 @@ axis2_http_request_line_to_string(
 
     ret = AXIS2_MALLOC(env->allocator,
             alloc_len * sizeof(axis2_char_t));
-    if(NULL == ret)
+    if (NULL == ret)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    if(req_line_impl->uri[0] != '/')
+    if (req_line_impl->uri[0] != '/')
     {
         sprintf(ret, "%s /%s %s%s", req_line_impl->method, req_line_impl->uri,
                 req_line_impl->http_version, AXIS2_HTTP_CRLF);

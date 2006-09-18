@@ -18,16 +18,16 @@
 
 axis2_status_t AXIS2_CALL
 woden_desc_element_resolve_methods(
-        woden_desc_element_t *desc_element,
-        const axis2_env_t *env,
-        axis2_hash_t *methods)
+    woden_desc_element_t *desc_element,
+    const axis2_env_t *env,
+    axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
-    
-    desc_element->ops->free = axis2_hash_get(methods, "free", 
+
+    desc_element->ops->free = axis2_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    desc_element->ops->type = axis2_hash_get(methods, "type", 
+    desc_element->ops->type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
     desc_element->ops->set_document_base_uri = axis2_hash_get(methods,
@@ -113,6 +113,6 @@ woden_desc_element_resolve_methods(
     desc_element->ops->to_component = axis2_hash_get(methods,
             "to_component", AXIS2_HASH_KEY_STRING);
 
-    return AXIS2_SUCCESS;    
+    return AXIS2_SUCCESS;
 }
 

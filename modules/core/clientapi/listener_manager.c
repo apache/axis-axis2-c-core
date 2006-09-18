@@ -52,7 +52,7 @@ axis2_listener_manager_worker_func_args_t;
 
 void *AXIS2_THREAD_FUNC
 axis2_listener_manager_worker_func(
-    axis2_thread_t *thd, 
+    axis2_thread_t *thd,
     void *data);
 
 /** Interface to implementation conversion macro */
@@ -119,7 +119,7 @@ axis2_listener_manager_create(
 
     /* initialize ops */
     listener_manager_impl->listener_manager.ops =
-        AXIS2_MALLOC( env->allocator, sizeof(axis2_listener_manager_ops_t) );
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_listener_manager_ops_t));
 
     if (!listener_manager_impl->listener_manager.ops)
     {
@@ -232,8 +232,8 @@ axis2_listener_manager_make_sure_started(
                         return AXIS2_FAILURE;
 #endif
 
-                        tl_state = AXIS2_MALLOC( env->allocator,
-                                sizeof(axis2_transport_listener_state_t) );
+                        tl_state = AXIS2_MALLOC(env->allocator,
+                                sizeof(axis2_transport_listener_state_t));
 
                         if (!tl_state)
                         {

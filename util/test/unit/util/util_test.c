@@ -20,10 +20,10 @@
 #include <axis2_allocator.h>
 #include <axis2_env.h>
 
-CuSuite* axis2_utilGetSuite() 
+CuSuite* axis2_utilGetSuite()
 {
     CuSuite* suite = CuSuiteNew();
-   
+
     /* Samisa - need to remove this as we no longer have samples in the main build*/
     SUITE_ADD_TEST(suite, Testaxis2_class_loader_create_dll);
     SUITE_ADD_TEST(suite, Testaxis2_stream_write);
@@ -38,7 +38,7 @@ CuSuite* axis2_utilGetSuite()
     SUITE_ADD_TEST(suite, Testaxis2_uri_parse_string);
     SUITE_ADD_TEST(suite, Testaxis2_uri_parse_relative);
     SUITE_ADD_TEST(suite, Testaxis2_uri_clone);
-    SUITE_ADD_TEST(suite, Testaxis2_uri_get_path); 
+    SUITE_ADD_TEST(suite, Testaxis2_uri_get_path);
     /* Samisa - need to remove this as we run make check before make install
     SUITE_ADD_TEST(suite, Testaxis2_dir_handler_list_dir); */
 

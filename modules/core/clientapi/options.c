@@ -61,11 +61,11 @@ axis2_options_impl_t;
 #define AXIS2_INTF_TO_IMPL(options) ((axis2_options_impl_t *)options)
 
 /** private function prototypes */
-static void 
+static void
 axis2_options_init_data(
     axis2_options_impl_t *options);
 
-static void 
+static void
 axis2_options_init_ops(
     axis2_options_t *options);
 
@@ -318,7 +318,7 @@ axis2_options_set_soap_version(
     int soap_version);
 
 axis2_status_t AXIS2_CALL
-axis2_options_free (
+axis2_options_free(
     axis2_options_t *options,
     const axis2_env_t *env);
 
@@ -341,7 +341,7 @@ axis2_options_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    options_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_options_impl_t) );
+    options_impl = AXIS2_MALLOC(env->allocator, sizeof(axis2_options_impl_t));
     if (!options_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -367,7 +367,7 @@ axis2_options_create(
 
     /** initialize ops */
     options_impl->options.ops =
-        AXIS2_MALLOC( env->allocator, sizeof(axis2_options_ops_t) );
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_options_ops_t));
 
     if (!options_impl->options.ops)
     {
@@ -1127,7 +1127,7 @@ axis2_options_get_msg_info_headers(
 }
 
 axis2_status_t AXIS2_CALL
-axis2_options_free (
+axis2_options_free(
     axis2_options_t *options,
     const axis2_env_t *env)
 {
@@ -1169,8 +1169,8 @@ axis2_options_free (
 
     if (options_impl->msg_info_headers)
     {
-    	AXIS2_MSG_INFO_HEADERS_FREE(options_impl->msg_info_headers, env);
-	options_impl->msg_info_headers = NULL;
+        AXIS2_MSG_INFO_HEADERS_FREE(options_impl->msg_info_headers, env);
+        options_impl->msg_info_headers = NULL;
     }
 
     AXIS2_FREE(env->allocator, options_impl);
@@ -1179,7 +1179,7 @@ axis2_options_free (
     return AXIS2_SUCCESS;
 }
 
-static void 
+static void
 axis2_options_init_data(
     axis2_options_impl_t *options_impl)
 {
@@ -1200,7 +1200,7 @@ axis2_options_init_data(
     options_impl->enable_mtom = AXIS2_FALSE;
 }
 
-static void 
+static void
 axis2_options_init_ops(
     axis2_options_t *options)
 {

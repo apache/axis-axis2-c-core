@@ -1,42 +1,42 @@
 #include "axis2_stub_calculator.h"
 
-axiom_node_t* generate_request_xml (const  axis2_env_t* env );
-void handle_respone_xml ( const  axis2_env_t* env, axiom_node_t* res );
+axiom_node_t* generate_request_xml(const  axis2_env_t* env);
+void handle_respone_xml(const  axis2_env_t* env, axiom_node_t* res);
 
 int main(int argc, char** argv)
 {
     axis2_env_t* env = NULL;
     axis2_char_t* client_home = NULL;
 
-    axis2_char_t* endpoint_uri =NULL;
+    axis2_char_t* endpoint_uri = NULL;
 
-    axis2_stub_t* stub= NULL;
+    axis2_stub_t* stub = NULL;
 
     axiom_node_t* req = NULL;
     axiom_node_t* res = NULL;
 
     endpoint_uri = "http://localhost:9090/axis2/services/calculator";
 
-    env = axis2_env_create_all( "w2c_test.log", AXIS2_LOG_LEVEL_TRACE);
+    env = axis2_env_create_all("w2c_test.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set up deploy folder.*/
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     if (!client_home)
         client_home = "../../../deploy";
-    
-    stub = axis2_stub_calculator_create( env, client_home , endpoint_uri); 
-    
-    req =  generate_request_xml (env );
+
+    stub = axis2_stub_calculator_create(env, client_home , endpoint_uri);
+
+    req =  generate_request_xml(env);
 
     /* invoke the web service method*/
-    res = axis2_stub_calculator_add(  stub, env, req );
-    
-    handle_respone_xml ( env , res );
+    res = axis2_stub_calculator_add(stub, env, req);
+
+    handle_respone_xml(env , res);
 
     return 0;
 }
 
-axiom_node_t* generate_request_xml (const  axis2_env_t* env )
+axiom_node_t* generate_request_xml(const  axis2_env_t* env)
 {
     axiom_node_t *op_node = NULL;
     axiom_element_t* op_ele = NULL;
@@ -44,49 +44,49 @@ axiom_node_t* generate_request_xml (const  axis2_env_t* env )
     axiom_element_t * value_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
     axis2_char_t *om_str = NULL;
-     
+
     int value1 =  13;
     int value2 =  7;
     char value_str[64];
 
-    ns1 = axiom_namespace_create (env, "http://localhost/axis/Calculator", "ns1");
+    ns1 = axiom_namespace_create(env, "http://localhost/axis/Calculator", "ns1");
     op_ele = axiom_element_create(env, NULL, "add", ns1, &op_node);
-    
+
     value_ele = axiom_element_create(env, op_node, "in1", NULL, &value_node);
-    sprintf ( value_str, "%d", value1 );
-    AXIOM_ELEMENT_SET_TEXT(value_ele, env, value_str , value_node);
- 
-    value_ele = axiom_element_create(env, op_node, "in2", NULL, &value_node);
-    sprintf ( value_str, "%d", value2 );
+    sprintf(value_str, "%d", value1);
     AXIOM_ELEMENT_SET_TEXT(value_ele, env, value_str , value_node);
 
-    printf ("requesting %d  + %d \n", value1, value2 );
+    value_ele = axiom_element_create(env, op_node, "in2", NULL, &value_node);
+    sprintf(value_str, "%d", value2);
+    AXIOM_ELEMENT_SET_TEXT(value_ele, env, value_str , value_node);
+
+    printf("requesting %d  + %d \n", value1, value2);
     om_str = AXIOM_NODE_TO_STRING(op_node, env);
     if (om_str)
         printf("\nSending OM : %s\n", om_str);
 
     return op_node;
-    
+
 }
 
-void handle_respone_xml ( const  axis2_env_t* env, axiom_node_t* res )
+void handle_respone_xml(const  axis2_env_t* env, axiom_node_t* res)
 {
     axiom_node_t* node = NULL;
     axiom_element_t* ele = NULL;
     axis2_char_t* text =  NULL;
- 
-    if ( NULL ==res)
+
+    if (NULL == res)
     {
-        printf ("response null\n" );
+        printf("response null\n");
         return;
-    }  
-    node = AXIOM_NODE_GET_FIRST_CHILD ( res, env );
-    if ( node )
-    {
-        ele = AXIOM_NODE_GET_DATA_ELEMENT (node, env );
-        text = AXIOM_ELEMENT_GET_TEXT ( ele,env, node );
-       
-        printf ( "answer = %s\n", text );
     }
-    
+    node = AXIOM_NODE_GET_FIRST_CHILD(res, env);
+    if (node)
+    {
+        ele = AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+        text = AXIOM_ELEMENT_GET_TEXT(ele, env, node);
+
+        printf("answer = %s\n", text);
+    }
+
 }

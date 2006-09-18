@@ -64,7 +64,7 @@ axis2_bool_t AXIS2_CALL
 axis2_callback_get_complete(
     const axis2_callback_t *callback,
     const axis2_env_t *env);
-    
+
 axis2_status_t AXIS2_CALL
 axis2_callback_set_complete(
     axis2_callback_t *callback,
@@ -86,7 +86,7 @@ int AXIS2_CALL
 axis2_callback_get_error(
     const axis2_callback_t *callback,
     const axis2_env_t *env);
-    
+
 axis2_status_t AXIS2_CALL
 axis2_callback_set_error(
     axis2_callback_t *callback,
@@ -94,7 +94,7 @@ axis2_callback_set_error(
     int error);
 
 axis2_status_t AXIS2_CALL
-axis2_callback_free (
+axis2_callback_free(
     axis2_callback_t *callback,
     const axis2_env_t *env);
 
@@ -125,7 +125,7 @@ axis2_callback_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    callback_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_callback_impl_t) );
+    callback_impl = AXIS2_MALLOC(env->allocator, sizeof(axis2_callback_impl_t));
     if (!callback_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -140,7 +140,7 @@ axis2_callback_create(
 
     /* initialize ops */
     callback_impl->callback.ops =
-        AXIS2_MALLOC( env->allocator, sizeof(axis2_callback_ops_t) );
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_callback_ops_t));
 
     if (!callback_impl->callback.ops)
     {

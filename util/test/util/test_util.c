@@ -33,17 +33,18 @@
 typedef struct a
 {
     axis2_char_t *value;
-} a;
+}
+a;
 
 const axis2_env_t *test_init()
 {
-   axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_error_t *error = axis2_error_create (allocator);
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axis2_error_t *error = axis2_error_create(allocator);
     const axis2_env_t *env = axis2_env_create_with_error(allocator, error);
-   return env;
+    return env;
 }
 
-int test_hash_get (const axis2_env_t *env)
+int test_hash_get(const axis2_env_t *env)
 {
     axis2_hash_t *ht;
     a *a1, *a2, *a3, *a4;
@@ -56,10 +57,10 @@ int test_hash_get (const axis2_env_t *env)
     char *key3 = "key3";
     char *key4 = "key4";
 
-    a1 = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
-    a2 = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
-    a3 = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
-    a4 = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    a1 = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
+    a2 = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
+    a3 = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
+    a4 = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
 
 
     a1->value = AXIS2_STRDUP("value1", env);
@@ -67,32 +68,32 @@ int test_hash_get (const axis2_env_t *env)
     a3->value = AXIS2_STRDUP("value3", env);
     a4->value = AXIS2_STRDUP("value4", env);
 
-    ht = axis2_hash_make (env);
+    ht = axis2_hash_make(env);
 
-    axis2_hash_set (ht, key1, AXIS2_HASH_KEY_STRING, a1);
-    axis2_hash_set (ht, key2, AXIS2_HASH_KEY_STRING, a2);
-    axis2_hash_set (ht, key3, AXIS2_HASH_KEY_STRING, a3);
-    axis2_hash_set (ht, key4, AXIS2_HASH_KEY_STRING, a4);
+    axis2_hash_set(ht, key1, AXIS2_HASH_KEY_STRING, a1);
+    axis2_hash_set(ht, key2, AXIS2_HASH_KEY_STRING, a2);
+    axis2_hash_set(ht, key3, AXIS2_HASH_KEY_STRING, a3);
+    axis2_hash_set(ht, key4, AXIS2_HASH_KEY_STRING, a4);
 
-    axis2_hash_set (ht, key2, AXIS2_HASH_KEY_STRING, NULL);
-    axis2_hash_set (ht, key2, AXIS2_HASH_KEY_STRING, a2);
-    for (i = axis2_hash_first (ht, env); i; i = axis2_hash_next (env, i))
+    axis2_hash_set(ht, key2, AXIS2_HASH_KEY_STRING, NULL);
+    axis2_hash_set(ht, key2, AXIS2_HASH_KEY_STRING, a2);
+    for (i = axis2_hash_first(ht, env); i; i = axis2_hash_next(env, i))
     {
-        axis2_hash_this (i, NULL, NULL, &v);
-        printf ("\n %s \n", ((a *) v)->value);
+        axis2_hash_this(i, NULL, NULL, &v);
+        printf("\n %s \n", ((a *) v)->value);
     }
 
-    printf ("\n demo get %s ",
-            ((a *) axis2_hash_get (ht, key1, AXIS2_HASH_KEY_STRING))->value);
+    printf("\n demo get %s ",
+            ((a *) axis2_hash_get(ht, key1, AXIS2_HASH_KEY_STRING))->value);
 
-    printf ("\n demo get %s ",
-            ((a *) axis2_hash_get (ht, key2, AXIS2_HASH_KEY_STRING))->value);
+    printf("\n demo get %s ",
+            ((a *) axis2_hash_get(ht, key2, AXIS2_HASH_KEY_STRING))->value);
 
-    printf ("\n demo get %s ",
-            ((a *) axis2_hash_get (ht, key3, AXIS2_HASH_KEY_STRING))->value);
+    printf("\n demo get %s ",
+            ((a *) axis2_hash_get(ht, key3, AXIS2_HASH_KEY_STRING))->value);
 
-    printf ("\n demo get %s \n",
-            ((a *) axis2_hash_get (ht, key4, AXIS2_HASH_KEY_STRING))->value);
+    printf("\n demo get %s \n",
+            ((a *) axis2_hash_get(ht, key4, AXIS2_HASH_KEY_STRING))->value);
 
     axis2_hash_free(ht, env);
     AXIS2_FREE(env->allocator, a1->value);
@@ -108,16 +109,16 @@ int test_hash_get (const axis2_env_t *env)
 
 void test_axis2_dir_handler_list_service_or_module_dirs()
 {
-    int i,isize;
+    int i, isize;
     axis2_file_t *file = NULL;
     axis2_char_t *filename = NULL;
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    axis2_error_t *error = axis2_error_create (allocator);
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axis2_error_t *error = axis2_error_create(allocator);
     const axis2_env_t *env = axis2_env_create_with_error(allocator, error);
 
-    axis2_char_t *pathname = AXIS2_STRDUP("/tmp/test/",env);
+    axis2_char_t *pathname = AXIS2_STRDUP("/tmp/test/", env);
 
-    axis2_array_list_t *arr_folders = AXIS2_DIR_HANDLER_LIST_SERVICE_OR_MODULE_DIRS(env,pathname);
+    axis2_array_list_t *arr_folders = AXIS2_DIR_HANDLER_LIST_SERVICE_OR_MODULE_DIRS(env, pathname);
     if (arr_folders == NULL)
     {
         printf("List of folders is NULL\n");
@@ -125,14 +126,14 @@ void test_axis2_dir_handler_list_service_or_module_dirs()
     }
 
 
-    isize = AXIS2_ARRAY_LIST_SIZE(arr_folders,env);
-    printf("Folder array size = %d \n",isize);
+    isize = AXIS2_ARRAY_LIST_SIZE(arr_folders, env);
+    printf("Folder array size = %d \n", isize);
 
-    for (i =0;i<isize;++i)
+    for (i = 0;i < isize;++i)
     {
-        file = (axis2_file_t*)AXIS2_ARRAY_LIST_GET(arr_folders,env,i);
-        filename = AXIS2_FILE_GET_NAME(file,env);
-        printf("filename = %s \n",filename);
+        file = (axis2_file_t*)AXIS2_ARRAY_LIST_GET(arr_folders, env, i);
+        filename = AXIS2_FILE_GET_NAME(file, env);
+        printf("filename = %s \n", filename);
     }
     printf("----end of test_axis2_dir_handler_list_service_or_module_dirs----\n");
 
@@ -145,10 +146,10 @@ void test_axis2_dir_handler_list_service_or_module_dirs()
   */
 int test_file_diff(const axis2_env_t *env)
 {
-   axis2_char_t *expected_file_name = AXIS2_STRDUP("expected", env);
-    axis2_char_t *actual_file_name = AXIS2_STRDUP("actual", env);   
+    axis2_char_t *expected_file_name = AXIS2_STRDUP("expected", env);
+    axis2_char_t *actual_file_name = AXIS2_STRDUP("actual", env);
     axis2_file_diff(env, expected_file_name, actual_file_name);
-   return 0;
+    return 0;
 }
 
 void test_array_list(const axis2_env_t *env)
@@ -156,47 +157,47 @@ void test_array_list(const axis2_env_t *env)
     axis2_array_list_t *al;
     a *entry = NULL;
     int size;
-    
-    al = axis2_array_list_create (env, 1);
-    printf("list size %d\n", AXIS2_ARRAY_LIST_SIZE (al, env));
-    
-    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+
+    al = axis2_array_list_create(env, 1);
+    printf("list size %d\n", AXIS2_ARRAY_LIST_SIZE(al, env));
+
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value1", env);
-    AXIS2_ARRAY_LIST_ADD (al, env, (void*)entry);
-    
-    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    AXIS2_ARRAY_LIST_ADD(al, env, (void*)entry);
+
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value2", env);
-    AXIS2_ARRAY_LIST_ADD (al, env, (void*)entry);
-    
-    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    AXIS2_ARRAY_LIST_ADD(al, env, (void*)entry);
+
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value3", env);
-    AXIS2_ARRAY_LIST_ADD (al, env, (void*)entry);
-    
-    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    AXIS2_ARRAY_LIST_ADD(al, env, (void*)entry);
+
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value4", env);
-    AXIS2_ARRAY_LIST_ADD (al, env, (void*)entry);
-    
-    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    AXIS2_ARRAY_LIST_ADD(al, env, (void*)entry);
+
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value5", env);
-    AXIS2_ARRAY_LIST_ADD (al, env, (void*)entry);
+    AXIS2_ARRAY_LIST_ADD(al, env, (void*)entry);
 
-    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value6", env);
-    AXIS2_ARRAY_LIST_ADD (al, env, (void*)entry);
+    AXIS2_ARRAY_LIST_ADD(al, env, (void*)entry);
 
-    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof (a));
+    entry = (a *) AXIS2_MALLOC(env->allocator, sizeof(a));
     entry->value = AXIS2_STRDUP("value7", env);
-    AXIS2_ARRAY_LIST_SET (al, env, 3, (void*)entry);
-    AXIS2_ARRAY_LIST_REMOVE (al, env, 2);
-    
-    entry = (a *) AXIS2_ARRAY_LIST_GET (al, env, 0);
+    AXIS2_ARRAY_LIST_SET(al, env, 3, (void*)entry);
+    AXIS2_ARRAY_LIST_REMOVE(al, env, 2);
+
+    entry = (a *) AXIS2_ARRAY_LIST_GET(al, env, 0);
     printf("entry->value:%s\n", entry->value);
-    
-    entry = (a *) AXIS2_ARRAY_LIST_GET (al, env, 2);
+
+    entry = (a *) AXIS2_ARRAY_LIST_GET(al, env, 2);
     printf("entry->value:%s\n", entry->value);
-    size = AXIS2_ARRAY_LIST_SIZE (al, env);
-    printf("list size %d\n", AXIS2_ARRAY_LIST_SIZE (al, env));
-    
+    size = AXIS2_ARRAY_LIST_SIZE(al, env);
+    printf("list size %d\n", AXIS2_ARRAY_LIST_SIZE(al, env));
+
 }
 
 
@@ -215,58 +216,58 @@ void test_uuid_gen(const axis2_env_t *env)
 
 void test_log_write()
 {
-   char msg[10];
-   printf("start of test_log_write\n\n");
+    char msg[10];
+    printf("start of test_log_write\n\n");
     axis2_allocator_t *allocator = axis2_allocator_init(NULL);
-   if (!allocator)
-   {
-      printf("allocator is NULL\n");
-      return;
-   }
-   axis2_error_t *error = axis2_error_create(allocator);
-   if (!error)
-   {
-      printf("cannot create error\n");
-      return;
-   }
-    axis2_log_t *log22  = axis2_log_create (allocator, NULL,NULL);
-   if (!log22)
-   {
-      printf("cannot create log\n");
-      return;
-   }
-   log22->level = AXIS2_LOG_LEVEL_DEBUG;
+    if (!allocator)
+    {
+        printf("allocator is NULL\n");
+        return;
+    }
+    axis2_error_t *error = axis2_error_create(allocator);
+    if (!error)
+    {
+        printf("cannot create error\n");
+        return;
+    }
+    axis2_log_t *log22  = axis2_log_create(allocator, NULL, NULL);
+    if (!log22)
+    {
+        printf("cannot create log\n");
+        return;
+    }
+    log22->level = AXIS2_LOG_LEVEL_DEBUG;
 
     const axis2_env_t *env = axis2_env_create_with_error_log(allocator, error, log22);
-   if (!env)
-   {
-      printf("cannot create env with error and log\n");
-      return;
-   }
-   strcpy(msg,"abcd test123");
-   AXIS2_LOG_WRITE(env->log,msg,AXIS2_LOG_LEVEL_ERROR);
+    if (!env)
+    {
+        printf("cannot create env with error and log\n");
+        return;
+    }
+    strcpy(msg, "abcd test123");
+    AXIS2_LOG_WRITE(env->log, msg, AXIS2_LOG_LEVEL_ERROR);
 
-   AXIS2_LOG_CRITICAL(env->log,AXIS2_LOG_SI,"log1 %s","test1");
-   AXIS2_LOG_ERROR(env->log,AXIS2_LOG_SI,"log2 %d",2);
-   AXIS2_LOG_WARNING(env->log,AXIS2_LOG_SI,"log3 %s","test3");
-   AXIS2_LOG_INFO(env->log,AXIS2_LOG_SI,"log4 %s %s","info1","info2");
-   AXIS2_LOG_DEBUG(env->log,AXIS2_LOG_SI,"log5 %s %d","test",5);
+    AXIS2_LOG_CRITICAL(env->log, AXIS2_LOG_SI, "log1 %s", "test1");
+    AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "log2 %d", 2);
+    AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, "log3 %s", "test3");
+    AXIS2_LOG_INFO(env->log, AXIS2_LOG_SI, "log4 %s %s", "info1", "info2");
+    AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "log5 %s %d", "test", 5);
     printf("end of test_log_write \n\n");
-   
+
 }
 
 int main(void)
 {
-   const axis2_env_t *env = test_init();
-   test_file_diff(env);
-   test_hash_get(env);
+    const axis2_env_t *env = test_init();
+    test_file_diff(env);
+    test_hash_get(env);
     test_array_list(env);
     test_uuid_gen(env);
-   run_test_log();
-   test_axis2_dir_handler_list_service_or_module_dirs();
-   axis2_allocator_t *allocator = env->allocator;
+    run_test_log();
+    test_axis2_dir_handler_list_service_or_module_dirs();
+    axis2_allocator_t *allocator = env->allocator;
     axis2_env_free(env);
     axis2_allocator_free(allocator);
     run_test_string(env);
-   return 0;   
+    return 0;
 }

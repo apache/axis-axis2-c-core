@@ -24,7 +24,7 @@
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_token_get_cipher_value(const axis2_env_t *env,
-                            axiom_node_t *cv_node)
+        axiom_node_t *cv_node)
 {
     /*TODO Verification*/
     axis2_char_t *cv = NULL;
@@ -35,32 +35,33 @@ oxs_token_get_cipher_value(const axis2_env_t *env,
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_cipher_value_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t* cipher_val
-                    )
+        axiom_node_t *parent,
+        axis2_char_t* cipher_val
+                                    )
 {
     axiom_node_t *cipher_value_node = NULL;
     axiom_element_t *cipher_value_ele = NULL;
-    axis2_status_t ret; 
+    axis2_status_t ret;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create (env, OXS_EncNs,
-                                              OXS_xenc);
+    ns_obj = axiom_namespace_create(env, OXS_EncNs,
+            OXS_xenc);
 
 
-    cipher_value_ele = axiom_element_create(env, parent, OXS_NodeCipherValue, ns_obj, &cipher_value_node );
-    if(!cipher_value_ele)
-    {   
+    cipher_value_ele = axiom_element_create(env, parent, OXS_NodeCipherValue, ns_obj, &cipher_value_node);
+    if (!cipher_value_ele)
+    {
         oxs_error(ERROR_LOCATION,
-                    OXS_ERROR_ELEMENT_FAILED,"Error creating cipher value element");
+                OXS_ERROR_ELEMENT_FAILED, "Error creating cipher value element");
         return NULL;
-    }  
-    
-    if(cipher_val){
+    }
+
+    if (cipher_val)
+    {
         ret  = AXIOM_ELEMENT_SET_TEXT(cipher_value_ele, env, cipher_val, cipher_value_node);
     }
 
-    return cipher_value_node; 
-     
+    return cipher_value_node;
+
 }
 

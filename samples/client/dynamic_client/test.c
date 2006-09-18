@@ -28,13 +28,13 @@ build_om_programatically(axis2_env_t *env);
 
 int main(int argc, char** argv)
 {
-   axis2_env_t *env = NULL;
+    axis2_env_t *env = NULL;
     axis2_error_t *error = NULL;
     axis2_log_t *log = NULL;
     axis2_allocator_t *allocator = NULL;
-    
+
     /* set up the envioronment with allocator and log*/
-    allocator = axis2_allocator_init (NULL);
+    allocator = axis2_allocator_init(NULL);
     error = axis2_error_create(allocator);
     log = axis2_log_create(allocator, NULL, "addr_echo.log");
     env = axis2_env_create_with_error_log(allocator, error, log);
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 
 
     build_om_programatically(env);
-   return 0;
+    return 0;
 }
 
 /* build SOAP request message content using OM */
@@ -64,7 +64,7 @@ build_om_programatically(axis2_env_t *env)
     axiom_attribute_t *attr = NULL;
     axiom_attribute_t *attr_name_arg0 = NULL;
     axiom_attribute_t *attr_name_arg1 = NULL;
-    
+
 
     axiom_xml_writer_t *xml_writer = NULL;
     axiom_output_t *om_output = NULL;
@@ -72,8 +72,8 @@ build_om_programatically(axis2_env_t *env)
     axis2_char_t *ns = NULL;
 
     ns = AXIS2_STRDUP("http://localhost/axis/Calculator", env);
-    ns1 = axiom_namespace_create (env, ns, "tns0");
-    
+    ns1 = axiom_namespace_create(env, ns, "tns0");
+
     add_om_ele = axiom_element_create(env, NULL, "add", ns1, &add_om_node);
     cmplx_type_om_ele = axiom_element_create(env, add_om_node, "complexType", ns1, &cmplx_type_om_node);
     seq_om_ele = axiom_element_create(env, cmplx_type_om_node, "sequence", ns1, &seq_om_node);
@@ -88,14 +88,14 @@ build_om_programatically(axis2_env_t *env)
     AXIOM_ELEMENT_SET_TEXT(arg1_om_ele, env, "10", arg1_om_node);
     AXIOM_ELEMENT_ADD_ATTRIBUTE(arg1_om_ele, env, attr_name_arg1, arg1_om_node);
     AXIOM_ELEMENT_ADD_ATTRIBUTE(arg1_om_ele, env, attr, arg1_om_node);
-    
-    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE, 
+
+    xml_writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_FALSE,
             AXIS2_FALSE, AXIS2_XML_PARSER_TYPE_BUFFER);
-    om_output = axiom_output_create( env, xml_writer);
-    
+    om_output = axiom_output_create(env, xml_writer);
+
     AXIOM_NODE_SERIALIZE(add_om_node, env, om_output);
-    buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);         
-    printf("\nOM node in XML : %s \n",  buffer); 
+    buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);
+    printf("\nOM node in XML : %s \n",  buffer);
     AXIS2_FREE(env->allocator, buffer);
     AXIOM_OUTPUT_FREE(om_output, env);
 

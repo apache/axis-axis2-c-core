@@ -25,7 +25,8 @@ typedef struct axis2_transport_out_desc_impl
     axis2_transport_sender_t *sender;
     axis2_phase_t *out_phase;
     axis2_phase_t *fault_phase;
-} axis2_transport_out_desc_impl_t;
+}
+axis2_transport_out_desc_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(transport_out) ((axis2_transport_out_desc_impl_t *)transport_out)
 
@@ -158,7 +159,7 @@ axis2_transport_out_desc_create_with_qname(
     transport_out_impl->qname = AXIS2_QNAME_CLONE(qname, env);
 
     transport_out_impl->transport_out.ops =
-        AXIS2_MALLOC (env->allocator, sizeof(axis2_transport_out_desc_ops_t));
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_transport_out_desc_ops_t));
     if (NULL == transport_out_impl->transport_out.ops)
     {
         axis2_transport_out_desc_free(&(transport_out_impl->transport_out), env);

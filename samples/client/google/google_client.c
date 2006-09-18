@@ -21,10 +21,10 @@
 #include <axis2_client.h>
 
 axiom_node_t *
-build_soap_body_content(const axis2_env_t *env, 
-    const axis2_char_t *operation, 
-    const axis2_char_t *google_key, 
-    const axis2_char_t *word_to_spell);
+build_soap_body_content(const axis2_env_t *env,
+        const axis2_char_t *operation,
+        const axis2_char_t *google_key,
+        const axis2_char_t *word_to_spell);
 
 void print_invalid_om(const axis2_env_t *env, axiom_node_t *ret_node);
 
@@ -38,7 +38,7 @@ int main(int argc, char** argv)
     axis2_svc_client_t* svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
-    
+
     const axis2_char_t *google_key = NULL;
     const axis2_char_t *word_to_spell = NULL;
     const axis2_char_t *operation = NULL;
@@ -46,14 +46,14 @@ int main(int argc, char** argv)
     operation = "doSpellingSuggestion";
     google_key = "00000000000000000000000000000000";
     word_to_spell = "salvasion";
- 
+
     /* Set up the environment */
     env = axis2_env_create_all("google_client.log", AXIS2_LOG_LEVEL_TRACE);
- 
+
     /* Set end point reference of google service */
     address = "http://api.google.com/search/beta2";
-    
-    if ( (argc > 1) && (AXIS2_STRCMP("-h", argv[1]) == 0) )
+
+    if ((argc > 1) && (AXIS2_STRCMP("-h", argv[1]) == 0))
     {
         printf("\nUsage : %s [google_key] [word_to_spell] \n", argv[0]);
         printf("\tgoogle_key Your Google license key. Default value won't work. You must use your key here.\n");
@@ -63,23 +63,23 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    if (argc > 1 )
+    if (argc > 1)
         google_key = argv[1];
-    if (argc > 2 )
+    if (argc > 2)
         word_to_spell = argv[2];
-    
-    printf ("Using endpoint : %s\n", address);
-    printf ("\nInvoking operation %s with params %s and %s\n", operation, google_key, word_to_spell);
+
+    printf("Using endpoint : %s\n", address);
+    printf("\nInvoking operation %s with params %s and %s\n", operation, google_key, word_to_spell);
 
     /* Create EPR with given address */
     endpoint_ref = axis2_endpoint_ref_create(env, address);
-    
+
     /* Setup options */
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
     AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
-    
-     /* Set up deploy folder.*/
+
+    /* Set up deploy folder.*/
     client_home = AXIS2_GETENV("AXIS2C_HOME");
     if (!client_home)
         client_home = "../../deploy";
@@ -90,20 +90,20 @@ int main(int argc, char** argv)
     {
         printf("Error creating service client\n");
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-                  " %d :: %s", env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+                " %d :: %s", env->error->error_number,
+                AXIS2_ERROR_GET_MESSAGE(env->error));
     }
 
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);    
+    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
 
     /* Build the SOAP request message payload using OM API.*/
     payload = build_soap_body_content(env, operation, google_key, word_to_spell);
-    
+
     /* Send request */
     ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
-    
-    if(ret_node)
+
+    if (ret_node)
     {
         if (AXIOM_NODE_GET_NODE_TYPE(ret_node, env) == AXIOM_ELEMENT)
         {
@@ -112,12 +112,12 @@ int main(int argc, char** argv)
             axiom_node_t *ret_node1 = NULL;
 
             result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node, env);
-            if (AXIS2_STRCMP(AXIOM_ELEMENT_GET_LOCALNAME(result_ele, env), "doSpellingSuggestionResponse") != 0 )
+            if (AXIS2_STRCMP(AXIOM_ELEMENT_GET_LOCALNAME(result_ele, env), "doSpellingSuggestionResponse") != 0)
             {
                 print_invalid_om(env, ret_node);
                 return AXIS2_FAILURE;
             }
-            
+
             ret_node1 = AXIOM_NODE_GET_FIRST_CHILD(ret_node, env); /*return*/
             if (!ret_node1)
             {
@@ -126,7 +126,7 @@ int main(int argc, char** argv)
             }
             result_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(ret_node1, env);
             result = AXIOM_ELEMENT_GET_TEXT(result_ele, env, ret_node1);
-            printf( "\nResult = %s\n", result);
+            printf("\nResult = %s\n", result);
         }
         else
         {
@@ -136,26 +136,26 @@ int main(int argc, char** argv)
     }
     else
     {
-      AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-                  " %d :: %s", env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+                " %d :: %s", env->error->error_number,
+                AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("Google client invoke FAILED!\n");
     }
-    
+
     if (svc_client)
     {
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
-    
+
     return 0;
 }
 
 axiom_node_t *
-build_soap_body_content(const axis2_env_t *env, 
-    const axis2_char_t *operation, 
-    const axis2_char_t *google_key, 
-    const axis2_char_t *word_to_spell)
+build_soap_body_content(const axis2_env_t *env,
+        const axis2_char_t *operation,
+        const axis2_char_t *google_key,
+        const axis2_char_t *word_to_spell)
 {
     axiom_node_t *google_om_node = NULL;
     axiom_element_t* google_om_ele = NULL;
@@ -165,30 +165,30 @@ build_soap_body_content(const axis2_env_t *env,
     axiom_attribute_t* attri1 = NULL;
     axis2_char_t *buffer = NULL;
 
-    ns0 = axiom_namespace_create (env, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, "soapenv");
-    ns1 = axiom_namespace_create (env, "urn:GoogleSearch", "ns1");
-    ns2 = axiom_namespace_create (env, "http://www.w3.org/1999/XMLSchema-instance", "xsi");
-    ns3 = axiom_namespace_create (env, "http://www.w3.org/1999/XMLSchema", "xsd");
+    ns0 = axiom_namespace_create(env, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, "soapenv");
+    ns1 = axiom_namespace_create(env, "urn:GoogleSearch", "ns1");
+    ns2 = axiom_namespace_create(env, "http://www.w3.org/1999/XMLSchema-instance", "xsi");
+    ns3 = axiom_namespace_create(env, "http://www.w3.org/1999/XMLSchema", "xsd");
 
-    attri1 = axiom_attribute_create (env, "encodingStyle", 
-        "http://schemas.xmlsoap.org/soap/encoding/", ns0);
-    
+    attri1 = axiom_attribute_create(env, "encodingStyle",
+            "http://schemas.xmlsoap.org/soap/encoding/", ns0);
+
     google_om_ele = axiom_element_create(env, NULL, operation, ns1, &google_om_node);
     AXIOM_ELEMENT_ADD_ATTRIBUTE(google_om_ele, env, attri1, google_om_node);
     AXIOM_ELEMENT_DECLARE_NAMESPACE(google_om_ele, env, google_om_node, ns2);
     AXIOM_ELEMENT_DECLARE_NAMESPACE(google_om_ele, env, google_om_node, ns3);
-    
+
     text_om_ele = axiom_element_create(env, google_om_node, "key", NULL, &text_om_node);
-    attri1 = axiom_attribute_create (env, "type", "xsd:string", ns2);
+    attri1 = axiom_attribute_create(env, "type", "xsd:string", ns2);
     AXIOM_ELEMENT_ADD_ATTRIBUTE(text_om_ele, env, attri1, text_om_node);
     AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, google_key, text_om_node);
 
     text_om_ele = axiom_element_create(env, google_om_node, "phrase", NULL, &text_om_node);
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(text_om_ele, env,attri1, text_om_node);
+    AXIOM_ELEMENT_ADD_ATTRIBUTE(text_om_ele, env, attri1, text_om_node);
     AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, word_to_spell, text_om_node);
-    
-   buffer = AXIOM_NODE_TO_STRING(google_om_node, env);
-   printf("%s\n", buffer);
+
+    buffer = AXIOM_NODE_TO_STRING(google_om_node, env);
+    printf("%s\n", buffer);
     return google_om_node;
 }
 
@@ -196,5 +196,5 @@ void print_invalid_om(const axis2_env_t *env, axiom_node_t *ret_node)
 {
     axis2_char_t *buffer = NULL;
     buffer = AXIOM_NODE_TO_STRING(ret_node, env);
-    printf ("\nReceived OM as result : %s\n", buffer);
+    printf("\nReceived OM as result : %s\n", buffer);
 }

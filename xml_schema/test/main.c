@@ -16,7 +16,8 @@
 
 #include "xml_schema_test.h"
 
-void RunAllTests(void) {
+void RunAllTests(void)
+{
     CuString *output = CuStringNew();
     CuSuite* suite = xml_schema_GetSuite();
     CuSuiteRun(suite);
@@ -25,7 +26,8 @@ void RunAllTests(void) {
     printf("%s", output->buffer);
 }
 
-int main(void) {
+int main(void)
+{
     RunAllTests();
     return 0;
 }

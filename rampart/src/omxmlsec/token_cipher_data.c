@@ -23,24 +23,24 @@
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_cipher_data_element(const axis2_env_t *env,
-                        axiom_node_t *parent
-                    )
+        axiom_node_t *parent
+                                   )
 {
     axiom_node_t *cipher_data_node = NULL;
     axiom_element_t *cipher_data_ele = NULL;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create (env, OXS_EncNs,
-                                              OXS_xenc);
+    ns_obj = axiom_namespace_create(env, OXS_EncNs,
+            OXS_xenc);
 
-    cipher_data_ele = axiom_element_create(env, parent, OXS_NodeCipherData, ns_obj, &cipher_data_node );
-    if(!cipher_data_ele)
-    {   
+    cipher_data_ele = axiom_element_create(env, parent, OXS_NodeCipherData, ns_obj, &cipher_data_node);
+    if (!cipher_data_ele)
+    {
         oxs_error(ERROR_LOCATION,
-                    OXS_ERROR_ELEMENT_FAILED,"Error creating cipher value element");
+                OXS_ERROR_ELEMENT_FAILED, "Error creating cipher value element");
         return NULL;
-    }  
- 
-    return cipher_data_node; 
+    }
+
+    return cipher_data_node;
 }
 

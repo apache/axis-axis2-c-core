@@ -23,30 +23,30 @@
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_key_name_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t* key_name_val
-                    )
+        axiom_node_t *parent,
+        axis2_char_t* key_name_val
+                                )
 {
     axiom_node_t *key_name_node = NULL;
     axiom_element_t *key_name_ele = NULL;
-    axis2_status_t ret; 
+    axis2_status_t ret;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create (env, OXS_DSigNs,
-                                              OXS_ds);
+    ns_obj = axiom_namespace_create(env, OXS_DSigNs,
+            OXS_ds);
 
 
-    key_name_ele = axiom_element_create(env, parent, OXS_NodeKeyName, ns_obj, &key_name_node );
-    if(!key_name_ele)
-    {   
+    key_name_ele = axiom_element_create(env, parent, OXS_NodeKeyName, ns_obj, &key_name_node);
+    if (!key_name_ele)
+    {
         oxs_error(ERROR_LOCATION,
-                    OXS_ERROR_ELEMENT_FAILED,"Error creating KeyName element");
+                OXS_ERROR_ELEMENT_FAILED, "Error creating KeyName element");
         return NULL;
-    }  
+    }
 
     ret  = AXIOM_ELEMENT_SET_TEXT(key_name_ele, env, key_name_val, key_name_node);
-   
-    return key_name_node; 
-     
+
+    return key_name_node;
+
 }
 

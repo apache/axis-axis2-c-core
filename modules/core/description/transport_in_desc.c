@@ -30,7 +30,8 @@ typedef struct axis2_transport_in_desc_impl
     axis2_transport_receiver_t *recv;
     axis2_phase_t *in_phase;
     axis2_phase_t *fault_phase;
-} axis2_transport_in_desc_impl_t;
+}
+axis2_transport_in_desc_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(transport_in) ((axis2_transport_in_desc_impl_t *)transport_in)
 
@@ -164,7 +165,7 @@ axis2_transport_in_desc_create_with_qname(
     transport_in_impl->qname = AXIS2_QNAME_CLONE(qname, env);
 
     transport_in_impl->transport_in.ops =
-        AXIS2_MALLOC (env->allocator, sizeof(axis2_transport_in_desc_ops_t));
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_transport_in_desc_ops_t));
     if (NULL == transport_in_impl->transport_in.ops)
     {
         axis2_transport_in_desc_free(&(transport_in_impl->transport_in), env);

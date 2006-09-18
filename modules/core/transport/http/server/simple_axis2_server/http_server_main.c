@@ -30,13 +30,13 @@
 axis2_env_t *system_env = NULL;
 axis2_transport_receiver_t *server = NULL;
 /***************************** Function headers *******************************/
-axis2_env_t * 
+axis2_env_t *
 init_syetem_env(
     axis2_allocator_t *allocator,
     const axis2_char_t *log_file);
 
 void system_exit(
-    axis2_env_t *env, 
+    axis2_env_t *env,
     int status);
 
 void usage(
@@ -46,7 +46,7 @@ void sig_handler(
     int signal);
 
 /***************************** End of function headers ************************/
-axis2_env_t * 
+axis2_env_t *
 init_syetem_env(
     axis2_allocator_t *allocator,
     const axis2_char_t *log_file)
@@ -63,15 +63,15 @@ init_syetem_env(
 }
 
 void system_exit(
-    axis2_env_t *env, 
+    axis2_env_t *env,
     int status)
 {
     axis2_allocator_t *allocator = NULL;
-    if(NULL != server)
+    if (NULL != server)
     {
         AXIS2_TRANSPORT_RECEIVER_FREE(server,  system_env);
     }
-    if(NULL != env)
+    if (NULL != env)
     {
         allocator = env->allocator;
         axis2_env_free(env);
@@ -82,7 +82,7 @@ void system_exit(
 }
 
 int main(
-    int argc, 
+    int argc,
     char *argv[])
 {
     axis2_allocator_t *allocator = NULL;
@@ -100,45 +100,45 @@ int main(
     while ((c = AXIS2_GETOPT(argc, argv, ":p:r:ht:l:f:")) != -1)
     {
 
-        switch(c)
+        switch (c)
         {
-        case 'p':
-            port = AXIS2_ATOI(optarg);
-            break;
-        case 'r':
-            repo_path = optarg;
-            break;
-        case 't':
-            axis2_http_socket_read_timeout = AXIS2_ATOI(optarg) * 1000;
-            break;
-        case 'l':
-            log_level = AXIS2_ATOI(optarg);
-            if (log_level < AXIS2_LOG_LEVEL_CRITICAL)
-                log_level = AXIS2_LOG_LEVEL_CRITICAL;
-            if (log_level > AXIS2_LOG_LEVEL_TRACE)
-                log_level = AXIS2_LOG_LEVEL_TRACE;
-            break;
-        case 'f':
-            log_file = optarg;
-            break;
-        case 'h':
-            usage(argv[0]);
-            return 0;
-        case ':':
-            fprintf(stderr, "\nOption -%c requires an operand\n", optopt);
-            usage(argv[0]);
-            return -1;
-        case '?':
-            if (isprint (optopt))
-                fprintf (stderr, "\nUnknown option `-%c'.\n", optopt);
-            usage(argv[0]);
-            return -1;
+            case 'p':
+                port = AXIS2_ATOI(optarg);
+                break;
+            case 'r':
+                repo_path = optarg;
+                break;
+            case 't':
+                axis2_http_socket_read_timeout = AXIS2_ATOI(optarg) * 1000;
+                break;
+            case 'l':
+                log_level = AXIS2_ATOI(optarg);
+                if (log_level < AXIS2_LOG_LEVEL_CRITICAL)
+                    log_level = AXIS2_LOG_LEVEL_CRITICAL;
+                if (log_level > AXIS2_LOG_LEVEL_TRACE)
+                    log_level = AXIS2_LOG_LEVEL_TRACE;
+                break;
+            case 'f':
+                log_file = optarg;
+                break;
+            case 'h':
+                usage(argv[0]);
+                return 0;
+            case ':':
+                fprintf(stderr, "\nOption -%c requires an operand\n", optopt);
+                usage(argv[0]);
+                return -1;
+            case '?':
+                if (isprint(optopt))
+                    fprintf(stderr, "\nUnknown option `-%c'.\n", optopt);
+                usage(argv[0]);
+                return -1;
         }
     }
 
     allocator = axis2_allocator_init(NULL);
 
-    if(NULL == allocator)
+    if (NULL == allocator)
     {
         printf("[Axis2]Startup FAILED due to memory allocation failure\n");
         system_exit(NULL, -1);
@@ -161,7 +161,7 @@ int main(
     AXIS2_LOG_INFO(env->log, "Read Timeout : %d ms", axis2_http_socket_read_timeout);
 
     server = axis2_http_server_create(env, repo_path, port);
-    if(NULL == server)
+    if (NULL == server)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server creation failed: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -170,7 +170,7 @@ int main(
 
     }
     printf("Started Simple Axis2 HTTP Server ...\n");
-    if(AXIS2_TRANSPORT_RECEIVER_START(server, env) == AXIS2_FAILURE)
+    if (AXIS2_TRANSPORT_RECEIVER_START(server, env) == AXIS2_FAILURE)
     {
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Server start failed: Error code:"
                 " %d :: %s", env->error->error_number,
@@ -183,7 +183,7 @@ int main(
 void usage(
     axis2_char_t *prog_name)
 {
-    fprintf(stdout, "\n Usage : %s", prog_name );
+    fprintf(stdout, "\n Usage : %s", prog_name);
     fprintf(stdout, " [-p PORT]");
     fprintf(stdout, " [-t TIMEOUT]");
     fprintf(stdout, " [-r REPO_PATH]");
@@ -212,27 +212,27 @@ void usage(
 void sig_handler(
     int signal)
 {
-    switch(signal)
+    switch (signal)
     {
-    case SIGINT :
-    {
-        AXIS2_LOG_INFO(system_env->log, "Received signal SIGINT. Server "
-                "shutting down");
-        axis2_http_server_stop(server, system_env);
-        AXIS2_LOG_INFO(system_env->log, "Shutdown complete ...");
-        system_exit(system_env, 0);
-    }
-    case SIGPIPE :
-    {
-        AXIS2_LOG_INFO(system_env->log, "Received signal SIGPIPE.  Client "
-                "request serve aborted");
-        return;
-    }
-    case SIGSEGV :
-    {
-        fprintf(stderr, "Received deadly signal SIGSEGV. Terminating\n");
-        _exit(-1);
-    }
+        case SIGINT :
+        {
+            AXIS2_LOG_INFO(system_env->log, "Received signal SIGINT. Server "
+                    "shutting down");
+            axis2_http_server_stop(server, system_env);
+            AXIS2_LOG_INFO(system_env->log, "Shutdown complete ...");
+            system_exit(system_env, 0);
+        }
+        case SIGPIPE :
+        {
+            AXIS2_LOG_INFO(system_env->log, "Received signal SIGPIPE.  Client "
+                    "request serve aborted");
+            return;
+        }
+        case SIGSEGV :
+        {
+            fprintf(stderr, "Received deadly signal SIGSEGV. Terminating\n");
+            _exit(-1);
+        }
     }
 }
 #endif

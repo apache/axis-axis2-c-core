@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <w2c_typemapper.h>
 
-static axis2_char_t* read_file ( axis2_char_t* filename );
+static axis2_char_t* read_file(axis2_char_t* filename);
 
 void test_typemapper(CuTest *tc)
 {
@@ -16,12 +16,12 @@ void test_typemapper(CuTest *tc)
     axis2_char_t *expected;
     w2c_typemapper_t *typemapper;
     axis2_qname_t *qname;
-    
+
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
     expected = "axiom_node_t*";
-    typemapper = w2c_typemapper_create_from_file( env, "c.default.typemap.xml");
+    typemapper = w2c_typemapper_create_from_file(env, "c.default.typemap.xml");
     actual = W2C_TYPEMAPPER_GET_DEFAULT_MAPPING_NAME(typemapper, env);
     CuAssertStrEquals(tc, expected, actual);
 
@@ -29,7 +29,7 @@ void test_typemapper(CuTest *tc)
     actual = W2C_TYPEMAPPER_GET_TYPE_NAME(typemapper, env, qname);
     CuAssertStrEquals(tc, expected, actual);
 
-    W2C_TYPEMAPPER_FREE( typemapper, env);
+    W2C_TYPEMAPPER_FREE(typemapper, env);
 }
 
 void test_namespace_to_package_name(CuTest *tc)
@@ -44,20 +44,20 @@ void test_namespace_to_package_name(CuTest *tc)
     env = axis2_env_create(allocator);
 
     input = (char*)AXIS2_STRDUP("http://ws.apache.org/axis2/c/w2c", env);
-    actual = 
-      (char*)w2c_url_processor_make_package_name(env, input);
+    actual =
+        (char*)w2c_url_processor_make_package_name(env, input);
     expected = "org.apache.ws.axis2.c.w2c";
     CuAssertStrEquals(tc, expected, actual);
-    free (input);
-    free (actual);
- 
+    free(input);
+    free(actual);
+
     input = (char*)AXIS2_STRDUP("http://while.234who.for/switch/case/2sixa", env);
-    actual = 
-      (char*)w2c_url_processor_make_package_name(env, input);
+    actual =
+        (char*)w2c_url_processor_make_package_name(env, input);
     expected = "_for._234who._while._switch._case._2sixa";
     CuAssertStrEquals(tc, expected, actual);
-    free (input);
-    free (actual);
+    free(input);
+    free(actual);
 }
 
 void test_template_parse(CuTest *tc)
@@ -74,38 +74,38 @@ void test_template_parse(CuTest *tc)
     allocator = axis2_allocator_init(NULL);
     env = axis2_env_create(allocator);
 
-    xml_stream = read_file ("../../resources/xml/atoms.xml" );
-    if ( NULL == xml_stream )
-         return;
+    xml_stream = read_file("../../resources/xml/atoms.xml");
+    if (NULL == xml_stream)
+        return;
     xslt_filename = "../../resources/xml/style1.xsl";
     out_filename = "../../resources/xml/result1.xml";
     w2c_xslt_template_processor_parse(
-                  env, xml_stream, xslt_filename, out_filename);
-    out_content = read_file ("../../resources/xml/result1.xml");
-    cmp_out_content = read_file ("../../resources/xml/style1_result.xml");
+        env, xml_stream, xslt_filename, out_filename);
+    out_content = read_file("../../resources/xml/result1.xml");
+    cmp_out_content = read_file("../../resources/xml/style1_result.xml");
     /* just ignore the last new line char for avoid warning */
-    len = AXIS2_STRLEN( out_content);
+    len = AXIS2_STRLEN(out_content);
     out_content[len -1] = '\0';
-    
+
     CuAssertStrEquals(tc, out_content, cmp_out_content);
-    
-    if ( out_content )free ( out_content );
-    if ( cmp_out_content)free ( cmp_out_content );
-   
+
+    if (out_content)free(out_content);
+    if (cmp_out_content)free(cmp_out_content);
+
     xslt_filename = "../../resources/xml/style2.xsl";
     out_filename = "../../resources/xml/result2.xml";
     w2c_xslt_template_processor_parse(
-                  env, xml_stream, xslt_filename, out_filename);
-    out_content = read_file ("../../resources/xml/result2.xml");
-    cmp_out_content = read_file ("../../resources/xml/style2_result.xml");
+        env, xml_stream, xslt_filename, out_filename);
+    out_content = read_file("../../resources/xml/result2.xml");
+    cmp_out_content = read_file("../../resources/xml/style2_result.xml");
     /* just ignore the last new line char for avoid warning */
-    len = AXIS2_STRLEN( out_content);
+    len = AXIS2_STRLEN(out_content);
     out_content[len -1] = '\0';
-    
+
     CuAssertStrEquals(tc, out_content, cmp_out_content);
 
-    if ( out_content)free ( out_content );
-    if ( cmp_out_content)free ( cmp_out_content );
+    if (out_content)free(out_content);
+    if (cmp_out_content)free(cmp_out_content);
 }
 
 CuSuite* w2c_utilGetSuite()
@@ -118,36 +118,38 @@ CuSuite* w2c_utilGetSuite()
 }
 
 
-static axis2_char_t* read_file ( axis2_char_t *filename )
+static axis2_char_t* read_file(axis2_char_t *filename)
 {
-    const int MAX_SIZE=100;
+    const int MAX_SIZE = 100;
     int nread = 0;
     FILE *f = 0;
     axis2_char_t *out_stream = NULL;
     int ncount = 0;
 
-    out_stream = (axis2_char_t*) malloc (sizeof(axis2_char_t)* MAX_SIZE );
-    if (out_stream == NULL )
+    out_stream = (axis2_char_t*) malloc(sizeof(axis2_char_t) * MAX_SIZE);
+    if (out_stream == NULL)
     {
         return NULL;
     }
 
-    f = fopen ( filename, "r+");
-    if ( f == NULL )
+    f = fopen(filename, "r+");
+    if (f == NULL)
     {
-        free (out_stream );
+        free(out_stream);
         return NULL;
     }
-    do{
-        nread = fread ( out_stream + ncount, sizeof(axis2_char_t), MAX_SIZE, f);
+    do
+    {
+        nread = fread(out_stream + ncount, sizeof(axis2_char_t), MAX_SIZE, f);
         ncount += nread;
-        out_stream = (axis2_char_t*) realloc( out_stream,
-                    sizeof(axis2_char_t)* (MAX_SIZE + ncount ) );
-        if ( out_stream == NULL )
+        out_stream = (axis2_char_t*) realloc(out_stream,
+                sizeof(axis2_char_t) * (MAX_SIZE + ncount));
+        if (out_stream == NULL)
         {
             return NULL;
         }
-    }while ( nread == MAX_SIZE );
+    }
+    while (nread == MAX_SIZE);
 
     out_stream[ncount] = '\0';
     fclose(f);

@@ -26,14 +26,14 @@
 
 
 
-axis2_handler_desc_t * 
+axis2_handler_desc_t *
 test_flow_create_handler(const axis2_env_t *env)
 {
     axis2_handler_desc_t *handler_desc = NULL;
     axis2_handler_t *handler = NULL;
     axis2_qname_t *qname = NULL;
     axis2_phase_rule_t *rule = NULL;
-         
+
     printf("******************************************\n");
     printf("testing axis2_flow_create_handler  method \n");
     printf("******************************************\n");
@@ -48,7 +48,7 @@ test_flow_create_handler(const axis2_env_t *env)
     handler = axis2_handler_create(env);
     AXIS2_HANDLER_INIT(handler, env, handler_desc);
     AXIS2_HANDLER_DESC_SET_HANDLER(handler_desc, env, handler);
-   
+
     return handler_desc;
 }
 
@@ -63,14 +63,14 @@ void Testaxis2_flow_add_handler(CuTest *tc)
     printf("testing axis2_flow_add_handler  method \n");
     printf("***************************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    const axis2_env_t *env = axis2_env_create (allocator);
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    const axis2_env_t *env = axis2_env_create(allocator);
 
-    flow = axis2_flow_create(env); 
+    flow = axis2_flow_create(env);
     handler_desc = test_flow_create_handler(env);
-    actual = AXIS2_FLOW_ADD_HANDLER(flow, env, handler_desc); 
+    actual = AXIS2_FLOW_ADD_HANDLER(flow, env, handler_desc);
     CuAssertIntEquals(tc, expected, actual);
-    AXIS2_FLOW_FREE (flow,  env);
+    AXIS2_FLOW_FREE(flow,  env);
 
 }
 
@@ -84,12 +84,12 @@ void Testaxis2_flow_free(CuTest *tc)
     printf("testing axis2_flow_free  method \n");
     printf("********************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    const axis2_env_t *env = axis2_env_create (allocator);
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    const axis2_env_t *env = axis2_env_create(allocator);
 
-    flow = axis2_flow_create(env); 
-    actual = AXIS2_FLOW_FREE (flow,  env);
-    
+    flow = axis2_flow_create(env);
+    actual = AXIS2_FLOW_FREE(flow,  env);
+
     CuAssertIntEquals(tc, expected, actual);
 
 }

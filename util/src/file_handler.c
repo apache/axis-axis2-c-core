@@ -21,38 +21,38 @@
 
 #include <axis2_file_handler.h>
 
-void* AXIS2_CALL 
-axis2_file_handler_open(const axis2_char_t *file_name, 
-                            const axis2_char_t *options)
-                            
+void* AXIS2_CALL
+axis2_file_handler_open(const axis2_char_t *file_name,
+        const axis2_char_t *options)
+
 {
     FILE *file_ptr;
-   
-   if (!file_name)
-      return NULL;
 
-   if (!options)
-      return NULL;
-   
-   file_ptr = fopen (file_name, options);
-   return file_ptr;
+    if (!file_name)
+        return NULL;
+
+    if (!options)
+        return NULL;
+
+    file_ptr = fopen(file_name, options);
+    return file_ptr;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_file_handler_close(void *file_ptr)
 {
-   if(!file_ptr) return -1;
-   return (axis2_status_t) fclose(file_ptr);
+    if (!file_ptr) return -1;
+    return (axis2_status_t) fclose(file_ptr);
 }
 
-axis2_status_t AXIS2_CALL 
-axis2_file_handler_access(const axis2_char_t *path, 
-                            int mode)
+axis2_status_t AXIS2_CALL
+axis2_file_handler_access(const axis2_char_t *path,
+        int mode)
 {
     int i = 0;
     axis2_status_t status = AXIS2_FAILURE;
     i = AXIS2_ACCESS(path, mode);
-    if(0 == i)
+    if (0 == i)
     {
         status = AXIS2_SUCCESS;
     }
@@ -60,6 +60,6 @@ axis2_file_handler_access(const axis2_char_t *path,
     {
         status = AXIS2_FAILURE;
     }
-    return status;    
+    return status;
 }
 

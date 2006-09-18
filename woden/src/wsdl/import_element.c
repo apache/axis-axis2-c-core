@@ -18,16 +18,16 @@
 
 axis2_status_t AXIS2_CALL
 woden_import_element_resolve_methods(
-        woden_import_element_t *import_element,
-        const axis2_env_t *env,
-        axis2_hash_t *methods)
+    woden_import_element_t *import_element,
+    const axis2_env_t *env,
+    axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
-    
-    import_element->ops->free = axis2_hash_get(methods, "free", 
+
+    import_element->ops->free = axis2_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    import_element->ops->type = axis2_hash_get(methods, "type", 
+    import_element->ops->type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
     import_element->ops->set_namespace = axis2_hash_get(methods,
@@ -43,6 +43,6 @@ woden_import_element_resolve_methods(
     import_element->ops->get_desc_element = axis2_hash_get(methods,
             "get_desc_element", AXIS2_HASH_KEY_STRING);
 
-    return AXIS2_SUCCESS;    
+    return AXIS2_SUCCESS;
 }
 

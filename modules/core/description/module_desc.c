@@ -199,7 +199,7 @@ axis2_module_desc_create(
     }
 
     module_desc_impl->module_desc.ops =
-        AXIS2_MALLOC (env->allocator, sizeof(axis2_module_desc_ops_t));
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_module_desc_ops_t));
     if (NULL == module_desc_impl->module_desc.ops)
     {
         axis2_module_desc_free(&(module_desc_impl->module_desc), env);
@@ -301,14 +301,14 @@ axis2_module_desc_free(
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
-        for (hi = axis2_hash_first (module_desc_impl->ops, env); hi;
-                hi = axis2_hash_next ( env, hi))
+        for (hi = axis2_hash_first(module_desc_impl->ops, env); hi;
+                hi = axis2_hash_next(env, hi))
         {
             struct axis2_op * op = NULL;
-            axis2_hash_this (hi, NULL, NULL, &val);
+            axis2_hash_this(hi, NULL, NULL, &val);
             op = (struct axis2_op *) val;
             if (op)
-                AXIS2_OP_FREE (op, env);
+                AXIS2_OP_FREE(op, env);
 
             val = NULL;
             op = NULL;
@@ -485,7 +485,7 @@ axis2_module_desc_add_op(
     module_desc_impl = AXIS2_INTF_TO_IMPL(module_desc);
     if (NULL == (module_desc_impl->ops))
     {
-        module_desc_impl->ops = axis2_hash_make (env);
+        module_desc_impl->ops = axis2_hash_make(env);
         if (!module_desc_impl->ops)
             return AXIS2_FAILURE;
     }

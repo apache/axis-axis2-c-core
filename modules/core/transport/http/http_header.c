@@ -22,7 +22,7 @@
 
 /**
  * @brief HTTP Header struct impl
- *   Axis2 HTTP Header impl  
+ *   Axis2 HTTP Header impl
  */
 
 typedef struct axis2_http_header_impl
@@ -44,17 +44,17 @@ axis2_http_header_to_external_form(
 
 axis2_char_t *AXIS2_CALL
 axis2_http_header_get_name(
-    const axis2_http_header_t *header, 
+    const axis2_http_header_t *header,
     const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 axis2_http_header_get_value(
-    const axis2_http_header_t *header, 
+    const axis2_http_header_t *header,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_http_header_free(
-    axis2_http_header_t *header, 
+    axis2_http_header_t *header,
     const axis2_env_t *env);
 
 /***************************** End of function headers ************************/
@@ -70,11 +70,11 @@ axis2_http_header_create(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_ENV_CHECK(env, NULL);
 
-    http_header_impl =  (axis2_http_header_impl_t *)AXIS2_MALLOC
+    http_header_impl = (axis2_http_header_impl_t *)AXIS2_MALLOC
             (env->allocator, sizeof(
                         axis2_http_header_impl_t));
 
-    if(NULL == http_header_impl)
+    if (NULL == http_header_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -84,7 +84,7 @@ axis2_http_header_create(
 
     http_header_impl->http_header.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_header_ops_t));
-    if(NULL == http_header_impl->http_header.ops)
+    if (NULL == http_header_impl->http_header.ops)
     {
         axis2_http_header_free((axis2_http_header_t *)
                 http_header_impl, env);
@@ -103,7 +103,7 @@ axis2_http_header_create(
 
 AXIS2_EXTERN axis2_http_header_t *AXIS2_CALL AXIS2_CALL
 axis2_http_header_create_by_str(
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     const axis2_char_t *str)
 {
     axis2_char_t *tmp_str = NULL;
@@ -114,18 +114,18 @@ axis2_http_header_create_by_str(
     AXIS2_ENV_CHECK(env, NULL);
 
     tmp_str = AXIS2_STRDUP(str, env);
-    if(NULL == tmp_str)
+    if (NULL == tmp_str)
     {
         return NULL;
     }
     /* remove trailing \r\n */
-    if('\r' == tmp_str[AXIS2_STRLEN(tmp_str)-2])
+    if ('\r' == tmp_str[AXIS2_STRLEN(tmp_str)-2])
     {
         tmp_str[AXIS2_STRLEN(tmp_str)-2] = '\0';
     }
 
     ch = strchr((const char *)tmp_str, ':');
-    if(NULL == ch)
+    if (NULL == ch)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HEADER,
                 AXIS2_FAILURE);
@@ -134,7 +134,7 @@ axis2_http_header_create_by_str(
     }
     ch2 = ch + sizeof(axis2_char_t);
     /* skip spaces */
-    while(' ' == *ch2)
+    while (' ' == *ch2)
     {
         ch2 += sizeof(axis2_char_t);
     }
@@ -146,24 +146,24 @@ axis2_http_header_create_by_str(
 
 axis2_status_t AXIS2_CALL
 axis2_http_header_free(
-    axis2_http_header_t *header, 
+    axis2_http_header_t *header,
     const axis2_env_t *env)
 {
     axis2_http_header_impl_t *http_header_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     http_header_impl = AXIS2_INTF_TO_IMPL(header);
 
-    if(NULL != http_header_impl->name)
+    if (NULL != http_header_impl->name)
     {
         AXIS2_FREE(env->allocator, http_header_impl->name);
         http_header_impl->name = NULL;
     }
-    if(NULL != http_header_impl->value)
+    if (NULL != http_header_impl->value)
     {
         AXIS2_FREE(env->allocator, http_header_impl->value);
         http_header_impl->value = NULL;
     }
-    if(NULL != header->ops)
+    if (NULL != header->ops)
         AXIS2_FREE(env->allocator, header->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(header));
@@ -193,7 +193,7 @@ axis2_http_header_to_external_form(
 
 axis2_char_t *AXIS2_CALL
 axis2_http_header_get_name(
-    const axis2_http_header_t *header, 
+    const axis2_http_header_t *header,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -203,7 +203,7 @@ axis2_http_header_get_name(
 
 axis2_char_t *AXIS2_CALL
 axis2_http_header_get_value(
-    const axis2_http_header_t *header, 
+    const axis2_http_header_t *header,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);

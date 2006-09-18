@@ -21,9 +21,9 @@
 #include <axis2_client.h>
 
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env, 
-    const axis2_char_t *image_name, 
-    const axis2_char_t *to_save_name);
+build_om_programatically(const axis2_env_t *env,
+        const axis2_char_t *image_name,
+        const axis2_char_t *to_save_name);
 
 int main(int argc, char** argv)
 {
@@ -40,13 +40,13 @@ int main(int argc, char** argv)
     axis2_property_t *property = NULL;
     axis2_endpoint_ref_t* reply_to = NULL;
 
-   
+
     /* Set up the environment */
     env = axis2_env_create_all("mtom.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of mtom service */
     address = "http://localhost:9090/axis2/services/mtom";
-    if (argc > 1 )
+    if (argc > 1)
         address = argv[1];
     if (AXIS2_STRCMP(address, "-h") == 0)
     {
@@ -59,7 +59,7 @@ int main(int argc, char** argv)
     if (argc > 3)
         to_save_name = argv[3];
 
-    printf ("Using endpoint : %s\n", address);
+    printf("Using endpoint : %s\n", address);
 
     /* Create EPR with given address */
     endpoint_ref = axis2_endpoint_ref_create(env, address);
@@ -73,15 +73,15 @@ int main(int argc, char** argv)
     AXIS2_OPTIONS_SET_USE_SEPARATE_LISTENER(options, env, AXIS2_TRUE);
     /* Seperate listner needs addressing, hence addressing stuff in options */
     AXIS2_OPTIONS_SET_ACTION(options, env,
-        "http://ws.apache.org/axis2/c/samples/mtomSample");
-    reply_to = axis2_endpoint_ref_create(env, 
+            "http://ws.apache.org/axis2/c/samples/mtomSample");
+    reply_to = axis2_endpoint_ref_create(env,
             "http://localhost:6060/axis2/services/__ANONYMOUS_SERVICE__/__OPERATION_OUT_IN__");
 
     AXIS2_OPTIONS_SET_REPLY_TO(options, env, reply_to);
     AXIS2_OPTIONS_SET_SOAP_VERSION(options, env, AXIOM_SOAP11);
     AXIS2_OPTIONS_SET_ENABLE_MTOM(options, env, AXIS2_TRUE);
 
-    /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
+    /* Set up deploy folder. It is from the deploy folder, the configuration is picked up
      * using the axis2.xml file.
      * In this sample client_home points to the Axis2/C default deploy folder. The client_home can 
      * be different from this folder on your system. For example, you may have a different folder 
@@ -98,23 +98,23 @@ int main(int argc, char** argv)
     {
         printf("Error creating service client\n");
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-                  " %d :: %s", env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+                " %d :: %s", env->error->error_number,
+                AXIS2_ERROR_GET_MESSAGE(env->error));
     }
 
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);    
-    
+    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
+
     /* Engage addressing module */
     AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);
-    
+
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_programatically(env, image_name, to_save_name);
-    
+
     /* Send request */
     ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
-    
-    if(ret_node)
+
+    if (ret_node)
     {
         axis2_char_t *om_str = NULL;
         om_str = AXIOM_NODE_TO_STRING(ret_node, env);
@@ -124,12 +124,12 @@ int main(int argc, char** argv)
     }
     else
     {
-      AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-                  " %d :: %s", env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+                " %d :: %s", env->error->error_number,
+                AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("mtom client invoke FAILED!\n");
     }
-    
+
     if (svc_client)
     {
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
@@ -142,9 +142,9 @@ int main(int argc, char** argv)
 
 /* build SOAP request message content using OM */
 axiom_node_t *
-build_om_programatically(const axis2_env_t *env, 
-    const axis2_char_t *image_name, 
-    const axis2_char_t *to_save_name)
+build_om_programatically(const axis2_env_t *env,
+        const axis2_char_t *image_name,
+        const axis2_char_t *to_save_name)
 {
     axiom_node_t *mtom_om_node = NULL;
     axiom_element_t* mtom_om_ele = NULL;
@@ -157,10 +157,10 @@ build_om_programatically(const axis2_env_t *env,
     axiom_namespace_t *ns1 = NULL;
 
     axiom_data_handler_t *data_handler = NULL;
-    
-    ns1 = axiom_namespace_create (env, "http://ws.apache.org/axis2/c/samples/mtom", "ns1");
+
+    ns1 = axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples/mtom", "ns1");
     mtom_om_ele = axiom_element_create(env, NULL, "mtomSample", ns1, &mtom_om_node);
-    
+
     file_om_ele = axiom_element_create(env, mtom_om_node, "fileName", ns1, &file_om_node);
     AXIOM_ELEMENT_SET_TEXT(file_om_ele, env, to_save_name, file_om_node);
 

@@ -23,14 +23,14 @@
 #include <axis2_phase_rule.h>
 #include <stdio.h>
 
-axis2_handler_desc_t * 
+axis2_handler_desc_t *
 test_handler_desc_create_handler_desc(const axis2_env_t *env)
 {
     axis2_handler_desc_t *handler_desc = NULL;
     axis2_handler_t *handler = NULL;
     axis2_qname_t *qname = NULL;
     axis2_phase_rule_t *rule = NULL;
-         
+
     printf("*******************************************************\n");
     printf("testing axis2_handler_desc_create_handler_desc  method \n");
     printf("*******************************************************\n");
@@ -45,7 +45,7 @@ test_handler_desc_create_handler_desc(const axis2_env_t *env)
     handler = axis2_handler_create(env);
     AXIS2_HANDLER_INIT(handler, env, handler_desc);
     AXIS2_HANDLER_DESC_SET_HANDLER(handler_desc, env, handler);
-   
+
     return handler_desc;
 }
 
@@ -54,17 +54,17 @@ void Testaxis2_handler_desc_free(CuTest *tc)
     axis2_status_t actual = AXIS2_FAILURE;
     axis2_status_t expected = AXIS2_TRUE;
     axis2_handler_desc_t *handler_desc = NULL;
- 
+
     printf("****************************************\n");
     printf("testing axis2_handler_desc_free  method \n");
     printf("****************************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    const axis2_env_t *env = axis2_env_create (allocator);
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    const axis2_env_t *env = axis2_env_create(allocator);
 
-    handler_desc = test_handler_desc_create_handler_desc(env); 
-    actual = AXIS2_HANDLER_DESC_FREE (handler_desc,  env);
-    
+    handler_desc = test_handler_desc_create_handler_desc(env);
+    actual = AXIS2_HANDLER_DESC_FREE(handler_desc,  env);
+
     CuAssertIntEquals(tc, expected, actual);
 
 }

@@ -18,16 +18,16 @@
 
 axis2_status_t AXIS2_CALL
 woden_configurable_element_resolve_methods(
-        woden_configurable_element_t *configurable_element,
-        const axis2_env_t *env,
-        axis2_hash_t *methods)
+    woden_configurable_element_t *configurable_element,
+    const axis2_env_t *env,
+    axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
-    
-    configurable_element->ops->free = axis2_hash_get(methods, "free", 
+
+    configurable_element->ops->free = axis2_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    configurable_element->ops->type = axis2_hash_get(methods, "type", 
+    configurable_element->ops->type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
     configurable_element->ops->add_feature_element = axis2_hash_get(methods,
@@ -39,6 +39,6 @@ woden_configurable_element_resolve_methods(
     configurable_element->ops->get_property_elements = axis2_hash_get(methods,
             "get_property_elements", AXIS2_HASH_KEY_STRING);
 
-    return AXIS2_SUCCESS;    
+    return AXIS2_SUCCESS;
 }
 

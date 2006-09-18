@@ -24,37 +24,38 @@
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_encryption_method_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t* algorithm
-                    )
+        axiom_node_t *parent,
+        axis2_char_t* algorithm
+                                         )
 {
     axiom_node_t *encryption_method_node = NULL;
     axiom_element_t *encryption_method_ele = NULL;
     axiom_attribute_t *algo_attr = NULL;
-    int ret; 
+    int ret;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create (env, OXS_EncNs,
-                                              OXS_xenc);
+    ns_obj = axiom_namespace_create(env, OXS_EncNs,
+            OXS_xenc);
 
-    encryption_method_ele = axiom_element_create(env, parent, OXS_NodeEncryptionMethod, ns_obj, &encryption_method_node );
-    if(!encryption_method_ele)
-    {   
+    encryption_method_ele = axiom_element_create(env, parent, OXS_NodeEncryptionMethod, ns_obj, &encryption_method_node);
+    if (!encryption_method_ele)
+    {
         oxs_error(ERROR_LOCATION,
-                    OXS_ERROR_ELEMENT_FAILED,"Error creating encryption method element");
+                OXS_ERROR_ELEMENT_FAILED, "Error creating encryption method element");
         return NULL;
-    }  
-    /*Fixed bug. If kt algorithm is NULL then use the default*/ 
-    if(!algorithm){
+    }
+    /*Fixed bug. If kt algorithm is NULL then use the default*/
+    if (!algorithm)
+    {
         algorithm = (axis2_char_t*)OXS_DEFAULT_KT_ALGO_HREF;
     }
 
-    algo_attr =  axiom_attribute_create (env, OXS_AttrAlgorithm, algorithm, NULL);
+    algo_attr =  axiom_attribute_create(env, OXS_AttrAlgorithm, algorithm, NULL);
 
-    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encryption_method_ele, env, algo_attr, encryption_method_node);  
-   
-    return encryption_method_node; 
-     
+    ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encryption_method_ele, env, algo_attr, encryption_method_node);
+
+    return encryption_method_node;
+
 }
 
 
@@ -66,10 +67,10 @@ oxs_token_get_encryption_method(const axis2_env_t *env, axiom_node_t *enc_mtd_no
     axiom_element_t *enc_mtd_ele = NULL;
 
     enc_mtd_ele = AXIOM_NODE_GET_DATA_ELEMENT(enc_mtd_node, env);
-    if(!enc_mtd_ele)
+    if (!enc_mtd_ele)
     {
         oxs_error(ERROR_LOCATION,
-                    OXS_ERROR_ELEMENT_FAILED,"Error retrieving encryption method element");
+                OXS_ERROR_ELEMENT_FAILED, "Error retrieving encryption method element");
         return NULL;
     }
 

@@ -30,8 +30,8 @@ void Testaxis2_uri_parse_string(CuTest *tc)
     printf("******************************************\n");
     printf("testing axis2_uri_parse_string\n");
     printf("******************************************\n");
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    const axis2_env_t *env = axis2_env_create (allocator);
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    const axis2_env_t *env = axis2_env_create(allocator);
 
     /*uri_str = "http://myserver:80/home/damitha/temp/checkout.sh";*/
     /*uri_str = "../temp/checkout.sh";*/
@@ -40,9 +40,9 @@ void Testaxis2_uri_parse_string(CuTest *tc)
     CuAssertPtrNotNull(tc, uri);
 
     actual = AXIS2_URI_TO_STRING(uri, env, AXIS2_URI_UNP_OMITUSERINFO);
-   
+
     printf("actual:%s\n", actual);
-    
+
     CuAssertStrEquals(tc, expected, actual);
     AXIS2_URI_FREE(uri, env);
 }
@@ -59,8 +59,8 @@ void Testaxis2_uri_parse_relative(CuTest *tc)
     printf("******************************************\n");
     printf("testing axis2_uri_parse_relative\n");
     printf("******************************************\n");
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    const axis2_env_t *env = axis2_env_create (allocator);
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    const axis2_env_t *env = axis2_env_create(allocator);
 
     /*base_str = "http://myserver:80/home/damitha";*/
     base_str = "file://home/damitha/temp";
@@ -68,9 +68,9 @@ void Testaxis2_uri_parse_relative(CuTest *tc)
     base = axis2_uri_parse_string(env, base_str);
     new_uri = axis2_uri_parse_relative(env, base, uri_str);
     actual = AXIS2_URI_TO_STRING(new_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
-   
+
     printf("actual:%s\n", actual);
-    
+
     CuAssertStrEquals(tc, expected, actual);
     AXIS2_URI_FREE(new_uri, env);
 }
@@ -86,8 +86,8 @@ void Testaxis2_uri_clone(CuTest *tc)
     printf("******************************************\n");
     printf("testing axis2_uri_clone\n");
     printf("******************************************\n");
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    const axis2_env_t *env = axis2_env_create (allocator);
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    const axis2_env_t *env = axis2_env_create(allocator);
 
     uri_str = "http://myserver:80/home/damitha/temp";
     uri = axis2_uri_parse_string(env, uri_str);
@@ -95,9 +95,9 @@ void Testaxis2_uri_clone(CuTest *tc)
     CuAssertPtrNotNull(tc, new_uri);
 
     actual = AXIS2_URI_TO_STRING(new_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
-   
+
     printf("actual:%s\n", actual);
-    
+
     CuAssertStrEquals(tc, expected, actual);
     AXIS2_URI_FREE(uri, env);
 
@@ -113,16 +113,16 @@ void Testaxis2_uri_get_path(CuTest *tc)
     printf("******************************************\n");
     printf("testing axis2_uri_get_path\n");
     printf("******************************************\n");
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    const axis2_env_t *env = axis2_env_create (allocator);
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    const axis2_env_t *env = axis2_env_create(allocator);
 
     uri_str = "/home/damitha/temp/my.wsdl";
     /*uri_str = "http://myserver:80/home/damitha/temp/my.wsdl";*/
     uri = axis2_uri_parse_string(env, uri_str);
     actual = axis2_uri_get_path(uri, env);
-   
+
     printf("actual:%s\n", actual);
-    
+
     CuAssertStrEquals(tc, expected, actual);
     AXIS2_URI_FREE(uri, env);
 }

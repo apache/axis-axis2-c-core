@@ -22,13 +22,13 @@
 /* my on_complete callback function */
 axis2_status_t AXIS2_CALL
 echo_callback_on_complete(struct axis2_callback *callback,
-    const axis2_env_t *env);
+        const axis2_env_t *env);
 
 /* my on_error callback function */
 axis2_status_t AXIS2_CALL
 echo_callback_on_error(struct axis2_callback *callback,
-    const axis2_env_t *env,
-    int exception);
+        const axis2_env_t *env,
+        int exception);
 
 /* to check whether the callback is completed */
 int isComplete = 0;
@@ -44,13 +44,13 @@ int main(int argc, char** argv)
     axiom_node_t *payload = NULL;
     axis2_callback_t *callback = NULL;
     int count = 0;
-   
+
     /* Set up the environment */
     env = axis2_env_create_all("echo_non_blocking.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/echo";
-    if (argc > 1 )
+    if (argc > 1)
         address = argv[1];
     if (AXIS2_STRCMP(address, "-h") == 0)
     {
@@ -58,8 +58,8 @@ int main(int argc, char** argv)
         printf("use -h for help\n");
         return 0;
     }
-    printf ("Using endpoint : %s\n", address);
-    
+    printf("Using endpoint : %s\n", address);
+
     /* Create EPR with given address */
     endpoint_ref = axis2_endpoint_ref_create(env, address);
 
@@ -67,7 +67,7 @@ int main(int argc, char** argv)
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
 
-    /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
+    /* Set up deploy folder. It is from the deploy folder, the configuration is picked up
      * using the axis2.xml file.
      * In this sample client_home points to the Axis2/C default deploy folder. The client_home can 
      * be different from this folder on your system. For example, you may have a different folder 
@@ -84,90 +84,90 @@ int main(int argc, char** argv)
     {
         printf("Error creating service client\n");
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-                  " %d :: %s", env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+                " %d :: %s", env->error->error_number,
+                AXIS2_ERROR_GET_MESSAGE(env->error));
     }
 
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);    
+    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
 
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_payload_for_echo_svc(env);
-    
-    /* Create the callback object with default on_complete and on_error 
+
+    /* Create the callback object with default on_complete and on_error
        callback functions */
     callback = axis2_callback_create(env);
-   
-   /* Set our on_complete fucntion pointer to the callback object */
-   AXIS2_CALLBACK_SET_ON_COMPLETE(callback, echo_callback_on_complete);
 
-   /* Set our on_error function pointer to the callback object */
-   AXIS2_CALLBACK_SET_ON_ERROR(callback, echo_callback_on_error);
+    /* Set our on_complete fucntion pointer to the callback object */
+    AXIS2_CALLBACK_SET_ON_COMPLETE(callback, echo_callback_on_complete);
 
-    
+    /* Set our on_error function pointer to the callback object */
+    AXIS2_CALLBACK_SET_ON_ERROR(callback, echo_callback_on_error);
+
+
     /* Send request */
-    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, 
-        payload, callback);
-        
+    AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env,
+            payload, callback);
+
     /** Wait till callback is complete. Simply keep the parent thread running
        until our on_complete or on_error is invoked */
-   while(count < 30 )
-   {
-      if (isComplete)
-      {
-         /* We are done with the callback */
-         break;
-      }
+    while (count < 30)
+    {
+        if (isComplete)
+        {
+            /* We are done with the callback */
+            break;
+        }
         AXIS2_SLEEP(1);
         count++;
-   }
-    
+    }
+
     if (!(count < 30))
     {
         printf("\necho client invike FAILED. Counter timed out.\n");
     }
-    
+
     if (svc_client)
     {
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
-    
+
     return 0;
 }
 
 axis2_status_t AXIS2_CALL
 echo_callback_on_complete(struct axis2_callback *callback,
-                                  const axis2_env_t *env)
+        const axis2_env_t *env)
 {
-   /** SOAP response has arrived here; get the soap envelope 
-     from the callback object and do whatever you want to do with it */
-   
-   axiom_soap_envelope_t *soap_envelope = NULL;
-   axiom_node_t *ret_node = NULL;
+    /** SOAP response has arrived here; get the soap envelope
+      from the callback object and do whatever you want to do with it */
+
+    axiom_soap_envelope_t *soap_envelope = NULL;
+    axiom_node_t *ret_node = NULL;
     axis2_status_t status = AXIS2_SUCCESS;
-   
-   printf("inside on_complete_callback function\n");
-   
-   soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, env);
-   
-   if (!soap_envelope)
-   {
-       AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-                     " %d :: %s", env->error->error_number,
-                     AXIS2_ERROR_GET_MESSAGE(env->error));
-      printf("echo stub invoke FAILED!\n");
-      status = AXIS2_FAILURE;
-   }
+
+    printf("inside on_complete_callback function\n");
+
+    soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, env);
+
+    if (!soap_envelope)
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+                " %d :: %s", env->error->error_number,
+                AXIS2_ERROR_GET_MESSAGE(env->error));
+        printf("echo stub invoke FAILED!\n");
+        status = AXIS2_FAILURE;
+    }
     else
     {
         ret_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
-    
-        if(!ret_node)
+
+        if (!ret_node)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-                          " %d :: %s", env->error->error_number,
-                          AXIS2_ERROR_GET_MESSAGE(env->error));
+                    " %d :: %s", env->error->error_number,
+                    AXIS2_ERROR_GET_MESSAGE(env->error));
             printf("echo stub invoke FAILED!\n");
             status = AXIS2_FAILURE;
         }
@@ -179,19 +179,19 @@ echo_callback_on_complete(struct axis2_callback *callback,
                 printf("\nReceived OM : %s\n", om_str);
             printf("\necho client invoke SUCCESSFUL!\n");
         }
-    }    
+    }
     isComplete = 1;
-   return status;
+    return status;
 }
 
 axis2_status_t AXIS2_CALL
 echo_callback_on_error(struct axis2_callback *callback,
-                            const axis2_env_t *env,
-                            int exception)
+        const axis2_env_t *env,
+        int exception)
 {
-   /** take necessary action on error */
-   printf("\necho client invike FAILED. Error code:%d ::%s", exception, 
-         AXIS2_ERROR_GET_MESSAGE(env->error));
-   isComplete = 1;
-   return AXIS2_SUCCESS;
+    /** take necessary action on error */
+    printf("\necho client invike FAILED. Error code:%d ::%s", exception,
+            AXIS2_ERROR_GET_MESSAGE(env->error));
+    isComplete = 1;
+    return AXIS2_SUCCESS;
 }

@@ -37,100 +37,101 @@ typedef struct axis2_mep_client_impl
     axis2_char_t *soap_action;
     /** WSA action  */
     axis2_char_t *wsa_action;
-} axis2_mep_client_impl_t;
+}
+axis2_mep_client_impl_t;
 
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(mep_client) ((axis2_mep_client_impl_t *)mep_client)
 
-const axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL
 axis2_mep_client_get_soap_action(
-    const axis2_mep_client_t *mep_client, 
+    const axis2_mep_client_t *mep_client,
     const axis2_env_t *env);
-    
-axis2_status_t AXIS2_CALL 
+
+axis2_status_t AXIS2_CALL
 axis2_mep_client_prepare_invocation(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
-    axis2_op_t *op, 
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
+    axis2_op_t *op,
     axis2_msg_ctx_t *msg_ctx);
 
-axis2_msg_ctx_t *AXIS2_CALL 
+axis2_msg_ctx_t *AXIS2_CALL
 axis2_mep_client_prepare_soap_envelope(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
     axiom_node_t *to_send);
 
-axis2_transport_out_desc_t *AXIS2_CALL 
+axis2_transport_out_desc_t *AXIS2_CALL
 axis2_mep_client_infer_transport(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
     axis2_endpoint_ref_t *epr);
 
-axiom_soap_envelope_t *AXIS2_CALL 
+axiom_soap_envelope_t *AXIS2_CALL
 axis2_mep_client_create_default_soap_envelope(
-    axis2_mep_client_t *mep_client, 
+    axis2_mep_client_t *mep_client,
     const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_mep_client_engage_module(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
     const axis2_qname_t *qname);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_mep_client_set_soap_version_uri(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
     const axis2_char_t *soap_version_uri);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_mep_client_set_soap_action(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
     const axis2_char_t *soap_action);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_mep_client_set_wsa_action(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
     const axis2_char_t *wsa_action);
 
-axis2_char_t *AXIS2_CALL 
+axis2_char_t *AXIS2_CALL
 axis2_get_transport_from_url(
-    const axis2_char_t *url, 
+    const axis2_char_t *url,
     const axis2_env_t *env);
 
-axis2_svc_ctx_t *AXIS2_CALL 
+axis2_svc_ctx_t *AXIS2_CALL
 axis2_mep_client_get_svc_ctx(
-    const axis2_mep_client_t *mep_client, 
+    const axis2_mep_client_t *mep_client,
     const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_mep_client_free(
-    axis2_mep_client_t *mep_client, 
+    axis2_mep_client_t *mep_client,
     const axis2_env_t *env);
 
-axis2_mep_client_t *AXIS2_CALL 
+axis2_mep_client_t *AXIS2_CALL
 axis2_mep_client_create(
-    const axis2_env_t *env, 
-    axis2_svc_ctx_t *svc_ctx, 
+    const axis2_env_t *env,
+    axis2_svc_ctx_t *svc_ctx,
     const axis2_char_t *mep)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
-    
+
     AXIS2_ENV_CHECK(env, NULL);
-    
-    mep_client_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_mep_client_impl_t) );
+
+    mep_client_impl = AXIS2_MALLOC(env->allocator, sizeof(axis2_mep_client_impl_t));
     if (!mep_client_impl)
-    { 
+    {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;        
+        return NULL;
     }
 
     mep_client_impl->mep_client.ops = NULL;
     mep_client_impl->svc_ctx = NULL;
     mep_client_impl->mep = NULL;
-    mep_client_impl->soap_version_uri = NULL; 
+    mep_client_impl->soap_version_uri = NULL;
     mep_client_impl->soap_action = NULL;
     mep_client_impl->wsa_action = NULL;
 
@@ -138,15 +139,15 @@ axis2_mep_client_create(
     {
         mep_client_impl->svc_ctx = svc_ctx;
     }
-    
+
     mep_client_impl->soap_version_uri = AXIS2_STRDUP(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, env);
     if (!(mep_client_impl->soap_version_uri))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_mep_client_free(&(mep_client_impl->mep_client), env);
-        return NULL;        
+        return NULL;
     }
-    
+
     if (mep)
     {
         mep_client_impl->mep = AXIS2_STRDUP(mep, env);
@@ -157,14 +158,14 @@ axis2_mep_client_create(
             return NULL;
         }
     }
-    
-    /* initialize ops */    
-    mep_client_impl->mep_client.ops  = AXIS2_MALLOC( env->allocator, sizeof(axis2_mep_client_ops_t) );
+
+    /* initialize ops */
+    mep_client_impl->mep_client.ops  = AXIS2_MALLOC(env->allocator, sizeof(axis2_mep_client_ops_t));
     if (!mep_client_impl->mep_client.ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_mep_client_free(&(mep_client_impl->mep_client), env);
-        return NULL;        
+        return NULL;
     }
 
     mep_client_impl->mep_client.ops->get_soap_action = axis2_mep_client_get_soap_action;
@@ -182,29 +183,29 @@ axis2_mep_client_create(
     return &(mep_client_impl->mep_client);
 }
 
-const axis2_char_t *AXIS2_CALL 
+const axis2_char_t *AXIS2_CALL
 axis2_mep_client_get_soap_action(
-    const axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env) 
+    const axis2_mep_client_t *mep_client,
+    const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(mep_client)->soap_action;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_mep_client_prepare_invocation(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
-    axis2_op_t *op, 
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
+    axis2_op_t *op,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     axis2_svc_t *svc = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, op, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-    
+
     mep_client_impl = AXIS2_INTF_TO_IMPL(mep_client);
 
     /* make sure operation's MEP is the same as given MEP */
@@ -223,7 +224,7 @@ axis2_mep_client_prepare_invocation(
     }
     /* If operation has a parent service get it */
     svc = AXIS2_OP_GET_PARENT(op, env);
-    if(svc)
+    if (svc)
     {
         AXIS2_SVC_CTX_SET_SVC(mep_client_impl->svc_ctx, env, svc);
     }
@@ -241,40 +242,40 @@ axis2_mep_client_prepare_invocation(
             }
         }
     }
-    
-    if (mep_client_impl->wsa_action) 
+
+    if (mep_client_impl->wsa_action)
     {
         AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, mep_client_impl->wsa_action);
     }
-    
+
     if (mep_client_impl->soap_action)
     {
         AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env, mep_client_impl->soap_action);
     }
-    
+
     return AXIS2_SUCCESS;
 }
 
-axis2_msg_ctx_t *AXIS2_CALL 
+axis2_msg_ctx_t *AXIS2_CALL
 axis2_mep_client_prepare_soap_envelope(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
-    axiom_node_t *to_send)  
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
+    axiom_node_t *to_send)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
     axiom_soap_envelope_t *envelope = NULL;
     int soap_version = AXIOM_SOAP12;
-    
+
     AXIS2_ENV_CHECK(env, NULL);
-    
+
     mep_client_impl = AXIS2_INTF_TO_IMPL(mep_client);
-   
+
     if (mep_client_impl->svc_ctx)
     {
-        msg_ctx = axis2_msg_ctx_create(env, 
-                    AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env), 
-                    NULL, NULL);
+        msg_ctx = axis2_msg_ctx_create(env,
+                AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env),
+                NULL, NULL);
     }
 
     if (!msg_ctx)
@@ -284,20 +285,20 @@ axis2_mep_client_prepare_soap_envelope(
 
     if (mep_client_impl->soap_version_uri)
     {
-        if (AXIS2_STRCMP(mep_client_impl->soap_version_uri, 
+        if (AXIS2_STRCMP(mep_client_impl->soap_version_uri,
                 AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
             soap_version = AXIOM_SOAP11;
         else
             soap_version = AXIOM_SOAP12;
     }
-            
+
     envelope = axiom_soap_envelope_create_default_soap_envelope(env, soap_version);
     if (!envelope)
     {
         return NULL;
     }
-    
-    if (to_send) 
+
+    if (to_send)
     {
         axiom_soap_body_t *soap_body = NULL;
         soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
@@ -309,45 +310,45 @@ axis2_mep_client_prepare_soap_envelope(
             {
                 AXIOM_NODE_ADD_CHILD(node, env, to_send);
             }
-        }       
+        }
     }
-    
+
     AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, envelope);
-   
+
     return msg_ctx;
 }
 
-axis2_transport_out_desc_t *AXIS2_CALL 
+axis2_transport_out_desc_t *AXIS2_CALL
 axis2_mep_client_infer_transport(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
-    axis2_endpoint_ref_t *epr)  
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
+    axis2_endpoint_ref_t *epr)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     axis2_char_t *transport = NULL;
-    
+
     AXIS2_ENV_CHECK(env, NULL);
-    
+
     mep_client_impl = AXIS2_INTF_TO_IMPL(mep_client);
-    
+
     if (epr)
     {
         const axis2_char_t *to_url = AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env);
-        
-        transport = axis2_get_transport_from_url(to_url, env);        
+
+        transport = axis2_get_transport_from_url(to_url, env);
     }
 
-    if (transport) 
+    if (transport)
     {
         axis2_conf_ctx_t *conf_ctx = NULL;
         axis2_conf_t *conf = NULL;
         axis2_qname_t *qname = NULL;
         axis2_transport_out_desc_t *transport_out_desc = NULL;
-        
+
         qname = axis2_qname_create(env, transport, NULL, NULL);
         if (!qname)
             return NULL;
-        
+
         conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env);
         if (conf_ctx)
         {
@@ -357,56 +358,56 @@ axis2_mep_client_infer_transport(
                 transport_out_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, qname);
             }
         }
-       
+
         AXIS2_FREE(env->allocator, transport);
         transport = NULL;
         AXIS2_QNAME_FREE(qname, env);
         qname = NULL;
-        return transport_out_desc;        
+        return transport_out_desc;
 
-    } 
-    
+    }
+
     AXIS2_ERROR_SET(env->error, AXIS2_ERROR_CANNOT_INFER_TRANSPORT, AXIS2_FAILURE);
     return NULL;
 }
 
-axiom_soap_envelope_t *AXIS2_CALL 
+axiom_soap_envelope_t *AXIS2_CALL
 axis2_mep_client_create_default_soap_envelope(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env)  
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env)
 {
     axiom_soap_envelope_t *envelope = NULL;
     axis2_mep_client_impl_t *mep_client_impl = NULL;
-    
+
     AXIS2_ENV_CHECK(env, NULL);
     mep_client_impl = AXIS2_INTF_TO_IMPL(mep_client);
-    
-    if (AXIS2_STRCMP(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, mep_client_impl->soap_version_uri) == 0) 
+
+    if (AXIS2_STRCMP(AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI, mep_client_impl->soap_version_uri) == 0)
     {
-        envelope = axiom_soap_envelope_create_with_soap_version_prefix(env, AXIOM_SOAP12,NULL);
+        envelope = axiom_soap_envelope_create_with_soap_version_prefix(env, AXIOM_SOAP12, NULL);
     }
-    
-    if (AXIS2_STRCMP(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, mep_client_impl->soap_version_uri) == 0) 
+
+    if (AXIS2_STRCMP(AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI, mep_client_impl->soap_version_uri) == 0)
     {
-        envelope = axiom_soap_envelope_create_with_soap_version_prefix(env, AXIOM_SOAP11,NULL);
+        envelope = axiom_soap_envelope_create_with_soap_version_prefix(env, AXIOM_SOAP11, NULL);
     }
     return envelope;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_mep_client_engage_module(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
-    const axis2_qname_t *qname)  
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
+    const axis2_qname_t *qname)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
     axis2_conf_t *conf = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+
     mep_client_impl = AXIS2_INTF_TO_IMPL(mep_client);
-    
+
     if (mep_client_impl->svc_ctx)
     {
         conf_ctx = AXIS2_SVC_CTX_GET_CONF_CTX(mep_client_impl->svc_ctx, env);
@@ -416,35 +417,35 @@ axis2_mep_client_engage_module(
             if (conf)
             {
                 /*if it is already engaged do not engage it again*/
-                if (!(AXIS2_CONF_IS_ENGAGED(conf, env, qname))) 
+                if (!(AXIS2_CONF_IS_ENGAGED(conf, env, qname)))
                 {
                     return AXIS2_CONF_ENGAGE_MODULE(conf, env, qname);
                 }
             }
         }
     }
-    
+
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_mep_client_set_soap_version_uri(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
-    const axis2_char_t *soap_version_uri) 
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
+    const axis2_char_t *soap_version_uri)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+
     mep_client_impl = AXIS2_INTF_TO_IMPL(mep_client);
-    
+
     if (mep_client_impl->soap_version_uri)
     {
         AXIS2_FREE(env->allocator, mep_client_impl->soap_version_uri);
         mep_client_impl->soap_version_uri = NULL;
     }
-    
+
     if (soap_version_uri)
     {
         mep_client_impl->soap_version_uri = AXIS2_STRDUP(soap_version_uri, env);
@@ -454,28 +455,28 @@ axis2_mep_client_set_soap_version_uri(
             return AXIS2_FAILURE;
         }
     }
-    
+
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_mep_client_set_soap_action(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
-    const axis2_char_t *soap_action) 
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
+    const axis2_char_t *soap_action)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+
     mep_client_impl = AXIS2_INTF_TO_IMPL(mep_client);
-    
+
     if (mep_client_impl->soap_action)
     {
         AXIS2_FREE(env->allocator, mep_client_impl->soap_action);
         mep_client_impl->soap_action = NULL;
     }
-    
+
     if (soap_action)
     {
         mep_client_impl->soap_action = AXIS2_STRDUP(soap_action, env);
@@ -485,28 +486,28 @@ axis2_mep_client_set_soap_action(
             return AXIS2_FAILURE;
         }
     }
-    
+
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_mep_client_set_wsa_action(
-    axis2_mep_client_t *mep_client, 
-    const axis2_env_t *env, 
-    const axis2_char_t *wsa_action) 
+    axis2_mep_client_t *mep_client,
+    const axis2_env_t *env,
+    const axis2_char_t *wsa_action)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+
     mep_client_impl = AXIS2_INTF_TO_IMPL(mep_client);
-    
+
     if (mep_client_impl->wsa_action)
     {
         AXIS2_FREE(env->allocator, mep_client_impl->wsa_action);
         mep_client_impl->wsa_action = NULL;
     }
-    
+
     if (wsa_action)
     {
         mep_client_impl->wsa_action = AXIS2_STRDUP(wsa_action, env);
@@ -516,13 +517,13 @@ axis2_mep_client_set_wsa_action(
             return AXIS2_FAILURE;
         }
     }
-    
+
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t *AXIS2_CALL 
+axis2_char_t *AXIS2_CALL
 axis2_get_transport_from_url(
-    const axis2_char_t *url, 
+    const axis2_char_t *url,
     const axis2_env_t *env)
 {
     axis2_char_t *transport = NULL;
@@ -531,71 +532,71 @@ axis2_get_transport_from_url(
     AXIS2_PARAM_CHECK(env->error, url, AXIS2_FAILURE);
     start = url;
     end = url;
-    while ( end && (*end) != ':' )
+    while (end && (*end) != ':')
         end++;
-    
+
     if ((*end) == ':')
-    {    
+    {
         const axis2_char_t *c = NULL;
-        transport = AXIS2_MALLOC( env->allocator, (end - start + 1 ) * sizeof(char) );
+        transport = AXIS2_MALLOC(env->allocator, (end - start + 1) * sizeof(char));
         if (!transport)
-        { 
+        {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-            return NULL;        
+            return NULL;
         }
-        
+
         for (c = start; c < end; c++)
             transport[c - start] = *c;
         transport[c-start] = '\0';
     }
-    
-    return transport;    
+
+    return transport;
 }
 
-axis2_svc_ctx_t *AXIS2_CALL 
+axis2_svc_ctx_t *AXIS2_CALL
 axis2_mep_client_get_svc_ctx(
-    const axis2_mep_client_t *mep_client, 
+    const axis2_mep_client_t *mep_client,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(mep_client)->svc_ctx;
 }
 
-axis2_status_t AXIS2_CALL 
-axis2_mep_client_free (
-    axis2_mep_client_t *mep_client, 
+axis2_status_t AXIS2_CALL
+axis2_mep_client_free(
+    axis2_mep_client_t *mep_client,
     const axis2_env_t *env)
 {
     axis2_mep_client_impl_t *mep_client_impl = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+
     mep_client_impl = AXIS2_INTF_TO_IMPL(mep_client);
-    
+
     if (mep_client_impl->mep_client.ops)
     {
         AXIS2_FREE(env->allocator, mep_client_impl->mep_client.ops);
         mep_client_impl->mep_client.ops = NULL;
     }
-    
+
     if (mep_client_impl->mep)
     {
         AXIS2_FREE(env->allocator, mep_client_impl->mep);
         mep_client_impl->mep = NULL;
     }
-    
+
     if (mep_client_impl->soap_version_uri)
     {
         AXIS2_FREE(env->allocator, mep_client_impl->soap_version_uri);
         mep_client_impl->soap_version_uri = NULL;
     }
-    
+
     if (mep_client_impl->soap_action)
     {
         AXIS2_FREE(env->allocator, mep_client_impl->soap_action);
         mep_client_impl->soap_action = NULL;
     }
-    
+
     if (mep_client_impl->wsa_action)
     {
         AXIS2_FREE(env->allocator, mep_client_impl->wsa_action);
@@ -604,13 +605,13 @@ axis2_mep_client_free (
 
     AXIS2_FREE(env->allocator, mep_client_impl);
     mep_client_impl = NULL;
-    
+
     return AXIS2_SUCCESS;
 }
 
-axis2_msg_ctx_t *AXIS2_CALL 
+axis2_msg_ctx_t *AXIS2_CALL
 axis2_mep_client_two_way_send(
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_engine_t *engine = NULL;
@@ -621,33 +622,33 @@ axis2_mep_client_two_way_send(
     axiom_soap_envelope_t *response_envelope = NULL;
     const axis2_char_t *soap_ns_uri = NULL;
     axis2_property_t *property = NULL;
-    
+
     AXIS2_ENV_CHECK(env, NULL);
 
     conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
     engine = axis2_engine_create(env, conf_ctx);
     if (!engine)
         return NULL;
-    
+
     status = AXIS2_ENGINE_SEND(engine, env, msg_ctx);
     if (status != AXIS2_SUCCESS)
         return NULL;
-    
+
     /* create the response */
-    response = axis2_msg_ctx_create(env, conf_ctx, 
-                                    AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(msg_ctx, env),
-                                    AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env));
+    response = axis2_msg_ctx_create(env, conf_ctx,
+            AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(msg_ctx, env),
+            AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env));
     if (!response)
         return NULL;
-    
+
     property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, AXIS2_FALSE);
-    if(property)
+    if (property)
     {
         AXIS2_MSG_CTX_SET_PROPERTY(response, env, AXIS2_TRANSPORT_IN, property,
-            AXIS2_FALSE);
+                AXIS2_FALSE);
         property = NULL;
     }
-    
+
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
     if (op)
     {
@@ -661,11 +662,11 @@ axis2_mep_client_two_way_send(
     AXIS2_MSG_CTX_SET_DOING_REST(response, env, AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env));
 
     soap_ns_uri = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) ?
-        AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI:AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
-    
-    response_envelope = axis2_http_transport_utils_create_soap_msg(env, 
-                            msg_ctx, soap_ns_uri);
-    if (response_envelope) 
+            AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI : AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+
+    response_envelope = axis2_http_transport_utils_create_soap_msg(env,
+            msg_ctx, soap_ns_uri);
+    if (response_envelope)
     {
         AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
         if (engine)
@@ -673,7 +674,7 @@ axis2_mep_client_two_way_send(
             AXIS2_ENGINE_FREE(engine, env);
             engine = NULL;
         }
-                    
+
         engine = axis2_engine_create(env, conf_ctx);
         if (engine)
         {
@@ -681,9 +682,9 @@ axis2_mep_client_two_way_send(
             if (status != AXIS2_SUCCESS)
                 return NULL;
         }
-        
-    } 
-    else 
+
+    }
+    else
     {
         /* if it is a two way message, then the status should be in error,
            else it is a one way message */
@@ -693,23 +694,23 @@ axis2_mep_client_two_way_send(
             return NULL;
         }
     }
-        
+
     /* property is NULL, and we set null for AXIS2_TRANSPORT_IN in msg_ctx to
     avoid double free of this property */
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
             AXIS2_FALSE);
-    
-    if(NULL != engine)
+
+    if (NULL != engine)
     {
         AXIS2_ENGINE_FREE(engine, env);
         engine = NULL;
-    } 
+    }
     return response;
 }
 
-axis2_msg_ctx_t *AXIS2_CALL 
+axis2_msg_ctx_t *AXIS2_CALL
 axis2_mep_client_receive(
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_engine_t *engine = NULL;
@@ -720,24 +721,24 @@ axis2_mep_client_receive(
     axiom_soap_envelope_t *response_envelope = NULL;
     const axis2_char_t *soap_ns_uri = NULL;
     axis2_property_t *property = NULL;
-    
+
     AXIS2_ENV_CHECK(env, NULL);
 
     /* create the response */
-    response = axis2_msg_ctx_create(env, conf_ctx, 
-                                    AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(msg_ctx, env),
-                                    AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env));
+    response = axis2_msg_ctx_create(env, conf_ctx,
+            AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(msg_ctx, env),
+            AXIS2_MSG_CTX_GET_TRANSPORT_OUT_DESC(msg_ctx, env));
     if (!response)
         return NULL;
-    
+
     property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, AXIS2_FALSE);
-    if(property)
+    if (property)
     {
         AXIS2_MSG_CTX_SET_PROPERTY(response, env, AXIS2_TRANSPORT_IN, property,
-            AXIS2_FALSE);
+                AXIS2_FALSE);
         property = NULL;
     }
-    
+
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
     if (op)
     {
@@ -751,11 +752,11 @@ axis2_mep_client_receive(
     AXIS2_MSG_CTX_SET_DOING_REST(response, env, AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env));
 
     soap_ns_uri = AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env) ?
-        AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI:AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
-    
-    response_envelope = axis2_http_transport_utils_create_soap_msg(env, 
-                            msg_ctx, soap_ns_uri);
-    if (response_envelope) 
+            AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI : AXIOM_SOAP12_SOAP_ENVELOPE_NAMESPACE_URI;
+
+    response_envelope = axis2_http_transport_utils_create_soap_msg(env,
+            msg_ctx, soap_ns_uri);
+    if (response_envelope)
     {
         AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(response, env, response_envelope);
         if (engine)
@@ -763,7 +764,7 @@ axis2_mep_client_receive(
             AXIS2_ENGINE_FREE(engine, env);
             engine = NULL;
         }
-                    
+
         engine = axis2_engine_create(env, conf_ctx);
         if (engine)
         {
@@ -771,9 +772,9 @@ axis2_mep_client_receive(
             if (status != AXIS2_SUCCESS)
                 return NULL;
         }
-        
-    } 
-    else 
+
+    }
+    else
     {
         /* if it is a two way message, then the status should be in error,
            else it is a one way message */
@@ -783,16 +784,16 @@ axis2_mep_client_receive(
             return NULL;
         }
     }
-        
+
     /* property is NULL, and we set null for AXIS2_TRANSPORT_IN in msg_ctx to
     avoid double free of this property */
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
             AXIS2_FALSE);
-    
-    if(NULL != engine)
+
+    if (NULL != engine)
     {
         AXIS2_ENGINE_FREE(engine, env);
         engine = NULL;
-    } 
+    }
     return response;
 }

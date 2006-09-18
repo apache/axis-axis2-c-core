@@ -34,13 +34,13 @@ int main(int argc, char** argv)
     axis2_svc_client_t* svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
-   
+
     /* Set up the environment */
     env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
 
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/echo";
-    if (argc > 1 )
+    if (argc > 1)
         address = argv[1];
     if (AXIS2_STRCMP(address, "-h") == 0)
     {
@@ -48,8 +48,8 @@ int main(int argc, char** argv)
         printf("use -h for help\n");
         return 0;
     }
-    printf ("Using endpoint : %s\n", address);
-    
+    printf("Using endpoint : %s\n", address);
+
     /* Create EPR with given address */
     endpoint_ref = axis2_endpoint_ref_create(env, address);
 
@@ -57,9 +57,9 @@ int main(int argc, char** argv)
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
     AXIS2_OPTIONS_SET_ACTION(options, env,
-        "http://ws.apache.org/axis2/c/samples/echoString");
+            "http://ws.apache.org/axis2/c/samples/echoString");
 
-    /* Set up deploy folder. It is from the deploy folder, the configuration is picked up 
+    /* Set up deploy folder. It is from the deploy folder, the configuration is picked up
      * using the axis2.xml file.
      * In this sample client_home points to the Axis2/C default deploy folder. The client_home can 
      * be different from this folder on your system. For example, you may have a different folder 
@@ -76,23 +76,23 @@ int main(int argc, char** argv)
     {
         printf("Error creating service client\n");
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-                  " %d :: %s", env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+                " %d :: %s", env->error->error_number,
+                AXIS2_ERROR_GET_MESSAGE(env->error));
     }
 
     /* Set service client options */
-    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);    
-    
+    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
+
     /* Engage addressing module */
     AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);
-    
+
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_payload_for_echo_svc(env);
-    
+
     /* Send request */
     ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
-    
-    if(ret_node)
+
+    if (ret_node)
     {
         axis2_char_t *om_str = NULL;
         om_str = AXIOM_NODE_TO_STRING(ret_node, env);
@@ -102,9 +102,9 @@ int main(int argc, char** argv)
     }
     else
     {
-      AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
-                  " %d :: %s", env->error->error_number,
-                        AXIS2_ERROR_GET_MESSAGE(env->error));
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+                " %d :: %s", env->error->error_number,
+                AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("echo client invoke FAILED!\n");
     }
 
@@ -127,12 +127,12 @@ build_om_payload_for_echo_svc(const axis2_env_t *env)
     axiom_element_t * text_om_ele = NULL;
     axiom_namespace_t *ns1 = NULL;
     axis2_char_t *om_str = NULL;
-    
-    ns1 = axiom_namespace_create (env, "http://ws.apache.org/axis2/c/samples", "ns1");
+
+    ns1 = axiom_namespace_create(env, "http://ws.apache.org/axis2/c/samples", "ns1");
     echo_om_ele = axiom_element_create(env, NULL, "echoString", ns1, &echo_om_node);
     text_om_ele = axiom_element_create(env, echo_om_node, "text", NULL, &text_om_node);
     AXIOM_ELEMENT_SET_TEXT(text_om_ele, env, "echo5", text_om_node);
-    
+
     om_str = AXIOM_NODE_TO_STRING(echo_om_node, env);
     if (om_str)
         printf("\nSending OM : %s\n", om_str);

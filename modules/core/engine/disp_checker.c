@@ -25,83 +25,84 @@
 #include <axis2_svc_ctx.h>
 #include <axis2_endpoint_ref.h>
 
-typedef struct axis2_disp_checker_impl 
+typedef struct axis2_disp_checker_impl
 {
     /** phase */
-   axis2_disp_checker_t disp_checker;
+    axis2_disp_checker_t disp_checker;
     /** base class, inherits from handler */
     axis2_handler_t *base;
     /** phase name */
-    axis2_qname_t *qname;    
-} axis2_disp_checker_impl_t;
+    axis2_qname_t *qname;
+}
+axis2_disp_checker_impl_t;
 
 /** Interface to implementation conversion macro */
 #define AXIS2_INTF_TO_IMPL(disp_checker) ((axis2_disp_checker_impl_t *)disp_checker)
 
-axis2_status_t AXIS2_CALL 
-axis2_disp_checker_invoke (
-    struct axis2_handler *handler, 
+axis2_status_t AXIS2_CALL
+axis2_disp_checker_invoke(
+    struct axis2_handler *handler,
     const axis2_env_t *env,
     struct axis2_msg_ctx *msg_ctx);
 
-axis2_handler_t *AXIS2_CALL 
+axis2_handler_t *AXIS2_CALL
 axis2_disp_checker_get_base(
-    const axis2_disp_checker_t *disp_checker, 
+    const axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env);
 
 axis2_qname_t *AXIS2_CALL
 axis2_disp_checker_get_qname(
-    const axis2_disp_checker_t *disp_checker, 
+    const axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_disp_checker_set_qname(
-    axis2_disp_checker_t *disp_checker, 
-    const axis2_env_t *env, 
+    axis2_disp_checker_t *disp_checker,
+    const axis2_env_t *env,
     const axis2_qname_t *qname);
-    
+
 axis2_status_t AXIS2_CALL
 axis2_disp_checker_free(
-    axis2_disp_checker_t *disp_checker, 
+    axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env);
 
-axis2_disp_checker_t *AXIS2_CALL 
+axis2_disp_checker_t *AXIS2_CALL
 axis2_disp_checker_create(
-    const axis2_env_t *env) 
+    const axis2_env_t *env)
 {
     axis2_disp_checker_impl_t *disp_checker_impl = NULL;
     axis2_handler_desc_t *handler_desc = NULL;
-    
+
     AXIS2_ENV_CHECK(env, NULL);
-    
-    disp_checker_impl = AXIS2_MALLOC( env->allocator, sizeof(axis2_disp_checker_impl_t) );
+
+    disp_checker_impl = AXIS2_MALLOC(env->allocator, sizeof(axis2_disp_checker_impl_t));
     if (!disp_checker_impl)
-    { 
+    {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return NULL;        
+        return NULL;
     }
 
     disp_checker_impl->disp_checker.ops = NULL;
     disp_checker_impl->qname = NULL;
     disp_checker_impl->base = NULL;
-    
+
     /* create default qname */
-    disp_checker_impl->qname = axis2_qname_create(env, "dispatch_post_conditions_evaluator", 
-                                            "http://axis.ws.apache.org",
-                                            NULL);
+    disp_checker_impl->qname = axis2_qname_create(env, "dispatch_post_conditions_evaluator",
+            "http://axis.ws.apache.org",
+            NULL);
     if (!(disp_checker_impl->qname))
     {
         axis2_disp_checker_free(&(disp_checker_impl->disp_checker), env);
-        return NULL;        
-    }           
-    
+        return NULL;
+    }
+
     disp_checker_impl->base = axis2_handler_create(env);
     if (!disp_checker_impl->base)
     {
         axis2_disp_checker_free(&(disp_checker_impl->disp_checker), env);
         return NULL;
     }
-    
+
     /* handler desc of base handler */
     handler_desc = axis2_handler_desc_create_with_qname(env, disp_checker_impl->qname);
     if (!handler_desc)
@@ -109,20 +110,20 @@ axis2_disp_checker_create(
         axis2_disp_checker_free(&(disp_checker_impl->disp_checker), env);
         return NULL;
     }
-    
+
     AXIS2_HANDLER_INIT(disp_checker_impl->base, env, handler_desc);
-    
+
     /* set the base struct's invoke op */
-    if (disp_checker_impl->base->ops) 
+    if (disp_checker_impl->base->ops)
         disp_checker_impl->base->ops->invoke = axis2_disp_checker_invoke;
 
-    /* initialize ops */    
-    disp_checker_impl->disp_checker.ops  = AXIS2_MALLOC( env->allocator, sizeof(axis2_disp_checker_ops_t) );
+    /* initialize ops */
+    disp_checker_impl->disp_checker.ops  = AXIS2_MALLOC(env->allocator, sizeof(axis2_disp_checker_ops_t));
     if (!disp_checker_impl->disp_checker.ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         axis2_disp_checker_free(&(disp_checker_impl->disp_checker), env);
-        return NULL;        
+        return NULL;
     }
 
     disp_checker_impl->disp_checker.ops->get_base = axis2_disp_checker_get_base;
@@ -135,7 +136,7 @@ axis2_disp_checker_create(
 
 axis2_handler_t *AXIS2_CALL
 axis2_disp_checker_get_base(
-    const axis2_disp_checker_t *disp_checker, 
+    const axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -144,7 +145,7 @@ axis2_disp_checker_get_base(
 
 axis2_qname_t *AXIS2_CALL
 axis2_disp_checker_get_qname(
-    const axis2_disp_checker_t *disp_checker, 
+    const axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
@@ -153,41 +154,41 @@ axis2_disp_checker_get_qname(
 
 axis2_status_t AXIS2_CALL
 axis2_disp_checker_set_qname(
-    axis2_disp_checker_t *disp_checker, 
-    const axis2_env_t *env, 
+    axis2_disp_checker_t *disp_checker,
+    const axis2_env_t *env,
     const axis2_qname_t *qname)
 {
     axis2_disp_checker_impl_t *disp_checker_impl = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+
     disp_checker_impl = AXIS2_INTF_TO_IMPL(disp_checker);
-    
+
     if (disp_checker_impl->qname)
     {
         AXIS2_QNAME_FREE(disp_checker_impl->qname, env);
         disp_checker_impl->qname = NULL;
     }
-    
+
     if (qname)
     {
         disp_checker_impl->qname = AXIS2_QNAME_CLONE(qname, env);
         if (!(disp_checker_impl->qname))
             return AXIS2_FAILURE;
     }
-    
+
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 axis2_disp_checker_free(
-    axis2_disp_checker_t *disp_checker, 
+    axis2_disp_checker_t *disp_checker,
     const axis2_env_t *env)
 {
     axis2_disp_checker_impl_t *disp_checker_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     disp_checker_impl = AXIS2_INTF_TO_IMPL(disp_checker);
-    
+
     if (disp_checker_impl->qname)
     {
         AXIS2_QNAME_FREE(disp_checker_impl->qname, env);
@@ -199,17 +200,17 @@ axis2_disp_checker_free(
         AXIS2_FREE(env->allocator, disp_checker_impl->disp_checker.ops);
         disp_checker_impl->disp_checker.ops = NULL;
     }
-    
+
     AXIS2_FREE(env->allocator, disp_checker_impl);
     disp_checker_impl = NULL;
-    
-    return AXIS2_SUCCESS;    
+
+    return AXIS2_SUCCESS;
 }
-    
+
 axis2_status_t AXIS2_CALL
 axis2_disp_checker_invoke(
-    axis2_handler_t *handler, 
-    const axis2_env_t *env, 
+    axis2_handler_t *handler,
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_op_t *op = NULL;
@@ -220,14 +221,14 @@ axis2_disp_checker_invoke(
     const axis2_char_t *address = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     if (!(AXIS2_MSG_CTX_GET_SERVER_SIDE(msg_ctx, env))) /*if is client side, no point in proceeding*/
         return AXIS2_SUCCESS;
 
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
-    
+
     if (!op)
     {
         op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
@@ -238,9 +239,9 @@ axis2_disp_checker_invoke(
                 AXIS2_MSG_CTX_SET_OP(msg_ctx, env, op);
         }
     }
-    
+
     svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
-    
+
     if (!svc)
     {
         svc_ctx = AXIS2_MSG_CTX_GET_SVC_CTX(msg_ctx, env);
@@ -255,19 +256,19 @@ axis2_disp_checker_invoke(
     endpoint_ref = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
     if (endpoint_ref)
         address = AXIS2_ENDPOINT_REF_GET_ADDRESS(endpoint_ref, env);
-    
+
     svc = AXIS2_MSG_CTX_GET_SVC(msg_ctx, env);
     if (!svc)
     {
-        AXIS2_LOG_INFO(env->log, "Service Not found. Endpoint reference is : %s", (address)?address:"NULL");
+        AXIS2_LOG_INFO(env->log, "Service Not found. Endpoint reference is : %s", (address) ? address : "NULL");
         return AXIS2_FAILURE;
     }
-    
+
     op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
     if (!op)
     {
-        AXIS2_LOG_INFO(env->log, "Operation Not found. Endpoint reference is : %s", (address)?address:"NULL");
+        AXIS2_LOG_INFO(env->log, "Operation Not found. Endpoint reference is : %s", (address) ? address : "NULL");
         return AXIS2_FAILURE;
-    }    
+    }
     return AXIS2_SUCCESS;
 }

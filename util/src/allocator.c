@@ -29,14 +29,14 @@ axis2_allocator_free_impl(axis2_allocator_t *allocator, void *ptr);
 
 
 AXIS2_EXTERN axis2_allocator_t * AXIS2_CALL
-axis2_allocator_init (axis2_allocator_t *allocator)
+axis2_allocator_init(axis2_allocator_t *allocator)
 {
     if (allocator)
         return allocator;
 
     else
     {
-        allocator = (axis2_allocator_t *) malloc (sizeof (axis2_allocator_t));
+        allocator = (axis2_allocator_t *) malloc(sizeof(axis2_allocator_t));
         if (allocator)
         {
             allocator->malloc_fn = axis2_allocator_malloc_impl;
@@ -51,7 +51,7 @@ axis2_allocator_init (axis2_allocator_t *allocator)
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_allocator_free(axis2_allocator_t *allocator)
 {
-    if(allocator)
+    if (allocator)
     {
         allocator->free_fn(allocator, allocator);
     }
@@ -73,5 +73,5 @@ axis2_allocator_realloc_impl(axis2_allocator_t *allocator, void *ptr, size_t siz
 void AXIS2_CALL
 axis2_allocator_free_impl(axis2_allocator_t *allocator, void *ptr)
 {
-   free(ptr);
+    free(ptr);
 }

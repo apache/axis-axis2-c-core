@@ -16,7 +16,8 @@
 
 #include "om_test.h"
 
-void RunAllTests(void) {
+void RunAllTests(void)
+{
     CuString *output = CuStringNew();
     CuSuite* suite = CuSuiteNew();
 
@@ -27,7 +28,8 @@ void RunAllTests(void) {
     CuSuiteDetails(suite, output);
 }
 
-int main(void) {
+int main(void)
+{
     RunAllTests();
     return 0;
 }

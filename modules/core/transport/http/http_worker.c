@@ -31,7 +31,7 @@
 
 /**
  * @brief HTTP Worker struct impl
- * Axis2 HTTP Worker impl  
+ * Axis2 HTTP Worker impl
  */
 
 typedef struct axis2_http_worker_impl
@@ -79,7 +79,7 @@ axis2_http_worker_get_headers(
 axis2_status_t AXIS2_CALL
 axis2_http_worker_set_svr_port(
     axis2_http_worker_t *worker,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     int port);
 
 axis2_status_t AXIS2_CALL
@@ -91,15 +91,15 @@ axis2_http_worker_free(
 
 AXIS2_EXTERN axis2_http_worker_t *AXIS2_CALL
 axis2_http_worker_create(
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_conf_ctx_t *conf_ctx)
 {
     axis2_http_worker_impl_t *http_worker_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     http_worker_impl = (axis2_http_worker_impl_t *)
-            AXIS2_MALLOC (env->allocator, sizeof(axis2_http_worker_impl_t));
+            AXIS2_MALLOC(env->allocator, sizeof(axis2_http_worker_impl_t));
 
-    if(NULL == http_worker_impl)
+    if (NULL == http_worker_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -109,7 +109,7 @@ axis2_http_worker_create(
 
     http_worker_impl->http_worker.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_worker_ops_t));
-    if(NULL == http_worker_impl->http_worker.ops)
+    if (NULL == http_worker_impl->http_worker.ops)
     {
         axis2_http_worker_free((axis2_http_worker_t *)http_worker_impl, env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -127,14 +127,14 @@ axis2_http_worker_create(
 
 axis2_status_t AXIS2_CALL
 axis2_http_worker_free(
-    axis2_http_worker_t *http_worker, 
+    axis2_http_worker_t *http_worker,
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     AXIS2_INTF_TO_IMPL(http_worker)->conf_ctx = NULL;
 
-    if(NULL != http_worker->ops)
+    if (NULL != http_worker->ops)
         AXIS2_FREE(env->allocator, http_worker->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(http_worker));
@@ -145,9 +145,9 @@ axis2_http_worker_free(
 axis2_bool_t AXIS2_CALL
 axis2_http_worker_process_request(
     axis2_http_worker_t *http_worker,
-   const axis2_env_t *env,
-   axis2_simple_http_svr_conn_t *svr_conn,
-   axis2_http_simple_request_t *simple_request)
+    const axis2_env_t *env,
+    axis2_simple_http_svr_conn_t *svr_conn,
+    axis2_http_simple_request_t *simple_request)
 {
     axis2_http_worker_impl_t *http_worker_impl = NULL;
     axis2_conf_ctx_t *conf_ctx = NULL;
@@ -182,7 +182,7 @@ axis2_http_worker_process_request(
     http_worker_impl = AXIS2_INTF_TO_IMPL(http_worker);
     conf_ctx = http_worker_impl->conf_ctx;
 
-    if(NULL == conf_ctx)
+    if (NULL == conf_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_CONFIGURATION_CONTEXT,
                 AXIS2_FAILURE);
@@ -194,7 +194,7 @@ axis2_http_worker_process_request(
     http_version = AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION
             (AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE
                     (simple_request, env), env);
-    if(NULL == http_version)
+    if (NULL == http_version)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_HTTP_VERSION,
                 AXIS2_FAILURE);
@@ -206,16 +206,16 @@ axis2_http_worker_process_request(
     response = axis2_http_simple_response_create_default(env);
     encoding_header = AXIS2_HTTP_SIMPLE_REQUEST_GET_FIRST_HEADER(simple_request,
             env, AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
-    if(NULL != encoding_header)
+    if (NULL != encoding_header)
     {
         encoding_header_value = AXIS2_HTTP_HEADER_GET_VALUE(encoding_header,
                 env);
     }
-    if(content_length < 0 && (NULL != encoding_header_value && 0 != AXIS2_STRCMP
+    if (content_length < 0 && (NULL != encoding_header_value && 0 != AXIS2_STRCMP
             (encoding_header_value,
                     AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED)))
     {
-        if(0 == AXIS2_STRCASECMP(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
+        if (0 == AXIS2_STRCASECMP(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
                     AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
                         simple_request, env), env), AXIS2_HTTP_HEADER_POST))
         {
@@ -243,7 +243,7 @@ axis2_http_worker_process_request(
     AXIS2_MSG_CTX_SET_SERVER_SIDE(msg_ctx, env, AXIS2_TRUE);
 
 
-    if(0 == AXIS2_STRCASECMP(http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
+    if (0 == AXIS2_STRCASECMP(http_version, AXIS2_HTTP_HEADER_PROTOCOL_11))
     {
         axis2_http_worker_set_transport_out_config(http_worker, env, conf_ctx,
                 response);
@@ -273,7 +273,7 @@ axis2_http_worker_process_request(
 
     svc_grp_uuid = axis2_uuid_gen(env);
     AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env, svc_grp_uuid);
-    if(NULL != svc_grp_uuid)
+    if (NULL != svc_grp_uuid)
     {
         AXIS2_FREE(env->allocator, svc_grp_uuid);
         svc_grp_uuid = NULL;
@@ -288,7 +288,7 @@ axis2_http_worker_process_request(
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_HTTP_OUT_TRANSPORT_INFO,
             property, AXIS2_FALSE);
 
-    if(NULL != AXIS2_HTTP_SIMPLE_REQUEST_GET_FIRST_HEADER(simple_request, env,
+    if (NULL != AXIS2_HTTP_SIMPLE_REQUEST_GET_FIRST_HEADER(simple_request, env,
             AXIS2_HTTP_HEADER_SOAP_ACTION))
     {
         soap_action = AXIS2_HTTP_HEADER_GET_VALUE(
@@ -296,7 +296,7 @@ axis2_http_worker_process_request(
                         simple_request, env, AXIS2_HTTP_HEADER_SOAP_ACTION),
                     env);
     }
-    if(0 == AXIS2_STRCASECMP(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
+    if (0 == AXIS2_STRCASECMP(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
                 AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
                     simple_request, env), env), AXIS2_HTTP_HEADER_GET))
     {
@@ -310,7 +310,7 @@ axis2_http_worker_process_request(
                                 AXIS2_HTTP_REQUEST_LINE_GET_URI(
                                     AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
                                         simple_request, env), env)));
-        if(AXIS2_FALSE == processed)
+        if (AXIS2_FALSE == processed)
         {
             axis2_http_header_t *cont_len = NULL;
             axis2_char_t *body_string = NULL;
@@ -318,7 +318,7 @@ axis2_http_worker_process_request(
                     http_version, AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
             body_string = axis2_http_transport_utils_get_services_html(env,
                     conf_ctx);
-            if(NULL != body_string)
+            if (NULL != body_string)
             {
                 axis2_char_t str_len[10];
                 AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STRING(response, env,
@@ -335,7 +335,7 @@ axis2_http_worker_process_request(
             return AXIS2_TRUE;
         }
     }
-    else if(0 == AXIS2_STRCASECMP(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
+    else if (0 == AXIS2_STRCASECMP(AXIS2_HTTP_REQUEST_LINE_GET_METHOD(
                 AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
                     simple_request, env), env), AXIS2_HTTP_HEADER_POST))
     {
@@ -344,21 +344,21 @@ axis2_http_worker_process_request(
                         AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_TYPE(
                             simple_request, env) , content_length, soap_action,
                         url_external_form);
-        if(status == AXIS2_FAILURE)
+        if (status == AXIS2_FAILURE)
         {
             axis2_msg_ctx_t *fault_ctx = NULL;
             axis2_engine_t *engine = axis2_engine_create(env, conf_ctx);
             axis2_http_request_line_t *req_line = NULL;
             axis2_http_status_line_t *tmp_stat_line = NULL;
             axis2_char_t status_line_str[100];
-            if(NULL == engine)
+            if (NULL == engine)
             {
                 return AXIS2_FALSE;
             }
             fault_ctx = AXIS2_ENGINE_CREATE_FAULT_MSG_CTX(engine, env, msg_ctx);
             req_line = AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(simple_request
                     , env);
-            if(NULL != req_line)
+            if (NULL != req_line)
             {
                 sprintf(status_line_str, "%s 500 Internal Server Error\r\n",
                         AXIS2_HTTP_REQUEST_LINE_GET_HTTP_VERSION(req_line,
@@ -389,7 +389,7 @@ axis2_http_worker_process_request(
         }
     }
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-    if(NULL != op_ctx)
+    if (NULL != op_ctx)
     {
         axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(
                     msg_ctx, env), env);
@@ -401,7 +401,7 @@ axis2_http_worker_process_request(
                 ctx_written = AXIS2_PROPERTY_GET_VALUE(property, env);
         }
     }
-    if(NULL != ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)
+    if (NULL != ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)
     {
         AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(response, env, http_version,
                 AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
@@ -444,14 +444,14 @@ axis2_http_worker_set_response_headers(
     AXIS2_PARAM_CHECK(env->error, svr_conn, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, simple_request, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, simple_response, AXIS2_FAILURE);
-    if(AXIS2_FALSE == AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER
+    if (AXIS2_FALSE == AXIS2_HTTP_SIMPLE_RESPONSE_CONTAINS_HEADER
             (simple_response, env, AXIS2_HTTP_HEADER_CONNECTION))
     {
         conn_header = AXIS2_HTTP_SIMPLE_REQUEST_GET_FIRST_HEADER(simple_request,
                 env, AXIS2_HTTP_HEADER_CONNECTION);
-        if(NULL != conn_header)
+        if (NULL != conn_header)
         {
-            if(0 == AXIS2_STRCASECMP(AXIS2_HTTP_HEADER_GET_VALUE(conn_header,
+            if (0 == AXIS2_STRCASECMP(AXIS2_HTTP_HEADER_GET_VALUE(conn_header,
                     env), AXIS2_HTTP_HEADER_CONNECTION_KEEPALIVE))
             {
                 axis2_http_header_t *header = axis2_http_header_create(env,
@@ -462,7 +462,7 @@ axis2_http_worker_set_response_headers(
                 AXIS2_SIMPLE_HTTP_SVR_CONN_SET_KEEP_ALIVE(svr_conn, env,
                         AXIS2_TRUE);
             }
-            if(0 == AXIS2_STRCASECMP(AXIS2_HTTP_HEADER_GET_VALUE(conn_header,
+            if (0 == AXIS2_STRCASECMP(AXIS2_HTTP_HEADER_GET_VALUE(conn_header,
                     env), AXIS2_HTTP_HEADER_CONNECTION_CLOSE))
             {
                 axis2_http_header_t *header = axis2_http_header_create(env,
@@ -476,7 +476,7 @@ axis2_http_worker_set_response_headers(
         }
         else
         {
-            if(AXIS2_HTTP_SIMPLE_RESPONSE_GET_HTTP_VERSION(simple_response, env)
+            if (AXIS2_HTTP_SIMPLE_RESPONSE_GET_HTTP_VERSION(simple_response, env)
                     && AXIS2_STRCASECMP(
                         AXIS2_HTTP_SIMPLE_RESPONSE_GET_HTTP_VERSION(
                             simple_response, env), AXIS2_HTTP_HEADER_PROTOCOL_11))
@@ -490,11 +490,11 @@ axis2_http_worker_set_response_headers(
                         AXIS2_FALSE);
             }
         }
-        if(AXIS2_FALSE == AXIS2_HTTP_SIMPLE_REQUEST_CONTAINS_HEADER(
+        if (AXIS2_FALSE == AXIS2_HTTP_SIMPLE_REQUEST_CONTAINS_HEADER(
                     simple_request, env,
                     AXIS2_HTTP_HEADER_TRANSFER_ENCODING))
         {
-            if(0 != content_length)
+            if (0 != content_length)
             {
                 axis2_char_t content_len_str[10];
                 axis2_http_header_t *content_len_hdr = NULL;
@@ -549,7 +549,7 @@ axis2_http_worker_set_transport_out_config(
 axis2_hash_t *AXIS2_CALL
 axis2_http_worker_get_headers(
     axis2_http_worker_t *http_worker,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_http_simple_request_t *request)
 {
     axis2_array_list_t *header_list = NULL;
@@ -560,28 +560,28 @@ axis2_http_worker_get_headers(
     AXIS2_PARAM_CHECK(env->error, request, AXIS2_FAILURE);
 
     header_list = AXIS2_HTTP_SIMPLE_REQUEST_GET_HEADERS(request, env);
-    if(NULL == header_list)
+    if (NULL == header_list)
     {
         return NULL;
     }
     hdr_count = AXIS2_ARRAY_LIST_SIZE(header_list, env);
-    if(0 == hdr_count)
+    if (0 == hdr_count)
     {
         return NULL;
     }
 
-    for(i = 0; i < hdr_count; i++)
+    for (i = 0; i < hdr_count; i++)
     {
         axis2_http_header_t *tmp_hdr = NULL;
         tmp_hdr = AXIS2_ARRAY_LIST_GET(header_list, env, i);
-        if(NULL == tmp_hdr)
+        if (NULL == tmp_hdr)
         {
             continue;
         }
-        if(NULL == header_map)
+        if (NULL == header_map)
         {
             header_map = axis2_hash_make(env);
-            if(NULL == header_map)
+            if (NULL == header_map)
             {
                 return NULL;
             }
@@ -595,7 +595,7 @@ axis2_http_worker_get_headers(
 axis2_status_t AXIS2_CALL
 axis2_http_worker_set_svr_port(
     axis2_http_worker_t *worker,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     int port)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);

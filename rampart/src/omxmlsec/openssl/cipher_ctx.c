@@ -25,9 +25,10 @@
 #include <openssl_util.h>
 
 
-typedef struct openssl_cipher_ctx_impl{
+typedef struct openssl_cipher_ctx_impl
+{
     openssl_cipher_ctx_t ctx;
- 
+
     const EVP_CIPHER*   cipher;
     axis2_char_t  *key;
     axis2_char_t  *iv;
@@ -46,54 +47,54 @@ openssl_cipher_ctx_init_ops(
 
 /*public functions*/
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 openssl_cipher_ctx_free(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env
-    );
+        const axis2_env_t *env
+                       );
 
-const EVP_CIPHER* AXIS2_CALL 
+const EVP_CIPHER* AXIS2_CALL
 openssl_cipher_ctx_get_cipher(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env
-    );
+        const axis2_env_t *env
+                             );
 
-axis2_char_t *AXIS2_CALL 
+axis2_char_t *AXIS2_CALL
 openssl_cipher_ctx_get_key(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env
-    );
+        const axis2_env_t *env
+                          );
 
-axis2_char_t *AXIS2_CALL 
+axis2_char_t *AXIS2_CALL
 openssl_cipher_ctx_get_iv(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env
-    );
+        const axis2_env_t *env
+                         );
 
-axis2_char_t *AXIS2_CALL 
+axis2_char_t *AXIS2_CALL
 openssl_cipher_ctx_get_pad(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env
-    );
+        const axis2_env_t *env
+                          );
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 openssl_cipher_ctx_set_cipher(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env,
-    const EVP_CIPHER*
-    );
+        const axis2_env_t *env,
+        const EVP_CIPHER*
+                             );
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 openssl_cipher_ctx_set_key(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *key
-    );
+        const axis2_env_t *env,
+        axis2_char_t *key
+                          );
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 openssl_cipher_ctx_set_iv(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *iv
-    );
+        const axis2_env_t *env,
+        axis2_char_t *iv
+                         );
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 openssl_cipher_ctx_set_pad(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *pad
-    );
+        const axis2_env_t *env,
+        axis2_char_t *pad
+                          );
 
 
 
@@ -101,10 +102,10 @@ openssl_cipher_ctx_set_pad(openssl_cipher_ctx_t *ctx,
 AXIS2_EXTERN openssl_cipher_ctx_t *AXIS2_CALL
 openssl_cipher_ctx_create(const axis2_env_t *env)
 {
-    openssl_cipher_ctx_impl_t *ctx_impl= NULL;
+    openssl_cipher_ctx_impl_t *ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
-    ctx_impl = AXIS2_MALLOC(env->allocator,sizeof(openssl_cipher_ctx_impl_t));
+    ctx_impl = AXIS2_MALLOC(env->allocator, sizeof(openssl_cipher_ctx_impl_t));
     if (!ctx_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -118,7 +119,7 @@ openssl_cipher_ctx_create(const axis2_env_t *env)
 
 
 
-    ctx_impl->ctx.ops =  AXIS2_MALLOC(env->allocator,sizeof(openssl_cipher_ctx_ops_t));
+    ctx_impl->ctx.ops =  AXIS2_MALLOC(env->allocator, sizeof(openssl_cipher_ctx_ops_t));
     if (!ctx_impl->ctx.ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -150,41 +151,44 @@ openssl_cipher_ctx_init_ops(
 /* public functions*/
 axis2_status_t AXIS2_CALL
 openssl_cipher_ctx_free(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env
-    )
+        const axis2_env_t *env
+                       )
 {
-    openssl_cipher_ctx_impl_t * ctx_impl= NULL;
+    openssl_cipher_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     /*TODO Check how to free the EVP_CIPHER. Might be a problem if we try to free it here.*/
-    if (ctx_impl->key){
+    if (ctx_impl->key)
+    {
         AXIS2_FREE(env->allocator, ctx_impl->key);
         ctx_impl->key = NULL;
     }
 
-    if (ctx_impl->iv){
+    if (ctx_impl->iv)
+    {
         AXIS2_FREE(env->allocator, ctx_impl->iv);
         ctx_impl->iv = NULL;
     }
 
-    if (ctx_impl->pad){
+    if (ctx_impl->pad)
+    {
         AXIS2_FREE(env->allocator, ctx_impl->pad);
         ctx_impl->pad = NULL;
     }
 
     AXIS2_FREE(env->allocator,  ctx_impl);
     ctx_impl = NULL;
-     
+
     return AXIS2_SUCCESS;
 }
 
 const EVP_CIPHER* AXIS2_CALL
 openssl_cipher_ctx_get_cipher(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env
-    )
+        const axis2_env_t *env
+                             )
 {
-    openssl_cipher_ctx_impl_t * ctx_impl= NULL;
+    openssl_cipher_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
@@ -193,10 +197,10 @@ openssl_cipher_ctx_get_cipher(openssl_cipher_ctx_t *ctx,
 
 axis2_char_t *AXIS2_CALL
 openssl_cipher_ctx_get_key(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env
-    )
+        const axis2_env_t *env
+                          )
 {
-    openssl_cipher_ctx_impl_t * ctx_impl= NULL;
+    openssl_cipher_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
@@ -205,10 +209,10 @@ openssl_cipher_ctx_get_key(openssl_cipher_ctx_t *ctx,
 
 axis2_char_t *AXIS2_CALL
 openssl_cipher_ctx_get_iv(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env
-    )
+        const axis2_env_t *env
+                         )
 {
-    openssl_cipher_ctx_impl_t * ctx_impl= NULL;
+    openssl_cipher_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
@@ -217,26 +221,26 @@ openssl_cipher_ctx_get_iv(openssl_cipher_ctx_t *ctx,
 
 axis2_char_t *AXIS2_CALL
 openssl_cipher_ctx_get_pad(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env
-    )
+        const axis2_env_t *env
+                          )
 {
-    openssl_cipher_ctx_impl_t * ctx_impl= NULL;
+    openssl_cipher_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->pad;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 openssl_cipher_ctx_set_cipher(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env,
-    const EVP_CIPHER *cipher
-    )
+        const axis2_env_t *env,
+        const EVP_CIPHER *cipher
+                             )
 {
-    openssl_cipher_ctx_impl_t * ctx_impl= NULL;
+    openssl_cipher_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    
+
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     /*if (ctx_impl->cipher){
         AXIS2_FREE(env->allocator, ctx_impl->cipher);
@@ -248,17 +252,18 @@ openssl_cipher_ctx_set_cipher(openssl_cipher_ctx_t *ctx,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 openssl_cipher_ctx_set_key(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *key
-    )
+        const axis2_env_t *env,
+        axis2_char_t *key
+                          )
 {
-    openssl_cipher_ctx_impl_t * ctx_impl= NULL;
+    openssl_cipher_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->key){
+    if (ctx_impl->key)
+    {
         AXIS2_FREE(env->allocator, ctx_impl->key);
         ctx_impl->key = NULL;
     }
@@ -267,17 +272,18 @@ openssl_cipher_ctx_set_key(openssl_cipher_ctx_t *ctx,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 openssl_cipher_ctx_set_iv(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *iv
-    )
+        const axis2_env_t *env,
+        axis2_char_t *iv
+                         )
 {
-    openssl_cipher_ctx_impl_t * ctx_impl= NULL;
+    openssl_cipher_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->iv){
+    if (ctx_impl->iv)
+    {
         AXIS2_FREE(env->allocator, ctx_impl->iv);
         ctx_impl->iv = NULL;
     }
@@ -287,17 +293,18 @@ openssl_cipher_ctx_set_iv(openssl_cipher_ctx_t *ctx,
 }
 
 
-axis2_status_t AXIS2_CALL 
+axis2_status_t AXIS2_CALL
 openssl_cipher_ctx_set_pad(openssl_cipher_ctx_t *ctx,
-    const axis2_env_t *env,
-    axis2_char_t *pad
-    )
+        const axis2_env_t *env,
+        axis2_char_t *pad
+                          )
 {
-    openssl_cipher_ctx_impl_t * ctx_impl= NULL;
+    openssl_cipher_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
-    if (ctx_impl->pad){
+    if (ctx_impl->pad)
+    {
         AXIS2_FREE(env->allocator, ctx_impl->pad);
         ctx_impl->pad = NULL;
     }

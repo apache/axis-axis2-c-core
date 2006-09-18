@@ -25,7 +25,7 @@
 #include <axis2_utils.h>
 
 axis2_status_t AXIS2_CALL
-axis2_addr_disp_invoke (
+axis2_addr_disp_invoke(
     axis2_handler_t *handler,
     const axis2_env_t *env,
     struct axis2_msg_ctx *msg_ctx);
@@ -99,8 +99,8 @@ axis2_addr_disp_find_svc(
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                     "Checking for service using WSA enpoint address : %s", address);
 
-            if ( (AXIS2_STRCMP(AXIS2_WSA_ANONYMOUS_URL, address) == 0 ) ||
-                    (AXIS2_STRCMP(AXIS2_WSA_NAMESPACE_SUBMISSION, address) == 0 ))
+            if ((AXIS2_STRCMP(AXIS2_WSA_ANONYMOUS_URL, address) == 0) ||
+                    (AXIS2_STRCMP(AXIS2_WSA_NAMESPACE_SUBMISSION, address) == 0))
             {
                 return NULL;
             }
@@ -194,7 +194,7 @@ axis2_addr_disp_invoke(
     {
         const axis2_char_t *relates_to_value = NULL;
         relates_to_value = AXIS2_RELATES_TO_GET_VALUE(relates_to, env);
-        if (relates_to_value && AXIS2_STRCMP(relates_to_value, "") != 0 )
+        if (relates_to_value && AXIS2_STRCMP(relates_to_value, "") != 0)
         {
             axis2_conf_ctx_t *conf_ctx = NULL;
 
@@ -230,7 +230,7 @@ axis2_addr_disp_invoke(
                             if (svc_grp_ctx)
                             {
                                 AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env,
-                                        AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env) );
+                                        AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env));
                             }
                         }
                     }

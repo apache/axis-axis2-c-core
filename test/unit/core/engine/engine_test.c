@@ -21,7 +21,7 @@
 #include <axis2_env.h>
 #include "test_conf.h"
 
-CuSuite* axis2_engineGetSuite() 
+CuSuite* axis2_engineGetSuite()
 {
     CuSuite* suite = CuSuiteNew();
     SUITE_ADD_TEST(suite, Testaxis2_conf_set_default_dispatchers);

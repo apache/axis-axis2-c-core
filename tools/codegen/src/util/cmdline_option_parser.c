@@ -13,210 +13,211 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #include <w2c_cmdline_option_parser.h>
 #include <w2c_cmdline_option_consts.h>
 #include <w2c_cmdline_option.h>
 #include <w2c_cmdline_option_validator.h>
 #include <axis2_string.h>
 
-/** 
+/**
  * @brief
  */
 typedef struct w2c_cmdline_option_parser_impl
 {
     w2c_cmdline_option_parser_t cmdline_option_parser;
-    
+
     axis2_hash_t *hash;
-       
-} w2c_cmdline_option_parser_impl_t;
+
+}
+w2c_cmdline_option_parser_impl_t;
 
 #define W2C_INTF_TO_IMPL(cmdline_option_parser) \
     ((w2c_cmdline_option_parser_impl_t *) cmdline_option_parser)
 
 /************************* Function prototypes ********************************/
 
-axis2_status_t AXIS2_CALL 
-w2c_cmdline_option_parser_free (
-           w2c_cmdline_option_parser_t *cmdline_option_parser, 
-           const axis2_env_t *env);
+axis2_status_t AXIS2_CALL
+w2c_cmdline_option_parser_free(
+    w2c_cmdline_option_parser_t *cmdline_option_parser,
+    const axis2_env_t *env);
 
 
 axis2_hash_t* AXIS2_CALL
-w2c_cmdline_option_parser_get_options (
-          w2c_cmdline_option_parser_t *cmdline_option_parser,
-          const axis2_env_t *env);
+w2c_cmdline_option_parser_get_options(
+    w2c_cmdline_option_parser_t *cmdline_option_parser,
+    const axis2_env_t *env);
 
-axis2_array_list_t* AXIS2_CALL 
-w2c_cmdline_option_parser_get_invalid_options (
-          w2c_cmdline_option_parser_t *cmdline_option_parser,
-          const axis2_env_t *env);
+axis2_array_list_t* AXIS2_CALL
+w2c_cmdline_option_parser_get_invalid_options(
+    w2c_cmdline_option_parser_t *cmdline_option_parser,
+    const axis2_env_t *env);
 
 /** private method */
 void
-w2c_cmdline_option_parser_parse( w2c_cmdline_option_parser_impl_t *parser,
-                          const axis2_env_t *env,
-                          int argv, axis2_char_t **argc);
-   
+w2c_cmdline_option_parser_parse(w2c_cmdline_option_parser_impl_t *parser,
+        const axis2_env_t *env,
+        int argv, axis2_char_t **argc);
+
 
 /************************** End of function prototypes ************************/
 
-AXIS2_EXTERN w2c_cmdline_option_parser_t* AXIS2_CALL 
-w2c_cmdline_option_parser_create (const axis2_env_t *env,
-                                  int argc,
-                                  axis2_char_t **argv)
+AXIS2_EXTERN w2c_cmdline_option_parser_t* AXIS2_CALL
+w2c_cmdline_option_parser_create(const axis2_env_t *env,
+        int argc,
+        axis2_char_t **argv)
 {
     w2c_cmdline_option_parser_impl_t *cmdline_option_parser_impl = NULL;
-   
+
     AXIS2_ENV_CHECK(env, NULL);
 
     cmdline_option_parser_impl = (w2c_cmdline_option_parser_impl_t *) AXIS2_MALLOC(env->
-               allocator, sizeof(w2c_cmdline_option_parser_impl_t));
+            allocator, sizeof(w2c_cmdline_option_parser_impl_t));
 
-    if(NULL == cmdline_option_parser_impl)
+    if (NULL == cmdline_option_parser_impl)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     cmdline_option_parser_impl->hash = NULL;
-    
-    cmdline_option_parser_impl->cmdline_option_parser.ops = 
-    AXIS2_MALLOC (env->allocator, sizeof(w2c_cmdline_option_parser_ops_t));
-    if(NULL == cmdline_option_parser_impl->cmdline_option_parser.ops)
+
+    cmdline_option_parser_impl->cmdline_option_parser.ops =
+        AXIS2_MALLOC(env->allocator, sizeof(w2c_cmdline_option_parser_ops_t));
+    if (NULL == cmdline_option_parser_impl->cmdline_option_parser.ops)
     {
         w2c_cmdline_option_parser_free(
-                     &(cmdline_option_parser_impl->cmdline_option_parser), env);
+            &(cmdline_option_parser_impl->cmdline_option_parser), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
     w2c_cmdline_option_parser_parse
-        ( cmdline_option_parser_impl, env, argc, argv );
+    (cmdline_option_parser_impl, env, argc, argv);
 
-    cmdline_option_parser_impl->cmdline_option_parser.ops->free = 
-                                w2c_cmdline_option_parser_free;
+    cmdline_option_parser_impl->cmdline_option_parser.ops->free =
+        w2c_cmdline_option_parser_free;
     cmdline_option_parser_impl->cmdline_option_parser.ops->get_options =
-                                w2c_cmdline_option_parser_get_options;
+        w2c_cmdline_option_parser_get_options;
     cmdline_option_parser_impl->cmdline_option_parser.ops->get_invalid_options =
-                                w2c_cmdline_option_parser_get_invalid_options;
+        w2c_cmdline_option_parser_get_invalid_options;
 
     return &(cmdline_option_parser_impl->cmdline_option_parser);
 }
 
 /***************************Function implementation****************************/
 
-axis2_status_t AXIS2_CALL 
-w2c_cmdline_option_parser_free (w2c_cmdline_option_parser_t *cmdline_option_parser, 
-                            const axis2_env_t *env)
+axis2_status_t AXIS2_CALL
+w2c_cmdline_option_parser_free(w2c_cmdline_option_parser_t *cmdline_option_parser,
+        const axis2_env_t *env)
 {
     w2c_cmdline_option_parser_impl_t *cmdline_option_parser_impl = NULL;
     axis2_hash_index_t *hi;
     w2c_cmdline_option_t *option = NULL;
-  
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    
+
     cmdline_option_parser_impl = W2C_INTF_TO_IMPL(cmdline_option_parser);
-    
-    if(cmdline_option_parser->ops)
+
+    if (cmdline_option_parser->ops)
     {
         AXIS2_FREE(env->allocator, cmdline_option_parser->ops);
         cmdline_option_parser->ops = NULL;
     }
- 
+
     if (cmdline_option_parser_impl-> hash)
     {
         for (hi = axis2_hash_first(cmdline_option_parser_impl->hash, env); hi;
-                     hi = axis2_hash_next(env, hi))
+                hi = axis2_hash_next(env, hi))
         {
             axis2_hash_this(hi, NULL, NULL, (void*)&option);
-            W2C_CMDLINE_OPTION_FREE ( option, env );
+            W2C_CMDLINE_OPTION_FREE(option, env);
         }
-        axis2_hash_free ( cmdline_option_parser_impl-> hash, env );
+        axis2_hash_free(cmdline_option_parser_impl-> hash, env);
     }
 
-    if(cmdline_option_parser_impl)
+    if (cmdline_option_parser_impl)
     {
         AXIS2_FREE(env->allocator, cmdline_option_parser_impl);
         cmdline_option_parser_impl = NULL;
     }
-    
+
     return AXIS2_SUCCESS;
 }
 
 axis2_hash_t* AXIS2_CALL
-w2c_cmdline_option_parser_get_options (
-          w2c_cmdline_option_parser_t *cmdline_option_parser,
-          const axis2_env_t *env)
+w2c_cmdline_option_parser_get_options(
+    w2c_cmdline_option_parser_t *cmdline_option_parser,
+    const axis2_env_t *env)
 {
     w2c_cmdline_option_parser_impl_t *cmdline_option_parser_impl = NULL;
-  
+
     AXIS2_ENV_CHECK(env, NULL);
-    
+
     cmdline_option_parser_impl = W2C_INTF_TO_IMPL(cmdline_option_parser);
-    return cmdline_option_parser_impl -> hash;   
+    return cmdline_option_parser_impl -> hash;
 }
 
 axis2_array_list_t* AXIS2_CALL
-w2c_cmdline_option_parser_get_invalid_options (
-          w2c_cmdline_option_parser_t *cmdline_option_parser,
-          const axis2_env_t *env)
+w2c_cmdline_option_parser_get_invalid_options(
+    w2c_cmdline_option_parser_t *cmdline_option_parser,
+    const axis2_env_t *env)
 {
     w2c_cmdline_option_parser_impl_t *cmdline_option_parser_impl = NULL;
     axis2_array_list_t *invalid_arr = NULL;
     axis2_hash_index_t *hi = NULL;
     w2c_cmdline_option_t *option = NULL;
-  
+
     AXIS2_ENV_CHECK(env, NULL);
-    
+
     cmdline_option_parser_impl = W2C_INTF_TO_IMPL(cmdline_option_parser);
-    
-    invalid_arr = axis2_array_list_create ( env, 1 );
-    
+
+    invalid_arr = axis2_array_list_create(env, 1);
+
     for (hi = axis2_hash_first(cmdline_option_parser_impl->hash, env); hi;
-                        hi = axis2_hash_next( env, hi))
+            hi = axis2_hash_next(env, hi))
     {
-         axis2_hash_this(hi, NULL, NULL, (void*)&option);
-         if (w2c_cmdline_option_validator_isinvalid ( env,option ) )
-         {
-             AXIS2_ARRAY_LIST_ADD ( invalid_arr, env, option );
-         }
-     }
-     return invalid_arr;
+        axis2_hash_this(hi, NULL, NULL, (void*)&option);
+        if (w2c_cmdline_option_validator_isinvalid(env, option))
+        {
+            AXIS2_ARRAY_LIST_ADD(invalid_arr, env, option);
+        }
+    }
+    return invalid_arr;
 }
 
 /** private method */
 void
-w2c_cmdline_option_parser_parse( w2c_cmdline_option_parser_impl_t *parser,
-                          const axis2_env_t *env,
-                          int argc, axis2_char_t **argv)
+w2c_cmdline_option_parser_parse(w2c_cmdline_option_parser_impl_t *parser,
+        const axis2_env_t *env,
+        int argc, axis2_char_t **argv)
 {
     int i = 0;
     w2c_cmdline_option_t *option = NULL;
     axis2_hash_t *hash;
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
-    axis2_array_list_t *values_arr= NULL;
-   
-    hash = axis2_hash_make ( env );
+    axis2_array_list_t *values_arr = NULL;
+
+    hash = axis2_hash_make(env);
     parser->hash = hash;
-    while ( i < argc )
+    while (i < argc)
     {
         key = argv[i];
         values_arr = (axis2_array_list_t*)
-                    axis2_array_list_create(env, 1 );
+                axis2_array_list_create(env, 1);
         i ++;
-        while ( i < argc && !(w2c_string_indexof_cs ( argv[i], "-" ) == 0)
-            && !(w2c_string_indexof_cs ( argv[i], "--" ) == 0) )
+        while (i < argc && !(w2c_string_indexof_cs(argv[i], "-") == 0)
+                && !(w2c_string_indexof_cs(argv[i], "--") == 0))
         {
             value = (axis2_char_t*)AXIS2_STRDUP(argv[i], env);
-            AXIS2_ARRAY_LIST_ADD ( values_arr, env, value );
+            AXIS2_ARRAY_LIST_ADD(values_arr, env, value);
             i ++;
         }
         option = (w2c_cmdline_option_t*)
-           w2c_cmdline_option_create_with_values( env, key, values_arr );
-        key = W2C_CMDLINE_OPTION_GET_TYPE ( option, env );
-        axis2_hash_set ( hash, key, AXIS2_HASH_KEY_STRING, option );
-    } 
+                w2c_cmdline_option_create_with_values(env, key, values_arr);
+        key = W2C_CMDLINE_OPTION_GET_TYPE(option, env);
+        axis2_hash_set(hash, key, AXIS2_HASH_KEY_STRING, option);
+    }
     return;
 }
 

@@ -21,16 +21,17 @@
 #include <axis2_env.h>
 #include <om_node_test.h>
 
-CuSuite* axiomGetSuite() {
+CuSuite* axiomGetSuite()
+{
     CuSuite* suite = CuSuiteNew();
     SUITE_ADD_TEST(suite, Testaxiom_node_add_child);
     printf("came1\n");
     SUITE_ADD_TEST(suite, Testaxiom_node_set_parent);
     printf("came1\n");
-    SUITE_ADD_TEST(suite,Testaxiom_node_insert_sibling_after);
+    SUITE_ADD_TEST(suite, Testaxiom_node_insert_sibling_after);
     printf("came1\n");
-    SUITE_ADD_TEST(suite,Testaxiom_node_insert_sibling_before);
+    SUITE_ADD_TEST(suite, Testaxiom_node_insert_sibling_before);
     printf("came1\n");
-    SUITE_ADD_TEST(suite,Testaxiom_node_detach);
+    SUITE_ADD_TEST(suite, Testaxiom_node_detach);
     return suite;
 }

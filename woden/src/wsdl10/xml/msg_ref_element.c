@@ -18,34 +18,34 @@
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_msg_ref_element_resolve_methods(
-        woden_wsdl10_msg_ref_element_t *msg_ref_element,
-        const axis2_env_t *env,
-        axis2_hash_t *methods)
+    woden_wsdl10_msg_ref_element_t *msg_ref_element,
+    const axis2_env_t *env,
+    axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
-    
-    msg_ref_element->ops->free = axis2_hash_get(methods, "free", 
+
+    msg_ref_element->ops->free = axis2_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    msg_ref_element->ops->type = axis2_hash_get(methods, "type", 
+    msg_ref_element->ops->type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    msg_ref_element->ops->set_part = 
-            axis2_hash_get(methods, "set_part", 
-            AXIS2_HASH_KEY_STRING);
+    msg_ref_element->ops->set_part =
+        axis2_hash_get(methods, "set_part",
+                AXIS2_HASH_KEY_STRING);
 
-    msg_ref_element->ops->get_part = 
-            axis2_hash_get(methods, "get_part", 
-            AXIS2_HASH_KEY_STRING);
- 
-    msg_ref_element->ops->set_qname = 
-            axis2_hash_get(methods, "set_qname", 
-            AXIS2_HASH_KEY_STRING);
+    msg_ref_element->ops->get_part =
+        axis2_hash_get(methods, "get_part",
+                AXIS2_HASH_KEY_STRING);
 
-    msg_ref_element->ops->get_qname = 
-            axis2_hash_get(methods, "get_qname", 
-            AXIS2_HASH_KEY_STRING);
+    msg_ref_element->ops->set_qname =
+        axis2_hash_get(methods, "set_qname",
+                AXIS2_HASH_KEY_STRING);
 
-    return AXIS2_SUCCESS;    
+    msg_ref_element->ops->get_qname =
+        axis2_hash_get(methods, "get_qname",
+                AXIS2_HASH_KEY_STRING);
+
+    return AXIS2_SUCCESS;
 }
 

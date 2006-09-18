@@ -43,13 +43,13 @@ axis2_raw_xml_in_out_msg_recv_create(
 
     AXIS2_ENV_CHECK(env, NULL);
     msg_recv = axis2_msg_recv_create(env);
-    if(NULL == msg_recv)
+    if (NULL == msg_recv)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
     status = AXIS2_MSG_RECV_SET_SCOPE(msg_recv, env, AXIS2_APPLICATION_SCOPE);
-    if(AXIS2_TRUE != status)
+    if (AXIS2_TRUE != status)
     {
         AXIS2_MSG_RECV_FREE(msg_recv, env);
         return NULL;
@@ -124,7 +124,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
         op_desc = AXIS2_OP_CTX_GET_OP(op_ctx, env);
 
         style = AXIS2_OP_GET_STYLE(op_desc, env);
-        if(0 == AXIS2_STRCMP(AXIS2_STYLE_DOC, style))
+        if (0 == AXIS2_STRCMP(AXIS2_STYLE_DOC, style))
         {
             axiom_soap_envelope_t *envelope = NULL;
             axiom_soap_body_t *body = NULL;
@@ -135,7 +135,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             om_element = AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
             om_node = AXIOM_NODE_GET_FIRST_CHILD(om_node, env);
         }
-        else if(0 == AXIS2_STRCMP(AXIS2_STYLE_RPC, style))
+        else if (0 == AXIS2_STRCMP(AXIS2_STYLE_RPC, style))
         {
             axiom_soap_envelope_t *envelope = NULL;
             axiom_soap_body_t *body = NULL;
@@ -146,10 +146,10 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
             op_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
             op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
-            if(NULL != op_element)
+            if (NULL != op_element)
             {
                 local_name = AXIOM_ELEMENT_GET_LOCALNAME(op_element, env);
-                if(NULL != local_name)
+                if (NULL != local_name)
                 {
                     axis2_array_list_t *function_arr = NULL;
                     int i = 0;
@@ -157,7 +157,7 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
                     axis2_bool_t matches = AXIS2_FALSE;
 
                     function_arr = svc_obj->func_array;
-                    if(function_arr)
+                    if (function_arr)
                     {
                         size = AXIS2_ARRAY_LIST_SIZE(function_arr, env);
                     }
@@ -168,14 +168,14 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
 
                         function_name = (axis2_char_t *) AXIS2_ARRAY_LIST_GET(
                                     function_arr, env, i);
-                        if(0 == AXIS2_STRCMP(function_name, local_name))
+                        if (0 == AXIS2_STRCMP(function_name, local_name))
                         {
                             matches = AXIS2_TRUE;
 
                         }
                     }
 
-                    if(AXIS2_TRUE == matches)
+                    if (AXIS2_TRUE == matches)
                     {
                         om_node = AXIOM_NODE_GET_FIRST_CHILD(op_node, env);
                         om_element = AXIOM_NODE_GET_DATA_ELEMENT(om_node, env);
@@ -217,14 +217,14 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
 
         if (result_node)
         {
-            if(0 == AXIS2_STRCMP(style, AXIS2_STYLE_RPC))
+            if (0 == AXIS2_STRCMP(style, AXIS2_STYLE_RPC))
             {
                 axiom_namespace_t *ns = NULL;
                 axis2_char_t *res_name = NULL;
 
                 res_name = AXIS2_STRACAT(local_name, "Response", env);
                 ns = axiom_namespace_create(env, "http://soapenc/", "res");
-                if(!ns)
+                if (!ns)
                 {
                     status = AXIS2_FAILURE;
                 }
@@ -348,7 +348,7 @@ AXIS2_EXPORT int axis2_get_instance(
     const axis2_env_t *env)
 {
     *inst = axis2_raw_xml_in_out_msg_recv_create(env);
-    if(!(*inst))
+    if (!(*inst))
     {
         return AXIS2_FAILURE;
     }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #include <w2c_xslt_template_processor.h>
 #include <string.h>
 #include <libxml/xmlmemory.h>
@@ -35,30 +35,30 @@ w2c_xslt_template_processor_parse(
     axis2_char_t *xslt_filename,
     axis2_char_t *out_filename)
 {
- 	xsltStylesheetPtr ssheet = NULL;
-	xmlDocPtr doc = NULL;
-	xmlDocPtr res = NULL;
-	FILE *out = NULL;
+    xsltStylesheetPtr ssheet = NULL;
+    xmlDocPtr doc = NULL;
+    xmlDocPtr res = NULL;
+    FILE *out = NULL;
 
-	xmlSubstituteEntitiesDefault(1);
-	xmlLoadExtDtdDefaultValue = 1;
+    xmlSubstituteEntitiesDefault(1);
+    xmlLoadExtDtdDefaultValue = 1;
 
-	ssheet = xsltParseStylesheetFile((const xmlChar *)xslt_filename);
-	doc = (xmlDocPtr)xmlParseMemory(xml_stream,
-                              (unsigned int)strlen (xml_stream));
-	res = xsltApplyStylesheet(ssheet, doc, NULL);
-      
-	out = fopen ( out_filename, "w+");
-	xsltSaveResultToFile(out, res, ssheet);
+    ssheet = xsltParseStylesheetFile((const xmlChar *)xslt_filename);
+    doc = (xmlDocPtr)xmlParseMemory(xml_stream,
+            (unsigned int)strlen(xml_stream));
+    res = xsltApplyStylesheet(ssheet, doc, NULL);
 
-	xsltFreeStylesheet(ssheet);
-	xmlFreeDoc(res);
-	xmlFreeDoc(doc);
+    out = fopen(out_filename, "w+");
+    xsltSaveResultToFile(out, res, ssheet);
+
+    xsltFreeStylesheet(ssheet);
+    xmlFreeDoc(res);
+    xmlFreeDoc(doc);
 
     xsltCleanupGlobals();
     xmlCleanupParser();
     /* adding new line at the end */
-    fprintf( out, "\n");
-    fclose( out);
+    fprintf(out, "\n");
+    fclose(out);
 }
 

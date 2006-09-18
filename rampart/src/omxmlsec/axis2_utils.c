@@ -19,24 +19,24 @@
 #include <oxs_axis2_utils.h>
 #if 0
 AXIS2_EXTERN oxs_buffer_t * AXIS2_CALL  oxs_base64_decode(axis2_env_t *env,
-    oxs_buffer_t *coded_buf    )
+        oxs_buffer_t *coded_buf)
 {
-    axis2_char_t *plain_str=NULL;/* Here plain can be binary sometimes */
+    axis2_char_t *plain_str = NULL;/* Here plain can be binary sometimes */
     oxs_buffer_t *out_buf = NULL;
     int  ret, length;
 
     length =  axis2_base64_decode_len((char*)(OXS_BUFFER_GET_DATA(coded_buf, env)));
     plain_str = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len((char*)(OXS_BUFFER_GET_DATA(coded_buf, env))));
-    ret =  axis2_base64_decode(plain_str, (char*)(OXS_BUFFER_GET_DATA(coded_buf, env))); 
-    if(ret < 0) return NULL;
+    ret =  axis2_base64_decode(plain_str, (char*)(OXS_BUFFER_GET_DATA(coded_buf, env)));
+    if (ret < 0) return NULL;
     out_buf = oxs_string_to_buffer(env, plain_str);
     return out_buf;
 }
 
 AXIS2_EXTERN oxs_buffer_t * AXIS2_CALL  oxs_base64_encode(axis2_env_t *env,
-    oxs_buffer_t *plain_buf    )
+        oxs_buffer_t *plain_buf)
 {
-    axis2_char_t *encoded_str=NULL;
+    axis2_char_t *encoded_str = NULL;
     oxs_buffer_t *out_buf = NULL;
 
     int ret;
@@ -45,12 +45,12 @@ AXIS2_EXTERN oxs_buffer_t * AXIS2_CALL  oxs_base64_encode(axis2_env_t *env,
 
     printf("\noxs_base64_encode\nIn Data Size= %d", plain_buf->size);
     ret =  axis2_base64_encode(encoded_str, (char*)(plain_buf->data), plain_buf->size);
-    if(ret < 0) return NULL;
-    
+    if (ret < 0) return NULL;
+
     printf("\nEncoded_str= %s", encoded_str);
     /*Set to the output buffer */
-    
-    out_buf = oxs_string_to_buffer(env, encoded_str);    
+
+    out_buf = oxs_string_to_buffer(env, encoded_str);
     return out_buf;
 }
 #endif

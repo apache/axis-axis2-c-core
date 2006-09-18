@@ -33,14 +33,14 @@ void Testaxis2_class_loader_create_dll(CuTest *tc)
     printf("******************************************\n");
     printf("testing axis2_class_loader_create_dll\n");
     printf("******************************************\n");
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    const axis2_env_t *env = axis2_env_create (allocator);
-    
-    
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    const axis2_env_t *env = axis2_env_create(allocator);
+
+
     dll_desc = axis2_dll_desc_create(env);
-    
+
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    dll_name = AXIS2_STRACAT (axis2c_home, "/services/echo/libecho.so", env);
+    dll_name = AXIS2_STRACAT(axis2c_home, "/services/echo/libecho.so", env);
 
     AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_name);
     AXIS2_DLL_DESC_SET_TYPE(dll_desc, env, AXIS2_SVC_DLL);

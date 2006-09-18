@@ -18,34 +18,34 @@
 
 axis2_status_t AXIS2_CALL
 woden_ext_element_resolve_methods(
-        woden_ext_element_t *ext_element,
-        const axis2_env_t *env,
-        axis2_hash_t *methods)
+    woden_ext_element_t *ext_element,
+    const axis2_env_t *env,
+    axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
-    
-    ext_element->ops->free = axis2_hash_get(methods, "free", 
+
+    ext_element->ops->free = axis2_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    ext_element->ops->type = axis2_hash_get(methods, "type", 
+    ext_element->ops->type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    ext_element->ops->set_ext_type = 
-            axis2_hash_get(methods, "set_ext_type", 
-            AXIS2_HASH_KEY_STRING);
+    ext_element->ops->set_ext_type =
+        axis2_hash_get(methods, "set_ext_type",
+                AXIS2_HASH_KEY_STRING);
 
-    ext_element->ops->get_ext_type = 
-            axis2_hash_get(methods, "get_ext_type", 
-            AXIS2_HASH_KEY_STRING);
+    ext_element->ops->get_ext_type =
+        axis2_hash_get(methods, "get_ext_type",
+                AXIS2_HASH_KEY_STRING);
 
-    ext_element->ops->set_required = 
-            axis2_hash_get(methods, "set_required", 
-            AXIS2_HASH_KEY_STRING);
+    ext_element->ops->set_required =
+        axis2_hash_get(methods, "set_required",
+                AXIS2_HASH_KEY_STRING);
 
-    ext_element->ops->is_required = 
-            axis2_hash_get(methods, "is_required", 
-            AXIS2_HASH_KEY_STRING);
+    ext_element->ops->is_required =
+        axis2_hash_get(methods, "is_required",
+                AXIS2_HASH_KEY_STRING);
 
-    return AXIS2_SUCCESS;    
+    return AXIS2_SUCCESS;
 }
 

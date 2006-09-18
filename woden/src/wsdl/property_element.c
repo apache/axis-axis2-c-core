@@ -18,16 +18,16 @@
 
 axis2_status_t AXIS2_CALL
 woden_property_element_resolve_methods(
-        woden_property_element_t *property_element,
-        const axis2_env_t *env,
-        axis2_hash_t *methods)
+    woden_property_element_t *property_element,
+    const axis2_env_t *env,
+    axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
-    
-    property_element->ops->free = axis2_hash_get(methods, "free", 
+
+    property_element->ops->free = axis2_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    property_element->ops->type = axis2_hash_get(methods, "type", 
+    property_element->ops->type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
     property_element->ops->set_ref = axis2_hash_get(methods,
             "set_ref", AXIS2_HASH_KEY_STRING);
@@ -48,6 +48,6 @@ woden_property_element_resolve_methods(
     property_element->ops->has_value_token = axis2_hash_get(methods,
             "has_value_token", AXIS2_HASH_KEY_STRING);
 
-    return AXIS2_SUCCESS;    
+    return AXIS2_SUCCESS;
 }
 

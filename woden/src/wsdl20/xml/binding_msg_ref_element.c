@@ -18,34 +18,34 @@
 
 axis2_status_t AXIS2_CALL
 woden_binding_msg_ref_element_resolve_methods(
-        woden_binding_msg_ref_element_t *binding_msg_ref_element,
-        const axis2_env_t *env,
-        axis2_hash_t *methods)
+    woden_binding_msg_ref_element_t *binding_msg_ref_element,
+    const axis2_env_t *env,
+    axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
-    
-    binding_msg_ref_element->ops->free = axis2_hash_get(methods, "free", 
+
+    binding_msg_ref_element->ops->free = axis2_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
-    binding_msg_ref_element->ops->type = axis2_hash_get(methods, "type", 
+    binding_msg_ref_element->ops->type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    binding_msg_ref_element->ops->set_msg_label = 
-            axis2_hash_get(methods, "set_msg_label", 
-            AXIS2_HASH_KEY_STRING);
+    binding_msg_ref_element->ops->set_msg_label =
+        axis2_hash_get(methods, "set_msg_label",
+                AXIS2_HASH_KEY_STRING);
 
-    binding_msg_ref_element->ops->get_msg_label = 
-            axis2_hash_get(methods, "get_msg_label", 
-            AXIS2_HASH_KEY_STRING);
- 
-    binding_msg_ref_element->ops->set_direction = 
-            axis2_hash_get(methods, "set_direction", 
-            AXIS2_HASH_KEY_STRING);
+    binding_msg_ref_element->ops->get_msg_label =
+        axis2_hash_get(methods, "get_msg_label",
+                AXIS2_HASH_KEY_STRING);
 
-    binding_msg_ref_element->ops->get_direction = 
-            axis2_hash_get(methods, "get_direction", 
-            AXIS2_HASH_KEY_STRING);
+    binding_msg_ref_element->ops->set_direction =
+        axis2_hash_get(methods, "set_direction",
+                AXIS2_HASH_KEY_STRING);
 
-    return AXIS2_SUCCESS;    
+    binding_msg_ref_element->ops->get_direction =
+        axis2_hash_get(methods, "get_direction",
+                AXIS2_HASH_KEY_STRING);
+
+    return AXIS2_SUCCESS;
 }
 

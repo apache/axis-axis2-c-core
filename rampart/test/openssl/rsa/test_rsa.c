@@ -28,10 +28,10 @@
 
 axis2_env_t *test_init()
 {
-   axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-   axis2_error_t *error = (axis2_error_t*)axis2_error_create (allocator);
-   axis2_env_t *env = axis2_env_create_with_error(allocator, error);
-   return env;
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    axis2_error_t *error = (axis2_error_t*)axis2_error_create(allocator);
+    axis2_env_t *env = axis2_env_create_with_error(allocator, error);
+    return env;
 }
 
 int encdec()
@@ -42,42 +42,44 @@ int encdec()
     oxs_buffer_ptr randkey = NULL;
     int ret;
 
-    
+
     env = test_init();
     plaintxt = (unsigned char *)"We will we will rock ya...";
-    
+
     /******************/
-   /* ret = generate_random_key(env, randkey, 24 );
-    if(ret < 0 ){
-        printf("Error generating random key  \n");
-        return ret;
-    }else{
-        printf("Generated random key is %s", randkey->data);
-    }*/
+    /* ret = generate_random_key(env, randkey, 24 );
+     if(ret < 0 ){
+         printf("Error generating random key  \n");
+         return ret;
+     }else{
+         printf("Generated random key is %s", randkey->data);
+     }*/
     /******************/
 
 
     pubk = evp_pkey_load(env, "rsapub.pem", "");
     ret = openssl_rsa_pub_encrypt(env, pubk, plaintxt, &encrypted);
-    if(ret < 0 ){
+    if (ret < 0)
+    {
         printf("Encryption error \n");
         return ret;
     }
-   
-    printf("Encrypted text = [%d]\n", ret); 
-    
+
+    printf("Encrypted text = [%d]\n", ret);
+
     prvk = evp_pkey_load(env, "rsakey.pem", "");
     ret = openssl_rsa_prv_decrypt(env, prvk, encrypted, &decrypted);
-    if(ret < 0 ){
+    if (ret < 0)
+    {
         printf("Decryption error \n");
         return ret;
     }
-    printf("Decrypted text = [%d]\n%s\n",ret, decrypted); 
+    printf("Decrypted text = [%d]\n%s\n", ret, decrypted);
     return 0;
 }
 
 int main()
 {
     return encdec();
-    
+
 }

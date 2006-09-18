@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 #include <axis2_generic_obj.h>
 
 typedef struct axis2_generic_obj_impl
@@ -22,93 +22,94 @@ typedef struct axis2_generic_obj_impl
     AXIS2_FREE_VOID_ARG free_func;
     int type;
     void *value;
-    
-}axis2_generic_obj_impl_t;
+
+}
+axis2_generic_obj_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(generic_obj) \
     ((axis2_generic_obj_impl_t *) generic_obj)
 
 axis2_status_t AXIS2_CALL
-axis2_generic_obj_free (axis2_generic_obj_t *generic_obj, 
-                    const axis2_env_t *env); 
+axis2_generic_obj_free(axis2_generic_obj_t *generic_obj,
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 axis2_generic_obj_set_free_func(axis2_generic_obj_t *generic_obj,
-                            const axis2_env_t *env,
-                            AXIS2_FREE_VOID_ARG free_func);
+        const axis2_env_t *env,
+        AXIS2_FREE_VOID_ARG free_func);
 
 axis2_status_t AXIS2_CALL
 axis2_generic_obj_set_value(axis2_generic_obj_t *generic_obj,
-                            const axis2_env_t *env,
-                            void *value);
+        const axis2_env_t *env,
+        void *value);
 
 void *AXIS2_CALL
 axis2_generic_obj_get_value(axis2_generic_obj_t *generic_obj,
-                            const axis2_env_t *env);
+        const axis2_env_t *env);
 
 
 axis2_status_t AXIS2_CALL
 axis2_generic_obj_set_type(
-        axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env,
-        int type);
+    axis2_generic_obj_t *generic_obj,
+    const axis2_env_t *env,
+    int type);
 
 int AXIS2_CALL
 axis2_generic_obj_get_type(
-        axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env);
+    axis2_generic_obj_t *generic_obj,
+    const axis2_env_t *env);
 
 /************************** End of function prototypes ************************/
 
-axis2_generic_obj_t *AXIS2_CALL 
+axis2_generic_obj_t *AXIS2_CALL
 axis2_generic_obj_create(const axis2_env_t *env)
 {
     axis2_generic_obj_impl_t *generic_obj_impl = NULL;
-    
-   AXIS2_ENV_CHECK(env, NULL);
-   
-   generic_obj_impl = (axis2_generic_obj_impl_t *) AXIS2_MALLOC(env->allocator, 
-        sizeof(axis2_generic_obj_impl_t));
-   
-   if(NULL == generic_obj_impl)
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    generic_obj_impl = (axis2_generic_obj_impl_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_generic_obj_impl_t));
+
+    if (NULL == generic_obj_impl)
     {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    generic_obj_impl->value= NULL;
+    generic_obj_impl->value = NULL;
     generic_obj_impl->free_func = 0;
-    
-    generic_obj_impl->generic_obj.ops = 
-      AXIS2_MALLOC (env->allocator, sizeof(axis2_generic_obj_ops_t));
-   if(NULL == generic_obj_impl->generic_obj.ops)
+
+    generic_obj_impl->generic_obj.ops =
+        AXIS2_MALLOC(env->allocator, sizeof(axis2_generic_obj_ops_t));
+    if (NULL == generic_obj_impl->generic_obj.ops)
     {
         axis2_generic_obj_free(&(generic_obj_impl->generic_obj), env);
-      AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    
+
     generic_obj_impl->generic_obj.ops->free =  axis2_generic_obj_free;
     generic_obj_impl->generic_obj.ops->set_free_func = axis2_generic_obj_set_free_func;
     generic_obj_impl->generic_obj.ops->set_value = axis2_generic_obj_set_value;
-   generic_obj_impl->generic_obj.ops->get_value = axis2_generic_obj_get_value;
+    generic_obj_impl->generic_obj.ops->get_value = axis2_generic_obj_get_value;
     generic_obj_impl->generic_obj.ops->set_type = axis2_generic_obj_set_type;
-   generic_obj_impl->generic_obj.ops->get_type = axis2_generic_obj_get_type;
-   return &(generic_obj_impl->generic_obj);
+    generic_obj_impl->generic_obj.ops->get_type = axis2_generic_obj_get_type;
+    return &(generic_obj_impl->generic_obj);
 }
 
 /***************************Function implementation****************************/
 
-axis2_status_t AXIS2_CALL 
-axis2_generic_obj_free (axis2_generic_obj_t *generic_obj, 
-                    const axis2_env_t *env)
+axis2_status_t AXIS2_CALL
+axis2_generic_obj_free(axis2_generic_obj_t *generic_obj,
+        const axis2_env_t *env)
 {
     axis2_generic_obj_impl_t *generic_obj_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     generic_obj_impl = AXIS2_INTF_TO_IMPL(generic_obj);
-    
-    if(generic_obj_impl->value)
+
+    if (generic_obj_impl->value)
     {
-        if(generic_obj_impl->free_func)
+        if (generic_obj_impl->free_func)
         {
             generic_obj_impl->free_func(generic_obj_impl->value, env);
         }
@@ -118,14 +119,14 @@ axis2_generic_obj_free (axis2_generic_obj_t *generic_obj,
         }
         generic_obj_impl->value = NULL;
     }
-    
-    if(generic_obj_impl->generic_obj.ops)
+
+    if (generic_obj_impl->generic_obj.ops)
     {
         AXIS2_FREE(env->allocator, generic_obj_impl->generic_obj.ops);
         generic_obj_impl->generic_obj.ops = NULL;
     }
-    
-    if(generic_obj_impl)
+
+    if (generic_obj_impl)
     {
         AXIS2_FREE(env->allocator, generic_obj_impl);
         generic_obj_impl = NULL;
@@ -135,35 +136,35 @@ axis2_generic_obj_free (axis2_generic_obj_t *generic_obj,
 
 axis2_status_t AXIS2_CALL
 axis2_generic_obj_set_free_func(axis2_generic_obj_t *generic_obj,
-                            const axis2_env_t *env,
-                            AXIS2_FREE_VOID_ARG free_func)
+        const axis2_env_t *env,
+        AXIS2_FREE_VOID_ARG free_func)
 {
     axis2_generic_obj_impl_t *generic_obj_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     generic_obj_impl = AXIS2_INTF_TO_IMPL(generic_obj);
-   
+
     generic_obj_impl->free_func = free_func;
     return AXIS2_SUCCESS;
 }
 
 axis2_status_t AXIS2_CALL
 axis2_generic_obj_set_value(axis2_generic_obj_t *generic_obj,
-                            const axis2_env_t *env,
-                            void *value)
+        const axis2_env_t *env,
+        void *value)
 {
     axis2_generic_obj_impl_t *generic_obj_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     generic_obj_impl = AXIS2_INTF_TO_IMPL(generic_obj);
-   
+
     generic_obj_impl->value = value;
     return AXIS2_SUCCESS;
 }
 
 void *AXIS2_CALL
 axis2_generic_obj_get_value(axis2_generic_obj_t *generic_obj,
-                            const axis2_env_t *env)
+        const axis2_env_t *env)
 {
     axis2_generic_obj_impl_t *generic_obj_impl = NULL;
 
@@ -175,23 +176,23 @@ axis2_generic_obj_get_value(axis2_generic_obj_t *generic_obj,
 
 axis2_status_t AXIS2_CALL
 axis2_generic_obj_set_type(
-        axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env,
-        int type)
+    axis2_generic_obj_t *generic_obj,
+    const axis2_env_t *env,
+    int type)
 {
     axis2_generic_obj_impl_t *generic_obj_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     generic_obj_impl = AXIS2_INTF_TO_IMPL(generic_obj);
-   
+
     generic_obj_impl->type = type;
     return AXIS2_SUCCESS;
 }
 
 int AXIS2_CALL
 axis2_generic_obj_get_type(
-        axis2_generic_obj_t *generic_obj,
-        const axis2_env_t *env)
+    axis2_generic_obj_t *generic_obj,
+    const axis2_env_t *env)
 {
     axis2_generic_obj_impl_t *generic_obj_impl = NULL;
 

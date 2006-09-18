@@ -21,8 +21,8 @@
 #include <platforms/axis2_platform_auto_sense.h>
 
 AXIS2_EXTERN axis2_char_t** AXIS2_CALL
-axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env, 
-                                                const axis2_char_t *request)
+axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env,
+        const axis2_char_t *request)
 
 {
     axis2_char_t **ret = NULL;
@@ -30,16 +30,16 @@ axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env,
     axis2_char_t *tmp = NULL;
     int i = 0;
     AXIS2_ENV_CHECK(env, NULL);
-    ret  = AXIS2_MALLOC(env->allocator, 
-                                        2*(sizeof(axis2_char_t *)));
-    memset(ret, 0, 2*sizeof(axis2_char_t*)); 
+    ret  = AXIS2_MALLOC(env->allocator,
+            2 * (sizeof(axis2_char_t *)));
+    memset(ret, 0, 2*sizeof(axis2_char_t*));
     tmp = (axis2_char_t *)request;
 
-    
-    while(1)
+
+    while (1)
     {
         tmp = strstr(tmp, AXIS2_REQUEST_URL_PREFIX);
-        if(NULL == tmp)
+        if (NULL == tmp)
             break;
         else
         {
@@ -47,32 +47,32 @@ axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env,
             tmp += AXIS2_STRLEN(AXIS2_REQUEST_URL_PREFIX);
         }
     }
-    if(NULL != service_str)
+    if (NULL != service_str)
     {
         service_str += AXIS2_STRLEN(AXIS2_REQUEST_URL_PREFIX);
-        if('\0' != *service_str)
+        if ('\0' != *service_str)
         {
             service_str++; /*to remove the leading '/' */
             tmp = strchr(service_str, '/');
-            if(NULL != tmp)
+            if (NULL != tmp)
             {
                 i = tmp - service_str;
-                ret[0] = AXIS2_MALLOC(env->allocator, i*sizeof(char)+1);
-                strncpy(ret[0], service_str,i);
+                ret[0] = AXIS2_MALLOC(env->allocator, i * sizeof(char) + 1);
+                strncpy(ret[0], service_str, i);
                 ret[0][i] = '\0';
 
                 /* Now search for the op */
                 service_str = tmp;
-                if('\0' != *service_str)
+                if ('\0' != *service_str)
                 {
                     service_str++;
                     tmp = strchr(service_str, '?');
-                    if(NULL != tmp)
+                    if (NULL != tmp)
                     {
                         i = tmp - service_str;
-                        ret[1] = AXIS2_MALLOC(env->allocator, 
-                                                i*sizeof(char)+1);
-                        strncpy(ret[1], service_str,i);
+                        ret[1] = AXIS2_MALLOC(env->allocator,
+                                i * sizeof(char) + 1);
+                        strncpy(ret[1], service_str, i);
                         ret[1][i] = '\0';
                     }
                     else

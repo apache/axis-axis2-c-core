@@ -19,36 +19,36 @@
 #include <axiom_namespace_internal.h>
 /**************************** Function Prototypes ******************************/
 
-axis2_status_t AXIS2_CALL 
-axiom_namespace_free (axiom_namespace_t *om_namespace,
-                              const axis2_env_t *env);
+axis2_status_t AXIS2_CALL
+axiom_namespace_free(axiom_namespace_t *om_namespace,
+        const axis2_env_t *env);
 
-axis2_bool_t AXIS2_CALL 
-axiom_namespace_equals (axiom_namespace_t *om_namespace,
-                                const axis2_env_t *env,
-                                axiom_namespace_t *om_namespace1);
+axis2_bool_t AXIS2_CALL
+axiom_namespace_equals(axiom_namespace_t *om_namespace,
+        const axis2_env_t *env,
+        axiom_namespace_t *om_namespace1);
 
-axis2_status_t AXIS2_CALL 
-axiom_namespace_serialize (axiom_namespace_t *om_namespace,
-                              const axis2_env_t *env,
-                              axiom_output_t *om_output);
-                              
+axis2_status_t AXIS2_CALL
+axiom_namespace_serialize(axiom_namespace_t *om_namespace,
+        const axis2_env_t *env,
+        axiom_output_t *om_output);
+
 axis2_char_t* AXIS2_CALL
 axiom_namespace_get_uri(axiom_namespace_t *om_namespace,
-                            const axis2_env_t *env);
+        const axis2_env_t *env);
 
-axis2_char_t* AXIS2_CALL 
+axis2_char_t* AXIS2_CALL
 axiom_namespace_get_prefix(axiom_namespace_t *om_namespace,
-                              const axis2_env_t *env);
+        const axis2_env_t *env);
 
 axiom_namespace_t* AXIS2_CALL
 axiom_namespace_clone(axiom_namespace_t *om_namespace,
-                         const axis2_env_t *env);
+        const axis2_env_t *env);
 
 axis2_char_t* AXIS2_CALL
 axiom_namespace_to_string(axiom_namespace_t *om_namespace,
-                             const axis2_env_t *env);
-                             
+        const axis2_env_t *env);
+
 /****************************** axiom_namesapce_impl_struct **************************/
 
 typedef struct axiom_namespace_impl
@@ -59,10 +59,11 @@ typedef struct axiom_namespace_impl
     axis2_char_t *uri;
     /** namespace prefix  */
     axis2_char_t *prefix;
-    
+
     axis2_char_t *key;
 
-}axiom_namespace_impl_t;
+}
+axiom_namespace_impl_t;
 
 
 /**************************************** Macro ****************************************/
@@ -72,120 +73,120 @@ typedef struct axiom_namespace_impl
 
 /************************************************************************************/
 AXIS2_EXTERN axiom_namespace_t * AXIS2_CALL
-axiom_namespace_create (const axis2_env_t *env,
-                           const axis2_char_t * uri,
-                           const axis2_char_t * prefix)
+axiom_namespace_create(const axis2_env_t *env,
+        const axis2_char_t * uri,
+        const axis2_char_t * prefix)
 {
     axiom_namespace_impl_t *ns = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     /* There should be a uri */
-    if(!uri)
+    if (!uri)
     {
         AXIS2_ERROR_SET(env->error,
-            AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
+                AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
         return NULL;
     }
-    if(AXIS2_STRCMP(uri,"") == 0)
+    if (AXIS2_STRCMP(uri, "") == 0)
     {
-        AXIS2_ERROR_SET(env->error, 
-            AXIS2_ERROR_INVALID_EMPTY_NAMESPACE_URI, AXIS2_FAILURE);
-        return NULL;            
+        AXIS2_ERROR_SET(env->error,
+                AXIS2_ERROR_INVALID_EMPTY_NAMESPACE_URI, AXIS2_FAILURE);
+        return NULL;
     }
-    
-    ns = (axiom_namespace_impl_t *) AXIS2_MALLOC (env->allocator,
-                        sizeof(axiom_namespace_impl_t));
+
+    ns = (axiom_namespace_impl_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axiom_namespace_impl_t));
     if (!ns)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY , AXIS2_FAILURE);
         return NULL;
     }
-   
-    
+
+
     ns->om_namespace.ops = NULL;
     ns->prefix = NULL;
     ns->uri = NULL;
     ns->key = NULL;
-     
-    ns->uri = (axis2_char_t *) AXIS2_STRDUP(uri,env);
+
+    ns->uri = (axis2_char_t *) AXIS2_STRDUP(uri, env);
     if (!ns->uri)
     {
-        AXIS2_FREE (env->allocator, ns);
+        AXIS2_FREE(env->allocator, ns);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
     if (prefix)
     {
-        ns->prefix = (axis2_char_t *) AXIS2_STRDUP(prefix,env);
+        ns->prefix = (axis2_char_t *) AXIS2_STRDUP(prefix, env);
         if (!ns->prefix)
         {
-            AXIS2_FREE (env->allocator, ns);
-            AXIS2_FREE (env->allocator, ns->uri);
+            AXIS2_FREE(env->allocator, ns);
+            AXIS2_FREE(env->allocator, ns->uri);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
     }
 
     /* ops */
-    ns->om_namespace.ops = (axiom_namespace_ops_t *) AXIS2_MALLOC (
-                            env->allocator, sizeof(axiom_namespace_ops_t));
+    ns->om_namespace.ops = (axiom_namespace_ops_t *) AXIS2_MALLOC(
+                env->allocator, sizeof(axiom_namespace_ops_t));
 
     if (!ns->om_namespace.ops)
     {
-        AXIS2_FREE (env->allocator, ns);
-        AXIS2_FREE (env->allocator, ns->uri);
-        AXIS2_FREE (env->allocator, ns->prefix);
+        AXIS2_FREE(env->allocator, ns);
+        AXIS2_FREE(env->allocator, ns->uri);
+        AXIS2_FREE(env->allocator, ns->prefix);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    ns->om_namespace.ops->free = 
+    ns->om_namespace.ops->free =
         axiom_namespace_free;
-        
-    ns->om_namespace.ops->equals = 
+
+    ns->om_namespace.ops->equals =
         axiom_namespace_equals;
-        
-    ns->om_namespace.ops->serialize = 
+
+    ns->om_namespace.ops->serialize =
         axiom_namespace_serialize;
-        
-    ns->om_namespace.ops->get_uri = 
+
+    ns->om_namespace.ops->get_uri =
         axiom_namespace_get_uri;
-        
-    ns->om_namespace.ops->get_prefix =  
+
+    ns->om_namespace.ops->get_prefix =
         axiom_namespace_get_prefix;
-        
-    ns->om_namespace.ops->clone = 
+
+    ns->om_namespace.ops->clone =
         axiom_namespace_clone;
-        
+
     ns->om_namespace.ops->to_string =
-        axiom_namespace_to_string;        
+        axiom_namespace_to_string;
     return &(ns->om_namespace) ;
 }
 
 
 
 axis2_status_t AXIS2_CALL
-axiom_namespace_free (axiom_namespace_t *om_namespace,
-                         const axis2_env_t *env)
+axiom_namespace_free(axiom_namespace_t *om_namespace,
+        const axis2_env_t *env)
 {
     axiom_namespace_impl_t *ns_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
-    
+
     if (NULL != ns_impl->prefix)
     {
-        AXIS2_FREE (env->allocator, ns_impl->prefix);
+        AXIS2_FREE(env->allocator, ns_impl->prefix);
         ns_impl->prefix = NULL;
     }
 
     if (NULL != ns_impl->uri)
     {
-        AXIS2_FREE (env->allocator, ns_impl->uri);
+        AXIS2_FREE(env->allocator, ns_impl->uri);
         ns_impl->uri = NULL;
     }
-    
-    if(NULL != ns_impl->key)
+
+    if (NULL != ns_impl->key)
     {
         AXIS2_FREE(env->allocator, ns_impl->key);
         ns_impl->key = NULL;
@@ -193,44 +194,44 @@ axiom_namespace_free (axiom_namespace_t *om_namespace,
 
     if (NULL != om_namespace->ops)
     {
-        AXIS2_FREE (env->allocator, om_namespace->ops);
+        AXIS2_FREE(env->allocator, om_namespace->ops);
         om_namespace->ops = NULL;
     }
 
-    AXIS2_FREE (env->allocator, ns_impl);
+    AXIS2_FREE(env->allocator, ns_impl);
 
     return AXIS2_SUCCESS;
 }
 
 axis2_bool_t AXIS2_CALL
-axiom_namespace_equals (axiom_namespace_t *om_namespace,
-                                const axis2_env_t *env,
-                                axiom_namespace_t *om_namespace1)
+axiom_namespace_equals(axiom_namespace_t *om_namespace,
+        const axis2_env_t *env,
+        axiom_namespace_t *om_namespace1)
 {
     axiom_namespace_impl_t *ns1 = NULL;
     axiom_namespace_impl_t *ns2 = NULL;
-    
+
     int uris_differ = 0;
     int prefixes_differ = 0;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_namespace, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_namespace1, AXIS2_FAILURE);
-    
+
     ns1 = AXIS2_INTF_TO_IMPL(om_namespace);
     ns2 = AXIS2_INTF_TO_IMPL(om_namespace1);
-  
+
     if (!ns1 || !ns2)
         return AXIS2_FALSE;
 
     if (ns1->uri && ns2->uri)
-        uris_differ = axis2_strcmp ( ns1->uri, ns2->uri);
+        uris_differ = axis2_strcmp(ns1->uri, ns2->uri);
     else
         uris_differ = (ns1->uri || ns2->uri);
 
     if (ns1->prefix && ns2->prefix)
         prefixes_differ =
-            axis2_strcmp ( ns1->prefix, ns2->prefix);
+            axis2_strcmp(ns1->prefix, ns2->prefix);
     else
         prefixes_differ = (ns1->prefix || ns2->prefix);
 
@@ -238,47 +239,47 @@ axiom_namespace_equals (axiom_namespace_t *om_namespace,
 }
 
 axis2_status_t AXIS2_CALL
-axiom_namespace_serialize (axiom_namespace_t *om_namespace,
-                                   const axis2_env_t *env,
-                                   axiom_output_t *om_output)
-{ 
+axiom_namespace_serialize(axiom_namespace_t *om_namespace,
+        const axis2_env_t *env,
+        axiom_output_t *om_output)
+{
     int status = AXIS2_SUCCESS;
     axiom_namespace_impl_t *ns_impl = NULL;
-    if(!om_namespace)
+    if (!om_namespace)
         return AXIS2_FAILURE;
-        
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
     ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
-    
-    if (NULL != ns_impl->uri && NULL != ns_impl->prefix && 
+
+    if (NULL != ns_impl->uri && NULL != ns_impl->prefix &&
             AXIS2_STRCMP(ns_impl->prefix, "") != 0)
     {
-        status = axiom_output_write ( om_output, env, AXIOM_NAMESPACE,
-                                         2, ns_impl->prefix,
-                                         ns_impl->uri);
+        status = axiom_output_write(om_output, env, AXIOM_NAMESPACE,
+                2, ns_impl->prefix,
+                ns_impl->uri);
     }
-    else if(NULL != ns_impl->uri)
+    else if (NULL != ns_impl->uri)
     {
         status = axiom_output_write(om_output, env, AXIOM_NAMESPACE,
-                                        2, NULL, ns_impl->uri);
+                2, NULL, ns_impl->uri);
     }
     return status;
 }
 
 axis2_char_t* AXIS2_CALL
 axiom_namespace_get_uri(axiom_namespace_t *om_namespace,
-                           const axis2_env_t *env)
+        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_namespace)->uri;
 }
 
 
-axis2_char_t* AXIS2_CALL 
+axis2_char_t* AXIS2_CALL
 axiom_namespace_get_prefix(axiom_namespace_t *om_namespace,
-                              const axis2_env_t *env)
+        const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
     return AXIS2_INTF_TO_IMPL(om_namespace)->prefix;
@@ -286,17 +287,17 @@ axiom_namespace_get_prefix(axiom_namespace_t *om_namespace,
 
 axiom_namespace_t* AXIS2_CALL
 axiom_namespace_clone(axiom_namespace_t *om_namespace,
-                         const axis2_env_t *env)
+        const axis2_env_t *env)
 {
     axiom_namespace_impl_t *ns_impl = NULL;
     axiom_namespace_t *cloned_ns    = NULL;
-    
+
     AXIS2_ENV_CHECK(env, NULL);
     ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
-    
+
     cloned_ns = axiom_namespace_create(env,
-                      ns_impl->uri, ns_impl->prefix);
-    if(NULL != cloned_ns )
+            ns_impl->uri, ns_impl->prefix);
+    if (NULL != cloned_ns)
     {
         return cloned_ns;
     }
@@ -305,61 +306,61 @@ axiom_namespace_clone(axiom_namespace_t *om_namespace,
 
 axis2_char_t* AXIS2_CALL
 axiom_namespace_to_string(axiom_namespace_t *om_namespace,
-                             const axis2_env_t *env)
+        const axis2_env_t *env)
 {
     axiom_namespace_impl_t *ns_impl = NULL;
     axis2_char_t *temp_str = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
-    if(NULL != ns_impl->key)
+    if (NULL != ns_impl->key)
     {
         AXIS2_FREE(env->allocator, ns_impl->key);
         ns_impl->key = NULL;
     }
-    if((NULL != ns_impl->uri) && (NULL != ns_impl->prefix))
+    if ((NULL != ns_impl->uri) && (NULL != ns_impl->prefix))
     {
         temp_str = AXIS2_STRACAT(ns_impl->uri, "|", env);
         ns_impl->key = AXIS2_STRACAT(temp_str, ns_impl->prefix, env);
-        if(NULL != temp_str)
+        if (NULL != temp_str)
         {
             AXIS2_FREE(env->allocator, temp_str);
             temp_str = NULL;
         }
     }
-    else if((NULL != ns_impl->uri) && !(ns_impl->prefix))
+    else if ((NULL != ns_impl->uri) && !(ns_impl->prefix))
     {
         ns_impl->key = AXIS2_STRDUP(ns_impl->uri, env);
-        if(NULL == ns_impl->key)
+        if (NULL == ns_impl->key)
         {
             return NULL;
         }
     }
-    return ns_impl->key;    
-} 
+    return ns_impl->key;
+}
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axiom_namespace_set_uri(axiom_namespace_t *ns,
-                           const axis2_env_t *env,
-                           const axis2_char_t *uri)
+        const axis2_env_t *env,
+        const axis2_char_t *uri)
 {
     axiom_namespace_impl_t *ns_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
     ns_impl = AXIS2_INTF_TO_IMPL(ns);
 
-    if(NULL != ns_impl->uri)
-    {   
+    if (NULL != ns_impl->uri)
+    {
         AXIS2_FREE(env->allocator, ns_impl->uri);
         ns_impl->uri = NULL;
     }
-    
+
     ns_impl->uri = AXIS2_STRDUP(uri, env);
-    if(!(ns_impl->uri))
+    if (!(ns_impl->uri))
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
-    
+
     }
     return AXIS2_SUCCESS;
-}                           
+}

@@ -33,7 +33,7 @@
 
 /**
  * @brief REST sender struct impl
- *   Axis2 REST sender impl  
+ *   Axis2 REST sender impl
  */
 
 typedef struct axis2_rest_sender_impl
@@ -55,27 +55,27 @@ axis2_rest_sender_impl_t;
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_get_header_info(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_http_simple_response_t *response);
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_process_response(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_http_simple_response_t *response);
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_get_timeout_values(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_send(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axiom_node_t *out,
     const axis2_char_t *str_url);
@@ -83,36 +83,36 @@ axis2_rest_sender_send(
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_set_chunked(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_bool_t chunked);
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_set_om_output(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axiom_output_t *om_output);
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_set_http_version(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_char_t *version);
 
 axis2_char_t *AXIS2_CALL
 axis2_rest_sender_get_param_string(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_free(
-    axis2_rest_sender_t *sender, 
+    axis2_rest_sender_t *sender,
     const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
 axis2_rest_sender_get_param_string(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 /***************************** End of function headers ************************/
@@ -189,7 +189,7 @@ axis2_rest_sender_free(
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_send(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axiom_node_t *out,
     const axis2_char_t *str_url)
@@ -247,11 +247,11 @@ axis2_rest_sender_send(
             AXIS2_HTTP_METHOD, AXIS2_FALSE);
 
     /* The default is POST */
-    if(NULL != method && 0 == AXIS2_STRCMP(method, AXIS2_HTTP_HEADER_GET))
+    if (NULL != method && 0 == AXIS2_STRCMP(method, AXIS2_HTTP_HEADER_GET))
     {
         send_via_get = AXIS2_TRUE;
     }
-    if(AXIS2_FALSE == send_via_get)
+    if (AXIS2_FALSE == send_via_get)
     {
         if (NULL == sender_impl->om_output)
         {
@@ -275,7 +275,7 @@ axis2_rest_sender_send(
         /* AXIOM_OUTPUT_SET_DO_OPTIMIZE(om_output, env,
          *            AXIS2_MSG_CTX_GET_IS_DOING_MTOM(msg_ctx, env);
          */
-        AXIOM_NODE_SERIALIZE (out, env, sender_impl->om_output);
+        AXIOM_NODE_SERIALIZE(out, env, sender_impl->om_output);
         buffer = AXIOM_XML_WRITER_GET_XML(xml_writer, env);
 
         if (NULL == buffer)
@@ -307,7 +307,7 @@ axis2_rest_sender_send(
     http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_USER_AGENT,
             "Axis2/C");
     AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
-    if(AXIS2_FALSE == send_via_get)
+    if (AXIS2_FALSE == send_via_get)
     {
         if (AXIS2_FALSE == sender_impl->chunked)
         {
@@ -399,7 +399,7 @@ axis2_rest_sender_send(
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_set_chunked(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_bool_t chunked)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -411,7 +411,7 @@ axis2_rest_sender_set_chunked(
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_set_om_output(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axiom_output_t *om_output)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -423,7 +423,7 @@ axis2_rest_sender_set_om_output(
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_get_header_info(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_http_simple_response_t *response)
 {
@@ -524,7 +524,7 @@ axis2_rest_sender_get_header_info(
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_process_response(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     axis2_http_simple_response_t *response)
 {
@@ -560,7 +560,7 @@ axis2_rest_sender_process_response(
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_get_timeout_values(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_char_t *so_str = NULL;
@@ -598,7 +598,7 @@ axis2_rest_sender_get_timeout_values(
 axis2_status_t AXIS2_CALL
 axis2_rest_sender_set_http_version(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_char_t *version)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -613,7 +613,7 @@ axis2_rest_sender_set_http_version(
 axis2_char_t *AXIS2_CALL
 axis2_rest_sender_get_param_string(
     axis2_rest_sender_t *sender,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axiom_soap_envelope_t *soap_env = NULL;

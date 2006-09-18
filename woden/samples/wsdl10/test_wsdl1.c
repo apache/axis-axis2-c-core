@@ -30,10 +30,10 @@
 
 #include <axiom.h>
 
-static axiom_document_t* 
+static axiom_document_t*
 get_root_element_from_filename(
-        const axis2_env_t *env, 
-        axis2_char_t *filename);
+    const axis2_env_t *env,
+    axis2_char_t *filename);
 
 int main(int argc, char *argv[])
 {
@@ -53,8 +53,8 @@ int main(int argc, char *argv[])
     axis2_array_list_t *ed_list = NULL;
     void *ed = NULL;
     axis2_qname_t *ed_qname = NULL;
-    
-    if(argc > 1)
+
+    if (argc > 1)
     {
         filename = argv[1];
         printf("filename:%s\n", filename);
@@ -62,16 +62,16 @@ int main(int argc, char *argv[])
     else
     {
         printf("Give a WSDL 1.1 file name and continue\n");
-        return 0;        
+        return 0;
     }
-    
+
     env = axis2_env_create_all("test.log", 1);
-    
+
     om_doc = get_root_element_from_filename(env, filename);
     axis2c_home = AXIS2_GETENV("AXIS2C_HOME");
-    doc_base_uri = AXIS2_STRACAT (axis2c_home, "/woden", env);
+    doc_base_uri = AXIS2_STRACAT(axis2c_home, "/woden", env);
     resolver = woden_resolver_create(env);
-    
+
     desc = WODEN_RESOLVER_READ(resolver, env, om_doc, doc_base_uri);
     AXIS2_FREE(env->allocator, doc_base_uri);
     WODEN_RESOLVER_FREE(resolver, env);
@@ -81,9 +81,9 @@ int main(int argc, char *argv[])
     {
         intface_qname = WODEN_INTERFACE_GET_QNAME(intface, env);
     }
-    if (intface_qname) 
-        printf("Interface qname is %s\n", AXIS2_QNAME_TO_STRING(intface_qname, 
-                    env));
+    if (intface_qname)
+        printf("Interface qname is %s\n", AXIS2_QNAME_TO_STRING(intface_qname,
+                env));
     svc_list = WODEN_WSDL10_DESC_ELEMENT_GET_SVC_ELEMENTS(desc, env);
     if (svc_list)
     {
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
                             svc_qname, env));
             }
             endpoints = WODEN_SVC_GET_ENDPOINTS(svc, env);
-            if(endpoints)
+            if (endpoints)
             {
                 no_of_endpoints = AXIS2_ARRAY_LIST_SIZE(endpoints, env);
             }
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
                 printf("Endpoints is NULL\n");
                 return 1;
             }
-            for(i = 0; i < no_of_endpoints; i++)
+            for (i = 0; i < no_of_endpoints; i++)
             {
                 woden_nc_name_t *ncname = NULL;
                 axis2_char_t *ep_ncname = NULL;
@@ -117,11 +117,11 @@ int main(int argc, char *argv[])
 
                 endpoint = AXIS2_ARRAY_LIST_GET(endpoints, env, i);
                 ncname = WODEN_WSDL10_ENDPOINT_GET_NAME(endpoint, env);
-                if(ncname)
+                if (ncname)
                     ep_ncname = WODEN_NC_NAME_TO_STRING(ncname, env);
-                if(ep_ncname)
+                if (ep_ncname)
                 {
-                    printf("ep_ncname:%s\n", ep_ncname); 
+                    printf("ep_ncname:%s\n", ep_ncname);
                 }
             }
         }
@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
     ed_list = WODEN_WSDL10_DESC_GET_ELEMENT_DECLS(desc, env);
     if (ed_list)
     {
-        
+
         ed = AXIS2_ARRAY_LIST_GET(ed_list, env, 0);
         if (ed)
             ed_qname = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
     {
         axis2_char_t *content_model = NULL;
         axis2_generic_obj_t *obj = NULL;
-        
+
         axis2_qname_t *ed_qname = WODEN_ELEMENT_DECL_GET_QNAME(ed, env);
         if (ed_qname)
         {
@@ -182,10 +182,10 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-static axiom_document_t* 
+static axiom_document_t*
 get_root_element_from_filename(
-        const axis2_env_t *env, 
-        axis2_char_t *filename)
+    const axis2_env_t *env,
+    axis2_char_t *filename)
 {
     axiom_xml_reader_t *reader = NULL;
     axiom_stax_builder_t *om_builder = NULL;
@@ -196,6 +196,6 @@ get_root_element_from_filename(
     doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
     AXIOM_DOCUMENT_BUILD_ALL(doc, env);
 
-    return doc;    
+    return doc;
 }
 

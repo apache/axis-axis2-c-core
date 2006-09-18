@@ -17,12 +17,12 @@
 #include <axis2_types.h>
 
 AXIS2_EXTERN int AXIS2_CALL
-axis2_atoi (const char *s)
+axis2_atoi(const char *s)
 {
-    int i,n;
-    
+    int i, n;
+
     n = 0;
-    for(i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
+    for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
     {
         n = 10 * n + (s[i] - '0');
     }

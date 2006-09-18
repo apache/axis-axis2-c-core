@@ -24,8 +24,8 @@
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_data_reference_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t *data_ref )
+        axiom_node_t *parent,
+        axis2_char_t *data_ref)
 {
     axiom_node_t *data_reference_node = NULL;
     axiom_element_t *data_reference_ele = NULL;
@@ -33,22 +33,23 @@ oxs_token_build_data_reference_element(const axis2_env_t *env,
     int ret;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create (env, OXS_EncNs,
-                                              OXS_xenc);
+    ns_obj = axiom_namespace_create(env, OXS_EncNs,
+            OXS_xenc);
 
-    data_reference_ele = axiom_element_create(env, parent, OXS_NodeDataReference, ns_obj, &data_reference_node );
-    if(!data_reference_ele)
+    data_reference_ele = axiom_element_create(env, parent, OXS_NodeDataReference, ns_obj, &data_reference_node);
+    if (!data_reference_ele)
     {
         oxs_error(ERROR_LOCATION,
-                    OXS_ERROR_ELEMENT_FAILED,"Error creating data reference element");
+                OXS_ERROR_ELEMENT_FAILED, "Error creating data reference element");
         return NULL;
     }
     /*attach empty string*/
-    if(!data_ref){
+    if (!data_ref)
+    {
         data_ref = "";
     }
 
-    data_ref_attr =  axiom_attribute_create (env, OXS_AttrURI , data_ref, NULL);
+    data_ref_attr =  axiom_attribute_create(env, OXS_AttrURI , data_ref, NULL);
 
     ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(data_reference_ele, env, data_ref_attr, data_reference_node);
 
@@ -60,17 +61,17 @@ oxs_token_get_data_reference(const axis2_env_t *env, axiom_node_t *data_ref_node
 {
     axis2_char_t *data_ref = NULL;
     axiom_element_t *data_reference_ele = NULL;
-    
+
     data_reference_ele = AXIOM_NODE_GET_DATA_ELEMENT(data_ref_node, env);
-    if(!data_reference_ele)
+    if (!data_reference_ele)
     {
         oxs_error(ERROR_LOCATION,
-                    OXS_ERROR_ELEMENT_FAILED,"Error retrieving data reference element");
+                OXS_ERROR_ELEMENT_FAILED, "Error retrieving data reference element");
         return NULL;
     }
 
     data_ref = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(data_reference_ele, env, OXS_AttrURI);
     return data_ref;
-    
+
 }
 

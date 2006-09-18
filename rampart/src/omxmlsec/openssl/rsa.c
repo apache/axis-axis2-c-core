@@ -58,16 +58,16 @@ openssl_rsa_prv_decrypt(
     openssl_rsa_t *rsa,
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
-    unsigned char *in, 
-    unsigned char **out );
+    unsigned char *in,
+    unsigned char **out);
 
 int AXIS2_CALL
 openssl_rsa_pub_encrypt(
     openssl_rsa_t *rsa,
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
-    unsigned char *in, 
-    unsigned char **out );
+    unsigned char *in,
+    unsigned char **out);
 
 /*****************End of function headers ****************************/
 static void
@@ -81,25 +81,25 @@ openssl_rsa_init_ops(
 
 openssl_rsa_t *AXIS2_CALL
 openssl_rsa_create(
-        const axis2_env_t *env)
+    const axis2_env_t *env)
 {
     openssl_rsa_impl_t *rsa_impl = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    rsa_impl =  (openssl_rsa_impl_t *) AXIS2_MALLOC (env->allocator,
-                        sizeof (openssl_rsa_impl_t));
+    rsa_impl = (openssl_rsa_impl_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(openssl_rsa_impl_t));
 
-    if(NULL == rsa_impl)
+    if (NULL == rsa_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
 
-    rsa_impl->rsa.ops = AXIS2_MALLOC (env->allocator,
-        sizeof(openssl_rsa_ops_t));
+    rsa_impl->rsa.ops = AXIS2_MALLOC(env->allocator,
+            sizeof(openssl_rsa_ops_t));
 
-    if(NULL == rsa_impl->rsa.ops)
+    if (NULL == rsa_impl->rsa.ops)
     {
         openssl_rsa_free(&(rsa_impl->rsa), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -114,10 +114,10 @@ openssl_rsa_create(
 }
 
 axis2_status_t AXIS2_CALL
-openssl_rsa_free( openssl_rsa_t * rsa, 
-    const axis2_env_t *env)
+openssl_rsa_free(openssl_rsa_t * rsa,
+        const axis2_env_t *env)
 {
-    openssl_rsa_impl_t * rsa_impl= NULL;
+    openssl_rsa_impl_t * rsa_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
@@ -135,7 +135,7 @@ openssl_rsa_pub_encrypt(
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
     unsigned char *in,
-    unsigned char **out )
+    unsigned char **out)
 {
     unsigned char *encrypted = NULL;
     openssl_rsa_impl_t *rsa_impl = NULL;
@@ -144,16 +144,17 @@ openssl_rsa_pub_encrypt(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
-     
+
     /*encrypted = malloc(RSA_size(pubkey->key->pkey.rsa));*/
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
     encrypted = malloc(RSA_size(key->pkey.rsa));
-    ret = RSA_public_encrypt(strlen((char*)in), 
-                            in, 
-                            encrypted, 
-                            key->pkey.rsa , 
-                            RSA_PKCS1_PADDING);
-    if(ret < 0) {
+    ret = RSA_public_encrypt(strlen((char*)in),
+            in,
+            encrypted,
+            key->pkey.rsa ,
+            RSA_PKCS1_PADDING);
+    if (ret < 0)
+    {
         printf("Encryption failed \n");
         return (-1);
     }
@@ -167,24 +168,25 @@ openssl_rsa_prv_decrypt(
     const axis2_env_t *env,
     const openssl_pkey_t *pkey,
     unsigned char *in,
-    unsigned char **out )
+    unsigned char **out)
 {
     unsigned char *decrypted = NULL;
     openssl_rsa_impl_t *rsa_impl = NULL;
     int ret;
     EVP_PKEY *key = NULL;
-    
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     rsa_impl = AXIS2_INTF_TO_IMPL(rsa);
 
     key = (EVP_PKEY *)OPENSSL_PKEY_GET_KEY(pkey, env);
     decrypted = malloc(RSA_size(key->pkey.rsa));
-    ret = RSA_private_decrypt(RSA_size(key->pkey.rsa), 
-                                in, 
-                                decrypted, 
-                                key->pkey.rsa, 
-                                RSA_PKCS1_PADDING);
-    if(ret < 0) {
+    ret = RSA_private_decrypt(RSA_size(key->pkey.rsa),
+            in,
+            decrypted,
+            key->pkey.rsa,
+            RSA_PKCS1_PADDING);
+    if (ret < 0)
+    {
         printf("Decryption failed \n");
         return (-1);
     }

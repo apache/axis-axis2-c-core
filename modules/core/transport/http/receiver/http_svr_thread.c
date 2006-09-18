@@ -30,7 +30,7 @@
 
 /**
  * @brief HTTP Server Thread struct impl
- * Axis2 HTTP Server Thread impl  
+ * Axis2 HTTP Server Thread impl
  */
 
 typedef struct axis2_http_svr_thread_impl
@@ -80,7 +80,7 @@ axis2_http_svr_thread_is_running(
 axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_set_worker(
     axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_http_worker_t *worker);
 
 axis2_status_t AXIS2_CALL
@@ -94,14 +94,14 @@ init_thread_env(
 
 void *AXIS2_THREAD_FUNC
 worker_func(
-    axis2_thread_t *thd, 
+    axis2_thread_t *thd,
     void *data);
 
 /***************************** End of function headers ************************/
 
 axis2_http_svr_thread_t *AXIS2_CALL
 axis2_http_svr_thread_create(
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     int port)
 {
     axis2_http_svr_thread_impl_t *svr_thread_impl = NULL;
@@ -111,7 +111,7 @@ axis2_http_svr_thread_create(
             (env->allocator, sizeof(
                         axis2_http_svr_thread_impl_t));
 
-    if(NULL == svr_thread_impl)
+    if (NULL == svr_thread_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -123,7 +123,7 @@ axis2_http_svr_thread_create(
     svr_thread_impl->listen_socket = axis2_network_handler_create_server_socket
             (env, svr_thread_impl->port);
     svr_thread_impl->svr_thread.ops = NULL;
-    if(-1 == svr_thread_impl->listen_socket)
+    if (-1 == svr_thread_impl->listen_socket)
     {
         axis2_http_svr_thread_free((axis2_http_svr_thread_t *) svr_thread_impl,
                 env);
@@ -131,7 +131,7 @@ axis2_http_svr_thread_create(
     }
     svr_thread_impl->svr_thread.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_svr_thread_ops_t));
-    if(NULL == svr_thread_impl->svr_thread.ops)
+    if (NULL == svr_thread_impl->svr_thread.ops)
     {
         axis2_http_svr_thread_free((axis2_http_svr_thread_t *) svr_thread_impl,
                 env);
@@ -163,18 +163,18 @@ axis2_http_svr_thread_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     svr_thread_impl = AXIS2_INTF_TO_IMPL(svr_thread);
 
-    if(NULL != svr_thread_impl->worker)
+    if (NULL != svr_thread_impl->worker)
     {
         AXIS2_HTTP_WORKER_FREE(svr_thread_impl->worker, env);
         svr_thread_impl->worker = NULL;
     }
-    if(-1 != svr_thread_impl->listen_socket)
+    if (-1 != svr_thread_impl->listen_socket)
     {
         axis2_network_handler_close_socket(env, svr_thread_impl->listen_socket);
         svr_thread_impl->listen_socket = -1;
     }
     svr_thread_impl->stopped = AXIS2_TRUE;
-    if(NULL != svr_thread->ops)
+    if (NULL != svr_thread->ops)
         AXIS2_FREE(env->allocator, svr_thread->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(svr_thread));
@@ -192,7 +192,7 @@ axis2_http_svr_thread_run(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     svr_thread_impl = AXIS2_INTF_TO_IMPL(svr_thread);
 
-    while(AXIS2_FALSE == svr_thread_impl->stopped)
+    while (AXIS2_FALSE == svr_thread_impl->stopped)
     {
         int socket = -1;
         axis2_http_svr_thd_args_t *arg_list = NULL;
@@ -200,7 +200,7 @@ axis2_http_svr_thread_run(
 
         socket = axis2_network_handler_svr_socket_accept(env,
                 svr_thread_impl->listen_socket);
-        if(NULL == svr_thread_impl->worker)
+        if (NULL == svr_thread_impl->worker)
         {
             AXIS2_LOG_WARNING(env->log, AXIS2_LOG_SI, "Worker not ready yet."
                     " Cannot serve the request");
@@ -209,7 +209,7 @@ axis2_http_svr_thread_run(
         }
         arg_list = AXIS2_MALLOC(env->allocator,
                 sizeof(axis2_http_svr_thd_args_t));
-        if(NULL == arg_list)
+        if (NULL == arg_list)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI,
                     "Memory allocation error in the svr thread loop");
@@ -221,7 +221,7 @@ axis2_http_svr_thread_run(
 #ifdef AXIS2_SVR_MULTI_THREADED
         worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
                 worker_func, (void *)arg_list);
-        if(NULL == worker_thread)
+        if (NULL == worker_thread)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
                     "server thread loop");
@@ -245,14 +245,14 @@ axis2_http_svr_thread_destroy(
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
 
     svr_thread_impl = AXIS2_INTF_TO_IMPL(svr_thread);
-    if(AXIS2_TRUE == svr_thread_impl->stopped)
+    if (AXIS2_TRUE == svr_thread_impl->stopped)
     {
         return AXIS2_SUCCESS;
     }
     svr_thread_impl->stopped = AXIS2_TRUE;
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Terminating HTTP server "
             "thread.");
-    if(svr_thread_impl->listen_socket)
+    if (svr_thread_impl->listen_socket)
     {
         axis2_network_handler_close_socket(env, svr_thread_impl->listen_socket);
         svr_thread_impl->listen_socket = -1;
@@ -282,7 +282,7 @@ axis2_http_svr_thread_is_running(
 axis2_status_t AXIS2_CALL
 axis2_http_svr_thread_set_worker(
     axis2_http_svr_thread_t *svr_thread,
-    const axis2_env_t *env, 
+    const axis2_env_t *env,
     axis2_http_worker_t *worker)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -293,11 +293,11 @@ axis2_http_svr_thread_set_worker(
 
 
 /**
- * Thread worker function. 
+ * Thread worker function.
  */
 void *AXIS2_THREAD_FUNC
 worker_func(
-    axis2_thread_t *thd, 
+    axis2_thread_t *thd,
     void *data)
 {
     struct AXIS2_PLATFORM_TIMEB t1, t2;
@@ -319,7 +319,7 @@ worker_func(
 #endif
 
     arg_list = (axis2_http_svr_thd_args_t *)data;
-    if(NULL == arg_list)
+    if (NULL == arg_list)
     {
         return NULL;
     }
@@ -341,14 +341,14 @@ worker_func(
     AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t2);
     millisecs = t2.millitm - t1.millitm;
     secs = difftime(t2.time, t1.time);
-    if(millisecs < 0)
+    if (millisecs < 0)
     {
         millisecs += 1000;
         secs--;
     }
     secs += millisecs / 1000.0;
 
-    if(status == AXIS2_SUCCESS)
+    if (status == AXIS2_SUCCESS)
     {
 #if defined(WIN32)
         AXIS2_LOG_INFO(thread_env->log, "Request served successfully");

@@ -19,29 +19,29 @@
 
 int AXIS2_CALL
 echo_free(axis2_svc_skeleton_t *svc_skeleton,
-            const axis2_env_t *env);
+        const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
 echo_free_void_arg(void *svc_skeleton,
-                    const axis2_env_t *env);
+        const axis2_env_t *env);
 
 /*
- * This method invokes the right service method 
+ * This method invokes the right service method
  */
-axiom_node_t* AXIS2_CALL 
+axiom_node_t* AXIS2_CALL
 echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
-            const axis2_env_t *env,
-            axiom_node_t *node,
-            axis2_msg_ctx_t *msg_ctx);
-            
+        const axis2_env_t *env,
+        axiom_node_t *node,
+        axis2_msg_ctx_t *msg_ctx);
 
-int AXIS2_CALL 
+
+int AXIS2_CALL
 echo_init(axis2_svc_skeleton_t *svc_skeleton,
-          const axis2_env_t *env);
+        const axis2_env_t *env);
 
 axiom_node_t* AXIS2_CALL
-echo_on_fault(axis2_svc_skeleton_t *svc_skeli, 
-              const axis2_env_t *env, axiom_node_t *node);
+echo_on_fault(axis2_svc_skeleton_t *svc_skeli,
+        const axis2_env_t *env, axiom_node_t *node);
 
 /*Create function */
 axis2_svc_skeleton_t *
@@ -49,11 +49,11 @@ axis2_echo_create(const axis2_env_t *env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;
     /* Allocate memory for the structs */
-    svc_skeleton = AXIS2_MALLOC(env->allocator, 
-        sizeof(axis2_svc_skeleton_t));
+    svc_skeleton = AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_svc_skeleton_t));
 
     svc_skeleton->ops = AXIS2_MALLOC(
-        env->allocator, sizeof(axis2_svc_skeleton_ops_t));
+                env->allocator, sizeof(axis2_svc_skeleton_ops_t));
 
     svc_skeleton->func_array = NULL;
     /* Assign function pointers */
@@ -68,10 +68,10 @@ axis2_echo_create(const axis2_env_t *env)
 /* Initialize the service */
 int AXIS2_CALL
 echo_init(axis2_svc_skeleton_t *svc_skeleton,
-                        const axis2_env_t *env)
+        const axis2_env_t *env)
 {
     svc_skeleton->func_array = axis2_array_list_create(env, 0);
-    /* Add the implemented operation names of the service to  
+    /* Add the implemented operation names of the service to
      * the array list of functions 
      */
     AXIS2_ARRAY_LIST_ADD(svc_skeleton->func_array, env, "echoString");
@@ -80,13 +80,13 @@ echo_init(axis2_svc_skeleton_t *svc_skeleton,
 }
 
 /*
- * This method invokes the right service method 
+ * This method invokes the right service method
  */
 axiom_node_t* AXIS2_CALL
 echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
-            const axis2_env_t *env,
-            axiom_node_t *node,
-            axis2_msg_ctx_t *msg_ctx)
+        const axis2_env_t *env,
+        axiom_node_t *node,
+        axis2_msg_ctx_t *msg_ctx)
 {
     /* Invoke the business logic.
      * Depending on the function name invoke the correct impl method.
@@ -99,61 +99,61 @@ echo_invoke(axis2_svc_skeleton_t *svc_skeleton,
 
 /* On fault, handle the fault */
 axiom_node_t* AXIS2_CALL
-echo_on_fault(axis2_svc_skeleton_t *svc_skeli, 
-              const axis2_env_t *env, axiom_node_t *node)
+echo_on_fault(axis2_svc_skeleton_t *svc_skeli,
+        const axis2_env_t *env, axiom_node_t *node)
 {
-   /* Here we are just setting a simple error message inside an element 
-    * called 'EchoServiceError' 
-    */
+    /* Here we are just setting a simple error message inside an element
+     * called 'EchoServiceError' 
+     */
     axiom_node_t *error_node = NULL;
     axiom_node_t* text_node = NULL;
     axiom_element_t *error_ele = NULL;
-    error_ele = axiom_element_create(env, node, "EchoServiceError", NULL, 
-        &error_node);
-    AXIOM_ELEMENT_SET_TEXT(error_ele, env, "Echo service failed ", 
-        text_node);
+    error_ele = axiom_element_create(env, node, "EchoServiceError", NULL,
+            &error_node);
+    AXIOM_ELEMENT_SET_TEXT(error_ele, env, "Echo service failed ",
+            text_node);
     return error_node;
 }
 
 /* Free the resources used */
 int AXIS2_CALL
 echo_free(axis2_svc_skeleton_t *svc_skeleton,
-            const axis2_env_t *env)
+        const axis2_env_t *env)
 {
     /* Free the function array */
-    if(svc_skeleton->func_array)
+    if (svc_skeleton->func_array)
     {
         AXIS2_ARRAY_LIST_FREE(svc_skeleton->func_array, env);
         svc_skeleton->func_array = NULL;
     }
-    
+
     /* Free the function array */
-    if(svc_skeleton->ops)
+    if (svc_skeleton->ops)
     {
         AXIS2_FREE(env->allocator, svc_skeleton->ops);
         svc_skeleton->ops = NULL;
     }
-    
+
     /* Free the service skeleton */
-    if(svc_skeleton)
+    if (svc_skeleton)
     {
         AXIS2_FREE(env->allocator, svc_skeleton);
         svc_skeleton = NULL;
     }
 
-    return AXIS2_SUCCESS; 
+    return AXIS2_SUCCESS;
 }
 
 
 /**
  * Following block distinguish the exposed part of the dll.
  */
-AXIS2_EXPORT int 
+AXIS2_EXPORT int
 axis2_get_instance(axis2_svc_skeleton_t **inst,
-                   const axis2_env_t *env)
+        const axis2_env_t *env)
 {
-   *inst = axis2_echo_create(env);
-    if(!(*inst))
+    *inst = axis2_echo_create(env);
+    if (!(*inst))
     {
         return AXIS2_FAILURE;
     }
@@ -161,13 +161,13 @@ axis2_get_instance(axis2_svc_skeleton_t **inst,
     return AXIS2_SUCCESS;
 }
 
-AXIS2_EXPORT int 
+AXIS2_EXPORT int
 axis2_remove_instance(axis2_svc_skeleton_t *inst,
-                      const axis2_env_t *env)
+        const axis2_env_t *env)
 {
     axis2_status_t status = AXIS2_FAILURE;
-   if (inst)
-   {
+    if (inst)
+    {
         status = AXIS2_SVC_SKELETON_FREE(inst, env);
     }
     return status;

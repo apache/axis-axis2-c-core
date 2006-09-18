@@ -3,7 +3,8 @@
 #include "w2c_util_test.h"
 #include "w2c_conf_test.h"
 
-void RunAllTests(void) {
+void RunAllTests(void)
+{
     CuString *output = CuStringNew();
     CuSuite* suite = CuSuiteNew();
 
@@ -16,7 +17,8 @@ void RunAllTests(void) {
     printf("%s\n", output->buffer);
 }
 
-int main(void) {
+int main(void)
+{
     RunAllTests();
     return 0;
 }

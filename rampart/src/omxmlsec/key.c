@@ -23,7 +23,8 @@
 #include <openssl_cipher_property.h>
 #include <openssl_util.h>
 
-typedef struct oxs_key_impl{
+typedef struct oxs_key_impl
+{
     oxs_key_t key;
 
     unsigned char *data;
@@ -92,16 +93,16 @@ axis2_status_t AXIS2_CALL
 oxs_key_free(
     oxs_key_t *key,
     const axis2_env_t *env
-    );
+);
 
 axis2_status_t AXIS2_CALL
 oxs_key_populate(
-        oxs_key_t *key,
-        const axis2_env_t *env,
-        unsigned char *data,
-        axis2_char_t *name,
-        int size,
-        int usage);
+    oxs_key_t *key,
+    const axis2_env_t *env,
+    unsigned char *data,
+    axis2_char_t *name,
+    int size,
+    int usage);
 
 axis2_status_t AXIS2_CALL
 oxs_key_read_from_file(
@@ -180,7 +181,8 @@ oxs_key_set_data(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     oxs_key_impl = AXIS2_INTF_TO_IMPL(key);
 
-    if (oxs_key_impl->data){
+    if (oxs_key_impl->data)
+    {
         AXIS2_FREE(env->allocator, oxs_key_impl->data);
         oxs_key_impl->data = NULL;
     }
@@ -200,7 +202,8 @@ oxs_key_set_name(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     oxs_key_impl = AXIS2_INTF_TO_IMPL(key);
 
-    if (oxs_key_impl->name){
+    if (oxs_key_impl->name)
+    {
         AXIS2_FREE(env->allocator, oxs_key_impl->name);
         oxs_key_impl->name = NULL;
     }
@@ -245,7 +248,7 @@ oxs_key_set_usage(
 
 static void
 oxs_key_init_ops(
-        oxs_key_t *key)
+    oxs_key_t *key)
 {
     key->ops->get_data  = oxs_key_get_data ;
     key->ops->get_name  = oxs_key_get_name;
@@ -269,7 +272,7 @@ oxs_key_create_key(const axis2_env_t *env)
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    key_impl = AXIS2_MALLOC( env->allocator, sizeof(oxs_key_impl_t));
+    key_impl = AXIS2_MALLOC(env->allocator, sizeof(oxs_key_impl_t));
     if (!key_impl)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -281,7 +284,7 @@ oxs_key_create_key(const axis2_env_t *env)
     key_impl->size = -1;
     key_impl->usage = -1;
 
-    key_impl->key.ops =  AXIS2_MALLOC(env->allocator,sizeof(oxs_key_ops_t));
+    key_impl->key.ops =  AXIS2_MALLOC(env->allocator, sizeof(oxs_key_ops_t));
     if (!key_impl->key.ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
@@ -298,9 +301,9 @@ oxs_key_create_key(const axis2_env_t *env)
 
 axis2_status_t AXIS2_CALL
 oxs_key_free(oxs_key_t *key,
-    const axis2_env_t *env )
+        const axis2_env_t *env)
 {
-    oxs_key_impl_t *key_impl= NULL;
+    oxs_key_impl_t *key_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -323,13 +326,13 @@ oxs_key_populate(oxs_key_t *key,
         int size,
         int usage)
 {
-    int ret;   
+    int ret;
 
-    ret = OXS_KEY_SET_DATA(key, env, data); 
-    ret = OXS_KEY_SET_NAME(key, env, name); 
-    ret = OXS_KEY_SET_SIZE(key, env, size); 
+    ret = OXS_KEY_SET_DATA(key, env, data);
+    ret = OXS_KEY_SET_NAME(key, env, name);
+    ret = OXS_KEY_SET_SIZE(key, env, size);
     ret = OXS_KEY_SET_USAGE(key, env, usage);
- 
+
     return AXIS2_SUCCESS;
 }
 
@@ -341,16 +344,16 @@ oxs_key_read_from_file(oxs_key_t *key,
 {
     oxs_buffer_t *buf = NULL;
     axis2_status_t status = AXIS2_FAILURE;
- 
+
     buf = oxs_buffer_create(env);
     status = oxs_buffer_read_file(env, buf, file_name);
-   
+
     status = OXS_KEY_POPULATE(key, env,
-                            OXS_BUFFER_GET_DATA(buf, env), file_name,  
-                            OXS_BUFFER_GET_SIZE(buf, env), OXS_KEY_USAGE_NONE);
-     
-    return status; 
-    
+            OXS_BUFFER_GET_DATA(buf, env), file_name,
+            OXS_BUFFER_GET_SIZE(buf, env), OXS_KEY_USAGE_NONE);
+
+    return status;
+
 }
 
 axis2_status_t AXIS2_CALL
@@ -363,31 +366,33 @@ oxs_key_for_algo(oxs_key_t *key,
     axis2_status_t ret = AXIS2_FAILURE;
     int size;
     unsigned char *temp_str = NULL;
-    int temp_int = 0;   
- 
+    int temp_int = 0;
+
     cprop = (openssl_cipher_property_t *)oxs_get_cipher_property_for_url(env, key_algo);
-    if(!cprop){
+    if (!cprop)
+    {
         oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
-            "openssl_get_cipher_property failed");
+                "openssl_get_cipher_property failed");
         return AXIS2_FAILURE;
     }
 
     size = OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env);
 
-    key_buf = oxs_buffer_create(env);    
-    ret = generate_random_data(env, key_buf, size);    
-    if(ret == AXIS2_FAILURE){
-         oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
-            "generate_random_data failed");
-         return AXIS2_FAILURE;
+    key_buf = oxs_buffer_create(env);
+    ret = generate_random_data(env, key_buf, size);
+    if (ret == AXIS2_FAILURE)
+    {
+        oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,
+                "generate_random_data failed");
+        return AXIS2_FAILURE;
     }
-   
+
     temp_int = OXS_BUFFER_GET_SIZE(key_buf, env);
     temp_str = OXS_BUFFER_GET_DATA(key_buf, env);
-     
-    ret = OXS_KEY_POPULATE(key, env, 
-                            OXS_BUFFER_GET_DATA(key_buf, env), NULL, 
-                            OXS_BUFFER_GET_SIZE(key_buf, env), OXS_KEY_USAGE_NONE);
+
+    ret = OXS_KEY_POPULATE(key, env,
+            OXS_BUFFER_GET_DATA(key_buf, env), NULL,
+            OXS_BUFFER_GET_SIZE(key_buf, env), OXS_KEY_USAGE_NONE);
 
     /*free buffer*/
     return ret;

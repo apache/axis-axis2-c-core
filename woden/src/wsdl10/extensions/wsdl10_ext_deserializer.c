@@ -18,22 +18,22 @@
 
 axis2_status_t AXIS2_CALL
 woden_wsdl10_ext_deserializer_resolve_methods(
-        woden_wsdl10_ext_deserializer_t *ext_deserializer,
-        const axis2_env_t *env,
-        axis2_hash_t *methods)
+    woden_wsdl10_ext_deserializer_t *ext_deserializer,
+    const axis2_env_t *env,
+    axis2_hash_t *methods)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, methods, AXIS2_FAILURE);
-    
-    ext_deserializer->ops->free = axis2_hash_get(methods, "free", 
+
+    ext_deserializer->ops->free = axis2_hash_get(methods, "free",
             AXIS2_HASH_KEY_STRING);
 
-    ext_deserializer->ops->type = axis2_hash_get(methods, "type", 
-            AXIS2_HASH_KEY_STRING);
-    
-    ext_deserializer->ops->unmarshall = axis2_hash_get(methods, "unmarshall", 
+    ext_deserializer->ops->type = axis2_hash_get(methods, "type",
             AXIS2_HASH_KEY_STRING);
 
-    return AXIS2_SUCCESS;    
+    ext_deserializer->ops->unmarshall = axis2_hash_get(methods, "unmarshall",
+            AXIS2_HASH_KEY_STRING);
+
+    return AXIS2_SUCCESS;
 }
 

@@ -31,11 +31,12 @@ generate_random_data(const axis2_env_t *env, oxs_buffer_t *buffer, int size)
     axis2_status_t status =  AXIS2_FAILURE;
     int ret;
     unsigned char temp_buffer[1024];
-    
+
     ret = RAND_bytes(temp_buffer, size);
-    if(ret < 0){
+    if (ret < 0)
+    {
         oxs_error(ERROR_LOCATION,
-                OXS_ERROR_DEFAULT, "RAND_bytes failed %d",size );
+                OXS_ERROR_DEFAULT, "RAND_bytes failed %d", size);
         return AXIS2_FAILURE;
     }
 
@@ -51,36 +52,39 @@ openssl_populate_cipher_property(const axis2_env_t *env, openssl_cipher_property
 {
     EVP_CIPHER* cipher;
     EVP_CIPHER_CTX ctx;
-    axis2_char_t* cipher_name = NULL;   
+    axis2_char_t* cipher_name = NULL;
 
-    if(!cprop){
-         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-            "openssl_cipher_property is NULL");
-
-        return AXIS2_FAILURE;
-    
-    } 
-    
-    cipher_name = OPENSSL_CIPHER_PROPERTY_GET_NAME(cprop, env);
-    if(!cipher_name){
+    if (!cprop)
+    {
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-            "openssl_cipher_property name is NULL");
+                "openssl_cipher_property is NULL");
 
         return AXIS2_FAILURE;
 
     }
 
-    cipher = (EVP_CIPHER*)openssl_get_evp_cipher_by_name(env, cipher_name); 
-    if(!cipher){
-         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
-            "openssl_get_evp_cipher_by_name failed");
+    cipher_name = OPENSSL_CIPHER_PROPERTY_GET_NAME(cprop, env);
+    if (!cipher_name)
+    {
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                "openssl_cipher_property name is NULL");
+
+        return AXIS2_FAILURE;
+
+    }
+
+    cipher = (EVP_CIPHER*)openssl_get_evp_cipher_by_name(env, cipher_name);
+    if (!cipher)
+    {
+        oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
+                "openssl_get_evp_cipher_by_name failed");
 
         return AXIS2_FAILURE;
     }
     /*Initialize a cipher ctx*/
     EVP_CIPHER_CTX_init(&ctx);
     EVP_CipherInit_ex(&ctx, cipher, NULL, NULL, NULL, -1);
-    
+
     OPENSSL_CIPHER_PROPERTY_SET_CIPHER(cprop, env, cipher);
     OPENSSL_CIPHER_PROPERTY_SET_KEY_SIZE(cprop, env, EVP_CIPHER_CTX_key_length(&ctx));
     OPENSSL_CIPHER_PROPERTY_SET_BLOCK_SIZE(cprop, env, EVP_CIPHER_CTX_block_size(&ctx));
@@ -97,19 +101,28 @@ openssl_get_evp_cipher_by_name(const axis2_env_t *env, axis2_char_t *cipher_name
 {
     EVP_CIPHER* cipher = NULL;
 
-    if(0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_des_ede3_cbc )){
+    if (0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_des_ede3_cbc))
+    {
         cipher = (EVP_CIPHER*) EVP_des_ede3_cbc();
 
-    }else if(0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc )){
-        cipher =  (EVP_CIPHER*)EVP_aes_128_cbc();
+    }
+    else if (0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_128_cbc))
+    {
+        cipher = (EVP_CIPHER*)EVP_aes_128_cbc();
 
-    }else if(0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_192_cbc )){
-        cipher =  (EVP_CIPHER*)EVP_aes_192_cbc();
+    }
+    else if (0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_192_cbc))
+    {
+        cipher = (EVP_CIPHER*)EVP_aes_192_cbc();
 
-    }else if(0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_256_cbc )){
-        cipher =  (EVP_CIPHER*)EVP_aes_256_cbc();
+    }
+    else if (0 == AXIS2_STRCMP((char*)cipher_name, (char*)OPENSSL_EVP_aes_256_cbc))
+    {
+        cipher = (EVP_CIPHER*)EVP_aes_256_cbc();
 
-    }else{
+    }
+    else
+    {
         return NULL;
     }
 

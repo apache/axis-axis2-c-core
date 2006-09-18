@@ -135,8 +135,8 @@ axis2_msg_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    msg_impl = (axis2_msg_impl_t *) AXIS2_MALLOC (env->allocator,
-            sizeof (axis2_msg_impl_t));
+    msg_impl = (axis2_msg_impl_t *) AXIS2_MALLOC(env->allocator,
+            sizeof(axis2_msg_impl_t));
 
     if (NULL == msg_impl)
     {
@@ -220,10 +220,10 @@ axis2_msg_free(
         for (i = 0; i < size; i++)
         {
             axis2_phase_t *phase = NULL;
-            phase = (axis2_phase_t *) (AXIS2_ARRAY_LIST_GET(msg_impl->flow, env, i));
+            phase = (axis2_phase_t *)(AXIS2_ARRAY_LIST_GET(msg_impl->flow, env, i));
             if (phase)
             {
-                AXIS2_PHASE_FREE (phase, env);
+                AXIS2_PHASE_FREE(phase, env);
                 phase = NULL;
             }
 

@@ -17,7 +17,7 @@
 #include "woden_test.h"
 
 void RunAllTests(
-        void) 
+    void)
 {
     CuString *output = CuStringNew();
     CuSuite* suite = woden_GetSuite();
@@ -27,7 +27,7 @@ void RunAllTests(
     printf("%s", output->buffer);
 }
 
-int main(void) 
+int main(void)
 {
     RunAllTests();
     getchar();

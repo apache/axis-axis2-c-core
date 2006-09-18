@@ -18,19 +18,21 @@
 #include <stdio.h>
 #include "om/om_test.h"
 
-void RunAllTests(void) {
+void RunAllTests(void)
+{
     CuString *output = CuStringNew();
     CuSuite* suite = CuSuiteNew();
 
     CuSuiteAddSuite(suite, axiomGetSuite());
-    
+
     CuSuiteRun(suite);
     CuSuiteSummary(suite, output);
     CuSuiteDetails(suite, output);
     printf("%s\n", output->buffer);
 }
 
-int main(void) {
+int main(void)
+{
     RunAllTests();
     return 0;
 }

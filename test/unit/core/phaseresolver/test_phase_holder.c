@@ -37,13 +37,13 @@ void Testaxis2_phase_holder_free(CuTest *tc)
     printf("testing axis2_phase_holder_free  method \n");
     printf("****************************************\n");
 
-    axis2_allocator_t *allocator = axis2_allocator_init (NULL);
-    const axis2_env_t *env = axis2_env_create (allocator);
+    axis2_allocator_t *allocator = axis2_allocator_init(NULL);
+    const axis2_env_t *env = axis2_env_create(allocator);
 
     phases = get_phases(env);
-    phase_holder = axis2_phase_holder_create_with_phases(env, phases); 
+    phase_holder = axis2_phase_holder_create_with_phases(env, phases);
     actual = AXIS2_PHASE_HOLDER_FREE(phase_holder, env);
-    
+
     CuAssertIntEquals(tc, expected, actual);
 
 }
@@ -52,23 +52,23 @@ void Testaxis2_phase_holder_free(CuTest *tc)
   */
 axis2_array_list_t *get_phases(const axis2_env_t *env)
 {
-    struct axis2_phase *phase = NULL; 
-    axis2_array_list_t *phases = NULL; 
-    
+    struct axis2_phase *phase = NULL;
+    axis2_array_list_t *phases = NULL;
+
     phases = axis2_array_list_create(env, 10);
-    
+
     phase = axis2_phase_create(env, AXIS2_PHASE_POLICY_DETERMINATION);
     AXIS2_ARRAY_LIST_ADD(phases, env, phase);
-    
-    phase = axis2_phase_create(env, AXIS2_PHASE_TRANSPORTIN);   
+
+    phase = axis2_phase_create(env, AXIS2_PHASE_TRANSPORTIN);
     AXIS2_ARRAY_LIST_ADD(phases, env, phase);
-    
-    phase = axis2_phase_create(env, AXIS2_PHASE_PRE_DISPATCH);   
+
+    phase = axis2_phase_create(env, AXIS2_PHASE_PRE_DISPATCH);
     AXIS2_ARRAY_LIST_ADD(phases, env, phase);
-    
-    phase = axis2_phase_create(env, AXIS2_PHASE_DISPATCH);  
+
+    phase = axis2_phase_create(env, AXIS2_PHASE_DISPATCH);
     AXIS2_ARRAY_LIST_ADD(phases, env, phase);
-    
+
     return phases;
 
 }
