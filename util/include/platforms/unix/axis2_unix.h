@@ -112,7 +112,8 @@ extern "C"
 #include <sys/types.h>
 #include "axis2_uuid_gen_unix.h" /* uuid_gen unix implementation */
 #include <netinet/tcp.h>    /* TCP_NODELAY */
-# include <utime.h>
+#include <utime.h>
+#include <getopt.h>
 
 
 /* for file access handling */
@@ -237,6 +238,7 @@ extern "C"
 #define AXIS2_SHUT_WR                       SHUT_WR
 
 /** getopt function */
+#define _GNU_SOURCE
 #define AXIS2_GETOPT getopt
 
 /** minizip functions */
