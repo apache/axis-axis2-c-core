@@ -1154,7 +1154,6 @@ axis2_http_transport_utils_create_soap_msg(
             }
         }
 
-        AXIOM_SOAP_BUILDER_FREE(soap_builder, env);
         return soap_envelope;
     }
     else

@@ -296,8 +296,6 @@ axiom_soap_builder_free(axiom_soap_builder_t *builder,
         builder_impl = NULL;
     }
 
-
-    AXIS2_FREE(env->allocator, builder_impl);
     return AXIS2_SUCCESS;
 }
 
