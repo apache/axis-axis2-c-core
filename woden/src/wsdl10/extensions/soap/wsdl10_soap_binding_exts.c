@@ -380,7 +380,7 @@ woden_wsdl10_soap_binding_exts_get_soap_version(
     binding_exts_impl->qname = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_VERSION);
     version = (woden_string_attr_t *)
             WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(parent_element, env, binding_exts_impl->qname);
-    return version != NULL ? WODEN_STRING_ATTR_GET_STRING(version, env) :
+    return version  ? WODEN_STRING_ATTR_GET_STRING(version, env) :
             NULL;
 }
 
@@ -404,7 +404,7 @@ woden_wsdl10_soap_binding_exts_get_soap_underlying_protocol(
     binding_exts_impl->qname = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_PROTOCOL);
     protocol = (woden_uri_attr_t *) WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(
                 parent_element, env, binding_exts_impl->qname);
-    return protocol != NULL ? WODEN_URI_ATTR_GET_URI(protocol, env) : NULL;
+    return protocol  ? WODEN_URI_ATTR_GET_URI(protocol, env) : NULL;
 }
 
 axis2_uri_t *AXIS2_CALL
@@ -427,7 +427,7 @@ woden_wsdl10_soap_binding_exts_get_soap_mep_default(
     binding_exts_impl->qname = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ATTR_SOAP_MEPDEFAULT);
     mep_default = (woden_uri_attr_t *)
             WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(parent_element, env, binding_exts_impl->qname);
-    return mep_default != NULL ? WODEN_URI_ATTR_GET_URI(mep_default, env) :
+    return mep_default  ? WODEN_URI_ATTR_GET_URI(mep_default, env) :
             NULL;
 }
 

@@ -35,7 +35,7 @@ xml_schema_url_resolver_resolve_entity(
     axis2_char_t *schema_location,
     axis2_char_t *base_uri)
 {
-    if (NULL != base_uri && NULL != schema_location)
+    if (base_uri && NULL != schema_location)
     {
         axis2_uri_t *uri1 = NULL;
         axis2_uri_t *uri2 = NULL;
@@ -53,10 +53,10 @@ xml_schema_url_resolver_resolve_entity(
 
         uri1 = axis2_uri_parse_string(env, abs_path);
 
-        if (NULL != uri1)
+        if (uri1)
         {
             uri2 = axis2_uri_parse_relative(env, uri1, schema_location);
-            if (NULL != uri2)
+            if (uri2)
             {
                 ref = AXIS2_URI_TO_STRING(uri2, env, 1);
                 /* AXIS2_URI_FREE(uri2, env);  */
@@ -71,7 +71,7 @@ xml_schema_url_resolver_resolve_entity(
 static axis2_bool_t
 is_absolute_url(const axis2_char_t *url)
 {
-    if(NULL != url)
+    if( url)
     {
         if(strncmp(url, "http://", 7) == 0)
             return AXIS2_TRUE;
@@ -97,7 +97,7 @@ get_file_url(const axis2_env_t *env,
     {
         final_path = AXIS2_STRACAT("file:///", modified_path, env);
     }
-    if (NULL != modified_path)
+    if (modified_path)
     {
         AXIS2_FREE(env->allocator, modified_path);
     }

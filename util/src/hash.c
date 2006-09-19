@@ -287,7 +287,7 @@ find_entry(axis2_hash_t * ht,
         return hep;
 
     /* add a new entry for non-NULL values */
-    if ((he = ht->free) != NULL)
+    if ((he = ht->free))
         ht->free = he->next;
     else
         he = AXIS2_MALLOC(ht->env->allocator, sizeof(*he));

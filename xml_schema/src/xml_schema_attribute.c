@@ -310,54 +310,54 @@ xml_schema_attribute_free(void *attr,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
 
-    if (NULL != attr_impl->attribute_type)
+    if (attr_impl->attribute_type)
     {
         /* TODO */
     }
-    if (NULL != attr_impl->ht_super)
+    if (attr_impl->ht_super)
     {
         axis2_hash_free(attr_impl->ht_super, env);
         attr_impl->ht_super = NULL;
     }
-    if (NULL != attr_impl->default_value)
+    if (attr_impl->default_value)
     {
         AXIS2_FREE(env->allocator, attr_impl->default_value);
         attr_impl->default_value = NULL;
     }
-    if (NULL != attr_impl->default_value)
+    if (attr_impl->default_value)
     {
         AXIS2_FREE(env->allocator, attr_impl->fixed_value);
         attr_impl->fixed_value = NULL;
     }
-    if (NULL != attr_impl->name)
+    if (attr_impl->name)
     {
         AXIS2_FREE(env->allocator, attr_impl->name);
         attr_impl->name = NULL;
     }
 
-    if (NULL != attr_impl->form)
+    if (attr_impl->form)
     {
         XML_SCHEMA_FORM_FREE(attr_impl->form, env);
         attr_impl->form = NULL;
     }
-    if (NULL != attr_impl->use)
+    if (attr_impl->use)
     {
         XML_SCHEMA_USE_FREE(attr_impl->use, env);
         attr_impl->use = NULL;
     }
 
-    if (NULL != attr_impl->annotated)
+    if (attr_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(attr_impl->annotated, env);
         attr_impl->annotated = NULL;
     }
 
-    if (NULL != attr_impl->attr.ops)
+    if (attr_impl->attr.ops)
     {
         AXIS2_FREE(env->allocator, attr_impl->attr.ops);
         attr_impl->attr.ops = NULL;
     }
-    if (NULL != attr_impl->attr.base.ops)
+    if (attr_impl->attr.base.ops)
     {
         AXIS2_FREE(env->allocator, attr_impl->attr.base.ops);
         attr_impl->attr.base.ops = NULL;
@@ -418,7 +418,7 @@ xml_schema_attribute_set_default_value(
     xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, default_value, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
-    if (NULL != attr_impl->default_value)
+    if (attr_impl->default_value)
     {
         AXIS2_FREE(env->allocator, attr_impl->default_value);
         attr_impl->default_value = NULL;
@@ -442,7 +442,7 @@ xml_schema_attribute_set_fixed_value(void *attr,
     xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, fixed_value, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
-    if (NULL != attr_impl->fixed_value)
+    if (attr_impl->fixed_value)
     {
         AXIS2_FREE(env->allocator, attr_impl->fixed_value);
         attr_impl->fixed_value = NULL;
@@ -466,7 +466,7 @@ xml_schema_attribute_set_schema_form(void *attr,
     xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, schema_form, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
-    if (NULL != attr_impl->form)
+    if (attr_impl->form)
     {
         /* TODO */
     }
@@ -490,7 +490,7 @@ xml_schema_attribute_set_qname(void *attr,
     xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, qualified_name, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
-    if (NULL != attr_impl->qualified_name)
+    if (attr_impl->qualified_name)
     {
         /* TODO */
     }
@@ -516,7 +516,7 @@ xml_schema_attribute_set_name(void *attr,
     xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
-    if (NULL != attr_impl->name)
+    if (attr_impl->name)
     {
         AXIS2_FREE(env->allocator, attr_impl->name);
         attr_impl->name = NULL;
@@ -540,7 +540,7 @@ xml_schema_attribute_set_ref_name(void *attr,
     xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, ref_name, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
-    if (NULL != attr_impl->ref_name)
+    if (attr_impl->ref_name)
     {
         /* TODO */
     }
@@ -563,7 +563,7 @@ xml_schema_attribute_set_schema_type(void *attr,
     xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, sch_type, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
-    if (NULL != attr_impl->schema_type)
+    if (attr_impl->schema_type)
     {
         /* TODO */
     }
@@ -588,7 +588,7 @@ xml_schema_attribute_set_schema_type_name(void *attr,
     xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, sch_type_name, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
-    if (NULL != attr_impl->schema_type_name)
+    if (attr_impl->schema_type_name)
     {
         /* TODO */
     }
@@ -612,7 +612,7 @@ xml_schema_attribute_set_use(void *attr,
     xml_schema_attribute_impl_t *attr_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, use, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr);
-    if (NULL != attr_impl->use)
+    if (attr_impl->use)
     {
         /* TODO */
     }

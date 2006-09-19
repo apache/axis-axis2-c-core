@@ -162,7 +162,7 @@ axis2_msg_recv_free(
         recv_impl->scope = NULL;
     }
 
-    if (NULL != msg_recv->ops)
+    if (msg_recv->ops)
     {
         AXIS2_FREE(env->allocator, msg_recv->ops);
         msg_recv->ops = NULL;
@@ -260,7 +260,7 @@ axis2_msg_recv_get_impl_obj(
      * totally removed???
      */
     /*
-    if(NULL != scope_param && (0 == AXIS2_STRCMP(AXIS2_SESSION_SCOPE, 
+    if( scope_param && (0 == AXIS2_STRCMP(AXIS2_SESSION_SCOPE, 
         param_value)))
     {
         SessionContext sessionContext = msgContext.getSessionContext();
@@ -276,7 +276,7 @@ axis2_msg_recv_get_impl_obj(
     }
     else if
     */
-    if (NULL != scope_param && (0 == AXIS2_STRCMP(AXIS2_APPLICATION_SCOPE,
+    if (scope_param && (0 == AXIS2_STRCMP(AXIS2_APPLICATION_SCOPE,
             param_value)))
     {
         struct axis2_conf_ctx *global_ctx = NULL;
@@ -375,7 +375,7 @@ axis2_msg_recv_delete_svc_obj(
     {
         param_value = AXIS2_PARAM_GET_VALUE(scope_param, env);
     }
-    if (NULL != param_value && (0 == AXIS2_STRCMP(AXIS2_APPLICATION_SCOPE,
+    if (param_value && (0 == AXIS2_STRCMP(AXIS2_APPLICATION_SCOPE,
             param_value)))
     {
         return AXIS2_SUCCESS;

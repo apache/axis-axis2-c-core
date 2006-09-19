@@ -133,22 +133,22 @@ axis2_http_request_line_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     request_line_impl = AXIS2_INTF_TO_IMPL(request_line);
 
-    if (NULL != request_line_impl->method)
+    if (request_line_impl->method)
     {
         AXIS2_FREE(env->allocator, request_line_impl->method);
         request_line_impl->method = NULL;
     }
-    if (NULL != request_line_impl->uri)
+    if (request_line_impl->uri)
     {
         AXIS2_FREE(env->allocator, request_line_impl->uri);
         request_line_impl->uri = NULL;
     }
-    if (NULL != request_line_impl->http_version)
+    if (request_line_impl->http_version)
     {
         AXIS2_FREE(env->allocator, request_line_impl->http_version);
         request_line_impl->http_version = NULL;
     }
-    if (NULL != request_line->ops)
+    if (request_line->ops)
         AXIS2_FREE(env->allocator, request_line->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(request_line));

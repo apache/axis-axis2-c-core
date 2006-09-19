@@ -186,34 +186,34 @@ xml_schema_any_attribute_free(void *any_attr,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     any_attr_impl = AXIS2_INTF_TO_IMPL(any_attr);
 
-    if (NULL != any_attr_impl->ns)
+    if (any_attr_impl->ns)
     {
         AXIS2_FREE(env->allocator, any_attr_impl->ns);
         any_attr_impl->ns = NULL;
     }
-    if (NULL != any_attr_impl->ht_super)
+    if (any_attr_impl->ht_super)
     {
         axis2_hash_free(any_attr_impl->ht_super, env);
         any_attr_impl->ht_super = NULL;
     }
-    if (NULL != any_attr_impl->process_content)
+    if (any_attr_impl->process_content)
     {
         XML_SCHEMA_CONTENT_PROCESSING_FREE(any_attr_impl->process_content, env);
         any_attr_impl->process_content = NULL;
     }
 
-    if (NULL != any_attr_impl->annotated)
+    if (any_attr_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(any_attr_impl->annotated, env);
         any_attr_impl->annotated = NULL;
     }
 
-    if (NULL != any_attr_impl->any_attr.ops)
+    if (any_attr_impl->any_attr.ops)
     {
         AXIS2_FREE(env->allocator, any_attr_impl->any_attr.ops);
         any_attr_impl->any_attr.ops = NULL;
     }
-    if (NULL != any_attr_impl->any_attr.base.ops)
+    if (any_attr_impl->any_attr.base.ops)
     {
         AXIS2_FREE(env->allocator, any_attr_impl->any_attr.base.ops);
         any_attr_impl->any_attr.base.ops = NULL;
@@ -255,7 +255,7 @@ xml_schema_any_attribute_set_namespace(void *any_attr,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     any_attr_impl = AXIS2_INTF_TO_IMPL(any_attr);
 
-    if (NULL != any_attr_impl->ns)
+    if (any_attr_impl->ns)
     {
         AXIS2_FREE(env->allocator, any_attr_impl->ns);
         any_attr_impl->ns = NULL;
@@ -285,7 +285,7 @@ xml_schema_any_attribute_set_process_content(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     any_attr_impl = AXIS2_INTF_TO_IMPL(any_attr);
 
-    if (NULL != any_attr_impl->process_content)
+    if (any_attr_impl->process_content)
     {
         XML_SCHEMA_CONTENT_PROCESSING_FREE(
             any_attr_impl->process_content, env);

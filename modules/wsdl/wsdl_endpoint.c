@@ -129,25 +129,25 @@ axis2_wsdl_endpoint_free(axis2_wsdl_endpoint_t *wsdl_endpoint,
 
     wsdl_endpoint_impl = AXIS2_INTF_TO_IMPL(wsdl_endpoint);
 
-    if (NULL != wsdl_endpoint->ops)
+    if (wsdl_endpoint->ops)
     {
         AXIS2_FREE(env->allocator, wsdl_endpoint->ops);
         wsdl_endpoint->ops = NULL;
     }
 
-    if (NULL != AXIS2_INTF_TO_IMPL(wsdl_endpoint)->qname)
+    if (AXIS2_INTF_TO_IMPL(wsdl_endpoint)->qname)
     {
         AXIS2_FREE(env->allocator, wsdl_endpoint_impl->qname);
         wsdl_endpoint_impl->qname = NULL;
     }
 
-    if (NULL != AXIS2_INTF_TO_IMPL(wsdl_endpoint)->wsdl_binding)
+    if (AXIS2_INTF_TO_IMPL(wsdl_endpoint)->wsdl_binding)
     {
         AXIS2_WSDL_BINDING_FREE(wsdl_endpoint_impl->wsdl_binding, env);
         wsdl_endpoint_impl->wsdl_binding = NULL;
     }
 
-    if (NULL != wsdl_endpoint->wsdl_component)
+    if (wsdl_endpoint->wsdl_component)
     {
         AXIS2_WSDL_COMPONENT_FREE(wsdl_endpoint->wsdl_component, env);
         wsdl_endpoint->wsdl_component = NULL;

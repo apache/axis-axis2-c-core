@@ -141,17 +141,17 @@ xml_schema_input_source_free
 {
     xml_schema_input_source_impl_t *input_source_impl = NULL;
     input_source_impl = AXIS2_INTF_TO_IMPL(source);
-    if (NULL != input_source_impl->public_id)
+    if (input_source_impl->public_id)
     {
         AXIS2_FREE(env->allocator, input_source_impl->public_id);
         input_source_impl->public_id = NULL;
     }
-    if (NULL != input_source_impl->encoing)
+    if (input_source_impl->encoing)
     {
         AXIS2_FREE(env->allocator, input_source_impl->encoing);
         input_source_impl->encoing = NULL;
     }
-    if (NULL != input_source_impl->system_id)
+    if (input_source_impl->system_id)
     {
         AXIS2_FREE(env->allocator, input_source_impl->system_id);
         input_source_impl->system_id = NULL;
@@ -178,7 +178,7 @@ xml_schema_input_source_set_system_id(
 {
     xml_schema_input_source_impl_t *input_source = NULL;
     input_source = AXIS2_INTF_TO_IMPL(source);
-    if (NULL != input_source->system_id)
+    if (input_source->system_id)
     {
         AXIS2_FREE(env->allocator, input_source->system_id);
         input_source->system_id = NULL;
@@ -205,7 +205,7 @@ xml_schema_input_source_set_public_id(
 {
     xml_schema_input_source_impl_t *input_source = NULL;
     input_source = AXIS2_INTF_TO_IMPL(source);
-    if (NULL != input_source->public_id)
+    if (input_source->public_id)
     {
         AXIS2_FREE(env->allocator, input_source->public_id);
         input_source->public_id = NULL;
@@ -222,7 +222,7 @@ xml_schema_input_source_set_encoding(
 {
     xml_schema_input_source_impl_t *input_source = NULL;
     input_source = AXIS2_INTF_TO_IMPL(source);
-    if (NULL != input_source->encoing)
+    if (input_source->encoing)
     {
         AXIS2_FREE(env->allocator, input_source->encoing);
         input_source->encoing = NULL;

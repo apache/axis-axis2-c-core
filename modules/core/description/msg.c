@@ -212,7 +212,7 @@ axis2_msg_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg_impl = AXIS2_INTF_TO_IMPL(msg);
 
-    if (NULL != msg_impl->flow)
+    if (msg_impl->flow)
     {
         int i = 0;
         int size = 0;
@@ -232,7 +232,7 @@ axis2_msg_free(
         msg_impl->flow = NULL;
     }
 
-    if (NULL != msg_impl->soap_headers)
+    if (msg_impl->soap_headers)
     {
         int i = 0;
         int size = 0;
@@ -385,7 +385,7 @@ axis2_msg_is_param_locked(
 
     /* checking the locked status in parent */
     parent_l = axis2_msg_get_parent(msg, env);
-    if (NULL != parent_l)
+    if (parent_l)
     {
         locked = AXIS2_OP_IS_PARAM_LOCKED(parent_l, env, param_name);
     }
@@ -397,7 +397,7 @@ axis2_msg_is_param_locked(
     {
         param_l = axis2_msg_get_param(msg, env, param_name);
     }
-    return (param_l != NULL && AXIS2_PARAM_IS_LOCKED(param_l, env));
+    return (param_l  && AXIS2_PARAM_IS_LOCKED(param_l, env));
 }
 
 axis2_status_t AXIS2_CALL
@@ -522,7 +522,7 @@ axis2_msg_get_schema_element(
 
         schema = AXIS2_ARRAY_LIST_GET(schemas, env, i);
         schema_collection = XML_SCHEMA_GET_ITEMS(schema, env);
-        if (NULL != schema_collection)
+        if (schema_collection)
         {
             int count = 0;
             int j = 0;
@@ -538,7 +538,7 @@ axis2_msg_get_schema_element(
                 {
                     axis2_qname_t *schema_qname = NULL;
                     schema_qname = XML_SCHEMA_ELEMENT_GET_QNAME(schema_obj, env);
-                    if (NULL != msg_impl->element_qname && AXIS2_TRUE ==
+                    if (msg_impl->element_qname && AXIS2_TRUE ==
                             AXIS2_QNAME_EQUALS(msg_impl->element_qname, env,
                                     schema_qname))
                     {

@@ -159,7 +159,7 @@ axis2_http_simple_request_create(
         simple_request_impl->owns_stream = AXIS2_TRUE;
     }
 
-    if (http_hdr_count > 0 && NULL != http_headers)
+    if (http_hdr_count > 0 &&  http_headers)
     {
         int i = 0;
         simple_request_impl->header_group = axis2_array_list_create(env,
@@ -234,12 +234,12 @@ axis2_http_simple_request_free(
         Don't free the stream since it belongs to the socket
         TODO : if chunked remove the chunked stream.
     */
-    if (NULL != simple_request_impl->request_line)
+    if (simple_request_impl->request_line)
     {
         AXIS2_HTTP_REQUEST_LINE_FREE(simple_request_impl->request_line, env);
         simple_request_impl->request_line = NULL;
     }
-    if (NULL != simple_request_impl->header_group)
+    if (simple_request_impl->header_group)
     {
         int i = 0;
         axis2_http_header_t *tmp = NULL;
@@ -255,7 +255,7 @@ axis2_http_simple_request_free(
         simple_request_impl->header_group = NULL;
     }
 
-    if (NULL != simple_request->ops)
+    if (simple_request->ops)
         AXIS2_FREE(env->allocator, simple_request->ops);
 
     AXIS2_FREE(env->allocator, simple_request_impl);
@@ -457,7 +457,7 @@ axis2_http_simple_request_get_content_type(
     AXIS2_ENV_CHECK(env, NULL);
     tmp_header = axis2_http_simple_request_get_first_header
             (simple_request, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
-    if (NULL != tmp_header)
+    if (tmp_header)
         return AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, env);
 
     return AXIS2_HTTP_HEADER_ACCEPT_TEXT_PLAIN;
@@ -473,12 +473,12 @@ axis2_http_simple_request_get_charset(
     AXIS2_ENV_CHECK(env, NULL);
     tmp_header = axis2_http_simple_request_get_first_header
             (simple_request, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
-    if (NULL != tmp_header)
+    if (tmp_header)
     {
         axis2_char_t *value = AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, env);
         axis2_char_t *charset = (axis2_char_t *)strstr((char *)value,
                 (char *)AXIS2_HTTP_CHAR_SET_ENCODING);
-        if (NULL != charset)
+        if (charset)
         {
             charset = strchr((char *)charset, '=');
             return charset;
@@ -498,7 +498,7 @@ axis2_http_simple_request_get_content_length(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     tmp_header = axis2_http_simple_request_get_first_header
             (simple_request, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH);
-    if (NULL != tmp_header)
+    if (tmp_header)
     {
         return AXIS2_ATOI(AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, env));
     }
@@ -549,7 +549,7 @@ axis2_http_simple_request_get_body_bytes(
     while (AXIS2_STREAM_READ(body, env, tmp_buf2, 128) > 0)
     {
         tmp_buf3 = AXIS2_STRACAT(tmp_buf, tmp_buf2, env);
-        if (NULL != tmp_buf)
+        if (tmp_buf)
         {
             AXIS2_FREE(env->allocator, tmp_buf);
             tmp_buf = NULL;
@@ -560,7 +560,7 @@ axis2_http_simple_request_get_body_bytes(
     /*
         TODO :STREAM_READ => STREAM_READ_BYTES
     */
-    if (NULL != tmp_buf)
+    if (tmp_buf)
     {
         *buf = tmp_buf;
         return AXIS2_STRLEN(tmp_buf);

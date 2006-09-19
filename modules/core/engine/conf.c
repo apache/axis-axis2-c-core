@@ -633,7 +633,7 @@ axis2_conf_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     config_impl = AXIS2_INTF_TO_IMPL(conf);
 
-    if (NULL != conf->param_container)
+    if (conf->param_container)
     {
         AXIS2_PARAM_CONTAINER_FREE(conf->param_container, env);
         conf->param_container = NULL;
@@ -899,7 +899,7 @@ axis2_conf_free(
         config_impl->faulty_modules = NULL;
     }
 
-    if (NULL != config_impl->dep_engine)
+    if (config_impl->dep_engine)
     {
         AXIS2_DEP_ENGINE_FREE(config_impl->dep_engine, env);
         config_impl->dep_engine = NULL;
@@ -929,7 +929,7 @@ axis2_conf_free(
         config_impl->axis2_repo = NULL;
     }
 
-    if (NULL != conf->ops)
+    if (conf->ops)
     {
         AXIS2_FREE(env->allocator, conf->ops);
         conf->ops = NULL;
@@ -985,7 +985,7 @@ axis2_conf_add_svc_grp(
         svc_name2 = axis2_hash_get(config_impl->all_svcs, svc_name,
                 AXIS2_HASH_KEY_STRING);
         /* no two service names deployed in the engine can be same */
-        if (NULL != svc_name2)
+        if (svc_name2)
         {
             AXIS2_ERROR_SET(env->error,
                     AXIS2_ERROR_TWO_SVCS_CANNOT_HAVE_SAME_NAME, AXIS2_FAILURE);
@@ -996,7 +996,7 @@ axis2_conf_add_svc_grp(
 
     svcs = AXIS2_SVC_GRP_GET_ALL_SVCS(svc_grp, env);
     index_i = axis2_hash_first(svcs, env);
-    while (NULL != index_i)
+    while (index_i)
     {
         void *value = NULL;
         axis2_svc_t *desc = NULL;
@@ -1204,7 +1204,7 @@ axis2_conf_is_param_locked(
     AXIS2_PARAM_CHECK(env->error, param_name, AXIS2_FALSE);
 
     param = axis2_conf_get_param(conf, env, param_name);
-    return (NULL != param && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env));
+    return (param && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env));
 }
 
 axis2_transport_in_desc_t *AXIS2_CALL
@@ -1331,7 +1331,7 @@ axis2_conf_get_module(
     name = AXIS2_QNAME_TO_STRING(qname, env);
     ret = (axis2_module_desc_t *) axis2_hash_get(conf_impl->all_modules,
             name, AXIS2_HASH_KEY_STRING);
-    if (NULL != ret)
+    if (ret)
     {
         return ret;
     }
@@ -1452,13 +1452,13 @@ axis2_conf_get_all_svcs(
     config_impl = AXIS2_INTF_TO_IMPL(conf);
     sgs = axis2_conf_get_all_svc_grps(conf, env);
     index_i = axis2_hash_first(sgs, env);
-    while (NULL != index_i)
+    while (index_i)
     {
         axis2_hash_this(index_i, NULL, NULL, &value);
         axis_svc_grp = (axis2_svc_grp_t *) value;
         svcs = AXIS2_SVC_GRP_GET_ALL_SVCS(axis_svc_grp, env);
         index_j = axis2_hash_first(svcs, env);
-        while (NULL != index_j)
+        while (index_j)
         {
             axis2_hash_this(index_j, NULL, NULL, &value2);
             svc = (axis2_svc_t *) value2;
@@ -1491,7 +1491,7 @@ axis2_conf_is_engaged(
 
     def_mod = AXIS2_CONF_GET_DEFAULT_MODULE(conf, env,
             AXIS2_QNAME_GET_LOCALPART(module_name, env));
-    if (NULL != def_mod)
+    if (def_mod)
     {
         def_mod_qname = AXIS2_MODULE_DESC_GET_QNAME(def_mod, env);
     }
@@ -1505,7 +1505,7 @@ axis2_conf_is_engaged(
                 engaged_modules, env, i);
 
         if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(module_name, env, qname) ||
-                (NULL != def_mod_qname && AXIS2_TRUE == AXIS2_QNAME_EQUALS(
+                (def_mod_qname && AXIS2_TRUE == AXIS2_QNAME_EQUALS(
                             def_mod_qname, env, qname)))
         {
             return AXIS2_TRUE;
@@ -1921,7 +1921,7 @@ axis2_conf_engage_module(
         module_desc = AXIS2_DEP_ENGINE_BUILD_MODULE(dep_engine, env, file, conf);
         is_new_module = AXIS2_TRUE;
     }
-    if (NULL != module_desc)
+    if (module_desc)
     {
         int size = 0;
         int i = 0;

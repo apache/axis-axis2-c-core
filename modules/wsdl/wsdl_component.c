@@ -152,13 +152,13 @@ axis2_wsdl_component_free(axis2_wsdl_component_t *wsdl_component,
 
     component_impl = AXIS2_INTF_TO_IMPL(wsdl_component);
 
-    if (NULL != wsdl_component->ops)
+    if (wsdl_component->ops)
     {
         AXIS2_FREE(env->allocator, wsdl_component->ops);
         wsdl_component->ops = NULL;
     }
 
-    if (NULL != component_impl->component_properties)
+    if (component_impl->component_properties)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
@@ -184,13 +184,13 @@ axis2_wsdl_component_free(axis2_wsdl_component_t *wsdl_component,
         component_impl->component_properties = NULL;
     }
 
-    if (NULL != component_impl->attributes)
+    if (component_impl->attributes)
     {
         AXIS2_LINKED_LIST_FREE(component_impl->attributes, env);
         component_impl->attributes = NULL;
     }
 
-    if (NULL != component_impl->elements)
+    if (component_impl->elements)
     {
         AXIS2_LINKED_LIST_FREE(component_impl->elements, env);
         component_impl->elements = NULL;

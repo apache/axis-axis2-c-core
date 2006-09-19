@@ -146,10 +146,10 @@ axis2_raw_xml_in_out_msg_recv_invoke_business_logic_sync(
             body = AXIOM_SOAP_ENVELOPE_GET_BODY(envelope, env);
             op_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
             op_element = AXIOM_NODE_GET_DATA_ELEMENT(op_node, env);
-            if (NULL != op_element)
+            if (op_element)
             {
                 local_name = AXIOM_ELEMENT_GET_LOCALNAME(op_element, env);
-                if (NULL != local_name)
+                if (local_name)
                 {
                     axis2_array_list_t *function_arr = NULL;
                     int i = 0;

@@ -85,7 +85,7 @@ int printnode(axiom_node_t *om_node, const axis2_env_t *env)
             return AXIS2_FAILURE;
 
         localname = AXIOM_ELEMENT_GET_LOCALNAME(om_ele, env);
-        if (NULL != localname)
+        if (localname)
             printf("\n %s \n", localname);
         om_ns = AXIOM_ELEMENT_GET_NAMESPACE(om_ele, env, om_node);
 
@@ -161,33 +161,33 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
 
     om_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
 
-    if (NULL != om_node)
+    if (om_node)
         printnode(om_node, env);
 
     soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
-    if (NULL != soap_header)
+    if (soap_header)
     {
         om_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
-        if (NULL != om_node)
+        if (om_node)
             printnode(om_node, env);
 
         children_iter = AXIOM_SOAP_HEADER_EXAMINE_ALL_HEADER_BLOCKS(soap_header, env);
-        if (NULL != children_iter)
+        if (children_iter)
         {
             while (AXIOM_CHILDREN_ITERATOR_HAS_NEXT(children_iter, env))
             {
                 om_node = AXIOM_CHILDREN_ITERATOR_NEXT(children_iter, env);
-                if (NULL != om_node)
+                if (om_node)
                     printnode(om_node, env);
             }
         }
     }
 
     soap_body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-    if (NULL != soap_body)
+    if (soap_body)
     {
         om_node = AXIOM_SOAP_BODY_GET_BASE_NODE(soap_body, env);
-        if (NULL != om_node)
+        if (om_node)
             printnode(om_node, env);
         else
             printf("\n\n soap body base node null \n\n");
@@ -242,7 +242,7 @@ int build_soap(const axis2_env_t *env, const char *filename, const axis2_char_t 
 
     printf("\n\nThe serialized xml is >>>>>>>>>>>>>\n\n\n%s \n\n\n", buffer);
 
-    if (NULL != buffer)
+    if (buffer)
         AXIS2_FREE(env->allocator, buffer);
 
     AXIOM_SOAP_ENVELOPE_FREE(soap_envelope, env);

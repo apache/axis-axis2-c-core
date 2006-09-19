@@ -104,11 +104,11 @@ axis2_ssl_utils_cleanup_ssl(const axis2_env_t *env, SSL_CTX *ctx, SSL *ssl)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (NULL != ssl)
+    if (ssl)
     {
         SSL_shutdown(ssl);
     }
-    if (NULL != ctx)
+    if (ctx)
     {
         SSL_CTX_free(ctx);
     }

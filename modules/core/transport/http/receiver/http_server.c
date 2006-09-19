@@ -150,14 +150,14 @@ axis2_http_server_free(
     axis2_http_server_impl_t *server_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     server_impl = AXIS2_INTF_TO_IMPL(server);
-    if (NULL != server_impl->svr_thread)
+    if (server_impl->svr_thread)
     {
         AXIS2_HTTP_SVR_THREAD_DESTROY(server_impl->svr_thread, env);
         AXIS2_HTTP_SVR_THREAD_FREE(server_impl->svr_thread, env);
         server_impl->svr_thread = NULL;
     }
 
-    if (NULL != server_impl->conf_ctx_private)
+    if (server_impl->conf_ctx_private)
     {
         AXIS2_CONF_CTX_FREE(server_impl->conf_ctx_private, env);
         server_impl->conf_ctx_private = NULL;
@@ -167,7 +167,7 @@ axis2_http_server_free(
      */
     server_impl->conf_ctx = NULL;
 
-    if (NULL != server->ops)
+    if (server->ops)
     {
         AXIS2_FREE(env->allocator, server->ops);
     }
@@ -193,11 +193,11 @@ axis2_http_server_init(
     server_impl->conf_ctx = conf_ctx;
     param = (axis2_param_t *)AXIS2_PARAM_CONTAINER_GET_PARAM(
                 in_desc->param_container, env, "port");
-    if (NULL != param)
+    if (param)
     {
         port_str = AXIS2_PARAM_GET_VALUE(param, env);
     }
-    if (NULL != port_str)
+    if (port_str)
     {
         server_impl->port = atoi(port_str);
     }
@@ -244,7 +244,7 @@ axis2_http_server_stop(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     AXIS2_LOG_INFO(env->log, "Terminating HTTP server thread");
-    if (NULL != AXIS2_INTF_TO_IMPL(server)->svr_thread)
+    if (AXIS2_INTF_TO_IMPL(server)->svr_thread)
     {
         AXIS2_HTTP_SVR_THREAD_DESTROY(AXIS2_INTF_TO_IMPL(server)->svr_thread,
                 env);

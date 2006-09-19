@@ -139,12 +139,12 @@ axis2_stack_free(axis2_stack_t *stack,
 
     stack_impl = AXIS2_INTF_TO_IMPL(stack);
 
-    if (NULL != stack_impl->data)
+    if (stack_impl->data)
     {
         AXIS2_FREE(env->allocator, stack_impl->data);
         stack_impl->data = NULL;
     }
-    if (NULL != stack->ops)
+    if (stack->ops)
     {
         AXIS2_FREE(env->allocator, stack->ops);
         stack->ops = NULL;

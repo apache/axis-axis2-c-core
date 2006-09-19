@@ -107,7 +107,7 @@ axis2_thread_create(axis2_allocator_t* allocator, axis2_threadattr_t *attr,
     new->data = data;
     new->func = func;
 
-    if (NULL != attr)
+    if (attr)
     {
         temp = &attr->attr;
     }
@@ -138,9 +138,9 @@ axis2_os_thread_equal(axis2_os_thread_t tid1, axis2_os_thread_t tid2)
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_exit(axis2_thread_t *thd, axis2_allocator_t *allocator)
 {
-    if (NULL != thd)
+    if (thd)
     {
-        if (NULL != thd->td)
+        if (thd->td)
         {
             AXIS2_FREE(allocator, thd->td);
             thd->td = NULL;

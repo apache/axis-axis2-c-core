@@ -172,7 +172,7 @@ axis2_http_response_writer_free(
     AXIS2_FREE(env->allocator,
             AXIS2_INTF_TO_IMPL(response_writer)->encoding);
 
-    if (NULL != response_writer->ops)
+    if (response_writer->ops)
         AXIS2_FREE(env->allocator, response_writer->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(response_writer));

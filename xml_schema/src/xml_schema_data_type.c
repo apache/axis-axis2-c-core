@@ -58,13 +58,13 @@ xml_schema_data_type_create(const axis2_env_t *env)
 
     data_type_impl = AXIS2_MALLOC(env->allocator,
             sizeof(xml_schema_data_type_impl_t));
-    if (NULL != data_type_impl)
+    if (data_type_impl)
     {
         return NULL;
     }
     data_type_impl->data_type.ops = AXIS2_MALLOC(env->allocator,
             sizeof(xml_schema_data_type_ops_t));
-    if (NULL != data_type_impl->data_type.ops)
+    if (data_type_impl->data_type.ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
@@ -91,13 +91,13 @@ xml_schema_data_type_free(void *data_type,
 
     data_type_impl = AXIS2_INTF_TO_IMPL(data_type);
 
-    if (NULL != data_type_impl->data_type.ops)
+    if (data_type_impl->data_type.ops)
     {
         AXIS2_FREE(env->allocator , data_type_impl->data_type.ops);
         data_type_impl->data_type.ops = NULL;
     }
 
-    if (NULL != data_type_impl)
+    if (data_type_impl)
     {
         AXIS2_FREE(env->allocator, data_type_impl);
         data_type_impl = NULL;

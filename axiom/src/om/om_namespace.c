@@ -174,25 +174,25 @@ axiom_namespace_free(axiom_namespace_t *om_namespace,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
 
-    if (NULL != ns_impl->prefix)
+    if (ns_impl->prefix)
     {
         AXIS2_FREE(env->allocator, ns_impl->prefix);
         ns_impl->prefix = NULL;
     }
 
-    if (NULL != ns_impl->uri)
+    if (ns_impl->uri)
     {
         AXIS2_FREE(env->allocator, ns_impl->uri);
         ns_impl->uri = NULL;
     }
 
-    if (NULL != ns_impl->key)
+    if (ns_impl->key)
     {
         AXIS2_FREE(env->allocator, ns_impl->key);
         ns_impl->key = NULL;
     }
 
-    if (NULL != om_namespace->ops)
+    if (om_namespace->ops)
     {
         AXIS2_FREE(env->allocator, om_namespace->ops);
         om_namespace->ops = NULL;
@@ -253,14 +253,14 @@ axiom_namespace_serialize(axiom_namespace_t *om_namespace,
 
     ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
 
-    if (NULL != ns_impl->uri && NULL != ns_impl->prefix &&
+    if (ns_impl->uri && NULL != ns_impl->prefix &&
             AXIS2_STRCMP(ns_impl->prefix, "") != 0)
     {
         status = axiom_output_write(om_output, env, AXIOM_NAMESPACE,
                 2, ns_impl->prefix,
                 ns_impl->uri);
     }
-    else if (NULL != ns_impl->uri)
+    else if (ns_impl->uri)
     {
         status = axiom_output_write(om_output, env, AXIOM_NAMESPACE,
                 2, NULL, ns_impl->uri);
@@ -297,7 +297,7 @@ axiom_namespace_clone(axiom_namespace_t *om_namespace,
 
     cloned_ns = axiom_namespace_create(env,
             ns_impl->uri, ns_impl->prefix);
-    if (NULL != cloned_ns)
+    if (cloned_ns)
     {
         return cloned_ns;
     }
@@ -312,22 +312,22 @@ axiom_namespace_to_string(axiom_namespace_t *om_namespace,
     axis2_char_t *temp_str = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
-    if (NULL != ns_impl->key)
+    if (ns_impl->key)
     {
         AXIS2_FREE(env->allocator, ns_impl->key);
         ns_impl->key = NULL;
     }
-    if ((NULL != ns_impl->uri) && (NULL != ns_impl->prefix))
+    if ((ns_impl->uri) && (NULL != ns_impl->prefix))
     {
         temp_str = AXIS2_STRACAT(ns_impl->uri, "|", env);
         ns_impl->key = AXIS2_STRACAT(temp_str, ns_impl->prefix, env);
-        if (NULL != temp_str)
+        if (temp_str)
         {
             AXIS2_FREE(env->allocator, temp_str);
             temp_str = NULL;
         }
     }
-    else if ((NULL != ns_impl->uri) && !(ns_impl->prefix))
+    else if ((ns_impl->uri) && !(ns_impl->prefix))
     {
         ns_impl->key = AXIS2_STRDUP(ns_impl->uri, env);
         if (NULL == ns_impl->key)
@@ -349,7 +349,7 @@ axiom_namespace_set_uri(axiom_namespace_t *ns,
     AXIS2_PARAM_CHECK(env->error, uri, AXIS2_FAILURE);
     ns_impl = AXIS2_INTF_TO_IMPL(ns);
 
-    if (NULL != ns_impl->uri)
+    if (ns_impl->uri)
     {
         AXIS2_FREE(env->allocator, ns_impl->uri);
         ns_impl->uri = NULL;

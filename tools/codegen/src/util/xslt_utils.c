@@ -110,7 +110,7 @@ w2c_xslt_utils_copy_node_tree(
     it = AXIOM_ELEMENT_GET_CHILDREN(from_ele, env, from);
     AXIOM_CHILDREN_ITERATOR_RESET(it, env);
 
-    while ((from_child = AXIOM_CHILDREN_ITERATOR_NEXT(it, env)) != NULL)
+    while ((from_child = AXIOM_CHILDREN_ITERATOR_NEXT(it, env)))
     {
         if (AXIOM_NODE_GET_NODE_TYPE(from_child, env) == AXIOM_TEXT)
         {
@@ -130,13 +130,13 @@ w2c_xslt_utils_copy_node_tree(
     }
 
     attr_ht = AXIOM_ELEMENT_GET_ALL_ATTRIBUTES(from_ele, env);
-    if (NULL != attr_ht)
+    if (attr_ht)
     {
         for (hi = axis2_hash_first(attr_ht, env);  hi;
                 hi = axis2_hash_next(env, hi))
         {
             axis2_hash_this(hi, NULL, NULL, &val);
-            if (NULL != val)
+            if (val)
             {
                 om_attri = (axiom_attribute_t *)val;
                 om_attri = AXIOM_ATTRIBUTE_CLONE(om_attri, env);

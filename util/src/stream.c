@@ -136,7 +136,7 @@ axis2_stream_free(axis2_stream_t *stream, const axis2_env_t *env)
     {
         case AXIS2_STREAM_BASIC:
         {
-            if (NULL != stream_impl->buffer)
+            if (stream_impl->buffer)
             {
                 AXIS2_FREE(env->allocator, stream_impl->buffer);
             }
@@ -152,7 +152,7 @@ axis2_stream_free(axis2_stream_t *stream, const axis2_env_t *env)
         }
         case AXIS2_STREAM_SOCKET:
         {
-            if (NULL != stream_impl->fp)
+            if (stream_impl->fp)
             {
                 fclose(stream_impl->fp);
             }
@@ -164,7 +164,7 @@ axis2_stream_free(axis2_stream_t *stream, const axis2_env_t *env)
             break;
     }
 
-    if (NULL != stream_impl->stream.ops)
+    if (stream_impl->stream.ops)
     {
         AXIS2_FREE(env->allocator, stream_impl->stream.ops);
     }

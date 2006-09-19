@@ -118,10 +118,10 @@ axis2_wsdl_ext_soap_address_free(axis2_wsdl_ext_soap_address_t *ext_soap_address
 
     ext_soap_address_impl = AXIS2_INTF_TO_IMPL(ext_soap_address);
 
-    if (NULL != ext_soap_address->ops)
+    if (ext_soap_address->ops)
         AXIS2_FREE(env->allocator, ext_soap_address->ops);
 
-    if (NULL != ext_soap_address_impl->location_uri)
+    if (ext_soap_address_impl->location_uri)
     {
         AXIS2_FREE(env->allocator, ext_soap_address_impl->location_uri);
         ext_soap_address_impl->location_uri = NULL;

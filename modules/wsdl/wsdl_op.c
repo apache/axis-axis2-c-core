@@ -260,14 +260,14 @@ axis2_wsdl_op_free(axis2_wsdl_op_t *wsdl_op,
 
     wsdl_op_impl = AXIS2_INTF_TO_IMPL(wsdl_op);
 
-    if (NULL != wsdl_op->extensible_component)
+    if (wsdl_op->extensible_component)
     {
         AXIS2_WSDL_EXTENSIBLE_COMPONENT_FREE(wsdl_op->extensible_component, env);
 
         wsdl_op->extensible_component = NULL;
     }
 
-    if (NULL != wsdl_op_impl->in_faults)
+    if (wsdl_op_impl->in_faults)
     {
         void *val = NULL;
         int i = 0;
@@ -288,7 +288,7 @@ axis2_wsdl_op_free(axis2_wsdl_op_t *wsdl_op,
         wsdl_op_impl->in_faults = NULL;
     }
 
-    if (NULL != wsdl_op_impl->out_faults)
+    if (wsdl_op_impl->out_faults)
     {
         void *val = NULL;
         int i = 0;
@@ -312,7 +312,7 @@ axis2_wsdl_op_free(axis2_wsdl_op_t *wsdl_op,
         wsdl_op_impl->out_faults = NULL;
     }
 
-    if (NULL != wsdl_op_impl->name)
+    if (wsdl_op_impl->name)
     {
         AXIS2_QNAME_FREE(wsdl_op_impl->name, env);
         wsdl_op_impl->name = NULL;
@@ -324,13 +324,13 @@ axis2_wsdl_op_free(axis2_wsdl_op_t *wsdl_op,
         wsdl_op_impl->msg_exchange_pattern = NULL;
     }
 
-    if (NULL != wsdl_op_impl->style)
+    if (wsdl_op_impl->style)
     {
         AXIS2_FREE(env->allocator, wsdl_op_impl->style);
         wsdl_op_impl->style = NULL;
     }
 
-    if (NULL != wsdl_op->ops)
+    if (wsdl_op->ops)
     {
         AXIS2_FREE(env->allocator, wsdl_op->ops);
         wsdl_op->ops = NULL;

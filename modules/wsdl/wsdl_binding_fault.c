@@ -113,19 +113,19 @@ axis2_binding_fault_free(axis2_wsdl_binding_fault_t *binding_fault,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     binding_fault_impl = AXIS2_INTF_TO_IMPL(binding_fault);
-    if (NULL != binding_fault->ops)
+    if (binding_fault->ops)
     {
         AXIS2_FREE(env->allocator, binding_fault->ops);
         binding_fault->ops = NULL;
     }
 
-    if (NULL != binding_fault_impl->ref)
+    if (binding_fault_impl->ref)
     {
         AXIS2_QNAME_FREE(binding_fault_impl->ref, env);
         binding_fault_impl->ref = NULL;
     }
 
-    if (NULL != binding_fault->extensible_component)
+    if (binding_fault->extensible_component)
     {
         AXIS2_WSDL_EXTENSIBLE_COMPONENT_FREE(binding_fault->extensible_component, env);
         binding_fault->extensible_component = NULL;

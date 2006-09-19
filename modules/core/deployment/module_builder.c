@@ -136,7 +136,7 @@ axis2_module_builder_free(
         module_builder->desc_builder = NULL;
     }
 
-    if (NULL != module_builder->ops)
+    if (module_builder->ops)
     {
         AXIS2_FREE(env->allocator, module_builder->ops);
         module_builder->ops = NULL;
@@ -201,12 +201,12 @@ axis2_module_builder_populate_module(
         qattname);
     if(qattname)
         AXIS2_QNAME_FREE(qattname, env);
-    if(NULL != module_name_att)
+    if( module_name_att)
     {
         axis2_char_t *module_name = NULL;
         
         module_name = AXIOM_ATTRIBUTE_GET_VALUE(module_name_att, env);
-        if(NULL != module_name && (0 != AXIS2_STRCMP("", module_name)))
+        if( module_name && (0 != AXIS2_STRCMP("", module_name)))
         {
             axis2_qname_t *qmodule_name = NULL;
             AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Populate module %s", module_name);
@@ -257,15 +257,15 @@ axis2_module_builder_populate_module(
     if (qdllname)
         AXIS2_QNAME_FREE(qdllname, env);
 
-    if (NULL != module_dll_att)
+    if (module_dll_att)
     {
         axis2_char_t *class_name = NULL;
 
 
         class_name = AXIOM_ATTRIBUTE_GET_VALUE(module_dll_att, env);
-        if (NULL != class_name && (0 != AXIS2_STRCMP("", class_name)))
+        if (class_name && (0 != AXIS2_STRCMP("", class_name)))
         {
-            if (NULL != module_builder->desc_builder->engine)
+            if (module_builder->desc_builder->engine)
             {
                 axis2_arch_file_data_t *file_data = NULL;
 
@@ -300,7 +300,7 @@ axis2_module_builder_populate_module(
     if (qinflowst)
         AXIS2_QNAME_FREE(qinflowst, env);
 
-    if (NULL != in_flow_element && NULL != in_flow_node)
+    if (in_flow_element && NULL != in_flow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -322,7 +322,7 @@ axis2_module_builder_populate_module(
     if (qoutflowst)
         AXIS2_QNAME_FREE(qoutflowst, env);
 
-    if (NULL != out_flow_element && NULL != out_flow_node)
+    if (out_flow_element && NULL != out_flow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -343,7 +343,7 @@ axis2_module_builder_populate_module(
     if (qinfaultflow)
         AXIS2_QNAME_FREE(qinfaultflow, env);
 
-    if (NULL != in_fault_flow_element && NULL != in_fault_flow_node)
+    if (in_fault_flow_element && NULL != in_fault_flow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -364,7 +364,7 @@ axis2_module_builder_populate_module(
     if (qoutfaultflow)
         AXIS2_QNAME_FREE(qoutfaultflow, env);
 
-    if (NULL != out_fault_flow_element && NULL != out_fault_flow_node)
+    if (out_fault_flow_element && NULL != out_fault_flow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -457,7 +457,7 @@ axis2_module_builder_process_ops(
         if (qmep)
             AXIS2_QNAME_FREE(qmep, env);
 
-        if (NULL != op_mep_att)
+        if (op_mep_att)
         {
             mep_url = AXIOM_ATTRIBUTE_GET_VALUE(op_mep_att, env);
         }
@@ -497,7 +497,7 @@ axis2_module_builder_process_ops(
                 env, qmsgrecv, op_node, &recv_node);
         if (qmsgrecv)
             AXIS2_QNAME_FREE(qmsgrecv, env);
-        if (NULL != recv_element && NULL != recv_node)
+        if (recv_element && NULL != recv_node)
         {
             axis2_msg_recv_t *msg_recv = NULL;
 

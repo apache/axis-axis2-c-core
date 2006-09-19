@@ -180,23 +180,23 @@ xml_schema_external_free(void *external,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     external_impl = AXIS2_INTF_TO_IMPL(external);
 
-    if (NULL != external_impl->ht_super)
+    if (external_impl->ht_super)
     {
         axis2_hash_free(external_impl->ht_super, env);
         external_impl->ht_super = NULL;
     }
-    if (NULL != external_impl->annotated)
+    if (external_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(external_impl->annotated, env);
         external_impl->annotated = NULL;
     }
 
-    if (NULL != external_impl->external.ops)
+    if (external_impl->external.ops)
     {
         AXIS2_FREE(env->allocator, external_impl->external.ops);
         external_impl->external.ops = NULL;
     }
-    if (NULL != external_impl->external.base.ops)
+    if (external_impl->external.base.ops)
     {
         AXIS2_FREE(env->allocator, external_impl->external.base.ops);
         external_impl->external.base.ops = NULL;
@@ -261,7 +261,7 @@ xml_schema_external_get_schema(void *external,
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_EXTERNAL_SUPER_OBJS(external, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
 
         ext_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
@@ -281,7 +281,7 @@ xml_schema_external_set_schema(void *external,
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_EXTERNAL_SUPER_OBJS(external, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
 
         ext_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
@@ -289,7 +289,7 @@ xml_schema_external_set_schema(void *external,
         if (!ext_impl)
             return AXIS2_FAILURE;
     }
-    if (NULL != ext_impl->schema)
+    if (ext_impl->schema)
     {
         /*
         XML_SCHEMA_FREE(ext_impl->schema, env);
@@ -322,7 +322,7 @@ xml_schema_external_get_schema_location(void *external,
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_EXTERNAL_SUPER_OBJS(external, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
 
         ext_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
@@ -343,7 +343,7 @@ xml_schema_external_set_schema_location(void *external,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, location, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_EXTERNAL_SUPER_OBJS(external, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
 
         ext_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
@@ -351,7 +351,7 @@ xml_schema_external_set_schema_location(void *external,
         if (!ext_impl)
             return AXIS2_FAILURE;
     }
-    if (NULL != ext_impl->schema_location)
+    if (ext_impl->schema_location)
     {
         AXIS2_FREE(env->allocator, ext_impl->schema_location);
         ext_impl->schema_location = NULL;

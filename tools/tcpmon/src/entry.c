@@ -541,9 +541,9 @@ read_current_stream(axis2_stream_t *stream,
         {
             *(buffer + read_size) = '\0';
             current_line = buffer + current_line_offset;
-            if (NULL != strstr(current_line, "Content-Length"))
+            if (strstr(current_line, "Content-Length"))
             {
-                if (NULL != (length_char = strstr(current_line, ":")))
+                if ((length_char = strstr(current_line, ":")))
                 {
                     length_char++;
                     length = atoi(length_char);

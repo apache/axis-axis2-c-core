@@ -215,7 +215,7 @@ axiom_soap_header_create_with_parent(const axis2_env_t *env,
         AXIOM_SOAP_HEADER_FREE(header, env);
         return NULL;
     }
-    if (NULL != AXIOM_NODE_GET_FIRST_CHILD(parent_node, env))
+    if (AXIOM_NODE_GET_FIRST_CHILD(parent_node, env))
     {
         body_node = AXIOM_NODE_GET_FIRST_CHILD(parent_node, env);
         AXIOM_NODE_DETACH(body_node, env);
@@ -233,7 +233,7 @@ axiom_soap_header_create_with_parent(const axis2_env_t *env,
     header_impl->om_ele_node = this_node;
     axiom_soap_envelope_set_header(envelope, env, header);
 
-    if (NULL != body_node)
+    if (body_node)
     {
         AXIOM_NODE_ADD_CHILD(parent_node, env, body_node);
     }
@@ -250,7 +250,7 @@ axiom_soap_header_free(axiom_soap_header_t *header,
 
     header_impl = AXIS2_INTF_TO_IMPL(header);
 
-    if (NULL != header_impl->header_blocks)
+    if (header_impl->header_blocks)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
@@ -268,7 +268,7 @@ axiom_soap_header_free(axiom_soap_header_t *header,
 
         axis2_hash_free(header_impl->header_blocks, env);
     }
-    if (NULL != header_impl->header_block_keys)
+    if (header_impl->header_block_keys)
     {
         int size = 0;
         void *val = NULL;
@@ -277,7 +277,7 @@ axiom_soap_header_free(axiom_soap_header_t *header,
         for (i = 0; i < size; i++)
         {
             val = AXIS2_ARRAY_LIST_GET(header_impl->header_block_keys, env, i);
-            if (NULL != val)
+            if (val)
             {
                 AXIS2_FREE(env->allocator, (char*)val);
                 val = NULL;
@@ -286,7 +286,7 @@ axiom_soap_header_free(axiom_soap_header_t *header,
         AXIS2_ARRAY_LIST_FREE(header_impl->header_block_keys, env);
         header_impl->header_block_keys = NULL;
     }
-    if (NULL != header->ops)
+    if (header->ops)
     {
         AXIS2_FREE(env->allocator, header->ops);
         header->ops = NULL;
@@ -445,7 +445,7 @@ AXIS2_CALL axiom_soap_header_extract_header_blocks
     {
         first_ele = AXIOM_ELEMENT_GET_FIRST_ELEMENT(header_om_ele, env,
                 header_impl->om_ele_node, &first_node);
-        if (NULL != first_node)
+        if (first_node)
         {
             return axiom_children_with_specific_attribute_iterator_create(env,
                     first_node, qn, role,   AXIS2_TRUE);
@@ -542,7 +542,7 @@ axiom_soap_header_set_header_block(axiom_soap_header_t *header,
         axis2_hash_set(header_impl->header_blocks,
                 key , AXIS2_HASH_KEY_STRING, header_block);
     }
-    if (NULL != header_impl->header_block_keys)
+    if (header_impl->header_block_keys)
     {
         AXIS2_ARRAY_LIST_ADD(header_impl->header_block_keys, env, key);
     }
@@ -613,7 +613,7 @@ axiom_soap_header_get_header_blocks_with_namespace_uri
                 {
                     ns = AXIOM_ELEMENT_GET_NAMESPACE(header_block_om_ele, env,
                             header_block_om_node);
-                    if (NULL != ns)
+                    if (ns)
                     {
                         hb_namespace_uri = AXIOM_NAMESPACE_GET_URI(ns, env);
                         if (AXIS2_STRCMP(hb_namespace_uri, ns_uri) == 0)
@@ -681,7 +681,7 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *header,
         void *val = NULL;
 
         axis2_hash_this(hi, &key, NULL, &val);
-        if (NULL != val)
+        if (val)
         {
             axiom_soap_header_block_t *header_block = NULL;
             axiom_element_t *ele = NULL;
@@ -689,7 +689,7 @@ axiom_soap_header_remove_header_block(axiom_soap_header_t *header,
 
             header_block = (axiom_soap_header_block_t*)val;
             node = AXIOM_SOAP_HEADER_BLOCK_GET_BASE_NODE(header_block, env);
-            if (NULL != node)
+            if (node)
             {
                 axis2_qname_t *element_qname = NULL;
 

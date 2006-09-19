@@ -163,7 +163,7 @@ xml_schema_severity_type_free(void *severity_type,
         {
             axis2_char_t *value = NULL;
             value = (axis2_char_t*) AXIS2_ARRAY_LIST_GET(severity_type_impl->members, env, i);
-            if (NULL != value)
+            if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
@@ -216,7 +216,7 @@ xml_schema_severity_type_get_values(void *severity_type,
     xml_schema_severity_type_impl_t *severity_impl = NULL;
     axis2_hash_t *ht_super = NULL;
     ht_super = XML_SCHEMA_SEREVITY_TYPE_SUPER_OBJS(severity_type, env);
-    if(NULL != ht_super)
+    if( ht_super)
     {
         severity_impl = (xml_schema_severity_type_impl_t*)
             axis2_hash_get(ht_super, "XML_SCHEMA_SEVERITY_TYPE", AXIS2_HASH_KEY_STRING);

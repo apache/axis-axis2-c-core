@@ -153,7 +153,7 @@ w2c_cqname2name_maker_suggest_name(w2c_cqname2name_maker_t *cqname2name_maker,
     key = AXIS2_QNAME_TO_STRING(qname, env);
     local = (axis2_char_t*)axis2_hash_get(cqname2name_maker_impl-> qname2name, key,
             AXIS2_HASH_KEY_STRING);
-    if (local != NULL) /* key has been there somewhere */
+    if (local) /* key has been there somewhere */
     {
         return local;
     }

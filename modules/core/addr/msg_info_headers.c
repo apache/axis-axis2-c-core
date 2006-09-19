@@ -356,8 +356,8 @@ axis2_msg_info_headers_set_to(
     msg_info_headers_impl = AXIS2_INTF_TO_IMPL(msg_info_headers);
 
     if (msg_info_headers_impl->to && to) /* if the incoming to is NULL,
-                                                            we consider that to be a reset,
-                                                            so don't free */
+                                                                    we consider that to be a reset,
+                                                                    so don't free */
     {
         AXIS2_ENDPOINT_REF_FREE(msg_info_headers_impl->to, env);
         msg_info_headers_impl->to = NULL;
@@ -442,12 +442,12 @@ axis2_msg_info_headers_set_action(
     const axis2_char_t *action)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (NULL != AXIS2_INTF_TO_IMPL(msg_info_headers)->action)
+    if (AXIS2_INTF_TO_IMPL(msg_info_headers)->action)
     {
         AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(msg_info_headers)->action);
         AXIS2_INTF_TO_IMPL(msg_info_headers)->action = NULL;
     }
-    if (NULL != action)
+    if (action)
         AXIS2_INTF_TO_IMPL(msg_info_headers)->action = AXIS2_STRDUP(action, env);
     return AXIS2_SUCCESS;
 }
@@ -598,7 +598,7 @@ axis2_msg_info_headers_free(
         AXIS2_ARRAY_LIST_FREE(msg_info_headers_impl->ref_params, env);
         msg_info_headers_impl->ref_params = NULL;
     }
-    if (NULL != AXIS2_INTF_TO_IMPL(msg_info_headers)->action)
+    if (AXIS2_INTF_TO_IMPL(msg_info_headers)->action)
     {
         AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(msg_info_headers)->action);
         AXIS2_INTF_TO_IMPL(msg_info_headers)->action = NULL;

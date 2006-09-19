@@ -588,7 +588,7 @@ axis2_dep_engine_free(
         dep_engine_impl->repos_listener = NULL;
     }
 
-    if (NULL != dep_engine->ops)
+    if (dep_engine->ops)
     {
         AXIS2_FREE(env->allocator, dep_engine->ops);
         dep_engine->ops = NULL;
@@ -727,7 +727,7 @@ axis2_dep_engine_set_dep_features(
     para_hot_update = AXIS2_CONF_GET_PARAM(dep_engine_impl->conf, env,
             AXIS2_HOTUPDATE);
 
-    if (NULL != para_hot_dep)
+    if (para_hot_dep)
     {
         value = (axis2_char_t *) AXIS2_PARAM_GET_VALUE(para_hot_dep, env);
         if (0 == AXIS2_STRCASECMP("false", value))
@@ -735,7 +735,7 @@ axis2_dep_engine_set_dep_features(
             dep_engine_impl->hot_dep = AXIS2_FALSE;
         }
     }
-    if (NULL != para_hot_update)
+    if (para_hot_update)
     {
         value = (axis2_char_t *) AXIS2_PARAM_GET_VALUE(para_hot_update, env);
         if (0 == AXIS2_STRCASECMP("false", value))
@@ -871,7 +871,7 @@ axis2_dep_engine_load_client(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    if (NULL != client_home && 0 != AXIS2_STRCMP("", client_home))
+    if (client_home && 0 != AXIS2_STRCMP("", client_home))
     {
         status = axis2_dep_engine_check_client_home(dep_engine, env, client_home);
         if (AXIS2_SUCCESS == status)
@@ -1109,7 +1109,7 @@ axis2_dep_engine_add_new_svc(
                     env, j);
             module_desc = AXIS2_CONF_GET_MODULE(dep_engine_impl->conf, env,
                     qmodulename);
-            if (NULL != module_desc)
+            if (module_desc)
             {
                 AXIS2_SVC_ENGAGE_MODULE(svc, env, module_desc, dep_engine_impl->conf);
 
@@ -1136,7 +1136,7 @@ axis2_dep_engine_add_new_svc(
                     env, j);
             module_desc = AXIS2_CONF_GET_MODULE(dep_engine_impl->conf, env,
                     qmodulename);
-            if (NULL != module_desc)
+            if (module_desc)
             {
                 AXIS2_SVC_ENGAGE_MODULE(svc, env, module_desc, dep_engine_impl->conf);
 
@@ -1177,7 +1177,7 @@ axis2_dep_engine_add_new_svc(
                 module = AXIS2_CONF_GET_MODULE(dep_engine_impl->conf, env,
                         module_qname);
 
-                if (NULL != module)
+                if (module)
                 {
                     AXIS2_OP_ENGAGE_MODULE(op_desc, env, module,
                             dep_engine_impl->conf);
@@ -1212,25 +1212,25 @@ axis2_dep_engine_load_svc_props(
     dep_engine_impl = AXIS2_INTF_TO_IMPL(dep_engine);
 
     in_flow = AXIS2_SVC_GET_IN_FLOW(svc, env);
-    if (NULL != in_flow)
+    if (in_flow)
     {
         axis2_dep_engine_add_flow_handlers(dep_engine, env, in_flow);
     }
 
     out_flow = AXIS2_SVC_GET_OUT_FLOW(svc, env);
-    if (NULL != out_flow)
+    if (out_flow)
     {
         axis2_dep_engine_add_flow_handlers(dep_engine, env, out_flow);
     }
 
     in_fault_flow = AXIS2_SVC_GET_FAULT_IN_FLOW(svc, env);
-    if (NULL != in_fault_flow)
+    if (in_fault_flow)
     {
         axis2_dep_engine_add_flow_handlers(dep_engine, env, in_fault_flow);
     }
 
     out_fault_flow = AXIS2_SVC_GET_FAULT_OUT_FLOW(svc, env);
-    if (NULL != out_fault_flow)
+    if (out_fault_flow)
     {
         axis2_dep_engine_add_flow_handlers(dep_engine, env, out_fault_flow);
     }
@@ -1443,28 +1443,28 @@ axis2_dep_engine_add_new_module(
     }
 
     in_flow = AXIS2_MODULE_DESC_GET_IN_FLOW(module_metadata, env);
-    if (NULL != in_flow)
+    if (in_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, in_flow,
                 module->handler_create_func_map);
     }
 
     out_flow = AXIS2_MODULE_DESC_GET_OUT_FLOW(module_metadata, env);
-    if (NULL != out_flow)
+    if (out_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, out_flow,
                 module->handler_create_func_map);
     }
 
     in_fault_flow = AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_metadata, env);
-    if (NULL != in_fault_flow)
+    if (in_fault_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, in_fault_flow,
                 module->handler_create_func_map);
     }
 
     out_fault_flow = AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_metadata, env);
-    if (NULL != out_fault_flow)
+    if (out_fault_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, out_fault_flow,
                 module->handler_create_func_map);
@@ -1541,7 +1541,7 @@ axis2_dep_engine_do_deploy(
                     break;
                 case AXIS2_MODULE:
                     arch_reader = axis2_arch_reader_create(env);
-                    if (NULL != dep_engine_impl->arch_reader)
+                    if (dep_engine_impl->arch_reader)
                     {
                         AXIS2_ARCH_READER_FREE(dep_engine_impl->arch_reader, env);
                     }
@@ -1757,28 +1757,28 @@ axis2_dep_engine_build_module(
     AXIS2_MODULE_FILL_HANDLER_CREATE_FUNC_MAP(module, env);
 
     in_flow = AXIS2_MODULE_DESC_GET_IN_FLOW(module_desc, env);
-    if (NULL != in_flow)
+    if (in_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, in_flow,
                 module->handler_create_func_map);
     }
 
     out_flow = AXIS2_MODULE_DESC_GET_OUT_FLOW(module_desc, env);
-    if (NULL != out_flow)
+    if (out_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, out_flow,
                 module->handler_create_func_map);
     }
 
     in_fault_flow = AXIS2_MODULE_DESC_GET_FAULT_IN_FLOW(module_desc, env);
-    if (NULL != in_fault_flow)
+    if (in_fault_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, in_fault_flow,
                 module->handler_create_func_map);
     }
 
     out_fault_flow = AXIS2_MODULE_DESC_GET_FAULT_OUT_FLOW(module_desc, env);
-    if (NULL != out_fault_flow)
+    if (out_fault_flow)
     {
         axis2_dep_engine_add_module_flow_handlers(dep_engine, env, out_fault_flow,
                 module->handler_create_func_map);

@@ -207,7 +207,7 @@ axiom_soap_fault_text_free(axiom_soap_fault_text_t *fault_text,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     fault_text_impl = AXIS2_INTF_TO_IMPL(fault_text);
 
-    if (NULL != fault_text->ops)
+    if (fault_text->ops)
     {
         AXIS2_FREE(env->allocator, fault_text->ops);
         fault_text->ops = NULL;
@@ -235,11 +235,11 @@ axiom_soap_fault_text_set_lang(axiom_soap_fault_text_t *fault_text,
     AXIS2_PARAM_CHECK(env->error, lang, AXIS2_FAILURE);
 
     fault_text_impl = AXIS2_INTF_TO_IMPL(fault_text);
-    if (NULL != fault_text_impl->lang_attribute)
+    if (fault_text_impl->lang_attribute)
     {
         axis2_char_t *attr_lang = NULL;
         attr_lang = AXIOM_ATTRIBUTE_GET_VALUE(fault_text_impl->lang_attribute, env);
-        if (NULL != attr_lang)
+        if (attr_lang)
         {
             if (AXIS2_STRCMP(attr_lang, lang) == 0)
             {
@@ -361,15 +361,15 @@ axiom_soap_fault_text_set_text(axiom_soap_fault_text_t *fault_text,
 
     text_impl = AXIS2_INTF_TO_IMPL(fault_text);
 
-    if (NULL != text_impl->om_ele_node)
+    if (text_impl->om_ele_node)
     {
         axiom_element_t *text_ele = NULL;
         text_ele = (axiom_element_t *)
                 AXIOM_NODE_GET_DATA_ELEMENT(text_impl->om_ele_node, env);
-        if (NULL != text_ele)
+        if (text_ele)
         {
             AXIOM_ELEMENT_SET_TEXT(text_ele, env, value, text_impl->om_ele_node);
-            if (NULL != lang)
+            if (lang)
             {
                 axiom_soap_fault_text_set_lang(fault_text, env, lang);
             }
@@ -389,12 +389,12 @@ axiom_soap_fault_text_get_text(axiom_soap_fault_text_t *fault_text,
 
     text_impl = AXIS2_INTF_TO_IMPL(fault_text);
 
-    if (NULL != text_impl->om_ele_node)
+    if (text_impl->om_ele_node)
     {
         axiom_element_t *text_ele = NULL;
         text_ele = (axiom_element_t *)
                 AXIOM_NODE_GET_DATA_ELEMENT(text_impl->om_ele_node, env);
-        if (NULL != text_ele)
+        if (text_ele)
         {
             text = AXIOM_ELEMENT_GET_TEXT(text_ele, env,
                     text_impl->om_ele_node);

@@ -154,7 +154,7 @@ axis2_desc_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     desc_impl = AXIS2_INTF_TO_IMPL(desc);
 
-    if (NULL != desc_impl->children)
+    if (desc_impl->children)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
@@ -251,7 +251,7 @@ axis2_desc_is_param_locked(
 
     param_l = axis2_desc_get_param(desc, env, param_name);
 
-    return (param_l != NULL && AXIS2_PARAM_IS_LOCKED(param_l, env));
+    return (param_l  && AXIS2_PARAM_IS_LOCKED(param_l, env));
 }
 
 axis2_status_t AXIS2_CALL

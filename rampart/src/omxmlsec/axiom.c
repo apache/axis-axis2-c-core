@@ -181,7 +181,7 @@ oxs_axiom_check_node_name(const axis2_env_t *env, axiom_node_t* node, axis2_char
 
     if (ret_name < 0) return 0;
 
-    if (ns != NULL)
+    if (ns)
     {
         ns_str = AXIS2_QNAME_GET_URI(qname, env);
         ret_ns =  AXIS2_STRCMP(ns_str, ns) ;

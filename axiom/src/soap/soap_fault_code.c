@@ -204,17 +204,17 @@ axiom_soap_fault_code_free(axiom_soap_fault_code_t *fault_code,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
 
-    if (NULL != fault_code_impl->subcode)
+    if (fault_code_impl->subcode)
     {
         AXIOM_SOAP_FAULT_SUB_CODE_FREE(fault_code_impl->subcode, env);
         fault_code_impl->subcode = NULL;
     }
-    if (NULL != fault_code_impl->value)
+    if (fault_code_impl->value)
     {
         AXIOM_SOAP_FAULT_VALUE_FREE(fault_code_impl->value, env);
         fault_code_impl->value = NULL;
     }
-    if (NULL != fault_code->ops)
+    if (fault_code->ops)
     {
         AXIS2_FREE(env->allocator, fault_code->ops);
         fault_code->ops = NULL;
@@ -284,11 +284,11 @@ axiom_soap_fault_code_get_sub_code(axiom_soap_fault_code_t *fault_code,
     AXIS2_ENV_CHECK(env, NULL);
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
 
-    if (NULL != fault_code_impl->subcode)
+    if (fault_code_impl->subcode)
     {
         return fault_code_impl->subcode;
     }
-    else if (NULL != fault_code_impl->builder)
+    else if (fault_code_impl->builder)
     {
         while (!(fault_code_impl->subcode) &&
                 !(AXIOM_NODE_IS_COMPLETE(fault_code_impl->om_ele_node, env)))
@@ -315,7 +315,7 @@ axiom_soap_fault_code_get_value(axiom_soap_fault_code_t *fault_code,
 
     fault_code_impl = AXIS2_INTF_TO_IMPL(fault_code);
 
-    if (NULL != fault_code_impl->value)
+    if (fault_code_impl->value)
     {
         return fault_code_impl->value;
     }

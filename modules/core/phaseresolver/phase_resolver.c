@@ -364,7 +364,7 @@ axis2_phase_resolver_build_execution_chains(
                 AXIS2_QNAME_GET_LOCALPART(modulename, env));
         module_desc = AXIS2_CONF_GET_MODULE(resolver_impl->axis2_config, env,
                 modulename);
-        if (NULL != module_desc)
+        if (module_desc)
         {
             switch (type)
             {
@@ -410,7 +410,7 @@ axis2_phase_resolver_build_execution_chains(
             return AXIS2_FAILURE;
         }
 
-        if (NULL != flow)
+        if (flow)
         {
             int j = 0;
             int count = 0;
@@ -513,7 +513,7 @@ axis2_phase_resolver_build_execution_chains(
         }
     }
 
-    if (NULL != flow)
+    if (flow)
     {
         int j = 0;
         int count = 0;
@@ -781,7 +781,7 @@ axis2_phase_resolver_build_in_transport_chains(
                 break;
             }
         }
-        if (NULL != flow)
+        if (flow)
         {
             axis2_phase_holder_t *phase_holder = NULL;
             int size = 0;
@@ -912,7 +912,7 @@ axis2_phase_resolver_build_out_transport_chains(
             }
         }
 
-        if (NULL != flow)
+        if (flow)
         {
             axis2_phase_holder_t *phase_holder = NULL;
             int hndlr_count = 0;
@@ -1246,7 +1246,7 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
                     break;
                 }
             }
-            if (NULL != flow)
+            if (flow)
             {
                 int handler_count = 0;
 
@@ -1403,7 +1403,7 @@ axis2_phase_resolver_engage_to_global_chain(
                 break;
             }
         }
-        if (NULL != flow)
+        if (flow)
         {
             int j = 0;
             for (j = 0; j < AXIS2_FLOW_GET_HANDLER_COUNT(flow, env); j++)
@@ -1609,7 +1609,7 @@ axis2_phase_resolver_engage_module_to_op(
             }
         }
 
-        if (NULL != flow && NULL != resolver_impl->phase_holder)
+        if (flow && NULL != resolver_impl->phase_holder)
         {
             int j = 0;
             int handler_count = 0;

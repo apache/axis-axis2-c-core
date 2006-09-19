@@ -168,12 +168,12 @@ axiom_soap_over_http_sender_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     sender_impl = AXIS2_INTF_TO_IMPL(sender);
-    if (NULL != sender_impl->http_version)
+    if (sender_impl->http_version)
     {
         AXIS2_FREE(env->allocator, sender_impl->http_version);
         sender_impl->http_version = NULL;
     }
-    if (NULL != sender->ops)
+    if (sender->ops)
         AXIS2_FREE(env->allocator, sender->ops);
 
     /* Do not free this here since it will be required in later processing
@@ -438,11 +438,11 @@ axiom_soap_over_http_sender_send(
         axis2_char_t *tmp_header_val = NULL;
         tmp_header = AXIS2_HTTP_SIMPLE_RESPONSE_GET_FIRST_HEADER(response, env,
                 AXIS2_HTTP_HEADER_CONTENT_TYPE);
-        if (NULL != tmp_header)
+        if (tmp_header)
         {
             tmp_header_val = AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, env);
         }
-        if (NULL != tmp_header_val && (AXIS2_STRSTR(tmp_header_val,
+        if (tmp_header_val && (AXIS2_STRSTR(tmp_header_val,
                 AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP) || AXIS2_STRSTR(
                     tmp_header_val, AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML)))
         {
@@ -515,7 +515,7 @@ axiom_soap_over_http_sender_get_header_info(
         axis2_http_header_t *header = AXIS2_ARRAY_LIST_GET(headers, env, i);
         axis2_char_t *name = AXIS2_HTTP_HEADER_GET_NAME((axis2_http_header_t *)
                 header, env);
-        if (NULL != name)
+        if (name)
         {
             if (0 == AXIS2_STRCMP(name, AXIS2_HTTP_HEADER_TRANSFER_ENCODING) &&
                     0 == AXIS2_STRCMP(AXIS2_HTTP_HEADER_GET_VALUE(header
@@ -541,7 +541,7 @@ axiom_soap_over_http_sender_get_header_info(
                 axis2_char_t *content_type = AXIS2_HTTP_HEADER_GET_VALUE(header,
                         env);
                 tmp_charset = strstr(content_type, AXIS2_HTTP_CHAR_SET_ENCODING);
-                if (NULL != charset)
+                if (charset)
                 {
                     charset = AXIS2_STRDUP(tmp_charset, env);
                     break;
@@ -551,7 +551,7 @@ axiom_soap_over_http_sender_get_header_info(
     }
     content_type = (axis2_char_t *)AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_TYPE(
                 response, env);
-    if (NULL != content_type)
+    if (content_type)
     {
         if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)
                 && strstr(content_type, AXIS2_HTTP_HEADER_XOP_XML))
@@ -566,11 +566,11 @@ axiom_soap_over_http_sender_get_header_info(
                     property, AXIS2_FALSE);
         }
     }
-    if (NULL != charset)
+    if (charset)
     {
         axis2_ctx_t *axis_ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(
                     msg_ctx, env), env);
-        if (NULL != axis_ctx)
+        if (axis_ctx)
         {
             property = axis2_property_create(env);
             AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
@@ -651,20 +651,20 @@ axiom_soap_over_http_sender_get_timeout_values(
     tmp_param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx,
             env, AXIS2_HTTP_SO_TIMEOUT);
 
-    if (NULL != tmp_param)
+    if (tmp_param)
     {
         so_str = (axis2_char_t *)AXIS2_PARAM_GET_VALUE(tmp_param, env);
-        if (NULL != so_str)
+        if (so_str)
         {
             AXIS2_INTF_TO_IMPL(sender)->so_timeout = AXIS2_ATOI(so_str);
         }
     }
     tmp_param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env,
             AXIS2_HTTP_CONNECTION_TIMEOUT);
-    if (NULL != tmp_param)
+    if (tmp_param)
     {
         connection_str = (axis2_char_t *)AXIS2_PARAM_GET_VALUE(tmp_param, env);
-        if (NULL != connection_str)
+        if (connection_str)
         {
             AXIS2_INTF_TO_IMPL(sender)->connection_timeout =
                 AXIS2_ATOI(connection_str);
@@ -728,10 +728,10 @@ axiom_soap_over_http_sender_configure_proxy(
     }
     proxy_param = AXIS2_PARAM_CONTAINER_GET_PARAM(trans_desc->param_container,
             env, AXIS2_HTTP_PROXY);
-    if (NULL != proxy_param)
+    if (proxy_param)
     {
         transport_attrs = AXIS2_PARAM_GET_ATTRIBUTES(proxy_param, env);
-        if (NULL != transport_attrs)
+        if (transport_attrs)
         {
             axis2_generic_obj_t *obj = NULL;
             axiom_attribute_t *host_attr = NULL;
@@ -772,7 +772,7 @@ axiom_soap_over_http_sender_configure_proxy(
             {
                 return AXIS2_FAILURE;
             }
-            if (NULL != proxy_host && NULL != proxy_port)
+            if (proxy_host && NULL != proxy_port)
             {
                 AXIS2_HTTP_CLIENT_SET_PROXY(sender_impl->client, env, proxy_host,
                         AXIS2_ATOI(proxy_port));

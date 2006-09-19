@@ -915,7 +915,7 @@ woden_soap_header_block_get_element(
     header_block_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_SOAP_HEADER_BLOCK", AXIS2_HASH_KEY_STRING));
 
-    if (header_block_impl->f_types != NULL)
+    if (header_block_impl->f_types)
     {
         xse = WODEN_TYPES_GET_ELEMENT_DECLARATION(
                     header_block_impl->f_types, env, header_block_impl->

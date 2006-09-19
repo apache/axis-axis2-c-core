@@ -617,7 +617,7 @@ axis2_module_desc_is_param_locked(
     {
         param_l = axis2_module_desc_get_param(module_desc, env,
                 param_name);
-        if (NULL != param_l && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param_l, env))
+        if (param_l && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param_l, env))
             ret_state = AXIS2_TRUE;
         else
             ret_state = AXIS2_FALSE;

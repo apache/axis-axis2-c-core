@@ -140,25 +140,25 @@ axis2_wsdl_binding_msg_ref_free(axis2_wsdl_binding_msg_ref_t *binding_msg_ref,
 
     binding_msg_ref_impl = AXIS2_INTF_TO_IMPL(binding_msg_ref);
 
-    if (NULL != binding_msg_ref->ops)
+    if (binding_msg_ref->ops)
     {
         AXIS2_FREE(env->allocator, binding_msg_ref->ops);
         binding_msg_ref->ops = NULL;
     }
 
-    if (NULL != binding_msg_ref_impl->msg_label)
+    if (binding_msg_ref_impl->msg_label)
     {
         AXIS2_FREE(env->allocator, binding_msg_ref_impl->msg_label);
         binding_msg_ref_impl->msg_label = NULL;
     }
 
-    if (NULL != binding_msg_ref_impl->direction)
+    if (binding_msg_ref_impl->direction)
     {
         AXIS2_FREE(env->allocator, binding_msg_ref_impl->direction);
         binding_msg_ref_impl->direction = NULL;
     }
 
-    if (NULL != binding_msg_ref->extensible_component)
+    if (binding_msg_ref->extensible_component)
         AXIS2_WSDL_EXTENSIBLE_COMPONENT_FREE(binding_msg_ref->
                 extensible_component, env);
 

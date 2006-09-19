@@ -333,7 +333,7 @@ axis2_qname_to_string(const axis2_qname_t *qname,
         axis2_char_t *temp_string1 = NULL;
         temp_string1 = AXIS2_STRACAT(qname_impl->localpart, "|", env);
         qname_impl->qname_string = AXIS2_STRACAT(temp_string1, qname_impl->namespace_uri, env);
-        if (NULL != temp_string1)
+        if (temp_string1)
         {
             AXIS2_FREE(env->allocator, temp_string1);
             temp_string1 = NULL;
@@ -351,17 +351,17 @@ axis2_qname_to_string(const axis2_qname_t *qname,
         temp_string3 = AXIS2_STRACAT(temp_string2, "|", env);
         qname_impl->qname_string = AXIS2_STRACAT(temp_string3, qname_impl->prefix, env);
 
-        if (NULL != temp_string1)
+        if (temp_string1)
         {
             AXIS2_FREE(env->allocator, temp_string1);
             temp_string1 = NULL;
         }
-        if (NULL != temp_string2)
+        if (temp_string2)
         {
             AXIS2_FREE(env->allocator, temp_string2);
             temp_string2 = NULL;
         }
-        if (NULL != temp_string3)
+        if (temp_string3)
         {
             AXIS2_FREE(env->allocator, temp_string3);
             temp_string3 = NULL;
@@ -387,7 +387,7 @@ axis2_qname_create_from_string(const axis2_env_t *env,
     temp_string = AXIS2_STRDUP(qstring, env);
 
     index = strchr(temp_string, '|');
-    if (index != NULL)
+    if (index)
     {
 
         next = index + 1;
@@ -396,7 +396,7 @@ axis2_qname_create_from_string(const axis2_env_t *env,
         localpart = temp_string;
 
         index = strchr(next, '|');
-        if (NULL != index)
+        if (index)
         {
             prefix = index + 1;
             next[index - next] = '\0';
@@ -415,7 +415,7 @@ axis2_qname_create_from_string(const axis2_env_t *env,
         /** only localpart is there in this qname */
         qn = axis2_qname_create(env, temp_string, NULL, NULL);
     }
-    if (NULL != temp_string)
+    if (temp_string)
     {
         AXIS2_FREE(env->allocator, temp_string);
         temp_string = NULL;

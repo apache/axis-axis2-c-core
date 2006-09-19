@@ -204,27 +204,27 @@ axis2_http_status_line_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     status_line_impl = AXIS2_INTF_TO_IMPL(status_line);
 
-    if (NULL != status_line_impl->line)
+    if (status_line_impl->line)
     {
         AXIS2_FREE(env->allocator, status_line_impl->line);
         status_line_impl->line = NULL;
     }
-    if (NULL != status_line_impl->http_version)
+    if (status_line_impl->http_version)
     {
         AXIS2_FREE(env->allocator, status_line_impl->http_version);
         status_line_impl->http_version = NULL;
     }
-    if (NULL != status_line_impl->status_code)
+    if (status_line_impl->status_code)
     {
         AXIS2_FREE(env->allocator, status_line_impl->status_code);
         status_line_impl->status_code = NULL;
     }
-    if (NULL != status_line_impl->reason_phrase)
+    if (status_line_impl->reason_phrase)
     {
         AXIS2_FREE(env->allocator, status_line_impl->reason_phrase);
         status_line_impl->reason_phrase = NULL;
     }
-    if (NULL != status_line->ops)
+    if (status_line->ops)
         AXIS2_FREE(env->allocator, status_line->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(status_line));
@@ -237,7 +237,7 @@ axis2_http_status_line_get_status_code(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_CRITICAL_FAILURE);
-    if (NULL != AXIS2_INTF_TO_IMPL(status_line)->status_code)
+    if (AXIS2_INTF_TO_IMPL(status_line)->status_code)
     {
         return AXIS2_ATOI(AXIS2_INTF_TO_IMPL(status_line)->status_code);
     }

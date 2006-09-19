@@ -159,30 +159,30 @@ xml_schema_annotation_free(void *annotation,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     annotation_impl = AXIS2_INTF_TO_IMPL(annotation);
 
-    if (NULL != annotation_impl->items)
+    if (annotation_impl->items)
     {
         XML_SCHEMA_OBJ_COLLECTION_FREE(annotation_impl->items, env);
         annotation_impl->items = NULL;
     }
 
-    if (NULL != annotation_impl->ht_super)
+    if (annotation_impl->ht_super)
     {
         axis2_hash_free(annotation_impl->ht_super, env);
         annotation_impl->ht_super = NULL;
     }
 
-    if (NULL != annotation_impl->schema_obj)
+    if (annotation_impl->schema_obj)
     {
         XML_SCHEMA_OBJ_FREE(annotation_impl->schema_obj, env);
         annotation_impl->schema_obj = NULL;
     }
 
-    if (NULL != annotation_impl->annotation.ops)
+    if (annotation_impl->annotation.ops)
     {
         AXIS2_FREE(env->allocator, annotation_impl->annotation.ops);
         annotation_impl->annotation.ops = NULL;
     }
-    if (NULL != annotation_impl->annotation.base.ops)
+    if (annotation_impl->annotation.base.ops)
     {
         AXIS2_FREE(env->allocator, annotation_impl->annotation.base.ops);
         annotation_impl->annotation.base.ops = NULL;

@@ -883,7 +883,7 @@ axis2_status_t axis2_libxml2_reader_wrapper_fill_maps(axiom_xml_reader_t *parser
     {
         xmlTextReaderMoveToAttributeNo(parser_impl->reader, i);
         q_name = (char *) xmlTextReaderName(parser_impl->reader);
-        if (q_name != NULL)
+        if (q_name)
         {
             if ((strcmp(q_name, "xmlns") == 0) || (strncmp(q_name, "xmlns:", 6) == 0))
             {

@@ -98,7 +98,7 @@ int mode;
             if (mode & ZLIB_FILEFUNC_MODE_CREATE)
                 mode_fopen = "wb";
 
-    if ((filename != NULL) && (mode_fopen != NULL))
+    if ((filename) && (mode_fopen != NULL))
         file = fopen(filename, mode_fopen);
     return file;
 }

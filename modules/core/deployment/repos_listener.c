@@ -210,7 +210,7 @@ axis2_repos_listener_free(
         listener_impl->info_list = NULL;
     }
 
-    if (NULL != repos_listener->ops)
+    if (repos_listener->ops)
     {
         AXIS2_FREE(env->allocator, repos_listener->ops);
         repos_listener->ops = NULL;

@@ -208,12 +208,12 @@ axiom_soap_body_free(axiom_soap_body_t *body,
 
     body_impl = AXIS2_INTF_TO_IMPL(body);
 
-    if (NULL != body_impl->soap_fault)
+    if (body_impl->soap_fault)
     {
         AXIOM_SOAP_FAULT_FREE(body_impl->soap_fault, env);
         body_impl->soap_fault = NULL;
     }
-    if (NULL != body->ops)
+    if (body->ops)
     {
         AXIS2_FREE(env->allocator, body->ops);
         body->ops = NULL;
@@ -238,14 +238,14 @@ axis2_bool_t AXIS2_CALL axiom_soap_body_has_fault(axiom_soap_body_t *body,
     int status = AXIS2_SUCCESS;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     body_impl = AXIS2_INTF_TO_IMPL(body);
-    if (NULL != body_impl->soap_fault)
+    if (body_impl->soap_fault)
     {
         body_impl->has_fault = AXIS2_TRUE;
         return AXIS2_TRUE;
     }
     else
     {
-        if (NULL != body_impl->soap_builder)
+        if (body_impl->soap_builder)
         {
             while (!(body_impl->soap_fault) && !(AXIOM_NODE_IS_COMPLETE(body_impl->om_ele_node, env)))
             {
@@ -278,11 +278,11 @@ axiom_soap_body_get_fault(axiom_soap_body_t *body,
     axiom_soap_body_impl_t *body_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     body_impl = AXIS2_INTF_TO_IMPL(body);
-    if (NULL != body_impl->soap_fault)
+    if (body_impl->soap_fault)
     {
         return body_impl->soap_fault;
     }
-    else if (NULL != body_impl->soap_builder)
+    else if (body_impl->soap_builder)
     {
         while (!(body_impl->soap_fault) && !(AXIOM_NODE_IS_COMPLETE(body_impl->om_ele_node, env)))
         {
@@ -404,7 +404,7 @@ axiom_soap_body_set_fault(axiom_soap_body_t *body,
     axiom_soap_body_impl_t *body_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, soap_fault, AXIS2_FAILURE);
     body_impl = AXIS2_INTF_TO_IMPL(body);
-    if (NULL != body_impl->soap_fault)
+    if (body_impl->soap_fault)
     {
         AXIS2_ERROR_SET(env->error,
                 AXIS2_ERROR_ONLY_ONE_SOAP_FAULT_ALLOWED_IN_BODY, AXIS2_FAILURE);
@@ -428,7 +428,7 @@ axiom_soap_body_add_child(axiom_soap_body_t *body,
     AXIS2_PARAM_CHECK(env->error, child, AXIS2_FAILURE);
 
     body_impl = AXIS2_INTF_TO_IMPL(body);
-    if (NULL != body_impl->om_ele_node)
+    if (body_impl->om_ele_node)
     {
         return AXIOM_NODE_ADD_CHILD(body_impl->om_ele_node, env, child);
     }
@@ -453,7 +453,7 @@ axiom_soap_body_get_soap_version(axiom_soap_body_t *body,
     if (!om_ns)
         return AXIS2_FAILURE;
     uri = AXIOM_NAMESPACE_GET_URI(om_ns, env);
-    if (NULL != uri)
+    if (uri)
     {
         if (AXIS2_STRCMP(uri, AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI) == 0)
             return AXIOM_SOAP11;

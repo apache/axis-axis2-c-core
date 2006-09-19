@@ -45,16 +45,16 @@ xml_schema_test(
     schema = XML_SCHEMA_COLLECTION_READ_DOCUMENT(
                 schema_collection, env, om_doc);
 
-    if (NULL != schema)
+    if (schema)
     {
         axis2_char_t *buffer = NULL;
         printf("\n parsing schema is successful \n");
         buffer = XML_SCHEMA_SERIALIZE(schema, env);
         printf("%s", buffer);
-        if (NULL != buffer)
+        if (buffer)
             AXIS2_FREE(env->allocator, buffer);
     }
-    if (NULL != schema_collection)
+    if (schema_collection)
     {
         XML_SCHEMA_COLLECTION_FREE(schema_collection, env);
     }

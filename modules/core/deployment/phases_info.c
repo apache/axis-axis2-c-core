@@ -228,13 +228,13 @@ axis2_phases_info_free(
         phases_info_impl->out_faultphases = NULL;
     }
 
-    if (NULL != phases_info->ops)
+    if (phases_info->ops)
     {
         AXIS2_FREE(env->allocator, phases_info->ops);
         phases_info->ops = NULL;
     }
 
-    if (NULL != phases_info_impl)
+    if (phases_info_impl)
     {
         AXIS2_FREE(env->allocator, phases_info_impl);
         phases_info_impl = NULL;

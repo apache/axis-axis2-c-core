@@ -194,7 +194,7 @@ axis2_svc_builder_free(
 
     svc_builder_impl->svc = NULL;
 
-    if (NULL != svc_builder->ops)
+    if (svc_builder->ops)
     {
         AXIS2_FREE(env->allocator, svc_builder->ops);
         svc_builder->ops = NULL;
@@ -294,7 +294,7 @@ axis2_svc_builder_populate_svc(
         qdesc, svc_node, &desc_node);
     AXIS2_QNAME_FREE(qdesc, env) ;
     qdesc = NULL;
-    if(NULL != desc_element)
+    if( desc_element)
     {
         axiom_element_t *desc_value_element = NULL;
         axiom_node_t *desc_value_node = NULL;
@@ -303,7 +303,7 @@ axis2_svc_builder_populate_svc(
         
         desc_value_element = AXIOM_ELEMENT_GET_FIRST_ELEMENT(desc_element, 
             env, desc_node, &desc_value_node);
-        if(NULL != desc_value_element && NULL != desc_value_node)
+        if( desc_value_element && NULL != desc_value_node)
         {
             axis2_char_t *svc_name = NULL;
         
@@ -398,7 +398,7 @@ axis2_svc_builder_populate_svc(
             env, qinflowst, svc_node, &in_flow_node);
     AXIS2_QNAME_FREE(qinflowst, env) ;
     qinflowst = NULL;
-    if (in_flow_element != NULL && NULL != in_flow_node)
+    if (in_flow_element  &&  in_flow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -417,7 +417,7 @@ axis2_svc_builder_populate_svc(
             env, qoutflowst, svc_node, &out_flow_node);
     AXIS2_QNAME_FREE(qoutflowst, env) ;
     qoutflowst = NULL;
-    if (NULL != out_flow_element && NULL != out_flow_node)
+    if (out_flow_element && NULL != out_flow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -437,7 +437,7 @@ axis2_svc_builder_populate_svc(
     AXIS2_QNAME_FREE(qin_faultflowst, env) ;
     qin_faultflowst = NULL;
 
-    if (in_faultflow_element != NULL && NULL != in_faultflow_node)
+    if (in_faultflow_element  &&  in_faultflow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -457,7 +457,7 @@ axis2_svc_builder_populate_svc(
             env, qoutflowst, svc_node, &out_faultflow_node);
     AXIS2_QNAME_FREE(qout_faultflowst, env) ;
     qout_faultflowst = NULL;
-    if (NULL != out_faultflow_element && NULL != out_faultflow_node)
+    if (out_faultflow_element && NULL != out_faultflow_node)
     {
         axis2_flow_t *flow = NULL;
 
@@ -578,7 +578,7 @@ axis2_svc_builder_process_ops(
         op_mep_att = AXIOM_ELEMENT_GET_ATTRIBUTE(op_element, env, qmep);
         AXIS2_QNAME_FREE(qmep, env);
         qmep = NULL;
-        if (NULL != op_mep_att)
+        if (op_mep_att)
         {
             mep_url = AXIOM_ATTRIBUTE_GET_VALUE(op_mep_att, env);
             /*
@@ -639,7 +639,7 @@ axis2_svc_builder_process_ops(
                 env, qmsgrecv, op_node, &recv_node);
         AXIS2_QNAME_FREE(qmsgrecv, env);
         qmsgrecv = NULL;
-        if (NULL != recv_element && NULL != recv_node)
+        if (recv_element && NULL != recv_node)
         {
             axis2_msg_recv_t *msg_recv = NULL;
             msg_recv = AXIS2_DESC_BUILDER_LOAD_MSG_RECV(svc_builder->desc_builder,
@@ -667,7 +667,7 @@ axis2_svc_builder_process_ops(
             return AXIS2_FAILURE;
         }
         /* setting operation phase */
-        if (NULL != svc_builder->desc_builder->engine)
+        if (svc_builder->desc_builder->engine)
         {
             axis2_phases_info_t *info = AXIS2_DEP_ENGINE_GET_PHASES_INFO(
                         svc_builder->desc_builder->engine, env);
@@ -743,7 +743,7 @@ axis2_svc_builder_process_module_refs(
         module_ref_att = AXIOM_ELEMENT_GET_ATTRIBUTE(module_ref_element,
                 env, qref);
         AXIS2_QNAME_FREE(qref, env);
-        if (NULL != module_ref_att)
+        if (module_ref_att)
         {
             axis2_char_t *ref_name = NULL;
             axis2_qname_t *qrefname = NULL;

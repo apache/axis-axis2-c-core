@@ -145,7 +145,7 @@ axiom_mime_output_free(axiom_mime_output_t *mime_output, const axis2_env_t *env)
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     mime_output_impl = AXIS2_INTF_TO_IMPL(mime_output);
 
-    if (NULL != mime_output->ops)
+    if (mime_output->ops)
     {
         AXIS2_FREE(env->allocator, mime_output->ops);
         mime_output->ops = NULL;

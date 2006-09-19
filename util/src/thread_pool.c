@@ -96,7 +96,7 @@ axis2_thread_pool_free(axis2_thread_pool_t *pool)
         return AXIS2_FAILURE;
     }
     pool_impl = AXIS2_INTF_TO_IMPL(pool);
-    if (NULL != pool_impl->thread_pool.ops)
+    if (pool_impl->thread_pool.ops)
     {
         AXIS2_FREE(pool_impl->allocator, pool_impl->thread_pool.ops);
     }

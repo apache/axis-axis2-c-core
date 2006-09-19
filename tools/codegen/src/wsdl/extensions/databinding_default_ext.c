@@ -69,7 +69,7 @@ w2c_databinding_default_ext_engage(w2c_extension_t *extension,
     if (NULL == db_type || !AXIS2_STRCMP(db_type, "none"))
     {
         typemapper = W2C_ENGINE_CONFIGURATION_GET_TYPEMAPPER(conf, env);
-        if (typemapper != NULL)
+        if (typemapper)
         {
             W2C_TYPEMAPPER_FREE(typemapper, env);
         }

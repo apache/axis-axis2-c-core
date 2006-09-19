@@ -163,7 +163,7 @@ xml_schema_content_processing_free(void *content_processing,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     content_processing_impl = AXIS2_INTF_TO_IMPL(content_processing);
 
-    if (NULL != content_processing_impl->members)
+    if (content_processing_impl->members)
     {
         int size = 0;
         int i    = 0;
@@ -173,7 +173,7 @@ xml_schema_content_processing_free(void *content_processing,
             axis2_char_t *value = NULL;
             value = (axis2_char_t*)
                     AXIS2_ARRAY_LIST_GET(content_processing_impl->members, env, i);
-            if (NULL != value)
+            if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
@@ -183,30 +183,30 @@ xml_schema_content_processing_free(void *content_processing,
         content_processing_impl->members = NULL;
     }
 
-    if (NULL != content_processing_impl->ht_super)
+    if (content_processing_impl->ht_super)
     {
         axis2_hash_free(content_processing_impl->ht_super, env);
         content_processing_impl->ht_super = NULL;
     }
 
 
-    if (NULL != content_processing_impl->schema_enum)
+    if (content_processing_impl->schema_enum)
     {
         XML_SCHEMA_ENUM_FREE(content_processing_impl->schema_enum, env);
         content_processing_impl->schema_enum = NULL;
     }
 
-    if (NULL != content_processing_impl->content_processing.ops)
+    if (content_processing_impl->content_processing.ops)
     {
         AXIS2_FREE(env->allocator, content_processing_impl->content_processing.ops);
         content_processing_impl->content_processing.ops = NULL;
     }
-    if (NULL != content_processing_impl->content_processing.base.ops)
+    if (content_processing_impl->content_processing.base.ops)
     {
         AXIS2_FREE(env->allocator, content_processing_impl->content_processing.base.ops);
         content_processing_impl->content_processing.base.ops = NULL;
     }
-    if (NULL != content_processing_impl)
+    if (content_processing_impl)
     {
         AXIS2_FREE(env->allocator, content_processing_impl);
         content_processing_impl = NULL;

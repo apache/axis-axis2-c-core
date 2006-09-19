@@ -298,7 +298,7 @@ axis2_endpoint_ref_set_address(
     const axis2_char_t *address)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (NULL != AXIS2_INTF_TO_IMPL(endpoint_ref)->address)
+    if (AXIS2_INTF_TO_IMPL(endpoint_ref)->address)
     {
         AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(endpoint_ref)->address);
         AXIS2_INTF_TO_IMPL(endpoint_ref)->address = NULL;

@@ -303,7 +303,7 @@ xml_schema_collection_free(
     xml_schema_collection_impl_t *collec_impl = NULL;
 
     collec_impl = AXIS2_INTF_TO_IMPL(collection);
-    if (NULL != collec_impl->builder_list)
+    if (collec_impl->builder_list)
     {
         int i = 0, count = 0;
         count = AXIS2_ARRAY_LIST_SIZE(collec_impl->builder_list, env);
@@ -311,7 +311,7 @@ xml_schema_collection_free(
         {
             xml_schema_builder_t *builder = NULL;
             builder = AXIS2_ARRAY_LIST_GET(collec_impl->builder_list, env, i);
-            if (NULL != builder)
+            if (builder)
             {
                 XML_SCHEMA_BUILDER_FREE(builder, env);
                 builder = NULL;
@@ -322,7 +322,7 @@ xml_schema_collection_free(
     }
 
 
-    if (NULL != collection->ops)
+    if (collection->ops)
     {
         AXIS2_FREE(env->allocator, collection->ops);
         collection->ops = NULL;
@@ -345,7 +345,7 @@ xml_schema_collection_set_base_uri(
 
     collec_impl = AXIS2_INTF_TO_IMPL(collection);
 
-    if (NULL != collec_impl->base_uri)
+    if (collec_impl->base_uri)
     {
         AXIS2_FREE(env->allocator, collec_impl->base_uri);
         collec_impl->base_uri = NULL;
@@ -565,7 +565,7 @@ xml_schema_collection_get_element_by_qname(
 
     uri = AXIS2_QNAME_GET_URI(qname, env);
 
-    if (NULL != collec_impl->namespaces)
+    if (collec_impl->namespaces)
         schema = axis2_hash_get(collec_impl->namespaces, uri, AXIS2_HASH_KEY_STRING);
 
     if (!schema)
@@ -592,7 +592,7 @@ xml_schema_collection_get_type_by_qname(
 
     uri = AXIS2_QNAME_GET_URI(schema_type_qname, env);
 
-    if (NULL != collecion_impl->namespaces && NULL != uri)
+    if (collecion_impl->namespaces && NULL != uri)
         schema = axis2_hash_get(collecion_impl->namespaces, uri, AXIS2_HASH_KEY_STRING);
 
     if (!schema)
@@ -618,8 +618,8 @@ xml_schema_collection_add_unresolved_type(
     collection_impl = AXIS2_INTF_TO_IMPL(collection);
 
     qn_string = AXIS2_QNAME_TO_STRING(qtype, env);
-    if (NULL != collection_impl->unresolved_types &&
-            NULL != qn_string)
+    if (collection_impl->unresolved_types &&
+            qn_string)
     {
         receivers = axis2_hash_get(collection_impl->unresolved_types,
                 qn_string, AXIS2_HASH_KEY_STRING);
@@ -652,12 +652,12 @@ xml_schema_collection_resolve_type(
 
     collection_impl = AXIS2_INTF_TO_IMPL(collection);
     qn_string = AXIS2_QNAME_TO_STRING(type_qname, env);
-    if (NULL != qn_string && NULL != collection_impl->unresolved_types)
+    if (qn_string && NULL != collection_impl->unresolved_types)
     {
         receivers = axis2_hash_get(collection_impl->unresolved_types,
                 qn_string, AXIS2_HASH_KEY_STRING);
 
-        if (NULL != receivers)
+        if (receivers)
         {
             int i = 0;
 
@@ -665,7 +665,7 @@ xml_schema_collection_resolve_type(
             {
                 void *obj = NULL;
                 obj = AXIS2_ARRAY_LIST_GET(receivers, env, i);
-                if (NULL != obj)
+                if (obj)
                 {
                     XML_SCHEMA_ELEMENT_SET_SCHEMA_TYPE(obj, env, type);
                 }
@@ -675,7 +675,7 @@ xml_schema_collection_resolve_type(
         {
             return AXIS2_FAILURE;
         }
-        if (NULL != collection_impl->unresolved_types)
+        if (collection_impl->unresolved_types)
             axis2_hash_set(collection_impl->unresolved_types, qn_string,
                     AXIS2_HASH_KEY_STRING, NULL);
     }
@@ -692,7 +692,7 @@ xml_schema_collection_get_namespace_for_prefix(
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, prefix, NULL);
     collection_impl = AXIS2_INTF_TO_IMPL(collection);
-    if (NULL != collection_impl->in_scope_namespaces)
+    if (collection_impl->in_scope_namespaces)
     {
         axis2_char_t *ns = NULL;
         ns = (axis2_char_t *)axis2_hash_get(
@@ -713,7 +713,7 @@ xml_schema_collection_map_namespace(
     xml_schema_collection_impl_t *collection_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     collection_impl = AXIS2_INTF_TO_IMPL(collection);
-    if (NULL != collection_impl->in_scope_namespaces)
+    if (collection_impl->in_scope_namespaces)
     {
         axis2_hash_set(collection_impl->in_scope_namespaces, prefix,
                 AXIS2_HASH_KEY_STRING, namespc_uri);
@@ -764,7 +764,7 @@ xml_schema_collection_set_schemas(
 {
     xml_schema_collection_impl_t *collection_impl = NULL;
     collection_impl = AXIS2_INTF_TO_IMPL(collection);
-    if (NULL != collection_impl->schemas)
+    if (collection_impl->schemas)
     {
         /** TODO */
     }

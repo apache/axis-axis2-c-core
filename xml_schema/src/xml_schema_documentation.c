@@ -197,7 +197,7 @@ xml_schema_documentation_free(void *documentation,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     documentation_impl = AXIS2_INTF_TO_IMPL(documentation);
 
-    if (NULL != documentation_impl->source)
+    if (documentation_impl->source)
     {
         AXIS2_FREE(env->allocator, documentation_impl->source);
         documentation_impl->source = NULL;
@@ -205,29 +205,29 @@ xml_schema_documentation_free(void *documentation,
 
     /* TODO Free markup */
 
-    if (NULL != documentation_impl->ht_super)
+    if (documentation_impl->ht_super)
     {
         axis2_hash_free(documentation_impl->ht_super, env);
         documentation_impl->ht_super = NULL;
     }
 
-    if (NULL != documentation_impl->schema_obj)
+    if (documentation_impl->schema_obj)
     {
         XML_SCHEMA_OBJ_FREE(documentation_impl->schema_obj, env);
         documentation_impl->schema_obj = NULL;
     }
 
-    if (NULL != documentation_impl->documentation.ops)
+    if (documentation_impl->documentation.ops)
     {
         AXIS2_FREE(env->allocator, documentation_impl->documentation.ops);
         documentation_impl->documentation.ops = NULL;
     }
-    if (NULL != documentation_impl->documentation.base.ops)
+    if (documentation_impl->documentation.base.ops)
     {
         AXIS2_FREE(env->allocator, documentation_impl->documentation.base.ops);
         documentation_impl->documentation.base.ops = NULL;
     }
-    if (NULL != documentation_impl)
+    if (documentation_impl)
     {
         AXIS2_FREE(env->allocator, documentation_impl);
         documentation_impl = NULL;
@@ -267,11 +267,11 @@ xml_schema_documentation_get_source(void *documentation,
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_USE_SUPER_OBJS(documentation, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_APP_INFO",
                 AXIS2_HASH_KEY_STRING));
-        if (NULL != documentation_impl)
+        if (documentation_impl)
             return  documentation_impl->source;
     }
 
@@ -289,15 +289,15 @@ xml_schema_documentation_set_source(void *documentation,
     AXIS2_PARAM_CHECK(env->error, source, AXIS2_FAILURE);
 
     ht_super = XML_SCHEMA_USE_SUPER_OBJS(documentation, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_DOCUMENTATION",
                 AXIS2_HASH_KEY_STRING));
-        if (NULL != documentation_impl)
+        if (documentation_impl)
             return  AXIS2_FAILURE;
     }
 
-    if (NULL != documentation_impl->source)
+    if (documentation_impl->source)
     {
         AXIS2_FREE(env->allocator, documentation_impl->source);
         documentation_impl->source = NULL;
@@ -320,11 +320,11 @@ xml_schema_documentation_get_markup(void *documentation,
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_USE_SUPER_OBJS(documentation, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_DOCUMENTATION",
                 AXIS2_HASH_KEY_STRING));
-        if (NULL != documentation_impl)
+        if (documentation_impl)
             return  NULL;
     }
     return documentation_impl->markup;
@@ -340,11 +340,11 @@ xml_schema_documentation_set_markup(void *documentation,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, markup, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_USE_SUPER_OBJS(documentation, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         documentation_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
                 "XML_SCHEMA_DOCUMENTATION", AXIS2_HASH_KEY_STRING));
-        if (NULL != documentation_impl)
+        if (documentation_impl)
             return  AXIS2_FAILURE;
     }
     documentation_impl->markup = markup;
@@ -361,7 +361,7 @@ xml_schema_documentation_set_language(
     AXIS2_PARAM_CHECK(env->error, language, AXIS2_FAILURE);
 
     documentation_impl = AXIS2_INTF_TO_IMPL(documentation);
-    if (NULL != documentation_impl->language)
+    if (documentation_impl->language)
     {
         AXIS2_FREE(env->allocator, documentation_impl->language);
         documentation_impl->language = NULL;

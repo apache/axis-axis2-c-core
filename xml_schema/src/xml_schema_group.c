@@ -160,37 +160,37 @@ xml_schema_group_free(void *group,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     group_impl = AXIS2_INTF_TO_IMPL(group);
 
-    if (NULL != group_impl->name)
+    if (group_impl->name)
     {
         AXIS2_FREE(env->allocator, group_impl->name);
         group_impl->name = NULL;
     }
 
-    if (NULL != group_impl->particle)
+    if (group_impl->particle)
     {
         XML_SCHEMA_PARTICLE_FREE(group_impl->particle, env);
         group_impl->particle = NULL;
     }
 
-    if (NULL != group_impl->ht_super)
+    if (group_impl->ht_super)
     {
         axis2_hash_free(group_impl->ht_super, env);
         group_impl->ht_super = NULL;
     }
 
 
-    if (NULL != group_impl->annotated)
+    if (group_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(group_impl->annotated, env);
         group_impl->annotated = NULL;
     }
 
-    if (NULL != group_impl->group.ops)
+    if (group_impl->group.ops)
     {
         AXIS2_FREE(env->allocator, group_impl->group.ops);
         group_impl->group.ops = NULL;
     }
-    if (NULL != group_impl->group.base.ops)
+    if (group_impl->group.base.ops)
     {
         AXIS2_FREE(env->allocator, group_impl->group.base.ops);
         group_impl->group.base.ops = NULL;
@@ -250,7 +250,7 @@ xml_schema_group_set_name(void *group,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     group_impl = AXIS2_INTF_TO_IMPL(group);
-    if (NULL != group_impl->name)
+    if (group_impl->name)
     {
         AXIS2_FREE(env->allocator, group_impl->name);
         group_impl->name = NULL;
@@ -278,7 +278,7 @@ xml_schema_group_set_particle(void *group,
 {
     xml_schema_group_impl_t *group_impl = NULL;
     group_impl = AXIS2_INTF_TO_IMPL(group);
-    if (NULL != group_impl->particle)
+    if (group_impl->particle)
     {
         group_impl->particle = NULL;
     }

@@ -139,7 +139,7 @@ axis2_svc_grp_builder_free(
                 env);
         grp_builder_impl->svc_grp_builder.desc_builder = NULL;
     }
-    if (NULL != svc_grp_builder->ops)
+    if (svc_grp_builder->ops)
     {
         AXIS2_FREE(env->allocator, svc_grp_builder->ops);
         svc_grp_builder->ops = NULL;
@@ -276,7 +276,7 @@ axis2_svc_grp_builder_process_module_refs(
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_att = AXIOM_ELEMENT_GET_ATTRIBUTE(module_ref_element, env,
                 qref);
-        if (NULL != module_ref_att)
+        if (module_ref_att)
         {
             axis2_char_t *ref_name = NULL;
             axis2_qname_t *qrefname = NULL;

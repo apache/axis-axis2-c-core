@@ -111,7 +111,7 @@ axiom_mime_body_part_free(axiom_mime_body_part_t *mime_body_part, const axis2_en
         mime_body_part_impl->header_map = NULL;
     }
 
-    if (NULL != mime_body_part->ops)
+    if (mime_body_part->ops)
     {
         AXIS2_FREE(env->allocator, mime_body_part->ops);
         mime_body_part->ops = NULL;

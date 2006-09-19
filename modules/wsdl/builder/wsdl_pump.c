@@ -282,7 +282,7 @@ axis2_wsdl_pump_free(axis2_wsdl_pump_t *wsdl_pump,
 
     pump_impl = AXIS2_INTF_TO_IMPL(wsdl_pump);
 
-    if (NULL != wsdl_pump->ops)
+    if (wsdl_pump->ops)
         AXIS2_FREE(env->allocator, wsdl_pump->ops);
 
     AXIS2_FREE(env->allocator, pump_impl);

@@ -182,7 +182,7 @@ int AXIS2_CALL scandir(const char *_dirname, struct dirent **__namelist[], int(*
         return -1;
     }
 
-    while ((dp = readdir(dirp)) != NULL)
+    while ((dp = readdir(dirp)))
     {
         int dsize = 0;
         struct dirent *newdp = NULL;

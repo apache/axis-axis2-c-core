@@ -144,7 +144,7 @@ AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
         const axis2_env_t *env)
 {
     *inst = axis2_calc_create(env);
-    /*if(NULL != *inst)
+    /*if( *inst)
     {
         status = *inst->init();
     }*/

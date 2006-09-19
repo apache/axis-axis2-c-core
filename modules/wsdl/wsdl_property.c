@@ -132,12 +132,12 @@ axis2_wsdl_property_free(axis2_wsdl_property_t *wsdl_property,
     axis2_wsdl_property_impl_t *property_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (NULL != wsdl_property->ops)
+    if (wsdl_property->ops)
         AXIS2_FREE(env->allocator, wsdl_property->ops);
 
     property_impl = AXIS2_INTF_TO_IMPL(wsdl_property);
 
-    if (NULL != property_impl->name)
+    if (property_impl->name)
     {
         AXIS2_FREE(env->allocator, property_impl->name);
         property_impl->name = NULL;
@@ -147,7 +147,7 @@ axis2_wsdl_property_free(axis2_wsdl_property_t *wsdl_property,
 
     property_impl->value = NULL;
 
-    if (NULL != wsdl_property->wsdl_component)
+    if (wsdl_property->wsdl_component)
     {
         AXIS2_WSDL_COMPONENT_FREE(wsdl_property->wsdl_component, env);
         wsdl_property->wsdl_component = NULL;

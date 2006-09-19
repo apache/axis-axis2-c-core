@@ -163,7 +163,7 @@ xml_schema_simple_type_list_create(const axis2_env_t *env)
 
     annotated = XML_SCHEMA_SIMPLE_TYPE_CONTENT_GET_BASE_IMPL(
                 simple_type_list_impl->sim_type_content, env);
-    if (NULL != annotated)
+    if (annotated)
     {
         axis2_hash_set(simple_type_list_impl->ht_super,
                 AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
@@ -194,32 +194,32 @@ xml_schema_simple_type_list_free(void *simple_type_list,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     simple_type_list_impl = AXIS2_INTF_TO_IMPL(simple_type_list);
 
-    if (NULL != simple_type_list_impl->ht_super)
+    if (simple_type_list_impl->ht_super)
     {
         axis2_hash_free(simple_type_list_impl->ht_super, env);
         simple_type_list_impl->ht_super = NULL;
     }
-    if (NULL != simple_type_list_impl->sim_type_content)
+    if (simple_type_list_impl->sim_type_content)
     {
         XML_SCHEMA_SIMPLE_TYPE_CONTENT_FREE(
             simple_type_list_impl->sim_type_content , env);
         simple_type_list_impl->sim_type_content = NULL;
     }
 
-    if (NULL != simple_type_list_impl->simple_type_list.ops)
+    if (simple_type_list_impl->simple_type_list.ops)
     {
         AXIS2_FREE(env->allocator,
                 simple_type_list_impl->simple_type_list.ops);
         simple_type_list_impl->simple_type_list.ops = NULL;
     }
-    if (NULL != simple_type_list_impl->simple_type_list.base.ops)
+    if (simple_type_list_impl->simple_type_list.base.ops)
     {
         AXIS2_FREE(env->allocator,
                 simple_type_list_impl->simple_type_list.base.ops);
         simple_type_list_impl->simple_type_list.base.ops = NULL;
     }
 
-    if (NULL != simple_type_list_impl)
+    if (simple_type_list_impl)
     {
         AXIS2_FREE(env->allocator, simple_type_list_impl);
         simple_type_list_impl = NULL;
@@ -258,7 +258,7 @@ xml_schema_simple_type_list_resolve_methods(
 
     simple_type_list->ops = AXIS2_MALLOC(env->allocator,
             sizeof(xml_schema_simple_type_list_ops_t));
-    if(NULL != simple_type_list->ops)
+    if( simple_type_list->ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -302,7 +302,7 @@ xml_schema_simple_type_list_set_item_type(void *simple_type_list,
     xml_schema_simple_type_list_impl_t *sim_type_res_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     sim_type_res_impl = AXIS2_INTF_TO_IMPL(simple_type_list);
-    if (NULL != sim_type_res_impl->item_type_name)
+    if (sim_type_res_impl->item_type_name)
     {
         XML_SCHEMA_SIMPLE_TYPE_CONTENT_FREE(sim_type_res_impl->item_type, env);
         sim_type_res_impl->item_type_name = NULL;
@@ -329,7 +329,7 @@ xml_schema_simple_type_list_set_item_type_name(void *simple_type_list,
     AXIS2_PARAM_CHECK(env->error, item_type_name, AXIS2_FAILURE);
 
     sim_type_res_impl = AXIS2_INTF_TO_IMPL(simple_type_list);
-    if (NULL != sim_type_res_impl->item_type_name)
+    if (sim_type_res_impl->item_type_name)
     {
         AXIS2_QNAME_FREE(sim_type_res_impl->item_type_name, env);
         sim_type_res_impl->item_type_name = NULL;

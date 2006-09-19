@@ -251,7 +251,7 @@ axis2_desc_builder_free(
     /* we cannot free deployment engine here */
     desc_builder->engine = NULL;
 
-    if (NULL != desc_builder->ops)
+    if (desc_builder->ops)
         AXIS2_FREE(env->allocator, desc_builder->ops);
 
     if (desc_builder_impl)
@@ -493,7 +493,7 @@ struct axis2_handler_desc *AXIS2_CALL
 
         index_i = axis2_hash_first(order_itr, env);
 
-        while (NULL != index_i)
+        while (index_i)
         {
             axiom_attribute_t *order_attrib = NULL;
             axis2_qname_t *qname = NULL;
@@ -876,7 +876,7 @@ axis2_desc_builder_process_op_module_refs(
         qref = axis2_qname_create(env, AXIS2_REF, NULL, NULL);
         module_ref_attrib = AXIOM_ELEMENT_GET_ATTRIBUTE(moduleref, env, qref);
         AXIS2_QNAME_FREE(qref, env);
-        if (NULL != module_ref_attrib)
+        if (module_ref_attrib)
         {
             axis2_char_t *ref_name = NULL;
             axis2_qname_t *ref_qname = NULL;

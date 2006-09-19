@@ -120,7 +120,7 @@ axiom_attribute_create(const axis2_env_t *env,
         AXIS2_FREE(env->allocator, attribute_impl);
         return NULL;
     }
-    if (NULL != value)
+    if (value)
     {
         attribute_impl->value = (axis2_char_t*) AXIS2_STRDUP(value, env);
         if (!(attribute_impl->value))
@@ -247,7 +247,7 @@ axiom_attribute_serialize(axiom_attribute_t *om_attribute,
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
     attribute = AXIS2_INTF_TO_IMPL(om_attribute);
 
-    if (NULL != attribute->ns)
+    if (attribute->ns)
     {
         axis2_char_t *uri = NULL;
         axis2_char_t *prefix = NULL;
@@ -255,14 +255,14 @@ axiom_attribute_serialize(axiom_attribute_t *om_attribute,
         uri = AXIOM_NAMESPACE_GET_URI(attribute->ns, env);
         prefix = AXIOM_NAMESPACE_GET_PREFIX(attribute->ns, env);
 
-        if ((NULL != uri) && (NULL != prefix) && (AXIS2_STRCMP(prefix, "") != 0))
+        if ((uri) && (NULL != prefix) && (AXIS2_STRCMP(prefix, "") != 0))
         {
             status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 4,
                     attribute->localname,
                     attribute->value,
                     uri , prefix);
         }
-        else if (NULL != uri)
+        else if (uri)
         {
             status = axiom_output_write(om_output, env, AXIOM_ATTRIBUTE, 3,
                     attribute->localname, attribute->value, uri);
@@ -311,7 +311,7 @@ axiom_attribute_set_localname(axiom_attribute_t *om_attribute,
     AXIS2_PARAM_CHECK(env->error, localname, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(om_attribute);
 
-    if (NULL != (attr_impl->localname))
+    if ((attr_impl->localname))
     {
         AXIS2_FREE(env->allocator, attr_impl->localname);
         attr_impl->localname = NULL;
@@ -338,7 +338,7 @@ axiom_attribute_set_value(axiom_attribute_t *om_attribute,
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
 
     attr_impl = AXIS2_INTF_TO_IMPL(om_attribute);
-    if (NULL != attr_impl->value)
+    if (attr_impl->value)
     {
         AXIS2_FREE(env->allocator, attr_impl->value);
         attr_impl->value = NULL;
@@ -380,7 +380,7 @@ axiom_attribute_clone(axiom_attribute_t *om_attribute,
             attr_impl->localname,
             attr_impl->value,
             attr_impl->ns);
-    if (NULL != cloned_attr)
+    if (cloned_attr)
     {
         return cloned_attr;
     }

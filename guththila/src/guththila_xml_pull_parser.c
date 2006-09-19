@@ -705,7 +705,7 @@ guththila_process_char_data(axis2_env_t *
         else if (c == '&')
             ref = 1;
         else if (c == -1)		/* first should check for eof then
-                        				   only check of r != < */
+                                    				   only check of r != < */
         {
             guththila_close_token(environment, parser,
                     _char_data, ref);

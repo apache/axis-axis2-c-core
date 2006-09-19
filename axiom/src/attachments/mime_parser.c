@@ -121,7 +121,7 @@ axiom_mime_parser_free(axiom_mime_parser_t *mime_parser, const axis2_env_t *env)
         mime_parser_impl->mime_parts_map = NULL;
     }
 
-    if (NULL != mime_parser->ops)
+    if (mime_parser->ops)
     {
         AXIS2_FREE(env->allocator, mime_parser->ops);
         mime_parser->ops = NULL;

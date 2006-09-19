@@ -187,7 +187,7 @@ xml_schema_tokenized_type_free(void *tokenized_type,
         {
             axis2_char_t *value = NULL;
             value = (axis2_char_t*) AXIS2_ARRAY_LIST_GET(tokenized_type_impl->members, env, i);
-            if (NULL != value)
+            if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
@@ -197,13 +197,13 @@ xml_schema_tokenized_type_free(void *tokenized_type,
         tokenized_type_impl->schema_enum = NULL;
     }
 
-    if (NULL != tokenized_type_impl->tokenized_type.ops)
+    if (tokenized_type_impl->tokenized_type.ops)
     {
         AXIS2_FREE(env->allocator, tokenized_type_impl->tokenized_type.ops);
         tokenized_type_impl->tokenized_type.ops = NULL;
     }
 
-    if (NULL != tokenized_type_impl)
+    if (tokenized_type_impl)
     {
         AXIS2_FREE(env->allocator, tokenized_type_impl);
         tokenized_type_impl = NULL;
@@ -226,12 +226,12 @@ xml_schema_tokenized_type_get_values(void *tokenized_type,
     xml_schema_tokenized_type_impl_t *tokenized_impl = NULL;
     axis2_hash_t *ht_super = NULL;
     ht_super = XML_SCHEMA_TOKENIZED_TYPE_SUPER_OBJS(tokenized_type, env);
-    if(NULL != ht_super)
+    if( ht_super)
     {
         tokenized_impl = (xml_schema_tokenized_type_impl_t*)
             axis2_hash_get(tokenized_impl->ht_super, "XML_SCHEMA_TOKENIZED_TYPE",
                 AXIS2_HASH_KEY_STRING);
-        if(NULL != tokenized_impl)
+        if( tokenized_impl)
         {
             return tokenized_impl->members;
         }    

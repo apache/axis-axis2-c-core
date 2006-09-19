@@ -60,7 +60,7 @@ w2c_engine_config_loader_load_config(
             W2C_CMDLINE_OPTION_CONSTS_LONG_OUTPUT_LOCATION,
             option_map);
 
-    if (option != NULL)
+    if (option)
     {
         tmp_string = W2C_CMDLINE_OPTION_GET_VALUE(option , env);
     }
@@ -76,14 +76,14 @@ w2c_engine_config_loader_load_config(
     tmp_bool = w2c_engine_config_loader_load_option(env,
             W2C_CMDLINE_OPTION_CONSTS_SERVER_SIDE_CODE,
             W2C_CMDLINE_OPTION_CONSTS_LONG_SERVER_SIDE_CODE,
-            option_map) != NULL;
+            option_map) ;
     W2C_ENGINE_CONFIGURATION_SET_SERVER_SIDE(conf, env, tmp_bool);
 
     /* set service description*/
     tmp_bool = w2c_engine_config_loader_load_option(env,
             W2C_CMDLINE_OPTION_CONSTS_SERVICE_DESCRIPTION,
             W2C_CMDLINE_OPTION_CONSTS_LONG_SERVICE_DESCRIPTION,
-            option_map) != NULL;
+            option_map) ;
     W2C_ENGINE_CONFIGURATION_SET_GENERATE_DEPLOYEMENT_DESCRIPTOR
     (conf, env, tmp_bool);
 
@@ -95,14 +95,14 @@ w2c_engine_config_loader_load_config(
     tmp_bool = w2c_engine_config_loader_load_option(env,
             W2C_CMDLINE_OPTION_CONSTS_ASYNC_ONLY,
             W2C_CMDLINE_OPTION_CONSTS_LONG_ASYNC_ONLY,
-            option_map) != NULL;
+            option_map) ;
     W2C_ENGINE_CONFIGURATION_SET_SYNC_ON(conf, env, !tmp_bool);
 
     /* set sync only flag - this would have the priority*/
     tmp_bool = w2c_engine_config_loader_load_option(env,
             W2C_CMDLINE_OPTION_CONSTS_SYNC_ONLY,
             W2C_CMDLINE_OPTION_CONSTS_LONG_SYNC_ONLY,
-            option_map) != NULL;
+            option_map) ;
     W2C_ENGINE_CONFIGURATION_SET_ASYNC_ON(conf, env, !tmp_bool);
 
     /* package option */
@@ -144,7 +144,7 @@ w2c_engine_config_loader_load_config(
     tmp_bool = w2c_engine_config_loader_load_option(env,
             W2C_CMDLINE_OPTION_CONSTS_UNPACK_CLASSES,
             W2C_CMDLINE_OPTION_CONSTS_LONG_UNPACK_CLASSES,
-            option_map) != NULL;
+            option_map) ;
     W2C_ENGINE_CONFIGURATION_SET_PACK_CLASSES(conf, env, !tmp_bool);
 
     /* port name option */
@@ -184,7 +184,7 @@ w2c_engine_config_loader_load_config(
     tmp_bool = w2c_engine_config_loader_load_option(env,
             W2C_CMDLINE_OPTION_CONSTS_SERVER_SIDE_CODE,
             W2C_CMDLINE_OPTION_CONSTS_LONG_SERVER_SIDE_CODE,
-            option_map) != NULL;
+            option_map) ;
     W2C_ENGINE_CONFIGURATION_SET_SERVERSIDE_INTERFACE
     (conf, env, tmp_bool);
 
@@ -192,7 +192,7 @@ w2c_engine_config_loader_load_config(
     tmp_bool = w2c_engine_config_loader_load_option(env,
             W2C_CMDLINE_OPTION_CONSTS_GENERATE_ALL,
             W2C_CMDLINE_OPTION_CONSTS_LONG_GENERATE_ALL,
-            option_map) != NULL;
+            option_map) ;
     W2C_ENGINE_CONFIGURATION_SET_GENERATE_ALL
     (conf, env, tmp_bool);
 
@@ -200,7 +200,7 @@ w2c_engine_config_loader_load_config(
     tmp_bool = w2c_engine_config_loader_load_option(env,
             W2C_CMDLINE_OPTION_CONSTS_CONVERT_NAMES,
             W2C_CMDLINE_OPTION_CONSTS_LONG_CONVERT_NAMES,
-            option_map) != NULL;
+            option_map) ;
     W2C_ENGINE_CONFIGURATION_SET_CONVERT_NAMES
     (conf, env, tmp_bool);
 
@@ -208,7 +208,7 @@ w2c_engine_config_loader_load_config(
     tmp_bool = w2c_engine_config_loader_load_option(env,
             W2C_CMDLINE_OPTION_CONSTS_INDENT_CODE,
             W2C_CMDLINE_OPTION_CONSTS_LONG_INDENT_CODE,
-            option_map) != NULL;
+            option_map) ;
     W2C_ENGINE_CONFIGURATION_SET_INDENT_CODE
     (conf, env, tmp_bool);
 
@@ -254,7 +254,7 @@ w2c_engine_config_loader_load_config(
     tmp_bool = w2c_engine_config_loader_load_option(env,
             W2C_CMDLINE_OPTION_CONSTS_FLATTEN_FILES,
             W2C_CMDLINE_OPTION_CONSTS_LONG_FLATTEN_FILES,
-            option_map) != NULL;
+            option_map) ;
     W2C_ENGINE_CONFIGURATION_SET_FLATTEN_FILES(conf, env, tmp_bool);
 
 
@@ -383,17 +383,17 @@ w2c_engine_config_loader_load_option(const axis2_env_t *env,
         axis2_hash_t *options_map)
 {
     w2c_cmdline_option_t *option = NULL;
-    if (long_opt != NULL)
+    if (long_opt)
     {
         option = (w2c_cmdline_option_t*)axis2_hash_get(options_map,
                 long_opt, AXIS2_HASH_KEY_STRING);
-        if (option != NULL)
+        if (option)
         {
             return option;
         }
     }
     /* short option gets last precedence */
-    if (short_opt != NULL)
+    if (short_opt)
     {
         option = (w2c_cmdline_option_t*)axis2_hash_get(options_map,
                 short_opt, AXIS2_HASH_KEY_STRING);

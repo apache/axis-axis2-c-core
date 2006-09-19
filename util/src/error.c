@@ -472,11 +472,11 @@ axis2_error_init()
 axis2_status_t AXIS2_CALL
 axis2_error_impl_free(axis2_error_t *error)
 {
-    if (NULL != error && NULL != error->ops)
+    if (error && NULL != error->ops)
     {
         free(error->ops);
     }
-    if (NULL != error)
+    if (error)
     {
         free(error);
     }

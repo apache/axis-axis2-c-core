@@ -119,10 +119,10 @@ axis2_wsdl_extensible_element_free(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (NULL != extensible_element->ops)
+    if (extensible_element->ops)
         AXIS2_FREE(env->allocator, extensible_element->ops);
 
-    if (NULL != AXIS2_INTF_TO_IMPL(extensible_element)->type)
+    if (AXIS2_INTF_TO_IMPL(extensible_element)->type)
     {
         AXIS2_QNAME_FREE(AXIS2_INTF_TO_IMPL(extensible_element)->
                 type, env);

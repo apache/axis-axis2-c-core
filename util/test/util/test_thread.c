@@ -52,12 +52,12 @@ void thread_init(const axis2_env_t *env)
 
     control = axis2_thread_once_init(allocator);
 
-    if (NULL != control) printf("success - thread_init - axis2_thread_once_init \n");
+    if (control) printf("success - thread_init - axis2_thread_once_init \n");
     else printf("failure - thread_init - axis2_thread_once_init \n");
 
     thread_lock = axis2_thread_mutex_create(allocator, AXIS2_THREAD_MUTEX_DEFAULT);
 
-    if (NULL != thread_lock) printf("success - thread_init - axis2_thread_mutex_create \n");
+    if (thread_lock) printf("success - thread_init - axis2_thread_mutex_create \n");
     else printf("failure - thread_init - axis2_thread_mutex_create \n");
 }
 

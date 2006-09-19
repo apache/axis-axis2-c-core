@@ -319,7 +319,7 @@ axis2_arch_file_data_free(
         file_data_impl->deployable_svcs = NULL;
     }
 
-    if (NULL != arch_file_data->ops)
+    if (arch_file_data->ops)
     {
         AXIS2_FREE(env->allocator, arch_file_data->ops);
         arch_file_data->ops = NULL;
@@ -387,7 +387,7 @@ axis2_arch_file_data_get_svc_name(
     AXIS2_ENV_CHECK(env, NULL);
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
 
-    if (NULL != file_data_impl->file)
+    if (file_data_impl->file)
     {
         svc_name = AXIS2_FILE_GET_NAME(file_data_impl->file, env);
     }
@@ -428,7 +428,7 @@ axis2_arch_file_data_get_module_name(
     AXIS2_ENV_CHECK(env, NULL);
     file_data_impl = AXIS2_INTF_TO_IMPL(file_data);
 
-    if (NULL != file_data_impl->file)
+    if (file_data_impl->file)
     {
         module_name = AXIS2_FILE_GET_NAME(file_data_impl->file, env);
     }

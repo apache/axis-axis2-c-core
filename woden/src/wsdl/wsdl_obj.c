@@ -253,7 +253,7 @@ woden_wsdl_obj_set_component_exts(
             "WODEN_WSDL_OBJ", AXIS2_HASH_KEY_STRING));
 
     str_namespc = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
-    if (NULL != str_namespc)
+    if (str_namespc)
     {
         if (exts)
         {

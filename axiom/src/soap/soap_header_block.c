@@ -466,7 +466,7 @@ axiom_soap_header_block_set_attribute
     }
     else
     {
-        if (NULL !=  soap_envelope_namespace_uri)
+        if (soap_envelope_namespace_uri)
             om_ns = axiom_namespace_create(env,
                     soap_envelope_namespace_uri,
                     AXIOM_SOAP_DEFAULT_NAMESPACE_PREFIX);

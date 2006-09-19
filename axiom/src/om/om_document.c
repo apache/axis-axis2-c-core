@@ -196,19 +196,19 @@ axiom_document_build_next(axiom_document_t *om_document,
     if (!(document->root_element))
     {
         last_child = AXIOM_STAX_BUILDER_NEXT(document->builder, env);
-        if (NULL != last_child)
+        if (last_child)
         {
             document->last_child = last_child;
             document->root_element = last_child;
         }
         return last_child;
     }
-    else if ((NULL != document->root_element) &&
+    else if ((document->root_element) &&
             (AXIOM_NODE_IS_COMPLETE(document->root_element, env) == AXIS2_TRUE))
         return NULL;            /* Nothing wrong but done with pulling */
 
     last_child = AXIOM_STAX_BUILDER_NEXT(document->builder, env);
-    if (NULL != last_child)
+    if (last_child)
         document->last_child = last_child;
     return last_child;
 }
@@ -223,7 +223,7 @@ axiom_document_get_root_element(axiom_document_t * document,
     AXIS2_ENV_CHECK(env, NULL);
     doc_impl = AXIS2_INTF_TO_IMPL(document);
 
-    if (NULL != doc_impl->root_element)
+    if (doc_impl->root_element)
     {
         return doc_impl->root_element;
     }
@@ -231,7 +231,7 @@ axiom_document_get_root_element(axiom_document_t * document,
     {
         node = axiom_document_build_next(document, env);
 
-        if (NULL != doc_impl->root_element)
+        if (doc_impl->root_element)
         {
 
             return doc_impl->root_element;
@@ -259,7 +259,7 @@ axiom_document_set_root_element(axiom_document_t *document,
 
     document_impl = AXIS2_INTF_TO_IMPL(document);
 
-    if (NULL != document_impl->root_element)
+    if (document_impl->root_element)
     {
         status = AXIOM_NODE_FREE_TREE(document_impl->root_element, env);
         if (status == AXIS2_SUCCESS)
@@ -289,7 +289,7 @@ axiom_document_build_all(struct axiom_document *document,
     {
         axiom_document_get_root_element(document, env);
     }
-    if (NULL != doc_impl->root_element)
+    if (doc_impl->root_element)
     {
         do
         {
@@ -340,7 +340,7 @@ axiom_document_serialize(axiom_document_t *document,
     {
         axiom_document_get_root_element(document, env);
     }
-    if (NULL != document_impl->root_element)
+    if (document_impl->root_element)
     {
         return AXIOM_NODE_SERIALIZE(document_impl->root_element,
                 env, om_output);

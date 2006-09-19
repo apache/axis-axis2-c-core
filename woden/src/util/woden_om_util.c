@@ -49,7 +49,7 @@ woden_om_util_get_qname(
     namespc_uri = AXIOM_ELEMENT_FIND_NAMESPACE_URI(context_el,
             env, prefix, context_el_node);
     namespc_uri_str = AXIOM_NAMESPACE_GET_URI(namespc_uri, env);
-    if (NULL != namespc_uri_str)
+    if (namespc_uri_str)
     {
         woden_om_util_register_unique_prefix(env, prefix, namespc_uri_str, namespcs);
         return axis2_qname_create(env, localpart, namespc_uri_str, prefix);
@@ -72,13 +72,13 @@ woden_om_util_register_unique_prefix(
     ns_uri = axis2_hash_get(namespcs, prefix, AXIS2_HASH_KEY_STRING);
     if (ns_uri)
         ns_uri_str = AXIS2_URI_TO_STRING(ns_uri, env, AXIS2_URI_UNP_OMITUSERINFO);
-    if (NULL != ns_uri_str && 0 == AXIS2_STRCMP(ns_uri_str, namespc_uri_str))
+    if (ns_uri_str && 0 == AXIS2_STRCMP(ns_uri_str, namespc_uri_str))
     {
         /* Namespace already registerd */
         return AXIS2_SUCCESS;
     }
     tmp_prefix = AXIS2_STRDUP(prefix, env);
-    while (NULL != ns_uri_str && 0 != AXIS2_STRCMP(ns_uri_str, namespc_uri_str))
+    while (ns_uri_str && 0 != AXIS2_STRCMP(ns_uri_str, namespc_uri_str))
     {
         axis2_char_t *temp = NULL;
 

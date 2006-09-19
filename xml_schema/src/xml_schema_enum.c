@@ -159,31 +159,31 @@ xml_schema_enum_free(void *schema_enum,
 
     schema_enum_impl = AXIS2_INTF_TO_IMPL(schema_enum);
 
-    if (NULL != schema_enum_impl->value)
+    if (schema_enum_impl->value)
     {
         AXIS2_FREE(env->allocator, schema_enum_impl->value);
         schema_enum_impl->value = NULL;
     }
 
-    if (NULL != schema_enum_impl->values)
+    if (schema_enum_impl->values)
     {
         AXIS2_ARRAY_LIST_FREE(schema_enum_impl->values, env);
         schema_enum_impl->values = NULL;
     }
 
-    if (NULL != schema_enum_impl->ht_super)
+    if (schema_enum_impl->ht_super)
     {
         axis2_hash_free(schema_enum_impl->ht_super, env);
         schema_enum_impl->ht_super = NULL;
     }
 
-    if (NULL != schema_enum_impl->schema_enum.ops)
+    if (schema_enum_impl->schema_enum.ops)
     {
         AXIS2_FREE(env->allocator, schema_enum_impl->schema_enum.ops);
         schema_enum_impl->schema_enum.ops = NULL;
     }
 
-    if (NULL != schema_enum_impl)
+    if (schema_enum_impl)
     {
         AXIS2_FREE(env->allocator, (schema_enum_impl));
         schema_enum_impl = NULL;
@@ -286,7 +286,7 @@ xml_schema_enum_set_value(void *schema_enum,
     schema_enum_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super,
             "XML_SCHEMA_ENUM", AXIS2_HASH_KEY_STRING));
 
-    if (NULL != schema_enum_impl->value)
+    if (schema_enum_impl->value)
     {
         AXIS2_FREE(env->allocator, (schema_enum_impl->value));
         schema_enum_impl->value = NULL;
@@ -346,7 +346,7 @@ xml_schema_enum_index(axis2_char_t *value,
     {
         axis2_char_t *mem_val = NULL;
         mem_val = (axis2_char_t *)AXIS2_ARRAY_LIST_GET(values,  env, i);
-        if (NULL != mem_val && AXIS2_STRCMP(mem_val, value) == 0)
+        if (mem_val && AXIS2_STRCMP(mem_val, value) == 0)
         {
             return i;
         }

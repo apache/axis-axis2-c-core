@@ -192,12 +192,12 @@ axis2_http_client_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     http_client_impl = AXIS2_INTF_TO_IMPL(client);
 
-    if (NULL != http_client_impl->url)
+    if (http_client_impl->url)
     {
         AXIS2_URL_FREE(http_client_impl->url, env);
         http_client_impl->url = NULL;
     }
-    if (NULL != http_client_impl->response)
+    if (http_client_impl->response)
     {
         AXIS2_HTTP_SIMPLE_RESPONSE_FREE(http_client_impl->response, env);
         http_client_impl->response  = NULL;
@@ -207,7 +207,7 @@ axis2_http_client_free(
         axis2_network_handler_close_socket(env, http_client_impl->sockfd);
         http_client_impl->sockfd = -1;
     }
-    if (NULL != client->ops)
+    if (client->ops)
         AXIS2_FREE(env->allocator, client->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(client));
@@ -317,7 +317,7 @@ axis2_http_client_send(
     }
 
     headers = AXIS2_HTTP_SIMPLE_REQUEST_GET_HEADERS(request, env);
-    if (NULL != headers)
+    if (headers)
     {
         int header_count = AXIS2_ARRAY_LIST_SIZE(headers, env);
         int i = 0;
@@ -401,7 +401,7 @@ axis2_http_client_send(
             2);
     body_size = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY_BYTES(request, env,
             &str_body);
-    if (body_size > 0 && NULL != str_body)
+    if (body_size > 0 &&  str_body)
     {
         if (AXIS2_FALSE == chunking_enabled)
         {
@@ -448,7 +448,7 @@ axis2_http_client_send(
     }
 
     client_impl->request_sent = AXIS2_TRUE;
-    if (NULL != str_body)
+    if (str_body)
     {
         AXIS2_FREE(env->allocator, str_body);
         str_body = NULL;
@@ -556,7 +556,7 @@ axis2_http_client_recieve_header(
                 axis2_http_header_t *tmp_header =
                     axis2_http_header_create_by_str(env, str_header);
                 memset(str_header, 0, 512);
-                if (NULL != tmp_header)
+                if (tmp_header)
                 {
                     AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(client_impl->response,
                             env, tmp_header);
@@ -567,7 +567,7 @@ axis2_http_client_recieve_header(
     }
     AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STREAM(client_impl->response, env,
             client_impl->data_stream);
-    if (NULL != status_line)
+    if (status_line)
     {
         status_code = AXIS2_HTTP_STATUS_LINE_GET_STATUS_CODE(status_line, env);
         AXIS2_HTTP_STATUS_LINE_FREE(status_line, env);
@@ -606,7 +606,7 @@ axis2_http_client_set_url(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, url, AXIS2_FAILURE);
-    if (NULL != AXIS2_INTF_TO_IMPL(client)->url)
+    if (AXIS2_INTF_TO_IMPL(client)->url)
     {
         AXIS2_URL_FREE(AXIS2_INTF_TO_IMPL(client)->url, env);
         AXIS2_INTF_TO_IMPL(client)->url = NULL;
@@ -661,12 +661,12 @@ axis2_http_client_set_proxy(
     }
     client_impl = AXIS2_INTF_TO_IMPL(client);
     client_impl->proxy_port = proxy_port;
-    if (NULL != client_impl->proxy_host)
+    if (client_impl->proxy_host)
     {
         AXIS2_FREE(env->allocator, client_impl->proxy_host);
         client_impl->proxy_host = NULL;
     }
-    if (NULL != client_impl->proxy_host_port)
+    if (client_impl->proxy_host_port)
     {
         AXIS2_FREE(env->allocator, client_impl->proxy_host_port);
         client_impl->proxy_host_port = NULL;

@@ -186,7 +186,7 @@ xml_schema_form_free(void *form,
         {
             axis2_char_t *value = NULL;
             value = (axis2_char_t*) AXIS2_ARRAY_LIST_GET(form_impl->members, env, i);
-            if (NULL != value)
+            if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;

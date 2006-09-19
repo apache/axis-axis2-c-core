@@ -836,14 +836,14 @@ oxs_enc_engine_encrypted_data_node_read(const axis2_env_t *env,
     cur = AXIOM_NODE_GET_FIRST_CHILD(node, env);
 
     /* first node is optional EncryptionMethod, we'll read it later */
-    if ((cur != NULL) && (oxs_axiom_check_node_name(env, cur, OXS_NodeEncryptionMethod, OXS_EncNs)))
+    if ((cur) && (oxs_axiom_check_node_name(env, cur, OXS_NodeEncryptionMethod, OXS_EncNs)))
     {
         OXS_CTX_SET_ENC_METHOD_NODE(enc_ctx, env, cur);
         cur = AXIOM_NODE_GET_NEXT_SIBLING(cur, env);
     }
 
     /* next node is optional KeyInfo, we'll process it later */
-    if ((cur != NULL) && (oxs_axiom_check_node_name(env, cur, OXS_NodeKeyInfo, OXS_DSigNs)))
+    if ((cur) && (oxs_axiom_check_node_name(env, cur, OXS_NodeKeyInfo, OXS_DSigNs)))
     {
         OXS_CTX_SET_KEY_INFO_NODE(enc_ctx, env, cur);
         cur = AXIOM_NODE_GET_NEXT_SIBLING(cur, env);
@@ -863,7 +863,7 @@ oxs_enc_engine_encrypted_data_node_read(const axis2_env_t *env,
 
 
     /* now read the encryption method node */
-    if (OXS_CTX_GET_ENC_METHOD_NODE(enc_ctx, env) != NULL)
+    if (OXS_CTX_GET_ENC_METHOD_NODE(enc_ctx, env))
     {
         ele = AXIOM_NODE_GET_DATA_ELEMENT(OXS_CTX_GET_ENC_METHOD_NODE(enc_ctx, env), env);
         OXS_CTX_SET_ENC_MTD_ALGORITHM(enc_ctx, env, AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(ele, env, OXS_AttrAlgorithm));

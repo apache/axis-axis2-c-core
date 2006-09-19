@@ -245,7 +245,7 @@ axis2_svc_grp_create_with_conf(
     AXIS2_PARAM_CHECK(env->error, conf, NULL);
 
     svc_grp_impl = (axis2_svc_grp_impl_t *) axis2_svc_grp_create(env);
-    if (NULL != svc_grp_impl)
+    if (svc_grp_impl)
         svc_grp_impl->parent = conf;
 
     return &(svc_grp_impl->svc_grp);
@@ -263,45 +263,45 @@ axis2_svc_grp_free(
 
     svc_grp_impl = AXIS2_INTF_TO_IMPL(svc_grp);
 
-    if (NULL != svc_grp->ops)
+    if (svc_grp->ops)
     {
         AXIS2_FREE(env->allocator, svc_grp->ops);
         svc_grp->ops = NULL;
     }
 
-    if (NULL != svc_grp->param_container)
+    if (svc_grp->param_container)
     {
         AXIS2_PARAM_CONTAINER_FREE(svc_grp->param_container,
                 env);
         svc_grp->param_container = NULL;
     }
 
-    if (NULL != svc_grp_impl->svc_grp_name)
+    if (svc_grp_impl->svc_grp_name)
     {
         AXIS2_FREE(env->allocator, svc_grp_impl->svc_grp_name);
         svc_grp_impl->svc_grp_name = NULL;
     }
 
-    if (NULL != svc_grp_impl->svcs)
+    if (svc_grp_impl->svcs)
     {
         /* services are freed by arch_file_data */
         axis2_hash_free(svc_grp_impl->svcs, env);
         svc_grp_impl->svcs = NULL;
     }
 
-    if (NULL != svc_grp_impl->module_qnames)
+    if (svc_grp_impl->module_qnames)
     {
         AXIS2_ARRAY_LIST_FREE(svc_grp_impl->module_qnames, env);
         svc_grp_impl->module_qnames = NULL;
     }
 
-    if (NULL != svc_grp_impl->module_list)
+    if (svc_grp_impl->module_list)
     {
         AXIS2_ARRAY_LIST_FREE(svc_grp_impl->module_list, env);
         svc_grp_impl->module_list = NULL;
     }
 
-    if (NULL != svc_grp_impl)
+    if (svc_grp_impl)
     {
         AXIS2_FREE(env->allocator, svc_grp_impl);
         svc_grp_impl = NULL;
@@ -540,7 +540,7 @@ axis2_svc_grp_is_param_locked(
         ret = AXIS2_TRUE;
     }
     param = axis2_svc_grp_get_param(svc_grp, env, param_name);
-    if (NULL != param && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env))
+    if (param && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env))
     {
         ret = AXIS2_TRUE;
     }
@@ -646,13 +646,13 @@ axis2_svc_grp_engage_module(
     }
 
     module = AXIS2_CONF_GET_MODULE(svc_grp_impl->parent, env, module_name);
-    if (NULL != module)
+    if (module)
     {
         axis2_svc_t *axis_svc = NULL;
         axis2_hash_index_t *index = NULL;
 
         index = axis2_hash_first(svc_map, env);
-        while (NULL != index)
+        while (index)
         {
             void *v = NULL;
             /* engage in per each service */

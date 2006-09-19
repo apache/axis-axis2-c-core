@@ -377,7 +377,7 @@ woden_wsdl10_soap_binding_op_exts_get_soap_mep(
     mep = WODEN_ATTR_EXTENSIBLE_GET_EXT_ATTR(
                 parent_element, env, binding_op_exts_impl->qname);
 
-    return mep != NULL ? WODEN_URI_ATTR_GET_URI(mep, env) : NULL;
+    return mep  ? WODEN_URI_ATTR_GET_URI(mep, env) : NULL;
 }
 
 axis2_status_t AXIS2_CALL

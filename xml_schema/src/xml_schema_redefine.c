@@ -163,7 +163,7 @@ xml_schema_redefine_create(const axis2_env_t *env)
             AXIS2_HASH_KEY_STRING, redefine_impl->external);
 
     annotated = XML_SCHEMA_EXTERNAL_GET_BASE_IMPL(redefine_impl->external, env);
-    if (NULL != redefine_impl->external)
+    if (redefine_impl->external)
     {
 
         axis2_hash_set(redefine_impl->ht_super, "XML_SCHEMA_ANNOTATED",
@@ -192,24 +192,24 @@ xml_schema_redefine_free(void *redefine,
     redefine_impl = AXIS2_INTF_TO_IMPL(redefine);
 
 
-    if (NULL != redefine_impl->ht_super)
+    if (redefine_impl->ht_super)
     {
         axis2_hash_free(redefine_impl->ht_super, env);
         redefine_impl->ht_super = NULL;
     }
 
-    if (NULL != redefine_impl->external)
+    if (redefine_impl->external)
     {
         XML_SCHEMA_EXTERNAL_FREE(redefine_impl->external, env);
         redefine_impl->external = NULL;
     }
 
-    if (NULL != redefine_impl->redefine.ops)
+    if (redefine_impl->redefine.ops)
     {
         AXIS2_FREE(env->allocator, redefine_impl->redefine.ops);
         redefine_impl->redefine.ops = NULL;
     }
-    if (NULL != redefine_impl->redefine.base.ops)
+    if (redefine_impl->redefine.base.ops)
     {
         AXIS2_FREE(env->allocator, redefine_impl->redefine.base.ops);
         redefine_impl->redefine.base.ops = NULL;
@@ -281,7 +281,7 @@ xml_schema_redefine_set_attribute_group(void *redefine,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, group, AXIS2_FAILURE);
     red_impl = AXIS2_INTF_TO_IMPL(redefine);
-    if (NULL != red_impl->groups)
+    if (red_impl->groups)
     {}
     red_impl->groups = group;
     return AXIS2_SUCCESS;

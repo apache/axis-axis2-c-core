@@ -167,7 +167,7 @@ struct axis2_uri_impl
     /** structure returned from gethostbyname() */
     struct hostent *hostent;
 
-    /** The port number, numeric, valid only if port_str != NULL */
+    /** The port number, numeric, valid only if port_str  */
     axis2_port_t port;
 
     /** has the structure been initialized */
@@ -281,61 +281,61 @@ axis2_uri_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     uri_impl = AXIS2_INTF_TO_IMPL(uri);
 
-    if (NULL != uri_impl->scheme)
+    if (uri_impl->scheme)
     {
         AXIS2_FREE(env->allocator, uri_impl->scheme);
         uri_impl->scheme = NULL;
     }
 
-    if (NULL != uri_impl->hostinfo)
+    if (uri_impl->hostinfo)
     {
         AXIS2_FREE(env->allocator, uri_impl->hostinfo);
         uri_impl->hostinfo = NULL;
     }
 
-    if (NULL != uri_impl->user)
+    if (uri_impl->user)
     {
         AXIS2_FREE(env->allocator, uri_impl->user);
         uri_impl->user = NULL;
     }
 
-    if (NULL != uri_impl->password)
+    if (uri_impl->password)
     {
         AXIS2_FREE(env->allocator, uri_impl->password);
         uri_impl->password = NULL;
     }
 
-    if (NULL != uri_impl->hostname)
+    if (uri_impl->hostname)
     {
         AXIS2_FREE(env->allocator, uri_impl->hostname);
         uri_impl->hostname = NULL;
     }
 
-    if (NULL != uri_impl->port_str)
+    if (uri_impl->port_str)
     {
         AXIS2_FREE(env->allocator, uri_impl->port_str);
         uri_impl->port_str = NULL;
     }
 
-    if (NULL != uri_impl->path)
+    if (uri_impl->path)
     {
         AXIS2_FREE(env->allocator, uri_impl->path);
         uri_impl->path = NULL;
     }
 
-    if (NULL != uri_impl->query)
+    if (uri_impl->query)
     {
         AXIS2_FREE(env->allocator, uri_impl->query);
         uri_impl->query = NULL;
     }
 
-    if (NULL != uri_impl->fragment)
+    if (uri_impl->fragment)
     {
         AXIS2_FREE(env->allocator, uri_impl->fragment);
         uri_impl->fragment = NULL;
     }
 
-    if (NULL != uri->ops)
+    if (uri->ops)
         AXIS2_FREE(env->allocator, uri->ops);
 
     AXIS2_FREE(env->allocator, uri_impl);
@@ -741,7 +741,7 @@ axis2_uri_port_of_scheme(
 
     if (scheme_str)
     {
-        for (scheme = schemes; scheme->name != NULL; ++scheme)
+        for (scheme = schemes; scheme->name ; ++scheme)
         {
             if (AXIS2_STRCASECMP(scheme_str, scheme->name) == 0)
             {

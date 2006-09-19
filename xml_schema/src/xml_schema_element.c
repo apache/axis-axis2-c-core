@@ -453,7 +453,7 @@ xml_schema_element_create(const axis2_env_t *env)
             AXIS2_HASH_KEY_STRING, element_impl->particle);
 
     annotated = XML_SCHEMA_PARTICLE_GET_BASE_IMPL(element_impl->particle, env);
-    if (NULL != annotated)
+    if (annotated)
     {
         axis2_hash_set(element_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
                 AXIS2_HASH_KEY_STRING, &(element_impl->element));
@@ -479,13 +479,13 @@ xml_schema_element_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
 
-    if (NULL != element_impl->particle)
+    if (element_impl->particle)
     {
         XML_SCHEMA_PARTICLE_FREE(element_impl->particle, env);
         element_impl->particle = NULL;
     }
 
-    if (NULL != element_impl->type_recv)
+    if (element_impl->type_recv)
     {
         XML_SCHEMA_ANNOTATED_FREE(element_impl->type_recv, env);
         element_impl->type_recv = NULL;
@@ -493,7 +493,7 @@ xml_schema_element_free(
 
 
 
-    if (NULL != element_impl->schema_type)
+    if (element_impl->schema_type)
     {
         if (XML_SCHEMA_TYPE_GET_TYPE(element_impl->schema_type, env)
                 == XML_SCHEMA_SIMPLE_TYPE)
@@ -511,13 +511,13 @@ xml_schema_element_free(
             */
         }
     }
-    if (NULL != element_impl->element.base.ops)
+    if (element_impl->element.base.ops)
     {
         AXIS2_FREE(env->allocator, element_impl->element.base.ops);
         element_impl->element.base.ops = NULL;
 
     }
-    if (NULL !=  element_impl->element.ops)
+    if (element_impl->element.ops)
     {
         AXIS2_FREE(env->allocator, element_impl->element.ops);
         element_impl->element.ops = NULL;
@@ -568,7 +568,7 @@ xml_schema_element_set_default_value(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, default_value, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->default_value)
+    if (element_impl->default_value)
     {
         AXIS2_FREE(env->allocator, element_impl->default_value);
         element_impl->default_value = NULL;
@@ -596,7 +596,7 @@ xml_schema_element_set_block(
     AXIS2_PARAM_CHECK(env->error, block, AXIS2_FAILURE);
 
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->block)
+    if (element_impl->block)
     {
         /** TODO Free block */
 
@@ -622,7 +622,7 @@ xml_schema_element_set_final(
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->final_derivation)
+    if (element_impl->final_derivation)
     {
         /** TODO Free */
 
@@ -656,7 +656,7 @@ xml_schema_element_set_fixed_value(
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->fixed_value)
+    if (element_impl->fixed_value)
     {
         AXIS2_FREE(env->allocator, element_impl->fixed_value);
         element_impl->fixed_value = NULL;
@@ -681,7 +681,7 @@ xml_schema_element_get_form(
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->form)
+    if (element_impl->form)
     {
         XML_SCHEMA_FORM_FREE(element_impl->form, env);
         element_impl->form = NULL;
@@ -698,7 +698,7 @@ xml_schema_element_set_form(
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->form)
+    if (element_impl->form)
     {
         XML_SCHEMA_FORM_FREE(element_impl->form, env);
         element_impl->block = NULL;
@@ -766,7 +766,7 @@ xml_schema_element_set_name(
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->name)
+    if (element_impl->name)
     {
         AXIS2_FREE(env->allocator, element_impl->name);
         element_impl->name = NULL;
@@ -792,7 +792,7 @@ xml_schema_element_set_ref_qname(
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->ref_qname)
+    if (element_impl->ref_qname)
     {
         AXIS2_QNAME_FREE(element_impl->ref_qname, env);
         element_impl->ref_qname = NULL;
@@ -818,7 +818,7 @@ xml_schema_element_set_qname(
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->qualified_qname)
+    if (element_impl->qualified_qname)
     {
         AXIS2_QNAME_FREE(element_impl->qualified_qname, env);
         element_impl->qualified_qname = NULL;
@@ -846,7 +846,7 @@ xml_schema_element_set_schema_type(
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->schema_type)
+    if (element_impl->schema_type)
     {
         /** TODO free */
     }
@@ -871,7 +871,7 @@ xml_schema_element_set_schema_type_qname(
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->schema_type_qname)
+    if (element_impl->schema_type_qname)
     {
         /** TODO free */
     }
@@ -896,7 +896,7 @@ xml_schema_element_set_substitution_group(
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->substitution_group)
+    if (element_impl->substitution_group)
     {
         /** TODO free */
     }
@@ -924,7 +924,7 @@ xml_schema_element_set_type(
     xml_schema_element_impl_t *element_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     element_impl = AXIS2_INTF_TO_IMPL(element);
-    if (NULL != element_impl->schema_type)
+    if (element_impl->schema_type)
     {
         /** TODO */
     }

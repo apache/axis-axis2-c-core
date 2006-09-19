@@ -154,25 +154,25 @@ xml_schema_obj_table_free(xml_schema_obj_table_t *obj_table,
 
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
 
-    if (NULL != obj_table_impl->names)
+    if (obj_table_impl->names)
     {
         AXIS2_ARRAY_LIST_FREE(obj_table_impl->names, env);
         obj_table_impl->names = NULL;
     }
 
-    if (NULL != obj_table_impl->values)
+    if (obj_table_impl->values)
     {
         AXIS2_ARRAY_LIST_FREE(obj_table_impl->values, env);
         obj_table_impl->values = NULL;
     }
 
-    if (NULL != obj_table_impl->collection)
+    if (obj_table_impl->collection)
     {
         axis2_hash_free(obj_table_impl->collection, env);
         obj_table_impl->collection = NULL;
     }
 
-    if (NULL != obj_table_impl->obj_table.ops)
+    if (obj_table_impl->obj_table.ops)
     {
         AXIS2_FREE(env->allocator, obj_table_impl->obj_table.ops);
         obj_table_impl->obj_table.ops = NULL;
@@ -190,7 +190,7 @@ xml_schema_obj_table_get_count(xml_schema_obj_table_t *obj_table,
     xml_schema_obj_table_impl_t *obj_table_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
-    if (NULL != obj_table_impl->collection)
+    if (obj_table_impl->collection)
     {
         return axis2_hash_count(obj_table_impl->collection);
     }
@@ -212,7 +212,7 @@ xml_schema_obj_table_get_item(xml_schema_obj_table_t *obj_table,
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
 
     name = AXIS2_QNAME_TO_STRING(qname, env);
-    if (NULL != name)
+    if (name)
     {
         return axis2_hash_get(obj_table_impl->collection, name,
                 AXIS2_HASH_KEY_STRING);
@@ -230,7 +230,7 @@ xml_schema_obj_table_get_names(xml_schema_obj_table_t *obj_table,
     AXIS2_ENV_CHECK(env, NULL);
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
 
-    if (NULL != obj_table_impl->names)
+    if (obj_table_impl->names)
     {
         AXIS2_ARRAY_LIST_FREE(obj_table_impl->names, env);
         obj_table_impl->names = NULL;
@@ -266,7 +266,7 @@ xml_schema_obj_table_get_values(xml_schema_obj_table_t *obj_table,
     AXIS2_ENV_CHECK(env, NULL);
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
 
-    if (NULL != obj_table_impl->values)
+    if (obj_table_impl->values)
     {
         AXIS2_ARRAY_LIST_FREE(obj_table_impl->values, env);
         obj_table_impl->values = NULL;
@@ -303,11 +303,11 @@ xml_schema_obj_table_contains(xml_schema_obj_table_t *obj_table,
     AXIS2_PARAM_CHECK(env->error, qname, AXIS2_FAILURE);
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
     name = AXIS2_QNAME_TO_STRING(qname, env);
-    if (NULL != name)
+    if (name)
     {
         value = axis2_hash_get(obj_table_impl->collection, name,
                 AXIS2_HASH_KEY_STRING);
-        if (NULL != value)
+        if (value)
             return AXIS2_TRUE;
     }
 
@@ -328,7 +328,7 @@ xml_schema_obj_table_add(xml_schema_obj_table_t *obj_table,
     AXIS2_PARAM_CHECK(env->error, value, AXIS2_FAILURE);
     obj_table_impl = AXIS2_INTF_TO_IMPL(obj_table);
     name = AXIS2_QNAME_TO_STRING(qname, env);
-    if (NULL != name)
+    if (name)
     {
         axis2_hash_set(obj_table_impl->collection,
                 name, AXIS2_HASH_KEY_STRING, value);

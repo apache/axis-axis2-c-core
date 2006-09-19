@@ -110,14 +110,14 @@ int mode;
                 dwCreationDisposition = CREATE_ALWAYS;
             }
 
-    if ((filename != NULL) && (dwDesiredAccess != 0))
+    if ((filename) && (dwDesiredAccess != 0))
         hFile = CreateFile((LPCTSTR)filename, dwDesiredAccess, dwShareMode, NULL,
                 dwCreationDisposition, dwFlagsAndAttributes, NULL);
 
     if (hFile == INVALID_HANDLE_VALUE)
         hFile = NULL;
 
-    if (hFile != NULL)
+    if (hFile)
     {
         WIN32FILE_IOWIN w32fiow;
         w32fiow.hf = hFile;
@@ -139,9 +139,9 @@ uLong size;
 {
     uLong ret = 0;
     HANDLE hFile = NULL;
-    if (stream != NULL)
+    if (stream)
         hFile = ((WIN32FILE_IOWIN*)stream) -> hf;
-    if (hFile != NULL)
+    if (hFile)
         if (!ReadFile(hFile, buf, size, &ret, NULL))
         {
             DWORD dwErr = GetLastError();
@@ -162,10 +162,10 @@ uLong size;
 {
     uLong ret = 0;
     HANDLE hFile = NULL;
-    if (stream != NULL)
+    if (stream)
         hFile = ((WIN32FILE_IOWIN*)stream) -> hf;
 
-    if (hFile != NULL)
+    if (hFile)
         if (!WriteFile(hFile, buf, size, &ret, NULL))
         {
             DWORD dwErr = GetLastError();
@@ -183,9 +183,9 @@ voidpf stream;
 {
     long ret = -1;
     HANDLE hFile = NULL;
-    if (stream != NULL)
+    if (stream)
         hFile = ((WIN32FILE_IOWIN*)stream) -> hf;
-    if (hFile != NULL)
+    if (hFile)
     {
         DWORD dwSet = SetFilePointer(hFile, 0, NULL, FILE_CURRENT);
         if (dwSet == INVALID_SET_FILE_POINTER)
@@ -210,7 +210,7 @@ int origin;
     HANDLE hFile = NULL;
 
     long ret = -1;
-    if (stream != NULL)
+    if (stream)
         hFile = ((WIN32FILE_IOWIN*)stream) -> hf;
     switch (origin)
     {
@@ -227,7 +227,7 @@ int origin;
             return -1;
     }
 
-    if (hFile != NULL)
+    if (hFile)
     {
         DWORD dwSet = SetFilePointer(hFile, offset, NULL, dwMoveMethod);
         if (dwSet == INVALID_SET_FILE_POINTER)
@@ -248,11 +248,11 @@ voidpf stream;
 {
     int ret = -1;
 
-    if (stream != NULL)
+    if (stream)
     {
         HANDLE hFile;
         hFile = ((WIN32FILE_IOWIN*)stream) -> hf;
-        if (hFile != NULL)
+        if (hFile)
         {
             CloseHandle(hFile);
             ret = 0;
@@ -267,7 +267,7 @@ voidpf opaque;
 voidpf stream;
 {
     int ret = -1;
-    if (stream != NULL)
+    if (stream)
     {
         ret = ((WIN32FILE_IOWIN*)stream) -> error;
     }

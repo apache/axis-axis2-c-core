@@ -231,7 +231,7 @@ oxs_buffer_remove_head(
     /*If the size to be removed is less than the buffer size*/
     if (size < buffer_impl->size)
     {
-        if (buffer_impl->data != NULL)
+        if (buffer_impl->data)
         {
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                     "oxs_buffer_remove_head failed");
@@ -248,7 +248,7 @@ oxs_buffer_remove_head(
     /*If the buffer size is less than the max_size.*/
     if (buffer_impl->size < buffer_impl->max_size)
     {
-        if (buffer_impl->data != NULL)
+        if (buffer_impl->data)
         {
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                     "oxs_buffer_remove_head failed");
@@ -282,7 +282,7 @@ oxs_buffer_remove_tail(
     }
     if (buffer_impl->size < buffer_impl->max_size)
     {
-        if (buffer_impl->data != NULL)
+        if (buffer_impl->data)
         {
             oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                     "");
@@ -503,7 +503,7 @@ oxs_buffer_set_max_size(
     }
 
     /*If there are data already then use realloc instead of malloc*/
-    if (buffer_impl->data != NULL)
+    if (buffer_impl->data)
     {
         new_data = (unsigned char*)AXIS2_REALLOC(env->allocator, buffer_impl->data, new_size);
     }

@@ -102,7 +102,7 @@ axis2_flow_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     flow_impl = AXIS2_INTF_TO_IMPL(flow);
 
-    if (NULL != flow_impl->list)
+    if (flow_impl->list)
     {
         int i = 0;
         int size = 0;
@@ -120,7 +120,7 @@ axis2_flow_free(
         flow_impl->list = NULL;
     }
 
-    if (NULL != flow->ops)
+    if (flow->ops)
     {
         AXIS2_FREE(env->allocator, flow->ops);
         flow->ops = NULL;

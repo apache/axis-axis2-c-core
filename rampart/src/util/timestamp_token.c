@@ -144,13 +144,13 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
             RAMPART_SECURITY_TIMESTAMP,
             wsu_ns_obj,
             &ts_node);
-    if (NULL != ts_ele)
+    if (ts_ele)
     {
         /*First we build Created element*/
         created_ele = axiom_element_create(env, ts_node, RAMPART_SECURITY_TIMESTAMP_CREATED, wsu_ns_obj,
                 &created_node);
 
-        if (NULL != created_ele)
+        if (created_ele)
         {
             created_val = rampart_generate_time(env, 0);   /*Current time*/
             AXIOM_ELEMENT_SET_TEXT(created_ele, env, created_val, created_node);
@@ -159,7 +159,7 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
         expires_ele = axiom_element_create(env, ts_node, RAMPART_SECURITY_TIMESTAMP_EXPIRES, wsu_ns_obj,
                 &expires_node);
 
-        if (NULL != expires_ele)
+        if (expires_ele)
         {
             expires_val = rampart_generate_time(env, ttl);
             AXIOM_ELEMENT_SET_TEXT(expires_ele, env, expires_val, expires_node);

@@ -171,7 +171,7 @@ xml_schema_content_type_free(void *content_type,
         {
             axis2_char_t *value = NULL;
             value = (axis2_char_t*) AXIS2_ARRAY_LIST_GET(content_type_impl->members, env, i);
-            if (NULL != value)
+            if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;

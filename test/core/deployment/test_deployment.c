@@ -72,7 +72,7 @@ int axis2_test_dep_engine_load()
         axis2_hash_index_t *hi = NULL;
         void *service = NULL;
         for (hi = axis2_hash_first(svc_map, env);
-                NULL != hi; hi = axis2_hash_next(env, hi))
+                hi; hi = axis2_hash_next(env, hi))
         {
             axis2_hash_t *ops = NULL;
             axis2_svc_t *svc = NULL;
@@ -277,7 +277,7 @@ int axis2_test_default_module_version()
 
     engaged_modules = AXIS2_CONF_GET_ALL_ENGAGED_MODULES(axis_conf, env);
 
-    if (NULL != engaged_modules)
+    if (engaged_modules)
     {
         int list_size = 0;
         int i = 0;

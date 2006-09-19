@@ -133,7 +133,7 @@ axiom_data_handler_free(axiom_data_handler_t *data_handler, const axis2_env_t *e
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     data_handler_impl = AXIS2_INTF_TO_IMPL(data_handler);
 
-    if (NULL != data_handler->ops)
+    if (data_handler->ops)
     {
         AXIS2_FREE(env->allocator, data_handler->ops);
         data_handler->ops = NULL;

@@ -166,13 +166,13 @@ axis2_ws_info_free(
 
     ws_info_impl = AXIS2_INTF_TO_IMPL(ws_info);
 
-    if (NULL != ws_info->ops)
+    if (ws_info->ops)
     {
         AXIS2_FREE(env->allocator, ws_info->ops);
         ws_info->ops = NULL;
     }
 
-    if (NULL != ws_info_impl->file_name)
+    if (ws_info_impl->file_name)
     {
         AXIS2_FREE(env->allocator, ws_info_impl->file_name);
         ws_info_impl->file_name = NULL;

@@ -170,7 +170,7 @@ axiom_soap_fault_role_free(axiom_soap_fault_role_t *fault_role,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (NULL != fault_role->ops)
+    if (fault_role->ops)
     {
         AXIS2_FREE(env->allocator, fault_role->ops);
         fault_role->ops = NULL;
@@ -198,7 +198,7 @@ axiom_soap_fault_role_set_role_value
     role_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT
             (fault_role_impl->om_ele_node, env);
 
-    if (NULL != role_ele)
+    if (role_ele)
     {
         return AXIOM_ELEMENT_SET_TEXT(role_ele,  env, uri,
                 fault_role_impl->om_ele_node);
@@ -222,7 +222,7 @@ axiom_soap_fault_role_get_role_value
     role_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT
             (fault_role_impl->om_ele_node, env);
 
-    if (NULL != role_ele)
+    if (role_ele)
     {
         return AXIOM_ELEMENT_GET_TEXT(role_ele,  env,
                 fault_role_impl->om_ele_node);

@@ -265,7 +265,7 @@ axiom_soap_builder_free(axiom_soap_builder_t *builder,
         return AXIS2_FAILURE;
 
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
-    if (NULL != builder_impl->builder_helper)
+    if (builder_impl->builder_helper)
     {
         if (builder_impl->soap_version == AXIOM_SOAP11 && builder_impl->builder_helper)
         {
@@ -278,13 +278,13 @@ axiom_soap_builder_free(axiom_soap_builder_t *builder,
             builder_impl->builder_helper = NULL;
         }
     }
-    
-    /*if (NULL != builder_impl->om_builder)
+
+    /*if ( builder_impl->om_builder)
     {
         AXIOM_STAX_BUILDER_FREE(builder_impl->om_builder, env);
         builder_impl->om_builder = NULL;
     }*/
-    if (NULL != builder->ops)
+    if (builder->ops)
     {
         AXIS2_FREE(env->allocator, builder->ops);
         builder->ops = NULL;
@@ -823,7 +823,7 @@ axiom_soap_builder_identify_soap_version(axiom_soap_builder_t *builder,
 
     ns_uri = AXIOM_NAMESPACE_GET_URI(om_ns, env);
 
-    if (ns_uri != NULL)
+    if (ns_uri)
     {
         if (soap_version_uri_from_transport && AXIS2_STRCMP(soap_version_uri_from_transport, ns_uri) != 0)
         {
@@ -880,7 +880,7 @@ axiom_soap_builder_parse_headers(axiom_soap_builder_t *builder,
 
     soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(builder_impl->soap_envelope, env);
 
-    if (soap_header != NULL)
+    if (soap_header)
     {
         om_node = AXIOM_SOAP_HEADER_GET_BASE_NODE(soap_header, env);
         if (om_node)

@@ -116,7 +116,7 @@ w2c_url_processor_make_package_name(
     }
     free(long_path);
 
-    if (NULL != path)
+    if (path)
         path_length = strlen(path);
     if (0 != path_length)
     {

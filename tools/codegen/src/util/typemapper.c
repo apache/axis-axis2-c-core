@@ -185,12 +185,12 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
     typemapper_impl-> mapper_name =
         AXIS2_STRDUP(typemapper_impl-> mapper_name, env);
     it = AXIOM_ELEMENT_GET_CHILDREN(root_ele, env, root);
-    while ((child = AXIOM_CHILDREN_ITERATOR_NEXT(it, env)) != NULL)
+    while ((child = AXIOM_CHILDREN_ITERATOR_NEXT(it, env)))
     {
         child_ele = AXIOM_NODE_GET_DATA_ELEMENT(child, env);
         is_default = AXIS2_FALSE;
         if ((attri_val = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME
-                (child_ele, env, "default")) != NULL)
+                (child_ele, env, "default")))
         {
             is_default = AXIS2_TRUE;
         }

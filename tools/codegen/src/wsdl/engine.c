@@ -212,7 +212,7 @@ w2c_engine_generate(w2c_engine_t *engine,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     engine_impl = W2C_INTF_TO_IMPL(engine);
 
-    if (engine_impl-> pre_extensions != NULL)
+    if (engine_impl-> pre_extensions)
     {
         size = AXIS2_ARRAY_LIST_SIZE(engine_impl-> pre_extensions, env);
         for (i = 0; i < size ; i++)
@@ -266,7 +266,7 @@ w2c_engine_generate(w2c_engine_t *engine,
 
     w2c_class_loader_free_loaded_class(env, dll_desc);
 
-    if (engine_impl-> post_extensions != NULL)
+    if (engine_impl-> post_extensions)
     {
         size = AXIS2_ARRAY_LIST_SIZE(engine_impl-> post_extensions, env);
         for (i = 0; i < size ; i++)
@@ -277,7 +277,7 @@ w2c_engine_generate(w2c_engine_t *engine,
         }
     }
     /** freeing used extension right here */
-    if (engine_impl-> pre_extensions != NULL)
+    if (engine_impl-> pre_extensions)
     {
         size = AXIS2_ARRAY_LIST_SIZE(engine_impl-> pre_extensions, env);
         for (i = 0; i < size ; i++)
@@ -287,7 +287,7 @@ w2c_engine_generate(w2c_engine_t *engine,
             /*w2c_class_loader_free_loaded_class(env, dll_desc);*/
         }
 
-        if (engine_impl-> post_extensions != NULL)
+        if (engine_impl-> post_extensions)
         {
             size = AXIS2_ARRAY_LIST_SIZE(engine_impl-> post_extensions, env);
             for (i = 0; i < size ; i++)
@@ -318,7 +318,7 @@ w2c_engine_load_extension(w2c_engine_impl_t *engine_impl,
     prop_loader = engine_impl-> prop_loader;
     extension_names =
         W2C_CONFIG_PROPERTY_LOADER_GET_EXTENSION_CLASS_NAMES(prop_loader, env);
-    if (extension_names != NULL)
+    if (extension_names)
     {
         engine_impl-> pre_extensions
         = axis2_array_list_create(env, 10);
@@ -331,7 +331,7 @@ w2c_engine_load_extension(w2c_engine_impl_t *engine_impl,
                     (extension_names, env , i);
             ext = w2c_class_loader_get_object_from_class_name
                     (env, class_name, W2C_CLASS_LOADER_EXTENSION_PATH, &dll_desc);
-            if (NULL != ext)
+            if (ext)
             {
                 AXIS2_ARRAY_LIST_ADD_AT(engine_impl-> pre_extensions,
                         env, i, (void*)ext);
@@ -348,7 +348,7 @@ w2c_engine_load_extension(w2c_engine_impl_t *engine_impl,
     extension_names =
         W2C_CONFIG_PROPERTY_LOADER_GET_POST_EXTENSION_CLASS_NAMES(prop_loader, env);
 
-    if (extension_names != NULL)
+    if (extension_names)
     {
         engine_impl-> post_extensions
         = axis2_array_list_create(env, 10);
@@ -361,7 +361,7 @@ w2c_engine_load_extension(w2c_engine_impl_t *engine_impl,
                     (extension_names, env , i);
             ext = w2c_class_loader_get_object_from_class_name
                     (env, class_name, W2C_CLASS_LOADER_EXTENSION_PATH, &dll_desc);
-            if (NULL != ext)
+            if (ext)
             {
                 AXIS2_ARRAY_LIST_ADD_AT(engine_impl-> post_extensions,
                         env, i, ext);

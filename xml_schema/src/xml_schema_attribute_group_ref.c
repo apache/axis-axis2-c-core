@@ -165,29 +165,29 @@ xml_schema_attribute_group_ref_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(grp_ref);
 
-    if (NULL != attr_impl->ht_super)
+    if (attr_impl->ht_super)
     {
         axis2_hash_free(attr_impl->ht_super, env);
         attr_impl->ht_super = NULL;
     }
-    if (NULL != attr_impl->ref_qname)
+    if (attr_impl->ref_qname)
     {
         AXIS2_QNAME_FREE(attr_impl->ref_qname, env);
         attr_impl->ref_qname = NULL;
     }
 
-    if (NULL != attr_impl->annotated)
+    if (attr_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(attr_impl->annotated, env);
         attr_impl->annotated = NULL;
     }
 
-    if (NULL != attr_impl->grp_ref.ops)
+    if (attr_impl->grp_ref.ops)
     {
         AXIS2_FREE(env->allocator, attr_impl->grp_ref.ops);
         attr_impl->grp_ref.ops = NULL;
     }
-    if (NULL != attr_impl->grp_ref.base.ops)
+    if (attr_impl->grp_ref.base.ops)
     {
         AXIS2_FREE(env->allocator, attr_impl->grp_ref.base.ops);
         attr_impl->grp_ref.base.ops = NULL;
@@ -243,7 +243,7 @@ xml_schema_attribute_group_ref_set_ref_qname(
     xml_schema_attribute_group_ref_impl_t *attr_grp_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, ref_qname, AXIS2_FAILURE);
     attr_grp_impl = AXIS2_INTF_TO_IMPL(grp_ref);
-    if (NULL != attr_grp_impl->ref_qname)
+    if (attr_grp_impl->ref_qname)
     {
         /** TODO */
     }

@@ -149,31 +149,31 @@ axis2_flow_container_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     container_impl = AXIS2_INTF_TO_IMPL(flow_container);
 
-    if (NULL != container_impl->in)
+    if (container_impl->in)
     {
         AXIS2_FLOW_FREE(container_impl->in, env);
         container_impl->in = NULL;
     }
 
-    if (NULL != container_impl->out)
+    if (container_impl->out)
     {
         AXIS2_FLOW_FREE(container_impl->out, env);
         container_impl->out = NULL;
     }
 
-    if (NULL != container_impl->in_fault)
+    if (container_impl->in_fault)
     {
         AXIS2_FLOW_FREE(container_impl->in_fault, env);
         container_impl->in_fault = NULL;
     }
 
-    if (NULL != container_impl->out_fault)
+    if (container_impl->out_fault)
     {
         AXIS2_FLOW_FREE(container_impl->out_fault, env);
         container_impl->out_fault = NULL;
     }
 
-    if (NULL != flow_container->ops)
+    if (flow_container->ops)
         AXIS2_FREE(env->allocator, flow_container->ops);
 
     if (container_impl)

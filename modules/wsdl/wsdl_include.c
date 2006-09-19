@@ -107,16 +107,16 @@ axis2_wsdl_include_free(axis2_wsdl_include_t *wsdl_include,
 
     include_impl = AXIS2_INTF_TO_IMPL(wsdl_include);
 
-    if (NULL != wsdl_include->ops)
+    if (wsdl_include->ops)
         AXIS2_FREE(env->allocator, wsdl_include->ops);
 
-    if (NULL != include_impl->location)
+    if (include_impl->location)
     {
         AXIS2_FREE(env->allocator, include_impl->location);
         include_impl->location = NULL;
     }
 
-    if (NULL != wsdl_include->wsdl_component)
+    if (wsdl_include->wsdl_component)
     {
         AXIS2_WSDL_COMPONENT_FREE(wsdl_include->wsdl_component, env);
         wsdl_include->wsdl_component = NULL;

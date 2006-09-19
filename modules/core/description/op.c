@@ -676,7 +676,7 @@ axis2_op_create_with_wsdl_op(
         return NULL;
     }
 
-    if (NULL != op_impl->wsdl_op)
+    if (op_impl->wsdl_op)
     {
         AXIS2_WSDL_OP_FREE(op_impl->wsdl_op, env);
     }
@@ -700,7 +700,7 @@ axis2_op_free(
         op_impl->base = NULL;
     }
 
-    if (NULL != op->param_container)
+    if (op->param_container)
     {
         AXIS2_PARAM_CONTAINER_FREE(op->param_container, env);
         op->param_container = NULL;
@@ -714,7 +714,7 @@ axis2_op_free(
         op_impl->msg_recv = NULL;
     }
 
-    if (NULL != op_impl->module_qnames)
+    if (op_impl->module_qnames)
     {
         int i = 0;
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(op_impl->module_qnames, env); i++)
@@ -732,14 +732,14 @@ axis2_op_free(
         op_impl->module_qnames = NULL;
     }
 
-    if (NULL != op_impl->engaged_module_list)
+    if (op_impl->engaged_module_list)
     {
         AXIS2_ARRAY_LIST_FREE(op_impl->engaged_module_list, env);
         op_impl->engaged_module_list = NULL;
     }
 
 
-    if (NULL != op_impl->wsdl_op)
+    if (op_impl->wsdl_op)
     {
         AXIS2_WSDL_OP_FREE(op_impl->wsdl_op, env);
         op_impl->wsdl_op = NULL;
@@ -856,7 +856,7 @@ axis2_op_is_param_locked(
 
     /* checking the locked value of parent */
     parent = axis2_op_get_parent(op, env);
-    if (NULL != parent)
+    if (parent)
     {
         locked = AXIS2_SVC_IS_PARAM_LOCKED(parent, env, param_name);
     }
@@ -865,7 +865,7 @@ axis2_op_is_param_locked(
         return AXIS2_TRUE;
     }
     param = axis2_op_get_param(op, env, param_name);
-    return (param != NULL && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env));
+    return (param  && AXIS2_TRUE == AXIS2_PARAM_IS_LOCKED(param, env));
 }
 
 axis2_status_t AXIS2_CALL
@@ -1755,7 +1755,7 @@ axis2_op_find_existing_op_ctx(
     AXIS2_PARAM_CHECK(env->error, msg_ctx, NULL);
 
     op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-    if (NULL != op_ctx)
+    if (op_ctx)
     {
         return op_ctx;
     }
@@ -1908,7 +1908,7 @@ axis2_op_add_msg_ctx_in_out(
             AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING);
     out_msg_ctx = (axis2_msg_ctx_t *) axis2_hash_get(mep,
             AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING);
-    if (NULL != in_msg_ctx && NULL != out_msg_ctx)
+    if (in_msg_ctx && NULL != out_msg_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
                 AXIS2_FAILURE);
@@ -1948,7 +1948,7 @@ axis2_op_add_msg_ctx_out_in(
             AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING);
     out_msg_ctx = (axis2_msg_ctx_t *) axis2_hash_get(mep,
             AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING);
-    if (NULL != in_msg_ctx && NULL != out_msg_ctx)
+    if (in_msg_ctx && NULL != out_msg_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_MESSAGE_ADDITION,
                 AXIS2_FAILURE);

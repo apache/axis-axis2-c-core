@@ -150,13 +150,13 @@ xml_schema_obj_collection_free(
 
     obj_collection_impl = AXIS2_INTF_TO_IMPL(obj_collection);
 
-    if (NULL != obj_collection_impl->objs)
+    if (obj_collection_impl->objs)
     {
         AXIS2_ARRAY_LIST_FREE(obj_collection_impl->objs, env);
         obj_collection_impl->objs = NULL;
     }
 
-    if (NULL != obj_collection_impl->obj_collection.ops)
+    if (obj_collection_impl->obj_collection.ops)
     {
         AXIS2_FREE(env->allocator, obj_collection_impl->obj_collection.ops);
         obj_collection_impl->obj_collection.ops = NULL;

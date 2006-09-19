@@ -142,19 +142,19 @@ axis2_wsdl_soap_op_free(
 
     soap_op_impl = AXIS2_INTF_TO_IMPL(soap_op);
 
-    if (NULL != soap_op->ops)
+    if (soap_op->ops)
     {
         AXIS2_FREE(env->allocator, soap_op->ops);
         soap_op->ops = NULL;
     }
 
-    if (NULL != soap_op_impl->style)
+    if (soap_op_impl->style)
     {
         AXIS2_FREE(env->allocator, soap_op_impl->style);
         soap_op_impl->style = NULL;
     }
 
-    if (NULL != soap_op_impl->soap_action)
+    if (soap_op_impl->soap_action)
     {
         AXIS2_FREE(env->allocator, soap_op_impl->soap_action);
         soap_op_impl->soap_action = NULL;

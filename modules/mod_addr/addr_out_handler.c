@@ -154,7 +154,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
             addr_ns = AXIS2_WSA_NAMESPACE_SUBMISSION;
         }
     }
-    else if (AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env) != NULL)
+    else if (AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env))
     {
         axis2_op_ctx_t *op_ctx = NULL;
         axis2_msg_ctx_t *in_msg_ctx = NULL;
@@ -338,7 +338,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         /* It is wrong freeing the epr here. Instead I set the locally
          * created epr to msg_info_headers just after creating it
          */
-        /*if(NULL != epr)
+        /*if( epr)
         {
             AXIS2_ENDPOINT_REF_FREE(epr, env);
             epr = NULL;
@@ -422,11 +422,11 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                     (axiom_element_t *)
                     AXIOM_NODE_GET_DATA_ELEMENT(relates_to_header_node,
                             env);
-                if (NULL != relates_to_header_ele)
+                if (relates_to_header_ele)
                 {
                     dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(relates_to_header_ele, env,
                             addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
-                    if (NULL != dec_ns)
+                    if (dec_ns)
                     {
                         addr_ns_obj = dec_ns;
                     }
@@ -444,7 +444,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                             om_attr, relates_to_header_node);
 
                 }
-                if (NULL != relates_to_header_ele)
+                if (relates_to_header_ele)
                 {
                     dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(relates_to_header_ele, env,
                             addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
@@ -452,7 +452,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
                     {
                         dec_ns = AXIOM_ELEMENT_FIND_NAMESPACE(relates_to_header_ele, env,
                                 relates_to_header_node, addr_ns, AXIS2_WSA_DEFAULT_PREFIX);
-                        if (NULL != dec_ns)
+                        if (dec_ns)
                         {
                             AXIOM_NAMESPACE_FREE(addr_ns_obj, env);
                             addr_ns_obj = NULL ;
@@ -503,7 +503,7 @@ axis2_addr_out_handler_process_string_info(const axis2_env_t *env,
         header_block_ele =
             (axiom_element_t *)
             AXIOM_NODE_GET_DATA_ELEMENT(header_block_node, env);
-        if (NULL != header_block_ele)
+        if (header_block_ele)
         {
             axiom_namespace_t *dec_ns = NULL;
             AXIOM_ELEMENT_SET_TEXT(header_block_ele, env, value,
@@ -550,7 +550,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
         AXIOM_SOAP_HEADER_ADD_HEADER_BLOCK(soap_header, env, type,
                 addr_ns_obj);
 
-    if (NULL !=  addr_ns_obj)
+    if (addr_ns_obj)
     {
         AXIOM_NAMESPACE_FREE(addr_ns_obj, env);
         addr_ns_obj = NULL;
@@ -572,7 +572,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
         address_ele =
             axiom_element_create(env, hb_node, EPR_ADDRESS, addr_ns_obj,
                     &address_node);
-        if (NULL != address_ele)
+        if (address_ele)
         {
             axiom_namespace_t *dec_ns = NULL;
             AXIOM_ELEMENT_SET_TEXT(address_ele, env, address, address_node);
@@ -705,7 +705,7 @@ axis2_addr_out_handler_add_to_soap_header(const axis2_env_t *env,
                                                           referece_properties,
                                                           reference_node,
                                                           addr_ns);
-          if(NULL != reference_ele)
+          if( reference_ele)
          {
              axiom_namespace_t *dec_ns = NULL;
              dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE( reference_ele , env,
@@ -777,7 +777,7 @@ axis2_addr_out_handler_add_to_header(const axis2_env_t *env,
         sprintf(text, "%s:%s", qname_prefix, qname_localpart);
         AXIOM_ELEMENT_SET_TEXT(interface_ele, env, text, interface_node);
         AXIS2_FREE(env->allocator, text);
-        if (NULL != interface_ele)
+        if (interface_ele)
         {
             axiom_namespace_t *dec_ns = NULL;
             dec_ns = AXIOM_ELEMENT_FIND_DECLARED_NAMESPACE(interface_ele , env,

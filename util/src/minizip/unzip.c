@@ -157,12 +157,12 @@ typedef struct
 
     uLong size_central_dir;     /* size of the central directory  */
     uLong offset_central_dir;   /* offset of start of central directory with
-                                           respect to the starting disk number */
+                                               respect to the starting disk number */
 
     unz_file_info cur_file_info; /* public info about the current file in zip*/
     unz_file_info_internal cur_file_info_internal; /* private info about it*/
     file_in_zip_read_info_s* pfile_in_zip_read; /* structure about the current
-                                                file if we are decompressing it */
+                                                    file if we are decompressing it */
     int encrypted;
 #    ifndef NOUNCRYPT
     unsigned long keys[3];     /* keys defining the pseudo-random sequence */
@@ -423,12 +423,12 @@ zlib_filefunc_def* pzlib_filefunc_def;
     uLong central_pos, uL;
 
     uLong number_disk;          /* number of the current dist, used for
-                                           spaning ZIP, unsupported, always 0*/
+                                               spaning ZIP, unsupported, always 0*/
     uLong number_disk_with_CD;  /* number the the disk with central dir, used
-                                           for spaning ZIP, unsupported, always 0*/
+                                               for spaning ZIP, unsupported, always 0*/
     uLong number_entry_CD;      /* total number of entries in
-                                           the central dir
-                                           (same than number_entry on nospan) */
+                                               the central dir
+                                               (same than number_entry on nospan) */
 
     int err = UNZ_OK;
 
@@ -536,7 +536,7 @@ extern int ZEXPORT unzClose(file)
         return UNZ_PARAMERROR;
     s = (unz_s*)file;
 
-    if (s->pfile_in_zip_read != NULL)
+    if (s->pfile_in_zip_read)
         unzCloseCurrentFile(file);
 
     ZCLOSE(s->z_filefunc, s->filestream);
@@ -685,7 +685,7 @@ uLong commentBufferSize;
         err = UNZ_ERRNO;
 
     lSeek += file_info.size_filename;
-    if ((err == UNZ_OK) && (szFileName != NULL))
+    if ((err == UNZ_OK) && (szFileName))
     {
         uLong uSizeRead ;
         if (file_info.size_filename < fileNameBufferSize)
@@ -703,7 +703,7 @@ uLong commentBufferSize;
     }
 
 
-    if ((err == UNZ_OK) && (extraField != NULL))
+    if ((err == UNZ_OK) && (extraField))
     {
         uLong uSizeRead ;
         if (file_info.size_file_extra < extraFieldBufferSize)
@@ -727,7 +727,7 @@ uLong commentBufferSize;
         lSeek += file_info.size_file_extra;
 
 
-    if ((err == UNZ_OK) && (szComment != NULL))
+    if ((err == UNZ_OK) && (szComment))
     {
         uLong uSizeRead ;
         if (file_info.size_file_comment < commentBufferSize)
@@ -753,10 +753,10 @@ uLong commentBufferSize;
     else
         lSeek += file_info.size_file_comment;
 
-    if ((err == UNZ_OK) && (pfile_info != NULL))
+    if ((err == UNZ_OK) && (pfile_info))
         *pfile_info = file_info;
 
-    if ((err == UNZ_OK) && (pfile_info_internal != NULL))
+    if ((err == UNZ_OK) && (pfile_info_internal))
         *pfile_info_internal = file_info_internal;
 
     return err;
@@ -1090,7 +1090,7 @@ const char* password;
 #    ifndef NOUNCRYPT
     char source[12];
 #    else
-    if (password != NULL)
+    if (password)
         return UNZ_PARAMERROR;
 #    endif
 
@@ -1100,7 +1100,7 @@ const char* password;
     if (!s->current_file_ok)
         return UNZ_PARAMERROR;
 
-    if (s->pfile_in_zip_read != NULL)
+    if (s->pfile_in_zip_read)
         unzCloseCurrentFile(file);
 
     if (unzlocal_CheckCurrentFileCoherencyHeader(s, &iSizeVar,
@@ -1126,10 +1126,10 @@ const char* password;
 
     pfile_in_zip_read_info->stream_initialised = 0;
 
-    if (method != NULL)
+    if (method)
         *method = (int)s->cur_file_info.compression_method;
 
-    if (level != NULL)
+    if (level)
     {
         *level = 6;
         switch (s->cur_file_info.flag & 0x06)
@@ -1200,7 +1200,7 @@ const char* password;
     s->pfile_in_zip_read = pfile_in_zip_read_info;
 
 #    ifndef NOUNCRYPT
-    if (password != NULL)
+    if (password)
     {
         int i;
         s->pcrc_32_tab = get_crc_table();
@@ -1387,7 +1387,7 @@ unsigned len;
             */
             err = inflate(&pfile_in_zip_read_info->stream, flush);
 
-            if ((err >= 0) && (pfile_in_zip_read_info->stream.msg != NULL))
+            if ((err >= 0) && (pfile_in_zip_read_info->stream.msg))
                 err = Z_DATA_ERROR;
 
             uTotalOutAfter = pfile_in_zip_read_info->stream.total_out;
@@ -1590,7 +1590,7 @@ uLong uSizeBuf;
             return UNZ_ERRNO;
     }
 
-    if ((szComment != NULL) && (uSizeBuf > s->gi.size_comment))
+    if ((szComment) && (uSizeBuf > s->gi.size_comment))
         *(szComment + s->gi.size_comment) = '\0';
     return (int)uReadThis;
 }

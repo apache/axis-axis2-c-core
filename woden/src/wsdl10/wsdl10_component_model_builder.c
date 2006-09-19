@@ -351,7 +351,7 @@ init_components(
 
             incl_el = AXIS2_ARRAY_LIST_GET(includes, env, i);
             incl_desc = WODEN_INCLUDE_ELEMENT_GET_DESC_ELEMENT(incl_el, env);
-            if (NULL != incl_desc)
+            if (incl_desc)
             {
                 init_components(builder, env, incl_desc);
             }
@@ -369,7 +369,7 @@ init_components(
 
             imp_el = AXIS2_ARRAY_LIST_GET(imports, env, i);
             imp_desc = WODEN_IMPORT_ELEMENT_GET_DESC_ELEMENT(imp_el, env);
-            if (NULL != imp_desc)
+            if (imp_desc)
             {
                 init_components(builder, env, imp_desc);
             }
@@ -406,7 +406,7 @@ build_elements_and_types(
 
     type_system_uri = axis2_uri_parse_string(env, WODEN_TYPE_XSD_2001);
 
-    if (NULL != types)
+    if (types)
     {
         axis2_array_list_t *referenceable_schema_defs = NULL;
         int i = 0, size = 0;
@@ -475,7 +475,7 @@ build_element_decls(
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
     schema_tns = XML_SCHEMA_GET_TARGET_NAMESPACE(schema_def, env);
-    if (NULL != schema_tns)
+    if (schema_tns)
     {
         xml_schema_obj_table_t *element_table = NULL;
         axis2_array_list_t *qnames = NULL;
@@ -532,7 +532,7 @@ build_type_defs(
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 
     schema_tns = XML_SCHEMA_GET_TARGET_NAMESPACE(schema_def, env);
-    if (NULL != schema_tns)
+    if (schema_tns)
     {
         xml_schema_obj_table_t *type_table = NULL;
         axis2_array_list_t *qnames = NULL;
@@ -671,7 +671,7 @@ build_interfaces(
 
     desc = woden_wsdl10_desc_to_desc_element(desc, env);
     interface_els = WODEN_WSDL10_DESC_ELEMENT_GET_INTERFACE_ELEMENTS(desc, env);
-    if (NULL != interface_els)
+    if (interface_els)
     {
         size = AXIS2_ARRAY_LIST_SIZE(interface_els, env);
     }
@@ -781,7 +781,7 @@ build_interface_fault_refs(
         fault_ref = woden_wsdl10_interface_fault_ref_to_interface_fault_ref_element(
                     fault_ref, env);
         qname = WODEN_WSDL10_INTERFACE_FAULT_REF_ELEMENT_GET_MSG_QNAME(fault_ref, env);
-        if (NULL != qname)
+        if (qname)
         {
             axis2_array_list_t *msgs = NULL;
 
@@ -1385,7 +1385,7 @@ build_properties(
         prop = AXIS2_ARRAY_LIST_GET(prop_els, env, i);
         prop = woden_property_to_property_element(prop, env);
         qname = WODEN_PROPERTY_ELEMENT_GET_CONSTRAINT_QNAME(prop, env);
-        if (NULL != qname)
+        if (qname)
         {
             void *value = NULL;
 

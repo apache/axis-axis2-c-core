@@ -222,19 +222,19 @@ axis2_transport_out_desc_free(
         transport_out_impl->sender = NULL;
     }
 
-    if (NULL != transport_out->ops)
+    if (transport_out->ops)
     {
         AXIS2_FREE(env->allocator, transport_out->ops);
         transport_out->ops = NULL;
     }
 
-    if (NULL != transport_out_impl->transport_out.param_container)
+    if (transport_out_impl->transport_out.param_container)
     {
         AXIS2_PARAM_CONTAINER_FREE(transport_out_impl->transport_out.param_container, env);
         transport_out_impl->transport_out.param_container = NULL;
     }
 
-    if (NULL != transport_out_impl->qname)
+    if (transport_out_impl->qname)
     {
         AXIS2_QNAME_FREE(transport_out_impl->qname, env);
         transport_out_impl->qname = NULL;

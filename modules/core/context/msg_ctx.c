@@ -1783,7 +1783,7 @@ axis2_msg_ctx_set_msg_info_headers(
 
     if (msg_info_headers)
     {
-        if (NULL !=  AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers)
+        if (AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers)
         {
             AXIS2_MSG_INFO_HEADERS_FREE(
                 AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers, env);

@@ -178,7 +178,7 @@ xml_schema_simple_type_restriction_create(const axis2_env_t *env)
     annotated = XML_SCHEMA_SIMPLE_TYPE_CONTENT_GET_BASE_IMPL(
                 simple_type_restriction_impl->sim_type_content, env);
 
-    if (NULL != annotated)
+    if (annotated)
     {
         axis2_hash_set(simple_type_restriction_impl->ht_super,
                 AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
@@ -209,34 +209,34 @@ xml_schema_simple_type_restriction_free(void *simple_type_restriction,
     simple_type_restriction_impl = AXIS2_INTF_TO_IMPL(simple_type_restriction);
 
 
-    if (NULL != simple_type_restriction_impl->ht_super)
+    if (simple_type_restriction_impl->ht_super)
     {
         axis2_hash_free(simple_type_restriction_impl->ht_super, env);
         simple_type_restriction_impl->ht_super = NULL;
     }
 
 
-    if (NULL != simple_type_restriction_impl->sim_type_content)
+    if (simple_type_restriction_impl->sim_type_content)
     {
         XML_SCHEMA_SIMPLE_TYPE_CONTENT_FREE(
             simple_type_restriction_impl->sim_type_content , env);
         simple_type_restriction_impl->sim_type_content = NULL;
     }
 
-    if (NULL != simple_type_restriction_impl->simple_type_restriction.ops)
+    if (simple_type_restriction_impl->simple_type_restriction.ops)
     {
         AXIS2_FREE(env->allocator,
                 simple_type_restriction_impl->simple_type_restriction.ops);
         simple_type_restriction_impl->simple_type_restriction.ops = NULL;
     }
-    if (NULL != simple_type_restriction_impl->simple_type_restriction.base.ops)
+    if (simple_type_restriction_impl->simple_type_restriction.base.ops)
     {
         AXIS2_FREE(env->allocator,
                 simple_type_restriction_impl->simple_type_restriction.base.ops);
         simple_type_restriction_impl->simple_type_restriction.base.ops = NULL;
     }
 
-    if (NULL != simple_type_restriction_impl)
+    if (simple_type_restriction_impl)
     {
         AXIS2_FREE(env->allocator, simple_type_restriction_impl);
         simple_type_restriction_impl = NULL;
@@ -275,7 +275,7 @@ xml_schema_simple_type_restriction_resolve_methods(
 
     simple_type_restriction->ops = AXIS2_MALLOC(env->allocator,
             sizeof(xml_schema_simple_type_restriction_ops_t));
-    if(NULL != simple_type_restriction->ops)
+    if( simple_type_restriction->ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -322,7 +322,7 @@ xml_schema_simple_type_restriction_set_base_type(void *simple_type_restriction,
     xml_schema_simple_type_restriction_impl_t *sim_type_res_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     sim_type_res_impl = AXIS2_INTF_TO_IMPL(simple_type_restriction);
-    if (NULL != sim_type_res_impl->base_type_name)
+    if (sim_type_res_impl->base_type_name)
     {
         XML_SCHEMA_SIMPLE_TYPE_CONTENT_FREE(sim_type_res_impl->base_type, env);
         sim_type_res_impl->base_type_name = NULL;
@@ -351,7 +351,7 @@ xml_schema_simple_type_restriction_set_base_type_name(void *simple_type_restrict
     AXIS2_PARAM_CHECK(env->error, base_type_name, AXIS2_FAILURE);
 
     sim_type_res_impl = AXIS2_INTF_TO_IMPL(simple_type_restriction);
-    if (NULL != sim_type_res_impl->base_type_name)
+    if (sim_type_res_impl->base_type_name)
     {
         AXIS2_QNAME_FREE(sim_type_res_impl->base_type_name, env);
         sim_type_res_impl->base_type_name = NULL;

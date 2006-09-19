@@ -161,7 +161,7 @@ xml_schema_use_free(void *use,
         {
             axis2_char_t *value = NULL;
             value = (axis2_char_t*) AXIS2_ARRAY_LIST_GET(use_impl->members, env, i);
-            if (NULL != value)
+            if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
@@ -177,20 +177,20 @@ xml_schema_use_free(void *use,
         use_impl->schema_enum = NULL;
     }
 
-    if (NULL != use_impl->ht_super)
+    if (use_impl->ht_super)
     {
         axis2_hash_free(use_impl->ht_super, env);
         use_impl->ht_super = NULL;
     }
 
 
-    if (NULL != use_impl->use.base.ops)
+    if (use_impl->use.base.ops)
     {
         AXIS2_FREE(env->allocator, use_impl->use.base.ops);
         use_impl->use.base.ops = NULL;
     }
 
-    if (NULL != use_impl->use.ops)
+    if (use_impl->use.ops)
     {
         AXIS2_FREE(env->allocator, use_impl->use.ops);
         use_impl->use.ops = NULL;
@@ -245,7 +245,7 @@ xml_schema_use_get_values(void *use,
     super = XML_SCHEMA_USE_SUPER_OBJS(use, env);
     use_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, "XML_SCHEMA_USE",
             AXIS2_HASH_KEY_STRING));
-    if (NULL != use_impl)
+    if (use_impl)
         return use_impl->members;
     return NULL;
 }

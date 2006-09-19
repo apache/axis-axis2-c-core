@@ -120,17 +120,17 @@ axis2_wsdl_extensible_attribute_free(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (NULL != extensible_attribute->ops)
+    if (extensible_attribute->ops)
         AXIS2_FREE(env->allocator, extensible_attribute->ops);
 
-    if (NULL != AXIS2_INTF_TO_IMPL(extensible_attribute)->key)
+    if (AXIS2_INTF_TO_IMPL(extensible_attribute)->key)
     {
         AXIS2_QNAME_FREE(AXIS2_INTF_TO_IMPL(extensible_attribute)->
                 key, env);
         AXIS2_INTF_TO_IMPL(extensible_attribute)->key = NULL;
     }
 
-    if (NULL != AXIS2_INTF_TO_IMPL(extensible_attribute)->value)
+    if (AXIS2_INTF_TO_IMPL(extensible_attribute)->value)
     {
         AXIS2_QNAME_FREE(AXIS2_INTF_TO_IMPL(extensible_attribute)->
                 value, env);

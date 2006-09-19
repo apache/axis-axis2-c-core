@@ -177,7 +177,7 @@ xml_schema_derivation_method_free(void *derivation_method,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     derivation_method_impl = AXIS2_INTF_TO_IMPL(derivation_method);
 
-    if (NULL != derivation_method_impl->members)
+    if (derivation_method_impl->members)
     {
         int size = 0;
         int i    = 0;
@@ -186,7 +186,7 @@ xml_schema_derivation_method_free(void *derivation_method,
         {
             axis2_char_t *value = NULL;
             value = (axis2_char_t*) AXIS2_ARRAY_LIST_GET(derivation_method_impl->members, env, i);
-            if (NULL != value)
+            if (value)
             {
                 AXIS2_FREE(env->allocator, value);
                 value = NULL;
@@ -196,23 +196,23 @@ xml_schema_derivation_method_free(void *derivation_method,
         derivation_method_impl->members = NULL;
     }
 
-    if (NULL != derivation_method_impl->schema_enum)
+    if (derivation_method_impl->schema_enum)
     {
         XML_SCHEMA_ENUM_FREE(derivation_method_impl->schema_enum, env);
         derivation_method_impl->schema_enum = NULL;
     }
 
-    if (NULL != derivation_method_impl->derivation_method.ops)
+    if (derivation_method_impl->derivation_method.ops)
     {
         AXIS2_FREE(env->allocator, derivation_method_impl->derivation_method.ops);
         derivation_method_impl->derivation_method.ops = NULL;
     }
-    if (NULL != derivation_method_impl->derivation_method.base.ops)
+    if (derivation_method_impl->derivation_method.base.ops)
     {
         AXIS2_FREE(env->allocator, derivation_method_impl->derivation_method.base.ops);
         derivation_method_impl->derivation_method.base.ops = NULL;
     }
-    if (NULL != derivation_method_impl)
+    if (derivation_method_impl)
     {
         AXIS2_FREE(env->allocator, derivation_method_impl);
         derivation_method_impl = NULL;

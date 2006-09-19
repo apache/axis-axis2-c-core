@@ -64,7 +64,7 @@ axis2_network_handler_open_socket(const axis2_env_t *env, char *server, int port
         struct hostent* lphost = NULL;
         lphost = gethostbyname(server); /*nnn netdb.h*/
 
-        if (NULL != lphost)
+        if (lphost)
             sock_addr.sin_addr.s_addr =
                 ((struct in_addr*)lphost->h_addr)->s_addr;
         else

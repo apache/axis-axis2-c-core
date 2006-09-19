@@ -700,7 +700,7 @@ axis2_mep_client_two_way_send(
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
             AXIS2_FALSE);
 
-    if (NULL != engine)
+    if (engine)
     {
         AXIS2_ENGINE_FREE(engine, env);
         engine = NULL;
@@ -790,7 +790,7 @@ axis2_mep_client_receive(
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_TRANSPORT_IN, property,
             AXIS2_FALSE);
 
-    if (NULL != engine)
+    if (engine)
     {
         AXIS2_ENGINE_FREE(engine, env);
         engine = NULL;

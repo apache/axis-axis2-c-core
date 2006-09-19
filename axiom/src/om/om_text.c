@@ -243,13 +243,13 @@ axiom_text_free(axiom_text_t * om_text,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     text_impl = AXIS2_INTF_TO_IMPL(om_text);
-    if (NULL != text_impl->value)
+    if (text_impl->value)
     {
         AXIS2_FREE(env->allocator, text_impl->value);
         text_impl->value = NULL;
     }
 
-    if (NULL != text_impl->ns)
+    if (text_impl->ns)
     {
         AXIOM_NAMESPACE_FREE(text_impl->ns, env);
         text_impl->ns = NULL;
@@ -261,7 +261,7 @@ axiom_text_free(axiom_text_t * om_text,
         text_impl->content_id = NULL;
     }
 
-    if (NULL != om_text->ops)
+    if (om_text->ops)
     {
         AXIS2_FREE(env->allocator, om_text->ops);
         om_text->ops = NULL;
@@ -342,7 +342,7 @@ axiom_text_set_value(axiom_text_t *om_text,
     AXIS2_PARAM_CHECK(env->error , om_text, AXIS2_FAILURE);
 
     text_impl = AXIS2_INTF_TO_IMPL(om_text);
-    if (NULL != text_impl->value)
+    if (text_impl->value)
     {
         AXIS2_FREE(env->allocator, text_impl->value);
         text_impl->value = NULL;
@@ -464,14 +464,14 @@ axiom_text_serialize_start_part(axiom_text_t *om_text,
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
     local_name = axiom_text_get_localname(om_text, env);
 
-    if (om_text_impl->ns != NULL)
+    if (om_text_impl->ns)
     {
         namespace_uri = AXIOM_NAMESPACE_GET_URI(om_text_impl->ns, env);
-        if (namespace_uri != NULL)
+        if (namespace_uri)
         {
             prefix = AXIOM_NAMESPACE_GET_PREFIX(om_text_impl->ns, env);
 
-            if (prefix != NULL)
+            if (prefix)
             {
                 axiom_output_write(om_output, env, AXIOM_ELEMENT, 3,
                         local_name, namespace_uri, prefix);
@@ -527,11 +527,11 @@ axiom_text_serialize_attribute(axiom_text_t *om_text,
     attribute_local_name = AXIOM_ATTRIBUTE_GET_LOCALNAME(om_attribute, env);
 
 
-    if (om_namespace != NULL)
+    if (om_namespace)
     {
         prefix = AXIOM_NAMESPACE_GET_PREFIX(om_text_impl->ns, env);
         attribute_value = AXIOM_ATTRIBUTE_GET_VALUE(om_attribute, env);
-        if (prefix != NULL)
+        if (prefix)
         {
             AXIOM_XML_WRITER_WRITE_ATTRIBUTE(xml_writer, env, attribute_local_name, attribute_value);
         }
@@ -566,7 +566,7 @@ axiom_text_serialize_namespace(axiom_text_t *om_text,
     om_namespace = axiom_namespace_create(env, "" , "");
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
 
-    if (om_namespace != NULL)
+    if (om_namespace)
     {
         namespace_uri = AXIOM_NAMESPACE_GET_URI(om_text_impl->ns, env);
         namespace_prefix = AXIOM_NAMESPACE_GET_PREFIX(om_text_impl->ns, env);
@@ -584,7 +584,7 @@ axiom_text_get_text(axiom_text_t *om_text,
     AXIS2_ENV_CHECK(env, NULL);
 
     om_text_impl = AXIS2_INTF_TO_IMPL(om_text);
-    if (om_text_impl->value != NULL)
+    if (om_text_impl->value)
     {
         return om_text_impl->value;
     }

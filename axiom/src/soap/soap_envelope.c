@@ -443,18 +443,18 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *envelope,
                         axis2_char_t *text = NULL;
 
                         fault_code_om_node = AXIOM_SOAP_FAULT_CODE_GET_BASE_NODE(fault_code, env);
-                        if (NULL != fault_code_om_node)
+                        if (fault_code_om_node)
                         {
                             fault_code_om_ele = (axiom_element_t *)
                                     AXIOM_NODE_GET_DATA_ELEMENT(fault_code_om_node, env);
-                            if (NULL != fault_code_om_ele)
+                            if (fault_code_om_ele)
                             {
                                 AXIOM_ELEMENT_SET_LOCALNAME(fault_code_om_ele,
                                         env, AXIOM_SOAP11_SOAP_FAULT_CODE_LOCAL_NAME);
 
                                 fault_value = AXIOM_SOAP_FAULT_CODE_GET_VALUE(fault_code, env);
 
-                                if (NULL != fault_value)
+                                if (fault_value)
                                 {
                                     fault_value_om_node = AXIOM_SOAP_FAULT_VALUE_GET_BASE_NODE(fault_value, env);
                                     if (fault_value_om_node)
@@ -465,7 +465,7 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *envelope,
                                         if (fault_value_om_ele)
                                         {
                                             text = AXIOM_ELEMENT_GET_TEXT(fault_value_om_ele, env, fault_value_om_node);
-                                            if (NULL != text)
+                                            if (text)
                                             {
                                                 AXIOM_ELEMENT_SET_TEXT(fault_code_om_ele, env, text, fault_code_om_node);
                                             }
@@ -501,7 +501,7 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *envelope,
 
                                 fault_text =
                                     AXIOM_SOAP_FAULT_REASON_GET_FIRST_SOAP_FAULT_TEXT(fault_reason, env);
-                                if (NULL != fault_text)
+                                if (fault_text)
                                 {
                                     fault_text_om_node = AXIOM_SOAP_FAULT_TEXT_GET_BASE_NODE(fault_text, env);
                                     if (fault_text_om_node)
@@ -512,7 +512,7 @@ axiom_soap_envelope_serialize(axiom_soap_envelope_t *envelope,
                                         if (fault_text_om_ele)
                                         {
                                             text = AXIOM_ELEMENT_GET_TEXT(fault_text_om_ele, env, fault_text_om_node);
-                                            if (NULL != text)
+                                            if (text)
                                             {
                                                 AXIOM_ELEMENT_SET_TEXT(fault_reason_om_ele,
                                                         env, text, fault_reason_om_node);

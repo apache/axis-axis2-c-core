@@ -180,7 +180,7 @@ xml_schema_app_info_free(void *app_info,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     app_info_impl = AXIS2_INTF_TO_IMPL(app_info);
 
-    if (NULL != app_info_impl->source)
+    if (app_info_impl->source)
     {
         AXIS2_FREE(env->allocator, app_info_impl->source);
         app_info_impl->source = NULL;
@@ -188,29 +188,29 @@ xml_schema_app_info_free(void *app_info,
 
     /* TODO Free markup */
 
-    if (NULL != app_info_impl->ht_super)
+    if (app_info_impl->ht_super)
     {
         axis2_hash_free(app_info_impl->ht_super, env);
         app_info_impl->ht_super = NULL;
     }
 
-    if (NULL != app_info_impl->schema_obj)
+    if (app_info_impl->schema_obj)
     {
         XML_SCHEMA_OBJ_FREE(app_info_impl->schema_obj, env);
         app_info_impl->schema_obj = NULL;
     }
 
-    if (NULL != app_info_impl->app_info.ops)
+    if (app_info_impl->app_info.ops)
     {
         AXIS2_FREE(env->allocator, app_info_impl->app_info.ops);
         app_info_impl->app_info.ops = NULL;
     }
-    if (NULL != app_info_impl->app_info.base.ops)
+    if (app_info_impl->app_info.base.ops)
     {
         AXIS2_FREE(env->allocator, app_info_impl->app_info.base.ops);
         app_info_impl->app_info.base.ops = NULL;
     }
-    if (NULL != app_info_impl)
+    if (app_info_impl)
     {
         AXIS2_FREE(env->allocator, app_info_impl);
         app_info_impl = NULL;
@@ -251,11 +251,11 @@ xml_schema_app_info_get_source(void *app_info,
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_USE_SUPER_OBJS(app_info, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         app_info_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_APP_INFO",
                 AXIS2_HASH_KEY_STRING));
-        if (NULL != app_info_impl)
+        if (app_info_impl)
             return  app_info_impl->source;
     }
 
@@ -273,15 +273,15 @@ xml_schema_app_info_set_source(void *app_info,
     AXIS2_PARAM_CHECK(env->error, source, AXIS2_FAILURE);
 
     ht_super = XML_SCHEMA_USE_SUPER_OBJS(app_info, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         app_info_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_APP_INFO",
                 AXIS2_HASH_KEY_STRING));
-        if (NULL != app_info_impl)
+        if (app_info_impl)
             return  AXIS2_FAILURE;
     }
 
-    if (NULL != app_info_impl->source)
+    if (app_info_impl->source)
     {
         AXIS2_FREE(env->allocator, app_info_impl->source);
         app_info_impl->source = NULL;
@@ -305,11 +305,11 @@ xml_schema_app_info_get_markup(void *app_info,
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_USE_SUPER_OBJS(app_info, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         app_info_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_APP_INFO",
                 AXIS2_HASH_KEY_STRING));
-        if (NULL != app_info_impl)
+        if (app_info_impl)
             return  NULL;
     }
     return app_info_impl->markup;
@@ -326,11 +326,11 @@ xml_schema_app_info_set_markup(void *app_info,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, markup, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_USE_SUPER_OBJS(app_info, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         app_info_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_APP_INFO",
                 AXIS2_HASH_KEY_STRING));
-        if (NULL != app_info_impl)
+        if (app_info_impl)
             return  AXIS2_FAILURE;
     }
     app_info_impl->markup = markup;

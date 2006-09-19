@@ -192,40 +192,40 @@ xml_schema_attribute_group_free(void *attr_grp,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     attr_impl = AXIS2_INTF_TO_IMPL(attr_grp);
 
-    if (NULL != attr_impl->ht_super)
+    if (attr_impl->ht_super)
     {
         axis2_hash_free(attr_impl->ht_super, env);
         attr_impl->ht_super = NULL;
     }
-    if (NULL != attr_impl->any_attribute)
+    if (attr_impl->any_attribute)
     {
         XML_SCHEMA_ANY_ATTRIBUTE_FREE(attr_impl->any_attribute, env);
         attr_impl->any_attribute = NULL;
     }
-    if (NULL != attr_impl->attributes)
+    if (attr_impl->attributes)
     {
         /** TODO free individaul attributes */
         XML_SCHEMA_OBJ_COLLECTION_FREE(attr_impl->attributes, env);
         attr_impl->attributes = NULL;
     }
-    if (NULL != attr_impl->name)
+    if (attr_impl->name)
     {
         AXIS2_FREE(env->allocator, attr_impl->name);
         attr_impl->name = NULL;
     }
 
-    if (NULL != attr_impl->annotated)
+    if (attr_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(attr_impl->annotated, env);
         attr_impl->annotated = NULL;
     }
 
-    if (NULL != attr_impl->attr_grp.ops)
+    if (attr_impl->attr_grp.ops)
     {
         AXIS2_FREE(env->allocator, attr_impl->attr_grp.ops);
         attr_impl->attr_grp.ops = NULL;
     }
-    if (NULL != attr_impl->attr_grp.base.ops)
+    if (attr_impl->attr_grp.base.ops)
     {
         AXIS2_FREE(env->allocator, attr_impl->attr_grp.base.ops);
         attr_impl->attr_grp.base.ops = NULL;
@@ -278,7 +278,7 @@ xml_schema_attribute_group_set_any_attribute(
     xml_schema_attribute_group_impl_t *attr_grp_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, any_attr, AXIS2_FAILURE);
     attr_grp_impl = AXIS2_INTF_TO_IMPL(attr_grp);
-    if (NULL != attr_grp_impl->any_attribute)
+    if (attr_grp_impl->any_attribute)
     {
         /** TODO */
     }
@@ -301,7 +301,7 @@ xml_schema_attribute_group_set_attributes(void *attr_grp,
     xml_schema_attribute_group_impl_t *attr_grp_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, attrs, AXIS2_FAILURE);
     attr_grp_impl = AXIS2_INTF_TO_IMPL(attr_grp);
-    if (NULL != attr_grp_impl->attributes)
+    if (attr_grp_impl->attributes)
     {
         /** TODO */
     }
@@ -324,7 +324,7 @@ xml_schema_attribute_group_set_name(void *attr_grp,
     xml_schema_attribute_group_impl_t *attr_grp_impl = NULL;
     AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
     attr_grp_impl = AXIS2_INTF_TO_IMPL(attr_grp);
-    if (NULL != attr_grp_impl->name)
+    if (attr_grp_impl->name)
     {
         AXIS2_FREE(env->allocator, attr_grp_impl->name);
         attr_grp_impl->name = NULL;

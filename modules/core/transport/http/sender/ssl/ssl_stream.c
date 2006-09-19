@@ -118,7 +118,7 @@ axis2_ssl_stream_free(axis2_stream_t *stream, const axis2_env_t *env)
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     stream_impl = AXIS2_INTF_TO_IMPL(stream);
-    if (NULL != stream_impl->stream.ops)
+    if (stream_impl->stream.ops)
     {
         AXIS2_FREE(env->allocator, stream_impl->stream.ops);
     }

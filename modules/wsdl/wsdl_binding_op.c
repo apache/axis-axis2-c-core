@@ -254,13 +254,13 @@ axis2_wsdl_binding_op_free(axis2_wsdl_binding_op_t *binding_op,
 
     binding_op_impl = AXIS2_INTF_TO_IMPL(binding_op);
 
-    if (NULL != binding_op->ops)
+    if (binding_op->ops)
     {
         AXIS2_FREE(env->allocator, binding_op->ops);
         binding_op->ops = NULL;
     }
 
-    if (NULL != binding_op_impl->in_faults)
+    if (binding_op_impl->in_faults)
     {
         void *val = NULL;
         int i = 0;
@@ -281,7 +281,7 @@ axis2_wsdl_binding_op_free(axis2_wsdl_binding_op_t *binding_op,
         binding_op_impl->in_faults = NULL;
     }
 
-    if (NULL != binding_op_impl->out_faults)
+    if (binding_op_impl->out_faults)
     {
         void *val = NULL;
         int i = 0;
@@ -302,7 +302,7 @@ axis2_wsdl_binding_op_free(axis2_wsdl_binding_op_t *binding_op,
         binding_op_impl->out_faults = NULL;
     }
 
-    if (NULL != binding_op->extensible_component)
+    if (binding_op->extensible_component)
     {
         AXIS2_WSDL_EXTENSIBLE_COMPONENT_FREE(binding_op->
                 extensible_component, env);
@@ -364,7 +364,7 @@ axis2_wsdl_binding_op_set_op(axis2_wsdl_binding_op_t *binding_op,
 
     binding_op_impl = AXIS2_INTF_TO_IMPL(binding_op);
 
-    if (NULL != binding_op_impl->op)
+    if (binding_op_impl->op)
     {
         axis2_wsdl_op_free_void_arg(op, env);
         binding_op_impl->op = NULL;
@@ -478,7 +478,7 @@ axis2_wsdl_binding_op_set_in_faults(axis2_wsdl_binding_op_t *binding_op,
 
     binding_op_impl = AXIS2_INTF_TO_IMPL(binding_op);
 
-    if (NULL != binding_op_impl->out_faults)
+    if (binding_op_impl->out_faults)
     {
         void *val = NULL;
         int i = 0;
@@ -522,7 +522,7 @@ axis2_wsdl_binding_op_set_out_faults(axis2_wsdl_binding_op_t *binding_op,
 
     binding_op_impl = AXIS2_INTF_TO_IMPL(binding_op);
 
-    if (NULL != binding_op_impl->out_faults)
+    if (binding_op_impl->out_faults)
     {
         void *val = NULL;
         int i = 0;

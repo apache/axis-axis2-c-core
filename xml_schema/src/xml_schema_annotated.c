@@ -190,43 +190,43 @@ xml_schema_annotated_free(void *annotated,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     annotated_impl = AXIS2_INTF_TO_IMPL(annotated);
 
-    if (NULL != annotated_impl->id)
+    if (annotated_impl->id)
     {
         AXIS2_FREE(env->allocator, annotated_impl->id);
         annotated_impl->id = NULL;
     }
 
-    if (NULL != annotated_impl->annotation)
+    if (annotated_impl->annotation)
     {
         XML_SCHEMA_ANNOTATION_FREE(annotated_impl->annotation, env);
         annotated_impl->annotation = NULL;
     }
 
-    if (NULL != annotated_impl->unhandled_attrs)
+    if (annotated_impl->unhandled_attrs)
     {
         /* TODO need to iterate and free attributes */
         AXIS2_ARRAY_LIST_FREE(annotated_impl->unhandled_attrs, env);
         annotated_impl->unhandled_attrs = NULL;
     }
 
-    if (NULL != annotated_impl->ht_super)
+    if (annotated_impl->ht_super)
     {
         axis2_hash_free(annotated_impl->ht_super, env);
         annotated_impl->ht_super = NULL;
     }
 
-    if (NULL != annotated_impl->schema_obj)
+    if (annotated_impl->schema_obj)
     {
         XML_SCHEMA_OBJ_FREE(annotated_impl->schema_obj, env);
         annotated_impl->schema_obj = NULL;
     }
 
-    if (NULL != annotated_impl->annotated.ops)
+    if (annotated_impl->annotated.ops)
     {
         AXIS2_FREE(env->allocator, annotated_impl->annotated.ops);
         annotated_impl->annotated.ops = NULL;
     }
-    if (NULL != annotated_impl->annotated.base.ops)
+    if (annotated_impl->annotated.base.ops)
     {
         AXIS2_FREE(env->allocator, annotated_impl->annotated.base.ops);
         annotated_impl->annotated.base.ops = NULL;
@@ -321,7 +321,7 @@ xml_schema_annotated_get_id(void *annotated,
 
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         annotated_impl = (xml_schema_annotated_impl_t*)
                 axis2_hash_get(ht_super, "XML_SCHEMA_ANNOTATED",
@@ -345,7 +345,7 @@ xml_schema_annotated_set_id(void *annotated,
     AXIS2_PARAM_CHECK(env->error, id, AXIS2_FAILURE);
 
     ht_super = XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         annotated_impl = (xml_schema_annotated_impl_t*)
                 axis2_hash_get(ht_super, "XML_SCHEMA_ANNOTATED",
@@ -371,7 +371,7 @@ xml_schema_annotated_get_annotation(void *annotated,
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         annotated_impl = (xml_schema_annotated_impl_t*)
                 axis2_hash_get(ht_super, "XML_SCHEMA_ANNOTATED",
@@ -392,7 +392,7 @@ xml_schema_annotated_set_annotation(void *annotated,
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         annotated_impl = (xml_schema_annotated_impl_t*)
                 axis2_hash_get(ht_super, "XML_SCHEMA_ANNOTATED",
@@ -400,7 +400,7 @@ xml_schema_annotated_set_annotation(void *annotated,
         if (!annotated_impl)
             return AXIS2_FAILURE;
     }
-    if (NULL != annotated_impl->annotation)
+    if (annotated_impl->annotation)
     {
         /* TODO Free annotation
         XML_SCHEMA_ANNOTATED_FREE(annotated_impl->annotation, env);
@@ -419,7 +419,7 @@ xml_schema_annotated_get_unhandled_attrs(void *annotated,
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, NULL);
     ht_super = XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         annotated_impl = (xml_schema_annotated_impl_t*)
                 axis2_hash_get(ht_super, "XML_SCHEMA_ANNOTATED",
@@ -440,7 +440,7 @@ xml_schema_annotated_set_unhandled_attrs(void *annotated,
     axis2_hash_t *ht_super = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     ht_super = XML_SCHEMA_ANNOTATED_SUPER_OBJS(annotated, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         annotated_impl = (xml_schema_annotated_impl_t*)
                 axis2_hash_get(ht_super, "XML_SCHEMA_ANNOTATED",

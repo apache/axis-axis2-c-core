@@ -207,17 +207,17 @@ axiom_soap_fault_sub_code_free(axiom_soap_fault_sub_code_t *fault_sub_code,
     axiom_soap_fault_sub_code_impl_t *fault_sub_code_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     fault_sub_code_impl = AXIS2_INTF_TO_IMPL(fault_sub_code);
-    if (NULL != fault_sub_code_impl->value)
+    if (fault_sub_code_impl->value)
     {
         AXIOM_SOAP_FAULT_VALUE_FREE(fault_sub_code_impl->value, env);
         fault_sub_code_impl->value = NULL;
     }
-    if (NULL != fault_sub_code_impl->subcode)
+    if (fault_sub_code_impl->subcode)
     {
         AXIOM_SOAP_FAULT_SUB_CODE_FREE(fault_sub_code_impl->subcode, env);
         fault_sub_code_impl->subcode = NULL;
     }
-    if (NULL != fault_sub_code->ops)
+    if (fault_sub_code->ops)
     {
         AXIS2_FREE(env->allocator, fault_sub_code->ops);
         fault_sub_code->ops = NULL;

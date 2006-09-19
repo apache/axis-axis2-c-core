@@ -225,46 +225,46 @@ xml_schema_identity_constraint_free(void *id_constr,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     id_cns_impl = AXIS2_INTF_TO_IMPL(id_constr);
 
-    if (NULL != id_cns_impl->name)
+    if (id_cns_impl->name)
     {
         AXIS2_FREE(env->allocator, id_cns_impl->name);
         id_cns_impl->name = NULL;
     }
 
-    if (NULL != id_cns_impl->selector)
+    if (id_cns_impl->selector)
     {
         XML_SCHEMA_XPATH_FREE(id_cns_impl->selector, env);
         id_cns_impl->selector = NULL;
     }
 
-    if (NULL != id_cns_impl->ht_super)
+    if (id_cns_impl->ht_super)
     {
         axis2_hash_free(id_cns_impl->ht_super, env);
         id_cns_impl->ht_super = NULL;
     }
-    if (NULL != id_cns_impl->refer)
+    if (id_cns_impl->refer)
     {
         AXIS2_QNAME_FREE(id_cns_impl->refer, env);
         id_cns_impl->refer = NULL;
     }
-    if (NULL != id_cns_impl->annotated)
+    if (id_cns_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(id_cns_impl->annotated, env);
         id_cns_impl->annotated = NULL;
     }
 
-    if (NULL != id_cns_impl->id_constr.ops)
+    if (id_cns_impl->id_constr.ops)
     {
         AXIS2_FREE(env->allocator, id_cns_impl->id_constr.ops);
         id_cns_impl->id_constr.ops = NULL;
     }
-    if (NULL != id_cns_impl->id_constr.base.ops)
+    if (id_cns_impl->id_constr.base.ops)
     {
         AXIS2_FREE(env->allocator, id_cns_impl->id_constr.base.ops);
         id_cns_impl->id_constr.base.ops = NULL;
     }
 
-    if (NULL != id_cns_impl)
+    if (id_cns_impl)
     {
         AXIS2_FREE(env->allocator, id_cns_impl);
         id_cns_impl = NULL;
@@ -419,7 +419,7 @@ xml_schema_identity_constraint_set_refer(void *id_constr,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, refer, AXIS2_FAILURE);
     id_cns_impl = AXIS2_INTF_TO_IMPL(id_constr);
-    if (NULL != id_cns_impl->refer)
+    if (id_cns_impl->refer)
     {
         /*
         AXIS2_QNAME_FREE(id_cns_impl->reref, env);

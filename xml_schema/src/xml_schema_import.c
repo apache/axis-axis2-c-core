@@ -132,7 +132,7 @@ xml_schema_import_create(const axis2_env_t *env)
             AXIS2_HASH_KEY_STRING, import_impl->external);
 
     annotated = XML_SCHEMA_EXTERNAL_GET_BASE_IMPL(import_impl->external, env);
-    if (NULL != annotated)
+    if (annotated)
     {
 
         axis2_hash_set(import_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
@@ -159,23 +159,23 @@ xml_schema_import_free(void *import,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     import_impl = AXIS2_INTF_TO_IMPL(import);
 
-    if (NULL != import_impl->ht_super)
+    if (import_impl->ht_super)
     {
         axis2_hash_free(import_impl->ht_super, env);
         import_impl->ht_super = NULL;
     }
-    if (NULL != import_impl->external)
+    if (import_impl->external)
     {
         XML_SCHEMA_EXTERNAL_FREE(import_impl->external, env);
         import_impl->external = NULL;
     }
 
-    if (NULL != import_impl->import.ops)
+    if (import_impl->import.ops)
     {
         AXIS2_FREE(env->allocator, import_impl->import.ops);
         import_impl->import.ops = NULL;
     }
-    if (NULL != import_impl->import.base.ops)
+    if (import_impl->import.base.ops)
     {
         AXIS2_FREE(env->allocator, import_impl->import.base.ops);
         import_impl->import.base.ops = NULL;
@@ -213,7 +213,7 @@ xml_schema_import_set_namespace(void *import,
     xml_schema_import_impl_t *import_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     import_impl = AXIS2_INTF_TO_IMPL(import);
-    if (NULL != import_impl->ns)
+    if (import_impl->ns)
     {
         AXIS2_FREE(env->allocator, ns);
         import_impl->ns = NULL;

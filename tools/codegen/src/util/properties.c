@@ -183,7 +183,7 @@ w2c_properties_free(w2c_properties_t *properties,
                 for (i = 0; i < size; i ++)
                 {
                     value = (axis2_char_t*)AXIS2_ARRAY_LIST_GET(values_arr, env, i);
-                    if (value != NULL)
+                    if (value)
                     {
                         AXIS2_FREE(env-> allocator, value);
                     }

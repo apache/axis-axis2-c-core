@@ -643,7 +643,7 @@ axis2_engine_create_fault_msg_ctx(
     /* set msg id */
     msg_uuid =  axis2_uuid_gen(env);
     AXIS2_MSG_CTX_SET_MESSAGE_ID(fault_ctx, env, msg_uuid);
-    if (NULL != msg_uuid)
+    if (msg_uuid)
     {
         AXIS2_FREE(env->allocator, msg_uuid);
         msg_uuid = NULL;
@@ -812,7 +812,7 @@ axis2_engine_resume_invocation_phases(
                     msg_ctx);
         }
         else /* now we have found the paused phase and invoked the rest of the
-                                      * handlers of that phase, invoke all the phases after that */
+                                                  * handlers of that phase, invoke all the phases after that */
         {
             if (found_match)
             {

@@ -159,28 +159,28 @@ xml_schema_simple_content_free(void *sim_content,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     sim_cnt_impl = AXIS2_INTF_TO_IMPL(sim_content);
 
-    if (NULL != sim_cnt_impl->content)
+    if (sim_cnt_impl->content)
     {
         /** TODO */
     }
 
 
-    if (NULL != sim_cnt_impl->annotated)
+    if (sim_cnt_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(sim_cnt_impl->annotated, env);
         sim_cnt_impl->annotated = NULL;
     }
-    if (NULL != sim_cnt_impl->ht_super)
+    if (sim_cnt_impl->ht_super)
     {
         axis2_hash_free(sim_cnt_impl->ht_super, env);
         sim_cnt_impl->ht_super = NULL;
     }
-    if (NULL != sim_cnt_impl->sim_content.base.ops)
+    if (sim_cnt_impl->sim_content.base.ops)
     {
         AXIS2_FREE(env->allocator, sim_cnt_impl->sim_content.base.ops);
         sim_cnt_impl->sim_content.base.ops = NULL;
     }
-    if (NULL != sim_cnt_impl->sim_content.ops)
+    if (sim_cnt_impl->sim_content.ops)
     {
         AXIS2_FREE(env->allocator, sim_cnt_impl->sim_content.ops);
         sim_cnt_impl->sim_content.ops = NULL;
@@ -222,7 +222,7 @@ xml_schema_simple_content_set_content(void *sim_content,
 
     sim_cnt_impl = AXIS2_INTF_TO_IMPL(sim_content);
 
-    if (NULL != sim_cnt_impl->content)
+    if (sim_cnt_impl->content)
     {
         /** TODO */
 
@@ -242,7 +242,7 @@ xml_schema_simple_content_to_string(void *sim_content,
     AXIS2_ENV_CHECK(env, NULL);
 
     sim_cnt_impl = AXIS2_INTF_TO_IMPL(sim_content);
-    if (NULL != prefix && AXIS2_STRCMP(prefix, "") != 0 && strchr(prefix, ':') == NULL)
+    if (prefix && AXIS2_STRCMP(prefix, "") != 0 && strchr(prefix, ':') == NULL)
     {
         xml = AXIS2_STRACAT(prefix, ":", env);
     }

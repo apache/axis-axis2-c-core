@@ -1029,7 +1029,7 @@ woden_types_get_referenceable_schema_defs(
         xml_schema_t *schema_def = WODEN_SCHEMA_GET_SCHEMA_DEF(s,
                 env);
         if (AXIS2_TRUE == WODEN_SCHEMA_IS_REFERENCEABLE(s, env) &&
-                NULL != schema_def)
+                schema_def)
         {
             AXIS2_ARRAY_LIST_ADD(types_impl->schema_defs, env, schema_def);
         }
@@ -1064,7 +1064,7 @@ woden_types_get_referenceable_schema_defs_with_namespace(
         xml_schema_t *schema_def =
             WODEN_SCHEMA_GET_SCHEMA_DEF(schema, env);
         if (AXIS2_TRUE == WODEN_SCHEMA_IS_REFERENCEABLE(schema, env) &&
-                0 == AXIS2_STRCMP(namespc, namespc_l) && NULL != schema_def)
+                0 == AXIS2_STRCMP(namespc, namespc_l) &&  schema_def)
         {
             AXIS2_ARRAY_LIST_ADD(types_impl->schema_defs, env, schema_def);
         }

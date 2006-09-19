@@ -276,33 +276,33 @@ axiom_output_free(axiom_output_t *om_output,
 
     om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
 
-    if (NULL != om_output_impl->xml_version)
+    if (om_output_impl->xml_version)
     {
         AXIS2_FREE(env->allocator, om_output_impl->xml_version);
         om_output_impl->xml_version = NULL;
     }
-    if (NULL != om_output_impl->char_set_encoding)
+    if (om_output_impl->char_set_encoding)
     {
         AXIS2_FREE(env->allocator, om_output_impl->char_set_encoding);
         om_output_impl->char_set_encoding = NULL;
     }
-    if (NULL != om_output_impl->mime_boundary)
+    if (om_output_impl->mime_boundary)
     {
         AXIS2_FREE(env->allocator, om_output_impl->mime_boundary);
         om_output_impl->mime_boundary = NULL;
     }
-    if (NULL != om_output_impl->next_content_id)
+    if (om_output_impl->next_content_id)
     {
         AXIS2_FREE(env->allocator, om_output_impl->next_content_id);
         om_output_impl->next_content_id = NULL;
     }
-    if (NULL != om_output_impl->root_content_id)
+    if (om_output_impl->root_content_id)
     {
         AXIS2_FREE(env->allocator, om_output_impl->root_content_id);
         om_output_impl->root_content_id = NULL;
     }
 
-    if (NULL != om_output_impl->xml_writer)
+    if (om_output_impl->xml_writer)
     {
         AXIOM_XML_WRITER_FREE(om_output_impl->xml_writer, env);
         om_output_impl->xml_writer = NULL;
@@ -314,7 +314,7 @@ axiom_output_free(axiom_output_t *om_output,
         om_output_impl->binary_node_list = NULL;
     }
 
-    if (NULL != om_output->ops)
+    if (om_output->ops)
     {
         AXIS2_FREE(env->allocator, om_output->ops);
         om_output->ops = NULL;
@@ -373,7 +373,7 @@ axiom_output_set_xml_version(axiom_output_t *om_output,
     AXIS2_PARAM_CHECK(env->error, xml_version, AXIS2_FAILURE);
     output_impl = AXIS2_INTF_TO_IMPL(om_output);
 
-    if (NULL !=  output_impl->xml_version)
+    if (output_impl->xml_version)
     {
         AXIS2_FREE(env->allocator,  output_impl->xml_version);
         output_impl->xml_version = NULL;
@@ -406,7 +406,7 @@ axiom_output_set_char_set_encoding
     AXIS2_PARAM_CHECK(env->error, char_set_encoding, AXIS2_FAILURE);
     output_impl = AXIS2_INTF_TO_IMPL(om_output);
 
-    if (NULL != output_impl->char_set_encoding)
+    if (output_impl->char_set_encoding)
     {
         AXIS2_FREE(env->allocator, output_impl->char_set_encoding);
         output_impl->char_set_encoding = NULL;
@@ -503,7 +503,7 @@ axiom_output_write_optimized(axiom_output_t *om_output,
     axiom_output_impl_t *om_output_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     om_output_impl = AXIS2_INTF_TO_IMPL(om_output);
-    if (NULL != om_output_impl->binary_node_list)
+    if (om_output_impl->binary_node_list)
     {
         AXIS2_ARRAY_LIST_ADD(om_output_impl->binary_node_list, env, om_text);
     }
@@ -534,7 +534,7 @@ axiom_output_get_next_content_id(axiom_output_t *om_output,
     om_output_impl->next_id++;
 
     /** free existing id */
-    if (NULL != om_output_impl->next_content_id)
+    if (om_output_impl->next_content_id)
     {
         AXIS2_FREE(env->allocator, om_output_impl->next_content_id);
         om_output_impl->next_content_id = NULL;
@@ -549,17 +549,17 @@ axiom_output_get_next_content_id(axiom_output_t *om_output,
     temp_str = AXIS2_STRACAT(id, ".", env);
     temp_str1 = AXIS2_STRACAT(temp_str, uuid, env);
     om_output_impl->next_content_id = AXIS2_STRACAT(temp_str1, "@apache.org", env);
-    if (NULL != temp_str)
+    if (temp_str)
     {
         AXIS2_FREE(env->allocator, temp_str);
         temp_str = NULL;
     }
-    if (NULL != temp_str1)
+    if (temp_str1)
     {
         AXIS2_FREE(env->allocator, temp_str1);
         temp_str1 = NULL;
     }
-    if (NULL != uuid)
+    if (uuid)
     {
         AXIS2_FREE(env->allocator, uuid);
         uuid = NULL;
@@ -587,12 +587,12 @@ axiom_output_get_root_content_id(axiom_output_t *om_output,
         om_output_impl->root_content_id =
             AXIS2_STRACAT(temp_str, "@apache.org", env);
 
-        if (NULL != temp_str)
+        if (temp_str)
         {
             AXIS2_FREE(env->allocator, temp_str);
             temp_str = NULL;
         }
-        if (NULL != uuid)
+        if (uuid)
         {
             AXIS2_FREE(env->allocator, uuid);
             uuid = NULL;
@@ -618,7 +618,7 @@ axiom_output_get_mime_boundry(axiom_output_t *om_output,
         uuid = axis2_uuid_gen(env);
 
         om_output_impl->mime_boundary = AXIS2_STRACAT("MIMEBoundary", uuid, env);
-        if (NULL != uuid)
+        if (uuid)
         {
             AXIS2_FREE(env->allocator, uuid);
             uuid = NULL;

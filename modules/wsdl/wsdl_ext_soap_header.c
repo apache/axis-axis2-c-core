@@ -149,28 +149,28 @@ axis2_wsdl_ext_soap_header_free(axis2_wsdl_ext_soap_header_t *ext_soap_header,
 
     exp_soap_header_impl = AXIS2_INTF_TO_IMPL(ext_soap_header);
 
-    if (NULL != ext_soap_header->ops)
+    if (ext_soap_header->ops)
         AXIS2_FREE(env->allocator, ext_soap_header->ops);
 
-    if (NULL != exp_soap_header_impl->part)
+    if (exp_soap_header_impl->part)
     {
         AXIS2_FREE(env->allocator, exp_soap_header_impl->part);
         exp_soap_header_impl->part = NULL;
     }
 
-    if (NULL != exp_soap_header_impl->msg_qname)
+    if (exp_soap_header_impl->msg_qname)
     {
         AXIS2_QNAME_FREE(exp_soap_header_impl->msg_qname, env);
         exp_soap_header_impl->msg_qname = NULL;
     }
 
-    if (NULL != exp_soap_header_impl->qelement)
+    if (exp_soap_header_impl->qelement)
     {
         AXIS2_QNAME_FREE(exp_soap_header_impl->qelement, env);
         exp_soap_header_impl->qelement = NULL;
     }
 
-    if (NULL != ext_soap_header->ext_soap_body)
+    if (ext_soap_header->ext_soap_body)
     {
         AXIS2_WSDL_EXT_SOAP_BODY_FREE(ext_soap_header->ext_soap_body, env);
         ext_soap_header->ext_soap_body = NULL;

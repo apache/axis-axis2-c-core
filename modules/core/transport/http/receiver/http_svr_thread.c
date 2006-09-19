@@ -163,7 +163,7 @@ axis2_http_svr_thread_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     svr_thread_impl = AXIS2_INTF_TO_IMPL(svr_thread);
 
-    if (NULL != svr_thread_impl->worker)
+    if (svr_thread_impl->worker)
     {
         AXIS2_HTTP_WORKER_FREE(svr_thread_impl->worker, env);
         svr_thread_impl->worker = NULL;
@@ -174,7 +174,7 @@ axis2_http_svr_thread_free(
         svr_thread_impl->listen_socket = -1;
     }
     svr_thread_impl->stopped = AXIS2_TRUE;
-    if (NULL != svr_thread->ops)
+    if (svr_thread->ops)
         AXIS2_FREE(env->allocator, svr_thread->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(svr_thread));

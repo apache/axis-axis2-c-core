@@ -40,7 +40,7 @@ axis2_tokenize(const axis2_env_t *env,
     do
     {
         index = strchr(str, delim);
-        if ((index == NULL) && (NULL != str) && AXIS2_STRCMP(str, "") != 0)
+        if ((index == NULL) && (str) && AXIS2_STRCMP(str, "") != 0)
         {
             AXIS2_ARRAY_LIST_ADD(list, env, str);
             break;
@@ -48,7 +48,7 @@ axis2_tokenize(const axis2_env_t *env,
 
         rest = index + 1;
         str[index - str] = '\0';
-        if ((NULL != list) && (NULL != str) && AXIS2_STRCMP(str, "") != 0)
+        if ((list) && (NULL != str) && AXIS2_STRCMP(str, "") != 0)
         {
 
             AXIS2_ARRAY_LIST_ADD(list, env, str);

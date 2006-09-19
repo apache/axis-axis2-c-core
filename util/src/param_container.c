@@ -120,10 +120,10 @@ axis2_param_container_free(axis2_param_container_t *param_container,
 
     param_container_impl = AXIS2_INTF_TO_IMPL(param_container);
 
-    if (NULL != param_container->ops)
+    if (param_container->ops)
         AXIS2_FREE(env->allocator, param_container->ops);
 
-    if (NULL != param_container_impl->params)
+    if (param_container_impl->params)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;

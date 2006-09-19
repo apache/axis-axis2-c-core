@@ -215,7 +215,7 @@ axis2_dll_desc_free(axis2_dll_desc_t *dll_desc,
         dll_desc_impl->path_qualified_dll_name = NULL;
     }
 
-    if (NULL != dll_desc->ops)
+    if (dll_desc->ops)
     {
         AXIS2_FREE(env->allocator, dll_desc->ops);
         dll_desc->ops = NULL;

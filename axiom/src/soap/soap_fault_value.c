@@ -235,7 +235,7 @@ axiom_soap_fault_value_free(axiom_soap_fault_value_t *fault_value,
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
-    if (NULL != fault_value->ops)
+    if (fault_value->ops)
     {
         AXIS2_FREE(env->allocator, fault_value->ops);
         fault_value->ops = NULL;
@@ -305,7 +305,7 @@ axiom_soap_fault_value_set_text(axiom_soap_fault_value_t *fault_value,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, text, AXIS2_FAILURE);
     fault_value_impl = AXIS2_INTF_TO_IMPL(fault_value);
-    if (NULL != fault_value_impl->om_ele_node &&
+    if (fault_value_impl->om_ele_node &&
             AXIOM_NODE_GET_NODE_TYPE(fault_value_impl->om_ele_node, env) == AXIOM_ELEMENT)
     {
         axiom_element_t *om_ele = NULL;

@@ -390,7 +390,7 @@ woden_schema_get_namespace_as_string(
     schema_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_SCHEMA", AXIS2_HASH_KEY_STRING));
 
-    return schema_impl->f_namespc != NULL ?
+    return schema_impl->f_namespc  ?
             AXIS2_URI_TO_STRING(schema_impl->f_namespc, env, AXIS2_URI_UNP_OMITUSERINFO) : NULL;
 }
 

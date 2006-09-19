@@ -47,14 +47,14 @@ axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env,
             tmp += AXIS2_STRLEN(AXIS2_REQUEST_URL_PREFIX);
         }
     }
-    if (NULL != service_str)
+    if (service_str)
     {
         service_str += AXIS2_STRLEN(AXIS2_REQUEST_URL_PREFIX);
         if ('\0' != *service_str)
         {
             service_str++; /*to remove the leading '/' */
             tmp = strchr(service_str, '/');
-            if (NULL != tmp)
+            if (tmp)
             {
                 i = tmp - service_str;
                 ret[0] = AXIS2_MALLOC(env->allocator, i * sizeof(char) + 1);
@@ -67,7 +67,7 @@ axis2_parse_request_url_for_svc_and_op(const axis2_env_t *env,
                 {
                     service_str++;
                     tmp = strchr(service_str, '?');
-                    if (NULL != tmp)
+                    if (tmp)
                     {
                         i = tmp - service_str;
                         ret[1] = AXIS2_MALLOC(env->allocator,

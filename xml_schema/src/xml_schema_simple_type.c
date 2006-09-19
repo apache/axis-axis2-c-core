@@ -156,7 +156,7 @@ xml_schema_simple_type_create(const axis2_env_t *env,
             AXIS2_HASH_KEY_STRING, simple_type->schema_type);
 
     annotated = XML_SCHEMA_TYPE_GET_BASE_IMPL(simple_type->schema_type, env);
-    if (NULL != annotated)
+    if (annotated)
     {
         axis2_hash_set(simple_type->ht_super,
                 AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
@@ -185,23 +185,23 @@ xml_schema_simple_type_free(void *simple_type,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     simple_type_impl = AXIS2_INTF_TO_IMPL(simple_type);
 
-    if (NULL != simple_type_impl->ht_super)
+    if (simple_type_impl->ht_super)
     {
         axis2_hash_free(simple_type_impl->ht_super, env);
         simple_type_impl->ht_super = NULL;
     }
-    if (NULL != simple_type_impl->schema_type)
+    if (simple_type_impl->schema_type)
     {
         XML_SCHEMA_TYPE_FREE(simple_type_impl->schema_type, env);
         simple_type_impl->schema_type = NULL;
     }
 
-    if (NULL != simple_type_impl->simple_type.ops)
+    if (simple_type_impl->simple_type.ops)
     {
         AXIS2_FREE(env->allocator, simple_type_impl->simple_type.ops);
         simple_type_impl->simple_type.ops = NULL;
     }
-    if (NULL != simple_type_impl->simple_type.base.ops)
+    if (simple_type_impl->simple_type.base.ops)
     {
         AXIS2_FREE(env->allocator, simple_type_impl->simple_type.base.ops);
         simple_type_impl->simple_type.base.ops = NULL;
@@ -280,7 +280,7 @@ xml_schema_simple_type_set_content(void *simple_type,
     xml_schema_simple_type_impl_t *simple_type_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     simple_type_impl = AXIS2_INTF_TO_IMPL(simple_type);
-    if (NULL != simple_type_impl->content)
+    if (simple_type_impl->content)
     {
         XML_SCHEMA_SIMPLE_TYPE_CONTENT_FREE(simple_type_impl->content, env);
         simple_type_impl->content   = NULL;

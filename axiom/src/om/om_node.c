@@ -210,12 +210,12 @@ axiom_node_free_tree(axiom_node_t *om_node,
 
     node_impl = AXIS2_INTF_TO_IMPL(om_node);
 
-    if (NULL != node_impl->first_child)
+    if (node_impl->first_child)
     {
-        while (NULL != (node_impl->first_child))
+        while ((node_impl->first_child))
         {
             child_node = AXIOM_NODE_DETACH(node_impl->first_child, env);
-            if (NULL != child_node)
+            if (child_node)
             {
                 AXIOM_NODE_FREE_TREE(child_node , env);
                 child_node = NULL;
@@ -226,13 +226,13 @@ axiom_node_free_tree(axiom_node_t *om_node,
     switch (node_impl->node_type)
     {
         case AXIOM_ELEMENT:
-            if (NULL != node_impl->data_element)
+            if (node_impl->data_element)
                 AXIOM_ELEMENT_FREE((axiom_element_t*)(node_impl->data_element), env);
 
             break;
 
         case AXIOM_COMMENT:
-            if (NULL != node_impl->data_element)
+            if (node_impl->data_element)
                 AXIOM_COMMENT_FREE((axiom_comment_t*)(node_impl->data_element), env);
 
             break;
@@ -240,13 +240,13 @@ axiom_node_free_tree(axiom_node_t *om_node,
             /*AXIOM_DOCTYPE_FREE((axiom_doctype_t*)(node_impl->data_element), env);*/
             break;
         case AXIOM_PROCESSING_INSTRUCTION:
-            if (NULL != node_impl->data_element)
+            if (node_impl->data_element)
                 AXIOM_PROCESSING_INSTRUCTION_FREE(
                     (axiom_processing_instruction_t*)(node_impl->data_element), env);
 
             break;
         case AXIOM_TEXT:
-            if (NULL != node_impl->data_element)
+            if (node_impl->data_element)
                 AXIOM_TEXT_FREE((axiom_text_t*)(node_impl->data_element), env);
 
             break;
@@ -254,7 +254,7 @@ axiom_node_free_tree(axiom_node_t *om_node,
         default:
             break;
     }
-    if (NULL != om_node->ops)
+    if (om_node->ops)
     {
         AXIS2_FREE(env->allocator, om_node->ops);
         om_node->ops = NULL;
@@ -336,7 +336,7 @@ axiom_node_detach(axiom_node_t *om_node,
                 AXIS2_INTF_TO_IMPL(om_node)->prev_sibling;
     }
 
-    if (NULL != (AXIS2_INTF_TO_IMPL(parent)->last_child) &&
+    if ((AXIS2_INTF_TO_IMPL(parent)->last_child) &&
             ((AXIS2_INTF_TO_IMPL(parent)->last_child) == om_node))
     {
         AXIS2_INTF_TO_IMPL(parent)->last_child =
@@ -376,7 +376,7 @@ axiom_node_set_parent(axiom_node_t *om_node,
     /* if a new parent is assigned in  place of existing
      *  one first the node should  be detached  
      */
-    if (NULL != node_impl->parent)
+    if (node_impl->parent)
     {
         om_node =  axiom_node_detach(om_node, env);
     }
@@ -411,7 +411,7 @@ axiom_node_insert_sibling_after(axiom_node_t * om_node,
 
     next_sib = AXIS2_INTF_TO_IMPL(om_node)->next_sibling;
 
-    if (NULL != next_sib)
+    if (next_sib)
     {
         AXIS2_INTF_TO_IMPL(next_sib)->prev_sibling = node_to_insert;
     }
@@ -481,7 +481,7 @@ axiom_node_serialize(axiom_node_t *om_node,
     switch (node_impl->node_type)
     {
         case AXIOM_ELEMENT:
-            if (NULL != node_impl->data_element)
+            if (node_impl->data_element)
             {
                 status = AXIOM_ELEMENT_SERIALIZE_START_PART(
                             (axiom_element_t *)(node_impl->data_element),
@@ -495,7 +495,7 @@ axiom_node_serialize(axiom_node_t *om_node,
             break;
 
         case AXIOM_TEXT:
-            if (NULL !=  node_impl->data_element)
+            if (node_impl->data_element)
             {
                 status = AXIOM_TEXT_SERIALIZE(
                             (axiom_text_t*)(node_impl->data_element),
@@ -507,7 +507,7 @@ axiom_node_serialize(axiom_node_t *om_node,
             break;
 
         case AXIOM_COMMENT:
-            if (NULL !=  node_impl->data_element)
+            if (node_impl->data_element)
             {
                 status = AXIOM_COMMENT_SERIALIZE(
                             (axiom_comment_t*)(node_impl->data_element),
@@ -519,7 +519,7 @@ axiom_node_serialize(axiom_node_t *om_node,
             break;
 
         case AXIOM_DOCTYPE:
-            if (NULL != node_impl->data_element)
+            if (node_impl->data_element)
             {
                 status = AXIOM_DOCTYPE_SERIALIZE(
                             (axiom_doctype_t*)(node_impl->data_element),
@@ -531,7 +531,7 @@ axiom_node_serialize(axiom_node_t *om_node,
             break;
 
         case AXIOM_PROCESSING_INSTRUCTION:
-            if (NULL != node_impl->data_element)
+            if (node_impl->data_element)
             {
                 status = AXIOM_PROCESSING_INSTRUCTION_SERIALIZE(
                             (axiom_processing_instruction_t*)(node_impl->data_element),
@@ -549,7 +549,7 @@ axiom_node_serialize(axiom_node_t *om_node,
 
     temp_node = axiom_node_get_first_child(om_node, env);
     /* serialize children of this node */
-    while (NULL != temp_node)
+    while (temp_node)
     {
         status =  axiom_node_serialize(temp_node, env, om_output);
         temp_node = AXIOM_NODE_GET_NEXT_SIBLING(temp_node, env);
@@ -558,7 +558,7 @@ axiom_node_serialize(axiom_node_t *om_node,
     switch (node_impl->node_type)
     {
         case AXIOM_ELEMENT:
-            if (NULL != node_impl->data_element)
+            if (node_impl->data_element)
             {
                 status = AXIOM_ELEMENT_SERIALIZE_END_PART(
                             (axiom_element_t *)(node_impl->data_element),

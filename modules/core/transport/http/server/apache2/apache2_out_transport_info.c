@@ -108,12 +108,12 @@ axis2_http_out_transport_info_free(
     info_impl = AXIS2_INTF_TO_IMPL(info);
 
     info_impl->request = NULL; /* request doesn't belong to info */
-    if (NULL != info_impl->encoding)
+    if (info_impl->encoding)
     {
         AXIS2_FREE(env->allocator, info_impl->encoding);
         info_impl->encoding = NULL;
     }
-    if (NULL != info->ops)
+    if (info->ops)
         AXIS2_FREE(env->allocator, info->ops);
 
     AXIS2_FREE(env->allocator, info_impl);
@@ -147,7 +147,7 @@ axis2_http_out_transport_info_set_content_type(
 
     info_impl = AXIS2_INTF_TO_IMPL(info);
 
-    if (NULL != info_impl->encoding)
+    if (info_impl->encoding)
     {
 
         tmp1 = AXIS2_STRACAT(content_type, ";charset=", env);
@@ -178,7 +178,7 @@ axis2_http_out_transport_info_set_char_encoding(
 
     info_impl = AXIS2_INTF_TO_IMPL(info);
 
-    if (NULL != info_impl->encoding)
+    if (info_impl->encoding)
     {
         AXIS2_FREE(env->allocator, info_impl->encoding);
     }

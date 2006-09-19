@@ -129,7 +129,7 @@ axis2_http_chunked_stream_free(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    if (NULL != chunked_stream->ops)
+    if (chunked_stream->ops)
         AXIS2_FREE(env->allocator, chunked_stream->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(chunked_stream));
@@ -267,7 +267,7 @@ axis2_http_chunked_stream_start_chunk(
     }
     /* check whether we have extensions */
     tmp = strchr(str_chunk_len, ';');
-    if (NULL != tmp)
+    if (tmp)
     {
         /* we don't use extensions right now */
         *tmp = '\0';

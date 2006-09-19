@@ -119,7 +119,7 @@ void Testaxis2_hash_while(CuTest *tc)
         index_i = axis2_hash_next(environment, index_i);
 
     }
-    while (NULL != index_i);
+    while (index_i);
 
     printf("actual:%s\n",  actual->value);
     CuAssertStrEquals(tc, expected->value, actual->value);

@@ -38,7 +38,7 @@ AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all(const axis2_char_t *l
     log = axis2_log_create(allocator, NULL, log_file);
     thread_pool = axis2_thread_pool_init(allocator);
     env = axis2_env_create_with_error_log_thread_pool(allocator, error, log, thread_pool);
-    if (NULL != env->log)
+    if (env->log)
     {
         env->log->level = log_level;
     }
@@ -49,16 +49,16 @@ AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all(const axis2_char_t *l
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL  axis2_env_free(axis2_env_t *env)
 {
-    if (NULL != env && NULL != env->log)
+    if (env && NULL != env->log)
         AXIS2_LOG_FREE(env->allocator, env->log);
 
-    if (NULL != env && NULL != env->error)
+    if (env && NULL != env->error)
         AXIS2_ERROR_FREE(env->error);
 
-    if (NULL != env && NULL != env->thread_pool)
+    if (env && NULL != env->thread_pool)
         AXIS2_THREAD_POOL_FREE(env->thread_pool);
 
-    if (NULL != env)
+    if (env)
         free(env);
 
     return 0;
@@ -210,7 +210,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL  axis2_env_free_masked(axis2_env_t *env, 
     {
         AXIS2_THREAD_POOL_FREE(env->thread_pool);
     }
-    if (NULL != env)
+    if (env)
         free(env);
     return AXIS2_SUCCESS;
 }

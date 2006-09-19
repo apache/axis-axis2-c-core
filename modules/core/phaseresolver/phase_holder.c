@@ -126,7 +126,7 @@ axis2_phase_holder_free(
 
     phase_holder_impl = AXIS2_INTF_TO_IMPL(phase_holder);
 
-    if (NULL != phase_holder->ops)
+    if (phase_holder->ops)
     {
         AXIS2_FREE(env->allocator, phase_holder->ops);
         phase_holder->ops = NULL;

@@ -186,7 +186,7 @@ axis2_simple_http_svr_conn_free(
         AXIS2_INTF_TO_IMPL(svr_conn);
 
     axis2_simple_http_svr_conn_close(svr_conn, env);
-    if (NULL != svr_conn->ops)
+    if (svr_conn->ops)
     {
         AXIS2_FREE(env->allocator, svr_conn->ops);
         svr_conn->ops = NULL;
@@ -315,7 +315,7 @@ axis2_simple_http_svr_conn_read_request(
             break;
         }
     }
-    if (NULL != str_line)
+    if (str_line)
     {
         if (0 != AXIS2_STRNCASECMP(str_line, "GET", 3) && 0 !=
                 AXIS2_STRNCASECMP(str_line, "POST", 4))
@@ -367,7 +367,7 @@ axis2_simple_http_svr_conn_read_request(
                 axis2_http_header_t *tmp_header =
                     axis2_http_header_create_by_str(env, str_line);
                 memset(str_line, 0, 1024);
-                if (NULL != tmp_header)
+                if (tmp_header)
                 {
                     AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env,
                             tmp_header);
@@ -408,7 +408,7 @@ axis2_simple_http_svr_conn_write_response(
             svr_conn_impl->stream);
     content_type = (axis2_char_t *)AXIS2_HTTP_SIMPLE_RESPONSE_GET_CONTENT_TYPE(
                 response, env);
-    if (NULL != content_type)
+    if (content_type)
     {
         if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED)
                 && strstr(content_type, AXIS2_HTTP_HEADER_XOP_XML))
@@ -420,10 +420,10 @@ axis2_simple_http_svr_conn_write_response(
     }
     enc_header = AXIS2_HTTP_SIMPLE_RESPONSE_GET_FIRST_HEADER(response, env,
             AXIS2_HTTP_HEADER_TRANSFER_ENCODING);
-    if (NULL != enc_header)
+    if (enc_header)
     {
         axis2_char_t *enc_value = AXIS2_HTTP_HEADER_GET_VALUE(enc_header, env);
-        if (NULL != enc_value)
+        if (enc_value)
         {
             if (0 == AXIS2_STRCMP(enc_value,
                     AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
@@ -452,14 +452,14 @@ axis2_simple_http_svr_conn_write_response(
     AXIS2_HTTP_RESPONSE_WRITER_PRINT_STR(response_writer, env, status_line);
     headers = AXIS2_HTTP_SIMPLE_RESPONSE_GET_HEADERS(response, env);
 
-    if (NULL != headers)
+    if (headers)
     {
         for (i = 0; i < AXIS2_ARRAY_LIST_SIZE(headers, env); i++)
         {
             axis2_http_header_t *header = NULL;
             header = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(headers, env,
                     i);
-            if (NULL != header)
+            if (header)
             {
                 axis2_char_t *header_ext_form =
                     AXIS2_HTTP_HEADER_TO_EXTERNAL_FORM(

@@ -212,14 +212,14 @@ axiom_stax_builder_process_attributes(axiom_stax_builder_t *om_builder,
 
         attr_value = AXIOM_XML_READER_GET_ATTRIBUTE_VALUE_BY_NUMBER(
                     builder_impl->parser, env, i);
-        if (NULL != attr_name)
+        if (attr_name)
         {
             attribute = axiom_attribute_create(env, attr_name, attr_value, ns);
             if (!attribute)
                 return AXIS2_FAILURE;
 
             temp_ele = (axiom_element_t*)AXIOM_NODE_GET_DATA_ELEMENT(element_node, env);
-            if (NULL != temp_ele)
+            if (temp_ele)
             {
                 status = AXIOM_ELEMENT_ADD_ATTRIBUTE(temp_ele, env, attribute, element_node);
             }
@@ -823,7 +823,7 @@ AXIS2_CALL axiom_stax_builder_free(axiom_stax_builder_t *builder,
     }
     else
     {
-        if (NULL != builder_impl->root_node)
+        if (builder_impl->root_node)
         {
             AXIOM_NODE_FREE_TREE(builder_impl->root_node, env);
             builder_impl->root_node = NULL;

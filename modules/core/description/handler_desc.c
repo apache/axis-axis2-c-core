@@ -364,7 +364,7 @@ axis2_handler_desc_set_handler(
 
     if (handler)
         handler_desc_impl->handler = handler; /* Shallow copy, but free method
-                                                         should free this */
+                                                             should free this */
 
     return AXIS2_SUCCESS;
 }
@@ -425,8 +425,8 @@ axis2_handler_desc_set_parent(
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_INTF_TO_IMPL(handler_desc)->parent = parent; /* shallow copy, because
-                                                                  the parent lives
-                                                                  somewhere else*/
+                                                                      the parent lives
+                                                                      somewhere else*/
     return AXIS2_SUCCESS;
 }
 

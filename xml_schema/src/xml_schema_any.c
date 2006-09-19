@@ -165,7 +165,7 @@ xml_schema_any_create(const axis2_env_t *env)
             AXIS2_HASH_KEY_STRING, any_impl->particle);
 
     annotated = XML_SCHEMA_PARTICLE_GET_BASE_IMPL(any_impl->particle, env);
-    if (NULL != annotated)
+    if (annotated)
     {
         axis2_hash_set(any_impl->ht_super,
                 AXIS2_STRDUP("AXIS_XML_SCHEMA_ANNOTATED", env),
@@ -193,36 +193,36 @@ xml_schema_any_free(void *any,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     any_impl = AXIS2_INTF_TO_IMPL(any);
 
-    if (NULL != any_impl->ns)
+    if (any_impl->ns)
     {
         AXIS2_FREE(env->allocator, any_impl->ns);
         any_impl->ns = NULL;
     }
 
-    if (NULL != any_impl->process_content)
+    if (any_impl->process_content)
     {
         XML_SCHEMA_CONTENT_PROCESSING_FREE(any_impl->process_content, env);
         any_impl->process_content = NULL;
     }
 
-    if (NULL != any_impl->ht_super)
+    if (any_impl->ht_super)
     {
         axis2_hash_free(any_impl->ht_super, env);
         any_impl->ht_super = NULL;
     }
 
-    if (NULL != any_impl->particle)
+    if (any_impl->particle)
     {
         XML_SCHEMA_PARTICLE_FREE(any_impl->particle, env);
         any_impl->particle = NULL;
     }
 
-    if (NULL != any_impl->any.ops)
+    if (any_impl->any.ops)
     {
         AXIS2_FREE(env->allocator, any_impl->any.ops);
         any_impl->any.ops = NULL;
     }
-    if (NULL != any_impl->any.base.ops)
+    if (any_impl->any.base.ops)
     {
         AXIS2_FREE(env->allocator, any_impl->any.base.ops);
         any_impl->any.base.ops = NULL;
@@ -316,7 +316,7 @@ xml_schema_any_get_namespace(void *any,
     axis2_hash_t *ht_super = NULL;
 
     ht_super = XML_SCHEMA_ANY_SUPER_OBJS(any, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         any_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
                 "XML_SCHEMA_ANY", AXIS2_HASH_KEY_STRING));
@@ -336,14 +336,14 @@ xml_schema_any_set_namespace(void *any,
     AXIS2_PARAM_CHECK(env->error, namespc, AXIS2_FAILURE);
 
     ht_super = XML_SCHEMA_ANY_SUPER_OBJS(any, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         any_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
                 "XML_SCHEMA_ANY", AXIS2_HASH_KEY_STRING));
         if (!any_impl)
             return AXIS2_FAILURE;
     }
-    if (NULL != any_impl->ns)
+    if (any_impl->ns)
     {
         AXIS2_FREE(env->allocator, any_impl->ns);
         any_impl->ns = NULL;
@@ -360,7 +360,7 @@ xml_schema_any_get_process_content(void *any,
     axis2_hash_t *ht_super = NULL;
 
     ht_super = XML_SCHEMA_ANY_SUPER_OBJS(any, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         any_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
                 "XML_SCHEMA_ANY", AXIS2_HASH_KEY_STRING));
@@ -383,7 +383,7 @@ xml_schema_any_set_process_content(void *any,
 
     ht_super = XML_SCHEMA_ANY_SUPER_OBJS(any, env);
 
-    if (NULL != ht_super)
+    if (ht_super)
     {
         any_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super,
                 "XML_SCHEMA_ANY", AXIS2_HASH_KEY_STRING));
@@ -391,7 +391,7 @@ xml_schema_any_set_process_content(void *any,
             return AXIS2_FAILURE;
     }
 
-    if (NULL != any_impl->process_content)
+    if (any_impl->process_content)
     {
         XML_SCHEMA_CONTENT_PROCESSING_FREE(any_impl->process_content, env);
         any_impl->process_content = NULL;

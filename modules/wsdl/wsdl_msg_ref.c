@@ -139,23 +139,23 @@ axis2_wsdl_msg_ref_free(axis2_wsdl_msg_ref_t *msg_ref,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg_ref_impl = AXIS2_INTF_TO_IMPL(msg_ref);
 
-    if (NULL != msg_ref->ops)
+    if (msg_ref->ops)
     {
         AXIS2_FREE(env->allocator, msg_ref->ops);
     }
-    if (NULL != msg_ref_impl->msg_label)
+    if (msg_ref_impl->msg_label)
     {
         AXIS2_FREE(env->allocator, msg_ref_impl->msg_label);
     }
-    if (NULL != msg_ref_impl->msg_label)
+    if (msg_ref_impl->msg_label)
     {
         AXIS2_FREE(env->allocator, msg_ref_impl->msg_label);
     }
-    if (NULL != msg_ref_impl->element)
+    if (msg_ref_impl->element)
     {
         AXIS2_QNAME_FREE(msg_ref_impl->element, env);
     }
-    if (NULL != msg_ref->extensible_component)
+    if (msg_ref->extensible_component)
     {
         AXIS2_WSDL_EXTENSIBLE_COMPONENT_FREE(msg_ref->extensible_component, env);
     }

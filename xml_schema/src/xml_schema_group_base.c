@@ -143,7 +143,7 @@ xml_schema_group_base_create(const axis2_env_t *env)
             AXIS2_HASH_KEY_STRING, group_base_impl->particle);
 
     annotated = XML_SCHEMA_PARTICLE_GET_BASE_IMPL(group_base_impl->particle, env);
-    if (NULL != annotated)
+    if (annotated)
     {
         axis2_hash_set(group_base_impl->ht_super, AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
                 AXIS2_HASH_KEY_STRING, annotated);
@@ -199,30 +199,30 @@ xml_schema_group_base_free(void *group_base,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     group_base_impl = AXIS2_INTF_TO_IMPL(group_base);
 
-    if (NULL != group_base_impl->items)
+    if (group_base_impl->items)
     {
         XML_SCHEMA_OBJ_COLLECTION_FREE(group_base_impl->items, env);
         group_base_impl->items = NULL;
     }
 
-    if (NULL != group_base_impl->ht_super)
+    if (group_base_impl->ht_super)
     {
         axis2_hash_free(group_base_impl->ht_super, env);
         group_base_impl->ht_super = NULL;
     }
 
-    if (NULL != group_base_impl->particle)
+    if (group_base_impl->particle)
     {
         XML_SCHEMA_PARTICLE_FREE(group_base_impl->particle, env);
         group_base_impl->particle = NULL;
     }
 
-    if (NULL != group_base_impl->group_base.ops)
+    if (group_base_impl->group_base.ops)
     {
         AXIS2_FREE(env->allocator, group_base_impl->group_base.ops);
         group_base_impl->group_base.ops = NULL;
     }
-    if (NULL != group_base_impl->group_base.base.ops)
+    if (group_base_impl->group_base.base.ops)
     {
         AXIS2_FREE(env->allocator, group_base_impl->group_base.base.ops);
         group_base_impl->group_base.base.ops = NULL;

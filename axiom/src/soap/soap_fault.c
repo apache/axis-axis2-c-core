@@ -599,7 +599,7 @@ axiom_soap_fault_get_exception(axiom_soap_fault_t *fault,
     if (!detail)
         return NULL;
     detail_node = AXIOM_SOAP_FAULT_DETAIL_GET_BASE_NODE(detail, env);
-    if (NULL != detail_node)
+    if (detail_node)
     {
         detail_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(
                     detail_node, env);

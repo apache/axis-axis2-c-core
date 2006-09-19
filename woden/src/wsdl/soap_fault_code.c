@@ -167,7 +167,7 @@ woden_soap_fault_code_is_qname(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     soap_fault_code_impl = INTF_TO_IMPL(soap_fault_code);
 
-    return (NULL != soap_fault_code_impl->f_code_qn);
+    return (soap_fault_code_impl->f_code_qn);
 }
 
 axis2_bool_t AXIS2_CALL
@@ -180,7 +180,7 @@ woden_soap_fault_code_is_token(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     soap_fault_code_impl = INTF_TO_IMPL(soap_fault_code);
 
-    return (NULL != soap_fault_code_impl->f_token);
+    return (soap_fault_code_impl->f_token);
 }
 
 axis2_qname_t *AXIS2_CALL

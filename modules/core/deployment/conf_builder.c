@@ -173,7 +173,7 @@ axis2_conf_builder_free(
         conf_builder->desc_builder = NULL;
     }
 
-    if (NULL != conf_builder->ops)
+    if (conf_builder->ops)
     {
         AXIS2_FREE(env->allocator, conf_builder->ops);
         conf_builder->ops = NULL;
@@ -268,7 +268,7 @@ axis2_conf_builder_populate_conf(
     disp_order_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                 conf_element, env, qdisporder, conf_node, &disp_order_node);
     AXIS2_QNAME_FREE(qdisporder, env);
-    if (NULL != disp_order_element)
+    if (disp_order_element)
     {
         axis2_conf_builder_process_disp_order(conf_builder, env, disp_order_node);
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "found the custom disptaching \
@@ -322,7 +322,7 @@ axis2_conf_builder_populate_conf(
     def_mod_versions = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(conf_element,
             env, qdefmodver, conf_node);
     AXIS2_QNAME_FREE(qdefmodver, env);
-    if (NULL != def_mod_versions)
+    if (def_mod_versions)
     {
         status = axis2_conf_builder_process_default_module_versions(conf_builder
                 , env, def_mod_versions);
@@ -699,7 +699,7 @@ axis2_conf_builder_process_transport_senders(
                     qattname);
         }
         AXIS2_QNAME_FREE(qattname, env);
-        if (NULL != trs_name)
+        if (trs_name)
         {
             axis2_char_t *name = NULL;
             axiom_attribute_t *trs_dll_att = NULL;
@@ -807,7 +807,7 @@ axis2_conf_builder_process_transport_senders(
             in_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                         transport_element, env, qinflowst, transport_node, &in_flow_node);
             AXIS2_QNAME_FREE(qinflowst, env);
-            if (NULL != in_flow_element)
+            if (in_flow_element)
             {
                 AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
                 AXIS2_ERROR_SET(env->error,
@@ -818,7 +818,7 @@ axis2_conf_builder_process_transport_senders(
             out_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                         transport_element, env, qoutflowst, transport_node, &out_flow_node);
             AXIS2_QNAME_FREE(qoutflowst, env);
-            if (NULL != out_flow_element)
+            if (out_flow_element)
             {
                 axis2_flow_t *flow = NULL;
 
@@ -840,7 +840,7 @@ axis2_conf_builder_process_transport_senders(
                         transport_element, env, qinfaultflowst, transport_node,
                         &in_fault_flow_node);
             AXIS2_QNAME_FREE(qinfaultflowst, env);
-            if (NULL != in_fault_flow_element)
+            if (in_fault_flow_element)
             {
                 AXIS2_TRANSPORT_OUT_DESC_FREE(transport_out, env);
                 AXIS2_ERROR_SET(env->error,
@@ -854,7 +854,7 @@ axis2_conf_builder_process_transport_senders(
                         transport_element, env, qoutfaultflowst, transport_node,
                         &out_fault_flow_node);
             AXIS2_QNAME_FREE(qoutfaultflowst, env);
-            if (NULL != out_fault_flow_element)
+            if (out_fault_flow_element)
             {
                 axis2_flow_t *flow = NULL;
 
@@ -927,7 +927,7 @@ axis2_conf_builder_process_transport_recvs(
                 qattname);
         AXIS2_QNAME_FREE(qattname, env);
 
-        if (NULL != trs_name)
+        if (trs_name)
         {
             axis2_char_t *name = NULL;
             axiom_attribute_t *trs_class_name = NULL;
@@ -965,7 +965,7 @@ axis2_conf_builder_process_transport_recvs(
                     class_qname);
             AXIS2_QNAME_FREE(class_qname, env);
 
-            if (NULL != trs_class_name)
+            if (trs_class_name)
             {
                 axis2_char_t *class_name = NULL;
                 axis2_char_t *dll_name = NULL;
@@ -1031,7 +1031,7 @@ axis2_conf_builder_process_transport_recvs(
             out_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                         transport_element, env, qoutflowst, transport_node, &out_flow_node);
             AXIS2_QNAME_FREE(qoutflowst, env);
-            if (NULL != out_flow_element)
+            if (out_flow_element)
             {
                 AXIS2_TRANSPORT_IN_DESC_FREE(transport_in, env);
                 AXIS2_ERROR_SET(env->error,
@@ -1043,7 +1043,7 @@ axis2_conf_builder_process_transport_recvs(
             in_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                         transport_element, env, qinflowst, transport_node, &in_flow_node);
             AXIS2_QNAME_FREE(qinflowst, env);
-            if (NULL != in_flow_element)
+            if (in_flow_element)
             {
                 axis2_flow_t *flow = NULL;
 
@@ -1065,7 +1065,7 @@ axis2_conf_builder_process_transport_recvs(
                         transport_element, env, qinfaultflowst, transport_node,
                         &in_fault_flow_node);
             AXIS2_QNAME_FREE(qinfaultflowst, env);
-            if (NULL != in_fault_flow_element)
+            if (in_fault_flow_element)
             {
                 axis2_flow_t *flow = NULL;
 
@@ -1086,7 +1086,7 @@ axis2_conf_builder_process_transport_recvs(
             out_fault_flow_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(
                         transport_element, env, qoutfaultflowst, transport_node,
                         &out_fault_flow_node);
-            if (NULL != out_fault_flow_element)
+            if (out_fault_flow_element)
             {
                 AXIS2_ERROR_SET(env->error,
                         AXIS2_ERROR_OUT_FLOW_NOT_ALLOWED_IN_TRS_IN, AXIS2_FAILURE);

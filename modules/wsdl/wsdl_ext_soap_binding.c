@@ -132,22 +132,22 @@ axis2_wsdl_ext_soap_binding_free(axis2_wsdl_ext_soap_binding_t *ext_soap_binding
 
     exp_soap_binding_impl = AXIS2_INTF_TO_IMPL(ext_soap_binding);
 
-    if (NULL != ext_soap_binding->ops)
+    if (ext_soap_binding->ops)
         AXIS2_FREE(env->allocator, ext_soap_binding->ops);
 
-    if (NULL != exp_soap_binding_impl->style)
+    if (exp_soap_binding_impl->style)
     {
         AXIS2_FREE(env->allocator, exp_soap_binding_impl->style);
         exp_soap_binding_impl->style = NULL;
     }
 
-    if (NULL != exp_soap_binding_impl->transport_uri)
+    if (exp_soap_binding_impl->transport_uri)
     {
         AXIS2_FREE(env->allocator, exp_soap_binding_impl->transport_uri);
         exp_soap_binding_impl->transport_uri = NULL;
     }
 
-    if (NULL != ext_soap_binding->ext_element)
+    if (ext_soap_binding->ext_element)
     {
         AXIS2_WSDL_EXTENSIBLE_ELEMENT_FREE(ext_soap_binding->ext_element, env);
         ext_soap_binding->ext_element = NULL;

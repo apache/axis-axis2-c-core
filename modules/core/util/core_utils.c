@@ -78,7 +78,7 @@ axis2_core_utils_create_out_msg_ctx(
 
     msg_uuid =  axis2_uuid_gen(env);
     AXIS2_MSG_INFO_HEADERS_SET_MESSAGE_ID(msg_info_headers, env, msg_uuid);
-    if (NULL != msg_uuid)
+    if (msg_uuid)
     {
         AXIS2_FREE(env->allocator, msg_uuid);
         msg_uuid = NULL;
@@ -207,7 +207,7 @@ axis2_core_utils_get_module_qname(const axis2_env_t *env,
     AXIS2_ENV_CHECK(env, NULL);
     AXIS2_PARAM_CHECK(env->error, name, NULL);
 
-    if (version != NULL && 0 != AXIS2_STRLEN(version))
+    if (version  && 0 != AXIS2_STRLEN(version))
     {
         axis2_char_t * mod_name1 = NULL;
         axis2_char_t * mod_name = NULL;
@@ -249,22 +249,22 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
     {
         return AXIS2_FAILURE;
     }
-    for (hi = axis2_hash_first(modules_map, env); NULL != hi;
+    for (hi = axis2_hash_first(modules_map, env);  hi;
             hi = axis2_hash_next(env, hi))
     {
         axis2_module_desc_t *mod_desc = NULL;
 
         axis2_hash_this(hi, NULL, NULL, &val);
         mod_desc = (axis2_module_desc_t *) val;
-        if (NULL != mod_desc)
+        if (mod_desc)
         {
             const axis2_qname_t *module_qname = NULL;
             module_qname = AXIS2_MODULE_DESC_GET_QNAME(mod_desc, env);
-            if (NULL != module_qname)
+            if (module_qname)
             {
                 axis2_char_t *mod_name_with_ver = NULL;
                 mod_name_with_ver = AXIS2_QNAME_GET_LOCALPART(module_qname, env);
-                if (NULL != mod_name_with_ver)
+                if (mod_name_with_ver)
                 {
                     axis2_char_t *module_name_str = NULL;
                     axis2_char_t *module_ver_str = NULL;
@@ -280,9 +280,9 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
                             mod_name_with_ver);
                     current_def_ver = axis2_hash_get(default_modules,
                             module_name_str, AXIS2_HASH_KEY_STRING);
-                    if (NULL != current_def_ver)
+                    if (current_def_ver)
                     {
-                        if (NULL != module_ver_str && AXIS2_TRUE ==
+                        if (module_ver_str && AXIS2_TRUE ==
                                 axis2_core_utils_is_latest_mod_ver(env,
                                         module_ver_str, current_def_ver))
                         {
@@ -291,12 +291,12 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
                         }
                         else
                         {
-                            if (NULL != module_name_str)
+                            if (module_name_str)
                             {
                                 AXIS2_FREE(env->allocator, module_name_str);
                                 module_name_str = NULL;
                             }
-                            if (NULL != module_ver_str)
+                            if (module_ver_str)
                             {
                                 AXIS2_FREE(env->allocator, module_ver_str);
                                 module_ver_str = NULL;
@@ -316,12 +316,12 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
 
     hi = NULL;
     val = NULL;
-    for (hi = axis2_hash_first(default_modules, env); NULL != hi;
+    for (hi = axis2_hash_first(default_modules, env);  hi;
             hi = axis2_hash_next(env, hi))
     {
         void *key_string = NULL;
         axis2_hash_this(hi, (const void **)&key_string, NULL, &val);
-        if (NULL != key_string && NULL != val)
+        if (key_string && NULL != val)
         {
             AXIS2_CONF_ADD_DEFAULT_MODULE_VERSION(axis_conf, env,
                     (axis2_char_t *)key_string, (axis2_char_t *)val);
@@ -349,7 +349,7 @@ axis2_core_utils_get_module_name(const axis2_env_t *env, axis2_char_t *module_na
         return NULL;
     }
     version_sep_loc = AXIS2_RINDEX(name, version_seperator);
-    if (NULL != version_sep_loc)
+    if (version_sep_loc)
     {
         *version_sep_loc = '\0';
     }
@@ -366,7 +366,7 @@ axis2_core_utils_get_module_version(const axis2_env_t *env, axis2_char_t *module
     AXIS2_PARAM_CHECK(env->error, module_name, NULL);
 
     version_sep_loc = AXIS2_RINDEX(module_name, version_seperator);
-    if (NULL != version_sep_loc)
+    if (version_sep_loc)
     {
         return AXIS2_STRDUP(version_sep_loc + sizeof(axis2_char_t), env);
     }

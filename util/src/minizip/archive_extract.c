@@ -164,7 +164,7 @@ const axis2_char_t* password;
 
         }
 
-        if (fout != NULL)
+        if (fout)
         {
             do
             {
@@ -250,7 +250,7 @@ int aar_extract(axis2_char_t *d_name)
 
     filename_to_extract = d_name;
 
-    if (zipfilename != NULL)
+    if (zipfilename)
     {
         zlib_filefunc_def ffunc;
         strncpy(filename_try, zipfilename, MAXFILENAME - 1);
@@ -317,7 +317,7 @@ axis2_archive_extract()
                 return (AXIS2_FALSE);
 
             ptr = AXIS2_RINDEX(namelist[n]->d_name, '.');
-            if ((ptr != NULL) &&
+            if ((ptr) &&
                     (((strcmp(ptr, AXIS2_AAR_SUFFIX) == 0)) || (strcmp(ptr, AXIS2_MAR_SUFFIX) == 0)))
                 for (i = 0;i < n;i++)
                     if (strncmp(namelist[n]->d_name, namelist[i]->d_name, strlen(namelist[i]->d_name)) == 0)

@@ -42,7 +42,7 @@ oxs_errors_get_msg_by_code(int code)
     const char* error_msg = NULL;
     unsigned int i;
 
-    for (i = 0; (i < OXS_ERRORS_MAX_NUMBER) && (oxs_errors_get_msg(i) != NULL); ++i)
+    for (i = 0; (i < OXS_ERRORS_MAX_NUMBER) && (oxs_errors_get_msg(i)); ++i)
     {
         if (oxs_errors_get_code(i) == code)
         {

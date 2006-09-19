@@ -38,21 +38,21 @@ axis2_log_impl_free(axis2_allocator_t *allocator, axis2_log_t *log)
 {
     axis2_log_impl_t *log_impl = NULL;
 
-    if (NULL != log)
+    if (log)
     {
         log_impl = AXIS2_INTF_TO_IMPL(log);
 
-        if (NULL != log_impl->mutex)
+        if (log_impl->mutex)
         {
             axis2_thread_mutex_destroy(log_impl->mutex);
             log_impl->mutex = NULL;
         }
-        if (NULL != AXIS2_INTF_TO_IMPL(log)->stream)
+        if (AXIS2_INTF_TO_IMPL(log)->stream)
         {
             axis2_file_handler_close(log_impl->stream);
             log_impl->stream = NULL;
         }
-        if (NULL != log->ops)
+        if (log->ops)
         {
             AXIS2_FREE(allocator, log->ops);
             log->ops = NULL;
@@ -111,7 +111,7 @@ axis2_log_create(axis2_allocator_t * allocator, axis2_log_ops_t * ops,
      */
     if (stream_name && !(AXIS2_RINDEX(stream_name, AXIS2_PATH_SEP_CHAR)))
     {
-        if (NULL != (path_home = AXIS2_GETENV("AXIS2C_HOME")))
+        if ((path_home = AXIS2_GETENV("AXIS2C_HOME")))
         {
             AXIS2_SNPRINTF(log_dir, 500, "%s%c%s", path_home, AXIS2_PATH_SEP_CHAR, "logs");
             if (AXIS2_SUCCESS == axis2_file_handler_access(log_dir, AXIS2_F_OK))

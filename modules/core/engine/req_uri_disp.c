@@ -171,9 +171,9 @@ axis2_req_uri_disp_find_op(
                         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                                 "Operation found using target endpoint uri fragment");
                 }
-                if (NULL !=  url_tokens[0])
+                if (url_tokens[0])
                     AXIS2_FREE(env->allocator, url_tokens[0]);
-                if (NULL !=  url_tokens[1])
+                if (url_tokens[1])
                     AXIS2_FREE(env->allocator, url_tokens[1]);
                 AXIS2_FREE(env->allocator, url_tokens);
             }

@@ -117,13 +117,13 @@ axis2_apache2_worker_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     worker_impl = AXIS2_INTF_TO_IMPL(apache2_worker);
-    if (worker_impl->conf_ctx != NULL)
+    if (worker_impl->conf_ctx)
     {
         AXIS2_CONF_CTX_FREE(worker_impl->conf_ctx, env);
         worker_impl->conf_ctx = NULL;
     }
 
-    if (NULL != apache2_worker->ops)
+    if (apache2_worker->ops)
         AXIS2_FREE(env->allocator, apache2_worker->ops);
 
     AXIS2_FREE(env->allocator, worker_impl->conf_ctx);
@@ -291,11 +291,11 @@ axis2_apache2_worker_process_request(
     if (-1 == send_status)
     {
         op_ctx = AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env);
-        if (NULL != op_ctx)
+        if (op_ctx)
         {
             axis2_ctx_t *ctx = AXIS2_OP_CTX_GET_BASE(AXIS2_MSG_CTX_GET_OP_CTX(
                         msg_ctx, env), env);
-            if (NULL != ctx)
+            if (ctx)
             {
                 property = AXIS2_CTX_GET_PROPERTY(ctx, env,
                         AXIS2_RESPONSE_WRITTEN, AXIS2_FALSE);
@@ -306,7 +306,7 @@ axis2_apache2_worker_process_request(
                 }
             }
         }
-        if (NULL != ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)
+        if (ctx_written && AXIS2_STRCASECMP(ctx_written, "TRUE") == 0)
         {
             send_status = OK;
             body_string = axis2_apache2_worker_get_bytes(env, out_stream);
@@ -316,23 +316,23 @@ axis2_apache2_worker_process_request(
             send_status = HTTP_ACCEPTED;
         }
     }
-    if (NULL != body_string)
+    if (body_string)
     {
         ap_rwrite(body_string, AXIS2_STRLEN(body_string), request);
         AXIS2_FREE(env->allocator, body_string);
         body_string = NULL;
     }
-    if (NULL != url)
+    if (url)
     {
         AXIS2_URL_FREE(url, env);
         url = NULL;
     }
-    if (NULL != req_url)
+    if (req_url)
     {
         AXIS2_FREE(env->allocator, req_url);
         req_url = NULL;
     }
-    if (NULL != request_body)
+    if (request_body)
     {
         AXIS2_STREAM_FREE(request_body, env);
         request_body = NULL;

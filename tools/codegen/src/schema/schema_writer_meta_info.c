@@ -1587,7 +1587,7 @@ w2c_schema_writer_meta_info_get_ordered_qname_array(w2c_schema_writer_meta_info_
     {
         qname = (axis2_qname_t*) AXIS2_ARRAY_LIST_GET(
                     writer_meta_info_impl-> qname_orderlist, env, i);
-        if (qname != NULL)
+        if (qname)
         {
             AXIS2_ARRAY_LIST_SET(arr_list, env, real_index, qname);
             real_index ++;

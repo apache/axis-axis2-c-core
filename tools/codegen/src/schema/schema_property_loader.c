@@ -170,7 +170,7 @@ w2c_schema_property_loader_create(const axis2_env_t *env,
     schema_property_loader_impl-> prop_set =  axis2_properties_create(env);
     AXIS2_PROPERTIES_LOAD(schema_property_loader_impl-> prop_set, env, f);
 
-    if (schema_property_loader_impl-> prop_set != NULL)
+    if (schema_property_loader_impl-> prop_set)
     {
         w2c_schema_property_loader_load_values(schema_property_loader_impl, env);
     }
@@ -310,7 +310,7 @@ w2c_schema_property_loader_reload(
     schema_property_loader_impl-> prop_set =  axis2_properties_create(env);
     AXIS2_PROPERTIES_LOAD(schema_property_loader_impl-> prop_set, env, f);
 
-    if (schema_property_loader_impl-> prop_set != NULL)
+    if (schema_property_loader_impl-> prop_set)
     {
         w2c_schema_property_loader_load_values(schema_property_loader_impl, env);
     }

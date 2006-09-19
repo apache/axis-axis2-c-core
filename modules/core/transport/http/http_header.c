@@ -153,17 +153,17 @@ axis2_http_header_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     http_header_impl = AXIS2_INTF_TO_IMPL(header);
 
-    if (NULL != http_header_impl->name)
+    if (http_header_impl->name)
     {
         AXIS2_FREE(env->allocator, http_header_impl->name);
         http_header_impl->name = NULL;
     }
-    if (NULL != http_header_impl->value)
+    if (http_header_impl->value)
     {
         AXIS2_FREE(env->allocator, http_header_impl->value);
         http_header_impl->value = NULL;
     }
-    if (NULL != header->ops)
+    if (header->ops)
         AXIS2_FREE(env->allocator, header->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(header));

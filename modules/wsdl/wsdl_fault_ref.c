@@ -155,31 +155,31 @@ axis2_wsdl_fault_ref_free(axis2_wsdl_fault_ref_t *fault_ref,
 
     fault_ref_impl = AXIS2_INTF_TO_IMPL(fault_ref);
 
-    if (NULL != fault_ref->ops)
+    if (fault_ref->ops)
     {
         AXIS2_FREE(env->allocator, fault_ref->ops);
         fault_ref->ops = NULL;
     }
 
-    if (NULL != fault_ref_impl->msg_label)
+    if (fault_ref_impl->msg_label)
     {
         AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(fault_ref)->msg_label);
         fault_ref_impl->msg_label = NULL;
     }
 
-    if (NULL != fault_ref_impl->direction)
+    if (fault_ref_impl->direction)
     {
         AXIS2_FREE(env->allocator, fault_ref_impl->direction);
         fault_ref_impl->direction = NULL;
     }
 
-    if (NULL != fault_ref_impl->ref)
+    if (fault_ref_impl->ref)
     {
         AXIS2_QNAME_FREE(fault_ref_impl->ref, env);
         fault_ref_impl->ref = NULL;
     }
 
-    if (NULL != fault_ref->wsdl_component)
+    if (fault_ref->wsdl_component)
     {
         AXIS2_WSDL_COMPONENT_FREE(fault_ref->wsdl_component, env);
         fault_ref->wsdl_component = NULL;

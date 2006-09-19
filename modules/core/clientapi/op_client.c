@@ -450,7 +450,7 @@ axis2_op_client_execute(
 
     msg_id = (axis2_char_t*)axis2_uuid_gen(env);
     AXIS2_MSG_CTX_SET_MESSAGE_ID(msg_ctx, env, msg_id);
-    if (NULL != msg_id)
+    if (msg_id)
     {
         AXIS2_FREE(env->allocator, msg_id);
         msg_id = NULL;

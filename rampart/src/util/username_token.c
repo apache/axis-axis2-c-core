@@ -259,12 +259,12 @@ rampart_username_token_build(rampart_username_token_t *username_token,
     AXIOM_ELEMENT_DECLARE_NAMESPACE(ut_ele, env,
             ut_node, wsu_ns_obj);
 
-    if (NULL != ut_ele)
+    if (ut_ele)
     {
 
         un_ele = axiom_element_create(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_USERNAME, sec_ns_obj,
                 &un_node);
-        if (NULL != un_ele)
+        if (un_ele)
         {
             axiom_namespace_t *dec_ns = NULL;
             AXIOM_ELEMENT_SET_TEXT(un_ele, env, username, un_node);
@@ -286,7 +286,7 @@ rampart_username_token_build(rampart_username_token_t *username_token,
 
             pw_ele = axiom_element_create(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_PASSWORD, sec_ns_obj,
                     &pw_node);
-            if (NULL != pw_ele)
+            if (pw_ele)
             {
 
                 AXIOM_ELEMENT_SET_TEXT(pw_ele, env, digest_val, pw_node);
@@ -306,7 +306,7 @@ rampart_username_token_build(rampart_username_token_t *username_token,
             }
             nonce_ele = axiom_element_create(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_NONCE, sec_ns_obj,
                     &nonce_node);
-            if (NULL != nonce_ele)
+            if (nonce_ele)
             {
                 axiom_namespace_t *dec_ns = NULL;
                 AXIOM_ELEMENT_SET_TEXT(nonce_ele, env, nonce_val , nonce_node);
@@ -316,7 +316,7 @@ rampart_username_token_build(rampart_username_token_t *username_token,
             }
             created_ele = axiom_element_create(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_CREATED, sec_ns_obj,
                     &created_node);
-            if (NULL != created_ele)
+            if (created_ele)
             {
                 axiom_namespace_t *dec_ns = NULL;
                 AXIOM_ELEMENT_SET_TEXT(created_ele, env, created_val, created_node);
@@ -333,7 +333,7 @@ rampart_username_token_build(rampart_username_token_t *username_token,
         {
             pw_ele = axiom_element_create(env, ut_node, RAMPART_SECURITY_USERNAMETOKEN_PASSWORD, sec_ns_obj,
                     &pw_node);
-            if (NULL != pw_ele)
+            if (pw_ele)
             {
                 axiom_namespace_t *dec_ns = NULL;
                 AXIOM_ELEMENT_SET_TEXT(pw_ele, env, password, pw_node);

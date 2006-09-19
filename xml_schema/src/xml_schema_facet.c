@@ -184,23 +184,23 @@ xml_schema_facet_free(void *facet,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     facet_impl = AXIS2_INTF_TO_IMPL(facet);
 
-    if (NULL != facet_impl->annotated)
+    if (facet_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(facet_impl->annotated, env);
         facet_impl->annotated = NULL;
     }
 
-    if (NULL != facet_impl->facet.ops)
+    if (facet_impl->facet.ops)
     {
         AXIS2_FREE(env->allocator, facet_impl->facet.ops);
         facet_impl->facet.ops = NULL;
     }
-    if (NULL != facet_impl->facet.base.ops)
+    if (facet_impl->facet.base.ops)
     {
         AXIS2_FREE(env->allocator, facet_impl->facet.base.ops);
         facet_impl->facet.base.ops = NULL;
     }
-    if (NULL != facet_impl)
+    if (facet_impl)
     {
         AXIS2_FREE(env->allocator, facet_impl);
         facet_impl = NULL;
@@ -252,7 +252,7 @@ xml_schema_facet_set_value(void *facet,
     xml_schema_facet_impl_t *facet_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     facet_impl =  AXIS2_INTF_TO_IMPL(facet);
-    if (NULL != facet_impl->value)
+    if (facet_impl->value)
     {
         AXIS2_FREE(env->allocator, facet_impl->value);
         facet_impl->value = NULL;
@@ -341,18 +341,18 @@ xml_schema_facet_construct(const axis2_env_t *env,
         return NULL;
 
     attr_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, fixed_value);
-    if (NULL != attr_value && AXIS2_STRCMP(attr_value, "fixed") == 0)
+    if (attr_value && AXIS2_STRCMP(attr_value, "fixed") == 0)
         is_fixed = AXIS2_TRUE;
 
     attr_value = NULL;
     attr_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(om_ele, env, value_v);
-    if (NULL != attr_value)
+    if (attr_value)
         value = attr_value;
     else
         return NULL;
 
     facet = xml_schema_facet_create(env, value, is_fixed, facet_type);
-    if (NULL != facet)
+    if (facet)
         return facet;
     return NULL;
 }

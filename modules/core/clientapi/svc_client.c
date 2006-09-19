@@ -681,7 +681,7 @@ axis2_svc_client_send_robust(
     {
         return AXIS2_FAILURE;
     }
-    if (NULL != svc_client_impl->op_client)
+    if (svc_client_impl->op_client)
     {
         /** free op_client of previous message
             AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client);
@@ -730,7 +730,7 @@ axis2_svc_client_fire_and_forget(
         return;
     }
 
-    if (NULL != svc_client_impl->op_client)
+    if (svc_client_impl->op_client)
     {
         /** free previous op_client
             AXIS2_OP_CLIENT_FREE(op_client, env);
@@ -871,7 +871,7 @@ axis2_svc_client_send_receive(
         {
             return NULL;
         }
-        if (NULL != svc_client_impl->op_client)
+        if (svc_client_impl->op_client)
         {
             /** free op_client of previous request
             AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client);
@@ -942,7 +942,7 @@ axis2_svc_client_send_receive_non_blocking(
     {
         return;
     }
-    if (NULL != svc_client_impl->op_client)
+    if (svc_client_impl->op_client)
     {
         /** free op_client of previous request
         AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client, env);
@@ -1333,7 +1333,7 @@ axis2_svc_client_free(
         svc_client_impl->options = NULL;
     }
 
-    if (NULL != svc_client_impl->listener_manager)
+    if (svc_client_impl->listener_manager)
     {
         AXIS2_LISTNER_MANAGER_FREE(svc_client_impl->listener_manager, env);
         svc_client_impl->listener_manager = NULL;

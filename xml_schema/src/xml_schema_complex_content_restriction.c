@@ -236,33 +236,33 @@ xml_schema_complex_content_restriction_free(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     content_res_impl = AXIS2_INTF_TO_IMPL(cmp_content_res);
-    if (NULL != content_res_impl->any_attribute)
+    if (content_res_impl->any_attribute)
     {
         XML_SCHEMA_ANY_ATTRIBUTE_FREE(content_res_impl->any_attribute, env);
         content_res_impl->any_attribute = NULL;
     }
-    if (NULL != content_res_impl->attributes)
+    if (content_res_impl->attributes)
     {
         /** TODO free attributes */
     }
 
-    if (NULL != content_res_impl->base_type_name)
+    if (content_res_impl->base_type_name)
     {
         AXIS2_QNAME_FREE(content_res_impl->base_type_name, env);
         content_res_impl->base_type_name = NULL;
     }
 
-    if (NULL != content_res_impl->annotated)
+    if (content_res_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(content_res_impl->annotated, env);
         content_res_impl->annotated = NULL;
     }
-    if (NULL != content_res_impl->cmp_content_res.base.ops)
+    if (content_res_impl->cmp_content_res.base.ops)
     {
         AXIS2_FREE(env->allocator, content_res_impl->cmp_content_res.base.ops);
         content_res_impl->cmp_content_res.base.ops = NULL;
     }
-    if (NULL != content_res_impl->cmp_content_res.ops)
+    if (content_res_impl->cmp_content_res.ops)
     {
         AXIS2_FREE(env->allocator, content_res_impl->cmp_content_res.ops);
         content_res_impl->cmp_content_res.ops = NULL;
@@ -307,7 +307,7 @@ xml_schema_complex_content_restriction_set_any_attribute(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, any_attr, AXIS2_FAILURE);
-    if (NULL != content_res_impl->any_attribute)
+    if (content_res_impl->any_attribute)
     {
         XML_SCHEMA_ANY_ATTRIBUTE_FREE(content_res_impl->any_attribute, env);
         content_res_impl->any_attribute = NULL;
@@ -348,7 +348,7 @@ xml_schema_complex_content_restriction_set_base_type_name(
     xml_schema_complex_content_restriction_impl_t *content_res_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     content_res_impl = AXIS2_INTF_TO_IMPL(cmp_content);
-    if (NULL != content_res_impl->base_type_name)
+    if (content_res_impl->base_type_name)
     {
         AXIS2_QNAME_FREE(content_res_impl->base_type_name, env);
         content_res_impl->base_type_name = NULL;
@@ -367,7 +367,7 @@ xml_schema_complex_content_restriction_set_particle(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, particle, AXIS2_FAILURE);
 
-    if (NULL != cmp_cnt_res_impl->particle)
+    if (cmp_cnt_res_impl->particle)
     {
         XML_SCHEMA_PARTICLE_FREE(cmp_cnt_res_impl->particle, env);
         cmp_cnt_res_impl->particle = NULL;

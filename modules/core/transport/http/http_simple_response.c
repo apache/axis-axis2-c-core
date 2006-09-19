@@ -169,7 +169,7 @@ axis2_http_simple_response_create(
         return NULL;
     }
     simple_response_impl->status_line = status_line;
-    if (http_hdr_count > 0 && NULL != http_headers)
+    if (http_hdr_count > 0 &&  http_headers)
     {
         int i = 0;
         simple_response_impl->header_group = axis2_array_list_create(env,
@@ -260,12 +260,12 @@ axis2_http_simple_response_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     simple_response_impl = AXIS2_INTF_TO_IMPL(simple_response);
 
-    if (NULL != simple_response_impl->status_line)
+    if (simple_response_impl->status_line)
     {
         AXIS2_HTTP_STATUS_LINE_FREE(simple_response_impl->status_line, env);
         simple_response_impl->status_line = NULL;
     }
-    if (NULL != simple_response_impl->header_group)
+    if (simple_response_impl->header_group)
     {
         int i = 0;
         axis2_http_header_t *tmp = NULL;
@@ -274,7 +274,7 @@ axis2_http_simple_response_free(
         {
             tmp = (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET(
                         simple_response_impl->header_group, env, i);
-            if (NULL != tmp)
+            if (tmp)
             {
                 AXIS2_HTTP_HEADER_FREE(tmp, env);
             }
@@ -282,7 +282,7 @@ axis2_http_simple_response_free(
         AXIS2_ARRAY_LIST_FREE(simple_response_impl->header_group, env);
         simple_response_impl->header_group = NULL;
     }
-    if (NULL != simple_response->ops)
+    if (simple_response->ops)
         AXIS2_FREE(env->allocator, simple_response->ops);
 
     AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(simple_response));
@@ -314,7 +314,7 @@ axis2_http_simple_response_set_status_line(
             AXIS2_HTTP_CRLF);
     simple_response_impl = AXIS2_INTF_TO_IMPL
             (simple_response);
-    if (NULL != simple_response_impl->status_line)
+    if (simple_response_impl->status_line)
     {
         AXIS2_HTTP_STATUS_LINE_FREE(simple_response_impl->status_line, env);
         simple_response_impl->status_line = NULL;
@@ -547,12 +547,12 @@ axis2_http_simple_response_get_charset(
     AXIS2_ENV_CHECK(env, NULL);
     tmp_header = axis2_http_simple_response_get_first_header
             (simple_response, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
-    if (NULL != tmp_header)
+    if (tmp_header)
     {
         axis2_char_t *value = AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, env);
         axis2_char_t *charset = (axis2_char_t *)strstr((char *)value,
                 (char *)AXIS2_HTTP_CHAR_SET_ENCODING);
-        if (NULL != charset)
+        if (charset)
         {
             charset = strchr((char *)charset, '=');
             return charset;
@@ -572,7 +572,7 @@ axis2_http_simple_response_get_content_length(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     tmp_header = axis2_http_simple_response_get_first_header
             (simple_response, env, AXIS2_HTTP_HEADER_CONTENT_LENGTH);
-    if (NULL != tmp_header)
+    if (tmp_header)
     {
         return AXIS2_ATOI(AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, env));
     }
@@ -589,7 +589,7 @@ axis2_http_simple_response_get_content_type(
     AXIS2_ENV_CHECK(env, NULL);
     tmp_header =  axis2_http_simple_response_get_first_header
             (simple_response, env, AXIS2_HTTP_HEADER_CONTENT_TYPE);
-    if (NULL != tmp_header)
+    if (tmp_header)
         return AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, env);
 
     return AXIS2_HTTP_HEADER_ACCEPT_TEXT_PLAIN;

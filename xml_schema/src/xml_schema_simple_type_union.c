@@ -190,7 +190,7 @@ xml_schema_simple_type_union_create(const axis2_env_t *env)
     annotated = XML_SCHEMA_SIMPLE_TYPE_CONTENT_GET_BASE_IMPL(
                 simple_type_union_impl->sim_type_content, env);
 
-    if (NULL != annotated)
+    if (annotated)
     {
         axis2_hash_set(simple_type_union_impl->ht_super,
                 AXIS2_STRDUP("XML_SCHEMA_ANNOTATED", env),
@@ -221,32 +221,32 @@ xml_schema_simple_type_union_free(void *simple_type_union,
     simple_type_union_impl = AXIS2_INTF_TO_IMPL(simple_type_union);
 
 
-    if (NULL != simple_type_union_impl->ht_super)
+    if (simple_type_union_impl->ht_super)
     {
         axis2_hash_free(simple_type_union_impl->ht_super, env);
         simple_type_union_impl->ht_super = NULL;
     }
-    if (NULL != simple_type_union_impl->sim_type_content)
+    if (simple_type_union_impl->sim_type_content)
     {
         XML_SCHEMA_SIMPLE_TYPE_CONTENT_FREE(
             simple_type_union_impl->sim_type_content , env);
         simple_type_union_impl->sim_type_content = NULL;
     }
 
-    if (NULL != simple_type_union_impl->simple_type_union.ops)
+    if (simple_type_union_impl->simple_type_union.ops)
     {
         AXIS2_FREE(env->allocator,
                 simple_type_union_impl->simple_type_union.ops);
         simple_type_union_impl->simple_type_union.ops = NULL;
     }
-    if (NULL != simple_type_union_impl->simple_type_union.base.ops)
+    if (simple_type_union_impl->simple_type_union.base.ops)
     {
         AXIS2_FREE(env->allocator,
                 simple_type_union_impl->simple_type_union.base.ops);
         simple_type_union_impl->simple_type_union.base.ops = NULL;
     }
 
-    if (NULL != simple_type_union_impl)
+    if (simple_type_union_impl)
     {
         AXIS2_FREE(env->allocator, simple_type_union_impl);
         simple_type_union_impl = NULL;
@@ -285,7 +285,7 @@ xml_schema_simple_type_union_resolve_methods(
 
     simple_type_union->ops = AXIS2_MALLOC(env->allocator,
             sizeof(xml_schema_simple_type_union_ops_t));
-    if(NULL != simple_type_union->ops)
+    if( simple_type_union->ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;
@@ -331,7 +331,7 @@ xml_schema_simple_type_union_set_member_types_source(void *simple_type_union,
     xml_schema_simple_type_union_impl_t *sim_type_res_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     sim_type_res_impl = AXIS2_INTF_TO_IMPL(simple_type_union);
-    if (NULL != sim_type_res_impl->member_types_source)
+    if (sim_type_res_impl->member_types_source)
     {
         XML_SCHEMA_SIMPLE_TYPE_CONTENT_FREE(sim_type_res_impl->member_types_source, env);
         sim_type_res_impl->member_types_source = NULL;

@@ -191,7 +191,7 @@ xml_schema_obj_free(void *obj,
 
     obj_impl = AXIS2_INTF_TO_IMPL(obj);
 
-    if (NULL != obj_impl->source_uri)
+    if (obj_impl->source_uri)
     {
         AXIS2_FREE(env->allocator, obj_impl->source_uri);
         obj_impl->source_uri = NULL;
@@ -203,13 +203,13 @@ xml_schema_obj_free(void *obj,
         obj_impl->ht_super = NULL;
     }
 
-    if (NULL != obj_impl->obj.ops)
+    if (obj_impl->obj.ops)
     {
         AXIS2_FREE(env->allocator, obj_impl->obj.ops);
         obj_impl->obj.ops = NULL;
     }
 
-    if (NULL != obj_impl)
+    if (obj_impl)
     {
         AXIS2_FREE(env->allocator, obj_impl);
         obj_impl = NULL;
@@ -296,11 +296,11 @@ xml_schema_obj_get_line_num(void *obj,
     axis2_hash_t *super = NULL;
 
     super = XML_SCHEMA_OBJ_SUPER_OBJS(obj, env);
-    if (NULL != super)
+    if (super)
     {
         obj_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super,
                 "XML_SCHEMA_OBJ", AXIS2_HASH_KEY_STRING));
-        if (NULL != obj_impl)
+        if (obj_impl)
             return obj_impl->line_num;
     }
     return -1;
@@ -315,7 +315,7 @@ xml_schema_obj_set_line_num(void *obj,
     axis2_hash_t *super = NULL;
 
     super = XML_SCHEMA_OBJ_SUPER_OBJS(obj, env);
-    if (NULL != super)
+    if (super)
     {
         obj_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, "XML_SCHEMA_OBJ",
                 AXIS2_HASH_KEY_STRING));
@@ -337,7 +337,7 @@ xml_schema_obj_get_line_pos(void *obj,
     axis2_hash_t *super = NULL;
 
     super = XML_SCHEMA_OBJ_SUPER_OBJS(obj, env);
-    if (NULL != super)
+    if (super)
     {
         obj_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, "XML_SCHEMA_OBJ",
                 AXIS2_HASH_KEY_STRING));
@@ -354,11 +354,11 @@ xml_schema_obj_set_line_pos(void *obj,
     axis2_hash_t *super = NULL;
 
     super = XML_SCHEMA_OBJ_SUPER_OBJS(obj, env);
-    if (NULL != super)
+    if (super)
     {
         obj_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, "XML_SCHEMA_OBJ",
                 AXIS2_HASH_KEY_STRING));
-        if (NULL != obj_impl)
+        if (obj_impl)
             obj_impl->line_pos = line_pos;
     }
     return AXIS2_SUCCESS;
@@ -388,7 +388,7 @@ xml_schema_obj_set_source_uri(void *obj,
     obj_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(super, "XML_SCHEMA_OBJ",
             AXIS2_HASH_KEY_STRING));
 
-    if (NULL != obj_impl->source_uri)
+    if (obj_impl->source_uri)
     {
         AXIS2_FREE(env->allocator, obj_impl->source_uri);
         obj_impl->source_uri = NULL;
@@ -426,7 +426,7 @@ xml_schema_obj_add_meta_info(void *obj,
     axis2_hash_t *ht_super = NULL;
 
     ht_super = XML_SCHEMA_OBJ_SUPER_OBJS(obj, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         obj_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_OBJ",
                 AXIS2_HASH_KEY_STRING));
@@ -453,7 +453,7 @@ xml_schema_obj_get_meta_info(void *obj,
     xml_schema_obj_impl_t *obj_impl = NULL;
     axis2_hash_t *ht_super = NULL;
     ht_super = XML_SCHEMA_OBJ_SUPER_OBJS(obj, env);
-    if (NULL != ht_super)
+    if (ht_super)
     {
         obj_impl = AXIS2_INTF_TO_IMPL(axis2_hash_get(ht_super, "XML_SCHEMA_OBJ",
                 AXIS2_HASH_KEY_STRING));

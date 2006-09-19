@@ -67,11 +67,11 @@ void system_exit(
     int status)
 {
     axis2_allocator_t *allocator = NULL;
-    if (NULL != server)
+    if (server)
     {
         AXIS2_TRANSPORT_RECEIVER_FREE(server,  system_env);
     }
-    if (NULL != env)
+    if (env)
     {
         allocator = env->allocator;
         axis2_env_free(env);

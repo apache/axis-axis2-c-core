@@ -160,13 +160,13 @@ axis2_wsdl_extensible_component_free(
 
     extensible_component_impl = AXIS2_INTF_TO_IMPL(extensible_component);
 
-    if (NULL != extensible_component->ops)
+    if (extensible_component->ops)
     {
         AXIS2_FREE(env->allocator, extensible_component->ops);
         extensible_component->ops = NULL;
     }
 
-    if (NULL != extensible_component_impl->features)
+    if (extensible_component_impl->features)
     {
         void *val = NULL;
         int i = 0;
@@ -187,7 +187,7 @@ axis2_wsdl_extensible_component_free(
         extensible_component_impl->features = NULL;
     }
 
-    if (NULL != extensible_component_impl->properties)
+    if (extensible_component_impl->properties)
     {
         void *val = NULL;
         int i = 0;
@@ -208,7 +208,7 @@ axis2_wsdl_extensible_component_free(
         extensible_component_impl->properties = NULL;
     }
 
-    if (NULL != extensible_component->wsdl_component)
+    if (extensible_component->wsdl_component)
     {
         AXIS2_WSDL_COMPONENT_FREE(extensible_component->wsdl_component, env);
         extensible_component->wsdl_component = NULL;

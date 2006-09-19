@@ -74,7 +74,7 @@ void test_writer(CuTest *tc)
     writer = (w2c_writer_t*)w2c_class_loader_get_object_from_class_name
             (env, "w2c_cservice_xml_writer", "/codegen/writers/", &dll_desc);
     CuAssertPtrNotNull(tc, writer);
-    if (writer != NULL)
+    if (writer)
     {
         W2C_WRITER_INITIALIZE(writer, env, loader, conf);
         W2C_WRITER_CREATE_OUT_FILE(writer, env, NULL, NULL);

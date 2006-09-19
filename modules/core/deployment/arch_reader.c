@@ -136,7 +136,7 @@ axis2_arch_reader_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     arch_reader_impl = AXIS2_INTF_TO_IMPL(arch_reader);
 
-    if (NULL != arch_reader->ops)
+    if (arch_reader->ops)
         AXIS2_FREE(env->allocator, arch_reader->ops);
 
     if (arch_reader_impl->desc_builder)

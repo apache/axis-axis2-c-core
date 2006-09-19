@@ -229,19 +229,19 @@ axis2_transport_in_desc_free(
         transport_in_impl->recv = NULL;
     }
 
-    if (NULL != transport_in->ops)
+    if (transport_in->ops)
     {
         AXIS2_FREE(env->allocator, transport_in->ops);
         transport_in->ops = NULL;
     }
 
-    if (NULL != transport_in->param_container)
+    if (transport_in->param_container)
     {
         AXIS2_PARAM_CONTAINER_FREE(transport_in->param_container, env);
         transport_in->param_container = NULL;
     }
 
-    if (NULL != transport_in_impl->qname)
+    if (transport_in_impl->qname)
     {
         AXIS2_QNAME_FREE(transport_in_impl->qname, env);
         transport_in_impl->qname = NULL;

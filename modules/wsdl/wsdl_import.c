@@ -119,22 +119,22 @@ axis2_wsdl_import_free(axis2_wsdl_import_t *wsdl_import,
 
     import_impl = AXIS2_INTF_TO_IMPL(wsdl_import);
 
-    if (NULL != wsdl_import->ops)
+    if (wsdl_import->ops)
         AXIS2_FREE(env->allocator, wsdl_import->ops);
 
-    if (NULL != import_impl->namespace)
+    if (import_impl->namespace)
     {
         AXIS2_FREE(env->allocator, import_impl->namespace);
         import_impl->namespace = NULL;
     }
 
-    if (NULL != import_impl->location)
+    if (import_impl->location)
     {
         AXIS2_FREE(env->allocator, import_impl->location);
         import_impl->location = NULL;
     }
 
-    if (NULL != wsdl_import->wsdl_component)
+    if (wsdl_import->wsdl_component)
     {
         AXIS2_WSDL_COMPONENT_FREE(wsdl_import->wsdl_component, env);
         wsdl_import->wsdl_component = NULL;

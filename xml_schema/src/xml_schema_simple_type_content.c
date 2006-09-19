@@ -146,30 +146,30 @@ xml_schema_simple_type_content_free(void *sim_type_cont,
     sim_type_cont_impl = AXIS2_INTF_TO_IMPL(sim_type_cont);
 
 
-    if (NULL != sim_type_cont_impl->ht_super)
+    if (sim_type_cont_impl->ht_super)
     {
         axis2_hash_free(sim_type_cont_impl->ht_super, env);
         sim_type_cont_impl->ht_super = NULL;
     }
 
-    if (NULL != sim_type_cont_impl->annotated)
+    if (sim_type_cont_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(sim_type_cont_impl->annotated, env);
         sim_type_cont_impl->annotated = NULL;
     }
 
-    if (NULL != sim_type_cont_impl->sim_type_cont.ops)
+    if (sim_type_cont_impl->sim_type_cont.ops)
     {
         AXIS2_FREE(env->allocator, sim_type_cont_impl->sim_type_cont.ops);
         sim_type_cont_impl->sim_type_cont.ops = NULL;
     }
-    if (NULL != sim_type_cont_impl->sim_type_cont.base.ops)
+    if (sim_type_cont_impl->sim_type_cont.base.ops)
     {
         AXIS2_FREE(env->allocator, sim_type_cont_impl->sim_type_cont.base.ops);
         sim_type_cont_impl->sim_type_cont.base.ops = NULL;
     }
 
-    if (NULL != sim_type_cont_impl)
+    if (sim_type_cont_impl)
     {
         AXIS2_FREE(env->allocator, sim_type_cont_impl);
         sim_type_cont_impl = NULL;
@@ -206,7 +206,7 @@ xml_schema_simple_type_content_resolve_methods(
 
     sim_type_cont->ops = AXIS2_MALLOC(env->allocator,
             sizeof(xml_schema_simple_type_content_ops_t));
-    if (NULL != sim_type_cont->ops)
+    if (sim_type_cont->ops)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return AXIS2_FAILURE;

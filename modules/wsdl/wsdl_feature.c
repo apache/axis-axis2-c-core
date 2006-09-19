@@ -122,16 +122,16 @@ axis2_wsdl_feature_free(axis2_wsdl_feature_t *wsdl_feature,
 
     feature_impl = AXIS2_INTF_TO_IMPL(wsdl_feature);
 
-    if (NULL != wsdl_feature->ops)
+    if (wsdl_feature->ops)
         AXIS2_FREE(env->allocator, wsdl_feature->ops);
 
-    if (NULL != feature_impl->name)
+    if (feature_impl->name)
     {
         AXIS2_FREE(env->allocator, feature_impl->name);
         feature_impl->name = NULL;
     }
 
-    if (NULL != wsdl_feature->wsdl_component)
+    if (wsdl_feature->wsdl_component)
     {
         AXIS2_WSDL_COMPONENT_FREE(wsdl_feature->wsdl_component, env);
         wsdl_feature->wsdl_component = NULL;

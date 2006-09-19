@@ -221,31 +221,31 @@ xml_schema_complex_content_extension_free(void *cmp_cnt_ext_ext_ext,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     content_ext_impl = AXIS2_INTF_TO_IMPL(cmp_cnt_ext_ext_ext);
-    if (NULL != content_ext_impl->any_attribute)
+    if (content_ext_impl->any_attribute)
     {
         XML_SCHEMA_ANY_ATTRIBUTE_FREE(content_ext_impl->any_attribute, env);
         content_ext_impl->any_attribute = NULL;
     }
-    if (NULL != content_ext_impl->attributes)
+    if (content_ext_impl->attributes)
     {
         /** TODO free attributes */
     }
-    if (NULL != content_ext_impl->base_type_name)
+    if (content_ext_impl->base_type_name)
     {
         AXIS2_QNAME_FREE(content_ext_impl->base_type_name, env);
         content_ext_impl->base_type_name = NULL;
     }
-    if (NULL != content_ext_impl->annotated)
+    if (content_ext_impl->annotated)
     {
         XML_SCHEMA_ANNOTATED_FREE(content_ext_impl->annotated, env);
         content_ext_impl->annotated = NULL;
     }
-    if (NULL != content_ext_impl->cmp_cnt_ext.ops)
+    if (content_ext_impl->cmp_cnt_ext.ops)
     {
         AXIS2_FREE(env->allocator, content_ext_impl->cmp_cnt_ext.ops);
         content_ext_impl->cmp_cnt_ext.ops = NULL;
     }
-    if (NULL != content_ext_impl->cmp_cnt_ext.base.ops)
+    if (content_ext_impl->cmp_cnt_ext.base.ops)
     {
         AXIS2_FREE(env->allocator, content_ext_impl->cmp_cnt_ext.base.ops);
         content_ext_impl->cmp_cnt_ext.base.ops = NULL;
@@ -287,7 +287,7 @@ xml_schema_complex_content_extension_set_any_attribute(void *cmp_cnt_ext,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, any_attr, AXIS2_FAILURE);
-    if (NULL != content_ext_impl->any_attribute)
+    if (content_ext_impl->any_attribute)
     {
         XML_SCHEMA_ANY_ATTRIBUTE_FREE(content_ext_impl->any_attribute, env);
         content_ext_impl->any_attribute = NULL;
@@ -326,7 +326,7 @@ xml_schema_complex_content_extension_set_base_type_name(
     xml_schema_complex_content_extension_impl_t *content_ext_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     content_ext_impl = AXIS2_INTF_TO_IMPL(cmp_cnt_ext);
-    if (NULL != content_ext_impl->base_type_name)
+    if (content_ext_impl->base_type_name)
     {
         AXIS2_QNAME_FREE(content_ext_impl->base_type_name, env);
         content_ext_impl->base_type_name = NULL;
@@ -353,7 +353,7 @@ xml_schema_complex_content_extension_set_particle(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, particle, AXIS2_FAILURE);
     cmp_cnt_ext_impl = AXIS2_INTF_TO_IMPL(cmp_cnt_ext);
-    if (NULL != cmp_cnt_ext_impl->particle)
+    if (cmp_cnt_ext_impl->particle)
     {
         XML_SCHEMA_PARTICLE_FREE(cmp_cnt_ext_impl->particle, env);
         cmp_cnt_ext_impl->particle = NULL;

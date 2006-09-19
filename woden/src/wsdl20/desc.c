@@ -1445,8 +1445,8 @@ woden_desc_add_namespace(
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
-    pfx = (NULL != prefix) ? prefix : "";
-    if (NULL != namespc)
+    pfx = (prefix) ? prefix : "";
+    if (namespc)
         axis2_hash_set(desc_impl->f_namespcs, pfx, AXIS2_HASH_KEY_STRING,
                 AXIS2_URI_CLONE(namespc, env));
     else
@@ -1469,7 +1469,7 @@ woden_desc_remove_namespace(
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
-    pfx = (NULL != prefix) ? prefix : "";
+    pfx = (prefix) ? prefix : "";
     axis2_hash_set(desc_impl->f_namespcs, pfx, AXIS2_HASH_KEY_STRING, NULL);
     return AXIS2_SUCCESS;
 }
@@ -1489,7 +1489,7 @@ woden_desc_get_namespace(
     desc_impl = INTF_TO_IMPL(axis2_hash_get(super,
             "WODEN_DESC", AXIS2_HASH_KEY_STRING));
 
-    pfx = (NULL != prefix) ? prefix : "";
+    pfx = (prefix) ? prefix : "";
     return axis2_hash_get(desc_impl->f_namespcs, pfx, AXIS2_HASH_KEY_STRING);
 }
 

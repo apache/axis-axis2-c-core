@@ -149,7 +149,7 @@ axis2_set_log_level(
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
                 cmd->server->module_config, &axis2_module);
 
-    if (NULL != arg)
+    if (arg)
     {
         if (!apr_strnatcmp(arg, "AXIS2_LOG_LEVEL_DEBUG"))
         {
@@ -255,7 +255,7 @@ axis2_module_init(
                 "axis2_environment init failed\n");
         status = AXIS2_FAILURE;
     }
-    if (NULL != axis2_logger)
+    if (axis2_logger)
     {
 
         axis2_logger->level = conf->log_level;

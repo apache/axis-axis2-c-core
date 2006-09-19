@@ -308,14 +308,14 @@ axis2_status_t AXIS2_CALL axis2_linked_list_free(
 
     linked_list_impl = AXIS2_INTF_TO_IMPL(linked_list);
 
-    if (NULL != linked_list_impl->linked_list.ops)
+    if (linked_list_impl->linked_list.ops)
     {
         AXIS2_FREE(env->allocator, linked_list_impl->linked_list.ops);
         linked_list_impl->linked_list.ops = NULL;
     }
 
     current = linked_list_impl->first;
-    while (NULL != current)
+    while (current)
     {
         next = current->next;
         AXIS2_FREE(env->allocator, current);
@@ -510,7 +510,7 @@ axis2_linked_list_remove_first(axis2_linked_list_t *linked_list,
     AXIS2_INTF_TO_IMPL(linked_list)->size--;
     r = AXIS2_INTF_TO_IMPL(linked_list)->first->data;
 
-    if (AXIS2_INTF_TO_IMPL(linked_list)->first->next != NULL)
+    if (AXIS2_INTF_TO_IMPL(linked_list)->first->next)
         AXIS2_INTF_TO_IMPL(linked_list)->first->next->previous = NULL;
     else
         AXIS2_INTF_TO_IMPL(linked_list)->last = NULL;
@@ -543,7 +543,7 @@ axis2_linked_list_remove_last(axis2_linked_list_t *linked_list,
     AXIS2_INTF_TO_IMPL(linked_list)->size--;
     r = AXIS2_INTF_TO_IMPL(linked_list)->last->data;
 
-    if (AXIS2_INTF_TO_IMPL(linked_list)->last->previous != NULL)
+    if (AXIS2_INTF_TO_IMPL(linked_list)->last->previous)
         AXIS2_INTF_TO_IMPL(linked_list)->last->previous->next = NULL;
     else
         AXIS2_INTF_TO_IMPL(linked_list)->first = NULL;
@@ -620,7 +620,7 @@ axis2_linked_list_contains(axis2_linked_list_t *linked_list,
     AXIS2_PARAM_CHECK(env->error, o, AXIS2_FALSE);
 
     e = AXIS2_INTF_TO_IMPL(linked_list)->first;
-    while (e != NULL)
+    while (e)
     {
         if (o == e->data)
             return AXIS2_TRUE;
@@ -677,7 +677,7 @@ axis2_linked_list_remove(axis2_linked_list_t *linked_list,
     AXIS2_PARAM_CHECK(env->error, o, AXIS2_FALSE);
 
     e = AXIS2_INTF_TO_IMPL(linked_list)->first;
-    while (e != NULL)
+    while (e)
     {
         if (o == e->data)
         {
@@ -823,7 +823,7 @@ axis2_linked_list_index_of(axis2_linked_list_t *linked_list,
     AXIS2_PARAM_CHECK(env->error, o, AXIS2_FAILURE);
 
     e = AXIS2_INTF_TO_IMPL(linked_list)->first;
-    while (e != NULL)
+    while (e)
     {
         if (o == e->data)
             return index;
@@ -851,7 +851,7 @@ axis2_linked_list_last_index_of(axis2_linked_list_t *linked_list,
 
     index = AXIS2_INTF_TO_IMPL(linked_list)->size - 1;
     e = AXIS2_INTF_TO_IMPL(linked_list)->last;
-    while (e != NULL)
+    while (e)
     {
         if (o == e->data)
             return index;

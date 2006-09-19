@@ -209,7 +209,7 @@ axis2_ws_info_list_free(
         AXIS2_ARRAY_LIST_FREE(info_list_impl->info_list, env);
         info_list_impl->info_list = NULL;
     }
-    if (NULL != ws_info_list->ops)
+    if (ws_info_list->ops)
         AXIS2_FREE(env->allocator, ws_info_list->ops);
 
     if (info_list_impl)

@@ -196,7 +196,7 @@ axis2_wsdl_svc_free(axis2_wsdl_svc_t *wsdl_svc,
         wsdl_svc_impl->svc_interface = NULL;
     }
 
-    if (NULL != AXIS2_INTF_TO_IMPL(wsdl_svc)->qname)
+    if (AXIS2_INTF_TO_IMPL(wsdl_svc)->qname)
     {
         AXIS2_QNAME_FREE(AXIS2_INTF_TO_IMPL(wsdl_svc)->qname, env);
         AXIS2_INTF_TO_IMPL(wsdl_svc)->qname = NULL;

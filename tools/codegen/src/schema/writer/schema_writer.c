@@ -269,7 +269,7 @@ w2c_schema_writer_init(w2c_schema_writer_t *writer,
             w2c_xslt_utils_add_child_node(env, "bean", NULL);
         w2c_xslt_utils_add_attribute(env, writer_impl-> global_wrapped_source_node,
                 "name", W2C_SCHEMA_WRITER_WRAPPED_DATABINDING_CLASS_NAME);
-        if (writer_impl-> package_name != NULL)
+        if (writer_impl-> package_name)
         {
             length = AXIS2_STRLEN(writer_impl-> package_name);
             if (writer_impl-> package_name[length-1] == '.')
@@ -289,7 +289,7 @@ w2c_schema_writer_init(w2c_schema_writer_t *writer,
             w2c_xslt_utils_add_child_node(env, "bean", NULL);
         w2c_xslt_utils_add_attribute(env, writer_impl-> global_wrapped_header_node,
                 "name", W2C_SCHEMA_WRITER_WRAPPED_DATABINDING_CLASS_NAME);
-        if (writer_impl-> package_name != NULL)
+        if (writer_impl-> package_name)
         {
             length = AXIS2_STRLEN(writer_impl-> package_name);
             if (writer_impl-> package_name[length-1] == '.')
@@ -309,7 +309,7 @@ w2c_schema_writer_init(w2c_schema_writer_t *writer,
         W2C_SCHEMA_COMPILER_OPTIONS_GET_NS2PACKAGE_MAP(options, env);
     writer_impl-> is_helper_mode =
         W2C_SCHEMA_COMPILER_OPTIONS_GET_HELPER_MODE(options, env);
-    if (W2C_SCHEMA_COMPILER_OPTIONS_GET_MAPPER_CLASS_PACKAGE(options, env) != NULL)
+    if (W2C_SCHEMA_COMPILER_OPTIONS_GET_MAPPER_CLASS_PACKAGE(options, env))
     {
         writer_impl-> mapping_class_package =
             W2C_SCHEMA_COMPILER_OPTIONS_GET_MAPPER_CLASS_PACKAGE(options, env);
@@ -446,7 +446,7 @@ w2c_schema_writer_make_fully_qualified_class_name(w2c_schema_writer_impl_t *writ
     {
         package_prefix = package_name;
     }
-    if (package_prefix != NULL)
+    if (package_prefix)
     {
         length = AXIS2_STRLEN(fully_qualifed_class_name);
         fully_qualifed_class_name = axis2_stracat(package_prefix,
@@ -626,7 +626,7 @@ w2c_schema_writer_populate_info(w2c_schema_writer_impl_t *writer_impl,
 {
     w2c_schema_writer_meta_info_t *parent_meta_info = NULL;
     parent_meta_info = W2C_SCHEMA_WRITER_META_INFO_GET_PARENT(meta_info, env);
-    if (parent_meta_info != NULL)
+    if (parent_meta_info)
     {
         /* recursively do for all the parents */
         w2c_schema_writer_populate_info(writer_impl, env,
@@ -711,7 +711,7 @@ w2c_schema_writer_add_property_entries(w2c_schema_writer_impl_t *writer_impl,
         qname_str = AXIS2_QNAME_TO_STRING(schema_qname, env);
         schema_type = axis2_hash_get(writer_impl-> typemap, qname_str, AXIS2_HASH_KEY_STRING);
 
-        if (schema_type != NULL)
+        if (schema_type)
         {
             w2c_xslt_utils_add_attribute(env, property, "ours", "yes");
         }
@@ -724,7 +724,7 @@ w2c_schema_writer_add_property_entries(w2c_schema_writer_impl_t *writer_impl,
             w2c_xslt_utils_add_attribute(env, property, "nillable", "yes");
         }
         schema_type = axis2_hash_get(writer_impl-> base_typemap, qname_str, AXIS2_HASH_KEY_STRING);
-        if (schema_qname != NULL && schema_type != NULL)
+        if (schema_qname  && schema_type != NULL)
         {
             short_type_name = AXIS2_QNAME_GET_LOCALPART(schema_qname, env);
         }

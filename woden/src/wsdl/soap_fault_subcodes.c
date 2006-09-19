@@ -191,7 +191,7 @@ woden_soap_fault_subcodes_is_token(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     soap_fault_subcodes_impl = INTF_TO_IMPL(soap_fault_subcodes);
 
-    return (NULL != soap_fault_subcodes_impl->f_token);
+    return (soap_fault_subcodes_impl->f_token);
 }
 
 axis2_array_list_t *AXIS2_CALL

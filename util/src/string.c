@@ -99,7 +99,7 @@ axis2_strndup(
     AXIS2_PARAM_CHECK(env->error, ptr, NULL);
 
     end = axis2_memchr(ptr, '\0', n);
-    if (NULL != end)
+    if (end)
         n = end - (axis2_char_t *) ptr;
     str = (axis2_char_t *) AXIS2_MALLOC(env->allocator,
             sizeof(axis2_char_t) * (n + 1));
@@ -130,7 +130,7 @@ axis2_strcat(
 
     va_start(adummy, env);
 
-    while ((cp = va_arg(adummy, axis2_char_t *)) != NULL)
+    while ((cp = va_arg(adummy, axis2_char_t *)))
     {
         size_t cplen = strlen(cp);
         if (nargs < MAX_SAVED_LENGTHS)
@@ -157,7 +157,7 @@ axis2_strcat(
     va_start(adummy, env);
 
     nargs = 0;
-    while ((argp = va_arg(adummy, axis2_char_t *)) != NULL)
+    while ((argp = va_arg(adummy, axis2_char_t *)))
     {
         if (nargs < MAX_SAVED_LENGTHS)
         {
@@ -296,7 +296,7 @@ axis2_replace(const axis2_env_t *env,
     newstr = AXIS2_STRDUP(str, env);
 
     index = strchr(newstr, s1);
-    while (NULL != index)
+    while (index)
     {
         newstr[index - newstr] = s2;
         index = strchr(newstr, s1);

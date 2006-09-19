@@ -104,7 +104,7 @@ axis2_svr_callback_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     svr_callback_impl = AXIS2_INTF_TO_IMPL(svr_callback);
 
-    if (NULL != svr_callback->ops)
+    if (svr_callback->ops)
     {
         AXIS2_FREE(env->allocator, svr_callback->ops);
         svr_callback->ops = NULL;

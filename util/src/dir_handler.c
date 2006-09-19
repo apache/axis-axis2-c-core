@@ -203,7 +203,7 @@ axis2_dir_handler_list_service_or_module_dirs(const axis2_env_t *env,
 
     axis2_status_t status = AXIS2_FAILURE;
     AXIS2_ENV_CHECK(env, NULL);
-    /*if ((handle = opendir(pathname)) != NULL && (handle->finished == 1))
+    /*if ((handle = opendir(pathname))  && (handle->finished == 1))
     {
        printf("Path Name does not exist:%s\n",pathname);
        return NULL;
@@ -366,7 +366,7 @@ int file_select(struct dirent *entry)
 
     /* Check for filename extensions */
     ptr = AXIS2_RINDEX(entry->d_name, '.');
-    if ((ptr != NULL) &&
+    if ((ptr) &&
             ((strcmp(ptr, AXIS2_LIB_SUFFIX) == 0)))
     {
         return (AXIS2_TRUE);
@@ -390,7 +390,7 @@ int dir_select(struct dirent *entry)
 
     /* Check for filename extensions */
     /*ptr = AXIS2_RINDEX(entry->d_name, '.');
-    if (ptr != NULL)
+    if (ptr )
      {
        return (AXIS2_FALSE);
      }*/

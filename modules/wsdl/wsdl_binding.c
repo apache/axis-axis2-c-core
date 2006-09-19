@@ -230,25 +230,25 @@ axis2_wsdl_binding_free(axis2_wsdl_binding_t *wsdl_binding,
 
     binding_impl = AXIS2_INTF_TO_IMPL(wsdl_binding);
 
-    if (NULL != wsdl_binding->ops)
+    if (wsdl_binding->ops)
     {
         AXIS2_FREE(env->allocator, wsdl_binding->ops);
         wsdl_binding->ops = NULL;
     }
 
-    if (NULL != binding_impl->qname)
+    if (binding_impl->qname)
     {
         AXIS2_QNAME_FREE(AXIS2_INTF_TO_IMPL(wsdl_binding)->qname, env);
         binding_impl->qname = NULL;
     }
 
-    if (NULL != binding_impl->bound_interface)
+    if (binding_impl->bound_interface)
     {
         AXIS2_WSDL_INTERFACE_FREE(binding_impl->bound_interface, env);
         binding_impl->bound_interface = NULL;
     }
 
-    if (NULL != binding_impl->binding_faults)
+    if (binding_impl->binding_faults)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
@@ -269,7 +269,7 @@ axis2_wsdl_binding_free(axis2_wsdl_binding_t *wsdl_binding,
         binding_impl->binding_faults = NULL;
     }
 
-    if (NULL != binding_impl->binding_ops)
+    if (binding_impl->binding_ops)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
@@ -292,7 +292,7 @@ axis2_wsdl_binding_free(axis2_wsdl_binding_t *wsdl_binding,
         binding_impl->binding_ops = NULL;
     }
 
-    if (NULL != wsdl_binding->extensible_component)
+    if (wsdl_binding->extensible_component)
     {
         AXIS2_WSDL_EXTENSIBLE_COMPONENT_FREE(wsdl_binding->
                 extensible_component, env);
@@ -393,7 +393,7 @@ axis2_wsdl_binding_set_binding_faults(axis2_wsdl_binding_t *wsdl_binding,
 
     binding_impl = AXIS2_INTF_TO_IMPL(wsdl_binding);
 
-    if (NULL != binding_impl->binding_faults)
+    if (binding_impl->binding_faults)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
@@ -436,7 +436,7 @@ axis2_wsdl_binding_set_binding_ops(axis2_wsdl_binding_t *wsdl_binding,
     AXIS2_PARAM_CHECK(env->error, binding_ops, AXIS2_FAILURE);
 
     binding_impl = AXIS2_INTF_TO_IMPL(wsdl_binding);
-    if (NULL != binding_impl->binding_ops)
+    if (binding_impl->binding_ops)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;

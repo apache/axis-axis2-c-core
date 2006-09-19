@@ -328,7 +328,7 @@ xml_schema_complex_type_create(
 
     annotated =
         XML_SCHEMA_TYPE_GET_BASE_IMPL(complex_type_impl->schema_type, env);
-    if (NULL != annotated)
+    if (annotated)
     {
         axis2_hash_set(complex_type_impl->ht_super, "XML_SCHEMA_ANNOTATED",
                 AXIS2_HASH_KEY_STRING, annotated);
@@ -358,18 +358,18 @@ xml_schema_complex_type_free(void *complex_type,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     complex_type_impl = AXIS2_INTF_TO_IMPL(complex_type);
 
-    if (NULL != complex_type_impl->schema_type)
+    if (complex_type_impl->schema_type)
     {
         XML_SCHEMA_TYPE_FREE(complex_type_impl->schema_type, env);
         complex_type_impl->schema_type = NULL;
     }
-    if (NULL != complex_type_impl->complex_type.base.ops)
+    if (complex_type_impl->complex_type.base.ops)
     {
         AXIS2_FREE(env->allocator, complex_type_impl->complex_type.base.ops);
         complex_type_impl->complex_type.base.ops = NULL;
     }
 
-    if (NULL != complex_type_impl->complex_type.ops)
+    if (complex_type_impl->complex_type.ops)
     {
         AXIS2_FREE(env->allocator, complex_type_impl->complex_type.ops);
         complex_type_impl->complex_type.ops = NULL;
@@ -409,7 +409,7 @@ xml_schema_complex_type_set_any_attribute(
     xml_schema_complex_type_impl_t *cmp_type_impl = NULL;
 
     cmp_type_impl = AXIS2_INTF_TO_IMPL(cmp_type);
-    if (NULL != cmp_type_impl->any_attr)
+    if (cmp_type_impl->any_attr)
     {
         /** TODO free attribute */
     }
@@ -457,7 +457,7 @@ xml_schema_complex_type_set_block(
 {
     xml_schema_complex_type_impl_t *cmp_type_impl = NULL;
     cmp_type_impl = AXIS2_INTF_TO_IMPL(cmp_type);
-    if (NULL != cmp_type_impl->block)
+    if (cmp_type_impl->block)
     {
         /** TODO free block */
     }
@@ -493,7 +493,7 @@ xml_schema_complex_type_set_content_model(
     xml_schema_complex_type_impl_t *cmp_type_impl = NULL;
     cmp_type_impl = AXIS2_INTF_TO_IMPL(cmp_type);
 
-    if (NULL != cmp_type_impl->content_model)
+    if (cmp_type_impl->content_model)
     {
         /** TODO free content_model_type */
     }
@@ -518,7 +518,7 @@ xml_schema_complex_type_set_content_type(
     xml_schema_complex_type_impl_t *cmp_type_impl = NULL;
 
     cmp_type_impl = AXIS2_INTF_TO_IMPL(cmp_type);
-    if (NULL != cmp_type_impl->content_type)
+    if (cmp_type_impl->content_type)
     {
         /** TODO free */
     }
@@ -586,7 +586,7 @@ xml_schema_complex_type_set_particle(
 {
     xml_schema_complex_type_impl_t *cmp_type_impl = NULL;
     cmp_type_impl = AXIS2_INTF_TO_IMPL(cmp_type);
-    if (NULL != cmp_type_impl->particle)
+    if (cmp_type_impl->particle)
     {
         /** TODO free particle */
     }
