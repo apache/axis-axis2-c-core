@@ -60,11 +60,11 @@ guththila_writer_write(axis2_env_t *env,
 		       guththila_writer_t *wt);
 
 
-AXIS2_EXTERN void 
+AXIS2_EXTERN void AXIS2_CALL
 guththila_writer_free (axis2_env_t *env, 
 		       guththila_writer_t *wt);
 
-AXIS2_EXTERN char *
+AXIS2_EXTERN char * AXIS2_CALL
 guththila_writer_get_buffer (axis2_env_t *env, 
 		       guththila_writer_t *wt);
 #endif	/* GUTHTHILA_WRITE_H */

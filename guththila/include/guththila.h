@@ -95,7 +95,7 @@ typedef struct guththila_s
 } guththila_t;
 
 
-int AXIS2_CALL
+AXIS2_EXTERN int AXIS2_CALL
 guththila_read (axis2_env_t * environment,
 				guththila_t * p);
                                 
@@ -205,8 +205,8 @@ guththila_process_attribute_value (axis2_env_t * environment,
 						   int c);
                                               
                                               
-/* int AXIS2_CALL */
-/* guththila_is_space (axis2_env_t *environment, int c); */
+int AXIS2_CALL
+guththila_is_space (axis2_env_t *environment, int c);
 
 
 void AXIS2_CALL
@@ -370,53 +370,53 @@ AXIS2_EXTERN void  AXIS2_CALL
 guththila_create_xml_stream_writer_for_memory (axis2_env_t *environment, 
 						    guththila_t *p);
 
-AXIS2_EXTERN void AXIS2_CALL
+void AXIS2_CALL
 guththila_write_to_buffer (axis2_env_t *env, 
 					   guththila_t *p,
 					   const char *buff);
 
 
-AXIS2_EXTERN void AXIS2_CALL
+void AXIS2_CALL
 guththila_close_start_element (axis2_env_t *environment,
 					       guththila_t *p);
 
 
-AXIS2_EXTERN void AXIS2_CALL
+void AXIS2_CALL
 guththila_close_depth_element (axis2_env_t *environment,
 					       guththila_t *p);
 
 
-AXIS2_EXTERN void AXIS2_CALL
+void AXIS2_CALL
 guththila_check_name_validity (axis2_env_t *environment,
 					       guththila_t *p,
 					       char *start_element);
 
 
-AXIS2_EXTERN void AXIS2_CALL
+void AXIS2_CALL
 guththila_open_depth_element (axis2_env_t *environment,
 					      guththila_t *p);
 
 
-AXIS2_EXTERN void AXIS2_CALL
+void AXIS2_CALL
 guththila_do_write_attribute (axis2_env_t *environment, 
 					      guththila_t *p, 
 					      const char *local_name, 
 					      const char *value);
 
 
-AXIS2_EXTERN int AXIS2_CALL
+int AXIS2_CALL
 guththila_check_default_namespace (axis2_env_t *env, 
 						   guththila_t *p, 
 						   char *ns_uri);
 
 
-AXIS2_EXTERN void AXIS2_CALL
+void AXIS2_CALL
 guththila_do_write_default_namespace (axis2_env_t *env, 
 						      guththila_t *p, 
 						      char *ns_uri);
 
 
-AXIS2_EXTERN int  AXIS2_CALL
+int  AXIS2_CALL
 guththila_check_prefix_validity (axis2_env_t *env, 
 						 guththila_t *p, 
 						 char *prefix, 
@@ -440,7 +440,7 @@ guththila_do_write_namespace (axis2_env_t *env,
 					      char *prefix, 
 					      char *uri);
 
-void AXIS2_CALL
+AXIS2_EXTERN void AXIS2_CALL
 guththila_do_write_attribute_with_prefix_and_namespace (axis2_env_t *env, 
 									guththila_t *p,
 									const char *prefix, 
@@ -449,7 +449,7 @@ guththila_do_write_attribute_with_prefix_and_namespace (axis2_env_t *env,
 									const char *value);
 
 
-AXIS2_EXTERN int AXIS2_CALL
+int AXIS2_CALL
 guththila_is_exsisting_prefix (axis2_env_t *env, 
 					       guththila_t *p, 
 					       const char *prefix);
@@ -532,7 +532,7 @@ guththila_write_namespace (axis2_env_t *environment,
 
 
 AXIS2_EXTERN void   AXIS2_CALL
-guththila_writeAttribute (axis2_env_t *environment, 
+guththila_write_attribute (axis2_env_t *environment, 
 					  guththila_t *p, 
 					  const char *localname, 
 					  const char *value);
