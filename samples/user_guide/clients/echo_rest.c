@@ -43,14 +43,31 @@ int main(int argc, char** argv)
         {
             method_get = AXIS2_TRUE;
         }
-        if (0 == AXIS2_STRCMP(argv[1], "-h"))
+        else if (0 == AXIS2_STRCMP(argv[1], "-h"))
         {
             printf("Usage : %s [endpoint_url]", argv[0]);
             printf(" or %s -mGET for HTTP GET\n", argv[0]);
             printf("use -h for help\n");
             return 0;
         }
+        else
+        {
+            address = argv[1];
+        }
     }
+
+    if (argc > 2)
+    {
+        if (0 == strncmp(argv[2], "-mGET", 2))
+        {
+            method_get = AXIS2_TRUE;
+        }
+        else
+        {
+            address = argv[2];
+        }
+    }
+
     printf("Using endpoint : %s\n", address);
 
     /* Create EPR with given address */
