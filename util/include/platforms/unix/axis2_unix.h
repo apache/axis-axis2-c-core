@@ -238,7 +238,6 @@ extern "C"
 #define AXIS2_SHUT_WR                       SHUT_WR
 
 /** getopt function */
-#define _GNU_SOURCE
 #define AXIS2_GETOPT getopt
 
 /** minizip functions */
