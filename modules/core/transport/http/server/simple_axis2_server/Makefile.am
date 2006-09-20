@@ -13,11 +13,10 @@ axis2_http_server_LDADD   =  $(LDFLAGS) \
                             -laxis2_axiom \
                             -laxis2_engine \
                             -lpthread \
+                            -laxis2_parser \
                             -laxis2_wsdl \
-                            -laxis2_libxml2 \
                             -laxis2_http_sender \
                             -laxis2_http_receiver \
-                            -lxml2 \
 							-lwoden \
 							-laxis2_xml_schema \
                             $(LIBXML2_LIBS) \

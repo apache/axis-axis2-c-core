@@ -13,11 +13,10 @@ libmod_axis2_la_LIBADD   = $(LDFLAGS) \
                     -laxis2_axiom \
                     -laxis2_engine \
                     -lpthread \
+                    -laxis2_parser \
                     -laxis2_wsdl \
-                    -laxis2_libxml2 \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
-                    -lxml2 \
 					$(LIBXML2_LIBS) \
 					$(GUTHTHILA_LIBS)
 
