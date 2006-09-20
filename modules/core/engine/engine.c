@@ -812,7 +812,7 @@ axis2_engine_resume_invocation_phases(
                     msg_ctx);
         }
         else /* now we have found the paused phase and invoked the rest of the
-                                                  * handlers of that phase, invoke all the phases after that */
+                                                              * handlers of that phase, invoke all the phases after that */
         {
             if (found_match)
             {

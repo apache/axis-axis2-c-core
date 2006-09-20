@@ -356,8 +356,8 @@ axis2_msg_info_headers_set_to(
     msg_info_headers_impl = AXIS2_INTF_TO_IMPL(msg_info_headers);
 
     if (msg_info_headers_impl->to && to) /* if the incoming to is NULL,
-                                                                    we consider that to be a reset,
-                                                                    so don't free */
+                                                                            we consider that to be a reset,
+                                                                            so don't free */
     {
         AXIS2_ENDPOINT_REF_FREE(msg_info_headers_impl->to, env);
         msg_info_headers_impl->to = NULL;

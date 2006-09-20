@@ -157,12 +157,12 @@ typedef struct
 
     uLong size_central_dir;     /* size of the central directory  */
     uLong offset_central_dir;   /* offset of start of central directory with
-                                               respect to the starting disk number */
+                                                   respect to the starting disk number */
 
     unz_file_info cur_file_info; /* public info about the current file in zip*/
     unz_file_info_internal cur_file_info_internal; /* private info about it*/
     file_in_zip_read_info_s* pfile_in_zip_read; /* structure about the current
-                                                    file if we are decompressing it */
+                                                        file if we are decompressing it */
     int encrypted;
 #    ifndef NOUNCRYPT
     unsigned long keys[3];     /* keys defining the pseudo-random sequence */
@@ -423,12 +423,12 @@ zlib_filefunc_def* pzlib_filefunc_def;
     uLong central_pos, uL;
 
     uLong number_disk;          /* number of the current dist, used for
-                                               spaning ZIP, unsupported, always 0*/
+                                                   spaning ZIP, unsupported, always 0*/
     uLong number_disk_with_CD;  /* number the the disk with central dir, used
-                                               for spaning ZIP, unsupported, always 0*/
+                                                   for spaning ZIP, unsupported, always 0*/
     uLong number_entry_CD;      /* total number of entries in
-                                               the central dir
-                                               (same than number_entry on nospan) */
+                                                   the central dir
+                                                   (same than number_entry on nospan) */
 
     int err = UNZ_OK;
 
