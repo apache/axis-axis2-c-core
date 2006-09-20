@@ -53,23 +53,6 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
-AC_MSG_CHECKING(whether to build guththila xml parser library)
-AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=no],
-[ case "${enableval}" in
-  no)
-    AC_MSG_RESULT(no)
-    GUTHTHILA_DIR=""
-    ;;
-  *)
-    AC_MSG_RESULT(yes)
-    GUTHTHILA_DIR="guththila"
-
-    ;;
-  esac ],
-  AC_MSG_RESULT(no)
-  GUTHTHILA_DIR=""
-)
-
 AC_MSG_CHECKING(whether to build libxml2 xml parser library)
 AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=yes],
 [ case "${enableval}" in
@@ -80,12 +63,33 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library w
   *)
     AC_MSG_RESULT(yes)
     LIBXML2_DIR="libxml2"
+    GUTHTHILA_DIR=""
 
     ;;
   esac ],
   AC_MSG_RESULT(yes)
   LIBXML2_DIR="libxml2"
 )
+
+AC_MSG_CHECKING(whether to build guththila xml parser library)
+AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    GUTHTHILA_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    GUTHTHILA_DIR="guththila"
+    LIBXML2_DIR=""
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  GUTHTHILA_DIR=""
+)
+
+
 
 AC_MSG_CHECKING(To Use Axis2 C Util. This is a compulsory module to build Axis2 C)
 AC_ARG_WITH(axis2_util,
@@ -146,6 +150,7 @@ AC_CONFIG_FILES([Makefile \
     src/Makefile \
     src/parser/Makefile \
     src/parser/libxml2/Makefile \
+    src/parser/guththila/Makefile \
     src/soap/Makefile \
     src/om/Makefile \
     src/util/Makefile \
