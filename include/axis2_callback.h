@@ -48,11 +48,11 @@ extern "C"
     typedef struct axis2_callback axis2_callback_t;
     /** Type name for function pointer to be called on complete of callback  */
     typedef axis2_status_t (AXIS2_CALL *
-            on_complete_func_ptr)(axis2_callback_t *,
+            axis2_on_complete_func_ptr)(axis2_callback_t *,
                     const axis2_env_t *);
     /** Type name for function pointer to be called on error of callback  */
     typedef axis2_status_t (AXIS2_CALL *
-            on_error_func_ptr)(axis2_callback_t *,
+            axis2_on_error_func_ptr)(axis2_callback_t *,
                     const axis2_env_t *, int);
 
     /**
@@ -228,7 +228,7 @@ extern "C"
         void (AXIS2_CALL *
                 set_on_complete)(
                     axis2_callback_t *callback,
-                    on_complete_func_ptr f);
+                    axis2_on_complete_func_ptr f);
 
         /**
          * Sets the on error callback function.
@@ -238,7 +238,7 @@ extern "C"
         void (AXIS2_CALL *
                 set_on_error)(
                     axis2_callback_t *callback,
-                    on_error_func_ptr f);
+                    axis2_on_error_func_ptr f);
 
         /**
          * Frees callback struct.

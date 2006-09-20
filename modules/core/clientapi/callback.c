@@ -101,12 +101,12 @@ axis2_callback_free(
 void AXIS2_CALL
 axis2_callback_set_on_complete(
     axis2_callback_t *callback,
-    on_complete_func_ptr f);
+    axis2_on_complete_func_ptr f);
 
 void AXIS2_CALL
 axis2_callback_set_on_error(
     axis2_callback_t *callback,
-    on_error_func_ptr f);
+    axis2_on_error_func_ptr f);
 
 axis2_status_t AXIS2_CALL
 axis2_callback_set_data(
@@ -315,7 +315,7 @@ axis2_callback_get_data(
 void AXIS2_CALL
 axis2_callback_set_on_complete(
     axis2_callback_t *callback,
-    on_complete_func_ptr func)
+    axis2_on_complete_func_ptr func)
 {
     callback->ops->on_complete = func;
 }
@@ -323,7 +323,7 @@ axis2_callback_set_on_complete(
 void AXIS2_CALL
 axis2_callback_set_on_error(
     axis2_callback_t *callback,
-    on_error_func_ptr func)
+    axis2_on_error_func_ptr func)
 {
     callback->ops->on_error = func;
 }
