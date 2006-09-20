@@ -1345,12 +1345,6 @@ axis2_svc_client_free(
         svc_client_impl->op_client = NULL;
     }
 
-    if (svc_client_impl->svc)
-    {
-        AXIS2_SVC_FREE(svc_client_impl->svc, env);
-        svc_client_impl->svc = NULL;
-    }
-
     if (svc_client_impl->svc_client.ops)
     {
         AXIS2_FREE(env->allocator, svc_client_impl->svc_client.ops);
