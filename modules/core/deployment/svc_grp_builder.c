@@ -179,6 +179,12 @@ axis2_svc_grp_builder_populate_svc_grp(
 
     itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_grp_element, env, qparamst,
             grp_builder_impl->svc_grp);
+    
+    if (qparamst)
+    {
+        AXIS2_QNAME_FREE(qparamst, env);
+        qparamst = NULL;
+    }
 
     parent = AXIS2_SVC_GRP_GET_PARENT(svc_grp, env);
     status = AXIS2_DESC_BUILDER_PROCESS_PARAMS(grp_builder_impl->svc_grp_builder.
@@ -188,11 +194,25 @@ axis2_svc_grp_builder_populate_svc_grp(
     qmodulest = axis2_qname_create(env, AXIS2_MODULEST, NULL, NULL);
     module_ref_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_grp_element, env,
             qmodulest, grp_builder_impl->svc_grp);
+
+    if (qmodulest)
+    {
+        AXIS2_QNAME_FREE(qmodulest, env);
+        qmodulest = NULL;
+    }
+
     axis2_svc_grp_builder_process_module_refs(grp_builder, env, module_ref_itr,
             svc_grp);
     qsvc_element = axis2_qname_create(env, AXIS2_SVC_ELEMENT, NULL, NULL);
     svc_itr = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(svc_grp_element, env,
             qsvc_element, grp_builder_impl->svc_grp);
+
+    if (qsvc_element)
+    {
+        AXIS2_QNAME_FREE(qsvc_element, env);
+        qsvc_element = NULL;
+    }
+
     while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(svc_itr, env))
     {
         axiom_node_t *svc_node = NULL;
@@ -206,6 +226,13 @@ axis2_svc_grp_builder_populate_svc_grp(
         svc_element = AXIOM_NODE_GET_DATA_ELEMENT(svc_node, env);
         qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
         svc_name_att = AXIOM_ELEMENT_GET_ATTRIBUTE(svc_element, env, qattname);
+
+        if (qattname)
+        {
+            AXIS2_QNAME_FREE(qattname, env);
+            qattname = NULL;
+        }
+
         svc_name = AXIOM_ATTRIBUTE_GET_VALUE(svc_name_att, env);
         if (NULL == svc_name)
         {
