@@ -338,10 +338,10 @@ axis2_apache2_worker_process_request(
         request_body = NULL;
     }
 
-    if (send_status != HTTP_INTERNAL_SERVER_ERROR)
+    /*if (send_status != HTTP_INTERNAL_SERVER_ERROR)
     {
         AXIS2_MSG_CTX_FREE(msg_ctx, env);
-    }
+    }*/
 
     msg_ctx = NULL;
     return send_status;
