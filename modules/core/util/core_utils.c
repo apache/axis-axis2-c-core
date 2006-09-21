@@ -308,6 +308,12 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
                         axis2_hash_set(default_modules, module_name_str,
                                 AXIS2_HASH_KEY_STRING, module_ver_str);
                     }
+
+                    if  (module_name_str)
+                    {
+                        AXIS2_FREE(env->allocator, module_name_str);
+                        module_name_str = NULL;
+                    }
                 }
             }
         }
@@ -330,6 +336,13 @@ axis2_core_utils_calculate_default_module_version(const axis2_env_t *env,
                     (axis2_char_t *)val, (axis2_char_t *)key_string);
         }
     }
+
+    if (default_modules)
+    {
+        axis2_hash_free(default_modules, env);
+        default_modules = NULL;
+    }
+
     return AXIS2_SUCCESS;
 }
 
