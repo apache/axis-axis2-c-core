@@ -309,7 +309,6 @@ axis2_module_desc_free(
             op = (struct axis2_op *) val;
             if (op)
                 AXIS2_OP_FREE(op, env);
-
             val = NULL;
             op = NULL;
 

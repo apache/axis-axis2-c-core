@@ -775,6 +775,16 @@ extern "C"
                     const axis2_char_t *label,
                     const struct axis2_msg *msg);
 
+        /**
+         * Checks if the operation is from a module.
+         * @param op pointer to operation
+         * @param env pointer to environment struct
+         * AXIS2_TRUE if the operation is from a module, else AXIS2_FALSE
+         */
+        axis2_bool_t (AXIS2_CALL *
+        is_from_module)(
+            const axis2_op_t *op,
+            const axis2_env_t *env);
     };
 
     /**
@@ -797,6 +807,15 @@ extern "C"
      */
     AXIS2_EXTERN axis2_op_t *AXIS2_CALL
     axis2_op_create(
+        const axis2_env_t *env);
+
+    /**
+     * Creates operation struct for an operation defined in a module.
+     * @param env pointer to environment struct
+     * @return pointer to newly created operation
+     */
+    AXIS2_EXTERN axis2_op_t *AXIS2_CALL
+    axis2_op_create_from_module(
         const axis2_env_t *env);
 
     /**
@@ -1085,6 +1104,11 @@ extern "C"
     @sa axis2_op_ops#add_msg */
 #define AXIS2_OP_ADD_MSG(op, env, label, msg) \
         ((op)->ops->add_msg(op, env, label, msg))
+
+/** Checks is the operation is from a module.
+    @sa axis2_op_ops#is_from_module */
+#define AXIS2_OP_IS_FROM_MODULE(op, env) \
+        ((op)->ops->is_from_module(op, env))
 
 /** @} */
 #ifdef __cplusplus

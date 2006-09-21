@@ -705,6 +705,13 @@ axis2_conf_free(
         config_impl->transports_out = NULL;
     }
 
+    if (config_impl->dep_engine)
+    {
+        AXIS2_DEP_ENGINE_FREE(config_impl->dep_engine, env);
+        config_impl->dep_engine = NULL;
+    }
+
+
     if (config_impl->all_modules)
     {
         axis2_hash_index_t *hi = NULL;
@@ -897,12 +904,6 @@ axis2_conf_free(
         }
         axis2_hash_free(config_impl->faulty_modules, env);
         config_impl->faulty_modules = NULL;
-    }
-
-    if (config_impl->dep_engine)
-    {
-        AXIS2_DEP_ENGINE_FREE(config_impl->dep_engine, env);
-        config_impl->dep_engine = NULL;
     }
 
     if (config_impl->handlers)

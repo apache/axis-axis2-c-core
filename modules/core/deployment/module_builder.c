@@ -464,14 +464,14 @@ axis2_module_builder_process_ops(
         if (NULL == mep_url)
         {
             /* Assuming in-out mep */
-            op_desc = axis2_op_create(env);
+            op_desc = axis2_op_create_from_module(env);
         }
         else
         {
             /* TODO
              * We don't have a operation constructor taking mepURL as argument.
              * do we need this? */
-            op_desc = axis2_op_create(env);
+            op_desc = axis2_op_create_from_module(env);
         }
 
         op_name = AXIOM_ATTRIBUTE_GET_VALUE(op_name_att, env);

@@ -927,7 +927,8 @@ axis2_svc_free(
 
             if (val)
             {
-                AXIS2_OP_FREE((axis2_op_t *)val, env);
+                if (AXIS2_OP_IS_FROM_MODULE((axis2_op_t *)val, env) == AXIS2_FALSE )
+                    AXIS2_OP_FREE((axis2_op_t *)val, env);
                 val = NULL;
             }
         }

@@ -34,7 +34,7 @@ typedef struct axis2_op_impl
     /*To store deploy time module QNames */
     axis2_array_list_t *module_qnames;
     axis2_array_list_t *engaged_module_list;
-
+    axis2_bool_t from_module;
 }
 axis2_op_impl_t;
 
@@ -352,7 +352,11 @@ axis2_op_add_msg(
     const axis2_char_t *label,
     const axis2_msg_t *msg);
 
-
+axis2_bool_t AXIS2_CALL
+axis2_op_is_from_module(
+    const axis2_op_t *op,
+    const axis2_env_t *env);
+ 
 AXIS2_EXTERN axis2_op_t *AXIS2_CALL
 axis2_op_create(
     const axis2_env_t *env)
@@ -386,6 +390,7 @@ axis2_op_create(
     op_impl->module_qnames = NULL;
     op_impl->engaged_module_list = NULL;
     op_impl->op.ops = NULL;
+    op_impl->from_module = AXIS2_FALSE;
 
     op_impl->op.param_container = (axis2_param_container_t *)
             axis2_param_container_create(env);
@@ -615,9 +620,24 @@ axis2_op_create(
     op_impl->op.ops->register_op_ctx = axis2_op_register_op_ctx;
     op_impl->op.ops->get_msg = axis2_op_get_msg;
     op_impl->op.ops->add_msg = axis2_op_add_msg;
+    op_impl->op.ops->is_from_module = axis2_op_is_from_module;
 
     return &(op_impl->op);
 }
+
+AXIS2_EXTERN axis2_op_t *AXIS2_CALL
+axis2_op_create_from_module(
+    const axis2_env_t *env)
+{
+    axis2_op_impl_t *op_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    op_impl = (axis2_op_impl_t *) axis2_op_create(env);
+    op_impl->from_module = AXIS2_TRUE;
+    return &(op_impl->op);
+}
+
 
 axis2_op_t *AXIS2_CALL
 axis2_op_create_with_qname(
@@ -1999,4 +2019,13 @@ axis2_op_add_msg(
     op_impl = AXIS2_INTF_TO_IMPL(op);
 
     return AXIS2_DESC_ADD_CHILD(op_impl->base, env, label, msg);
+}
+
+axis2_bool_t AXIS2_CALL
+axis2_op_is_from_module(
+    const axis2_op_t *op,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(op)->from_module;
 }
