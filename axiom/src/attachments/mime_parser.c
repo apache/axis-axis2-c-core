@@ -445,7 +445,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                 sprintf(temp_boundry, "%s", "--");
                 sprintf(temp_boundry, "%s", mime_boundary);
                 sprintf(temp_boundry, "%s", "--");
-                if (AXIS2_STRSTR(body_mime, temp_boundry))
+                if (body_mime && AXIS2_STRSTR(body_mime, temp_boundry))
                     break;
 
             }
