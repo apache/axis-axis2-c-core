@@ -216,6 +216,8 @@ openssl_cipher_property_set_name(
 {
     openssl_cipher_property_impl_t *cprop_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
+
     cprop_impl = AXIS2_INTF_TO_IMPL(cprop);
 
     if (cprop_impl->name)
@@ -223,7 +225,7 @@ openssl_cipher_property_set_name(
         AXIS2_FREE(env->allocator, cprop_impl->name);
         cprop_impl->name = NULL;
     }
-    cprop_impl->name = name;
+    cprop_impl->name = AXIS2_STRDUP(name, env);
     return AXIS2_SUCCESS;
 }
 
@@ -235,6 +237,8 @@ openssl_cipher_property_set_url(
 {
     openssl_cipher_property_impl_t *cprop_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, url, AXIS2_FAILURE);
+
     cprop_impl = AXIS2_INTF_TO_IMPL(cprop);
 
     if (cprop_impl->url)
@@ -242,7 +246,7 @@ openssl_cipher_property_set_url(
         AXIS2_FREE(env->allocator, cprop_impl->url);
         cprop_impl->url = NULL;
     }
-    cprop_impl->url = url;
+    cprop_impl->url = AXIS2_STRDUP(url, env);
     return AXIS2_SUCCESS;
 }
 

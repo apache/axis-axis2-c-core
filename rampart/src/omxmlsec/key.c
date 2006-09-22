@@ -179,6 +179,7 @@ oxs_key_set_data(
     oxs_key_impl_t *oxs_key_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, data, AXIS2_FAILURE);
     oxs_key_impl = AXIS2_INTF_TO_IMPL(key);
 
     if (oxs_key_impl->data)
@@ -186,7 +187,7 @@ oxs_key_set_data(
         AXIS2_FREE(env->allocator, oxs_key_impl->data);
         oxs_key_impl->data = NULL;
     }
-    oxs_key_impl->data = data;
+    oxs_key_impl->data = (unsigned char *)strdup(data);
     return AXIS2_SUCCESS;
 
 }
@@ -200,6 +201,7 @@ oxs_key_set_name(
     oxs_key_impl_t *oxs_key_impl = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
     oxs_key_impl = AXIS2_INTF_TO_IMPL(key);
 
     if (oxs_key_impl->name)
@@ -207,7 +209,7 @@ oxs_key_set_name(
         AXIS2_FREE(env->allocator, oxs_key_impl->name);
         oxs_key_impl->name = NULL;
     }
-    oxs_key_impl->name = (axis2_char_t *)name;
+    oxs_key_impl->name = AXIS2_STRDUP(name, env);
     return AXIS2_SUCCESS;
 
 }

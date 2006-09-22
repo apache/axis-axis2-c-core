@@ -249,7 +249,7 @@ openssl_pkey_set_name(
 {
     openssl_pkey_impl_t * pkey_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-
+    AXIS2_PARAM_CHECK(env->error, name, AXIS2_FAILURE);
     pkey_impl = AXIS2_INTF_TO_IMPL(pkey);
     if (pkey_impl->name)
     {
@@ -257,7 +257,7 @@ openssl_pkey_set_name(
         pkey_impl->name = NULL;
     }
 
-    pkey_impl->name = name;
+    pkey_impl->name = AXIS2_STRDUP(name, env);
 
     return AXIS2_SUCCESS;
 }

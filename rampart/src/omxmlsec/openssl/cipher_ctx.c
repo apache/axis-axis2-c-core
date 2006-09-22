@@ -260,6 +260,7 @@ openssl_cipher_ctx_set_key(openssl_cipher_ctx_t *ctx,
 {
     openssl_cipher_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, key, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     if (ctx_impl->key)
@@ -267,7 +268,7 @@ openssl_cipher_ctx_set_key(openssl_cipher_ctx_t *ctx,
         AXIS2_FREE(env->allocator, ctx_impl->key);
         ctx_impl->key = NULL;
     }
-    ctx_impl->key = key;
+    ctx_impl->key = AXIS2_STRDUP(key, env);
 
     return AXIS2_SUCCESS;
 }
@@ -280,6 +281,7 @@ openssl_cipher_ctx_set_iv(openssl_cipher_ctx_t *ctx,
 {
     openssl_cipher_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, iv, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     if (ctx_impl->iv)
@@ -287,7 +289,7 @@ openssl_cipher_ctx_set_iv(openssl_cipher_ctx_t *ctx,
         AXIS2_FREE(env->allocator, ctx_impl->iv);
         ctx_impl->iv = NULL;
     }
-    ctx_impl->iv = iv;
+    ctx_impl->iv = AXIS2_STRDUP(iv, env);
 
     return AXIS2_SUCCESS;
 }
@@ -301,6 +303,7 @@ openssl_cipher_ctx_set_pad(openssl_cipher_ctx_t *ctx,
 {
     openssl_cipher_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, pad, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     if (ctx_impl->pad)
@@ -308,7 +311,7 @@ openssl_cipher_ctx_set_pad(openssl_cipher_ctx_t *ctx,
         AXIS2_FREE(env->allocator, ctx_impl->pad);
         ctx_impl->pad = NULL;
     }
-    ctx_impl->pad = pad;
+    ctx_impl->pad = AXIS2_STRDUP(pad, env);
 
     return AXIS2_SUCCESS;
 }

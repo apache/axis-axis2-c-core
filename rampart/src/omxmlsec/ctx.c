@@ -690,6 +690,7 @@ oxs_ctx_set_id(
 {
     oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, id, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     if (ctx_impl->id)
@@ -697,7 +698,7 @@ oxs_ctx_set_id(
         AXIS2_FREE(env->allocator, ctx_impl->id);
         ctx_impl->id = NULL;
     }
-    ctx_impl->id = id;
+    ctx_impl->id = AXIS2_STRDUP(id, env);
 
     return AXIS2_SUCCESS;
 }
@@ -711,6 +712,7 @@ oxs_ctx_set_type(
 {
     oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, type, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     if (ctx_impl->type)
@@ -718,7 +720,7 @@ oxs_ctx_set_type(
         AXIS2_FREE(env->allocator, ctx_impl->type);
         ctx_impl->type = NULL;
     }
-    ctx_impl->type = type;
+    ctx_impl->type = AXIS2_STRDUP(type, env);
 
     return AXIS2_SUCCESS;
 }
@@ -732,6 +734,7 @@ oxs_ctx_set_mime_type(
 {
     oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, mime_type, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     if (ctx_impl->mime_type)
@@ -739,7 +742,7 @@ oxs_ctx_set_mime_type(
         AXIS2_FREE(env->allocator, ctx_impl->mime_type);
         ctx_impl->mime_type = NULL;
     }
-    ctx_impl->mime_type = mime_type;
+    ctx_impl->mime_type = AXIS2_STRDUP(mime_type, env);
 
     return AXIS2_SUCCESS;
 }
@@ -753,6 +756,7 @@ oxs_ctx_set_encoding(
 {
     oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, encoding, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     if (ctx_impl->encoding)
@@ -760,7 +764,7 @@ oxs_ctx_set_encoding(
         AXIS2_FREE(env->allocator, ctx_impl->encoding);
         ctx_impl->encoding = NULL;
     }
-    ctx_impl->encoding = encoding;
+    ctx_impl->encoding = AXIS2_STRDUP(encoding, env);
 
     return AXIS2_SUCCESS;
 }
@@ -774,6 +778,7 @@ oxs_ctx_set_recipient(
 {
     oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, recipient, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     if (ctx_impl->recipient)
@@ -781,7 +786,7 @@ oxs_ctx_set_recipient(
         AXIS2_FREE(env->allocator, ctx_impl->recipient);
         ctx_impl->recipient = NULL;
     }
-    ctx_impl->recipient = recipient;
+    ctx_impl->recipient = AXIS2_STRDUP(recipient, env);
 
     return AXIS2_SUCCESS;
 }
@@ -795,6 +800,7 @@ oxs_ctx_set_carried_key_name(
 {
     oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, carried_key_name, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     if (ctx_impl->carried_key_name)
@@ -802,7 +808,7 @@ oxs_ctx_set_carried_key_name(
         AXIS2_FREE(env->allocator, ctx_impl->carried_key_name);
         ctx_impl->carried_key_name = NULL;
     }
-    ctx_impl->carried_key_name = carried_key_name;
+    ctx_impl->carried_key_name = AXIS2_STRDUP(carried_key_name, env);
 
     return AXIS2_SUCCESS;
 }
@@ -816,6 +822,7 @@ oxs_ctx_set_enc_mtd_algorithm(
 {
     oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, enc_mtd_algorithm, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     if (ctx_impl->enc_mtd_algorithm)
@@ -823,7 +830,7 @@ oxs_ctx_set_enc_mtd_algorithm(
         AXIS2_FREE(env->allocator, ctx_impl->enc_mtd_algorithm);
         ctx_impl->enc_mtd_algorithm = NULL;
     }
-    ctx_impl->enc_mtd_algorithm = enc_mtd_algorithm;
+    ctx_impl->enc_mtd_algorithm = AXIS2_STRDUP(enc_mtd_algorithm, env);
 
     return AXIS2_SUCCESS;
 }
@@ -837,6 +844,7 @@ oxs_ctx_set_input_data(
 {
     oxs_ctx_impl_t * ctx_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, input_data, AXIS2_FAILURE);
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     if (ctx_impl->input_data)
@@ -844,7 +852,7 @@ oxs_ctx_set_input_data(
         AXIS2_FREE(env->allocator, ctx_impl->input_data);
         ctx_impl->input_data = NULL;
     }
-    ctx_impl->input_data = input_data ;
+    ctx_impl->input_data = AXIS2_STRDUP(input_data, env) ;
 
     return AXIS2_SUCCESS;
 }
