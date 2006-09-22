@@ -649,6 +649,12 @@ axis2_op_client_free(
         op_client_impl->op_client.ops = NULL;
     }
 
+    if (op_client_impl->op_ctx)
+    {
+        AXIS2_OP_CTX_FREE(op_client_impl->op_ctx, env);
+        op_client_impl->op_ctx = NULL;
+    }
+
     AXIS2_FREE(env->allocator, op_client_impl);
     op_client_impl = NULL;
     axiom_xml_reader_cleanup();
