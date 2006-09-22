@@ -113,7 +113,7 @@ axis2_date_time_create_with_offset(const axis2_env_t *env, int offset)
     axis2_date_time_impl_t *date_time_impl = NULL;
     time_t t;
     struct tm* utc_time = NULL;
-    struct tm* utc_time_ret = NULL;
+    /*struct tm* utc_time_ret = NULL;*/
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -127,7 +127,10 @@ axis2_date_time_create_with_offset(const axis2_env_t *env, int offset)
     }
 
     t = time(NULL) + offset;
-    utc_time_ret = (struct tm *)axis2_gmtime_r(&t, utc_time);
+    /*Temporary fixed the segmentation fault. JIRA AXIS2C-302 */
+    /*utc_time_ret = (struct tm *)axis2_gmtime_r(&t, utc_time);*/
+    utc_time = gmtime(&t);
+
     date_time_impl-> year = utc_time-> tm_year;
     date_time_impl-> mon = utc_time-> tm_mon;
     date_time_impl-> day = utc_time-> tm_mday;
