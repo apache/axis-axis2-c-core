@@ -374,7 +374,7 @@ axis2_conf_ctx_get_op_ctx(
         rv = (axis2_op_ctx_t*)axis2_hash_get(conf_ctx_impl->op_ctx_map,
                 message_id, AXIS2_HASH_KEY_STRING);
 
-        axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
+        /*axis2_thread_mutex_unlock(conf_ctx_impl->mutex);*/
     }
     axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
     return rv;
@@ -419,7 +419,7 @@ axis2_conf_ctx_get_svc_ctx(
     {
         rv = (axis2_svc_ctx_t*)axis2_hash_get(conf_ctx_impl->svc_ctx_map,
                 svc_id, AXIS2_HASH_KEY_STRING);
-        axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
+        /*axis2_thread_mutex_unlock(conf_ctx_impl->mutex);*/
     }
     axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
     return rv;
@@ -464,7 +464,7 @@ axis2_conf_ctx_get_svc_grp_ctx(
     {
         rv = (axis2_svc_grp_ctx_t*)axis2_hash_get(conf_ctx_impl->svc_grp_ctx_map
                 , svc_grp_id, AXIS2_HASH_KEY_STRING);
-        axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
+        /*axis2_thread_mutex_unlock(conf_ctx_impl->mutex);*/
     }
     axis2_thread_mutex_unlock(conf_ctx_impl->mutex);
     return rv;
