@@ -522,7 +522,7 @@ axis2_op_create(
         return NULL;
     }
     message_out = NULL;
-
+    
     axis2_op_set_msg_exchange_pattern(&(op_impl->op), env,
             (axis2_char_t *) AXIS2_MEP_URI_IN_OUT);
 

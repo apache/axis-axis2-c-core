@@ -960,6 +960,7 @@ axis2_msg_ctx_free(
     }
 
     AXIS2_FREE(env->allocator, msg_ctx_impl);
+    msg_ctx_impl = NULL;
 
     return AXIS2_SUCCESS;
 }

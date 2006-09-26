@@ -229,7 +229,6 @@ rampart_username_token_build(rampart_username_token_t *username_token,
     axiom_node_t  *ut_node, *un_node, *pw_node, *nonce_node, *created_node = NULL;
     axiom_element_t  *ut_ele, *un_ele, *pw_ele,  *nonce_ele, *created_ele = NULL;
     axis2_char_t *username, *password,  *password_type = NULL;
-    axis2_char_t *nonce_val, *created_val, *digest_val = NULL;
     axiom_namespace_t *wsu_ns_obj = NULL;
     axiom_attribute_t *om_attr = NULL;
     rampart_username_token_impl_t *username_token_impl = NULL;
@@ -279,6 +278,7 @@ rampart_username_token_build(rampart_username_token_t *username_token,
 
         if (0 == AXIS2_STRCMP(password_type, RAMPART_PASSWORD_DIGEST))
         {
+            axis2_char_t *nonce_val, *created_val, *digest_val = NULL;
             axiom_namespace_t *dec_ns = NULL;
             nonce_val = rampart_generate_nonce(env) ;
             created_val = rampart_generate_time(env, 0);
@@ -327,7 +327,19 @@ rampart_username_token_build(rampart_username_token_t *username_token,
                 AXIOM_ELEMENT_SET_NAMESPACE(created_ele, env, wsu_ns_obj, created_node);
 
             }
-
+            
+            if(nonce_val){
+                AXIS2_FREE(env->allocator, nonce_val);
+                nonce_val = NULL;
+            }
+            if(created_val){
+                AXIS2_FREE(env->allocator, created_val);
+                created_val = NULL;
+            }
+            if(digest_val){
+                AXIS2_FREE(env->allocator, digest_val);
+                digest_val = NULL;
+            }
         }
         else /*default is passwordText*/
         {

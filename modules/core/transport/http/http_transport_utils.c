@@ -274,6 +274,7 @@ axis2_http_transport_utils_process_http_post_request(
                 callback_ctx.unread_len = soap_body_len;
             }
         }
+        AXIS2_FREE(env->allocator, mime_boundary);
     }
 
 
