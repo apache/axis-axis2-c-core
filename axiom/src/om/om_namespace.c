@@ -81,18 +81,21 @@ axiom_namespace_create(const axis2_env_t *env,
 
     AXIS2_ENV_CHECK(env, NULL);
     /* There should be a uri */
+    /*     if (!uri) */
+    /*     { */
+    /*         AXIS2_ERROR_SET(env->error, */
+    /*                 AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE); */
+    /*         return NULL; */
+    /*     } */
+    /*     if (AXIS2_STRCMP(uri, "") == 0) */
+    /*     { */
+    /*         AXIS2_ERROR_SET(env->error, */
+    /*                 AXIS2_ERROR_INVALID_EMPTY_NAMESPACE_URI, AXIS2_FAILURE); */
+    /*         return NULL; */
+    /*     } */
+
     if (!uri)
-    {
-        AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_INVALID_NULL_PARAM, AXIS2_FAILURE);
-        return NULL;
-    }
-    if (AXIS2_STRCMP(uri, "") == 0)
-    {
-        AXIS2_ERROR_SET(env->error,
-                AXIS2_ERROR_INVALID_EMPTY_NAMESPACE_URI, AXIS2_FAILURE);
-        return NULL;
-    }
+      uri = "";
 
     ns = (axiom_namespace_impl_t *) AXIS2_MALLOC(env->allocator,
             sizeof(axiom_namespace_impl_t));

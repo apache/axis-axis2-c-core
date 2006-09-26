@@ -204,53 +204,25 @@ test_om_serialize()
        </book>
     */
     int status;
-    axiom_element_t *ele1 = NULL, *ele2 = NULL, *ele3 = NULL, *ele4 =
-                NULL;
-    axiom_node_t *node1 = NULL, *node2 = NULL, *node3 = NULL, *node4 =
-                NULL, *node5 = NULL, *node6 = NULL;
-    axiom_attribute_t *attr1 = NULL, *attr2 = NULL;
-    axiom_namespace_t *ns1 = NULL, *ns2 = NULL;
-    axiom_text_t *text1 = NULL;
+    axiom_element_t *ele1 = NULL;
+    axiom_node_t *node1 = NULL;
+    axiom_attribute_t *attr1 = NULL;
+    axiom_namespace_t *ns1 = NULL;
     axiom_output_t *om_output = NULL;
     axiom_xml_writer_t *writer = NULL;
     axis2_char_t *output_buffer = NULL;
 
-    ns1 =
-        axiom_namespace_create(environment,
-                "http://ws.apache.org/axis2/c/om",
-                "axiom");
-    ns2 =
-        axiom_namespace_create(environment, "urn:ISBN:0-395-74341-6",
-                "isbn");
+    
+    ns1 = axiom_namespace_create(environment, NULL, NULL);
     ele1 = axiom_element_create(environment, NULL, "book", ns1, &node1);
-    AXIOM_ELEMENT_DECLARE_NAMESPACE(ele1, environment, node1, ns2);
+    attr1 = axiom_attribute_create(environment, "title", "Mr", NULL);
 
-    ele2 = axiom_element_create(environment, node1, "title", ns1, &node2);
+    AXIOM_ELEMENT_ADD_ATTRIBUTE(ele1, environment, attr1, node1);
 
-    text1 = axiom_text_create(environment, node2, "Axis2/C OM HOWTO", &node3);
-
-    ele3 = axiom_element_create(environment, node1, "number", ns2, &node4);
-
-    text1 = axiom_text_create(environment, node4, "1748491379", &node5);
-
-    ele4 = axiom_element_create(environment, node1, "author", ns1, &node6);
-
-    attr1 = axiom_attribute_create(environment, "title", "Mr", ns1);
-
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(ele4, environment, attr1, node6);
-
-    attr2 = axiom_attribute_create(environment, "name", "Axitoc Oman", ns1);
-
-    AXIOM_ELEMENT_ADD_ATTRIBUTE(ele4, environment, attr2, node6);
-
-
-    /* serializing stuff */
-    writer = axiom_xml_writer_create_for_memory(environment, NULL, AXIS2_TRUE, 0,
-            AXIS2_XML_PARSER_TYPE_BUFFER);
+    writer = axiom_xml_writer_create_for_memory(environment, NULL, AXIS2_TRUE, 0, AXIS2_XML_PARSER_TYPE_BUFFER);
     om_output = axiom_output_create(environment, writer);
-
-    printf("Serialize built document\n");
     status = AXIOM_NODE_SERIALIZE(node1, environment , om_output);
+
     if (status != AXIS2_SUCCESS)
     {
         printf("\naxiom_node_serialize failed\n");
@@ -294,5 +266,8 @@ main(int argc, char *argv[])
     axis2_allocator_free(allocator);
     return 0;
 }
+
+
+
 
 

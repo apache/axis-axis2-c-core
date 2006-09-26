@@ -1089,8 +1089,6 @@ axis2_libxml2_writer_wrapper_write_namespace(axiom_xml_writer_t *writer,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, namespace_uri, AXIS2_FAILURE);
-    if (AXIS2_STRCMP(namespace_uri, "") == 0)
-        return AXIS2_FAILURE;
 
     writer_impl = AXIS2_INTF_TO_IMPL(writer);
 
