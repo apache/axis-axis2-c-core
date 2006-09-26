@@ -554,7 +554,15 @@ axis2_svc_client_engage_module(
     svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
     mod_qname = axis2_qname_create(env, module_name, NULL, NULL);
 
-    module = AXIS2_CONF_GET_MODULE(svc_client_impl->conf, env, mod_qname);
+    if (mod_qname)
+    {
+        module = AXIS2_CONF_GET_MODULE(svc_client_impl->conf, env, mod_qname);
+
+        AXIS2_QNAME_FREE(mod_qname, env);
+        mod_qname = NULL;
+    }
+    else
+        return AXIS2_FAILURE;
 
     if (module)
     {

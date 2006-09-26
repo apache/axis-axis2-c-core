@@ -49,17 +49,36 @@ AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all(const axis2_char_t *l
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL  axis2_env_free(axis2_env_t *env)
 {
-    if (env && NULL != env->log)
+    axis2_allocator_t *allocator = NULL;
+    
+    if (env && env->allocator)
+        allocator = env->allocator;
+
+    if (env && env->log)
+    {
         AXIS2_LOG_FREE(env->allocator, env->log);
-
-    if (env && NULL != env->error)
+        env->log = NULL;
+    }
+    if (env && env->error)
+    {
         AXIS2_ERROR_FREE(env->error);
-
-    if (env && NULL != env->thread_pool)
+        env->error = NULL;
+    }
+    if (env && env->thread_pool)
+    {
         AXIS2_THREAD_POOL_FREE(env->thread_pool);
-
+        env->thread_pool = NULL;
+    }
     if (env)
-        free(env);
+    {
+        AXIS2_FREE(env->allocator, env);
+        env = NULL;
+    }
+    if (allocator)
+    {
+        AXIS2_FREE(allocator, allocator);
+        allocator = NULL;
+    }
 
     return 0;
 }

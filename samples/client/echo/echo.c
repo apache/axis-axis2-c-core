@@ -34,6 +34,7 @@ int main(int argc, char** argv)
     axis2_svc_client_t* svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
+    /*axis2_allocator_t *allocator = NULL;*/
 
     /* Set up the environment */
     env = axis2_env_create_all("echo.log", AXIS2_LOG_LEVEL_TRACE);
@@ -114,11 +115,22 @@ int main(int argc, char** argv)
         svc_client = NULL;
     }
 
+    /*if (env->allocator)
+    {
+        allocator = env->allocator;
+    }*/
+
     if (env)
     {
-        axis2_env_free(env);
+        axis2_env_free((axis2_env_t *) env);
         env = NULL;
     }
+
+    /*if (allocator)
+    {
+        AXIS2_FREE(allocator, allocator);
+        allocator = NULL;
+    }*/
 
     return 0;
 }

@@ -76,7 +76,7 @@ void system_exit(
         allocator = env->allocator;
         axis2_env_free(env);
     }
-    axis2_allocator_free(allocator);
+    /*axis2_allocator_free(allocator);*/
     axiom_xml_reader_cleanup();
     _exit(status);
 }

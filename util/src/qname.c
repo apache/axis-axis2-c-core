@@ -217,7 +217,9 @@ axis2_qname_free(axis2_qname_t * qname,
     if (qname->ops)
     {
         AXIS2_FREE(env->allocator, qname->ops);
+        qname->ops = NULL;
     }
+
     AXIS2_FREE(env->allocator, qname_impl);
     return AXIS2_SUCCESS;
 
