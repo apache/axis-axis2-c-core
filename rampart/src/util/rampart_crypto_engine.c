@@ -33,6 +33,7 @@
 #include <rampart_constants.h>
 #include <oxs_token_reference_list.h>
 #include <axis2_array_list.h>
+#include <oxs_axiom.h>
 
 typedef struct rampart_crypto_engine_impl
 {

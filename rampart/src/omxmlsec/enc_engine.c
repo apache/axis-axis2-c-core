@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-
+#include <oxs_axiom.h>
 #include <axis2_qname.h>
 #include <axiom_namespace.h>
 #include <axiom_node.h>
@@ -35,7 +35,7 @@
 #include <openssl_rsa.h>
 #include <oxs_token_cipher_value.h>
 #include <oxs_iv.h>
-
+#include <openssl_util.h>
 
 typedef struct oxs_enc_engine_impl
 {

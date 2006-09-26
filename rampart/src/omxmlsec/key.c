@@ -348,7 +348,7 @@ oxs_key_read_from_file(oxs_key_t *key,
     axis2_status_t status = AXIS2_FAILURE;
 
     buf = oxs_buffer_create(env);
-    status = oxs_buffer_read_file(env, buf, file_name);
+    status = OXS_BUFFER_READ_FILE(buf, env, file_name);
 
     status = OXS_KEY_POPULATE(key, env,
             OXS_BUFFER_GET_DATA(buf, env), file_name,
