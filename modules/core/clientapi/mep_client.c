@@ -634,6 +634,18 @@ axis2_mep_client_two_way_send(
     if (status != AXIS2_SUCCESS)
         return NULL;
 
+    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    if (op)
+    {
+        /* handle one way case */
+        const axis2_char_t *mep = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
+        if (AXIS2_STRCMP(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
+            AXIS2_STRCMP(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
+        {
+            return NULL;
+        }
+    }
+
     /* create the response */
     response = axis2_msg_ctx_create(env, conf_ctx,
             AXIS2_MSG_CTX_GET_TRANSPORT_IN_DESC(msg_ctx, env),
@@ -649,7 +661,7 @@ axis2_mep_client_two_way_send(
         property = NULL;
     }
 
-    op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+    /*op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);*/
     if (op)
     {
         AXIS2_OP_REGISTER_OP_CTX(op, env, response, AXIS2_MSG_CTX_GET_OP_CTX(msg_ctx, env));

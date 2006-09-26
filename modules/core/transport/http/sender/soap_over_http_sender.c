@@ -436,12 +436,31 @@ axiom_soap_over_http_sender_send(
     {
         axis2_http_header_t *tmp_header = NULL;
         axis2_char_t *tmp_header_val = NULL;
+        axis2_op_t *op = NULL;
+
+        op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
+        if (op)
+        {
+            AXIS2_ERROR_SET(env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
+                AXIS2_FAILURE);
+            /* handle one way case */
+            const axis2_char_t *mep = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
+            if (AXIS2_STRCMP(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
+                AXIS2_STRCMP(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
+            {
+                return AXIS2_FAILURE;
+            }
+        }
+            
+        /* set an error to indicate error code status */
         tmp_header = AXIS2_HTTP_SIMPLE_RESPONSE_GET_FIRST_HEADER(response, env,
                 AXIS2_HTTP_HEADER_CONTENT_TYPE);
         if (tmp_header)
         {
             tmp_header_val = AXIS2_HTTP_HEADER_GET_VALUE(tmp_header, env);
         }
+        
+        
         if (tmp_header_val && (AXIS2_STRSTR(tmp_header_val,
                 AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP) || AXIS2_STRSTR(
                     tmp_header_val, AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML)))
