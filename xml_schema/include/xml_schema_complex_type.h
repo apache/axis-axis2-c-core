@@ -255,9 +255,9 @@ xml_schema_complex_type_create(const axis2_env_t *env,
       (((xml_schema_complex_type_t *) complex_type)->ops->\
           get_block_resolved(complex_type, env))
       
-#define XML_SCHEMA_COMPLEX_TYPE_GET_CONTENT_MODEL(complex_type, env, cnt_mtype) \
+#define XML_SCHEMA_COMPLEX_TYPE_GET_CONTENT_MODEL(complex_type, env) \
       (((xml_schema_complex_type_t *) complex_type)->ops->\
-          get_content_model(complex_type, env, cnt_mtype))   
+          get_content_model(complex_type, env))   
       
 #define XML_SCHEMA_COMPLEX_TYPE_SET_CONTENT_MODEL(complex_type, env, cnt_model) \
       (((xml_schema_complex_type_t *) complex_type)->ops->\
