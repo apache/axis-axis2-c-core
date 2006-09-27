@@ -2904,7 +2904,9 @@ parse_binding_msg_ref(
                         int_msg_ref, env);
             msg_ref = woden_wsdl10_binding_msg_ref_to_binding_msg_ref_element(msg_ref, env);
             binding_msg_qname = WODEN_WSDL10_BINDING_MSG_REF_ELEMENT_GET_QNAME(msg_ref, env);
-            if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(intf_msg_qname, env, binding_msg_qname))
+            if(intf_msg_qname != NULL &&
+                    binding_msg_qname != NULL &&
+                    AXIS2_TRUE == AXIS2_QNAME_EQUALS(intf_msg_qname, env, binding_msg_qname))
             {
                 WODEN_WSDL10_BINDING_MSG_REF_SET_INTERFACE_MSG_REF_ELEMENT(
                     msg_ref, env, int_msg_ref);

@@ -37,7 +37,7 @@ extern "C"
 /*********************************** Constansts********************************/
 
 /* Namespace URIs.*/
-#define WODEN_WSDL10_NS_URI_SOAP "http://schemas.xmlsoap.org/wsdl/soap"
+#define WODEN_WSDL10_NS_URI_SOAP "http://schemas.xmlsoap.org/wsdl/soap/"
 
 /* Protocol URIs.*/
 #define WODEN_WSDL10_PROTOCOL_URI_HTTP "http://www.w3.org/2003/05/soap/bindings/HTTP/"
@@ -63,25 +63,25 @@ extern "C"
 
 /* Qualified element names.*/
 
-#define WODEN_WSDL10_Q_ELEM_SOAP_MODULE "module|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ELEM_SOAP_MODULE "module|http://schemas.xmlsoap.org/wsdl/soap|wsoap/"
 
-#define WODEN_WSDL10_Q_ELEM_SOAP_HEADER "header|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ELEM_SOAP_HEADER "header|http://schemas.xmlsoap.org/wsdl/soap|wsoap/"
 
 /* Qualified attribute names.*/
 
-#define WODEN_WSDL10_Q_ATTR_SOAP_VERSION "version|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_VERSION "version|http://schemas.xmlsoap.org/wsdl/soap|wsoap/"
 
-#define WODEN_WSDL10_Q_ATTR_SOAP_PROTOCOL "protocol|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_PROTOCOL "protocol|http://schemas.xmlsoap.org/wsdl/soap|wsoap/"
 
-#define WODEN_WSDL10_Q_ATTR_SOAP_MEPDEFAULT "mepDefault|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_MEPDEFAULT "mepDefault|http://schemas.xmlsoap.org/wsdl/soap|wsoap/"
 
-#define WODEN_WSDL10_Q_ATTR_SOAP_CODE "ATTR_CODE|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_CODE "ATTR_CODE|http://schemas.xmlsoap.org/wsdl/soap|wsoap/"
 
-#define WODEN_WSDL10_Q_ATTR_SOAP_SUBCODES "subcodes|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_SUBCODES "subcodes|http://schemas.xmlsoap.org/wsdl/soap|wsoap/"
 
-#define WODEN_WSDL10_Q_ATTR_SOAP_MEP "mep|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_MEP "mep|http://schemas.xmlsoap.org/wsdl/soap|wsoap/"
 
-#define WODEN_WSDL10_Q_ATTR_SOAP_ACTION "action|http://schemas.xmlsoap.org/wsdl/soap|wsoap"
+#define WODEN_WSDL10_Q_ATTR_SOAP_ACTION "action|http://schemas.xmlsoap.org/wsdl/soap|wsoap/"
 
 
 

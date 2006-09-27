@@ -377,7 +377,11 @@ woden_wsdl10_soap_module_deserializer_unmarshall(
         binding_op_exts = woden_wsdl10_soap_binding_op_exts_create(env);
         WODEN_WSDL10_SOAP_BINDING_OP_EXTS_SET_SOAP_ACTION(binding_op_exts,
                 env, soap_action);
-        AXIS2_URI_FREE(soap_action, env);
+        if( soap_action != NULL)
+        {
+            AXIS2_URI_FREE(soap_action, env);
+        }
+
 
         soap_mod = woden_wsdl10_soap_module_to_soap_module_element(soap_mod,
                 env);
