@@ -171,7 +171,11 @@ tcpmon_util_format_as_xml(const axis2_env_t* env, axis2_char_t* data)
             }
         }
     }
-    add_axis2_char_t(env, allocator, '\0', 1);
+    if ( !xml_part_found)
+    {
+        return AXIS2_STRDUP( data, env);
+    }
+    add_axis2_char_t (env, allocator, '\0', 1);
     /**(allocator-> buffer + allocator-> index) = '\0';*/
     return allocator-> buffer;
 }
