@@ -42,7 +42,7 @@ extern "C"
 typedef struct w2c_typemapper w2c_typemapper_t;
 typedef struct w2c_typemapper_ops w2c_typemapper_ops_t;
 
-  struct w2c_typemapper_ops
+AXIS2_DECLARE_DATA  struct w2c_typemapper_ops
 {
    /**
     * free w2c_typemapper.
@@ -114,9 +114,31 @@ typedef struct w2c_typemapper_ops w2c_typemapper_ops_t;
     get_default_qname)(w2c_typemapper_t *typemapper,
           const axis2_env_t *env);
 
+   /**
+    * retrieve the qname 2 typename hash.
+    * @param  typemapper pointer to typemapper struct
+    * @param  env Environment. MUST NOT be NULL
+    * @param the qname 2 typename hash
+    */
+    axis2_hash_t* (AXIS2_CALL *
+    get_all)(w2c_typemapper_t *typemapper,
+          const axis2_env_t *env);
+   
+   /**
+    * retrieve whether the type is primitive.
+    * @param  typemapper pointer to typemapper struct
+    * @param  env Environment. MUST NOT be NULL
+    * @param  qname qname in wsdl to find the mapping
+    * @return whether the type is primitive
+    */
+    axis2_bool_t (AXIS2_CALL *
+    is_primitive)(w2c_typemapper_t *typemapper,
+          const axis2_env_t *env,
+          axis2_qname_t *qname);
+
 };
 
-  struct w2c_typemapper
+AXIS2_DECLARE_DATA  struct w2c_typemapper
 {
      struct w2c_typemapper_ops *ops;
 };
@@ -153,6 +175,13 @@ w2c_typemapper_create_from_file( const axis2_env_t *env,
 
 #define W2C_TYPEMAPPER_GET_DEFAULT_QNAME(typemapper, env)\
       ((typemapper)->ops->get_default_qname(typemapper, env))
+
+#define W2C_TYPEMAPPER_GET_ALL(typemapper, env)\
+      ((typemapper)->ops->get_all(typemapper, env))
+
+#define W2C_TYPEMAPPER_IS_PRIMITIVE(typemapper, env, qname)\
+      ((typemapper)->ops->is_primitive(typemapper, env, qname))
+
 /** @} */
 
 #ifdef __cplusplus

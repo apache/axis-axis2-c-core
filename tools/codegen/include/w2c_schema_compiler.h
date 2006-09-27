@@ -25,6 +25,7 @@
 #include <axis2_utils.h>
 #include <w2c_schema_compiler_options.h>
 #include <xml_schema.h>
+#include <w2c_typemapper.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -39,7 +40,7 @@ extern "C"
 typedef struct w2c_schema_compiler w2c_schema_compiler_t;
 typedef struct w2c_schema_compiler_ops w2c_schema_compiler_ops_t;
 
-  struct w2c_schema_compiler_ops
+AXIS2_DECLARE_DATA  struct w2c_schema_compiler_ops
 {
    /**
     * free w2c_schema_compiler.
@@ -53,7 +54,7 @@ typedef struct w2c_schema_compiler_ops w2c_schema_compiler_ops_t;
          const axis2_env_t *env);
 
    /**
-    * free w2c_schema_compiler.
+    * compiler single schema.
     * @param  schema_compiler pointer to schema_compiler struct
     * @param  env Environment. MUST NOT be NULL
     * @param  xml_schema schema to compile
@@ -66,21 +67,20 @@ typedef struct w2c_schema_compiler_ops w2c_schema_compiler_ops_t;
                 xml_schema_t *xml_schema);
 
    /**
-    * free w2c_schema_compiler.
+    * compiles list of schemas.
     * @param  schema_compiler pointer to schema_compiler struct
     * @param  env Environment. MUST NOT be NULL
     * @param  schema_list list of schemas
-    * @return status of the op. AXIS2_SUCCESS on success
-    *     else AXIS2_FAILURE
+    * @return result typemapper
     */
-    axis2_status_t (AXIS2_CALL *
+    w2c_typemapper_t *(AXIS2_CALL *
     compile_schema_list)( w2c_schema_compiler_t *compiler,
                 const axis2_env_t *env,
                 axis2_array_list_t *schema_list);
 
 };
 
-  struct w2c_schema_compiler
+AXIS2_DECLARE_DATA  struct w2c_schema_compiler
 {
      struct w2c_schema_compiler_ops *ops;
 };

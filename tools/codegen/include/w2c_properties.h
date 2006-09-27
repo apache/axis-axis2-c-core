@@ -40,7 +40,7 @@ extern "C"
 typedef struct w2c_properties w2c_properties_t;
 typedef struct w2c_properties_ops w2c_properties_ops_t;
 
-  struct w2c_properties_ops
+AXIS2_DECLARE_DATA  struct w2c_properties_ops
 {
     /**
      * free w2c_properties.
@@ -64,7 +64,7 @@ typedef struct w2c_properties_ops w2c_properties_ops_t;
            const axis2_env_t *env);
 };
 
-  struct w2c_properties
+AXIS2_DECLARE_DATA  struct w2c_properties
 {
      struct w2c_properties_ops *ops;
 };

@@ -39,7 +39,7 @@ extern "C"
 typedef struct w2c_schema_writer_meta_info w2c_schema_writer_meta_info_t;
 typedef struct w2c_schema_writer_meta_info_ops w2c_schema_writer_meta_info_ops_t;
 
-  struct w2c_schema_writer_meta_info_ops
+AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info_ops
 {
    /**
     * free w2c_schema_writer_meta_info.
@@ -234,7 +234,7 @@ typedef struct w2c_schema_writer_meta_info_ops w2c_schema_writer_meta_info_ops_t
                             const axis2_env_t *env);
 
    /**
-    * setter for enum_face.
+    * setter for enum_facet.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
     * @param  enum_face value to set
@@ -242,21 +242,21 @@ typedef struct w2c_schema_writer_meta_info_ops w2c_schema_writer_meta_info_ops_t
     *      else AXIS2_FAILURE
     */
     axis2_status_t (AXIS2_CALL *
-    set_enum_face)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
+    set_enum_facet)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axis2_env_t *env,
                             axis2_char_t *enum_face);
    /**
-    * getter for enum_face.
+    * getter for enum_facet.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
-    * @param  value for the enum_face
+    * @param  value for the enum_facet
     */
     axis2_char_t *(AXIS2_CALL *
-    get_enum_face)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
+    get_enum_facet)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axis2_env_t *env);
 
    /**
-    * setter for pattern_face.
+    * setter for pattern_facet.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
     * @param  pattern_face value to set
@@ -264,17 +264,17 @@ typedef struct w2c_schema_writer_meta_info_ops w2c_schema_writer_meta_info_ops_t
     *      else AXIS2_FAILURE
     */
     axis2_status_t (AXIS2_CALL *
-    set_pattern_face)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
+    set_pattern_facet)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axis2_env_t *env,
                             axis2_char_t *pattern_face);
    /**
-    * getter for pattern_face.
+    * getter for pattern_facet.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
     * @param  value for the pattern_face
     */
     axis2_char_t *(AXIS2_CALL *
-    get_pattern_face)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
+    get_pattern_facet)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axis2_env_t *env);
 
    /**
@@ -453,29 +453,7 @@ typedef struct w2c_schema_writer_meta_info_ops w2c_schema_writer_meta_info_ops_t
     get_qname_minoccurs_countmap)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                             const axis2_env_t *env);
 
-   /**
-    * setter for qname_orderlist.
-    * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
-    * @param  env Environment. MUST NOT be NULL
-    * @param  qname_orderlist value to set
-    * @return status of the op. AXIS2_SUCCESS on success
-    *      else AXIS2_FAILURE
-    */
-    axis2_status_t (AXIS2_CALL *
-    set_qname_orderlist)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
-                            const axis2_env_t *env,
-                            axis2_hash_t *qname_orderlist);
-   /**
-    * getter for qname_orderlist.
-    * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
-    * @param  env Environment. MUST NOT be NULL
-    * @param  value for the qname_orderlist
-    */
-    axis2_hash_t *(AXIS2_CALL *
-    get_qname_orderlist)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
-                            const axis2_env_t *env);
-
-   /**
+    /**
     * setter for length_facet.
     * @param  schema_writer_meta_info pointer to schema_writer_meta_info struct
     * @param  env Environment. MUST NOT be NULL
@@ -674,6 +652,11 @@ typedef struct w2c_schema_writer_meta_info_ops w2c_schema_writer_meta_info_ops_t
     register_nillable_qname)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
                          const axis2_env_t *env,
                          axis2_qname_t *qname);
+    
+    axis2_bool_t (AXIS2_CALL *
+    is_nillable)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
+                         const axis2_env_t *env,
+                         axis2_qname_t *qname);
 
 
     axis2_status_t (AXIS2_CALL *
@@ -767,9 +750,14 @@ typedef struct w2c_schema_writer_meta_info_ops w2c_schema_writer_meta_info_ops_t
                              const axis2_env_t *env,
                              axis2_qname_t *type,
                              int mask);
+    
+    axis2_status_t (AXIS2_CALL *
+    add_enum_facet)( w2c_schema_writer_meta_info_t *schema_writer_meta_info,
+                             const axis2_env_t *env,
+                             axis2_char_t *facet);
 };
 
-  struct w2c_schema_writer_meta_info
+AXIS2_DECLARE_DATA  struct w2c_schema_writer_meta_info
 {
      struct w2c_schema_writer_meta_info_ops *ops;
 };
@@ -793,230 +781,229 @@ w2c_schema_writer_meta_info_create( const axis2_env_t *env);
       ((schema_writer_meta_info)->ops->set_ordered(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_ORDERED(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_ordered(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_ordered(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_ANONYMOUS(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_anonymous(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_ANONYMOUS(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_anonymous(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_anonymous(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_CHOICE(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_choice(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_CHOICE(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_choice(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_choice(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_EXTENSION(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_extension(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_EXTENSION(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_extension(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_extension(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_RESTRICTION(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_restriction(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_RESTRICTION(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_restriction(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_restriction(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_EXTENSION_CLASSNAME(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_extension_classname(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_EXTENSION_CLASSNAME(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_extension_classname(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_extension_classname(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_RESTRICTION_CLASSNAME(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_restriction_classname(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_RESTRICTION_CLASSNAME(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_restriction_classname(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_restriction_classname(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_OWN_CLASSNAME(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_own_classname(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_OWN_CLASSNAME(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_own_classname(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_own_classname(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_ENUM_FACET(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_enum_facet(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_ENUM_FACET(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_enum_facet(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_enum_facet(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_PATTERN_FACET(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_pattern_facet(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_PATTERN_FACET(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_pattern_facet(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_pattern_facet(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_EXTENSION_BASETYPE(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_extension_basetype(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_EXTENSION_BASETYPE(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_extension_basetype(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_extension_basetype(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_RESTRICTION_BASETYPE(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_restriction_basetype(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_RESTRICTION_BASETYPE(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_restriction_basetype(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_restriction_basetype(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_OWNQNAME(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_ownqname(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_OWNQNAME(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_ownqname(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_ownqname(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_ELEMENT2SCHEMA_QNAMEMAP(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_element2schema_qnamemap(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_ELEMENT2SCHEMA_QNAMEMAP(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_element2schema_qnamemap(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_element2schema_qnamemap(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_ELEMENT2CLASSMAP(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_element2classmap(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_ELEMENT2CLASSMAP(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_element2classmap(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_element2classmap(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_SPECIALTYPE_FLAGMAP(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_specialtype_flagmap(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_SPECIALTYPE_FLAGMAP(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_specialtype_flagmap(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_specialtype_flagmap(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_QNAME_MAXOCCURS_COUNTMAP(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_qname_maxoccurs_countmap(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_QNAME_MAXOCCURS_COUNTMAP(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_qname_maxoccurs_countmap(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_qname_maxoccurs_countmap(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_QNAME_MINOCCURS_COUNTMAP(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_qname_minoccurs_countmap(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_QNAME_MINOCCURS_COUNTMAP(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_qname_minoccurs_countmap(schema_writer_meta_info, env))
-
-#define W2C_SCHEMA_WRITER_META_INFO_SET_QNAME_ORDERLIST(schema_writer_meta_info, env, value) \
-      ((schema_writer_meta_info)->ops->set_qname_orderlist(schema_writer_meta_info, env, value))
-
-#define W2C_SCHEMA_WRITER_META_INFO_GET_QNAME_ORDERLIST(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_qname_orderlist(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_qname_minoccurs_countmap(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_LENGTH_FACET(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_length_facet(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_LENGTH_FACET(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_length_facet(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_length_facet(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_MAXEXCLUSIVE_FACET(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_maxexclusive_facet(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_MAXEXCLUSIVE_FACET(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_maxexclusive_facet(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_maxexclusive_facet(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_MINEXCLUSIVE_FACET(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_minexclusive_facet(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_MINEXCLUSIVE_FACET(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_minexclusive_facet(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_minexclusive_facet(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_MAXINCLUSIVE_FACET(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_maxinclusive_facet(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_MAXINCLUSIVE_FACET(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_maxinclusive_facet(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_maxinclusive_facet(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_MININCLUSIVE_FACET(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_mininclusive_facet(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_MININCLUSIVE_FACET(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_mininclusive_facet(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_mininclusive_facet(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_MAXLENGTH_FACET(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_maxlength_facet(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_MAXLENGTH_FACET(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_maxlength_facet(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_maxlength_facet(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_MINLENGTH_FACET(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_minlength_facet(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_MINLENGTH_FACET(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_minlength_facet(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_minlength_facet(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_NILLABLE_QNAMELIST(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_nillable_qnamelist(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_NILLABLE_QNAMELIST(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_nillable_qnamelist(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_nillable_qnamelist(schema_writer_meta_info, env))
 
 #define W2C_SCHEMA_WRITER_META_INFO_SET_PARENT(schema_writer_meta_info, env, value) \
       ((schema_writer_meta_info)->ops->set_parent(schema_writer_meta_info, env, value))
 
 #define W2C_SCHEMA_WRITER_META_INFO_GET_PARENT(schema_writer_meta_info, env) \
-      ((schema_wrtier_meta_info)->ops->get_parent(schema_writer_meta_info, env))
+      ((schema_writer_meta_info)->ops->get_parent(schema_writer_meta_info, env))
 
 
-#define W2C_SCHEMA_WRITER_META_INOF_IS_RESTRICTION_BASE_TYPE(schema_writer_meta_info, env, type) \
+#define W2C_SCHEMA_WRITER_META_INFO_IS_RESTRICTION_BASE_TYPE(schema_writer_meta_info, env, type) \
       ((schema_writer_meta_info)->ops->is_restriction_base_type(schema_writer_meta_info, env, type))
 
-#define W2C_SCHEMA_WRITER_META_INOF_REGISTER_NILLABLE_QNAME(schema_writer_meta_info, env, qname) \
+#define W2C_SCHEMA_WRITER_META_INFO_REGISTER_NILLABLE_QNAME(schema_writer_meta_info, env, qname) \
       ((schema_writer_meta_info)->ops->register_nillable_qname(schema_writer_meta_info, env, qname))
 
-#define W2C_SCHEMA_WRITER_META_INOF_REGISTER_MAPPING(schema_writer_meta_info, \
+#define W2C_SCHEMA_WRITER_META_INFO_IS_NILLABLE(schema_writer_meta_info, env, qname) \
+      ((schema_writer_meta_info)->ops->is_nillable(schema_writer_meta_info, env, qname))
+
+#define W2C_SCHEMA_WRITER_META_INFO_REGISTER_MAPPING(schema_writer_meta_info, \
                                        env, qname, schema_name, class_name, type) \
       ((schema_writer_meta_info)->ops->register_mapping(schema_writer_meta_info, \
                                        env, qname, schema_name, class_name, type)) 
 
-#define W2C_SCHEMA_WRITER_META_INOF_GET_SCHEMAQNAME4QNAME(schema_writer_meta_info, env, qname) \
+#define W2C_SCHEMA_WRITER_META_INFO_GET_SCHEMAQNAME4QNAME(schema_writer_meta_info, env, qname) \
       ((schema_writer_meta_info)->ops->get_schemaqname4qname(schema_writer_meta_info, env, qname))
 
-#define W2C_SCHEMA_WRITER_META_INOF_GET_CLASSNAME4QNAME(schema_writer_meta_info, env, qname) \
+#define W2C_SCHEMA_WRITER_META_INFO_GET_CLASSNAME4QNAME(schema_writer_meta_info, env, qname) \
       ((schema_writer_meta_info)->ops->get_classname4qname(schema_writer_meta_info, env, qname))
 
-#define W2C_SCHEMA_WRITER_META_INOF_GET_ATTRI_STATUS4QNAME(schema_writer_meta_info, env, qname) \
+#define W2C_SCHEMA_WRITER_META_INFO_GET_ATTRI_STATUS4QNAME(schema_writer_meta_info, env, qname) \
       ((schema_writer_meta_info)->ops->get_attri_status4qname(schema_writer_meta_info, env, qname))
 
-#define W2C_SCHEMA_WRITER_META_INOF_GET_ANY_STATUS4QNAME(schema_writer_meta_info, env, qname) \
+#define W2C_SCHEMA_WRITER_META_INFO_GET_ANY_STATUS4QNAME(schema_writer_meta_info, env, qname) \
       ((schema_writer_meta_info)->ops->get_any_status4qname(schema_writer_meta_info, env, qname))
 
-#define W2C_SCHEMA_WRITER_META_INOF_GET_ARRAY_STATUS4QNAME(schema_writer_meta_info, env, qname) \
+#define W2C_SCHEMA_WRITER_META_INFO_GET_ARRAY_STATUS4QNAME(schema_writer_meta_info, env, qname) \
       ((schema_writer_meta_info)->ops->get_array_status4qname(schema_writer_meta_info, env, qname))
 
-#define W2C_SCHEMA_WRITER_META_INOF_GET_BINARY_STATUS4QNAME(schema_writer_meta_info, env, qname) \
+#define W2C_SCHEMA_WRITER_META_INFO_GET_BINARY_STATUS4QNAME(schema_writer_meta_info, env, qname) \
       ((schema_writer_meta_info)->ops->get_binary_status4qname(schema_writer_meta_info, env, qname))
 
-#define W2C_SCHEMA_WRITER_META_INOF_GET_ANY_ATTRI_STATUS4QNAME(schema_writer_meta_info, env, qname) \
+#define W2C_SCHEMA_WRITER_META_INFO_GET_ANY_ATTRI_STATUS4QNAME(schema_writer_meta_info, env, qname) \
       ((schema_writer_meta_info)->ops->get_any_attri_status4qname(schema_writer_meta_info, env, qname))
 
-#define W2C_SCHEMA_WRITER_META_INOF_ADD_MIN_OCCURS(schema_writer_meta_info, env, qname, min_occurs) \
+#define W2C_SCHEMA_WRITER_META_INFO_ADD_MIN_OCCURS(schema_writer_meta_info, env, qname, min_occurs) \
       ((schema_writer_meta_info)->ops->add_min_occurs(schema_writer_meta_info, env, qname, min_occurs))
 
-#define W2C_SCHEMA_WRITER_META_INOF_ADD_MAX_OCCURS(schema_writer_meta_info, env, qname, max_occurs) \
+#define W2C_SCHEMA_WRITER_META_INFO_ADD_MAX_OCCURS(schema_writer_meta_info, env, qname, max_occurs) \
       ((schema_writer_meta_info)->ops->add_max_occurs(schema_writer_meta_info, env, qname, max_occurs))
 
-#define W2C_SCHEMA_WRITER_META_INOF_REGISTER_QNAME_INDEX(schema_writer_meta_info, env, qname, index) \
+#define W2C_SCHEMA_WRITER_META_INFO_REGISTER_QNAME_INDEX(schema_writer_meta_info, env, qname, index) \
       ((schema_writer_meta_info)->ops->register_qname_index(schema_writer_meta_info, env, qname, index))
 
-#define W2C_SCHEMA_WRITER_META_INOF_GET_MIN_OCCURS(schema_writer_meta_info, env, qname) \
+#define W2C_SCHEMA_WRITER_META_INFO_GET_MIN_OCCURS(schema_writer_meta_info, env, qname) \
       ((schema_writer_meta_info)->ops->get_min_occurs(schema_writer_meta_info, env, qname))
 
-#define W2C_SCHEMA_WRITER_META_INOF_GET_MAX_OCCURS(schema_writer_meta_info, env, qname) \
+#define W2C_SCHEMA_WRITER_META_INFO_GET_MAX_OCCURS(schema_writer_meta_info, env, qname) \
       ((schema_writer_meta_info)->ops->get_max_occurs(schema_writer_meta_info, env, qname))
 
-#define W2C_SCHEMA_WRITER_META_INOF_GET_QNAME_ARRAY(schema_writer_meta_info, env) \
+#define W2C_SCHEMA_WRITER_META_INFO_GET_QNAME_ARRAY(schema_writer_meta_info, env) \
       ((schema_writer_meta_info)->ops->get_qname_array(schema_writer_meta_info, env))
 
-#define W2C_SCHEMA_WRITER_META_INOF_GET_ORDERED_QNAME_ARRAY(schema_writer_meta_info, env) \
+#define W2C_SCHEMA_WRITER_META_INFO_GET_ORDERED_QNAME_ARRAY(schema_writer_meta_info, env) \
       ((schema_writer_meta_info)->ops->get_ordered_qname_array(schema_writer_meta_info, env))
 
-#define W2C_SCHEMA_WRITER_META_INOF_GET_ORDER_START_POINT(schema_writer_meta_info, env) \
+#define W2C_SCHEMA_WRITER_META_INFO_GET_ORDER_START_POINT(schema_writer_meta_info, env) \
       ((schema_writer_meta_info)->ops->get_order_start_point(schema_writer_meta_info, env))
 
-#define W2C_SCHEMA_WRITER_META_INOF_ADD_STATUS(schema_writer_meta_info, env, type, mask) \
+#define W2C_SCHEMA_WRITER_META_INFO_ADD_STATUS(schema_writer_meta_info, env, type, mask) \
       ((schema_writer_meta_info)->ops->add_status(schema_writer_meta_info, env, type, mask))
 
+#define W2C_SCHEMA_WRITER_META_INFO_ADD_ENUM_FACET(schema_writer_meta_info, env, enum_facet) \
+      ((schema_writer_meta_info)->ops->add_enum_facet(schema_writer_meta_info, env, enum_facet))
 
 /** @} */
 

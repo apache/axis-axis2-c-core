@@ -39,7 +39,7 @@ extern "C"
 typedef struct w2c_engine w2c_engine_t;
 typedef struct w2c_engine_ops w2c_engine_ops_t;
 
-  struct w2c_engine_ops
+AXIS2_DECLARE_DATA  struct w2c_engine_ops
 {
    /**
     * free w2c_engine.
@@ -66,7 +66,7 @@ typedef struct w2c_engine_ops w2c_engine_ops_t;
 
 };
 
-  struct w2c_engine
+AXIS2_DECLARE_DATA  struct w2c_engine
 {
      struct w2c_engine_ops *ops;
 };

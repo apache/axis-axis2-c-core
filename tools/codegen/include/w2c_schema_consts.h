@@ -40,7 +40,7 @@ extern "C"
 /** schema constants */
 
 
-#define W2C_SCHEMA_URI_DEFAULT_SCHEMA_XSD   URI_2001_SCHEMA_XSD
+#define W2C_SCHEMA_URI_DEFAULT_SCHEMA_XSD   AXIS2_URI_2001_SCHEMA_XSD
     
 #define W2C_SCHEMA_XSD_STRING               "string" "|" W2C_SCHEMA_URI_DEFAULT_SCHEMA_XSD
 #define W2C_SCHEMA_XSD_BOOLEAN              "boolean" "|" W2C_SCHEMA_URI_DEFAULT_SCHEMA_XSD
@@ -93,15 +93,17 @@ extern "C"
 
 /*it patterns for the types*/
 
-#define W2C_SCHEMA_ATTRIBUTE_TYPE           0x01
-/*#define W2C_SCHEMA_ANY                    0x02*/
-#define W2C_SCHEMA_ELEMENT_TYPE             0x02
-/*#define W2C_SCHEMA_ANY_ATTRIBUTE_TYPE     0x08*/
-#define W2C_SCHEMA_ARRAY_TYPE               0x04
-#define W2C_SCHEMA_ANY_TYPE                 0x08
-#define W2C_SCHEMA_BINARY_TYPE              0x10
+#define W2C_SCHEMA_CONSTS_ATTRIBUTE_TYPE           0x01
+/*#define W2C_SCHEMA_CONSTS_ANY                    0x02*/
+#define W2C_SCHEMA_CONSTS_ELEMENT_TYPE             0x02
+/*#define W2C_SCHEMA_CONSTS_ANY_ATTRIBUTE_TYPE     0x08*/
+#define W2C_SCHEMA_CONSTS_ARRAY_TYPE               0x04
+#define W2C_SCHEMA_CONSTS_ANY_TYPE                 0x08
+#define W2C_SCHEMA_CONSTS_BINARY_TYPE              0x10
 
 
+#define W2C_SCHEMA_COMPILER_CONSTS_EXTRA_ATTRIBUTE_FIELD_NAME "extraAttributes"
+#define W2C_SCHEMA_CONSTS_ANY_ELEMENT_FIELD_NAME "extraElement"
 /** @} */
 
 #ifdef __cplusplus

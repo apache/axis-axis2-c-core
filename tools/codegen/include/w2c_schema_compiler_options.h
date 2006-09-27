@@ -23,7 +23,9 @@
  */
 
 #include <axis2_utils.h>
-#include <axis2_array_list.h>
+#include <axis2_hash.h>
+#include <w2c_engine_configuration.h>
+#include <w2c_qname2name_maker.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -39,7 +41,7 @@ extern "C"
 typedef struct w2c_schema_compiler_options w2c_schema_compiler_options_t;
 typedef struct w2c_schema_compiler_options_ops w2c_schema_compiler_options_ops_t;
 
-  struct w2c_schema_compiler_options_ops
+AXIS2_DECLARE_DATA  struct w2c_schema_compiler_options_ops
 {
    /**
     * free w2c_schema_compiler_options.
@@ -116,9 +118,38 @@ typedef struct w2c_schema_compiler_options_ops w2c_schema_compiler_options_ops_t
     get_ns2package_map)( w2c_schema_compiler_options_t *schema_compiler_options,
         const axis2_env_t *env);
 
+    axis2_status_t (AXIS2_CALL *
+    set_language)( w2c_schema_compiler_options_t *schema_compiler_options,
+        const axis2_env_t *env,
+        axis2_char_t *language);
+
+    axis2_char_t* (AXIS2_CALL *
+    get_language)( w2c_schema_compiler_options_t *schema_compiler_options,
+        const axis2_env_t *env);
+
+    axis2_status_t (AXIS2_CALL *
+    set_qname2name_maker)( w2c_schema_compiler_options_t *schema_compiler_options,
+        const axis2_env_t *env,
+        w2c_qname2name_maker_t *maker);
+
+    w2c_qname2name_maker_t* (AXIS2_CALL *
+    get_qname2name_maker)( w2c_schema_compiler_options_t *schema_compiler_options,
+        const axis2_env_t *env);
+
+    axis2_status_t (AXIS2_CALL *
+    set_name_maker_func)( w2c_schema_compiler_options_t *schema_compiler_options,
+        const axis2_env_t *env,
+        W2C_ENGINE_CONFIGURATION_NAMEMAKER maker);
+
+    W2C_ENGINE_CONFIGURATION_NAMEMAKER (AXIS2_CALL *
+    get_name_maker_func)( w2c_schema_compiler_options_t *schema_compiler_options,
+        const axis2_env_t *env);
+
+
+
 };
 
-  struct w2c_schema_compiler_options
+AXIS2_DECLARE_DATA  struct w2c_schema_compiler_options
 {
      struct w2c_schema_compiler_options_ops *ops;
 };
@@ -137,46 +168,64 @@ w2c_schema_compiler_options_create( const axis2_env_t *env);
       ((schema_compiler_options)->ops->free (schema_compiler_options, env)) 
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_GET_OUTPUT_LOCATION( schema_compiler_options, env) \
-    ((schema_compiler_options)->ops->get_output_location ( schema_compiler_options, env);
+    ((schema_compiler_options)->ops->get_output_location ( schema_compiler_options, env))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_SET_OUTPUT_LOCATION( schema_compiler_options, env, val) \
-    ((schema_compiler_options)->ops->set_output_location ( schema_compiler_options, env, val);
+    ((schema_compiler_options)->ops->set_output_location ( schema_compiler_options, env, val))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_GET_PACKAGE_NAME( schema_compiler_options, env) \
-     ((schema_compiler_options)->ops->get_package_name( schema_compiler_options, env);
+     ((schema_compiler_options)->ops->get_package_name( schema_compiler_options, env))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_SET_PACKAGE_NAME( schema_compiler_options, env, val) \
-     ((schema_compiler_options)->ops->set_package_name( schema_compiler_options, env, val);
+     ((schema_compiler_options)->ops->set_package_name( schema_compiler_options, env, val))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_GET_HELPER_MODE( schema_compiler_options, env) \
-      ((schema_compiler_options)->ops->get_helper_mode( schema_compiler_options, env);
+      ((schema_compiler_options)->ops->get_helper_mode( schema_compiler_options, env))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_SET_HELPER_MODE( schema_compiler_options, env, val) \
-      ((schema_compiler_options)->ops->set_helper_mode( schema_compiler_options, env, val);
+      ((schema_compiler_options)->ops->set_helper_mode( schema_compiler_options, env, val))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_GET_WRITE_OUT( schema_compiler_options, env) \
-       ((schema_compiler_options)->ops->get_write_out( schema_compiler_options, env);
+       ((schema_compiler_options)->ops->get_write_out( schema_compiler_options, env))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_SET_WRITE_OUT( schema_compiler_options, env, val) \
-       ((schema_compiler_options)->ops->set_write_out( schema_compiler_options, env, val);
+       ((schema_compiler_options)->ops->set_write_out( schema_compiler_options, env, val))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_GET_WRAP_CLASSES( schema_compiler_options, env) \
-        ((schema_compiler_options)->ops->get_wrap_classes( schema_compiler_options, env);
+        ((schema_compiler_options)->ops->get_wrap_classes( schema_compiler_options, env))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_SET_WRAP_CLASSES( schema_compiler_options, env, val) \
-        ((schema_compiler_options)->ops->set_wrap_classes( schema_compiler_options, env, val);
+        ((schema_compiler_options)->ops->set_wrap_classes( schema_compiler_options, env, val))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_GET_NS2PACKAGE_MAP( schema_compiler_options, env) \
-         ((schema_compiler_options)->ops->get_ns2package_map( schema_compiler_options, env);
+         ((schema_compiler_options)->ops->get_ns2package_map( schema_compiler_options, env))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_SET_NS2PACKAGE_MAP( schema_compiler_options, env, val) \
-         ((schema_compiler_options)->ops->set_ns2package_map( schema_compiler_options, env, val);
+         ((schema_compiler_options)->ops->set_ns2package_map( schema_compiler_options, env, val))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_GET_MAPPER_CLASS_PACKAGE( schema_compiler_options, env) \
-         ((schema_compiler_options)->ops->get_mapper_class_package( schema_compiler_options, env);
+         ((schema_compiler_options)->ops->get_mapper_class_package( schema_compiler_options, env))
 
 #define W2C_SCHEMA_COMPILER_OPTIONS_SET_MAPPER_CLASS_PACKAGE( schema_compiler_options, env, val) \
-         ((schema_compiler_options)->ops->set_mapper_class_package( schema_compiler_options, env, val);
+         ((schema_compiler_options)->ops->set_mapper_class_package( schema_compiler_options, env, val))
+
+#define W2C_SCHEMA_COMPILER_OPTIONS_GET_LANGUAGE( schema_compiler_options, env) \
+         ((schema_compiler_options)->ops->get_language( schema_compiler_options, env))
+
+#define W2C_SCHEMA_COMPILER_OPTIONS_SET_LANGUAGE( schema_compiler_options, env, val) \
+         ((schema_compiler_options)->ops->set_language( schema_compiler_options, env, val))
+
+#define W2C_SCHEMA_COMPILER_OPTIONS_GET_QNAME2NAME_MAKER( schema_compiler_options, env) \
+         ((schema_compiler_options)->ops->get_qname2name_maker( schema_compiler_options, env))
+
+#define W2C_SCHEMA_COMPILER_OPTIONS_SET_QNAME2NAME_MAKER( schema_compiler_options, env, val) \
+         ((schema_compiler_options)->ops->set_qname2name_maker( schema_compiler_options, env, val))
+
+#define W2C_SCHEMA_COMPILER_OPTIONS_GET_NAME_MAKER_FUNC( schema_compiler_options, env) \
+         ((schema_compiler_options)->ops->get_name_maker_func( schema_compiler_options, env))
+
+#define W2C_SCHEMA_COMPILER_OPTIONS_SET_NAME_MAKER_FUNC( schema_compiler_options, env, val) \
+         ((schema_compiler_options)->ops->set_name_maker_func( schema_compiler_options, env, val))
 
 
 /** @} */

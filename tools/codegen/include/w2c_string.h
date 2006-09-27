@@ -24,6 +24,8 @@
 
 #include <stdio.h>
 #include <axis2_utils.h>
+#include <axis2_string.h>
+#include <axis2_qname.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -71,6 +73,7 @@ w2c_string_add_string ( axis2_char_t *string1, axis2_char_t *string2,
  * all letters convert to simple.
  * @param name name to convert
  * @param env pointer to the environment. MUST NOT be NULL
+ * @return	c simple name	
  */
 AXIS2_EXTERN axis2_char_t*
 w2c_string_make_c_simple_name( axis2_char_t *name,
@@ -82,12 +85,21 @@ w2c_string_make_c_simple_name( axis2_char_t *name,
  * all letters convert to capital.
  * @param name name to convert
  * @param env pointer to the environment. MUST NOT be NULL
+ * @return	c macro name	
  */
 AXIS2_EXTERN axis2_char_t*
 w2c_string_make_c_macro_name(axis2_char_t *name,
                                const axis2_env_t *env);
 
-
+/**
+ * get a hash key from the qname.
+ * @param qname qname to make the key
+ * @param env pointer to the environment. MUST NOT be NULL
+ * @return	newly create hash key
+ */
+AXIS2_EXTERN axis2_char_t*
+w2c_string_make_key_from_qname(axis2_qname_t *qname,
+                               const axis2_env_t *env);
 
 /** @} */
 

@@ -40,12 +40,12 @@ extern "C"
  */
 
 typedef axis2_char_t* (*W2C_ENGINE_CONFIGURATION_NAMEMAKER)
-                  ( axis2_qname_t *name, const axis2_env_t *env);
+                  ( axis2_char_t *name, const axis2_env_t *env);
     
 typedef struct w2c_engine_configuration w2c_engine_configuration_t;
 typedef struct w2c_engine_configuration_ops w2c_engine_configuration_ops_t;
 
-  struct w2c_engine_configuration_ops
+AXIS2_DECLARE_DATA  struct w2c_engine_configuration_ops
 {
    /**
     * free w2c_engine_configuration.
@@ -767,7 +767,7 @@ typedef struct w2c_engine_configuration_ops w2c_engine_configuration_ops_t;
 
 };
 
-  struct w2c_engine_configuration
+AXIS2_DECLARE_DATA  struct w2c_engine_configuration
 {
      struct w2c_engine_configuration_ops* ops;
 };

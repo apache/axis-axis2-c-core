@@ -40,7 +40,7 @@ extern "C"
 typedef struct w2c_config_property_loader w2c_config_property_loader_t;
 typedef struct w2c_config_property_loader_ops w2c_config_property_loader_ops_t;
 
-  struct w2c_config_property_loader_ops
+AXIS2_DECLARE_DATA  struct w2c_config_property_loader_ops
 {
    /**
     * free w2c_config_property_loader.
@@ -198,7 +198,7 @@ typedef struct w2c_config_property_loader_ops w2c_config_property_loader_ops_t;
         const axis2_env_t *env);
 };
 
-  struct w2c_config_property_loader
+AXIS2_DECLARE_DATA  struct w2c_config_property_loader
 {
      struct w2c_config_property_loader_ops *ops;
 };

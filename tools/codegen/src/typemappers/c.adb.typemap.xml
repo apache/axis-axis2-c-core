@@ -1,0 +1,199 @@
+<mappings dbf="c-adb">
+    <mapping default="yes">
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">content</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">string</qname>
+        <value>axis2_char_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">boolean</qname>
+        <value>axis2_bool_t</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">double</qname>
+        <value>double</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">float</qname>
+        <value>float</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">int</qname>
+        <value>int</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">integer</qname>
+        <value>int</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">long</qname>
+        <value>long</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">short</qname>
+        <value>short</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">byte</qname>
+        <value>char</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">decimal</qname>
+        <value>int</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">base64Binary</qname>
+        <value>axis2_base64_binary_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">hexBinary</qname>
+        <value>void*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">anySimpleType</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">anyType</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">any</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">QName</qname>
+        <value>axis2_qname_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">dateTime</qname>
+        <value>axis2_date_time_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">date</qname>
+        <value>axis2_date_time_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">time</qname>
+        <value>axis2_date_time_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">unsignedLong</qname>
+        <value>unsigned long</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">unsignedInt</qname>
+        <value>unsigned int</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">unsignedShort</qname>
+        <value>unsigned short</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">unsignedByte</qname>
+        <value>unsigned char</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">positiveInteger</qname>
+        <value>unsigned int</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">negativeInteger</qname>
+        <value>int</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">nonNegativeInteger</qname>
+        <value>int</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">nonPositiveInteger</qname>
+        <value>int</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">gYearMonth</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">gMonthDay</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">gYear</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">gMonth</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">gDay</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">duration</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">Name</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">NCName</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">NMTOKEN</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">NMTOKENS</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">NOTATION</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">ENTITY</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">ENTITIES</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">IDREF</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">IDREFS</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">anyURI</qname>
+        <value>axis2_uri_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">language</qname>
+        <value>axis2_char_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">ID</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">schema</qname>
+        <value>axiom_node_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">normalizedString</qname>
+        <value>axis2_char_t*</value>
+    </mapping>
+    <mapping>
+        <qname namespace="http://www.w3.org/2001/XMLSchema" prefix="">token</qname>
+        <value>axis2_char_t*</value>
+    </mapping>
+</mappings>
+

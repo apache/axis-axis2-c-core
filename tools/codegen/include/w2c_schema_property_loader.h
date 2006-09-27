@@ -38,7 +38,7 @@ extern "C"
 typedef struct w2c_schema_property_loader w2c_schema_property_loader_t;
 typedef struct w2c_schema_property_loader_ops w2c_schema_property_loader_ops_t;
 
-  struct w2c_schema_property_loader_ops
+AXIS2_DECLARE_DATA  struct w2c_schema_property_loader_ops
 {
    /**
     * free w2c_schema_property_loader.
@@ -113,15 +113,37 @@ typedef struct w2c_schema_property_loader_ops w2c_schema_property_loader_ops_t;
     /**
      * retrieve typemapper name.
      * @param  env Environment. MUST NOT be NULL
-     * @return Returns axis2_array_list_t*.
+     * @return Returns typemapper_name.
      */
     axis2_char_t* (AXIS2_CALL* 
     get_typemapper_name)(
         w2c_schema_property_loader_t *schema_property_loader,
         const axis2_env_t *env);
+
+    /**
+     * retrieve default class.
+     * @param  env Environment. MUST NOT be NULL
+     * @return Returns axis2_char_t*.
+     */
+    axis2_char_t* (AXIS2_CALL* 
+    get_default_class)(
+        w2c_schema_property_loader_t *schema_property_loader,
+        const axis2_env_t *env);
+
+    /**
+     * retrieve default array.
+     * @param  env Environment. MUST NOT be NULL
+     * @return Returns axis2_char_t*.
+     */
+    axis2_char_t* (AXIS2_CALL* 
+    get_default_array)(
+        w2c_schema_property_loader_t *schema_property_loader,
+        const axis2_env_t *env);
+
+
 };
 
-  struct w2c_schema_property_loader
+AXIS2_DECLARE_DATA  struct w2c_schema_property_loader
 {
      struct w2c_schema_property_loader_ops *ops;
 };
@@ -146,13 +168,20 @@ w2c_schema_property_loader_create( const axis2_env_t *env, axis2_char_t *lang);
 #define W2C_SCHEMA_PROPERTY_LOADER_RELOAD(schema_property_loader, env) \
       ((schema_property_loader)->ops->reload (schema_property_loader, env)) 
 
+#define W2C_SCHEMA_PROPERTY_LOADER_GET_WRITER_INSTANCE(schema_property_loader, env) \
+      ((schema_property_loader)->ops->get_writer_instance(schema_property_loader, env)) 
+
 #define W2C_SCHEMA_PROPERTY_LOADER_GET_TEMPLATE_NAME(schema_property_loader, env) \
       ((schema_property_loader)->ops->get_template_name(schema_property_loader, env))
 
 #define W2C_SCHEMA_PROPERTY_LOADER_GET_TYPEMAPPER_NAME(schema_property_loader, env) \
       ((schema_property_loader)->ops->get_typemapper_name(schema_property_loader, env))
 
+#define W2C_SCHEMA_PROPERTY_LOADER_GET_DEFAULT_ARRAY(schema_property_loader, env) \
+      ((schema_property_loader)->ops->get_default_array(schema_property_loader, env))
 
+#define W2C_SCHEMA_PROPERTY_LOADER_GET_DEFAULT_CLASS(schema_property_loader, env) \
+      ((schema_property_loader)->ops->get_default_class(schema_property_loader, env))
 
 /** @} */
 
