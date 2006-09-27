@@ -422,6 +422,5 @@ int main(int argc, char *argv[])
     /*create_soap_fault(env);
     test_soap_fault_value(env); */
     axis2_env_free(env);
-    axis2_allocator_free(allocator);
     return 0;
 }
