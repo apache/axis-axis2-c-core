@@ -694,6 +694,8 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *builder,
         axiom_soap_fault_set_base_node(soap_fault, env, om_element_node);
 
         axiom_soap_body_set_fault(soap_body, env, soap_fault);
+    
+        axiom_soap_fault_set_builder(soap_fault, env, builder);
 
         builder_impl->processing_fault = AXIS2_TRUE;
 
