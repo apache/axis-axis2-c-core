@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+ 
 #include <w2c_xslt_utils.h>
 #include <w2c_string.h>
 #include <platforms/axis2_platform_auto_sense.h>
@@ -22,44 +22,44 @@
 
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
-w2c_file_writer_create_classfile_name(
+w2c_file_writer_create_classfile_name (
     const axis2_env_t *env,
     axis2_char_t *root_location,
     axis2_char_t *package_name,
     axis2_char_t *filename,
-    axis2_char_t *extension)
+    axis2_char_t *extension )
 {
     axis2_char_t *full_path = NULL;
     axis2_char_t *cp = NULL;
     axis2_bool_t end = AXIS2_FALSE;
     int error = 0;
     int length = 0;
-
-    if (NULL == root_location)
+        
+    if ( NULL == root_location )
     {
-        full_path = AXIS2_STRDUP(".", env);
+        full_path= AXIS2_STRDUP ( ".", env);
     }
     else
     {
-        full_path = AXIS2_STRDUP(root_location, env);
-        for (end = AXIS2_FALSE, cp = full_path; 1; cp ++)
+        full_path = AXIS2_STRDUP ( root_location,env );
+        for ( end = AXIS2_FALSE, cp = full_path; 1; cp ++)
         {
-            if (*cp == '\0')
+            if ( *cp == '\0' )
             {
                 end = AXIS2_TRUE;
             }
-            else if (*cp != AXIS2_PATH_SEP_CHAR)
+            else if ( *cp != AXIS2_PATH_SEP_CHAR)
             {
                 continue;
             }
             *cp = '\0';
             /* TODO: this should be placed in platform */
-            error = mkdir(full_path, 0755);
-            if (end)
+            error = mkdir ( full_path, 0755 ); 
+            if ( end )
             {
-                if (cp != full_path && *(cp - 1) == AXIS2_PATH_SEP_CHAR)
+                if ( cp != full_path && *(cp-1) == AXIS2_PATH_SEP_CHAR )
                 {
-                    *(cp - 1) = '\0';
+                    *(cp-1) = '\0';
                 }
                 break;
             }
@@ -70,29 +70,29 @@ w2c_file_writer_create_classfile_name(
         }
     }
     /* to seperate root location and package path */
-    full_path = w2c_string_add_string(full_path, AXIS2_PATH_SEP_STR, env);
+    full_path = w2c_string_add_string ( full_path, AXIS2_PATH_SEP_STR, env );
 
     /* this is related to adding folder hiearchy corrosponding to the package */
-    if (package_name && *package_name != '\0')
+    if ( package_name && *package_name != '\0')
     {
-        length = AXIS2_STRLEN(full_path);
-        full_path = w2c_string_add_string(full_path, package_name, env);
+        length = AXIS2_STRLEN ( full_path );
+        full_path = w2c_string_add_string ( full_path, package_name, env);
 
         /* the loop wil start from the package name */
-        for (end = AXIS2_FALSE, cp = full_path + length; 1; cp ++)
+        for ( end = AXIS2_FALSE, cp = full_path + length; 1; cp ++)
         {
-            if (*cp == '\0')
+            if ( *cp == '\0' )
             {
                 end = AXIS2_TRUE;
             }
-            else if (*cp != '.')
+            else if ( *cp !='.' )
             {
                 continue;
             }
             *cp = '\0';
             /* TODO:this should be placed in platform */
-            error = mkdir(full_path, 0755);
-            if (end)
+            error = mkdir ( full_path, 0755 ); 
+            if ( end )
             {
                 break;
             }
@@ -101,10 +101,10 @@ w2c_file_writer_create_classfile_name(
                 *cp = AXIS2_PATH_SEP_CHAR;
             }
         }
-        full_path = w2c_string_add_string(full_path, AXIS2_PATH_SEP_STR, env);
+        full_path = w2c_string_add_string ( full_path, AXIS2_PATH_SEP_STR, env );
     }
-    full_path = w2c_string_add_string(full_path, filename, env);
-    full_path = w2c_string_add_string(full_path, extension, env);/* extension has the .*/
+    full_path = w2c_string_add_string ( full_path, filename, env);
+    full_path = w2c_string_add_string ( full_path, extension, env );/* extension has the .*/
 
     return full_path;
 }
