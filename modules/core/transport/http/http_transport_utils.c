@@ -236,6 +236,28 @@ axis2_http_transport_utils_process_http_post_request(
             }
         }
     }
+    else
+    {
+        /* check content encoding from msg ctx property */
+        axis2_property_t *property = NULL;
+        axis2_char_t *value = NULL;
+        property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+            AXIS2_HTTP_HEADER_TRANSFER_ENCODING,
+            AXIS2_FALSE);
+        if (property)
+            value = (axis2_char_t *)AXIS2_PROPERTY_GET_VALUE(property, env);
+
+        if (value && AXIS2_STRSTR(value, AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
+        {
+            /* this is an UGLY hack to get some of the trnaports working 
+                e.g. PHP transport where it strips the chunking info in case of chunking 
+                and also gives out a content lenght of 0.
+                We need to fix the transport design to fix sutuations like this.
+                */
+            callback_ctx.content_length = 1000000;
+            callback_ctx.unread_len = callback_ctx.content_length;
+        }
+    }
 
     if (strstr(content_type, AXIS2_HTTP_HEADER_ACCEPT_MULTIPART_RELATED))
     {
@@ -268,6 +290,9 @@ axis2_http_transport_utils_process_http_post_request(
             if (stream)
             {
                 AXIS2_STREAM_WRITE(stream, env, soap_body_str, soap_body_len);
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "axis2_http_transport_utils_process_http_post_request soap_body_str = %s...%d soap_body_len=%d", 
+                    soap_body_str, strlen(soap_body_str), soap_body_len);
                 callback_ctx.in_stream = stream;
                 callback_ctx.chunked_stream = NULL;
                 callback_ctx.content_length = soap_body_len;
