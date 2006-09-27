@@ -186,6 +186,12 @@ AC_CONFIG_FILES([Makefile \
     src/wsdl/writer/Makefile \
     src/wsdl/emitter/Makefile \
     src/wsdl/extensions/Makefile \
+    src/templates/Makefile \
+    src/templates/c/Makefile \
+    src/typemappers/Makefile \
+    src/schema/Makefile \
+    src/schema/compiler/Makefile \
+    src/schema/writer/Makefile \
     test/Makefile \
     test/unit/Makefile \
     test/unit/util/Makefile \
