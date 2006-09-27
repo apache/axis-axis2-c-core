@@ -10,7 +10,7 @@ fi
 AXIS2C=`pwd`/..
 export AXIS2C_HOME AXIS2C
 
-./configure --prefix=${AXIS2C_HOME} --enable-tests=yes --with-axis2_util=${AXIS2C_HOME}/include --with-axiom=${AXIS2C_HOME}/include --with-axis2_xml_schema=${AXIS2C_HOME}/include --with-axis2_woden=${AXIS2C_HOME}/include
+./configure --prefix=${AXIS2C_HOME} --enable-tests=no --with-axis2_util=${AXIS2C_HOME}/include --with-axiom=${AXIS2C_HOME}/include --with-axis2_xml_schema=${AXIS2C_HOME}/include --with-axis2_woden=${AXIS2C_HOME}/include
 
 make
 make install

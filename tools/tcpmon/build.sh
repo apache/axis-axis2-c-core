@@ -9,6 +9,6 @@ fi
 
 export AXIS2C_HOME
 
-./configure --prefix=${AXIS2C_HOME} --enable-tests=yes --with-axis2_util=${AXIS2C_HOME}/include 
+./configure --prefix=${AXIS2C_HOME} --enable-tests=no --with-axis2_util=${AXIS2C_HOME}/include 
 make
 make install
