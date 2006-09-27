@@ -127,6 +127,8 @@ xml_schema_obj_table_create(const axis2_env_t *env)
     }
     obj_table_impl->obj_table.ops->free =
         xml_schema_obj_table_free;
+    obj_table_impl->obj_table.ops->put =
+        xml_schema_obj_table_put;
     obj_table_impl->obj_table.ops->get_count =
         xml_schema_obj_table_get_count;
     obj_table_impl->obj_table.ops->get_item =

@@ -126,7 +126,7 @@ xml_schema_simple_type_restriction_create(const axis2_env_t *env);
 
 #define XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_GET_BASE_TYPE(simple_type_restriction, env) \
       (((xml_schema_simple_type_restriction_t *) simple_type_restriction)->ops->\
-            get_max_occurs(simple_type_restriction, env))
+            get_base_type(simple_type_restriction, env))
 
 #define XML_SCHEMA_SIMPLE_TYPE_RESTRICTION_SET_BASE_TYPE(simple_type_restriction,\
          env, base_type) \

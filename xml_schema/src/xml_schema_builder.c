@@ -968,46 +968,44 @@ set_namespace_attributes(
         return AXIS2_FAILURE;
 
     ht_ns = AXIOM_ELEMENT_GET_NAMESPACES(om_ele, env);
-    if (!ht_ns)
-    {   /* no namespaces available */
-        return AXIS2_SUCCESS;
-    }
-
-    ht_sch_ns = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(schema, env);
-    if (!ht_sch_ns)
-        return AXIS2_FAILURE;
-
-    for (hi_ns = axis2_hash_first(ht_ns, env); hi_ns;
-            hi_ns = axis2_hash_next(env, hi_ns))
+    if (ht_ns)
     {
-        void *val = NULL;
-        axis2_hash_this(hi_ns, NULL, NULL, &val);
-        if (val)
+        ht_sch_ns = XML_SCHEMA_GET_PREFIX_TO_NAMESPACE_MAP(schema, env);
+        if (!ht_sch_ns)
+            return AXIS2_FAILURE;
+    
+        for (hi_ns = axis2_hash_first(ht_ns, env); hi_ns;
+                hi_ns = axis2_hash_next(env, hi_ns))
         {
-            axis2_char_t *uri = NULL;
-            axis2_char_t *prefix = NULL;
-            uri = AXIOM_NAMESPACE_GET_URI((axiom_namespace_t*)val, env);
-            prefix =
-                AXIOM_NAMESPACE_GET_PREFIX((axiom_namespace_t*)val, env);
-
-            if (prefix && AXIS2_STRCMP(prefix, "") != 0)
+            void *val = NULL;
+            axis2_hash_this(hi_ns, NULL, NULL, &val);
+            if (val)
             {
-                axis2_hash_set(ht_sch_ns, prefix,
-                        AXIS2_HASH_KEY_STRING, uri);
-
-                if (uri && AXIS2_STRCMP(uri, XML_SCHEMA_NS) == 0)
+                axis2_char_t *uri = NULL;
+                axis2_char_t *prefix = NULL;
+                uri = AXIOM_NAMESPACE_GET_URI((axiom_namespace_t*)val, env);
+                prefix =
+                    AXIOM_NAMESPACE_GET_PREFIX((axiom_namespace_t*)val, env);
+    
+                if (prefix && AXIS2_STRCMP(prefix, "") != 0)
                 {
-                    XML_SCHEMA_SET_SCHEMA_NS_PREFIX(schema, env, prefix);
+                    axis2_hash_set(ht_sch_ns, prefix,
+                            AXIS2_HASH_KEY_STRING, uri);
+    
+                    if (uri && AXIS2_STRCMP(uri, XML_SCHEMA_NS) == 0)
+                    {
+                        XML_SCHEMA_SET_SCHEMA_NS_PREFIX(schema, env, prefix);
+                    }
                 }
-            }
-            else
-            {
-                /** default namespace [xmlns=""] */
-                axis2_hash_set(ht_sch_ns, "", AXIS2_HASH_KEY_STRING, uri);
+                else
+                {
+                    /** default namespace [xmlns=""] */
+                    axis2_hash_set(ht_sch_ns, "", AXIS2_HASH_KEY_STRING, uri);
+                }
             }
         }
     }
-
+    /** note: targetNamespace may availabe even though namespace declarations not available */ 
     target_ns_qn = axis2_qname_create(env, "targetNamespace", NULL, NULL);
 
     contain = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE(om_ele, env, target_ns_qn);
