@@ -130,6 +130,9 @@ w2c_emitter_add_param( w2c_emitter_impl_t *emitter_impl,
 axis2_char_t* w2c_emitter_default_namemaker( axis2_char_t *name,
                             const axis2_env_t *env);
 
+axis2_status_t
+w2c_emitter_init( w2c_emitter_impl_t* emitter_impl,
+                  const axis2_env_t *env);
 
 /************************** End of function prototypes ************************/
 

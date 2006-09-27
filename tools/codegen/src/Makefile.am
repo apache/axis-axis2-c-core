@@ -1,4 +1,4 @@
-SUBDIRS = util wsdl
+SUBDIRS = util wsdl templates typemappers schema
 
 templatesdir=$(prefix)/conf
 typemappersdir=$(prefix)/conf
@@ -22,6 +22,6 @@ INCLUDES = -I$(top_builddir)/include \
                         @UTILINC@ \
                         @AXIOMINC@
 
-install:install-recursive
-	cp templates $(templatesdir) -rf
-	cp typemappers $(typemappersdir) -rf
+#install:install-recursive
+#	cp templates $(templatesdir) -rf
+#	cp typemappers $(typemappersdir) -rf
