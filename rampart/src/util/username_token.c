@@ -227,9 +227,19 @@ rampart_username_token_build(rampart_username_token_t *username_token,
                             )
 {
 
-    axiom_node_t  *ut_node, *un_node, *pw_node, *nonce_node, *created_node = NULL;
-    axiom_element_t  *ut_ele, *un_ele, *pw_ele,  *nonce_ele, *created_ele = NULL;
-    axis2_char_t *username, *password,  *password_type = NULL;
+    axiom_node_t *ut_node = NULL;
+    axiom_node_t *un_node = NULL;
+    axiom_node_t *pw_node = NULL;
+    axiom_node_t *nonce_node = NULL;
+    axiom_node_t *created_node = NULL;
+    axiom_element_t  *ut_ele = NULL;
+    axiom_element_t *un_ele = NULL; 
+    axiom_element_t *pw_ele = NULL;
+    axiom_element_t *nonce_ele = NULL;
+    axiom_element_t *created_ele = NULL;
+    axis2_char_t *username = NULL;
+    axis2_char_t *password = NULL;
+    axis2_char_t *password_type = NULL;
     axiom_namespace_t *wsu_ns_obj = NULL;
     axiom_attribute_t *om_attr = NULL;
     rampart_username_token_impl_t *username_token_impl = NULL;
@@ -279,8 +289,11 @@ rampart_username_token_build(rampart_username_token_t *username_token,
 
         if (0 == AXIS2_STRCMP(password_type, RAMPART_PASSWORD_DIGEST))
         {
-            axis2_char_t *nonce_val, *created_val, *digest_val = NULL;
+            axis2_char_t *nonce_val = NULL;
+            axis2_char_t *created_val = NULL;
+            axis2_char_t *digest_val = NULL;
             axiom_namespace_t *dec_ns = NULL;
+
             nonce_val = rampart_generate_nonce(env) ;
             created_val = rampart_generate_time(env, 0);
             digest_val = rampart_crypto_sha1(env, nonce_val, created_val, password);
@@ -375,12 +388,19 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
         rampart_actions_t *actions,
         axis2_array_list_t *sub_codes)
 {
-    axiom_element_t *sec_ele, *ut_ele = NULL;
-    axiom_node_t *sec_node, *ut_node = NULL;
+    axiom_element_t *sec_ele = NULL;
+    axiom_element_t *ut_ele = NULL;
+    axiom_node_t *sec_node = NULL;
+    axiom_node_t *ut_node = NULL;
     axiom_child_element_iterator_t *children = NULL;
-    axis2_char_t *username = NULL,
-            *password = NULL, *nonce = NULL, *created = NULL, *password_type = NULL;
-    axis2_char_t *pw_callback_module = NULL, *password_from_svr = NULL, *password_to_compare = NULL;
+    axis2_char_t *username = NULL;
+    axis2_char_t *password = NULL;
+    axis2_char_t *nonce = NULL;
+    axis2_char_t *created = NULL;
+    axis2_char_t *password_type = NULL;
+    axis2_char_t *pw_callback_module = NULL;
+    axis2_char_t *password_from_svr = NULL;
+    axis2_char_t *password_to_compare = NULL;
     axis2_ctx_t *ctx = NULL;
     axis2_qname_t *qname = NULL;
     rampart_username_token_impl_t *username_token_impl = NULL;

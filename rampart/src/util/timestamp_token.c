@@ -133,9 +133,14 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
         const  axiom_namespace_t *sec_ns_obj,
         int ttl)
 {
-    axiom_node_t  *ts_node, *created_node, *expires_node = NULL;
-    axiom_element_t  *ts_ele, *created_ele, *expires_ele = NULL;
-    axis2_char_t *created_val, *expires_val = NULL;
+    axiom_node_t *ts_node = NULL;
+    axiom_node_t *created_node = NULL;
+    axiom_node_t *expires_node = NULL;
+    axiom_element_t *ts_ele = NULL;
+    axiom_element_t *created_ele = NULL;
+    axiom_element_t *expires_ele = NULL;
+    axis2_char_t *created_val = NULL;
+    axis2_char_t *expires_val = NULL;
     axiom_namespace_t *wsu_ns_obj = NULL;
 
     wsu_ns_obj = axiom_namespace_create(env, RAMPART_WSU_XMLNS,
@@ -178,9 +183,14 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
         axis2_array_list_t *sub_codes)
 {
     axis2_status_t validity = AXIS2_FAILURE;
-    axiom_element_t *created_ele = NULL, *expires_ele = NULL, *ts_ele = NULL;
-    axiom_node_t *created_node = NULL, *expires_node = NULL;
-    axis2_char_t *created_val = NULL, *expires_val = NULL, *current_val = NULL;
+    axiom_element_t *created_ele = NULL;
+    axiom_element_t *expires_ele = NULL;
+    axiom_element_t *ts_ele = NULL;
+    axiom_node_t *created_node = NULL;
+    axiom_node_t *expires_node = NULL;
+    axis2_char_t *created_val = NULL;
+    axis2_char_t *expires_val = NULL;
+    axis2_char_t *current_val = NULL;
 
     /*Check: TIMESTAMP MUST contain exactly one CREATED*/
     if (1 !=  oxs_axiom_get_number_of_children_with_qname(env, ts_node, RAMPART_SECURITY_TIMESTAMP_CREATED, NULL, NULL))

@@ -560,8 +560,11 @@ oxs_enc_engine_populate_cipher_value(
     oxs_buffer_t *databuf)
 {
     axis2_status_t ret = AXIS2_FAILURE;
-    axiom_element_t *template_ele = NULL, *cv_ele = NULL, *cd_ele = NULL;
-    axiom_node_t *cv_node = NULL, *cd_node = NULL;
+    axiom_element_t *template_ele = NULL;
+    axiom_element_t *cv_ele = NULL;
+    axiom_element_t *cd_ele = NULL;
+    axiom_node_t *cv_node = NULL;
+    axiom_node_t *cd_node = NULL;
     axis2_qname_t *qname = NULL;
     oxs_enc_engine_impl_t *enc_engine_impl = NULL;
 
@@ -741,7 +744,6 @@ oxs_enc_engine_cipher_data_node_read(const axis2_env_t *env,
 
     if (!cur)
     {
-
         return AXIS2_FAILURE;
     }
 
@@ -779,7 +781,8 @@ oxs_enc_engine_encrypted_data_node_read(const axis2_env_t *env,
     int ret;
 
     /* Operation is either encrypt or decrypt */
-    if (!((OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_ENCRYPT) || (OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT)))
+    if (!((OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_ENCRYPT) || 
+            (OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT)))
     {
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,
                 "Operation is NOT either encrypt or decrypt");

@@ -153,13 +153,24 @@ rampart_crypto_engine_encrypt_message(
 {
 
     axis2_status_t ret = AXIS2_FAILURE;
-    axiom_node_t *node_to_enc = NULL, *body_node = NULL;
+    axiom_node_t *node_to_enc = NULL; 
+    axiom_node_t *body_node = NULL;
     /*EncryptedData variables*/
-    axiom_node_t *enc_data_node = NULL, *enc_mtd_node = NULL, *key_info_node = NULL, *key_name_node = NULL;
-    axiom_node_t *cv_node = NULL, *cd_node = NULL, *enc_key_ref_list_node = NULL, *enc_key_data_ref_node = NULL;
+    axiom_node_t *enc_data_node = NULL;
+    axiom_node_t *enc_mtd_node = NULL;
+    axiom_node_t *key_info_node = NULL;
+    axiom_node_t *key_name_node = NULL;
+    axiom_node_t *cv_node = NULL;
+    axiom_node_t *cd_node = NULL;
+    axiom_node_t *enc_key_ref_list_node = NULL;
+    axiom_node_t *enc_key_data_ref_node = NULL;
     /*EncryptedKey varaibles*/
-    axiom_node_t *enc_key_node = NULL, *enc_key_enc_mtd_node = NULL, *enc_key_key_info_node = NULL, *enc_key_key_name_node = NULL;
-    axiom_node_t *enc_key_cv_node = NULL, *enc_key_cd_node = NULL;
+    axiom_node_t *enc_key_node = NULL;
+    axiom_node_t *enc_key_enc_mtd_node = NULL;
+    axiom_node_t *enc_key_key_info_node = NULL;
+    axiom_node_t *enc_key_key_name_node = NULL;
+    axiom_node_t *enc_key_cv_node = NULL;
+    axiom_node_t *enc_key_cd_node = NULL;
     axiom_soap_body_t *body = NULL;
     axis2_char_t *str_to_enc = NULL;
     oxs_ctx_t * enc_ctx = NULL;
@@ -305,8 +316,10 @@ rampart_crypto_engine_decrypt_message(
     axiom_soap_envelope_t *soap_envelope ,
     axiom_node_t *sec_node)
 {
-    axiom_node_t *enc_data_node = NULL, *parent_of_enc_node = NULL;
-    axiom_node_t *body_node = NULL , *decrypted_node = NULL;
+    axiom_node_t *enc_data_node = NULL;
+    axiom_node_t *parent_of_enc_node = NULL;
+    axiom_node_t *body_node = NULL;
+    axiom_node_t *decrypted_node = NULL;
     axiom_node_t *ref_list_node = NULL;
     axiom_soap_body_t *body = NULL;
     axis2_char_t *decrypted_data = NULL;

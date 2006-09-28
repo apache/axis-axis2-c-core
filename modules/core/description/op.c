@@ -466,7 +466,6 @@ axis2_op_create(
             sizeof(axis2_wsdl_op_ops_t));
     op_impl->op.base.ops->free_void_arg = axis2_op_free_void_arg;
     op_impl->op.base.ops->get_qname = axis2_op_get_qname;
-
     message_processing = axis2_phase_create(env, AXIS2_PHASE_MESSAGE_PROCESSING);
     if (op_impl->base)
     {
@@ -522,7 +521,6 @@ axis2_op_create(
         return NULL;
     }
     message_out = NULL;
-    
     axis2_op_set_msg_exchange_pattern(&(op_impl->op), env,
             (axis2_char_t *) AXIS2_MEP_URI_IN_OUT);
 

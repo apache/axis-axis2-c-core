@@ -32,7 +32,9 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
 {
     axiom_node_t *binary_security_token_node = NULL;
     axiom_element_t *binary_security_token_ele = NULL;
-    axiom_attribute_t *encoding_type_att = NULL, *value_type_att = NULL, *id_attr = NULL;
+    axiom_attribute_t *encoding_type_att = NULL;
+    axiom_attribute_t *value_type_att = NULL;
+    axiom_attribute_t *id_attr = NULL;
     int ret;
     axiom_namespace_t *ns_obj = NULL;
 

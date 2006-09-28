@@ -33,7 +33,8 @@ oxs_token_build_encrypted_type_element(const axis2_env_t *env,
 {
     axiom_node_t *encrypted_type_node = NULL;
     axiom_element_t *encrypted_type_ele = NULL;
-    axiom_attribute_t *type_attr = NULL, *id_attr = NULL;
+    axiom_attribute_t *type_attr = NULL
+    axiom_attribute_t *id_attr = NULL;
     int ret;
     axiom_namespace_t *ns_obj = NULL;
 

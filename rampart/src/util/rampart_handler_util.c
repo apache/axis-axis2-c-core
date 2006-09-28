@@ -156,12 +156,14 @@ rampart_get_action_params(const axis2_env_t *env,
         axis2_param_t *param_action,
         const axis2_char_t *key)
 {
-    axis2_char_t *value = NULL, *tmp_key = NULL;
+    axis2_char_t *value = NULL;
+    axis2_char_t *tmp_key = NULL;
+    axis2_char_t * param_name = NULL;
     axis2_array_list_t *param_list = NULL;
     axis2_param_t *param = NULL;
     int param_type;
-    axis2_char_t * param_name = NULL;
     int i, size = 0;
+
     if (!param_action)
     {
         printf("param_action is NULL");
