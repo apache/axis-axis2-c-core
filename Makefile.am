@@ -19,6 +19,8 @@ dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .deps`
 	rm -rf `find $(distdir)/ -type d -name .libs`
 	rm -rf `find $(distdir)/ -type f -name Makefile`
+	rm -rf `find $(distdir)/ -type f -name axis2c-sample-src-${PACKAGE_VERSION}.tar.gz`
+	rm -rf `find $(distdir)/ -type d -name autom4te.cache`
 
 bindist: $(bin_PROGRAMS)
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
