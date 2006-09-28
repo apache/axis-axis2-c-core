@@ -28,11 +28,10 @@ libaxis2_wsdl_la_SOURCES = wsdl_op.c \
                         wsdl_ext_soap_op.c
 
 
-libaxis2_wsdl_la_LIBADD = \
-                                  -laxis2_axiom \
-                                  -laxis2_util 
+libaxis2_wsdl_la_LIBADD = $(top_builddir)/axiom/src/om/libaxis2_axiom.la \
+							$(top_builddir)/util/src/libaxis2_util.la
 
 INCLUDES = -I$(top_builddir)/include \
-            -I$(top_builddir)/xml_schema/include\
-			@UTILINC@ 
+            -I$(top_builddir)/xml_schema/include \
+            -I$(top_builddir)/util/include
 

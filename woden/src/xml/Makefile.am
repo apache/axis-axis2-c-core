@@ -1,7 +1,6 @@
 noinst_LTLIBRARIES = libwoden_xml.la
 
-libwoden_xml_la_SOURCES = \
-							xml_attr.c \
+libwoden_xml_la_SOURCES =	xml_attr.c \
 							qname_attr.c \
 							uri_attr.c \
 							qname_list_attr.c \
@@ -11,6 +10,6 @@ libwoden_xml_la_SOURCES = \
 							bool_attr.c
 
 INCLUDES = -I$(top_builddir)/include \
-			@AXIOMINC@ \
-			@UTILINC@ \
-			@XMLSCHEMAINC@
+			-I ../../../util/include \
+			-I ../../../axiom/include \
+			-I ../../../xml_schema/include

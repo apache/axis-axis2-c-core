@@ -1,25 +1,26 @@
 datadir=$(prefix)
 logsdir=$(prefix)/logs
 docsdir=$(prefix)/docs
-SUBDIRS = modules $(TESTDIR) include ides
+SUBDIRS = util $(GUTHTHILA_DIR) axiom xml_schema woden modules rampart $(TESTDIR) include ides
 include_HEADERS=$(top_builddir)/include/*.h
 data_DATA= samples/server/axis2.xml README \
 	INSTALL CREDITS COPYING NEWS config.guess missing install-sh depcomp config.sub ltmain.sh
 
 logs_DATA=
 docs_DATA=docs/*
-EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE samples/server/axis2.log samples build axis2c_build.sh
+EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE samples/server/axis2.log samples build axis2c_build.sh docs guththila
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
 	rm -rf `find $(distdir)/ -type d -name .deps`
 	rm -rf `find $(distdir)/ -type d -name .libs`
-	sh dist.sh
-	tar -chf - axis2c-src-${PACKAGE_VERSION} | gzip -c > axis2c-src-${PACKAGE_VERSION}.tar.gz
+	rm -rf `find $(distdir)/ -type f -name Makefile`
+#	sh dist.sh
+#	tar -chf - axis2c-src-${PACKAGE_VERSION} | gzip -c > axis2c-src-${PACKAGE_VERSION}.tar.gz
 
-bindist: $(bin_PROGRAMS)
-	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
-	sh bindist.sh
-	mkdir axis2c-bin-${PACKAGE_VERSION}-linux
-	cp -r ${AXIS2C_HOME}/* axis2c-bin-${PACKAGE_VERSION}-linux
-	tar -cf - axis2c-bin-${PACKAGE_VERSION}-linux | gzip -c > axis2c-bin-${PACKAGE_VERSION}-linux.tar.gz
-	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
+#bindist: $(bin_PROGRAMS)
+#	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
+#	sh bindist.sh
+#	mkdir axis2c-bin-${PACKAGE_VERSION}-linux
+#	cp -r ${AXIS2C_HOME}/* axis2c-bin-${PACKAGE_VERSION}-linux
+#	tar -cf - axis2c-bin-${PACKAGE_VERSION}-linux | gzip -c > axis2c-bin-${PACKAGE_VERSION}-linux.tar.gz
+#	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux

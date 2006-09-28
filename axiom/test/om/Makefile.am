@@ -6,8 +6,7 @@ SUBDIRS =
 AM_CFLAGS = -g -O2 -pthread
 test_om_SOURCES = test_om.c
 
-test_om_LDADD   =   \
-                    -laxis2_util \
+test_om_LDADD   =	../../../util/src/libaxis2_util.la \
                     $(top_builddir)/src/om/libaxis2_axiom.la \
                     $(top_builddir)/src/parser/libxml2/libaxis2_parser.la \
                     $(LIBXML2_LIBS) \
@@ -15,4 +14,4 @@ test_om_LDADD   =   \
                     
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/parser \
-			@UTILINC@ 
+			-I ../../../util/include 

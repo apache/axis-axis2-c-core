@@ -3,11 +3,11 @@ prgbin_PROGRAMS = round1
 round1_SOURCES = round1_client.c
 
 round1_LDADD   =    $(LDFLAGS) \
-                    -laxis2_util \
-					-laxis2_axiom \
-					-laxis2_parser \
-					-lwoden \
-					-laxis2_xml_schema \
+                    ../../../../util/src/libaxis2_util.la \
+                    ../../../../axiom/src/om/libaxis2_axiom.la \
+                    ../../../../axiom/src/parser/$(PARSER_DIR)/libaxis2_parser.la \
+                    ../../../../woden/src/wsdl20/libwoden.la \
+                    ../../../../xml_schema/src/libaxis2_xml_schema.la \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
 					$(top_builddir)//modules/core/transport/http/sender/libaxis2_http_sender.la \
@@ -17,6 +17,6 @@ round1_LDADD   =    $(LDFLAGS) \
 
 INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/xml_schema/include \
-			@AXIOMINC@ \
-			@UTILINC@ 
+            -I ../../../../util/include \
+            -I ../../../../axiom/include
 

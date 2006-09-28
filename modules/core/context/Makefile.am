@@ -1,7 +1,6 @@
 noinst_LTLIBRARIES = libaxis2_context.la
 
-libaxis2_context_la_SOURCES = \
-                            ctx.c \
+libaxis2_context_la_SOURCES =	ctx.c \
                             msg_ctx.c \
                             op_ctx.c \
                             svc_ctx.c \
@@ -11,6 +10,6 @@ libaxis2_context_la_SOURCES = \
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/engine \
-            -I$(top_builddir)/xml_schema/include\
-			@AXIOMINC@ \
-			@UTILINC@ 
+            -I$(top_builddir)/xml_schema/include \
+            -I$(top_builddir)/util/include \
+            -I$(top_builddir)/axiom/include

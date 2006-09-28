@@ -5,10 +5,11 @@ libaxis2_attachments_la_SOURCES = mime_output.c \
 					mime_body_part.c \
                     mime_parser.c
 
-libaxis2_attachments_la_LIBADD =  -laxis2_util 
-INCLUDES = -I$(top_builddir)/include \
+libaxis2_attachments_la_LIBADD = ../../../util/src/libaxis2_util.la 
+
+INCLUDES =	-I$(top_builddir)/include \
             -I$(top_builddir)/parser \
-			@UTILINC@
+			-I ../../../util/include
 
 EXTRA_DIST = axiom_mime_body_part.h axiom_mime_output.h
 

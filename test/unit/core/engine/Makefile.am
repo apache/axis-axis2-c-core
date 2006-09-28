@@ -15,8 +15,8 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl \
             -I${CUTEST_HOME}/include \
             -I$(top_builddir)/xml_schema/include \
-			@AXIOMINC@ \
-			@UTILINC@ 
+			-I ../../../../util/include \
+			-I ../../../../axiom/include 
 
 check_PROGRAMS = engine_test
 prgbin_PROGRAMS = engine_test
@@ -24,11 +24,11 @@ engine_test_SOURCES = main.c
 engine_test_LDADD   =   libtest_engine.la  \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
-                   	-laxis2_util \
-					-lwoden \
-					-laxis2_xml_schema \
-					-laxis2_axiom \
-					-laxis2_parser \
+					 ../../../../util/src/libaxis2_util.la \
+					 ../../../../axiom/src/om/libaxis2_axiom.la \
+					 ../../../../axiom/src/parser/$(PARSER_DIR)/libaxis2_parser.la \
+					 ../../../../xml_schema/src/libaxis2_xml_schema.la \
+					 ../../../../woden/src/wsdl20/libwoden.la \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
                     $(GUTHTHILA_LIBS) \

@@ -17,7 +17,6 @@
 #include <stdio.h>
 #include <axis2_hash.h>
 #include <axis2_string.h>
-#include <axis2_file_diff.h>
 #include <axis2_error_default.h>
 #include <axis2_array_list.h>
 #include <platforms/axis2_platform_auto_sense.h>
@@ -148,7 +147,6 @@ int test_file_diff(const axis2_env_t *env)
 {
     axis2_char_t *expected_file_name = AXIS2_STRDUP("expected", env);
     axis2_char_t *actual_file_name = AXIS2_STRDUP("actual", env);
-    axis2_file_diff(env, expected_file_name, actual_file_name);
     return 0;
 }
 

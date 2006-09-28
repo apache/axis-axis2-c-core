@@ -38,6 +38,38 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
+AC_MSG_CHECKING(whether to build libxml2 xml parser library)
+AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=yes],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    PARSER_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    PARSER_DIR="libxml2"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  PARSER_DIR="libxml2"
+)
+
+AC_MSG_CHECKING(whether to build guththila xml parser library)
+AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    PARSER_DIR="guththila"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
 AC_MSG_CHECKING(whether to build tests)
 AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
 [ case "${enableval}" in
@@ -135,6 +167,7 @@ AC_SUBST(AXIOMINC)
 AC_SUBST(UTILINC)
 AC_SUBST(XMLSCHEMAINC)
 AC_SUBST(TESTDIR)
+AC_SUBST(PARSER_DIR)
 
 AC_CONFIG_FILES([Makefile \
     src/Makefile \
@@ -153,8 +186,6 @@ AC_CONFIG_FILES([Makefile \
     src/wsdl10/extensions/soap/Makefile \
     src/builder/Makefile \
     src/builder/wsdl10/Makefile \
-    samples/Makefile \
-    samples/wsdl10/Makefile \
     test/Makefile
     ])
     

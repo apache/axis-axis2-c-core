@@ -17,9 +17,31 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
+
 dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_LIB(z, inflate)
+
+if test -d $srcdir/util; then
+    AC_CONFIG_SUBDIRS(util)
+fi
+
+if test -d $srcdir/axiom; then
+    AC_CONFIG_SUBDIRS(axiom)
+fi
+
+if test -d $srcdir/xml_schema; then
+    AC_CONFIG_SUBDIRS(xml_schema)
+fi
+
+if test -d $srcdir/woden; then
+    AC_CONFIG_SUBDIRS(woden)
+fi
+
+if test -d $srcdir/rampart; then
+    AC_CONFIG_SUBDIRS(rampart)
+fi
+
 
 #CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
@@ -67,6 +89,42 @@ dnl Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
+
+AC_MSG_CHECKING(whether to build libxml2 xml parser library)
+AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=yes],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    PARSER_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    PARSER_DIR="libxml2"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  PARSER_DIR="libxml2"
+)
+
+AC_MSG_CHECKING(whether to build guththila xml parser library)
+AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    PARSER_DIR="guththila"
+    if test -d $srcdir/guththila; then
+        AC_CONFIG_SUBDIRS(guththila)
+    fi
+
+   GUTHTHILA_DIR="guththila"
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
 
 AC_MSG_CHECKING(whether to use apache2 as server transport)
 AC_ARG_WITH(apache2,
@@ -117,7 +175,7 @@ AC_ARG_WITH(apr,
 )
 
 AC_MSG_CHECKING(whether to build tests)
-AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
+AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
 [ case "${enableval}" in
   yes)
     AC_MSG_RESULT(yes)
@@ -263,7 +321,11 @@ AC_SUBST(DICLIENT_DIR)
 AC_SUBST(TESTDIR)
 AC_SUBST(SAMPLES)
 AC_SUBST(APACHE2BUILD)
+AC_SUBST(PARSER_DIR)
+AC_SUBST(GUTHTHILA_DIR)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
+export PARSER_DIR
+export prefix 
 
 AC_CONFIG_FILES([Makefile \
     modules/Makefile \

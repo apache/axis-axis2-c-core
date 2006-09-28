@@ -14,9 +14,9 @@ libwoden_extensions_soap_la_SOURCES = \
 											soap_header_block_deserializer.c
 
 INCLUDES = -I$(top_builddir)/include \
-			@AXIOMINC@ \
-			@UTILINC@ \
-			@XMLSCHEMAINC@
+			-I ../../../../../util/include \
+			-I ../../../../../axiom/include \
+			-I ../../../../../xml_schema/include 
 
 EXTRA_DIST = woden_soap_constants.h
 

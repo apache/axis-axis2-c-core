@@ -13,6 +13,6 @@ libwoden_wsdl20_xml_la_SOURCES = \
 							svc_element.c
 
 INCLUDES = -I$(top_builddir)/include \
-			@AXIOMINC@ \
-			@UTILINC@ \
-			@XMLSCHEMAINC@
+			-I ../../../../util/include \
+			-I ../../../../axiom/include \
+			-I ../../../../xml_schema/include

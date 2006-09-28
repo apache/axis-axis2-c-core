@@ -1,7 +1,6 @@
 noinst_LTLIBRARIES = libaxis2_addr.la
 
-libaxis2_addr_la_SOURCES = \
-                            relates_to.c \
+libaxis2_addr_la_SOURCES =	relates_to.c \
                             svc_name.c \
                             any_content_type.c \
                             endpoint_ref.c \
@@ -10,5 +9,5 @@ libaxis2_addr_la_SOURCES = \
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/engine \
-			@AXIOMINC@ \
-			@UTILINC@ 
+            -I$(top_builddir)/util/include \
+            -I$(top_builddir)/axiom/include 

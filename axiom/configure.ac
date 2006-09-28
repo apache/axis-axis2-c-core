@@ -58,17 +58,16 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library w
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
-    LIBXML2_DIR=""
+    PARSER_DIR=""
     ;;
   *)
     AC_MSG_RESULT(yes)
-    LIBXML2_DIR="libxml2"
-    GUTHTHILA_DIR=""
+    PARSER_DIR="libxml2"
 
     ;;
   esac ],
   AC_MSG_RESULT(yes)
-  LIBXML2_DIR="libxml2"
+  PARSER_DIR="libxml2"
 )
 
 AC_MSG_CHECKING(whether to build guththila xml parser library)
@@ -76,20 +75,15 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser lib
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
-    GUTHTHILA_DIR=""
     ;;
   *)
     AC_MSG_RESULT(yes)
-    GUTHTHILA_DIR="guththila"
-    LIBXML2_DIR=""
+    PARSER_DIR="guththila"
 
     ;;
   esac ],
   AC_MSG_RESULT(no)
-  GUTHTHILA_DIR=""
 )
-
-
 
 AC_MSG_CHECKING(To Use Axis2 C Util. This is a compulsory module to build Axis2 C)
 AC_ARG_WITH(axis2_util,
@@ -141,8 +135,7 @@ UTILINC=$axis2_utilinc
 AC_SUBST(UTILINC)
 AC_SUBST(LIBXML2_CFLAGS)
 AC_SUBST(LIBXML2_LIBS)
-AC_SUBST(LIBXML2_DIR)
-AC_SUBST(GUTHTHILA_DIR)
+AC_SUBST(PARSER_DIR)
 AC_SUBST(GUTHTHILA_LIBS)
 AC_SUBST(TESTDIR)
 

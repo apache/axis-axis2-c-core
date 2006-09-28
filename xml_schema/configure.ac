@@ -38,6 +38,38 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
 
+AC_MSG_CHECKING(whether to build libxml2 xml parser library)
+AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=yes],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    PARSER_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    PARSER_DIR="libxml2"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  PARSER_DIR="libxml2"
+)
+
+AC_MSG_CHECKING(whether to build guththila xml parser library)
+AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    PARSER_DIR="guththila"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
 AC_MSG_CHECKING(To Use Axis2 C AXIOM. This is a compulsory module to build Axis2 C)
 AC_ARG_WITH(axiom,
 [  --with-axiom[=PATH]      use axiom.],
@@ -109,11 +141,11 @@ AXIOMINC=$axiominc
 AC_SUBST(UTILINC)
 AC_SUBST(AXIOMINC)
 AC_SUBST(TESTDIR)
+AC_SUBST(PARSER_DIR)
 
 AC_CONFIG_FILES([Makefile
     src/Makefile \
-    test/Makefile \
-    samples/Makefile
+    test/Makefile
     ])
     
 AC_OUTPUT

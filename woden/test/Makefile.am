@@ -8,9 +8,9 @@ noinst_HEADERS= \
 
 INCLUDES = -I$(top_builddir)/include \
             -I${CUTEST_HOME}/include \
-			@AXIOMINC@ \
-			@UTILINC@ \
-			@XMLSCHEMAINC@
+			-I ../../axiom/include \
+			-I ../../util/include \
+			-I ../../xml_schema/include 
 
 noinst_PROGRAMS = woden_test
 check_PROGRAMS = woden_test
@@ -20,10 +20,10 @@ woden_test_LDADD   =  \
 					  ../src/wsdl20/libwoden.la \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
-                   	-laxis2_util \
-					-laxis2_axiom \
-					-laxis2_xml_schema \
-                    -laxis2_parser \
+					 ../../util/src/libaxis2_util.la \
+					 ../../axiom/src/om/libaxis2_axiom.la \
+					 ../../xml_schema/src/libaxis2_xml_schema.la \
+					 ../../axiom/src/parser/$(PARSER_DIR)/libaxis2_parser.la \
                     $(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
 

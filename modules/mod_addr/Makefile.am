@@ -6,10 +6,9 @@ libaxis2_mod_addr_la_SOURCES = addr_in_handler.c \
                                 addr_out_handler.c \
                                 mod_addr.c
 
-libaxis2_mod_addr_la_LIBADD =  \
-					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
-                                        -laxis2_axiom \
-                                        -laxis2_util
+libaxis2_mod_addr_la_LIBADD =	$(top_builddir)/modules/core/engine/libaxis2_engine.la \
+							$(top_builddir)/axiom/src/om/libaxis2_axiom.la \
+							$(top_builddir)/util/src/libaxis2_util.la 
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/description \
@@ -18,6 +17,6 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/engine \
             -I$(top_builddir)/modules/core/deployment \
             -I$(top_builddir)/modules/wsdl \
-            -I$(top_builddir)/xml_schema/include\
-			@AXIOMINC@ \
-			@UTILINC@ 
+            -I$(top_builddir)/xml_schema/include \
+            -I$(top_builddir)/util/include \
+            -I$(top_builddir)/axiom/include

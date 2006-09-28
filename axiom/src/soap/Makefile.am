@@ -20,7 +20,7 @@ libaxis2_soap_la_LIBADD =
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/parser \
             -I$(top_builddir)/src/om \
-			@UTILINC@
+			-I ../../../util/include
 
 EXTRA_DIST = maven.xml project.xml axiom_soap11_builder_helper.h \
 		_axiom_soap_fault_code.h _axiom_soap_fault_reason.h \

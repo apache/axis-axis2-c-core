@@ -1,21 +1,20 @@
-lib_LTLIBRARIES = libaxis2_engine.la
-noinst_HEADERS = \
-                    axis2_event.h
+lib_LTLIBRARIES=libaxis2_engine.la
+noinst_HEADERS=axis2_event.h
 
-libaxis2_engine_la_SOURCES = handler.c \
-                                conf.c \
-                                phase.c \
-                                disp_checker.c \
-                                event.c \
-                                addr_disp.c \
-                                req_uri_disp.c \
-                                disp.c \
-                                soap_action_disp.c \
-                                soap_body_disp.c \
-                                ctx_handler.c \
-                                engine.c
+libaxis2_engine_la_SOURCES=handler.c \
+							conf.c \
+                        	phase.c \
+                        	disp_checker.c \
+                        	event.c \
+                        	addr_disp.c \
+                        	req_uri_disp.c \
+                        	disp.c \
+                        	soap_action_disp.c \
+                        	soap_body_disp.c \
+                        	ctx_handler.c \
+                        	engine.c
 
-libaxis2_engine_la_LIBADD = $(top_builddir)/modules/core/description/libaxis2_description.la \
+libaxis2_engine_la_LIBADD=$(top_builddir)/modules/core/description/libaxis2_description.la \
                     $(top_builddir)/modules/core/receivers/libaxis2_receivers.la \
 					$(top_builddir)/modules/core/deployment/libaxis2_deployment.la \
 					$(top_builddir)/modules/core/context/libaxis2_context.la \
@@ -24,12 +23,11 @@ libaxis2_engine_la_LIBADD = $(top_builddir)/modules/core/description/libaxis2_de
 					$(top_builddir)/modules/core/phaseresolver/libaxis2_phaseresolver.la \
 					$(top_builddir)/modules/core/util/libaxis2_core_utils.la \
 					$(top_builddir)/modules/core/transport/http/libaxis2_http.la \
-										-laxis2_xml_schema \
-                                        -laxis2_util \
-                                        -laxis2_axiom \
-										-lwoden 
+					$(top_builddir)/xml_schema/src/libaxis2_xml_schema.la \
+					$(top_builddir)/util/src/libaxis2_util.la \
+					$(top_builddir)/axiom/src/om/libaxis2_axiom.la 
 
-INCLUDES = -I$(top_builddir)/include \
+INCLUDES = 	-I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/description \
             -I$(top_builddir)/modules/core/engine \
@@ -38,6 +36,6 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/context \
             -I$(top_builddir)/modules/core/util \
             -I$(top_builddir)/modules/core/clientapi \
-            -I$(top_builddir)/xml_schema/include\
-			@AXIOMINC@ \
-			@UTILINC@ 
+            -I$(top_builddir)/xml_schema/include \
+            -I$(top_builddir)/util/include \
+            -I$(top_builddir)/axiom/include

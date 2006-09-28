@@ -5,8 +5,8 @@ libaxis2_http_sender_la_SOURCES = http_transport_sender.c\
                                   http_client.c
 
 libaxis2_http_sender_la_LIBADD = $(top_builddir)/modules/core/engine/libaxis2_engine.la \
-                                  -laxis2_axiom \
-                                  -laxis2_util 
+								$(top_builddir)/axiom/src/om/libaxis2_axiom.la \
+								$(top_builddir)/util/src/libaxis2_util.la 
 
 if AXIS2_SSL_ENABLED
 libaxis2_http_sender_la_SOURCES += ssl/ssl_stream.c\
@@ -24,6 +24,6 @@ INCLUDES = -I$(top_builddir)/include \
            -I$(top_builddir)/modules/core/phaseresolver \
            -I$(top_builddir)/modules/core/engine \
            -I$(top_builddir)/modules/core/deployment \
-           -I$(top_builddir)/xml_schema/include\
-			@AXIOMINC@ \
-			@UTILINC@ 
+           -I$(top_builddir)/xml_schema/include \
+           -I$(top_builddir)/util/include \
+           -I$(top_builddir)/axiom/include

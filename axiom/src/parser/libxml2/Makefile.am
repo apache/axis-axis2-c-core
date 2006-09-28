@@ -11,4 +11,5 @@ libaxis2_parser_la_LIBADD = -lxml2
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/src/parser \
-			@UTILINC@
+            -I ../../../../util/include 
+			

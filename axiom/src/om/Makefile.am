@@ -16,17 +16,16 @@ libaxis2_axiom_la_SOURCES = om_attribute.c \
                         om_children_with_specific_attribute_iterator.c \
                         om_navigator.c
 
-libaxis2_axiom_la_LIBADD =  \
-                    $(top_builddir)/src/soap/libaxis2_soap.la \
-					$(top_builddir)/src/attachments/libaxis2_attachments.la \
-                    $(top_builddir)/src/util/libaxis2_axiom_util.la \
-					-laxis2_util
+libaxis2_axiom_la_LIBADD =	$(top_builddir)/src/soap/libaxis2_soap.la \
+							$(top_builddir)/src/attachments/libaxis2_attachments.la \
+                    		$(top_builddir)/src/util/libaxis2_axiom_util.la \
+							../../../util/src/.libs/libaxis2_util.la
 
-INCLUDES = -I$(top_builddir)/include \
+INCLUDES =	-I$(top_builddir)/include \
             -I$(top_builddir)/src/parser \
             -I$(top_builddir)/src/om \
             -I$(top_builddir)/src/attachments \
-			@UTILINC@
+			-I ../../../util/include 
 
 EXTRA_DIST = axiom_namespace_internal.h  axiom_node_internal.h  axiom_stax_builder_internal.h
 

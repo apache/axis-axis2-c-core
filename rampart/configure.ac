@@ -85,8 +85,6 @@ AC_ARG_WITH(axis2_util,
   AC_MSG_RESULT(no)
 )
 
-AC_MSG_CHECKING(To Use Xml Schema. This is a compulsory module to build Woden C)
-
 AXIOMINC=$axiominc
 UTILINC=$axis2_utilinc
 
@@ -96,20 +94,12 @@ AC_SUBST(XMLSCHEMAINC)
 
 AC_CONFIG_FILES([Makefile \
     src/Makefile \
-    src/omxmlsec/Makefile\
-    src/omxmlsec/openssl/Makefile\
+    src/omxmlsec/Makefile \
+    src/omxmlsec/openssl/Makefile \
     src/data/Makefile \
     src/handlers/Makefile \
-    src/core/Makefile\
-    src/util/Makefile\
-    samples/Makefile \
-    samples/callback/Makefile \
-    samples/client/Makefile \
-    samples/client/enc_echo/Makefile \
-    samples/client/enc_echo/data/Makefile \
-    samples/client/enc_echo/keys/Makefile \
-    samples/client/echo/Makefile \
-    samples/client/echo/data/Makefile 
+    src/core/Makefile \
+    src/util/Makefile
     ])
     
 AC_OUTPUT

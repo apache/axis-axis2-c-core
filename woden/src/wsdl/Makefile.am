@@ -1,7 +1,6 @@
 lib_LTLIBRARIES = libwoden_wsdl.la
 
-libwoden_wsdl_la_SOURCES = \
-							wsdl_element.c \
+libwoden_wsdl_la_SOURCES = 	wsdl_element.c \
 							wsdl_obj.c \
 							documentable.c \
 							documentation.c \
@@ -46,15 +45,13 @@ libwoden_wsdl_la_SOURCES = \
 							
 
 
-libwoden_wsdl_la_LIBADD =  \
-                    $(top_builddir)/src/xml/libwoden_xml.la \
-                    $(top_builddir)/src/util/libwoden_util.la \
-                    $(top_builddir)/src/types/libwoden_types.la \
-                    $(top_builddir)/src/schema/libwoden_schema.la
+libwoden_wsdl_la_LIBADD = $(top_builddir)/src/xml/libwoden_xml.la \
+                    	$(top_builddir)/src/util/libwoden_util.la \
+                    	$(top_builddir)/src/types/libwoden_types.la \
+                    	$(top_builddir)/src/schema/libwoden_schema.la
 
 INCLUDES = -I$(top_builddir)/include \
-			@AXIOMINC@ \
-			@UTILINC@ \
-			@XMLSCHEMAINC@
-
+			-I ../../../util/include \
+			-I ../../../axiom/include \
+			-I ../../../xml_schema/include
 

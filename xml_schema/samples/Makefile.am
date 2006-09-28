@@ -4,10 +4,8 @@ prgbin_PROGRAMS = test_schema
 check_PROGRAMS = test_schema
 test_schema_SOURCES = test_schema.c
 
-test_schema_LDADD   =   \
-			$(top_builddir)/src/libaxis2_xml_schema.la \
-			-laxis2_axiom \
-			-laxis2_parser 
+test_schema_LDADD   = -laxis2_xml_schema  \
+						-laxis2_axiom \
+						-laxis2_parser
 
-INCLUDES = -I$(top_builddir)/include \
-		@UTILINC@ 
+INCLUDES = -I$(AXIS2C_HOME)/include 

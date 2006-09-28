@@ -13,8 +13,7 @@ noinst_HEADERS = axis2_deployment.h \
                     axis2_ws_info.h \
                     axis2_ws_info_list.h
 
-libaxis2_deployment_la_SOURCES = \
-                                phases_info.c \
+libaxis2_deployment_la_SOURCES =phases_info.c \
                                 desc_builder.c \
                                 arch_reader.c \
                                 dep_engine.c \
@@ -35,6 +34,6 @@ INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/phaseresolver \
             -I$(top_builddir)/modules/core/deployment \
             -I$(top_builddir)/modules/core/util \
-            -I$(top_builddir)/xml_schema/include\
-			@AXIOMINC@ \
-			@UTILINC@ 
+            -I$(top_builddir)/xml_schema/include \
+            -I$(top_builddir)/axiom/include \
+            -I$(top_builddir)/util/include

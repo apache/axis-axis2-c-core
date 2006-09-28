@@ -1,4 +1,30 @@
 #!/bin/bash
+echo 'Running autogen.sh in Util'
+cd util
+./autogen.sh
+
+echo 'Running autogen.sh in Axiom'
+cd ../axiom
+./autogen.sh
+
+echo 'Running autogen.sh in Xml_schema'
+cd ../xml_schema
+./autogen.sh
+
+echo 'Running autogen.sh in Woden'
+cd ../woden
+./autogen.sh
+
+echo 'Running autogen.sh in Guththila'
+cd ../guththila
+./autogen.sh
+
+echo 'Running autogen.sh in Rampart'
+cd ../rampart
+./autogen.sh
+
+echo 'Running autogen.sh in Axis2/C'
+cd ..
 
 echo -n 'Running libtoolize...'
 if libtoolize --force > /dev/null 2>&1; then
