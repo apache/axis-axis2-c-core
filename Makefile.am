@@ -1,14 +1,14 @@
 datadir=$(prefix)
 logsdir=$(prefix)/logs
 docsdir=$(prefix)/docs
-SUBDIRS = util $(GUTHTHILA_DIR) axiom xml_schema woden modules rampart tools/codegen tools/tcpmon $(TESTDIR) include ides
+SUBDIRS = util $(GUTHTHILA_DIR) axiom xml_schema woden modules rampart $(TESTDIR) include ides
 include_HEADERS=$(top_builddir)/include/*.h
 data_DATA= samples/server/axis2.xml README \
 	INSTALL CREDITS COPYING NEWS config.guess missing install-sh depcomp config.sub ltmain.sh
 
 logs_DATA=
 docs_DATA=docs/*
-EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE samples/server/axis2.log samples build axis2c_build.sh docs guththila
+EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE samples/server/axis2.log samples build axis2c_build.sh docs guththila tools
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
 	rm -rf `find $(distdir)/ -type d -name .la`

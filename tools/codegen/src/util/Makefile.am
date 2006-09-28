@@ -31,3 +31,5 @@ libw2c_util_la_LIBADD =  \
 INCLUDES = -I$(top_builddir)/include \
 			-I ../../../../util/include \
 			-I ../../../../axiom/include 
+
+EXTRA_DIST=codegen-config.properties

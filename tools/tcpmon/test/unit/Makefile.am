@@ -8,12 +8,12 @@ tcpmon_unit_test_suite_LDADD   =   \
                      $(top_builddir)/src/libaxis2_tcpmon.la \
                      -L$(CUTEST_HOME)/lib \
                      -lcutest \
-                     -L$(AXIS2C_HOME)/lib \
-                     -laxis2_util \
+					 ../../../../util/src/libaxis2_util.la \
+					 ../../../../axiom/src/om/libaxis2_axiom.la \
                      $(NULL)
 
 
 INCLUDES = -I${CUTEST_HOME}/include \
            -I$(top_builddir)/include \
-           @UTILINC@ \
+		   -I ../../../../util/include \
            $(NULL)
