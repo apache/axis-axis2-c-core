@@ -12,7 +12,6 @@ then
 else
     export LD_LIBRARY_PATH=${AXIS2C_DEPLOY}/lib
 fi
-cd util
 
 ./configure --prefix=${AXIS2C_DEPLOY}
 make 
