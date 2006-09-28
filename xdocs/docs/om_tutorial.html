@@ -296,12 +296,12 @@ be referenced using that pointer.</p>
 
 <p><b>Code Listing 1</b></p>
 </div>
-<pre>axis2_xml_reader_t&nbsp;*xml_reader&nbsp;=&nbsp;NULL;<br />
+<pre>axiom_xml_reader_t&nbsp;*xml_reader&nbsp;=&nbsp;NULL;<br />
 axiom_stax_builder_t&nbsp;*om_builder&nbsp;=&nbsp;NULL;<br />
 axiom_soap_builder_t&nbsp;*soap_builder&nbsp;=&nbsp;NULL;<br />
 axiom_soap_envelope_t&nbsp;*soap_envelope&nbsp;=&nbsp;NULL;<br />
 <i>/**&nbsp;create&nbsp;the&nbsp;parser&nbsp;*/</i><br />
-axis2_xml_reader_t&nbsp;*xml_reader&nbsp;=&nbsp;axis2_xml_reader_create_for_file(env,&nbsp;"test_soap.xml",NULL);<br />
+xml_reader&nbsp;=&nbsp;axiom_xml_reader_create_for_file(env,&nbsp;"test_soap.xml",NULL);<br />
 <i>/**&nbsp;create&nbsp;the&nbsp;OM&nbsp;builder&nbsp;*/</i><br />
 om_builder&nbsp;=&nbsp;axiom_stax_builder_create(env,&nbsp;xml_reader);<br />
 <i>/**&nbsp;create&nbsp;SOAP&nbsp;builder&nbsp;*/</i><br />
