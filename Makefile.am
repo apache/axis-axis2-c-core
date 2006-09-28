@@ -11,10 +11,10 @@ docs_DATA=docs/*
 EXTRA_DIST = build.sh autogen.sh CREDITS LICENSE samples/server/axis2.log samples build axis2c_build.sh docs guththila tools
 dist-hook:
 	rm -rf `find $(distdir)/ -type d -name .svn`
-	rm -rf `find $(distdir)/ -type d -name .la`
-	rm -rf `find $(distdir)/ -type d -name .o`
-	rm -rf `find $(distdir)/ -type d -name .lo`
-	rm -rf `find $(distdir)/ -type d -name .loT`
+	rm -rf `find $(distdir)/ -type f -name *.la`
+	rm -rf `find $(distdir)/ -type f -name *.o`
+	rm -rf `find $(distdir)/ -type f -name *.lo`
+	rm -rf `find $(distdir)/ -type f -name *.loT`
 	rm -rf `find $(distdir)/ -type d -name .deps`
 	rm -rf `find $(distdir)/ -type d -name .libs`
 	rm -rf `find $(distdir)/ -type f -name Makefile`
