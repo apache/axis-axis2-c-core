@@ -197,7 +197,7 @@ axis2_libxml2_reader_wrapper_init_map(axis2_libxml2_reader_wrapper_impl_t *parse
 
         parser->event_map[XML_READER_TYPE_TEXT] = AXIOM_XML_READER_CHARACTER;
 
-        parser->event_map[XML_READER_TYPE_CDATA] = AXIOM_XML_READER_CDATA;
+        parser->event_map[XML_READER_TYPE_CDATA] = AXIOM_XML_READER_CHARACTER;
 
         parser->event_map[XML_READER_TYPE_SIGNIFICANT_WHITESPACE] =
             AXIOM_XML_READER_SPACE;
