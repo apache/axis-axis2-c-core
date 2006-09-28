@@ -45,7 +45,7 @@ threadattr_cleanup(void *data)
     axis2_threadattr_t *attr = data;
     int rv;
 
-    rv = pthread_attr_destroy(&attr->attr);
+    rv = pthread_attr_destroy(&(attr->attr));
 
     if (0 != rv)
     {
@@ -59,7 +59,7 @@ threadattr_cleanup(void *data)
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_threadattr_detach_set(axis2_threadattr_t *attr, axis2_bool_t detached)
 {
-    if (0 == pthread_attr_setdetachstate(&attr->attr, DETACH_ARG(detached)))
+    if (0 == pthread_attr_setdetachstate(&(attr->attr), DETACH_ARG(detached)))
     {
         return AXIS2_SUCCESS;
     }
@@ -70,7 +70,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_threadattr_detach_get(axis2_threadattr_t *attr)
 {
     int state = 0;
-    pthread_attr_getdetachstate(&attr->attr, &state);
+    pthread_attr_getdetachstate(&(attr->attr), &state);
     if (state == 1)
     {
         return AXIS2_TRUE;
@@ -109,7 +109,7 @@ axis2_thread_create(axis2_allocator_t* allocator, axis2_threadattr_t *attr,
 
     if (attr)
     {
-        temp = &attr->attr;
+        temp = &(attr->attr);
     }
     else
     {
@@ -156,7 +156,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_join(axis2_thread_t *thd)
 {
     void *thread_stat;
-    if (0 == pthread_join(*thd->td, (void *)&thread_stat))
+    if (0 == pthread_join(*(thd->td), (void *)(&thread_stat)))
     {
         return AXIS2_SUCCESS;
     }
@@ -206,7 +206,7 @@ axis2_thread_once_init(axis2_allocator_t* allocator)
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_once(axis2_thread_once_t *control, void(*func)(void))
 {
-    return pthread_once(&control->once, func);
+    return pthread_once(&(control->once), func);
 }
 
 /*************************Thread locking functions*****************************/
@@ -218,7 +218,7 @@ axis2_thread_mutex_create(axis2_allocator_t *allocator, unsigned int flags)
     new_mutex = AXIS2_MALLOC(allocator, sizeof(axis2_thread_mutex_t));
     new_mutex->allocator = allocator;
 
-    if (pthread_mutex_init(&new_mutex->mutex, NULL) != 0)
+    if (pthread_mutex_init(&(new_mutex->mutex), NULL) != 0)
     {
         AXIS2_FREE(allocator, new_mutex);
         return NULL;
@@ -229,13 +229,13 @@ axis2_thread_mutex_create(axis2_allocator_t *allocator, unsigned int flags)
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_mutex_lock(axis2_thread_mutex_t *mutex)
 {
-    return pthread_mutex_lock(&mutex->mutex);
+    return pthread_mutex_lock(&(mutex->mutex));
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_mutex_unlock(axis2_thread_mutex_t *mutex)
 {
-    if (pthread_mutex_unlock(&mutex->mutex) != 0)
+    if (pthread_mutex_unlock(&(mutex->mutex)) != 0)
     {
         return AXIS2_FAILURE;
     }
@@ -245,7 +245,7 @@ axis2_thread_mutex_unlock(axis2_thread_mutex_t *mutex)
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 axis2_thread_mutex_destroy(axis2_thread_mutex_t *mutex)
 {
-    if (0 != pthread_mutex_destroy(&mutex->mutex))
+    if (0 != pthread_mutex_destroy(&(mutex->mutex)))
     {
         return AXIS2_FAILURE;
     }

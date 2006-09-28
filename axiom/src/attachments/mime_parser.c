@@ -200,9 +200,14 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                 }
             }
         }
-
     }
     while (!pos && len > 0);
+
+    if (root_mime)
+    {
+        AXIS2_FREE(env->allocator, root_mime);
+        root_mime = NULL;
+    }
 
     pos = NULL;
     len = 0;
@@ -450,13 +455,26 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
 
             }
 
+            if (body_mime)
+            {
+                AXIS2_FREE(env->allocator, body_mime);
+                body_mime = NULL;
+            }
+
             body_mime = temp_body_mime;
             body_mime_len = temp_body_mime_len;
 
         }/*if (mime_parser_impl->mime_parts_map)*/
     }/* end while (!end_of_mime) */
 
+    if (body_mime)
+    {
+        AXIS2_FREE(env->allocator, body_mime);
+        body_mime = NULL;
+    }
+
     AXIS2_FREE(env->allocator, buffer);
+    buffer = NULL;
 
     return mime_parser_impl->mime_parts_map;
 }

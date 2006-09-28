@@ -766,6 +766,7 @@ axis2_svc_client_send_receive(
     axis2_param_t *param = NULL;
     axis2_uri_t *action_uri = NULL;
     axis2_char_t *action_str = NULL;
+    axis2_bool_t qname_free_flag = AXIS2_FALSE;
 
     AXIS2_ENV_CHECK(env, NULL);
     svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
@@ -784,6 +785,7 @@ axis2_svc_client_send_receive(
 
     if (!op_qname)
     {
+        qname_free_flag = AXIS2_TRUE;
         op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
     }
 
@@ -881,8 +883,8 @@ axis2_svc_client_send_receive(
         }
         if (svc_client_impl->op_client)
         {
-            /** free op_client of previous request
-            AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client);
+            /** free op_client of previous request 
+            AXIS2_OP_CLIENT_FREE(svc_client_impl->op_client, env);
             */
         }
         svc_client_impl->op_client = op_client;
@@ -891,12 +893,24 @@ axis2_svc_client_send_receive(
         AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
         res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
 
+        if (msg_ctx)
+        {
+            AXIS2_FREE(env->allocator, msg_ctx);
+            msg_ctx = NULL;
+        }
+
         if (!res_msg_ctx)
         {
             return NULL;
         }
 
         soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(res_msg_ctx, env);
+    }
+
+    if (qname_free_flag)
+    {
+        AXIS2_QNAME_FREE((axis2_qname_t *) op_qname, env);
+        op_qname = NULL;
     }
 
     if (!soap_envelope)
@@ -1322,6 +1336,17 @@ axis2_svc_client_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
+
+    /* TODO: Fix this memory leak. 
+     *
+     * Segfault occurs with dual clients
+     *
+    if (svc_client_impl->svc)
+    {
+        AXIS2_SVC_FREE(svc_client_impl->svc, env);
+        svc_client_impl->svc = NULL;
+    }
+    */
 
     if (svc_client_impl->callback_recv)
     {

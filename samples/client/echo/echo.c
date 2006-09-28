@@ -100,6 +100,9 @@ int main(int argc, char** argv)
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
         printf("\necho client invoke SUCCESSFUL!\n");
+
+        AXIOM_NODE_FREE_TREE(ret_node, env);
+        ret_node = NULL;
     }
     else
     {
@@ -107,6 +110,12 @@ int main(int argc, char** argv)
                 " %d :: %s", env->error->error_number,
                 AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("echo client invoke FAILED!\n");
+    }
+
+    if (payload)
+    {
+        AXIOM_NODE_FREE_TREE(payload, env);
+        payload = NULL;
     }
 
     if (svc_client)
@@ -153,7 +162,10 @@ build_om_payload_for_echo_svc(const axis2_env_t *env)
 
     om_str = AXIOM_NODE_TO_STRING(echo_om_node, env);
     if (om_str)
+    {
         printf("\nSending OM : %s\n", om_str);
-
+        AXIS2_FREE(env->allocator, om_str);
+        om_str =  NULL;
+    }
     return echo_om_node;
 }
