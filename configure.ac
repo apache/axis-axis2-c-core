@@ -42,6 +42,13 @@ if test -d $srcdir/rampart; then
     AC_CONFIG_SUBDIRS(rampart)
 fi
 
+if test -d $srcdir/tools/codegen; then
+    AC_CONFIG_SUBDIRS(tools/codegen)
+fi
+
+if test -d $srcdir/tools/tcpmon; then
+    AC_CONFIG_SUBDIRS(tools/tcpmon)
+fi
 
 #CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"

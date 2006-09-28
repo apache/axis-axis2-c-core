@@ -23,8 +23,16 @@ echo 'Running autogen.sh in Rampart'
 cd ../rampart
 ./autogen.sh
 
+echo 'Running autogen.sh in Codegen'
+cd ../tools/codegen
+./autogen.sh
+
+echo 'Running autogen.sh in TCPmon'
+cd ../../tools/tcpmon
+./autogen.sh
+
 echo 'Running autogen.sh in Axis2/C'
-cd ..
+cd ../..
 
 echo -n 'Running libtoolize...'
 if libtoolize --force > /dev/null 2>&1; then

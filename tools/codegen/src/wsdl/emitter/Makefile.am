@@ -5,19 +5,18 @@ libw2c_emitter_if_la_SOURCES = emitter.c
 
 libw2c_emitter_if_la_LIBADD = \
                  $(top_builddir)/src/util/libw2c_util.la \
-                 -L$(AXIS2C_HOME)/lib \
-                 -laxis2_util \
-                 -laxis2_axiom \
-                 -laxis2_xml_schema \
-                 -lwoden_wsdl \
-                 -lwoden \
+				 ../../../../../util/src/libaxis2_util.la \
+				 ../../../../../axiom/src/om/libaxis2_axiom.la \
+				 ../../../../../xml_schema/src/libaxis2_xml_schema.la \
+				 ../../../../../woden/src/wsdl20/libwoden.la \
+				 ../../../../../woden/src/wsdl/libwoden_wsdl.la \
                  $(NULL)
 
 
 INCLUDES = -I$(top_builddir)/include \
-                        @UTILINC@ \
-                        @AXIOMINC@ \
-                        @WODENINC@ 
+			-I ../../../../../util/include \
+			-I ../../../../../axiom/include \
+			-I ../../../../../woden/include 
 
 prglib_LTLIBRARIES = \
              libw2c_c_emitter.la 

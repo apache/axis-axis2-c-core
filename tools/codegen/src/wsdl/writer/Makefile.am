@@ -5,14 +5,15 @@ libw2c_writer_if_la_SOURCES = writer.c
 
 libw2c_writer_if_la_LIBADD = \
                  $(top_builddir)/src/util/libw2c_util.la \
-                 -L$(AXIS2C_HOME)/lib \
-                 -laxis2_util \
-                 -laxis2_axiom
+				 ../../../../../util/src/libaxis2_util.la \
+				 ../../../../../axiom/src/om/libaxis2_axiom.la \
+				 ../../../../../woden/src/wsdl20/libwoden.la \
+				 ../../../../../xml_schema/src/libaxis2_xml_schema.la
 
 
 INCLUDES = -I$(top_builddir)/include \
-                        @UTILINC@ \
-                        @AXIOMINC@
+			-I ../../../../../util/include \
+			-I ../../../../../axiom/include 
 
 prglib_LTLIBRARIES = \
              libw2c_cservice_xml_writer.la \

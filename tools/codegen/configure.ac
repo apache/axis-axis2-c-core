@@ -46,6 +46,37 @@ dnl Checks for library informations
 PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
 PKG_CHECK_MODULES(LIBXSLT, libxslt)
 
+AC_MSG_CHECKING(whether to build libxml2 xml parser library)
+AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=yes],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    PARSER_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    PARSER_DIR="libxml2"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  PARSER_DIR="libxml2"
+)
+
+AC_MSG_CHECKING(whether to build guththila xml parser library)
+AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    PARSER_DIR="guththila"
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
 
 AC_MSG_CHECKING(To Use Axis2/C Util. This is a compulsory module to build Axis2/C)
 AC_ARG_WITH(axis2_util,
@@ -176,6 +207,7 @@ AC_SUBST(UTILINC)
 AC_SUBST(XMLSCHEMAINC)
 AC_SUBST(WODENINC)
 AC_SUBST(TESTDIR)
+AC_SUBST(PARSER_DIR)
 
 CFLAGS="$CFLAGS $LIBXML2_CFLAGS $LIBXSLT_CFLAGS"
 
@@ -195,11 +227,7 @@ AC_CONFIG_FILES([Makefile \
     test/Makefile \
     test/unit/Makefile \
     test/unit/util/Makefile \
-    test/unit/codegen/Makefile \
-    samples/client/calculator/Makefile \
-    samples/server/calculator/Makefile \
-    samples/client/interop_test_svc/Makefile \
-    samples/server/interop_test_svc/Makefile \
+    test/unit/codegen/Makefile
     ])
     
 AC_OUTPUT

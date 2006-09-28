@@ -9,11 +9,11 @@ x2c_SOURCES =  xsd2code.c
 x2c_LDADD =  \
              $(top_builddir)/src/wsdl/libw2c_codegen.la \
              $(top_builddir)/src/schema/compiler/libw2c_schema.la \
-             -L$(AXIS2C_HOME)/lib \
-             -laxis2_util \
-             -laxis2_axiom \
-             -laxis2_parser \
-			 -laxis2_xml_schema \
+             ../../../../util/src/libaxis2_util.la \
+             ../../../../axiom/src/om/libaxis2_axiom.la \
+             ../../../../xml_schema/src/libaxis2_xml_schema.la \
+             ../../../../woden/src/wsdl20/libwoden.la \
+			../../../../axiom/src/parser/$(PARSER_DIR)/libaxis2_parser.la \
              -lxml2 \
              -lxslt \
 			 $(NULL)
@@ -26,15 +26,16 @@ libw2c_databinding_adb_ext_la_SOURCES = databinding_adb_ext.c
 libw2c_databinding_adb_ext_la_LIBADD = \
                  $(top_builddir)/src/util/libw2c_util.la \
                  $(top_builddir)/src/schema/compiler/libw2c_schema.la \
-                 -L$(AXIS2C_HOME)/lib \
-                 -laxis2_util \
-                 -laxis2_axiom \
-                 -lwoden_wsdl \
-                 -lwoden \
-                 -laxis2_xml_schema
+               	../../../../util/src/libaxis2_util.la \
+                 ../../../../axiom/src/om/libaxis2_axiom.la \
+                 ../../../../xml_schema/src/libaxis2_xml_schema.la \
+                 ../../../../woden/src/wsdl20/libwoden.la \
+                 ../../../../woden/src/wsdl/libwoden_wsdl.la
 
 
 INCLUDES = -I$(top_builddir)/include \
-                        @UTILINC@ \
-                        @XMLSCHEMAINC@ \
-                        @AXIOMINC@
+            -I ../../../../util/include \
+            -I ../../../../axiom/include \
+            -I ../../../../xml_schema/include \
+            -I ../../../../woden/include \
+            -I ../../../../include

@@ -20,14 +20,14 @@ libw2c_util_la_SOURCES = \
 
 
 libw2c_util_la_LIBADD =  \
-                      -L$(AXIS2C_HOME)/lib \
                       -lxml2 -lxslt \
-                      -laxis2_util \
-                      -laxis2_axiom \
-                      -laxis2_parser \
+					  ../../../../util/src/libaxis2_util.la \
+					  ../../../../woden/src/wsdl20/libwoden.la \
+					  ../../../../axiom/src/om/libaxis2_axiom.la \
+					  ../../../../axiom/src/parser/$(PARSER_DIR)/libaxis2_parser.la \
                       $(NULL)
 
 
 INCLUDES = -I$(top_builddir)/include \
-                        @UTILINC@ \
-                        @AXIOMINC@
+			-I ../../../../util/include \
+			-I ../../../../axiom/include 

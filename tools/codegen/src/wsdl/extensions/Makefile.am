@@ -16,34 +16,34 @@ libw2c_c_code_indenter_ext_la_SOURCES = c_code_indenter_ext.c
 
 libw2c_databinding_default_ext_la_LIBADD = \
                  $(top_builddir)/src/util/libw2c_util.la \
-                 -L$(AXIS2C_HOME)/lib \
-                 -laxis2_util \
-                 -laxis2_axiom
+				 ../../../../../util/src/libaxis2_util.la \
+				 ../../../../../axiom/src/om/libaxis2_axiom.la \
+				 ../../../../../woden/src/wsdl20/libwoden.la
 
 libw2c_c_namemaker_ext_la_LIBADD = \
                  $(top_builddir)/src/util/libw2c_util.la \
-                 -L$(AXIS2C_HOME)/lib \
-                 -laxis2_util \
-                 -laxis2_axiom
+				 ../../../../../util/src/libaxis2_util.la \
+				 ../../../../../axiom/src/om/libaxis2_axiom.la \
+				 ../../../../../woden/src/wsdl20/libwoden.la
 
 libw2c_c_qname2name_ext_la_LIBADD = \
                  $(top_builddir)/src/util/libw2c_util.la \
-                 -L$(AXIS2C_HOME)/lib \
-                 -laxis2_util \
-                 -laxis2_axiom
+				 ../../../../../util/src/libaxis2_util.la \
+				 ../../../../../axiom/src/om/libaxis2_axiom.la \
+				 ../../../../../woden/src/wsdl20/libwoden.la
 
 libw2c_default_qname2name_ext_la_LIBADD = \
                  $(top_builddir)/src/util/libw2c_util.la \
-                 -L$(AXIS2C_HOME)/lib \
-                 -laxis2_util \
-                 -laxis2_axiom
+				 ../../../../../util/src/libaxis2_util.la \
+				 ../../../../../axiom/src/om/libaxis2_axiom.la \
+				 ../../../../../woden/src/wsdl20/libwoden.la
 
 libw2c_c_code_indenter_ext_la_LIBADD = \
                  $(top_builddir)/src/util/libw2c_util.la \
-                 -L$(AXIS2C_HOME)/lib \
-                 -laxis2_util \
-                 -laxis2_axiom
+				 ../../../../../util/src/libaxis2_util.la \
+				 ../../../../../axiom/src/om/libaxis2_axiom.la \
+				 ../../../../../woden/src/wsdl20/libwoden.la
 
 INCLUDES = -I$(top_builddir)/include \
-                        @UTILINC@ \
-                        @AXIOMINC@
+			-I ../../../../../util/include \
+			-I ../../../../../axiom/include 
