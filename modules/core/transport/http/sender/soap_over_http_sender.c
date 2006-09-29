@@ -441,10 +441,11 @@ axiom_soap_over_http_sender_send(
         op = AXIS2_MSG_CTX_GET_OP(msg_ctx, env);
         if (op)
         {
+            const axis2_char_t *mep = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_HTTP_CLIENT_TRANSPORT_ERROR,
                 AXIS2_FAILURE);
             /* handle one way case */
-            const axis2_char_t *mep = AXIS2_OP_GET_MSG_EXCHANGE_PATTERN(op, env);
+            
             if (AXIS2_STRCMP(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
                 AXIS2_STRCMP(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
             {
