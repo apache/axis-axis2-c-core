@@ -69,32 +69,27 @@ Table of Contents
 3. Then go to the folder where you extracted the source
         cd /your_path_to_axis2c_source
 
-4. Set parser location
-   Include path and library path to parser should be set. For libxml2, this is automatically
-   resolved by the configure script.
-
-5. Build the source
+4. Build the source
    This can be done by running the 'configure; make; make install' command sequence in the 
-   sub folders 
-         1. util
-         2. axiom
-         3. xml_schema
-         4. woden; and then in 
-         5. root folder of source extract
+   AXIS2C_HOME directory 
 
-   in that order. Note that each sub folder mentioned in the above sequence represents 
-   a separate independent sub project in Axis2/C. The latter sub projects in the above sequence 
-   need the predecessors to build. e.g. AXIOM needs utils and XML schema needs both AXIOM
-   and utils etc. Hence you have to use extra prefixes such as --with-axis2_util or 
-   --with-axiom to indicate where the dependencies are located.
-
+    ./configure
+     make
+     make install
+        	
    Please run './configure --help' in respective sub folders for more information on
    these configure options. 
 
    You may also need to set LD_LIBRARY_PATH to include the install locations.
 
    NOTE: If you don't provide a --prefix configure option, it will by default install into
-   /usr/local/axis2c folder.
+   ====  /usr/local/axis2c folder.
+
+
+    You may need to try Axis2c with guththila xml parser. You can do it by giving --enable-guththila=yes
+      ./configure --enable-guththila=yes [other configuration options]
+	make
+        make install
 
    If you need to get the samples working, you also need to build the samples.
    Please run './configure --help' in samples folder for more information on
@@ -105,18 +100,9 @@ Table of Contents
         make
         make install
 
-   There is a shell script that is meant to help you build all of the source in one step,
-   named axis2c_build.sh. This script can be given the location you wish to install
-   as a command line argument; if not given, the default install location is 
-   /usr/local/axis2c.
-   In the source root run:
-        ./axis2c_build.sh [path_your_wish_to_install_axis2c_binaries]
+5. Go to the folder where you installed axis2c.
 
-   You can also build the rampart module if you wish to test WS-Security implementation.
-
-6. Go to the folder where you installed axis2c.
-
-7. Start simple axis server
+6. Start simple axis server
         cd axis2c/bin
         ./axis2_http_server
 
@@ -155,7 +141,7 @@ Table of Contents
 
     The c:\axis2c-M0.4 folder structure is as follows.
 
-    axis2c-M0.4
+    axis2c-0.94
       |
 	  +- bin         - server and other executables
       |   |
@@ -181,18 +167,18 @@ Table of Contents
 
     You need to set a couple of environment variables before you can run the server and samples.
 
-    Set the variable AXIS2C_HOME to the deploy folder (C:\axis2c-M0.4)
+    Set the variable AXIS2C_HOME to the deploy folder (C:\axis2c-0.94)
     Add the path to lib directory to the PATH variable (%AXIS2C_HOME%\lib)
 
     Now everything is set to run the server!
 
-    C:\axis2c-M0.4\bin>axis2_http_server.exe 
+    C:\axis2c-0.94\bin>axis2_http_server.exe 
 
     You should see the message:
         Started Simple Axis2 HTTP Server...
 
     By default the log is created under %AXIS2C_HOME%\logs folder with the name axis2.log.
-    (Note: You may provide command line options to change the default behavior. Type "axis2_http_server.exe -h" to learn about the usage)
+    (Note: You may provide command line options to change the default behaviour. Type "axis2_http_server.exe -h" to learn about the usage)
 
     Now you can run any sample client deployed under %AXIS2C_HOME%\bin\samples\
     Example:
@@ -286,7 +272,7 @@ Table of Contents
         Started Simple Axis2 HTTP Server...
 
     By default, the log is created under %AXIS2C_HOME%\logs folder with the name axis2.log.
-    (Note: You may provide command line options to change the default behavior. Type "axis2_http_server.exe -h" to learn about the usage)
+    (Note: You may provide command line options to change the default behaviour. Type "axis2_http_server.exe -h" to learn about the usage)
 
     Now you can run any sample client deployed under %AXIS2C_HOME%\bin\samples\
     Example:
@@ -301,11 +287,11 @@ Table of Contents
 5.1.1 On the Linux Platform
 
     Provide the Apache2 include file location as a configure option
-        ./configure --with-apache2="<apache2 include files location>" [other configure options]
+        ./configure --with-apache2="<apache2 directory>" [other configure options]
 
     NOTE: Some apache2 distributions install APR (Apache Portable Run-time) include files in a
     separate location which is required to build mod_axis2. In that case use:
-        ./configure --with-apache2="<apache2 include files location>" --with-apr="<apr include files location>" [other configure options]
+        ./configure --with-apache2="<apache2 directory>" --with-apr="<apr include files location>" [other configure options]
 
     Then build the source tree
         make
@@ -363,3 +349,71 @@ Table of Contents
         http://localhost/axis2/services
 
     Enjoy the Axis2C soap engine!
+
+
+
+
+
+FAQ
+=======
+
+1. Although I was able to get simple axis server up, unable to run samples ?
+
+        This could happen because of wrong location of AXIS2C_HOME 
+
+
+2. What are the other dependencies Axis2c has ?
+     
+        Basically if you are willing to use libxml2 as your parser, you need to have it installed on your system.
+and rampart (security module of axis2c) has dependency on openssl.
+
+        libxml2 - http://xmlsoft.org/downloads.html
+
+3. I installed libxml2 installed in my system, but ./configure fails saying "libxml2 not found"
+
+        Yes, you need to install libxml2-dev packages. 
+		
+		1. If you are using debian based system
+    			apt-get install libxml2-dev
+                2. If you are using redhat based system.
+                        yum install libxml2-dev
+		3. If you compile libxml2 from source this you will not get this error.
+
+4. I installed openssl in my system but , I'm getting an error while configuring rampart ?
+    
+         You might need to get installed "libssl-dev"
+
+5. Is there any recommended packages ,that I need to installed in my system ?
+
+                1. automake, autoconf , libtool, aclocal
+                2. libxml2 and libxml2-dev
+		3. openssl
+                4. libssl-dev
+		5. pkg-config
+  		
+6. I tried several methods, browse through axis-c-dev and axis-c-user mail archives but I' was unable solve it ?
+
+    Then you can ask from axis2c users or Axis2c developers about it by sending your question to 
+         user 	   = axis-c-user@ws.apache.org    
+         developer = axis-c-dev@ws.apache.org 
+
+      You can get subscribe to 
+
+                 axis-c-user list by sending request to  "axis-c-user-subscribe@ws.apache.org"
+
+                 axis-c-dev  list by sending request to  "axis-c-dev-subscribe@ws.apache.org"
+
+       subject of the request should be "subscribe"
+
+
+7. This FAQ is not enough ?
+       
+       You can help us by reporting your suggestions, complaints, problems and bugs ...
+
+
+
+ Thank you for using Axis2c ...
+
+
+
+

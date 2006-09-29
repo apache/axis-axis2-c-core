@@ -1,4 +1,4 @@
-We are pleased to announce the release of Apache Axis2/C version 0.93.
+We are pleased to announce the release of Apache Axis2/C version 0.94.
 You can download this release from
 http://ws.apache.org/axis2/c/download.cgi
 
@@ -25,28 +25,25 @@ Key Features
   16. Security module with UsernameToken support
   17. REST support (HTTP GET case) - New
   18. Dynamic invocation support (based on XML schema and WSDL implementations) - New
+  19. Guththila pull parser support
+  20. WSDL2C code generation tool- with schema code generation (experimental)
+  21. TCP Monitor - C implementation (experimental)
 
 Major Changes Since Last Release
-
-   1. REST support for HTTP GET case
-   2. XML Schema implementation
-   3. Woden/C implementation that supports both WSDL 1.1 and WSDL 2.0
-   4. Dynamic client invocation (given a WSDL, consume services dynamically)
-   5. Numerous improvements to API and API documentation
-   6. Many bug fixes, especially, many paths of execution previously untouched were tested along with 
-      Sandesha2/C implementation
-
+   1. Guththila pull parser support
+   2. WSDL2C code generation tool
+   3. TCP Monitor - C implementation 
+   4. Major Memory leak fixes
+   5. Fixes to code generation with Java Tool
+   6. Many Bug Fixes
+ 
 TODOs Remaining for 1.0
-
    1. Complete API documentation and API improvements
-   2. Fix major memory leaks
-   3. Test codegen for both ADB and none cases
-   4. Put in place a comprehensive functional test framework
-   5. WSDL2C tool
+   2. Fix further memory leaks
+   3. Put in place a comprehensive functional test framework
 
-
+  
 We welcome your early feedback on this implementation.
 Thanks for your interest in Axis2C
 
 -- Apache Axis2C Team -- 
-

@@ -723,3 +723,18 @@ axis2_op_client_set_callback_recv(
     AXIS2_INTF_TO_IMPL(op_client)->callback_recv = callback_recv;
     return AXIS2_SUCCESS;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

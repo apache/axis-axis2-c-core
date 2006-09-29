@@ -1,4 +1,3 @@
-
                           Apache Axis2/C
 
   What is it?
@@ -64,8 +63,26 @@
        subscribe to the `axis-c-dev@ws.apache.org' mailing list as described at
        http://ws.apache.org/axis2/c/mail-lists.html
 
-  Acknowledgments
+  Acknowledgements
   ----------------
 
   Apache Axis2/C relies heavily on the use of autoconf and libtool to provide
   a build environment.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

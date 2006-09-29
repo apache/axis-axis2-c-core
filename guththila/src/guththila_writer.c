@@ -108,3 +108,10 @@ guththila_writer_get_buffer(axis2_env_t *env,
     else
         return (char *)NULL;
 }
+
+
+
+
+
+
+
