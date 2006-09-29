@@ -137,7 +137,7 @@ AC_ARG_WITH(apache2,
     AC_MSG_RESULT(yes)
     dnl Find apache2 include dir in the path pointed by APACHE2_HOME env variable
     if test -d $withval; then
-        apache2inc="-I$withval"
+        apache2inc="-I$withval/include"
     dnl else find the apache2 include dir in /usr/local/apache2
     elif test -d '/usr/include/apache2'; then
         apache2inc="-I/usr/include/apache2"
@@ -161,7 +161,7 @@ AC_ARG_WITH(apr,
     AC_MSG_RESULT(yes)
     dnl Find apr include dir in the path
     if test -d $withval; then
-        aprinc="-I$withval"
+        aprinc="-I$withval/include"
     dnl else find the apache2 include dir in /usr/local/apache2
     elif test -d '/usr/include/apr-0'; then
         aprinc="-I/usr/include/apr-0"
