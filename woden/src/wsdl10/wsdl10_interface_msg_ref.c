@@ -504,6 +504,12 @@ create(const axis2_env_t *env)
     axis2_hash_set(interface_msg_ref_impl->methods, "get_direction",
             AXIS2_HASH_KEY_STRING,
             woden_wsdl10_interface_msg_ref_get_direction);
+    axis2_hash_set(interface_msg_ref_impl->methods, "get_msg",
+            AXIS2_HASH_KEY_STRING,
+            woden_wsdl10_interface_msg_ref_get_msg);
+    axis2_hash_set(interface_msg_ref_impl->methods, "set_msg",
+            AXIS2_HASH_KEY_STRING,
+            woden_wsdl10_interface_msg_ref_set_msg);
     axis2_hash_set(interface_msg_ref_impl->methods, "get_msg_content_model",
             AXIS2_HASH_KEY_STRING,
             woden_wsdl10_interface_msg_ref_get_msg_content_model);

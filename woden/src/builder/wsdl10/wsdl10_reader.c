@@ -2135,8 +2135,28 @@ parse_interface_msg_ref(
         axis2_char_t *namespc_str = NULL;
         axis2_array_list_t *msgs = NULL;
         int i = 0, size = 0;
+        axis2_char_t *tmp_msg = NULL;
+
+       /**
+        * NOTE:
+        * msg can contain names like "impl:msg_name"
+        * this time msg_name is in impl prefixed namespace rather than in tns
+        * so the following logic is wrong.
+        */
 
         namespc = WODEN_WSDL10_DESC_ELEMENT_GET_TARGET_NAMESPACE(desc, env);
+
+        /** currently I m removing impl from the msg */
+        for ( tmp_msg = msg; *msg != ':' && *msg != '\0' && *msg != '|'; msg ++ );
+        if(  *msg == '\0' || *msg == '|')
+        {
+            msg = tmp_msg;
+        }
+        else
+        {
+            msg++;
+        }
+
         namespc_str = AXIS2_URI_TO_STRING(namespc, env, AXIS2_URI_UNP_OMITUSERINFO);
         qname = axis2_qname_create(env, msg, namespc_str, NULL);
         msg_ref = woden_wsdl10_interface_msg_ref_to_interface_msg_ref_element(
