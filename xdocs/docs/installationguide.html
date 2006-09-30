@@ -154,10 +154,6 @@ source distribution on Linux</p>
       <li>cd /your_path_to_axis2c_source</li>
     </ul>
   </li>
-  <li>Set parser location
-    <p>Include path and library path to parser should be set. For libxml2
-    this is automatically resolved by configure script.</p>
-  </li>
   <li>Build the source
     <ul>
       <li>This can be done using the following command sequence:
@@ -170,6 +166,15 @@ source distribution on Linux</p>
       <li>use './configure --help' for possible command line options.</li>
       <li>NOTE: If you don't provide a --prefix configure option, it will by
         defaul install into /usr/local/axis2c folder.</li>
+      <li>You may also need to set LD_LIBRARY_PATH to include the
+      install locations.</li>
+     <li>    You may need to try axis2c with guththila xml parser. You
+     can do it by giving --enable-guththila=yes</li>
+           <ul> 
+	   <li> ./configure --enable-guththila=yes [other configuration options]</li>
+	   <li>make</li>
+	   <li> make install</li>
+	   </ul>
       <li>If you need to get the samples working, you also need to build the
         samples.
         <p>To build samples:</p>

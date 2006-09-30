@@ -65,7 +65,7 @@
         </mailingList>
     </mailingLists>
 	
-    <!-- ========== -->
+        <!-- ========== -->
 	<!-- Developers -->
 	<!-- ========== -->
 	<developers>
@@ -73,12 +73,6 @@
 			<name>Samisa Abeysinghe</name>
 			<id>samisa</id>
 			<email>samisa AT wso2.com</email>
-			<organization>WSO2</organization>
-		</developer>
-		<developer>
-			<name>Paul Fremantle</name>
-			<id>pzf</id>
-			<email>paul AT wso2.com</email>
 			<organization>WSO2</organization>
 		</developer>
 		<developer>
@@ -108,13 +102,31 @@
 		<developer>
 			<name>Dinesh Premalal</name>
 			<id>dinesh</id>
-			<email>xydinesh AT gmail.com</email>
-			<organization>University of Moratuwa</organization>
+			<email>dinesh AT wso2.com</email>
+			<organization>WSO2</organization>
 		</developer>
 		<developer>
 			<name>Sanjaya Rathnaweera</name>
 			<id>pini</id>
 			<email>sanjaya AT wso2.com</email>
+			<organization>WSO2</organization>
+		</developer>
+		<developer>
+			<name>Nabeel Yoosuf</name>
+			<id>nabeel</id>
+			<email>nabeel.yoosuf AT gmail.com</email>
+			<organization>Purdue University</organization>
+		</developer>
+		<developer>
+		        <name>Dimuthu Gamage</name>
+			<id>dimuthucg</id>
+			<email>dimuthuc AT gmail.com</email>
+			<organization>Univerisity of Moratuwa</organization>
+		</developer>
+		<developer>
+			<name>Paul Fremantle</name>
+			<id>pzf</id>
+			<email>paul AT wso2.com</email>
 			<organization>WSO2</organization>
 		</developer>
 		<developer>
@@ -129,12 +141,6 @@
 			<email>sanjiva AT wso2.com</email>
 			<organization>WSO2</organization>
 		</developer>
-		<developer>
-			<name>Nabeel Yoosuf</name>
-			<id>nabeel</id>
-			<email>nabeel.yoosuf AT gmail.com</email>
-			<organization>Purdue University</organization>
-		</developer>
 	</developers>
 	<contributors>
 		<contributor>
@@ -142,14 +148,6 @@
 			<email>jjc AT public.jclark.com</email>
             <roles>
                 <role>Technical Adviser on Building a Portable/Re-usable C library</role>
-            </roles>
-		</contributor>
-		<contributor>
-			<name>Dimuthu Gamage</name>
-			<email>dimuthuc AT gmail.com</email>
-			<organization>Univerisity of Moratuwa</organization>
-            <roles>
-                <role>Implemeted WSDL2C tool</role>
             </roles>
 		</contributor>
 	</contributors>
