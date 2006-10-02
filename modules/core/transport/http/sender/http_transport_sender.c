@@ -571,7 +571,7 @@ axis2_http_transport_sender_write_message(
 {
     const axis2_char_t *soap_action = NULL;
     const axis2_char_t *url = NULL;
-    axiom_soap_over_http_sender_t *sender = NULL;
+    axis2_soap_over_http_sender_t *sender = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -626,23 +626,23 @@ axis2_http_transport_sender_write_message(
     }
     else
     {
-        sender = axiom_soap_over_http_sender_create(env);
+        sender = axis2_soap_over_http_sender_create(env);
 
         if (NULL == sender)
         {
             return AXIS2_FAILURE;
         }
-        AXIOM_SOAP_OVER_HTTP_SENDER_SET_CHUNKED(sender, env,
+        AXIS2_SOAP_OVER_HTTP_SENDER_SET_CHUNKED(sender, env,
                 AXIS2_INTF_TO_IMPL(transport_sender)->chunked);
-        AXIOM_SOAP_OVER_HTTP_SENDER_SET_OM_OUTPUT(sender, env, om_output);
+        AXIS2_SOAP_OVER_HTTP_SENDER_SET_OM_OUTPUT(sender, env, om_output);
         AXIOM_SOAP_OVER_SENDER_SET_HTTP_VERSION(sender, env,
                 AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
-        status = AXIOM_SOAP_OVER_HTTP_SENDER_SEND(sender, env, msg_ctx, out, url
+        status = AXIS2_SOAP_OVER_HTTP_SENDER_SEND(sender, env, msg_ctx, out, url
                 , soap_action);
         /*
          * TODO check for errors
          */
-        AXIOM_SOAP_OVER_HTTP_SENDER_FREE(sender, env);
+        AXIS2_SOAP_OVER_HTTP_SENDER_FREE(sender, env);
         sender = NULL;
     }
     return status;
