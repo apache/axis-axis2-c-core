@@ -100,7 +100,7 @@ AC_ARG_ENABLE(rampart, [  --enable-rampart build ramprt. default=no],
 
     ;;
   esac ],
-  AC_MSG_RESULT(yes)
+  AC_MSG_RESULT(no)
   RAMPART_DIR="rampart"
 )
 
