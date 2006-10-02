@@ -10,7 +10,7 @@ main_unit_test_suite_LDADD   =	-L$(CUTEST_HOME)/lib \
 					 			-lxml2 \
                     			-L$(top_builddir)/test/unit/om -ltest_om \
                     			$(top_builddir)/src/om/libaxis2_axiom.la \
-                    			$(top_builddir)/src/parser/libxml2/libaxis2_libxml2.la
+                    			$(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la
                     
 
 INCLUDES = -I${CUTEST_HOME}/include \

@@ -18,7 +18,7 @@ om_test_LDADD   =   libtest_om.la  \
                     -lcutest \
 					../../../../util/src/libaxis2_util.la \
 					$(top_builddir)/src/om/libaxis2_axiom.la \
-                    $(top_builddir)/src/parser/libxml2/libaxis2_parser.la \
+                    $(top_builddir)/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
                     $(LIBXML2_LIBS) \
                     $(GUTHTHILA_LIBS)
                     
