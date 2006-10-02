@@ -101,7 +101,6 @@ AC_ARG_ENABLE(rampart, [  --enable-rampart build ramprt. default=no],
     ;;
   esac ],
   AC_MSG_RESULT(no)
-  RAMPART_DIR="rampart"
 )
 
 AC_MSG_CHECKING(whether to build libxml2 xml parser library)
