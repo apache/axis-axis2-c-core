@@ -11,7 +11,7 @@ xml_schema_test_LDADD   =	-L$(CUTEST_HOME)/lib \
 						-lcutest \
 						../../util/src/libaxis2_util.la \
 						../../axiom/src/om/libaxis2_axiom.la \
-						../../axiom/src/parser/$(PARSER_DIR)/libaxis2_parser.la \
+						../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 						$(top_builddir)/src/libaxis2_xml_schema.la \
 						$(LIBXML2_LIBS)
                     

@@ -27,7 +27,7 @@ bindist: $(bin_PROGRAMS)
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
 	sh bindist.sh
 	mkdir axis2c-bin-${PACKAGE_VERSION}-linux
-	cp -r ${AXIS2C_HOME}/* axis2c-bin-${PACKAGE_VERSION}-linux
+	cp -r `pwd`/deploy/* axis2c-bin-${PACKAGE_VERSION}-linux
 	tar -cf - axis2c-bin-${PACKAGE_VERSION}-linux | gzip -c > axis2c-bin-${PACKAGE_VERSION}-linux.tar.gz
 	rm -rf axis2c-bin-${PACKAGE_VERSION}-linux
 

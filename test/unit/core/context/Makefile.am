@@ -20,7 +20,7 @@ context_test_LDADD   =   \
                         -lcutest \
 						../../../../util/src/libaxis2_util.la \
 						../../../../axiom/src/om/libaxis2_axiom.la \
-						../../../../axiom/src/parser/$(PARSER_DIR)/libaxis2_parser.la \
+						../../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 						../../../../woden/src/wsdl20/libwoden.la \
 						../../../../xml_schema/src/libaxis2_xml_schema.la \
 						$(top_builddir)/modules/core/engine/libaxis2_engine.la \

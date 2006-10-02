@@ -13,7 +13,7 @@ w2c_unit_test_suite_LDADD   =   \
                      ../../../../util/src/libaxis2_util.la \
                      ../../../../axiom/src/om/libaxis2_axiom.la \
                      ../../../../xml_schema/src/libaxis2_xml_schema.la \
-                     ../../../../axiom/src/parser/$(PARSER_DIR)/libaxis2_parser.la \
+                     ../../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
                      -lxslt \
                      -lxml2
 

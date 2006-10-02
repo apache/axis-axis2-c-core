@@ -1,5 +1,5 @@
 TESTS =
-prglibdir=$(prefix)/rampart
+prglibdir=$(prefix)/rampart/rampart
 prglib_LTLIBRARIES = libmod_rampart.la
 prglib_DATA= ../data/module.xml
 

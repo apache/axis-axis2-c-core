@@ -94,16 +94,18 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library w
 [ case "${enableval}" in
   no)
     AC_MSG_RESULT(no)
-    PARSER_DIR=""
+    WRAPPER_DIR=""
     ;;
   *)
     AC_MSG_RESULT(yes)
-    PARSER_DIR="libxml2"
+    WRAPPER_DIR="libxml2"
+    PKG_CHECK_MODULES(PARSER, libxml-2.0)
+    CFLAGS="$CFLAGS $PARSER_LIBS"
 
     ;;
   esac ],
   AC_MSG_RESULT(yes)
-  PARSER_DIR="libxml2"
+  WRAPPER_DIR="libxml2"
 )
 
 AC_MSG_CHECKING(whether to build guththila xml parser library)
@@ -114,12 +116,14 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser lib
     ;;
   *)
     AC_MSG_RESULT(yes)
-    PARSER_DIR="guththila"
+    WRAPPER_DIR="guththila"
     if test -d $srcdir/guththila; then
         AC_CONFIG_SUBDIRS(guththila)
     fi
 
-   GUTHTHILA_DIR="guththila"
+#    GUTHTHILA_LIBS="../../../../../../guththila/src/"
+    GUTHTHILA_DIR="guththila"
+
     ;;
   esac ],
   AC_MSG_RESULT(no)
@@ -261,9 +265,11 @@ AC_ARG_ENABLE(diclient, [  --enable-diclient    build diclient library wrapper. 
 )
 
 
+
 APACHE2INC=$apache2inc
 APRINC=$aprinc
 
+AC_SUBST(PARSER_LIBS)
 AC_SUBST(APACHE2INC)
 AC_SUBST(APRINC)
 AC_SUBST(DICLIENT_DIR)
@@ -271,9 +277,12 @@ AC_SUBST(TESTDIR)
 AC_SUBST(SAMPLES)
 AC_SUBST(APACHE2BUILD)
 AC_SUBST(PARSER_DIR)
+AC_SUBST(WRAPPER_DIR)
 AC_SUBST(GUTHTHILA_DIR)
+#AC_SUBST(GUTHTHILA_LIBS)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
-export PARSER_DIR
+#export PARSER_DIR
+export WRAPPER_DIR
 export prefix 
 
 AC_CONFIG_FILES([Makefile \

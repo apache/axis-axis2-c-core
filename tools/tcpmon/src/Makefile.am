@@ -14,7 +14,7 @@ libaxis2_tcpmon_la_LIBADD = \
 			 ../../../util/src/libaxis2_util.la \
 			 ../../../woden/src/wsdl20/libwoden.la \
 			 ../../../axiom/src/om/libaxis2_axiom.la \
-			 ../../../axiom/src/parser/$(PARSER_DIR)/libaxis2_parser.la \
+			 ../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 			 ../../../xml_schema/src/libaxis2_xml_schema.la \
             $(NULL)
 
@@ -26,7 +26,7 @@ tcpmon_LDADD =  \
 			 ../../../util/src/libaxis2_util.la \
 			 ../../../woden/src/wsdl20/libwoden.la \
 			 ../../../axiom/src/om/libaxis2_axiom.la \
-			 ../../../axiom/src/parser/$(PARSER_DIR)/libaxis2_parser.la \
+			 ../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
 			 ../../../xml_schema/src/libaxis2_xml_schema.la \
              $(NULL)
 

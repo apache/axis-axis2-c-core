@@ -20,7 +20,7 @@ w2c_codegen_test_LDADD   =   libtest_w2c_codegen.la \
                      -lcutest \
 					 ../../../../../util/src/libaxis2_util.la \
 					 ../../../../../axiom/src/om/libaxis2_axiom.la \
-					 ../../../../../axiom/src/parser/$(PARSER_DIR)/libaxis2_parser.la \
+					 ../../../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
                      -lxslt \
                      -lxml2
 

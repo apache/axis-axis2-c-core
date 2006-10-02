@@ -13,7 +13,7 @@ x2c_LDADD =  \
              ../../../../axiom/src/om/libaxis2_axiom.la \
              ../../../../xml_schema/src/libaxis2_xml_schema.la \
              ../../../../woden/src/wsdl20/libwoden.la \
-			../../../../axiom/src/parser/$(PARSER_DIR)/libaxis2_parser.la \
+			../../../../axiom/src/parser/$(WRAPPER_DIR)/libaxis2_parser.la \
              -lxml2 \
              -lxslt \
 			 $(NULL)
