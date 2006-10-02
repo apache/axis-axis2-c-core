@@ -38,10 +38,6 @@ if test -d $srcdir/woden; then
     AC_CONFIG_SUBDIRS(woden)
 fi
 
-if test -d $srcdir/rampart; then
-    AC_CONFIG_SUBDIRS(rampart)
-fi
-
 #CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Wno-implicit-function-declaration"
 CFLAGS="$CFLAGS -D_LARGEFILE64_SOURCE"
 if test "$GCC" = "yes"; then
@@ -79,8 +75,7 @@ AC_CHECK_HEADERS([net/if_dl.h])
 
 dnl This is a check to see if we are running MacOS X
 dnl It may be better to do a Darwin check
-AC_CHECK_HEADERS([sys/appleapiopts.h])
-
+AC_CHECK_HEADERS([sys/appleapiopts.h]) 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 
@@ -88,6 +83,26 @@ dnl Checks for library functions.
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 #AC_CHECK_FUNCS([memmove])
+
+AC_MSG_CHECKING(whether to build rampart )
+AC_ARG_ENABLE(rampart, [  --enable-rampart build ramprt. default=no],
+[ case "${enableval}" in
+  no)
+    AC_MSG_RESULT(no)
+    RAMPART_DIR=""
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    RAMPART_DIR="rampart"
+    if test -d $srcdir/rampart; then
+        AC_CONFIG_SUBDIRS(rampart)
+    fi
+
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  RAMPART_DIR="rampart"
+)
 
 AC_MSG_CHECKING(whether to build libxml2 xml parser library)
 AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=yes],
@@ -279,6 +294,7 @@ AC_SUBST(APACHE2BUILD)
 AC_SUBST(PARSER_DIR)
 AC_SUBST(WRAPPER_DIR)
 AC_SUBST(GUTHTHILA_DIR)
+AC_SUBST(RAMPART_DIR)
 #AC_SUBST(GUTHTHILA_LIBS)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
 #export PARSER_DIR

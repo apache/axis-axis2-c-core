@@ -1,7 +1,7 @@
 datadir=$(prefix)
 logsdir=$(prefix)/logs
 docsdir=$(prefix)/docs
-SUBDIRS = util $(GUTHTHILA_DIR) axiom xml_schema woden modules rampart $(TESTDIR) include ides
+SUBDIRS = util $(GUTHTHILA_DIR) axiom xml_schema woden modules $(RAMPART_DIR) $(TESTDIR) include ides
 include_HEADERS=$(top_builddir)/include/*.h
 data_DATA= samples/server/axis2.xml README \
 	INSTALL CREDITS COPYING NEWS config.guess missing install-sh depcomp config.sub ltmain.sh
