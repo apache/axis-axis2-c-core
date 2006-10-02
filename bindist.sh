@@ -1,10 +1,11 @@
 #!/bin/bash
+make distclean
 
 ./autogen.sh
 AXIS2C_HOME=`pwd`/deploy
 export AXIS2C_HOME 
 
-./configure --prefix=${AXIS2C_HOME} --enable-tests=yes --enable-trace=yes  --enable-diclient=no --enable-static=no --enable-openssl=no 
+./configure --prefix=${AXIS2C_HOME} --enable-tests=no --enable-trace=yes  --enable-diclient=no --enable-static=no --enable-openssl=no 
 
 make
 make install
