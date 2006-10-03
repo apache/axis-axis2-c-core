@@ -3,14 +3,40 @@ sh clean.sh
 
 ./autogen.sh
 AXIS2C_HOME=`pwd`/deploy
-export AXIS2C_HOME 
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$AXIS2C_HOME/lib
+export AXIS2C_HOME LD_LIBRARY_PATH
 
-./configure --prefix=${AXIS2C_HOME} --enable-tests=no --enable-trace=yes  --enable-diclient=no --enable-static=no --enable-openssl=no --with-apache2=/usr/local/apache2/
+./configure --prefix=${AXIS2C_HOME} --enable-tests=no --enable-trace=yes  --enable-diclient=no --enable-static=no --enable-openssl=no --with-apache2=/usr/local/apache2
 
 make
 make install
 
-cd samples
+cd woden/samples
+./autogen.sh
+./configure --prefix=${AXIS2C_HOME}
+make 
+make install
+
+cd ../../xml_schema/samples
+./autogen.sh
+./configure --prefix=${AXIS2C_HOME}
+make 
+make install
+
+cd ../../tools/codegen
+./autogen.sh
+./configure --prefix=${AXIS2C_HOME} --enable-tests=no
+make
+make install
+
+cd ../tcpmon
+./autogen.sh
+./configure --prefix=${AXIS2C_HOME} --enable-tests=no
+make
+make install
+
+
+cd ../../samples
 
 ./autogen.sh
 
@@ -25,6 +51,7 @@ rm -rf ${AXIS2C_HOME}/samples
 mv samples ${AXIS2C_HOME}
 
 cd ..
+
 rm -rf xdocs/api/html
 maven site
 cd xdocs/api 
