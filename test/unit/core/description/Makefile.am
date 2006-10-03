@@ -37,6 +37,6 @@ description_test_LDADD   =   libtest_description.la  \
 					 ../../../../woden/src/wsdl20/libwoden.la \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
-                    $(GUTHTHILA_LIBS) \
+                    -L$(top_builddir)$(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
 

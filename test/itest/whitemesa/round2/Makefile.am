@@ -10,9 +10,9 @@ round2_LDADD   =    $(LDFLAGS) \
                     ../../../../xml_schema/src/libaxis2_xml_schema.la \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 					$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
-					$(top_builddir)//modules/core/transport/http/sender/libaxis2_http_sender.la \
+					$(top_builddir)/modules/core/transport/http/sender/libaxis2_http_sender.la \
 					$(top_builddir)/modules/core/transport/http/receiver/libaxis2_http_receiver.la \
-                    $(GUTHTHILA_LIBS) \
+                    -L$(top_builddir)/$(GUTHTHILA_LIBS) \
                     $(LIBXML2_LIBS)
 
 INCLUDES = -I$(top_builddir)/include \

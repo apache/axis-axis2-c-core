@@ -122,6 +122,9 @@ AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library w
   WRAPPER_DIR="libxml2"
 )
 
+
+GUTHTHILA_LIBS=""
+
 AC_MSG_CHECKING(whether to build guththila xml parser library)
 AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser library wrapper. default=no],
 [ case "${enableval}" in
@@ -135,7 +138,7 @@ AC_ARG_ENABLE(guththila, [  --enable-guththila    build guththila xml parser lib
         AC_CONFIG_SUBDIRS(guththila)
     fi
 
-#    GUTHTHILA_LIBS="../../../../../../guththila/src/"
+    GUTHTHILA_LIBS="/guththila/src/"
     GUTHTHILA_DIR="guththila"
 
     ;;
@@ -294,7 +297,7 @@ AC_SUBST(PARSER_DIR)
 AC_SUBST(WRAPPER_DIR)
 AC_SUBST(GUTHTHILA_DIR)
 AC_SUBST(RAMPART_DIR)
-#AC_SUBST(GUTHTHILA_LIBS)
+AC_SUBST(GUTHTHILA_LIBS)
 AM_CONDITIONAL(AXIS2_SSL_ENABLED, test x$ssl_enabled = xtrue)
 #export PARSER_DIR
 export WRAPPER_DIR

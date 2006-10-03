@@ -14,7 +14,7 @@ test_context_LDADD   =	../../../util/src/libaxis2_util.la \
 						../../../xml_schema/src/libaxis2_xml_schema.la \
 						$(top_builddir)/modules/core/engine/libaxis2_engine.la \
 						$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
-			        	$(GUTHTHILA_LIBS) \
+			        	-L$(top_builddir)$(GUTHTHILA_LIBS) \
 			        	$(LIBXML2_LIBS)
 
 INCLUDES = -I${CUTEST_HOME}/include \

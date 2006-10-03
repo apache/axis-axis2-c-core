@@ -19,8 +19,8 @@ axis2_http_server_LDADD   =  $(LDFLAGS) \
                             -laxis2_wsdl \
                             -laxis2_http_sender \
                             -laxis2_http_receiver \
-                            $(LIBXML2_LIBS) \
-                            $(GUTHTHILA_LIBS)
+							-L$(top_builddir)$(GUTHTHILA_LIBS) \
+                            $(LIBXML2_LIBS)
                     
 INCLUDES =  -I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl\

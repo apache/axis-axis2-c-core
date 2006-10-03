@@ -5,6 +5,7 @@ libmod_axis2_la_SOURCES = mod_axis2.c\
                        apache2_out_transport_info.c\
                        apache2_worker.c
 AM_CFLAGS = -DLINUX=2 -D_REENTRANT -D_XOPEN_SOURCE=500 -D_BSD_SOURCE -D_SVID_SOURCE -D_GNU_SOURCE
+
 libmod_axis2_la_LIBADD   = $(LDFLAGS) \
                     -L$(top_builddir)/modules/wsdl \
                     -L$(top_builddir)/modules/core/engine \
@@ -20,9 +21,9 @@ libmod_axis2_la_LIBADD   = $(LDFLAGS) \
                     -laxis2_wsdl \
                     -laxis2_http_sender \
                     -laxis2_http_receiver \
+                    -L$(top_builddir)$(GUTHTHILA_LIBS) \
 					$(PARSER_LIBS) \
-					$(LIBXML2_LIBS) \
-					$(GUTHTHILA_LIBS)
+					$(LIBXML2_LIBS)
 
 INCLUDES = -I$(top_builddir)/include \
 	       -I$(top_builddir)/modules/wsdl\

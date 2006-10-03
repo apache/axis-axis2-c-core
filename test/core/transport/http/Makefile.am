@@ -17,7 +17,7 @@ test_http_transport_LDADD   =  \
 							$(top_builddir)/modules/wsdl/libaxis2_wsdl.la \
 							$(top_builddir)/modules/core/transport/http/sender/libaxis2_http_sender.la \
 							$(LIBXML2_LIBS) \
-                    		$(GUTHTHILA_LIBS)
+                    		-L$(top_builddir)$(GUTHTHILA_LIBS)
                     
 INCLUDES = -I${CUTEST_HOME}/include \
             -I$(top_builddir)/include \
