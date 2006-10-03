@@ -1,5 +1,5 @@
 prglibdir=$(prefix)/lib
-prgbindir=$(prefix)/bin
+prgbindir=$(prefix)/bin/tools
 
 prglib_LTLIBRARIES = \
              libaxis2_tcpmon.la
