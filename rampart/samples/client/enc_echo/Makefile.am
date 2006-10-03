@@ -1,8 +1,8 @@
 SUBDIRS = data keys
-prgbindir=$(prefix)/bin/samples/rampart
+prgbindir=$(prefix)/bin/samples/rampart/client/enc_echo
 prgbin_PROGRAMS = echo
-samplesdir=$(prefix)/samples/client/echo
-samples_DATA=echo.c README.txt Makefile.am Makefile.in
+#samplesdir=$(prefix)/samples/client/echo
+#samples_DATA=echo.c README.txt Makefile.am Makefile.in
 echo_SOURCES = echo.c
 
 echo_LDADD   = $(LDFLAGS) \
@@ -21,7 +21,7 @@ echo_LDADD   = $(LDFLAGS) \
                     $(LIBXML2_LIBS)
 
 INCLUDES = -I$(AXIS2C_HOME)/include \
-            -I$(top_builddir)/include \
+            -I ../../../include \
 			@UTILINC@ \
 			@AXIOMINC@
 
