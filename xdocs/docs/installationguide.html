@@ -6,12 +6,11 @@
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <title>Axis2-C Installation Guide</title>
-  <meta name="generator" content="amaya 9.4, see http://www.w3.org/Amaya/" />
+  <meta name="generator" content="amaya 9.51, see http://www.w3.org/Amaya/" />
 </head>
 
 <body xml:lang="en">
 <h1>Axis2/C Installation Guide</h1>
-
 
 <p>This document will guide you on how to install Axis2/C and run the server
 and client samples on Linux and Microsoft Windows operating systems.</p>
@@ -51,18 +50,19 @@ mailing list see <a href="../mail-lists.html">here</a></p>
       </li>
     </ul>
   </li>
-  <li><a href="#installing-apache2">Installing Apache2 Web Server integration module
-    (mod_axis2)</a>
+  <li><a href="#installing-apache2">Installing Apache2 Web Server integration
+    module (mod_axis2)</a>
     <ul>
-      <li><a href="#building-apache2">Building mod_axis2 from source tree</a></li>
-      <li><a href="#deploying-apache2">Deploying in Apache2 Web Server</a></li>
+      <li><a href="#building-apache2">Building mod_axis2 from source
+      tree</a></li>
+      <li><a href="#deploying-apache2">Deploying in Apache2 Web
+      Server</a></li>
     </ul>
   </li>
 </ul>
 
-<p><a></a></p>
-
-<h2>Installing and running on Linux</h2>
+<a id="linux"></a>
+<h2>1. Installing and running on Linux</h2>
 
 <p>This can be done using binary or source distributions</p>
 
@@ -70,29 +70,30 @@ mailing list see <a href="../mail-lists.html">here</a></p>
 which can be downloaded from <a
 href="http://xmlsoft.org/downloads.html">here</a>.</p>
 
-<p>(NOTE: most Linux systems has libxml2 by default.)</p>
-<a></a>
+<p><b>NOTE:</b> Most Linux systems have libxml2 installed by default. On
+Windows you need to download and install libxml2.</p>
 
-<h3>1. Using binary release</h3>
+<a id="linux_binary"></a>
+<h3>1.1. Using binary release</h3>
 
 <p>The following steps need to be taken to install and run Axis2/C using
 binary distribution on Linux</p>
-
-<h4>1. Extract the binary tar package to a folder.</h4>
+<ol>
+<li>Extract the binary tar package to a folder.</li>
+<li>Set AXIS2C_HOME environment variable pointing to the location where you
+  have extracted Axis2C</li>
 <ul>
-  <li>Set AXIS2C_HOME environment variable pointing to the location where you
-    have extracted Axis2C</li>
   <li>AXIS2C_HOME='/your_path_to_axis2c'</li>
-  <li>export AXIS2C_HOME
-    <p>Note: You will need to set AXIS2C_HOME only if you need to run axis2c
-    samples or tests. The reason is</p>
-    <p>that the samples and tests use the AXIS2C_HOME envioronment variable
-    to locate the repository path. To write your own</p>
-    <p>services or clients this would not be neccessary.</p>
-  </li>
+  <li>export AXIS2C_HOME</li>
+  <br />
+
+  <li><strong>NOTE:</strong> You will need to set AXIS2C_HOME only if you
+    need to run Axis2C samples or tests. The reason is that the samples and
+    test codes use AXIS2C_HOME to get the path to Axis2C. To write your own
+    services or clients this is not a requirement.</li>
 </ul>
 
-<h4>2. Run the simple axis server:</h4>
+<li>Run the simple axis server:</li>
 <ul>
   <li>To start the simple axis server on default port 9090, run the following
     commands.
@@ -102,8 +103,10 @@ binary distribution on Linux</p>
     </ul>
   </li>
   <li>To see the possible command line options run ./axis2_http_server -h</li>
-  <li>NOTE: If you run into shared lib problems, try setting the
-    LD_LIBRARY_PATH
+  <br />
+
+  <li><strong>NOTE:</strong> If you run into shared lib problems, try setting
+    the LD_LIBRARY_PATH
     <ul>
       <li>export
       LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</li>
@@ -111,7 +114,7 @@ binary distribution on Linux</p>
   </li>
 </ul>
 
-<h4>3. Run the sample clients in a new shell</h4>
+<li>Run the sample clients in a new shell</li>
 <ul>
   <li>cd /your_path_to_axis2c/bin/samples</li>
   <li>to run client for echo service
@@ -126,15 +129,18 @@ binary distribution on Linux</p>
   </li>
   <li>To see the possible command line options for sample clients run them
     with '-h' option</li>
-  <li>NOTE: If you run into shared lib problems, try setting the
-    LD_LIBRARY_PATH
+  <br />
+
+  <li><strong>NOTE:</strong> If you run into shared lib problems, try setting
+    the LD_LIBRARY_PATH
     <ul>
       <li>export
       LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/your_path_to_axis2c/lib</li>
     </ul>
   </li>
 </ul>
-<a></a>
+</ol>
+<ai id="linux_source"></a>
 
 <h3>2. Using source release</h3>
 
@@ -147,6 +153,12 @@ source distribution on Linux</p>
     <ul>
       <li>AXIS2C_HOME='/your_desired_path_to_axis2c_installation'</li>
       <li>export AXIS2C_HOME</li>
+      <br />
+
+      <li><strong>NOTE:</strong> You will need to set AXIS2C_HOME only if you
+        need to run Axis2C samples or tests. The reason is that the samples
+        and test codes use AXIS2C_HOME to get the path to Axis2C. To write
+        your own services or clients this is not a requirement.</li>
     </ul>
   </li>
   <li>Then go to the folder where you extracted the source
@@ -156,35 +168,54 @@ source distribution on Linux</p>
   </li>
   <li>Build the source
     <ul>
-      <li>This can be done using the following command sequence:
+      <li>This can be done using the following command sequence in the
+        directory where you have extracted the source:
         <ul>
-          <li>./configure</li>
-          <li>make</li>
-          <li>make install</li>
-        </ul>
-      </li>
-      <li>use './configure --help' for possible command line options.</li>
-      <li>NOTE: If you don't provide a --prefix configure option, it will by
-        defaul install into /usr/local/axis2c folder.</li>
-      <li>You may also need to set LD_LIBRARY_PATH to include the
-      install locations.</li>
-     <li>    You may need to try axis2c with guththila xml parser. You
-     can do it by giving --enable-guththila=yes</li>
-           <ul> 
-	   <li> ./configure --enable-guththila=yes [other configuration options]</li>
-	   <li>make</li>
-	   <li> make install</li>
-	   </ul>
-      <li>If you need to get the samples working, you also need to build the
-        samples.
-        <p>To build samples:</p>
-        <ul>
-          <li>cd samples</li>
           <li>./configure --prefix=${AXIS2C_HOME}</li>
           <li>make</li>
           <li>make install</li>
         </ul>
       </li>
+      <li>use './configure --help' for possible command line options.</li>
+      <li><strong>NOTE:</strong> If you don't provide a --prefix configure
+        option, it will by defaul be installed into /usr/local/axis2c
+        directory.</li>
+      <li>You may need to try axis2c with guththila xml parser. You can do it
+        by giving --enable-guththila=yes
+        <ul>
+          <li>./configure --enable-guththila=yes [other configuration
+          options]</li>
+          <li>make</li>
+          <li>make install</li>
+        </ul>
+      </li>
+      <li>In order to build rampart (axis2c security module)
+        <ul>
+          <li>./configure --enable-rampart=yes [other configuration
+          options]</li>
+          <li>make</li>
+          <li>make install</li>
+        </ul>
+      </li>
+      <li>If you need to get the samples working, you also need to build the
+        samples.
+        <br />To build the samples:
+        <ul>
+          <li>export
+          LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/axis2c/lib/</li>
+          <li>cd samples</li>
+          <li>./configure --prefix=${AXIS2C_HOME}</li>
+          <li>--with-axis2_util=${AXIS2C_HOME}/include</li>
+          <li>--with-axiom=${AXIS2C_HOME}/include</li>
+          <li>make</li>
+          <li>sudo make install</li>
+        </ul>
+      </li>
+      <li>Please run "./configure --help" in samples folder for more
+        information on configure options.</li>
+      <li><strong>NOTE:</strong> If you don't provide a --prefix configure
+        option, samples will by default be installed into
+        "/usr/local/axis2c/samples" directory.</li>
     </ul>
   </li>
   <li>Go to where you installed axis2c.</li>
@@ -193,17 +224,19 @@ source distribution on Linux</p>
       <li>To start the simple axis server on port 9090 run the following
         command lines
         <ul>
-          <li>cd axis2c/bin</li>
+          <li>cd ${AXIS2C_HOME}/bin</li>
           <li>./axis2_http_server</li>
         </ul>
       </li>
       <li>To see the possible command line options run ./axis2_http_server
       -h</li>
+      <li> <strong>NOTE:</strong> You may need to be login as superuser to
+        run the simple axis server.</li>
     </ul>
   </li>
   <li>Run the sample clients in a new shell using the following command lines
     <ul>
-      <li>cd bin/samples</li>
+      <li>cd ${AXIS2C_HOME}/bin/samples</li>
       <li>to run client for echo service
         <ul>
           <li>./echo</li>
@@ -219,8 +252,8 @@ source distribution on Linux</p>
     </ul>
   </li>
 </ol>
-<a></a>
 
+<a id="win"></a>
 <h2>Installing and running on Microsoft Windows (win32)</h2>
 
 <p>This too can be done using either binary or source distributions</p>
@@ -230,10 +263,10 @@ href="http://xmlsoft.org/downloads.html">here</a>.</p>
 
 <p>(NOTE: most Linux systems has libxml2 by default. On Windows you need to
 download and install libxml2)</p>
-<a></a>
+<a id="win_binary"></a>
 
 <h3>1. Using binary release</h3>
-<a></a>
+<a id="bin_req"></a>
 
 <h4>Requirements</h4>
 <ul>
@@ -253,7 +286,7 @@ download and install libxml2)</p>
     </ul>
   </li>
 </ul>
-<a></a>
+<a id="bin_binaries"></a>
 
 <h4>Binaries in the release</h4>
 <ul>
@@ -277,7 +310,7 @@ download and install libxml2)</p>
   <li>Copy libxml2.dll, iconv.dll and zlib1.dll downloaded to
   C:\axis2c\lib</li>
 </ul>
-<a></a>
+<a id="bin_run"></a>
 
 <h4>Running the binaries</h4>
 <ul>
@@ -304,10 +337,10 @@ download and install libxml2)</p>
     </ul>
   </li>
 </ul>
-<a></a>
+<a id="win_source"></a>
 
 <h3>2. Using the source release.</h3>
-<a></a>
+<a id="src_req"></a>
 
 <h4>Requirements</h4>
 <ul>
@@ -328,7 +361,7 @@ download and install libxml2)</p>
     </ul>
   </li>
 </ul>
-<a></a>
+<a id="edit"></a>
 
 <h4>Editing configure.in file</h4>
 <ul>
@@ -348,7 +381,7 @@ download and install libxml2)</p>
   <li>You need to have zlib1.dll in a library path. You may copy this dll to
     libxml2/lib.</li>
 </ul>
-<a></a>
+<a id="src_compile"></a>
 
 <h4>Compiling the source.</h4>
 
@@ -387,7 +420,7 @@ download and install libxml2)</p>
     <li>logs - system and client logs are written to this folder</li>
   </ul>
 </ul>
-<a></a>
+<a id="src_run"></a>
 
 <h4>Running the binaries</h4>
 <ul>
@@ -418,9 +451,10 @@ download and install libxml2)</p>
     </ul>
   </li>
 </ul>
-<a id="installing-apache2"/>
-<h3> 3. Installing Apache2 Web Server integration module (mod_axis2).</h3>
+<a id="installing-apache2"></a>
 
+<h3>3. Installing Apache2 Web Server integration module (mod_axis2).</h3>
+<a id="building-apache2"></a>
 <h4>3.1 Building mod_axis2 from source tree</h4>
 
 <h4>3.1.1 On Linux Platform</h4>
@@ -452,7 +486,7 @@ download and install libxml2)</p>
     directory.<br />
     eg: C:\axis2c\build\deploy\lib</li>
 </ul>
-
+<a id="deploying-apache2"></a>
 <h4>3.2 Deploying in Apache2 Web Server</h4>
 
 <p><b>Note: To do the following tasks you might need super user privileges in

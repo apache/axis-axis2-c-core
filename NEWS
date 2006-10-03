@@ -23,11 +23,11 @@ Key Features
   15. Code generation tool for stub and skeleton generation for a given WSDL (based on Java tool)
         o Axis Data Binding (ADB) support
   16. Security module with UsernameToken support
-  17. REST support (HTTP GET case) - New
-  18. Dynamic invocation support (based on XML schema and WSDL implementations) - New
-  19. Guththila pull parser support
-  20. WSDL2C code generation tool- with schema code generation (experimental)
-  21. TCP Monitor - C implementation (experimental)
+  17. REST support (HTTP GET case)
+  18. Dynamic invocation support (based on XML schema and WSDL implementations)
+  19. Guththila pull parser support - New
+  20. WSDL2C code generation tool- with schema code generation (experimental) - New
+  21. TCP Monitor - C implementation (experimental) - New
 
 Major Changes Since Last Release
    1. Guththila pull parser support
