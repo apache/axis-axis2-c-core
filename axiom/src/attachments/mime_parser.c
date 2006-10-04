@@ -34,6 +34,7 @@ axiom_mime_parser_impl_t;
 
 #define AXIOM_MIME_PARSER_CONTENT_ID "content-id"
 
+#define AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT 100
 /***************************** Function headers *******************************/
 
 axis2_status_t AXIS2_CALL
@@ -266,15 +267,18 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
         mime_parser_impl->soap_body_str = soap_body_str;
     }
 
-    while (!end_of_mime && count < 10)
+    while (!end_of_mime && count < AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT)
     {
         axis2_char_t *temp_body_mime = NULL;
         int temp_body_mime_len = 0;
         pos = NULL;
         len = 0;
-        /* start hack */
-        count ++;
-        /* end hack */
+        
+        /* keep trac of counter to ensure that we do not go in an infinite loop
+           It is possible that we could fall into an infinite loop if there 
+           are problems in sender's message format
+           */
+        count++;
 
         do
         {
@@ -300,6 +304,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                 len = callback(buffer, size, (void*)callback_ctx);
                 if (len > 0)
                 {
+                    count = 0;
                     temp_body_mime = body_mime;
                     body_mime = AXIS2_MALLOC(env->allocator,
                             sizeof(char) * (body_mime_len + len + 1));
@@ -365,6 +370,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                 len = callback(buffer, size, (void*)callback_ctx);
                 if (len > 0)
                 {
+                    count = 0;
                     axis2_char_t *temp_mime_binary = mime_binary;
                     mime_binary = AXIS2_MALLOC(env->allocator,
                             sizeof(char) * (mime_binary_len + len + 1));
