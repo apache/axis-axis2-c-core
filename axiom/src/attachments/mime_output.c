@@ -371,7 +371,7 @@ axis2_write_mime_boundary(axiom_mime_output_t *mime_output, const axis2_env_t *e
         byte_buffer = NULL;
     }
 
-    AXIS2_FREE(env->allocator, byte_buffer);
+    /*AXIS2_FREE(env->allocator, byte_buffer);*/
 
     *output_stream = byte_stream;
     *output_stream_size = size + 2;
