@@ -1500,9 +1500,10 @@ axis2_libxml2_writer_wrapper_get_xml(axiom_xml_writer_t *writer,
         {
             output = AXIS2_MALLOC(env->allocator,
                     sizeof(axis2_char_t) * (
-                        strlen((const axis2_char_t*)(writer_impl->buffer->content)) + 1));
-            sprintf(output,
-                    ((const axis2_char_t*)(writer_impl->buffer->content)));
+                        writer_impl->buffer->size + 1));
+            memcpy(output, writer_impl->buffer->content, writer_impl->buffer->size);
+            output[writer_impl->buffer->size] = '\0';
+
         }
         return (void*)output;
     }
