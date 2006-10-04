@@ -32,6 +32,8 @@ axiom_mime_parser_impl_t;
 
 #define AXIOM_MIME_PARSER_BUFFER_SIZE (1024 * 1024)
 
+#define AXIOM_MIME_PARSER_CONTENT_ID "content-id"
+
 /***************************** Function headers *******************************/
 
 axis2_status_t AXIS2_CALL
@@ -158,6 +160,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
     int mime_binary_len = 0;
     axis2_char_t *pos = NULL;
     axis2_bool_t end_of_mime = AXIS2_FALSE;
+    int count = 0;
 
     AXIS2_ENV_CHECK(env, NULL);
     mime_parser_impl = AXIS2_INTF_TO_IMPL(mime_parser);
@@ -203,11 +206,11 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
     }
     while (!pos && len > 0);
 
-    if (root_mime)
+    /*if (root_mime)
     {
         AXIS2_FREE(env->allocator, root_mime);
         root_mime = NULL;
-    }
+    }*/
 
     pos = NULL;
     len = 0;
@@ -263,12 +266,15 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
         mime_parser_impl->soap_body_str = soap_body_str;
     }
 
-    while (!end_of_mime)
+    while (!end_of_mime && count < 10)
     {
         axis2_char_t *temp_body_mime = NULL;
         int temp_body_mime_len = 0;
         pos = NULL;
         len = 0;
+        /* start hack */
+        count ++;
+        /* end hack */
 
         do
         {
@@ -405,11 +411,11 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
             axis2_char_t *id = NULL;
             if (body_mime)
             {
-                id = AXIS2_STRSTR(body_mime, "content-id");
+                id = axis2_strcasestr(body_mime, AXIOM_MIME_PARSER_CONTENT_ID);
             }
             if (id)
             {
-                id += AXIS2_STRLEN("content-id");
+                id += AXIS2_STRLEN(AXIOM_MIME_PARSER_CONTENT_ID);
                 while (id && *id && *id != ':')
                     id++;
                 if (id)
@@ -455,11 +461,11 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
 
             }
 
-            if (body_mime)
+            /*if (body_mime)
             {
                 AXIS2_FREE(env->allocator, body_mime);
                 body_mime = NULL;
-            }
+            }*/
 
             body_mime = temp_body_mime;
             body_mime_len = temp_body_mime_len;
@@ -467,11 +473,11 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
         }/*if (mime_parser_impl->mime_parts_map)*/
     }/* end while (!end_of_mime) */
 
-    if (body_mime)
+    /*if (body_mime)
     {
         AXIS2_FREE(env->allocator, body_mime);
         body_mime = NULL;
-    }
+    }*/
 
     AXIS2_FREE(env->allocator, buffer);
     buffer = NULL;
