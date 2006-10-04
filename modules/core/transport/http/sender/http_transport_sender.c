@@ -581,10 +581,10 @@ axis2_http_transport_sender_write_message(
 
     url = AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env);
     soap_action = AXIS2_MSG_CTX_GET_SOAP_ACTION(msg_ctx, env);
-    if (NULL == soap_action || 0 == AXIS2_STRLEN(soap_action))
+    /*hack if (NULL == soap_action || 0 == AXIS2_STRLEN(soap_action))
     {
         soap_action = AXIS2_MSG_CTX_GET_WSA_ACTION(msg_ctx, env);
-    }
+    }*/
     if (NULL == soap_action)
     {
         soap_action = "";

@@ -271,7 +271,7 @@ axis2_soap_over_http_sender_send(
     }
 
     AXIOM_OUTPUT_SET_DO_OPTIMIZE(sender_impl->om_output, env,
-            doing_mtom);
+            doing_mtom); 
 
     AXIOM_SOAP_ENVELOPE_SERIALIZE(out, env, sender_impl->om_output,
             AXIS2_FALSE);
@@ -364,10 +364,14 @@ axis2_soap_over_http_sender_send(
         content_type = (axis2_char_t *)AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP;
         content_type = AXIS2_STRACAT(content_type, ";charset=", env);
         content_type = AXIS2_STRACAT(content_type, char_set_enc, env);
-        content_type = AXIS2_STRACAT(content_type, ";action=", env);
-        content_type = AXIS2_STRACAT(content_type, soap_action, env);
+        if (axis2_strcmp(soap_action, ""))
+        {
+            content_type = AXIS2_STRACAT(content_type, ";action=", env);
+            content_type = AXIS2_STRACAT(content_type, soap_action, env);
+        }
         content_type = AXIS2_STRACAT(content_type, ";", env);
     }
+
     http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_TYPE,
             content_type);
     if (content_type)

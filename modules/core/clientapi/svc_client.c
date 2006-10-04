@@ -893,10 +893,10 @@ axis2_svc_client_send_receive(
         AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
         res_msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(op_client, env, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE);
 
-	if (res_msg_ctx)
-	  soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(res_msg_ctx, env);
-	else
-	  return NULL;
+        if (res_msg_ctx)
+          soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(res_msg_ctx, env);
+        else
+          return NULL;
     }
 
     if (qname_free_flag)

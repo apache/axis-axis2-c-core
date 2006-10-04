@@ -302,11 +302,6 @@ axis2_http_transport_utils_process_http_post_request(
         AXIS2_FREE(env->allocator, mime_boundary);
     }
 
-
-    /*TODO for MTOM:create a basic stream
-    set callback_ctx.in_stream to this basic stream
-    make callback_ctx.chunked_stream null but keep the referance */
-
     AXIS2_MSG_CTX_SET_WSA_ACTION(msg_ctx, env, soap_action_header);
     AXIS2_MSG_CTX_SET_SOAP_ACTION(msg_ctx, env, soap_action_header);
     AXIS2_MSG_CTX_SET_TO(msg_ctx, env, axis2_endpoint_ref_create(env,
@@ -1257,7 +1252,14 @@ axis2_http_transport_utils_get_value_from_content_type(
         return NULL;
     }
     tmp2 =  AXIS2_STRDUP(tmp + 1, env);
+    
     AXIS2_FREE(env->allocator, tmp_content_type);
+    if (*tmp2 == '"')
+    {
+        tmp = tmp2;
+        tmp2 =  AXIS2_STRDUP(tmp + 1, env);
+        tmp2[strlen(tmp2) - 1] = '\0';
+    }
     return tmp2;
 }
 
