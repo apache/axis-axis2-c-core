@@ -195,7 +195,18 @@ extern "C"
    axis2_string_toupper(
            axis2_char_t *str );
    
-     
+    /**
+     * Finds the first occurrence of the substring needle in the string 
+     * haystack, ignores the case of both arguments. 
+     * @param haystack string in which the given string is to be found
+     * @param needle string to be found in haystack
+     * @return pointer to the beginning of the substring, 
+     * or NULL  if  the  substring  is  not found
+     */
+    AXIS2_EXTERN axis2_char_t * AXIS2_CALL
+    axis2_strcasestr(
+            const axis2_char_t *heystack, 
+            const axis2_char_t *needle);
    
 
 #define AXIS2_STRDUP(pts, env) \

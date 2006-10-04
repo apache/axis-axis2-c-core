@@ -445,3 +445,28 @@ axis2_string_toupper(axis2_char_t* str)
     return str;
 }
 
+AXIS2_EXTERN axis2_char_t * AXIS2_CALL
+axis2_strcasestr(const axis2_char_t *heystack, const axis2_char_t *needle)
+{
+    axis2_char_t start, current;
+    size_t len;
+
+    if (!heystack || !needle)
+        return NULL;
+
+    if ((start = *needle++))
+    {
+        len = strlen(needle);
+        do
+        {
+            do
+            {
+                if (!(current = *heystack++))
+                    return (NULL);
+            } while (toupper(current) != toupper(start));
+        } while (strncasecmp(heystack, needle, len));
+        heystack--;
+    }
+    return (axis2_char_t *)heystack;
+}
+
