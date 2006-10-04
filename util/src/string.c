@@ -462,7 +462,7 @@ axis2_strcasestr(const axis2_char_t *heystack, const axis2_char_t *needle)
             do
             {
                 if (!(current = *heystack++))
-                    return (NULL);
+                    return NULL;
             } while (toupper(current) != toupper(start));
         } while (strncasecmp(heystack, needle, len));
         heystack--;
