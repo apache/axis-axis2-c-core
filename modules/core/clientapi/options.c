@@ -33,7 +33,7 @@ typedef struct axis2_options_impl
 
     axis2_char_t *soap_version_uri;
     
-    axis2_char_t *target_epr;
+    axis2_endpoint_ref_t *target_epr;
 
     int soap_version;
 
@@ -737,7 +737,6 @@ axis2_options_get_target_epr(const axis2_options_t *options,
         const axis2_env_t *env)
 {
     axis2_options_impl_t *options_impl = NULL;
-    axis2_endpoint_ref_t *to = NULL;
     AXIS2_ENV_CHECK(env, NULL);
 
     options_impl = AXIS2_INTF_TO_IMPL(options);

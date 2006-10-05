@@ -1486,17 +1486,16 @@ axis2_svc_client_set_listen_port(
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_transport_in_desc_t *transport_in = NULL;
     axis2_qname_t *transport_in_qname = NULL;
-    axis2_char_t *port_value = NULL;
     axis2_param_t *param = NULL;
-    axis2_char_t *transport_in_protocol = NULL;
+    const axis2_char_t *transport_in_protocol = NULL;
     axis2_transport_receiver_t *listener = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
     svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
-    transport_in_protocol = AXIS2_OPTIONS_GET_TRANSPORT_IN_PROTOCOL(
-                svc_client_impl->options, env);
+    transport_in_protocol =
+        AXIS2_OPTIONS_GET_TRANSPORT_IN_PROTOCOL(svc_client_impl->options, env);
     if (!transport_in_protocol)
         transport_in_protocol = AXIS2_TRANSPORT_HTTP;
     
