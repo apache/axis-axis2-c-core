@@ -1024,6 +1024,44 @@ extern "C"
                 populate_schema_mappings)(
                     axis2_svc_t *svc,
                     const axis2_env_t *env);
+
+        /**
+         * Set the path to the service
+         * @param svc pointer to service struct
+         * @param env pointer to environment struct
+         * @param svc_path path to the service
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE 
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_path) (
+                    axis2_svc_t *svc,
+                    const axis2_env_t *env,
+                    const axis2_char_t *svc_path);
+        
+        /**
+         * Get the path to the service
+         * @param svc pointer to service struct
+         * @param env pointer to environment struct
+         * @return a pointer to the service path
+         */
+        axis2_char_t *(AXIS2_CALL *
+                get_path) (
+                    axis2_svc_t *svc,
+                    const axis2_env_t *env);
+        
+        /**
+         * This method implementation is a tempory one to print wsdl. 
+         * This prints a static wsdl stored in the service path. When an 
+         * c2wsdl implementation is available this will be modified
+         * to create the wsdl dynamically from the service in memory.
+         * @param svc pointer to service struct
+         * @param env pointer to environment struct
+         * @return a pointer to the buffer containing wsdl 
+         */
+        axis2_char_t *(AXIS2_CALL *
+                print_wsdl) (
+                    axis2_svc_t *svc,
+                    const axis2_env_t *env);
     };
 
     /**
@@ -1434,6 +1472,21 @@ extern "C"
     @sa axis2_svc_ops#populate_schema_mappings */
 #define AXIS2_SVC_POPULATE_SCHEMA_MAPPINGS(svc, env) \
         ((svc)->ops->populate_schema_mappings(svc, env))
+
+/** Sets service path.
+    @sa axis2_svc_ops#set_path */
+#define AXIS2_SVC_SET_PATH(svc, env, svc_path) \
+        ((svc)->ops->set_path(svc, env, svc_path))
+
+/** Gets service path.
+    @sa axis2_svc_ops#get_path */
+#define AXIS2_SVC_GET_PATH(svc, env) \
+        ((svc)->ops->get_path(svc, env))
+
+/** Prints wsdl.
+    @sa axis2_svc_ops#print_wsdl */
+#define AXIS2_SVC_PRINT_WSDL(svc, env) \
+        ((svc)->ops->print_wsdl(svc, env))
 
 /** @} */
 #ifdef __cplusplus

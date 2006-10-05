@@ -361,6 +361,7 @@ axis2_svc_builder_populate_svc(
     svc_folder_path = AXIS2_FILE_GET_PATH(svc_folder, env);
     dll_path = axis2_strcat(env, svc_folder_path, AXIS2_PATH_SEP_STR,
             svc_dll_name, NULL);
+    AXIS2_SVC_SET_PATH(builder_impl->svc, env, svc_folder_path);
     AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "dll path is : %s", dll_path);
     status = AXIS2_DLL_DESC_SET_NAME(dll_desc, env, dll_path);
     if (AXIS2_SUCCESS != status)

@@ -32,6 +32,8 @@ typedef struct axis2_options_impl
     axis2_hash_t *properties;
 
     axis2_char_t *soap_version_uri;
+    
+    axis2_char_t *target_epr;
 
     int soap_version;
 
@@ -152,6 +154,11 @@ axis2_options_get_to(
     const axis2_options_t *options,
     const axis2_env_t *env);
 
+axis2_endpoint_ref_t *AXIS2_CALL
+axis2_options_get_target_epr(
+    const axis2_options_t *options,
+    const axis2_env_t *env);
+
 
 axis2_bool_t AXIS2_CALL
 axis2_options_get_use_separate_listener(
@@ -192,6 +199,12 @@ axis2_options_set_to(
     axis2_options_t *options,
     const axis2_env_t *env,
     axis2_endpoint_ref_t *to);
+
+axis2_status_t AXIS2_CALL
+axis2_options_set_target_epr(
+    axis2_options_t *options,
+    const axis2_env_t *env,
+    axis2_endpoint_ref_t *epr);
 
 axis2_status_t AXIS2_CALL
 axis2_options_set_transport_receiver(
@@ -719,6 +732,19 @@ axis2_options_get_to(const axis2_options_t *options,
     return to;
 }
 
+axis2_endpoint_ref_t* AXIS2_CALL
+axis2_options_get_target_epr(const axis2_options_t *options,
+        const axis2_env_t *env)
+{
+    axis2_options_impl_t *options_impl = NULL;
+    axis2_endpoint_ref_t *to = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+
+    options_impl = AXIS2_INTF_TO_IMPL(options);
+
+    return options_impl->target_epr;
+}
+
 
 axis2_bool_t AXIS2_CALL
 axis2_options_get_use_separate_listener(const axis2_options_t *options,
@@ -809,6 +835,18 @@ axis2_options_set_to(
     axis2_options_impl_t *options_impl = NULL;
     options_impl = AXIS2_INTF_TO_IMPL(options);
     AXIS2_MSG_INFO_HEADERS_SET_TO(options_impl->msg_info_headers, env, to);
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_options_set_target_epr(
+    axis2_options_t *options,
+    const axis2_env_t *env,
+    axis2_endpoint_ref_t *epr)
+{
+    axis2_options_impl_t *options_impl = NULL;
+    options_impl = AXIS2_INTF_TO_IMPL(options);
+    options_impl->target_epr = epr;
     return AXIS2_SUCCESS;
 }
 
@@ -1198,6 +1236,7 @@ axis2_options_init_data(
     options_impl->manage_session = -1;
     options_impl->soap_version = AXIOM_SOAP12;
     options_impl->enable_mtom = AXIS2_FALSE;
+    options_impl->target_epr = NULL;
 }
 
 static void
@@ -1250,6 +1289,8 @@ axis2_options_init_ops(
     options->ops->get_soap_version = axis2_options_get_soap_version;
     options->ops->set_enable_mtom = axis2_options_set_enable_mtom;
     options->ops->get_enable_mtom = axis2_options_get_enable_mtom;
+    options->ops->set_target_epr = axis2_options_set_target_epr;
+    options->ops->get_target_epr = axis2_options_get_target_epr;
     options->ops->free = axis2_options_free;
 }
 

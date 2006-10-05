@@ -88,6 +88,10 @@ extern "C"
         AXIS2_ERROR_UNSUPPORTED_TYPE,
         /* Options object is not set */
         AXIS2_ERROR_OPTIONS_OBJECT_IS_NOT_SET,
+        /* No target endpoint reference provided */
+        AXIS2_ERROR_NO_TARGET_EPR_SET,
+        /* Addressing is enabled, but no target epr provided */
+        AXIS2_ERROR_ADDRESSING_ENABLED_BUT_NO_TARGET_EPR_SET,
         /*
          * Group - core:clientapi:diclient
          */

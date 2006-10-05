@@ -56,7 +56,9 @@ int main(int argc, char** argv)
 
     /* Setup options */
     options = axis2_options_create(env);
-    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+    /*AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);*/
+    AXIS2_OPTIONS_SET_TARGET_EPR(options, env, endpoint_ref);
+
     AXIS2_OPTIONS_SET_ACTION(options, env,
             "http://ws.apache.org/axis2/c/samples/echoString");
 
@@ -85,7 +87,7 @@ int main(int argc, char** argv)
     AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
 
     /* Engage addressing module */
-    AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);
+    /*AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);*/
 
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_payload_for_echo_svc(env);

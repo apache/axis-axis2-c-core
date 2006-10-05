@@ -105,7 +105,7 @@ extern "C"
     /**
      * Concatenate multiple strings, allocating memory
      * @param ... The strings to concatenate.  The final string must be NULL
-     * @return The new string
+     * @return Null terminated new string
      */
     AXIS2_EXTERN axis2_char_t * AXIS2_CALL
     axis2_strcat(const axis2_env_t *env, ...);

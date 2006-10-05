@@ -207,6 +207,12 @@ axis2_svc_client_get_svc_ctx(
     const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL
+axis2_svc_client_set_listen_port(
+    const axis2_svc_client_t *svc_client,
+    const axis2_env_t *env,
+    axis2_char_t *port);
+
+axis2_status_t AXIS2_CALL
 axis2_svc_client_free(
     axis2_svc_client_t *svc_client,
     const axis2_env_t *env);
@@ -1215,6 +1221,7 @@ axis2_svc_client_init_ops(
     svc_client->ops->get_svc_ctx = axis2_svc_client_get_svc_ctx;
     svc_client->ops->free_fn = axis2_svc_client_free;
     svc_client->ops->get_op_client = axis2_svc_client_get_op_client;
+    svc_client->ops->set_listen_port = axis2_svc_client_set_listen_port;
 }
 
 static axis2_svc_t *
@@ -1468,4 +1475,43 @@ axis2_svc_client_get_op_client(
     const axis2_env_t *env)
 {
     return AXIS2_INTF_TO_IMPL(svc_client)->op_client;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_svc_client_set_listen_port(
+    const axis2_svc_client_t *svc_client,
+    const axis2_env_t *env,
+    axis2_char_t *port)
+{
+    axis2_svc_client_impl_t *svc_client_impl = NULL;
+    axis2_transport_in_desc_t *transport_in = NULL;
+    axis2_qname_t *transport_in_qname = NULL;
+    axis2_char_t *port_value = NULL;
+    axis2_param_t *param = NULL;
+    axis2_char_t *transport_in_protocol = NULL;
+    axis2_transport_receiver_t *listener = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
+    transport_in_protocol = AXIS2_OPTIONS_GET_TRANSPORT_IN_PROTOCOL(
+                svc_client_impl->options, env);
+    if (!transport_in_protocol)
+        transport_in_protocol = AXIS2_TRANSPORT_HTTP;
+    
+    transport_in_qname = axis2_qname_create(env, transport_in_protocol, NULL, NULL);
+    transport_in = AXIS2_CONF_GET_TRANSPORT_IN(svc_client_impl->conf, env, 
+            transport_in_qname);
+    param = AXIS2_TRANSPORT_IN_DESC_GET_PARAM(transport_in, env, "port");
+    AXIS2_PARAM_SET_VALUE(param, env, AXIS2_STRDUP(port, env));
+    listener = AXIS2_TRANSPORT_IN_DESC_GET_RECV(transport_in, env);
+    if (listener)
+    {
+        status = AXIS2_TRANSPORT_RECEIVER_INIT(listener, env, 
+                svc_client_impl->conf_ctx, transport_in);
+    }
+    AXIS2_QNAME_FREE(transport_in_qname, env);
+    
+    return status;
 }

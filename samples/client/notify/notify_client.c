@@ -83,7 +83,7 @@ int main(int argc, char** argv)
     AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
 
     /* Engage addressing module */
-    AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);
+    /*AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);*/
 
     /* Build the SOAP request message payload using OM API.*/
     payload = build_om_programatically(env);

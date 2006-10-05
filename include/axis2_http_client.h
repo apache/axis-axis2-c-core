@@ -147,6 +147,12 @@ extern "C"
                 get_proxy)(
                     const axis2_http_client_t *client,
                     const axis2_env_t *env);
+        
+        axis2_status_t (AXIS2_CALL *
+                set_dump) (
+                    axis2_http_client_t *client,
+                    const axis2_env_t *env,
+                    axis2_bool_t dump);
 
         /**
          * @param client pointer to client
@@ -237,6 +243,11 @@ extern "C"
     @sa axis2_http_client_ops#get_proxy */
 #define AXIS2_HTTP_CLIENT_GET_PROXY(client, env) \
                                 ((client)->ops->get_proxy(client, env))
+
+/** Set dump true.
+    @sa axis2_http_client_ops#set_dump */
+#define AXIS2_HTTP_CLIENT_SET_DUMP(client, env, dump) \
+                                ((client)->ops->set_dump(client, env, dump))
 
 /** Frees the http client.
     @sa axis2_http_client_ops#free */
