@@ -636,12 +636,24 @@ extern "C"
                     const axis2_options_t *options,
                     const axis2_env_t *env);
 
+        /**
+         * Set the target endpoint reference the receiving end is listening to
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         axis2_status_t (AXIS2_CALL *
                 set_target_epr) (
                     axis2_options_t *options,
                     const axis2_env_t *env,
                     axis2_endpoint_ref_t *epr);
 
+        /**
+         * Get the target endpoint reference the receiving end is listening to
+         * @param options pointer to options struct
+         * @param env pointer to environment struct
+         * @return endpoint reference the receiving end is listening to
+         */
         axis2_endpoint_ref_t *(AXIS2_CALL *
                 get_target_epr) (
                     const axis2_options_t *options,
