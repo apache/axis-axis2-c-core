@@ -816,4 +816,6 @@ axis2_http_client_set_dump(
 
     client_impl->dump = dump;
 
+    return AXIS2_SUCCESS;
+
 }

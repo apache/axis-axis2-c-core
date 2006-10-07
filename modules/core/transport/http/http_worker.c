@@ -311,7 +311,7 @@ axis2_http_worker_process_request(
             axis2_conf_t *conf = NULL;
 
             *temp_str = '\0';
-            axis2_ssize_t len = AXIS2_STRLEN(url_external_form);
+            /*axis2_ssize_t len = AXIS2_STRLEN(url_external_form);*/
             temp_str2 = AXIS2_RINDEX(url_external_form, '/');
             svc_name = AXIS2_STRDUP(temp_str2+1, env);
             conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
