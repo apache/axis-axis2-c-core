@@ -178,7 +178,7 @@ axis2_addr_in_handler_invoke(struct axis2_handler *handler,
                 property = axis2_property_create(env);
                 AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
                 AXIS2_PROPERTY_SET_VALUE(property, env, addr_ns_str);
-                AXIS2_CTX_SET_PROPERTY(ctx, env, AXIS2_WSA_VERSION, property, AXIS2_TRUE);
+                AXIS2_CTX_SET_PROPERTY(ctx, env, AXIS2_WSA_VERSION, property, AXIS2_FALSE);
             }
 
             /* extract service group context, if available */

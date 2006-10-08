@@ -149,6 +149,15 @@ axis2_core_utils_create_out_msg_ctx(
         property = NULL;
     }
 
+    property = AXIS2_MSG_CTX_GET_PROPERTY(in_msg_ctx, env,
+            AXIS2_WSA_VERSION, AXIS2_FALSE);
+    if (property)
+    {
+        AXIS2_MSG_CTX_SET_PROPERTY(new_msg_ctx, env,
+                AXIS2_WSA_VERSION, property, AXIS2_FALSE);
+        property = NULL;
+    }
+
     doing_rest = AXIS2_MSG_CTX_GET_DOING_REST(in_msg_ctx, env);
     AXIS2_MSG_CTX_SET_DOING_REST(new_msg_ctx, env, doing_rest);
 
@@ -192,6 +201,8 @@ axis2_core_utils_reset_out_msg_ctx(const axis2_env_t *env,
             NULL, AXIS2_FALSE);
     AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_CHARACTER_SET_ENCODING,
             NULL, AXIS2_FALSE);
+    AXIS2_MSG_CTX_SET_PROPERTY(out_msg_ctx, env, AXIS2_WSA_VERSION, NULL,
+            AXIS2_FALSE);
 
     AXIS2_MSG_CTX_SET_SVC_GRP_CTX(out_msg_ctx, env, NULL);
 
