@@ -336,8 +336,7 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Sets the target endpoint ref. If this is not set then the target
-         * is deduced from wsa to epr.
+         * Sets the target endpoint ref.
          * @param svc_client pointer to service client struct
          * @param env pointer to environment struct
          * @param target_epr pointer to the endpoint_ref struct to be set as 
@@ -385,19 +384,6 @@ extern "C"
                 get_op_client)(
                     const axis2_svc_client_t *svc_client,
                     const axis2_env_t *env);
-
-        /**
-         * Set the listen port on which the callback server is actually
-         * listening to
-         * @param svc_client pointer to service_client struct
-         * @param env env pointer to environment struct
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_listen_port)(
-                    const axis2_svc_client_t *svc_client,
-                    const axis2_env_t *env,
-                    axis2_char_t *port);
     };
 
     /**
@@ -592,11 +578,6 @@ extern "C"
     @sa axis2_svc_client_ops#get_op_client */
     #define AXIS2_SVC_CLIENT_GET_OP_CLIENT(svc_client, env) \
             ((svc_client)->ops->get_op_client(svc_client, env))
-
-/** Set the listen port .
-    @sa axis2_svc_client_ops#set_listen_port */
-    #define AXIS2_SVC_CLIENT_SET_LISTEN_PORT(svc_client, env, port) \
-            ((svc_client)->ops->set_listen_port(svc_client, env, port))
 
 
 /** @} */

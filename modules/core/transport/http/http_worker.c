@@ -300,53 +300,6 @@ axis2_http_worker_process_request(
                 AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
                     simple_request, env), env), AXIS2_HTTP_HEADER_GET))
     {
-        axis2_char_t *temp_str = NULL;
-        /* Print the wsdl */
-        temp_str = AXIS2_STRSTR(url_external_form, "?wsdl");
-        if(temp_str)
-        {
-            axis2_char_t *temp_str2 = NULL;
-            axis2_char_t *svc_name = NULL;
-            axis2_svc_t *svc = NULL;
-            axis2_conf_t *conf = NULL;
-
-            *temp_str = '\0';
-            /*axis2_ssize_t len = AXIS2_STRLEN(url_external_form);*/
-            temp_str2 = AXIS2_RINDEX(url_external_form, '/');
-            svc_name = AXIS2_STRDUP(temp_str2+1, env);
-            conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
-            if(conf)
-            {
-                svc = AXIS2_CONF_GET_SVC(conf, env, svc_name);
-            }
-            if(svc)
-            {
-                axis2_http_header_t *cont_len = NULL;
-                axis2_char_t *body_string = NULL;
-
-                AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(response, env,
-                        http_version, AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
-                body_string = AXIS2_SVC_PRINT_WSDL(svc, env);
-                if (body_string)
-                {
-                    axis2_char_t str_len[10];
-                    AXIS2_HTTP_SIMPLE_RESPONSE_SET_BODY_STRING(response, env,
-                            body_string);
-                    sprintf(str_len, "%d", AXIS2_STRLEN(body_string));
-                    cont_len = axis2_http_header_create(env,
-                            AXIS2_HTTP_HEADER_CONTENT_LENGTH, str_len);
-                    AXIS2_HTTP_SIMPLE_RESPONSE_SET_HEADER(response, env, cont_len);
-                }
-                axis2_http_worker_set_response_headers(http_worker, env, svr_conn,
-                        simple_request, response, 0);
-                AXIS2_FREE(env->allocator, body_string);
-                AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, response);
-                AXIS2_HTTP_SIMPLE_RESPONSE_FREE(response, env);
-                return AXIS2_TRUE;
-
-            }
-        }
-
         processed = axis2_http_transport_utils_process_http_get_request
                 (env, msg_ctx, request_body, out_stream,
                         AXIS2_HTTP_SIMPLE_REQUEST_GET_CONTENT_TYPE(

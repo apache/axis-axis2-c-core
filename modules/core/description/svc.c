@@ -16,7 +16,6 @@
 
 #include <axis2_svc.h>
 #include <axis2_addr.h>
-#include <axis2_stream.h>
 #include <axis2_property.h>
 #include <xml_schema_obj_collection.h>
 #include <axis2_module.h>
@@ -32,8 +31,6 @@ struct axis2_svc_impl
     /** to keep last update time of the service */
     long last_update;
     axis2_char_t *filename;
-    /** service path */
-    axis2_char_t *svc_path;
     /** to store module descriptions at deploy time parsing */
     axis2_array_list_t *module_list;
     /**
@@ -514,27 +511,11 @@ axis2_svc_adjust_schema_names(
     xml_schema_t *schema,
     axis2_hash_t *names);
 
-axis2_status_t AXIS2_CALL
-axis2_svc_set_path(
-    axis2_svc_t *svc,
-    const axis2_env_t *env,
-    const axis2_char_t *svc_path);
-
-axis2_char_t *AXIS2_CALL
-axis2_svc_get_path(
-    axis2_svc_t *svc,
-    const axis2_env_t *env);
-
 axis2_hash_t *AXIS2_CALL
 axis2_svc_swap_mapping_table(
     axis2_svc_t *svc,
     const axis2_env_t *env,
     axis2_hash_t *orig_table);
-
-axis2_char_t *AXIS2_CALL
-axis2_svc_print_wsdl(
-    axis2_svc_t *svc,
-    const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_svc_t *AXIS2_CALL
 axis2_svc_create(
@@ -579,7 +560,6 @@ axis2_svc_create(
     svc_impl->target_ns = NULL;
     svc_impl->target_ns_prefix = NULL;
     svc_impl->sc_calc_count = 0;
-    svc_impl->svc_path = NULL;
 
     svc_impl->svc.param_container = axis2_param_container_create(env);
     if (NULL == svc_impl->svc.param_container)
@@ -809,9 +789,6 @@ axis2_svc_create(
     svc_impl->svc.ops->set_ns_map = axis2_svc_set_ns_map;
     svc_impl->svc.ops->populate_schema_mappings =
         axis2_svc_populate_schema_mappings;
-    svc_impl->svc.ops->set_path = axis2_svc_set_path;
-    svc_impl->svc.ops->get_path = axis2_svc_get_path;
-    svc_impl->svc.ops->print_wsdl = axis2_svc_print_wsdl;
 
     return &(svc_impl->svc);
 }
@@ -902,12 +879,6 @@ axis2_svc_free(
     {
         AXIS2_FREE(env->allocator, svc_impl->filename);
         svc_impl->filename = NULL;
-    }
-    
-    if (svc_impl->svc_path)
-    {
-        AXIS2_FREE(env->allocator, svc_impl->svc_path);
-        svc_impl->svc_path = NULL;
     }
 
     svc_impl->parent = NULL;
@@ -2716,71 +2687,4 @@ axis2_svc_swap_mapping_table(
     }
     return new_table;
 }
-
-axis2_status_t AXIS2_CALL
-axis2_svc_set_path(
-    axis2_svc_t *svc,
-    const axis2_env_t *env,
-    const axis2_char_t *svc_path)
-{
-    axis2_svc_impl_t *svc_impl = NULL;
-    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, svc_path, AXIS2_FAILURE);
-    svc_impl = AXIS2_INTF_TO_IMPL(svc);
-
-    svc_impl->svc_path = AXIS2_STRDUP(svc_path, env);
-    if(!svc_impl->svc_path)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return AXIS2_FAILURE;
-    }
-    return AXIS2_SUCCESS;
-}
-
-axis2_char_t *AXIS2_CALL
-axis2_svc_get_path(
-    axis2_svc_t *svc,
-    const axis2_env_t *env)
-{
-    axis2_svc_impl_t *svc_impl = NULL;
-    
-    AXIS2_ENV_CHECK(env, NULL);
-    svc_impl = AXIS2_INTF_TO_IMPL(svc);
-
-    return svc_impl->svc_path;
-}
-
-axis2_char_t *AXIS2_CALL
-axis2_svc_print_wsdl(
-    axis2_svc_t *svc,
-    const axis2_env_t *env)
-{
-    axis2_svc_impl_t *svc_impl = NULL;
-    axis2_char_t *wsdl_path = NULL;
-    axis2_stream_t *stream = NULL;
-    void *fd = NULL;
-    int count = 0;
-    int bytes_read = 0;
-    axis2_char_t *buffer = NULL;
-    
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    svc_impl = AXIS2_INTF_TO_IMPL(svc);
-
-    if(!svc_impl->svc_path)
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
-        return AXIS2_FAILURE;
-    }
-    wsdl_path = axis2_strcat(env, svc_impl->svc_path, AXIS2_PATH_SEP_STR, 
-            svc_impl->axis_svc_name, ".wsdl", NULL);
-    fd = axis2_file_handler_open(wsdl_path, "rt");
-    stream = axis2_stream_create_file(env, fd);
-    count = 24 * 8096 * sizeof(axis2_char_t);
-    buffer = (axis2_char_t*) AXIS2_MALLOC(env->allocator, count);
-    bytes_read = AXIS2_STREAM_READ(stream, env, buffer, count);
-    buffer[bytes_read] = '\0';
-    return buffer;
-}
-
 

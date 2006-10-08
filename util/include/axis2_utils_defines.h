@@ -166,11 +166,6 @@ typedef enum _axis2_xml_parser_type
     AXIS2_XML_PARSER_TYPE_DOC
 } axis2_xml_parser_type;
 
-/**
- * Used as the property key set the message dump property true. When this 
- * property is true the input message is dumped to the screen.
- */
-#define AXIS2_DUMP_TRUE "dump"
     
 #ifdef __cplusplus
 }

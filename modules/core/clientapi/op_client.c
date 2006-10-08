@@ -405,13 +405,7 @@ axis2_op_client_execute(
     if (!transport_out)
     {
         axis2_endpoint_ref_t *to_epr = NULL;
-        /**
-         * Modify the code so that the to_epr is taken from 
-         * AXIS2_OPTIONS_GET_TARGET_EPR.
-         */
-        /*to_epr = AXIS2_OPTIONS_GET_TO(op_client_impl->options, env);*/
-        to_epr = AXIS2_OPTIONS_GET_TARGET_EPR(op_client_impl->options, env);
-        
+        to_epr = AXIS2_OPTIONS_GET_TO(op_client_impl->options, env);
         if (!to_epr)
             to_epr = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
         transport_out = AXIS2_MEP_CLIENT_INFER_TRANSPORT(op_client_impl->base, env, to_epr);
@@ -492,10 +486,8 @@ axis2_op_client_execute(
             /* Usual Request-Response Sync implementation */
             property = axis2_property_create(env);
             AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
-            /*epr_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(
-                        AXIS2_OPTIONS_GET_TO(op_client_impl->options, env), env);*/
             epr_address = AXIS2_ENDPOINT_REF_GET_ADDRESS(
-                    AXIS2_OPTIONS_GET_TARGET_EPR(op_client_impl->options, env), env);
+                        AXIS2_OPTIONS_GET_TO(op_client_impl->options, env), env);
             address = AXIS2_STRDUP(epr_address, env);
             AXIS2_PROPERTY_SET_VALUE(property, env, address);
             AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env,

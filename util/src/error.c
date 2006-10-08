@@ -67,10 +67,6 @@ axis2_error_init()
         "type is not supported";
     axis2_error_messages[AXIS2_ERROR_OPTIONS_OBJECT_IS_NOT_SET] =
         "Options object is not set";
-    axis2_error_messages[AXIS2_ERROR_NO_TARGET_EPR_SET] =
-        "No target endpoint reference provided";
-    axis2_error_messages[AXIS2_ERROR_ADDRESSING_ENABLED_BUT_NO_TARGET_EPR_SET] =
-        "Addressing is enabled, but no target epr provided";
     /* core:clientapi:diclient */
 
     /* core:context */

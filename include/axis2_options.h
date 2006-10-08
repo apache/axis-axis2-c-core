@@ -637,39 +637,16 @@ extern "C"
                     const axis2_env_t *env);
 
         /**
-         * Set the target endpoint reference the receiving end is listening to
+         * Frees options struct.
          * @param options pointer to options struct
          * @param env pointer to environment struct
          * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
          */
         axis2_status_t (AXIS2_CALL *
-                set_target_epr) (
+                free)(
                     axis2_options_t *options,
-                    const axis2_env_t *env,
-                    axis2_endpoint_ref_t *epr);
-
-        /**
-         * Get the target endpoint reference the receiving end is listening to
-         * @param options pointer to options struct
-         * @param env pointer to environment struct
-         * @return endpoint reference the receiving end is listening to
-         */
-        axis2_endpoint_ref_t *(AXIS2_CALL *
-                get_target_epr) (
-                    const axis2_options_t *options,
                     const axis2_env_t *env);
-
-                /**
-                 * Frees options struct.
-                 * @param options pointer to options struct
-                 * @param env pointer to environment struct
-                 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-                 */
-                axis2_status_t (AXIS2_CALL *
-                        free)(
-                            axis2_options_t *options,
-                            const axis2_env_t *env);
-            };
+    };
 
     /**
      * options struct.
@@ -929,16 +906,6 @@ extern "C"
     @sa axis2_options_ops#get_enable_mtom */
 #define AXIS2_OPTIONS_GET_ENABLE_MTOM(options, env) \
       ((options)->ops->get_enable_mtom(options, env))
-
-/** Set target epr.
-    @sa axis2_options_ops#set_target_epr */
-#define AXIS2_OPTIONS_SET_TARGET_EPR(options, env, epr) \
-      ((options)->ops->set_target_epr(options, env, epr))
-
-/** Get target epr.
-    @sa axis2_options_ops#get_target_epr */
-#define AXIS2_OPTIONS_GET_TARGET_EPR(options, env) \
-      ((options)->ops->get_target_epr(options, env))
 
 /** Frees the options struct.
     @sa axis2_options_ops#free*/
