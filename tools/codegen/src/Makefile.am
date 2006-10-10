@@ -3,7 +3,7 @@ SUBDIRS = util wsdl templates typemappers schema
 templatesdir=$(prefix)/conf
 typemappersdir=$(prefix)/conf
 
-prgbindir=$(prefix)/bin
+prgbindir=$(prefix)/bin/tools
 prgbin_PROGRAMS = w2c
 
 w2c_SOURCES =  wsdl2code.c

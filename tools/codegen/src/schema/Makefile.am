@@ -1,7 +1,7 @@
 SUBDIRS= compiler writer 
 
 prglibdir=$(prefix)/lib/codegen
-prgbindir=$(prefix)/bin
+prgbindir=$(prefix)/bin/tools
 
 prgbin_PROGRAMS = x2c
 
