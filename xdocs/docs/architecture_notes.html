@@ -43,8 +43,8 @@ as to enable the extension of the functionality of Axis2/C.</p>
 <p>Axis2/C defines an environment to hold platform specific entities such as
 the allocating mechanism, the logging mechanism, etc. This environment is
 initialized at the point of starting Axis2/C and will last for the lifetime
-of Axis2/C library. Different sub environments can also be created to suit
-the particular scenarios (eg: the thread specific environment). The Axis2
+of Axis2/C library. Different sub environments can also be created to suit a
+particular scenario (eg: the thread specific environment). The Axis2
 Environment holds following entities in order to abstract the platform.</p>
 
 <h4>Axis2 Allocator</h4>
@@ -104,7 +104,7 @@ are used. These macros will be mapped to platform specific system calls in a
 platform specific header file (e.g. <code>axis2_unix.h</code>). The file
 <code>axis2_platform_auto_sense.h</code> will include the correct platform
 specific header file, based on the compiler directives available at compile
-time. </p>
+time.</p>
 <a name="Transport_Abstraction"></a>
 
 <h2>Transport Abstraction</h2>
@@ -119,8 +119,8 @@ their own transports and the interface is defined in
 Simple HTTP server provided by Axis2 or the Axis2 Apache2 module. The
 transport sender uses sockets to connect and send the SOAP Message.</p>
 
-<p>Inside the HTTP transport,&nbsp; the receivers and clients are abstracted
-so that the user can easily plug in their own senders and receivers (eg: A
+<p>Inside the HTTP transport,  the receivers and clients are abstracted so
+that the user can easily plug in their own senders and receivers (eg: A
 <code>libcurl</code> based client can be implemented instead of the simple
 http client available in the axis2 distribution)</p>
 <a name="Stream_Abstraction"></a>
@@ -146,7 +146,7 @@ engine to the stream.</p>
 <h2>Threading Model</h2>
 
 <p>Axis2 core functions, such as hot deployment / update, asynchronous
-invocation, concurrent request processing in simple axis2 server, etc&nbsp;
+invocation, concurrent request processing in simple axis2 server, etc 
 heavily depends on threads. At the same time these threads should be platform
 independent inside the Axis2 core components. Another important requirement
 in threading model is the ability to pool the threads. This thread pooling
