@@ -14,9 +14,9 @@
 <!-- See the License for the specific language governing permissions and      -->
 <!-- limitations under the License.                                           -->
 
-<wsdl:definitions targetNamespace="http://localhost/axis/Calculator" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://localhost/axis/Calculator" xmlns:intf="http://localhost/axis/Calculator" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<wsdl:definitions targetNamespace="http://localhost/axis/Calculator" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://localhost/axis/Calculator" xmlns:intf="http://localhost/axis/Calculator" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
  <wsdl:types>
-  <schema elementFormDefault="qualified" targetNamespace="http://localhost/axis/Calculator" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://localhost/axis/Calculator" xmlns:intf="http://localhost/axis/Calculator" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <schema elementFormDefault="qualified" targetNamespace="http://localhost/axis/Calculator" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://localhost/axis/Calculator" xmlns:intf="http://localhost/axis/Calculator" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl">
    <element name="add">
     <complexType>
      <sequence>

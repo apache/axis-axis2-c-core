@@ -20,7 +20,7 @@
 /**
  * @file woden_constants.h
  * @brief Axis2 Xml Woden Constants
- * Constants for WSDL 2.0 elements, attributes and URIs.
+ * Constants for WSDL 1.0 elements, attributes and URIs.
  */
  
 #include <axis2_utils.h>
@@ -40,7 +40,7 @@ extern "C"
 #define WODEN_WSDL10_NS_URI_XMLNS "http://www.w3.org/2000/xmlns/"
 #define WODEN_WSDL10_NS_URI_XSI "http://www.w3.org/2001/XMLSchema-instance"
 
-/* Top-level WSDL 2.0 element names. */
+/* Top-level WSDL 1.0 element names. */
 #define WODEN_WSDL10_ELEM_DEFINITIONS "description"
 #define WODEN_WSDL10_ELEM_DOCUMENTATION "documentation"
 #define WODEN_WSDL10_ELEM_IMPORT "import"
@@ -50,7 +50,7 @@ extern "C"
 #define WODEN_WSDL10_ELEM_BINDING "binding"
 #define WODEN_WSDL10_ELEM_SERVICE "service"
 
-/* Nested WSDL 2.0 element names. */
+/* Nested WSDL 1.0 element names. */
 #define WODEN_WSDL10_ELEM_FAULT "fault"
 #define WODEN_WSDL10_ELEM_OPERATION "operation"
 #define WODEN_WSDL10_ELEM_INPUT "input"
@@ -64,31 +64,31 @@ extern "C"
 #define WODEN_WSDL10_ELEM_ENDPOINT "port"
 #define WODEN_WSDL10_ELEM_PART "part"
 
-/* Top-level WSDL 2.0 qualified element names. */
-#define WODEN_WSDL10_Q_ELEM_DEFINITIONS "definitions|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_DOCUMENTATION "documentation|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_ACTION "action|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_IMPORT "import|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_INCLUDE "include|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_TYPES "types|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_MSG_REF "message|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_PART "part|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_INTERFACE "portType|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_BINDING "binding|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_SERVICE "service|http://schemas.xmlsoap.org/wsdl/"
+/* Top-level WSDL 1.0 qualified element names. */
+#define WODEN_WSDL10_Q_ELEM_DEFINITIONS "definitions|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_DOCUMENTATION "documentation|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_ACTION "action|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_IMPORT "import|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_INCLUDE "include|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_TYPES "types|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_MSG_REF "message|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_PART "part|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_INTERFACE "portType|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_BINDING "binding|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_SERVICE "service|http://schemas.xmlsoap.org/wsdl"
 
-/* Nested WSDL 2.0 qualified element names. */
-#define WODEN_WSDL10_Q_ELEM_FAULT "fault|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_OPERATION "operation|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_INPUT "input|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_OUTPUT "output|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_INFAULT "infault|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_OUTFAULT "outfault|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_FEATURE "feature|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_PROPERTY "property|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_VALUE "value|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_CONSTRAINT "constraint|http://schemas.xmlsoap.org/wsdl/"
-#define WODEN_WSDL10_Q_ELEM_ENDPOINT "port|http://schemas.xmlsoap.org/wsdl/"
+/* Nested WSDL 1.0 qualified element names. */
+#define WODEN_WSDL10_Q_ELEM_FAULT "fault|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_OPERATION "operation|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_INPUT "input|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_OUTPUT "output|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_INFAULT "infault|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_OUTFAULT "outfault|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_FEATURE "feature|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_PROPERTY "property|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_VALUE "value|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_CONSTRAINT "constraint|http://schemas.xmlsoap.org/wsdl"
+#define WODEN_WSDL10_Q_ELEM_ENDPOINT "port|http://schemas.xmlsoap.org/wsdl"
 
 /* Attribute names. */
 #define WODEN_WSDL10_ATTR_ID "id"
@@ -122,7 +122,7 @@ extern "C"
 #define WODEN_WSDL10_NMTOKEN_ELEMENT "#element"
 
 /* Constants representing the values of the properties used to 
- * configure the Woden runtime (i.e. different to WSDL 2.0 properties).
+ * configure the Woden runtime (i.e. different to WSDL 1.0 properties).
  * These typically describe the standards, APIs, etc, supported by this 
  * implementation of the Woden API.
  * 
