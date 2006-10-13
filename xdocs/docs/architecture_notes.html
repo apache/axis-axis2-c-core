@@ -10,7 +10,7 @@
   <title>Architecture_notes.html</title>
 </head>
 
-<body>
+<body lang="en">
 <h1>C Specific Architectural Notes on Axis2/C</h1>
 
 <p>Send your feedback to: <a
@@ -32,10 +32,10 @@ see <a href="../mail-lists.html">here</a></p>
 
 <h2>Introduction</h2>
 
-<p>One of the main design goals of Axis2/C is the re-useability of the
-library and the ability to plug into different platforms. There are many
-features that allow Axis2/C to be pluggable in to different platforms as well
-as to enable the extension of the functionality of Axis2/C.</p>
+<p>One of the main design goals of Axis2/C is the re-usability of the library
+and the ability to plug into different platforms. There are many features
+that allow Axis2/C to be pluggable in to different platforms as well as to
+enable the extension of the functionality of Axis2/C.</p>
 <a name="Axis2_Environment"></a>
 
 <h2>Axis2 Environment</h2>
@@ -91,8 +91,8 @@ selecting a set of modules. The modules can either be compiled at the source
 tree of Axis2 or separately. These modules should be compiled as Dynamic
 Shared Objects (DSOs) that exist separately. Services are also loaded
 dynamically by reading the contents of the services folder. This dynamic
-loading is mandatory in order to provide hot deployment / update as well as
-to facilitate the runtime selection of transports.</p>
+loading is mandatory in order to provide hot deployment/ update as well as to
+facilitate the runtime selection of transports.</p>
 
 <p>The DSO support for loading individual Axis2 components is based on the
 component named <code>class_loader</code>, which must be statically compiled
@@ -116,7 +116,8 @@ their own transports and the interface is defined in
 <code>axis2_transport_receiver.h</code>.</p>
 
 <p>Currently Axis2/C supports HTTP transport. The transport receiver is a
-Simple HTTP server provided by Axis2 or the Axis2 Apache2 module. The
+Simple HTTP server provided by Axis2 or the Axis2 Apache2 (<a
+href="installationguide.html#installing-apache2">mod_axis2</a>) module. The
 transport sender uses sockets to connect and send the SOAP Message.</p>
 
 <p>Inside the HTTP transport,  the receivers and clients are abstracted so
@@ -128,7 +129,7 @@ http client available in the axis2 distribution)</p>
 <h2>Stream Abstraction</h2>
 
 <p>Stream is a representation of a sequence of bytes. Since Axis2 heavily
-uses streaming mechanisms to read / write xml, an implementation independent
+uses streaming mechanisms to read/write xml, an implementation independent
 stream abstraction is required in order to integrate Axis2 in other
 environments seamlessly. The core components of Axis2 deal with this
 abstracted stream and does not worry about the implementation specific
@@ -145,7 +146,7 @@ engine to the stream.</p>
 
 <h2>Threading Model</h2>
 
-<p>Axis2 core functions, such as hot deployment / update, asynchronous
+<p>Axis2 core functions, such as hot deployment/update, asynchronous
 invocation, concurrent request processing in simple axis2 server, etc 
 heavily depends on threads. At the same time these threads should be platform
 independent inside the Axis2 core components. Another important requirement
