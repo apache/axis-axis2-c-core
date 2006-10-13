@@ -405,7 +405,13 @@ axis2_op_client_execute(
     if (!transport_out)
     {
         axis2_endpoint_ref_t *to_epr = NULL;
-        to_epr = AXIS2_OPTIONS_GET_TO(op_client_impl->options, env);
+        axis2_property_t *property = NULL;
+         property = AXIS2_OPTIONS_GET_PROPERTY(op_client_impl->options, env, 
+                 AXIS2_TARGET_EPR);
+         if(property)
+            to_epr = AXIS2_PROPERTY_GET_VALUE(property, env);
+         if(!to_epr)
+            to_epr = AXIS2_OPTIONS_GET_TO(op_client_impl->options, env);
         if (!to_epr)
             to_epr = AXIS2_MSG_CTX_GET_TO(msg_ctx, env);
         transport_out = AXIS2_MEP_CLIENT_INFER_TRANSPORT(op_client_impl->base, env, to_epr);
@@ -723,18 +729,4 @@ axis2_op_client_set_callback_recv(
     AXIS2_INTF_TO_IMPL(op_client)->callback_recv = callback_recv;
     return AXIS2_SUCCESS;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

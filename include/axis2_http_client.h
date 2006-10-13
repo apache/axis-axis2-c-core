@@ -147,6 +147,12 @@ extern "C"
                 get_proxy)(
                     const axis2_http_client_t *client,
                     const axis2_env_t *env);
+        
+        axis2_status_t (AXIS2_CALL *
+                set_dump_input_msg) (
+                    axis2_http_client_t *client,
+                    const axis2_env_t *env,
+                    axis2_bool_t dump_input_msg);
 
         /**
          * @param client pointer to client
@@ -237,6 +243,11 @@ extern "C"
     @sa axis2_http_client_ops#get_proxy */
 #define AXIS2_HTTP_CLIENT_GET_PROXY(client, env) \
                                 ((client)->ops->get_proxy(client, env))
+
+/** Set dump_input_msg true.
+    @sa axis2_http_client_ops#set_dump_input_msg */
+#define AXIS2_HTTP_CLIENT_SET_DUMP_INPUT_MSG(client, env, dump_input_msg) \
+        ((client)->ops->set_dump_input_msg(client, env, dump_input_msg))
 
 /** Frees the http client.
     @sa axis2_http_client_ops#free */

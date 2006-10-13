@@ -287,7 +287,8 @@ axis2_client_utils_create_axis2_svc(
             AXIS2_FREE(env->allocator, localname);
             AXIS2_QNAME_FREE(temp_svc_qname, env);
         }
-        endpoints = WODEN_WSDL10_SVC_GET_ENDPOINTS(wsdl_svc, env);
+        if(wsdl_svc)
+            endpoints = WODEN_WSDL10_SVC_GET_ENDPOINTS(wsdl_svc, env);
         if (endpoints)
             no_of_endpoints = AXIS2_ARRAY_LIST_SIZE(endpoints, env);
         for (i = 0; i < no_of_endpoints; i++)

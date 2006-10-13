@@ -209,6 +209,7 @@ axis2_soap_over_http_sender_send(
     axis2_byte_t *output_stream = NULL;
     int output_stream_size = 0;
     axis2_bool_t doing_mtom = AXIS2_FALSE;
+    axis2_property_t *dump_property = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -234,6 +235,18 @@ axis2_soap_over_http_sender_send(
     {
         return AXIS2_FAILURE;
     }
+
+    dump_property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env, 
+            AXIS2_DUMP_INPUT_MSG_TRUE, AXIS2_FALSE);
+    if(dump_property)
+    {
+        axis2_char_t *dump_true = AXIS2_PROPERTY_GET_VALUE(dump_property, env);
+        if(0 == AXIS2_STRCMP(dump_true, AXIS2_VALUE_TRUE))
+        {
+            AXIS2_HTTP_CLIENT_SET_DUMP_INPUT_MSG(sender_impl->client, env, AXIS2_TRUE);
+        }
+    }
+
     /* configure proxy settings if we have set so
      */
     axis2_soap_over_http_sender_configure_proxy(sender, env, msg_ctx);

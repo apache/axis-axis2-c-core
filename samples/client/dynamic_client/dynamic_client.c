@@ -64,7 +64,7 @@ int main(int argc, char** argv)
         return 1;
     }
     wsdl_uri_str = argv[1];
-    if (strstr(wsdl_uri_str, "Calculator"))
+    if (strstr(wsdl_uri_str, "cal_1.1"))
     {
         printf("Calculator\n");
         process_for_wsdl1(env, wsdl_uri_str);
@@ -165,12 +165,12 @@ process_for_wsdl2(
     if (!client_home)
         client_home = "../../deploy";
 
-    wsdl_svc_qname = axis2_qname_create(env, "Calculator",
-            "http://localhost/axis/Calculator", NULL);
+    wsdl_svc_qname = axis2_qname_create(env, "reservationService",
+            "http://greath.example.com/2004/wsdl/resSvc", NULL);
     wsdl_uri = axis2_uri_parse_string(env, wsdl_uri_str);
     svc_client =
         axis2_svc_client_create_for_dynamic_invocation(
-            env, NULL, wsdl_uri, wsdl_svc_qname, "Calculator", client_home);
+            env, NULL, wsdl_uri, wsdl_svc_qname, "reservationService", client_home);
     if (!svc_client)
     {
         printf("Service client is NULL \n");

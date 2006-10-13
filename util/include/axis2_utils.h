@@ -132,6 +132,9 @@ typedef int (AXIS2_CALL *AXIS2_CLOSE_INPUT_CALLBACK)(void *ctx);
 
     
 #define AXIS2_REQUEST_URL_PREFIX "/services"
+#define AXIS2_TARGET_EPR "target_epr"
+#define AXIS2_DUMP_INPUT_MSG_TRUE "dump"
+
     /**
      * This function allows users to reolve the service and op from the 
      * url. It returns an array of 2 elements of axis2_char_t arrays (strings).

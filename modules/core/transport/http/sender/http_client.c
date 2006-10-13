@@ -48,6 +48,7 @@ typedef struct axis2_http_client_impl
     axis2_char_t *proxy_host;
     int proxy_port;
     axis2_char_t *proxy_host_port;
+    axis2_bool_t dump_input_msg;
 }
 axis2_http_client_impl_t;
 
@@ -114,6 +115,12 @@ axis2_http_client_connect_ssl_host(
     int port);
 
 axis2_status_t AXIS2_CALL
+axis2_http_client_set_dump_input_msg(
+    axis2_http_client_t *client,
+    const axis2_env_t *env,
+    axis2_bool_t dump_input_msg);
+
+axis2_status_t AXIS2_CALL
 axis2_http_client_free(
     axis2_http_client_t *client,
     const axis2_env_t *env);
@@ -152,6 +159,7 @@ axis2_http_client_create(
     http_client_impl->proxy_port = 0;
     http_client_impl->proxy_host = NULL;
     http_client_impl->proxy_host_port = NULL;
+    http_client_impl->dump_input_msg = AXIS2_FALSE;
 
     http_client_impl->http_client.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_http_client_ops_t));
@@ -177,6 +185,8 @@ axis2_http_client_create(
         axis2_http_client_set_proxy;
     http_client_impl->http_client.ops->get_proxy =
         axis2_http_client_get_proxy;
+    http_client_impl->http_client.ops->set_dump_input_msg = 
+        axis2_http_client_set_dump_input_msg;
     http_client_impl->http_client.ops->free = axis2_http_client_free;
 
     return &(http_client_impl->http_client);
@@ -246,6 +256,16 @@ axis2_http_client_send(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     client_impl = AXIS2_INTF_TO_IMPL(client);
+
+    body_size = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY_BYTES(request, env,
+            &str_body);
+    if(client_impl->dump_input_msg == AXIS2_TRUE)
+    {
+        /* We just print the input message and return */
+        printf("----------------Input message--------------:\n");
+        printf("%s\n", str_body);
+        return AXIS2_SUCCESS;
+    }
 
     if (NULL == client_impl->url)
     {
@@ -399,8 +419,6 @@ axis2_http_client_send(
     wire_format = NULL;
     written = AXIS2_STREAM_WRITE(client_impl->data_stream, env, AXIS2_HTTP_CRLF,
             2);
-    body_size = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY_BYTES(request, env,
-            &str_body);
     if (body_size > 0 &&  str_body)
     {
         if (AXIS2_FALSE == chunking_enabled)
@@ -786,3 +804,19 @@ axis2_http_client_connect_ssl_host(
     AXIS2_STREAM_FREE(tmp_stream, env);
     return AXIS2_SUCCESS;
 }
+
+axis2_status_t AXIS2_CALL
+axis2_http_client_set_dump_input_msg(
+    axis2_http_client_t *client,
+    const axis2_env_t *env,
+    axis2_bool_t dump_input_msg)
+{
+    axis2_http_client_impl_t *client_impl = NULL;
+    
+    client_impl = AXIS2_INTF_TO_IMPL(client);
+
+    client_impl->dump_input_msg = dump_input_msg;
+
+    return AXIS2_SUCCESS;
+}
+
