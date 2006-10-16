@@ -64,6 +64,16 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     axis2_status_t (AXIS2_CALL * 
     free)(tcpmon_session_t *session,
             const axis2_env_t *env);
+
+
+	 axis2_status_t (AXIS2_CALL *
+						  set_test_bit) (tcpmon_session_t *session,
+											  const axis2_env_t *env,
+											  int test_bit);
+
+	 axis2_status_t (AXIS2_CALL *
+						  get_test_bit) (tcpmon_session_t *session,
+											  axis2_env_t *env);
     
    /**
     * configure the listening port.
@@ -73,9 +83,9 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE.
     */
     axis2_status_t (AXIS2_CALL *
-    set_listen_port) (tcpmon_session_t *session,
-                        const axis2_env_t *env,
-                        int listen_port);
+						  set_listen_port) (tcpmon_session_t *session,
+								const axis2_env_t *env,
+								int listen_port);
 
    /**
     * retrieve the listening port
@@ -188,6 +198,12 @@ tcpmon_session_create(const axis2_env_t *env );
 
 #define TCPMON_SESSION_FREE(session, env) \
         ((session)->ops->free (session, env))
+
+#define TCPMON_SESSION_SET_TEST_BIT(session, env, test_bit) \
+        ((session)->ops->set_test_bit(session, env, test_bit))
+
+#define TCPMON_SESSION_GET_TEST_BIT(session, env) \
+        ((session)->ops->get_test_bit(session, env))
 
 #define TCPMON_SESSION_SET_LISTEN_PORT(session, env, listen_port) \
         ((session)->ops->set_listen_port(session, env, listen_port))
