@@ -71,6 +71,9 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_log_impl_write_to_file(FILE *fd,
         axis2_thread_mutex_t *mutex, axis2_log_levels_t level,
         const axis2_char_t * file, const int line, const axis2_char_t * value);
 
+axis2_log_t * AXIS2_CALL axis2_log_create_default (axis2_allocator_t *allocator);
+
+
 
 AXIS2_EXTERN axis2_log_t * AXIS2_CALL
 axis2_log_create(axis2_allocator_t * allocator, axis2_log_ops_t * ops,
@@ -461,6 +464,39 @@ axis2_log_impl_get_time_str(void)
         time_str[strlen(time_str)-1] = '\0';
     }
     return time_str;
+}
+
+axis2_log_t * AXIS2_CALL 
+axis2_log_create_default (axis2_allocator_t *allocator)
+{
+	 axis2_log_impl_t *log_impl;
+
+    if (!allocator)
+        return NULL;
+
+    log_impl = (axis2_log_impl_t *) AXIS2_MALLOC(allocator,
+            sizeof(axis2_log_impl_t));
+
+    if (!log_impl)
+        return NULL;
+
+    log_impl->mutex = axis2_thread_mutex_create(allocator,
+            AXIS2_THREAD_MUTEX_DEFAULT);
+
+    if (!log_impl->mutex)
+    {
+        fprintf(stderr, "cannot create log mutex \n");
+        return NULL;
+    }
+		
+    axis2_thread_mutex_lock(log_impl->mutex);
+	 log_impl->stream = stderr;
+    axis2_thread_mutex_unlock(log_impl->mutex);
+    /* by default, log is enabled */
+    log_impl->log.enabled = 1;
+    log_impl->log.level = AXIS2_LOG_LEVEL_DEBUG;
+
+    return &(log_impl->log);
 }
 
 #ifdef AXIS2_TRACE

@@ -30,12 +30,14 @@ AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all(const axis2_char_t *l
     axis2_allocator_t *allocator = NULL;
     axis2_thread_pool_t *thread_pool = NULL;
 
-    if (!log_file)
-        log_file = "/dev/stderr";
-
     allocator = axis2_allocator_init(NULL);
     error = axis2_error_create(allocator);
-    log = axis2_log_create(allocator, NULL, log_file);
+
+	 if (log_file)
+		  log = axis2_log_create(allocator, NULL, log_file);
+	 else
+		  log = axis2_log_create_default (allocator);
+
     thread_pool = axis2_thread_pool_init(allocator);
     env = axis2_env_create_with_error_log_thread_pool(allocator, error, log, thread_pool);
     if (env->log)
@@ -87,6 +89,8 @@ AXIS2_EXTERN axis2_env_t* AXIS2_CALL
 axis2_env_create(axis2_allocator_t *allocator)
 {
     axis2_env_t *environment;
+	 axis2_log_t *log = NULL;
+
     if (NULL == allocator)
         return NULL;
 
@@ -96,13 +100,15 @@ axis2_env_create(axis2_allocator_t *allocator)
     if (NULL == environment)
         return NULL;
 
+	 log = axis2_log_create_default (allocator);
+
     environment->allocator = allocator;
 
     /* Create default error */
     environment->error = axis2_error_create(allocator);
     if (NULL == environment->error)
         return NULL;
-    environment->log = NULL;
+    environment->log = log;
     environment->thread_pool = NULL;
     return environment;
 
