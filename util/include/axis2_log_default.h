@@ -46,6 +46,9 @@ extern "C"
     AXIS2_EXTERN axis2_log_t * AXIS2_CALL axis2_log_create (axis2_allocator_t * allocator,
                      axis2_log_ops_t * ops, const axis2_char_t * stream_name);
     AXIS2_EXTERN axis2_char_t *AXIS2_CALL  axis2_log_impl_get_time_str(void);
+    
+    AXIS2_EXTERN axis2_log_t * AXIS2_CALL 
+    axis2_log_create_default (axis2_allocator_t *allocator);
 
 /** @} */
     

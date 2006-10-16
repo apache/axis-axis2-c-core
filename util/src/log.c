@@ -71,10 +71,6 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL axis2_log_impl_write_to_file(FILE *fd,
         axis2_thread_mutex_t *mutex, axis2_log_levels_t level,
         const axis2_char_t * file, const int line, const axis2_char_t * value);
 
-AXIS2_EXTERN axis2_log_t * AXIS2_CALL axis2_log_create_default (axis2_allocator_t *allocator);
-
-
-
 AXIS2_EXTERN axis2_log_t * AXIS2_CALL
 axis2_log_create(axis2_allocator_t * allocator, axis2_log_ops_t * ops,
         const axis2_char_t * stream_name)
