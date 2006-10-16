@@ -100,8 +100,8 @@ process_for_wsdl1(
      * modules that the client uses
      */
     client_home = AXIS2_GETENV("AXIS2C_HOME");
-    if (!client_home)
-        client_home = "../../deploy";
+    if (!client_home || !strcmp (client_home, ""))
+        client_home = "../..";
 
     wsdl_svc_qname = axis2_qname_create(env, "Calculator",
             "http://localhost/axis/Calculator", NULL);
@@ -111,7 +111,7 @@ process_for_wsdl1(
             env, NULL, wsdl_uri, wsdl_svc_qname, "Calculator", client_home);
     if (!svc_client)
     {
-        printf("Service client is NULL \n");
+        printf("Error creating service client, Please check AXIS2C_HOME again\n");
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Service client is NULL");
         return 1;
     }
@@ -128,7 +128,7 @@ process_for_wsdl1(
         om_str = AXIOM_NODE_TO_STRING(response, env);
         if (om_str)
             printf("\nReceived OM : %s\n", om_str);
-        printf("status:%s\n", "Success");
+        printf("status:%s\n", "Successful");
     }
     else
         printf("status:%s\n", "Failure");
@@ -162,8 +162,8 @@ process_for_wsdl2(
      * modules that the client uses
      */
     client_home = AXIS2_GETENV("AXIS2C_HOME");
-    if (!client_home)
-        client_home = "../../deploy";
+    if (!client_home || !strcmp (client_home, ""))
+        client_home = "../..";
 
     wsdl_svc_qname = axis2_qname_create(env, "reservationService",
             "http://greath.example.com/2004/wsdl/resSvc", NULL);
@@ -175,7 +175,7 @@ process_for_wsdl2(
     {
         printf("Service client is NULL \n");
         AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, "Service client is NULL");
-        return 1;
+        return -1;
     }
     payload = build_om_programatically_for_wsdl2(env);
     op_qname = axis2_qname_create(env, "add", "http://localhost/axis/Calculator",

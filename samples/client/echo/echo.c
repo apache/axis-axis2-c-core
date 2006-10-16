@@ -68,17 +68,18 @@ int main(int argc, char** argv)
      * modules that the client uses
      */
     client_home = AXIS2_GETENV("AXIS2C_HOME");
-    if (!client_home)
-        client_home = "../../deploy";
+    if (!client_home || !strcmp (client_home, ""))
+        client_home = "../..";
 
     /* Create service client */
     svc_client = axis2_svc_client_create(env, client_home);
     if (!svc_client)
     {
-        printf("Error creating service client\n");
+        printf("Error creating service client, Please check AXIS2C_HOME again\n");
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
                 " %d :: %s", env->error->error_number,
                 AXIS2_ERROR_GET_MESSAGE(env->error));
+		  return -1;
     }
 
     /* Set service client options */

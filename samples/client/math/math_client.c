@@ -44,8 +44,8 @@ int main(int argc, char** argv)
     env = axis2_env_create_all("math_blocking.log", AXIS2_LOG_LEVEL_TRACE);
 
     client_home = AXIS2_GETENV("AXIS2C_HOME");
-    if (!client_home)
-        client_home = "../../deploy";
+    if (!client_home || !strcmp (client_home, ""))
+        client_home = "../..";
 
     address = "http://localhost:9090/axis2/services/math";
     if (argc > 1)
@@ -116,6 +116,7 @@ int main(int argc, char** argv)
                 " %d :: %s", env->error->error_number,
                 AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("math stub invoke FAILED!\n");
+		  return -1;
     }
 
     if (stub)
