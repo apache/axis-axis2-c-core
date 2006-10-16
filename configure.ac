@@ -352,7 +352,8 @@ AC_CONFIG_FILES([Makefile \
     test/tools/Makefile \
     ides/Makefile \
     ides/anjuta/Makefile \
-    include/Makefile
+    include/Makefile \
+    axis2c.pc
     ])
     
 AC_OUTPUT
