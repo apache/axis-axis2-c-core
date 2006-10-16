@@ -174,6 +174,7 @@ axis2_http_worker_process_request(
     axis2_char_t *url_external_form = NULL;
     axis2_qname_t *tmp_qname = NULL;
     axis2_char_t *svc_grp_uuid = NULL;
+	 axis2_char_t *path = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svr_conn, AXIS2_FAILURE);
@@ -249,13 +250,16 @@ axis2_http_worker_process_request(
                 response);
     }
     svr_ip = AXIS2_SIMPLE_HTTP_SVR_CONN_GET_SVR_IP(svr_conn, env);
-    request_url = axis2_url_create(env, "http", svr_ip,
-            http_worker_impl->svr_port,
-            AXIS2_HTTP_REQUEST_LINE_GET_URI(
-                AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
-                    simple_request, env), env));
 
-    url_external_form = AXIS2_URL_TO_EXTERNAL_FORM(request_url, env);
+	 path =   AXIS2_HTTP_REQUEST_LINE_GET_URI(
+		  AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
+				simple_request, env), env);
+
+    request_url = axis2_url_create(env, "http", svr_ip,
+											  http_worker_impl->svr_port,
+											  path);
+
+	 url_external_form = AXIS2_URL_TO_EXTERNAL_FORM(request_url, env);
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_REQUEST);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env, axis2_stream_free_void_arg);
@@ -316,6 +320,25 @@ axis2_http_worker_process_request(
             axis2_char_t *body_string = NULL;
             AXIS2_HTTP_SIMPLE_RESPONSE_SET_STATUS_LINE(response, env,
                     http_version, AXIS2_HTTP_RESPONSE_OK_CODE_VAL, "OK");
+
+				path =   AXIS2_HTTP_REQUEST_LINE_GET_URI(
+					 AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
+						  simple_request, env), env);
+				
+							 /* check for axis2/services */
+				if (path)
+				  {
+						if (path[strlen(path) - 1] != '/')
+						  {
+								strcat (path, "/");
+						  }
+						
+						if (strcmp (path, "/axis2/services/"))
+						  {
+								return AXIS2_FAILURE;
+						  }
+				  }
+    
             body_string = axis2_http_transport_utils_get_services_html(env,
                     conf_ctx);
             if (body_string)
