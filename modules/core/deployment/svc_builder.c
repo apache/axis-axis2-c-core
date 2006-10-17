@@ -221,7 +221,7 @@ axis2_svc_builder_populate_svc(
     axiom_children_qname_iterator_t *operation_itr = NULL;
     /*axiom_children_qname_iterator_t *module_configs_itr = NULL; */
     axis2_qname_t *qparamst = NULL;
-    /*axis2_qname_t *qdesc = NULL;*/
+    axis2_qname_t *qdesc = NULL;
     axis2_qname_t *qmodulest = NULL;
     axis2_qname_t *qinflowst = NULL;
     axis2_qname_t *qoutflowst = NULL;
@@ -232,9 +232,8 @@ axis2_svc_builder_populate_svc(
     /*axis2_qname_t *qmodule_config = NULL; */
     axis2_status_t status = AXIS2_FAILURE;
     axis2_svc_grp_t *parent = NULL;
-    /*axiom_element_t *desc_element = NULL;
+    axiom_element_t *desc_element = NULL;
     axiom_node_t *desc_node = NULL;
-    */
     axiom_children_qname_iterator_t *module_refs = NULL;
     axiom_node_t *in_flow_node = NULL;
     axiom_element_t *in_flow_element = NULL;
@@ -289,7 +288,8 @@ axis2_svc_builder_populate_svc(
      * is incorporated I comment out this part and add my own logic to set svc
      * name
      */
-    /*qdesc = axis2_qname_create(env, AXIS2_DESCRIPTION, NULL, NULL);
+	 /* -------------------------service description-------------------- */
+    qdesc = axis2_qname_create(env, AXIS2_DESCRIPTION, NULL, NULL);
     desc_element = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(svc_element, env,
         qdesc, svc_node, &desc_node);
     AXIS2_QNAME_FREE(qdesc, env) ;
@@ -298,38 +298,17 @@ axis2_svc_builder_populate_svc(
     {
         axiom_element_t *desc_value_element = NULL;
         axiom_node_t *desc_value_node = NULL;
-        axiom_xml_writer_t *xml_writer = NULL;
-        axiom_output_t *om_output = NULL;
-        
+        axis2_char_t *description_text = NULL;
+
         desc_value_element = AXIOM_ELEMENT_GET_FIRST_ELEMENT(desc_element, 
             env, desc_node, &desc_value_node);
-        if( desc_value_element && NULL != desc_value_node)
-        {
-            axis2_char_t *svc_name = NULL;
-        
-            xml_writer = axiom_xml_writer_create_for_memory(env, NULL, 
-                AXIS2_TRUE, 0, AXIS2_XML_PARSERT_TYPE_BUFFER);
-            om_output = axiom_output_create(env, xml_writer);
-            status = AXIOM_NODE_SERIALIZE(desc_value_node, env, om_output);
-            if(status != AXIS2_SUCCESS)
-            {
-                return AXIS2_FAILURE;
-            }
-            svc_name = (axis2_char_t*)AXIOM_XML_WRITER_GET_XML(xml_writer, env);
-            AXIS2_SVC_SET_NAME(builder_impl->svc, env, 
-                svc_name);
-            AXIOM_OUTPUT_FREE(om_output, env);
-        }
-        else
-        {
-            axis2_char_t *svc_name = NULL;
-        
-            svc_name = AXIOM_ELEMENT_GET_TEXT(desc_element, env, desc_node);
-            AXIS2_SVC_SET_NAME(builder_impl->svc, env, 
-                svc_name);
-        }
+		  description_text = AXIOM_ELEMENT_GET_TEXT (desc_element, env, desc_node);
+		  if (description_text)
+			 {
+				  AXIS2_SVC_SET_SVC_DESC (builder_impl->svc, env, description_text);
+			 }
     }
-    */
+	 /* --------------------services description end -------------------- */
     /* my logic to get set service name */
     qattname = axis2_qname_create(env, AXIS2_ATTNAME, NULL, NULL);
     name_attr = AXIOM_ELEMENT_GET_ATTRIBUTE(svc_element, env, qattname);

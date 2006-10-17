@@ -764,14 +764,21 @@ axis2_http_transport_utils_get_services_html(
             axis2_hash_this(hi, NULL, NULL, &service);
             sname = AXIS2_QNAME_GET_LOCALPART(AXIS2_SVC_GET_QNAME(
                         ((axis2_svc_t *)service), env), env);
-            ret = AXIS2_STRACAT(tmp2, "<h3>", env);
+            ret = AXIS2_STRACAT(tmp2, "<h3><u>", env);
             tmp2 = ret;
             ret = AXIS2_STRACAT(tmp2, sname, env);
             AXIS2_FREE(env->allocator, tmp2);
             tmp2 = ret;
-            ret  = AXIS2_STRACAT(tmp2, "</h3>", env);
-            AXIS2_FREE(env->allocator, tmp2);
-            tmp2 = ret;
+            ret  = AXIS2_STRACAT(tmp2, "</u></h3>", env);
+				tmp2 = ret;
+				ret = AXIS2_STRACAT (tmp2, "<p>", env);
+				tmp2 = ret;
+							 /**
+							  *setting services description */
+				ret = AXIS2_STRACAT (tmp2, AXIS2_SVC_GET_SVC_DESC ((axis2_svc_t *)service, env), env);
+				tmp2 = ret;
+				ret = AXIS2_STRACAT (tmp2, "</p>", env);
+				tmp2 = ret;
             ops = AXIS2_SVC_GET_ALL_OPS(((axis2_svc_t *)service), env);
             if (ops && 0 != axis2_hash_count(ops))
             {
