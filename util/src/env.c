@@ -155,6 +155,7 @@ axis2_env_create_with_error_log(axis2_allocator_t *allocator
     }
 
     environment->thread_pool = NULL;
+    axis2_error_init();
     return environment;
 }
 
