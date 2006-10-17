@@ -554,9 +554,33 @@ extern "C"
          * @return last updated time in seconds
          */
         long (AXIS2_CALL *
-                get_last_update)(
-                    const axis2_svc_t *svc,
-                    const axis2_env_t *env);
+				  get_last_update)(
+						const axis2_svc_t *svc,
+						const axis2_env_t *env);
+
+		  /**
+			*Get the description of the services, which is in the
+			*service.xml, <description> tag
+			*@param svc pointer to service struct
+			*@param env pointer to environment struct
+			*@return services description string
+			*/
+
+		  const axis2_char_t *(AXIS2_CALL *
+									  get_svc_desc) (
+											const axis2_svc_t *svc,
+											const axis2_env_t *env);
+
+		  /**
+			*Set the description of the service which is in service.xml
+			*@param svc pointer to service struct
+			*@param env pointer to environment struct
+			*@return AXIS2_SUCCESS on success, else AXIS2_FAILURE */
+		  axis2_status_t (AXIS2_CALL *
+								set_svc_desc) (
+									 axis2_svc_t *svc,
+									 const axis2_env_t *env,
+									 const axis2_char_t *svc_desc);
 
         /**
          * Gets the name of the file that holds the implementation of the 
@@ -1253,6 +1277,16 @@ extern "C"
     @sa axis2_svc_ops#get_last_update */
 #define AXIS2_SVC_GET_LAST_UPDATE(svc, env) \
         ((svc)->ops->get_last_update(svc, env))
+
+/** Gets service description.
+		  @sa axis2_svc_ops#get_svc_desc*/
+#define AXIS2_SVC_GET_SVC_DESC(svc, env) \
+        ((svc)->ops->get_svc_desc(svc, env))
+
+/** Sets service description.
+	 @sa axis2_svc_ops#set_svc_desc */
+#define AXIS2_SVC_SET_SVC_DESC(svc, env, svc_desc) \
+        ((svc)->ops->set_svc_desc(svc, env, svc_desc))
 
 /** Gets file name.
     @sa axis2_svc_ops#get_file_name */
