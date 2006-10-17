@@ -332,11 +332,7 @@ axis2_http_worker_process_request(
 						  {
 								strcat (path, "/");
 						  }
-						
-						if (strcmp (path, "/axis2/services/"))
-						  {
-								return AXIS2_FAILURE;
-						  }
+
 				  }
     
             body_string = axis2_http_transport_utils_get_services_html(env,
