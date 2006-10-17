@@ -36,6 +36,12 @@ extern "C"
 {
 #endif
 
+typedef enum axiom_data_handler_type
+{
+    AXIOM_DATA_HANDLER_TYPE_FILE,
+    AXIOM_DATA_HANDLER_TYPE_BUFFER
+}axiom_data_handler_type_t;
+
 
 /* This should be moved to header file later axis2_defines.h*/    
 #define axis2_byte_t char
@@ -118,6 +124,7 @@ AXIS2_EXTERN axiom_data_handler_t * AXIS2_CALL
 axiom_data_handler_create (const axis2_env_t *env, 
     const axis2_char_t *file_name, 
     const axis2_char_t *mime_type);
+
 
 /*************************** Function macros **********************************/
 

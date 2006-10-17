@@ -25,6 +25,7 @@ typedef struct axiom_data_handler_impl
     axis2_char_t* file_name;
     axis2_byte_t* buffer;
     int buffer_len;
+    int data_handler_type;
 }
 axiom_data_handler_impl_t;
 
@@ -102,8 +103,13 @@ axiom_data_handler_create(const axis2_env_t *env,
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return NULL;
         }
+        data_handler_impl->data_handler_type = AXIOM_DATA_HANDLER_TYPE_FILE;
     }
-
+    else
+    {
+        data_handler_impl->data_handler_type = AXIOM_DATA_HANDLER_TYPE_BUFFER;
+    }
+    
     data_handler_impl->data_handler.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axiom_data_handler_ops_t));
     if (NULL == data_handler_impl->data_handler.ops)
@@ -122,6 +128,7 @@ axiom_data_handler_create(const axis2_env_t *env,
     data_handler_impl->data_handler.ops->set_file_name = axiom_data_handler_set_file_name;
     return &(data_handler_impl->data_handler);
 }
+
 
 /*************************** Start of op impls *************************/
 
@@ -172,8 +179,13 @@ axiom_data_handler_read_from(axiom_data_handler_t *data_handler, const axis2_env
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     data_handler_impl = AXIS2_INTF_TO_IMPL(data_handler);
-
-    if (data_handler_impl->file_name)
+    if(data_handler_impl->data_handler_type == AXIOM_DATA_HANDLER_TYPE_BUFFER)
+    {
+        *output_stream = data_handler_impl->buffer;
+        *output_stream_size = data_handler_impl->buffer_len;  
+    }
+    else if (data_handler_impl->data_handler_type == AXIOM_DATA_HANDLER_TYPE_FILE
+        &&  data_handler_impl->file_name)
     {
         FILE *f = NULL;
         axis2_byte_t *byte_stream = NULL;

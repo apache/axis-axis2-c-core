@@ -370,8 +370,9 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                 len = callback(buffer, size, (void*)callback_ctx);
                 if (len > 0)
                 {
-                    axis2_char_t *temp_mime_binary = mime_binary;
+                    axis2_char_t *temp_mime_binary = NULL;
                     count = 0;
+                    temp_mime_binary = mime_binary;
                     mime_binary = AXIS2_MALLOC(env->allocator,
                             sizeof(char) * (mime_binary_len + len + 1));
                     if (mime_binary)
