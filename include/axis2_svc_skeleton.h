@@ -18,22 +18,22 @@
 #define AXIS2_SVC_SKELETON_H
 
 /**
- * @defgroup axis2_svc_api service API
+ * @defgroup axis2_soc_api service API
  * @ingroup axis2
  * @{
  * @} 
  */
 
-/** @defgroup axis2_svc_skeleton service skeleton
+/** 
+ * @defgroup axis2_svc_skeleton service skeleton
  * @ingroup axis2_svc_api
- * Description
+ * service skeleton API should be implemented by all services
+ * that are to be deployed with Axis2/C engine. 
  * @{
  */
 
 /**
  * @file axis2_svc_skeleton.h
- * @brief Axis2c service skeleton that should be implemented by actual service
- * wrappers
  */
 
 #include <axiom_node.h>
@@ -52,46 +52,46 @@ extern "C"
     typedef struct axis2_svc_skeleton axis2_svc_skeleton_t;
    
     /**
-     *service skeleton ops struct
-     * struct for 
-     * Encapsulator struct for operations of axis2_svc_skeleton
+     * service skeleton ops struct.
+     * Encapsulator struct for operations of axis2_svc_skeleton.
      */
-     struct axis2_svc_skeleton_ops
+    struct axis2_svc_skeleton_ops
     {
 
-        /*
-    * @param svc_skeleton pointer to svc_skeleton struct
-    * @param env pointer to environment struct
-    */
+        /**
+         * Initializes the service implementation.
+         * @param svc_skeleton pointer to svc_skeleton struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         int (AXIS2_CALL *
                 init)(
                     axis2_svc_skeleton_t *svc_skeleton,
                     const axis2_env_t *env);
 
-        /*
-    * @param svc_skeli pointer to svc_skeli struct
-    * @param env pointer to environment struct
-    */
+        /**
+         * Frees service implementation.
+         * @param svc_skeli pointer to svc_skeli struct
+         * @param env pointer to environment struct
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
         int (AXIS2_CALL *
                 free)(
                     axis2_svc_skeleton_t *svc_skeli,
                     const axis2_env_t *env);
 
-        /*
-    * @param svc_skeli pointer to svc_skeli struct
-    * @param env pointer to environment struct
-    */
-        int (AXIS2_CALL *
-                free_void_arg)(
-                    void *svc_skeli,
-                    const axis2_env_t *env);
-
-        /*
-    * @param svc_skeli pointer to svc_skeli struct
-    * @param env pointer to environment struct
-    * @param node pointer to node struct
-    * @param msg_ctx pointer to message context struct
-    */
+        /**
+         * Invokes the service. This function should be used to call up the
+         * functions implementing service operations.
+         * @param svc_skeli pointer to svc_skeli struct
+         * @param env pointer to environment struct
+         * @param node pointer to node struct
+         * @param msg_ctx pointer to message context struct
+         * @return pointer to AXIOM node resulting from the invocation. 
+         * In case of one way operations, NULL would be returned with 
+         * status in environment error set to AXIS2_SUCCESS. On error
+         * NULL would be returned with error status set to AXIS2_FAILURE
+         */
         axiom_node_t *(AXIS2_CALL*
                 invoke)(
                     axis2_svc_skeleton_t *svc_skeli,
@@ -99,11 +99,13 @@ extern "C"
                     axiom_node_t *node,
                     axis2_msg_ctx_t *msg_ctx);
 
-        /*
-    * @param svc_skeli pointer to svc_skeli struct
-    * @param env pointer to environment struct
-    * @param node pointer to node struct
-    */
+        /**
+         * This method would be called if a fault is detected.
+         * @param svc_skeli pointer to svc_skeli struct
+         * @param env pointer to environment struct
+         * @param node pointer to node struct
+         * @return pointer to AXIOM node reflecting the fault, NULL on error
+         */
         axiom_node_t *(AXIS2_CALL*
                 on_fault)(
                     axis2_svc_skeleton_t *svc_skeli,
@@ -114,24 +116,16 @@ extern "C"
     } ;
 
     /**
-     *service skeleton struct
-     * struct for 
-     * @param ops pointer to ops struct
-     * @param func_array pointer to func_array struct
+     * service skeleton struct.
      */
-     struct axis2_svc_skeleton
+    struct axis2_svc_skeleton
     {
+        /** operations of service skeleton */
         axis2_svc_skeleton_ops_t *ops;
+        /** Array list of functions, implementing the service operations */
         axis2_array_list_t *func_array;
     };
 
-    /**
-     * Creates axis2_svc_skeleton struct
-     * @param env pointer to environment struct
-     * @return pointer to newly created axis2_svc_struct
-     */
-    AXIS2_EXTERN axis2_svc_skeleton_t * AXIS2_CALL
-    axis2_svc_skeleton_create (const axis2_env_t *env);
 
 /*************************** Function macros **********************************/
 
@@ -145,17 +139,17 @@ extern "C"
 #define AXIS2_SVC_SKELETON_FREE(svc_skeleton, env) \
       ((svc_skeleton)->ops->free (svc_skeleton, env))
 
-/** Invokes axis2 svc skeleton.
+/** Invokes axis2 service skeleton.
     @sa axis2_svc_skeleton_ops#invoke */
 #define AXIS2_SVC_SKELETON_INVOKE(svc_skeleton, env, node, msg_ctx) \
       ((svc_skeleton)->ops->invoke (svc_skeleton, env, node, msg_ctx))
 
-/** axis2_svc_skeleton on fault.
+/** Called on fault.
     @sa axis2_svc_skeleton_ops#on_fault */
 #define AXIS2_SVC_SKELETON_ON_FAULT(svc_skeleton, env, node) \
       ((svc_skeleton)->ops->on_fault (svc_skeleton, env, node))
 
-    /** @} */
+/** @} */
 
 #ifdef __cplusplus
 }

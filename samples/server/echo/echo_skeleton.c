@@ -21,10 +21,6 @@ int AXIS2_CALL
 echo_free(axis2_svc_skeleton_t *svc_skeleton,
         const axis2_env_t *env);
 
-axis2_status_t AXIS2_CALL
-echo_free_void_arg(void *svc_skeleton,
-        const axis2_env_t *env);
-
 /*
  * This method invokes the right service method
  */
