@@ -35,9 +35,6 @@ extern "C"
 struct axis2_qname;
 struct axis2_qname_ops;
 
-static const axis2_char_t XML_NAMESPACE_URI[] =
-    "http://www.w3c.org/XML/1998/namespace";
-
 /**
  * @defgroup axis2_qname qname 
  * @ingroup axis2_util
