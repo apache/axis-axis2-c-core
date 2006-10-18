@@ -25,7 +25,7 @@ extern "C"
 #endif
 
     typedef struct axis2_log_ops axis2_log_ops_t;
-   typedef struct axis2_log axis2_log_t;
+	 typedef struct axis2_log axis2_log_t;
 
 
 #define AXIS2_LOG_SI __FILE__,__LINE__
@@ -88,7 +88,7 @@ extern "C"
        * @return axis2_status_t AXIS2_SUCCESS on success else AXIS2_FAILURE
        */
 
-       axis2_status_t (AXIS2_CALL *
+       void (AXIS2_CALL *
       free) (axis2_allocator_t *allocator, 
             struct axis2_log *log);
 
@@ -98,7 +98,7 @@ extern "C"
         * @param size size of the buffer to be written to log
         * @return satus of the op. AXIS2_SUCCESS on success else AXIS2_FAILURE
         */
-        axis2_status_t (AXIS2_CALL *
+        void (AXIS2_CALL *
        write) (axis2_log_t *log, 
              const axis2_char_t *buffer, 
              axis2_log_levels_t level,
@@ -122,35 +122,35 @@ extern "C"
 
     };
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 axis2_log_impl_log_critical(axis2_log_t *log, 
                       const axis2_char_t *filename, 
                      const int linenumber,
                      const axis2_char_t *format,...);
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 axis2_log_impl_log_error(axis2_log_t *log,
                    const axis2_char_t *filename,
                    const int linenumber,
                    const axis2_char_t *format,...);
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 axis2_log_impl_log_warning(axis2_log_t *log,
                      const axis2_char_t *filename,
                           const int linenumber,
                           const axis2_char_t *format,...);
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 axis2_log_impl_log_info(axis2_log_t *log, 
                   const axis2_char_t *format,...);
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 axis2_log_impl_log_debug(axis2_log_t *log,
                    const axis2_char_t *filename,
                    const int linenumber,
                    const axis2_char_t *format,...);
 
-AXIS2_EXTERN axis2_status_t AXIS2_CALL 
+AXIS2_EXTERN void AXIS2_CALL 
 axis2_log_impl_log_trace(axis2_log_t *log,
                          const axis2_char_t *filename,
                    const int linenumber,
@@ -185,3 +185,7 @@ axis2_log_impl_log_trace(axis2_log_t *log,
 #endif
 
 #endif                          /* AXIS2_LOG_H */
+
+
+
+
