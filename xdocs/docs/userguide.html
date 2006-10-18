@@ -6,8 +6,7 @@
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <title>Axis2/C User's Guide</title>
-  <meta name="generator" content="amaya 9.2.1, see http://www.w3.org/Amaya/"
-  />
+  <meta name="generator" content="Bluefish 1.0.5"/>
 </head>
 
 <body xml:lang="en">
@@ -101,13 +100,15 @@
   </li>
 </ul>
 
-<h2><a id="Introduction">Introduction</a></h2>
+<a id="Introduction"></a>
+<h2>Introduction</h2>
 
-<p>Welcome to Axis2/C, the Apache Axis2 implemented in C. This User's Guide
-will help you to understand what Axis2/C has to offer and how to get started
+<p>Welcome to Axis2/C, the Apache Axis2 implementation in C. This User's Guide
+will help you understand what Axis2/C has to offer and how to get started
 with it.</p>
 
-<h3><a id="What_is_Axis2_">What is Axis2/C?</a></h3>
+<a id="What_is_Axis2_"></a>
+<h3>What is Axis2/C?</h3>
 
 <p>Axis2/C is an effort to implement the <a
 href="http://ws.apache.org/axis2/1_0/Axis2ArchitectureGuide.html">Axis2
@@ -122,11 +123,11 @@ now delivers the following key features:</p>
     its own XML object model and StAX (Streaming API for XML) parsing to
     achieve significant speed. In addition to that, Axis2/C is inherently
     benefited by the speed of its implementation language, namely C, compared
-    to the Java implementation.</p>
+    to Java implementation.</p>
   </li>
   <li><p style="margin-bottom: 0in;"><strong>Low memory foot print</strong>-
-    Axis2 architecture was designed ground-up keeping the low memory foot
-    print in mind. Axis2/C strives to achieve the same with a well designed
+    Axis2 architecture was designed ground-up keeping in mind the low memory foot
+    print. Axis2/C strives to achieve the same with a well designed
     memory management strategy.</p>
   </li>
   <li><p style="margin-bottom: 0in;"><strong>AXIOM/C</strong>- Axis2/C comes
@@ -134,11 +135,11 @@ now delivers the following key features:</p>
     implementation of <a
     href="http://ws.apache.org/commons/axiom/OMTutorial.html">AXIOM</a>.</p>
   </li>
-  <li><p style="margin-bottom: 0in;"><strong>MEP Support</strong> - Support
+  <li><p style="margin-bottom: 0in;"><strong>MEP Support</strong> - Supports
     Message Exchange Patterns (MEPs)</p>
   </li>
-  <li><p style="margin-bottom: 0in;"><strong>Flexibility</strong> - The
-    Axis2/C architecture gives the developer complete freedom to insert
+  <li><p style="margin-bottom: 0in;"><strong>Flexibility</strong> - Axis2/C
+    architecture gives the developer complete freedom to insert
     extensions into the engine (using modules and handlers) for custom SOAP
     header processing.</p>
   </li>
@@ -149,7 +150,7 @@ now delivers the following key features:</p>
   </li>
   <li><p style="margin-bottom: 0in;"><strong>Composition and
     Extensibility</strong> - Modules and phases improve support for
-    composability and extensibility. Modules supports composability and is
+    composability and extensibility. Modules support composability and are
     able to add support for new WS-* specifications in a simple and clean
     manner. They are however, not hot deployable as they change the overall
     behavior of the system.</p>
@@ -165,20 +166,22 @@ community welcomes your participation and contributions.</p>
 href="mailto:axis-user@ws.apache.org">axis-c-user@ws.apache.org</a>" and
 please remember to prefix the subject of the mail with [Axis2].</p>
 
-<p>The following sections will guide you through on how to write Web service
+<p>The following sections will guide on how to write Web service
 clients and services.</p>
 
-<h2><a name="Web_Services_Using_Axis2">Web Services Using Axis2/C</a></h2>
+<a name="Web_Services_Using_Axis2"></a>
+<h2>Web Services Using Axis2/C</h2>
 
 <p>Before starting, please make sure that you have installed Axis2/C
-correctly and check whether you can run the axis2_http_server located in
+correctly and whether you can run the axis2_http_server located in
 AXIS2C_HOME/bin (See <a href="installationguide.html">Installation Guide</a>
 for details).</p>
 
-<h3><a name="Writing_Web_Services_Using_Axis2_C">Writing Web Services Using Axis2/C</a></h3>
+<a name="Writing_Web_Services_Using_Axis2_C"></a>
+<h3>Writing Web Services Using Axis2/C</h3>
 
-<h4><a id="Creating_Web_Service__MyService_">Creating Web Service (Echo
-service)</a></h4>
+<a id="Creating_Web_Service__MyService_"></a>
+<h4>Creating Web Service (Echo service)</h4>
 
 <p>First let's see how we can write a simple Web Service (echo service) using
 Axis2/C's primary interfaces and how to deploy it. For this purpose we will
@@ -188,10 +191,10 @@ create a Web Service with one operation as follows.</p>
 <p>You can have a peek at the complete source code for this example echo
 service located in the "AXIS2C_HOME/samples/server/echo" directory.</p>
 
-<h4><a id="How_to_write_the_Web_Service_">How to write the Web
-Service?</a></h4>
+<a id="How_to_write_the_Web_Service_"></a>
+<h4>How to write the Web Service?</h4>
 
-<p>Writing a new Web Service with Axis2/C involve four steps. Let's take echo
+<p>Writing a new Web Service with Axis2/C involves four steps. Let's take echo
 service as our example.</p>
 <ol>
   <li><p style="margin-bottom: 0in;">Write a echo_skeleton.c file which
@@ -202,7 +205,7 @@ service as our example.</p>
   <li>Write a services.xml file to explain the Web service.</li>
   <li>Create a folder with the service name under AXIS2C_HOME/services and
     put the compiled service ( .dll or .so file) for the Web service and
-    services.xml file in to that folder</li>
+    services.xml file into that folder.</li>
 </ol>
 <a name="Step1"></a>
 <h4>Step1 :Write the echo_skeleton.c file implementing the
@@ -374,13 +377,13 @@ file.</p>
 
 <p>Axis2/C engine can load the service dll. However, it needs to know which
 method to call. Since C does not have reflection, we need to have some dll
-exposed functions known to Axis2/C engine.
+exposing functions known to Axis2/C engine.
 <b><code>axis2_get_instance</code></b> and
 <b><code>axis2_remove_instance</code></b> are the two functions that need to
 be exposed from a service dll (or any other dll of Axis2/C engine). Axis2/C
 engine calls <code>axis2_get_instance</code> method, which creates a new
-service instance, and cast the return pointer to
-<code>axis2_svc_skeleton</code> interface. Then the interface methods can be
+service instance, and casts the return pointer to
+<code>axis2_svc_skeleton</code> interface. Then, the interface methods can be
 called by Axis2/C engine.</p>
 <a name="Step2"></a>
 <h4>Step2 : Now we can write the echo service in a file echo.c</h4>
@@ -501,7 +504,7 @@ qualified class name, we use the dll name for class attributes.</p>
 <pre class="code">&lt;service name="echo"&gt;<br /> &lt;parameter name="ServiceClass" locked="xsd:false"&gt;echo&lt;/parameter&gt;<br /> &lt;description&gt;<br /> This is a echo service<br /> &lt;/description&gt;<br /><br /> &lt;operation name="echoString"&gt;<br /> &lt;parameter name="wsamapping"&gt;<br /> http://localhost:9090/axis2/services/echo/echoString<br /> &lt;/parameter&gt;<br /> &lt;/operation&gt;<br />&lt;/service&gt;</pre>
 
 <p>Name of the service will be the name of the folder with the shared library
-and the services.xml. In the case of this example we will have a folder named
+and services.xml. In this example we will have a folder named
 "echo" in which we have the echo.dll (or libecho.so on Linux platform) and
 services.xml file.</p>
 
@@ -514,7 +517,7 @@ services.xml file should have following format:<br />
 </p>
 <pre class="code">&lt;serviceGroup&gt;<br /> &lt;service name="Service1"&gt;<br /> &lt;!-- details for Service1 --&gt;<br /> &lt;/service&gt;<br /> &lt;service name="Service2"&gt;<br /> &lt;!-- details for Service2 --&gt;<br /> &lt;/service&gt;<br /> &lt;module ref="ModuleName" /&gt;<br /> &lt;parameter name="serviceGroupParam1" locked="false"&gt;value 1&lt;/parameter&gt;<br />&lt;/serviceGroup&gt;</pre>
 
-<p>Note : name of the service is a compulsory attribute</p>
+<p><strong>Note :</strong> Name of the service is a compulsory attribute</p>
 <a name="Step4"></a>
 <h4>Step4 :Create the Web service folder in services folder of the
 repository.</h4>
@@ -534,26 +537,28 @@ the name of the service will be the name of the archive file. To create
 rename the zip extension to aar. Then Axis2 understands it as a service
 archive.</p>
 
-<h3><a name="Writing_Web_Services_Using_Code_Generator">Writing Web Services Skeleton Using Code Generator</a></h3>
+<a name="Writing_Web_Services_Using_Code_Generator"></a>
+<h3>Writing Web Services Skeleton Using Code Generator</h3>
 
-<h4><a id="WSDL2Code_tool">WSDL2Code tool</a></h4>
+<a id="WSDL2Code_tool"></a>
+<h4>WSDL2Code tool</h4>
 
 <p>Axis2/Java WSDL2Code tool supports generation of Axis2/C stub and
 skeleton. <a
 href="http://svn.apache.org/viewvc/webservices/axis2/trunk/java">Axis2/Java
-SVN</a> revision 414253 and later versions provides this facility. A basic
+SVN</a> revision 414253 and later versions provide this facility. A basic
 guide for the tool can be found <a
-href="http://ws.apache.org/axis2/1_0/userguide2.html#Writing_Web_Services_by_Code_Generating_Skeleton">here</a></p>
+href="http://ws.apache.org/axis2/1_0/userguide2.html#Writing_Web_Services_by_Code_Generating_Skeleton">here.</a></p>
 
 <p>We will run the tool with the following parameters and generate the
-skeleton and the other required files to support ADB (Axis Data Binding). In
+skeleton and other required files to support ADB (Axis Data Binding). In
 order to run the tool, <span style="font-weight: bold;">set all the .jar
 library files in the Axis2/Java to the classpath</span>. To generate code
 with no data binding support, just replace -d adb -u with -d none</p>
 <pre><br />java -Dorg.apache.adb.properties=/org/apache/axis2/schema/c-schema-compile.properties org.apache.axis2.wsdl.WSDL2Code <br /> -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u<br /> </pre>
 
 <p>If you need an XML in/out programming model, you can just ignore the data
-binding support by setting following parameters. Give "<code>-l c</code>"
+binding support by setting the following parameters. Give "<code>-l c</code>"
 option to enable C language code generation.</p>
 <pre><br />java org.apache.axis2.wsdl.WSDL2Code -uri interoptestdoclitparameters.wsdl -ss -sd -d none -l c<br /> </pre>
 
@@ -561,24 +566,25 @@ option to enable C language code generation.</p>
 &lt;axis2_src_dir&gt;/test/resources directory. This is used to generate stub
 and skeleton code throughout this User's Guide.</p>
 
-<h4><a id="Implement_the_Business_Logic">Implement the Business Logic</a></h4>
+<a id="Implement_the_Business_Logic"></a>
+<h4>Implement the Business Logic</h4>
 Locate the skeleton source file from the generated files:
 "<code>axis2_WSDLInteropTestDocLitService.c</code>". You can go through the
 rest of the guide to add the business logic to the following operations in
 the WSDL.
 <ul>
-  <li>echoString - Operation that echoes a String value</li>
-  <li>echoStringArray - Operation that accept string array as the input and
-    echoes them back</li>
-  <li>echoStruct - Operation that accept a Struct as the input and echoes
-    them back</li>
+  <li>echoString - Operation that echoes a String value.</li>
+  <li>echoStringArray - Operation that accepts a string array as the input and
+    echoes them back.</li>
+  <li>echoStruct - Operation that accepts a Struct as the input and echoes
+    them back.</li>
 </ul>
 
 <p>Complete skeleton source file for the above operations can be found under
 &lt;axis2_src_dir&gt;/samples/codegen/server/interop_doc2 directory with the
 name "<code>axis2_WSDLInteropTestDocLitService.c</code>".</p>
-
-<h4><a id="echoString">echoString</a></h4>
+<a id="echoString"></a>
+<h4>echoString</h4>
 
 <p>If you generate the code with data binding support, you will find the
 following code segment in the
@@ -586,7 +592,7 @@ following code segment in the
 inside this function as shown below:</p>
 <pre>axis2_echoStringResponse_t*<br />axis2_WSDLInteropTestDocLitService_echoString<br /> (const axis2_env_t* env ,axis2_echoString_t* param6 )<br />{<br /> /* Todo fill this with the necessary business logic */<br />}</pre>
 
-<p>Once filled with the business logic, it will be as follows. The code is
+<p>Once the business logic is filled, it will be as follows. The code is
 simple and the inline comments provide explanation.</p>
 <pre>axis2_echoStringResponse_t*<br />axis2_WSDLInteropTestDocLitService_echoString<br /> (const axis2_env_t* env ,axis2_echoString_t* param6 )<br />{<br /> axis2_echoString_t* echo_in = param6;<br /> axis2_echoStringResponse_t* echo_out = NULL;<br /><br /> char* echo_string = NULL;<br /> <br /> /* retrieve the string input */<br /> echo_string = AXIS2_ECHOSTRING_GET_PARAM0 ( echo_in, env );<br /><br /> /* create the response and set the output string */<br /> echo_out = axis2_echoStringResponse_create ( env );<br /> AXIS2_ECHOSTRUCTRESPONSE_SET_RETURN ( echo_out, env, echo_string );<br /><br /> return echo_out;<br />}</pre>
 
@@ -599,10 +605,10 @@ simple and the inline comments provide explanation.</p>
 <h4><a id="services_xml">services.xml</a></h4>
 Axis2 uses "services.xml" to hold the configurations for a particular Web
 service deployed in the Axis2 engine. When we generate the skeleton using the
-WSDL2Java tool, it will also generate the required services.xml for this Web
+WSDL2Java tool, it will generate the required services.xml for this Web
 service as well. This is essential to <a href="#deploy">deploy the
 service</a>. Please refer to the '<a href="#Step3">Write the
-services.xml</a>' section in this guide to learn more about services.xml
+services.xml</a>' section in this guide to learn more about services.xml.
 <a name="deploy"></a>
 <h3>Deploy the Web Service</h3>
 
@@ -610,7 +616,8 @@ services.xml</a>' section in this guide to learn more about services.xml
 directory. You need restart the server for the engine to pick this
 service.</p>
 
-<h2><a name="Web_Service_Clients_Using_Axis2">Web Service Clients Using Axis2/C</a></h2>
+<a name="Web_Service_Clients_Using_Axis2"></a>
+<h2>Web Service Clients Using Axis2/C</h2>
 
 <p>Now let's see how we can write a Web service client to consume a Web
 service.</p>
@@ -621,13 +628,13 @@ users ranging from simple, less time consuming  operations such as
 using client applications) these Web services, we cannot use some simple
 generic invocation paradigm that suits all the timing complexities involved
 in the service operations. For example, if we use a single transport channel
-(such as HTTP) to invoke a Web service with an IN-OUT operation that take
-long time to complete, then most of the time we may end up with "connection
+(such as HTTP) to invoke a Web service with an IN-OUT operation which takes
+a long time to complete, then most of the time we may end up with "connection
 time outs". On the other hand, if there are simultaneous service invocations
 that we need to perform from a single client application, then the use of a
 "blocking" client API will degrade the performance of the client application.
 Similarly, there are various other consequences such as One-Way transports
-that come in to play when we need them. Let's try to analyze some common
+that come into play when we need them. Let's try to analyze some common
 service invocation paradigms.</p>
 
 <p>Many Web service engines provide the users with a Blocking and
@@ -642,9 +649,9 @@ Non-Blocking client APIs.</p>
   <li><b>Non-Blocking API</b>- This is a callback or polling based API.
     Hence, once a service invocation is called, the client application
     immediately gets the control back and the response is retrieved using the
-    callback object provided. This approach provides the flexibility to the
-    client application to invoke several Web services simultaneously without
-    blocking the operation already invoked.</li>
+    callback object provided. This approach provides the client application
+    with the flexibility to invoke several Web services simultaneously without
+    blocking the operation that has already been invoked.</li>
 </ul>
 
 <p>Both these mechanisms work in the API level. Let's name the asynchronous
@@ -652,7 +659,7 @@ behavior that we can get using the <strong>Non-Blocking API</strong> as
 <b>API Level Asynchrony.</b></p>
 
 <p>Both these mechanisms use single transport connection to send the request
-and to receive the response. They severely lag the capability of using two
+and to receive the response. They severely lack the capability of using two
 transport connections for the request and the response (either One-Way of
 Two-Way). So both these mechanisms fail to address the problem of long
 running transactions (the transport connection may time-out before the
@@ -693,7 +700,7 @@ following table.</p>
     <tr>
       <td>Non-Blocking</td>
       <td>Yes</td>
-      <td>This is can be used to gain the maximum asynchronous behavior. No
+      <td>This can be used to gain the maximum asynchronous behavior. No
         blocking in the API level and also in the transport level</td>
     </tr>
   </tbody>
@@ -704,13 +711,14 @@ services.</p>
 
 <p>Below we describe how to write Web Services Clients using Axis2/C.</p>
 
-<h3><a name="Writing_Web_Service_Clients_using_Axis2%27s_Primary_APIs">Writing Web Service Clients Using Axis2's Primary APIs</a></h3>
+<a name="Writing_Web_Service_Clients_using_Axis2%27s_Primary_APIs"></a>
+<h3>Writing Web Service Clients Using Axis2's Primary APIs</h3>
 <a id="EchoBlockingClient"></a>
 <h4>echo_blocking Client</h4>
 
 <p>Axis2/C provides the user with several invocation patterns for Web
 Services, ranging from pure blocking single channel invocations to a
-non-blocking dual channel invocations. Let's first see how we can write a
+non-blocking dual channel invocation. Let's first see how we can write a
 client to invoke "echo" operation of "echo" service using the simplest
 blocking invocation. The client code you need to write is as follows.</p>
 <pre> <br /> <span style="color: rgb(36, 193, 19);">/* Create EPR with given address */</span><br />endpoint_ref = axis2_endpoint_ref_create(env, address);<br /><span style="color: rgb(36, 193, 19);">/* Setup options */</span><br />options = axis2_options_create(env);<br />AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);<br /><span style="color: rgb(36, 193, 19);">/* Set the deploy folder */</span><br />client_home = AXIS2_GETENV("AXIS2C_HOME");<br />if (!client_home)<br />client_home = "../../deploy";<br /><span style="color: rgb(36, 193, 19);">/* Create service client */</span><br />svc_client = axis2_svc_client_create(env, client_home);<br />if (!svc_client)<br />{<br />printf("Error creating service client\n");<br />AXIS2_LOG_ERROR(env-&gt;log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"<br />" %d :: %s", env-&gt;error-&gt;error_number,<br />AXIS2_ERROR_GET_MESSAGE(env-&gt;error));<br />}<br /><span style="color: rgb(36, 193, 19);">/* Set service client options */</span><br />AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options); <span style="color: rgb(36, 193, 19);">/* Build the SOAP request message payload using OM API.*/</span><br />payload = build_om_payload_for_echo_svc(env);<br /><span style="color: rgb(36, 193, 19);">/* Send request */</span><br />ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);<br /><span style="color: rgb(36, 193, 19);">/* Print result */</span><br />if(ret_node)<br />{<br />axis2_char_t *om_str = NULL;<br />om_str = AXIOM_NODE_TO_STRING(ret_node, env);<br />if (om_str)<br />printf("\nReceived OM : %s\n", om_str);<br />printf("\necho client invoke SUCCESSFUL!\n");<br />}<br />else<br />{<br />AXIS2_LOG_ERROR(env-&gt;log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"<br />" %d :: %s", env-&gt;error-&gt;error_number,<br />AXIS2_ERROR_GET_MESSAGE(env-&gt;error));<br />printf("echo client invoke FAILED!\n");<br />}</pre>
@@ -766,7 +774,7 @@ created as shown below:</p>
 <p>Axis2/C engine calls the "on_complete" method once the Web service
 response is received by the Axis2/C client API (that is service_client). This
 will eliminate the blocking nature of the Web service invocations and
-provides the user with the flexibility to use non-blocking API for Web
+provide the user with the flexibility to use non-blocking API for Web
 service clients.</p>
 
 <p>Please have a look at the echo_non_blocking.c file located at
@@ -775,7 +783,7 @@ service clients.</p>
 <h4>echo_non_blocking_dual Client</h4>
 
 <p>The solution provided by the non-blocking API has one limitation when it
-comes to  Web service invocations which takes a long time to complete. The
+comes to  Web service invocations,it takes a long time to complete. The
 limitation is due to the use of a single transport connection to invoke the
 Web service and to retrieve the response. In other words, client API provides
 a non blocking invocation mechanism for the users, but the request and the
@@ -789,14 +797,14 @@ One-Way or Two-Way) for the request and response. The next problem that needs
 to be solved is the correlation (correlating the request and the response).
 <a href="http://www.w3.org/2002/ws/addr/">WS-Addressing</a> provides a neat
 solution to this using &lt;wsa:MessageID&gt; and &lt;wsa:RelatesTo&gt;
-headers. Axis2/C provides support for addressing  based correlation mechanism
+headers. Axis2/C provides support for addressing based correlation mechanism
 and a compliant client API to invoke Web services with two transport
 connections.</p>
 
 <p>Users can select between blocking or non-blocking APIs for the Web service
 clients with two transport connections. By simply using a boolean flag, the
 same API can be used to invoke Web services (IN-OUT operations) using two
-separate transport connections. All that you have to do is to set
+separate transport connections. All you have to do is to set
 "use_separate_listener" to true in options:</p>
 <pre>AXIS2_OPTIONS_SET_USE_SEPERATE_LISTENER(options, env, AXIS2_TRUE);</pre>
 
@@ -810,7 +818,7 @@ addressing in the "axis2.xml" configuration file. This can be done by adding
 the following line to "axis2.xml" file in the deployment folder.</p>
 <pre style="margin-bottom: 0.2in;"> &lt;module ref="addressing"/&gt;</pre>
 
-<p>Note: Once you modify the "axis2.xml" file you have to restart the server.
+<p><strong>Note:</strong> Once you modify the "axis2.xml" file you have to restart the server.
 You also have to have the addressing module installed in the modules folder
 of the deployment folder. This is done by default when you make the
 installation.</p>
@@ -839,7 +847,7 @@ we use a Blocking API in the client code. Sample code for this can be found
 in the "&lt;axis2c_home&gt;/samples/user_guide/clients/" directory and the
 explanation is similar to the <a
 href="#EchoNonBlockingDualClient">echo_non_blocking_dual client</a>, except
-that here we do not use a callback object to handle response. This is a very
+that here we do not use a callback object to handle response. This is an extremely
 useful mechanism when the service invocation is IN-OUT in nature and the
 transports are One-Way (e.g. SMTP). For the sample client we use two HTTP
 connections for request and response.</p>
@@ -850,14 +858,14 @@ Support</h3>
 <p>Axis2 code generator provides the data binding support for Web service
 client generation as well. You can generate the required stubs from a given
 WSDL with the other supporting files. Use the following parameters to
-generate the Axis2/C stub code with the data binding support. You should have
+generate the Axis2/C stub code with data binding support. You should have
 <a
 href="http://svn.apache.org/viewvc/webservices/axis2/trunk/java">Axis2/Java
-source SVN</a> revision 414253 or later to generate Axis2/C code</p>
+source SVN</a> revision 414253 or later to generate Axis2/C code.</p>
 <pre><br />java WSDL2Code -Dorg.apache.adb.properties=/org/apache/axis2/schema/c-schema-compile.properties<br /> -uri interoptestdoclitparameters.wsdl -d adb -u<br /> </pre>
 
 <p>In order to ignore the data binding support (to use XML in/out model),
-just use following parameters.</p>
+just use the following parameters.</p>
 <pre><br />java WSDL2Code -uri interoptestdoclitparameters.wsdl -d none<br /> </pre>
 
 <p>The following section demonstrates how to use the generated code using the
@@ -881,7 +889,8 @@ invoke the echoStringArray operation as follows.
 based authentication and Timestamps as per WS-Security specification. In this
 User's Guide we will explain how to use Rampart inside Axis2/C.</p>
 
-<h3><a id="Engaging_rampart_module">Engaging rampart module</a></h3>
+<a id="Engaging_rampart_module"></a>
+<h3>Engaging rampart module</h3>
 <ul>
   <li><b>Step 1:</b> Copy rampart directory created in
     AXIS2C_HOME/deploy/rampart to AXIS2C_HOME/deploy/modules
@@ -891,7 +900,7 @@ User's Guide we will explain how to use Rampart inside Axis2/C.</p>
     This will engage the rampart module.
     <pre class="code">&lt;module ref="rampart"/&gt;</pre>
   </li>
-  <li><b>Step 3:</b>Then add following to the axis2.xml file to specify
+  <li><b>Step 3:</b>Then add the following to axis2.xml file to specify
     In/Out flow parameters. You may find a sample axis2.xml file in
     rampart/samples/client/echo/data/
     <pre class="code"> &lt;parameter name="OutflowSecurity"&gt;<br /> &lt;action&gt;<br /> &lt;items&gt;UsernameToken Timestamp&lt;/items&gt;<br /> &lt;user&gt;Gajaba&lt;/user&gt;<br /> &lt;passwordType&gt;passwordDigest&lt;/passwordType&gt;<br /> &lt;passwordCallbackClass&gt;/home/gajaba/axis2/c/deploy/rampart/samples/callback/libpwcb.so&lt;/passwordCallbackClass&gt;<br /> &lt;timeToLive&gt;360&lt;/timeToLive&gt;<br /> &lt;/action&gt;<br /> &lt;/parameter&gt;<br /> </pre>
@@ -907,7 +916,7 @@ the sample under rampart/samples/client/echo. If everything works fine a
 security header should be added to the outgoing SOAP message.</p>
 <pre class="code">&lt;wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"&gt;<br /> &lt;wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"&gt;<br /> &lt;wsse:Username&gt;Gajaba&lt;/wsse:Username&gt;<br /> &lt;wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest"&gt;WNPznBN3PeLypKYXlwV7w9zJZ9o=&lt;/wsse:Password&gt;<br /> &lt;wsse:Nonce&gt;ICAgICAgIDEwNDY0NDk1Mg==&lt;/wsse:Nonce&gt;<br /> &lt;wsu:Created&gt;2006-08-28T11:52:27Z&lt;/wsu:Created&gt;<br /> &lt;/wsse:UsernameToken&gt;<br /> &lt;wsu:Timestamp xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"&gt;<br /> &lt;wsu:Created&gt;2006-08-28T11:52:27Z&lt;/wsu:Created&gt;<br /> &lt;wsu:Expires&gt;2006-08-28T11:58:27Z&lt;/wsu:Expires&gt;<br /> &lt;/wsu:Timestamp&gt;<br />&lt;/wsse:Security&gt;<br /></pre>
 
-<p>Note that for the above sample we have use the same axis2.xml file for
+<p><strong>Note: </strong>For the above sample we have used the same axis2.xml file for
 both server and the client. But in the real world this is not possible. In
 such a situation you can specify a client home as an argument.</p>
 <pre class="code">./echo [endpoint_url] [path to your client_home]</pre>
@@ -922,7 +931,7 @@ such a situation you can specify a client home as an argument.</p>
     </tr>
     <tr>
       <td>items</td>
-      <td>Specify which tokens to be used for the credential exchange. In the
+      <td>Specify the tokens to be used for the credential exchange. In the
         above example we used both UsernameTokens and Timestamps</td>
     </tr>
     <tr>
@@ -931,7 +940,7 @@ such a situation you can specify a client home as an argument.</p>
     </tr>
     <tr>
       <td>passwordType</td>
-      <td>The way passowrd is delivered. This can be either passwordText or
+      <td>The way password is delivered. This can be either passwordText or
         the passwordDigest. The former delivers password in plainText whilst
         the latter delivers the hashed value of the password. Default is
         passwordText</td>
@@ -952,12 +961,12 @@ such a situation you can specify a client home as an argument.</p>
 
 <h3>Writing Your Own Password Callback Module</h3>
 
-<p>The Rampart module is independent of the way that passwords are stored.
+<p>The Rampart module is not dependent on the way that passwords are stored.
 For example, you may have passwords in a flat file or in a secured database.
 What ever the way, Rampart expects a password callback module to retrieve
 passwords for a given username. The sample coming under
-"&lt;axis2c_home&gt;rampart/samples/callback" is a very simple one which has
-few hard-coded passwords. It assigns a function to the function pointer</p>
+"&lt;axis2c_home&gt;rampart/samples/callback" is a simple one containing a 
+few hard-coded passwords. It assigns a function to the function pointer.</p>
 <pre class="code">rcb-&gt;ops-&gt;callback_password = get_sample_password;</pre>
 
 <p><code>callback_password</code> is a function pointer to any function which
@@ -965,21 +974,21 @@ has the following signature.</p>
 <pre class="code"><code>axis2_char_t</code>* your_function(rampart_callback_t *rcb,<br /> const axis2_env_t *env, const axis2_char_t *username)</pre>
 
 <p><code>your_function</code> should return the password as
-<code>axis2_char_t</code>* for the username specified, if any. Inside your
+<code>axis2_char_t</code>* per the username specified, if any. Inside your
 function, you may write your code to supply stored passwords.</p>
 
 <p>Then the path to the callback module needs to be specified in axis2.xml
 under passwordCallbackClass. [The word Class, instead of Module is only for
-the compatibility with java implementation]</p>
+compatibility with java implementation]</p>
 <a id="Adding_security_parameters_dynamically"></a>
 
 <h3>Adding Security Parameters Dynamically</h3>
 
 <p>Outflow parameters specified in the axis2.xml can be added dynamically in
-the client level. This can be done as in the following sample code.</p>
+the client level. This can be done as shown in the following sample code.</p>
 <pre class="code"> un_property = axis2_property_create(env);<br /> AXIS2_PROPERTY_SET_VALUE(un_property, env, "Gajaba");<br /> AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_USER, un_property);<br /></pre>
 
-<p>Above will set the username parameter dynamically. All the values
+<p>The above code will set the username parameter dynamically. All the values
 specified in the axis2.xml will be overridden by the dynamic settings.</p>
 
 <h2>References</h2>
