@@ -324,6 +324,7 @@ AC_CONFIG_FILES([Makefile \
     modules/wsdl/Makefile \
     modules/wsdl/builder/Makefile \
     modules/mod_addr/Makefile \
+    modules/mod_log/Makefile \
     test/Makefile \
     test/wsdl/Makefile \
     test/wsdl/builder/Makefile \

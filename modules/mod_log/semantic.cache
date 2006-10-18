@@ -1,0 +1,15 @@
+;; Object mod_log/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "mod_log/"
+  :tables (list 
+   (semanticdb-table "Makefile.am"
+    :major-mode 'makefile-mode
+    :tags '(("prglibdir" variable (:default-value ("$(prefix)/modules/logging")) nil [1 37]) ("prglib_LTLIBRARIES" variable (:default-value ("libaxis2_mod_log.la")) nil [37 78]) ("prglib_DATA" variable (:default-value ("module.xml")) nil [78 102]) ("EXTRA_DIST" variable (:default-value ("module.xml")) nil [102 126]) ("libaxis2_mod_log_la_SOURCES" variable (:default-value ("log_in_handler.c" "log_out_handler.c" "mod_log.c")) nil [126 269]) ("libaxis2_mod_log_la_LIBADD" variable (:default-value ("$(top_builddir)/modules/core/engine/libaxis2_engine.la" "-laxis2_axiom" "-laxis2_util")) nil [270 473]) ("INCLUDES" variable (:default-value ("-I$(top_builddir)/include" "-I$(top_builddir)/modules/core/description" "-I$(top_builddir)/modules/core/context" "-I$(top_builddir)/modules/core/phaseresolver" "-I$(top_builddir)/modules/core/engine" "-I$(top_builddir)/modules/core/deployment" "-I$(top_builddir)/modules/wsdl" "-I$(top_builddir)/xml_schema/include" "-I$(top_builddir)/util/include" "-I$(top_builddir)/axiom/include")) nil [474 973]))
+    :file "Makefile.am"
+    :pointmax 974
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )
