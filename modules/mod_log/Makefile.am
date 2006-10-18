@@ -8,8 +8,8 @@ libaxis2_mod_log_la_SOURCES = log_in_handler.c \
 
 libaxis2_mod_log_la_LIBADD =  \
 					$(top_builddir)/modules/core/engine/libaxis2_engine.la \
-                                        -laxis2_axiom \
-                                        -laxis2_util
+					$(top_builddir)/util/src/libaxis2_util.la \
+					$(top_builddir)/axiom/src/om/libaxis2_axiom.la
 
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/core/description \
