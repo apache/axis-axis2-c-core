@@ -14,7 +14,7 @@
  *   limitations under the License.
  */
 
-#include<openssl/sha.h>
+#include <openssl/sha.h>
 
 #include <axis2_utils_defines.h>
 #include <axis2_defines.h>

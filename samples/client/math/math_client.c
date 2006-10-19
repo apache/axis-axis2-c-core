@@ -108,6 +108,7 @@ int main(int argc, char** argv)
                 AXIOM_OUTPUT_FREE(om_output, env);
                 om_output = NULL;
             }
+            AXIOM_XML_WRITER_FREE(writer, env);
         }
     }
     else
