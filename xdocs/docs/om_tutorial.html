@@ -33,7 +33,7 @@
         Nodes</a></li>
       <li><a href="#Traversing">Traversing</a></li>
       <li><a href="#Serialization">Serialization</a></li>
-      <li><a href="#Reader_and_Writer">Using axis2_xml_reader and axis2_xml_writer</a></li>
+      <li><a href="#Reader_and_Writer">Using axiom_xml_reader and axiom_xml_writer</a></li>
       <li><a href="#Mem_Leaks">How to avoid memory leaks and double frees when using OM</a></li>
       <li><a href="#Complete_Sample">Complete Sample</a></li>
     </ul>
@@ -108,11 +108,11 @@ memory intensive programming.</p>
     required. OM is based on StAX, the standard pull parser API.
     <p>Since different XML parsers offer different kinds of pull parser APIs,
     we define an API derived from StAX. That API is defined in
-    <code>axis2_xml_reader.h</code>. Similarly we define an xml writer API in
-    <code>axis2_xml_writer.h</code>. These two APIs work as an abstarction
+    <code>axiom_xml_reader.h</code>. Similarly we define an xml writer API in
+    <code>axiom_xml_writer.h</code>. These two APIs work as an abstarction
     layer between any XML parser and OM. So any parser that is going to be
-    used for OM should implement the <code>axis2_xml_reader</code> API and
-    <code>axis2_xml_writer</code> API using a wrapper layer.</p>
+    used for OM should implement the <code>axiom_xml_reader</code> API and
+    <code>axiom_xml_writer</code> API using a wrapper layer.</p>
     <p></p>
     <p>Currenly we use <code>libxml2</code> as our default XML parser.</p>
     <p></p>
@@ -126,7 +126,7 @@ height="282" /></p>
 <!--  End of Image -->
 
 <p>OM Builder wraps the raw xml character stream through the
-<code>axis2_xml_reader</code> API. Hence the complexities of the pull event
+<code>axiom_xml_reader</code> API. Hence the complexities of the pull event
 stream are covered.</p>
 
 <a id="Where_Does_SOAP_Come_into_Play?"></a>
@@ -135,7 +135,7 @@ stream are covered.</p>
 <p>In a nutshell SOAP is an information exchange protocol based on XML. SOAP
 has a defined set of XML elements that should be used in messages. Since Axis
 is a "SOAP Engine" and OM is built for Axis, a SOAP specific API was
-implemented on top of OM.We have defined a number of structs to represent
+implemented on top of OM. We have defined a number of structs to represent
 SOAP constructs like Envelope etc., which wraps general OM structures. See <a
 href="http://www.w3schools.com/SOAP/soap_intro.asp">here</a> to learn more
 about SOAP.</p>
@@ -156,14 +156,14 @@ about SOAP.</p>
 <h3>Axis2/C environment</h3>
 
 <p>Before starting the discussion on OM, it is necessary to get a good
-understanding of the basics of Axis2/C. Axis2/C is designed to be plugble to
+understanding of the basics of Axis2/C. Axis2/C is designed to be pluggable to
 any system written in C or C++ and therefore Axis2 has abstracted the
 functionalities that differ from system to system in to a structure
 <code>axis2_env_t</code>, which we refer to as axis2 environment . The
-environment holds <code>axis2_allocater_t</code> [ used for memory
+environment holds <code>axis2_allocator_t</code> [ used for memory
 allocation/deallocation ] , <code>axis2_error_t</code> [ error reporting
 mechanism ], <code>axis2_log_t</code> [ logging mechanism ] and
-<code>axis2_thread_t</code> [threading mechnism ].
+<code>axis2_thread_t</code> [ threading mechanism ].
 <code>axis2_allocator_t</code> has function pointers to <code>malloc</code>,
 <code>realloc</code> and <code>free</code> functions and all memory
 allocation and deallocation is done using the allocator. Therefore, by
@@ -181,14 +181,14 @@ allocator.</p>
 
 <p></p>
 
-<p>We parse <code>NULL</code> to the above function to use the default
+<p>We pass <code>NULL</code> to the above function to use the default
 allocator. Then the allocators function pointers point to
-<code>malloc</code>, <code>realloc</code> and <code>free</code> functons. If
+<code>malloc</code>, <code>realloc</code> and <code>free</code> functions. If
 you have your own allocator structure, you may pass it instead.</p>
 
 <p></p>
 
-<p>Convinent macros <code>AXIS2_MALLOC</code>, <code>AXIS2_REALLOC</code> and
+<p>Convenient macros <code>AXIS2_MALLOC</code>, <code>AXIS2_REALLOC</code> and
 <code>AXIS2_FREE</code> are defined to use allocator functions (refer to
 <code>axis2_allocator.h</code> for more information).</p>
 
@@ -216,8 +216,8 @@ log);</code></p>
 
 <p></p>
 
-<p>Apart from the above abstraction , all other library functions used are
-ANSI C complient. Further, platform dependent funtions are also
+<p>Apart from the above abstraction, all other library functions used are
+ANSI C compliant. Further, platform dependent functions are also
 abstracted.</p>
 
 <p></p>
@@ -247,7 +247,7 @@ as the first argument and the pointer to the environment as the second.</p>
 <p>All functions return a pointer to a struct or a status code [
 <code>AXIS2_SUCCESS</code> , <code>AXIS2_FAILURE</code>]. So if
 <code>NULL</code> is returned by a function it is either because there is
-nothing to return or an error has occured.</p>
+nothing to return or an error has occurred.</p>
 
 <p></p>
 
@@ -273,7 +273,7 @@ stored in the '<code>axiom_node_t'</code> struct can be obtained by
 <code>AXIOM_NODE_GET_NODE_TYPE</code> macro. When we create
 <code>axiom_element_t</code> , <code>axiom_text_t</code> etc .., it is
 required to parse a double pointer to the node struct as the last parameter
-of the <code>create</code> function so that the correponding node struct can
+of the <code>create</code> function so that the corresponding node struct can
 be referenced using that pointer.</p>
 
 <p>Eg.</p>
@@ -305,7 +305,7 @@ xml_reader&nbsp;=&nbsp;axiom_xml_reader_create_for_file(env,&nbsp;"test_soap.xml
 <i>/**&nbsp;create&nbsp;the&nbsp;OM&nbsp;builder&nbsp;*/</i><br />
 om_builder&nbsp;=&nbsp;axiom_stax_builder_create(env,&nbsp;xml_reader);<br />
 <i>/**&nbsp;create&nbsp;SOAP&nbsp;builder&nbsp;*/</i><br />
-soap_builder&nbsp;=&nbsp;axiom_soap_builder_create(env,&nbsp;om_builder&nbsp;,&nbsp;AXIOM_SOAP_ENVELOPE_NAMESPACE_URI);<br />
+soap_builder&nbsp;=&nbsp;axiom_soap_builder_create(env,&nbsp;om_builder&nbsp;,&nbsp;AXIOM_SOAP11_SOAP_ENVELOPE_NAMESPACE_URI);<br />
 <i>/**&nbsp;get&nbsp;soap&nbsp;envelope&nbsp;*/</i><br />
 soap_envelope&nbsp;=&nbsp;AXIOM_SOAP_BUILDER_GET_SOAP_ENVELOPE(soap_builder,&nbsp;env);<br /></pre>
 <br />
@@ -353,7 +353,7 @@ the struct being created without a builder.</p>
 
 <p>The SOAP struct hierarchy is made in the most natural way for a
 programmer. It acts as a wrapper layer on top of OM implementation. The SOAP
-structs wraps the correspoding <code>axiom_node_t</code> structs to store
+structs wraps the corresponding <code>axiom_node_t</code> structs to store
 information in xml.</p>
 <!--  The following illustration of the actual class diagram will be helpful in understanding this.
 Need an image here -->
@@ -455,7 +455,7 @@ axiom_element_find_declared_namespace(axiom_element_t *om_element,
 axis2_status_t
 axiom_element_set_namespace(axiom_element_t *om_element,
                                const axis2_env_t *env,
-                               axis2_namespace_t *ns,
+                               axiom_namespace_t *ns,
                                axiom_node_t *element_node);</pre>
 
 <p></p>
@@ -480,8 +480,8 @@ in the current element's namespace declarations section.</p>
 an element's own namespace should be declared in its own namespace
 declarations section or in one of its parent elements. ] This method first
 searches for a matching namespace using <code>find_namespace</code> and if a
-matching namespace is not found anamespace is declared to this om_element's
-namespace declarations section before seting the own namespace reference.</p>
+matching namespace is not found, a namespace is declared to this om_element's
+namespace declarations section before setting the own namespace reference.</p>
 
 <p>The following sample code segment shows how the namespaces are dealt with
 in OM</p>
@@ -594,7 +594,7 @@ restrictive set can be chosen by using
 <code>AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME()</code> method returns the
 first child that matches the given <code>axis2_qname_t</code> and
 <code>AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME()</code> returns
-<code>axiom_children_qname_iterator_t</code> which can be used to travese all
+<code>axiom_children_qname_iterator_t</code> which can be used to traverse all
 the matching children. The advantage of these iterators are that they won't
 build the whole object structure at once; it builds only what is required.</p>
 
@@ -621,7 +621,7 @@ build the whole object structure at once; it builds only what is required.</p>
 <h3><b>Serialization</b></h3>
 
 <p>OM can be serialized using <code>AXIOM_NODE_SERIALIZE</code> macro .The
-serialization uses <code>axis2_xml_writer.h</code> and
+serialization uses <code>axiom_xml_writer.h</code> and
 <code>axiom_output.h</code> APIs.</p>
 
 <p></p>
@@ -632,13 +632,13 @@ serialize the SOAP envelope created in code listing 1).</p>
 <div>
 <p><b>Code Listing 8</b></p>
 </div>
-<pre class="code">axis2_xml_writer_t *xml_writer = NULL;
+<pre class="code">axiom_xml_writer_t *xml_writer = NULL;
 axiom_output_t *om_output = NULL;
 axis2_char_t *buffer = NULL;
 
 ..............
 
-xml_writer = axis2_xml_writer_create(env, NULL, 0, 0);
+xml_writer = axiom_xml_writer_create(env, NULL, 0, 0);
 om_output = axiom_output_create(env, xml_writer);
 
 AXIOM_SOAP_ENVELOPE_SERIALIZE(envelope, env, om_output);
@@ -676,41 +676,41 @@ AXIS2_FREE(env-&gt;allocator, xml_output);</pre>
 <p></p>
 
 <a id="Reader_and_Writer"></a>
-<h3><b>Using axis2_xml_reader and axis2_xml_writer</b></h3>
+<h3><b>Using axiom_xml_reader and axiom_xml_writer</b></h3>
 
-<p><code>axis2_xml_reader</code> provides three create functions that and can
+<p><code>axiom_xml_reader</code> provides three create functions that and can
 be used for different xml input sources.</p>
 <ul>
-  <li><code>axis2_xml_reader_create_for_file</code> functon can be used to
+  <li><code>axiom_xml_reader_create_for_file</code> function can be used to
     read from a file.</li>
-  <li><code>axis2_xml_reader_create_for_io</code> uses a user defined
+  <li><code>axiom_xml_reader_create_for_io</code> uses a user defined
     callback function to pull xml.</li>
-  <li><code>axis2_xml_reader_create_for_memory</code> can be used to read
+  <li><code>axiom_xml_reader_create_for_memory</code> can be used to read
     from an xml string that is in a character buffer.</li>
 </ul>
 
 <p></p>
 
-<p>Similarly <code>axis2_xml_writer</code> provides two create functions.</p>
+<p>Similarly <code>axiom_xml_writer</code> provides two create functions.</p>
 <ul>
-  <li><code>axis2_xml_writer_create_for_file</code> can be used to write to a
+  <li><code>axiom_xml_writer_create_for_file</code> can be used to write to a
     file.</li>
-  <li><code>axis2_xml_writer_create_for_memory</code> can be used to write to
-    an internal memory buffer and obtain the xml string to a charcater buffer
+  <li><code>axiom_xml_writer_create_for_memory</code> can be used to write to
+    an internal memory buffer and obtain the xml string to a character buffer
     as the output.</li>
 </ul>
 
 <p></p>
 
-<p>Please refer to <code>axis2_xml_reader.h</code> and
-<code>axis2_xml_writer.h</code> for more information.</p>
+<p>Please refer to <code>axiom_xml_reader.h</code> and
+<code>axiom_xml_writer.h</code> for more information.</p>
 
 <p></p>
 
 <a id="Mem_Leaks"></a>
 <h3><b>How to avoid memory leaks and double frees when using OM</b></h3>
 
-<p>You have to be extremely carefull when using om in order to avoid memory
+<p>You have to be extremely careful when using om in order to avoid memory
 leaks and double free errors. Following guidelines will be very useful.</p>
 
 <p>1. <code>om_element_t</code> struct keeps a list of attributes and a list
@@ -752,8 +752,8 @@ pointer is pointing */</code></p>
 <p></p>
 
 <p>3. when creating om programatically , if you are declaring a namespace to
-an om elment, it is advisible to find whether the namespace is already
-availble in the elements scope using find_namespace function. If available,
+an om element, it is advisable to find whether the namespace is already
+available in the elements scope using find_namespace function. If available,
 that pointer can be used instead of creating another namespace struct
 instance to prevent memory leaks.</p>
 
@@ -778,10 +778,10 @@ console.</p>
 #include&nbsp;&lt;axiom_element.h&gt;
 #include&nbsp;&lt;axiom_document.h&gt;
 #include&nbsp;&lt;axiom_stax_builder.h&gt;
-#include&nbsp;&lt;axis2_xml_reader.h&gt;
+#include&nbsp;&lt;axiom_xml_reader.h&gt;
 #include&nbsp;&lt;axis2_log_default.h&gt;
 #include&nbsp;&lt;axis2_error_default.h&gt;
-#include&nbsp;&lt;axis2_xml_writer.h&gt;
+#include&nbsp;&lt;axiom_xml_writer.h&gt;
 #include&nbsp;&lt;axiom_output.h&gt;
 #include&nbsp;&lt;stdio.h&gt;
 
@@ -821,14 +821,14 @@ build_and_serialize_om(axis2_env_t&nbsp;**env)
 &nbsp;&nbsp;&nbsp;&nbsp;axiom_document_t&nbsp;*document&nbsp;=&nbsp;NULL;
 &nbsp;&nbsp;&nbsp;&nbsp;axiom_stax_builder_t&nbsp;*om_builder&nbsp;=&nbsp;NULL;
 
-&nbsp;&nbsp;&nbsp;&nbsp;axis2_xml_reader_t&nbsp;*xml_reader&nbsp;=&nbsp;NULL;
-&nbsp;&nbsp;&nbsp;&nbsp;axis2_xml_writer_t&nbsp;*xml_writer&nbsp;=&nbsp;NULL;
+&nbsp;&nbsp;&nbsp;&nbsp;axiom_xml_reader_t&nbsp;*xml_reader&nbsp;=&nbsp;NULL;
+&nbsp;&nbsp;&nbsp;&nbsp;axiom_xml_writer_t&nbsp;*xml_writer&nbsp;=&nbsp;NULL;
 &nbsp;&nbsp;&nbsp;&nbsp;axiom_output_t&nbsp;*om_output&nbsp;=&nbsp;NULL;
 
 &nbsp;&nbsp;&nbsp;&nbsp;axis2_char_t&nbsp;*buffer&nbsp;=&nbsp;NULL;
 &nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;f&nbsp;=&nbsp;fopen("test.xml","r");
-&nbsp;&nbsp;&nbsp;&nbsp;xml_reader&nbsp;=&nbsp;axis2_xml_reader_create_for_io(env,&nbsp;read_input_callback,
+&nbsp;&nbsp;&nbsp;&nbsp;xml_reader&nbsp;=&nbsp;axiom_xml_reader_create_for_io(env,&nbsp;read_input_callback,
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;close_input_callback,&nbsp;NULL,&nbsp;NULL);
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if</b>(!xml_reader)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>return</b>&nbsp;-1;
@@ -865,7 +865,7 @@ build_and_serialize_om(axis2_env_t&nbsp;**env)
 &nbsp;&nbsp;&nbsp;&nbsp;}
 &nbsp;&nbsp;&nbsp;&nbsp;AXIOM_DOCUMENT_BUILD_ALL(document,&nbsp;env);
 &nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;xml_writer&nbsp;=&nbsp;axis2_xml_writer_create_for_memory(env,&nbsp;NULL,&nbsp;AXIS2_TRUE,&nbsp;0, AXIS2_XML_PARSER_TYPE_BUFFER);
+&nbsp;&nbsp;&nbsp;&nbsp;xml_writer&nbsp;=&nbsp;axiom_xml_writer_create_for_memory(env,&nbsp;NULL,&nbsp;AXIS2_TRUE,&nbsp;0, AXIS2_XML_PARSER_TYPE_BUFFER);
 &nbsp;&nbsp;&nbsp;&nbsp;
 &nbsp;&nbsp;&nbsp;&nbsp;om_output&nbsp;=&nbsp;axiom_output_create(env,&nbsp;xml_writer);
 &nbsp;&nbsp;&nbsp;&nbsp;
