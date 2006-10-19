@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <title>Axis2/C Developer Guide</title>
-  <meta name="generator" content="amaya 8.5, see http://www.w3.org/Amaya/" />
+  <meta name="generator" content="Bluefish 1.0.5"/>
 </head>
 
 <body xml:lang="en">
@@ -19,8 +19,8 @@ mailing lists see <a href="../mail-lists.html">here</a></p>
 
 <h2>Content</h2>
 
-<p>This guide walks you through the following topics that might help you get
-familiar with the Axis2/C project and its development norms in quick time.</p>
+<p>This guide walks you through the following topics with the aim of helping you get
+familiar with the Axis2/C project and its development norms quickly.</p>
 <ul>
   <li><a href="#Programming_Model">Programming model</a></li>
   <li><a href="#Memory_Management">Memory management</a></li>
@@ -32,7 +32,7 @@ familiar with the Axis2/C project and its development norms in quick time.</p>
 <h2>Programming Model</h2>
 
 <p>Axis2/C programming model uses a pseudo object oriented model to achieve
-data hiding. The following example illustrates how this is done in Axis2/C.
+data hiding. The following example illustrates how this is done.
 Each struct corresponds to the "class" concept in object oriented
 programming. Hence, each struct has its own header file, that exposes the API
 for that struct and a source file, that contains the functional
@@ -44,10 +44,10 @@ implementation struct ('impl' struct) with the data fields is hidden from the
 user, and lives in the source file. To ease the user from the complex syntax
 required to access the functions in a given ops struct, macros are provided
 to access them. Since the data is hidden, it is the usual practice to provide
-getter and setter methods for the data fields of the struct, in addition to
-the other processing functionality. The actual function implementations in
+*getter* and *setter* methods for the data fields of the struct, in addition to
+the other processing functionality. The actual functional implementations in
 the source file are mapped to the ops struct functions declared in the header
-file, by means of function pointer assignments.</p>
+file by means of function pointer assignments.</p>
 
 <p>Here is a sample header file associated with the "foo" struct. (Imagine a
 class called "foo" in the proper object oriented programming model.)</p>
@@ -123,7 +123,7 @@ axis2_status_t AXIS2_CALL axis2_foo_free(axis2_foo_t *foo, const axis2_env_t *en
 }</pre>
 <a id="Memory_Management"></a>
 
-<p>If you had a closer look into the given sample above, you will see that
+<p>If you take a closer look at the sample above, you will see that
 almost all functions take a double pointer to the axis2_env struct. To learn
 more about the Axis2/C environment, please have a look at the <a
 href="architecture_notes.html">architecture notes</a>.</p>
@@ -139,7 +139,7 @@ good practice, which will help you to properly free such allocated memory.</p>
 <h3>Memory Management Guidelines for Developing Services</h3>
 
 <p>To understand how the allocated memory is reclaimed, it is worth looking
-at the service skeleton interface which is defined in
+at the service skeleton interface which is defined in :
 <strong>axis2_svc_skeleton.h</strong></p>
 <pre class="code">
 AXIS2_DECLARE_DATA struct axis2_svc_skeleton_ops
@@ -231,13 +231,12 @@ for properties are taken care of by the SOAP engine. SOAP engine reclaims the
 memory allocated for properties based on the scope (Request, Session or
 Application) that you set for each property.
 
-<p> <a id="Coding_Conventions"></a></p>
-
+<a id="Coding_Conventions"></a>
 <h2>Coding Conventions</h2>
 
 <p>Coding conventions used with the Axis2 project is listed in <a
 href="../coding_conventions.html">this</a> document.</p>
-<a id="Unit_and_System_Tests"></a>
+<a id="Unit_Tests"></a>
 
 <h2>Unit Tests</h2>
 
@@ -255,7 +254,7 @@ write unit tests in Axis2/C.</p>
 
 <p>This section illustrates how to add a unit test case to the util module.
 Let's take, for example, the unit tests for axis2 stream. There are two files
-named util_stream_test.c/.h placed into modules/util/test folder. Here's a
+named <code>util_stream_test.c/.h</code> placed into modules/util/test folder. Here's a
 sample code written to test the operation
 <code>axis2_stream_ops_read</code>.</p>
 <pre class="code">
@@ -273,7 +272,7 @@ void Testaxis2_stream_ops_read(CuTest *tc)
 </pre>
 
 <p>The prototype of the function should be added to the header file. The test
-suite is defined in util_test.c. You need to add the above defined test case
+suite is defined in <code>util_test.c</code>. You need to add the above defined test case
 to the test suite as shown below.</p>
 <pre class="code">#include "util_test.h"
 #include &lt;axis2_allocator.h&gt;
@@ -293,7 +292,7 @@ CuSuite* axis2_utilGetSuite()
 
 <h4>Step2: Adding the Module test suite to the Main Unit Test Suite</h4>
 
-<p>Now you need to add the util module test suite to the main test suite.</p>
+<p>Now, you need to add the util module test suite to the main test suite.</p>
 <pre class="code">#include &lt;CuTest.h&gt;
 #include "../../util/test/util_test.h"
 #include "../../common/test/common_test.h"
@@ -318,7 +317,7 @@ int main(void)
 }
 </pre>
 
-<p>You can either run only the unit tests written for the util module or run
+<p>You can either run only the unit tests written for the util module or 
 all the tests.</p>
 </body>
 </html>
