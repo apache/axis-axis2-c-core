@@ -34,7 +34,7 @@ see <a href="../mail-lists.html">here</a></p>
 
 <p>One of the main design goals of Axis2/C is the re-usability of the library
 and the ability to plug into different platforms. There are many features
-that allow Axis2/C to be pluggable in to different platforms as well as to
+that allow Axis2/C to be pluggable into different platforms as well as to
 enable the extension of the functionality of Axis2/C.</p>
 <a name="Axis2_Environment"></a>
 
@@ -45,18 +45,18 @@ the allocating mechanism, the logging mechanism, etc. This environment is
 initialized at the point of starting Axis2/C and will last for the lifetime
 of Axis2/C library. Different sub environments can also be created to suit a
 particular scenario (eg: the thread specific environment). The Axis2
-Environment holds following entities in order to abstract the platform.</p>
+environment holds the following entities in order to abstract the platform.</p>
 
 <h4>Axis2 Allocator</h4>
 
 <p>Allocator is the wrapper for memory management mechanisms. It defines the
-following primitives.</p>
+following primitives:</p>
 <ol>
   <li><code>malloc</code> - method to allocate a memory block of given
-  size</li>
+  size.</li>
   <li><code>realloc</code> - method to change the size of the memory
-  block</li>
-  <li><code>free</code> - method to free a memory block</li>
+  block.</li>
+  <li><code>free</code> - method to free a memory block.</li>
 </ol>
 
 <h4>Axis2 Error</h4>
@@ -79,7 +79,7 @@ implementations of threads. Axis2 internal library uses this interface to
 manipulate threads and they deal with a common thread type which is defined
 as <code>axis2_thread.</code></p>
 
-<p>Axis2 Environment is the starting point for the platform abstraction of
+<p>Axis2 environment is the starting point for platform abstraction of
 Axis2/C. It can be used to plug platform specific memory management, error
 reporting, logging and thread pooling mechanisms to Axis2 core functions.</p>
 <a name="Dynamic_Loading"></a>
@@ -91,8 +91,8 @@ selecting a set of modules. The modules can either be compiled at the source
 tree of Axis2 or separately. These modules should be compiled as Dynamic
 Shared Objects (DSOs) that exist separately. Services are also loaded
 dynamically by reading the contents of the services folder. This dynamic
-loading is mandatory in order to provide hot deployment/ update as well as to
-facilitate the runtime selection of transports.</p>
+loading is mandatory in order to provide hot deployment/update as well as to
+facilitate runtime selection of transports.</p>
 
 <p>The DSO support for loading individual Axis2 components is based on the
 component named <code>class_loader</code>, which must be statically compiled
@@ -109,9 +109,9 @@ time.</p>
 
 <h2>Transport Abstraction</h2>
 
-<p>One of the key advantages of Axis2 is that the Axis2 engine and the other
+<p>One of the key advantages of Axis2 is the fact that the engine and the other
 SOAP processing is independent from the transport aspect. Users can develop
-their own transports and the interface is defined in
+their own transports and the interface is defined in:
 <code>axis2_transport_sender.h</code> and
 <code>axis2_transport_receiver.h</code>.</p>
 
@@ -123,7 +123,7 @@ transport sender uses sockets to connect and send the SOAP Message.</p>
 <p>Inside the HTTP transport,  the receivers and clients are abstracted so
 that the user can easily plug in their own senders and receivers (eg: A
 <code>libcurl</code> based client can be implemented instead of the simple
-http client available in the axis2 distribution)</p>
+http client available in the axis2 distribution).</p>
 <a name="Stream_Abstraction"></a>
 
 <h2>Stream Abstraction</h2>
@@ -138,17 +138,17 @@ what type of stream should be created (eg: socket, file, etc) and creates the
 appropriate stream. Thereafter, rest of the components are independent from
 the implementation details of the stream.</p>
 
-<p>Also the stream serves as a main point in internationalization support. It
-can convert the the internal byte representation to a different type of
-encodings specified by the user. This can be achieved by plugging an encoding
+<p>The stream also serves as a main point in internationalization support. It
+can convert the the internal byte representation to different types of
+encodings as specified by the user. This can be achieved by plugging an encoding
 engine to the stream.</p>
 <a name="Threading_Model"></a>
 
 <h2>Threading Model</h2>
 
 <p>Axis2 core functions, such as hot deployment/update, asynchronous
-invocation, concurrent request processing in simple axis2 server, etc 
-heavily depends on threads. At the same time these threads should be platform
+invocation, concurrent request processing in simple axis2 server, etc., 
+heavily depend on threads. At the same time these threads should be platform
 independent inside the Axis2 core components. Another important requirement
 in threading model is the ability to pool the threads. This thread pooling
 mechanism should be Axis2 independent and Axis2 core components should be
