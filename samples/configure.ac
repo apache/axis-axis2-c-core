@@ -20,7 +20,7 @@ AC_PROG_MAKE_SET
 dnl Checks for libraries.
 AC_CHECK_LIB(dl, dlopen)
 
-CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE"
+CFLAGS="$CFLAGS -ansi -Wall -D_LARGEFILE64_SOURCE -Werror"
 LDFLAGS="-lpthread"
 
 dnl Checks for header files.
