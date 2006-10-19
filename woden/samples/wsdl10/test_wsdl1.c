@@ -75,8 +75,17 @@ int main(int argc, char *argv[])
     desc = WODEN_RESOLVER_READ(resolver, env, om_doc, doc_base_uri);
     AXIS2_FREE(env->allocator, doc_base_uri);
     WODEN_RESOLVER_FREE(resolver, env);
-    intfaces = WODEN_WSDL10_DESC_GET_INTERFACES(desc, env);
-    intface = AXIS2_ARRAY_LIST_GET(intfaces, env, 0);
+
+	 if (desc)
+		  intfaces = WODEN_WSDL10_DESC_GET_INTERFACES(desc, env);
+	 else
+		  return -1;
+
+	 if (intfaces)
+		  intface = AXIS2_ARRAY_LIST_GET(intfaces, env, 0);
+	 else 
+		  return -1;
+
     if (intface)
     {
         intface_qname = WODEN_INTERFACE_GET_QNAME(intface, env);

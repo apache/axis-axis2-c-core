@@ -311,6 +311,9 @@ axis2_svc_client_create_for_dynamic_invocation(
             AXIS2_PHASES_INFO_SET_OP_PHASES(info, env, op);
         }
     }
+	 else
+		  return AXIS2_FAILURE;
+
     /** add the service to the config context if it isn't in there already */
     if (NULL == AXIS2_CONF_GET_SVC(svc_client_impl->conf, env,
             AXIS2_SVC_GET_NAME(svc_client_impl->svc, env)))

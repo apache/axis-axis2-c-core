@@ -19,6 +19,7 @@
 #include <axis2_utils.h>
 #include <axis2_utils_defines.h>
 #include <string.h>
+#include <stdio.h>
 
 /********************************** Function prototypes *****************/
 
@@ -263,6 +264,17 @@ axis2_qname_equals(const axis2_qname_t *qname,
         uris_differ =
             axis2_strcmp(qn1->namespace_uri,
                     qn2->namespace_uri);
+		  if (uris_differ)
+			 {
+				  if ((qn1->namespace_uri[strlen(qn1->namespace_uri) - 1] != '/') 
+						&& (qn2->namespace_uri[strlen(qn2->namespace_uri) - 1] == '/') )
+						fprintf (stderr, "you may need to add / to your wsdl namespace %s \n", qn1->namespace_uri);
+				  else if ((qn1->namespace_uri[strlen(qn1->namespace_uri) - 1] == '/') 
+							  && (qn2->namespace_uri[strlen(qn2->namespace_uri) - 1] != '/') )
+						fprintf (stderr, "you may need to add / to your wsdl namespace %s \n", qn2->namespace_uri);
+
+			 }
+
     }
     else
     {

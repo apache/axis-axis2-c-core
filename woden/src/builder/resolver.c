@@ -20,6 +20,7 @@
 #include <woden_schema_constants.h>
 #include <woden_qname_util.h>
 #include <axis2_uri.h>
+#include <axis2_qname.h>
 
 #include "../wsdl20/woden_constants.h"
 #include "../wsdl10/woden_wsdl10_constants.h"

@@ -69,7 +69,14 @@ axis2_client_utils_create_axis2_svc(
     doc = axiom_util_new_document(env, wsdl_uri);
     resolver = woden_resolver_create(env);
 
-    desc = WODEN_RESOLVER_READ(resolver, env, doc, (axis2_char_t *)doc_base_uri);
+	 if (resolver)
+		  desc = WODEN_RESOLVER_READ(resolver, env, doc, (axis2_char_t *)doc_base_uri);
+	 else
+		  return AXIS2_FAILURE;
+
+	 if (!desc)
+		  return AXIS2_FAILURE;
+
     spec = WODEN_RESOLVER_GET_SPEC(resolver, env);
     if (WODEN_WSDL20 == spec)
     {
@@ -459,3 +466,13 @@ axis2_client_utils_create_axis2_svc(
     }
     return axis2_svc;
 }
+
+
+
+
+
+
+
+
+
+
