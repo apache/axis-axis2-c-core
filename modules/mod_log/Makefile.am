@@ -1,7 +1,7 @@
 prglibdir=$(prefix)/modules/logging
 prglib_LTLIBRARIES = libaxis2_mod_log.la
 prglib_DATA= module.xml
-EXTRA_DIST = module.xml
+EXTRA_DIST = module.xml mod_log.h
 libaxis2_mod_log_la_SOURCES = log_in_handler.c \
                                 log_out_handler.c \
                                 mod_log.c
