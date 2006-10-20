@@ -1,5 +1,5 @@
 noinst_LTLIBRARIES = libomopenssl.la
-libomopenssl_la_SOURCES = cipher_ctx.c crypt.c rsa.c pkey.c util.c cipher_property.c 
+libomopenssl_la_SOURCES = cipher_ctx.c crypt.c rsa.c pkey.c util.c cipher_property.c digest.c
 
 libomopenssl_la_LIBADD  = -lssl\
 			../../../../util/src/libaxis2_util.la \

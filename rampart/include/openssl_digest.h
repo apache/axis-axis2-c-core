@@ -14,40 +14,37 @@
  *   limitations under the License.
  */
 
+#include <openssl/sha.h>
 
 #include <axis2_utils_defines.h>
 #include <axis2_defines.h>
 #include <axis2_env.h>
 
 /**
-  * @file rampart_crypto_util.h
-  * @brief RAMPART-UTIL Crypto
+  * @file openssl_digest.h
+  * @brief 
   */
-#ifndef RAMPART_CRYPTO_UTIL
-#define RAMPART_CRYPTO_UTIL
+#ifndef OPENSSL_DIGEST
+#define OPENSSL_DIGEST
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
-  * @defgroup Rampart_Crypto_Util
-  * @ingroup Rampart_Util
+  * @defgroup 
+  * @ingroup 
   */
 
 
   /** 
-  * Calculate the hash of concatenated string of followings
-  * @param nonce
-  * @param created 
-  * @param password 
-  * @return calculated hash
+  * Calculate the digest of the input
+  * @return calculated digest
   */ 
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-   rampart_crypto_sha1(const axis2_env_t *env,
-            const axis2_char_t *nonce,
-                      const axis2_char_t *created,
-                      const axis2_char_t *password);
+   openssl_sha1(const axis2_env_t *env,
+                axis2_char_t *input,
+                int length);
                                                                             
 
 /* @} */
@@ -55,4 +52,4 @@ AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 }
 #endif
 
-#endif    /* !RAMPART_CRYPTO_H */
+#endif    /* OPENSSL_DIGEST */
