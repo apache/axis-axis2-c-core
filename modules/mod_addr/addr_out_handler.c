@@ -121,6 +121,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
     axiom_element_t *soap_header_ele = NULL;
     axis2_endpoint_ref_t *epr = NULL;
     axis2_property_t *property = NULL;
+	 const axis2_char_t *wsa_action = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -128,7 +129,9 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
     if (!msg_info_headers)
         return AXIS2_SUCCESS; /* no addressing in use */
-    if (!AXIS2_MSG_INFO_HEADERS_GET_ACTION(msg_info_headers, env))
+	 wsa_action = AXIS2_MSG_INFO_HEADERS_GET_ACTION (msg_info_headers, env);
+
+    if (!wsa_action || !axis2_strcmp (wsa_action, ""))
         return AXIS2_SUCCESS; /* If no action present, assume no addressing in use */
 
 
@@ -288,7 +291,7 @@ axis2_addr_out_handler_invoke(struct axis2_handler * handler,
         }
 
         action = AXIS2_MSG_INFO_HEADERS_GET_ACTION(msg_info_headers, env);
-        if (action)
+        if (action && axis2_strcmp(action, ""))
         {
             axis2_addr_out_handler_process_string_info(env, action,
                     AXIS2_WSA_ACTION,
