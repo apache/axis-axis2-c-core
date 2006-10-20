@@ -1,3 +1,38 @@
+Axis2-C (0.94)
+  * Guththila pull parser support
+  * WSDL2C code generation tool
+  * TCP Monitor - C implementation
+  * Major Memory leak fixes
+  * Fixes to code generation with Java Tool
+  * Many Bug Fixes
+	
+ -- Axis2-C team <axis-c-dev@ws.apache.org>  Tue, 3 October  2006 
+	
+Axis2-C (0.93)
+  * REST support for HTTP GET case
+  * XML Schema implementation
+  * Woden/C implementation that supports both WSDL 1.1 and WSDL 2.0
+  * Dynamic client invocation (given a WSDL, consume services dynamically)
+  * Numerous improvements to API and API documentation
+  * Many bug fixes, especially, many paths of execution previously untouched were tested along with Sandesha2/C  implementation
+
+ -- Axis2-C team <axis-c-dev@ws.apache.org>  Thu, 31 August  2006 
+	
+Axis2-C (0.92)
+  * Completed MTOM implementation with multiple attachment support and non-optimize  
+  * Completed service client API with send robust and fire and forget
+  * Added "message" to description hierarchy
+  * Archive based deployment Model (for services and modules)
+  * Code generation for WSDL using Java WSDL2Code tool
+  * ADB support (with Java WSDL2C tool)
+  * WS-Security usernameToken support
+  * Initial implementation of the XML Schema parser (To be used in WSDL parser and REST support)
+  * Initial implementation of WSDL parser (To be used in dynamic invocation)
+  * Changed double pointer environment parameters into pointer parameters
+  to improve efficiency
+
+ -- Axis2-C team <axis-c-dev@ws.apache.org>  Fri, 16 June 2006 
+	
 Axis2-C (0.91)
 
   * Full Addressing 1.0 support
