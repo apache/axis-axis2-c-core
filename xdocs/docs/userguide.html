@@ -45,7 +45,7 @@
       <li><a href="#Writing_Web_Services_Using_Code_Generator">Writing Web
         Services Skeleton Using Code Generator</a>
         <ul>
-          <li><a href="#WSDL2Code_tool">WSDL2Code tool</a></li>
+          <li><a href="#WSDL2C_tool">WSDL2C tool</a></li>
           <li><a href="#Implement_the_Business_Logic">Implement the Business
             Logic</a></li>
           <li><a href="#echoString">echoString</a></li>
@@ -540,10 +540,10 @@ archive.</p>
 <a name="Writing_Web_Services_Using_Code_Generator"></a>
 <h3>Writing Web Services Skeleton Using Code Generator</h3>
 
-<a id="WSDL2Code_tool"></a>
-<h4>WSDL2Code tool</h4>
+<a id="WSDL2C_tool"></a>
+<h4>WSDL2C tool</h4>
 
-<p>Axis2/Java WSDL2Code tool supports generation of Axis2/C stub and
+<p>Axis2/Java WSDL2C tool supports generation of Axis2/C stub and
 skeleton. <a
 href="http://svn.apache.org/viewvc/webservices/axis2/trunk/java">Axis2/Java
 SVN</a> revision 414253 and later versions provide this facility. A basic
@@ -555,12 +555,13 @@ skeleton and other required files to support ADB (Axis Data Binding). In
 order to run the tool, <span style="font-weight: bold;">set all the .jar
 library files in the Axis2/Java to the classpath</span>. To generate code
 with no data binding support, just replace -d adb -u with -d none</p>
-<pre><br />java -Dorg.apache.adb.properties=/org/apache/axis2/schema/c-schema-compile.properties org.apache.axis2.wsdl.WSDL2Code <br /> -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u<br /> </pre>
+<pre><br />java org.apache.axis2.wsdl.WSDL2C -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u<br /> 
+</pre>
 
 <p>If you need an XML in/out programming model, you can just ignore the data
 binding support by setting the following parameters. Give "<code>-l c</code>"
 option to enable C language code generation.</p>
-<pre><br />java org.apache.axis2.wsdl.WSDL2Code -uri interoptestdoclitparameters.wsdl -ss -sd -d none -l c<br /> </pre>
+<pre><br />java org.apache.axis2.wsdl.WSDL2C -uri interoptestdoclitparameters.wsdl -ss -sd -d none<br /> </pre>
 
 <p>The WSDL <code>interoptestdoclitparameters.wsdl</code> can be found in
 &lt;axis2_src_dir&gt;/test/resources directory. This is used to generate stub
@@ -862,11 +863,11 @@ generate the Axis2/C stub code with data binding support. You should have
 <a
 href="http://svn.apache.org/viewvc/webservices/axis2/trunk/java">Axis2/Java
 source SVN</a> revision 414253 or later to generate Axis2/C code.</p>
-<pre><br />java WSDL2Code -Dorg.apache.adb.properties=/org/apache/axis2/schema/c-schema-compile.properties<br /> -uri interoptestdoclitparameters.wsdl -d adb -u<br /> </pre>
+<pre><br />java WSDL2C -uri interoptestdoclitparameters.wsdl -d adb -u<br /> </pre>
 
 <p>In order to ignore the data binding support (to use XML in/out model),
 just use the following parameters.</p>
-<pre><br />java WSDL2Code -uri interoptestdoclitparameters.wsdl -d none<br /> </pre>
+<pre><br />java WSDL2C -uri interoptestdoclitparameters.wsdl -d none<br /> </pre>
 
 <p>The following section demonstrates how to use the generated code using the
 wsdl file "interoptestdoclitparameters.wsdl" to implement the client business
