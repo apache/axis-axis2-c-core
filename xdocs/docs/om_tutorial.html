@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
   <title>Axis2/C OM Tutorial</title>
-  <meta name="generator" content="amaya 8.5, see http://www.w3.org/Amaya/" />
+  <meta name="generator" content="Bluefish 1.0.5"/>
 </head>
 
 <body>
@@ -27,7 +27,7 @@
   </li>
   <li><a href="#Working_with_OM">Working with OM</a>
     <ul>
-      <li><a href="#Env">Axis2/C environment</a></li>
+      <li><a href="#Env">Axis2/C Environment</a></li>
       <li><a href="#Creation">Creation</a></li>
       <li><a href="#Addition_and_Detaching_of_Nodes">Adding and Detaching
         Nodes</a></li>
@@ -153,12 +153,12 @@ about SOAP.</p>
 <p></p>
 
 <a id="Env"></a>
-<h3>Axis2/C environment</h3>
+<h3>Axis2/C Environment</h3>
 
 <p>Before starting the discussion on OM, it is necessary to get a good
 understanding of the basics of Axis2/C. Axis2/C is designed to be pluggable to
-any system written in C or C++ and therefore Axis2 has abstracted the
-functionalities that differ from system to system in to a structure
+any system written in C or C++ as such, Axis2 has abstracted the
+functionalities that differ from system to system into a structure
 <code>axis2_env_t</code>, which we refer to as axis2 environment . The
 environment holds <code>axis2_allocator_t</code> [ used for memory
 allocation/deallocation ] , <code>axis2_error_t</code> [ error reporting
@@ -271,12 +271,12 @@ element' struct stored in <code>axiom_node_t</code> must be obtained using
 the <code>AXIOM_NODE_GET_DATA_ELEMENT</code> macro. The type of the struct
 stored in the '<code>axiom_node_t'</code> struct can be obtained by
 <code>AXIOM_NODE_GET_NODE_TYPE</code> macro. When we create
-<code>axiom_element_t</code> , <code>axiom_text_t</code> etc .., it is
+<code>axiom_element_t</code> , <code>axiom_text_t</code> etc., it is
 required to parse a double pointer to the node struct as the last parameter
 of the <code>create</code> function so that the corresponding node struct can
 be referenced using that pointer.</p>
 
-<p>Eg.</p>
+<p>Example</p>
 
 <p><code>axiom_node_t *my_node = NULL;</code></p>
 
@@ -289,7 +289,7 @@ be referenced using that pointer.</p>
 
 <p>Now if we call <code>AXIOM_NODE_GET_NODE_TYPE</code> macro on
 '<code>my_node</code>' pointer we will get the value as
-<code>AXIOM_ELEMENT</code> .</p>
+<code>AXIOM_ELEMENT</code>.</p>
 
 <div>
 <p></p>
@@ -379,12 +379,12 @@ axiom_node_add_child( axiom_node_t *om_node,
 axiom_node_detach (axiom_node_t *om_node, 
                       const axis2_env_t *env);</pre>
 
-<p>The detach operation resets the links and remove a node from om
+<p>The detach operation resets the links and removes a node from OM
 structure.</p>
 
 <p></p>
 
-<p>This code segment shows how the addition takes place. Note that it is
+<p>This code segment shows how the addition takes place. Note,that it is
 related to the code segment shown in the creation section.</p>
 
 <div>
@@ -427,7 +427,7 @@ of creating to <code>bar_ele</code> as follows.</p>
 
 <p></p>
 
-<p>Following are the important methods available in
+<p>The following are the important methods available in
 <code>axiom_element</code> to handle namespaces.</p>
 
 <div>
@@ -460,7 +460,7 @@ axiom_element_set_namespace(axiom_element_t *om_element,
 
 <p></p>
 
-<p>An om_element has a namespace list [declared namespaces] and a pointer to
+<p>An <code>om_element</code> has a namespace list [declared namespaces] and a pointer to
 its own namespace if one exists.</p>
 
 <p>The <code>declare_namespace</code> function is straight forward. It adds a
@@ -476,7 +476,7 @@ been reached.</p>
 <p><code>find_declared_namespace</code> can be used to search for a namespace
 in the current element's namespace declarations section.</p>
 
-<p><code>set_namespace</code> sets an om_elements own namespace. [ Note that
+<p><code>set_namespace</code> sets an <code>om_elements</code> own namespace. [ Note that
 an element's own namespace should be declared in its own namespace
 declarations section or in one of its parent elements. ] This method first
 searches for a matching namespace using <code>find_namespace</code> and if a
@@ -484,7 +484,7 @@ matching namespace is not found, a namespace is declared to this om_element's
 namespace declarations section before setting the own namespace reference.</p>
 
 <p>The following sample code segment shows how the namespaces are dealt with
-in OM</p>
+in OM.</p>
 
 <div>
 <p><b>Code Listing 6</b></p>
@@ -511,7 +511,7 @@ om_text  = axiom_text_create(env, ele1_node, "blah", &amp;text_node);</pre>
 
 <p></p>
 
-<p>Serilization of the root element produces the following XML</p>
+<p>Serilization of the root element produces the following XML:</p>
 <pre class="xml">&lt;x:root xmlns:x="bar"&gt;
   &lt;y:foo xmlns:y="bar1"&gt;
         blah
@@ -547,7 +547,7 @@ AXIOM_ELEMENT_SET_TEXT(foo_ele, env, "Test", &amp;foo_node);</pre>
 <p>Traversing the OM structure can be done by obtaining an iterator struct.
 You can either call the appropriate function on an OM element or create the
 iterator manually. OM C offers three iterators to traverse the OM structure.
-They are</p>
+They are:</p>
 <ul>
   <li>axiom_children_iterator_t</li>
   <li>axiom_child_element_iterator_t</li>
@@ -626,8 +626,8 @@ serialization uses <code>axiom_xml_writer.h</code> and
 
 <p></p>
 
-<p>Here is an example that shows how to write the output to the console, (We
-serialize the SOAP envelope created in code listing 1).</p>
+<p>Here is an example that shows how to write the output to the console (we have
+serialized the SOAP envelope created in code listing 1).</p>
 
 <div>
 <p><b>Code Listing 8</b></p>
@@ -648,7 +648,7 @@ printf("%s ", buffer);</pre>
 <p></p>
 
 <p>An easy way to serialize is to use the <code>to_string</code> function in
-om_element</p>
+<code>om_element</code></p>
 
 <p></p>
 
@@ -678,7 +678,7 @@ AXIS2_FREE(env-&gt;allocator, xml_output);</pre>
 <a id="Reader_and_Writer"></a>
 <h3><b>Using axiom_xml_reader and axiom_xml_writer</b></h3>
 
-<p><code>axiom_xml_reader</code> provides three create functions that and can
+<p><code>axiom_xml_reader</code> provides three create functions that can
 be used for different xml input sources.</p>
 <ul>
   <li><code>axiom_xml_reader_create_for_file</code> function can be used to
@@ -710,26 +710,26 @@ be used for different xml input sources.</p>
 <a id="Mem_Leaks"></a>
 <h3><b>How to avoid memory leaks and double frees when using OM</b></h3>
 
-<p>You have to be extremely careful when using om in order to avoid memory
-leaks and double free errors. Following guidelines will be very useful.</p>
+<p>You have to be extremely careful when using OM, in order to avoid memory
+leaks and double free errors. The following guidelines will be extremely useful:</p>
 
 <p>1. <code>om_element_t</code> struct keeps a list of attributes and a list
 of namespaces, when a namespace pointer is added to this list , it will be
-freed when this om_element is freed, Therefore same pointer to a namespace or
+freed when this <code>om_element</code> is freed, Therefore same pointer to a namespace or
 an attribute should not be passed twice to a <code>create</code> , add or
 <code>set</code> function.</p>
 
 <p>To avoid the inconvenience, clone functions have been implemented for both
-axiom_namespace and axiom_attribute structures.</p>
+<code>axiom_namespace</code> and <code>axiom_attribute</code> structures.</p>
 
 <p></p>
 
-<p>2. OM returns shallow references to its string values. Therefore when
-using the returned values, AXIS2_STRDUP () function should be used to avoid
+<p>2. OM returns shallow references to its string values. Therefore, when
+using the returned values, <code>AXIS2_STRDUP ()</code> function should be used to avoid
 double free errors, if the returned value is going to be set to another
 struct.</p>
 
-<p>Eg.:</p>
+<p>Example</p>
 
 <p><code>axiom_namespace_t *ns = NULL;</code></p>
 
@@ -751,25 +751,20 @@ pointer is pointing */</code></p>
 
 <p></p>
 
-<p>3. when creating om programatically , if you are declaring a namespace to
-an om element, it is advisable to find whether the namespace is already
-available in the elements scope using find_namespace function. If available,
+<p>3. When creating OM programatically , if you are declaring a namespace to
+an OM element, it is advisable to find whether the namespace is already
+available in the elements scope using <code>find_namespace</code> function. If available,
 that pointer can be used instead of creating another namespace struct
 instance to prevent memory leaks.</p>
-
 <p></p>
-
 <a id="Complete_Sample"></a>
 <h3><b>Complete code for the OM based document building and
 serialization</b></h3>
-
 <p>The following code segment shows how to use the OM for completely building
 a document and then serializing it into text pushing the output to the
 console.</p>
-
 <div>
 <p></p>
-
 <p><b>Code Listing 10</b></p>
 </div>
 <pre>#include&nbsp;&lt;axiom_node.h&gt;
@@ -785,10 +780,8 @@ console.</p>
 #include&nbsp;&lt;axiom_output.h&gt;
 #include&nbsp;&lt;stdio.h&gt;
 
-
 FILE&nbsp;*f&nbsp;=&nbsp;NULL;
 int&nbsp;read_input_callback(char&nbsp;*buffer,&nbsp;int&nbsp;size,&nbsp;void*&nbsp;ctx)
-
 {
 &nbsp;&nbsp;&nbsp;&nbsp;<b>return</b>&nbsp;fread(buffer,&nbsp;<b>sizeof</b>(char),&nbsp;size,&nbsp;f);
 }
@@ -796,9 +789,7 @@ int&nbsp;close_input_callback(void *ctx)
 {
 &nbsp;&nbsp;&nbsp;&nbsp;<b>return</b>&nbsp;fclose(f);
 }
-
 axis2_env_t&nbsp;*&nbsp;create_environment()
-
 {
 &nbsp;&nbsp;&nbsp;&nbsp;axis2_allocator_t&nbsp;*allocator&nbsp;=&nbsp;NULL;
 &nbsp;&nbsp;&nbsp;&nbsp;axis2_env_t&nbsp;*env&nbsp;=&nbsp;NULL;
@@ -894,9 +885,9 @@ int&nbsp;main()
 &nbsp;&nbsp;&nbsp;&nbsp;axis2_env_t&nbsp;*env&nbsp;=&nbsp;NULL;
 &nbsp;&nbsp;&nbsp;&nbsp;axis2_allocator_t&nbsp;*allocator&nbsp;=&nbsp;NULL;
 &nbsp;&nbsp;&nbsp;&nbsp;env&nbsp;=&nbsp;create_environment();
-<br />
+<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;status&nbsp;=&nbsp;build_and_serialize_om(env);
-
+<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;<b>if</b>(status&nbsp;==&nbsp;AXIS2_FAILURE)
 &nbsp;&nbsp;&nbsp;&nbsp;{
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("&nbsp;build&nbsp;om&nbsp;failed");
