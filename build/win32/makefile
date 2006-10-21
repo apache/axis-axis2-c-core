@@ -498,6 +498,8 @@ axis2_client_dynamic_client:
 	del *.obj
 	
 	if not exist $(AXIS2_BINS)\samples mkdir $(AXIS2_BINS)\samples
+	if not exist $(AXIS2_BINS)\samples\resources mkdir $(AXIS2_BINS)\samples\resources
+	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\*.wsdl $(AXIS2_BINS)\samples\resources
 
 	copy dynamic_client.exe $(AXIS2_BINS)\samples
 	del dynamic_client.exe
@@ -629,9 +631,7 @@ copy_samples:
 	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\dynamic_client.c $(AXIS2_INSTALL_DIR)\samples\client\dynamic_client
 	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\README $(AXIS2_INSTALL_DIR)\samples\client\dynamic_client
 
-	copy $(AXIS2_SOURCE_DIR)\samples\client\dynamic_client\*.wsdl $(AXIS2_INSTALL_DIR)\samples\client\dynamic_client
-
-
+	
 	if not exist $(AXIS2_INSTALL_DIR)\samples\client\notify mkdir $(AXIS2_INSTALL_DIR)\samples\client\notify
 	copy $(AXIS2_SOURCE_DIR)\samples\client\notify\*.c $(AXIS2_INSTALL_DIR)\samples\client\notify
 
