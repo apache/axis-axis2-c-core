@@ -64,6 +64,7 @@ AXIS2_APACHE_MODULE = mod_axis2
 
 AXIS2_RAMPART = mod_rampart
 AXIS2_MOD_ADDR = axis2_mod_addr
+AXIS2_MOD_LOG = axis2_mod_log
 
 # include path
 APACHE_INCLUE_PATH = /I$(APACHE_INSTALL_DIR)\include
@@ -292,6 +293,23 @@ axis2_mod_addr:
 	del *.dll
 	del *.lib
 	copy $(AXIS2_SOURCE_DIR)\modules\mod_addr\module.xml $(AXIS2_MODULES)\addressing
+
+axis2_mod_log:
+	$(CC) $(CFLAGS)  $(AXIS2_SOURCE_DIR)\modules\mod_log\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib \
+	$(LIBS) $(AXIS2_ENGINE).lib /DLL /OUT:axis2_mod_log.dll  /IMPLIB:axis2_mod_log.lib
+	del *.obj
+	
+	if not exist $(AXIS2_MODULES)\logging mkdir $(AXIS2_MODULES)\logging
+
+	copy axis2_mod_log.dll $(AXIS2_MODULES)\logging\
+
+	del *.dll
+	del *.lib
+	copy $(AXIS2_SOURCE_DIR)\modules\mod_log\module.xml $(AXIS2_MODULES)\logging
+
+
+
 
 
 ############# end modules  ###################
@@ -865,7 +883,7 @@ woden_all: woden woden_sample woden_copy_include
 ##############################################################################################
 
 
-all: clean_make_dir clean deploy basic_modules xml_schema_all woden_all axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr all_services all_clients axis2_server   copy_include clean_make_dir 
+all: clean_make_dir clean deploy basic_modules xml_schema_all woden_all axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_mod_log all_services all_clients axis2_server   copy_include clean_make_dir 
  
 install: all
 
