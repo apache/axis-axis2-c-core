@@ -33,6 +33,7 @@ axiom_mime_parser_impl_t;
 #define AXIOM_MIME_PARSER_BUFFER_SIZE (1024 * 1024)
 
 #define AXIOM_MIME_PARSER_CONTENT_ID "content-id"
+#define AXIOM_MIME_PARSER_CONTENT_TYPE "content-type"
 
 #define AXIOM_MIME_PARSER_END_OF_MIME_MAX_COUNT 100
 /***************************** Function headers *******************************/
@@ -416,9 +417,33 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
         {
             /* get MIME ID */
             axis2_char_t *id = NULL;
+            axis2_char_t *type = NULL;
             if (body_mime)
             {
                 id = axis2_strcasestr(body_mime, AXIOM_MIME_PARSER_CONTENT_ID);
+                type = axis2_strcasestr(body_mime, AXIOM_MIME_PARSER_CONTENT_TYPE);
+                if (type)
+                {
+                    axis2_char_t *end = NULL;
+                    axis2_char_t *temp_type = NULL;
+                    type += AXIS2_STRLEN(AXIOM_MIME_PARSER_CONTENT_TYPE);
+                    while (type && *type && *type != ':')
+                        type++;
+                    type++;
+                    while (type && *type && *type == ' ')
+                        type++;
+                    end = type;
+                    while (end && *end && !isspace(*end))
+                        end++;
+                    if ((end - type) > 0)
+                    {
+                        temp_type = AXIS2_MALLOC(env->allocator,
+                                sizeof(axis2_char_t) * ((end - type) + 1));
+                        memcpy(temp_type, type, (end - type));
+                        temp_type[end - type] = '\0';
+                        type = temp_type;
+                    }
+                }
             }
             if (id)
             {
@@ -447,7 +472,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                                 axiom_data_handler_t *data_handler = NULL;
                                 memcpy(mime_id, id, mime_id_len);
                                 mime_id[mime_id_len] = '\0';
-                                data_handler = axiom_data_handler_create(env, NULL, NULL);
+                                data_handler = axiom_data_handler_create(env, NULL, type);
                                 AXIOM_DATA_HANDLER_SET_BINARY_DATA(data_handler, env,
                                         mime_binary, mime_binary_len);
                                 axis2_hash_set(mime_parser_impl->mime_parts_map, mime_id,
