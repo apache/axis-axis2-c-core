@@ -38,6 +38,9 @@ AXIS2_EXTERN axis2_env_t * AXIS2_CALL axis2_env_create_all(const axis2_char_t *l
 	 else
 		  log = axis2_log_create_default (allocator);
 
+	 if (!log)
+	   log = axis2_log_create_default (allocator);
+
     thread_pool = axis2_thread_pool_init(allocator);
     env = axis2_env_create_with_error_log_thread_pool(allocator, error, log, thread_pool);
     if (env->log)

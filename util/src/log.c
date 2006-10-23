@@ -49,8 +49,11 @@ axis2_log_impl_free(axis2_allocator_t *allocator, axis2_log_t *log)
         }
         if (AXIS2_INTF_TO_IMPL(log)->stream)
         {
-            axis2_file_handler_close(log_impl->stream);
-            log_impl->stream = NULL;
+				if (log_impl->stream)
+				  {
+						axis2_file_handler_close(log_impl->stream);
+						log_impl->stream = NULL;
+				  }
         }
         if (log->ops)
         {
