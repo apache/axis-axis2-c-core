@@ -489,6 +489,17 @@ axis2_log_create_default (axis2_allocator_t *allocator)
     log_impl->log.enabled = 1;
     log_impl->log.level = AXIS2_LOG_LEVEL_DEBUG;
 
+	 log_impl->log.ops =
+		  (axis2_log_ops_t *) AXIS2_MALLOC(allocator,
+													  sizeof(axis2_log_ops_t));
+	 
+	 if (!log_impl->log.ops)
+		{
+			 axis2_log_impl_free(allocator, (axis2_log_t*)log_impl);
+			 return NULL;
+        }
+        log_impl->log.ops->free = axis2_log_impl_free;
+        log_impl->log.ops->write = axis2_log_impl_write;
     return &(log_impl->log);
 }
 
@@ -536,3 +547,5 @@ AXIS2_EXTERN void AXIS2_CALL axis2_log_impl_log_trace(axis2_log_t *log,
     
 }
 #endif
+
+
