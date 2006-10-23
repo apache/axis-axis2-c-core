@@ -24,7 +24,7 @@
         <items>UsernameToken  Timestamp</items>
         <user>Gampola</user>
         <passwordType>passwordText</passwordType>
-        <!--Following shoud change with your DLL or SO path-->
+        <!--Following should change with your DLL or SO path-->
         <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
         <timeToLive>360</timeToLive>
       </action>
@@ -34,7 +34,7 @@
     <parameter name="InflowSecurity">
       <action>
         <items>UsernameToken Timestamp</items>
-        <!--Following shoud change with your DLL or SO path-->
+        <!--Following should change with your DLL or SO path-->
         <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
       </action>
     </parameter>
