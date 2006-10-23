@@ -22,6 +22,10 @@ get_sample_password(rampart_callback_t *rcb,
     {
         pw = "GampolaPW";
     }
+    else if (0 == AXIS2_STRCMP(username, "alice"))
+    {
+        pw = "password";
+    }
     else
     {}
     return pw;

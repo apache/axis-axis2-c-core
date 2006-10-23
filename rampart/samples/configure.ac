@@ -52,6 +52,7 @@ AC_SUBST(PARSER_DIR)
 
 AC_CONFIG_FILES([Makefile \
         callback/Makefile \
+        callback/htpasswd_callback/Makefile \
         client/Makefile
         client/enc_echo/Makefile \
         client/enc_echo/data/Makefile \
