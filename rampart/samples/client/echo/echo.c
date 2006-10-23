@@ -22,7 +22,7 @@
 #include <rampart_constants.h>
 
 /*Enable following line to setup dynamic values*/
-#define DYN_SETTINGS 1
+/*#define DYN_SETTINGS 1*/
 
 axiom_node_t *
 build_om_payload_for_echo_svc(const axis2_env_t *env);
@@ -51,7 +51,6 @@ int main(int argc, char** argv)
 
     /* Set end point reference of echo service */
     address = "http://localhost:9090/axis2/services/echo";
-    
     if (argc > 2)
     {
         address = argv[1];
@@ -74,10 +73,10 @@ int main(int argc, char** argv)
     /* Setup options */
     options = axis2_options_create(env);
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
-    /*AXIS2_OPTIONS_SET_ACTION(options, env,
-            "http://ws.apache.org/axis2/c/samples/echoString");*/
     AXIS2_OPTIONS_SET_ACTION(options, env,
-            "urn:echo");
+            "http://ws.apache.org/axis2/c/samples/echoString");
+
+
 
     /*
      * Set security params. If you need to enable dynamic settings uncomment
@@ -86,11 +85,11 @@ int main(int argc, char** argv)
 
 #ifdef DYN_SETTINGS
     un_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(un_property, env, "alice");
+    AXIS2_PROPERTY_SET_VALUE(un_property, env, "Raigama");
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_USER, un_property);
 
     pw_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(pw_property, env, "password");
+    AXIS2_PROPERTY_SET_VALUE(pw_property, env, "RaigamaPW");
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_PASSWORD,  pw_property);
 
     pw_type_property = axis2_property_create(env);
@@ -104,11 +103,11 @@ int main(int argc, char** argv)
 
     /*Make sure this is the correct path for the callback module*/
     pw_cb_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(pw_cb_property, env, "/home/kau/axis2/c/deploy/samples/rampart/callback/libpwcb.so");
+    AXIS2_PROPERTY_SET_VALUE(pw_cb_property, env, "/home/kau/axis2/c/deploy/rampart/samples/callback/libpwcb.so");
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_PW_CALLBACK_CLASS , pw_cb_property);
 
     time_to_live_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(time_to_live_property, env, "300");
+    AXIS2_PROPERTY_SET_VALUE(time_to_live_property, env, "420");
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_TIME_TO_LIVE, time_to_live_property);
 #endif
 
