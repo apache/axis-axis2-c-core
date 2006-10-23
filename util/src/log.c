@@ -147,9 +147,11 @@ axis2_log_create(axis2_allocator_t * allocator, axis2_log_ops_t * ops,
 
     if (NULL == log_impl->stream)
     {
-        log_impl->log.ops = NULL;
-        axis2_log_impl_free(allocator, &(log_impl->log));
-        return NULL;
+		  log_impl->stream = stderr;
+/*         log_impl->log.ops = NULL; */
+/*         axis2_log_impl_free(allocator, &(log_impl->log)); */
+
+/*         return NULL; */
     }
     /* by default, log is enabled */
     log_impl->log.enabled = 1;

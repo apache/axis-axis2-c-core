@@ -53,8 +53,8 @@ init_syetem_env(
 {
     axis2_error_t *error = axis2_error_create(allocator);
     axis2_log_t *log = axis2_log_create(allocator, NULL, log_file);
-	 if (!log)
-		  log = axis2_log_create_default (allocator);
+	 /* if (!log) */
+/* 		  log = axis2_log_create_default (allocator); */
     axis2_thread_pool_t *thread_pool = axis2_thread_pool_init(allocator);
     /* We need to init the parser in main thread before spawning child
      * threads
