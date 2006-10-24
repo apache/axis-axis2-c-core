@@ -476,7 +476,10 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
     /* test code: uncomment this when test is over */ 
     axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
     if (!AXIS2_MSG_CTX_IS_PAUSED(out_msg_ctx, env))
+    {
         AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+        out_msg_ctx = NULL;
+    }
     /*end test code */
     return status;
 }

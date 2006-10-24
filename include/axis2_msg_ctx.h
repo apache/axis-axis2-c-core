@@ -613,6 +613,35 @@ extern "C"
                     const axis2_bool_t paused);
 
         /**
+         * Gets the bool value indicating the keep value status. It is possible 
+         * to keep alive the message context by any handler. By calling this method
+         * one can see whether it is possible to clean the message context.
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @return AXIS2_TRUE if message context is keep alive, else AXIS2_FALSE
+         */
+        axis2_bool_t (AXIS2_CALL *
+                is_keep_alive)(
+                    const axis2_msg_ctx_t *msg_ctx,
+                    const axis2_env_t *env);
+
+        /**
+         * Sets the bool value indicating the keep alive status of invocation.
+         * By setting this one can indicate the engine not to clean the message 
+         * context.
+         * @param msg_ctx message context
+         * @param env pointer to environment struct
+         * @param keep_alive keep alive
+         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+         */
+        axis2_status_t (AXIS2_CALL *
+                set_keep_alive)(
+                    axis2_msg_ctx_t *msg_ctx,
+                    const axis2_env_t *env,
+                    const axis2_bool_t keep_alive);
+
+
+        /**
          * Gets transport in description.
          * @param msg_ctx message context
          * @param env pointer to environment struct
@@ -1586,6 +1615,17 @@ extern "C"
     @sa axis2_msg_ctx_ops#set_paused */
 #define AXIS2_MSG_CTX_SET_PAUSED(msg_ctx, env, paused) \
       ((msg_ctx)->ops->set_paused(msg_ctx, env, paused))
+
+/** Gets bool value indicating the keep alive status of invocation.
+    @sa axis2_msg_ctx_ops#is_keep_alive */
+#define AXIS2_MSG_CTX_IS_KEEP_ALIVE(msg_ctx, env) \
+      ((msg_ctx)->ops->is_keep_alive(msg_ctx, env))
+
+/** Sets bool value indicating the keep alive status of invocation.
+    @sa axis2_msg_ctx_ops#set_keep_alive */
+#define AXIS2_MSG_CTX_SET_KEEP_ALIVE(msg_ctx, env, keep_alive) \
+      ((msg_ctx)->ops->set_keep_alive(msg_ctx, env, keep_alive))
+
 
 /** Gets transport in description.
     @sa axis2_msg_ctx_ops#get_transport_in_desc */

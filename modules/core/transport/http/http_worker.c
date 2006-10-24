@@ -438,11 +438,11 @@ axis2_http_worker_process_request(
     status = AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, response);
     AXIS2_FREE(env->allocator, url_external_form);
     url_external_form = NULL;
-    /*
-    AXIS2_MSG_CTX_FREE(msg_ctx, env);
-    
-    msg_ctx = NULL;
-    */
+    if (!AXIS2_MSG_CTX_IS_KEEP_ALIVE(msg_ctx, env))
+    {
+        AXIS2_MSG_CTX_FREE(msg_ctx, env);
+        msg_ctx = NULL;
+    }
     AXIS2_URL_FREE(request_url, env);
     request_url = NULL;
     AXIS2_HTTP_SIMPLE_RESPONSE_FREE(response, env);

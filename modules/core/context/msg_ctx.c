@@ -81,6 +81,7 @@ struct axis2_msg_ctx_impl
     axis2_bool_t new_thread_required;
     /** paused */
     axis2_bool_t paused;
+    axis2_bool_t keep_alive;
     /** output written? */
     axis2_bool_t output_written;
     /** service context ID */
@@ -334,6 +335,17 @@ axis2_msg_ctx_set_paused(
     struct axis2_msg_ctx *msg_ctx,
     const axis2_env_t *env,
     axis2_bool_t paused);
+
+axis2_bool_t AXIS2_CALL
+axis2_msg_ctx_is_keep_alive(
+    const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env);
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_keep_alive(
+    struct axis2_msg_ctx *msg_ctx,
+    const axis2_env_t *env,
+    axis2_bool_t keep_alive);
 
 struct axis2_transport_in_desc *AXIS2_CALL
             axis2_msg_ctx_get_transport_in_desc(
@@ -688,6 +700,7 @@ axis2_msg_ctx_create(
     msg_ctx_impl->message_id = NULL;
     msg_ctx_impl->new_thread_required = AXIS2_FALSE;
     msg_ctx_impl->paused = AXIS2_FALSE;
+    msg_ctx_impl->keep_alive = AXIS2_FALSE;
     msg_ctx_impl->output_written = AXIS2_FALSE;
     msg_ctx_impl->svc_ctx_id = NULL;
     msg_ctx_impl->paused_phase_name = NULL;
@@ -785,6 +798,8 @@ axis2_msg_ctx_create(
     msg_ctx_impl->msg_ctx.ops->get_msg_info_headers = axis2_msg_ctx_get_msg_info_headers;
     msg_ctx_impl->msg_ctx.ops->get_paused = axis2_msg_ctx_get_paused;
     msg_ctx_impl->msg_ctx.ops->set_paused = axis2_msg_ctx_set_paused;
+    msg_ctx_impl->msg_ctx.ops->set_keep_alive = axis2_msg_ctx_set_keep_alive;
+    msg_ctx_impl->msg_ctx.ops->is_keep_alive = axis2_msg_ctx_is_keep_alive;
     msg_ctx_impl->msg_ctx.ops->get_transport_in_desc = axis2_msg_ctx_get_transport_in_desc;
     msg_ctx_impl->msg_ctx.ops->get_transport_out_desc = axis2_msg_ctx_get_transport_out_desc;
     msg_ctx_impl->msg_ctx.ops->set_transport_in_desc = axis2_msg_ctx_set_transport_in_desc;
@@ -1559,6 +1574,29 @@ axis2_msg_ctx_set_paused(
     msg_ctx_impl->paused = paused;
     msg_ctx_impl->paused_phase_index = msg_ctx_impl->current_phase_index;
     return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+axis2_msg_ctx_set_keep_alive(
+    struct axis2_msg_ctx *msg_ctx,
+    const axis2_env_t *env,
+    axis2_bool_t keep_alive)
+{
+    axis2_msg_ctx_impl_t *msg_ctx_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
+    msg_ctx_impl->keep_alive = keep_alive;
+    return AXIS2_SUCCESS;
+}
+
+axis2_bool_t AXIS2_CALL
+axis2_msg_ctx_is_keep_alive(
+    const axis2_msg_ctx_t *msg_ctx,
+    const axis2_env_t *env)
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    return AXIS2_INTF_TO_IMPL(msg_ctx)->keep_alive;
 }
 
 struct axis2_transport_in_desc *AXIS2_CALL
