@@ -106,22 +106,8 @@ rampart_get_security_param(const axis2_env_t *env,
 {
 
 
-    axis2_conf_ctx_t *conf_ctx = NULL;
-    axis2_conf_t *conf = NULL;
     axis2_param_t *param = NULL;
-
-    conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
-    if (NULL == conf_ctx)
-    {
-        return NULL;
-    }
-    conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
-    if (NULL == conf)
-    {
-        return NULL;
-    }
-    param = AXIS2_CONF_GET_PARAM(conf, env, parameter);
-
+    param = AXIS2_MSG_CTX_GET_PARAMETER(msg_ctx, env, parameter);
     return param;
 }
 
