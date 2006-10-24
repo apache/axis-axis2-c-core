@@ -1138,7 +1138,10 @@ axis2_dep_engine_add_new_svc(
                     qmodulename);
             if (module_desc)
             {
-                AXIS2_SVC_ENGAGE_MODULE(svc, env, module_desc, dep_engine_impl->conf);
+                axis2_status_t status = AXIS2_FAILURE;
+                status = AXIS2_SVC_ENGAGE_MODULE(svc, env, module_desc, dep_engine_impl->conf);
+                if(!status)
+                    return status;
 
             }
             else

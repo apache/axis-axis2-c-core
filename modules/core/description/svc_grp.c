@@ -660,7 +660,7 @@ axis2_svc_grp_engage_module(
             axis_svc = (axis2_svc_t *) v;
             status = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_TO_SVC(phase_resolver,
                     env, axis_svc, module);
-            if (AXIS2_FAILURE == status)
+            if (!status)
             {
                 if (phase_resolver)
                 {

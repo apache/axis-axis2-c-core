@@ -1962,9 +1962,9 @@ axis2_conf_engage_module(
         status = AXIS2_PHASE_RESOLVER_ENGAGE_MODULE_GLOBALLY(phase_resolver, env,
                 module_desc);
         AXIS2_PHASE_RESOLVER_FREE(phase_resolver, env);
-        if (AXIS2_SUCCESS != status)
+        if (!status)
         {
-            return AXIS2_FAILURE;
+            return status;
         }
         module_qname = AXIS2_MODULE_DESC_GET_QNAME(module_desc, env);
         module_qref_l = AXIS2_QNAME_CLONE(module_qname, env);

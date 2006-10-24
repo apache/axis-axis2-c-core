@@ -36,7 +36,7 @@ int AXIS2_CALL math_init(axis2_svc_skeleton_t *svc_skeleton,
 
 
 AXIS2_EXTERN axis2_svc_skeleton_t * AXIS2_CALL
-axis2_math_create(const axis2_env_t *env)
+math_create(const axis2_env_t *env)
 {
     axis2_svc_skeleton_t *svc_skeleton = NULL;
     svc_skeleton = AXIS2_MALLOC(env->allocator,
@@ -143,7 +143,7 @@ math_invoke(axis2_svc_skeleton_t *svc_skeleton,
 AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
         const axis2_env_t *env)
 {
-    *inst = axis2_math_create(env);
+    *inst = math_create(env);
     /*if( *inst)
     {
         status = *inst->init();
