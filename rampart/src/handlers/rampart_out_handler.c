@@ -107,7 +107,7 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
     msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
-    \
+    
 
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
     if (!soap_envelope)
