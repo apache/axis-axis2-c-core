@@ -54,11 +54,14 @@ extern "C"
             * @param callback rampart callback pointer
             * @param env environment must not be null
             * @param username The username of the password expected.
+            * @param param any parameter that is to be passed to the callback function.
             * @return returns password if any. Otherwise NULL returns  
             */
             axis2_char_t *(AXIS2_CALL*
             callback_password)(rampart_callback_t *callback,
-            const axis2_env_t *env, const axis2_char_t *username);
+            const axis2_env_t *env, 
+            const axis2_char_t *username,
+            void *param);
            
            /**
             * Free function of the rampart callback
@@ -82,8 +85,8 @@ extern "C"
 #define RAMPART_CALLBACK_FREE(callback, env) \
       ((callback)->ops->free (callback, env))
 
-#define RAMPART_CALLBACK_CALLBACK_PASSWORD(callback, env, username) \
-      ((callback)->ops->callback_password(callback, env, username))
+#define RAMPART_CALLBACK_CALLBACK_PASSWORD(callback, env, username, param) \
+      ((callback)->ops->callback_password(callback, env, username, param))
 
     /** @} */
 #ifdef __cplusplus

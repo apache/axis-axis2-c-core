@@ -62,7 +62,8 @@ rampart_get_password(const axis2_env_t *env,
 static axis2_char_t*
 rampart_username_token_callback_pw(const axis2_env_t *env,
         axis2_char_t *callback_module_name,
-        const axis2_char_t *username);
+        const axis2_char_t *username,
+        axis2_ctx_t *ctx);
 
 /** public functions*/
 axis2_status_t AXIS2_CALL
@@ -119,7 +120,7 @@ rampart_get_password(const axis2_env_t *env,
     if (pw_callback_module)
     {
         username = RAMPART_ACTIONS_GET_USER(actions, env);
-        password = rampart_username_token_callback_pw(env, pw_callback_module, username);
+        password = rampart_username_token_callback_pw(env, pw_callback_module, username, ctx);
     }
     return password;
 }
@@ -128,13 +129,16 @@ rampart_get_password(const axis2_env_t *env,
 static axis2_char_t*
 rampart_username_token_callback_pw(const axis2_env_t *env,
         axis2_char_t *callback_module_name,
-        const axis2_char_t *username)
+        const axis2_char_t *username, 
+        axis2_ctx_t *ctx)
 {
     rampart_callback_t* rcb = NULL;
     axis2_char_t *password = NULL;
     axis2_dll_desc_t *dll_desc = NULL;
     void *ptr = NULL;
     axis2_param_t *impl_info_param = NULL;
+    axis2_property_t* property = NULL;
+    void *cb_prop_val = NULL;
 
     dll_desc = axis2_dll_desc_create(env);
     AXIS2_DLL_DESC_SET_NAME(dll_desc, env, callback_module_name);
@@ -156,8 +160,16 @@ rampart_username_token_callback_pw(const axis2_env_t *env,
         printf("\nrampart_callback_t is null");
         return NULL;
     }
+    /*Get callback specific property if any from the ctx*/
+    property = AXIS2_CTX_GET_PROPERTY(ctx, env, RAMPART_CALLBACK_SPECIFIC_PROPERTY, AXIS2_FALSE);
+    if (property)
+    {
+        cb_prop_val = AXIS2_PROPERTY_GET_VALUE(property, env);
+        property = NULL;
+    }
+
     /*Get the password thru the callback*/
-    password = RAMPART_CALLBACK_CALLBACK_PASSWORD(rcb, env, username);
+    password = RAMPART_CALLBACK_CALLBACK_PASSWORD(rcb, env, username, cb_prop_val);
 
     return password;
 }
@@ -529,7 +541,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
     pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
 
-    password_from_svr = rampart_username_token_callback_pw(env, pw_callback_module, username);
+    password_from_svr = rampart_username_token_callback_pw(env, pw_callback_module, username, ctx);
 
     if (!password_from_svr)
     {

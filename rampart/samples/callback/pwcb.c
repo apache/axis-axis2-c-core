@@ -11,7 +11,9 @@
 
 axis2_char_t* AXIS2_CALL
 get_sample_password(rampart_callback_t *rcb,
-        const axis2_env_t *env, const axis2_char_t *username)
+        const axis2_env_t *env, 
+        const axis2_char_t *username,
+        void *param)
 {
     axis2_char_t * pw = NULL;
     if (0 == AXIS2_STRCMP(username, "Raigama"))

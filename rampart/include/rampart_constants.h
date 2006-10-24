@@ -122,7 +122,7 @@ extern "C"
 
 /*Dynamically set values*/
 #define RAMPART_ACTION_PASSWORD "password"
-
+#define RAMPART_CALLBACK_SPECIFIC_PROPERTY "callbackSpecificProperty"
 #ifdef __cplusplus
 }
 #endif

@@ -11,12 +11,20 @@
 
 axis2_char_t* AXIS2_CALL
 get_ht_password(rampart_callback_t *rcb,
-        const axis2_env_t *env, const axis2_char_t *username)
+        const axis2_env_t *env, 
+        const axis2_char_t *username, 
+        void *param)
 {
     axis2_char_t * password = NULL;
-    /*TODO : Hard coded value must be changed. This is the common place to have
-     * the htpasswd files. But not always*/
+    /*The default location is the following. But this will be overridden by the property values set in the meg_ctx*/
     axis2_char_t *filename = "/usr/local/apache2/passwd/passwords";
+
+    if(param){
+        filename = (axis2_char_t *)param;
+    }else{
+       AXIS2_LOG_INFO(env->log, "Using the default password file location %s", filename);
+    }
+
     FILE *file = NULL;
     
     file = fopen ( filename, "r" );
@@ -50,9 +58,8 @@ get_ht_password(rampart_callback_t *rcb,
        AXIS2_LOG_INFO(env->log, "Cannot load the password file %s in the callback module", filename);
        perror ( filename ); 
     }
-    
     return password;
-}
+ };
 
 
 /**
