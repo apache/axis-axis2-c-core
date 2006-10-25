@@ -767,6 +767,16 @@ mod_rampart_pwcb:
 	copy $(AXIS2_SOURCE_DIR)\rampart\samples\callback\pwcb.c $(AXIS2_INSTALL_DIR)\rampart\samples\callback
 	del pwcb.*
 
+mod_rampart_htpwcb: 
+	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\rampart\samples\callback\htpasswd_callback\htpwcb.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib /DLL /OUT:pwcb.dll /IMPLIB:pwcb.lib
+
+	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples mkdir $(AXIS2_INSTALL_DIR)\rampart\samples
+	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\callback\htpasswd mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\callback\htpasswd
+	
+	copy pwcb.dll $(AXIS2_INSTALL_DIR)\rampart\samples\callback\htpasswd\pwcb.dll
+	del pwcb.*
+
 mod_rampart_samples:
 	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client
 	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\client\echo
@@ -788,7 +798,7 @@ mod_rampart_copy_include:
 	xcopy /E /I /Y $(AXIS2_SOURCE_DIR)\rampart\include $(AXIS2_INSTALL_DIR)\rampart\include
 	copy $(AXIS2_SOURCE_DIR)\rampart\README $(AXIS2_INSTALL_DIR)\rampart
 
-mod_rampart_all: mod_rampart mod_rampart_pwcb mod_rampart_samples mod_rampart_copy_include
+mod_rampart_all: mod_rampart mod_rampart_pwcb mod_rampart_htpwcb mod_rampart_samples mod_rampart_copy_include
 
 
 
