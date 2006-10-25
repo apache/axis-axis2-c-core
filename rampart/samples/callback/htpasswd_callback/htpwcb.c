@@ -16,6 +16,7 @@ get_ht_password(rampart_callback_t *rcb,
         void *param)
 {
     axis2_char_t * password = NULL;
+    FILE *file = NULL;
     /*The default location is the following. But this will be overridden by the property values set in the meg_ctx*/
     axis2_char_t *filename = "/usr/local/apache2/passwd/passwords";
 
@@ -25,7 +26,6 @@ get_ht_password(rampart_callback_t *rcb,
        AXIS2_LOG_INFO(env->log, "Using the default password file location %s", filename);
     }
 
-    FILE *file = NULL;
     
     file = fopen ( filename, "r" );
     if ( file != NULL )
