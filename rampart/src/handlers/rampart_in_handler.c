@@ -95,48 +95,45 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
             int i = 0, size = 0;
 
             AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "SOAP header found");
+            
+            /*Create and populate rampart actions*/
+            actions = rampart_actions_create(env);
+
             /*Check InFlowSecurity parameters*/
 
             ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
             param_in_flow_security = rampart_get_security_param(env, msg_ctx, RAMPART_INFLOW_SECURITY);
 
-            if (!param_in_flow_security)
-            {
-                /*This check ensures that user doesnt need to have security checking in his message flow*/
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No Inflow Security. So nothing to do");
-                return AXIS2_SUCCESS;
-            }
-            else
+            if (param_in_flow_security)
             {
                 AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler]Inflow Security found");
+
+               /*Get actions*/
+                action_list = rampart_get_actions(env, ctx, param_in_flow_security);
+    
+                if (action_list)
+                {
+
+                    if (AXIS2_ARRAY_LIST_IS_EMPTY(action_list, env))
+                    {
+                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No actions defined");
+                        /*return AXIS2_SUCCESS;*/
+                    }
+                    /*Now we support only one action.i.e. Only the first action*/
+                    param_action = (axis2_param_t*) AXIS2_ARRAY_LIST_GET(action_list, env, 0);
+
+                    if (param_action)
+                    {
+                        status = RAMPART_ACTIONS_POPULATE_FROM_PARAMS(actions, env, param_action);
+                    }else{
+                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Cannot find first action element from the InflowSecurityParameter");
+                    }
+                }
+            }else{
+                /*This check ensures that user doesnt need to have security checking in his message flow*/
+                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No Inflow Security in the paramter list.");
+                /*return AXIS2_SUCCESS;*/
             }
-
-            /*Get actions*/
-            action_list = rampart_get_actions(env, ctx, param_in_flow_security);
-
-            if (!action_list)
-            {
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler]action_list is empty");
-                return AXIS2_SUCCESS;
-            }
-
-            if (AXIS2_ARRAY_LIST_IS_EMPTY(action_list, env))
-            {
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No actions defined");
-                return AXIS2_SUCCESS;
-            }
-
-            /*Now we support only one action.i.e. Only the first action*/
-            param_action = (axis2_param_t*) AXIS2_ARRAY_LIST_GET(action_list, env, 0);
-
-            if (!param_action)
-            {
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Cannot find first action element");
-                return AXIS2_FAILURE;
-            }
-            /*Create and populate rampart actions*/
-            actions = rampart_actions_create(env);
-            status = RAMPART_ACTIONS_POPULATE_FROM_PARAMS(actions, env, param_action);
             /*Then re-populate using the axis2_ctx*/
             status = RAMPART_ACTIONS_POPULATE_FROM_CTX(actions, env, ctx);
 
