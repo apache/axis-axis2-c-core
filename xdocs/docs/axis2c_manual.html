@@ -1,0 +1,3843 @@
+<html>
+<head>
+  <title>Apache Axis2/C Manual</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+
+<body lang="en-US" dir="ltr">
+<p style="margin-bottom: 0in">This document is intended to be a reference
+manual on <a href="http://ws.apache.org/axis2/c">Apache Axis2/C</a> and
+covers its features and how to use it. Please send your feedback to Apache
+Axis2/C developer mailing list (<a
+href="mailto:axis-c-dev@apache.org">axis-c-dev@apache.org</a>)</p>
+
+<a name="toc"/><h1 class="western">Axis2/C Manual</h1>
+
+<ol>
+<li><a href="#quick_start">Quick Start Guide</a></li>
+<li><a href="#repo_fold">Repository Folder</a></li>
+<li><a href="#svc_api">Service API</a></li>
+<li><a href="#cli_api">Client API</a></li>
+<li><a href="#rest">REST</a></li>
+<li><a href="#mtom">MTOM</a></li>
+<li><a href="#eng_mod">Engaging a Module</a></li>
+<li><a href="#ws_add">WS-Addressing</a></li>
+<li><a href="#wrt_mod">Writing a Module</a></li>
+<li><a href="#sim_ser">Simple Axis Server</a></li>
+<li><a href="#apa_mod">Apache2 Module</a></li>
+<li><a href="#appA">Appendix A  - axis2.xml</a></li>
+<li><a href="#appB">Appendix B  - services.xml</a></li>
+<li><a href="#appC">Appendix C  - module.xml</a></li>
+<li><a href="#appD">Appendix D  - service client options</a></li>
+</ol>
+
+<a name="quick_start"/><h1>1. Quick Start Guide</h1>
+
+<p>This sections is aimed to help you to get a Web service up in quick time
+using Axis2/C and consume that service using an Axis2/C client.</p>
+
+<p>First download the latest binary release form Apache Axis2/C <a
+href="http://ws.apache.org/axis2/c/download.cgi">download page </a>. Once you
+download the correct binary that suits your platform, all that you require to
+get it running is to extract the package to a folder of your choice, set
+AXIS2C_HOME environment variable to point to this extracted folder. On Linux,
+you may have to set the LD_LIBRARY_PATH environment variable to include the
+lib folder (e.g. add $AXIS2C_HOME/lib). On Windows, you would have to add the
+lib folder to your PATH variable to include the Axis2/C dlls to your path.
+Now you should be able to cd to bin folder of this extracted folder and run
+the simple axis server in one command line and cd to bin/samples in another
+command shell and run any of the samples there (you may have to set the
+environment variables in this new shell as well). Please see the <a
+href="http://ws.apache.org/axis2/c/docs/installationguide.html">installation
+guide </a> for more details.</p>
+<p><br>
+<br>
+</p>
+
+<p>Once you have Axis2/C up and running successfully, you can start writing
+your own services and clients. The following sections detail how to write
+your first service and client with Axis2/C.</p>
+
+<h2 class="western">1.1 Hello Service</h2>
+
+<p>Lets see how you could write your first Web service with Axis2/C and then
+how to deploy it.</p>
+
+<p>The first service that we are going to write is named "hello" and would
+have a single operation named "greet" in the service. This "greet" operation,
+when invoked by client, would expect the client to send a greeting in the
+request, and would in turn send a greeting in the response. Following are
+example XML payloads exchanged between client and service:</p>
+
+<p>Request:</p>
+<pre>&lt;greet&gt;
+    Hello Service!
+&lt;greet&gt;</pre>
+
+<p>Response:</p>
+<pre>&lt;greetResponse&gt;
+    Hello Client!
+&lt;greetResponse&gt;</pre>
+<br>
+
+
+<p>The steps to be followed when implementing a service with Axis2/C
+include:</p>
+<ol>
+  <li><b>Implement the functions corresponding to the operations of the
+    service.</b> <br>
+    In our sample, we will have one function that implements the "greet"
+    operation. <br>
+    We would name that function "axis2_hello_greet".</li>
+  <li><b>Implement the functions defined by the axis2_svc_skeleton
+    interface</b><br>
+    axis2_svc_skeleton interface expects the functions free and invoke to be
+    implemented by our service.<br>
+    In our sample, we would implement those and name them as hello_free, and
+    hello_invoke respectively.<br>
+  </li>
+  <li><b>Implement the create function, that would create an instance of
+    service skeleton</b><br>
+    The create function would create an axis2_svc_skeleton and assign the
+    respective function pointers to map the axis2_svc_skeleton interface to
+    our interface implementation methods explained in above step<br>
+  </li>
+  <li><b>Implement axis2_get_instance and axis2_remove_instance
+    functions</b><br>
+    Those functions are used to create and destroy service instances by the
+    engine, and each service must define those functions.<br>
+  </li>
+  <li><b>Write the services.xml file for the service</b><br>
+    services.xml file acts as the deployment descriptor file for the service.
+    As the bare minimum, we need to configure the service name, operations
+    and the shared library file name containing the service implementation in
+    this file.<br>
+    As we have already decided, we would name the service "hello", the
+    operation "greet" and the shared library libhello.so on Linux and
+    hello.dll on Windows.<br>
+  </li>
+</ol>
+
+<h3 class="western">1.1.1 Operation Implementation</h3>
+
+<p>Following is the implementation of the greet operation:</p>
+<pre>axiom_node_t *
+axis2_hello_greet(const axis2_env_t *env, axiom_node_t *node)
+{
+    axiom_node_t *client_greeting_node = NULL;
+    axiom_node_t *return_node = NULL;
+
+    AXIS2_ENV_CHECK(env, NULL);
+
+    if (node)
+    {
+        client_greeting_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);
+        if (client_greeting_node &amp;&amp;                 AXIOM_NODE_GET_NODE_TYPE(client_greeting_node, env) == AXIOM_TEXT)
+        {
+            axiom_text_t *greeting = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(client_greeting_node, env);
+            if (greeting &amp;&amp; AXIOM_TEXT_GET_VALUE(greeting , env))
+            {
+                axis2_char_t *greeting_str = AXIOM_TEXT_GET_VALUE(greeting, env);
+                printf("Client greeted saying \"%s\" \n", greeting_str);
+                return_node = build_greeting_response(env, "Hello Client!");
+            }
+        }
+    }
+    else
+    {
+        AXIS2_ERROR_SET(env-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        printf("ERROR: invalid XML in request\n");
+        return_node = build_greeting_response(env, "Client! Who are you?");
+    }
+
+    return return_node;
+}</pre>
+<br>
+
+
+<p>This function implements the business logic for the greet operation. We
+would be calling this function from our implementation of the invoke
+function. Basically this function receives the request payload as an
+axiom_node, process it to understand the request logic and prepares the
+response as an axiom_node and returns that.</p>
+
+<h3 class="western">1.1.2 Skeleton Create Method</h3>
+
+<p>Service skeleton creation could be implemented like the following:</p>
+<pre>axis2_svc_skeleton_t *
+axis2_hello_create(const axis2_env_t *env)
+{
+    axis2_svc_skeleton_t *svc_skeleton = NULL;
+    svc_skeleton = AXIS2_MALLOC(env-&gt;allocator,
+            sizeof(axis2_svc_skeleton_t));
+
+    svc_skeleton-&gt;ops = AXIS2_MALLOC(
+                env-&gt;allocator, sizeof(axis2_svc_skeleton_ops_t));
+
+    svc_skeleton-&gt;func_array = NULL;
+    svc_skeleton-&gt;ops-&gt;free = hello_free;
+    svc_skeleton-&gt;ops-&gt;invoke = hello_invoke;
+
+    return svc_skeleton;
+}</pre>
+<br>
+
+
+<p>The create function creates and returns a new axis2_svc_skeleton instance.
+The most important aspect to notice about this function is the function
+pointer assignments to map the interface operations to the corresponding
+functions of our implementation.</p>
+<br>
+
+
+<h3>1.1.3 Invoking Operation Implementation</h3>
+
+<h3></h3>
+
+<p>The invoke method of the service skeleton is the point of entry for
+invoking the operations. Hence in our implementation of the invoke function,
+we have to define how the operations are to be called.</p>
+<pre>axiom_node_t* AXIS2_CALL
+hello_invoke(axis2_svc_skeleton_t *svc_skeleton,
+        const axis2_env_t *env,
+        axiom_node_t *node,
+        axis2_msg_ctx_t *msg_ctx)
+{
+    return axis2_hello_greet(env, node);
+}</pre>
+<br>
+
+
+<p>In our implementation of the hello_invoke, we call the function
+implementing the greet operation. As we have only one operation, the task is
+simple here. If we had multiple operations, we would have to look into the
+information in message context to map to the exact operation. <br>
+Axis2/C engine would call the invoke method with an axiom_node, containing
+the request payload and axis2_msg_ctx instance containing the message context
+information, in addition to service skeleton and environment pointers. We
+could use the message context to extract whatever information we deem
+necessary related to the incoming message. The Axis2/C engine expects the
+invoke method to return a pointer to an axiom_node, representing the response
+payload.</p>
+
+<h3>1.1.4 Full Source</h3>
+
+<p>Here is the complete source code for the service : <a
+href="hello/service/hello.c.html">hello.c</a></p>
+<br>
+
+
+<h3>1.1.5 Service Descriptor</h3>
+
+<p>services.xml file contains details on the service that would be read by
+the Axis2/C deployment engine during deployment time. Following shows the
+contents for the service.xml file for hello service.</p>
+<pre>&lt;service name="hello"&gt;
+   &lt;parameter name="ServiceClass" locked="xsd:false"&gt;hello&lt;/parameter&gt;
+   &lt;description&gt;
+        Quick start guide hello service sample.
+   &lt;/description&gt;
+   &lt;operation name="greet"/&gt;
+&lt;/service&gt;</pre>
+
+<p>The service configuration shown above specifies that the name of the
+service is hello. <br>
+The value of the "serviceclass" , "hello" in this case, will be mapped to the
+service implementation by the deployment engine as libhello.so on Linux or
+hello.dll on windows.<br>
+description element contains a brief description of the service. <br>
+There can be one or more operation elements. For this sample, we only have
+one operation, with the name "greet"<br>
+</p>
+
+<h3>1.1.6 Compiling the Service</h3>
+
+<p>You can compile the service sample as shown below.</p>
+
+<p>On Linux:</p>
+<pre>gcc -shared -olibhello.so -I$AXIS2C_HOME/include -L$AXIS2C_HOME/lib -laxis2 hello.c</pre>
+
+<p>On Windows </p>
+
+<p>to compile,</p>
+<pre>cl.exe /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT" /D "AXIS2_SVR_MULTI_THREADED" /w /nologo $(AXIS2_INCLUDE_PATH)$(APACHE_INCLUDE_PATH) /I hello.c</pre>
+
+<h3>1.1.7 Deploying the Service</h3>
+
+<p>In order to make the service available to be consumed by clients, we have
+to deploy the service. To deploy the service, you have to create a folder in
+AXIS2C_HOME/services folder named hello and copy the services.xml file and
+the shared library file (libhello.so on Linux or hello.dll on Windows) into
+that folder</p>
+
+<p>To verify that your service has been correctly deployed, you can start the
+simple axis server and then browse the list of deployed services using a Web
+browser. To start the simple axis server you can go to AXIS2C_HOME/bin folder
+and run the executable axis2_http_server. The default url that you can test
+the service list with is <a
+href="http://localhost:9090/axis2/services">http://localhost:9090/axis2/services</a>.
+You should get an entry for the hello service on the page that you get.</p>
+
+<p><br>
+<br>
+</p>
+
+<h2 class="western" style="margin-top: 0in; margin-bottom: 0in">1.2 Hello
+Client</h2>
+
+<p>Now that you know how to write a service with Axis2/C, lets see how you
+could write a client to consume that service. The request payload that the
+client would be sending to the service was described in the previous section.
+The client has to prepare the payload, send it to the service and then
+receive and process the response.</p>
+
+<p>The steps to be followed when implementing a client with Axis2/C
+include:</p>
+<ol>
+  <li><b>Create the environment to be used by the client.</b> <br>
+    Each function in Axis2/C takes a pointer to the environment instance that
+    encapsulates memory allocators, error handler, logging and threading
+    mechanisms. axis2_env_create_all method can be used to create a default,
+    ready to use environment instance.<br>
+  </li>
+  <li><b>Create an options instance, and set options</b><br>
+    axis2_options struct can be used to set the client side options. As an
+    example, we can use options to set the endpoint address of the service to
+    be consumed by the client.</li>
+  <li><b>Create a service client instance, giving the client repository
+    folder as a parameter.</b><br>
+    axis2_svc_client struct is meant to be used by users for consuming
+    services. It provides an easy to use API. Service client create method
+    takes the location of the repository as a parameter. For the purpose of
+    our sample, you can use the AXIS2C_HOME as the repository. The concept of
+    repository would be explained in detail in a later section.<br>
+  </li>
+  <li><b>Set options to service client instance</b><br>
+    The options created in earlier step needs to be set on the service
+    client, indicating that options are meant to be used by the service
+    client.<br>
+  </li>
+  <li><b>Send the request and receive the response</b><br>
+    Service client's AXIS2_SVC_CLIENT_SEND_RECEIVE macro could be used to
+    invoke the send receive operation on the service client instance.<br>
+    The send receive operation takes the request payload as an axiom_node and
+    returns the response payload as an axiom_node.</li>
+  <li><b>Process the response</b><br>
+    Process the response in line with the client business logic.</li>
+</ol>
+
+<h3>1.2.1 Creating and Setting Options</h3>
+<pre>    options = axis2_options_create(env);
+    address = "http://localhost:9090/axis2/services/hello";
+    endpoint_ref = axis2_endpoint_ref_create(env, address);
+    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);</pre>
+
+<p>In the above shown section of code, an axis2_options instance is created
+first. Then an endpoint reference instance is created with the address of the
+location of the service. Finally, the created endpoint is set as the "to"
+address of the options. The "to" address indicates where the request should
+be sent to.</p>
+<br>
+
+
+<h3>1.2.2 Using Service Client</h3>
+<pre>    svc_client = axis2_svc_client_create(env, client_home);
+    AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);
+    payload = build_om_request(env);
+    ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);</pre>
+
+<p>After creating and preparing the options, the next step is to create a
+service client instance and use it to send the request and receive the
+response. The code fragment given above shows how options could be set on top
+of service client and how to invoke the send receive operation with request
+payload. Once the response is received, the response payload would be stored
+in the ret_node, which is a pointer to an axiom_node and that could be used
+to further process the response.</p>
+<br>
+
+
+<h3>1.2.3 Full Source</h3>
+
+<p>Here is the complete source code for the client : <a
+href="hello/client/hello.c.html">hello.c</a></p>
+<br>
+
+
+<h3>1.2.4 Compiling the Client</h3>
+
+<p>You can compile the client sample as shown below.</p>
+
+<p>On Linux:</p>
+<pre>gcc -o hello -I$AXIS2C_HOME/include -L$AXIS2C_HOME/lib -laxis2 hello.c</pre>
+
+<p>On Windows</p>
+
+<p>to compile,</p>
+<pre>cl.exe /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) hello.c /c </pre>
+
+<p>to link,</p>
+<pre>link.exe /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXML2_INSTALL_DIR)\lib /LIBPATH:$(APACHE_INSTALL_DIR)\lib /LIBPATH:$(ZLIB_INSTALL_DIR)\lib *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:hello.exe</pre>
+
+<h3>1.2.5 Running the Client</h3>
+
+<p>To run the client, make sure you have started the simple axis server and
+run the hello executable.</p>
+
+<p style="margin-bottom: 0in"><br>
+</p>
+
+<a name="repo_fold"></a><h1>2. Repository Folder</h1>
+
+<P>Repository is a folder where all Axis2/C related configuration as well as
+services and modules are located. The following shows the folder structure of
+the repository:</p>
+<img src="images/axis2c_repo.gif">
+
+<p>Here the name of the repository folder is axis2c_repo. On your system, you
+can choose this to be any folder name of your choice. There are three sub
+folders possible in the repository. In addition to that, the axis2.xml
+configuration file is also located in the repository. Following table
+describes the purpose of repository contents.</p>
+
+<table border="1">
+  <caption>Axis2/C Repository Subfolders</caption>
+  <tbody>
+    <tr>
+      <th>Folder Name</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td><p>lib</p>
+      </td>
+      <td><p>lib folder contains the libraries required to run Axis2/C
+        engine. While you can afford to have the shared libs of Axis2/C in a
+        location of your choice, the dynamically loaded shared libs, parser,
+        transport receiver and transport sender has to be there in the
+        repository lib folder. <br>
+        It is mandatory that the lib folder is there in the repository.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>modules</p>
+      </td>
+      <td><p>modules folder contains the modules deployed with Axis2/C. Each
+        module deployed would have its own sub folder inside modules folder.
+        As an example, if addressing module is deployed, then there would be
+        a sub folder named addressing inside the modules folder of the
+        repository.<br>
+        In deployment time, Axis2/C deployment engine would traverse this
+        modules folders to find out what modules are available.<br>
+        modules folder is optional. If it is empty or non-existent, that
+        means that there are no deployed modules.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>services</p>
+      </td>
+      <td><p>services folder contains the services deployed with Axis2/C.
+        Each service deployed would have its own sub folder inside services
+        folder, or would live inside one of the sub folders.<br>
+        In deployment time, Axis2/C deployment engine would traverse this
+        services folders to find out what services are available.<br>
+        services folder is optional. If it is empty or non-existent, that
+        means that there are no deployed services.</p>
+      </td>
+    </tr>
+    <tr>
+      <td><p>axis2.xml</p>
+      </td>
+      <td><p>axis2.xml file is the configuration file of Axis2/C.<br>
+        The configuration file is mandatory and must have the name axis2.xml.
+        It is safe to consider your Axis2/C repository to be the folder where
+        you have the axis2.xml file.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Both clients as well as services written using Axis2/C could use the same
+repository. However one can use one repository for the server side and
+another one for the client side. The services folder makes sense, only when
+the repository is used by the server side. When the repository is used by the
+client, services folder, if present, would not be useful.</p>
+
+<p>The Axis2/C binary distribution, when extracted, could be considered ready
+to be used as your repository folder. If you are building Axis2/C from source
+distribution, when you build the source, including the samples, the
+installation destination would be ready to be used as your repository
+folder.</p>
+
+<p>The simple axis server (that is axis2_http_server binary), the client
+samples as well as the httpd module (Axis2 Apache2 module) requires the
+repository folder to be specified in order to run correctly.</p>
+
+<p></p>
+
+<h2>2.1 Module Folders</h2>
+
+<p>As described earlier, all modules are placed inside modules folder of the
+repository and each module would have its own sub folder within modules
+folder.<br>
+The folder in which a module is placed must have the same name as the module
+name. As an example, the addressing module would be placed in a sub folder
+named addressing.<br>
+</p>
+
+<p>Inside the folder corresponding to a module, the shared library
+implementing the module and the module configuration file, module.xml, would
+be placed. It is a must that inside each folder representing a module that
+these two files are present. module.xml file would be processed by the
+deployment engine to find out module specific information such as module
+name, set of handlers and the flows into which those handlers are to be added
+etc.</p>
+
+<h2>2.1 Service Folders</h2>
+
+<p>All services are placed inside services folder of the repository and each
+service would be in one of the sub folders within services folder. Axis2/C
+has a concept called service groups, where there could be one or more
+services inside a service group. A single stand alone service would be
+assigned a service group with the same name as that of the service by the
+Axis2/C engine for the purpose of easy handling. For this reason, sub folders
+in services folder correspond to service groups.</p>
+
+<p>A service, if deployed as a stand alone service, would live inside a
+folder with the same name as that of the service. As an example, the echo
+service would be placed in a sub folder named echo. Inside the folder
+corresponding to a service, the shared library implementing the service and
+the service configuration file, services.xml, would be placed. It is because
+of the fact that the engine treats the folders to represent service groups
+and not a single service, the configuration file is called services.xml.
+However, it is alway possible to place a single service inside a single
+folder, as that is the most common use case.</p>
+
+<p>Each sub folder within the services folder should have at least one shared
+lib implementing a service and a services.xml file. If it is a real service
+group, there could be multiple shared libs, yet only one services.xml file
+configuring all those services. services.xml file would be processed by the
+deployment engine to find out service group and service specific information
+such as service group name, service name, set of operations for each service
+etc.</p>
+
+<a name="svc_api"></a><h1>3. Service API</h1>
+
+<p>We have already seen how to write a service in quick start guide section
+of this manual. This section would cover the service API of Axis2/C in a bit
+more detail.</p>
+
+<p>The axis2_svc_skeleton is an interface. Axis2/C does not provide any
+concrete implementation of this interface. It is the responsibility of the
+service implementer to implement this interface. To implement the interface,
+one should implement functions adhering to the function pointer signatures of
+the members of axis2_svc_skeleton_ops struct. Then, a create function should
+be written, to create an axis2_svc_skeleton instance, and assign the
+implementing functions to members of the ops member of service skeleton.</p>
+
+<p>The following table details the function signatures to be implemented by a
+service.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Function Signature</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td><pre>int (AXIS2_CALL *
+    free )( axis2_svc_skeleton_t *svc_skeli,
+        const axis2_env_t *env);</pre>
+      </td>
+      <td>Frees the service implementation instance.</td>
+    </tr>
+    <tr>
+      <td><pre>axiom_node_t *(AXIS2_CALL*
+    invoke )( axis2_svc_skeleton_t *svc_skeli,
+        const axis2_env_t *env,
+        axiom_node_t *node,
+        axis2_msg_ctx_t *msg_ctx);</pre>
+      </td>
+      <td>Invokes the service implementation. You have to implement the logic
+        to call the correct functions in this method based on the name of the
+        operation being invoked.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+
+
+<p><font color="#800000">int</font> <font
+color="#000000">AXIS2_CALL</font><br>
+<font color="#000000">math_free</font>(<font
+color="#000000">axis2_svc_skeleton_t</font> *<font
+color="#000000">svc_skeleton</font>,<br>
+        <font color="#800000">const</font> <font
+color="#000000">axis2_env_t</font> *<font color="#000000">env</font>)<br>
+{<br>
+    <font color="#000000"><b>if</b></font> (<font
+color="#000000">svc_skeleton</font>-&gt;<font color="#000000">ops</font>)<br>
+    {<br>
+        <font color="#000000">AXIS2_FREE</font>(<font
+color="#000000">env</font>-&gt;<font color="#000000">allocator</font>, <font
+color="#000000">svc_skeleton</font>-&gt;<font color="#000000">ops</font>);<br>
+        <font color="#000000">svc_skeleton</font>-&gt;<font
+color="#000000">ops</font> = <font color="#000000">NULL</font>;<br>
+    }<br>
+<br>
+    <font color="#000000"><b>if</b></font> (<font
+color="#000000">svc_skeleton</font>)<br>
+    {<br>
+        <font color="#000000">AXIS2_FREE</font>(<font
+color="#000000">env</font>-&gt;<font color="#000000">allocator</font>, <font
+color="#000000">svc_skeleton</font>);<br>
+        <font color="#000000">svc_skeleton</font> = <font
+color="#000000">NULL</font>;<br>
+    }<br>
+    <font color="#000000"><b>return</b></font> <font
+color="#000000">AXIS2_SUCCESS</font>;<br>
+}<br>
+</p>
+<br>
+
+
+<p>The above code shows the free method implementation of the math sample.</p>
+
+<p><br>
+<font color="#000000">axiom_node_t</font>* <font
+color="#000000">AXIS2_CALL</font><br>
+<font color="#000000">math_invoke</font>(<font
+color="#000000">axis2_svc_skeleton_t</font> *<font
+color="#000000">svc_skeleton</font>,<br>
+        <font color="#800000">const</font> <font
+color="#000000">axis2_env_t</font> *<font color="#000000">env</font>,<br>
+        <font color="#000000">axiom_node_t</font> *<font
+color="#000000">node</font>,<br>
+        <font color="#000000">axis2_msg_ctx_t</font> *<font
+color="#000000">msg_ctx</font>)<br>
+{<br>
+    <font color="#000000"><b>if</b></font> (<font
+color="#000000">node</font>)<br>
+    {<br>
+        <font color="#000000"><b>if</b></font> (<font
+color="#000000">AXIOM_NODE_GET_NODE_TYPE</font>(<font
+color="#000000">node</font>, <font color="#000000">env</font>) == <font
+color="#000000">AXIOM_ELEMENT</font>)<br>
+        {<br>
+            <font color="#000000">axiom_element_t</font> *<font
+color="#000000">element</font> = <font color="#000000">NULL</font>;<br>
+            <font color="#000000">element</font> = (<font
+color="#000000">axiom_element_t</font> *)<font
+color="#000000">AXIOM_NODE_GET_DATA_ELEMENT</font>(<font
+color="#000000">node</font>, <font color="#000000">env</font>);<br>
+            <font color="#000000"><b>if</b></font> (<font
+color="#000000">element</font>)<br>
+            {<br>
+                <font
+color="#000000">axis2_char_t</font> *<font
+color="#000000">op_name</font> = <font
+color="#000000">AXIOM_ELEMENT_GET_LOCALNAME</font>(<font
+color="#000000">element</font>, <font color="#000000">env</font>);<br>
+                <font
+color="#000000"><b>if</b></font> (<font color="#000000">op_name</font>)<br>
+                {<br>
+                    <font
+color="#000000"><b>if</b></font> (<font
+color="#000000">AXIS2_STRCMP</font>(<font
+color="#000000">op_name</font>, <font
+color="#FF0000">"add"</font>) == <font color="#0000FF">0</font>)<br>
+                        <font
+color="#000000"><b>return</b></font> <font
+color="#000000">axis2_math_add</font>(<font
+color="#000000">env</font>, <font color="#000000">node</font>);<br>
+                    <font
+color="#000000"><b>if</b></font> (<font
+color="#000000">AXIS2_STRCMP</font>(<font
+color="#000000">op_name</font>, <font
+color="#FF0000">"sub"</font>) == <font color="#0000FF">0</font>)<br>
+                        <font
+color="#000000"><b>return</b></font> <font
+color="#000000">axis2_math_sub</font>(<font
+color="#000000">env</font>, <font color="#000000">node</font>);<br>
+                    <font
+color="#000000"><b>if</b></font> (<font
+color="#000000">AXIS2_STRCMP</font>(<font
+color="#000000">op_name</font>, <font
+color="#FF0000">"mul"</font>) == <font color="#0000FF">0</font>)<br>
+                        <font
+color="#000000"><b>return</b></font> <font
+color="#000000">axis2_math_mul</font>(<font
+color="#000000">env</font>, <font color="#000000">node</font>);<br>
+                    <font
+color="#000000"><b>if</b></font> (<font
+color="#000000">AXIS2_STRCMP</font>(<font
+color="#000000">op_name</font>, <font
+color="#FF0000">"div"</font>) == <font color="#0000FF">0</font>)<br>
+                        <font
+color="#000000"><b>return</b></font> <font
+color="#000000">axis2_math_div</font>(<font
+color="#000000">env</font>, <font color="#000000">node</font>);<br>
+                }<br>
+            }<br>
+        }<br>
+    }<br>
+<br>
+    <font color="#000000">printf</font>(<font
+color="#FF0000">"Math service ERROR: invalid operation invoked\n"</font>);<br>
+<br>
+    <font color="#000000"><b>return</b></font> <font
+color="#000000">node</font>;<br>
+}<br>
+</p>
+
+<p>The above code fragment from math sample shows how the correct method to
+be invoked could be picked from the operation name that comes in the message
+context.</p>
+
+<p>There are two more methods that a service should implement. Once a service
+is deployed, the message receiver of the Axis2/C engine would need to create
+a service instance at runtime for the purpose of invoking it. For this, it
+looks for a method named axis2_create_instance and calls it on the service
+shared library. The engine also looks to a function named
+axis2_remove_instance for clean up purposes in the shared library.</p>
+
+<p><font color="#000000">AXIS2_EXPORT</font> <font
+color="#800000">int</font> <font
+color="#000000">axis2_get_instance</font>(<font
+color="#000000"><b>struct</b></font> <font
+color="#000000">axis2_svc_skeleton</font> **<font
+color="#000000">inst</font>,<br>
+        <font color="#800000">const</font> <font
+color="#000000">axis2_env_t</font> *<font color="#000000">env</font>)<br>
+{<br>
+    *<font color="#000000">inst</font> = <font
+color="#000000">axis2_math_create</font>(<font
+color="#000000">env</font>);<br>
+    <font color="#000000"><b>if</b></font> (!(*<font
+color="#000000">inst</font>))<br>
+    {<br>
+        <font color="#000000"><b>return</b></font> <font
+color="#000000">AXIS2_FAILURE</font>;<br>
+    }<br>
+<br>
+    <font color="#000000"><b>return</b></font> <font
+color="#000000">AXIS2_SUCCESS</font>;<br>
+}<br>
+<br>
+<font color="#000000">AXIS2_EXPORT</font> <font
+color="#800000">int</font> <font
+color="#000000">axis2_remove_instance</font>(<font
+color="#000000">axis2_svc_skeleton_t</font> *<font
+color="#000000">inst</font>,<br>
+        <font color="#800000">const</font> <font
+color="#000000">axis2_env_t</font> *<font color="#000000">env</font>)<br>
+{<br>
+    <font color="#000000">axis2_status_t</font> <font
+color="#000000">status</font> = <font
+color="#000000">AXIS2_FAILURE</font>;<br>
+    <font color="#000000"><b>if</b></font> (<font
+color="#000000">inst</font>)<br>
+    {<br>
+        <font color="#000000">status</font> = <font
+color="#000000">AXIS2_SVC_SKELETON_FREE</font>(<font
+color="#000000">inst</font>, <font color="#000000">env</font>);<br>
+    }<br>
+    <font color="#000000"><b>return</b></font> <font
+color="#000000">status</font>;<br>
+}<br>
+</p>
+
+<p>Note that service instantiation happens per request. That means for each
+request, the create method would be called and a new axis2_svc_skeleton
+instance would be created.</p>
+
+<a name="cli_api"></a><h1>4. Client API</h1>
+
+<p>The primary client API to be used with Axis2/C is axis2_svc_client, the
+service client API. This is meant to be an easy to use API for consuming
+services. If you want to do more complex tasks, such as invoking a client
+inside a module, or wrap the client API with another interface, you may need
+to use the axis2_op_client, operation client, API. However for general
+purposes, service client is sufficient.</p>
+
+<p>Behaviour of the service client could be fine tuned with the options
+passed to service client. You can set the options by creating axis2_options
+instance. The bare minimum that you need to set is the endpoint URI where the
+request is to be sent to. An example of this was given in the quick start
+guide section.</p>
+
+<p>The service client interface serves as the primary client interface for
+consuming services. You can set the options to be used by the service client
+and then invoke an operation on a given service. There are several ways of
+invoking a service operation. The way of invoking an operation depends on 3
+things. Those are,</p>
+<ol>
+  <li>The Message Exchange Pattern (MEP)</li>
+  <li>Synchronous/Asynchronous behaviour (Blocking/Non-Blocking)</li>
+  <li>Two-way or one-way transport</li>
+</ol>
+
+<p>Many ways of service operation invoking scenarios can be obtained by
+combining these 3 factors. Service client interface provides the necessary
+parameters for above 3 tasks.</p>
+
+<p></p>
+
+<p>Deciding the Message Exchange Pattern (MEP)</p>
+
+<p>There are 2 message exchange patterns.</p>
+<ol>
+  <li>out_only</li>
+  <li>in_out</li>
+</ol>
+
+<p>In out_only MEP the client doesn't expect a reply from the server. Service
+client provides 2 methods for executing out_only operations.</p>
+
+<p></p>
+
+<h3><em>axis2_svc_client_fire_and_forget</em></h3>
+
+<p>Sends a message and forget about it. This method is used to interact with
+a service operation whose MEP is In-Only. That is, there is no opportunity to
+get an error from the service via this method; one may still get client-side
+errors, such as host unknown etc.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_svc_client_t *svc_client</td>
+      <td>svc_client pointer to service client struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_qname_t *op_qname</td>
+      <td>qname of the service operation which is going to be execute</td>
+    </tr>
+    <tr>
+      <td>const axiom_node_t *payload</td>
+      <td>payload pointer to OM node representing the XML payload to be
+      sent</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>return type :- void</p>
+
+<p></p>
+
+<h3><em>axis2_svc_client_send_robust</em></h3>
+
+<p>If a fault triggers on server side, this method would report an error back
+to the caller.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_svc_client_t *svc_client</td>
+      <td>svc_client pointer to service client struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_qname_t *op_qname</td>
+      <td>qname of the service operation which is going to be execute</td>
+    </tr>
+    <tr>
+      <td>const axiom_node_t *payload</td>
+      <td>payload pointer to OM node representing the XML payload to be
+      sent</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>return type:- axis2_status_t</p>
+
+<p>return AXIS2_SUCCESS on success, else AXIS2_FAILURE.</p>
+
+<p></p>
+
+<p>Both these methods call AXIS2_OP_CLIENT_EXECUTE inside. But
+fire_and_forget method set the blocking parameter FALSE and send_robust set
+the blocking parameter TRUE. Hence it will block for the fault trigger.</p>
+
+<p></p>
+
+<p>In in_out MEP, the client expect a reply from the server. The
+axis2_svc_client_send_recieve and axis2_send_receive_non_blocking supports
+this MEP pattern.</p>
+
+<p></p>
+
+<h3><em>axis2_svc_client_send_receive</em></h3>
+
+<p>Sends XML request and receives XML response.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_svc_client_t *svc_client</td>
+      <td>svc_client pointer to service client struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_qname_t *op_qname</td>
+      <td>qname of the service operation which is going to be execute</td>
+    </tr>
+    <tr>
+      <td>const axiom_node_t *payload</td>
+      <td>payload pointer to OM node representing the XML payload to be
+      sent</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Return pointer to OM node representing the XML response. The caller owns
+the returned node. This method blocks until the response arrives.</p>
+
+<p></p>
+
+<h3><em>axis2_send_receive_non_blocking</em></h3>
+
+<p>Sends XML request and receives XML response, but does not block for
+response.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_svc_client_t *svc_client</td>
+      <td>svc_client pointer to service client struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_qname_t *op_qname</td>
+      <td>qname of the service operation which is going to be execute</td>
+    </tr>
+    <tr>
+      <td>const axiom_node_t *payload</td>
+      <td>payload pointer to OM node representing the XML payload to be
+      sent</td>
+    </tr>
+    <tr>
+      <td>axis2_callback_t *callback</td>
+      <td>callback pointer to callback struct used to capture response</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p>Return type :- void<br>
+This method will not block for the response. Instead it sets a call back to
+capture the response.<br>
+</p>
+
+<p><strong>Synchronous/Asynchronous behaviour
+(Blocking/Non-Blocking)</strong></p>
+
+<p>This will determine whether the client will block (Sysnchronous) or
+non-block (asynchronous) for the response in a in-out MEP scenario. This can
+be decided by using<br>
+<em>axis2_svc_client_send_receive</em> or
+<em>axis2_svc_client_send_receive_non_blocking</em> methods.<br>
+</p>
+
+<p></p>
+
+<p><strong>Two-way or One-way transport</strong></p>
+
+<p>If the transport is Two-way transport then only one channel is used .If
+the Transport is One-way then the response will come from a seperate
+chanel.<br>
+If we want to set a seperate channel for the response the following
+<em>set_use_seperate_listener</em> option has to be set.</p>
+
+<p>See ApendixD for further details.</p>
+
+<a name="rest"></a><h1>5. REST</h1>
+
+<p>If you want to consume Web services using REST style calls you can use
+either the HTTP POST method or HTTP GET method.</p>
+
+<p>The following example shows how to enable a REST style invocation using
+different HTTP methods.</p>
+<pre>AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_ENABLE_REST,AXIS2_VALUE_TRUE);<br/>
+if (AXIS2_TRUE == method_get )<br/>
+{<br/>
+AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_HTTP_METHOD, AXIS2_HTTP_HEADER_GET);<br/>
+}</pre>
+
+<p>Default value of REST is set to HTTP POST Method. If someone need to
+change it to HTTP GET method.</p>
+<pre>AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_HTTP_METHOD, AXIS2_HTTP_HEADER_GET);</pre>
+
+<p>can be used.</p>
+
+<a name="mtom"></a><h1>6. MTOM</h1>
+
+<p>Axis2/C allows you to send and receive binary data with SOAP messages
+using MTOM/XOP conventions. When sending attachments, you have to use service
+client (svc_client) to perform the send and receive operation, and give the
+binary data as an array.</p>
+
+<p>In order to send the attachment you need to build om node including that
+attachment as a node. We need to give our built om structure to service
+client to perform send and receive operations.</p>
+
+<p>In the above sample payload shown, we place our image file as text within
+an image element</p>
+<pre>image_om_ele = axiom_element_create(env,mtom_om_node, "image", ns1,&amp;image_om_node);
+data_handler = axiom_data_handler_create(env, image_name, "image/jpeg");
+data_text = axiom_text_create_with_data_handler(env, image_om_node,data_handler, &amp;data_om_node);</pre>
+
+<p>When sending attachments, you can configure the client either to send the
+attachment in the optimised format or in non optimised format. By setting an
+option</p>
+<pre>AXIS2_OPTIONS_SET_ENABLE_MTOM(options,env,AXIS2_TRUE);</pre>
+or setting<br>
+<pre>&lt;enableMtom&gt;true&lt;/enableMtom&gt;</pre>
+in axis2.xml
+
+<p>If the attachment is sent in binary optimised format, the file content
+would be sent as it is, out of the SOAP body, using MIME headers and the
+payload would have an XOP:Include element, referring to the MIME part that
+contains the binary attachment. In case of binary non optimised format, the
+attachment content would be sent in the payload itself, as a base64 encoded
+string.</p>
+
+<a name="eng_mod"></a><h1>7. Engaging a Module</h1>
+
+<p>Modules have the concept of being available and engaged. Available means
+modules are deployed in the system but not activated. They will be activated
+only after being engaged. Normally a module is a set of handlers. Every
+module should come with its own module.xml file . This module.xml file
+specifies the module specific handlers and to what phases they are to be
+deployed in the axis2 handler chain. Some of the module specific handlers may
+be put in to system predefined phases.In that case, module.xml file should
+specify where to put the handlers relative to the others in that phase. Some
+times module may define its own phase. In that case some of the module specie
+handlers may be put in to that phase. The handlers which are added to the
+system predefined phases (global handlers) are invoked for every message
+which comes in/out to the system. The handlers in the module specific phase
+are invoked only for the messages aiming at the operations which engaged that
+module. Engaging a module means correctly adding the handlers of a particular
+module to a phase. A service, operations or the system may engage a module.
+Once the module is engaged the handlers and the operations defined in the
+module are added to the entity that engaged them.</p>
+
+<p></p>
+
+<p>Before engaging a module following steps has to be followed.</p>
+<ol>
+  <li>Writing the module.xml file</li>
+  <li>Packaging the module libraries and the module.xml in to a folder which
+    has the name of the module.</li>
+  <li>Deploy the folder in AXIS2C_INSTALL_DIR/modules</li>
+  <li>Adding the module specific phases in the axis2.xml file.</li>
+</ol>
+
+<p>The following is an example of engaging a sample module called logging
+module to the axis2c system.</p>
+
+<p></p>
+
+<h3><strong>Writing the module.xml file</strong></h3>
+
+<p>In the module.xml file, the handlers of the module and the phases to which
+they are to be added has to be specified. Below is the module.xml file of the
+sample logging module.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <td>&lt;module name="logging" class="axis2_mod_log"&gt;
+
+        <p>&lt;inflow&gt;</p>
+
+        <p>&lt;handler name="LoggingInHandler" class="axis2_mod_log"&gt;</p>
+
+        <p>&lt;order phase="PreDispatch"/&gt;</p>
+
+        <p>&lt;/handler&gt;</p>
+
+        <p>&lt;/inflow&gt;</p>
+
+        <p></p>
+
+        <p>&lt;outflow&gt;</p>
+
+        <p>&lt;handler name="LoggingOutHandler" class="axis2_mod_log"&gt;</p>
+
+        <p>&lt;order phase="MessageOut"/&gt;</p>
+
+        <p>&lt;/handler&gt;</p>
+
+        <p>&lt;/outflow&gt;</p>
+
+        <p></p>
+
+        <p>&lt;Outfaultflow&gt;</p>
+
+        <p>&lt;handler name="LoggingOutHandler" class="axis2_mod_log"&gt;</p>
+
+        <p>&lt;order phase="MessageOut"/&gt;</p>
+
+        <p>&lt;/handler&gt;</p>
+
+        <p>&lt;/Outfaultflow&gt;</p>
+
+        <p>&lt;/module&gt;</p>
+
+        <p></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<h3><strong>Adding the module specific phases in the axis2.xml
+file</strong></h3>
+
+<p>The module specific phase has to de added after the system predefined
+phases. The following example shows where to add the module specific
+phases.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <td>&lt;phaseOrder type="inflow"&gt;
+
+        <p>&lt;!-- System pre defined phases --&gt;</p>
+
+        <p>&lt;phase name="TransportIn"/&gt;</p>
+
+        <p>&lt;phase name="PreDispatch"/&gt;</p>
+
+        <p>&lt;phase name="Dispatch"
+        class="org.apache.axis2.engine.DispatchPhase"&gt;</p>
+
+        <p>&lt;handler name="AddressingBasedDispatcher"</p>
+
+        <p>class="axis2_engine"&gt;</p>
+
+        <p>&lt;order phase="Dispatch"/&gt;</p>
+
+        <p>&lt;/handler&gt;</p>
+
+        <p></p>
+
+        <p>&lt;handler name="RequestURIBasedDispatcher"</p>
+
+        <p>class="axis2_engine"&gt;</p>
+
+        <p>&lt;order phase="Dispatch"/&gt;</p>
+
+        <p>&lt;/handler&gt;</p>
+
+        <p></p>
+
+        <p>&lt;handler name="SOAPActionBasedDispatcher"</p>
+
+        <p>class="axis2_engine"&gt;</p>
+
+        <p>&lt;order phase="Dispatch"/&gt;</p>
+
+        <p>&lt;/handler&gt;</p>
+
+        <p></p>
+
+        <p>&lt;handler name="SOAPMessageBodyBasedDispatcher"</p>
+
+        <p>class="axis2_engine"&gt;</p>
+
+        <p>&lt;order phase="Dispatch"/&gt;</p>
+
+        <p>&lt;/handler&gt;</p>
+
+        <p>&lt;handler name="InstanceDispatcher"</p>
+
+        <p>class="org.apache.axis2.engine.InstanceDispatcher"&gt;</p>
+
+        <p>&lt;order phase="PostDispatch"/&gt;</p>
+
+        <p>&lt;/handler&gt;</p>
+
+        <p>&lt;/phase&gt;</p>
+
+        <p>&lt;!-- System pre defined phases --&gt;</p>
+
+        <p><span style="color: #0000FF">&lt;!-- After Postdispatch phase
+        module author or or service author can add any phase he want
+        --&gt;</span></p>
+
+        <p>&lt;phase name="OperationInPhase"/&gt;</p>
+
+        <p>&lt;phase name=""/&gt;</p>
+
+        <p>&lt;/phaseOrder&gt;</p>
+
+        <p>&lt;phaseOrder type="outflow"&gt;</p>
+
+        <p><span style="color: #0000FF">&lt;!-- user can add his own phases
+        to this area --&gt;</span></p>
+
+        <p>&lt;phase name="OperationOutPhase"/&gt;</p>
+
+        <p>&lt;phase name=""/&gt;</p>
+
+        <p>&lt;!--system predefined phase--&gt;</p>
+
+        <p>&lt;!--these phase will run irrespective of the service--&gt;</p>
+
+        <p>&lt;phase name="MessageOut"/&gt;</p>
+
+        <p>&lt;/phaseOrder/&gt;</p>
+
+        <p>&lt;phaseOrder type="INfaultflow"&gt;</p>
+
+        <p><span style="color: #0000FF">&lt;!-- user can add his own phases
+        to this area --&gt;</span></p>
+
+        <p>&lt;phase name="OperationInFaultPhase"/&gt;</p>
+
+        <p>&lt;phase name=""/&gt;</p>
+
+        <p>&lt;/phaseOrder&gt;</p>
+
+        <p>&lt;phaseOrder type="Outfaultflow"&gt;</p>
+
+        <p><span style="color: #0000FF">&lt;!-- user can add his own phases
+        to this area --&gt;</span></p>
+
+        <p>&lt;phase name="OperationOutFaultPhase"/&gt;</p>
+
+        <p>&lt;phase name=""/&gt;</p>
+
+        <p>&lt;phase name="PolicyDetermination"/&gt;</p>
+
+        <p>&lt;phase name="MessageOut"/&gt;</p>
+
+        <p>&lt;/phaseOrder&gt;</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As mentioned in the above example, the user or module author can handle
+his own phases after system predefined phases.In the above example there are
+no specific phases for the logging module. That is all the module specific
+handlers are added to the system predefined phases as mentioned in the
+module.xml file.</p>
+
+<p></p>
+
+<h3>Engaging the module for services</h3>
+
+<p>Following is an example of engaging the logging module to the echo
+service.This can be done by simply adding &lt;module ref ="logging"/&gt; in
+the service.xml file. This informs the Axis2 engine that the module "logging"
+should be engaged for this service. The handler inside the module will be
+executed in their respective phases as described by the "module.xml".</p>
+
+<table border="1">
+  <tbody>
+    <tr>
+      <td>&lt;service name="echo"&gt;
+
+        <p><span style="color: #0000FF">&lt;module ref
+        ="logging"/&gt;</span></p>
+
+        <p>&lt;parameter name="ServiceClass"
+        locked="xsd:false"&gt;echo&lt;/parameter&gt;</p>
+
+        <p>&lt;description&gt;</p>
+
+        <p>This is a testing service , to test the system is working or
+        not</p>
+
+        <p>&lt;/description&gt;</p>
+
+        <p>&lt;operation name="echoString"&gt;</p>
+
+        <p>&lt;!--messageReceiver class="axis2_receivers" /--&gt;</p>
+
+        <p>&lt;parameter name="wsamapping"
+        &gt;http://ws.apache.org/axis2/c/samples/echoString&lt;/parameter&gt;</p>
+
+        <p>&lt;/operation&gt;</p>
+
+        <p>&lt;/service&gt;</p>
+
+        <p></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Engaging the module globally</h3>
+
+<p>If we want to engage the module for every service deployed in the axis2c
+system, we can add the above entry in the axis2.xml file. This will inform
+the Axis2/C system to invoke the handler inside the module specific phases
+for every message coming to any service deployed within the system.</p>
+
+<p></p>
+
+<h3>Engaging the module at the client side</h3>
+
+<p>In the client side if the above &lt;module ref ="logging"/&gt; is added in
+the axis2.xml the module specific handlers will invoke for every request the
+client sends.If only a particular client wants to engage the module it can be
+done by engaging the module programmatically. This can be done by adding the
+following line in the client code after setting the options.</p>
+
+<p>AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options);</p>
+
+<p><em>AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, "module
+name");</em></p>
+
+<p></p>
+
+<p>So it is very easy engaging modules in Axis2/c and it also gives a higher
+flexibility.</p>
+
+<a name="ws_add"/><h1>8. WS-Addressing</h1>
+
+<p><a href="http://www.w3.org/2002/ws/addr/">WS-Addressing</a> provides
+mechanisms to address Web services and messages. With Axis2/C, you can use
+both WS-Addressing <a href="http://www.w3.org/TR/ws-addr-core/">version
+1.0</a> as well as the <a
+href="http://www.w3.org/Submission/ws-addressing/">submission version</a>.</p>
+
+<p>WS-Addressing can be enabled in the client side using 2 different methods
+in Axis2/C.</p>
+<ul>
+  <li>Engaging Addressing module globally in the axis2.xml file
+    <p>Adding <span style="color: #0000FF">&lt;module
+    ref="addressing"/&gt;</span> in the client side axis2.xml file will add
+    addressing capability to every message the Axis2/C clients send.</p>
+  </li>
+  <li>If we need to add addressing for a specific client , we should do it
+    programmetically by adding the following function call in the client
+    implementation file.
+    <pre>AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env,AXIS2_MODULE_ADDRESSING);</pre>
+  </li>
+</ul>
+
+<p>There are two basic requirements for using WS-Addressing on client side
+with Axis2/C. One is that you have to provide a WS-Addressing action at
+message level. The other is that you have to enable the use of WS-Addressing
+at client level.</p>
+<pre>    address = "http://localh ost:9090/axis2/services/echo";
+    endpoint_ref = axis2_endpoint_ref_create(env, address);
+    /* Setup options */
+    options = axis2_options_create(env);
+    AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);</pre>
+
+<p>In the above code segment the message destination endpoint(wsa:To) is set
+using the AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref) macro.
+endpoint_ref is created using the address string. Another important parameter
+in addressing is the wsa:action parameter. This is set from the function
+shown below.</p>
+<pre>AXIS2_OPTIONS_SET_ACTION(options,env,"http://ws.apache.org/axis2/c/samples/echoString")</pre>
+
+<p>In addition to the action and to there are other WS-Addressing related
+SOAP headers that could be sent in a message. Axis2/C has support to set
+those headers as options at client level. The following functions are used to
+set them.</p>
+<pre>AXIS2_OPTIONS_SET_REPLY_TO(options, env, reply_to)</pre>
+
+<p>Sets the wsa:Replyto header. The "ReplyTo" header contains the endpoint to
+send reply messages The Replyto header is required when the response comes in
+a seperate channel. (when using dual chanel)</p>
+<pre>AXIS2_OPTIONS_SET_FAULT_TO(options, env, fault_to)</pre>
+
+<p>Sets the wsa:FaultTo header.This contains the endpoint to direct fault
+messages. If "FaultTo" is absent one may use "ReplyTo" endpoint instead.</p>
+<pre>AXIS2_OPTIONS_SET_FROM(options, env, from)</pre>
+
+<p>Some times receiving endpoint requires to know the original sender of the
+message.wsa:From header is used in those cases.The above function sets the
+wsa:From header.</p>
+<pre>AXIS2_OPTIONS_SET_RELATES_TO(options, env, relates_to)</pre>
+
+<p>sets the wsa:RelatesTo header.This header contains a uri value that must
+be the message ID of a previously exchanged message.It defines the current
+message relationship to the message being identified.</p>
+
+<a name="wrt_mod"/><h1>9. Writing a Module</h1>
+
+<p>A module is an extension point in the Axis2/C engine. Modules are used to
+improve the quality of service in the Axis2/C engine.A SOAP message may
+contain any number of header blocks. These header blocks provide various
+processing information. In Axis2/C, these various header blocks are processed
+by modules. Some times modules may add header blocks to a SOAP message.</p>
+
+<p>Normally a module is a collection of handlers. So writing a module mainly
+consists of writing handlers. Axis2/C provides two basic interfaces for
+writing a module. They are axis2_module and axis2_handler.</p>
+
+<p></p>
+
+<p>Every module should have 3 basic functions as defined in the
+axis2_modules_ops.</p>
+<ol>
+  <li><pre><font color="#4169E1">axis2_status_t (AXIS2_CALL * init ) (axis2_module_t *module, const
+    axis2_env_t *env , axis2_conf_ctx_t *conf_ctx , axis2_module_desc_t
+    *module_desc)</font></pre>
+    <p>The module initialisation is done here.</p>
+  </li>
+  <li><pre><font color="#4169E1">axis2_status_t (AXIS2_CALL * shut_down ) (axis2_module_t *module, const
+    axis2_env_t *env )</font></pre>
+    <p>Handler created function are stored in a hash map. This function will
+    remove them from the hash map.</p>
+  </li>
+  <li><pre><font color="#4169E1">axis2_status_t (AXIS2_CALL *fill_handler_create_func_map )
+    (axis2_module_t *module, const axis2_env_t *env )</font></pre>
+    <p>This function fills the hash map of handler create functions for the
+    module.</p>
+  </li>
+</ol>
+
+<p>The module developer implements these functions in its implementation
+file. When creating a module, the base struct functions will be assigned
+these implemented functions.</p>
+
+<p>The following example shows the creation of logging module.</p>
+<pre><strong><font color="#4169E1"><a name="axis2_mod_log_create"></a>axis2_module_t *
+axis2_mod_log_create(const axis2_env_t *env)</font></strong>
+{
+    axis2_module_t *module = NULL;
+    module = AXIS2_MALLOC(env-&gt;allocator, 
+        <font color="#4169E1">sizeof</font>(axis2_module_t));
+
+    
+    module-&gt;ops = AXIS2_MALLOC(
+        env-&gt;allocator, <font color="#4169E1">sizeof</font>(axis2_module_ops_t));
+
+    module-&gt;ops-&gt;shutdown = axis2_mod_log_shutdown;
+    module-&gt;ops-&gt;init = axis2_mod_log_init;
+    module-&gt;ops-&gt;fill_handler_create_func_map = 
+        axis2_mod_log_fill_handler_create_func_map;
+
+    <font color="#4169E1">return</font> module;
+}</pre>
+
+<p>The following code segmement shows the adding of handler create functions
+to the module hash map.</p>
+<pre><strong><font color="#4169E1"><a name="axis2_mod_log_fill_handler_create_func_map"></a>axis2_status_t AXIS2_CALL
+axis2_mod_log_fill_handler_create_func_map(axis2_module_t *module,
+                                            const axis2_env_t *env)</font></strong>
+{
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    
+    module-&gt;handler_create_func_map = axis2_hash_make(env);
+    <font color="#4169E1">if</font>(!module-&gt;handler_create_func_map)
+    {
+        AXIS2_ERROR_SET(env-&gt;error, AXIS2_ERROR_NO_MEMORY, 
+            AXIS2_FAILURE);
+        <font color="#4169E1">return</font> AXIS2_FAILURE;
+    }
+    axis2_hash_set(module-&gt;handler_create_func_map, <font color="#666666">"LoggingInHandler"</font>, 
+        AXIS2_HASH_KEY_STRING, axis2_log_in_handler_create);
+
+
+    axis2_hash_set(module-&gt;handler_create_func_map, <font color="#666666">"LoggingOutHandler"</font>, 
+        AXIS2_HASH_KEY_STRING, axis2_log_out_handler_create);
+    
+    <font color="#4169E1">return</font> AXIS2_SUCCESS;</pre>
+
+<p>In the above example the "logging" module adds two handlers. So these
+handler creation functions are added to the hash map.</p>
+
+<p></p>
+
+<h3>Writing handlers</h3>
+
+<p>Handler is the smallest unit of execution in the Axis2/C engine's
+execution flow. The engine could have two flows, the in-flow and the
+out-flow. A flow is a collection of phases and a phase in turn is a
+collection of handlers. A handler is invoked when the phase within which it
+lives is invoked. Axis2/C defines an interface called axis2_handler , which
+is used to create handlers.</p>
+
+<p>The following example shows the creation of the in handler in the logging
+module.</p>
+<pre>AXIS2_EXTERN axis2_handler_t* AXIS2_CALL
+axis2_log_in_handler_create(const axis2_env_t *env, 
+                         axis2_qname_t *qname)
+{
+    axis2_handler_t *handler = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    handler = axis2_handler_create(env);
+    if (!handler)
+    {
+      return  NULL;
+    }
+   
+    /* handler init is handled by conf loading, so no need to do it here */
+    
+/* set the base struct's invoke op */
+
+     if (handler-&gt;ops) 
+        handler-&gt;ops-&gt;invoke = axis2_log_in_handler_invoke;
+
+    return handler;
+}</pre>
+
+<p>In the above example the axis2_log_in_handler_invoke function is assigned
+to axis2_handler invoke function pointer. Invoke is called to do the actual
+work assigned to the handler. The phase that owns the handler is responsible
+for calling invoke of the handler. Those structs that implement the interface
+of the handler should implement the logic for invoke and assign the
+respective function pointer to invoke operation of the ops struct.</p>
+
+<p>The following code segment shows the "logging" module in handler invoke
+function.</p>
+<pre>axis2_status_t AXIS2_CALL
+axis2_log_in_handler_invoke(struct axis2_handler *handler, 
+                         const axis2_env_t *env,
+                         struct axis2_msg_ctx *msg_ctx)
+{
+    axiom_soap_envelope_t *soap_envelope = NULL;
+    axiom_node_t *ret_node = NULL;
+
+    AXIS2_ENV_CHECK( env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env-&gt;error, msg_ctx, AXIS2_FAILURE);
+    
+    AXIS2_LOG_INFO(env-&gt;log, "Starting logging in handler .........");
+    printf("\n\nStarting logging in handler .........\n\n");
+    
+    soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
+    
+    if(soap_envelope)
+    {
+        AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
+
+        ret_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
+
+        if(ret_node)
+        {
+            axis2_char_t *om_str = NULL;
+            om_str = AXIOM_NODE_TO_STRING(ret_node, env);
+            if (om_str)
+            {
+                AXIS2_LOG_INFO(env-&gt;log, "Input msg: %s", om_str);
+                printf("Input msg: %s", om_str);
+            }
+        }
+    }
+    
+    return AXIS2_SUCCESS;
+}</pre>
+
+<h3>Writing the module.xml file</h3>
+
+<p>After writing the module, the module.xml file should be written. The
+module.xml file contains all the configuration details for a particular
+module.See Enging a module part for more details. Some of the important
+details in the module.xml file can be summerized as follows.</p>
+<ul>
+  <li>The names of the module specific handlers and the phases they are to be
+    added in Axis2/C flows.</li>
+  <li>The relative places of handlers with respect to the other handlers in a
+    given phase.</li>
+  <li>The operations the module is adding to the engaged services.</li>
+  <li>The module specific message receivers.</li>
+</ul>
+
+<p>The handlers defined in a module can be added to Axis2/C system global
+phases or the module specific phases.</p>
+
+<a name="sim_ser"/><h1>11. Simple Axis Server</h1>
+
+<p>simple axis server is the inbuilt server of the Axis2/C.<br>
+</p>
+<pre>./axis2_http_server [-p PORT] [-t TIMEOUT] [-r REPO_PATH][-l LOG_LEVEL] [-f LOG_FILE]</pre>
+<br>
+There are some options that we could give to the server. One can start simple
+axis server without any options.
+<pre>$./axis2_http_server </pre>
+Then it takes
+<p> port       -&gt; 9090<br/>
+      repo path  -&gt; ../<br/>
+      time_out   -&gt; AXIS2_HTTP_DEFAULT_SO_TIMEOUT (30000 s)<br/>
+      log_level  -&gt; AXIS2_LOG_LEVEL_DEBUG<br/>
+      log_file   -&gt; axis2.log</p>
+<br></p>
+as default values.
+<pre>[-p PORT]
+This option specifies the port that server should start. 
+Once started the server listen for requests that will come to this port.
+
+[-t TIMEOUT]
+Timeout gives time period that the server should listen without any
+requests. After that it quits.
+
+[-r REPO_PATH]
+This is the repository path to pick up the services and axis2.xml
+
+[-l LOG_LEVEL]
+There are several log levels available. One could specify the log level we needed.
+LOG_LEVEL can be one of following<
+           AXIS2_LOG_LEVEL_CRITICAL - Log critical errors only 
+           AXIS2_LOG_LEVEL_ERROR - Log errors critical errors 
+           AXIS2_LOG_LEVEL_WARNING - Log warnings and above 
+           AXIS2_LOG_LEVEL_INFO - Log info and above
+           AXIS2_LOG_LEVEL_DEBUG - Log debug and above (default)
+           AXIS2_LOG_LEVEL_TRACE - Log trace messages
+
+[-f LOG_FILE]<br/>
+One could specify a log file , when need to use a file other that
+default file (axis2.log).
+</pre>
+<a name="apa_mod"/><h1>12. Apache2 Module</h1>
+
+<p>To build Axis2/C with apache module, One need to give configuration
+options as</p>
+
+<p>On Linux platform</p>
+
+<p>./configure --with-apache2=[path to apache directory]</p>
+
+<p><font color="#666666">NOTE: Some apache2 distributions install APR (Apache
+Portable Run-time) include files in a separate location which is required to
+build mod_axis2. In that case use: ./configure --with-apache2="&lt;apache2
+directory&gt;" --with-apr="&lt;apr include files location&gt;" [other
+configure options]</font></p>
+
+<p>Then build the source tree</p>
+<pre>   
+        make
+        make install</pre>
+
+<p>This will install mod_axis2.so into your "&lt;your_path_to_axis2c&gt;/lib"<br/>
+On Win32 platform<br/>
+Provide the apache2 location in configure.in file in APACHE_INSTALL_DIR</p>
+<pre>
+ Example
+    APACHE_INSTALL_DIR = E:\Apache</pre>
+
+<p>After compiling the sources build the mod_axis2.dll by issuing the command
+"nmake axis2_apache_module". This will build the mod_axis2.dll and copy it to
+%AXIS2C_HOME%\lib directory.</p>
+
+<pre>
+Example
+    C:\axis2c\build\deploy\lib</pre>
+
+<p>Deploying in Apache2 Web Server</p>
+
+<p><font color="#666666">NOTE: To do the following tasks, you might need
+super user privileges in your machine.</font></p>
+
+<p>Copy the mod_axis2 <font color="#4169E1">(libmod_axis2.so.0.0.0 on Linux
+and mod_axis2.dll in Windows)</font> to "&lt;apache2 modules directory&gt;"
+as mod_axis2.so</p>
+
+<pre>
+  Example
+In Linux
+    cp $AXIS2C_HOME/lib/libmod_axis2.so.0.0.0
+      /usr/lib/apache2/modules/mod_axis2.so
+
+In Windows
+   copy C:\axis2c\build\deploy\lib\mod_axis2.dll
+   C:\Apache2\modules\mod_axis2.so
+</pre>
+
+<p>Edit the Apache2's configuration file (generally httpd.conf) and add the
+following directives<br>
+</p>
+
+<pre>LoadModule axis2_module&lt;apache2 modules directory&gt;/mod_axis2.so
+&lt;Location /axis2&gt;</p>
+        SetHandler axis2_module
+        RepoPath &lt;axis2 repository path&gt;
+        LogFile &lt;axis2 log file path&gt;
+        Axis2LogLevel LOG_LEVEL
+&lt;/Location&gt;</pre>
+
+<p><font color="#666666">NOTE: Axis2 log file path should have write access
+to all users because by </font>default Apache Web Server runs as nobody.</p>
+
+<pre>LOG_LEVEL can be one of following
+        AXIS2_LOG_LEVEL_CRITICAL - Log critical errors only
+        AXIS2_LOG_LEVEL_ERROR - Log errors critical errors
+        AXIS2_LOG_LEVEL_WARNING - Log warnings and above
+        AXIS2_LOG_LEVEL_INFO - Log info and above
+        AXIS2_LOG_LEVEL_DEBUG - Log debug and above (default)
+        AXIS2_LOG_LEVEL_TRACE - Log trace messages</pre>
+
+<p><font color="#B22222">NOTE: Use forward slashes "/" for path separators in
+&lt;apache2 modules directory&gt;,&lt;axis2 repository path&gt; and &lt;axis2
+log file path&gt;</font></p>
+
+<p>Make sure that the apache2 user has the correct permissions to above
+paths</p>
+<ul>
+  <li>Read permission to the repository</li>
+  <li>Write permission to the log file</li>
+</ul>
+
+<p>Restart apache2 and test whether mod_axis2 module is loaded by typing the
+URL</p>
+
+<p><a
+href="http://localhost/axis2/services">http://localhost/axis2/services</a></p>
+
+<a name="appA"/><h1>Appendix A</h1>
+
+<h2 style="margin-bottom: 0in">axis2.xml</h2>
+
+<p>The axis2.xml file is the configuration file for Axis2/C. It has 6 top
+level elements. They are <em>parameter, transportReciever,
+transportSender,module,phaseOrder</em> and <em>messageReciever</em>. Given
+below is a description about these elements, their sub elements , element
+atributes, possible valuses and their purpose.</p>
+
+<p></p>
+
+<p><em><strong>axisconfig</strong></em> is the root element</p>
+
+<table border="1">
+  <tbody>
+    <tr>
+      <th>Attribute</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>Axis2/C</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p>The description of the 6 top level elements is given below.</p>
+
+<p></p>
+
+<h3><em>parameter</em></h3>
+
+<p>In Axis2/C a parameter is a name value pair. Each and every top level
+parameter available in the axis2.xml (direct sub elements of root element)
+will be transformed into properties in axisConfiguration. Therefore the top
+level parameters in configuration document can be accessed via
+axisConfiguration in the running system.</p>
+
+<p>sub elements :- none</p>
+
+<p>attributes:- name , locked</p>
+
+<p></p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>Name of the parameter. The table below shows possible values of the
+        name attribute and their description.
+
+        <table border="1">
+          <caption></caption>
+          <tbody>
+            <tr>
+              <th>Value</th>
+              <th>Description</th>
+              <th>Possibe text of parameter element</th>
+            </tr>
+            <tr>
+              <td>enableMTOM</td>
+              <td>Enable MTOM support when sending binary attachments</td>
+              <td>true or false</td>
+            </tr>
+            <tr>
+              <td>enableREST</td>
+              <td>Enable REST support</td>
+              <td>true or false</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>locked</td>
+      <td>whether the parameter can be changed from the code. Following are
+        the possible values for the locked attribute.
+
+        <table border="1">
+          <caption></caption>
+          <tbody>
+            <tr>
+              <th>Value</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>true</td>
+              <td>The parameter cannot be changed from the code</td>
+            </tr>
+            <tr>
+              <td>false</td>
+              <td>The parmeter can be changed from the code.</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<h3><em>transportReciever</em></h3>
+
+<p>This element spsecifies the transport Reciever details in an INOUT
+messange exchange scenario. The users can change the transport reciever port
+as they wishes.</p>
+
+<p>attributes :- name, class</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+      <th>Possible values</th>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td>Specify which transport protocol is used</td>
+      <td>http(when using http)</td>
+    </tr>
+    <tr>
+      <td>Class</td>
+      <td>Specify shared library which implements the transport interface</td>
+      <td>Name of the shared library.
+
+        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        library is libfoo.so.</p>
+
+        <p>On Windows <em>foo.dll</em>.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p>Sub elements of <em>transportReciever</em></p>
+
+<p><em>transportReciever</em> can have zero or more parameters.(prameter
+elements) . An example element is shown below.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>Name of the parameter.
+
+        <table border="1">
+          <caption></caption>
+          <tbody>
+            <tr>
+              <th>Value</th>
+              <th>Description</th>
+              <th>Possible text of parameter element</th>
+            </tr>
+            <tr>
+              <td>port</td>
+              <td>Transport listener port</td>
+              <td>Integer specifying the port number</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>locked</td>
+      <td>whether the parameter can be changed from the code
+
+        <table border="1">
+          <caption></caption>
+          <tbody>
+            <tr>
+              <th>Value</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>true</td>
+              <td>Parameter cannot be changed from the code</td>
+            </tr>
+            <tr>
+              <td>false</td>
+              <td>The parmeter can be changed from the code.</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p></p>
+
+<h3><em>transportSender</em></h3>
+
+<p>This element specifies the transport senders used to send messages</p>
+
+<p>attributes :- name, class</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>Specify which transport protocol is used when sending messages</td>
+      <td>http(when using http)</td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td>Specify shared library which implements the transport interface</td>
+      <td><p>Name of the shared library.</p>
+
+        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        library is libfoo.so.</p>
+
+        <p>On Windows <em>foo.dll</em>.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p>Sub elements of <em>transportSender</em></p>
+
+<p><em>transportSender</em> can have zero or more parameters.(prameter
+elements) . An example element is shown below.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>The name of the parameter.
+
+        <table border="1">
+          <caption></caption>
+          <tbody>
+            <tr>
+              <th>Value</th>
+              <th>Description</th>
+              <th>Possible text of parameter element</th>
+            </tr>
+            <tr>
+              <td>PROTOCOL</td>
+              <td>Transport protocol used</td>
+              <td>Prtocol version. eg:- HTTP /1.1, HTTP/1.0</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td>locked</td>
+      <td>whether the parameter can be changed from the code
+
+        <table border="1">
+          <caption></caption>
+          <tbody>
+            <tr>
+              <th>Value</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>true</td>
+              <td>The parameter cannot be changed from the code</td>
+            </tr>
+            <tr>
+              <td>false</td>
+              <td>The parmeter can be changed from the code.</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<h3><em>module</em></h3>
+
+<p>This element is optional. It is used when a particular module needs to be
+engaged for every service in the system.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attributes</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>ref</td>
+      <td>the name of the module which is to be engaged globally</td>
+      <td>Name of the module.
+
+        <p>eg:- addressing</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<h3><em>phaseOrder</em></h3>
+
+<p>The order of phases in execution chain has to be configured using phase
+order element.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>type</td>
+      <td>Flow to which the phase belongs to</td>
+      <td>inflow
+
+        <p>outflow</p>
+
+        <p>INfaultflow</p>
+
+        <p>Outfaultflow</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A flow is a collection of handlers which are invoked for a particular
+message.The types of flows are described below.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Flow</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>inflow</td>
+      <td>Collection of handlers invoked for a message coming in to the
+        system.</td>
+    </tr>
+    <tr>
+      <td>outflow</td>
+      <td>Collection of handles invoked for a message going out of the
+      system.</td>
+    </tr>
+    <tr>
+      <td>INfaultflow</td>
+      <td>Collection of handlers invoked for a incoming fault message.</td>
+    </tr>
+    <tr>
+      <td>Outfaultflow</td>
+      <td>Collection of handlers invoked for a outgoing fault message.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p>sub elements of <em>phaseOrder</em></p>
+
+<p><em>phase</em>:- represents available phases in the execution chain. The
+system predefined phases cannot be changed.</p>
+
+<p>The system predefined phases are,</p>
+<ul>
+  <li>Transport</li>
+  <li>PreDispatch</li>
+  <li>Dispatch</li>
+  <li>PostDispatch</li>
+  <li>MessageOut</li>
+</ul>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>Specifies the name of the phase</td>
+      <td>TransportIn,Dispatch,PreDispatch,PostDispatch,MessageOut,
+
+        <p>User defined phases (can have user defined name)</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p>sub elements of phase</p>
+
+<p><em>handler</em></p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>Specifies the handler name. Phase may contain zero or more
+      handlers.</td>
+      <td>Based on handler name.
+
+        <p>eg:- AddressingbasedDispatcher, RequestURIbaseddispatcher</p>
+      </td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td>Specify shared library which implements the handler</td>
+      <td><p>Name of the shared library.</p>
+
+        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        library is libfoo.so.</p>
+
+        <p>On Windows <em>foo.dll</em>.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<h3><em>messageReciever</em></h3>
+
+<p></p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>mep</td>
+      <td>Message Exchange Pattern</td>
+      <td>INOUT, INONLY</td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td>Specify the shared library which implements the transport interface
+
+        <p>If not specified Axis2/C default message reciever is used.</p>
+      </td>
+      <td>Name of the shared library.
+
+        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        library is libfoo.so.</p>
+
+        <p>On Windows <em>foo.dll</em>.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<a name="appB"/><h1>Appendix B</h1>
+
+<h2 style="margin-bottom: 0in">services.xml</h2>
+
+<p>Configuration of a service is specified using services.xml.Each service or
+service archive file need to have a services.xml in order to be a valid
+service. The given below is a description of each element.</p>
+
+<p></p>
+
+<p>If services.xml describes a single service the root elemnt is
+<em>service</em>. If it is describing a service group, then the root element
+is <em>serviceGroup</em>. <em>service</em> will be a child element of
+serviceGroup, if there are multiple services specified in service.xml.</p>
+
+<h3><em><strong>service/serviceGroup</strong></em></h3>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attributes</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>Name of the service. This will be the name of the archive
+
+        <p>file for the service.</p>
+      </td>
+      <td>Depend on the service or the
+
+        <p>serviceGroup. eg:- echo,sg_math</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<h3><strong><em>description</em></strong></h3>
+
+<p>This is optional. This element can be used to describe the service in a
+human readable format.</p>
+
+<p></p>
+
+<h3><em><strong>module</strong></em></h3>
+
+<p>This is optional. Can be used to engage modules at service level.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attributes</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>ref</td>
+      <td>Name of the module which is to be engaged for the service</td>
+      <td>Name of the module which is to be engaged at service level.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p></p>
+
+<h3><em><strong>parameter</strong></em></h3>
+
+<p>The service element can have any number of parameters as sub elemnts.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attributes</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+      <th>Value of the text in parameter element</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>Specify the shared library the service is implemented</td>
+      <td>serviceClass</td>
+      <td>the service name. eg:- echo</td>
+    </tr>
+    <tr>
+      <td>locked</td>
+      <td>Specify whether the parameter can be changed from the code</td>
+      <td>true/false</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<h3><em><strong>operations</strong></em></h3>
+
+<p>The operations which the service provide are specified here.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attributes</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>name of the operation</td>
+      <td>eg:- echoString</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>sub elements of <em>operation</em></p>
+
+<p><em>parameter</em> elements can be present as sub elements. Zero or more
+parameters may be present.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+      <th>Possible Value</th>
+      <th>Parameter Vlue</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>ws-Addressing action mapping to the operation.</td>
+      <td>wsamapping</td>
+      <td>A URL representing the ws-Addressing action corresponding to the
+        operation</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<h3><em><strong>messageReciever</strong></em></h3>
+
+<p>An operation specific messageReciver is specified from this. This is
+optional.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attributes</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td>Shared library with the message reciever implementation</td>
+      <td>Name of the shared library.
+
+        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        library is libfoo.so.</p>
+
+        <p>On Windows <em>foo.dll</em>.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<a name="appC"/><h1>Appendix C</h1>
+
+<h2 style="margin-bottom: 0in">module.xml</h2>
+
+<p>The module.xml provides the configuration details for a particular module
+in Axis2/C. The top level element is <em>module</em>.</p>
+
+<p></p>
+
+<h3><em>module</em></h3>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attributes</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>Name of the module</td>
+      <td>eg:- addressing</td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td>Specify shared library which implements the module.</td>
+      <td>Name of the shared library.
+
+        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        library is libfoo.so.</p>
+
+        <p>On Windows <em>foo.dll</em>.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p>Other elements are child elements of <em>module</em>.</p>
+
+<p></p>
+
+<h3><em>parameter</em></h3>
+
+<p>Any number of parameters can be present.It depends on the module.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attributes</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>Name of the parameter</td>
+      <td>depends on the module</td>
+    </tr>
+    <tr>
+      <td>locked</td>
+      <td>Whether the parameter can be changed from the code</td>
+      <td>true- cannot be changed
+
+        <p>false- can be changed</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<h3><em>Description</em></h3>
+
+<p>No attributes or sub elements. Describes the behaviour of the module. This
+element is optional.</p>
+
+<p></p>
+
+<h3><em>inflow</em></h3>
+
+<p>Encapsulate details added to the inflow by the module. Zero or one element
+is possible.No attributes.</p>
+
+<p>sub elements of <em>inflow</em></p>
+
+<p><em>handler</em>:- Contains details about the module specific handlers
+added to a particular flow. Zero or more handlers can be added.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attributes</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>Name of the handler</td>
+      <td>Depends on the handlers in the module.</td>
+    </tr>
+    <tr>
+      <td>class</td>
+      <td>Specify shared library which implements the handler</td>
+      <td><p>Name of the shared library.</p>
+
+        <p>eg:-On Linux if the value is given as <em>foo</em> then shared
+        library is libfoo.so.</p>
+
+        <p>On Windows <em>foo.dll</em>.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p>sub elemnts of <em>handler</em></p>
+
+<p><em>order:</em>- Specify where to put a handler in a particular phase.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attribute</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>phase</td>
+      <td>the name of the phase the handler belongs to</td>
+      <td>depends on the handler</td>
+    </tr>
+    <tr>
+      <td>phaseLast</td>
+      <td>Indicate the handler is last handler of the phase</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td>phaseFirst</td>
+      <td>Indicate the handler is first handler of the phase.</td>
+      <td>true</td>
+    </tr>
+    <tr>
+      <td>before</td>
+      <td>Handler should be invoked before the handler specified by before
+        handler</td>
+      <td>handler name</td>
+    </tr>
+    <tr>
+      <td>after</td>
+      <td>Handler should be invoked after the handler specified by after
+        handler</td>
+      <td>hadler name</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>phase is compulsory. Given below is combinations possible from the other 4
+attributes.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Combination</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>phaseLast</td>
+      <td>Indicate the handler is last handler of the phase</td>
+    </tr>
+    <tr>
+      <td>phasefirst</td>
+      <td>Indicate the handler is first handler of the phase.</td>
+    </tr>
+    <tr>
+      <td>before</td>
+      <td>Handler should be invoked before the handler specified by before
+        handler</td>
+    </tr>
+    <tr>
+      <td>after</td>
+      <td>Handler should be invoked after the handler specified by after
+        handler</td>
+    </tr>
+    <tr>
+      <td>before &amp; after</td>
+      <td>Handler should be invoked before the handler specified by the
+        before handler and
+
+        <p>after the handler specified by the after handler.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><em>outflow</em>,<em>INfaultflow</em>,<em>OUTfaultflow</em> elements have
+the same syntax as that of <em>inflow</em>.</p>
+
+<p></p>
+
+<h3><em>operation</em></h3>
+
+<p>This is used when a module wants to add an operation to an engaged
+service.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Attributes</th>
+      <th>Description</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>Name of the operation(compulsory)</td>
+      <td>Depends on the module</td>
+    </tr>
+    <tr>
+      <td>mep</td>
+      <td>Message Exchange Pattern</td>
+      <td>INOUT,INONLY</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>sub elements of <em>operatio</em><em>n</em></p>
+
+<p>Any number of parameters can be included as sub elements in the operation
+element.</p>
+
+<p>The <em>messageReciever</em> parameter specifies the message reciever the
+message is intended to. If it is not set, the default message reciever is
+used.</p>
+
+<p></p>
+
+<a name="appD"/><h1>Appendix D</h1>
+
+<p>This document describes about various types of options in the
+axis2_options.h. These options are used by the service client before sending
+messages.</p>
+
+<p><strong>AXIS2_OPTIONS_SET_ACTION(options, env, action)</strong></p>
+
+<p>Set the ws-addressing action in the addressing header.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *action</td>
+      <td>action pointer to action string</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_FAULT_TO(options, env, fault_to)</strong></p>
+
+<p>Set the end point reference which may recieve the message in a case of
+fault.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_endpoint_ref_t *fault_to</td>
+      <td>fault_to pointer to endpoint reference struct representing fault to
+        address.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_FROM(options, env, from)</strong></p>
+
+<p>Some services need to know the source from which the messgae comes. This
+option set the from enfdpoint</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_endpoint_ref_t *from</td>
+      <td>from pointer to endpoint reference struct representing from to
+        address</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>AXIS2_OPTIONS_SET_TO(options, env, to)</strong></p>
+
+<p>Sets the endpoint reference the message is destined to.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_endpoint_ref_t *to</td>
+      <td>to pointer to endpoint reference struct representing to address</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>AXIS2_OPTIONS_SET_TRANSPORT_RECEIVER(options, env,
+receiver)</strong></p>
+
+<p>Set the transport reciever in a IN-OUT message exchange scenario.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_transport_receiver_t *receiver</td>
+      <td>receiver pointer to transport receiver struct</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>AXIS2_OPTIONS_SET_TRANSPORT_IN(options, env,
+transport_in)</strong></p>
+
+<p>Set transport in description</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_transport_in_desc_t *transport_in</td>
+      <td>transport_in pointer to transport_in struct</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_TRANSPORT_IN_PROTOCOL(options, env,
+transport_in_protocol)</strong></p>
+
+<p>Set transport in protocol</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *transport_in_protocol</td>
+      <td>in_protocol pointer to in_protocol struct</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_MESSAGE_ID(options, env, message_id)</strong></p>
+
+<p>Set the soap message Id</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *message_id</td>
+      <td>message_id pointer to message_id struct</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_PROPERTIES(options, env, properties)</strong></p>
+
+<p>Set the properties hash map.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_hash_t *properties</td>
+      <td>properties pointer to properties hash map</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_PROPERTY(options, env, key,
+property)</strong></p>
+
+<p>Set a property with a given key value.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *property_key</td>
+      <td>property_key property key string</td>
+    </tr>
+    <tr>
+      <td>const void *property</td>
+      <td>property pointer to property to be set</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_RELATES_TO(options, env, relates_to)</strong></p>
+
+<p>Some times messages may have relations.eg:- echo. This will set for
+related messages</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_relates_to_t *relates_to</td>
+      <td>relates_to pointer to relates_to struct</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_REPLY_TO(options, env, reply_to)</strong></p>
+
+<p>Sets the reply to address. when the client wants a reply. It may be the
+sending end point or another different end point.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_endpoint_ref_t *reply_to</td>
+      <td>reply_to pointer to endpoint reference struct representing reply to
+        address</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_TRANSPORT_OUT(options, env,
+transport_out)</strong></p>
+
+<p>Set the transport out description.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_transport_out_desc_t *transport_out</td>
+      <td>transport_out pointer to transport out description struct</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_SENDER_TRANSPORT(options, env, sender_transport,
+conf)</strong></p>
+
+<p>Sets the sender transport</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *sender_transport</td>
+      <td>sender_transport name of the sender transport to be set</td>
+    </tr>
+    <tr>
+      <td>axis2_conf_t *conf</td>
+      <td>conf pointer to conf struct, it is from the conf that the transport
+        is picked with the given name</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_SOAP_VERSION_URI(options, env,
+soap_version_uri)</strong></p>
+
+<p>Sets the soap version URI. SOAP 1.1 URI OR SOAP 1.2 URI</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *soap_version_uri</td>
+      <td>soap_version_uri URI of the SOAP version to be set</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_TIMEOUT_IN_MILLI_SECONDS(options, env,
+timeout_in_milli_seconds)</strong></p>
+
+<p>Set the time out in mili seconds. This is used in asyncronous message
+exchnge scebarios for the call back object to wait for the response.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const long timeout_in_milli_seconds</td>
+      <td>timeout_in_milli_seconds timeout in milli seconds</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_TRANSPORT_INFO(options, env, sender_transport,
+receiver_transport, user_separate_listener)</strong></p>
+
+<p>Sets transport information. Transport information includes the name of the
+sender transport, name of the receiver transport and if a separate listener
+to be used to receive response.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *sender_transport</td>
+      <td>sender_transport name of sender transport to be used</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *receiver_transport</td>
+      <td>receiver_transport name of receiver transport to be used</td>
+    </tr>
+    <tr>
+      <td>const axis2_bool_t use_separate_listener</td>
+      <td>use_separate_listener bool value indicating whether to use a
+        seperate listner or not</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_USE_SEPARATE_LISTENER(options, env,
+use_separate_listener)</strong></p>
+
+<p>Sets the bool value indicating whether to use a separate listener or not.
+Seperate listener is used when the transport is one way transport.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_bool_t use_separate_listener</td>
+      <td>use_separate_listener bool value indicating whether to use a
+        seperate listener or not</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_SOAP_VERSION(options, env,
+soap_version)</strong></p>
+
+<p>Set the SOAP version. Either AXIOM_SOAP_11 or AXIOM_SOAP_12.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const int soap_version</td>
+      <td>soap_version soap version</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_ENABLE_MTOM(options, env,
+enable_mtom)</strong></p>
+
+<p>Enable/disable MTOM handling when sending binary attachments.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_bool_t enable_mtom</td>
+      <td>enable_mtom AXIS2_TRUE if MTOM is to be enabled, AXIS2_FALSE</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p>This document describes about various types of options in the
+axis2_options.h. These options are used by the service client before sending
+messages.</p>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_ACTION(options, env, action)</strong></p>
+
+<p>Set the ws-addressing action in the addressing header.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *action</td>
+      <td>action pointer to action string</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_FAULT_TO(options, env, fault_to)</strong></p>
+
+<p>Set the end point reference which may recieve the message in a case of
+fault.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_endpoint_ref_t *fault_to</td>
+      <td>fault_to pointer to endpoint reference struct representing fault to
+        address.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_FROM(options, env, from)</strong></p>
+
+<p>Some services need to know the source from which the messgae comes. This
+option set the from enfdpoint</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_endpoint_ref_t *from</td>
+      <td>from pointer to endpoint reference struct representing from to
+        address</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>AXIS2_OPTIONS_SET_TO(options, env, to)</strong></p>
+
+<p>Sets the endpoint reference the message is destined to.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_endpoint_ref_t *to</td>
+      <td>to pointer to endpoint reference struct representing to address</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>AXIS2_OPTIONS_SET_TRANSPORT_RECEIVER(options, env,
+receiver)</strong></p>
+
+<p>Set the transport reciever in a IN-OUT message exchange scenario.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_transport_receiver_t *receiver</td>
+      <td>receiver pointer to transport receiver struct</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>AXIS2_OPTIONS_SET_TRANSPORT_IN(options, env,
+transport_in)</strong></p>
+
+<p>Set transport in description</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_transport_in_desc_t *transport_in</td>
+      <td>transport_in pointer to transport_in struct</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_TRANSPORT_IN_PROTOCOL(options, env,
+transport_in_protocol)</strong></p>
+
+<p>Set transport in protocol</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *transport_in_protocol</td>
+      <td>in_protocol pointer to in_protocol struct</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_MESSAGE_ID(options, env, message_id)</strong></p>
+
+<p>Set the soap message Id</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *message_id</td>
+      <td>message_id pointer to message_id struct</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_PROPERTIES(options, env, properties)</strong></p>
+
+<p>Set the properties hash map.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_hash_t *properties</td>
+      <td>properties pointer to properties hash map</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_PROPERTY(options, env, key,
+property)</strong></p>
+
+<p>Set a property with a given key value.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *property_key</td>
+      <td>property_key property key string</td>
+    </tr>
+    <tr>
+      <td>const void *property</td>
+      <td>property pointer to property to be set</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_RELATES_TO(options, env, relates_to)</strong></p>
+
+<p>Some times messages may have relations.eg:- echo. This will set for
+related messages</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_relates_to_t *relates_to</td>
+      <td>relates_to pointer to relates_to struct</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_REPLY_TO(options, env, reply_to)</strong></p>
+
+<p>Sets the reply to address. when the client wants a reply. It may be the
+sending end point or another different end point.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_endpoint_ref_t *reply_to</td>
+      <td>reply_to pointer to endpoint reference struct representing reply to
+        address</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_TRANSPORT_OUT(options, env,
+transport_out)</strong></p>
+
+<p>Set the transport out description.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_transport_out_desc_t *transport_out</td>
+      <td>transport_out pointer to transport out description struct</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_SENDER_TRANSPORT(options, env, sender_transport,
+conf)</strong></p>
+
+<p>Sets the sender transport</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *sender_transport</td>
+      <td>sender_transport name of the sender transport to be set</td>
+    </tr>
+    <tr>
+      <td>axis2_conf_t *conf</td>
+      <td>conf pointer to conf struct, it is from the conf that the transport
+        is picked with the given name</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_SOAP_VERSION_URI(options, env,
+soap_version_uri)</strong></p>
+
+<p>Sets the soap version URI. SOAP 1.1 URI OR SOAP 1.2 URI</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *soap_version_uri</td>
+      <td>soap_version_uri URI of the SOAP version to be set</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_TIMEOUT_IN_MILLI_SECONDS(options, env,
+timeout_in_milli_seconds)</strong></p>
+
+<p>Set the time out in mili seconds. This is used in asyncronous message
+exchnge scebarios for the call back object to wait for the response.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const long timeout_in_milli_seconds</td>
+      <td>timeout_in_milli_seconds timeout in milli seconds</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_TRANSPORT_INFO(options, env, sender_transport,
+receiver_transport, user_separate_listener)</strong></p>
+
+<p>Sets transport information. Transport information includes the name of the
+sender transport, name of the receiver transport and if a separate listener
+to be used to receive response.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *sender_transport</td>
+      <td>sender_transport name of sender transport to be used</td>
+    </tr>
+    <tr>
+      <td>const axis2_char_t *receiver_transport</td>
+      <td>receiver_transport name of receiver transport to be used</td>
+    </tr>
+    <tr>
+      <td>const axis2_bool_t use_separate_listener</td>
+      <td>use_separate_listener bool value indicating whether to use a
+        seperate listner or not</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_USE_SEPARATE_LISTENER(options, env,
+use_separate_listener)</strong></p>
+
+<p>Sets the bool value indicating whether to use a separate listener or not.
+Seperate listener is used when the transport is one way transport.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_bool_t use_separate_listener</td>
+      <td>use_separate_listener bool value indicating whether to use a
+        seperate listener or not</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_SOAP_VERSION(options, env,
+soap_version)</strong></p>
+
+<p>Set the SOAP version. Either AXIOM_SOAP_11 or AXIOM_SOAP_12.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>const int soap_version</td>
+      <td>soap_version soap version</td>
+    </tr>
+  </tbody>
+</table>
+
+<p></p>
+
+<p><strong>AXIS2_OPTIONS_SET_ENABLE_MTOM(options, env,
+enable_mtom)</strong></p>
+
+<p>Enable/disable MTOM handling when sending binary attachments.</p>
+
+<table border="1">
+  <caption></caption>
+  <tbody>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>axis2_options_t *options</td>
+      <td>options pointer to options struct</td>
+    </tr>
+    <tr>
+      <td>const axis2_env_t *env</td>
+      <td>env pointer to environment struct</td>
+    </tr>
+    <tr>
+      <td>axis2_bool_t enable_mtom</td>
+      <td>enable_mtom Aȱ </td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>
