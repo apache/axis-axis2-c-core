@@ -519,9 +519,9 @@ deployment engine to find out service group and service specific information
 such as service group name, service name, set of operations for each service
 etc.</p>
 
-<a name="svc_api"></a><h1>3. Service API</h1>
+<a name="svc_api"></a><h1>3. Service API</H1>
 
-<p>We have already seen how to write a service in quick start guide section
+<P>We have already seen how to write a service in quick start guide section
 of this manual. This section would cover the service API of Axis2/C in a bit
 more detail.</p>
 
@@ -566,128 +566,58 @@ service.</p>
 <br>
 
 
-<p><font color="#800000">int</font> <font
-color="#000000">AXIS2_CALL</font><br>
-<font color="#000000">math_free</font>(<font
-color="#000000">axis2_svc_skeleton_t</font> *<font
-color="#000000">svc_skeleton</font>,<br>
-        <font color="#800000">const</font> <font
-color="#000000">axis2_env_t</font> *<font color="#000000">env</font>)<br>
-{<br>
-    <font color="#000000"><b>if</b></font> (<font
-color="#000000">svc_skeleton</font>-&gt;<font color="#000000">ops</font>)<br>
-    {<br>
-        <font color="#000000">AXIS2_FREE</font>(<font
-color="#000000">env</font>-&gt;<font color="#000000">allocator</font>, <font
-color="#000000">svc_skeleton</font>-&gt;<font color="#000000">ops</font>);<br>
-        <font color="#000000">svc_skeleton</font>-&gt;<font
-color="#000000">ops</font> = <font color="#000000">NULL</font>;<br>
-    }<br>
-<br>
-    <font color="#000000"><b>if</b></font> (<font
-color="#000000">svc_skeleton</font>)<br>
-    {<br>
-        <font color="#000000">AXIS2_FREE</font>(<font
-color="#000000">env</font>-&gt;<font color="#000000">allocator</font>, <font
-color="#000000">svc_skeleton</font>);<br>
-        <font color="#000000">svc_skeleton</font> = <font
-color="#000000">NULL</font>;<br>
-    }<br>
-    <font color="#000000"><b>return</b></font> <font
-color="#000000">AXIS2_SUCCESS</font>;<br>
-}<br>
-</p>
-<br>
-
+<pre>int AXIS2_CALL
+math_free (axis2_svc_skeleton_t *svc_skeleton, const axis2_env_t *env
+{
+    if (svc_skeleton-&gt;ops)
+    {
+        AXIS2_FREE(env-&gt;allocator, svc_skeleton-&gt;ops);
+        svc_skeleton-&gt; ops = NULL;
+    }
+    if(svc_skeleton)
+    {
+      AXIS2_FREE (env->allocator, svc_skeleton -&gt;ops);
+      svc_skeleton -&gt; NULL;
+    }
+    return AXIS2_SUCCESS;
+}
+</pre>
 
 <p>The above code shows the free method implementation of the math sample.</p>
 
-<p><br>
-<font color="#000000">axiom_node_t</font>* <font
-color="#000000">AXIS2_CALL</font><br>
-<font color="#000000">math_invoke</font>(<font
-color="#000000">axis2_svc_skeleton_t</font> *<font
-color="#000000">svc_skeleton</font>,<br>
-        <font color="#800000">const</font> <font
-color="#000000">axis2_env_t</font> *<font color="#000000">env</font>,<br>
-        <font color="#000000">axiom_node_t</font> *<font
-color="#000000">node</font>,<br>
-        <font color="#000000">axis2_msg_ctx_t</font> *<font
-color="#000000">msg_ctx</font>)<br>
-{<br>
-    <font color="#000000"><b>if</b></font> (<font
-color="#000000">node</font>)<br>
-    {<br>
-        <font color="#000000"><b>if</b></font> (<font
-color="#000000">AXIOM_NODE_GET_NODE_TYPE</font>(<font
-color="#000000">node</font>, <font color="#000000">env</font>) == <font
-color="#000000">AXIOM_ELEMENT</font>)<br>
-        {<br>
-            <font color="#000000">axiom_element_t</font> *<font
-color="#000000">element</font> = <font color="#000000">NULL</font>;<br>
-            <font color="#000000">element</font> = (<font
-color="#000000">axiom_element_t</font> *)<font
-color="#000000">AXIOM_NODE_GET_DATA_ELEMENT</font>(<font
-color="#000000">node</font>, <font color="#000000">env</font>);<br>
-            <font color="#000000"><b>if</b></font> (<font
-color="#000000">element</font>)<br>
-            {<br>
-                <font
-color="#000000">axis2_char_t</font> *<font
-color="#000000">op_name</font> = <font
-color="#000000">AXIOM_ELEMENT_GET_LOCALNAME</font>(<font
-color="#000000">element</font>, <font color="#000000">env</font>);<br>
-                <font
-color="#000000"><b>if</b></font> (<font color="#000000">op_name</font>)<br>
-                {<br>
-                    <font
-color="#000000"><b>if</b></font> (<font
-color="#000000">AXIS2_STRCMP</font>(<font
-color="#000000">op_name</font>, <font
-color="#FF0000">"add"</font>) == <font color="#0000FF">0</font>)<br>
-                        <font
-color="#000000"><b>return</b></font> <font
-color="#000000">axis2_math_add</font>(<font
-color="#000000">env</font>, <font color="#000000">node</font>);<br>
-                    <font
-color="#000000"><b>if</b></font> (<font
-color="#000000">AXIS2_STRCMP</font>(<font
-color="#000000">op_name</font>, <font
-color="#FF0000">"sub"</font>) == <font color="#0000FF">0</font>)<br>
-                        <font
-color="#000000"><b>return</b></font> <font
-color="#000000">axis2_math_sub</font>(<font
-color="#000000">env</font>, <font color="#000000">node</font>);<br>
-                    <font
-color="#000000"><b>if</b></font> (<font
-color="#000000">AXIS2_STRCMP</font>(<font
-color="#000000">op_name</font>, <font
-color="#FF0000">"mul"</font>) == <font color="#0000FF">0</font>)<br>
-                        <font
-color="#000000"><b>return</b></font> <font
-color="#000000">axis2_math_mul</font>(<font
-color="#000000">env</font>, <font color="#000000">node</font>);<br>
-                    <font
-color="#000000"><b>if</b></font> (<font
-color="#000000">AXIS2_STRCMP</font>(<font
-color="#000000">op_name</font>, <font
-color="#FF0000">"div"</font>) == <font color="#0000FF">0</font>)<br>
-                        <font
-color="#000000"><b>return</b></font> <font
-color="#000000">axis2_math_div</font>(<font
-color="#000000">env</font>, <font color="#000000">node</font>);<br>
-                }<br>
-            }<br>
-        }<br>
-    }<br>
-<br>
-    <font color="#000000">printf</font>(<font
-color="#FF0000">"Math service ERROR: invalid operation invoked\n"</font>);<br>
-<br>
-    <font color="#000000"><b>return</b></font> <font
-color="#000000">node</font>;<br>
-}<br>
-</p>
+<pre>
+axiom_node_t* AXIS2_CALL
+math_invoke(axis2_svc_skeleton_t *svc_skeleton,
+        const axis2_env_t *env,
+        axiom_node_t *node,
+        axis2_msg_ctx_t *msg_ctx)
+{
+    <b>if</b> (node)
+    {
+        <b>if</b> (AXIOM_NODE_GET_NODE_TYPE(node, env) == AXIOM_ELEMENT)
+        {
+            axiom_element_t *element = NULL;
+            element = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
+            <b>if</b> (element)
+            {
+                axis2_char_t *op_name = AXIOM_ELEMENT_GET_LOCALNAME(element, env);
+                <b>if</b> (op_name)
+                {
+                    <b>if</b> (AXIS2_STRCMP(op_name, "add") == 0)
+                        <b>return</b> axis2_math_add(env, node);
+                    <b>if</b> (AXIS2_STRCMP(op_name, "sub") == 0)
+                        <b>return</b> axis2_math_sub(env, node);
+                    <b>if</b> (AXIS2_STRCMP(op_name, "mul") == 0)
+                        <b>return</b> axis2_math_mul(env, node);
+                    <b>if</b> (AXIS2_STRCMP(op_name, "div") == 0)
+                        <b>return</b> axis2_math_div(env, node);
+                }
+            }
+        }
+    }
+    printf("Math service ERROR: invalid operation invoked\n");
+    <b>return</b>node;
+}</pre>
 
 <p>The above code fragment from math sample shows how the correct method to
 be invoked could be picked from the operation name that comes in the message
@@ -700,51 +630,29 @@ looks for a method named axis2_create_instance and calls it on the service
 shared library. The engine also looks to a function named
 axis2_remove_instance for clean up purposes in the shared library.</p>
 
-<p><font color="#000000">AXIS2_EXPORT</font> <font
-color="#800000">int</font> <font
-color="#000000">axis2_get_instance</font>(<font
-color="#000000"><b>struct</b></font> <font
-color="#000000">axis2_svc_skeleton</font> **<font
-color="#000000">inst</font>,<br>
-        <font color="#800000">const</font> <font
-color="#000000">axis2_env_t</font> *<font color="#000000">env</font>)<br>
-{<br>
-    *<font color="#000000">inst</font> = <font
-color="#000000">axis2_math_create</font>(<font
-color="#000000">env</font>);<br>
-    <font color="#000000"><b>if</b></font> (!(*<font
-color="#000000">inst</font>))<br>
-    {<br>
-        <font color="#000000"><b>return</b></font> <font
-color="#000000">AXIS2_FAILURE</font>;<br>
-    }<br>
-<br>
-    <font color="#000000"><b>return</b></font> <font
-color="#000000">AXIS2_SUCCESS</font>;<br>
-}<br>
-<br>
-<font color="#000000">AXIS2_EXPORT</font> <font
-color="#800000">int</font> <font
-color="#000000">axis2_remove_instance</font>(<font
-color="#000000">axis2_svc_skeleton_t</font> *<font
-color="#000000">inst</font>,<br>
-        <font color="#800000">const</font> <font
-color="#000000">axis2_env_t</font> *<font color="#000000">env</font>)<br>
-{<br>
-    <font color="#000000">axis2_status_t</font> <font
-color="#000000">status</font> = <font
-color="#000000">AXIS2_FAILURE</font>;<br>
-    <font color="#000000"><b>if</b></font> (<font
-color="#000000">inst</font>)<br>
-    {<br>
-        <font color="#000000">status</font> = <font
-color="#000000">AXIS2_SVC_SKELETON_FREE</font>(<font
-color="#000000">inst</font>, <font color="#000000">env</font>);<br>
-    }<br>
-    <font color="#000000"><b>return</b></font> <font
-color="#000000">status</font>;<br>
-}<br>
-</p>
+<pre>AXIS2_EXPORT int axis2_get_instance(struct axis2_svc_skeleton **inst,
+        const axis2_env_t *env)
+{
+    *inst = axis2_math_create(env);
+    if> (!(*inst))
+    {
+        return AXIS2_FAILURE;
+    }
+
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXPORT int axis2_remove_instance(axis2_svc_skeleton_t *inst,
+        const axis2_env_t *env)
+{
+    axis2_status_t status = AXIS2_FAILURE;
+    if (inst)
+    {
+        status = AXIS2_SVC_SKELETON_FREE(inst, env);
+    }
+    return status;
+}
+</pre>
 
 <p>Note that service instantiation happens per request. That means for each
 request, the create method would be called and a new axis2_svc_skeleton

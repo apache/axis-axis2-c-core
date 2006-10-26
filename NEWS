@@ -28,10 +28,12 @@ Key Features
   19. Guththila pull parser support
   20. WSDL2C code generation tool- with schema code generation
   21. TCP Monitor - C implementation
+  22. Axis2/C Manual - New
 
 Major Changes Since Last Release
    1. Major Memory leak fixes
    2. Many Bug Fixes
+   3. Improved Documentation
  
 TODOs Remaining for 1.0
    1. Complete API documentation and API improvements
