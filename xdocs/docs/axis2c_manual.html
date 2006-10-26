@@ -132,9 +132,11 @@ axis2_hello_greet(const axis2_env_t *env, axiom_node_t *node)
     if (node)
     {
         client_greeting_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);
-        if (client_greeting_node &amp;&amp;                 AXIOM_NODE_GET_NODE_TYPE(client_greeting_node, env) == AXIOM_TEXT)
+        if (client_greeting_node &amp;&amp; 
+	AXIOM_NODE_GET_NODE_TYPE(client_greeting_node, env) == AXIOM_TEXT)
         {
-            axiom_text_t *greeting = (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(client_greeting_node, env);
+            axiom_text_t *greeting = 
+	    (axiom_text_t *)AXIOM_NODE_GET_DATA_ELEMENT(client_greeting_node, env);
             if (greeting &amp;&amp; AXIOM_TEXT_GET_VALUE(greeting , env))
             {
                 axis2_char_t *greeting_str = AXIOM_TEXT_GET_VALUE(greeting, env);
@@ -145,7 +147,8 @@ axis2_hello_greet(const axis2_env_t *env, axiom_node_t *node)
     }
     else
     {
-        AXIS2_ERROR_SET(env-&gt;error, AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
+        AXIS2_ERROR_SET(env-&gt;error, 
+	AXIS2_ERROR_SVC_SKEL_INVALID_XML_FORMAT_IN_REQUEST, AXIS2_FAILURE);
         printf("ERROR: invalid XML in request\n");
         return_node = build_greeting_response(env, "Client! Who are you?");
     }
@@ -260,7 +263,9 @@ one operation, with the name "greet"<br>
 <p>On Windows </p>
 
 <p>to compile,</p>
-<pre>cl.exe /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT" /D "AXIS2_SVR_MULTI_THREADED" /w /nologo $(AXIS2_INCLUDE_PATH)$(APACHE_INCLUDE_PATH) /I hello.c</pre>
+<pre>cl.exe /D "WIN32" /D "_WINDOWS" /D "_MBCS"/D"AXIS2_DECLARE_EXPORT" 
+/D "AXIS2_SVR_MULTI_THREADED" /w /nologo $(AXIS2_INCLUDE_PATH)
+$(APACHE_INCLUDE_PATH) /I hello.c</pre>
 
 <h3>1.1.7 Deploying the Service</h3>
 
@@ -376,7 +381,11 @@ href="hello/client/hello.c.html">hello.c</a></p>
 <pre>cl.exe /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" $(AXIS2_INCLUDE_PATH) hello.c /c </pre>
 
 <p>to link,</p>
-<pre>link.exe /nologo /LIBPATH:$(AXIS2_LIBS) /LIBPATH:$(LIBXML2_INSTALL_DIR)\lib /LIBPATH:$(APACHE_INSTALL_DIR)\lib /LIBPATH:$(ZLIB_INSTALL_DIR)\lib *.obj $(AXIS2_UTIL).lib $(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:hello.exe</pre>
+<pre>link.exe /nologo /LIBPATH:$(AXIS2_LIBS)
+/LIBPATH:$(LIBXML2_INSTALL_DIR)\lib
+/LIBPATH:$(APACHE_INSTALL_DIR)\lib 
+/LIBPATH:$(ZLIB_INSTALL_DIR)\lib *.obj $(AXIS2_UTIL).lib $(AXIOM).lib
+$(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib  /OUT:hello.exe</pre>
 
 <h3>1.2.5 Running the Client</h3>
 
@@ -1366,7 +1375,9 @@ axis2_mod_log_create(const axis2_env_t *env)</font></strong>
 
 <p>The following code segmement shows the adding of handler create functions
 to the module hash map.</p>
-<pre><strong><font color="#4169E1"><a name="axis2_mod_log_fill_handler_create_func_map"></a>axis2_status_t AXIS2_CALL
+<pre><strong><font color="#4169E1"><a
+name="axis2_mod_log_fill_handler_create_func_map"></a>
+axis2_status_t AXIS2_CALL
 axis2_mod_log_fill_handler_create_func_map(axis2_module_t *module,
                                             const axis2_env_t *env)</font></strong>
 {

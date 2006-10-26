@@ -186,7 +186,8 @@ for details).</p>
 <p>First let's see how we can write a simple Web Service (echo service) using
 Axis2/C's primary interfaces and how to deploy it. For this purpose we will
 create a Web Service with one operation as follows.</p>
-<pre><br />axiom_node_t* axis2_echo_echo(axiom_node_t *echo_node){}<br /> </pre>
+<pre>
+axiom_node_t* axis2_echo_echo(axiom_node_t *echo_node){}</pre>
 
 <p>You can have a peek at the complete source code for this example echo
 service located in the "AXIS2C_HOME/samples/server/echo" directory.</p>
@@ -216,9 +217,20 @@ operations struct which defines four function pointers to be implemented and
 assigned by a service skeleton.</p>
 
 <p>They are:</p>
-<pre class="code">int (AXIS2_CALL * init) (axis2_svc_skeleton_t *svc_skeleton,<br /> const axis2_env_t *env);<br /><br />axiom_node_t * (AXIS2_CALL* invoke)(axis2_svc_skeleton_t *svc_skeli, <br /> const axis2_env_t *env, axiom_node_t *node);<br /><br />axiom_node_t *(AXIS2_CALL* on_fault)(axis2_svc_skeleton_t *svc_skeli,<br /> const axis2_env_t *env, axiom_node_t *node);<br /><br />int (AXIS2_CALL *free)(axis2_svc_skeleton_t *svc_skeli, <br /> const axis2_env_t *env);</pre>
+<pre>
+int (AXIS2_CALL * init) (axis2_svc_skeleton_t *svc_skeleton,
+ const axis2_env_t *env);
 
-<p>Let's implement the above functions for echo service.</p>
+axiom_node_t * (AXIS2_CALL* invoke)(axis2_svc_skeleton_t *svc_skeli, 
+ const axis2_env_t *env, axiom_node_t *node);
+
+axiom_node_t *(AXIS2_CALL* on_fault)(axis2_svc_skeleton_t *svc_skeli,
+ const axis2_env_t *env, axiom_node_t *node);
+
+int (AXIS2_CALL *free)(axis2_svc_skeleton_t *svc_skeli, 
+ const axis2_env_t *env);
+</pre>
+<P>Let's implement the above functions for echo service.</p>
 
 <p><i><code>/* Initialize the service */</code></i><br />
 <code>int AXIS2_CALL</code><br />
@@ -501,7 +513,7 @@ Java's services.xml file. Only difference is that instead of giving package
 qualified class name, we use the dll name for class attributes.</p>
 
 <p>"services.xml" for echo will be as follows:</p>
-<pre class="code">&lt;service name="echo"&gt;<br /> &lt;parameter name="ServiceClass" locked="xsd:false"&gt;echo&lt;/parameter&gt;<br /> &lt;description&gt;<br /> This is a echo service<br /> &lt;/description&gt;<br /><br /> &lt;operation name="echoString"&gt;<br /> &lt;parameter name="wsamapping"&gt;<br /> http://localhost:9090/axis2/services/echo/echoString<br /> &lt;/parameter&gt;<br /> &lt;/operation&gt;<br />&lt;/service&gt;</pre>
+<code class="code">&lt;service name="echo"&gt;<br /> &lt;parameter name="ServiceClass" locked="xsd:false"&gt;echo&lt;/parameter&gt;<br /> &lt;description&gt;<br /> This is a echo service<br /> &lt;/description&gt;<br /><br /> &lt;operation name="echoString"&gt;<br /> &lt;parameter name="wsamapping"&gt;<br /> http://localhost:9090/axis2/services/echo/echoString<br /> &lt;/parameter&gt;<br /> &lt;/operation&gt;<br />&lt;/service&gt;</code>
 
 <p>Name of the service will be the name of the folder with the shared library
 and services.xml. In this example we will have a folder named
@@ -515,7 +527,7 @@ services within a single interaction using the <code>axis2_svc_grp_ctx</code>
 (Service Group Context ). If you hope to use this functionality, the
 services.xml file should have following format:<br />
 </p>
-<pre class="code">&lt;serviceGroup&gt;<br /> &lt;service name="Service1"&gt;<br /> &lt;!-- details for Service1 --&gt;<br /> &lt;/service&gt;<br /> &lt;service name="Service2"&gt;<br /> &lt;!-- details for Service2 --&gt;<br /> &lt;/service&gt;<br /> &lt;module ref="ModuleName" /&gt;<br /> &lt;parameter name="serviceGroupParam1" locked="false"&gt;value 1&lt;/parameter&gt;<br />&lt;/serviceGroup&gt;</pre>
+<code class="code">&lt;serviceGroup&gt;<br /> &lt;service name="Service1"&gt;<br /> &lt;!-- details for Service1 --&gt;<br /> &lt;/service&gt;<br /> &lt;service name="Service2"&gt;<br /> &lt;!-- details for Service2 --&gt;<br /> &lt;/service&gt;<br /> &lt;module ref="ModuleName" /&gt;<br /> &lt;parameter name="serviceGroupParam1" locked="false"&gt;value 1&lt;/parameter&gt;<br />&lt;/serviceGroup&gt;</code>
 
 <p><strong>Note :</strong> Name of the service is a compulsory attribute</p>
 <a name="Step4"></a>
@@ -555,13 +567,14 @@ skeleton and other required files to support ADB (Axis Data Binding). In
 order to run the tool, <span style="font-weight: bold;">set all the .jar
 library files in the Axis2/Java to the classpath</span>. To generate code
 with no data binding support, just replace -d adb -u with -d none</p>
-<pre><br />java org.apache.axis2.wsdl.WSDL2C -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u<br /> 
+<pre>
+java org.apache.axis2.wsdl.WSDL2C -uri interoptestdoclitparameters.wsdl -ss -sd -d adb -u 
 </pre>
 
 <p>If you need an XML in/out programming model, you can just ignore the data
 binding support by setting the following parameters. Give "<code>-l c</code>"
 option to enable C language code generation.</p>
-<pre><br />java org.apache.axis2.wsdl.WSDL2C -uri interoptestdoclitparameters.wsdl -ss -sd -d none<br /> </pre>
+<pre>java org.apache.axis2.wsdl.WSDL2C -uri interoptestdoclitparameters.wsdl -ss -sd -d none</pre>
 
 <p>The WSDL <code>interoptestdoclitparameters.wsdl</code> can be found in
 &lt;axis2_src_dir&gt;/test/resources directory. This is used to generate stub
@@ -591,18 +604,105 @@ name "<code>axis2_WSDLInteropTestDocLitService.c</code>".</p>
 following code segment in the
 "<code>axis2_WSDLInteropTestDocLitService.c</code>". Fill the business logic
 inside this function as shown below:</p>
-<pre>axis2_echoStringResponse_t*<br />axis2_WSDLInteropTestDocLitService_echoString<br /> (const axis2_env_t* env ,axis2_echoString_t* param6 )<br />{<br /> /* Todo fill this with the necessary business logic */<br />}</pre>
+<pre>
+axis2_echoStringResponse_t*
+axis2_WSDLInteropTestDocLitService_echoString
+ (const axis2_env_t* env ,axis2_echoString_t* param6 )
+{
+ /* Todo fill this with the necessary business logic *}
+</pre>
 
 <p>Once the business logic is filled, it will be as follows. The code is
 simple and the inline comments provide explanation.</p>
-<pre>axis2_echoStringResponse_t*<br />axis2_WSDLInteropTestDocLitService_echoString<br /> (const axis2_env_t* env ,axis2_echoString_t* param6 )<br />{<br /> axis2_echoString_t* echo_in = param6;<br /> axis2_echoStringResponse_t* echo_out = NULL;<br /><br /> char* echo_string = NULL;<br /> <br /> /* retrieve the string input */<br /> echo_string = AXIS2_ECHOSTRING_GET_PARAM0 ( echo_in, env );<br /><br /> /* create the response and set the output string */<br /> echo_out = axis2_echoStringResponse_create ( env );<br /> AXIS2_ECHOSTRUCTRESPONSE_SET_RETURN ( echo_out, env, echo_string );<br /><br /> return echo_out;<br />}</pre>
+<pre>
+axis2_echoStringResponse_t*
+axis2_WSDLInteropTestDocLitService_echoString
+ (const axis2_env_t* env ,axis2_echoString_t* param6 )
+{
+ axis2_echoString_t* echo_in = param6;
+ axis2_echoStringResponse_t* echo_out = NULL;
 
+ char* echo_string = NULL;
+ 
+ /* retrieve the string input */
+ echo_string = AXIS2_ECHOSTRING_GET_PARAM0 ( echo_in, env );
+
+ /* create the response and set the output string */
+ echo_out = axis2_echoStringResponse_create ( env );
+ AXIS2_ECHOSTRUCTRESPONSE_SET_RETURN ( echo_out, env, echo_string );
+
+ return echo_out;
+}
+<pre>
 <h4><a id="echoStringArray">echoStringArray</a></h4>
-<pre>axis2_echoStringArrayResponse_t*<br />axis2_WSDLInteropTestDocLitService_echoStringArray<br /> (const axis2_env_t* env ,axis2_echoStringArray_t* param2 )<br /><br />{<br /> axis2_echoStringArray_t* echo_in = param2;<br /> axis2_echoStringArrayResponse_t* echo_out = NULL;<br /> axis2_ArrayOfstring_literal_t* array_in = NULL;<br /> axis2_ArrayOfstring_literal_t* array_out = NULL;<br /> char ** string_array = NULL;<br /> int string_array_length = 0;<br /> <br /> /* retrieve the array from input*/<br /> array_in = AXIS2_ECHOSTRINGARRAY_GET_PARAM0( echo_in, env);<br /> /* retrieve the string_array and array length */<br /> string_array =<br /> AXIS2_ARRAYOFSTRING_LITERAL_GET_STRING <br /> (array_in, env,&amp;string_array_length );<br /> <br /> /* create the output array and set the string array and length */<br /> array_out = axis2_ArrayOfstring_literal_create ( env );<br /> AXIS2_ARRAYOFSTRING_LITERAL_SET_STRING(<br /> array_out, env, string_array, string_array_length );<br /> <br /> /* create the response and set the output*/<br /> echo_out = axis2_echoStringArrayResponse_create ( env );<br /> AXIS2_ECHOSTRINGARRAYRESPONSE_SET_RETURN ( echo_out, env , array_out );<br /> <br /> return echo_out;<br /><br />}</pre>
+<pre>
+axis2_echoStringArrayResponse_t*
+axis2_WSDLInteropTestDocLitService_echoStringArray
+ (const axis2_env_t* env ,axis2_echoStringArray_t* param2 )
 
+{
+ axis2_echoStringArray_t* echo_in = param2;
+ axis2_echoStringArrayResponse_t* echo_out = NULL;
+ axis2_ArrayOfstring_literal_t* array_in = NULL;
+ axis2_ArrayOfstring_literal_t* array_out = NULL;
+ char ** string_array = NULL;
+ int string_array_length = 0;
+ 
+ /* retrieve the array from input*/
+ array_in = AXIS2_ECHOSTRINGARRAY_GET_PARAM0( echo_in, env);
+ /* retrieve the string_array and array length */
+ string_array =
+ AXIS2_ARRAYOFSTRING_LITERAL_GET_STRING 
+ (array_in, env,&string_array_length );
+ 
+ /* create the output array and set the string array and length */
+ array_out = axis2_ArrayOfstring_literal_create ( env );
+ AXIS2_ARRAYOFSTRING_LITERAL_SET_STRING(
+ array_out, env, string_array, string_array_length );
+ 
+ /* create the response and set the output*/
+ echo_out = axis2_echoStringArrayResponse_create ( env );
+ AXIS2_ECHOSTRINGARRAYRESPONSE_SET_RETURN ( echo_out, env , array_out
+ );
+ 
+ return echo_out;
+</pre>
 <h4><a id="echoStruct">echoStruct</a></h4>
-<pre>axis2_echoStructResponse_t*<br />axis2_WSDLInteropTestDocLitService_echoStruct<br /> (const axis2_env_t* env ,axis2_echoStruct_t* param4 )<br /><br />{<br /> axis2_echoStruct_t* echo_in = param4;<br /> axis2_echoStructResponse_t* echo_out = NULL;<br /> axis2_SOAPStruct_t* struct_in = NULL;<br /> axis2_SOAPStruct_t* struct_out = NULL;<br /> <br /> float float_val = 0;<br /> int int_val = 0;<br /> char* string_val = NULL;<br /> <br /> /* retrieve the structure from input */<br /> struct_in = AXIS2_ECHOSTRUCT_GET_PARAM0( echo_in, env);<br /><br /> /* retrieve each value from the structure */ <br /> float_val = AXIS2_SOAPSTRUCT_GET_VARFLOAT ( struct_in, env);<br /> int_val = AXIS2_SOAPSTRUCT_GET_VARINT ( struct_in, env);<br /> string_val = AXIS2_SOAPSTRUCT_GET_VARSTRING ( struct_in, env);<br /> <br /> /* create the output structure and set values */<br /> struct_out = axis2_SOAPStruct_create( env );<br /> AXIS2_SOAPSTRUCT_SET_VARFLOAT ( struct_out, env, float_val );<br /> AXIS2_SOAPSTRUCT_SET_VARINT ( struct_out, env, int_val );<br /> AXIS2_SOAPSTRUCT_SET_VARSTRING ( struct_out, env, string_val );<br /> <br /> /* create the response and set the output structure*/<br /> echo_out = axis2_echoStructResponse_create ( env );<br /> AXIS2_ECHOSTRUCTRESPONSE_SET_RETURN ( echo_out, env, struct_out );<br /> <br /> return echo_out;<br />}<br /></pre>
+<pre>
+axis2_echoStructResponse_t*
+axis2_WSDLInteropTestDocLitService_echoStruct
+ (const axis2_env_t* env ,axis2_echoStruct_t* param4 )
 
+{
+ axis2_echoStruct_t* echo_in = param4;
+ axis2_echoStructResponse_t* echo_out = NULL;
+ axis2_SOAPStruct_t* struct_in = NULL;
+ axis2_SOAPStruct_t* struct_out = NULL;
+ 
+ float float_val = 0;
+ int int_val = 0;
+ char* string_val = NULL;
+ 
+ /* retrieve the structure from input */
+ struct_in = AXIS2_ECHOSTRUCT_GET_PARAM0( echo_in, env);
+
+ /* retrieve each value from the structure */ 
+ float_val = AXIS2_SOAPSTRUCT_GET_VARFLOAT ( struct_in, env);
+ int_val = AXIS2_SOAPSTRUCT_GET_VARINT ( struct_in, env);
+ string_val = AXIS2_SOAPSTRUCT_GET_VARSTRING ( struct_in, env);
+ 
+ /* create the output structure and set values */
+ struct_out = axis2_SOAPStruct_create( env );
+ AXIS2_SOAPSTRUCT_SET_VARFLOAT ( struct_out, env, float_val );
+ AXIS2_SOAPSTRUCT_SET_VARINT ( struct_out, env, int_val );
+ AXIS2_SOAPSTRUCT_SET_VARSTRING ( struct_out, env, string_val );
+ 
+ /* create the response and set the output structure*/
+ echo_out = axis2_echoStructResponse_create ( env );
+ AXIS2_ECHOSTRUCTRESPONSE_SET_RETURN ( echo_out, env, struct_out );
+ 
+ return echo_out;
+</pre>
 <h4><a id="services_xml">services.xml</a></h4>
 Axis2 uses "services.xml" to hold the configurations for a particular Web
 service deployed in the Axis2 engine. When we generate the skeleton using the
@@ -722,8 +822,49 @@ Services, ranging from pure blocking single channel invocations to a
 non-blocking dual channel invocation. Let's first see how we can write a
 client to invoke "echo" operation of "echo" service using the simplest
 blocking invocation. The client code you need to write is as follows.</p>
-<pre> <br /> <span style="color: rgb(36, 193, 19);">/* Create EPR with given address */</span><br />endpoint_ref = axis2_endpoint_ref_create(env, address);<br /><span style="color: rgb(36, 193, 19);">/* Setup options */</span><br />options = axis2_options_create(env);<br />AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);<br /><span style="color: rgb(36, 193, 19);">/* Set the deploy folder */</span><br />client_home = AXIS2_GETENV("AXIS2C_HOME");<br />if (!client_home)<br />client_home = "../../deploy";<br /><span style="color: rgb(36, 193, 19);">/* Create service client */</span><br />svc_client = axis2_svc_client_create(env, client_home);<br />if (!svc_client)<br />{<br />printf("Error creating service client\n");<br />AXIS2_LOG_ERROR(env-&gt;log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"<br />" %d :: %s", env-&gt;error-&gt;error_number,<br />AXIS2_ERROR_GET_MESSAGE(env-&gt;error));<br />}<br /><span style="color: rgb(36, 193, 19);">/* Set service client options */</span><br />AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options); <span style="color: rgb(36, 193, 19);">/* Build the SOAP request message payload using OM API.*/</span><br />payload = build_om_payload_for_echo_svc(env);<br /><span style="color: rgb(36, 193, 19);">/* Send request */</span><br />ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);<br /><span style="color: rgb(36, 193, 19);">/* Print result */</span><br />if(ret_node)<br />{<br />axis2_char_t *om_str = NULL;<br />om_str = AXIOM_NODE_TO_STRING(ret_node, env);<br />if (om_str)<br />printf("\nReceived OM : %s\n", om_str);<br />printf("\necho client invoke SUCCESSFUL!\n");<br />}<br />else<br />{<br />AXIS2_LOG_ERROR(env-&gt;log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"<br />" %d :: %s", env-&gt;error-&gt;error_number,<br />AXIS2_ERROR_GET_MESSAGE(env-&gt;error));<br />printf("echo client invoke FAILED!\n");<br />}</pre>
-
+<pre>
+ /* Create EPR with given address */
+endpoint_ref = axis2_endpoint_ref_create(env, address);
+/* Setup options */
+options = axis2_options_create(env);
+AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
+/* Set the deploy folder */
+client_home = AXIS2_GETENV("AXIS2C_HOME");
+if (!client_home)
+client_home = "../../deploy";
+/* Create service client */
+svc_client = axis2_svc_client_create(env, client_home);
+    if (!svc_client)
+    {
+       printf("Error creating service client\n");
+       AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED:
+        Error code: 
+%	d :: %s", env->error->error_number,
+        AXIS2_ERROR_GET_MESSAGE(env->error));
+    }
+/* Set service client options */
+AXIS2_SVC_CLIENT_SET_OPTIONS(svc_client, env, options); /* Build the
+SOAP request message payload using OM API.*/
+payload = build_om_payload_for_echo_svc(env);
+/* Send request */
+ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
+/* Print result */
+    if(ret_node)
+    {
+       axis2_char_t *om_str = NULL;
+       om_str = AXIOM_NODE_TO_STRING(ret_node, env);
+       if (om_str)
+          printf("\nReceived OM : %s\n", om_str);
+       printf("\necho client invoke SUCCESSFUL!\n");
+    }      
+    else
+    {
+       AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+" %d :: %s", env->error->error_number,
+       AXIS2_ERROR_GET_MESSAGE(env->error));
+       printf("echo client invoke FAILED!\n");
+}
+</pre>
 <p>The comments in the above code explains the code. In simple terms, these
 are the steps:</p>
 <ol>
@@ -758,19 +899,34 @@ API for users.</p>
 echo_non_blocking.c. The changes that user may have to do with respect to the
 "echo_blocking" client in order to make it non-blocking, would be as
 follows:</p>
-<pre style="margin-bottom: 0.2in;">AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);</pre>
+<pre>AXIS2_SVC_CLIENT_SEND_RECEIVE_NON_BLOCKING(svc_client, env, payload, callback);</pre>
 
 <p>Unlike "send_receive", "send_receive_non_blocking" accepts a callback
 struct in addition to payload. Axis2/C client API provides a callback struct
 with the following associated functions:</p>
-<pre>axis2_status_t (AXIS2_CALL *<br />on_complete)(<br /> struct axis2_callback *callback,<br /> const axis2_env_t *env);<br /><br />axis2_status_t (AXIS2_CALL *<br />on_error)(<br /> struct axis2_callback *callback,<br /> const axis2_env_t *env,<br /> int exception);<br /><br />axis2_bool_t (AXIS2_CALL *<br />get_complete)(<br /> struct axis2_callback *callback,<br /> const axis2_env_t *env);</pre>
+<pre>
+axis2_status_t (AXIS2_CALL *
+on_complete)(
+ struct axis2_callback *callback,
+ const axis2_env_t *env);
 
+axis2_status_t (AXIS2_CALL *
+on_error)(
+ struct axis2_callback *callback,
+ const axis2_env_t *env,
+ int exception);
+
+axis2_bool_t (AXIS2_CALL *
+get_complete)(
+ struct axis2_callback *callback,
+ const axis2_env_t *env);
+</pre>
 <p>The user is expected to implement the "on_complete " and "on_error "
 functions and set them on the callback using the "set_on_complete" and
 "set_on_error" API calls. In the sample, ''on complete'' is implemented by
 "echo_callback_on_complete" function and is set on the callback struct
 created as shown below:</p>
-<pre style="margin-bottom: 0.2in;">AXIS2_CALLBACK_SET_ON_COMPLETE(callback, echo_callback_on_complete);</pre>
+<pre>AXIS2_CALLBACK_SET_ON_COMPLETE(callback, echo_callback_on_complete);</pre>
 
 <p>Axis2/C engine calls the "on_complete" method once the Web service
 response is received by the Axis2/C client API (that is service_client). This
@@ -817,7 +973,7 @@ transports one has to"engage" the addressing module.</p>
 <p>To engage the addressing module simply add a module reference for
 addressing in the "axis2.xml" configuration file. This can be done by adding
 the following line to "axis2.xml" file in the deployment folder.</p>
-<pre style="margin-bottom: 0.2in;"> &lt;module ref="addressing"/&gt;</pre>
+<pre> &lt;module ref="addressing"/&gt;</pre>
 
 <p><strong>Note:</strong> Once you modify the "axis2.xml" file you have to restart the server.
 You also have to have the addressing module installed in the modules folder
@@ -863,26 +1019,159 @@ generate the Axis2/C stub code with data binding support. You should have
 <a
 href="http://svn.apache.org/viewvc/webservices/axis2/trunk/java">Axis2/Java
 source SVN</a> revision 414253 or later to generate Axis2/C code.</p>
-<pre><br />java WSDL2C -uri interoptestdoclitparameters.wsdl -d adb -u<br /> </pre>
+<pre>java WSDL2C -uri interoptestdoclitparameters.wsdl -d adb -u</pre>
 
 <p>In order to ignore the data binding support (to use XML in/out model),
 just use the following parameters.</p>
-<pre><br />java WSDL2C -uri interoptestdoclitparameters.wsdl -d none<br /> </pre>
+<pre>java WSDL2C -uri interoptestdoclitparameters.wsdl -d none</pre>
 
 <p>The following section demonstrates how to use the generated code using the
 wsdl file "interoptestdoclitparameters.wsdl" to implement the client business
 logic.</p>
 <a id="Codegenerator_Client_echoString"></a>
 <h4>Client for echoString operation</h4>
-<pre>#include "axis2_WSDLInteropTestDocLitService_stub.h"<br /><br />/*<br /> * demonstrates how to execute the service using databinding<br /> */<br />void invoke_service_using_databinding ( axis2_stub_t* stub,<br /> const axis2_env_t* env );<br />int main(int argc, char** argv)<br />{<br /> /* variables to keep the environment */<br /> axis2_env_t* env = NULL;<br /> axis2_char_t* client_home = NULL;<br /> axis2_char_t* endpoint_uri =NULL;<br /> axis2_stub_t* stub= NULL;<br /> <br /> /* endpoint uri: if it is NULL endpoint will be picked from the WSDL */ <br /> endpoint_uri = "http://localhost:9090/axis2/services/WSDLInteropTestDocLitService";<br /><br /> env = axis2_env_create_all( "codegen_utest_blocking.log", <br /> AXIS2_LOG_LEVEL_TRACE);<br /><br /> /* Set up deploy folder.*/<br /> client_home = AXIS2_GETENV("AXIS2C_HOME");<br /> if (!client_home)<br /> client_home = "../../../deploy";<br /> <br /> /* create the stub using generated code */<br /> stub = axis2_WSDLInteropTestDocLitService_stub_create( env, client_home , endpoint_uri); <br /> <br /> /* calls the service*/<br /> invoke_service_using_databinding ( stub, env );<br /><br /> return 0;<br />}<br /><br />void invoke_service_using_databinding ( axis2_stub_t* stub,<br /> const axis2_env_t* env )<br />{<br /> /* variables used by databinding */<br /> axis2_echoString_t* echo_in = NULL;<br /> axis2_echoStringResponse_t* echo_out = NULL;<br /> <br /> /* variables to store data */<br /> char* echo_str = "hello";<br /> char* return_echo_str = NULL;<br /><br /> /* create the input params using databinding */<br /> echo_in = axis2_echoString_create( env );<br /> AXIS2_ECHOSTRING_SET_PARAM0( echo_in, env, echo_str );<br /><br /> /* invoke the web service method*/<br /> echo_out = axis2_echoString( stub, env, echo_in );<br /> <br /> /* return the output params using databinding */<br /> return_echo_str = AXIS2_ECHOSTRUCTRESPONSE_GET_RETURN( echo_out, env );<br /> <br /> /* print the result */<br /> printf ( "returned string %s\n", return_echo_str );<br /><br />} </pre>
+<pre>#include "axis2_WSDLInteropTestDocLitService_stub.h"
+/*
+ * demonstrates how to execute the service using databinding */
+void invoke_service_using_databinding ( axis2_stub_t* stub, 
+                                    const axis2_env_t* env );
+int main(int argc, char** argv)
+{
+/* variables to keep the environment */
+ axis2_env_t* env = NULL;
+ axis2_char_t* client_home = NULL;
+ axis2_char_t* endpoint_uri =NULL;
+ axis2_stub_t* stub= NULL;
+ /* endpoint uri: if it is NULL endpoint will be picked from the WSDL */ 
+ endpoint_uri =
+ "http://localhost:9090/axis2/services/WSDLInteropTestDocLitService";
+ env = axis2_env_create_all( "codegen_utest_blocking.log", 
+ AXIS2_LOG_LEVEL_TRACE);
+ /* Set up deploy folder.*/
+ client_home = AXIS2_GETENV("AXIS2C_HOME");
+ if (!client_home)
+ client_home = "../../../deploy";
+ /* create the stub using generated code */
+ stub = axis2_WSDLInteropTestDocLitService_stub_create( env,
+ client_home , endpoint_uri); 
+ /* calls the service*/
+ invoke_service_using_databinding ( stub, env );
+ return 0;
+} 
+
+void invoke_service_using_databinding ( axis2_stub_t* stub,
+ const axis2_env_t* env )
+ {
+ /* variables used by databinding */
+ axis2_echoString_t* echo_in = NULL;
+ axis2_echoStringResponse_t* echo_out = NULL;
+ /* variables to store data */
+ char* echo_str = "hello";
+ char* return_echo_str = NULL;
+ /* create the input params using databinding */
+ echo_in = axis2_echoString_create( env );
+ AXIS2_ECHOSTRING_SET_PARAM0( echo_in, env, echo_str );
+ /* invoke the web service method*/
+ echo_out = axis2_echoString( stub, env, echo_in );
+ /* return the output params using databinding */
+ return_echo_str = AXIS2_ECHOSTRUCTRESPONSE_GET_RETURN( echo_out, env
+ );
+ /* print the result */
+ printf ( "returned string %s\n", return_echo_str );
+} </pre>
 <a id="Codegenerator_Client_echoStringArray"></a>
 <h4>Client for echoStringArray operation</h4>
 You can change the <code>invoke_service_using_databinding</code> function to
 invoke the echoStringArray operation as follows.
-<pre>void invoke_service_using_databinding ( axis2_stub_t* stub,<br /> const axis2_env_t* env )<br />{<br /> /* variables used by databinding */<br /> axis2_echoStringArray_t* echo_in = NULL;<br /> axis2_echoStringArrayResponse_t* echo_out = NULL;<br /> axis2_ArrayOfstring_literal_t* array_in = NULL;<br /> axis2_ArrayOfstring_literal_t* array_out = NULL;<br /><br /> /* variables to store data */<br /> char *string_array[]= { "test","this","array" };<br /> int array_length = 3;<br /><br /> char **string_return_string_array = NULL;<br /> int return_array_length = 0;<br /> int i = 0; <br /> <br /> /*create the input array and set the string array and length*/<br /> array_in = axis2_ArrayOfstring_literal_create (env );<br /> AXIS2_ARRAYOFSTRING_LITERAL_SET_STRING( array_in, env,<br /> string_array, array_length );<br /><br /> /* create the request and set the inputs */<br /> echo_in = axis2_echoStringArray_create ( env );<br /> AXIS2_ECHOSTRINGARRAY_SET_PARAM0( echo_in, env, array_in );<br /><br /> /* invoke the web service method*/<br /> echo_out = axis2_echoStringArray( stub, env, echo_in );<br /><br /> /* return the output params using databinding */<br /> array_out = AXIS2_ECHOSTRINGARRAYRESPONSE_GET_RETURN( echo_out, env ); <br /> <br /> /* retrieve the string array values and length */<br /> string_return_string_array = AXIS2_ARRAYOFSTRING_LITERAL_GET_STRING<br /> ( array_out, env, &amp;return_array_length );<br /><br /> /* print the output */<br /> for ( i = 0; i &lt; return_array_length ; i ++ )<br /> {<br /> printf("value%d: %s \n", i, string_return_string_array[i] );<br /> }<br />}</pre>
+<pre>void invoke_service_using_databinding ( axis2_stub_t* stub, const
+axis2_env_t* env )
+ {
+ /* variables used by databinding */
+ axis2_echoStringArray_t* echo_in = NULL;
+ axis2_echoStringArrayResponse_t* echo_out = NULL;
+ axis2_ArrayOfstring_literal_t* array_in = NULL;
+ axis2_ArrayOfstring_literal_t* array_out = NULL;
+  /* variables to store data */
+ char *string_array[]= { "test","this","array" };
+ int array_length = 3;
+  char **string_return_string_array = NULL;
+ int return_array_length = 0;
+ int i = 0;
+ 
+  /*create the input array and set the string array and length*/
+ array_in = axis2_ArrayOfstring_literal_create (env );
+ AXIS2_ARRAYOFSTRING_LITERAL_SET_STRING( array_in, env,
+ string_array, array_length );
+
+ /* create the request and set the inputs */
+ echo_in = axis2_echoStringArray_create ( env );
+ AXIS2_ECHOSTRINGARRAY_SET_PARAM0( echo_in, env, array_in );
+
+ /* invoke the web service method*/
+ echo_out = axis2_echoStringArray( stub, env, echo_in );
+
+ /* return the output params using databinding */
+ array_out = AXIS2_ECHOSTRINGARRAYRESPONSE_GET_RETURN( echo_out, env
+ ); 
+ 
+ /* retrieve the string array values and length */
+ string_return_string_array = AXIS2_ARRAYOFSTRING_LITERAL_GET_STRING
+ ( array_out, env, &amp;return_array_length );
+
+ /* print the output */
+ for ( i = 0; i &lt; return_array_length ; i ++ )
+  {
+    printf("value%d: %s \n", i, string_return_string_array[i] );
+  }
+ </pre>
+
 <a id="Codegenerator_Client_echoStruct"></a>
 <h4>Client for echoStruct operation</h4>
-<pre>void invoke_service_using_databinding ( axis2_stub_t* stub,<br /> const axis2_env_t* env )<br />{<br /> /* variables used by databinding */<br /> axis2_echoStruct_t* echo_in = NULL;<br /> axis2_echoStructResponse_t* echo_out = NULL;<br /> axis2_SOAPStruct_t* struct_in = NULL;<br /> axis2_SOAPStruct_t* struct_out = NULL;<br /><br /><br /> /* variables to store data */<br /> float float_val = 11;<br /> int int_val = 10;<br /> char* string_val = "hello struct";<br /><br /> int ret_int_val = 0;<br /> float ret_float_val = 0;<br /> char* ret_string_val = "";<br /> <br /> /* create the struct and set input values*/<br /> struct_in = axis2_SOAPStruct_create( env );<br /> AXIS2_SOAPSTRUCT_SET_VARFLOAT ( struct_in, env, float_val );<br /> AXIS2_SOAPSTRUCT_SET_VARINT ( struct_in, env, int_val );<br /> AXIS2_SOAPSTRUCT_SET_VARSTRING ( struct_in, env, string_val );<br /><br /> /* create the request and set the struct */<br /> echo_in = axis2_echoStruct_create( env );<br /> AXIS2_ECHOSTRUCT_SET_PARAM0( echo_in, env, struct_in );<br /><br /> /* invoke the web service method */<br /> echo_out = axis2_echoStruct( stub, env, echo_in );<br /><br /> /* retrieve the structure from response */<br /> struct_out = AXIS2_ECHOSTRUCTRESPONSE_GET_RETURN( echo_out, env );<br /><br /> /* retrieve each value from the structure */<br /> ret_float_val = AXIS2_SOAPSTRUCT_GET_VARFLOAT ( struct_out, env );<br /> ret_int_val = AXIS2_SOAPSTRUCT_GET_VARINT ( struct_out, env );<br /> ret_string_val = AXIS2_SOAPSTRUCT_GET_VARSTRING ( struct_out, env );<br /><br /> /* print the values */<br /> printf ( "returned values \n");<br /> printf (" float %f\n", ret_float_val );<br /> printf (" int %d \n", ret_int_val );<br /> printf (" string %s \n", ret_string_val);<br /> <br />}</pre>
+<pre>void invoke_service_using_databinding ( axis2_stub_t* stub,
+ const axis2_env_t* env )
+ {
+ /* variables used by databinding */
+ axis2_echoStruct_t* echo_in = NULL;
+ axis2_echoStructResponse_t* echo_out = NULL;
+ axis2_SOAPStruct_t* struct_in = NULL;
+ axis2_SOAPStruct_t* struct_out = NULL;
+
+
+ /* variables to store data */
+ float float_val = 11;
+ int int_val = 10;
+ char* string_val = "hello struct";
+ int ret_int_val = 0;
+ float ret_float_val = 0;
+ char* ret_string_val = "";
+ 
+ /* create the struct and set input values*/
+ struct_in = axis2_SOAPStruct_create( env );
+ AXIS2_SOAPSTRUCT_SET_VARFLOAT ( struct_in, env, float_val );
+ AXIS2_SOAPSTRUCT_SET_VARINT ( struct_in, env, int_val );
+ AXIS2_SOAPSTRUCT_SET_VARSTRING ( struct_in, env, string_val );
+
+ /* create the request and set the struct */
+ echo_in = axis2_echoStruct_create( env );
+ AXIS2_ECHOSTRUCT_SET_PARAM0( echo_in, env, struct_in );
+ /* invoke the web service method */
+ echo_out = axis2_echoStruct( stub, env, echo_in );
+
+ /* retrieve the structure from response */
+ struct_out = AXIS2_ECHOSTRUCTRESPONSE_GET_RETURN( echo_out, env );
+
+ /* retrieve each value from the structure */
+ ret_float_val = AXIS2_SOAPSTRUCT_GET_VARFLOAT ( struct_out, env );
+ ret_int_val = AXIS2_SOAPSTRUCT_GET_VARINT ( struct_out, env );
+ ret_string_val = AXIS2_SOAPSTRUCT_GET_VARSTRING ( struct_out, env );
+
+ /* print the values */
+ printf ( "returned values \n");
+ printf (" float %f\n", ret_float_val );
+ printf (" int %d \n", ret_int_val );
+ printf (" string %s \n", ret_string_val);
+ }
+ </pre>
 <a id="Providing_security_using_Rampart"></a>
 <h2>Providing Security using Rampart/C</h2>
 
@@ -895,17 +1184,21 @@ User's Guide we will explain how to use Rampart inside Axis2/C.</p>
 <ul>
   <li><b>Step 1:</b> Copy rampart directory created in
     AXIS2C_HOME/deploy/rampart to AXIS2C_HOME/deploy/modules
-    <pre class="code">cp $AXIS2C_HOME/deploy/rampart/rampart $AXIS2C_HOME/deploy/modules</pre>
+    <pre>cp $AXIS2C_HOME/deploy/rampart/rampart $AXIS2C_HOME/deploy/modules</pre>
   </li>
   <li><b>Step 2:</b>Add following line to the axis2.xml under axisconfig.
     This will engage the rampart module.
-    <pre class="code">&lt;module ref="rampart"/&gt;</pre>
+    <pre>&lt;module ref="rampart"/&gt;</pre>
   </li>
   <li><b>Step 3:</b>Then add the following to axis2.xml file to specify
     In/Out flow parameters. You may find a sample axis2.xml file in
     rampart/samples/client/echo/data/
-    <pre class="code"> &lt;parameter name="OutflowSecurity"&gt;<br /> &lt;action&gt;<br /> &lt;items&gt;UsernameToken Timestamp&lt;/items&gt;<br /> &lt;user&gt;Gajaba&lt;/user&gt;<br /> &lt;passwordType&gt;passwordDigest&lt;/passwordType&gt;<br /> &lt;passwordCallbackClass&gt;/home/gajaba/axis2/c/deploy/rampart/samples/callback/libpwcb.so&lt;/passwordCallbackClass&gt;<br /> &lt;timeToLive&gt;360&lt;/timeToLive&gt;<br /> &lt;/action&gt;<br /> &lt;/parameter&gt;<br /> </pre>
-    <pre class="code"> &lt;parameter name="InflowSecurity"&gt;<br /> &lt;action&gt;<br /> &lt;items&gt;UsernameToken Timestamp&lt;/items&gt;<br /> &lt;passwordCallbackClass&gt;/home/gajaba/axis2/c/deploy/rampart/samples/callback/libpwcb.so&lt;/passwordCallbackClass&gt;<br /> &lt;/action&gt;<br /> &lt;/parameter&gt;<br /> </pre>
+    <p> &lt;parameter name="OutflowSecurity"&gt;&lt;action&gt;<br /> &lt;items&gt;UsernameToken Timestamp&lt;/items&gt;<br /> &lt;user&gt;Gajaba&lt;/user&gt;<br /> &lt;passwordType&gt;passwordDigest&lt;/passwordType&gt;<br /> &lt;passwordCallbackClass&gt;/home/gajaba/axis2/c/deploy/rampart/samples/callback/libpwcb.so&lt;/passwordCallbackClass&gt;<br /> &lt;timeToLive&gt;360&lt;/timeToLive&gt;<br /> &lt;/action&gt;<br /> &lt;/parameter&gt;<br /> </p>
+    <p class="code"> &lt;parameter name="InflowSecurity"&gt;<br />
+    &lt;action&gt;<br /> &lt;items&gt;UsernameToken
+    Timestamp&lt;/items&gt;<br />
+    &lt;passwordCallbackClass&gt;/home/gajaba/axis2/c/deploy/rampart/samples/callback/libpwcb.so&lt;/passwordCallbackClass&gt;<br /> &lt;/action&gt;<br /> &lt;/parameter&gt;<br /> </p>
+
   </li>
 </ul>
 
@@ -915,7 +1208,7 @@ User's Guide we will explain how to use Rampart inside Axis2/C.</p>
 <p>Now everything is setup to try out the sample. Start axis2 server and run
 the sample under rampart/samples/client/echo. If everything works fine a
 security header should be added to the outgoing SOAP message.</p>
-<pre class="code">&lt;wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"&gt;<br /> &lt;wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"&gt;<br /> &lt;wsse:Username&gt;Gajaba&lt;/wsse:Username&gt;<br /> &lt;wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest"&gt;WNPznBN3PeLypKYXlwV7w9zJZ9o=&lt;/wsse:Password&gt;<br /> &lt;wsse:Nonce&gt;ICAgICAgIDEwNDY0NDk1Mg==&lt;/wsse:Nonce&gt;<br /> &lt;wsu:Created&gt;2006-08-28T11:52:27Z&lt;/wsu:Created&gt;<br /> &lt;/wsse:UsernameToken&gt;<br /> &lt;wsu:Timestamp xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"&gt;<br /> &lt;wsu:Created&gt;2006-08-28T11:52:27Z&lt;/wsu:Created&gt;<br /> &lt;wsu:Expires&gt;2006-08-28T11:58:27Z&lt;/wsu:Expires&gt;<br /> &lt;/wsu:Timestamp&gt;<br />&lt;/wsse:Security&gt;<br /></pre>
+<p>&lt;wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"&gt;<br /> &lt;wsse:UsernameToken xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"&gt;<br /> &lt;wsse:Username&gt;Gajaba&lt;/wsse:Username&gt;<br /> &lt;wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest"&gt;WNPznBN3PeLypKYXlwV7w9zJZ9o=&lt;/wsse:Password&gt;<br /> &lt;wsse:Nonce&gt;ICAgICAgIDEwNDY0NDk1Mg==&lt;/wsse:Nonce&gt;<br /> &lt;wsu:Created&gt;2006-08-28T11:52:27Z&lt;/wsu:Created&gt;<br /> &lt;/wsse:UsernameToken&gt;<br /> &lt;wsu:Timestamp xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"&gt;<br /> &lt;wsu:Created&gt;2006-08-28T11:52:27Z&lt;/wsu:Created&gt;<br /> &lt;wsu:Expires&gt;2006-08-28T11:58:27Z&lt;/wsu:Expires&gt;<br /> &lt;/wsu:Timestamp&gt;<br />&lt;/wsse:Security&gt;<br /></p>
 
 <p><strong>Note: </strong>For the above sample we have used the same axis2.xml file for
 both server and the client. But in the real world this is not possible. In
@@ -972,7 +1265,9 @@ few hard-coded passwords. It assigns a function to the function pointer.</p>
 
 <p><code>callback_password</code> is a function pointer to any function which
 has the following signature.</p>
-<pre class="code"><code>axis2_char_t</code>* your_function(rampart_callback_t *rcb,<br /> const axis2_env_t *env, const axis2_char_t *username)</pre>
+<pre class="code"><code>axis2_char_t</code>*
+your_function(rampart_callback_t *rcb,
+              const axis2_env_t *env, const axis2_char_t *username)</pre>
 
 <p><code>your_function</code> should return the password as
 <code>axis2_char_t</code>* per the username specified, if any. Inside your
@@ -987,7 +1282,9 @@ compatibility with java implementation]</p>
 
 <p>Outflow parameters specified in the axis2.xml can be added dynamically in
 the client level. This can be done as shown in the following sample code.</p>
-<pre class="code"> un_property = axis2_property_create(env);<br /> AXIS2_PROPERTY_SET_VALUE(un_property, env, "Gajaba");<br /> AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_USER, un_property);<br /></pre>
+<pre class="code"> un_property = axis2_property_create(env);
+AXIS2_PROPERTY_SET_VALUE(un_property, env, "Gajaba");
+AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_USER, un_property);</pre>
 
 <p>The above code will set the username parameter dynamically. All the values
 specified in the axis2.xml will be overridden by the dynamic settings.</p>
