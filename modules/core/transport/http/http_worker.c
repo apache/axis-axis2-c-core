@@ -174,7 +174,7 @@ axis2_http_worker_process_request(
     axis2_char_t *url_external_form = NULL;
     axis2_qname_t *tmp_qname = NULL;
     axis2_char_t *svc_grp_uuid = NULL;
-	 axis2_char_t *path = NULL;
+    axis2_char_t *path = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, svr_conn, AXIS2_FAILURE);
@@ -249,15 +249,16 @@ axis2_http_worker_process_request(
         axis2_http_worker_set_transport_out_config(http_worker, env, conf_ctx,
                 response);
     }
+
     svr_ip = AXIS2_SIMPLE_HTTP_SVR_CONN_GET_SVR_IP(svr_conn, env);
 
-	path =   AXIS2_HTTP_REQUEST_LINE_GET_URI(
-		AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
-			simple_request, env), env);
+    path =   AXIS2_HTTP_REQUEST_LINE_GET_URI(
+	AXIS2_HTTP_SIMPLE_REQUEST_GET_REQUEST_LINE(
+	    simple_request, env), env);
 
     request_url = axis2_url_create(env, "http", svr_ip,
-								   http_worker_impl->svr_port,
-								   path);
+				   http_worker_impl->svr_port,
+				   path);
 
 	url_external_form = AXIS2_URL_TO_EXTERNAL_FORM(request_url, env);
     property = axis2_property_create(env);

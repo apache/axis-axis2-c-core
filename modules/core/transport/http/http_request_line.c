@@ -203,7 +203,7 @@ axis2_http_request_line_parse_line(
     }
     *tmp++ = '\0';
     uri = tmp;
-    tmp = strchr(tmp, ' ');
+    tmp = strrchr(tmp, ' ');
     if (NULL == tmp)
     {
         AXIS2_FREE(env->allocator, req_line);
