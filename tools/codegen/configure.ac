@@ -35,7 +35,7 @@ AC_C_CONST
 dnl Checks for libraries
 AC_CHECK_LIB(dl, dlopen)
 AC_CHECK_LIB(z, inflate)
-AC_CHECK_LIB(cutest, CuTestInit)
+dnl AC_CHECK_LIB(cutest, CuTestInit)
 AC_CHECK_LIB(xslt, xsltApplyStylesheet)
 
 dnl Checks for library functions.

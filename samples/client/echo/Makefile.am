@@ -5,7 +5,6 @@ samples_DATA=echo.c README.txt Makefile.am Makefile.in
 echo_SOURCES = echo.c
 
 echo_LDADD   = $(LDFLAGS) \
-                    -L$(AXIS2C_HOME)/lib \
 					-laxis2_util \
                     -laxis2_axiom \
                     -laxis2_wsdl \

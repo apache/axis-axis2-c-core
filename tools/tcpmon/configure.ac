@@ -38,7 +38,7 @@ AC_FUNC_REALLOC
 AC_CHECK_FUNCS([memmove])
 
 AC_CHECK_LIB(z, inflate)
-AC_CHECK_LIB(cutest, CuTestInit)
+dnl AC_CHECK_LIB(cutest, CuTestInit)
 
 AC_MSG_CHECKING(whether to build libxml2 xml parser library)
 AC_ARG_ENABLE(libxml2, [  --enable-libxml2    build libxml2 xml parser library wrapper. default=yes],

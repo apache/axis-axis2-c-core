@@ -87,7 +87,7 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
 	TESTDIR=""
 )
 
-AC_CHECK_LIB(cutest, CuTestInit, [], [TESTDIR=""])
+dnl AC_CHECK_LIB(cutest, CuTestInit, [], [TESTDIR=""])
 
 UTILINC=$axis2_utilinc
 AXIOMINC=$axiominc

@@ -87,7 +87,7 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
   TESTDIR=""
 )
 
-AC_CHECK_LIB(cutest, CuTestInit, [], [TESTDIR=""])
+dnl AC_CHECK_LIB(cutest, CuTestInit, [], [TESTDIR=""])
 
 AC_MSG_CHECKING(To Use Xml Schema. This is a compulsory module to build Woden C)
 AC_ARG_WITH(axis2_xml_schema,
