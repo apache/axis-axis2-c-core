@@ -520,8 +520,7 @@ axis2_op_client_execute(
                 if (AXIS2_STRCMP(mep, AXIS2_MEP_URI_OUT_ONLY) == 0 ||
                         AXIS2_STRCMP(mep, AXIS2_MEP_URI_ROBUST_OUT_ONLY) == 0)
                 {
-                    return AXIS2_ERROR_GET_STATUS_CODE(env->error);
-                    /*return AXIS2_SUCCESS;*/
+                    return AXIS2_SUCCESS;
                 }
                 else
                     return AXIS2_FAILURE;
