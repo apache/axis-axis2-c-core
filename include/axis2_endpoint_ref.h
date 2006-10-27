@@ -318,6 +318,18 @@ extern "C"
         const axis2_env_t *env,
         const axis2_char_t *address);
 
+    /**
+     * Frees the endpoint_ref given as a void pointer. This method would cast the 
+     * void parameter to an endpoint_ref pointer and then call free method.
+     * @param pointer to endpoint_ref as a void pointer
+     * @param env pointer to environment struct
+     * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
+     */
+    axis2_status_t AXIS2_CALL
+    axis2_endpoint_ref_free_void_arg(
+        void *endpoint_ref,
+        const axis2_env_t *env);
+
 /** Gets address.
     @sa axis2_endpoint_ref_ops#get_address */
 #define AXIS2_ENDPOINT_REF_GET_ADDRESS(endpoint_ref, env) \

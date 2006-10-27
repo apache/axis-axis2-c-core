@@ -350,6 +350,19 @@ axis2_endpoint_ref_set_svc_name(
 }
 
 axis2_status_t AXIS2_CALL
+axis2_endpoint_ref_free_void_arg(
+    void *endpoint_ref,
+    const axis2_env_t *env)
+{
+    axis2_endpoint_ref_t *endpoint_ref_l = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    endpoint_ref_l = (axis2_endpoint_ref_t *) endpoint_ref;
+    return axis2_endpoint_ref_free(endpoint_ref_l, env);
+}
+
+axis2_status_t AXIS2_CALL
 axis2_endpoint_ref_free(
     axis2_endpoint_ref_t *endpoint_ref,
     const axis2_env_t *env)

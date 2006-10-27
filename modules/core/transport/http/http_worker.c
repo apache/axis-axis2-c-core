@@ -425,7 +425,8 @@ axis2_http_worker_process_request(
     status = AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, response);
     AXIS2_FREE(env->allocator, url_external_form);
     url_external_form = NULL;
-    if (!AXIS2_MSG_CTX_IS_KEEP_ALIVE(msg_ctx, env))
+    if (!AXIS2_MSG_CTX_IS_KEEP_ALIVE(msg_ctx, env) &&
+        !AXIS2_MSG_CTX_IS_PAUSED(msg_ctx, env)) 
     {
         AXIS2_MSG_CTX_FREE(msg_ctx, env);
         msg_ctx = NULL;
