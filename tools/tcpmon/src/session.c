@@ -532,4 +532,3 @@ tcpmon_session_get_on_new_entry(tcpmon_session_t *session,
 
     return session_impl-> on_new_entry_funct;
 }
-
