@@ -30,6 +30,7 @@ typedef struct axis2_callback_impl
     int error;
     /** to store callback specific data */
     void *data;
+    axis2_thread_mutex_t *mutex;
 }
 axis2_callback_impl_t;
 
@@ -137,6 +138,7 @@ axis2_callback_create(
     callback_impl->envelope = NULL;
     callback_impl->error = AXIS2_ERROR_NONE;
     callback_impl->data = NULL;
+    callback_impl->mutex = NULL;
 
     /* initialize ops */
     callback_impl->callback.ops =
@@ -148,7 +150,8 @@ axis2_callback_create(
         axis2_callback_free(&(callback_impl->callback), env);
         return NULL;
     }
-
+    callback_impl->mutex = axis2_thread_mutex_create(env->allocator,
+                                 AXIS2_THREAD_MUTEX_DEFAULT);
     callback_impl->callback.ops->invoke_on_complete =
         axis2_callback_invoke_on_complete;
     callback_impl->callback.ops->on_complete =
@@ -189,10 +192,16 @@ axis2_callback_invoke_on_complete(
     const axis2_env_t *env,
     axis2_async_result_t *result)
 {
+    axis2_callback_impl_t *callback_impl = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    callback_impl = AXIS2_INTF_TO_IMPL(callback);
     axis2_callback_set_envelope(callback, env,
             AXIS2_ASYNC_RESULT_GET_ENVELOPE(result, env));
-    return AXIS2_CALLBACK_ON_COMPLETE(callback, env);
+    status = AXIS2_CALLBACK_ON_COMPLETE(callback, env);
+
+    return status;
 }
 
 axis2_status_t AXIS2_CALL
@@ -220,7 +229,9 @@ axis2_callback_set_complete(
     const axis2_env_t *env,
     axis2_bool_t complete)
 {
+    axis2_callback_impl_t *callback_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    callback_impl = AXIS2_INTF_TO_IMPL(callback);
     AXIS2_INTF_TO_IMPL(callback)->complete = complete;
     return AXIS2_SUCCESS;
 }
@@ -275,6 +286,11 @@ axis2_callback_free(
 
     callback_impl = AXIS2_INTF_TO_IMPL(callback);
 
+    if(NULL != callback_impl->mutex)
+    {
+        axis2_thread_mutex_destroy(callback_impl->mutex);
+        callback_impl->mutex = NULL;
+    }
     if (callback_impl->callback.ops)
     {
         AXIS2_FREE(env->allocator, callback_impl->callback.ops);

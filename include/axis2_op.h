@@ -256,19 +256,6 @@ extern "C"
                     struct axis2_msg_recv *msg_recv);
 
         /**
-         * Gets message receiver. message receiver is responsible for invoking
-         * the business logic associated with the operation.
-         * @param op pointer to operation
-         * @param env pointer to environment struct
-         * @return pointer to message receiver, returns a reference, not a 
-         * cloned copy
-         */
-        struct axis2_msg_recv *(AXIS2_CALL *
-                get_msg_recv)(
-                    const axis2_op_t *op,
-                    const axis2_env_t *env);
-
-        /**
          * Gets style of operation. Style is that mentioned in WSDL, either 
          * RPC or document literal.
          * @param op pointer to operation
@@ -891,11 +878,6 @@ extern "C"
     @sa axis2_op_ops#set_msg_recv */
 #define AXIS2_OP_SET_MSG_RECV(op, env, msg_recv) \
         ((op)->ops->set_msg_recv (op, env, msg_recv))
-
-/** Gets message receiver.
-    @sa axis2_op_ops#get_msg_recv */
-#define AXIS2_OP_GET_MSG_RECV(op, env) \
-        ((op)->ops->get_msg_recv (op, env))
 
 /** Sets QName.
     @sa axis2_op_ops#set_qname */

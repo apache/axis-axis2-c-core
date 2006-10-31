@@ -26,6 +26,7 @@ typedef struct axis2_callback_recv_impl
     axis2_msg_recv_t *base;
     /** callback map */
     axis2_hash_t *callback_map;
+    axis2_thread_mutex_t *mutex;
 }
 axis2_callback_recv_impl_t;
 
@@ -77,6 +78,7 @@ axis2_callback_recv_create(
     callback_recv_impl->callback_recv.ops = NULL;
     callback_recv_impl->base = NULL;
     callback_recv_impl->callback_map = NULL;
+    callback_recv_impl->mutex = NULL;
 
     callback_recv_impl->base = axis2_msg_recv_create(env);
     if (!(callback_recv_impl->base))
@@ -94,6 +96,8 @@ axis2_callback_recv_create(
         return NULL;
     }
 
+    callback_recv_impl->mutex = axis2_thread_mutex_create(env->allocator,
+                                 AXIS2_THREAD_MUTEX_DEFAULT);
     /* initialize ops */
     callback_recv_impl->callback_recv.ops  =
         AXIS2_MALLOC(env->allocator, sizeof(axis2_callback_recv_ops_t));
@@ -139,6 +143,11 @@ axis2_callback_recv_free(
     {
         AXIS2_FREE(env->allocator, callback_recv_impl->callback_recv.ops);
         callback_recv_impl->callback_recv.ops = NULL;
+    }
+    if(NULL != callback_recv_impl->mutex)
+    {
+        axis2_thread_mutex_destroy(callback_recv_impl->mutex);
+        callback_recv_impl->mutex = NULL;
     }
 
     if (callback_recv_impl->callback_map)

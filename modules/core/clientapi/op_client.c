@@ -106,6 +106,11 @@ axis2_op_client_set_callback(
     const axis2_env_t *env,
     axis2_callback_t *callback);
 
+axis2_callback_t *AXIS2_CALL
+axis2_op_client_get_callback(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env);
+
 axis2_status_t AXIS2_CALL
 axis2_op_client_execute(
     axis2_op_client_t *op_client,
@@ -356,6 +361,20 @@ axis2_op_client_set_callback(
     op_client_impl->callback = callback;
     return AXIS2_SUCCESS;
 }
+
+axis2_callback_t *AXIS2_CALL
+axis2_op_client_get_callback(
+    axis2_op_client_t *op_client,
+    const axis2_env_t *env)
+{
+    axis2_op_client_impl_t *op_client_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    op_client_impl = AXIS2_INTF_TO_IMPL(op_client);
+
+    return op_client_impl->callback;
+}
+
 
 axis2_status_t AXIS2_CALL
 axis2_op_client_execute(
@@ -687,6 +706,7 @@ axis2_op_client_init_ops(
     op_client->ops->add_out_msg_ctx = axis2_op_client_add_out_msg_ctx;
     op_client->ops->get_msg_ctx = axis2_op_client_get_msg_ctx;
     op_client->ops->set_callback = axis2_op_client_set_callback;
+    op_client->ops->get_callback = axis2_op_client_get_callback;
     op_client->ops->execute = axis2_op_client_execute;
     op_client->ops->reset = axis2_op_client_reset;
     op_client->ops->complete = axis2_op_client_complete;

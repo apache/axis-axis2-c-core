@@ -152,6 +152,17 @@ extern "C"
                     axis2_op_client_t *op_client,
                     const axis2_env_t *env,
                     axis2_callback_t *callback);
+        /**
+         * Gets the callback. 
+         * @param op_client pointer to operation client struct
+         * @param env pointer to environment struct
+         * @return callback
+         */
+        axis2_callback_t *(AXIS2_CALL *
+                get_callback)(
+                    axis2_op_client_t *op_client,
+                    const axis2_env_t *env);
+
 
         /**
          * Execute the MEP. What this does depends on the specific operation client.
@@ -295,6 +306,12 @@ extern "C"
     @sa axis2_op_client_ops#set_callback*/
 #define AXIS2_OP_CLIENT_SET_CALLBACK(op_client, env, callback) \
       ((op_client)->ops->set_callback(op_client, env, callback))
+
+/** gets operation callback. 
+    @sa axis2_op_client_ops#get_callback*/
+#define AXIS2_OP_CLIENT_GET_CALLBACK(op_client, env) \
+      ((op_client)->ops->get_callback(op_client, env))
+
 
 /** Executes operation client. 
     @sa axis2_op_client_ops#execute*/
