@@ -232,12 +232,13 @@ axis2_addr_disp_invoke(
                                 AXIS2_MSG_CTX_SET_SVC_GRP_CTX_ID(msg_ctx, env,
                                         AXIS2_SVC_GRP_CTX_GET_ID(svc_grp_ctx, env));
                             }
+                            return AXIS2_SUCCESS;
                         }
                     }
                 }
             }
         }
-        return AXIS2_SUCCESS;
+        
     }
 
     msg_ctx->ops->find_svc = axis2_addr_disp_find_svc;
