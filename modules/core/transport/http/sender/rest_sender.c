@@ -663,7 +663,11 @@ axis2_rest_sender_get_param_string(
         axis2_char_t *pair = NULL;
 
         pair = AXIS2_ARRAY_LIST_GET(param_list, env, i);
-        tmp_string = AXIS2_STRACAT(param_string, pair, env);
+		if(i ==0)
+			tmp_string = AXIS2_STRACAT(param_string, pair, env);
+		else
+		tmp_string = axis2_strcat(env, param_string, "&", pair, NULL);				
+
         if (param_string)
         {
             AXIS2_FREE(env->allocator, param_string);
