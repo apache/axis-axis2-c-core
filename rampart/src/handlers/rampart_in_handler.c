@@ -116,8 +116,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
 
                     if (AXIS2_ARRAY_LIST_IS_EMPTY(action_list, env))
                     {
-                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No actions defined");
-                        /*return AXIS2_SUCCESS;*/
+                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No actions defined.");
                     }
                     /*Now we support only one action.i.e. Only the first action*/
                     param_action = (axis2_param_t*) AXIS2_ARRAY_LIST_GET(action_list, env, 0);
@@ -130,9 +129,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                     }
                 }
             }else{
-                /*This check ensures that user doesnt need to have security checking in his message flow*/
                 AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No Inflow Security in the paramter list.");
-                /*return AXIS2_SUCCESS;*/
             }
             /*Then re-populate using the axis2_ctx*/
             status = RAMPART_ACTIONS_POPULATE_FROM_CTX(actions, env, ctx);
