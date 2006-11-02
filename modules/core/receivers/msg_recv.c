@@ -408,7 +408,7 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-
+        
     out_msg_ctx = axis2_core_utils_create_out_msg_ctx(env, msg_ctx);
     if (!out_msg_ctx)
     {
@@ -421,8 +421,13 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
         AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
         return AXIS2_FAILURE;
     }
+    
     status = AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, out_msg_ctx);
-    if (AXIS2_SUCCESS != status)
+    /* test code */
+    if(status)
+        status = AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, msg_ctx);
+    /* end test code */
+    if (!status)
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
         AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
