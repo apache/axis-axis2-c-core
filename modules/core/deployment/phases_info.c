@@ -718,7 +718,8 @@ axis2_phases_info_set_op_phases(
         status = AXIS2_OP_SET_FAULT_IN_FLOW(op_desc, env,
                 op_in_faultphases);
     }
-    else
+    /*
+	else
     {
         status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
         if (AXIS2_SUCCESS != status)
@@ -726,12 +727,13 @@ axis2_phases_info_set_op_phases(
             return status;
         }
     }
-
+	*/
     if (op_out_faultphases)
     {
         status = AXIS2_OP_SET_FAULT_OUT_FLOW(op_desc, env,
                 op_out_faultphases);
     }
+	/*
     else
     {
         status = AXIS2_ERROR_GET_STATUS_CODE(env->error);
@@ -740,7 +742,7 @@ axis2_phases_info_set_op_phases(
             return status;
         }
     }
-
+	*/
     return status;
 
 }
