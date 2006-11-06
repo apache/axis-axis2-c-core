@@ -172,9 +172,6 @@ axis2_http_transport_sender_invoke(
     axis2_byte_t *output_stream = NULL;
     int buffer_size = 0;
 
-
-
-
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
 
@@ -580,7 +577,6 @@ axis2_http_transport_sender_write_message(
     AXIS2_PARAM_CHECK(env->error, om_output, AXIS2_FAILURE);
 
     url = AXIS2_ENDPOINT_REF_GET_ADDRESS(epr, env);
-    soap_action = AXIS2_MSG_CTX_GET_SOAP_ACTION(msg_ctx, env);
     /*hack if (NULL == soap_action || 0 == AXIS2_STRLEN(soap_action))
     {
         soap_action = AXIS2_MSG_CTX_GET_WSA_ACTION(msg_ctx, env);

@@ -268,9 +268,6 @@ axis2_conf_ctx_create(
     conf_ctx_impl->conf_ctx.ops->init =
         axis2_conf_ctx_init;
 
-    conf_ctx_impl->conf_ctx.ops->free =
-        axis2_conf_ctx_free;
-
     conf_ctx_impl->conf_ctx.ops->fill_ctxs =
         axis2_conf_ctx_fill_ctxs;
 

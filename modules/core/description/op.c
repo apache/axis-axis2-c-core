@@ -485,7 +485,6 @@ axis2_op_create(
             }
         }
     }
-
     if (AXIS2_SUCCESS != status)
     {
         AXIS2_PHASE_FREE(message_processing, env);
@@ -513,7 +512,6 @@ axis2_op_create(
             }
         }
     }
-
     if (AXIS2_SUCCESS != status)
     {
         AXIS2_PHASE_FREE(message_out, env);

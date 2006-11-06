@@ -212,7 +212,7 @@ axis2_msg_free(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     msg_impl = AXIS2_INTF_TO_IMPL(msg);
 
-    if (msg_impl->flow)
+    /*if (msg_impl->flow)
     {
         int i = 0;
         int size = 0;
@@ -231,7 +231,7 @@ axis2_msg_free(
         }
         AXIS2_ARRAY_LIST_FREE(msg_impl->flow, env);
         msg_impl->flow = NULL;
-    }
+    }*/
 
     if (msg_impl->soap_headers)
     {

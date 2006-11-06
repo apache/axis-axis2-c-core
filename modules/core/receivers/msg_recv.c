@@ -423,16 +423,15 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
     }
     
     status = AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, out_msg_ctx);
-    /* test code */
-    if(status)
-        status = AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, msg_ctx);
-    /* end test code */
     if (!status)
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
         AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
         return status;
     }
+    status = AXIS2_OP_CTX_ADD_MSG_CTX(op_ctx, env, msg_ctx);
+    if(!status)
+        return status;
     status = AXIS2_MSG_RECV_INVOKE_IN_OUT_BUSINESS_LOGIC_SYNC(msg_recv, env,
             msg_ctx, out_msg_ctx);
     if (AXIS2_SUCCESS != status)
@@ -482,9 +481,9 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
             !AXIS2_MSG_CTX_IS_KEEP_ALIVE(out_msg_ctx, env))
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
-        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
-        out_msg_ctx = NULL;
     }
+    AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+    out_msg_ctx = NULL;
     return status;
 }
 

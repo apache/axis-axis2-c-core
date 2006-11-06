@@ -914,6 +914,9 @@ axis2_msg_ctx_free(
 
     msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
 
+    if (msg_ctx_impl->paused || msg_ctx_impl->keep_alive)
+        return AXIS2_SUCCESS;
+    
     if (msg_ctx_impl->msg_ctx.ops)
     {
         AXIS2_FREE(env->allocator, msg_ctx_impl->msg_ctx.ops);

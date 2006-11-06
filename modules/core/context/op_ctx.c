@@ -383,13 +383,13 @@ axis2_op_ctx_add_msg_ctx(
         if (!out_msg_ctx)
         {
             axis2_hash_set(op_ctx_impl->msg_ctx_map,
-                    AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING,
+                AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING,
                     msg_ctx);
         }
         else
         {
             axis2_hash_set(op_ctx_impl->msg_ctx_map,
-                    AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING,
+                AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING,
                     msg_ctx);
         }
     }
