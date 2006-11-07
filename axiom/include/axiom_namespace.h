@@ -130,7 +130,7 @@ extern "C"
     {
         /** AXIOM namespace related ops */
         axiom_namespace_ops_t *ops;
-        
+        int ref;        
     } axiom_namespace_t;
 
   /**

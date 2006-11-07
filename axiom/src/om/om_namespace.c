@@ -107,6 +107,7 @@ axiom_namespace_create(const axis2_env_t *env,
 
 
     ns->om_namespace.ops = NULL;
+    ns->om_namespace.ref = 0;
     ns->prefix = NULL;
     ns->uri = NULL;
     ns->key = NULL;
@@ -175,6 +176,12 @@ axiom_namespace_free(axiom_namespace_t *om_namespace,
 {
     axiom_namespace_impl_t *ns_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    if (--om_namespace->ref > 0)
+    {
+        return AXIS2_SUCCESS;
+    }
+
     ns_impl = AXIS2_INTF_TO_IMPL(om_namespace);
 
     if (ns_impl->prefix)

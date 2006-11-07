@@ -685,6 +685,7 @@ axiom_element_declare_namespace(axiom_element_t *ele,
         axis2_hash_set(om_ele_impl->namespaces, key,
                 AXIS2_HASH_KEY_STRING,  ns);
     }
+    ++ns->ref;
 
     return AXIS2_SUCCESS;
 }
@@ -1590,6 +1591,7 @@ axiom_element_declare_default_namespace(axiom_element_t *om_element,
 
     axis2_hash_set(om_ele_impl->namespaces, "",
             AXIS2_HASH_KEY_STRING, default_ns);
+    ++default_ns->ref;
     return default_ns;
 }
 
