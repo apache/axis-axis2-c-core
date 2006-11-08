@@ -41,9 +41,14 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_nonce(const axis2_env_t *
     char *rand_str = NULL;
     axis2_char_t* encoded_str = NULL;
 
+
     buffer = oxs_buffer_create(env);
     status = generate_random_data(env, buffer, 16);
-    rand_str = (char*)OXS_BUFFER_GET_DATA(buffer, env);
+    
+
+    rand_str = (char *)malloc(OXS_BUFFER_GET_SIZE(buffer, env)+1);
+    memcpy(rand_str, (char*)OXS_BUFFER_GET_DATA(buffer, env), OXS_BUFFER_GET_SIZE(buffer, env));
+    /*rand_str = (char*)OXS_BUFFER_GET_DATA(buffer, env);*/
     encoded_str = AXIS2_MALLOC(env->allocator, sizeof(char) * (SIZE_NONCE+1));
     axis2_base64_encode(encoded_str, rand_str, OXS_BUFFER_GET_SIZE(buffer, env));
     OXS_BUFFER_FREE(buffer, env);

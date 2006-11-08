@@ -411,7 +411,8 @@ oxs_enc_engine_crypt(
     unsigned char *out_main_buf = NULL;
     openssl_cipher_ctx_t *oc_ctx = NULL;
     axis2_char_t *iv = NULL;
-    axis2_char_t *key = NULL;
+    /*axis2_char_t *key = NULL;*/
+    
     axis2_char_t *cipher_name =  NULL;
     axis2_char_t *encoded_str = NULL;
     axis2_char_t *in_data = NULL;
@@ -448,13 +449,14 @@ oxs_enc_engine_crypt(
     ret = OPENSSL_CIPHER_CTX_SET_IV(oc_ctx, env, iv);
 
     /*Set the key*/
-    key =  AXIS2_STRNDUP((axis2_char_t*)OXS_KEY_GET_DATA(OXS_CTX_GET_KEY(enc_ctx,
+    /*key =  AXIS2_STRNDUP((axis2_char_t*)OXS_KEY_GET_DATA(OXS_CTX_GET_KEY(enc_ctx,
             env),
             env),
             OPENSSL_CIPHER_PROPERTY_GET_KEY_SIZE(cprop, env),
-            env);
+            env);*/
 
-    ret = OPENSSL_CIPHER_CTX_SET_KEY(oc_ctx, env, key);
+
+    ret = OPENSSL_CIPHER_CTX_SET_KEY(oc_ctx, env, OXS_CTX_GET_KEY(enc_ctx, env));
 
     /*Set the cipher*/
     cipher_name = (axis2_char_t*)OPENSSL_CIPHER_PROPERTY_GET_NAME(cprop, env);
@@ -486,7 +488,6 @@ oxs_enc_engine_crypt(
     else if (OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT)
     {
         in_data = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len((char*)(OXS_CTX_GET_INPUT_DATA(enc_ctx, env))));
-        /*axis2_base64_decode(in_data, (char*)(enc_ctx->inputdata)); */
         decoded_len = axis2_base64_decode_binary((unsigned char*)in_data, (char*)(OXS_CTX_GET_INPUT_DATA(enc_ctx, env)));
         if (decoded_len < 0)
         {

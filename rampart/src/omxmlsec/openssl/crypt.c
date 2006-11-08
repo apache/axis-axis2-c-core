@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <axis2_util.h>
 #include <oxs_buffer.h>
+#include <oxs_key.h>
 #include <oxs_error.h>
 #include <openssl_cipher_ctx.h>
 #include <openssl_crypt.h>
@@ -40,17 +41,23 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
     unsigned char inbuf[BUFSIZE + 1 ], outbuf[BUFSIZE + EVP_MAX_BLOCK_LENGTH]; /*EVP_MAX_BLOCK_LENGTH = 32 in evp.h*/
     unsigned char *tempbuf = NULL;
     unsigned char *tempbuf2 = NULL;
+    unsigned char *key_data = NULL;
+    oxs_key_t *key = NULL;
 
     int inlen, outlen, i,  out_buf_index;
     int ret;
 
     i = 0;
     out_buf_index = 0;
-
+    
+    /*Get the key*/
+    key = OPENSSL_CIPHER_CTX_GET_KEY(oc_ctx, env);
+    key_data = AXIS2_MALLOC(env->allocator, OXS_KEY_GET_SIZE(key, env));
+    key_data = memcpy(key_data,  OXS_KEY_GET_DATA(key, env), OXS_KEY_GET_SIZE(key, env));
     /*Init ctx*/
     EVP_CIPHER_CTX_init(&ctx);
     ret = EVP_CipherInit_ex(&ctx, (EVP_CIPHER *)OPENSSL_CIPHER_CTX_GET_CIPHER(oc_ctx, env), NULL, NULL, NULL, do_encrypt);
-    ret  = EVP_CipherInit_ex(&ctx, NULL, NULL, (unsigned char*)OPENSSL_CIPHER_CTX_GET_KEY(oc_ctx, env),
+    ret  = EVP_CipherInit_ex(&ctx, NULL, NULL, key_data,
             (unsigned char*)OPENSSL_CIPHER_CTX_GET_IV(oc_ctx, env),
             do_encrypt);
     for (;;)

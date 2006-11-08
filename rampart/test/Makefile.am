@@ -1,2 +1,2 @@
-SUBDIRS = openssl util
+SUBDIRS = openssl 
 

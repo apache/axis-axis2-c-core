@@ -54,7 +54,7 @@ AC_CONFIG_FILES([Makefile \
     src/data/Makefile \
     src/handlers/Makefile \
     src/core/Makefile \
-    src/util/Makefile
+    src/util/Makefile 
     ])
     
 AC_OUTPUT

@@ -30,7 +30,8 @@ typedef struct openssl_cipher_ctx_impl
     openssl_cipher_ctx_t ctx;
 
     const EVP_CIPHER*   cipher;
-    axis2_char_t  *key;
+    /*axis2_char_t  *key;*/
+    oxs_key_t *key;
     axis2_char_t  *iv;
     axis2_char_t  *pad;
 }
@@ -57,7 +58,7 @@ openssl_cipher_ctx_get_cipher(openssl_cipher_ctx_t *ctx,
         const axis2_env_t *env
                              );
 
-axis2_char_t *AXIS2_CALL
+oxs_key_t *AXIS2_CALL
 openssl_cipher_ctx_get_key(openssl_cipher_ctx_t *ctx,
         const axis2_env_t *env
                           );
@@ -81,7 +82,7 @@ openssl_cipher_ctx_set_cipher(openssl_cipher_ctx_t *ctx,
 axis2_status_t AXIS2_CALL
 openssl_cipher_ctx_set_key(openssl_cipher_ctx_t *ctx,
         const axis2_env_t *env,
-        axis2_char_t *key
+        oxs_key_t *key
                           );
 
 axis2_status_t AXIS2_CALL
@@ -161,7 +162,8 @@ openssl_cipher_ctx_free(openssl_cipher_ctx_t *ctx,
     /*TODO Check how to free the EVP_CIPHER. Might be a problem if we try to free it here.*/
     if (ctx_impl->key)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->key);
+        OXS_KEY_FREE(ctx_impl->key, env);
+        /*AXIS2_FREE(env->allocator, ctx_impl->key);*/
         ctx_impl->key = NULL;
     }
 
@@ -194,7 +196,7 @@ openssl_cipher_ctx_get_cipher(openssl_cipher_ctx_t *ctx,
     return ctx_impl->cipher ;
 }
 
-axis2_char_t *AXIS2_CALL
+oxs_key_t *AXIS2_CALL
 openssl_cipher_ctx_get_key(openssl_cipher_ctx_t *ctx,
         const axis2_env_t *env
                           )
@@ -254,7 +256,7 @@ openssl_cipher_ctx_set_cipher(openssl_cipher_ctx_t *ctx,
 axis2_status_t AXIS2_CALL
 openssl_cipher_ctx_set_key(openssl_cipher_ctx_t *ctx,
         const axis2_env_t *env,
-        axis2_char_t *key
+        oxs_key_t *key
                           )
 {
     openssl_cipher_ctx_impl_t * ctx_impl = NULL;
@@ -264,10 +266,11 @@ openssl_cipher_ctx_set_key(openssl_cipher_ctx_t *ctx,
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
     if (ctx_impl->key)
     {
-        AXIS2_FREE(env->allocator, ctx_impl->key);
+        OXS_KEY_FREE(ctx_impl->key, env);
+        /*AXIS2_FREE(env->allocator, ctx_impl->key);*/
         ctx_impl->key = NULL;
     }
-    ctx_impl->key = AXIS2_STRDUP(key, env);
+    ctx_impl->key = key ;/* AXIS2_STRDUP(key, env);*/
 
     return AXIS2_SUCCESS;
 }

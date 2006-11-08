@@ -15,8 +15,8 @@
  */
 #include <axis2_defines.h>
 #include <axis2_env.h>
-#include<openssl/evp.h>
-
+#include <openssl/evp.h>
+#include <oxs_key.h>
 /**
   * @file 
   * @brief 
@@ -48,7 +48,7 @@ extern "C" {
             const axis2_env_t *env
             );
         
-        axis2_char_t *(AXIS2_CALL *
+        oxs_key_t *(AXIS2_CALL *
         get_key)(openssl_cipher_ctx_t *ctx,
             const axis2_env_t *env
             );
@@ -72,7 +72,7 @@ extern "C" {
         axis2_status_t (AXIS2_CALL *
         set_key_value)(openssl_cipher_ctx_t *ctx,
             const axis2_env_t *env,
-            axis2_char_t *key
+            oxs_key_t *key
             );
 
         axis2_status_t (AXIS2_CALL *

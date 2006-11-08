@@ -173,7 +173,18 @@ extern "C"
                 axiom_node_t* template_node,
                 axis2_char_t* data,
                 oxs_ctx_t * enc_ctx);
-
+        /**
+         *
+         *
+         */
+        axis2_status_t (AXIS2_CALL *
+        encrypt_node)(
+                oxs_enc_engine_t *enc_engine,
+                const axis2_env_t *env,
+                oxs_ctx_t * enc_ctx,
+                axiom_node_t* node,
+                axiom_node_t* enc_type_node);
+                
     };
 
     /**
@@ -218,6 +229,9 @@ extern "C"
 
 #define OXS_ENC_ENGINE_ENCRYPT_TEMPLATE(enc_engine, env, template_node, data, enc_ctx) \
         ((enc_engine)->ops->encrypt_template(enc_engine, env, template_node, data, enc_ctx))
+
+#define OXS_ENC_ENGINE_ENCRYPT_NODE(enc_engine, env, enc_ctx, node, enc_type_node) \
+        ((enc_engine)->ops->encrypt_template(enc_engine, env, enc_ctx, node, enc_type_node))
 
 
 /** @} */
