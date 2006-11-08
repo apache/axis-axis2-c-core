@@ -9,8 +9,6 @@ libaxis2_clientapi_la_SOURCES = async_result.c \
 								op_client.c \
 								svc_client.c
 
-noinst_HEADERS = callback_recv.h
-
 INCLUDES = -I$(top_builddir)/include \
             -I$(top_builddir)/modules/wsdl \
             -I$(top_builddir)/modules/core/engine \
