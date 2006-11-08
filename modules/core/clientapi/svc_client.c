@@ -19,7 +19,7 @@
 #include <axis2_const.h>
 #include <axis2_hash.h>
 #include <axis2_uri.h>
-#include "callback_recv.h"
+#include "axis2_callback_recv.h"
 #include <axiom_soap_const.h>
 #include <axiom_soap_body.h>
 #include <axiom_soap_header.h>

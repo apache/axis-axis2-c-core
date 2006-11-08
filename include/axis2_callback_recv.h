@@ -25,7 +25,7 @@
  */
 
 /**
-  * @file axis2_callback_recv.h
+  * @file axis2_axis2_callback_recv.h
   */
 
 #include <axis2_defines.h>
