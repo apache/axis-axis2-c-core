@@ -39,15 +39,8 @@ extern "C"
 
 /* Global namespaces *******************/
 
-#define OXS_Ns                    "http://www.aleksey.com/xmlsec/2002"
 #define OXS_DSigNs                "http://www.w3.org/2000/09/xmldsig#"
 #define OXS_EncNs                 "http://www.w3.org/2001/04/xmlenc#"
-#define OXS_XkmsNs                "http://www.w3.org/2002/03/xkms#"
-#define OXS_XPathNs               "http://www.w3.org/TR/1999/REC-xpath-19991116"
-#define OXS_XPath2Ns              "http://www.w3.org/2002/06/xmldsig-filter2"
-#define OXS_XPointerNs            "http://www.w3.org/2001/04/xmldsig-more/xptr"
-#define OXS_Soap11Ns              "http://schemas.xmlsoap.org/soap/envelope/"
-#define OXS_Soap12Ns              "http://www.w3.org/2002/06/soap-envelope"
 #define OXS_WSSENS                "http://schemas.xmlsoap.org/ws/2002/04/secext"
 
 /* DSig Nodes  **************************/
@@ -142,27 +135,6 @@ extern "C"
 #define OXS_HrefBase64           "http://www.w3.org/2000/09/xmldsig#base64" 
 
 
-
-/* C14N strings**************************/
-
-#define OXS_NameC14Ni         "c14n" 
-#define OXS_HrefC14N          "http://www.w3.org/TR/2001/REC-xml-c14n-20010315" 
-
-#define OXS_NameC14NWithComments  "c14n-with-comments" 
-#define OXS_HrefC14NWithComments  "http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments" 
-
-#define OXS_NameExcC14N       "exc-c14n" 
-#define OXS_HrefExcC14N       "http://www.w3.org/2001/10/xml-exc-c14n#" 
-
-#define OXS_NameExcC14NWithComments   "exc-c14n-with-comments" 
-#define OXS_HrefExcC14NWithComments   "http://www.w3.org/2001/10/xml-exc-c14n#WithComments" 
-
-#define OXS_NsExcC14N             "http://www.w3.org/2001/10/xml-exc-c14n#" 
-#define OXS_NsExcC14NWithComments "http://www.w3.org/2001/10/xml-exc-c14n#WithComments" 
-
-#define OXS_NodeInclusiveNamespaces   "InclusiveNamespaces" 
-#define OXS_AttrPrefixList            "PrefixList" 
-
 /* DES strings*****************************/
 
 #define OXS_NameDESKeyValue       "des" 
@@ -176,34 +148,11 @@ extern "C"
 #define OXS_HrefKWDes3            "http://www.w3.org/2001/04/xmlenc#kw-tripledes" 
 
 
-/*************************************************************************
- *
- * GOST2001 strings
- *
- ************************************************************************/
-#define OXS_NameGOST2001KeyValue         "gost2001" 
-#define OXS_NodeGOST2001KeyValue         "GOST3410-2001-KeyValue" 
-#define OXS_HrefGOST2001KeyValue         "http://www.w3.org/2000/09/xmldsig#GOST2001KeyValue" 
 
-#define OXS_NameGost2001GostR3411_94         "gostr34102001-gostr3411" 
-#define OXS_HrefGost2001GostR3411_94         "http://www.w3.org/2001/04/xmldsig-more#gostr34102001-gostr3411" 
-
-/*************************************************************************
- *
- * DSA strings
- *
- ************************************************************************/
+/**DSA strings ********************************/
 #define OXS_NameDSAKeyValue          "dsa" 
 #define OXS_NodeDSAKeyValue          "DSAKeyValue" 
 #define OXS_HrefDSAKeyValue          "http://www.w3.org/2000/09/xmldsig#DSAKeyValue" 
-#define OXS_NodeDSAP             "P" 
-#define OXS_NodeDSAQ             "Q" 
-#define OXS_NodeDSAG             "G" 
-#define OXS_NodeDSAJ             "J" 
-#define OXS_NodeDSAX             "X" 
-#define OXS_NodeDSAY             "Y" 
-#define OXS_NodeDSASeed          "Seed" 
-#define OXS_NodeDSAPgenCounter       "PgenCounter" 
 
 #define OXS_NameDsaSha1          "dsa-sha1" 
 #define OXS_HrefDsaSha1          "http://www.w3.org/2000/09/xmldsig#dsa-sha1" 
@@ -217,107 +166,29 @@ extern "C"
 #define OXS_NodeEncryptedKey         "EncryptedKey" 
 #define OXS_HrefEncryptedKey         "http://www.w3.org/2001/04/xmlenc#EncryptedKey" 
 
-/*************************************************************************
- *
- * Enveloped transform strings
- *
- ************************************************************************/
-#define OXS_NameEnveloped        "enveloped-signature" 
-#define OXS_HrefEnveloped        "http://www.w3.org/2000/09/xmldsig#enveloped-signature" 
 
-
-/*************************************************************************
- *
- * HMAC strings
- *
- ************************************************************************/
-#define OXS_NameHMACKeyValue         "hmac" 
-#define OXS_NodeHMACKeyValue         "HMACKeyValue" 
-#define OXS_HrefHMACKeyValue         "http://www.aleksey.com/xmlsec/2002#HMACKeyValue" 
-
-#define OXS_NodeHMACOutputLength     "HMACOutputLength" 
-
-#define OXS_NameHmacMd5          "hmac-md5" 
-#define OXS_HrefHmacMd5          "http://www.w3.org/2001/04/xmldsig-more#hmac-md5" 
-
-#define OXS_NameHmacRipemd160        "hmac-ripemd160" 
-#define OXS_HrefHmacRipemd160        "http://www.w3.org/2001/04/xmldsig-more#hmac-ripemd160" 
-
-#define OXS_NameHmacSha1         "hmac-sha1" 
-#define OXS_HrefHmacSha1         "http://www.w3.org/2000/09/xmldsig#hmac-sha1" 
-
-#define OXS_NameHmacSha224           "hmac-sha224" 
-#define OXS_HrefHmacSha224           "http://www.w3.org/2001/04/xmldsig-more#hmac-sha224" 
-
-#define OXS_NameHmacSha256           "hmac-sha256" 
-#define OXS_HrefHmacSha256           "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256" 
-
-#define OXS_NameHmacSha384           "hmac-sha384" 
-#define OXS_HrefHmacSha384           "http://www.w3.org/2001/04/xmldsig-more#hmac-sha384" 
-
-#define OXS_NameHmacSha512           "hmac-sha512" 
-#define OXS_HrefHmacSha512           "http://www.w3.org/2001/04/xmldsig-more#hmac-sha512" 
-
-/*************************************************************************
- *
- * KeyName strings
- *
- ************************************************************************/
+/*KeyName strings*********************************************************/
 #define OXS_NameKeyName          "key-name" 
 #define OXS_NodeKeyName          "KeyName" 
 
 
-/*************************************************************************
- *
- * KeyValue strings
- *
- ************************************************************************/
+/* KeyValue strings*******************************************************/
 #define OXS_NameKeyValue         "key-value" 
 #define OXS_NodeKeyValue         "KeyValue" 
 
-/*************************************************************************
- *
- * Memory Buffer strings
- *
- ************************************************************************/
-#define OXS_NameMemBuf           "membuf-transform" 
 
-/*************************************************************************
- *
- * MD5 strings
- *
- ************************************************************************/
+/* MD5 strings************************************************************/
 #define OXS_NameMd5              "md5" 
 #define OXS_HrefMd5              "http://www.w3.org/2001/04/xmldsig-more#md5" 
 
-/*************************************************************************
- *
- * RetrievalMethod
- *
- ************************************************************************/
+/* RetrievalMethod********************************************************/
 #define OXS_NameRetrievalMethod      "retrieval-method" 
 #define OXS_NodeRetrievalMethod      "RetrievalMethod" 
 
-/*************************************************************************
- *
- * RIPEMD160 strings
- *
- ************************************************************************/
-#define OXS_NameRipemd160        "ripemd160" 
-#define OXS_HrefRipemd160        "http://www.w3.org/2001/04/xmlenc#ripemd160" 
-
-
-/*************************************************************************
- *
- * RSA strings
- *
- ************************************************************************/
+/* RSA strings************************************************************/
 #define OXS_NameRSAKeyValue          "rsa" 
 #define OXS_NodeRSAKeyValue          "RSAKeyValue" 
 #define OXS_HrefRSAKeyValue          "http://www.w3.org/2000/09/xmldsig#RSAKeyValue" 
-#define OXS_NodeRSAModulus           "Modulus" 
-#define OXS_NodeRSAExponent          "Exponent" 
-#define OXS_NodeRSAPrivateExponent       "PrivateExponent" 
 
 #define OXS_NameRsaMd5           "rsa-md5" 
 #define OXS_HrefRsaMd5           "http://www.w3.org/2001/04/xmldsig-more#rsa-md5" 
@@ -348,19 +219,7 @@ extern "C"
 #define OXS_NodeRsaOAEPparams        "OAEPparams" 
 
 
-/*************************************************************************
- *
- * GOSTR3411_94 strings
- *
- ************************************************************************/
-#define OXS_NameGostR3411_94             "gostr3411" 
-#define OXS_HrefGostR3411_94             "http://www.w3.org/2001/04/xmldsig-more#gostr3411" 
-
-/*************************************************************************
- *
- * SHA1 strings
- *
- ************************************************************************/
+/* SHA1 strings **********************************************************/
 #define OXS_NameSha1             "sha1" 
 #define OXS_HrefSha1             "http://www.w3.org/2000/09/xmldsig#sha1" 
 
@@ -376,11 +235,7 @@ extern "C"
 #define OXS_NameSha512           "sha512" 
 #define OXS_HrefSha512           "http://www.w3.org/2001/04/xmlenc#sha512" 
 
-/*************************************************************************
- *
- * X509 strings
- *
- ************************************************************************/
+/* X509 strings**********************************************************/
 #define OXS_NameX509Data         "x509" 
 #define OXS_NodeX509Data         "X509Data" 
 #define OXS_HrefX509Data         "http://www.w3.org/2000/09/xmldsig#X509Data" 
@@ -398,55 +253,7 @@ extern "C"
 
 #define OXS_NameX509Store        "x509-store" 
 
-/*************************************************************************
- *
- * PGP strings
- *
- ************************************************************************/
-#define OXS_NamePGPData          "pgp" 
-#define OXS_NodePGPData          "PGPData" 
-#define OXS_HrefPGPData          "http://www.w3.org/2000/09/xmldsig#PGPData" 
-
-/*************************************************************************
- *
- * SPKI strings
- *
- ************************************************************************/
-#define OXS_NameSPKIData         "spki" 
-#define OXS_NodeSPKIData         "SPKIData" 
-#define OXS_HrefSPKIData         "http://www.w3.org/2000/09/xmldsig#SPKIData" 
-
-
-/*************************************************************************
- *
- * XPath/XPointer strings
- *
- ************************************************************************/
-#define OXS_NameXPath            "xpath" 
-#define OXS_NodeXPath            "XPath" 
-
-#define OXS_NameXPath2           "xpath2" 
-#define OXS_NodeXPath2           "XPath" 
-#define OXS_XPath2FilterIntersect    "intersect" 
-#define OXS_XPath2FilterSubtract     "subtract" 
-#define OXS_XPath2FilterUnion        "union" 
-
-#define OXS_NameXPointer         "xpointer" 
-#define OXS_NodeXPointer         "XPointer" 
-
-/*************************************************************************
- *
- * Xslt strings
- *
- ************************************************************************/
-#define OXS_NameXslt             "xslt" 
-#define OXS_HrefXslt             "http://www.w3.org/TR/1999/REC-xslt-19991116" 
-
-/*************************************************************************
- *
- * SOAP 1.1/1.2 strings
- *
- ************************************************************************/
+/* SOAP 1.1/1.2 strings*****************************************************/
 #define OXS_NodeEnvelope         "Envelope" 
 #define OXS_NodeHeader           "Header" 
 #define OXS_NodeBody                 "Body" 
@@ -472,12 +279,6 @@ extern "C"
 #define OXS_SoapFaultCodeReceiver        "Receiver" 
 #define OXS_SoapFaultCodeSender          "Sender" 
 #define OXS_SoapFaultDataEncodningUnknown    "DataEncodingUnknown" 
-
-
-
-
-
-
 
 
 /*************************************************************************/

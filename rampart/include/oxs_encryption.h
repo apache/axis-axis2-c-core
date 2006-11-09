@@ -35,7 +35,7 @@ extern "C"
 {
 #endif
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN  axis2_status_t AXIS2_CALL
 oxs_encryption_symmetric_crypt(const axis2_env_t *env,
     oxs_ctx_t * enc_ctx,
     oxs_buffer_t *input,
