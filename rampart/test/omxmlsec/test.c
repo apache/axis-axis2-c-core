@@ -21,8 +21,11 @@
 #include <axiom_xml_reader.h>
 #include <axis2_env.h>
 #include <oxs_ctx.h>
+#include <oxs_key.h>
 #include <oxs_error.h>
-#include <oxs_enc_engine.h>
+#include <oxs_encryption.h>
+#include <oxs_xml_encryption.h>
+#include <oxs_token_encrypted_data.h>
 
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
@@ -64,12 +67,11 @@ int main(int argc, char *argv[])
     oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT, "Api danne neee %d", 13);
     axis2_env_t *env = NULL;
     axis2_char_t *filename = "a.xml";
-    axis2_char_t *doc_file = "b.xml";
-    axis2_char_t *data = "OM the universal sound";
-    enc_ctx_t *ctx = NULL;
+    oxs_ctx_t *ctx = NULL;
+    oxs_key_t *key = NULL;
     axis2_status_t temp_status = AXIS2_FAILURE;
-    axiom_node_t *tmpl = NULL, *enc_doc = NULL;
-    axis2_char_t *encrypted_result = NULL, *decrypted_result = NULL;
+    axiom_node_t *tmpl = NULL, *enc_node = NULL, *enc_data_node = NULL;
+    axis2_char_t *encrypted_result = NULL;
     FILE *outf;
 
     env = test_init();
@@ -77,6 +79,7 @@ int main(int argc, char *argv[])
 
     if (argc > 1)
         filename = argv[1];
+
     tmpl = load_sample_xml(env , tmpl, filename);
 
     if (tmpl)
@@ -88,34 +91,25 @@ int main(int argc, char *argv[])
         printf("load_sample_xml FAILED");
         return -1;
     }
+    /*Create key*/
+    key = oxs_key_create_key(env);
+    OXS_KEY_POPULATE(key, env, (unsigned char*)"12345678", "session_key",  8, OXS_KEY_USAGE_ENCRYPT);
+   
+    /*Create ctx*/
+    ctx = oxs_ctx_create(env);
+    OXS_CTX_SET_KEY(ctx, env, key);
 
-    enc_doc =  load_sample_xml(env , enc_doc, doc_file);
-    if (enc_doc)
-    {
-        printf("load_sample_xml enc_doc SUCCESS");
-        /*     data = AXIOM_NODE_TO_STRING(enc_doc, env); *//*Enable this to encrypt an xml*/
-    }
-    else
-    {
-        printf("load_sample_xml enc_doc FAILED");
-        return -1;
-    }
+    /*Set algorithm*/
+    OXS_CTX_SET_ENC_MTD_ALGORITHM(ctx, env, OXS_HrefAes128Cbc);
 
+    /*Get the node to be encrypted*/
+    enc_node = AXIOM_NODE_GET_FIRST_CHILD(tmpl, env);
 
-
+    /*Create a reference to encrypted node*/
+    enc_data_node =  oxs_token_build_encrypted_data_element(env, tmpl, "xml-element", "id"); 
     /*Encrypt***************************************************/
-    ctx = oxs_ctx_create_ctx(env);
 
-    ctx->key = oxs_key_read_from_file(env, "deskey.bin");
-
-    /*TODO Set the key name inside KeyName node*/
-
-    if (!ctx)
-    {
-        printf("\nCannot create context");
-        return -1;
-    }
-    temp_status = oxs_enc_encrypt_template(env, tmpl, data, ctx);
+    temp_status = oxs_xml_enc_encrypt_node(env, ctx,  enc_node, &enc_data_node);
 
     if (temp_status)
     {
@@ -132,33 +126,5 @@ int main(int argc, char *argv[])
     outf = fopen("result.xml", "wb");
     fwrite(encrypted_result, 1, AXIS2_STRLEN(encrypted_result), outf);
 
-    /*Decrypt **************************************************/
-#if 1
-    printf("\nDecryption start\n**************************************************\n");
-    ctx = oxs_ctx_create_ctx(env);
-    ctx->key = oxs_key_read_from_file(env, "deskey.bin");
-
-    if (!ctx)
-    {
-        printf("\nCannot create context");
-        return -1;
-    }
-
-    temp_status = oxs_enc_decrypt_template(env, tmpl, &decrypted_result, ctx);
-
-    if (temp_status)
-    {
-        printf("oxs_enc_decrypt_template SUCCESS\n");
-    }
-    else
-    {
-        printf("oxs_enc_decrypt_template FAILURE\n");
-    }
-
-    printf("Decrypted result is\n%s", decrypted_result)    ;
-
-#endif
     return 0;
-
-
 }

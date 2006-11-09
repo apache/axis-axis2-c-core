@@ -14,41 +14,37 @@
  * limitations under the License.
  */
 
-#ifndef OXS_ENCRIPTION_METHOD_H
-#define OXS_ENCRIPTION_METHOD_H
+#ifndef OXS_ENCRYPTION_H
+#define OXS_ENCRYPTION_H
 
 
 /**
-  * @file oxs_token_encription_method.h
+  * @file oxs_encryption.h
   * @brief 
   */
 
 #include <axis2_defines.h>
+#include <oxs_ctx.h>
 #include <axis2_env.h>
 #include <axiom_node.h>
 #include <axiom_element.h>
 #include <axis2_qname.h>
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+axis2_status_t AXIS2_CALL
+oxs_encryption_symmetric_crypt(const axis2_env_t *env,
+    oxs_ctx_t * enc_ctx,
+    oxs_buffer_t *input,
+    oxs_buffer_t *result);
 
-/**
-* Encryption Method element
-*/
-AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-oxs_token_build_encryption_method_element(const axis2_env_t *env,
-                        axiom_node_t *parent,
-                        axis2_char_t *algorithm
-                    );
 
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL
-oxs_token_get_encryption_method(const axis2_env_t *env, axiom_node_t *enc_mtd_node);
-/*TODO write free method*/
 /** @} */
 #ifdef __cplusplus
 }
 #endif
 
-#endif                          /* OXS_ENCRIPTION_METHOD_H */
+#endif                          /* OXS_ENCRYPTION_H */

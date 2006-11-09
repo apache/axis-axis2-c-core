@@ -43,7 +43,10 @@ rampart_crypto_engine_impl_t;
 
 #define AXIS2_INTF_TO_IMPL(engine) ((rampart_crypto_engine_impl_t *)engine)
 
+
+
 /*******************Function Headers ****************************/
+/*Private functions*/
 static void
 rampart_crypto_engine_init_ops(
     rampart_crypto_engine_t *engine);
@@ -182,9 +185,13 @@ rampart_crypto_engine_encrypt_message(
     rampart_crypto_engine_impl_t *engine_impl = NULL;
     axiom_node_t *removed_node = NULL;
     axis2_char_t* tmp_str = NULL;
+    axis2_char_t* encryption_parts = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     engine_impl = AXIS2_INTF_TO_IMPL(engine);
+
+    /*TODO Get encryption parts*/
+    encryption_parts = RAMPART_ACTIONS_GET_ENCRYPTION_PARTS(actions, env);
 
     /*Generate the session key*/
     sessionkey = oxs_key_create_key(env);
@@ -199,12 +206,8 @@ rampart_crypto_engine_encrypt_message(
     ret = OXS_KEY_SET_NAME(sessionkey, env, "sessionkey");
     ret = OXS_KEY_SET_USAGE(sessionkey, env, OXS_KEY_USAGE_ENCRYPT);
 
-    /*printf("\nSession Key is %s", OXS_KEY_GET_DATA(sessionkey,env));    */
-
     body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
     body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
-
-    /*TODO Get the node to be encrypted. As per encryptionParts in the OutflowSecurity*/
 
     /*TODO Generate uuid for the EncryptedDataNode*/
     uuid = "EncDataId-34526";
@@ -214,7 +217,6 @@ rampart_crypto_engine_encrypt_message(
     {
         node_to_enc = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
     }
-
 
     str_to_enc = AXIOM_NODE_TO_STRING(node_to_enc, env);
 

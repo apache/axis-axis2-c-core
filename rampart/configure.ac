@@ -55,6 +55,8 @@ AC_CONFIG_FILES([Makefile \
     src/handlers/Makefile \
     src/core/Makefile \
     src/util/Makefile 
+    test/Makefile 
+    test/omxmlsec/Makefile 
     ])
     
 AC_OUTPUT
