@@ -1,7 +1,7 @@
 TESTS = wsdl_test
-prglibdir=$(prefix)/lib/unit_test
-prgbindir=$(prefix)/bin/unit_test
-prglib_LTLIBRARIES = libtest_wsdl.la
+libdir=$(prefix)/lib/unit_test
+bindir=$(prefix)/bin/unit_test
+lib_LTLIBRARIES = libtest_wsdl.la
 
 libtest_wsdl_la_SOURCES = wsdl_test.c test_wsdl_component.c
 
@@ -22,7 +22,7 @@ INCLUDES = -I$(top_builddir)/include \
 
 
 check_PROGRAMS = wsdl_test
-prgbin_PROGRAMS = wsdl_test
+bin_PROGRAMS = wsdl_test
 wsdl_test_SOURCES = main.c
 
 wsdl_test_LDADD   =   \

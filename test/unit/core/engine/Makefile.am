@@ -1,7 +1,7 @@
 TESTS = engine_test
-prgbindir=$(prefix)/bin/unit_test
-prglibdir=$(prefix)/lib/unit_test
-prglib_LTLIBRARIES = libtest_engine.la
+bindir=$(prefix)/bin/unit_test
+libdir=$(prefix)/lib/unit_test
+lib_LTLIBRARIES = libtest_engine.la
 libtest_engine_la_SOURCES = engine_test.c test_conf.c
 noinst_HEADERS=$(top_builddir)/test/unit/core/engine/*.h
 
@@ -19,7 +19,7 @@ INCLUDES = -I$(top_builddir)/include \
 			-I ../../../../axiom/include 
 
 check_PROGRAMS = engine_test
-prgbin_PROGRAMS = engine_test
+bin_PROGRAMS = engine_test
 engine_test_SOURCES = main.c
 engine_test_LDADD   =   libtest_engine.la  \
                      -L$(CUTEST_HOME)/lib \

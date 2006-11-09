@@ -1,7 +1,7 @@
 TESTS = description_test
-prgbindir=$(prefix)/bin/unit_test
-prglibdir=$(prefix)/lib/unit_test
-prglib_LTLIBRARIES = libtest_description.la
+bindir=$(prefix)/bin/unit_test
+libdir=$(prefix)/lib/unit_test
+lib_LTLIBRARIES = libtest_description.la
 libtest_description_la_SOURCES = description_test.c \
                                     test_op.c \
                                     test_svc.c \
@@ -24,7 +24,7 @@ INCLUDES = -I$(top_builddir)/include \
 		   -I ../../../../util/include \
 		   -I ../../../../axiom/include 
 
-prgbin_PROGRAMS = description_test
+bin_PROGRAMS = description_test
 check_PROGRAMS = description_test
 description_test_SOURCES = main.c
 description_test_LDADD   =   libtest_description.la  \

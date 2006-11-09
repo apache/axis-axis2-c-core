@@ -1,6 +1,6 @@
 TESTS =
-prgbindir=$(prefix)/bin/unit_test
-prgbin_PROGRAMS = main_unit_test_suite
+bindir=$(prefix)/bin/unit_test
+bin_PROGRAMS = main_unit_test_suite
 SUBDIRS = core wsdl
 main_unit_test_suite_SOURCES = main.c
 

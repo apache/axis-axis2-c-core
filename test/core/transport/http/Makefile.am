@@ -1,7 +1,7 @@
-prgbindir=$(prefix)/bin/system_test
+bindir=$(prefix)/bin/system_test
 TESTS = test_http_transport
 check_PROGRAMS = test_http_transport
-prgbin_PROGRAMS = test_http_transport
+bin_PROGRAMS = test_http_transport
 SUBDIRS =
 AM_CFLAGS = -g -pthread
 test_http_transport_SOURCES = test_http_transport.c

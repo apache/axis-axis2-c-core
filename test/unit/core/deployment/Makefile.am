@@ -1,7 +1,7 @@
 TESTS = deployment_test
-prgbindir=$(prefix)/bin/unit_test
-prglibdir=$(prefix)/lib/unit_test
-prglib_LTLIBRARIES = libtest_deployment.la
+bindir=$(prefix)/bin/unit_test
+libdir=$(prefix)/lib/unit_test
+lib_LTLIBRARIES = libtest_deployment.la
 libtest_deployment_la_SOURCES = deployment_test.c \
                                 test_phases_info.c \
                                 test_dep_engine.c
@@ -22,7 +22,7 @@ INCLUDES = -I$(top_builddir)/include \
 			-I ../../../../util/include \
 			-I ../../../../axiom/include 
 
-prgbin_PROGRAMS = deployment_test
+bin_PROGRAMS = deployment_test
 check_PROGRAMS = deployment_test
 deployment_test_SOURCES = main.c
 deployment_test_LDADD   =   libtest_deployment.la  \

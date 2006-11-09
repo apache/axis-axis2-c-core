@@ -1,7 +1,7 @@
 TESTS = phaseresolver_test
-prgbindir=$(prefix)/bin/unit_test
-prglibdir=$(prefix)/lib/unit_test
-prglib_LTLIBRARIES = libtest_phaseresolver.la
+bindir=$(prefix)/bin/unit_test
+libdir=$(prefix)/lib/unit_test
+lib_LTLIBRARIES = libtest_phaseresolver.la
 libtest_phaseresolver_la_SOURCES = phaseresolver_test.c \
                                     test_resolver.c \
                                     test_phase_holder.c
@@ -21,7 +21,7 @@ INCLUDES = -I$(top_builddir)/include \
 			-I ../../../../util/include \
 			-I ../../../../axiom/include 
 
-prgbin_PROGRAMS = phaseresolver_test
+bin_PROGRAMS = phaseresolver_test
 check_PROGRAMS = phaseresolver_test
 phaseresolver_test_SOURCES = main.c
 phaseresolver_test_LDADD   =   libtest_phaseresolver.la  \

@@ -1,5 +1,5 @@
-prgbindir=$(prefix)/bin/itest
-prgbin_PROGRAMS = round2 
+bindir=$(prefix)/bin/itest
+bin_PROGRAMS = round2 
 round2_SOURCES = round2_client.c
 
 round2_LDADD   =    $(LDFLAGS) \

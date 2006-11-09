@@ -1,7 +1,7 @@
 TESTS = context_test
-prgbindir=$(prefix)/bin/unit_test
-prglibdir=$(prefix)/lib/unit_test
-prglib_LTLIBRARIES = libtest_context.la
+bindir=$(prefix)/bin/unit_test
+libdir=$(prefix)/lib/unit_test
+lib_LTLIBRARIES = libtest_context.la
 libtest_context_la_SOURCES = context_test.c
 noinst_HEADERS=$(top_builddir)/test/unit/core/context/*.h
 
@@ -11,7 +11,7 @@ INCLUDES = -I$(top_builddir)/include \
 			-I ../../../../util/include \
 			-I ../../../../axiom/include
 
-prgbin_PROGRAMS = context_test
+bin_PROGRAMS = context_test
 check_PROGRAMS = context_test
 context_test_SOURCES = main.c
 context_test_LDADD   =   \
