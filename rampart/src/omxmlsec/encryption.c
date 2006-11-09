@@ -116,19 +116,17 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
         /*Free*/
         AXIS2_FREE(env->allocator, encoded_str);
         encoded_str = NULL;
-        AXIS2_FREE(env->allocator, out_main_buf);
-        out_main_buf = NULL;    
 
     /*DECRYPTION*/
     }else if(OXS_CTX_GET_OPERATION(enc_ctx, env) == OXS_CTX_OPERATION_DECRYPT){
-        unsigned char *decoded_data = NULL;
+        unsigned char *decoded_data = NULL;/*Can be binary*/
         unsigned char *out_main_buf = NULL;
         int decoded_len = -1;
         int enclen = -1;
 
         /*First we need to base64 decode*/
-        decoded_data = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len((char*)(OXS_CTX_GET_INPUT_DATA(enc_ctx, env))));
-        decoded_len = axis2_base64_decode_binary(decoded_data, (char*)(OXS_CTX_GET_INPUT_DATA(enc_ctx, env)) );
+        decoded_data = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len((char*)OXS_BUFFER_GET_DATA(input, env)));
+        decoded_len = axis2_base64_decode_binary(decoded_data, (char*)OXS_BUFFER_GET_DATA(input, env) );
         if (decoded_len < 0)
         {
             oxs_error(ERROR_LOCATION, OXS_ERROR_DECRYPT_FAILED,
@@ -142,8 +140,6 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
         /*Free*/
         AXIS2_FREE(env->allocator, decoded_data);
         decoded_data = NULL;
-        AXIS2_FREE(env->allocator, out_main_buf);
-        out_main_buf = NULL;
 
     }else{
         oxs_error(ERROR_LOCATION, OXS_ERROR_INVALID_DATA,

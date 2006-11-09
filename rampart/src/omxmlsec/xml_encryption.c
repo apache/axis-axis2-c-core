@@ -56,6 +56,10 @@ oxs_xml_enc_encrypt_node(const axis2_env_t *env,
     /*We call encrypt_data*/
     ret = oxs_xml_enc_encrypt_data(env, enc_ctx, serialized_buf, enc_type_node); 
     
+    /*Remove the node from the parent*/
+    if(AXIS2_SUCCESS == ret){
+        AXIOM_NODE_DETACH(node, env);
+    }
     /*Free*/
     OXS_BUFFER_FREE(serialized_buf, env); 
 
@@ -69,7 +73,9 @@ oxs_xml_enc_decrypt_node(const axis2_env_t *env,
                             axiom_node_t *enc_type_node,
                             axiom_node_t **decrypted_node)
 {
+
     
+
     return AXIS2_SUCCESS;
 }
 
@@ -94,7 +100,7 @@ oxs_xml_enc_encrypt_data(const axis2_env_t *env,
     sym_key = OXS_CTX_GET_KEY(enc_ctx, env);
 
     /*Set the operation to encrypt*/
-    OXS_CTX_SET_OPERATION(enc_ctx, env, OXS_CTX_OPERATION_DECRYPT);
+    OXS_CTX_SET_OPERATION(enc_ctx, env, OXS_CTX_OPERATION_ENCRYPT);
 
     /*Create an empty buffer for encrypted data*/
     result_buf = oxs_buffer_create(env);
@@ -106,7 +112,6 @@ oxs_xml_enc_encrypt_data(const axis2_env_t *env,
     cd_node = oxs_token_build_cipher_data_element(env, *enc_type_node);
     cv_node = oxs_token_build_cipher_value_element(env, cd_node, (axis2_char_t*)OXS_BUFFER_GET_DATA(result_buf, env));
 
-    /*Replace the node with enc_type_node*/
     /*Free buffers*/
     OXS_BUFFER_FREE(result_buf, env); 
 

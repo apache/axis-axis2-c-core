@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <axis2_util.h>
 #include <oxs_constants.h>
+#include <oxs_util.h>
 #include <axiom.h>
 #include <axiom_xml_reader.h>
 #include <axis2_env.h>
@@ -64,14 +65,14 @@ axis2_env_t *test_init()
 
 int main(int argc, char *argv[])
 {
-    oxs_error(ERROR_LOCATION, OXS_ERROR_DEFAULT, "Api danne neee %d", 13);
     axis2_env_t *env = NULL;
-    axis2_char_t *filename = "a.xml";
+    axis2_char_t *filename = "input.xml";
     oxs_ctx_t *ctx = NULL;
     oxs_key_t *key = NULL;
     axis2_status_t temp_status = AXIS2_FAILURE;
     axiom_node_t *tmpl = NULL, *enc_node = NULL, *enc_data_node = NULL;
     axis2_char_t *encrypted_result = NULL;
+    axis2_char_t *id = NULL;
     FILE *outf;
 
     env = test_init();
@@ -100,13 +101,15 @@ int main(int argc, char *argv[])
     OXS_CTX_SET_KEY(ctx, env, key);
 
     /*Set algorithm*/
-    OXS_CTX_SET_ENC_MTD_ALGORITHM(ctx, env, OXS_HrefAes128Cbc);
+    OXS_CTX_SET_ENC_MTD_ALGORITHM(ctx, env, OXS_HrefAes256Cbc);
 
     /*Get the node to be encrypted*/
     enc_node = AXIOM_NODE_GET_FIRST_CHILD(tmpl, env);
 
     /*Create a reference to encrypted node*/
-    enc_data_node =  oxs_token_build_encrypted_data_element(env, tmpl, "xml-element", "id"); 
+    id =  oxs_util_generate_id(env, OXS_ENCDATA_ID);
+    printf("ID=%s\n",id);
+    enc_data_node =  oxs_token_build_encrypted_data_element(env, tmpl, OXS_TypeEncElement, id); 
     /*Encrypt***************************************************/
 
     temp_status = oxs_xml_enc_encrypt_node(env, ctx,  enc_node, &enc_data_node);
@@ -121,7 +124,7 @@ int main(int argc, char *argv[])
     }
 
     encrypted_result = AXIOM_NODE_TO_STRING(tmpl, env) ;
-    printf("Final template is\n %s  ", encrypted_result);
+    /*printf("Final template is\n %s  ", encrypted_result);*/
 
     outf = fopen("result.xml", "wb");
     fwrite(encrypted_result, 1, AXIS2_STRLEN(encrypted_result), outf);

@@ -1,8 +1,7 @@
 TESTS = test_oxs
 bin_PROGRAMS = test_oxs
-SUBDIRS =
 
-AM_CFLAGS = -g -O2 -pthread
+#AM_CFLAGS = -g -O2 -pthread
 
 test_oxs_SOURCES =  test.c
 

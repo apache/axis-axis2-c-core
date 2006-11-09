@@ -35,7 +35,9 @@ extern "C"
 #define OXS_WSSE "wsse"
 
 
-
+/*ID Prefixes*/
+#define OXS_ENCDATA_ID "EncDataID"
+#define OXS_ENCKEY_ID "EncKeyID"
 
 /* Global namespaces *******************/
 
