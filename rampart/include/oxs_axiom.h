@@ -46,6 +46,10 @@ oxs_axiom_get_number_of_children_with_qname(const axis2_env_t *env,
                                          axis2_char_t* local_name,
                                          axis2_char_t* ns_uri,
                                          axis2_char_t* prefix);
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+oxs_axiom_get_attribute_value_of_node_by_name(const axis2_env_t *env,
+        axiom_node_t *node,
+        axis2_char_t *attribute_name);
 
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL

@@ -21,7 +21,7 @@
 #include <axiom_attribute.h>
 #include <axiom_element.h>
 
-/*TODO These names should be changed to oxs_token_build_XXX_node*/
+
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_encrypted_data_element(const axis2_env_t *env,

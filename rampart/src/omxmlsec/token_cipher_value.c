@@ -26,8 +26,8 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_token_get_cipher_value(const axis2_env_t *env,
         axiom_node_t *cv_node)
 {
-    /*TODO Verification*/
     axis2_char_t *cv = NULL;
+    /*TODO Verification*/
     cv = (axis2_char_t*)oxs_axiom_get_node_content(env, cv_node);
     return cv;
 

@@ -67,17 +67,6 @@ oxs_xml_enc_encrypt_node(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
-oxs_xml_enc_decrypt_node(const axis2_env_t *env,
-                            oxs_ctx_t * enc_ctx,
-                            axiom_node_t *enc_type_node,
-                            axiom_node_t **decrypted_node)
-{
-
-    
-
-    return AXIS2_SUCCESS;
-}
 
 axis2_status_t AXIS2_CALL
 oxs_xml_enc_encrypt_data(const axis2_env_t *env,
@@ -119,11 +108,76 @@ oxs_xml_enc_encrypt_data(const axis2_env_t *env,
 }
 
 axis2_status_t AXIS2_CALL
+oxs_xml_enc_decrypt_node(const axis2_env_t *env,
+                            oxs_ctx_t * enc_ctx,
+                            axiom_node_t *enc_type_node,
+                            axiom_node_t **decrypted_node)
+{
+    axiom_node_t *deserialized_node = NULL;
+    axiom_node_t *parent_of_enc_node = NULL;
+    oxs_buffer_t *result_buf = NULL;
+    axis2_char_t *decrypted_data = NULL;/*Can be either am XML-Element or XML-Content*/
+
+    /*Create an empty buffer for results*/
+    result_buf = oxs_buffer_create(env);
+
+    /*Decrypt*/
+    oxs_xml_enc_decrypt_data(env, enc_ctx, enc_type_node, result_buf);
+    decrypted_data = (axis2_char_t *)OXS_BUFFER_GET_DATA(result_buf, env);
+     
+    /*De-serialize the decrypted content to build the node*/
+    deserialized_node = (axiom_node_t*)oxs_axiom_deserialize_node(env, decrypted_data);
+
+    /*Assign deserialized_node to the reference passed*/
+    *decrypted_node = deserialized_node;
+
+    /*Replace the encrypted node with the de-serialized node*/
+    AXIOM_NODE_DETACH(enc_type_node, env);    
+    parent_of_enc_node = AXIOM_NODE_GET_PARENT(enc_type_node, env);
+    AXIOM_NODE_ADD_CHILD(parent_of_enc_node, env, deserialized_node);
+
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
 oxs_xml_enc_decrypt_data(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             axiom_node_t *enc_type_node,
                             oxs_buffer_t *result_buf)
 {
-    return AXIS2_SUCCESS;
+    axiom_node_t *enc_mtd_node = NULL;
+    axiom_node_t *cd_node = NULL;
+    axiom_node_t *cv_node = NULL;
+    axis2_char_t *cipher_val = NULL;
+    axis2_char_t *sym_algo = NULL;
+    axis2_char_t *type = NULL;
+    axis2_char_t *id = NULL;
+    oxs_buffer_t *input_buf = NULL;
+
+    /*Get the symmetric encryption algorithm*/
+    enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NodeEncryptionMethod, NULL, NULL);
+    sym_algo = oxs_token_get_encryption_method(env, enc_mtd_node);
+
+    /*Get ID, Type, MimeType attributes from the EncryptedDataNode*/
+    id = oxs_axiom_get_attribute_value_of_node_by_name(env, enc_type_node, OXS_AttrId);
+    type = oxs_axiom_get_attribute_value_of_node_by_name(env, enc_type_node, OXS_AttrType);
+
+    /*Populate the context for future use*/
+    OXS_CTX_SET_ENC_MTD_ALGORITHM(enc_ctx, env, sym_algo);
+    OXS_CTX_SET_ID(enc_ctx, env, id);
+    OXS_CTX_SET_TYPE(enc_ctx, env, type);
+    
+    /*Get the cipher value*/
+    cd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NodeCipherData, NULL, NULL);
+    cv_node = oxs_axiom_get_first_child_node_by_name(env, cd_node, OXS_NodeCipherValue, NULL, NULL);
+    cipher_val = oxs_token_get_cipher_value(env, cv_node); 
+    
+    /*Create input buffer with cipher data obtained*/
+    input_buf = oxs_buffer_create(env);
+    OXS_BUFFER_POPULATE(input_buf, env, (unsigned char*)cipher_val, AXIS2_STRLEN(cipher_val) );
+
+    /*Decrypt*/
+    OXS_CTX_SET_OPERATION(enc_ctx, env, OXS_CTX_OPERATION_DECRYPT);
+    return oxs_encryption_symmetric_crypt(env, enc_ctx, input_buf, result_buf);
 }
 
