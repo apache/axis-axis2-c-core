@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <axis2_util.h>
 #include <oxs_constants.h>
-#include <oxs_util.h>
+#include <oxs_utility.h>
 #include <axiom.h>
 #include <axiom_xml_reader.h>
 #include <axis2_env.h>

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#ifndef OXS_UTIL_H
-#define OXS_UTIL_H
+#ifndef OXS_UTILITY_H
+#define OXS_UTILITY_H
 
 
 /**
-  * @file oxs_util.h
+  * @file oxs_utilty.h
   * @brief 
   */
 
@@ -43,4 +43,4 @@ oxs_util_generate_id(const axis2_env_t *env,
 }
 #endif
 
-#endif                          /* OXS_UTIL_H */
+#endif                          /* OXS_UTILITY_H */

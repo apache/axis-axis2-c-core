@@ -16,7 +16,7 @@
 
 #include <stdio.h>
 #include <axis2_util.h>
-#include <oxs_util.h>
+#include <oxs_utility.h>
 #include <oxs_error.h>
 
 /* Generates an id for an element.
