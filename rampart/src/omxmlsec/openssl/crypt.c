@@ -112,7 +112,7 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
     {
         /* Error */
         EVP_CIPHER_CTX_cleanup(&ctx);
-        printf("\nERROR:EVP_CipherFinal_ex--- EVP_CIPHER_CTX_cleanup");
+        printf("\nERROR:EVP_CipherFinal_ex--- EVP_CIPHER_CTX_cleanup\n");
         return (-1);
     }
     /*Alright now we need to write the last drop*/
@@ -125,7 +125,8 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
     out_buf_index = out_buf_index + outlen;/*Update the writing position of the tempbuf*/
     EVP_CIPHER_CTX_cleanup(&ctx);
     /*Assign the temp buf to the out_main_buf*/
-    *out_main_buf = tempbuf;
+    *out_main_buf = malloc(out_buf_index+outlen);
+    memcpy(*out_main_buf, tempbuf, out_buf_index+outlen);
     free(tempbuf2);
     return out_buf_index;
 
