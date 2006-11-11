@@ -828,6 +828,7 @@ axiom_element_add_attribute(axiom_element_t *om_element,
                 name, AXIS2_HASH_KEY_STRING,
                 attribute);
     }
+    attribute->ref++;
     return ((qname) ? AXIS2_SUCCESS : AXIS2_FAILURE);
 }
 

@@ -159,6 +159,7 @@ axiom_attribute_create(const axis2_env_t *env,
     attribute_impl->om_attribute.ops->set_value = axiom_attribute_set_value;
 
     attribute_impl->om_attribute.ops->clone = axiom_attribute_clone;
+    attribute_impl->om_attribute.ref = 0;
     return &(attribute_impl->om_attribute);
 }
 
@@ -168,6 +169,9 @@ axiom_attribute_free(axiom_attribute_t *om_attribute,
         const axis2_env_t *env)
 {
     axiom_attribute_impl_t *attribute_impl = NULL;
+
+    if (--om_attribute->ref > 0)
+	  return AXIS2_SUCCESS;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     attribute_impl = AXIS2_INTF_TO_IMPL(om_attribute);

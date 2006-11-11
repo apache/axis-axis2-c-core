@@ -166,7 +166,8 @@ extern "C"
     typedef struct axiom_attribute
     {
         /** ops of attribute struct */
-        axiom_attribute_ops_t *ops;
+	  axiom_attribute_ops_t *ops;
+	  int ref;
        
     } axiom_attribute_t;
 
