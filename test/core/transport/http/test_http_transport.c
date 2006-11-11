@@ -197,7 +197,7 @@ void test_https_client(const axis2_env_t *env)
     client = axis2_http_client_create(env, url);
 
     /* if you weant to test the proxy uncomment following */
-    AXIS2_HTTP_CLIENT_SET_PROXY(client, env, "127.0.0.1", 8080);
+    /*AXIS2_HTTP_CLIENT_SET_PROXY(client, env, "127.0.0.1", 8080);*/
 
     status = AXIS2_HTTP_CLIENT_SEND(client, env, request);
     if (status < 0)
@@ -242,8 +242,6 @@ int main(void)
     test_https_client(env);
     test_url(env);
 
-    axis2_allocator_t *allocator = env->allocator;
     axis2_env_free(env);
-    axis2_allocator_free(allocator);
     return 0;
 }

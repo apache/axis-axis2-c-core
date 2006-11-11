@@ -104,8 +104,6 @@ axis2_stream_create_ssl(const axis2_env_t *env, axis2_socket_t socket)
     stream_impl->stream.ops->read = axis2_ssl_stream_read;
     stream_impl->stream.ops->write = axis2_ssl_stream_write;
     stream_impl->stream.ops->skip = axis2_ssl_stream_skip;
-    stream_impl->stream.ops->get_char = axis2_ssl_stream_get_char;
-    stream_impl->stream.ops->get_type = axis2_ssl_stream_get_type;
 
     return &(stream_impl->stream);
 }
