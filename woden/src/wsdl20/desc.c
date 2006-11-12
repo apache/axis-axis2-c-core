@@ -438,12 +438,15 @@ woden_desc_to_desc_element(
     AXIS2_ENV_CHECK(env, NULL);
     if (!desc)
     {
-        desc_impl = (woden_desc_impl_t *) create(env);
+	  desc = (void *) create (env);
+	  desc_impl = (woden_desc_impl_t *) desc;
     }
     else
         desc_impl = (woden_desc_impl_t *) desc;
 
-    woden_desc_free_ops(desc, env);
+    if (desc)
+	  woden_desc_free_ops(desc, env);
+
     desc_impl->desc.base.desc_element.ops =
         AXIS2_MALLOC(env->allocator,
                 sizeof(woden_desc_element_ops_t));
@@ -462,12 +465,15 @@ woden_desc_to_documentable_element(
     AXIS2_ENV_CHECK(env, NULL);
     if (!desc)
     {
-        desc_impl = (woden_desc_impl_t *) create(env);
+	  desc = (void *) create (env);
+	  desc_impl = (woden_desc_impl_t *) desc;
     }
     else
         desc_impl = (woden_desc_impl_t *) desc;
 
-    woden_desc_free_ops(desc, env);
+    if (desc)
+	  woden_desc_free_ops(desc, env);
+
     desc_impl->desc.base.desc_element.documentable_element.ops =
         AXIS2_MALLOC(env->allocator,
                 sizeof(woden_documentable_element_ops_t));
@@ -487,12 +493,15 @@ woden_desc_to_documentable(
     AXIS2_ENV_CHECK(env, NULL);
     if (!desc)
     {
-        desc_impl = (woden_desc_impl_t *) create(env);
+	  desc = (void *) create (env);
+	  desc_impl = (woden_desc_impl_t *) desc;
     }
     else
         desc_impl = (woden_desc_impl_t *) desc;
 
-    woden_desc_free_ops(desc, env);
+    if (desc)
+	  woden_desc_free_ops(desc, env);
+
     desc_impl->desc.base.documentable.ops =
         AXIS2_MALLOC(env->allocator,
                 sizeof(woden_documentable_ops_t));
@@ -513,12 +522,15 @@ woden_desc_to_wsdl_obj(
     AXIS2_ENV_CHECK(env, NULL);
     if (!desc)
     {
-        desc_impl = (woden_desc_impl_t *) create(env);
+	  desc = (void *) create (env);
+	  desc_impl = (woden_desc_impl_t *) desc;
     }
     else
         desc_impl = (woden_desc_impl_t *) desc;
 
-    woden_desc_free_ops(desc, env);
+    if (desc)
+	  woden_desc_free_ops(desc, env);
+
     desc_impl->desc.base.documentable.base.wsdl_obj.ops =
         AXIS2_MALLOC(env->allocator,
                 sizeof(woden_wsdl_obj_ops_t));
@@ -540,11 +552,14 @@ woden_desc_to_wsdl_component(
 
     if (!desc)
     {
-        desc_impl = (woden_desc_impl_t *) create(env);
+	  desc = (void *) create (env);
+	  desc_impl = (woden_desc_impl_t *) desc;
     }
     else
         desc_impl = (woden_desc_impl_t *) desc;
-    woden_desc_free_ops(desc, env);
+    if (desc)
+	  woden_desc_free_ops(desc, env);
+
     desc_impl->desc.base.wsdl_component.ops =
         AXIS2_MALLOC(env->allocator,
                 sizeof(woden_wsdl_component_ops_t));
@@ -563,12 +578,15 @@ woden_desc_to_attr_extensible(
     AXIS2_ENV_CHECK(env, NULL);
     if (!desc)
     {
-        desc_impl = (woden_desc_impl_t *) create(env);
+	  desc = (void *) create (env);
+	  desc_impl = (woden_desc_impl_t *) desc;
     }
     else
         desc_impl = (woden_desc_impl_t *) desc;
 
-    woden_desc_free_ops(desc, env);
+    if (desc)
+	  woden_desc_free_ops(desc, env);
+
 
     desc_impl->desc.base.desc_element.documentable_element.
     wsdl_element.base.attr_extensible.ops =
@@ -590,12 +608,14 @@ woden_desc_to_element_extensible(
     AXIS2_ENV_CHECK(env, NULL);
     if (!desc)
     {
-        desc_impl = (woden_desc_impl_t *) create(env);
+	  desc = (void *) create (env);
+	  desc_impl = (woden_desc_impl_t *) desc;
     }
     else
         desc_impl = (woden_desc_impl_t *) desc;
 
-    woden_desc_free_ops(desc, env);
+    if (desc)
+	  woden_desc_free_ops(desc, env);
 
     desc_impl->desc.base.desc_element.documentable_element.
     wsdl_element.base.element_extensible.ops =

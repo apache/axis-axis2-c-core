@@ -148,12 +148,14 @@ woden_interface_fault_ref_to_interface_fault_ref_element(
     AXIS2_ENV_CHECK(env, NULL);
     if (!interface_fault_ref)
     {
-        interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) create(env);
+	  interface_fault_ref = (void *) create (env);
+	  interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
     }
     else
         interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    woden_interface_fault_ref_free_ops(interface_fault_ref, env);
+    if (interface_fault_ref)
+	  woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.interface_fault_ref_element.ops =
         AXIS2_MALLOC(env->allocator,
@@ -173,12 +175,14 @@ woden_interface_fault_ref_to_nested_configurable(
     AXIS2_ENV_CHECK(env, NULL);
     if (!interface_fault_ref)
     {
-        interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) create(env);
+	  interface_fault_ref = (void *) create (env);
+	  interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
     }
     else
         interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    woden_interface_fault_ref_free_ops(interface_fault_ref, env);
+    if (interface_fault_ref)
+	  woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.nested_configurable.ops =
         AXIS2_MALLOC(env->allocator,
@@ -200,12 +204,14 @@ woden_interface_fault_ref_to_configurable(
     AXIS2_ENV_CHECK(env, NULL);
     if (!interface_fault_ref)
     {
-        interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) create(env);
+	  interface_fault_ref = (void *) create (env);
+	  interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
     }
     else
         interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    woden_interface_fault_ref_free_ops(interface_fault_ref, env);
+    if (interface_fault_ref)
+	  woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.nested_configurable.base.configurable.ops =
         AXIS2_MALLOC(env->allocator,
@@ -227,12 +233,14 @@ woden_interface_fault_ref_to_nested_element(
     AXIS2_ENV_CHECK(env, NULL);
     if (!interface_fault_ref)
     {
-        interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) create(env);
+	  interface_fault_ref = (void *) create (env);
+	  interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
     }
     else
         interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    woden_interface_fault_ref_free_ops(interface_fault_ref, env);
+    if (interface_fault_ref)
+	  woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.interface_fault_ref_element.base.nested_element.ops =
         AXIS2_MALLOC(env->allocator,
@@ -253,12 +261,14 @@ woden_interface_fault_ref_to_configurable_element(
     AXIS2_ENV_CHECK(env, NULL);
     if (!interface_fault_ref)
     {
-        interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) create(env);
+	  interface_fault_ref = (void *) create (env);
+	  interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
     }
     else
         interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    woden_interface_fault_ref_free_ops(interface_fault_ref, env);
+    if (interface_fault_ref)
+	  woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.interface_fault_ref_element.base.configurable_element.ops =
         AXIS2_MALLOC(env->allocator,
@@ -278,12 +288,14 @@ woden_interface_fault_ref_to_documentable_element(
     AXIS2_ENV_CHECK(env, NULL);
     if (!interface_fault_ref)
     {
-        interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) create(env);
+	  interface_fault_ref = (void *) create (env);
+	  interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
     }
     else
         interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    woden_interface_fault_ref_free_ops(interface_fault_ref, env);
+    if (interface_fault_ref)
+	  woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.interface_fault_ref_element.base.documentable_element.ops =
         AXIS2_MALLOC(env->allocator,
@@ -304,12 +316,14 @@ woden_interface_fault_ref_to_documentable(
     AXIS2_ENV_CHECK(env, NULL);
     if (!interface_fault_ref)
     {
-        interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) create(env);
+	  interface_fault_ref = (void *) create (env);
+	  interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
     }
     else
         interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    woden_interface_fault_ref_free_ops(interface_fault_ref, env);
+    if (interface_fault_ref)
+	  woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.nested_configurable.base.
     configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator,
@@ -330,12 +344,14 @@ woden_interface_fault_ref_to_attr_extensible(
     AXIS2_ENV_CHECK(env, NULL);
     if (!interface_fault_ref)
     {
-        interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) create(env);
+	  interface_fault_ref = (void *) create (env);
+	  interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
     }
     else
         interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    woden_interface_fault_ref_free_ops(interface_fault_ref, env);
+    if (interface_fault_ref)
+	  woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.interface_fault_ref_element.base.documentable_element.
     wsdl_element.base.attr_extensible.ops =
@@ -358,12 +374,14 @@ woden_interface_fault_ref_to_element_extensible(
     AXIS2_ENV_CHECK(env, NULL);
     if (!interface_fault_ref)
     {
-        interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) create(env);
+	  interface_fault_ref = (void *) create (env);
+	  interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
     }
     else
         interface_fault_ref_impl = (woden_interface_fault_ref_impl_t *) interface_fault_ref;
 
-    woden_interface_fault_ref_free_ops(interface_fault_ref, env);
+    if (interface_fault_ref)
+	  woden_interface_fault_ref_free_ops(interface_fault_ref, env);
 
     interface_fault_ref_impl->interface_fault_ref.base.interface_fault_ref_element.base.documentable_element.
     wsdl_element.base.element_extensible.ops =

@@ -172,12 +172,14 @@ woden_svc_to_documentable_element(
     AXIS2_ENV_CHECK(env, NULL);
     if (!svc)
     {
-        svc_impl = (woden_svc_impl_t *) create(env);
+	  svc = (void *) create (env);
+	  svc_impl = (woden_svc_impl_t *) svc;
     }
     else
         svc_impl = (woden_svc_impl_t *) svc;
 
-    woden_svc_free_ops(svc, env);
+    if (svc)
+	  woden_svc_free_ops(svc, env);
 
     svc_impl->svc.base.svc_element.base.documentable_element.ops =
         AXIS2_MALLOC(env->allocator,
@@ -198,12 +200,14 @@ woden_svc_to_configurable(
     AXIS2_ENV_CHECK(env, NULL);
     if (!svc)
     {
-        svc_impl = (woden_svc_impl_t *) create(env);
+	  svc = (void *) create (env);
+	  svc_impl = (woden_svc_impl_t *) svc;
     }
     else
         svc_impl = (woden_svc_impl_t *) svc;
 
-    woden_svc_free_ops(svc, env);
+    if (svc)
+	  woden_svc_free_ops(svc, env);
 
     svc_impl->svc.base.configurable.ops =
         AXIS2_MALLOC(env->allocator,
@@ -224,12 +228,14 @@ woden_svc_to_configurable_component(
     AXIS2_ENV_CHECK(env, NULL);
     if (!svc)
     {
-        svc_impl = (woden_svc_impl_t *) create(env);
+	  svc = (void *) create (env);
+	  svc_impl = (woden_svc_impl_t *) svc;
     }
     else
         svc_impl = (woden_svc_impl_t *) svc;
 
-    woden_svc_free_ops(svc, env);
+    if (svc)
+	  woden_svc_free_ops(svc, env);
 
     svc_impl->svc.base.configurable_component.ops =
         AXIS2_MALLOC(env->allocator,
@@ -250,12 +256,14 @@ woden_svc_to_wsdl_component(
 
     if (!svc)
     {
-        svc_impl = (woden_svc_impl_t *) create(env);
+	  svc = (void *) create (env);
+	  svc_impl = (woden_svc_impl_t *) svc;
     }
     else
         svc_impl = (woden_svc_impl_t *) svc;
 
-    woden_svc_free_ops(svc, env);
+    if (svc)
+	  woden_svc_free_ops(svc, env);
 
     svc_impl->svc.base.configurable_component.wsdl_component.ops =
         AXIS2_MALLOC(env->allocator,
@@ -275,12 +283,14 @@ woden_svc_to_configurable_element(
     AXIS2_ENV_CHECK(env, NULL);
     if (!svc)
     {
-        svc_impl = (woden_svc_impl_t *) create(env);
+	  svc = (void *) create (env);
+	  svc_impl = (woden_svc_impl_t *) svc;
     }
     else
         svc_impl = (woden_svc_impl_t *) svc;
 
-    woden_svc_free_ops(svc, env);
+    if (svc)
+	  woden_svc_free_ops(svc, env);
 
     svc_impl->svc.base.svc_element.base.configurable_element.ops =
         AXIS2_MALLOC(env->allocator,
@@ -300,12 +310,14 @@ woden_svc_to_documentable(
     AXIS2_ENV_CHECK(env, NULL);
     if (!svc)
     {
-        svc_impl = (woden_svc_impl_t *) create(env);
+	  svc = (void *) create (env);
+	  svc_impl = (woden_svc_impl_t *) svc;
     }
     else
         svc_impl = (woden_svc_impl_t *) svc;
 
-    woden_svc_free_ops(svc, env);
+    if (svc)
+	  woden_svc_free_ops(svc, env);
 
     svc_impl->svc.base.
     configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator,
@@ -326,12 +338,14 @@ woden_svc_to_attr_extensible(
     AXIS2_ENV_CHECK(env, NULL);
     if (!svc)
     {
-        svc_impl = (woden_svc_impl_t *) create(env);
+	  svc = (void *) create (env);
+	  svc_impl = (woden_svc_impl_t *) svc;
     }
     else
         svc_impl = (woden_svc_impl_t *) svc;
 
-    woden_svc_free_ops(svc, env);
+    if (svc)
+	  woden_svc_free_ops(svc, env);
 
     svc_impl->svc.base.svc_element.base.documentable_element.
     wsdl_element.base.attr_extensible.ops =
@@ -354,12 +368,14 @@ woden_svc_to_element_extensible(
     AXIS2_ENV_CHECK(env, NULL);
     if (!svc)
     {
-        svc_impl = (woden_svc_impl_t *) create(env);
+	  svc = (void *) create (env);
+	  svc_impl = (woden_svc_impl_t *) svc;
     }
     else
         svc_impl = (woden_svc_impl_t *) svc;
 
-    woden_svc_free_ops(svc, env);
+    if (svc)
+	  woden_svc_free_ops(svc, env);
 
     svc_impl->svc.base.svc_element.base.documentable_element.
     wsdl_element.base.element_extensible.ops =

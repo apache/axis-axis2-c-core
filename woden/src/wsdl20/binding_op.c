@@ -171,11 +171,14 @@ woden_binding_op_to_binding_op_element(
     AXIS2_ENV_CHECK(env, NULL);
     if (!binding_op)
     {
-        binding_op_impl = (woden_binding_op_impl_t *) create(env);
+	  binding_op = (void *) create (env);
+	  binding_op_impl = (woden_binding_op_impl_t *) binding_op;
     }
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
-    woden_binding_op_free_ops(binding_op, env);
+
+    if (binding_op)
+	  woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.binding_op_element.ops =
         AXIS2_MALLOC(env->allocator,
@@ -195,11 +198,14 @@ woden_binding_op_to_nested_configurable(
     AXIS2_ENV_CHECK(env, NULL);
     if (!binding_op)
     {
-        binding_op_impl = (woden_binding_op_impl_t *) create(env);
+	  binding_op = (void *) create (env);
+	  binding_op_impl = (woden_binding_op_impl_t *) binding_op;
     }
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
-    woden_binding_op_free_ops(binding_op, env);
+
+    if (binding_op)
+	  woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.nested_configurable.ops =
         AXIS2_MALLOC(env->allocator,
@@ -221,11 +227,14 @@ woden_binding_op_to_configurable(
     AXIS2_ENV_CHECK(env, NULL);
     if (!binding_op)
     {
-        binding_op_impl = (woden_binding_op_impl_t *) create(env);
+	  binding_op = (void *) create (env);
+	  binding_op_impl = (woden_binding_op_impl_t *) binding_op;
     }
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
-    woden_binding_op_free_ops(binding_op, env);
+
+    if (binding_op)
+	  woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.nested_configurable.base.configurable.ops =
         AXIS2_MALLOC(env->allocator,
@@ -250,11 +259,14 @@ woden_binding_op_to_wsdl_obj(
     AXIS2_ENV_CHECK(env, NULL);
     if (!binding_op)
     {
-        binding_op_impl = (woden_binding_op_impl_t *) create(env);
+	  binding_op = (void *) create (env);
+	  binding_op_impl = (woden_binding_op_impl_t *) binding_op;
     }
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
-    woden_binding_op_free_ops(binding_op, env);
+
+    if (binding_op)
+	  woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.nested_configurable.base.configurable.
     base.documentable.base.wsdl_obj.ops = AXIS2_MALLOC(env->allocator,
@@ -281,11 +293,14 @@ woden_binding_op_to_nested_element(
     AXIS2_ENV_CHECK(env, NULL);
     if (!binding_op)
     {
-        binding_op_impl = (woden_binding_op_impl_t *) create(env);
+	  binding_op = (void *) create (env);
+	  binding_op_impl = (woden_binding_op_impl_t *) binding_op;
     }
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
-    woden_binding_op_free_ops(binding_op, env);
+
+    if (binding_op)
+	  woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.nested_configurable.base.
     nested_element.ops = AXIS2_MALLOC(env->allocator,
@@ -306,11 +321,14 @@ woden_binding_op_to_wsdl_component(
     AXIS2_ENV_CHECK(env, NULL);
     if (!binding_op)
     {
-        binding_op_impl = (woden_binding_op_impl_t *) create(env);
+	  binding_op = (void *) create (env);
+	  binding_op_impl = (woden_binding_op_impl_t *) binding_op;
     }
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
-    woden_binding_op_free_ops(binding_op, env);
+
+    if (binding_op)
+	  woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.nested_configurable.base.
     nested_component.wsdl_component.ops = AXIS2_MALLOC(env->allocator,
@@ -331,12 +349,15 @@ woden_binding_op_to_configurable_element(
     AXIS2_ENV_CHECK(env, NULL);
     if (!binding_op)
     {
-        binding_op_impl = (woden_binding_op_impl_t *) create(env);
+	  binding_op = (void *) create (env);
+	  binding_op_impl = (woden_binding_op_impl_t *) binding_op;
     }
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
 
-    woden_binding_op_free_ops(binding_op, env);
+
+    if (binding_op)
+	  woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.binding_op_element.base.configurable_element.ops =
         AXIS2_MALLOC(env->allocator,
@@ -357,12 +378,15 @@ woden_binding_op_to_documentable_element(
     AXIS2_ENV_CHECK(env, NULL);
     if (!binding_op)
     {
-        binding_op_impl = (woden_binding_op_impl_t *) create(env);
+	  binding_op = (void *) create (env);
+	  binding_op_impl = (woden_binding_op_impl_t *) binding_op;
     }
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
 
-    woden_binding_op_free_ops(binding_op, env);
+
+    if (binding_op)
+	  woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.binding_op_element.base.documentable_element.ops =
         AXIS2_MALLOC(env->allocator,
@@ -383,12 +407,15 @@ woden_binding_op_to_documentable(
     AXIS2_ENV_CHECK(env, NULL);
     if (!binding_op)
     {
-        binding_op_impl = (woden_binding_op_impl_t *) create(env);
+	  binding_op = (void *) create (env);
+	  binding_op_impl = (woden_binding_op_impl_t *) binding_op;
     }
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
 
-    woden_binding_op_free_ops(binding_op, env);
+
+    if (binding_op)
+	  woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.nested_configurable.base.
     configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator,
@@ -416,11 +443,14 @@ woden_binding_op_to_attr_extensible(
     AXIS2_ENV_CHECK(env, NULL);
     if (!binding_op)
     {
-        binding_op_impl = (woden_binding_op_impl_t *) create(env);
+	  binding_op = (void *) create (env);
+	  binding_op_impl = (woden_binding_op_impl_t *) binding_op;
     }
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
-    woden_binding_op_free_ops(binding_op, env);
+
+    if (binding_op)
+	  woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.binding_op_element.
     base.documentable_element.wsdl_element.base.attr_extensible.ops =
@@ -454,11 +484,14 @@ woden_binding_op_to_element_extensible(
     AXIS2_ENV_CHECK(env, NULL);
     if (!binding_op)
     {
-        binding_op_impl = (woden_binding_op_impl_t *) create(env);
+	  binding_op = (void *) create (env);
+	  binding_op_impl = (woden_binding_op_impl_t *) binding_op;
     }
     else
         binding_op_impl = (woden_binding_op_impl_t *) binding_op;
-    woden_binding_op_free_ops(binding_op, env);
+
+    if (binding_op)
+	  woden_binding_op_free_ops(binding_op, env);
 
     binding_op_impl->binding_op.base.binding_op_element.
     base.documentable_element.wsdl_element.base.element_extensible.ops =
