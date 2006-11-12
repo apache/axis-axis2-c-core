@@ -26,18 +26,18 @@
 
 #define AXIS2_ADDR_DISP_NAME "addressing_based_dispatcher"
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 axis2_addr_disp_invoke(
     axis2_handler_t *handler,
     const axis2_env_t *env,
     struct axis2_msg_ctx *msg_ctx);
 
-axis2_svc_t *AXIS2_CALL
+static axis2_svc_t *AXIS2_CALL
 axis2_addr_disp_find_svc(
     axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env);
 
-axis2_op_t *AXIS2_CALL
+static axis2_op_t *AXIS2_CALL
 axis2_addr_disp_find_op(
     axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env,
@@ -85,7 +85,7 @@ axis2_addr_disp_create(
     return disp;
 }
 
-axis2_svc_t *AXIS2_CALL
+static axis2_svc_t *AXIS2_CALL
 axis2_addr_disp_find_svc(
     axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env)
@@ -155,7 +155,7 @@ axis2_addr_disp_find_svc(
     return svc;
 }
 
-axis2_op_t *AXIS2_CALL
+static axis2_op_t *AXIS2_CALL
 axis2_addr_disp_find_op(
     axis2_msg_ctx_t *msg_ctx,
     const axis2_env_t *env,
@@ -187,7 +187,7 @@ axis2_addr_disp_find_op(
 }
 
 
-axis2_status_t AXIS2_CALL
+static axis2_status_t AXIS2_CALL
 axis2_addr_disp_invoke(
     axis2_handler_t *handler,
     const axis2_env_t *env,
