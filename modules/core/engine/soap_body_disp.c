@@ -24,6 +24,8 @@
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_body.h>
 
+#define AXIS2_SOAP_MESSAGE_BODY_DISP_NAME "soap_message_body_based_dispatcher"
+
 axis2_status_t AXIS2_CALL
 axiom_soap_body_disp_invoke(
     axis2_handler_t *handler,
@@ -53,8 +55,8 @@ axiom_soap_body_disp_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    qname = axis2_qname_create(env, "soap_message_body_based_dispatcher",
-            "http://axis.ws.apache.org",
+    qname = axis2_qname_create(env, AXIS2_SOAP_MESSAGE_BODY_DISP_NAME,
+            AXIS2_DISP_NAMESPACE,
             NULL);
 
     disp = axis2_disp_create(env, qname);

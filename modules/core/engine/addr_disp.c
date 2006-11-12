@@ -56,11 +56,17 @@ axis2_addr_disp_create(
     qname = axis2_qname_create(env, AXIS2_ADDR_DISP_NAME,
             AXIS2_DISP_NAMESPACE,
             NULL);
+    if (!qname)
+    {
+        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        return NULL;
+    }
 
     disp = axis2_disp_create(env, qname);
     if (!disp)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
+        AXIS2_QNAME_FREE(qname, env);
         return NULL;
     }
 
@@ -68,6 +74,7 @@ axis2_addr_disp_create(
     if (!handler)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_HANDLER_STATE, AXIS2_FAILURE);
+        AXIS2_QNAME_FREE(qname, env);
         return NULL;
     }
 
