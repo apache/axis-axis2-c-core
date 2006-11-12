@@ -89,12 +89,14 @@ woden_inlined_schema_to_schema(
 
     if (!schema)
     {
-        schema_impl = (woden_inlined_schema_impl_t *) create(env);
+	  schema = (void *) create (env);
+	  schema_impl = (woden_inlined_schema_impl_t *) schema;
     }
     else
         schema_impl = (woden_inlined_schema_impl_t *) schema;
 
-    woden_inlined_schema_free_ops(schema, env);
+    if (schema)
+	  woden_inlined_schema_free_ops(schema, env);
 
     schema_impl->inlined_schema.schema.ops =
         AXIS2_MALLOC(env->allocator,
