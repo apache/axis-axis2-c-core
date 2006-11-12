@@ -379,23 +379,23 @@ Table of Contents
     following directives
 
     LoadModule axis2_module <apache2 modules directory>/mod_axis2.so
+    Axis2RepoPath <axis2 repository path>
+    Axis2LogFile <axis2 log file path>
+    Axis2LogLevel LOG_LEVEL
     <Location /axis2>
         SetHandler axis2_module
-        RepoPath <axis2 repository path>
-        LogFile <axis2 log file path>
-        Axis2LogLevel LOG_LEVEL
     </Location>
 
     NOTE: Axis2 log file path should have write access to all users because by
           default Apache Web Server runs as nobody.
 
     LOG_LEVEL can be one of following
-        AXIS2_LOG_LEVEL_CRITICAL - Log critical errors only
-        AXIS2_LOG_LEVEL_ERROR - Log errors critical errors
-        AXIS2_LOG_LEVEL_WARNING - Log warnings and above
-        AXIS2_LOG_LEVEL_INFO - Log info and above
-        AXIS2_LOG_LEVEL_DEBUG - Log debug and above (default)
-        AXIS2_LOG_LEVEL_TRACE - Log trace messages
+        crit - Log critical errors only
+        error - Log errors critical errors
+        warn - Log warnings and above
+        info - Log info and above
+        debug - Log debug and above (default)
+        trace - Log trace messages
 
     NOTE: Use forward slashes "/" for path separators in <apache2 modules directory>, 
           <axis2 repository path> and <axis2 log file path>

@@ -79,11 +79,11 @@ axis2_register_hooks(
 
 static const command_rec axis2_cmds[] =
     {
-        AP_INIT_TAKE1("RepoPath", axis2_set_repo_path, NULL, ACCESS_CONF,
+        AP_INIT_TAKE1("Axis2RepoPath", axis2_set_repo_path, NULL, RSRC_CONF,
                 "Axis2/C repository path"),
-        AP_INIT_TAKE1("LogFile", axis2_set_log_file, NULL, ACCESS_CONF,
+        AP_INIT_TAKE1("Axis2LogFile", axis2_set_log_file, NULL, RSRC_CONF,
                 "Axis2/C log file name"),
-        AP_INIT_TAKE1("Axis2LogLevel", axis2_set_log_level, NULL, ACCESS_CONF,
+        AP_INIT_TAKE1("Axis2LogLevel", axis2_set_log_level, NULL, RSRC_CONF,
                 "Axis2/C log level"),
         {NULL}
     };
@@ -109,9 +109,6 @@ axis2_create_svr(
     conf->axis2_log_file = NULL;
     conf->axis2_repo_path = NULL;
     conf->log_level = AXIS2_LOG_LEVEL_DEBUG;
-    /* We need to init xml readers before we go into threaded env
-     */
-    axiom_xml_reader_init();
     return conf;
 }
 
@@ -121,6 +118,12 @@ axis2_set_repo_path(
     void *dummy,
     const char *arg)
 {
+    const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
+    if (err != NULL)
+    {
+        return err;
+    }
+
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
                 cmd->server->module_config, &axis2_module);
     conf->axis2_repo_path = apr_pstrdup(cmd->pool, arg);
@@ -133,6 +136,12 @@ axis2_set_log_file(
     void *dummy,
     const char *arg)
 {
+    const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
+    if (err != NULL)
+    {
+        return err;
+    }
+
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
                 cmd->server->module_config, &axis2_module);
     conf->axis2_log_file = apr_pstrdup(cmd->pool, arg);
@@ -145,33 +154,40 @@ axis2_set_log_level(
     void *dummy,
     const char *arg)
 {
+    char *str;
+    const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
+    if (err != NULL)
+    {
+        return err;
+    }
+
     axis2_log_levels_t level = AXIS2_LOG_LEVEL_DEBUG;
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
                 cmd->server->module_config, &axis2_module);
 
-    if (arg)
+    if ((str = ap_getword_conf(cmd->pool, &arg)))
     {
-        if (!apr_strnatcmp(arg, "AXIS2_LOG_LEVEL_DEBUG"))
-        {
-            level = AXIS2_LOG_LEVEL_DEBUG;
-        }
-        else if (!apr_strnatcmp(arg, "AXIS2_LOG_LEVEL_CRITICAL"))
+        if (!strcasecmp(str, "crit"))
         {
             level = AXIS2_LOG_LEVEL_CRITICAL;
         }
-        else if (!apr_strnatcmp(arg, "AXIS2_LOG_LEVEL_ERROR"))
+        else if (!strcasecmp(str, "error"))
         {
             level = AXIS2_LOG_LEVEL_ERROR;
         }
-        else if (!apr_strnatcmp(arg, "AXIS2_LOG_LEVEL_WARNING"))
+        else if (!strcasecmp(str, "warn"))
         {
             level = AXIS2_LOG_LEVEL_WARNING;
         }
-        else if (!apr_strnatcmp(arg, "AXIS2_LOG_LEVEL_INFO"))
+        else if (!strcasecmp(str, "info"))
         {
             level = AXIS2_LOG_LEVEL_INFO;
         }
-        else if (!apr_strnatcmp(arg, "AXIS2_LOG_LEVEL_TRACE"))
+        else if (!strcasecmp(str, "debug"))
+        {
+            level = AXIS2_LOG_LEVEL_DEBUG;
+        }
+        else if (!strcasecmp(str, "trace"))
         {
             level = AXIS2_LOG_LEVEL_TRACE;
         }
@@ -217,6 +233,10 @@ axis2_module_init(
     axis2_status_t status = AXIS2_SUCCESS;
     axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
                 svr_rec->module_config, &axis2_module);
+
+    /* We need to init xml readers before we go into threaded env
+     */
+    axiom_xml_reader_init();
 
     /*apr_pool_cleanup_register(p, NULL, module_exit, apr_pool_cleanup_null);*/
     allocator = axis2_allocator_init(NULL);
@@ -283,7 +303,7 @@ axis2_register_hooks(
     apr_pool_t *p)
 {
     ap_hook_handler(axis2_handler, NULL, NULL, APR_HOOK_MIDDLE);
-    ap_hook_child_init(axis2_module_init, NULL, NULL, APR_HOOK_REALLY_FIRST);
+    ap_hook_child_init(axis2_module_init, NULL, NULL, APR_HOOK_MIDDLE);
 }
 
 
