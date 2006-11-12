@@ -131,14 +131,13 @@ axis2_addr_disp_find_svc(
                         conf = AXIS2_CONF_CTX_GET_CONF(conf_ctx, env);
                         if (conf)
                         {
-                            axis2_qname_t *qname = axis2_qname_create(env, url_tokens[0], NULL, NULL);
+                            svc = AXIS2_CONF_GET_SVC(conf, env, url_tokens[0]);
 
-                            svc = AXIS2_CONF_GET_SVC(conf, env, AXIS2_QNAME_GET_LOCALPART(qname, env));
-
-                            AXIS2_QNAME_FREE(qname, env);
                             if (svc)
+                            {
                                 AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI,
                                         "Service found using WSA enpoint address");
+                            }
                         }
                     }
                     AXIS2_FREE(env->allocator, url_tokens[0]);
