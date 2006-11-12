@@ -111,6 +111,8 @@ axis2_addr_disp_find_svc(
             if ((AXIS2_STRCMP(AXIS2_WSA_ANONYMOUS_URL, address) == 0) ||
                     (AXIS2_STRCMP(AXIS2_WSA_NAMESPACE_SUBMISSION, address) == 0))
             {
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                    "Endpoint address cannot be the same as WSA namespace : %s", address);
                 return NULL;
             }
 
