@@ -44,6 +44,8 @@ extern "C"
 {
 #endif
 
+#define AXIS2_DISP_NAMESPACE "http://axis.ws.apache.org"
+
     /** Type name for struct axis2_disp */
     typedef struct axis2_disp axis2_disp_t;
     /** Type name for struct axis2_disp_ops */

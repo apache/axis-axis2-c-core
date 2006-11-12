@@ -24,6 +24,8 @@
 #include <axis2_addr.h>
 #include <axis2_utils.h>
 
+#define AXIS2_ADDR_DISP_NAME "addressing_based_dispatcher"
+
 axis2_status_t AXIS2_CALL
 axis2_addr_disp_invoke(
     axis2_handler_t *handler,
@@ -51,8 +53,8 @@ axis2_addr_disp_create(
 
     AXIS2_ENV_CHECK(env, NULL);
 
-    qname = axis2_qname_create(env, "addressing_based_dispatcher",
-            "http://axis.ws.apache.org",
+    qname = axis2_qname_create(env, AXIS2_ADDR_DISP_NAME,
+            AXIS2_DISP_NAMESPACE,
             NULL);
 
     disp = axis2_disp_create(env, qname);
