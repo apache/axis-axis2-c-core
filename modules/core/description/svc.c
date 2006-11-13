@@ -962,6 +962,20 @@ axis2_svc_free(
 
     if (svc_impl->op_action_map)
     {
+        axis2_hash_index_t *hi = NULL;
+        const void *key = NULL;
+
+        for (hi = axis2_hash_first(svc_impl->op_action_map, env); hi;
+                hi = axis2_hash_next(env, hi))
+        {
+            axis2_hash_this(hi, &key, NULL, NULL);
+
+            if (key)
+            {
+                AXIS2_FREE(env->allocator, (axis2_char_t *)key);
+                key = NULL;
+            }
+        }
         axis2_hash_free(svc_impl->op_action_map, env);
         svc_impl->op_action_map = NULL;
     }

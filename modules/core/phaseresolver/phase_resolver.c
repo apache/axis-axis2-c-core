@@ -1146,10 +1146,12 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
                 break;
             }
         }
+        
         if (AXIS2_TRUE == engaged)
         {
             continue;
         }
+        
         for (type = 1; type < 5; type++)
         {
             switch (type)
@@ -1256,6 +1258,9 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
                     }
                 }
             }
+            
+            if(phase_holder)
+                AXIS2_PHASE_HOLDER_FREE(phase_holder, env);
         }
         status = AXIS2_OP_ADD_TO_ENGAGED_MODULE_LIST(op_desc, env, module_desc);
         if (AXIS2_SUCCESS != status)
@@ -1264,8 +1269,6 @@ axis2_phase_resolver_engage_module_to_svc_from_global(
         }
     }
 
-    if(phase_holder)
-        AXIS2_PHASE_HOLDER_FREE(phase_holder, env);
     return AXIS2_SUCCESS;
 }
 
@@ -1405,9 +1408,10 @@ axis2_phase_resolver_engage_to_global_chain(
                 }*/
             }
         }
+    
+        if(phase_holder)    
+            AXIS2_PHASE_HOLDER_FREE(phase_holder, env);
     }
-    if(phase_holder)    
-        AXIS2_PHASE_HOLDER_FREE(phase_holder, env);
 
     return AXIS2_SUCCESS;
 }
