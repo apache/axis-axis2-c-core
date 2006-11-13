@@ -385,6 +385,9 @@ axis2_conf_create(
     config_impl->dep_engine = NULL;
     config_impl->all_modules = NULL;
     config_impl->name_to_version_map = NULL;
+    config_impl->transports_in = NULL;
+    config_impl->transports_out = NULL;
+    config_impl->handlers = NULL;
     config_impl->conf.ops = NULL;
 
     config_impl->conf.param_container = (axis2_param_container_t *)
@@ -449,6 +452,7 @@ axis2_conf_create(
         if (AXIS2_FAILURE == status)
         {
             axis2_conf_free(&(config_impl->conf), env);
+            AXIS2_PHASE_FREE(phase, env);
             return NULL;
 
         }
@@ -463,6 +467,7 @@ axis2_conf_create(
         if (AXIS2_FAILURE == status)
         {
             axis2_conf_free(&(config_impl->conf), env);
+            AXIS2_PHASE_FREE(phase, env);
             return NULL;
         }
     }
