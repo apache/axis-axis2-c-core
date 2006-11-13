@@ -167,25 +167,25 @@ extern "C"
                     );
 
         /**
-        * Gets encryption_prop_file of the rampart action.
+        * Gets encryption_key_file of the rampart action.
         * @param actions rampart_action ptr to action
         * @param env pointer to environment struct
-        * @return encryption_prop_file
+        * @return encryption_key_file
         */
         axis2_char_t *(AXIS2_CALL *
-        get_encryption_prop_file )(
+        get_encryption_key_file )(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
 
         /**
-        * Gets decryption_prop_file of the rampart action.
+        * Gets decryption_key_file of the rampart action.
         * @param actions rampart_action ptr to action
         * @param env pointer to environment struct
-        * @return decryption_prop_file
+        * @return decryption_key_file
         */
         axis2_char_t *(AXIS2_CALL *
-        get_decryption_prop_file )(
+        get_decryption_key_file )(
                     rampart_actions_t *actions,
                     const axis2_env_t *env
                     );
@@ -362,31 +362,31 @@ extern "C"
                     );
         
         /**
-        * Sets encryption_prop_file of the rampart action.
+        * Sets encryption_key_file of the rampart action.
         * @param actions rampart_action ptr to action
         * @param env pointer to environment struct
-        * @param encryption_prop_file
+        * @param encryption_key_file
         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *
-        set_encryption_prop_file)(
+        set_encryption_key_file)(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
-                    axis2_char_t *encryption_prop_file
+                    axis2_char_t *encryption_key_file
                     );
 
         /**
-        * Sets decryption_prop_file of the rampart action.
+        * Sets decryption_key_file of the rampart action.
         * @param actions rampart_action ptr to action
         * @param env pointer to environment struct
-        * @param decryption_prop_file
+        * @param decryption_key_file
         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
         */
         axis2_status_t (AXIS2_CALL *
-        set_decryption_prop_file)(
+        set_decryption_key_file)(
                     rampart_actions_t *actions,
                     const axis2_env_t *env,
-                    axis2_char_t *decryption_prop_file
+                    axis2_char_t *decryption_key_file
                     );
 
         /**
@@ -579,17 +579,17 @@ extern "C"
 #define RAMPART_ACTIONS_SET_PW_CB_CLASS(actions, env, password_callback_class)\
         ((actions)->ops->set_password_callback_class(actions, env,password_callback_class ))
 
-#define RAMPART_ACTIONS_GET_ENC_PROP_FILE(actions, env) \
-        ((actions)->ops->get_encryption_prop_file(actions, env) )
+#define RAMPART_ACTIONS_GET_ENC_KEY_FILE(actions, env) \
+        ((actions)->ops->get_encryption_key_file(actions, env) )
 
-#define RAMPART_ACTIONS_SET_ENC_PROP_FILE(actions, env, encryption_prop_file)\
-        ((actions)->ops->set_encryption_prop_file(actions, env, encryption_prop_file))
+#define RAMPART_ACTIONS_SET_ENC_KEY_FILE(actions, env, encryption_key_file)\
+        ((actions)->ops->set_encryption_key_file(actions, env, encryption_key_file))
 
-#define RAMPART_ACTIONS_GET_DEC_PROP_FILE(actions, env) \
-        ((actions)->ops->get_decryption_prop_file(actions, env) )
+#define RAMPART_ACTIONS_GET_DEC_KEY_FILE(actions, env) \
+        ((actions)->ops->get_decryption_key_file(actions, env) )
 
-#define RAMPART_ACTIONS_SET_DEC_PROP_FILE(actions, env, decryption_prop_file)\
-        ((actions)->ops->set_decryption_prop_file(actions, env, decryption_prop_file))
+#define RAMPART_ACTIONS_SET_DEC_KEY_FILE(actions, env, decryption_key_file)\
+        ((actions)->ops->set_decryption_key_file(actions, env, decryption_key_file))
 
 #define RAMPART_ACTIONS_GET_SIG_PROP_FILE(actions, env) \
         ((actions)->ops->get_signature_prop_file(actions, env) )

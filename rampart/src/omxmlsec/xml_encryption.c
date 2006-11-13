@@ -184,3 +184,46 @@ oxs_xml_enc_decrypt_data(const axis2_env_t *env,
     return oxs_encryption_symmetric_crypt(env, enc_ctx, input_buf, result_buf);
 }
 
+axis2_status_t AXIS2_CALL
+oxs_xml_enc_encrypt_key(const axis2_env_t *env,
+                            oxs_asym_ctx_t * asym_ctx,
+                            axiom_node_t *parent,
+                            oxs_key_t *sym_key)
+{
+    axis2_char_t *algorithm = NULL;
+    axis2_char_t *encrypted_key_data = NULL;
+    oxs_buffer_t *input = NULL;
+    oxs_buffer_t *result = NULL;
+    axiom_node_t *encrypted_key_node = NULL;
+    axiom_node_t *enc_mtd_node = NULL;
+    /*axiom_node_t *key_info_node = NULL;*/
+    axiom_node_t *cd_node = NULL;
+    axiom_node_t *cv_node = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+
+    /*Create input buffer*/
+    input = oxs_buffer_create(env);
+    OXS_BUFFER_POPULATE(input, env, OXS_KEY_GET_DATA(sym_key, env), OXS_KEY_GET_SIZE(sym_key, env));
+
+    /*Create an empty buffer to collect results*/
+    result = oxs_buffer_create(env);
+    
+    /*Call encryption*/
+    status = oxs_encryption_asymmetric_crypt(env, asym_ctx, input, result);
+
+    /*Get the encrypted key*/
+    encrypted_key_data = (axis2_char_t *)OXS_BUFFER_GET_DATA(result, env);
+
+    /*Build nodes*/
+    encrypted_key_node = oxs_token_build_encrypted_key_element(env, parent);
+    algorithm = oxs_asym_ctx_get_algorithm(asym_ctx, env);
+    enc_mtd_node = oxs_token_build_encryption_method_element(env, encrypted_key_node, algorithm);
+    /*key_info_node = oxs_token_build_key_info_element(env, encrypted_key_node);*/
+    /*TODO SecurityTokenReference*/
+    cd_node = oxs_token_build_cipher_data_element(env, encrypted_key_node);
+    cv_node = oxs_token_build_cipher_value_element(env, cd_node,  encrypted_key_data);
+
+    return AXIS2_SUCCESS; 
+}
+
+

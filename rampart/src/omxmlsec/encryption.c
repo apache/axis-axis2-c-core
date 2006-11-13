@@ -150,3 +150,63 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
+
+AXIS2_EXTERN  axis2_status_t AXIS2_CALL
+oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
+    oxs_asym_ctx_t *ctx,
+    oxs_buffer_t *input,
+    oxs_buffer_t *result)
+{
+    openssl_pkey_t *pkey = NULL;
+    openssl_rsa_t *rsa = NULL;
+    oxs_asym_ctx_operation_t operation = -1;
+    axis2_char_t *file_name = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    /*TODO We support RSA encryption only. If any other algorithm is specified, reject*/
+
+    /*Create and Load the PKEY*/
+    file_name = oxs_asym_ctx_get_file_name(ctx, env);
+    pkey =  openssl_pkey_create(env);
+    status = OPENSSL_PKEY_LOAD(pkey, env, file_name, "");/*TODO password*/
+      
+    /*Check for the operation and call appropriate method*/
+    operation = oxs_asym_ctx_get_operation(ctx, env);
+    rsa = openssl_rsa_create(env);
+    if(   OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT == operation ){
+        axis2_char_t *encoded_str = NULL;
+        unsigned char *encrypted = NULL;
+        int enclen = -1;
+        int encodedlen = -1;
+        int ret = -1;
+        
+        /*Encrypt using the public key. Then base64 encode and populate the buffer */
+        enclen = OPENSSL_RSA_PUB_ENCRYPT(rsa, env, pkey, OXS_BUFFER_GET_DATA(input, env), &encrypted);
+        encodedlen = axis2_base64_encode_len(enclen);
+        encoded_str = AXIS2_MALLOC(env->allocator, encodedlen);
+        ret = axis2_base64_encode(encoded_str, (const char *)encrypted, enclen); 
+        status = OXS_BUFFER_POPULATE(result, env, (unsigned char*)AXIS2_STRDUP(encoded_str, env), encodedlen);
+
+    }else if(OXS_ASYM_CTX_OPERATION_PRV_DECRYPT == operation ){
+        unsigned char  *decoded_encrypted_str = NULL;
+        unsigned char *decrypted  =  NULL;
+        int ret = -1;
+        int  declen = -1;
+
+        /*Base64 decode first. Then do the decryption and populate the buffer*/
+        decoded_encrypted_str = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len((char*)OXS_BUFFER_GET_DATA(input, env)));
+        ret = axis2_base64_decode((char*)decoded_encrypted_str, (char*)OXS_BUFFER_GET_DATA(input, env));
+        declen = OPENSSL_RSA_PRV_DECRYPT(rsa, env, pkey, decoded_encrypted_str, &decrypted);
+        status = OXS_BUFFER_POPULATE(result, env, decrypted, declen);
+    
+    }else if(OXS_ASYM_CTX_OPERATION_PRV_ENCRYPT == operation ){
+        /**/
+    }else if(OXS_ASYM_CTX_OPERATION_PRV_ENCRYPT == operation ){
+        /**/
+    }else{
+
+    }
+
+    /*TODO Set certificate information taken from the PEM file */
+    
+    return AXIS2_SUCCESS;
+}

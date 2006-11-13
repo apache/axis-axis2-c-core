@@ -396,6 +396,6 @@ oxs_key_for_algo(oxs_key_t *key,
             OXS_BUFFER_GET_DATA(key_buf, env), NULL,
             OXS_BUFFER_GET_SIZE(key_buf, env), OXS_KEY_USAGE_NONE);
 
-    /*free buffer*/
+    /* Duplicate key data and free key_buf*/
     return ret;
 }

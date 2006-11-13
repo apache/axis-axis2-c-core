@@ -35,29 +35,35 @@ extern "C"
 {
 #endif
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_encrypt_node(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             axiom_node_t *node,
                             axiom_node_t **enc_type_node);
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_decrypt_node(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             axiom_node_t *enc_type_node,
                             axiom_node_t **decrypted_node);
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_encrypt_data(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             oxs_buffer_t *content_buf,
                             axiom_node_t **enc_type_node);
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_decrypt_data(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             axiom_node_t *enc_type_node,
                             oxs_buffer_t *result_buf);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_xml_enc_encrypt_key(const axis2_env_t *env,
+                            oxs_asym_ctx_t * asym_ctx,
+                            axiom_node_t *parent,
+                            oxs_key_t *sym_key);
 /** @} */
 #ifdef __cplusplus
 }

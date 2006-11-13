@@ -27,6 +27,7 @@
 #include <oxs_encryption.h>
 #include <oxs_xml_encryption.h>
 #include <oxs_token_encrypted_data.h>
+#include <oxs_certificate.h>
 
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
@@ -120,6 +121,13 @@ int main(int argc, char *argv[])
 
     env = test_init();
     printf("--Testing started--------------------------------------------\n");
+
+    /*additional code start*/
+    oxs_certificate_t *cert = NULL;
+    cert = oxs_certificate_create(env);
+    oxs_certificate_set_serial_number(cert, env, "MYSER-NUMBER");
+    printf("\nSER NO :%s\n", oxs_certificate_get_serial_number(cert, env));
+    /*additional code end*/
 
     if (argc > 1)
         filename = argv[1];

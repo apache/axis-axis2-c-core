@@ -29,7 +29,6 @@
 #include <rampart_handler_util.h>
 #include <rampart_timestamp_token.h>
 #include <rampart_util.h>
-#include <rampart_crypto_engine.h>
 
 /*************************** Function headers *********************************/
 
@@ -74,7 +73,6 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
     axis2_char_t *items = NULL;
     axiom_node_t *sec_node, *ts_node = NULL;
     axiom_element_t *sec_ele, *ts_ele = NULL;
-    axis2_status_t enc_status = AXIS2_FAILURE;
     rampart_actions_t *actions = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -215,32 +213,8 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, AXIS2_STRTRIM(env, item, NULL)))
                 {
                     /*Do useful to verify encrypt*/
+                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Decryption... NOT IMPLEMENTED YET.. SORRY");
 
-                    rampart_crypto_engine_t *engine = NULL;
-                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Decrypting message");
-
-                    engine = rampart_crypto_engine_create(env);
-                    enc_status = RAMPART_CRYPTO_ENGINE_DECRYPT_MESSAGE(engine, env, msg_ctx, actions, soap_envelope, sec_node);
-
-                    RAMPART_CRYPTO_ENGINE_FREE(engine, env);
-                    if (enc_status == AXIS2_SUCCESS)
-                    {
-                        status = AXIS2_SUCCESS;
-                    }
-                    else
-                    {
-                        axis2_array_list_t *sub_codes = NULL;
-                        sub_codes = axis2_array_list_create(env, 1);
-                        if (sub_codes)
-                        {
-                            AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
-                        }
-                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Decryption FAILED");
-
-                        rampart_create_fault_envelope(env, "wsse:FailedCheck",
-                                "Decryption failed. Hej kau complete this", sub_codes, msg_ctx);
-                        return AXIS2_FAILURE;
-                    }
 
                     /*Signature*/
                 }

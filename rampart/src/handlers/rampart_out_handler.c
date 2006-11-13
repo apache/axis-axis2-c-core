@@ -26,7 +26,6 @@
 #include <rampart_username_token.h>
 #include <rampart_handler_util.h>
 #include <rampart_timestamp_token.h>
-#include <rampart_crypto_engine.h>
 #include <rampart_action.h>
 
 /*********************** Function headers *********************************/
@@ -99,7 +98,6 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
     axis2_array_list_t *action_list = NULL;
     axis2_param_t *param_action = NULL;
     axis2_char_t *items = NULL;
-    axis2_status_t enc_status = AXIS2_FAILURE;
     rampart_actions_t *actions = NULL;
     axis2_status_t status = AXIS2_FAILURE;
 
@@ -266,24 +264,8 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
                 else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT,
                         AXIS2_STRTRIM(env, item, NULL)))
                 {
-                    rampart_crypto_engine_t *engine = NULL;
 
-                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Encrypting message");
-                    engine = rampart_crypto_engine_create(env);
-
-                    enc_status = RAMPART_CRYPTO_ENGINE_ENCRYPT_MESSAGE(engine, env, msg_ctx, actions, soap_envelope, sec_node);
-
-                    RAMPART_CRYPTO_ENGINE_FREE(engine, env);
-
-                    if (enc_status != AXIS2_SUCCESS)
-                    {
-                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Encryption failed. ERROR");
-                        return AXIS2_FAILURE;
-                    }
-
-                    enc_status = AXIS2_SUCCESS;/*TODO Remove*/
-                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Encryption success");
-
+                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Encrypting we do not support yet");
                     /*Signature*/
                 }
                 else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE,

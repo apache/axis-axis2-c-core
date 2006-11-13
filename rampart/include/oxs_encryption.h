@@ -25,6 +25,7 @@
 
 #include <axis2_defines.h>
 #include <oxs_ctx.h>
+#include <oxs_asym_ctx.h>
 #include <axis2_env.h>
 #include <axiom_node.h>
 #include <axiom_element.h>
@@ -41,7 +42,11 @@ oxs_encryption_symmetric_crypt(const axis2_env_t *env,
     oxs_buffer_t *input,
     oxs_buffer_t *result);
 
-
+AXIS2_EXTERN  axis2_status_t AXIS2_CALL
+oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
+    oxs_asym_ctx_t * enc_ctx,
+    oxs_buffer_t *input,
+    oxs_buffer_t *result);
 /** @} */
 #ifdef __cplusplus
 }
