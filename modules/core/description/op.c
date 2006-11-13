@@ -31,7 +31,7 @@ typedef struct axis2_op_impl
     axis2_wsdl_op_t *wsdl_op;
 
     int mep;
-    /*To store deploy time module QNames */
+    /* to store deploy time module QNames */
     axis2_array_list_t *module_qnames;
     axis2_array_list_t *engaged_module_list;
     axis2_bool_t from_module;
@@ -365,8 +365,6 @@ axis2_op_create(
     axis2_array_list_t *array_list_l = NULL;
     axis2_op_impl_t *op_impl = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    axis2_phase_t *message_processing = NULL;
-    axis2_phase_t *message_out = NULL;
     axis2_property_t *property = NULL;
     axis2_msg_t *msg = NULL;
 
@@ -461,64 +459,12 @@ axis2_op_create(
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
         return NULL;
     }
-    /* Set the function pointers of the base */
+    /* set function pointers of base */
     op_impl->op.base.ops = AXIS2_MALLOC(env->allocator,
             sizeof(axis2_wsdl_op_ops_t));
     op_impl->op.base.ops->free_void_arg = axis2_op_free_void_arg;
     op_impl->op.base.ops->get_qname = axis2_op_get_qname;
-    message_processing = axis2_phase_create(env, AXIS2_PHASE_MESSAGE_PROCESSING);
-    if (op_impl->base)
-    {
-        axis2_msg_t *msg = NULL;
-        msg = AXIS2_DESC_GET_CHILD(op_impl->base, env, AXIS2_MSG_IN);
-        if (msg)
-        {
-            axis2_array_list_t *list = AXIS2_MSG_GET_FLOW(msg, env);
-            if (list)
-            {
-                status = AXIS2_ARRAY_LIST_ADD(list, env,
-                        message_processing);
-            }
-            else
-            {
-                status = AXIS2_FAILURE;
-            }
-        }
-    }
-    if (AXIS2_SUCCESS != status)
-    {
-        AXIS2_PHASE_FREE(message_processing, env);
-        message_processing = NULL;
-        return NULL;
-    }
-    message_processing = NULL;
 
-    message_out = axis2_phase_create(env, AXIS2_PHASE_MESSAGE_OUT);
-    if (op_impl->base)
-    {
-        axis2_msg_t *msg = NULL;
-        msg = AXIS2_DESC_GET_CHILD(op_impl->base, env, AXIS2_MSG_OUT);
-        if (msg)
-        {
-            axis2_array_list_t *list = AXIS2_MSG_GET_FLOW(msg, env);
-            if (list)
-            {
-                status = AXIS2_ARRAY_LIST_ADD(list, env,
-                        message_out);
-            }
-            else
-            {
-                status = AXIS2_FAILURE;
-            }
-        }
-    }
-    if (AXIS2_SUCCESS != status)
-    {
-        AXIS2_PHASE_FREE(message_out, env);
-        message_out = NULL;
-        return NULL;
-    }
-    message_out = NULL;
     axis2_op_set_msg_exchange_pattern(&(op_impl->op), env,
             (axis2_char_t *) AXIS2_MEP_URI_IN_OUT);
 
@@ -541,7 +487,12 @@ axis2_op_create(
     }
 
     array_list_l = axis2_array_list_create(env, 0);
-    if (NULL == array_list_l) return NULL;
+    if (NULL == array_list_l)
+    {
+        axis2_op_free(&(op_impl->op), env);
+        return NULL;
+    }
+
     property = axis2_property_create(env);
     AXIS2_PROPERTY_SET_FREE_FUNC(property, env,
             axis2_array_list_free_void_arg);
@@ -1051,12 +1002,6 @@ axis2_op_engage_module(
     AXIS2_PARAM_CHECK(env->error, conf, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
 
-    /*property = (axis2_property_t *)
-        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op_impl->wsdl_op->
-        extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY);*/
-    /* collection_module is the already engaged modules */
-    /*collection_module = (axis2_array_list_t *)
-        AXIS2_PROPERTY_GET_VALUE(property, env);*/
     collection_module = op_impl->engaged_module_list;
     if (collection_module)
         size = AXIS2_ARRAY_LIST_SIZE(collection_module, env);
@@ -1134,13 +1079,6 @@ axis2_op_add_to_engaged_module_list(
     AXIS2_PARAM_CHECK(env->error, module_desc, AXIS2_FAILURE);
     op_impl = AXIS2_INTF_TO_IMPL(op);
 
-    /*property = (axis2_property_t *)
-        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op_impl->wsdl_op->
-            extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY);
-
-    collection_module = (axis2_array_list_t *) AXIS2_PROPERTY_GET_VALUE(
-        property, env);
-    */
     if (!op_impl->engaged_module_list)
     {
         op_impl->engaged_module_list = axis2_array_list_create(env, 0);
@@ -1178,11 +1116,6 @@ axis2_op_get_all_modules(
     AXIS2_ENV_CHECK(env, NULL);
     op_impl = AXIS2_INTF_TO_IMPL(op);
 
-    /*property =  (axis2_property_t *)
-        AXIS2_WSDL_COMPONENT_GET_COMPONENT_PROPERTY(op_impl->wsdl_op->
-            extensible_component->wsdl_component, env, AXIS2_MODULEREF_KEY);
-    modules = (axis2_array_list_t *) AXIS2_PROPERTY_GET_VALUE(property, env);
-    return modules;*/
     return op_impl->engaged_module_list;
 }
 
@@ -2025,3 +1958,4 @@ axis2_op_is_from_module(
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     return AXIS2_INTF_TO_IMPL(op)->from_module;
 }
+
