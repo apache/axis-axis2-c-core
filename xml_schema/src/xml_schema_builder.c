@@ -23,6 +23,7 @@
 #include <limits.h>
 #include <axis2_string.h>
 #include <axiom_util.h>
+#include <xml_schema_complex_content_restriction.h>
 
 typedef struct xml_schema_builder_impl
 {
@@ -1996,7 +1997,7 @@ handle_complex_content_restriction(
     res_ele = (axiom_element_t*)
             AXIOM_NODE_GET_DATA_ELEMENT(res_node, env);
 
-    cmp_cnt_res = xml_schema_complex_content_create(env);
+    cmp_cnt_res = xml_schema_complex_content_restriction_create(env);
 
     builder_impl = AXIS2_INTF_TO_IMPL(builder);
 

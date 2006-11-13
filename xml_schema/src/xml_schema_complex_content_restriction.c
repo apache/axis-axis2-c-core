@@ -117,7 +117,6 @@ AXIS2_EXTERN xml_schema_complex_content_restriction_t * AXIS2_CALL
 xml_schema_complex_content_restriction_create(const axis2_env_t *env)
 {
     xml_schema_complex_content_restriction_impl_t *cmp_content_res_impl = NULL;
-    axis2_status_t status = AXIS2_FAILURE;
 
     cmp_content_res_impl = (xml_schema_complex_content_restriction_impl_t*)
             AXIS2_MALLOC(env->allocator, sizeof(xml_schema_complex_content_restriction_impl_t));
