@@ -1084,7 +1084,7 @@ rampart_actions_populate_from_params(rampart_actions_t *actions,
 
     if (rampart_get_action_params(env, param_action, RAMPART_ACTION_ENCRYPTION_PROP_FILE))
     {
-        ret = RAMPART_ACTIONS_SET_ENC_PROP_FILE(actions, env,
+        ret = RAMPART_ACTIONS_SET_ENC_KEY_FILE(actions, env,
                 (axis2_char_t *)rampart_get_action_params(
                     env, param_action, RAMPART_ACTION_ENCRYPTION_PROP_FILE));
 
@@ -1092,7 +1092,7 @@ rampart_actions_populate_from_params(rampart_actions_t *actions,
 
     if (rampart_get_action_params(env, param_action, RAMPART_ACTION_DECRYPTION_PROP_FILE))
     {
-        ret = RAMPART_ACTIONS_SET_DEC_PROP_FILE(actions, env,
+        ret = RAMPART_ACTIONS_SET_DEC_KEY_FILE(actions, env,
                 (axis2_char_t *)rampart_get_action_params(
                     env, param_action, RAMPART_ACTION_DECRYPTION_PROP_FILE));
 
@@ -1211,7 +1211,7 @@ rampart_actions_populate_from_ctx(rampart_actions_t *actions,
 
     if (rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_ENCRYPTION_PROP_FILE))
     {
-        ret = RAMPART_ACTIONS_SET_ENC_PROP_FILE(actions, env,
+        ret = RAMPART_ACTIONS_SET_ENC_KEY_FILE(actions, env,
                 (axis2_char_t *)rampart_get_property_from_ctx(
                     env, ctx, RAMPART_ACTION_ENCRYPTION_PROP_FILE));
 
@@ -1219,7 +1219,7 @@ rampart_actions_populate_from_ctx(rampart_actions_t *actions,
 
     if (rampart_get_property_from_ctx(env, ctx, RAMPART_ACTION_DECRYPTION_PROP_FILE))
     {
-        ret = RAMPART_ACTIONS_SET_DEC_PROP_FILE(actions, env,
+        ret = RAMPART_ACTIONS_SET_DEC_KEY_FILE(actions, env,
                 (axis2_char_t *)rampart_get_property_from_ctx(
                     env, ctx, RAMPART_ACTION_DECRYPTION_PROP_FILE));
 
