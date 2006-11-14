@@ -103,7 +103,6 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
   TESTDIR=""
 )
 
-dnl AC_CHECK_LIB(cutest, CuTestInit, [], [TESTDIR=""])
 
 PKG_CHECK_MODULES(LIBXML2, libxml-2.0)
 CFLAGS="$CFLAGS $LIBXML2_CFLAGS $GUTHTHILA_CFLAGS"
@@ -126,8 +125,6 @@ AC_CONFIG_FILES([Makefile \
     test/Makefile \
     test/om/Makefile \
     test/soap/Makefile \
-    test/unit/Makefile \
-    test/unit/om/Makefile\
     include/Makefile
     ])
     

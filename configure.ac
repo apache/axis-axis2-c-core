@@ -336,14 +336,6 @@ AC_CONFIG_FILES([Makefile \
     test/core/context/Makefile \
     test/core/engine/Makefile \
     test/core/addr/Makefile \
-    test/unit/Makefile \
-    test/unit/core/Makefile \
-    test/unit/core/description/Makefile \
-    test/unit/core/engine/Makefile \
-    test/unit/core/context/Makefile \
-    test/unit/core/phaseresolver/Makefile \
-    test/unit/core/deployment/Makefile \
-    test/unit/wsdl/Makefile \
     test/core/transport/Makefile\
     test/core/transport/http/Makefile \
     test/itest/Makefile \

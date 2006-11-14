@@ -109,7 +109,6 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=yes],
   TESTDIR=""
 )
 
-dnl AC_CHECK_LIB(cutest, CuTestInit, [], [TESTDIR=""])
 
 CFLAGS="$CFLAGS $GUTHTHILA_CFLAGS"
 
@@ -127,8 +126,6 @@ AC_CONFIG_FILES([Makefile \
     include/Makefile \
     test/Makefile \
     test/util/Makefile \
-    test/unit/Makefile \
-    test/unit/util/Makefile
     ])
     
 AC_OUTPUT
