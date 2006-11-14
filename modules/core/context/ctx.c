@@ -24,6 +24,7 @@ typedef struct axis2_ctx_impl
     axis2_ctx_t ctx;
     /** non persistent map */
     axis2_hash_t *non_persistent_map;
+    axis2_bool_t non_persistent_map_deep_copy;
     /** persistent map */
     axis2_hash_t *persistent_map;
     /*axis2_ctx_t *parent; This will not be required as the responsibility of
@@ -109,6 +110,7 @@ axis2_ctx_create(
     }
 
     ctx_impl->non_persistent_map = axis2_hash_make(env);
+    ctx_impl->non_persistent_map_deep_copy = AXIS2_TRUE;
     if (!(ctx_impl->non_persistent_map))
     {
         axis2_ctx_free(&(ctx_impl->ctx), env);
@@ -249,7 +251,7 @@ axis2_ctx_free(
         ctx_impl->ctx.ops = NULL;
     }
 
-    if (ctx_impl->non_persistent_map)
+    if (ctx_impl->non_persistent_map && ctx_impl->non_persistent_map_deep_copy)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
@@ -319,7 +321,7 @@ axis2_ctx_set_non_persistent_map(
 
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
-    if (ctx_impl->non_persistent_map)
+    if (ctx_impl->non_persistent_map && ctx_impl->non_persistent_map_deep_copy)
     {
         axis2_hash_index_t *hi = NULL;
         void *val = NULL;
@@ -349,6 +351,7 @@ axis2_ctx_set_non_persistent_map(
     }
 
     ctx_impl->non_persistent_map = map;
+    ctx_impl->non_persistent_map_deep_copy = AXIS2_FALSE;
 
     return AXIS2_SUCCESS;
 }

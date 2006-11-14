@@ -482,7 +482,9 @@ axis2_raw_xml_in_out_msg_recv_receive_sync(
     {
         axis2_core_utils_reset_out_msg_ctx(env, out_msg_ctx);
     }
-    AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+    /* this is freed in http worker by resetting the operation context 
+       holding this msg context
+    AXIS2_MSG_CTX_FREE(out_msg_ctx, env); */
     out_msg_ctx = NULL;
     return status;
 }

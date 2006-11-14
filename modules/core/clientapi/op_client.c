@@ -23,6 +23,7 @@
 #include <axis2_engine.h>
 #include "axis2_callback_recv.h"
 #include <axiom_xml_reader.h>
+#include <axis2_core_utils.h>
 
 typedef struct axis2_op_client_impl
 {
@@ -279,12 +280,13 @@ axis2_op_client_add_msg_ctx(
     {
         /* may be this is the second invocation using the same service clinet,
            so reset */
-        /* TODO: Fix the memory leaks here */
+        AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+        out_msg_ctx = NULL;
         axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING, NULL);
+        AXIS2_MSG_CTX_FREE(in_msg_ctx, env);
+        in_msg_ctx = NULL;
         axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING, NULL);
         AXIS2_OP_CTX_SET_IS_COMPLETE(op_client_impl->op_ctx, env, AXIS2_FALSE);
-        out_msg_ctx = NULL;
-        in_msg_ctx = NULL;
     }
 
     if (!out_msg_ctx)

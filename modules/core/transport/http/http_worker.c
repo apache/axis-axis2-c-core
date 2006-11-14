@@ -425,7 +425,37 @@ axis2_http_worker_process_request(
     status = AXIS2_SIMPLE_HTTP_SVR_CONN_WRITE_RESPONSE(svr_conn, env, response);
     AXIS2_FREE(env->allocator, url_external_form);
     url_external_form = NULL;
-    AXIS2_MSG_CTX_FREE(msg_ctx, env);
+    /* this is freed in the following block of logic, taking it from 
+       operation context that holds it
+    AXIS2_MSG_CTX_FREE(msg_ctx, env); */
+    /* Free message contextx */
+    if (op_ctx) 
+    {
+        axis2_msg_ctx_t *out_msg_ctx = NULL, *in_msg_ctx = NULL;
+        axis2_hash_t *msg_ctx_map = NULL;
+
+        msg_ctx_map = AXIS2_OP_CTX_GET_MSG_CTX_MAP(op_ctx, env);
+
+        out_msg_ctx = axis2_hash_get(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE,
+                AXIS2_HASH_KEY_STRING);
+        in_msg_ctx = axis2_hash_get(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE,
+                AXIS2_HASH_KEY_STRING);
+
+        if (out_msg_ctx)
+        {
+            AXIS2_MSG_CTX_FREE(out_msg_ctx, env);
+            out_msg_ctx = NULL;
+            axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_OUT_VALUE, AXIS2_HASH_KEY_STRING, NULL);
+        }
+
+        if (in_msg_ctx)
+        {
+            AXIS2_MSG_CTX_FREE(in_msg_ctx, env);
+            in_msg_ctx = NULL;
+            axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING, NULL);
+        }
+    } /* Done freeing message contexts */
+    
     msg_ctx = NULL;
     AXIS2_URL_FREE(request_url, env);
     request_url = NULL;

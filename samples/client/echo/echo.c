@@ -34,6 +34,8 @@ int main(int argc, char** argv)
     axis2_svc_client_t* svc_client = NULL;
     axiom_node_t *payload = NULL;
     axiom_node_t *ret_node = NULL;
+    axiom_node_t *payload2 = NULL;
+    axiom_node_t *ret_node2 = NULL;
     /*axis2_allocator_t *allocator = NULL;*/
 
     /* Set up the environment */
@@ -94,6 +96,8 @@ int main(int argc, char** argv)
     /* Send request */
     ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
 
+    payload2 = build_om_payload_for_echo_svc(env);
+    ret_node2 = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload2);
     if (ret_node)
     {
         axis2_char_t *om_str = NULL;
@@ -113,11 +117,11 @@ int main(int argc, char** argv)
         printf("echo client invoke FAILED!\n");
     }
 
-    if (payload)
+    /*if (payload)
     {
         AXIOM_NODE_FREE_TREE(payload, env);
         payload = NULL;
-    }
+    }*/
 
     if (svc_client)
     {

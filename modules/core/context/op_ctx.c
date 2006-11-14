@@ -261,9 +261,23 @@ axis2_op_ctx_free(
 
     if (op_ctx_impl->msg_ctx_map)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *ctx = NULL;
+        for (hi = axis2_hash_first(op_ctx_impl->msg_ctx_map, env);
+            hi; hi = axis2_hash_next(env, hi))
+        {
+            axis2_hash_this(hi, NULL, NULL, &ctx);
+            if (ctx)
+            {
+                axis2_msg_ctx_t *msg_ctx = (axis2_msg_ctx_t*)ctx;
+                AXIS2_MSG_CTX_FREE(msg_ctx, env);
+            }
+        }
+
         axis2_hash_free(op_ctx_impl->msg_ctx_map, env);
         op_ctx_impl->msg_ctx_map = NULL;
     }
+
     if (op_ctx_impl->mutex)
     {
         axis2_thread_mutex_destroy(op_ctx_impl->mutex);

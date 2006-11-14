@@ -24,6 +24,7 @@ typedef struct axis2_callback_recv_impl
     axis2_callback_recv_t callback_recv;
     /** base context struct */
     axis2_msg_recv_t *base;
+    axis2_bool_t base_deep_copy;
     /** callback map */
     axis2_hash_t *callback_map;
     axis2_thread_mutex_t *mutex;
@@ -77,6 +78,7 @@ axis2_callback_recv_create(
 
     callback_recv_impl->callback_recv.ops = NULL;
     callback_recv_impl->base = NULL;
+    callback_recv_impl->base_deep_copy = AXIS2_TRUE;
     callback_recv_impl->callback_map = NULL;
     callback_recv_impl->mutex = NULL;
 
@@ -125,6 +127,7 @@ axis2_callback_recv_get_base(
     const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, NULL);
+    AXIS2_INTF_TO_IMPL(callback_recv)->base_deep_copy = AXIS2_FALSE;
     return AXIS2_INTF_TO_IMPL(callback_recv)->base;
 }
 
@@ -166,7 +169,7 @@ axis2_callback_recv_free(
         callback_recv_impl->callback_map = NULL;
     }
 
-    if (callback_recv_impl->base)
+    if (callback_recv_impl->base && callback_recv_impl->base_deep_copy)
     {
         AXIS2_MSG_RECV_FREE(callback_recv_impl->base, env);
     }

@@ -49,6 +49,7 @@ struct axis2_msg_ctx_impl
      * information is present in the SOAP header.
      */
     axis2_msg_info_headers_t *msg_info_headers;
+    axis2_bool_t msg_info_headers_deep_copy;
 
     struct axis2_op_ctx *op_ctx;
     struct axis2_svc_ctx *svc_ctx;
@@ -750,6 +751,7 @@ axis2_msg_ctx_create(
         axis2_msg_ctx_free(&(msg_ctx_impl->msg_ctx), env);
         return NULL;
     }
+    msg_ctx_impl->msg_info_headers_deep_copy = AXIS2_TRUE;
 
     /* initialize ops */
     msg_ctx_impl->msg_ctx.ops  = AXIS2_MALLOC(env->allocator, sizeof(axis2_msg_ctx_ops_t));
@@ -929,7 +931,7 @@ axis2_msg_ctx_free(
         msg_ctx_impl->base = NULL;
     }
 
-    if (msg_ctx_impl->msg_info_headers)
+    if (msg_ctx_impl->msg_info_headers && msg_ctx_impl->msg_info_headers_deep_copy)
     {
         AXIS2_MSG_INFO_HEADERS_FREE(msg_ctx_impl->msg_info_headers, env);
         msg_ctx_impl->msg_info_headers = NULL;
@@ -1825,13 +1827,15 @@ axis2_msg_ctx_set_msg_info_headers(
 
     if (msg_info_headers)
     {
-        if (AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers)
+        if (AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers && 
+            AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers_deep_copy)
         {
             AXIS2_MSG_INFO_HEADERS_FREE(
                 AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers, env);
             AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers = NULL;
         }
         AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers = msg_info_headers;
+        AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers_deep_copy = AXIS2_FALSE;
     }
 
     return AXIS2_SUCCESS;
@@ -2475,8 +2479,16 @@ axis2_msg_ctx_set_options(
 
     msg_ctx_impl = AXIS2_INTF_TO_IMPL(msg_ctx);
 
+    if (AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers && msg_ctx_impl->msg_info_headers_deep_copy)
+    {
+        AXIS2_MSG_INFO_HEADERS_FREE(
+            AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers, env);
+        AXIS2_INTF_TO_IMPL(msg_ctx)->msg_info_headers = NULL;
+    }
     msg_ctx_impl->msg_info_headers =
         AXIS2_OPTIONS_GET_MSG_INFO_HEADERS(options, env);
+    msg_ctx_impl->msg_info_headers_deep_copy = AXIS2_FALSE;
+
     AXIS2_CTX_SET_NON_PERSISTANT_MAP(msg_ctx_impl->base, env,
             AXIS2_OPTIONS_GET_PROPERTIES(options, env));
     rest_val = (axis2_char_t *)AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,

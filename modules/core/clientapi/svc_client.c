@@ -1182,6 +1182,12 @@ axis2_svc_client_init_data(
 
     svc_client_impl->headers = NULL;
 
+    if (svc_client_impl->callback_recv)
+    {
+        AXIS2_CALLBACK_RECV_FREE(svc_client_impl->callback_recv, env);
+        svc_client_impl->callback_recv = NULL;
+    }
+
     svc_client_impl->callback_recv = axis2_callback_recv_create(env);
     if (!(svc_client_impl->callback_recv))
     {
@@ -1332,16 +1338,11 @@ axis2_svc_client_free(
 
     svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
 
-    /* TODO: Fix this memory leak. 
-     *
-     * Segfault occurs with dual clients
-     *
     if (svc_client_impl->svc)
     {
         AXIS2_SVC_FREE(svc_client_impl->svc, env);
         svc_client_impl->svc = NULL;
     }
-    */
 
     if (svc_client_impl->callback_recv)
     {
