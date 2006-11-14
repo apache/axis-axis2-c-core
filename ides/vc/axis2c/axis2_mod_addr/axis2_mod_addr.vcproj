@@ -40,7 +40,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_MOD_ADDRESSING_EXPORTS;AXIS2_DECLARE_EXPORT;"
+				AdditionalIncludeDirectories=".\..\..\..\..\util\include;.\..\..\..\..\include;.\..\..\..\..\axiom\include;.\..\..\..\..\xml_schema\include;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_MOD_ADDRESSING_EXPORTS;AXIS2_DECLARE_EXPORT;_CRT_SECURE_NO_DEPRECATE;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
