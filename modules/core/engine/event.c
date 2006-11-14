@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_event.h>
+#include "axis2_event.h"
 #include <axis2_const.h>
 
 typedef struct axis2_event_impl
