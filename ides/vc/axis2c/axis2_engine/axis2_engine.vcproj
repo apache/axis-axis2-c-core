@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\..\..\..\..\woden\include;.\..\..\..\..\include;.\..\..\..\..\modules\core\deployment;"
+				AdditionalIncludeDirectories=".\..\..\..\..\woden\include;.\..\..\..\..\include;.\..\..\..\..\modules\core\deployment;.\..\..\..\..\util\include;.\..\..\..\..\xml_schema\include;.\..\..\..\..\axiom\include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_ENGINE_EXPORTS;AXIS2_DECLARE_EXPORT;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
