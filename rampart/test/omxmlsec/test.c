@@ -151,14 +151,14 @@ int main(int argc, char *argv[])
     OXS_CTX_SET_KEY(ctx, env, key);
 
     /*Set algorithm*/
-    OXS_CTX_SET_ENC_MTD_ALGORITHM(ctx, env, OXS_HrefAes256Cbc);
+    OXS_CTX_SET_ENC_MTD_ALGORITHM(ctx, env, OXS_HREF_AES_256_CBC);
 
     /*Get the node to be encrypted*/
     enc_node = AXIOM_NODE_GET_FIRST_CHILD(tmpl, env);
 
     /*Create a reference to encrypted node*/
     id =  oxs_util_generate_id(env, OXS_ENCDATA_ID);
-    enc_data_node =  oxs_token_build_encrypted_data_element(env, tmpl, OXS_TypeEncElement, id); 
+    enc_data_node =  oxs_token_build_encrypted_data_element(env, tmpl, OXS_TYPE_ENC_ELEMENT, id); 
     /*Encrypt***************************************************/
 
     temp_status = oxs_xml_enc_encrypt_node(env, ctx,  enc_node, &enc_data_node);

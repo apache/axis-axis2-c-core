@@ -44,11 +44,10 @@ oxs_token_build_cipher_value_element(const axis2_env_t *env,
     axis2_status_t ret;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create(env, OXS_EncNs,
-            OXS_xenc);
+    ns_obj = axiom_namespace_create(env, OXS_ENC_NS,
+            OXS_XENC);
 
-
-    cipher_value_ele = axiom_element_create(env, parent, OXS_NodeCipherValue, ns_obj, &cipher_value_node);
+    cipher_value_ele = axiom_element_create(env, parent, OXS_NODE_CIPHER_VALUE, ns_obj, &cipher_value_node);
     if (!cipher_value_ele)
     {
         oxs_error(ERROR_LOCATION,

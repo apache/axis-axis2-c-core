@@ -31,11 +31,11 @@ oxs_token_build_reference_list_element(const axis2_env_t *env,
     axiom_element_t *reference_list_ele = NULL;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create(env, OXS_EncNs,
-            OXS_xenc);
+    ns_obj = axiom_namespace_create(env, OXS_ENC_NS,
+            OXS_XENC);
 
 
-    reference_list_ele = axiom_element_create(env, parent, OXS_NodeReferenceList, ns_obj, &reference_list_node);
+    reference_list_ele = axiom_element_create(env, parent, OXS_NODE_REFERENCE_LIST, ns_obj, &reference_list_node);
     if (!reference_list_ele)
     {
         oxs_error(ERROR_LOCATION,
@@ -63,7 +63,7 @@ oxs_token_get_reference_list_data(const axis2_env_t *env, axiom_node_t *ref_list
     ref_list_ele = AXIOM_NODE_GET_DATA_ELEMENT(ref_list_node, env);
 
     /*Get children*/
-    qname = axis2_qname_create(env, OXS_NodeDataReference, NULL, NULL);
+    qname = axis2_qname_create(env, OXS_NODE_DATA_REFERENCE, NULL, NULL);
     iter = AXIOM_ELEMENT_GET_CHILDREN_WITH_QNAME(ref_list_ele, env, qname, ref_list_node);
     AXIS2_QNAME_FREE(qname, env);
     qname = NULL;

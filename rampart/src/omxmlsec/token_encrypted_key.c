@@ -31,10 +31,10 @@ oxs_token_build_encrypted_key_element(const axis2_env_t *env,
     axiom_element_t *encrypted_key_ele = NULL;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create(env, OXS_EncNs,
-            OXS_xenc);
+    ns_obj = axiom_namespace_create(env, OXS_ENC_NS,
+            OXS_XENC);
 
-    encrypted_key_ele = axiom_element_create(env, parent, OXS_NodeEncryptedKey, ns_obj, &encrypted_key_node);
+    encrypted_key_ele = axiom_element_create(env, parent, OXS_NODE_ENCRYPTED_KEY, ns_obj, &encrypted_key_node);
     if (!encrypted_key_ele)
     {
         oxs_error(ERROR_LOCATION,

@@ -30,10 +30,10 @@ oxs_token_build_cipher_data_element(const axis2_env_t *env,
     axiom_element_t *cipher_data_ele = NULL;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create(env, OXS_EncNs,
-            OXS_xenc);
+    ns_obj = axiom_namespace_create(env, OXS_ENC_NS,
+            OXS_XENC);
 
-    cipher_data_ele = axiom_element_create(env, parent, OXS_NodeCipherData, ns_obj, &cipher_data_node);
+    cipher_data_ele = axiom_element_create(env, parent, OXS_NODE_CIPHER_DATA, ns_obj, &cipher_data_node);
     if (!cipher_data_ele)
     {
         oxs_error(ERROR_LOCATION,

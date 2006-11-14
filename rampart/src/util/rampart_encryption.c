@@ -101,7 +101,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
         /*Create an empty EncryptedDataNode*/
         parent_of_node_to_enc = AXIOM_NODE_GET_PARENT(node_to_enc, env);
         id = oxs_util_generate_id(env,(axis2_char_t*)OXS_ENCDATA_ID);
-        enc_data_node = oxs_token_build_encrypted_data_element(env, parent_of_node_to_enc, OXS_TypeEncElement, id );
+        enc_data_node = oxs_token_build_encrypted_data_element(env, parent_of_node_to_enc, OXS_TYPE_ENC_ELEMENT, id );
         enc_status = oxs_xml_enc_encrypt_node(env, enc_ctx, node_to_enc, enc_data_node);
         AXIS2_ARRAY_LIST_ADD(id_list, env, id);
         if(AXIS2_FAILURE == enc_status){

@@ -32,11 +32,11 @@ oxs_token_build_key_name_element(const axis2_env_t *env,
     axis2_status_t ret;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create(env, OXS_DSigNs,
-            OXS_ds);
+    ns_obj = axiom_namespace_create(env, OXS_DSIG_NS,
+            OXS_DS);
 
 
-    key_name_ele = axiom_element_create(env, parent, OXS_NodeKeyName, ns_obj, &key_name_node);
+    key_name_ele = axiom_element_create(env, parent, OXS_NODE_KEY_NAME, ns_obj, &key_name_node);
     if (!key_name_ele)
     {
         oxs_error(ERROR_LOCATION,

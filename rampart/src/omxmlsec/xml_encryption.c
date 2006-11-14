@@ -158,12 +158,12 @@ oxs_xml_enc_decrypt_data(const axis2_env_t *env,
     oxs_buffer_t *input_buf = NULL;
 
     /*Get the symmetric encryption algorithm*/
-    enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NodeEncryptionMethod, NULL, NULL);
+    enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NODE_ENCRYPTION_METHOD, NULL, NULL);
     sym_algo = oxs_token_get_encryption_method(env, enc_mtd_node);
 
     /*Get ID, Type, MimeType attributes from the EncryptedDataNode*/
-    id = oxs_axiom_get_attribute_value_of_node_by_name(env, enc_type_node, OXS_AttrId);
-    type = oxs_axiom_get_attribute_value_of_node_by_name(env, enc_type_node, OXS_AttrType);
+    id = oxs_axiom_get_attribute_value_of_node_by_name(env, enc_type_node, OXS_ATTR_ID);
+    type = oxs_axiom_get_attribute_value_of_node_by_name(env, enc_type_node, OXS_ATTR_TYPE);
 
     /*Populate the context for future use*/
     OXS_CTX_SET_ENC_MTD_ALGORITHM(enc_ctx, env, sym_algo);
@@ -171,8 +171,8 @@ oxs_xml_enc_decrypt_data(const axis2_env_t *env,
     OXS_CTX_SET_TYPE(enc_ctx, env, type);
     
     /*Get the cipher value*/
-    cd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NodeCipherData, NULL, NULL);
-    cv_node = oxs_axiom_get_first_child_node_by_name(env, cd_node, OXS_NodeCipherValue, NULL, NULL);
+    cd_node = oxs_axiom_get_first_child_node_by_name(env, enc_type_node, OXS_NODE_CIPHER_DATA, NULL, NULL);
+    cv_node = oxs_axiom_get_first_child_node_by_name(env, cd_node, OXS_NODE_CIPHER_VALUE, NULL, NULL);
     cipher_val = oxs_token_get_cipher_value(env, cv_node); 
     
     /*Create input buffer with cipher data obtained*/

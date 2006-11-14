@@ -38,10 +38,10 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
     int ret;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create(env, OXS_WSSENS,
+    ns_obj = axiom_namespace_create(env, OXS_WSSE_NS,
             OXS_WSSE);
 
-    binary_security_token_ele = axiom_element_create(env, parent, OXS_NodeBinarySecurityToken, ns_obj, &binary_security_token_node);
+    binary_security_token_ele = axiom_element_create(env, parent, OXS_NODE_BINARY_SECURITY_TOKEN, ns_obj, &binary_security_token_node);
     if (!binary_security_token_ele)
     {
         oxs_error(ERROR_LOCATION,
@@ -49,9 +49,9 @@ oxs_token_build_binary_security_token_element(const axis2_env_t *env,
         return NULL;
     }
 
-    id_attr = axiom_attribute_create(env, OXS_AttrId, id, NULL);
-    encoding_type_att =  axiom_attribute_create(env, OXS_AttrEncodingType, encoding_type, NULL);
-    value_type_att =  axiom_attribute_create(env, OXS_AttrValueType, value_type, NULL);
+    id_attr = axiom_attribute_create(env, OXS_ATTR_ID, id, NULL);
+    encoding_type_att =  axiom_attribute_create(env, OXS_ATTR_ENCODING_TYPE, encoding_type, NULL);
+    value_type_att =  axiom_attribute_create(env, OXS_ATTR_VALUE_TYPE, value_type, NULL);
 
     ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(binary_security_token_ele, env, id_attr, binary_security_token_node);
     ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(binary_security_token_ele, env, encoding_type_att, binary_security_token_node);

@@ -34,10 +34,10 @@ oxs_token_build_encryption_method_element(const axis2_env_t *env,
     int ret;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create(env, OXS_EncNs,
-            OXS_xenc);
+    ns_obj = axiom_namespace_create(env, OXS_ENC_NS,
+            OXS_XENC);
 
-    encryption_method_ele = axiom_element_create(env, parent, OXS_NodeEncryptionMethod, ns_obj, &encryption_method_node);
+    encryption_method_ele = axiom_element_create(env, parent, OXS_NODE_ENCRYPTION_METHOD, ns_obj, &encryption_method_node);
     if (!encryption_method_ele)
     {
         oxs_error(ERROR_LOCATION,
@@ -50,7 +50,7 @@ oxs_token_build_encryption_method_element(const axis2_env_t *env,
         algorithm = (axis2_char_t*)OXS_DEFAULT_KT_ALGO_HREF;
     }
 
-    algo_attr =  axiom_attribute_create(env, OXS_AttrAlgorithm, algorithm, NULL);
+    algo_attr =  axiom_attribute_create(env, OXS_ATTR_ALGORITHM, algorithm, NULL);
 
     ret = AXIOM_ELEMENT_ADD_ATTRIBUTE(encryption_method_ele, env, algo_attr, encryption_method_node);
 
@@ -74,7 +74,7 @@ oxs_token_get_encryption_method(const axis2_env_t *env, axiom_node_t *enc_mtd_no
         return NULL;
     }
 
-    enc_mtd = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(enc_mtd_ele, env, OXS_AttrAlgorithm);
+    enc_mtd = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(enc_mtd_ele, env, OXS_ATTR_ALGORITHM);
     return enc_mtd;
 
 }

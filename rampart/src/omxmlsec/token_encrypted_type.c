@@ -38,7 +38,7 @@ oxs_token_build_encrypted_type_element(const axis2_env_t *env,
     int ret;
     axiom_namespace_t *ns_obj = NULL;
 
-    ns_obj = axiom_namespace_create(env, OXS_EncNs,
+    ns_obj = axiom_namespace_create(env, OXS_ENC_NS,
             OXS_xenc);
 
     encrypted_type_ele = axiom_element_create(env, parent, encrypted_type, ns_obj, &encrypted_type_node);
