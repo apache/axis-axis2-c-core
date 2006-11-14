@@ -1,3 +1,3 @@
 TESTS =
-SUBDIRS = om soap unit
+SUBDIRS = om soap 
 
