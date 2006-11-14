@@ -38,7 +38,7 @@
 
 
 /*public functions*/
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_encrypt_node(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             axiom_node_t *node,
@@ -68,7 +68,7 @@ oxs_xml_enc_encrypt_node(const axis2_env_t *env,
 }
 
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_encrypt_data(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             oxs_buffer_t *content_buf,
@@ -107,7 +107,7 @@ oxs_xml_enc_encrypt_data(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_decrypt_node(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             axiom_node_t *enc_type_node,
@@ -142,7 +142,7 @@ oxs_xml_enc_decrypt_node(const axis2_env_t *env,
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_decrypt_data(const axis2_env_t *env,
                             oxs_ctx_t * enc_ctx,
                             axiom_node_t *enc_type_node,
@@ -184,7 +184,7 @@ oxs_xml_enc_decrypt_data(const axis2_env_t *env,
     return oxs_encryption_symmetric_crypt(env, enc_ctx, input_buf, result_buf);
 }
 
-axis2_status_t AXIS2_CALL
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_encrypt_key(const axis2_env_t *env,
                             oxs_asym_ctx_t * asym_ctx,
                             axiom_node_t *parent,
