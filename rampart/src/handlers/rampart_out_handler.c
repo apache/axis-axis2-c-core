@@ -190,6 +190,9 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
         sec_header_block = AXIOM_SOAP_HEADER_ADD_HEADER_BLOCK(soap_header,
                 env, RAMPART_SECURITY, sec_ns_obj);
 
+        /*Set mustUnderstand=1*/
+        AXIOM_SOAP_HEADER_BLOCK_SET_MUST_UNDERSTAND_WITH_BOOL(sec_header_block, env, AXIS2_TRUE);
+
         if (sec_header_block)
         {
             axis2_char_t* item = NULL;
