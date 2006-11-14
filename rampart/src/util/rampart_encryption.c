@@ -19,7 +19,6 @@
 #include <oxs_ctx.h>
 #include <oxs_error.h>
 #include <oxs_utility.h>
-#include <oxs_enc_engine.h>
 #include <rampart_encryption.h>
 #include <oxs_token_encrypted_data.h>
 #include <oxs_token_encrypted_key.h>
