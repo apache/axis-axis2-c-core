@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <woden_om_util.h>
+#include "woden_om_util.h"
 #include <axis2_qname.h>
 #include <axiom_element.h>
 #include <axis2_uri.h>
