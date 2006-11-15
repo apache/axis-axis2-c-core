@@ -88,7 +88,6 @@ AC_ARG_ENABLE(tests, [  --enable-tests    build tests. default=no],
   TESTDIR=""
 )
 
-dnl AC_CHECK_LIB(cutest, CuTestInit, [], [TESTDIR=""])
 
 AC_MSG_CHECKING(To Use Xml Schema. This is a compulsory module to build Woden C)
 AC_ARG_WITH(axis2_xml_schema,
@@ -140,8 +139,7 @@ AC_CONFIG_FILES([Makefile \
     src/wsdl10/extensions/Makefile \
     src/wsdl10/extensions/soap/Makefile \
     src/builder/Makefile \
-    src/builder/wsdl10/Makefile \
-    test/Makefile
+    src/builder/wsdl10/Makefile 
     ])
     
 AC_OUTPUT
