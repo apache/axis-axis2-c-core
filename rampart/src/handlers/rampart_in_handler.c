@@ -128,6 +128,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 }
             }else{
                 AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No Inflow Security in the paramter list.");
+                return AXIS2_SUCCESS;
             }
             /*Then re-populate using the axis2_ctx*/
             status = RAMPART_ACTIONS_POPULATE_FROM_CTX(actions, env, ctx);
@@ -136,8 +137,8 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
 
             if (!items)
             {
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No items defined");
-                return AXIS2_FAILURE;
+                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No items defined. So nothing to do.");
+                return AXIS2_SUCCESS;
             }
 
             /*Get action items seperated by spaces*/
