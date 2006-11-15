@@ -214,7 +214,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 {
                     /*Do useful to verify encrypt*/
                     AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Decryption... NOT IMPLEMENTED YET.. SORRY");
-
+                    
 
                     /*Signature*/
                 }

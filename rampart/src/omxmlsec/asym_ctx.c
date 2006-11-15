@@ -25,6 +25,7 @@ typedef struct oxs_asym_ctx_impl
     oxs_asym_ctx_t asym_ctx;
     
     axis2_char_t *file_name;
+    axis2_char_t *format;
     axis2_char_t *algorithm;
     oxs_asym_ctx_operation_t operation;   
     oxs_certificate_t *certificate;
@@ -54,6 +55,11 @@ oxs_asym_ctx_get_file_name_impl(
     const axis2_env_t *env);
 
 axis2_char_t *AXIS2_CALL
+oxs_asym_ctx_get_format_impl(
+    const oxs_asym_ctx_t *asym_ctx,
+    const axis2_env_t *env);
+
+axis2_char_t *AXIS2_CALL
 oxs_asym_ctx_get_algorithm_impl(
     const oxs_asym_ctx_t *asym_ctx,
     const axis2_env_t *env);
@@ -70,6 +76,12 @@ oxs_asym_ctx_get_certificate_impl(
 
 axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_file_name_impl(
+    oxs_asym_ctx_t *asym_ctx,
+    const axis2_env_t *env,
+    axis2_char_t *file_name);
+
+axis2_status_t AXIS2_CALL
+oxs_asym_ctx_set_format_impl(
     oxs_asym_ctx_t *asym_ctx,
     const axis2_env_t *env,
     axis2_char_t *file_name);
@@ -105,6 +117,18 @@ oxs_asym_ctx_get_file_name_impl(
     asym_ctx_impl = AXIS2_INTF_TO_IMPL(asym_ctx);
 
     return asym_ctx_impl->file_name;
+}
+
+axis2_char_t *AXIS2_CALL
+oxs_asym_ctx_get_format_impl(
+    const oxs_asym_ctx_t *asym_ctx,
+    const axis2_env_t *env)
+{
+    oxs_asym_ctx_impl_t *asym_ctx_impl = NULL;
+    AXIS2_ENV_CHECK(env, NULL);
+    asym_ctx_impl = AXIS2_INTF_TO_IMPL(asym_ctx);
+
+    return asym_ctx_impl->format;
 }
 
 axis2_char_t *AXIS2_CALL
@@ -161,6 +185,27 @@ oxs_asym_ctx_set_file_name_impl(
         oxs_asym_ctx_impl->file_name = NULL;
     }
     oxs_asym_ctx_impl->file_name = AXIS2_STRDUP(file_name, env);
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+oxs_asym_ctx_set_format_impl(
+    oxs_asym_ctx_t *asym_ctx,
+    const axis2_env_t *env,
+    axis2_char_t *format)
+{
+    oxs_asym_ctx_impl_t *oxs_asym_ctx_impl = NULL;
+
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env->error, format, AXIS2_FAILURE);
+    oxs_asym_ctx_impl = AXIS2_INTF_TO_IMPL(asym_ctx);
+
+    if (oxs_asym_ctx_impl->format)
+    {
+        AXIS2_FREE(env->allocator, oxs_asym_ctx_impl->format);
+        oxs_asym_ctx_impl->format = NULL;
+    }
+    oxs_asym_ctx_impl->format = AXIS2_STRDUP(format, env);
     return AXIS2_SUCCESS;
 }
 
@@ -228,10 +273,12 @@ oxs_asym_ctx_init_ops(
     oxs_asym_ctx_t *asym_ctx)
 {
     asym_ctx->ops->get_file_name  = oxs_asym_ctx_get_file_name_impl;
+    asym_ctx->ops->get_format  = oxs_asym_ctx_get_format;
     asym_ctx->ops->get_algorithm  = oxs_asym_ctx_get_algorithm_impl;
     asym_ctx->ops->get_operation  = oxs_asym_ctx_get_operation_impl;
     asym_ctx->ops->get_certificate  = oxs_asym_ctx_get_certificate_impl;
     asym_ctx->ops->set_file_name   = oxs_asym_ctx_set_file_name_impl;
+    asym_ctx->ops->set_format   = oxs_asym_ctx_set_format;
     asym_ctx->ops->set_algorithm  = oxs_asym_ctx_set_algorithm_impl;
     asym_ctx->ops->set_operation  = oxs_asym_ctx_set_operation_impl;
     asym_ctx->ops->set_certificate  = oxs_asym_ctx_set_certificate_impl;
@@ -240,7 +287,7 @@ oxs_asym_ctx_init_ops(
 
 
 AXIS2_EXTERN oxs_asym_ctx_t *AXIS2_CALL
-oxs_asym_ctx_create_asym_ctx(const axis2_env_t *env)
+oxs_asym_ctx_create(const axis2_env_t *env)
 {
     oxs_asym_ctx_impl_t *asym_ctx_impl = NULL;
 
@@ -254,6 +301,7 @@ oxs_asym_ctx_create_asym_ctx(const axis2_env_t *env)
     }
 
     asym_ctx_impl->file_name= NULL;
+    asym_ctx_impl->format= NULL;
     asym_ctx_impl->algorithm = NULL;
     asym_ctx_impl->operation = -1;
     asym_ctx_impl->certificate = NULL;
@@ -287,6 +335,12 @@ oxs_asym_ctx_free_impl(oxs_asym_ctx_t *asym_ctx,
     {
         AXIS2_FREE(env->allocator, asym_ctx_impl->file_name);
         asym_ctx_impl->file_name = NULL;
+    }
+
+    if (asym_ctx_impl->format)
+    {
+        AXIS2_FREE(env->allocator, asym_ctx_impl->format);
+        asym_ctx_impl->format = NULL;
     }
 
     if (asym_ctx_impl->algorithm)
@@ -324,6 +378,13 @@ oxs_asym_ctx_get_file_name(const oxs_asym_ctx_t *ctx,
 }
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+oxs_asym_ctx_get_format(const oxs_asym_ctx_t *ctx,
+                    const axis2_env_t *env)
+{
+     return  ctx->ops->get_format(ctx, env);
+}
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_asym_ctx_get_algorithm(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env)
 {
@@ -350,6 +411,14 @@ oxs_asym_ctx_set_file_name(oxs_asym_ctx_t *ctx,
                     axis2_char_t *file_name)
 {
      return  ctx->ops->set_file_name(ctx, env,file_name );
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_asym_ctx_set_format(oxs_asym_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *format)
+{
+     return  ctx->ops->set_format(ctx, env,format );
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL

@@ -38,6 +38,10 @@ extern "C"
  * @{
  */
 
+    typedef enum  {
+        OXS_ASYM_CTX_FORMAT_PEM,
+        OXS_ASYM_CTX_FORMAT_PKCS12
+    }oxs_asym_ctx_format_t;
 
     typedef enum  {
         OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT,
@@ -73,6 +77,12 @@ extern "C"
                     const axis2_env_t *env
                     );
 
+        axis2_char_t *(AXIS2_CALL *
+        get_format)(
+                    const oxs_asym_ctx_t *ctx,
+                    const axis2_env_t *env
+                    );
+
         oxs_certificate_t *(AXIS2_CALL *
         get_certificate)(
                     const oxs_asym_ctx_t *ctx,
@@ -97,6 +107,13 @@ extern "C"
                     oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env,
                     axis2_char_t *file_name
+                    );
+
+        axis2_status_t (AXIS2_CALL *
+        set_format)(
+                    oxs_asym_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *format
                     );
 
         axis2_status_t (AXIS2_CALL *
@@ -139,6 +156,10 @@ oxs_asym_ctx_get_file_name(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env);
 
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+oxs_asym_ctx_get_format(const oxs_asym_ctx_t *ctx,
+                    const axis2_env_t *env);
+
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_asym_ctx_get_algorithm(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env);
 
@@ -154,6 +175,11 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_file_name(oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env,
                     axis2_char_t *file_name);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_asym_ctx_set_format(oxs_asym_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *format);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_algorithm(oxs_asym_ctx_t *ctx,

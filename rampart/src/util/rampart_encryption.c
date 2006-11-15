@@ -97,11 +97,13 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
         enc_ctx = oxs_ctx_create(env);
         /*Set the key*/
         OXS_CTX_SET_KEY(enc_ctx, env, session_key);
+        /*Set the algorithm*/
+        OXS_CTX_SET_ENC_MTD_ALGORITHM(enc_ctx, env, enc_sym_algo);
         /*Create an empty EncryptedDataNode*/
         parent_of_node_to_enc = AXIOM_NODE_GET_PARENT(node_to_enc, env);
         id = oxs_util_generate_id(env,(axis2_char_t*)OXS_ENCDATA_ID);
         enc_data_node = oxs_token_build_encrypted_data_element(env, parent_of_node_to_enc, OXS_TYPE_ENC_ELEMENT, id );
-        enc_status = oxs_xml_enc_encrypt_node(env, enc_ctx, node_to_enc, enc_data_node);
+        enc_status = oxs_xml_enc_encrypt_node(env, enc_ctx, node_to_enc, &enc_data_node);
         AXIS2_ARRAY_LIST_ADD(id_list, env, id);
         if(AXIS2_FAILURE == enc_status){
             return AXIS2_FAILURE;
@@ -148,15 +150,18 @@ rampart_enc_get_nodes_to_encrypt(const axis2_env_t *env,
 
     /*Get encryption parts*/
     encryption_parts =  AXIS2_STRDUP(RAMPART_ACTIONS_GET_ENCRYPTION_PARTS(actions, env), env);
-    /*If no encryption parts are specified use body as default*/
+    /*If no encryption parts are specified use body as default... 
+     * Well...hmmm.. the child of the body infact*/
     if((!encryption_parts) || (0 == AXIS2_STRCMP(encryption_parts, " "))){
         axiom_soap_body_t *body = NULL;
         axiom_node_t *body_node = NULL;
+        axiom_node_t *body_child_node = NULL;
 
         AXIS2_LOG_INFO(env->log, "[rampart][rampart_encryption] No encryption parts specified. Using the body as default");
         body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
         body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
-        AXIS2_ARRAY_LIST_ADD(nodes_to_encrypt, env, body_node);
+        body_child_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);
+        AXIS2_ARRAY_LIST_ADD(nodes_to_encrypt, env, body_child_node);
         return AXIS2_SUCCESS;
     }
 

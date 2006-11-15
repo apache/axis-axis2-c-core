@@ -20,7 +20,8 @@
 #include <axiom_soap.h>
 #include <axis2_msg_ctx.h>
 #include <rampart_action.h>
-
+#include <oxs_asym_ctx.h>
+#include <oxs_xml_encryption.h>
 /**
   * @file rampart_encryption.h
   * @brief 
