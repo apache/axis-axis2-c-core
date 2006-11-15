@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <axis2_ws_info.h>
+#include "axis2_ws_info.h"
 #include <string.h>
 
 typedef struct axis2_ws_info_impl
