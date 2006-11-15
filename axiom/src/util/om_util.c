@@ -1060,27 +1060,27 @@ axiom_util_new_document(
 	 if (uri)
 		  path = AXIS2_URI_GET_PATH((axis2_uri_t *) uri, env);
 	 else
-		  return AXIS2_FAILURE;
+		 return NULL;
 
 	 if (path)
 		  reader = axiom_xml_reader_create_for_file(env, path, NULL);
 	 else
-		  return AXIS2_FAILURE;
+		 return NULL;
 
 	 if(reader)
 		  om_builder = axiom_stax_builder_create(env, reader);
 	 else
-		  return AXIS2_FAILURE;
+		 return NULL;
 
 	 if (om_builder)
 		  doc = AXIOM_STAX_BUILDER_GET_DOCUMENT(om_builder, env);
 	 else
-		  return AXIS2_FAILURE;
+		 return NULL;
 
 	 if (doc)
 		  AXIOM_DOCUMENT_BUILD_ALL(doc, env);
 	 else
-		  return AXIS2_FAILURE;
+		 return NULL;
 
     return doc;
 }

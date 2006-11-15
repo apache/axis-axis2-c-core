@@ -16,7 +16,7 @@
 
 #include <axiom_namespace.h>
 #include <axis2_string.h>
-#include <axiom_namespace_internal.h>
+#include "axiom_namespace_internal.h"
 /**************************** Function Prototypes ******************************/
 
 axis2_status_t AXIS2_CALL
