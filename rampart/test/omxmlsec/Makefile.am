@@ -13,7 +13,7 @@ INCLUDES = -I$(top_builddir)/include \
 test_oxs_LDADD   = $(top_builddir)/src/util/librampart_util.la \
                     $(top_builddir)/src/omxmlsec/libomxmlsec.la \
                     $(top_builddir)/src/omxmlsec/openssl/libomopenssl.la \
-		   -laxis2_util \
-		   -laxis2_axiom\
-           -laxis2_libxml2\
+					../../../util/src/libaxis2_util.la \
+					../../../axiom/src/om/libaxis2_axiom.la \
+					../../../axiom/src/parser/libxml2/libaxis2_libxml2.la \
            -lxml2
