@@ -118,13 +118,14 @@ axis2_set_repo_path(
     void *dummy,
     const char *arg)
 {
+	axis2_config_rec_t *conf = NULL;		
     const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
     if (err != NULL)
     {
         return err;
     }
 
-    axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
+    conf = (axis2_config_rec_t*)ap_get_module_config(
                 cmd->server->module_config, &axis2_module);
     conf->axis2_repo_path = apr_pstrdup(cmd->pool, arg);
     return NULL;
@@ -136,13 +137,14 @@ axis2_set_log_file(
     void *dummy,
     const char *arg)
 {
+	axis2_config_rec_t *conf = NULL;		
     const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
     if (err != NULL)
     {
         return err;
     }
 
-    axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
+    conf = (axis2_config_rec_t*)ap_get_module_config(
                 cmd->server->module_config, &axis2_module);
     conf->axis2_log_file = apr_pstrdup(cmd->pool, arg);
     return NULL;
@@ -155,14 +157,15 @@ axis2_set_log_level(
     const char *arg)
 {
     char *str;
-    const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
+    axis2_log_levels_t level = AXIS2_LOG_LEVEL_DEBUG;
+	axis2_config_rec_t *conf = NULL;
+	const char *err = ap_check_cmd_context(cmd, GLOBAL_ONLY);
     if (err != NULL)
     {
         return err;
     }
 
-    axis2_log_levels_t level = AXIS2_LOG_LEVEL_DEBUG;
-    axis2_config_rec_t *conf = (axis2_config_rec_t*)ap_get_module_config(
+    conf = (axis2_config_rec_t*)ap_get_module_config(
                 cmd->server->module_config, &axis2_module);
 
     if ((str = ap_getword_conf(cmd->pool, &arg)))
