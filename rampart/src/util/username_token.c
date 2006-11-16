@@ -150,14 +150,14 @@ rampart_username_token_callback_pw(const axis2_env_t *env,
     /*callback()*/
     if (!ptr)
     {
-        printf("\nCallback ptr is null");
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Unable to create the pw callback module %s. ERROR", callback_module_name);
         return NULL;
     }
 
     rcb = (rampart_callback_t*)ptr;
     if (!rcb)
     {
-        printf("\nrampart_callback_t is null");
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Unable to load the pw callback module %s. ERROR", callback_module_name);
         return NULL;
     }
     /*Get callback specific property if any from the ctx*/
@@ -171,6 +171,7 @@ rampart_username_token_callback_pw(const axis2_env_t *env,
     /*Get the password thru the callback*/
     password = RAMPART_CALLBACK_CALLBACK_PASSWORD(rcb, env, username, cb_prop_val);
 
+    AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Password taken from the callback module %s. SUCCESS", callback_module_name);
     return password;
 }
 
@@ -268,6 +269,7 @@ rampart_username_token_build(rampart_username_token_t *username_token,
 
     if (!password)
     {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Cannot find the password for user %s. ERROR", username);
         return AXIS2_FAILURE;
     }
 
@@ -423,7 +425,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
     if (!sec_node)
     {
-        AXIS2_LOG_INFO(env->log, " Cannot find sec_node.. :(");
+        AXIS2_LOG_INFO(env->log, " [rampart][rampart_usernametoken] Cannot find security header element");
         return AXIS2_FAILURE;
     }
 
@@ -431,7 +433,6 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     sec_ele = AXIOM_NODE_GET_DATA_ELEMENT(sec_node, env);
     if (!sec_ele)
     {
-        AXIS2_LOG_INFO(env->log, " Cannot find sec_ele... :(");
         return AXIS2_FAILURE;
     }
 
@@ -444,7 +445,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
         ut_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(sec_ele, env, qname, sec_node, &ut_node);
         if (!ut_ele)
         {
-            AXIS2_LOG_INFO(env->log, "Cannot find UsernameToken in Security element...");
+            AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Cannot find UsernameToken in Security header element...");
             AXIS2_ARRAY_LIST_ADD(sub_codes, env, "No username token in the security header");
             return AXIS2_FAILURE;
         }
@@ -500,7 +501,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
                 if (!password_type)
                 {
                     /*R4201 Any PASSWORD MUST specify a Type attribute */
-                    AXIS2_LOG_INFO(env->log, "Password Type is not specified in the password element");
+                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Password Type is not specified in the password element");
                     AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Password Type is not specified in the password element");
                     return AXIS2_FAILURE;
                 }
@@ -520,7 +521,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
             }
             else
             {
-                AXIS2_LOG_INFO(env->log, "\nUnknown element found %s -> %s", localname, AXIOM_ELEMENT_GET_TEXT(element, env, node));
+                AXIS2_LOG_INFO(env->log, "\n[rampart][rampart_usernametoken] Unknown element found %s -> %s", localname, AXIOM_ELEMENT_GET_TEXT(element, env, node));
             }
 
 
@@ -528,7 +529,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     }
     else
     {
-        AXIS2_LOG_INFO(env->log, "Cannot find child elements of Usernametoken");
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Cannot find child elements of Usernametoken");
         return AXIS2_FAILURE;
     }
 
@@ -545,6 +546,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
 
     if (!password_from_svr)
     {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Cannot get the password for user %s", username);
         return AXIS2_FAILURE;
     }
     /*Alright NOW we have the password. Is digest needed?*/
@@ -560,11 +562,12 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     /*The BIG moment. Compare passwords*/
     if (0 == AXIS2_STRCMP(password_to_compare , password))
     {
-        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Password is not valid");
         return AXIS2_SUCCESS;
     }
     else
     {
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_usernametoken] Password is not valid for user %s", username);
+        AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Password is not valid");
         return AXIS2_FAILURE;
     }
 }
