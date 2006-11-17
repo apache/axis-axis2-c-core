@@ -180,9 +180,9 @@ axiom_soap_header_block_create_with_parent(const axis2_env_t *env,
             attr_name, soap_envelope_namespace_uri))
             
 #define AXIOM_SOAP_HEADER_BLOCK_SET_ATTRIBUTE(header_block, env,\
-            attr_name, soap_envelope_namespace_uri)  \
+            attr_name, attr_value, soap_envelope_namespace_uri)  \
         ((header_block)->ops->set_attribute(header_block, env, \
-            attr_name, soap_envelope_namespace_uri))            
+            attr_name, attr_value, soap_envelope_namespace_uri))            
 
 /** @} */
 
