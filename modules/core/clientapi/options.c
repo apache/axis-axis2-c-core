@@ -1145,6 +1145,28 @@ axis2_options_free(
 
     if (options_impl->properties)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        const void *key = NULL;
+        for (hi = axis2_hash_first(options_impl->properties, env);
+                hi; hi = axis2_hash_next(env, hi))
+        {
+            axis2_property_t *property = NULL;
+
+            axis2_hash_this(hi, &key, NULL, &val);
+            property = (axis2_property_t *) val;
+
+            if (property)
+            {
+                AXIS2_PROPERTY_FREE(property, env);
+                property = NULL;
+            }
+
+            val = NULL;
+            key = NULL;
+        }
+
+
         axis2_hash_free(options_impl->properties, env);
         options_impl->properties = NULL;
     }
