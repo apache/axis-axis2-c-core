@@ -171,11 +171,15 @@ axis2_log_impl_log_trace(axis2_log_t *log,
 #ifdef AXIS2_TRACE
 #define AXIS2_LOG_TRACE axis2_log_impl_log_trace
 #else
-  #ifdef WIN32
-  #define AXIS2_LOG_TRACE axis2_log_impl_log_trace
-  #else
-  #define AXIS2_LOG_TRACE(params, args ...)
-  #endif
+# ifdef WIN32
+#  define AXIS2_LOG_TRACE axis2_log_impl_log_trace
+# elif defined HAVE_GNUC_VARARGS
+#  define AXIS2_LOG_TRACE(params, args ...)
+# elif defined HAVE_ISO_VARARGS
+#  define AXIS2_LOG_TRACE(params, ...)
+# else
+#  define AXIS2_LOG_TRACE axis2_log_impl_log_trace
+# endif
 #endif
 
 /** @} */
