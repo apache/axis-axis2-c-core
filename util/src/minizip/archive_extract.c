@@ -314,14 +314,25 @@ axis2_archive_extract()
         {
             if ((strcmp(namelist[n]->d_name, ".") == 0) ||
                     (strcmp(namelist[n]->d_name, "..") == 0))
+            {
+                for (i = n; i >= 0; i--) /* clean remaining memory before return */
+                    free(namelist[i]);
+                free(namelist);
                 return (AXIS2_FALSE);
-
+            }
+            
             ptr = AXIS2_RINDEX(namelist[n]->d_name, '.');
             if ((ptr) &&
                     (((strcmp(ptr, AXIS2_AAR_SUFFIX) == 0)) || (strcmp(ptr, AXIS2_MAR_SUFFIX) == 0)))
                 for (i = 0;i < n;i++)
                     if (strncmp(namelist[n]->d_name, namelist[i]->d_name, strlen(namelist[i]->d_name)) == 0)
+                    {
+                        int j;
+                        for (j = n; j >= 0; j--) /* clean remaining memory before return */
+                            free(namelist[j]);
+                        free(namelist);
                         return (AXIS2_FALSE);
+                    }
 
             aar_extract(namelist[n]->d_name);
             free(namelist[n]);

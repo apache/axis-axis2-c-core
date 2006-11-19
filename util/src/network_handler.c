@@ -65,8 +65,10 @@ axis2_network_handler_open_socket(const axis2_env_t *env, char *server, int port
         lphost = gethostbyname(server); /*nnn netdb.h*/
 
         if (lphost)
+        {
             sock_addr.sin_addr.s_addr =
                 ((struct in_addr*)lphost->h_addr)->s_addr;
+        }
         else
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_INVALID_ADDRESS,

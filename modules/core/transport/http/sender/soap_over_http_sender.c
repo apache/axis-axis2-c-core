@@ -368,21 +368,33 @@ axis2_soap_over_http_sender_send(
     }
     else if (AXIS2_TRUE == AXIS2_MSG_CTX_GET_IS_SOAP_11(msg_ctx, env))
     {
+        axis2_char_t *temp_content_type = NULL;
         content_type = (axis2_char_t *)AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
         content_type = AXIS2_STRACAT(content_type, ";charset=", env);
-        content_type = AXIS2_STRACAT(content_type, char_set_enc, env);
+        temp_content_type = AXIS2_STRACAT(content_type, char_set_enc, env);
+        AXIS2_FREE(env->allocator, content_type);
+        content_type = temp_content_type;
     }
     else
     {
+        axis2_char_t *temp_content_type = NULL;
         content_type = (axis2_char_t *)AXIS2_HTTP_HEADER_ACCEPT_APPL_SOAP;
         content_type = AXIS2_STRACAT(content_type, ";charset=", env);
-        content_type = AXIS2_STRACAT(content_type, char_set_enc, env);
+        temp_content_type = AXIS2_STRACAT(content_type, char_set_enc, env);
+        AXIS2_FREE(env->allocator, content_type);
+        content_type = temp_content_type;
         if (axis2_strcmp(soap_action, ""))
         {
-            content_type = AXIS2_STRACAT(content_type, ";action=", env);
-            content_type = AXIS2_STRACAT(content_type, soap_action, env);
+            temp_content_type = AXIS2_STRACAT(content_type, ";action=", env);
+            AXIS2_FREE(env->allocator, content_type);
+            content_type = temp_content_type;
+            temp_content_type = AXIS2_STRACAT(content_type, soap_action, env);
+            AXIS2_FREE(env->allocator, content_type);
+            content_type = temp_content_type;
         }
-        content_type = AXIS2_STRACAT(content_type, ";", env);
+        temp_content_type = AXIS2_STRACAT(content_type, ";", env);
+        AXIS2_FREE(env->allocator, content_type);
+        content_type = temp_content_type;
     }
 
     http_header = axis2_http_header_create(env, AXIS2_HTTP_HEADER_CONTENT_TYPE,
@@ -759,6 +771,7 @@ axis2_soap_over_http_sender_configure_proxy(
         return AXIS2_FAILURE;
     }
     trans_desc = AXIS2_CONF_GET_TRANSPORT_OUT(conf, env, transport_qname);
+    AXIS2_QNAME_FREE(transport_qname, env);
     if (NULL == trans_desc)
     {
         return AXIS2_FAILURE;

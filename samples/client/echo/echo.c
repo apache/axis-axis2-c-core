@@ -96,8 +96,6 @@ int main(int argc, char** argv)
     /* Send request */
     ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
 
-    payload2 = build_om_payload_for_echo_svc(env);
-    ret_node2 = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload2);
     if (ret_node)
     {
         axis2_char_t *om_str = NULL;
@@ -106,7 +104,8 @@ int main(int argc, char** argv)
             printf("\nReceived OM : %s\n", om_str);
         printf("\necho client invoke SUCCESSFUL!\n");
 
-        AXIOM_NODE_FREE_TREE(ret_node, env);
+        /*AXIOM_NODE_FREE_TREE(ret_node, env);*/
+        AXIS2_FREE(env->allocator, om_str);
         ret_node = NULL;
     }
     else
@@ -117,6 +116,28 @@ int main(int argc, char** argv)
         printf("echo client invoke FAILED!\n");
     }
 
+    payload2 = build_om_payload_for_echo_svc(env);
+    ret_node2 = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload2);
+    if (ret_node2)
+    {
+        axis2_char_t *om_str = NULL;
+        om_str = AXIOM_NODE_TO_STRING(ret_node2, env);
+        if (om_str)
+            printf("\nReceived OM : %s\n", om_str);
+        printf("\necho client invoke SUCCESSFUL!\n");
+
+        /*AXIOM_NODE_FREE_TREE(ret_node2, env);*/
+        AXIS2_FREE(env->allocator, om_str);
+        ret_node2 = NULL;
+    }
+    else
+    {
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Stub invoke FAILED: Error code:"
+                " %d :: %s", env->error->error_number,
+                AXIS2_ERROR_GET_MESSAGE(env->error));
+        printf("echo client invoke FAILED!\n");
+    }
+    
     /*if (payload)
     {
         AXIOM_NODE_FREE_TREE(payload, env);

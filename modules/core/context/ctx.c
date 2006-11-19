@@ -161,6 +161,18 @@ axis2_ctx_set_property(
     }
     else
     {
+        if (value)
+        {
+            /* handle the case where we are setting a new value with the 
+               same key, we would have to free the existing value */
+            axis2_property_t *temp_value = 
+                axis2_hash_get(ctx_impl->non_persistent_map, key, 
+                    AXIS2_HASH_KEY_STRING);
+            if (temp_value && temp_value != value)
+            {
+                AXIS2_PROPERTY_FREE(temp_value, env);
+            }
+        }
         if (ctx_impl->non_persistent_map)
             axis2_hash_set(ctx_impl->non_persistent_map, key,
                     AXIS2_HASH_KEY_STRING, value);

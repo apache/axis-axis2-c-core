@@ -318,6 +318,7 @@ axiom_xml_reader_create_for_file(const axis2_env_t *env,
             (xmlTextReaderErrorFunc)axis2_libxml2_reader_wrapper_error_handler,
             (void *)env);
     wrapper_impl->current_event = -1;
+    wrapper_impl->ctx = NULL;
 
     axis2_libxml2_reader_wrapper_init_map(wrapper_impl);
 
@@ -547,6 +548,11 @@ axis2_libxml2_reader_wrapper_free(axiom_xml_reader_t *parser,
         const axis2_env_t *env)
 {
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    if (AXIS2_INTF_TO_IMPL(parser)->ctx)
+    {
+        AXIS2_FREE(env->allocator, AXIS2_INTF_TO_IMPL(parser)->ctx);
+    }
+    
     if (AXIS2_INTF_TO_IMPL(parser)->reader)
     {
         xmlTextReaderClose(AXIS2_INTF_TO_IMPL(parser)->reader);

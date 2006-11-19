@@ -168,7 +168,7 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_char_t *char_set = NULL;
     /*axis2_char_t *xml_char_set = NULL;*/
     axis2_conf_ctx_t *conf_ctx = NULL;
-    axis2_callback_info_t callback_ctx;
+    axis2_callback_info_t *callback_ctx;
     axis2_hash_t *headers = NULL;
     axis2_engine_t *engine = NULL;
     axiom_soap_body_t *soap_body = NULL;
@@ -184,11 +184,14 @@ axis2_http_transport_utils_process_http_post_request(
 
     conf_ctx = AXIS2_MSG_CTX_GET_CONF_CTX(msg_ctx, env);
 
-    callback_ctx.in_stream = in_stream;
-    callback_ctx.env = env;
-    callback_ctx.content_length = content_length;
-    callback_ctx.unread_len = content_length;
-    callback_ctx.chunked_stream = NULL;
+    callback_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_callback_info_t));
+    /* Note: the memory created above is freed in xml reader free function
+       as this is passed on to the reader */
+    callback_ctx->in_stream = in_stream;
+    callback_ctx->env = env;
+    callback_ctx->content_length = content_length;
+    callback_ctx->unread_len = content_length;
+    callback_ctx->chunked_stream = NULL;
 
     if (soap_action_header && (strlen(soap_action_header) > 0))
     {
@@ -223,9 +226,9 @@ axis2_http_transport_utils_process_http_post_request(
             if (encoding_value && 0 == AXIS2_STRCASECMP(encoding_value,
                     AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED))
             {
-                callback_ctx.chunked_stream = axis2_http_chunked_stream_create(
+                callback_ctx->chunked_stream = axis2_http_chunked_stream_create(
                             env, in_stream);
-                if (NULL == callback_ctx.chunked_stream)
+                if (NULL == callback_ctx->chunked_stream)
                 {
                     AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Error occured in"
                             " creating in chunked stream.");
@@ -254,8 +257,8 @@ axis2_http_transport_utils_process_http_post_request(
                 and also gives out a content lenght of 0.
                 We need to fix the transport design to fix sutuations like this.
                 */
-            callback_ctx.content_length = 1000000;
-            callback_ctx.unread_len = callback_ctx.content_length;
+            callback_ctx->content_length = 1000000;
+            callback_ctx->unread_len = callback_ctx->content_length;
         }
     }
 
@@ -278,7 +281,7 @@ axis2_http_transport_utils_process_http_post_request(
             {
                 binary_data_map = AXIOM_MIME_PARSER_PARSE(mime_parser, env,
                         axis2_http_transport_utils_on_data_request,
-                        (void *) & callback_ctx, mime_boundary);
+                        (void *) callback_ctx, mime_boundary);
 
                 soap_body_len = AXIOM_MIME_PARSER_GET_SOAP_BODY_LENGTH(
                             mime_parser, env);
@@ -293,10 +296,10 @@ axis2_http_transport_utils_process_http_post_request(
                 AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
                     "axis2_http_transport_utils_process_http_post_request soap_body_str = %s...%d soap_body_len=%d", 
                     soap_body_str, strlen(soap_body_str), soap_body_len);
-                callback_ctx.in_stream = stream;
-                callback_ctx.chunked_stream = NULL;
-                callback_ctx.content_length = soap_body_len;
-                callback_ctx.unread_len = soap_body_len;
+                callback_ctx->in_stream = stream;
+                callback_ctx->chunked_stream = NULL;
+                callback_ctx->content_length = soap_body_len;
+                callback_ctx->unread_len = soap_body_len;
             }
         }
         AXIS2_FREE(env->allocator, mime_boundary);
@@ -311,7 +314,7 @@ axis2_http_transport_utils_process_http_post_request(
     char_set = axis2_http_transport_utils_get_charset_enc(env, content_type);
     xml_reader = axiom_xml_reader_create_for_io(env,
             axis2_http_transport_utils_on_data_request, NULL,
-            (void *) & callback_ctx, char_set);
+            (void *) callback_ctx, char_set);
 
     if (NULL == xml_reader)
     {
@@ -1009,8 +1012,9 @@ axis2_http_transport_utils_create_soap_msg(
         in_stream = AXIS2_PROPERTY_GET_VALUE(property, env);
         property = NULL;
     }
-    /* TODO free this when xml pulling is over */
     callback_ctx = AXIS2_MALLOC(env->allocator, sizeof(axis2_callback_info_t));
+    /* Note: the memory created above is freed in xml reader free function
+       as this is passed on to the reader */
     if (NULL == callback_ctx)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
