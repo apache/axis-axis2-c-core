@@ -122,8 +122,10 @@ create(
         return NULL;
     }
     documentable_impl->documentable.ops->free = woden_documentable_free;
-    documentable_impl->documentable.ops->super_objs = woden_documentable_super_objs;
-    documentable_impl->documentable.ops->get_base_impl = woden_documentable_get_base_impl;
+    documentable_impl->documentable.ops->super_objs = 
+        woden_documentable_super_objs;
+    documentable_impl->documentable.ops->get_base_impl = 
+        woden_documentable_get_base_impl;
     documentable_impl->documentable.ops->add_documentation_element =
         woden_documentable_add_documentation_element;
     documentable_impl->documentable.ops->get_documentation_elements =

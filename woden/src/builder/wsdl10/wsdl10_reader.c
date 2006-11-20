@@ -638,7 +638,7 @@ parse_desc(
     desc = woden_wsdl10_desc_to_desc_element(desc, env);
     WODEN_WSDL10_DESC_ELEMENT_SET_EXT_REGISTRY(desc, env, ext_reg);
 
-    if (NULL == wsdl_modules)
+    if (!wsdl_modules)
     {
         /* This is the initial WSDL document. No imports or includes yet.
          * TODO this might be the place to flag the initial Desc if necessary.
@@ -718,7 +718,7 @@ parse_desc(
     temp_el = axiom_util_get_first_child_element(desc_el, env, desc_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
         axis2_qname_t *q_elem_import = NULL;
@@ -738,7 +738,7 @@ parse_desc(
         q_elem_binding = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_BINDING);
         q_elem_svc = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_SERVICE);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -748,7 +748,7 @@ parse_desc(
             desc = woden_wsdl10_desc_to_documentable(desc, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(desc, env, documentation);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_import, temp_el_node))
         {
             void *import_element = NULL;
@@ -765,7 +765,7 @@ parse_desc(
             desc = woden_wsdl10_desc_to_desc_element(desc, env);
             WODEN_WSDL10_DESC_ELEMENT_ADD_IMPORT_ELEMENT(desc, env, import_element);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_include, temp_el_node))
         {
             void *include_element = NULL;
@@ -781,7 +781,7 @@ parse_desc(
                     wsdl_modules);
             WODEN_WSDL10_DESC_ELEMENT_ADD_INCLUDE_ELEMENT(desc, env, include_element);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_types, temp_el_node))
         {
             void *types = NULL;
@@ -789,7 +789,7 @@ parse_desc(
             types = parse_types(reader, env, temp_el_node, desc);
             WODEN_WSDL10_DESC_ELEMENT_SET_TYPES_ELEMENT(desc, env, types);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_msg_ref, temp_el_node))
         {
             void *msg_ref = NULL;
@@ -797,7 +797,7 @@ parse_desc(
             msg_ref = parse_msg_ref(reader, env, temp_el_node, desc);
             WODEN_WSDL10_DESC_ELEMENT_ADD_MSG_ELEMENT(desc, env, msg_ref);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_interface, temp_el_node))
         {
             void *interface = NULL;
@@ -805,7 +805,7 @@ parse_desc(
             interface = parse_interface(reader, env, temp_el_node, desc);
             WODEN_WSDL10_DESC_ELEMENT_ADD_INTERFACE_ELEMENT(desc, env, interface);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_binding, temp_el_node))
         {
             void *binding = NULL;
@@ -813,7 +813,7 @@ parse_desc(
             binding = parse_binding(reader, env, temp_el_node, desc);
             WODEN_WSDL10_DESC_ELEMENT_ADD_BINDING_ELEMENT(desc, env, binding);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_svc, temp_el_node))
         {
             void *svc = NULL;
@@ -856,7 +856,7 @@ parse_desc(
      */
     desc = woden_wsdl10_desc_to_desc_element(desc, env);
     types = WODEN_WSDL10_DESC_ELEMENT_GET_TYPES_ELEMENT(desc, env);
-    if (NULL == types)
+    if (!types)
     {
 
         types = WODEN_WSDL10_DESC_ELEMENT_CREATE_TYPES_ELEMENT(desc, env);
@@ -1071,7 +1071,7 @@ parse_types(
     temp_el = axiom_util_get_first_child_element(types_el, env, types_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
         axis2_qname_t *q_temp_el_type = NULL;
@@ -1080,7 +1080,7 @@ parse_types(
         q_elem_documentation = axis2_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_DOCUMENTATION);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -1089,7 +1089,7 @@ parse_types(
             types = woden_types_to_documentable(types, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(types, env, documentation);
         }
-        if (AXIS2_TRUE == woden_schema_constants_compare_import(q_temp_el_type, env))
+        if (woden_schema_constants_compare_import(q_temp_el_type, env))
         {
             void *schema = NULL;
 
@@ -1101,7 +1101,7 @@ parse_types(
                 WODEN_TYPES_ELEMENT_ADD_SCHEMA(types, env, schema);
             }
         }
-        if (AXIS2_TRUE == woden_schema_constants_compare_schema(q_temp_el_type, env))
+        if (woden_schema_constants_compare_schema(q_temp_el_type, env))
         {
             void *schema = NULL;
 
@@ -1263,7 +1263,7 @@ parse_schema_import(
         uri = NULL;
     }
 
-    if (NULL == WODEN_SCHEMA_GET_NAMESPACE(base_schema, env))
+    if (!WODEN_SCHEMA_GET_NAMESPACE(base_schema, env))
     {
 
         /* The namespace attribute is REQUIRED on xs:import, so don't continue. */
@@ -1271,7 +1271,7 @@ parse_schema_import(
         return schema;
     }
 
-    if (NULL == WODEN_IMPORTED_SCHEMA_GET_LOCATION(schema, env))
+    if (!WODEN_IMPORTED_SCHEMA_GET_LOCATION(schema, env))
     {
         /* This is a namespace-only import, no schema document to be retrieved so don't continue.*/
 
@@ -1403,7 +1403,7 @@ parse_msg_ref(
     temp_el = axiom_util_get_first_child_element(msg_el, env, msg_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
         axis2_qname_t *q_elem_part = NULL;
@@ -1411,7 +1411,7 @@ parse_msg_ref(
         q_elem_documentation = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_DOCUMENTATION);
         q_elem_part = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_PART);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -1420,7 +1420,7 @@ parse_msg_ref(
             msg = woden_wsdl10_msg_ref_to_documentable(msg, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(msg, env, documentation);
         }
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_part, temp_el_node))
         {
             void *part = NULL;
@@ -1534,14 +1534,14 @@ parse_part(
     temp_el = axiom_util_get_first_child_element(part_el, env, part_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
 
         q_elem_documentation = axis2_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_DOCUMENTATION);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -1652,7 +1652,7 @@ parse_interface(
     temp_el = axiom_util_get_first_child_element(interface_el, env, interface_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
         axis2_qname_t *q_elem_op = NULL;
@@ -1664,7 +1664,7 @@ parse_interface(
         q_elem_feature = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_FEATURE);
         q_elem_property = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_PROPERTY);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -1673,7 +1673,7 @@ parse_interface(
             intface = woden_interface_to_documentable(intface, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(intface, env, documentation);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_op, temp_el_node))
         {
             void *intface_op = NULL;
@@ -1683,7 +1683,7 @@ parse_interface(
             intface = woden_interface_to_interface_element(intface, env);
             WODEN_INTERFACE_ELEMENT_ADD_INTERFACE_OP_ELEMENT(intface, env, intface_op);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_feature, temp_el_node))
         {
             void *feature = NULL;
@@ -1694,7 +1694,7 @@ parse_interface(
             configurable = woden_configurable_to_configurable_element(configurable, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(configurable, env, feature);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_property, temp_el_node))
         {
             void *property = NULL;
@@ -1819,7 +1819,7 @@ parse_interface_op(
     temp_el = axiom_util_get_first_child_element(op_el, env, op_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
         axis2_qname_t *q_elem_feature = NULL;
@@ -1844,7 +1844,7 @@ parse_interface_op(
         q_elem_outfault = axis2_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_OUTFAULT);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -1853,7 +1853,7 @@ parse_interface_op(
             op = woden_interface_op_to_documentable(op, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(op, env, documentation);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_feature, temp_el_node))
         {
             void *feature = NULL;
@@ -1862,7 +1862,7 @@ parse_interface_op(
             op = woden_interface_op_to_configurable_element(op, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(op, env, feature);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_property, temp_el_node))
         {
             void *property = NULL;
@@ -1871,7 +1871,7 @@ parse_interface_op(
             op = woden_interface_op_to_configurable_element(op, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_PROPERTY_ELEMENT(op, env, property);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_input, temp_el_node))
         {
             void *input = NULL;
@@ -1880,7 +1880,7 @@ parse_interface_op(
             op = woden_interface_op_to_interface_op_element(op, env);
             WODEN_INTERFACE_OP_ELEMENT_ADD_INTERFACE_MSG_REF_ELEMENT(op, env, input);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_output, temp_el_node))
         {
             void *output = NULL;
@@ -1889,7 +1889,7 @@ parse_interface_op(
             op = woden_interface_op_to_interface_op_element(op, env);
             WODEN_INTERFACE_OP_ELEMENT_ADD_INTERFACE_MSG_REF_ELEMENT(op, env, output);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_infault, temp_el_node))
         {
             void *infault = NULL;
@@ -1898,7 +1898,7 @@ parse_interface_op(
             op = woden_interface_op_to_interface_op_element(op, env);
             WODEN_INTERFACE_OP_ELEMENT_ADD_INTERFACE_FAULT_REF_ELEMENT(op, env, infault);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_outfault, temp_el_node))
         {
             void *outfault = NULL;
@@ -2021,14 +2021,14 @@ parse_interface_fault_ref(
     temp_el = axiom_util_get_first_child_element(fault_ref_el, env, fault_ref_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
 
         q_elem_documentation = axis2_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_DOCUMENTATION);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -2172,7 +2172,7 @@ parse_interface_msg_ref(
 
             msg = AXIS2_ARRAY_LIST_GET(msgs, env, i);
             msg_qname = WODEN_WSDL10_MSG_REF_GET_QNAME(msg, env);
-            if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(msg_qname, env, qname))
+            if (AXIS2_QNAME_EQUALS(msg_qname, env, qname))
             {
                 WODEN_WSDL10_INTERFACE_MSG_REF_ELEMENT_SET_MSG(msg_ref, env, msg);
             }
@@ -2188,14 +2188,14 @@ parse_interface_msg_ref(
     temp_el = axiom_util_get_first_child_element(msg_ref_el, env, msg_ref_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
 
         q_elem_documentation = axis2_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_DOCUMENTATION);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -2299,7 +2299,7 @@ parse_binding(
             intface = AXIS2_ARRAY_LIST_GET(interfaces, env, i);
             intface = woden_interface_to_interface_element(intface, env);
             qname = WODEN_INTERFACE_ELEMENT_GET_QNAME(intface, env);
-            if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(intface_qn, env, qname))
+            if (AXIS2_QNAME_EQUALS(intface_qn, env, qname))
             {
                 WODEN_BINDING_SET_INTERFACE_ELEMENT(binding, env, intface);
             }
@@ -2337,7 +2337,7 @@ parse_binding(
     temp_el = axiom_util_get_first_child_element(binding_el, env, binding_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
         axis2_qname_t *q_elem_op = NULL;
@@ -2349,7 +2349,7 @@ parse_binding(
         q_elem_feature = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_FEATURE);
         q_elem_property = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_PROPERTY);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -2358,7 +2358,7 @@ parse_binding(
             binding = woden_binding_to_documentable(binding, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(binding, env, documentation);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_op, temp_el_node))
         {
             void *binding_op = NULL;
@@ -2368,7 +2368,7 @@ parse_binding(
             binding = woden_binding_to_binding_element(binding, env);
             WODEN_BINDING_ELEMENT_ADD_BINDING_OP_ELEMENT(binding, env, binding_op);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_feature, temp_el_node))
         {
             void *feature = NULL;
@@ -2377,7 +2377,7 @@ parse_binding(
             binding = woden_binding_to_configurable_element(binding, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(binding, env, feature);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_property, temp_el_node))
         {
             void *property = NULL;
@@ -2472,7 +2472,7 @@ parse_binding_op(
             if (intface_op)
                 qname = WODEN_INTERFACE_OP_ELEMENT_GET_QNAME(
                             intface_op, env);
-            if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(ref_qn, env, qname))
+            if (AXIS2_QNAME_EQUALS(ref_qn, env, qname))
             {
                 WODEN_WSDL10_BINDING_OP_SET_INTERFACE_OP_ELEMENT(op,
                         env, intface_op);
@@ -2495,7 +2495,7 @@ parse_binding_op(
     temp_el = axiom_util_get_first_child_element(op_el, env, op_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
         axis2_qname_t *q_elem_feature = NULL;
@@ -2520,7 +2520,7 @@ parse_binding_op(
         q_elem_outfault = axis2_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_OUTFAULT);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -2529,7 +2529,7 @@ parse_binding_op(
             op = woden_wsdl10_binding_op_to_documentable(op, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(op, env, documentation);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_feature, temp_el_node))
         {
             void *feature = NULL;
@@ -2538,7 +2538,7 @@ parse_binding_op(
             op = woden_wsdl10_binding_op_to_configurable_element(op, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(op, env, feature);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_property, temp_el_node))
         {
             void *property = NULL;
@@ -2547,7 +2547,7 @@ parse_binding_op(
             op = woden_wsdl10_binding_op_to_configurable_element(op, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_PROPERTY_ELEMENT(op, env, property);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_input, temp_el_node))
         {
             void *input = NULL;
@@ -2556,7 +2556,7 @@ parse_binding_op(
             op = woden_wsdl10_binding_op_to_binding_op_element(op, env);
             WODEN_WSDL10_BINDING_OP_ELEMENT_ADD_BINDING_MSG_REF_ELEMENT(op, env, input);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_output, temp_el_node))
         {
             void *output = NULL;
@@ -2565,7 +2565,7 @@ parse_binding_op(
             op = woden_wsdl10_binding_op_to_binding_op_element(op, env);
             WODEN_WSDL10_BINDING_OP_ELEMENT_ADD_BINDING_MSG_REF_ELEMENT(op, env, output);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_infault, temp_el_node))
         {
             void *infault = NULL;
@@ -2574,7 +2574,7 @@ parse_binding_op(
             op = woden_wsdl10_binding_op_to_binding_op_element(op, env);
             WODEN_WSDL10_BINDING_OP_ELEMENT_ADD_BINDING_FAULT_REF_ELEMENT(op, env, infault);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_outfault, temp_el_node))
         {
             void *outfault = NULL;
@@ -2733,10 +2733,10 @@ parse_binding_fault_ref(
                             int_flt_ref, env);
                 /*label = WODEN_WSDL10_INTERFACE_FAULT_REF_ELEMENT_GET_MSG_LABEL(
                         int_flt_ref, env);
-                if(AXIS2_TRUE == AXIS2_QNAME_EQUALS(qref, env, qname) &&
-                        AXIS2_TRUE == WODEN_MSG_LABEL_EQUALS(msg_label, env, label))
+                if(AXIS2_QNAME_EQUALS(qref, env, qname) &&
+                        WODEN_MSG_LABEL_EQUALS(msg_label, env, label))
                  */
-                if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(qref, env, qname))
+                if (AXIS2_QNAME_EQUALS(qref, env, qname))
                 {
                     WODEN_BINDING_FAULT_REF_SET_INTERFACE_FAULT_REF_ELEMENT(
                         fault_ref, env, int_flt_ref);
@@ -2761,7 +2761,7 @@ parse_binding_fault_ref(
     temp_el = axiom_util_get_first_child_element(fault_ref_el, env, fault_ref_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
         axis2_qname_t *q_elem_feature = NULL;
@@ -2774,7 +2774,7 @@ parse_binding_fault_ref(
         q_elem_property = axis2_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_PROPERTY);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -2783,7 +2783,7 @@ parse_binding_fault_ref(
             fault_ref = woden_binding_fault_ref_to_documentable(fault_ref, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(fault_ref, env, documentation);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_feature, temp_el_node))
         {
             void *feature = NULL;
@@ -2792,7 +2792,7 @@ parse_binding_fault_ref(
             fault_ref = woden_binding_fault_ref_to_configurable_element(fault_ref, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(fault_ref, env, feature);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_property, temp_el_node))
         {
             void *property = NULL;
@@ -2926,7 +2926,7 @@ parse_binding_msg_ref(
             binding_msg_qname = WODEN_WSDL10_BINDING_MSG_REF_ELEMENT_GET_QNAME(msg_ref, env);
             if(intf_msg_qname != NULL &&
                     binding_msg_qname != NULL &&
-                    AXIS2_TRUE == AXIS2_QNAME_EQUALS(intf_msg_qname, env, binding_msg_qname))
+                    AXIS2_QNAME_EQUALS(intf_msg_qname, env, binding_msg_qname))
             {
                 WODEN_WSDL10_BINDING_MSG_REF_SET_INTERFACE_MSG_REF_ELEMENT(
                     msg_ref, env, int_msg_ref);
@@ -2949,7 +2949,7 @@ parse_binding_msg_ref(
     temp_el = axiom_util_get_first_child_element(msg_ref_el, env, msg_ref_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
         axis2_qname_t *q_elem_feature = NULL;
@@ -2962,7 +2962,7 @@ parse_binding_msg_ref(
         q_elem_property = axis2_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_PROPERTY);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -2971,7 +2971,7 @@ parse_binding_msg_ref(
             msg_ref = woden_wsdl10_binding_msg_ref_to_documentable(msg_ref, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(msg_ref, env, documentation);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_feature, temp_el_node))
         {
             void *feature = NULL;
@@ -2980,7 +2980,7 @@ parse_binding_msg_ref(
             msg_ref = woden_wsdl10_binding_msg_ref_to_configurable_element(msg_ref, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(msg_ref, env, feature);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_property, temp_el_node))
         {
             void *property = NULL;
@@ -3083,7 +3083,7 @@ parse_svc(
             intface = AXIS2_ARRAY_LIST_GET(interfaces, env, i);
             intface = woden_interface_to_interface_element(intface, env);
             qname = WODEN_INTERFACE_ELEMENT_GET_QNAME(intface, env);
-            if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(intface_qn, env, qname))
+            if (AXIS2_QNAME_EQUALS(intface_qn, env, qname))
             {
                 WODEN_WSDL10_SVC_SET_INTERFACE_ELEMENT(svc, env, intface);
             }
@@ -3107,7 +3107,7 @@ parse_svc(
     temp_el = axiom_util_get_first_child_element(svc_el, env, svc_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
         axis2_qname_t *q_elem_endpoint = NULL;
@@ -3119,7 +3119,7 @@ parse_svc(
         q_elem_feature = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_FEATURE);
         q_elem_property = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_PROPERTY);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -3128,7 +3128,7 @@ parse_svc(
             svc = woden_wsdl10_svc_to_documentable(svc, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(svc, env, documentation);
         }
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_endpoint, temp_el_node))
         {
             void *endpoint = NULL;
@@ -3137,7 +3137,7 @@ parse_svc(
             svc = woden_wsdl10_svc_to_svc_element(svc, env);
             WODEN_WSDL10_SVC_ELEMENT_ADD_ENDPOINT_ELEMENT(svc, env, endpoint);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_feature, temp_el_node))
         {
             void *feature = NULL;
@@ -3146,7 +3146,7 @@ parse_svc(
             svc = woden_wsdl10_svc_to_configurable_element(svc, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(svc, env, feature);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_property, temp_el_node))
         {
             void *property = NULL;
@@ -3251,7 +3251,7 @@ parse_endpoint(
             binding = AXIS2_ARRAY_LIST_GET(bindings, env, i);
             binding = woden_binding_to_binding_element(binding, env);
             qname = WODEN_BINDING_ELEMENT_GET_QNAME(binding, env);
-            if (AXIS2_TRUE == AXIS2_QNAME_EQUALS(binding_qn, env, qname))
+            if (AXIS2_QNAME_EQUALS(binding_qn, env, qname))
             {
                 WODEN_WSDL10_ENDPOINT_SET_BINDING_ELEMENT(endpoint, env, binding);
             }
@@ -3287,7 +3287,7 @@ parse_endpoint(
     temp_el = axiom_util_get_first_child_element(endpoint_el, env, endpoint_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
         axis2_qname_t *q_elem_feature = NULL;
@@ -3297,7 +3297,7 @@ parse_endpoint(
         q_elem_feature = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_FEATURE);
         q_elem_property = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_PROPERTY);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -3306,7 +3306,7 @@ parse_endpoint(
             endpoint = woden_wsdl10_endpoint_to_documentable(endpoint, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(endpoint, env, documentation);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_feature, temp_el_node))
         {
             void *feature = NULL;
@@ -3315,7 +3315,7 @@ parse_endpoint(
             endpoint = woden_wsdl10_endpoint_to_configurable_element(endpoint, env);
             WODEN_CONFIGURABLE_ELEMENT_ADD_FEATURE_ELEMENT(endpoint, env, feature);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_property, temp_el_node))
         {
             void *property = NULL;
@@ -3408,13 +3408,13 @@ parse_feature(
     temp_el = axiom_util_get_first_child_element(feature_el, env, feature_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
 
         q_elem_documentation = axis2_qname_create_from_string(env, WODEN_WSDL10_Q_ELEM_DOCUMENTATION);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -3517,7 +3517,7 @@ parse_property(
     temp_el = axiom_util_get_first_child_element(property_el, env, property_el_node,
             &temp_el_node);
 
-    while (temp_el && NULL != temp_el_node)
+    while (temp_el && temp_el_node)
     {
         axis2_qname_t *q_elem_documentation = NULL;
         axis2_qname_t *q_elem_value = NULL;
@@ -3530,7 +3530,7 @@ parse_property(
         q_elem_constraint = axis2_qname_create_from_string(env,
                 WODEN_WSDL10_Q_ELEM_CONSTRAINT);
 
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_documentation, temp_el_node))
         {
             void *documentation = NULL;
@@ -3539,7 +3539,7 @@ parse_property(
             property = woden_property_to_documentable(property, env);
             WODEN_DOCUMENTABLE_ADD_DOCUMENTATION_ELEMENT(property, env, documentation);
         }
-        if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        if (axis2_qname_util_matches(env,
                 q_elem_value, temp_el_node))
         {
             axiom_child_element_iterator_t *node_list = NULL;
@@ -3553,7 +3553,7 @@ parse_property(
             property = woden_property_to_property_element(property, env);
             WODEN_PROPERTY_ELEMENT_SET_VALUE(property, env, node_list_obj);
         }
-        else if (AXIS2_TRUE == axis2_qname_util_matches(env,
+        else if (axis2_qname_util_matches(env,
                 q_elem_constraint, temp_el_node))
         {
             axiom_node_t *node = NULL;
@@ -3736,7 +3736,7 @@ parse_ext_element(
     el = AXIOM_NODE_GET_DATA_ELEMENT(el_node, env);
     namespc = AXIOM_ELEMENT_GET_NAMESPACE(el, env, el_node);
     namespc_uri_str = AXIOM_NAMESPACE_GET_URI(namespc, env);
-    if (NULL == namespc_uri_str || (0 == AXIS2_STRCMP(namespc_uri_str,
+    if (!namespc_uri_str || (0 == AXIS2_STRCMP(namespc_uri_str,
             WODEN_WSDL10_NS_URI_WSDL20)))
     {
         /* TODO Set error message */
@@ -3745,7 +3745,7 @@ parse_ext_element(
 
     desc = woden_wsdl10_desc_to_desc_element(desc, env);
     ext_reg = WODEN_WSDL10_DESC_ELEMENT_GET_EXT_REGISTRY(desc, env);
-    if (NULL == ext_reg)
+    if (!ext_reg)
     {
         /* TODO Set error message */
         return NULL;
@@ -3822,7 +3822,7 @@ get_wsdl_from_location(
     /* Check if WSDL imported or included previously from this location.*/
     referenced_desc = axis2_hash_get(wsdl_modules, location_str, AXIS2_HASH_KEY_STRING);
 
-    if (NULL == referenced_desc)
+    if (!referenced_desc)
     {
         /* not previously imported or included, so retrieve the WSDL.*/
         void *schema_col = NULL;

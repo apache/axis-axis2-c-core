@@ -131,6 +131,7 @@
   <portType name="GoogleSearchPort">
 
     <operation name="doGetCachedPage">
+      <documentation>test</documentation>
       <input message="typens:doGetCachedPage"/>
       <output message="typens:doGetCachedPageResponse"/>
     </operation>

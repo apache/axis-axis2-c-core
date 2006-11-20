@@ -362,6 +362,8 @@ woden_interface_op_to_documentable(
     const axis2_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
+    woden_configurable_t *configurable = NULL;
+    woden_documentable_t *documentable = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     if (!interface_op)
@@ -376,9 +378,14 @@ woden_interface_op_to_documentable(
     interface_op_impl->interface_op.base.nested_configurable.base.
     configurable.base.documentable.ops = AXIS2_MALLOC(env->allocator,
             sizeof(woden_documentable_ops_t));
+    if(interface_op_impl->nested_configurable)
+        configurable = WODEN_NESTED_CONFIGURABLE_GET_BASE_IMPL(
+            interface_op_impl->nested_configurable, env);
+    if(configurable)
+        documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
     woden_documentable_resolve_methods(&(interface_op_impl->interface_op.base.
-            nested_configurable.base.configurable.base.documentable), env, NULL,
-            interface_op_impl->methods);
+            nested_configurable.base.configurable.base.documentable), env, 
+            documentable, interface_op_impl->methods);
     return interface_op;
 }
 
@@ -399,8 +406,8 @@ woden_interface_op_to_attr_extensible(
 
     woden_interface_op_free_ops(interface_op, env);
 
-    interface_op_impl->interface_op.base.interface_op_element.base.documentable_element.
-    wsdl_element.base.attr_extensible.ops =
+    interface_op_impl->interface_op.base.interface_op_element.base.
+        documentable_element.wsdl_element.base.attr_extensible.ops =
         AXIS2_MALLOC(env->allocator,
                 sizeof(woden_attr_extensible_ops_t));
     woden_attr_extensible_resolve_methods(&(interface_op_impl->interface_op.base.
@@ -570,6 +577,7 @@ woden_interface_op_create(const axis2_env_t *env)
 {
     woden_interface_op_impl_t *interface_op_impl = NULL;
     void *configurable = NULL;
+    void *documentable = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
     interface_op_impl = (woden_interface_op_impl_t *) create(env);
@@ -592,6 +600,9 @@ woden_interface_op_create(const axis2_env_t *env)
                 interface_op_impl->nested_configurable, env);
     axis2_hash_set(interface_op_impl->super, "WODEN_CONFIGURABLE",
             AXIS2_HASH_KEY_STRING, configurable);
+    documentable = WODEN_CONFIGURABLE_GET_BASE_IMPL(configurable, env);
+    axis2_hash_set(interface_op_impl->super, "WODEN_DOCUMENTABLE",
+            AXIS2_HASH_KEY_STRING, documentable);
 
     return &(interface_op_impl->interface_op);
 }
