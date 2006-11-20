@@ -24,6 +24,7 @@
 #include <oxs_token_encryption_method.h>
 #include <oxs_token_cipher_value.h>
 #include <oxs_token_cipher_data.h>
+#include <oxs_token_reference_list.h>
 #include <oxs_constants.h>
 #include <oxs_axiom.h>
 #include <oxs_ctx.h>
