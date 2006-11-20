@@ -15,10 +15,12 @@
  */
 
 #include <stdio.h>
+#include <axiom_element.h>
 #include <oxs_constants.h>
 #include <oxs_error.h>
 #include <oxs_token_cipher_data.h>
-#include <axiom_element.h>
+#include <oxs_token_cipher_value.h>
+#include <oxs_axiom.h>
 
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
@@ -44,3 +46,20 @@ oxs_token_build_cipher_data_element(const axis2_env_t *env,
     return cipher_data_node;
 }
 
+AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+oxs_token_get_cipher_value_from_cipher_data(const axis2_env_t *env,
+            axiom_node_t *cd_node)
+{
+    axiom_node_t *cv_node = NULL;
+    axis2_char_t *value = NULL;
+    /*First check direct <CipherValue>*/
+    cv_node = oxs_axiom_get_first_child_node_by_name(env, cd_node, OXS_NODE_CIPHER_VALUE, NULL, NULL);
+    if(cv_node){
+        value = oxs_token_get_cipher_value(env, cv_node);
+    }else{
+        /*If not then check for <CipherReference URI?>*/
+        /*TODO*/
+    }
+
+    return value;
+}

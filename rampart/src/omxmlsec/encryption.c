@@ -164,7 +164,9 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
     axis2_status_t status = AXIS2_FAILURE;
     /*TODO We support RSA encryption only. If any other algorithm is specified, reject*/
 
-    /*Create and Load the PKEY*/
+    /*1. Try to get th epkey from the asy_ctx*/
+    
+    /*2. If not try to load the key from the dec_prop_file*/
     file_name = oxs_asym_ctx_get_file_name(ctx, env);
     pkey =  openssl_pkey_create(env);
     status = OPENSSL_PKEY_LOAD(pkey, env, file_name, "");/*TODO password*/

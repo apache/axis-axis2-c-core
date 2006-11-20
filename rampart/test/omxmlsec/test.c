@@ -66,7 +66,7 @@ axis2_env_t *test_init()
 oxs_key_t *create_key(axis2_env_t *env)
 {
     oxs_key_t *key = NULL;
-    key = oxs_key_create_key(env);
+    key = oxs_key_create(env);
     OXS_KEY_POPULATE(key, env, (unsigned char*)"12345678123456781234567812345678", "session_key",  32, OXS_KEY_USAGE_DECRYPT);
     return key;
 }

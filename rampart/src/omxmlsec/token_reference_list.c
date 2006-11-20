@@ -24,8 +24,7 @@
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_reference_list_element(const axis2_env_t *env,
-        axiom_node_t *parent
-                                      )
+        axiom_node_t *parent )
 {
     axiom_node_t *reference_list_node = NULL;
     axiom_element_t *reference_list_ele = NULL;
@@ -44,6 +43,33 @@ oxs_token_build_reference_list_element(const axis2_env_t *env,
     }
 
     return reference_list_node;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_token_build_data_reference_list(const axis2_env_t *env, axiom_node_t *parent, axis2_array_list_t *id_list)
+{
+    axiom_node_t *ref_list_node = NULL;
+    int i=0;
+
+    if(!id_list){
+        return AXIS2_SUCCESS;
+    }
+    /*Build the ReferenceList element*/
+    ref_list_node = oxs_token_build_reference_list_element(env, parent);
+    if(!ref_list_node) {return AXIS2_FAILURE;}
+
+    /*Build the list*/
+    for(i=0 ; i < AXIS2_ARRAY_LIST_SIZE(id_list, env); i++){ 
+        axiom_node_t *data_ref_node = NULL;
+        axis2_char_t *id = NULL;
+        
+        /*We need to prepend # to the id in the list to create the reference*/
+        id = AXIS2_STRACAT("#",(axis2_char_t*)AXIS2_ARRAY_LIST_GET(id_list, env, i), env);
+        data_ref_node = oxs_token_build_data_reference_element(env, ref_list_node, id);
+
+        if(!data_ref_node) {return AXIS2_FAILURE;}
+    }
+    return AXIS2_SUCCESS;
 }
 
 AXIS2_EXTERN axis2_array_list_t *AXIS2_CALL
@@ -70,6 +96,7 @@ oxs_token_get_reference_list_data(const axis2_env_t *env, axiom_node_t *ref_list
 
     list = axis2_array_list_create(env, 0);
 
+    /*Insert UIDs of nodes to the list*/
     while (AXIS2_TRUE == AXIOM_CHILDREN_QNAME_ITERATOR_HAS_NEXT(iter, env))
     {
         axiom_node_t *dref_node = NULL;

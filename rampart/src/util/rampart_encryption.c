@@ -76,7 +76,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     enc_sym_algo = RAMPART_ACTIONS_GET_ENC_SYM_ALGO(actions, env); 
 
     /*Generate the  session key*/
-    session_key = oxs_key_create_key(env);
+    session_key = oxs_key_create(env);
     status = OXS_KEY_FOR_ALGO(session_key, env, enc_sym_algo); 
 
     /*Create a list to store EncDataIds. This will be used in building the ReferenceList*/
@@ -119,7 +119,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     oxs_asym_ctx_set_file_name(asym_ctx, env, certificate_file);
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT);
     /*Encrypt the session key*/
-    oxs_xml_enc_encrypt_key(env, asym_ctx, sec_node,session_key);    
+    oxs_xml_enc_encrypt_key(env, asym_ctx, sec_node,session_key, id_list);    
 
 
     return AXIS2_SUCCESS;

@@ -63,7 +63,14 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_encrypt_key(const axis2_env_t *env,
                             oxs_asym_ctx_t * asym_ctx,
                             axiom_node_t *parent,
-                            oxs_key_t *sym_key);
+                            oxs_key_t *sym_key,
+                            axis2_array_list_t *id_list);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_xml_enc_decrypt_key(const axis2_env_t *env,
+                            oxs_asym_ctx_t * asym_ctx,
+                            axiom_node_t *encrypted_key_node,
+                            oxs_key_t *key);                            
 /** @} */
 #ifdef __cplusplus
 }

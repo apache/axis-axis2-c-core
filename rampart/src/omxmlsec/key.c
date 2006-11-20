@@ -27,10 +27,12 @@ typedef struct oxs_key_impl
 {
     oxs_key_t key;
 
-    unsigned char *data;
+
+    oxs_buffer_t *buf;
     axis2_char_t *name;
-    int            size;
     int            usage;
+    /*int            size;
+    unsigned char *data;*/
 }
 oxs_key_impl_t;
 
@@ -126,7 +128,7 @@ oxs_key_get_data(
     AXIS2_ENV_CHECK(env, NULL);
     key_impl = AXIS2_INTF_TO_IMPL(key);
 
-    return key_impl->data;
+    return OXS_BUFFER_GET_DATA(key_impl->buf, env);
 
 }
 
@@ -151,8 +153,8 @@ oxs_key_get_size(
     oxs_key_impl_t *key_impl = NULL;
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     key_impl = AXIS2_INTF_TO_IMPL(key);
-
-    return key_impl->size;
+    
+    return OXS_BUFFER_GET_SIZE(key_impl->buf, env);
 
 }
 
@@ -170,27 +172,6 @@ oxs_key_get_usage(
 }
 
 
-axis2_status_t AXIS2_CALL
-oxs_key_set_data(
-    oxs_key_t *key,
-    const axis2_env_t *env,
-    unsigned char *data)
-{
-    oxs_key_impl_t *oxs_key_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, data, AXIS2_FAILURE);
-    oxs_key_impl = AXIS2_INTF_TO_IMPL(key);
-
-    if (oxs_key_impl->data)
-    {
-        AXIS2_FREE(env->allocator, oxs_key_impl->data);
-        oxs_key_impl->data = NULL;
-    }
-    oxs_key_impl->data = (unsigned char *)strdup(data);
-    return AXIS2_SUCCESS;
-
-}
 
 axis2_status_t AXIS2_CALL
 oxs_key_set_name(
@@ -214,21 +195,6 @@ oxs_key_set_name(
 
 }
 
-axis2_status_t AXIS2_CALL
-oxs_key_set_size(
-    oxs_key_t *key,
-    const axis2_env_t *env,
-    int size)
-{
-    oxs_key_impl_t *oxs_key_impl = NULL;
-
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    oxs_key_impl = AXIS2_INTF_TO_IMPL(key);
-
-    oxs_key_impl->size = size;
-    return AXIS2_SUCCESS;
-
-}
 
 axis2_status_t AXIS2_CALL
 oxs_key_set_usage(
@@ -256,9 +222,7 @@ oxs_key_init_ops(
     key->ops->get_name  = oxs_key_get_name;
     key->ops->get_size  = oxs_key_get_size;
     key->ops->get_usage = oxs_key_get_usage;
-    key->ops->set_data  = oxs_key_set_data ;
     key->ops->set_name  = oxs_key_set_name;
-    key->ops->set_size  = oxs_key_set_size;
     key->ops->set_usage = oxs_key_set_usage;
     key->ops->free      = oxs_key_free;
     key->ops->populate  = oxs_key_populate;
@@ -268,7 +232,7 @@ oxs_key_init_ops(
 
 
 AXIS2_EXTERN oxs_key_t *AXIS2_CALL
-oxs_key_create_key(const axis2_env_t *env)
+oxs_key_create(const axis2_env_t *env)
 {
     oxs_key_impl_t *key_impl = NULL;
 
@@ -281,10 +245,12 @@ oxs_key_create_key(const axis2_env_t *env)
         return NULL;
     }
 
-    key_impl->data = NULL;
+    key_impl->buf = NULL;
     key_impl->name = NULL;
-    key_impl->size = -1;
     key_impl->usage = -1;
+    
+    /*additionally we need to create a buffer to keep data*/
+    key_impl->buf = oxs_buffer_create(env);
 
     key_impl->key.ops =  AXIS2_MALLOC(env->allocator, sizeof(oxs_key_ops_t));
     if (!key_impl->key.ops)
@@ -295,7 +261,6 @@ oxs_key_create_key(const axis2_env_t *env)
     }
 
     oxs_key_init_ops(&(key_impl->key));
-
     return &(key_impl->key);
 
 }
@@ -311,7 +276,9 @@ oxs_key_free(oxs_key_t *key,
 
     key_impl = AXIS2_INTF_TO_IMPL(key);
 
-    key_impl->data = NULL;
+    OXS_BUFFER_FREE(key_impl->buf, env);
+    key_impl->buf = NULL;
+    AXIS2_FREE(env->allocator,  key_impl->name);
     key_impl->name = NULL;
 
     AXIS2_FREE(env->allocator,  key_impl);
@@ -328,12 +295,17 @@ oxs_key_populate(oxs_key_t *key,
         int size,
         int usage)
 {
+    oxs_key_impl_t *key_impl = NULL;
     int ret;
 
-    ret = OXS_KEY_SET_DATA(key, env, data);
+    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+
+    key_impl = AXIS2_INTF_TO_IMPL(key);
+
     ret = OXS_KEY_SET_NAME(key, env, name);
-    ret = OXS_KEY_SET_SIZE(key, env, size);
     ret = OXS_KEY_SET_USAGE(key, env, usage);
+
+    ret = OXS_BUFFER_POPULATE(key_impl->buf, env, data, size);
 
     return AXIS2_SUCCESS;
 }

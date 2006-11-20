@@ -178,9 +178,11 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                     rampart_create_fault_envelope(env, "wsse:Security", "Security header element is not valid", sub_codes, msg_ctx);
                     return AXIS2_FAILURE;
                 }
-
+                /*NEW CODE*/
+                /*status = rampart_shp_process_message(env, msg_ctx, actions, soap_envelope, sec_node);*/
+                
                 sec_ele = AXIOM_NODE_GET_DATA_ELEMENT(sec_node, env);
-
+                
                 /*UsernameToken*/
                 if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL)))
                 {

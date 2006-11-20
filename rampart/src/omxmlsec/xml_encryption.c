@@ -188,7 +188,8 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_xml_enc_encrypt_key(const axis2_env_t *env,
                             oxs_asym_ctx_t * asym_ctx,
                             axiom_node_t *parent,
-                            oxs_key_t *sym_key)
+                            oxs_key_t *sym_key,
+                            axis2_array_list_t *id_list)
 {
     axis2_char_t *algorithm = NULL;
     axis2_char_t *encrypted_key_data = NULL;
@@ -219,11 +220,60 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
     algorithm = oxs_asym_ctx_get_algorithm(asym_ctx, env);
     enc_mtd_node = oxs_token_build_encryption_method_element(env, encrypted_key_node, algorithm);
     /*key_info_node = oxs_token_build_key_info_element(env, encrypted_key_node);*/
-    /*TODO SecurityTokenReference*/
     cd_node = oxs_token_build_cipher_data_element(env, encrypted_key_node);
     cv_node = oxs_token_build_cipher_value_element(env, cd_node,  encrypted_key_data);
 
+    /*TODO SecurityTokenReference*/
+    oxs_token_build_data_reference_list(env, encrypted_key_node, id_list); 
     return AXIS2_SUCCESS; 
 }
+/**
+* Inspect the key node. Then populate the sym_key
+*/
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_xml_enc_decrypt_key(const axis2_env_t *env,
+                            oxs_asym_ctx_t * asym_ctx,
+                            axiom_node_t *encrypted_key_node,
+                            oxs_key_t *key)
+{   
+    axiom_node_t *enc_mtd_node = NULL;
+    axiom_node_t *cd_node = NULL;
+    axis2_char_t *enc_mtd_algo = NULL;
+    axis2_char_t *cipher_val = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    oxs_buffer_t *input_buf = NULL;
+    oxs_buffer_t *result_buf = NULL;
+    
+    /*Get encryption method algorithm*/
+    enc_mtd_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_ENCRYPTION_METHOD, NULL, NULL);
+    enc_mtd_algo = oxs_token_get_encryption_method(env, enc_mtd_node);
 
+    /*Get cipher data*/
+    cd_node = oxs_axiom_get_first_child_node_by_name(env, encrypted_key_node, OXS_NODE_CIPHER_DATA, NULL, NULL);
+    cipher_val = oxs_token_get_cipher_value_from_cipher_data(env, cd_node);
+    
+    /*Get key used to encrypt*/
+    /*Right now we support KeyInfo -> SecurityTokenReference -> Reference
+                           KeyInfo -> SecurityTokenReference -> X509IssuerSerial */
 
+    /*Get the pkey used to decrypt the session key. If found set it to the asym_ctx*/
+    /*TODO This can be achieved well thru a Keys Mgr*/ 
+    /*Create the input buffer*/
+    input_buf = oxs_buffer_create(env);
+    OXS_BUFFER_POPULATE(input_buf, env, (unsigned char*)cipher_val, AXIS2_STRLEN(cipher_val));
+
+    /*Create a results buffer*/
+    result_buf = oxs_buffer_create(env);
+
+    /*Call decryption*/
+    status = oxs_encryption_asymmetric_crypt(env, asym_ctx, input_buf, result_buf);
+    
+    /*Populate the key with the data in the result buffer*/
+    OXS_KEY_POPULATE(key, env, 
+                            OXS_BUFFER_GET_DATA(result_buf, env), 
+                            "decrypted_session_key", 
+                            OXS_BUFFER_GET_SIZE(result_buf, env), 
+                            OXS_KEY_USAGE_DECRYPT  );
+
+    return AXIS2_SUCCESS;
+}

@@ -95,18 +95,6 @@ extern "C"
                     const oxs_key_t *key,
                     const axis2_env_t *env);
         
-         /**
-         * Sets data of the key.
-         * @param key oxs_key ptr to key
-         * @param env pointer to environment struct
-         * @param data data of the key
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_data)(
-                    oxs_key_t *key,
-                    const axis2_env_t *env,
-                    unsigned char *data);
 
          /**
          * Sets the name of the key.
@@ -121,18 +109,6 @@ extern "C"
                     const axis2_env_t *env,
                     axis2_char_t *name);
 
-         /**
-         * Sets the size of the key.
-         * @param key oxs_key ptr to key
-         * @param env pointer to environment struct
-         * @param size size of the key
-         * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
-         */
-        axis2_status_t (AXIS2_CALL *
-                set_size)(
-                    oxs_key_t *key,
-                    const axis2_env_t *env,
-                    int size);
 
          /**
          * Set the usage of the key.
@@ -212,7 +188,7 @@ extern "C"
     };
 
 AXIS2_EXTERN oxs_key_t *AXIS2_CALL
-oxs_key_create_key(const axis2_env_t *env);
+oxs_key_create(const axis2_env_t *env);
 
 /*Macros*/
 
@@ -229,14 +205,8 @@ oxs_key_create_key(const axis2_env_t *env);
 #define OXS_KEY_GET_USAGE(key,env)\
     ((key)->ops->get_usage(key,env))
 
-#define OXS_KEY_SET_DATA(key,env, data)\
-    ((key)->ops->set_data(key, env, data))
-
 #define OXS_KEY_SET_NAME(key,env, name)\
     ((key)->ops->set_name(key, env, name))
-
-#define OXS_KEY_SET_SIZE(key,env, size)\
-    ((key)->ops->set_size(key, env, size))
 
 #define OXS_KEY_SET_USAGE(key,env, usage)\
     ((key)->ops->set_usage(key, env, usage))
