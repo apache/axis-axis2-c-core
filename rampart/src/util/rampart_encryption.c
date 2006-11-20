@@ -35,6 +35,7 @@
 #include <axis2_array_list.h>
 #include <oxs_axiom.h>
 #include <oxs_asym_ctx.h>
+#include <oxs_xml_encryption.h>
 
 /*Private functions*/
 /*
