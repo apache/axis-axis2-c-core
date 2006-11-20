@@ -247,13 +247,15 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
 
                     AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler]  building Timestamp Token");
                     ttl_str = RAMPART_ACTIONS_GET_TIME_TO_LIVE(actions, env);
-                    ttl = atoi(RAMPART_ACTIONS_GET_TIME_TO_LIVE(actions, env));
-                    if (ttl <= 0)
-                    {
+                    /*Check for the ttl. If not specified use the default*/
+                    if(!ttl_str){
                         AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler]  Using default timeToLive value %s",
                                 RAMPART_TIMESTAMP_TOKEN_DEFAULT_TIME_TO_LIVE);
                         ttl = RAMPART_TIMESTAMP_TOKEN_DEFAULT_TIME_TO_LIVE;
+                    }else{
+                        ttl = atoi(RAMPART_ACTIONS_GET_TIME_TO_LIVE(actions, env));
                     }
+
                     timestamp_token = rampart_timestamp_token_create(env);
                     status = RAMPART_TIMESTAMP_TOKEN_BUILD(timestamp_token, env,
                             ctx, sec_node, sec_ns_obj, ttl);

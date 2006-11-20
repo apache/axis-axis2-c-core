@@ -162,6 +162,11 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
             AXIOM_ELEMENT_SET_TEXT(created_ele, env, created_val, created_node);
         }
         /*Then we build Expires element*/
+        /*If ttl<0 then we dont build the expires element.*/
+        if(ttl<0){
+            AXIS2_LOG_INFO(env->log, " [rampart][ts] ttl is %d which is less then zero. Thus we do not build the expires element. ");
+            return AXIS2_SUCCESS;
+        }
         expires_ele = axiom_element_create(env, ts_node, RAMPART_SECURITY_TIMESTAMP_EXPIRES, wsu_ns_obj,
                 &expires_node);
 

@@ -107,7 +107,7 @@ int main(int argc, char** argv)
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_PW_CALLBACK_CLASS , pw_cb_property);
 
     time_to_live_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(time_to_live_property, env, "420");
+    AXIS2_PROPERTY_SET_VALUE(time_to_live_property, env, "-420");
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_TIME_TO_LIVE, time_to_live_property);
 #endif
 
@@ -170,7 +170,8 @@ int main(int argc, char** argv)
 
     if (svc_client)
     {
-        AXIS2_SVC_CLIENT_FREE(svc_client, env);
+        /*TODO check the double free. After Samisa's modifications*/
+        /*AXIS2_SVC_CLIENT_FREE(svc_client, env);*/
         svc_client = NULL;
     }
     return 0;
