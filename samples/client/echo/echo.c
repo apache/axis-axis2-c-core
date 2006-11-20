@@ -150,11 +150,11 @@ int main(int argc, char** argv)
         svc_client = NULL;
     }
 
-    if (endpoint_ref)
+    /*if (endpoint_ref)
     {
         AXIS2_ENDPOINT_REF_FREE(endpoint_ref, env);
         endpoint_ref = NULL;
-    }
+    }*/
     /*if (env->allocator)
     {
         allocator = env->allocator;

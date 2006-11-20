@@ -561,7 +561,7 @@ axis2_msg_info_headers_free(
 
     if (msg_info_headers_impl->to)
     {
-        /*AXIS2_ENDPOINT_REF_FREE(msg_info_headers_impl->to, env);*/
+        AXIS2_ENDPOINT_REF_FREE(msg_info_headers_impl->to, env);
         msg_info_headers_impl->to = NULL;
     }
     if (msg_info_headers_impl->from)

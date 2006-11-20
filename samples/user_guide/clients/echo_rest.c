@@ -79,7 +79,7 @@ int main(int argc, char** argv)
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
     /* Enable REST at the client side */
     rest_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(rest_property, env, AXIS2_VALUE_TRUE);
+    AXIS2_PROPERTY_SET_VALUE(rest_property, env, axis2_strdup(AXIS2_VALUE_TRUE, env));
     AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_ENABLE_REST,
             rest_property);
     if (AXIS2_TRUE == method_get)
