@@ -82,10 +82,13 @@ int main(int argc, char** argv)
     AXIS2_PROPERTY_SET_VALUE(rest_property, env, axis2_strdup(AXIS2_VALUE_TRUE, env));
     AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_ENABLE_REST,
             rest_property);
+    rest_property = NULL;
     if (AXIS2_TRUE == method_get)
     {
-        AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_HTTP_METHOD,
-                AXIS2_HTTP_HEADER_GET);
+        rest_property = axis2_property_create(env);
+        AXIS2_PROPERTY_SET_VALUE(rest_property, env, axis2_strdup(AXIS2_HTTP_HEADER_GET, env));
+         AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_HTTP_METHOD,
+                rest_property);
     }
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up
      * using the axis2.xml file.
