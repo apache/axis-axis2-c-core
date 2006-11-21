@@ -168,10 +168,15 @@ axis2_ctx_set_property(
             axis2_property_t *temp_value = 
                 axis2_hash_get(ctx_impl->non_persistent_map, key, 
                     AXIS2_HASH_KEY_STRING);
-            if (temp_value && temp_value != value)
-            {
-                AXIS2_PROPERTY_FREE(temp_value, env);
-            }
+			if (temp_value)
+			{
+				void *temp_value_value = AXIS2_PROPERTY_GET_VALUE (temp_value, env);
+				void *value_value = AXIS2_PROPERTY_GET_VALUE (value, env);
+				if (temp_value_value != value_value)
+				{
+					AXIS2_PROPERTY_FREE(temp_value, env);
+				}
+			}
         }
         if (ctx_impl->non_persistent_map)
             axis2_hash_set(ctx_impl->non_persistent_map, key,
