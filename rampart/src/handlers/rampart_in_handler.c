@@ -72,6 +72,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
     axis2_param_t *param_action = NULL;
     axiom_node_t *sec_node = NULL;
     rampart_actions_t *actions = NULL;
+    axis2_array_list_t *sub_codes = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -129,7 +130,6 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
 
 
             sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
-            axis2_array_list_t *sub_codes = NULL;
 
             sub_codes = axis2_array_list_create(env, 0);
 
