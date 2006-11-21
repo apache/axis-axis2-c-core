@@ -217,7 +217,7 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
     if (!ts_ele)
     {
         AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Cannot find Timestamp element");
-        AXIS2_LOG_INFO(env->log, " Cannot find timestamp ... ");
+        AXIS2_LOG_INFO(env->log, " Cannot find timestamp ");
         return AXIS2_FAILURE;
     }
 
@@ -233,7 +233,7 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
     }
 
     created_val = AXIOM_ELEMENT_GET_TEXT(created_ele, env, created_node);
-    /*Check weather created is less than current time or not*/
+    /*Check whether created is less than current time or not*/
     current_val = rampart_generate_time(env, 0);
     validity = rampart_compare_date_time(env, created_val, current_val);
     if (validity == AXIS2_FAILURE)
@@ -259,17 +259,18 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
         return AXIS2_FAILURE;
     }
 
-    /*Now the expires element is present. So check weather this has a valid timestamp.
+    /*Now the expires element is present. So check whether this has a valid timestamp.
       If not it's a failure*/
     expires_val = AXIOM_ELEMENT_GET_TEXT(expires_ele, env, expires_node);
 
-    /*Check weather time has expired or not*/
+    /*Check whether time has expired or not*/
     validity = rampart_compare_date_time(env, current_val, expires_val);
     if (validity == AXIS2_FAILURE)
     {
         AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Timestamp token has expired");
         return AXIS2_FAILURE;
     }
+    AXIS2_LOG_INFO(env->log, "[rampart][ts] Timstamp is valid");
 
     /*free memory for qnames*/
     return validity;

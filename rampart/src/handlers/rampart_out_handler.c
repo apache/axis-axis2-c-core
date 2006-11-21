@@ -27,6 +27,7 @@
 #include <rampart_handler_util.h>
 #include <rampart_timestamp_token.h>
 #include <rampart_action.h>
+#include <rampart_encryption.h>
 
 /*********************** Function headers *********************************/
 
@@ -271,7 +272,7 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
                 {
 
                     AXIS2_LOG_INFO(env->log, "[rampart][rampart_out_handler] Encrypting we do not support yet");
-                    /*status = rampart_enc_encrypt_message(env, msg_ctx, actions, soap_envelope, sec_node);    */
+                    status = rampart_enc_encrypt_message(env, msg_ctx, actions, soap_envelope, sec_node);    
                     /*Signature*/
                 }
                 else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE,

@@ -83,12 +83,11 @@ oxs_error(const char* file, int line, const char* func,
     va_list ap;
 
     error_msg = oxs_errors_get_msg_by_code(code);
-    /*TODO Log instead of printf*/
 
     va_start(ap, msg);
     AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, msg, ap);
     va_end(ap);
 
-
+    
     printf("\nERROR [%s:%d in %s] %s , %s\n", file, line, func, error_msg, value);
 }

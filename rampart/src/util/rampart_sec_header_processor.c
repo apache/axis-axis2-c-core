@@ -20,6 +20,8 @@
 #include <rampart_action.h>
 #include <rampart_constants.h>
 #include <rampart_sec_header_processor.h>
+#include <rampart_username_token.h>
+#include <rampart_timestamp_token.h>
 #include <oxs_ctx.h>
 #include <oxs_error.h>
 #include <oxs_utility.h>
@@ -37,13 +39,88 @@
 #include <oxs_axiom.h>
 #include <oxs_asym_ctx.h>
 
+
+
+
 /*Private functions*/
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_shp_process_timestamptoken(const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    rampart_actions_t *actions,
+    axiom_soap_envelope_t *soap_envelope,
+    axiom_node_t *ts_node,
+    axis2_array_list_t *sub_codes)
+{
+    rampart_timestamp_token_t *timestamp_token = NULL;
+    axis2_status_t valid_ts = AXIS2_FAILURE;
+    
+    timestamp_token = rampart_timestamp_token_create(env);
+    valid_ts = RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, ts_node, sub_codes);
+
+    if (valid_ts)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][scp] Validating Timestamp is SUCCESS ");
+        return AXIS2_SUCCESS;
+    }
+    else
+    {
+        /*TODO return a fault*/
+
+        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][scp] Timestamp is not valid");
+        if (sub_codes)
+        {
+            AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
+        }
+
+        return AXIS2_FAILURE;
+
+    }
+
+}
+
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+rampart_shp_process_usernametoken(const axis2_env_t *env,
+    axis2_msg_ctx_t *msg_ctx,
+    rampart_actions_t *actions,
+    axiom_soap_envelope_t *soap_envelope,
+    axiom_node_t *ut_node,
+    axis2_array_list_t *sub_codes)
+{
+    rampart_username_token_t *username_token = NULL;
+    axiom_soap_header_t *soap_header = NULL;
+    axis2_status_t valid_user = AXIS2_FAILURE;
+
+    soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
+ 
+    username_token = rampart_username_token_create(env);
+    AXIS2_LOG_INFO(env->log, "[rampart][shp] Validating UsernameToken");
+    valid_user = RAMPART_USERNAME_TOKEN_VALIDATE(username_token, env,
+                            msg_ctx, soap_header, actions, sub_codes);    
+
+    if (valid_user)
+    {
+        AXIS2_LOG_INFO(env->log, "[rampart][shp] Validating UsernameToken SUCCESS");
+        return AXIS2_SUCCESS;
+    }else{
+        if (sub_codes)
+        {
+            AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
+        }
+
+        AXIS2_LOG_INFO(env->log, "[rampart][shp] Validating UsernameToken FAILED");
+        return AXIS2_FAILURE;
+    }
+    
+}
+
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_shp_process_encrypted_key(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     rampart_actions_t *actions,
     axiom_soap_envelope_t *soap_envelope,
-    axiom_node_t *encrypted_key_node)
+    axiom_node_t *encrypted_key_node,
+    axis2_array_list_t *sub_codes)
 {
     axiom_node_t *ref_list_node = NULL;
     axis2_array_list_t *reference_list = NULL;
@@ -109,20 +186,18 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Node ID=%s decrypted successfuly", id);
     }
 
-    
     return AXIS2_SUCCESS;    
 }
 
-
 /*Public functions*/
-
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_shp_process_message(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     rampart_actions_t *actions,
     axiom_soap_envelope_t *soap_envelope,
-    axiom_node_t *sec_node)
+    axiom_node_t *sec_node,
+    axis2_array_list_t *sub_codes)
 {
     axiom_node_t *cur_node = NULL;
     axiom_element_t *cur_ele = NULL;
@@ -143,15 +218,15 @@ rampart_shp_process_message(const axis2_env_t *env,
         if(0 == AXIS2_STRCMP(cur_node_name , RAMPART_SECURITY_USERNAMETOKEN) ){
             /*Process UT*/
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Process Usernametoken");
-
+            status = rampart_shp_process_usernametoken(env,msg_ctx, actions, soap_envelope, cur_node, sub_codes);
         }else if(0 == AXIS2_STRCMP(cur_node_name , RAMPART_SECURITY_TIMESTAMP)){
             /*Verify TS*/
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Process Timestamptoken");
-
+            status = rampart_shp_process_timestamptoken(env,msg_ctx, actions, soap_envelope, cur_node, sub_codes);
         }else if(0 == AXIS2_STRCMP(cur_node_name ,OXS_NODE_ENCRYPTED_KEY)){
             /*Process EncryptedKey*/
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Process EncryptedKey");
-            status = rampart_shp_process_encrypted_key(env,msg_ctx, actions, soap_envelope, cur_node);
+            status = rampart_shp_process_encrypted_key(env,msg_ctx, actions, soap_envelope, cur_node, sub_codes);
         }else if(0 == AXIS2_STRCMP(cur_node_name ,OXS_NODE_ENCRYPTED_DATA)){
             /*Process Encrypteddata*/
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Process EncryptedData");
@@ -160,6 +235,11 @@ rampart_shp_process_message(const axis2_env_t *env,
             /*List is placed Out side of the EncryptedKey*/
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Process ReferenceList");
         }
+        /*Retuen failure on error*/
+        if(AXIS2_FAILURE == status){
+            return AXIS2_FAILURE;
+        }
+        /*Proceed to next node*/
         cur_node = AXIOM_NODE_GET_NEXT_SIBLING(cur_node, env);
     }/*End of while*/
     

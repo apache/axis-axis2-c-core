@@ -29,7 +29,7 @@
 #include <rampart_handler_util.h>
 #include <rampart_timestamp_token.h>
 #include <rampart_util.h>
-
+#include <rampart_sec_header_processor.h>
 /*************************** Function headers *********************************/
 
 axis2_status_t AXIS2_CALL
@@ -70,9 +70,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
     axis2_ctx_t *ctx = NULL;
     axis2_array_list_t *action_list = NULL;
     axis2_param_t *param_action = NULL;
-    axis2_char_t *items = NULL;
-    axiom_node_t *sec_node, *ts_node = NULL;
-    axiom_element_t *sec_ele, *ts_ele = NULL;
+    axiom_node_t *sec_node = NULL;
     rampart_actions_t *actions = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
@@ -88,9 +86,6 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
         soap_header = AXIOM_SOAP_ENVELOPE_GET_HEADER(soap_envelope, env);
         if (soap_header)
         {
-            axis2_char_t* item = NULL;
-            axis2_array_list_t *items_list = NULL;
-            int i = 0, size = 0;
 
             AXIS2_LOG_TRACE(env->log, AXIS2_LOG_SI, "SOAP header found");
             
@@ -98,7 +93,6 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
             actions = rampart_actions_create(env);
 
             /*Check InFlowSecurity parameters*/
-
             ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
             param_in_flow_security = rampart_get_security_param(env, msg_ctx, RAMPART_INFLOW_SECURITY);
 
@@ -133,155 +127,35 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
             /*Then re-populate using the axis2_ctx*/
             status = RAMPART_ACTIONS_POPULATE_FROM_CTX(actions, env, ctx);
 
-            items = AXIS2_STRDUP(RAMPART_ACTIONS_GET_ITEMS(actions, env), env);
 
-            if (!items)
-            {
-                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No items defined. So nothing to do.");
+            sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
+            axis2_array_list_t *sub_codes = NULL;
+
+            sub_codes = axis2_array_list_create(env, 0);
+
+            if(!sec_node){
+                AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No security header element.");
                 return AXIS2_SUCCESS;
+            
             }
 
-            /*Get action items seperated by spaces*/
-            items_list = axis2_tokenize(env, items, ' ');
-            if (items_list)
+            /*status = rampart_validate_security_token(env, msg_ctx, sec_node);
+            if (AXIS2_FAILURE == status)
             {
-                size = AXIS2_ARRAY_LIST_SIZE(items_list, env);
+                AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_INVALID_SECURITY_TOKEN);
+                rampart_create_fault_envelope(env, "wsse:Security", "Security header element is not valid", sub_codes, msg_ctx);
+                return AXIS2_FAILURE;
             }
-
-            for (i = 0; i < size; i++)
+            */
+            /*The main entry point for all security header validations*/    
+            status = rampart_shp_process_message(env, msg_ctx, actions, soap_envelope, sec_node, sub_codes);
+            if (AXIS2_FAILURE == status)
             {
-                item = AXIS2_ARRAY_LIST_GET(items_list, env, i);
-                sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
-                /*If no sec_node return fault*/
-                if (!sec_node)
-                {
-                    axis2_array_list_t *sub_codes = NULL;
-                    sub_codes = axis2_array_list_create(env, 1);
-                    if (sub_codes)
-                    {
-                        AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_SECURITY_TOKEN_UNAVAILABLE);
-                    }
-
-                    rampart_create_fault_envelope(env, "wsse:Security", "Security header element is unavailable", sub_codes, msg_ctx);
-                    return AXIS2_FAILURE;
-                }
-
-                status = rampart_validate_security_token(env, msg_ctx, sec_node);
-                if (AXIS2_FAILURE == status)
-                {
-                    axis2_array_list_t *sub_codes = NULL;
-                    sub_codes = axis2_array_list_create(env, 1);
-                    if (sub_codes)
-                    {
-                        AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_INVALID_SECURITY_TOKEN);
-                    }
-                    rampart_create_fault_envelope(env, "wsse:Security", "Security header element is not valid", sub_codes, msg_ctx);
-                    return AXIS2_FAILURE;
-                }
-                /*NEW CODE*/
-                /*status = rampart_shp_process_message(env, msg_ctx, actions, soap_envelope, sec_node);*/
-                
-                sec_ele = AXIOM_NODE_GET_DATA_ELEMENT(sec_node, env);
-                
-                /*UsernameToken*/
-                if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_USERNAMETOKEN, AXIS2_STRTRIM(env, item, NULL)))
-                {
-                    rampart_username_token_t *username_token = NULL;
-                    axis2_array_list_t *sub_codes = NULL;
-                    axis2_status_t valid_user = AXIS2_FAILURE;
-
-                    sub_codes = axis2_array_list_create(env, 0);
-                    username_token = rampart_username_token_create(env);
-                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Validating UsernameToken");
-                    valid_user = RAMPART_USERNAME_TOKEN_VALIDATE(username_token, env,
-                            msg_ctx, soap_header, actions, sub_codes);
-                    if (valid_user)
-                    {
-                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Validating UsernameToken SUCCESS");
-                        status = AXIS2_SUCCESS;
-                    }
-                    else
-                    {
-                        if (sub_codes)
-                        {
-                            AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
-                        }
-
-                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Validating UsernameToken FAILED");
-                        rampart_create_fault_envelope(env, "wsse:UsernameToken", "Username is not valid", sub_codes, msg_ctx);
-                        return AXIS2_FAILURE;
-                    }
-                    /*Encrypt*/
-                }
-                else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_ENCRYPT, AXIS2_STRTRIM(env, item, NULL)))
-                {
-                    /*Do useful to verify encrypt*/
-                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Decryption... NOT IMPLEMENTED YET.. SORRY");
-                    
-
-                    /*Signature*/
-                }
-                else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_SIGNATURE, AXIS2_STRTRIM(env, item, NULL)))
-                {
-                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Verfying signature... NOT IMPLEMENTED YET.. SORRY");
-                    /*Timestamp Token*/
-                }
-                else if (0 == AXIS2_STRCMP(RAMPART_ACTION_ITEMS_TIMESTAMP, AXIS2_STRTRIM(env, item, NULL)))
-                {
-                    axis2_qname_t *qname = NULL;
-                    axis2_array_list_t *sub_codes = NULL;
-                    axis2_status_t valid_ts = AXIS2_FAILURE;
-                    rampart_timestamp_token_t *timestamp_token = NULL;
-
-                    AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Validating Timestamp");
-                    sub_codes = axis2_array_list_create(env, 0);
-
-                    qname = axis2_qname_create(env,
-                            RAMPART_SECURITY_TIMESTAMP,
-                            RAMPART_WSU_XMLNS,
-                            RAMPART_WSU);
-                    if (qname)
-                    {
-                        ts_ele = AXIOM_ELEMENT_GET_FIRST_CHILD_WITH_QNAME(sec_ele, env, qname, sec_node, &ts_node);
-                        if (!ts_ele)
-                        {
-                            AXIS2_LOG_INFO(env->log, "Cannot find Timestamp in Security element...");
-                            AXIS2_ARRAY_LIST_ADD(sub_codes, env, "Time stamp token expected");
-                            AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
-                            rampart_create_fault_envelope(env, "wsse:Timestamptoken", "Timestamp is not available", sub_codes, msg_ctx);
-                            return AXIS2_FAILURE;
-                        }
-                    }
-                    timestamp_token = rampart_timestamp_token_create(env);
-                    valid_ts = RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, ts_node, sub_codes);
-                    /*TODO free*/
-                    if (valid_ts)
-                    {
-                        AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] Validating Timestamp is SUCCESS ");
-                        status = AXIS2_SUCCESS;
-                    }
-                    else
-                    {
-                        /*TODO return a fault*/
-
-                        AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart] Timestamp is not valid");
-                        if (sub_codes)
-                        {
-                            AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
-                        }
-
-                        rampart_create_fault_envelope(env, "wsse:Timestamptoken", "Timestamp is not valid", sub_codes, msg_ctx);
-                        return AXIS2_FAILURE;
-
-                    }
-                }
-                else
-                {
-                    return AXIS2_SUCCESS;
-                }
+                rampart_create_fault_envelope(env, "wsse:Security", "Security header processing failed", sub_codes, msg_ctx);
+                return AXIS2_FAILURE;
+            }                
 
 
-            } /* End of for */
         } /* End of sec_header */
 
     }/* End of soap_envelope */
