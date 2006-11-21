@@ -125,7 +125,6 @@ oxs_xml_enc_decrypt_node(const axis2_env_t *env,
     /*Decrypt*/
     oxs_xml_enc_decrypt_data(env, enc_ctx, enc_type_node, result_buf);
     decrypted_data = (axis2_char_t *)OXS_BUFFER_GET_DATA(result_buf, env);
-    printf("\nDecrypted_Data = %s\n", decrypted_data); 
     /*De-serialize the decrypted content to build the node*/
     deserialized_node = (axiom_node_t*)oxs_axiom_deserialize_node(env, decrypted_data);
     if(!deserialized_node){

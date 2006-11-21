@@ -80,6 +80,7 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
         if (do_encrypt == 1)
         {
             printf("\nEncrypting block[%d] %s", inlen, inbuf);
+            AXIS2_LOG_INFO(env->log, "[oxs][crypt.c] Encrypting block[%d] %s", inlen, inbuf);
         }
 
         memset(outbuf, 0 , BUFSIZE + EVP_MAX_BLOCK_LENGTH);/*Reset memory for the outbuf*/
@@ -113,6 +114,7 @@ AXIS2_EXTERN int AXIS2_CALL  openssl_block_cipher_crypt(const axis2_env_t *env,
         /* Error */
         EVP_CIPHER_CTX_cleanup(&ctx);
         printf("\nERROR:EVP_CipherFinal_ex--- EVP_CIPHER_CTX_cleanup\n");
+        AXIS2_LOG_INFO(env->log, "[oxs][crypt.c] EVP_CIPHER_CTX_cleanup ");
         return (-1);
     }
     /*Alright now we need to write the last drop*/

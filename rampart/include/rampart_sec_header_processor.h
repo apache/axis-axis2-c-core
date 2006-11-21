@@ -42,7 +42,7 @@ extern "C" {
 * @return AXIS2_SUCCESS on success, else AXIS2_FAILURE
 */
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
-rampart_sp_process_message(const axis2_env_t *env,
+rampart_shp_process_message(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx,
     rampart_actions_t *actions,
     axiom_soap_envelope_t *soap_envelope,

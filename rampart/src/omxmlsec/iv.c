@@ -58,7 +58,6 @@ oxs_iv_generate_for_algo(const axis2_env_t *env,
     {
         iv = OXS_IV_DEFAULT;/* i.e. OPENSSL_DEFAULT_IV16. Many ciphers have 16... mmm.. need a better way.. a TODO*/
     }
-    printf("IVIVIVIV size=%d value = %s", size, iv);
 
     return iv;
 }

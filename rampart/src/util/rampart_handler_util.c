@@ -86,15 +86,6 @@ rampart_get_property_from_ctx(const axis2_env_t *env,
         property = NULL;
     }
 
-    if (str_property)
-    {
-        return str_property;
-    }
-    else
-    {
-        /* printf(" Cannot find dynamic settings for %s ", key);*/
-    }
-
     return str_property;
 }
 
@@ -151,7 +142,7 @@ rampart_get_action_params(const axis2_env_t *env,
 
     if (!param_action)
     {
-        printf("param_action is NULL");
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_handler_util] param_action is NULL");
     }
 
     param_type = AXIS2_PARAM_GET_PARAM_TYPE(param_action, env);
@@ -160,7 +151,7 @@ rampart_get_action_params(const axis2_env_t *env,
     param_list = AXIS2_PARAM_GET_VALUE_LIST(param_action, env);
     if (!param_list)
     {
-        printf("param list is null");
+        AXIS2_LOG_INFO(env->log, "[rampart][rampart_handler_util] param list is NULL");
     }
 
     size = AXIS2_ARRAY_LIST_SIZE(param_list, env);

@@ -84,7 +84,6 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
         return AXIS2_FAILURE;
     }
 
-    /*printf("\n DT1 = %s",AXIS2_DATE_TIME_SERIALIZE_DATE_TIME(dt1, env)); */
     yyyy1 = AXIS2_DATE_TIME_GET_YEAR(dt1, env);
     mm1 = AXIS2_DATE_TIME_GET_MONTH(dt1, env);
     dd1 = AXIS2_DATE_TIME_GET_DATE(dt1, env);
@@ -97,8 +96,6 @@ rampart_compare_date_time(const axis2_env_t *env, axis2_char_t *dt1_str, axis2_c
     {
         return AXIS2_FAILURE;
     }
-
-    /*printf("\n DT2 = %s",AXIS2_DATE_TIME_SERIALIZE_DATE_TIME(dt2, env)); */
 
     yyyy2 = AXIS2_DATE_TIME_GET_YEAR(dt2, env);
     mm2 = AXIS2_DATE_TIME_GET_MONTH(dt2, env);
