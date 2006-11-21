@@ -207,7 +207,8 @@ axis2_rest_sender_send(
     const axis2_char_t *content_type = NULL;
     axis2_property_t *property = NULL;
     axis2_bool_t send_via_get = AXIS2_FALSE;
-    axis2_char_t *method = NULL;
+    axis2_property_t *method = NULL;
+	axis2_char_t *method_value = NULL;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -243,11 +244,13 @@ axis2_rest_sender_send(
     AXIS2_MSG_CTX_SET_PROPERTY(msg_ctx, env, AXIS2_HTTP_CLIENT,
             property, AXIS2_TRUE);
 
-    method = (axis2_char_t *)AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
+    method = (axis2_property_t *)AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,
             AXIS2_HTTP_METHOD, AXIS2_FALSE);
+	if (method)
+		method_value = (axis2_char_t *) AXIS2_PROPERTY_GET_VALUE (method, env);
 
     /* The default is POST */
-    if (method && 0 == AXIS2_STRCMP(method, AXIS2_HTTP_HEADER_GET))
+    if (method_value && 0 == AXIS2_STRCMP(method_value, AXIS2_HTTP_HEADER_GET))
     {
         send_via_get = AXIS2_TRUE;
     }

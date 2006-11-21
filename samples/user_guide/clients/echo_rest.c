@@ -32,6 +32,7 @@ int main(int argc, char** argv)
     axiom_node_t *ret_node = NULL;
     axis2_bool_t method_get = AXIS2_FALSE;
     axis2_property_t *rest_property = NULL;
+	axis2_property_t *get_property = NULL;
 
     /* Set up the environment */
     env = axis2_env_create_all("echo_rest.log", AXIS2_LOG_LEVEL_TRACE);
@@ -79,16 +80,15 @@ int main(int argc, char** argv)
     AXIS2_OPTIONS_SET_TO(options, env, endpoint_ref);
     /* Enable REST at the client side */
     rest_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(rest_property, env, axis2_strdup(AXIS2_VALUE_TRUE, env));
+    AXIS2_PROPERTY_SET_VALUE(rest_property, env, axis2_strdup (AXIS2_VALUE_TRUE, env));
     AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_ENABLE_REST,
             rest_property);
-    rest_property = NULL;
     if (AXIS2_TRUE == method_get)
     {
-        rest_property = axis2_property_create(env);
-        AXIS2_PROPERTY_SET_VALUE(rest_property, env, axis2_strdup(AXIS2_HTTP_HEADER_GET, env));
+        get_property = axis2_property_create(env);
+        AXIS2_PROPERTY_SET_VALUE(get_property, env, axis2_strdup(AXIS2_HTTP_HEADER_GET, env));
          AXIS2_OPTIONS_SET_PROPERTY(options, env, AXIS2_HTTP_METHOD,
-                rest_property);
+                get_property);
     }
     /* Set up deploy folder. It is from the deploy folder, the configuration is picked up
      * using the axis2.xml file.
