@@ -192,7 +192,7 @@ int AXIS2_CALL scandir(const char *_dirname, struct dirent **__namelist[], int(*
             continue;
         }
 
-        if ((nfiles + 1) == vector_size)
+        if (nfiles == vector_size)
         {
             struct dirent **newv;
             if (vector_size == 0)
