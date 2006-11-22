@@ -40,20 +40,6 @@ axis2_echo_echo(const axis2_env_t *env, axiom_node_t *node)
         printf("Echo client ERROR: input parameter NULL\n");
         return NULL;
     }
-    else
-    {
-        axiom_xml_writer_t *writer = NULL;
-        axiom_output_t *om_output = NULL;
-     /*   axis2_char_t *buffer = NULL;*/
-
-        writer = axiom_xml_writer_create_for_memory(env, NULL, AXIS2_TRUE, 0,
-                AXIS2_XML_PARSER_TYPE_BUFFER);
-        om_output = axiom_output_create(env, writer);
-
-        /*AXIOM_NODE_SERIALIZE (node, env, om_output);
-        buffer = AXIOM_XML_WRITER_GET_XML(writer, env);
-        printf("buffer = %s \n", buffer);*/
-    }
 
     text_parent_node = AXIOM_NODE_GET_FIRST_CHILD(node, env);
     if (!text_parent_node) /* 'text' node */
