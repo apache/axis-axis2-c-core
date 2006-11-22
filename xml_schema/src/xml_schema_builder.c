@@ -3839,7 +3839,7 @@ handle_app_info(
     ele_iter = axiom_util_get_child_elements(cnt_ele, env, content);
 
     attr_value = AXIOM_ELEMENT_GET_ATTRIBUTE_VALUE_BY_NAME(cnt_ele, env, "source");
-    if (!ele_iter && !AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(ele_iter, env))
+    if (!attr_value &&(!ele_iter || !AXIOM_CHILD_ELEMENT_ITERATOR_HAS_NEXT(ele_iter, env)))
         return NULL;
 
     XML_SCHEMA_APP_INFO_SET_SOURCE(app_info, env, attr_value);
