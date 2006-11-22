@@ -43,11 +43,9 @@ AXIS2_EXTERN oxs_buffer_t * AXIS2_CALL  oxs_base64_encode(axis2_env_t *env,
 
     encoded_str = AXIS2_MALLOC(env->allocator, (unsigned int)axis2_base64_encode_len(AXIS2_STRLEN((char*)(plain_buf->data))));
 
-    printf("\noxs_base64_encode\nIn Data Size= %d", plain_buf->size);
     ret =  axis2_base64_encode(encoded_str, (char*)(plain_buf->data), plain_buf->size);
     if (ret < 0) return NULL;
 
-    printf("\nEncoded_str= %s", encoded_str);
     /*Set to the output buffer */
 
     out_buf = oxs_string_to_buffer(env, encoded_str);

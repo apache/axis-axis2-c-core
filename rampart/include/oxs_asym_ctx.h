@@ -26,7 +26,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axiom_node.h>
-#include <oxs_certificate.h>
+#include <oxs_x509_cert.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -83,7 +83,7 @@ extern "C"
                     const axis2_env_t *env
                     );
 
-        oxs_certificate_t *(AXIS2_CALL *
+        oxs_x509_cert_t *(AXIS2_CALL *
         get_certificate)(
                     const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env
@@ -120,7 +120,7 @@ extern "C"
         set_certificate)(
                     oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env,
-                    oxs_certificate_t *cert
+                    oxs_x509_cert_t *cert
                     );
 
 
@@ -167,7 +167,7 @@ AXIS2_EXTERN oxs_asym_ctx_operation_t AXIS2_CALL
 oxs_asym_ctx_get_operation(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env);
 
-AXIS2_EXTERN oxs_certificate_t* AXIS2_CALL
+AXIS2_EXTERN oxs_x509_cert_t* AXIS2_CALL
 oxs_asym_ctx_get_certificate(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env);
 
@@ -194,7 +194,7 @@ oxs_asym_ctx_set_operation(oxs_asym_ctx_t *ctx,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_certificate(oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env,
-                    oxs_certificate_t *certificate);
+                    oxs_x509_cert_t *certificate);
 
 
 /** @} */

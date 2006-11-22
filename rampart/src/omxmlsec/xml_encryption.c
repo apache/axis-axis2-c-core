@@ -25,6 +25,7 @@
 #include <oxs_token_cipher_value.h>
 #include <oxs_token_cipher_data.h>
 #include <oxs_token_reference_list.h>
+#include <oxs_token_key_info.h>
 #include <oxs_constants.h>
 #include <oxs_axiom.h>
 #include <oxs_ctx.h>
@@ -197,7 +198,7 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
     oxs_buffer_t *result = NULL;
     axiom_node_t *encrypted_key_node = NULL;
     axiom_node_t *enc_mtd_node = NULL;
-    /*axiom_node_t *key_info_node = NULL;*/
+    axiom_node_t *key_info_node = NULL;
     axiom_node_t *cd_node = NULL;
     axiom_node_t *cv_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
@@ -219,7 +220,7 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
     encrypted_key_node = oxs_token_build_encrypted_key_element(env, parent);
     algorithm = oxs_asym_ctx_get_algorithm(asym_ctx, env);
     enc_mtd_node = oxs_token_build_encryption_method_element(env, encrypted_key_node, algorithm);
-    /*key_info_node = oxs_token_build_key_info_element(env, encrypted_key_node);*/
+    key_info_node = oxs_token_build_key_info_element(env, encrypted_key_node);
     cd_node = oxs_token_build_cipher_data_element(env, encrypted_key_node);
     cv_node = oxs_token_build_cipher_value_element(env, cd_node,  encrypted_key_data);
 

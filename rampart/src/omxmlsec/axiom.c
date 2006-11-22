@@ -18,6 +18,7 @@
 #include <axis2_util.h>
 #include <oxs_constants.h>
 #include <oxs_error.h>
+#include <oxs_axiom.h>
 #include <axiom_node.h>
 #include <axiom_namespace.h>
 #include <axiom_attribute.h>
@@ -58,11 +59,50 @@ oxs_axiom_get_number_of_children_with_qname(const axis2_env_t *env,
 
     return counter;
 }
+/**
+ * Traverse thru the node and its children. Check if the id attribute is equal to the given value
+ * */
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+oxs_axiom_get_node_by_id(const axis2_env_t *env,
+    axiom_node_t *node,
+    axis2_char_t *id_val)
+{
+    axis2_char_t *attribute_value = NULL;
+    
+    attribute_value = oxs_axiom_get_attribute_value_of_node_by_name(env, node, OXS_ATTR_ID);
+    if(0 == AXIS2_STRCMP(id_val, attribute_value) ){
+        /*Gottcha.. return this node*/
+        return node;
+    }else{
+        /*Doesnt match. Search sibling/children*/
+        axiom_node_t *sib_node = NULL;
 
+        sib_node = node;
+        while(sib_node){
+            axiom_element_t *ele = NULL;
+            axiom_children_iterator_t *iter = NULL;
+
+            ele = AXIOM_NODE_GET_DATA_ELEMENT(sib_node, env);
+            iter = AXIOM_ELEMENT_GET_CHILDREN(ele, env, sib_node);
+            while (AXIS2_TRUE == AXIOM_CHILDREN_ITERATOR_HAS_NEXT(iter, env)){
+                axiom_node_t *child_node = NULL;
+                child_node = AXIOM_CHILDREN_ITERATOR_NEXT(iter, env);
+                /*If the child is an element*/
+                if(AXIOM_ELEMENT == AXIOM_NODE_GET_NODE_TYPE(child_node, env)){
+                    /*Recursive call*/
+                    return oxs_axiom_get_node_by_id(env, child_node, id_val);
+                }
+            }
+            sib_node = AXIOM_NODE_GET_NEXT_SIBLING(sib_node, env);
+        }/*sib_node while*/
+
+    }
+    return NULL;
+}
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_axiom_get_attribute_value_of_node_by_name(const axis2_env_t *env,
-        axiom_node_t *node,
-        axis2_char_t *attribute_name)
+    axiom_node_t *node,
+    axis2_char_t *attribute_name)
 {
     axis2_char_t *attribute_value = NULL;
     axiom_element_t *ele = NULL;

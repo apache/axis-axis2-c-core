@@ -39,9 +39,6 @@
 #include <oxs_axiom.h>
 #include <oxs_asym_ctx.h>
 
-
-
-
 /*Private functions*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_shp_process_timestamptoken(const axis2_env_t *env,
@@ -65,19 +62,14 @@ rampart_shp_process_timestamptoken(const axis2_env_t *env,
     else
     {
         /*TODO return a fault*/
-
         AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][scp] Timestamp is not valid");
         if (sub_codes)
         {
             AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
         }
-
         return AXIS2_FAILURE;
-
     }
-
 }
-
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 rampart_shp_process_usernametoken(const axis2_env_t *env,
@@ -107,11 +99,9 @@ rampart_shp_process_usernametoken(const axis2_env_t *env,
         {
             AXIS2_ARRAY_LIST_ADD(sub_codes, env, RAMPART_FAULT_FAILED_AUTHENTICATION);
         }
-
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Validating UsernameToken FAILED");
         return AXIS2_FAILURE;
     }
-    
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -139,7 +129,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Reference List is empty");
         return AXIS2_SUCCESS;
     }
-    AXIS2_LOG_INFO(env->log, "[rampart][shp] Reference List has %d node references", AXIS2_ARRAY_LIST_SIZE(reference_list, env));
+    AXIS2_LOG_INFO(env->log, "[rampart][shp] Reference List has %d node reference(s)", AXIS2_ARRAY_LIST_SIZE(reference_list, env));
 
     /*If the reference list > 0 then We have nodes to decrypt. Next step is to get the encrypted key*/
     /*Obtain the session key which is encrypted*/
@@ -162,7 +152,9 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     /*Go thru each and every node in the list and decrypt them*/
     for(i=0 ; i < AXIS2_ARRAY_LIST_SIZE(reference_list, env); i++ ){
         axis2_char_t *id = NULL;
+        axis2_char_t *id2 = NULL;
         axiom_node_t *enc_data_node = NULL;
+        axiom_node_t *envelope_node = NULL;
         oxs_ctx_t *ctx = NULL;
         axiom_node_t *decrypted_node = NULL; 
         axiom_soap_body_t *body = NULL;
@@ -171,13 +163,18 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         /*Get the i-th element and decrypt it */
         id = (axis2_char_t*)AXIS2_ARRAY_LIST_GET(reference_list, env, i);
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Decrypting node, ID=%s", id);
-        /*TODO Write a proper function to get the node bu its ID*/
+        id2 = axis2_string_substring_starting_at(id, 1);
+        envelope_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
 
-        /*This is only for test*/
+        /*Search for the node by its ID*/
         body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
         body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
-        enc_data_node = AXIOM_NODE_GET_FIRST_CHILD(body_node, env);    
-        
+        /*TODO Check why this fails for soap envelope node*/
+        enc_data_node = oxs_axiom_get_node_by_id(env, body_node, id2);
+        if(!enc_data_node){
+            AXIS2_LOG_INFO(env->log, "[rampart][shp] Node with ID=%s cannot be found", id);
+            continue;
+        }
         /*Create an enc_ctx*/    
         ctx = oxs_ctx_create(env);
         OXS_CTX_SET_KEY(ctx, env, decrypted_sym_key);

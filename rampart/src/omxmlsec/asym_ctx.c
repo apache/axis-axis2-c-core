@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <axis2_util.h>
 #include <oxs_asym_ctx.h>
-#include <oxs_certificate.h>
+#include <oxs_x509_cert.h>
 #include <oxs_error.h>
 
 typedef struct oxs_asym_ctx_impl
@@ -28,7 +28,7 @@ typedef struct oxs_asym_ctx_impl
     axis2_char_t *format;
     axis2_char_t *algorithm;
     oxs_asym_ctx_operation_t operation;   
-    oxs_certificate_t *certificate;
+    oxs_x509_cert_t *certificate;
 }
 oxs_asym_ctx_impl_t;
 
@@ -69,7 +69,7 @@ oxs_asym_ctx_get_operation_impl(
     const oxs_asym_ctx_t *asym_ctx,
     const axis2_env_t *env);
 
-oxs_certificate_t *AXIS2_CALL
+oxs_x509_cert_t *AXIS2_CALL
 oxs_asym_ctx_get_certificate_impl(
     const oxs_asym_ctx_t *asym_ctx,
     const axis2_env_t *env);
@@ -102,7 +102,7 @@ axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_certificate_impl(
     oxs_asym_ctx_t *asym_ctx,
     const axis2_env_t *env,
-    oxs_certificate_t *certificate);
+    oxs_x509_cert_t *certificate);
 
 /******************** end of function headers *****************/
 
@@ -155,7 +155,7 @@ oxs_asym_ctx_get_operation_impl(
     return asym_ctx_impl->operation;
 }
 
-oxs_certificate_t *AXIS2_CALL
+oxs_x509_cert_t *AXIS2_CALL
 oxs_asym_ctx_get_certificate_impl(
     const oxs_asym_ctx_t *asym_ctx,
     const axis2_env_t *env)
@@ -250,7 +250,7 @@ axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_certificate_impl(
     oxs_asym_ctx_t *asym_ctx,
     const axis2_env_t *env,
-    oxs_certificate_t *certificate)
+    oxs_x509_cert_t *certificate)
 {
     oxs_asym_ctx_impl_t *oxs_asym_ctx_impl = NULL;
 
@@ -260,7 +260,7 @@ oxs_asym_ctx_set_certificate_impl(
 
     if (oxs_asym_ctx_impl->certificate)
     {
-        oxs_certificate_free(oxs_asym_ctx_impl->certificate, env);
+        oxs_x509_cert_free(oxs_asym_ctx_impl->certificate, env);
         oxs_asym_ctx_impl->certificate = NULL;
     }
     oxs_asym_ctx_impl->certificate = certificate;
@@ -351,7 +351,7 @@ oxs_asym_ctx_free_impl(oxs_asym_ctx_t *asym_ctx,
 
     if (asym_ctx_impl->certificate)
     {
-        oxs_certificate_free(asym_ctx_impl->certificate, env);
+        oxs_x509_cert_free(asym_ctx_impl->certificate, env);
         asym_ctx_impl->certificate = NULL;
     }
 
@@ -398,7 +398,7 @@ oxs_asym_ctx_get_operation(const oxs_asym_ctx_t *ctx,
      return  ctx->ops->get_operation(ctx, env);
 }
 
-AXIS2_EXTERN oxs_certificate_t* AXIS2_CALL
+AXIS2_EXTERN oxs_x509_cert_t* AXIS2_CALL
 oxs_asym_ctx_get_certificate(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env)
 {
@@ -440,7 +440,7 @@ oxs_asym_ctx_set_operation(oxs_asym_ctx_t *ctx,
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_certificate(oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env,
-                    oxs_certificate_t *certificate)
+                    oxs_x509_cert_t *certificate)
 {
      return  ctx->ops->set_certificate(ctx, env, certificate);
 }

@@ -31,9 +31,6 @@
 
     <parameter name="InflowSecurity">
       <action>
-        <items>Encrypt</items>
-        <encryptionKeyTransportAlgorithm>http://www.w3.org/2000/09/xmldsig#rsa-sha1</encryptionKeyTransportAlgorithm>
-        <encryptionSymAlgorithm>http://www.w3.org/200i1/04/xmlenc#tripledes-cbc</encryptionSymAlgorithm>  
         <decryptionPropFile>/home/kau/keys/rsakey.pem</decryptionPropFile>
       </action>
     </parameter>
