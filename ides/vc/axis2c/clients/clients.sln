@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "echo", "echo\echo.vcproj", "{57414A3E-782C-4472-9EEE-981EF0649258}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mtom", "mtom\mtom.vcproj", "{9EA3CB05-003C-410C-A4F2-B0DB7F01645D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "math", "math\math.vcproj", "{9121BA33-CE71-4775-AD78-1114696BFEC8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{57414A3E-782C-4472-9EEE-981EF0649258}.Debug|Win32.ActiveCfg = Debug|Win32
+		{57414A3E-782C-4472-9EEE-981EF0649258}.Debug|Win32.Build.0 = Debug|Win32
+		{57414A3E-782C-4472-9EEE-981EF0649258}.Release|Win32.ActiveCfg = Release|Win32
+		{57414A3E-782C-4472-9EEE-981EF0649258}.Release|Win32.Build.0 = Release|Win32
+		{9EA3CB05-003C-410C-A4F2-B0DB7F01645D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9EA3CB05-003C-410C-A4F2-B0DB7F01645D}.Debug|Win32.Build.0 = Debug|Win32
+		{9EA3CB05-003C-410C-A4F2-B0DB7F01645D}.Release|Win32.ActiveCfg = Release|Win32
+		{9EA3CB05-003C-410C-A4F2-B0DB7F01645D}.Release|Win32.Build.0 = Release|Win32
+		{9121BA33-CE71-4775-AD78-1114696BFEC8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9121BA33-CE71-4775-AD78-1114696BFEC8}.Debug|Win32.Build.0 = Debug|Win32
+		{9121BA33-CE71-4775-AD78-1114696BFEC8}.Release|Win32.ActiveCfg = Release|Win32
+		{9121BA33-CE71-4775-AD78-1114696BFEC8}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
