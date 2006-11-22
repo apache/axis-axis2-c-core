@@ -999,7 +999,7 @@ axiom_util_get_localname(axiom_node_t *node,
         return NULL;
     if (AXIOM_NODE_GET_NODE_TYPE(node, env) != AXIOM_ELEMENT)
         return NULL;
-    om_ele = (axiom_element_t *)AXIOM_NODE_GET_NODE_TYPE(node, env);
+    om_ele = (axiom_element_t *)AXIOM_NODE_GET_DATA_ELEMENT(node, env);
     if (om_ele)
         return AXIOM_ELEMENT_GET_LOCALNAME(om_ele, env);
     return NULL;
