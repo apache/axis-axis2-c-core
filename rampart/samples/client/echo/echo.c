@@ -85,29 +85,29 @@ int main(int argc, char** argv)
 
 #ifdef DYN_SETTINGS
     un_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(un_property, env, "Raigama");
+    AXIS2_PROPERTY_SET_VALUE(un_property, env, axis2_strdup ("Raigama", env));
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_USER, un_property);
 
     pw_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(pw_property, env, "RaigamaPW");
+    AXIS2_PROPERTY_SET_VALUE(pw_property, env, axis2_strdup ("RaigamaPW", env));
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_PASSWORD,  pw_property);
 
     pw_type_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(pw_type_property, env, RAMPART_PASSWORD_DIGEST);
+    AXIS2_PROPERTY_SET_VALUE(pw_type_property, env, axis2_strdup (RAMPART_PASSWORD_DIGEST, env));
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_PASSWORD_TYPE, pw_type_property);
 
     /*Make sure these action itmes are validated by the server side. Otherwise error*/
     items_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(items_property, env, "UsernameToken Timestamp");
+    AXIS2_PROPERTY_SET_VALUE(items_property, env, axis2_strdup("UsernameToken Timestamp", env));
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_ITEMS, items_property);
 
     /*Make sure this is the correct path for the callback module*/
     pw_cb_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(pw_cb_property, env, "/home/kau/axis2/c/deploy/rampart/samples/callback/libpwcb.so");
+    AXIS2_PROPERTY_SET_VALUE(pw_cb_property, env, axis2_strdup ("/home/kau/axis2/c/deploy/rampart/samples/callback/libpwcb.so", env));
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_PW_CALLBACK_CLASS , pw_cb_property);
 
     time_to_live_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(time_to_live_property, env, "-420");
+    AXIS2_PROPERTY_SET_VALUE(time_to_live_property, env, axis2_strdup ("-420", env));
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_TIME_TO_LIVE, time_to_live_property);
 #endif
 
@@ -170,8 +170,7 @@ int main(int argc, char** argv)
 
     if (svc_client)
     {
-        /*TODO check the double free. After Samisa's modifications*/
-        /*AXIS2_SVC_CLIENT_FREE(svc_client, env);*/
+        AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
     return 0;
@@ -196,6 +195,5 @@ build_om_payload_for_echo_svc(const axis2_env_t *env)
     om_str = AXIOM_NODE_TO_STRING(echo_om_node, env);
     if (om_str)
         printf("\nSending OM : %s\n", om_str);
-
     return echo_om_node;
 }
