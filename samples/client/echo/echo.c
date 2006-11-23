@@ -104,7 +104,6 @@ int main(int argc, char** argv)
             printf("\nReceived OM : %s\n", om_str);
         printf("\necho client invoke SUCCESSFUL!\n");
 
-        /*AXIOM_NODE_FREE_TREE(ret_node, env);*/
         AXIS2_FREE(env->allocator, om_str);
         ret_node = NULL;
     }
@@ -126,7 +125,6 @@ int main(int argc, char** argv)
             printf("\nReceived OM : %s\n", om_str);
         printf("\necho client invoke SUCCESSFUL!\n");
 
-        /*AXIOM_NODE_FREE_TREE(ret_node2, env);*/
         AXIS2_FREE(env->allocator, om_str);
         ret_node2 = NULL;
     }
@@ -138,39 +136,17 @@ int main(int argc, char** argv)
         printf("echo client invoke FAILED!\n");
     }
     
-    /*if (payload)
-    {
-        AXIOM_NODE_FREE_TREE(payload, env);
-        payload = NULL;
-    }*/
-
     if (svc_client)
     {
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
 
-    /*if (endpoint_ref)
-    {
-        AXIS2_ENDPOINT_REF_FREE(endpoint_ref, env);
-        endpoint_ref = NULL;
-    }*/
-    /*if (env->allocator)
-    {
-        allocator = env->allocator;
-    }*/
-
     if (env)
     {
         axis2_env_free((axis2_env_t *) env);
         env = NULL;
     }
-
-    /*if (allocator)
-    {
-        AXIS2_FREE(allocator, allocator);
-        allocator = NULL;
-    }*/
 
     return 0;
 }
