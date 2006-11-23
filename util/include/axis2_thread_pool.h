@@ -113,6 +113,13 @@ AXIS2_EXTERN axis2_thread_pool_t * AXIS2_CALL axis2_thread_pool_init(
 AXIS2_EXTERN struct axis2_env * AXIS2_CALL
 axis2_init_thread_env(const struct axis2_env *system_env);
 
+/**
+ * This function can be used to free the environment that was used  
+ * in a thread function
+ */
+AXIS2_EXTERN void AXIS2_CALL
+axis2_free_thread_env(struct axis2_env *thread_env);
+
 #define AXIS2_THREAD_POOL_GET_THREAD(thread_pool, func, data) \
       ((thread_pool)->ops->get_thread(thread_pool, func, data))
 

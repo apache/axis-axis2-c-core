@@ -48,6 +48,7 @@ typedef struct axis2_http_svr_thd_args
     axis2_env_t *env;
     axis2_socket_t socket;
     axis2_http_worker_t *worker;
+    axis2_thread_t *thread;
 }
 axis2_http_svr_thd_args_t;
 
@@ -218,9 +219,11 @@ axis2_http_svr_thread_run(
         arg_list->env = (axis2_env_t *)env;
         arg_list->socket = socket;
         arg_list->worker = svr_thread_impl->worker;
+        arg_list->thread = NULL;
 #ifdef AXIS2_SVR_MULTI_THREADED
         worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
                 worker_func, (void *)arg_list);
+        arg_list->thread = worker_thread;
         if (NULL == worker_thread)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
@@ -337,7 +340,6 @@ worker_func(
     AXIS2_SIMPLE_HTTP_SVR_CONN_FREE(svr_conn, thread_env);
     if (request)
         AXIS2_HTTP_SIMPLE_REQUEST_FREE(request, thread_env);
-    AXIS2_FREE(thread_env->allocator, arg_list);
     AXIS2_PLATFORM_GET_TIME_IN_MILLIS(&t2);
     millisecs = t2.millitm - t1.millitm;
     secs = difftime(t2.time, t1.time);
@@ -370,7 +372,14 @@ worker_func(
     /*axis2_env_free_masked(thread_env, 0x2);*/
     /*axiom_xml_reader_cleanup();*/
 #ifdef AXIS2_SVR_MULTI_THREADED
-    /*AXIS2_THREAD_POOL_EXIT_THREAD(env->thread_pool, thd);*/
+    AXIS2_THREAD_POOL_EXIT_THREAD(thread_env->thread_pool, arg_list->thread);
 #endif
+    AXIS2_FREE(thread_env->allocator, arg_list);
+
+    if (thread_env)
+    {
+        axis2_free_thread_env(thread_env);
+        thread_env = NULL;
+    }
     return NULL;
 }
