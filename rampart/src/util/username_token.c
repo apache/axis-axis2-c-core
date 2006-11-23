@@ -27,7 +27,7 @@
 #include <rampart_callback.h>
 #include <rampart_handler_util.h>
 #include <oxs_axiom.h>
-
+#include <rampart_sec_processed_result.h>
 typedef struct rampart_username_token_impl
 {
     rampart_username_token_t username_token;

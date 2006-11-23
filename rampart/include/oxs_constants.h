@@ -112,9 +112,6 @@ extern "C"
 /****************************************************************
    AES 
 ****************************************************************/
-#define OXS_NAME_AES_KEY_VALUE          "aes" 
-#define OXS_NODE_AES_KEY_VALUE          "AESKeyValue" 
-#define OXS_HREF_AES_KEY_VALUE          "http://www.aleksey.com/xmlsec/2002#AESKeyValue" 
 
 #define OXS_NAME_AES_128_CBC        "aes128-cbc" 
 #define OXS_HREF_AES_128_CBC        "http://www.w3.org/2001/04/xmlenc#aes128-cbc" 
@@ -145,8 +142,6 @@ extern "C"
  DES 
 ****************************************************************/
 #define OXS_NAME_DES_KEY_VALUE       "des" 
-#define OXS_NODE_DES_KEY_VALUE       "DESKeyValue" 
-#define OXS_HREF_DES_KEY_VALUE       "http://www.aleksey.com/xmlsec/2002#DESKeyValue" 
 
 #define OXS_NAME_DES3_CBC           "tripledes-cbc" 
 #define OXS_HREF_DES3_CBC           "http://www.w3.org/2001/04/xmlenc#tripledes-cbc" 
