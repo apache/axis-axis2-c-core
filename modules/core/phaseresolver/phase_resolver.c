@@ -1631,12 +1631,14 @@ axis2_phase_resolver_engage_module_to_op(
                 }
             }
         }
+
+        if(phase_holder)
+        {
+            AXIS2_PHASE_HOLDER_FREE(phase_holder, env);
+            phase_holder = NULL;
+        }
     }
-    if(phase_holder)
-    {
-        AXIS2_PHASE_HOLDER_FREE(phase_holder, env);
-        phase_holder = NULL;
-    }
+    
     return AXIS2_SUCCESS;
 }
 

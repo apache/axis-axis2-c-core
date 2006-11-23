@@ -55,21 +55,25 @@ void axis2_populate_axis_service(axis2_stub_t* stub, const axis2_env_t *env)
     op = axis2_op_create_with_qname(env, op_qname);
     AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
     AXIS2_SVC_ADD_OP(svc, env, op);
+    AXIS2_QNAME_FREE(op_qname, env);
 
     op_qname = axis2_qname_create(env, "sub" , "", NULL);
     op = axis2_op_create_with_qname(env, op_qname);
     AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
     AXIS2_SVC_ADD_OP(svc, env, op);
+    AXIS2_QNAME_FREE(op_qname, env);
 
     op_qname = axis2_qname_create(env, "mul" , "", NULL);
     op = axis2_op_create_with_qname(env, op_qname);
     AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
     AXIS2_SVC_ADD_OP(svc, env, op);
+    AXIS2_QNAME_FREE(op_qname, env);
 
     op_qname = axis2_qname_create(env, "div" , "", NULL);
     op = axis2_op_create_with_qname(env, op_qname);
     AXIS2_OP_SET_MSG_EXCHANGE_PATTERN(op, env, AXIS2_MEP_URI_OUT_IN);
     AXIS2_SVC_ADD_OP(svc, env, op);
+    AXIS2_QNAME_FREE(op_qname, env);
 }
 
 axis2_stub_t *
@@ -111,6 +115,7 @@ axis2_math_stub_add(axis2_stub_t *stub,
     svc_client = AXIS2_STUB_GET_SVC_CLIENT(stub, env);
     op_qname = axis2_qname_create(env, "add" , "", NULL);
     ret_node =  AXIS2_SVC_CLIENT_SEND_RECEIVE_WITH_OP_QNAME(svc_client, env, op_qname, node);
+    AXIS2_QNAME_FREE(op_qname, env);
 
     return ret_node;
 }

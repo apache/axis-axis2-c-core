@@ -124,6 +124,13 @@ int main(int argc, char** argv)
     {
         AXIS2_STUB_FREE(stub, env);
     }
+
+    if (env)
+    {
+        axis2_env_free((axis2_env_t *) env);
+        env = NULL;
+    }
+    
     return status;
 }
 
