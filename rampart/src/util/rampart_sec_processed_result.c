@@ -32,7 +32,7 @@ rampart_set_security_processed_result(const axis2_env_t *env,
 {
     axis2_hash_t *sec_processed_results = NULL;
 
-    sec_processed_results = rampart_get_security_processed_results_set(env, msg_ctx);
+    sec_processed_results = rampart_get_all_security_processed_results(env, msg_ctx);
     if(!sec_processed_results){
         return AXIS2_FAILURE;
     }
@@ -48,7 +48,7 @@ rampart_get_security_processed_result(const axis2_env_t *env,
 {
     axis2_hash_t *sec_processed_results = NULL;
 
-    sec_processed_results = rampart_get_security_processed_results_set(env, msg_ctx);
+    sec_processed_results = rampart_get_all_security_processed_results(env, msg_ctx);
     if(!sec_processed_results){
         return NULL;
     }
@@ -76,7 +76,7 @@ rampart_set_security_processed_results_property(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
-rampart_get_security_processed_results_set(const axis2_env_t *env,
+rampart_get_all_security_processed_results(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx)
 {
     axis2_property_t *sec_processed_results_prop = NULL;
@@ -106,7 +106,7 @@ rampart_print_security_processed_results_set(const axis2_env_t *env,
     const void *key = NULL;
     void *val = NULL;
     
-    sec_processed_results = rampart_get_security_processed_results_set(env, msg_ctx);
+    sec_processed_results = rampart_get_all_security_processed_results(env, msg_ctx);
     if(!sec_processed_results){
         return;
     }

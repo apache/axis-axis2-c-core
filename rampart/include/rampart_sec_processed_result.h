@@ -67,7 +67,7 @@ rampart_set_security_processed_results_property(const axis2_env_t *env,
 *   Get the complete set of security processed results
 */
 AXIS2_EXTERN axis2_hash_t* AXIS2_CALL
-rampart_get_security_processed_results_set(const axis2_env_t *env,
+rampart_get_all_security_processed_results(const axis2_env_t *env,
     axis2_msg_ctx_t *msg_ctx);
 
 /**

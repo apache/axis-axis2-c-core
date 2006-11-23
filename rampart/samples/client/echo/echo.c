@@ -98,7 +98,7 @@ int main(int argc, char** argv)
 
     /*Make sure these action itmes are validated by the server side. Otherwise error*/
     items_property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_VALUE(items_property, env, axis2_strdup("UsernameToken ", env));
+    AXIS2_PROPERTY_SET_VALUE(items_property, env, axis2_strdup("UsernameToken Timestamp", env));
     AXIS2_OPTIONS_SET_PROPERTY(options, env, RAMPART_ACTION_ITEMS, items_property);
 
     /*Make sure this is the correct path for the callback module*/
