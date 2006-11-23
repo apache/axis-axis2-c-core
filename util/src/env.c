@@ -74,7 +74,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL  axis2_env_free(axis2_env_t *env)
         AXIS2_THREAD_POOL_FREE(env->thread_pool);
         env->thread_pool = NULL;
     }
-    if (env)
+    if (env && env->allocator)
     {
         AXIS2_FREE(env->allocator, env);
         env = NULL;

@@ -167,8 +167,16 @@ axis2_init_thread_env(const axis2_env_t *system_env)
 AXIS2_EXTERN void AXIS2_CALL
 axis2_free_thread_env(struct axis2_env *thread_env)
 {
-    thread_env->allocator = NULL;
+    if (!thread_env)
+        return;
+    /* log, thread_pool and allocator are shared, so do not free them */
     thread_env->log = NULL;
     thread_env->thread_pool = NULL;
-    axis2_env_free(thread_env);
+    if (thread_env->error)
+    {
+        AXIS2_ERROR_FREE(thread_env->error);
+        thread_env->error = NULL;
+    }
+    AXIS2_FREE(thread_env->allocator, thread_env);
 }
+

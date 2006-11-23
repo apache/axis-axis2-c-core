@@ -219,11 +219,9 @@ axis2_http_svr_thread_run(
         arg_list->env = (axis2_env_t *)env;
         arg_list->socket = socket;
         arg_list->worker = svr_thread_impl->worker;
-        arg_list->thread = NULL;
 #ifdef AXIS2_SVR_MULTI_THREADED
         worker_thread = AXIS2_THREAD_POOL_GET_THREAD(env->thread_pool,
                 worker_func, (void *)arg_list);
-        arg_list->thread = worker_thread;
         if (NULL == worker_thread)
         {
             AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "Thread creation failed"
@@ -369,11 +367,7 @@ worker_func(
                 secs);
 #endif
     }
-    /*axis2_env_free_masked(thread_env, 0x2);*/
-    /*axiom_xml_reader_cleanup();*/
-#ifdef AXIS2_SVR_MULTI_THREADED
-    AXIS2_THREAD_POOL_EXIT_THREAD(thread_env->thread_pool, arg_list->thread);
-#endif
+
     AXIS2_FREE(thread_env->allocator, arg_list);
 
     if (thread_env)
@@ -381,5 +375,9 @@ worker_func(
         axis2_free_thread_env(thread_env);
         thread_env = NULL;
     }
+#ifdef AXIS2_SVR_MULTI_THREADED
+    AXIS2_THREAD_POOL_EXIT_THREAD(env->thread_pool, thd);
+#endif
+
     return NULL;
 }
