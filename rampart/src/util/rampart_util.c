@@ -14,16 +14,20 @@
  *   limitations under the License.
  */
 
-/* Rampart_crypto_util will contain crypto functionalities of the rampart model
+/* 
  *
  */
 #include <stdio.h>
 #include <rampart_util.h>
 #include <axis2_util.h>
 #include <axis2_base64.h>
+#include <axis2_property.h>
 #include <time.h>
 #include <oxs_buffer.h>
 #include <openssl_util.h>
+#include <axis2_msg_ctx.h>
+#include <rampart_constants.h>
+
 /*Calculate the hash of concatenated string of
  * nonce, created and the password.
  *
@@ -34,6 +38,7 @@
 
 
 /*#define PRINTINFO 1 */
+
 AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_generate_nonce(const axis2_env_t *env)
 {
     oxs_buffer_t *buffer = NULL;

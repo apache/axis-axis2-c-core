@@ -123,6 +123,16 @@ extern "C"
 /*Dynamically set values*/
 #define RAMPART_ACTION_PASSWORD "password"
 #define RAMPART_CALLBACK_SPECIFIC_PROPERTY "callbackSpecificProperty"
+
+/*Security processed results*/
+#define RAMPART_SECURITY_PROCESSED_RESULTS "SecurityProcessedResults"
+#define RAMPART_SPR_UT_USERNAME "SPR_UT_username"
+#define RAMPART_SPR_UT_CREATED "SPR_UT_created"
+#define RAMPART_SPR_UT_NONCE "SPR_UT_nonce"
+#define RAMPART_SPR_UT_PASSWORD_TYPE "SPR_UT_passwordType"
+#define RAMPART_SPR_TS_CREATED "SPR_TS_created"
+#define RAMPART_SPR_TS_EXPIRES "SPR_TS_expires"
+
 #ifdef __cplusplus
 }
 #endif

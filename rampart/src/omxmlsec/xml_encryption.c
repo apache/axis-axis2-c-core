@@ -129,7 +129,7 @@ oxs_xml_enc_decrypt_node(const axis2_env_t *env,
     /*De-serialize the decrypted content to build the node*/
     deserialized_node = (axiom_node_t*)oxs_axiom_deserialize_node(env, decrypted_data);
     if(!deserialized_node){
-        oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,"Cannot deserialize a node from the content.");
+        oxs_error(ERROR_LOCATION, OXS_ERROR_ENCRYPT_FAILED,"Cannot deserialize a node from the content.\n%s", decrypted_data);
         return AXIS2_FAILURE;
     }
     /*Assign deserialized_node to the reference passed*/

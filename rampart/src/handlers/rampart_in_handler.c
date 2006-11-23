@@ -16,6 +16,7 @@
 
 #include <axis2_handler_desc.h>
 #include <axis2_array_list.h>
+#include <axis2_hash.h>
 #include <axiom_soap_const.h>
 #include <axiom_soap_envelope.h>
 #include <axiom_soap_header.h>
@@ -30,6 +31,8 @@
 #include <rampart_timestamp_token.h>
 #include <rampart_util.h>
 #include <rampart_sec_header_processor.h>
+#include <rampart_sec_processed_result.h>
+
 /*************************** Function headers *********************************/
 
 axis2_status_t AXIS2_CALL
@@ -127,11 +130,16 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
             }
             /*Then re-populate using the axis2_ctx*/
             status = RAMPART_ACTIONS_POPULATE_FROM_CTX(actions, env, ctx);
-
+            
 
             sec_node = rampart_get_security_token(env, msg_ctx, soap_header);
 
             sub_codes = axis2_array_list_create(env, 0);
+            /*Set the security processed results to the message ctx*/
+            status = rampart_set_security_processed_results_property(env, msg_ctx);
+            if(AXIS2_FAILURE == status){
+                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, "[rampart][rampart_in_handler] Unable to set the security processed results");
+            }
 
             if(!sec_node){
                 AXIS2_LOG_INFO(env->log, "[rampart][rampart_in_handler] No security header element.");
@@ -147,6 +155,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 return AXIS2_FAILURE;
             }
             */
+
             /*The main entry point for all security header validations*/    
             status = rampart_shp_process_message(env, msg_ctx, actions, soap_envelope, sec_node, sub_codes);
             if (AXIS2_FAILURE == status)
@@ -155,6 +164,7 @@ rampart_in_handler_invoke(struct axis2_handler *handler,
                 return AXIS2_FAILURE;
             }                
 
+            /*rampart_print_security_processed_results_set(env, msg_ctx);*/
 
         } /* End of sec_header */
 

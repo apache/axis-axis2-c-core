@@ -512,11 +512,13 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
             else if (0 == AXIS2_STRCMP(localname,  RAMPART_SECURITY_USERNAMETOKEN_NONCE))
             {
                 nonce = AXIOM_ELEMENT_GET_TEXT(element, env, node);
+                rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_NONCE, nonce);
 
             }
             else if (0 == AXIS2_STRCMP(localname ,  RAMPART_SECURITY_USERNAMETOKEN_CREATED))
             {
                 created = AXIOM_ELEMENT_GET_TEXT(element, env, node);
+                rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_CREATED, created);
 
             }
             else
@@ -539,6 +541,9 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
         AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Username is not specified");
         return AXIS2_FAILURE;
     }
+    
+    /*Set the username to the SPR*/
+    rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_USERNAME, username);
 
     ctx = AXIS2_MSG_CTX_GET_BASE(msg_ctx, env);
     pw_callback_module = RAMPART_ACTIONS_GET_PW_CB_CLASS(actions, env);
@@ -560,10 +565,12 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     {
         AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Generating digest to compare from the password");
         password_to_compare = rampart_crypto_sha1(env, nonce, created, password_from_svr);
+        rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_PASSWORD_TYPE, RAMPART_PASSWORD_DIGEST_URI);
     }
     else
     {
         password_to_compare = password_from_svr;
+        rampart_set_security_processed_result(env, msg_ctx, RAMPART_SPR_UT_PASSWORD_TYPE, RAMPART_PASSWORD_TEXT_URI);
     }
 
     /*The BIG moment. Compare passwords*/

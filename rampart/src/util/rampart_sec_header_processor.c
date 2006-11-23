@@ -157,20 +157,17 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
         axiom_node_t *envelope_node = NULL;
         oxs_ctx_t *ctx = NULL;
         axiom_node_t *decrypted_node = NULL; 
-        axiom_soap_body_t *body = NULL;
-        axiom_node_t *body_node = NULL;
 
         /*Get the i-th element and decrypt it */
         id = (axis2_char_t*)AXIS2_ARRAY_LIST_GET(reference_list, env, i);
         AXIS2_LOG_INFO(env->log, "[rampart][shp] Decrypting node, ID=%s", id);
+
+        /*Need to remove # sign from the ID*/
         id2 = axis2_string_substring_starting_at(id, 1);
         envelope_node = AXIOM_SOAP_ENVELOPE_GET_BASE_NODE(soap_envelope, env);
 
         /*Search for the node by its ID*/
-        body = AXIOM_SOAP_ENVELOPE_GET_BODY(soap_envelope, env);
-        body_node = AXIOM_SOAP_BODY_GET_BASE_NODE(body, env);
-        /*TODO Check why this fails for soap envelope node*/
-        enc_data_node = oxs_axiom_get_node_by_id(env, body_node, id2);
+        enc_data_node = oxs_axiom_get_node_by_id(env, envelope_node, OXS_ATTR_ID, id2);
         if(!enc_data_node){
             AXIS2_LOG_INFO(env->log, "[rampart][shp] Node with ID=%s cannot be found", id);
             continue;
