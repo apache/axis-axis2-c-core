@@ -290,6 +290,10 @@ axis2_http_client_send(
     if (client_impl->sockfd < 0)
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_SOCKET_ERROR, AXIS2_FAILURE);
+        if (str_body)
+        {
+            AXIS2_FREE(env->allocator, str_body);
+        }
         return AXIS2_FAILURE;
     }
     /* ONLY FOR TESTING

@@ -117,7 +117,6 @@ int main(int argc, char** argv)
                 " %d :: %s", env->error->error_number,
                 AXIS2_ERROR_GET_MESSAGE(env->error));
         printf("math stub invoke FAILED!\n");
-		  return -1;
     }
 
     if (stub)

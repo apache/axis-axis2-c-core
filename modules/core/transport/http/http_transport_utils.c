@@ -1042,6 +1042,7 @@ axis2_http_transport_utils_create_soap_msg(
     {
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NULL_IN_STREAM_IN_MSG_CTX,
                 AXIS2_FAILURE);
+        AXIS2_FREE(env->allocator, callback_ctx);
         return NULL;
     }
     property = AXIS2_MSG_CTX_GET_PROPERTY(msg_ctx, env,

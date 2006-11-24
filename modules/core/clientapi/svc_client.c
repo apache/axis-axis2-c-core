@@ -898,8 +898,6 @@ axis2_svc_client_send_receive(
 
         if (res_msg_ctx)
           soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(res_msg_ctx, env);
-        else
-          return NULL;
     }
 
     if (qname_free_flag)

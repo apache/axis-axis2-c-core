@@ -703,6 +703,12 @@ axis2_mep_client_two_way_send(
         if (AXIS2_ERROR_GET_STATUS_CODE(env->error) != AXIS2_SUCCESS)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_BLOCKING_INVOCATION_EXPECTS_RESPONSE, AXIS2_FAILURE);
+            if (engine)
+            {
+                AXIS2_ENGINE_FREE(engine, env);
+                engine = NULL;
+            }
+            AXIS2_MSG_CTX_FREE(response, env);
             return NULL;
         }
     }
