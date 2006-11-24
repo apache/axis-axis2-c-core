@@ -668,6 +668,8 @@ axis2_svc_client_send_robust(
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_op_client_t *op_client = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
+    axis2_status_t status = AXIS2_FAILURE;
+    axis2_bool_t qname_free_flag = AXIS2_FALSE;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
 
@@ -676,6 +678,7 @@ axis2_svc_client_send_robust(
     if (!op_qname)
     {
         op_qname = axis2_qname_create(env, AXIS2_ANON_ROBUST_OUT_ONLY_OP, NULL, NULL);
+        qname_free_flag = AXIS2_TRUE;
     }
 
     msg_ctx = axis2_msg_ctx_create(env,
@@ -702,7 +705,15 @@ axis2_svc_client_send_robust(
     svc_client_impl->op_client = op_client;
 
     AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(op_client, env, msg_ctx);
-    return AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
+    status = AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_TRUE);
+    
+    if (qname_free_flag)
+    {
+        AXIS2_QNAME_FREE((axis2_qname_t *) op_qname, env);
+        op_qname = NULL;
+    }
+
+    return status;
 }
 
 void AXIS2_CALL
@@ -715,6 +726,7 @@ axis2_svc_client_fire_and_forget(
     axis2_svc_client_impl_t *svc_client_impl = NULL;
     axis2_op_client_t *op_client = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
+    axis2_bool_t qname_free_flag = AXIS2_FALSE;
 
     if (!env)
         return;
@@ -724,6 +736,7 @@ axis2_svc_client_fire_and_forget(
     if (!op_qname)
     {
         op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_ONLY_OP, NULL, NULL);
+        qname_free_flag = AXIS2_TRUE;
     }
 
     msg_ctx = axis2_msg_ctx_create(env,
@@ -751,6 +764,13 @@ axis2_svc_client_fire_and_forget(
 
     AXIS2_OP_CLIENT_ADD_OUT_MSG_CTX(op_client, env, msg_ctx);
     AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_FALSE);
+    
+    if (qname_free_flag)
+    {
+        AXIS2_QNAME_FREE((axis2_qname_t *) op_qname, env);
+        op_qname = NULL;
+    }
+
     return;
 }
 
@@ -938,12 +958,14 @@ axis2_svc_client_send_receive_non_blocking(
     axis2_op_client_t *op_client = NULL;
     axis2_msg_ctx_t *msg_ctx = NULL;
     const axis2_char_t *transport_in_protocol = NULL;
+    axis2_bool_t qname_free_flag = AXIS2_FALSE;
 
     svc_client_impl = AXIS2_INTF_TO_IMPL(svc_client);
 
     if (!op_qname)
     {
         op_qname = axis2_qname_create(env, AXIS2_ANON_OUT_IN_OP, NULL, NULL);
+        qname_free_flag = AXIS2_TRUE;
     }
 
     msg_ctx = axis2_msg_ctx_create(env,
@@ -988,6 +1010,12 @@ axis2_svc_client_send_receive_non_blocking(
     }
 
     AXIS2_OP_CLIENT_EXECUTE(op_client, env, AXIS2_FALSE);
+    
+    if (qname_free_flag)
+    {
+        AXIS2_QNAME_FREE((axis2_qname_t *) op_qname, env);
+        op_qname = NULL;
+    }
 
     return;
 }

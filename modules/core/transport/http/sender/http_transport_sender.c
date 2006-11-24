@@ -619,6 +619,8 @@ axis2_http_transport_sender_write_message(
         AXIS2_REST_SENDER_SET_HTTP_VERSION(sender, env,
                 AXIS2_INTF_TO_IMPL(transport_sender)->http_version);
         status = AXIS2_REST_SENDER_SEND(sender, env, msg_ctx, data_out, url);
+
+        AXIS2_REST_SENDER_FREE(sender, env);
     }
     else
     {

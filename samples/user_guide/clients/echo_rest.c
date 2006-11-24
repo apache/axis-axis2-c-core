@@ -126,7 +126,10 @@ int main(int argc, char** argv)
         axis2_char_t *om_str = NULL;
         om_str = AXIOM_NODE_TO_STRING(ret_node, env);
         if (om_str)
+        {
             printf("\nReceived OM : %s\n", om_str);
+            AXIS2_FREE(env->allocator, om_str);
+        }
         printf("\necho client invoke SUCCESSFUL!\n");
     }
     else

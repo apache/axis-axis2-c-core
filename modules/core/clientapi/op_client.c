@@ -500,6 +500,7 @@ axis2_op_client_execute(
         if (!engine)
             return AXIS2_FAILURE;
         AXIS2_ENGINE_SEND(engine, env, msg_ctx);
+        AXIS2_ENGINE_FREE(engine, env);
     }
     else
     {
@@ -725,7 +726,8 @@ axis2_op_client_worker_func(
     axis2_op_client_worker_func_args_t *args_list = NULL;
     axis2_op_ctx_t *op_ctx = NULL;
     axis2_msg_ctx_t *response = NULL;
-    const axis2_env_t *th_env = NULL;
+    axis2_env_t *th_env = NULL;
+    axis2_thread_pool_t *th_pool = NULL;
 
     args_list = (axis2_op_client_worker_func_args_t *) data;
     if (!args_list)
@@ -742,10 +744,28 @@ axis2_op_client_worker_func(
 
     /* send the request and wait for response */
     response = axis2_mep_client_two_way_send(th_env, args_list->msg_ctx);
+
+    axis2_op_client_add_msg_ctx(&(args_list->op_client_impl->op_client), th_env,
+        response);
     args_list->op_client_impl->async_result = axis2_async_result_create(th_env, response);
     AXIS2_CALLBACK_INVOKE_ON_COMPLETE(args_list->callback, th_env, args_list->op_client_impl->async_result);
     AXIS2_CALLBACK_SET_COMPLETE(args_list->callback, th_env, AXIS2_TRUE);
 
+    /* clean up memory */
+    AXIS2_ASYNC_RESULT_FREE(args_list->op_client_impl->async_result, th_env);
+    
+    AXIS2_OP_CTX_FREE(op_ctx, th_env);
+        
+    th_pool = th_env->thread_pool;
+    
+    AXIS2_FREE(th_env->allocator, args_list);
+    
+    if (th_env)
+    {
+        axis2_free_thread_env(th_env);
+        th_env = NULL;
+    }
+    AXIS2_THREAD_POOL_EXIT_THREAD(th_pool, thd);
     return NULL;
 }
 

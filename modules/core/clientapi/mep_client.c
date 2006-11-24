@@ -631,6 +631,10 @@ axis2_mep_client_two_way_send(
         return NULL;
 
     status = AXIS2_ENGINE_SEND(engine, env, msg_ctx);
+    
+    AXIS2_ENGINE_FREE(engine, env);
+    engine = NULL;
+    
     if (status != AXIS2_SUCCESS)
         return NULL;
 

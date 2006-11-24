@@ -109,6 +109,13 @@ int main(int argc, char** argv)
         AXIS2_SVC_CLIENT_FREE(svc_client, env);
         svc_client = NULL;
     }
+
+    if (env)
+    {
+        axis2_env_free((axis2_env_t *) env);
+        env = NULL;
+    }
+
     return 0;
 }
 
@@ -126,7 +133,11 @@ build_om_programatically(const axis2_env_t *env)
     AXIOM_ELEMENT_SET_TEXT(notify_om_ele, env, "notify5", notify_om_node);
 
     buffer = AXIOM_NODE_TO_STRING(notify_om_node, env);
-    printf("\nSending OM node in XML : %s \n",  buffer);
+    if (buffer)
+    {
+        printf("\nSending OM node in XML : %s \n",  buffer);
+        AXIS2_FREE(env->allocator, buffer);
+    }
 
     return notify_om_node;
 }
