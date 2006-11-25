@@ -261,6 +261,12 @@ axiom_text_free(axiom_text_t * om_text,
         text_impl->content_id = NULL;
     }
 
+    if (text_impl->om_attribute)
+    {
+        AXIOM_ATTRIBUTE_FREE(text_impl->om_attribute, env);
+        text_impl->om_attribute = NULL;
+    }
+
     if (om_text->ops)
     {
         AXIS2_FREE(env->allocator, om_text->ops);
@@ -279,6 +285,7 @@ axiom_text_serialize(axiom_text_t *om_text,
     int status = AXIS2_SUCCESS;
     axiom_text_impl_t *om_text_impl = NULL;
     axis2_char_t *attribute_value = NULL;
+    axis2_char_t *temp_attribute_value = NULL;
     axis2_char_t *text = NULL;
     axiom_xml_writer_t *om_output_xml_writer = NULL;
 
@@ -305,9 +312,22 @@ axiom_text_serialize(axiom_text_t *om_text,
                     om_text_impl->content_id = AXIS2_STRDUP(content_id, env);
             }
             attribute_value = AXIS2_STRDUP("cid:", env);
-            attribute_value = AXIS2_STRACAT(attribute_value, om_text_impl->content_id, env);
+            temp_attribute_value = AXIS2_STRACAT(attribute_value, om_text_impl->content_id, env);
+            AXIS2_FREE(env->allocator, attribute_value);
+            attribute_value = temp_attribute_value;
+
             /*send binary as MTOM optimised*/
+            if (om_text_impl->om_attribute)
+            {
+                AXIOM_ATTRIBUTE_FREE(om_text_impl->om_attribute, env);
+                om_text_impl->om_attribute = NULL;
+            }
+
             om_text_impl->om_attribute = axiom_attribute_create(env, "href", attribute_value, NULL);
+
+            AXIS2_FREE(env->allocator, attribute_value);
+            attribute_value = NULL;
+
             axiom_text_serialize_start_part(om_text, env, om_output);
 
             axiom_output_write_optimized(om_output, env, om_text);

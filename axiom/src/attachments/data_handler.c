@@ -290,6 +290,14 @@ axiom_data_handler_read_from(axiom_data_handler_t *data_handler, const axis2_env
                     read_stream_size = 0;
                 }
             }
+            else
+            {
+                if (read_stream)
+                {
+                    AXIS2_FREE(env->allocator, read_stream);
+                    read_stream = NULL;
+                }
+            }
         }
         while (!feof(f));
 

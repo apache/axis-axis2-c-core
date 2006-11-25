@@ -175,7 +175,9 @@ axiom_mime_output_complete(axiom_mime_output_t *mime_output,
 {
     axis2_status_t status = AXIS2_FAILURE;
     axis2_char_t *header_value = NULL;
+    axis2_char_t *temp_header_value = NULL;
     axis2_char_t *content_id_string = NULL;
+    axis2_char_t *temp_content_id_string = NULL;
     axiom_mime_body_part_t *root_mime_body_part = NULL;
     axis2_byte_t *output_stream_start = NULL;
     int output_stream_start_size = 0;
@@ -188,6 +190,7 @@ axiom_mime_output_complete(axiom_mime_output_t *mime_output,
     axis2_byte_t *stream_buffer = NULL;
     int stream_buffer_size = 0;
     int soap_body_buffer_size = 0;
+    axis2_char_t *temp_soap_body_buffer;
 
     AXIS2_ENV_CHECK(env, NULL);
 
@@ -200,22 +203,35 @@ axiom_mime_output_complete(axiom_mime_output_t *mime_output,
 
     /* content-type */
     header_value = AXIS2_STRDUP("application/xop+xml; charset=", env);
-    header_value = AXIS2_STRACAT(header_value, char_set_encoding, env);
-    header_value = AXIS2_STRACAT(header_value, "; type=\"", env);
-    header_value = AXIS2_STRACAT(header_value, soap_content_type, env);
-    header_value = AXIS2_STRACAT(header_value, "\";", env);
+    temp_header_value = AXIS2_STRACAT(header_value, char_set_encoding, env);
+    AXIS2_FREE(env->allocator, header_value);
+    header_value = temp_header_value;
+    temp_header_value = AXIS2_STRACAT(header_value, "; type=\"", env);
+    AXIS2_FREE(env->allocator, header_value);
+    header_value = temp_header_value;
+    temp_header_value = AXIS2_STRACAT(header_value, soap_content_type, env);
+    AXIS2_FREE(env->allocator, header_value);
+    header_value = temp_header_value;
+    temp_header_value = AXIS2_STRACAT(header_value, "\";", env);
+    AXIS2_FREE(env->allocator, header_value);
+    header_value = temp_header_value;
     AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-type", header_value);
 
     /* content-transfer-encoding */
-    AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-transfer-encoding", "binary");
+    AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-transfer-encoding", axis2_strdup("binary", env));
 
     /* content-id */
     content_id_string = (axis2_char_t *)"<";
     content_id_string = AXIS2_STRACAT(content_id_string, content_id, env);
-    content_id_string = AXIS2_STRACAT(content_id_string, ">", env);
+    temp_content_id_string = AXIS2_STRACAT(content_id_string, ">", env);
+    AXIS2_FREE(env->allocator, content_id_string);
+    content_id_string = temp_content_id_string;
     AXIOM_MIME_BODY_PART_ADD_HEADER(root_mime_body_part, env, "content-id", content_id_string);
 
     axis2_write_body_part(mime_output, env, &output_stream_body, &output_stream_body_size, root_mime_body_part, boundary);
+
+    AXIOM_MIME_BODY_PART_FREE(root_mime_body_part, env);
+    root_mime_body_part = NULL;
 
     if (binary_node_list)
     {
@@ -277,7 +293,11 @@ axiom_mime_output_complete(axiom_mime_output_t *mime_output,
 
     if (soap_body_buffer)
     {
-        soap_body_buffer = AXIS2_STRACAT(soap_body_buffer, "\r\n", env);
+        temp_soap_body_buffer = AXIS2_STRACAT(soap_body_buffer, "\r\n", env);
+        
+        AXIS2_FREE(env->allocator, soap_body_buffer);
+        soap_body_buffer = temp_soap_body_buffer;
+        
         soap_body_buffer_size = AXIS2_STRLEN(soap_body_buffer);
     }
 
@@ -386,6 +406,7 @@ axis2_create_mime_body_part(axiom_text_t *text, const axis2_env_t *env)
     const axis2_char_t *content_type = "application/octet-stream";
     axiom_mime_body_part_t * mime_body_part = axiom_mime_body_part_create(env);
     axis2_char_t *content_id = (axis2_char_t *)"<";
+    axis2_char_t *temp_content_id = NULL;
     if (!mime_body_part)
         return NULL;
     data_handler = AXIOM_TEXT_GET_DATA_HANDLER(text, env);
@@ -399,10 +420,14 @@ axis2_create_mime_body_part(axiom_text_t *text, const axis2_env_t *env)
             data_handler);
     content_id = AXIS2_STRACAT(content_id,
             AXIOM_TEXT_GET_CONTENT_ID(text, env), env);
-    content_id = AXIS2_STRACAT(content_id, ">", env);
+    temp_content_id = AXIS2_STRACAT(content_id, ">", env);
+    
+    AXIS2_FREE(env->allocator, content_id);
+    content_id = temp_content_id;
+    
     AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-id", content_id);
-    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-type", content_type);
-    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-transfer-encoding", "binary");
+    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-type", axis2_strdup(content_type, env));
+    AXIOM_MIME_BODY_PART_ADD_HEADER(mime_body_part, env, "content-transfer-encoding", axis2_strdup("binary", env));
 
     return mime_body_part;
 }
@@ -502,37 +527,70 @@ axiom_mime_output_get_content_type_for_mime(axiom_mime_output_t *mime_output,
         const axis2_char_t *soap_content_type)
 {
     axis2_char_t *content_type_string = NULL;
+    axis2_char_t *temp_content_type_string = NULL;
 
     AXIS2_ENV_CHECK(env, NULL);
 
     content_type_string = AXIS2_STRDUP("multipart/related", env);
-    content_type_string = AXIS2_STRACAT(content_type_string, "; ", env);
+    temp_content_type_string = AXIS2_STRACAT(content_type_string, "; ", env);
+    AXIS2_FREE(env->allocator, content_type_string);
+    content_type_string = temp_content_type_string;
     if (boundary)
     {
-        content_type_string = AXIS2_STRACAT(content_type_string, "boundary=", env);
-        content_type_string = AXIS2_STRACAT(content_type_string, boundary, env);
-        content_type_string = AXIS2_STRACAT(content_type_string, "; ", env);
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, "boundary=", env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, boundary, env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, "; ", env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
     }
-    content_type_string = AXIS2_STRACAT(content_type_string, "type=\"application/xop+xml\"", env);
-    content_type_string = AXIS2_STRACAT(content_type_string, "; ", env);
+    temp_content_type_string = AXIS2_STRACAT(content_type_string, "type=\"application/xop+xml\"", env);
+    AXIS2_FREE(env->allocator, content_type_string);
+    content_type_string = temp_content_type_string;
+    temp_content_type_string = AXIS2_STRACAT(content_type_string, "; ", env);
+    AXIS2_FREE(env->allocator, content_type_string);
+    content_type_string = temp_content_type_string;
     if (content_id)
     {
-        content_type_string = AXIS2_STRACAT(content_type_string, "start=\"<", env);
-        content_type_string = AXIS2_STRACAT(content_type_string, content_id , env);
-        content_type_string = AXIS2_STRACAT(content_type_string, ">\"", env);
-        content_type_string = AXIS2_STRACAT(content_type_string, "; ", env);
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, "start=\"<", env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, content_id , env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, ">\"", env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, "; ", env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
     }
     if (soap_content_type)
     {
-        content_type_string = AXIS2_STRACAT(content_type_string, "start-info=\"", env);
-        content_type_string = AXIS2_STRACAT(content_type_string, soap_content_type, env);
-        content_type_string = AXIS2_STRACAT(content_type_string, "\"; ", env);
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, "start-info=\"", env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, soap_content_type, env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, "\"; ", env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
     }
     if (char_set_encoding)
     {
-        content_type_string = AXIS2_STRACAT(content_type_string, "charset=\"", env);
-        content_type_string = AXIS2_STRACAT(content_type_string, char_set_encoding, env);
-        content_type_string = AXIS2_STRACAT(content_type_string, "\"", env);
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, "charset=\"", env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, char_set_encoding, env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
+        temp_content_type_string = AXIS2_STRACAT(content_type_string, "\"", env);
+        AXIS2_FREE(env->allocator, content_type_string);
+        content_type_string = temp_content_type_string;
     }
 
     return content_type_string;

@@ -314,6 +314,12 @@ axiom_output_free(axiom_output_t *om_output,
         om_output_impl->binary_node_list = NULL;
     }
 
+    if (om_output_impl->mime_output)
+    {
+        AXIOM_MIME_OUTPUT_FREE(om_output_impl->mime_output, env);
+        om_output_impl->mime_output = NULL;
+    }
+
     if (om_output->ops)
     {
         AXIS2_FREE(env->allocator, om_output->ops);

@@ -37,7 +37,6 @@ int main(int argc, char** argv)
     axiom_node_t *ret_node = NULL;
     const axis2_char_t *image_name = "resources/axis2.jpg";
     const axis2_char_t *to_save_name = "test.jpg";
-    axis2_property_t *property = NULL;
     axis2_endpoint_ref_t* reply_to = NULL;
 
 
@@ -63,9 +62,6 @@ int main(int argc, char** argv)
 
     /* Create EPR with given address */
     endpoint_ref = axis2_endpoint_ref_create(env, address);
-    property = axis2_property_create(env);
-    AXIS2_PROPERTY_SET_SCOPE(property, env, AXIS2_SCOPE_APPLICATION);
-    AXIS2_PROPERTY_SET_VALUE(property, env, AXIS2_VALUE_TRUE);
 
     /* Setup options */
     options = axis2_options_create(env);
@@ -120,7 +116,10 @@ int main(int argc, char** argv)
         axis2_char_t *om_str = NULL;
         om_str = AXIOM_NODE_TO_STRING(ret_node, env);
         if (om_str)
+        {
             printf("\nReceived OM : %s\n", om_str);
+            AXIS2_FREE(env->allocator, om_str);
+        }
         printf("\nmtom client invoke SUCCESSFUL!\n");
     }
     else
@@ -156,6 +155,7 @@ build_om_programatically(const axis2_env_t *env,
     axiom_node_t* data_om_node = NULL;
     axiom_text_t * data_text = NULL;
     axiom_namespace_t *ns1 = NULL;
+    axis2_char_t *om_str = NULL;
 
     axiom_data_handler_t *data_handler = NULL;
 
@@ -169,6 +169,11 @@ build_om_programatically(const axis2_env_t *env,
 
     data_handler = axiom_data_handler_create(env, image_name, "image/jpeg");
     data_text = axiom_text_create_with_data_handler(env, image_om_node, data_handler, &data_om_node);
-    printf("%s", AXIOM_NODE_TO_STRING(mtom_om_node, env));
+    om_str = AXIOM_NODE_TO_STRING(mtom_om_node, env);
+    if (om_str)
+    {
+        printf("%s", om_str);
+        AXIS2_FREE(env->allocator, om_str);
+    }
     return mtom_om_node;
 }
