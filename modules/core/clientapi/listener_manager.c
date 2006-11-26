@@ -250,6 +250,8 @@ axis2_listener_manager_make_sure_started(
                 }
             }
         }
+
+        AXIS2_QNAME_FREE(qname, env);
     }
 
     if (tl_state)
@@ -337,6 +339,17 @@ axis2_listener_manager_free(
 
     if (listener_manager_impl->listener_map)
     {
+        axis2_hash_index_t *hi = NULL;
+        const void *key = NULL;
+        void *val = NULL;
+        for (hi = axis2_hash_first(listener_manager_impl->listener_map, env); hi;
+                hi = axis2_hash_next(env, hi))
+        {
+            axis2_hash_this(hi, &key, NULL, &val);
+            if (val)
+                AXIS2_FREE(env->allocator, val);
+        }
+
         axis2_hash_free(listener_manager_impl->listener_map, env);
         listener_manager_impl->listener_map = NULL;
     }

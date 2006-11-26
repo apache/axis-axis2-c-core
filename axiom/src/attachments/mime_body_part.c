@@ -17,7 +17,6 @@
 #include "axiom_mime_body_part.h"
 #include <axiom_data_handler.h>
 #include <axis2_hash.h>
-#include <stdio.h>
 
 typedef struct axiom_mime_body_part_impl
 {
@@ -115,7 +114,6 @@ axiom_mime_body_part_free(axiom_mime_body_part_t *mime_body_part, const axis2_en
                     hash_index; hash_index = axis2_hash_next(env, hash_index))
         {
             axis2_hash_this(hash_index, &key, NULL, &value);
-            printf("key = %s\n", (char*) key);
             if (value)
             {
                 AXIS2_FREE(env->allocator, value);

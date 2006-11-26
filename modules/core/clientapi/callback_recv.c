@@ -156,12 +156,18 @@ axis2_callback_recv_free(
     if (callback_recv_impl->callback_map)
     {
         axis2_hash_index_t *hi = NULL;
+        const void *key = NULL;
         void *val = NULL;
         for (hi = axis2_hash_first(callback_recv_impl->callback_map, env); hi;
                 hi = axis2_hash_next(env, hi))
         {
-            if (val)
+            axis2_hash_this(hi, &key, NULL, &val);
+            if (key)
+                AXIS2_FREE(env->allocator, (char*)key);
+
+            /*if (val)
                 AXIS2_FREE(env->allocator, val);
+            */
             val = NULL;
         }
 

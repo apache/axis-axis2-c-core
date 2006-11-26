@@ -881,6 +881,7 @@ axis2_op_set_msg_recv(
 
     if (op_impl->msg_recv)
     {
+        AXIS2_MSG_RECV_FREE(op_impl->msg_recv, env);
         op_impl->msg_recv = NULL;
     }
 
