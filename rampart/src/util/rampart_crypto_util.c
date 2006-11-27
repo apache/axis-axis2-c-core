@@ -69,7 +69,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL rampart_crypto_sha1(const axis2_env_t *env
     
     digest = openssl_sha1(env, input, AXIS2_STRLEN(input)); 
     AXIS2_FREE(env->allocator, input);
-    
+    AXIS2_FREE(env->allocator, decoded_nonce);
     return digest;
 }
 
