@@ -24,6 +24,7 @@
 #include <rampart_crypto_util.h>
 #include <rampart_util.h>
 #include <rampart_timestamp_token.h>
+#include <rampart_sec_processed_result.h>
 #include <oxs_axiom.h>
 
 typedef struct rampart_timestamp_token_impl
