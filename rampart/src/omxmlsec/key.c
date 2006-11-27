@@ -31,8 +31,6 @@ typedef struct oxs_key_impl
     oxs_buffer_t *buf;
     axis2_char_t *name;
     int            usage;
-    /*int            size;
-    unsigned char *data;*/
 }
 oxs_key_impl_t;
 

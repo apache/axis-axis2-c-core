@@ -38,6 +38,7 @@ extern "C" {
  * @{
  */
 
+/*TODO make these enums*/
 #define OPENSSL_PKEY_TYPE_UNKNOWN        0
 #define OPENSSL_PKEY_TYPE_PUBLIC_KEY     1
 #define OPENSSL_PKEY_TYPE_PRIVATE_KEY    2

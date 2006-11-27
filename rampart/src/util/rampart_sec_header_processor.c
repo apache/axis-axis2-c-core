@@ -52,7 +52,7 @@ rampart_shp_process_timestamptoken(const axis2_env_t *env,
     axis2_status_t valid_ts = AXIS2_FAILURE;
     
     timestamp_token = rampart_timestamp_token_create(env);
-    valid_ts = RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, ts_node, sub_codes);
+    valid_ts = RAMPART_TIMESTAMP_TOKEN_VALIDATE(timestamp_token, env, msg_ctx, ts_node, sub_codes);
 
     if (valid_ts)
     {
@@ -267,7 +267,11 @@ rampart_shp_process_message(const axis2_env_t *env,
     axis2_status_t status = AXIS2_FAILURE;
 
     /*If certian security elements are expected by the reciever, rampart should check for those */
-    return rampart_shp_enforce_security(env, msg_ctx, actions,  soap_envelope, sec_node, sub_codes);
+    /*This should be done along with the the message header processing. Need to be modified later for encryption*/
+    status =  rampart_shp_enforce_security(env, msg_ctx, actions,  soap_envelope, sec_node, sub_codes);
+    if(AXIS2_FAILURE == status){
+        return AXIS2_FAILURE;
+    }
 
     AXIS2_LOG_INFO(env->log, "[rampart][shp] Process security header");
     /*Get the first token of the security header element*/

@@ -132,6 +132,12 @@ extern "C"
 #define RAMPART_SPR_UT_PASSWORD_TYPE "SPR_UT_passwordType"
 #define RAMPART_SPR_TS_CREATED "SPR_TS_created"
 #define RAMPART_SPR_TS_EXPIRES "SPR_TS_expires"
+#define RAMPART_SPR_UT_CHECKED "SPR_UT_Checked"
+#define RAMPART_SPR_TS_CHECKED "SPR_TS_Checked"
+#define RAMPART_SPR_ENC_CHECKED "SPR_ENC_Checked"
+
+#define RAMPART_YES "YES"
+#define RAMPART_NO "NO"
 
 #ifdef __cplusplus
 }

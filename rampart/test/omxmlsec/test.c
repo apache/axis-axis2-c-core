@@ -122,13 +122,6 @@ int main(int argc, char *argv[])
     env = test_init();
     printf("--Testing started--------------------------------------------\n");
 
-    /*additional code start*/
-    oxs_x509_cert_t *cert = NULL;
-    cert = oxs_x509_cert_create(env);
-    oxs_x509_cert_set_issuer(cert, env, "IssuerXYZ");
-    printf("\nSER NO :%s\n", oxs_x509_cert_get_issuer(cert, env));
-    /*additional code end*/
-
     if (argc > 1)
         filename = argv[1];
 

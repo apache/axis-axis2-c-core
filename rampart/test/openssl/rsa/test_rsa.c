@@ -78,6 +78,9 @@ int encdec()
     return 0;
 }
 
+
+
+
 int main()
 {
     return encdec();

@@ -119,6 +119,8 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
     oxs_asym_ctx_set_file_name(asym_ctx, env, certificate_file);
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT);
+    /*TODO This should be taken from the configurations*/
+    oxs_asym_ctx_set_format(asym_ctx, env, OXS_ASYM_CTX_FORMAT_PKCS12);
     /*Encrypt the session key*/
     oxs_xml_enc_encrypt_key(env, asym_ctx, sec_node,session_key, id_list);    
 

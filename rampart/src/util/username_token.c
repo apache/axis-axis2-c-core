@@ -577,6 +577,7 @@ rampart_username_token_validate(rampart_username_token_t *username_token,
     if (0 == AXIS2_STRCMP(password_to_compare , password))
     {
         AXIS2_LOG_INFO(env->log,  "[rampart][rampart_usernametoken] Password comparison SUCCESS");
+        rampart_set_security_processed_result(env, msg_ctx,RAMPART_SPR_UT_CHECKED, RAMPART_YES);
         return AXIS2_SUCCESS;
     }
     else

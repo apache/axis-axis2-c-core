@@ -218,12 +218,9 @@ rampart_get_security_token(const axis2_env_t *env,
 
         }/*End of for*/
     }
-
     return header_block_node;
 
 }
-
-
 
 AXIS2_EXTERN void AXIS2_CALL
 rampart_create_fault_envelope(const axis2_env_t *env,

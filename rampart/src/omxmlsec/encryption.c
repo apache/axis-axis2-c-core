@@ -166,6 +166,7 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
 
     /*1. Try to get the pkey from the asy_ctx*/
     
+
     /*2. If not try to load the key from the dec_prop_file*/
     file_name = oxs_asym_ctx_get_file_name(ctx, env);
     pkey =  openssl_pkey_create(env);

@@ -58,6 +58,7 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
 axis2_status_t AXIS2_CALL
 rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
         const axis2_env_t *env,
+        axis2_msg_ctx_t *msg_ctx,
         axiom_node_t *ts_node,
         axis2_array_list_t *sub_codes);
 
@@ -184,6 +185,7 @@ rampart_timestamp_token_build(rampart_timestamp_token_t *timestamp_token,
 axis2_status_t AXIS2_CALL
 rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
         const axis2_env_t *env,
+        axis2_msg_ctx_t *msg_ctx,
         axiom_node_t *ts_node,
         axis2_array_list_t *sub_codes)
 {
@@ -233,6 +235,7 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
     }
 
     created_val = AXIOM_ELEMENT_GET_TEXT(created_ele, env, created_node);
+    rampart_set_security_processed_result(env, msg_ctx,RAMPART_SPR_TS_CREATED, created_val);
     /*Check whether created is less than current time or not*/
     current_val = rampart_generate_time(env, 0);
     validity = rampart_compare_date_time(env, created_val, current_val);
@@ -262,6 +265,7 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
     /*Now the expires element is present. So check whether this has a valid timestamp.
       If not it's a failure*/
     expires_val = AXIOM_ELEMENT_GET_TEXT(expires_ele, env, expires_node);
+    rampart_set_security_processed_result(env, msg_ctx,RAMPART_SPR_TS_EXPIRES, expires_val);
 
     /*Check whether time has expired or not*/
     validity = rampart_compare_date_time(env, current_val, expires_val);
@@ -271,7 +275,7 @@ rampart_timestamp_token_validate(rampart_timestamp_token_t *timestamp_token,
         return AXIS2_FAILURE;
     }
     AXIS2_LOG_INFO(env->log, "[rampart][ts] Timstamp is valid");
-
+    rampart_set_security_processed_result(env, msg_ctx,RAMPART_SPR_TS_CHECKED, RAMPART_YES);
     /*free memory for qnames*/
     return validity;
 }
