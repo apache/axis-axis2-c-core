@@ -82,8 +82,7 @@ AC_CONFIG_FILES([Makefile \
     src/util/Makefile \
     test/Makefile \
     test/omxmlsec/Makefile \
-    test/openssl/Makefile \
-    test/openssl/pkcs/Makefile 
+    test/openssl/Makefile 
     ])
     
 AC_OUTPUT
