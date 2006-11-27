@@ -210,6 +210,12 @@ oxs_buffer_free(
         buffer_impl->data = NULL;
     }
 
+    if (buffer_impl->buffer.ops)
+    {
+        AXIS2_FREE(env->allocator, buffer_impl->buffer.ops);
+        buffer_impl->buffer.ops = NULL;
+    }
+
     AXIS2_FREE(env->allocator,  buffer_impl);
     buffer_impl = NULL;
 
