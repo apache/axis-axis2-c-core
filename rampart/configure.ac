@@ -75,6 +75,7 @@ AC_SUBST(XMLSCHEMAINC)
 AC_CONFIG_FILES([Makefile \
     src/Makefile \
     src/omxmlsec/Makefile \
+    src/omxmlsec/tokens/Makefile \
     src/omxmlsec/openssl/Makefile \
     src/data/Makefile \
     src/handlers/Makefile \
