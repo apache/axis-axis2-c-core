@@ -473,7 +473,7 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                             int mime_id_len = 0;
                             mime_id_len = pos - id;
                             mime_id = AXIS2_MALLOC(env->allocator,
-                                    sizeof(axis2_char_t) * mime_id_len + 1);
+                                    sizeof(axis2_char_t) * mime_id_len + 1); /* this would be freed by SOAP builder*/
                             if (mime_id)
                             {
 

@@ -31,6 +31,7 @@
 #include <axis2_mep_client.h>
 #include "../description/axis2_client_utils.h"
 #include <platforms/axis2_platform_auto_sense.h>
+#include <stdio.h>
 
 typedef struct axis2_svc_client_impl
 {
@@ -815,6 +816,7 @@ axis2_svc_client_send_receive(
     if (AXIS2_OPTIONS_GET_USE_SEPERATE_LISTENER(svc_client_impl->options, env))
     {
         axis2_callback_t *callback = NULL;
+        axis2_msg_ctx_t *msg_ctx = NULL;
         long index = 0;
 
         /* This means doing a Request-Response invocation using two channels.
@@ -837,7 +839,6 @@ axis2_svc_client_send_receive(
             /*wait till the response arrives*/
             if (index-- >= 0)
             {
-                axis2_msg_ctx_t *msg_ctx = NULL;
                 AXIS2_USLEEP(10000);
                 msg_ctx = (axis2_msg_ctx_t *)AXIS2_OP_CLIENT_GET_MSG_CTX(
                             svc_client_impl->op_client, env,
@@ -874,6 +875,13 @@ axis2_svc_client_send_receive(
         }
 
         soap_envelope = AXIS2_CALLBACK_GET_ENVELOPE(callback, env);
+
+        /* start of hack to get rid of memory leak */
+        msg_ctx = axis2_msg_ctx_create(env,
+                        AXIS2_SVC_CTX_GET_CONF_CTX(svc_client_impl->svc_ctx, env), NULL, NULL);
+        AXIS2_OP_CLIENT_ADD_MSG_CTX(svc_client_impl->op_client, env, msg_ctx);
+        AXIS2_MSG_CTX_SET_SOAP_ENVELOPE(msg_ctx, env, soap_envelope);
+        /* end of hack to get rid of memory leak */
 
         /* process the result of the invocation */
         if (!soap_envelope)

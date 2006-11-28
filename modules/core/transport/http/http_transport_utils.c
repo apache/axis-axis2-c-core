@@ -176,6 +176,7 @@ axis2_http_transport_utils_process_http_post_request(
     axis2_status_t status = AXIS2_FAILURE;
     axis2_hash_t *binary_data_map = NULL;
     axis2_char_t *soap_body_str = NULL;
+    axis2_stream_t *stream = NULL;
 
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, in_stream, AXIS2_FAILURE);
@@ -273,7 +274,6 @@ axis2_http_transport_utils_process_http_post_request(
         if (mime_boundary)
         {
             axiom_mime_parser_t *mime_parser = NULL;
-            axis2_stream_t *stream = NULL;
             int soap_body_len = 0;
 
             mime_parser = axiom_mime_parser_create(env);
@@ -484,6 +484,13 @@ axis2_http_transport_utils_process_http_post_request(
         AXIS2_FREE(env->allocator, soap_body_str);
         soap_body_str = NULL;
     }
+
+    if (stream)
+    {
+        AXIS2_STREAM_FREE(stream, env);
+        stream = NULL;
+    }
+    
     return status;
 }
 

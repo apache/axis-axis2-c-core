@@ -287,6 +287,23 @@ axiom_soap_builder_free(axiom_soap_builder_t *builder,
     
     if (builder_impl->mime_body_parts)
     {
+        axis2_hash_index_t *hi = NULL;
+        void *val = NULL;
+        const void *key = NULL;
+        for (hi = axis2_hash_first(builder_impl->mime_body_parts, env);
+                hi; hi = axis2_hash_next(env, hi))
+        {
+            axis2_hash_this(hi, &key, NULL, &val);
+
+            if (key)
+            {
+                AXIS2_FREE(env->allocator, (char*)key);
+            }
+
+            val = NULL;
+            key = NULL;
+        }
+
         axis2_hash_free(builder_impl->mime_body_parts, env);
         builder_impl->mime_body_parts = NULL;
     }
