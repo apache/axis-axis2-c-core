@@ -190,7 +190,7 @@ openssl_cipher_ctx_get_cipher(openssl_cipher_ctx_t *ctx,
         const axis2_env_t *env)
 {
     openssl_cipher_ctx_impl_t * ctx_impl = NULL;
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     ctx_impl = AXIS2_INTF_TO_IMPL(ctx);
 
     return ctx_impl->cipher ;

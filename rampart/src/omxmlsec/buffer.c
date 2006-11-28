@@ -550,7 +550,7 @@ oxs_buffer_get_data(
 {
     oxs_buffer_impl_t *buffer_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+    AXIS2_ENV_CHECK(env, NULL);
     buffer_impl = AXIS2_INTF_TO_IMPL(buffer);
 
     return buffer_impl->data;
