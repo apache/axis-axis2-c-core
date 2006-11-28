@@ -705,7 +705,8 @@ basic_modules: axis2_util axis2_parser axiom
 #rampart module
 
 OMXMLSEC_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\*.c \
-	   $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\openssl\*.c 
+    	       $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\tokens\*.c \
+    	       $(AXIS2_SOURCE_DIR)\rampart\src\omxmlsec\openssl\*.c 
 
 MOD_RAMPART_SRC = $(AXIS2_SOURCE_DIR)\rampart\src\core\*.c \
 		$(AXIS2_SOURCE_DIR)\rampart\src\handlers\*.c \
