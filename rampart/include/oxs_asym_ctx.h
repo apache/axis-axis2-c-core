@@ -86,7 +86,7 @@ oxs_asym_ctx_get_operation(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env);
 
 AXIS2_EXTERN openssl_pkey_t* AXIS2_CALL
-oxs_asym_ctx_private_key(const oxs_asym_ctx_t *ctx,
+oxs_asym_ctx_get_private_key(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env);
 
 AXIS2_EXTERN oxs_x509_cert_t* AXIS2_CALL

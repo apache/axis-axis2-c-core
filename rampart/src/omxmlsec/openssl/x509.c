@@ -83,6 +83,16 @@ openssl_x509_load_from_buffer(const axis2_env_t *env,
 }
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
+openssl_x509_load_from_pem(const axis2_env_t *env,
+    axis2_char_t *filename,
+    axis2_char_t *password,
+    X509 **cert)
+{
+    
+    return AXIS2_SUCCESS;
+}
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 openssl_x509_load_from_pkcs12(const axis2_env_t *env,
     axis2_char_t *filename,
     axis2_char_t *password,
@@ -125,7 +135,6 @@ openssl_x509_load_certificate(const axis2_env_t *env,
 
     if(OPENSSL_X509_FORMAT_PEM == format){
         /*Load from PEM*/
-
     }else if(OPENSSL_X509_FORMAT_PKCS12 == format){
         /*Load from PKCS12*/
         EVP_PKEY *pkey = NULL;
@@ -174,6 +183,7 @@ openssl_x509_get_serial(const axis2_env_t *env,
 {
     axis2_char_t *serial = NULL;
     int no = 0;
+    /*WARN: Do not use the serial number without converting it to the integer.*/
     serial = (axis2_char_t*)i2s_ASN1_INTEGER(NULL,X509_get_serialNumber(cert));
     no = atoi(serial);
 
@@ -218,7 +228,7 @@ openssl_x509_get_info(const axis2_env_t *env,
     }else if(OPENSSL_X509_INFO_VALID_TO == type){
         ASN1_TIME_print(out, X509_get_notAfter(cert));
     }else if(OPENSSL_X509_INFO_DATA_CERT == type){
-        if(!PEM_write_bio_X509(out, cert)){
+        if(!PEM_write_bio_X509_AUX(out, cert)){
             return NULL;
         }
     }else if(OPENSSL_X509_INFO_FINGER == type){

@@ -27,6 +27,7 @@
 #include <openssl_constants.h>
 #include <openssl_rsa.h>
 #include <openssl_util.h>
+#include <oxs_key_mgr.h>
 
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -160,28 +161,39 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
     openssl_pkey_t *pkey = NULL;
     openssl_rsa_t *rsa = NULL;
     oxs_asym_ctx_operation_t operation = -1;
-    axis2_char_t *file_name = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    
     /*TODO We support RSA encryption only. If any other algorithm is specified, reject*/
 
-    /*1. Try to get the pkey from the asy_ctx*/
-    
 
+    /*Load the key using key manager*/
+    status = oxs_key_mgr_load_key(env, ctx);
+
+        
+#if 0
+    /*1. Try to get the pkey from the asy_ctx*/
+    axis2_char_t *file_name = NULL;
     /*2. If not try to load the key from the dec_prop_file*/
     file_name = oxs_asym_ctx_get_file_name(ctx, env);
     pkey =  openssl_pkey_create(env);
     status = OPENSSL_PKEY_LOAD(pkey, env, file_name, "");/*TODO password*/
-      
+#endif
+
     /*Check for the operation and call appropriate method*/
     operation = oxs_asym_ctx_get_operation(ctx, env);
     rsa = openssl_rsa_create(env);
     if(   OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT == operation ){
         axis2_char_t *encoded_str = NULL;
+        oxs_x509_cert_t *x509_cert = NULL;
         unsigned char *encrypted = NULL;
         int enclen = -1;
         int encodedlen = -1;
         int ret = -1;
-        
+       
+        /*Operation is PUB ENCRYPT; Get the public key from the context*/
+        x509_cert = oxs_asym_ctx_get_certificate(ctx, env);
+        pkey = oxs_x509_cert_get_public_key(x509_cert, env);
+
         /*Encrypt using the public key. Then base64 encode and populate the buffer */
         enclen = OPENSSL_RSA_PUB_ENCRYPT(rsa, env, pkey, OXS_BUFFER_GET_DATA(input, env), &encrypted);
         encodedlen = axis2_base64_encode_len(enclen);
@@ -195,6 +207,8 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
         int ret = -1;
         int  declen = -1;
 
+        /*Operation id PRV DECRYPT; Get the private key from the context*/
+        pkey = oxs_asym_ctx_get_private_key(ctx, env);
         /*Base64 decode first. Then do the decryption and populate the buffer*/
         decoded_encrypted_str = AXIS2_MALLOC(env->allocator, axis2_base64_decode_len((char*)OXS_BUFFER_GET_DATA(input, env)));
         ret = axis2_base64_decode((char*)decoded_encrypted_str, (char*)OXS_BUFFER_GET_DATA(input, env));

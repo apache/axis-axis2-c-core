@@ -26,6 +26,7 @@
 #include <oxs_token_cipher_data.h>
 #include <oxs_token_reference_list.h>
 #include <oxs_token_key_info.h>
+#include <oxs_token_key_identifier.h>
 #include <oxs_constants.h>
 #include <oxs_axiom.h>
 #include <oxs_ctx.h>
@@ -194,14 +195,16 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
 {
     axis2_char_t *algorithm = NULL;
     axis2_char_t *encrypted_key_data = NULL;
+    axis2_char_t *bst_data = NULL;
     oxs_buffer_t *input = NULL;
     oxs_buffer_t *result = NULL;
     axiom_node_t *encrypted_key_node = NULL;
     axiom_node_t *enc_mtd_node = NULL;
-    axiom_node_t *key_info_node = NULL;
+    axiom_node_t *kifier_node = NULL;
     axiom_node_t *cd_node = NULL;
     axiom_node_t *cv_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
+    oxs_x509_cert_t *cert = NULL;
 
     /*Create input buffer*/
     input = oxs_buffer_create(env);
@@ -216,14 +219,19 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
     /*Get the encrypted key*/
     encrypted_key_data = (axis2_char_t *)OXS_BUFFER_GET_DATA(result, env);
 
+    /*Get binary securty token data to be set to  the KeyIdentifierNode*/
+    cert = oxs_asym_ctx_get_certificate(asym_ctx, env);
+    bst_data = oxs_x509_cert_get_data(cert, env);
+
     /*Build nodes*/
     encrypted_key_node = oxs_token_build_encrypted_key_element(env, parent);
     algorithm = oxs_asym_ctx_get_algorithm(asym_ctx, env);
     enc_mtd_node = oxs_token_build_encryption_method_element(env, encrypted_key_node, algorithm);
-    key_info_node = oxs_token_build_key_info_element(env, encrypted_key_node);
+    kifier_node = oxs_token_build_key_identifier_element(env, encrypted_key_node, OXS_ENCODING_BASE64BINARY, OXS_VALUE_X509V3, bst_data);
     cd_node = oxs_token_build_cipher_data_element(env, encrypted_key_node);
     cv_node = oxs_token_build_cipher_value_element(env, cd_node,  encrypted_key_data);
-
+    
+    
     /*TODO SecurityTokenReference*/
     oxs_token_build_data_reference_list(env, encrypted_key_node, id_list); 
     return AXIS2_SUCCESS; 

@@ -51,7 +51,7 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 openssl_pkcs12_parse(const axis2_env_t *env,
     axis2_char_t *password ,
     PKCS12 *p12,
-    EVP_PKEY **pkey,
+    EVP_PKEY **prvkey,
     X509 **cert,
     STACK_OF(X509) **ca);
 

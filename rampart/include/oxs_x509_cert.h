@@ -26,6 +26,7 @@
 #include <axis2_defines.h>
 #include <axis2_env.h>
 #include <axiom_node.h>
+#include <openssl_pkey.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -56,7 +57,7 @@ oxs_x509_cert_free(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env);
 
 /*Getters*/
-AXIS2_EXTERN axis2_char_t *AXIS2_CALL
+AXIS2_EXTERN int AXIS2_CALL
 oxs_x509_cert_get_serial_number(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env);
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
@@ -80,12 +81,15 @@ oxs_x509_cert_get_hash(oxs_x509_cert_t *x509_cert,
 AXIS2_EXTERN axis2_char_t *AXIS2_CALL
 oxs_x509_cert_get_data(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env);
+AXIS2_EXTERN openssl_pkey_t *AXIS2_CALL
+oxs_x509_cert_get_public_key(oxs_x509_cert_t *x509_cert,
+    const axis2_env_t *env);
 
 /*Setters*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_x509_cert_set_serial_number(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env,
-    axis2_char_t *value);
+    int value);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_x509_cert_set_issuer(oxs_x509_cert_t *x509_cert,
@@ -117,6 +121,10 @@ oxs_x509_cert_set_data(oxs_x509_cert_t *x509_cert,
     const axis2_env_t *env,
     axis2_char_t *value);
 
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_x509_cert_set_public_key(oxs_x509_cert_t *x509_cert,
+    const axis2_env_t *env,
+    openssl_pkey_t *public_key);
 
 /** @} */
 #ifdef __cplusplus

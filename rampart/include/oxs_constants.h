@@ -40,6 +40,7 @@ extern "C"
 ****************************************************************/
 #define OXS_ENCDATA_ID "EncDataID"
 #define OXS_ENCKEY_ID "EncKeyID"
+#define OXS_CERT_ID "CertID"
 
 /****************************************************************
    Global namespaces 
@@ -91,6 +92,7 @@ extern "C"
     KeyInfo Nodes
 ****************************************************************/
 #define OXS_NODE_BINARY_SECURITY_TOKEN     "BinarySecurityToken"
+#define OXS_NODE_KEY_IDENTIFIER     "KeyIdentifier"
 
 
 /****************************************************************
@@ -297,6 +299,12 @@ extern "C"
 #define OXS_SOAP_FAULT_CODE_RECEIVER        "Receiver" 
 #define OXS_SOAP_FAULT_CODE_SENDER          "Sender" 
 #define OXS_SOAP_FAULT_DATA_ENCODNING_UNKNOWN    "DataEncodingUnknown" 
+
+/****************************************************************
+    Ext
+****************************************************************/
+#define OXS_ENCODING_BASE64BINARY "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary"
+#define OXS_VALUE_X509V3 "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3"
 
 
 /*************************************************************************/

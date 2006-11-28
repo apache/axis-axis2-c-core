@@ -68,6 +68,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     axis2_char_t *certificate_file = NULL;
     oxs_key_t *session_key = NULL;
     oxs_asym_ctx_t *asym_ctx = NULL;
+
     int i = 0;
     /*Get nodes to be encrypted*/
     nodes_to_encrypt = axis2_array_list_create(env, 5);
@@ -124,7 +125,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     /*Encrypt the session key*/
     oxs_xml_enc_encrypt_key(env, asym_ctx, sec_node,session_key, id_list);    
 
-
+     
     return AXIS2_SUCCESS;
 }
 
