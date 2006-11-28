@@ -140,6 +140,24 @@ axiom_data_handler_free(axiom_data_handler_t *data_handler, const axis2_env_t *e
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     data_handler_impl = AXIS2_INTF_TO_IMPL(data_handler);
 
+    if (data_handler_impl->file_name)
+    {
+        AXIS2_FREE(env->allocator, data_handler_impl->file_name);
+        data_handler_impl->file_name = NULL;
+    }
+
+    if (data_handler_impl->mime_type)
+    {
+        AXIS2_FREE(env->allocator, data_handler_impl->mime_type);
+        data_handler_impl->mime_type = NULL;
+    }
+
+    if (data_handler_impl->buffer)
+    {
+        AXIS2_FREE(env->allocator, data_handler_impl->buffer);
+        data_handler_impl->buffer = NULL;
+    }
+
     if (data_handler->ops)
     {
         AXIS2_FREE(env->allocator, data_handler->ops);

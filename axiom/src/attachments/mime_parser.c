@@ -119,11 +119,19 @@ axiom_mime_parser_free(axiom_mime_parser_t *mime_parser, const axis2_env_t *env)
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     mime_parser_impl = AXIS2_INTF_TO_IMPL(mime_parser);
 
-    if (mime_parser_impl->mime_parts_map)
+    /* This map is passed on to SOAP builder, and SOAP builder take over the
+       ownership of the map */
+    /*if (mime_parser_impl->mime_parts_map)
     {
         axis2_hash_free(mime_parser_impl->mime_parts_map, env);
         mime_parser_impl->mime_parts_map = NULL;
-    }
+    }*/
+
+    /*if (mime_parser_impl->soap_body_str)
+    {
+        AXIS2_FREE(env->allocator, mime_parser_impl->soap_body_str);
+        mime_parser_impl->soap_body_str = NULL;
+    }*/
 
     if (mime_parser->ops)
     {
@@ -473,6 +481,10 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
                                 memcpy(mime_id, id, mime_id_len);
                                 mime_id[mime_id_len] = '\0';
                                 data_handler = axiom_data_handler_create(env, NULL, type);
+                                
+                                AXIS2_FREE(env->allocator, type);
+                                type = NULL;
+                                
                                 AXIOM_DATA_HANDLER_SET_BINARY_DATA(data_handler, env,
                                         mime_binary, mime_binary_len);
                                 axis2_hash_set(mime_parser_impl->mime_parts_map, mime_id,
@@ -493,11 +505,11 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
 
             }
 
-            /*if (body_mime)
+            if (body_mime)
             {
                 AXIS2_FREE(env->allocator, body_mime);
                 body_mime = NULL;
-            }*/
+            }
 
             body_mime = temp_body_mime;
             body_mime_len = temp_body_mime_len;
@@ -505,11 +517,17 @@ axiom_mime_parser_parse(axiom_mime_parser_t *mime_parser,
         }/*if (mime_parser_impl->mime_parts_map)*/
     }/* end while (!end_of_mime) */
 
-    /*if (body_mime)
+    if (body_mime)
     {
         AXIS2_FREE(env->allocator, body_mime);
         body_mime = NULL;
-    }*/
+    }
+    
+    if (root_mime)
+    {
+        AXIS2_FREE(env->allocator, root_mime);
+        root_mime = NULL;
+    }
 
     AXIS2_FREE(env->allocator, buffer);
     buffer = NULL;

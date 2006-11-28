@@ -136,6 +136,12 @@ int main(int argc, char** argv)
         svc_client = NULL;
     }
 
+    if (env)
+    {
+        axis2_env_free((axis2_env_t *) env);
+        env = NULL;
+    }
+
     return 0;
 
 }

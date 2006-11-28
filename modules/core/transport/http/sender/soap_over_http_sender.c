@@ -442,14 +442,15 @@ axis2_soap_over_http_sender_send(
 
     status_code = AXIS2_HTTP_CLIENT_SEND(sender_impl->client, env, request);
 
-    /*AXIS2_FREE(env->allocator, output_stream);
-    output_stream = NULL;*/
 
     AXIS2_FREE(env->allocator, buffer);
     buffer = NULL;
 
     AXIS2_HTTP_SIMPLE_REQUEST_FREE(request, env);
     request = NULL;
+    
+    AXIS2_FREE(env->allocator, output_stream);
+    output_stream = NULL;
 
     status_code = AXIS2_HTTP_CLIENT_RECIEVE_HEADER(sender_impl->client, env);
 

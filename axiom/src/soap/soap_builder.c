@@ -284,6 +284,13 @@ axiom_soap_builder_free(axiom_soap_builder_t *builder,
         AXIOM_STAX_BUILDER_FREE(builder_impl->om_builder, env);
         builder_impl->om_builder = NULL;
     }
+    
+    if (builder_impl->mime_body_parts)
+    {
+        axis2_hash_free(builder_impl->mime_body_parts, env);
+        builder_impl->mime_body_parts = NULL;
+    }
+
 
     if (builder->ops)
     {
@@ -538,6 +545,7 @@ axiom_soap_builder_construct_node(axiom_soap_builder_t *builder,
                             }
                         }
                     }
+                    AXIS2_QNAME_FREE(qname, env);
                 }
             }
         }

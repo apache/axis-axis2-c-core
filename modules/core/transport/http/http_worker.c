@@ -454,6 +454,7 @@ axis2_http_worker_process_request(
             in_msg_ctx = NULL;
             axis2_hash_set(msg_ctx_map, AXIS2_WSDL_MESSAGE_LABEL_IN_VALUE, AXIS2_HASH_KEY_STRING, NULL);
         }
+
     } /* Done freeing message contexts */
     
     msg_ctx = NULL;

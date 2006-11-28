@@ -293,14 +293,16 @@ axis2_http_transport_utils_process_http_post_request(
             if (stream)
             {
                 AXIS2_STREAM_WRITE(stream, env, soap_body_str, soap_body_len);
-                AXIS2_LOG_ERROR(env->log, AXIS2_LOG_SI, 
+                /*AXIS2_LOG_DEBUG(env->log, AXIS2_LOG_SI, 
                     "axis2_http_transport_utils_process_http_post_request soap_body_str = %s...%d soap_body_len=%d", 
-                    soap_body_str, strlen(soap_body_str), soap_body_len);
+                    soap_body_str, strlen(soap_body_str), soap_body_len);*/
                 callback_ctx->in_stream = stream;
                 callback_ctx->chunked_stream = NULL;
                 callback_ctx->content_length = soap_body_len;
                 callback_ctx->unread_len = soap_body_len;
             }
+            AXIOM_MIME_PARSER_FREE(mime_parser, env);
+            mime_parser = NULL;
         }
         AXIS2_FREE(env->allocator, mime_boundary);
     }
@@ -1127,10 +1129,10 @@ axis2_http_transport_utils_create_soap_msg(
                 callback_ctx->content_length = soap_body_len;
                 callback_ctx->unread_len = soap_body_len;
             }
+
+            AXIOM_MIME_PARSER_FREE(mime_parser, env);
+            mime_parser = NULL;
         }
-        /**
-         * TODO MTOM stuff - create builder and get envelope
-         */
     }
 
     if (AXIS2_TRUE != AXIS2_MSG_CTX_GET_DOING_REST(msg_ctx, env))

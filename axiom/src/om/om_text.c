@@ -267,6 +267,12 @@ axiom_text_free(axiom_text_t * om_text,
         text_impl->om_attribute = NULL;
     }
 
+    if (text_impl->data_handler)
+    {
+        AXIOM_DATA_HANDLER_FREE(text_impl->data_handler, env);
+        text_impl->data_handler = NULL;
+    }
+
     if (om_text->ops)
     {
         AXIS2_FREE(env->allocator, om_text->ops);

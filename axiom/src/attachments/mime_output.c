@@ -249,6 +249,10 @@ axiom_mime_output_complete(axiom_mime_output_t *mime_output,
                 mime_body_part = axis2_create_mime_body_part(text, env);
                 axis2_write_body_part(mime_output, env, &temp_stream,
                         &temp_stream_size, mime_body_part, boundary);
+
+                AXIOM_MIME_BODY_PART_FREE(mime_body_part, env);
+                mime_body_part = NULL;
+
                 temp = output_stream_body_parts;
                 temp_size = output_stream_body_parts_size;
                 output_stream_body_parts_size = temp_size +
@@ -327,6 +331,8 @@ axiom_mime_output_complete(axiom_mime_output_t *mime_output,
     {
         memcpy(stream_buffer + output_stream_start_size + output_stream_body_size,
                 soap_body_buffer, soap_body_buffer_size);
+        AXIS2_FREE(env->allocator, soap_body_buffer);
+        soap_body_buffer = NULL;
     }
 
     if (output_stream_body_parts)
