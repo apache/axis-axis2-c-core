@@ -18,8 +18,31 @@
 #include <oxs_constants.h>
 #include <oxs_error.h>
 #include <oxs_token_x509_issuer_serial.h>
+#include <oxs_token_x509_issuer_name.h>
+#include <oxs_token_x509_serial_number.h>
 #include <axiom_element.h>
 
+
+AXIS2_EXTERN axiom_node_t* AXIS2_CALL
+oxs_token_build_x509_issuer_serial_with_data(const axis2_env_t *env,
+        axiom_node_t *parent,
+        axis2_char_t *issuer_name,
+        axis2_char_t *serial_number)
+{
+    axiom_node_t *x509_issuer_serial_node = NULL;
+    axiom_node_t *x509_issuer_name_node = NULL;
+    axiom_node_t *x509_serial_number_node = NULL;
+
+    x509_issuer_serial_node = oxs_token_build_x509_issuer_serial_element(env, parent);
+    if(issuer_name){
+        x509_issuer_name_node = oxs_token_build_issuer_name_element(env, x509_issuer_serial_node, issuer_name);
+    }
+    if(serial_number){
+        x509_serial_number_node = oxs_token_build_serial_number_element(env, x509_issuer_serial_node, serial_number);
+    }
+    return x509_issuer_serial_node;
+
+}
 
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
 oxs_token_build_x509_issuer_serial_element(const axis2_env_t *env,

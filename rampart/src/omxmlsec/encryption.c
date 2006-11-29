@@ -162,12 +162,14 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
     openssl_rsa_t *rsa = NULL;
     oxs_asym_ctx_operation_t operation = -1;
     axis2_status_t status = AXIS2_FAILURE;
-    
+    axis2_char_t *password = NULL;
+
     /*TODO We support RSA encryption only. If any other algorithm is specified, reject*/
 
 
     /*Load the key using key manager*/
-    status = oxs_key_mgr_load_key(env, ctx);
+    password = oxs_asym_ctx_get_password(ctx, env);
+    status = oxs_key_mgr_load_key(env, ctx, password);
 
         
 #if 0

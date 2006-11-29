@@ -21,10 +21,10 @@
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_key_mgr_load_key(const axis2_env_t *env,
-    oxs_asym_ctx_t *ctx)
+    oxs_asym_ctx_t *ctx,
+    axis2_char_t *password)
 {
     axis2_char_t *filename = NULL;
-    axis2_char_t *password = "1234";
     axis2_status_t status = AXIS2_FAILURE;
     openssl_x509_format_t format;
     openssl_pkey_t *open_prvkey = NULL;

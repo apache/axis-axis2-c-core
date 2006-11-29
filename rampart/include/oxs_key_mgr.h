@@ -40,7 +40,8 @@ extern "C"
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_key_mgr_load_key(const axis2_env_t *env,
-    oxs_asym_ctx_t *ctx);
+    oxs_asym_ctx_t *ctx,
+    axis2_char_t *password);
 
 /** @} */
 #ifdef __cplusplus

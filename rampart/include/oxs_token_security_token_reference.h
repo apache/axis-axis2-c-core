@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef OXS_TOKEN_X509_ISSUER_SERIAL_H
-#define OXS_TOKEN_X509_ISSUER_SERIAL_H
+#ifndef OXS_TOKEN_SECURITY_TOKEN_REFERENCE
+#define OXS_TOKEN_SECURITY_TOKEN_REFERENCE
 
 
 /**
@@ -32,18 +32,8 @@
 extern "C"
 {
 #endif
-
-/**
-* X509Data element
-*/
 AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-oxs_token_build_x509_issuer_serial_with_data(const axis2_env_t *env,
-        axiom_node_t *parent,
-        axis2_char_t *issuer_name,
-        axis2_char_t *serial_number);
-
-AXIS2_EXTERN axiom_node_t* AXIS2_CALL
-oxs_token_build_x509_issuer_serial_element(const axis2_env_t *env,
+oxs_token_build_security_token_reference_element(const axis2_env_t *env,
         axiom_node_t *parent);
 
 
@@ -53,4 +43,4 @@ oxs_token_build_x509_issuer_serial_element(const axis2_env_t *env,
 }
 #endif
 
-#endif                          /* OXS_TOKEN_X509_ISSUER_SERIAL_H */
+#endif                          /* OXS_TOKEN_SECURITY_TOKEN_REFERENCE */

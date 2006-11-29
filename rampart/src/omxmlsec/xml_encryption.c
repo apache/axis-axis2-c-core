@@ -27,6 +27,8 @@
 #include <oxs_token_reference_list.h>
 #include <oxs_token_key_info.h>
 #include <oxs_token_key_identifier.h>
+#include <oxs_token_x509_issuer_serial.h>
+#include <oxs_token_security_token_reference.h>
 #include <oxs_constants.h>
 #include <oxs_axiom.h>
 #include <oxs_ctx.h>
@@ -38,7 +40,31 @@
 #include <oxs_xml_encryption.h>
 
 /*private functions*/
+static axis2_status_t 
+oxs_xml_enc_populate_stref_with_issuer_serial(const axis2_env_t *env,
+    oxs_asym_ctx_t *asym_ctx,
+    axiom_node_t *stref_node)
+{
+    axiom_node_t *issuer_serial_node = NULL;
+    oxs_x509_cert_t *cert = NULL;
+    axis2_char_t *issuer_name = NULL;
+    axis2_char_t serial_number[255];
+    int serial = -1;
 
+    /*Get binary securty token data to be set to  the KeyIdentifierNode*/
+    cert = oxs_asym_ctx_get_certificate(asym_ctx, env);
+    
+    issuer_name = oxs_x509_cert_get_issuer(cert, env);
+    serial =  oxs_x509_cert_get_serial_number(cert, env);
+    if((!issuer_name) || (serial<0)){
+        return AXIS2_FAILURE;
+    }
+
+    sprintf(serial_number, "%d", serial);
+    
+    issuer_serial_node = oxs_token_build_x509_issuer_serial_with_data(env, stref_node, issuer_name, serial_number);
+    return AXIS2_SUCCESS;
+}
 
 /*public functions*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
@@ -195,16 +221,15 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
 {
     axis2_char_t *algorithm = NULL;
     axis2_char_t *encrypted_key_data = NULL;
-    axis2_char_t *bst_data = NULL;
     oxs_buffer_t *input = NULL;
     oxs_buffer_t *result = NULL;
     axiom_node_t *encrypted_key_node = NULL;
     axiom_node_t *enc_mtd_node = NULL;
-    axiom_node_t *kifier_node = NULL;
+    axiom_node_t *key_info_node = NULL;
+    axiom_node_t *stref_node = NULL;
     axiom_node_t *cd_node = NULL;
     axiom_node_t *cv_node = NULL;
     axis2_status_t status = AXIS2_FAILURE;
-    oxs_x509_cert_t *cert = NULL;
 
     /*Create input buffer*/
     input = oxs_buffer_create(env);
@@ -219,23 +244,25 @@ oxs_xml_enc_encrypt_key(const axis2_env_t *env,
     /*Get the encrypted key*/
     encrypted_key_data = (axis2_char_t *)OXS_BUFFER_GET_DATA(result, env);
 
-    /*Get binary securty token data to be set to  the KeyIdentifierNode*/
-    cert = oxs_asym_ctx_get_certificate(asym_ctx, env);
-    bst_data = oxs_x509_cert_get_data(cert, env);
-
     /*Build nodes*/
     encrypted_key_node = oxs_token_build_encrypted_key_element(env, parent);
     algorithm = oxs_asym_ctx_get_algorithm(asym_ctx, env);
     enc_mtd_node = oxs_token_build_encryption_method_element(env, encrypted_key_node, algorithm);
-    kifier_node = oxs_token_build_key_identifier_element(env, encrypted_key_node, OXS_ENCODING_BASE64BINARY, OXS_VALUE_X509V3, bst_data);
+    key_info_node = oxs_token_build_key_info_element(env, encrypted_key_node); 
+    
+    stref_node = oxs_token_build_security_token_reference_element(env, key_info_node);
+    status = oxs_xml_enc_populate_stref_with_issuer_serial(env, asym_ctx, stref_node); 
+    if(AXIS2_SUCCESS!=status){
+        return AXIS2_FAILURE;
+    }
+    
     cd_node = oxs_token_build_cipher_data_element(env, encrypted_key_node);
     cv_node = oxs_token_build_cipher_value_element(env, cd_node,  encrypted_key_data);
-    
-    
-    /*TODO SecurityTokenReference*/
     oxs_token_build_data_reference_list(env, encrypted_key_node, id_list); 
+
     return AXIS2_SUCCESS; 
 }
+
 /**
 * Inspect the key node. Then populate the sym_key
 */

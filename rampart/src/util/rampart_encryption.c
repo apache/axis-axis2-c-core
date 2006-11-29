@@ -119,6 +119,7 @@ rampart_enc_encrypt_message(const axis2_env_t *env,
     asym_ctx = oxs_asym_ctx_create(env);
     oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
     oxs_asym_ctx_set_file_name(asym_ctx, env, certificate_file);
+    oxs_asym_ctx_set_password(asym_ctx, env, "1234");
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PUB_ENCRYPT);
     /*TODO This should be taken from the configurations*/
     oxs_asym_ctx_set_format(asym_ctx, env, OXS_ASYM_CTX_FORMAT_PKCS12);

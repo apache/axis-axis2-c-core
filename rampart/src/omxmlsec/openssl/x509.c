@@ -27,6 +27,7 @@
 #include <openssl_pkcs12.h>
 #include <openssl_x509.h>
 
+/*Usefull when we have BinarySecurityTokn*/
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 openssl_x509_load_from_buffer(const axis2_env_t *env,
     axis2_char_t *b64_encoded_buf,

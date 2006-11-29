@@ -73,6 +73,10 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 oxs_asym_ctx_get_file_name(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env);
 
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+oxs_asym_ctx_get_password(const oxs_asym_ctx_t *ctx,
+                    const axis2_env_t *env);
+
 AXIS2_EXTERN oxs_asym_ctx_format_t AXIS2_CALL
 oxs_asym_ctx_get_format(const oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env);
@@ -97,6 +101,11 @@ AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_file_name(oxs_asym_ctx_t *ctx,
                     const axis2_env_t *env,
                     axis2_char_t *file_name);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
+oxs_asym_ctx_set_password(oxs_asym_ctx_t *ctx,
+                    const axis2_env_t *env,
+                    axis2_char_t *password);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
 oxs_asym_ctx_set_format(oxs_asym_ctx_t *ctx,

@@ -93,6 +93,7 @@ extern "C"
 ****************************************************************/
 #define OXS_NODE_BINARY_SECURITY_TOKEN     "BinarySecurityToken"
 #define OXS_NODE_KEY_IDENTIFIER     "KeyIdentifier"
+#define OXS_NODE_SECURITY_TOKEN_REFRENCE    "SecurityTokenReference"
 
 
 /****************************************************************

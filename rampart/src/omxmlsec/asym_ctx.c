@@ -23,6 +23,7 @@
 struct oxs_asym_ctx_t
 {
     axis2_char_t *file_name;
+    axis2_char_t *password;
     axis2_char_t *algorithm;
     oxs_asym_ctx_operation_t operation;   
     oxs_asym_ctx_format_t format;   
@@ -31,7 +32,7 @@ struct oxs_asym_ctx_t
 };
 
 
-/*private functions*/
+/*Public functions*/
 
 axis2_char_t *AXIS2_CALL
 oxs_asym_ctx_get_file_name(
@@ -41,6 +42,13 @@ oxs_asym_ctx_get_file_name(
     return asym_ctx->file_name;
 }
 
+axis2_char_t *AXIS2_CALL
+oxs_asym_ctx_get_password(
+    const oxs_asym_ctx_t *asym_ctx,
+    const axis2_env_t *env)
+{
+    return asym_ctx->password;
+}
 oxs_asym_ctx_format_t AXIS2_CALL
 oxs_asym_ctx_get_format(
     const oxs_asym_ctx_t *asym_ctx,
@@ -96,6 +104,22 @@ oxs_asym_ctx_set_file_name(
         asym_ctx->file_name = NULL;
     }
     asym_ctx->file_name = AXIS2_STRDUP(file_name, env);
+    return AXIS2_SUCCESS;
+}
+
+axis2_status_t AXIS2_CALL
+oxs_asym_ctx_set_password(
+    oxs_asym_ctx_t *asym_ctx,
+    const axis2_env_t *env,
+    axis2_char_t *password)
+{
+
+    if (asym_ctx->password)
+    {
+        AXIS2_FREE(env->allocator, asym_ctx->password);
+        asym_ctx->password = NULL;
+    }
+    asym_ctx->password = AXIS2_STRDUP(password, env);
     return AXIS2_SUCCESS;
 }
 
@@ -186,6 +210,7 @@ oxs_asym_ctx_create(const axis2_env_t *env)
     }
 
     asym_ctx->file_name= NULL;
+    asym_ctx->password= NULL;
     asym_ctx->format= -1;
     asym_ctx->algorithm = NULL;
     asym_ctx->operation = -1;
@@ -206,6 +231,12 @@ oxs_asym_ctx_free(oxs_asym_ctx_t *asym_ctx,
     {
         AXIS2_FREE(env->allocator, asym_ctx->file_name);
         asym_ctx->file_name = NULL;
+    }
+
+    if (asym_ctx->password)
+    {
+        AXIS2_FREE(env->allocator, asym_ctx->password);
+        asym_ctx->password = NULL;
     }
 
     if (asym_ctx->algorithm)
