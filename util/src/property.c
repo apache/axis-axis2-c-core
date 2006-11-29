@@ -168,6 +168,22 @@ axis2_property_set_value(axis2_property_t *property,
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     property_impl = AXIS2_INTF_TO_IMPL(property);
 
+    if (property_impl->value)
+    {
+        if (property_impl->scope != AXIS2_SCOPE_APPLICATION)
+        {
+            if (property_impl->free_func)
+            {
+                property_impl->free_func(property_impl->value, env);
+            }
+            else
+            {
+                AXIS2_FREE(env->allocator, property_impl->value);
+            }
+            property_impl->value = NULL;
+        }
+    }
+
     property_impl->value = value;
     return AXIS2_SUCCESS;
 }
