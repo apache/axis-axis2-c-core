@@ -145,7 +145,7 @@ extern "C"
 #define AXIS2_PRINTF_LONGLONG_FORMAT_SPECIFIER_CHARS "I64d"
 
 AXIS2_EXTERN HMODULE AXIS2_CALL
-callLoadLib(LPCTSTR lib);
+callLoadLib(char* lib);
 
 AXIS2_EXTERN struct tm * AXIS2_CALL 
 axis2_win_gmtime(const time_t *timep, struct tm *result);
