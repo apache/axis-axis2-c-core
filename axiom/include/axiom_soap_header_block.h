@@ -94,16 +94,16 @@ extern "C"
         axis2_status_t (AXIS2_CALL *
       set_attribute)(axiom_soap_header_block_t *header_block,
                        const axis2_env_t *env,
-                       axis2_char_t *attr_name,
-                       axis2_char_t *attr_value,
-                       axis2_char_t *soap_envelope_namespace_uri);
+                       const axis2_char_t *attr_name,
+                       const axis2_char_t *attr_value,
+                       const axis2_char_t *soap_envelope_namespace_uri);
                   
                              
         axis2_char_t* (AXIS2_CALL *
       get_attribute)(axiom_soap_header_block_t *header_block,
                        const axis2_env_t *env,
-                       axis2_char_t *attr_name,
-                       axis2_char_t *soap_envelope_namespace_uri);                            
+                       const axis2_char_t *attr_name,
+                       const axis2_char_t *soap_envelope_namespace_uri);                            
                                        
                                               
         axiom_node_t* (AXIS2_CALL *

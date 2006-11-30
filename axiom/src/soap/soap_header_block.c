@@ -160,6 +160,10 @@ axiom_soap_header_block_create(const axis2_env_t *env)
         axiom_soap_header_block_set_processed;
     header_block_impl->header_block.ops->get_role =
         axiom_soap_header_block_get_role;
+    header_block_impl->header_block.ops->set_attribute =
+        axiom_soap_header_block_set_attribute;
+    header_block_impl->header_block.ops->get_attribute =
+        axiom_soap_header_block_get_attribute;
 
     header_block_impl->header_block.ops->get_soap_version =
         axiom_soap_header_block_get_soap_version;
