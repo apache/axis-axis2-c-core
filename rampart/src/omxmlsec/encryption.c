@@ -170,7 +170,9 @@ oxs_encryption_asymmetric_crypt(const axis2_env_t *env,
     /*Load the key using key manager*/
     password = oxs_asym_ctx_get_password(ctx, env);
     status = oxs_key_mgr_load_key(env, ctx, password);
-
+    if(AXIS2_FAILURE == status){
+        return AXIS2_FAILURE;
+    }
         
 #if 0
     /*1. Try to get the pkey from the asy_ctx*/

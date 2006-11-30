@@ -44,13 +44,17 @@ oxs_key_mgr_load_key(const axis2_env_t *env,
 
     if(OXS_ASYM_CTX_FORMAT_PEM == oxs_asym_ctx_get_format(ctx, env)){
         format = OPENSSL_X509_FORMAT_PEM;
-
+        status = openssl_x509_load_from_pem(env, filename,  &cert);    
+        if(AXIS2_FAILURE == status){
+            return AXIS2_FAILURE;
+        }
     }else if(OXS_ASYM_CTX_FORMAT_PKCS12 == oxs_asym_ctx_get_format(ctx, env)){
         format = OPENSSL_X509_FORMAT_PKCS12;
         status = openssl_x509_load_from_pkcs12(env, filename, password, &cert, &prvkey, &ca);
- 
+        if(AXIS2_FAILURE == status){
+            return AXIS2_FAILURE;
+        }
     }
-   
     
     /*Alright if the prvkey is available, populate the openssl_pkey*/
     if(prvkey){

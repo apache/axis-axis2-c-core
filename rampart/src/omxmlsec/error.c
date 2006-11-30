@@ -21,6 +21,7 @@
 #include <time.h>
 #include <axis2_log_default.h>
 #include <platforms/axis2_platform_auto_sense.h>
+
 /*Table to map error codes with the error message*/
 #define OXS_ERRORS_MAX_NUMBER 64
 static oxs_error_description oxs_errors_table[OXS_ERRORS_MAX_NUMBER] =
@@ -88,6 +89,7 @@ oxs_error(const char* file, int line, const char* func,
     AXIS2_VSNPRINTF(value, AXIS2_LEN_VALUE, msg, ap);
     va_end(ap);
 
-    
+    /*Should pass env to this method rather than creating a own one*/
+   /* AXIS2_LOG_INFO(env->log, "ERROR [%s:%d in %s] %s , %s", file, line, func, error_msg, value);     */
     printf("\nERROR [%s:%d in %s] %s , %s\n", file, line, func, error_msg, value);
 }

@@ -116,6 +116,7 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     axis2_array_list_t *reference_list = NULL;
     axis2_char_t *enc_asym_algo = NULL;
     axis2_char_t *certificate_file = NULL;
+    axis2_char_t *password = NULL;
     axis2_status_t status = AXIS2_FAILURE;
     oxs_asym_ctx_t *asym_ctx = NULL;
     oxs_key_t *decrypted_sym_key = NULL;
@@ -138,9 +139,13 @@ rampart_shp_process_encrypted_key(const axis2_env_t *env,
     /*Set default values. Might be useful if there are no data available to identify those*/
     enc_asym_algo = RAMPART_ACTIONS_GET_ENC_KT_ALGO(actions, env);
     certificate_file = RAMPART_ACTIONS_GET_DEC_KEY_FILE(actions, env);
+    /*Get the password to retrieve the key from key store*/
+    password = RAMPART_ACTIONS_GET_ENC_USER(actions, env);
     oxs_asym_ctx_set_algorithm(asym_ctx, env, enc_asym_algo);
     oxs_asym_ctx_set_file_name(asym_ctx, env, certificate_file);
     oxs_asym_ctx_set_operation(asym_ctx, env, OXS_ASYM_CTX_OPERATION_PRV_DECRYPT);
+    oxs_asym_ctx_set_password(asym_ctx, env, password);
+    oxs_asym_ctx_set_format(asym_ctx, env, OXS_ASYM_CTX_FORMAT_PKCS12);
 
     /*Create an empty key*/
     decrypted_sym_key = oxs_key_create(env);

@@ -65,6 +65,11 @@ openssl_x509_load_from_buffer(const axis2_env_t *env,
     X509 **cert);
 
 AXIS2_EXTERN axis2_status_t AXIS2_CALL
+openssl_x509_load_from_pem(const axis2_env_t *env,
+    axis2_char_t *filename,
+        X509 **cert);
+
+AXIS2_EXTERN axis2_status_t AXIS2_CALL
 openssl_x509_load_from_pkcs12(const axis2_env_t *env,
     axis2_char_t *filename,
     axis2_char_t *password,
