@@ -41,7 +41,7 @@ extern "C"
  * @param env pointer to environment struct. MUST NOT be NULL.
  * @param data to be formatted
  */
-AXIS2_EXTERN axis2_char_t* AXIS2_CALL
+axis2_char_t* AXIS2_CALL
 tcpmon_util_format_as_xml (const axis2_env_t *env, axis2_char_t *data);
 
 /** @} */

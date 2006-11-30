@@ -191,7 +191,7 @@ typedef int (*TCPMON_SESSION_TRANS_ERROR_FUNCT)
  * @param env double pointer to environment struct. MUST NOT be NULL
  * @return pointer to newly created tcpmon_session struct
  */
-AXIS2_EXTERN tcpmon_session_t * AXIS2_CALL
+tcpmon_session_t * AXIS2_CALL
 tcpmon_session_create(const axis2_env_t *env );
 
 /*************************** Function macros **********************************/

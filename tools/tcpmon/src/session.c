@@ -23,8 +23,8 @@
 #include <axis2_network_handler.h>
 #include <axis2_array_list.h>
 
-#include <tcpmon_session_local.h>
-#include <tcpmon_entry_local.h>
+#include "tcpmon_session_local.h"
+#include "tcpmon_entry_local.h"
 
 /**
  * @brief
@@ -121,7 +121,7 @@ server_funct(axis2_thread_t *thd, void *data);
 
 /************************** End of function prototypes ************************/
 
-AXIS2_EXTERN tcpmon_session_t * AXIS2_CALL
+tcpmon_session_t * AXIS2_CALL
 tcpmon_session_create(const axis2_env_t *env)
 {
     tcpmon_session_impl_t *session_impl = NULL;
@@ -513,7 +513,7 @@ tcpmon_session_get_on_trans_fault(tcpmon_session_t *session,
 {
     tcpmon_session_impl_t *session_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
 
     session_impl = AXIS2_INTF_TO_IMPL(session);
 
@@ -526,7 +526,7 @@ tcpmon_session_get_on_new_entry(tcpmon_session_t *session,
 {
     tcpmon_session_impl_t *session_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
 
     session_impl = AXIS2_INTF_TO_IMPL(session);
 

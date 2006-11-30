@@ -135,7 +135,7 @@ typedef struct tcpmon_entry tcpmon_entry_t;
  * @param env double pointer to environment struct. MUST NOT be NULL
  * @return pointer to newly created tcpmon_entry struct
  */
-AXIS2_EXTERN tcpmon_entry_t * AXIS2_CALL
+tcpmon_entry_t * AXIS2_CALL
 tcpmon_entry_create(const axis2_env_t *env );
 
 /*************************** Function macros **********************************/

@@ -22,8 +22,8 @@
 #include <axis2_stream.h>
 #include <time.h>
 
-#include <tcpmon_entry_local.h>
-#include <tcpmon_session_local.h>
+#include "tcpmon_entry_local.h"
+#include "tcpmon_session_local.h"
 
 #define AXIS2_TCPMON
 /**
@@ -104,7 +104,7 @@ write_to_file (char *filename,
 					char *buffer);
 /************************** End of function prototypes ************************/
 
-AXIS2_EXTERN tcpmon_entry_t * AXIS2_CALL
+tcpmon_entry_t * AXIS2_CALL
 tcpmon_entry_create(const axis2_env_t *env)
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
@@ -221,7 +221,7 @@ tcpmon_entry_arrived_time(tcpmon_entry_t *entry,
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
-	 AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	 AXIS2_ENV_CHECK(env, NULL);
 
 	 entry_impl = AXIS2_INTF_TO_IMPL(entry);
 
@@ -234,7 +234,7 @@ tcpmon_entry_sent_time(tcpmon_entry_t *entry,
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
-	 AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	 AXIS2_ENV_CHECK(env, NULL);
 
 	 entry_impl = AXIS2_INTF_TO_IMPL(entry);
 
@@ -247,7 +247,7 @@ tcpmon_entry_time_diff(tcpmon_entry_t *entry,
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
-	 AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	 AXIS2_ENV_CHECK(env, NULL);
 
 	 entry_impl = AXIS2_INTF_TO_IMPL(entry);
 
@@ -260,7 +260,7 @@ tcpmon_entry_sent_data(tcpmon_entry_t *entry,
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
-	 AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	 AXIS2_ENV_CHECK(env, NULL);
 
 	 entry_impl = AXIS2_INTF_TO_IMPL(entry);
 
@@ -273,7 +273,7 @@ tcpmon_entry_sent_headers(tcpmon_entry_t *entry,
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
-	 AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	 AXIS2_ENV_CHECK(env, NULL);
 
 	 entry_impl = AXIS2_INTF_TO_IMPL(entry);
 
@@ -286,7 +286,7 @@ tcpmon_entry_arrived_data(tcpmon_entry_t *entry,
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
-	 AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	 AXIS2_ENV_CHECK(env, NULL);
 
 	 entry_impl = AXIS2_INTF_TO_IMPL(entry);
 
@@ -299,7 +299,7 @@ tcpmon_entry_arrived_headers(tcpmon_entry_t *entry,
 {
 	 tcpmon_entry_impl_t *entry_impl = NULL;
 
-	 AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	 AXIS2_ENV_CHECK(env, NULL);
 
 	 entry_impl = AXIS2_INTF_TO_IMPL(entry);
 
@@ -322,7 +322,7 @@ tcpmon_entry_is_success(tcpmon_entry_t *entry,
 /** implimentations for protected methods */
 
 /** executes as new entry arises */
-void* tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
+void* AXIS2_CALL tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 {
 	 tcpmon_entry_request_data_t* req_data = data;
 	 const axis2_env_t* env = NULL;
@@ -346,6 +346,8 @@ void* tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 	 int target_port = 0;
 	 axis2_char_t* target_host = NULL;
 	 int test_bit = 0;
+	 tcpmon_entry_t* entry = NULL;
+	 tcpmon_entry_impl_t* entry_impl = NULL;
 
 	 env = req_data -> env;
 	 client_socket = req_data-> socket;
@@ -355,8 +357,7 @@ void* tcpmon_entry_new_entry_funct(axis2_thread_t *thd, void* data)
 	 on_new_entry =
 		  tcpmon_session_get_on_new_entry(session, env);
 
-	 tcpmon_entry_t* entry = NULL;
-	 tcpmon_entry_impl_t* entry_impl = NULL;
+
 
 	 entry = tcpmon_entry_create(env);
 	 entry_impl = AXIS2_INTF_TO_IMPL(entry);
