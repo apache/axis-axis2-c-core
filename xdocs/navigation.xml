@@ -11,6 +11,10 @@
         <item name="Checkout Source Code" href="svn.html"/>
       </item>
       <item name="Documentation" href="docs/index.html">
+	<item name="Installation Guide" href="docs/installationguide.html"/>
+	<item name="Developer Guide" href="docs/developerguide.html"/>
+	<item name="User Guide" href="docs/userguide.html"/>
+	<item name="Axis2/C manual" href="docs/axis2c_manual.html"/>
       </item>
       <item name="Get Involved" href="mail-lists.html">
         <item name="Mailing Lists" href="mail-lists.html"/>
