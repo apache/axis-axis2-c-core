@@ -259,11 +259,9 @@ axis2_http_client_send(
 
     body_size = AXIS2_HTTP_SIMPLE_REQUEST_GET_BODY_BYTES(request, env,
             &str_body);
+
     if(client_impl->dump_input_msg == AXIS2_TRUE)
     {
-        /* We just print the input message and return */
-        printf("----------------Input message--------------:\n");
-        printf("%s\n", str_body);
         return AXIS2_SUCCESS;
     }
 
