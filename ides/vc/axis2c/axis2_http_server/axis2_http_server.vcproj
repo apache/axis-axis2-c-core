@@ -76,6 +76,7 @@
 			<Tool
 				Name="VCManifestTool"
 				EmbedManifest="false"
+				UseFAT32Workaround="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"

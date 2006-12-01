@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=".\..\..\..\..\util\include;.\..\..\..\..\axiom\include;.\..\..\..\..\xml_schema\include;.\..\..\..\..\include;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_HTTP_RECEIVER_EXPORTS;_CRT_SECURE_NO_DEPRECATE;AXIS2_DECLARE_EXPORT;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;AXIS2_HTTP_RECEIVER_EXPORTS;_CRT_SECURE_NO_DEPRECATE;AXIS2_DECLARE_EXPORT;AXIS2_SVR_MULTI_THREADED;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"

@@ -542,6 +542,30 @@
 				<Filter
 					Name="windows"
 					>
+					<File
+						RelativePath="..\..\..\..\util\include\platforms\windows\axis2_dir_windows.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\util\include\platforms\windows\axis2_getopt_windows.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\util\include\platforms\windows\axis2_thread_mutex_windows.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\util\include\platforms\windows\axis2_thread_windows.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\util\include\platforms\windows\axis2_uuid_gen_windows.h"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\..\util\include\platforms\windows\axis2_windows.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>
