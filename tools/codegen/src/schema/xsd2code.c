@@ -83,7 +83,7 @@ w2c_schema_compile( const axis2_env_t *env, axis2_char_t *schema_name,
 
     compiler = w2c_schema_compiler_create( env, compiler_options);
     if ( compiler)
-        w2c_schema_compiler_compile( compiler, env, current_schema);
+        W2C_SCHEMA_COMPILER_COMPILE( compiler, env, current_schema);
 }
  
 static void 

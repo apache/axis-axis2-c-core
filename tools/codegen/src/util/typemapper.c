@@ -180,7 +180,7 @@ w2c_typemapper_create_from_file(const axis2_env_t *env,
     xml_reader =
         axiom_xml_reader_create_for_file(env, file_path, NULL);
     if(!xml_reader)
-        return AXIS2_FAILURE;
+		return NULL;
     om_builder = axiom_stax_builder_create(env, xml_reader);
     om_doc = axiom_document_create(env, NULL, om_builder);
     AXIOM_DOCUMENT_BUILD_ALL(om_doc, env);
@@ -334,7 +334,7 @@ w2c_typemapper_get_parameter_name(w2c_typemapper_t *typemapper,
     axis2_char_t counter_str[32];
 
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
     
 
     local = AXIS2_STRDUP( "param", env);
@@ -361,7 +361,7 @@ w2c_typemapper_get_type_name(w2c_typemapper_t *typemapper,
     axis2_char_t *value =NULL;
     axis2_hash_t *h = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
     
     typemapper_impl = W2C_INTF_TO_IMPL(typemapper);
     h = typemapper_impl-> qname2name;

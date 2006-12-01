@@ -48,6 +48,12 @@ axis2_status_t
 w2c_databinding_adb_ext_invoke( const axis2_env_t * env,
         w2c_engine_configuration_t *conf);
 
+axis2_status_t
+populate_default_options(
+           const axis2_env_t *env,
+           w2c_schema_compiler_options_t *options,
+           w2c_engine_configuration_t *config);
+
 
 axiom_document_t*
 get_root_element_from_filename(

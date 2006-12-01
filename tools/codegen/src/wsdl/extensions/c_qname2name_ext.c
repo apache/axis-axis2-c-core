@@ -122,7 +122,7 @@ w2c_c_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
     axis2_char_t counter_str[32];
     axis2_char_t *given_name = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
     
     impl = W2C_QNAME2NAME_MAKER_INTF_TO_IMPL(qname2name_maker);
 

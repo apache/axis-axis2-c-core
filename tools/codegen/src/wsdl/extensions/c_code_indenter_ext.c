@@ -383,7 +383,7 @@ axis2_char_t* read_file ( axis2_char_t *filename,
     f = fopen ( filename, "r+");
     if ( f == NULL )
     {
-        free (out_stream );
+		AXIS2_FREE(env->allocator, out_stream );
         return NULL;
     }
     do{

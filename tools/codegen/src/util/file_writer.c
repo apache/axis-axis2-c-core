@@ -54,7 +54,7 @@ w2c_file_writer_create_classfile_name (
             }
             *cp = '\0';
             /* TODO: this should be placed in platform */
-            error = mkdir ( full_path, 0755 ); 
+            error = AXIS2_MKDIR ( full_path, 0755 ); 
             if ( end )
             {
                 if ( cp != full_path && *(cp-1) == AXIS2_PATH_SEP_CHAR )
@@ -91,7 +91,7 @@ w2c_file_writer_create_classfile_name (
             }
             *cp = '\0';
             /* TODO:this should be placed in platform */
-            error = mkdir ( full_path, 0755 ); 
+            error = AXIS2_MKDIR ( full_path, 0755 ); 
             if ( end )
             {
                 break;

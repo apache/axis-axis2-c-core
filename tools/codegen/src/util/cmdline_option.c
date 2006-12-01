@@ -41,7 +41,7 @@ axis2_status_t AXIS2_CALL
 w2c_cmdline_option_free (w2c_cmdline_option_t *cmdline_option, 
            const axis2_env_t *env);
 
-axis2_char_t* 
+axis2_char_t* AXIS2_CALL
 w2c_cmdline_option_get_type(w2c_cmdline_option_t *cmdline_option,
           const axis2_env_t *env);
 
@@ -166,7 +166,7 @@ w2c_cmdline_option_free (w2c_cmdline_option_t *cmdline_option,
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t* 
+axis2_char_t* AXIS2_CALL
 w2c_cmdline_option_get_type(w2c_cmdline_option_t *cmdline_option,
           const axis2_env_t *env)
 {

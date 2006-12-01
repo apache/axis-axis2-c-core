@@ -15,6 +15,7 @@
  */
  
 #include <w2c_engine_configuration.h>
+#include <w2c_engine_config_loader.h>
 #include <axis2_array_list.h>
 #include <axis2_hash.h>
 #include <axis2_string.h>
@@ -1706,7 +1707,7 @@ w2c_engine_configuration_get_filenames(
 {
     w2c_engine_configuration_impl_t *engine_configuration_impl = NULL;
     
-    AXIS2_ENV_CHECK (env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK (env, NULL);
    
     engine_configuration_impl = W2C_INTF_TO_IMPL(engine_configuration );
 

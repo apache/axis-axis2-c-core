@@ -17,6 +17,7 @@
 #include <w2c_url_processor.h>
 #include <w2c_string.h>
 #include <axis2_url.h>
+#include <ctype.h>
 
 
 static axis2_bool_t AXIS2_CALL
@@ -113,7 +114,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
             }
         }
     }
-    free (long_path );    
+	AXIS2_FREE(env->allocator, long_path );    
   
     if ( NULL != path )
         path_length = strlen ( path );
@@ -146,7 +147,7 @@ AXIS2_EXTERN axis2_char_t* AXIS2_CALL
                 long_path_rev = ptr + 1;
             }
         }
-        free ( long_path );
+		AXIS2_FREE(env->allocator, long_path );
     }
                 
     return package_name;

@@ -26,6 +26,7 @@
 #include <xml_schema_includes.h>
 #include <axis2_hash.h>
 #include <w2c_string.h>
+#include <stdlib.h>
 
 /**
  * @brief
@@ -973,7 +974,7 @@ w2c_schema_compiler_compile_schema_list( w2c_schema_compiler_t *compiler,
     axis2_char_t *key = NULL;
     axis2_char_t *value = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
 
     compiler_impl = W2C_INTF_TO_IMPL(compiler);
 

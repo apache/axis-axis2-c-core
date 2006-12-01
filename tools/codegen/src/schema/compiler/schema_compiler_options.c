@@ -277,7 +277,7 @@ w2c_schema_compiler_options_get_output_location( w2c_schema_compiler_options_t *
 {
     w2c_schema_compiler_options_impl_t *compiler_options_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
 
     compiler_options_impl = W2C_INTF_TO_IMPL(compiler_options);
 
@@ -307,7 +307,7 @@ w2c_schema_compiler_options_get_mapper_class_package( w2c_schema_compiler_option
 {
     w2c_schema_compiler_options_impl_t *compiler_options_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
 
     compiler_options_impl = W2C_INTF_TO_IMPL(compiler_options);
 
@@ -339,7 +339,7 @@ w2c_schema_compiler_options_get_package_name( w2c_schema_compiler_options_t *com
 {
     w2c_schema_compiler_options_impl_t *compiler_options_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
 
     compiler_options_impl = W2C_INTF_TO_IMPL(compiler_options);
 

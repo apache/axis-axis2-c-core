@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <writer_protected.h>
+#include "writer_protected.h"
 #include <w2c_file_writer.h>
 
 #define W2C_CSVC_SKELETON_WRITER_CLASS "w2c_csvc_skeleton_writer"

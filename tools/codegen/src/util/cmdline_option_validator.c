@@ -17,6 +17,8 @@
 #include <w2c_cmdline_option_validator.h>
 #include <w2c_cmdline_option_consts.h>
 #include <w2c_cmdline_option.h>
+#include <string.h>
+#include <w2c_string.h>
 
 
 AXIS2_EXTERN axis2_bool_t AXIS2_CALL
@@ -27,7 +29,6 @@ w2c_cmdline_option_validator_isinvalid(
     axis2_bool_t isinvalid = AXIS2_FALSE;
     axis2_char_t *type = NULL;
     int index = -1;
-    
     type = W2C_CMDLINE_OPTION_GET_TYPE( option, env );
     index = w2c_string_indexof_cs(type,
             W2C_CMDLINE_OPTION_CONSTS_EXTRA_OPTIONTYPE_PREFIX);

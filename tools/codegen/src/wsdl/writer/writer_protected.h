@@ -45,7 +45,7 @@ typedef struct w2c_writer_impl
 
 /************************* Function prototypes ********************************/
 
-AXIS2_EXTERN w2c_writer_impl_t * AXIS2_CALL 
+w2c_writer_impl_t * AXIS2_CALL 
 w2c_writer_create_impl (const axis2_env_t *env);
 
 axis2_status_t AXIS2_CALL

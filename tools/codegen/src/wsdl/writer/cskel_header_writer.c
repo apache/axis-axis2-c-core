@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <writer_protected.h>
+#include "writer_protected.h"
 #include <w2c_file_writer.h>
 
 #define W2C_CSKEL_HEADER_WRITER_CLASS "w2c_cskel_header_writer"
@@ -28,7 +28,7 @@ w2c_cskel_header_writer_create_out_file(w2c_writer_t *writer,
     w2c_writer_impl_t* writer_impl = NULL;
     axis2_char_t* output_locat = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
     writer_impl = W2C_INTF_TO_IMPL(writer);
 
     /* here the package_name would be build */

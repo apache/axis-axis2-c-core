@@ -32,8 +32,8 @@ w2c_class_loader_get_object_from_class_name
     axis2_char_t *file_path = NULL;
     void *obj = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env->error, class_name, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
+	AXIS2_PARAM_CHECK(env->error, class_name, NULL);
 
     file_path = getenv("AXIS2C_HOME");
     file_path = AXIS2_STRDUP( file_path, env);

@@ -63,7 +63,7 @@ w2c_string_indexof_cs( axis2_char_t *str, axis2_char_t *cs );
  * @param string2	string
  * @return		added string
  */
-AXIS2_EXTERN axis2_char_t*
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 w2c_string_add_string ( axis2_char_t *string1, axis2_char_t *string2,
                    const axis2_env_t *env );
 
@@ -75,7 +75,7 @@ w2c_string_add_string ( axis2_char_t *string1, axis2_char_t *string2,
  * @param env pointer to the environment. MUST NOT be NULL
  * @return	c simple name	
  */
-AXIS2_EXTERN axis2_char_t*
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 w2c_string_make_c_simple_name( axis2_char_t *name,
                                const axis2_env_t *env);
 
@@ -87,7 +87,7 @@ w2c_string_make_c_simple_name( axis2_char_t *name,
  * @param env pointer to the environment. MUST NOT be NULL
  * @return	c macro name	
  */
-AXIS2_EXTERN axis2_char_t*
+AXIS2_EXTERN axis2_char_t* AXIS2_CALL
 w2c_string_make_c_macro_name(axis2_char_t *name,
                                const axis2_env_t *env);
 

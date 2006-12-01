@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <w2c_emitter_protected.h>
+#include "w2c_emitter_protected.h"
 #include <w2c_writer.h>
 #include <w2c_xslt_utils.h>
 #include <w2c_typemapper.h>
@@ -30,7 +30,13 @@
 #define W2C_C_EMITTER_TYPE_SUFFIX "_t*"
 
 /**********************fucntion prototypes ***********************************/
+axis2_status_t
+w2c_c_emitter_write_skel_header( w2c_emitter_impl_t *emitter_impl,
+                                        const axis2_env_t *env);
 
+axis2_status_t
+w2c_c_emitter_write_stub_header( w2c_emitter_impl_t *emitter_impl,
+                                        const axis2_env_t *env);
 axis2_status_t AXIS2_CALL
 w2c_c_emitter_set_config(w2c_emitter_t *emitter,
        const axis2_env_t *env,

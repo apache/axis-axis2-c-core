@@ -43,7 +43,7 @@ w2c_xslt_utils_add_child_node(
 {
     axiom_node_t *child_node = NULL;
     axiom_element_t *child_ele = NULL;
-    AXIS2_ENV_CHECK ( env, AXIS2_FAILURE );
+	AXIS2_ENV_CHECK ( env, NULL );
 
     child_ele = axiom_element_create ( env,
                     parent_node,

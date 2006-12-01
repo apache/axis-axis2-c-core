@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <w2c_emitter_protected.h>
+#include "w2c_emitter_protected.h"
 
 #include <woden_wsdl10_desc.h>
 #include <woden_wsdl10_svc.h>
@@ -59,6 +59,21 @@
 #include <w2c_cmdline_option_consts.h>
 #include <w2c_xslt_utils.h>
 
+
+axis2_status_t
+w2c_emitter_load_services_wsdl1( w2c_emitter_impl_t *emitter_impl,
+                            const axis2_env_t *env,
+                            axiom_node_t *root);
+axis2_status_t
+w2c_emitter_load_services_wsdl2( w2c_emitter_impl_t* emitter_impl,
+                            const axis2_env_t* env,
+                            axiom_node_t* root);
+
+axis2_status_t
+w2c_emitter_load_operations( w2c_emitter_impl_t *emitter_impl,
+                                    const axis2_env_t *env,
+                                    axiom_node_t *method, 
+                                    void *interface_op, int wsdl_version);
 /***************************Function implementation****************************/
 
 w2c_emitter_impl_t*
@@ -145,7 +160,7 @@ w2c_emitter_free(w2c_emitter_t *emitter,
     }
     if ( emitter_impl-> common_node )
     {
-        AXIOM_NODE_FREE_TREE_TREE ( emitter_impl-> common_node, env );
+        AXIOM_NODE_FREE_TREE( emitter_impl-> common_node, env );
     }
     if(emitter->ops)
     {

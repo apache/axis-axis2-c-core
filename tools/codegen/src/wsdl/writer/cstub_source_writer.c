@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <writer_protected.h>
+#include "writer_protected.h"
 #include <w2c_file_writer.h>
 
 #define W2C_CSTUB_SOURCE_WRITER_CLASS "w2c_cstub_source_writer"
@@ -29,7 +29,7 @@ w2c_cstub_source_writer_create_out_file(w2c_writer_t *writer,
     axis2_char_t* output_locat = NULL;
     axis2_char_t* ext_name = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
     writer_impl = W2C_INTF_TO_IMPL(writer);
     ext_name = w2c_writer_get_extension ( writer_impl, env );
 

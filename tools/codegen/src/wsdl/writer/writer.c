@@ -14,7 +14,7 @@
  * limitations under the License.
  */
  
-#include <writer_protected.h>
+#include "writer_protected.h"
 #include <axis2_array_list.h>
 #include <axis2_string.h>
 #include <w2c_string.h>
@@ -23,9 +23,10 @@
 #include <stdlib.h>
 #include <w2c_file_writer.h>
 #include <w2c_xslt_utils.h>
+#include <w2c_xslt_template_processor.h>
 
 
-AXIS2_EXTERN w2c_writer_impl_t * AXIS2_CALL 
+w2c_writer_impl_t * AXIS2_CALL 
 w2c_writer_create_impl (const axis2_env_t *env)
 {
     w2c_writer_impl_t *writer_impl = NULL;
@@ -106,7 +107,7 @@ w2c_writer_create_out_file(w2c_writer_t *writer,
     axis2_char_t* ext_name = NULL;
     axis2_char_t* output_locat = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
     writer_impl = W2C_INTF_TO_IMPL(writer);
 
     ext_name = w2c_writer_get_extension ( writer_impl, env );

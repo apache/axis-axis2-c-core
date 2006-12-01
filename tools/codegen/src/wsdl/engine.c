@@ -141,7 +141,7 @@ w2c_engine_create_with_parser (const axis2_env_t *env,
         {
             w2c_messages_print_n_log_error( env,
                        "engine.noDefaultLang");
-            return AXIS2_FAILURE;
+			return NULL;
         }
     }
     w2c_engine_load_extension ( engine_impl, env );
