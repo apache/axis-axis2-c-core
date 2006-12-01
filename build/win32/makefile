@@ -140,7 +140,7 @@ AXIS2_MOD_ADDR_SRC = $(AXIS2_SOURCE_DIR)\modules\mod_addr\*.c
 
 #compiler options
 CC = cl.exe 
-CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT" \
+CFLAGS = /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "AXIS2_DECLARE_EXPORT"  \
 	  /D "AXIS2_SVR_MULTI_THREADED" /w /nologo $(AXIS2_INCLUDE_PATH) \
 	 $(APACHE_INCLUDE_PATH)
 
@@ -698,7 +698,20 @@ all_clients: axis2_client_echo axis2_client_math  axis2_client_google_spell axis
 
 basic_modules: axis2_util axis2_parser axiom
 
+################################# tools ##################################################
 
+
+tcpmon: 
+	$(CC) /nologo /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "_CRT_SECURE_NO_DEPRECATE" $(AXIS2_INCLUDE_PATH) \
+	/I $(AXIS2_SOURCE_DIR)\tools\tcpmon\include \
+	$(AXIS2_SOURCE_DIR)\tools\tcpmon\src\*.c /c
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib \
+	$(AXIOM).lib $(AXIS2_PARSER).lib $(LIBS) $(AXIS2_ENGINE).lib \
+	$(AXIS2_TRANSPORT_RECEIVER).lib  /OUT:tcpmon.exe 
+	del *.obj
+	copy tcpmon.exe $(AXIS2_BINS)\
+
+	del *.exe
 
 ################################ other porjects #########################################
 
@@ -770,12 +783,12 @@ mod_rampart_pwcb:
 
 mod_rampart_htpwcb: 
 	$(CC) $(CFLAGS) $(MOD_RAMPART_INCLUDE_PATH) $(AXIS2_SOURCE_DIR)\rampart\samples\callback\htpasswd_callback\htpwcb.c /c
-	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib /DLL /OUT:pwcb.dll /IMPLIB:pwcb.lib
+	$(LD) $(LDFLAGS) *.obj $(AXIS2_UTIL).lib /DLL /OUT:htpwcb.dll /IMPLIB:htpwcb.lib
 
 	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples mkdir $(AXIS2_INSTALL_DIR)\rampart\samples
 	if not exist $(AXIS2_INSTALL_DIR)\rampart\samples\callback\htpasswd mkdir $(AXIS2_INSTALL_DIR)\rampart\samples\callback\htpasswd
 	
-	copy pwcb.dll $(AXIS2_INSTALL_DIR)\rampart\samples\callback\htpasswd\pwcb.dll
+	copy htpwcb.dll $(AXIS2_INSTALL_DIR)\rampart\samples\callback\htpasswd\htpwcb.dll
 	del pwcb.*
 
 mod_rampart_samples:
@@ -893,9 +906,10 @@ woden_all: woden woden_sample woden_copy_include
  
 ##############################################################################################
 
-
 all: clean_make_dir clean deploy basic_modules xml_schema_all woden_all axis2_wsdl axis2_engine axis2_http_sender axis2_http_receiver axis2_mod_addr axis2_mod_log all_services all_clients axis2_server   copy_include clean_make_dir 
  
 install: all
 
-dist: all mod_rampart_all axis2_apache_module copy_extra copy_samples mv_dist
+dist: all mod_rampart_all axis2_apache_module tcpmon copy_extra copy_samples mv_dist
+
+
