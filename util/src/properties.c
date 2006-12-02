@@ -388,13 +388,14 @@ axis2_properties_read(FILE* input,
 
         if (ncount + MAX_SIZE > total_alloc)
         {
+            axis2_char_t *new_stream = NULL;
             if (curr_alloc < MAX_ALLOC)
             {
                 curr_alloc *= 2;
             }
 
             total_alloc += curr_alloc;
-            axis2_char_t *new_stream = AXIS2_MALLOC(env->allocator,
+            new_stream = AXIS2_MALLOC(env->allocator,
                                            sizeof(axis2_char_t) * total_alloc);
             if (new_stream == NULL)
             {
