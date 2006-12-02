@@ -360,17 +360,21 @@ axis2_properties_trunk_and_dup(axis2_char_t* start, axis2_char_t* end,
     return start;
 }
 
+#define MAX_SIZE 1024
+#define MAX_ALLOC (MAX_SIZE * 64)
+
 axis2_char_t*
 axis2_properties_read(FILE* input,
         const axis2_env_t* env)
 {
-    const int MAX_SIZE = 1000;
     int nread = 0;
     axis2_char_t* out_stream = NULL;
     int ncount = 0;
+    size_t curr_alloc = MAX_SIZE * 2;
+    size_t total_alloc = curr_alloc;
 
     out_stream = (axis2_char_t*) AXIS2_MALLOC(env-> allocator,
-            sizeof(axis2_char_t) * MAX_SIZE);
+            sizeof(axis2_char_t) * curr_alloc);
     if (out_stream == NULL)
     {
         return NULL;
@@ -378,13 +382,27 @@ axis2_properties_read(FILE* input,
 
     do
     {
-        nread = fread(out_stream + ncount, sizeof(axis2_char_t), MAX_SIZE, input);
+        nread = fread(out_stream + ncount, sizeof(axis2_char_t), MAX_SIZE,
+                      input);
         ncount += nread;
-        out_stream = (axis2_char_t*) AXIS2_REALLOC(env-> allocator, out_stream,
-                sizeof(axis2_char_t) * (MAX_SIZE + ncount));
-        if (out_stream == NULL)
+
+        if (ncount + MAX_SIZE > total_alloc)
         {
-            return NULL;
+            if (curr_alloc < MAX_ALLOC)
+            {
+                curr_alloc *= 2;
+            }
+
+            total_alloc += curr_alloc;
+            axis2_char_t *new_stream = AXIS2_MALLOC(env->allocator,
+                                           sizeof(axis2_char_t) * total_alloc);
+            if (new_stream == NULL)
+            {
+                return NULL;
+            }
+
+            memcpy(new_stream, out_stream, sizeof(axis2_char_t) * ncount);
+            out_stream = new_stream;
         }
     }
     while (nread == MAX_SIZE);

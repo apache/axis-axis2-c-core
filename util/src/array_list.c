@@ -16,6 +16,7 @@
 
 #include <axis2_array_list.h>
 #include <axis2_utils.h>
+#include <string.h>
 
 typedef struct axis2_array_list_impl
 {
@@ -177,12 +178,19 @@ axis2_status_t AXIS2_CALL axis2_array_list_ensure_capacity(struct axis2_array_li
     {
         int new_capacity = (array_list_impl->capacity * 2 > min_capacity) ?
                 (array_list_impl->capacity * 2) : min_capacity;
-        array_list_impl->data = AXIS2_REALLOC(env->allocator, array_list_impl->data, sizeof(void*) * new_capacity);
-        if (!array_list_impl->data)
+        void **data = (void**) AXIS2_MALLOC(env->allocator,
+                                            sizeof(void*) * new_capacity);
+        if (!data)
         {
             AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE);
             return AXIS2_FAILURE;
         }
+        memcpy(data, array_list_impl->data,
+               sizeof(void*) * array_list_impl->capacity);
+               
+        AXIS2_FREE(env->allocator, array_list_impl->data);
+
+        array_list_impl->data = data;
         array_list_impl->capacity = new_capacity;
     }
     return AXIS2_SUCCESS;

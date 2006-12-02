@@ -75,3 +75,26 @@ axis2_allocator_free_impl(axis2_allocator_t *allocator, void *ptr)
 {
     free(ptr);
 }
+
+
+AXIS2_EXTERN void AXIS2_CALL 
+axis2_allocator_switch_to_global_pool(axis2_allocator_t *allocator)
+{
+    if (!allocator)
+        return;
+    void *temp = allocator->local_pool;
+    allocator->local_pool = allocator->global_pool;
+    allocator->global_pool = temp;
+    return;
+}
+
+AXIS2_EXTERN void AXIS2_CALL 
+axis2_allocator_switch_to_local_pool(axis2_allocator_t *allocator)
+{
+    if (!allocator)
+        return;
+    void *temp = allocator->global_pool;
+    allocator->global_pool = allocator->local_pool;
+    allocator->local_pool = temp;
+    return;
+}

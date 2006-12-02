@@ -74,6 +74,10 @@ extern "C"
         * @param ptr pointer to be freed
         */
          void (AXIS2_CALL *free_fn) (struct axis2_allocator *allocator, void *ptr);
+        /** local memory pool */
+         void *local_pool;
+        /** global memory pool */
+         void *global_pool;
     } axis2_allocator_t;
 
   /**
@@ -82,7 +86,7 @@ extern "C"
     * @return initialized allocator. NULL on error.
     */
     AXIS2_EXTERN axis2_allocator_t * AXIS2_CALL 
-   axis2_allocator_init (axis2_allocator_t *allocator);
+    axis2_allocator_init (axis2_allocator_t *allocator);
 
   /** 
     * This function should be used to deallocate memory if the default allocator provided by
@@ -90,7 +94,29 @@ extern "C"
     * @param allocator 
     */
     AXIS2_EXTERN axis2_status_t AXIS2_CALL 
-   axis2_allocator_free(axis2_allocator_t *allocator);
+    axis2_allocator_free(axis2_allocator_t *allocator);
+
+  /** 
+    * Swaps the local_pool and global_pool values. 
+    * In case of using pools, local_pool is suppoed to hold the pool out of which
+    * local values are allocated. In case of values that live beyond a request 
+    * globle pool should be used, hence this method has to be called to swithch to 
+    * globle pool for allocation. 
+    * @param allocator allocator whose memory pools are to be switched
+    */
+    AXIS2_EXTERN void AXIS2_CALL 
+    axis2_allocator_switch_to_global_pool(axis2_allocator_t *allocator);
+
+  /** 
+    * Swaps the local_pool and global_pool values. 
+    * In case of using pools, local_pool is suppoed to hold the pool out of which
+    * local values are allocated. In case of values that live beyond a request 
+    * globle pool should be used. This method can be used to inverse the switching 
+    * done by axis2_allocator_switch_to_global_pool, to start using the local pool again.
+    * @param allocator allocator whose memory pools are to be switched
+    */
+    AXIS2_EXTERN void AXIS2_CALL 
+    axis2_allocator_switch_to_local_pool(axis2_allocator_t *allocator);
 
 #define AXIS2_MALLOC(allocator, size) \
       ((allocator)->malloc_fn(allocator, size))

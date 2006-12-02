@@ -466,6 +466,20 @@ axis2_error_init()
     axis2_error_messages[AXIS2_ERROR_WSDL_SCHEMA_IS_NULL] =
         "Schema is NULL";
 
+    /* repos */
+    axis2_error_messages[AXIS2_ERROR_REPOS_NOT_AUTHENTICATED] =
+        "NOT_AUTHENTICATED";
+    axis2_error_messages[AXIS2_ERROR_REPOS_UNSUPPORTED_MODE] =
+        "UNSUPPORTED_MODE";
+    axis2_error_messages[AXIS2_ERROR_REPOS_EXPIRED] =
+        "EXPIRED";
+    axis2_error_messages[AXIS2_ERROR_REPOS_NOT_IMPLEMENTED] =
+        "NOT_IMPLEMENTED";
+    axis2_error_messages[AXIS2_ERROR_REPOS_NOT_FOUND] =
+        "NOT_FOUND";
+    axis2_error_messages[AXIS2_ERROR_REPOS_BAD_SEARCH_TEXT] =
+        "BAD_SEARCH_TEXT";
+
     return AXIS2_SUCCESS;
 }
 
@@ -474,11 +488,11 @@ axis2_error_impl_free(axis2_error_t *error)
 {
     if (error && NULL != error->ops)
     {
-        free(error->ops);
+        AXIS2_FREE(error->allocator, error->ops);
     }
     if (error)
     {
-        free(error);
+        AXIS2_FREE(error->allocator, error);
     }
     return AXIS2_SUCCESS;
 }
@@ -495,6 +509,8 @@ axis2_error_create(axis2_allocator_t * allocator)
 
     if (!error)
         return NULL;
+
+    error->allocator = allocator;
 
     error->ops =
         (axis2_error_ops_t *) AXIS2_MALLOC(allocator,

@@ -140,6 +140,7 @@ axis2_ctx_handler_invoke(
     else if (op) /*  2. if no op_ctx, create new op_ctx */
     {
         axis2_conf_ctx_t *conf_ctx = NULL;
+        axis2_allocator_switch_to_global_pool(env->allocator);
         op_ctx = axis2_op_ctx_create(env, op, NULL);
         if (!op_ctx)
         {
@@ -154,11 +155,12 @@ axis2_ctx_handler_invoke(
         if (conf_ctx)
         {
             svc_grp_ctx = AXIS2_CONF_CTX_FILL_CTXS(conf_ctx, env, msg_ctx);
-            if (svc_grp_ctx)
-                return AXIS2_SUCCESS;
         }
 
+        axis2_allocator_switch_to_local_pool(env->allocator);
     }
 
+    if (!svc_grp_ctx)
+        return AXIS2_FAILURE;
     return AXIS2_SUCCESS;
 }

@@ -527,6 +527,22 @@ extern "C"
         /** Invalid parameters for service operation in SOAP request */
         AXIS2_ERROR_SVC_SKEL_INVALID_OPERATION_PARAMETERS_IN_SOAP_REQUEST,
         
+       /*
+        * Group - repos
+        */
+        /* not authenticated */
+        AXIS2_ERROR_REPOS_NOT_AUTHENTICATED,
+        /* unsupported mode */
+        AXIS2_ERROR_REPOS_UNSUPPORTED_MODE,
+        /* expired */
+        AXIS2_ERROR_REPOS_EXPIRED,
+        /* not implemented */
+        AXIS2_ERROR_REPOS_NOT_IMPLEMENTED,
+        /* not found */
+        AXIS2_ERROR_REPOS_NOT_FOUND,
+        /* bad search text */
+        AXIS2_ERROR_REPOS_BAD_SEARCH_TEXT,
+
         /** The following has to be the last error value all the time.
             All other error codes should appear above this.
             AXIS2_ERROR_LAST is used to track the number of error codes present
@@ -599,6 +615,7 @@ extern "C"
     {
         /** error related ops */
         struct axis2_error_ops *ops;
+        axis2_allocator_t *allocator;
         /** last error number */
         int error_number;
 
