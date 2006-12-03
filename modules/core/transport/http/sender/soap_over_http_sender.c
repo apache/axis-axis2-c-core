@@ -406,6 +406,7 @@ axis2_soap_over_http_sender_send(
     }
 
     AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
+
     if (0 == AXIS2_STRCMP(sender_impl->http_version,
             AXIS2_HTTP_HEADER_PROTOCOL_11))
     {

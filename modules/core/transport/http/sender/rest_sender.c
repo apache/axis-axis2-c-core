@@ -209,6 +209,9 @@ axis2_rest_sender_send(
     axis2_bool_t send_via_get = AXIS2_FALSE;
     axis2_property_t *method = NULL;
 	axis2_char_t *method_value = NULL;
+	axis2_hash_t *content_type_hash;
+	char *content_type_value = NULL;
+	axis2_property_t *content_type_property;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -327,8 +330,25 @@ axis2_rest_sender_send(
                     AXIS2_HTTP_HEADER_TRANSFER_ENCODING_CHUNKED);
             AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
         }
-        /* TODO we need to set the content type with soap action header for soap12*/
-        content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
+        /* TODO we eed to set the content type with soap action header
+		 * for soap12*/
+		content_type_property  = (axis2_property_t *)AXIS2_MSG_CTX_GET_PROPERTY(
+			msg_ctx, env,
+			AXIS2_USER_DEFINED_HTTP_HEADER_CONTENT_TYPE, 
+			AXIS2_FALSE);
+
+		if (content_type_property)
+		{
+			content_type_hash = (axis2_hash_t *) AXIS2_PROPERTY_GET_VALUE (content_type_property, env);
+			if (content_type_hash)
+				content_type_value = (char *) axis2_hash_get (content_type_hash, AXIS2_HTTP_HEADER_CONTENT_TYPE, AXIS2_HASH_KEY_STRING);
+		}
+
+		if (content_type_value)
+			content_type = content_type_value;
+		else
+			content_type = AXIS2_HTTP_HEADER_ACCEPT_TEXT_XML;
+
         http_header = axis2_http_header_create(env,
                 AXIS2_HTTP_HEADER_CONTENT_TYPE, content_type);
         AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER(request, env, http_header);
