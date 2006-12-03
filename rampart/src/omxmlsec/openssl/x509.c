@@ -88,6 +88,7 @@ openssl_x509_load_from_pem(const axis2_env_t *env,
     axis2_char_t *filename,
     X509 **cert)
 {
+    axis2_status_t status = AXIS2_SUCCESS;
     BIO *in;
 
     if ((in=BIO_new_file(filename,"r")) == NULL)
@@ -102,10 +103,14 @@ openssl_x509_load_from_pem(const axis2_env_t *env,
         printf("Error creating the certificate\n");
         return AXIS2_FAILURE;
     }
-    BIO_reset(in);
-    BIO_free(in);    
     
-    return AXIS2_SUCCESS;
+    if (BIO_reset(in) != 1)
+        status = AXIS2_FAILURE;
+    
+    if (BIO_free(in) != 1)
+        status = AXIS2_FAILURE;
+    
+    return status;
 }
 
 
