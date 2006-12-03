@@ -89,7 +89,6 @@ axis2_status_t AXIS2_CALL
 rampart_out_handler_invoke(struct axis2_handler * handler,
         const axis2_env_t * env, axis2_msg_ctx_t * msg_ctx)
 {
-    axis2_msg_info_headers_t *msg_info_headers = NULL;
     axis2_ctx_t *ctx = NULL;
     axiom_soap_envelope_t *soap_envelope = NULL;
     axiom_soap_header_t *soap_header = NULL;
@@ -104,9 +103,6 @@ rampart_out_handler_invoke(struct axis2_handler * handler,
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
-
-    msg_info_headers = AXIS2_MSG_CTX_GET_MSG_INFO_HEADERS(msg_ctx, env);
-    
 
     soap_envelope = AXIS2_MSG_CTX_GET_SOAP_ENVELOPE(msg_ctx, env);
     if (!soap_envelope)

@@ -212,6 +212,8 @@ axis2_rest_sender_send(
 	axis2_hash_t *content_type_hash;
 	char *content_type_value = NULL;
 	axis2_property_t *content_type_property;
+	axis2_property_t *http_header_property;
+	axis2_array_list_t *http_header_list;
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
     AXIS2_PARAM_CHECK(env->error, msg_ctx, AXIS2_FAILURE);
@@ -374,6 +376,28 @@ axis2_rest_sender_send(
     axis2_rest_sender_get_timeout_values(sender, env, msg_ctx);
     AXIS2_HTTP_CLIENT_SET_TIMEOUT(sender_impl->client, env,
             sender_impl->so_timeout);
+
+	/**
+	 *If user need to add http headers to request, Need to create
+	 *array list with http headers and set it as a propety with name
+	 *AXIS2_HTTP_HEADER_PROPERTY
+	 */
+	http_header_property = (axis2_property_t *)AXIS2_MSG_CTX_GET_PROPERTY(
+		msg_ctx, env,
+		AXIS2_HTTP_HEADER_PROPERTY,
+		AXIS2_FALSE);
+	if (http_header_property)
+	{
+		http_header_list = (axis2_array_list_t *) AXIS2_PROPERTY_GET_VALUE (http_header_property, env);
+		if (!AXIS2_ARRAY_LIST_IS_EMPTY (http_header_list, env))
+		{
+			int i;
+			for (i = 0; i < AXIS2_ARRAY_LIST_SIZE (http_header_list, env); i++)
+			{
+				AXIS2_HTTP_SIMPLE_REQUEST_ADD_HEADER (request, env, (axis2_http_header_t *)AXIS2_ARRAY_LIST_GET (http_header_list, env, i));
+			}
+		}
+	}
 
     status_code = AXIS2_HTTP_CLIENT_SEND(sender_impl->client, env, request);
 
