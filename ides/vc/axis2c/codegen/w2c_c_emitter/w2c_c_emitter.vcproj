@@ -91,6 +91,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy .\..\..\..\..\..\tools\codegen\src\util\codegen-config.properties .\..\..\deploy\conf\codegen-config.properties"
 			/>
 		</Configuration>
 		<Configuration

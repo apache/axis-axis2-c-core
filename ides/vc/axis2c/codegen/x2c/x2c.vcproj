@@ -90,6 +90,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="xcopy /E /I /Y .\..\..\..\..\..\tools\codegen\src\typemappers  .\..\..\deploy\conf\typemappers"
 			/>
 		</Configuration>
 		<Configuration

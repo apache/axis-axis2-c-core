@@ -27,6 +27,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -41,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="./../../../../../tools/codegen/include;./../../../../../woden/include;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;W2C_CODEGEN_EXPORTS;AXIS2_DECLARE_EXPORT;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;W2C_CODEGEN_EXPORTS;AXIS2_DECLARE_EXPORT;_CRT_SECURE_NO_DEPRECATE;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -90,6 +91,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="xcopy /E /I /Y .\..\..\..\..\..\tools\codegen\src\templates  .\..\..\deploy\conf\templates"
 			/>
 		</Configuration>
 		<Configuration
