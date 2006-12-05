@@ -24,7 +24,7 @@
         <items>UsernameToken Timestamp Encrypt</items>
         <user>Gampola</user>
         <passwordType>passwordDigest</passwordType>
-        <!--Following should change with your DLL or SO path-->
+        <!--Following should be changed with your DLL or SO path-->
         <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
         <timeToLive>360</timeToLive>
         <encryptionKeyTransportAlgorithm>http://www.w3.org/2001/04/xmlenc#rsa-1_5</encryptionKeyTransportAlgorithm>
@@ -38,6 +38,7 @@
     <parameter name="InflowSecurity">
       <action>
         <items>Encrypt</items>
+        <!--Following should be changed with your DLL or SO path-->
         <passwordCallbackClass>/home/kau/axis2/c/deploy/bin/samples/rampart/callback/libpwcb.so</passwordCallbackClass>
         <decryptionPropFile>/home/kau/axis2/c/rampart/samples/keys/xhome/x_store.pfx</decryptionPropFile>
         <encryptionUser>x12345</encryptionUser>
