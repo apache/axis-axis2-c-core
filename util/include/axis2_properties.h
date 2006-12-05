@@ -100,7 +100,7 @@ typedef struct axis2_properties_ops axis2_properties_ops_t;
     axis2_status_t (AXIS2_CALL *
     load)(axis2_properties_t *properties,
                  const axis2_env_t *env,
-                 FILE *input);
+                 axis2_char_t *input_filename);
   
    /**
     * store properties

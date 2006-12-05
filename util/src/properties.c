@@ -50,7 +50,7 @@ axis2_properties_set_property(axis2_properties_t *properties,
 axis2_status_t AXIS2_CALL
 axis2_properties_load(axis2_properties_t *properties,
         const axis2_env_t *env,
-        FILE *input);
+		axis2_char_t  *input_filename);
 
 axis2_status_t AXIS2_CALL
 axis2_properties_store(axis2_properties_t *properties,
@@ -229,9 +229,10 @@ axis2_properties_store(axis2_properties_t *properties,
 axis2_status_t AXIS2_CALL
 axis2_properties_load(axis2_properties_t *properties,
         const axis2_env_t *env,
-        FILE *input)
+        axis2_char_t *input_filename)
 {
     axis2_properties_impl_t *properties_impl = NULL;
+	FILE *input = NULL;
     axis2_char_t *cur = NULL;
     axis2_char_t *tag = NULL;
     const int LINE_STARTED = -1;
@@ -246,11 +247,14 @@ axis2_properties_load(axis2_properties_t *properties,
     axis2_char_t loginfo[1024];
 
     AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
-    AXIS2_PARAM_CHECK(env-> error, input, AXIS2_FAILURE);
+    AXIS2_PARAM_CHECK(env-> error, input_filename, AXIS2_FAILURE);
 
     properties_impl = AXIS2_INTF_TO_IMPL(properties);
     prop_hash = properties_impl-> prop_hash;
 
+	input = fopen(input_filename, "r+");
+		if(!input)
+			return AXIS2_FAILURE;
     buffer = axis2_properties_read(input, env);
 
     if (buffer == NULL)
@@ -326,6 +330,8 @@ axis2_properties_load(axis2_properties_t *properties,
         AXIS2_FREE(env-> allocator, buffer);
         return AXIS2_FAILURE;
     }
+	if(input)
+		fclose(input);			
     AXIS2_FREE(env-> allocator, buffer);
     return AXIS2_SUCCESS;
 }
