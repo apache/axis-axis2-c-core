@@ -23,7 +23,8 @@
 axiom_node_t *
 build_om_programatically(const axis2_env_t *env,
         const axis2_char_t *image_name,
-        const axis2_char_t *to_save_name);
+        const axis2_char_t *to_save_name,
+        axis2_bool_t optimized);
 
 int main(int argc, char** argv)
 {
@@ -38,6 +39,7 @@ int main(int argc, char** argv)
     const axis2_char_t *image_name = "resources/axis2.jpg";
     const axis2_char_t *to_save_name = "test.jpg";
     axis2_endpoint_ref_t* reply_to = NULL;
+    axis2_bool_t optimized = AXIS2_TRUE;
 
 
     /* Set up the environment */
@@ -49,7 +51,7 @@ int main(int argc, char** argv)
         address = argv[1];
     if (AXIS2_STRCMP(address, "-h") == 0)
     {
-        printf("Usage : %s [endpoint_url] [image_name] [to_save_name]\n", argv[0]);
+        printf("Usage : %s [endpoint_url] [image_name] [to_save_name] [do_not_optimize]\n", argv[0]);
         printf("use -h for help\n");
         return 0;
     }
@@ -57,6 +59,8 @@ int main(int argc, char** argv)
         image_name = argv[2];
     if (argc > 3)
         to_save_name = argv[3];
+    if (argc > 4)
+        optimized = AXIS2_FALSE;
 
     printf("Using endpoint : %s\n", address);
 
@@ -106,7 +110,7 @@ int main(int argc, char** argv)
     AXIS2_SVC_CLIENT_ENGAGE_MODULE(svc_client, env, AXIS2_MODULE_ADDRESSING);
 
     /* Build the SOAP request message payload using OM API.*/
-    payload = build_om_programatically(env, image_name, to_save_name);
+    payload = build_om_programatically(env, image_name, to_save_name, optimized);
 
     /* Send request */
     ret_node = AXIS2_SVC_CLIENT_SEND_RECEIVE(svc_client, env, payload);
@@ -150,7 +154,8 @@ int main(int argc, char** argv)
 axiom_node_t *
 build_om_programatically(const axis2_env_t *env,
         const axis2_char_t *image_name,
-        const axis2_char_t *to_save_name)
+        const axis2_char_t *to_save_name,
+        axis2_bool_t optimized)
 {
     axiom_node_t *mtom_om_node = NULL;
     axiom_element_t* mtom_om_ele = NULL;
@@ -175,6 +180,7 @@ build_om_programatically(const axis2_env_t *env,
 
     data_handler = axiom_data_handler_create(env, image_name, "image/jpeg");
     data_text = axiom_text_create_with_data_handler(env, image_om_node, data_handler, &data_om_node);
+    AXIOM_TEXT_SET_OPTIMIZE(data_text, env, optimized);
     om_str = AXIOM_NODE_TO_STRING(mtom_om_node, env);
     if (om_str)
     {

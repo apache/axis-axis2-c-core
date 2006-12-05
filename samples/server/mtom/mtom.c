@@ -90,6 +90,26 @@ axis2_mtom_mtom(const axis2_env_t *env, axiom_node_t *node)
                             ret_node = build_om_programatically(env, text_str);
                         }
                     }
+                    else /* attachment has come by value, as non-optimized binary */
+                    {
+                        axiom_text_t *bin_text = (axiom_text_t *)
+                                AXIOM_NODE_GET_DATA_ELEMENT(inc_node, env);
+                        int plain_binary_len = 0;
+                        axis2_byte_t *plain_binary = NULL;
+                        axiom_data_handler_t *data_handler = NULL;
+                        
+                        axis2_char_t *base64text = AXIOM_TEXT_GET_VALUE(bin_text, env);
+                        printf("base64text = %s\n", base64text);
+                        plain_binary_len = axis2_base64_decode_len(base64text);
+                        plain_binary =  AXIS2_MALLOC(env->
+                                    allocator, sizeof(unsigned char) * plain_binary_len);
+                        axis2_base64_decode_binary((unsigned char*)plain_binary,
+                                    base64text);
+                        data_handler = axiom_data_handler_create(env, text_str, NULL);
+                        AXIOM_DATA_HANDLER_SET_BINARY_DATA(data_handler, env, plain_binary, plain_binary_len);
+                        AXIOM_DATA_HANDLER_WRITE_TO(data_handler, env);
+                        ret_node = build_om_programatically(env, text_str);
+                    }
                 }
             }
 
