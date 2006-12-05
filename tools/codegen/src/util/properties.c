@@ -62,18 +62,9 @@ w2c_properties_create (const axis2_env_t *env,
     axis2_char_t *p = NULL;
     axis2_char_t *tag = NULL;
     axis2_hash_t *tmp_hash = NULL;
-    FILE *f = NULL;
     axis2_array_list_t *arr_list = NULL;
     int i = 0;
    
-    AXIS2_ENV_CHECK(env, NULL);
-
-    f = fopen ( filename, "r+");
-    if ( f == NULL )
-    {
-        AXIS2_ERROR_SET(env->error, AXIS2_ERROR_COULD_NOT_OPEN_FILE, AXIS2_FAILURE); 
-        return NULL;
-    }
 
     properties_impl = (w2c_properties_impl_t *) AXIS2_MALLOC(env->
                allocator, sizeof(w2c_properties_impl_t));
@@ -89,9 +80,7 @@ w2c_properties_create (const axis2_env_t *env,
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_NO_MEMORY, AXIS2_FAILURE); 
         return NULL;
     }
-    AXIS2_PROPERTIES_LOAD( main_props, env, f );
-    fclose(f);
-
+	AXIS2_PROPERTIES_LOAD( main_props, env, filename );
 
     tmp_hash = AXIS2_PROPERTIES_GET_ALL( main_props, env);
     

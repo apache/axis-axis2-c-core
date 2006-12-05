@@ -698,11 +698,15 @@ w2c_engine_configuration_free (w2c_engine_configuration_t *engine_configuration,
     }
     if ( engine_configuration_impl->base_uri )
     {
+		/*
         AXIS2_FREE ( env-> allocator, engine_configuration_impl->base_uri );
-    }
+		*/
+	}
     if ( engine_configuration_impl->wsdl_uri )
     {
+		/*
         AXIS2_FREE ( env-> allocator, engine_configuration_impl->wsdl_uri );
+		*/
     }
     if ( engine_configuration_impl->repository_path )
     {

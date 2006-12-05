@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-#include <schema_writer_protected.h>
+#include "schema_writer_protected.h"
+#include <w2c_xslt_template_processor.h>
 
 /**
  * The following set of functions suppose to be implemented 
@@ -127,7 +128,7 @@ w2c_schema_writer_free (w2c_schema_writer_t *schema_writer,
     }
     if( writer_impl-> global_wrapped_node)
     {
-        AXIOM_NODE_FREE( writer_impl-> global_wrapped_node, env);
+        AXIOM_NODE_FREE_TREE( writer_impl-> global_wrapped_node, env);
     }
     
     if( writer_impl-> model_map)
@@ -172,7 +173,7 @@ w2c_schema_writer_get_model_map( w2c_schema_writer_t *writer,
 {
     w2c_schema_writer_impl_t *writer_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
 
     writer_impl = W2C_INTF_TO_IMPL(writer);
 
@@ -343,7 +344,7 @@ w2c_schema_writer_write_simple_type( w2c_schema_writer_t *writer,
 {
     AXIS2_ENV_CHECK(env, NULL);
     w2c_messages_print_n_log_error( env, "schema.notImplemented");
-    return AXIS2_FAILURE;
+	return NULL;
 }
 
 axis2_status_t
@@ -380,7 +381,7 @@ w2c_schema_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer,
     W2C_ENGINE_CONFIGURATION_NAMEMAKER name_maker = NULL;
     w2c_schema_writer_impl_t *writer_impl = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
 
     writer_impl = W2C_INTF_TO_IMPL(writer);
     ns_uri = AXIS2_QNAME_GET_URI( qname, env);
@@ -925,7 +926,7 @@ w2c_schema_writer_get_prefix4uri( w2c_schema_writer_impl_t *writer_impl,
     return prefix;
 }
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 w2c_schema_writer_register_extension_mapper_packagename(w2c_schema_writer_t *writer,
                                         const axis2_env_t *env,
                                         axis2_char_t *packagename)
@@ -937,7 +938,7 @@ w2c_schema_writer_register_extension_mapper_packagename(w2c_schema_writer_t *wri
     return AXIS2_SUCCESS;
 }
 
-axis2_status_t
+axis2_status_t AXIS2_CALL
 w2c_schema_writer_write_extension_mapper( w2c_schema_writer_t *writer,
                                 const axis2_env_t *env,
                                 axis2_hash_t *meta_info_array)
@@ -945,7 +946,7 @@ w2c_schema_writer_write_extension_mapper( w2c_schema_writer_t *writer,
     return AXIS2_SUCCESS;
 }
 
-axis2_char_t*
+axis2_char_t* AXIS2_CALL
 w2c_schema_writer_get_extension_mapper_package_name(w2c_schema_writer_t *writer,
                                         const axis2_env_t *env)
 {

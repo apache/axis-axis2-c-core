@@ -46,7 +46,6 @@ int main(int argc, char **argv )
         w2c_schema_print_usage( env);
     }
 
-    axis2_allocator_free(allocator);
     axis2_env_free( env );
     return 0;
 }

@@ -49,10 +49,8 @@ w2c_messages_get_message_properties(
     filepath = AXIS2_MALLOC ( env-> allocator, path_len* sizeof(axis2_char_t) );
     sprintf ( filepath, "%s%s%s", axis2c_home, inter_path, filename );
   
-    f = fopen( filepath, "r+");
     props = axis2_properties_create(env);
-    AXIS2_PROPERTIES_LOAD( props, env, f); 
-    fclose(f);
+	AXIS2_PROPERTIES_LOAD( props, env, filepath); 
 
     return props;
 }

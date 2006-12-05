@@ -48,7 +48,6 @@ int main(int argc, char** argv)
         }
     }
     W2C_CMDLINE_OPTION_PARSER_FREE(cmd_opt_parser, env);
-    axis2_allocator_free(allocator);
     axis2_env_free(env);
     return 0;
 }

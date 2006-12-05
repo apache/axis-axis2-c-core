@@ -31,7 +31,8 @@ extern "C"
 {
 #endif
 
-#define W2C_MESSAGES_INTER_PATH "/conf/"
+#define W2C_MESSAGES_INTER_PATH  "/conf/"
+
     
 /**
  * @defgroup w2c_messages handles file writing

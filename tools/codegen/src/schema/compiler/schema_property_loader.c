@@ -164,15 +164,17 @@ w2c_schema_property_loader_create (const axis2_env_t *env,
     sprintf(schema_property_loader_impl-> prop_filename, "%s%s", axis2c_home,
                            W2C_SCHEMA_PROPERTY_LOADER_DEFAULT_PROPERTIES);
     
-    f = fopen ( schema_property_loader_impl-> prop_filename, "r+");
+    /*
+	f = fopen ( schema_property_loader_impl-> prop_filename, "r+");
     if ( f == NULL )
     {
         w2c_schema_property_loader_free(&(schema_property_loader_impl->schema_property_loader), env);
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_COULD_NOT_OPEN_FILE, AXIS2_FAILURE);
         return NULL;
     }
+	*/
     schema_property_loader_impl-> prop_set =  axis2_properties_create( env);
-    AXIS2_PROPERTIES_LOAD( schema_property_loader_impl-> prop_set, env, f);
+	AXIS2_PROPERTIES_LOAD( schema_property_loader_impl-> prop_set, env, schema_property_loader_impl->prop_filename);
 
     if ( schema_property_loader_impl-> prop_set != NULL )
     {
@@ -317,7 +319,7 @@ w2c_schema_property_loader_reload (
     {
          AXIS2_PROPERTIES_FREE ( schema_property_loader_impl->prop_set, env );
     }
-
+	/*
     f = fopen ( schema_property_loader_impl-> prop_filename, "r+");
     if ( f == NULL )
     {
@@ -325,8 +327,9 @@ w2c_schema_property_loader_reload (
         AXIS2_ERROR_SET(env->error, AXIS2_ERROR_COULD_NOT_OPEN_FILE, AXIS2_FAILURE);
         return AXIS2_FAILURE;
     }
+	*/
     schema_property_loader_impl-> prop_set =  axis2_properties_create( env);
-    AXIS2_PROPERTIES_LOAD( schema_property_loader_impl-> prop_set, env, f);
+	AXIS2_PROPERTIES_LOAD( schema_property_loader_impl-> prop_set, env, schema_property_loader_impl->prop_filename);
 
     if ( schema_property_loader_impl-> prop_set != NULL )
     {

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-#include <schema_writer_protected.h>
+#include "schema_writer_protected.h"
+#include <w2c_xslt_template_processor.h>
 
 /**
  * @brief
@@ -40,7 +41,7 @@ w2c_schema_c_writer_make_fully_qualified_class_name( w2c_schema_writer_t *writer
     axis2_char_t *temp_uri = NULL;
     axis2_char_t *temp_prefix = NULL;
 
-    AXIS2_ENV_CHECK(env, AXIS2_FAILURE);
+	AXIS2_ENV_CHECK(env, NULL);
 
     writer_impl = W2C_INTF_TO_IMPL(writer);
    

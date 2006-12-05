@@ -58,7 +58,8 @@ w2c_class_loader_get_object_from_class_name
     AXIS2_PARAM_SET_VALUE(impl_info_param, env, dll_desc);
 
     axis2_class_loader_init(env);
-    obj = axis2_class_loader_create_dll(env, impl_info_param);
+	printf("\n%s\n", file_path);
+	obj = axis2_class_loader_create_dll(env, impl_info_param);
 
     AXIS2_FREE ( env->allocator, file_path);
     return obj;

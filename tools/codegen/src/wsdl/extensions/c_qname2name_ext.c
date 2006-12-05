@@ -33,7 +33,15 @@ typedef struct w2c_c_qname2name_ext_impl
         ((w2c_c_qname2name_ext_impl_t*) extension)
 
 #define W2C_QNAME2NAME_MAKER_INTF_TO_IMPL(qname2name_maker) \
-        ((w2c_c_qname2name_ext_impl_t*) ((void*)(qname2name_maker) - sizeof(w2c_extension_t)))
+        ((w2c_c_qname2name_ext_impl_t*) ((qname2name_maker) - sizeof(w2c_extension_t)))
+
+/**
+Above macro was as 
+((w2c_c_qname2name_ext_impl_t*) ((void*)(qname2name_maker) - sizeof(w2c_extension_t))) 
+
+This gives a compilation error on win32, and in current form it currupts 
+memory.
+*/
 
 /**************implmentations for w2c_extension_t methods**********************/
 axis2_status_t AXIS2_CALL
@@ -148,7 +156,7 @@ w2c_c_qname2name_ext_suggest_name(w2c_qname2name_maker_t *qname2name_maker,
     given_name = axis2_stracat( local, counter_str, env);
 
     axis2_hash_set(impl-> qname2name, key, AXIS2_HASH_KEY_STRING, given_name);
-    axis2_hash_set(impl-> name2number, local, AXIS2_HASH_KEY_STRING, (void*)counter+1);
+    axis2_hash_set(impl-> name2number, local, AXIS2_HASH_KEY_STRING, (void*)(counter+1));
 
     return given_name;    
 }
