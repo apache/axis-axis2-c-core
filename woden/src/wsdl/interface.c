@@ -182,9 +182,9 @@ woden_interface_to_interface_element(
     }
     else
         interface_impl = (woden_interface_impl_t *) interface;
-
+	/*
     woden_interface_free_ops(interface, env);
-
+	*/
     interface_impl->interface.base.interface_element.ops =
         AXIS2_MALLOC(env->allocator,
                 sizeof(woden_interface_element_ops_t));
@@ -456,9 +456,11 @@ woden_interface_free_ops(
 
     if (interface_impl->interface.base.interface_element.base.documentable_element.ops)
     {
+		/*
         AXIS2_FREE(env->allocator, interface_impl->interface.base.
                 interface_element.base.documentable_element.ops);
-        interface_impl->interface.base.interface_element.base.documentable_element.ops =
+        */
+		interface_impl->interface.base.interface_element.base.documentable_element.ops =
             NULL;
     }
 

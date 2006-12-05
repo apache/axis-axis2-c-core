@@ -207,8 +207,9 @@ woden_binding_to_binding_element(
     }
     else
         binding_impl = (woden_binding_impl_t *) binding;
-    woden_binding_free_ops(binding, env);
-
+    /*
+	woden_binding_free_ops(binding, env);
+	*/
     binding_impl->binding.base.binding_element.ops =
         AXIS2_MALLOC(env->allocator,
                 sizeof(woden_binding_element_ops_t));
